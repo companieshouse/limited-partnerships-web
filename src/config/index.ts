@@ -4,11 +4,11 @@ export const APPLICATION_NAME = "limited-partnerships-web";
 export const NODE_ENV = process.env["NODE_ENV"];
 export const PORT = getEnvironmentValue("PORT", "3127");
 
+// Templates
+export const START_TEMPLATE = "start";
+
 
 // Routing Paths
 export const BASE_URL = "/limited-partnerships/";
-export const START_URL = BASE_URL + "start";
+export const START_URL = BASE_URL + START_TEMPLATE;
 
-
-// Templates
-export const START_TEMPLATE = "start";
