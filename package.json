@@ -1,0 +1,32 @@
+{
+  "name": "limited-partnerships-web",
+  "version": "0.1.0",
+  "description": "Limited Partnerships Web App",
+  "main": "app.ts",
+  "scripts": {
+    "start": "node dist/bin/www.js",
+    "build": "tsc && cp -r views dist/",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/companieshouse/limited-partnerships-web.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "homepage": "https://github.com/companieshouse/limited-partnerships-web#readme",
+  "dependencies": {
+    "@companieshouse/structured-logging-node": "^2.0.1",
+    "express": "^4.21.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3",
+    "nunjucks": "^3.2.4"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.7.9",
+    "@types/nunjucks": "^3.2.6",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
+  }
+}
