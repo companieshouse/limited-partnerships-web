@@ -5,8 +5,8 @@
   "main": "app.ts",
   "scripts": {
     "build": "tsc && cp -r views dist/",
-    "lint": "eslint '{src,test}/**/*'",
-    "lint:fix": "eslint '{src,test}/**/*' --fix",
+    "lint": "eslint '{src,test}/**/*' *.mjs",
+    "lint:fix": "eslint '{src,test}/**/*' *.mjs --fix",
     "prepare": "husky",
     "sonarqube": "branch=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD); if [[ $branch == \"HEAD\" ]]; then echo $branch && npm run sonarqube-base-branch; else echo $branch && npm run sonarqube-pull-request; fi;",
     "sonarqube-base-branch": "sonar-scanner",
