@@ -29,5 +29,5 @@ app.set("view engine", "html");
 // apply our default router to /
 app.use("/", router);
 
-logger.info("limited-partnerships-web has started.");
+logger.info(`${config.APPLICATION_NAME} has started.`);
 export default app;
