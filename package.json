@@ -7,9 +7,12 @@
     "build": "tsc && cp -r views dist/",
     "lint": "eslint '{src,test}/**/*'",
     "lint:fix": "eslint '{src,test}/**/*' --fix",
+    "prepare": "husky",
+    "sonarqube": "branch=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD); if [[ $branch == \"HEAD\" ]]; then echo $branch && npm run sonarqube-base-branch; else echo $branch && npm run sonarqube-pull-request; fi;",
+    "sonarqube-base-branch": "sonar-scanner",
+    "sonarqube-pull-request": "sonar-scanner -D sonar.pullrequest.base=main",
     "start": "node dist/bin/www.js",
-    "test": "jest",
-    "prepare": "husky"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -39,6 +42,7 @@
     "@types/nunjucks": "^3.2.6",
     "eslint": "^9.13.0",
     "globals": "^15.11.0",
-    "husky": "^9.1.6"
+    "husky": "^9.1.6",
+    "sonarqube-scanner": "^3.0.1"
   }
 }
