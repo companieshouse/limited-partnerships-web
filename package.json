@@ -4,9 +4,12 @@
   "description": "Limited Partnerships Web App",
   "main": "app.ts",
   "scripts": {
-    "start": "node dist/bin/www.js",
     "build": "tsc && cp -r views dist/",
-    "test": "jest"
+    "lint": "eslint '{src,test}/**/*'",
+    "lint:fix": "eslint '{src,test}/**/*' --fix",
+    "start": "node dist/bin/www.js",
+    "test": "jest",
+    "prepare": "husky"
   },
   "repository": {
     "type": "git",
@@ -22,13 +25,20 @@
   "dependencies": {
     "@companieshouse/structured-logging-node": "^2.0.1",
     "express": "^4.21.1",
+    "nunjucks": "^3.2.4",
     "ts-node": "^10.9.2",
-    "typescript": "^5.6.3",
-    "nunjucks": "^3.2.4"
+    "typescript": "^5.6.3"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.1.0",
+    "@eslint/js": "^9.13.0",
+    "@typescript-eslint/eslint-plugin": "^8.11.0",
+    "@stylistic/eslint-plugin-ts": "^2.9.0",
     "@types/express": "^5.0.0",
     "@types/node": "^22.7.9",
-    "@types/nunjucks": "^3.2.6"
+    "@types/nunjucks": "^3.2.6",
+    "eslint": "^9.13.0",
+    "globals": "^15.11.0",
+    "husky": "^9.1.6"
   }
 }

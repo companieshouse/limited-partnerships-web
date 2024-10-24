@@ -32,7 +32,7 @@ server.on("error", onError);
 /**
  * Event listener for HTTP server "error" event.
  */
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 function onError(error: any) {
   if (error.syscall !== "listen") {
     throw error;

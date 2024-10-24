@@ -5,7 +5,6 @@ import * as config from "./config";
 import logger from "./utils/logger";
 import router from "./routes";
 
-
 const app = express();
 
 // set some app variables from the environment
@@ -13,13 +12,12 @@ app.set("port", config.PORT);
 app.set("dev", config.NODE_ENV === "development");
 
 // set up the template engine
-const nunjucksEnv = nunjucks.configure([
+nunjucks.configure([
   "views"
 ], {
   autoescape: true,
   express: app,
 });
-
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

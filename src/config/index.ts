@@ -7,7 +7,6 @@ export const PORT = getEnvironmentValue("PORT", "3000");
 // Templates
 export const START_TEMPLATE = "start";
 
-
 // Routing Paths
 export const BASE_URL = "/limited-partnerships/";
 export const START_URL = BASE_URL + START_TEMPLATE;
