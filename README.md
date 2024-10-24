@@ -2,7 +2,7 @@
 Web front-end for the Limited Partnerships service
 
 Requires >= Node v20
-         >= npm v8
+         >= npm v10
 
 ## Local build instructions
 1. run 'npm i' to install packages
