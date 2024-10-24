@@ -7,6 +7,4 @@ const router = Router();
 // Routes
 router.get(config.START_URL, controllers.startController.get);
 
-
-
 export default router;

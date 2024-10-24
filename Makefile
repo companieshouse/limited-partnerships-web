@@ -19,9 +19,9 @@ build:
 # Note: The following target and others lower down are commented out for now. They will need
 #       to be uncommented (probably quite soon) when the other build tasks are implemented 
 
-# .PHONY: lint
-# lint:
-# 	npm run lint
+.PHONY: lint
+lint:
+	npm run lint
 
 .PHONY: sonar
 sonar:

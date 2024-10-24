@@ -4,11 +4,14 @@
   "description": "Limited Partnerships Web App",
   "main": "app.ts",
   "scripts": {
-    "start": "node dist/bin/www.js",
     "build": "tsc && cp -r views dist/",
+    "lint": "eslint '{src,test}/**/*'",
+    "lint:fix": "eslint '{src,test}/**/*' --fix",
+    "prepare": "husky",
+    "sonarqube": "branch=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD); if [[ $branch == \"HEAD\" ]]; then echo $branch && npm run sonarqube-base-branch; else echo $branch && npm run sonarqube-pull-request; fi;",
     "sonarqube-base-branch": "sonar-scanner",
     "sonarqube-pull-request": "sonar-scanner -D sonar.pullrequest.base=main",
-    "sonarqube": "branch=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD); if [[ $branch == \"HEAD\" ]]; then echo $branch && npm run sonarqube-base-branch; else echo $branch && npm run sonarqube-pull-request; fi;",
+    "start": "node dist/bin/www.js",
     "test": "jest"
   },
   "repository": {
@@ -25,14 +28,21 @@
   "dependencies": {
     "@companieshouse/structured-logging-node": "^2.0.1",
     "express": "^4.21.1",
+    "nunjucks": "^3.2.4",
     "ts-node": "^10.9.2",
-    "typescript": "^5.6.3",
-    "nunjucks": "^3.2.4"
+    "typescript": "^5.6.3"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.1.0",
+    "@eslint/js": "^9.13.0",
+    "@stylistic/eslint-plugin-ts": "^2.9.0",
+    "@typescript-eslint/eslint-plugin": "^8.11.0",
     "@types/express": "^5.0.0",
     "@types/node": "^22.7.9",
     "@types/nunjucks": "^3.2.6",
+    "eslint": "^9.13.0",
+    "globals": "^15.11.0",
+    "husky": "^9.1.6",
     "sonarqube-scanner": "^3.0.1"
   }
 }
