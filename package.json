@@ -12,6 +12,10 @@
     "type": "git",
     "url": "git+https://github.com/companieshouse/limited-partnerships-web.git"
   },
+  "engines": {
+    "npm": ">=8.0.0",
+    "node": ">=20.0.0"
+  },
   "author": "",
   "license": "MIT",
   "homepage": "https://github.com/companieshouse/limited-partnerships-web#readme",
