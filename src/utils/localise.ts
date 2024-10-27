@@ -1,16 +1,13 @@
 import { LocalesService, LanguageNames } from "@companieshouse/ch-node-utils";
 import { LOCALES_ENABLED, LOCALES_PATH } from "../config";
 
-type Language = "cy" | "en"; // Add more languages as needed
-
-const languageMap: { [key in Language]?: string } = {
-  cy: "cy",
-  en: "en",
-  // Add more languages here
-};
+enum Language {
+  CY = "cy",
+  EN = "en",
+}
 
 export const selectLang = (lang: any): string => {
-  return languageMap[lang as Language] || "en";
+  return Object.values(Language).includes(lang) ? lang : Language.EN;
 };
 
 export const addLangToUrl = (url: string, lang?: string): string => {
@@ -21,7 +18,7 @@ export const addLangToUrl = (url: string, lang?: string): string => {
   return `${url}${separator}lang=${lang}`;
 };
 
-export const getLocaleInfo = (locales: LocalesService, lang: string) => {
+export const getLocalisationProperties = (locales: LocalesService, lang: string) => {
   return {
     languageEnabled: locales.enabled,
     languages: LanguageNames.sourceLocales(locales.localesFolder),

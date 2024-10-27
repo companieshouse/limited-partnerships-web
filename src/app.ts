@@ -4,6 +4,7 @@ import * as path from "path";
 import * as config from "./config";
 import logger from "./utils/logger";
 import router from "./routes";
+import localisationMiddleware from "./middlewares/localisation.middleware";
 
 const app = express();
 
@@ -24,6 +25,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "njk");
+
+// middlewares
+app.use(localisationMiddleware);
 
 // apply our default router to /
 app.use("/", router);
