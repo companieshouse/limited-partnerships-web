@@ -5,7 +5,6 @@ const localisationMiddleware = (req: Request, res: Response, next: NextFunction)
 
   const lang = localise.selectLang(req.query.lang);
   const localesService = localise.getLocalesService();
-
   const localisationProps = localise.getLocalisationProperties(localesService, lang);
 
   // set values needed for localisation in the templates

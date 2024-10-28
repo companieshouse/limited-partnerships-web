@@ -1,3 +1,4 @@
 {
-    "startTitle" : "This is Limited Partnerships"
+    "startTitle" : "This is Limited Partnerships",
+    "errorStartAddressMissing" : "Please enter an address"
 }
