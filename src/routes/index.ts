@@ -6,7 +6,6 @@ const router = Router();
 
 // Routes
 router.get(config.START_URL, controllers.startController.get);
+router.get(config.HEALTHCHECK_URL, controllers.healthCheckController.get);
 
-
-
-export default router;
+ export default router;
