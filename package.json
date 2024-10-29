@@ -12,7 +12,8 @@
     "sonarqube-base-branch": "sonar-scanner",
     "sonarqube-pull-request": "sonar-scanner -D sonar.pullrequest.base=main",
     "start": "node dist/bin/www.js",
-    "test": "jest"
+    "test": "jest",
+    "coverage": "jest --coverage --forceExit --passWithNoTests"
   },
   "repository": {
     "type": "git",
