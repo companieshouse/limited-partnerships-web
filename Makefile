@@ -35,10 +35,6 @@ sonar:
 # .PHONY: test
 # test: test-unit
 
-# .PHONY: security-check
-# security-check:
-# 	npm audit --audit-level=high
-
 .PHONY: package
 package: build
 ifndef version
