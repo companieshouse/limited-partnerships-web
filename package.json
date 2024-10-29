@@ -41,7 +41,7 @@
     "@typescript-eslint/eslint-plugin": "^8.11.0",
     "@types/express": "^5.0.0",
     "@types/jest": "^29.5.14",
-    "@types/node": "^22.7.9",
+    "@types/node": "^22.8.2",
     "@types/nunjucks": "^3.2.6",
     "@types/supertest": "^6.0.2",
     "eslint": "^9.13.0",
