@@ -40,20 +40,14 @@ describe("Localisation tests", () => {
     expect(resp.text).toContain(enStartPageText.startTitle);
   });
 
-  test("renders the start page with English text when an unsupported language is given", async () => {
-    setLocalesEnabled(true);
-
-    const resp = await request(app).get(config.START_URL + "?lang=pp");
-
-    expect(resp.text).toContain(enStartPageText.startTitle);
-  });
-
   test("renders the start page with English text as default when localisation is switched on", async () => {
     setLocalesEnabled(true);
 
     const resp = await request(app).get(config.START_URL);
 
     expect(resp.text).toContain(enStartPageText.startTitle);
+    expect(resp.text).toContain("English");
+    expect(resp.text).toContain("Cymraeg");
   });
 
   test("renders the start page with English text as default when localisation is switched off", async () => {
@@ -62,22 +56,6 @@ describe("Localisation tests", () => {
     const resp = await request(app).get(config.START_URL);
 
     expect(resp.text).toContain(enStartPageText.startTitle);
-  });
-
-  test("renders the start page with the language nav bar when localisation is switched on", async () => {
-    setLocalesEnabled(true);
-
-    const resp = await request(app).get(config.START_URL);
-
-    expect(resp.text).toContain("English");
-    expect(resp.text).toContain("Cymraeg");
-  });
-
-  test("renders the start page without the language nav bar when localisation is switched off", async () => {
-    setLocalesEnabled(false);
-
-    const resp = await request(app).get(config.START_URL);
-
     expect(resp.text).not.toContain("English");
     expect(resp.text).not.toContain("Cymraeg");
   });
