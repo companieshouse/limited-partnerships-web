@@ -35,7 +35,7 @@ const sessionStore = new SessionStore(new Redis(`redis://${config.CACHE_SERVER}`
 
 const csrfProtectionMiddleware = CsrfProtectionMiddleware({
   sessionStore,
-  enabled: true,
+  enabled: false,
   sessionCookieName: config.COOKIE_NAME
 });
 app.use(csrfProtectionMiddleware);

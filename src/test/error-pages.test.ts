@@ -36,9 +36,11 @@ describe("Error pages", () => {
     expect(response.text).toContain("Sorry, the service is unavailable");
   });
 
-  it.skip("Should render the CSRF error page", async () => {
+  it("Should render the CSRF error page", async () => {
     mockGet.mockImplementationOnce(() => { throw new CsrfError(CSRF_TOKEN_ERROR); });
+
     const response = await request(app).get(config.START_URL);
+
     expect(response.status).toEqual(403);
     expect(response.text).toContain(CSRF_ERROR_PAGE_HEADING);
     expect(response.text).toContain(CSRF_ERROR_PAGE_TEXT);
