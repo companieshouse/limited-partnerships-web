@@ -1,12 +1,14 @@
+jest.mock("ioredis");
+
 import request from "supertest";
-
-import app from "../app";
-import * as config from "../config";
-
-import { get } from "../controllers/start.controller";
 import { CsrfError } from "@companieshouse/web-security-node";
 
+import app from "../app";
+import { get } from "../controllers/start.controller";
+import * as config from "../config";
+
 jest.mock("../controllers/start.controller");
+
 const mockGet = get as jest.Mock;
 
 const CSRF_TOKEN_ERROR = "CSRF token mismatch";

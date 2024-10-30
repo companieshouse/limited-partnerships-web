@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from "express";
+import { CsrfError } from '@companieshouse/web-security-node';
+
 import logger from "../utils/logger";
 import * as config from "../config";
-import { CsrfError } from '@companieshouse/web-security-node';
 
 const pageNotFound = (req: Request, res: Response) => {
   return res.status(404).render(config.NOT_FOUND_TEMPLATE, {

@@ -1,13 +1,13 @@
 import express from "express";
 import * as nunjucks from "nunjucks";
 import * as path from "path";
+import Redis from 'ioredis';
+import { CsrfProtectionMiddleware } from "@companieshouse/web-security-node";
+import { SessionStore } from "@companieshouse/node-session-handler";
 
 import * as config from "./config";
 import logger from "./utils/logger";
 import router from "./routes";
-import { CsrfProtectionMiddleware } from "@companieshouse/web-security-node";
-import { SessionStore } from "@companieshouse/node-session-handler";
-import Redis from 'ioredis';
 import errorHandler from "./middlewares/error.middleware";
 
 const app = express();
