@@ -4,7 +4,7 @@
   "description": "Limited Partnerships Web App",
   "main": "app.ts",
   "scripts": {
-    "build": "tsc && cp -r src/views dist/",
+    "build": "rm -rf dist && tsc && cp -r src/views dist/ && cp -r locales dist/",
     "lint": "eslint '{src,test}/**/*' *.mjs",
     "lint:fix": "eslint '{src,test}/**/*' *.mjs --fix",
     "prepare": "husky",
@@ -28,6 +28,7 @@
   "license": "MIT",
   "homepage": "https://github.com/companieshouse/limited-partnerships-web#readme",
   "dependencies": {
+    "@companieshouse/ch-node-utils": "^1.3.12",
     "@companieshouse/structured-logging-node": "^2.0.1",
     "@companieshouse/node-session-handler": "^5.0.1",
     "@companieshouse/web-security-node": "^4.4.0",
