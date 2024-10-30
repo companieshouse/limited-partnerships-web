@@ -6,11 +6,12 @@ export const PORT = getEnvironmentValue("PORT", "3000");
 
 // Templates
 export const START_TEMPLATE = "start";
+export const ERROR_TEMPLATE = "error-page";
+export const NOT_FOUND_TEMPLATE = "page-not-found";
 
 // Routing Paths
 export const BASE_URL = "/limited-partnerships/";
 export const START_URL = BASE_URL + START_TEMPLATE;
-
 // Sessions
 export const COOKIE_NAME = getEnvironmentValue("COOKIE_NAME");
 export const CACHE_SERVER = getEnvironmentValue("CACHE_SERVER");
