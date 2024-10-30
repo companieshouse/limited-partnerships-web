@@ -1,7 +1,7 @@
 import express from "express";
 import * as nunjucks from "nunjucks";
 import * as path from "path";
-import Redis from 'ioredis';
+import Redis from "ioredis";
 import { CsrfProtectionMiddleware } from "@companieshouse/web-security-node";
 import { SessionStore } from "@companieshouse/node-session-handler";
 

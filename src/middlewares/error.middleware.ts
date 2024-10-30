@@ -18,7 +18,6 @@ const pageNotFound = (req: Request, res: Response) => {
 
 const csrfErrorHandler = (err: CsrfError | Error, req: Request, res: Response, next: NextFunction) => {
 
-  const isRegistration: boolean = req.path.startsWith(config.START_URL);
   // Handle non-CSRF Errors immediately
   if (!(err instanceof CsrfError)) {
     return next(err);
@@ -26,7 +25,6 @@ const csrfErrorHandler = (err: CsrfError | Error, req: Request, res: Response, n
 
   return res.status(403).render(config.ERROR_TEMPLATE, {
     templateName: config.ERROR_TEMPLATE,
-    isRegistration,
     csrfErrors: true
   });
 };
