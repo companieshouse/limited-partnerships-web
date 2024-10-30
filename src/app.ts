@@ -18,7 +18,8 @@ app.set("dev", config.NODE_ENV === "development");
 
 // set up the template engine
 nunjucks.configure([
-  path.join(__dirname, "views")
+  path.join(__dirname, "views"),
+  "node_modules/@companieshouse"
 ], {
   autoescape: true,
   express: app,
