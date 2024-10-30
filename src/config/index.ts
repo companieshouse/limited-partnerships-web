@@ -8,6 +8,8 @@ export const LOCALES_PATH = getEnvironmentValue("LOCALES_PATH", "locales");
 
 // Templates
 export const START_TEMPLATE = "start";
+export const ERROR_TEMPLATE = "error-page";
+export const NOT_FOUND_TEMPLATE = "page-not-found";
 
 // Routing Paths
 export const BASE_URL = "/limited-partnerships/";

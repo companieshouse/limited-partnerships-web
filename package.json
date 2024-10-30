@@ -5,7 +5,6 @@
   "main": "app.ts",
   "scripts": {
     "build": "rm -rf dist && tsc && cp -r src/views dist/ && cp -r locales dist/",
-    "dev": "nodemon src/bin/www.ts",
     "lint": "eslint '{src,test}/**/*' *.mjs",
     "lint:fix": "eslint '{src,test}/**/*' *.mjs --fix",
     "prepare": "husky",
@@ -13,7 +12,9 @@
     "sonarqube-base-branch": "sonar-scanner",
     "sonarqube-pull-request": "sonar-scanner -D sonar.pullrequest.base=main",
     "start": "node dist/bin/www.js",
-    "test": "jest"
+    "dev": "nodemon src/bin/www.ts",
+    "test": "jest",
+    "coverage": "jest --coverage --forceExit --passWithNoTests"
   },
   "repository": {
     "type": "git",

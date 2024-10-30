@@ -25,19 +25,19 @@ lint:
 
 .PHONY: sonar
 sonar:
-# sonar: test-unit
+sonar: test-unit
 	npm run sonarqube
 
-# .PHONY: test-unit
-# test-unit: clean
-# 	npm run coverage
+.PHONY: test-unit
+test-unit: clean
+	npm run coverage
 
-# .PHONY: test
-# test: test-unit
+.PHONY: test
+test: test-unit
 
-# .PHONY: security-check
-# security-check:
-# 	npm audit --audit-level=high
+.PHONY: security-check
+security-check:
+	npm audit --audit-level=high
 
 .PHONY: package
 package: build
@@ -54,6 +54,6 @@ endif
 	cd $(tmpdir) && zip -r ../$(artifact_name)-$(version).zip .
 	rm -rf $(tmpdir)
 
-# .PHONY: dist
-# dist: lint test-unit clean package
+.PHONY: dist
+dist: lint test-unit clean package
 
