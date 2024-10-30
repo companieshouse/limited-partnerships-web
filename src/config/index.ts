@@ -11,3 +11,6 @@ export const START_TEMPLATE = "start";
 export const BASE_URL = "/limited-partnerships/";
 export const START_URL = BASE_URL + START_TEMPLATE;
 
+// Sessions
+export const COOKIE_NAME = getEnvironmentValue("COOKIE_NAME");
+export const CACHE_SERVER = getEnvironmentValue("CACHE_SERVER");

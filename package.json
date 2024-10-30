@@ -27,6 +27,8 @@
   "homepage": "https://github.com/companieshouse/limited-partnerships-web#readme",
   "dependencies": {
     "@companieshouse/structured-logging-node": "^2.0.1",
+    "@companieshouse/node-session-handler": "^5.0.1",
+    "@companieshouse/web-security-node": "^4.4.0",
     "express": "^4.21.1",
     "nunjucks": "^3.2.4",
     "ts-node": "^10.9.2",

@@ -4,6 +4,9 @@ import * as path from "path";
 import * as config from "./config";
 import logger from "./utils/logger";
 import router from "./routes";
+import { CsrfProtectionMiddleware } from "@companieshouse/web-security-node";
+import { SessionStore } from "@companieshouse/node-session-handler";
+import Redis from 'ioredis';
 
 const app = express();
 
@@ -23,6 +26,16 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "njk");
+
+// csrf middleware
+const sessionStore = new SessionStore(new Redis(`redis://${config.CACHE_SERVER}`));
+
+const csrfProtectionMiddleware = CsrfProtectionMiddleware({
+  sessionStore,
+  enabled: true,
+  sessionCookieName: config.COOKIE_NAME
+});
+app.use(csrfProtectionMiddleware);
 
 // apply our default router to /
 app.use("/", router);
