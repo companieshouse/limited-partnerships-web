@@ -1,5 +1,3 @@
-jest.mock("ioredis");
-
 import request from "supertest";
 import { CsrfError } from "@companieshouse/web-security-node";
 
