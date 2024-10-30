@@ -7,8 +7,17 @@ import { LocalesService } from "@companieshouse/ch-node-utils";
 
 describe("Localisation tests", () => {
 
+  beforeEach(() => {
+    jest.resetAllMocks();
+  });
+
+  const setLocalesEnabled = (bool: boolean) => {
+    jest.spyOn(config, 'isLocalesEnabled').mockReturnValue(bool);
+    LocalesService.getInstance().enabled = bool;
+  };
+
   test("renders the start page with English text when lang is en", async () => {
-    LocalesService.getInstance().enabled = true;
+    setLocalesEnabled(true);
 
     const resp = await request(app).get(config.START_URL + "?lang=en");
 
@@ -16,7 +25,7 @@ describe("Localisation tests", () => {
   });
 
   test("renders the start page with Welsh text when lang is cy", async () => {
-    LocalesService.getInstance().enabled = true;
+    setLocalesEnabled(true);
 
     const resp = await request(app).get(config.START_URL + "?lang=cy");
 
@@ -24,7 +33,7 @@ describe("Localisation tests", () => {
   });
 
   test("renders the start page with English text when an unsupported language is given", async () => {
-    LocalesService.getInstance().enabled = true;
+    setLocalesEnabled(true);
 
     const resp = await request(app).get(config.START_URL + "?lang=pp");
 
@@ -32,7 +41,7 @@ describe("Localisation tests", () => {
   });
 
   test("renders the start page with English text when an unsupported language is given", async () => {
-    LocalesService.getInstance().enabled = true;
+    setLocalesEnabled(true);
 
     const resp = await request(app).get(config.START_URL + "?lang=pp");
 
@@ -40,7 +49,7 @@ describe("Localisation tests", () => {
   });
 
   test("renders the start page with English text as default when localisation is switched on", async () => {
-    LocalesService.getInstance().enabled = true;
+    setLocalesEnabled(true);
 
     const resp = await request(app).get(config.START_URL);
 
@@ -48,7 +57,7 @@ describe("Localisation tests", () => {
   });
 
   test("renders the start page with English text as default when localisation is switched off", async () => {
-    LocalesService.getInstance().enabled = false;
+    setLocalesEnabled(false);
 
     const resp = await request(app).get(config.START_URL);
 
@@ -56,7 +65,7 @@ describe("Localisation tests", () => {
   });
 
   test("renders the start page with the language nav bar when localisation is switched on", async () => {
-    LocalesService.getInstance().enabled = true;
+    setLocalesEnabled(true);
 
     const resp = await request(app).get(config.START_URL);
 
@@ -65,7 +74,7 @@ describe("Localisation tests", () => {
   });
 
   test("renders the start page without the language nav bar when localisation is switched off", async () => {
-    LocalesService.getInstance().enabled = false;
+    setLocalesEnabled(false);
 
     const resp = await request(app).get(config.START_URL);
 
