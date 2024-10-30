@@ -1,9 +1,9 @@
+import { LocalesService } from "@companieshouse/ch-node-utils";
 import request from "supertest";
+import app from "../app";
 import * as config from "../config";
 import enStartPageText from "../../locales/en/translations.json";
 import cyStartPageText from "../../locales/cy/translations.json";
-import app from "../app";
-import { LocalesService } from "@companieshouse/ch-node-utils";
 
 describe("Localisation tests", () => {
 
