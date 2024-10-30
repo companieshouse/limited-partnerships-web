@@ -4,7 +4,7 @@
   "description": "Limited Partnerships Web App",
   "main": "app.ts",
   "scripts": {
-    "build": "tsc && cp -r src/views dist/ && cp -r locales dist/",
+    "build": "rm -rf dist && tsc && cp -r src/views dist/ && cp -r locales dist/",
     "dev": "nodemon src/bin/www.ts",
     "lint": "eslint '{src,test}/**/*' *.mjs",
     "lint:fix": "eslint '{src,test}/**/*' *.mjs --fix",
@@ -40,12 +40,17 @@
     "@stylistic/eslint-plugin-ts": "^2.9.0",
     "@typescript-eslint/eslint-plugin": "^8.11.0",
     "@types/express": "^5.0.0",
+    "@types/jest": "^29.5.14",
     "@types/node": "^22.7.9",
     "@types/nunjucks": "^3.2.6",
+    "@types/supertest": "^6.0.2",
     "eslint": "^9.13.0",
     "globals": "^15.11.0",
     "husky": "^9.1.6",
+    "jest": "^29.7.0",
     "nodemon": "^3.1.7",
-    "sonarqube-scanner": "^3.0.1"
+    "sonarqube-scanner": "^3.0.1",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.2.5"
   }
 }
