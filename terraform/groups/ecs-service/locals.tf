@@ -8,8 +8,8 @@ locals {
   docker_repo                 = "limited-partnerships-web"
   kms_alias                   = "alias/${var.aws_profile}/environment-services-kms"
   lb_listener_rule_priority   = 23
-  lb_listener_paths           = ["/limited-partnerships-web*"]
-  healthcheck_path            = "/limited-partnerships-web/healthcheck" #healthcheck path for limited-partnerships-web
+  lb_listener_paths           = ["/limited-partnerships*"]
+  healthcheck_path            = "/limited-partnerships/healthcheck" #healthcheck path for limited-partnerships-web
   healthcheck_matcher         = "200"
   vpc_name                    = local.service_secrets["vpc_name"]
   s3_config_bucket            = data.vault_generic_secret.shared_s3.data["config_bucket_name"]
