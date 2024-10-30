@@ -8,13 +8,16 @@ export const NODE_ENV = process.env["NODE_ENV"];
 export const PIWIK_SITE_ID = getEnvironmentValue("PIWIK_SITE_ID", "24");
 export const PIWIK_URL = getEnvironmentValue("PIWIK_URL", "https://matomo.platform.aws.chdev.org");
 export const PORT = getEnvironmentValue("PORT", "3000");
+export const HEALTHCHECK = "healthcheck";
 
 export const SERVICE_NAME = "Limited Partnerships";
 
 // Templates
 export const START_TEMPLATE = "start";
+export const ERROR_TEMPLATE = "error-page";
+export const NOT_FOUND_TEMPLATE = "page-not-found";
 
 // Routing Paths
 export const BASE_URL = "/limited-partnerships/";
 export const START_URL = BASE_URL + START_TEMPLATE;
-
+export const HEALTHCHECK_URL = BASE_URL + HEALTHCHECK;

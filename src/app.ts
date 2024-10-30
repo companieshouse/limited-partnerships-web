@@ -1,9 +1,11 @@
 import express from "express";
 import * as nunjucks from "nunjucks";
 import * as path from "path";
+
 import * as config from "./config";
 import logger from "./utils/logger";
 import router from "./routes";
+import errorHandler from "./middlewares/error.middleware";
 
 const app = express();
 
@@ -36,6 +38,8 @@ app.set("view engine", "njk");
 
 // apply our default router to /
 app.use("/", router);
+
+app.use(errorHandler);
 
 logger.info(`${config.APPLICATION_NAME} has started.`);
 export default app;
