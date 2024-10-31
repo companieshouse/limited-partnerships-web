@@ -7,5 +7,6 @@ module.exports = {
     '^.+\\.ts$': 'ts-jest',
   },
   moduleDirectories: ['node_modules', 'src'],
-  globalSetup: "./src/test/global.setup.ts"
+  globalSetup: "./src/test/global.setup.ts",
+  setupFilesAfterEnv: ['./src/test/setup-jest.ts']
 };
