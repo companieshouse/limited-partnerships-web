@@ -1,6 +1,9 @@
 import express from "express";
 import * as nunjucks from "nunjucks";
 import * as path from "path";
+import Redis from "ioredis";
+import { CsrfProtectionMiddleware } from "@companieshouse/web-security-node";
+import { SessionStore } from "@companieshouse/node-session-handler";
 
 import * as config from "./config";
 import logger from "./utils/logger";
@@ -39,6 +42,16 @@ app.set("view engine", "njk");
 
 // middlewares
 app.use(localisationMiddleware);
+
+// csrf middleware
+const sessionStore = new SessionStore(new Redis(`redis://${config.CACHE_SERVER}`));
+
+const csrfProtectionMiddleware = CsrfProtectionMiddleware({
+  sessionStore,
+  enabled: false,
+  sessionCookieName: config.COOKIE_NAME
+});
+app.use(csrfProtectionMiddleware);
 
 // apply our default router to /
 app.use("/", router);

@@ -1,10 +1,30 @@
 import { NextFunction, Request, Response } from "express";
+import { CsrfError } from '@companieshouse/web-security-node';
+
 import logger from "../utils/logger";
 import * as config from "../config";
 
 const pageNotFound = (req: Request, res: Response) => {
   return res.status(404).render(config.NOT_FOUND_TEMPLATE, {
     templateName: config.NOT_FOUND_TEMPLATE
+  });
+};
+
+/**
+ * This handler catches any CSRF errors thrown within the application.
+ * If it is not a CSRF, the error is passed to the next error handler.
+ * If it is a CSRF error, it responds with a 403 forbidden status and renders the CSRF error.
+ */
+const csrfErrorHandler = (err: CsrfError | Error, req: Request, res: Response, next: NextFunction) => {
+
+  // Handle non-CSRF Errors immediately
+  if (!(err instanceof CsrfError)) {
+    return next(err);
+  }
+
+  return res.status(403).render(config.ERROR_TEMPLATE, {
+    templateName: config.ERROR_TEMPLATE,
+    csrfErrors: true
   });
 };
 
@@ -21,4 +41,4 @@ const errorHandler = (err: Error, req: Request, res: Response, _next: NextFuncti
   });
 };
 
-export default [pageNotFound, errorHandler];
+export default [pageNotFound, csrfErrorHandler, errorHandler];
