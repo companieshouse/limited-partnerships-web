@@ -9,10 +9,6 @@ jest.mock("../controllers/start.controller");
 
 const mockGet = get as jest.Mock;
 
-const CSRF_TOKEN_ERROR = "CSRF token mismatch";
-const CSRF_ERROR_PAGE_TEXT = "We have not been able to save the information you submitted on the previous screen.";
-const CSRF_ERROR_PAGE_HEADING = "Sorry, something went wrong";
-
 describe("Error pages", () => {
 
   beforeEach(() => {
@@ -37,12 +33,12 @@ describe("Error pages", () => {
   });
 
   it("Should render the CSRF error page", async () => {
-    mockGet.mockImplementationOnce(() => { throw new CsrfError(CSRF_TOKEN_ERROR); });
+    mockGet.mockImplementationOnce(() => { throw new CsrfError("CSRF token mismatch"); });
 
     const response = await request(app).get(config.START_URL);
 
     expect(response.status).toEqual(403);
-    expect(response.text).toContain(CSRF_ERROR_PAGE_HEADING);
-    expect(response.text).toContain(CSRF_ERROR_PAGE_TEXT);
+    expect(response.text).toContain("Sorry, something went wrong");
+    expect(response.text).toContain("We have not been able to save the information you submitted on the previous screen.");
   });
 });
