@@ -1,15 +1,15 @@
 import express from "express";
+import cookieParser from 'cookie-parser';
 import * as nunjucks from "nunjucks";
 import * as path from "path";
 import Redis from "ioredis";
 import { CsrfProtectionMiddleware } from "@companieshouse/web-security-node";
-import { SessionStore } from "@companieshouse/node-session-handler";
+import { SessionMiddleware, SessionStore } from "@companieshouse/node-session-handler";
 
 import * as config from "./config";
-import logger from "./utils/logger";
+import { logger } from "./utils";
 import router from "./routes";
-import errorHandler from "./middlewares/error.middleware";
-import localisationMiddleware from "./middlewares/localisation.middleware";
+import { errorHandler, localisationMiddleware } from "./middlewares";
 
 const app = express();
 
@@ -36,6 +36,7 @@ nunjucksEnv.addGlobal("SERVICE_NAME", config.SERVICE_NAME);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "njk");
@@ -43,9 +44,16 @@ app.set("view engine", "njk");
 // middlewares
 app.use(localisationMiddleware);
 
-// csrf middleware
+const cookieConfig = {
+  cookieName: '__SID',
+  cookieSecret: config.COOKIE_SECRET,
+  cookieDomain: config.COOKIE_DOMAIN,
+  cookieTimeToLiveInSeconds: parseInt(config.DEFAULT_SESSION_EXPIRATION, 10)
+};
 const sessionStore = new SessionStore(new Redis(`redis://${config.CACHE_SERVER}`));
+app.use(SessionMiddleware(cookieConfig, sessionStore));
 
+// csrf middleware
 const csrfProtectionMiddleware = CsrfProtectionMiddleware({
   sessionStore,
   enabled: false,
@@ -59,4 +67,5 @@ app.use("/", router);
 app.use(errorHandler);
 
 logger.info(`${config.APPLICATION_NAME} has started.`);
+
 export default app;

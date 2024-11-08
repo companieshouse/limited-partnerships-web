@@ -5,8 +5,9 @@
  */
 
 import * as http from "http";
+
 import * as config from "../config";
-import logger from "../utils/logger";
+import { logger } from "../utils";
 
 import app from "../app";
 

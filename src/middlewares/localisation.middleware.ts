@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import * as localise from "../utils/localise";
 
-const localisationMiddleware = (req: Request, res: Response, next: NextFunction) => {
+export const localisationMiddleware = (req: Request, res: Response, next: NextFunction) => {
 
   const lang = localise.selectLang(req.query.lang);
   const localesService = localise.getLocalesService();
@@ -17,4 +17,3 @@ const localisationMiddleware = (req: Request, res: Response, next: NextFunction)
   next();
 };
 
-export default localisationMiddleware;
