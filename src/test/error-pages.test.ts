@@ -1,4 +1,3 @@
-import { NextFunction, Request, Response } from "express";
 import request from "supertest";
 import { CsrfError } from "@companieshouse/web-security-node";
 
@@ -7,9 +6,6 @@ import * as config from "../config";
 import { get } from "../controllers/start.controller";
 
 jest.mock("../controllers/start.controller");
-jest.mock("../middlewares/authentication.middleware", () => ({
-  authentication: (req: Request, res: Response, next: NextFunction) => next()
-}));
 
 const mockGet = get as jest.Mock;
 
