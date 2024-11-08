@@ -22,7 +22,6 @@ export const authentication = (req: Request, res: Response, next: NextFunction):
     res.locals.userEmail = userEmail;
 
     next();
-
   } catch (err) {
     logger.errorRequest(req, err);
     next(err);

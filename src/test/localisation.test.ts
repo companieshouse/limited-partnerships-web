@@ -1,9 +1,15 @@
-import { LocalesService } from "@companieshouse/ch-node-utils";
+import { NextFunction, Request, Response } from "express";
 import request from "supertest";
+import { LocalesService } from "@companieshouse/ch-node-utils";
+
 import app from "../app";
 import * as config from "../config";
 import enStartPageText from "../../locales/en/translations.json";
 import cyStartPageText from "../../locales/cy/translations.json";
+
+jest.mock("../middlewares/authentication.middleware", () => ({
+  authentication: (req: Request, res: Response, next: NextFunction) => next()
+}));
 
 describe("Localisation tests", () => {
 
