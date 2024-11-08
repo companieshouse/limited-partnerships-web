@@ -4,9 +4,9 @@ import { getEnvironmentValue, getEnvironmentValueAsBoolean } from "../utils/envi
 export const ACCOUNT_URL = getEnvironmentValue("ACCOUNT_URL");
 export const API_URL = getEnvironmentValue("API_URL");
 export const APPLICATION_NAME = "limited-partnerships-web";
+export const CACHE_SERVER = getEnvironmentValue("CACHE_SERVER");
 export const CDN_HOST = getEnvironmentValue("CDN_HOST");
 export const CHS_URL = getEnvironmentValue("CHS_URL");
-export const CACHE_SERVER = getEnvironmentValue("CACHE_SERVER");
 export const COOKIE_DOMAIN = getEnvironmentValue("COOKIE_DOMAIN");
 export const COOKIE_NAME = getEnvironmentValue("COOKIE_NAME");
 export const COOKIE_SECRET = getEnvironmentValue("COOKIE_SECRET");
