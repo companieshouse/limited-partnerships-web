@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { CsrfError } from '@companieshouse/web-security-node';
 
-import logger from "../utils/logger";
+import { logger } from "../utils";
 import * as config from "../config";
 
 const pageNotFound = (req: Request, res: Response) => {
@@ -33,7 +33,7 @@ const csrfErrorHandler = (err: CsrfError | Error, req: Request, res: Response, n
  * Use this error handler by calling next(e) from within a controller
  * Always keep this as the last handler in the chain for it to work.
  */
-const errorHandler = (err: Error, req: Request, res: Response, _next: NextFunction) => {
+const globalErrorHandler = (err: Error, req: Request, res: Response, _next: NextFunction) => {
   logger.errorRequest(req, `An error has occurred. Re-routing to the error screen - ${err.stack}`);
 
   res.status(500).render(config.ERROR_TEMPLATE, {
@@ -41,4 +41,8 @@ const errorHandler = (err: Error, req: Request, res: Response, _next: NextFuncti
   });
 };
 
-export default [pageNotFound, csrfErrorHandler, errorHandler];
+const errorHandler = [pageNotFound, csrfErrorHandler, globalErrorHandler];
+
+export {
+  errorHandler
+};

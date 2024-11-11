@@ -1,6 +1,21 @@
 export default () => {
-  process.env.COOKIE_NAME = "cookie_name";
-  process.env.COOKIE_DOMAIN = "cookie_domain";
+  process.env.ACCOUNT_URL = "http://account.chs.local";
+  process.env.API_URL = "http://api.chs.local:4001";
+  process.env.CACHE_SERVER = "redis";
+  process.env.CDN_HOST = "cdn.chs.local";
+  process.env.CHS_URL = "http://chs.local";
+  process.env.COOKIE_DOMAIN = "chs.local";
+  process.env.COOKIE_NAME = "__SID";
   process.env.COOKIE_SECRET = "123456789012345678901234";
-  process.env.CACHE_SERVER = "cache_server";
+  process.env.DEFAULT_SESSION_EXPIRATION = "3600";
+  process.env.INTERNAL_API_URL = "http://api.chs.local:4001";
+  process.env.LOCALES_ENABLED = "false";
+  process.env.LOCALES_PATH = "locales";
+  process.env.LOG_LEVEL = "ERROR";
+  process.env.NODE_ENV = "development";
+  process.env.OAUTH2_CLIENT_ID = "OAUTH2_CLIENT_ID";
+  process.env.OAUTH2_CLIENT_SECRET = "OAUTH2_CLIENT_SECRET";
+  process.env.PIWIK_SITE_ID = "24";
+  process.env.PIWIK_URL = "piwik.url";
+  process.env.PORT = "3000";
 };

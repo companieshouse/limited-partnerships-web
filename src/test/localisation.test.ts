@@ -1,5 +1,6 @@
-import { LocalesService } from "@companieshouse/ch-node-utils";
 import request from "supertest";
+import { LocalesService } from "@companieshouse/ch-node-utils";
+
 import app from "../app";
 import * as config from "../config";
 import enStartPageText from "../../locales/en/translations.json";
