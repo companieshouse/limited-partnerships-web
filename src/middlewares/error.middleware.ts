@@ -33,7 +33,7 @@ const csrfErrorHandler = (err: CsrfError | Error, req: Request, res: Response, n
  * Use this error handler by calling next(e) from within a controller
  * Always keep this as the last handler in the chain for it to work.
  */
-const error = (err: Error, req: Request, res: Response, _next: NextFunction) => {
+const globalErrorHandler = (err: Error, req: Request, res: Response, _next: NextFunction) => {
   logger.errorRequest(req, `An error has occurred. Re-routing to the error screen - ${err.stack}`);
 
   res.status(500).render(config.ERROR_TEMPLATE, {
@@ -41,7 +41,7 @@ const error = (err: Error, req: Request, res: Response, _next: NextFunction) => 
   });
 };
 
-const errorHandler = [pageNotFound, csrfErrorHandler, error];
+const errorHandler = [pageNotFound, csrfErrorHandler, globalErrorHandler];
 
 export {
   errorHandler
