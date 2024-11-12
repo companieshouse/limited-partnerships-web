@@ -1,14 +1,16 @@
+{% extends "layout.njk" %}
+
 {% block content %}
 	<div class="govuk-grid-row">
 		<div class="govuk-grid-column-two-thirds">
-			<h1 class="govuk-heading-l">Page not found</h1>
-			<p class="govuk-body">If you typed the web address, check it is spelled correctly.</p>
+			<h1 class="govuk-heading-l">{{ i18n.pageNotFound_Title }}</h1>
+			<p class="govuk-body">{{ i18n.pageNotFound_Text1 }}</p>
 
-			<p class="govuk-body">If you pasted the web address, check you copied the entire address.</p>
+			<p class="govuk-body">{{ i18n.pageNotFound_Text2 }}</p>
 
-			<p class="govuk-body">If the web address is correct or you selected a link, the page may have moved. </p>
+			<p class="govuk-body">{{ i18n.pageNotFound_Text3 }}</p>
 
-			<p class="govuk-body"> To register an limited partnerships, go to the <a class="govuk-link" href="/limited-partnerships/start">Register an limited partnerships start page.</a> </p>
+			<p class="govuk-body">{{ i18n.pageNotFound_Text4_Part1 }}<a class="govuk-link" href="/limited-partnerships/start">{{ i18n.pageNotFound_Text4_HyperlinkText }}</a>{{ i18n.pageNotFound_Text4_Part2 }}</p>
 		</div>
 	</div>
 {% endblock %}

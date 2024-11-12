@@ -1,4 +1,8 @@
 {
     "startTitle" : "Partneriaethau Cyfyngedig yw hyn",
-    "errorStartAddressMissing" : "Rhowch gyfeiriad"
+    "errorStartAddressMissing" : "Rhowch gyfeiriad",
+
+    "pageNotFound_Title" : "WELSH - Page Not Found",
+
+    "errorPage_Title" : "WELSH - Sorry, the service is unavailable"
 }
