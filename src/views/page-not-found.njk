@@ -1,16 +1,19 @@
 {% extends "layout.njk" %}
 
 {% block content %}
+
 	<div class="govuk-grid-row">
 		<div class="govuk-grid-column-two-thirds">
-			<h1 class="govuk-heading-l">{{ i18n.pageNotFound_Title }}</h1>
-			<p class="govuk-body">{{ i18n.pageNotFound_Text1 }}</p>
+			<h1 class="govuk-heading-l">{{ i18n.pageNotFound_title }}</h1>
 
-			<p class="govuk-body">{{ i18n.pageNotFound_Text2 }}</p>
+			<p class="govuk-body">{{ i18n.pageNotFound_spelling }}</p>
 
-			<p class="govuk-body">{{ i18n.pageNotFound_Text3 }}</p>
+			<p class="govuk-body">{{ i18n.pageNotFound_copiedAddress}}</p>
 
-			<p class="govuk-body">{{ i18n.pageNotFound_Text4_Part1 }}<a class="govuk-link" href="/limited-partnerships/start">{{ i18n.pageNotFound_Text4_HyperlinkText }}</a>{{ i18n.pageNotFound_Text4_Part2 }}</p>
+			<p class="govuk-body">{{ i18n.pageNotFound_movedPage }}</p>
+
+			<!-- '| safe' ensure that text is unescaped, as it contains a hyperlink -->
+			<p class="govuk-body">{{ i18n.pageNotFound_goToStartPage | safe }}
 		</div>
 	</div>
 {% endblock %}
