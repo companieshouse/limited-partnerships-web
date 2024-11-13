@@ -14,6 +14,9 @@
     "start": "node dist/bin/www.js",
     "dev": "nodemon src/bin/www.ts",
     "test": "jest",
+    "test:unit": "jest --testRegex=.spec.ts",
+    "test:unit:watch": "jest --testRegex=.spec.ts --watch",
+    "test:integration": "jest --testRegex=.test.ts --detectOpenHandles",
     "coverage": "jest --coverage --forceExit --passWithNoTests"
   },
   "repository": {
@@ -28,6 +31,7 @@
   "license": "MIT",
   "homepage": "https://github.com/companieshouse/limited-partnerships-web#readme",
   "dependencies": {
+    "@companieshouse/api-sdk-node": "^2.0.212",
     "@companieshouse/ch-node-utils": "^1.3.12",
     "@companieshouse/node-session-handler": "^5.0.1",
     "@companieshouse/structured-logging-node": "^2.0.1",

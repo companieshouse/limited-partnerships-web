@@ -1,5 +1,5 @@
 import { LocalesService, LanguageNames } from "@companieshouse/ch-node-utils";
-import { isLocalesEnabled, LOCALES_PATH } from "../config";
+import { isLocalesEnabled, LOCALES_PATH } from "../config/constants";
 
 enum Language {
   CY = "cy",
@@ -21,15 +21,21 @@ export const addLangToUrl = (url: string, lang?: string): string => {
   return `${url}${separator}lang=${lang}`;
 };
 
-export const getLocalisationProperties = (locales: LocalesService, lang: string) => {
+export const getLocalisationProperties = (
+  locales: LocalesService,
+  lang: string
+) => {
   return {
     languageEnabled: locales.enabled,
     languages: LanguageNames.sourceLocales(locales.localesFolder),
     i18n: locales.i18nCh.resolveNamespacesKeys(lang),
-    lang
+    lang,
   };
 };
 
-const localesSevice = LocalesService.getInstance(LOCALES_PATH, isLocalesEnabled());
+const localesSevice = LocalesService.getInstance(
+  LOCALES_PATH,
+  isLocalesEnabled()
+);
 
 export const getLocalesService = () => localesSevice;
