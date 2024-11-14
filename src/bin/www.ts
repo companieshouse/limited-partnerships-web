@@ -41,15 +41,15 @@ function onError(error: any) {
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
-    case "EACCES":
-      logger.error(config.PORT + " requires elevated privileges");
-      process.exit(1);
-      break;
-    case "EADDRINUSE":
-      logger.error(config.PORT + " is already in use");
-      process.exit(1);
-      break;
-    default:
-      throw error;
+      case "EACCES":
+        logger.error(config.PORT + " requires elevated privileges");
+        process.exit(1);
+        break;
+      case "EADDRINUSE":
+        logger.error(config.PORT + " is already in use");
+        process.exit(1);
+        break;
+      default:
+        throw error;
   }
 }

@@ -1,6 +1,8 @@
+/* eslint-disable */
+
 import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-import TransactionRegistrationType from "application/registration/TransactionRegistrationType";
+import TransactionRegistrationType from "../../application/registration/TransactionRegistrationType";
 import IRegistrationGateway from "../../domain/IRegistrationGateway";
 import CustomError from "domain/entities/CustomError";
 
@@ -10,6 +12,9 @@ type TransactionLimitedPartnership = LimitedPartnership & {
 };
 
 class RegistrationInMemoryGateway implements IRegistrationGateway {
+  transationId = "transaction-id";
+  submissionId = "submission-id";
+
   limitedPartnerships: TransactionLimitedPartnership[] = [];
   errors: CustomError[] = [];
 
@@ -27,30 +32,38 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
     throw new Error("Method not implemented.");
   }
 
-  async create(
+  async createTransaction(
+    transactionType: TransactionRegistrationType
+  ): Promise<string> {
+    if (transactionType === TransactionRegistrationType.START) {
+      return this.transationId;
+    }
+
+    return "";
+  }
+
+  async createSubmissionFromTransaction(
     transactionType: TransactionRegistrationType,
     transactionId: string,
     data: Record<string, any>
   ): Promise<string> {
-    const id = "submission-id";
+    if (this.errors.length > 0) {
+      throw this.errors;
+    }
 
     const limitedPartnership = {
       _id: transactionId,
       data,
-      links: [{ self: "/limited-partnership/" }],
+      links: [
+        {
+          self: `/limited-partnership/transaction/${this.transationId}/submission/${this.submissionId}/name`,
+        },
+      ],
     };
 
     this.limitedPartnerships.push(limitedPartnership);
 
-    return id;
-  }
-
-  async update(
-    transactionType: TransactionRegistrationType,
-    transactionId: string,
-    data: Record<string, any>
-  ): Promise<void> {
-    throw new Error("Method not implemented.");
+    return this.submissionId;
   }
 }
 

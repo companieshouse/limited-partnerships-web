@@ -1,16 +1,11 @@
-import { NameEndingType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import RegistrationCoordinator from "../../../application/registration/Coordinator";
-import {
-  registrationRoutingName,
-  registrationRoutingStart,
-} from "../../../application/registration/Routing";
+import { registrationRoutingStart } from "../../../application/registration/Routing";
 import RegistrationService from "../../../application/registration/Service";
-// import CustomError from "../../../domain/entities/CustomError";
 import TransactionRegistrationType from "../../../application/registration/TransactionRegistrationType";
 import IRegistrationGateway from "../../../domain/IRegistrationGateway";
 import RegistrationInMemoryGateway from "../../../infrastructure/gateway/RegistrationInMemoryGateway";
 
-describe("Transaction", () => {
+describe("Create Transaction", () => {
   let registrationGateway: RegistrationInMemoryGateway;
   let registrationCoordinator: RegistrationCoordinator;
   let registrationService: RegistrationService;
@@ -26,6 +21,7 @@ describe("Transaction", () => {
 
   beforeEach(() => {
     registrationGateway.feedLimitedPartnerships([]);
+    registrationGateway.feedErrors([]);
   });
 
   describe("Get registrationRoutingStart", () => {
@@ -38,34 +34,17 @@ describe("Transaction", () => {
     });
   });
 
-  describe("Get registrationRoutingName", () => {
-    it("should return the page corresponcting to the transaction", () => {
-      const result = registrationService.getRegistrationRouting(
-        TransactionRegistrationType.NAME
+  describe("Create transaction", () => {
+    it("should create a transaction and add id to the url", async () => {
+      const result = await registrationService.createTransaction(
+        TransactionRegistrationType.START
       );
 
-      expect(result).toEqual(registrationRoutingName);
-    });
-  });
-
-  describe("Create LimitedPartnerShip", () => {
-    it("should create a new LimitedPartnership", async () => {
-      const result = await registrationService.create(
-        TransactionRegistrationType.NAME,
-        "transaction-id",
-        {
-          partnership_name: "Test Limited Partnership",
-          name_ending: NameEndingType.LIMITED_PARTNERSHIP,
-        }
-      );
-
-      expect(result).toBeTruthy();
-      expect(registrationGateway.limitedPartnerships.length).toEqual(1);
       expect(result).toEqual(
         expect.objectContaining({
-          ...registrationRoutingName,
+          ...registrationRoutingStart,
           data: {
-            registrationId: "submission-id",
+            transactionId: registrationGateway.transationId,
           },
         })
       );

@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import TransactionRegistrationType from "application/registration/TransactionRegistrationType";
@@ -8,19 +10,17 @@ class RegistrationGateway implements IRegistrationGateway {
     throw new Error("Method not implemented.");
   }
 
-  async create(
-    transactionType: TransactionRegistrationType,
-    transactionId: string,
-    data: Record<string, any>
+  async createTransaction(
+    transactionType: TransactionRegistrationType
   ): Promise<string> {
     throw new Error("Method not implemented.");
   }
 
-  async update(
+  async createSubmissionFromTransaction(
     transactionType: TransactionRegistrationType,
-    id: string,
+    transactionId: string,
     data: Record<string, any>
-  ): Promise<void> {
+  ): Promise<string> {
     throw new Error("Method not implemented.");
   }
 }

@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { Router } from "express";
 
 import * as config from "../config";

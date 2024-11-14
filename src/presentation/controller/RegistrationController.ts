@@ -34,16 +34,17 @@ class RegistrationController {
     };
   }
 
-  create(): RequestHandler {
+  createSubmissionFromTransaction(): RequestHandler {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const transactionId = request.params.transactionId;
 
-        const result = await this.registrationService.create(
-          TransactionRegistrationType.START,
-          transactionId,
-          request.body
-        );
+        const result =
+          await this.registrationService.createSubmissionFromTransaction(
+            TransactionRegistrationType.START,
+            transactionId,
+            request.body
+          );
 
         if (result?.errors?.length) {
           response.render(this.templateName(result.currentUrl), {
