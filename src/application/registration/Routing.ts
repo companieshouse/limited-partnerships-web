@@ -12,10 +12,14 @@ import TransactionRegistrationType from "./TransactionRegistrationType";
 
 export const NAME_TEMPLATE = "name";
 export const NEXT_TEMPLATE = "next";
+// Only for demo - to be removed
+export const NEXT2_TEMPLATE = "next-2";
 
 export const NAME_URL = `${BASE_URL}/transaction/${TRANSACTION_ID}/${NAME_TEMPLATE}`;
 
 export const NEXT_URL = `${BASE_URL}/transaction/${TRANSACTION_ID}/submission/${SUBMISSION_ID}/${NEXT_TEMPLATE}`;
+// Only for demo - to be removed
+export const NEXT2_URL = `${BASE_URL}/transaction/${TRANSACTION_ID}/submission/${SUBMISSION_ID}/${NEXT2_TEMPLATE}`;
 
 export const registrationRoutingStart = {
   previousUrl: "/",
@@ -38,6 +42,14 @@ export const registrationRoutingNext = {
   transactionType: TransactionRegistrationType.NEXT,
 };
 
+// Only for demo - to be removed
+export const registrationRoutingNext2 = {
+  previousUrl: NAME_URL,
+  currentUrl: NEXT2_URL,
+  nextUrl: "/",
+  transactionType: TransactionRegistrationType.NEXT,
+};
+
 export const registrationsRouting: TransactionsRouting = new Map<
   TransactionRegistrationType,
   TransactionRouting
@@ -54,6 +66,11 @@ registrationsRouting.set(
 registrationsRouting.set(
   TransactionRegistrationType.NEXT,
   registrationRoutingNext
+);
+// Only for demo - to be removed
+registrationsRouting.set(
+  "NEXT_2" as TransactionRegistrationType,
+  registrationRoutingNext2
 );
 
 export default registrationsRouting;

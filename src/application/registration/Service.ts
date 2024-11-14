@@ -49,8 +49,6 @@ class RegistrationService {
     transactiontionId: string,
     data: Record<string, any>
   ): Promise<TransactionRouting> {
-    const registrationRouting = registrationsRouting.get(registrationType);
-
     try {
       const submissionId =
         await this.registrationGateway.createSubmissionFromTransaction(
@@ -58,6 +56,15 @@ class RegistrationService {
           transactiontionId,
           data
         );
+
+      const transaction = await this.registrationGateway.getSubmissionById(
+        submissionId
+      );
+
+      const registrationRouting = this.registrationCoordinator.execute(
+        registrationType,
+        transaction
+      );
 
       return registrationRouting
         ? { ...registrationRouting, data: { submissionId } }

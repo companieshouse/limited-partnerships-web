@@ -4,7 +4,7 @@ import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/l
 
 import TransactionRegistrationType from "../../application/registration/TransactionRegistrationType";
 import IRegistrationGateway from "../../domain/IRegistrationGateway";
-import CustomError from "domain/entities/CustomError";
+import CustomError from "../../domain/entities/CustomError";
 
 type TransactionLimitedPartnership = LimitedPartnership & {
   _id?: string;
@@ -74,7 +74,9 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
 
     this.limitedPartnerships.push(limitedPartnership);
 
-    // console.log(limitedPartnership);
+    if (transactionId === this.transactionId) {
+      this.limitedPartnerships[0] = limitedPartnership;
+    }
 
     return this.submissionId;
   }
