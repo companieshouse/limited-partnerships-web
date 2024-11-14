@@ -12,7 +12,7 @@ type TransactionLimitedPartnership = LimitedPartnership & {
 };
 
 class RegistrationInMemoryGateway implements IRegistrationGateway {
-  transationId = "transaction-id";
+  transactionId = "transaction-id";
   submissionId = "submission-id";
 
   limitedPartnerships: TransactionLimitedPartnership[] = [];
@@ -36,7 +36,7 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
     transactionType: TransactionRegistrationType
   ): Promise<string> {
     if (transactionType === TransactionRegistrationType.START) {
-      return this.transationId;
+      return this.transactionId;
     }
 
     return "";
@@ -53,10 +53,13 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
 
     const limitedPartnership = {
       _id: transactionId,
-      data,
+      data: {
+        partnership_name: data.partnership_name,
+        name_ending: data.name_ending,
+      },
       links: [
         {
-          self: `/limited-partnership/transaction/${this.transationId}/submission/${this.submissionId}/name`,
+          self: `/limited-partnership/transaction/${this.transactionId}/submission/${this.submissionId}/name`,
         },
       ],
     };

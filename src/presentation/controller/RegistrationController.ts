@@ -64,10 +64,11 @@ class RegistrationController {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const transactionId = request.params.transactionId;
+        const transactionType = request.body.transactionType;
 
         const result =
           await this.registrationService.createSubmissionFromTransaction(
-            TransactionRegistrationType.START,
+            transactionType,
             transactionId,
             request.body
           );

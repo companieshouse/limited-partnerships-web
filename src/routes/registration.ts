@@ -5,7 +5,7 @@ import { authentication } from "../middlewares";
 
 import { IDependencies } from "../config/IDependencies";
 
-import { NAME_URL } from "../application/registration/Routing";
+import { NAME_URL, NEXT_URL } from "../application/registration/Routing";
 
 export const registrationEndpoints = (
   router: Router,
@@ -24,6 +24,17 @@ export const registrationEndpoints = (
 
   router.get(
     NAME_URL,
+    authentication,
+    dependencies.registrationController.getTransactionRouting()
+  );
+  router.post(
+    NAME_URL,
+    authentication,
+    dependencies.registrationController.createSubmissionFromTransaction()
+  );
+
+  router.get(
+    NEXT_URL,
     authentication,
     dependencies.registrationController.getTransactionRouting()
   );

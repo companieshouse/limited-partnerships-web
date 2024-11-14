@@ -42,4 +42,4 @@ export const START_URL = `${BASE_URL}/${START_TEMPLATE}`;
 export const HEALTHCHECK_URL = `${BASE_URL}/healthcheck`;
 
 export const TRANSACTION_ID = ":transactionId";
-export const SUBMISSION_ID = ":submission";
+export const SUBMISSION_ID = ":submissionId";

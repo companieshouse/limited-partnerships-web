@@ -22,9 +22,9 @@ describe("Create Transaction", () => {
       transactionType: registrationRoutingStart.transactionType,
     });
 
-    const url = `/limited-partnerships/transaction/${appDevDependencies.registrationGateway.transationId}/name`;
+    const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.registrationGateway.transactionId}/name`;
 
     expect(res.status).toBe(302);
-    expect(res.text).toContain(`Redirecting to ${url}`);
+    expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
   });
 });

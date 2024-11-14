@@ -44,7 +44,7 @@ describe("Create Transaction", () => {
         expect.objectContaining({
           ...registrationRoutingStart,
           data: {
-            transactionId: registrationGateway.transationId,
+            transactionId: registrationGateway.transactionId,
           },
         })
       );
