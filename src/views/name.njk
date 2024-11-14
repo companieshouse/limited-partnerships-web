@@ -1,0 +1,220 @@
+{% extends "layout.njk" %}
+
+{% block content %}
+
+<main class="govuk-main-wrapper" id="main-content">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form class="form" action="/lp-name" method="post">
+        <h1 class="govuk-heading-xl">Limited partnership name</h1>
+
+        <div class="govuk-form-group">
+          <h1 class="govuk-label-wrapper">
+            <label class="govuk-label govuk-label--l" for="lpChooseName">
+              What's the name of the limited partnership?
+            </label>
+          </h1>
+
+          <div id="lpChooseName-hint" class="govuk-hint">
+            Do not enter a name ending, like Limited Partnership or LP. We'll
+            add this for you.
+          </div>
+
+          <div class="govuk-input__wrapper">
+            <input
+              class="govuk-input"
+              id="lpChooseName"
+              name="lpChooseName"
+              type="text"
+              aria-describedby="lpChooseName-hint"
+            />
+
+            <div class="govuk-input__suffix" aria-hidden="true">
+              Limited Partnership
+            </div>
+          </div>
+        </div>
+
+        <details class="govuk-details">
+          <summary class="govuk-details__summary">
+            <span class="govuk-details__summary-text">
+              Check you can use the name
+            </span>
+          </summary>
+          <div class="govuk-details__text">
+            <p>
+              You must check the name is not the same as an existing limited
+              partnership on the
+              <a href="#/">Companies House register (link opens in a new tab)</a
+              >. If it is, we will reject your application.
+            </p>
+            <p>
+              You should also use the
+              <a href="https://www.gov.uk/search-for-trade mark" target="_blank"
+                >trade mark search (link opens in a new tab)</a
+              >
+              to check if your name matches an existing trade mark. If it does,
+              consider choosing a different name. Companies House will not carry
+              out this check for you.
+            </p>
+          </div>
+        </details>
+
+        <div class="govuk-form-group">
+          <fieldset class="govuk-fieldset" aria-describedby="nameEnding-hint">
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+              <h1 class="govuk-fieldset__heading">
+                Which name ending would you prefer to go on the public record?
+              </h1>
+            </legend>
+
+            <div id="nameEnding-hint" class="govuk-hint">
+              There's no difference between the name endings Limited
+              Partnership, LP and L.P. except for how they look.
+            </div>
+
+            <div class="govuk-radios" data-module="govuk-radios">
+              <div class="govuk-radios__item">
+                <input
+                  class="govuk-radios__input"
+                  id="nameEnding"
+                  name="nameEnding"
+                  type="radio"
+                  value="Limited Partnership"
+                />
+                <label class="govuk-label govuk-radios__label" for="nameEnding">
+                  Limited Partnership
+                </label>
+              </div>
+
+              <div class="govuk-radios__item">
+                <input
+                  class="govuk-radios__input"
+                  id="nameEnding-2"
+                  name="nameEnding"
+                  type="radio"
+                  value="LP"
+                />
+                <label
+                  class="govuk-label govuk-radios__label"
+                  for="nameEnding-2"
+                >
+                  LP
+                </label>
+              </div>
+
+              <div class="govuk-radios__item">
+                <input
+                  class="govuk-radios__input"
+                  id="nameEnding-3"
+                  name="nameEnding"
+                  type="radio"
+                  value="L.P."
+                />
+                <label
+                  class="govuk-label govuk-radios__label"
+                  for="nameEnding-3"
+                >
+                  L.P.
+                </label>
+              </div>
+
+              <div class="govuk-radios__item">
+                <input
+                  class="govuk-radios__input"
+                  id="nameEnding-4"
+                  name="nameEnding"
+                  type="radio"
+                  value=""
+                  aria-controls="conditional-nameEnding-4"
+                  aria-expanded="false"
+                />
+                <label
+                  class="govuk-label govuk-radios__label"
+                  for="nameEnding-4"
+                >
+                  A Welsh name ending
+                </label>
+              </div>
+
+              <div
+                class="govuk-radios__conditional govuk-radios__conditional--hidden"
+                id="conditional-nameEnding-4"
+              >
+                <div class="govuk-form-group">
+                  <fieldset class="govuk-fieldset">
+                    <legend
+                      class="govuk-fieldset__legend govuk-visually-hidden"
+                    >
+                      <h1 class="govuk-fieldset__heading">
+                        What other name ending would you prefer?
+                      </h1>
+                    </legend>
+
+                    <div class="govuk-radios" data-module="govuk-radios">
+                      <div class="govuk-radios__item">
+                        <input
+                          class="govuk-radios__input"
+                          id="nameEnding"
+                          name="nameEnding"
+                          type="radio"
+                          value="Partneriaeth Cyfyngedig"
+                        />
+                        <label
+                          class="govuk-label govuk-radios__label"
+                          for="nameEnding"
+                        >
+                          Partneriaeth Cyfyngedig
+                        </label>
+                      </div>
+
+                      <div class="govuk-radios__item">
+                        <input
+                          class="govuk-radios__input"
+                          id="nameEnding-2"
+                          name="nameEnding"
+                          type="radio"
+                          value="PC"
+                        />
+                        <label
+                          class="govuk-label govuk-radios__label"
+                          for="nameEnding-2"
+                        >
+                          PC
+                        </label>
+                      </div>
+
+                      <div class="govuk-radios__item">
+                        <input
+                          class="govuk-radios__input"
+                          id="nameEnding-3"
+                          name="nameEnding"
+                          type="radio"
+                          value="P.C."
+                        />
+                        <label
+                          class="govuk-label govuk-radios__label"
+                          for="nameEnding-3"
+                        >
+                          P.C.
+                        </label>
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+
+        <button type="submit" class="govuk-button" data-module="govuk-button">
+          Save and continue
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script src="/public/javascripts/lp-name.js"></script>
+</main>
+
+{% endblock %}

@@ -1,24 +1,31 @@
-/* eslint-disable */
-
 import { Router } from "express";
 
 import * as config from "../config";
-import * as controllers from "../controllers";
 import { authentication } from "../middlewares";
 
 import { IDependencies } from "../config/IDependencies";
+
+import { NAME_URL } from "../application/registration/Routing";
 
 export const registrationEndpoints = (
   router: Router,
   dependencies: IDependencies
 ): void => {
-  router.get(config.HEALTHCHECK_URL, controllers.healthCheckController.get);
-
   router.get(
     config.START_URL,
     authentication,
-    controllers.startController.get
-    // dependencies.registrationController.getTransactionRouting()
+    dependencies.registrationController.getTransactionRouting()
+  );
+  router.post(
+    config.START_URL,
+    authentication,
+    dependencies.registrationController.createTransaction()
+  );
+
+  router.get(
+    NAME_URL,
+    authentication,
+    dependencies.registrationController.getTransactionRouting()
   );
 };
 

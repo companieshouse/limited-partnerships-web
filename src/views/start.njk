@@ -2,14 +2,18 @@
 
 {% block content %}
 
-  {# Move these to layout template #}
-  {% import "ch-node-utils/templates/add-lang-to-url.njk" as lang2url %}
-  {% include "ch-node-utils/templates/locales-banner.njk" %}
+{% import "ch-node-utils/templates/add-lang-to-url.njk" as lang2url %}
+{% include "ch-node-utils/templates/locales-banner.njk" %}
 
   {{ i18n.startTitle }}
 
   <p>
 
   {{ errorMessage }}
+
+  <form action={{props.currentUrl}} method="POST">
+    <input type="hidden" name="transactionType" value={{ props.transactionType }}>
+    <button class="govuk-button" type="submit">Start</button>
+  </form>
 
 {% endblock %}

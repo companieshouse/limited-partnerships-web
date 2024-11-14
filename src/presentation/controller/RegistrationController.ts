@@ -22,12 +22,38 @@ class RegistrationController {
 
         const transactionRouting = this.inserIdInAllUrl(
           result,
-          request.params.id
+          request.params.transactionId,
+          request.params.submissionId
         );
 
         response.render(this.templateName(transactionRouting.currentUrl), {
-          data: transactionRouting,
+          props: transactionRouting,
         });
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  createTransaction(): RequestHandler {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const transactionType = request.body.transactionType;
+
+        const result = await this.registrationService.createTransaction(
+          transactionType
+        );
+
+        if (result?.errors?.length) {
+          response.render(this.templateName(result.currentUrl), {
+            props: result,
+          });
+          return;
+        }
+
+        response.redirect(
+          this.inserTransactionId(result.nextUrl, result?.data?.transactionId)
+        );
       } catch (error) {
         next(error);
       }
@@ -48,14 +74,17 @@ class RegistrationController {
 
         if (result?.errors?.length) {
           response.render(this.templateName(result.currentUrl), {
-            data: result.data,
+            props: result,
           });
           return;
         }
 
-        response.redirect(
-          this.inserId(result.nextUrl, result?.data?.transactionId)
+        const url = this.inserSubmissionId(
+          this.inserTransactionId(result.nextUrl, transactionId),
+          result?.data?.submissionId
         );
+
+        response.redirect(url);
       } catch (error) {
         next(error);
       }
@@ -75,19 +104,33 @@ class RegistrationController {
     return splitted[splitted.length - 1];
   }
 
-  private inserId(url: string, transactionId: string): string {
-    return transactionId ? url.replace(":id", transactionId) : url;
+  inserTransactionId(url: string, transactionId: string): string {
+    return transactionId ? url.replace(":transactionId", transactionId) : url;
+  }
+
+  inserSubmissionId(url: string, submissionId: string): string {
+    return submissionId ? url.replace(":submissionId", submissionId) : url;
   }
 
   private inserIdInAllUrl(
     transactionRouting: TransactionRouting,
-    transactionId: string
+    transactionId: string,
+    submissionId: string
   ): TransactionRouting {
     return {
       ...transactionRouting,
-      previousUrl: this.inserId(transactionRouting.previousUrl, transactionId),
-      currentUrl: this.inserId(transactionRouting.currentUrl, transactionId),
-      nextUrl: this.inserId(transactionRouting.nextUrl, transactionId),
+      previousUrl: this.inserSubmissionId(
+        this.inserTransactionId(transactionRouting.previousUrl, transactionId),
+        submissionId
+      ),
+      currentUrl: this.inserSubmissionId(
+        this.inserTransactionId(transactionRouting.currentUrl, transactionId),
+        submissionId
+      ),
+      nextUrl: this.inserSubmissionId(
+        this.inserTransactionId(transactionRouting.nextUrl, transactionId),
+        submissionId
+      ),
     };
   }
 }

@@ -21,18 +21,21 @@ export const registrationRoutingStart = {
   previousUrl: "/",
   currentUrl: START_URL,
   nextUrl: NAME_URL,
+  transactionType: TransactionRegistrationType.START,
 };
 
 export const registrationRoutingName = {
   previousUrl: START_URL,
   currentUrl: NAME_URL,
   nextUrl: NEXT_URL,
+  transactionType: TransactionRegistrationType.NAME,
 };
 
 export const registrationRoutingNext = {
   previousUrl: NAME_URL,
   currentUrl: NEXT_URL,
   nextUrl: "/",
+  transactionType: TransactionRegistrationType.NEXT,
 };
 
 export const registrationsRouting: TransactionsRouting = new Map<

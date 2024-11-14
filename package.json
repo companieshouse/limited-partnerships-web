@@ -14,9 +14,11 @@
     "start": "node dist/bin/www.js",
     "dev": "nodemon src/bin/www.ts",
     "test": "jest",
+    "test:watch": "jest --watch",
     "test:unit": "jest --testRegex=.spec.ts",
     "test:unit:watch": "jest --testRegex=.spec.ts --watch",
-    "test:integration": "jest --testRegex=.test.ts --detectOpenHandles",
+    "test:integration": "jest --testRegex=.test.ts",
+    "test:integration:watch": "jest --testRegex=.test.ts --watch",
     "coverage": "jest --coverage --forceExit --passWithNoTests"
   },
   "repository": {

@@ -25,8 +25,9 @@ class RegistrationService {
   // async get(id: string): Promise<LimitedPartnership> {
   //   return await this.registrationGateway.get(id);
   // }
-
-  async createTransaction(registrationType: TransactionRegistrationType) {
+  async createTransaction(
+    registrationType: TransactionRegistrationType
+  ): Promise<TransactionRouting> {
     const registrationRouting = registrationsRouting.get(registrationType);
 
     try {
@@ -51,7 +52,7 @@ class RegistrationService {
     const registrationRouting = registrationsRouting.get(registrationType);
 
     try {
-      const registrationId =
+      const submissionId =
         await this.registrationGateway.createSubmissionFromTransaction(
           registrationType,
           transactiontionId,
@@ -59,7 +60,7 @@ class RegistrationService {
         );
 
       return registrationRouting
-        ? { ...registrationRouting, data: { registrationId } }
+        ? { ...registrationRouting, data: { submissionId } }
         : transactionRoutingDefault;
     } catch (errors: any) {
       const registrationRouting = this.getRegistrationRouting(registrationType);

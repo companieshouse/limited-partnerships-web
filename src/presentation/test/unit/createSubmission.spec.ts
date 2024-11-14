@@ -53,7 +53,7 @@ describe("Create Submission", () => {
         expect.objectContaining({
           ...registrationRoutingName,
           data: {
-            registrationId: registrationGateway.submissionId,
+            submissionId: registrationGateway.submissionId,
           },
         })
       );

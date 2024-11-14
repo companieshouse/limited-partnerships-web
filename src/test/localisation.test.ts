@@ -2,18 +2,17 @@ import request from "supertest";
 import { LocalesService } from "@companieshouse/ch-node-utils";
 
 import app from "../app";
-import * as config from "../config";
+import * as config from "../config/constants";
 import enStartPageText from "../../locales/en/translations.json";
 import cyStartPageText from "../../locales/cy/translations.json";
 
 describe("Localisation tests", () => {
-
   beforeEach(() => {
     jest.resetAllMocks();
   });
 
   const setLocalesEnabled = (bool: boolean) => {
-    jest.spyOn(config, 'isLocalesEnabled').mockReturnValue(bool);
+    jest.spyOn(config, "isLocalesEnabled").mockReturnValue(bool);
     LocalesService.getInstance().enabled = bool;
   };
 
@@ -60,5 +59,4 @@ describe("Localisation tests", () => {
     expect(resp.text).not.toContain("English");
     expect(resp.text).not.toContain("Cymraeg");
   });
-
 });

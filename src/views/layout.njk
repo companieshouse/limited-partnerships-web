@@ -43,6 +43,9 @@
   }) }}
 {% endblock %}
 
+{% import "ch-node-utils/templates/add-lang-to-url.njk" as lang2url %}
+{% include "ch-node-utils/templates/locales-banner.njk" %}
+
 {% block footer %}
   {{ govukFooter({
     meta: {

@@ -5,8 +5,8 @@ import { logger } from "./utils";
 import { errorHandler } from "./middlewares";
 import {
   appConfig,
-  appDependencies,
-  // appDevDependencies
+  // appDependencies,
+  appDevDependencies as appDependencies,
 } from "./config";
 import appRouter from "./routes";
 
@@ -15,7 +15,6 @@ const app = express();
 appConfig(app);
 
 // apply our default router to /
-// app.use("/", router);
 app.use(appRouter(appDependencies));
 
 app.use(errorHandler);
