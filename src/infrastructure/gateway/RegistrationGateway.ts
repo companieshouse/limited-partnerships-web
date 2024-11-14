@@ -6,7 +6,7 @@ import TransactionRegistrationType from "application/registration/TransactionReg
 import IRegistrationGateway from "../../domain/IRegistrationGateway";
 
 class RegistrationGateway implements IRegistrationGateway {
-  async get(id: string): Promise<LimitedPartnership> {
+  async getSubmissionById(id: string): Promise<LimitedPartnership> {
     throw new Error("Method not implemented.");
   }
 

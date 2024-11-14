@@ -1,9 +1,9 @@
-// import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import TransactionRegistrationType from "../application/registration/TransactionRegistrationType";
 
 interface IRegistrationGateway {
-  // get(id: string): Promise<LimitedPartnership>;
+  getSubmissionById(id: string): Promise<LimitedPartnership>;
   createTransaction(
     transactionType: TransactionRegistrationType
   ): Promise<string>;

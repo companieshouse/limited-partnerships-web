@@ -1,4 +1,4 @@
-// import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import CustomError from "../../domain/entities/CustomError";
 import TransactionRegistrationType from "./TransactionRegistrationType";
@@ -22,9 +22,9 @@ class RegistrationService {
     this.registrationCoordinator = registrationCoordinator;
   }
 
-  // async get(id: string): Promise<LimitedPartnership> {
-  //   return await this.registrationGateway.get(id);
-  // }
+  async getSubmissionById(id: string): Promise<LimitedPartnership> {
+    return await this.registrationGateway.getSubmissionById(id);
+  }
   async createTransaction(
     registrationType: TransactionRegistrationType
   ): Promise<TransactionRouting> {

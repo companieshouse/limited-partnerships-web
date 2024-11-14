@@ -28,8 +28,16 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
     this.errors = errors;
   }
 
-  async get(id: string): Promise<LimitedPartnership> {
-    throw new Error("Method not implemented.");
+  async getSubmissionById(id: string): Promise<LimitedPartnership> {
+    const limitedPartnerShip = this.limitedPartnerships.find(
+      (lp) => lp._id === id
+    );
+
+    if (!limitedPartnerShip) {
+      throw new CustomError("Limited partnership", `Not found: ${id}`);
+    }
+
+    return limitedPartnerShip;
   }
 
   async createTransaction(
@@ -52,19 +60,21 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
     }
 
     const limitedPartnership = {
-      _id: transactionId,
+      _id: this.submissionId,
       data: {
         partnership_name: data.partnership_name,
         name_ending: data.name_ending,
       },
       links: [
         {
-          self: `/limited-partnership/transaction/${this.transactionId}/submission/${this.submissionId}/name`,
+          self: `/limited-partnership/transaction/${transactionId}/submission/${this.submissionId}/name`,
         },
       ],
     };
 
     this.limitedPartnerships.push(limitedPartnership);
+
+    // console.log(limitedPartnership);
 
     return this.submissionId;
   }
