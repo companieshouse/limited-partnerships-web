@@ -3,7 +3,7 @@ import { logger } from "../utils/logger";
 export const createLimitedPartnership = async (
 
   transactionId: string,
-  //_data: LimitedPartnership
+  // _data: LimitedPartnership
 ): Promise<string> => {
   logger.info(`Calling 'postLimitedPartnership' for transaction id '${transactionId}'`);
 
