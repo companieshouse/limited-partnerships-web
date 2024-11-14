@@ -12,12 +12,12 @@
 
         <div class="govuk-form-group">
           <h1 class="govuk-label-wrapper">
-            <label class="govuk-label govuk-label--l" for="lpChooseName">
+            <label class="govuk-label govuk-label--l" for="partnership_name">
               What's the name of the limited partnership?
             </label>
           </h1>
 
-          <div id="lpChooseName-hint" class="govuk-hint">
+          <div id="partnership_name-hint" class="govuk-hint">
             Do not enter a name ending, like Limited Partnership or LP. We'll
             add this for you.
           </div>
@@ -25,10 +25,12 @@
           <div class="govuk-input__wrapper">
             <input
               class="govuk-input"
-              id="lpChooseName"
+              id="partnership_name"
               name="partnership_name"
               type="text"
-              aria-describedby="lpChooseName-hint"
+              aria-describedby="partnership_name-hint"
+              required
+              minLength="3"
             />
 
             <div class="govuk-input__suffix" aria-hidden="true">
@@ -83,6 +85,7 @@
                   name="name_ending"
                   type="radio"
                   value="Limited Partnership"
+                  required
                 />
                 <label class="govuk-label govuk-radios__label" for="nameEnding">
                   Limited Partnership
@@ -96,6 +99,7 @@
                   name="name_ending"
                   type="radio"
                   value="LP"
+                  required
                 />
                 <label
                   class="govuk-label govuk-radios__label"
@@ -112,6 +116,7 @@
                   name="name_ending"
                   type="radio"
                   value="L.P."
+                  required
                 />
                 <label
                   class="govuk-label govuk-radios__label"
@@ -161,6 +166,7 @@
                           name="name_ending"
                           type="radio"
                           value="Partneriaeth Cyfyngedig"
+                          required
                         />
                         <label
                           class="govuk-label govuk-radios__label"
@@ -177,6 +183,7 @@
                           name="name_ending"
                           type="radio"
                           value="PC"
+                          required
                         />
                         <label
                           class="govuk-label govuk-radios__label"
@@ -193,6 +200,7 @@
                           name="name_ending"
                           type="radio"
                           value="P.C."
+                          required
                         />
                         <label
                           class="govuk-label govuk-radios__label"
@@ -216,7 +224,7 @@
     </div>
   </div>
 
-  <script src="/public/javascripts/lp-name.js"></script>
+  <script src="/limited-partnerships/public/javascripts/name.js"></script>
 </main>
 
 {% endblock %}

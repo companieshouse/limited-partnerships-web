@@ -4,7 +4,7 @@
   "description": "Limited Partnerships Web App",
   "main": "app.ts",
   "scripts": {
-    "build": "rm -rf dist && tsc && cp -r src/views dist/ && cp -r locales dist/",
+    "build": "rm -rf dist && tsc && cp -r src/views dist/ && cp -r locales public dist/",
     "lint": "eslint '{src,test}/**/*' *.mjs",
     "lint:fix": "eslint '{src,test}/**/*' *.mjs --fix",
     "prepare": "husky",
