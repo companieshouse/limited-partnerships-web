@@ -47,6 +47,28 @@ describe("Create Transaction", () => {
     expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
   });
 
+  // Only for demo - to be removed
+  it("should create a submission and go to next 2", async () => {
+    const url = appDevDependencies.registrationController.inserSubmissionId(
+      appDevDependencies.registrationController.inserTransactionId(
+        NAME_URL,
+        appDevDependencies.registrationGateway.transactionId
+      ),
+      appDevDependencies.registrationGateway.submissionId
+    );
+
+    const res = await request(app).post(url).send({
+      transactionType: registrationRoutingName.transactionType,
+      partnership_name: "Test Limited Partnership",
+      name_ending: NameEndingType.LP,
+    });
+
+    const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.registrationGateway.transactionId}/submission/${appDevDependencies.registrationGateway.submissionId}/next-2`;
+
+    expect(res.status).toBe(302);
+    expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+  });
+
   it("should return an error", async () => {
     const url = appDevDependencies.registrationController.inserSubmissionId(
       appDevDependencies.registrationController.inserTransactionId(
