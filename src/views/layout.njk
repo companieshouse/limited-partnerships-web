@@ -26,6 +26,10 @@
 {% block beforeContent %}
   {% include "includes/phase_banner.njk" %}
   <div style="margin-bottom: 25px; border-bottom: 1px solid #b1b4b6;">
+
+    {% import "ch-node-utils/templates/add-lang-to-url.njk" as lang2url %}
+    {% include "ch-node-utils/templates/locales-banner.njk" %}
+
     {% block backLink %}
     {% endblock %}
     {% block signOutBanner %}
