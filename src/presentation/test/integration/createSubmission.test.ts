@@ -46,4 +46,21 @@ describe("Create Transaction", () => {
     expect(res.status).toBe(302);
     expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
   });
+
+  it("should return an error", async () => {
+    const url = appDevDependencies.registrationController.inserSubmissionId(
+      appDevDependencies.registrationController.inserTransactionId(
+        NAME_URL,
+        appDevDependencies.registrationGateway.transactionId
+      ),
+      appDevDependencies.registrationGateway.submissionId
+    );
+
+    const res = await request(app).post(url).send({
+      transactionType: registrationRoutingName.transactionType,
+    });
+
+    expect(res.status).toBe(200);
+    // see when and where to display errors from the API
+  });
 });

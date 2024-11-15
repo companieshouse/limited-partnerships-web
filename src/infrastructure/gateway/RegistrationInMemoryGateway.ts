@@ -1,6 +1,9 @@
 /* eslint-disable */
 
-import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import {
+  LimitedPartnership,
+  NameEndingType,
+} from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import TransactionRegistrationType from "../../application/registration/TransactionRegistrationType";
 import IRegistrationGateway from "../../domain/IRegistrationGateway";
@@ -55,6 +58,24 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
     transactionId: string,
     data: Record<string, any>
   ): Promise<string> {
+    if (!data.partnership_name) {
+      this.errors.push(
+        new CustomError(
+          "partnership_name",
+          "partnership_name must be at least 3 characters"
+        )
+      );
+    }
+
+    if (!data.name_ending) {
+      this.errors.push(
+        new CustomError(
+          "name_ending",
+          `name_ending must be one of ${Object.keys(NameEndingType).join(", ")}`
+        )
+      );
+    }
+
     if (this.errors.length > 0) {
       throw this.errors;
     }
