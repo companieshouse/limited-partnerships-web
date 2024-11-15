@@ -1,21 +1,25 @@
-import {
-  LimitedPartnership,
-  NameEndingType,
-} from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import {
   TransactionRouting,
   transactionRoutingDefault,
 } from "../../domain/entities/TransactionRouting";
 import TransactionRegistrationType from "./TransactionRegistrationType";
-import registrationsRouting, { NEXT2_URL } from "./Routing";
+import registrationsRouting from "./Routing";
+import registrationCoordinatorElementList from "./coordination";
+
+export type RegistrationCoordinatorElement = {
+  transactionRegistrationType: TransactionRegistrationType;
+  callback: any;
+};
 
 class RegistrationCoordinator {
+  private list: RegistrationCoordinatorElement[] =
+    registrationCoordinatorElementList;
   private transactionMap = new Map<TransactionRegistrationType, any>();
 
   constructor() {
-    // Only for demo - to be removed
-    this.transactionMap.set(TransactionRegistrationType.NAME, this.nameEnding);
+    this.init();
   }
 
   public execute(
@@ -33,22 +37,18 @@ class RegistrationCoordinator {
     return coordination(limitedPartnerShip);
   }
 
-  // Only for demo - to be removed
-  private nameEnding(
-    limitedPartnerShip: LimitedPartnership
-  ): TransactionRouting {
-    const nameRouting = registrationsRouting.get(
-      TransactionRegistrationType.NAME
-    ) as TransactionRouting;
+  private init() {
+    this.list.forEach((item) => {
+      const { transactionRegistrationType, callback } = item;
+      this.addCoordination(transactionRegistrationType, callback);
+    });
+  }
 
-    if (
-      limitedPartnerShip.data?.name_ending ===
-      NameEndingType.LIMITED_PARTNERSHIP
-    ) {
-      return nameRouting;
-    }
-
-    return { ...nameRouting, nextUrl: NEXT2_URL };
+  private addCoordination(
+    transactionRegistrationType: TransactionRegistrationType,
+    callback: (limitedPartnerShip: LimitedPartnership) => TransactionRouting
+  ) {
+    this.transactionMap.set(transactionRegistrationType, callback);
   }
 }
 
