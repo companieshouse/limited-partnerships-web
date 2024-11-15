@@ -1,5 +1,7 @@
 import { LocalesService, LanguageNames } from "@companieshouse/ch-node-utils";
-import { isLocalesEnabled, LOCALES_PATH } from "../config";
+import { isLocalesEnabled } from "../config";
+
+const LOCALES_PATH = "locales"; // The folder under which all the locale resource asset JSON files reside
 
 enum Language {
   CY = "cy",

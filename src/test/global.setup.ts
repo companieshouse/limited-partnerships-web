@@ -10,7 +10,6 @@ export default () => {
   process.env.DEFAULT_SESSION_EXPIRATION = "3600";
   process.env.INTERNAL_API_URL = "http://api.chs.local:4001";
   process.env.LOCALES_ENABLED = "false";
-  process.env.LOCALES_PATH = "locales";
   process.env.LOG_LEVEL = "ERROR";
   process.env.NODE_ENV = "development";
   process.env.OAUTH2_CLIENT_ID = "OAUTH2_CLIENT_ID";
