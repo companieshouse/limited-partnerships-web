@@ -1,13 +1,13 @@
 import { logger } from "../utils/logger";
 
-export const createLimitedPartnership = async (
+export const createLimitedPartnership = (
 
   transactionId: string,
 
-): Promise<string> => {
+): string => {
   logger.info(`Calling 'postLimitedPartnership' for transaction id '${transactionId}'`);
 
-  // Return a hardcoded string with await
-  return await Promise.resolve("Dummy response");
+  // Directly return the string
+  return "Dummy response";
 };
 
