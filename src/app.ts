@@ -6,7 +6,7 @@ import { errorHandler } from "./middlewares";
 import {
   appConfig,
   // appDependencies,
-  appDevDependencies as appDependencies,
+  appDevDependencies as appDependencies, // only to play with screens without api - to be removed
 } from "./config";
 import appRouter from "./routes";
 

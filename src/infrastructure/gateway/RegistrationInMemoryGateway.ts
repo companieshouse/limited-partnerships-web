@@ -15,8 +15,8 @@ type TransactionLimitedPartnership = LimitedPartnership & {
 };
 
 class RegistrationInMemoryGateway implements IRegistrationGateway {
-  transactionId = "transaction-id";
-  submissionId = "submission-id";
+  transactionId = "92793162-6334-4112-99e2-f96a3d7ef2ae";
+  submissionId = "04aae9fa-c444-479f-acd2-5580e9a5d9bb";
 
   limitedPartnerships: TransactionLimitedPartnership[] = [];
   errors: CustomError[] = [];
