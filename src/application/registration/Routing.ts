@@ -10,10 +10,10 @@ import {
 } from "../../config/constants";
 import TransactionRegistrationType from "./TransactionRegistrationType";
 
-export const NAME_TEMPLATE = "name";
-export const NEXT_TEMPLATE = "next";
+export const NAME_TEMPLATE = TransactionRegistrationType.NAME.toLowerCase();
+export const NEXT_TEMPLATE = TransactionRegistrationType.NEXT.toLowerCase();
 // Only for demo - to be removed
-export const NEXT2_TEMPLATE = "next-2";
+export const NEXT2_TEMPLATE = `${TransactionRegistrationType.NEXT.toLowerCase()}-2`;
 
 export const NAME_URL = `${BASE_URL}/transaction/${TRANSACTION_ID}/${NAME_TEMPLATE}`;
 
@@ -35,7 +35,7 @@ export const registrationRoutingName = {
   transactionType: TransactionRegistrationType.NAME,
 };
 
-export const registrationRoutingNext = {
+const registrationRoutingNext = {
   previousUrl: NAME_URL,
   currentUrl: NEXT_URL,
   nextUrl: "/",
@@ -43,34 +43,28 @@ export const registrationRoutingNext = {
 };
 
 // Only for demo - to be removed
-export const registrationRoutingNext2 = {
+const registrationRoutingNext2 = {
   previousUrl: NAME_URL,
   currentUrl: NEXT2_URL,
   nextUrl: "/",
-  transactionType: TransactionRegistrationType.NEXT,
+  transactionType:
+    `${TransactionRegistrationType.NEXT}_2` as TransactionRegistrationType,
 };
+
+const list = [
+  registrationRoutingStart,
+  registrationRoutingName,
+  registrationRoutingNext,
+  registrationRoutingNext2,
+];
 
 export const registrationsRouting: TransactionsRouting = new Map<
   TransactionRegistrationType,
   TransactionRouting
 >();
 
-registrationsRouting.set(
-  TransactionRegistrationType.START,
-  registrationRoutingStart
-);
-registrationsRouting.set(
-  TransactionRegistrationType.NAME,
-  registrationRoutingName
-);
-registrationsRouting.set(
-  TransactionRegistrationType.NEXT,
-  registrationRoutingNext
-);
-// Only for demo - to be removed
-registrationsRouting.set(
-  "NEXT_2" as TransactionRegistrationType,
-  registrationRoutingNext2
-);
+list.forEach((routing) => {
+  registrationsRouting.set(routing.transactionType, routing);
+});
 
 export default registrationsRouting;

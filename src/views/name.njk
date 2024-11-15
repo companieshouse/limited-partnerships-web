@@ -226,17 +226,25 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-  const suffixDiv = document.querySelector('.govuk-input__suffix');
-  const radioButtons = document.querySelectorAll('input[name="name_ending"]');
+    const suffixDiv = document.querySelector('.govuk-input__suffix');
+    const radioButtons = document.querySelectorAll('input[name="name_ending"]');
 
-  radioButtons.forEach(function(radioButton) {
-    radioButton.addEventListener('change', function() {
-      if (radioButton.checked) {
-        suffixDiv.textContent = radioButton.value;
+    radioButtons.forEach(function(radioButton) {
+      radioButton.addEventListener('change', function() {
+        if (radioButton.checked) {
+          suffixDiv.textContent = radioButton.value;
+        }
+      });
+    });
+
+    const form = document.querySelector('.form');
+
+    form.addEventListener('submit', function(evt) {
+      if (!suffixDiv.textContent) {
+        evt.preventDefault();
       }
     });
   });
-});
 </script>
 
 {% endblock %}
