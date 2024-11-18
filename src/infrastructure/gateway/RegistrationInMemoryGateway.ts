@@ -1,5 +1,6 @@
 /* eslint-disable */
 
+import crypto from "crypto";
 import {
   LimitedPartnership,
   NameEndingType,
@@ -8,15 +9,12 @@ import {
 import TransactionRegistrationType from "../../application/registration/TransactionRegistrationType";
 import IRegistrationGateway from "../../domain/IRegistrationGateway";
 import CustomError from "../../domain/entities/CustomError";
-
-type TransactionLimitedPartnership = LimitedPartnership & {
-  _id?: string;
-  links?: { self: string }[];
-};
+import TransactionLimitedPartnership from "../../domain/entities/TransactionLimitedPartnership";
+import LimitedPartnershipBuilder from "./LimitedPartnershipBuilder";
 
 class RegistrationInMemoryGateway implements IRegistrationGateway {
-  transactionId = "92793162-6334-4112-99e2-f96a3d7ef2ae";
-  submissionId = "04aae9fa-c444-479f-acd2-5580e9a5d9bb";
+  transactionId = crypto.randomUUID().toString();
+  submissionId = crypto.randomUUID().toString();
 
   limitedPartnerships: TransactionLimitedPartnership[] = [];
   errors: CustomError[] = [];
@@ -40,7 +38,7 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
       throw new CustomError("Limited partnership", `Not found: ${id}`);
     }
 
-    return limitedPartnerShip;
+    return new LimitedPartnershipBuilder(limitedPartnerShip).build();
   }
 
   async createTransaction(
@@ -80,18 +78,11 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
       throw this.errors;
     }
 
-    const limitedPartnership = {
-      _id: this.submissionId,
-      data: {
-        partnership_name: data.partnership_name,
-        name_ending: data.name_ending,
-      },
-      links: [
-        {
-          self: `/limited-partnership/transaction/${transactionId}/submission/${this.submissionId}/name`,
-        },
-      ],
-    };
+    const limitedPartnership = this.buildLimitedPartnership(
+      transactionType,
+      data,
+      transactionId
+    );
 
     this.limitedPartnerships.push(limitedPartnership);
 
@@ -100,6 +91,26 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
     }
 
     return this.submissionId;
+  }
+
+  private buildLimitedPartnership(
+    transactionType: TransactionRegistrationType,
+    data: Record<string, any>,
+    transactionId: string
+  ): TransactionLimitedPartnership {
+    const limitedPartnershipBuilder = new LimitedPartnershipBuilder({
+      _id: this.submissionId,
+      links: [
+        {
+          self: `/limited-partnership/transaction/${transactionId}/submission/${this.submissionId}/name`,
+        },
+      ],
+    });
+
+    limitedPartnershipBuilder.withData(transactionType, data);
+    const limitedPartnership = limitedPartnershipBuilder.build();
+
+    return limitedPartnership;
   }
 }
 

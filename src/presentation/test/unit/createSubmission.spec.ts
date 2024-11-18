@@ -41,7 +41,7 @@ describe("Create Submission", () => {
     it("should create a new LimitedPartnership", async () => {
       const result = await registrationService.createSubmissionFromTransaction(
         TransactionRegistrationType.NAME,
-        "transaction-id",
+        registrationGateway.transactionId,
         {
           partnership_name: "Test Limited Partnership",
           name_ending: NameEndingType.LIMITED_PARTNERSHIP,
@@ -72,7 +72,7 @@ describe("Create Submission", () => {
 
       const result = await registrationService.createSubmissionFromTransaction(
         TransactionRegistrationType.NAME,
-        "transaction-id",
+        registrationGateway.transactionId,
         {
           partnership_name: "Test Limited Partnership",
           name_ending: NameEndingType.LIMITED_PARTNERSHIP,
