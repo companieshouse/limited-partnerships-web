@@ -48,7 +48,7 @@
     "@types/node": "^22.7.9",
     "@types/nunjucks": "^3.2.6",
     "@types/supertest": "^6.0.2",
-    "@typescript-eslint/eslint-plugin": "^8.11.0",
+    "@typescript-eslint/eslint-plugin": "^8.15.0",
     "eslint": "^9.13.0",
     "globals": "^15.11.0",
     "husky": "^9.1.6",
