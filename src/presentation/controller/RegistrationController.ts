@@ -93,11 +93,9 @@ class RegistrationController {
   }
 
   private getTransactionType(path: string) {
-    let id = this.templateName(path);
-    if (id.includes("-")) {
-      id = id.replace("-", "_");
-    }
-    return id.toUpperCase() as TransactionRegistrationType;
+    const type = this.templateName(path);
+
+    return type as TransactionRegistrationType;
   }
 
   private templateName(url: string): string {

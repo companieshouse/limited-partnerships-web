@@ -27,7 +27,7 @@ describe("Create Transaction", () => {
   describe("Get registrationRoutingStart", () => {
     it("should return the page corresponcting to the transaction", () => {
       const result = registrationService.getRegistrationRouting(
-        TransactionRegistrationType.START
+        TransactionRegistrationType.start
       );
 
       expect(result).toEqual(registrationRoutingStart);
@@ -37,7 +37,7 @@ describe("Create Transaction", () => {
   describe("Create transaction", () => {
     it("should create a transaction and add id to the url", async () => {
       const result = await registrationService.createTransaction(
-        TransactionRegistrationType.START
+        TransactionRegistrationType.start
       );
 
       expect(result).toEqual(

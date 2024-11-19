@@ -13,7 +13,7 @@ const callback = (
   limitedPartnerShip: LimitedPartnership
 ): TransactionRouting => {
   const nameRouting = registrationsRouting.get(
-    TransactionRegistrationType.NAME
+    TransactionRegistrationType.name
   ) as TransactionRouting;
 
   if (
@@ -26,6 +26,6 @@ const callback = (
 };
 
 export const nameEnding: RegistrationCoordinatorElement = {
-  transactionRegistrationType: TransactionRegistrationType.NAME,
+  transactionRegistrationType: TransactionRegistrationType.name,
   callback,
 };

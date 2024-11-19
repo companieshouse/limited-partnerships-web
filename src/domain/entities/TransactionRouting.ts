@@ -21,5 +21,5 @@ export const transactionRoutingDefault = {
   previousUrl: "/",
   currentUrl: START_URL,
   nextUrl: NAME_URL,
-  transactionType: TransactionRegistrationType.START,
+  transactionType: TransactionRegistrationType.start,
 };

@@ -30,7 +30,7 @@ describe("Create Submission", () => {
   describe("Get registrationRoutingName", () => {
     it("should return the page corresponcting to the transaction", () => {
       const result = registrationService.getRegistrationRouting(
-        TransactionRegistrationType.NAME
+        TransactionRegistrationType.name
       );
 
       expect(result).toEqual(registrationRoutingName);
@@ -40,7 +40,7 @@ describe("Create Submission", () => {
   describe("Create LimitedPartnerShip", () => {
     it("should create a new LimitedPartnership", async () => {
       const result = await registrationService.createSubmissionFromTransaction(
-        TransactionRegistrationType.NAME,
+        TransactionRegistrationType.name,
         registrationGateway.transactionId,
         {
           partnership_name: "Test Limited Partnership",
@@ -71,7 +71,7 @@ describe("Create Submission", () => {
       registrationGateway.feedErrors([partnershipNameError, nameEndingError]);
 
       const result = await registrationService.createSubmissionFromTransaction(
-        TransactionRegistrationType.NAME,
+        TransactionRegistrationType.name,
         registrationGateway.transactionId,
         {
           partnership_name: "Test Limited Partnership",
