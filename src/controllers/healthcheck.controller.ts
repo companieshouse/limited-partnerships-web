@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 
 export const get = (req: Request, res: Response) => {
-  res.status(200).json({ status: "OK" });
+  const ok = "OK";
+  res.status(200).json({ status: ok });
 };
