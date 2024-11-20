@@ -8,7 +8,7 @@ import TransactionRegistrationType from "../../../application/registration/Trans
 import IRegistrationGateway from "../../../domain/IRegistrationGateway";
 import RegistrationInMemoryGateway from "../../../infrastructure/gateway/RegistrationInMemoryGateway";
 
-describe("Create Submission", () => {
+describe("Create transaction and the first submission", () => {
   let registrationGateway: RegistrationInMemoryGateway;
   let registrationCoordinator: RegistrationCoordinator;
   let registrationService: RegistrationService;
@@ -39,20 +39,21 @@ describe("Create Submission", () => {
 
   describe("Create LimitedPartnerShip", () => {
     it("should create a new LimitedPartnership", async () => {
-      const result = await registrationService.createSubmissionFromTransaction(
-        TransactionRegistrationType.name,
-        registrationGateway.transactionId,
-        {
-          partnership_name: "Test Limited Partnership",
-          name_ending: NameEndingType.LIMITED_PARTNERSHIP,
-        }
-      );
+      const result =
+        await registrationService.createTransactionAndFirstSubmission(
+          TransactionRegistrationType.name,
+          {
+            partnership_name: "Test Limited Partnership",
+            name_ending: NameEndingType.LIMITED_PARTNERSHIP,
+          }
+        );
 
       expect(registrationGateway.limitedPartnerships.length).toEqual(1);
       expect(result).toEqual(
         expect.objectContaining({
           ...registrationRoutingName,
           data: {
+            transactionId: registrationGateway.transactionId,
             submissionId: registrationGateway.submissionId,
           },
         })
@@ -70,14 +71,14 @@ describe("Create Submission", () => {
       );
       registrationGateway.feedErrors([partnershipNameError, nameEndingError]);
 
-      const result = await registrationService.createSubmissionFromTransaction(
-        TransactionRegistrationType.name,
-        registrationGateway.transactionId,
-        {
-          partnership_name: "Test Limited Partnership",
-          name_ending: NameEndingType.LIMITED_PARTNERSHIP,
-        }
-      );
+      const result =
+        await registrationService.createTransactionAndFirstSubmission(
+          TransactionRegistrationType.name,
+          {
+            partnership_name: "Test Limited Partnership",
+            name_ending: NameEndingType.LIMITED_PARTNERSHIP,
+          }
+        );
 
       expect(registrationGateway.limitedPartnerships.length).toEqual(0);
       expect(result).toEqual(

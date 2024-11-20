@@ -20,11 +20,6 @@ export const registrationEndpoints = (
     authentication,
     dependencies.registrationController.getTransactionRouting()
   );
-  router.post(
-    config.START_URL,
-    authentication,
-    dependencies.registrationController.createTransaction()
-  );
 
   router.get(
     NAME_URL,
@@ -34,7 +29,7 @@ export const registrationEndpoints = (
   router.post(
     NAME_URL,
     authentication,
-    dependencies.registrationController.createSubmissionFromTransaction()
+    dependencies.registrationController.createTransactionAndFirstSubmission()
   );
 
   router.get(

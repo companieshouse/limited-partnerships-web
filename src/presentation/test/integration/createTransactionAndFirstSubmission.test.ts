@@ -8,7 +8,7 @@ import {
   registrationRoutingName,
 } from "../../../application/registration/Routing";
 
-describe("Create Transaction", () => {
+describe("Create transaction and the first submission", () => {
   beforeAll(() => {
     appDevDependencies.registrationGateway.feedLimitedPartnerships([]);
     appDevDependencies.registrationGateway.feedErrors([]);
@@ -26,7 +26,7 @@ describe("Create Transaction", () => {
     expect(res.text).toContain("What's the name of the limited partnership?");
   });
 
-  it("should create a submission", async () => {
+  it("should create a transaction and the first submission", async () => {
     const url = appDevDependencies.registrationController.inserSubmissionId(
       appDevDependencies.registrationController.inserTransactionId(
         NAME_URL,

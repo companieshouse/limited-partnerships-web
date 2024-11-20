@@ -35,41 +35,14 @@ class RegistrationController {
     };
   }
 
-  createTransaction(): RequestHandler {
+  createTransactionAndFirstSubmission(): RequestHandler {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
-        const transactionType = request.body.transactionType;
-
-        const result = await this.registrationService.createTransaction(
-          transactionType
-        );
-
-        if (result?.errors?.length) {
-          response.render(this.templateName(result.currentUrl), {
-            props: result,
-          });
-          return;
-        }
-
-        response.redirect(
-          this.inserTransactionId(result.nextUrl, result?.data?.transactionId)
-        );
-      } catch (error) {
-        next(error);
-      }
-    };
-  }
-
-  createSubmissionFromTransaction(): RequestHandler {
-    return async (request: Request, response: Response, next: NextFunction) => {
-      try {
-        const transactionId = request.params.transactionId;
         const transactionType = request.body.transactionType;
 
         const result =
-          await this.registrationService.createSubmissionFromTransaction(
+          await this.registrationService.createTransactionAndFirstSubmission(
             transactionType,
-            transactionId,
             request.body
           );
 
@@ -81,7 +54,7 @@ class RegistrationController {
         }
 
         const url = this.inserSubmissionId(
-          this.inserTransactionId(result.nextUrl, transactionId),
+          this.inserTransactionId(result.nextUrl, result?.data?.transactionId),
           result?.data?.submissionId
         );
 

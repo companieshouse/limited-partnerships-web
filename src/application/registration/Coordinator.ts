@@ -26,15 +26,15 @@ class RegistrationCoordinator {
     registrationType: TransactionRegistrationType,
     limitedPartnerShip: LimitedPartnership
   ): TransactionRouting {
-    const coordination = this.transactionMap.get(registrationType);
+    const callback = this.transactionMap.get(registrationType);
 
-    if (!coordination) {
+    if (!callback) {
       return (
         registrationsRouting.get(registrationType) ?? transactionRoutingDefault
       );
     }
 
-    return coordination(limitedPartnerShip);
+    return callback(limitedPartnerShip);
   }
 
   private init() {

@@ -16,7 +16,7 @@ class RegistrationGateway implements IRegistrationGateway {
     throw new Error("Method not implemented.");
   }
 
-  async createSubmissionFromTransaction(
+  async createTransactionAndFirstSubmission(
     transactionType: TransactionRegistrationType,
     transactionId: string,
     data: Record<string, any>

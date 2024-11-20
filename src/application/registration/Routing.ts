@@ -15,7 +15,7 @@ export const NEXT_TEMPLATE = TransactionRegistrationType.next;
 // Only for demo - to be removed
 export const NEXT2_TEMPLATE = TransactionRegistrationType["next-2"];
 
-export const NAME_URL = `${BASE_URL}/transaction/${TRANSACTION_ID}/${NAME_TEMPLATE}`;
+export const NAME_URL = `${BASE_URL}/${NAME_TEMPLATE}`;
 
 export const NEXT_URL = `${BASE_URL}/transaction/${TRANSACTION_ID}/submission/${SUBMISSION_ID}/${NEXT_TEMPLATE}`;
 // Only for demo - to be removed

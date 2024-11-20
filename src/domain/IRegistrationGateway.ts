@@ -7,7 +7,7 @@ interface IRegistrationGateway {
   createTransaction(
     transactionType: TransactionRegistrationType
   ): Promise<string>;
-  createSubmissionFromTransaction(
+  createTransactionAndFirstSubmission(
     transactionType: TransactionRegistrationType,
     transactionId: string,
     data: Record<string, any>

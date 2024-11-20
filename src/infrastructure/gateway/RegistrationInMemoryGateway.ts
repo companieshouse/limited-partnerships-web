@@ -44,14 +44,14 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
   async createTransaction(
     transactionType: TransactionRegistrationType
   ): Promise<string> {
-    if (transactionType === TransactionRegistrationType.start) {
+    if (transactionType === TransactionRegistrationType.name) {
       return this.transactionId;
     }
 
     return "";
   }
 
-  async createSubmissionFromTransaction(
+  async createTransactionAndFirstSubmission(
     transactionType: TransactionRegistrationType,
     transactionId: string,
     data: Record<string, any>

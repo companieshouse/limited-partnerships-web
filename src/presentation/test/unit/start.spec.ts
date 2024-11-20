@@ -33,21 +33,4 @@ describe("Create Transaction", () => {
       expect(result).toEqual(registrationRoutingStart);
     });
   });
-
-  describe("Create transaction", () => {
-    it("should create a transaction and add id to the url", async () => {
-      const result = await registrationService.createTransaction(
-        TransactionRegistrationType.start
-      );
-
-      expect(result).toEqual(
-        expect.objectContaining({
-          ...registrationRoutingStart,
-          data: {
-            transactionId: registrationGateway.transactionId,
-          },
-        })
-      );
-    });
-  });
 });
