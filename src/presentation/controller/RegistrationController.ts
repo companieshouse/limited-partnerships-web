@@ -1,8 +1,8 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
 
 import RegistrationService from "../../application/registration/Service";
-import TransactionRegistrationType from "../../application/registration/TransactionRegistrationType";
-import { TransactionRouting } from "../../domain/entities/TransactionRouting";
+import PageRegistrationType from "../../application/registration/PageRegistrationType";
+import { PageRouting } from "../../domain/entities/PageRouting";
 
 class RegistrationController {
   private registrationService: RegistrationService;
@@ -11,23 +11,23 @@ class RegistrationController {
     this.registrationService = registrationService;
   }
 
-  getTransactionRouting(): RequestHandler {
+  getPageRouting(): RequestHandler {
     return (request: Request, response: Response, next: NextFunction) => {
       try {
-        const transactionType = this.getTransactionType(request.path);
+        const pageType = this.pageType(request.path);
 
         const result = this.registrationService.getRegistrationRouting(
-          transactionType as TransactionRegistrationType
+          pageType as PageRegistrationType
         );
 
-        const transactionRouting = this.inserIdInAllUrl(
+        const pageRouting = this.inserIdInAllUrl(
           result,
           request.params.transactionId,
           request.params.submissionId
         );
 
-        response.render(this.templateName(transactionRouting.currentUrl), {
-          props: transactionRouting,
+        response.render(this.templateName(pageRouting.currentUrl), {
+          props: pageRouting,
         });
       } catch (error) {
         next(error);
@@ -38,11 +38,11 @@ class RegistrationController {
   createTransactionAndFirstSubmission(): RequestHandler {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
-        const transactionType = request.body.transactionType;
+        const pageType = request.body.pageType;
 
         const result =
           await this.registrationService.createTransactionAndFirstSubmission(
-            transactionType,
+            pageType,
             request.body
           );
 
@@ -65,10 +65,10 @@ class RegistrationController {
     };
   }
 
-  private getTransactionType(path: string) {
+  private pageType(path: string) {
     const type = this.templateName(path);
 
-    return type as TransactionRegistrationType;
+    return type as PageRegistrationType;
   }
 
   private templateName(url: string): string {
@@ -85,22 +85,22 @@ class RegistrationController {
   }
 
   private inserIdInAllUrl(
-    transactionRouting: TransactionRouting,
+    pageRouting: PageRouting,
     transactionId: string,
     submissionId: string
-  ): TransactionRouting {
+  ): PageRouting {
     return {
-      ...transactionRouting,
+      ...pageRouting,
       previousUrl: this.inserSubmissionId(
-        this.inserTransactionId(transactionRouting.previousUrl, transactionId),
+        this.inserTransactionId(pageRouting.previousUrl, transactionId),
         submissionId
       ),
       currentUrl: this.inserSubmissionId(
-        this.inserTransactionId(transactionRouting.currentUrl, transactionId),
+        this.inserTransactionId(pageRouting.currentUrl, transactionId),
         submissionId
       ),
       nextUrl: this.inserSubmissionId(
-        this.inserTransactionId(transactionRouting.nextUrl, transactionId),
+        this.inserTransactionId(pageRouting.nextUrl, transactionId),
         submissionId
       ),
     };

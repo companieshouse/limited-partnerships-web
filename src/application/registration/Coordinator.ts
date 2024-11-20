@@ -1,37 +1,35 @@
 import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import {
-  TransactionRouting,
-  transactionRoutingDefault,
-} from "../../domain/entities/TransactionRouting";
-import TransactionRegistrationType from "./TransactionRegistrationType";
+  PageRouting,
+  pageRoutingDefault,
+} from "../../domain/entities/PageRouting";
+import PageRegistrationType from "./PageRegistrationType";
 import registrationsRouting from "./Routing";
 import registrationCoordinatorElementList from "./coordination";
 
 export type RegistrationCoordinatorElement = {
-  transactionRegistrationType: TransactionRegistrationType;
+  pageRegistrationType: PageRegistrationType;
   callback: any;
 };
 
 class RegistrationCoordinator {
   private list: RegistrationCoordinatorElement[] =
     registrationCoordinatorElementList;
-  private transactionMap = new Map<TransactionRegistrationType, any>();
+  private callbackMap = new Map<PageRegistrationType, any>();
 
   constructor() {
     this.init();
   }
 
   public execute(
-    registrationType: TransactionRegistrationType,
+    registrationType: PageRegistrationType,
     limitedPartnerShip: LimitedPartnership
-  ): TransactionRouting {
-    const callback = this.transactionMap.get(registrationType);
+  ): PageRouting {
+    const callback = this.callbackMap.get(registrationType);
 
     if (!callback) {
-      return (
-        registrationsRouting.get(registrationType) ?? transactionRoutingDefault
-      );
+      return registrationsRouting.get(registrationType) ?? pageRoutingDefault;
     }
 
     return callback(limitedPartnerShip);
@@ -39,16 +37,16 @@ class RegistrationCoordinator {
 
   private init() {
     this.list.forEach((item) => {
-      const { transactionRegistrationType, callback } = item;
-      this.addCoordination(transactionRegistrationType, callback);
+      const { pageRegistrationType, callback } = item;
+      this.addCoordination(pageRegistrationType, callback);
     });
   }
 
   private addCoordination(
-    transactionRegistrationType: TransactionRegistrationType,
-    callback: (limitedPartnerShip: LimitedPartnership) => TransactionRouting
+    pageRegistrationType: PageRegistrationType,
+    callback: (limitedPartnerShip: LimitedPartnership) => PageRouting
   ) {
-    this.transactionMap.set(transactionRegistrationType, callback);
+    this.callbackMap.set(pageRegistrationType, callback);
   }
 }
 

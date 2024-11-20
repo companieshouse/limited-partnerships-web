@@ -1,7 +1,4 @@
-import {
-  TransactionRouting,
-  transactionRoutingDefault,
-} from "./TransactionRouting";
+import { PageRouting, pageRoutingDefault } from "./PageRouting";
 
 class CustomError {
   private field: string;
@@ -25,14 +22,14 @@ class CustomError {
   }
 
   static routingWithErrors(
-    transactionRouting: TransactionRouting | undefined,
+    pageRouting: PageRouting | undefined,
     errors: any
-  ): TransactionRouting {
+  ): PageRouting {
     const errorsMap = CustomError.errorsToCustomErrors(errors);
 
-    return transactionRouting
-      ? { ...transactionRouting, errors: errorsMap }
-      : { ...transactionRoutingDefault, errors: errorsMap };
+    return pageRouting
+      ? { ...pageRouting, errors: errorsMap }
+      : { ...pageRoutingDefault, errors: errorsMap };
   }
 }
 

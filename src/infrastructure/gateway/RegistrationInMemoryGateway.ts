@@ -6,7 +6,7 @@ import {
   NameEndingType,
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-import TransactionRegistrationType from "../../application/registration/TransactionRegistrationType";
+import PageRegistrationType from "../../application/registration/PageRegistrationType";
 import IRegistrationGateway from "../../domain/IRegistrationGateway";
 import CustomError from "../../domain/entities/CustomError";
 import TransactionLimitedPartnership from "../../domain/entities/TransactionLimitedPartnership";
@@ -41,10 +41,8 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
     return new LimitedPartnershipBuilder(limitedPartnerShip).build();
   }
 
-  async createTransaction(
-    transactionType: TransactionRegistrationType
-  ): Promise<string> {
-    if (transactionType === TransactionRegistrationType.name) {
+  async createTransaction(pageType: PageRegistrationType): Promise<string> {
+    if (pageType === PageRegistrationType.name) {
       return this.transactionId;
     }
 
@@ -52,7 +50,7 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
   }
 
   async createTransactionAndFirstSubmission(
-    transactionType: TransactionRegistrationType,
+    pageType: PageRegistrationType,
     transactionId: string,
     data: Record<string, any>
   ): Promise<string> {
@@ -79,7 +77,7 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
     }
 
     const limitedPartnership = this.buildLimitedPartnership(
-      transactionType,
+      pageType,
       data,
       transactionId
     );
@@ -94,7 +92,7 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
   }
 
   private buildLimitedPartnership(
-    transactionType: TransactionRegistrationType,
+    pageType: PageRegistrationType,
     data: Record<string, any>,
     transactionId: string
   ): TransactionLimitedPartnership {
@@ -107,7 +105,7 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
       ],
     });
 
-    limitedPartnershipBuilder.withData(transactionType, data);
+    limitedPartnershipBuilder.withData(pageType, data);
     const limitedPartnership = limitedPartnershipBuilder.build();
 
     return limitedPartnership;

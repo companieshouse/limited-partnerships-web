@@ -36,7 +36,7 @@ describe("Create transaction and the first submission", () => {
     );
 
     const res = await request(app).post(url).send({
-      transactionType: registrationRoutingName.transactionType,
+      pageType: registrationRoutingName.pageType,
       partnership_name: "Test Limited Partnership",
       name_ending: NameEndingType.LIMITED_PARTNERSHIP,
     });
@@ -58,7 +58,7 @@ describe("Create transaction and the first submission", () => {
     );
 
     const res = await request(app).post(url).send({
-      transactionType: registrationRoutingName.transactionType,
+      pageType: registrationRoutingName.pageType,
       partnership_name: "Test Limited Partnership",
       name_ending: NameEndingType.LP,
     });
@@ -79,7 +79,7 @@ describe("Create transaction and the first submission", () => {
     );
 
     const res = await request(app).post(url).send({
-      transactionType: registrationRoutingName.transactionType,
+      pageType: registrationRoutingName.pageType,
     });
 
     expect(res.status).toBe(200);

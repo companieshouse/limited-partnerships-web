@@ -1,4 +1,4 @@
-enum TransactionRegistrationType {
+enum PageRegistrationType {
   start = "start",
   name = "name",
   next = "next",
@@ -6,4 +6,4 @@ enum TransactionRegistrationType {
   "next-2" = "next-2",
 }
 
-export default TransactionRegistrationType;
+export default PageRegistrationType;

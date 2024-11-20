@@ -8,9 +8,6 @@
 
   {{ errorMessage }}
 
-  <form action={{props.nextUrl}}>
-    <input type="hidden" name="transactionType" value={{ props.transactionType }}>
-    <button class="govuk-button" type="submit">Start</button>
-  </form>
+  <button class="govuk-button" onClick="location.href='{{ props.nextUrl }}'">Start</button>
 
 {% endblock %}

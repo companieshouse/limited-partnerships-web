@@ -4,7 +4,7 @@ import RegistrationCoordinator from "../../../application/registration/Coordinat
 import { registrationRoutingName } from "../../../application/registration/Routing";
 import RegistrationService from "../../../application/registration/Service";
 import CustomError from "../../../domain/entities/CustomError";
-import TransactionRegistrationType from "../../../application/registration/TransactionRegistrationType";
+import PageRegistrationType from "../../../application/registration/PageRegistrationType";
 import IRegistrationGateway from "../../../domain/IRegistrationGateway";
 import RegistrationInMemoryGateway from "../../../infrastructure/gateway/RegistrationInMemoryGateway";
 
@@ -30,7 +30,7 @@ describe("Create transaction and the first submission", () => {
   describe("Get registrationRoutingName", () => {
     it("should return the page corresponcting to the transaction", () => {
       const result = registrationService.getRegistrationRouting(
-        TransactionRegistrationType.name
+        PageRegistrationType.name
       );
 
       expect(result).toEqual(registrationRoutingName);
@@ -41,7 +41,7 @@ describe("Create transaction and the first submission", () => {
     it("should create a new LimitedPartnership", async () => {
       const result =
         await registrationService.createTransactionAndFirstSubmission(
-          TransactionRegistrationType.name,
+          PageRegistrationType.name,
           {
             partnership_name: "Test Limited Partnership",
             name_ending: NameEndingType.LIMITED_PARTNERSHIP,
@@ -73,7 +73,7 @@ describe("Create transaction and the first submission", () => {
 
       const result =
         await registrationService.createTransactionAndFirstSubmission(
-          TransactionRegistrationType.name,
+          PageRegistrationType.name,
           {
             partnership_name: "Test Limited Partnership",
             name_ending: NameEndingType.LIMITED_PARTNERSHIP,

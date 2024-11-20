@@ -1,7 +1,7 @@
 import RegistrationCoordinator from "../../../application/registration/Coordinator";
 import { registrationRoutingStart } from "../../../application/registration/Routing";
 import RegistrationService from "../../../application/registration/Service";
-import TransactionRegistrationType from "../../../application/registration/TransactionRegistrationType";
+import PageRegistrationType from "../../../application/registration/PageRegistrationType";
 import IRegistrationGateway from "../../../domain/IRegistrationGateway";
 import RegistrationInMemoryGateway from "../../../infrastructure/gateway/RegistrationInMemoryGateway";
 
@@ -27,7 +27,7 @@ describe("Create Transaction", () => {
   describe("Get registrationRoutingStart", () => {
     it("should return the page corresponcting to the transaction", () => {
       const result = registrationService.getRegistrationRouting(
-        TransactionRegistrationType.start
+        PageRegistrationType.start
       );
 
       expect(result).toEqual(registrationRoutingStart);

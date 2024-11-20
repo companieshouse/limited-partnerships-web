@@ -1,11 +1,11 @@
 import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import CustomError from "../../domain/entities/CustomError";
-import TransactionRegistrationType from "./TransactionRegistrationType";
+import PageRegistrationType from "./PageRegistrationType";
 import {
-  TransactionRouting,
-  transactionRoutingDefault,
-} from "../../domain/entities/TransactionRouting";
+  PageRouting,
+  pageRoutingDefault,
+} from "../../domain/entities/PageRouting";
 import IRegistrationGateway from "../../domain/IRegistrationGateway";
 import RegistrationCoordinator from "./Coordinator";
 import registrationsRouting from "./Routing";
@@ -27,9 +27,9 @@ class RegistrationService {
   }
 
   async createTransactionAndFirstSubmission(
-    registrationType: TransactionRegistrationType,
+    registrationType: PageRegistrationType,
     data: Record<string, any>
-  ): Promise<TransactionRouting> {
+  ): Promise<PageRouting> {
     try {
       const transactionId = await this.registrationGateway.createTransaction(
         registrationType
@@ -42,30 +42,29 @@ class RegistrationService {
           data
         );
 
-      const transaction = await this.registrationGateway.getSubmissionById(
-        submissionId
-      );
+      const limitedPartnerShip =
+        await this.registrationGateway.getSubmissionById(submissionId);
 
       const registrationRouting = this.registrationCoordinator.execute(
         registrationType,
-        transaction
+        limitedPartnerShip
       );
 
       return registrationRouting
         ? { ...registrationRouting, data: { submissionId, transactionId } }
-        : transactionRoutingDefault;
+        : pageRoutingDefault;
     } catch (errors: any) {
       const registrationRouting = this.getRegistrationRouting(registrationType);
       return CustomError.routingWithErrors(registrationRouting, errors);
     }
   }
 
-  getRegistrationRouting(registrationType: TransactionRegistrationType) {
+  getRegistrationRouting(registrationType: PageRegistrationType) {
     const registrationRouting = registrationsRouting.get(registrationType);
 
     return registrationRouting
       ? { ...registrationRouting }
-      : transactionRoutingDefault;
+      : pageRoutingDefault;
   }
 }
 

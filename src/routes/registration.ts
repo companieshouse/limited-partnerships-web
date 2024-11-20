@@ -18,13 +18,13 @@ export const registrationEndpoints = (
   router.get(
     config.START_URL,
     authentication,
-    dependencies.registrationController.getTransactionRouting()
+    dependencies.registrationController.getPageRouting()
   );
 
   router.get(
     NAME_URL,
     authentication,
-    dependencies.registrationController.getTransactionRouting()
+    dependencies.registrationController.getPageRouting()
   );
   router.post(
     NAME_URL,
@@ -35,14 +35,14 @@ export const registrationEndpoints = (
   router.get(
     NEXT_URL,
     authentication,
-    dependencies.registrationController.getTransactionRouting()
+    dependencies.registrationController.getPageRouting()
   );
 
   // Only for demo - to be removed
   router.get(
     NEXT2_URL,
     authentication,
-    dependencies.registrationController.getTransactionRouting()
+    dependencies.registrationController.getPageRouting()
   );
 };
 

@@ -1,19 +1,16 @@
-import {
-  TransactionRouting,
-  TransactionsRouting,
-} from "../../domain/entities/TransactionRouting";
+import { PageRouting, PagesRouting } from "../../domain/entities/PageRouting";
 import {
   BASE_URL,
   START_URL,
   SUBMISSION_ID,
   TRANSACTION_ID,
 } from "../../config/constants";
-import TransactionRegistrationType from "./TransactionRegistrationType";
+import PageRegistrationType from "./PageRegistrationType";
 
-export const NAME_TEMPLATE = TransactionRegistrationType.name;
-export const NEXT_TEMPLATE = TransactionRegistrationType.next;
+export const NAME_TEMPLATE = PageRegistrationType.name;
+export const NEXT_TEMPLATE = PageRegistrationType.next;
 // Only for demo - to be removed
-export const NEXT2_TEMPLATE = TransactionRegistrationType["next-2"];
+export const NEXT2_TEMPLATE = PageRegistrationType["next-2"];
 
 export const NAME_URL = `${BASE_URL}/${NAME_TEMPLATE}`;
 
@@ -25,21 +22,21 @@ export const registrationRoutingStart = {
   previousUrl: "/",
   currentUrl: START_URL,
   nextUrl: NAME_URL,
-  transactionType: TransactionRegistrationType.start,
+  pageType: PageRegistrationType.start,
 };
 
 export const registrationRoutingName = {
   previousUrl: START_URL,
   currentUrl: NAME_URL,
   nextUrl: NEXT_URL,
-  transactionType: TransactionRegistrationType.name,
+  pageType: PageRegistrationType.name,
 };
 
 const registrationRoutingNext = {
   previousUrl: NAME_URL,
   currentUrl: NEXT_URL,
   nextUrl: "/",
-  transactionType: TransactionRegistrationType.next,
+  pageType: PageRegistrationType.next,
 };
 
 // Only for demo - to be removed
@@ -47,7 +44,7 @@ const registrationRoutingNext2 = {
   previousUrl: NAME_URL,
   currentUrl: NEXT2_URL,
   nextUrl: "/",
-  transactionType: TransactionRegistrationType["next-2"],
+  pageType: PageRegistrationType["next-2"],
 };
 
 const list = [
@@ -57,13 +54,13 @@ const list = [
   registrationRoutingNext2,
 ];
 
-export const registrationsRouting: TransactionsRouting = new Map<
-  TransactionRegistrationType,
-  TransactionRouting
+export const registrationsRouting: PagesRouting = new Map<
+  PageRegistrationType,
+  PageRouting
 >();
 
 list.forEach((routing) => {
-  registrationsRouting.set(routing.transactionType, routing);
+  registrationsRouting.set(routing.pageType, routing);
 });
 
 export default registrationsRouting;
