@@ -1,5 +1,4 @@
 import { NameEndingType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-import RegistrationCoordinator from "../../../application/registration/Coordinator";
 import RegistrationService from "../../../application/registration/Service";
 import IRegistrationGateway from "../../../domain/IRegistrationGateway";
 import RegistrationInMemoryGateway from "../../../infrastructure/gateway/RegistrationInMemoryGateway";
@@ -7,15 +6,12 @@ import CustomError from "../../../domain/entities/CustomError";
 
 describe("Get Submission", () => {
   let registrationGateway: RegistrationInMemoryGateway;
-  let registrationCoordinator: RegistrationCoordinator;
   let registrationService: RegistrationService;
 
   beforeAll(() => {
     registrationGateway = new RegistrationInMemoryGateway();
-    registrationCoordinator = new RegistrationCoordinator();
     registrationService = new RegistrationService(
-      registrationGateway as unknown as IRegistrationGateway,
-      registrationCoordinator
+      registrationGateway as unknown as IRegistrationGateway
     );
   });
 

@@ -1,4 +1,8 @@
-import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+/* eslint-disable indent */
+import {
+  LimitedPartnership,
+  NameEndingType,
+} from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import CustomError from "../../domain/entities/CustomError";
 import PageRegistrationType from "./PageRegistrationType";
@@ -7,19 +11,13 @@ import {
   pageRoutingDefault,
 } from "../../domain/entities/PageRouting";
 import IRegistrationGateway from "../../domain/IRegistrationGateway";
-import RegistrationCoordinator from "./Coordinator";
-import registrationsRouting from "./Routing";
+import registrationsRouting, { NEXT2_URL } from "./Routing";
 
 class RegistrationService {
   registrationGateway: IRegistrationGateway;
-  registrationCoordinator: RegistrationCoordinator;
 
-  constructor(
-    registrationGateway: IRegistrationGateway,
-    registrationCoordinator: RegistrationCoordinator
-  ) {
+  constructor(registrationGateway: IRegistrationGateway) {
     this.registrationGateway = registrationGateway;
-    this.registrationCoordinator = registrationCoordinator;
   }
 
   async getSubmissionById(id: string): Promise<LimitedPartnership> {
@@ -45,13 +43,26 @@ class RegistrationService {
       const limitedPartnerShip =
         await this.registrationGateway.getSubmissionById(submissionId);
 
-      const registrationRouting = this.registrationCoordinator.execute(
-        registrationType,
-        limitedPartnerShip
-      );
+      const registrationRouting = this.getRegistrationRouting(registrationType);
+
+      if (
+        limitedPartnerShip.data?.name_ending !==
+        NameEndingType.LIMITED_PARTNERSHIP
+      ) {
+        return registrationRouting
+          ? {
+              ...registrationRouting,
+              nextUrl: NEXT2_URL,
+              data: { submissionId, transactionId },
+            }
+          : pageRoutingDefault;
+      }
 
       return registrationRouting
-        ? { ...registrationRouting, data: { submissionId, transactionId } }
+        ? {
+            ...registrationRouting,
+            data: { submissionId, transactionId },
+          }
         : pageRoutingDefault;
     } catch (errors: any) {
       const registrationRouting = this.getRegistrationRouting(registrationType);

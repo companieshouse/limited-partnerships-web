@@ -1,6 +1,5 @@
 import { NameEndingType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-import RegistrationCoordinator from "../../../application/registration/Coordinator";
 import { registrationRoutingName } from "../../../application/registration/Routing";
 import RegistrationService from "../../../application/registration/Service";
 import CustomError from "../../../domain/entities/CustomError";
@@ -10,15 +9,12 @@ import RegistrationInMemoryGateway from "../../../infrastructure/gateway/Registr
 
 describe("Create transaction and the first submission", () => {
   let registrationGateway: RegistrationInMemoryGateway;
-  let registrationCoordinator: RegistrationCoordinator;
   let registrationService: RegistrationService;
 
   beforeAll(() => {
     registrationGateway = new RegistrationInMemoryGateway();
-    registrationCoordinator = new RegistrationCoordinator();
     registrationService = new RegistrationService(
-      registrationGateway as unknown as IRegistrationGateway,
-      registrationCoordinator
+      registrationGateway as unknown as IRegistrationGateway
     );
   });
 
