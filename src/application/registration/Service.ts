@@ -3,7 +3,6 @@ import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/l
 import CustomError from "../../domain/entities/CustomError";
 import PageRegistrationType from "../../presentation/controller/registration/PageType";
 import IRegistrationGateway from "../../domain/IRegistrationGateway";
-import TransactionLimitedPartnership from "domain/entities/TransactionLimitedPartnership";
 
 class RegistrationService {
   registrationGateway: IRegistrationGateway;
@@ -20,7 +19,6 @@ class RegistrationService {
     registrationType: PageRegistrationType,
     data: Record<string, any>
   ): Promise<{
-    limitedPartnership: TransactionLimitedPartnership;
     submissionId: string;
     transactionId: string;
     errors?: CustomError[];
@@ -36,13 +34,9 @@ class RegistrationService {
         data
       );
 
-      const limitedPartnership =
-        await this.registrationGateway.getSubmissionById(submissionId);
-
-      return { limitedPartnership, submissionId, transactionId };
+      return { submissionId, transactionId };
     } catch (errors: any) {
       return {
-        limitedPartnership: {},
         submissionId: "",
         transactionId: "",
         errors,

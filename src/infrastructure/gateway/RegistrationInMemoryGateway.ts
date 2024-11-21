@@ -76,11 +76,7 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
       throw this.errors;
     }
 
-    const limitedPartnership = this.buildLimitedPartnership(
-      pageType,
-      data,
-      transactionId
-    );
+    const limitedPartnership = this.buildLimitedPartnership(pageType, data);
 
     this.limitedPartnerships.push(limitedPartnership);
 
@@ -93,8 +89,7 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
 
   private buildLimitedPartnership(
     pageType: PageRegistrationType,
-    data: Record<string, any>,
-    transactionId: string
+    data: Record<string, any>
   ): TransactionLimitedPartnership {
     const limitedPartnershipBuilder = new LimitedPartnershipGatewayBuilder({
       _id: this.submissionId,

@@ -30,7 +30,6 @@ describe("Create transaction and the first submission", () => {
         appDevDependencies.registrationGateway.limitedPartnerships.length
       ).toEqual(1);
       expect(result).toEqual({
-        limitedPartnership,
         transactionId: appDevDependencies.registrationGateway.transactionId,
         submissionId: appDevDependencies.registrationGateway.submissionId,
       });
@@ -63,7 +62,6 @@ describe("Create transaction and the first submission", () => {
         appDevDependencies.registrationGateway.limitedPartnerships.length
       ).toEqual(0);
       expect(result).toEqual({
-        limitedPartnership: {},
         transactionId: "",
         submissionId: "",
         errors: [partnershipNameError, nameEndingError],
