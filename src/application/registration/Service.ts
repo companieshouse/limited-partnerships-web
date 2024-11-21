@@ -3,6 +3,7 @@ import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/l
 import CustomError from "../../domain/entities/CustomError";
 import PageRegistrationType from "../../presentation/controller/registration/PageType";
 import IRegistrationGateway from "../../domain/IRegistrationGateway";
+import { logger } from "../../utils";
 
 class RegistrationService {
   registrationGateway: IRegistrationGateway;
@@ -36,6 +37,10 @@ class RegistrationService {
 
       return { submissionId, transactionId };
     } catch (errors: any) {
+      logger.error(
+        `Error creating transaction or submission: ${JSON.stringify(errors)}`
+      );
+
       return {
         submissionId: "",
         transactionId: "",
