@@ -1,8 +1,8 @@
-import { NameEndingType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import RegistrationService from "../../../application/registration/Service";
 import IRegistrationGateway from "../../../domain/IRegistrationGateway";
 import RegistrationInMemoryGateway from "../../../infrastructure/gateway/RegistrationInMemoryGateway";
 import CustomError from "../../../domain/entities/CustomError";
+import LimitedPartnershipBuilder from "../builder/LimitedPartnershipBuilder";
 
 describe("Get Submission", () => {
   let registrationGateway: RegistrationInMemoryGateway;
@@ -22,16 +22,20 @@ describe("Get Submission", () => {
 
   describe("Get submission by id", () => {
     it("should return the submission", async () => {
+      const limitedPartnership = new LimitedPartnershipBuilder().build();
+
       registrationGateway.feedLimitedPartnerships([limitedPartnership]);
 
       const result = await registrationService.getSubmissionById(
-        limitedPartnership["_id"]
+        limitedPartnership["_id"] as string
       );
 
       expect(result).toEqual(limitedPartnership);
     });
 
     it("should return the submission", async () => {
+      const limitedPartnership = new LimitedPartnershipBuilder().build();
+
       registrationGateway.feedLimitedPartnerships([limitedPartnership]);
 
       await registrationService.getSubmissionById("wrong-id").catch((error) => {
@@ -42,16 +46,3 @@ describe("Get Submission", () => {
     });
   });
 });
-
-const limitedPartnership = {
-  _id: "123456",
-  data: {
-    partnership_name: "partnership_name test",
-    name_ending: NameEndingType.LIMITED_PARTNERSHIP,
-  },
-  links: [
-    {
-      self: `/limited-partnership/transaction/098765/submission/123456/name`,
-    },
-  ],
-};

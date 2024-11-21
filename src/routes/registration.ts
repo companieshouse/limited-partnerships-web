@@ -9,7 +9,7 @@ import {
   NAME_URL,
   NEXT2_URL,
   NEXT_URL,
-} from "../application/registration/Routing";
+} from "../presentation/controller/registration/Routing";
 
 export const registrationEndpoints = (
   router: Router,

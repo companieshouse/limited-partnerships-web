@@ -74,6 +74,7 @@ export default [...compat.extends(
 
       outerIIFEBody: 2,
       SwitchCase: 2,
+      "offsetTernaryExpressions": true
     }],
 
     "key-spacing": ["error", {

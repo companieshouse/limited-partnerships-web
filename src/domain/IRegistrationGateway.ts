@@ -1,6 +1,6 @@
 import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-import PageRegistrationType from "../application/registration/PageRegistrationType";
+import PageRegistrationType from "../presentation/controller/registration/PageRegistrationType";
 
 interface IRegistrationGateway {
   getSubmissionById(id: string): Promise<LimitedPartnership>;

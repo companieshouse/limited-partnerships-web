@@ -1,10 +1,10 @@
-import { PageRouting, PagesRouting } from "../../domain/entities/PageRouting";
+import { PageRouting, PagesRouting } from "../PageRouting";
 import {
   BASE_URL,
   START_URL,
   SUBMISSION_ID,
   TRANSACTION_ID,
-} from "../../config/constants";
+} from "../../../config/constants";
 import PageRegistrationType from "./PageRegistrationType";
 
 export const NAME_TEMPLATE = PageRegistrationType.name;

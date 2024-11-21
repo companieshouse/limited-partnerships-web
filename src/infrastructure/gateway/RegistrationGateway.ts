@@ -2,7 +2,7 @@
 
 import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-import PageRegistrationType from "application/registration/PageRegistrationType";
+import PageRegistrationType from "presentation/controller/registration/PageRegistrationType";
 import IRegistrationGateway from "../../domain/IRegistrationGateway";
 
 class RegistrationGateway implements IRegistrationGateway {

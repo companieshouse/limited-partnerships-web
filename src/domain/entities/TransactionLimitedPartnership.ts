@@ -4,7 +4,6 @@ type TransactionLimitedPartnership = LimitedPartnership & {
   _id?: string;
   created_at?: Date;
   updated_at?: Date;
-  links?: { self: string }[];
 };
 
 export default TransactionLimitedPartnership;

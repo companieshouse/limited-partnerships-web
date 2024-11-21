@@ -6,7 +6,7 @@ import {
   NameEndingType,
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-import PageRegistrationType from "../../application/registration/PageRegistrationType";
+import PageRegistrationType from "../../presentation/controller/registration/PageRegistrationType";
 import IRegistrationGateway from "../../domain/IRegistrationGateway";
 import CustomError from "../../domain/entities/CustomError";
 import TransactionLimitedPartnership from "../../domain/entities/TransactionLimitedPartnership";
@@ -98,11 +98,6 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
   ): TransactionLimitedPartnership {
     const limitedPartnershipBuilder = new LimitedPartnershipBuilder({
       _id: this.submissionId,
-      links: [
-        {
-          self: `/limited-partnership/transaction/${transactionId}/submission/${this.submissionId}/name`,
-        },
-      ],
     });
 
     limitedPartnershipBuilder.withData(pageType, data);

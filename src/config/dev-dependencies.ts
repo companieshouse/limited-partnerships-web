@@ -1,6 +1,6 @@
 import RegistrationService from "../application/registration/Service";
 import RegistrationInMemoryGateway from "../infrastructure/gateway/RegistrationInMemoryGateway";
-import RegistrationController from "../presentation/controller/RegistrationController";
+import RegistrationController from "../presentation/controller/registration/RegistrationController";
 
 const registrationGateway: RegistrationInMemoryGateway =
   new RegistrationInMemoryGateway();

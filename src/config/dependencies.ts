@@ -1,6 +1,6 @@
 import RegistrationService from "../application/registration/Service";
 import RegistrationGateway from "../infrastructure/gateway/RegistrationGateway";
-import RegistrationController from "../presentation/controller/RegistrationController";
+import RegistrationController from "../presentation/controller/registration/RegistrationController";
 
 const registrationGateway: RegistrationGateway = new RegistrationGateway();
 const registrationService: RegistrationService = new RegistrationService(

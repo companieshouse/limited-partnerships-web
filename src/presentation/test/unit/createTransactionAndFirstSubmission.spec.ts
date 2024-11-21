@@ -1,11 +1,11 @@
 import { NameEndingType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-import { registrationRoutingName } from "../../../application/registration/Routing";
 import RegistrationService from "../../../application/registration/Service";
 import CustomError from "../../../domain/entities/CustomError";
-import PageRegistrationType from "../../../application/registration/PageRegistrationType";
+import PageRegistrationType from "../../controller/registration/PageRegistrationType";
 import IRegistrationGateway from "../../../domain/IRegistrationGateway";
 import RegistrationInMemoryGateway from "../../../infrastructure/gateway/RegistrationInMemoryGateway";
+import LimitedPartnershipBuilder from "../builder/LimitedPartnershipBuilder";
 
 describe("Create transaction and the first submission", () => {
   let registrationGateway: RegistrationInMemoryGateway;
@@ -23,37 +23,27 @@ describe("Create transaction and the first submission", () => {
     registrationGateway.feedErrors([]);
   });
 
-  describe("Get registrationRoutingName", () => {
-    it("should return the page corresponcting to the transaction", () => {
-      const result = registrationService.getRegistrationRouting(
-        PageRegistrationType.name
-      );
-
-      expect(result).toEqual(registrationRoutingName);
-    });
-  });
-
   describe("Create LimitedPartnerShip", () => {
     it("should create a new LimitedPartnership", async () => {
+      const limitedPartnership = new LimitedPartnershipBuilder()
+        .withId(registrationGateway.submissionId)
+        .build();
+
       const result =
         await registrationService.createTransactionAndFirstSubmission(
           PageRegistrationType.name,
           {
-            partnership_name: "Test Limited Partnership",
-            name_ending: NameEndingType.LIMITED_PARTNERSHIP,
+            partnership_name: limitedPartnership.data?.partnership_name,
+            name_ending: limitedPartnership.data?.name_ending,
           }
         );
 
       expect(registrationGateway.limitedPartnerships.length).toEqual(1);
-      expect(result).toEqual(
-        expect.objectContaining({
-          ...registrationRoutingName,
-          data: {
-            transactionId: registrationGateway.transactionId,
-            submissionId: registrationGateway.submissionId,
-          },
-        })
-      );
+      expect(result).toEqual({
+        limitedPartnership,
+        transactionId: registrationGateway.transactionId,
+        submissionId: registrationGateway.submissionId,
+      });
     });
 
     it("should return an error", async () => {
@@ -77,12 +67,12 @@ describe("Create transaction and the first submission", () => {
         );
 
       expect(registrationGateway.limitedPartnerships.length).toEqual(0);
-      expect(result).toEqual(
-        expect.objectContaining({
-          ...registrationRoutingName,
-          errors: [partnershipNameError, nameEndingError],
-        })
-      );
+      expect(result).toEqual({
+        limitedPartnership: {},
+        transactionId: "",
+        submissionId: "",
+        errors: [partnershipNameError, nameEndingError],
+      });
     });
   });
 });

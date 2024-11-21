@@ -1,5 +1,3 @@
-import { PageRouting, pageRoutingDefault } from "./PageRouting";
-
 class CustomError {
   private field: string;
   private message: string;
@@ -19,17 +17,6 @@ class CustomError {
 
   static errorsToCustomErrors(errors: any) {
     return !Array.isArray(errors) ? [errors] : errors;
-  }
-
-  static routingWithErrors(
-    pageRouting: PageRouting | undefined,
-    errors: any
-  ): PageRouting {
-    const errorsMap = CustomError.errorsToCustomErrors(errors);
-
-    return pageRouting
-      ? { ...pageRouting, errors: errorsMap }
-      : { ...pageRoutingDefault, errors: errorsMap };
   }
 }
 

@@ -1,4 +1,4 @@
-import RegistrationController from "../presentation/controller/RegistrationController";
+import RegistrationController from "../presentation/controller/registration/RegistrationController";
 
 export type IDependencies = {
   registrationController: RegistrationController;
