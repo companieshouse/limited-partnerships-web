@@ -5,7 +5,7 @@ import PageRegistrationType from "../presentation/controller/registration/PageRe
 interface IRegistrationGateway {
   getSubmissionById(id: string): Promise<LimitedPartnership>;
   createTransaction(pageType: PageRegistrationType): Promise<string>;
-  createTransactionAndFirstSubmission(
+  createSubmission(
     pageType: PageRegistrationType,
     transactionId: string,
     data: Record<string, any>

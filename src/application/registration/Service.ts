@@ -30,12 +30,11 @@ class RegistrationService {
         registrationType
       );
 
-      const submissionId =
-        await this.registrationGateway.createTransactionAndFirstSubmission(
-          registrationType,
-          transactionId,
-          data
-        );
+      const submissionId = await this.registrationGateway.createSubmission(
+        registrationType,
+        transactionId,
+        data
+      );
 
       const limitedPartnership =
         await this.registrationGateway.getSubmissionById(submissionId);

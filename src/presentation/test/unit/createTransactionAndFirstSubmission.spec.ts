@@ -1,36 +1,24 @@
 import { NameEndingType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-import RegistrationService from "../../../application/registration/Service";
 import CustomError from "../../../domain/entities/CustomError";
 import PageRegistrationType from "../../controller/registration/PageRegistrationType";
-import IRegistrationGateway from "../../../domain/IRegistrationGateway";
-import RegistrationInMemoryGateway from "../../../infrastructure/gateway/RegistrationInMemoryGateway";
 import LimitedPartnershipBuilder from "../builder/LimitedPartnershipBuilder";
+import { appDevDependencies } from "../../../config/dev-dependencies";
 
 describe("Create transaction and the first submission", () => {
-  let registrationGateway: RegistrationInMemoryGateway;
-  let registrationService: RegistrationService;
-
-  beforeAll(() => {
-    registrationGateway = new RegistrationInMemoryGateway();
-    registrationService = new RegistrationService(
-      registrationGateway as unknown as IRegistrationGateway
-    );
-  });
-
   beforeEach(() => {
-    registrationGateway.feedLimitedPartnerships([]);
-    registrationGateway.feedErrors([]);
+    appDevDependencies.registrationGateway.feedLimitedPartnerships([]);
+    appDevDependencies.registrationGateway.feedErrors([]);
   });
 
   describe("Create LimitedPartnerShip", () => {
     it("should create a new LimitedPartnership", async () => {
       const limitedPartnership = new LimitedPartnershipBuilder()
-        .withId(registrationGateway.submissionId)
+        .withId(appDevDependencies.registrationGateway.submissionId)
         .build();
 
       const result =
-        await registrationService.createTransactionAndFirstSubmission(
+        await appDevDependencies.registrationService.createTransactionAndFirstSubmission(
           PageRegistrationType.name,
           {
             partnership_name: limitedPartnership.data?.partnership_name,
@@ -38,11 +26,13 @@ describe("Create transaction and the first submission", () => {
           }
         );
 
-      expect(registrationGateway.limitedPartnerships.length).toEqual(1);
+      expect(
+        appDevDependencies.registrationGateway.limitedPartnerships.length
+      ).toEqual(1);
       expect(result).toEqual({
         limitedPartnership,
-        transactionId: registrationGateway.transactionId,
-        submissionId: registrationGateway.submissionId,
+        transactionId: appDevDependencies.registrationGateway.transactionId,
+        submissionId: appDevDependencies.registrationGateway.submissionId,
       });
     });
 
@@ -55,10 +45,13 @@ describe("Create transaction and the first submission", () => {
         "name_ending",
         `name_ending must be one of ${Object.keys(NameEndingType).join(", ")}`
       );
-      registrationGateway.feedErrors([partnershipNameError, nameEndingError]);
+      appDevDependencies.registrationGateway.feedErrors([
+        partnershipNameError,
+        nameEndingError,
+      ]);
 
       const result =
-        await registrationService.createTransactionAndFirstSubmission(
+        await appDevDependencies.registrationService.createTransactionAndFirstSubmission(
           PageRegistrationType.name,
           {
             partnership_name: "Test Limited Partnership",
@@ -66,7 +59,9 @@ describe("Create transaction and the first submission", () => {
           }
         );
 
-      expect(registrationGateway.limitedPartnerships.length).toEqual(0);
+      expect(
+        appDevDependencies.registrationGateway.limitedPartnerships.length
+      ).toEqual(0);
       expect(result).toEqual({
         limitedPartnership: {},
         transactionId: "",

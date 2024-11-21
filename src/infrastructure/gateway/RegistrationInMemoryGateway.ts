@@ -49,7 +49,7 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
     return "";
   }
 
-  async createTransactionAndFirstSubmission(
+  async createSubmission(
     pageType: PageRegistrationType,
     transactionId: string,
     data: Record<string, any>
