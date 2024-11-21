@@ -7,7 +7,6 @@ import { IDependencies } from "../config/IDependencies";
 
 import {
   NAME_URL,
-  NEXT2_URL,
   NEXT_URL,
 } from "../presentation/controller/registration/Routing";
 
@@ -34,13 +33,6 @@ export const registrationEndpoints = (
 
   router.get(
     NEXT_URL,
-    authentication,
-    dependencies.registrationController.getPageRouting()
-  );
-
-  // Only for demo - to be removed
-  router.get(
-    NEXT2_URL,
     authentication,
     dependencies.registrationController.getPageRouting()
   );

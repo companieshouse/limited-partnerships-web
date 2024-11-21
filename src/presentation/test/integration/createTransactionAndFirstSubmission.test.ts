@@ -40,26 +40,6 @@ describe("Create transaction and the first submission", () => {
     expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
   });
 
-  // Only for demo - to be removed
-  it("should create a transaction and the first submission - redirect to next 2", async () => {
-    const url = appDevDependencies.registrationController.insertIdsInUrl(
-      NAME_URL,
-      appDevDependencies.registrationGateway.transactionId,
-      appDevDependencies.registrationGateway.submissionId
-    );
-
-    const res = await request(app).post(url).send({
-      pageType: registrationRoutingName.pageType,
-      partnership_name: "Test Limited Partnership",
-      name_ending: NameEndingType.LP,
-    });
-
-    const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.registrationGateway.transactionId}/submission/${appDevDependencies.registrationGateway.submissionId}/next-2`;
-
-    expect(res.status).toBe(302);
-    expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
-  });
-
   it("should return an error", async () => {
     const url = appDevDependencies.registrationController.insertIdsInUrl(
       NAME_URL,

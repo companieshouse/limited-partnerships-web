@@ -1,11 +1,8 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
 
 import RegistrationService from "../../../application/registration/Service";
-import registrationsRouting, { NEXT2_URL } from "./Routing";
-import { NameEndingType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import registrationsRouting from "./Routing";
 import AbstractController from "../AbstractController";
-import TransactionLimitedPartnership from "domain/entities/TransactionLimitedPartnership";
-import { PageRouting } from "../PageRouting";
 
 class Controller extends AbstractController {
   private registrationService: RegistrationService;
@@ -49,7 +46,7 @@ class Controller extends AbstractController {
             request.body
           );
 
-        let registrationRouting = super.getRouting(
+        const registrationRouting = super.getRouting(
           registrationsRouting,
           pageType
         );
@@ -60,11 +57,6 @@ class Controller extends AbstractController {
           });
           return;
         }
-
-        registrationRouting = this.updateNextUrl(
-          result?.limitedPartnership,
-          registrationRouting
-        );
 
         const url = super.insertIdsInUrl(
           registrationRouting.nextUrl,
@@ -77,23 +69,6 @@ class Controller extends AbstractController {
         next(error);
       }
     };
-  }
-
-  private updateNextUrl(
-    limitedPartnership: TransactionLimitedPartnership,
-    registrationRouting: PageRouting
-  ) {
-    if (
-      limitedPartnership?.data?.name_ending !==
-      NameEndingType.LIMITED_PARTNERSHIP
-    ) {
-      registrationRouting = {
-        ...registrationRouting,
-        nextUrl: NEXT2_URL,
-      };
-    }
-
-    return registrationRouting;
   }
 }
 
