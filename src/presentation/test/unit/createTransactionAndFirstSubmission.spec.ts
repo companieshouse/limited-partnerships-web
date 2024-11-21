@@ -1,7 +1,7 @@
 import { NameEndingType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import CustomError from "../../../domain/entities/CustomError";
-import PageRegistrationType from "../../controller/registration/PageType";
+import RegistrationPageType from "../../controller/registration/PageType";
 import LimitedPartnershipBuilder from "../builder/LimitedPartnershipBuilder";
 import { appDevDependencies } from "../../../config/dev-dependencies";
 
@@ -19,7 +19,7 @@ describe("Create transaction and the first submission", () => {
 
       const result =
         await appDevDependencies.registrationService.createTransactionAndFirstSubmission(
-          PageRegistrationType.name,
+          RegistrationPageType.name,
           {
             partnership_name: limitedPartnership.data?.partnership_name,
             name_ending: limitedPartnership.data?.name_ending,
@@ -51,7 +51,7 @@ describe("Create transaction and the first submission", () => {
 
       const result =
         await appDevDependencies.registrationService.createTransactionAndFirstSubmission(
-          PageRegistrationType.name,
+          RegistrationPageType.name,
           {
             partnership_name: "Test Limited Partnership",
             name_ending: NameEndingType.LIMITED_PARTNERSHIP,

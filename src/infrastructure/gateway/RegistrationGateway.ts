@@ -2,7 +2,7 @@
 
 import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-import PageRegistrationType from "presentation/controller/registration/PageType";
+import RegistrationPageType from "presentation/controller/registration/PageType";
 import IRegistrationGateway from "../../domain/IRegistrationGateway";
 
 class RegistrationGateway implements IRegistrationGateway {
@@ -10,12 +10,14 @@ class RegistrationGateway implements IRegistrationGateway {
     throw new Error("Method not implemented.");
   }
 
-  async createTransaction(pageType: PageRegistrationType): Promise<string> {
+  async createTransaction(
+    registrationPageType: RegistrationPageType
+  ): Promise<string> {
     throw new Error("Method not implemented.");
   }
 
   async createSubmission(
-    pageType: PageRegistrationType,
+    registrationPageType: RegistrationPageType,
     transactionId: string,
     data: Record<string, any>
   ): Promise<string> {

@@ -6,7 +6,7 @@ import {
   NameEndingType,
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-import PageRegistrationType from "../../presentation/controller/registration/PageType";
+import RegistrationPageType from "../../presentation/controller/registration/PageType";
 import IRegistrationGateway from "../../domain/IRegistrationGateway";
 import CustomError from "../../domain/entities/CustomError";
 import TransactionLimitedPartnership from "../../domain/entities/TransactionLimitedPartnership";
@@ -41,8 +41,10 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
     return new LimitedPartnershipGatewayBuilder(limitedPartnerShip).build();
   }
 
-  async createTransaction(pageType: PageRegistrationType): Promise<string> {
-    if (pageType === PageRegistrationType.name) {
+  async createTransaction(
+    registrationPageType: RegistrationPageType
+  ): Promise<string> {
+    if (registrationPageType === RegistrationPageType.name) {
       return this.transactionId;
     }
 
@@ -50,7 +52,7 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
   }
 
   async createSubmission(
-    pageType: PageRegistrationType,
+    registrationPageType: RegistrationPageType,
     transactionId: string,
     data: Record<string, any>
   ): Promise<string> {
@@ -76,7 +78,10 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
       throw this.errors;
     }
 
-    const limitedPartnership = this.buildLimitedPartnership(pageType, data);
+    const limitedPartnership = this.buildLimitedPartnership(
+      registrationPageType,
+      data
+    );
 
     this.limitedPartnerships.push(limitedPartnership);
 
@@ -88,7 +93,7 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
   }
 
   private buildLimitedPartnership(
-    pageType: PageRegistrationType,
+    pageType: RegistrationPageType,
     data: Record<string, any>
   ): TransactionLimitedPartnership {
     const limitedPartnershipBuilder = new LimitedPartnershipGatewayBuilder({

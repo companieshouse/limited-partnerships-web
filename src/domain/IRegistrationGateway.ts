@@ -1,12 +1,14 @@
 import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-import PageRegistrationType from "../presentation/controller/registration/PageType";
+import RegistrationPageType from "../presentation/controller/registration/PageType";
 
 interface IRegistrationGateway {
   getSubmissionById(id: string): Promise<LimitedPartnership>;
-  createTransaction(pageType: PageRegistrationType): Promise<string>;
+  createTransaction(
+    registrationPageType: RegistrationPageType
+  ): Promise<string>;
   createSubmission(
-    pageType: PageRegistrationType,
+    registrationPageType: RegistrationPageType,
     transactionId: string,
     data: Record<string, any>
   ): Promise<string>;

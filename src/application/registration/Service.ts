@@ -1,7 +1,7 @@
 import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import CustomError from "../../domain/entities/CustomError";
-import PageRegistrationType from "../../presentation/controller/registration/PageType";
+import RegistrationPageType from "../../presentation/controller/registration/PageType";
 import IRegistrationGateway from "../../domain/IRegistrationGateway";
 import { logger } from "../../utils";
 
@@ -17,7 +17,7 @@ class RegistrationService {
   }
 
   async createTransactionAndFirstSubmission(
-    registrationType: PageRegistrationType,
+    registrationType: RegistrationPageType,
     data: Record<string, any>
   ): Promise<{
     submissionId: string;

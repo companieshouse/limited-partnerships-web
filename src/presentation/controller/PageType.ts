@@ -1,5 +1,5 @@
-import PageRegistrationType from "./registration/PageType";
+import RegistrationPageType from "./registration/PageType";
 
-type PageType = PageRegistrationType;
+type PageType = RegistrationPageType;
 
 export default PageType;

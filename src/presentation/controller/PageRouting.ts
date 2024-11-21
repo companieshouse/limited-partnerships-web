@@ -1,16 +1,16 @@
 import CustomError from "../../domain/entities/CustomError";
-import PageRegistrationType from "./registration/PageType";
+import PageType from "./registration/PageType";
 
 export type PageRouting = {
   previousUrl: string;
   currentUrl: string;
   nextUrl: string;
-  pageType: PageRegistrationType | PageDefault;
+  pageType: PageType | PageDefault;
   data?: Record<string, any>;
   errors?: CustomError[];
 };
 
-export type PagesRouting = Map<PageRegistrationType, PageRouting>;
+export type PagesRouting = Map<PageType, PageRouting>;
 
 enum PageDefault {
   default = "not-found",

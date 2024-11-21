@@ -1,7 +1,7 @@
 import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import TransactionLimitedPartnership from "../../domain/entities/TransactionLimitedPartnership";
-import PageRegistrationType from "../../presentation/controller/registration/PageType";
+import PageType from "../../presentation/controller/PageType";
 
 class LimitedPartnershipGatewayBuilder {
   created_at?: Date;
@@ -25,7 +25,7 @@ class LimitedPartnershipGatewayBuilder {
   }
 
   withData(
-    pageType: PageRegistrationType, // used to decide where to insert data
+    pageType: PageType, // used to decide where to insert data
     data: Record<string, any>
   ) {
     this.data = { ...this.data, ...data };

@@ -5,10 +5,10 @@ import {
   SUBMISSION_ID,
   TRANSACTION_ID,
 } from "../../../config/constants";
-import PageRegistrationType from "./PageType";
+import RegistrationPageType from "./PageType";
 
-export const NAME_TEMPLATE = PageRegistrationType.name;
-export const NEXT_TEMPLATE = PageRegistrationType.next;
+export const NAME_TEMPLATE = RegistrationPageType.name;
+export const NEXT_TEMPLATE = RegistrationPageType.next;
 
 export const NAME_URL = `${BASE_URL}/${NAME_TEMPLATE}`;
 
@@ -18,21 +18,21 @@ export const registrationRoutingStart = {
   previousUrl: "/",
   currentUrl: START_URL,
   nextUrl: NAME_URL,
-  pageType: PageRegistrationType.start,
+  pageType: RegistrationPageType.start,
 };
 
 export const registrationRoutingName = {
   previousUrl: START_URL,
   currentUrl: NAME_URL,
   nextUrl: NEXT_URL,
-  pageType: PageRegistrationType.name,
+  pageType: RegistrationPageType.name,
 };
 
 const registrationRoutingNext = {
   previousUrl: NAME_URL,
   currentUrl: NEXT_URL,
   nextUrl: "/",
-  pageType: PageRegistrationType.next,
+  pageType: RegistrationPageType.next,
 };
 
 const list = [
@@ -42,7 +42,7 @@ const list = [
 ];
 
 export const registrationsRouting: PagesRouting = new Map<
-  PageRegistrationType,
+  RegistrationPageType,
   PageRouting
 >();
 
