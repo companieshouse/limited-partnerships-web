@@ -6,11 +6,11 @@ import {
   NameEndingType,
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-import PageRegistrationType from "../../presentation/controller/registration/PageRegistrationType";
+import PageRegistrationType from "../../presentation/controller/registration/PageType";
 import IRegistrationGateway from "../../domain/IRegistrationGateway";
 import CustomError from "../../domain/entities/CustomError";
 import TransactionLimitedPartnership from "../../domain/entities/TransactionLimitedPartnership";
-import LimitedPartnershipBuilder from "./LimitedPartnershipBuilder";
+import LimitedPartnershipGatewayBuilder from "./LimitedPartnershipGatewayBuilder";
 
 class RegistrationInMemoryGateway implements IRegistrationGateway {
   transactionId = crypto.randomUUID().toString();
@@ -38,7 +38,7 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
       throw new CustomError("Limited partnership", `Not found: ${id}`);
     }
 
-    return new LimitedPartnershipBuilder(limitedPartnerShip).build();
+    return new LimitedPartnershipGatewayBuilder(limitedPartnerShip).build();
   }
 
   async createTransaction(pageType: PageRegistrationType): Promise<string> {
@@ -96,7 +96,7 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
     data: Record<string, any>,
     transactionId: string
   ): TransactionLimitedPartnership {
-    const limitedPartnershipBuilder = new LimitedPartnershipBuilder({
+    const limitedPartnershipBuilder = new LimitedPartnershipGatewayBuilder({
       _id: this.submissionId,
     });
 

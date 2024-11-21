@@ -5,7 +5,7 @@ import {
   SUBMISSION_ID,
   TRANSACTION_ID,
 } from "../../../config/constants";
-import PageRegistrationType from "./PageRegistrationType";
+import PageRegistrationType from "./PageType";
 
 export const NAME_TEMPLATE = PageRegistrationType.name;
 export const NEXT_TEMPLATE = PageRegistrationType.next;

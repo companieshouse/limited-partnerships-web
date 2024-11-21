@@ -1,7 +1,7 @@
 import { PageRouting, pageRoutingDefault, PagesRouting } from "./PageRouting";
 import PageType from "./PageType";
 
-abstract class Controller {
+abstract class AbstractController {
   protected getRouting(routing: PagesRouting, pageType: PageType) {
     const registrationRouting = routing.get(pageType);
 
@@ -62,4 +62,4 @@ abstract class Controller {
   }
 }
 
-export default Controller;
+export default AbstractController;

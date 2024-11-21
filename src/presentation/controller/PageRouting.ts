@@ -1,5 +1,5 @@
 import CustomError from "../../domain/entities/CustomError";
-import PageRegistrationType from "./registration/PageRegistrationType";
+import PageRegistrationType from "./registration/PageType";
 
 export type PageRouting = {
   previousUrl: string;
@@ -13,12 +13,12 @@ export type PageRouting = {
 export type PagesRouting = Map<PageRegistrationType, PageRouting>;
 
 enum PageDefault {
-  defualt = "default",
+  default = "not-found",
 }
 
 export const pageRoutingDefault = {
   previousUrl: "",
   currentUrl: "",
   nextUrl: "",
-  pageType: PageDefault.defualt,
+  pageType: PageDefault.default,
 };

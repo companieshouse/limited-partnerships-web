@@ -1,4 +1,4 @@
-enum PageRegistrationType {
+enum PageType {
   start = "start",
   name = "name",
   next = "next",
@@ -6,4 +6,4 @@ enum PageRegistrationType {
   "next-2" = "next-2",
 }
 
-export default PageRegistrationType;
+export default PageType;

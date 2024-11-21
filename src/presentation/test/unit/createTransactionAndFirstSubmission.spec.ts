@@ -1,7 +1,7 @@
 import { NameEndingType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import CustomError from "../../../domain/entities/CustomError";
-import PageRegistrationType from "../../controller/registration/PageRegistrationType";
+import PageRegistrationType from "../../controller/registration/PageType";
 import LimitedPartnershipBuilder from "../builder/LimitedPartnershipBuilder";
 import { appDevDependencies } from "../../../config/dev-dependencies";
 

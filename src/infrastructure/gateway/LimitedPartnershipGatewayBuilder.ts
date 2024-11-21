@@ -1,9 +1,9 @@
 import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import TransactionLimitedPartnership from "../../domain/entities/TransactionLimitedPartnership";
-import PageRegistrationType from "../../presentation/controller/registration/PageRegistrationType";
+import PageRegistrationType from "../../presentation/controller/registration/PageType";
 
-class LimitedPartnershipBuilder {
+class LimitedPartnershipGatewayBuilder {
   created_at?: Date;
   updated_at?: Date;
   _id?: string;
@@ -27,7 +27,7 @@ class LimitedPartnershipBuilder {
   withData(
     pageType: PageRegistrationType, // used to decide where to insert data
     data: Record<string, any>
-  ): LimitedPartnershipBuilder {
+  ) {
     this.data = { ...this.data, ...data };
     return this;
   }
@@ -42,4 +42,4 @@ class LimitedPartnershipBuilder {
   }
 }
 
-export default LimitedPartnershipBuilder;
+export default LimitedPartnershipGatewayBuilder;

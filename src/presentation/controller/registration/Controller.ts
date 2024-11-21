@@ -1,14 +1,14 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
 
 import RegistrationService from "../../../application/registration/Service";
-import PageRegistrationType from "./PageRegistrationType";
+import PageType from "./PageType";
 import registrationsRouting, { NEXT2_URL } from "./Routing";
 import { NameEndingType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-import Controller from "../Controller";
+import AbstractController from "../AbstractController";
 import TransactionLimitedPartnership from "domain/entities/TransactionLimitedPartnership";
 import { PageRouting } from "../PageRouting";
 
-class RegistrationController extends Controller {
+class Controller extends AbstractController {
   private registrationService: RegistrationService;
 
   constructor(registrationService: RegistrationService) {
@@ -23,7 +23,7 @@ class RegistrationController extends Controller {
 
         const result = super.getRouting(
           registrationsRouting,
-          pageType as PageRegistrationType
+          pageType as PageType
         );
 
         const pageRouting = super.inserIdsInAllUrl(
@@ -100,4 +100,4 @@ class RegistrationController extends Controller {
   }
 }
 
-export default RegistrationController;
+export default Controller;

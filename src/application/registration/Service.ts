@@ -1,7 +1,7 @@
 import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import CustomError from "../../domain/entities/CustomError";
-import PageRegistrationType from "../../presentation/controller/registration/PageRegistrationType";
+import PageRegistrationType from "../../presentation/controller/registration/PageType";
 import IRegistrationGateway from "../../domain/IRegistrationGateway";
 import TransactionLimitedPartnership from "domain/entities/TransactionLimitedPartnership";
 

@@ -1,4 +1,4 @@
-import PageRegistrationType from "./registration/PageRegistrationType";
+import PageRegistrationType from "./registration/PageType";
 
 type PageType = PageRegistrationType;
 
