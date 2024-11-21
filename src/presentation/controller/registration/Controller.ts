@@ -1,7 +1,6 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
 
 import RegistrationService from "../../../application/registration/Service";
-import PageType from "./PageType";
 import registrationsRouting, { NEXT2_URL } from "./Routing";
 import { NameEndingType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import AbstractController from "../AbstractController";
@@ -20,16 +19,14 @@ class Controller extends AbstractController {
     return (request: Request, response: Response, next: NextFunction) => {
       try {
         const pageType = super.pageType(request.path);
+        const transactionId = request.params.transactionId;
+        const submissionId = request.params.submissionId;
 
-        const result = super.getRouting(
+        const pageRouting = super.getRouting(
           registrationsRouting,
-          pageType as PageType
-        );
-
-        const pageRouting = super.inserIdsInAllUrl(
-          result,
-          request.params.transactionId,
-          request.params.submissionId
+          pageType,
+          transactionId,
+          submissionId
         );
 
         response.render(super.templateName(pageRouting.currentUrl), {

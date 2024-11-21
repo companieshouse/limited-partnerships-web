@@ -2,12 +2,25 @@ import { PageRouting, pageRoutingDefault, PagesRouting } from "./PageRouting";
 import PageType from "./PageType";
 
 abstract class AbstractController {
-  protected getRouting(routing: PagesRouting, pageType: PageType) {
-    const registrationRouting = routing.get(pageType);
+  protected getRouting(
+    routing: PagesRouting,
+    pageType: PageType,
+    transactionId = "",
+    submissionId = ""
+  ) {
+    let pageRouting = routing.get(pageType);
 
-    return registrationRouting
-      ? { ...registrationRouting }
-      : pageRoutingDefault;
+    if (!pageRouting) {
+      return pageRoutingDefault;
+    }
+
+    pageRouting = this.insertIdsInAllUrl(
+      pageRouting,
+      transactionId,
+      submissionId
+    );
+
+    return pageRouting;
   }
 
   protected pageType(path: string) {
@@ -22,21 +35,20 @@ abstract class AbstractController {
   }
 
   insertIdsInUrl(url: string, transactionId = "", submissionId = ""): string {
-    return this.inserSubmissionId(
-      this.inserTransactionId(url, transactionId),
-      submissionId
-    );
+    url = this.insertSubmissionId(url, submissionId);
+    url = this.insertTransactionId(url, transactionId);
+    return url;
   }
 
-  protected inserTransactionId(url: string, transactionId: string): string {
+  protected insertTransactionId(url: string, transactionId: string): string {
     return transactionId ? url.replace(":transactionId", transactionId) : url;
   }
 
-  protected inserSubmissionId(url: string, submissionId: string): string {
+  protected insertSubmissionId(url: string, submissionId: string): string {
     return submissionId ? url.replace(":submissionId", submissionId) : url;
   }
 
-  protected inserIdsInAllUrl(
+  protected insertIdsInAllUrl(
     pageRouting: PageRouting,
     transactionId: string,
     submissionId: string
