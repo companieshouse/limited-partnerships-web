@@ -1,11 +1,13 @@
 import { PageRouting, PagesRouting } from "../PageRouting";
 import {
   BASE_URL,
-  START_URL,
   SUBMISSION_ID,
   TRANSACTION_ID,
 } from "../../../config/constants";
+import { START_URL } from "../global/Routing";
+import GlobalPageType from "../global/PageType";
 import RegistrationPageType from "./PageType";
+import PageType from "../PageType";
 
 export const NAME_TEMPLATE = RegistrationPageType.name;
 export const NEXT_TEMPLATE = RegistrationPageType.next;
@@ -18,7 +20,7 @@ export const registrationRoutingStart = {
   previousUrl: "/",
   currentUrl: START_URL,
   nextUrl: NAME_URL,
-  pageType: RegistrationPageType.start,
+  pageType: GlobalPageType.start,
 };
 
 export const registrationRoutingName = {
@@ -42,7 +44,7 @@ const list = [
 ];
 
 export const registrationsRouting: PagesRouting = new Map<
-  RegistrationPageType,
+  PageType,
   PageRouting
 >();
 

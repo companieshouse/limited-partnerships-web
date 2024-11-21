@@ -1,7 +1,8 @@
 import request from "supertest";
 
-import app from "./app";
-import { appDevDependencies, START_URL } from "../../../config";
+import app from "../app";
+import { appDevDependencies } from "../../../../config";
+import { START_URL } from "../../../controller/global/Routing";
 
 describe("Create Transaction", () => {
   beforeAll(() => {

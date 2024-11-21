@@ -1,12 +1,12 @@
 import request from "supertest";
 import { NameEndingType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-import app from "./app";
-import { appDevDependencies } from "../../../config";
+import app from "../app";
+import { appDevDependencies } from "../../../../config";
 import {
   NAME_URL,
   registrationRoutingName,
-} from "../../controller/registration/Routing";
+} from "../../../controller/registration/Routing";
 
 describe("Create transaction and the first submission", () => {
   beforeAll(() => {

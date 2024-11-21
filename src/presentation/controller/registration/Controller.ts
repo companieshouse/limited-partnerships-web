@@ -4,7 +4,7 @@ import RegistrationService from "../../../application/registration/Service";
 import registrationsRouting from "./Routing";
 import AbstractController from "../AbstractController";
 
-class Controller extends AbstractController {
+class RegistrationController extends AbstractController {
   private registrationService: RegistrationService;
 
   constructor(registrationService: RegistrationService) {
@@ -72,4 +72,4 @@ class Controller extends AbstractController {
   }
 }
 
-export default Controller;
+export default RegistrationController;

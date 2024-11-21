@@ -1,5 +1,4 @@
 enum PageType {
-  start = "start",
   name = "name",
   next = "next",
 }

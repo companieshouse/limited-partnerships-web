@@ -1,6 +1,6 @@
-import CustomError from "../../../domain/entities/CustomError";
-import LimitedPartnershipBuilder from "../builder/LimitedPartnershipBuilder";
-import { appDevDependencies } from "../../../config/dev-dependencies";
+import CustomError from "../../../../domain/entities/CustomError";
+import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
+import { appDevDependencies } from "../../../../config/dev-dependencies";
 
 describe("Get Submission", () => {
   beforeEach(() => {

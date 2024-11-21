@@ -32,14 +32,11 @@ export const isLocalesEnabled = () =>
 export const SERVICE_NAME = "Limited Partnerships";
 
 // Templates
-export const START_TEMPLATE = "start";
 export const ERROR_TEMPLATE = "error-page";
 export const NOT_FOUND_TEMPLATE = "page-not-found";
 
 // Routing Paths
 export const BASE_URL = "/limited-partnerships";
-export const START_URL = `${BASE_URL}/${START_TEMPLATE}`;
-export const HEALTHCHECK_URL = `${BASE_URL}/healthcheck`;
 
 export const TRANSACTION_ID = ":transactionId";
 export const SUBMISSION_ID = ":submissionId";

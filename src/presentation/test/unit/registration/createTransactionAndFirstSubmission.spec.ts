@@ -1,9 +1,9 @@
 import { NameEndingType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-import CustomError from "../../../domain/entities/CustomError";
-import RegistrationPageType from "../../controller/registration/PageType";
-import LimitedPartnershipBuilder from "../builder/LimitedPartnershipBuilder";
-import { appDevDependencies } from "../../../config/dev-dependencies";
+import CustomError from "../../../../domain/entities/CustomError";
+import RegistrationPageType from "../../../controller/registration/PageType";
+import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
+import { appDevDependencies } from "../../../../config/dev-dependencies";
 
 describe("Create transaction and the first submission", () => {
   beforeEach(() => {

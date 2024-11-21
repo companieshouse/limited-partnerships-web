@@ -1,6 +1,5 @@
 import { Router } from "express";
 
-import * as config from "../config";
 import { authentication } from "../middlewares";
 
 import { IDependencies } from "../config/IDependencies";
@@ -14,12 +13,6 @@ export const registrationEndpoints = (
   router: Router,
   dependencies: IDependencies
 ): void => {
-  router.get(
-    config.START_URL,
-    authentication,
-    dependencies.registrationController.getPageRouting()
-  );
-
   router.get(
     NAME_URL,
     authentication,

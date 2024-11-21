@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 
 import { logger, checkUserSignedIn, getLoggedInUserEmail } from "../utils";
-import { START_URL } from "../config/constants";
+import { START_URL } from "../presentation/controller/global/Routing";
 
 export const authentication = (
   req: Request,

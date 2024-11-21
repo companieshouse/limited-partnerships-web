@@ -1,5 +1,5 @@
 import CustomError from "../../domain/entities/CustomError";
-import PageType from "./registration/PageType";
+import PageType from "./PageType";
 
 export type PageRouting = {
   previousUrl: string;
