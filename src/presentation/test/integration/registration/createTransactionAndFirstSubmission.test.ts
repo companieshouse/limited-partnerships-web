@@ -2,7 +2,7 @@ import request from "supertest";
 import { NameEndingType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import app from "../app";
-import { appDevDependencies } from "../../../../config";
+import { appDevDependencies } from "../../../../config/dev-dependencies";
 import {
   NAME_URL,
   registrationRoutingName,
