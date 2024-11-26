@@ -13,36 +13,41 @@
       <div class="govuk-form-group">
         <h1 class="govuk-label-wrapper">
           <label class="govuk-label govuk-label--l" for="partnership_name">
-            What's the name of the limited partnership?
+            What is the limited partnership name?
           </label>
         </h1>
 
-        <div id="partnership_name-hint" class="govuk-hint">
-          Do not enter a name ending, like Limited Partnership or LP. We'll
-          add this for you.
-        </div>
+        {{ govukInput ({
+          classes: "govuk-input--width-40",
+          errorMessage: errors.partnership_name if errors,
+          id: "partnership_name",
+          name: "partnership_name",
+          value: partnership_name,
+          fieldset: {
+            legend: {
+              isPageHeading: false,
+              classes: "govuk-fieldset__legend--xl"
+            }
+          },
+          hint: {
+            text: "Do not enter a name ending, like Limited Partnership or LP. We'll add this for you."
+          },
+          attributes : {
+            required : true,
+            "aria-describedby": "partnership_name-hint",
+            minLength: "3"
+          },
+          suffix: {
+            text: "Limited Partnership"
+          }
+        }) }}
 
-        <div class="govuk-input__wrapper">
-          <input
-            class="govuk-input"
-            id="partnership_name"
-            name="partnership_name"
-            type="text"
-            aria-describedby="partnership_name-hint"
-            required
-            minLength="3"
-          />
-
-          <div class="govuk-input__suffix" aria-hidden="true">
-            Limited Partnership
-          </div>
-        </div>
       </div>
 
       <details class="govuk-details">
         <summary class="govuk-details__summary">
           <span class="govuk-details__summary-text">
-            Check you can use the name
+            Check the limited partnership name against an existing trademark
           </span>
         </summary>
         <div class="govuk-details__text">
@@ -68,158 +73,107 @@
         <fieldset class="govuk-fieldset" aria-describedby="nameEnding-hint">
           <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
             <h1 class="govuk-fieldset__heading">
-              Which name ending would you prefer to go on the public record?
+              Which limited partnership name ending would you prefer to go on the public record?
             </h1>
           </legend>
 
-          <div id="nameEnding-hint" class="govuk-hint">
-            There's no difference between the name endings Limited
-            Partnership, LP and L.P. except for how they look.
-          </div>
+          {% set welch %}
+            {{ govukRadios({
+              errorMessage: errors.name_ending if errors,
+              classes: "govuk-radios",
+              idPrefix: "name_ending",
+              name: "name_ending",
+              items: [
+                {
+                  value: "Partneriaeth Cyfyngedig",
+                  text: "Partneriaeth Cyfyngedig",
+                  id: "nameEnding-1",
+                  name: "name_ending",
+                  attributes: {
+                    required: true
+                  }
+                },
+                {
+                  value: "PC",
+                  text: "PC",
+                  id: "nameEnding-2",
+                  name: "name_ending",
+                  attributes: {
+                    required: true
+                  }
+                },
+                {
+                  value: "P.C.",
+                  text: "P.C.",
+                  id: "nameEnding-3",
+                  name: "name_ending",
+                  attributes: {
+                    required: true
+                  }
+                }
+              ]
+            }) }}
+          {% endset -%}
 
-          <div class="govuk-radios" data-module="govuk-radios">
-            <div class="govuk-radios__item">
-              <input
-                class="govuk-radios__input"
-                id="nameEnding"
-                name="name_ending"
-                type="radio"
-                value="Limited Partnership"
-                required
-              />
-              <label class="govuk-label govuk-radios__label" for="nameEnding">
-                Limited Partnership
-              </label>
-            </div>
-
-            <div class="govuk-radios__item">
-              <input
-                class="govuk-radios__input"
-                id="nameEnding-2"
-                name="name_ending"
-                type="radio"
-                value="LP"
-                required
-              />
-              <label
-                class="govuk-label govuk-radios__label"
-                for="nameEnding-2"
-              >
-                LP
-              </label>
-            </div>
-
-            <div class="govuk-radios__item">
-              <input
-                class="govuk-radios__input"
-                id="nameEnding-3"
-                name="name_ending"
-                type="radio"
-                value="L.P."
-                required
-              />
-              <label
-                class="govuk-label govuk-radios__label"
-                for="nameEnding-3"
-              >
-                L.P.
-              </label>
-            </div>
-
-            <div class="govuk-radios__item">
-              <input
-                class="govuk-radios__input"
-                id="nameEnding-4"
-                name="name_ending"
-                type="radio"
-                value=""
-                aria-controls="conditional-nameEnding-4"
-                aria-expanded="false"
-              />
-              <label
-                class="govuk-label govuk-radios__label"
-                for="nameEnding-4"
-              >
-                A Welsh name ending
-              </label>
-            </div>
-
-            <div
-              class="govuk-radios__conditional govuk-radios__conditional--hidden"
-              id="conditional-nameEnding-4"
-            >
-              <div class="govuk-form-group">
-                <fieldset class="govuk-fieldset">
-                  <legend
-                    class="govuk-fieldset__legend govuk-visually-hidden"
-                  >
-                    <h1 class="govuk-fieldset__heading">
-                      What other name ending would you prefer?
-                    </h1>
-                  </legend>
-
-                  <div class="govuk-radios" data-module="govuk-radios">
-                    <div class="govuk-radios__item">
-                      <input
-                        class="govuk-radios__input"
-                        id="nameEnding"
-                        name="name_ending"
-                        type="radio"
-                        value="Partneriaeth Cyfyngedig"
-                        required
-                      />
-                      <label
-                        class="govuk-label govuk-radios__label"
-                        for="nameEnding"
-                      >
-                        Partneriaeth Cyfyngedig
-                      </label>
-                    </div>
-
-                    <div class="govuk-radios__item">
-                      <input
-                        class="govuk-radios__input"
-                        id="nameEnding-2"
-                        name="name_ending"
-                        type="radio"
-                        value="PC"
-                        required
-                      />
-                      <label
-                        class="govuk-label govuk-radios__label"
-                        for="nameEnding-2"
-                      >
-                        PC
-                      </label>
-                    </div>
-
-                    <div class="govuk-radios__item">
-                      <input
-                        class="govuk-radios__input"
-                        id="nameEnding-3"
-                        name="name_ending"
-                        type="radio"
-                        value="P.C."
-                        required
-                      />
-                      <label
-                        class="govuk-label govuk-radios__label"
-                        for="nameEnding-3"
-                      >
-                        P.C.
-                      </label>
-                    </div>
-                  </div>
-                </fieldset>
-              </div>
-            </div>
-          </div>
+          {{ govukRadios({
+            errorMessage: errors.name_ending if errors,
+            classes: "govuk-radios",
+            idPrefix: "name_ending",
+            name: "name_ending",
+            fieldset: {
+              legend: {
+                isPageHeading: false,
+                classes: "govuk-fieldset__legend--xl"
+              }
+            },
+            hint: {
+              text: "There's no difference between the name endings Limited
+              Partnership, LP and L.P. except for how they look."
+            },
+            items: [
+              {
+                value: "Limited Partnership",
+                text: "Limited Partnership",
+                id: "nameEnding-1",
+                name: "name_ending",
+                attributes: {
+                  required: true
+                }
+              },
+              {
+                value: "LP",
+                text: "LP",
+                id: "nameEnding-2",
+                name: "name_ending",
+                attributes: {
+                  required: true
+                }
+              },
+              {
+                value: "L.P.",
+                text: "L.P.",
+                id: "nameEnding-3",
+                name: "name_ending",
+                attributes: {
+                  required: true
+                }
+              },
+              {
+                value: "",
+                text: "A Welsh name ending",
+                id: "nameEnding-4",
+                name: "name_ending",
+                conditional: {
+                  html: welch
+                }
+              }
+            ]
+          }) }}
+          
         </fieldset>
       </div>
 
-      <button type="submit" class="govuk-button" data-module="govuk-button">
-        Save and continue
-      </button>
+      {% include "includes/save-and-continue-button.html" %}
     </form>
   </div>
 </div>

@@ -1,6 +1,6 @@
 import { LocalesService, LanguageNames } from "@companieshouse/ch-node-utils";
 
-import { isLocalesEnabled, LOCALES_PATH } from "../config/constants";
+import { isLocalesEnabled } from "../config/constants";
 
 enum Language {
   CY = "cy",
@@ -34,9 +34,6 @@ export const getLocalisationProperties = (
   };
 };
 
-const localesSevice = LocalesService.getInstance(
-  LOCALES_PATH,
-  isLocalesEnabled()
-);
+const localesSevice = LocalesService.getInstance("locales", isLocalesEnabled());
 
 export const getLocalesService = () => localesSevice;
