@@ -18,7 +18,7 @@ describe("Create transaction and the first submission", () => {
     const res = await request(app).get(NAME_URL);
 
     expect(res.status).toBe(200);
-    expect(res.text).toContain("What's the name of the limited partnership?");
+    expect(res.text).toContain("What is the limited partnership name?");
   });
 
   it("should create a transaction and the first submission", async () => {
