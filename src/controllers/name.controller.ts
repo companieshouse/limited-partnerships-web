@@ -10,10 +10,12 @@ export const get = (req: Request, res: Response, _next: NextFunction) => {
 
 export const post = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    // will have to change to use transaction service
     const transactionId = crypto.randomUUID().toString();
 
     await createLimitedPartnership(transactionId);
 
+    // will have to change to use redirect
     return res.render(config.NAME_TEMPLATE);
   } catch (error) {
     next(error);
