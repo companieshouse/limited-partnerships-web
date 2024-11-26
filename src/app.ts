@@ -1,10 +1,13 @@
 import express from "express";
-import cookieParser from 'cookie-parser';
+import cookieParser from "cookie-parser";
 import * as nunjucks from "nunjucks";
 import * as path from "path";
 import Redis from "ioredis";
 import { CsrfProtectionMiddleware } from "@companieshouse/web-security-node";
-import { SessionMiddleware, SessionStore } from "@companieshouse/node-session-handler";
+import {
+  SessionMiddleware,
+  SessionStore,
+} from "@companieshouse/node-session-handler";
 
 import * as config from "./config";
 import { logger } from "./utils";
@@ -18,15 +21,18 @@ app.set("port", config.PORT);
 app.set("dev", config.NODE_ENV === "development");
 
 // set up the template engine
-const nunjucksEnv = nunjucks.configure([
-  path.join(__dirname, "views"),
-  "node_modules/@companieshouse",
-  "node_modules/govuk-frontend",
-  "node_modules/govuk-frontend/components"
-], {
-  autoescape: true,
-  express: app,
-});
+const nunjucksEnv = nunjucks.configure(
+  [
+    path.join(__dirname, "views"),
+    "node_modules/@companieshouse",
+    "node_modules/govuk-frontend",
+    "node_modules/govuk-frontend/components",
+  ],
+  {
+    autoescape: true,
+    express: app,
+  }
+);
 
 nunjucksEnv.addGlobal("CDN_HOST", config.CDN_HOST);
 nunjucksEnv.addGlobal("MATOMO_ASSET_PATH", `//${config.CDN_HOST}`);
@@ -45,19 +51,21 @@ app.set("view engine", "njk");
 app.use(localisationMiddleware);
 
 const cookieConfig = {
-  cookieName: '__SID',
+  cookieName: "__SID",
   cookieSecret: config.COOKIE_SECRET,
   cookieDomain: config.COOKIE_DOMAIN,
-  cookieTimeToLiveInSeconds: parseInt(config.DEFAULT_SESSION_EXPIRATION, 10)
+  cookieTimeToLiveInSeconds: parseInt(config.DEFAULT_SESSION_EXPIRATION, 10),
 };
-const sessionStore = new SessionStore(new Redis(`redis://${config.CACHE_SERVER}`));
+const sessionStore = new SessionStore(
+  new Redis(`redis://${config.CACHE_SERVER}`)
+);
 app.use(SessionMiddleware(cookieConfig, sessionStore));
 
 // csrf middleware
 const csrfProtectionMiddleware = CsrfProtectionMiddleware({
   sessionStore,
   enabled: false,
-  sessionCookieName: config.COOKIE_NAME
+  sessionCookieName: config.COOKIE_NAME,
 });
 app.use(csrfProtectionMiddleware);
 
