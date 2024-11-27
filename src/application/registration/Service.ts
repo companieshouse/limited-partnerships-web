@@ -12,8 +12,8 @@ class RegistrationService {
     this.registrationGateway = registrationGateway;
   }
 
-  async getSubmissionById(id: string): Promise<LimitedPartnership> {
-    return await this.registrationGateway.getSubmissionById(id);
+  getSubmissionById(id: string): Promise<LimitedPartnership> {
+    return this.registrationGateway.getSubmissionById(id);
   }
 
   async createTransactionAndFirstSubmission(
@@ -36,7 +36,11 @@ class RegistrationService {
       );
 
       return { submissionId, transactionId };
-    } catch (errors: any) {
+    } catch (error: any) {
+      const errors = !Array.isArray(error)
+        ? [new CustomError("500", error.message)]
+        : error;
+
       logger.error(
         `Error creating transaction or submission: ${JSON.stringify(errors)}`
       );

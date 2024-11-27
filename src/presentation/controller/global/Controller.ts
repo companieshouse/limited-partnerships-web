@@ -11,6 +11,9 @@ class GlobalController extends AbstractController {
   getPageRouting(): RequestHandler {
     return (request: Request, response: Response, next: NextFunction) => {
       try {
+        // example error message using the locales json files
+        // const errorMessage = response.locals.i18n["startPage"]["errorStartAddressMissing"];
+
         const pageType = super.pageType(request.path);
 
         const pageRouting = super.getRouting(registrationsRouting, pageType);

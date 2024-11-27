@@ -101,9 +101,8 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
     });
 
     limitedPartnershipBuilder.withData(pageType, data);
-    const limitedPartnership = limitedPartnershipBuilder.build();
 
-    return limitedPartnership;
+    return limitedPartnershipBuilder.build();
   }
 }
 

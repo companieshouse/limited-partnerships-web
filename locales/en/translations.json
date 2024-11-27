@@ -1,4 +1,20 @@
 {
-    "startTitle" : "This is Limited Partnerships",
-    "errorStartAddressMissing" : "Please enter an address"
+    "startPage" : {
+        "title" : "This is Limited Partnerships",
+        "errorStartAddressMissing" : "Please enter an address"
+    },
+
+    "pageNotFound" : {
+        "title" : "Page not found",
+        "spelling" : "If you typed the web address, check it is spelled correctly.",
+        "copiedAddress" : "If you pasted the web address, check you copied the entire address.",
+        "movedPage" : "If the web address is correct or you selected a link, the page may have moved.",
+        "goToStartPage" : "To register a limited partnership, go to the <a class='govuk-link' href='/limited-partnerships/start'>Register a limited partnership</a> start page."
+    },
+
+    "errorPage" : {
+        "title" : "Sorry, the service is unavailable",
+        "tryLater" : "You will be able to use the service at a later date.",
+        "moreInfo" : "Email <a class='govuk-link' href='mailto: enquiries@companieshouse.gov.uk'>enquiries@companieshouse.gov.uk</a>, if you need more information."
+    }
 }

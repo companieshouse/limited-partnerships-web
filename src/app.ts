@@ -5,8 +5,8 @@ import { logger } from "./utils";
 import { errorHandler } from "./middlewares";
 import {
   appConfig,
-  // appDependencies,
-  appDevDependencies as appDependencies, // only to play with screens without api - to be removed
+  appDependencies,
+  // appDevDependencies as appDependencies, // only to play with screens without api
 } from "./config";
 import appRouter from "./routes";
 

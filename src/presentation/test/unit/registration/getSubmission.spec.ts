@@ -24,7 +24,7 @@ describe("Get Submission", () => {
       expect(result).toEqual(limitedPartnership);
     });
 
-    it("should return the submission", async () => {
+    it("should return an error not found if id is wrong", async () => {
       const limitedPartnership = new LimitedPartnershipBuilder().build();
 
       appDevDependencies.registrationGateway.feedLimitedPartnerships([
