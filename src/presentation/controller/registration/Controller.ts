@@ -3,6 +3,7 @@ import { NextFunction, Request, RequestHandler, Response } from "express";
 import RegistrationService from "../../../application/registration/Service";
 import registrationsRouting from "./Routing";
 import AbstractController from "../AbstractController";
+import PageType from "./PageType";
 
 class RegistrationController extends AbstractController {
   private registrationService: RegistrationService;
@@ -40,7 +41,7 @@ class RegistrationController extends AbstractController {
       try {
         const access_token =
           request?.session?.data?.signin_info?.access_token?.access_token ?? "";
-        const pageType = request.body.pageType;
+        const pageType = this.extractPageTypeOrThrowError(request);
 
         const result =
           await this.registrationService.createTransactionAndFirstSubmission(
@@ -72,6 +73,16 @@ class RegistrationController extends AbstractController {
         next(error);
       }
     };
+  }
+
+  private extractPageTypeOrThrowError(request) {
+    const pageTypeList = Object.values(PageType);
+    const pageType = request.body.pageType;
+
+    if (!pageTypeList.includes(pageType)) {
+      throw new Error(`wrong page type: ${pageType}`);
+    }
+    return pageType;
   }
 }
 

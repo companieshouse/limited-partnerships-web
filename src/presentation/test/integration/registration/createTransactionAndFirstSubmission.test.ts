@@ -54,4 +54,12 @@ describe("Create transaction and the first submission", () => {
     expect(res.status).toBe(200);
     // see when and where to display errors from the API
   });
+
+  it("should return an error 500 if page type doesn't exist", async () => {
+    const res = await request(app).post(NAME_URL).send({
+      pageType: "wrong-page-type",
+    });
+
+    expect(res.status).toBe(500);
+  });
 });
