@@ -54,7 +54,7 @@ class RegistrationController extends AbstractController {
           pageType
         );
 
-        if (result?.errors?.length) {
+        if (result.errors?.length) {
           response.render(super.templateName(registrationRouting.currentUrl), {
             props: result,
           });
@@ -63,8 +63,8 @@ class RegistrationController extends AbstractController {
 
         const url = super.insertIdsInUrl(
           registrationRouting.nextUrl,
-          result?.transactionId,
-          result?.submissionId
+          result.transactionId,
+          result.submissionId
         );
 
         response.redirect(url);
