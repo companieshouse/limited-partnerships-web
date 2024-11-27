@@ -1,7 +1,8 @@
 import request from "supertest";
 import { LocalesService } from "@companieshouse/ch-node-utils";
 import * as config from "../../../../config/constants";
-
+import enTranslationText from "../../../../../locales/en/translations.json";
+import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
 import {
   NAME_URL,
@@ -22,8 +23,8 @@ describe("Name Page", () => {
     const res = await request(app).get(NAME_URL + "?lang=cy");
 
     expect(res.status).toBe(200);
-    expect(res.text).toContain("WELSH - What is the limited partnership name?");
-    expect(res.text).toContain("WELSH - Save and continue");
+    expect(res.text).toContain(cyTranslationText.namePage.title);
+    expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
   });
 
   it("should load the name page with English text", async () => {
@@ -31,8 +32,8 @@ describe("Name Page", () => {
     const res = await request(app).get(NAME_URL + "?lang=en");
 
     expect(res.status).toBe(200);
-    expect(res.text).toContain("What is the limited partnership name?");
-    expect(res.text).toContain("Save and continue");
+    expect(res.text).toContain(enTranslationText.namePage.title);
+    expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
     expect(res.text).not.toContain("WELSH -");
   });
 
