@@ -83,10 +83,11 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
 
   private buildLimitedPartnership(
     pageType: RegistrationPageType,
-    data: Record<string, any>
+    data: Record<string, any>,
+    submissionId?: string
   ): TransactionLimitedPartnership {
     const limitedPartnershipBuilder = new LimitedPartnershipGatewayBuilder({
-      _id: this.submissionId,
+      _id: submissionId,
     });
 
     limitedPartnershipBuilder.withData(pageType, data);
