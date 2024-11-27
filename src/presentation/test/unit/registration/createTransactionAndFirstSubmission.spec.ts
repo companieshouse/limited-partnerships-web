@@ -69,5 +69,26 @@ describe("Create transaction and the first submission", () => {
         errors: [partnershipNameError, nameEndingError],
       });
     });
+
+    it("should return an error - wrong type", async () => {
+      const result =
+        await appDevDependencies.registrationService.createTransactionAndFirstSubmission(
+          "access_token",
+          RegistrationPageType.next,
+          {
+            partnership_name: "Test Limited Partnership",
+            name_ending: NameEndingType.LIMITED_PARTNERSHIP,
+          }
+        );
+
+      expect(
+        appDevDependencies.registrationGateway.limitedPartnerships.length
+      ).toEqual(0);
+      expect(result).toEqual({
+        transactionId: "",
+        submissionId: "",
+        errors: [new Error("wrong type")],
+      });
+    });
   });
 });

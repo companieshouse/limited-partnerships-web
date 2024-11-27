@@ -33,11 +33,11 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
     access_token: string,
     registrationPageType: RegistrationPageType
   ): Promise<string> {
-    if (registrationPageType === RegistrationPageType.name) {
-      return this.transactionId;
+    if (registrationPageType !== RegistrationPageType.name) {
+      throw new Error("wrong type");
     }
 
-    return "";
+    return this.transactionId;
   }
 
   async createSubmission(
