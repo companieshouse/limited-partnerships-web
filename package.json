@@ -12,7 +12,7 @@
     "sonarqube-base-branch": "sonar-scanner",
     "sonarqube-pull-request": "sonar-scanner -D sonar.pullrequest.base=main",
     "start": "node dist/bin/www.js",
-    "dev": "nodemon src/bin/www.ts",
+    "dev": "nodemon --ext ts,njk,json src/bin/www.ts",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:unit": "jest --testRegex=.spec.ts",

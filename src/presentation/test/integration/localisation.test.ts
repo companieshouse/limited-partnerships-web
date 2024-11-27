@@ -9,7 +9,7 @@ import { START_URL } from "../../../presentation/controller/global/Routing";
 
 describe("Localisation tests", () => {
   beforeEach(() => {
-    jest.resetAllMocks();
+    jest.clearAllMocks();
   });
 
   const setLocalesEnabled = (bool: boolean) => {

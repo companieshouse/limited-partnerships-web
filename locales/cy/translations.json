@@ -1,4 +1,19 @@
 {
+    "buttons" : {
+        "saveAndContinue" : "WELSH - Save and continue"
+    },
+
+    "namePage" : {
+        "title" : "WELSH - Limited partnership name",
+        "whatIsName" : "WELSH - What is the limited partnership name?",
+        "whatIsNameHint" : "WELSH - Do not enter a name ending, like Limited Partnership or LP. We'll add this for you.",
+        "checkName" : "WELSH - Check the limited partnership name against an existing trademark",
+        "checkNameExistingLP" : "WELSH - You must check the name is not the same as an existing limited partnership on the <a href='#/'>Companies House register (link opens in a new tab)</a>. If it is, we will reject your application.",
+        "checkNameExistingTrademark" : "WELSH - You should also use the <a href='https://www.gov.uk/search-for-trade mark' target='_blank'>trade mark search (link opens in a new tab)</a> to check if your name matches an existing trade mark. If it does, consider choosing a different name. Companies House will not carry out this check for you.",
+        "nameEnding" : "WELSH - Which limited partnership name ending would you prefer to go on the public record?",
+        "nameEndingHint" : "WELSH - There's no difference between the name endings Limited Partnership, LP and L.P. except for how they look."
+    },
+
     "startPage" : {
         "title" : "Partneriaethau Cyfyngedig yw hyn",
         "errorStartAddressMissing" : "Rhowch gyfeiriad"
