@@ -9,15 +9,15 @@ class LimitedPartnershipGatewayBuilder {
   _id?: string;
   data?: LimitedPartnership["data"];
 
-  constructor(limitedPartnership: TransactionLimitedPartnership) {
+  constructor(limitedPartnership?: TransactionLimitedPartnership) {
     if (limitedPartnership?.created_at) {
       this.created_at = limitedPartnership.created_at;
     }
     if (limitedPartnership?.updated_at) {
       this.updated_at = limitedPartnership.updated_at;
     }
-    if (limitedPartnership["_id"]) {
-      this["_id"] = limitedPartnership["_id"];
+    if (limitedPartnership?.["_id"]) {
+      this["_id"] = limitedPartnership?.["_id"];
     }
     if (limitedPartnership?.data) {
       this.data = { ...limitedPartnership.data };

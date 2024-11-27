@@ -38,10 +38,13 @@ class RegistrationController extends AbstractController {
   createTransactionAndFirstSubmission(): RequestHandler {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
+        const access_token =
+          request?.session?.data?.signin_info?.access_token?.access_token ?? "";
         const pageType = request.body.pageType;
 
         const result =
           await this.registrationService.createTransactionAndFirstSubmission(
+            access_token as string,
             pageType,
             request.body
           );

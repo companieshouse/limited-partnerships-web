@@ -29,19 +29,8 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
     this.errors = errors;
   }
 
-  async getSubmissionById(id: string): Promise<LimitedPartnership> {
-    const limitedPartnerShip = this.limitedPartnerships.find(
-      (lp) => lp._id === id
-    );
-
-    if (!limitedPartnerShip) {
-      throw new CustomError("Limited partnership", `Not found: ${id}`);
-    }
-
-    return new LimitedPartnershipGatewayBuilder(limitedPartnerShip).build();
-  }
-
   async createTransaction(
+    access_token: string,
     registrationPageType: RegistrationPageType
   ): Promise<string> {
     if (registrationPageType === RegistrationPageType.name) {
@@ -103,6 +92,18 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
     limitedPartnershipBuilder.withData(pageType, data);
 
     return limitedPartnershipBuilder.build();
+  }
+
+  async getSubmissionById(id: string): Promise<LimitedPartnership> {
+    const limitedPartnerShip = this.limitedPartnerships.find(
+      (lp) => lp._id === id
+    );
+
+    if (!limitedPartnerShip) {
+      throw new CustomError("Limited partnership", `Not found: ${id}`);
+    }
+
+    return new LimitedPartnershipGatewayBuilder(limitedPartnerShip).build();
   }
 }
 

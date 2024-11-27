@@ -19,6 +19,7 @@ describe("Create transaction and the first submission", () => {
 
       const result =
         await appDevDependencies.registrationService.createTransactionAndFirstSubmission(
+          "access_token",
           RegistrationPageType.name,
           {
             partnership_name: limitedPartnership.data?.partnership_name,
@@ -51,6 +52,7 @@ describe("Create transaction and the first submission", () => {
 
       const result =
         await appDevDependencies.registrationService.createTransactionAndFirstSubmission(
+          "access_token",
           RegistrationPageType.name,
           {
             partnership_name: "Test Limited Partnership",
