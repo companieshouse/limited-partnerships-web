@@ -1,12 +1,19 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction } from "express";
 
-import { logger, checkUserSignedIn, getLoggedInUserEmail } from '../utils';
-import { START_URL } from '../config';
+import { logger, checkUserSignedIn, getLoggedInUserEmail } from "../utils";
+import { START_URL } from "../presentation/controller/global/Routing";
 
-export const authentication = (req: Request, res: Response, next: NextFunction): void => {
+export const authentication = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void => {
   try {
     if (!checkUserSignedIn(req.session)) {
-      logger.infoRequest(req, 'User not authenticated, redirecting to sign in page, status_code=302');
+      logger.infoRequest(
+        req,
+        "User not authenticated, redirecting to sign in page, status_code=302"
+      );
 
       const returnToUrl = START_URL;
 
@@ -15,7 +22,7 @@ export const authentication = (req: Request, res: Response, next: NextFunction):
 
     const userEmail = getLoggedInUserEmail(req.session);
 
-    logger.infoRequest(req, `User (${ userEmail }) is signed in`);
+    logger.infoRequest(req, `User (${userEmail}) is signed in`);
 
     // Using the https://expressjs.com/en/5x/api.html#res.locals to make sure that the email
     // is available within a single request-response cycle and visible in the template.

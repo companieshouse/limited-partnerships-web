@@ -1,0 +1,206 @@
+{% extends "layout.njk" %}
+
+{% block content %}
+
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <form class="form" action={{ props.currentUrl }} method="post">
+      <input type="hidden" name="pageType" value={{ props.pageType }}>
+      
+      {% include "includes/csrf_token.njk" %}
+
+      <h1 class="govuk-heading-xl">Limited partnership name</h1>
+
+      <div class="govuk-form-group">
+        <h1 class="govuk-label-wrapper">
+          <label class="govuk-label govuk-label--l" for="partnership_name">
+            What is the limited partnership name?
+          </label>
+        </h1>
+
+        {{ govukInput ({
+          classes: "govuk-input--width-40",
+          errorMessage: errors.partnership_name if errors,
+          id: "partnership_name",
+          name: "partnership_name",
+          value: partnership_name,
+          fieldset: {
+            legend: {
+              isPageHeading: false,
+              classes: "govuk-fieldset__legend--xl"
+            }
+          },
+          hint: {
+            text: "Do not enter a name ending, like Limited Partnership or LP. We'll add this for you."
+          },
+          attributes : {
+            required : true,
+            "aria-describedby": "partnership_name-hint",
+            minLength: "3"
+          },
+          suffix: {
+            text: "Limited Partnership"
+          }
+        }) }}
+
+      </div>
+
+      <details class="govuk-details">
+        <summary class="govuk-details__summary">
+          <span class="govuk-details__summary-text">
+            Check the limited partnership name against an existing trademark
+          </span>
+        </summary>
+        <div class="govuk-details__text">
+          <p>
+            You must check the name is not the same as an existing limited
+            partnership on the
+            <a href="#/">Companies House register (link opens in a new tab)</a
+            >. If it is, we will reject your application.
+          </p>
+          <p>
+            You should also use the
+            <a href="https://www.gov.uk/search-for-trade mark" target="_blank"
+              >trade mark search (link opens in a new tab)</a
+            >
+            to check if your name matches an existing trade mark. If it does,
+            consider choosing a different name. Companies House will not carry
+            out this check for you.
+          </p>
+        </div>
+      </details>
+
+      <div class="govuk-form-group">
+        <fieldset class="govuk-fieldset" aria-describedby="nameEnding-hint">
+          <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+            <h1 class="govuk-fieldset__heading">
+              Which limited partnership name ending would you prefer to go on the public record?
+            </h1>
+          </legend>
+
+          {% set welsh %}
+            {{ govukRadios({
+              errorMessage: errors.name_ending if errors,
+              classes: "govuk-radios",
+              idPrefix: "name_ending",
+              name: "name_ending",
+              items: [
+                {
+                  value: "Partneriaeth Cyfyngedig",
+                  text: "Partneriaeth Cyfyngedig",
+                  id: "nameEnding-1",
+                  name: "name_ending",
+                  attributes: {
+                    required: true
+                  }
+                },
+                {
+                  value: "PC",
+                  text: "PC",
+                  id: "nameEnding-2",
+                  name: "name_ending",
+                  attributes: {
+                    required: true
+                  }
+                },
+                {
+                  value: "P.C.",
+                  text: "P.C.",
+                  id: "nameEnding-3",
+                  name: "name_ending",
+                  attributes: {
+                    required: true
+                  }
+                }
+              ]
+            }) }}
+          {% endset -%}
+
+          {{ govukRadios({
+            errorMessage: errors.name_ending if errors,
+            classes: "govuk-radios",
+            idPrefix: "name_ending",
+            name: "name_ending",
+            fieldset: {
+              legend: {
+                isPageHeading: false,
+                classes: "govuk-fieldset__legend--xl"
+              }
+            },
+            hint: {
+              text: "There's no difference between the name endings Limited
+              Partnership, LP and L.P. except for how they look."
+            },
+            items: [
+              {
+                value: "Limited Partnership",
+                text: "Limited Partnership",
+                id: "nameEnding-1",
+                name: "name_ending",
+                attributes: {
+                  required: true
+                }
+              },
+              {
+                value: "LP",
+                text: "LP",
+                id: "nameEnding-2",
+                name: "name_ending",
+                attributes: {
+                  required: true
+                }
+              },
+              {
+                value: "L.P.",
+                text: "L.P.",
+                id: "nameEnding-3",
+                name: "name_ending",
+                attributes: {
+                  required: true
+                }
+              },
+              {
+                value: "",
+                text: "A Welsh name ending",
+                id: "nameEnding-4",
+                name: "name_ending",
+                conditional: {
+                  html: welsh
+                }
+              }
+            ]
+          }) }}
+          
+        </fieldset>
+      </div>
+
+      {% include "includes/save-and-continue-button.njk" %}
+    </form>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const suffixDiv = document.querySelector('.govuk-input__suffix');
+    const radioButtons = document.querySelectorAll('input[name="name_ending"]');
+
+    radioButtons.forEach(function(radioButton) {
+      radioButton.addEventListener('change', function() {
+        if (radioButton.checked) {
+          suffixDiv.textContent = radioButton.value;
+        }
+      });
+    });
+
+    const form = document.querySelector('.form');
+
+    form.addEventListener('submit', function(evt) {
+      if (!suffixDiv.textContent) {
+        evt.preventDefault();
+      }
+    });
+  });
+</script>
+
+{% endblock %}

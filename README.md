@@ -11,9 +11,44 @@ Requires >= Node v20
 
 use localhost:3000/limited-partnerships/start to view the test page
 
-## Frontend Technologies and Utils
+## Technologies and Utils
 
 - [NodeJS](https://nodejs.org/)
 - [ExpressJS](https://expressjs.com/)
 - [Typescript](https://www.typescriptlang.org/)
 - [Sonarqube](https://www.sonarqube.org)
+
+## Run Tests
+
+Unit tests:
+```
+$ npm run test:unit
+```
+Unit tests watch mode: 
+```
+$ npm run test:unit:watch
+```
+
+---
+\
+integration tests:
+```
+$ npm run test:integration
+```
+
+integration tests watch mode:
+```
+$ npm run test:integration:watch
+```
+
+---
+\
+all tests:
+```
+$ npm run test
+```
+
+all tests watch mode:
+```
+$ npm run test:watch
+```

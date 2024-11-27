@@ -1,13 +1,17 @@
 import { Router } from "express";
 
-import * as config from "../config";
-import * as controllers from "../controllers";
-import { authentication } from "../middlewares";
+import { IDependencies } from "../config";
 
-const router = Router();
+import globalEndpoints from "./global";
+import registrationEndpoints from "./registration";
 
-// Routes
-router.get(config.HEALTHCHECK_URL, controllers.healthCheckController.get);
-router.get(config.START_URL, authentication, controllers.startController.get);
+const appRouter = (dependencies: IDependencies): Router => {
+  const router = Router();
 
-export default router;
+  globalEndpoints(router, dependencies);
+  registrationEndpoints(router, dependencies);
+
+  return router;
+};
+
+export default appRouter;
