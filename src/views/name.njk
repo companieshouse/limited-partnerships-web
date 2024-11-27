@@ -8,7 +8,7 @@
     <form class="form" action={{ props.currentUrl }} method="post">
       <input type="hidden" name="pageType" value={{ props.pageType }}>
       
-      {% include "includes/csrf_token.html" %}
+      {% include "includes/csrf_token.njk" %}
 
       <h1 class="govuk-heading-xl">Limited partnership name</h1>
 
@@ -79,7 +79,7 @@
             </h1>
           </legend>
 
-          {% set welch %}
+          {% set welsh %}
             {{ govukRadios({
               errorMessage: errors.name_ending if errors,
               classes: "govuk-radios",
@@ -166,7 +166,7 @@
                 id: "nameEnding-4",
                 name: "name_ending",
                 conditional: {
-                  html: welch
+                  html: welsh
                 }
               }
             ]
@@ -175,7 +175,7 @@
         </fieldset>
       </div>
 
-      {% include "includes/save-and-continue-button.html" %}
+      {% include "includes/save-and-continue-button.njk" %}
     </form>
   </div>
 </div>
