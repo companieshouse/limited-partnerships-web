@@ -3,11 +3,17 @@ import { Request, Response } from "express";
 import { NameEndingType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import app from "../app";
+import appRealDependencies from "../../../../app";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import {
   NAME_URL,
   registrationRoutingName,
 } from "../../../controller/registration/Routing";
+
+import { createApiClient } from "@companieshouse/api-sdk-node";
+import TransactionService from "@companieshouse/api-sdk-node/dist/services/transaction/service";
+jest.mock("@companieshouse/api-sdk-node");
+jest.mock("@companieshouse/api-sdk-node/dist/services/transaction/service");
 
 describe("Create transaction and the first submission", () => {
   beforeAll(() => {
@@ -39,6 +45,38 @@ describe("Create transaction and the first submission", () => {
 
     expect(res.status).toBe(302);
     expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+  });
+
+  it("should create a transaction and the first submission - appRealDependencies and mock", async () => {
+    const url = appDevDependencies.registrationController.insertIdsInUrl(
+      NAME_URL,
+      appDevDependencies.registrationGateway.transactionId,
+      appDevDependencies.registrationGateway.submissionId
+    );
+
+    const mockCreateApiClient = createApiClient as jest.Mock;
+    mockCreateApiClient.mockReturnValue({
+      transaction: {
+        ...TransactionService.prototype,
+        postTransaction: () => ({
+          httpStatusCode: 201,
+          resource: {
+            id: appDevDependencies.registrationGateway.transactionId,
+          },
+        }),
+      },
+    });
+
+    const res = await request(appRealDependencies).post(url).send({
+      pageType: registrationRoutingName.pageType,
+      partnership_name: "Test Limited Partnership",
+      name_ending: NameEndingType.LIMITED_PARTNERSHIP,
+    });
+
+    const partialRedirectUrl = `/limited-partnerships/transaction/${appDevDependencies.registrationGateway.transactionId}/submission/`;
+
+    expect(res.status).toBe(302);
+    expect(res.text).toContain(`Redirecting to ${partialRedirectUrl}`);
   });
 
   it("should return an error", async () => {
