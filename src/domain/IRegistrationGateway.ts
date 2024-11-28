@@ -4,7 +4,7 @@ import RegistrationPageType from "../presentation/controller/registration/PageTy
 
 interface IRegistrationGateway {
   createTransaction(
-    access_token: string,
+    opt: { access_token: string },
     registrationPageType: RegistrationPageType
   ): Promise<string>;
   createSubmission(

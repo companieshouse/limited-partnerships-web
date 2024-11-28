@@ -45,7 +45,7 @@ class RegistrationController extends AbstractController {
 
         const result =
           await this.registrationService.createTransactionAndFirstSubmission(
-            access_token,
+            { access_token },
             pageType,
             request.body
           );

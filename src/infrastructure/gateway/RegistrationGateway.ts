@@ -2,7 +2,6 @@
 
 import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { Transaction } from "@companieshouse/api-sdk-node/dist/services/transaction/types";
-
 import { createApiClient, Resource } from "@companieshouse/api-sdk-node";
 
 import RegistrationPageType from "../../presentation/controller/registration/PageType";
@@ -13,10 +12,10 @@ class RegistrationGateway implements IRegistrationGateway {
   private readonly api = createApiClient(API_KEY);
 
   async createTransaction(
-    access_token: string,
+    opt: { access_token: string },
     registrationPageType: RegistrationPageType
   ): Promise<string> {
-    const api = createApiClient(undefined, access_token);
+    const api = createApiClient(undefined, opt.access_token);
 
     const response = await api.transaction.postTransaction({
       reference: "LimitedPartnershipsReference",

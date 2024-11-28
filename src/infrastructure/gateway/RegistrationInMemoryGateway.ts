@@ -30,7 +30,7 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
   }
 
   async createTransaction(
-    access_token: string,
+    opt: { access_token: string },
     registrationPageType: RegistrationPageType
   ): Promise<string> {
     if (registrationPageType !== RegistrationPageType.name) {

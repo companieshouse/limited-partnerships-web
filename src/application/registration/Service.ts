@@ -17,7 +17,7 @@ class RegistrationService {
   }
 
   async createTransactionAndFirstSubmission(
-    access_token: string,
+    opt: { access_token: string },
     registrationType: RegistrationPageType,
     data: Record<string, any>
   ): Promise<{
@@ -27,7 +27,7 @@ class RegistrationService {
   }> {
     try {
       const transactionId = await this.registrationGateway.createTransaction(
-        access_token,
+        { access_token: opt.access_token },
         registrationType
       );
 
