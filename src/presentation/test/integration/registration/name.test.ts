@@ -24,6 +24,8 @@ describe("Name Page", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(cyTranslationText.namePage.title);
+    expect(res.text).toContain(cyTranslationText.namePage.whatIsName);
+    expect(res.text).toContain(cyTranslationText.namePage.nameEnding);
     expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
   });
 
@@ -33,6 +35,8 @@ describe("Name Page", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(enTranslationText.namePage.title);
+    expect(res.text).toContain(enTranslationText.namePage.whatIsName);
+    expect(res.text).toContain(enTranslationText.namePage.nameEnding);
     expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
     expect(res.text).not.toContain("WELSH -");
   });
