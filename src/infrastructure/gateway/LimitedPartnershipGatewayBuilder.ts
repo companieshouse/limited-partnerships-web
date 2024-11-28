@@ -11,7 +11,7 @@ class LimitedPartnershipGatewayBuilder {
 
   constructor(limitedPartnership?: TransactionLimitedPartnership) {
     if (limitedPartnership?.["_id"]) {
-      this["_id"] = limitedPartnership?.["_id"];
+      this["_id"] = limitedPartnership["_id"];
     }
     if (limitedPartnership?.data) {
       this.data = { ...limitedPartnership.data };
