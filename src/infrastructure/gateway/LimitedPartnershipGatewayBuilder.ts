@@ -22,7 +22,11 @@ class LimitedPartnershipGatewayBuilder {
     pageType: PageType, // used to decide where to insert data
     data: Record<string, any>
   ) {
+    delete data["_csrf"];
+    delete data.pageType;
+
     this.data = { ...this.data, ...data };
+
     return this;
   }
 

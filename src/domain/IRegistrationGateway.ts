@@ -8,6 +8,7 @@ interface IRegistrationGateway {
     registrationPageType: RegistrationPageType
   ): Promise<string>;
   createSubmission(
+    opt: { access_token: string },
     registrationPageType: RegistrationPageType,
     transactionId: string,
     data: Record<string, any>
