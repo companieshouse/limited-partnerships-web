@@ -3,8 +3,8 @@ import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/l
 import RegistrationPageType from "../presentation/controller/registration/PageType";
 
 interface IRegistrationGateway {
-  getSubmissionById(id: string): Promise<LimitedPartnership>;
   createTransaction(
+    opt: { access_token: string },
     registrationPageType: RegistrationPageType
   ): Promise<string>;
   createSubmission(
@@ -12,6 +12,7 @@ interface IRegistrationGateway {
     transactionId: string,
     data: Record<string, any>
   ): Promise<string>;
+  getSubmissionById(id: string): Promise<LimitedPartnership>;
 }
 
 export default IRegistrationGateway;

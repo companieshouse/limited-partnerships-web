@@ -19,6 +19,7 @@ describe("Create transaction and the first submission", () => {
 
       const result =
         await appDevDependencies.registrationService.createTransactionAndFirstSubmission(
+          { access_token: "access_token" },
           RegistrationPageType.name,
           {
             partnership_name: limitedPartnership.data?.partnership_name,
@@ -51,6 +52,7 @@ describe("Create transaction and the first submission", () => {
 
       const result =
         await appDevDependencies.registrationService.createTransactionAndFirstSubmission(
+          { access_token: "access_token" },
           RegistrationPageType.name,
           {
             partnership_name: "Test Limited Partnership",
@@ -65,6 +67,27 @@ describe("Create transaction and the first submission", () => {
         transactionId: "",
         submissionId: "",
         errors: [partnershipNameError, nameEndingError],
+      });
+    });
+
+    it("should return an error - wrong type", async () => {
+      const result =
+        await appDevDependencies.registrationService.createTransactionAndFirstSubmission(
+          { access_token: "access_token" },
+          RegistrationPageType.next,
+          {
+            partnership_name: "Test Limited Partnership",
+            name_ending: NameEndingType.LIMITED_PARTNERSHIP,
+          }
+        );
+
+      expect(
+        appDevDependencies.registrationGateway.limitedPartnerships.length
+      ).toEqual(0);
+      expect(result).toEqual({
+        transactionId: "",
+        submissionId: "",
+        errors: [new Error("wrong type")],
       });
     });
   });
