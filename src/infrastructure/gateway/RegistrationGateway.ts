@@ -6,16 +6,14 @@ import { createApiClient, Resource } from "@companieshouse/api-sdk-node";
 
 import RegistrationPageType from "../../presentation/controller/registration/PageType";
 import IRegistrationGateway from "../../domain/IRegistrationGateway";
-import { API_KEY } from "../../config/constants";
+import LimitedPartnershipGatewayBuilder from "./LimitedPartnershipGatewayBuilder";
 
 class RegistrationGateway implements IRegistrationGateway {
-  private readonly api = createApiClient(API_KEY);
-
   async createTransaction(
     opt: { access_token: string },
     registrationPageType: RegistrationPageType
   ): Promise<string> {
-    const api = createApiClient(undefined, opt.access_token);
+    const api = this.createApi(opt.access_token);
 
     const response = await api.transaction.postTransaction({
       reference: "LimitedPartnershipsReference",
@@ -30,15 +28,36 @@ class RegistrationGateway implements IRegistrationGateway {
   }
 
   async createSubmission(
+    opt: { access_token: string },
     registrationPageType: RegistrationPageType,
     transactionId: string,
     data: Record<string, any>
   ): Promise<string> {
-    return crypto.randomUUID().toString();
+    const limitedPartnershipBuilder = new LimitedPartnershipGatewayBuilder();
+    limitedPartnershipBuilder.withData(registrationPageType, data);
+    const limitedPartnership = limitedPartnershipBuilder.build();
+
+    const api = this.createApi(opt.access_token);
+
+    const response =
+      await api.limitedPartnershipsService.postLimitedPartnership(
+        transactionId,
+        limitedPartnership
+      );
+
+    if (response.httpStatusCode !== 201) {
+      throw response;
+    }
+
+    return (response as Resource<Transaction>)?.resource?.id ?? "";
   }
 
   async getSubmissionById(id: string): Promise<LimitedPartnership> {
     throw new Error("Method not implemented.");
+  }
+
+  private createApi(access_token: string) {
+    return createApiClient(undefined, access_token);
   }
 }
 

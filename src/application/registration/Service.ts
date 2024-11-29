@@ -32,6 +32,7 @@ class RegistrationService {
       );
 
       const submissionId = await this.registrationGateway.createSubmission(
+        { access_token: opt.access_token },
         registrationType,
         transactionId,
         data

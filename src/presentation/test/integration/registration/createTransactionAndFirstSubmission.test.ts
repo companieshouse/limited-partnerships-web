@@ -1,6 +1,11 @@
 import request from "supertest";
 import { Request, Response } from "express";
-import { NameEndingType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { createApiClient } from "@companieshouse/api-sdk-node";
+import {
+  LimitedPartnershipsService,
+  NameEndingType,
+} from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import TransactionService from "@companieshouse/api-sdk-node/dist/services/transaction/service";
 
 import app from "../app";
 import appRealDependencies from "../../../../app";
@@ -10,10 +15,7 @@ import {
   registrationRoutingName,
 } from "../../../controller/registration/Routing";
 
-import { createApiClient } from "@companieshouse/api-sdk-node";
-import TransactionService from "@companieshouse/api-sdk-node/dist/services/transaction/service";
 jest.mock("@companieshouse/api-sdk-node");
-jest.mock("@companieshouse/api-sdk-node/dist/services/transaction/service");
 
 describe("Create transaction and the first submission", () => {
   beforeAll(() => {
@@ -65,6 +67,15 @@ describe("Create transaction and the first submission", () => {
           },
         }),
       },
+      limitedPartnershipsService: {
+        ...LimitedPartnershipsService.prototype,
+        postLimitedPartnership: () => ({
+          httpStatusCode: 201,
+          resource: {
+            id: appDevDependencies.registrationGateway.submissionId,
+          },
+        }),
+      },
     });
 
     const res = await request(appRealDependencies).post(url).send({
@@ -73,7 +84,7 @@ describe("Create transaction and the first submission", () => {
       name_ending: NameEndingType.LIMITED_PARTNERSHIP,
     });
 
-    const partialRedirectUrl = `/limited-partnerships/transaction/${appDevDependencies.registrationGateway.transactionId}/submission/`;
+    const partialRedirectUrl = `/limited-partnerships/transaction/${appDevDependencies.registrationGateway.transactionId}/submission/${appDevDependencies.registrationGateway.submissionId}/next`;
 
     expect(res.status).toBe(302);
     expect(res.text).toContain(`Redirecting to ${partialRedirectUrl}`);
