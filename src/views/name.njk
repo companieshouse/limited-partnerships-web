@@ -10,12 +10,12 @@
       
       {% include "includes/csrf_token.njk" %}
 
-      <h1 class="govuk-heading-xl">Limited partnership name</h1>
+      <h1 class="govuk-heading-xl">{{ i18n.namePage.title }}</h1>
 
       <div class="govuk-form-group">
         <h1 class="govuk-label-wrapper">
           <label class="govuk-label govuk-label--l" for="partnership_name">
-            What is the limited partnership name?
+            {{ i18n.namePage.whatIsName }}
           </label>
         </h1>
 
@@ -32,7 +32,7 @@
             }
           },
           hint: {
-            text: "Do not enter a name ending, like Limited Partnership or LP. We'll add this for you."
+            text: i18n.namePage.whatIsNameHint
           },
           attributes : {
             required : true,
@@ -49,24 +49,15 @@
       <details class="govuk-details">
         <summary class="govuk-details__summary">
           <span class="govuk-details__summary-text">
-            Check the limited partnership name against an existing trademark
+            {{ i18n.namePage.checkName }}
           </span>
         </summary>
         <div class="govuk-details__text">
           <p>
-            You must check the name is not the same as an existing limited
-            partnership on the
-            <a href="#/">Companies House register (link opens in a new tab)</a
-            >. If it is, we will reject your application.
+            {{ i18n.namePage.checkNameExistingLP | safe }}
           </p>
           <p>
-            You should also use the
-            <a href="https://www.gov.uk/search-for-trade mark" target="_blank"
-              >trade mark search (link opens in a new tab)</a
-            >
-            to check if your name matches an existing trade mark. If it does,
-            consider choosing a different name. Companies House will not carry
-            out this check for you.
+            {{ i18n.namePage.checkNameExistingTrademark | safe }}
           </p>
         </div>
       </details>
@@ -75,7 +66,7 @@
         <fieldset class="govuk-fieldset" aria-describedby="nameEnding-hint">
           <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
             <h1 class="govuk-fieldset__heading">
-              Which limited partnership name ending would you prefer to go on the public record?
+              {{ i18n.namePage.nameEnding }}
             </h1>
           </legend>
 
@@ -129,8 +120,7 @@
               }
             },
             hint: {
-              text: "There's no difference between the name endings Limited
-              Partnership, LP and L.P. except for how they look."
+              text: i18n.namePage.nameEndingHint
             },
             items: [
               {
