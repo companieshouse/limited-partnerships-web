@@ -19,6 +19,11 @@ export const registrationEndpoints = (
     authentication,
     dependencies.registrationController.getPageRouting()
   );
+  router.post(
+    WHICH_TYPE_URL,
+    authentication,
+    dependencies.registrationController.redirectWithParameter()
+  );
 
   router.get(
     NAME_URL,

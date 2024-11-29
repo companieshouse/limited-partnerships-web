@@ -12,7 +12,7 @@
 
         {{ govukRadios({
           classes: "govuk-radios",
-          name: "registerType",
+          name: "parameter",
           fieldset: {
             legend: {
               text: i18n.whichTypePage.title,
@@ -21,29 +21,26 @@
             }
           },
           items: [
-              {
+            {
               value: "registerLp",
               text: i18n.whichTypePage.options.registerLp
-
             },
             {
               value: "registerPflp",
               text: i18n.whichTypePage.options.registerPflp
             },
-                {
+            {
               value: "registerSlp",
               text: i18n.whichTypePage.options.registerSlp
             },
-                {
+            {
               value: "registerPflpSco",
               text: i18n.whichTypePage.options.registerPflpSco
             },
-
             {
               value: "registerSqp",
               text: i18n.whichTypePage.options.registerSqp
             }
-          
           ]
         }) }}
 

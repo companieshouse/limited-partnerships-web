@@ -75,6 +75,27 @@ class RegistrationController extends AbstractController {
     };
   }
 
+  redirectWithParameter(): RequestHandler {
+    return (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const type = this.extractPageTypeOrThrowError(request);
+
+        const registrationRouting = super.getRouting(
+          registrationsRouting,
+          type
+        );
+
+        const url = super.insertIdsInUrl(registrationRouting.nextUrl);
+
+        const { pageType, parameter } = request.body;
+
+        response.redirect(`${url}?${pageType}=${parameter}`);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
   private extractPageTypeOrThrowError(request) {
     const pageTypeList = Object.values(PageType);
     const pageType = request.body.pageType;
