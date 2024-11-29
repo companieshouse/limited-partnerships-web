@@ -1,6 +1,5 @@
 export default () => {
   process.env.ACCOUNT_URL = "https://account.chs.local";
-  process.env.CHS_API_KEY = "CHS_API_KEY";
   process.env.API_URL = "https://api.chs.local:4001";
   process.env.CACHE_SERVER = "redis";
   process.env.CDN_HOST = "cdn.chs.local";
