@@ -1,5 +1,6 @@
 {
     "buttons" : {
+        "continue" : "WELCH - Continue",
         "saveAndContinue" : "WELSH - Save and continue"
     },
 
@@ -17,6 +18,17 @@
     "startPage" : {
         "title" : "Partneriaethau Cyfyngedig yw hyn",
         "errorStartAddressMissing" : "Rhowch gyfeiriad"
+    },
+
+    "whichTypePage": {
+        "title": "WELCH - Which type of partnership do you want to register",
+        "options": {
+            "registerLp": "WELCH - Limited partnership in England, Wales or Northern Ireland",
+            "registerPflp": "WELCH - Private fund limited partnership in England, Wales or Northern Ireland",
+            "registerSlp": "WELCH - Scottish limited partnership",
+            "registerPflpSco": "WELCH - Private fund limited partnership in Scotland",
+            "registerSqp": "WELCH - Scottish qualifying partnership"
+        }
     },
 
     "pageNotFound" : {

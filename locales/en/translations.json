@@ -1,5 +1,6 @@
 {
     "buttons" : {
+        "continue" : "Continue",
         "saveAndContinue" : "Save and continue"
     },
 
@@ -17,6 +18,17 @@
     "startPage" : {
         "title" : "This is Limited Partnerships",
         "errorStartAddressMissing" : "Please enter an address"
+    },
+
+    "whichTypePage": {
+        "title": "Which type of partnership do you want to register",
+        "options": {
+            "registerLp": "Limited partnership in England, Wales or Northern Ireland",
+            "registerPflp": "Private fund limited partnership in England, Wales or Northern Ireland",
+            "registerSlp": "Scottish limited partnership",
+            "registerPflpSco": "Private fund limited partnership in Scotland",
+            "registerSqp": "Scottish qualifying partnership"
+        }
     },
 
     "pageNotFound" : {

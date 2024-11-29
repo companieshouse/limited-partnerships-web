@@ -45,7 +45,7 @@ const globalErrorHandler = (
 ) => {
   logger.errorRequest(
     req,
-    `An error has occurred. Re-routing to the error screen - ${err.stack}`
+    `An error has occurred. Re-routing to the error screen - ${err.message}`
   );
 
   res.status(500).render(config.ERROR_TEMPLATE, {
