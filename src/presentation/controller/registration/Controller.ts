@@ -1,4 +1,5 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
+import escape from "escape-html";
 
 import RegistrationService from "../../../application/registration/Service";
 import registrationsRouting from "./Routing";
@@ -87,7 +88,8 @@ class RegistrationController extends AbstractController {
 
         const url = super.insertIdsInUrl(registrationRouting.nextUrl);
 
-        const { pageType, parameter } = request.body;
+        const pageType = escape(request.body.pageType);
+        const parameter = escape(request.body.parameter);
 
         response.redirect(`${url}?${pageType}=${parameter}`);
       } catch (error) {
