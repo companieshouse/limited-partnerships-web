@@ -1,0 +1,67 @@
+{% extends "layout.njk" %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action={{ props.currentUrl }} method="post">
+        <input type="hidden" name="pageType" value={{ props.pageType }}>
+      
+        {% include "includes/csrf_token.njk" %}
+
+        {{ govukRadios({
+          classes: "govuk-radios",
+          name: "parameter",
+          fieldset: {
+            legend: {
+              text: i18n.whichTypePage.title,
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--xl"
+            }
+          },
+          items: [
+            {
+              value: "registerLp",
+              text: i18n.whichTypePage.options.registerLp,
+              attributes: {
+                required: true
+              }
+            },
+            {
+              value: "registerPflp",
+              text: i18n.whichTypePage.options.registerPflp,
+              attributes: {
+                required: true
+              }
+            },
+            {
+              value: "registerSlp",
+              text: i18n.whichTypePage.options.registerSlp,
+              attributes: {
+                required: true
+              }
+            },
+            {
+              value: "registerPflpSco",
+              text: i18n.whichTypePage.options.registerPflpSco,
+              attributes: {
+                required: true
+              }
+            },
+            {
+              value: "registerSqp",
+              text: i18n.whichTypePage.options.registerSqp,
+              attributes: {
+                required: true
+              }
+            }
+          ]
+        }) }}
+
+        {% include "includes/continue-button.njk" %} 
+      </form>
+    </div>
+  </div>
+
+{% endblock %}

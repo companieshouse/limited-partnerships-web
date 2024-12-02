@@ -1,6 +1,7 @@
-enum PageType {
+enum RegistrationPageType {
   name = "name",
+  whichType = "which-type",
   next = "next",
 }
 
-export default PageType;
+export default RegistrationPageType;

@@ -1,4 +1,5 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
+import escape from "escape-html";
 
 import RegistrationService from "../../../application/registration/Service";
 import registrationsRouting from "./Routing";
@@ -69,6 +70,28 @@ class RegistrationController extends AbstractController {
         );
 
         response.redirect(url);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  redirectWithParameter(): RequestHandler {
+    return (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const type = this.extractPageTypeOrThrowError(request);
+
+        const registrationRouting = super.getRouting(
+          registrationsRouting,
+          type
+        );
+
+        const url = super.insertIdsInUrl(registrationRouting.nextUrl);
+
+        const pageType = escape(request.body.pageType);
+        const parameter = escape(request.body.parameter);
+
+        response.redirect(`${url}?${pageType}=${parameter}`);
       } catch (error) {
         next(error);
       }
