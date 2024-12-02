@@ -1,6 +1,6 @@
-enum PageType {
+enum GlobalPageType {
   healthcheck = "healthcheck",
   start = "start",
 }
 
-export default PageType;
+export default GlobalPageType;

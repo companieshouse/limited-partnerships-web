@@ -207,6 +207,9 @@
         evt.preventDefault();
       }
     });
+
+    const params = new URLSearchParams(document.location.search);
+    const whichType = params.get("which-type");
   });
 </script>
 
