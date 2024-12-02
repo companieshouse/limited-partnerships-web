@@ -29,29 +29,19 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
     this.errors = errors;
   }
 
-  async getSubmissionById(id: string): Promise<LimitedPartnership> {
-    const limitedPartnerShip = this.limitedPartnerships.find(
-      (lp) => lp._id === id
-    );
-
-    if (!limitedPartnerShip) {
-      throw new CustomError("Limited partnership", `Not found: ${id}`);
-    }
-
-    return new LimitedPartnershipGatewayBuilder(limitedPartnerShip).build();
-  }
-
   async createTransaction(
+    opt: { access_token: string },
     registrationPageType: RegistrationPageType
   ): Promise<string> {
-    if (registrationPageType === RegistrationPageType.name) {
-      return this.transactionId;
+    if (registrationPageType !== RegistrationPageType.name) {
+      throw new Error("wrong type");
     }
 
-    return "";
+    return this.transactionId;
   }
 
   async createSubmission(
+    opt: { access_token: string },
     registrationPageType: RegistrationPageType,
     transactionId: string,
     data: Record<string, any>
@@ -94,15 +84,28 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
 
   private buildLimitedPartnership(
     pageType: RegistrationPageType,
-    data: Record<string, any>
+    data: Record<string, any>,
+    submissionId?: string
   ): TransactionLimitedPartnership {
     const limitedPartnershipBuilder = new LimitedPartnershipGatewayBuilder({
-      _id: this.submissionId,
+      _id: submissionId,
     });
 
     limitedPartnershipBuilder.withData(pageType, data);
 
     return limitedPartnershipBuilder.build();
+  }
+
+  async getSubmissionById(id: string): Promise<LimitedPartnership> {
+    const limitedPartnerShip = this.limitedPartnerships.find(
+      (lp) => lp._id === id
+    );
+
+    if (!limitedPartnerShip) {
+      throw new CustomError("Limited partnership", `Not found: ${id}`);
+    }
+
+    return new LimitedPartnershipGatewayBuilder(limitedPartnerShip).build();
   }
 }
 

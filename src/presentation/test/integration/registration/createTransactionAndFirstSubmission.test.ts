@@ -1,12 +1,21 @@
 import request from "supertest";
-import { NameEndingType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { Request, Response } from "express";
+import { createApiClient } from "@companieshouse/api-sdk-node";
+import {
+  LimitedPartnershipsService,
+  NameEndingType,
+} from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import TransactionService from "@companieshouse/api-sdk-node/dist/services/transaction/service";
 
 import app from "../app";
+import appRealDependencies from "../../../../app";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import {
   NAME_URL,
   registrationRoutingName,
 } from "../../../controller/registration/Routing";
+
+jest.mock("@companieshouse/api-sdk-node");
 
 describe("Create transaction and the first submission", () => {
   beforeAll(() => {
@@ -40,6 +49,47 @@ describe("Create transaction and the first submission", () => {
     expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
   });
 
+  it("should create a transaction and the first submission - appRealDependencies and mock", async () => {
+    const url = appDevDependencies.registrationController.insertIdsInUrl(
+      NAME_URL,
+      appDevDependencies.registrationGateway.transactionId,
+      appDevDependencies.registrationGateway.submissionId
+    );
+
+    const mockCreateApiClient = createApiClient as jest.Mock;
+    mockCreateApiClient.mockReturnValue({
+      transaction: {
+        ...TransactionService.prototype,
+        postTransaction: () => ({
+          httpStatusCode: 201,
+          resource: {
+            id: appDevDependencies.registrationGateway.transactionId,
+          },
+        }),
+      },
+      limitedPartnershipsService: {
+        ...LimitedPartnershipsService.prototype,
+        postLimitedPartnership: () => ({
+          httpStatusCode: 201,
+          resource: {
+            id: appDevDependencies.registrationGateway.submissionId,
+          },
+        }),
+      },
+    });
+
+    const res = await request(appRealDependencies).post(url).send({
+      pageType: registrationRoutingName.pageType,
+      partnership_name: "Test Limited Partnership",
+      name_ending: NameEndingType.LIMITED_PARTNERSHIP,
+    });
+
+    const partialRedirectUrl = `/limited-partnerships/transaction/${appDevDependencies.registrationGateway.transactionId}/submission/${appDevDependencies.registrationGateway.submissionId}/next`;
+
+    expect(res.status).toBe(302);
+    expect(res.text).toContain(`Redirecting to ${partialRedirectUrl}`);
+  });
+
   it("should return an error", async () => {
     const url = appDevDependencies.registrationController.insertIdsInUrl(
       NAME_URL,
@@ -53,5 +103,27 @@ describe("Create transaction and the first submission", () => {
 
     expect(res.status).toBe(200);
     // see when and where to display errors from the API
+  });
+
+  it("should return a status 500 if page type doesn't exist - sq", async () => {
+    const res = await request(app).post(NAME_URL).send({
+      pageType: "wrong-page-type",
+    });
+
+    expect(res.status).toBe(500);
+  });
+
+  it("should call next if type in path is incorrect - sq", async () => {
+    const next = jest.fn();
+
+    await appDevDependencies.globalController.getPageRouting()(
+      {
+        path: "/limited-partnerships/wrong-type",
+      } as Request,
+      {} as Response,
+      next
+    );
+
+    expect(next).toHaveBeenCalled();
   });
 });

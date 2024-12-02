@@ -1,27 +1,63 @@
 /* eslint-disable */
 
 import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { Transaction } from "@companieshouse/api-sdk-node/dist/services/transaction/types";
+import { createApiClient, Resource } from "@companieshouse/api-sdk-node";
 
-import RegistrationPageType from "presentation/controller/registration/PageType";
+import RegistrationPageType from "../../presentation/controller/registration/PageType";
 import IRegistrationGateway from "../../domain/IRegistrationGateway";
+import LimitedPartnershipGatewayBuilder from "./LimitedPartnershipGatewayBuilder";
 
 class RegistrationGateway implements IRegistrationGateway {
-  async getSubmissionById(id: string): Promise<LimitedPartnership> {
-    throw new Error("Method not implemented.");
-  }
-
   async createTransaction(
+    opt: { access_token: string },
     registrationPageType: RegistrationPageType
   ): Promise<string> {
-    throw new Error("Method not implemented.");
+    const api = this.createApi(opt.access_token);
+
+    const response = await api.transaction.postTransaction({
+      reference: "LimitedPartnershipsReference",
+      description: "Limited Partnerships Transaction",
+    });
+
+    if (response.httpStatusCode !== 201) {
+      throw response;
+    }
+
+    return (response as Resource<Transaction>)?.resource?.id ?? "";
   }
 
   async createSubmission(
+    opt: { access_token: string },
     registrationPageType: RegistrationPageType,
     transactionId: string,
     data: Record<string, any>
   ): Promise<string> {
+    const limitedPartnershipBuilder = new LimitedPartnershipGatewayBuilder();
+    limitedPartnershipBuilder.withData(registrationPageType, data);
+    const limitedPartnership = limitedPartnershipBuilder.build();
+
+    const api = this.createApi(opt.access_token);
+
+    const response =
+      await api.limitedPartnershipsService.postLimitedPartnership(
+        transactionId,
+        limitedPartnership
+      );
+
+    if (response.httpStatusCode !== 201) {
+      throw response;
+    }
+
+    return (response as Resource<Transaction>)?.resource?.id ?? "";
+  }
+
+  async getSubmissionById(id: string): Promise<LimitedPartnership> {
     throw new Error("Method not implemented.");
+  }
+
+  private createApi(access_token: string) {
+    return createApiClient(undefined, access_token);
   }
 }
 

@@ -10,12 +10,12 @@
       
       {% include "includes/csrf_token.njk" %}
 
-      <h1 class="govuk-heading-xl">Limited partnership name</h1>
+      <h1 class="govuk-heading-xl">{{ i18n.namePage.title }}</h1>
 
       <div class="govuk-form-group">
         <h1 class="govuk-label-wrapper">
           <label class="govuk-label govuk-label--l" for="partnership_name">
-            What is the limited partnership name?
+            {{ i18n.namePage.whatIsName }}
           </label>
         </h1>
 
@@ -32,7 +32,7 @@
             }
           },
           hint: {
-            text: "Do not enter a name ending, like Limited Partnership or LP. We'll add this for you."
+            text: i18n.namePage.whatIsNameHint
           },
           attributes : {
             required : true,
@@ -58,7 +58,7 @@
         <fieldset class="govuk-fieldset" aria-describedby="nameEnding-hint">
           <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
             <h1 class="govuk-fieldset__heading">
-              Which limited partnership name ending would you prefer to go on the public record?
+              {{ i18n.namePage.nameEnding }}
             </h1>
           </legend>
 
@@ -112,8 +112,7 @@
               }
             },
             hint: {
-              text: "There's no difference between the name endings Limited
-              Partnership, LP and L.P. except for how they look."
+              text: i18n.namePage.nameEndingHint
             },
             items: [
               {

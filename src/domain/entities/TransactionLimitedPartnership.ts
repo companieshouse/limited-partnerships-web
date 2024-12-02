@@ -4,8 +4,6 @@ import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/l
 
 type TransactionLimitedPartnership = LimitedPartnership & {
   _id?: string;
-  created_at?: Date;
-  updated_at?: Date;
 };
 
 export default TransactionLimitedPartnership;

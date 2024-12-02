@@ -17,6 +17,7 @@ class RegistrationService {
   }
 
   async createTransactionAndFirstSubmission(
+    opt: { access_token: string },
     registrationType: RegistrationPageType,
     data: Record<string, any>
   ): Promise<{
@@ -26,10 +27,12 @@ class RegistrationService {
   }> {
     try {
       const transactionId = await this.registrationGateway.createTransaction(
+        { access_token: opt.access_token },
         registrationType
       );
 
       const submissionId = await this.registrationGateway.createSubmission(
+        { access_token: opt.access_token },
         registrationType,
         transactionId,
         data
@@ -37,9 +40,7 @@ class RegistrationService {
 
       return { submissionId, transactionId };
     } catch (error: any) {
-      const errors = !Array.isArray(error)
-        ? [new CustomError("500", error.message)]
-        : error;
+      const errors = Array.isArray(error) ? error : [error];
 
       logger.error(
         `Error creating transaction or submission: ${JSON.stringify(errors)}`

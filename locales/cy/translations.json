@@ -1,14 +1,35 @@
 {
+    "buttons" : {
+        "saveAndContinue" : "WELSH - Save and continue"
+    },
+
+    "namePage" : {
+        "title" : "WELSH - Limited partnership name",
+        "whatIsName" : "WELSH - What is the limited partnership name?",
+        "whatIsNameHint" : "WELSH - Do not enter a name ending, like Limited Partnership or LP. We'll add this for you.",
+        "checkName" : "WELSH - Check the limited partnership name against an existing trademark",
+        "checkNameExistingLP" : "WELSH - You must check the name is not the same as an existing limited partnership on the <a href='#/'>Companies House register (link opens in a new tab)</a>. If it is, we will reject your application.",
+        "checkNameExistingTrademark" : "WELSH - You should also use the <a href='https://www.gov.uk/search-for-trade mark' target='_blank'>trade mark search (link opens in a new tab)</a> to check if your name matches an existing trade mark. If it does, consider choosing a different name. Companies House will not carry out this check for you.",
+        "nameEnding" : "WELSH - Which limited partnership name ending would you prefer to go on the public record?",
+        "nameEndingHint" : "WELSH - There's no difference between the name endings Limited Partnership, LP and L.P. except for how they look."
+    },
+
     "startPage" : {
         "title" : "Partneriaethau Cyfyngedig yw hyn",
         "errorStartAddressMissing" : "Rhowch gyfeiriad"
     },
 
     "pageNotFound" : {
-        "title" : "WELSH - Page Not Found"
+        "title" : "WELSH - Page Not Found",
+        "spelling" : "WELSH - If you typed the web address, check it is spelled correctly.",
+        "copiedAddress" : "WELSH - If you pasted the web address, check you copied the entire address.",
+        "movedPage" : "WELSH - If the web address is correct or you selected a link, the page may have moved.",
+        "goToStartPage" : "WELSH - To register a limited partnership, go to the <a class='govuk-link' href='/limited-partnerships/start'>Register a limited partnership</a> start page."
     },
 
     "errorPage" : {
-        "title" : "WELSH - Sorry, the service is unavailable"
+        "title" : "WELSH - Sorry, the service is unavailable",
+        "tryLater" : "WELSH - You will be able to use the service at a later date.",
+        "moreInfo" : "WELSH - Email <a class='govuk-link' href='mailto: enquiries@companieshouse.gov.uk'>enquiries@companieshouse.gov.uk</a>, if you need more information."
     }
 }
