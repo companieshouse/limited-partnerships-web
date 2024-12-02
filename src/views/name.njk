@@ -39,7 +39,6 @@
             "aria-describedby": "partnership_name-hint",
             minLength: "1"
           },
-          pattern : "^(?! ).*(?<! )$",
           suffix: {
             text: "Limited Partnership"
           }
@@ -205,6 +204,7 @@
       if (!suffixDiv.textContent) {
         evt.preventDefault();
       }
+      nameField.value = nameField.value.trim();
     });
 
     const params = new URLSearchParams(document.location.search);
