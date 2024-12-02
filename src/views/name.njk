@@ -177,8 +177,6 @@
       const nameLength = document.getElementById('partnership_name').value.length;
       const suffixLength =  suffixDiv.textContent.length;
       const maxLength = 160;
-      console.log("Name Length = " + nameLength);
-      console.log("Suffix Length = " + suffixLength);
       if (nameLength + suffixLength > maxLength){
         nameField.setCustomValidity(`Max length including suffix is ${maxLength} characters`);
       } else {
