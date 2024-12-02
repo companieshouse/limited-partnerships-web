@@ -4,7 +4,7 @@ import app from "../app";
 import { WHICH_TYPE_URL } from "../../../controller/registration/Routing";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import enTranslationText from "../../../../../locales/en/translations.json";
-import RegistrationPageType from "presentation/controller/registration/PageType";
+import RegistrationPageType from "../../../../presentation/controller/registration/PageType";
 
 describe("Which type Page", () => {
   beforeAll(() => {

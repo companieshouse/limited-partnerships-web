@@ -1,6 +1,6 @@
 {
     "buttons" : {
-        "continue" : "WELCH - Continue",
+        "continue" : "WELSH - Continue",
         "saveAndContinue" : "WELSH - Save and continue"
     },
 
@@ -21,13 +21,13 @@
     },
 
     "whichTypePage": {
-        "title": "WELCH - Which type of partnership do you want to register",
+        "title": "WELSH - Which type of partnership do you want to register",
         "options": {
-            "registerLp": "WELCH - Limited partnership in England, Wales or Northern Ireland",
-            "registerPflp": "WELCH - Private fund limited partnership in England, Wales or Northern Ireland",
-            "registerSlp": "WELCH - Scottish limited partnership",
-            "registerPflpSco": "WELCH - Private fund limited partnership in Scotland",
-            "registerSqp": "WELCH - Scottish qualifying partnership"
+            "registerLp": "WELSH - Limited partnership in England, Wales or Northern Ireland",
+            "registerPflp": "WELSH - Private fund limited partnership in England, Wales or Northern Ireland",
+            "registerSlp": "WELSH - Scottish limited partnership",
+            "registerPflpSco": "WELSH - Private fund limited partnership in Scotland",
+            "registerSqp": "WELSH - Scottish qualifying partnership"
         }
     },
 
