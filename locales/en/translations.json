@@ -15,6 +15,13 @@
         "nameEndingHint" : "There's no difference between the name endings Limited Partnership, LP and L.P. except for how they look."
     },
 
+    "pflpNamePage" : {
+        "title" : "",
+        "whatIsName": "What's the name of the private fund limited partnership'?",
+        "whatIsNameHint": "Do not enter a name ending like Limited Partnership or PF LP. We will add this for you.",
+        "checkNameExistingTrademark": "Use the <a href='https://www.gov.uk/search-for-trademark' target='_blank">trade mark search (link opens in a new tab)</a> to check if your name matches an existing trade mark. If it does, consider choosing a different name. Companies House will not carry out this check for you."
+    },
+
     "startPage" : {
         "title" : "This is Limited Partnerships",
         "errorStartAddressMissing" : "Please enter an address"

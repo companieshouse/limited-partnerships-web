@@ -1,0 +1,103 @@
+<div class="govuk-form-group">
+  <fieldset class="govuk-fieldset" aria-describedby="nameEnding-hint">
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+      <h1 class="govuk-fieldset__heading">
+        {{ i18n.namePage.nameEnding }}
+      </h1>
+    </legend>
+
+    {% set welsh %}
+      {{ govukRadios({
+        errorMessage: errors.name_ending if errors,
+        classes: "govuk-radios",
+        idPrefix: "name_ending",
+        name: "name_ending",
+        items: [
+          {
+            value: "Partneriaeth Cyfyngedig",
+            text: "Partneriaeth Cyfyngedig",
+            id: "nameEnding-1",
+            name: "name_ending",
+            attributes: {
+              required: true
+            }
+          },
+          {
+            value: "PC",
+            text: "PC",
+            id: "nameEnding-2",
+            name: "name_ending",
+            attributes: {
+            required: true
+          }
+        },
+        {
+          value: "P.C.",
+          text: "P.C.",
+          id: "nameEnding-3",
+          name: "name_ending",
+          attributes: {
+            required: true
+          }
+        }]
+      }) }}
+    {% endset -%}
+
+    {{ govukRadios({
+      errorMessage: errors.name_ending if errors,
+      classes: "govuk-radios",
+      idPrefix: "name_ending",
+      name: "name_ending",
+      fieldset: {
+        legend: {
+        isPageHeading: false,
+        classes: "govuk-fieldset__legend--xl"
+      }
+      },
+        hint: {
+          text: i18n.namePage.nameEndingHint
+        },
+        items: [
+          {
+            value: "Limited Partnership",
+            text: "Limited Partnership",
+            id: "nameEnding-1",
+            name: "name_ending",
+            attributes: {
+              required: true
+            }
+          },
+          {
+            value: "LP",
+            text: "LP",
+            id: "nameEnding-2",
+            name: "name_ending",
+            attributes: {
+              required: true
+            }
+          },
+          {
+            value: "L.P.",
+            text: "L.P.",
+            id: "nameEnding-3",
+            name: "name_ending",
+            attributes: {
+              required: true
+            }
+          },
+          {
+            value: "",
+            text: "A Welsh name ending",
+            id: "nameEnding-4",
+            name: "name_ending",
+            conditional: {
+              html: welsh
+            }
+          }]
+        }) }}
+      </fieldset>
+    </div>
+   {% include "includes/save-and-continue-button.njk" %}
+    </form>
+  </div>
+</div>

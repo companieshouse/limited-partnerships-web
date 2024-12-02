@@ -1,0 +1,57 @@
+{% extends "layouts/main.html" %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <form class="form" action={{ props.currentUrl }} method="post">
+
+      <input type="hidden" name="pageType" value={{ props.pageType }}>
+
+      {% include "includes/csrf_token.njk" %}
+
+      <h1 class="govuk-heading-xl">{{ i18n.pflpNamePage.title }}</h1>
+
+      <div class="govuk-form-group">
+        <h1 class="govuk-label-wrapper">
+          <label class="govuk-label govuk-label--l" for="partnership_name">
+            {{ i18n.pflpNamePage.checkNameExistingTrademark }}
+          </label>
+        </h1>
+
+        {{ govukInput({
+          classes: "govuk-input--width-40",
+          errorMessage: errors.pfl_partnership_name if errors,
+          id: "pflPartnership_name",
+          name: "pflPartnership_name",
+          value: pflPartnership_name,
+          fieldset: {
+            legend: {
+              isPageHeading: false,
+              classes: "govuk-fieldset__legend--xl"
+            }
+          },
+          hint: {
+            text: i18n.namePage.whatIsNameHint
+          },
+          attributes : {
+            required : true,
+            "aria-describedby": "partnership_name-hint",
+            minLength: "3"
+          },
+          suffix: {
+              text: "Limited Partnership"
+            }
+          }) }}
+      </div>   
+
+      {{ govukInsetText({
+        html: i18n.pflpNamePage.checkNameExistingTrademark
+      }) }}
+
+      {% include "includes/name-ending.njk" %}
+    </form>  
+  </div>      
+</div>   
+
+{% endblock %}
