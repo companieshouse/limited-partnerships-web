@@ -174,7 +174,7 @@
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     function validateNameLength() {
-      const nameLength = document.getElementById('partnership_name').value.length;
+      const nameLength = nameField.value.length;
       const suffixLength =  suffixDiv.textContent.length;
       const maxLength = 160;
       if (nameLength + suffixLength > maxLength){
