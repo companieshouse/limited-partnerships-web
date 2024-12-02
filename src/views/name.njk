@@ -37,7 +37,7 @@
           attributes : {
             required : true,
             "aria-describedby": "partnership_name-hint",
-            minLength: "2"
+            minLength: "1"
           },
           pattern : "^(?! ).*(?<! )$",
           suffix: {
@@ -174,10 +174,9 @@
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     function validateNameLength() {
-      const nameLength = nameField.value.length;
-      const suffixLength =  suffixDiv.textContent.length;
+      const name = nameField.value + " " + suffixDiv.textContent;
       const maxLength = 160;
-      if (nameLength + suffixLength > maxLength){
+      if (name.length > maxLength){
         nameField.setCustomValidity(`Max length including suffix is ${maxLength} characters`);
       } else {
         nameField.setCustomValidity('');
