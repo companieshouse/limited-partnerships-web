@@ -37,7 +37,7 @@
           attributes : {
             required : true,
             "aria-describedby": "partnership_name-hint",
-            minLength: "3"
+            minLength: "1"
           },
           suffix: {
             text: "Limited Partnership"
@@ -164,6 +164,17 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
+    function validateNameLength() {
+      const name = nameField.value + " " + suffixDiv.textContent;
+      const maxLength = 160;
+      if (name.length > maxLength){
+        nameField.setCustomValidity(`Max length including suffix is ${maxLength} characters`);
+      } else {
+        nameField.setCustomValidity('');
+      }
+      nameField.reportValidity();
+    };
+
     const suffixDiv = document.querySelector('.govuk-input__suffix');
     const radioButtons = document.querySelectorAll('input[name="name_ending"]');
 
@@ -171,9 +182,13 @@
       radioButton.addEventListener('change', function() {
         if (radioButton.checked) {
           suffixDiv.textContent = radioButton.value;
+          validateNameLength();
         }
       });
     });
+
+    const nameField = document.getElementById('partnership_name');
+    nameField.addEventListener('keyup', validateNameLength);
 
     const form = document.querySelector('.form');
 
@@ -181,6 +196,7 @@
       if (!suffixDiv.textContent) {
         evt.preventDefault();
       }
+      nameField.value = nameField.value.trim();
     });
 
     const params = new URLSearchParams(document.location.search);
