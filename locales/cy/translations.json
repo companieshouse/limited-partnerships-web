@@ -18,6 +18,14 @@
         "existingTrademarkHint" : "WELSH - You should also use the <a href='https://www.gov.uk/search-for-trademark' target='_blank'>trade mark search (opens in a new tab)</a> to check if your name matches an existing trade mark. If it does, consider choosing a different name. Companies House will not carry out this check for you."
     },
 
+    "privateNamePage" : {
+        "title" : "WELSH -  Private fund limited partnership name",
+        "whatIsName": "WELSH - What's the name of the private fund limited partnership'?",
+        "whatIsNameHint": "WELSH - Do not enter a name ending like Limited Partnership or PF LP. We will add this for you.",
+        "checkNameExistingTrademark": "WELSH - Use the <a href='https://www.gov.uk/search-for-trademark' target='_blank'>trade mark search (link opens in a new tab)</a> to check if your name matches an existing trade mark. If it does, consider choosing a different name. Companies House will not carry out this check for you.",
+        "nameEnding" : "WELSH - Which private fund limited partnership name ending would you prefer to go on the public record?"
+    },
+
     "startPage" : {
         "title" : "Partneriaethau Cyfyngedig yw hyn",
         "errorStartAddressMissing" : "Rhowch gyfeiriad"
