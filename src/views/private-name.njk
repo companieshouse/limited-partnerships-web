@@ -49,7 +49,7 @@
       </div>   
 
       {{ govukInsetText({
-        html: i18n.privateNamePage.checkNameExistingTrademark
+        html: '<p>' + i18n.privateNamePage.existingPartnershipHint + '</p><p>' + i18n.privateNamePage.sensitiveWordHint + '</p><p>' + i18n.privateNamePage.existingTrademarkHint + '</p>'
       }) }}
 
       {% include "includes/name-ending.njk" %}

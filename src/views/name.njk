@@ -49,11 +49,7 @@
       </div>
 
       {{ govukInsetText({
-        html: 
-        '<p>{{ i18n.namePage.existingPartnershipHint }}</p>
-        <p>{{ i18n.namePage.sensitiveWordHint }}</p>
-        <p>{{ i18n.namePage.existingTrademarkHint }}</p>
-        '
+        html: '<p>' + i18n.namePage.existingPartnershipHint + '</p><p>' + i18n.namePage.sensitiveWordHint + '</p><p>' + i18n.namePage.existingTrademarkHint + '</p>'
       }) }}
 
       {% include "includes/name-ending.njk" %}
