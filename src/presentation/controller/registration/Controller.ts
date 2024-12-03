@@ -28,8 +28,10 @@ class RegistrationController extends AbstractController {
           submissionId
         );
 
+        const parameters = request.query;
+
         response.render(super.templateName(pageRouting.currentUrl), {
-          props: pageRouting,
+          props: { ...pageRouting, parameters },
         });
       } catch (error) {
         next(error);
