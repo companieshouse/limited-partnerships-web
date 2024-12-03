@@ -2,6 +2,10 @@
 
 {% block content %}
 
+{# parameter example #}
+{# 
+  {{ props.parameters['which-type'] }} 
+#}
 
 {% if type = "" %}
 
@@ -45,9 +49,6 @@
       }
       nameField.value = nameField.value.trim();
     });
-
-    const params = new URLSearchParams(document.location.search);
-    const whichType = params.get("which-type");
   });
 </script>
 
