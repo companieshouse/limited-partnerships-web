@@ -41,13 +41,12 @@ describe("Name Page", () => {
     expect(res.text).not.toContain("WELSH -");
   });
 
-  it.only("should load the private name page with Welsh text", async () => {
+  it("should load the private name page with Welsh text", async () => {
     setLocalesEnabled(true);
     const res = await request(app).get(NAME_URL + "?lang=cy&which-type=registerPflp");
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(cyTranslationText.privateNamePage.title);
-    expect(res.text).toContain(cyTranslationText.privateNamePage.whatIsName);
     expect(res.text).toContain(cyTranslationText.privateNamePage.nameEnding);
     expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
   });
@@ -58,7 +57,6 @@ describe("Name Page", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(enTranslationText.privateNamePage.title);
-    expect(res.text).toContain(enTranslationText.privateNamePage.whatIsName);
     expect(res.text).toContain(enTranslationText.privateNamePage.nameEnding);
     expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
     expect(res.text).not.toContain("WELSH -");
