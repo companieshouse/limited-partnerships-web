@@ -18,9 +18,9 @@ describe("Name Page", () => {
     LocalesService.getInstance().enabled = bool;
   };
 
-  it("should load the name page with Welsh text", async () => {
+  it("should load the name lp page with Welsh text", async () => {
     setLocalesEnabled(true);
-    const res = await request(app).get(NAME_URL + "?lang=cy");
+    const res = await request(app).get(NAME_URL + "?lang=cy&which-type=registerLp");
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(cyTranslationText.namePage.title);
@@ -31,12 +31,35 @@ describe("Name Page", () => {
 
   it("should load the name page with English text", async () => {
     setLocalesEnabled(true);
-    const res = await request(app).get(NAME_URL + "?lang=en");
+    const res = await request(app).get(NAME_URL + "?lang=en&which-type=registerLp");
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(enTranslationText.namePage.title);
     expect(res.text).toContain(enTranslationText.namePage.whatIsName);
     expect(res.text).toContain(enTranslationText.namePage.nameEnding);
+    expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
+    expect(res.text).not.toContain("WELSH -");
+  });
+
+  it.only("should load the private name page with Welsh text", async () => {
+    setLocalesEnabled(true);
+    const res = await request(app).get(NAME_URL + "?lang=cy&which-type=registerPflp");
+
+    expect(res.status).toBe(200);
+    expect(res.text).toContain(cyTranslationText.privateNamePage.title);
+    expect(res.text).toContain(cyTranslationText.privateNamePage.whatIsName);
+    expect(res.text).toContain(cyTranslationText.privateNamePage.nameEnding);
+    expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
+  });
+
+  it("should load the private name page with English text", async () => {
+    setLocalesEnabled(true);
+    const res = await request(app).get(NAME_URL + "?lang=en&which-type=registerPflp");
+
+    expect(res.status).toBe(200);
+    expect(res.text).toContain(enTranslationText.privateNamePage.title);
+    expect(res.text).toContain(enTranslationText.privateNamePage.whatIsName);
+    expect(res.text).toContain(enTranslationText.privateNamePage.nameEnding);
     expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
     expect(res.text).not.toContain("WELSH -");
   });

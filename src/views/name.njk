@@ -7,10 +7,10 @@
   {{ props.parameters['which-type'] }} 
 #}
 
-{% if type = "" %}
-
+{% if props.parameters['which-type'] == "registerPflp" %}
+  {% include "pages/private-limited-partnership-name.njk" %}
 {% else %}
-
+  {% include "pages/limited-partnership-name.njk" %}
 {% endif %}
 
 <script>

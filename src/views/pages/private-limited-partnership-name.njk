@@ -11,7 +11,7 @@
       <div class="govuk-form-group">
         <h1 class="govuk-label-wrapper">
           <label class="govuk-label govuk-label--l" for="partnership_name">
-            {{ i18n.privateNamePage.checkNameExistingTrademark }}
+            {{ i18n.privateNamePage.whatIsName }}
           </label>
         </h1>
 
@@ -42,7 +42,7 @@
       </div>   
 
       {{ govukInsetText({
-        html: '<p>' + i18n.privateNamePage.existingPartnershipHint + '</p><p>' + i18n.privateNamePage.sensitiveWordHint + '</p><p>' + i18n.privateNamePage.existingTrademarkHint + '</p>'
+        html:'<p>' + i18n.privateNamePage.existingTrademarkHint + '</p>'
       }) }}
 
      <div class="govuk-form-group">
@@ -144,7 +144,7 @@
         }) }}
       </fieldset>
     </div>
-    { % include "includes/save-and-continue-button.njk" %}
+    {% include "includes/save-and-continue-button.njk" %}
     </form>
   </div>
 </div>
