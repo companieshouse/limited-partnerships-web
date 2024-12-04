@@ -28,7 +28,7 @@ export const PORT = getEnvironmentValue("PORT");
 export const isLocalesEnabled = () =>
   getEnvironmentValueAsBoolean("LOCALES_ENABLED");
 
-export const SERVICE_NAME = "Limited Partnerships";
+export const SERVICE_NAME = "File for a limited partnership";
 
 // Templates
 export const ERROR_TEMPLATE = "error-page";
