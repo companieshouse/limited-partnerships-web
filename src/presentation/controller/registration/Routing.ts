@@ -33,7 +33,7 @@ export const registrationRoutingName = {
 };
 
 const registrationRoutingNext = {
-  previousUrl: NAME_URL,
+  previousUrl: WHICH_TYPE_URL,
   currentUrl: NEXT_URL,
   nextUrl: "/",
   pageType: RegistrationPageType.next,
