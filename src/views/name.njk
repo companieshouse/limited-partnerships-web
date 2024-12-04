@@ -7,6 +7,7 @@
   <div class="govuk-grid-column-two-thirds">
     <form class="form" action={{ props.currentUrl }} method="post">
       <input type="hidden" name="pageType" value={{ props.pageType }}>
+      <input type="hidden" id="name_ending" name="name_ending">
       
       {% include "includes/csrf_token.njk" %}
 
@@ -58,18 +59,16 @@
             </h1>
           </legend>
 
-          {% set welsh %}
+          {% set welshRadios %}
             {{ govukRadios({
               errorMessage: errors.name_ending if errors,
               classes: "govuk-radios",
-              idPrefix: "name_ending",
-              name: "name_ending",
+              idPrefix: "welsh_name_ending",
+              name: "welsh_name_ending",
               items: [
                 {
                   value: "Partneriaeth Cyfyngedig",
                   text: "Partneriaeth Cyfyngedig",
-                  id: "nameEnding-1",
-                  name: "name_ending",
                   attributes: {
                     required: true
                   }
@@ -77,8 +76,6 @@
                 {
                   value: "PC",
                   text: "PC",
-                  id: "nameEnding-2",
-                  name: "name_ending",
                   attributes: {
                     required: true
                   }
@@ -86,8 +83,6 @@
                 {
                   value: "P.C.",
                   text: "P.C.",
-                  id: "nameEnding-3",
-                  name: "name_ending",
                   attributes: {
                     required: true
                   }
@@ -99,8 +94,8 @@
           {{ govukRadios({
             errorMessage: errors.name_ending if errors,
             classes: "govuk-radios",
-            idPrefix: "name_ending",
-            name: "name_ending",
+            idPrefix: "english_name_ending",
+            name: "english_name_ending",
             fieldset: {
               legend: {
                 isPageHeading: false,
@@ -114,8 +109,7 @@
               {
                 value: "Limited Partnership",
                 text: "Limited Partnership",
-                id: "nameEnding-1",
-                name: "name_ending",
+                id: "englishNameEnding-1",
                 attributes: {
                   required: true
                 }
@@ -123,8 +117,7 @@
               {
                 value: "LP",
                 text: "LP",
-                id: "nameEnding-2",
-                name: "name_ending",
+                id: "englishNameEnding-2",
                 attributes: {
                   required: true
                 }
@@ -132,8 +125,7 @@
               {
                 value: "L.P.",
                 text: "L.P.",
-                id: "nameEnding-3",
-                name: "name_ending",
+                id: "englishNameEnding-3",
                 attributes: {
                   required: true
                 }
@@ -141,10 +133,9 @@
               {
                 value: "",
                 text: "A Welsh name ending",
-                id: "nameEnding-4",
-                name: "name_ending",
+                id: "englishNameEnding-4",
                 conditional: {
-                  html: welsh
+                  html: welshRadios
                 }
               }
             ]
@@ -171,13 +162,17 @@
       nameField.reportValidity();
     };
 
+    const name_ending = document.getElementById('name_ending');
     const suffixDiv = document.querySelector('.govuk-input__suffix');
-    const radioButtons = document.querySelectorAll('input[name="name_ending"]');
+    const englishadioButtons = document.querySelectorAll('input[name="english_name_ending"]');
+    const welshRadioButtons = document.querySelectorAll('input[name="welsh_name_ending"]');
+    const allRadioButtons = [...englishRadioButtons, ...welshRadioButtons];
 
-    radioButtons.forEach(function(radioButton) {
+    allRadioButtons.forEach(function(radioButton) {
       radioButton.addEventListener('change', function() {
         if (radioButton.checked) {
           suffixDiv.textContent = radioButton.value;
+          name_ending.value = radioButton.value;
           validateNameLength();
         }
       });
