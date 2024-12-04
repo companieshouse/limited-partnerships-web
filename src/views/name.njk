@@ -2,10 +2,12 @@
 
 {% block content %}
 
-{% if props.parameters['which-type'] == "registerPflp" %}
-  {% include "pages/name/private-limited-partnership-name.njk" %}
+{% if props.parameters['which-type'] == "registerLp" %}
+   {% include "pages/name/limited-partnership-name.njk" %}
+{% elif props.parameters['which-type'] == "registerPflp" %}
+  {% include "pages/name/private-limited-partnership-name.njk" %}  
 {% else %}
-  {% include "pages/name/limited-partnership-name.njk" %}
+  <p>Under construction</p>
 {% endif %}
 
 <script>
