@@ -18,7 +18,7 @@ describe("Name Page", () => {
     LocalesService.getInstance().enabled = bool;
   };
 
-  it("should load the name lp page with Welsh text", async () => {
+  it("should load the name page with Welsh text", async () => {
     setLocalesEnabled(true);
     const res = await request(app).get(NAME_URL + "?lang=cy&which-type=registerLp");
 
