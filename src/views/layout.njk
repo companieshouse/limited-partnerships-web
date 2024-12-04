@@ -1,5 +1,6 @@
 {% extends "govuk/template.njk" %}
 
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
@@ -36,6 +37,7 @@
     {% include "ch-node-utils/templates/locales-banner.njk" %}
 
     {% block backLink %}
+      {% include "includes/back-link.njk" %}
     {% endblock %}
     {% block signOutBanner %}
       {% include "includes/sign-out-user-banner.njk" %}

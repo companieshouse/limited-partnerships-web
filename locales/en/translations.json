@@ -24,7 +24,7 @@
     },
 
     "whichTypePage": {
-        "title": "Which type of partnership do you want to register",
+        "title": "Which type of partnership do you want to register?",
         "options": {
             "registerLp": "Limited partnership in England, Wales or Northern Ireland",
             "registerPflp": "Private fund limited partnership in England, Wales or Northern Ireland",
