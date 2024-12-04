@@ -2,15 +2,10 @@
 
 {% block content %}
 
-{# parameter example #}
-{# 
-  {{ props.parameters['which-type'] }} 
-#}
-
 {% if props.parameters['which-type'] == "registerPflp" %}
-  {% include "pages/private-limited-partnership-name.njk" %}
+  {% include "pages/name/private-limited-partnership-name.njk" %}
 {% else %}
-  {% include "pages/limited-partnership-name.njk" %}
+  {% include "pages/name/limited-partnership-name.njk" %}
 {% endif %}
 
 <script>
