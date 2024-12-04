@@ -5,6 +5,7 @@ import { authentication } from "../middlewares";
 import { IDependencies } from "../config/IDependencies";
 
 import {
+  EMAIL_URL,
   NAME_URL,
   NEXT_URL,
   WHICH_TYPE_URL,
@@ -34,6 +35,12 @@ export const registrationEndpoints = (
     NAME_URL,
     authentication,
     dependencies.registrationController.createTransactionAndFirstSubmission()
+  );
+
+  router.get(
+    EMAIL_URL,
+    authentication,
+    dependencies.registrationController.getPageRouting()
   );
 
   router.get(

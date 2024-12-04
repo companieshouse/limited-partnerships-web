@@ -1,0 +1,49 @@
+{% extends "layout.njk" %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+    <form class="form" action={{ props.currentUrl }} method="post">
+      <input type="hidden" name="pageType" value={{ props.pageType }}>
+      
+      {% include "includes/csrf_token.njk" %}
+
+      <h1 class="govuk-heading-xl">{{ i18n.emailPage.title }}</h1>
+   
+      {{ govukInput({
+        label: {
+          text: i18n.emailPage.whatIsEmail,
+          classes: "govuk-label--xl",
+          isPageHeading: true
+        },
+        hint: {
+          text: i18n.emailPage.emailHint
+        },
+        id: "registered-email",
+        name: "registeredEmail",
+        value: props.data.email,
+        type: "email",
+        attributes : {
+          required : true
+        }
+      }) }}
+
+
+      <details class="govuk-details" data-module="govuk-details">
+        <summary class="govuk-details__summary">
+          <span class="govuk-details__summary-text">
+            {{ i18n.emailPage.emailUsedFor.title }}
+          </span>
+        </summary>
+        <div class="govuk-details__text">
+          <p class="govuk-body">{{ i18n.emailPage.emailUsedFor.paragraphe1 }}</p>
+          <p class="govuk-body">{{ i18n.emailPage.emailUsedFor.paragraphe2 }}</p>
+        </div>
+      </details>
+
+      {% include "includes/save-and-continue-button.njk" %}
+    </form>
+  </div>
+</div>
+
+{% endblock %}

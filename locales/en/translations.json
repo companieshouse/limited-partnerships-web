@@ -34,6 +34,17 @@
         }
     },
 
+    "emailPage" : {
+        "title" : "Limited partnership email",
+        "whatIsEmail" : "What is the registered email address for the partnership?",
+        "emailHint" : "Partners must be able to access emails that are sent to this address.",
+        "emailUsedFor" : { 
+            "title": "What is the registered email address used for?",
+            "paragraphe1": "In future we'll use this to send important information that relates to the limited partnership. For example, new legislative requirements or warnings about missed deadlines.",
+            "paragraphe2": "It will not be shown on the public register."
+        }
+    },
+
     "pageNotFound" : {
         "title" : "Page not found",
         "spelling" : "If you typed the web address, check it is spelled correctly.",
