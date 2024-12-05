@@ -17,6 +17,8 @@ import {
 
 jest.mock("@companieshouse/api-sdk-node");
 
+const NAME_PAGE_URL = NAME_URL + "?which-type=registerLp";
+
 describe("Create transaction and the first submission", () => {
   beforeAll(() => {
     appDevDependencies.registrationGateway.feedLimitedPartnerships([]);
@@ -24,7 +26,7 @@ describe("Create transaction and the first submission", () => {
   });
 
   it("should load the name page with status 200", async () => {
-    const res = await request(app).get(NAME_URL);
+    const res = await request(app).get(NAME_PAGE_URL);
 
     expect(res.status).toBe(200);
     expect(res.text).toContain("What is the limited partnership name?");
@@ -32,7 +34,7 @@ describe("Create transaction and the first submission", () => {
 
   it("should create a transaction and the first submission", async () => {
     const url = appDevDependencies.registrationController.insertIdsInUrl(
-      NAME_URL,
+      NAME_PAGE_URL,
       appDevDependencies.registrationGateway.transactionId,
       appDevDependencies.registrationGateway.submissionId
     );
@@ -51,7 +53,7 @@ describe("Create transaction and the first submission", () => {
 
   it("should create a transaction and the first submission - appRealDependencies and mock", async () => {
     const url = appDevDependencies.registrationController.insertIdsInUrl(
-      NAME_URL,
+      NAME_PAGE_URL,
       appDevDependencies.registrationGateway.transactionId,
       appDevDependencies.registrationGateway.submissionId
     );
@@ -92,7 +94,7 @@ describe("Create transaction and the first submission", () => {
 
   it("should return an error", async () => {
     const url = appDevDependencies.registrationController.insertIdsInUrl(
-      NAME_URL,
+      NAME_PAGE_URL,
       appDevDependencies.registrationGateway.transactionId,
       appDevDependencies.registrationGateway.submissionId
     );
