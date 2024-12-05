@@ -7,8 +7,6 @@
       <input type="hidden" name="pageType" value={{ props.pageType }}>
       
       {% include "includes/csrf_token.njk" %}
-
-      <h1 class="govuk-heading-xl">{{ i18n.emailPage.title }}</h1>
    
       {{ govukInput({
         label: {

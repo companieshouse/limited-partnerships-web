@@ -46,7 +46,6 @@
     },
 
     "emailPage" : {
-        "title" : "Limited partnership email",
         "whatIsEmail" : "What is the registered email address for the partnership?",
         "emailHint" : "Partners must be able to access emails that are sent to this address.",
         "emailUsedFor" : { 
