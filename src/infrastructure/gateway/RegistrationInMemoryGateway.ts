@@ -68,16 +68,11 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
       throw this.errors;
     }
 
-    const limitedPartnership = this.buildLimitedPartnership(
-      registrationPageType,
-      data
-    );
+    const limitedPartnershipBuilder = new LimitedPartnershipGatewayBuilder();
 
-    if (transactionId === this.transactionId) {
-      this.limitedPartnerships[0] = limitedPartnership;
-    } else {
-      this.limitedPartnerships.push(limitedPartnership);
-    }
+    limitedPartnershipBuilder.withData(registrationPageType, data);
+
+    this.limitedPartnerships.push(limitedPartnershipBuilder.build());
 
     return this.submissionId;
   }
@@ -88,26 +83,18 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
     registrationPageType: RegistrationPageType,
     data: Record<string, any>
   ): Promise<void> {
-    if (submissionId === this.submissionId) {
-      const limitedPartnershipBuilder = new LimitedPartnershipGatewayBuilder({
-        _id: submissionId,
-        data: this.limitedPartnerships[0].data,
-      });
+    let index = this.limitedPartnerships.findIndex(
+      (lp) => lp._id === submissionId
+    );
 
-      limitedPartnershipBuilder.withData(registrationPageType, data);
+    const limitedPartnershipBuilder = new LimitedPartnershipGatewayBuilder({
+      _id: submissionId,
+      data: this.limitedPartnerships[index]?.data,
+    });
 
-      const limitedPartnership = limitedPartnershipBuilder.build();
+    limitedPartnershipBuilder.withData(registrationPageType, data);
 
-      this.limitedPartnerships[0] = limitedPartnership;
-    } else {
-      const limitedPartnershipBuilder = new LimitedPartnershipGatewayBuilder();
-
-      limitedPartnershipBuilder.withData(registrationPageType, data);
-
-      const limitedPartnership = limitedPartnershipBuilder.build();
-
-      this.limitedPartnerships.push(limitedPartnership);
-    }
+    this.limitedPartnerships[index] = limitedPartnershipBuilder.build();
   }
 
   async getSubmissionById(id: string): Promise<LimitedPartnership> {
@@ -120,22 +107,6 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
     }
 
     return new LimitedPartnershipGatewayBuilder(limitedPartnerShip).build();
-  }
-
-  private buildLimitedPartnership(
-    pageType: RegistrationPageType,
-    data: Record<string, any>,
-    submissionId?: string,
-    limitedPartnership?: LimitedPartnership
-  ): TransactionLimitedPartnership {
-    const limitedPartnershipBuilder = new LimitedPartnershipGatewayBuilder({
-      _id: submissionId,
-      data: limitedPartnership?.data,
-    });
-
-    limitedPartnershipBuilder.withData(pageType, data);
-
-    return limitedPartnershipBuilder.build();
   }
 }
 
