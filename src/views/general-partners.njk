@@ -1,0 +1,28 @@
+{% extends "layout.njk" %}
+
+{% set pageName="Add general partner information" %}
+
+{% block beforeContent %}
+  {% include "includes/back-link.njk" %}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form class="form" action="general-partner-choice" method="post">
+ 
+        {% if (data['registrationOrTransition'] == "registration") %}
+          <span class="govuk-caption-l">ACME LIMITED PARTNERSHIP</span>
+        {% else %}  
+          <span class="govuk-caption-l">ACME LIMITED PARTNERSHIP (LP123456)</span>
+        {% endif %}
+
+        <h1 class="govuk-heading-xl">{{ i18n.generalPartnerPage.title }}</h1>
+
+        <p class="govuk-body">{{ i18n.generalPartnerPage.pageInfromation }}</p>
+      
+        {% include "includes/continue-button.njk" %}
+      </form>
+    </div>
+  </div>
+{% endblock %}
