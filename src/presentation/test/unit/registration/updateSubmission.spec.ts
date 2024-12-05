@@ -33,4 +33,34 @@ describe("Update Submission", () => {
       data: { ...limitedPartnership.data, email: "email@example.com" },
     });
   });
+
+  it("should return an error if no data are send", async () => {
+    const limitedPartnership = new LimitedPartnershipBuilder()
+      .withId(appDevDependencies.registrationGateway.submissionId)
+      .build();
+
+    appDevDependencies.registrationGateway.feedLimitedPartnerships([
+      limitedPartnership,
+    ]);
+
+    const result = await appDevDependencies.registrationService.sendPageData(
+      { access_token: "access_token" },
+      limitedPartnership["_id"] as string,
+      RegistrationPageType.email,
+      {}
+    );
+
+    expect(
+      appDevDependencies.registrationGateway.limitedPartnerships[0]
+    ).not.toEqual({
+      ...limitedPartnership,
+      data: { ...limitedPartnership.data, email: "email@example.com" },
+    });
+
+    expect(result).toEqual({
+      errors: [
+        new Error("data is empty - No data has been sent from the page"),
+      ],
+    });
+  });
 });

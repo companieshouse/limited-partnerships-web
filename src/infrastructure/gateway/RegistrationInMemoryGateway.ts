@@ -83,6 +83,10 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
     registrationPageType: RegistrationPageType,
     data: Record<string, any>
   ): Promise<void> {
+    if (!data || !Object.keys(data).length) {
+      throw new Error("data is empty - No data has been sent from the page");
+    }
+
     let index = this.limitedPartnerships.findIndex(
       (lp) => lp._id === submissionId
     );
