@@ -42,6 +42,11 @@ export const registrationEndpoints = (
     authentication,
     dependencies.registrationController.getPageRouting()
   );
+  router.post(
+    EMAIL_URL,
+    authentication,
+    dependencies.registrationController.sendPageData()
+  );
 
   router.get(
     NEXT_URL,

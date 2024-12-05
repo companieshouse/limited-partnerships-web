@@ -43,7 +43,7 @@ describe("Create transaction and the first submission", () => {
       name_ending: NameEndingType.LIMITED_PARTNERSHIP,
     });
 
-    const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.registrationGateway.transactionId}/submission/${appDevDependencies.registrationGateway.submissionId}/next`;
+    const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.registrationGateway.transactionId}/submission/${appDevDependencies.registrationGateway.submissionId}/email`;
 
     expect(res.status).toBe(302);
     expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
@@ -84,7 +84,7 @@ describe("Create transaction and the first submission", () => {
       name_ending: NameEndingType.LIMITED_PARTNERSHIP,
     });
 
-    const partialRedirectUrl = `/limited-partnerships/transaction/${appDevDependencies.registrationGateway.transactionId}/submission/${appDevDependencies.registrationGateway.submissionId}/next`;
+    const partialRedirectUrl = `/limited-partnerships/transaction/${appDevDependencies.registrationGateway.transactionId}/submission/${appDevDependencies.registrationGateway.submissionId}/email`;
 
     expect(res.status).toBe(302);
     expect(res.text).toContain(`Redirecting to ${partialRedirectUrl}`);

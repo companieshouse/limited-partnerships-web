@@ -73,27 +73,41 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
       data
     );
 
-    this.limitedPartnerships.push(limitedPartnership);
-
     if (transactionId === this.transactionId) {
       this.limitedPartnerships[0] = limitedPartnership;
+    } else {
+      this.limitedPartnerships.push(limitedPartnership);
     }
 
     return this.submissionId;
   }
 
-  private buildLimitedPartnership(
-    pageType: RegistrationPageType,
-    data: Record<string, any>,
-    submissionId?: string
-  ): TransactionLimitedPartnership {
-    const limitedPartnershipBuilder = new LimitedPartnershipGatewayBuilder({
-      _id: submissionId,
-    });
+  async sendPageData(
+    opt: { access_token: string },
+    submissionId: string,
+    registrationPageType: RegistrationPageType,
+    data: Record<string, any>
+  ): Promise<void> {
+    if (submissionId === this.submissionId) {
+      const limitedPartnershipBuilder = new LimitedPartnershipGatewayBuilder({
+        _id: submissionId,
+        data: this.limitedPartnerships[0].data,
+      });
 
-    limitedPartnershipBuilder.withData(pageType, data);
+      limitedPartnershipBuilder.withData(registrationPageType, data);
 
-    return limitedPartnershipBuilder.build();
+      const limitedPartnership = limitedPartnershipBuilder.build();
+
+      this.limitedPartnerships[0] = limitedPartnership;
+    } else {
+      const limitedPartnershipBuilder = new LimitedPartnershipGatewayBuilder();
+
+      limitedPartnershipBuilder.withData(registrationPageType, data);
+
+      const limitedPartnership = limitedPartnershipBuilder.build();
+
+      this.limitedPartnerships.push(limitedPartnership);
+    }
   }
 
   async getSubmissionById(id: string): Promise<LimitedPartnership> {
@@ -106,6 +120,22 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
     }
 
     return new LimitedPartnershipGatewayBuilder(limitedPartnerShip).build();
+  }
+
+  private buildLimitedPartnership(
+    pageType: RegistrationPageType,
+    data: Record<string, any>,
+    submissionId?: string,
+    limitedPartnership?: LimitedPartnership
+  ): TransactionLimitedPartnership {
+    const limitedPartnershipBuilder = new LimitedPartnershipGatewayBuilder({
+      _id: submissionId,
+      data: limitedPartnership?.data,
+    });
+
+    limitedPartnershipBuilder.withData(pageType, data);
+
+    return limitedPartnershipBuilder.build();
   }
 }
 

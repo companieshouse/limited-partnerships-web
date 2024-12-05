@@ -52,6 +52,15 @@ class RegistrationGateway implements IRegistrationGateway {
     return (response as Resource<Transaction>)?.resource?.id ?? "";
   }
 
+  async sendPageData(
+    opt: { access_token: string },
+    submissionId: string,
+    registrationType: RegistrationPageType,
+    data: Record<string, any>
+  ): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+
   async getSubmissionById(id: string): Promise<LimitedPartnership> {
     throw new Error("Method not implemented.");
   }
