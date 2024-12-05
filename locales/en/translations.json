@@ -45,9 +45,9 @@
         }
     },
 
-    "generalPartnerPage": {
+    "generalPartnersPage": {
         "title": "You now need to tell us about the general partners",
-        "pageInfromation": "If the partnership has more than one general partner, you'll add them one at a time."
+        "pageInformation": "If the partnership has more than one general partner, you'll add them one at a time."
     },
 
     "pageNotFound" : {

@@ -23,7 +23,7 @@ describe("General Partners Page", () => {
     const res = await request(app).get(GENERAL_PARTNERS_URL + "?lang=cy");
 
     expect(res.status).toBe(200);
-    expect(res.text).toContain(cyTranslationText.generalPartnerPage.title);
+    expect(res.text).toContain(cyTranslationText.generalPartnersPage.title);
   });
 
   it("should load the general partners page with English text", async () => {
@@ -31,6 +31,6 @@ describe("General Partners Page", () => {
     const res = await request(app).get(GENERAL_PARTNERS_URL + "?lang=en");
 
     expect(res.status).toBe(200);
-    expect(res.text).toContain(enTranslationText.generalPartnerPage.title);
+    expect(res.text).toContain(enTranslationText.generalPartnersPage.title);
   });
 });
