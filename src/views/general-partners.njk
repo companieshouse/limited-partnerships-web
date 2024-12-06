@@ -7,7 +7,7 @@
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <form class="form" action="general-partner-choice" method="post">
+      <form class="form" action={{ props.nextUrl }} method="post">
  
         {% if (data['registrationOrTransition'] == "registration") %}
           <span class="govuk-caption-l">ACME LIMITED PARTNERSHIP</span>
