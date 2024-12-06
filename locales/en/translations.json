@@ -29,10 +29,9 @@
         "nameEnding" : "Which private fund limited partnership name ending would you prefer to go on the public record?"
     },
 
-    "privateNameScotlandPage" : {
+    "privateNameScottishPage" : {
         "title" : "Scottish private fund limited partnership name",
-        "whatIsNameHint" : "Do not enter a name ending like Limited Partnership, LP, or L.P. We will add this for you.",
-        "nameEnding" : "Which private fund limited partnership name ending would you prefer to go on the public record?"
+        "whatIsNameHint" : "Do not enter a name ending like Limited Partnership, LP, or L.P. We will add this for you."
     },
 
     "startPage" : {

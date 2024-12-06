@@ -67,8 +67,8 @@ describe("Name Page", () => {
     const res = await request(app).get(NAME_URL + "?lang=cy&which-type=registerPflpSco");
 
     expect(res.status).toBe(200);
-    expect(res.text).toContain(cyTranslationText.privateNameScotlandPage.title);
-    expect(res.text).toContain(cyTranslationText.privateNameScotlandPage.nameEnding);
+    expect(res.text).toContain(cyTranslationText.privateNameScottishPage.title);
+    expect(res.text).toContain(cyTranslationText.privateNameScottishPage.whatIsNameHint);
     expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
   });
 
@@ -77,8 +77,8 @@ describe("Name Page", () => {
     const res = await request(app).get(NAME_URL + "?lang=en&which-type=registerPflpSco");
 
     expect(res.status).toBe(200);
-    expect(res.text).toContain(enTranslationText.privateNameScotlandPage.title);
-    expect(res.text).toContain(enTranslationText.privateNameScotlandPage.nameEnding);
+    expect(res.text).toContain(enTranslationText.privateNameScottishPage.title);
+    expect(res.text).toContain(enTranslationText.privateNameScottishPage.whatIsNameHint);
     expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
     expect(res.text).not.toContain("WELSH -");
   });

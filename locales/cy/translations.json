@@ -29,10 +29,9 @@
         "nameEnding" : "WELSH - Which private fund limited partnership name ending would you prefer to go on the public record?"
     },
 
-    "privateNameScotlandPage" : {
+    "privateNameScottishPage" : {
         "title" : "WELSH - Scottish private fund limited partnership name",
-        "whatIsNameHint" : "WELSH - Do not enter a name ending like Limited Partnership, LP, or L.P. We will add this for you.",
-        "nameEnding" : "WELSH - Which private fund limited partnership name ending would you prefer to go on the public record?"
+        "whatIsNameHint" : "WELSH - Do not enter a name ending like Limited Partnership, LP, or L.P. We will add this for you."
     },
 
     "startPage" : {
