@@ -62,4 +62,25 @@ describe("Name Page", () => {
     expect(res.text).not.toContain("WELSH -");
   });
 
+  it("should load the private name page with Welsh text", async () => {
+    setLocalesEnabled(true);
+    const res = await request(app).get(NAME_URL + "?lang=cy&which-type=registerSlp");
+
+    expect(res.status).toBe(200);
+    expect(res.text).toContain(cyTranslationText.scottishNamePage.title);
+    expect(res.text).toContain(cyTranslationText.scottishNamePage.nameEnding);
+    expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
+  });
+
+  it("should load the private name page with English text", async () => {
+    setLocalesEnabled(true);
+    const res = await request(app).get(NAME_URL + "?lang=en&which-type=registerSlp");
+
+    expect(res.status).toBe(200);
+    expect(res.text).toContain(enTranslationText.scottishNamePage.title);
+    expect(res.text).toContain(enTranslationText.scottishNamePage.nameEnding);
+    expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
+    expect(res.text).not.toContain("WELSH -");
+  });
+
 });
