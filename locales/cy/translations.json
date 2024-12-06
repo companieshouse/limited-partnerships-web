@@ -45,6 +45,11 @@
         }
     },
 
+    "generalPartnersPage": {
+        "title": "WELSH - You now need to tell us about the general partners",
+        "pageInformation": "WELSH - If the partnership has more than one general partner, you'll add them one at a time."
+    },
+
     "pageNotFound" : {
         "title" : "WELSH - Page Not Found",
         "spelling" : "WELSH - If you typed the web address, check it is spelled correctly.",
