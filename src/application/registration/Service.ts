@@ -53,6 +53,34 @@ class RegistrationService {
       };
     }
   }
+
+  async sendPageData(
+    opt: { access_token: string },
+    transactionId: string,
+    submissionId: string,
+    registrationType: RegistrationPageType,
+    data: Record<string, any>
+  ): Promise<void | {
+    errors?: CustomError[];
+  }> {
+    try {
+      await this.registrationGateway.sendPageData(
+        opt,
+        transactionId,
+        submissionId,
+        registrationType,
+        data
+      );
+    } catch (error: any) {
+      const errors = Array.isArray(error) ? error : [error];
+
+      logger.error(`Error sending data: ${JSON.stringify(errors)}`);
+
+      return {
+        errors,
+      };
+    }
+  }
 }
 
 export default RegistrationService;
