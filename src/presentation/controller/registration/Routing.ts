@@ -1,8 +1,7 @@
 import { PageRouting, PagesRouting } from "../PageRouting";
 import {
   BASE_URL,
-  SUBMISSION_ID,
-  TRANSACTION_ID,
+  BASE_WITH_IDS_URL,
 } from "../../../config/constants";
 
 import RegistrationPageType from "./PageType";
@@ -17,9 +16,9 @@ export const NEXT_TEMPLATE = RegistrationPageType.next;
 export const WHICH_TYPE_URL = `${BASE_URL}/${WHICH_TYPE_TEMPLATE}`;
 export const NAME_URL = `${BASE_URL}/${NAME_TEMPLATE}`;
 
-export const GENERAL_PARTNERS_URL = `${BASE_URL}/transaction/${TRANSACTION_ID}/submission/${SUBMISSION_ID}/${GENERAL_PARTNERS_TEMPLATE}`;
+export const GENERAL_PARTNERS_URL = `${BASE_WITH_IDS_URL}/${GENERAL_PARTNERS_TEMPLATE}`;
 
-export const NEXT_URL = `${BASE_URL}/transaction/${TRANSACTION_ID}/submission/${SUBMISSION_ID}/${NEXT_TEMPLATE}`;
+export const NEXT_URL = `${BASE_WITH_IDS_URL}/${NEXT_TEMPLATE}`;
 
 const registrationRoutingPartnershipType = {
   previousUrl: START_URL,
