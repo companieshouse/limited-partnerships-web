@@ -43,7 +43,7 @@ const registrationRoutingNext = {
 };
 
 const registrationRoutingGeneralPartners = {
-  previousUrl: NAME_URL,
+  previousUrl: WHICH_TYPE_URL,
   currentUrl: GENERAL_PARTNERS_URL,
   nextUrl: NEXT_URL,
   pageType: RegistrationPageType.generalPartners,
