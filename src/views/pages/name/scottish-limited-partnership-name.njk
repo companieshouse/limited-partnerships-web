@@ -17,10 +17,10 @@
 
         {{ govukInput({
           classes: "govuk-input--width-40",
-          errorMessage: errors.scottish_partnership_name if errors,
-          id: "scottishPartnership_name",
-          name: "scottishPartnership_name",
-          value: scottishPartnership_name,
+          errorMessage: errors.partnership_name if errors,
+          id: "partnership_name",
+          name: "partnership_name",
+          value: partnership_name,
           fieldset: {
             legend: {
               isPageHeading: false,
@@ -33,7 +33,7 @@
           attributes : {
             required : true,
             "aria-describedby": "partnership_name-hint",
-            minLength: "3"
+            minLength: "1"
           },
           suffix: {
               text: "Limited Partnership"
@@ -42,7 +42,7 @@
       </div>   
 
       {{ govukInsetText({
-        html: '<p>' + i18n.namePage.existingPartnershipHint + '</p><p>' + i18n.namePage.sensitiveWordHint + '</p><p>' + i18n.namePage.existingTrademarkHint + '</p>'
+        html: '<p>' + i18n.scottishNamePage.existingPartnershipHint + '</p><p>' + i18n.namePage.sensitiveWordHint + '</p><p>' + i18n.namePage.existingTrademarkHint + '</p>'
       }) }}
 
      <div class="govuk-form-group">
@@ -53,42 +53,7 @@
           </h1>
         </legend>
 
-       {% set welsh %}
-         {{ govukRadios({
-            errorMessage: errors.name_ending if errors,
-            classes: "govuk-radios",
-            idPrefix: "name_ending",
-            name: "name_ending",
-            items: [
-            {
-              value: "Partneriaeth Cyfyngedig",
-              text: "Partneriaeth Cyfyngedig",
-              id: "nameEnding-1",
-              name: "name_ending",
-              attributes: {
-                required: true
-              }
-            },
-            {
-              value: "PC",
-              text: "PC",
-              id: "nameEnding-2",
-              name: "name_ending",
-              attributes: {
-                required: true
-            }
-          },
-          {
-            value: "P.C.",
-            text: "P.C.",
-            id: "nameEnding-3",
-            name: "name_ending",
-            attributes: {
-            required: true
-          }
-        }]
-      }) }}
-    {% endset -%}
+       
 
     {{ govukRadios({
       errorMessage: errors.name_ending if errors,

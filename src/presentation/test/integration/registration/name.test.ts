@@ -62,7 +62,7 @@ describe("Name Page", () => {
     expect(res.text).not.toContain("WELSH -");
   });
 
-  it("should load the private name page with Welsh text", async () => {
+  it("should load the Scottish limited partnership name page with Welsh text", async () => {
     setLocalesEnabled(true);
     const res = await request(app).get(NAME_URL + "?lang=cy&which-type=registerSlp");
 
@@ -72,7 +72,7 @@ describe("Name Page", () => {
     expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
   });
 
-  it("should load the private name page with English text", async () => {
+  it("should load the Scottish limited partnership name page with English text", async () => {
     setLocalesEnabled(true);
     const res = await request(app).get(NAME_URL + "?lang=en&which-type=registerSlp");
 
