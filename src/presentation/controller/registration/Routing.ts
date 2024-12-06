@@ -11,15 +11,15 @@ import PageType from "../PageType";
 const START_URL = `${BASE_URL}/start`;
 export const WHICH_TYPE_TEMPLATE = RegistrationPageType.whichType;
 export const NAME_TEMPLATE = RegistrationPageType.name;
-export const NEXT_TEMPLATE = RegistrationPageType.next;
 export const GENERAL_PARTNERS_TEMPLATE = RegistrationPageType.generalPartners;
+export const NEXT_TEMPLATE = RegistrationPageType.next;
 
 export const WHICH_TYPE_URL = `${BASE_URL}/${WHICH_TYPE_TEMPLATE}`;
 export const NAME_URL = `${BASE_URL}/${NAME_TEMPLATE}`;
 
-export const NEXT_URL = `${BASE_URL}/transaction/${TRANSACTION_ID}/submission/${SUBMISSION_ID}/${NEXT_TEMPLATE}`;
+export const GENERAL_PARTNERS_URL = `${BASE_URL}/transaction/${TRANSACTION_ID}/submission/${SUBMISSION_ID}/${GENERAL_PARTNERS_TEMPLATE}`;
 
-export const GENERAL_PARTNERS_URL = `${BASE_URL}/${GENERAL_PARTNERS_TEMPLATE}`;
+export const NEXT_URL = `${BASE_URL}/transaction/${TRANSACTION_ID}/submission/${SUBMISSION_ID}/${NEXT_TEMPLATE}`;
 
 const registrationRoutingPartnershipType = {
   previousUrl: START_URL,
@@ -35,13 +35,6 @@ export const registrationRoutingName = {
   pageType: RegistrationPageType.name,
 };
 
-const registrationRoutingNext = {
-  previousUrl: WHICH_TYPE_URL,
-  currentUrl: NEXT_URL,
-  nextUrl: "/",
-  pageType: RegistrationPageType.next,
-};
-
 const registrationRoutingGeneralPartners = {
   previousUrl: WHICH_TYPE_URL,
   currentUrl: GENERAL_PARTNERS_URL,
@@ -49,11 +42,18 @@ const registrationRoutingGeneralPartners = {
   pageType: RegistrationPageType.generalPartners,
 };
 
+const registrationRoutingNext = {
+  previousUrl: WHICH_TYPE_URL,
+  currentUrl: NEXT_URL,
+  nextUrl: "/",
+  pageType: RegistrationPageType.next,
+};
+
 const list = [
   registrationRoutingPartnershipType,
   registrationRoutingName,
-  registrationRoutingNext,
   registrationRoutingGeneralPartners,
+  registrationRoutingNext,
 ];
 
 export const registrationsRouting: PagesRouting = new Map<
