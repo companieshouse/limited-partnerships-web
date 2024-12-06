@@ -40,7 +40,7 @@
     "@companieshouse/web-security-node": "^4.4.0",
     "cookie-parser": "^1.4.7",
     "escape-html": "^1.0.3",
-    "express": "^4.21.1",
+    "express": "^4.21.2",
     "govuk-frontend": "^4.6.0",
     "nunjucks": "^3.2.4",
     "ts-node": "^10.9.2",
