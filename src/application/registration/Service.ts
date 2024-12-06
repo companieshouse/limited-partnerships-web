@@ -56,6 +56,7 @@ class RegistrationService {
 
   async sendPageData(
     opt: { access_token: string },
+    transactionId: string,
     submissionId: string,
     registrationType: RegistrationPageType,
     data: Record<string, any>
@@ -65,6 +66,7 @@ class RegistrationService {
     try {
       await this.registrationGateway.sendPageData(
         opt,
+        transactionId,
         submissionId,
         registrationType,
         data
@@ -72,7 +74,7 @@ class RegistrationService {
     } catch (error: any) {
       const errors = Array.isArray(error) ? error : [error];
 
-      logger.error(`Error sending data: ${errors}`);
+      logger.error(`Error sending data: ${JSON.stringify(errors)}`);
 
       return {
         errors,

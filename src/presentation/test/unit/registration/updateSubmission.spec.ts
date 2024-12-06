@@ -19,6 +19,7 @@ describe("Update Submission", () => {
 
     await appDevDependencies.registrationService.sendPageData(
       { access_token: "access_token" },
+      appDevDependencies.registrationGateway.transactionId,
       limitedPartnership["_id"] as string,
       RegistrationPageType.email,
       {
@@ -45,6 +46,7 @@ describe("Update Submission", () => {
 
     const result = await appDevDependencies.registrationService.sendPageData(
       { access_token: "access_token" },
+      appDevDependencies.registrationGateway.transactionId,
       limitedPartnership["_id"] as string,
       RegistrationPageType.email,
       {}

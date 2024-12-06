@@ -16,6 +16,7 @@ interface IRegistrationGateway {
   getSubmissionById(id: string): Promise<LimitedPartnership>;
   sendPageData(
     opt: { access_token: string },
+    transactionId: string,
     submissionId: string,
     registrationType: RegistrationPageType,
     data: Record<string, any>

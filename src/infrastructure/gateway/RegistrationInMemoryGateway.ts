@@ -79,6 +79,7 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
 
   async sendPageData(
     opt: { access_token: string },
+    transactionId: string,
     submissionId: string,
     registrationPageType: RegistrationPageType,
     data: Record<string, any>

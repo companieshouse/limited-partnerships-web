@@ -9,9 +9,11 @@ import TransactionService from "@companieshouse/api-sdk-node/dist/services/trans
 import appRealDependencies from "../../../../app";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import {
+  EMAIL_URL,
   NAME_URL,
   registrationRoutingName,
 } from "../../../controller/registration/Routing";
+import RegistrationPageType from "../../../controller/registration/PageType";
 
 jest.mock("@companieshouse/api-sdk-node");
 
@@ -33,6 +35,10 @@ mockCreateApiClient.mockReturnValue({
       resource: {
         id: appDevDependencies.registrationGateway.submissionId,
       },
+    }),
+    patchLimitedPartnership: () => ({
+      httpStatusCode: 200,
+      resource: {},
     }),
   },
 });
@@ -56,9 +62,29 @@ describe("Create transaction and the first submission", () => {
       name_ending: NameEndingType.LIMITED_PARTNERSHIP,
     });
 
-    const partialRedirectUrl = `/limited-partnerships/transaction/${appDevDependencies.registrationGateway.transactionId}/submission/${appDevDependencies.registrationGateway.submissionId}/email`;
+    const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.registrationGateway.transactionId}/submission/${appDevDependencies.registrationGateway.submissionId}/email`;
 
     expect(res.status).toBe(302);
-    expect(res.text).toContain(`Redirecting to ${partialRedirectUrl}`);
+    expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+  });
+
+  describe("Update submission", () => {
+    it("should update the submission", async () => {
+      const url = appDevDependencies.registrationController.insertIdsInUrl(
+        EMAIL_URL,
+        appDevDependencies.registrationGateway.transactionId,
+        appDevDependencies.registrationGateway.submissionId
+      );
+
+      const res = await request(appRealDependencies).post(url).send({
+        pageType: RegistrationPageType.email,
+        email: "test@email.com",
+      });
+
+      const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.registrationGateway.transactionId}/submission/${appDevDependencies.registrationGateway.submissionId}/next`;
+
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+    });
   });
 });

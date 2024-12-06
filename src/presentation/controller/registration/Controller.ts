@@ -107,6 +107,7 @@ class RegistrationController extends AbstractController {
 
         const result = await this.registrationService.sendPageData(
           { access_token },
+          transactionId,
           submissionId,
           pageType,
           request.body
