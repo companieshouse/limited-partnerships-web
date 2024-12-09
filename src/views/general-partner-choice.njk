@@ -1,0 +1,42 @@
+{% extends "layout.njk" %}
+
+{% block beforeContent %}
+  {% include "includes/back-link.njk" %}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form class="form" action="/general-partner-choice" method="post">
+        
+        {{ govukRadios({
+          name: "generalPartner",
+          value: data['generalPartner'],
+          fieldset: {
+            legend: {
+              text: i18n.generalPartnerChoicePage.title,
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--xl"
+            }
+          },
+          hint: {
+            text: i18n.generalPartnerChoicePage.hint
+          },
+
+          items: [
+            {
+              value: "person",
+              text: i18n.generalPartnerChoicePage.person
+            },
+            {
+              value: "entity",
+              text: i18n.generalPartnerChoicePage.legalEntity
+            }
+          ]
+        }) }}
+       
+        {% include "includes/continue-button.njk" %}
+      </form>
+    </div>
+  </div>
+{% endblock %}
