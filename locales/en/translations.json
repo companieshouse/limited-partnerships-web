@@ -45,6 +45,11 @@
         }
     },
 
+    "limitedPartnersPage": {
+        "title": "You now need to tell us about the general partners",
+        "pageInformation": "If the partnership has more than one general partner, you'll add them one at a time."
+    },
+
     "pageNotFound" : {
         "title" : "Page not found",
         "spelling" : "If you typed the web address, check it is spelled correctly.",

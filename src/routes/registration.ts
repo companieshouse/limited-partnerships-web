@@ -8,6 +8,7 @@ import {
   NAME_URL,
   NEXT_URL,
   WHICH_TYPE_URL,
+  LIMITED_PARTNERS_URL,
 } from "../presentation/controller/registration/Routing";
 
 export const registrationEndpoints = (
@@ -38,6 +39,12 @@ export const registrationEndpoints = (
 
   router.get(
     NEXT_URL,
+    authentication,
+    dependencies.registrationController.getPageRouting()
+  );
+
+  router.get(
+    LIMITED_PARTNERS_URL,
     authentication,
     dependencies.registrationController.getPageRouting()
   );
