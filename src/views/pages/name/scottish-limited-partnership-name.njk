@@ -17,10 +17,10 @@
 
         {{ govukInput({
           classes: "govuk-input--width-40",
-          errorMessage: errors.scottish_partnership_name if errors,
+          errorMessage: errors.props.errors.partnership_name if errors,
           id: "partnership_name",
           name: "partnership_name",
-          value: partnership_name,
+          value: props.data.limitedPartnership.partnership_name,
           fieldset: {
             legend: {
               isPageHeading: false,
