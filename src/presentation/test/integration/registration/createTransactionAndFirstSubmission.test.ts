@@ -6,8 +6,8 @@ import app from "../app";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import {
   NAME_URL,
-  registrationRoutingName,
 } from "../../../controller/registration/Routing";
+import RegistrationPageType from "../../../controller/registration/PageType";
 
 const NAME_PAGE_URL = NAME_URL + "?which-type=registerLp";
 
@@ -32,7 +32,7 @@ describe("Create transaction and the first submission", () => {
     );
 
     const res = await request(app).post(url).send({
-      pageType: registrationRoutingName.pageType,
+      pageType: RegistrationPageType.name,
       partnership_name: "Test Limited Partnership",
       name_ending: NameEndingType.LIMITED_PARTNERSHIP,
     });
@@ -51,7 +51,7 @@ describe("Create transaction and the first submission", () => {
     );
 
     const res = await request(app).post(url).send({
-      pageType: registrationRoutingName.pageType,
+      pageType: RegistrationPageType.name,
     });
 
     expect(res.status).toBe(200);

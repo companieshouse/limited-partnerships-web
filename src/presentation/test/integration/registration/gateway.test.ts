@@ -11,7 +11,6 @@ import { appDevDependencies } from "../../../../config/dev-dependencies";
 import {
   EMAIL_URL,
   NAME_URL,
-  registrationRoutingName,
 } from "../../../controller/registration/Routing";
 import RegistrationPageType from "../../../controller/registration/PageType";
 
@@ -57,7 +56,7 @@ describe("Create transaction and the first submission", () => {
     );
 
     const res = await request(appRealDependencies).post(url).send({
-      pageType: registrationRoutingName.pageType,
+      pageType: RegistrationPageType.name,
       partnership_name: "Test Limited Partnership",
       name_ending: NameEndingType.LIMITED_PARTNERSHIP,
     });
@@ -81,7 +80,7 @@ describe("Create transaction and the first submission", () => {
         email: "test@email.com",
       });
 
-      const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.registrationGateway.transactionId}/submission/${appDevDependencies.registrationGateway.submissionId}/next`;
+      const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.registrationGateway.transactionId}/submission/${appDevDependencies.registrationGateway.submissionId}/general-partners`;
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
