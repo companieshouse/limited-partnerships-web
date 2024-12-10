@@ -77,6 +77,11 @@
         "pageInformation": "If the partnership has more than one general partner, you'll add them one at a time."
     },
 
+    "limitedPartnersPage": {
+        "title": "You now need to tell us about the limited partners",
+        "pageInformation": "If the partnership has more than one limited partner, you'll add them one at a time."
+    },
+    
     "generalPartnerChoicePage": {
         "title": "Is the general partner a person or a legal entity?", 
         "hint": "You can add more later.",

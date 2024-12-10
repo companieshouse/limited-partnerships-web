@@ -77,6 +77,11 @@
         "pageInformation": "WELSH - If the partnership has more than one general partner, you'll add them one at a time."
     },
 
+    "limitedPartnersPage": {
+        "title": "WELSH - You now need to tell us about the limited partners",
+        "pageInformation": "WELSH - If the partnership has more than one limited partner, you'll add them one at a time."
+    },
+    
     "generalPartnerChoicePage": {
         "title": "WELSH - You now need to tell us about the general partners",
         "hint": "WELSH - You can add more later.",
