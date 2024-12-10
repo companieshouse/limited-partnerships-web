@@ -61,7 +61,7 @@ class RegistrationGateway implements IRegistrationGateway {
   ): Promise<void> {
     const api = this.createApi(opt.access_token);
 
-    const response =
+    /*const response =
       await api.limitedPartnershipsService.patchLimitedPartnership(
         transactionId,
         submissionId,
@@ -73,7 +73,7 @@ class RegistrationGateway implements IRegistrationGateway {
 
     if (response.httpStatusCode !== 200) {
       throw response;
-    }
+    }*/
   }
 
   async getSubmissionById(id: string): Promise<LimitedPartnership> {
