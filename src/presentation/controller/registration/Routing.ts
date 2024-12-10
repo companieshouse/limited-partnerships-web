@@ -2,8 +2,6 @@ import { PageRouting, PagesRouting } from "../PageRouting";
 import {
   BASE_URL,
   BASE_WITH_IDS_URL,
-  SUBMISSION_ID,
-  TRANSACTION_ID,
 } from "../../../config/constants";
 
 import RegistrationPageType from "./PageType";
