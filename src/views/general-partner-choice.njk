@@ -13,7 +13,8 @@
         {% include "includes/csrf_token.njk" %}
         
         {{ govukRadios({
-          name: "generalPartner",
+          classes: "govuk-radios",
+          name: "parameter",
           value: data['generalPartner'],
           fieldset: {
             legend: {
@@ -28,7 +29,7 @@
 
           items: [
             {
-              value: "Person",
+              value: "person",
               text: i18n.generalPartnerChoicePage.person,
               id: "person",
               name: "person",
@@ -37,7 +38,7 @@
               }
             },
             {
-              value: "Legal Entity",
+              value: "legalEntity",
               text: i18n.generalPartnerChoicePage.legalEntity,
               id: "legal_entity",
               name: "legal_entity",
