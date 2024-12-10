@@ -9,6 +9,7 @@ import {
   NEXT_URL,
   registrationRoutingLimitedPartnerChoice,
 } from "../../../controller/registration/Routing";
+import RegistrationPageType from "../../../controller/registration/PageType";
 
 describe("Limited Partner Choice Page", () => {
   beforeEach(() => {
@@ -45,18 +46,19 @@ describe("Limited Partner Choice Page", () => {
   it("should pass the limited partner choice as a url query param to next page", async () => {
     const transactionId = "3664373";
     const submissionId = "1543454";
+    const selectedChoice = "person";
 
     const url = insertIdsInUrl(LIMITED_PARTNER_CHOICE_URL, transactionId, submissionId);
     const res = await request(app)
       .post(url)
       .send({
         pageType: registrationRoutingLimitedPartnerChoice.pageType,
-        parameter: "person",
+        parameter: selectedChoice,
       });
 
     expect(res.status).toBe(302);
     const nextPageUrl = insertIdsInUrl(NEXT_URL, transactionId, submissionId)
-      + "?limited-partner-choice=person";
+      + `?${RegistrationPageType.limitedPartnerChoice}=${selectedChoice}`;
     expect(res.header.location).toEqual(nextPageUrl);
   });
 });
