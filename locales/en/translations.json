@@ -9,6 +9,13 @@
         }
     },
 
+    "limitedPartnerChoicePage" : {
+        "isPersonOrLegalEntity" : "Is the limited partner a person or a legal entity?",
+        "isPersonOrLegalEntityHint" : "You can add more later.",
+        "person" : "A person",
+        "legalEntity" : "A legal entity"
+    },
+
     "namePage" : {
         "title" : "Limited partnership name",
         "whatIsName" : "What is the limited partnership name?",
