@@ -46,6 +46,11 @@ export const registrationEndpoints = (
     authentication,
     dependencies.registrationController.getPageRouting()
   );
+  router.post(
+    GENERAL_PARTNER_CHOICE_URL,
+    authentication,
+    dependencies.registrationController.redirectWithParameter()
+  );
   router.get(
     NEXT_URL,
     authentication,
