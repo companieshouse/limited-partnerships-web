@@ -11,6 +11,7 @@ import app from "../app";
 import appRealDependencies from "../../../../app";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import {
+  LIMITED_PARTNER_CHOICE_TEMPLATE,
   NAME_URL,
   registrationRoutingName,
 } from "../../../controller/registration/Routing";
@@ -45,7 +46,7 @@ describe("Create transaction and the first submission", () => {
       name_ending: NameEndingType.LIMITED_PARTNERSHIP,
     });
 
-    const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.registrationGateway.transactionId}/submission/${appDevDependencies.registrationGateway.submissionId}/next`;
+    const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.registrationGateway.transactionId}/submission/${appDevDependencies.registrationGateway.submissionId}/${LIMITED_PARTNER_CHOICE_TEMPLATE}`;
 
     expect(res.status).toBe(302);
     expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
@@ -86,7 +87,7 @@ describe("Create transaction and the first submission", () => {
       name_ending: NameEndingType.LIMITED_PARTNERSHIP,
     });
 
-    const partialRedirectUrl = `/limited-partnerships/transaction/${appDevDependencies.registrationGateway.transactionId}/submission/${appDevDependencies.registrationGateway.submissionId}/next`;
+    const partialRedirectUrl = `/limited-partnerships/transaction/${appDevDependencies.registrationGateway.transactionId}/submission/${appDevDependencies.registrationGateway.submissionId}/${LIMITED_PARTNER_CHOICE_TEMPLATE}`;
 
     expect(res.status).toBe(302);
     expect(res.text).toContain(`Redirecting to ${partialRedirectUrl}`);

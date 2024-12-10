@@ -9,6 +9,7 @@ import {
   NEXT_URL,
   WHICH_TYPE_URL,
   GENERAL_PARTNERS_URL,
+  LIMITED_PARTNER_CHOICE_URL,
 } from "../presentation/controller/registration/Routing";
 
 export const registrationEndpoints = (
@@ -40,7 +41,16 @@ export const registrationEndpoints = (
     authentication,
     dependencies.registrationController.getPageRouting()
   );
-
+  router.get(
+    LIMITED_PARTNER_CHOICE_URL,
+    authentication,
+    dependencies.registrationController.getPageRouting()
+  );
+  router.post(
+    LIMITED_PARTNER_CHOICE_URL,
+    authentication,
+    dependencies.registrationController.redirectWithParameter()
+  );
   router.get(
     NEXT_URL,
     authentication,

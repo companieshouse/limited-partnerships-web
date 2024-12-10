@@ -4,6 +4,13 @@
         "saveAndContinue" : "WELSH - Save and continue"
     },
 
+    "limitedPartnerChoicePage" : {
+        "isPersonOrLegalEntity" : "WELSH - Is the limited partner a person or a legal entity?",
+        "isPersonOrLegalEntityHint" : "WELSH - You can add more later.",
+        "person" : "WELSH - A person",
+        "legalEntity" : "WELSH - A legal entity"
+    },
+
     "namePage" : {
         "title" : "WELSH - Limited partnership name",
         "whatIsName" : "WELSH - What is the limited partnership name?",

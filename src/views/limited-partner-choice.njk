@@ -1,0 +1,47 @@
+{% extends "layout.njk" %}
+
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action="{{ props.currentUrl }}" method="post">
+        <input type="hidden" name="pageType" value={{ props.pageType }}>
+        {% include "includes/csrf_token.njk" %}
+       
+        {{ govukRadios({
+          name: "parameter",
+          value: props.data.limitedPartnership.limited_partner,
+          fieldset: {
+            legend: {
+              text: i18n.limitedPartnerChoicePage.isPersonOrLegalEntity,
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--xl"
+            }
+          },
+          hint: {
+            text: i18n.limitedPartnerChoicePage.isPersonOrLegalEntityHint
+          },
+          items: [
+            {
+              value: "person",
+              text: i18n.limitedPartnerChoicePage.person,
+              attributes : {
+                required : true
+              }
+            },
+            {
+              value: "legal_entity",
+              text: i18n.limitedPartnerChoicePage.legalEntity,
+              attributes : {
+                required : true
+              }
+            }
+          ]
+        }) }}
+              
+        {% include "includes/save-and-continue-button.njk" %} 
+      </form>
+    </div>
+  </div>
+{% endblock %}
