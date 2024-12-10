@@ -37,7 +37,7 @@ describe("General Partner Choice Page", () => {
   });
 
   it("should redirect to next page when choice is selected", async () => {
-    const selectedType = "Person";
+    const selectedType = "person";
     const res = await request(app).post(GENERAL_PARTNER_CHOICE_URL).send({
       pageType: RegistrationPageType.generalPartnerChoice,
       parameter: selectedType,
