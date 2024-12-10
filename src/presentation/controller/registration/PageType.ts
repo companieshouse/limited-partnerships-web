@@ -4,6 +4,7 @@ enum RegistrationPageType {
   email = "email",
   generalPartners = "general-partners",
   limitedPartners = "limited-partners",
+  generalPartnerChoice = "general-partner-choice",
   next = "next",
 }
 

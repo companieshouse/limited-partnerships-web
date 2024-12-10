@@ -11,6 +11,7 @@ import {
   WHICH_TYPE_URL,
   LIMITED_PARTNERS_URL,
   GENERAL_PARTNERS_URL,
+  GENERAL_PARTNER_CHOICE_URL,
 } from "../presentation/controller/registration/Routing";
 
 export const registrationEndpoints = (
@@ -38,12 +39,6 @@ export const registrationEndpoints = (
     dependencies.registrationController.createTransactionAndFirstSubmission()
   );
   router.get(
-    GENERAL_PARTNERS_URL,
-    authentication,
-    dependencies.registrationController.getPageRouting()
-  );
-
-  router.get(
     EMAIL_URL,
     authentication,
     dependencies.registrationController.getPageRouting()
@@ -53,7 +48,21 @@ export const registrationEndpoints = (
     authentication,
     dependencies.registrationController.sendPageData()
   );
-
+  router.get(
+    GENERAL_PARTNERS_URL,
+    authentication,
+    dependencies.registrationController.getPageRouting()
+  );
+  router.get(
+    GENERAL_PARTNER_CHOICE_URL,
+    authentication,
+    dependencies.registrationController.getPageRouting()
+  );
+  router.post(
+    GENERAL_PARTNER_CHOICE_URL,
+    authentication,
+    dependencies.registrationController.redirectWithParameter()
+  );
   router.get(
     LIMITED_PARTNERS_URL,
     authentication,
