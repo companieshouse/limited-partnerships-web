@@ -3,6 +3,7 @@ enum RegistrationPageType {
   name = "name",
   email = "email",
   generalPartners = "general-partners",
+  generalPartnerChoice = "general-partner-choice",
   next = "next",
 }
 

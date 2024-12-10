@@ -77,6 +77,13 @@
         "pageInformation": "If the partnership has more than one general partner, you'll add them one at a time."
     },
 
+    "generalPartnerChoicePage": {
+        "title": "Is the general partner a person or a legal entity?", 
+        "hint": "You can add more later.",
+        "person": "A person",
+        "legalEntity": "A legal entity"
+    },
+
     "pageNotFound" : {
         "title" : "Page not found",
         "spelling" : "If you typed the web address, check it is spelled correctly.",
