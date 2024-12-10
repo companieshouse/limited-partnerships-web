@@ -26,7 +26,6 @@ export const LIMITED_PARTNERS_URL = `${BASE_WITH_IDS_URL}/${LIMITED_PARTNERS_TEM
 
 export const NEXT_URL = `${BASE_WITH_IDS_URL}/${NEXT_TEMPLATE}`;
 
-
 const registrationRoutingPartnershipType = {
   previousUrl: START_URL,
   currentUrl: WHICH_TYPE_URL,
@@ -76,6 +75,7 @@ const list = [
   registrationRoutingGeneralPartners,
   registrationRoutingLimitedPartners,
   registrationRoutingNext,
+
 ];
 
 export const registrationsRouting: PagesRouting = new Map<
