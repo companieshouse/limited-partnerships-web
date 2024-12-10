@@ -10,6 +10,12 @@ import {
   registrationRoutingLimitedPartnerChoice,
 } from "../../../controller/registration/Routing";
 
+const insertIdsInUrl = (url: string, transactionId: string, submissionId: string) => {
+  return url
+    .replace(`:${config.TRANSACTION_ID}`, transactionId)
+    .replace(`:${config.SUBMISSION_ID}`, submissionId);
+};
+
 describe("Limited Partner Choice Page", () => {
   beforeEach(() => {
     setLocalesEnabled(false);
@@ -40,9 +46,7 @@ describe("Limited Partner Choice Page", () => {
     const transactionId = "3664373";
     const submissionId = "1543454";
 
-    const url = LIMITED_PARTNER_CHOICE_URL
-      .replace(`:${config.TRANSACTION_ID}`, transactionId)
-      .replace(`:${config.SUBMISSION_ID}`, submissionId);
+    const url = insertIdsInUrl(LIMITED_PARTNER_CHOICE_URL, transactionId, submissionId);
     const res = await request(app)
       .post(url)
       .send({
@@ -51,9 +55,7 @@ describe("Limited Partner Choice Page", () => {
       });
 
     expect(res.status).toBe(302);
-    const nextPageUrl = NEXT_URL
-      .replace(`:${config.TRANSACTION_ID}`, transactionId)
-      .replace(`:${config.SUBMISSION_ID}`, submissionId)
+    const nextPageUrl = insertIdsInUrl(NEXT_URL, transactionId, submissionId)
       + "?limited-partner-choice=person";
     expect(res.header.location).toEqual(nextPageUrl);
   });

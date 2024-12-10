@@ -19,8 +19,7 @@ class RegistrationController extends AbstractController {
     return (request: Request, response: Response, next: NextFunction) => {
       try {
         const pageType = super.pageType(request.path);
-        const transactionId = request.params.transactionId;
-        const submissionId = request.params.submissionId;
+        const { transactionId, submissionId } = this.extractIds(request);
 
         const pageRouting = super.getRouting(
           registrationsRouting,
@@ -43,8 +42,7 @@ class RegistrationController extends AbstractController {
   createTransactionAndFirstSubmission(): RequestHandler {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
-        const access_token =
-          request?.session?.data?.signin_info?.access_token?.access_token ?? "";
+        const access_token = this.extractAccessToken(request);
         const pageType = this.extractPageTypeOrThrowError(request);
 
         const result =
@@ -101,6 +99,42 @@ class RegistrationController extends AbstractController {
     };
   }
 
+  sendPageData(): RequestHandler {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const access_token = this.extractAccessToken(request);
+        const pageType = this.extractPageTypeOrThrowError(request);
+        const { transactionId, submissionId } = this.extractIds(request);
+
+        const result = await this.registrationService.sendPageData(
+          { access_token },
+          transactionId,
+          submissionId,
+          pageType,
+          request.body
+        );
+
+        const registrationRouting = super.getRouting(
+          registrationsRouting,
+          pageType,
+          transactionId,
+          submissionId
+        );
+
+        if (result?.errors?.length) {
+          response.render(super.templateName(registrationRouting.currentUrl), {
+            props: result,
+          });
+          return;
+        }
+
+        response.redirect(registrationRouting.nextUrl);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
   private extractPageTypeOrThrowError(request) {
     const pageTypeList = Object.values(PageType);
     const pageType = request.body.pageType;
@@ -109,6 +143,19 @@ class RegistrationController extends AbstractController {
       throw new Error(`wrong page type: ${pageType}`);
     }
     return pageType;
+  }
+
+  private extractAccessToken(request) {
+    return (
+      request?.session?.data?.signin_info?.access_token?.access_token ?? ""
+    );
+  }
+
+  private extractIds(request) {
+    const transactionId = request.params.transactionId;
+    const submissionId = request.params.submissionId;
+
+    return { transactionId, submissionId };
   }
 }
 
