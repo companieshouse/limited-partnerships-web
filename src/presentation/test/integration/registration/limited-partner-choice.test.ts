@@ -10,12 +10,6 @@ import {
   registrationRoutingLimitedPartnerChoice,
 } from "../../../controller/registration/Routing";
 
-const insertIdsInUrl = (url: string, transactionId: string, submissionId: string) => {
-  return url
-    .replace(`:${config.TRANSACTION_ID}`, transactionId)
-    .replace(`:${config.SUBMISSION_ID}`, submissionId);
-};
-
 describe("Limited Partner Choice Page", () => {
   beforeEach(() => {
     setLocalesEnabled(false);
@@ -24,6 +18,12 @@ describe("Limited Partner Choice Page", () => {
   const setLocalesEnabled = (bool: boolean) => {
     jest.spyOn(config, "isLocalesEnabled").mockReturnValue(bool);
     LocalesService.getInstance().enabled = bool;
+  };
+
+  const insertIdsInUrl = (url: string, transactionId: string, submissionId: string) => {
+    return url
+      .replace(`:${config.TRANSACTION_ID}`, transactionId)
+      .replace(`:${config.SUBMISSION_ID}`, submissionId);
   };
 
   it("should load the limited partner choice page with Welsh text", async () => {
