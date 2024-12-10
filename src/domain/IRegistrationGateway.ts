@@ -14,6 +14,13 @@ interface IRegistrationGateway {
     data: Record<string, any>
   ): Promise<string>;
   getSubmissionById(id: string): Promise<LimitedPartnership>;
+  sendPageData(
+    opt: { access_token: string },
+    transactionId: string,
+    submissionId: string,
+    registrationType: RegistrationPageType,
+    data: Record<string, any>
+  ): Promise<void>;
 }
 
 export default IRegistrationGateway;

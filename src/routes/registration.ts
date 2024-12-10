@@ -5,10 +5,12 @@ import { authentication } from "../middlewares";
 import { IDependencies } from "../config/IDependencies";
 
 import {
+  EMAIL_URL,
   NAME_URL,
   NEXT_URL,
   WHICH_TYPE_URL,
   LIMITED_PARTNERS_URL,
+  GENERAL_PARTNERS_URL,
 } from "../presentation/controller/registration/Routing";
 
 export const registrationEndpoints = (
@@ -25,7 +27,6 @@ export const registrationEndpoints = (
     authentication,
     dependencies.registrationController.redirectWithParameter()
   );
-
   router.get(
     NAME_URL,
     authentication,
@@ -35,6 +36,22 @@ export const registrationEndpoints = (
     NAME_URL,
     authentication,
     dependencies.registrationController.createTransactionAndFirstSubmission()
+  );
+  router.get(
+    GENERAL_PARTNERS_URL,
+    authentication,
+    dependencies.registrationController.getPageRouting()
+  );
+
+  router.get(
+    EMAIL_URL,
+    authentication,
+    dependencies.registrationController.getPageRouting()
+  );
+  router.post(
+    EMAIL_URL,
+    authentication,
+    dependencies.registrationController.sendPageData()
   );
 
   router.get(
