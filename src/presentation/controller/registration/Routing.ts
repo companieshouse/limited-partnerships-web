@@ -12,9 +12,9 @@ export const WHICH_TYPE_TEMPLATE = RegistrationPageType.whichType;
 export const NAME_TEMPLATE = RegistrationPageType.name;
 export const EMAIL_TEMPLATE = RegistrationPageType.email;
 export const GENERAL_PARTNERS_TEMPLATE = RegistrationPageType.generalPartners;
+export const LIMITED_PARTNERS_TEMPLATE = RegistrationPageType.limitedPartners;
 
 export const NEXT_TEMPLATE = RegistrationPageType.next;
-export const LIMITED_PARTNERS_TEMPLATE = RegistrationPageType.limitedPartners;
 
 export const WHICH_TYPE_URL = `${BASE_URL}/${WHICH_TYPE_TEMPLATE}`;
 export const NAME_URL = `${BASE_URL}/${NAME_TEMPLATE}`;
@@ -22,9 +22,10 @@ export const EMAIL_URL = `${BASE_WITH_IDS_URL}/${EMAIL_TEMPLATE}`;
 
 export const GENERAL_PARTNERS_URL = `${BASE_WITH_IDS_URL}/${GENERAL_PARTNERS_TEMPLATE}`;
 
+export const LIMITED_PARTNERS_URL = `${BASE_WITH_IDS_URL}/${LIMITED_PARTNERS_TEMPLATE}`;
+
 export const NEXT_URL = `${BASE_WITH_IDS_URL}/${NEXT_TEMPLATE}`;
 
-export const LIMITED_PARTNERS_URL = `${BASE_WITH_IDS_URL}/${LIMITED_PARTNERS_TEMPLATE}`;
 
 const registrationRoutingPartnershipType = {
   previousUrl: START_URL,
@@ -38,13 +39,6 @@ const registrationRoutingName = {
   currentUrl: NAME_URL,
   nextUrl: EMAIL_URL,
   pageType: RegistrationPageType.name,
-};
-
-const registrationRoutingLimitedPartners = {
-  previousUrl: WHICH_TYPE_URL,
-  currentUrl: LIMITED_PARTNERS_URL,
-  nextUrl: NEXT_URL,
-  pageType: RegistrationPageType.limitedPartners,
 };
 
 const registrationRoutingEmail = {
@@ -61,6 +55,13 @@ const registrationRoutingGeneralPartners = {
   pageType: RegistrationPageType.generalPartners,
 };
 
+const registrationRoutingLimitedPartners = {
+  previousUrl: WHICH_TYPE_URL,
+  currentUrl: LIMITED_PARTNERS_URL,
+  nextUrl: NEXT_URL,
+  pageType: RegistrationPageType.limitedPartners,
+};
+
 const registrationRoutingNext = {
   previousUrl: GENERAL_PARTNERS_URL,
   currentUrl: NEXT_URL,
@@ -73,8 +74,8 @@ const list = [
   registrationRoutingName,
   registrationRoutingEmail,
   registrationRoutingGeneralPartners,
-  registrationRoutingNext,
   registrationRoutingLimitedPartners,
+  registrationRoutingNext,
 ];
 
 export const registrationsRouting: PagesRouting = new Map<

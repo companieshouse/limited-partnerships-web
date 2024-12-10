@@ -55,13 +55,13 @@ export const registrationEndpoints = (
   );
 
   router.get(
-    NEXT_URL,
+    LIMITED_PARTNERS_URL,
     authentication,
     dependencies.registrationController.getPageRouting()
   );
 
   router.get(
-    LIMITED_PARTNERS_URL,
+    NEXT_URL,
     authentication,
     dependencies.registrationController.getPageRouting()
   );
