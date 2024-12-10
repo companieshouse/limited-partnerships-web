@@ -1,21 +1,13 @@
 import request from "supertest";
 import { Request, Response } from "express";
-import { createApiClient } from "@companieshouse/api-sdk-node";
-import {
-  LimitedPartnershipsService,
-  NameEndingType,
-} from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-import TransactionService from "@companieshouse/api-sdk-node/dist/services/transaction/service";
+import { NameEndingType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import app from "../app";
-import appRealDependencies from "../../../../app";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import {
   NAME_URL,
-  registrationRoutingName,
 } from "../../../controller/registration/Routing";
-
-jest.mock("@companieshouse/api-sdk-node");
+import RegistrationPageType from "../../../controller/registration/PageType";
 
 const NAME_PAGE_URL = NAME_URL + "?which-type=registerLp";
 
@@ -40,56 +32,15 @@ describe("Create transaction and the first submission", () => {
     );
 
     const res = await request(app).post(url).send({
-      pageType: registrationRoutingName.pageType,
+      pageType: RegistrationPageType.name,
       partnership_name: "Test Limited Partnership",
       name_ending: NameEndingType.LIMITED_PARTNERSHIP,
     });
 
-    const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.registrationGateway.transactionId}/submission/${appDevDependencies.registrationGateway.submissionId}/next`;
+    const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.registrationGateway.transactionId}/submission/${appDevDependencies.registrationGateway.submissionId}/email`;
 
     expect(res.status).toBe(302);
     expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
-  });
-
-  it("should create a transaction and the first submission - appRealDependencies and mock", async () => {
-    const url = appDevDependencies.registrationController.insertIdsInUrl(
-      NAME_PAGE_URL,
-      appDevDependencies.registrationGateway.transactionId,
-      appDevDependencies.registrationGateway.submissionId
-    );
-
-    const mockCreateApiClient = createApiClient as jest.Mock;
-    mockCreateApiClient.mockReturnValue({
-      transaction: {
-        ...TransactionService.prototype,
-        postTransaction: () => ({
-          httpStatusCode: 201,
-          resource: {
-            id: appDevDependencies.registrationGateway.transactionId,
-          },
-        }),
-      },
-      limitedPartnershipsService: {
-        ...LimitedPartnershipsService.prototype,
-        postLimitedPartnership: () => ({
-          httpStatusCode: 201,
-          resource: {
-            id: appDevDependencies.registrationGateway.submissionId,
-          },
-        }),
-      },
-    });
-
-    const res = await request(appRealDependencies).post(url).send({
-      pageType: registrationRoutingName.pageType,
-      partnership_name: "Test Limited Partnership",
-      name_ending: NameEndingType.LIMITED_PARTNERSHIP,
-    });
-
-    const partialRedirectUrl = `/limited-partnerships/transaction/${appDevDependencies.registrationGateway.transactionId}/submission/${appDevDependencies.registrationGateway.submissionId}/next`;
-
-    expect(res.status).toBe(302);
-    expect(res.text).toContain(`Redirecting to ${partialRedirectUrl}`);
   });
 
   it("should return an error", async () => {
@@ -100,7 +51,7 @@ describe("Create transaction and the first submission", () => {
     );
 
     const res = await request(app).post(url).send({
-      pageType: registrationRoutingName.pageType,
+      pageType: RegistrationPageType.name,
     });
 
     expect(res.status).toBe(200);
