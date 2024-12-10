@@ -38,6 +38,16 @@ export const registrationEndpoints = (
     dependencies.registrationController.createTransactionAndFirstSubmission()
   );
   router.get(
+    EMAIL_URL,
+    authentication,
+    dependencies.registrationController.getPageRouting()
+  );
+  router.post(
+    EMAIL_URL,
+    authentication,
+    dependencies.registrationController.sendPageData()
+  );
+  router.get(
     GENERAL_PARTNERS_URL,
     authentication,
     dependencies.registrationController.getPageRouting()
@@ -52,17 +62,6 @@ export const registrationEndpoints = (
     authentication,
     dependencies.registrationController.redirectWithParameter()
   );
-  router.get(
-    EMAIL_URL,
-    authentication,
-    dependencies.registrationController.getPageRouting()
-  );
-  router.post(
-    EMAIL_URL,
-    authentication,
-    dependencies.registrationController.sendPageData()
-  );
-
   router.get(
     NEXT_URL,
     authentication,

@@ -6,7 +6,9 @@ import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
 import {
   GENERAL_PARTNER_CHOICE_URL,
+  NEXT_URL,
 } from "../../../controller/registration/Routing";
+import RegistrationPageType from "../../../../presentation/controller/registration/PageType";
 
 describe("General Partner Choice Page", () => {
   beforeEach(() => {
@@ -32,5 +34,17 @@ describe("General Partner Choice Page", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(enTranslationText.generalPartnerChoicePage.title);
+  });
+
+  it("should redirect to next page when choice is selected", async () => {
+    const selectedType = "Person";
+    const res = await request(app).post(GENERAL_PARTNER_CHOICE_URL).send({
+      pageType: RegistrationPageType.generalPartnerChoice,
+      parameter: selectedType,
+    });
+
+    const redirectUrl = `${NEXT_URL}?${RegistrationPageType.generalPartnerChoice}=${selectedType}`;
+    expect(res.status).toBe(302);
+    expect(res.text).toContain(redirectUrl);
   });
 });
