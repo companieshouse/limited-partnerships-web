@@ -68,32 +68,38 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
       throw this.errors;
     }
 
-    const limitedPartnership = this.buildLimitedPartnership(
-      registrationPageType,
-      data
-    );
+    const limitedPartnershipBuilder = new LimitedPartnershipGatewayBuilder();
 
-    this.limitedPartnerships.push(limitedPartnership);
+    limitedPartnershipBuilder.withData(registrationPageType, data);
 
-    if (transactionId === this.transactionId) {
-      this.limitedPartnerships[0] = limitedPartnership;
-    }
+    this.limitedPartnerships.push(limitedPartnershipBuilder.build());
 
     return this.submissionId;
   }
 
-  private buildLimitedPartnership(
-    pageType: RegistrationPageType,
-    data: Record<string, any>,
-    submissionId?: string
-  ): TransactionLimitedPartnership {
+  async sendPageData(
+    opt: { access_token: string },
+    transactionId: string,
+    submissionId: string,
+    registrationPageType: RegistrationPageType,
+    data: Record<string, any>
+  ): Promise<void> {
+    if (!data || !Object.keys(data).length) {
+      throw new Error("data is empty - No data has been sent from the page");
+    }
+
+    let index = this.limitedPartnerships.findIndex(
+      (lp) => lp._id === submissionId
+    );
+
     const limitedPartnershipBuilder = new LimitedPartnershipGatewayBuilder({
       _id: submissionId,
+      data: this.limitedPartnerships[index]?.data,
     });
 
-    limitedPartnershipBuilder.withData(pageType, data);
+    limitedPartnershipBuilder.withData(registrationPageType, data);
 
-    return limitedPartnershipBuilder.build();
+    this.limitedPartnerships[index] = limitedPartnershipBuilder.build();
   }
 
   async getSubmissionById(id: string): Promise<LimitedPartnership> {

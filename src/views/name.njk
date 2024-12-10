@@ -8,6 +8,9 @@
   {% include "pages/name/private-limited-partnership-name.njk" %} 
 {% elif props.parameters['which-type'] == "registerSlp" %}
   {% include "pages/name/scottish-limited-partnership-name.njk" %}
+  {% include "pages/name/private-limited-partnership-name.njk" %}  
+{% elif props.parameters['which-type'] == "registerPflpSco" %}
+  {% include "pages/name/private-limited-partnership-name-scotland.njk" %}  
 {% else %}
   <p>Under construction</p>
 {% endif %}
