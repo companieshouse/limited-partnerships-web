@@ -1,6 +1,7 @@
 import request from "supertest";
 import { LocalesService } from "@companieshouse/ch-node-utils";
-import * as config from "../../../../config/constants";
+import * as constants from "../../../../config/constants";
+import { appDevDependencies } from "../../../../config";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
@@ -17,14 +18,8 @@ describe("Limited Partner Choice Page", () => {
   });
 
   const setLocalesEnabled = (bool: boolean) => {
-    jest.spyOn(config, "isLocalesEnabled").mockReturnValue(bool);
+    jest.spyOn(constants, "isLocalesEnabled").mockReturnValue(bool);
     LocalesService.getInstance().enabled = bool;
-  };
-
-  const insertIdsInUrl = (url: string, transactionId: string, submissionId: string) => {
-    return url
-      .replace(`:${config.TRANSACTION_ID}`, transactionId)
-      .replace(`:${config.SUBMISSION_ID}`, submissionId);
   };
 
   it("should load the limited partner choice page with Welsh text", async () => {
@@ -48,7 +43,12 @@ describe("Limited Partner Choice Page", () => {
     const submissionId = "1543454";
     const selectedChoice = "person";
 
-    const url = insertIdsInUrl(LIMITED_PARTNER_CHOICE_URL, transactionId, submissionId);
+    const url = appDevDependencies.registrationController.insertIdsInUrl(
+      LIMITED_PARTNER_CHOICE_URL,
+      transactionId,
+      submissionId
+    );
+
     const res = await request(app)
       .post(url)
       .send({
@@ -57,8 +57,11 @@ describe("Limited Partner Choice Page", () => {
       });
 
     expect(res.status).toBe(302);
-    const nextPageUrl = insertIdsInUrl(NEXT_URL, transactionId, submissionId)
-      + `?${RegistrationPageType.limitedPartnerChoice}=${selectedChoice}`;
+    const nextPageUrl = appDevDependencies.registrationController.insertIdsInUrl(
+      NEXT_URL,
+      transactionId,
+      submissionId
+    ) + `?${RegistrationPageType.limitedPartnerChoice}=${selectedChoice}`;
     expect(res.header.location).toEqual(nextPageUrl);
   });
 });
