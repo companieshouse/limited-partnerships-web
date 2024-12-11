@@ -12,48 +12,29 @@
     "namePage" : {
         "title" : "WELSH - Limited partnership name",
         "whatIsName" : "WELSH - What is the limited partnership name?",
-        "whatIsNameHint" : "WELSH - Do not enter a name ending, like Limited Partnership or LP. We'll add this for you.",
-        "checkName" : "WELSH - Check the limited partnership name against an existing trademark",
-        "checkNameExistingLP" : "WELSH - You must check the name is not the same as an existing limited partnership on the <a href='#/'>Companies House register (link opens in a new tab)</a>. If it is, we will reject your application.",
-        "checkNameExistingTrademark" : "WELSH - You should also use the <a href='https://www.gov.uk/search-for-trade mark' target='_blank'>trade mark search (link opens in a new tab)</a> to check if your name matches an existing trade mark. If it does, consider choosing a different name. Companies House will not carry out this check for you.",
+        "whatIsNameHint" : "WELSH - Do not enter a name ending like Limited Partnership or LP. We will add this for you.",
+        "existingPartnershipHint" : "WELSH - You must check the name is not the same as an existing partnership or company on the <a href='https://find-and-update.company-information.service.gov.uk/company-name-availability' target='_blank'>Companies House register (opens in a new tab)</a>. If it is, we’ll reject your application.",
+        "sensitiveWordHint" : "WELSH - If the name includes <a href='https://www.gov.uk/government/publications/incorporation-and-names/annex-a-sensitive-words-and-expressions-or-words-that-could-imply-a-connection-with-government' target='_blank'>sensitive words or expressions that require approval (opens in a new tab)</a>, you must get permission before you register.",
+        "existingTrademarkHint" : "WELSH - You should also use the <a href='https://www.gov.uk/search-for-trademark' target='_blank'>trade mark search (opens in a new tab)</a> to check if your name matches an existing trade mark. If it does, consider choosing a different name. Companies House will not carry out this check for you.",
         "nameEnding" : "WELSH - Which limited partnership name ending would you prefer to go on the public record?",
-        "nameEndingHint" : "WELSH - There's no difference between the name endings Limited Partnership, LP and L.P. except for how they look.",
-        "existingPartnershipHint" : "WELSH - You must check the name is not the same as an existing partnership or company on the <a href='https://find-and-update.company-information.service.gov.uk/company-name-availability' target='_blank'>Companies House register (opens in a new tab)</a>. If it is, we’ll reject your application.",
-        "sensitiveWordHint" : "WELSH - If the name includes <a href='https://www.gov.uk/government/publications/incorporation-and-names/annex-a-sensitive-words-and-expressions-or-words-that-could-imply-a-connection-with-government' target='_blank'>sensitive words or expressions that require approval (opens in a new tab)</a>, you must get permission before you register.",
-        "existingTrademarkHint" : "WELSH - You should also use the <a href='https://www.gov.uk/search-for-trademark' target='_blank'>trade mark search (opens in a new tab)</a> to check if your name matches an existing trade mark. If it does, consider choosing a different name. Companies House will not carry out this check for you."
-    },
+        "nameEndingHint" : "WELSH - There's no difference between the name endings Limited Partnership, LP and L.P., except for how they look.",
 
-    "privateNamePage" : {
-        "title" : "WELSH - Private fund limited partnership name",
-        "whatIsName" : "WELSH - What's the name of the private fund limited partnership?",
-        "whatIsNameHint" : "WELSH - Do not enter a name ending like Limited Partnership or LP. We will add this for you.",
-        "nameEndingHint" : "WELSH - There's no difference between the name endings Limited Partnership, LP and L.P. except for how they look.",
-        "existingPartnershipHint" : "WELSH - You must check the name is not the same as an existing partnership or company on the <a href='https://find-and-update.company-information.service.gov.uk/company-name-availability' target='_blank'>Companies House register (opens in a new tab)</a>. If it is, we’ll reject your application.",
-        "sensitiveWordHint" : "WELSH - If the name includes <a href='https://www.gov.uk/government/publications/incorporation-and-names/annex-a-sensitive-words-and-expressions-or-words-that-could-imply-a-connection-with-government' target='_blank'>sensitive words or expressions that require approval (opens in a new tab)</a>, you must get permission before you register.",
-        "existingTrademarkHint" : "WELSH - Use the <a href='https://www.gov.uk/search-for-trademark' target='_blank'>trade mark search (link opens in a new tab)</a> to check if your name matches an existing trade mark. If it does, consider choosing a different name. Companies House will not carry out this check for you.",
-        "nameEnding" : "WELSH - Which private fund limited partnership name ending would you prefer to go on the public record?"
-    },
-
-    "scottishNamePage" : {
-        "title" : "WELSH - Scottish limited partnership name",
-        "whatIsName" : "WELSH - What's the name of the Scottish limited partnership?",
-        "whatIsNameHint" : "WELSH - Do not enter a name ending like Limited Partnership or LP. We will add this for you.",
-        "nameEndingHint" : "WELSH - There's no difference between the name endings Limited Partnership, LP and L.P. except for how they look.",
-        "existingPartnershipHint" : "WELSH - You must check the name is not the same as an existing partnership or company on the <a href='https://find-and-update.company-information.service.gov.uk/company-name-availability' target='_blank'>Companies House register (opens in a new tab)</a>. If it is, we’ll reject your application.",
-        "sensitiveWordHint" : "WELSH - If the name includes <a href='https://www.gov.uk/government/publications/incorporation-and-names/annex-a-sensitive-words-and-expressions-or-words-that-could-imply-a-connection-with-government' target='_blank'>sensitive words or expressions that require approval (opens in a new tab)</a>, you must get permission before you register.",
-        "existingTrademarkHint" : "WELSH - Use the <a href='https://www.gov.uk/search-for-trademark' target='_blank'>trade mark search (link opens in a new tab)</a> to check if your name matches an existing trade mark. If it does, consider choosing a different name. Companies House will not carry out this check for you.",
-        "nameEnding" : "WELSH - Which private fund limited partnership name ending would you prefer to go on the public record?"
-    },
+        "privateFund" : {
+            "title" : "WELSH - Private fund limited partnership name",
+            "whatIsName" : "WELSH - What's the name of the private fund limited partnership?",
+            "nameEnding" : "WELSH - Which private fund limited partnership name ending would you prefer to go on the public record?",
     
-    "privateNameScottishPage" : {
-        "title" : "WELSH - Scottish private fund limited partnership name",
-        "whatIsName" : "WELSH - What's the name of the private fund limited partnership?",
-        "whatIsNameHint" : "WELSH - Do not enter a name ending like Limited Partnership, LP, or L.P. We will add this for you.",
-        "existingPartnershipHint" : "WELSH - You must check the name is not the same as an existing partnership or company on the <a href='https://find-and-update.company-information.service.gov.uk/company-name-availability' target='_blank'>Companies House register (opens in a new tab)</a>. If it is, we’ll reject your application.",
-        "sensitiveWordHint" : "WELSH - If the name includes <a href='https://www.gov.uk/government/publications/incorporation-and-names/annex-a-sensitive-words-and-expressions-or-words-that-could-imply-a-connection-with-government' target='_blank'>sensitive words or expressions that require approval (opens in a new tab)</a>, you must get permission before you register.",
-        "existingTrademarkHint" : "WELSH - Use the <a href='https://www.gov.uk/search-for-trademark' target='_blank'>trade mark search (link opens in a new tab)</a> to check if your name matches an existing trade mark. If it does, consider choosing a different name. Companies House will not carry out this check for you.",
-        "nameEnding" : "WELSH - Which private fund limited partnership name ending would you prefer to go on the public record?",
-        "nameEndingHint" : "WELSH - There's no difference between the name endings Limited Partnership, LP and L.P., except for how they look."
+            "scottish" : {
+                "title" : "WELSH - Scottish private fund limited partnership name",
+                "whatIsName" : "WELSH - What's the name of the private fund limited partnership?"        
+            }    
+        },
+
+        "scottish" : {
+            "title" : "WELSH - Scottish limited partnership name",
+            "whatIsName" : "WELSH - What's the name of the Scottish limited partnership?",
+            "nameEnding" : "WELSH - Which name ending would you prefer to go on the public record?"
+        }
     },
 
     "startPage" : {
