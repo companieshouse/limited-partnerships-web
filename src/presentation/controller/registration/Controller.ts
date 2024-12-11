@@ -5,6 +5,7 @@ import RegistrationService from "../../../application/registration/Service";
 import registrationsRouting from "./Routing";
 import AbstractController from "../AbstractController";
 import PageType from "./PageType";
+import { SUBMISSION_ID, TRANSACTION_ID } from "../../../config/constants";
 
 class RegistrationController extends AbstractController {
   private registrationService: RegistrationService;
@@ -83,15 +84,15 @@ class RegistrationController extends AbstractController {
 
         const registrationRouting = super.getRouting(
           registrationsRouting,
-          type
+          type,
+          request.params[TRANSACTION_ID],
+          request.params[SUBMISSION_ID]
         );
-
-        const url = super.insertIdsInUrl(registrationRouting.nextUrl);
 
         const pageType = escape(request.body.pageType);
         const parameter = escape(request.body.parameter);
 
-        response.redirect(`${url}?${pageType}=${parameter}`);
+        response.redirect(`${registrationRouting.nextUrl}?${pageType}=${parameter}`);
       } catch (error) {
         next(error);
       }

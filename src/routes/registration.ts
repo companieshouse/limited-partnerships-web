@@ -12,6 +12,7 @@ import {
   LIMITED_PARTNERS_URL,
   GENERAL_PARTNERS_URL,
   GENERAL_PARTNER_CHOICE_URL,
+  LIMITED_PARTNER_CHOICE_URL,
 } from "../presentation/controller/registration/Routing";
 
 export const registrationEndpoints = (
@@ -37,6 +38,11 @@ export const registrationEndpoints = (
     NAME_URL,
     authentication,
     dependencies.registrationController.createTransactionAndFirstSubmission()
+  );
+  router.get(
+    GENERAL_PARTNERS_URL,
+    authentication,
+    dependencies.registrationController.getPageRouting()
   );
   router.get(
     EMAIL_URL,
@@ -69,6 +75,16 @@ export const registrationEndpoints = (
     dependencies.registrationController.getPageRouting()
   );
 
+  router.get(
+    LIMITED_PARTNER_CHOICE_URL,
+    authentication,
+    dependencies.registrationController.getPageRouting()
+  );
+  router.post(
+    LIMITED_PARTNER_CHOICE_URL,
+    authentication,
+    dependencies.registrationController.redirectWithParameter()
+  );
   router.get(
     NEXT_URL,
     authentication,

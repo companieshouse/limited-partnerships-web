@@ -1,3 +1,4 @@
+import { SUBMISSION_ID, TRANSACTION_ID } from "../../config/constants";
 import { PageRouting, pageRoutingDefault, PagesRouting } from "./PageRouting";
 import PageType from "./PageType";
 
@@ -41,11 +42,11 @@ abstract class AbstractController {
   }
 
   protected insertTransactionId(url: string, transactionId: string): string {
-    return transactionId ? url.replace(":transactionId", transactionId) : url;
+    return transactionId ? url.replace(`:${TRANSACTION_ID}`, transactionId) : url;
   }
 
   protected insertSubmissionId(url: string, submissionId: string): string {
-    return submissionId ? url.replace(":submissionId", submissionId) : url;
+    return submissionId ? url.replace(`:${SUBMISSION_ID}`, submissionId) : url;
   }
 
   protected insertIdsInAllUrl(
