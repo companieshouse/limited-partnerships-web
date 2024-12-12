@@ -2,19 +2,21 @@
 
 {% block content %}
 
-{% if props.parameters['which-type'] == "registerLp" %}
+{% set partnershipType = props.parameters['which-type'] %}
+
+{% if partnershipType == "registerLp" %}
   {% set title = i18n.namePage.title %}
   {% set whatIsName = i18n.namePage.whatIsName %}
   {% set nameEnding = i18n.namePage.nameEnding %}
-{% elif props.parameters['which-type'] == "registerPflp" %}
+{% elif partnershipType == "registerPflp" %}
   {% set title = i18n.namePage.privateFund.title %}
   {% set whatIsName = i18n.namePage.privateFund.whatIsName %}
   {% set nameEnding = i18n.namePage.privateFund.nameEnding %}
-{% elif props.parameters['which-type'] == "registerSlp" %}
+{% elif partnershipType == "registerSlp" %}
   {% set title = i18n.namePage.scottish.title %}
   {% set whatIsName = i18n.namePage.scottish.whatIsName %}
   {% set nameEnding = i18n.namePage.scottish.nameEnding %}
-{% elif props.parameters['which-type'] == "registerPflpSco" %}
+{% elif partnershipType == "registerPflpSco" %}
   {% set title = i18n.namePage.privateFund.scottish.title %}
   {% set whatIsName = i18n.namePage.privateFund.scottish.whatIsName %}
   {% set nameEnding = i18n.namePage.privateFund.nameEnding %}
@@ -76,7 +78,7 @@
             </h1>
           </legend>
 
-          {% if props.parameters['which-type'] == "registerLp" or props.parameters['which-type'] == "registerPflp" %}
+          {% if partnershipType == "registerLp" or partnershipType == "registerPflp" %}
             {% include "pages/name/options-with-welsh.njk" %}
           {% else %}
             {% include "pages/name/options-without-welsh.njk" %}
