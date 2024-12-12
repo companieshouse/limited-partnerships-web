@@ -6,12 +6,12 @@
 
       {% include "includes/csrf_token.njk" %}
 
-      <h1 class="govuk-heading-xl">{{ i18n.privateNamePage.title }}</h1>
+      <h1 class="govuk-heading-xl">{{ i18n.namePage.privateFund.title }}</h1>
 
       <div class="govuk-form-group">
         <h1 class="govuk-label-wrapper">
           <label class="govuk-label govuk-label--l" for="partnership_name">
-            {{ i18n.privateNamePage.whatIsName }}
+            {{ i18n.namePage.privateFund.whatIsName }}
           </label>
         </h1>
 
@@ -28,7 +28,7 @@
             }
           },
           hint: {
-            text: i18n.privateNamePage.whatIsNameHint
+            text: i18n.namePage.whatIsNameHint
           },
           attributes : {
             required : true,
@@ -49,7 +49,7 @@
         <fieldset class="govuk-fieldset" aria-describedby="nameEnding-hint">
           <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
             <h1 class="govuk-fieldset__heading">
-              {{ i18n.privateNamePage.nameEnding }}
+              {{ i18n.namePage.privateFund.nameEnding }}
             </h1>
           </legend>
 
@@ -103,7 +103,7 @@
               }
             },
             hint: {
-              text: i18n.privateNamePage.nameEndingHint
+              text: i18n.namePage.nameEndingHint
             },
             items: [
               {
