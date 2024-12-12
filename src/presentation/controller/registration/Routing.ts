@@ -60,7 +60,7 @@ const registrationRoutingGeneralPartners = {
 const registrationRoutingLimitedPartners = {
   previousUrl: WHICH_TYPE_URL,
   currentUrl: LIMITED_PARTNERS_URL,
-  nextUrl: NEXT_URL,
+  nextUrl: LIMITED_PARTNER_CHOICE_URL,
   pageType: RegistrationPageType.limitedPartners,
 };
 
