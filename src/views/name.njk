@@ -78,11 +78,7 @@
             </h1>
           </legend>
 
-          {% if partnershipType == "registerLp" or partnershipType == "registerPflp" %}
-            {% include "pages/name/options-with-welsh.njk" %}
-          {% else %}
-            {% include "pages/name/options-without-welsh.njk" %}
-          {% endif %}
+          {% include "pages/name/options-with-or-without-welsh.njk" %}
 
         </fieldset>
       </div>
