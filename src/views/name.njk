@@ -2,17 +2,92 @@
 
 {% block content %}
 
-{% if props.parameters['which-type'] == "registerLp" %}
-   {% include "pages/name/limited-partnership-name.njk" %}
-{% elif props.parameters['which-type'] == "registerPflp" %}
-  {% include "pages/name/private-limited-partnership-name.njk" %} 
-{% elif props.parameters['which-type'] == "registerSlp" %}
-  {% include "pages/name/scottish-limited-partnership-name.njk" %}
-{% elif props.parameters['which-type'] == "registerPflpSco" %}
-  {% include "pages/name/private-limited-partnership-name-scotland.njk" %}  
-{% else %}
-  <p>Under construction</p>
+{% set partnershipType = props.parameters['which-type'] %}
+
+{% if partnershipType == "registerLp" %}
+  {% set title = i18n.namePage.title %}
+  {% set whatIsName = i18n.namePage.whatIsName %}
+  {% set nameEnding = i18n.namePage.nameEnding %}
+{% elif partnershipType == "registerPflp" %}
+  {% set title = i18n.namePage.privateFund.title %}
+  {% set whatIsName = i18n.namePage.privateFund.whatIsName %}
+  {% set nameEnding = i18n.namePage.privateFund.nameEnding %}
+{% elif partnershipType == "registerSlp" %}
+  {% set title = i18n.namePage.scottish.title %}
+  {% set whatIsName = i18n.namePage.scottish.whatIsName %}
+  {% set nameEnding = i18n.namePage.scottish.nameEnding %}
+{% elif partnershipType == "registerPflpSco" %}
+  {% set title = i18n.namePage.privateFund.scottish.title %}
+  {% set whatIsName = i18n.namePage.privateFund.scottish.whatIsName %}
+  {% set nameEnding = i18n.namePage.privateFund.nameEnding %}
 {% endif %}
+
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <form class="form" action={{ props.currentUrl }} method="post">
+      <input type="hidden" name="pageType" value={{ props.pageType }}>
+      
+      {% include "includes/csrf_token.njk" %}
+
+      <h1 class="govuk-heading-xl">{{ title }}</h1>
+
+      <div class="govuk-form-group">
+        <h1 class="govuk-label-wrapper">
+          <label class="govuk-label govuk-label--l" for="partnership_name">
+            {{ whatIsName }}
+          </label>
+        </h1>
+
+        {{ govukInput ({
+          classes: "govuk-input--width-40",
+          errorMessage: props.errors.partnership_name if errors,
+          id: "partnership_name",
+          name: "partnership_name",
+          value: props.data.limitedPartnership.partnership_name,
+          fieldset: {
+            legend: {
+              isPageHeading: false,
+              classes: "govuk-fieldset__legend--xl"
+            }
+          },
+          hint: {
+            text: i18n.namePage.whatIsNameHint
+          },
+          attributes : {
+            required : true,
+            "aria-describedby": "partnership_name-hint",
+            minLength: "1"
+          },
+          suffix: {
+            text: "Limited Partnership"
+          }
+        }) }}
+
+      </div>
+
+      {{ govukInsetText({
+        html: '<p>' + i18n.namePage.existingPartnershipHint + '</p><p>' + i18n.namePage.sensitiveWordHint + '</p><p>' + i18n.namePage.existingTrademarkHint + '</p>'
+      }) }}
+
+      <div class="govuk-form-group">
+        <fieldset class="govuk-fieldset" aria-describedby="nameEnding-hint">
+          <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+            <h1 class="govuk-fieldset__heading">
+              {{ nameEnding }}
+            </h1>
+          </legend>
+
+          {% include "pages/name/options-with-or-without-welsh.njk" %}
+
+        </fieldset>
+      </div>
+
+      {% include "includes/save-and-continue-button.njk" %}
+    </form>
+  </div>
+</div>
+
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
