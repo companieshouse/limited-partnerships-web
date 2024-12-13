@@ -2,13 +2,13 @@
 
 {% block content %}
 
-{% if props.parameters['which-type'] == "registerLp" %}
+{% if props.parameters['which-type'] == "LP" %}
    {% include "pages/name/limited-partnership-name.njk" %}
-{% elif props.parameters['which-type'] == "registerPflp" %}
+{% elif props.parameters['which-type'] == "PFLP" %}
   {% include "pages/name/private-limited-partnership-name.njk" %} 
-{% elif props.parameters['which-type'] == "registerSlp" %}
+{% elif props.parameters['which-type'] == "SLP" %}
   {% include "pages/name/scottish-limited-partnership-name.njk" %}
-{% elif props.parameters['which-type'] == "registerPflpSco" %}
+{% elif props.parameters['which-type'] == "SPFLP" %}
   {% include "pages/name/private-limited-partnership-name-scotland.njk" %}  
 {% else %}
   <p>Under construction</p>

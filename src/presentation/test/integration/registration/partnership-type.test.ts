@@ -19,7 +19,7 @@ describe("Which type Page", () => {
     expect(res.text).toContain(enTranslationText.whichTypePage.title);
     expect(res.text).toContain(enTranslationText.buttons.continue);
     expect(res.text).toContain(
-      enTranslationText.whichTypePage.options.registerLp
+      enTranslationText.whichTypePage.options.LP
     );
   });
 
