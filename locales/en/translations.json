@@ -52,11 +52,11 @@
     "whichTypePage": {
         "title": "Which type of partnership do you want to register?",
         "options": {
-            "registerLp": "Limited partnership in England, Wales or Northern Ireland",
-            "registerPflp": "Private fund limited partnership in England, Wales or Northern Ireland",
-            "registerSlp": "Scottish limited partnership",
-            "registerPflpSco": "Private fund limited partnership in Scotland",
-            "registerSqp": "Scottish qualifying partnership"
+            "LP": "Limited partnership in England, Wales or Northern Ireland",
+            "PFLP": "Private fund limited partnership in England, Wales or Northern Ireland",
+            "SLP": "Scottish limited partnership",
+            "SPFLP": "Private fund limited partnership in Scotland",
+            "SQP": "Scottish qualifying partnership"
         }
     },
 

@@ -4,19 +4,19 @@
 
 {% set partnershipType = props.parameters['which-type'] %}
 
-{% if partnershipType == "registerLp" %}
+{% if partnershipType == "LP" %}
   {% set title = i18n.namePage.title %}
   {% set whatIsName = i18n.namePage.whatIsName %}
   {% set nameEnding = i18n.namePage.nameEnding %}
-{% elif partnershipType == "registerPflp" %}
+{% elif partnershipType == "PFLP" %}
   {% set title = i18n.namePage.privateFund.title %}
   {% set whatIsName = i18n.namePage.privateFund.whatIsName %}
   {% set nameEnding = i18n.namePage.privateFund.nameEnding %}
-{% elif partnershipType == "registerSlp" %}
+{% elif partnershipType == "SLP" %}
   {% set title = i18n.namePage.scottish.title %}
   {% set whatIsName = i18n.namePage.scottish.whatIsName %}
   {% set nameEnding = i18n.namePage.scottish.nameEnding %}
-{% elif partnershipType == "registerPflpSco" %}
+{% elif partnershipType == "SPFLP" %}
   {% set title = i18n.namePage.privateFund.scottish.title %}
   {% set whatIsName = i18n.namePage.privateFund.scottish.whatIsName %}
   {% set nameEnding = i18n.namePage.privateFund.nameEnding %}
@@ -27,6 +27,7 @@
   <div class="govuk-grid-column-two-thirds">
     <form class="form" action={{ props.currentUrl }} method="post">
       <input type="hidden" name="pageType" value={{ props.pageType }}>
+      <input type="hidden" name="partnership_type" value={{ props.parameters['which-type'] }}>
       
       {% include "includes/csrf_token.njk" %}
 
