@@ -9,51 +9,39 @@
         }
     },
 
+    "limitedPartnerChoicePage" : {
+        "isPersonOrLegalEntity" : "Is the limited partner a person or a legal entity?",
+        "isPersonOrLegalEntityHint" : "You can add more later.",
+        "person" : "A person",
+        "legalEntity" : "A legal entity"
+    },
+
     "namePage" : {
         "title" : "Limited partnership name",
         "whatIsName" : "What is the limited partnership name?",
-        "whatIsNameHint" : "Do not enter a name ending, like Limited Partnership or LP. We'll add this for you.",
-        "checkName" : "Check the limited partnership name against an existing trademark",
-        "checkNameExistingLP" : "You must check the name is not the same as an existing limited partnership on the <a href='#/'>Companies House register (link opens in a new tab)</a>. If it is, we will reject your application.",
-        "checkNameExistingTrademark" : "You should also use the <a href='https://www.gov.uk/search-for-trade mark' target='_blank'>trade mark search (link opens in a new tab)</a> to check if your name matches an existing trade mark. If it does, consider choosing a different name. Companies House will not carry out this check for you.",
+        "whatIsNameHint" : "Do not enter a name ending like Limited Partnership or LP. We will add this for you.",
+        "existingPartnershipHint" : "You must check the name is not the same as an existing partnership or company on the <a href='https://find-and-update.company-information.service.gov.uk/company-name-availability' target='_blank'>Companies House register (opens in a new tab)</a>. If it is, we’ll reject your application.",
+        "sensitiveWordHint" : "If the name includes <a href='https://www.gov.uk/government/publications/incorporation-and-names/annex-a-sensitive-words-and-expressions-or-words-that-could-imply-a-connection-with-government' target='_blank'>sensitive words or expressions that require approval (opens in a new tab)</a>, you must get permission before you register.",
+        "existingTrademarkHint" : "You should also use the <a href='https://www.gov.uk/search-for-trademark' target='_blank'>trade mark search (opens in a new tab)</a> to check if your name matches an existing trade mark. If it does, consider choosing a different name. Companies House will not carry out this check for you.",
         "nameEnding" : "Which limited partnership name ending would you prefer to go on the public record?",
-        "nameEndingHint" : "There's no difference between the name endings Limited Partnership, LP and L.P. except for how they look.",
-        "existingPartnershipHint" : "You must check the name is not the same as an existing partnership or company on the <a href='https://find-and-update.company-information.service.gov.uk/company-name-availability' target='_blank'>Companies House register (opens in a new tab)</a>. If it is, we’ll reject your application.",
-        "sensitiveWordHint" : "If the name includes <a href='https://www.gov.uk/government/publications/incorporation-and-names/annex-a-sensitive-words-and-expressions-or-words-that-could-imply-a-connection-with-government' target='_blank'>sensitive words or expressions that require approval (opens in a new tab)</a>, you must get permission before you register.",
-        "existingTrademarkHint" : "You should also use the <a href='https://www.gov.uk/search-for-trademark' target='_blank'>trade mark search (opens in a new tab)</a> to check if your name matches an existing trade mark. If it does, consider choosing a different name. Companies House will not carry out this check for you."
-    },
+        "nameEndingHint" : "There's no difference between the name endings Limited Partnership, LP and L.P., except for how they look.",
 
-    "privateNamePage" : {
-        "title" : "Private fund limited partnership name",
-        "whatIsName" : "What's the name of the private fund limited partnership?",
-        "whatIsNameHint" : "Do not enter a name ending like Limited Partnership or LP. We will add this for you.",
-        "nameEndingHint" : "There's no difference between the name endings Limited Partnership, LP and L.P. except for how they look.",
-        "existingPartnershipHint" : "You must check the name is not the same as an existing partnership or company on the <a href='https://find-and-update.company-information.service.gov.uk/company-name-availability' target='_blank'>Companies House register (opens in a new tab)</a>. If it is, we’ll reject your application.",
-        "sensitiveWordHint" : "If the name includes <a href='https://www.gov.uk/government/publications/incorporation-and-names/annex-a-sensitive-words-and-expressions-or-words-that-could-imply-a-connection-with-government' target='_blank'>sensitive words or expressions that require approval (opens in a new tab)</a>, you must get permission before you register.",
-        "existingTrademarkHint" : "Use the <a href='https://www.gov.uk/search-for-trademark' target='_blank'>trade mark search (link opens in a new tab)</a> to check if your name matches an existing trade mark. If it does, consider choosing a different name. Companies House will not carry out this check for you.",
-        "nameEnding" : "Which private fund limited partnership name ending would you prefer to go on the public record?"
-    },
-
-    "scottishNamePage" : {
-        "title" : "Scottish limited partnership name",
-        "whatIsName" : "What's the name of the Scottish limited partnership?",
-        "whatIsNameHint" : "Do not enter a name ending like Limited Partnership or LP. We will add this for you.",
-        "nameEndingHint" : "There's no difference between the name endings Limited Partnership, LP and L.P. except for how they look.",
-        "existingPartnershipHint" : "You must check the name is not the same as an existing partnership or company on the <a href='https://find-and-update.company-information.service.gov.uk/company-name-availability' target='_blank'>Companies House register (opens in a new tab)</a>. If it is, we’ll reject your application.",
-        "sensitiveWordHint" : "If the name includes <a href='https://www.gov.uk/government/publications/incorporation-and-names/annex-a-sensitive-words-and-expressions-or-words-that-could-imply-a-connection-with-government' target='_blank'>sensitive words or expressions that require approval (opens in a new tab)</a>, you must get permission before you register.",
-        "existingTrademarkHint" : "Use the <a href='https://www.gov.uk/search-for-trademark' target='_blank'>trade mark search (link opens in a new tab)</a> to check if your name matches an existing trade mark. If it does, consider choosing a different name. Companies House will not carry out this check for you.",
-        "nameEnding" : "Which private fund limited partnership name ending would you prefer to go on the public record?"
-    },
+        "privateFund" : {
+            "title" : "Private fund limited partnership name",
+            "whatIsName" : "What's the name of the private fund limited partnership?",
+            "nameEnding" : "Which private fund limited partnership name ending would you prefer to go on the public record?",
     
-    "privateNameScottishPage" : {
-        "title" : "Scottish private fund limited partnership name",
-        "whatIsName" : "What's the name of the private fund limited partnership?",
-        "whatIsNameHint" : "Do not enter a name ending like Limited Partnership, LP, or L.P. We will add this for you.",
-        "existingPartnershipHint" : "You must check the name is not the same as an existing partnership or company on the <a href='https://find-and-update.company-information.service.gov.uk/company-name-availability' target='_blank'>Companies House register (opens in a new tab)</a>. If it is, we’ll reject your application.",
-        "sensitiveWordHint" : "If the name includes <a href='https://www.gov.uk/government/publications/incorporation-and-names/annex-a-sensitive-words-and-expressions-or-words-that-could-imply-a-connection-with-government' target='_blank'>sensitive words or expressions that require approval (opens in a new tab)</a>, you must get permission before you register.",
-        "existingTrademarkHint" : "Use the <a href='https://www.gov.uk/search-for-trademark' target='_blank'>trade mark search (link opens in a new tab)</a> to check if your name matches an existing trade mark. If it does, consider choosing a different name. Companies House will not carry out this check for you.",
-        "nameEnding" : "Which private fund limited partnership name ending would you prefer to go on the public record?",
-        "nameEndingHint" : "There's no difference between the name endings Limited Partnership, LP and L.P., except for how they look."
+            "scottish" : {
+                "title" : "Scottish private fund limited partnership name",
+                "whatIsName" : "What's the name of the private fund limited partnership?"        
+            }    
+        },
+
+        "scottish" : {
+            "title" : "Scottish limited partnership name",
+            "whatIsName" : "What's the name of the Scottish limited partnership?",
+            "nameEnding" : "Which name ending would you prefer to go on the public record?"
+        }
     },
 
     "startPage" : {

@@ -46,8 +46,8 @@ describe("Name Page", () => {
     const res = await request(app).get(NAME_URL + "?lang=cy&which-type=registerPflp");
 
     expect(res.status).toBe(200);
-    expect(res.text).toContain(cyTranslationText.privateNamePage.title);
-    expect(res.text).toContain(cyTranslationText.privateNamePage.nameEnding);
+    expect(res.text).toContain(cyTranslationText.namePage.privateFund.title);
+    expect(res.text).toContain(cyTranslationText.namePage.privateFund.nameEnding);
     expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
   });
 
@@ -56,8 +56,8 @@ describe("Name Page", () => {
     const res = await request(app).get(NAME_URL + "?lang=en&which-type=registerPflp");
 
     expect(res.status).toBe(200);
-    expect(res.text).toContain(enTranslationText.privateNamePage.title);
-    expect(res.text).toContain(enTranslationText.privateNamePage.nameEnding);
+    expect(res.text).toContain(enTranslationText.namePage.privateFund.title);
+    expect(res.text).toContain(enTranslationText.namePage.privateFund.nameEnding);
     expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
     expect(res.text).not.toContain("WELSH -");
   });
@@ -67,8 +67,8 @@ describe("Name Page", () => {
     const res = await request(app).get(NAME_URL + "?lang=cy&which-type=registerSlp");
 
     expect(res.status).toBe(200);
-    expect(res.text).toContain(cyTranslationText.scottishNamePage.title);
-    expect(res.text).toContain(cyTranslationText.scottishNamePage.nameEnding);
+    expect(res.text).toContain(cyTranslationText.namePage.scottish.title);
+    expect(res.text).toContain(cyTranslationText.namePage.scottish.nameEnding);
     expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
   });
 
@@ -77,8 +77,8 @@ describe("Name Page", () => {
     const res = await request(app).get(NAME_URL + "?lang=en&which-type=registerSlp");
 
     expect(res.status).toBe(200);
-    expect(res.text).toContain(enTranslationText.scottishNamePage.title);
-    expect(res.text).toContain(enTranslationText.scottishNamePage.nameEnding);
+    expect(res.text).toContain(enTranslationText.namePage.scottish.title);
+    expect(res.text).toContain(enTranslationText.namePage.scottish.nameEnding);
     expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
     expect(res.text).not.toContain("WELSH -");
   });
@@ -88,8 +88,8 @@ describe("Name Page", () => {
     const res = await request(app).get(NAME_URL + "?lang=cy&which-type=registerPflpSco");
 
     expect(res.status).toBe(200);
-    expect(res.text).toContain(cyTranslationText.privateNameScottishPage.title);
-    expect(res.text).toContain(cyTranslationText.privateNameScottishPage.whatIsNameHint);
+    expect(res.text).toContain(cyTranslationText.namePage.privateFund.scottish.title);
+    expect(res.text).toContain(cyTranslationText.namePage.whatIsNameHint);
     expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
   });
 
@@ -98,8 +98,8 @@ describe("Name Page", () => {
     const res = await request(app).get(NAME_URL + "?lang=en&which-type=registerPflpSco");
 
     expect(res.status).toBe(200);
-    expect(res.text).toContain(enTranslationText.privateNameScottishPage.title);
-    expect(res.text).toContain(enTranslationText.privateNameScottishPage.whatIsNameHint);
+    expect(res.text).toContain(enTranslationText.namePage.privateFund.scottish.title);
+    expect(res.text).toContain(enTranslationText.namePage.whatIsNameHint);
     expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
     expect(res.text).not.toContain("WELSH -");
   });
