@@ -2,7 +2,9 @@
 
 {% block content %}
 
-{% if props.parameters['which-type'] == "registerLp" %}
+<div id="content" data-type={{props.data.limitedPartnership.partnership_type}}></div>
+
+{# {% if props.parameters['which-type'] == "registerLp" %}
    {% include "pages/name/limited-partnership-name.njk" %}
 {% elif props.parameters['which-type'] == "registerPflp" %}
   {% include "pages/name/private-limited-partnership-name.njk" %} 
@@ -12,7 +14,7 @@
   {% include "pages/name/private-limited-partnership-name-scotland.njk" %}  
 {% else %}
   <p>Under construction</p>
-{% endif %}
+{% endif %} #}
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
@@ -51,6 +53,24 @@
       nameField.value = nameField.value.trim();
     });
   });
+
+  const content = document.getElementById('content');
+  const whichType = sessionStorage.getItem("which-type");
+  const whichTypeDb = content.dataset.type;
+
+  const value = (whichType && whichType !== whichTypeDb) ? whichType : whichTypeDb;
+
+  if (value == "registerLp"){
+    content.innerHTML = `{% include "pages/name/limited-partnership-name.njk" %}`;
+  } else if (value === "registerPflp") {
+    content.innerHTML = `{% include "pages/name/private-limited-partnership-name.njk" %}`;
+  } else if (value === "registerSlp") {
+    content.innerHTML = `{% include "pages/name/scottish-limited-partnership-name.njk" %}`;
+  } else if (value === "registerPflpSco") {
+    content.innerHTML = `{% include "pages/name/private-limited-partnership-name-scotland.njk" %}`; 
+  } else{
+    content.innerHTML = `<p>Under construction</p>`;
+  }
 </script>
 
 {% endblock %}

@@ -64,4 +64,16 @@
     </div>
   </div>
 
+  <script>
+    const radioButtons = document.querySelectorAll('input[name="parameter"]');
+
+    radioButtons.forEach(function(radioButton) {
+      radioButton.addEventListener('change', function() {
+        if (radioButton.checked) {
+          sessionStorage.setItem("which-type", radioButton.value);
+        }
+      });
+    });
+  </script>
+
 {% endblock %}

@@ -20,7 +20,7 @@ class RegistrationController extends AbstractController {
         const pageType = super.pageType(request.path);
         const { transactionId, submissionId } = this.extractIds(request);
 
-        const pageRouting = super.getRouting(
+        let pageRouting = super.getRouting(
           registrationsRouting,
           pageType,
           transactionId,
@@ -28,6 +28,18 @@ class RegistrationController extends AbstractController {
         );
 
         const parameters = request.query;
+
+        // add fake LP
+        pageRouting = {
+          ...pageRouting,
+          data: {
+            limitedPartnership: {
+              partnership_name: "test",
+              name_ending: "Limited Partnership",
+              partnership_type: "registerLp"
+            }
+          } };
+        //
 
         response.render(super.templateName(pageRouting.currentUrl), {
           props: { ...pageRouting, parameters },
