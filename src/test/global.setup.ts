@@ -14,6 +14,7 @@ export default () => {
   process.env.NODE_ENV = "development";
   process.env.OAUTH2_CLIENT_ID = "OAUTH2_CLIENT_ID";
   process.env.OAUTH2_CLIENT_SECRET = "OAUTH2_CLIENT_SECRET";
+  process.env.PIWIK_REGISTRATION_START_GOAL_ID = "45";
   process.env.PIWIK_SITE_ID = "24";
   process.env.PIWIK_URL = "piwik.url";
   process.env.PORT = "3000";
