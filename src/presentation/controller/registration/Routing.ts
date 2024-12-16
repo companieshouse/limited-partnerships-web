@@ -43,7 +43,7 @@ const registrationRoutingName = {
 };
 
 const registrationRoutingEmail = {
-  previousUrl: WHICH_TYPE_URL,
+  previousUrl: NAME_URL,
   currentUrl: EMAIL_URL,
   nextUrl: GENERAL_PARTNERS_URL,
   pageType: RegistrationPageType.email,
@@ -56,24 +56,24 @@ const registrationRoutingGeneralPartners = {
   pageType: RegistrationPageType.generalPartners,
 };
 
+const registrationRoutingGeneralPartnerChoice = {
+  previousUrl: GENERAL_PARTNERS_URL,
+  currentUrl: GENERAL_PARTNER_CHOICE_URL,
+  nextUrl: LIMITED_PARTNERS_URL,
+  pageType: RegistrationPageType.generalPartnerChoice,
+};
+
 const registrationRoutingLimitedPartners = {
-  previousUrl: WHICH_TYPE_URL,
+  previousUrl: GENERAL_PARTNER_CHOICE_URL,
   currentUrl: LIMITED_PARTNERS_URL,
   nextUrl: NEXT_URL,
   pageType: RegistrationPageType.limitedPartners,
 };
 
-const registrationRoutingGeneralPartnerChoice = {
-  previousUrl: GENERAL_PARTNERS_URL,
-  currentUrl: GENERAL_PARTNER_CHOICE_URL,
-  nextUrl: NEXT_URL,
-  pageType: RegistrationPageType.generalPartnerChoice,
-};
-
 const registrationRoutingNext = {
-  previousUrl: GENERAL_PARTNERS_URL,
+  previousUrl: LIMITED_PARTNERS_URL,
   currentUrl: NEXT_URL,
-  nextUrl: "/",
+  nextUrl: START_URL,
   pageType: RegistrationPageType.next,
 };
 
@@ -82,8 +82,8 @@ const list = [
   registrationRoutingName,
   registrationRoutingEmail,
   registrationRoutingGeneralPartners,
-  registrationRoutingLimitedPartners,
   registrationRoutingGeneralPartnerChoice,
+  registrationRoutingLimitedPartners,
   registrationRoutingNext,
 
 ];

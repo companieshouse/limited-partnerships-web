@@ -23,7 +23,8 @@
         type: "email",
         attributes : {
           required : true
-        }
+        },
+        errorMessage: props.errors.email if props.errors
       }) }}
 
 

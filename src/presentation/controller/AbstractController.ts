@@ -30,7 +30,8 @@ abstract class AbstractController {
   }
 
   protected templateName(url: string): string {
-    const splitted = url.split("/");
+    const urlWithoutQueryParams = url.split("?")[0];
+    const splitted = urlWithoutQueryParams.split("/");
     return splitted[splitted.length - 1];
   }
 

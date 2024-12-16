@@ -5,6 +5,7 @@ import RegistrationService from "../../../application/registration/Service";
 import registrationsRouting from "./Routing";
 import AbstractController from "../AbstractController";
 import PageType from "./PageType";
+import addLangToUrls from "../../../utils/queryParams";
 
 class RegistrationController extends AbstractController {
   private registrationService: RegistrationService;
@@ -29,8 +30,12 @@ class RegistrationController extends AbstractController {
 
         const parameters = request.query;
 
-        response.render(super.templateName(pageRouting.currentUrl), {
-          props: { ...pageRouting, parameters },
+        const pageRoutingWithQueryParams = addLangToUrls(request, pageRouting, response.locals);
+
+        response.render(super.templateName(pageRoutingWithQueryParams.currentUrl), {
+          props: { ...pageRouting, ...pageRoutingWithQueryParams, parameters },
+          ...response.locals,
+          currentUrl: pageRoutingWithQueryParams.currentUrl,
         });
       } catch (error) {
         next(error);
@@ -43,6 +48,7 @@ class RegistrationController extends AbstractController {
       try {
         const access_token = this.extractAccessToken(request);
         const pageType = this.extractPageTypeOrThrowError(request);
+        const { transactionId, submissionId } = this.extractIds(request);
 
         const result =
           await this.registrationService.createTransactionAndFirstSubmission(
@@ -53,7 +59,9 @@ class RegistrationController extends AbstractController {
 
         const registrationRouting = super.getRouting(
           registrationsRouting,
-          pageType
+          pageType,
+          transactionId,
+          submissionId
         );
 
         if (result.errors?.length) {
@@ -63,13 +71,15 @@ class RegistrationController extends AbstractController {
           return;
         }
 
-        const url = super.insertIdsInUrl(
+        registrationRouting.nextUrl = super.insertIdsInUrl(
           registrationRouting.nextUrl,
           result.transactionId,
           result.submissionId
         );
 
-        response.redirect(url);
+        const pageRoutingWithQueryParams = addLangToUrls(request, registrationRouting, response.locals);
+
+        response.redirect(pageRoutingWithQueryParams.nextUrl);
       } catch (error) {
         next(error);
       }
@@ -79,19 +89,25 @@ class RegistrationController extends AbstractController {
   redirectWithParameter(): RequestHandler {
     return (request: Request, response: Response, next: NextFunction) => {
       try {
+        console.log("TYPE", request.body.pageType);
         const type = this.extractPageTypeOrThrowError(request);
+        const { transactionId, submissionId } = this.extractIds(request);
 
         const registrationRouting = super.getRouting(
           registrationsRouting,
-          type
+          type,
+          transactionId,
+          submissionId
         );
-
-        const url = super.insertIdsInUrl(registrationRouting.nextUrl);
 
         const pageType = escape(request.body.pageType);
         const parameter = escape(request.body.parameter);
 
-        response.redirect(`${url}?${pageType}=${parameter}`);
+        registrationRouting.nextUrl = `${registrationRouting.nextUrl}?${pageType}=${parameter}`;
+
+        const pageRoutingWithQueryParams = addLangToUrls(request, registrationRouting, response.locals);
+
+        response.redirect(pageRoutingWithQueryParams.nextUrl);
       } catch (error) {
         next(error);
       }
@@ -127,7 +143,9 @@ class RegistrationController extends AbstractController {
           return;
         }
 
-        response.redirect(registrationRouting.nextUrl);
+        const pageRoutingWithQueryParams = addLangToUrls(request, registrationRouting, response.locals);
+
+        response.redirect(pageRoutingWithQueryParams.nextUrl);
       } catch (error) {
         next(error);
       }

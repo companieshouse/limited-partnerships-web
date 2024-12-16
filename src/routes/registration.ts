@@ -28,6 +28,7 @@ export const registrationEndpoints = (
     authentication,
     dependencies.registrationController.redirectWithParameter()
   );
+
   router.get(
     NAME_URL,
     authentication,
@@ -38,6 +39,7 @@ export const registrationEndpoints = (
     authentication,
     dependencies.registrationController.createTransactionAndFirstSubmission()
   );
+
   router.get(
     EMAIL_URL,
     authentication,
@@ -48,11 +50,13 @@ export const registrationEndpoints = (
     authentication,
     dependencies.registrationController.sendPageData()
   );
+
   router.get(
     GENERAL_PARTNERS_URL,
     authentication,
     dependencies.registrationController.getPageRouting()
   );
+
   router.get(
     GENERAL_PARTNER_CHOICE_URL,
     authentication,
@@ -63,6 +67,7 @@ export const registrationEndpoints = (
     authentication,
     dependencies.registrationController.redirectWithParameter()
   );
+
   router.get(
     LIMITED_PARTNERS_URL,
     authentication,
