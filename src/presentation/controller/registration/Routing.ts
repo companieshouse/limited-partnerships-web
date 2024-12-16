@@ -57,6 +57,13 @@ const registrationRoutingGeneralPartners = {
   pageType: RegistrationPageType.generalPartners,
 };
 
+const registrationRoutingGeneralPartnerChoice = {
+  previousUrl: GENERAL_PARTNERS_URL,
+  currentUrl: GENERAL_PARTNER_CHOICE_URL,
+  nextUrl: LIMITED_PARTNERS_URL,
+  pageType: RegistrationPageType.generalPartnerChoice,
+};
+
 const registrationRoutingLimitedPartners = {
   previousUrl: GENERAL_PARTNER_CHOICE_URL,
   currentUrl: LIMITED_PARTNERS_URL,
@@ -64,15 +71,8 @@ const registrationRoutingLimitedPartners = {
   pageType: RegistrationPageType.limitedPartners,
 };
 
-const registrationRoutingGeneralPartnerChoice = {
-  previousUrl: GENERAL_PARTNERS_URL,
-  currentUrl: GENERAL_PARTNER_CHOICE_URL,
-  nextUrl: LIMITED_PARTNER_CHOICE_URL,
-  pageType: RegistrationPageType.generalPartnerChoice,
-};
-
 export const registrationRoutingLimitedPartnerChoice = {
-  previousUrl: GENERAL_PARTNER_CHOICE_URL,
+  previousUrl: LIMITED_PARTNERS_URL,
   currentUrl: LIMITED_PARTNER_CHOICE_URL,
   nextUrl: NEXT_URL,
   pageType: RegistrationPageType.limitedPartnerChoice,
