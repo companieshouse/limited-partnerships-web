@@ -24,6 +24,7 @@ describe("Create transaction and the first submission", () => {
           {
             partnership_name: limitedPartnership.data?.partnership_name,
             name_ending: limitedPartnership.data?.name_ending,
+            partnership_type: limitedPartnership.data?.partnership_type,
           }
         );
 
@@ -57,6 +58,7 @@ describe("Create transaction and the first submission", () => {
           {
             partnership_name: "Test Limited Partnership",
             name_ending: NameEndingType.LIMITED_PARTNERSHIP,
+            partnership_type: "LP",
           }
         );
 
@@ -78,6 +80,7 @@ describe("Create transaction and the first submission", () => {
           {
             partnership_name: "Test Limited Partnership",
             name_ending: NameEndingType.LIMITED_PARTNERSHIP,
+            partnership_type: "LP",
           }
         );
 

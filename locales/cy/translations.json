@@ -52,11 +52,11 @@
     "whichTypePage": {
         "title": "WELSH - Which type of partnership do you want to register?",
         "options": {
-            "registerLp": "WELSH - Limited partnership in England, Wales or Northern Ireland",
-            "registerPflp": "WELSH - Private fund limited partnership in England, Wales or Northern Ireland",
-            "registerSlp": "WELSH - Scottish limited partnership",
-            "registerPflpSco": "WELSH - Private fund limited partnership in Scotland",
-            "registerSqp": "WELSH - Scottish qualifying partnership"
+            "LP": "WELSH - Limited partnership in England, Wales or Northern Ireland",
+            "PFLP": "WELSH - Private fund limited partnership in England, Wales or Northern Ireland",
+            "SLP": "WELSH - Scottish limited partnership",
+            "SPFLP": "WELSH - Private fund limited partnership in Scotland",
+            "SQP": "WELSH - Scottish qualifying partnership"
         }
     },
 
