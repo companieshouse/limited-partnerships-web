@@ -6,13 +6,11 @@ const addLangToUrls = (request: Request, pageRouting: PageRouting, locals: Recor
     previousUrl: string,
     currentUrl: string,
     nextUrl: string} => {
-  const localsLang = locals.lang;
-  console.log(localsLang);
-  let previousUrl;
+  const lang = locals.lang;
+  let previousUrl: string = pageRouting.previousUrl;
 
   // current url
   const currentUrlParams = new URLSearchParams(new URL(`http://${request.url}`)?.search);
-  const lang = currentUrlParams.get("lang") as string;
   const pageRoutingCurrentUrl = new URL(`http://${pageRouting.currentUrl}`);
 
   // next url
@@ -42,15 +40,8 @@ const addLangToUrls = (request: Request, pageRouting: PageRouting, locals: Recor
       const previousUrlParams = new URLSearchParams(new URL(request?.headers?.referer)?.search);
       const pageRoutingPreviousUrl = new URL(`http://${pageRouting.previousUrl}`);
 
-      // give priority to the language of the current url, as the previous one may be different
-      if (currentUrlParams.has("lang")) {
-        const lang = currentUrlParams.get("lang") as string;
-
+      if (lang) {
         pageRoutingPreviousUrl.search = setLang(previousUrlParams, lang);
-      } else if (previousUrlParams.has("lang")) {
-
-        const lang = previousUrlParams.get("lang") as string;
-
         pageRoutingCurrentUrl.search = setLang(currentUrlParams, lang);
         pageRoutingNextUrl.search = setLang(pageRoutingNextUrlParams, lang);
       }
