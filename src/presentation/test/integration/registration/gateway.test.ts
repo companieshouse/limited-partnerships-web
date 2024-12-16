@@ -59,6 +59,7 @@ describe("Create transaction and the first submission", () => {
       pageType: RegistrationPageType.name,
       partnership_name: "Test Limited Partnership",
       name_ending: NameEndingType.LIMITED_PARTNERSHIP,
+      partnership_type: "LP",
     });
 
     const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.registrationGateway.transactionId}/submission/${appDevDependencies.registrationGateway.submissionId}/email`;
