@@ -30,7 +30,7 @@
   ]
 %}
 
-{% if partnershipType == "registerLp" or partnershipType == "registerPflp" %}
+{% if partnershipType == "LP" or partnershipType == "PFLP" %}
   {% set welsh %}
     {{ govukRadios({
       errorMessage: errors.name_ending if errors,
