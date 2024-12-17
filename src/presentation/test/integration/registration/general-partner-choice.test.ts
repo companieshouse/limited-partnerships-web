@@ -6,7 +6,7 @@ import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
 import {
   GENERAL_PARTNER_CHOICE_URL,
-  LIMITED_PARTNER_CHOICE_URL,
+  LIMITED_PARTNERS_URL,
 } from "../../../controller/registration/Routing";
 import RegistrationPageType from "../../../../presentation/controller/registration/PageType";
 
@@ -43,7 +43,7 @@ describe("General Partner Choice Page", () => {
       parameter: selectedType,
     });
 
-    const redirectUrl = `${LIMITED_PARTNER_CHOICE_URL}?${RegistrationPageType.generalPartnerChoice}=${selectedType}`;
+    const redirectUrl = `${LIMITED_PARTNERS_URL}?${RegistrationPageType.generalPartnerChoice}=${selectedType}`;
     expect(res.status).toBe(302);
     expect(res.text).toContain(redirectUrl);
   });

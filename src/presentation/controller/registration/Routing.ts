@@ -57,22 +57,22 @@ const registrationRoutingGeneralPartners = {
   pageType: RegistrationPageType.generalPartners,
 };
 
-const registrationRoutingLimitedPartners = {
-  previousUrl: WHICH_TYPE_URL,
-  currentUrl: LIMITED_PARTNERS_URL,
-  nextUrl: NEXT_URL,
-  pageType: RegistrationPageType.limitedPartners,
-};
-
 const registrationRoutingGeneralPartnerChoice = {
   previousUrl: GENERAL_PARTNERS_URL,
   currentUrl: GENERAL_PARTNER_CHOICE_URL,
-  nextUrl: LIMITED_PARTNER_CHOICE_URL,
+  nextUrl: LIMITED_PARTNERS_URL,
   pageType: RegistrationPageType.generalPartnerChoice,
 };
 
-export const registrationRoutingLimitedPartnerChoice = {
+const registrationRoutingLimitedPartners = {
   previousUrl: GENERAL_PARTNER_CHOICE_URL,
+  currentUrl: LIMITED_PARTNERS_URL,
+  nextUrl: LIMITED_PARTNER_CHOICE_URL,
+  pageType: RegistrationPageType.limitedPartners,
+};
+
+export const registrationRoutingLimitedPartnerChoice = {
+  previousUrl: LIMITED_PARTNERS_URL,
   currentUrl: LIMITED_PARTNER_CHOICE_URL,
   nextUrl: NEXT_URL,
   pageType: RegistrationPageType.limitedPartnerChoice,
