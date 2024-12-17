@@ -22,6 +22,7 @@ export const LOG_LEVEL = getEnvironmentValue("LOG_LEVEL");
 export const NODE_ENV = process.env["NODE_ENV"];
 export const OAUTH2_CLIENT_ID = getEnvironmentValue("OAUTH2_CLIENT_ID");
 export const OAUTH2_CLIENT_SECRET = getEnvironmentValue("OAUTH2_CLIENT_SECRET");
+export const PIWIK_REGISTRATION_START_GOAL_ID = getEnvironmentValue("PIWIK_REGISTRATION_START_GOAL_ID");
 export const PIWIK_SITE_ID = getEnvironmentValue("PIWIK_SITE_ID");
 export const PIWIK_URL = getEnvironmentValue("PIWIK_URL");
 export const PORT = getEnvironmentValue("PORT");

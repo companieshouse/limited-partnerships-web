@@ -8,6 +8,6 @@
 
   {{ errorMessage }}
 
-  <button class="govuk-button" onClick="location.href='{{ props.nextUrl }}'">Start</button>
-
+  <button class="govuk-button" onClick="_paq.push(['trackGoal', '{{PIWIK_REGISTRATION_START_GOAL_ID}}']); location.href='{{ props.nextUrl }}'">Start</button>
+  
 {% endblock %}

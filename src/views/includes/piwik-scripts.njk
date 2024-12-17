@@ -4,7 +4,7 @@
     window.PIWIK_URL = '{{ PIWIK_URL }}'
     window.PIWIK_SITE_ID = '{{ PIWIK_SITE_ID }}'
 </script>
-<div id="templateName" data-id='{{templateName}}' hidden></div>
+<div id="templateName" data-id='{{ props.pageType }}' hidden></div>
 <script src="{{MATOMO_ASSET_PATH}}/javascripts/app/cookie-consent/cookie-consent-1.0.0.js"></script>
 <script src="{{MATOMO_ASSET_PATH}}/javascripts/app/cookie-consent/matomo-only-cookie-consent.js"></script>
 <noscript>
