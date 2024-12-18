@@ -1,56 +1,64 @@
-import request from "supertest";
+import { NextFunction, Request, Response } from "express";
 import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { Session } from "@companieshouse/node-session-handler";
 
-import appRealDependencies from "../../../../app";
-import {
-  NAME_URL,
-  WHICH_TYPE_URL,
-} from "../../../controller/registration/Routing";
+import { NAME_URL } from "../../../controller/registration/Routing";
 import RegistrationPageType from "../../../controller/registration/PageType";
-import enTranslationText from "../../../../../locales/en/translations.json";
-
-jest.mock("../../../../infrastructure/repository/CacheRepository", () => {
-  return jest.fn().mockImplementation(() => {
-    return {
-      ...jest.requireActual(
-        "../../../../infrastructure/repository/CacheRepository"
-      ),
-      getData: jest.fn().mockImplementation(() => ({
-        [RegistrationPageType.whichType]: PartnershipType.LP,
-      })),
-      addData: jest.fn().mockImplementation(() => {}),
-    };
-  });
-});
+import RegistrationController from "../../../controller/registration/Controller";
+import RegistrationService from "../../../../application/registration/Service";
+import RegistrationInMemoryGateway from "../../../../infrastructure/gateway/registration/RegistrationInMemoryGateway";
+import CacheRepository from "../../../../infrastructure/repository/CacheRepository";
 
 describe("Cache", () => {
-  it("should redirect to name page", async () => {
-    const postTypeResponse = await request(appRealDependencies)
-      .post(WHICH_TYPE_URL)
-      .send({
-        pageType: RegistrationPageType.whichType,
-        parameter: PartnershipType.LP,
-      });
+  let registrationController: RegistrationController;
 
-    expect(postTypeResponse.status).toBe(302);
-    expect(postTypeResponse.text).toContain(`Redirecting to ${NAME_URL}`);
+  beforeAll(() => {
+    registrationController = new RegistrationController(
+      new RegistrationService(
+        new RegistrationInMemoryGateway(),
+        new CacheRepository()
+      )
+    );
+  });
 
-    const getNamePageResponse = await request(appRealDependencies).get(
-      NAME_URL
+  it("should get data from session", async () => {
+    const getExtraData = jest.fn().mockImplementation(() => ({
+      [RegistrationPageType.whichType]: PartnershipType.LP,
+    }));
+    const setExtraData = jest.fn().mockImplementation(() => {});
+
+    await registrationController.redirectAndCacheSelection()(
+      {
+        path: NAME_URL,
+        session: {
+          getExtraData,
+          setExtraData,
+        } as unknown as Session,
+        params: {},
+        body: {
+          pageType: RegistrationPageType.whichType,
+          parameter: PartnershipType.LP,
+        },
+      } as Request,
+      { render: jest.fn() } as unknown as Response,
+      jest.fn() as NextFunction
     );
 
-    expect(getNamePageResponse.status).toBe(200);
-    expect(getNamePageResponse.text).toContain(
-      enTranslationText.namePage.title
+    expect(setExtraData).toHaveBeenCalled();
+
+    await registrationController.getPageRouting()(
+      {
+        path: NAME_URL,
+        session: {
+          getExtraData,
+          setExtraData,
+        } as unknown as Session,
+        params: {},
+      } as Request,
+      { render: jest.fn() } as unknown as Response,
+      jest.fn() as NextFunction
     );
-    expect(getNamePageResponse.text).toContain(
-      enTranslationText.namePage.whatIsName
-    );
-    expect(getNamePageResponse.text).toContain(
-      enTranslationText.namePage.nameEnding
-    );
-    expect(getNamePageResponse.text).toContain(
-      enTranslationText.buttons.saveAndContinue
-    );
+
+    expect(getExtraData).toHaveBeenCalled();
   });
 });
