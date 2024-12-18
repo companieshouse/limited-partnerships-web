@@ -1,15 +1,17 @@
 import request from "supertest";
 
 import app from "../app";
-import { WHICH_TYPE_URL } from "../../../controller/registration/Routing";
+import { NAME_URL, WHICH_TYPE_URL } from "../../../controller/registration/Routing";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import RegistrationPageType from "../../../../presentation/controller/registration/PageType";
+import { APPLICATION_CACHE_KEY } from "../../../../config/constants";
 
 describe("Which type Page", () => {
-  beforeAll(() => {
+  beforeEach(() => {
     appDevDependencies.registrationGateway.feedLimitedPartnerships([]);
     appDevDependencies.registrationGateway.feedErrors([]);
+    appDevDependencies.cacheRepository.feedCache(null);
   });
 
   it("should load the which-type page", async () => {
@@ -31,9 +33,13 @@ describe("Which type Page", () => {
       parameter: selectedType,
     });
 
-    const redirectUrl = `/limited-partnerships/name?${RegistrationPageType.whichType}=${selectedType}`;
-
     expect(res.status).toBe(302);
-    expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+    expect(res.text).toContain(`Redirecting to ${NAME_URL}`);
+
+    expect(appDevDependencies.cacheRepository.cache).toEqual({
+      [APPLICATION_CACHE_KEY]: {
+        [RegistrationPageType.whichType]: selectedType
+      }
+    });
   });
 });

@@ -1,7 +1,7 @@
 import request from "supertest";
 import { LocalesService } from "@companieshouse/ch-node-utils";
 import * as constants from "../../../../config/constants";
-import { appDevDependencies } from "../../../../config";
+import { appDevDependencies, APPLICATION_CACHE_KEY } from "../../../../config";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
@@ -15,6 +15,10 @@ import RegistrationPageType from "../../../controller/registration/PageType";
 describe("Limited Partner Choice Page", () => {
   beforeEach(() => {
     setLocalesEnabled(false);
+
+    appDevDependencies.registrationGateway.feedLimitedPartnerships([]);
+    appDevDependencies.registrationGateway.feedErrors([]);
+    appDevDependencies.cacheRepository.feedCache(null);
   });
 
   const setLocalesEnabled = (bool: boolean) => {
@@ -61,7 +65,14 @@ describe("Limited Partner Choice Page", () => {
       NEXT_URL,
       transactionId,
       submissionId
-    ) + `?${RegistrationPageType.limitedPartnerChoice}=${selectedChoice}`;
+    );
     expect(res.header.location).toEqual(nextPageUrl);
+
+    // to be removed - not store in cache
+    expect(appDevDependencies.cacheRepository.cache).toEqual({
+      [APPLICATION_CACHE_KEY]: {
+        [RegistrationPageType.limitedPartnerChoice]: selectedChoice
+      }
+    });
   });
 });

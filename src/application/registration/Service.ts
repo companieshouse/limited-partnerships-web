@@ -3,13 +3,16 @@ import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/l
 import CustomError from "../../domain/entities/CustomError";
 import RegistrationPageType from "../../presentation/controller/registration/PageType";
 import IRegistrationGateway from "../../domain/IRegistrationGateway";
+import ICacheRepository from "../../domain/ICacheRepository";
 import { logger } from "../../utils";
 
 class RegistrationService {
   registrationGateway: IRegistrationGateway;
+  cacheRepository: ICacheRepository;
 
-  constructor(registrationGateway: IRegistrationGateway) {
+  constructor(registrationGateway: IRegistrationGateway, cacheRepository: ICacheRepository) {
     this.registrationGateway = registrationGateway;
+    this.cacheRepository = cacheRepository;
   }
 
   getSubmissionById(id: string): Promise<LimitedPartnership> {
@@ -80,6 +83,14 @@ class RegistrationService {
         errors,
       };
     }
+  }
+
+  async getDataFromCache(): Promise<Record<string, any>> {
+    return await this.cacheRepository.getData();
+  }
+
+  async addDataToCache(data: Record<string, any>): Promise<void> {
+    await this.cacheRepository.addData(data);
   }
 }
 

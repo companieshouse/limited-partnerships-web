@@ -30,6 +30,7 @@ export const isLocalesEnabled = () =>
   getEnvironmentValueAsBoolean("LOCALES_ENABLED");
 
 export const SERVICE_NAME = "File for a limited partnership";
+export const APPLICATION_CACHE_KEY = "limited_partnership";
 
 // Templates
 export const ERROR_TEMPLATE = "error-page";

@@ -2,7 +2,7 @@
 
 {% block content %}
 
-{% set partnershipType = props.parameters['which-type'] %}
+{% set partnershipType = props.data.cache['which-type'] %}
 
 {% if partnershipType == "LP" %}
   {% set title = i18n.namePage.title %}

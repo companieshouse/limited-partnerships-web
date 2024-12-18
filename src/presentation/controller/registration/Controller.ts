@@ -16,7 +16,7 @@ class RegistrationController extends AbstractController {
   }
 
   getPageRouting(): RequestHandler {
-    return (request: Request, response: Response, next: NextFunction) => {
+    return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const pageType = super.pageType(request.path);
         const { transactionId, submissionId } = this.extractIds(request);
@@ -28,10 +28,15 @@ class RegistrationController extends AbstractController {
           submissionId
         );
 
-        const parameters = request.query;
+        const cache = await this.registrationService.getDataFromCache();
+
+        pageRouting.data = {
+          ...pageRouting.data,
+          cache
+        };
 
         response.render(super.templateName(pageRouting.currentUrl), {
-          props: { ...pageRouting, parameters },
+          props: { ...pageRouting },
         });
       } catch (error) {
         next(error);
@@ -77,8 +82,8 @@ class RegistrationController extends AbstractController {
     };
   }
 
-  redirectWithParameter(): RequestHandler {
-    return (request: Request, response: Response, next: NextFunction) => {
+  redirectAndCacheSelection(): RequestHandler {
+    return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const type = this.extractPageTypeOrThrowError(request);
 
@@ -92,7 +97,9 @@ class RegistrationController extends AbstractController {
         const pageType = escape(request.body.pageType);
         const parameter = escape(request.body.parameter);
 
-        response.redirect(`${registrationRouting.nextUrl}?${pageType}=${parameter}`);
+        await this.registrationService.addDataToCache({ [pageType]: parameter });
+
+        response.redirect(registrationRouting.nextUrl);
       } catch (error) {
         next(error);
       }

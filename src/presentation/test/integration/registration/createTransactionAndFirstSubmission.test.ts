@@ -1,6 +1,6 @@
 import request from "supertest";
 import { Request, Response } from "express";
-import { NameEndingType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { NameEndingType, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import app from "../app";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
@@ -9,16 +9,19 @@ import {
 } from "../../../controller/registration/Routing";
 import RegistrationPageType from "../../../controller/registration/PageType";
 
-const NAME_PAGE_URL = NAME_URL + "?which-type=LP";
-
 describe("Create transaction and the first submission", () => {
   beforeAll(() => {
     appDevDependencies.registrationGateway.feedLimitedPartnerships([]);
     appDevDependencies.registrationGateway.feedErrors([]);
+    appDevDependencies.cacheRepository.feedCache(null);
   });
 
   it("should load the name page with status 200", async () => {
-    const res = await request(app).get(NAME_PAGE_URL);
+    appDevDependencies.cacheRepository.feedCache({
+      [RegistrationPageType.whichType]: PartnershipType.LP
+    });
+
+    const res = await request(app).get(NAME_URL);
 
     expect(res.status).toBe(200);
     expect(res.text).toContain("What is the limited partnership name?");
@@ -26,7 +29,7 @@ describe("Create transaction and the first submission", () => {
 
   it("should create a transaction and the first submission", async () => {
     const url = appDevDependencies.registrationController.insertIdsInUrl(
-      NAME_PAGE_URL,
+      NAME_URL,
       appDevDependencies.registrationGateway.transactionId,
       appDevDependencies.registrationGateway.submissionId
     );
@@ -35,7 +38,7 @@ describe("Create transaction and the first submission", () => {
       pageType: RegistrationPageType.name,
       partnership_name: "Test Limited Partnership",
       name_ending: NameEndingType.LIMITED_PARTNERSHIP,
-      partnership_type: "LP",
+      partnership_type: PartnershipType.LP,
     });
 
     const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.registrationGateway.transactionId}/submission/${appDevDependencies.registrationGateway.submissionId}/email`;
@@ -46,7 +49,7 @@ describe("Create transaction and the first submission", () => {
 
   it("should return an error", async () => {
     const url = appDevDependencies.registrationController.insertIdsInUrl(
-      NAME_PAGE_URL,
+      NAME_URL,
       appDevDependencies.registrationGateway.transactionId,
       appDevDependencies.registrationGateway.submissionId
     );
