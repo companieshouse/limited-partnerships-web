@@ -1,32 +1,46 @@
 import request from "supertest";
 import { Request, Response } from "express";
-import { NameEndingType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import {
+  NameEndingType,
+  PartnershipType,
+} from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import app from "../app";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
-import {
-  NAME_URL,
-} from "../../../controller/registration/Routing";
+import { NAME_URL } from "../../../controller/registration/Routing";
 import RegistrationPageType from "../../../controller/registration/PageType";
-
-const NAME_PAGE_URL = NAME_URL + "?which-type=LP";
+import {
+  APPLICATION_CACHE_KEY,
+  APPLICATION_CACHE_KEY_PREFIX_REGISTRATION,
+} from "../../../../config/constants";
 
 describe("Create transaction and the first submission", () => {
   beforeAll(() => {
     appDevDependencies.registrationGateway.feedLimitedPartnerships([]);
     appDevDependencies.registrationGateway.feedErrors([]);
+    appDevDependencies.cacheRepository.feedCache(null);
   });
 
   it("should load the name page with status 200", async () => {
-    const res = await request(app).get(NAME_PAGE_URL);
+    appDevDependencies.cacheRepository.feedCache({
+      [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]:
+        PartnershipType.LP,
+    });
+
+    const res = await request(app).get(NAME_URL);
 
     expect(res.status).toBe(200);
     expect(res.text).toContain("What is the limited partnership name?");
   });
 
   it("should create a transaction and the first submission", async () => {
+    appDevDependencies.cacheRepository.feedCache({
+      [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]:
+        PartnershipType.LP,
+    });
+
     const url = appDevDependencies.registrationController.insertIdsInUrl(
-      NAME_PAGE_URL,
+      NAME_URL,
       appDevDependencies.registrationGateway.transactionId,
       appDevDependencies.registrationGateway.submissionId
     );
@@ -35,18 +49,22 @@ describe("Create transaction and the first submission", () => {
       pageType: RegistrationPageType.name,
       partnership_name: "Test Limited Partnership",
       name_ending: NameEndingType.LIMITED_PARTNERSHIP,
-      partnership_type: "LP",
+      partnership_type: PartnershipType.LP,
     });
 
     const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.registrationGateway.transactionId}/submission/${appDevDependencies.registrationGateway.submissionId}/email`;
 
     expect(res.status).toBe(302);
     expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+
+    expect(appDevDependencies.cacheRepository.cache).toEqual({
+      [APPLICATION_CACHE_KEY]: {},
+    });
   });
 
   it("should return an error", async () => {
     const url = appDevDependencies.registrationController.insertIdsInUrl(
-      NAME_PAGE_URL,
+      NAME_URL,
       appDevDependencies.registrationGateway.transactionId,
       appDevDependencies.registrationGateway.submissionId
     );

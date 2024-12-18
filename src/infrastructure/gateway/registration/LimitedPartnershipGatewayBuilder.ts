@@ -1,7 +1,7 @@
 import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-import TransactionLimitedPartnership from "../../domain/entities/TransactionLimitedPartnership";
-import PageType from "../../presentation/controller/PageType";
+import TransactionLimitedPartnership from "../../../domain/entities/TransactionLimitedPartnership";
+import PageType from "../../../presentation/controller/PageType";
 
 class LimitedPartnershipGatewayBuilder {
   created_at?: Date;
