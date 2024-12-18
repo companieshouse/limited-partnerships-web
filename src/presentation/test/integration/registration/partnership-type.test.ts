@@ -44,4 +44,26 @@ describe("Which type Page", () => {
       },
     });
   });
+
+  it("should redirect to name page and update type in cache", async () => {
+    appDevDependencies.cacheRepository.feedCache({
+      [RegistrationPageType.whichType]: PartnershipType.LP,
+    });
+
+    const selectedType = PartnershipType.PFLP;
+
+    const res = await request(app).post(WHICH_TYPE_URL).send({
+      pageType: RegistrationPageType.whichType,
+      parameter: selectedType,
+    });
+
+    expect(res.status).toBe(302);
+    expect(res.text).toContain(`Redirecting to ${NAME_URL}`);
+
+    expect(appDevDependencies.cacheRepository.cache).toEqual({
+      [APPLICATION_CACHE_KEY]: {
+        [RegistrationPageType.whichType]: selectedType,
+      },
+    });
+  });
 });
