@@ -9,6 +9,7 @@ import app from "../app";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import { NAME_URL } from "../../../controller/registration/Routing";
 import RegistrationPageType from "../../../controller/registration/PageType";
+import { APPLICATION_CACHE_KEY } from "../../../../config/constants";
 
 describe("Create transaction and the first submission", () => {
   beforeAll(() => {
@@ -29,6 +30,10 @@ describe("Create transaction and the first submission", () => {
   });
 
   it("should create a transaction and the first submission", async () => {
+    appDevDependencies.cacheRepository.feedCache({
+      [`registration_${RegistrationPageType.whichType}`]: PartnershipType.LP,
+    });
+
     const url = appDevDependencies.registrationController.insertIdsInUrl(
       NAME_URL,
       appDevDependencies.registrationGateway.transactionId,
@@ -46,6 +51,10 @@ describe("Create transaction and the first submission", () => {
 
     expect(res.status).toBe(302);
     expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+
+    expect(appDevDependencies.cacheRepository.cache).toEqual({
+      [APPLICATION_CACHE_KEY]: {},
+    });
   });
 
   it("should return an error", async () => {

@@ -34,6 +34,18 @@ class CacheInMemoryRepository implements ICacheRepository {
       },
     };
   }
+
+  async deleteData(session: Session, key: string): Promise<void> {
+    const data = await this.getData(session);
+
+    delete data[key];
+
+    this.cache = {
+      [APPLICATION_CACHE_KEY]: {
+        ...data,
+      },
+    };
+  }
 }
 
 export default CacheInMemoryRepository;

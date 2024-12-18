@@ -8,16 +8,15 @@ import RegistrationController from "../../../controller/registration/Controller"
 import RegistrationService from "../../../../application/registration/Service";
 import RegistrationInMemoryGateway from "../../../../infrastructure/gateway/registration/RegistrationInMemoryGateway";
 import CacheRepository from "../../../../infrastructure/repository/CacheRepository";
+import CacheService from "../../../../application/CacheService";
 
 describe("Cache", () => {
   let registrationController: RegistrationController;
 
   beforeAll(() => {
     registrationController = new RegistrationController(
-      new RegistrationService(
-        new RegistrationInMemoryGateway(),
-        new CacheRepository()
-      )
+      new RegistrationService(new RegistrationInMemoryGateway()),
+      new CacheService(new CacheRepository())
     );
   });
 

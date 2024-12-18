@@ -3,19 +3,22 @@ import RegistrationService from "../application/registration/Service";
 import RegistrationInMemoryGateway from "../infrastructure/gateway/registration/RegistrationInMemoryGateway";
 import CacheInMemoryRepository from "../infrastructure/repository/CacheInMemoryRepository";
 import RegistrationController from "../presentation/controller/registration/Controller";
+import CacheService from "../application/CacheService";
 
 const globalController: GlobalController = new GlobalController();
 
 const registrationGateway: RegistrationInMemoryGateway =
-new RegistrationInMemoryGateway();
-const cacheRepository = new CacheInMemoryRepository();
+  new RegistrationInMemoryGateway();
 
 const registrationService: RegistrationService = new RegistrationService(
-  registrationGateway,
-  cacheRepository
+  registrationGateway
 );
+
+const cacheRepository = new CacheInMemoryRepository();
+const cacheService = new CacheService(cacheRepository);
+
 const registrationController: RegistrationController =
-  new RegistrationController(registrationService);
+  new RegistrationController(registrationService, cacheService);
 
 export const appDevDependencies = {
   globalController,

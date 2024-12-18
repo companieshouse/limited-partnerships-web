@@ -1,22 +1,15 @@
 import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-import { Session } from "@companieshouse/node-session-handler";
 
 import CustomError from "../../domain/entities/CustomError";
 import RegistrationPageType from "../../presentation/controller/registration/PageType";
 import IRegistrationGateway from "../../domain/IRegistrationGateway";
-import ICacheRepository from "../../domain/ICacheRepository";
 import { logger } from "../../utils";
 
 class RegistrationService {
   registrationGateway: IRegistrationGateway;
-  cacheRepository: ICacheRepository;
 
-  constructor(
-    registrationGateway: IRegistrationGateway,
-    cacheRepository: ICacheRepository
-  ) {
+  constructor(registrationGateway: IRegistrationGateway) {
     this.registrationGateway = registrationGateway;
-    this.cacheRepository = cacheRepository;
   }
 
   getSubmissionById(id: string): Promise<LimitedPartnership> {
@@ -87,17 +80,6 @@ class RegistrationService {
         errors,
       };
     }
-  }
-
-  async getDataFromCache(session: Session): Promise<Record<string, any>> {
-    return await this.cacheRepository.getData(session);
-  }
-
-  async addDataToCache(
-    session: Session,
-    data: Record<string, any>
-  ): Promise<void> {
-    await this.cacheRepository.addData(session, data);
   }
 }
 

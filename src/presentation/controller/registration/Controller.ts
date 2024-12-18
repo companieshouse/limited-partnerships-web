@@ -5,15 +5,21 @@ import { Session } from "@companieshouse/node-session-handler";
 import RegistrationService from "../../../application/registration/Service";
 import registrationsRouting from "./Routing";
 import AbstractController from "../AbstractController";
-import PageType from "./PageType";
+import RegistrationPageType from "./PageType";
 import { SUBMISSION_ID, TRANSACTION_ID } from "../../../config/constants";
+import CacheService from "../../../application/CacheService";
 
 class RegistrationController extends AbstractController {
   private registrationService: RegistrationService;
+  private cacheService: CacheService;
 
-  constructor(registrationService: RegistrationService) {
+  constructor(
+    registrationService: RegistrationService,
+    cacheService: CacheService
+  ) {
     super();
     this.registrationService = registrationService;
+    this.cacheService = cacheService;
   }
 
   getPageRouting(): RequestHandler {
@@ -30,7 +36,7 @@ class RegistrationController extends AbstractController {
           submissionId
         );
 
-        const cache = await this.registrationService.getDataFromCache(session);
+        const cache = await this.cacheService.getDataFromCache(session);
 
         pageRouting.data = {
           ...pageRouting.data,
@@ -49,6 +55,7 @@ class RegistrationController extends AbstractController {
   createTransactionAndFirstSubmission(): RequestHandler {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
+        const session = request.session as Session;
         const access_token = this.extractAccessToken(request);
         const pageType = this.extractPageTypeOrThrowError(request);
 
@@ -77,6 +84,11 @@ class RegistrationController extends AbstractController {
           result.submissionId
         );
 
+        await this.cacheService.removeDataFromCache(
+          session,
+          `registration_${RegistrationPageType.whichType}`
+        );
+
         response.redirect(url);
       } catch (error) {
         next(error);
@@ -100,7 +112,7 @@ class RegistrationController extends AbstractController {
         const pageType = escape(request.body.pageType);
         const parameter = escape(request.body.parameter);
 
-        await this.registrationService.addDataToCache(session, {
+        await this.cacheService.addDataToCache(session, {
           [`registration_${pageType}`]: parameter,
         });
 
@@ -148,7 +160,7 @@ class RegistrationController extends AbstractController {
   }
 
   private extractPageTypeOrThrowError(request) {
-    const pageTypeList = Object.values(PageType);
+    const pageTypeList = Object.values(RegistrationPageType);
     const pageType = request.body.pageType;
 
     if (!pageTypeList.includes(pageType)) {

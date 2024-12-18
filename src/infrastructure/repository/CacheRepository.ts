@@ -17,6 +17,14 @@ class CacheRepository implements ICacheRepository {
 
     session?.setExtraData(APPLICATION_CACHE_KEY, updatedCache);
   }
+
+  async deleteData(session: Session, key: string): Promise<void> {
+    const cache = await this.getData(session);
+
+    delete cache[key];
+
+    session?.setExtraData(APPLICATION_CACHE_KEY, cache);
+  }
 }
 
 export default CacheRepository;
