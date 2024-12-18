@@ -9,8 +9,8 @@ class CacheService {
     this.cacheRepository = cacheRepository;
   }
 
-  async getDataFromCache(session: Session): Promise<Record<string, any>> {
-    return await this.cacheRepository.getData(session);
+  getDataFromCache(session: Session): Promise<Record<string, any>> {
+    return this.cacheRepository.getData(session);
   }
 
   async addDataToCache(
