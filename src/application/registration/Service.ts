@@ -1,4 +1,5 @@
 import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { Session } from "@companieshouse/node-session-handler";
 
 import CustomError from "../../domain/entities/CustomError";
 import RegistrationPageType from "../../presentation/controller/registration/PageType";
@@ -10,7 +11,10 @@ class RegistrationService {
   registrationGateway: IRegistrationGateway;
   cacheRepository: ICacheRepository;
 
-  constructor(registrationGateway: IRegistrationGateway, cacheRepository: ICacheRepository) {
+  constructor(
+    registrationGateway: IRegistrationGateway,
+    cacheRepository: ICacheRepository
+  ) {
     this.registrationGateway = registrationGateway;
     this.cacheRepository = cacheRepository;
   }
@@ -85,12 +89,15 @@ class RegistrationService {
     }
   }
 
-  async getDataFromCache(): Promise<Record<string, any>> {
-    return await this.cacheRepository.getData();
+  async getDataFromCache(session: Session): Promise<Record<string, any>> {
+    return await this.cacheRepository.getData(session);
   }
 
-  async addDataToCache(data: Record<string, any>): Promise<void> {
-    await this.cacheRepository.addData(data);
+  async addDataToCache(
+    session: Session,
+    data: Record<string, any>
+  ): Promise<void> {
+    await this.cacheRepository.addData(session, data);
   }
 }
 

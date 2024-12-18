@@ -1,5 +1,6 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
 import escape from "escape-html";
+import { Session } from "@companieshouse/node-session-handler";
 
 import RegistrationService from "../../../application/registration/Service";
 import registrationsRouting from "./Routing";
@@ -18,6 +19,7 @@ class RegistrationController extends AbstractController {
   getPageRouting(): RequestHandler {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
+        const session = request.session as Session;
         const pageType = super.pageType(request.path);
         const { transactionId, submissionId } = this.extractIds(request);
 
@@ -28,11 +30,11 @@ class RegistrationController extends AbstractController {
           submissionId
         );
 
-        const cache = await this.registrationService.getDataFromCache();
+        const cache = await this.registrationService.getDataFromCache(session);
 
         pageRouting.data = {
           ...pageRouting.data,
-          cache
+          cache,
         };
 
         response.render(super.templateName(pageRouting.currentUrl), {
@@ -85,6 +87,7 @@ class RegistrationController extends AbstractController {
   redirectAndCacheSelection(): RequestHandler {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
+        const session = request.session as Session;
         const type = this.extractPageTypeOrThrowError(request);
 
         const registrationRouting = super.getRouting(
@@ -97,7 +100,9 @@ class RegistrationController extends AbstractController {
         const pageType = escape(request.body.pageType);
         const parameter = escape(request.body.parameter);
 
-        await this.registrationService.addDataToCache({ [pageType]: parameter });
+        await this.registrationService.addDataToCache(session, {
+          [pageType]: parameter,
+        });
 
         response.redirect(registrationRouting.nextUrl);
       } catch (error) {

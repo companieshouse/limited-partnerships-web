@@ -1,6 +1,8 @@
+import { Session } from "@companieshouse/node-session-handler";
+
 interface ICacheRepository {
-  addData(data: Record<string, any>): Promise<void>;
-  getData(): Promise<Record<string, any>>;
+  getData(session: Session): Promise<Record<string, any>>;
+  addData(session: Session, data: Record<string, any>): Promise<void>;
 }
 
 export default ICacheRepository;
