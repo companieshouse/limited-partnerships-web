@@ -9,7 +9,10 @@ import {
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import RegistrationPageType from "../../../../presentation/controller/registration/PageType";
-import { APPLICATION_CACHE_KEY } from "../../../../config/constants";
+import {
+  APPLICATION_CACHE_KEY,
+  APPLICATION_CACHE_KEY_PREFIX_REGISTRATION,
+} from "../../../../config/constants";
 
 describe("Which type Page", () => {
   beforeEach(() => {
@@ -40,14 +43,16 @@ describe("Which type Page", () => {
 
     expect(appDevDependencies.cacheRepository.cache).toEqual({
       [APPLICATION_CACHE_KEY]: {
-        [`registration_${RegistrationPageType.whichType}`]: selectedType,
+        [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]:
+          selectedType,
       },
     });
   });
 
   it("should redirect to name page and update type in cache", async () => {
     appDevDependencies.cacheRepository.feedCache({
-      [`registration_${RegistrationPageType.whichType}`]: PartnershipType.LP,
+      [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]:
+        PartnershipType.LP,
     });
 
     const selectedType = PartnershipType.PFLP;
@@ -62,7 +67,8 @@ describe("Which type Page", () => {
 
     expect(appDevDependencies.cacheRepository.cache).toEqual({
       [APPLICATION_CACHE_KEY]: {
-        [`registration_${RegistrationPageType.whichType}`]: selectedType,
+        [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]:
+          selectedType,
       },
     });
   });

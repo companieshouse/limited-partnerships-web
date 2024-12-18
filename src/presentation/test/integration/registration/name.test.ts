@@ -5,7 +5,10 @@ import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
 import { NAME_URL } from "../../../controller/registration/Routing";
-import { appDevDependencies } from "../../../../config";
+import {
+  appDevDependencies,
+  APPLICATION_CACHE_KEY_PREFIX_REGISTRATION,
+} from "../../../../config";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
@@ -27,7 +30,8 @@ describe("Name Page", () => {
     setLocalesEnabled(true);
 
     appDevDependencies.cacheRepository.feedCache({
-      [`registration_${RegistrationPageType.whichType}`]: PartnershipType.LP,
+      [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]:
+        PartnershipType.LP,
     });
 
     const res = await request(app).get(NAME_URL + "?lang=cy");
@@ -43,7 +47,8 @@ describe("Name Page", () => {
     setLocalesEnabled(true);
 
     appDevDependencies.cacheRepository.feedCache({
-      [`registration_${RegistrationPageType.whichType}`]: PartnershipType.LP,
+      [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]:
+        PartnershipType.LP,
     });
 
     const res = await request(app).get(NAME_URL + "?lang=en");
@@ -60,7 +65,8 @@ describe("Name Page", () => {
     setLocalesEnabled(true);
 
     appDevDependencies.cacheRepository.feedCache({
-      [`registration_${RegistrationPageType.whichType}`]: PartnershipType.PFLP,
+      [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]:
+        PartnershipType.PFLP,
     });
 
     const res = await request(app).get(NAME_URL + "?lang=cy");
@@ -77,7 +83,8 @@ describe("Name Page", () => {
     setLocalesEnabled(true);
 
     appDevDependencies.cacheRepository.feedCache({
-      [`registration_${RegistrationPageType.whichType}`]: PartnershipType.PFLP,
+      [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]:
+        PartnershipType.PFLP,
     });
 
     const res = await request(app).get(NAME_URL + "?lang=en");
@@ -95,7 +102,8 @@ describe("Name Page", () => {
     setLocalesEnabled(true);
 
     appDevDependencies.cacheRepository.feedCache({
-      [`registration_${RegistrationPageType.whichType}`]: PartnershipType.SLP,
+      [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]:
+        PartnershipType.SLP,
     });
 
     const res = await request(app).get(NAME_URL + "?lang=cy");
@@ -110,7 +118,8 @@ describe("Name Page", () => {
     setLocalesEnabled(true);
 
     appDevDependencies.cacheRepository.feedCache({
-      [`registration_${RegistrationPageType.whichType}`]: PartnershipType.SLP,
+      [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]:
+        PartnershipType.SLP,
     });
 
     const res = await request(app).get(NAME_URL + "?lang=en");
@@ -126,7 +135,8 @@ describe("Name Page", () => {
     setLocalesEnabled(true);
 
     appDevDependencies.cacheRepository.feedCache({
-      [`registration_${RegistrationPageType.whichType}`]: PartnershipType.SPFLP,
+      [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]:
+        PartnershipType.SPFLP,
     });
 
     const res = await request(app).get(NAME_URL + "?lang=cy");
@@ -143,7 +153,8 @@ describe("Name Page", () => {
     setLocalesEnabled(true);
 
     appDevDependencies.cacheRepository.feedCache({
-      [`registration_${RegistrationPageType.whichType}`]: PartnershipType.SPFLP,
+      [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]:
+        PartnershipType.SPFLP,
     });
 
     const res = await request(app).get(NAME_URL + "?lang=en");

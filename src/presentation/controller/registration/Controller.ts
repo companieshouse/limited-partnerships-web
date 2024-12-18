@@ -6,7 +6,11 @@ import RegistrationService from "../../../application/registration/Service";
 import registrationsRouting from "./Routing";
 import AbstractController from "../AbstractController";
 import RegistrationPageType from "./PageType";
-import { SUBMISSION_ID, TRANSACTION_ID } from "../../../config/constants";
+import {
+  APPLICATION_CACHE_KEY_PREFIX_REGISTRATION,
+  SUBMISSION_ID,
+  TRANSACTION_ID,
+} from "../../../config/constants";
 import CacheService from "../../../application/CacheService";
 
 class RegistrationController extends AbstractController {
@@ -86,7 +90,7 @@ class RegistrationController extends AbstractController {
 
         await this.cacheService.removeDataFromCache(
           session,
-          `registration_${RegistrationPageType.whichType}`
+          `${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`
         );
 
         response.redirect(url);
@@ -113,7 +117,8 @@ class RegistrationController extends AbstractController {
         const parameter = escape(request.body.parameter);
 
         await this.cacheService.addDataToCache(session, {
-          [`registration_${pageType}`]: parameter,
+          [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${pageType}`]:
+            parameter,
         });
 
         response.redirect(registrationRouting.nextUrl);

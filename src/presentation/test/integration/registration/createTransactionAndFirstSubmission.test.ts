@@ -9,7 +9,10 @@ import app from "../app";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import { NAME_URL } from "../../../controller/registration/Routing";
 import RegistrationPageType from "../../../controller/registration/PageType";
-import { APPLICATION_CACHE_KEY } from "../../../../config/constants";
+import {
+  APPLICATION_CACHE_KEY,
+  APPLICATION_CACHE_KEY_PREFIX_REGISTRATION,
+} from "../../../../config/constants";
 
 describe("Create transaction and the first submission", () => {
   beforeAll(() => {
@@ -20,7 +23,8 @@ describe("Create transaction and the first submission", () => {
 
   it("should load the name page with status 200", async () => {
     appDevDependencies.cacheRepository.feedCache({
-      [`registration_${RegistrationPageType.whichType}`]: PartnershipType.LP,
+      [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]:
+        PartnershipType.LP,
     });
 
     const res = await request(app).get(NAME_URL);
@@ -31,7 +35,8 @@ describe("Create transaction and the first submission", () => {
 
   it("should create a transaction and the first submission", async () => {
     appDevDependencies.cacheRepository.feedCache({
-      [`registration_${RegistrationPageType.whichType}`]: PartnershipType.LP,
+      [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]:
+        PartnershipType.LP,
     });
 
     const url = appDevDependencies.registrationController.insertIdsInUrl(

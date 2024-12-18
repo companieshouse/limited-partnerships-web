@@ -2,7 +2,11 @@ import request from "supertest";
 import { LocalesService } from "@companieshouse/ch-node-utils";
 
 import * as constants from "../../../../config/constants";
-import { appDevDependencies, APPLICATION_CACHE_KEY } from "../../../../config";
+import {
+  appDevDependencies,
+  APPLICATION_CACHE_KEY,
+  APPLICATION_CACHE_KEY_PREFIX_REGISTRATION,
+} from "../../../../config";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
@@ -75,7 +79,7 @@ describe("Limited Partner Choice Page", () => {
     // to be removed - not store in cache
     expect(appDevDependencies.cacheRepository.cache).toEqual({
       [APPLICATION_CACHE_KEY]: {
-        [`registration_${RegistrationPageType.limitedPartnerChoice}`]:
+        [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.limitedPartnerChoice}`]:
           selectedChoice,
       },
     });

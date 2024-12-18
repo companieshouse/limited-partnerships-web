@@ -10,7 +10,10 @@ import {
 } from "../../../controller/registration/Routing";
 import RegistrationPageType from "../../../../presentation/controller/registration/PageType";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
-import { APPLICATION_CACHE_KEY } from "../../../../config/constants";
+import {
+  APPLICATION_CACHE_KEY,
+  APPLICATION_CACHE_KEY_PREFIX_REGISTRATION,
+} from "../../../../config/constants";
 
 describe("General Partner Choice Page", () => {
   beforeEach(() => {
@@ -59,7 +62,7 @@ describe("General Partner Choice Page", () => {
     // to be removed - not store in cache
     expect(appDevDependencies.cacheRepository.cache).toEqual({
       [APPLICATION_CACHE_KEY]: {
-        [`registration_${RegistrationPageType.generalPartnerChoice}`]:
+        [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.generalPartnerChoice}`]:
           selectedType,
       },
     });
