@@ -31,7 +31,9 @@ describe("General Partner Choice Page", () => {
     const res = await request(app).get(GENERAL_PARTNER_CHOICE_URL + "?lang=cy");
 
     expect(res.status).toBe(200);
-    expect(res.text).toContain(cyTranslationText.generalPartnerChoicePage.title);
+    expect(res.text).toContain(
+      cyTranslationText.generalPartnerChoicePage.title
+    );
   });
 
   it("should load the general partner choice page with English text", async () => {
@@ -39,7 +41,9 @@ describe("General Partner Choice Page", () => {
     const res = await request(app).get(GENERAL_PARTNER_CHOICE_URL + "?lang=en");
 
     expect(res.status).toBe(200);
-    expect(res.text).toContain(enTranslationText.generalPartnerChoicePage.title);
+    expect(res.text).toContain(
+      enTranslationText.generalPartnerChoicePage.title
+    );
   });
 
   it("should redirect to next page when choice is selected", async () => {
@@ -55,8 +59,9 @@ describe("General Partner Choice Page", () => {
     // to be removed - not store in cache
     expect(appDevDependencies.cacheRepository.cache).toEqual({
       [APPLICATION_CACHE_KEY]: {
-        [RegistrationPageType.generalPartnerChoice]: selectedType
-      }
+        [`registration_${RegistrationPageType.generalPartnerChoice}`]:
+          selectedType,
+      },
     });
   });
 });

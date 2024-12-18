@@ -101,7 +101,7 @@ class RegistrationController extends AbstractController {
         const parameter = escape(request.body.parameter);
 
         await this.registrationService.addDataToCache(session, {
-          [pageType]: parameter,
+          [`registration_${pageType}`]: parameter,
         });
 
         response.redirect(registrationRouting.nextUrl);

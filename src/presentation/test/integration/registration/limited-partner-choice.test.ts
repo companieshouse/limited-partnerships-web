@@ -75,7 +75,8 @@ describe("Limited Partner Choice Page", () => {
     // to be removed - not store in cache
     expect(appDevDependencies.cacheRepository.cache).toEqual({
       [APPLICATION_CACHE_KEY]: {
-        [RegistrationPageType.limitedPartnerChoice]: selectedChoice,
+        [`registration_${RegistrationPageType.limitedPartnerChoice}`]:
+          selectedChoice,
       },
     });
   });

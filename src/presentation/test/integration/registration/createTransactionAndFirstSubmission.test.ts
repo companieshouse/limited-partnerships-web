@@ -1,12 +1,13 @@
 import request from "supertest";
 import { Request, Response } from "express";
-import { NameEndingType, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import {
+  NameEndingType,
+  PartnershipType,
+} from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import app from "../app";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
-import {
-  NAME_URL,
-} from "../../../controller/registration/Routing";
+import { NAME_URL } from "../../../controller/registration/Routing";
 import RegistrationPageType from "../../../controller/registration/PageType";
 
 describe("Create transaction and the first submission", () => {
@@ -18,7 +19,7 @@ describe("Create transaction and the first submission", () => {
 
   it("should load the name page with status 200", async () => {
     appDevDependencies.cacheRepository.feedCache({
-      [RegistrationPageType.whichType]: PartnershipType.LP
+      [`registration_${RegistrationPageType.whichType}`]: PartnershipType.LP,
     });
 
     const res = await request(app).get(NAME_URL);

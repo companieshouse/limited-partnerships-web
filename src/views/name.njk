@@ -2,8 +2,8 @@
 
 {% block content %}
 
-{% if props.data.cache['which-type'] %}
-  {% set partnershipType = props.data.cache['which-type'] %}
+{% if props.data.cache["registration_which-type"] %}
+  {% set partnershipType = props.data.cache["registration_which-type"] %}
 {% elif props.data.limitedPartnership.partnership_type %}
   {% set partnershipType = props.data.limitedPartnership.partnership_type %}
 {% else %}

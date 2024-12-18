@@ -40,14 +40,14 @@ describe("Which type Page", () => {
 
     expect(appDevDependencies.cacheRepository.cache).toEqual({
       [APPLICATION_CACHE_KEY]: {
-        [RegistrationPageType.whichType]: selectedType,
+        [`registration_${RegistrationPageType.whichType}`]: selectedType,
       },
     });
   });
 
   it("should redirect to name page and update type in cache", async () => {
     appDevDependencies.cacheRepository.feedCache({
-      [RegistrationPageType.whichType]: PartnershipType.LP,
+      [`registration_${RegistrationPageType.whichType}`]: PartnershipType.LP,
     });
 
     const selectedType = PartnershipType.PFLP;
@@ -62,7 +62,7 @@ describe("Which type Page", () => {
 
     expect(appDevDependencies.cacheRepository.cache).toEqual({
       [APPLICATION_CACHE_KEY]: {
-        [RegistrationPageType.whichType]: selectedType,
+        [`registration_${RegistrationPageType.whichType}`]: selectedType,
       },
     });
   });
