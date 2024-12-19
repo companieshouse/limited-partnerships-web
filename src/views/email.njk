@@ -1,7 +1,8 @@
 {% extends "layout.njk" %}
 
+{% set pageTitle = i18n.emailPage.emailUsedFor.title %}
 {% block pageTitle %}
-  {{ i18n.emailPage.emailUsedFor.title }} - {{ i18n.service }} - GOV.UK
+  {% include "includes/page-title.njk" %}
 {% endblock %}
 
 {% block content %}

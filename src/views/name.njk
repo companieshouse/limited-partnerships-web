@@ -1,7 +1,5 @@
 {% extends "layout.njk" %}
 
-{% set partnershipType = props.parameters['which-type'] %}
-
 {% if props.data.cache["registration_which-type"] %}
   {% set partnershipType = props.data.cache["registration_which-type"] %}
 {% elif props.data.limitedPartnership.partnership_type %}
@@ -28,8 +26,9 @@
   {% set nameEnding = i18n.namePage.privateFund.nameEnding %}
 {% endif %}
 
+{% set pageTitle = title  %}
 {% block pageTitle %}
-  {{ title }} - {{ i18n.service }} - GOV.UK
+   {% include "includes/page-title.njk" %}
 {% endblock %}
 
 {% block content %}
