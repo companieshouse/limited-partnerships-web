@@ -27,6 +27,7 @@ describe("Limited Partner Choice Page", () => {
     const res = await request(app).get(LIMITED_PARTNER_CHOICE_URL + "?lang=cy");
 
     expect(res.status).toBe(200);
+    expect(res.text).toContain(`${cyTranslationText.limitedPartnerChoicePage.isPersonOrLegalEntity} - ${cyTranslationText.service} - GOV.UK`);
     expect(res.text).toContain(cyTranslationText.limitedPartnerChoicePage.isPersonOrLegalEntity);
   });
 
@@ -35,6 +36,7 @@ describe("Limited Partner Choice Page", () => {
     const res = await request(app).get(LIMITED_PARTNER_CHOICE_URL + "?lang=en");
 
     expect(res.status).toBe(200);
+    expect(res.text).toContain(`${enTranslationText.limitedPartnerChoicePage.isPersonOrLegalEntity} - ${enTranslationText.service} - GOV.UK`);
     expect(res.text).toContain(enTranslationText.limitedPartnerChoicePage.isPersonOrLegalEntity);
   });
 

@@ -25,6 +25,7 @@ describe("General Partner Choice Page", () => {
     const res = await request(app).get(GENERAL_PARTNER_CHOICE_URL + "?lang=cy");
 
     expect(res.status).toBe(200);
+    expect(res.text).toContain(`${cyTranslationText.generalPartnerChoicePage.title } - ${cyTranslationText.service} - GOV.UK`);
     expect(res.text).toContain(cyTranslationText.generalPartnerChoicePage.title);
   });
 
@@ -33,6 +34,7 @@ describe("General Partner Choice Page", () => {
     const res = await request(app).get(GENERAL_PARTNER_CHOICE_URL + "?lang=en");
 
     expect(res.status).toBe(200);
+    expect(res.text).toContain(`${enTranslationText.generalPartnerChoicePage.title} - ${enTranslationText.service} - GOV.UK`);
     expect(res.text).toContain(enTranslationText.generalPartnerChoicePage.title);
   });
 

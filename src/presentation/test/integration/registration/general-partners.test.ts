@@ -23,6 +23,7 @@ describe("General Partners Page", () => {
     const res = await request(app).get(GENERAL_PARTNERS_URL + "?lang=cy");
 
     expect(res.status).toBe(200);
+    expect(res.text).toContain(`${cyTranslationText.generalPartnersPage.title } - ${cyTranslationText.service} - GOV.UK`);
     expect(res.text).toContain(cyTranslationText.generalPartnersPage.title);
   });
 
@@ -31,6 +32,7 @@ describe("General Partners Page", () => {
     const res = await request(app).get(GENERAL_PARTNERS_URL + "?lang=en");
 
     expect(res.status).toBe(200);
+    expect(res.text).toContain(`${enTranslationText.generalPartnersPage.title } - ${enTranslationText.service} - GOV.UK`);
     expect(res.text).toContain(enTranslationText.generalPartnersPage.title);
   });
 });

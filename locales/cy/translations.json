@@ -1,5 +1,5 @@
 {
-    "emailPage" : {
+    "emailPage" : {        
         "whatIsEmail" : "WELSH - What is the registered email address for the partnership?",
         "emailHint" : "WELSH - Partners must be able to access emails that are sent to this address.",
         "emailUsedFor" : { 
@@ -94,5 +94,7 @@
     "buttons" : {
         "continue" : "WELSH - Continue",
         "saveAndContinue" : "WELSH - Save and continue"
-    }
+    },
+
+    "service" : "WELSH - Register a Limited Partnership"
 }
