@@ -1,9 +1,6 @@
 {% extends "layout.njk" %}
 
-<<<<<<< HEAD
 {% set partnershipType = props.parameters['which-type'] %}
-=======
-{% block content %}
 
 {% if props.data.cache["registration_which-type"] %}
   {% set partnershipType = props.data.cache["registration_which-type"] %}
@@ -12,7 +9,6 @@
 {% else %}
   {% set partnershipType = "" %}
 {% endif %}
->>>>>>> main
 
 {% if partnershipType == "LP" %}
   {% set title = i18n.namePage.title %}
