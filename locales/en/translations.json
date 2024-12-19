@@ -1,5 +1,8 @@
 {
-    "emailPage" : {        
+    
+    "service" : "Register a Limited Partnership",
+    
+    "emailPage" : {
         "whatIsEmail" : "What is the registered email address for the partnership?",
         "emailHint" : "Partners must be able to access emails that are sent to this address.",
         "emailUsedFor" : { 
@@ -94,7 +97,5 @@
     "buttons" : {
         "continue" : "Continue",
         "saveAndContinue" : "Save and continue"
-    },
-
-    "service" : "Register a Limited Partnership"  
+    }
 }
