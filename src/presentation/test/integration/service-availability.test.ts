@@ -14,7 +14,7 @@ describe("Service Availability tests", () => {
   });
 
   const setServiceUnavailable = (value: boolean) => {
-    jest.replaceProperty(configConstants, 'SHOW_SERVICE_OFFLINE_PAGE', value);
+    jest.replaceProperty(configConstants, 'SHOW_SERVICE_UNAVAILABLE_PAGE', value);
   };
 
   test("shows the servce unavailable page when service unavailable flag is true", async () => {

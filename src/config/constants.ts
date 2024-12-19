@@ -32,7 +32,7 @@ export const isLocalesEnabled = () =>
   getEnvironmentValueAsBoolean("LOCALES_ENABLED");
 
 export const SERVICE_NAME = "File for a limited partnership";
-export const SHOW_SERVICE_OFFLINE_PAGE = getEnvironmentValueAsBoolean("SHOW_SERVICE_OFFLINE_PAGE");
+export const SHOW_SERVICE_UNAVAILABLE_PAGE = getEnvironmentValueAsBoolean("SHOW_SERVICE_UNAVAILABLE_PAGE");
 export const APPLICATION_CACHE_KEY = "limited_partnership";
 export const APPLICATION_CACHE_KEY_PREFIX_REGISTRATION = "registration_";
 
