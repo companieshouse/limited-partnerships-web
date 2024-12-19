@@ -31,14 +31,14 @@
   {% include "includes/cookie-consent-banner.njk" %}
 {% endblock %}
 
+{% block pageTitle %}
+  {% include "includes/page-title.njk" %}
+{% endblock %}
+
 {% block beforeContent %}
   {% include "includes/phase_banner.njk" %}
   <div style="margin-bottom: 25px; border-bottom: 1px solid #b1b4b6;">
     {% include "ch-node-utils/templates/locales-banner.njk" %}
-
-    {% block pageTitle %}
-      {% include "includes/page-title.njk" %}
-    {% endblock %}
 
     {% block backLink %}
       {% include "includes/back-link.njk" %}
