@@ -1,6 +1,8 @@
 {
-
-    "service" : "WELSH - Register a Limited Partnership",
+    "buttons" : {
+        "continue" : "WELSH - Continue",
+        "saveAndContinue" : "WELSH - Save and continue"
+    },  
 
     "emailPage" : {
         "whatIsEmail" : "WELSH - What is the registered email address for the partnership?",
@@ -10,6 +12,36 @@
             "sendInformation": "WELSH - In future we'll use this to send important information that relates to the limited partnership. For example, new legislative requirements or warnings about missed deadlines.",
             "publicRegister": "WELSH - It will not be shown on the public register."
         }
+    },
+
+    "errorPage" : {
+        "title" : "WELSH - Sorry, the service is unavailable",
+        "tryLater" : "WELSH - You will be able to use the service at a later date.",
+        "moreInfo" : "WELSH - Email <a class='govuk-link' href='mailto: enquiries@companieshouse.gov.uk'>enquiries@companieshouse.gov.uk</a>, if you need more information."
+    },
+
+    "generalPartnerChoicePage": {
+        "title": "WELSH - You now need to tell us about the general partners",
+        "hint": "WELSH - You can add more later.",
+        "person": "WELSH - A person",
+        "legalEntity": "WELSH - A legal entity"
+    },
+
+    "generalPartnersPage": {
+        "title": "WELSH - You now need to tell us about the general partners",
+        "pageInformation": "WELSH - If the partnership has more than one general partner, you'll add them one at a time."
+    },
+
+    "limitedPartnerChoicePage" : {
+        "isPersonOrLegalEntity" : "WELSH - Is the limited partner a person or a legal entity?",
+        "isPersonOrLegalEntityHint" : "WELSH - You can add more later.",
+        "person" : "WELSH - A person",
+        "legalEntity" : "WELSH - A legal entity"
+    },
+
+    "limitedPartnersPage": {
+        "title": "WELSH - You now need to tell us about the limited partners",
+        "pageInformation": "WELSH - If the partnership has more than one limited partner, you'll add them one at a time."
     },
 
     "namePage" : {
@@ -40,6 +72,16 @@
         }
     },
 
+    "pageNotFound" : {
+        "title" : "WELSH - Page Not Found",
+        "spelling" : "WELSH - If you typed the web address, check it is spelled correctly.",
+        "copiedAddress" : "WELSH - If you pasted the web address, check you copied the entire address.",
+        "movedPage" : "WELSH - If the web address is correct or you selected a link, the page may have moved.",
+        "goToStartPage" : "WELSH - To register a limited partnership, go to the <a class='govuk-link' href='/limited-partnerships/start'>Register a limited partnership</a> start page."
+    },
+
+    "service" : "WELSH - Register a Limited Partnership",
+
     "startPage" : {
         "title" : "Partneriaethau Cyfyngedig yw hyn",
         "errorStartAddressMissing" : "Rhowch gyfeiriad"
@@ -54,48 +96,5 @@
             "SPFLP": "WELSH - Private fund limited partnership in Scotland",
             "SQP": "WELSH - Scottish qualifying partnership"
         }
-    },
-
-    "generalPartnersPage": {
-        "title": "WELSH - You now need to tell us about the general partners",
-        "pageInformation": "WELSH - If the partnership has more than one general partner, you'll add them one at a time."
-    },
-
-    "generalPartnerChoicePage": {
-        "title": "WELSH - You now need to tell us about the general partners",
-        "hint": "WELSH - You can add more later.",
-        "person": "WELSH - A person",
-        "legalEntity": "WELSH - A legal entity"
-    },
-
-    "limitedPartnersPage": {
-        "title": "WELSH - You now need to tell us about the limited partners",
-        "pageInformation": "WELSH - If the partnership has more than one limited partner, you'll add them one at a time."
-    },
-
-    "limitedPartnerChoicePage" : {
-        "isPersonOrLegalEntity" : "WELSH - Is the limited partner a person or a legal entity?",
-        "isPersonOrLegalEntityHint" : "WELSH - You can add more later.",
-        "person" : "WELSH - A person",
-        "legalEntity" : "WELSH - A legal entity"
-    },
-    
-    "pageNotFound" : {
-        "title" : "WELSH - Page Not Found",
-        "spelling" : "WELSH - If you typed the web address, check it is spelled correctly.",
-        "copiedAddress" : "WELSH - If you pasted the web address, check you copied the entire address.",
-        "movedPage" : "WELSH - If the web address is correct or you selected a link, the page may have moved.",
-        "goToStartPage" : "WELSH - To register a limited partnership, go to the <a class='govuk-link' href='/limited-partnerships/start'>Register a limited partnership</a> start page."
-    },
-
-    "errorPage" : {
-        "title" : "WELSH - Sorry, the service is unavailable",
-        "tryLater" : "WELSH - You will be able to use the service at a later date.",
-        "moreInfo" : "WELSH - Email <a class='govuk-link' href='mailto: enquiries@companieshouse.gov.uk'>enquiries@companieshouse.gov.uk</a>, if you need more information."
-    },
-
-    "buttons" : {
-        "continue" : "WELSH - Continue",
-        "saveAndContinue" : "WELSH - Save and continue"
-    }  
+    }   
 }
