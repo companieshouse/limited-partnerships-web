@@ -6,6 +6,7 @@ abstract class AbstractController {
   protected getRouting(
     routing: PagesRouting,
     pageType: PageType,
+    currentUrl: string,
     transactionId = "",
     submissionId = ""
   ) {
@@ -21,6 +22,8 @@ abstract class AbstractController {
       submissionId
     );
 
+    pageRouting = this.addLangToUrls(currentUrl, pageRouting);
+
     return pageRouting;
   }
 
@@ -31,7 +34,8 @@ abstract class AbstractController {
   }
 
   protected templateName(url: string): string {
-    const splitted = url.split("/");
+    const urlWithoutQueryParams = url.split("?")[0];
+    const splitted = urlWithoutQueryParams.split("/");
     return splitted[splitted.length - 1];
   }
 
@@ -42,7 +46,9 @@ abstract class AbstractController {
   }
 
   protected insertTransactionId(url: string, transactionId: string): string {
-    return transactionId ? url.replace(`:${TRANSACTION_ID}`, transactionId) : url;
+    return transactionId
+      ? url.replace(`:${TRANSACTION_ID}`, transactionId)
+      : url;
   }
 
   protected insertSubmissionId(url: string, submissionId: string): string {
@@ -72,6 +78,28 @@ abstract class AbstractController {
         submissionId
       ),
     };
+  }
+
+  private addLangToUrls(
+    currentUrl: string,
+    pageRouting: PageRouting
+  ): PageRouting {
+    const currentUrlParams = new URLSearchParams(
+      new URL(`http://${currentUrl}`)?.search
+    );
+
+    if (currentUrlParams.has("lang")) {
+      const langQuery = `?lang=${currentUrlParams.get("lang")}`;
+
+      return {
+        ...pageRouting,
+        previousUrl: `${pageRouting.previousUrl}${langQuery}`,
+        currentUrl: `${pageRouting.currentUrl}${langQuery}`,
+        nextUrl: `${pageRouting.nextUrl}${langQuery}`,
+      };
+    }
+
+    return pageRouting;
   }
 }
 

@@ -36,6 +36,7 @@ class RegistrationController extends AbstractController {
         const pageRouting = super.getRouting(
           registrationsRouting,
           pageType,
+          request.url,
           transactionId,
           submissionId
         );
@@ -72,7 +73,8 @@ class RegistrationController extends AbstractController {
 
         const registrationRouting = super.getRouting(
           registrationsRouting,
-          pageType
+          pageType,
+          request.url
         );
 
         if (result.errors?.length) {
@@ -109,6 +111,7 @@ class RegistrationController extends AbstractController {
         const registrationRouting = super.getRouting(
           registrationsRouting,
           type,
+          request.url,
           request.params[TRANSACTION_ID],
           request.params[SUBMISSION_ID]
         );
@@ -146,6 +149,7 @@ class RegistrationController extends AbstractController {
         const registrationRouting = super.getRouting(
           registrationsRouting,
           pageType,
+          request.url,
           transactionId,
           submissionId
         );

@@ -16,7 +16,11 @@ class GlobalController extends AbstractController {
 
         const pageType = super.pageType(request.path);
 
-        const pageRouting = super.getRouting(registrationsRouting, pageType);
+        const pageRouting = super.getRouting(
+          registrationsRouting,
+          pageType,
+          request.url
+        );
 
         response.render(super.templateName(pageRouting.currentUrl), {
           props: pageRouting,
