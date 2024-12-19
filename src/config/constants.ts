@@ -32,12 +32,14 @@ export const isLocalesEnabled = () =>
   getEnvironmentValueAsBoolean("LOCALES_ENABLED");
 
 export const SERVICE_NAME = "File for a limited partnership";
+export const SHOW_SERVICE_UNAVAILABLE_PAGE = getEnvironmentValueAsBoolean("SHOW_SERVICE_UNAVAILABLE_PAGE");
 export const APPLICATION_CACHE_KEY = "limited_partnership";
 export const APPLICATION_CACHE_KEY_PREFIX_REGISTRATION = "registration_";
 
 // Templates
 export const ERROR_TEMPLATE = "error-page";
 export const NOT_FOUND_TEMPLATE = "page-not-found";
+export const SERVICE_UNAVAILABLE_TEMPLATE = "service-unavailable";
 
 // Routing Paths
 export const SUBMISSION_ID = "submissionId";
