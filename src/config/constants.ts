@@ -22,7 +22,9 @@ export const LOG_LEVEL = getEnvironmentValue("LOG_LEVEL");
 export const NODE_ENV = process.env["NODE_ENV"];
 export const OAUTH2_CLIENT_ID = getEnvironmentValue("OAUTH2_CLIENT_ID");
 export const OAUTH2_CLIENT_SECRET = getEnvironmentValue("OAUTH2_CLIENT_SECRET");
-export const PIWIK_REGISTRATION_START_GOAL_ID = getEnvironmentValue("PIWIK_REGISTRATION_START_GOAL_ID");
+export const PIWIK_REGISTRATION_START_GOAL_ID = getEnvironmentValue(
+  "PIWIK_REGISTRATION_START_GOAL_ID"
+);
 export const PIWIK_SITE_ID = getEnvironmentValue("PIWIK_SITE_ID");
 export const PIWIK_URL = getEnvironmentValue("PIWIK_URL");
 export const PORT = getEnvironmentValue("PORT");
@@ -30,6 +32,8 @@ export const isLocalesEnabled = () =>
   getEnvironmentValueAsBoolean("LOCALES_ENABLED");
 
 export const SERVICE_NAME = "File for a limited partnership";
+export const APPLICATION_CACHE_KEY = "limited_partnership";
+export const APPLICATION_CACHE_KEY_PREFIX_REGISTRATION = "registration_";
 
 // Templates
 export const ERROR_TEMPLATE = "error-page";

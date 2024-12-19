@@ -4,8 +4,8 @@ import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/l
 import { Transaction } from "@companieshouse/api-sdk-node/dist/services/transaction/types";
 import { createApiClient, Resource } from "@companieshouse/api-sdk-node";
 
-import RegistrationPageType from "../../presentation/controller/registration/PageType";
-import IRegistrationGateway from "../../domain/IRegistrationGateway";
+import RegistrationPageType from "../../../presentation/controller/registration/PageType";
+import IRegistrationGateway from "../../../domain/IRegistrationGateway";
 import LimitedPartnershipGatewayBuilder from "./LimitedPartnershipGatewayBuilder";
 
 class RegistrationGateway implements IRegistrationGateway {

@@ -6,10 +6,10 @@ import {
   NameEndingType,
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-import RegistrationPageType from "../../presentation/controller/registration/PageType";
-import IRegistrationGateway from "../../domain/IRegistrationGateway";
-import CustomError from "../../domain/entities/CustomError";
-import TransactionLimitedPartnership from "../../domain/entities/TransactionLimitedPartnership";
+import RegistrationPageType from "../../../presentation/controller/registration/PageType";
+import IRegistrationGateway from "../../../domain/IRegistrationGateway";
+import CustomError from "../../../domain/entities/CustomError";
+import TransactionLimitedPartnership from "../../../domain/entities/TransactionLimitedPartnership";
 import LimitedPartnershipGatewayBuilder from "./LimitedPartnershipGatewayBuilder";
 
 class RegistrationInMemoryGateway implements IRegistrationGateway {

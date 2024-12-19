@@ -27,7 +27,7 @@ export const registrationEndpoints = (
   router.post(
     WHICH_TYPE_URL,
     authentication,
-    dependencies.registrationController.redirectWithParameter()
+    dependencies.registrationController.redirectAndCacheSelection()
   );
   router.get(
     NAME_URL,
@@ -67,7 +67,8 @@ export const registrationEndpoints = (
   router.post(
     GENERAL_PARTNER_CHOICE_URL,
     authentication,
-    dependencies.registrationController.redirectWithParameter()
+    // to be changed - use different method
+    dependencies.registrationController.redirectAndCacheSelection()
   );
   router.get(
     LIMITED_PARTNERS_URL,
@@ -83,7 +84,8 @@ export const registrationEndpoints = (
   router.post(
     LIMITED_PARTNER_CHOICE_URL,
     authentication,
-    dependencies.registrationController.redirectWithParameter()
+    // to be changed - use different method
+    dependencies.registrationController.redirectAndCacheSelection()
   );
   router.get(
     NEXT_URL,

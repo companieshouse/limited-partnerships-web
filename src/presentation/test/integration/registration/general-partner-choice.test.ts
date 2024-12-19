@@ -9,10 +9,19 @@ import {
   LIMITED_PARTNERS_URL,
 } from "../../../controller/registration/Routing";
 import RegistrationPageType from "../../../../presentation/controller/registration/PageType";
+import { appDevDependencies } from "../../../../config/dev-dependencies";
+import {
+  APPLICATION_CACHE_KEY,
+  APPLICATION_CACHE_KEY_PREFIX_REGISTRATION,
+} from "../../../../config/constants";
 
 describe("General Partner Choice Page", () => {
   beforeEach(() => {
     setLocalesEnabled(false);
+
+    appDevDependencies.registrationGateway.feedLimitedPartnerships([]);
+    appDevDependencies.registrationGateway.feedErrors([]);
+    appDevDependencies.cacheRepository.feedCache(null);
   });
 
   const setLocalesEnabled = (bool: boolean) => {
@@ -25,8 +34,12 @@ describe("General Partner Choice Page", () => {
     const res = await request(app).get(GENERAL_PARTNER_CHOICE_URL + "?lang=cy");
 
     expect(res.status).toBe(200);
-    expect(res.text).toContain(`${cyTranslationText.generalPartnerChoicePage.title } - ${cyTranslationText.service} - GOV.UK`);
-    expect(res.text).toContain(cyTranslationText.generalPartnerChoicePage.title);
+    expect(res.text).toContain(
+      `${cyTranslationText.generalPartnerChoicePage.title } - ${cyTranslationText.service} - GOV.UK`
+    );
+    expect(res.text).toContain(
+      cyTranslationText.generalPartnerChoicePage.title
+    );
   });
 
   it("should load the general partner choice page with English text", async () => {
@@ -34,8 +47,12 @@ describe("General Partner Choice Page", () => {
     const res = await request(app).get(GENERAL_PARTNER_CHOICE_URL + "?lang=en");
 
     expect(res.status).toBe(200);
-    expect(res.text).toContain(`${enTranslationText.generalPartnerChoicePage.title} - ${enTranslationText.service} - GOV.UK`);
-    expect(res.text).toContain(enTranslationText.generalPartnerChoicePage.title);
+    expect(res.text).toContain(
+      `${enTranslationText.generalPartnerChoicePage.title} - ${enTranslationText.service} - GOV.UK`
+    );
+    expect(res.text).toContain(
+      enTranslationText.generalPartnerChoicePage.title
+    );
   });
 
   it("should redirect to next page when choice is selected", async () => {
@@ -45,8 +62,15 @@ describe("General Partner Choice Page", () => {
       parameter: selectedType,
     });
 
-    const redirectUrl = `${LIMITED_PARTNERS_URL}?${RegistrationPageType.generalPartnerChoice}=${selectedType}`;
     expect(res.status).toBe(302);
-    expect(res.text).toContain(redirectUrl);
+    expect(res.text).toContain(LIMITED_PARTNERS_URL);
+
+    // to be removed - not store in cache
+    expect(appDevDependencies.cacheRepository.cache).toEqual({
+      [APPLICATION_CACHE_KEY]: {
+        [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.generalPartnerChoice}`]:
+          selectedType,
+      },
+    });
   });
 });

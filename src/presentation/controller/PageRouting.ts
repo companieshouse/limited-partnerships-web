@@ -21,4 +21,6 @@ export const pageRoutingDefault = {
   currentUrl: "",
   nextUrl: "",
   pageType: PageDefault.default,
+  data: null,
+  errors: null
 };

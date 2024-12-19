@@ -1,6 +1,18 @@
 {% extends "layout.njk" %}
 
+<<<<<<< HEAD
 {% set partnershipType = props.parameters['which-type'] %}
+=======
+{% block content %}
+
+{% if props.data.cache["registration_which-type"] %}
+  {% set partnershipType = props.data.cache["registration_which-type"] %}
+{% elif props.data.limitedPartnership.partnership_type %}
+  {% set partnershipType = props.data.limitedPartnership.partnership_type %}
+{% else %}
+  {% set partnershipType = "" %}
+{% endif %}
+>>>>>>> main
 
 {% if partnershipType == "LP" %}
   {% set title = i18n.namePage.title %}
@@ -30,7 +42,7 @@
   <div class="govuk-grid-column-two-thirds">
     <form class="form" action={{ props.currentUrl }} method="post">
       <input type="hidden" name="pageType" value={{ props.pageType }}>
-      <input type="hidden" name="partnership_type" value={{ props.parameters['which-type'] }}>
+      <input type="hidden" name="partnership_type" value={{ partnershipType }}>
       
       {% include "includes/csrf_token.njk" %}
 
