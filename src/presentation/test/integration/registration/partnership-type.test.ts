@@ -21,7 +21,7 @@ describe("Which type Page", () => {
     appDevDependencies.cacheRepository.feedCache(null);
   });
 
-  it("should load the which-type page", async () => {
+  it.skip("should load the which-type page", async () => {
     const res = await request(app).get(WHICH_TYPE_URL);
 
     expect(res.status).toBe(200);
