@@ -1,7 +1,5 @@
 {% extends "layout.njk" %}
 
-{% block content %}
-
 {% if props.data.cache["registration_which-type"] %}
   {% set partnershipType = props.data.cache["registration_which-type"] %}
 {% elif props.data.limitedPartnership.partnership_type %}
@@ -28,6 +26,9 @@
   {% set nameEnding = i18n.namePage.privateFund.nameEnding %}
 {% endif %}
 
+{% set pageTitle = title  %}
+
+{% block content %}
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
