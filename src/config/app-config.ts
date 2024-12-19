@@ -12,6 +12,7 @@ import { CsrfProtectionMiddleware } from "@companieshouse/web-security-node";
 
 import * as config from "./constants";
 import { localisationMiddleware } from "../middlewares";
+import { serviceAvailabilityMiddleware } from "../middlewares/service-availability.middleware";
 
 export const appConfig = (app: express.Application) => {
   // set some app variables from the environment
@@ -46,6 +47,7 @@ export const appConfig = (app: express.Application) => {
   app.set("view engine", "njk");
 
   // middlewares
+  app.use(serviceAvailabilityMiddleware);
   app.use(localisationMiddleware);
 
   const cookieConfig = {

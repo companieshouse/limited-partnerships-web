@@ -18,4 +18,5 @@ export default () => {
   process.env.PIWIK_SITE_ID = "24";
   process.env.PIWIK_URL = "piwik.url";
   process.env.PORT = "3000";
+  process.env.SHOW_SERVICE_OFFLINE_PAGE = "false";
 };
