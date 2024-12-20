@@ -15,8 +15,7 @@ import { RefreshTokenService } from "@companieshouse/api-sdk-node/dist/services/
 
 jest.mock("@companieshouse/api-sdk-node");
 
-const mockCreateApiClient = createApiClient as jest.Mock;
-mockCreateApiClient.mockReturnValue({
+const value = {
   transaction: {
     ...TransactionService.prototype,
     postTransaction: () => ({
@@ -39,7 +38,17 @@ mockCreateApiClient.mockReturnValue({
       resource: {},
     }),
   },
-});
+  refreshToken: {
+    ...RefreshTokenService.prototype,
+    refresh: {
+      httpStatusCode: 201,
+      resource: { access_token: "access_token" },
+    },
+  },
+};
+
+const mockCreateApiClient = createApiClient as jest.Mock;
+mockCreateApiClient.mockReturnValue(value);
 
 describe("Gateway", () => {
   describe("Create transaction and the first submission", () => {
@@ -88,34 +97,74 @@ describe("Gateway", () => {
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
     });
 
-    it("should update the submission", async () => {
-      mockCreateApiClient.mockReturnValue({
-        limitedPartnershipsService: {
-          ...LimitedPartnershipsService.prototype,
-          patchLimitedPartnership: () => ({
-            httpStatusCode: 401,
-            resource: {},
-          }),
-        },
-        refreshToken: {
-          ...RefreshTokenService.prototype,
-          refreshToken: () => {},
-        },
+    describe("401", () => {
+      it("should retrun after failing to refresh the token", async () => {
+        mockCreateApiClient.mockReturnValue({
+          ...value,
+          limitedPartnershipsService: {
+            ...value.limitedPartnershipsService,
+            patchLimitedPartnership: () => ({
+              httpStatusCode: 401,
+              resource: {},
+            }),
+          },
+          refreshToken: {
+            ...RefreshTokenService.prototype,
+            refresh: () => {},
+          },
+        });
+
+        const url = appDevDependencies.registrationController.insertIdsInUrl(
+          EMAIL_URL,
+          appDevDependencies.registrationGateway.transactionId,
+          appDevDependencies.registrationGateway.submissionId
+        );
+
+        const res = await request(appRealDependencies).post(url).send({
+          pageType: RegistrationPageType.email,
+          email: "test@email.com",
+        });
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(enTranslationText.emailPage.whatIsEmail);
       });
 
-      const url = appDevDependencies.registrationController.insertIdsInUrl(
-        EMAIL_URL,
-        appDevDependencies.registrationGateway.transactionId,
-        appDevDependencies.registrationGateway.submissionId
-      );
+      it("should update the submission after refreshing the token", async () => {
+        const refreshToken = jest.fn().mockImplementation(() => ({
+          resource: { access_token: "access_token" },
+        }));
 
-      const res = await request(appRealDependencies).post(url).send({
-        pageType: RegistrationPageType.email,
-        email: "test@email.com",
+        mockCreateApiClient.mockReturnValue({
+          ...value,
+          limitedPartnershipsService: {
+            ...value.limitedPartnershipsService,
+            patchLimitedPartnership: () => ({
+              httpStatusCode: 401,
+              resource: {},
+            }),
+          },
+          refreshToken: {
+            ...value.refreshToken,
+            refresh: refreshToken,
+          },
+        });
+
+        const url = appDevDependencies.registrationController.insertIdsInUrl(
+          EMAIL_URL,
+          appDevDependencies.registrationGateway.transactionId,
+          appDevDependencies.registrationGateway.submissionId
+        );
+
+        const res = await request(appRealDependencies).post(url).send({
+          pageType: RegistrationPageType.email,
+          email: "test@email.com",
+        });
+
+        expect(refreshToken).toHaveBeenCalled();
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(enTranslationText.emailPage.whatIsEmail);
       });
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(enTranslationText.emailPage.whatIsEmail);
     });
   });
 });
