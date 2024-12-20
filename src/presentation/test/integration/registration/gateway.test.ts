@@ -11,6 +11,7 @@ import { appDevDependencies } from "../../../../config/dev-dependencies";
 import { EMAIL_URL, NAME_URL } from "../../../controller/registration/Routing";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import enTranslationText from "../../../../../locales/en/translations.json";
+import { RefreshTokenService } from "@companieshouse/api-sdk-node/dist/services/refresh-token";
 
 jest.mock("@companieshouse/api-sdk-node");
 
@@ -95,6 +96,10 @@ describe("Gateway", () => {
             httpStatusCode: 401,
             resource: {},
           }),
+        },
+        refreshToken: {
+          ...RefreshTokenService.prototype,
+          refreshToken: () => {},
         },
       });
 
