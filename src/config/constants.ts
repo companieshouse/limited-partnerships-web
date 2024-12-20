@@ -30,6 +30,7 @@ export const PIWIK_URL = getEnvironmentValue("PIWIK_URL");
 export const PORT = getEnvironmentValue("PORT");
 export const isLocalesEnabled = () =>
   getEnvironmentValueAsBoolean("LOCALES_ENABLED");
+export const REFRESH_TOKEN_GRANT_TYPE = "refresh_token";
 
 export const SERVICE_NAME = "File for a limited partnership";
 export const APPLICATION_CACHE_KEY = "limited_partnership";

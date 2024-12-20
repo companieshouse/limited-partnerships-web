@@ -1,24 +1,37 @@
 /* eslint-disable */
 
-import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { Resource } from "@companieshouse/api-sdk-node";
 import { Transaction } from "@companieshouse/api-sdk-node/dist/services/transaction/types";
-import { createApiClient, Resource } from "@companieshouse/api-sdk-node";
+import { ApiErrorResponse } from "@companieshouse/api-sdk-node/dist/services/resource";
+import {
+  LimitedPartnership,
+  LimitedPartnershipCreated,
+} from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
+import { makeApiCallWithRetry } from "../api";
 import RegistrationPageType from "../../../presentation/controller/registration/PageType";
 import IRegistrationGateway from "../../../domain/IRegistrationGateway";
 import LimitedPartnershipGatewayBuilder from "./LimitedPartnershipGatewayBuilder";
 
 class RegistrationGateway implements IRegistrationGateway {
   async createTransaction(
-    opt: { access_token: string },
+    opt: { access_token: string; refresh_token: string },
     registrationPageType: RegistrationPageType
   ): Promise<string> {
-    const api = this.createApi(opt.access_token);
+    const apiCall = {
+      service: "transaction",
+      method: "postTransaction",
+      args: [
+        {
+          reference: "LimitedPartnershipsReference",
+          description: "Limited Partnerships Transaction",
+        },
+      ],
+    };
 
-    const response = await api.transaction.postTransaction({
-      reference: "LimitedPartnershipsReference",
-      description: "Limited Partnerships Transaction",
-    });
+    const response = await makeApiCallWithRetry<
+      Resource<Transaction> | ApiErrorResponse
+    >(opt, apiCall);
 
     if (response.httpStatusCode !== 201) {
       throw response;
@@ -28,7 +41,7 @@ class RegistrationGateway implements IRegistrationGateway {
   }
 
   async createSubmission(
-    opt: { access_token: string },
+    opt: { access_token: string; refresh_token: string },
     registrationPageType: RegistrationPageType,
     transactionId: string,
     data: Record<string, any>
@@ -37,13 +50,15 @@ class RegistrationGateway implements IRegistrationGateway {
     limitedPartnershipBuilder.withData(registrationPageType, data);
     const limitedPartnership = limitedPartnershipBuilder.build();
 
-    const api = this.createApi(opt.access_token);
+    const apiCall = {
+      service: "limitedPartnershipsService",
+      method: "postLimitedPartnership",
+      args: [transactionId, limitedPartnership],
+    };
 
-    const response =
-      await api.limitedPartnershipsService.postLimitedPartnership(
-        transactionId,
-        limitedPartnership
-      );
+    const response = await makeApiCallWithRetry<
+      Resource<LimitedPartnershipCreated> | ApiErrorResponse
+    >(opt, apiCall);
 
     if (response.httpStatusCode !== 201) {
       throw response;
@@ -53,23 +68,28 @@ class RegistrationGateway implements IRegistrationGateway {
   }
 
   async sendPageData(
-    opt: { access_token: string },
+    opt: { access_token: string; refresh_token: string },
     transactionId: string,
     submissionId: string,
     registrationType: RegistrationPageType,
     data: Record<string, any>
   ): Promise<void> {
-    const api = this.createApi(opt.access_token);
-
-    const response =
-      await api.limitedPartnershipsService.patchLimitedPartnership(
+    const apiCall = {
+      service: "limitedPartnershipsService",
+      method: "patchLimitedPartnership",
+      args: [
         transactionId,
         submissionId,
         {
           type: registrationType,
-          data
-        }
-      );
+          data,
+        },
+      ],
+    };
+
+    const response = await makeApiCallWithRetry<
+      Resource<void> | ApiErrorResponse
+    >(opt, apiCall);
 
     if (response.httpStatusCode !== 200) {
       throw response;
@@ -78,10 +98,6 @@ class RegistrationGateway implements IRegistrationGateway {
 
   async getSubmissionById(id: string): Promise<LimitedPartnership> {
     throw new Error("Method not implemented.");
-  }
-
-  private createApi(access_token: string) {
-    return createApiClient(undefined, access_token);
   }
 }
 

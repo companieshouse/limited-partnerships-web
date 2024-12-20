@@ -2,8 +2,8 @@
 
 {% if props.data.cache["registration_which-type"] %}
   {% set partnershipType = props.data.cache["registration_which-type"] %}
-{% elif props.data.limitedPartnership.partnership_type %}
-  {% set partnershipType = props.data.limitedPartnership.partnership_type %}
+{% elif props.data.limitedPartnership.data.partnership_type %}
+  {% set partnershipType = props.data.limitedPartnership.data.partnership_type %}
 {% else %}
   {% set partnershipType = "" %}
 {% endif %}
@@ -52,7 +52,7 @@
           errorMessage: props.errors.partnership_name if errors,
           id: "partnership_name",
           name: "partnership_name",
-          value: props.data.limitedPartnership.partnership_name,
+          value: props.data.limitedPartnership.data.partnership_name,
           fieldset: {
             legend: {
               isPageHeading: false,
