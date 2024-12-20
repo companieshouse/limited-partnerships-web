@@ -17,7 +17,7 @@ class RegistrationService {
   }
 
   async createTransactionAndFirstSubmission(
-    opt: { access_token: string },
+    opt: { access_token: string; refresh_token: string },
     registrationType: RegistrationPageType,
     data: Record<string, any>
   ): Promise<{
@@ -27,12 +27,12 @@ class RegistrationService {
   }> {
     try {
       const transactionId = await this.registrationGateway.createTransaction(
-        { access_token: opt.access_token },
+        opt,
         registrationType
       );
 
       const submissionId = await this.registrationGateway.createSubmission(
-        { access_token: opt.access_token },
+        opt,
         registrationType,
         transactionId,
         data
@@ -55,7 +55,7 @@ class RegistrationService {
   }
 
   async sendPageData(
-    opt: { access_token: string },
+    opt: { access_token: string; refresh_token: string },
     transactionId: string,
     submissionId: string,
     registrationType: RegistrationPageType,

@@ -19,7 +19,7 @@ describe("Create transaction and the first submission", () => {
 
       const result =
         await appDevDependencies.registrationService.createTransactionAndFirstSubmission(
-          { access_token: "access_token" },
+          { access_token: "access_token", refresh_token: "refresh_token" },
           RegistrationPageType.name,
           {
             partnership_name: limitedPartnership.data?.partnership_name,
@@ -53,7 +53,7 @@ describe("Create transaction and the first submission", () => {
 
       const result =
         await appDevDependencies.registrationService.createTransactionAndFirstSubmission(
-          { access_token: "access_token" },
+          { access_token: "access_token", refresh_token: "refresh_token" },
           RegistrationPageType.name,
           {
             partnership_name: "Test Limited Partnership",
@@ -75,7 +75,7 @@ describe("Create transaction and the first submission", () => {
     it("should return an error - wrong type", async () => {
       const result =
         await appDevDependencies.registrationService.createTransactionAndFirstSubmission(
-          { access_token: "access_token" },
+          { access_token: "access_token", refresh_token: "refresh_token" },
           RegistrationPageType.next,
           {
             partnership_name: "Test Limited Partnership",

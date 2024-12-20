@@ -61,31 +61,39 @@ class RegistrationController extends AbstractController {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const session = request.session as Session;
-        const access_token = this.extractAccessToken(request);
+        const tokens = this.extractTokens(request);
         const pageType = this.extractPageTypeOrThrowError(request);
 
         const result =
           await this.registrationService.createTransactionAndFirstSubmission(
-            { access_token },
+            tokens,
             pageType,
             request.body
           );
 
-        const registrationRouting = super.getRouting(
+        const pageRouting = super.getRouting(
           registrationsRouting,
           pageType,
           request.url
         );
 
         if (result.errors?.length) {
-          response.render(super.templateName(registrationRouting.currentUrl), {
-            props: result,
+          const cache = await this.cacheService.getDataFromCache(session);
+
+          pageRouting.data = {
+            ...pageRouting.data,
+            limitedPartnership: { data: request.body },
+            cache,
+          };
+
+          response.render(super.templateName(pageRouting.currentUrl), {
+            props: { ...pageRouting, ...result },
           });
           return;
         }
 
         const url = super.insertIdsInUrl(
-          registrationRouting.nextUrl,
+          pageRouting.nextUrl,
           result.transactionId,
           result.submissionId
         );
@@ -134,12 +142,12 @@ class RegistrationController extends AbstractController {
   sendPageData(): RequestHandler {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
-        const access_token = this.extractAccessToken(request);
+        const tokens = this.extractTokens(request);
         const pageType = this.extractPageTypeOrThrowError(request);
         const { transactionId, submissionId } = this.extractIds(request);
 
         const result = await this.registrationService.sendPageData(
-          { access_token },
+          tokens,
           transactionId,
           submissionId,
           pageType,
@@ -168,7 +176,7 @@ class RegistrationController extends AbstractController {
     };
   }
 
-  private extractPageTypeOrThrowError(request) {
+  private extractPageTypeOrThrowError(request: Request) {
     const pageTypeList = Object.values(RegistrationPageType);
     const pageType = request.body.pageType;
 
@@ -178,13 +186,16 @@ class RegistrationController extends AbstractController {
     return pageType;
   }
 
-  private extractAccessToken(request) {
-    return (
-      request?.session?.data?.signin_info?.access_token?.access_token ?? ""
-    );
+  private extractTokens(request: Request) {
+    return {
+      access_token:
+        request?.session?.data?.signin_info?.access_token?.access_token ?? "",
+      refresh_token:
+        request?.session?.data?.signin_info?.access_token?.refresh_token ?? "",
+    };
   }
 
-  private extractIds(request) {
+  private extractIds(request: Request) {
     const transactionId = request.params.transactionId;
     const submissionId = request.params.submissionId;
 
