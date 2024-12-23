@@ -1,4 +1,7 @@
-import { NameEndingType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import {
+  NameEndingType,
+  PartnershipType,
+} from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import TransactionLimitedPartnership from "../../../domain/entities/TransactionLimitedPartnership";
 
 class LimitedPartnershipBuilder {
@@ -6,6 +9,8 @@ class LimitedPartnershipBuilder {
   data = {
     partnership_name: "partnership_name test",
     name_ending: NameEndingType.LIMITED_PARTNERSHIP,
+    partnership_type: PartnershipType.LP,
+    email: "test@email.com",
   };
 
   withId(id: string) {

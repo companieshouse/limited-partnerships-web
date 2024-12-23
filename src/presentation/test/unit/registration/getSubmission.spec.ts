@@ -17,7 +17,9 @@ describe("Get Submission", () => {
       ]);
 
       const result =
-        await appDevDependencies.registrationService.getSubmissionById(
+        await appDevDependencies.registrationService.getLimitedPartnership(
+          { access_token: "access_token", refresh_token: "refresh_token" },
+          "transaction_id",
           limitedPartnership["_id"] as string
         );
 
@@ -32,7 +34,11 @@ describe("Get Submission", () => {
       ]);
 
       await appDevDependencies.registrationService
-        .getSubmissionById("wrong-id")
+        .getLimitedPartnership(
+          { access_token: "access_token", refresh_token: "refresh_token" },
+          "transaction_id",
+          "wrong-id"
+        )
         .catch((error) => {
           expect(error).toEqual(
             new CustomError("Limited partnership", "Not found: wrong-id")

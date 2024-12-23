@@ -12,6 +12,8 @@ import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 describe("Email Page", () => {
   beforeEach(() => {
     setLocalesEnabled(false);
+
+    appDevDependencies.registrationGateway.feedLimitedPartnerships([]);
   });
 
   const setLocalesEnabled = (bool: boolean) => {
@@ -45,6 +47,19 @@ describe("Email Page", () => {
       expect(res.text).toContain(cyTranslationText.emailPage.whatIsEmail);
       expect(res.text).toContain(cyTranslationText.emailPage.emailHint);
       expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
+    });
+
+    it("should load the name page with data from api", async () => {
+      const limitedPartnership = new LimitedPartnershipBuilder().build();
+
+      appDevDependencies.registrationGateway.feedLimitedPartnerships([
+        limitedPartnership,
+      ]);
+
+      const res = await request(app).get(EMAIL_URL);
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(limitedPartnership?.data?.email);
     });
   });
 

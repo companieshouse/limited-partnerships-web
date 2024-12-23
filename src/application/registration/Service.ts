@@ -12,8 +12,22 @@ class RegistrationService {
     this.registrationGateway = registrationGateway;
   }
 
-  getSubmissionById(id: string): Promise<LimitedPartnership> {
-    return this.registrationGateway.getSubmissionById(id);
+  async getLimitedPartnership(
+    opt: { access_token: string; refresh_token: string },
+    transactionId: string,
+    submissionId: string
+  ): Promise<LimitedPartnership> {
+    try {
+      return await this.registrationGateway.getLimitedPartnership(
+        opt,
+        transactionId,
+        submissionId
+      );
+    } catch (error: any) {
+      logger.error(`Error getting LimitedPartnership ${JSON.stringify(error)}`);
+
+      throw error;
+    }
   }
 
   async createTransactionAndFirstSubmission(

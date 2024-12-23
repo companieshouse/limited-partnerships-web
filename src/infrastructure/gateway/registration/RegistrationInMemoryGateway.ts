@@ -102,13 +102,29 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
     this.limitedPartnerships[index] = limitedPartnershipBuilder.build();
   }
 
-  async getSubmissionById(id: string): Promise<LimitedPartnership> {
+  async getLimitedPartnership(
+    opt: { access_token: string; refresh_token: string },
+    transactionId: string,
+    submissionId: string
+  ): Promise<LimitedPartnership> {
+    if (
+      transactionId === ":transactionId" &&
+      submissionId === ":submissionId"
+    ) {
+      return new LimitedPartnershipGatewayBuilder(
+        this.limitedPartnerships[0]
+      ).build();
+    }
+
     const limitedPartnerShip = this.limitedPartnerships.find(
-      (lp) => lp._id === id
+      (lp) => lp._id === submissionId
     );
 
     if (!limitedPartnerShip) {
-      throw new CustomError("Limited partnership", `Not found: ${id}`);
+      throw new CustomError(
+        "Limited partnership",
+        `Not found: ${submissionId}`
+      );
     }
 
     return new LimitedPartnershipGatewayBuilder(limitedPartnerShip).build();
