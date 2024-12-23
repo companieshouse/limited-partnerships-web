@@ -127,9 +127,3 @@ variable "limited_partnerships_web_version" {
   type        = string
   description = "The version of the limited partnerships web container to run."
 }
-
-variable "log_level" {
-  default     = "info"
-  type        = string
-  description = "The log level for services to use: trace, debug, info or error"
-}
