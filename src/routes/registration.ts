@@ -13,6 +13,7 @@ import {
   GENERAL_PARTNERS_URL,
   GENERAL_PARTNER_CHOICE_URL,
   LIMITED_PARTNER_CHOICE_URL,
+  NAME_WITH_IDS_URL,
 } from "../presentation/controller/registration/Routing";
 
 export const registrationEndpoints = (
@@ -29,6 +30,7 @@ export const registrationEndpoints = (
     authentication,
     dependencies.registrationController.redirectAndCacheSelection()
   );
+
   router.get(
     NAME_URL,
     authentication,
@@ -39,11 +41,19 @@ export const registrationEndpoints = (
     authentication,
     dependencies.registrationController.createTransactionAndFirstSubmission()
   );
+
+  router.get(
+    NAME_WITH_IDS_URL,
+    authentication,
+    dependencies.registrationController.getPageRouting()
+  );
+
   router.get(
     GENERAL_PARTNERS_URL,
     authentication,
     dependencies.registrationController.getPageRouting()
   );
+
   router.get(
     EMAIL_URL,
     authentication,
@@ -54,11 +64,13 @@ export const registrationEndpoints = (
     authentication,
     dependencies.registrationController.sendPageData()
   );
+
   router.get(
     GENERAL_PARTNERS_URL,
     authentication,
     dependencies.registrationController.getPageRouting()
   );
+
   router.get(
     GENERAL_PARTNER_CHOICE_URL,
     authentication,
@@ -70,6 +82,7 @@ export const registrationEndpoints = (
     // to be changed - use different method
     dependencies.registrationController.redirectAndCacheSelection()
   );
+
   router.get(
     LIMITED_PARTNERS_URL,
     authentication,
@@ -87,6 +100,7 @@ export const registrationEndpoints = (
     // to be changed - use different method
     dependencies.registrationController.redirectAndCacheSelection()
   );
+
   router.get(
     NEXT_URL,
     authentication,

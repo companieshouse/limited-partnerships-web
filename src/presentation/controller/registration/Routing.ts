@@ -1,8 +1,5 @@
 import { PageRouting, PagesRouting } from "../PageRouting";
-import {
-  BASE_URL,
-  BASE_WITH_IDS_URL,
-} from "../../../config/constants";
+import { BASE_URL, BASE_WITH_IDS_URL } from "../../../config/constants";
 
 import RegistrationPageType from "./PageType";
 import PageType from "../PageType";
@@ -13,14 +10,17 @@ export const NAME_TEMPLATE = RegistrationPageType.name;
 export const EMAIL_TEMPLATE = RegistrationPageType.email;
 export const GENERAL_PARTNERS_TEMPLATE = RegistrationPageType.generalPartners;
 export const LIMITED_PARTNERS_TEMPLATE = RegistrationPageType.limitedPartners;
-export const GENERAL_PARTNER_CHOICE_TEMPLATE = RegistrationPageType.generalPartnerChoice;
-export const LIMITED_PARTNER_CHOICE_TEMPLATE = RegistrationPageType.limitedPartnerChoice;
+export const GENERAL_PARTNER_CHOICE_TEMPLATE =
+  RegistrationPageType.generalPartnerChoice;
+export const LIMITED_PARTNER_CHOICE_TEMPLATE =
+  RegistrationPageType.limitedPartnerChoice;
 export const NEXT_TEMPLATE = RegistrationPageType.next;
 
 // URLs
 const START_URL = `${BASE_URL}/start`;
 export const WHICH_TYPE_URL = `${BASE_URL}/${WHICH_TYPE_TEMPLATE}`;
 export const NAME_URL = `${BASE_URL}/${NAME_TEMPLATE}`;
+export const NAME_WITH_IDS_URL = `${BASE_WITH_IDS_URL}/${NAME_TEMPLATE}`;
 export const EMAIL_URL = `${BASE_WITH_IDS_URL}/${EMAIL_TEMPLATE}`;
 export const GENERAL_PARTNERS_URL = `${BASE_WITH_IDS_URL}/${GENERAL_PARTNERS_TEMPLATE}`;
 export const GENERAL_PARTNER_CHOICE_URL = `${BASE_WITH_IDS_URL}/${GENERAL_PARTNER_CHOICE_TEMPLATE}`;
@@ -44,7 +44,7 @@ const registrationRoutingName = {
 };
 
 const registrationRoutingEmail = {
-  previousUrl: NAME_URL,
+  previousUrl: NAME_WITH_IDS_URL,
   currentUrl: EMAIL_URL,
   nextUrl: GENERAL_PARTNERS_URL,
   pageType: RegistrationPageType.email,
@@ -94,7 +94,6 @@ const list = [
   registrationRoutingGeneralPartnerChoice,
   registrationRoutingLimitedPartnerChoice,
   registrationRoutingNext,
-
 ];
 
 export const registrationsRouting: PagesRouting = new Map<

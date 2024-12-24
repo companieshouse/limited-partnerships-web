@@ -96,8 +96,26 @@ class RegistrationGateway implements IRegistrationGateway {
     }
   }
 
-  async getSubmissionById(id: string): Promise<LimitedPartnership> {
-    throw new Error("Method not implemented.");
+  async getLimitedPartnership(
+    opt: { access_token: string; refresh_token: string },
+    transactionId: string,
+    submissionId: string
+  ): Promise<LimitedPartnership> {
+    const apiCall = {
+      service: "limitedPartnershipsService",
+      method: "getLimitedPartnership",
+      args: [transactionId, submissionId],
+    };
+
+    const response = await makeApiCallWithRetry<
+      Resource<LimitedPartnership> | ApiErrorResponse
+    >(opt, apiCall);
+
+    if (response.httpStatusCode !== 200) {
+      throw response;
+    }
+
+    return (response as Resource<LimitedPartnership>)?.resource ?? {};
   }
 }
 

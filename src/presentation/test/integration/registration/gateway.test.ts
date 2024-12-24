@@ -12,6 +12,7 @@ import { EMAIL_URL, NAME_URL } from "../../../controller/registration/Routing";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import { RefreshTokenService } from "@companieshouse/api-sdk-node/dist/services/refresh-token";
+import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 
 jest.mock("@companieshouse/api-sdk-node");
 
@@ -37,6 +38,10 @@ const value = {
       httpStatusCode: 200,
       resource: {},
     }),
+    getLimitedPartnership: () => ({
+      httpStatusCode: 200,
+      resource: new LimitedPartnershipBuilder().build(),
+    }),
   },
   refreshToken: {
     ...RefreshTokenService.prototype,
@@ -51,12 +56,14 @@ const mockCreateApiClient = createApiClient as jest.Mock;
 mockCreateApiClient.mockReturnValue(value);
 
 describe("Gateway", () => {
-  describe("Create transaction and the first submission", () => {
-    beforeAll(() => {
-      appDevDependencies.registrationGateway.feedLimitedPartnerships([]);
-      appDevDependencies.registrationGateway.feedErrors([]);
-    });
+  beforeEach(() => {
+    appDevDependencies.registrationGateway.feedLimitedPartnerships([]);
+    appDevDependencies.registrationGateway.feedErrors([]);
 
+    mockCreateApiClient.mockReturnValue(value);
+  });
+
+  describe("Create transaction and the first submission", () => {
     it("should create a transaction and the first submission", async () => {
       const url = appDevDependencies.registrationController.insertIdsInUrl(
         NAME_URL,
@@ -165,6 +172,45 @@ describe("Gateway", () => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(enTranslationText.emailPage.whatIsEmail);
       });
+    });
+  });
+
+  describe("Get Limited Parnership", () => {
+    it("should load the name page with data from api", async () => {
+      const url = appDevDependencies.registrationController.insertIdsInUrl(
+        EMAIL_URL,
+        appDevDependencies.registrationGateway.transactionId,
+        appDevDependencies.registrationGateway.submissionId
+      );
+
+      const res = await request(appRealDependencies).get(url);
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(enTranslationText.emailPage.whatIsEmail);
+    });
+
+    it("should load error page if submissionId is incorrect", async () => {
+      mockCreateApiClient.mockReturnValue({
+        ...value,
+        limitedPartnershipsService: {
+          ...value.limitedPartnershipsService,
+          getLimitedPartnership: () => ({
+            httpStatusCode: 404,
+            errors: ["Not Found"],
+          }),
+        },
+      });
+
+      const url = appDevDependencies.registrationController.insertIdsInUrl(
+        EMAIL_URL,
+        appDevDependencies.registrationGateway.transactionId,
+        "wrong-id"
+      );
+
+      const res = await request(appRealDependencies).get(url);
+
+      expect(res.status).toBe(500);
+      expect(res.text).toContain(enTranslationText.errorPage.title);
     });
   });
 });

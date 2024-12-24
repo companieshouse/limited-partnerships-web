@@ -13,7 +13,11 @@ interface IRegistrationGateway {
     transactionId: string,
     data: Record<string, any>
   ): Promise<string>;
-  getSubmissionById(id: string): Promise<LimitedPartnership>;
+  getLimitedPartnership(
+    opt: { access_token: string; refresh_token: string },
+    transactionId: string,
+    submissionId: string
+  ): Promise<LimitedPartnership>;
   sendPageData(
     opt: { access_token: string },
     transactionId: string,

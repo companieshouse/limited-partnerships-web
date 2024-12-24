@@ -30,6 +30,7 @@ class RegistrationController extends AbstractController {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const session = request.session as Session;
+        const tokens = this.extractTokens(request);
         const pageType = super.pageType(request.path);
         const { transactionId, submissionId } = this.extractIds(request);
 
@@ -41,10 +42,21 @@ class RegistrationController extends AbstractController {
           submissionId
         );
 
+        let limitedPartnership = {};
+        if (transactionId && submissionId) {
+          limitedPartnership =
+            await this.registrationService.getLimitedPartnership(
+              tokens,
+              transactionId,
+              submissionId
+            );
+        }
+
         const cache = await this.cacheService.getDataFromCache(session);
 
         pageRouting.data = {
           ...pageRouting.data,
+          limitedPartnership,
           cache,
         };
 

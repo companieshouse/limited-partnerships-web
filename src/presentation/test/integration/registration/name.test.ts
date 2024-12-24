@@ -1,16 +1,24 @@
 import request from "supertest";
 import { LocalesService } from "@companieshouse/ch-node-utils";
+import {
+  NameEndingType,
+  PartnershipType,
+} from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+
 import * as config from "../../../../config/constants";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
-import { NAME_URL } from "../../../controller/registration/Routing";
+import {
+  NAME_URL,
+  NAME_WITH_IDS_URL,
+} from "../../../controller/registration/Routing";
 import {
   appDevDependencies,
   APPLICATION_CACHE_KEY_PREFIX_REGISTRATION,
 } from "../../../../config";
 import RegistrationPageType from "../../../controller/registration/PageType";
-import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 
 describe("Name Page", () => {
   beforeEach(() => {
@@ -65,6 +73,29 @@ describe("Name Page", () => {
     expect(res.text).toContain(enTranslationText.namePage.nameEnding);
     expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
     expect(res.text).not.toContain("WELSH -");
+  });
+
+  it("should load the name page with data from api", async () => {
+    const limitedPartnership = new LimitedPartnershipBuilder()
+      .withId(appDevDependencies.registrationGateway.submissionId)
+      .withNameEnding(NameEndingType.LIMITED_PARTNERSHIP)
+      .build();
+
+    appDevDependencies.registrationGateway.feedLimitedPartnerships([
+      limitedPartnership,
+    ]);
+
+    const url = appDevDependencies.registrationController.insertIdsInUrl(
+      NAME_WITH_IDS_URL,
+      appDevDependencies.registrationGateway.transactionId,
+      appDevDependencies.registrationGateway.submissionId
+    );
+
+    const res = await request(app).get(url);
+
+    expect(res.status).toBe(200);
+    expect(res.text).toContain(limitedPartnership?.data?.partnership_name);
+    expect(res.text).toContain(limitedPartnership?.data?.name_ending);
   });
 
   it("should load the private name page with Welsh text", async () => {
