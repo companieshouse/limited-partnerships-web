@@ -19,7 +19,7 @@ terraform {
 }
 
 module "secrets" {
-  source      = "git@github.com:companieshouse/terraform-modules//aws/ecs/secrets?ref=1.0.294"
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/secrets?ref=1.0.296"
 
   name_prefix = "${local.service_name}-${var.environment}"
   environment = var.environment
@@ -28,7 +28,7 @@ module "secrets" {
 }
 
 module "ecs-service" {
-  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-service?ref=1.0.294"
+  source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-service?ref=1.0.296"
 
   # Environmental configuration
   environment             = var.environment
@@ -45,8 +45,8 @@ module "ecs-service" {
 
   # ECS Task container health check
   use_task_container_healthcheck = true
-  healthcheck_path          = local.healthcheck_path
-  healthcheck_matcher       = local.healthcheck_matcher
+  healthcheck_path               = local.healthcheck_path
+  healthcheck_matcher            = local.healthcheck_matcher
 
   # Docker container details
   docker_registry   = var.docker_registry
@@ -76,10 +76,10 @@ module "ecs-service" {
   cloudwatch_alarms_enabled = var.cloudwatch_alarms_enabled
 
   # Service environment variable and secret configs
-  task_environment            = local.task_environment
-  task_secrets                = local.task_secrets
-  app_environment_filename    = local.app_environment_filename
-  use_set_environment_files   = local.use_set_environment_files
+  task_environment          = local.task_environment
+  task_secrets              = local.task_secrets
+  app_environment_filename  = local.app_environment_filename
+  use_set_environment_files = local.use_set_environment_files
 
   depends_on = [module.secrets]
 }
