@@ -28,6 +28,16 @@ class LimitedPartnershipBuilder {
     return this;
   }
 
+  withPartnershipType(partnershipType: PartnershipType) {
+    this.data.partnership_type = partnershipType;
+    return this;
+  }
+
+  withEmail(email: string) {
+    this.data.email = email;
+    return this;
+  }
+
   build(): TransactionLimitedPartnership {
     return {
       _id: this["_id"],
