@@ -51,6 +51,7 @@ class RegistrationController extends AbstractController {
               submissionId
             );
         }
+
         const cache = await this.cacheService.getDataFromCache(session);
 
         pageRouting.data = {

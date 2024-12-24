@@ -114,6 +114,12 @@
     const radioButtons = document.querySelectorAll('input[name="name_ending"]');
 
     radioButtons.forEach(function(radioButton) {
+      // set value on loading
+      if (radioButton.checked) {
+          suffixDiv.textContent = radioButton.value;
+      }
+
+      // set value on change
       radioButton.addEventListener('change', function() {
         if (radioButton.checked) {
           suffixDiv.textContent = radioButton.value;
