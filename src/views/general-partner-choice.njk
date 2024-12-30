@@ -7,9 +7,10 @@
     <div class="govuk-grid-column-two-thirds">
       <form class="form" action={{ props.currentUrl }} method="post">
         <input type="hidden" name="pageType" value={{ props.pageType }}>
-
         {% include "includes/csrf_token.njk" %}
         
+        {% include "includes/proposed-name.njk" %}  
+
         {{ govukRadios({
           classes: "govuk-radios",
           name: "parameter",
