@@ -60,6 +60,9 @@ describe("Email Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(limitedPartnership?.data?.email);
+      expect(res.text).toContain(
+        `${limitedPartnership?.data?.partnership_name} ${limitedPartnership?.data?.name_ending}`
+      );
     });
   });
 

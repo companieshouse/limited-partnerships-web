@@ -14,6 +14,7 @@ import {
   APPLICATION_CACHE_KEY,
   APPLICATION_CACHE_KEY_PREFIX_REGISTRATION,
 } from "../../../../config/constants";
+import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 
 describe("General Partner Choice Page", () => {
   beforeEach(() => {
@@ -72,5 +73,20 @@ describe("General Partner Choice Page", () => {
           selectedType,
       },
     });
+  });
+
+  it("should load the name page with data from api", async () => {
+    const limitedPartnership = new LimitedPartnershipBuilder().build();
+
+    appDevDependencies.registrationGateway.feedLimitedPartnerships([
+      limitedPartnership,
+    ]);
+
+    const res = await request(app).get(GENERAL_PARTNER_CHOICE_URL);
+
+    expect(res.status).toBe(200);
+    expect(res.text).toContain(
+      `${limitedPartnership?.data?.partnership_name} ${limitedPartnership?.data?.name_ending}`
+    );
   });
 });
