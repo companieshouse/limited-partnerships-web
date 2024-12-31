@@ -75,7 +75,7 @@ describe("General Partner Choice Page", () => {
     });
   });
 
-  it("should load the partnership name and name ending with data from api", async () => {
+  it("should load the general partner choice name and name ending with data from api", async () => {
     const limitedPartnership = new LimitedPartnershipBuilder().build();
 
     appDevDependencies.registrationGateway.feedLimitedPartnerships([
