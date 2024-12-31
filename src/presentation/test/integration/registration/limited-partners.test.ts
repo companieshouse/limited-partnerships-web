@@ -13,6 +13,8 @@ import { appDevDependencies } from "../../../../config/dev-dependencies";
 describe("Limited Partners Page", () => {
   beforeEach(() => {
     setLocalesEnabled(false);
+
+appDevDependencies.registrationGateway.feedLimitedPartnerships([]);
   });
 
   const setLocalesEnabled = (bool: boolean) => {
@@ -42,7 +44,7 @@ describe("Limited Partners Page", () => {
     expect(res.text).toContain(enTranslationText.limitedPartnersPage.title);
   });
 
-  it("should load the name page with data from api", async () => {
+  it("should load the partnership name and name ending with data from api", async () => {
     const limitedPartnership = new LimitedPartnershipBuilder().build();
 
     appDevDependencies.registrationGateway.feedLimitedPartnerships([
