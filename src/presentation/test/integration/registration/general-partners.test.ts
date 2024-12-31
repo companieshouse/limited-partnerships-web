@@ -44,7 +44,7 @@ describe("General Partners Page", () => {
     expect(res.text).toContain(enTranslationText.generalPartnersPage.title);
   });
 
-  it("should load the general partner name and name ending with data from api", async () => {
+  it("It should contain the proposed name - data from api", async () => {
     const limitedPartnership = new LimitedPartnershipBuilder().build();
 
     appDevDependencies.registrationGateway.feedLimitedPartnerships([
