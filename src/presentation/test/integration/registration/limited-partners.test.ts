@@ -44,7 +44,7 @@ describe("Limited Partners Page", () => {
     expect(res.text).toContain(enTranslationText.limitedPartnersPage.title);
   });
 
-  it("It should contain the proposed name - data from api", async () => {
+  it("should contain the proposed name - data from api", async () => {
     const limitedPartnership = new LimitedPartnershipBuilder().build();
 
     appDevDependencies.registrationGateway.feedLimitedPartnerships([
