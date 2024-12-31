@@ -14,7 +14,7 @@ describe("Limited Partners Page", () => {
   beforeEach(() => {
     setLocalesEnabled(false);
 
-appDevDependencies.registrationGateway.feedLimitedPartnerships([]);
+    appDevDependencies.registrationGateway.feedLimitedPartnerships([]);
   });
 
   const setLocalesEnabled = (bool: boolean) => {
