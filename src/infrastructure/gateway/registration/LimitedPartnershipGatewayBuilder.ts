@@ -30,6 +30,15 @@ class LimitedPartnershipGatewayBuilder {
     return this;
   }
 
+  withLpData(
+    data: LimitedPartnership["data"]
+  ) {
+
+    this.data = { ...this.data, ...data };
+
+    return this;
+  }
+
   build(): TransactionLimitedPartnership {
     return {
       _id: this["_id"],

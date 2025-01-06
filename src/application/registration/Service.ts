@@ -72,8 +72,7 @@ class RegistrationService {
     opt: { access_token: string; refresh_token: string },
     transactionId: string,
     submissionId: string,
-    registrationType: RegistrationPageType,
-    data: Record<string, any>
+    data: LimitedPartnership["data"]
   ): Promise<void | {
     errors?: CustomError[];
   }> {
@@ -82,7 +81,6 @@ class RegistrationService {
         opt,
         transactionId,
         submissionId,
-        registrationType,
         data
       );
     } catch (error: any) {

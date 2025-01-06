@@ -81,8 +81,7 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
     opt: { access_token: string },
     transactionId: string,
     submissionId: string,
-    registrationPageType: RegistrationPageType,
-    data: Record<string, any>
+    data: LimitedPartnership["data"]
   ): Promise<void> {
     if (!data || !Object.keys(data).length) {
       throw new Error("data is empty - No data has been sent from the page");
@@ -97,7 +96,7 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
       data: this.limitedPartnerships[index]?.data,
     });
 
-    limitedPartnershipBuilder.withData(registrationPageType, data);
+    limitedPartnershipBuilder.withLpData(data);
 
     this.limitedPartnerships[index] = limitedPartnershipBuilder.build();
   }

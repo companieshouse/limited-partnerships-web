@@ -71,8 +71,7 @@ class RegistrationGateway implements IRegistrationGateway {
     opt: { access_token: string; refresh_token: string },
     transactionId: string,
     submissionId: string,
-    registrationType: RegistrationPageType,
-    data: Record<string, any>
+    data: LimitedPartnership["data"]
   ): Promise<void> {
     const apiCall = {
       service: "limitedPartnershipsService",
@@ -80,10 +79,7 @@ class RegistrationGateway implements IRegistrationGateway {
       args: [
         transactionId,
         submissionId,
-        {
-          type: registrationType,
-          data,
-        },
+        data,        
       ],
     };
 

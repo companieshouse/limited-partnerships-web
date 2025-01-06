@@ -1,6 +1,5 @@
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
-import RegistrationPageType from "../../../controller/registration/PageType";
 
 describe("Update Submission", () => {
   beforeEach(() => {
@@ -21,7 +20,6 @@ describe("Update Submission", () => {
       { access_token: "access_token", refresh_token: "refresh_token" },
       appDevDependencies.registrationGateway.transactionId,
       limitedPartnership["_id"] as string,
-      RegistrationPageType.email,
       {
         email: "email@example.com",
       }
@@ -48,7 +46,6 @@ describe("Update Submission", () => {
       { access_token: "access_token", refresh_token: "refresh_token" },
       appDevDependencies.registrationGateway.transactionId,
       limitedPartnership["_id"] as string,
-      RegistrationPageType.email,
       {}
     );
 

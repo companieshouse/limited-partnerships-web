@@ -22,8 +22,7 @@ interface IRegistrationGateway {
     opt: { access_token: string },
     transactionId: string,
     submissionId: string,
-    registrationType: RegistrationPageType,
-    data: Record<string, any>
+    data: LimitedPartnership["data"]
   ): Promise<void>;
 }
 

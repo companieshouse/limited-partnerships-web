@@ -162,7 +162,6 @@ class RegistrationController extends AbstractController {
           tokens,
           transactionId,
           submissionId,
-          pageType,
           request.body
         );
 
