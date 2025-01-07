@@ -21,7 +21,7 @@
     },
 
     "generalPartnerChoicePage": {
-        "title": "WELSH - Is the limited partner a person or a legal entity",
+        "title": "WELSH - Is the general partner a person or a legal entity",
         "hint": "WELSH - You can add more later.",
         "person": "WELSH - A person",
         "legalEntity": "WELSH - A legal entity"
