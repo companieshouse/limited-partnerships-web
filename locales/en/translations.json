@@ -80,7 +80,7 @@
         "goToStartPage" : "To register a limited partnership, go to the <a class='govuk-link' href='/limited-partnerships/start'>Register a limited partnership</a> start page."
     },
 
-    "service" : "Register a Limited Partnership",
+    "service" : "Register a limited partnership",
 
     "startPage" : {
         "title" : "This is Limited Partnerships",
