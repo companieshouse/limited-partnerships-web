@@ -30,6 +30,8 @@
   ]
 %}
 
+{% set hint = i18n.namePage.nameEndingHint %}
+
 {% if partnershipType == "LP" or partnershipType == "PFLP" %}
   {% set nameEndingOptionsList = (nameEndingOptionsList.push(
     {
@@ -60,6 +62,8 @@
       }
     }
   ), nameEndingOptionsList) %}
+
+  {% set hint = i18n.namePage.nameEndingWelshHint %}
 {% endif %}
 
 {{ govukRadios({
@@ -75,7 +79,7 @@
     }
   },
   hint: {
-    text: i18n.namePage.nameEndingHint
+    text: hint
   },
   items: nameEndingOptionsList
 }) }}

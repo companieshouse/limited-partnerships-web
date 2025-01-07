@@ -52,7 +52,8 @@
         "sensitiveWordHint" : "WELSH - If the name includes <a href='https://www.gov.uk/government/publications/incorporation-and-names/annex-a-sensitive-words-and-expressions-or-words-that-could-imply-a-connection-with-government' target='_blank'>sensitive words or expressions that require approval (opens in a new tab)</a>, you must get permission before you register.",
         "existingTrademarkHint" : "WELSH - You should also use the <a href='https://www.gov.uk/search-for-trademark' target='_blank'>trade mark search (opens in a new tab)</a> to check if your name matches an existing trade mark. If it does, consider choosing a different name. Companies House will not carry out this check for you.",
         "nameEnding" : "WELSH - Which limited partnership name ending would you prefer to go on the public record?",
-        "nameEndingHint" : "WELSH - There's no difference between the name endings Limited Partnership, LP and L.P. except how they look. Partneriaeth Cyfyngedig, PC, and P.C. can only be used if the partnership's principal place of business is in Wales.",
+        "nameEndingHint" : "WELSH - There's no difference between the name endings Limited Partnership, LP and L.P. except how they look.",
+        "nameEndingWelshHint" : "WELSH - There's no difference between the name endings Limited Partnership, LP and L.P. except how they look. Partneriaeth Cyfyngedig, PC, and P.C. can only be used if the partnership's principal place of business is in Wales.",
 
         "privateFund" : {
             "title" : "WELSH - Private fund limited partnership name",
