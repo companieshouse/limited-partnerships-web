@@ -4,20 +4,20 @@ import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limi
 import app from "../app";
 import {
   NAME_URL,
-  WHICH_TYPE_URL,
+  WHICH_TYPE_URL
 } from "../../../controller/registration/Routing";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import RegistrationPageType from "../../../../presentation/controller/registration/PageType";
 import {
   APPLICATION_CACHE_KEY,
-  APPLICATION_CACHE_KEY_PREFIX_REGISTRATION,
+  APPLICATION_CACHE_KEY_PREFIX_REGISTRATION
 } from "../../../../config/constants";
 
 describe("Which type Page", () => {
   beforeEach(() => {
     appDevDependencies.registrationGateway.feedLimitedPartnerships([]);
-    appDevDependencies.registrationGateway.feedErrors([]);
+    appDevDependencies.registrationGateway.feedErrors();
     appDevDependencies.cacheRepository.feedCache(null);
   });
 
@@ -35,7 +35,7 @@ describe("Which type Page", () => {
 
     const res = await request(app).post(WHICH_TYPE_URL).send({
       pageType: RegistrationPageType.whichType,
-      parameter: selectedType,
+      parameter: selectedType
     });
 
     expect(res.status).toBe(302);
@@ -44,22 +44,22 @@ describe("Which type Page", () => {
     expect(appDevDependencies.cacheRepository.cache).toEqual({
       [APPLICATION_CACHE_KEY]: {
         [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]:
-          selectedType,
-      },
+          selectedType
+      }
     });
   });
 
   it("should redirect to name page and update type in cache", async () => {
     appDevDependencies.cacheRepository.feedCache({
       [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]:
-        PartnershipType.LP,
+        PartnershipType.LP
     });
 
     const selectedType = PartnershipType.PFLP;
 
     const res = await request(app).post(WHICH_TYPE_URL).send({
       pageType: RegistrationPageType.whichType,
-      parameter: selectedType,
+      parameter: selectedType
     });
 
     expect(res.status).toBe(302);
@@ -68,8 +68,8 @@ describe("Which type Page", () => {
     expect(appDevDependencies.cacheRepository.cache).toEqual({
       [APPLICATION_CACHE_KEY]: {
         [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]:
-          selectedType,
-      },
+          selectedType
+      }
     });
   });
 });

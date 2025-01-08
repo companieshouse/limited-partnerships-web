@@ -2,7 +2,7 @@ import request from "supertest";
 import { LocalesService } from "@companieshouse/ch-node-utils";
 import {
   NameEndingType,
-  PartnershipType,
+  PartnershipType
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import * as config from "../../../../config/constants";
@@ -11,11 +11,11 @@ import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
 import {
   NAME_URL,
-  NAME_WITH_IDS_URL,
+  NAME_WITH_IDS_URL
 } from "../../../controller/registration/Routing";
 import {
   appDevDependencies,
-  APPLICATION_CACHE_KEY_PREFIX_REGISTRATION,
+  APPLICATION_CACHE_KEY_PREFIX_REGISTRATION
 } from "../../../../config";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
@@ -25,7 +25,7 @@ describe("Name Page", () => {
     setLocalesEnabled(false);
 
     appDevDependencies.registrationGateway.feedLimitedPartnerships([]);
-    appDevDependencies.registrationGateway.feedErrors([]);
+    appDevDependencies.registrationGateway.feedErrors();
     appDevDependencies.cacheRepository.feedCache(null);
   });
 
@@ -39,7 +39,7 @@ describe("Name Page", () => {
 
     appDevDependencies.cacheRepository.feedCache({
       [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]:
-        PartnershipType.LP,
+        PartnershipType.LP
     });
 
     const res = await request(app).get(NAME_URL + "?lang=cy");
@@ -59,7 +59,7 @@ describe("Name Page", () => {
 
     appDevDependencies.cacheRepository.feedCache({
       [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]:
-        PartnershipType.LP,
+        PartnershipType.LP
     });
 
     const res = await request(app).get(NAME_URL + "?lang=en");
@@ -82,7 +82,7 @@ describe("Name Page", () => {
       .build();
 
     appDevDependencies.registrationGateway.feedLimitedPartnerships([
-      limitedPartnership,
+      limitedPartnership
     ]);
 
     const url = appDevDependencies.registrationController.insertIdsInUrl(
@@ -103,7 +103,7 @@ describe("Name Page", () => {
 
     appDevDependencies.cacheRepository.feedCache({
       [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]:
-        PartnershipType.PFLP,
+        PartnershipType.PFLP
     });
 
     const res = await request(app).get(NAME_URL + "?lang=cy");
@@ -124,7 +124,7 @@ describe("Name Page", () => {
 
     appDevDependencies.cacheRepository.feedCache({
       [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]:
-        PartnershipType.PFLP,
+        PartnershipType.PFLP
     });
 
     const res = await request(app).get(NAME_URL + "?lang=en");
@@ -146,7 +146,7 @@ describe("Name Page", () => {
 
     appDevDependencies.cacheRepository.feedCache({
       [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]:
-        PartnershipType.SLP,
+        PartnershipType.SLP
     });
 
     const res = await request(app).get(NAME_URL + "?lang=cy");
@@ -165,7 +165,7 @@ describe("Name Page", () => {
 
     appDevDependencies.cacheRepository.feedCache({
       [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]:
-        PartnershipType.SLP,
+        PartnershipType.SLP
     });
 
     const res = await request(app).get(NAME_URL + "?lang=en");
@@ -185,7 +185,7 @@ describe("Name Page", () => {
 
     appDevDependencies.cacheRepository.feedCache({
       [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]:
-        PartnershipType.SPFLP,
+        PartnershipType.SPFLP
     });
 
     const res = await request(app).get(NAME_URL + "?lang=cy");
@@ -206,7 +206,7 @@ describe("Name Page", () => {
 
     appDevDependencies.cacheRepository.feedCache({
       [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]:
-        PartnershipType.SPFLP,
+        PartnershipType.SPFLP
     });
 
     const res = await request(app).get(NAME_URL + "?lang=en");

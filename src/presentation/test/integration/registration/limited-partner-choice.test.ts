@@ -5,7 +5,7 @@ import * as constants from "../../../../config/constants";
 import {
   appDevDependencies,
   APPLICATION_CACHE_KEY,
-  APPLICATION_CACHE_KEY_PREFIX_REGISTRATION,
+  APPLICATION_CACHE_KEY_PREFIX_REGISTRATION
 } from "../../../../config";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
@@ -13,7 +13,7 @@ import app from "../app";
 import {
   LIMITED_PARTNER_CHOICE_URL,
   NEXT_URL,
-  registrationRoutingLimitedPartnerChoice,
+  registrationRoutingLimitedPartnerChoice
 } from "../../../controller/registration/Routing";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
@@ -23,7 +23,7 @@ describe("Limited Partner Choice Page", () => {
     setLocalesEnabled(false);
 
     appDevDependencies.registrationGateway.feedLimitedPartnerships([]);
-    appDevDependencies.registrationGateway.feedErrors([]);
+    appDevDependencies.registrationGateway.feedErrors();
     appDevDependencies.cacheRepository.feedCache(null);
   });
 
@@ -71,7 +71,7 @@ describe("Limited Partner Choice Page", () => {
 
     const res = await request(app).post(url).send({
       pageType: registrationRoutingLimitedPartnerChoice.pageType,
-      parameter: selectedChoice,
+      parameter: selectedChoice
     });
 
     expect(res.status).toBe(302);
@@ -87,8 +87,8 @@ describe("Limited Partner Choice Page", () => {
     expect(appDevDependencies.cacheRepository.cache).toEqual({
       [APPLICATION_CACHE_KEY]: {
         [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.limitedPartnerChoice}`]:
-          selectedChoice,
-      },
+          selectedChoice
+      }
     });
   });
 
@@ -96,7 +96,7 @@ describe("Limited Partner Choice Page", () => {
     const limitedPartnership = new LimitedPartnershipBuilder().build();
 
     appDevDependencies.registrationGateway.feedLimitedPartnerships([
-      limitedPartnership,
+      limitedPartnership
     ]);
 
     const res = await request(app).get(LIMITED_PARTNER_CHOICE_URL);

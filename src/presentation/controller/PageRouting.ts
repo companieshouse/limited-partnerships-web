@@ -1,4 +1,4 @@
-import CustomError from "../../domain/entities/CustomError";
+import { UIValidationErrors } from "../../domain/entities/UIErrors";
 import PageType from "./PageType";
 
 export type PageRouting = {
@@ -7,13 +7,13 @@ export type PageRouting = {
   nextUrl: string;
   pageType: PageType | PageDefault;
   data?: Record<string, any>;
-  errors?: CustomError[];
+  errors?: UIValidationErrors;
 };
 
 export type PagesRouting = Map<PageType, PageRouting>;
 
 enum PageDefault {
-  default = "not-found",
+  default = "not-found"
 }
 
 export const pageRoutingDefault = {

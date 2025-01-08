@@ -2,7 +2,7 @@ import request from "supertest";
 import { createApiClient } from "@companieshouse/api-sdk-node";
 import {
   LimitedPartnershipsService,
-  NameEndingType,
+  NameEndingType
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import TransactionService from "@companieshouse/api-sdk-node/dist/services/transaction/service";
 
@@ -22,34 +22,34 @@ const value = {
     postTransaction: () => ({
       httpStatusCode: 201,
       resource: {
-        id: appDevDependencies.registrationGateway.transactionId,
-      },
-    }),
+        id: appDevDependencies.registrationGateway.transactionId
+      }
+    })
   },
   limitedPartnershipsService: {
     ...LimitedPartnershipsService.prototype,
     postLimitedPartnership: () => ({
       httpStatusCode: 201,
       resource: {
-        id: appDevDependencies.registrationGateway.submissionId,
-      },
+        id: appDevDependencies.registrationGateway.submissionId
+      }
     }),
     patchLimitedPartnership: () => ({
       httpStatusCode: 200,
-      resource: {},
+      resource: {}
     }),
     getLimitedPartnership: () => ({
       httpStatusCode: 200,
-      resource: new LimitedPartnershipBuilder().build(),
-    }),
+      resource: new LimitedPartnershipBuilder().build()
+    })
   },
   refreshToken: {
     ...RefreshTokenService.prototype,
     refresh: {
       httpStatusCode: 201,
-      resource: { access_token: "access_token" },
-    },
-  },
+      resource: { access_token: "access_token" }
+    }
+  }
 };
 
 const mockCreateApiClient = createApiClient as jest.Mock;
@@ -58,7 +58,7 @@ mockCreateApiClient.mockReturnValue(value);
 describe("Gateway", () => {
   beforeEach(() => {
     appDevDependencies.registrationGateway.feedLimitedPartnerships([]);
-    appDevDependencies.registrationGateway.feedErrors([]);
+    appDevDependencies.registrationGateway.feedErrors();
 
     mockCreateApiClient.mockReturnValue(value);
   });
@@ -75,7 +75,7 @@ describe("Gateway", () => {
         pageType: RegistrationPageType.name,
         partnership_name: "Test Limited Partnership",
         name_ending: NameEndingType.LIMITED_PARTNERSHIP,
-        partnership_type: "LP",
+        partnership_type: "LP"
       });
 
       const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.registrationGateway.transactionId}/submission/${appDevDependencies.registrationGateway.submissionId}/email`;
@@ -95,7 +95,7 @@ describe("Gateway", () => {
 
       const res = await request(appRealDependencies).post(url).send({
         pageType: RegistrationPageType.email,
-        email: "test@email.com",
+        email: "test@email.com"
       });
 
       const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.registrationGateway.transactionId}/submission/${appDevDependencies.registrationGateway.submissionId}/general-partners`;
@@ -105,20 +105,20 @@ describe("Gateway", () => {
     });
 
     describe("401", () => {
-      it("should retrun after failing to refresh the token", async () => {
+      it("should return after failing to refresh the token", async () => {
         mockCreateApiClient.mockReturnValue({
           ...value,
           limitedPartnershipsService: {
             ...value.limitedPartnershipsService,
             patchLimitedPartnership: () => ({
               httpStatusCode: 401,
-              resource: {},
-            }),
+              resource: {}
+            })
           },
           refreshToken: {
             ...RefreshTokenService.prototype,
-            refresh: () => {},
-          },
+            refresh: () => {}
+          }
         });
 
         const url = appDevDependencies.registrationController.insertIdsInUrl(
@@ -129,7 +129,7 @@ describe("Gateway", () => {
 
         const res = await request(appRealDependencies).post(url).send({
           pageType: RegistrationPageType.email,
-          email: "test@email.com",
+          email: "test@email.com"
         });
 
         expect(res.status).toBe(200);
@@ -138,7 +138,7 @@ describe("Gateway", () => {
 
       it("should update the submission after refreshing the token", async () => {
         const refreshToken = jest.fn().mockImplementation(() => ({
-          resource: { access_token: "access_token" },
+          resource: { access_token: "access_token" }
         }));
 
         mockCreateApiClient.mockReturnValue({
@@ -147,13 +147,13 @@ describe("Gateway", () => {
             ...value.limitedPartnershipsService,
             patchLimitedPartnership: () => ({
               httpStatusCode: 401,
-              resource: {},
-            }),
+              resource: {}
+            })
           },
           refreshToken: {
             ...value.refreshToken,
-            refresh: refreshToken,
-          },
+            refresh: refreshToken
+          }
         });
 
         const url = appDevDependencies.registrationController.insertIdsInUrl(
@@ -164,7 +164,7 @@ describe("Gateway", () => {
 
         const res = await request(appRealDependencies).post(url).send({
           pageType: RegistrationPageType.email,
-          email: "test@email.com",
+          email: "test@email.com"
         });
 
         expect(refreshToken).toHaveBeenCalled();
@@ -196,9 +196,9 @@ describe("Gateway", () => {
           ...value.limitedPartnershipsService,
           getLimitedPartnership: () => ({
             httpStatusCode: 404,
-            errors: ["Not Found"],
-          }),
-        },
+            errors: ["Not Found"]
+          })
+        }
       });
 
       const url = appDevDependencies.registrationController.insertIdsInUrl(
