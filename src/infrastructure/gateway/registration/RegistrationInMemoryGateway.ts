@@ -97,8 +97,23 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
     registrationPageType: RegistrationPageType,
     data: Record<string, any>
   ): Promise<void> {
-    if (!data || !Object.keys(data).length) {
-      throw new Error("data is empty - No data has been sent from the page");
+    const apiErrors: ApiErrors = {
+      errors: {}
+    };
+
+    if (!data.email) {
+      apiErrors.errors = {
+        ...apiErrors.errors,
+        "data.email": "must be a well-formed email address"
+      };
+    }
+
+    if (Object.keys(apiErrors.errors).length > 0) {
+      this.uiErrors.formatValidationErrorToUiErrors(apiErrors);
+    }
+
+    if (this.uiErrors.errors.errorList.length > 0) {
+      throw this.uiErrors;
     }
 
     let index = this.limitedPartnerships.findIndex(

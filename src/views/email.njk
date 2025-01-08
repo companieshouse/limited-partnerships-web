@@ -8,6 +8,8 @@
     <form class="form" action={{ props.currentUrl }} method="post">
       <input type="hidden" name="pageType" value={{ props.pageType }}>      
       {% include "includes/csrf_token.njk" %}
+
+      {% include "includes/errors.njk" %}
       
       {% include "includes/proposed-name.njk" %}  
    

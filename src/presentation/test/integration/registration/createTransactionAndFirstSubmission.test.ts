@@ -62,7 +62,7 @@ describe("Create transaction and the first submission", () => {
     });
   });
 
-  it("should return an error", async () => {
+  it("should return validation errors", async () => {
     const url = appDevDependencies.registrationController.insertIdsInUrl(
       NAME_URL,
       appDevDependencies.registrationGateway.transactionId,
@@ -74,7 +74,7 @@ describe("Create transaction and the first submission", () => {
     });
 
     expect(res.status).toBe(200);
-    // see when and where to display errors from the API
+    expect(res.text).toContain("partnership_name must be less than 160");
   });
 
   it("should return a status 500 if page type doesn't exist - sq", async () => {

@@ -60,7 +60,7 @@ describe("Update Submission", () => {
     });
 
     expect(result).toEqual({
-      errors: [new Error("data is empty - No data has been sent from the page")]
+      errors: appDevDependencies.registrationGateway.uiErrors
     });
   });
 });

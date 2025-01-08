@@ -105,7 +105,7 @@ describe("Gateway", () => {
     });
 
     describe("401", () => {
-      it("should return after failing to refresh the token", async () => {
+      it("should return an error after failing to refresh the token", async () => {
         mockCreateApiClient.mockReturnValue({
           ...value,
           limitedPartnershipsService: {
@@ -132,23 +132,31 @@ describe("Gateway", () => {
           email: "test@email.com"
         });
 
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(enTranslationText.emailPage.whatIsEmail);
+        expect(res.status).toBe(500);
       });
 
       it("should update the submission after refreshing the token", async () => {
-        const refreshToken = jest.fn().mockImplementation(() => ({
-          resource: { access_token: "access_token" }
-        }));
+        let patchLimitedPartnership = {
+          httpStatusCode: 401,
+          resource: {}
+        };
+
+        const refreshToken = jest.fn().mockImplementation(() => {
+          patchLimitedPartnership = {
+            httpStatusCode: 200,
+            resource: {}
+          };
+
+          return {
+            resource: { access_token: "access_token" }
+          };
+        });
 
         mockCreateApiClient.mockReturnValue({
           ...value,
           limitedPartnershipsService: {
             ...value.limitedPartnershipsService,
-            patchLimitedPartnership: () => ({
-              httpStatusCode: 401,
-              resource: {}
-            })
+            patchLimitedPartnership: () => patchLimitedPartnership
           },
           refreshToken: {
             ...value.refreshToken,
@@ -169,8 +177,10 @@ describe("Gateway", () => {
 
         expect(refreshToken).toHaveBeenCalled();
 
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(enTranslationText.emailPage.whatIsEmail);
+        const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.registrationGateway.transactionId}/submission/${appDevDependencies.registrationGateway.submissionId}/general-partners`;
+
+        expect(res.status).toBe(302);
+        expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
       });
     });
   });

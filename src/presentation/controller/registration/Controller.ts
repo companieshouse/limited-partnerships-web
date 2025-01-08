@@ -101,8 +101,9 @@ class RegistrationController extends AbstractController {
           pageRouting.errors = result.errors.errors;
 
           response.render(super.templateName(pageRouting.currentUrl), {
-            props: { ...pageRouting, ...result }
+            props: { ...result, ...pageRouting }
           });
+
           return;
         }
 
@@ -175,9 +176,11 @@ class RegistrationController extends AbstractController {
           submissionId
         );
 
-        if (result?.errors?.length) {
+        if (result?.errors) {
+          registrationRouting.errors = result.errors.errors;
+
           response.render(super.templateName(registrationRouting.currentUrl), {
-            props: result
+            props: { ...result, ...registrationRouting }
           });
           return;
         }

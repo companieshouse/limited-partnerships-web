@@ -8,6 +8,7 @@ import { EMAIL_URL } from "../../../controller/registration/Routing";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
+import { ApiErrors } from "../../../../domain/entities/UIErrors";
 
 describe("Email Page", () => {
   beforeEach(() => {
@@ -53,7 +54,7 @@ describe("Email Page", () => {
       const limitedPartnership = new LimitedPartnershipBuilder().build();
 
       appDevDependencies.registrationGateway.feedLimitedPartnerships([
-        limitedPartnership,
+        limitedPartnership
       ]);
 
       const res = await request(app).get(EMAIL_URL);
@@ -73,7 +74,7 @@ describe("Email Page", () => {
         .build();
 
       appDevDependencies.registrationGateway.feedLimitedPartnerships([
-        limitedPartnership,
+        limitedPartnership
       ]);
 
       const url = appDevDependencies.registrationController.insertIdsInUrl(
@@ -84,13 +85,43 @@ describe("Email Page", () => {
 
       const res = await request(app).post(url).send({
         pageType: RegistrationPageType.email,
-        email: "test@example.com",
+        email: "test@example.com"
       });
 
       const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.registrationGateway.transactionId}/submission/${appDevDependencies.registrationGateway.submissionId}/general-partners`;
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+    });
+
+    it("should a validation error", async () => {
+      const limitedPartnership = new LimitedPartnershipBuilder()
+        .withId(appDevDependencies.registrationGateway.submissionId)
+        .build();
+
+      appDevDependencies.registrationGateway.feedLimitedPartnerships([
+        limitedPartnership
+      ]);
+
+      const apiErrors: ApiErrors = {
+        errors: { "data.email": "must be a well-formed email address" }
+      };
+
+      appDevDependencies.registrationGateway.feedErrors(apiErrors);
+
+      const url = appDevDependencies.registrationController.insertIdsInUrl(
+        EMAIL_URL,
+        appDevDependencies.registrationGateway.transactionId,
+        appDevDependencies.registrationGateway.submissionId
+      );
+
+      const res = await request(app).post(url).send({
+        pageType: RegistrationPageType.email,
+        email: "test@example."
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain("must be a well-formed email address");
     });
   });
 });
