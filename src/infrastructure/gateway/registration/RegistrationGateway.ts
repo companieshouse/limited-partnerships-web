@@ -74,17 +74,14 @@ class RegistrationGateway implements IRegistrationGateway {
     registrationType: RegistrationPageType,
     data: Record<string, any>
   ): Promise<void> {
+    const limitedPartnershipBuilder = new LimitedPartnershipGatewayBuilder();
+    limitedPartnershipBuilder.withData(registrationType, data);
+    const limitedPartnership = limitedPartnershipBuilder.build();
+
     const apiCall = {
       service: "limitedPartnershipsService",
       method: "patchLimitedPartnership",
-      args: [
-        transactionId,
-        submissionId,
-        {
-          type: registrationType,
-          data,
-        },
-      ],
+      args: [transactionId, submissionId, limitedPartnership.data],
     };
 
     const response = await makeApiCallWithRetry<
