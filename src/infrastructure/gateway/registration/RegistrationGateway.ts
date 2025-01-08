@@ -5,13 +5,14 @@ import { Transaction } from "@companieshouse/api-sdk-node/dist/services/transact
 import { ApiErrorResponse } from "@companieshouse/api-sdk-node/dist/services/resource";
 import {
   LimitedPartnership,
-  LimitedPartnershipCreated,
+  LimitedPartnershipCreated
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import { makeApiCallWithRetry } from "../api";
 import RegistrationPageType from "../../../presentation/controller/registration/PageType";
 import IRegistrationGateway from "../../../domain/IRegistrationGateway";
 import LimitedPartnershipGatewayBuilder from "./LimitedPartnershipGatewayBuilder";
+import UIErrors from "../../../domain/entities/UIErrors";
 
 class RegistrationGateway implements IRegistrationGateway {
   async createTransaction(
@@ -24,9 +25,9 @@ class RegistrationGateway implements IRegistrationGateway {
       args: [
         {
           reference: "LimitedPartnershipsReference",
-          description: "Limited Partnerships Transaction",
-        },
-      ],
+          description: "Limited Partnerships Transaction"
+        }
+      ]
     };
 
     const response = await makeApiCallWithRetry<
@@ -53,12 +54,14 @@ class RegistrationGateway implements IRegistrationGateway {
     const apiCall = {
       service: "limitedPartnershipsService",
       method: "postLimitedPartnership",
-      args: [transactionId, limitedPartnership],
+      args: [transactionId, limitedPartnership]
     };
 
     const response = await makeApiCallWithRetry<
       Resource<LimitedPartnershipCreated> | ApiErrorResponse
     >(opt, apiCall);
+
+    this.throwUIErrorsIf400Status(response);
 
     if (response.httpStatusCode !== 201) {
       throw response;
@@ -82,14 +85,16 @@ class RegistrationGateway implements IRegistrationGateway {
         submissionId,
         {
           type: registrationType,
-          data,
-        },
-      ],
+          data
+        }
+      ]
     };
 
     const response = await makeApiCallWithRetry<
       Resource<void> | ApiErrorResponse
     >(opt, apiCall);
+
+    this.throwUIErrorsIf400Status(response);
 
     if (response.httpStatusCode !== 200) {
       throw response;
@@ -104,7 +109,7 @@ class RegistrationGateway implements IRegistrationGateway {
     const apiCall = {
       service: "limitedPartnershipsService",
       method: "getLimitedPartnership",
-      args: [transactionId, submissionId],
+      args: [transactionId, submissionId]
     };
 
     const response = await makeApiCallWithRetry<
@@ -116,6 +121,19 @@ class RegistrationGateway implements IRegistrationGateway {
     }
 
     return (response as Resource<LimitedPartnership>)?.resource ?? {};
+  }
+
+  private throwUIErrorsIf400Status(
+    response: Resource<LimitedPartnershipCreated> | ApiErrorResponse
+  ) {
+    if (response.httpStatusCode === 400) {
+      const uiErrors = new UIErrors();
+      uiErrors.formatValidationErrorToUiErrors(
+        (response as Resource<any>)?.resource
+      );
+
+      throw uiErrors;
+    }
   }
 }
 
