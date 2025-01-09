@@ -40,8 +40,8 @@ describe("Create transaction and the first submission", () => {
     it("should return an error", async () => {
       const apiErrors: ApiErrors = {
         errors: {
-          "data.partnership_name": "partnership_name must be less than 160",
-          "data.name_ending": `name_ending must be one of ${Object.keys(
+          "data.partnershipName": "partnership_name must be less than 160",
+          "data.nameEnding": `name_ending must be one of ${Object.keys(
             NameEndingType
           ).join(", ")}`
         }

@@ -31,10 +31,14 @@ class UIErrors {
     }
 
     if (property.includes("data.")) {
-      return property.replace("data.", "");
+      return this.camelToSnakeCase(property.replace("data.", ""));
     }
 
-    return property;
+    return this.camelToSnakeCase(property);
+  }
+
+  private camelToSnakeCase(str: string): string {
+    return str.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
   }
 }
 

@@ -60,14 +60,14 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
     if (!data.partnership_name) {
       apiErrors.errors = {
         ...apiErrors.errors,
-        "data.partnership_name": "partnership_name must be less than 160"
+        "data.partnershipName": "partnership_name must be less than 160"
       };
     }
 
     if (!data.name_ending) {
       apiErrors.errors = {
         ...apiErrors.errors,
-        "data.name_ending": `name_ending must be one of ${Object.keys(
+        "data.nameEnding": `name_ending must be one of ${Object.keys(
           NameEndingType
         ).join(", ")}`
       };
