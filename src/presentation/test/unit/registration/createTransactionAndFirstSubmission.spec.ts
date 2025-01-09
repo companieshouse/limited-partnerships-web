@@ -41,7 +41,7 @@ describe("Create transaction and the first submission", () => {
       const apiErrors: ApiErrors = {
         errors: {
           "data.partnershipName": "partnership_name must be less than 160",
-          "data.nameEnding": `name_ending must be one of ${Object.keys(
+          "data.nameEnding": `name_ending must be one of ${Object.values(
             NameEndingType
           ).join(", ")}`
         }
@@ -76,7 +76,7 @@ describe("Create transaction and the first submission", () => {
           },
           {
             href: "#name_ending",
-            text: "name_ending must be one of LIMITED_PARTNERSHIP, LP, L_DOT_P_DOT, PARTNERIAETH_CYFYNGEDIG, PC, P_DOT_C_DOT"
+            text: "name_ending must be one of Limited Partnership, LP, L.P., Partneriaeth Cyfyngedig, PC, P.C."
           }
         ]
       });

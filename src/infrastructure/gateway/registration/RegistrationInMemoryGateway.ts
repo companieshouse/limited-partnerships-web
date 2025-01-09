@@ -67,7 +67,7 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
     if (!data.name_ending) {
       apiErrors.errors = {
         ...apiErrors.errors,
-        "data.nameEnding": `name_ending must be one of ${Object.keys(
+        "data.nameEnding": `name_ending must be one of ${Object.values(
           NameEndingType
         ).join(", ")}`
       };

@@ -13,7 +13,7 @@ class UIErrors {
 
   formatValidationErrorToUiErrors(apiErrors: ApiErrors) {
     this.apiErrors = apiErrors;
-    const list = apiErrors.errors;
+    const list = apiErrors?.errors ?? {};
 
     for (const property in list) {
       const href = this.formatHrefValue(property);

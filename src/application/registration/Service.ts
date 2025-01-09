@@ -106,7 +106,7 @@ class RegistrationService {
 
   private extractAPIErrors(errors: any) {
     const isValidationErrors = errors instanceof UIErrors;
-    const apiErrors = isValidationErrors ? errors.apiErrors : errors;
+    const apiErrors = isValidationErrors ? errors?.apiErrors : errors;
 
     return { apiErrors, isValidationErrors };
   }
