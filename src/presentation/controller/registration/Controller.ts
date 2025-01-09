@@ -98,7 +98,7 @@ class RegistrationController extends AbstractController {
             cache
           };
 
-          pageRouting.errors = result.errors.errors;
+          pageRouting.errors = result.errors?.errors;
 
           response.render(super.templateName(pageRouting.currentUrl), {
             props: { ...result, ...pageRouting }
@@ -177,7 +177,7 @@ class RegistrationController extends AbstractController {
         );
 
         if (result?.errors) {
-          registrationRouting.errors = result.errors.errors;
+          registrationRouting.errors = result.errors?.errors;
 
           response.render(super.templateName(registrationRouting.currentUrl), {
             props: { ...result, ...registrationRouting }
