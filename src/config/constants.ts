@@ -25,6 +25,18 @@ export const OAUTH2_CLIENT_SECRET = getEnvironmentValue("OAUTH2_CLIENT_SECRET");
 export const PIWIK_REGISTRATION_START_GOAL_ID = getEnvironmentValue(
   "PIWIK_REGISTRATION_START_GOAL_ID"
 );
+export const PIWIK_REGISTRATION_LP_GOAL_ID = getEnvironmentValue(
+  "PIWIK_REGISTRATION_LP_GOAL_ID"
+);
+export const PIWIK_REGISTRATION_PRIVATE_FUND_LP_GOAL_ID = getEnvironmentValue(
+  "PIWIK_REGISTRATION_PRIVATE_FUND_LP_GOAL_ID"
+);
+export const PIWIK_REGISTRATION_SCOTTISH_LP_GOAL_ID = getEnvironmentValue(
+  "PIWIK_REGISTRATION_SCOTTISH_LP_GOAL_ID"
+);
+export const PIWIK_REGISTRATION_SCOTTISH_PRIVATE_FUND_LP_GOAL_ID = getEnvironmentValue(
+  "PIWIK_REGISTRATION_SCOTTISH_PRIVATE_FUND_LP_GOAL_ID"
+);
 export const PIWIK_SITE_ID = getEnvironmentValue("PIWIK_SITE_ID");
 export const PIWIK_URL = getEnvironmentValue("PIWIK_URL");
 export const PORT = getEnvironmentValue("PORT");
