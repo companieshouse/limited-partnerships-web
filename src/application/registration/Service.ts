@@ -1,9 +1,9 @@
 import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-import CustomError from "../../domain/entities/CustomError";
 import RegistrationPageType from "../../presentation/controller/registration/PageType";
 import IRegistrationGateway from "../../domain/IRegistrationGateway";
 import { logger } from "../../utils";
+import UIErrors from "../../domain/entities/UIErrors";
 
 class RegistrationService {
   registrationGateway: IRegistrationGateway;
@@ -37,7 +37,7 @@ class RegistrationService {
   ): Promise<{
     submissionId: string;
     transactionId: string;
-    errors?: CustomError[];
+    errors?: UIErrors;
   }> {
     try {
       const transactionId = await this.registrationGateway.createTransaction(
@@ -53,17 +53,21 @@ class RegistrationService {
       );
 
       return { submissionId, transactionId };
-    } catch (error: any) {
-      const errors = Array.isArray(error) ? error : [error];
+    } catch (errors: any) {
+      const { apiErrors, isValidationErrors } = this.extractAPIErrors(errors);
 
       logger.error(
-        `Error creating transaction or submission: ${JSON.stringify(errors)}`
+        `Error creating transaction or submission: ${JSON.stringify(apiErrors)}`
       );
+
+      if (!isValidationErrors) {
+        throw errors;
+      }
 
       return {
         submissionId: "",
         transactionId: "",
-        errors,
+        errors
       };
     }
   }
@@ -75,7 +79,7 @@ class RegistrationService {
     registrationType: RegistrationPageType,
     data: Record<string, any>
   ): Promise<void | {
-    errors?: CustomError[];
+    errors?: UIErrors;
   }> {
     try {
       await this.registrationGateway.sendPageData(
@@ -85,15 +89,26 @@ class RegistrationService {
         registrationType,
         data
       );
-    } catch (error: any) {
-      const errors = Array.isArray(error) ? error : [error];
+    } catch (errors: any) {
+      const { apiErrors, isValidationErrors } = this.extractAPIErrors(errors);
 
-      logger.error(`Error sending data: ${JSON.stringify(errors)}`);
+      logger.error(`Error sending data: ${JSON.stringify(apiErrors)}`);
+
+      if (!isValidationErrors) {
+        throw errors;
+      }
 
       return {
-        errors,
+        errors
       };
     }
+  }
+
+  private extractAPIErrors(errors: any) {
+    const isValidationErrors = errors instanceof UIErrors;
+    const apiErrors = isValidationErrors ? errors?.apiErrors : errors;
+
+    return { apiErrors, isValidationErrors };
   }
 }
 

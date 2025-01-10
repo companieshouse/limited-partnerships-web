@@ -5,7 +5,7 @@ import RegistrationPageType from "../../../controller/registration/PageType";
 describe("Update Submission", () => {
   beforeEach(() => {
     appDevDependencies.registrationGateway.feedLimitedPartnerships([]);
-    appDevDependencies.registrationGateway.feedErrors([]);
+    appDevDependencies.registrationGateway.feedErrors();
   });
 
   it("should send data an update the limited partnership", async () => {
@@ -14,7 +14,7 @@ describe("Update Submission", () => {
       .build();
 
     appDevDependencies.registrationGateway.feedLimitedPartnerships([
-      limitedPartnership,
+      limitedPartnership
     ]);
 
     await appDevDependencies.registrationService.sendPageData(
@@ -23,7 +23,7 @@ describe("Update Submission", () => {
       limitedPartnership["_id"] as string,
       RegistrationPageType.email,
       {
-        email: "email@example.com",
+        email: "email@example.com"
       }
     );
 
@@ -31,7 +31,7 @@ describe("Update Submission", () => {
       appDevDependencies.registrationGateway.limitedPartnerships[0]
     ).toEqual({
       ...limitedPartnership,
-      data: { ...limitedPartnership.data, email: "email@example.com" },
+      data: { ...limitedPartnership.data, email: "email@example.com" }
     });
   });
 
@@ -41,7 +41,7 @@ describe("Update Submission", () => {
       .build();
 
     appDevDependencies.registrationGateway.feedLimitedPartnerships([
-      limitedPartnership,
+      limitedPartnership
     ]);
 
     const result = await appDevDependencies.registrationService.sendPageData(
@@ -56,13 +56,11 @@ describe("Update Submission", () => {
       appDevDependencies.registrationGateway.limitedPartnerships[0]
     ).not.toEqual({
       ...limitedPartnership,
-      data: { ...limitedPartnership.data, email: "email@example.com" },
+      data: { ...limitedPartnership.data, email: "email@example.com" }
     });
 
     expect(result).toEqual({
-      errors: [
-        new Error("data is empty - No data has been sent from the page"),
-      ],
+      errors: appDevDependencies.registrationGateway.uiErrors
     });
   });
 });

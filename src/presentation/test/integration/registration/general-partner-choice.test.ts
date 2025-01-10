@@ -6,13 +6,13 @@ import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
 import {
   GENERAL_PARTNER_CHOICE_URL,
-  LIMITED_PARTNERS_URL,
+  LIMITED_PARTNERS_URL
 } from "../../../controller/registration/Routing";
 import RegistrationPageType from "../../../../presentation/controller/registration/PageType";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import {
   APPLICATION_CACHE_KEY,
-  APPLICATION_CACHE_KEY_PREFIX_REGISTRATION,
+  APPLICATION_CACHE_KEY_PREFIX_REGISTRATION
 } from "../../../../config/constants";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 
@@ -21,7 +21,7 @@ describe("General Partner Choice Page", () => {
     setLocalesEnabled(false);
 
     appDevDependencies.registrationGateway.feedLimitedPartnerships([]);
-    appDevDependencies.registrationGateway.feedErrors([]);
+    appDevDependencies.registrationGateway.feedErrors();
     appDevDependencies.cacheRepository.feedCache(null);
   });
 
@@ -36,7 +36,7 @@ describe("General Partner Choice Page", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
-      `${cyTranslationText.generalPartnerChoicePage.title } - ${cyTranslationText.service} - GOV.UK`
+      `${cyTranslationText.generalPartnerChoicePage.title} - ${cyTranslationText.service} - GOV.UK`
     );
     expect(res.text).toContain(
       cyTranslationText.generalPartnerChoicePage.title
@@ -60,7 +60,7 @@ describe("General Partner Choice Page", () => {
     const selectedType = "person";
     const res = await request(app).post(GENERAL_PARTNER_CHOICE_URL).send({
       pageType: RegistrationPageType.generalPartnerChoice,
-      parameter: selectedType,
+      parameter: selectedType
     });
 
     expect(res.status).toBe(302);
@@ -70,8 +70,8 @@ describe("General Partner Choice Page", () => {
     expect(appDevDependencies.cacheRepository.cache).toEqual({
       [APPLICATION_CACHE_KEY]: {
         [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.generalPartnerChoice}`]:
-          selectedType,
-      },
+          selectedType
+      }
     });
   });
 
@@ -79,7 +79,7 @@ describe("General Partner Choice Page", () => {
     const limitedPartnership = new LimitedPartnershipBuilder().build();
 
     appDevDependencies.registrationGateway.feedLimitedPartnerships([
-      limitedPartnership,
+      limitedPartnership
     ]);
 
     const res = await request(app).get(GENERAL_PARTNER_CHOICE_URL);

@@ -8,6 +8,8 @@
     <form class="form" action={{ props.currentUrl }} method="post">
       <input type="hidden" name="pageType" value={{ props.pageType }}>      
       {% include "includes/csrf_token.njk" %}
+
+      {% include "includes/errors.njk" %}
       
       {% include "includes/proposed-name.njk" %}  
    
@@ -20,7 +22,7 @@
         hint: {
           text: i18n.emailPage.emailHint
         },
-        id: "registered-email",
+        id: "email",
         name: "email",
         value: props.data.limitedPartnership.data.email,
         type: "email",

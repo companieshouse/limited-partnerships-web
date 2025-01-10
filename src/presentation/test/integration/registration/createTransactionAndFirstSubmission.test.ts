@@ -2,7 +2,7 @@ import request from "supertest";
 import { Request, Response } from "express";
 import {
   NameEndingType,
-  PartnershipType,
+  PartnershipType
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import app from "../app";
@@ -11,20 +11,20 @@ import { NAME_URL } from "../../../controller/registration/Routing";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import {
   APPLICATION_CACHE_KEY,
-  APPLICATION_CACHE_KEY_PREFIX_REGISTRATION,
+  APPLICATION_CACHE_KEY_PREFIX_REGISTRATION
 } from "../../../../config/constants";
 
 describe("Create transaction and the first submission", () => {
   beforeAll(() => {
     appDevDependencies.registrationGateway.feedLimitedPartnerships([]);
-    appDevDependencies.registrationGateway.feedErrors([]);
+    appDevDependencies.registrationGateway.feedErrors();
     appDevDependencies.cacheRepository.feedCache(null);
   });
 
   it("should load the name page with status 200", async () => {
     appDevDependencies.cacheRepository.feedCache({
       [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]:
-        PartnershipType.LP,
+        PartnershipType.LP
     });
 
     const res = await request(app).get(NAME_URL);
@@ -36,7 +36,7 @@ describe("Create transaction and the first submission", () => {
   it("should create a transaction and the first submission", async () => {
     appDevDependencies.cacheRepository.feedCache({
       [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]:
-        PartnershipType.LP,
+        PartnershipType.LP
     });
 
     const url = appDevDependencies.registrationController.insertIdsInUrl(
@@ -49,7 +49,7 @@ describe("Create transaction and the first submission", () => {
       pageType: RegistrationPageType.name,
       partnership_name: "Test Limited Partnership",
       name_ending: NameEndingType.LIMITED_PARTNERSHIP,
-      partnership_type: PartnershipType.LP,
+      partnership_type: PartnershipType.LP
     });
 
     const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.registrationGateway.transactionId}/submission/${appDevDependencies.registrationGateway.submissionId}/email`;
@@ -58,11 +58,11 @@ describe("Create transaction and the first submission", () => {
     expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
 
     expect(appDevDependencies.cacheRepository.cache).toEqual({
-      [APPLICATION_CACHE_KEY]: {},
+      [APPLICATION_CACHE_KEY]: {}
     });
   });
 
-  it("should return an error", async () => {
+  it("should return validation errors", async () => {
     const url = appDevDependencies.registrationController.insertIdsInUrl(
       NAME_URL,
       appDevDependencies.registrationGateway.transactionId,
@@ -70,16 +70,16 @@ describe("Create transaction and the first submission", () => {
     );
 
     const res = await request(app).post(url).send({
-      pageType: RegistrationPageType.name,
+      pageType: RegistrationPageType.name
     });
 
     expect(res.status).toBe(200);
-    // see when and where to display errors from the API
+    expect(res.text).toContain("partnership_name must be less than 160");
   });
 
   it("should return a status 500 if page type doesn't exist - sq", async () => {
     const res = await request(app).post(NAME_URL).send({
-      pageType: "wrong-page-type",
+      pageType: "wrong-page-type"
     });
 
     expect(res.status).toBe(500);
@@ -90,7 +90,7 @@ describe("Create transaction and the first submission", () => {
 
     await appDevDependencies.globalController.getPageRouting()(
       {
-        path: "/limited-partnerships/wrong-type",
+        path: "/limited-partnerships/wrong-type"
       } as Request,
       {} as Response,
       next

@@ -5,7 +5,7 @@ import { appDevDependencies } from "../../../../config/dev-dependencies";
 describe("Get Submission", () => {
   beforeEach(() => {
     appDevDependencies.registrationGateway.feedLimitedPartnerships([]);
-    appDevDependencies.registrationGateway.feedErrors([]);
+    appDevDependencies.registrationGateway.feedErrors();
   });
 
   describe("Get submission by id", () => {
@@ -13,7 +13,7 @@ describe("Get Submission", () => {
       const limitedPartnership = new LimitedPartnershipBuilder().build();
 
       appDevDependencies.registrationGateway.feedLimitedPartnerships([
-        limitedPartnership,
+        limitedPartnership
       ]);
 
       const result =
@@ -30,7 +30,7 @@ describe("Get Submission", () => {
       const limitedPartnership = new LimitedPartnershipBuilder().build();
 
       appDevDependencies.registrationGateway.feedLimitedPartnerships([
-        limitedPartnership,
+        limitedPartnership
       ]);
 
       await appDevDependencies.registrationService

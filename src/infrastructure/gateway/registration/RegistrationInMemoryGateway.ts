@@ -3,7 +3,7 @@
 import crypto from "crypto";
 import {
   LimitedPartnership,
-  NameEndingType,
+  NameEndingType
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import RegistrationPageType from "../../../presentation/controller/registration/PageType";
@@ -11,13 +11,14 @@ import IRegistrationGateway from "../../../domain/IRegistrationGateway";
 import CustomError from "../../../domain/entities/CustomError";
 import TransactionLimitedPartnership from "../../../domain/entities/TransactionLimitedPartnership";
 import LimitedPartnershipGatewayBuilder from "./LimitedPartnershipGatewayBuilder";
+import UIErrors, { ApiErrors } from "../../../domain/entities/UIErrors";
 
 class RegistrationInMemoryGateway implements IRegistrationGateway {
   transactionId = crypto.randomUUID().toString();
   submissionId = crypto.randomUUID().toString();
 
   limitedPartnerships: TransactionLimitedPartnership[] = [];
-  errors: CustomError[] = [];
+  uiErrors: UIErrors = new UIErrors();
 
   feedLimitedPartnerships(
     limitedPartnerships: TransactionLimitedPartnership[]
@@ -25,8 +26,14 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
     this.limitedPartnerships = limitedPartnerships;
   }
 
-  feedErrors(errors: CustomError[]) {
-    this.errors = errors;
+  feedErrors(errors?: ApiErrors) {
+    this.uiErrors.errors.errorList = [];
+
+    if (!errors) {
+      return;
+    }
+
+    this.uiErrors.formatValidationErrorToUiErrors(errors);
   }
 
   async createTransaction(
@@ -46,26 +53,32 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
     transactionId: string,
     data: Record<string, any>
   ): Promise<string> {
+    const apiErrors: ApiErrors = {
+      errors: {}
+    };
+
     if (!data.partnership_name) {
-      this.errors.push(
-        new CustomError(
-          "partnership_name",
-          "partnership_name must be at least 3 characters"
-        )
-      );
+      apiErrors.errors = {
+        ...apiErrors.errors,
+        "data.partnershipName": "partnership_name must be less than 160"
+      };
     }
 
     if (!data.name_ending) {
-      this.errors.push(
-        new CustomError(
-          "name_ending",
-          `name_ending must be one of ${Object.keys(NameEndingType).join(", ")}`
-        )
-      );
+      apiErrors.errors = {
+        ...apiErrors.errors,
+        "data.nameEnding": `name_ending must be one of ${Object.values(
+          NameEndingType
+        ).join(", ")}`
+      };
     }
 
-    if (this.errors.length > 0) {
-      throw this.errors;
+    if (Object.keys(apiErrors.errors).length > 0) {
+      this.uiErrors.formatValidationErrorToUiErrors(apiErrors);
+    }
+
+    if (this.uiErrors.errors.errorList.length > 0) {
+      throw this.uiErrors;
     }
 
     const limitedPartnershipBuilder = new LimitedPartnershipGatewayBuilder();
@@ -84,8 +97,23 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
     registrationPageType: RegistrationPageType,
     data: Record<string, any>
   ): Promise<void> {
-    if (!data || !Object.keys(data).length) {
-      throw new Error("data is empty - No data has been sent from the page");
+    const apiErrors: ApiErrors = {
+      errors: {}
+    };
+
+    if (!data.email) {
+      apiErrors.errors = {
+        ...apiErrors.errors,
+        "data.email": "must be a well-formed email address"
+      };
+    }
+
+    if (Object.keys(apiErrors.errors).length > 0) {
+      this.uiErrors.formatValidationErrorToUiErrors(apiErrors);
+    }
+
+    if (this.uiErrors.errors.errorList.length > 0) {
+      throw this.uiErrors;
     }
 
     let index = this.limitedPartnerships.findIndex(
@@ -94,7 +122,7 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
 
     const limitedPartnershipBuilder = new LimitedPartnershipGatewayBuilder({
       _id: submissionId,
-      data: this.limitedPartnerships[index]?.data,
+      data: this.limitedPartnerships[index]?.data
     });
 
     limitedPartnershipBuilder.withData(registrationPageType, data);

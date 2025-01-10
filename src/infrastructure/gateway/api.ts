@@ -4,7 +4,7 @@ import {
   API_URL,
   OAUTH2_CLIENT_ID,
   OAUTH2_CLIENT_SECRET,
-  REFRESH_TOKEN_GRANT_TYPE,
+  REFRESH_TOKEN_GRANT_TYPE
 } from "../../config/constants";
 import { logger } from "../../utils";
 import ApiClient from "@companieshouse/api-sdk-node/dist/client";
@@ -29,7 +29,7 @@ export const makeApiCallWithRetry = async <T>(
     const accessToken = await refreshToken(client, tokens.refresh_token);
     logger.info(`New access token: ${accessToken}`);
 
-    const refreshClient = createApi(tokens.access_token);
+    const refreshClient = createApi(accessToken);
     response = await refreshClient[info.service][info.method](info.args);
   }
 

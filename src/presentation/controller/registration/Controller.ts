@@ -9,7 +9,7 @@ import RegistrationPageType from "./PageType";
 import {
   APPLICATION_CACHE_KEY_PREFIX_REGISTRATION,
   SUBMISSION_ID,
-  TRANSACTION_ID,
+  TRANSACTION_ID
 } from "../../../config/constants";
 import CacheService from "../../../application/CacheService";
 
@@ -57,11 +57,11 @@ class RegistrationController extends AbstractController {
         pageRouting.data = {
           ...pageRouting.data,
           limitedPartnership,
-          cache,
+          cache
         };
 
         response.render(super.templateName(pageRouting.currentUrl), {
-          props: { ...pageRouting },
+          props: { ...pageRouting }
         });
       } catch (error) {
         next(error);
@@ -89,18 +89,21 @@ class RegistrationController extends AbstractController {
           request.url
         );
 
-        if (result.errors?.length) {
+        if (result.errors) {
           const cache = await this.cacheService.getDataFromCache(session);
 
           pageRouting.data = {
             ...pageRouting.data,
             limitedPartnership: { data: request.body },
-            cache,
+            cache
           };
 
+          pageRouting.errors = result.errors?.errors;
+
           response.render(super.templateName(pageRouting.currentUrl), {
-            props: { ...pageRouting, ...result },
+            props: { ...result, ...pageRouting }
           });
+
           return;
         }
 
@@ -140,8 +143,7 @@ class RegistrationController extends AbstractController {
         const parameter = escape(request.body.parameter);
 
         await this.cacheService.addDataToCache(session, {
-          [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${pageType}`]:
-            parameter,
+          [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${pageType}`]: parameter
         });
 
         response.redirect(registrationRouting.nextUrl);
@@ -174,9 +176,11 @@ class RegistrationController extends AbstractController {
           submissionId
         );
 
-        if (result?.errors?.length) {
+        if (result?.errors) {
+          registrationRouting.errors = result.errors?.errors;
+
           response.render(super.templateName(registrationRouting.currentUrl), {
-            props: result,
+            props: { ...result, ...registrationRouting }
           });
           return;
         }
@@ -203,7 +207,7 @@ class RegistrationController extends AbstractController {
       access_token:
         request?.session?.data?.signin_info?.access_token?.access_token ?? "",
       refresh_token:
-        request?.session?.data?.signin_info?.access_token?.refresh_token ?? "",
+        request?.session?.data?.signin_info?.access_token?.refresh_token ?? ""
     };
   }
 
