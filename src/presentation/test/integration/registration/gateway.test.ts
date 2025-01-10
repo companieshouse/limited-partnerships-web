@@ -183,6 +183,69 @@ describe("Gateway", () => {
         expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
       });
     });
+
+    describe("400", () => {
+      it("should return validation errors - name page", async () => {
+        mockCreateApiClient.mockReturnValue({
+          ...value,
+          limitedPartnershipsService: {
+            ...value.limitedPartnershipsService,
+            postLimitedPartnership: () => ({
+              httpStatusCode: 400,
+              resource: {
+                errors: {
+                  "data.partnershipName": "partnership_name must be less than 160"
+                }
+              }
+            })
+          }
+        });
+
+        const url = appDevDependencies.registrationController.insertIdsInUrl(
+          NAME_URL,
+          appDevDependencies.registrationGateway.transactionId,
+          appDevDependencies.registrationGateway.submissionId
+        );
+
+        const res = await request(appRealDependencies).post(url).send({
+          pageType: RegistrationPageType.name
+        });
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain("partnership_name must be less than 160");
+      });
+
+      it("should return validation errors - email page", async () => {
+        mockCreateApiClient.mockReturnValue({
+          ...value,
+          limitedPartnershipsService: {
+            ...value.limitedPartnershipsService,
+            patchLimitedPartnership: () => ({
+              httpStatusCode: 400,
+              resource: {
+                errors: {
+                  "data.email": "must be a well-formed email address"
+                }
+              }
+            })
+          }
+        });
+
+        const url = appDevDependencies.registrationController.insertIdsInUrl(
+          EMAIL_URL,
+          appDevDependencies.registrationGateway.transactionId,
+          appDevDependencies.registrationGateway.submissionId
+        );
+
+        const res = await request(appRealDependencies).post(url).send({
+          pageType: RegistrationPageType.email,
+          email: "test@email.com"
+        });
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain("must be a well-formed email address");
+      });
+    });
   });
 
   describe("Get Limited Parnership", () => {
