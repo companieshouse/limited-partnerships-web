@@ -94,7 +94,7 @@ describe("Email Page", () => {
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
     });
 
-    it("should a validation error", async () => {
+    it("should return a validation error", async () => {
       const limitedPartnership = new LimitedPartnershipBuilder()
         .withId(appDevDependencies.registrationGateway.submissionId)
         .build();

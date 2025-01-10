@@ -121,7 +121,7 @@ class RegistrationGateway implements IRegistrationGateway {
   }
 
   private throwUIErrorsIf400Status(
-    response: Resource<LimitedPartnershipCreated> | ApiErrorResponse
+    response: Resource<LimitedPartnershipCreated | void> | ApiErrorResponse
   ) {
     if (response.httpStatusCode === 400) {
       const uiErrors = new UIErrors();
