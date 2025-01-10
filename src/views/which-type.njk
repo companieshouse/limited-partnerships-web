@@ -28,7 +28,7 @@
               text: i18n.whichTypePage.options.LP,
               attributes: {
                 "required": true,
-                "data-event-id": "which-type-of-partnership-to-register-radio - limited-partnership-england-wales"
+                "data-goal-id": PIWIK_REGISTRATION_LP_GOAL_ID
               }
             },
             {
@@ -36,7 +36,7 @@
               text: i18n.whichTypePage.options.PFLP,
               attributes: {
                 "required": true,
-                "data-event-id": "which-type-of-partnership-to-register-radio - private-fund-limited-partnership-england-wales"
+                "data-goal-id": PIWIK_REGISTRATION_PRIVATE_FUND_LP_GOAL_ID
               }
             },
             {
@@ -44,7 +44,7 @@
               text: i18n.whichTypePage.options.SLP,
               attributes: {
                 "required": true,
-                "data-event-id": "which-type-of-partnership-to-register-radio - scottish-limited-partnership"
+                "data-goal-id": PIWIK_REGISTRATION_SCOTTISH_LP_GOAL_ID
               }
             },
             {
@@ -52,13 +52,16 @@
               text: i18n.whichTypePage.options.SPFLP,
               attributes: {
                 "required": true,
-                "data-event-id": "which-type-of-partnership-to-register-radio - private-fund-limited-partnership-in-scotland"
+                "data-goal-id": PIWIK_REGISTRATION_SCOTTISH_PRIVATE_FUND_LP_GOAL_ID
               }
             }
           ]
         }) }}
 
-        {% include "includes/continue-button.njk" %} 
+        <button class="govuk-button" data-module="govuk-button" id="submit" onclick="_paq.push(['trackGoal', document.querySelector('input[name=parameter]:checked').getAttribute('data-goal-id')])">
+          {{ i18n.buttons.continue }}
+        </button>
+
       </form>
     </div>
   </div>
