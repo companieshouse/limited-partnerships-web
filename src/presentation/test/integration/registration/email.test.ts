@@ -28,7 +28,7 @@ describe("Email Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${enTranslationText.emailPage.emailUsedFor.title} - ${enTranslationText.service} - GOV.UK`
+        `${enTranslationText.emailPage.whatIsEmail} - ${enTranslationText.service} - GOV.UK`
       );
       expect(res.text).toContain(enTranslationText.emailPage.whatIsEmail);
       expect(res.text).toContain(enTranslationText.emailPage.emailHint);
@@ -42,7 +42,7 @@ describe("Email Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${cyTranslationText.emailPage.emailUsedFor.title} - ${cyTranslationText.service} - GOV.UK`
+        `${cyTranslationText.emailPage.whatIsEmail} - ${cyTranslationText.service} - GOV.UK`
       );
       expect(res.text).toContain(cyTranslationText.emailPage.whatIsEmail);
       expect(res.text).toContain(cyTranslationText.emailPage.emailHint);
