@@ -94,9 +94,13 @@
         </fieldset>
       </div>
 
-      <button class="govuk-button" data-module="govuk-button" id="submit" onclick="_paq.push(['trackEvent', 'Which limited partnership name ending would you prefer to go on the public record?', document.querySelector('input[name=name_ending]:checked').nextElementSibling.innerHTML])">
-        {{ i18n.buttons.saveAndContinue }}
-      </button>
+      {{ govukButton({
+        text: i18n.buttons.saveAndContinue,
+        attributes: {
+          "id": "submit",
+          "onclick": "_paq.push(['trackEvent', 'Limited Partnerships name', 'name-ending', document.querySelector('input[name=name_ending]:checked').nextElementSibling.innerHTML])"
+        }
+      }) }}
     </form>
   </div>
 </div>
