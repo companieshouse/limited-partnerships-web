@@ -68,7 +68,7 @@
             required : true,
             "aria-describedby": "partnership_name-hint",
             minLength: "1",
-            "data-event-id": "namePage-name"
+            "data-event-id": "name"
           },
           suffix: {
             text: "Limited Partnership"
@@ -94,7 +94,9 @@
         </fieldset>
       </div>
 
-      {% include "includes/save-and-continue-button.njk" %}
+      <button class="govuk-button" data-module="govuk-button" id="submit" onclick="_paq.push(['trackEvent', 'Which limited partnership name ending would you prefer to go on the public record?', document.querySelector('input[name=name_ending]:checked').nextElementSibling.innerHTML])">
+        {{ i18n.buttons.saveAndContinue }}
+      </button>
     </form>
   </div>
 </div>
