@@ -68,7 +68,7 @@
             required : true,
             "aria-describedby": "partnership_name-hint",
             minLength: "1",
-            "data-event-id": "namePage-name"
+            "data-event-id": "name"
           },
           suffix: {
             text: "Limited Partnership"
@@ -94,7 +94,13 @@
         </fieldset>
       </div>
 
-      {% include "includes/save-and-continue-button.njk" %}
+      {{ govukButton({
+        text: i18n.buttons.saveAndContinue,
+        attributes: {
+          "id": "submit",
+          "onclick": "_paq.push(['trackEvent', 'Limited Partnerships name', 'name-ending', document.querySelector('input[name=name_ending]:checked').nextElementSibling.innerHTML])"
+        }
+      }) }}
     </form>
   </div>
 </div>
