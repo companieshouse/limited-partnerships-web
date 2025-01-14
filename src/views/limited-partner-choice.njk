@@ -43,7 +43,13 @@
           ]
         }) }}
               
-        {% include "includes/continue-button.njk" %} 
+        {{ govukButton({
+          text: i18n.buttons.continue,
+          attributes: {
+            "id": "submit",
+            "onclick": "_paq.push(['trackEvent', 'Limited partner choice', 'selection', document.querySelector('input[name=parameter]:checked').nextElementSibling.innerHTML])"
+          }
+        }) }}
       </form>
     </div>
   </div>
