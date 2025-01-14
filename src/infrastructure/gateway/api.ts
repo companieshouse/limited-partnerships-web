@@ -30,7 +30,7 @@ export const makeApiCallWithRetry = async <T>(
     logger.info(`New access token: ${accessToken}`);
 
     const refreshClient = createApi(accessToken);
-    response = await refreshClient[info.service][info.method](info.args);
+    response = await refreshClient[info.service][info.method](...info.args);
   }
 
   logger.debug("Call successful.");
