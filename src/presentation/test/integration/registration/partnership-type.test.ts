@@ -2,10 +2,7 @@ import request from "supertest";
 import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import app from "../app";
-import {
-  NAME_URL,
-  WHICH_TYPE_URL
-} from "../../../controller/registration/Routing";
+import { NAME_URL, WHICH_TYPE_URL } from "../../../controller/registration/url";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import RegistrationPageType from "../../../../presentation/controller/registration/PageType";

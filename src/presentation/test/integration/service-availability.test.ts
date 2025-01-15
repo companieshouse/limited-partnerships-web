@@ -1,10 +1,10 @@
-import { expect, jest, test } from '@jest/globals';
+import { expect, jest, test } from "@jest/globals";
 import request from "supertest";
 import app from "./app";
-import { WHICH_TYPE_URL } from "../../controller/registration/Routing";
+import { WHICH_TYPE_URL } from "../../controller/registration/url";
 import * as configConstants from "../../../config/constants";
 import enTranslationText from "../../../../locales/en/translations.json";
-import { HEALTHCHECK_URL } from '../../controller/global/Routing';
+import { HEALTHCHECK_URL } from "../../controller/global/Routing";
 
 const SERVICE_UNAVAILABLE_TEXT = "Sorry, the service is unavailable";
 
@@ -14,7 +14,11 @@ describe("Service Availability tests", () => {
   });
 
   const setServiceUnavailable = (value: boolean) => {
-    jest.replaceProperty(configConstants, 'SHOW_SERVICE_UNAVAILABLE_PAGE', value);
+    jest.replaceProperty(
+      configConstants,
+      "SHOW_SERVICE_UNAVAILABLE_PAGE",
+      value
+    );
   };
 
   test("shows the servce unavailable page when service unavailable flag is true", async () => {

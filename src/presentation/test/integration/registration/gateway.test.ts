@@ -8,7 +8,7 @@ import TransactionService from "@companieshouse/api-sdk-node/dist/services/trans
 
 import appRealDependencies from "../../../../app";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
-import { EMAIL_URL, NAME_URL } from "../../../controller/registration/Routing";
+import { EMAIL_URL, NAME_URL } from "../../../controller/registration/url";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import { RefreshTokenService } from "@companieshouse/api-sdk-node/dist/services/refresh-token";
@@ -98,7 +98,7 @@ describe("Gateway", () => {
         email: "test@email.com"
       });
 
-      const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.registrationGateway.transactionId}/submission/${appDevDependencies.registrationGateway.submissionId}/general-partners`;
+      const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.registrationGateway.transactionId}/submission/${appDevDependencies.registrationGateway.submissionId}/office-address`;
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
@@ -177,7 +177,7 @@ describe("Gateway", () => {
 
         expect(refreshToken).toHaveBeenCalled();
 
-        const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.registrationGateway.transactionId}/submission/${appDevDependencies.registrationGateway.submissionId}/general-partners`;
+        const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.registrationGateway.transactionId}/submission/${appDevDependencies.registrationGateway.submissionId}/office-address`;
 
         expect(res.status).toBe(302);
         expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
@@ -194,7 +194,8 @@ describe("Gateway", () => {
               httpStatusCode: 400,
               resource: {
                 errors: {
-                  "data.partnershipName": "partnership_name must be less than 160"
+                  "data.partnershipName":
+                    "partnership_name must be less than 160"
                 }
               }
             })

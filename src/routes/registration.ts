@@ -14,7 +14,8 @@ import {
   GENERAL_PARTNER_CHOICE_URL,
   LIMITED_PARTNER_CHOICE_URL,
   NAME_WITH_IDS_URL,
-} from "../presentation/controller/registration/Routing";
+  OFFICE_ADDRESS_URL
+} from "../presentation/controller/registration/url";
 
 export const registrationEndpoints = (
   router: Router,
@@ -63,6 +64,12 @@ export const registrationEndpoints = (
     EMAIL_URL,
     authentication,
     dependencies.registrationController.sendPageData()
+  );
+
+  router.get(
+    OFFICE_ADDRESS_URL,
+    authentication,
+    dependencies.registrationController.getPageRouting()
   );
 
   router.get(

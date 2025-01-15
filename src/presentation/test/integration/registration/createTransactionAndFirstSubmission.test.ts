@@ -7,7 +7,7 @@ import {
 
 import app from "../app";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
-import { NAME_URL } from "../../../controller/registration/Routing";
+import { NAME_URL } from "../../../controller/registration/url";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import {
   APPLICATION_CACHE_KEY,

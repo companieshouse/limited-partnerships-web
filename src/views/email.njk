@@ -2,6 +2,16 @@
 
 {% set pageTitle = i18n.emailPage.whatIsEmail %}
 
+{% set emailErrorMessage = null %}
+
+{% if props.errors.errorList.length > 0 %}
+  {% for el in props.errors.errorList %}
+    {% if el.href === "#email" %}
+      {% set emailErrorMessage = { text: el.text } %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -29,7 +39,8 @@
         attributes : {
           required : true,
           "data-event-id": "email-address-registered"
-        }
+        },
+        erroMessage: emailErrorMessage
       }) }}
 
       <details class="govuk-details" data-module="govuk-details">

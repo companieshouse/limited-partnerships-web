@@ -12,7 +12,7 @@ import app from "../app";
 import {
   NAME_URL,
   NAME_WITH_IDS_URL
-} from "../../../controller/registration/Routing";
+} from "../../../controller/registration/url";
 import {
   appDevDependencies,
   APPLICATION_CACHE_KEY_PREFIX_REGISTRATION

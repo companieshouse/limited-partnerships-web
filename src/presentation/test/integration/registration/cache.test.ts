@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { Session } from "@companieshouse/node-session-handler";
 
-import { NAME_URL } from "../../../controller/registration/Routing";
+import { NAME_URL } from "../../../controller/registration/url";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import RegistrationController from "../../../controller/registration/Controller";
 import RegistrationService from "../../../../application/registration/Service";
@@ -22,7 +22,7 @@ describe("Cache", () => {
 
   it("should get data from session", async () => {
     const getExtraData = jest.fn().mockImplementation(() => ({
-      [RegistrationPageType.whichType]: PartnershipType.LP,
+      [RegistrationPageType.whichType]: PartnershipType.LP
     }));
     const setExtraData = jest.fn().mockImplementation(() => {});
 
@@ -31,13 +31,13 @@ describe("Cache", () => {
         path: NAME_URL,
         session: {
           getExtraData,
-          setExtraData,
+          setExtraData
         } as unknown as Session,
         params: {},
         body: {
           pageType: RegistrationPageType.whichType,
-          parameter: PartnershipType.LP,
-        },
+          parameter: PartnershipType.LP
+        }
       } as Request,
       { render: jest.fn() } as unknown as Response,
       jest.fn() as NextFunction
@@ -50,9 +50,9 @@ describe("Cache", () => {
         path: NAME_URL,
         session: {
           getExtraData,
-          setExtraData,
+          setExtraData
         } as unknown as Session,
-        params: {},
+        params: {}
       } as Request,
       { render: jest.fn() } as unknown as Response,
       jest.fn() as NextFunction

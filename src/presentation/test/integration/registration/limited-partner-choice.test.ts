@@ -12,9 +12,9 @@ import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
 import {
   LIMITED_PARTNER_CHOICE_URL,
-  NEXT_URL,
-  registrationRoutingLimitedPartnerChoice
-} from "../../../controller/registration/Routing";
+  NEXT_URL
+} from "../../../controller/registration/url";
+import { registrationRoutingLimitedPartnerChoice } from "../../../controller/registration/Routing";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 

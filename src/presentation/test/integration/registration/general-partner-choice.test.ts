@@ -7,7 +7,7 @@ import app from "../app";
 import {
   GENERAL_PARTNER_CHOICE_URL,
   LIMITED_PARTNERS_URL
-} from "../../../controller/registration/Routing";
+} from "../../../controller/registration/url";
 import RegistrationPageType from "../../../../presentation/controller/registration/PageType";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import {

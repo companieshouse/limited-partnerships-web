@@ -4,9 +4,7 @@ import * as config from "../../../../config/constants";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
-import {
-  GENERAL_PARTNERS_URL,
-} from "../../../controller/registration/Routing";
+import { GENERAL_PARTNERS_URL } from "../../../controller/registration/url";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 
@@ -28,7 +26,7 @@ describe("General Partners Page", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
-      `${cyTranslationText.generalPartnersPage.title } - ${cyTranslationText.service} - GOV.UK`
+      `${cyTranslationText.generalPartnersPage.title} - ${cyTranslationText.service} - GOV.UK`
     );
     expect(res.text).toContain(cyTranslationText.generalPartnersPage.title);
   });
@@ -39,7 +37,7 @@ describe("General Partners Page", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
-      `${enTranslationText.generalPartnersPage.title } - ${enTranslationText.service} - GOV.UK`
+      `${enTranslationText.generalPartnersPage.title} - ${enTranslationText.service} - GOV.UK`
     );
     expect(res.text).toContain(enTranslationText.generalPartnersPage.title);
   });
@@ -48,7 +46,7 @@ describe("General Partners Page", () => {
     const limitedPartnership = new LimitedPartnershipBuilder().build();
 
     appDevDependencies.registrationGateway.feedLimitedPartnerships([
-      limitedPartnership,
+      limitedPartnership
     ]);
 
     const res = await request(app).get(GENERAL_PARTNERS_URL);
