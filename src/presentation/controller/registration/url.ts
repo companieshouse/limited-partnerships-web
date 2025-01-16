@@ -7,7 +7,6 @@ export const WHICH_TYPE_URL = `${BASE_URL}/${template.WHICH_TYPE_TEMPLATE}`;
 export const NAME_URL = `${BASE_URL}/${template.NAME_TEMPLATE}`;
 export const NAME_WITH_IDS_URL = `${BASE_WITH_IDS_URL}/${template.NAME_TEMPLATE}`;
 export const EMAIL_URL = `${BASE_WITH_IDS_URL}/${template.EMAIL_TEMPLATE}`;
-export const OFFICE_ADDRESS_URL = `${BASE_WITH_IDS_URL}/${template.OFFICE_ADDRESS_TEMPLATE}`;
 export const GENERAL_PARTNERS_URL = `${BASE_WITH_IDS_URL}/${template.GENERAL_PARTNERS_TEMPLATE}`;
 export const GENERAL_PARTNER_CHOICE_URL = `${BASE_WITH_IDS_URL}/${template.GENERAL_PARTNER_CHOICE_TEMPLATE}`;
 

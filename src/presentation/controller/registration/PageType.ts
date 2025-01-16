@@ -2,7 +2,6 @@ enum RegistrationPageType {
   whichType = "which-type",
   name = "name",
   email = "email",
-  officeAddress = "office-address",
   generalPartners = "general-partners",
   limitedPartners = "limited-partners",
   generalPartnerChoice = "general-partner-choice",

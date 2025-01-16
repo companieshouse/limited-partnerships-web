@@ -27,7 +27,6 @@
           {% endif %}
         </div>
         
-    
         <div class="govuk-!-margin-top-8">
           {{ govukInput({
             hint: {
@@ -37,7 +36,7 @@
             name: "address_line_1",
             value: props.data.limitedPartnership.data.registered_office_address.address_line_1,
             attributes : {
-              "data-event-id": "name-or-number-office-address-registered"
+              "data-event-id": "name-or-number-postcode-registered-office-address"
             }
           }) }}
 
@@ -50,15 +49,13 @@
             value: props.data.limitedPartnership.data.registered_office_address.postal_code,
             attributes : {
               required : true,
-              "data-event-id": "postcode-office-address-registered"
+              "data-event-id": "postcode-postcode-registered-office-address"
             }
           }) }}
 
-          <p><a href="">{{ i18n.officeAddress.enterAddressManually }}</a><p>
-
-          {{ govukInsetText({
-            html: i18n.officeAddress.publicRegister
-          }) }}
+          <p>
+            <a href="" class="govuk-link">{{ i18n.officeAddress.enterAddressManually }}</a>
+          <p>
 
           {{ govukButton({
             text: i18n.officeAddress.findAddress,
@@ -67,7 +64,13 @@
             }
           }) }}
       </div>
-      </form>
+    </form>
+
+    <div>
+      {{ govukInsetText({
+        html: i18n.officeAddress.publicRegister
+      }) }}
+    </div>
   </div>
 </div>
 

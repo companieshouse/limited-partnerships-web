@@ -4,10 +4,11 @@ import * as config from "../../../../config/constants";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
-import { OFFICE_ADDRESS_URL } from "../../../controller/registration/url";
-import { appDevDependencies } from "../../../../config/dev-dependencies";
 
-describe("Office Address Page", () => {
+import { appDevDependencies } from "../../../../config/dev-dependencies";
+import { POSTCODE_REGISTERED_OFFICE_ADDRESS_URL } from "../../../controller/addressLookUp/url";
+
+describe("Postcode Registered Office Address Page", () => {
   beforeEach(() => {
     setLocalesEnabled(false);
 
@@ -19,10 +20,12 @@ describe("Office Address Page", () => {
     LocalesService.getInstance().enabled = bool;
   };
 
-  describe("Get Office Address Page", () => {
+  describe("Get Postcode Registered Office Address Page", () => {
     it("should load the office address page with English text", async () => {
       setLocalesEnabled(true);
-      const res = await request(app).get(OFFICE_ADDRESS_URL + "?lang=en");
+      const res = await request(app).get(
+        POSTCODE_REGISTERED_OFFICE_ADDRESS_URL + "?lang=en"
+      );
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
@@ -40,7 +43,9 @@ describe("Office Address Page", () => {
 
     it("should load the office address page with Welsh text", async () => {
       setLocalesEnabled(true);
-      const res = await request(app).get(OFFICE_ADDRESS_URL + "?lang=cy");
+      const res = await request(app).get(
+        POSTCODE_REGISTERED_OFFICE_ADDRESS_URL + "?lang=cy"
+      );
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(

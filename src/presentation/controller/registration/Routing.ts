@@ -3,6 +3,7 @@ import { PageRouting, PagesRouting } from "../PageRouting";
 import RegistrationPageType from "./PageType";
 import PageType from "../PageType";
 import * as url from "./url";
+import { POSTCODE_REGISTERED_OFFICE_ADDRESS_URL } from "../addressLookUp/url";
 
 const registrationRoutingPartnershipType = {
   previousUrl: url.START_URL,
@@ -21,19 +22,14 @@ const registrationRoutingName = {
 const registrationRoutingEmail = {
   previousUrl: url.NAME_WITH_IDS_URL,
   currentUrl: url.EMAIL_URL,
-  nextUrl: url.OFFICE_ADDRESS_URL,
+  nextUrl: POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
   pageType: RegistrationPageType.email
 };
 
-const registrationRoutingOfficeAddress = {
-  previousUrl: url.EMAIL_URL,
-  currentUrl: url.OFFICE_ADDRESS_URL,
-  nextUrl: url.GENERAL_PARTNERS_URL,
-  pageType: RegistrationPageType.officeAddress
-};
+// address look-up
 
 const registrationRoutingGeneralPartners = {
-  previousUrl: url.EMAIL_URL,
+  previousUrl: POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
   currentUrl: url.GENERAL_PARTNERS_URL,
   nextUrl: url.GENERAL_PARTNER_CHOICE_URL,
   pageType: RegistrationPageType.generalPartners
@@ -71,7 +67,6 @@ const list = [
   registrationRoutingPartnershipType,
   registrationRoutingName,
   registrationRoutingEmail,
-  registrationRoutingOfficeAddress,
   registrationRoutingGeneralPartners,
   registrationRoutingLimitedPartners,
   registrationRoutingGeneralPartnerChoice,

@@ -13,9 +13,9 @@ import {
   GENERAL_PARTNERS_URL,
   GENERAL_PARTNER_CHOICE_URL,
   LIMITED_PARTNER_CHOICE_URL,
-  NAME_WITH_IDS_URL,
-  OFFICE_ADDRESS_URL
+  NAME_WITH_IDS_URL
 } from "../presentation/controller/registration/url";
+import { POSTCODE_REGISTERED_OFFICE_ADDRESS_URL } from "../presentation/controller/addressLookUp/url";
 
 export const registrationEndpoints = (
   router: Router,
@@ -67,9 +67,9 @@ export const registrationEndpoints = (
   );
 
   router.get(
-    OFFICE_ADDRESS_URL,
+    POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
     authentication,
-    dependencies.registrationController.getPageRouting()
+    dependencies.addressLookUpController.getPageRouting()
   );
 
   router.get(
