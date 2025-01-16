@@ -1,0 +1,58 @@
+{% extends "layout.njk" %}
+
+{% set pageTitle = i18n.chooseRegisteredOfficeAddressPage.title %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form class="form" action={{ props.currentUrl }} method="post">
+        <input type="hidden" name="pageType" value={{ props.pageType }}>
+        {% include "includes/csrf_token.njk" %}
+        
+        {% include "includes/proposed-name.njk" %}  
+
+        {{ govukRadios({
+          classes: "govuk-radios",
+          name: "parameter",
+          value: data['chooseRegisteredOfficeAddressPage'],
+          fieldset: {
+            legend: {
+              text: i18n.choose.title,
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--xl"
+            }
+          },
+          hint: {
+            text: i18n.chooseRegisteredOfficeAddressPage.addressLink
+          },
+
+          items: [
+            {
+              value: "Address1",
+              text: i18n.chooseRegisteredOfficeAddressPage.address,
+              id: "address",
+              name: "address",
+              attributes: {
+                required: true
+              }
+            },
+            {
+              value: "Address2",
+              text: i18n.chooseRegisteredOfficeAddressPage.legalEntity,
+              id: "legal_entity",
+              name: "legal_entity",
+              attributes: {
+                required: true
+              }
+            }
+          ]
+        }) }}
+       
+        {% include "includes/save-and-continue-button.njk" %}
+      </form>
+    </div>
+  </div>
+{% endblock %}
+
+       
+      
