@@ -1,6 +1,5 @@
 enum AddressPageType {
-  postcodeRegisteredOfficeAddress = "postcode-registered-office-address",
-  next = "next"
+  postcodeRegisteredOfficeAddress = "postcode-registered-office-address"
 }
 
 export default AddressPageType;

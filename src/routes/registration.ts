@@ -15,7 +15,6 @@ import {
   LIMITED_PARTNER_CHOICE_URL,
   NAME_WITH_IDS_URL
 } from "../presentation/controller/registration/url";
-import { POSTCODE_REGISTERED_OFFICE_ADDRESS_URL } from "../presentation/controller/addressLookUp/url";
 
 export const registrationEndpoints = (
   router: Router,
@@ -64,12 +63,6 @@ export const registrationEndpoints = (
     EMAIL_URL,
     authentication,
     dependencies.registrationController.sendPageData()
-  );
-
-  router.get(
-    POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
-    authentication,
-    dependencies.addressLookUpController.getPageRouting()
   );
 
   router.get(
