@@ -6,16 +6,20 @@ import { NAME_URL } from "../../../controller/registration/url";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import RegistrationController from "../../../controller/registration/Controller";
 import RegistrationService from "../../../../application/registration/Service";
-import RegistrationInMemoryGateway from "../../../../infrastructure/gateway/registration/RegistrationInMemoryGateway";
+import RegistrationInMemoryGateway from "../../../../infrastructure/gateway/limitedPartnership/LimitedPartnershipInMemoryGateway";
 import CacheRepository from "../../../../infrastructure/repository/CacheRepository";
 import CacheService from "../../../../application/CacheService";
+import TransactionInMemoryGateway from "../../../../infrastructure/gateway/transaction/TransactionInMemoryGateway";
 
 describe("Cache", () => {
   let registrationController: RegistrationController;
 
   beforeAll(() => {
     registrationController = new RegistrationController(
-      new RegistrationService(new RegistrationInMemoryGateway()),
+      new RegistrationService(
+        new RegistrationInMemoryGateway(),
+        new TransactionInMemoryGateway()
+      ),
       new CacheService(new CacheRepository())
     );
   });

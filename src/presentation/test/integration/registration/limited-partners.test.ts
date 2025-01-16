@@ -12,7 +12,7 @@ describe("Limited Partners Page", () => {
   beforeEach(() => {
     setLocalesEnabled(false);
 
-    appDevDependencies.registrationGateway.feedLimitedPartnerships([]);
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([]);
   });
 
   const setLocalesEnabled = (bool: boolean) => {
@@ -45,7 +45,7 @@ describe("Limited Partners Page", () => {
   it("should contain the proposed name - data from api", async () => {
     const limitedPartnership = new LimitedPartnershipBuilder().build();
 
-    appDevDependencies.registrationGateway.feedLimitedPartnerships([
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
       limitedPartnership
     ]);
 

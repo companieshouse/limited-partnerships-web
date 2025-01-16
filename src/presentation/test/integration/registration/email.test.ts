@@ -14,7 +14,7 @@ describe("Email Page", () => {
   beforeEach(() => {
     setLocalesEnabled(false);
 
-    appDevDependencies.registrationGateway.feedLimitedPartnerships([]);
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([]);
   });
 
   const setLocalesEnabled = (bool: boolean) => {
@@ -53,7 +53,7 @@ describe("Email Page", () => {
     it("should load the name page with data from api", async () => {
       const limitedPartnership = new LimitedPartnershipBuilder().build();
 
-      appDevDependencies.registrationGateway.feedLimitedPartnerships([
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
         limitedPartnership
       ]);
 
@@ -70,17 +70,17 @@ describe("Email Page", () => {
   describe("Post email", () => {
     it("should send email", async () => {
       const limitedPartnership = new LimitedPartnershipBuilder()
-        .withId(appDevDependencies.registrationGateway.submissionId)
+        .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
         .build();
 
-      appDevDependencies.registrationGateway.feedLimitedPartnerships([
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
         limitedPartnership
       ]);
 
       const url = appDevDependencies.registrationController.insertIdsInUrl(
         EMAIL_URL,
-        appDevDependencies.registrationGateway.transactionId,
-        appDevDependencies.registrationGateway.submissionId
+        appDevDependencies.transactionGateway.transactionId,
+        appDevDependencies.limitedPartnershipGateway.submissionId
       );
 
       const res = await request(app).post(url).send({
@@ -88,7 +88,7 @@ describe("Email Page", () => {
         email: "test@example.com"
       });
 
-      const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.registrationGateway.transactionId}/submission/${appDevDependencies.registrationGateway.submissionId}/postcode-registered-office-address`;
+      const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.transactionGateway.transactionId}/submission/${appDevDependencies.limitedPartnershipGateway.submissionId}/postcode-registered-office-address`;
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
@@ -96,10 +96,10 @@ describe("Email Page", () => {
 
     it("should return a validation error", async () => {
       const limitedPartnership = new LimitedPartnershipBuilder()
-        .withId(appDevDependencies.registrationGateway.submissionId)
+        .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
         .build();
 
-      appDevDependencies.registrationGateway.feedLimitedPartnerships([
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
         limitedPartnership
       ]);
 
@@ -107,12 +107,12 @@ describe("Email Page", () => {
         errors: { "data.email": "must be a well-formed email address" }
       };
 
-      appDevDependencies.registrationGateway.feedErrors(apiErrors);
+      appDevDependencies.limitedPartnershipGateway.feedErrors(apiErrors);
 
       const url = appDevDependencies.registrationController.insertIdsInUrl(
         EMAIL_URL,
-        appDevDependencies.registrationGateway.transactionId,
-        appDevDependencies.registrationGateway.submissionId
+        appDevDependencies.transactionGateway.transactionId,
+        appDevDependencies.limitedPartnershipGateway.submissionId
       );
 
       const res = await request(app).post(url).send({

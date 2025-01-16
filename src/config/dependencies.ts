@@ -1,24 +1,28 @@
 import GlobalController from "../presentation/controller/global/Controller";
 import RegistrationService from "../application/registration/Service";
-import RegistrationGateway from "../infrastructure/gateway/registration/RegistrationGateway";
+import LimitedPartnershipGateway from "../infrastructure/gateway/limitedPartnership/LimitedPartnershipGateway";
 import CacheRepository from "../infrastructure/repository/CacheRepository";
 import RegistrationController from "../presentation/controller/registration/Controller";
 import CacheService from "../application/CacheService";
 import AddressLookUpGateway from "../infrastructure/gateway/addressLookUp/AddressLookUpGateway";
 import AddressLookUpService from "../application/addressLookUp/Service";
 import AddressLookUpController from "../presentation/controller/addressLookUp/Controller";
+import TransactionGateway from "../infrastructure/gateway/transaction/TransactionGateway";
 
 const globalController: GlobalController = new GlobalController();
 
-const registrationGateway: RegistrationGateway = new RegistrationGateway();
+const limitedPartnershipGateway: LimitedPartnershipGateway =
+  new LimitedPartnershipGateway();
+const transactionGateway: TransactionGateway = new TransactionGateway();
 const registrationService: RegistrationService = new RegistrationService(
-  registrationGateway
+  limitedPartnershipGateway,
+  transactionGateway
 );
 
 const addressLookUpGateway: AddressLookUpGateway = new AddressLookUpGateway();
 const addressLookUpService: AddressLookUpService = new AddressLookUpService(
   addressLookUpGateway,
-  registrationGateway
+  limitedPartnershipGateway
 );
 
 const cacheRepository = new CacheRepository();

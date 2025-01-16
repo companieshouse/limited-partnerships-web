@@ -4,15 +4,15 @@ import { appDevDependencies } from "../../../../config/dev-dependencies";
 
 describe("Get Submission", () => {
   beforeEach(() => {
-    appDevDependencies.registrationGateway.feedLimitedPartnerships([]);
-    appDevDependencies.registrationGateway.feedErrors();
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([]);
+    appDevDependencies.limitedPartnershipGateway.feedErrors();
   });
 
   describe("Get submission by id", () => {
     it("should return the submission", async () => {
       const limitedPartnership = new LimitedPartnershipBuilder().build();
 
-      appDevDependencies.registrationGateway.feedLimitedPartnerships([
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
         limitedPartnership
       ]);
 
@@ -29,7 +29,7 @@ describe("Get Submission", () => {
     it("should return an error not found if id is wrong", async () => {
       const limitedPartnership = new LimitedPartnershipBuilder().build();
 
-      appDevDependencies.registrationGateway.feedLimitedPartnerships([
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
         limitedPartnership
       ]);
 

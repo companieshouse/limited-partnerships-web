@@ -1,16 +1,16 @@
 import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import RegistrationPageType from "../../presentation/controller/registration/PageType";
-import IRegistrationGateway from "../../domain/IRegistrationGateway";
+import ILimitedPartnershipGateway from "../../domain/ILimitedPartnershipGateway";
 import { logger } from "../../utils";
 import UIErrors from "../../domain/entities/UIErrors";
+import ITransactionGateway from "../../domain/ITransactionGateway";
 
 class RegistrationService {
-  registrationGateway: IRegistrationGateway;
-
-  constructor(registrationGateway: IRegistrationGateway) {
-    this.registrationGateway = registrationGateway;
-  }
+  constructor(
+    private limitedPartnershipGateway: ILimitedPartnershipGateway,
+    private transactionGateway: ITransactionGateway
+  ) {}
 
   async getLimitedPartnership(
     opt: { access_token: string; refresh_token: string },
@@ -18,7 +18,7 @@ class RegistrationService {
     submissionId: string
   ): Promise<LimitedPartnership> {
     try {
-      return await this.registrationGateway.getLimitedPartnership(
+      return await this.limitedPartnershipGateway.getLimitedPartnership(
         opt,
         transactionId,
         submissionId
@@ -40,17 +40,18 @@ class RegistrationService {
     errors?: UIErrors;
   }> {
     try {
-      const transactionId = await this.registrationGateway.createTransaction(
+      const transactionId = await this.transactionGateway.createTransaction(
         opt,
         registrationType
       );
 
-      const submissionId = await this.registrationGateway.createSubmission(
-        opt,
-        registrationType,
-        transactionId,
-        data
-      );
+      const submissionId =
+        await this.limitedPartnershipGateway.createSubmission(
+          opt,
+          registrationType,
+          transactionId,
+          data
+        );
 
       return { submissionId, transactionId };
     } catch (errors: any) {
@@ -82,7 +83,7 @@ class RegistrationService {
     errors?: UIErrors;
   }> {
     try {
-      await this.registrationGateway.sendPageData(
+      await this.limitedPartnershipGateway.sendPageData(
         opt,
         transactionId,
         submissionId,

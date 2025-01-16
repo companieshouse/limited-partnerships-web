@@ -4,22 +4,22 @@ import RegistrationPageType from "../../../controller/registration/PageType";
 
 describe("Update Submission", () => {
   beforeEach(() => {
-    appDevDependencies.registrationGateway.feedLimitedPartnerships([]);
-    appDevDependencies.registrationGateway.feedErrors();
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([]);
+    appDevDependencies.limitedPartnershipGateway.feedErrors();
   });
 
   it("should send data an update the limited partnership", async () => {
     const limitedPartnership = new LimitedPartnershipBuilder()
-      .withId(appDevDependencies.registrationGateway.submissionId)
+      .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
       .build();
 
-    appDevDependencies.registrationGateway.feedLimitedPartnerships([
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
       limitedPartnership
     ]);
 
     await appDevDependencies.registrationService.sendPageData(
       { access_token: "access_token", refresh_token: "refresh_token" },
-      appDevDependencies.registrationGateway.transactionId,
+      appDevDependencies.transactionGateway.transactionId,
       limitedPartnership["_id"] as string,
       RegistrationPageType.email,
       {
@@ -28,7 +28,7 @@ describe("Update Submission", () => {
     );
 
     expect(
-      appDevDependencies.registrationGateway.limitedPartnerships[0]
+      appDevDependencies.limitedPartnershipGateway.limitedPartnerships[0]
     ).toEqual({
       ...limitedPartnership,
       data: { ...limitedPartnership.data, email: "email@example.com" }
@@ -37,30 +37,30 @@ describe("Update Submission", () => {
 
   it("should return an error if no data are send", async () => {
     const limitedPartnership = new LimitedPartnershipBuilder()
-      .withId(appDevDependencies.registrationGateway.submissionId)
+      .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
       .build();
 
-    appDevDependencies.registrationGateway.feedLimitedPartnerships([
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
       limitedPartnership
     ]);
 
     const result = await appDevDependencies.registrationService.sendPageData(
       { access_token: "access_token", refresh_token: "refresh_token" },
-      appDevDependencies.registrationGateway.transactionId,
+      appDevDependencies.transactionGateway.transactionId,
       limitedPartnership["_id"] as string,
       RegistrationPageType.email,
       {}
     );
 
     expect(
-      appDevDependencies.registrationGateway.limitedPartnerships[0]
+      appDevDependencies.limitedPartnershipGateway.limitedPartnerships[0]
     ).not.toEqual({
       ...limitedPartnership,
       data: { ...limitedPartnership.data, email: "email@example.com" }
     });
 
     expect(result).toEqual({
-      errors: appDevDependencies.registrationGateway.uiErrors
+      errors: appDevDependencies.limitedPartnershipGateway.uiErrors
     });
   });
 });

@@ -7,14 +7,14 @@ import { ApiErrors } from "../../../../domain/entities/UIErrors";
 
 describe("Create transaction and the first submission", () => {
   beforeEach(() => {
-    appDevDependencies.registrationGateway.feedLimitedPartnerships([]);
-    appDevDependencies.registrationGateway.feedErrors();
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([]);
+    appDevDependencies.limitedPartnershipGateway.feedErrors();
   });
 
   describe("Create LimitedPartnerShip", () => {
     it("should create a new LimitedPartnership", async () => {
       const limitedPartnership = new LimitedPartnershipBuilder()
-        .withId(appDevDependencies.registrationGateway.submissionId)
+        .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
         .build();
 
       const result =
@@ -29,11 +29,11 @@ describe("Create transaction and the first submission", () => {
         );
 
       expect(
-        appDevDependencies.registrationGateway.limitedPartnerships.length
+        appDevDependencies.limitedPartnershipGateway.limitedPartnerships.length
       ).toEqual(1);
       expect(result).toEqual({
-        transactionId: appDevDependencies.registrationGateway.transactionId,
-        submissionId: appDevDependencies.registrationGateway.submissionId
+        transactionId: appDevDependencies.transactionGateway.transactionId,
+        submissionId: appDevDependencies.limitedPartnershipGateway.submissionId
       });
     });
 
@@ -47,7 +47,7 @@ describe("Create transaction and the first submission", () => {
         }
       };
 
-      appDevDependencies.registrationGateway.feedErrors(apiErrors);
+      appDevDependencies.limitedPartnershipGateway.feedErrors(apiErrors);
 
       const result =
         await appDevDependencies.registrationService.createTransactionAndFirstSubmission(
@@ -61,14 +61,16 @@ describe("Create transaction and the first submission", () => {
         );
 
       expect(
-        appDevDependencies.registrationGateway.limitedPartnerships.length
+        appDevDependencies.limitedPartnershipGateway.limitedPartnerships.length
       ).toEqual(0);
       expect(result).toEqual({
         transactionId: "",
         submissionId: "",
-        errors: appDevDependencies.registrationGateway.uiErrors
+        errors: appDevDependencies.limitedPartnershipGateway.uiErrors
       });
-      expect(appDevDependencies.registrationGateway.uiErrors.errors).toEqual({
+      expect(
+        appDevDependencies.limitedPartnershipGateway.uiErrors.errors
+      ).toEqual({
         errorList: [
           {
             href: "#partnership_name",
@@ -98,7 +100,7 @@ describe("Create transaction and the first submission", () => {
         });
 
       expect(
-        appDevDependencies.registrationGateway.limitedPartnerships.length
+        appDevDependencies.limitedPartnershipGateway.limitedPartnerships.length
       ).toEqual(0);
     });
   });

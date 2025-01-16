@@ -12,7 +12,7 @@ describe("Postcode Registered Office Address Page", () => {
   beforeEach(() => {
     setLocalesEnabled(false);
 
-    appDevDependencies.registrationGateway.feedLimitedPartnerships([]);
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([]);
   });
 
   const setLocalesEnabled = (bool: boolean) => {

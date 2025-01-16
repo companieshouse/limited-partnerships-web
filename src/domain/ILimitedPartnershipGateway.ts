@@ -2,11 +2,7 @@ import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/l
 
 import RegistrationPageType from "../presentation/controller/registration/PageType";
 
-interface IRegistrationGateway {
-  createTransaction(
-    opt: { access_token: string },
-    registrationPageType: RegistrationPageType
-  ): Promise<string>;
+interface ILimitedPartnershipGateway {
   createSubmission(
     opt: { access_token: string },
     registrationPageType: RegistrationPageType,
@@ -27,4 +23,4 @@ interface IRegistrationGateway {
   ): Promise<void>;
 }
 
-export default IRegistrationGateway;
+export default ILimitedPartnershipGateway;

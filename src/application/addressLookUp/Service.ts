@@ -1,13 +1,13 @@
 import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 import IAddressLookUpGateway from "../../domain/IAddressLookUpGateway";
-import IRegistrationGateway from "../../domain/IRegistrationGateway";
+import ILimitedPartnershipGateway from "../../domain/ILimitedPartnershipGateway";
 
 import { logger } from "../../utils";
 
 class AddressLookUpService {
   constructor(
     private addressGateway: IAddressLookUpGateway,
-    private registrationGateway: IRegistrationGateway
+    private limitedPartnershipGateway: ILimitedPartnershipGateway
   ) {}
 
   async getLimitedPartnership(
@@ -16,7 +16,7 @@ class AddressLookUpService {
     submissionId: string
   ): Promise<LimitedPartnership> {
     try {
-      return await this.registrationGateway.getLimitedPartnership(
+      return await this.limitedPartnershipGateway.getLimitedPartnership(
         opt,
         transactionId,
         submissionId

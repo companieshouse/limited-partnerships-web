@@ -16,8 +16,8 @@ import {
 
 describe("Create transaction and the first submission", () => {
   beforeAll(() => {
-    appDevDependencies.registrationGateway.feedLimitedPartnerships([]);
-    appDevDependencies.registrationGateway.feedErrors();
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([]);
+    appDevDependencies.limitedPartnershipGateway.feedErrors();
     appDevDependencies.cacheRepository.feedCache(null);
   });
 
@@ -41,8 +41,8 @@ describe("Create transaction and the first submission", () => {
 
     const url = appDevDependencies.registrationController.insertIdsInUrl(
       NAME_URL,
-      appDevDependencies.registrationGateway.transactionId,
-      appDevDependencies.registrationGateway.submissionId
+      appDevDependencies.transactionGateway.transactionId,
+      appDevDependencies.limitedPartnershipGateway.submissionId
     );
 
     const res = await request(app).post(url).send({
@@ -52,7 +52,7 @@ describe("Create transaction and the first submission", () => {
       partnership_type: PartnershipType.LP
     });
 
-    const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.registrationGateway.transactionId}/submission/${appDevDependencies.registrationGateway.submissionId}/email`;
+    const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.transactionGateway.transactionId}/submission/${appDevDependencies.limitedPartnershipGateway.submissionId}/email`;
 
     expect(res.status).toBe(302);
     expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
@@ -65,8 +65,8 @@ describe("Create transaction and the first submission", () => {
   it("should return validation errors", async () => {
     const url = appDevDependencies.registrationController.insertIdsInUrl(
       NAME_URL,
-      appDevDependencies.registrationGateway.transactionId,
-      appDevDependencies.registrationGateway.submissionId
+      appDevDependencies.transactionGateway.transactionId,
+      appDevDependencies.limitedPartnershipGateway.submissionId
     );
 
     const res = await request(app).post(url).send({
