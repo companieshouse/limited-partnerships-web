@@ -27,9 +27,9 @@ class AddressLookUpController extends AbstractController {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const session = request.session as Session;
-        const tokens = this.extractTokens(request);
+        const tokens = super.extractTokens(request);
         const pageType = super.pageType(request.path);
-        const { transactionId, submissionId } = this.extractIds(request);
+        const { transactionId, submissionId } = super.extractIds(request);
 
         const pageRouting = super.getRouting(
           addresssRouting,
@@ -69,7 +69,10 @@ class AddressLookUpController extends AbstractController {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const session = request.session as Session;
-        const pageType = this.extractPageTypeOrThrowError(request);
+        const pageType = super.extractPageTypeOrThrowError(
+          request,
+          AddressLookUpPageType
+        );
         const postalCode = escape(request.body.postal_code);
         const addressLine1 = escape(request.body.address_line_1);
 
@@ -91,6 +94,7 @@ class AddressLookUpController extends AbstractController {
           response.render(super.templateName(pageRouting.currentUrl), {
             props: { ...pageRouting }
           });
+          return;
         }
 
         await this.cacheService.addDataToCache(session, {
@@ -102,32 +106,6 @@ class AddressLookUpController extends AbstractController {
         next(error);
       }
     };
-  }
-
-  private extractPageTypeOrThrowError(request: Request) {
-    const pageTypeList = Object.values(AddressLookUpPageType);
-    const pageType = request.body.pageType;
-
-    if (!pageTypeList.includes(pageType)) {
-      throw new Error(`wrong page type: ${pageType}`);
-    }
-    return pageType;
-  }
-
-  private extractTokens(request: Request) {
-    return {
-      access_token:
-        request?.session?.data?.signin_info?.access_token?.access_token ?? "",
-      refresh_token:
-        request?.session?.data?.signin_info?.access_token?.refresh_token ?? ""
-    };
-  }
-
-  private extractIds(request: Request) {
-    const transactionId = request.params.transactionId;
-    const submissionId = request.params.submissionId;
-
-    return { transactionId, submissionId };
   }
 }
 
