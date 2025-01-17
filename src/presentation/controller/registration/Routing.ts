@@ -88,7 +88,7 @@ export const registrationRoutingCheckYourAnswers = {
 };
 
 const registrationRoutingNext = {
-  previousUrl: LIMITED_PARTNER_CHOICE_URL,
+  previousUrl: CHECK_YOUR_ANSWERS_URL,
   currentUrl: NEXT_URL,
   nextUrl: "/",
   pageType: RegistrationPageType.next,

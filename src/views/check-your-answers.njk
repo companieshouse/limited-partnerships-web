@@ -83,8 +83,10 @@
       }) }} 
  
       <br>
-      <form method="post">
-        <div class="govuk-button-group">
+      <div class="govuk-button-group">
+        <form class="form" action={{ props.currentUrl }} method="post">
+        <input type="hidden" name="pageType" value={{ props.pageType }}>
+        {% include "includes/csrf_token.njk" %}
 
           {{ govukCheckboxes({
             name: "lpStatement",            
@@ -112,9 +114,9 @@
               "id": "submit",
               "data-event-id": "check-your-answers-continue-to-payment-page-button"
             }
-          }) }}
-        </div>
-      </form>
+          }) }}        
+        </form>
+      </div>
     </div>
   </div>
 

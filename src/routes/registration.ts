@@ -111,7 +111,7 @@ export const registrationEndpoints = (
   router.post(
     CHECK_YOUR_ANSWERS_URL,
     authentication,
-    dependencies.registrationController.getPageRouting()
+    dependencies.registrationController.redirectAndCacheSelection()
   );
 
   router.get(
