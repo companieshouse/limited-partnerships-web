@@ -12,7 +12,7 @@ import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
 import {
   LIMITED_PARTNER_CHOICE_URL,
-  NEXT_URL,
+  CHECK_YOUR_ANSWERS_URL,
   registrationRoutingLimitedPartnerChoice
 } from "../../../controller/registration/Routing";
 import RegistrationPageType from "../../../controller/registration/PageType";
@@ -77,7 +77,7 @@ describe("Limited Partner Choice Page", () => {
     expect(res.status).toBe(302);
     const nextPageUrl =
       appDevDependencies.registrationController.insertIdsInUrl(
-        NEXT_URL,
+        CHECK_YOUR_ANSWERS_URL,
         transactionId,
         submissionId
       );
