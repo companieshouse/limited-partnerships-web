@@ -13,6 +13,7 @@ import {
   GENERAL_PARTNERS_URL,
   GENERAL_PARTNER_CHOICE_URL,
   LIMITED_PARTNER_CHOICE_URL,
+  CHECK_YOUR_ANSWERS_URL,
   NAME_WITH_IDS_URL,
 } from "../presentation/controller/registration/Routing";
 
@@ -99,6 +100,18 @@ export const registrationEndpoints = (
     authentication,
     // to be changed - use different method
     dependencies.registrationController.redirectAndCacheSelection()
+  );
+
+  router.get(
+    CHECK_YOUR_ANSWERS_URL,
+    authentication,
+    dependencies.registrationController.getPageRouting()
+  );
+
+  router.post(
+    CHECK_YOUR_ANSWERS_URL,
+    authentication,
+    dependencies.registrationController.getPageRouting()
   );
 
   router.get(

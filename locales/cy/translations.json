@@ -4,6 +4,18 @@
         "saveAndContinue" : "WELSH - Save and continue"
     },  
 
+    "checkYourAnswersPage" : {
+        "title" : "WELSH - Check your answers before sending your application",
+        "lpInfo" : "WELSH - Limited partnership information",
+        "headingName" : "WELSH - Partnership Name",
+        "headingSic" : "WELSH - Standard Industrial Classification (SIC) code",
+        "headingEmail" : "WELSH - Registered email address",
+        "headingTerm" : "WELSH - Term of partnership",
+        "confirm" : "WELSH - Confirm this statement",
+        "futureLawful" : "WELSH - I confirm that the intended future activities of the limited partnership are lawful.",
+        "payment" : "WELSH - Continue to payment"
+    },
+
     "emailPage" : {
         "whatIsEmail" : "WELSH - What is the registered email address for the partnership?",
         "emailHint" : "WELSH - Partners must be able to access emails that are sent to this address.",

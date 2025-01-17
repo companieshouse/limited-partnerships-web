@@ -14,6 +14,7 @@ export const GENERAL_PARTNER_CHOICE_TEMPLATE =
   RegistrationPageType.generalPartnerChoice;
 export const LIMITED_PARTNER_CHOICE_TEMPLATE =
   RegistrationPageType.limitedPartnerChoice;
+export const CHECK_YOUR_ANSWERS_TEMPLATE = RegistrationPageType.checkYourAnswers;
 export const NEXT_TEMPLATE = RegistrationPageType.next;
 
 // URLs
@@ -27,6 +28,7 @@ export const GENERAL_PARTNER_CHOICE_URL = `${BASE_WITH_IDS_URL}/${GENERAL_PARTNE
 
 export const LIMITED_PARTNERS_URL = `${BASE_WITH_IDS_URL}/${LIMITED_PARTNERS_TEMPLATE}`;
 export const LIMITED_PARTNER_CHOICE_URL = `${BASE_WITH_IDS_URL}/${LIMITED_PARTNER_CHOICE_TEMPLATE}`;
+export const CHECK_YOUR_ANSWERS_URL = `${BASE_WITH_IDS_URL}/${CHECK_YOUR_ANSWERS_TEMPLATE}`;
 export const NEXT_URL = `${BASE_WITH_IDS_URL}/${NEXT_TEMPLATE}`;
 
 const registrationRoutingPartnershipType = {
@@ -74,8 +76,15 @@ const registrationRoutingLimitedPartners = {
 export const registrationRoutingLimitedPartnerChoice = {
   previousUrl: LIMITED_PARTNERS_URL,
   currentUrl: LIMITED_PARTNER_CHOICE_URL,
-  nextUrl: NEXT_URL,
+  nextUrl: CHECK_YOUR_ANSWERS_URL,
   pageType: RegistrationPageType.limitedPartnerChoice,
+};
+
+export const registrationRoutingCheckYourAnswers = {
+  previousUrl: LIMITED_PARTNER_CHOICE_URL,
+  currentUrl: CHECK_YOUR_ANSWERS_URL,
+  nextUrl: NEXT_URL,
+  pageType: RegistrationPageType.checkYourAnswers,
 };
 
 const registrationRoutingNext = {
@@ -93,6 +102,7 @@ const list = [
   registrationRoutingLimitedPartners,
   registrationRoutingGeneralPartnerChoice,
   registrationRoutingLimitedPartnerChoice,
+  registrationRoutingCheckYourAnswers,
   registrationRoutingNext,
 ];
 
