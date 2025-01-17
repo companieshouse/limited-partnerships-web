@@ -6,7 +6,7 @@
 
     "emailPage" : {
         "whatIsEmail" : "WELSH - Partners must be able to access emails that are sent to this address.",
-        "emailHint" : "WELSH - Partners must be able to access emails that are sent to this address.",
+        "emailHint" : "",
         "emailUsedFor" : { 
             "title": "WELSH - What is the registered email address for the partnership?",
             "sendInformation": "WELSH - In future we'll use this to send important information that relates to the limited partnership. For example, new legislative requirements or warnings about missed deadlines.",
