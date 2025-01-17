@@ -1,6 +1,7 @@
 /* eslint-disable */
 
 import { UKAddress } from "@companieshouse/api-sdk-node/dist/services/postcode-lookup";
+
 import IAddressLookUpGateway from "../../../domain/IAddressLookUpGateway";
 
 class AddressLookUpInMemoryGateway implements IAddressLookUpGateway {
@@ -14,9 +15,7 @@ class AddressLookUpInMemoryGateway implements IAddressLookUpGateway {
   };
 
   async isValidUKPostcode(postcode: string): Promise<boolean> {
-    if (postcode === this.address.postcode) return true;
-
-    return false;
+    return postcode === this.address.postcode;
   }
 
   async getListOfValidPostcodeAddresses(
