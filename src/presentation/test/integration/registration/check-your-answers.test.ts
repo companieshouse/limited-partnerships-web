@@ -56,8 +56,7 @@ describe("Check Your Answers Page", () => {
     const res = await request(app).get(CHECK_YOUR_ANSWERS_URL);
 
     expect(res.status).toBe(200);
+    expect(res.text).toContain(limitedPartnership?.data?.partnership_name);
     expect(res.text).toContain(limitedPartnership?.data?.email);
-    expect(res.text).toContain(`${limitedPartnership?.data?.partnership_name}`);
-    expect(res.text).toContain(`${limitedPartnership?.data?.email}`);
   });
 });
