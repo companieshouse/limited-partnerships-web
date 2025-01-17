@@ -1,21 +1,32 @@
 /* eslint-disable */
 
-import { Resource } from "@companieshouse/api-sdk-node";
 import { UKAddress } from "@companieshouse/api-sdk-node/dist/services/postcode-lookup";
 import IAddressLookUpGateway from "../../../domain/IAddressLookUpGateway";
 
 class AddressLookUpInMemoryGateway implements IAddressLookUpGateway {
-  postcode: string = "CF14 3UZ";
+  address: UKAddress = {
+    postcode: "CF14 3UZ",
+    addressLine1: "CROWN WAY",
+    addressLine2: "",
+    postTown: "CARDIFF",
+    country: "GB-WLS",
+    premise: ""
+  };
 
   async isValidUKPostcode(postcode: string): Promise<boolean> {
-    if (postcode === this.postcode) return true;
+    if (postcode === this.address.postcode) return true;
 
     return false;
   }
+
   async getListOfValidPostcodeAddresses(
     postcode: string
-  ): Promise<Resource<UKAddress[]>> {
-    throw new Error("Method not implemented.");
+  ): Promise<UKAddress[]> {
+    if (postcode === this.address.postcode) {
+      return [this.address];
+    }
+
+    return [];
   }
 }
 

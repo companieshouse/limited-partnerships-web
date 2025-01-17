@@ -70,7 +70,8 @@ class AddressLookUpController extends AbstractController {
       try {
         const session = request.session as Session;
         const pageType = this.extractPageTypeOrThrowError(request);
-        const postal_code = escape(request.body.postal_code);
+        const postalCode = escape(request.body.postal_code);
+        const addressLine1 = escape(request.body.address_line_1);
 
         const pageRouting = super.getRouting(
           addressLookUpRouting,
@@ -80,19 +81,20 @@ class AddressLookUpController extends AbstractController {
           request.params[SUBMISSION_ID]
         );
 
-        const result: boolean = await this.addressService.isValidUKPostcode(
-          postal_code
-        );
+        const { isValid, address } =
+          await this.addressService.isValidUKPostcodeAndHasAnAddress(
+            postalCode,
+            addressLine1
+          );
 
-        if (!result) {
+        if (!isValid) {
           response.render(super.templateName(pageRouting.currentUrl), {
             props: { ...pageRouting }
           });
         }
 
         await this.cacheService.addDataToCache(session, {
-          [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${pageType}`]:
-            postal_code
+          [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${pageType}`]: address
         });
 
         response.redirect(pageRouting.nextUrl);

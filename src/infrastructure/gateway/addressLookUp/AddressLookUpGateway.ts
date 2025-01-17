@@ -10,7 +10,7 @@ class AddressLookUpGateway implements IAddressLookUpGateway {
   }
   async getListOfValidPostcodeAddresses(
     postcode: string
-  ): Promise<Resource<UKAddress[]>> {
+  ): Promise<UKAddress[]> {
     throw new Error("Method not implemented.");
   }
 }

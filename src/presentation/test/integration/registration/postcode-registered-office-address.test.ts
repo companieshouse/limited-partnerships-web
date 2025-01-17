@@ -13,6 +13,8 @@ import { POSTCODE_REGISTERED_OFFICE_ADDRESS_URL } from "../../../controller/addr
 import AddressPageType from "../../../controller/addressLookUp/PageType";
 
 describe("Postcode Registered Office Address Page", () => {
+  const address = appDevDependencies.addressLookUpGateway.address;
+
   beforeEach(() => {
     setLocalesEnabled(false);
 
@@ -76,7 +78,7 @@ describe("Postcode Registered Office Address Page", () => {
       const res = await request(app).post(url).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
         address_line_1: null,
-        postal_code: appDevDependencies.addressLookUpGateway.postcode
+        postal_code: address.postcode
       });
 
       const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.transactionGateway.transactionId}/submission/${appDevDependencies.limitedPartnershipGateway.submissionId}/general-partners`;
@@ -87,7 +89,47 @@ describe("Postcode Registered Office Address Page", () => {
       expect(appDevDependencies.cacheRepository.cache).toEqual({
         [config.APPLICATION_CACHE_KEY]: {
           [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${AddressPageType.postcodeRegisteredOfficeAddress}`]:
-            appDevDependencies.addressLookUpGateway.postcode
+            {
+              postcode: "CF14 3UZ",
+              addressLine1: "",
+              addressLine2: "",
+              postTown: "",
+              country: "",
+              premise: ""
+            }
+        }
+      });
+    });
+
+    it("should validate the post code and find a matching address then redirect to the next page", async () => {
+      const url = appDevDependencies.addressLookUpController.insertIdsInUrl(
+        POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
+        appDevDependencies.transactionGateway.transactionId,
+        appDevDependencies.limitedPartnershipGateway.submissionId
+      );
+
+      const res = await request(app).post(url).send({
+        pageType: AddressPageType.postcodeRegisteredOfficeAddress,
+        address_line_1: address.addressLine1,
+        postal_code: address.postcode
+      });
+
+      const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.transactionGateway.transactionId}/submission/${appDevDependencies.limitedPartnershipGateway.submissionId}/general-partners`;
+
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+
+      expect(appDevDependencies.cacheRepository.cache).toEqual({
+        [config.APPLICATION_CACHE_KEY]: {
+          [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${AddressPageType.postcodeRegisteredOfficeAddress}`]:
+            {
+              postcode: "CF14 3UZ",
+              addressLine1: "CROWN WAY",
+              addressLine2: "",
+              postTown: "CARDIFF",
+              country: "GB-WLS",
+              premise: ""
+            }
         }
       });
     });
