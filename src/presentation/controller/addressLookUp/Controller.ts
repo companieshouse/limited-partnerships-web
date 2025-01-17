@@ -1,11 +1,17 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
+import escape from "escape-html";
 import { Session } from "@companieshouse/node-session-handler";
 
 import AddressService from "../../../application/addressLookUp/Service";
-import addresssRouting from "./Routing";
+import addresssRouting, { addressLookUpRouting } from "./Routing";
 import AbstractController from "../AbstractController";
-import RegistrationPageType from "./PageType";
+import AddressLookUpPageType from "./PageType";
 import CacheService from "../../../application/CacheService";
+import {
+  APPLICATION_CACHE_KEY_PREFIX_REGISTRATION,
+  SUBMISSION_ID,
+  TRANSACTION_ID
+} from "../../../config/constants";
 
 class AddressLookUpController extends AbstractController {
   private addressService: AddressService;
@@ -59,8 +65,45 @@ class AddressLookUpController extends AbstractController {
     };
   }
 
+  postcodeValidation(): RequestHandler {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const session = request.session as Session;
+        const pageType = this.extractPageTypeOrThrowError(request);
+        const postal_code = escape(request.body.postal_code);
+
+        const pageRouting = super.getRouting(
+          addressLookUpRouting,
+          pageType,
+          request.url,
+          request.params[TRANSACTION_ID],
+          request.params[SUBMISSION_ID]
+        );
+
+        const result: boolean = await this.addressService.isValidUKPostcode(
+          postal_code
+        );
+
+        if (!result) {
+          response.render(super.templateName(pageRouting.currentUrl), {
+            props: { ...pageRouting }
+          });
+        }
+
+        await this.cacheService.addDataToCache(session, {
+          [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${pageType}`]:
+            postal_code
+        });
+
+        response.redirect(pageRouting.nextUrl);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
   private extractPageTypeOrThrowError(request: Request) {
-    const pageTypeList = Object.values(RegistrationPageType);
+    const pageTypeList = Object.values(AddressLookUpPageType);
     const pageType = request.body.pageType;
 
     if (!pageTypeList.includes(pageType)) {

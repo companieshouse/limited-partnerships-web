@@ -14,13 +14,13 @@ const registrationRoutingPostcodeRegisteredOfficeAddress = {
 
 const list = [registrationRoutingPostcodeRegisteredOfficeAddress];
 
-export const registrationsRouting: PagesRouting = new Map<
+export const addressLookUpRouting: PagesRouting = new Map<
   PageType,
   PageRouting
 >();
 
 list.forEach((routing) => {
-  registrationsRouting.set(routing.pageType, routing);
+  addressLookUpRouting.set(routing.pageType, routing);
 });
 
-export default registrationsRouting;
+export default addressLookUpRouting;

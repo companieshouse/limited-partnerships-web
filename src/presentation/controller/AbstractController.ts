@@ -76,7 +76,7 @@ abstract class AbstractController {
         pageRouting.nextUrl,
         transactionId,
         submissionId
-      ),
+      )
     };
   }
 
@@ -95,7 +95,7 @@ abstract class AbstractController {
         ...pageRouting,
         previousUrl: `${pageRouting.previousUrl}${langQuery}`,
         currentUrl: `${pageRouting.currentUrl}${langQuery}`,
-        nextUrl: `${pageRouting.nextUrl}${langQuery}`,
+        nextUrl: `${pageRouting.nextUrl}${langQuery}`
       };
     }
 

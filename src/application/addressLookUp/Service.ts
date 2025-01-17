@@ -27,6 +27,16 @@ class AddressLookUpService {
       throw error;
     }
   }
+
+  async isValidUKPostcode(postal_code: any) {
+    try {
+      return await this.addressGateway.isValidUKPostcode(postal_code);
+    } catch (error: any) {
+      logger.error(`Error validating postcode ${JSON.stringify(error)}`);
+
+      throw error;
+    }
+  }
 }
 
 export default AddressLookUpService;

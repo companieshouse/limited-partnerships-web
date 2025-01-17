@@ -1,12 +1,16 @@
 import request from "supertest";
 import { LocalesService } from "@companieshouse/ch-node-utils";
+
 import * as config from "../../../../config/constants";
+
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
-import app from "../app";
 
 import { appDevDependencies } from "../../../../config/dev-dependencies";
+import app from "../app";
+
 import { POSTCODE_REGISTERED_OFFICE_ADDRESS_URL } from "../../../controller/addressLookUp/url";
+import AddressPageType from "../../../controller/addressLookUp/PageType";
 
 describe("Postcode Registered Office Address Page", () => {
   beforeEach(() => {
@@ -58,6 +62,34 @@ describe("Postcode Registered Office Address Page", () => {
         cyTranslationText.officeAddress.officialCommunication
       );
       expect(res.text).toContain(cyTranslationText.officeAddress.findAddress);
+    });
+  });
+
+  describe("Post postcode", () => {
+    it("should validate the post code then redirect to the next page", async () => {
+      const url = appDevDependencies.addressLookUpController.insertIdsInUrl(
+        POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
+        appDevDependencies.transactionGateway.transactionId,
+        appDevDependencies.limitedPartnershipGateway.submissionId
+      );
+
+      const res = await request(app).post(url).send({
+        pageType: AddressPageType.postcodeRegisteredOfficeAddress,
+        address_line_1: null,
+        postal_code: appDevDependencies.addressLookUpGateway.postcode
+      });
+
+      const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.transactionGateway.transactionId}/submission/${appDevDependencies.limitedPartnershipGateway.submissionId}/general-partners`;
+
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+
+      expect(appDevDependencies.cacheRepository.cache).toEqual({
+        [config.APPLICATION_CACHE_KEY]: {
+          [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${AddressPageType.postcodeRegisteredOfficeAddress}`]:
+            appDevDependencies.addressLookUpGateway.postcode
+        }
+      });
     });
   });
 });

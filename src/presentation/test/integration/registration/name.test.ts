@@ -13,10 +13,8 @@ import {
   NAME_URL,
   NAME_WITH_IDS_URL
 } from "../../../controller/registration/url";
-import {
-  appDevDependencies,
-  APPLICATION_CACHE_KEY_PREFIX_REGISTRATION
-} from "../../../../config";
+import { appDevDependencies } from "../../../../config/dev-dependencies";
+import { APPLICATION_CACHE_KEY_PREFIX_REGISTRATION } from "../../../../config/constants";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 

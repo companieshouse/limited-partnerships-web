@@ -3,10 +3,10 @@ import { LocalesService } from "@companieshouse/ch-node-utils";
 
 import * as constants from "../../../../config/constants";
 import {
-  appDevDependencies,
   APPLICATION_CACHE_KEY,
   APPLICATION_CACHE_KEY_PREFIX_REGISTRATION
-} from "../../../../config";
+} from "../../../../config/constants";
+import { appDevDependencies } from "../../../../config/dev-dependencies";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
