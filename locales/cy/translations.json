@@ -96,5 +96,19 @@
             "SLP": "WELSH - Scottish limited partnership",
             "SPFLP": "WELSH - Private fund limited partnership in Scotland"
         }
-    }   
+    },
+
+    "contact_companies_house": "[CY] Contact Companies House",
+    "if_you_have_questions": "if you have any questions.",
+    "page_header": "[CY] Sorry, there is a problem with the service",
+    "try_again_later": "[CY] Try again later.",
+    "sorry_something_went_wrong":"[CY] Sorry, something went wrong",
+    "we_have_not_been_able_to_save":"[CY] We have not been able to save the information you submitted on the previous screen. This may be because the page was inactive for too long, or because of a technical issue.",
+    "try_the_following":"[CY] Try the following:",
+    "use_the_back_link":"[CY] use the back link to return to the previous screen and resubmit the information",
+    "sign_out_of_the_service":"[CY] sign out of the service, and then sign back in",
+    "if_the_problem_continues":"[CY] If the problem continues,",
+    "contact_us_link":"[CY] contact us",
+    "for_help":"[CY] for help."
+
 }
