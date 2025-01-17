@@ -88,7 +88,7 @@ describe("Postcode Registered Office Address Page", () => {
 
       expect(appDevDependencies.cacheRepository.cache).toEqual({
         [config.APPLICATION_CACHE_KEY]: {
-          [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${AddressPageType.postcodeRegisteredOfficeAddress}`]:
+          [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`]:
             {
               postcode: "CF14 3UZ",
               addressLine1: "",
@@ -121,7 +121,7 @@ describe("Postcode Registered Office Address Page", () => {
 
       expect(appDevDependencies.cacheRepository.cache).toEqual({
         [config.APPLICATION_CACHE_KEY]: {
-          [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${AddressPageType.postcodeRegisteredOfficeAddress}`]:
+          [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`]:
             {
               postcode: "CF14 3UZ",
               addressLine1: "CROWN WAY",

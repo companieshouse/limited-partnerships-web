@@ -98,7 +98,8 @@ class AddressLookUpController extends AbstractController {
         }
 
         await this.cacheService.addDataToCache(session, {
-          [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${pageType}`]: address
+          [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`]:
+            address
         });
 
         response.redirect(pageRouting.nextUrl);
