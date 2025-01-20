@@ -1,17 +1,51 @@
-/* eslint-disable */
-
 import { Resource } from "@companieshouse/api-sdk-node";
 import { UKAddress } from "@companieshouse/api-sdk-node/dist/services/postcode-lookup";
 import IAddressLookUpGateway from "../../../domain/IAddressLookUpGateway";
+import { POSTCODE_ADDRESSES_LOOKUP_URL } from "../../../config/constants";
+import { makeApiCallWithRetry } from "../api";
 
 class AddressLookUpGateway implements IAddressLookUpGateway {
-  async isValidUKPostcode(postcode: string): Promise<boolean> {
-    throw new Error("Method not implemented.");
+  SDK_POSTCODE_LOOKUP_SERVICE = "postCodeLookup";
+
+  async isValidUKPostcode(
+    opt: { access_token: string; refresh_token: string },
+    postalCode: string
+  ): Promise<boolean> {
+    const apiCall = {
+      service: this.SDK_POSTCODE_LOOKUP_SERVICE,
+      method: "isValidUKPostcode",
+      args: [
+        `${POSTCODE_ADDRESSES_LOOKUP_URL}/postcode`,
+        this.removeSpaceFromPostCode(postalCode)
+      ]
+    };
+
+    return await makeApiCallWithRetry<boolean>(opt, apiCall);
   }
+
   async getListOfValidPostcodeAddresses(
-    postcode: string
+    opt: { access_token: string; refresh_token: string },
+    postalCode: string
   ): Promise<UKAddress[]> {
-    throw new Error("Method not implemented.");
+    const apiCall = {
+      service: this.SDK_POSTCODE_LOOKUP_SERVICE,
+      method: "getListOfValidPostcodeAddresses",
+      args: [
+        `${POSTCODE_ADDRESSES_LOOKUP_URL}/multiple-addresses`,
+        this.removeSpaceFromPostCode(postalCode)
+      ]
+    };
+
+    const response = await makeApiCallWithRetry<Resource<UKAddress[]>>(
+      opt,
+      apiCall
+    );
+
+    return (response as Resource<UKAddress[]>)?.resource ?? [];
+  }
+
+  private removeSpaceFromPostCode(postalCode: string) {
+    return postalCode ? postalCode.replace(/\s+/g, "") : "";
   }
 }
 

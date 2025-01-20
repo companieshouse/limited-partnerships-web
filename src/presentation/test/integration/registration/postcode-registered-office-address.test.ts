@@ -11,9 +11,11 @@ import app from "../app";
 
 import { POSTCODE_REGISTERED_OFFICE_ADDRESS_URL } from "../../../controller/addressLookUp/url";
 import AddressPageType from "../../../controller/addressLookUp/PageType";
+import { UKAddress } from "@companieshouse/api-sdk-node/dist/services/postcode-lookup";
 
 describe("Postcode Registered Office Address Page", () => {
-  const address = appDevDependencies.addressLookUpGateway.address;
+  const addresses: UKAddress[] =
+    appDevDependencies.addressLookUpGateway.addresses;
 
   beforeEach(() => {
     setLocalesEnabled(false);
@@ -78,7 +80,7 @@ describe("Postcode Registered Office Address Page", () => {
       const res = await request(app).post(url).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
         address_line_1: null,
-        postal_code: address.postcode
+        postal_code: addresses[0].postcode
       });
 
       const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.transactionGateway.transactionId}/submission/${appDevDependencies.limitedPartnershipGateway.submissionId}/general-partners`;
@@ -90,7 +92,7 @@ describe("Postcode Registered Office Address Page", () => {
         [config.APPLICATION_CACHE_KEY]: {
           [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`]:
             {
-              postcode: "CF14 3UZ",
+              postcode: "ST6 3LJ",
               addressLine1: "",
               addressLine2: "",
               postTown: "",
@@ -110,8 +112,8 @@ describe("Postcode Registered Office Address Page", () => {
 
       const res = await request(app).post(url).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
-        address_line_1: address.addressLine1,
-        postal_code: address.postcode
+        address_line_1: addresses[0].addressLine1,
+        postal_code: addresses[0].postcode
       });
 
       const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.transactionGateway.transactionId}/submission/${appDevDependencies.limitedPartnershipGateway.submissionId}/general-partners`;
@@ -123,12 +125,12 @@ describe("Postcode Registered Office Address Page", () => {
         [config.APPLICATION_CACHE_KEY]: {
           [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`]:
             {
-              postcode: "CF14 3UZ",
-              addressLine1: "CROWN WAY",
+              postcode: "ST6 3LJ",
+              premise: "2",
+              addressLine1: "DUNCALF STREET",
               addressLine2: "",
-              postTown: "CARDIFF",
-              country: "GB-WLS",
-              premise: ""
+              postTown: "STOKE-ON-TRENT",
+              country: "GB-ENG"
             }
         }
       });
