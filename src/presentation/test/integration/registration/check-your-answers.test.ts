@@ -48,7 +48,7 @@ describe("Check Your Answers Page", () => {
     expect(res.text).toContain("WELSH -");
   });
 
-  it("should load the name page with data from api", async () => {
+  it("should load the check your answers page with data from api", async () => {
     const limitedPartnership = new LimitedPartnershipBuilder().build();
     appDevDependencies.registrationGateway.feedLimitedPartnerships([
       limitedPartnership
