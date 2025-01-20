@@ -1,12 +1,11 @@
 import request from "supertest";
-import { LocalesService } from "@companieshouse/ch-node-utils";
-import * as config from "../../../../config/constants";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
 import { LIMITED_PARTNERS_URL } from "../../../controller/registration/url";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
+import { setLocalesEnabled } from "../../../../test/test-utils";
 
 describe("Limited Partners Page", () => {
   beforeEach(() => {
@@ -14,11 +13,6 @@ describe("Limited Partners Page", () => {
 
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([]);
   });
-
-  const setLocalesEnabled = (bool: boolean) => {
-    jest.spyOn(config, "isLocalesEnabled").mockReturnValue(bool);
-    LocalesService.getInstance().enabled = bool;
-  };
 
   it("should load the limited partners page with Welsh text", async () => {
     setLocalesEnabled(true);
