@@ -6,7 +6,7 @@ import { logger } from "../../utils";
 import UIErrors from "../../domain/entities/UIErrors";
 import ITransactionGateway from "../../domain/ITransactionGateway";
 
-class RegistrationService {
+class LimitedPartnershipService {
   constructor(
     private limitedPartnershipGateway: ILimitedPartnershipGateway,
     private transactionGateway: ITransactionGateway
@@ -113,4 +113,4 @@ class RegistrationService {
   }
 }
 
-export default RegistrationService;
+export default LimitedPartnershipService;

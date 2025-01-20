@@ -2,25 +2,25 @@ import { NextFunction, Request, RequestHandler, Response } from "express";
 import escape from "escape-html";
 import { Session } from "@companieshouse/node-session-handler";
 
-import AddressService from "../../../application/addressLookUp/Service";
+import AddressService from "../../../application/service/AddressLookUpService";
 import addresssRouting, { addressLookUpRouting } from "./Routing";
 import AbstractController from "../AbstractController";
 import AddressLookUpPageType from "./PageType";
-import CacheService from "../../../application/CacheService";
+import CacheService from "../../../application/service/CacheService";
 import {
   APPLICATION_CACHE_KEY_PREFIX_REGISTRATION,
   SUBMISSION_ID,
   TRANSACTION_ID
 } from "../../../config/constants";
+import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 
 class AddressLookUpController extends AbstractController {
-  private addressService: AddressService;
-  private cacheService: CacheService;
-
-  constructor(addressService: AddressService, cacheService: CacheService) {
+  constructor(
+    private addressService: AddressService,
+    private limitedPartnershipService: LimitedPartnershipService,
+    private cacheService: CacheService
+  ) {
     super();
-    this.addressService = addressService;
-    this.cacheService = cacheService;
   }
 
   getPageRouting(): RequestHandler {
@@ -41,11 +41,12 @@ class AddressLookUpController extends AbstractController {
 
         let limitedPartnership = {};
         if (transactionId && submissionId) {
-          limitedPartnership = await this.addressService.getLimitedPartnership(
-            tokens,
-            transactionId,
-            submissionId
-          );
+          limitedPartnership =
+            await this.limitedPartnershipService.getLimitedPartnership(
+              tokens,
+              transactionId,
+              submissionId
+            );
         }
 
         const cache = await this.cacheService.getDataFromCache(session);

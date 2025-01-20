@@ -17,7 +17,7 @@ describe("Update Submission", () => {
       limitedPartnership
     ]);
 
-    await appDevDependencies.registrationService.sendPageData(
+    await appDevDependencies.limitedPartnershipService.sendPageData(
       { access_token: "access_token", refresh_token: "refresh_token" },
       appDevDependencies.transactionGateway.transactionId,
       limitedPartnership["_id"] as string,
@@ -44,13 +44,14 @@ describe("Update Submission", () => {
       limitedPartnership
     ]);
 
-    const result = await appDevDependencies.registrationService.sendPageData(
-      { access_token: "access_token", refresh_token: "refresh_token" },
-      appDevDependencies.transactionGateway.transactionId,
-      limitedPartnership["_id"] as string,
-      RegistrationPageType.email,
-      {}
-    );
+    const result =
+      await appDevDependencies.limitedPartnershipService.sendPageData(
+        { access_token: "access_token", refresh_token: "refresh_token" },
+        appDevDependencies.transactionGateway.transactionId,
+        limitedPartnership["_id"] as string,
+        RegistrationPageType.email,
+        {}
+      );
 
     expect(
       appDevDependencies.limitedPartnershipGateway.limitedPartnerships[0]

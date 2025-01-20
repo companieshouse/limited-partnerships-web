@@ -2,7 +2,7 @@ import { NextFunction, Request, RequestHandler, Response } from "express";
 import escape from "escape-html";
 import { Session } from "@companieshouse/node-session-handler";
 
-import RegistrationService from "../../../application/registration/Service";
+import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import registrationsRouting from "./Routing";
 import AbstractController from "../AbstractController";
 import RegistrationPageType from "./PageType";
@@ -11,18 +11,18 @@ import {
   SUBMISSION_ID,
   TRANSACTION_ID
 } from "../../../config/constants";
-import CacheService from "../../../application/CacheService";
+import CacheService from "../../../application/service/CacheService";
 
 class RegistrationController extends AbstractController {
-  private registrationService: RegistrationService;
+  private limitedPartnershipService: LimitedPartnershipService;
   private cacheService: CacheService;
 
   constructor(
-    registrationService: RegistrationService,
+    limitedPartnershipService: LimitedPartnershipService,
     cacheService: CacheService
   ) {
     super();
-    this.registrationService = registrationService;
+    this.limitedPartnershipService = limitedPartnershipService;
     this.cacheService = cacheService;
   }
 
@@ -45,7 +45,7 @@ class RegistrationController extends AbstractController {
         let limitedPartnership = {};
         if (transactionId && submissionId) {
           limitedPartnership =
-            await this.registrationService.getLimitedPartnership(
+            await this.limitedPartnershipService.getLimitedPartnership(
               tokens,
               transactionId,
               submissionId
@@ -80,7 +80,7 @@ class RegistrationController extends AbstractController {
         );
 
         const result =
-          await this.registrationService.createTransactionAndFirstSubmission(
+          await this.limitedPartnershipService.createTransactionAndFirstSubmission(
             tokens,
             pageType,
             request.body
@@ -169,7 +169,7 @@ class RegistrationController extends AbstractController {
         );
         const { transactionId, submissionId } = super.extractIds(request);
 
-        const result = await this.registrationService.sendPageData(
+        const result = await this.limitedPartnershipService.sendPageData(
           tokens,
           transactionId,
           submissionId,

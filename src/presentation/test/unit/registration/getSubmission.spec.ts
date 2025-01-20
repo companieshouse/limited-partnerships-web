@@ -17,7 +17,7 @@ describe("Get Submission", () => {
       ]);
 
       const result =
-        await appDevDependencies.registrationService.getLimitedPartnership(
+        await appDevDependencies.limitedPartnershipService.getLimitedPartnership(
           { access_token: "access_token", refresh_token: "refresh_token" },
           "transaction_id",
           limitedPartnership["_id"] as string
@@ -33,7 +33,7 @@ describe("Get Submission", () => {
         limitedPartnership
       ]);
 
-      await appDevDependencies.registrationService
+      await appDevDependencies.limitedPartnershipService
         .getLimitedPartnership(
           { access_token: "access_token", refresh_token: "refresh_token" },
           "transaction_id",
