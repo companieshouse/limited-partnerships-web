@@ -4,6 +4,18 @@
         "saveAndContinue" : "Save and continue"
     },
 
+    "checkYourAnswersPage" : {
+        "title" : "Check your answers before sending your application",
+        "lpInfo" : "Limited partnership information",
+        "headingName" : "Partnership Name",
+        "headingSic" : "Standard Industrial Classification (SIC) code",
+        "headingEmail" : "Registered email address",
+        "headingTerm" : "Term of partnership",
+        "confirm" : "Confirm this statement",
+        "futureLawful" : "I confirm that the intended future activities of the limited partnership are lawful.",
+        "payment" : "Continue to payment"
+    },
+
     "emailPage" : {
         "whatIsEmail" : "What is the registered email address for the partnership?",
         "emailHint" : "Partners must be able to access emails that are sent to this address.",

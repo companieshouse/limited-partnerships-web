@@ -52,12 +52,19 @@ const registrationRoutingLimitedPartners = {
 export const registrationRoutingLimitedPartnerChoice = {
   previousUrl: url.LIMITED_PARTNERS_URL,
   currentUrl: url.LIMITED_PARTNER_CHOICE_URL,
-  nextUrl: url.NEXT_URL,
+  nextUrl: url.CHECK_YOUR_ANSWERS_URL,
   pageType: RegistrationPageType.limitedPartnerChoice
 };
 
-const registrationRoutingNext = {
+export const registrationRoutingCheckYourAnswers = {
   previousUrl: url.LIMITED_PARTNER_CHOICE_URL,
+  currentUrl: url.CHECK_YOUR_ANSWERS_URL,
+  nextUrl: url.NEXT_URL,
+  pageType: RegistrationPageType.checkYourAnswers,
+};
+
+const registrationRoutingNext = {
+  previousUrl: url.CHECK_YOUR_ANSWERS_URL,
   currentUrl: url.NEXT_URL,
   nextUrl: "/",
   pageType: RegistrationPageType.next
@@ -71,6 +78,7 @@ const list = [
   registrationRoutingLimitedPartners,
   registrationRoutingGeneralPartnerChoice,
   registrationRoutingLimitedPartnerChoice,
+  registrationRoutingCheckYourAnswers,
   registrationRoutingNext
 ];
 
