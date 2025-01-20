@@ -7,14 +7,13 @@ import {
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import RegistrationPageType from "../../../presentation/controller/registration/PageType";
-import IRegistrationGateway from "../../../domain/IRegistrationGateway";
+import ILimitedPartnershipGateway from "../../../domain/ILimitedPartnershipGateway";
 import CustomError from "../../../domain/entities/CustomError";
 import TransactionLimitedPartnership from "../../../domain/entities/TransactionLimitedPartnership";
 import LimitedPartnershipGatewayBuilder from "./LimitedPartnershipGatewayBuilder";
 import UIErrors, { ApiErrors } from "../../../domain/entities/UIErrors";
 
-class RegistrationInMemoryGateway implements IRegistrationGateway {
-  transactionId = crypto.randomUUID().toString();
+class RegistrationInMemoryGateway implements ILimitedPartnershipGateway {
   submissionId = crypto.randomUUID().toString();
 
   limitedPartnerships: TransactionLimitedPartnership[] = [];
@@ -34,17 +33,6 @@ class RegistrationInMemoryGateway implements IRegistrationGateway {
     }
 
     this.uiErrors.formatValidationErrorToUiErrors(errors);
-  }
-
-  async createTransaction(
-    opt: { access_token: string },
-    registrationPageType: RegistrationPageType
-  ): Promise<string> {
-    if (registrationPageType !== RegistrationPageType.name) {
-      throw new Error("wrong type");
-    }
-
-    return this.transactionId;
   }
 
   async createSubmission(

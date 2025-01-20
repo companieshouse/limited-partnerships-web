@@ -6,7 +6,7 @@ enum RegistrationPageType {
   limitedPartners = "limited-partners",
   generalPartnerChoice = "general-partner-choice",
   limitedPartnerChoice = "limited-partner-choice",
-  next = "next",
+  next = "next"
 }
 
 export default RegistrationPageType;

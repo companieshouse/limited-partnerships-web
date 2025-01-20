@@ -1,24 +1,48 @@
 import GlobalController from "../presentation/controller/global/Controller";
-import RegistrationService from "../application/registration/Service";
-import RegistrationGateway from "../infrastructure/gateway/registration/RegistrationGateway";
+import LimitedPartnershipService from "../application/service/LimitedPartnershipService";
+import LimitedPartnershipGateway from "../infrastructure/gateway/limitedPartnership/LimitedPartnershipGateway";
 import CacheRepository from "../infrastructure/repository/CacheRepository";
 import RegistrationController from "../presentation/controller/registration/Controller";
-import CacheService from "../application/CacheService";
+import CacheService from "../application/service/CacheService";
+// import AddressLookUpGateway from "../infrastructure/gateway/addressLookUp/AddressLookUpGateway";
+import AddressLookUpInMemoryGateway from "../infrastructure/gateway/addressLookUp/AddressLookUpInMemoryGateway";
+import AddressLookUpService from "../application/service/AddressLookUpService";
+import AddressLookUpController from "../presentation/controller/addressLookUp/Controller";
+import TransactionGateway from "../infrastructure/gateway/transaction/TransactionGateway";
 
-const globalController: GlobalController = new GlobalController();
+// GATEWAYS
+const limitedPartnershipGateway: LimitedPartnershipGateway =
+  new LimitedPartnershipGateway();
+const transactionGateway: TransactionGateway = new TransactionGateway();
+const addressLookUpGateway: AddressLookUpInMemoryGateway =
+  new AddressLookUpInMemoryGateway(); // to be removed and use the bottom one - only there until the real gateway does its job - only valid postcode CF14 3UZ for the moment
+// const addressLookUpGateway: AddressLookUpGateway = new AddressLookUpGateway();
 
-const registrationGateway: RegistrationGateway = new RegistrationGateway();
-const registrationService: RegistrationService = new RegistrationService(
-  registrationGateway
-);
-
+// REPOSITORIES
 const cacheRepository = new CacheRepository();
+
+// SERVICES
+const limitedPartnershipService: LimitedPartnershipService =
+  new LimitedPartnershipService(limitedPartnershipGateway, transactionGateway);
+const addressLookUpService: AddressLookUpService = new AddressLookUpService(
+  addressLookUpGateway,
+  limitedPartnershipGateway
+);
 const cacheService = new CacheService(cacheRepository);
 
+// CONTROLLERS
+const globalController: GlobalController = new GlobalController();
 const registrationController: RegistrationController =
-  new RegistrationController(registrationService, cacheService);
+  new RegistrationController(limitedPartnershipService, cacheService);
+const addressLookUpController: AddressLookUpController =
+  new AddressLookUpController(
+    addressLookUpService,
+    limitedPartnershipService,
+    cacheService
+  );
 
 export const appDependencies = {
   globalController,
   registrationController,
+  addressLookUpController
 };

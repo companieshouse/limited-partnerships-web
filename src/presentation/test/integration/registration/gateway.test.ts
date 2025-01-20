@@ -8,7 +8,7 @@ import TransactionService from "@companieshouse/api-sdk-node/dist/services/trans
 
 import appRealDependencies from "../../../../app";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
-import { EMAIL_URL, NAME_URL } from "../../../controller/registration/Routing";
+import { EMAIL_URL, NAME_URL } from "../../../controller/registration/url";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import { RefreshTokenService } from "@companieshouse/api-sdk-node/dist/services/refresh-token";
@@ -22,7 +22,7 @@ const value = {
     postTransaction: () => ({
       httpStatusCode: 201,
       resource: {
-        id: appDevDependencies.registrationGateway.transactionId
+        id: appDevDependencies.transactionGateway.transactionId
       }
     })
   },
@@ -31,7 +31,7 @@ const value = {
     postLimitedPartnership: () => ({
       httpStatusCode: 201,
       resource: {
-        id: appDevDependencies.registrationGateway.submissionId
+        id: appDevDependencies.limitedPartnershipGateway.submissionId
       }
     }),
     patchLimitedPartnership: () => ({
@@ -57,8 +57,8 @@ mockCreateApiClient.mockReturnValue(value);
 
 describe("Gateway", () => {
   beforeEach(() => {
-    appDevDependencies.registrationGateway.feedLimitedPartnerships([]);
-    appDevDependencies.registrationGateway.feedErrors();
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([]);
+    appDevDependencies.limitedPartnershipGateway.feedErrors();
 
     mockCreateApiClient.mockReturnValue(value);
   });
@@ -67,8 +67,8 @@ describe("Gateway", () => {
     it("should create a transaction and the first submission", async () => {
       const url = appDevDependencies.registrationController.insertIdsInUrl(
         NAME_URL,
-        appDevDependencies.registrationGateway.transactionId,
-        appDevDependencies.registrationGateway.submissionId
+        appDevDependencies.transactionGateway.transactionId,
+        appDevDependencies.limitedPartnershipGateway.submissionId
       );
 
       const res = await request(appRealDependencies).post(url).send({
@@ -78,7 +78,7 @@ describe("Gateway", () => {
         partnership_type: "LP"
       });
 
-      const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.registrationGateway.transactionId}/submission/${appDevDependencies.registrationGateway.submissionId}/email`;
+      const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.transactionGateway.transactionId}/submission/${appDevDependencies.limitedPartnershipGateway.submissionId}/email`;
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
@@ -89,8 +89,8 @@ describe("Gateway", () => {
     it("should update the submission", async () => {
       const url = appDevDependencies.registrationController.insertIdsInUrl(
         EMAIL_URL,
-        appDevDependencies.registrationGateway.transactionId,
-        appDevDependencies.registrationGateway.submissionId
+        appDevDependencies.transactionGateway.transactionId,
+        appDevDependencies.limitedPartnershipGateway.submissionId
       );
 
       const res = await request(appRealDependencies).post(url).send({
@@ -98,7 +98,7 @@ describe("Gateway", () => {
         email: "test@email.com"
       });
 
-      const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.registrationGateway.transactionId}/submission/${appDevDependencies.registrationGateway.submissionId}/general-partners`;
+      const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.transactionGateway.transactionId}/submission/${appDevDependencies.limitedPartnershipGateway.submissionId}/postcode-registered-office-address`;
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
@@ -123,8 +123,8 @@ describe("Gateway", () => {
 
         const url = appDevDependencies.registrationController.insertIdsInUrl(
           EMAIL_URL,
-          appDevDependencies.registrationGateway.transactionId,
-          appDevDependencies.registrationGateway.submissionId
+          appDevDependencies.transactionGateway.transactionId,
+          appDevDependencies.limitedPartnershipGateway.submissionId
         );
 
         const res = await request(appRealDependencies).post(url).send({
@@ -166,8 +166,8 @@ describe("Gateway", () => {
 
         const url = appDevDependencies.registrationController.insertIdsInUrl(
           EMAIL_URL,
-          appDevDependencies.registrationGateway.transactionId,
-          appDevDependencies.registrationGateway.submissionId
+          appDevDependencies.transactionGateway.transactionId,
+          appDevDependencies.limitedPartnershipGateway.submissionId
         );
 
         const res = await request(appRealDependencies).post(url).send({
@@ -177,7 +177,7 @@ describe("Gateway", () => {
 
         expect(refreshToken).toHaveBeenCalled();
 
-        const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.registrationGateway.transactionId}/submission/${appDevDependencies.registrationGateway.submissionId}/general-partners`;
+        const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.transactionGateway.transactionId}/submission/${appDevDependencies.limitedPartnershipGateway.submissionId}/postcode-registered-office-address`;
 
         expect(res.status).toBe(302);
         expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
@@ -194,7 +194,8 @@ describe("Gateway", () => {
               httpStatusCode: 400,
               resource: {
                 errors: {
-                  "data.partnershipName": "partnership_name must be less than 160"
+                  "data.partnershipName":
+                    "partnership_name must be less than 160"
                 }
               }
             })
@@ -203,8 +204,8 @@ describe("Gateway", () => {
 
         const url = appDevDependencies.registrationController.insertIdsInUrl(
           NAME_URL,
-          appDevDependencies.registrationGateway.transactionId,
-          appDevDependencies.registrationGateway.submissionId
+          appDevDependencies.transactionGateway.transactionId,
+          appDevDependencies.limitedPartnershipGateway.submissionId
         );
 
         const res = await request(appRealDependencies).post(url).send({
@@ -233,8 +234,8 @@ describe("Gateway", () => {
 
         const url = appDevDependencies.registrationController.insertIdsInUrl(
           EMAIL_URL,
-          appDevDependencies.registrationGateway.transactionId,
-          appDevDependencies.registrationGateway.submissionId
+          appDevDependencies.transactionGateway.transactionId,
+          appDevDependencies.limitedPartnershipGateway.submissionId
         );
 
         const res = await request(appRealDependencies).post(url).send({
@@ -252,8 +253,8 @@ describe("Gateway", () => {
     it("should load the name page with data from api", async () => {
       const url = appDevDependencies.registrationController.insertIdsInUrl(
         EMAIL_URL,
-        appDevDependencies.registrationGateway.transactionId,
-        appDevDependencies.registrationGateway.submissionId
+        appDevDependencies.transactionGateway.transactionId,
+        appDevDependencies.limitedPartnershipGateway.submissionId
       );
 
       const res = await request(appRealDependencies).get(url);
@@ -276,7 +277,7 @@ describe("Gateway", () => {
 
       const url = appDevDependencies.registrationController.insertIdsInUrl(
         EMAIL_URL,
-        appDevDependencies.registrationGateway.transactionId,
+        appDevDependencies.transactionGateway.transactionId,
         "wrong-id"
       );
 

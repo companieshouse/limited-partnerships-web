@@ -73,6 +73,24 @@
         }
     },
 
+    "officeAddress": {
+        "whatIsOfficeAddress": "WELSH - What is the registered office address of the partnership?",
+        "officialCommunication": "WELSH - This is where official communications will be sent.",
+        "england": {
+            "physicalAddress": "WELSH - It must be a physical address in England, Wales or Northern Ireland. You cannot use a PO Box address.",
+            "jurisdiction": "WELSH - The partnership will be registered in the jurisdiction of this address (either England and Wales, or Northern Ireland)."
+        },
+        "scotland": {
+            "physicalAddress": "WELSH - It must be a physical address in Scotland. You cannot use a PO Box address.",
+            "jurisdiction": "WELSH - The partnership will be registered in the jurisdiction of this address (Scotland)."
+        },
+        "nameOrNumberHint": "WELSH - Property name or number (optional)",
+        "postcodeHint": "WELSH - Postcode",
+        "enterAddressManually": "WELSH - Enter address manually",
+        "publicRegister": "WELSH - <h2 class='govuk-heading-m'>What information we'll show on the public register</h2> <p>We'll show the registered office address on the public register.</p>",
+        "findAddress": "WELSH - Find address"
+    },
+
     "pageNotFound" : {
         "title" : "WELSH - Page Not Found",
         "spelling" : "WELSH - If you typed the web address, check it is spelled correctly.",

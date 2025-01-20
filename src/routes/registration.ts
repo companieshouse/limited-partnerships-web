@@ -13,8 +13,8 @@ import {
   GENERAL_PARTNERS_URL,
   GENERAL_PARTNER_CHOICE_URL,
   LIMITED_PARTNER_CHOICE_URL,
-  NAME_WITH_IDS_URL,
-} from "../presentation/controller/registration/Routing";
+  NAME_WITH_IDS_URL
+} from "../presentation/controller/registration/url";
 
 export const registrationEndpoints = (
   router: Router,

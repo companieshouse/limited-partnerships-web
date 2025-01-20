@@ -1,0 +1,77 @@
+{% extends "layout.njk" %}
+
+{% set pageTitle = i18n.officeAddress.whatIsOfficeAddress %}
+
+</fieldset>
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form class="form" action={{ props.currentUrl }} method="post">
+        <input type="hidden" name="pageType" value={{ props.pageType }}>      
+        {% include "includes/csrf_token.njk" %}
+
+        {% include "includes/errors.njk" %}
+
+        <div>
+          {% include "includes/proposed-name.njk" %}
+          <h1 class="govuk-heading-xl">{{ i18n.officeAddress.whatIsOfficeAddress }}</h1>
+          <p class="govuk-hint">{{ i18n.officeAddress.officialCommunication }}</p>
+
+          {% if props.data.limitedPartnership.data.partnership_type == "LP" or props.data.limitedPartnership.data.partnership_type == "PFLP" %}
+            <p class="govuk-hint">{{ i18n.officeAddress.england.physicalAddress }}</p>
+            <p class="govuk-hint">{{ i18n.officeAddress.england.jurisdiction }}</p>
+          {% else  %}
+            <p class="govuk-hint">{{ i18n.officeAddress.scotland.physicalAddress }}</p>
+            <p class="govuk-hint">{{ i18n.officeAddress.scotland.jurisdiction }}</p>
+          {% endif %}
+        </div>
+        
+        <div class="govuk-!-margin-top-8">
+          {{ govukInput({
+            hint: {
+              text: i18n.officeAddress.nameOrNumberHint
+            },
+            id: "address_line_1",
+            name: "address_line_1",
+            value: props.data.limitedPartnership.data.registered_office_address.address_line_1,
+            attributes : {
+              "data-event-id": "name-or-number-postcode-registered-office-address"
+            }
+          }) }}
+
+          {{ govukInput({
+            hint: {
+              text: i18n.officeAddress.postcodeHint
+            },
+            id: "postal_code",
+            name: "postal_code",
+            value: props.data.limitedPartnership.data.registered_office_address.postal_code,
+            attributes : {
+              required : true,
+              "data-event-id": "postcode-postcode-registered-office-address"
+            }
+          }) }}
+
+          <p>
+            <a href="" class="govuk-link">{{ i18n.officeAddress.enterAddressManually }}</a>
+          <p>
+
+          {{ govukButton({
+            text: i18n.officeAddress.findAddress,
+            attributes: {
+              "id": "submit"
+            }
+          }) }}
+      </div>
+    </form>
+
+    <div>
+      {{ govukInsetText({
+        html: i18n.officeAddress.publicRegister
+      }) }}
+    </div>
+  </div>
+</div>
+
+{% endblock %}

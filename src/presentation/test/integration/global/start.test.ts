@@ -6,8 +6,8 @@ import { START_URL } from "../../../controller/global/Routing";
 
 describe("Create Transaction", () => {
   beforeAll(() => {
-    appDevDependencies.registrationGateway.feedLimitedPartnerships([]);
-    appDevDependencies.registrationGateway.feedErrors();
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([]);
+    appDevDependencies.limitedPartnershipGateway.feedErrors();
   });
 
   it("should load the start page with status 200", async () => {

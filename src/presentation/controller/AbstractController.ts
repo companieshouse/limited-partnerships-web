@@ -1,3 +1,5 @@
+import { Request } from "express";
+
 import { SUBMISSION_ID, TRANSACTION_ID } from "../../config/constants";
 import { PageRouting, pageRoutingDefault, PagesRouting } from "./PageRouting";
 import PageType from "./PageType";
@@ -76,7 +78,7 @@ abstract class AbstractController {
         pageRouting.nextUrl,
         transactionId,
         submissionId
-      ),
+      )
     };
   }
 
@@ -95,11 +97,40 @@ abstract class AbstractController {
         ...pageRouting,
         previousUrl: `${pageRouting.previousUrl}${langQuery}`,
         currentUrl: `${pageRouting.currentUrl}${langQuery}`,
-        nextUrl: `${pageRouting.nextUrl}${langQuery}`,
+        nextUrl: `${pageRouting.nextUrl}${langQuery}`
       };
     }
 
     return pageRouting;
+  }
+
+  protected extractPageTypeOrThrowError(
+    request: Request,
+    pageTypeEnum: object
+  ) {
+    const pageTypeList = Object.values(pageTypeEnum);
+    const pageType = request.body.pageType;
+
+    if (!pageTypeList.includes(pageType)) {
+      throw new Error(`wrong page type: ${pageType}`);
+    }
+    return pageType;
+  }
+
+  protected extractTokens(request: Request) {
+    return {
+      access_token:
+        request?.session?.data?.signin_info?.access_token?.access_token ?? "",
+      refresh_token:
+        request?.session?.data?.signin_info?.access_token?.refresh_token ?? ""
+    };
+  }
+
+  protected extractIds(request: Request) {
+    const transactionId = request.params.transactionId;
+    const submissionId = request.params.submissionId;
+
+    return { transactionId, submissionId };
   }
 }
 
