@@ -12,7 +12,7 @@ export type PageRouting = {
 
 export type PagesRouting = Map<PageType, PageRouting>;
 
-enum PageDefault {
+export enum PageDefault {
   default = "not-found"
 }
 

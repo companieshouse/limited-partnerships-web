@@ -40,6 +40,9 @@ class AddressLookUpController extends AbstractController {
         );
 
         let limitedPartnership = {};
+        const generalPartner = {};
+        const limitedPartner = {};
+
         if (transactionId && submissionId) {
           limitedPartnership =
             await this.limitedPartnershipService.getLimitedPartnership(
@@ -54,6 +57,8 @@ class AddressLookUpController extends AbstractController {
         pageRouting.data = {
           ...pageRouting.data,
           limitedPartnership,
+          generalPartner,
+          limitedPartner,
           cache
         };
 
