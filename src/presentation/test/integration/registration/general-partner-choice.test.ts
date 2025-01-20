@@ -7,7 +7,7 @@ import app from "../app";
 import {
   GENERAL_PARTNER_CHOICE_URL,
   LIMITED_PARTNERS_URL
-} from "../../../controller/registration/Routing";
+} from "../../../controller/registration/url";
 import RegistrationPageType from "../../../../presentation/controller/registration/PageType";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import {
@@ -20,8 +20,8 @@ describe("General Partner Choice Page", () => {
   beforeEach(() => {
     setLocalesEnabled(false);
 
-    appDevDependencies.registrationGateway.feedLimitedPartnerships([]);
-    appDevDependencies.registrationGateway.feedErrors();
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([]);
+    appDevDependencies.limitedPartnershipGateway.feedErrors();
     appDevDependencies.cacheRepository.feedCache(null);
   });
 
@@ -78,7 +78,7 @@ describe("General Partner Choice Page", () => {
   it("should contain the proposed name - data from api", async () => {
     const limitedPartnership = new LimitedPartnershipBuilder().build();
 
-    appDevDependencies.registrationGateway.feedLimitedPartnerships([
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
       limitedPartnership
     ]);
 

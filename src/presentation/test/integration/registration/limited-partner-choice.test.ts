@@ -3,18 +3,18 @@ import { LocalesService } from "@companieshouse/ch-node-utils";
 
 import * as constants from "../../../../config/constants";
 import {
-  appDevDependencies,
   APPLICATION_CACHE_KEY,
   APPLICATION_CACHE_KEY_PREFIX_REGISTRATION
-} from "../../../../config";
+} from "../../../../config/constants";
+import { appDevDependencies } from "../../../../config/dev-dependencies";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
 import {
   LIMITED_PARTNER_CHOICE_URL,
-  CHECK_YOUR_ANSWERS_URL,
-  registrationRoutingLimitedPartnerChoice
-} from "../../../controller/registration/Routing";
+  CHECK_YOUR_ANSWERS_URL
+} from "../../../controller/registration/url";
+import { registrationRoutingLimitedPartnerChoice } from "../../../controller/registration/Routing";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 
@@ -22,8 +22,8 @@ describe("Limited Partner Choice Page", () => {
   beforeEach(() => {
     setLocalesEnabled(false);
 
-    appDevDependencies.registrationGateway.feedLimitedPartnerships([]);
-    appDevDependencies.registrationGateway.feedErrors();
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([]);
+    appDevDependencies.limitedPartnershipGateway.feedErrors();
     appDevDependencies.cacheRepository.feedCache(null);
   });
 
@@ -95,7 +95,7 @@ describe("Limited Partner Choice Page", () => {
   it("should contain the proposed name - data from api", async () => {
     const limitedPartnership = new LimitedPartnershipBuilder().build();
 
-    appDevDependencies.registrationGateway.feedLimitedPartnerships([
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
       limitedPartnership
     ]);
 

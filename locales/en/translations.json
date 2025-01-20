@@ -85,6 +85,24 @@
         }
     },
 
+    "officeAddress": {
+        "whatIsOfficeAddress": "What is the registered office address of the partnership?",
+        "officialCommunication": "This is where official communications will be sent.",
+        "england": {
+            "physicalAddress": "It must be a physical address in England, Wales or Northern Ireland. You cannot use a PO Box address.",
+            "jurisdiction": "The partnership will be registered in the jurisdiction of this address (either England and Wales, or Northern Ireland)."
+        },
+        "scotland": {
+            "physicalAddress": "It must be a physical address in Scotland. You cannot use a PO Box address.",
+            "jurisdiction": "The partnership will be registered in the jurisdiction of this address (Scotland)."
+        },
+        "nameOrNumberHint": "Property name or number (optional)",
+        "postcodeHint": "Postcode",
+        "enterAddressManually": "Enter address manually",
+        "publicRegister": "<h2 class='govuk-heading-m'>What information we'll show on the public register</h2> <p>We'll show the registered office address on the public register.</p>",
+        "findAddress": "Find address"
+    },
+
     "pageNotFound" : {
         "title" : "Page not found",
         "spelling" : "If you typed the web address, check it is spelled correctly.",

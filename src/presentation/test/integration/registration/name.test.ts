@@ -12,11 +12,9 @@ import app from "../app";
 import {
   NAME_URL,
   NAME_WITH_IDS_URL
-} from "../../../controller/registration/Routing";
-import {
-  appDevDependencies,
-  APPLICATION_CACHE_KEY_PREFIX_REGISTRATION
-} from "../../../../config";
+} from "../../../controller/registration/url";
+import { appDevDependencies } from "../../../../config/dev-dependencies";
+import { APPLICATION_CACHE_KEY_PREFIX_REGISTRATION } from "../../../../config/constants";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 
@@ -24,8 +22,8 @@ describe("Name Page", () => {
   beforeEach(() => {
     setLocalesEnabled(false);
 
-    appDevDependencies.registrationGateway.feedLimitedPartnerships([]);
-    appDevDependencies.registrationGateway.feedErrors();
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([]);
+    appDevDependencies.limitedPartnershipGateway.feedErrors();
     appDevDependencies.cacheRepository.feedCache(null);
   });
 
@@ -77,18 +75,18 @@ describe("Name Page", () => {
 
   it("should load the name page with data from api", async () => {
     const limitedPartnership = new LimitedPartnershipBuilder()
-      .withId(appDevDependencies.registrationGateway.submissionId)
+      .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
       .withNameEnding(NameEndingType.LIMITED_PARTNERSHIP)
       .build();
 
-    appDevDependencies.registrationGateway.feedLimitedPartnerships([
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
       limitedPartnership
     ]);
 
     const url = appDevDependencies.registrationController.insertIdsInUrl(
       NAME_WITH_IDS_URL,
-      appDevDependencies.registrationGateway.transactionId,
-      appDevDependencies.registrationGateway.submissionId
+      appDevDependencies.transactionGateway.transactionId,
+      appDevDependencies.limitedPartnershipGateway.submissionId
     );
 
     const res = await request(app).get(url);

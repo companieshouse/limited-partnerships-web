@@ -1,6 +1,6 @@
 import { Session } from "@companieshouse/node-session-handler";
 
-import ICacheRepository from "../domain/ICacheRepository";
+import ICacheRepository from "../../domain/ICacheRepository";
 
 class CacheService {
   cacheRepository: ICacheRepository;

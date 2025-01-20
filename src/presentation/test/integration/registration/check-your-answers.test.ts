@@ -1,6 +1,6 @@
 import request from "supertest";
 import app from "../app";
-import { CHECK_YOUR_ANSWERS_URL } from "../../../controller/registration/Routing";
+import { CHECK_YOUR_ANSWERS_URL } from "../../../controller/registration/url";
 import { LocalesService } from "@companieshouse/ch-node-utils";
 import * as config from "../../../../config/constants";
 import enTranslationText from "../../../../../locales/en/translations.json";
@@ -50,7 +50,7 @@ describe("Check Your Answers Page", () => {
 
   it("should load the check your answers page with data from api", async () => {
     const limitedPartnership = new LimitedPartnershipBuilder().build();
-    appDevDependencies.registrationGateway.feedLimitedPartnerships([
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
       limitedPartnership
     ]);
     const res = await request(app).get(CHECK_YOUR_ANSWERS_URL);

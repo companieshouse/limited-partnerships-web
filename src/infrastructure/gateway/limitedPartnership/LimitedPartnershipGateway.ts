@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import { Resource } from "@companieshouse/api-sdk-node";
 import { Transaction } from "@companieshouse/api-sdk-node/dist/services/transaction/types";
 import { ApiErrorResponse } from "@companieshouse/api-sdk-node/dist/services/resource";
@@ -10,37 +8,11 @@ import {
 
 import { makeApiCallWithRetry } from "../api";
 import RegistrationPageType from "../../../presentation/controller/registration/PageType";
-import IRegistrationGateway from "../../../domain/IRegistrationGateway";
+import ILimitedPartnershipGateway from "../../../domain/ILimitedPartnershipGateway";
 import LimitedPartnershipGatewayBuilder from "./LimitedPartnershipGatewayBuilder";
 import UIErrors from "../../../domain/entities/UIErrors";
 
-class RegistrationGateway implements IRegistrationGateway {
-  async createTransaction(
-    opt: { access_token: string; refresh_token: string },
-    registrationPageType: RegistrationPageType
-  ): Promise<string> {
-    const apiCall = {
-      service: "transaction",
-      method: "postTransaction",
-      args: [
-        {
-          reference: "LimitedPartnershipsReference",
-          description: "Limited Partnerships Transaction"
-        }
-      ]
-    };
-
-    const response = await makeApiCallWithRetry<
-      Resource<Transaction> | ApiErrorResponse
-    >(opt, apiCall);
-
-    if (response.httpStatusCode !== 201) {
-      throw response;
-    }
-
-    return (response as Resource<Transaction>)?.resource?.id ?? "";
-  }
-
+class LimitedPartnershipGateway implements ILimitedPartnershipGateway {
   async createSubmission(
     opt: { access_token: string; refresh_token: string },
     registrationPageType: RegistrationPageType,
@@ -134,4 +106,4 @@ class RegistrationGateway implements IRegistrationGateway {
   }
 }
 
-export default RegistrationGateway;
+export default LimitedPartnershipGateway;

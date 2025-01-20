@@ -2,7 +2,7 @@ import { NextFunction, Request, RequestHandler, Response } from "express";
 import escape from "escape-html";
 import { Session } from "@companieshouse/node-session-handler";
 
-import RegistrationService from "../../../application/registration/Service";
+import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import registrationsRouting from "./Routing";
 import AbstractController from "../AbstractController";
 import RegistrationPageType from "./PageType";
@@ -11,18 +11,18 @@ import {
   SUBMISSION_ID,
   TRANSACTION_ID
 } from "../../../config/constants";
-import CacheService from "../../../application/CacheService";
+import CacheService from "../../../application/service/CacheService";
 
 class RegistrationController extends AbstractController {
-  private registrationService: RegistrationService;
+  private limitedPartnershipService: LimitedPartnershipService;
   private cacheService: CacheService;
 
   constructor(
-    registrationService: RegistrationService,
+    limitedPartnershipService: LimitedPartnershipService,
     cacheService: CacheService
   ) {
     super();
-    this.registrationService = registrationService;
+    this.limitedPartnershipService = limitedPartnershipService;
     this.cacheService = cacheService;
   }
 
@@ -30,9 +30,9 @@ class RegistrationController extends AbstractController {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const session = request.session as Session;
-        const tokens = this.extractTokens(request);
+        const tokens = super.extractTokens(request);
         const pageType = super.pageType(request.path);
-        const { transactionId, submissionId } = this.extractIds(request);
+        const { transactionId, submissionId } = super.extractIds(request);
 
         const pageRouting = super.getRouting(
           registrationsRouting,
@@ -45,7 +45,7 @@ class RegistrationController extends AbstractController {
         let limitedPartnership = {};
         if (transactionId && submissionId) {
           limitedPartnership =
-            await this.registrationService.getLimitedPartnership(
+            await this.limitedPartnershipService.getLimitedPartnership(
               tokens,
               transactionId,
               submissionId
@@ -73,11 +73,14 @@ class RegistrationController extends AbstractController {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const session = request.session as Session;
-        const tokens = this.extractTokens(request);
-        const pageType = this.extractPageTypeOrThrowError(request);
+        const tokens = super.extractTokens(request);
+        const pageType = super.extractPageTypeOrThrowError(
+          request,
+          RegistrationPageType
+        );
 
         const result =
-          await this.registrationService.createTransactionAndFirstSubmission(
+          await this.limitedPartnershipService.createTransactionAndFirstSubmission(
             tokens,
             pageType,
             request.body
@@ -129,7 +132,10 @@ class RegistrationController extends AbstractController {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const session = request.session as Session;
-        const type = this.extractPageTypeOrThrowError(request);
+        const type = super.extractPageTypeOrThrowError(
+          request,
+          RegistrationPageType
+        );
 
         const registrationRouting = super.getRouting(
           registrationsRouting,
@@ -156,11 +162,14 @@ class RegistrationController extends AbstractController {
   sendPageData(): RequestHandler {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
-        const tokens = this.extractTokens(request);
-        const pageType = this.extractPageTypeOrThrowError(request);
-        const { transactionId, submissionId } = this.extractIds(request);
+        const tokens = super.extractTokens(request);
+        const pageType = super.extractPageTypeOrThrowError(
+          request,
+          RegistrationPageType
+        );
+        const { transactionId, submissionId } = super.extractIds(request);
 
-        const result = await this.registrationService.sendPageData(
+        const result = await this.limitedPartnershipService.sendPageData(
           tokens,
           transactionId,
           submissionId,
@@ -190,32 +199,6 @@ class RegistrationController extends AbstractController {
         next(error);
       }
     };
-  }
-
-  private extractPageTypeOrThrowError(request: Request) {
-    const pageTypeList = Object.values(RegistrationPageType);
-    const pageType = request.body.pageType;
-
-    if (!pageTypeList.includes(pageType)) {
-      throw new Error(`wrong page type: ${pageType}`);
-    }
-    return pageType;
-  }
-
-  private extractTokens(request: Request) {
-    return {
-      access_token:
-        request?.session?.data?.signin_info?.access_token?.access_token ?? "",
-      refresh_token:
-        request?.session?.data?.signin_info?.access_token?.refresh_token ?? ""
-    };
-  }
-
-  private extractIds(request: Request) {
-    const transactionId = request.params.transactionId;
-    const submissionId = request.params.submissionId;
-
-    return { transactionId, submissionId };
   }
 }
 
