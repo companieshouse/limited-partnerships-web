@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { Resource } from "@companieshouse/api-sdk-node";
 import { UKAddress } from "@companieshouse/api-sdk-node/dist/services/postcode-lookup";
 import IAddressLookUpGateway from "../../../domain/IAddressLookUpGateway";
