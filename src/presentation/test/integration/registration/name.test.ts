@@ -1,11 +1,9 @@
 import request from "supertest";
-import { LocalesService } from "@companieshouse/ch-node-utils";
 import {
   NameEndingType,
   PartnershipType
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-import * as config from "../../../../config/constants";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
@@ -17,6 +15,7 @@ import { appDevDependencies } from "../../../../config/dev-dependencies";
 import { APPLICATION_CACHE_KEY_PREFIX_REGISTRATION } from "../../../../config/constants";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
+import { setLocalesEnabled } from "../../../../test/test-utils";
 
 describe("Name Page", () => {
   beforeEach(() => {
@@ -26,11 +25,6 @@ describe("Name Page", () => {
     appDevDependencies.limitedPartnershipGateway.feedErrors();
     appDevDependencies.cacheRepository.feedCache(null);
   });
-
-  const setLocalesEnabled = (bool: boolean) => {
-    jest.spyOn(config, "isLocalesEnabled").mockReturnValue(bool);
-    LocalesService.getInstance().enabled = bool;
-  };
 
   it("should load the name page with Welsh text", async () => {
     setLocalesEnabled(true);

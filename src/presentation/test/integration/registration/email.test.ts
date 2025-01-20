@@ -1,6 +1,4 @@
 import request from "supertest";
-import { LocalesService } from "@companieshouse/ch-node-utils";
-import * as config from "../../../../config/constants";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
@@ -9,6 +7,7 @@ import { appDevDependencies } from "../../../../config/dev-dependencies";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { ApiErrors } from "../../../../domain/entities/UIErrors";
+import { setLocalesEnabled } from "../../../../test/test-utils";
 
 describe("Email Page", () => {
   beforeEach(() => {
@@ -16,11 +15,6 @@ describe("Email Page", () => {
 
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([]);
   });
-
-  const setLocalesEnabled = (bool: boolean) => {
-    jest.spyOn(config, "isLocalesEnabled").mockReturnValue(bool);
-    LocalesService.getInstance().enabled = bool;
-  };
 
   describe("Get Email Page", () => {
     it("should load the name page with English text", async () => {
