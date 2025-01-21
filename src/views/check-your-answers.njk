@@ -2,8 +2,8 @@
 
 {% set pageTitle = title  %}
 
-{% set partnershipNameChangeLink = props.currentUrl %}
-{{ partnershipNameChangeLink | replace("check-your-answers", "name") }}
+{% set currentUrl = props.currentUrl %}
+{{ currentUrl | replace("check-your-answers", "name") }}
 
 {% block content %}
 
@@ -24,7 +24,7 @@
 	        actions: {
             items: [ CREATE_CHANGE_LINK(
               i18n.checkYourAnswersPage.change,
-              partnershipNameChangeLink | replace("check-your-answers", "name#partnership_name"),
+              currentUrl | replace("check-your-answers", "name#partnership_name"),
               partnershipNameChangeText,
               "change-partnership-name-button"
             ) ]
@@ -57,7 +57,7 @@
             actions: {
               items: [ CREATE_CHANGE_LINK(
                 i18n.checkYourAnswersPage.change,
-                partnershipNameChangeLink | replace("check-your-answers", "email#email"),
+                currentUrl | replace("check-your-answers", "email#email"),
                 partnershipNameChangeText,
                 "change-email-button"
               ) ]
