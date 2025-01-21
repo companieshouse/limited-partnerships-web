@@ -18,7 +18,7 @@ class AddressLookUpGateway implements IAddressLookUpGateway {
       method: "isValidUKPostcode",
       args: [
         `${POSTCODE_ADDRESSES_LOOKUP_URL}/postcode`,
-        this.removeSpaceFromPostCode(postalCode)
+        this.removeSpaceFromPostalCode(postalCode)
       ]
     };
 
@@ -34,7 +34,7 @@ class AddressLookUpGateway implements IAddressLookUpGateway {
       method: "getListOfValidPostcodeAddresses",
       args: [
         `${POSTCODE_ADDRESSES_LOOKUP_URL}/multiple-addresses`,
-        this.removeSpaceFromPostCode(postalCode)
+        this.removeSpaceFromPostalCode(postalCode)
       ]
     };
 
@@ -46,7 +46,7 @@ class AddressLookUpGateway implements IAddressLookUpGateway {
     return response?.resource ?? [];
   }
 
-  private removeSpaceFromPostCode(postalCode: string) {
+  private removeSpaceFromPostalCode(postalCode: string) {
     return postalCode ? postalCode.replace(/\s+/g, "") : "";
   }
 }
