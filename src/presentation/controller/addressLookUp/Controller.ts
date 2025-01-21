@@ -75,12 +75,12 @@ class AddressLookUpController extends AbstractController {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const session = request.session as Session;
+        const tokens = super.extractTokens(request);
         const pageType = super.extractPageTypeOrThrowError(
           request,
           AddressLookUpPageType
         );
-        const postalCode = escape(request.body.postal_code);
-        const addressLine1 = escape(request.body.address_line_1);
+        const { postal_code, address_line_1 } = request.body;
 
         const pageRouting = super.getRouting(
           addressLookUpRouting,
@@ -92,8 +92,9 @@ class AddressLookUpController extends AbstractController {
 
         const { isValid, address } =
           await this.addressService.isValidUKPostcodeAndHasAnAddress(
-            postalCode,
-            addressLine1
+            tokens,
+            escape(postal_code),
+            escape(address_line_1)
           );
 
         if (!isValid) {

@@ -1,6 +1,6 @@
 import {
   getEnvironmentValue,
-  getEnvironmentValueAsBoolean,
+  getEnvironmentValueAsBoolean
 } from "../utils/environment.value";
 
 // APP CONFIG
@@ -34,18 +34,22 @@ export const PIWIK_REGISTRATION_PRIVATE_FUND_LP_GOAL_ID = getEnvironmentValue(
 export const PIWIK_REGISTRATION_SCOTTISH_LP_GOAL_ID = getEnvironmentValue(
   "PIWIK_REGISTRATION_SCOTTISH_LP_GOAL_ID"
 );
-export const PIWIK_REGISTRATION_SCOTTISH_PRIVATE_FUND_LP_GOAL_ID = getEnvironmentValue(
-  "PIWIK_REGISTRATION_SCOTTISH_PRIVATE_FUND_LP_GOAL_ID"
-);
+export const PIWIK_REGISTRATION_SCOTTISH_PRIVATE_FUND_LP_GOAL_ID =
+  getEnvironmentValue("PIWIK_REGISTRATION_SCOTTISH_PRIVATE_FUND_LP_GOAL_ID");
 export const PIWIK_SITE_ID = getEnvironmentValue("PIWIK_SITE_ID");
 export const PIWIK_URL = getEnvironmentValue("PIWIK_URL");
 export const PORT = getEnvironmentValue("PORT");
+export const POSTCODE_ADDRESSES_LOOKUP_URL = getEnvironmentValue(
+  "POSTCODE_ADDRESSES_LOOKUP_URL"
+);
 export const isLocalesEnabled = () =>
   getEnvironmentValueAsBoolean("LOCALES_ENABLED");
 export const REFRESH_TOKEN_GRANT_TYPE = "refresh_token";
 
 export const SERVICE_NAME = "File for a limited partnership";
-export const SHOW_SERVICE_UNAVAILABLE_PAGE = getEnvironmentValueAsBoolean("SHOW_SERVICE_UNAVAILABLE_PAGE");
+export const SHOW_SERVICE_UNAVAILABLE_PAGE = getEnvironmentValueAsBoolean(
+  "SHOW_SERVICE_UNAVAILABLE_PAGE"
+);
 export const APPLICATION_CACHE_KEY = "limited_partnership";
 export const APPLICATION_CACHE_KEY_PREFIX_REGISTRATION = "registration_";
 

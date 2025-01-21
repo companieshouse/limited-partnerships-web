@@ -1,66 +1,26 @@
 import request from "supertest";
 import { createApiClient } from "@companieshouse/api-sdk-node";
-import {
-  LimitedPartnershipsService,
-  NameEndingType
-} from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-import TransactionService from "@companieshouse/api-sdk-node/dist/services/transaction/service";
+import { NameEndingType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { RefreshTokenService } from "@companieshouse/api-sdk-node/dist/services/refresh-token";
 
 import appRealDependencies from "../../../../app";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import { EMAIL_URL, NAME_URL } from "../../../controller/registration/url";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import enTranslationText from "../../../../../locales/en/translations.json";
-import { RefreshTokenService } from "@companieshouse/api-sdk-node/dist/services/refresh-token";
-import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
+import sdkMock from "../mock/sdkMock";
 
 jest.mock("@companieshouse/api-sdk-node");
 
-const value = {
-  transaction: {
-    ...TransactionService.prototype,
-    postTransaction: () => ({
-      httpStatusCode: 201,
-      resource: {
-        id: appDevDependencies.transactionGateway.transactionId
-      }
-    })
-  },
-  limitedPartnershipsService: {
-    ...LimitedPartnershipsService.prototype,
-    postLimitedPartnership: () => ({
-      httpStatusCode: 201,
-      resource: {
-        id: appDevDependencies.limitedPartnershipGateway.submissionId
-      }
-    }),
-    patchLimitedPartnership: () => ({
-      httpStatusCode: 200,
-      resource: {}
-    }),
-    getLimitedPartnership: () => ({
-      httpStatusCode: 200,
-      resource: new LimitedPartnershipBuilder().build()
-    })
-  },
-  refreshToken: {
-    ...RefreshTokenService.prototype,
-    refresh: {
-      httpStatusCode: 201,
-      resource: { access_token: "access_token" }
-    }
-  }
-};
-
 const mockCreateApiClient = createApiClient as jest.Mock;
-mockCreateApiClient.mockReturnValue(value);
+mockCreateApiClient.mockReturnValue(sdkMock);
 
 describe("Gateway", () => {
   beforeEach(() => {
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([]);
     appDevDependencies.limitedPartnershipGateway.feedErrors();
 
-    mockCreateApiClient.mockReturnValue(value);
+    mockCreateApiClient.mockReturnValue(sdkMock);
   });
 
   describe("Create transaction and the first submission", () => {
@@ -107,9 +67,9 @@ describe("Gateway", () => {
     describe("401", () => {
       it("should return an error after failing to refresh the token", async () => {
         mockCreateApiClient.mockReturnValue({
-          ...value,
+          ...sdkMock,
           limitedPartnershipsService: {
-            ...value.limitedPartnershipsService,
+            ...sdkMock.limitedPartnershipsService,
             patchLimitedPartnership: () => ({
               httpStatusCode: 401,
               resource: {}
@@ -153,13 +113,13 @@ describe("Gateway", () => {
         });
 
         mockCreateApiClient.mockReturnValue({
-          ...value,
+          ...sdkMock,
           limitedPartnershipsService: {
-            ...value.limitedPartnershipsService,
+            ...sdkMock.limitedPartnershipsService,
             patchLimitedPartnership: () => patchLimitedPartnership
           },
           refreshToken: {
-            ...value.refreshToken,
+            ...sdkMock.refreshToken,
             refresh: refreshToken
           }
         });
@@ -187,9 +147,9 @@ describe("Gateway", () => {
     describe("400", () => {
       it("should return validation errors - name page", async () => {
         mockCreateApiClient.mockReturnValue({
-          ...value,
+          ...sdkMock,
           limitedPartnershipsService: {
-            ...value.limitedPartnershipsService,
+            ...sdkMock.limitedPartnershipsService,
             postLimitedPartnership: () => ({
               httpStatusCode: 400,
               resource: {
@@ -218,9 +178,9 @@ describe("Gateway", () => {
 
       it("should return validation errors - email page", async () => {
         mockCreateApiClient.mockReturnValue({
-          ...value,
+          ...sdkMock,
           limitedPartnershipsService: {
-            ...value.limitedPartnershipsService,
+            ...sdkMock.limitedPartnershipsService,
             patchLimitedPartnership: () => ({
               httpStatusCode: 400,
               resource: {
@@ -265,9 +225,9 @@ describe("Gateway", () => {
 
     it("should load error page if submissionId is incorrect", async () => {
       mockCreateApiClient.mockReturnValue({
-        ...value,
+        ...sdkMock,
         limitedPartnershipsService: {
-          ...value.limitedPartnershipsService,
+          ...sdkMock.limitedPartnershipsService,
           getLimitedPartnership: () => ({
             httpStatusCode: 404,
             errors: ["Not Found"]

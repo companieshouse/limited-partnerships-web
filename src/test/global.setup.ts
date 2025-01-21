@@ -22,5 +22,6 @@ export default () => {
   process.env.PIWIK_SITE_ID = "24";
   process.env.PIWIK_URL = "piwik.url";
   process.env.PORT = "3000";
+  process.env.POSTCODE_ADDRESSES_LOOKUP_URL = "https://example.co.uk";
   process.env.SHOW_SERVICE_UNAVAILABLE_PAGE = "false";
 };

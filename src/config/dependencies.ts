@@ -4,8 +4,7 @@ import LimitedPartnershipGateway from "../infrastructure/gateway/limitedPartners
 import CacheRepository from "../infrastructure/repository/CacheRepository";
 import RegistrationController from "../presentation/controller/registration/Controller";
 import CacheService from "../application/service/CacheService";
-// import AddressLookUpGateway from "../infrastructure/gateway/addressLookUp/AddressLookUpGateway";
-import AddressLookUpInMemoryGateway from "../infrastructure/gateway/addressLookUp/AddressLookUpInMemoryGateway";
+import AddressLookUpGateway from "../infrastructure/gateway/addressLookUp/AddressLookUpGateway";
 import AddressLookUpService from "../application/service/AddressLookUpService";
 import AddressLookUpController from "../presentation/controller/addressLookUp/Controller";
 import TransactionGateway from "../infrastructure/gateway/transaction/TransactionGateway";
@@ -14,9 +13,7 @@ import TransactionGateway from "../infrastructure/gateway/transaction/Transactio
 const limitedPartnershipGateway: LimitedPartnershipGateway =
   new LimitedPartnershipGateway();
 const transactionGateway: TransactionGateway = new TransactionGateway();
-const addressLookUpGateway: AddressLookUpInMemoryGateway =
-  new AddressLookUpInMemoryGateway(); // to be removed and use the bottom one - only there until the real gateway does its job - only valid postcode CF14 3UZ for the moment
-// const addressLookUpGateway: AddressLookUpGateway = new AddressLookUpGateway();
+const addressLookUpGateway: AddressLookUpGateway = new AddressLookUpGateway();
 
 // REPOSITORIES
 const cacheRepository = new CacheRepository();
