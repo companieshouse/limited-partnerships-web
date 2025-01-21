@@ -1,0 +1,48 @@
+{% extends "layout.njk" %}
+
+{% set pageTitle = i18n.chooseRegisteredOfficeAddressPage.title %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form class="form" action={{ props.currentUrl }} method="post">
+        <input type="hidden" name="pageType" value={{ props.pageType }}>
+        {% include "includes/csrf_token.njk" %}
+        
+        {% include "includes/proposed-name.njk" %}  
+
+        {{ govukRadios({
+          classes: "govuk-radios",
+          name: "parameter",
+          value: data['chooseRegisteredOfficeAddressPage'],
+          fieldset: {
+            legend: {
+              text: i18n.chooseRegisteredOfficeAddressPage.title,
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--xl"
+            }
+          },
+          hint: {
+            text: i18n.chooseRegisteredOfficeAddressPage.addressLink
+          },
+
+          items: [
+            {
+              value: "1 Orchard Street, Whitchurch, Cardiff, CF14 3UZ",
+              text: "1 Orchard Street, Whitchurch, Cardiff, CF14 3UZ"
+            },
+            {
+              value: "2 Orchard Street, Whitchurch, Cardiff, CF14 3UZ",
+              text: "2 Orchard Street, Whitchurch, Cardiff, CF14 3UZ"
+            }
+          ]
+        }) }}
+       
+        {% include "includes/save-and-continue-button.njk" %}
+      </form>
+    </div>
+  </div>
+{% endblock %}
+
+       
+      

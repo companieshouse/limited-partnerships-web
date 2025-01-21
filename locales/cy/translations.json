@@ -26,6 +26,12 @@
         }
     },
 
+    "chooseRegisteredOfficeAddressPage" : {
+         "title": "WELSH - Choose the registered office address",
+         "addressLink": "WELSH - The address is not on the list."
+        
+    },
+
     "errorPage" : {
         "title" : "WELSH - Sorry, the service is unavailable",
         "tryLater" : "WELSH - You will be able to use the service at a later date.",

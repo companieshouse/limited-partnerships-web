@@ -26,6 +26,12 @@
         }
     },
 
+    "chooseRegisteredOfficeAddressPage" : {
+        "title": "Choose the registered office address",
+        "addressLink": "The address is not on the list."
+       
+   },
+
     "errorPage" : {
         "title" : "Sorry, the service is unavailable",
         "tryLater" : "You will be able to use the service at a later date.",
