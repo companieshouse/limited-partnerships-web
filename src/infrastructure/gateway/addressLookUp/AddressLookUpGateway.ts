@@ -22,7 +22,7 @@ class AddressLookUpGateway implements IAddressLookUpGateway {
       ]
     };
 
-    return await makeApiCallWithRetry<boolean>(opt, apiCall);
+    return makeApiCallWithRetry<boolean>(opt, apiCall);
   }
 
   async getListOfValidPostcodeAddresses(
@@ -43,7 +43,7 @@ class AddressLookUpGateway implements IAddressLookUpGateway {
       apiCall
     );
 
-    return (response as Resource<UKAddress[]>)?.resource ?? [];
+    return response?.resource ?? [];
   }
 
   private removeSpaceFromPostCode(postalCode: string) {
