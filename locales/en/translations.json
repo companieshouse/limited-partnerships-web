@@ -7,6 +7,7 @@
     "checkYourAnswersPage" : {
         "title" : "Check your answers before sending your application",
         "lpInfo" : "Limited partnership information",
+        "change" : "Change",
         "headingName" : "Partnership Name",
         "headingSic" : "Standard Industrial Classification (SIC) code",
         "headingEmail" : "Registered email address",

@@ -7,6 +7,7 @@
     "checkYourAnswersPage" : {
         "title" : "WELSH - Check your answers before sending your application",
         "lpInfo" : "WELSH - Limited partnership information",
+        "change" : "WELSH - Change",
         "headingName" : "WELSH - Partnership Name",
         "headingSic" : "WELSH - Standard Industrial Classification (SIC) code",
         "headingEmail" : "WELSH - Registered email address",

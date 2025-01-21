@@ -14,6 +14,3 @@ export const createSummaryListLink = (
   };
 };
 
-export const createChangeLinkConfig = (href: string, text: string, dataEventId: string) => {
-  return createSummaryListLink('Change', href, text, dataEventId);
-};

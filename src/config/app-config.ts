@@ -3,7 +3,7 @@ import express from "express";
 import Redis from "ioredis";
 import * as nunjucks from "nunjucks";
 import * as path from "path";
-import { createChangeLinkConfig } from "../utils/change.link";
+import { createSummaryListLink } from "../utils/change.link";
 
 import {
   SessionMiddleware,
@@ -44,7 +44,7 @@ export const appConfig = (app: express.Application) => {
   nunjucksEnv.addGlobal("PIWIK_SITE_ID", config.PIWIK_SITE_ID);
   nunjucksEnv.addGlobal("PIWIK_URL", config.PIWIK_URL);
   nunjucksEnv.addGlobal("SERVICE_NAME", config.SERVICE_NAME);
-  nunjucksEnv.addGlobal("CREATE_CHANGE_LINK", createChangeLinkConfig);
+  nunjucksEnv.addGlobal("CREATE_CHANGE_LINK", createSummaryListLink);
 
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
