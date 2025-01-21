@@ -1,20 +1,14 @@
 import request from "supertest";
-import { LocalesService } from "@companieshouse/ch-node-utils";
-import * as config from "../../../../config/constants";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
 import { CHOOSE_REGISTERED_OFFICE_ADDRESS_URL } from "presentation/controller/addressLookUp/url";
+import { setLocalesEnabled } from "../../../../test/test-utils";
 
 describe("Choose Registered Office Address Page", () => {
   beforeEach(() => {
     setLocalesEnabled(false);
   });
-
-  const setLocalesEnabled = (bool: boolean) => {
-    jest.spyOn(config, "isLocalesEnabled").mockReturnValue(bool);
-    LocalesService.getInstance().enabled = bool;
-  };
 
   describe("Get Choose Registered Office Address Page", () => {
     it("should load the choose registered office address page with English text", async () => {
