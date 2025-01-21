@@ -1,0 +1,123 @@
+{% extends "layout.njk" %}
+
+{% set pageTitle = title  %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds-from-desktop">
+      <h1 class="govuk-heading-l">{{ i18n.checkYourAnswersPage.title }}</h1>
+      <h2 class="govuk-heading-m">{{ i18n.checkYourAnswersPage.lpInfo }}</h2>
+      {{ govukSummaryList({
+        classes: "govuk-!-margin-bottom-9",
+        rows: [
+          {
+            key: {
+	          text: i18n.checkYourAnswersPage.headingName
+	        },
+	        value: {
+	          text: props.data.limitedPartnership.data.partnership_name
+	        },
+	        actions: {
+	          items: [
+	            {
+	              href: "javascript:void(0)",
+	              text: "Change",
+	              visuallyHiddenText: "Name"
+	            }
+	          ]
+	        }
+	      },
+          {
+            key: {
+              text: i18n.checkYourAnswersPage.headingSic
+            },
+            value: {
+              text: "62012 - Business and domestic software development"
+            },
+            actions: {
+              items: [
+                {
+                  href: "javascript:void(0)",
+                  text: "Change",
+                  visuallyHiddenText: "Standard Industrial Classification code"
+                }
+              ]
+            }
+          },
+          {
+            key: {
+                text: i18n.checkYourAnswersPage.headingEmail
+            },
+            value: {
+                text: props.data.limitedPartnership.data.email
+            },
+            actions: {
+            items: [
+                {
+                    href: "javascript:void(0)",
+                    text: "Change",
+                    visuallyHiddenText: "registered email address"
+                }
+              ]
+            }
+          },
+          {
+            key: {
+              text: i18n.checkYourAnswersPage.headingTerm
+            },
+            value: {
+              text: data['term-of-partners'] or "Term will be decided by some or all of the partners"
+            },
+            actions: {
+              items: [
+                {
+                  href: "javascript:void(0)",
+                  text: "Change",
+                  visuallyHiddenText: "term of partnership"
+                }
+              ]
+            }
+          }
+        ]          
+      }) }} 
+ 
+      <br>
+      <div class="govuk-button-group">
+        <form class="form" action={{ props.currentUrl }} method="post">
+        <input type="hidden" name="pageType" value={{ props.pageType }}>
+        {% include "includes/csrf_token.njk" %}
+
+          {{ govukCheckboxes({
+            name: "lpStatement",            
+            fieldset: {
+              legend: {
+                text: i18n.checkYourAnswersPage.confirm,
+                isPageHeading: false,
+                classes: "govuk-visually-hidden"
+              }
+            },
+            items: [
+              {
+                value: "lp-statement",
+                text: i18n.checkYourAnswersPage.futureLawful,
+                attributes: {
+                  required: true
+                }
+              }
+            ]
+          }) }}
+
+          {{ govukButton({
+            text: i18n.checkYourAnswersPage.payment,
+            attributes: {
+              "id": "submit",
+              "data-event-id": "check-your-answers-continue-to-payment-page-button"
+            }
+          }) }}        
+        </form>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

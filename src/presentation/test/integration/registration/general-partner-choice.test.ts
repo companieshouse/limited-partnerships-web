@@ -1,6 +1,4 @@
 import request from "supertest";
-import { LocalesService } from "@companieshouse/ch-node-utils";
-import * as config from "../../../../config/constants";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
@@ -15,6 +13,7 @@ import {
   APPLICATION_CACHE_KEY_PREFIX_REGISTRATION
 } from "../../../../config/constants";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
+import { setLocalesEnabled } from "../../../../test/test-utils";
 
 describe("General Partner Choice Page", () => {
   beforeEach(() => {
@@ -24,11 +23,6 @@ describe("General Partner Choice Page", () => {
     appDevDependencies.limitedPartnershipGateway.feedErrors();
     appDevDependencies.cacheRepository.feedCache(null);
   });
-
-  const setLocalesEnabled = (bool: boolean) => {
-    jest.spyOn(config, "isLocalesEnabled").mockReturnValue(bool);
-    LocalesService.getInstance().enabled = bool;
-  };
 
   it("should load the general partner choice page with Welsh text", async () => {
     setLocalesEnabled(true);

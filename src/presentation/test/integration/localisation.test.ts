@@ -1,21 +1,15 @@
 import request from "supertest";
-import { LocalesService } from "@companieshouse/ch-node-utils";
 
 import app from "./app";
-import * as config from "../../../config/constants";
 import enTranslationText from "../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../locales/cy/translations.json";
 import { START_URL } from "../../../presentation/controller/global/Routing";
+import { setLocalesEnabled } from "../../../test/test-utils";
 
 describe("Localisation tests", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
-
-  const setLocalesEnabled = (bool: boolean) => {
-    jest.spyOn(config, "isLocalesEnabled").mockReturnValue(bool);
-    LocalesService.getInstance().enabled = bool;
-  };
 
   test("renders the start page with English text when lang is en", async () => {
     setLocalesEnabled(true);

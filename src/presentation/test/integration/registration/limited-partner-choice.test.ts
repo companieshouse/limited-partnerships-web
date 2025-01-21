@@ -1,7 +1,4 @@
 import request from "supertest";
-import { LocalesService } from "@companieshouse/ch-node-utils";
-
-import * as constants from "../../../../config/constants";
 import {
   APPLICATION_CACHE_KEY,
   APPLICATION_CACHE_KEY_PREFIX_REGISTRATION
@@ -12,11 +9,12 @@ import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
 import {
   LIMITED_PARTNER_CHOICE_URL,
-  NEXT_URL
+  CHECK_YOUR_ANSWERS_URL
 } from "../../../controller/registration/url";
 import { registrationRoutingLimitedPartnerChoice } from "../../../controller/registration/Routing";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
+import { setLocalesEnabled } from "../../../../test/test-utils";
 
 describe("Limited Partner Choice Page", () => {
   beforeEach(() => {
@@ -26,11 +24,6 @@ describe("Limited Partner Choice Page", () => {
     appDevDependencies.limitedPartnershipGateway.feedErrors();
     appDevDependencies.cacheRepository.feedCache(null);
   });
-
-  const setLocalesEnabled = (bool: boolean) => {
-    jest.spyOn(constants, "isLocalesEnabled").mockReturnValue(bool);
-    LocalesService.getInstance().enabled = bool;
-  };
 
   it("should load the limited partner choice page with Welsh text", async () => {
     setLocalesEnabled(true);
@@ -77,7 +70,7 @@ describe("Limited Partner Choice Page", () => {
     expect(res.status).toBe(302);
     const nextPageUrl =
       appDevDependencies.registrationController.insertIdsInUrl(
-        NEXT_URL,
+        CHECK_YOUR_ANSWERS_URL,
         transactionId,
         submissionId
       );
