@@ -1,18 +1,13 @@
 import request from "supertest";
 import app from "../app";
 import { CHECK_YOUR_ANSWERS_URL } from "../../../controller/registration/url";
-import { LocalesService } from "@companieshouse/ch-node-utils";
-import * as config from "../../../../config/constants";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
+import { setLocalesEnabled } from "../../../../test/test-utils";
 
 describe("Check Your Answers Page", () => {
-  const setLocalesEnabled = (bool: boolean) => {
-    jest.spyOn(config, "isLocalesEnabled").mockReturnValue(bool);
-    LocalesService.getInstance().enabled = bool;
-  };
 
   it("should GET Check Your Answers Page English text", async () => {
     setLocalesEnabled(true);

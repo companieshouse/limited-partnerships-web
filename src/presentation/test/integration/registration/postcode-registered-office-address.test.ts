@@ -1,5 +1,4 @@
 import request from "supertest";
-import { LocalesService } from "@companieshouse/ch-node-utils";
 
 import * as config from "../../../../config/constants";
 
@@ -11,6 +10,7 @@ import app from "../app";
 
 import { POSTCODE_REGISTERED_OFFICE_ADDRESS_URL } from "../../../controller/addressLookUp/url";
 import AddressPageType from "../../../controller/addressLookUp/PageType";
+import { setLocalesEnabled } from "../../../../test/test-utils";
 
 describe("Postcode Registered Office Address Page", () => {
   const address = appDevDependencies.addressLookUpGateway.address;
@@ -20,11 +20,6 @@ describe("Postcode Registered Office Address Page", () => {
 
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([]);
   });
-
-  const setLocalesEnabled = (bool: boolean) => {
-    jest.spyOn(config, "isLocalesEnabled").mockReturnValue(bool);
-    LocalesService.getInstance().enabled = bool;
-  };
 
   describe("Get Postcode Registered Office Address Page", () => {
     it("should load the office address page with English text", async () => {
