@@ -38,7 +38,7 @@ describe("Gateway Address Look Up", () => {
       expect(isValidUKPostcode).toHaveBeenCalled();
       expect(getListOfValidPostcodeAddresses).not.toHaveBeenCalled();
 
-      const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.transactionGateway.transactionId}/submission/${appDevDependencies.limitedPartnershipGateway.submissionId}/general-partners`;
+      const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.transactionGateway.transactionId}/submission/${appDevDependencies.limitedPartnershipGateway.submissionId}/choose-registered-office-address`;
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
@@ -60,7 +60,7 @@ describe("Gateway Address Look Up", () => {
       expect(isValidUKPostcode).toHaveBeenCalled();
       expect(getListOfValidPostcodeAddresses).toHaveBeenCalled();
 
-      const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.transactionGateway.transactionId}/submission/${appDevDependencies.limitedPartnershipGateway.submissionId}/general-partners`;
+      const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.transactionGateway.transactionId}/submission/${appDevDependencies.limitedPartnershipGateway.submissionId}/choose-registered-office-address`;
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);

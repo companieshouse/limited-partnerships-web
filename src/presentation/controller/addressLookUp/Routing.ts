@@ -10,11 +10,21 @@ import { EMAIL_URL, GENERAL_PARTNERS_URL } from "../registration/url";
 const addressRoutingPostcodeRegisteredOfficeAddress = {
   previousUrl: EMAIL_URL,
   currentUrl: url.POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
-  nextUrl: GENERAL_PARTNERS_URL,
+  nextUrl: url.CHOOSE_REGISTERED_OFFICE_ADDRESS_URL,
   pageType: AddressPageType.postcodeRegisteredOfficeAddress
 };
 
-const registeredOfficeAddress = [addressRoutingPostcodeRegisteredOfficeAddress];
+const addressRoutingChooseRegisteredOfficeAddress = {
+  previousUrl: url.POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
+  currentUrl: url.CHOOSE_REGISTERED_OFFICE_ADDRESS_URL,
+  nextUrl: GENERAL_PARTNERS_URL,
+  pageType: AddressPageType.chooseRegisteredOfficeAddress
+};
+
+const registeredOfficeAddress = [
+  addressRoutingPostcodeRegisteredOfficeAddress,
+  addressRoutingChooseRegisteredOfficeAddress
+];
 
 export const addressLookUpRouting: PagesRouting = new Map<
   PageType,
