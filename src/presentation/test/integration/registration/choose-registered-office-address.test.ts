@@ -5,8 +5,9 @@ import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
+import { CHOOSE_REGISTERED_OFFICE_ADDRESS_URL } from "presentation/controller/addressLookUp/url";
 
-describe.skip("Choose Registered Office Address Page", () => {
+describe("Choose Registered Office Address Page", () => {
   beforeEach(() => {
     setLocalesEnabled(false);
   });
@@ -17,9 +18,9 @@ describe.skip("Choose Registered Office Address Page", () => {
   };
 
   describe("Get Choose Registered Office Address Page", () => {
-    it.only("should load the choose registered office address page with English text", async () => {
+    it("should load the choose registered office address page with English text", async () => {
       setLocalesEnabled(true);
-      const res = await request(app).get("CHOOSE_REGISTERED_OFFICE_ADDRESS_URL" + "?lang=en");
+      const res = await request(app).get(CHOOSE_REGISTERED_OFFICE_ADDRESS_URL + "?lang=en");
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
@@ -30,9 +31,9 @@ describe.skip("Choose Registered Office Address Page", () => {
       expect(res.text).not.toContain("WELSH -");
     });
 
-    it.only("should load the choose registered office address page with Welsh text", async () => {
+    it("should load the choose registered office address page with Welsh text", async () => {
       setLocalesEnabled(true);
-      const res = await request(app).get("CHOOSE_REGISTERED_OFFICE_ADDRESS_URL" + "?lang=cy");
+      const res = await request(app).get(CHOOSE_REGISTERED_OFFICE_ADDRESS_URL + "?lang=cy");
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(

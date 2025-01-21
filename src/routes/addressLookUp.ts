@@ -4,7 +4,7 @@ import { authentication } from "../middlewares";
 
 import { IDependencies } from "../config/IDependencies";
 
-import { POSTCODE_REGISTERED_OFFICE_ADDRESS_URL } from "../presentation/controller/addressLookUp/url";
+import { CHOOSE_REGISTERED_OFFICE_ADDRESS_URL, POSTCODE_REGISTERED_OFFICE_ADDRESS_URL } from "../presentation/controller/addressLookUp/url";
 
 export const addressLookUpEndpoints = (
   router: Router,
@@ -19,6 +19,12 @@ export const addressLookUpEndpoints = (
     POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
     authentication,
     dependencies.addressLookUpController.postcodeValidation()
+  );
+
+  router.get(
+    CHOOSE_REGISTERED_OFFICE_ADDRESS_URL,
+    authentication,
+    dependencies.addressLookUpController.getPageRouting()
   );
 };
 
