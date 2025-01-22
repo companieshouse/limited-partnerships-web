@@ -1,27 +1,24 @@
-import UIErrors from "../../domain/entities/UIErrors";
+import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import UIErrors, { ApiErrors } from "../../domain/entities/UIErrors";
 import IAddressLookUpGateway from "../../domain/IAddressLookUpGateway";
-import ILimitedPartnershipGateway from "../../domain/ILimitedPartnershipGateway";
 
 import { logger } from "../../utils";
 import { UKAddress } from "@companieshouse/api-sdk-node/dist/services/postcode-lookup";
 
 class AddressLookUpService {
-  constructor(
-    private addressGateway: IAddressLookUpGateway,
-    private limitedPartnershipGateway: ILimitedPartnershipGateway
-  ) {}
+  constructor(private addressGateway: IAddressLookUpGateway) {}
 
   async isValidUKPostcodeAndHasAnAddress(
     opt: { access_token: string; refresh_token: string },
+    partnershipType: string,
     postalCode: string,
     premise?: string
   ): Promise<{
-    isValid: boolean;
     address: UKAddress;
     errors?: UIErrors;
   }> {
     try {
-      let errors: UIErrors | undefined;
+      const uiErrors = new UIErrors();
 
       const address: UKAddress = {
         postcode: postalCode,
@@ -38,28 +35,26 @@ class AddressLookUpService {
       );
 
       if (!isValid) {
-        const uiErrors = new UIErrors();
-        uiErrors.formatValidationErrorToUiErrors({
-          errors: {
-            postal_code: `The postcode ${postalCode} cannot be found`
-          }
-        });
+        uiErrors.formatValidationErrorToUiErrors(
+          this.makePostalCodeError(`The postcode ${postalCode} cannot be found`)
+        );
 
-        errors = uiErrors;
+        return { address, errors: uiErrors };
       }
 
-      if (isValid && premise) {
-        const ukAddresses: UKAddress[] =
-          await this.addressGateway.getListOfValidPostcodeAddresses(
-            opt,
-            postalCode
-          );
+      const ukAddresses: UKAddress[] =
+        await this.addressGateway.getListOfValidPostcodeAddresses(
+          opt,
+          postalCode
+        );
 
+      if (!this.isFromCorrectCountry(partnershipType, ukAddresses, uiErrors)) {
+        return { address, errors: uiErrors };
+      }
+
+      if (premise) {
         if (ukAddresses.length === 0) {
-          return {
-            isValid,
-            address
-          };
+          return { address };
         }
 
         const matchingAddress = ukAddresses.find(
@@ -68,20 +63,59 @@ class AddressLookUpService {
         );
 
         if (matchingAddress) {
-          return { isValid, address: matchingAddress };
+          return { address: matchingAddress };
         }
       }
 
-      return {
-        isValid,
-        address,
-        errors
-      };
+      return { address };
     } catch (error: any) {
       logger.error(`Error validating postcode ${JSON.stringify(error)}`);
 
       throw error;
     }
+  }
+
+  private isFromCorrectCountry(
+    partnershipType: string,
+    ukAddresses: UKAddress[],
+    uiErrors: UIErrors
+  ): boolean {
+    let isCorrectCountry = true;
+
+    const SCOTLAND = ["GB-SCT", "DG", "NE", "CA", "TD"];
+    const IS_IN_SCOTLAND = SCOTLAND.includes(ukAddresses[0]?.country);
+    const SCOTLAND_TYPE =
+      partnershipType === PartnershipType.SLP ||
+      partnershipType === PartnershipType.SPFLP;
+    const NON_SCOTLAND_TYPE =
+      partnershipType === PartnershipType.LP ||
+      partnershipType === PartnershipType.PFLP;
+
+    if (SCOTLAND_TYPE && !IS_IN_SCOTLAND) {
+      isCorrectCountry = false;
+      uiErrors.formatValidationErrorToUiErrors(
+        this.makePostalCodeError(
+          "You must enter a postcode which is in Scotland"
+        )
+      );
+    } else if (NON_SCOTLAND_TYPE && IS_IN_SCOTLAND) {
+      isCorrectCountry = false;
+      uiErrors.formatValidationErrorToUiErrors(
+        this.makePostalCodeError(
+          "You must enter a postcode which is in England, Wales, or Northern Ireland"
+        )
+      );
+    }
+
+    return isCorrectCountry;
+  }
+
+  private makePostalCodeError(message: string): ApiErrors {
+    return {
+      errors: {
+        postal_code: message
+      }
+    };
   }
 }
 

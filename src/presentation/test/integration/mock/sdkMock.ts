@@ -45,7 +45,9 @@ const sdkMock = {
     }),
     getLimitedPartnership: () => ({
       httpStatusCode: 200,
-      resource: new LimitedPartnershipBuilder().build()
+      resource: new LimitedPartnershipBuilder()
+        .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+        .build()
     })
   },
   refreshToken: {

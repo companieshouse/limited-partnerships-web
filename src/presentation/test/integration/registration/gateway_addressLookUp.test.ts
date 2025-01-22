@@ -17,18 +17,22 @@ const mockCreateApiClient = createApiClient as jest.Mock;
 mockCreateApiClient.mockReturnValue(sdkMock);
 
 describe("Gateway Address Look Up", () => {
+  let url = "";
+
+  beforeAll(() => {
+    url = appDevDependencies.addressLookUpController.insertIdsInUrl(
+      POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
+      appDevDependencies.transactionGateway.transactionId,
+      appDevDependencies.limitedPartnershipGateway.submissionId
+    );
+  });
+
   beforeEach(() => {
     mockCreateApiClient.mockReturnValue(sdkMock);
   });
 
   describe("isValidUKPostcode", () => {
     it("should validate the post code then redirect to the next page", async () => {
-      const url = appDevDependencies.addressLookUpController.insertIdsInUrl(
-        POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
-        appDevDependencies.transactionGateway.transactionId,
-        appDevDependencies.limitedPartnershipGateway.submissionId
-      );
-
       const res = await request(appRealDependencies).post(url).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
         premise: "",
@@ -36,7 +40,7 @@ describe("Gateway Address Look Up", () => {
       });
 
       expect(isValidUKPostcode).toHaveBeenCalled();
-      expect(getListOfValidPostcodeAddresses).not.toHaveBeenCalled();
+      expect(getListOfValidPostcodeAddresses).toHaveBeenCalled();
 
       const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.transactionGateway.transactionId}/submission/${appDevDependencies.limitedPartnershipGateway.submissionId}/choose-registered-office-address`;
 
@@ -45,12 +49,6 @@ describe("Gateway Address Look Up", () => {
     });
 
     it("should validate the post code and find a matching address then redirect to the next page", async () => {
-      const url = appDevDependencies.addressLookUpController.insertIdsInUrl(
-        POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
-        appDevDependencies.transactionGateway.transactionId,
-        appDevDependencies.limitedPartnershipGateway.submissionId
-      );
-
       const res = await request(appRealDependencies).post(url).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
         premise: "2",
