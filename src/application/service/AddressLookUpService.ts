@@ -1,3 +1,4 @@
+import UIErrors from "../../domain/entities/UIErrors";
 import IAddressLookUpGateway from "../../domain/IAddressLookUpGateway";
 import ILimitedPartnershipGateway from "../../domain/ILimitedPartnershipGateway";
 
@@ -17,8 +18,11 @@ class AddressLookUpService {
   ): Promise<{
     isValid: boolean;
     address: UKAddress;
+    errors?: UIErrors;
   }> {
     try {
+      let errors: UIErrors | undefined;
+
       const address: UKAddress = {
         postcode: postalCode,
         addressLine1: "",
@@ -32,6 +36,17 @@ class AddressLookUpService {
         opt,
         postalCode
       );
+
+      if (!isValid) {
+        const uiErrors = new UIErrors();
+        uiErrors.formatValidationErrorToUiErrors({
+          errors: {
+            postal_code: `The postcode ${postalCode} cannot be found`
+          }
+        });
+
+        errors = uiErrors;
+      }
 
       if (isValid && addressLine1) {
         const ukAddresses: UKAddress[] =
@@ -60,7 +75,8 @@ class AddressLookUpService {
 
       return {
         isValid,
-        address
+        address,
+        errors
       };
     } catch (error: any) {
       logger.error(`Error validating postcode ${JSON.stringify(error)}`);

@@ -86,7 +86,7 @@ class AddressLookUpController extends AbstractController {
           request.params[SUBMISSION_ID]
         );
 
-        const { isValid, address } =
+        const { isValid, address, errors } =
           await this.addressService.isValidUKPostcodeAndHasAnAddress(
             tokens,
             escape(postal_code),
@@ -94,6 +94,8 @@ class AddressLookUpController extends AbstractController {
           );
 
         if (!isValid) {
+          pageRouting.errors = errors?.errors;
+
           response.render(super.templateName(pageRouting.currentUrl), {
             props: { ...pageRouting }
           });

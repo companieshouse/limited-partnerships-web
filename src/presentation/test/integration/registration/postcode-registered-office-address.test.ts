@@ -21,6 +21,7 @@ describe("Postcode Registered Office Address Page", () => {
     setLocalesEnabled(false);
 
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([]);
+    appDevDependencies.cacheRepository.feedCache(null);
   });
 
   describe("Get Postcode Registered Office Address Page", () => {
@@ -129,6 +130,25 @@ describe("Postcode Registered Office Address Page", () => {
             }
         }
       });
+    });
+
+    it("should return an error if the postcode is not valid", async () => {
+      const url = appDevDependencies.addressLookUpController.insertIdsInUrl(
+        POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
+        appDevDependencies.transactionGateway.transactionId,
+        appDevDependencies.limitedPartnershipGateway.submissionId
+      );
+
+      const res = await request(app).post(url).send({
+        pageType: AddressPageType.postcodeRegisteredOfficeAddress,
+        address_line_1: null,
+        postal_code: "AA1 1AA"
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(`The postcode AA1 1AA cannot be found`);
+
+      expect(appDevDependencies.cacheRepository.cache).toEqual(null);
     });
   });
 });
