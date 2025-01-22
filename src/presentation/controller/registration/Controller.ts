@@ -43,6 +43,9 @@ class RegistrationController extends AbstractController {
         );
 
         let limitedPartnership = {};
+        const generalPartner = {};
+        const limitedPartner = {};
+
         if (transactionId && submissionId) {
           limitedPartnership =
             await this.limitedPartnershipService.getLimitedPartnership(
@@ -57,6 +60,8 @@ class RegistrationController extends AbstractController {
         pageRouting.data = {
           ...pageRouting.data,
           limitedPartnership,
+          generalPartner,
+          limitedPartner,
           cache
         };
 

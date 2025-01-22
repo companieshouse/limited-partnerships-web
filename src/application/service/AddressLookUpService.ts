@@ -68,8 +68,6 @@ class AddressLookUpService {
       throw error;
     }
   }
-
-  private;
 }
 
 export default AddressLookUpService;
