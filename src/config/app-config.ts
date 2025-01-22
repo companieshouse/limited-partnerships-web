@@ -3,7 +3,7 @@ import express from "express";
 import Redis from "ioredis";
 import * as nunjucks from "nunjucks";
 import * as path from "path";
-import { createSummaryListLink } from "../utils/change.link";
+import { createSummaryListLink } from "../utils/change-link";
 
 import {
   SessionMiddleware,

@@ -1,4 +1,4 @@
-import { createSummaryListLink } from '../../../../utils/change.link';
+import { createSummaryListLink } from '../../../../utils/change-link';
 import { EMAIL_URL } from "../../../controller/registration/url";
 
 describe('createSummaryListLink test suite', () => {
