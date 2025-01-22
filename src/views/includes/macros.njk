@@ -1,0 +1,7 @@
+{% macro formatAddress(address) %}
+  {{ address.premise }}
+  {% if address.addressLine1 %} {{ address.addressLine1 }}, {% endif %}
+  {% if address.addressLine2 %} {{ address.addressLine2 }}, {% endif %}
+  {% if address.postTown %} {{ address.postTown }}, {% endif %}
+  {{ address.postcode }}
+{% endmacro %}

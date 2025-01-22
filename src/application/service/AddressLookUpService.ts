@@ -69,6 +69,22 @@ class AddressLookUpService {
     }
   }
 
+  async getAddressListForPostcode(
+    opt: { access_token: string; refresh_token: string },
+    postalCode: string,
+  ): Promise<UKAddress[]> {
+    try {
+      return await this.addressGateway.getListOfValidPostcodeAddresses(
+        opt,
+        postalCode
+      );
+    } catch (error: any) {
+      logger.error(`Error retrieving address list for postcode ${postalCode} ${JSON.stringify(error)}`);
+
+      throw error;
+    }
+  }
+
   private;
 }
 

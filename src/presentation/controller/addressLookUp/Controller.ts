@@ -13,6 +13,7 @@ import {
   TRANSACTION_ID
 } from "../../../config/constants";
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
+import { UKAddress } from "@companieshouse/api-sdk-node/dist/services/postcode-lookup";
 
 class AddressLookUpController extends AbstractController {
   constructor(
@@ -54,11 +55,18 @@ class AddressLookUpController extends AbstractController {
 
         const cache = await this.cacheService.getDataFromCache(session);
 
+        let addressList: UKAddress[] = [];
+        if (this.isAddressListRequired(pageRouting.pageType)) {
+          const postcode = cache.registration_registered_office_address.postcode;
+          addressList = await this.getAddressList(tokens, postcode);
+        }
+
         pageRouting.data = {
           ...pageRouting.data,
           limitedPartnership,
           generalPartner,
           limitedPartner,
+          addressList,
           cache
         };
 
@@ -69,6 +77,17 @@ class AddressLookUpController extends AbstractController {
         next(error);
       }
     };
+  }
+
+  private isAddressListRequired(pageType: string): boolean {
+    return pageType === AddressLookUpPageType.chooseRegisteredOfficeAddress;
+  }
+
+  private async getAddressList(tokens, postcode: string): Promise<UKAddress[]> {
+    return await this.addressService.getAddressListForPostcode(
+      tokens,
+      postcode,
+    );
   }
 
   postcodeValidation(): RequestHandler {
