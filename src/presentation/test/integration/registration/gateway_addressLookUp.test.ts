@@ -31,7 +31,7 @@ describe("Gateway Address Look Up", () => {
 
       const res = await request(appRealDependencies).post(url).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
-        address_line_1: "",
+        premise: "",
         postal_code: "ST6 3LJ"
       });
 
@@ -53,7 +53,7 @@ describe("Gateway Address Look Up", () => {
 
       const res = await request(appRealDependencies).post(url).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
-        address_line_1: "2",
+        premise: "2",
         postal_code: "ST6 3LJ"
       });
 

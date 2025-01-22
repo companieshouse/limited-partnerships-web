@@ -2,8 +2,6 @@
 
 {% set pageTitle = i18n.officeAddress.whatIsOfficeAddress %}
 
-</fieldset>
-
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -32,9 +30,9 @@
             hint: {
               text: i18n.officeAddress.nameOrNumberHint
             },
-            id: "address_line_1",
-            name: "address_line_1",
-            value: props.data.limitedPartnership.data.registered_office_address.address_line_1,
+            id: "premise",
+            name: "premise",
+            value: props.data.limitedPartnership.data.registered_office_address.premise,
             attributes : {
               "data-event-id": "name-or-number-postcode-registered-office-address"
             }
@@ -47,10 +45,11 @@
             id: "postal_code",
             name: "postal_code",
             value: props.data.limitedPartnership.data.registered_office_address.postal_code,
-            attributes : {
-              required : true,
+            attributes: {
+              required: true,
               "data-event-id": "postcode-postcode-registered-office-address"
-            }
+            },
+            pattern: "^[A-Za-z]{1,2}\\d[A-Za-z\\d]? ?\\d[A-Za-z]{2}$"
           }) }}
 
           <p>
@@ -72,6 +71,5 @@
       }) }}
     </div>
   </div>
-</div>
 
 {% endblock %}

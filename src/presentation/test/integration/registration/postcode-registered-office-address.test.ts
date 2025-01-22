@@ -75,7 +75,7 @@ describe("Postcode Registered Office Address Page", () => {
 
       const res = await request(app).post(url).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
-        address_line_1: null,
+        premise: null,
         postal_code: addresses[0].postcode
       });
 
@@ -108,7 +108,7 @@ describe("Postcode Registered Office Address Page", () => {
 
       const res = await request(app).post(url).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
-        address_line_1: addresses[0].addressLine1,
+        premise: addresses[0].premise,
         postal_code: addresses[0].postcode
       });
 
@@ -141,7 +141,7 @@ describe("Postcode Registered Office Address Page", () => {
 
       const res = await request(app).post(url).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
-        address_line_1: null,
+        premise: null,
         postal_code: "AA1 1AA"
       });
 

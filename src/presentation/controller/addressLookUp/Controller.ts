@@ -76,7 +76,7 @@ class AddressLookUpController extends AbstractController {
           request,
           AddressLookUpPageType
         );
-        const { postal_code, address_line_1 } = request.body;
+        const { postal_code, premise } = request.body;
 
         const pageRouting = super.getRouting(
           addressLookUpRouting,
@@ -90,7 +90,7 @@ class AddressLookUpController extends AbstractController {
           await this.addressService.isValidUKPostcodeAndHasAnAddress(
             tokens,
             escape(postal_code),
-            escape(address_line_1)
+            escape(premise)
           );
 
         if (!isValid) {

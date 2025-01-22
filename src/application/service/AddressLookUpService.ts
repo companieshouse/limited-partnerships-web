@@ -14,7 +14,7 @@ class AddressLookUpService {
   async isValidUKPostcodeAndHasAnAddress(
     opt: { access_token: string; refresh_token: string },
     postalCode: string,
-    addressLine1?: string
+    premise?: string
   ): Promise<{
     isValid: boolean;
     address: UKAddress;
@@ -48,7 +48,7 @@ class AddressLookUpService {
         errors = uiErrors;
       }
 
-      if (isValid && addressLine1) {
+      if (isValid && premise) {
         const ukAddresses: UKAddress[] =
           await this.addressGateway.getListOfValidPostcodeAddresses(
             opt,
@@ -64,8 +64,7 @@ class AddressLookUpService {
 
         const matchingAddress = ukAddresses.find(
           (ukAddress) =>
-            ukAddress.postcode === postalCode &&
-            ukAddress.addressLine1 === addressLine1
+            ukAddress.postcode === postalCode && ukAddress.premise === premise
         );
 
         if (matchingAddress) {
