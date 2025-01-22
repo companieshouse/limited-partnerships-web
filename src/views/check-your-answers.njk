@@ -2,6 +2,9 @@
 
 {% set pageTitle = title  %}
 
+{% set checkYourAnswers = "check-your-answers" %}
+{% set currentUrl = props.currentUrl %}
+
 {% block content %}
 
   <div class="govuk-grid-row">
@@ -19,14 +22,13 @@
 	          text: props.data.limitedPartnership.data.partnership_name
 	        },
 	        actions: {
-	          items: [
-	            {
-	              href: "javascript:void(0)",
-	              text: "Change",
-	              visuallyHiddenText: "Name"
-	            }
-	          ]
-	        }
+            items: [ CREATE_CHANGE_LINK(
+              i18n.checkYourAnswersPage.change,
+              currentUrl | replace(checkYourAnswers, "name#partnership_name"),
+              partnershipNameChangeText,
+              "change-partnership-name-button"
+            ) ]
+          }
 	      },
           {
             key: {
@@ -53,13 +55,12 @@
                 text: props.data.limitedPartnership.data.email
             },
             actions: {
-            items: [
-                {
-                    href: "javascript:void(0)",
-                    text: "Change",
-                    visuallyHiddenText: "registered email address"
-                }
-              ]
+              items: [ CREATE_CHANGE_LINK(
+                i18n.checkYourAnswersPage.change,
+                currentUrl | replace(checkYourAnswers, "email#email"),
+                partnershipNameChangeText,
+                "change-email-button"
+              ) ]
             }
           },
           {

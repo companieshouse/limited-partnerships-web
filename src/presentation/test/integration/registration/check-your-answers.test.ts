@@ -16,6 +16,7 @@ describe("Check Your Answers Page", () => {
     expect(res.status).toBe(200);
     expect(res.text).toContain(enTranslationText.checkYourAnswersPage.title);
     expect(res.text).toContain(enTranslationText.checkYourAnswersPage.lpInfo);
+    expect(res.text).toContain(enTranslationText.checkYourAnswersPage.change);
     expect(res.text).toContain(enTranslationText.checkYourAnswersPage.headingName);
     expect(res.text).toContain(enTranslationText.checkYourAnswersPage.headingSic);
     expect(res.text).toContain(enTranslationText.checkYourAnswersPage.headingEmail);
@@ -33,6 +34,7 @@ describe("Check Your Answers Page", () => {
     expect(res.status).toBe(200);
     expect(res.text).toContain(cyTranslationText.checkYourAnswersPage.title);
     expect(res.text).toContain(cyTranslationText.checkYourAnswersPage.lpInfo);
+    expect(res.text).toContain(cyTranslationText.checkYourAnswersPage.change);
     expect(res.text).toContain(cyTranslationText.checkYourAnswersPage.headingName);
     expect(res.text).toContain(cyTranslationText.checkYourAnswersPage.headingSic);
     expect(res.text).toContain(cyTranslationText.checkYourAnswersPage.headingEmail);
@@ -53,5 +55,7 @@ describe("Check Your Answers Page", () => {
     expect(res.status).toBe(200);
     expect(res.text).toContain(limitedPartnership?.data?.partnership_name);
     expect(res.text).toContain(limitedPartnership?.data?.email);
+    expect(res.text).toContain("name#partnership_name");
+    expect(res.text).toContain("email#email");
   });
 });
