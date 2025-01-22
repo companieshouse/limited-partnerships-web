@@ -1,5 +1,5 @@
 import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-import UIErrors, { ApiErrors } from "../../domain/entities/UIErrors";
+import UIErrors from "../../domain/entities/UIErrors";
 import IAddressLookUpGateway from "../../domain/IAddressLookUpGateway";
 
 import { logger } from "../../utils";
@@ -35,8 +35,9 @@ class AddressLookUpService {
       );
 
       if (!isValid) {
-        uiErrors.formatValidationErrorToUiErrors(
-          this.makePostalCodeError(`The postcode ${postalCode} cannot be found`)
+        this.setPostalCodeError(
+          uiErrors,
+          `The postcode ${postalCode} cannot be found`
         );
 
         return { address, errors: uiErrors };
@@ -93,29 +94,29 @@ class AddressLookUpService {
 
     if (SCOTLAND_TYPE && !IS_IN_SCOTLAND) {
       isCorrectCountry = false;
-      uiErrors.formatValidationErrorToUiErrors(
-        this.makePostalCodeError(
-          "You must enter a postcode which is in Scotland"
-        )
+
+      this.setPostalCodeError(
+        uiErrors,
+        "You must enter a postcode which is in Scotland"
       );
     } else if (NON_SCOTLAND_TYPE && IS_IN_SCOTLAND) {
       isCorrectCountry = false;
-      uiErrors.formatValidationErrorToUiErrors(
-        this.makePostalCodeError(
-          "You must enter a postcode which is in England, Wales, or Northern Ireland"
-        )
+
+      this.setPostalCodeError(
+        uiErrors,
+        "You must enter a postcode which is in England, Wales, or Northern Ireland"
       );
     }
 
     return isCorrectCountry;
   }
 
-  private makePostalCodeError(message: string): ApiErrors {
-    return {
+  private setPostalCodeError(uiErrors: UIErrors, message: string): void {
+    uiErrors.formatValidationErrorToUiErrors({
       errors: {
         postal_code: message
       }
-    };
+    });
   }
 }
 
