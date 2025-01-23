@@ -8,10 +8,9 @@ import sdkMock, {
   isValidUKPostcode
 } from "../mock/sdkMock";
 
-import { CHOOSE_REGISTERED_OFFICE_ADDRESS_URL, POSTCODE_REGISTERED_OFFICE_ADDRESS_URL } from "../../../controller/addressLookUp/url";
+import { POSTCODE_REGISTERED_OFFICE_ADDRESS_URL } from "../../../controller/addressLookUp/url";
 import AddressPageType from "../../../controller/addressLookUp/PageType";
 import enTranslationText from "../../../../../locales/en/translations.json";
-import { APPLICATION_CACHE_KEY_PREFIX_REGISTRATION } from "config";
 
 jest.mock("@companieshouse/api-sdk-node");
 
@@ -61,41 +60,6 @@ describe("Gateway Address Look Up", () => {
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
-    });
-
-    it("should load error page when error thrown from getListOfValidPostcodeAddresses", async () => {
-      mockCreateApiClient.mockReturnValue({
-        ...sdkMock,
-        postCodeLookup: {
-          ...sdkMock.postCodeLookup,
-          getListOfValidPostcodeAddresses: () => {
-            throw new Error();
-          }
-        }
-      });
-
-      appDevDependencies.cacheRepository.feedCache({
-        [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`]:
-          {
-            postcode: "ST6 3LJ",
-            premise: "",
-            addressLine1: "",
-            addressLine2: "",
-            postTown: "",
-            country: ""
-          }
-      });
-
-      const url = appDevDependencies.addressLookUpController.insertIdsInUrl(
-        CHOOSE_REGISTERED_OFFICE_ADDRESS_URL,
-        appDevDependencies.transactionGateway.transactionId,
-        appDevDependencies.limitedPartnershipGateway.submissionId
-      );
-
-      const res = await request(appRealDependencies).get(url);
-
-      expect(res.status).toBe(500);
-      expect(res.text).toContain(enTranslationText.errorPage.title);
     });
 
     it("should load error page when error thrown from isValidUKPostcode", async () => {

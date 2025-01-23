@@ -17,7 +17,10 @@
         {% for address in props.data.addressList %}
           {% set newItem = {
             value: address | dump,
-            text: macros.formatAddress(address)
+            text: macros.formatAddress(address),
+            attributes: {
+              required: true
+            }
           } %}
           {% set addressItems = addressItems.concat([newItem]) %}
         {% endfor %}

@@ -61,7 +61,19 @@ describe("Choose Registered Office Address Page", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain("2 Duncalf street, Stoke-on-trent, ST6 3LJ");
+    expect(res.text).toContain("The lodge Duncalf street, Castle hill, Stoke-on-trent, ST6 3LJ");
     expect(res.text).toContain("4 Duncalf street, Stoke-on-trent, ST6 3LJ");
     expect(res.text).toContain("6 Duncalf street, Stoke-on-trent, ST6 3LJ");
+  });
+
+  it("should return error page when gateway getListOfValidPostcodeAddresses throws an error", async () => {
+    setLocalesEnabled(false);
+
+    appDevDependencies.addressLookUpGateway.error = true;
+
+    const res = await request(app).get(CHOOSE_REGISTERED_OFFICE_ADDRESS_URL);
+
+    expect(res.status).toBe(500);
+    expect(res.text).toContain(enTranslationText.errorPage.title);
   });
 });

@@ -29,6 +29,14 @@ class AddressLookUpInMemoryGateway implements IAddressLookUpGateway {
       addressLine2: "",
       postTown: "STOKE-ON-TRENT",
       country: "GB-ENG"
+    },
+    {
+      postcode: "ST6 3LJ",
+      premise: "THE LODGE",
+      addressLine1: "DUNCALF STREET",
+      addressLine2: "CASTLE HILL",
+      postTown: "STOKE-ON-TRENT",
+      country: "GB-ENG"
     }
   ];
 
@@ -42,6 +50,8 @@ class AddressLookUpInMemoryGateway implements IAddressLookUpGateway {
       country: "GB-SCT"
     }
   ];
+
+  error = false;
 
   async isValidUKPostcode(
     opt: { access_token: string; refresh_token: string },
@@ -57,6 +67,10 @@ class AddressLookUpInMemoryGateway implements IAddressLookUpGateway {
     opt: { access_token: string; refresh_token: string },
     postcode: string
   ): Promise<UKAddress[]> {
+    if (this.error) {
+      throw new Error('Test 500 error');
+    }
+
     if (postcode === this.addresses[0].postcode) {
       return this.addresses;
     }

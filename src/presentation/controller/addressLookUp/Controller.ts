@@ -54,8 +54,10 @@ class AddressLookUpController extends AbstractController {
         const cache = await this.cacheService.getDataFromCache(session);
 
         let addressList: UKAddress[] = [];
+
         if (this.isAddressListRequired(pageRouting.pageType)) {
           const postcode = cache.registration_registered_office_address.postcode;
+
           addressList = await this.addressService.getAddressListForPostcode(
             tokens,
             postcode,
