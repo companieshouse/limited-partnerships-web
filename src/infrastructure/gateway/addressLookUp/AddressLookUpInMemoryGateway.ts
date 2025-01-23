@@ -32,11 +32,25 @@ class AddressLookUpInMemoryGateway implements IAddressLookUpGateway {
     }
   ];
 
+  scotlandAddresses: UKAddress[] = [
+    {
+      postcode: "IV18 0JT",
+      premise: "1",
+      addressLine1: "MAIN AVENUE",
+      addressLine2: "",
+      postTown: "INVERGORDON",
+      country: "GB-SCT"
+    }
+  ];
+
   async isValidUKPostcode(
     opt: { access_token: string; refresh_token: string },
     postcode: string
   ): Promise<boolean> {
-    return postcode === this.addresses[0].postcode;
+    return (
+      postcode === this.addresses[0].postcode ||
+      postcode === this.scotlandAddresses[0].postcode
+    );
   }
 
   async getListOfValidPostcodeAddresses(
@@ -45,6 +59,10 @@ class AddressLookUpInMemoryGateway implements IAddressLookUpGateway {
   ): Promise<UKAddress[]> {
     if (postcode === this.addresses[0].postcode) {
       return this.addresses;
+    }
+
+    if (postcode === this.scotlandAddresses[0].postcode) {
+      return this.scotlandAddresses;
     }
 
     return [];

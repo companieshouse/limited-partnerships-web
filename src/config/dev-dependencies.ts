@@ -24,8 +24,7 @@ const cacheRepository = new CacheInMemoryRepository();
 const limitedPartnershipService: LimitedPartnershipService =
   new LimitedPartnershipService(limitedPartnershipGateway, transactionGateway);
 const addressLookUpService: AddressLookUpService = new AddressLookUpService(
-  addressLookUpGateway,
-  limitedPartnershipGateway
+  addressLookUpGateway
 );
 const cacheService = new CacheService(cacheRepository);
 

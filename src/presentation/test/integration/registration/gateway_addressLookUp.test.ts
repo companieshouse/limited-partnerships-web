@@ -8,9 +8,10 @@ import sdkMock, {
   isValidUKPostcode
 } from "../mock/sdkMock";
 
-import { POSTCODE_REGISTERED_OFFICE_ADDRESS_URL } from "../../../controller/addressLookUp/url";
+import { CHOOSE_REGISTERED_OFFICE_ADDRESS_URL, POSTCODE_REGISTERED_OFFICE_ADDRESS_URL } from "../../../controller/addressLookUp/url";
 import AddressPageType from "../../../controller/addressLookUp/PageType";
 import enTranslationText from "../../../../../locales/en/translations.json";
+import { APPLICATION_CACHE_KEY_PREFIX_REGISTRATION } from "config";
 
 jest.mock("@companieshouse/api-sdk-node");
 
@@ -26,18 +27,19 @@ describe("Gateway Address Look Up", () => {
 
   beforeEach(() => {
     mockCreateApiClient.mockReturnValue(sdkMock);
+    appDevDependencies.cacheRepository.feedCache(null);
   });
 
   describe("isValidUKPostcode", () => {
     it("should validate the post code then redirect to the next page", async () => {
       const res = await request(appRealDependencies).post(url).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
-        address_line_1: "",
+        premise: "",
         postal_code: "ST6 3LJ"
       });
 
       expect(isValidUKPostcode).toHaveBeenCalled();
-      expect(getListOfValidPostcodeAddresses).not.toHaveBeenCalled();
+      expect(getListOfValidPostcodeAddresses).toHaveBeenCalled();
 
       const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.transactionGateway.transactionId}/submission/${appDevDependencies.limitedPartnershipGateway.submissionId}/choose-registered-office-address`;
 
@@ -48,7 +50,7 @@ describe("Gateway Address Look Up", () => {
     it("should validate the post code and find a matching address then redirect to the next page", async () => {
       const res = await request(appRealDependencies).post(url).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
-        address_line_1: "2",
+        premise: "2",
         postal_code: "ST6 3LJ"
       });
 
@@ -72,11 +74,25 @@ describe("Gateway Address Look Up", () => {
         }
       });
 
-      const res = await request(appRealDependencies).post(url).send({
-        pageType: AddressPageType.postcodeRegisteredOfficeAddress,
-        address_line_1: "2",
-        postal_code: "ST6 3LJ"
+      appDevDependencies.cacheRepository.feedCache({
+        [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`]:
+          {
+            postcode: "ST6 3LJ",
+            premise: "",
+            addressLine1: "",
+            addressLine2: "",
+            postTown: "",
+            country: ""
+          }
       });
+
+      const url = appDevDependencies.addressLookUpController.insertIdsInUrl(
+        CHOOSE_REGISTERED_OFFICE_ADDRESS_URL,
+        appDevDependencies.transactionGateway.transactionId,
+        appDevDependencies.limitedPartnershipGateway.submissionId
+      );
+
+      const res = await request(appRealDependencies).get(url);
 
       expect(res.status).toBe(500);
       expect(res.text).toContain(enTranslationText.errorPage.title);
