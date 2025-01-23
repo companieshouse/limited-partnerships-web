@@ -40,8 +40,6 @@ class AddressLookUpController extends AbstractController {
         );
 
         let limitedPartnership = {};
-        const generalPartner = {};
-        const limitedPartner = {};
 
         if (transactionId && submissionId) {
           limitedPartnership =
@@ -57,8 +55,6 @@ class AddressLookUpController extends AbstractController {
         pageRouting.data = {
           ...pageRouting.data,
           limitedPartnership,
-          generalPartner,
-          limitedPartner,
           cache
         };
 
@@ -76,11 +72,12 @@ class AddressLookUpController extends AbstractController {
       try {
         const session = request.session as Session;
         const tokens = super.extractTokens(request);
+        const { transactionId, submissionId } = super.extractIds(request);
         const pageType = super.extractPageTypeOrThrowError(
           request,
           AddressLookUpPageType
         );
-        const { postal_code, address_line_1 } = request.body;
+        const { postal_code, premise } = request.body;
 
         const pageRouting = super.getRouting(
           addressLookUpRouting,
@@ -90,14 +87,24 @@ class AddressLookUpController extends AbstractController {
           request.params[SUBMISSION_ID]
         );
 
-        const { isValid, address } =
-          await this.addressService.isValidUKPostcodeAndHasAnAddress(
+        const limitedPartnership =
+          await this.limitedPartnershipService.getLimitedPartnership(
             tokens,
-            escape(postal_code),
-            escape(address_line_1)
+            transactionId,
+            submissionId
           );
 
-        if (!isValid) {
+        const { address, errors } =
+          await this.addressService.isValidUKPostcodeAndHasAnAddress(
+            tokens,
+            limitedPartnership?.data?.partnership_type ?? "",
+            escape(postal_code),
+            escape(premise)
+          );
+
+        if (errors?.errors) {
+          pageRouting.errors = errors?.errors;
+
           response.render(super.templateName(pageRouting.currentUrl), {
             props: { ...pageRouting }
           });

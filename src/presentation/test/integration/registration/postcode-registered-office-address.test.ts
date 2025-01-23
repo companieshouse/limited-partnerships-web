@@ -12,15 +12,34 @@ import app from "../app";
 import { POSTCODE_REGISTERED_OFFICE_ADDRESS_URL } from "../../../controller/addressLookUp/url";
 import AddressPageType from "../../../controller/addressLookUp/PageType";
 import { setLocalesEnabled } from "../../../../test/test-utils";
+import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
+import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 describe("Postcode Registered Office Address Page", () => {
   const addresses: UKAddress[] =
     appDevDependencies.addressLookUpGateway.addresses;
+  let url = "";
+
+  beforeAll(() => {
+    const limitedPartnership = new LimitedPartnershipBuilder()
+      .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+      .build();
+
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
+      limitedPartnership
+    ]);
+
+    url = appDevDependencies.addressLookUpController.insertIdsInUrl(
+      POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
+      appDevDependencies.transactionGateway.transactionId,
+      appDevDependencies.limitedPartnershipGateway.submissionId
+    );
+  });
 
   beforeEach(() => {
     setLocalesEnabled(false);
 
-    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([]);
+    appDevDependencies.cacheRepository.feedCache(null);
   });
 
   describe("Get Postcode Registered Office Address Page", () => {
@@ -66,15 +85,9 @@ describe("Postcode Registered Office Address Page", () => {
 
   describe("Post postcode", () => {
     it("should validate the post code then redirect to the next page", async () => {
-      const url = appDevDependencies.addressLookUpController.insertIdsInUrl(
-        POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
-        appDevDependencies.transactionGateway.transactionId,
-        appDevDependencies.limitedPartnershipGateway.submissionId
-      );
-
       const res = await request(app).post(url).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
-        address_line_1: null,
+        premise: null,
         postal_code: addresses[0].postcode
       });
 
@@ -99,15 +112,9 @@ describe("Postcode Registered Office Address Page", () => {
     });
 
     it("should validate the post code and find a matching address then redirect to the next page", async () => {
-      const url = appDevDependencies.addressLookUpController.insertIdsInUrl(
-        POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
-        appDevDependencies.transactionGateway.transactionId,
-        appDevDependencies.limitedPartnershipGateway.submissionId
-      );
-
       const res = await request(app).post(url).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
-        address_line_1: addresses[0].addressLine1,
+        premise: addresses[0].premise,
         postal_code: addresses[0].postcode
       });
 
@@ -129,6 +136,58 @@ describe("Postcode Registered Office Address Page", () => {
             }
         }
       });
+    });
+
+    it("should return an error if the postcode is not valid", async () => {
+      const res = await request(app).post(url).send({
+        pageType: AddressPageType.postcodeRegisteredOfficeAddress,
+        premise: null,
+        postal_code: "AA1 1AA"
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(`The postcode AA1 1AA cannot be found`);
+
+      expect(appDevDependencies.cacheRepository.cache).toEqual(null);
+    });
+
+    it("should return an error if the postcode is in Scotland and the type is LP", async () => {
+      const res = await request(app).post(url).send({
+        pageType: AddressPageType.postcodeRegisteredOfficeAddress,
+        premise: null,
+        postal_code: "IV18 0JT"
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(
+        "You must enter a postcode which is in England, Wales, or Northern Ireland"
+      );
+
+      expect(appDevDependencies.cacheRepository.cache).toEqual(null);
+    });
+
+    it("should return an error if the postcode is not in Scotland and the type is SLP", async () => {
+      const limitedPartnership = new LimitedPartnershipBuilder()
+        .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+        .withPartnershipType(PartnershipType.SLP)
+        .build();
+
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
+        limitedPartnership
+      ]);
+
+      const res = await request(app).post(url).send({
+        pageType: AddressPageType.postcodeRegisteredOfficeAddress,
+        premise: null,
+        postal_code: "ST6 3LJ"
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(
+        "You must enter a postcode which is in Scotland"
+      );
+
+      expect(appDevDependencies.cacheRepository.cache).toEqual(null);
     });
   });
 });
