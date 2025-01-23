@@ -1,4 +1,4 @@
-import request, { Response } from "supertest";
+import request from "supertest";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
@@ -60,14 +60,8 @@ describe("Choose Registered Office Address Page", () => {
     const res = await request(app).get(CHOOSE_REGISTERED_OFFICE_ADDRESS_URL);
 
     expect(res.status).toBe(200);
-    // expect 6 because the string will appear in each radio button value as well as description
-    expect(occurrences(res, "DUNCALF STREET")).toBe(6);
-    expect(occurrences(res, "STOKE-ON-TRENT")).toBe(6);
-    expect(occurrences(res, "ST6 3LJ")).toBe(6);
+    expect(res.text).toContain("2 Duncalf street, Stoke-on-trent, ST6 3LJ");
+    expect(res.text).toContain("4 Duncalf street, Stoke-on-trent, ST6 3LJ");
+    expect(res.text).toContain("6 Duncalf street, Stoke-on-trent, ST6 3LJ");
   });
-
-  const occurrences = (res: Response, textToMatch: string) => {
-    const regex = new RegExp(textToMatch, 'g');
-    return (res.text.match(regex) || []).length;
-  };
 });

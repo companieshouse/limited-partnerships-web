@@ -74,18 +74,19 @@ class AddressLookUpService {
     postalCode: string,
   ): Promise<UKAddress[]> {
     try {
-      return await this.addressGateway.getListOfValidPostcodeAddresses(
+      const addressList: UKAddress[] = await this.addressGateway.getListOfValidPostcodeAddresses(
         opt,
         postalCode
       );
+
+      return addressList.sort((a, b) => a.premise.localeCompare(b.premise));
+
     } catch (error: any) {
       logger.error(`Error retrieving address list for postcode ${postalCode} ${JSON.stringify(error)}`);
 
       throw error;
     }
   }
-
-  private;
 }
 
 export default AddressLookUpService;

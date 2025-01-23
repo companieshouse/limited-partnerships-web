@@ -58,7 +58,10 @@ class AddressLookUpController extends AbstractController {
         let addressList: UKAddress[] = [];
         if (this.isAddressListRequired(pageRouting.pageType)) {
           const postcode = cache.registration_registered_office_address.postcode;
-          addressList = await this.getAddressList(tokens, postcode);
+          addressList = await this.addressService.getAddressListForPostcode(
+            tokens,
+            postcode,
+          );
         }
 
         pageRouting.data = {
@@ -81,13 +84,6 @@ class AddressLookUpController extends AbstractController {
 
   private isAddressListRequired(pageType: string): boolean {
     return pageType === AddressLookUpPageType.chooseRegisteredOfficeAddress;
-  }
-
-  private async getAddressList(tokens, postcode: string): Promise<UKAddress[]> {
-    return await this.addressService.getAddressListForPostcode(
-      tokens,
-      postcode,
-    );
   }
 
   postcodeValidation(): RequestHandler {
