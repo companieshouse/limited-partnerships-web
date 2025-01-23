@@ -4,6 +4,18 @@
 
 {% set pageTitle = i18n.chooseRegisteredOfficeAddressPage.title %}
 
+{% set addressItems = [] %}
+{% for address in props.data.addressList %}
+  {% set newItem = {
+    value: address | dump,
+    text: macros.formatAddress(address),
+    attributes: {
+      required: true
+    }
+  } %}
+  {% set addressItems = addressItems.concat([newItem]) %}
+{% endfor %}
+
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -12,18 +24,6 @@
         {% include "includes/csrf_token.njk" %}
         
         {% include "includes/proposed-name.njk" %}  
-
-        {% set addressItems = [] %}
-        {% for address in props.data.addressList %}
-          {% set newItem = {
-            value: address | dump,
-            text: macros.formatAddress(address),
-            attributes: {
-              required: true
-            }
-          } %}
-          {% set addressItems = addressItems.concat([newItem]) %}
-        {% endfor %}
 
         {{ govukRadios({
           classes: "govuk-radios",
