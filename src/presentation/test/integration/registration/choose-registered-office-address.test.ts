@@ -77,7 +77,7 @@ describe("Choose Registered Office Address Page", () => {
     });
   });
 
-  describe("GET Choose Registered Office Address Page", () => {
+  describe("POST Choose Registered Office Address Page", () => {
 
     it("should redirect to the next page and add select address to cache", async () => {
       const res = await request(app).post(CHOOSE_REGISTERED_OFFICE_ADDRESS_URL).send({
