@@ -78,8 +78,8 @@ describe("Choose Registered Office Address Page", () => {
   });
 
   describe("GET Choose Registered Office Address Page", () => {
-    it("should redirect to the next page and add select address to cache", async () => {
 
+    it("should redirect to the next page and add select address to cache", async () => {
       const res = await request(app).post(CHOOSE_REGISTERED_OFFICE_ADDRESS_URL).send({
         pageType: AddressPageType.chooseRegisteredOfficeAddress,
         selected_address: `{
@@ -107,6 +107,21 @@ describe("Choose Registered Office Address Page", () => {
           postTown: 'STOKE-ON-TRENT',
           country: 'GB-ENG'
         }
+      );
+    });
+
+    it("should redirect to the error page if address can't be deserialised", async () => {
+      const res = await request(app).post(CHOOSE_REGISTERED_OFFICE_ADDRESS_URL).send({
+        pageType: AddressPageType.chooseRegisteredOfficeAddress,
+        selected_address: `some address`
+      });
+
+      expect(res.status).toBe(500);
+      expect(res.text).toContain(enTranslationText.errorPage.title);
+
+      const cache = appDevDependencies.cacheRepository.cache;
+      expect(cache?.[`${config.APPLICATION_CACHE_KEY}`]).not.toHaveProperty(
+        `${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${AddressPageType.chooseRegisteredOfficeAddress}`
       );
     });
   });
