@@ -44,7 +44,7 @@ class AddressLookUpService {
       }
 
       const ukAddresses: UKAddress[] =
-        await this.addressGateway.getListOfValidPostcodeAddresses(
+        await this.getAddressListForPostcode(
           opt,
           postalCode
         );
