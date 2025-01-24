@@ -104,6 +104,10 @@ class AddressLookUpController extends AbstractController {
 
         if (errors?.errors) {
           pageRouting.errors = errors?.errors;
+          pageRouting.data = {
+            ...pageRouting.data,
+            limitedPartnership
+          };
 
           response.render(super.templateName(pageRouting.currentUrl), {
             props: { ...pageRouting }
