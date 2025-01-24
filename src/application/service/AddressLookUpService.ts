@@ -44,7 +44,7 @@ class AddressLookUpService {
       }
 
       const ukAddresses: UKAddress[] =
-        await this.addressGateway.getListOfValidPostcodeAddresses(
+        await this.getAddressListForPostcode(
           opt,
           postalCode
         );
@@ -71,6 +71,25 @@ class AddressLookUpService {
       return { address };
     } catch (error: any) {
       logger.error(`Error validating postcode ${JSON.stringify(error)}`);
+
+      throw error;
+    }
+  }
+
+  async getAddressListForPostcode(
+    opt: { access_token: string; refresh_token: string },
+    postalCode: string,
+  ): Promise<UKAddress[]> {
+    try {
+      const addressList: UKAddress[] = await this.addressGateway.getListOfValidPostcodeAddresses(
+        opt,
+        postalCode
+      );
+
+      return addressList.sort((a, b) => a.premise.localeCompare(b.premise));
+
+    } catch (error: any) {
+      logger.error(`Error retrieving address list for postcode ${postalCode} ${JSON.stringify(error)}`);
 
       throw error;
     }

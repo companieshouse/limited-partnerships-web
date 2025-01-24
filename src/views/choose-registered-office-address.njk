@@ -1,6 +1,20 @@
 {% extends "layout.njk" %}
 
+{% import 'includes/macros.njk' as macros %}
+
 {% set pageTitle = i18n.chooseRegisteredOfficeAddressPage.title %}
+
+{% set addressItems = [] %}
+{% for address in props.data.addressList %}
+  {% set newItem = {
+    value: address | dump,
+    text: macros.formatAddress(address),
+    attributes: {
+      required: true
+    }
+  } %}
+  {% set addressItems = addressItems.concat([newItem]) %}
+{% endfor %}
 
 {% block content %}
   <div class="govuk-grid-row">
@@ -22,29 +36,14 @@
               classes: "govuk-fieldset__legend--xl"
             }
           },
-          hint: {
-            text: i18n.chooseRegisteredOfficeAddressPage.addressLink
-          },
-
-          items: [
-            {
-              value: "1 Orchard Street, Whitchurch, Cardiff, CF14 3UZ",
-              text: "1 Orchard Street, Whitchurch, Cardiff, CF14 3UZ",
-              attributes: {
-                  required: true
-                }
-            },
-            {
-              value: "2 Orchard Street, Whitchurch, Cardiff, CF14 3UZ",
-              text: "2 Orchard Street, Whitchurch, Cardiff, CF14 3UZ",
-              attributes: {
-                  required: true
-                }
-            }
-          ]
+          items: addressItems
         }) }}
        
-        {% include "includes/save-and-continue-button.njk" %}
+        <p>
+          <a href="" class="govuk-link">{{ i18n.chooseRegisteredOfficeAddressPage.addressLink }}</a>
+        <p>
+       
+        {% include "includes/continue-button.njk" %}
       </form>
     </div>
   </div>
