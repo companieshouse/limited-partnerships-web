@@ -10,6 +10,7 @@ import * as config from "config";
 describe("Choose Registered Office Address Page", () => {
   beforeEach(() => {
     setLocalesEnabled(false);
+    appDevDependencies.addressLookUpGateway.error = false;
     appDevDependencies.cacheRepository.feedCache({
       [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`]:
         {
