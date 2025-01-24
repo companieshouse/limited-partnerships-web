@@ -28,7 +28,7 @@
         {{ govukRadios({
           classes: "govuk-radios",
           name: "selected_address",
-          value: data['chooseRegisteredOfficeAddressPage'],
+          value: props.data.cache['registration_choose-registered-office-address'] | dump,
           fieldset: {
             legend: {
               text: i18n.chooseRegisteredOfficeAddressPage.title,
