@@ -3,7 +3,6 @@
 {% import 'includes/macros.njk' as macros %}
 
 {% set pageTitle = i18n.chooseRegisteredOfficeAddressPage.title %}
-{% set currentUrl = props.currentUrl %}
 
 {% set addressItems = [] %}
 {% for address in props.data.addressList %}
@@ -41,7 +40,7 @@
         }) }}
        
         <p>
-          <a href= "{{ currentUrl | replace(props.pageType, props.data.enterRegisteredOfficeAddressPageType) }}" class="govuk-body-m govuk-link">{{ i18n.chooseRegisteredOfficeAddressPage.addressLink }}</a>
+          <a href= "{{ props.currentUrl | replace(props.pageType, props.data.enterRegisteredOfficeAddressPageType) }}" class="govuk-body-m govuk-link">{{ i18n.chooseRegisteredOfficeAddressPage.addressLink }}</a>
         <p>
        
         {% include "includes/continue-button.njk" %}

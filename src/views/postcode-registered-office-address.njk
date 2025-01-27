@@ -1,7 +1,6 @@
 {% extends "layout.njk" %}
 
 {% set pageTitle = i18n.officeAddress.whatIsOfficeAddress %}
-{% set currentUrl = props.currentUrl %}
 
 {% set postalCodeErrorMessage = null %}
 
@@ -65,7 +64,7 @@
           }) }}
 
           <p>
-            <a href="{{ currentUrl | replace(props.pageType, props.data.enterRegisteredOfficeAddressPageType) }}" class="govuk-body-m govuk-link">{{ i18n.officeAddress.enterAddressManually }}</a>
+            <a href="{{ props.currentUrl | replace(props.pageType, props.data.enterRegisteredOfficeAddressPageType) }}" class="govuk-body-m govuk-link">{{ i18n.officeAddress.enterAddressManually }}</a>
           <p>
 
           {{ govukButton({
