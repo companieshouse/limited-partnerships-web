@@ -26,6 +26,11 @@ export const addressLookUpEndpoints = (
     authentication,
     dependencies.addressLookUpController.getPageRouting()
   );
+  router.post(
+    CHOOSE_REGISTERED_OFFICE_ADDRESS_URL,
+    authentication,
+    dependencies.addressLookUpController.selectAddress()
+  );
 };
 
 export default addressLookUpEndpoints;
