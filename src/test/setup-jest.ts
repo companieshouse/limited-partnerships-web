@@ -1,9 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 
 jest.mock("ioredis");
+jest.mock("../utils/logger");
 
 jest.mock("../middlewares/authentication.middleware", () => ({
-  authentication: (req: Request, res: Response, next: NextFunction) => next(),
+  authentication: (req: Request, res: Response, next: NextFunction) => next()
 }));
 
 /*
@@ -14,5 +15,5 @@ jest.mock("@companieshouse/web-security-node", () => ({
   ...jest.requireActual("@companieshouse/web-security-node"),
   CsrfProtectionMiddleware:
     (_opts) => (req: Request, res: Response, next: NextFunction) =>
-      next(),
+      next()
 }));

@@ -14,9 +14,12 @@ import {
 import { registrationRoutingLimitedPartnerChoice } from "../../../controller/registration/Routing";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
-import { setLocalesEnabled } from "../../../../test/test-utils";
+import { getUrl, setLocalesEnabled } from "../../utils";
 
 describe("Limited Partner Choice Page", () => {
+  const URL = getUrl(LIMITED_PARTNER_CHOICE_URL);
+  const REDIRECT_URL = getUrl(CHECK_YOUR_ANSWERS_URL);
+
   beforeEach(() => {
     setLocalesEnabled(false);
 
@@ -27,7 +30,7 @@ describe("Limited Partner Choice Page", () => {
 
   it("should load the limited partner choice page with Welsh text", async () => {
     setLocalesEnabled(true);
-    const res = await request(app).get(LIMITED_PARTNER_CHOICE_URL + "?lang=cy");
+    const res = await request(app).get(URL + "?lang=cy");
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
@@ -40,7 +43,7 @@ describe("Limited Partner Choice Page", () => {
 
   it("should load the limited partner choice page with English text", async () => {
     setLocalesEnabled(true);
-    const res = await request(app).get(LIMITED_PARTNER_CHOICE_URL + "?lang=en");
+    const res = await request(app).get(URL + "?lang=en");
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
@@ -52,29 +55,15 @@ describe("Limited Partner Choice Page", () => {
   });
 
   it("should store the limited partner choice to cache", async () => {
-    const transactionId = "3664373";
-    const submissionId = "1543454";
     const selectedChoice = "person";
 
-    const url = appDevDependencies.registrationController.insertIdsInUrl(
-      LIMITED_PARTNER_CHOICE_URL,
-      transactionId,
-      submissionId
-    );
-
-    const res = await request(app).post(url).send({
+    const res = await request(app).post(URL).send({
       pageType: registrationRoutingLimitedPartnerChoice.pageType,
       parameter: selectedChoice
     });
 
     expect(res.status).toBe(302);
-    const nextPageUrl =
-      appDevDependencies.registrationController.insertIdsInUrl(
-        CHECK_YOUR_ANSWERS_URL,
-        transactionId,
-        submissionId
-      );
-    expect(res.header.location).toEqual(nextPageUrl);
+    expect(res.header.location).toEqual(REDIRECT_URL);
 
     // to be removed - not store in cache
     expect(appDevDependencies.cacheRepository.cache).toEqual({
@@ -92,7 +81,7 @@ describe("Limited Partner Choice Page", () => {
       limitedPartnership
     ]);
 
-    const res = await request(app).get(LIMITED_PARTNER_CHOICE_URL);
+    const res = await request(app).get(URL);
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
