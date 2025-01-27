@@ -9,16 +9,20 @@ import cyTranslationText from "../../../../../locales/cy/translations.json";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import app from "../app";
 
-import { POSTCODE_REGISTERED_OFFICE_ADDRESS_URL } from "../../../controller/addressLookUp/url";
+import {
+  CHOOSE_REGISTERED_OFFICE_ADDRESS_URL,
+  POSTCODE_REGISTERED_OFFICE_ADDRESS_URL
+} from "../../../controller/addressLookUp/url";
 import AddressPageType from "../../../controller/addressLookUp/PageType";
-import { setLocalesEnabled } from "../../../../test/test-utils";
+import { getUrl, setLocalesEnabled } from "../../utils";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 describe("Postcode Registered Office Address Page", () => {
+  const URL = getUrl(POSTCODE_REGISTERED_OFFICE_ADDRESS_URL);
+  const REDIRECT_URL = getUrl(CHOOSE_REGISTERED_OFFICE_ADDRESS_URL);
   const addresses: UKAddress[] =
     appDevDependencies.addressLookUpGateway.addresses;
-  let url = "";
 
   beforeAll(() => {
     const limitedPartnership = new LimitedPartnershipBuilder()
@@ -28,12 +32,6 @@ describe("Postcode Registered Office Address Page", () => {
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
       limitedPartnership
     ]);
-
-    url = appDevDependencies.addressLookUpController.insertIdsInUrl(
-      POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
-      appDevDependencies.transactionGateway.transactionId,
-      appDevDependencies.limitedPartnershipGateway.submissionId
-    );
   });
 
   beforeEach(() => {
@@ -45,9 +43,7 @@ describe("Postcode Registered Office Address Page", () => {
   describe("Get Postcode Registered Office Address Page", () => {
     it("should load the office address page with English text", async () => {
       setLocalesEnabled(true);
-      const res = await request(app).get(
-        POSTCODE_REGISTERED_OFFICE_ADDRESS_URL + "?lang=en"
-      );
+      const res = await request(app).get(URL + "?lang=en");
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
@@ -65,9 +61,7 @@ describe("Postcode Registered Office Address Page", () => {
 
     it("should load the office address page with Welsh text", async () => {
       setLocalesEnabled(true);
-      const res = await request(app).get(
-        POSTCODE_REGISTERED_OFFICE_ADDRESS_URL + "?lang=cy"
-      );
+      const res = await request(app).get(URL + "?lang=cy");
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
@@ -85,16 +79,14 @@ describe("Postcode Registered Office Address Page", () => {
 
   describe("Post postcode", () => {
     it("should validate the post code then redirect to the next page", async () => {
-      const res = await request(app).post(url).send({
+      const res = await request(app).post(URL).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
         premise: null,
         postal_code: addresses[0].postcode
       });
 
-      const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.transactionGateway.transactionId}/submission/${appDevDependencies.limitedPartnershipGateway.submissionId}/choose-registered-office-address`;
-
       expect(res.status).toBe(302);
-      expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
 
       expect(appDevDependencies.cacheRepository.cache).toEqual({
         [config.APPLICATION_CACHE_KEY]: {
@@ -112,16 +104,14 @@ describe("Postcode Registered Office Address Page", () => {
     });
 
     it("should validate the post code and find a matching address then redirect to the next page", async () => {
-      const res = await request(app).post(url).send({
+      const res = await request(app).post(URL).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
         premise: addresses[0].premise,
         postal_code: addresses[0].postcode
       });
 
-      const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.transactionGateway.transactionId}/submission/${appDevDependencies.limitedPartnershipGateway.submissionId}/choose-registered-office-address`;
-
       expect(res.status).toBe(302);
-      expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
 
       expect(appDevDependencies.cacheRepository.cache).toEqual({
         [config.APPLICATION_CACHE_KEY]: {
@@ -139,7 +129,7 @@ describe("Postcode Registered Office Address Page", () => {
     });
 
     it("should return an error if the postcode is not valid", async () => {
-      const res = await request(app).post(url).send({
+      const res = await request(app).post(URL).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
         premise: null,
         postal_code: "AA1 1AA"
@@ -152,7 +142,7 @@ describe("Postcode Registered Office Address Page", () => {
     });
 
     it("should return an error if the postcode is in Scotland and the type is LP", async () => {
-      const res = await request(app).post(url).send({
+      const res = await request(app).post(URL).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
         premise: null,
         postal_code: "IV18 0JT"
@@ -176,7 +166,7 @@ describe("Postcode Registered Office Address Page", () => {
         limitedPartnership
       ]);
 
-      const res = await request(app).post(url).send({
+      const res = await request(app).post(URL).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
         premise: null,
         postal_code: "ST6 3LJ"

@@ -3,15 +3,18 @@ import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
 import { CHOOSE_REGISTERED_OFFICE_ADDRESS_URL } from "presentation/controller/addressLookUp/url";
-import { setLocalesEnabled } from "../../../../test/test-utils";
+import { getUrl, setLocalesEnabled } from "../../utils";
 import { appDevDependencies } from "config/dev-dependencies";
 import * as config from "config";
 import AddressPageType from "presentation/controller/addressLookUp/PageType";
+import { GENERAL_PARTNERS_URL } from "presentation/controller/registration/url";
 
 describe("Choose Registered Office Address Page", () => {
+  const URL = getUrl(CHOOSE_REGISTERED_OFFICE_ADDRESS_URL);
+
   beforeEach(() => {
     setLocalesEnabled(false);
-    appDevDependencies.addressLookUpGateway.error = false;
+    appDevDependencies.addressLookUpGateway.setError(false);
     appDevDependencies.cacheRepository.feedCache({
       [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`]:
         {
@@ -29,14 +32,18 @@ describe("Choose Registered Office Address Page", () => {
     it("should load the choose registered office address page with English text", async () => {
       setLocalesEnabled(true);
 
-      const res = await request(app).get(CHOOSE_REGISTERED_OFFICE_ADDRESS_URL + "?lang=en");
+      const res = await request(app).get(URL + "?lang=en");
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
         `${enTranslationText.chooseRegisteredOfficeAddressPage.title} - ${enTranslationText.service} - GOV.UK`
       );
-      expect(res.text).toContain(enTranslationText.chooseRegisteredOfficeAddressPage.title);
-      expect(res.text).toContain(enTranslationText.chooseRegisteredOfficeAddressPage.addressLink);
+      expect(res.text).toContain(
+        enTranslationText.chooseRegisteredOfficeAddressPage.title
+      );
+      expect(res.text).toContain(
+        enTranslationText.chooseRegisteredOfficeAddressPage.addressLink
+      );
 
       expect(res.text).toContain(enTranslationText.buttons.continue);
       expect(res.text).not.toContain("WELSH -");
@@ -45,32 +52,38 @@ describe("Choose Registered Office Address Page", () => {
     it("should load the choose registered office address page with Welsh text", async () => {
       setLocalesEnabled(true);
 
-      const res = await request(app).get(CHOOSE_REGISTERED_OFFICE_ADDRESS_URL + "?lang=cy");
+      const res = await request(app).get(URL + "?lang=cy");
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
         `${cyTranslationText.chooseRegisteredOfficeAddressPage.title} - ${cyTranslationText.service} - GOV.UK`
       );
-      expect(res.text).toContain(cyTranslationText.chooseRegisteredOfficeAddressPage.title);
-      expect(res.text).toContain(enTranslationText.chooseRegisteredOfficeAddressPage.addressLink);
+      expect(res.text).toContain(
+        cyTranslationText.chooseRegisteredOfficeAddressPage.title
+      );
+      expect(res.text).toContain(
+        enTranslationText.chooseRegisteredOfficeAddressPage.addressLink
+      );
 
       expect(res.text).toContain(cyTranslationText.buttons.continue);
     });
 
     it("should populate the address list", async () => {
-      const res = await request(app).get(CHOOSE_REGISTERED_OFFICE_ADDRESS_URL);
+      const res = await request(app).get(URL);
 
       expect(res.status).toBe(200);
       expect(res.text).toContain("2 Duncalf street, Stoke-on-trent, ST6 3LJ");
-      expect(res.text).toContain("The lodge Duncalf street, Castle hill, Stoke-on-trent, ST6 3LJ");
+      expect(res.text).toContain(
+        "The lodge Duncalf street, Castle hill, Stoke-on-trent, ST6 3LJ"
+      );
       expect(res.text).toContain("4 Duncalf street, Stoke-on-trent, ST6 3LJ");
       expect(res.text).toContain("6 Duncalf street, Stoke-on-trent, ST6 3LJ");
     });
 
     it("should return error page when gateway getListOfValidPostcodeAddresses throws an error", async () => {
-      appDevDependencies.addressLookUpGateway.error = true;
+      appDevDependencies.addressLookUpGateway.setError(true);
 
-      const res = await request(app).get(CHOOSE_REGISTERED_OFFICE_ADDRESS_URL);
+      const res = await request(app).get(URL);
 
       expect(res.status).toBe(500);
       expect(res.text).toContain(enTranslationText.errorPage.title);
@@ -80,7 +93,7 @@ describe("Choose Registered Office Address Page", () => {
   describe("POST Choose Registered Office Address Page", () => {
 
     it("should redirect to the next page and add select address to cache", async () => {
-      const res = await request(app).post(CHOOSE_REGISTERED_OFFICE_ADDRESS_URL).send({
+      const res = await request(app).post(URL).send({
         pageType: AddressPageType.chooseRegisteredOfficeAddress,
         selected_address: `{
           "postcode": "ST6 3LJ",
@@ -92,7 +105,7 @@ describe("Choose Registered Office Address Page", () => {
         }`
       });
 
-      const redirectUrl = '/limited-partnerships/transaction/:transactionId/submission/:submissionId/general-partners';
+      const redirectUrl = getUrl(GENERAL_PARTNERS_URL);
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
 
@@ -111,7 +124,7 @@ describe("Choose Registered Office Address Page", () => {
     });
 
     it("should redirect to the error page if address can't be deserialised", async () => {
-      const res = await request(app).post(CHOOSE_REGISTERED_OFFICE_ADDRESS_URL).send({
+      const res = await request(app).post(URL).send({
         pageType: AddressPageType.chooseRegisteredOfficeAddress,
         selected_address: `some address`
       });

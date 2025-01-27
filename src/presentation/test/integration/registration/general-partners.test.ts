@@ -5,9 +5,11 @@ import app from "../app";
 import { GENERAL_PARTNERS_URL } from "../../../controller/registration/url";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
-import { setLocalesEnabled } from "../../../../test/test-utils";
+import { getUrl, setLocalesEnabled } from "../../utils";
 
 describe("General Partners Page", () => {
+  const URL = getUrl(GENERAL_PARTNERS_URL);
+
   beforeEach(() => {
     setLocalesEnabled(false);
 
@@ -16,7 +18,7 @@ describe("General Partners Page", () => {
 
   it("should load the general partners page with Welsh text", async () => {
     setLocalesEnabled(true);
-    const res = await request(app).get(GENERAL_PARTNERS_URL + "?lang=cy");
+    const res = await request(app).get(URL + "?lang=cy");
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
@@ -27,7 +29,7 @@ describe("General Partners Page", () => {
 
   it("should load the general partners page with English text", async () => {
     setLocalesEnabled(true);
-    const res = await request(app).get(GENERAL_PARTNERS_URL + "?lang=en");
+    const res = await request(app).get(URL + "?lang=en");
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
@@ -43,7 +45,7 @@ describe("General Partners Page", () => {
       limitedPartnership
     ]);
 
-    const res = await request(app).get(GENERAL_PARTNERS_URL);
+    const res = await request(app).get(URL);
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(

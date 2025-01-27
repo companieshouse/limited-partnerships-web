@@ -1,4 +1,3 @@
-import CustomError from "../../../../domain/entities/CustomError";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 
@@ -6,6 +5,7 @@ describe("Get Submission", () => {
   beforeEach(() => {
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([]);
     appDevDependencies.limitedPartnershipGateway.feedErrors();
+    appDevDependencies.addressLookUpGateway.setError(false);
   });
 
   describe("Get submission by id", () => {
@@ -33,17 +33,15 @@ describe("Get Submission", () => {
         limitedPartnership
       ]);
 
-      await appDevDependencies.limitedPartnershipService
-        .getLimitedPartnership(
+      appDevDependencies.limitedPartnershipGateway.setError(true);
+
+      await expect(
+        appDevDependencies.limitedPartnershipService.getLimitedPartnership(
           { access_token: "access_token", refresh_token: "refresh_token" },
           "transaction_id",
           "wrong-id"
         )
-        .catch((error) => {
-          expect(error).toEqual(
-            new CustomError("Limited partnership", "Not found: wrong-id")
-          );
-        });
+      ).rejects.toThrow("Not found: wrong-id");
     });
   });
 });
