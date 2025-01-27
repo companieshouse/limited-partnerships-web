@@ -43,11 +43,6 @@
       <h1 class="govuk-heading-xl">{{ title }}</h1>
 
       <div class="govuk-form-group">
-        <h1 class="govuk-label-wrapper">
-          <label class="govuk-label govuk-label--l" for="partnership_name">
-            {{ whatIsName }}
-          </label>
-        </h1>
 
         {{ govukInput ({
           classes: "govuk-input--width-40",
@@ -55,12 +50,12 @@
           id: "partnership_name",
           name: "partnership_name",
           value: props.data.limitedPartnership.data.partnership_name,
-          fieldset: {
-            legend: {
-              isPageHeading: false,
-              classes: "govuk-fieldset__legend--xl"
-            }
+          label: {
+            text: whatIsName,
+            classes: "govuk-label--l",
+            isPageHeading: false
           },
+          
           hint: {
             text: i18n.namePage.whatIsNameHint
           },
@@ -83,14 +78,8 @@
 
       <div class="govuk-form-group">
         <fieldset class="govuk-fieldset" aria-describedby="name_ending-hint">
-          <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-            <h1 class="govuk-fieldset__heading">
-              {{ nameEnding }}
-            </h1>
-          </legend>
 
           {% include "pages/name/options-with-or-without-welsh.njk" %}
-
         </fieldset>
       </div>
 
