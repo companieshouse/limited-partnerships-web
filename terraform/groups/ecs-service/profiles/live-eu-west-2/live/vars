@@ -7,4 +7,3 @@ max_task_count     = 3
 min_task_count     = 2
 
 # scaling configs
-desired_task_count = 2 # use multi instance in Live
