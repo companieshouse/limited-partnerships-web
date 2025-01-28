@@ -40,10 +40,16 @@
         }) }}
        
         <p>
-          <a href="" class="govuk-link">{{ i18n.chooseRegisteredOfficeAddressPage.addressLink }}</a>
+          <a href="" class="govuk-link" data-event-id="registered-office-address-manual-link">{{i18n.chooseRegisteredOfficeAddressPage.addressLink }}</a>
         <p>
        
-        {% include "includes/continue-button.njk" %}
+       {{ govukButton({
+               text: i18n.buttons.continue,
+               attributes: {
+               "id": "submit",
+               "onclick": "_paq.push(['trackEvent', ' Registerd Office address choice', 'selection', document.querySelector('input[name=parameter]:checked').nextElementSibling.innerHTML])"
+         }
+        }) }}
       </form>
     </div>
   </div>
