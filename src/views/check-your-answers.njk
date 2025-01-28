@@ -5,6 +5,11 @@
 {% set checkYourAnswers = "check-your-answers" %}
 {% set currentUrl = props.currentUrl %}
 
+{% set fullName = props.data.limitedPartnership.data.partnership_name %}
+{% if props.data.limitedPartnership.data.name_ending %}
+  {% set fullName = fullName + " " + props.data.limitedPartnership.data.name_ending %}
+{% endif %}
+
 {% block content %}
 
   <div class="govuk-grid-row">
@@ -16,20 +21,22 @@
         rows: [
           {
             key: {
-	          text: i18n.checkYourAnswersPage.headingName
-	        },
-	        value: {
-	          text: props.data.limitedPartnership.data.partnership_name
-	        },
-	        actions: {
-            items: [ CREATE_CHANGE_LINK(
-              i18n.checkYourAnswersPage.change,
-              currentUrl | replace(checkYourAnswers, "name#partnership_name"),
-              partnershipNameChangeText,
-              "change-partnership-name-button"
-            ) ]
-          }
-	      },
+	            text: i18n.checkYourAnswersPage.headingName
+            },
+            value: {
+              text: fullName
+            },
+            actions: {
+              items: [ 
+                CREATE_CHANGE_LINK(
+                  i18n.checkYourAnswersPage.change,
+                  currentUrl | replace(checkYourAnswers, "name#partnership_name"),
+                  partnershipNameChangeText,
+                  "change-partnership-name-button"
+                )
+              ]
+            }
+          },
           {
             key: {
               text: i18n.checkYourAnswersPage.headingSic
