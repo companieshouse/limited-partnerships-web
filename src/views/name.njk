@@ -1,5 +1,7 @@
 {% extends "layout.njk" %}
 
+{% import 'includes/macros.njk' as macros %}
+
 {% if props.data.cache["registration_which-type"] %}
   {% set partnershipType = props.data.cache["registration_which-type"] %}
 {% elif props.data.limitedPartnership.data.partnership_type %}
@@ -28,6 +30,8 @@
 
 {% set pageTitle = title  %}
 
+{% set nameErrorMessage = macros.htmlInputErrorMessage(i18n.namePage.nameErrorMessage) %}
+
 {% block content %}
 
 <div class="govuk-grid-row">
@@ -55,7 +59,6 @@
             classes: "govuk-label--l",
             isPageHeading: false
           },
-          
           hint: {
             text: i18n.namePage.whatIsNameHint
           },
@@ -63,7 +66,8 @@
             required : true,
             "aria-describedby": "partnership_name-hint",
             minLength: "1",
-            "data-event-id": "name"
+            "data-event-id": "name",
+            oninvalid: nameErrorMessage
           },
           suffix: {
             text: "Limited Partnership"

@@ -1,3 +1,5 @@
+{% set nameEndingErrorMessage = macros.htmlOptionErrorMessage(i18n.namePage.nameEndingErrorMessage, "name_ending") %}
+
 {% set nameEndingOptionsList = 
   [
     {
@@ -6,7 +8,9 @@
       id: "nameEnding-1",
       name: "name_ending",
       attributes: {
-        required: true
+        required: true,
+        oninvalid: nameEndingErrorMessage,
+        onclick: "this.setCustomValidity('')"
       }
     },
     {
@@ -15,7 +19,9 @@
       id: "nameEnding-2",
       name: "name_ending",
       attributes: {
-        required: true
+        required: true,
+        oninvalid: nameEndingErrorMessage,
+        onclick: "this.setCustomValidity('')"
       }
     },
     {
@@ -24,7 +30,9 @@
       id: "nameEnding-3",
       name: "name_ending",
       attributes: {
-        required: true
+        required: true,
+        oninvalid: nameEndingErrorMessage,
+        onclick: "this.setCustomValidity('')"
       }
     }
   ]
@@ -40,7 +48,9 @@
       id: "nameEnding-4",
       name: "name_ending",
       attributes: {
-        required: true
+        required: true,
+        oninvalid: nameEndingErrorMessage,
+        onclick: "this.setCustomValidity('')"
       }
     },
     {
@@ -49,7 +59,9 @@
       id: "nameEnding-5",
       name: "name_ending",
       attributes: {
-        required: true
+        required: true,
+        oninvalid: nameEndingErrorMessage,
+        onclick: "this.setCustomValidity('')"
       }
     },
     {
@@ -58,7 +70,9 @@
       id: "nameEnding-6",
       name: "name_ending",
       attributes: {
-        required: true
+        required: true,
+        oninvalid: nameEndingErrorMessage,
+        onclick: "this.setCustomValidity('')"
       }
     }
   ), nameEndingOptionsList) %}
