@@ -4,7 +4,7 @@ import app from "./app";
 import enTranslationText from "../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../locales/cy/translations.json";
 import { START_URL } from "../../../presentation/controller/global/Routing";
-import { setLocalesEnabled } from "../../../test/test-utils";
+import { setLocalesEnabled } from "../utils";
 
 describe("Localisation tests", () => {
   beforeEach(() => {

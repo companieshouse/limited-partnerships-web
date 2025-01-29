@@ -143,6 +143,37 @@ class AddressLookUpController extends AbstractController {
       }
     };
   }
+
+  selectAddress(): RequestHandler {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const session = request.session as Session;
+        const pageType = super.extractPageTypeOrThrowError(
+          request,
+          AddressLookUpPageType
+        );
+
+        const pageRouting = super.getRouting(
+          addressLookUpRouting,
+          pageType,
+          request.url,
+          request.params[TRANSACTION_ID],
+          request.params[SUBMISSION_ID]
+        );
+
+        const selectedAddress: UKAddress = JSON.parse(request.body.selected_address);
+
+        await this.cacheService.addDataToCache(session, {
+          [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${pageType}`]:
+            selectedAddress
+        });
+
+        response.redirect(pageRouting.nextUrl);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
 }
 
 export default AddressLookUpController;

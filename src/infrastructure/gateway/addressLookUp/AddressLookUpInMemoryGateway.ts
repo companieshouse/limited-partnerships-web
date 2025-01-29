@@ -53,6 +53,10 @@ class AddressLookUpInMemoryGateway implements IAddressLookUpGateway {
 
   error = false;
 
+  setError(value: boolean) {
+    this.error = value;
+  }
+
   async isValidUKPostcode(
     opt: { access_token: string; refresh_token: string },
     postcode: string
@@ -68,7 +72,7 @@ class AddressLookUpInMemoryGateway implements IAddressLookUpGateway {
     postcode: string
   ): Promise<UKAddress[]> {
     if (this.error) {
-      throw new Error('Test 500 error');
+      throw new Error("Test 500 error");
     }
 
     if (postcode === this.addresses[0].postcode) {

@@ -13,9 +13,12 @@ import {
   APPLICATION_CACHE_KEY_PREFIX_REGISTRATION
 } from "../../../../config/constants";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
-import { setLocalesEnabled } from "../../../../test/test-utils";
+import { getUrl, setLocalesEnabled } from "../../utils";
 
 describe("General Partner Choice Page", () => {
+  const URL = getUrl(GENERAL_PARTNER_CHOICE_URL);
+  const REDIRECT_URL = getUrl(LIMITED_PARTNERS_URL);
+
   beforeEach(() => {
     setLocalesEnabled(false);
 
@@ -26,7 +29,7 @@ describe("General Partner Choice Page", () => {
 
   it("should load the general partner choice page with Welsh text", async () => {
     setLocalesEnabled(true);
-    const res = await request(app).get(GENERAL_PARTNER_CHOICE_URL + "?lang=cy");
+    const res = await request(app).get(URL + "?lang=cy");
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
@@ -39,7 +42,7 @@ describe("General Partner Choice Page", () => {
 
   it("should load the general partner choice page with English text", async () => {
     setLocalesEnabled(true);
-    const res = await request(app).get(GENERAL_PARTNER_CHOICE_URL + "?lang=en");
+    const res = await request(app).get(URL + "?lang=en");
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
@@ -52,13 +55,14 @@ describe("General Partner Choice Page", () => {
 
   it("should redirect to next page when choice is selected", async () => {
     const selectedType = "person";
-    const res = await request(app).post(GENERAL_PARTNER_CHOICE_URL).send({
+
+    const res = await request(app).post(URL).send({
       pageType: RegistrationPageType.generalPartnerChoice,
       parameter: selectedType
     });
 
     expect(res.status).toBe(302);
-    expect(res.text).toContain(LIMITED_PARTNERS_URL);
+    expect(res.text).toContain(REDIRECT_URL);
 
     // to be removed - not store in cache
     expect(appDevDependencies.cacheRepository.cache).toEqual({
@@ -76,7 +80,7 @@ describe("General Partner Choice Page", () => {
       limitedPartnership
     ]);
 
-    const res = await request(app).get(GENERAL_PARTNER_CHOICE_URL);
+    const res = await request(app).get(URL);
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(

@@ -8,13 +8,13 @@ import {
 
 import RegistrationPageType from "../../../presentation/controller/registration/PageType";
 import ILimitedPartnershipGateway from "../../../domain/ILimitedPartnershipGateway";
-import CustomError from "../../../domain/entities/CustomError";
 import TransactionLimitedPartnership from "../../../domain/entities/TransactionLimitedPartnership";
 import LimitedPartnershipGatewayBuilder from "./LimitedPartnershipGatewayBuilder";
 import UIErrors, { ApiErrors } from "../../../domain/entities/UIErrors";
 
-class RegistrationInMemoryGateway implements ILimitedPartnershipGateway {
+class LimitedPartnershipInMemoryGateway implements ILimitedPartnershipGateway {
   submissionId = crypto.randomUUID().toString();
+  error = false;
 
   limitedPartnerships: TransactionLimitedPartnership[] = [];
   uiErrors: UIErrors = new UIErrors();
@@ -33,6 +33,10 @@ class RegistrationInMemoryGateway implements ILimitedPartnershipGateway {
     }
 
     this.uiErrors.formatValidationErrorToUiErrors(errors);
+  }
+
+  setError(value: boolean) {
+    this.error = value;
   }
 
   async createSubmission(
@@ -123,28 +127,14 @@ class RegistrationInMemoryGateway implements ILimitedPartnershipGateway {
     transactionId: string,
     submissionId: string
   ): Promise<LimitedPartnership> {
-    if (
-      transactionId === ":transactionId" &&
-      submissionId === ":submissionId"
-    ) {
-      return new LimitedPartnershipGatewayBuilder(
-        this.limitedPartnerships[0]
-      ).build();
+    if (this.error) {
+      throw new Error(`Not found: ${submissionId}`);
     }
 
-    const limitedPartnerShip = this.limitedPartnerships.find(
-      (lp) => lp._id === submissionId
-    );
-
-    if (!limitedPartnerShip) {
-      throw new CustomError(
-        "Limited partnership",
-        `Not found: ${submissionId}`
-      );
-    }
-
-    return new LimitedPartnershipGatewayBuilder(limitedPartnerShip).build();
+    return new LimitedPartnershipGatewayBuilder(
+      this.limitedPartnerships[0]
+    ).build();
   }
 }
 
-export default RegistrationInMemoryGateway;
+export default LimitedPartnershipInMemoryGateway;

@@ -27,8 +27,8 @@
 
         {{ govukRadios({
           classes: "govuk-radios",
-          name: "parameter",
-          value: data['chooseRegisteredOfficeAddressPage'],
+          name: "selected_address",
+          value: props.data.cache['registration_choose-registered-office-address'] | dump,
           fieldset: {
             legend: {
               text: i18n.chooseRegisteredOfficeAddressPage.title,
@@ -36,15 +36,11 @@
               classes: "govuk-fieldset__legend--xl"
             }
           },
-          items: addressItems,
-          attributes: {
-            required : true,
-            "radio-event-id": "address-radio-selected"
-          }
+          items: addressItems
         }) }}
        
         <p>
-          <a href="" class="govuk-link" data-event-id="registered-office-address-manual-link">{{i18n.chooseRegisteredOfficeAddressPage.addressLink }}</a>
+          <a href= "{{ props.currentUrl | replace(props.pageType, props.data.enterRegisteredOfficeAddressPageType) }}" class="govuk-body-m govuk-link">{{ i18n.chooseRegisteredOfficeAddressPage.addressLink }}</a>
         <p>
        
        {{ govukButton({

@@ -7,9 +7,13 @@ import { appDevDependencies } from "../../../../config/dev-dependencies";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { ApiErrors } from "../../../../domain/entities/UIErrors";
-import { setLocalesEnabled } from "../../../../test/test-utils";
+import { getUrl, setLocalesEnabled } from "../../utils";
+import { POSTCODE_REGISTERED_OFFICE_ADDRESS_URL } from "../../../controller/addressLookUp/url";
 
 describe("Email Page", () => {
+  const URL = getUrl(EMAIL_URL);
+  const REDIRECT_URL = getUrl(POSTCODE_REGISTERED_OFFICE_ADDRESS_URL);
+
   beforeEach(() => {
     setLocalesEnabled(false);
 
@@ -19,7 +23,7 @@ describe("Email Page", () => {
   describe("Get Email Page", () => {
     it("should load the name page with English text", async () => {
       setLocalesEnabled(true);
-      const res = await request(app).get(EMAIL_URL + "?lang=en");
+      const res = await request(app).get(URL + "?lang=en");
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
@@ -33,7 +37,7 @@ describe("Email Page", () => {
 
     it("should load the name page with Welsh text", async () => {
       setLocalesEnabled(true);
-      const res = await request(app).get(EMAIL_URL + "?lang=cy");
+      const res = await request(app).get(URL + "?lang=cy");
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
@@ -51,7 +55,7 @@ describe("Email Page", () => {
         limitedPartnership
       ]);
 
-      const res = await request(app).get(EMAIL_URL);
+      const res = await request(app).get(URL);
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(limitedPartnership?.data?.email);
@@ -71,21 +75,13 @@ describe("Email Page", () => {
         limitedPartnership
       ]);
 
-      const url = appDevDependencies.registrationController.insertIdsInUrl(
-        EMAIL_URL,
-        appDevDependencies.transactionGateway.transactionId,
-        appDevDependencies.limitedPartnershipGateway.submissionId
-      );
-
-      const res = await request(app).post(url).send({
+      const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.email,
         email: "test@example.com"
       });
 
-      const redirectUrl = `/limited-partnerships/transaction/${appDevDependencies.transactionGateway.transactionId}/submission/${appDevDependencies.limitedPartnershipGateway.submissionId}/postcode-registered-office-address`;
-
       expect(res.status).toBe(302);
-      expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
     });
 
     it("should return a validation error", async () => {
@@ -103,13 +99,7 @@ describe("Email Page", () => {
 
       appDevDependencies.limitedPartnershipGateway.feedErrors(apiErrors);
 
-      const url = appDevDependencies.registrationController.insertIdsInUrl(
-        EMAIL_URL,
-        appDevDependencies.transactionGateway.transactionId,
-        appDevDependencies.limitedPartnershipGateway.submissionId
-      );
-
-      const res = await request(app).post(url).send({
+      const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.email,
         email: "test@example."
       });
