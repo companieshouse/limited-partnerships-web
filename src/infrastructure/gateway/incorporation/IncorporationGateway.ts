@@ -35,10 +35,7 @@ class IncorporationGateway implements IIncorporationGateway {
       throw response;
     }
 
-    return (
-      (response as Resource<LimitedPartnershipResourceCreated>)?.resource?.id ??
-      ""
-    );
+    return response?.resource?.id ?? "";
   }
 }
 
