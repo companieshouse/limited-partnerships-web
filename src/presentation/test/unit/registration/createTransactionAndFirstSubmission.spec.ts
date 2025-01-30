@@ -11,7 +11,7 @@ describe("Create transaction and the first submission", () => {
     appDevDependencies.limitedPartnershipGateway.feedErrors();
   });
 
-  describe("Create LimitedPartnerShip", () => {
+  describe("Create LimitedPartnership", () => {
     it("should create a new LimitedPartnership", async () => {
       const limitedPartnership = new LimitedPartnershipBuilder()
         .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
@@ -102,6 +102,20 @@ describe("Create transaction and the first submission", () => {
       expect(
         appDevDependencies.limitedPartnershipGateway.limitedPartnerships.length
       ).toEqual(0);
+    });
+  });
+
+  describe("Create incorporation", () => {
+    it("should return an error - wrong type", async () => {
+      const transactionId = appDevDependencies.transactionGateway.transactionId;
+
+      await expect(
+        appDevDependencies.incorporationGateway.createIncorporation(
+          { access_token: "access_token", refresh_token: "refresh_token" },
+          RegistrationPageType.next,
+          transactionId
+        )
+      ).rejects.toThrow("wrong type");
     });
   });
 });
