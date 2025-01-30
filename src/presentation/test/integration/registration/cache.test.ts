@@ -10,6 +10,7 @@ import RegistrationInMemoryGateway from "../../../../infrastructure/gateway/limi
 import CacheRepository from "../../../../infrastructure/repository/CacheRepository";
 import CacheService from "../../../../application/service/CacheService";
 import TransactionInMemoryGateway from "../../../../infrastructure/gateway/transaction/TransactionInMemoryGateway";
+import IncorporationInMemoryGateway from "../../../../infrastructure/gateway/incorporation/IncorporationInMemoryGateway";
 
 describe("Cache", () => {
   let registrationController: RegistrationController;
@@ -18,7 +19,8 @@ describe("Cache", () => {
     registrationController = new RegistrationController(
       new LimitedPartnershipService(
         new RegistrationInMemoryGateway(),
-        new TransactionInMemoryGateway()
+        new TransactionInMemoryGateway(),
+        new IncorporationInMemoryGateway()
       ),
       new CacheService(new CacheRepository())
     );

@@ -1,9 +1,8 @@
 import { Resource } from "@companieshouse/api-sdk-node";
-import { Transaction } from "@companieshouse/api-sdk-node/dist/services/transaction/types";
 import { ApiErrorResponse } from "@companieshouse/api-sdk-node/dist/services/resource";
 import {
   LimitedPartnership,
-  LimitedPartnershipCreated
+  LimitedPartnershipResourceCreated
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import { makeApiCallWithRetry } from "../api";
@@ -13,6 +12,8 @@ import LimitedPartnershipGatewayBuilder from "./LimitedPartnershipGatewayBuilder
 import UIErrors from "../../../domain/entities/UIErrors";
 
 class LimitedPartnershipGateway implements ILimitedPartnershipGateway {
+  SDK_LIMITED_PARTNERSHIP_SERVICE = "limitedPartnershipsService";
+
   async createSubmission(
     opt: { access_token: string; refresh_token: string },
     registrationPageType: RegistrationPageType,
@@ -24,13 +25,13 @@ class LimitedPartnershipGateway implements ILimitedPartnershipGateway {
     const limitedPartnership = limitedPartnershipBuilder.build();
 
     const apiCall = {
-      service: "limitedPartnershipsService",
+      service: this.SDK_LIMITED_PARTNERSHIP_SERVICE,
       method: "postLimitedPartnership",
       args: [transactionId, limitedPartnership]
     };
 
     const response = await makeApiCallWithRetry<
-      Resource<LimitedPartnershipCreated> | ApiErrorResponse
+      Resource<LimitedPartnershipResourceCreated> | ApiErrorResponse
     >(opt, apiCall);
 
     this.throwUIErrorsIf400Status(response);
@@ -39,7 +40,10 @@ class LimitedPartnershipGateway implements ILimitedPartnershipGateway {
       throw response;
     }
 
-    return (response as Resource<Transaction>)?.resource?.id ?? "";
+    return (
+      (response as Resource<LimitedPartnershipResourceCreated>)?.resource?.id ??
+      ""
+    );
   }
 
   async sendPageData(
@@ -54,7 +58,7 @@ class LimitedPartnershipGateway implements ILimitedPartnershipGateway {
     const limitedPartnership = limitedPartnershipBuilder.build();
 
     const apiCall = {
-      service: "limitedPartnershipsService",
+      service: this.SDK_LIMITED_PARTNERSHIP_SERVICE,
       method: "patchLimitedPartnership",
       args: [transactionId, submissionId, limitedPartnership.data]
     };
@@ -76,7 +80,7 @@ class LimitedPartnershipGateway implements ILimitedPartnershipGateway {
     submissionId: string
   ): Promise<LimitedPartnership> {
     const apiCall = {
-      service: "limitedPartnershipsService",
+      service: this.SDK_LIMITED_PARTNERSHIP_SERVICE,
       method: "getLimitedPartnership",
       args: [transactionId, submissionId]
     };
@@ -93,7 +97,9 @@ class LimitedPartnershipGateway implements ILimitedPartnershipGateway {
   }
 
   private throwUIErrorsIf400Status(
-    response: Resource<LimitedPartnershipCreated | void> | ApiErrorResponse
+    response:
+      | Resource<LimitedPartnershipResourceCreated | void>
+      | ApiErrorResponse
   ) {
     if (response.httpStatusCode === 400) {
       const uiErrors = new UIErrors();

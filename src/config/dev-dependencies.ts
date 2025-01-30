@@ -8,6 +8,7 @@ import AddressLookUpInMemoryGateway from "../infrastructure/gateway/addressLookU
 import AddressLookUpService from "../application/service/AddressLookUpService";
 import AddressLookUpController from "../presentation/controller/addressLookUp/Controller";
 import TransactionInMemoryGateway from "../infrastructure/gateway/transaction/TransactionInMemoryGateway";
+import IncorporationInMemoryGateway from "../infrastructure/gateway/incorporation/IncorporationInMemoryGateway";
 
 // GATEWAYS
 const limitedPartnershipGateway: RegistrationInMemoryGateway =
@@ -16,13 +17,19 @@ const transactionGateway: TransactionInMemoryGateway =
   new TransactionInMemoryGateway();
 const addressLookUpGateway: AddressLookUpInMemoryGateway =
   new AddressLookUpInMemoryGateway();
+const incorporationGateway: IncorporationInMemoryGateway =
+  new IncorporationInMemoryGateway();
 
 // REPOSITORIES
 const cacheRepository = new CacheInMemoryRepository();
 
 // SERVICES
 const limitedPartnershipService: LimitedPartnershipService =
-  new LimitedPartnershipService(limitedPartnershipGateway, transactionGateway);
+  new LimitedPartnershipService(
+    limitedPartnershipGateway,
+    transactionGateway,
+    incorporationGateway
+  );
 const addressLookUpService: AddressLookUpService = new AddressLookUpService(
   addressLookUpGateway
 );
@@ -43,6 +50,7 @@ export const appDevDependencies = {
   globalController,
   limitedPartnershipGateway,
   transactionGateway,
+  incorporationGateway,
   cacheRepository,
   limitedPartnershipService,
   registrationController,
