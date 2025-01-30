@@ -27,16 +27,6 @@
         }
     },
 
-    "whatIsYourJurisdiction" : {
-        "title" : "WELSH - What is your jurisdiction?",
-        "whereIsJurisdiction" : "WELSH - Where is the jurisdiction?",
-        "options": {
-            "EnglandWales" : "WELSH - England and Wales",
-            "NI" : "WELSH - Northern Ireland"
-        }
-    }, 
- 
-
     "chooseRegisteredOfficeAddressPage" : {
          "title": "WELSH - Choose the registered office address",
          "addressLink": "WELSH - The address is not on the list"
@@ -134,6 +124,15 @@
         "title" : "Partneriaethau Cyfyngedig yw hyn",
         "errorStartAddressMissing" : "Rhowch gyfeiriad"
     },
+
+    "whatIsYourJurisdiction" : {
+        "title" : "WELSH - What is your jurisdiction?",
+        "whereIsJurisdiction" : "WELSH - Where is the jurisdiction?",
+        "options": {
+            "EnglandWales" : "WELSH - England and Wales",
+            "NorthernIreland" : "WELSH - Northern Ireland"
+        }
+    }, 
 
     "whichTypePage": {
         "title": "WELSH - Which type of partnership do you want to register?",

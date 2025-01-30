@@ -2,17 +2,16 @@ import request from "supertest";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
-import { EMAIL_URL } from "../../../controller/registration/url";
+import { EMAIL_URL, WHAT_IS_YOUR_JURISDICTION_URL } from "../../../controller/registration/url";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { ApiErrors } from "../../../../domain/entities/UIErrors";
 import { getUrl, setLocalesEnabled } from "../../utils";
-import { POSTCODE_REGISTERED_OFFICE_ADDRESS_URL } from "../../../controller/addressLookUp/url";
 
 describe("Email Page", () => {
   const URL = getUrl(EMAIL_URL);
-  const REDIRECT_URL = getUrl(POSTCODE_REGISTERED_OFFICE_ADDRESS_URL);
+  const REDIRECT_URL = getUrl(WHAT_IS_YOUR_JURISDICTION_URL);
 
   beforeEach(() => {
     setLocalesEnabled(false);
