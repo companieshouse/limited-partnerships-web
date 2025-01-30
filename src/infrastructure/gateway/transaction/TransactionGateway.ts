@@ -7,6 +7,7 @@ import { ApiErrorResponse } from "@companieshouse/api-sdk-node/dist/services/res
 import { makeApiCallWithRetry } from "../api";
 import ITransactionGateway from "../../../domain/ITransactionGateway";
 import PageType from "../../../presentation/controller/PageType";
+import { SDK_TRANSACTION_SERVICE } from "../../../config/constants";
 
 class TransactionGateway implements ITransactionGateway {
   async createTransaction(
@@ -14,7 +15,7 @@ class TransactionGateway implements ITransactionGateway {
     pageType: PageType
   ): Promise<string> {
     const apiCall = {
-      service: "transaction",
+      service: SDK_TRANSACTION_SERVICE,
       method: "postTransaction",
       args: [
         {

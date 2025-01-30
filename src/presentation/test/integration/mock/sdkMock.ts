@@ -6,7 +6,47 @@ import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import { PostcodeLookupService } from "@companieshouse/api-sdk-node/dist/services/postcode-lookup";
 
-// Postcode Look Up
+// Transaction service
+export const postTransaction = jest.fn().mockImplementation(() => ({
+  httpStatusCode: 201,
+  resource: {
+    id: appDevDependencies.transactionGateway.transactionId
+  }
+}));
+
+// Limited Partnerships Service
+export const postLimitedPartnership = jest.fn().mockImplementation(() => ({
+  httpStatusCode: 201,
+  resource: {
+    id: appDevDependencies.limitedPartnershipGateway.submissionId
+  }
+}));
+export const patchLimitedPartnership = jest.fn().mockImplementation(() => ({
+  httpStatusCode: 200,
+  resource: {}
+}));
+export const getLimitedPartnership = jest.fn().mockImplementation(() => ({
+  httpStatusCode: 200,
+  resource: new LimitedPartnershipBuilder()
+    .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+    .build()
+}));
+export const postLimitedPartnershipIncorporation = jest
+  .fn()
+  .mockImplementation(() => ({
+    httpStatusCode: 201,
+    resource: {
+      id: appDevDependencies.incorporationGateway.incorporationId
+    }
+  }));
+
+// Refresh Token service
+export const refresh = jest.fn().mockImplementation(() => ({
+  httpStatusCode: 201,
+  resource: { access_token: "access_token" }
+}));
+
+// Postcode Look Up service
 export const isValidUKPostcode = jest.fn().mockImplementation(() => true);
 export const getListOfValidPostcodeAddresses = jest
   .fn()
@@ -24,38 +64,18 @@ export const getListOfValidPostcodeAddresses = jest
 const sdkMock = {
   transaction: {
     ...TransactionService.prototype,
-    postTransaction: () => ({
-      httpStatusCode: 201,
-      resource: {
-        id: appDevDependencies.transactionGateway.transactionId
-      }
-    })
+    postTransaction
   },
   limitedPartnershipsService: {
     ...LimitedPartnershipsService.prototype,
-    postLimitedPartnership: () => ({
-      httpStatusCode: 201,
-      resource: {
-        id: appDevDependencies.limitedPartnershipGateway.submissionId
-      }
-    }),
-    patchLimitedPartnership: () => ({
-      httpStatusCode: 200,
-      resource: {}
-    }),
-    getLimitedPartnership: () => ({
-      httpStatusCode: 200,
-      resource: new LimitedPartnershipBuilder()
-        .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
-        .build()
-    })
+    postLimitedPartnership,
+    patchLimitedPartnership,
+    getLimitedPartnership,
+    postLimitedPartnershipIncorporation
   },
   refreshToken: {
     ...RefreshTokenService.prototype,
-    refresh: {
-      httpStatusCode: 201,
-      resource: { access_token: "access_token" }
-    }
+    refresh
   },
   postCodeLookup: {
     ...PostcodeLookupService.prototype,

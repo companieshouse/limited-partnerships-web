@@ -8,19 +8,26 @@ import AddressLookUpGateway from "../infrastructure/gateway/addressLookUp/Addres
 import AddressLookUpService from "../application/service/AddressLookUpService";
 import AddressLookUpController from "../presentation/controller/addressLookUp/Controller";
 import TransactionGateway from "../infrastructure/gateway/transaction/TransactionGateway";
+import { IIncorporationGateway } from "../domain/IIncorporationGateway";
+import IncorporationGateway from "../infrastructure/gateway/incorporation/IncorporationGateway";
 
 // GATEWAYS
 const limitedPartnershipGateway: LimitedPartnershipGateway =
   new LimitedPartnershipGateway();
 const transactionGateway: TransactionGateway = new TransactionGateway();
 const addressLookUpGateway: AddressLookUpGateway = new AddressLookUpGateway();
+const incorporationGateway: IIncorporationGateway = new IncorporationGateway();
 
 // REPOSITORIES
 const cacheRepository = new CacheRepository();
 
 // SERVICES
 const limitedPartnershipService: LimitedPartnershipService =
-  new LimitedPartnershipService(limitedPartnershipGateway, transactionGateway);
+  new LimitedPartnershipService(
+    limitedPartnershipGateway,
+    transactionGateway,
+    incorporationGateway
+  );
 const addressLookUpService: AddressLookUpService = new AddressLookUpService(
   addressLookUpGateway
 );
