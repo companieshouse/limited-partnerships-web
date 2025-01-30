@@ -4,11 +4,7 @@
 
 {% set checkYourAnswers = "check-your-answers" %}
 {% set currentUrl = props.currentUrl %}
-
-{% set fullName = props.data.limitedPartnership.data.partnership_name %}
-{% if props.data.limitedPartnership.data.name_ending %}
-  {% set fullName = (fullName | upper) + " " + (props.data.limitedPartnership.data.name_ending | upper) %}
-{% endif %}
+{% set fullName = (props.data.limitedPartnership.data.partnership_name | upper) + " " + (props.data.limitedPartnership.data.name_ending | upper) %}
 
 {% block content %}
 
