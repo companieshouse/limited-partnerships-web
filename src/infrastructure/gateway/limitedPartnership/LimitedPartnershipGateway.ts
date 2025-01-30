@@ -42,10 +42,7 @@ class LimitedPartnershipGateway implements ILimitedPartnershipGateway {
       throw response;
     }
 
-    return (
-      (response as Resource<LimitedPartnershipResourceCreated>)?.resource?.id ??
-      ""
-    );
+    return response?.resource?.id ?? "";
   }
 
   async sendPageData(
