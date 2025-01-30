@@ -5,11 +5,10 @@ import {
   LimitedPartnershipResourceCreated
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-import { makeApiCallWithRetry } from "../api";
+import { checkForBadRequest, makeApiCallWithRetry } from "../api";
 import RegistrationPageType from "../../../presentation/controller/registration/PageType";
 import ILimitedPartnershipGateway from "../../../domain/ILimitedPartnershipGateway";
 import LimitedPartnershipGatewayBuilder from "./LimitedPartnershipGatewayBuilder";
-import UIErrors from "../../../domain/entities/UIErrors";
 import { SDK_LIMITED_PARTNERSHIP_SERVICE } from "../../../config/constants";
 
 class LimitedPartnershipGateway implements ILimitedPartnershipGateway {
@@ -30,10 +29,14 @@ class LimitedPartnershipGateway implements ILimitedPartnershipGateway {
     };
 
     const response = await makeApiCallWithRetry<
-      Resource<LimitedPartnershipResourceCreated> | ApiErrorResponse
+      Resource<LimitedPartnershipResourceCreated>
     >(opt, apiCall);
 
-    this.throwUIErrorsIf400Status(response);
+    const uiErrors =
+      checkForBadRequest<LimitedPartnershipResourceCreated>(response);
+    if (uiErrors) {
+      throw uiErrors;
+    }
 
     if (response.httpStatusCode !== 201) {
       throw response;
@@ -62,11 +65,12 @@ class LimitedPartnershipGateway implements ILimitedPartnershipGateway {
       args: [transactionId, submissionId, limitedPartnership.data]
     };
 
-    const response = await makeApiCallWithRetry<
-      Resource<void> | ApiErrorResponse
-    >(opt, apiCall);
+    const response = await makeApiCallWithRetry<Resource<void>>(opt, apiCall);
 
-    this.throwUIErrorsIf400Status(response);
+    const uiErrors = checkForBadRequest<void>(response);
+    if (uiErrors) {
+      throw uiErrors;
+    }
 
     if (response.httpStatusCode !== 200) {
       throw response;
@@ -93,21 +97,6 @@ class LimitedPartnershipGateway implements ILimitedPartnershipGateway {
     }
 
     return (response as Resource<LimitedPartnership>)?.resource ?? {};
-  }
-
-  private throwUIErrorsIf400Status(
-    response:
-      | Resource<LimitedPartnershipResourceCreated | void>
-      | ApiErrorResponse
-  ) {
-    if (response.httpStatusCode === 400) {
-      const uiErrors = new UIErrors();
-      uiErrors.formatValidationErrorToUiErrors(
-        (response as Resource<any>)?.resource
-      );
-
-      throw uiErrors;
-    }
   }
 }
 
