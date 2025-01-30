@@ -2,12 +2,14 @@ import request from "supertest";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
-import { CHOOSE_REGISTERED_OFFICE_ADDRESS_URL } from "presentation/controller/addressLookUp/url";
+import {
+  CHOOSE_REGISTERED_OFFICE_ADDRESS_URL,
+  CONFIRM_REGISTERED_OFFICE_ADDRESS_URL
+} from "presentation/controller/addressLookUp/url";
 import { getUrl, setLocalesEnabled } from "../../utils";
 import { appDevDependencies } from "config/dev-dependencies";
 import * as config from "config";
 import AddressPageType from "presentation/controller/addressLookUp/PageType";
-import { GENERAL_PARTNERS_URL } from "presentation/controller/registration/url";
 
 describe("Choose Registered Office Address Page", () => {
   const URL = getUrl(CHOOSE_REGISTERED_OFFICE_ADDRESS_URL);
@@ -105,7 +107,7 @@ describe("Choose Registered Office Address Page", () => {
         }`
       });
 
-      const redirectUrl = getUrl(GENERAL_PARTNERS_URL);
+      const redirectUrl = getUrl(CONFIRM_REGISTERED_OFFICE_ADDRESS_URL);
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
 
