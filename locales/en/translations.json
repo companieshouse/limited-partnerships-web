@@ -89,7 +89,10 @@
             "title" : "Scottish limited partnership name",
             "whatIsName" : "What's the name of the Scottish limited partnership?",
             "nameEnding" : "Which name ending would you prefer to go on the public record?"
-        }
+        },
+
+        "nameErrorMessage": "Enter a name for the partnership",
+        "nameEndingErrorMessage": "Select the name ending to go on the public record"
     },
 
     "officeAddress": {
