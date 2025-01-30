@@ -3,7 +3,7 @@ import { Transaction } from "@companieshouse/api-sdk-node/dist/services/transact
 import { ApiErrorResponse } from "@companieshouse/api-sdk-node/dist/services/resource";
 import {
   LimitedPartnership,
-  LimitedPartnershipCreated
+  LimitedPartnershipResourceCreated
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import { makeApiCallWithRetry } from "../api";
@@ -30,7 +30,7 @@ class LimitedPartnershipGateway implements ILimitedPartnershipGateway {
     };
 
     const response = await makeApiCallWithRetry<
-      Resource<LimitedPartnershipCreated> | ApiErrorResponse
+      Resource<LimitedPartnershipResourceCreated> | ApiErrorResponse
     >(opt, apiCall);
 
     this.throwUIErrorsIf400Status(response);
@@ -93,7 +93,7 @@ class LimitedPartnershipGateway implements ILimitedPartnershipGateway {
   }
 
   private throwUIErrorsIf400Status(
-    response: Resource<LimitedPartnershipCreated | void> | ApiErrorResponse
+    response: Resource<LimitedPartnershipResourceCreated | void> | ApiErrorResponse
   ) {
     if (response.httpStatusCode === 400) {
       const uiErrors = new UIErrors();

@@ -3,12 +3,12 @@ import { PageRouting, PagesRouting } from "../PageRouting";
 import AddressPageType from "./PageType";
 import PageType from "../PageType";
 import * as url from "./url";
-import { EMAIL_URL, GENERAL_PARTNERS_URL } from "../registration/url";
+import { WHAT_IS_YOUR_JURISDICTION_URL, GENERAL_PARTNERS_URL } from "../registration/url";
 
 // Registered Office Address
 
 const addressRoutingPostcodeRegisteredOfficeAddress = {
-  previousUrl: EMAIL_URL,
+  previousUrl: WHAT_IS_YOUR_JURISDICTION_URL,
   currentUrl: url.POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
   nextUrl: url.CHOOSE_REGISTERED_OFFICE_ADDRESS_URL,
   pageType: AddressPageType.postcodeRegisteredOfficeAddress
