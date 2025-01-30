@@ -85,7 +85,7 @@ describe("Limited Partner Choice Page", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
-      `${limitedPartnership?.data?.partnership_name} ${limitedPartnership?.data?.name_ending}`
+      `${limitedPartnership?.data?.partnership_name?.toUpperCase()} ${limitedPartnership?.data?.name_ending?.toUpperCase()}`
     );
   });
 });

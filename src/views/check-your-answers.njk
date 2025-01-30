@@ -7,7 +7,7 @@
 
 {% set fullName = props.data.limitedPartnership.data.partnership_name %}
 {% if props.data.limitedPartnership.data.name_ending %}
-  {% set fullName = fullName + " " + props.data.limitedPartnership.data.name_ending %}
+  {% set fullName = (fullName | upper) + " " + (props.data.limitedPartnership.data.name_ending | upper) %}
 {% endif %}
 
 {% block content %}
