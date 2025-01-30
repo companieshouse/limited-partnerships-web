@@ -174,6 +174,29 @@ class AddressLookUpController extends AbstractController {
       }
     };
   }
+
+  submitManualAddress(): RequestHandler {
+    return (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const pageType = super.extractPageTypeOrThrowError(
+          request,
+          AddressLookUpPageType
+        );
+
+        const pageRouting = super.getRouting(
+          addressLookUpRouting,
+          pageType,
+          request.url,
+          request.params[TRANSACTION_ID],
+          request.params[SUBMISSION_ID]
+        );
+
+        response.redirect(pageRouting.nextUrl);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
 }
 
 export default AddressLookUpController;

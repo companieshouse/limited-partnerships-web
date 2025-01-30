@@ -1,3 +1,173 @@
-<h1>
-    Enter Registered Office Address Page
-</h1>
+{% extends "layout.njk" %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form class="form" action={{ props.currentUrl }} method="post">
+        <input type="hidden" name="pageType" value={{ props.pageType }}>      
+        
+        {% include "includes/csrf_token.njk" %}
+
+        {% include "includes/errors.njk" %}
+   
+        <div>
+          {% include "includes/proposed-name.njk" %}
+
+          <fieldset class="govuk-fieldset">
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+              <h1 class="govuk-heading-xl">
+                {{ i18n.enterRegisteredOfficeAddressPage.title }}
+              </h1>
+            </legend>
+
+            <p class="govuk-hint">{{ i18n.enterRegisteredOfficeAddressPage.titleHint1 }}</p>
+            <p class="govuk-hint">{{ i18n.enterRegisteredOfficeAddressPage.titleHint2 }}</p>
+            <p class="govuk-hint">{{ i18n.enterRegisteredOfficeAddressPage.titleHint3 }}</p>
+            
+            <br>
+
+            {{ govukInput({
+              label: {
+                text: i18n.enterRegisteredOfficeAddressPage.propertyNameOrNumber,
+                classes: "govuk-!-margin-top-5"
+              },
+              hint: {
+                text: i18n.enterRegisteredOfficeAddressPage.propertyNameOrNumberHint
+              },
+              id: "name_number",
+              name: "name_number",
+              value: "",
+              attributes : {  
+                required : true,
+                maxLength: 50,
+                "data-event-id": "property-name-or-number"
+              }
+            }) }}
+
+            {{ govukInput({
+              label: {
+                text: i18n.enterRegisteredOfficeAddressPage.addressLine1
+              },
+              id: "line_1",
+              name: "line_1",
+              value: "",
+              attributes : {
+                required : true,
+                maxLength: 50,
+                "data-event-id": "address-line-1"
+              }
+            }) }}
+
+            {{ govukInput({
+              label: {
+                text: i18n.enterRegisteredOfficeAddressPage.addressLine2
+              },
+              id: "line_2",
+              name: "line_2",
+              value: "",
+              attributes : {
+                required : true,
+                maxLength: 50,
+                "data-event-id": "address-line-2"
+              }
+            }) }}
+
+            {{ govukInput({
+              label: {
+                text: i18n.enterRegisteredOfficeAddressPage.townOrCity
+              },
+              classes: "govuk-!-width-two-thirds",
+              id: "town",
+              name: "town",
+              value: "",
+              attributes : {
+                required : true,
+                maxLength: 50,
+                "data-event-id": "town-or-city"
+              }
+            }) }}
+
+            {{ govukInput({
+              label: {
+                text: i18n.enterRegisteredOfficeAddressPage.county
+              },
+              classes: "govuk-!-width-two-thirds",
+              id: "county",
+              name: "county",
+              value: "",
+              attributes : {
+                maxLength: 50,
+                "data-event-id": "county"
+              }
+            }) }}
+
+            {{ govukInput({
+              label: {
+                text: i18n.enterRegisteredOfficeAddressPage.postcode
+              },
+              classes: "govuk-input--width-10",
+              id: "postcode",
+              name: "postcode",
+              value: "",
+              attributes : {
+                required : true,
+                maxLength: 15,
+                "data-event-id": "postcode"
+              }
+            }) }}
+
+            {{ govukSelect({
+              id: "country",
+              name: "country",
+              label: {
+                text: i18n.enterRegisteredOfficeAddressPage.country
+              },
+              fieldset: {
+                legend: {
+                  text: "Country",
+                  isPageHeading: false,
+                  classes: "govuk-!-font-weight-regular"
+                }
+              },
+              attributes : {
+                required: "true",
+                "data-event-id": "country"
+              },
+              items: [
+                {
+                  value: "",
+                  text: i18n.enterRegisteredOfficeAddressPage.countrySelect
+                },
+                {
+                  value: "england",
+                  text: i18n.enterRegisteredOfficeAddressPage.countryEngland
+                },
+                {
+                  value: "scotland",
+                  text: i18n.enterRegisteredOfficeAddressPage.countryScotland
+                },
+                {
+                  value: "wales",
+                  text: i18n.enterRegisteredOfficeAddressPage.countryWales
+                },
+                {
+                  value: "northern-ireland",
+                  text: i18n.enterRegisteredOfficeAddressPage.countryNorthernIreland
+                }
+              ]
+            }) }}
+          </fieldset>
+
+          {{ govukInsetText({
+            html: "<h2 class='govuk-heading-m'>" + i18n.enterRegisteredOfficeAddressPage.publicInformationTitle + "</h2>
+              <p>" + i18n.enterRegisteredOfficeAddressPage.publicInformationLine1 + "</p>"
+          }) }}
+
+          {% include "includes/save-and-continue-button.njk" %}
+
+        </div>
+      </form>
+    </div>
+  </div>
+  
+{% endblock %}

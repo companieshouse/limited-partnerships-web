@@ -6,6 +6,7 @@ import { IDependencies } from "../config/IDependencies";
 
 import {
   CHOOSE_REGISTERED_OFFICE_ADDRESS_URL,
+  CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
   ENTER_REGISTERED_OFFICE_ADDRESS_URL,
   POSTCODE_REGISTERED_OFFICE_ADDRESS_URL
 } from "../presentation/controller/addressLookUp/url";
@@ -38,6 +39,17 @@ export const addressLookUpEndpoints = (
 
   router.get(
     ENTER_REGISTERED_OFFICE_ADDRESS_URL,
+    authentication,
+    dependencies.addressLookUpController.getPageRouting()
+  );
+  router.post(
+    ENTER_REGISTERED_OFFICE_ADDRESS_URL,
+    authentication,
+    dependencies.addressLookUpController.submitManualAddress()
+  );
+
+  router.get(
+    CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
     authentication,
     dependencies.addressLookUpController.getPageRouting()
   );
