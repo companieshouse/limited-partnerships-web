@@ -27,6 +27,16 @@
         }
     },
 
+    "whatIsYourJurisdiction" : {
+        "title" : "WELSH - What is your jurisdiction?",
+        "whereIsJurisdiction" : "WELSH - Where is the jurisdiction?",
+        "options": {
+            "EnglandWales" : "WELSH - England and Wales",
+            "NI" : "WELSH - Northern Ireland"
+        }
+    }, 
+ 
+
     "chooseRegisteredOfficeAddressPage" : {
          "title": "WELSH - Choose the registered office address",
          "addressLink": "WELSH - The address is not on the list"

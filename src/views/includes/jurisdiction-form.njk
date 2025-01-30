@@ -1,0 +1,44 @@
+<form class="form" action={{ props.currentUrl }} method="post">
+  <input type="hidden" name="pageType" value={{ props.pageType }}>  
+  {% include "includes/csrf_token.njk" %}
+      
+  {% include "includes/errors.njk" %}
+      
+  {% include "includes/proposed-name.njk" %}  
+
+  {{ govukRadios({
+    classes: "govuk-radios",
+    name: "parameter",
+    fieldset: {
+      legend: {
+        text: i18n.whatIsYourJurisdiction.whereIsJurisdiction,
+        isPageHeading: true,
+        classes: "govuk-fieldset__legend--xl"
+      }
+    },
+      hint: {
+      text: "This is where the partnership was formed. The registered office address and principal place of business will need to be in the same jurisdiction."
+    }, 
+    items: [
+      {
+        value: "england-wales",
+        text: i18n.whatIsYourJurisdiction.options.EnglandWales,
+        attributes: {
+          "required": true
+        }
+      },
+      {
+        value: "northern-ireland",
+        text: i18n.whatIsYourJurisdiction.options.NorthernIreland,
+        attributes: {
+          "required": true
+        }
+      }
+    ]
+  }) }}
+
+  <button class="govuk-button" data-module="govuk-button" id="submit">
+    {{ i18n.buttons.continue }}
+  </button>
+
+</form>

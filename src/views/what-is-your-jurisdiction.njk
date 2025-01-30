@@ -1,0 +1,24 @@
+{% extends "layout.njk" %}
+
+{% if props.data.cache["registration_which-type"] %}
+  {% set partnershipType = props.data.cache["registration_which-type"] %}
+{% elif props.data.limitedPartnership.data.partnership_type %}
+  {% set partnershipType = props.data.limitedPartnership.data.partnership_type %}
+{% else %}
+  {% set partnershipType = "" %}
+{% endif %}
+
+{% set pageTitle = i18n.startPage.title %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {% if partnershipType == "SLP" or partnershipType == "SPFLP" %}
+       {% include "includes/jurisdiction-scotland.njk" %}
+      {% else %}
+        {% include "includes/jurisdiction-form.njk" %}
+      {% endif %}
+   </div>
+  </div>
+
+{% endblock %}
