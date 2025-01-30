@@ -69,12 +69,11 @@ describe("Gateway Transaction - Incorporation - Partnership", () => {
           ...sdkMock,
           limitedPartnershipsService: {
             ...sdkMock.limitedPartnershipsService,
-            postLimitedPartnership: () => ({
+            postLimitedPartnershipIncorporation: () => ({
               httpStatusCode: 400,
               resource: {
                 errors: {
-                  "data.partnershipName":
-                    "partnership_name must be less than 160"
+                  incorporation: "Something is wrong"
                 }
               }
             })
@@ -86,7 +85,7 @@ describe("Gateway Transaction - Incorporation - Partnership", () => {
         });
 
         expect(res.status).toBe(200);
-        expect(res.text).toContain("partnership_name must be less than 160");
+        expect(res.text).toContain("Something is wrong");
       });
     });
   });
