@@ -3,11 +3,10 @@ import { LimitedPartnershipResourceCreated } from "@companieshouse/api-sdk-node/
 
 import { IIncorporationGateway } from "../../../domain/IIncorporationGateway";
 import PageType from "../../../presentation/controller/PageType";
-import { errors400, makeApiCallWithRetry } from "../api";
+import { checkForBadRequest, makeApiCallWithRetry } from "../api";
+import { SDK_LIMITED_PARTNERSHIP_SERVICE } from "../../../config/constants";
 
 class IncorporationGateway implements IIncorporationGateway {
-  SDK_LIMITED_PARTNERSHIP_SERVICE = "limitedPartnershipsService";
-
   async createIncorporation(
     opt: {
       access_token: string;
@@ -17,7 +16,7 @@ class IncorporationGateway implements IIncorporationGateway {
     transactionId: string
   ): Promise<string> {
     const apiCall = {
-      service: this.SDK_LIMITED_PARTNERSHIP_SERVICE,
+      service: SDK_LIMITED_PARTNERSHIP_SERVICE,
       method: "postLimitedPartnershipIncorporation",
       args: [transactionId]
     };
@@ -26,7 +25,8 @@ class IncorporationGateway implements IIncorporationGateway {
       Resource<LimitedPartnershipResourceCreated>
     >(opt, apiCall);
 
-    const uiErrors = errors400<LimitedPartnershipResourceCreated>(response);
+    const uiErrors =
+      checkForBadRequest<LimitedPartnershipResourceCreated>(response);
     if (uiErrors) {
       throw uiErrors;
     }

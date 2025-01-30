@@ -63,3 +63,8 @@ export const SUBMISSION_ID = "submissionId";
 export const TRANSACTION_ID = "transactionId";
 export const BASE_URL = "/limited-partnerships";
 export const BASE_WITH_IDS_URL = `${BASE_URL}/transaction/:${TRANSACTION_ID}/submission/:${SUBMISSION_ID}`;
+
+// services
+export const SDK_LIMITED_PARTNERSHIP_SERVICE = "limitedPartnershipsService";
+export const SDK_POSTCODE_LOOKUP_SERVICE = "postCodeLookup";
+export const SDK_TRANSACTION_SERVICE = "transaction";

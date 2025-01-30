@@ -65,7 +65,9 @@ const refreshToken = async (
   return accessToken;
 };
 
-export const errors400 = <T>(response: Resource<T>): UIErrors | null => {
+export const checkForBadRequest = <T>(
+  response: Resource<T>
+): UIErrors | null => {
   if (response.httpStatusCode === 400) {
     const uiErrors = new UIErrors();
     uiErrors.formatValidationErrorToUiErrors(

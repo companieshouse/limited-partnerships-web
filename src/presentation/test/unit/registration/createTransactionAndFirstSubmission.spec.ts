@@ -84,9 +84,9 @@ describe("Create transaction and the first submission", () => {
       });
     });
 
-    it("should return an error - wrong type", async () => {
-      await appDevDependencies.limitedPartnershipService
-        .createTransactionAndFirstSubmission(
+    it("should return an error if wrong page type - transaction", async () => {
+      await expect(
+        appDevDependencies.limitedPartnershipService.createTransactionAndFirstSubmission(
           { access_token: "access_token", refresh_token: "refresh_token" },
           RegistrationPageType.next,
           {
@@ -95,18 +95,14 @@ describe("Create transaction and the first submission", () => {
             partnership_type: "LP"
           }
         )
-        .catch((error) => {
-          expect(error).toEqual(new Error("wrong type"));
-        });
+      ).rejects.toThrow("Wrong page type to create a new transaction");
 
       expect(
         appDevDependencies.limitedPartnershipGateway.limitedPartnerships.length
       ).toEqual(0);
     });
-  });
 
-  describe("Create incorporation", () => {
-    it("should return an error - wrong type", async () => {
+    it("should return an error if wrong page type - incorporation", async () => {
       const transactionId = appDevDependencies.transactionGateway.transactionId;
 
       await expect(
@@ -115,7 +111,7 @@ describe("Create transaction and the first submission", () => {
           RegistrationPageType.next,
           transactionId
         )
-      ).rejects.toThrow("wrong type");
+      ).rejects.toThrow("Wrong page type to create a new incorporation");
     });
   });
 });

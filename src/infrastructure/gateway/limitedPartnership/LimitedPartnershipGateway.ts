@@ -10,10 +10,9 @@ import RegistrationPageType from "../../../presentation/controller/registration/
 import ILimitedPartnershipGateway from "../../../domain/ILimitedPartnershipGateway";
 import LimitedPartnershipGatewayBuilder from "./LimitedPartnershipGatewayBuilder";
 import UIErrors from "../../../domain/entities/UIErrors";
+import { SDK_LIMITED_PARTNERSHIP_SERVICE } from "../../../config/constants";
 
 class LimitedPartnershipGateway implements ILimitedPartnershipGateway {
-  SDK_LIMITED_PARTNERSHIP_SERVICE = "limitedPartnershipsService";
-
   async createSubmission(
     opt: { access_token: string; refresh_token: string },
     registrationPageType: RegistrationPageType,
@@ -25,7 +24,7 @@ class LimitedPartnershipGateway implements ILimitedPartnershipGateway {
     const limitedPartnership = limitedPartnershipBuilder.build();
 
     const apiCall = {
-      service: this.SDK_LIMITED_PARTNERSHIP_SERVICE,
+      service: SDK_LIMITED_PARTNERSHIP_SERVICE,
       method: "postLimitedPartnership",
       args: [transactionId, limitedPartnership]
     };
@@ -58,7 +57,7 @@ class LimitedPartnershipGateway implements ILimitedPartnershipGateway {
     const limitedPartnership = limitedPartnershipBuilder.build();
 
     const apiCall = {
-      service: this.SDK_LIMITED_PARTNERSHIP_SERVICE,
+      service: SDK_LIMITED_PARTNERSHIP_SERVICE,
       method: "patchLimitedPartnership",
       args: [transactionId, submissionId, limitedPartnership.data]
     };
@@ -80,7 +79,7 @@ class LimitedPartnershipGateway implements ILimitedPartnershipGateway {
     submissionId: string
   ): Promise<LimitedPartnership> {
     const apiCall = {
-      service: this.SDK_LIMITED_PARTNERSHIP_SERVICE,
+      service: SDK_LIMITED_PARTNERSHIP_SERVICE,
       method: "getLimitedPartnership",
       args: [transactionId, submissionId]
     };
