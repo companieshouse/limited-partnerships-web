@@ -22,7 +22,7 @@ describe("Which jurisdiction page", () => {
     setLocalesEnabled(false);
   });
 
-  it("should load the name page with English text for EnglandWales jurisdiction", async () => {
+  it("should load the name page with English text for EnglandWales LP jurisdiction", async () => {
     setLocalesEnabled(true);
 
     appDevDependencies.cacheRepository.feedCache({
@@ -43,12 +43,54 @@ describe("Which jurisdiction page", () => {
     expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
   });
 
-  it("should load the name page with Welsh text for EnglandWales jurisdiction", async () => {
+  it("should load the name page with Welsh text for EnglandWales LP jurisdiction", async () => {
     setLocalesEnabled(true);
 
     appDevDependencies.cacheRepository.feedCache({
       [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]:
        PartnershipType.LP
+    });
+
+    const res = await request(app).get(URL + "?lang=cy");
+
+    expect(res.status).toBe(200);
+    expect(res.text).toContain(
+      `${cyTranslationText.whatIsYourJurisdiction.title} - ${cyTranslationText.service} - GOV.UK`
+    );
+    expect(res.text).toContain(cyTranslationText.whatIsYourJurisdiction.title);
+    expect(res.text).toContain(cyTranslationText.whatIsYourJurisdiction.whereIsJurisdiction);
+    expect(res.text).toContain(cyTranslationText.whatIsYourJurisdiction.options.EnglandWales);
+    expect(res.text).toContain(cyTranslationText.whatIsYourJurisdiction.options.NorthernIreland);
+    expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
+  });
+
+  it("should load the name page with English text for EnglandWales PFLP jurisdiction", async () => {
+    setLocalesEnabled(true);
+
+    appDevDependencies.cacheRepository.feedCache({
+      [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]:
+      PartnershipType.PFLP
+    });
+
+    const res = await request(app).get(URL + "?lang=en");
+
+    expect(res.status).toBe(200);
+    expect(res.text).toContain(
+      `${enTranslationText.whatIsYourJurisdiction.title} - ${enTranslationText.service} - GOV.UK`
+    );
+    expect(res.text).toContain(enTranslationText.whatIsYourJurisdiction.title);
+    expect(res.text).toContain(enTranslationText.whatIsYourJurisdiction.whereIsJurisdiction);
+    expect(res.text).toContain(enTranslationText.whatIsYourJurisdiction.options.EnglandWales);
+    expect(res.text).toContain(enTranslationText.whatIsYourJurisdiction.options.NorthernIreland);
+    expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
+  });
+
+  it("should load the name page with Welsh text for EnglandWales PFLP jurisdiction", async () => {
+    setLocalesEnabled(true);
+
+    appDevDependencies.cacheRepository.feedCache({
+      [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]:
+       PartnershipType.PFLP
     });
 
     const res = await request(app).get(URL + "?lang=cy");
