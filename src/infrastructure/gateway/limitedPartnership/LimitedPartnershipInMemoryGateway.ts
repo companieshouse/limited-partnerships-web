@@ -93,7 +93,7 @@ class LimitedPartnershipInMemoryGateway implements ILimitedPartnershipGateway {
       errors: {}
     };
 
-    if (!data.email) {
+    if (registrationPageType === RegistrationPageType.email && !data.email) {
       apiErrors.errors = {
         ...apiErrors.errors,
         "data.email": "must be a well-formed email address"

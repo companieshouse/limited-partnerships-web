@@ -1,8 +1,14 @@
 import { Request } from "express";
 
-import { SUBMISSION_ID, TRANSACTION_ID } from "../../config/constants";
+import {
+  BASE_URL,
+  BASE_WITH_IDS_URL,
+  SUBMISSION_ID,
+  TRANSACTION_ID
+} from "../../config/constants";
 import { PageRouting, pageRoutingDefault, PagesRouting } from "./PageRouting";
 import PageType from "./PageType";
+import { NAME_URL } from "./registration/url";
 
 abstract class AbstractController {
   protected getRouting(
@@ -42,8 +48,24 @@ abstract class AbstractController {
   }
 
   insertIdsInUrl(url: string, transactionId = "", submissionId = ""): string {
+    url = this.insertMissingPart(transactionId, submissionId, url);
     url = this.insertSubmissionId(url, submissionId);
     url = this.insertTransactionId(url, transactionId);
+    return url;
+  }
+
+  private insertMissingPart(
+    transactionId: string,
+    submissionId: string,
+    url: string
+  ) {
+    // urls that can exist with or without ids
+    const URLS = [NAME_URL];
+
+    if (transactionId && submissionId && URLS.includes(url)) {
+      url = url.replace(BASE_URL, BASE_WITH_IDS_URL);
+    }
+
     return url;
   }
 

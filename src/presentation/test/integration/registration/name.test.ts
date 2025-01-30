@@ -18,8 +18,6 @@ import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { getUrl, setLocalesEnabled } from "../../utils";
 
 describe("Name Page", () => {
-  const URL = getUrl(NAME_URL);
-
   beforeEach(() => {
     setLocalesEnabled(false);
 
@@ -36,7 +34,7 @@ describe("Name Page", () => {
         PartnershipType.LP
     });
 
-    const res = await request(app).get(URL + "?lang=cy");
+    const res = await request(app).get(NAME_URL + "?lang=cy");
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
@@ -56,7 +54,7 @@ describe("Name Page", () => {
         PartnershipType.LP
     });
 
-    const res = await request(app).get(URL + "?lang=en");
+    const res = await request(app).get(NAME_URL + "?lang=en");
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
@@ -96,7 +94,7 @@ describe("Name Page", () => {
         PartnershipType.PFLP
     });
 
-    const res = await request(app).get(URL + "?lang=cy");
+    const res = await request(app).get(NAME_URL + "?lang=cy");
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
@@ -117,7 +115,7 @@ describe("Name Page", () => {
         PartnershipType.PFLP
     });
 
-    const res = await request(app).get(URL + "?lang=en");
+    const res = await request(app).get(NAME_URL + "?lang=en");
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
@@ -139,7 +137,7 @@ describe("Name Page", () => {
         PartnershipType.SLP
     });
 
-    const res = await request(app).get(URL + "?lang=cy");
+    const res = await request(app).get(NAME_URL + "?lang=cy");
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
@@ -158,7 +156,7 @@ describe("Name Page", () => {
         PartnershipType.SLP
     });
 
-    const res = await request(app).get(URL + "?lang=en");
+    const res = await request(app).get(NAME_URL + "?lang=en");
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
@@ -178,7 +176,7 @@ describe("Name Page", () => {
         PartnershipType.SPFLP
     });
 
-    const res = await request(app).get(URL + "?lang=cy");
+    const res = await request(app).get(NAME_URL + "?lang=cy");
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
@@ -199,7 +197,7 @@ describe("Name Page", () => {
         PartnershipType.SPFLP
     });
 
-    const res = await request(app).get(URL + "?lang=en");
+    const res = await request(app).get(NAME_URL + "?lang=en");
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(

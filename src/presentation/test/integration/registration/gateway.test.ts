@@ -29,9 +29,7 @@ describe("Gateway", () => {
 
   describe("Create transaction and the first submission", () => {
     it("should create a transaction and the first submission", async () => {
-      const URL = getUrl(NAME_URL);
-
-      const res = await request(appRealDependencies).post(URL).send({
+      const res = await request(appRealDependencies).post(NAME_URL).send({
         pageType: RegistrationPageType.name,
         partnership_name: "Test Limited Partnership",
         name_ending: NameEndingType.LIMITED_PARTNERSHIP,
@@ -47,9 +45,7 @@ describe("Gateway", () => {
 
   describe("Update submission", () => {
     it("should update the submission", async () => {
-      const URL = getUrl(NAME_URL);
-
-      const res = await request(appRealDependencies).post(URL).send({
+      const res = await request(appRealDependencies).post(NAME_URL).send({
         pageType: RegistrationPageType.email,
         email: "test@email.com"
       });
@@ -130,8 +126,6 @@ describe("Gateway", () => {
 
     describe("400", () => {
       it("should return validation errors - name page", async () => {
-        const URL = getUrl(NAME_URL);
-
         mockCreateApiClient.mockReturnValue({
           ...sdkMock,
           limitedPartnershipsService: {
@@ -148,7 +142,7 @@ describe("Gateway", () => {
           }
         });
 
-        const res = await request(appRealDependencies).post(URL).send({
+        const res = await request(appRealDependencies).post(NAME_URL).send({
           pageType: RegistrationPageType.name
         });
 
