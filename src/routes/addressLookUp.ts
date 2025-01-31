@@ -45,7 +45,7 @@ export const addressLookUpEndpoints = (
   router.post(
     ENTER_REGISTERED_OFFICE_ADDRESS_URL,
     authentication,
-    dependencies.addressLookUpController.submitManualAddress()
+    dependencies.addressLookUpController.sendManualAddress()
   );
 
   router.get(

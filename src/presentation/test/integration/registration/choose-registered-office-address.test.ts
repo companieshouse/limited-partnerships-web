@@ -113,13 +113,13 @@ describe("Choose Registered Office Address Page", () => {
 
       const cache = appDevDependencies.cacheRepository.cache;
       expect(cache?.[`${config.APPLICATION_CACHE_KEY}`]).toHaveProperty(
-        `${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${AddressPageType.chooseRegisteredOfficeAddress}`,
+        `${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`,
         {
-          postcode: 'ST6 3LJ',
-          premise: '4',
-          addressLine1: 'DUNCALF STREET',
-          addressLine2: '',
-          postTown: 'STOKE-ON-TRENT',
+          postal_code: 'ST6 3LJ',
+          premises: '4',
+          address_line_1: 'DUNCALF STREET',
+          address_line_2: '',
+          locality: 'STOKE-ON-TRENT',
           country: 'GB-ENG'
         }
       );
