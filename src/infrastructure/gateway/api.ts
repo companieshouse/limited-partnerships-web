@@ -1,4 +1,5 @@
-import { createApiClient } from "@companieshouse/api-sdk-node";
+import { createApiClient, Resource } from "@companieshouse/api-sdk-node";
+import ApiClient from "@companieshouse/api-sdk-node/dist/client";
 
 import {
   API_URL,
@@ -7,7 +8,7 @@ import {
   REFRESH_TOKEN_GRANT_TYPE
 } from "../../config/constants";
 import { logger } from "../../utils";
-import ApiClient from "@companieshouse/api-sdk-node/dist/client";
+import UIErrors from "../../domain/entities/UIErrors";
 
 export const makeApiCallWithRetry = async <T>(
   tokens: { access_token: string; refresh_token: string },
@@ -62,4 +63,19 @@ const refreshToken = async (
   }
 
   return accessToken;
+};
+
+export const checkForBadRequest = <T>(
+  response: Resource<T>
+): UIErrors | null => {
+  if (response.httpStatusCode === 400) {
+    const uiErrors = new UIErrors();
+    uiErrors.formatValidationErrorToUiErrors(
+      (response as Resource<any>)?.resource
+    );
+
+    return uiErrors;
+  }
+
+  return null;
 };

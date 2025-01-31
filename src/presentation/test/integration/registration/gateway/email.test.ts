@@ -1,23 +1,21 @@
 import request from "supertest";
 import { createApiClient } from "@companieshouse/api-sdk-node";
-import { NameEndingType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { RefreshTokenService } from "@companieshouse/api-sdk-node/dist/services/refresh-token";
 
-import appRealDependencies from "../../../../app";
-import { appDevDependencies } from "../../../../config/dev-dependencies";
-import { EMAIL_URL, NAME_URL } from "../../../controller/registration/url";
-import RegistrationPageType from "../../../controller/registration/PageType";
-import enTranslationText from "../../../../../locales/en/translations.json";
-import sdkMock from "../mock/sdkMock";
-import { getUrl } from "../../utils";
-import { POSTCODE_REGISTERED_OFFICE_ADDRESS_URL } from "../../../controller/addressLookUp/url";
+import appRealDependencies from "../../../../../app";
+import { appDevDependencies } from "../../../../../config/dev-dependencies";
+import { EMAIL_URL, WHAT_IS_YOUR_JURISDICTION_URL } from "../../../../controller/registration/url";
+import RegistrationPageType from "../../../../controller/registration/PageType";
+import enTranslationText from "../../../../../../locales/en/translations.json";
+import sdkMock from "../../mock/sdkMock";
+import { getUrl } from "../../../utils";
 
 jest.mock("@companieshouse/api-sdk-node");
 
 const mockCreateApiClient = createApiClient as jest.Mock;
 mockCreateApiClient.mockReturnValue(sdkMock);
 
-describe("Gateway", () => {
+describe("Gateway Update - Refresh Token", () => {
   const URL = getUrl(EMAIL_URL);
 
   beforeEach(() => {
@@ -27,39 +25,7 @@ describe("Gateway", () => {
     mockCreateApiClient.mockReturnValue(sdkMock);
   });
 
-  describe("Create transaction and the first submission", () => {
-    it("should create a transaction and the first submission", async () => {
-      const URL = getUrl(NAME_URL);
-
-      const res = await request(appRealDependencies).post(URL).send({
-        pageType: RegistrationPageType.name,
-        partnership_name: "Test Limited Partnership",
-        name_ending: NameEndingType.LIMITED_PARTNERSHIP,
-        partnership_type: "LP"
-      });
-
-      const REDIRECT_URL = getUrl(EMAIL_URL);
-
-      expect(res.status).toBe(302);
-      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
-    });
-  });
-
   describe("Update submission", () => {
-    it("should update the submission", async () => {
-      const URL = getUrl(NAME_URL);
-
-      const res = await request(appRealDependencies).post(URL).send({
-        pageType: RegistrationPageType.email,
-        email: "test@email.com"
-      });
-
-      const REDIRECT_URL = getUrl(POSTCODE_REGISTERED_OFFICE_ADDRESS_URL);
-
-      expect(res.status).toBe(302);
-      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
-    });
-
     describe("401", () => {
       it("should return an error after failing to refresh the token", async () => {
         mockCreateApiClient.mockReturnValue({
@@ -121,7 +87,7 @@ describe("Gateway", () => {
 
         expect(refreshToken).toHaveBeenCalled();
 
-        const REDIRECT_URL = getUrl(POSTCODE_REGISTERED_OFFICE_ADDRESS_URL);
+        const REDIRECT_URL = getUrl(WHAT_IS_YOUR_JURISDICTION_URL);
 
         expect(res.status).toBe(302);
         expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
@@ -129,33 +95,6 @@ describe("Gateway", () => {
     });
 
     describe("400", () => {
-      it("should return validation errors - name page", async () => {
-        const URL = getUrl(NAME_URL);
-
-        mockCreateApiClient.mockReturnValue({
-          ...sdkMock,
-          limitedPartnershipsService: {
-            ...sdkMock.limitedPartnershipsService,
-            postLimitedPartnership: () => ({
-              httpStatusCode: 400,
-              resource: {
-                errors: {
-                  "data.partnershipName":
-                    "partnership_name must be less than 160"
-                }
-              }
-            })
-          }
-        });
-
-        const res = await request(appRealDependencies).post(URL).send({
-          pageType: RegistrationPageType.name
-        });
-
-        expect(res.status).toBe(200);
-        expect(res.text).toContain("partnership_name must be less than 160");
-      });
-
       it("should return validation errors - email page", async () => {
         mockCreateApiClient.mockReturnValue({
           ...sdkMock,

@@ -14,7 +14,7 @@ class TransactionInMemoryGateway implements ITransactionGateway {
     pageType: PageType
   ): Promise<string> {
     if (pageType !== RegistrationPageType.name) {
-      throw new Error("wrong type");
+      throw new Error("Wrong page type to create a new transaction");
     }
 
     return this.transactionId;

@@ -22,8 +22,15 @@ const registrationRoutingName = {
 const registrationRoutingEmail = {
   previousUrl: url.NAME_WITH_IDS_URL,
   currentUrl: url.EMAIL_URL,
-  nextUrl: POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
+  nextUrl: url.WHAT_IS_YOUR_JURISDICTION_URL,
   pageType: RegistrationPageType.email
+};
+
+const registrationRoutingJurisdiction = {
+  previousUrl: url.EMAIL_URL,
+  currentUrl: url.WHAT_IS_YOUR_JURISDICTION_URL,
+  nextUrl: POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
+  pageType: RegistrationPageType.whatIsYourJurisdiction
 };
 
 // address look-up
@@ -74,6 +81,7 @@ const list = [
   registrationRoutingPartnershipType,
   registrationRoutingName,
   registrationRoutingEmail,
+  registrationRoutingJurisdiction,
   registrationRoutingGeneralPartners,
   registrationRoutingLimitedPartners,
   registrationRoutingGeneralPartnerChoice,

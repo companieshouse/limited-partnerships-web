@@ -1,0 +1,14 @@
+{% include "includes/proposed-name.njk" %}        
+<h1 class="govuk-heading-xl">{{ i18n.whatIsYourJurisdiction.scotlandHeading }}</h1>
+
+<p class="govuk-body">{{ i18n.whatIsYourJurisdiction.scotlandInformation }}</p>
+
+<p class="govuk-body">{{ i18n.whatIsYourJurisdiction.ifNotScotland }}</p>
+      
+<form class="form" action={{ props.currentUrl }} method="post">
+  <input type="hidden" name="pageType" value={{ props.pageType }}>  
+  <input type="hidden" name="jurisdiction" value="Scotland">
+  {% include "includes/csrf_token.njk" %}
+  {% include "includes/errors.njk" %}
+  {% include "includes/save-and-continue-button.njk" %}
+</form>

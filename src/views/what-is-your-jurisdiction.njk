@@ -1,0 +1,18 @@
+{% extends "layout.njk" %}
+
+{% set partnershipType = props.data.limitedPartnership.data.partnership_type %}
+
+{% set pageTitle = i18n.whatIsYourJurisdiction.title %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {% if partnershipType == "SLP" or partnershipType == "SPFLP" %}
+       {% include "includes/jurisdiction-scotland.njk" %}
+      {% else %}
+        {% include "includes/jurisdiction-form.njk" %}
+      {% endif %}
+   </div>
+  </div>
+
+{% endblock %}
