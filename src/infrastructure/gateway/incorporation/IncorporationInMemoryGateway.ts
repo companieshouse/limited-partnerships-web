@@ -1,5 +1,5 @@
 /* eslint-disable */
-
+import crypto from "crypto";
 import { IIncorporationGateway } from "../../../domain/IIncorporationGateway";
 import PageType from "../../../presentation/controller/PageType";
 import RegistrationPageType from "../../../presentation/controller/registration/PageType";

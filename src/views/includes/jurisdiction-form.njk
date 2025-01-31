@@ -1,0 +1,47 @@
+<form class="form" action={{ props.currentUrl }} method="post">
+  <input type="hidden" name="pageType" value={{ props.pageType }}>  
+ 
+  {% include "includes/csrf_token.njk" %}
+      
+  {% include "includes/errors.njk" %}
+      
+  {% include "includes/proposed-name.njk" %}  
+
+  {{ govukRadios({
+    classes: "govuk-radios",
+    name: "jurisdiction",
+    fieldset: {
+      legend: {
+        text: i18n.whatIsYourJurisdiction.whereIsJurisdiction,
+        isPageHeading: true,
+        classes: "govuk-fieldset__legend--xl"
+      }
+    },
+    hint: {
+      text: i18n.whatIsYourJurisdiction.hint
+    }, 
+    items: [
+      {
+        id: "jurisdiction",
+        name: "jurisdiction",
+        value: "England and Wales",
+        text: i18n.whatIsYourJurisdiction.options.EnglandWales,
+        attributes: {
+          "required": true
+        }
+      },
+      {
+        id: "jurisdiction",
+        name: "jurisdiction",
+        value: "Northern Ireland",
+        text: i18n.whatIsYourJurisdiction.options.NorthernIreland,
+        attributes: {
+          "required": true
+        }
+      }
+    ]
+  }) }}
+
+  {% include "includes/save-and-continue-button.njk" %}
+
+</form>

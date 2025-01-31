@@ -128,6 +128,19 @@
         "errorStartAddressMissing" : "Rhowch gyfeiriad"
     },
 
+    "whatIsYourJurisdiction" : {
+        "title" : "WELSH - What is your jurisdiction?",
+        "whereIsJurisdiction" : "WELSH - Where is the jurisdiction?",
+        "options": {
+            "EnglandWales" : "WELSH - England and Wales",
+            "NorthernIreland" : "WELSH - Northern Ireland"
+        },
+        "hint" : "WELSH - This is where the partnership was formed. The registered office address and principal place of business will need to be in the same jurisdiction.", 
+        "scotlandHeading" : "WELSH - This partnership will be registered in Scotland",
+        "scotlandInformation" : "WELSH - This means the partnership's registered office address and principal place of business will need to be in Scotland. Select to continue, if this is correct.",
+        "ifNotScotland" : "WELSH - If these addresses are in England, Wales or Northern Ireland, you will need to go back to change the type of partnership you are registering."
+    }, 
+
     "whichTypePage": {
         "title": "WELSH - Which type of partnership do you want to register?",
         "options": {
