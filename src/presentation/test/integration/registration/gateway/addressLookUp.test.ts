@@ -1,20 +1,20 @@
 import request from "supertest";
 import { createApiClient } from "@companieshouse/api-sdk-node";
 
-import appRealDependencies from "../../../../app";
-import { appDevDependencies } from "../../../../config/dev-dependencies";
+import appRealDependencies from "../../../../../app";
+import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import sdkMock, {
   getListOfValidPostcodeAddresses,
   isValidUKPostcode
-} from "../mock/sdkMock";
+} from "../../mock/sdkMock";
 
 import {
   CHOOSE_REGISTERED_OFFICE_ADDRESS_URL,
   POSTCODE_REGISTERED_OFFICE_ADDRESS_URL
-} from "../../../controller/addressLookUp/url";
-import AddressPageType from "../../../controller/addressLookUp/PageType";
-import enTranslationText from "../../../../../locales/en/translations.json";
-import { getUrl } from "../../utils";
+} from "../../../../controller/addressLookUp/url";
+import AddressPageType from "../../../../controller/addressLookUp/PageType";
+import enTranslationText from "../../../../../../locales/en/translations.json";
+import { getUrl } from "../../../utils";
 
 jest.mock("@companieshouse/api-sdk-node");
 

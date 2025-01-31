@@ -24,3 +24,15 @@
 
   {{ address }}
 {% endmacro %}
+
+{% macro htmlInputErrorMessage(message) %}
+  {% set errorMessage = "this.setCustomValidity('" + message + "')" %}
+
+  {{ errorMessage }}
+{% endmacro %}
+
+{% macro htmlOptionErrorMessage(message, name) %}
+  {% set errorMessage = "document.querySelectorAll('input[name=" + name + "]:checked').length === 0 ? this.setCustomValidity('" + message + "') : this.setCustomValidity('')" %}
+
+  {{ errorMessage }}
+{% endmacro %}

@@ -10,7 +10,8 @@
     value: address | dump,
     text: macros.formatAddress(address),
     attributes: {
-      required: true
+      required: true,
+      "radio-event-id": "address-radio-selected"
     }
   } %}
   {% set addressItems = addressItems.concat([newItem]) %}
@@ -40,10 +41,16 @@
         }) }}
        
         <p>
-          <a href="" class="govuk-link">{{ i18n.chooseRegisteredOfficeAddressPage.addressLink }}</a>
+          <a href="{{ props.currentUrl | replace(props.pageType, props.data.enterRegisteredOfficeAddressPageType) }}" class="govuk-body-m govuk-link" data-event-id="address-not-on-list">{{ i18n.chooseRegisteredOfficeAddressPage.addressLink }}</a>
         <p>
        
-        {% include "includes/continue-button.njk" %}
+       {{ govukButton({
+          text: i18n.buttons.continue,
+          attributes: {
+            "id": "submit",
+            "onclick": "_paq.push(['trackEvent', 'Limited Partnerships', '" + props.pageType + "', document.querySelector('input[name=selected_address]:checked').getAttribute('radio-event-id')])"
+          }
+        }) }}
       </form>
     </div>
   </div>
