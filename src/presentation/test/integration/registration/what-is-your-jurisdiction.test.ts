@@ -23,10 +23,10 @@ describe("Which jurisdiction page", () => {
 
   it("should load the jurisdiction page with English text for EnglandWales LP jurisdiction", async () => {
     setLocalesEnabled(true);
-    
+
     const limitedPartnership = new LimitedPartnershipBuilder()
-    .withPartnershipType(PartnershipType.LP)
-    .build();
+      .withPartnershipType(PartnershipType.LP)
+      .build();
 
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
       limitedPartnership
@@ -49,8 +49,8 @@ describe("Which jurisdiction page", () => {
     setLocalesEnabled(true);
 
     const limitedPartnership = new LimitedPartnershipBuilder()
-    .withPartnershipType(PartnershipType.LP)
-    .build();
+      .withPartnershipType(PartnershipType.LP)
+      .build();
 
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
       limitedPartnership
@@ -73,8 +73,8 @@ describe("Which jurisdiction page", () => {
     setLocalesEnabled(true);
 
     const limitedPartnership = new LimitedPartnershipBuilder()
-    .withPartnershipType(PartnershipType.PFLP)
-    .build();
+      .withPartnershipType(PartnershipType.PFLP)
+      .build();
 
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
       limitedPartnership
@@ -95,10 +95,10 @@ describe("Which jurisdiction page", () => {
 
   it("should load the jurisdiction page with Welsh text for EnglandWales PFLP jurisdiction", async () => {
     setLocalesEnabled(true);
-    
+
     const limitedPartnership = new LimitedPartnershipBuilder()
-    .withPartnershipType(PartnershipType.PFLP)
-    .build();
+      .withPartnershipType(PartnershipType.PFLP)
+      .build();
 
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
       limitedPartnership
@@ -121,8 +121,8 @@ describe("Which jurisdiction page", () => {
     setLocalesEnabled(false);
 
     const limitedPartnership = new LimitedPartnershipBuilder()
-    .withPartnershipType(PartnershipType.SLP)
-    .build();
+      .withPartnershipType(PartnershipType.SLP)
+      .build();
 
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
       limitedPartnership
@@ -144,8 +144,8 @@ describe("Which jurisdiction page", () => {
     setLocalesEnabled(false);
 
     const limitedPartnership = new LimitedPartnershipBuilder()
-    .withPartnershipType(PartnershipType.SPFLP)
-    .build();
+      .withPartnershipType(PartnershipType.SPFLP)
+      .build();
 
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
       limitedPartnership
