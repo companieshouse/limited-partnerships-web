@@ -13,7 +13,7 @@ describe("Enter Registered Office Address Page", () => {
   });
 
   describe("GET Enter Registered Office Address Page", () => {
-    it("should load the choose registered office address page with English text", async () => {
+    it("should load the enter registered office address page with English text", async () => {
       setLocalesEnabled(true);
 
       const res = await request(app).get(URL + "?lang=en");
@@ -23,7 +23,7 @@ describe("Enter Registered Office Address Page", () => {
       expect(res.text).not.toContain("WELSH -");
     });
 
-    it("should load the choose registered office address page with Welsh text", async () => {
+    it("should load the enter registered office address page with Welsh text", async () => {
       setLocalesEnabled(true);
 
       const res = await request(app).get(URL + "?lang=cy");
