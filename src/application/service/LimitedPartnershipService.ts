@@ -5,11 +5,13 @@ import ILimitedPartnershipGateway from "../../domain/ILimitedPartnershipGateway"
 import { logger } from "../../utils";
 import UIErrors from "../../domain/entities/UIErrors";
 import ITransactionGateway from "../../domain/ITransactionGateway";
+import { IIncorporationGateway } from "../../domain/IIncorporationGateway";
 
 class LimitedPartnershipService {
   constructor(
     private limitedPartnershipGateway: ILimitedPartnershipGateway,
-    private transactionGateway: ITransactionGateway
+    private transactionGateway: ITransactionGateway,
+    private incorporationGateway: IIncorporationGateway
   ) {}
 
   async getLimitedPartnership(
@@ -43,6 +45,12 @@ class LimitedPartnershipService {
       const transactionId = await this.transactionGateway.createTransaction(
         opt,
         registrationType
+      );
+
+      await this.incorporationGateway.createIncorporation(
+        opt,
+        registrationType,
+        transactionId
       );
 
       const submissionId =

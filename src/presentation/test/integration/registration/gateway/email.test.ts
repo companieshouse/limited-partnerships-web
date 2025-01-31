@@ -1,23 +1,23 @@
 import request from "supertest";
 import { createApiClient } from "@companieshouse/api-sdk-node";
-import { NameEndingType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { RefreshTokenService } from "@companieshouse/api-sdk-node/dist/services/refresh-token";
 
-import appRealDependencies from "../../../../app";
-import { appDevDependencies } from "../../../../config/dev-dependencies";
-import { EMAIL_URL, NAME_URL } from "../../../controller/registration/url";
-import RegistrationPageType from "../../../controller/registration/PageType";
-import enTranslationText from "../../../../../locales/en/translations.json";
-import sdkMock from "../mock/sdkMock";
-import { getUrl } from "../../utils";
-import { POSTCODE_REGISTERED_OFFICE_ADDRESS_URL } from "../../../controller/addressLookUp/url";
+import appRealDependencies from "../../../../../app";
+import { appDevDependencies } from "../../../../../config/dev-dependencies";
+import { EMAIL_URL, NAME_URL } from "../../../../controller/registration/url";
+import RegistrationPageType from "../../../../controller/registration/PageType";
+import enTranslationText from "../../../../../../locales/en/translations.json";
+import sdkMock from "../../mock/sdkMock";
+import { getUrl } from "../../../utils";
+import { POSTCODE_REGISTERED_OFFICE_ADDRESS_URL } from "../../../../controller/addressLookUp/url";
+import { NameEndingType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 jest.mock("@companieshouse/api-sdk-node");
 
 const mockCreateApiClient = createApiClient as jest.Mock;
 mockCreateApiClient.mockReturnValue(sdkMock);
 
-describe("Gateway", () => {
+describe("Gateway Update - Refresh Token", () => {
   const URL = getUrl(EMAIL_URL);
 
   beforeEach(() => {
