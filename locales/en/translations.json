@@ -135,6 +135,7 @@
             "EnglandWales" : "England and Wales",
             "NorthernIreland" : "Northern Ireland"
         },
+        "hint" : "This is where the partnership was formed. The registered office address and principal place of business will need to be in the same jurisdiction.", 
         "scotlandHeading" : "This partnership will be registered in Scotland",
         "scotlandInformation" : "This means the partnership's registered office address and principal place of business will need to be in Scotland. Select to continue, if this is correct .",
         "ifNotScotland" : "If these addresses are in England, Wales or Northern Ireland, you will need to go back to change the type of partnership you are registering."

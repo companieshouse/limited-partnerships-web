@@ -8,11 +8,10 @@ import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
 import { getUrl, setLocalesEnabled } from "../../utils";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
-import { APPLICATION_CACHE_KEY_PREFIX_REGISTRATION } from "../../../../config/constants";
-import RegistrationPageType from "../../../controller/registration/PageType";
 import {
   WHAT_IS_YOUR_JURISDICTION_URL
 } from "../../../controller/registration/url";
+import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 
 describe("Which jurisdiction page", () => {
 
@@ -22,13 +21,16 @@ describe("Which jurisdiction page", () => {
     setLocalesEnabled(false);
   });
 
-  it("should load the name page with English text for EnglandWales LP jurisdiction", async () => {
+  it("should load the jurisdiction page with English text for EnglandWales LP jurisdiction", async () => {
     setLocalesEnabled(true);
+    
+    const limitedPartnership = new LimitedPartnershipBuilder()
+    .withPartnershipType(PartnershipType.LP)
+    .build();
 
-    appDevDependencies.cacheRepository.feedCache({
-      [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]:
-      PartnershipType.LP
-    });
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
+      limitedPartnership
+    ]);
 
     const res = await request(app).get(URL + "?lang=en");
 
@@ -43,13 +45,16 @@ describe("Which jurisdiction page", () => {
     expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
   });
 
-  it("should load the name page with Welsh text for EnglandWales LP jurisdiction", async () => {
+  it("should load the jurisdiction page with Welsh text for EnglandWales LP jurisdiction", async () => {
     setLocalesEnabled(true);
 
-    appDevDependencies.cacheRepository.feedCache({
-      [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]:
-       PartnershipType.LP
-    });
+    const limitedPartnership = new LimitedPartnershipBuilder()
+    .withPartnershipType(PartnershipType.LP)
+    .build();
+
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
+      limitedPartnership
+    ]);
 
     const res = await request(app).get(URL + "?lang=cy");
 
@@ -64,13 +69,16 @@ describe("Which jurisdiction page", () => {
     expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
   });
 
-  it("should load the name page with English text for EnglandWales PFLP jurisdiction", async () => {
+  it("should load the jurisdiction page with English text for EnglandWales PFLP jurisdiction", async () => {
     setLocalesEnabled(true);
 
-    appDevDependencies.cacheRepository.feedCache({
-      [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]:
-      PartnershipType.PFLP
-    });
+    const limitedPartnership = new LimitedPartnershipBuilder()
+    .withPartnershipType(PartnershipType.PFLP)
+    .build();
+
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
+      limitedPartnership
+    ]);
 
     const res = await request(app).get(URL + "?lang=en");
 
@@ -85,13 +93,16 @@ describe("Which jurisdiction page", () => {
     expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
   });
 
-  it("should load the name page with Welsh text for EnglandWales PFLP jurisdiction", async () => {
+  it("should load the jurisdiction page with Welsh text for EnglandWales PFLP jurisdiction", async () => {
     setLocalesEnabled(true);
+    
+    const limitedPartnership = new LimitedPartnershipBuilder()
+    .withPartnershipType(PartnershipType.PFLP)
+    .build();
 
-    appDevDependencies.cacheRepository.feedCache({
-      [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]:
-       PartnershipType.PFLP
-    });
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
+      limitedPartnership
+    ]);
 
     const res = await request(app).get(URL + "?lang=cy");
 
@@ -106,13 +117,16 @@ describe("Which jurisdiction page", () => {
     expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
   });
 
-  it("should load the name page with English text for Scotland SLP jurisdiction", async () => {
+  it("should load the jurisdiction page with English text for Scotland SLP jurisdiction", async () => {
     setLocalesEnabled(false);
 
-    appDevDependencies.cacheRepository.feedCache({
-      [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]:
-        PartnershipType.SLP
-    });
+    const limitedPartnership = new LimitedPartnershipBuilder()
+    .withPartnershipType(PartnershipType.SLP)
+    .build();
+
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
+      limitedPartnership
+    ]);
 
     const res = await request(app).get(URL);
 
@@ -126,13 +140,16 @@ describe("Which jurisdiction page", () => {
     expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
   });
 
-  it("should load the name page with English text for Scotland SPFLP jurisdiction", async () => {
+  it("should load the jurisdiction page with English text for Scotland SPFLP jurisdiction", async () => {
     setLocalesEnabled(false);
 
-    appDevDependencies.cacheRepository.feedCache({
-      [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]:
-        PartnershipType.SPFLP
-    });
+    const limitedPartnership = new LimitedPartnershipBuilder()
+    .withPartnershipType(PartnershipType.SPFLP)
+    .build();
+
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
+      limitedPartnership
+    ]);
 
     const res = await request(app).get(URL);
 
