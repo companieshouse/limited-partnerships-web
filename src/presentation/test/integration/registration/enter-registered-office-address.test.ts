@@ -2,8 +2,9 @@ import request, { Response } from "supertest";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
-import { ENTER_REGISTERED_OFFICE_ADDRESS_URL } from "presentation/controller/addressLookUp/url";
+import { CONFIRM_REGISTERED_OFFICE_ADDRESS_URL, ENTER_REGISTERED_OFFICE_ADDRESS_URL } from "presentation/controller/addressLookUp/url";
 import { getUrl, setLocalesEnabled } from "presentation/test/utils";
+import AddressPageType from "presentation/controller/addressLookUp/PageType";
 
 describe("Enter Registered Office Address Page", () => {
   const URL = getUrl(ENTER_REGISTERED_OFFICE_ADDRESS_URL);
@@ -59,5 +60,17 @@ describe("Enter Registered Office Address Page", () => {
       expect(res.text).toContain(translations.enterRegisteredOfficeAddressPage.publicInformationTitle);
       expect(res.text).toContain(translations.enterRegisteredOfficeAddressPage.publicInformationLine1);
     };
+  });
+
+  describe("POST Enter Registered Office Address Page", () => {
+    it("should redirect to the confirm address page", async () => {
+      const res = await request(app).post(URL).send({
+        pageType: AddressPageType.enterRegisteredOfficeAddress
+      });
+
+      const redirectUrl = getUrl(CONFIRM_REGISTERED_OFFICE_ADDRESS_URL);
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+    });
   });
 });
