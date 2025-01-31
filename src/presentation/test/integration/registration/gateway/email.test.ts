@@ -1,16 +1,19 @@
 import request from "supertest";
 import { createApiClient } from "@companieshouse/api-sdk-node";
 import { RefreshTokenService } from "@companieshouse/api-sdk-node/dist/services/refresh-token";
+import { NameEndingType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import appRealDependencies from "../../../../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { EMAIL_URL, NAME_URL } from "../../../../controller/registration/url";
+import {
+  EMAIL_URL,
+  NAME_URL,
+  WHAT_IS_YOUR_JURISDICTION_URL
+} from "../../../../controller/registration/url";
 import RegistrationPageType from "../../../../controller/registration/PageType";
 import enTranslationText from "../../../../../../locales/en/translations.json";
 import sdkMock from "../../mock/sdkMock";
 import { getUrl } from "../../../utils";
-import { POSTCODE_REGISTERED_OFFICE_ADDRESS_URL } from "../../../../controller/addressLookUp/url";
-import { NameEndingType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 jest.mock("@companieshouse/api-sdk-node");
 
@@ -50,7 +53,7 @@ describe("Gateway Update - Refresh Token", () => {
         email: "test@email.com"
       });
 
-      const REDIRECT_URL = getUrl(POSTCODE_REGISTERED_OFFICE_ADDRESS_URL);
+      const REDIRECT_URL = getUrl(WHAT_IS_YOUR_JURISDICTION_URL);
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
@@ -117,7 +120,7 @@ describe("Gateway Update - Refresh Token", () => {
 
         expect(refreshToken).toHaveBeenCalled();
 
-        const REDIRECT_URL = getUrl(POSTCODE_REGISTERED_OFFICE_ADDRESS_URL);
+        const REDIRECT_URL = getUrl(WHAT_IS_YOUR_JURISDICTION_URL);
 
         expect(res.status).toBe(302);
         expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);

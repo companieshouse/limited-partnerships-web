@@ -1,6 +1,7 @@
 import {
   NameEndingType,
-  PartnershipType
+  PartnershipType,
+  Jurisdiction
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import TransactionLimitedPartnership from "../../../domain/entities/TransactionLimitedPartnership";
 
@@ -10,7 +11,8 @@ class LimitedPartnershipBuilder {
     partnership_name: "partnership_name test",
     name_ending: NameEndingType.LIMITED_PARTNERSHIP,
     partnership_type: PartnershipType.LP,
-    email: "test@email.com"
+    email: "test@email.com",
+    jurisdiction: Jurisdiction.NORTHERN_IRELAND
   };
 
   withId(id: string) {
@@ -35,6 +37,11 @@ class LimitedPartnershipBuilder {
 
   withEmail(email: string) {
     this.data.email = email;
+    return this;
+  }
+
+  withJurisdiction(jurisdiction: Jurisdiction) {
+    this.data.jurisdiction = jurisdiction;
     return this;
   }
 
