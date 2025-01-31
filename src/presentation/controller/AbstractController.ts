@@ -48,13 +48,13 @@ abstract class AbstractController {
   }
 
   insertIdsInUrl(url: string, transactionId = "", submissionId = ""): string {
-    url = this.insertMissingPart(transactionId, submissionId, url);
+    url = this.replaceBaseUrlWithIds(transactionId, submissionId, url);
     url = this.insertSubmissionId(url, submissionId);
     url = this.insertTransactionId(url, transactionId);
     return url;
   }
 
-  private insertMissingPart(
+  private replaceBaseUrlWithIds(
     transactionId: string,
     submissionId: string,
     url: string
