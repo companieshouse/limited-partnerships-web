@@ -72,5 +72,14 @@ describe("Enter Registered Office Address Page", () => {
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
     });
+
+    it("should redirect to the error page when error occurs during Post", async () => {
+      const res = await request(app).post(URL).send({
+        pageType: "Invalid page type",
+      });
+
+      expect(res.status).toBe(500);
+      expect(res.text).toContain(enTranslationText.errorPage.title);
+    });
   });
 });
