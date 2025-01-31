@@ -1,6 +1,6 @@
 <form class="form" action={{ props.currentUrl }} method="post">
   <input type="hidden" name="pageType" value={{ props.pageType }}>  
-  <input type="hidden" name="jurisdiction" value={{ props.jurisdiction }}> 
+ 
   {% include "includes/csrf_token.njk" %}
       
   {% include "includes/errors.njk" %}
@@ -22,14 +22,18 @@
     }, 
     items: [
       {
-        value: "england-wales",
+        id: "England and Wales",
+        name: "England and Wales",
+        value: props.data.limitedPartnership.data.jurisdiction,
         text: i18n.whatIsYourJurisdiction.options.EnglandWales,
         attributes: {
           "required": true
         }
       },
       {
-        value: "northern-ireland",
+        id: "Northern Ireland",
+        name: "Northern Ireland",
+        value: props.data.limitedPartnership.data.jurisdiction,
         text: i18n.whatIsYourJurisdiction.options.NorthernIreland,
         attributes: {
           "required": true
