@@ -7,11 +7,7 @@ import addresssRouting, { addressLookUpRouting } from "./Routing";
 import AbstractController from "../AbstractController";
 import AddressLookUpPageType from "./PageType";
 import CacheService from "../../../application/service/CacheService";
-import {
-  APPLICATION_CACHE_KEY_PREFIX_REGISTRATION,
-  SUBMISSION_ID,
-  TRANSACTION_ID
-} from "../../../config/constants";
+import { APPLICATION_CACHE_KEY_PREFIX_REGISTRATION } from "../../../config/constants";
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import { UKAddress } from "@companieshouse/api-sdk-node/dist/services/postcode-lookup";
 
@@ -38,9 +34,7 @@ class AddressLookUpController extends AbstractController {
         const pageRouting = super.getRouting(
           addresssRouting,
           pageType,
-          request.url,
-          transactionId,
-          submissionId
+          request
         );
 
         let limitedPartnership = {};
@@ -59,11 +53,12 @@ class AddressLookUpController extends AbstractController {
         let addressList: UKAddress[] = [];
 
         if (this.isAddressListRequired(pageRouting.pageType)) {
-          const postcode = cache[this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY].postcode;
+          const postcode =
+            cache[this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY].postcode;
 
           addressList = await this.addressService.getAddressListForPostcode(
             tokens,
-            postcode,
+            postcode
           );
         }
 
@@ -102,9 +97,7 @@ class AddressLookUpController extends AbstractController {
         const pageRouting = super.getRouting(
           addressLookUpRouting,
           pageType,
-          request.url,
-          request.params[TRANSACTION_ID],
-          request.params[SUBMISSION_ID]
+          request
         );
 
         const limitedPartnership =
@@ -136,8 +129,7 @@ class AddressLookUpController extends AbstractController {
         }
 
         await this.cacheService.addDataToCache(session, {
-          [this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY]:
-            address
+          [this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY]: address
         });
 
         response.redirect(pageRouting.nextUrl);
@@ -150,7 +142,9 @@ class AddressLookUpController extends AbstractController {
   selectAddress(): RequestHandler {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
-        const selectedAddress: UKAddress = JSON.parse(request.body.selected_address);
+        const selectedAddress: UKAddress = JSON.parse(
+          request.body.selected_address
+        );
         const address = {
           address_line_1: selectedAddress.addressLine1,
           address_line_2: selectedAddress.addressLine2,
@@ -170,7 +164,15 @@ class AddressLookUpController extends AbstractController {
   sendManualAddress(): RequestHandler {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
-        const { premises, address_line_1, address_line_2, locality, region, postal_code, country } = request.body;
+        const {
+          premises,
+          address_line_1,
+          address_line_2,
+          locality,
+          region,
+          postal_code,
+          country
+        } = request.body;
         const address = {
           address_line_1,
           address_line_2,
@@ -202,9 +204,7 @@ class AddressLookUpController extends AbstractController {
     const pageRouting = super.getRouting(
       addressLookUpRouting,
       pageType,
-      request.url,
-      request.params[TRANSACTION_ID],
-      request.params[SUBMISSION_ID]
+      request
     );
 
     const cacheKey = this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY;
