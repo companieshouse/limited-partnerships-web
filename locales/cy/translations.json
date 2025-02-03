@@ -91,7 +91,7 @@
             "nameEnding" : "WELSH - Which name ending would you prefer to go on the public record?"
         },
 
-        "nameErrorMessage": "WELSH - Enter a name for the partnership",
+        "nameErrorMessage": "WELSH - Enter the name of the partnership",
         "nameEndingErrorMessage": "WELSH - Select the name ending to go on the public record"
     },
 
