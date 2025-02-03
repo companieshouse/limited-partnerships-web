@@ -159,9 +159,8 @@ class AddressLookUpController extends AbstractController {
           postal_code: selectedAddress.postcode,
           premises: selectedAddress.premise
         };
-        const cacheKey = this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY;
 
-        await this.saveAndRedirectToNextPage(request, response, address, cacheKey);
+        await this.saveAndRedirectToNextPage(request, response, address);
       } catch (error) {
         next(error);
       }
@@ -182,9 +181,7 @@ class AddressLookUpController extends AbstractController {
           region
         };
 
-        const cacheKey = this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY;
-
-        await this.saveAndRedirectToNextPage(request, response, address, cacheKey);
+        await this.saveAndRedirectToNextPage(request, response, address);
       } catch (error) {
         next(error);
       }
@@ -194,7 +191,7 @@ class AddressLookUpController extends AbstractController {
   private async saveAndRedirectToNextPage(
     request: Request,
     response: Response<any, Record<string, any>>,
-    dataToStore: any, cacheKey: string
+    dataToStore: any
   ) {
     const session = request.session as Session;
     const pageType = super.extractPageTypeOrThrowError(
@@ -209,6 +206,8 @@ class AddressLookUpController extends AbstractController {
       request.params[TRANSACTION_ID],
       request.params[SUBMISSION_ID]
     );
+
+    const cacheKey = this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY;
 
     await this.cacheService.addDataToCache(session, {
       [cacheKey]: dataToStore

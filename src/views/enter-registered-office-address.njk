@@ -1,5 +1,13 @@
 {% extends "layout.njk" %}
 
+{% if props.data.cache["registration_registered_office_address"] %}
+  {% set registeredOfficeAddress = props.data.cache["registration_registered_office_address"] %}
+{% elif props.data.partnership.data.registered_office_address %}
+  {% set registeredOfficeAddress = props.data.partnership.data.registered_office_address %}
+{% else %}
+  {% set registeredOfficeAddress = {} %}
+{% endif %}
+
 {% set pageTitle = i18n.enterRegisteredOfficeAddressPage.title %}
 
 {% block content %}
@@ -38,7 +46,7 @@
               },
               id: "premises",
               name: "premises",
-              value: "",
+              value: registeredOfficeAddress.premises,
               attributes : {  
                 required : true,
                 maxLength: 50,
@@ -52,7 +60,7 @@
               },
               id: "address_line_1",
               name: "address_line_1",
-              value: "",
+              value: registeredOfficeAddress.address_line_1,
               attributes : {
                 required : true,
                 maxLength: 50,
@@ -66,7 +74,7 @@
               },
               id: "address_line_2",
               name: "address_line_2",
-              value: "",
+              value: registeredOfficeAddress.address_line_2,
               attributes : {
                 maxLength: 50,
                 "data-event-id": "address-line-2"
@@ -80,7 +88,7 @@
               classes: "govuk-!-width-two-thirds",
               id: "locality",
               name: "locality",
-              value: "",
+              value: registeredOfficeAddress.locality,
               attributes : {
                 required : true,
                 maxLength: 50,
@@ -95,7 +103,7 @@
               classes: "govuk-!-width-two-thirds",
               id: "region",
               name: "region",
-              value: "",
+              value: registeredOfficeAddress.region,
               attributes : {
                 maxLength: 50,
                 "data-event-id": "county"
@@ -109,7 +117,7 @@
               classes: "govuk-input--width-10",
               id: "postal_code",
               name: "postal_code",
-              value: "",
+              value: registeredOfficeAddress.postal_code,
               attributes : {
                 required : true,
                 maxLength: 15,
@@ -120,6 +128,7 @@
             {{ govukSelect({
               id: "country",
               name: "country",
+              value: registeredOfficeAddress.country,
               label: {
                 text: i18n.enterRegisteredOfficeAddressPage.country
               },

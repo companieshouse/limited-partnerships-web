@@ -14,3 +14,25 @@ export const getUrl = (url: string) =>
     appDevDependencies.transactionGateway.transactionId,
     appDevDependencies.limitedPartnershipGateway.submissionId
   );
+
+const singleQuoteToHtml = (input: string) => {
+  return input.replace(/'/g, "&#39;");
+};
+
+export const testTranslations = (
+  text: string,
+  translations: Record<string, any>
+) => {
+  for (const key in translations) {
+    if (typeof translations[key] === "object") {
+      testTranslations(text, translations[key]);
+      continue;
+    }
+
+    const str = key.toLowerCase().includes("hint")
+      ? singleQuoteToHtml(translations[key])
+      : translations[key];
+
+    expect(text).toContain(str);
+  }
+};
