@@ -1,7 +1,8 @@
 {% extends "layout.njk" %}
 
-{% if props.data.cache["registration_registered_office_address"] %}
-  {% set registeredOfficeAddress = props.data.cache["registration_registered_office_address"] %}
+{% set registeredOfficeKey = "registration_registered_office_address" %}
+{% if props.data.cache[registeredOfficeKey] %}
+  {% set registeredOfficeAddress = props.data.cache[registeredOfficeKey] %}
 {% elif props.data.partnership.data.registered_office_address %}
   {% set registeredOfficeAddress = props.data.partnership.data.registered_office_address %}
 {% else %}
