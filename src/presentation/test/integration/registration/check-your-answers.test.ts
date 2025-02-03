@@ -5,7 +5,7 @@ import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
-import { getUrl, setLocalesEnabled } from "../../utils";
+import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 
 describe("Check Your Answers Page", () => {
   const URL = getUrl(CHECK_YOUR_ANSWERS_URL);
@@ -15,26 +15,7 @@ describe("Check Your Answers Page", () => {
     const res = await request(app).get(URL + "?lang=en");
 
     expect(res.status).toBe(200);
-    expect(res.text).toContain(enTranslationText.checkYourAnswersPage.title);
-    expect(res.text).toContain(enTranslationText.checkYourAnswersPage.lpInfo);
-    expect(res.text).toContain(enTranslationText.checkYourAnswersPage.change);
-    expect(res.text).toContain(
-      enTranslationText.checkYourAnswersPage.headingName
-    );
-    expect(res.text).toContain(
-      enTranslationText.checkYourAnswersPage.headingSic
-    );
-    expect(res.text).toContain(
-      enTranslationText.checkYourAnswersPage.headingEmail
-    );
-    expect(res.text).toContain(
-      enTranslationText.checkYourAnswersPage.headingTerm
-    );
-    expect(res.text).toContain(enTranslationText.checkYourAnswersPage.confirm);
-    expect(res.text).toContain(
-      enTranslationText.checkYourAnswersPage.futureLawful
-    );
-    expect(res.text).toContain(enTranslationText.checkYourAnswersPage.payment);
+    testTranslations(res.text, enTranslationText.checkYourAnswersPage);
     expect(res.text).not.toContain("WELSH -");
   });
 
@@ -43,26 +24,7 @@ describe("Check Your Answers Page", () => {
     const res = await request(app).get(URL + "?lang=cy");
 
     expect(res.status).toBe(200);
-    expect(res.text).toContain(cyTranslationText.checkYourAnswersPage.title);
-    expect(res.text).toContain(cyTranslationText.checkYourAnswersPage.lpInfo);
-    expect(res.text).toContain(cyTranslationText.checkYourAnswersPage.change);
-    expect(res.text).toContain(
-      cyTranslationText.checkYourAnswersPage.headingName
-    );
-    expect(res.text).toContain(
-      cyTranslationText.checkYourAnswersPage.headingSic
-    );
-    expect(res.text).toContain(
-      cyTranslationText.checkYourAnswersPage.headingEmail
-    );
-    expect(res.text).toContain(
-      cyTranslationText.checkYourAnswersPage.headingTerm
-    );
-    expect(res.text).toContain(cyTranslationText.checkYourAnswersPage.confirm);
-    expect(res.text).toContain(
-      cyTranslationText.checkYourAnswersPage.futureLawful
-    );
-    expect(res.text).toContain(cyTranslationText.checkYourAnswersPage.payment);
+    testTranslations(res.text, cyTranslationText.checkYourAnswersPage);
     expect(res.text).toContain("WELSH -");
   });
 

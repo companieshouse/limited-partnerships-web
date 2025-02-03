@@ -6,8 +6,8 @@ import {
   CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
   ENTER_REGISTERED_OFFICE_ADDRESS_URL
 } from "presentation/controller/addressLookUp/url";
-import { getUrl, setLocalesEnabled, testTranslations } from "presentation/test/utils";
-import AddressPageType from "presentation/controller/addressLookUp/PageType";
+import { getUrl, setLocalesEnabled, testTranslations } from "../../../../presentation/test/utils";
+import AddressPageType from "../../../../presentation/controller/addressLookUp/PageType";
 
 describe("Enter Registered Office Address Page", () => {
   const URL = getUrl(ENTER_REGISTERED_OFFICE_ADDRESS_URL);

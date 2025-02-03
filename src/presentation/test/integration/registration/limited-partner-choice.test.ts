@@ -14,7 +14,7 @@ import {
 import { registrationRoutingLimitedPartnerChoice } from "../../../controller/registration/Routing";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
-import { getUrl, setLocalesEnabled } from "../../utils";
+import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 
 describe("Limited Partner Choice Page", () => {
   const URL = getUrl(LIMITED_PARTNER_CHOICE_URL);
@@ -33,12 +33,7 @@ describe("Limited Partner Choice Page", () => {
     const res = await request(app).get(URL + "?lang=cy");
 
     expect(res.status).toBe(200);
-    expect(res.text).toContain(
-      `${cyTranslationText.limitedPartnerChoicePage.isPersonOrLegalEntity} - ${cyTranslationText.service} - GOV.UK`
-    );
-    expect(res.text).toContain(
-      cyTranslationText.limitedPartnerChoicePage.isPersonOrLegalEntity
-    );
+    testTranslations(res.text, cyTranslationText.limitedPartnerChoicePage);
   });
 
   it("should load the limited partner choice page with English text", async () => {
@@ -46,12 +41,7 @@ describe("Limited Partner Choice Page", () => {
     const res = await request(app).get(URL + "?lang=en");
 
     expect(res.status).toBe(200);
-    expect(res.text).toContain(
-      `${enTranslationText.limitedPartnerChoicePage.isPersonOrLegalEntity} - ${enTranslationText.service} - GOV.UK`
-    );
-    expect(res.text).toContain(
-      enTranslationText.limitedPartnerChoicePage.isPersonOrLegalEntity
-    );
+    testTranslations(res.text, enTranslationText.limitedPartnerChoicePage);
   });
 
   it("should store the limited partner choice to cache", async () => {

@@ -5,7 +5,7 @@ import app from "../app";
 import { LIMITED_PARTNERS_URL } from "../../../controller/registration/url";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled } from "../../utils";
+import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 
 describe("Limited Partners Page", () => {
   const URL = getUrl(LIMITED_PARTNERS_URL);
@@ -21,10 +21,7 @@ describe("Limited Partners Page", () => {
     const res = await request(app).get(URL + "?lang=cy");
 
     expect(res.status).toBe(200);
-    expect(res.text).toContain(
-      `${cyTranslationText.limitedPartnersPage.title} - ${cyTranslationText.service} - GOV.UK`
-    );
-    expect(res.text).toContain(cyTranslationText.limitedPartnersPage.title);
+    testTranslations(res.text, cyTranslationText.limitedPartnersPage);
   });
 
   it("should load the limited partners page with English text", async () => {
@@ -32,10 +29,7 @@ describe("Limited Partners Page", () => {
     const res = await request(app).get(URL + "?lang=en");
 
     expect(res.status).toBe(200);
-    expect(res.text).toContain(
-      `${enTranslationText.limitedPartnersPage.title} - ${enTranslationText.service} - GOV.UK`
-    );
-    expect(res.text).toContain(enTranslationText.limitedPartnersPage.title);
+    testTranslations(res.text, enTranslationText.limitedPartnersPage);
   });
 
   it("should contain the proposed name - data from api", async () => {

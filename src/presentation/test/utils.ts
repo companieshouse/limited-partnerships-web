@@ -21,17 +21,20 @@ const singleQuoteToHtml = (input: string) => {
 
 export const testTranslations = (
   text: string,
-  translations: Record<string, any>
+  translations: Record<string, any>,
+  exclude?: string[]
 ) => {
   for (const key in translations) {
+    if (exclude?.includes(key)) {
+      continue;
+    }
+
     if (typeof translations[key] === "object") {
       testTranslations(text, translations[key]);
       continue;
     }
 
-    const str = key.toLowerCase().includes("hint")
-      ? singleQuoteToHtml(translations[key])
-      : translations[key];
+    const str = singleQuoteToHtml(translations[key]);
 
     expect(text).toContain(str);
   }

@@ -6,7 +6,7 @@ import {
   CHOOSE_REGISTERED_OFFICE_ADDRESS_URL,
   CONFIRM_REGISTERED_OFFICE_ADDRESS_URL
 } from "presentation/controller/addressLookUp/url";
-import { getUrl, setLocalesEnabled } from "../../utils";
+import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import { appDevDependencies } from "config/dev-dependencies";
 import * as config from "config";
 import AddressPageType from "presentation/controller/addressLookUp/PageType";
@@ -37,17 +37,7 @@ describe("Choose Registered Office Address Page", () => {
       const res = await request(app).get(URL + "?lang=en");
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(
-        `${enTranslationText.chooseRegisteredOfficeAddressPage.title} - ${enTranslationText.service} - GOV.UK`
-      );
-      expect(res.text).toContain(
-        enTranslationText.chooseRegisteredOfficeAddressPage.title
-      );
-      expect(res.text).toContain(
-        enTranslationText.chooseRegisteredOfficeAddressPage.addressLink
-      );
-
-      expect(res.text).toContain(enTranslationText.buttons.continue);
+      testTranslations(res.text, enTranslationText.chooseRegisteredOfficeAddressPage);
       expect(res.text).not.toContain("WELSH -");
     });
 
@@ -57,17 +47,7 @@ describe("Choose Registered Office Address Page", () => {
       const res = await request(app).get(URL + "?lang=cy");
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(
-        `${cyTranslationText.chooseRegisteredOfficeAddressPage.title} - ${cyTranslationText.service} - GOV.UK`
-      );
-      expect(res.text).toContain(
-        cyTranslationText.chooseRegisteredOfficeAddressPage.title
-      );
-      expect(res.text).toContain(
-        enTranslationText.chooseRegisteredOfficeAddressPage.addressLink
-      );
-
-      expect(res.text).toContain(cyTranslationText.buttons.continue);
+      testTranslations(res.text, cyTranslationText.chooseRegisteredOfficeAddressPage);
     });
 
     it("should populate the address list", async () => {

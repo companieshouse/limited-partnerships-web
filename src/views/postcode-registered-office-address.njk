@@ -79,7 +79,7 @@
 
     <div>
       {{ govukInsetText({
-        html: i18n.officeAddress.publicRegister
+        html: "<h2 class='govuk-heading-m'>" + i18n.officeAddress.publicRegisterTitle | escape + "</h2> <p>" + i18n.officeAddress.publicRegisterLine1 | escape + "</p>"
       }) }}
     </div>
   </div>
