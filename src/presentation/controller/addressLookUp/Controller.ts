@@ -16,6 +16,9 @@ import LimitedPartnershipService from "../../../application/service/LimitedPartn
 import { UKAddress } from "@companieshouse/api-sdk-node/dist/services/postcode-lookup";
 
 class AddressLookUpController extends AbstractController {
+  public readonly REGISTERED_OFFICE_ADDRESS_CACHE_KEY =
+    APPLICATION_CACHE_KEY_PREFIX_REGISTRATION + "registered_office_address";
+
   constructor(
     private addressService: AddressService,
     private limitedPartnershipService: LimitedPartnershipService,
@@ -56,7 +59,7 @@ class AddressLookUpController extends AbstractController {
         let addressList: UKAddress[] = [];
 
         if (this.isAddressListRequired(pageRouting.pageType)) {
-          const postcode = cache.registration_registered_office_address.postcode;
+          const postcode = cache[this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY].postcode;
 
           addressList = await this.addressService.getAddressListForPostcode(
             tokens,
@@ -133,7 +136,7 @@ class AddressLookUpController extends AbstractController {
         }
 
         await this.cacheService.addDataToCache(session, {
-          [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`]:
+          [this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY]:
             address
         });
 
@@ -147,32 +150,70 @@ class AddressLookUpController extends AbstractController {
   selectAddress(): RequestHandler {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
-        const session = request.session as Session;
-        const pageType = super.extractPageTypeOrThrowError(
-          request,
-          AddressLookUpPageType
-        );
-
-        const pageRouting = super.getRouting(
-          addressLookUpRouting,
-          pageType,
-          request.url,
-          request.params[TRANSACTION_ID],
-          request.params[SUBMISSION_ID]
-        );
-
         const selectedAddress: UKAddress = JSON.parse(request.body.selected_address);
+        const address = {
+          address_line_1: selectedAddress.addressLine1,
+          address_line_2: selectedAddress.addressLine2,
+          country: selectedAddress.country,
+          locality: selectedAddress.postTown,
+          postal_code: selectedAddress.postcode,
+          premises: selectedAddress.premise
+        };
 
-        await this.cacheService.addDataToCache(session, {
-          [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${pageType}`]:
-            selectedAddress
-        });
-
-        response.redirect(pageRouting.nextUrl);
+        await this.saveAndRedirectToNextPage(request, response, address);
       } catch (error) {
         next(error);
       }
     };
+  }
+
+  sendManualAddress(): RequestHandler {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { premises, address_line_1, address_line_2, locality, region, postal_code, country } = request.body;
+        const address = {
+          address_line_1,
+          address_line_2,
+          country,
+          locality,
+          postal_code,
+          premises,
+          region
+        };
+
+        await this.saveAndRedirectToNextPage(request, response, address);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  private async saveAndRedirectToNextPage(
+    request: Request,
+    response: Response<any, Record<string, any>>,
+    dataToStore: any
+  ) {
+    const session = request.session as Session;
+    const pageType = super.extractPageTypeOrThrowError(
+      request,
+      AddressLookUpPageType
+    );
+
+    const pageRouting = super.getRouting(
+      addressLookUpRouting,
+      pageType,
+      request.url,
+      request.params[TRANSACTION_ID],
+      request.params[SUBMISSION_ID]
+    );
+
+    const cacheKey = this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY;
+
+    await this.cacheService.addDataToCache(session, {
+      [cacheKey]: dataToStore
+    });
+
+    response.redirect(pageRouting.nextUrl);
   }
 }
 

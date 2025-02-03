@@ -1,3 +1,184 @@
-<h1>
-    Enter Registered Office Address Page
-</h1>
+{% extends "layout.njk" %}
+
+{% set registeredOfficeKey = "registration_registered_office_address" %}
+{% if props.data.cache[registeredOfficeKey] %}
+  {% set registeredOfficeAddress = props.data.cache[registeredOfficeKey] %}
+{% elif props.data.limitedPartnership.data.registered_office_address %}
+  {% set registeredOfficeAddress = props.data.limitedPartnership.data.registered_office_address %}
+{% else %}
+  {% set registeredOfficeAddress = {} %}
+{% endif %}
+
+{% set pageTitle = i18n.enterRegisteredOfficeAddressPage.title %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form class="form" action={{ props.currentUrl }} method="post">
+        <input type="hidden" name="pageType" value={{ props.pageType }}>      
+        
+        {% include "includes/csrf_token.njk" %}
+
+        {% include "includes/errors.njk" %}
+   
+        <div>
+          {% include "includes/proposed-name.njk" %}
+
+          <fieldset class="govuk-fieldset">
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+              <h1 class="govuk-heading-xl">
+                {{ i18n.enterRegisteredOfficeAddressPage.title }}
+              </h1>
+            </legend>
+
+            <p class="govuk-hint">{{ i18n.enterRegisteredOfficeAddressPage.titleHint1 }}</p>
+            <p class="govuk-hint">{{ i18n.enterRegisteredOfficeAddressPage.titleHint2 }}</p>
+            <p class="govuk-hint">{{ i18n.enterRegisteredOfficeAddressPage.titleHint3 }}</p>
+            
+            <br>
+
+            {{ govukInput({
+              label: {
+                text: i18n.enterRegisteredOfficeAddressPage.propertyNameOrNumber,
+                classes: "govuk-!-margin-top-5"
+              },
+              hint: {
+                text: i18n.enterRegisteredOfficeAddressPage.propertyNameOrNumberHint
+              },
+              id: "premises",
+              name: "premises",
+              value: registeredOfficeAddress.premises,
+              attributes : {  
+                required : true,
+                maxLength: 50,
+                "data-event-id": "property-name-or-number"
+              }
+            }) }}
+
+            {{ govukInput({
+              label: {
+                text: i18n.enterRegisteredOfficeAddressPage.addressLine1
+              },
+              id: "address_line_1",
+              name: "address_line_1",
+              value: registeredOfficeAddress.address_line_1,
+              attributes : {
+                required : true,
+                maxLength: 50,
+                "data-event-id": "address-line-1"
+              }
+            }) }}
+
+            {{ govukInput({
+              label: {
+                text: i18n.enterRegisteredOfficeAddressPage.addressLine2
+              },
+              id: "address_line_2",
+              name: "address_line_2",
+              value: registeredOfficeAddress.address_line_2,
+              attributes : {
+                maxLength: 50,
+                "data-event-id": "address-line-2"
+              }
+            }) }}
+
+            {{ govukInput({
+              label: {
+                text: i18n.enterRegisteredOfficeAddressPage.townOrCity
+              },
+              classes: "govuk-!-width-two-thirds",
+              id: "locality",
+              name: "locality",
+              value: registeredOfficeAddress.locality,
+              attributes : {
+                required : true,
+                maxLength: 50,
+                "data-event-id": "town-or-city"
+              }
+            }) }}
+
+            {{ govukInput({
+              label: {
+                text: i18n.enterRegisteredOfficeAddressPage.county
+              },
+              classes: "govuk-!-width-two-thirds",
+              id: "region",
+              name: "region",
+              value: registeredOfficeAddress.region,
+              attributes : {
+                maxLength: 50,
+                "data-event-id": "county"
+              }
+            }) }}
+
+            {{ govukInput({
+              label: {
+                text: i18n.enterRegisteredOfficeAddressPage.postcode
+              },
+              classes: "govuk-input--width-10",
+              id: "postal_code",
+              name: "postal_code",
+              value: registeredOfficeAddress.postal_code,
+              attributes : {
+                required : true,
+                maxLength: 15,
+                "data-event-id": "postcode"
+              }
+            }) }}
+
+            {{ govukSelect({
+              id: "country",
+              name: "country",
+              value: registeredOfficeAddress.country,
+              label: {
+                text: i18n.enterRegisteredOfficeAddressPage.country
+              },
+              fieldset: {
+                legend: {
+                  text: "Country",
+                  isPageHeading: false,
+                  classes: "govuk-!-font-weight-regular"
+                }
+              },
+              attributes : {
+                required: "true",
+                "data-event-id": "country"
+              },
+              items: [
+                {
+                  value: "",
+                  text: i18n.enterRegisteredOfficeAddressPage.countrySelect
+                },
+                {
+                  value: "england",
+                  text: i18n.enterRegisteredOfficeAddressPage.countryEngland
+                },
+                {
+                  value: "scotland",
+                  text: i18n.enterRegisteredOfficeAddressPage.countryScotland
+                },
+                {
+                  value: "wales",
+                  text: i18n.enterRegisteredOfficeAddressPage.countryWales
+                },
+                {
+                  value: "northern-ireland",
+                  text: i18n.enterRegisteredOfficeAddressPage.countryNorthernIreland
+                }
+              ]
+            }) }}
+          </fieldset>
+
+          {{ govukInsetText({
+            html: "<h2 class='govuk-heading-m'>" + i18n.enterRegisteredOfficeAddressPage.publicInformationTitle + "</h2>
+              <p>" + i18n.enterRegisteredOfficeAddressPage.publicInformationLine1 + "</p>"
+          }) }}
+
+          {% include "includes/save-and-continue-button.njk" %}
+
+        </div>
+      </form>
+    </div>
+  </div>
+  
+{% endblock %}

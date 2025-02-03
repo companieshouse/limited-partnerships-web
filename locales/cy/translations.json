@@ -17,6 +17,11 @@
         "payment" : "WELSH - Continue to payment"
     },
 
+    "chooseRegisteredOfficeAddressPage" : {
+        "title": "WELSH - Choose the registered office address",
+        "addressLink": "WELSH - The address is not on the list"    
+   },
+
     "emailPage" : {
         "whatIsEmail" : "WELSH - What is the registered email address for the partnership?",
         "emailHint" : "WELSH - Partners must be able to access emails that are sent to this address.",
@@ -27,11 +32,27 @@
         }
     },
 
-    "chooseRegisteredOfficeAddressPage" : {
-         "title": "WELSH - Choose the registered office address",
-         "addressLink": "WELSH - The address is not on the list"
-        
-    },
+    "enterRegisteredOfficeAddressPage" : {
+        "title": "WELSH - What is the registered office address of the partnership?",
+        "titleHint1": "WELSH - We'll use this address to send official communications.",
+        "titleHint2": "WELSH - It must be a physical address in the jurisdiction where the partnership was formed. You cannot use a PO Box address.",
+        "titleHint3": "WELSH - It is not the principal place of business. You'll need to provide this later.",
+        "propertyNameOrNumber": "WELSH - Property name or number",
+        "propertyNameOrNumberHint": "WELSH - For example, 'The Mill', '116' or 'Flat 37a'",
+        "addressLine1": "WELSH - Address line 1",
+        "addressLine2": "WELSH - Address line 2 (optional)",
+        "townOrCity": "WELSH - Town or city",
+        "county": "WELSH - County (optional)",
+        "postcode": "WELSH - Postcode",
+        "country": "WELSH - Country",
+        "countrySelect": "WELSH - Select country",
+        "countryEngland": "WELSH - England",
+        "countryScotland": "WELSH - Scotland",
+        "countryWales": "WELSH - Wales",
+        "countryNorthernIreland": "WELSH - Northern Ireland",
+        "publicInformationTitle": "WELSH - What information we'll show on the public online register",
+        "publicInformationLine1": "WELSH - We'll show the registered office address on the public register."
+   },
 
     "errorPage" : {
         "title" : "WELSH - Sorry, the service is unavailable",

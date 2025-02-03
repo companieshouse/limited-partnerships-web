@@ -2,12 +2,14 @@ import request from "supertest";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
-import { CHOOSE_REGISTERED_OFFICE_ADDRESS_URL } from "presentation/controller/addressLookUp/url";
+import {
+  CHOOSE_REGISTERED_OFFICE_ADDRESS_URL,
+  CONFIRM_REGISTERED_OFFICE_ADDRESS_URL
+} from "presentation/controller/addressLookUp/url";
 import { getUrl, setLocalesEnabled } from "../../utils";
 import { appDevDependencies } from "config/dev-dependencies";
 import * as config from "config";
 import AddressPageType from "presentation/controller/addressLookUp/PageType";
-import { GENERAL_PARTNERS_URL } from "presentation/controller/registration/url";
 
 describe("Choose Registered Office Address Page", () => {
   const URL = getUrl(CHOOSE_REGISTERED_OFFICE_ADDRESS_URL);
@@ -105,19 +107,19 @@ describe("Choose Registered Office Address Page", () => {
         }`
       });
 
-      const redirectUrl = getUrl(GENERAL_PARTNERS_URL);
+      const redirectUrl = getUrl(CONFIRM_REGISTERED_OFFICE_ADDRESS_URL);
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
 
       const cache = appDevDependencies.cacheRepository.cache;
       expect(cache?.[`${config.APPLICATION_CACHE_KEY}`]).toHaveProperty(
-        `${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${AddressPageType.chooseRegisteredOfficeAddress}`,
+        `${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`,
         {
-          postcode: 'ST6 3LJ',
-          premise: '4',
-          addressLine1: 'DUNCALF STREET',
-          addressLine2: '',
-          postTown: 'STOKE-ON-TRENT',
+          postal_code: 'ST6 3LJ',
+          premises: '4',
+          address_line_1: 'DUNCALF STREET',
+          address_line_2: '',
+          locality: 'STOKE-ON-TRENT',
           country: 'GB-ENG'
         }
       );
