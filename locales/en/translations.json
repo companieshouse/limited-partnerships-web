@@ -91,7 +91,7 @@
             "nameEnding" : "Which name ending would you prefer to go on the public record?"
         },
 
-        "nameErrorMessage": "Enter a name for the partnership",
+        "nameErrorMessage": "Enter the name of the partnership",
         "nameEndingErrorMessage": "Select the name ending to go on the public record"
     },
 
