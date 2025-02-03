@@ -42,6 +42,12 @@
     ]
   }) }}
 
-  {% include "includes/save-and-continue-button.njk" %}
+  {{ govukButton({
+    text: i18n.buttons.saveAndContinue,
+    attributes: {
+      "id": "submit",
+      "onclick": "_paq.push(['trackEvent', 'Limited Partnerships jurisdiction', 'jurisdiction', document.querySelector('input[name=jurisdiction]:checked').nextElementSibling.innerHTML])"
+    }
+  }) }}
 
 </form>
