@@ -1,10 +1,15 @@
 import request from "supertest";
 import { createApiClient } from "@companieshouse/api-sdk-node";
 import { RefreshTokenService } from "@companieshouse/api-sdk-node/dist/services/refresh-token";
+import { NameEndingType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import appRealDependencies from "../../../../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { EMAIL_URL, WHAT_IS_YOUR_JURISDICTION_URL } from "../../../../controller/registration/url";
+import {
+  EMAIL_URL,
+  NAME_URL,
+  WHAT_IS_YOUR_JURISDICTION_URL
+} from "../../../../controller/registration/url";
 import RegistrationPageType from "../../../../controller/registration/PageType";
 import enTranslationText from "../../../../../../locales/en/translations.json";
 import sdkMock from "../../mock/sdkMock";
@@ -25,7 +30,35 @@ describe("Gateway Update - Refresh Token", () => {
     mockCreateApiClient.mockReturnValue(sdkMock);
   });
 
+  describe("Create transaction and the first submission", () => {
+    it("should create a transaction and the first submission", async () => {
+      const res = await request(appRealDependencies).post(NAME_URL).send({
+        pageType: RegistrationPageType.name,
+        partnership_name: "Test Limited Partnership",
+        name_ending: NameEndingType.LIMITED_PARTNERSHIP,
+        partnership_type: "LP"
+      });
+
+      const REDIRECT_URL = getUrl(EMAIL_URL);
+
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+    });
+  });
+
   describe("Update submission", () => {
+    it("should update the submission", async () => {
+      const res = await request(appRealDependencies).post(NAME_URL).send({
+        pageType: RegistrationPageType.email,
+        email: "test@email.com"
+      });
+
+      const REDIRECT_URL = getUrl(WHAT_IS_YOUR_JURISDICTION_URL);
+
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+    });
+
     describe("401", () => {
       it("should return an error after failing to refresh the token", async () => {
         mockCreateApiClient.mockReturnValue({
@@ -95,6 +128,31 @@ describe("Gateway Update - Refresh Token", () => {
     });
 
     describe("400", () => {
+      it("should return validation errors - name page", async () => {
+        mockCreateApiClient.mockReturnValue({
+          ...sdkMock,
+          limitedPartnershipsService: {
+            ...sdkMock.limitedPartnershipsService,
+            postLimitedPartnership: () => ({
+              httpStatusCode: 400,
+              resource: {
+                errors: {
+                  "data.partnershipName":
+                    "partnership_name must be less than 160"
+                }
+              }
+            })
+          }
+        });
+
+        const res = await request(appRealDependencies).post(NAME_URL).send({
+          pageType: RegistrationPageType.name
+        });
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain("partnership_name must be less than 160");
+      });
+
       it("should return validation errors - email page", async () => {
         mockCreateApiClient.mockReturnValue({
           ...sdkMock,

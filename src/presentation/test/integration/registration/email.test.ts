@@ -2,7 +2,10 @@ import request from "supertest";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
-import { EMAIL_URL, WHAT_IS_YOUR_JURISDICTION_URL } from "../../../controller/registration/url";
+import {
+  EMAIL_URL,
+  WHAT_IS_YOUR_JURISDICTION_URL
+} from "../../../controller/registration/url";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
@@ -34,7 +37,7 @@ describe("Email Page", () => {
       expect(res.text).not.toContain("WELSH -");
     });
 
-    it("should load the name page with Welsh text", async () => {
+    it("should load the email page with Welsh text", async () => {
       setLocalesEnabled(true);
       const res = await request(app).get(URL + "?lang=cy");
 
@@ -47,7 +50,7 @@ describe("Email Page", () => {
       expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
     });
 
-    it("should load the name page with data from api", async () => {
+    it("should load the email page with data from api", async () => {
       const limitedPartnership = new LimitedPartnershipBuilder().build();
 
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([

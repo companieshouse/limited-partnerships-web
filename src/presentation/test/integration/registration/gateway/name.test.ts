@@ -31,7 +31,7 @@ describe("Gateway Transaction - Incorporation - Partnership", () => {
 
   describe("Create transaction and the first submission", () => {
     it("should create a transaction and the first submission", async () => {
-      const res = await request(appRealDependencies).post(URL).send({
+      const res = await request(appRealDependencies).post(NAME_URL).send({
         pageType: RegistrationPageType.name,
         partnership_name: "Test Limited Partnership",
         name_ending: NameEndingType.LIMITED_PARTNERSHIP,
@@ -79,7 +79,7 @@ describe("Gateway Transaction - Incorporation - Partnership", () => {
           }
         });
 
-        const res = await request(appRealDependencies).post(URL).send({
+        const res = await request(appRealDependencies).post(NAME_URL).send({
           pageType: RegistrationPageType.name
         });
 
@@ -102,7 +102,7 @@ describe("Gateway Transaction - Incorporation - Partnership", () => {
         }
       });
 
-      const res = await request(appRealDependencies).post(URL).send({
+      const res = await request(appRealDependencies).post(NAME_URL).send({
         pageType: RegistrationPageType.name
       });
 

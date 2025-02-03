@@ -49,6 +49,11 @@ export const registrationEndpoints = (
     authentication,
     dependencies.registrationController.getPageRouting()
   );
+  router.post(
+    NAME_WITH_IDS_URL,
+    authentication,
+    dependencies.registrationController.sendPageData()
+  );
 
   router.get(
     GENERAL_PARTNERS_URL,
