@@ -14,9 +14,7 @@ abstract class AbstractController {
   protected getRouting(
     routing: PagesRouting,
     pageType: PageType,
-    currentUrl: string,
-    transactionId = "",
-    submissionId = ""
+    request: Request
   ) {
     let pageRouting = routing.get(pageType);
 
@@ -26,11 +24,11 @@ abstract class AbstractController {
 
     pageRouting = this.insertIdsInAllUrl(
       pageRouting,
-      transactionId,
-      submissionId
+      request.params[TRANSACTION_ID],
+      request.params[SUBMISSION_ID]
     );
 
-    pageRouting = this.addLangToUrls(currentUrl, pageRouting);
+    pageRouting = this.addLangToUrls(request.url, pageRouting);
 
     return pageRouting;
   }

@@ -6,11 +6,7 @@ import LimitedPartnershipService from "../../../application/service/LimitedPartn
 import registrationsRouting from "./Routing";
 import AbstractController from "../AbstractController";
 import RegistrationPageType from "./PageType";
-import {
-  APPLICATION_CACHE_KEY_PREFIX_REGISTRATION,
-  SUBMISSION_ID,
-  TRANSACTION_ID
-} from "../../../config/constants";
+import { APPLICATION_CACHE_KEY_PREFIX_REGISTRATION } from "../../../config/constants";
 import CacheService from "../../../application/service/CacheService";
 
 class RegistrationController extends AbstractController {
@@ -37,9 +33,7 @@ class RegistrationController extends AbstractController {
         const pageRouting = super.getRouting(
           registrationsRouting,
           pageType,
-          request.url,
-          transactionId,
-          submissionId
+          request
         );
 
         let limitedPartnership = {};
@@ -94,7 +88,7 @@ class RegistrationController extends AbstractController {
         const pageRouting = super.getRouting(
           registrationsRouting,
           pageType,
-          request.url
+          request
         );
 
         if (result.errors) {
@@ -145,9 +139,7 @@ class RegistrationController extends AbstractController {
         const registrationRouting = super.getRouting(
           registrationsRouting,
           type,
-          request.url,
-          request.params[TRANSACTION_ID],
-          request.params[SUBMISSION_ID]
+          request
         );
 
         const pageType = escape(request.body.pageType);
@@ -185,9 +177,7 @@ class RegistrationController extends AbstractController {
         const registrationRouting = super.getRouting(
           registrationsRouting,
           pageType,
-          request.url,
-          transactionId,
-          submissionId
+          request
         );
 
         if (result?.errors) {

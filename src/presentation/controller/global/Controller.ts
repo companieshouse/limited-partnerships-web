@@ -19,11 +19,11 @@ class GlobalController extends AbstractController {
         const pageRouting = super.getRouting(
           registrationsRouting,
           pageType,
-          request.url
+          request
         );
 
         response.render(super.templateName(pageRouting.currentUrl), {
-          props: pageRouting,
+          props: pageRouting
         });
       } catch (error) {
         next(error);
