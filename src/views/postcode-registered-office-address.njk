@@ -65,14 +65,14 @@
           }) }}
 
           <p>
-            <a href="{{ props.currentUrl | replace(props.pageType, props.data.enterRegisteredOfficeAddressPageType) }}" class="govuk-body-m govuk-link" onclick="_paq.push(['trackEvent', 'Limited Partnerships registered addess', 'manual-page-link', 'enter-address-manually']);">{{ i18n.officeAddress.enterAddressManually }}</a>
+            <a href="{{ props.currentUrl | replace(props.pageType, props.data.enterRegisteredOfficeAddressPageType) }}" class="govuk-body-m govuk-link" data-event-id="enter-address-manually">{{ i18n.officeAddress.enterAddressManually }}</a>
           <p>
 
           {{ govukButton({
             text: i18n.officeAddress.findAddress,
             attributes: {
               "id": "submit",
-              "onclick": "_paq.push(['trackEvent', 'Limited Partnerships registered addess', 'find-addess', 'submit']);"
+              "onclick": "_paq.push(['trackEvent', 'Limited Partnerships registered office address', 'find-office-address', 'submit']);"
             }
           }) }}
       </div>
