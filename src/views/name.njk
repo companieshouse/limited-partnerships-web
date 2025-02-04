@@ -77,7 +77,10 @@
       </div>
 
       {{ govukInsetText({
-        html: '<p>' + i18n.namePage.existingPartnershipHint | escape + '</p><p>' + i18n.namePage.sensitiveWordHint | escape + '</p><p>' + i18n.namePage.existingTrademarkHint | escape + '</p>'
+        html: '<p>' + i18n.namePage.existingPartnershipHintStart | escape + ' <a href="' + i18n.namePage.existingPartnershipHintUrl | escape + '" target="_blank">' + i18n.namePage.existingPartnershipHintUrlName | escape + '</a>. ' + i18n.namePage.existingPartnershipHintEnd | escape
+          + '</p><p>' + i18n.namePage.sensitiveWordHintStart | escape + ' <a href="' + i18n.namePage.sensitiveWordHintUrl | escape + '" target="_blank">' + i18n.namePage.sensitiveWordHintUrlName | escape + '</a>, ' + i18n.namePage.sensitiveWordHintEnd | escape
+          + '</p><p>' + i18n.namePage.existingTrademarkHintStart | escape + ' <a href="' + i18n.namePage.existingTrademarkHintUrl | escape + '" target="_blank">' + i18n.namePage.existingTrademarkHintUrlName | escape + '</a> ' + i18n.namePage.existingTrademarkHintEnd | escape
+          + '</p>'
       }) }}
 
       <div class="govuk-form-group">

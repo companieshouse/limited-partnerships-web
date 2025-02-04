@@ -16,7 +16,12 @@ export const getUrl = (url: string) =>
   );
 
 const singleQuoteToHtml = (input: string) => {
-  return input.replace(/'/g, "&#39;");
+  return input
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 };
 
 export const testTranslations = (
