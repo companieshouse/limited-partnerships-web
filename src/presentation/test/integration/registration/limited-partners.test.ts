@@ -21,6 +21,9 @@ describe("Limited Partners Page", () => {
     const res = await request(app).get(URL + "?lang=cy");
 
     expect(res.status).toBe(200);
+    expect(res.text).toContain(
+      `${cyTranslationText.limitedPartnersPage.title} - ${cyTranslationText.service} - GOV.UK`
+    );
     testTranslations(res.text, cyTranslationText.limitedPartnersPage);
   });
 
@@ -29,6 +32,9 @@ describe("Limited Partners Page", () => {
     const res = await request(app).get(URL + "?lang=en");
 
     expect(res.status).toBe(200);
+    expect(res.text).toContain(
+      `${enTranslationText.limitedPartnersPage.title} - ${enTranslationText.service} - GOV.UK`
+    );
     testTranslations(res.text, enTranslationText.limitedPartnersPage);
   });
 

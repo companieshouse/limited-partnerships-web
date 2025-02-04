@@ -67,9 +67,6 @@ describe("Name Page", () => {
         `${enTranslationText.namePage.title} - ${enTranslationText.service} - GOV.UK`
       );
       testTranslations(res.text, enTranslationText.namePage, ["privateFund", "scottish"]);
-      // expect(res.text).toContain(enTranslationText.namePage.title);
-      // expect(res.text).toContain(enTranslationText.namePage.whatIsName);
-      // expect(res.text).toContain(enTranslationText.namePage.nameEnding);
       expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
       expect(res.text).not.toContain("WELSH -");
     });

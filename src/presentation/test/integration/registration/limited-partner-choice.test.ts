@@ -33,6 +33,9 @@ describe("Limited Partner Choice Page", () => {
     const res = await request(app).get(URL + "?lang=cy");
 
     expect(res.status).toBe(200);
+    expect(res.text).toContain(
+      `${cyTranslationText.limitedPartnerChoicePage.isPersonOrLegalEntity} - ${cyTranslationText.service} - GOV.UK`
+    );
     testTranslations(res.text, cyTranslationText.limitedPartnerChoicePage);
   });
 
@@ -41,6 +44,9 @@ describe("Limited Partner Choice Page", () => {
     const res = await request(app).get(URL + "?lang=en");
 
     expect(res.status).toBe(200);
+    expect(res.text).toContain(
+      `${enTranslationText.limitedPartnerChoicePage.isPersonOrLegalEntity} - ${enTranslationText.service} - GOV.UK`
+    );
     testTranslations(res.text, enTranslationText.limitedPartnerChoicePage);
   });
 

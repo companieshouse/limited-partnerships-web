@@ -46,6 +46,9 @@ describe("Postcode Registered Office Address Page", () => {
       const res = await request(app).get(URL + "?lang=en");
 
       expect(res.status).toBe(200);
+      expect(res.text).toContain(
+        `${enTranslationText.officeAddress.whatIsOfficeAddress} - ${enTranslationText.service} - GOV.UK`
+      );
       testTranslations(res.text, enTranslationText.officeAddress, ["scotland"]);
       expect(res.text).not.toContain("WELSH -");
     });
@@ -55,6 +58,9 @@ describe("Postcode Registered Office Address Page", () => {
       const res = await request(app).get(URL + "?lang=cy");
 
       expect(res.status).toBe(200);
+      expect(res.text).toContain(
+        `${cyTranslationText.officeAddress.whatIsOfficeAddress} - ${cyTranslationText.service} - GOV.UK`
+      );
       testTranslations(res.text, cyTranslationText.officeAddress, ["scotland"]);
     });
   });
