@@ -15,7 +15,7 @@ export const getUrl = (url: string) =>
     appDevDependencies.limitedPartnershipGateway.submissionId
   );
 
-const singleQuoteToHtml = (input: string) => {
+const toEscapedHtml = (input: string) => {
   return input
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
@@ -39,7 +39,7 @@ export const testTranslations = (
       continue;
     }
 
-    const str = singleQuoteToHtml(translations[key]);
+    const str = toEscapedHtml(translations[key]);
 
     expect(text).toContain(str);
   }
