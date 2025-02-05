@@ -5,24 +5,40 @@
   {% set postTown = '' %}
 
   {% if address.premise %}
-    {% set premise = address.premise | capitalize + ' ' %}
+    {% set premise = capitalizeEachWord(address.premise).trim() + ' ' %}
   {% endif %}
 
   {% if address.addressLine1 %} 
-    {% set addressLine1 = address.addressLine1 | capitalize + ', ' %} 
+    {% set addressLine1 = capitalizeEachWord(address.addressLine1).trim() + ', ' %} 
   {% endif %}
 
   {% if address.addressLine2 %} 
-    {% set addressLine2 = address.addressLine2 | capitalize + ', ' %} 
+    {% set addressLine2 = capitalizeEachWord(address.addressLine2).trim() + ', ' %} 
   {% endif %}
 
   {% if address.postTown %} 
-    {% set postTown = address.postTown | capitalize + ', ' %} 
+    {% set postTown = capitalizeEachWord(address.postTown).trim() + ', ' %} 
   {% endif %}
 
   {% set address = premise + addressLine1 + addressLine2 + postTown + address.postcode %}
 
   {{ address }}
+{% endmacro %}
+
+{% macro capitalizeEachWord(str) %}
+  {% set words = str.split(' ') %}
+  {% set capitalizedWords = [] %}
+  {% for word in words %}
+    {% set subwords = word.split('-') %}
+    {% set capitalizedSubwords = [] %}
+    {% for subword in subwords %}
+      {% set capitalizedSubword = subword | capitalize %}
+      {% set capitalizedSubwords = capitalizedSubwords.concat(capitalizedSubword) %}
+    {% endfor %}
+    {% set capitalizedWord = capitalizedSubwords.join('-') %}
+    {% set capitalizedWords = capitalizedWords.concat(capitalizedWord) %}
+  {% endfor %}
+  {{ capitalizedWords.join(' ') }}
 {% endmacro %}
 
 {% macro htmlInputErrorMessage(message) %}

@@ -10,6 +10,7 @@ import CacheService from "../../../application/service/CacheService";
 import { APPLICATION_CACHE_KEY_PREFIX_REGISTRATION } from "../../../config/constants";
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import { UKAddress } from "@companieshouse/api-sdk-node/dist/services/postcode-lookup";
+import UIErrors from "../../../domain/entities/UIErrors";
 
 class AddressLookUpController extends AbstractController {
   public readonly REGISTERED_OFFICE_ADDRESS_CACHE_KEY =
@@ -85,20 +86,9 @@ class AddressLookUpController extends AbstractController {
   postcodeValidation(): RequestHandler {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
-        const session = request.session as Session;
         const tokens = super.extractTokens(request);
         const { transactionId, submissionId } = super.extractIds(request);
-        const pageType = super.extractPageTypeOrThrowError(
-          request,
-          AddressLookUpPageType
-        );
         const { postal_code, premise } = request.body;
-
-        const pageRouting = super.getRouting(
-          addressLookUpRouting,
-          pageType,
-          request
-        );
 
         const limitedPartnership =
           await this.limitedPartnershipService.getLimitedPartnership(
@@ -116,23 +106,11 @@ class AddressLookUpController extends AbstractController {
           );
 
         if (errors?.errors) {
-          pageRouting.errors = errors?.errors;
-          pageRouting.data = {
-            ...pageRouting.data,
-            limitedPartnership
-          };
-
-          response.render(super.templateName(pageRouting.currentUrl), {
-            props: { ...pageRouting }
-          });
+          this.renderErrors(request, response, errors, { limitedPartnership });
           return;
         }
 
-        await this.cacheService.addDataToCache(session, {
-          [this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY]: address
-        });
-
-        response.redirect(pageRouting.nextUrl);
+        this.cacheAddressAndRedirectToNextPage(request, response, address);
       } catch (error) {
         next(error);
       }
@@ -154,7 +132,7 @@ class AddressLookUpController extends AbstractController {
           premises: selectedAddress.premise
         };
 
-        await this.saveAndRedirectToNextPage(request, response, address);
+        await this.cacheAddressAndRedirectToNextPage(request, response, address);
       } catch (error) {
         next(error);
       }
@@ -183,19 +161,42 @@ class AddressLookUpController extends AbstractController {
           region
         };
 
-        await this.saveAndRedirectToNextPage(request, response, address);
+        await this.cacheAddressAndRedirectToNextPage(request, response, address);
       } catch (error) {
         next(error);
       }
     };
   }
 
-  private async saveAndRedirectToNextPage(
-    request: Request,
-    response: Response<any, Record<string, any>>,
-    dataToStore: any
-  ) {
-    const session = request.session as Session;
+  confirmAddress(): RequestHandler {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const session = request.session as Session;
+
+        const cache = await this.cacheService.getDataFromCache(session);
+
+        const address = cache[this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY];
+
+        if (!address) {
+          const uiErrors = new UIErrors();
+          uiErrors.formatValidationErrorToUiErrors({
+            errors: {
+              address: "You must provide an address"
+            }
+          });
+
+          this.renderErrors(request, response, uiErrors);
+          return;
+        }
+
+        this.redirectToNextPage(request, response);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  private renderErrors(request, response: Response<any, Record<string, any>>, uiErrors: UIErrors, data?: any) {
     const pageType = super.extractPageTypeOrThrowError(
       request,
       AddressLookUpPageType
@@ -207,11 +208,46 @@ class AddressLookUpController extends AbstractController {
       request
     );
 
+    pageRouting.errors = uiErrors.errors;
+    pageRouting.data = {
+      ...pageRouting.data,
+      ...data
+    };
+
+    response.render(super.templateName(pageRouting.currentUrl), {
+      props: { ...pageRouting }
+    });
+  }
+
+  private async cacheAddressAndRedirectToNextPage(
+    request: Request,
+    response: Response<any, Record<string, any>>,
+    dataToStore: any
+  ) {
+    const session = request.session as Session;
     const cacheKey = this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY;
 
     await this.cacheService.addDataToCache(session, {
       [cacheKey]: dataToStore
     });
+
+    this.redirectToNextPage(request, response);
+  }
+
+  private redirectToNextPage(
+    request: Request,
+    response: Response<any, Record<string, any>>
+  ) {
+    const pageType = super.extractPageTypeOrThrowError(
+      request,
+      AddressLookUpPageType
+    );
+
+    const pageRouting = super.getRouting(
+      addressLookUpRouting,
+      pageType,
+      request
+    );
 
     response.redirect(pageRouting.nextUrl);
   }

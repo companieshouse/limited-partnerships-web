@@ -8,3 +8,5 @@ export const ENTER_REGISTERED_OFFICE_ADDRESS_TEMPLATE =
   AddressPageType.enterRegisteredOfficeAddress;
 export const CONFIRM_REGISTERED_OFFICE_ADDRESS_TEMPLATE =
   AddressPageType.confirmRegisteredOfficeAddress;
+export const POSTCODE_PRINCIPLE_PLACE_OF_BUSINESS_TEMPLATE =
+  AddressPageType.postcodePrinciplePlaceOfBusiness;
