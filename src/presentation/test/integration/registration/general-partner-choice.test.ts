@@ -13,7 +13,7 @@ import {
   APPLICATION_CACHE_KEY_PREFIX_REGISTRATION
 } from "../../../../config/constants";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
-import { getUrl, setLocalesEnabled } from "../../utils";
+import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 
 describe("General Partner Choice Page", () => {
   const URL = getUrl(GENERAL_PARTNER_CHOICE_URL);
@@ -35,9 +35,7 @@ describe("General Partner Choice Page", () => {
     expect(res.text).toContain(
       `${cyTranslationText.generalPartnerChoicePage.title} - ${cyTranslationText.service} - GOV.UK`
     );
-    expect(res.text).toContain(
-      cyTranslationText.generalPartnerChoicePage.title
-    );
+    testTranslations(res.text, cyTranslationText.generalPartnerChoicePage);
   });
 
   it("should load the general partner choice page with English text", async () => {
@@ -48,9 +46,8 @@ describe("General Partner Choice Page", () => {
     expect(res.text).toContain(
       `${enTranslationText.generalPartnerChoicePage.title} - ${enTranslationText.service} - GOV.UK`
     );
-    expect(res.text).toContain(
-      enTranslationText.generalPartnerChoicePage.title
-    );
+    testTranslations(res.text, enTranslationText.generalPartnerChoicePage);
+
   });
 
   it("should redirect to next page when choice is selected", async () => {

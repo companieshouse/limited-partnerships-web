@@ -10,7 +10,7 @@ import { appDevDependencies } from "../../../../config/dev-dependencies";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { ApiErrors } from "../../../../domain/entities/UIErrors";
-import { getUrl, setLocalesEnabled } from "../../utils";
+import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 
 describe("Email Page", () => {
   const URL = getUrl(EMAIL_URL);
@@ -28,12 +28,10 @@ describe("Email Page", () => {
       const res = await request(app).get(URL + "?lang=en");
 
       expect(res.status).toBe(200);
+      testTranslations(res.text, enTranslationText.emailPage);
       expect(res.text).toContain(
         `${enTranslationText.emailPage.whatIsEmail} - ${enTranslationText.service} - GOV.UK`
       );
-      expect(res.text).toContain(enTranslationText.emailPage.whatIsEmail);
-      expect(res.text).toContain(enTranslationText.emailPage.emailHint);
-      expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
       expect(res.text).not.toContain("WELSH -");
     });
 
@@ -45,8 +43,7 @@ describe("Email Page", () => {
       expect(res.text).toContain(
         `${cyTranslationText.emailPage.whatIsEmail} - ${cyTranslationText.service} - GOV.UK`
       );
-      expect(res.text).toContain(cyTranslationText.emailPage.whatIsEmail);
-      expect(res.text).toContain(cyTranslationText.emailPage.emailHint);
+      testTranslations(res.text, cyTranslationText.emailPage);
       expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
     });
 
