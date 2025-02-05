@@ -17,10 +17,14 @@
         "payment" : "Continue to payment"
     },
 
+    "choosePrincipalPlaceOfBusinessAddressPage" : {
+        "title": "Choose the principal place of business"
+    },
+
     "chooseRegisteredOfficeAddressPage" : {
         "title": "Choose the registered office address",
         "addressLink": "The address is not on the list"
-   },
+    },
 
     "emailPage" : {
         "whatIsEmail" : "What is the registered email address for the partnership?",
