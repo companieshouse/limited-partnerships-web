@@ -174,13 +174,7 @@
               <p>" + i18n.enterRegisteredOfficeAddressPage.publicInformationLine1 + "</p>"
           }) }}
 
-          {{ govukButton({
-            text: i18n.buttons.saveAndContinue,
-            attributes: {
-              "id": "submit",
-              "data-event-id": "manual-address-save-and-continue"
-            }
-          }) }}  
+          {% include "includes/save-and-continue-button.njk" %}
 
         </div>
       </form>
