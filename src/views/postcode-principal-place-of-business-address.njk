@@ -1,0 +1,38 @@
+{% extends "layout.njk" %}
+
+{% set pageTitle = i18n.address.findPostcode.principalPlaceOfBusiness.whatIsPrincipalPlaceOfBusiness %}
+
+{% set postalCodeErrorMessage = null %}
+
+{% if props.errors.errorList.length > 0 %}
+  {% for el in props.errors.errorList %}
+    {% if el.href === "#postal_code" %}
+      {% set postalCodeErrorMessage = { text: el.text } %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      {% include "includes/errors.njk" %}
+
+      <div>
+        {% include "includes/proposed-name.njk" %}
+
+        <h1 class="govuk-heading-xl">{{ i18n.address.findPostcode.principalPlaceOfBusiness.whatIsPrincipalPlaceOfBusiness }}</h1>
+        <p class="govuk-hint">{{ i18n.address.findPostcode.principalPlaceOfBusiness.runningOfBusiness }}</p>
+        <p class="govuk-hint">{{ i18n.address.findPostcode.principalPlaceOfBusiness.jurisdiction }}</p>
+      </div>
+
+      {% include "pages/address/postcode-form.njk" %}
+
+    <div>
+      {{ govukInsetText({
+        html: "<h2 class='govuk-heading-m'>" + i18n.address.findPostcode.principalPlaceOfBusiness.publicRegisterTitle | escape + "</h2> <p>" + i18n.address.findPostcode.principalPlaceOfBusiness.publicRegisterLine1 | escape + "</p>"
+      }) }}
+    </div>
+  </div>
+
+{% endblock %}
