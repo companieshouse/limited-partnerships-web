@@ -4,7 +4,7 @@ import { NameEndingType } from "@companieshouse/api-sdk-node/dist/services/limit
 
 import appRealDependencies from "../../../../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { EMAIL_URL, NAME_URL, WHAT_IS_YOUR_JURISDICTION_URL } from "../../../../controller/registration/url";
+import { EMAIL_URL, NAME_URL, WHERE_IS_THE_JURISDICTION_URL } from "../../../../controller/registration/url";
 import RegistrationPageType from "../../../../controller/registration/PageType";
 import sdkMock, {
   postLimitedPartnership,
@@ -56,7 +56,7 @@ describe("Gateway Transaction - Incorporation - Partnership", () => {
         email: "test@email.com"
       });
 
-      const REDIRECT_URL = getUrl(WHAT_IS_YOUR_JURISDICTION_URL);
+      const REDIRECT_URL = getUrl(WHERE_IS_THE_JURISDICTION_URL);
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);

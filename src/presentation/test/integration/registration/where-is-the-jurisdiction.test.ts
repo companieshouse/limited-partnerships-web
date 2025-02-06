@@ -9,13 +9,13 @@ import app from "../app";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import {
-  WHAT_IS_YOUR_JURISDICTION_URL
+  WHERE_IS_THE_JURISDICTION_URL
 } from "../../../controller/registration/url";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 
-describe("Which jurisdiction page", () => {
+describe("Where is the jurisdiction page", () => {
 
-  const URL = getUrl(WHAT_IS_YOUR_JURISDICTION_URL);
+  const URL = getUrl(WHERE_IS_THE_JURISDICTION_URL);
 
   beforeEach(() => {
     setLocalesEnabled(false);
@@ -35,9 +35,9 @@ describe("Which jurisdiction page", () => {
     const res = await request(app).get(URL + "?lang=en");
 
     expect(res.status).toBe(200);
-    testTranslations(res.text, enTranslationText.whatIsYourJurisdiction, ["scotland"]);
+    testTranslations(res.text, enTranslationText.whereIsTheJurisdiction, ["scotland"]);
     expect(res.text).toContain(
-      `${enTranslationText.whatIsYourJurisdiction.title} - ${enTranslationText.service} - GOV.UK`
+      `${enTranslationText.whereIsTheJurisdiction.title} - ${enTranslationText.service} - GOV.UK`
     );
     expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
   });
@@ -57,9 +57,9 @@ describe("Which jurisdiction page", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
-      `${cyTranslationText.whatIsYourJurisdiction.title} - ${cyTranslationText.service} - GOV.UK`
+      `${cyTranslationText.whereIsTheJurisdiction.title} - ${cyTranslationText.service} - GOV.UK`
     );
-    testTranslations(res.text, cyTranslationText.whatIsYourJurisdiction, ["scotland"]);
+    testTranslations(res.text, cyTranslationText.whereIsTheJurisdiction, ["scotland"]);
     expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
   });
 
@@ -78,9 +78,9 @@ describe("Which jurisdiction page", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
-      `${enTranslationText.whatIsYourJurisdiction.title} - ${enTranslationText.service} - GOV.UK`
+      `${enTranslationText.whereIsTheJurisdiction.title} - ${enTranslationText.service} - GOV.UK`
     );
-    testTranslations(res.text, enTranslationText.whatIsYourJurisdiction, ["scotland"]);
+    testTranslations(res.text, enTranslationText.whereIsTheJurisdiction, ["scotland"]);
     expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
   });
 
@@ -99,9 +99,9 @@ describe("Which jurisdiction page", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
-      `${cyTranslationText.whatIsYourJurisdiction.title} - ${cyTranslationText.service} - GOV.UK`
+      `${cyTranslationText.whereIsTheJurisdiction.title} - ${cyTranslationText.service} - GOV.UK`
     );
-    testTranslations(res.text, cyTranslationText.whatIsYourJurisdiction, ["scotland"]);
+    testTranslations(res.text, cyTranslationText.whereIsTheJurisdiction, ["scotland"]);
     expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
   });
 
@@ -120,10 +120,10 @@ describe("Which jurisdiction page", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
-      `${enTranslationText.whatIsYourJurisdiction.title} - ${enTranslationText.service} - GOV.UK`
+      `${enTranslationText.whereIsTheJurisdiction.title} - ${enTranslationText.service} - GOV.UK`
     );
-    testTranslations(res.text, enTranslationText.whatIsYourJurisdiction.scotland);
-    expect(res.text).toContain(enTranslationText.whatIsYourJurisdiction.title);
+    testTranslations(res.text, enTranslationText.whereIsTheJurisdiction.scotland);
+    expect(res.text).toContain(enTranslationText.whereIsTheJurisdiction.title);
     expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
   });
 
@@ -142,10 +142,10 @@ describe("Which jurisdiction page", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
-      `${enTranslationText.whatIsYourJurisdiction.title} - ${enTranslationText.service} - GOV.UK`
+      `${enTranslationText.whereIsTheJurisdiction.title} - ${enTranslationText.service} - GOV.UK`
     );
-    expect(res.text).toContain(enTranslationText.whatIsYourJurisdiction.title);
-    testTranslations(res.text, enTranslationText.whatIsYourJurisdiction.scotland);
+    expect(res.text).toContain(enTranslationText.whereIsTheJurisdiction.title);
+    testTranslations(res.text, enTranslationText.whereIsTheJurisdiction.scotland);
     expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
   });
 });

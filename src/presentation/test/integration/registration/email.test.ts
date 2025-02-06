@@ -4,7 +4,7 @@ import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
 import {
   EMAIL_URL,
-  WHAT_IS_YOUR_JURISDICTION_URL
+  WHERE_IS_THE_JURISDICTION_URL
 } from "../../../controller/registration/url";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import RegistrationPageType from "../../../controller/registration/PageType";
@@ -14,7 +14,7 @@ import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 
 describe("Email Page", () => {
   const URL = getUrl(EMAIL_URL);
-  const REDIRECT_URL = getUrl(WHAT_IS_YOUR_JURISDICTION_URL);
+  const REDIRECT_URL = getUrl(WHERE_IS_THE_JURISDICTION_URL);
 
   beforeEach(() => {
     setLocalesEnabled(false);
