@@ -8,7 +8,7 @@ import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import {
   EMAIL_URL,
   NAME_URL,
-  WHAT_IS_YOUR_JURISDICTION_URL
+  WHERE_IS_THE_JURISDICTION_URL
 } from "../../../../controller/registration/url";
 import RegistrationPageType from "../../../../controller/registration/PageType";
 import enTranslationText from "../../../../../../locales/en/translations.json";
@@ -53,7 +53,7 @@ describe("Gateway Update - Refresh Token", () => {
         email: "test@email.com"
       });
 
-      const REDIRECT_URL = getUrl(WHAT_IS_YOUR_JURISDICTION_URL);
+      const REDIRECT_URL = getUrl(WHERE_IS_THE_JURISDICTION_URL);
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
@@ -120,7 +120,7 @@ describe("Gateway Update - Refresh Token", () => {
 
         expect(refreshToken).toHaveBeenCalled();
 
-        const REDIRECT_URL = getUrl(WHAT_IS_YOUR_JURISDICTION_URL);
+        const REDIRECT_URL = getUrl(WHERE_IS_THE_JURISDICTION_URL);
 
         expect(res.status).toBe(302);
         expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);

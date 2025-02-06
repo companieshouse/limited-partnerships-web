@@ -2,7 +2,11 @@
 
 {% set partnershipType = props.data.limitedPartnership.data.partnership_type %}
 
-{% set pageTitle = i18n.whatIsYourJurisdiction.title %}
+{% if partnershipType == "SLP" or partnershipType == "SPFLP" %}
+  {% set pageTitle = i18n.whereIsTheJurisdiction.scotland.title %}
+{% else %}
+  {% set pageTitle = i18n.whereIsTheJurisdiction.title %}
+{% endif %}
 
 {% block content %}
   <div class="govuk-grid-row">
