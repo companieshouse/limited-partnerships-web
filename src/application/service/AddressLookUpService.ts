@@ -86,8 +86,6 @@ class AddressLookUpService {
     if (!this.isJurisdictionAndCountryCombinationAllowed(jurisdiction, country, uiErrors)) {
       return uiErrors;
     }
-
-    return;
   }
 
   async getAddressListForPostcode(
