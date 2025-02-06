@@ -3,7 +3,10 @@ import { PageRouting, PagesRouting } from "../PageRouting";
 import RegistrationPageType from "./PageType";
 import PageType from "../PageType";
 import * as url from "./url";
-import { CHOOSE_REGISTERED_OFFICE_ADDRESS_URL, POSTCODE_REGISTERED_OFFICE_ADDRESS_URL } from "../addressLookUp/url";
+import {
+  POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+  POSTCODE_REGISTERED_OFFICE_ADDRESS_URL
+} from "../addressLookUp/url";
 
 const registrationRoutingPartnershipType = {
   previousUrl: url.START_URL,
@@ -22,21 +25,23 @@ const registrationRoutingName = {
 const registrationRoutingEmail = {
   previousUrl: url.NAME_WITH_IDS_URL,
   currentUrl: url.EMAIL_URL,
-  nextUrl: url.WHAT_IS_YOUR_JURISDICTION_URL,
+  nextUrl: url.WHERE_IS_THE_JURISDICTION_URL,
   pageType: RegistrationPageType.email
 };
 
 const registrationRoutingJurisdiction = {
   previousUrl: url.EMAIL_URL,
-  currentUrl: url.WHAT_IS_YOUR_JURISDICTION_URL,
+  currentUrl: url.WHERE_IS_THE_JURISDICTION_URL,
   nextUrl: POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
-  pageType: RegistrationPageType.whatIsYourJurisdiction
+  pageType: RegistrationPageType.whereIsTheJurisdiction
 };
 
-// address look-up
+// registered office address
+
+// principal place of business
 
 const registrationRoutingGeneralPartners = {
-  previousUrl: CHOOSE_REGISTERED_OFFICE_ADDRESS_URL,
+  previousUrl: POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   currentUrl: url.GENERAL_PARTNERS_URL,
   nextUrl: url.GENERAL_PARTNER_CHOICE_URL,
   pageType: RegistrationPageType.generalPartners
@@ -67,7 +72,7 @@ export const registrationRoutingCheckYourAnswers = {
   previousUrl: url.LIMITED_PARTNER_CHOICE_URL,
   currentUrl: url.CHECK_YOUR_ANSWERS_URL,
   nextUrl: url.NEXT_URL,
-  pageType: RegistrationPageType.checkYourAnswers,
+  pageType: RegistrationPageType.checkYourAnswers
 };
 
 const registrationRoutingNext = {

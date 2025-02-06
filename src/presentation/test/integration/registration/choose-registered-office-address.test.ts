@@ -20,11 +20,11 @@ describe("Choose Registered Office Address Page", () => {
     appDevDependencies.cacheRepository.feedCache({
       [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`]:
         {
-          postcode: "ST6 3LJ",
-          premise: "",
-          addressLine1: "",
-          addressLine2: "",
-          postTown: "",
+          postal_code: "ST6 3LJ",
+          premises: "",
+          address_line_1: "",
+          address_line_2: "",
+          locality: "",
           country: ""
         }
     });
@@ -37,7 +37,10 @@ describe("Choose Registered Office Address Page", () => {
       const res = await request(app).get(URL + "?lang=en");
 
       expect(res.status).toBe(200);
-      testTranslations(res.text, enTranslationText.chooseRegisteredOfficeAddressPage);
+      testTranslations(
+        res.text,
+        enTranslationText.chooseRegisteredOfficeAddressPage
+      );
       expect(res.text).not.toContain("WELSH -");
     });
 
@@ -47,7 +50,10 @@ describe("Choose Registered Office Address Page", () => {
       const res = await request(app).get(URL + "?lang=cy");
 
       expect(res.status).toBe(200);
-      testTranslations(res.text, cyTranslationText.chooseRegisteredOfficeAddressPage);
+      testTranslations(
+        res.text,
+        cyTranslationText.chooseRegisteredOfficeAddressPage
+      );
     });
 
     it("should populate the address list", async () => {
@@ -73,19 +79,20 @@ describe("Choose Registered Office Address Page", () => {
   });
 
   describe("POST Choose Registered Office Address Page", () => {
-
     it("should redirect to the next page and add select address to cache", async () => {
-      const res = await request(app).post(URL).send({
-        pageType: AddressPageType.chooseRegisteredOfficeAddress,
-        selected_address: `{
-          "postcode": "ST6 3LJ",
-          "premise": "4",
-          "addressLine1": "DUNCALF STREET",
-          "addressLine2": "",
-          "postTown": "STOKE-ON-TRENT",
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: AddressPageType.chooseRegisteredOfficeAddress,
+          selected_address: `{
+          "postal_code": "ST6 3LJ",
+          "premises": "4",
+          "address_line_1": "DUNCALF STREET",
+          "address_line_2": "",
+          "locality": "STOKE-ON-TRENT",
           "country": "GB-ENG"
         }`
-      });
+        });
 
       const redirectUrl = getUrl(CONFIRM_REGISTERED_OFFICE_ADDRESS_URL);
       expect(res.status).toBe(302);
@@ -95,12 +102,12 @@ describe("Choose Registered Office Address Page", () => {
       expect(cache?.[`${config.APPLICATION_CACHE_KEY}`]).toHaveProperty(
         `${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`,
         {
-          postal_code: 'ST6 3LJ',
-          premises: '4',
-          address_line_1: 'DUNCALF STREET',
-          address_line_2: '',
-          locality: 'STOKE-ON-TRENT',
-          country: 'GB-ENG'
+          postal_code: "ST6 3LJ",
+          premises: "4",
+          address_line_1: "DUNCALF STREET",
+          address_line_2: "",
+          locality: "STOKE-ON-TRENT",
+          country: "GB-ENG"
         }
       );
     });

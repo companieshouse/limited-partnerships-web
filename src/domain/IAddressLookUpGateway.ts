@@ -1,4 +1,4 @@
-import { UKAddress } from "@companieshouse/api-sdk-node/dist/services/postcode-lookup/types";
+import Address from "./entities/Address";
 
 interface IAddressLookUpGateway {
   isValidUKPostcode(
@@ -9,7 +9,7 @@ interface IAddressLookUpGateway {
   getListOfValidPostcodeAddresses(
     opt: { access_token: string; refresh_token: string },
     postcode: string
-  ): Promise<UKAddress[]>;
+  ): Promise<Address[]>;
 }
 
 export default IAddressLookUpGateway;

@@ -6,7 +6,7 @@ import { IDependencies } from "../config/IDependencies";
 
 import {
   EMAIL_URL,
-  WHAT_IS_YOUR_JURISDICTION_URL,
+  WHERE_IS_THE_JURISDICTION_URL,
   NAME_URL,
   NEXT_URL,
   WHICH_TYPE_URL,
@@ -73,12 +73,12 @@ export const registrationEndpoints = (
   );
 
   router.get(
-    WHAT_IS_YOUR_JURISDICTION_URL,
+    WHERE_IS_THE_JURISDICTION_URL,
     authentication,
     dependencies.registrationController.getPageRouting()
   );
   router.post(
-    WHAT_IS_YOUR_JURISDICTION_URL,
+    WHERE_IS_THE_JURISDICTION_URL,
     authentication,
     dependencies.registrationController.sendPageData()
   );

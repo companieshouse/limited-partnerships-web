@@ -1,26 +1,26 @@
 {% macro formatAddress(address) %}
-  {% set premise = '' %}
-  {% set addressLine1 = '' %}
-  {% set addressLine2 = '' %}
-  {% set postTown = '' %}
+  {% set premises = '' %}
+  {% set address_line_1 = '' %}
+  {% set address_line_2 = '' %}
+  {% set locality = '' %}
 
-  {% if address.premise %}
-    {% set premise = capitalizeEachWord(address.premise) + ' ' %}
+  {% if address.premises %}
+    {% set premises = capitalizeEachWord(address.premises) + ' ' %}
   {% endif %}
 
-  {% if address.addressLine1 %} 
-    {% set addressLine1 = capitalizeEachWord(address.addressLine1) + ', ' %} 
+  {% if address.address_line_1 %} 
+    {% set address_line_1 = capitalizeEachWord(address.address_line_1) + ', ' %} 
   {% endif %}
 
-  {% if address.addressLine2 %} 
-    {% set addressLine2 = capitalizeEachWord(address.addressLine2) + ', ' %} 
+  {% if address.address_line_2 %} 
+    {% set address_line_2 = capitalizeEachWord(address.address_line_2) + ', ' %} 
   {% endif %}
 
-  {% if address.postTown %} 
-    {% set postTown = capitalizeEachWord(address.postTown) + ', ' %} 
+  {% if address.locality %} 
+    {% set locality = capitalizeEachWord(address.locality) + ', ' %} 
   {% endif %}
 
-  {% set address = premise + addressLine1 + addressLine2 + postTown + address.postcode %}
+  {% set address = premises + address_line_1 + address_line_2 + locality + address.postal_code %}
 
   {{ address }}
 {% endmacro %}

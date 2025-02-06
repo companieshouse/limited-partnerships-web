@@ -1,4 +1,39 @@
 {
+    "address": {
+        "findPostcode": {
+            "registeredOfficeAddress": {
+
+                "whatIsOfficeAddress": "What is the registered office address of the partnership?",
+                "officialCommunication": "This is where official communications will be sent.",
+                "england": {
+                    "physicalAddress": "It must be a physical address in England, Wales or Northern Ireland. You cannot use a PO Box address.",
+                    "jurisdiction": "The partnership will be registered in the jurisdiction of this address (either England and Wales, or Northern Ireland)."
+                },
+                "scotland": {
+                    "physicalAddress": "It must be a physical address in Scotland. You cannot use a PO Box address.",
+                    "jurisdiction": "The partnership will be registered in the jurisdiction of this address (Scotland)."
+                },
+                "publicRegisterTitle": "What information we'll show on the public register",
+                "publicRegisterLine1": "We'll show the registered office address on the public register."
+            },
+
+            "principalPlaceOfBusiness": {
+                "whatIsPrincipalPlaceOfBusiness": "What is the principal place of business?",
+                "runningOfBusiness": "This is the address where the day to day running of the business takes place. It could be the same as the registered office address, or a different address.",
+                "jurisdiction": "It must be in the jurisdiction where the partnership was formed. It can be changed to an address outside of the jurisdiction after you've registered the partnership.",
+                "publicRegisterTitle": "What information we'll show on the public register",
+                "publicRegisterLine1": "We'll show the principal place of business on the public register."
+            },
+ 
+            "nameOrNumberHint": "Property name or number (optional)",
+            "postcodeHint": "Postcode",
+            "enterAddressManually": "Enter address manually",
+            "findAddress": "Find address",
+
+            "errorPostcode": "Enter a postcode"
+        }
+    },
+    
     "buttons" : {
         "continue" : "Continue",
         "saveAndContinue" : "Save and continue"
@@ -139,25 +174,6 @@
         "nameEndingErrorMessage": "Select the name ending to go on the public record"
     },
 
-    "officeAddress": {
-        "whatIsOfficeAddress": "What is the registered office address of the partnership?",
-        "officialCommunication": "This is where official communications will be sent.",
-        "england": {
-            "physicalAddress": "It must be a physical address in England, Wales or Northern Ireland. You cannot use a PO Box address.",
-            "jurisdiction": "The partnership will be registered in the jurisdiction of this address (either England and Wales, or Northern Ireland)."
-        },
-        "scotland": {
-            "physicalAddress": "It must be a physical address in Scotland. You cannot use a PO Box address.",
-            "jurisdiction": "The partnership will be registered in the jurisdiction of this address (Scotland)."
-        },
-        "nameOrNumberHint": "Property name or number (optional)",
-        "postcodeHint": "Postcode",
-        "enterAddressManually": "Enter address manually",
-        "publicRegisterTitle": "What information we'll show on the public register",
-        "publicRegisterLine1": "We'll show the registered office address on the public register.",
-        "findAddress": "Find address"
-    },
-
     "pageNotFound" : {
         "title" : "Page not found",
         "spelling" : "If you typed the web address, check it is spelled correctly.",
@@ -173,8 +189,8 @@
         "errorStartAddressMissing" : "Please enter an address"
     },
 
-    "whatIsYourJurisdiction" : {
-        "title" : "What is your jurisdiction?",
+    "whereIsTheJurisdiction" : {
+        "title" : "Where is the jurisdiction?",
         "whereIsJurisdiction" : "Where is the jurisdiction?",
         "options": {
             "EnglandWales" : "England and Wales",
@@ -182,7 +198,7 @@
         },
         "hint" : "This is where the partnership was formed. The registered office address and principal place of business will need to be in the same jurisdiction.", 
         "scotland": {
-            "heading" : "This partnership will be registered in Scotland",
+            "title" : "This partnership will be registered in Scotland",
             "information" : "This means the partnership's registered office address and principal place of business will need to be in Scotland. Select to continue, if this is correct.",
             "ifNotScotland" : "If these addresses are in England, Wales or Northern Ireland, you will need to go back to change the type of partnership you are registering."
         }

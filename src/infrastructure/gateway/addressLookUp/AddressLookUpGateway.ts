@@ -8,6 +8,8 @@ import {
   SDK_POSTCODE_LOOKUP_SERVICE
 } from "../../../config/constants";
 import { makeApiCallWithRetry } from "../api";
+import postcodeLookUpAddressToAddress from "./addressMapper";
+import { Address } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 class AddressLookUpGateway implements IAddressLookUpGateway {
   async isValidUKPostcode(
@@ -29,7 +31,7 @@ class AddressLookUpGateway implements IAddressLookUpGateway {
   async getListOfValidPostcodeAddresses(
     opt: { access_token: string; refresh_token: string },
     postalCode: string
-  ): Promise<UKAddress[]> {
+  ): Promise<Address[]> {
     const apiCall = {
       service: SDK_POSTCODE_LOOKUP_SERVICE,
       method: "getListOfValidPostcodeAddresses",
@@ -44,7 +46,9 @@ class AddressLookUpGateway implements IAddressLookUpGateway {
       apiCall
     );
 
-    return response?.resource ?? [];
+    const addresses = response?.resource ?? [];
+
+    return addresses.map(postcodeLookUpAddressToAddress);
   }
 
   private removeSpaceFromPostalCode(postalCode: string) {

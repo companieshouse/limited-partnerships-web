@@ -10,31 +10,32 @@
   {{ govukRadios({
     classes: "govuk-radios",
     name: "jurisdiction",
+    value: props.data.limitedPartnership.data.jurisdiction,
     fieldset: {
       legend: {
-        text: i18n.whatIsYourJurisdiction.whereIsJurisdiction,
+        text: i18n.whereIsTheJurisdiction.title,
         isPageHeading: true,
         classes: "govuk-fieldset__legend--xl"
       }
     },
     hint: {
-      text: i18n.whatIsYourJurisdiction.hint
+      text: i18n.whereIsTheJurisdiction.hint
     }, 
     items: [
       {
-        id: "jurisdiction",
+        id: "jurisdiction-england-wales",
         name: "jurisdiction",
         value: "England and Wales",
-        text: i18n.whatIsYourJurisdiction.options.EnglandWales,
+        text: i18n.whereIsTheJurisdiction.options.EnglandWales,
         attributes: {
           "required": true
         }
       },
       {
-        id: "jurisdiction",
+        id: "jurisdiction-northern-ireland",
         name: "jurisdiction",
         value: "Northern Ireland",
-        text: i18n.whatIsYourJurisdiction.options.NorthernIreland,
+        text: i18n.whereIsTheJurisdiction.options.NorthernIreland,
         attributes: {
           "required": true
         }
