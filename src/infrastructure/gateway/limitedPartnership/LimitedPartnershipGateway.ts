@@ -10,7 +10,6 @@ import RegistrationPageType from "../../../presentation/controller/registration/
 import ILimitedPartnershipGateway from "../../../domain/ILimitedPartnershipGateway";
 import LimitedPartnershipGatewayBuilder from "./LimitedPartnershipGatewayBuilder";
 import { SDK_LIMITED_PARTNERSHIP_SERVICE } from "../../../config/constants";
-import AddressPageType from "../../../presentation/controller/addressLookUp/PageType";
 
 class LimitedPartnershipGateway implements ILimitedPartnershipGateway {
   async createSubmission(
@@ -50,7 +49,7 @@ class LimitedPartnershipGateway implements ILimitedPartnershipGateway {
     opt: { access_token: string; refresh_token: string },
     transactionId: string,
     submissionId: string,
-    registrationType: RegistrationPageType | AddressPageType,
+    registrationType: RegistrationPageType,
     data: Record<string, any>
   ): Promise<void> {
     const limitedPartnershipBuilder = new LimitedPartnershipGatewayBuilder();

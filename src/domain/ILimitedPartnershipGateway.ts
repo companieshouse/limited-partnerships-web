@@ -1,7 +1,6 @@
 import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import RegistrationPageType from "../presentation/controller/registration/PageType";
-import AddressPageType from "../presentation/controller/addressLookUp/PageType";
 
 interface ILimitedPartnershipGateway {
   createSubmission(
@@ -19,7 +18,7 @@ interface ILimitedPartnershipGateway {
     opt: { access_token: string },
     transactionId: string,
     submissionId: string,
-    registrationType: RegistrationPageType | AddressPageType,
+    registrationType: RegistrationPageType,
     data: Record<string, any>
   ): Promise<void>;
 }

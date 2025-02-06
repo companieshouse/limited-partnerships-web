@@ -33,9 +33,9 @@
               {{ macros.capitalizeEachWord(address.region) }}
               <br>
             {% endif %}
-            {{ address.country | upper }}
-            <br>
             {{ address.postal_code | upper }}
+            <br>
+            {{ macros.capitalizeEachWord(address.country) }}
             <br>
           </p>
           <p class="govuk-body-m">

@@ -6,7 +6,6 @@ import { logger } from "../../utils";
 import UIErrors from "../../domain/entities/UIErrors";
 import ITransactionGateway from "../../domain/ITransactionGateway";
 import { IIncorporationGateway } from "../../domain/IIncorporationGateway";
-import AddressPageType from "../../presentation/controller/addressLookUp/PageType";
 
 class LimitedPartnershipService {
   constructor(
@@ -86,7 +85,7 @@ class LimitedPartnershipService {
     opt: { access_token: string; refresh_token: string },
     transactionId: string,
     submissionId: string,
-    registrationType: RegistrationPageType | AddressPageType,
+    registrationType: RegistrationPageType,
     data: Record<string, any>
   ): Promise<void | {
     errors?: UIErrors;
