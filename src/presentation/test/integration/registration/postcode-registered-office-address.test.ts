@@ -14,7 +14,7 @@ import {
   POSTCODE_REGISTERED_OFFICE_ADDRESS_URL
 } from "../../../controller/addressLookUp/url";
 import AddressPageType from "../../../controller/addressLookUp/PageType";
-import { getUrl, setLocalesEnabled } from "../../utils";
+import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
@@ -49,13 +49,7 @@ describe("Postcode Registered Office Address Page", () => {
       expect(res.text).toContain(
         `${enTranslationText.officeAddress.whatIsOfficeAddress} - ${enTranslationText.service} - GOV.UK`
       );
-      expect(res.text).toContain(
-        enTranslationText.officeAddress.whatIsOfficeAddress
-      );
-      expect(res.text).toContain(
-        enTranslationText.officeAddress.officialCommunication
-      );
-      expect(res.text).toContain(enTranslationText.officeAddress.findAddress);
+      testTranslations(res.text, enTranslationText.officeAddress, ["scotland"]);
       expect(res.text).not.toContain("WELSH -");
     });
 
@@ -67,13 +61,7 @@ describe("Postcode Registered Office Address Page", () => {
       expect(res.text).toContain(
         `${cyTranslationText.officeAddress.whatIsOfficeAddress} - ${cyTranslationText.service} - GOV.UK`
       );
-      expect(res.text).toContain(
-        cyTranslationText.officeAddress.whatIsOfficeAddress
-      );
-      expect(res.text).toContain(
-        cyTranslationText.officeAddress.officialCommunication
-      );
-      expect(res.text).toContain(cyTranslationText.officeAddress.findAddress);
+      testTranslations(res.text, cyTranslationText.officeAddress, ["scotland"]);
     });
   });
 

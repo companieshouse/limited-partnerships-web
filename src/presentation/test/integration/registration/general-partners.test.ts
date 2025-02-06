@@ -5,7 +5,7 @@ import app from "../app";
 import { GENERAL_PARTNERS_URL } from "../../../controller/registration/url";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled } from "../../utils";
+import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 
 describe("General Partners Page", () => {
   const URL = getUrl(GENERAL_PARTNERS_URL);
@@ -24,7 +24,7 @@ describe("General Partners Page", () => {
     expect(res.text).toContain(
       `${cyTranslationText.generalPartnersPage.title} - ${cyTranslationText.service} - GOV.UK`
     );
-    expect(res.text).toContain(cyTranslationText.generalPartnersPage.title);
+    testTranslations(res.text, cyTranslationText.generalPartnersPage);
   });
 
   it("should load the general partners page with English text", async () => {
@@ -35,7 +35,7 @@ describe("General Partners Page", () => {
     expect(res.text).toContain(
       `${enTranslationText.generalPartnersPage.title} - ${enTranslationText.service} - GOV.UK`
     );
-    expect(res.text).toContain(enTranslationText.generalPartnersPage.title);
+    testTranslations(res.text, enTranslationText.generalPartnersPage);
   });
 
   it("should contain the proposed name - data from api", async () => {

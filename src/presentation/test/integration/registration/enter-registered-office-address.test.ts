@@ -6,8 +6,8 @@ import {
   CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
   ENTER_REGISTERED_OFFICE_ADDRESS_URL
 } from "presentation/controller/addressLookUp/url";
-import { getUrl, setLocalesEnabled, testTranslations } from "presentation/test/utils";
-import AddressPageType from "presentation/controller/addressLookUp/PageType";
+import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
+import AddressPageType from "../../../controller/addressLookUp/PageType";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import LimitedPartnershipBuilder from "presentation/test/builder/LimitedPartnershipBuilder";
 import { Jurisdiction } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";

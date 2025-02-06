@@ -88,9 +88,24 @@
         "title" : "Limited partnership name",
         "whatIsName" : "What is the limited partnership name?",
         "whatIsNameHint" : "Do not enter a name ending like Limited Partnership or LP. We will add this for you.",
-        "existingPartnershipHint" : "You must check the name is not the same as an existing partnership or company on the <a href='https://find-and-update.company-information.service.gov.uk/company-name-availability' target='_blank'>Companies House register (opens in a new tab)</a>. If it is, we’ll reject your application.",
-        "sensitiveWordHint" : "If the name includes <a href='https://www.gov.uk/government/publications/incorporation-and-names/annex-a-sensitive-words-and-expressions-or-words-that-could-imply-a-connection-with-government' target='_blank'>sensitive words or expressions that require approval (opens in a new tab)</a>, you must get permission before you register.",
-        "existingTrademarkHint" : "You should also use the <a href='https://www.gov.uk/search-for-trademark' target='_blank'>trade mark search (opens in a new tab)</a> to check if your name matches an existing trade mark. If it does, consider choosing a different name. Companies House will not carry out this check for you.",
+        "existingPartnershipHint" : {
+            "start" : "You must check the name is not the same as an existing partnership or company on the",
+            "url" : "https://find-and-update.company-information.service.gov.uk/company-name-availability",
+            "urlName" : "Companies House register (opens in a new tab)",
+            "end" : "If it is, we'll reject your application."
+        },
+        "sensitiveWordHint" : {
+            "start" : "If the name includes",
+            "url" : "https://www.gov.uk/government/publications/incorporation-and-names/annex-a-sensitive-words-and-expressions-or-words-that-could-imply-a-connection-with-government",
+            "urlName" : "sensitive words or expressions that require approval (opens in a new tab)",
+            "end" : "you must get permission before you register."
+        },
+        "existingTrademarkHint" : {
+            "start" : "You should also use the",
+            "url" : "https://www.gov.uk/search-for-trademark",
+            "urlName" : "trade mark search (opens in a new tab)",
+            "end" : "to check if your name matches an existing trade mark. If it does, consider choosing a different name. Companies House will not carry out this check for you."
+        },
         "nameEnding" : "Which limited partnership name ending would you prefer to go on the public record?",
         "nameEndingHint" : "There's no difference between the name endings Limited Partnership, LP and L.P. except how they look.",
         "nameEndingWelshHint" : "There's no difference between the name endings Limited Partnership, LP and L.P. except how they look. Partneriaeth Cyfyngedig, PC, and P.C. can only be used if the partnership's principal place of business is in Wales.",
@@ -130,7 +145,8 @@
         "nameOrNumberHint": "Property name or number (optional)",
         "postcodeHint": "Postcode",
         "enterAddressManually": "Enter address manually",
-        "publicRegister": "<h2 class='govuk-heading-m'>What information we'll show on the public register</h2> <p>We'll show the registered office address on the public register.</p>",
+        "publicRegisterTitle": "What information we'll show on the public register",
+        "publicRegisterLine1": "We'll show the registered office address on the public register.",
         "findAddress": "Find address"
     },
 
@@ -157,9 +173,11 @@
             "NorthernIreland" : "Northern Ireland"
         },
         "hint" : "This is where the partnership was formed. The registered office address and principal place of business will need to be in the same jurisdiction.", 
-        "scotlandHeading" : "This partnership will be registered in Scotland",
-        "scotlandInformation" : "This means the partnership's registered office address and principal place of business will need to be in Scotland. Select to continue, if this is correct.",
-        "ifNotScotland" : "If these addresses are in England, Wales or Northern Ireland, you will need to go back to change the type of partnership you are registering."
+        "scotland": {
+            "heading" : "This partnership will be registered in Scotland",
+            "information" : "This means the partnership's registered office address and principal place of business will need to be in Scotland. Select to continue, if this is correct.",
+            "ifNotScotland" : "If these addresses are in England, Wales or Northern Ireland, you will need to go back to change the type of partnership you are registering."
+        }
     }, 
 
     "whichTypePage": {

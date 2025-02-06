@@ -5,26 +5,41 @@ import app from "../app";
 import { NAME_URL, WHICH_TYPE_URL } from "../../../controller/registration/url";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import enTranslationText from "../../../../../locales/en/translations.json";
+import cyTranslationText from "../../../../../locales/cy/translations.json";
 import RegistrationPageType from "../../../../presentation/controller/registration/PageType";
 import {
   APPLICATION_CACHE_KEY,
   APPLICATION_CACHE_KEY_PREFIX_REGISTRATION
 } from "../../../../config/constants";
+import { setLocalesEnabled, testTranslations } from "../../../../presentation/test/utils";
 
 describe("Which type Page", () => {
   beforeEach(() => {
+    setLocalesEnabled(false);
+
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([]);
     appDevDependencies.limitedPartnershipGateway.feedErrors();
     appDevDependencies.cacheRepository.feedCache(null);
   });
 
-  it("should load the which-type page", async () => {
-    const res = await request(app).get(WHICH_TYPE_URL);
+  it("should load the which-type page with English text", async () => {
+    setLocalesEnabled(true);
+
+    const res = await request(app).get(WHICH_TYPE_URL + "?lang=en");
 
     expect(res.status).toBe(200);
-    expect(res.text).toContain(enTranslationText.whichTypePage.title);
+    testTranslations(res.text, enTranslationText.whichTypePage);
     expect(res.text).toContain(enTranslationText.buttons.continue);
-    expect(res.text).toContain(enTranslationText.whichTypePage.options.LP);
+  });
+
+  it("should load the which-type page with Welsh text", async () => {
+    setLocalesEnabled(true);
+
+    const res = await request(app).get(WHICH_TYPE_URL + "?lang=cy");
+
+    expect(res.status).toBe(200);
+    testTranslations(res.text, cyTranslationText.whichTypePage);
+    expect(res.text).toContain(cyTranslationText.buttons.continue);
   });
 
   it("should redirect to name page and cache contains the type selected", async () => {
