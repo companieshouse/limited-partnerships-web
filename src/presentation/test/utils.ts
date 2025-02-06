@@ -17,11 +17,11 @@ export const getUrl = (url: string) =>
 
 const toEscapedHtml = (input: string) => {
   return input
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 };
 
 export const testTranslations = (
@@ -35,7 +35,7 @@ export const testTranslations = (
     }
 
     if (typeof translations[key] === "object") {
-      testTranslations(text, translations[key]);
+      testTranslations(text, translations[key], exclude);
       continue;
     }
 

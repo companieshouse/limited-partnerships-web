@@ -1,21 +1,22 @@
 import request from "supertest";
 import { UKAddress } from "@companieshouse/api-sdk-node/dist/services/postcode-lookup";
 
-import * as config from "../../../../config/constants";
+import * as config from "../../../../../config/constants";
 
-import enTranslationText from "../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../locales/cy/translations.json";
+import enTranslationText from "../../../../../../locales/en/translations.json";
+import cyTranslationText from "../../../../../../locales/cy/translations.json";
 
-import { appDevDependencies } from "../../../../config/dev-dependencies";
-import app from "../app";
+import { appDevDependencies } from "../../../../../config/dev-dependencies";
+import app from "../../app";
 
 import {
   CHOOSE_REGISTERED_OFFICE_ADDRESS_URL,
+  CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
   POSTCODE_REGISTERED_OFFICE_ADDRESS_URL
-} from "../../../controller/addressLookUp/url";
-import AddressPageType from "../../../controller/addressLookUp/PageType";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
-import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
+} from "../../../../controller/addressLookUp/url";
+import AddressPageType from "../../../../controller/addressLookUp/PageType";
+import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
+import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
 import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 describe("Postcode Registered Office Address Page", () => {
@@ -24,7 +25,11 @@ describe("Postcode Registered Office Address Page", () => {
   const addresses: UKAddress[] =
     appDevDependencies.addressLookUpGateway.addresses;
 
-  beforeAll(() => {
+  beforeEach(() => {
+    setLocalesEnabled(false);
+
+    appDevDependencies.cacheRepository.feedCache(null);
+
     const limitedPartnership = new LimitedPartnershipBuilder()
       .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
       .build();
@@ -34,12 +39,6 @@ describe("Postcode Registered Office Address Page", () => {
     ]);
   });
 
-  beforeEach(() => {
-    setLocalesEnabled(false);
-
-    appDevDependencies.cacheRepository.feedCache(null);
-  });
-
   describe("Get Postcode Registered Office Address Page", () => {
     it("should load the office address page with English text", async () => {
       setLocalesEnabled(true);
@@ -47,9 +46,12 @@ describe("Postcode Registered Office Address Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${enTranslationText.officeAddress.whatIsOfficeAddress} - ${enTranslationText.service} - GOV.UK`
+        `${enTranslationText.address.findPostcode.registeredOfficeAddress.whatIsOfficeAddress} - ${enTranslationText.service} - GOV.UK`
       );
-      testTranslations(res.text, enTranslationText.officeAddress, ["scotland"]);
+      testTranslations(res.text, enTranslationText.address.findPostcode, [
+        "scotland",
+        "principalPlaceOfBusiness"
+      ]);
       expect(res.text).not.toContain("WELSH -");
     });
 
@@ -59,9 +61,12 @@ describe("Postcode Registered Office Address Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${cyTranslationText.officeAddress.whatIsOfficeAddress} - ${cyTranslationText.service} - GOV.UK`
+        `${cyTranslationText.address.findPostcode.registeredOfficeAddress.whatIsOfficeAddress} - ${cyTranslationText.service} - GOV.UK`
       );
-      testTranslations(res.text, cyTranslationText.officeAddress, ["scotland"]);
+      testTranslations(res.text, cyTranslationText.address.findPostcode, [
+        "scotland",
+        "principalPlaceOfBusiness"
+      ]);
     });
   });
 
@@ -69,7 +74,7 @@ describe("Postcode Registered Office Address Page", () => {
     it("should validate the post code then redirect to the next page", async () => {
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
-        premise: null,
+        premises: null,
         postal_code: addresses[0].postcode
       });
 
@@ -80,12 +85,12 @@ describe("Postcode Registered Office Address Page", () => {
         [config.APPLICATION_CACHE_KEY]: {
           [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`]:
             {
-              postcode: "ST6 3LJ",
-              addressLine1: "",
-              addressLine2: "",
-              postTown: "",
+              postal_code: "ST6 3LJ",
+              address_line_1: "",
+              address_line_2: "",
+              locality: "",
               country: "",
-              premise: ""
+              premises: ""
             }
         }
       });
@@ -94,9 +99,11 @@ describe("Postcode Registered Office Address Page", () => {
     it("should validate the post code and find a matching address then redirect to the next page", async () => {
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
-        premise: addresses[0].premise,
+        premises: addresses[0].premise,
         postal_code: addresses[0].postcode
       });
+
+      const REDIRECT_URL = getUrl(CONFIRM_REGISTERED_OFFICE_ADDRESS_URL);
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
@@ -105,11 +112,11 @@ describe("Postcode Registered Office Address Page", () => {
         [config.APPLICATION_CACHE_KEY]: {
           [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`]:
             {
-              postcode: "ST6 3LJ",
-              premise: "2",
-              addressLine1: "DUNCALF STREET",
-              addressLine2: "",
-              postTown: "STOKE-ON-TRENT",
+              postal_code: "ST6 3LJ",
+              premises: "2",
+              address_line_1: "DUNCALF STREET",
+              address_line_2: "",
+              locality: "STOKE-ON-TRENT",
               country: "GB-ENG"
             }
         }
@@ -119,7 +126,7 @@ describe("Postcode Registered Office Address Page", () => {
     it("should return an error if the postcode is not valid", async () => {
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
-        premise: null,
+        premises: null,
         postal_code: "AA1 1AA"
       });
 
@@ -132,7 +139,7 @@ describe("Postcode Registered Office Address Page", () => {
     it("should return an error if the postcode is in Scotland and the type is LP", async () => {
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
-        premise: null,
+        premises: null,
         postal_code: "IV18 0JT"
       });
 
@@ -156,7 +163,7 @@ describe("Postcode Registered Office Address Page", () => {
 
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
-        premise: null,
+        premises: null,
         postal_code: "ST6 3LJ"
       });
 
