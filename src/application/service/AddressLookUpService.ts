@@ -80,16 +80,14 @@ class AddressLookUpService {
   isValidJurisdictionAndCountry(
     jurisdiction: string,
     country: string
-  ): {
-    errors?: UIErrors;
-  } {
+  ): UIErrors | undefined {
     const uiErrors = new UIErrors();
 
     if (!this.isJurisdictionAndCountryCombinationAllowed(jurisdiction, country, uiErrors)) {
-      return { errors: uiErrors };
+      return uiErrors;
     }
 
-    return { };
+    return;
   }
 
   async getAddressListForPostcode(

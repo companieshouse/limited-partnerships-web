@@ -194,7 +194,7 @@ class AddressLookUpController extends AbstractController {
           submissionId
         );
 
-        const { errors } =
+        const errors =
           this.addressService.isValidJurisdictionAndCountry(
             limitedPartnership?.data?.jurisdiction ?? "",
             country,
