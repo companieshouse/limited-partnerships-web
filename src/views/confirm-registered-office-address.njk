@@ -21,16 +21,16 @@
 
         {% if address %}
           <p class="govuk-body-m">
-            {{ macros.capitalizeEachWord(addressFirstLineForDisplay).trim() }}
+            {{ macros.capitalizeEachWord(addressFirstLineForDisplay) }}
             <br>
             {% if address.address_line_2 %}
-              {{ macros.capitalizeEachWord(address.address_line_2).trim() }}
+              {{ macros.capitalizeEachWord(address.address_line_2) }}
               <br>
             {% endif %}
-            {{ macros.capitalizeEachWord(address.locality).trim() }}
+            {{ macros.capitalizeEachWord(address.locality) }}
             <br>
             {% if address.region %}
-              {{ macros.capitalizeEachWord(address.region).trim() }}
+              {{ macros.capitalizeEachWord(address.region) }}
               <br>
             {% endif %}
             {{ address.country | upper }}

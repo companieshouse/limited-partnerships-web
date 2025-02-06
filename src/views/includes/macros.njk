@@ -5,19 +5,19 @@
   {% set postTown = '' %}
 
   {% if address.premise %}
-    {% set premise = capitalizeEachWord(address.premise).trim() + ' ' %}
+    {% set premise = capitalizeEachWord(address.premise) + ' ' %}
   {% endif %}
 
   {% if address.addressLine1 %} 
-    {% set addressLine1 = capitalizeEachWord(address.addressLine1).trim() + ', ' %} 
+    {% set addressLine1 = capitalizeEachWord(address.addressLine1) + ', ' %} 
   {% endif %}
 
   {% if address.addressLine2 %} 
-    {% set addressLine2 = capitalizeEachWord(address.addressLine2).trim() + ', ' %} 
+    {% set addressLine2 = capitalizeEachWord(address.addressLine2) + ', ' %} 
   {% endif %}
 
   {% if address.postTown %} 
-    {% set postTown = capitalizeEachWord(address.postTown).trim() + ', ' %} 
+    {% set postTown = capitalizeEachWord(address.postTown) + ', ' %} 
   {% endif %}
 
   {% set address = premise + addressLine1 + addressLine2 + postTown + address.postcode %}
@@ -25,21 +25,21 @@
   {{ address }}
 {% endmacro %}
 
-{% macro capitalizeEachWord(str) %}
-  {% set words = str.split(' ') %}
-  {% set capitalizedWords = [] %}
-  {% for word in words %}
-    {% set subwords = word.split('-') %}
-    {% set capitalizedSubwords = [] %}
-    {% for subword in subwords %}
-      {% set capitalizedSubword = subword | capitalize %}
-      {% set capitalizedSubwords = capitalizedSubwords.concat(capitalizedSubword) %}
-    {% endfor %}
-    {% set capitalizedWord = capitalizedSubwords.join('-') %}
-    {% set capitalizedWords = capitalizedWords.concat(capitalizedWord) %}
-  {% endfor %}
-  {{ capitalizedWords.join(' ') }}
-{% endmacro %}
+{%- macro capitalizeEachWord(str) -%}
+  {%- set words = str.split(' ') -%}
+  {%- set capitalizedWords = [] -%}
+  {%- for word in words -%}
+    {%- set subwords = word.split('-') -%}
+    {%- set capitalizedSubwords = [] -%}
+    {%- for subword in subwords -%}
+      {%- set capitalizedSubword = subword | capitalize -%}
+      {%- set capitalizedSubwords = capitalizedSubwords.concat(capitalizedSubword) -%}
+    {%- endfor -%}
+    {%- set capitalizedWord = capitalizedSubwords.join('-') -%}
+    {%- set capitalizedWords = capitalizedWords.concat(capitalizedWord) -%}
+  {%- endfor -%}
+  {{- capitalizedWords.join(' ') -}}
+{%- endmacro -%}
 
 {% macro htmlInputErrorMessage(message) %}
   {% set errorMessage = "this.setCustomValidity('" + message + "')" %}

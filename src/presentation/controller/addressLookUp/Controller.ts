@@ -249,18 +249,17 @@ class AddressLookUpController extends AbstractController {
           transactionId,
           submissionId,
           pageType,
-          address
+          { registered_office_address: address }
         );
 
         if (result?.errors) {
-          if (Object.keys(limitedPartnership).length === 0) {
-            limitedPartnership =
-            await this.limitedPartnershipService.getLimitedPartnership(
-              tokens,
-              transactionId,
-              submissionId
-            );
-          }
+          limitedPartnership =
+          await this.limitedPartnershipService.getLimitedPartnership(
+            tokens,
+            transactionId,
+            submissionId
+          );
+
           pageRouting.errors = result.errors.errors;
           pageRouting.data = {
             ...pageRouting.data,
