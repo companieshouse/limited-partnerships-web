@@ -25,7 +25,11 @@ describe("Postcode Registered Office Address Page", () => {
   const addresses: UKAddress[] =
     appDevDependencies.addressLookUpGateway.addresses;
 
-  beforeAll(() => {
+  beforeEach(() => {
+    setLocalesEnabled(false);
+
+    appDevDependencies.cacheRepository.feedCache(null);
+
     const limitedPartnership = new LimitedPartnershipBuilder()
       .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
       .build();
@@ -33,12 +37,6 @@ describe("Postcode Registered Office Address Page", () => {
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
       limitedPartnership
     ]);
-  });
-
-  beforeEach(() => {
-    setLocalesEnabled(false);
-
-    appDevDependencies.cacheRepository.feedCache(null);
   });
 
   describe("Get Postcode Registered Office Address Page", () => {
@@ -76,7 +74,7 @@ describe("Postcode Registered Office Address Page", () => {
     it("should validate the post code then redirect to the next page", async () => {
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
-        premise: null,
+        premises: null,
         postal_code: addresses[0].postcode
       });
 
@@ -128,7 +126,7 @@ describe("Postcode Registered Office Address Page", () => {
     it("should return an error if the postcode is not valid", async () => {
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
-        premise: null,
+        premises: null,
         postal_code: "AA1 1AA"
       });
 
@@ -141,7 +139,7 @@ describe("Postcode Registered Office Address Page", () => {
     it("should return an error if the postcode is in Scotland and the type is LP", async () => {
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
-        premise: null,
+        premises: null,
         postal_code: "IV18 0JT"
       });
 
@@ -165,7 +163,7 @@ describe("Postcode Registered Office Address Page", () => {
 
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
-        premise: null,
+        premises: null,
         postal_code: "ST6 3LJ"
       });
 

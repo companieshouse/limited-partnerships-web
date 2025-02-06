@@ -4,43 +4,43 @@
 
     <div class="govuk-!-margin-top-8">
         {{ govukInput({
-        hint: {
-            text: i18n.address.findPostcode.nameOrNumberHint
-        },
-        id: "premises",
-        name: "premises",
-        value: "",
-        attributes : {
-            "data-event-id": "name-or-number"
-        }
+            hint: {
+                text: i18n.address.findPostcode.nameOrNumberHint
+            },
+            id: "premises",
+            name: "premises",
+            value: "",
+            attributes : {
+                "data-event-id": "name-or-number"
+            }
         }) }}
 
         {{ govukInput({
-        hint: {
-            text: i18n.address.findPostcode.postcodeHint
-        },
-        id: "postal_code",
-        name: "postal_code",
-        classes: "govuk-input--width-10",
-        value: "",
-        attributes: {
-            required: true,
-            "data-event-id": "postcode"
-        },
-        pattern: "^[A-Za-z]{1,2}\\d[A-Za-z\\d]? ?\\d[A-Za-z]{2}$",
-        errorMessage: postalCodeErrorMessage
+            hint: {
+                text: i18n.address.findPostcode.postcodeHint
+            },
+            id: "postal_code",
+            name: "postal_code",
+            classes: "govuk-input--width-10",
+            value: "",
+            attributes: {
+                required: true,
+                "data-event-id": "postcode"
+            },
+            pattern: "^[A-Za-z]{1,2}\\d[A-Za-z\\d]? ?\\d[A-Za-z]{2}$",
+            errorMessage: postalCodeErrorMessage
         }) }}
 
         <p>
-        <a href="{{ props.currentUrl | replace(props.pageType, props.data.enterManualAddressPageType) }}" class="govuk-body-m govuk-link" data-event-id="enter-address-manually">{{ i18n.address.findPostcode.enterAddressManually }}</a>
+            <a href="{{ props.currentUrl | replace(props.pageType, props.data.enterManualAddressPageType) }}" class="govuk-body-m govuk-link" data-event-id="enter-address-manually">{{ i18n.address.findPostcode.enterAddressManually }}</a>
         <p>
 
         {{ govukButton({
-        text: i18n.address.findPostcode.findAddress,
-        attributes: {
-            "id": "submit",
-            "data-event-id": "find-address"
-        }
+            text: i18n.address.findPostcode.findAddress,
+            attributes: {
+                "id": "submit",
+                "data-event-id": "find-address"
+            }
         }) }}
     </div>
 </form>
