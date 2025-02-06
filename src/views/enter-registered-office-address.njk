@@ -47,7 +47,7 @@
               },
               id: "premises",
               name: "premises",
-              value: props.address.premises,
+              value: props.data.address.premises,
               attributes : {  
                 required : true,
                 maxLength: 50,
@@ -61,7 +61,7 @@
               },
               id: "address_line_1",
               name: "address_line_1",
-              value: props.address.address_line_1,
+              value: props.data.address.address_line_1,
               attributes : {
                 required : true,
                 maxLength: 50,
@@ -75,7 +75,7 @@
               },
               id: "address_line_2",
               name: "address_line_2",
-              value: props.address.address_line_2,
+              value: props.data.address.address_line_2,
               attributes : {
                 maxLength: 50,
                 "data-event-id": "address-line-2"
@@ -89,7 +89,7 @@
               classes: "govuk-!-width-two-thirds",
               id: "locality",
               name: "locality",
-              value: props.address.locality,
+              value: props.data.address.locality,
               attributes : {
                 required : true,
                 maxLength: 50,
@@ -104,7 +104,7 @@
               classes: "govuk-!-width-two-thirds",
               id: "region",
               name: "region",
-              value: props.address.region,
+              value: props.data.address.region,
               attributes : {
                 maxLength: 50,
                 "data-event-id": "county"
@@ -118,7 +118,7 @@
               classes: "govuk-input--width-10",
               id: "postal_code",
               name: "postal_code",
-              value: props.address.postal_code,
+              value: props.data.address.postal_code,
               attributes : {
                 required : true,
                 maxLength: 15,
@@ -129,7 +129,7 @@
             {{ govukSelect({
               id: "country",
               name: "country",
-              value: props.address.country,
+              value: props.data.address.country,
               label: {
                 text: i18n.enterRegisteredOfficeAddressPage.country
               },

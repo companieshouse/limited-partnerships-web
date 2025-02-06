@@ -35,8 +35,9 @@ class AddressLookUpService {
       );
 
       if (!isValid) {
-        this.setPostalCodeError(
+        this.setFieldError(
           uiErrors,
+          "postal_code",
           `The postcode ${postalCode} cannot be found`
         );
 
@@ -80,22 +81,15 @@ class AddressLookUpService {
     jurisdiction: string,
     country: string
   ): {
-    isValid: boolean;
     errors?: UIErrors;
   } {
-    try {
-      const uiErrors = new UIErrors();
+    const uiErrors = new UIErrors();
 
-      if (!this.isJurisdictionAndCountryCombinationAllowed(jurisdiction, country, uiErrors)) {
-        return { isValid: false, errors: uiErrors };
-      }
-
-      return { isValid: true };
-    } catch (error: any) {
-      logger.error(`Error validating jurisdiction and country ${JSON.stringify(error)}`);
-
-      throw error;
+    if (!this.isJurisdictionAndCountryCombinationAllowed(jurisdiction, country, uiErrors)) {
+      return { errors: uiErrors };
     }
+
+    return { };
   }
 
   async getAddressListForPostcode(
@@ -136,15 +130,17 @@ class AddressLookUpService {
     if (SCOTLAND_TYPE && !IS_IN_SCOTLAND) {
       isCorrectCountry = false;
 
-      this.setPostalCodeError(
+      this.setFieldError(
         uiErrors,
+        "postal_code",
         "You must enter a postcode which is in Scotland"
       );
     } else if (NON_SCOTLAND_TYPE && IS_IN_SCOTLAND) {
       isCorrectCountry = false;
 
-      this.setPostalCodeError(
+      this.setFieldError(
         uiErrors,
+        "postal_code",
         "You must enter a postcode which is in England, Wales, or Northern Ireland"
       );
     }
@@ -152,10 +148,10 @@ class AddressLookUpService {
     return isCorrectCountry;
   }
 
-  private setPostalCodeError(uiErrors: UIErrors, message: string): void {
+  private setFieldError(uiErrors: UIErrors, fieldName: string, message: string): void {
     uiErrors.formatValidationErrorToUiErrors({
       errors: {
-        postal_code: message
+        [fieldName]: message
       }
     });
   }
@@ -171,21 +167,14 @@ class AddressLookUpService {
       || (jurisdiction === Jurisdiction.ENGLAND_AND_WALES && (country === "england" || country === "wales"));
 
     if (!isValid) {
-      this.setCountryError(
+      this.setFieldError(
         uiErrors,
+        "country",
         "You must enter a country that matches your jurisdiction"
       );
     }
 
     return isValid;
-  }
-
-  private setCountryError(uiErrors: UIErrors, message: string): void {
-    uiErrors.formatValidationErrorToUiErrors({
-      errors: {
-        country: message
-      }
-    });
   }
 }
 

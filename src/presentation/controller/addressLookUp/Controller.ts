@@ -209,9 +209,15 @@ class AddressLookUpController extends AbstractController {
 
           pageRouting.errors = errors?.errors;
 
+          pageRouting.data = {
+            ...pageRouting.data,
+            address
+          };
+
           response.render(super.templateName(pageRouting.currentUrl), {
-            props: { ...pageRouting, address }
+            props: { ...pageRouting }
           });
+
           return;
         }
 
