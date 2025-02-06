@@ -62,6 +62,11 @@ export const addressLookUpEndpoints = (
     authentication,
     dependencies.addressLookUpController.getPageRouting()
   );
+  router.post(
+    POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+    authentication,
+    dependencies.addressLookUpController.postcodeValidation()
+  );
 };
 
 export default addressLookUpEndpoints;

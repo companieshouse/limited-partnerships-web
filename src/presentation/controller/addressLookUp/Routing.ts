@@ -22,7 +22,8 @@ const addressRoutingPostcodeRegisteredOfficeAddress = {
   nextUrl: CHOOSE_REGISTERED_OFFICE_ADDRESS_URL,
   pageType: AddressPageType.postcodeRegisteredOfficeAddress,
   data: {
-    enterManualAddressPageType: AddressPageType.enterRegisteredOfficeAddress
+    enterManualAddressPageType: AddressPageType.enterRegisteredOfficeAddress,
+    confirmAddressUrl: CONFIRM_REGISTERED_OFFICE_ADDRESS_URL
   }
 };
 
@@ -64,7 +65,8 @@ const addressRoutingPostcodePrincipalPlaceOfBusinessAddress = {
   nextUrl: GENERAL_PARTNERS_URL,
   pageType: AddressPageType.postcodePrincipalPlaceOfBusinessAddress,
   data: {
-    enterManualAddressPageType: "#"
+    enterManualAddressPageType: "#",
+    confirmAddressUrl: "#"
   }
 };
 

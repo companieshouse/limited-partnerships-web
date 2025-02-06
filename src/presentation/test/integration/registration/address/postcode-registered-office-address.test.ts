@@ -11,6 +11,7 @@ import app from "../../app";
 
 import {
   CHOOSE_REGISTERED_OFFICE_ADDRESS_URL,
+  CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
   POSTCODE_REGISTERED_OFFICE_ADDRESS_URL
 } from "../../../../controller/addressLookUp/url";
 import AddressPageType from "../../../../controller/addressLookUp/PageType";
@@ -86,12 +87,12 @@ describe("Postcode Registered Office Address Page", () => {
         [config.APPLICATION_CACHE_KEY]: {
           [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`]:
             {
-              postcode: "ST6 3LJ",
-              addressLine1: "",
-              addressLine2: "",
-              postTown: "",
+              postal_code: "ST6 3LJ",
+              address_line_1: "",
+              address_line_2: "",
+              locality: "",
               country: "",
-              premise: ""
+              premises: ""
             }
         }
       });
@@ -100,9 +101,11 @@ describe("Postcode Registered Office Address Page", () => {
     it("should validate the post code and find a matching address then redirect to the next page", async () => {
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
-        premise: addresses[0].premise,
+        premises: addresses[0].premise,
         postal_code: addresses[0].postcode
       });
+
+      const REDIRECT_URL = getUrl(CONFIRM_REGISTERED_OFFICE_ADDRESS_URL);
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
@@ -111,11 +114,11 @@ describe("Postcode Registered Office Address Page", () => {
         [config.APPLICATION_CACHE_KEY]: {
           [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`]:
             {
-              postcode: "ST6 3LJ",
-              premise: "2",
-              addressLine1: "DUNCALF STREET",
-              addressLine2: "",
-              postTown: "STOKE-ON-TRENT",
+              postal_code: "ST6 3LJ",
+              premises: "2",
+              address_line_1: "DUNCALF STREET",
+              address_line_2: "",
+              locality: "STOKE-ON-TRENT",
               country: "GB-ENG"
             }
         }
