@@ -4,7 +4,7 @@ import AddressPageType from "./PageType";
 import PageType from "../PageType";
 import {
   GENERAL_PARTNERS_URL,
-  WHAT_IS_YOUR_JURISDICTION_URL
+  WHERE_IS_THE_JURISDICTION_URL
 } from "../registration/url";
 import {
   POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
@@ -17,7 +17,7 @@ import {
 // Registered Office Address
 
 const addressRoutingPostcodeRegisteredOfficeAddress = {
-  previousUrl: WHAT_IS_YOUR_JURISDICTION_URL,
+  previousUrl: WHERE_IS_THE_JURISDICTION_URL,
   currentUrl: POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
   nextUrl: CHOOSE_REGISTERED_OFFICE_ADDRESS_URL,
   pageType: AddressPageType.postcodeRegisteredOfficeAddress,

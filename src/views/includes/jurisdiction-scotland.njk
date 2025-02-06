@@ -1,9 +1,9 @@
 {% include "includes/proposed-name.njk" %}        
-<h1 class="govuk-heading-xl">{{ i18n.whatIsYourJurisdiction.scotland.heading }}</h1>
+<h1 class="govuk-heading-xl">{{ i18n.whereIsTheJurisdiction.scotland.title}}</h1>
 
-<p class="govuk-body">{{ i18n.whatIsYourJurisdiction.scotland.information }}</p>
+<p class="govuk-body">{{ i18n.whereIsTheJurisdiction.scotland.information }}</p>
 
-<p class="govuk-body">{{ i18n.whatIsYourJurisdiction.scotland.ifNotScotland }}</p>
+<p class="govuk-body">{{ i18n.whereIsTheJurisdiction.scotland.ifNotScotland }}</p>
       
 <form class="form" action={{ props.currentUrl }} method="post">
   <input type="hidden" name="pageType" value={{ props.pageType }}>  
