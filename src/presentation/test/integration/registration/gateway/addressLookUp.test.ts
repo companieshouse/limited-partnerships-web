@@ -34,7 +34,7 @@ describe("Gateway Address Look Up", () => {
     it("should validate the post code then redirect to the next page", async () => {
       const res = await request(appRealDependencies).post(URL).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
-        premise: "",
+        premises: "",
         postal_code: "ST6 3LJ"
       });
 
@@ -48,7 +48,7 @@ describe("Gateway Address Look Up", () => {
     it("should validate the post code and find a matching address then redirect to the next page", async () => {
       const res = await request(appRealDependencies).post(URL).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
-        premise: "2",
+        premises: "2",
         postal_code: "ST6 3LJ"
       });
 

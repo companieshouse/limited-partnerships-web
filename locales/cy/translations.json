@@ -1,4 +1,39 @@
 {
+    "address": {
+        "findPostcode": {
+            "registeredOfficeAddress": {
+
+                "whatIsOfficeAddress": "WELSH - What is the registered office address of the partnership?",
+                "officialCommunication": "WELSH - This is where official communications will be sent.",
+                "england": {
+                    "physicalAddress": "WELSH - It must be a physical address in England, Wales or Northern Ireland. You cannot use a PO Box address.",
+                    "jurisdiction": "WELSH - The partnership will be registered in the jurisdiction of this address (either England and Wales, or Northern Ireland)."
+                },
+                "scotland": {
+                    "physicalAddress": "WELSH - It must be a physical address in Scotland. You cannot use a PO Box address.",
+                    "jurisdiction": "WELSH - The partnership will be registered in the jurisdiction of this address (Scotland)."
+                },
+                "publicRegisterTitle": "WELSH - What information we'll show on the public register",
+                "publicRegisterLine1": "WELSH - We'll show the registered office address on the public register."
+            },
+
+            "principalPlaceOfBusiness": {
+                "whatIsPrincipalPlaceOfBusiness": "WELSH - What is the principal place of business?",
+                "runningOfBusiness": "WELSH - This is the address where the day to day running of the business takes place. It could be the same as the registered office address, or a different address.",
+                "jurisdiction": "WELSH - It must be in the jurisdiction where the partnership was formed. It can be changed to an address outside of the jurisdiction after you've registered the partnership.",
+                "publicRegisterTitle": "WELSH - What information we'll show on the public register",
+                "publicRegisterLine1": "WELSH - We'll show the principal place of business  on the public register."
+            },
+ 
+            "nameOrNumberHint": "WELSH - Property name or number (optional)",
+            "postcodeHint": "WELSH - Postcode",
+            "enterAddressManually": "WELSH - Enter address manually",
+            "findAddress": "WELSH - Find address",
+
+            "errorPostcode": "WELSH - Enter a postcode"
+        }
+    },
+    
     "buttons" : {
         "continue" : "WELSH - Continue",
         "saveAndContinue" : "WELSH - Save and continue"
@@ -129,25 +164,6 @@
 
         "nameErrorMessage": "WELSH - Enter the name of the partnership",
         "nameEndingErrorMessage": "WELSH - Select the name ending to go on the public record"
-    },
-
-    "officeAddress": {
-        "whatIsOfficeAddress": "WELSH - What is the registered office address of the partnership?",
-        "officialCommunication": "WELSH - This is where official communications will be sent.",
-        "england": {
-            "physicalAddress": "WELSH - It must be a physical address in England, Wales or Northern Ireland. You cannot use a PO Box address.",
-            "jurisdiction": "WELSH - The partnership will be registered in the jurisdiction of this address (either England and Wales, or Northern Ireland)."
-        },
-        "scotland": {
-            "physicalAddress": "WELSH - It must be a physical address in Scotland. You cannot use a PO Box address.",
-            "jurisdiction": "WELSH - The partnership will be registered in the jurisdiction of this address (Scotland)."
-        },
-        "nameOrNumberHint": "WELSH - Property name or number (optional)",
-        "postcodeHint": "WELSH - Postcode",
-        "enterAddressManually": "WELSH - Enter address manually",
-        "publicRegisterTitle": "WELSH - What information we'll show on the public register",
-        "publicRegisterLine1": "WELSH - We'll show the registered office address on the public register.",
-        "findAddress": "WELSH - Find address"
     },
 
     "pageNotFound" : {
