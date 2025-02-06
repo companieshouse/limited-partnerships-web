@@ -3,7 +3,7 @@ import UIErrors from "../../domain/entities/UIErrors";
 import IAddressLookUpGateway from "../../domain/IAddressLookUpGateway";
 
 import { logger } from "../../utils";
-import { UKAddress } from "@companieshouse/api-sdk-node/dist/services/postcode-lookup";
+import Address from "../../domain/entities/Address";
 
 class AddressLookUpService {
   constructor(private addressGateway: IAddressLookUpGateway) {}
@@ -12,21 +12,21 @@ class AddressLookUpService {
     opt: { access_token: string; refresh_token: string },
     partnershipType: string,
     postalCode: string,
-    premise?: string
+    premises?: string
   ): Promise<{
-    address: UKAddress;
+    address: Address;
     errors?: UIErrors;
   }> {
     try {
       const uiErrors = new UIErrors();
 
-      const address: UKAddress = {
-        postcode: postalCode,
-        addressLine1: "",
-        addressLine2: "",
-        postTown: "",
+      const address: Address = {
+        postal_code: postalCode,
+        address_line_1: "",
+        address_line_2: "",
+        locality: "",
         country: "",
-        premise: ""
+        premises: ""
       };
 
       const isValid = await this.addressGateway.isValidUKPostcode(
@@ -44,24 +44,24 @@ class AddressLookUpService {
         return { address, errors: uiErrors };
       }
 
-      const ukAddresses: UKAddress[] =
-        await this.getAddressListForPostcode(
-          opt,
-          postalCode
-        );
+      const ukAddresses: Address[] = await this.getAddressListForPostcode(
+        opt,
+        postalCode
+      );
 
       if (!this.isFromCorrectCountry(partnershipType, ukAddresses, uiErrors)) {
         return { address, errors: uiErrors };
       }
 
-      if (premise) {
+      if (premises) {
         if (ukAddresses.length === 0) {
           return { address };
         }
 
         const matchingAddress = ukAddresses.find(
           (ukAddress) =>
-            ukAddress.postcode === postalCode && ukAddress.premise === premise
+            ukAddress.postal_code === postalCode &&
+            ukAddress.premises === premises
         );
 
         if (matchingAddress) {
@@ -94,18 +94,22 @@ class AddressLookUpService {
 
   async getAddressListForPostcode(
     opt: { access_token: string; refresh_token: string },
-    postalCode: string,
-  ): Promise<UKAddress[]> {
+    postalCode: string
+  ): Promise<Address[]> {
     try {
-      const addressList: UKAddress[] = await this.addressGateway.getListOfValidPostcodeAddresses(
-        opt,
-        postalCode
-      );
+      const addressList: Address[] =
+        await this.addressGateway.getListOfValidPostcodeAddresses(
+          opt,
+          postalCode
+        );
 
-      return addressList.sort((a, b) => a.premise.localeCompare(b.premise));
-
+      return addressList.sort((a, b) => a.premises.localeCompare(b.premises));
     } catch (error: any) {
-      logger.error(`Error retrieving address list for postcode ${postalCode} ${JSON.stringify(error)}`);
+      logger.error(
+        `Error retrieving address list for postcode ${postalCode} ${JSON.stringify(
+          error
+        )}`
+      );
 
       throw error;
     }
@@ -113,7 +117,7 @@ class AddressLookUpService {
 
   private isFromCorrectCountry(
     partnershipType: string,
-    ukAddresses: UKAddress[],
+    ukAddresses: Address[],
     uiErrors: UIErrors
   ): boolean {
     let isCorrectCountry = true;

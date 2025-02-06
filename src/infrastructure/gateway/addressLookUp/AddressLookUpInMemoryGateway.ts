@@ -3,6 +3,8 @@
 import { UKAddress } from "@companieshouse/api-sdk-node/dist/services/postcode-lookup";
 
 import IAddressLookUpGateway from "../../../domain/IAddressLookUpGateway";
+import Address from "../../../domain/entities/Address";
+import postcodeLookUpAddressToAddress from "./addressMapper";
 
 class AddressLookUpInMemoryGateway implements IAddressLookUpGateway {
   addresses: UKAddress[] = [
@@ -70,17 +72,17 @@ class AddressLookUpInMemoryGateway implements IAddressLookUpGateway {
   async getListOfValidPostcodeAddresses(
     opt: { access_token: string; refresh_token: string },
     postcode: string
-  ): Promise<UKAddress[]> {
+  ): Promise<Address[]> {
     if (this.error) {
       throw new Error("Test 500 error");
     }
 
     if (postcode === this.addresses[0].postcode) {
-      return this.addresses;
+      return this.addresses.map(postcodeLookUpAddressToAddress);
     }
 
     if (postcode === this.scotlandAddresses[0].postcode) {
-      return this.scotlandAddresses;
+      return this.scotlandAddresses.map(postcodeLookUpAddressToAddress);
     }
 
     return [];

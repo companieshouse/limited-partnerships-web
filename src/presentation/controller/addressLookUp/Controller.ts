@@ -9,7 +9,7 @@ import AddressLookUpPageType from "./PageType";
 import CacheService from "../../../application/service/CacheService";
 import { APPLICATION_CACHE_KEY_PREFIX_REGISTRATION } from "../../../config/constants";
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
-import { UKAddress } from "@companieshouse/api-sdk-node/dist/services/postcode-lookup";
+import Address from "../../../domain/entities/Address";
 
 class AddressLookUpController extends AbstractController {
   public readonly REGISTERED_OFFICE_ADDRESS_CACHE_KEY =
@@ -50,11 +50,11 @@ class AddressLookUpController extends AbstractController {
 
         const cache = await this.cacheService.getDataFromCache(session);
 
-        let addressList: UKAddress[] = [];
+        let addressList: Address[] = [];
 
         if (this.isAddressListRequired(pageRouting.pageType)) {
           const postcode =
-            cache[this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY].postcode;
+            cache[this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY].postal_code;
 
           addressList = await this.addressService.getAddressListForPostcode(
             tokens,
@@ -92,7 +92,7 @@ class AddressLookUpController extends AbstractController {
           request,
           AddressLookUpPageType
         );
-        const { postal_code, premise } = request.body;
+        const { postal_code, premises } = request.body;
 
         const pageRouting = super.getRouting(
           addressLookUpRouting,
@@ -112,7 +112,7 @@ class AddressLookUpController extends AbstractController {
             tokens,
             limitedPartnership?.data?.partnership_type ?? "",
             escape(postal_code),
-            escape(premise)
+            escape(premises)
           );
 
         if (errors?.errors) {
@@ -132,6 +132,18 @@ class AddressLookUpController extends AbstractController {
           [this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY]: address
         });
 
+        // if exact match - redirect to confirm page
+        if (address.postal_code && address.premises && address.address_line_1) {
+          const url = super.insertIdsInUrl(
+            pageRouting?.data?.confirmAddressUrl,
+            transactionId,
+            submissionId
+          );
+          response.redirect(url);
+          return;
+        }
+
+        // correct postcode - no exact match - redirect to choose address page
         response.redirect(pageRouting.nextUrl);
       } catch (error) {
         next(error);
@@ -142,17 +154,7 @@ class AddressLookUpController extends AbstractController {
   selectAddress(): RequestHandler {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
-        const selectedAddress: UKAddress = JSON.parse(
-          request.body.selected_address
-        );
-        const address = {
-          address_line_1: selectedAddress.addressLine1,
-          address_line_2: selectedAddress.addressLine2,
-          country: selectedAddress.country,
-          locality: selectedAddress.postTown,
-          postal_code: selectedAddress.postcode,
-          premises: selectedAddress.premise
-        };
+        const address: Address = JSON.parse(request.body.selected_address);
 
         await this.saveAndRedirectToNextPage(request, response, address);
       } catch (error) {
