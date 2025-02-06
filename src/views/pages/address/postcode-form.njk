@@ -41,7 +41,8 @@
             attributes: {
                 required: true,
                 "data-event-id": "postcode",
-                oninvalid: postcodeErrorMessage
+                oninvalid: postcodeErrorMessage,
+                onclick: "this.setCustomValidity('')"
             },
             pattern: "^[A-Za-z]{1,2}\\d[A-Za-z\\d]? ?\\d[A-Za-z]{2}$",
             errorMessage: postalCodeErrorMessage
