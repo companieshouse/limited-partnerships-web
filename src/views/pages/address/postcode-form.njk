@@ -1,6 +1,17 @@
+{% set postalCodeErrorMessage = null %}
+
+{% if props.errors.errorList.length > 0 %}
+  {% for el in props.errors.errorList %}
+    {% if el.href === "#postal_code" %}
+      {% set postalCodeErrorMessage = { text: el.text } %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
 <form class="form" action={{ props.currentUrl }} method="post">
     <input type="hidden" name="pageType" value={{ props.pageType }}>      
     {% include "includes/csrf_token.njk" %}
+
 
     <div class="govuk-!-margin-top-8">
         {{ govukInput({
