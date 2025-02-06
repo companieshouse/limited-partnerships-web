@@ -120,10 +120,10 @@ describe("Where is the jurisdiction page", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
-      `${enTranslationText.whereIsTheJurisdiction.title} - ${enTranslationText.service} - GOV.UK`
+      `${enTranslationText.whereIsTheJurisdiction.scotland.title} - ${enTranslationText.service} - GOV.UK`
     );
     testTranslations(res.text, enTranslationText.whereIsTheJurisdiction.scotland);
-    expect(res.text).toContain(enTranslationText.whereIsTheJurisdiction.title);
+    expect(res.text).toContain(enTranslationText.whereIsTheJurisdiction.scotland.title);
     expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
   });
 
@@ -142,9 +142,9 @@ describe("Where is the jurisdiction page", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
-      `${enTranslationText.whereIsTheJurisdiction.title} - ${enTranslationText.service} - GOV.UK`
+      `${enTranslationText.whereIsTheJurisdiction.scotland.title} - ${enTranslationText.service} - GOV.UK`
     );
-    expect(res.text).toContain(enTranslationText.whereIsTheJurisdiction.title);
+    expect(res.text).toContain(enTranslationText.whereIsTheJurisdiction.scotland.title);
     testTranslations(res.text, enTranslationText.whereIsTheJurisdiction.scotland);
     expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
   });
