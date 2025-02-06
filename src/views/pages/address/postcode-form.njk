@@ -1,3 +1,7 @@
+{% import 'includes/macros.njk' as macros %}
+
+{% set postcodeErrorMessage = macros.htmlInputErrorMessage(i18n.address.findPostcode.errorPostcode) %}
+
 {% set postalCodeErrorMessage = null %}
 
 {% if props.errors.errorList.length > 0 %}
@@ -36,7 +40,8 @@
             value: "",
             attributes: {
                 required: true,
-                "data-event-id": "postcode"
+                "data-event-id": "postcode",
+                oninvalid: postcodeErrorMessage
             },
             pattern: "^[A-Za-z]{1,2}\\d[A-Za-z\\d]? ?\\d[A-Za-z]{2}$",
             errorMessage: postalCodeErrorMessage

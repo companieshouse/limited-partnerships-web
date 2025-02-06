@@ -28,7 +28,9 @@
             "nameOrNumberHint": "Property name or number (optional)",
             "postcodeHint": "Postcode",
             "enterAddressManually": "Enter address manually",
-            "findAddress": "Find address"
+            "findAddress": "Find address",
+
+            "errorPostcode": "Enter a postcode"
         }
     },
     

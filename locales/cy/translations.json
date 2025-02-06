@@ -28,7 +28,9 @@
             "nameOrNumberHint": "WELSH - Property name or number (optional)",
             "postcodeHint": "WELSH - Postcode",
             "enterAddressManually": "WELSH - Enter address manually",
-            "findAddress": "WELSH - Find address"
+            "findAddress": "WELSH - Find address",
+
+            "errorPostcode": "WELSH - Enter a postcode"
         }
     },
     
