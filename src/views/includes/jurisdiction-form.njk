@@ -10,6 +10,7 @@
   {{ govukRadios({
     classes: "govuk-radios",
     name: "jurisdiction",
+    value: props.data.limitedPartnership.data.jurisdiction,
     fieldset: {
       legend: {
         text: i18n.whereIsTheJurisdiction.title,
