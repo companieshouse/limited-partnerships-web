@@ -7,6 +7,8 @@ import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import * as config from "../../../../../config";
 import AddressPageType from "../../../../../presentation/controller/addressLookUp/PageType";
+import LimitedPartnershipBuilder from "../../../../../presentation/test/builder/LimitedPartnershipBuilder";
+import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 
 describe("Confirm Registered Office Address Page", () => {
   const URL = getUrl(CONFIRM_REGISTERED_OFFICE_ADDRESS_URL);
@@ -25,6 +27,14 @@ describe("Confirm Registered Office Address Page", () => {
           country: "england"
         }
     });
+
+    const limitedPartnership = new LimitedPartnershipBuilder()
+      .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+      .build();
+
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
+      limitedPartnership
+    ]);
   });
 
   describe("GET Confirm Registered Office Address Page", () => {
@@ -72,6 +82,46 @@ describe("Confirm Registered Office Address Page", () => {
       const redirectUrl = getUrl(POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL);
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+    });
+
+    it("should show error message if address is not provided", async () => {
+      appDevDependencies.cacheRepository.feedCache({});
+
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: AddressPageType.confirmRegisteredOfficeAddress
+        });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain("You must provide an address");
+    });
+
+    it("should show validation error message if validation error occurs when saving address", async () => {
+      const limitedPartnership = new LimitedPartnershipBuilder()
+        .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+        .build();
+
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
+        limitedPartnership
+      ]);
+
+      const apiErrors: ApiErrors = {
+        errors: {
+          "registeredOfficeAddress.postalCode": "must not be null"
+        }
+      };
+
+      appDevDependencies.limitedPartnershipGateway.feedErrors(apiErrors);
+
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: AddressPageType.confirmRegisteredOfficeAddress
+        });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain("must not be null");
     });
   });
 });
