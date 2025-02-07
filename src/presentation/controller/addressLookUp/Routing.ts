@@ -50,7 +50,7 @@ const addressRoutingConfirmRegisteredOfficeAddress = {
   nextUrl: POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   pageType: AddressPageType.confirmRegisteredOfficeAddress,
   data: {
-    enterRegisteredOfficeAddressPageType: AddressPageType.enterRegisteredOfficeAddress
+    enterManualAddressPageType: AddressPageType.enterRegisteredOfficeAddress
   }
 };
 

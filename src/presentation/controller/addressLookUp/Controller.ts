@@ -10,7 +10,7 @@ import CacheService from "../../../application/service/CacheService";
 import { APPLICATION_CACHE_KEY_PREFIX_REGISTRATION } from "../../../config/constants";
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import UIErrors from "../../../domain/entities/UIErrors";
-import { Address } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { Address, LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 class AddressLookUpController extends AbstractController {
   public readonly REGISTERED_OFFICE_ADDRESS_CACHE_KEY =
@@ -27,10 +27,8 @@ class AddressLookUpController extends AbstractController {
   getPageRouting(): RequestHandler {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
-        const session = request.session as Session;
         const tokens = super.extractTokens(request);
         const pageType = super.pageType(request.path);
-        const { transactionId, submissionId } = super.extractIds(request);
 
         const pageRouting = super.getRouting(
           addresssRouting,
@@ -38,41 +36,12 @@ class AddressLookUpController extends AbstractController {
           request
         );
 
-        let limitedPartnership = {};
-
-        if (transactionId && submissionId) {
-          limitedPartnership =
-            await this.limitedPartnershipService.getLimitedPartnership(
-              tokens,
-              transactionId,
-              submissionId
-            );
-        }
-
-        const cache = await this.cacheService.getDataFromCache(session);
-
-        let addressList: Address[] = [];
-
-        if (this.isAddressListRequired(pageRouting.pageType)) {
-          const postcode =
-            cache[this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY].postal_code;
-
-          addressList = await this.addressService.getAddressListForPostcode(
-            tokens,
-            postcode
-          );
-        }
-
-        pageRouting.data = {
-          ...pageRouting.data,
-          limitedPartnership,
-          addressList,
-          cache
-        };
-
-        response.render(super.templateName(pageRouting.currentUrl), {
-          props: { ...pageRouting }
-        });
+        await this.renderPage(
+          request,
+          response,
+          pageRouting,
+          tokens
+        );
       } catch (error) {
         next(error);
       }
@@ -117,15 +86,15 @@ class AddressLookUpController extends AbstractController {
           );
 
         if (errors?.errors) {
-          pageRouting.errors = errors?.errors;
-          pageRouting.data = {
-            ...pageRouting.data,
-            limitedPartnership
-          };
-
-          response.render(super.templateName(pageRouting.currentUrl), {
-            props: { ...pageRouting }
-          });
+          await this.renderPage(
+            request,
+            response,
+            pageRouting,
+            tokens,
+            undefined,
+            undefined,
+            errors
+          );
           return;
         }
 
@@ -210,17 +179,15 @@ class AddressLookUpController extends AbstractController {
             request
           );
 
-          pageRouting.errors = errors?.errors;
-
-          pageRouting.data = {
-            ...pageRouting.data,
-            address
-          };
-
-          response.render(super.templateName(pageRouting.currentUrl), {
-            props: { ...pageRouting }
-          });
-
+          await this.renderPage(
+            request,
+            response,
+            pageRouting,
+            tokens,
+            undefined,
+            address,
+            errors
+          );
           return;
         }
 
@@ -253,8 +220,6 @@ class AddressLookUpController extends AbstractController {
 
         const address = cache[this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY];
 
-        let limitedPartnership = {};
-
         if (!address) {
           const uiErrors = new UIErrors();
           uiErrors.formatValidationErrorToUiErrors({
@@ -263,23 +228,15 @@ class AddressLookUpController extends AbstractController {
             }
           });
 
-          limitedPartnership =
-          await this.limitedPartnershipService.getLimitedPartnership(
+          await this.renderPage(
+            request,
+            response,
+            pageRouting,
             tokens,
-            transactionId,
-            submissionId
+            undefined,
+            undefined,
+            uiErrors
           );
-
-          pageRouting.errors = uiErrors.errors;
-          pageRouting.data = {
-            ...pageRouting.data,
-            cache,
-            limitedPartnership
-          };
-
-          response.render(super.templateName(pageRouting.currentUrl), {
-            props: { ...pageRouting }
-          });
           return;
         }
 
@@ -293,23 +250,15 @@ class AddressLookUpController extends AbstractController {
         );
 
         if (result?.errors) {
-          limitedPartnership =
-          await this.limitedPartnershipService.getLimitedPartnership(
+          await this.renderPage(
+            request,
+            response,
+            pageRouting,
             tokens,
-            transactionId,
-            submissionId
+            undefined,
+            undefined,
+            result.errors,
           );
-
-          pageRouting.errors = result.errors.errors;
-          pageRouting.data = {
-            ...pageRouting.data,
-            cache,
-            limitedPartnership
-          };
-
-          response.render(super.templateName(pageRouting.currentUrl), {
-            props: { ...pageRouting }
-          });
           return;
         }
 
@@ -344,6 +293,55 @@ class AddressLookUpController extends AbstractController {
     });
 
     response.redirect(pageRouting.nextUrl);
+  }
+
+  private async renderPage(
+    request: Request,
+    response: Response,
+    pageRouting: any,
+    tokens: any,
+    limitedPartnership?: LimitedPartnership,
+    address?: any,
+    errors?: any,
+  ) {
+    const { transactionId, submissionId } = super.extractIds(request);
+
+    if (!limitedPartnership) {
+      limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+        tokens,
+        transactionId,
+        submissionId
+      );
+    }
+
+    const session = request.session as Session;
+
+    const cache = await this.cacheService.getDataFromCache(session);
+
+    let addressList: Address[] = [];
+
+    if (this.isAddressListRequired(pageRouting.pageType)) {
+      const postcode =
+        cache[this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY].postal_code;
+
+      addressList = await this.addressService.getAddressListForPostcode(
+        tokens,
+        postcode
+      );
+    }
+
+    pageRouting.errors = errors?.errors;
+    pageRouting.data = {
+      ...pageRouting.data,
+      cache,
+      limitedPartnership,
+      addressList,
+      address
+    };
+
+    response.render(super.templateName(pageRouting.currentUrl), {
+      props: { ...pageRouting }
+    });
   }
 }
 
