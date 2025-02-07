@@ -157,7 +157,7 @@ class AddressLookUpController extends AbstractController {
       try {
         const address: Address = JSON.parse(request.body.selected_address);
 
-        await this.saveAndRedirectToNextPage(request, response, address);
+        await this.cacheAndRedirectToNextPage(request, response, address);
       } catch (error) {
         next(error);
       }
@@ -224,7 +224,7 @@ class AddressLookUpController extends AbstractController {
           return;
         }
 
-        await this.saveAndRedirectToNextPage(request, response, address);
+        await this.cacheAndRedirectToNextPage(request, response, address);
       } catch (error) {
         next(error);
       }
@@ -320,7 +320,7 @@ class AddressLookUpController extends AbstractController {
     };
   }
 
-  private async saveAndRedirectToNextPage(
+  private async cacheAndRedirectToNextPage(
     request: Request,
     response: Response<any, Record<string, any>>,
     dataToStore: any
