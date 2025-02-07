@@ -1,4 +1,4 @@
-import { Address, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { Address, Jurisdiction, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import UIErrors from "../../domain/entities/UIErrors";
 import IAddressLookUpGateway from "../../domain/IAddressLookUpGateway";
 
@@ -34,8 +34,9 @@ class AddressLookUpService {
       );
 
       if (!isValid) {
-        this.setPostalCodeError(
+        this.setFieldError(
           uiErrors,
+          "postal_code",
           `The postcode ${postalCode} cannot be found`
         );
 
@@ -72,6 +73,17 @@ class AddressLookUpService {
       logger.error(`Error validating postcode ${JSON.stringify(error)}`);
 
       throw error;
+    }
+  }
+
+  isValidJurisdictionAndCountry(
+    jurisdiction: string,
+    country: string
+  ): UIErrors | undefined {
+    const uiErrors = new UIErrors();
+
+    if (!this.isJurisdictionAndCountryCombinationAllowed(jurisdiction, country, uiErrors)) {
+      return uiErrors;
     }
   }
 
@@ -117,15 +129,17 @@ class AddressLookUpService {
     if (SCOTLAND_TYPE && !IS_IN_SCOTLAND) {
       isCorrectCountry = false;
 
-      this.setPostalCodeError(
+      this.setFieldError(
         uiErrors,
+        "postal_code",
         "You must enter a postcode which is in Scotland"
       );
     } else if (NON_SCOTLAND_TYPE && IS_IN_SCOTLAND) {
       isCorrectCountry = false;
 
-      this.setPostalCodeError(
+      this.setFieldError(
         uiErrors,
+        "postal_code",
         "You must enter a postcode which is in England, Wales, or Northern Ireland"
       );
     }
@@ -133,12 +147,33 @@ class AddressLookUpService {
     return isCorrectCountry;
   }
 
-  private setPostalCodeError(uiErrors: UIErrors, message: string): void {
+  private setFieldError(uiErrors: UIErrors, fieldName: string, message: string): void {
     uiErrors.formatValidationErrorToUiErrors({
       errors: {
-        postal_code: message
+        [fieldName]: message
       }
     });
+  }
+
+  private isJurisdictionAndCountryCombinationAllowed(
+    jurisdiction: string,
+    country: string,
+    uiErrors: UIErrors
+  ): boolean {
+
+    const isValid = (jurisdiction === Jurisdiction.SCOTLAND && country === "scotland")
+      || (jurisdiction === Jurisdiction.NORTHERN_IRELAND && country === "northern-ireland")
+      || (jurisdiction === Jurisdiction.ENGLAND_AND_WALES && (country === "england" || country === "wales"));
+
+    if (!isValid) {
+      this.setFieldError(
+        uiErrors,
+        "country",
+        "You must enter a country that matches your jurisdiction"
+      );
+    }
+
+    return isValid;
   }
 }
 

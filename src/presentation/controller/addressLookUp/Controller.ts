@@ -186,6 +186,44 @@ class AddressLookUpController extends AbstractController {
           region
         };
 
+        const tokens = super.extractTokens(request);
+        const { transactionId, submissionId } = super.extractIds(request);
+
+        const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+          tokens,
+          transactionId,
+          submissionId
+        );
+
+        const errors =
+          this.addressService.isValidJurisdictionAndCountry(
+            limitedPartnership?.data?.jurisdiction ?? "",
+            country,
+          );
+
+        if (errors?.errors) {
+          const pageType = super.pageType(request.path);
+
+          const pageRouting = super.getRouting(
+            addresssRouting,
+            pageType,
+            request
+          );
+
+          pageRouting.errors = errors?.errors;
+
+          pageRouting.data = {
+            ...pageRouting.data,
+            address
+          };
+
+          response.render(super.templateName(pageRouting.currentUrl), {
+            props: { ...pageRouting }
+          });
+
+          return;
+        }
+
         await this.saveAndRedirectToNextPage(request, response, address);
       } catch (error) {
         next(error);
