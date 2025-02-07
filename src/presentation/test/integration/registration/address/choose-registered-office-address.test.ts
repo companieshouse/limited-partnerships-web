@@ -1,12 +1,12 @@
 import request from "supertest";
-import enTranslationText from "../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../locales/cy/translations.json";
-import app from "../app";
+import enTranslationText from "../../../../../../locales/en/translations.json";
+import cyTranslationText from "../../../../../../locales/cy/translations.json";
+import app from "../../app";
 import {
   CHOOSE_REGISTERED_OFFICE_ADDRESS_URL,
   CONFIRM_REGISTERED_OFFICE_ADDRESS_URL
 } from "presentation/controller/addressLookUp/url";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
+import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import { appDevDependencies } from "config/dev-dependencies";
 import * as config from "config";
 import AddressPageType from "presentation/controller/addressLookUp/PageType";
