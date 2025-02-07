@@ -25,21 +25,21 @@
   {{ address }}
 {% endmacro %}
 
-{% macro capitalizeEachWord(str) -%}
-  {% set words = str.split(' ') %}
-  {% set capitalizedWords = [] %}
-  {% for word in words %}
-    {% set subwords = word.split('-') %}
-    {% set capitalizedSubwords = [] %}
-    {% for subword in subwords %}
-      {% set capitalizedSubword = subword | capitalize %}
-      {% set capitalizedSubwords = capitalizedSubwords.concat(capitalizedSubword) %}
-    {% endfor %}
-    {% set capitalizedWord = capitalizedSubwords.join('-') %}
-    {% set capitalizedWords = capitalizedWords.concat(capitalizedWord) %}
-  {% endfor %}
-  {{ capitalizedWords.join(' ') }}
-{%- endmacro %}
+{%- macro capitalizeEachWord(str) -%}
+  {%- set words = str.split(' ') -%}
+  {%- set capitalizedWords = [] -%}
+  {%- for word in words -%}
+    {%- set subwords = word.split('-') -%}
+    {%- set capitalizedSubwords = [] -%}
+    {%- for subword in subwords -%}
+      {%- set capitalizedSubword = subword | capitalize -%}
+      {%- set capitalizedSubwords = capitalizedSubwords.concat(capitalizedSubword) -%}
+    {%- endfor -%}
+    {%- set capitalizedWord = capitalizedSubwords.join('-') -%}
+    {%- set capitalizedWords = capitalizedWords.concat(capitalizedWord) -%}
+  {%- endfor -%}
+  {{- capitalizedWords.join(' ') -}}
+{%- endmacro -%}
 
 {% macro htmlInputErrorMessage(message) %}
   {% set errorMessage = "this.setCustomValidity('" + message + "')" %}
