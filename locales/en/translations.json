@@ -52,6 +52,10 @@
         "payment" : "Continue to payment"
     },
 
+    "choosePrincipalPlaceOfBusinessPage" : {
+        "title": "Choose the principal place of business address"
+    },
+
     "chooseRegisteredOfficeAddressPage" : {
         "title": "Choose the registered office address",
         "addressLink": "The address is not on the list"

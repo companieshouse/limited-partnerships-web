@@ -52,6 +52,10 @@
         "payment" : "WELSH - Continue to payment"
     },
 
+    "choosePrincipalPlaceOfBusinessPage" : {
+        "title": "WELSH - Choose the principal place of business address"
+    },
+
     "chooseRegisteredOfficeAddressPage" : {
         "title": "WELSH - Choose the registered office address",
         "addressLink": "WELSH - The address is not on the list"    

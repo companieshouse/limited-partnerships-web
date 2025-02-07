@@ -7,10 +7,9 @@ import cyTranslationText from "../../../../../../locales/cy/translations.json";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import app from "../../app";
 
-import { POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL } from "../../../../controller/addressLookUp/url";
+import { POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL, CHOOSE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL } from "../../../../controller/addressLookUp/url";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
-import { GENERAL_PARTNERS_URL } from "../../../../controller/registration/url";
 import AddressPageType from "../../../../controller/addressLookUp/PageType";
 import {
   APPLICATION_CACHE_KEY,
@@ -20,7 +19,7 @@ import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limi
 
 describe("Postcode Principal Place Of Business Address Page", () => {
   const URL = getUrl(POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL);
-  const REDIRECT_URL = getUrl(GENERAL_PARTNERS_URL);
+  const REDIRECT_URL = getUrl(CHOOSE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL);
   const addresses: UKAddress[] =
     appDevDependencies.addressLookUpGateway.addresses;
 

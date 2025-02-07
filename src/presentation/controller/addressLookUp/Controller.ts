@@ -79,7 +79,9 @@ class AddressLookUpController extends AbstractController {
   }
 
   private isAddressListRequired(pageType: string): boolean {
-    return pageType === AddressLookUpPageType.chooseRegisteredOfficeAddress;
+
+    return pageType === AddressLookUpPageType.chooseRegisteredOfficeAddress ||
+           pageType === AddressLookUpPageType.choosePrincipalPlaceOfBusinessAddress ;
   }
 
   postcodeValidation(): RequestHandler {
