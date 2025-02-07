@@ -36,6 +36,12 @@ class AddressLookUpController extends AbstractController {
           request
         );
 
+        if (pageType === AddressLookUpPageType.postcodeRegisteredOfficeAddress) {
+          // clear address from cache
+          const session = request.session as Session;
+          await this.cacheService.removeDataFromCache(session, this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY);
+        }
+
         await this.renderPage(
           request,
           response,
