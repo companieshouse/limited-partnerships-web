@@ -53,7 +53,8 @@
     },
 
     "choosePrincipalPlaceOfBusinessPage" : {
-        "title": "WELSH - Choose the principal place of business"
+        "title": "WELSH - Choose the principal place of business",
+        "addressLink": "WELSH - The address is not on the list"
     },
 
     "chooseRegisteredOfficeAddressPage" : {

@@ -53,7 +53,8 @@
     },
 
     "choosePrincipalPlaceOfBusinessPage" : {
-        "title": "Choose the principal place of business"
+        "title": "Choose the principal place of business",
+         "addressLink": "The address is not on the list"
     },
 
     "chooseRegisteredOfficeAddressPage" : {
