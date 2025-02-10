@@ -3,6 +3,7 @@ enum RegistrationPageType {
   name = "name",
   email = "email",
   whereIsTheJurisdiction = "where-is-the-jurisdiction",
+  term = "term",
   generalPartners = "general-partners",
   limitedPartners = "limited-partners",
   generalPartnerChoice = "general-partner-choice",

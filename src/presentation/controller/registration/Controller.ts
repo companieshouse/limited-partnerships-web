@@ -1,6 +1,10 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
 import escape from "escape-html";
 import { Session } from "@companieshouse/node-session-handler";
+import {
+  LimitedPartnership,
+  PartnershipType
+} from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import registrationsRouting from "./Routing";
@@ -8,6 +12,8 @@ import AbstractController from "../AbstractController";
 import RegistrationPageType from "./PageType";
 import { APPLICATION_CACHE_KEY_PREFIX_REGISTRATION } from "../../../config/constants";
 import CacheService from "../../../application/service/CacheService";
+import PageType from "../PageType";
+import { GENERAL_PARTNERS_URL } from "./url";
 
 class RegistrationController extends AbstractController {
   private limitedPartnershipService: LimitedPartnershipService;
@@ -59,6 +65,17 @@ class RegistrationController extends AbstractController {
           cache
         };
 
+        if (
+          this.conditionalRedirecting(
+            request,
+            response,
+            pageType,
+            limitedPartnership
+          )
+        ) {
+          return;
+        }
+
         response.render(super.templateName(pageRouting.currentUrl), {
           props: { ...pageRouting }
         });
@@ -66,6 +83,36 @@ class RegistrationController extends AbstractController {
         next(error);
       }
     };
+  }
+
+  conditionalRedirecting(
+    request: Request,
+    response: Response,
+    pageType: PageType,
+    limitedPartnership: LimitedPartnership
+  ): boolean {
+    let redirect = false;
+
+    // Redirect to general partners page if partnership type is PFLP or SPFLP instead of term page
+    if (
+      pageType === RegistrationPageType.term &&
+      (limitedPartnership.data?.partnership_type === PartnershipType.PFLP ||
+        limitedPartnership.data?.partnership_type === PartnershipType.SPFLP)
+    ) {
+      const { transactionId, submissionId } = super.extractIds(request);
+
+      const url = super.insertIdsInUrl(
+        GENERAL_PARTNERS_URL,
+        transactionId,
+        submissionId
+      );
+
+      response.redirect(url);
+
+      redirect = true;
+    }
+
+    return redirect;
   }
 
   createTransactionAndFirstSubmission(): RequestHandler {
