@@ -86,6 +86,7 @@ class AddressLookUpService {
           opt,
           postalCode
         );
+
       return addressList.sort((a, b) => a.premises.localeCompare(b.premises));
     } catch (error: any) {
       logger.error(
