@@ -328,10 +328,9 @@ class AddressLookUpController extends AbstractController {
       limitedPartnership
     };
 
-    response.render(super.templateName(pageRouting.currentUrl), {
+    return response.render(super.templateName(pageRouting.currentUrl), {
       props: { ...pageRouting }
     });
-    return limitedPartnership;
   }
 
   private async saveAndRedirectToNextPage(

@@ -10,9 +10,8 @@
 {% elif props.data.limitedPartnership.data.registered_office_address %}
   {% set address = props.data.limitedPartnership.data.registered_office_address %}
 {% else %}
-  {% set address = {} %}
+  {% set address = null %}
 {% endif %}
-
 
 {% set addressFirstLineForDisplay = address.premises + " " + address.address_line_1 %}
 
