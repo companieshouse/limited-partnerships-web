@@ -1,15 +1,15 @@
 import request from "supertest";
-import enTranslationText from "../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../locales/cy/translations.json";
-import app from "../app";
+import enTranslationText from "../../../../../../locales/en/translations.json";
+import cyTranslationText from "../../../../../../locales/cy/translations.json";
+import app from "../../app";
 import {
   CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
   ENTER_REGISTERED_OFFICE_ADDRESS_URL
 } from "presentation/controller/addressLookUp/url";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
-import AddressPageType from "../../../controller/addressLookUp/PageType";
-import { appDevDependencies } from "../../../../config/dev-dependencies";
-import LimitedPartnershipBuilder from "presentation/test/builder/LimitedPartnershipBuilder";
+import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
+import AddressPageType from "../../../../controller/addressLookUp/PageType";
+import { appDevDependencies } from "../../../../../config/dev-dependencies";
+import LimitedPartnershipBuilder from "../../../../../presentation/test/builder/LimitedPartnershipBuilder";
 import { Jurisdiction } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 describe("Enter Registered Office Address Page", () => {

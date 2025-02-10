@@ -1,4 +1,4 @@
-import Address from "./entities/Address";
+import { Address } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 interface IAddressLookUpGateway {
   isValidUKPostcode(

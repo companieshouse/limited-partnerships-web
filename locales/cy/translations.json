@@ -57,6 +57,14 @@
         "addressLink": "WELSH - The address is not on the list"    
    },
 
+   "confirmRegisteredOfficeAddressPage" : {
+        "title" : "WELSH - Confirm the registered office address",
+        "addressLink" : "WELSH - Change",
+        "addressLinkHidden" : "WELSH - registered office address",
+        "publicRegisterTitle": "WELSH - What information we'll show on the public register",
+        "publicRegisterLine1": "WELSH - We'll show the registered office address on the public register."
+   },
+
     "emailPage" : {
         "whatIsEmail" : "WELSH - What is the registered email address for the partnership?",
         "emailHint" : "WELSH - Partners must be able to access emails that are sent to this address.",

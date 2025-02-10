@@ -55,6 +55,11 @@ export const addressLookUpEndpoints = (
     authentication,
     dependencies.addressLookUpController.getPageRouting()
   );
+  router.post(
+    CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
+    authentication,
+    dependencies.addressLookUpController.confirmAddress()
+  );
 
   // principal place of business
   router.get(

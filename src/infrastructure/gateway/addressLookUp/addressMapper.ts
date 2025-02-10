@@ -1,5 +1,5 @@
+import { Address } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { UKAddress } from "@companieshouse/api-sdk-node/dist/services/postcode-lookup";
-import Address from "../../../domain/entities/Address";
 
 const postcodeLookUpAddressToAddress = (address: UKAddress): Address => {
   return {

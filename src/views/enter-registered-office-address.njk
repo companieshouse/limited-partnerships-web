@@ -1,7 +1,9 @@
 {% extends "layout.njk" %}
 
 {% set registeredOfficeKey = "registration_registered_office_address" %}
-{% if props.data.cache[registeredOfficeKey] %}
+{% if props.data.address %}
+  {% set registeredOfficeAddress = props.data.address %}
+{% elif props.data.cache[registeredOfficeKey] %}
   {% set registeredOfficeAddress = props.data.cache[registeredOfficeKey] %}
 {% elif props.data.limitedPartnership.data.registered_office_address %}
   {% set registeredOfficeAddress = props.data.limitedPartnership.data.registered_office_address %}
@@ -12,6 +14,7 @@
 {% set pageTitle = i18n.enterRegisteredOfficeAddressPage.title %}
 
 {% block content %}
+
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <form class="form" action={{ props.currentUrl }} method="post">
@@ -47,7 +50,7 @@
               },
               id: "premises",
               name: "premises",
-              value: props.data.address.premises,
+              value: registeredOfficeAddress.premises,
               attributes : {  
                 required : true,
                 maxLength: 50,
@@ -61,7 +64,7 @@
               },
               id: "address_line_1",
               name: "address_line_1",
-              value: props.data.address.address_line_1,
+              value: registeredOfficeAddress.address_line_1,
               attributes : {
                 required : true,
                 maxLength: 50,
@@ -75,7 +78,7 @@
               },
               id: "address_line_2",
               name: "address_line_2",
-              value: props.data.address.address_line_2,
+              value: registeredOfficeAddress.address_line_2,
               attributes : {
                 maxLength: 50,
                 "data-event-id": "address-line-2"
@@ -89,7 +92,7 @@
               classes: "govuk-!-width-two-thirds",
               id: "locality",
               name: "locality",
-              value: props.data.address.locality,
+              value: registeredOfficeAddress.locality,
               attributes : {
                 required : true,
                 maxLength: 50,
@@ -104,7 +107,7 @@
               classes: "govuk-!-width-two-thirds",
               id: "region",
               name: "region",
-              value: props.data.address.region,
+              value: registeredOfficeAddress.region,
               attributes : {
                 maxLength: 50,
                 "data-event-id": "county"
@@ -118,7 +121,7 @@
               classes: "govuk-input--width-10",
               id: "postal_code",
               name: "postal_code",
-              value: props.data.address.postal_code,
+              value: registeredOfficeAddress.postal_code,
               attributes : {
                 required : true,
                 maxLength: 15,
@@ -129,7 +132,7 @@
             {{ govukSelect({
               id: "country",
               name: "country",
-              value: props.data.address.country,
+              value: registeredOfficeAddress.country,
               label: {
                 text: i18n.enterRegisteredOfficeAddressPage.country
               },

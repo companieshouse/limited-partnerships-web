@@ -1,9 +1,8 @@
-import { Jurisdiction, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { Address, Jurisdiction, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import UIErrors from "../../domain/entities/UIErrors";
 import IAddressLookUpGateway from "../../domain/IAddressLookUpGateway";
 
 import { logger } from "../../utils";
-import Address from "../../domain/entities/Address";
 
 class AddressLookUpService {
   constructor(private addressGateway: IAddressLookUpGateway) {}
