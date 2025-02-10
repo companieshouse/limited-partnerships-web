@@ -3,7 +3,17 @@
 
 {% set pageTitle = i18n.confirmRegisteredOfficeAddressPage.title %}
 
-{% set address = props.data.cache.registration_registered_office_address %}
+{% set registeredOfficeKey = "registration_registered_office_address" %}
+
+{% if props.data.cache[registeredOfficeKey] %}
+  {% set address = props.data.cache[registeredOfficeKey] %}
+{% elif props.data.limitedPartnership.data.registered_office_address %}
+  {% set address = props.data.limitedPartnership.data.registered_office_address %}
+{% else %}
+  {% set address = {} %}
+{% endif %}
+
+
 {% set addressFirstLineForDisplay = address.premises + " " + address.address_line_1 %}
 
 {% block content %}
