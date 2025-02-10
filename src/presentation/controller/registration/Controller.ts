@@ -65,20 +65,18 @@ class RegistrationController extends AbstractController {
           cache
         };
 
-        if (
-          this.conditionalRedirecting(
-            request,
-            response,
-            pageType,
-            limitedPartnership
-          )
-        ) {
-          return;
-        }
+        const redirect = this.conditionalRedirecting(
+          request,
+          response,
+          pageType,
+          limitedPartnership
+        );
 
-        response.render(super.templateName(pageRouting.currentUrl), {
-          props: { ...pageRouting }
-        });
+        if (!redirect) {
+          response.render(super.templateName(pageRouting.currentUrl), {
+            props: { ...pageRouting }
+          });
+        }
       } catch (error) {
         next(error);
       }

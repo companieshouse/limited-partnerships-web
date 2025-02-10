@@ -12,6 +12,7 @@ import {
 } from "../../../controller/registration/url";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
+import RegistrationPageType from "../../../controller/registration/PageType";
 
 describe("Email Page", () => {
   const URL = getUrl(TERM_URL);
@@ -95,6 +96,29 @@ describe("Email Page", () => {
         ]);
 
         const res = await request(app).get(URL);
+
+        expect(res.status).toBe(302);
+        expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+      });
+    });
+
+    describe.skip("Post term", () => {
+      const REDIRECT_URL = getUrl(GENERAL_PARTNERS_URL);
+
+      it("should send term", async () => {
+        const limitedPartnership = new LimitedPartnershipBuilder()
+          .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+          .withPartnershipType(PartnershipType.LP)
+          .build();
+
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
+          limitedPartnership
+        ]);
+
+        const res = await request(app).post(URL).send({
+          pageType: RegistrationPageType.term,
+        //   term: Term.BY_AGREEMENT
+        });
 
         expect(res.status).toBe(302);
         expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
