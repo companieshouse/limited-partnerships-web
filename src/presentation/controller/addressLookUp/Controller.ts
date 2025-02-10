@@ -14,6 +14,8 @@ import Address from "../../../domain/entities/Address";
 class AddressLookUpController extends AbstractController {
   public readonly REGISTERED_OFFICE_ADDRESS_CACHE_KEY =
     APPLICATION_CACHE_KEY_PREFIX_REGISTRATION + "registered_office_address";
+  public readonly PRINCIPAL_PLACE_OF_BUSINESS_CACHE_KEY =
+    APPLICATION_CACHE_KEY_PREFIX_REGISTRATION + "principal_place_of_business";
 
   constructor(
     private addressService: AddressService,
@@ -53,8 +55,12 @@ class AddressLookUpController extends AbstractController {
         let addressList: Address[] = [];
 
         if (this.isAddressListRequired(pageRouting.pageType)) {
-          const postcode =
-            cache[this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY].postal_code;
+          let postcode = "";
+          if (pageType === AddressLookUpPageType.choosePrincipalPlaceOfBusinessAddress) {
+            postcode = cache[this.PRINCIPAL_PLACE_OF_BUSINESS_CACHE_KEY].postal_code;
+          } else {
+            postcode = cache[this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY].postal_code;
+          }
 
           addressList = await this.addressService.getAddressListForPostcode(
             tokens,
@@ -211,7 +217,12 @@ class AddressLookUpController extends AbstractController {
       request
     );
 
-    const cacheKey = this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY;
+    let cacheKey = "";
+    if (pageType === AddressLookUpPageType.choosePrincipalPlaceOfBusinessAddress) {
+      cacheKey = this.PRINCIPAL_PLACE_OF_BUSINESS_CACHE_KEY;
+    } else {
+      cacheKey = this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY;
+    }
 
     await this.cacheService.addDataToCache(session, {
       [cacheKey]: dataToStore

@@ -19,7 +19,7 @@ describe("Choose Principal Place Of Business Address Page", () => {
     setLocalesEnabled(false);
     appDevDependencies.addressLookUpGateway.setError(false);
     appDevDependencies.cacheRepository.feedCache({
-      [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`]:
+      [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}principal_place_of_business`]:
         {
           postal_code: "ST6 3LJ",
           premises: "",
