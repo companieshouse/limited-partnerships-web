@@ -41,14 +41,21 @@
   {{- capitalizedWords.join(' ') -}}
 {%- endmacro -%}
 
-{% macro htmlInputErrorMessage(message) %}
-  {% set errorMessage = "this.setCustomValidity('" + message + "')" %}
+{% macro htmlInputErrorMessage(message, page, field) %}
+
+  {% set event = "_paq.push(['trackEvent', 'Limited Partnerships "+ page +"', '"+ field +"', 'Error: " + message + "']);" %}
+  {% set validation = "this.setCustomValidity('" + message + "');" %}
+
+  {% set errorMessage = event + validation %}
 
   {{ errorMessage }}
 {% endmacro %}
 
-{% macro htmlOptionErrorMessage(message, name) %}
-  {% set errorMessage = "document.querySelectorAll('input[name=" + name + "]:checked').length === 0 ? this.setCustomValidity('" + message + "') : this.setCustomValidity('')" %}
+{% macro htmlOptionErrorMessage(message, page, field) %}
+  {% set event = "_paq.push(['trackEvent', 'Limited Partnerships "+ page +"', '"+ field +"', 'Error: " + message + "']);" %}
+  {% set validation = "document.querySelectorAll('input[name=" + field + "]:checked').length === 0 ? this.setCustomValidity('" + message + "') : this.setCustomValidity('')" %}
+
+  {% set errorMessage = event + validation %}
 
   {{ errorMessage }}
 {% endmacro %}

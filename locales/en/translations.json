@@ -55,7 +55,7 @@
     "chooseRegisteredOfficeAddressPage" : {
         "title": "Choose the registered office address",
         "addressLink": "The address is not on the list"
-   },
+    },
 
    "confirmRegisteredOfficeAddressPage" : {
         "title" : "Confirm the registered office address",
