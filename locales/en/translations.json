@@ -41,9 +41,9 @@
             "findAddress": "Find address",
 
             "errorPostcode": "Enter a postcode"
-        }    
+        }
     },
-    
+
     "buttons" : {
         "continue" : "Continue",
         "saveAndContinue" : "Save and continue"
