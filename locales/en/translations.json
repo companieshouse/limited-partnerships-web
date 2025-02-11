@@ -192,9 +192,9 @@
     "termPage": {
         "title": "What is the term of the partnership?",
         "hint": "This is the length of time for which the partnership will be entered into.",
-        "option1": "Such term as decided by the partners within the partnership agreement",
-        "option2": "Until the general partner determines the partnership is dissolved",
-        "option3": "No set term",
+        "byAgreement": "Such term as decided by the partners within the partnership agreement",
+        "untilDissolution": "Until the general partner determines the partnership is dissolved",
+        "noTerm": "No set term",
         "publicRegisterTitle": "What information we'll show on the public register",
         "publicRegisterLine1": "We'll show the term of partnership on the public register."
     },

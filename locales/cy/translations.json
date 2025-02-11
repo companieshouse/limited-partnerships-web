@@ -190,13 +190,13 @@
     },
 
     "termPage": {
-        "title": "WELSH _ What is the term of the partnership?",
-        "hint": "WELSH _ This is the length of time for which the partnership will be entered into.",
-        "option1": "WELSH _ Such term as decided by the partners within the partnership agreement",
-        "option2": "WELSH _ Until the general partner determines the partnership is dissolved",
-        "option3": "WELSH _ No set term",
-        "publicRegisterTitle": "WELSH _ What information we'll show on the public register",
-        "publicRegisterLine1": "WELSH _ We'll show the term of partnership on the public register."
+        "title": "WELSH - What is the term of the partnership?",
+        "hint": "WELSH - This is the length of time for which the partnership will be entered into.",
+        "byAgreement": "WELSH - Such term as decided by the partners within the partnership agreement",
+        "untilDissolution": "WELSH - Until the general partner determines the partnership is dissolved",
+        "noTerm": "WELSH - No set term",
+        "publicRegisterTitle": "WELSH - What information we'll show on the public register",
+        "publicRegisterLine1": "WELSH - We'll show the term of partnership on the public register."
     },
 
     "whereIsTheJurisdiction" : {
