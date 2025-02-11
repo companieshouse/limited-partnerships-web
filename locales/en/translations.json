@@ -1,5 +1,15 @@
 {
     "address": {
+        "addressLink": "The address is not on the list",
+
+        "choosePrincipalPlaceOfBusinessPage" : {
+            "title": "Choose the principal place of business"            
+        },
+    
+        "chooseRegisteredOfficeAddressPage" : {
+            "title": "Choose the registered office address"            
+        },
+
         "findPostcode": {
             "registeredOfficeAddress": {
 
@@ -31,7 +41,7 @@
             "findAddress": "Find address",
 
             "errorPostcode": "Enter a postcode"
-        }
+        }    
     },
     
     "buttons" : {
@@ -50,17 +60,7 @@
         "confirm" : "Confirm this statement",
         "futureLawful" : "I confirm that the intended future activities of the limited partnership are lawful.",
         "payment" : "Continue to payment"
-    },
-
-    "choosePrincipalPlaceOfBusinessPage" : {
-        "title": "Choose the principal place of business",
-         "addressLink": "The address is not on the list"
-    },
-
-    "chooseRegisteredOfficeAddressPage" : {
-        "title": "Choose the registered office address",
-        "addressLink": "The address is not on the list"
-   },
+    },   
 
    "confirmRegisteredOfficeAddressPage" : {
         "title" : "Confirm the registered office address",

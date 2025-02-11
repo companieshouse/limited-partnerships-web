@@ -40,7 +40,7 @@ describe("Choose Principal Place Of Business Address Page", () => {
       expect(res.status).toBe(200);
       testTranslations(
         res.text,
-        cyTranslationText.choosePrincipalPlaceOfBusinessPage
+        cyTranslationText.address.choosePrincipalPlaceOfBusinessPage
       );
     });
 
@@ -52,7 +52,7 @@ describe("Choose Principal Place Of Business Address Page", () => {
       expect(res.status).toBe(200);
       testTranslations(
         res.text,
-        enTranslationText.choosePrincipalPlaceOfBusinessPage
+        enTranslationText.address.choosePrincipalPlaceOfBusinessPage
       );
     });
 

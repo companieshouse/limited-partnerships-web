@@ -1,5 +1,15 @@
 {
     "address": {
+        "addressLink": "WELSH - The address is not on the list",
+
+        "choosePrincipalPlaceOfBusinessPage" : {
+            "title": "WELSH - Choose the principal place of business"            
+        },
+    
+        "chooseRegisteredOfficeAddressPage" : {
+            "title": "WELSH - Choose the registered office address"                
+        },
+
         "findPostcode": {
             "registeredOfficeAddress": {
 
@@ -51,16 +61,6 @@
         "futureLawful" : "WELSH - I confirm that the intended future activities of the limited partnership are lawful.",
         "payment" : "WELSH - Continue to payment"
     },
-
-    "choosePrincipalPlaceOfBusinessPage" : {
-        "title": "WELSH - Choose the principal place of business",
-        "addressLink": "WELSH - The address is not on the list"
-    },
-
-    "chooseRegisteredOfficeAddressPage" : {
-        "title": "WELSH - Choose the registered office address",
-        "addressLink": "WELSH - The address is not on the list"    
-   },
 
    "confirmRegisteredOfficeAddressPage" : {
         "title" : "WELSH - Confirm the registered office address",

@@ -39,7 +39,7 @@ describe("Choose Registered Office Address Page", () => {
       expect(res.status).toBe(200);
       testTranslations(
         res.text,
-        enTranslationText.chooseRegisteredOfficeAddressPage
+        enTranslationText.address.chooseRegisteredOfficeAddressPage
       );
       expect(res.text).not.toContain("WELSH -");
     });
@@ -52,7 +52,7 @@ describe("Choose Registered Office Address Page", () => {
       expect(res.status).toBe(200);
       testTranslations(
         res.text,
-        cyTranslationText.chooseRegisteredOfficeAddressPage
+        cyTranslationText.address.chooseRegisteredOfficeAddressPage
       );
     });
 
