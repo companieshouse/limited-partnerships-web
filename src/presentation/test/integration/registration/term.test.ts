@@ -1,5 +1,8 @@
 import request from "supertest";
-import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import {
+  PartnershipType,
+  Term
+} from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import app from "../app";
 import enTranslationText from "../../../../../locales/en/translations.json";
@@ -13,9 +16,11 @@ import {
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import RegistrationPageType from "../../../controller/registration/PageType";
+import { ApiErrors } from "../../../../domain/entities/UIErrors";
 
 describe("Email Page", () => {
   const URL = getUrl(TERM_URL);
+  const REDIRECT_URL = getUrl(GENERAL_PARTNERS_URL);
 
   beforeEach(() => {
     setLocalesEnabled(true);
@@ -67,8 +72,6 @@ describe("Email Page", () => {
     });
 
     describe("should redirect to general partner page", () => {
-      const REDIRECT_URL = getUrl(GENERAL_PARTNERS_URL);
-
       it(`should redirect to general partner page if ${PartnershipType.PFLP}`, async () => {
         const limitedPartnership = new LimitedPartnershipBuilder()
           .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
@@ -102,9 +105,7 @@ describe("Email Page", () => {
       });
     });
 
-    describe.skip("Post term", () => {
-      const REDIRECT_URL = getUrl(GENERAL_PARTNERS_URL);
-
+    describe("Post term", () => {
       it("should send term", async () => {
         const limitedPartnership = new LimitedPartnershipBuilder()
           .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
@@ -117,12 +118,36 @@ describe("Email Page", () => {
 
         const res = await request(app).post(URL).send({
           pageType: RegistrationPageType.term,
-        //   term: Term.BY_AGREEMENT
+          term: Term.BY_AGREEMENT
         });
 
         expect(res.status).toBe(302);
         expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
       });
+    });
+
+    it("should return a validation error", async () => {
+      const limitedPartnership = new LimitedPartnershipBuilder()
+        .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+        .build();
+
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
+        limitedPartnership
+      ]);
+
+      const apiErrors: ApiErrors = {
+        errors: { "data.term": "Term must be valid" }
+      };
+
+      appDevDependencies.limitedPartnershipGateway.feedErrors(apiErrors);
+
+      const res = await request(app).post(URL).send({
+        pageType: RegistrationPageType.email,
+        term: "wrong-term"
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain("Term must be valid");
     });
   });
 });
