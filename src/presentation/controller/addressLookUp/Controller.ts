@@ -9,7 +9,9 @@ import AddressLookUpPageType from "./PageType";
 import CacheService from "../../../application/service/CacheService";
 import { APPLICATION_CACHE_KEY_PREFIX_REGISTRATION } from "../../../config/constants";
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
-import Address from "../../../domain/entities/Address";
+import UIErrors from "../../../domain/entities/UIErrors";
+import { Address } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { PageRouting, pageRoutingDefault } from "../PageRouting";
 
 class AddressLookUpController extends AbstractController {
   public readonly REGISTERED_OFFICE_ADDRESS_CACHE_KEY =
@@ -193,11 +195,150 @@ class AddressLookUpController extends AbstractController {
           region
         };
 
+        const tokens = super.extractTokens(request);
+        const { transactionId, submissionId } = super.extractIds(request);
+
+        const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+          tokens,
+          transactionId,
+          submissionId
+        );
+
+        const errors =
+          this.addressService.isValidJurisdictionAndCountry(
+            limitedPartnership?.data?.jurisdiction ?? "",
+            country,
+          );
+
+        if (errors?.errors) {
+          const pageType = super.pageType(request.path);
+
+          const pageRouting = super.getRouting(
+            addresssRouting,
+            pageType,
+            request
+          );
+
+          pageRouting.errors = errors?.errors;
+
+          pageRouting.data = {
+            ...pageRouting.data,
+            address
+          };
+
+          response.render(super.templateName(pageRouting.currentUrl), {
+            props: { ...pageRouting }
+          });
+
+          return;
+        }
+
         await this.saveAndRedirectToNextPage(request, response, address);
       } catch (error) {
         next(error);
       }
     };
+  }
+
+  confirmAddress(): RequestHandler {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const session = request.session as Session;
+        const tokens = super.extractTokens(request);
+        const { transactionId, submissionId } = super.extractIds(request);
+
+        const pageType = super.extractPageTypeOrThrowError(
+          request,
+          AddressLookUpPageType
+        );
+
+        const pageRouting = super.getRouting(
+          addressLookUpRouting,
+          pageType,
+          request
+        );
+
+        const cache = await this.cacheService.getDataFromCache(session);
+
+        const address = cache[this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY];
+
+        if (!address) {
+          await this.handleAddressNotFound(tokens, transactionId, submissionId, pageRouting, cache, response);
+          return;
+        }
+
+        // store in api
+        const result = await this.limitedPartnershipService.sendPageData(
+          tokens,
+          transactionId,
+          submissionId,
+          pageType,
+          { registered_office_address: address }
+        );
+
+        if (result?.errors) {
+          const limitedPartnership =
+          await this.limitedPartnershipService.getLimitedPartnership(
+            tokens,
+            transactionId,
+            submissionId
+          );
+
+          pageRouting.errors = result.errors.errors;
+          pageRouting.data = {
+            ...pageRouting.data,
+            cache,
+            limitedPartnership
+          };
+
+          response.render(super.templateName(pageRouting.currentUrl), {
+            props: { ...pageRouting }
+          });
+          return;
+        }
+
+        // clear address from cache
+        await this.cacheService.removeDataFromCache(session, this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY);
+
+        response.redirect(pageRouting.nextUrl);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  private async handleAddressNotFound(
+    tokens: { access_token: string; refresh_token: string; },
+    transactionId: string,
+    submissionId: string,
+    pageRouting: PageRouting | typeof pageRoutingDefault,
+    cache: Record<string, any>,
+    response: Response
+  ) {
+    const uiErrors = new UIErrors();
+    uiErrors.formatValidationErrorToUiErrors({
+      errors: {
+        address: "You must provide an address"
+      }
+    });
+
+    const limitedPartnership =
+      await this.limitedPartnershipService.getLimitedPartnership(
+        tokens,
+        transactionId,
+        submissionId
+      );
+
+    pageRouting.errors = uiErrors.errors;
+    pageRouting.data = {
+      ...pageRouting.data,
+      cache,
+      limitedPartnership
+    };
+
+    return response.render(super.templateName(pageRouting.currentUrl), {
+      props: { ...pageRouting }
+    });
   }
 
   private async saveAndRedirectToNextPage(

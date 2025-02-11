@@ -3,8 +3,8 @@
 import { UKAddress } from "@companieshouse/api-sdk-node/dist/services/postcode-lookup";
 
 import IAddressLookUpGateway from "../../../domain/IAddressLookUpGateway";
-import Address from "../../../domain/entities/Address";
 import postcodeLookUpAddressToAddress from "./addressMapper";
+import { Address } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 class AddressLookUpInMemoryGateway implements IAddressLookUpGateway {
   addresses: UKAddress[] = [

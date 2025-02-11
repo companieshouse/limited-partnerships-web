@@ -48,15 +48,18 @@ const addressRoutingEnterRegisteredOfficeAddress = {
 const addressRoutingConfirmRegisteredOfficeAddress = {
   previousUrl: POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
   currentUrl: CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
-  nextUrl: GENERAL_PARTNERS_URL,
-  pageType: AddressPageType.confirmRegisteredOfficeAddress
+  nextUrl: POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+  pageType: AddressPageType.confirmRegisteredOfficeAddress,
+  data: {
+    enterManualAddressPageType: AddressPageType.enterRegisteredOfficeAddress
+  }
 };
 
 const registeredOfficeAddress = [
   addressRoutingPostcodeRegisteredOfficeAddress,
   addressRoutingChooseRegisteredOfficeAddress,
   addressRoutingEnterRegisteredOfficeAddress,
-  addressRoutingConfirmRegisteredOfficeAddress
+  addressRoutingConfirmRegisteredOfficeAddress,
 ];
 
 // principal place of business

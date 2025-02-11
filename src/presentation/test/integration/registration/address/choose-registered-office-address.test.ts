@@ -60,12 +60,12 @@ describe("Choose Registered Office Address Page", () => {
       const res = await request(app).get(URL);
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain("2 Duncalf street, Stoke-on-trent, ST6 3LJ");
+      expect(res.text).toContain("2 Duncalf Street, Stoke-On-Trent, ST6 3LJ");
       expect(res.text).toContain(
-        "The lodge Duncalf street, Castle hill, Stoke-on-trent, ST6 3LJ"
+        "The Lodge Duncalf Street, Castle Hill, Stoke-On-Trent, ST6 3LJ"
       );
-      expect(res.text).toContain("4 Duncalf street, Stoke-on-trent, ST6 3LJ");
-      expect(res.text).toContain("6 Duncalf street, Stoke-on-trent, ST6 3LJ");
+      expect(res.text).toContain("4 Duncalf Street, Stoke-On-Trent, ST6 3LJ");
+      expect(res.text).toContain("6 Duncalf Street, Stoke-On-Trent, ST6 3LJ");
     });
 
     it("should return error page when gateway getListOfValidPostcodeAddresses throws an error", async () => {

@@ -62,6 +62,14 @@
         "addressLink": "The address is not on the list"
    },
 
+   "confirmRegisteredOfficeAddressPage" : {
+        "title" : "Confirm the registered office address",
+        "addressLink" : "Change",
+        "addressLinkHidden" : "registered office address",
+        "publicRegisterTitle": "What information we'll show on the public register",
+        "publicRegisterLine1": "We'll show the registered office address on the public register."
+   },
+
     "emailPage" : {
         "whatIsEmail" : "What is the registered email address for the partnership?",
         "emailHint" : "Partners must be able to access emails that are sent to this address.",

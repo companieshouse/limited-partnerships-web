@@ -8,8 +8,8 @@ import {
   SDK_POSTCODE_LOOKUP_SERVICE
 } from "../../../config/constants";
 import { makeApiCallWithRetry } from "../api";
-import Address from "../../../domain/entities/Address";
 import postcodeLookUpAddressToAddress from "./addressMapper";
+import { Address } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 class AddressLookUpGateway implements IAddressLookUpGateway {
   async isValidUKPostcode(
