@@ -78,10 +78,7 @@ const addressRoutingChoosePrincipalPlaceOfBusinessAddress = {
   previousUrl: POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   currentUrl: CHOOSE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   nextUrl: GENERAL_PARTNERS_URL,
-  pageType: AddressPageType.choosePrincipalPlaceOfBusinessAddress,
-  data: {
-
-  }
+  pageType: AddressPageType.choosePrincipalPlaceOfBusinessAddress
 };
 
 const principalPlaceOfBusinessAddress = [
