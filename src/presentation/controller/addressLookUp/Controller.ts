@@ -138,9 +138,15 @@ class AddressLookUpController extends AbstractController {
           return;
         }
 
-        await this.cacheService.addDataToCache(session, {
-          [this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY]: address
-        });
+        if (pageType === AddressLookUpPageType.postcodePrincipalPlaceOfBusinessAddress) {
+          await this.cacheService.addDataToCache(session, {
+            [this.PRINCIPAL_PLACE_OF_BUSINESS_CACHE_KEY]: address
+          });
+        } else {
+          await this.cacheService.addDataToCache(session, {
+            [this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY]: address
+          });
+        }
 
         // if exact match - redirect to confirm page
         if (address.postal_code && address.premises && address.address_line_1) {

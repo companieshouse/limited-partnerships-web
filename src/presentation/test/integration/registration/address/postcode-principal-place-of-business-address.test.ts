@@ -79,7 +79,7 @@ describe("Postcode Principal Place Of Business Address Page", () => {
 
       expect(appDevDependencies.cacheRepository.cache).toEqual({
         [APPLICATION_CACHE_KEY]: {
-          [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`]:
+          [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}principal_place_of_business`]:
             {
               postal_code: "ST6 3LJ",
               address_line_1: "",

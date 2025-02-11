@@ -1,57 +1,14 @@
 {% extends "layout.njk" %}
 
-{% import 'includes/macros.njk' as macros %}
-
 {% set pageTitle = i18n.choosePrincipalPlaceOfBusinessPage.title %}
-
-{% set addressItems = [] %}
-{% for address in props.data.addressList %}
-  {% set newItem = {
-    value: address | dump,
-    text: macros.formatAddress(address),
-    attributes: {
-      required: true,
-      "radio-event-id": "address-radio-selected"
-    }
-  } %}
-  {% set addressItems = addressItems.concat([newItem]) %}
-{% endfor %}
+{% set cache = props.data.cache['registration_choose-principal-place-of-business-address'] %}
+{% set pagetype = props.data.enterPrincipalPlaceOfBusinessPageType %}
+{% set addressLink = i18n.choosePrincipalPlaceOfBusinessPage.addressLink %}
 
 {% block content %}
   <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-      <form class="form" action={{ props.currentUrl }} method="post">
-        <input type="hidden" name="pageType" value={{ props.pageType }}>
-        {% include "includes/csrf_token.njk" %}
-        
-        {% include "includes/proposed-name.njk" %}  
-
-        {{ govukRadios({
-          classes: "govuk-radios",
-          name: "selected_address",
-          value: props.data.cache['registration_choose-principal-place-of-business-address'] | dump,
-          fieldset: {
-            legend: {
-              text: i18n.choosePrincipalPlaceOfBusinessPage.title,
-              isPageHeading: true,
-              classes: "govuk-fieldset__legend--xl"
-            }
-          },
-          items: addressItems
-        }) }}
-
-        <p>
-          <a href="{{ props.currentUrl | replace(props.pageType, props.data.enterPrincipalPlaceOfBusinessPageType) }}" class="govuk-body-m govuk-link" data-event-id="address-not-on-list">{{ i18n.choosePrincipalPlaceOfBusinessPage.addressLink }}</a>
-        <p>
-       
-       {{ govukButton({
-          text: i18n.buttons.continue,
-          attributes: {
-            "id": "submit",
-            "onclick": "_paq.push(['trackEvent', 'Limited Partnerships', '" + props.pageType + "', document.querySelector('input[name=selected_address]:checked').getAttribute('radio-event-id')])"
-          }
-        }) }}
-      </form>
+    <div class="govuk-grid-column-two-thirds">      
+      {% include "pages/address/choose-address-form.njk" %}
     </div>
   </div>
 {% endblock %}
