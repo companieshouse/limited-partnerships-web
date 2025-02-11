@@ -1,13 +1,15 @@
 {
     "address": {
-        "addressLink": "The address is not on the list",
+        "chooseAddress": { 
+            "addressLink": "The address is not on the list",
 
-        "choosePrincipalPlaceOfBusinessPage" : {
-            "title": "Choose the principal place of business"            
-        },
+            "principalPlaceOfBusiness" : {
+               "title": "Choose the principal place of business"            
+            },
     
-        "chooseRegisteredOfficeAddressPage" : {
-            "title": "Choose the registered office address"            
+            "registeredOfficeAddress" : {
+                "title": "Choose the registered office address"                
+            }
         },
 
         "findPostcode": {

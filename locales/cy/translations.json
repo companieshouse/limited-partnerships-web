@@ -1,13 +1,15 @@
 {
     "address": {
-        "addressLink": "WELSH - The address is not on the list",
+        "chooseAddress": { 
+            "addressLink": "WELSH - The address is not on the list",
 
-        "choosePrincipalPlaceOfBusinessPage" : {
-            "title": "WELSH - Choose the principal place of business"            
-        },
+            "principalPlaceOfBusiness" : {
+               "title": "WELSH - Choose the principal place of business"            
+            },
     
-        "chooseRegisteredOfficeAddressPage" : {
-            "title": "WELSH - Choose the registered office address"                
+            "registeredOfficeAddress" : {
+                "title": "WELSH - Choose the registered office address"                
+            }
         },
 
         "findPostcode": {
