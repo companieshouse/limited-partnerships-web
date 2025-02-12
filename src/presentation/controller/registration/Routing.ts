@@ -40,6 +40,13 @@ const registrationRoutingJurisdiction = {
 
 // principal place of business
 
+const registrationRoutingTerm = {
+  previousUrl: POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+  currentUrl: url.TERM_URL,
+  nextUrl: url.GENERAL_PARTNERS_URL,
+  pageType: RegistrationPageType.term
+};
+
 const registrationRoutingGeneralPartners = {
   previousUrl: CHOOSE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   currentUrl: url.GENERAL_PARTNERS_URL,
@@ -87,6 +94,7 @@ const list = [
   registrationRoutingName,
   registrationRoutingEmail,
   registrationRoutingJurisdiction,
+  registrationRoutingTerm,
   registrationRoutingGeneralPartners,
   registrationRoutingLimitedPartners,
   registrationRoutingGeneralPartnerChoice,
