@@ -1,5 +1,7 @@
 {% extends "layout.njk" %}
 
+{% import 'includes/macros.njk' as macros %}
+
 {% set registeredOfficeKey = "registration_registered_office_address" %}
 {% if props.data.address %}
   {% set registeredOfficeAddress = props.data.address %}
@@ -12,6 +14,11 @@
 {% endif %}
 
 {% set pageTitle = i18n.enterRegisteredOfficeAddressPage.title %}
+
+{% set validateNameOrNumber = "validateInput(this, 50, '" + i18n.enterRegisteredOfficeAddressPage.errorMessage.nameOrNumberMissing | escape + "', '" + i18n.enterRegisteredOfficeAddressPage.errorMessage.nameOrNumberLength | escape + "');" %}
+{% set validateAddressLine1 = "validateInput(this, 50, '" + i18n.enterRegisteredOfficeAddressPage.errorMessage.addressLine1Missing | escape + "', '" + i18n.enterRegisteredOfficeAddressPage.errorMessage.addressLine1Length | escape + "');" %}
+{% set validateTownOrCity = "validateInput(this, 50, '" + i18n.enterRegisteredOfficeAddressPage.errorMessage.townOrCityMissing | escape + "', '" + i18n.enterRegisteredOfficeAddressPage.errorMessage.townOrCityLength | escape + "');" %}
+{% set validatePostcode = "validateInput(this, 15, '" + i18n.enterRegisteredOfficeAddressPage.errorMessage.postcodeMissing | escape + "', '" + i18n.enterRegisteredOfficeAddressPage.errorMessage.postcodeLength | escape + "');" %}
 
 {% block content %}
 
@@ -53,7 +60,8 @@
               value: registeredOfficeAddress.premises,
               attributes : {  
                 required : true,
-                maxLength: 50,
+                oninvalid: validateNameOrNumber,
+                oninput: validateNameOrNumber,
                 "data-event-id": "property-name-or-number"
               }
             }) }}
@@ -67,7 +75,8 @@
               value: registeredOfficeAddress.address_line_1,
               attributes : {
                 required : true,
-                maxLength: 50,
+                oninvalid: validateAddressLine1,
+                oninput: validateAddressLine1,
                 "data-event-id": "address-line-1"
               }
             }) }}
@@ -79,8 +88,8 @@
               id: "address_line_2",
               name: "address_line_2",
               value: registeredOfficeAddress.address_line_2,
-              attributes : {
-                maxLength: 50,
+              attributes : {  
+                oninput: "validateLength(this, 50, '" + i18n.enterRegisteredOfficeAddressPage.errorMessage.addressLine2Length | escape + "');",
                 "data-event-id": "address-line-2"
               }
             }) }}
@@ -95,7 +104,8 @@
               value: registeredOfficeAddress.locality,
               attributes : {
                 required : true,
-                maxLength: 50,
+                oninvalid: validateTownOrCity,
+                oninput: validateTownOrCity,
                 "data-event-id": "town-or-city"
               }
             }) }}
@@ -109,7 +119,7 @@
               name: "region",
               value: registeredOfficeAddress.region,
               attributes : {
-                maxLength: 50,
+                oninput: "validateLength(this, 50, '" + i18n.enterRegisteredOfficeAddressPage.errorMessage.countyLength | escape + "');",
                 "data-event-id": "county"
               }
             }) }}
@@ -124,7 +134,8 @@
               value: registeredOfficeAddress.postal_code,
               attributes : {
                 required : true,
-                maxLength: 15,
+                oninvalid: validatePostcode,
+                oninput: validatePostcode,
                 "data-event-id": "postcode"
               }
             }) }}
@@ -145,6 +156,8 @@
               },
               attributes : {
                 required: "true",
+                oninvalid: "this.setCustomValidity('" + i18n.enterRegisteredOfficeAddressPage.errorMessage.countryMissing + "');",
+                oninput: "this.setCustomValidity('');",
                 "data-event-id": "country"
               },
               items: [
@@ -165,7 +178,7 @@
                   text: i18n.enterRegisteredOfficeAddressPage.countryWales
                 },
                 {
-                  value: "northern-ireland",
+                  value: "northern ireland",
                   text: i18n.enterRegisteredOfficeAddressPage.countryNorthernIreland
                 }
               ]
@@ -183,5 +196,23 @@
       </form>
     </div>
   </div>
-  
+  <script>
+    function validateInput(input, maxLength, missingMessage, lengthMessage) {
+      if (!input.value) {
+        input.setCustomValidity(missingMessage);
+      } else if (input.value.length > maxLength) {
+        input.setCustomValidity(lengthMessage);
+      } else {
+        input.setCustomValidity('');
+      }
+    }
+
+    function validateLength(input, maxLength, lengthMessage) {
+      if (input.value.length > maxLength) {
+        input.setCustomValidity(lengthMessage);
+      } else {
+        input.setCustomValidity('');
+      }
+    }
+</script>
 {% endblock %}
