@@ -5,6 +5,7 @@ import PageType from "../PageType";
 import * as url from "./url";
 import {
   CHOOSE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+  POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   POSTCODE_REGISTERED_OFFICE_ADDRESS_URL
 } from "../addressLookUp/url";
 
