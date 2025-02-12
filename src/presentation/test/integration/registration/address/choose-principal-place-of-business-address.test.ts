@@ -3,9 +3,9 @@ import enTranslationText from "../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../locales/cy/translations.json";
 import app from "../../app";
 import {
-  CHOOSE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL
+  CHOOSE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+  CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL
 } from "presentation/controller/addressLookUp/url";
-import { GENERAL_PARTNERS_URL } from "../../../../controller/registration/url";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import { appDevDependencies } from "config/dev-dependencies";
 import * as config from "config";
@@ -13,7 +13,7 @@ import AddressPageType from "presentation/controller/addressLookUp/PageType";
 
 describe("Choose Principal Place Of Business Address Page", () => {
   const URL = getUrl(CHOOSE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL);
-  const REDIRECT_URL = getUrl(GENERAL_PARTNERS_URL);
+  const REDIRECT_URL = getUrl(CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL);
 
   beforeEach(() => {
     setLocalesEnabled(false);
@@ -97,19 +97,18 @@ describe("Choose Principal Place Of Business Address Page", () => {
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
 
-      // Will need to be uncommented when the confirm page is introduced
-      /* const cache = appDevDependencies.cacheRepository.cache;
+      const cache = appDevDependencies.cacheRepository.cache;
       expect(cache?.[`${config.APPLICATION_CACHE_KEY}`]).toHaveProperty(
-        `${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}principal_place_of_business_address`,
-          {
-            postal_code: "ST6 3LJ",
-            premises: "4",
-            address_line_1: "DUNCALF STREET",
-            address_line_2: "",
-            locality: "STOKE-ON-TRENT",
-            country: "GB-ENG"
-          }
-        ); */
+        `${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}principal_place_of_business`,
+        {
+          postal_code: "ST6 3LJ",
+          premises: "4",
+          address_line_1: "DUNCALF STREET",
+          address_line_2: "",
+          locality: "STOKE-ON-TRENT",
+          country: "GB-ENG"
+        }
+      );
     });
 
     it("should redirect to the error page if address can't be deserialised", async () => {
