@@ -1,3 +1,4 @@
+{% set nameEndingEventErrorMessage = macros.htmlOptionErrorMessage(i18n.namePage.nameEndingErrorMessage, "name", "name_ending", true) %}
 {% set nameEndingErrorMessage = macros.htmlOptionErrorMessage(i18n.namePage.nameEndingErrorMessage, "name", "name_ending") %}
 
 {% set nameEndingOptionsList = 
@@ -9,7 +10,7 @@
       name: "name_ending",
       attributes: {
         required: true,
-        oninvalid: nameEndingErrorMessage,
+        oninvalid: nameEndingEventErrorMessage,
         onclick: "this.setCustomValidity('')"
       }
     },
