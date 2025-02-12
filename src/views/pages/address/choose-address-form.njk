@@ -1,0 +1,47 @@
+{% import 'includes/macros.njk' as macros %}
+
+{% set addressItems = [] %}
+{% for address in props.data.addressList %}
+  {% set newItem = {
+    value: address | dump,
+    text: macros.formatAddress(address),
+    attributes: {
+      required: true,
+      "radio-event-id": "address-radio-selected"
+    }
+  } %}
+  {% set addressItems = addressItems.concat([newItem]) %}
+{% endfor %}
+
+<form class="form" action={{ props.currentUrl }} method="post">
+    <input type="hidden" name="pageType" value={{ props.pageType }}>
+    {% include "includes/csrf_token.njk" %}
+
+    {% include "includes/proposed-name.njk" %}  
+
+    {{ govukRadios({
+        classes: "govuk-radios",
+        name: "selected_address",
+        value: cache | dump,
+        fieldset: {
+        legend: {
+            text: pageTitle,
+            isPageHeading: true,
+            classes: "govuk-fieldset__legend--xl"
+        }
+        },
+        items: addressItems
+    }) }}
+
+    <p>
+      <a href="{{ props.currentUrl | replace(props.pageType, pageType) }}" class="govuk-body-m govuk-link" data-event-id="address-not-on-list">{{ addressLink }}</a>
+    <p>
+
+    {{ govukButton({
+        text: i18n.buttons.continue,
+        attributes: {
+        "id": "submit",
+        "onclick": "_paq.push(['trackEvent', 'Limited Partnerships', '" + props.pageType + "', document.querySelector('input[name=selected_address]:checked').getAttribute('radio-event-id')])"
+        }
+    }) }}
+</form>

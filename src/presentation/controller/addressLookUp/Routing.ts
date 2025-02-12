@@ -11,7 +11,8 @@ import {
   CHOOSE_REGISTERED_OFFICE_ADDRESS_URL,
   ENTER_REGISTERED_OFFICE_ADDRESS_URL,
   CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
-  POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL
+  POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+  CHOOSE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL
 } from "./url";
 
 // Registered Office Address
@@ -65,7 +66,7 @@ const registeredOfficeAddress = [
 const addressRoutingPostcodePrincipalPlaceOfBusinessAddress = {
   previousUrl: CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
   currentUrl: POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
-  nextUrl: GENERAL_PARTNERS_URL,
+  nextUrl: CHOOSE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   pageType: AddressPageType.postcodePrincipalPlaceOfBusinessAddress,
   data: {
     enterManualAddressPageType: "#",
@@ -73,8 +74,16 @@ const addressRoutingPostcodePrincipalPlaceOfBusinessAddress = {
   }
 };
 
+const addressRoutingChoosePrincipalPlaceOfBusinessAddress = {
+  previousUrl: POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+  currentUrl: CHOOSE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+  nextUrl: GENERAL_PARTNERS_URL,
+  pageType: AddressPageType.choosePrincipalPlaceOfBusinessAddress
+};
+
 const principalPlaceOfBusinessAddress = [
-  addressRoutingPostcodePrincipalPlaceOfBusinessAddress
+  addressRoutingPostcodePrincipalPlaceOfBusinessAddress,
+  addressRoutingChoosePrincipalPlaceOfBusinessAddress
 ];
 
 export const addressLookUpRouting: PagesRouting = new Map<

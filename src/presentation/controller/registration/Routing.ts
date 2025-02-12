@@ -4,7 +4,7 @@ import RegistrationPageType from "./PageType";
 import PageType from "../PageType";
 import * as url from "./url";
 import {
-  POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+  CHOOSE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   POSTCODE_REGISTERED_OFFICE_ADDRESS_URL
 } from "../addressLookUp/url";
 
@@ -41,7 +41,7 @@ const registrationRoutingJurisdiction = {
 // principal place of business
 
 const registrationRoutingGeneralPartners = {
-  previousUrl: POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+  previousUrl: CHOOSE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   currentUrl: url.GENERAL_PARTNERS_URL,
   nextUrl: url.GENERAL_PARTNER_CHOICE_URL,
   pageType: RegistrationPageType.generalPartners
