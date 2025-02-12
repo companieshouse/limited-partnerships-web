@@ -2,7 +2,8 @@ import {
   NameEndingType,
   PartnershipType,
   Jurisdiction,
-  Term
+  Term,
+  Address
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import TransactionLimitedPartnership from "../../../domain/entities/TransactionLimitedPartnership";
 
@@ -53,6 +54,16 @@ class LimitedPartnershipBuilder {
 
   withJurisdiction(jurisdiction: Jurisdiction) {
     this.data.jurisdiction = jurisdiction;
+    return this;
+  }
+
+  withRegisteredOfficeAddress(address: Address) {
+    this.data.registered_office_address = address as any;
+    return this;
+  }
+
+  withTerm(term: Term) {
+    this.data.term = term;
     return this;
   }
 
