@@ -15,7 +15,8 @@ import {
   GENERAL_PARTNER_CHOICE_URL,
   LIMITED_PARTNER_CHOICE_URL,
   CHECK_YOUR_ANSWERS_URL,
-  NAME_WITH_IDS_URL
+  NAME_WITH_IDS_URL,
+  TERM_URL
 } from "../presentation/controller/registration/url";
 
 export const registrationEndpoints = (
@@ -56,12 +57,6 @@ export const registrationEndpoints = (
   );
 
   router.get(
-    GENERAL_PARTNERS_URL,
-    authentication,
-    dependencies.registrationController.getPageRouting()
-  );
-
-  router.get(
     EMAIL_URL,
     authentication,
     dependencies.registrationController.getPageRouting()
@@ -79,6 +74,17 @@ export const registrationEndpoints = (
   );
   router.post(
     WHERE_IS_THE_JURISDICTION_URL,
+    authentication,
+    dependencies.registrationController.sendPageData()
+  );
+
+  router.get(
+    TERM_URL,
+    authentication,
+    dependencies.registrationController.getPageRouting()
+  );
+  router.post(
+    TERM_URL,
     authentication,
     dependencies.registrationController.sendPageData()
   );

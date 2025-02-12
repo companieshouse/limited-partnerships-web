@@ -13,3 +13,5 @@ export const CONFIRM_REGISTERED_OFFICE_ADDRESS_TEMPLATE =
 // principal place of business
 export const POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_TEMPLATE =
   AddressPageType.postcodePrincipalPlaceOfBusinessAddress;
+export const CHOOSE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_TEMPLATE =
+  AddressPageType.choosePrincipalPlaceOfBusinessAddress;

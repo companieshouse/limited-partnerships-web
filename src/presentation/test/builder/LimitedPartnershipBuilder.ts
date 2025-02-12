@@ -1,7 +1,9 @@
 import {
   NameEndingType,
   PartnershipType,
-  Jurisdiction
+  Jurisdiction,
+  Term,
+  Address
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import TransactionLimitedPartnership from "../../../domain/entities/TransactionLimitedPartnership";
 
@@ -12,7 +14,17 @@ class LimitedPartnershipBuilder {
     name_ending: NameEndingType.LIMITED_PARTNERSHIP,
     partnership_type: PartnershipType.LP,
     email: "test@email.com",
-    jurisdiction: Jurisdiction.NORTHERN_IRELAND
+    jurisdiction: Jurisdiction.NORTHERN_IRELAND,
+    registered_office_address: {
+      postal_code: "ST6 3LJ",
+      premises: "4",
+      address_line_1: "line 1",
+      address_line_2: "line 2",
+      locality: "stoke-on-trent",
+      region: "region",
+      country: "england"
+    },
+    term: Term.BY_AGREEMENT
   };
 
   withId(id: string) {
@@ -42,6 +54,16 @@ class LimitedPartnershipBuilder {
 
   withJurisdiction(jurisdiction: Jurisdiction) {
     this.data.jurisdiction = jurisdiction;
+    return this;
+  }
+
+  withRegisteredOfficeAddress(address: Address) {
+    this.data.registered_office_address = address as any;
+    return this;
+  }
+
+  withTerm(term: Term) {
+    this.data.term = term;
     return this;
   }
 

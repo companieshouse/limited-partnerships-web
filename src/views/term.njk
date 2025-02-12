@@ -1,0 +1,60 @@
+{% extends "layout.njk" %}
+
+{% set pageTitle = i18n.termPage.title  %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form class="form" action={{ props.currentUrl }} method="post">
+        <input type="hidden" name="pageType" value={{ props.pageType }}>
+        {% include "includes/csrf_token.njk" %}
+        
+        {% include "includes/proposed-name.njk" %}  
+
+        {{ govukRadios({
+          classes: "govuk-radios",
+          name: "term",
+          fieldset: {
+            legend: {
+              text: i18n.termPage.title,
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--xl"
+            }
+          },
+          hint: {
+            text: i18n.termPage.hint
+          },
+
+          items: [
+            {
+              value: "BY_AGREEMENT",
+              text: i18n.termPage.byAgreement
+            },
+            {
+              value: "UNTIL_DISSOLUTION",
+              text: i18n.termPage.untilDissolution
+            },
+            {
+              value: "NONE",
+              text: i18n.termPage.noTerm
+            }
+          ]
+        }) }}
+
+        <div>
+          {{ govukInsetText({
+            html: "<h2 class='govuk-heading-m'>" + i18n.termPage.publicRegisterTitle | escape + "</h2> <p>" + i18n.termPage.publicRegisterLine1 | escape + "</p>"
+          }) }}
+        </div>
+       
+        {{ govukButton({
+          text: i18n.buttons.saveAndContinue,
+          attributes: {
+            "id": "submit",
+            "onclick": "_paq.push(['trackEvent', 'Limited Partnerships Term', 'selection', document.querySelector('input[name=term]:checked').nextElementSibling.innerHTML])"
+          }
+        }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}

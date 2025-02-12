@@ -1,5 +1,17 @@
 {
     "address": {
+        "chooseAddress": { 
+            "addressLink": "The address is not on the list",
+
+            "principalPlaceOfBusiness" : {
+               "title": "Choose the principal place of business"            
+            },
+    
+            "registeredOfficeAddress" : {
+                "title": "Choose the registered office address"                
+            }
+        },
+
         "findPostcode": {
             "registeredOfficeAddress": {
 
@@ -33,7 +45,7 @@
             "errorPostcode": "Enter a postcode"
         }
     },
-    
+
     "buttons" : {
         "continue" : "Continue",
         "saveAndContinue" : "Save and continue"
@@ -50,12 +62,7 @@
         "confirm" : "Confirm this statement",
         "futureLawful" : "I confirm that the intended future activities of the limited partnership are lawful.",
         "payment" : "Continue to payment"
-    },
-
-    "chooseRegisteredOfficeAddressPage" : {
-        "title": "Choose the registered office address",
-        "addressLink": "The address is not on the list"
-    },
+    },   
 
    "confirmRegisteredOfficeAddressPage" : {
         "title" : "Confirm the registered office address",
@@ -187,6 +194,16 @@
     "startPage" : {
         "title" : "This is Limited Partnerships",
         "errorStartAddressMissing" : "Please enter an address"
+    },
+
+    "termPage": {
+        "title": "What is the term of the partnership?",
+        "hint": "This is the length of time for which the partnership will be entered into.",
+        "byAgreement": "Such term as decided by the partners within the partnership agreement",
+        "untilDissolution": "Until the general partner determines the partnership is dissolved",
+        "noTerm": "No set term",
+        "publicRegisterTitle": "What information we'll show on the public register",
+        "publicRegisterLine1": "We'll show the term of partnership on the public register."
     },
 
     "whereIsTheJurisdiction" : {
