@@ -1,9 +1,9 @@
 {% extends "layout.njk" %}
 {% import 'includes/macros.njk' as macros %}
 
-{% set pageTitle = i18n.confirm..title %}
+{% set pageTitle = i18n.address.confirm.principalPlaceOfBusiness.title %}
 
-{% set principalPlaceOfBusinessKey = "registration_choose-principal-place-of-business-address" %}
+{% set principalPlaceOfBusinessKey = "registration_principal_place_of_business" %}
 
 {% if props.data.cache[principalPlaceOfBusinessKey] %}
   {% set address = props.data.cache[principalPlaceOfBusinessKey] %}
@@ -26,7 +26,7 @@
         
         {% include "includes/proposed-name.njk" %}
 
-        <h1 class="govuk-heading-xl">{{ i18n.confirm.principalPlaceOfBusiness.title }}</h1>
+        <h1 class="govuk-heading-xl">{{ i18n.address.confirm.principalPlaceOfBusiness.title }}</h1>
 
         {% if address %}
           <p class="govuk-body-m">
@@ -48,13 +48,13 @@
             <br>
           </p>
           <p class="govuk-body-m">
-            <a href="{{ props.currentUrl | replace(props.pageType, props.data.enterManualAddressPageType) }}">{{ i18n.confirm.addressLink }} <span class="govuk-visually-hidden">{{ i18n.confirm.addressLinkHidden }}</span></a>
+            <a href="{{ props.currentUrl | replace(props.pageType, props.data.enterManualAddressPageType) }}">{{ i18n.address.confirm.addressLink }} <span class="govuk-visually-hidden">{{ i18n.address.confirm.addressLinkHidden }}</span></a>
           <p>
         {% endif %}
 
         {{ govukInsetText({
-          html: "<h2 class='govuk-heading-m'>" + i18n.confirm.publicRegisterTitle | escape + "</h2>"
-                + "<p>" + i18n.confirm.principalPlaceOfBusiness.publicRegisterLine1 | escape + "</p>"
+          html: "<h2 class='govuk-heading-m'>" + i18n.address.confirm.publicRegisterTitle | escape + "</h2>"
+                + "<p>" + i18n.address.confirm.principalPlaceOfBusiness.publicRegisterLine1 | escape + "</p>"
         }) }}
 
         {% include "includes/save-and-continue-button.njk" %}
