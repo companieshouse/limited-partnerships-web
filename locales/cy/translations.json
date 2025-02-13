@@ -14,16 +14,17 @@
 
         "confirm": {
             "addressLink" : "WELSH - Change",
-            "addressLinkHidden" : "WELSH - registered office address",
             "publicRegisterTitle": "WELSH - What information we'll show on the public online register",
 
             "registeredOfficeAddress" : {
                 "title" : "WELSH - Confirm the registered office address",
+                "addressLinkHidden" : "WELSH - registered office address",
                 "publicRegisterLine1": "WELSH - We'll show the registered office address on the public register."
             },
             
             "principalPlaceOfBusiness" : {
                 "title" : "WELSH - Confirm the principal place of business address",              
+                "addressLinkHidden" : "WELSH - principal place of business address",
                 "publicRegisterLine1": "WELSH - We'll show the principal place of business address on the public register."
             }
         },
@@ -79,14 +80,6 @@
         "futureLawful" : "WELSH - I confirm that the intended future activities of the limited partnership are lawful.",
         "payment" : "WELSH - Continue to payment"
     },
-
-   "confirmRegisteredOfficeAddressPage" : {
-        "title" : "WELSH - Confirm the registered office address",
-        "addressLink" : "WELSH - Change",
-        "addressLinkHidden" : "WELSH - registered office address",
-        "publicRegisterTitle": "WELSH - What information we'll show on the public register",
-        "publicRegisterLine1": "WELSH - We'll show the registered office address on the public register."
-   },
 
     "emailPage" : {
         "whatIsEmail" : "WELSH - What is the registered email address for the partnership?",

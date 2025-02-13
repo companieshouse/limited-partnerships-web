@@ -1,64 +1,15 @@
 {% extends "layout.njk" %}
-{% import 'includes/macros.njk' as macros %}
 
 {% set pageTitle = i18n.address.confirm.principalPlaceOfBusiness.title %}
-
-{% set principalPlaceOfBusinessKey = "registration_principal_place_of_business" %}
-
-{% if props.data.cache[principalPlaceOfBusinessKey] %}
-  {% set address = props.data.cache[principalPlaceOfBusinessKey] %}
-{% elif props.data.limitedPartnership.data.principal_place_of_business %}
-  {% set address = props.data.limitedPartnership.data.principal_place_of_business %}
-{% else %}
-  {% set address = null %}
-{% endif %}
-
-{% set addressFirstLineForDisplay = address.premises + " " + address.address_line_1 %}
+{% set publicRegisterLine = i18n.address.confirm.principalPlaceOfBusiness.publicRegisterLine1 %}
+{% set addressLinkHidden = i18n.address.confirm.addressLinkHidden %}
+{% set cacheKey = "registration_principal_place_of_business" %}
+{% set data = props.data.limitedPartnership.data.principal_place_of_business %}
 
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <form class="form" action={{ props.currentUrl }} method="post">
-        <input type="hidden" name="pageType" value={{ props.pageType }}>
-        {% include "includes/csrf_token.njk" %}
-
-        {% include "includes/errors.njk" %}
-        
-        {% include "includes/proposed-name.njk" %}
-
-        <h1 class="govuk-heading-xl">{{ i18n.address.confirm.principalPlaceOfBusiness.title }}</h1>
-
-        {% if address %}
-          <p class="govuk-body-m">
-            {{ macros.capitalizeEachWord(addressFirstLineForDisplay) }}
-            <br>
-            {% if address.address_line_2 %}
-              {{ macros.capitalizeEachWord(address.address_line_2) }}
-              <br>
-            {% endif %}
-            {{ macros.capitalizeEachWord(address.locality) }}
-            <br>
-            {% if address.region %}
-              {{ macros.capitalizeEachWord(address.region) }}
-              <br>
-            {% endif %}
-            {{ address.postal_code | upper }}
-            <br>
-            {{ macros.capitalizeEachWord(address.country) }}
-            <br>
-          </p>
-          <p class="govuk-body-m">
-            <a href="{{ props.currentUrl | replace(props.pageType, props.data.enterManualAddressPageType) }}">{{ i18n.address.confirm.addressLink }} <span class="govuk-visually-hidden">{{ i18n.address.confirm.addressLinkHidden }}</span></a>
-          <p>
-        {% endif %}
-
-        {{ govukInsetText({
-          html: "<h2 class='govuk-heading-m'>" + i18n.address.confirm.publicRegisterTitle | escape + "</h2>"
-                + "<p>" + i18n.address.confirm.principalPlaceOfBusiness.publicRegisterLine1 | escape + "</p>"
-        }) }}
-
-        {% include "includes/save-and-continue-button.njk" %}
-      </form>
+      {% include "pages/address/confirm-address-form.njk" %}
     </div>
   </div> 
 {% endblock %}
