@@ -19,7 +19,7 @@ describe("Choose Principal Place Of Business Address Page", () => {
     setLocalesEnabled(false);
     appDevDependencies.addressLookUpGateway.setError(false);
     appDevDependencies.cacheRepository.feedCache({
-      [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}principal_place_of_business`]:
+      [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}principal_place_of_business_address`]:
         {
           postal_code: "ST6 3LJ",
           premises: "",
@@ -99,7 +99,7 @@ describe("Choose Principal Place Of Business Address Page", () => {
 
       const cache = appDevDependencies.cacheRepository.cache;
       expect(cache?.[`${config.APPLICATION_CACHE_KEY}`]).toHaveProperty(
-        `${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}principal_place_of_business`,
+        `${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}principal_place_of_business_address`,
         {
           postal_code: "ST6 3LJ",
           premises: "4",

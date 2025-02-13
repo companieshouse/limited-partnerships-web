@@ -16,8 +16,8 @@ import { PageRouting, pageRoutingDefault } from "../PageRouting";
 class AddressLookUpController extends AbstractController {
   public readonly REGISTERED_OFFICE_ADDRESS_CACHE_KEY =
     APPLICATION_CACHE_KEY_PREFIX_REGISTRATION + "registered_office_address";
-  public readonly PRINCIPAL_PLACE_OF_BUSINESS_CACHE_KEY =
-    APPLICATION_CACHE_KEY_PREFIX_REGISTRATION + "principal_place_of_business";
+  public readonly PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CACHE_KEY =
+    APPLICATION_CACHE_KEY_PREFIX_REGISTRATION + "principal_place_of_business_address";
 
   constructor(
     private addressService: AddressService,
@@ -59,7 +59,7 @@ class AddressLookUpController extends AbstractController {
         if (this.isAddressListRequired(pageRouting.pageType)) {
           let postcode = "";
           if (pageType === AddressLookUpPageType.choosePrincipalPlaceOfBusinessAddress) {
-            postcode = cache[this.PRINCIPAL_PLACE_OF_BUSINESS_CACHE_KEY].postal_code;
+            postcode = cache[this.PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CACHE_KEY].postal_code;
           } else {
             postcode = cache[this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY].postal_code;
           }
@@ -140,7 +140,7 @@ class AddressLookUpController extends AbstractController {
 
         if (pageType === AddressLookUpPageType.postcodePrincipalPlaceOfBusinessAddress) {
           await this.cacheService.addDataToCache(session, {
-            [this.PRINCIPAL_PLACE_OF_BUSINESS_CACHE_KEY]: address
+            [this.PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CACHE_KEY]: address
           });
         } else {
           await this.cacheService.addDataToCache(session, {
@@ -366,7 +366,7 @@ class AddressLookUpController extends AbstractController {
 
     let cacheKey = "";
     if (pageType === AddressLookUpPageType.choosePrincipalPlaceOfBusinessAddress) {
-      cacheKey = this.PRINCIPAL_PLACE_OF_BUSINESS_CACHE_KEY;
+      cacheKey = this.PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CACHE_KEY;
     } else {
       cacheKey = this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY;
     }

@@ -22,7 +22,7 @@
                 "publicRegisterLine1": "We'll show the registered office address on the public register."
             },
             
-            "principalPlaceOfBusiness" : {
+            "principalPlaceOfBusinessAddress" : {
                 "title" : "Confirm the principal place of business address",              
                 "addressLinkHidden" : "principal place of business address",
                 "publicRegisterLine1": "We'll show the principal place of business address on the public register."
