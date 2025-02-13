@@ -1,7 +1,5 @@
 {% import 'includes/macros.njk' as macros %}
 
-{% set addressFirstLineForDisplay = address.premises + " " + address.address_line_1 %}
-
 {% if props.data.cache[cacheKey] %}
   {% set address = props.data.cache[cacheKey] %}
 {% elif data %}
@@ -9,6 +7,8 @@
 {% else %}
   {% set address = null %}
 {% endif %}
+
+{% set addressFirstLineForDisplay = address.premises + " " + address.address_line_1 %}
 
 <form class="form" action={{ props.currentUrl }} method="post">
     <input type="hidden" name="pageType" value={{ props.pageType }}>
