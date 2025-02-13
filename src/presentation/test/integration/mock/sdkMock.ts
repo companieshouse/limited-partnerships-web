@@ -50,16 +50,18 @@ export const refresh = jest.fn().mockImplementation(() => ({
 export const isValidUKPostcode = jest.fn().mockImplementation(() => true);
 export const getListOfValidPostcodeAddresses = jest
   .fn()
-  .mockImplementation(() => [
-    {
-      postcode: "ST6 3LJ",
-      premise: "2",
-      addressLine1: "DUNCALF STREET",
-      addressLine2: "",
-      postTown: "STOKE-ON-TRENT",
-      country: "GB-ENG"
-    }
-  ]);
+  .mockImplementation(() => ({
+    resource: [
+      {
+        postcode: "ST6 3LJ",
+        premise: "2",
+        addressLine1: "DUNCALF STREET",
+        addressLine2: "",
+        postTown: "STOKE-ON-TRENT",
+        country: "GB-ENG"
+      }
+    ]
+  }));
 
 const sdkMock = {
   transaction: {
