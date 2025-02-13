@@ -11,7 +11,7 @@ class AddressLookUpInMemoryGateway implements IAddressLookUpGateway {
   walesAddresses: UKAddress[] = walesAddresses;
   scotlandAddresses: UKAddress[] = scotlandAddresses;
   borderAddresses: UKAddress[] = borderAddresses;
-  northenIrelandAddresses: UKAddress[] = northenIrelandAddresses;
+  northernIrelandAddresses: UKAddress[] = northernIrelandAddresses;
 
   error = false;
 
@@ -28,7 +28,7 @@ class AddressLookUpInMemoryGateway implements IAddressLookUpGateway {
       postcode === this.walesAddresses[0].postcode ||
       postcode === this.scotlandAddresses[0].postcode ||
       postcode === this.borderAddresses[0].postcode ||
-      postcode === this.northenIrelandAddresses[0].postcode
+      postcode === this.northernIrelandAddresses[0].postcode
     );
   }
 
@@ -56,8 +56,8 @@ class AddressLookUpInMemoryGateway implements IAddressLookUpGateway {
       return this.borderAddresses.map(postcodeLookUpAddressToAddress);
     }
 
-    if (postcode === this.northenIrelandAddresses[0].postcode) {
-      return this.northenIrelandAddresses.map(postcodeLookUpAddressToAddress);
+    if (postcode === this.northernIrelandAddresses[0].postcode) {
+      return this.northernIrelandAddresses.map(postcodeLookUpAddressToAddress);
     }
 
     return [];
@@ -134,7 +134,7 @@ const borderAddresses: UKAddress[] = [
   }
 ];
 
-const northenIrelandAddresses: UKAddress[] = [
+const northernIrelandAddresses: UKAddress[] = [
   {
     postcode: "BT12 6QH",
     premise: "11E",

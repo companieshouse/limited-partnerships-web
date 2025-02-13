@@ -166,7 +166,7 @@ class AddressLookUpService {
       this.setFieldError(
         uiErrors,
         "postal_code",
-        "You must enter a postcode which is in Northen Ireland"
+        "You must enter a postcode which is in Northern Ireland"
       );
     }
 

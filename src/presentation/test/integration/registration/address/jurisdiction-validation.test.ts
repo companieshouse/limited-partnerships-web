@@ -152,13 +152,13 @@ describe("Jurisdiction validation", () => {
     });
   });
 
-  describe("Northen Ireland", () => {
+  describe("Northern Ireland", () => {
     const limitedPartnership = new LimitedPartnershipBuilder()
       .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
       .withJurisdiction(Jurisdiction.NORTHERN_IRELAND)
       .build();
 
-    it("should redirect if jurisdiction is in Northen Ireland", async () => {
+    it("should redirect if jurisdiction is in Northern Ireland", async () => {
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
         limitedPartnership
       ]);
@@ -167,7 +167,7 @@ describe("Jurisdiction validation", () => {
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
         premises: null,
         postal_code:
-          appDevDependencies.addressLookUpGateway.northenIrelandAddresses[0]
+          appDevDependencies.addressLookUpGateway.northernIrelandAddresses[0]
             .postcode
       });
 
@@ -189,7 +189,7 @@ describe("Jurisdiction validation", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        "You must enter a postcode which is in Northen Ireland"
+        "You must enter a postcode which is in Northern Ireland"
       );
 
       expect(appDevDependencies.cacheRepository.cache).toEqual(null);
