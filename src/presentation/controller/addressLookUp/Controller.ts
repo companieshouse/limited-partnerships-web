@@ -35,21 +35,16 @@ class AddressLookUpController extends AbstractController {
         const pageType = super.pageType(request.path);
         const { transactionId, submissionId } = super.extractIds(request);
 
-        const pageRouting = super.getRouting(
-          addresssRouting,
-          pageType,
-          request
-        );
+        const pageRouting = super.getRouting(addresssRouting, pageType, request);
 
         let limitedPartnership = {};
 
         if (transactionId && submissionId) {
-          limitedPartnership =
-            await this.limitedPartnershipService.getLimitedPartnership(
-              tokens,
-              transactionId,
-              submissionId
-            );
+          limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+            tokens,
+            transactionId,
+            submissionId
+          );
         }
 
         const cache = await this.cacheService.getDataFromCache(session);
@@ -58,21 +53,13 @@ class AddressLookUpController extends AbstractController {
 
         if (this.isAddressListRequired(pageRouting.pageType)) {
           let postcode = "";
-          if (
-            pageType ===
-            AddressLookUpPageType.choosePrincipalPlaceOfBusinessAddress
-          ) {
-            postcode =
-              cache[this.PRINCIPAL_PLACE_OF_BUSINESS_CACHE_KEY].postal_code;
+          if (pageType === AddressLookUpPageType.choosePrincipalPlaceOfBusinessAddress) {
+            postcode = cache[this.PRINCIPAL_PLACE_OF_BUSINESS_CACHE_KEY].postal_code;
           } else {
-            postcode =
-              cache[this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY].postal_code;
+            postcode = cache[this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY].postal_code;
           }
 
-          addressList = await this.addressService.getAddressListForPostcode(
-            tokens,
-            postcode
-          );
+          addressList = await this.addressService.getAddressListForPostcode(tokens, postcode);
         }
 
         pageRouting.data = {
@@ -104,32 +91,23 @@ class AddressLookUpController extends AbstractController {
         const session = request.session as Session;
         const tokens = super.extractTokens(request);
         const { transactionId, submissionId } = super.extractIds(request);
-        const pageType = super.extractPageTypeOrThrowError(
-          request,
-          AddressLookUpPageType
-        );
+        const pageType = super.extractPageTypeOrThrowError(request, AddressLookUpPageType);
         const { postal_code, premises } = request.body;
 
-        const pageRouting = super.getRouting(
-          addressLookUpRouting,
-          pageType,
-          request
+        const pageRouting = super.getRouting(addressLookUpRouting, pageType, request);
+
+        const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+          tokens,
+          transactionId,
+          submissionId
         );
 
-        const limitedPartnership =
-          await this.limitedPartnershipService.getLimitedPartnership(
-            tokens,
-            transactionId,
-            submissionId
-          );
-
-        const { address, errors } =
-          await this.addressService.isValidUKPostcodeAndHasAnAddress(
-            tokens,
-            limitedPartnership?.data?.jurisdiction ?? "",
-            escape(postal_code),
-            escape(premises)
-          );
+        const { address, errors } = await this.addressService.isValidUKPostcodeAndHasAnAddress(
+          tokens,
+          limitedPartnership?.data?.jurisdiction ?? "",
+          escape(postal_code),
+          escape(premises)
+        );
 
         if (errors?.errors) {
           pageRouting.errors = errors?.errors;
@@ -145,10 +123,7 @@ class AddressLookUpController extends AbstractController {
           return;
         }
 
-        if (
-          pageType ===
-          AddressLookUpPageType.postcodePrincipalPlaceOfBusinessAddress
-        ) {
+        if (pageType === AddressLookUpPageType.postcodePrincipalPlaceOfBusinessAddress) {
           await this.cacheService.addDataToCache(session, {
             [this.PRINCIPAL_PLACE_OF_BUSINESS_CACHE_KEY]: address
           });
@@ -160,11 +135,7 @@ class AddressLookUpController extends AbstractController {
 
         // if exact match - redirect to confirm page
         if (address.postal_code && address.premises && address.address_line_1) {
-          const url = super.insertIdsInUrl(
-            pageRouting?.data?.confirmAddressUrl,
-            transactionId,
-            submissionId
-          );
+          const url = super.insertIdsInUrl(pageRouting?.data?.confirmAddressUrl, transactionId, submissionId);
           response.redirect(url);
           return;
         }
@@ -192,15 +163,7 @@ class AddressLookUpController extends AbstractController {
   sendManualAddress(): RequestHandler {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
-        const {
-          premises,
-          address_line_1,
-          address_line_2,
-          locality,
-          region,
-          postal_code,
-          country
-        } = request.body;
+        const { premises, address_line_1, address_line_2, locality, region, postal_code, country } = request.body;
         const address = {
           address_line_1,
           address_line_2,
@@ -214,12 +177,11 @@ class AddressLookUpController extends AbstractController {
         const tokens = super.extractTokens(request);
         const { transactionId, submissionId } = super.extractIds(request);
 
-        const limitedPartnership =
-          await this.limitedPartnershipService.getLimitedPartnership(
-            tokens,
-            transactionId,
-            submissionId
-          );
+        const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+          tokens,
+          transactionId,
+          submissionId
+        );
 
         const errors = this.addressService.isValidJurisdictionAndCountry(
           limitedPartnership?.data?.jurisdiction ?? "",
@@ -229,11 +191,7 @@ class AddressLookUpController extends AbstractController {
         if (errors?.errors) {
           const pageType = super.pageType(request.path);
 
-          const pageRouting = super.getRouting(
-            addresssRouting,
-            pageType,
-            request
-          );
+          const pageRouting = super.getRouting(addresssRouting, pageType, request);
 
           pageRouting.errors = errors?.errors;
 
@@ -263,30 +221,16 @@ class AddressLookUpController extends AbstractController {
         const tokens = super.extractTokens(request);
         const { transactionId, submissionId } = super.extractIds(request);
 
-        const pageType = super.extractPageTypeOrThrowError(
-          request,
-          AddressLookUpPageType
-        );
+        const pageType = super.extractPageTypeOrThrowError(request, AddressLookUpPageType);
 
-        const pageRouting = super.getRouting(
-          addressLookUpRouting,
-          pageType,
-          request
-        );
+        const pageRouting = super.getRouting(addressLookUpRouting, pageType, request);
 
         const cache = await this.cacheService.getDataFromCache(session);
 
         const address = cache[this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY];
 
         if (!address) {
-          await this.handleAddressNotFound(
-            tokens,
-            transactionId,
-            submissionId,
-            pageRouting,
-            cache,
-            response
-          );
+          await this.handleAddressNotFound(tokens, transactionId, submissionId, pageRouting, cache, response);
           return;
         }
 
@@ -300,12 +244,11 @@ class AddressLookUpController extends AbstractController {
         );
 
         if (result?.errors) {
-          const limitedPartnership =
-            await this.limitedPartnershipService.getLimitedPartnership(
-              tokens,
-              transactionId,
-              submissionId
-            );
+          const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+            tokens,
+            transactionId,
+            submissionId
+          );
 
           pageRouting.errors = result.errors.errors;
           pageRouting.data = {
@@ -321,10 +264,7 @@ class AddressLookUpController extends AbstractController {
         }
 
         // clear address from cache
-        await this.cacheService.removeDataFromCache(
-          session,
-          this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY
-        );
+        await this.cacheService.removeDataFromCache(session, this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY);
 
         response.redirect(pageRouting.nextUrl);
       } catch (error) {
@@ -348,12 +288,11 @@ class AddressLookUpController extends AbstractController {
       }
     });
 
-    const limitedPartnership =
-      await this.limitedPartnershipService.getLimitedPartnership(
-        tokens,
-        transactionId,
-        submissionId
-      );
+    const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+      tokens,
+      transactionId,
+      submissionId
+    );
 
     pageRouting.errors = uiErrors.errors;
     pageRouting.data = {
@@ -373,21 +312,12 @@ class AddressLookUpController extends AbstractController {
     dataToStore: any
   ) {
     const session = request.session as Session;
-    const pageType = super.extractPageTypeOrThrowError(
-      request,
-      AddressLookUpPageType
-    );
+    const pageType = super.extractPageTypeOrThrowError(request, AddressLookUpPageType);
 
-    const pageRouting = super.getRouting(
-      addressLookUpRouting,
-      pageType,
-      request
-    );
+    const pageRouting = super.getRouting(addressLookUpRouting, pageType, request);
 
     let cacheKey = "";
-    if (
-      pageType === AddressLookUpPageType.choosePrincipalPlaceOfBusinessAddress
-    ) {
+    if (pageType === AddressLookUpPageType.choosePrincipalPlaceOfBusinessAddress) {
       cacheKey = this.PRINCIPAL_PLACE_OF_BUSINESS_CACHE_KEY;
     } else {
       cacheKey = this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY;

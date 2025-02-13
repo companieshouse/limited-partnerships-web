@@ -1,7 +1,4 @@
-import {
-  Address,
-  Jurisdiction
-} from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { Address, Jurisdiction } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import UIErrors from "../../domain/entities/UIErrors";
 import IAddressLookUpGateway from "../../domain/IAddressLookUpGateway";
 
@@ -31,25 +28,15 @@ class AddressLookUpService {
         premises: ""
       };
 
-      const isValid = await this.addressGateway.isValidUKPostcode(
-        opt,
-        postalCode
-      );
+      const isValid = await this.addressGateway.isValidUKPostcode(opt, postalCode);
 
       if (!isValid) {
-        this.setFieldError(
-          uiErrors,
-          "postal_code",
-          `The postcode ${postalCode} cannot be found`
-        );
+        this.setFieldError(uiErrors, "postal_code", `The postcode ${postalCode} cannot be found`);
 
         return { address, errors: uiErrors };
       }
 
-      const ukAddresses: Address[] = await this.getAddressListForPostcode(
-        opt,
-        postalCode
-      );
+      const ukAddresses: Address[] = await this.getAddressListForPostcode(opt, postalCode);
 
       if (!this.isFromCorrectCountry(jurisdiction, ukAddresses, uiErrors)) {
         return { address, errors: uiErrors };
@@ -61,9 +48,7 @@ class AddressLookUpService {
         }
 
         const matchingAddress = ukAddresses.find(
-          (ukAddress) =>
-            ukAddress.postal_code === postalCode &&
-            ukAddress.premises === premises
+          (ukAddress) => ukAddress.postal_code === postalCode && ukAddress.premises === premises
         );
 
         if (matchingAddress) {
@@ -79,19 +64,10 @@ class AddressLookUpService {
     }
   }
 
-  isValidJurisdictionAndCountry(
-    jurisdiction: string,
-    country: string
-  ): UIErrors | undefined {
+  isValidJurisdictionAndCountry(jurisdiction: string, country: string): UIErrors | undefined {
     const uiErrors = new UIErrors();
 
-    if (
-      !this.isJurisdictionAndCountryCombinationAllowed(
-        jurisdiction,
-        country,
-        uiErrors
-      )
-    ) {
+    if (!this.isJurisdictionAndCountryCombinationAllowed(jurisdiction, country, uiErrors)) {
       return uiErrors;
     }
   }
@@ -101,29 +77,17 @@ class AddressLookUpService {
     postalCode: string
   ): Promise<Address[]> {
     try {
-      const addressList: Address[] =
-        await this.addressGateway.getListOfValidPostcodeAddresses(
-          opt,
-          postalCode
-        );
+      const addressList: Address[] = await this.addressGateway.getListOfValidPostcodeAddresses(opt, postalCode);
 
       return addressList.sort((a, b) => a.premises.localeCompare(b.premises));
     } catch (error: any) {
-      logger.error(
-        `Error retrieving address list for postcode ${postalCode} ${JSON.stringify(
-          error
-        )}`
-      );
+      logger.error(`Error retrieving address list for postcode ${postalCode} ${JSON.stringify(error)}`);
 
       throw error;
     }
   }
 
-  private isFromCorrectCountry(
-    jurisdiction: string,
-    ukAddresses: Address[],
-    uiErrors: UIErrors
-  ): boolean {
+  private isFromCorrectCountry(jurisdiction: string, ukAddresses: Address[], uiErrors: UIErrors): boolean {
     let isCorrectCountry = true;
 
     const IS_BORDER = ukAddresses[0]?.country === "border";
@@ -137,47 +101,24 @@ class AddressLookUpService {
       return isCorrectCountry;
     }
 
-    if (
-      jurisdiction === Jurisdiction.ENGLAND_AND_WALES &&
-      !IS_IN_ENGLAND &&
-      !IS_IN_WALES
-    ) {
+    if (jurisdiction === Jurisdiction.ENGLAND_AND_WALES && !IS_IN_ENGLAND && !IS_IN_WALES) {
       isCorrectCountry = false;
 
-      this.setFieldError(
-        uiErrors,
-        "postal_code",
-        "You must enter a postcode which is in England or Wales"
-      );
+      this.setFieldError(uiErrors, "postal_code", "You must enter a postcode which is in England or Wales");
     } else if (jurisdiction === Jurisdiction.SCOTLAND && !IS_IN_SCOTLAND) {
       isCorrectCountry = false;
 
-      this.setFieldError(
-        uiErrors,
-        "postal_code",
-        "You must enter a postcode which is in Scotland"
-      );
-    } else if (
-      jurisdiction === Jurisdiction.NORTHERN_IRELAND &&
-      !IS_IN_NORTHEN_IRELAND
-    ) {
+      this.setFieldError(uiErrors, "postal_code", "You must enter a postcode which is in Scotland");
+    } else if (jurisdiction === Jurisdiction.NORTHERN_IRELAND && !IS_IN_NORTHEN_IRELAND) {
       isCorrectCountry = false;
 
-      this.setFieldError(
-        uiErrors,
-        "postal_code",
-        "You must enter a postcode which is in Northern Ireland"
-      );
+      this.setFieldError(uiErrors, "postal_code", "You must enter a postcode which is in Northern Ireland");
     }
 
     return isCorrectCountry;
   }
 
-  private setFieldError(
-    uiErrors: UIErrors,
-    fieldName: string,
-    message: string
-  ): void {
+  private setFieldError(uiErrors: UIErrors, fieldName: string, message: string): void {
     uiErrors.formatValidationErrorToUiErrors({
       errors: {
         [fieldName]: message
@@ -192,17 +133,11 @@ class AddressLookUpService {
   ): boolean {
     const isValid =
       (jurisdiction === Jurisdiction.SCOTLAND && country === "scotland") ||
-      (jurisdiction === Jurisdiction.NORTHERN_IRELAND &&
-        country === "northern-ireland") ||
-      (jurisdiction === Jurisdiction.ENGLAND_AND_WALES &&
-        (country === "england" || country === "wales"));
+      (jurisdiction === Jurisdiction.NORTHERN_IRELAND && country === "northern-ireland") ||
+      (jurisdiction === Jurisdiction.ENGLAND_AND_WALES && (country === "england" || country === "wales"));
 
     if (!isValid) {
-      this.setFieldError(
-        uiErrors,
-        "country",
-        "You must enter a country that matches your jurisdiction"
-      );
+      this.setFieldError(uiErrors, "country", "You must enter a country that matches your jurisdiction");
     }
 
     return isValid;

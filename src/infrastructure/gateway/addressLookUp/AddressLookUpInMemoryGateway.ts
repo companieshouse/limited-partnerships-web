@@ -19,10 +19,7 @@ class AddressLookUpInMemoryGateway implements IAddressLookUpGateway {
     this.error = value;
   }
 
-  async isValidUKPostcode(
-    opt: { access_token: string; refresh_token: string },
-    postcode: string
-  ): Promise<boolean> {
+  async isValidUKPostcode(opt: { access_token: string; refresh_token: string }, postcode: string): Promise<boolean> {
     return (
       postcode === this.englandAddresses[0].postcode ||
       postcode === this.walesAddresses[0].postcode ||
