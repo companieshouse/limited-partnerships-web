@@ -28,15 +28,24 @@
           items: [
             {
               value: "BY_AGREEMENT",
-              text: i18n.termPage.byAgreement
+              text: i18n.termPage.byAgreement,
+              attributes: {
+                required: true
+              }
             },
             {
               value: "UNTIL_DISSOLUTION",
-              text: i18n.termPage.untilDissolution
+              text: i18n.termPage.untilDissolution,
+              attributes: {
+                required: true
+              }
             },
             {
               value: "NONE",
-              text: i18n.termPage.noTerm
+              text: i18n.termPage.noTerm,
+              attributes: {
+                required: true
+              }
             }
           ]
         }) }}
