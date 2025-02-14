@@ -34,7 +34,7 @@
             "countryScotland": "WELSH - Scotland",
             "countryWales": "WELSH - Wales",
             "countryNorthernIreland": "WELSH - Northern Ireland",
-            "errorMessage": {
+            "errorMessages": {
                 "nameOrNumberMissing": "WELSH - Enter a property name or number",
                 "nameOrNumberLength": "WELSH - Property name or number must be 50 characters or less",
                 "addressLine1Missing": "WELSH - Enter an address",
@@ -84,7 +84,8 @@
             "errorMessages": {
                 "jurisdictionEnglandAndWales": "WELSH - You must enter a postcode which is in England or Wales",
                 "jurisdictionNorthernIreland": "WELSH - You must enter a postcode which is in Northern Ireland",
-                "jurisdictionScotland": "WELSH - You must enter a postcode which is in Scotland"
+                "jurisdictionScotland": "WELSH - You must enter a postcode which is in Scotland",
+                "jurisdictionCountry": "WELSH - You must enter a country that matches your jurisdiction"
             }
         }
     },

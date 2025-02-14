@@ -156,7 +156,11 @@ class AddressLookUpService {
       (jurisdiction === Jurisdiction.ENGLAND_AND_WALES && (country === "GB-ENG" || country === "GB-WLS"));
 
     if (!isValid) {
-      this.setFieldError(uiErrors, "country", "You must enter a country that matches your jurisdiction");
+      this.setFieldError(
+        uiErrors,
+        "country",
+        this.i18n?.address?.findPostcode?.errorMessages?.jurisdictionCountry
+      );
     }
 
     return isValid;
