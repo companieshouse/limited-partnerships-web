@@ -45,7 +45,8 @@
                 "countyLength": "County, state, province or region must be 50 characters or less",
                 "postcodeMissing": "Enter a postcode",
                 "postcodeLength": "Postcode must be 15 characters or less",
-                "countryMissing": "Select a country"
+                "countryMissing": "Select a country",
+                "jurisdictionCountry": "You must enter a country that matches your jurisdiction"
             }
         },
 
@@ -84,8 +85,7 @@
             "errorMessages": {
                 "jurisdictionEnglandAndWales": "You must enter a postcode which is in England or Wales",
                 "jurisdictionNorthernIreland": "You must enter a postcode which is in Northern Ireland",
-                "jurisdictionScotland": "You must enter a postcode which is in Scotland",
-                "jurisdictionCountry": "You must enter a country that matches your jurisdiction"
+                "jurisdictionScotland": "You must enter a postcode which is in Scotland"
             }
         }
     },

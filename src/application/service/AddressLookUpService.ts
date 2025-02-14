@@ -159,7 +159,7 @@ class AddressLookUpService {
       this.setFieldError(
         uiErrors,
         "country",
-        this.i18n?.address?.findPostcode?.errorMessages?.jurisdictionCountry
+        this.i18n?.address?.enterAddress?.errorMessages?.jurisdictionCountry
       );
     }
 
