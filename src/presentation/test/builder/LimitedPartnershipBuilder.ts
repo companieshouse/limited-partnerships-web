@@ -14,7 +14,7 @@ class LimitedPartnershipBuilder {
     name_ending: NameEndingType.LIMITED_PARTNERSHIP,
     partnership_type: PartnershipType.LP,
     email: "test@email.com",
-    jurisdiction: Jurisdiction.NORTHERN_IRELAND,
+    jurisdiction: Jurisdiction.ENGLAND_AND_WALES,
     registered_office_address: {
       postal_code: "ST6 3LJ",
       premises: "4",
