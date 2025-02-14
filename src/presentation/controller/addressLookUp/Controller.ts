@@ -237,12 +237,12 @@ class AddressLookUpController extends AbstractController {
 
         const cache = await this.cacheService.getDataFromCache(session);
 
-        const address = cache[this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY];
-
-        if (!address) {
+        if (!request.body?.address) {
           await this.handleAddressNotFound(tokens, transactionId, submissionId, pageRouting, cache, response);
           return;
         }
+
+        const address = JSON.parse(request.body?.address);
 
         // store in api
         const result = await this.limitedPartnershipService.sendPageData(
