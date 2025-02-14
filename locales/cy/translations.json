@@ -144,6 +144,12 @@
         "pageInformation": "WELSH - If the partnership has more than one general partner, you'll add them one at a time."
     },
 
+    "govUk" : {
+        "error" : {
+            "title" : "WELSH - There is a problem"
+        }
+    },
+
     "limitedPartnerChoicePage" : {
         "isPersonOrLegalEntity" : "WELSH - Is the limited partner a person or a legal entity?",
         "isPersonOrLegalEntityHint" : "WELSH - You can add more later.",
