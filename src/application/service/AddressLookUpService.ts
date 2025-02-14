@@ -161,9 +161,9 @@ class AddressLookUpService {
     uiErrors: UIErrors
   ): boolean {
 
-    const isValid = (jurisdiction === Jurisdiction.SCOTLAND && country === "scotland")
-      || (jurisdiction === Jurisdiction.NORTHERN_IRELAND && country === "northern-ireland")
-      || (jurisdiction === Jurisdiction.ENGLAND_AND_WALES && (country === "england" || country === "wales"));
+    const isValid = (jurisdiction === Jurisdiction.SCOTLAND && country === "GB-SCT")
+      || (jurisdiction === Jurisdiction.NORTHERN_IRELAND && country === "GB-NIR")
+      || (jurisdiction === Jurisdiction.ENGLAND_AND_WALES && (country === "GB-ENG" || country === "GB-WLS"));
 
     if (!isValid) {
       this.setFieldError(

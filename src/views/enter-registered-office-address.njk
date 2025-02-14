@@ -166,19 +166,19 @@
                   text: i18n.address.enterAddress.countrySelect
                 },
                 {
-                  value: "england",
+                  value: "GB-ENG",
                   text: i18n.address.enterAddress.countryEngland
                 },
                 {
-                  value: "scotland",
+                  value: "GB-SCT",
                   text: i18n.address.enterAddress.countryScotland
                 },
                 {
-                  value: "wales",
+                  value: "GB-WLS",
                   text: i18n.address.enterAddress.countryWales
                 },
                 {
-                  value: "northern ireland",
+                  value: "GB-NIR",
                   text: i18n.address.enterAddress.countryNorthernIreland
                 }
               ]
@@ -196,23 +196,7 @@
       </form>
     </div>
   </div>
-  <script>
-    function validateInput(input, maxLength, missingMessage, lengthMessage) {
-      if (!input.value) {
-        input.setCustomValidity(missingMessage);
-      } else if (input.value.length > maxLength) {
-        input.setCustomValidity(lengthMessage);
-      } else {
-        input.setCustomValidity('');
-      }
-    }
 
-    function validateLength(input, maxLength, lengthMessage) {
-      if (input.value.length > maxLength) {
-        input.setCustomValidity(lengthMessage);
-      } else {
-        input.setCustomValidity('');
-      }
-    }
-</script>
+  {% include "includes/validators.njk" %}
+
 {% endblock %}

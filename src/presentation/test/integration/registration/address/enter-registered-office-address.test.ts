@@ -55,7 +55,7 @@ describe("Enter Registered Office Address Page", () => {
 
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.enterRegisteredOfficeAddress,
-        country: "wales"
+        country: "GB-WLS"
       });
 
       const redirectUrl = getUrl(CONFIRM_REGISTERED_OFFICE_ADDRESS_URL);
@@ -74,7 +74,7 @@ describe("Enter Registered Office Address Page", () => {
 
       const res = await request(app).post(URL).send({
         pageType: "Invalid page type",
-        country: "scotland"
+        country: "GB-SCT"
       });
 
       expect(res.status).toBe(500);
