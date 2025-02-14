@@ -24,7 +24,7 @@ describe("Confirm Registered Office Address Page", () => {
           address_line_2: "line 2",
           locality: "stoke-on-trent",
           region: "region",
-          country: "england"
+          country: "GB-ENG"
         }
     });
 
@@ -56,6 +56,65 @@ describe("Confirm Registered Office Address Page", () => {
       expect(res.text).toContain("Region");
       expect(res.text).toContain("England");
       expect(res.text).toContain("ST6 3LJ");
+    });
+
+    describe("Map Country Code", () => {
+      it("should return Wales if country code is GB-WLS", async () => {
+        appDevDependencies.cacheRepository.feedCache({
+          [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`]:
+            {
+              postal_code: "CF3 0AD",
+              premises: "261",
+              address_line_1: "OAKLANDS CLOSE",
+              address_line_2: "",
+              locality: "CARDIFF",
+              country: "GB-WLS"
+            }
+        });
+
+        const res = await request(app).get(URL);
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain("Wales");
+      });
+
+      it("should return Scotland if country code is GB-SCT", async () => {
+        appDevDependencies.cacheRepository.feedCache({
+          [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`]:
+            {
+              postal_code: "IV18 0JT",
+              premises: "1",
+              address_line_1: "MAIN AVENUE",
+              address_line_2: "",
+              locality: "INVERGORDON",
+              country: "GB-SCT"
+            }
+        });
+
+        const res = await request(app).get(URL);
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain("Scotland");
+      });
+
+      it("should return Northern Ireland if country code is GB-NIR", async () => {
+        appDevDependencies.cacheRepository.feedCache({
+          [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`]:
+            {
+              postal_code: "BT12 6QH",
+              premises: "11E",
+              address_line_1: "GLENMACHAN CLOSE",
+              address_line_2: "",
+              locality: "BELFAST",
+              country: "GB-NIR"
+            }
+        });
+
+        const res = await request(app).get(URL);
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain("Northern Ireland");
+      });
     });
 
     it("should load the confirm registered office address page with Welsh text", async () => {
