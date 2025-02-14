@@ -78,6 +78,12 @@
         "publicRegisterLine1": "We'll show the registered office address on the public register."
    },
 
+   "govUk" : {
+        "error" : {
+            "title" : "There is a problem"
+        }
+   },
+
     "emailPage" : {
         "whatIsEmail" : "What is the registered email address for the partnership?",
         "emailHint" : "Partners must be able to access emails that are sent to this address.",

@@ -78,6 +78,12 @@
         "publicRegisterLine1": "WELSH - We'll show the registered office address on the public register."
    },
 
+   "govUk" : {
+        "error" : {
+            "title" : "WELSH - There is a problem"
+        }
+   },
+
     "emailPage" : {
         "whatIsEmail" : "WELSH - What is the registered email address for the partnership?",
         "emailHint" : "WELSH - Partners must be able to access emails that are sent to this address.",

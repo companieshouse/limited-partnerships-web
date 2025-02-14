@@ -115,6 +115,28 @@ describe("Enter Registered Office Address Page", () => {
     });
 
     expect(res.status).toBe(200);
+    expect(res.text).toContain(enTranslationText.govUk.error.title);
+    expect(res.text).toContain("You must enter a country that matches your jurisdiction");
+  });
+
+  it("should return a Welsh validation error when jurisdiction of Northern Ireland does not match country", async () => {
+    setLocalesEnabled(true);
+
+    const limitedPartnership = new LimitedPartnershipBuilder()
+      .withJurisdiction(Jurisdiction.NORTHERN_IRELAND)
+      .build();
+
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
+      limitedPartnership
+    ]);
+
+    const res = await request(app).post(URL + "?lang=cy").send({
+      pageType: AddressPageType.enterRegisteredOfficeAddress,
+      country: "scotland"
+    });
+
+    expect(res.status).toBe(200);
+    expect(res.text).toContain(cyTranslationText.govUk.error.title);
     expect(res.text).toContain("You must enter a country that matches your jurisdiction");
   });
 
