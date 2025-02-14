@@ -5,7 +5,13 @@ import IAddressLookUpGateway from "../../domain/IAddressLookUpGateway";
 import { logger } from "../../utils";
 
 class AddressLookUpService {
+  i18n: any;
+
   constructor(private addressGateway: IAddressLookUpGateway) {}
+
+  setI18n(i18n: any) {
+    this.i18n = i18n;
+  }
 
   async isValidUKPostcodeAndHasAnAddress(
     opt: { access_token: string; refresh_token: string },
@@ -104,15 +110,27 @@ class AddressLookUpService {
     if (jurisdiction === Jurisdiction.ENGLAND_AND_WALES && !IS_IN_ENGLAND && !IS_IN_WALES) {
       isCorrectCountry = false;
 
-      this.setFieldError(uiErrors, "postal_code", "You must enter a postcode which is in England or Wales");
+      this.setFieldError(
+        uiErrors,
+        "postal_code",
+        this.i18n?.address?.findPostcode?.errorMessages?.jurisdictionEnglandAndWales
+      );
     } else if (jurisdiction === Jurisdiction.SCOTLAND && !IS_IN_SCOTLAND) {
       isCorrectCountry = false;
 
-      this.setFieldError(uiErrors, "postal_code", "You must enter a postcode which is in Scotland");
+      this.setFieldError(
+        uiErrors,
+        "postal_code",
+        this.i18n?.address?.findPostcode?.errorMessages?.jurisdictionScotland
+      );
     } else if (jurisdiction === Jurisdiction.NORTHERN_IRELAND && !IS_IN_NORTHEN_IRELAND) {
       isCorrectCountry = false;
 
-      this.setFieldError(uiErrors, "postal_code", "You must enter a postcode which is in Northern Ireland");
+      this.setFieldError(
+        uiErrors,
+        "postal_code",
+        this.i18n?.address?.findPostcode?.errorMessages?.jurisdictionNorthernIreland
+      );
     }
 
     return isCorrectCountry;

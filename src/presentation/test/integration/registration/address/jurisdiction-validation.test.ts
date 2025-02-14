@@ -91,6 +91,25 @@ describe("Jurisdiction validation", () => {
 
       expect(appDevDependencies.cacheRepository.cache).toEqual(null);
     });
+
+    it("should return an error if the postcode is in Scotland - WELSH", async () => {
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+      setLocalesEnabled(true);
+
+      const res = await request(app)
+        .post(URL + "?lang=cy")
+        .send({
+          pageType: AddressPageType.postcodeRegisteredOfficeAddress,
+          premises: null,
+          postal_code: appDevDependencies.addressLookUpGateway.scotlandAddresses[0].postcode
+        });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain("WELSH - You must enter a postcode which is in England or Wales");
+
+      expect(appDevDependencies.cacheRepository.cache).toEqual(null);
+    });
   });
 
   describe("Scotland", () => {

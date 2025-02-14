@@ -42,7 +42,11 @@ describe("Postcode Registered Office Address Page", () => {
       expect(res.text).toContain(
         `${enTranslationText.address.findPostcode.registeredOfficeAddress.whatIsOfficeAddress} - ${enTranslationText.service} - GOV.UK`
       );
-      testTranslations(res.text, enTranslationText.address.findPostcode, ["scotland", "principalPlaceOfBusiness"]);
+      testTranslations(res.text, enTranslationText.address.findPostcode, [
+        "scotland",
+        "principalPlaceOfBusiness",
+        "errorMessages"
+      ]);
       expect(res.text).not.toContain("WELSH -");
     });
 
@@ -54,7 +58,11 @@ describe("Postcode Registered Office Address Page", () => {
       expect(res.text).toContain(
         `${cyTranslationText.address.findPostcode.registeredOfficeAddress.whatIsOfficeAddress} - ${cyTranslationText.service} - GOV.UK`
       );
-      testTranslations(res.text, cyTranslationText.address.findPostcode, ["scotland", "principalPlaceOfBusiness"]);
+      testTranslations(res.text, cyTranslationText.address.findPostcode, [
+        "scotland",
+        "principalPlaceOfBusiness",
+        "errorMessages"
+      ]);
     });
   });
 

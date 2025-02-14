@@ -30,6 +30,8 @@ class AddressLookUpController extends AbstractController {
   getPageRouting(): RequestHandler {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
+        this.addressService.setI18n(response.locals.i18n);
+
         const session = request.session as Session;
         const tokens = super.extractTokens(request);
         const pageType = super.pageType(request.path);
@@ -88,6 +90,8 @@ class AddressLookUpController extends AbstractController {
   postcodeValidation(): RequestHandler {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
+        this.addressService.setI18n(response.locals.i18n);
+
         const session = request.session as Session;
         const tokens = super.extractTokens(request);
         const { transactionId, submissionId } = super.extractIds(request);
@@ -151,6 +155,8 @@ class AddressLookUpController extends AbstractController {
   selectAddress(): RequestHandler {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
+        this.addressService.setI18n(response.locals.i18n);
+
         const address: Address = JSON.parse(request.body.selected_address);
 
         await this.saveAndRedirectToNextPage(request, response, address);
@@ -163,6 +169,8 @@ class AddressLookUpController extends AbstractController {
   sendManualAddress(): RequestHandler {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
+        this.addressService.setI18n(response.locals.i18n);
+
         const { premises, address_line_1, address_line_2, locality, region, postal_code, country } = request.body;
         const address = {
           address_line_1,
@@ -217,6 +225,8 @@ class AddressLookUpController extends AbstractController {
   confirmAddress(): RequestHandler {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
+        this.addressService.setI18n(response.locals.i18n);
+
         const session = request.session as Session;
         const tokens = super.extractTokens(request);
         const { transactionId, submissionId } = super.extractIds(request);
