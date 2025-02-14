@@ -1,6 +1,7 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
 import escape from "escape-html";
 import { Session } from "@companieshouse/node-session-handler";
+import { Address } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import AddressService from "../../../application/service/AddressLookUpService";
 import addresssRouting, { addressLookUpRouting } from "./Routing";
@@ -10,7 +11,6 @@ import CacheService from "../../../application/service/CacheService";
 import { APPLICATION_CACHE_KEY_PREFIX_REGISTRATION } from "../../../config/constants";
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import UIErrors from "../../../domain/entities/UIErrors";
-import { Address } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { PageRouting, pageRoutingDefault } from "../PageRouting";
 
 class AddressLookUpController extends AbstractController {

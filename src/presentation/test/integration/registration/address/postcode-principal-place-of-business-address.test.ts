@@ -14,16 +14,12 @@ import {
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
 import AddressPageType from "../../../../controller/addressLookUp/PageType";
-import {
-  APPLICATION_CACHE_KEY,
-  APPLICATION_CACHE_KEY_PREFIX_REGISTRATION
-} from "../../../../../config/constants";
+import { APPLICATION_CACHE_KEY, APPLICATION_CACHE_KEY_PREFIX_REGISTRATION } from "../../../../../config/constants";
 
 describe("Postcode Principal Place Of Business Address Page", () => {
   const URL = getUrl(POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL);
   const REDIRECT_URL = getUrl(CHOOSE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL);
-  const addresses: UKAddress[] =
-    appDevDependencies.addressLookUpGateway.englandAddresses;
+  const addresses: UKAddress[] = appDevDependencies.addressLookUpGateway.englandAddresses;
 
   beforeEach(() => {
     setLocalesEnabled(false);
@@ -34,9 +30,7 @@ describe("Postcode Principal Place Of Business Address Page", () => {
       .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
       .build();
 
-    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
-      limitedPartnership
-    ]);
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
   });
 
   describe("Get Postcode Principal Place Of Business Address Page", () => {
@@ -48,9 +42,7 @@ describe("Postcode Principal Place Of Business Address Page", () => {
       expect(res.text).toContain(
         `${enTranslationText.address.findPostcode.principalPlaceOfBusiness.whatIsPrincipalPlaceOfBusiness} - ${enTranslationText.service} - GOV.UK`
       );
-      testTranslations(res.text, enTranslationText.address.findPostcode, [
-        "registeredOfficeAddress"
-      ]);
+      testTranslations(res.text, enTranslationText.address.findPostcode, ["registeredOfficeAddress"]);
       expect(res.text).not.toContain("WELSH -");
     });
 
@@ -62,9 +54,7 @@ describe("Postcode Principal Place Of Business Address Page", () => {
       expect(res.text).toContain(
         `${cyTranslationText.address.findPostcode.principalPlaceOfBusiness.whatIsPrincipalPlaceOfBusiness} - ${cyTranslationText.service} - GOV.UK`
       );
-      testTranslations(res.text, cyTranslationText.address.findPostcode, [
-        "registeredOfficeAddress"
-      ]);
+      testTranslations(res.text, cyTranslationText.address.findPostcode, ["registeredOfficeAddress"]);
     });
   });
 
@@ -81,15 +71,14 @@ describe("Postcode Principal Place Of Business Address Page", () => {
 
       expect(appDevDependencies.cacheRepository.cache).toEqual({
         [APPLICATION_CACHE_KEY]: {
-          [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}principal_place_of_business`]:
-            {
-              postal_code: "ST6 3LJ",
-              address_line_1: "",
-              address_line_2: "",
-              locality: "",
-              country: "",
-              premises: ""
-            }
+          [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}principal_place_of_business`]: {
+            postal_code: "ST6 3LJ",
+            address_line_1: "",
+            address_line_2: "",
+            locality: "",
+            country: "",
+            premises: ""
+          }
         }
       });
     });
@@ -109,15 +98,14 @@ describe("Postcode Principal Place Of Business Address Page", () => {
 
       expect(appDevDependencies.cacheRepository.cache).toEqual({
         [APPLICATION_CACHE_KEY]: {
-          [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`]:
-            {
-              postal_code: "ST6 3LJ",
-              premises: "2",
-              address_line_1: "DUNCALF STREET",
-              address_line_2: "",
-              locality: "STOKE-ON-TRENT",
-              country: "GB-ENG"
-            }
+          [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`]: {
+            postal_code: "ST6 3LJ",
+            premises: "2",
+            address_line_1: "DUNCALF STREET",
+            address_line_2: "",
+            locality: "STOKE-ON-TRENT",
+            country: "GB-ENG"
+          }
         }
       });
     });

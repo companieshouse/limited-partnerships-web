@@ -25,9 +25,7 @@ describe("Jurisdiction validation", () => {
       .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
       .build();
 
-    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
-      limitedPartnership
-    ]);
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
   });
 
   it("should redirect if jurisdiction is in Border", async () => {
@@ -35,15 +33,12 @@ describe("Jurisdiction validation", () => {
       .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
       .build();
 
-    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
-      limitedPartnership
-    ]);
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
     const res = await request(app).post(URL).send({
       pageType: AddressPageType.postcodeRegisteredOfficeAddress,
       premises: null,
-      postal_code:
-        appDevDependencies.addressLookUpGateway.borderAddresses[0].postcode
+      postal_code: appDevDependencies.addressLookUpGateway.borderAddresses[0].postcode
     });
 
     expect(res.status).toBe(302);
@@ -57,15 +52,12 @@ describe("Jurisdiction validation", () => {
       .build();
 
     it("should redirect if jurisdiction is in England", async () => {
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
-        limitedPartnership
-      ]);
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
         premises: null,
-        postal_code:
-          appDevDependencies.addressLookUpGateway.englandAddresses[0].postcode
+        postal_code: appDevDependencies.addressLookUpGateway.englandAddresses[0].postcode
       });
 
       expect(res.status).toBe(302);
@@ -73,15 +65,12 @@ describe("Jurisdiction validation", () => {
     });
 
     it("should redirect if jurisdiction is in Wales", async () => {
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
-        limitedPartnership
-      ]);
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
         premises: null,
-        postal_code:
-          appDevDependencies.addressLookUpGateway.walesAddresses[0].postcode
+        postal_code: appDevDependencies.addressLookUpGateway.walesAddresses[0].postcode
       });
 
       expect(res.status).toBe(302);
@@ -89,21 +78,16 @@ describe("Jurisdiction validation", () => {
     });
 
     it("should return an error if the postcode is in Scotland", async () => {
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
-        limitedPartnership
-      ]);
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
         premises: null,
-        postal_code:
-          appDevDependencies.addressLookUpGateway.scotlandAddresses[0].postcode
+        postal_code: appDevDependencies.addressLookUpGateway.scotlandAddresses[0].postcode
       });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(
-        "You must enter a postcode which is in England or Wales"
-      );
+      expect(res.text).toContain("You must enter a postcode which is in England or Wales");
 
       expect(appDevDependencies.cacheRepository.cache).toEqual(null);
     });
@@ -116,15 +100,12 @@ describe("Jurisdiction validation", () => {
       .build();
 
     it("should redirect if jurisdiction is in Scotland", async () => {
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
-        limitedPartnership
-      ]);
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
         premises: null,
-        postal_code:
-          appDevDependencies.addressLookUpGateway.scotlandAddresses[0].postcode
+        postal_code: appDevDependencies.addressLookUpGateway.scotlandAddresses[0].postcode
       });
 
       expect(res.status).toBe(302);
@@ -132,21 +113,16 @@ describe("Jurisdiction validation", () => {
     });
 
     it("should return an error if the postcode is in Wales", async () => {
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
-        limitedPartnership
-      ]);
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
         premises: null,
-        postal_code:
-          appDevDependencies.addressLookUpGateway.walesAddresses[0].postcode
+        postal_code: appDevDependencies.addressLookUpGateway.walesAddresses[0].postcode
       });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(
-        "You must enter a postcode which is in Scotland"
-      );
+      expect(res.text).toContain("You must enter a postcode which is in Scotland");
 
       expect(appDevDependencies.cacheRepository.cache).toEqual(null);
     });
@@ -159,16 +135,12 @@ describe("Jurisdiction validation", () => {
       .build();
 
     it("should redirect if jurisdiction is in Northern Ireland", async () => {
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
-        limitedPartnership
-      ]);
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
         premises: null,
-        postal_code:
-          appDevDependencies.addressLookUpGateway.northernIrelandAddresses[0]
-            .postcode
+        postal_code: appDevDependencies.addressLookUpGateway.northernIrelandAddresses[0].postcode
       });
 
       expect(res.status).toBe(302);
@@ -176,21 +148,16 @@ describe("Jurisdiction validation", () => {
     });
 
     it("should return an error if the postcode is in Wales", async () => {
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
-        limitedPartnership
-      ]);
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
         premises: null,
-        postal_code:
-          appDevDependencies.addressLookUpGateway.walesAddresses[0].postcode
+        postal_code: appDevDependencies.addressLookUpGateway.walesAddresses[0].postcode
       });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(
-        "You must enter a postcode which is in Northern Ireland"
-      );
+      expect(res.text).toContain("You must enter a postcode which is in Northern Ireland");
 
       expect(appDevDependencies.cacheRepository.cache).toEqual(null);
     });

@@ -30,9 +30,7 @@ describe("Postcode Registered Office Address Page", () => {
       .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
       .build();
 
-    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
-      limitedPartnership
-    ]);
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
   });
 
   describe("Get Postcode Registered Office Address Page", () => {
@@ -44,10 +42,7 @@ describe("Postcode Registered Office Address Page", () => {
       expect(res.text).toContain(
         `${enTranslationText.address.findPostcode.registeredOfficeAddress.whatIsOfficeAddress} - ${enTranslationText.service} - GOV.UK`
       );
-      testTranslations(res.text, enTranslationText.address.findPostcode, [
-        "scotland",
-        "principalPlaceOfBusiness"
-      ]);
+      testTranslations(res.text, enTranslationText.address.findPostcode, ["scotland", "principalPlaceOfBusiness"]);
       expect(res.text).not.toContain("WELSH -");
     });
 
@@ -59,10 +54,7 @@ describe("Postcode Registered Office Address Page", () => {
       expect(res.text).toContain(
         `${cyTranslationText.address.findPostcode.registeredOfficeAddress.whatIsOfficeAddress} - ${cyTranslationText.service} - GOV.UK`
       );
-      testTranslations(res.text, cyTranslationText.address.findPostcode, [
-        "scotland",
-        "principalPlaceOfBusiness"
-      ]);
+      testTranslations(res.text, cyTranslationText.address.findPostcode, ["scotland", "principalPlaceOfBusiness"]);
     });
   });
 
@@ -71,8 +63,7 @@ describe("Postcode Registered Office Address Page", () => {
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
         premises: null,
-        postal_code:
-          appDevDependencies.addressLookUpGateway.englandAddresses[0].postcode
+        postal_code: appDevDependencies.addressLookUpGateway.englandAddresses[0].postcode
       });
 
       expect(res.status).toBe(302);
@@ -80,15 +71,14 @@ describe("Postcode Registered Office Address Page", () => {
 
       expect(appDevDependencies.cacheRepository.cache).toEqual({
         [config.APPLICATION_CACHE_KEY]: {
-          [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`]:
-            {
-              postal_code: "ST6 3LJ",
-              address_line_1: "",
-              address_line_2: "",
-              locality: "",
-              country: "",
-              premises: ""
-            }
+          [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`]: {
+            postal_code: "ST6 3LJ",
+            address_line_1: "",
+            address_line_2: "",
+            locality: "",
+            country: "",
+            premises: ""
+          }
         }
       });
     });
@@ -96,10 +86,8 @@ describe("Postcode Registered Office Address Page", () => {
     it("should validate the post code and find a matching address then redirect to the next page", async () => {
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
-        premises:
-          appDevDependencies.addressLookUpGateway.englandAddresses[0].premise,
-        postal_code:
-          appDevDependencies.addressLookUpGateway.englandAddresses[0].postcode
+        premises: appDevDependencies.addressLookUpGateway.englandAddresses[0].premise,
+        postal_code: appDevDependencies.addressLookUpGateway.englandAddresses[0].postcode
       });
 
       const REDIRECT_URL = getUrl(CONFIRM_REGISTERED_OFFICE_ADDRESS_URL);
@@ -109,15 +97,14 @@ describe("Postcode Registered Office Address Page", () => {
 
       expect(appDevDependencies.cacheRepository.cache).toEqual({
         [config.APPLICATION_CACHE_KEY]: {
-          [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`]:
-            {
-              postal_code: "ST6 3LJ",
-              premises: "2",
-              address_line_1: "DUNCALF STREET",
-              address_line_2: "",
-              locality: "STOKE-ON-TRENT",
-              country: "GB-ENG"
-            }
+          [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`]: {
+            postal_code: "ST6 3LJ",
+            premises: "2",
+            address_line_1: "DUNCALF STREET",
+            address_line_2: "",
+            locality: "STOKE-ON-TRENT",
+            country: "GB-ENG"
+          }
         }
       });
     });

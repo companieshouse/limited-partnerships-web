@@ -27,18 +27,14 @@ export const patchLimitedPartnership = jest.fn().mockImplementation(() => ({
 }));
 export const getLimitedPartnership = jest.fn().mockImplementation(() => ({
   httpStatusCode: 200,
-  resource: new LimitedPartnershipBuilder()
-    .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
-    .build()
+  resource: new LimitedPartnershipBuilder().withId(appDevDependencies.limitedPartnershipGateway.submissionId).build()
 }));
-export const postLimitedPartnershipIncorporation = jest
-  .fn()
-  .mockImplementation(() => ({
-    httpStatusCode: 201,
-    resource: {
-      id: appDevDependencies.incorporationGateway.incorporationId
-    }
-  }));
+export const postLimitedPartnershipIncorporation = jest.fn().mockImplementation(() => ({
+  httpStatusCode: 201,
+  resource: {
+    id: appDevDependencies.incorporationGateway.incorporationId
+  }
+}));
 
 // Refresh Token service
 export const refresh = jest.fn().mockImplementation(() => ({
@@ -48,20 +44,18 @@ export const refresh = jest.fn().mockImplementation(() => ({
 
 // Postcode Look Up service
 export const isValidUKPostcode = jest.fn().mockImplementation(() => true);
-export const getListOfValidPostcodeAddresses = jest
-  .fn()
-  .mockImplementation(() => ({
-    resource: [
-      {
-        postcode: "ST6 3LJ",
-        premise: "2",
-        addressLine1: "DUNCALF STREET",
-        addressLine2: "",
-        postTown: "STOKE-ON-TRENT",
-        country: "GB-ENG"
-      }
-    ]
-  }));
+export const getListOfValidPostcodeAddresses = jest.fn().mockImplementation(() => ({
+  resource: [
+    {
+      postcode: "ST6 3LJ",
+      premise: "2",
+      addressLine1: "DUNCALF STREET",
+      addressLine2: "",
+      postTown: "STOKE-ON-TRENT",
+      country: "GB-ENG"
+    }
+  ]
+}));
 
 const sdkMock = {
   transaction: {

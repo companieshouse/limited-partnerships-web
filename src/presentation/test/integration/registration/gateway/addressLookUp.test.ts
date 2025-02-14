@@ -3,10 +3,7 @@ import { createApiClient } from "@companieshouse/api-sdk-node";
 
 import appRealDependencies from "../../../../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import sdkMock, {
-  getListOfValidPostcodeAddresses,
-  isValidUKPostcode
-} from "../../mock/sdkMock";
+import sdkMock, { getListOfValidPostcodeAddresses, isValidUKPostcode } from "../../mock/sdkMock";
 
 import {
   CHOOSE_REGISTERED_OFFICE_ADDRESS_URL,
