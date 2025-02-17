@@ -149,13 +149,18 @@ class AddressLookUpService {
     country: string,
     uiErrors: UIErrors
   ): boolean {
+
     const isValid =
-      (jurisdiction === Jurisdiction.SCOTLAND && country === "scotland") ||
-      (jurisdiction === Jurisdiction.NORTHERN_IRELAND && country === "northern-ireland") ||
-      (jurisdiction === Jurisdiction.ENGLAND_AND_WALES && (country === "england" || country === "wales"));
+      (jurisdiction === Jurisdiction.SCOTLAND && country === "GB-SCT") ||
+      (jurisdiction === Jurisdiction.NORTHERN_IRELAND && country === "GB-NIR") ||
+      (jurisdiction === Jurisdiction.ENGLAND_AND_WALES && (country === "GB-ENG" || country === "GB-WLS"));
 
     if (!isValid) {
-      this.setFieldError(uiErrors, "country", "You must enter a country that matches your jurisdiction");
+      this.setFieldError(
+        uiErrors,
+        "country",
+        this.i18n?.address?.enterAddress?.errorMessages?.jurisdictionCountry
+      );
     }
 
     return isValid;
