@@ -59,7 +59,13 @@
             "enterAddressManually": "Enter address manually",
             "findAddress": "Find address",
 
-            "errorPostcode": "Enter a postcode"
+            "errorPostcode": "Enter a postcode",
+
+            "errorMessages": {
+                "jurisdictionEnglandAndWales": "You must enter a postcode which is in England or Wales",
+                "jurisdictionNorthernIreland": "You must enter a postcode which is in Northern Ireland",
+                "jurisdictionScotland": "You must enter a postcode which is in Scotland"
+            }
         }
     },
 

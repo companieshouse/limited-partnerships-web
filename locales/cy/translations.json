@@ -59,7 +59,13 @@
             "enterAddressManually": "WELSH - Enter address manually",
             "findAddress": "WELSH - Find address",
 
-            "errorPostcode": "WELSH - Enter a postcode"
+            "errorPostcode": "WELSH - Enter a postcode",
+
+            "errorMessages": {
+                "jurisdictionEnglandAndWales": "WELSH - You must enter a postcode which is in England or Wales",
+                "jurisdictionNorthernIreland": "WELSH - You must enter a postcode which is in Northern Ireland",
+                "jurisdictionScotland": "WELSH - You must enter a postcode which is in Scotland"
+            }
         }
     },
 

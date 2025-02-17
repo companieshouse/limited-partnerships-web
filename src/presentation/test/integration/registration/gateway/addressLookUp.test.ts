@@ -3,13 +3,11 @@ import { createApiClient } from "@companieshouse/api-sdk-node";
 
 import appRealDependencies from "../../../../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import sdkMock, {
-  getListOfValidPostcodeAddresses,
-  isValidUKPostcode
-} from "../../mock/sdkMock";
+import sdkMock, { getListOfValidPostcodeAddresses, isValidUKPostcode } from "../../mock/sdkMock";
 
 import {
   CHOOSE_REGISTERED_OFFICE_ADDRESS_URL,
+  CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
   POSTCODE_REGISTERED_OFFICE_ADDRESS_URL
 } from "../../../../controller/addressLookUp/url";
 import AddressPageType from "../../../../controller/addressLookUp/PageType";
@@ -46,6 +44,8 @@ describe("Gateway Address Look Up", () => {
     });
 
     it("should validate the post code and find a matching address then redirect to the next page", async () => {
+      const REDIRECT_URL = getUrl(CONFIRM_REGISTERED_OFFICE_ADDRESS_URL);
+
       const res = await request(appRealDependencies).post(URL).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
         premises: "2",
