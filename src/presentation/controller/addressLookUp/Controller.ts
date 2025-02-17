@@ -237,11 +237,22 @@ class AddressLookUpController extends AbstractController {
 
         const cache = await this.cacheService.getDataFromCache(session);
 
-        const address = cache[this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY];
+        let data;
 
-        if (!address) {
-          await this.handleAddressNotFound(tokens, transactionId, submissionId, pageRouting, cache, response);
-          return;
+        if (pageType === AddressLookUpPageType.confirmPrincipalPlaceOfBusinessAddress) {
+          const addressPpob = cache[this.PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CACHE_KEY];
+          if (!addressPpob) {
+            await this.handleAddressNotFound(tokens, transactionId, submissionId, pageRouting, cache, response);
+            return;
+          }
+          data = { principal_place_of_business_address: addressPpob };
+        } else {
+          const addressRoa = cache[this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY];
+          if (!addressRoa) {
+            await this.handleAddressNotFound(tokens, transactionId, submissionId, pageRouting, cache, response);
+            return;
+          }
+          data = { registered_office_address: addressRoa };
         }
 
         // store in api
@@ -250,7 +261,7 @@ class AddressLookUpController extends AbstractController {
           transactionId,
           submissionId,
           pageType,
-          { registered_office_address: address }
+          data
         );
 
         if (result?.errors) {

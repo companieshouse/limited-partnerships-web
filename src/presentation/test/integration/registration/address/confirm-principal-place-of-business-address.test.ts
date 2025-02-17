@@ -72,9 +72,9 @@ describe("Confirm Principal Place Of Business Address Page", () => {
     });
   });
 
-  // Skip until save data is implemented.
   describe("POST Confirm Principal Place Of Business Address Page", () => {
-    it.skip("should redirect to the next page", async () => {
+
+    it("should redirect to the next page", async () => {
       const res = await request(app)
         .post(URL)
         .send({
@@ -86,7 +86,7 @@ describe("Confirm Principal Place Of Business Address Page", () => {
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
     });
 
-    it.skip("should show error message if address is not provided", async () => {
+    it("should show error message if address is not provided", async () => {
       appDevDependencies.cacheRepository.feedCache({});
 
       const res = await request(app)
@@ -99,7 +99,7 @@ describe("Confirm Principal Place Of Business Address Page", () => {
       expect(res.text).toContain("You must provide an address");
     });
 
-    it.skip("should show validation error message if validation error occurs when saving address", async () => {
+    it("should show validation error message if validation error occurs when saving address", async () => {
       const limitedPartnership = new LimitedPartnershipBuilder()
         .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
         .build();
