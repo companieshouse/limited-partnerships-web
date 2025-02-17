@@ -26,6 +26,43 @@
                 "title" : "Confirm the principal place of business address",              
                 "addressLinkHidden" : "principal place of business address",
                 "publicRegisterLine1": "We'll show the principal place of business address on the public register."
+        },
+        
+        "enterAddress": {
+            "registeredOfficeAddress" : {
+                "title": "What is the registered office address of the partnership?",
+                "titleHint1": "We'll use this address to send official communications.",
+                "titleHint2": "It must be a physical address in the jurisdiction where the partnership was formed. You cannot use a PO Box address.",
+                "titleHint3": "It is not the principal place of business. You'll need to provide this later.",
+                "publicInformationTitle": "What information we'll show on the public online register",
+                "publicInformationLine1": "We'll show the registered office address on the public register."
+            },
+            "propertyNameOrNumber": "Property name or number",
+            "propertyNameOrNumberHint": "For example, 'The Mill', '116' or 'Flat 37a'",
+            "addressLine1": "Address line 1",
+            "addressLine2": "Address line 2 (optional)",
+            "townOrCity": "Town or city",
+            "county": "County (optional)",
+            "postcode": "Postcode",
+            "country": "Country",
+            "countrySelect": "Select country",
+            "countryEngland": "England",
+            "countryScotland": "Scotland",
+            "countryWales": "Wales",
+            "countryNorthernIreland": "Northern Ireland",
+            "errorMessages": {
+                "nameOrNumberMissing": "Enter a property name or number",
+                "nameOrNumberLength": "Property name or number must be 50 characters or less",
+                "addressLine1Missing": "Enter an address",
+                "addressLine1Length": "Address line 1 must be 50 characters or less",
+                "addressLine2Length": "Address line 2 must be 50 characters or less",
+                "townOrCityMissing": "Enter a town or city",
+                "townOrCityLength": "Town or city must be 50 characters or less",
+                "countyLength": "County, state, province or region must be 50 characters or less",
+                "postcodeMissing": "Enter a postcode",
+                "postcodeLength": "Postcode must be 15 characters or less",
+                "countryMissing": "Select a country",
+                "jurisdictionCountry": "You must enter a country that matches your jurisdiction"
             }
         },
 
@@ -97,28 +134,6 @@
         }
     },
 
-    "enterRegisteredOfficeAddressPage" : {
-        "title": "What is the registered office address of the partnership?",
-        "titleHint1": "We'll use this address to send official communications.",
-        "titleHint2": "It must be a physical address in the jurisdiction where the partnership was formed. You cannot use a PO Box address.",
-        "titleHint3": "It is not the principal place of business. You'll need to provide this later.",
-        "propertyNameOrNumber": "Property name or number",
-        "propertyNameOrNumberHint": "For example, 'The Mill', '116' or 'Flat 37a'",
-        "addressLine1": "Address line 1",
-        "addressLine2": "Address line 2 (optional)",
-        "townOrCity": "Town or city",
-        "county": "County (optional)",
-        "postcode": "Postcode",
-        "country": "Country",
-        "countrySelect": "Select country",
-        "countryEngland": "England",
-        "countryScotland": "Scotland",
-        "countryWales": "Wales",
-        "countryNorthernIreland": "Northern Ireland",
-        "publicInformationTitle": "What information we'll show on the public online register",
-        "publicInformationLine1": "We'll show the registered office address on the public register."
-   },
-
     "errorPage" : {
         "title" : "Sorry, the service is unavailable",
         "tryLater" : "You will be able to use the service at a later date.",
@@ -135,7 +150,13 @@
     "generalPartnersPage": {
         "title": "You now need to tell us about the general partners",
         "pageInformation": "If the partnership has more than one general partner, you'll add them one at a time."
-    }, 
+    },
+
+    "govUk" : {
+        "error" : {
+            "title" : "There is a problem"
+        }
+    },
     
     "limitedPartnerChoicePage" : {
         "isPersonOrLegalEntity" : "Is the limited partner a person or a legal entity?",
