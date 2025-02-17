@@ -37,8 +37,8 @@ describe("Confirm Registered Office Address Page", () => {
     ]);
   });
 
-  describe.skip("GET Confirm Registered Office Address Page", () => {
-    it("should load the confirm registered office address page with English text", async () => {
+  describe("GET Confirm Registered Office Address Page", () => {
+    it.only("should load the confirm registered office address page with English text", async () => {
       setLocalesEnabled(true);
 
       const res = await request(app).get(URL + "?lang=en");
