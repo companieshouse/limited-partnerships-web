@@ -5,7 +5,8 @@ enum AddressPageType {
   confirmRegisteredOfficeAddress = "confirm-registered-office-address",
 
   postcodePrincipalPlaceOfBusinessAddress = "postcode-principal-place-of-business-address",
-  choosePrincipalPlaceOfBusinessAddress = "choose-principal-place-of-business-address"
+  choosePrincipalPlaceOfBusinessAddress = "choose-principal-place-of-business-address",
+  enterPrincipalPlaceOfBusinessAddress = "enter-principal-place-of-business-address"
 }
 
 export default AddressPageType;
