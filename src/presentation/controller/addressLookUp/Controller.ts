@@ -335,7 +335,7 @@ class AddressLookUpController extends AbstractController {
     const pageRouting = super.getRouting(addressLookUpRouting, pageType, request);
 
     let cacheKey = "";
-    if (pageType === AddressLookUpPageType.choosePrincipalPlaceOfBusinessAddress) {
+    if (pageType === AddressLookUpPageType.choosePrincipalPlaceOfBusinessAddress || pageType === AddressLookUpPageType.enterPrincipalPlaceOfBusinessAddress || pageType === AddressLookUpPageType.confirmPrincipalPlaceOfBusinessAddress) {
       cacheKey = this.PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CACHE_KEY;
     } else {
       cacheKey = this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY;
