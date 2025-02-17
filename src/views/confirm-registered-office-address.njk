@@ -20,6 +20,7 @@
     <div class="govuk-grid-column-two-thirds">
       <form class="form" action={{ props.currentUrl }} method="post">
         <input type="hidden" name="pageType" value={{ props.pageType }}>
+        <input type="hidden" name="address" value='{{address | dump}}'>
         {% include "includes/csrf_token.njk" %}
 
         {% include "includes/errors.njk" %}
