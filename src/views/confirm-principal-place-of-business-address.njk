@@ -1,0 +1,15 @@
+{% extends "layout.njk" %}
+
+{% set pageTitle = i18n.address.confirm.principalPlaceOfBusinessAddress.title %}
+{% set publicRegisterLine = i18n.address.confirm.principalPlaceOfBusinessAddress.publicRegisterLine1 %}
+{% set addressLinkHidden = i18n.address.confirm.principalPlaceOfBusinessAddress.addressLinkHidden %}
+{% set cacheKey = "registration_principal_place_of_business_address" %}
+{% set data = props.data.limitedPartnership.data.principal_place_of_business_address %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {% include "pages/address/confirm-address-form.njk" %}
+    </div>
+  </div> 
+{% endblock %}
