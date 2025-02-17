@@ -1,15 +1,19 @@
 {% extends "layout.njk" %}
 
-{% set principalPlaceOfBusinessKey = "registration_choose-principal-place-of-business-address" %}
-{% if props.data.cache[principalPlaceOfBusinessKey] %}
-  {% set address = props.data.cache[principalPlaceOfBusinessKey] %}
-{% elif props.data.limitedPartnership.data.principal_place_of_business %}
-  {% set address = props.data.limitedPartnership.data.principal_place_of_business %}
+{% import 'includes/macros.njk' as macros %}
+
+{% set principalPlaceOfBusinessKey = "registration_principal_place_of_business_address" %}
+{% if props.data.address %}
+  {% set principalPlaceOfBusinessAddress = props.data.address %}
+{% elif props.data.cache[principalPlaceOfBusinessKey] %}
+  {% set principalPlaceOfBusinessAddress = props.data.cache[principalPlaceOfBusinessKey] %}
+{% elif props.data.limitedPartnership.data.principal_place_of_business_address %}
+  {% set principalPlaceOfBusinessAddress = props.data.principal_place_of_business_address %}
 {% else %}
-  {% set address = null %}
+  {% set principalPlaceOfBusinessAddress = {} %}
 {% endif %}
 
-{% set pageTitle = i18n.findPostCode.principalPlaceOfBusiness.whatIsThePrincipalPlaceOfBusiness %}
+{% set pageTitle = i18n.address.enterAddress.principalPlaceOfBusinessAddress.title %}
 
 {% block content %}
 
@@ -28,101 +32,105 @@
           <fieldset class="govuk-fieldset">
             <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
               <h1 class="govuk-heading-xl">
-                {{ i18n.findPostCode.principalPlaceOfBusiness.whatIsThePrincipalPlaceOfBusiness }}
+                {{ i18n.address.enterAddress.principalPlaceOfBusinessAddress.title }}
               </h1>
             </legend>
 
-            <p class="govuk-hint">{{ i18n.enterRegisteredOfficeAddressPage.titleHint1 }}</p>
-            <p class="govuk-hint">{{ i18n.enterRegisteredOfficeAddressPage.titleHint2 }}</p>
-            <p class="govuk-hint">{{ i18n.enterRegisteredOfficeAddressPage.titleHint3 }}</p>
+            <p class="govuk-hint">{{ i18n.address.enterAddress.principalPlaceOfBusinessAddress.titleHint1 }}</p>
+            <p class="govuk-hint">{{ i18n.address.enterAddress.principalPlaceOfBusinessAddress.titleHint2 }}</p>
+            <p class="govuk-hint">{{ i18n.address.enterAddress.principalPlaceOfBusinessAddress.titleHint3 }}</p>
             
             <br>
 
             {{ govukInput({
               label: {
-                text: i18n.enterRegisteredOfficeAddressPage.propertyNameOrNumber,
+                text: i18n.address.enterAddress.propertyNameOrNumber,
                 classes: "govuk-!-margin-top-5"
               },
               hint: {
-                text: i18n.enterRegisteredOfficeAddressPage.propertyNameOrNumberHint
+                text: i18n.address.enterAddress.propertyNameOrNumberHint
               },
               id: "premises",
               name: "premises",
-              value: registeredOfficeAddress.premises,
+              value: principalPlaceOfBusiness.premises,
               attributes : {  
                 required : true,
-                maxLength: 50,
+                oninvalid: validateNameOrNumber,
+                oninput: validateNameOrNumber,
                 "data-event-id": "property-name-or-number"
               }
             }) }}
 
             {{ govukInput({
               label: {
-                text: i18n.enterRegisteredOfficeAddressPage.addressLine1
+                text: i18n.address.enterAddress.addressLine1
               },
               id: "address_line_1",
               name: "address_line_1",
-              value: registeredOfficeAddress.address_line_1,
+              value: principalPlaceOfBusiness.address_line_1,
               attributes : {
                 required : true,
-                maxLength: 50,
+                oninvalid: validateAddressLine1,
+                oninput: validateAddressLine1,
                 "data-event-id": "address-line-1"
               }
             }) }}
 
             {{ govukInput({
               label: {
-                text: i18n.enterRegisteredOfficeAddressPage.addressLine2
+                text: i18n.address.enterAddress.addressLine2
               },
               id: "address_line_2",
               name: "address_line_2",
-              value: registeredOfficeAddress.address_line_2,
-              attributes : {
-                maxLength: 50,
+              value: principalPlaceOfBusiness.address_line_2,
+              attributes : {  
+                oninput: "validateLength(this, 50, '" + i18n.address.enterAddress.errorMessages.addressLine2Length | escape + "');",
                 "data-event-id": "address-line-2"
               }
             }) }}
 
             {{ govukInput({
               label: {
-                text: i18n.enterRegisteredOfficeAddressPage.townOrCity
+                text: i18n.address.enterAddress.townOrCity
               },
               classes: "govuk-!-width-two-thirds",
               id: "locality",
               name: "locality",
-              value: registeredOfficeAddress.locality,
+              value: principalPlaceOfBusiness.locality,
               attributes : {
                 required : true,
-                maxLength: 50,
+                oninvalid: validateTownOrCity,
+                oninput: validateTownOrCity,
                 "data-event-id": "town-or-city"
               }
             }) }}
 
             {{ govukInput({
               label: {
-                text: i18n.enterRegisteredOfficeAddressPage.county
+                text: i18n.address.enterAddress.county
               },
               classes: "govuk-!-width-two-thirds",
               id: "region",
               name: "region",
-              value: registeredOfficeAddress.region,
+              value: principalPlaceOfBusiness.region,
               attributes : {
-                maxLength: 50,
+                oninput: "validateLength(this, 50, '" + i18n.address.enterAddress.errorMessages.countyLength | escape + "');",
                 "data-event-id": "county"
               }
             }) }}
 
             {{ govukInput({
               label: {
-                text: i18n.enterRegisteredOfficeAddressPage.postcode
+                text: i18n.address.enterAddress.postcode
               },
               classes: "govuk-input--width-10",
               id: "postal_code",
               name: "postal_code",
-              value: registeredOfficeAddress.postal_code,
+              value: principalPlaceOfBusiness.postal_code,
               attributes : {
                 required : true,
-                maxLength: 15,
+                oninvalid: validatePostcode,
+                oninput: validatePostcode,
                 "data-event-id": "postcode"
               }
             }) }}
@@ -130,9 +138,9 @@
             {{ govukSelect({
               id: "country",
               name: "country",
-              value: registeredOfficeAddress.country,
+              value: principalPlaceOfBusiness.country,
               label: {
-                text: i18n.enterRegisteredOfficeAddressPage.country
+                text: i18n.address.enterAddress.country
               },
               fieldset: {
                 legend: {
@@ -143,36 +151,38 @@
               },
               attributes : {
                 required: "true",
+                oninvalid: "this.setCustomValidity('" + i18n.address.enterAddress.errorMessages.countryMissing + "');",
+                oninput: "this.setCustomValidity('');",
                 "data-event-id": "country"
               },
               items: [
                 {
                   value: "",
-                  text: i18n.enterRegisteredOfficeAddressPage.countrySelect
+                  text: i18n.address.enterAddress.countrySelect
                 },
                 {
-                  value: "england",
-                  text: i18n.enterRegisteredOfficeAddressPage.countryEngland
+                  value: "GB-ENG",
+                  text: i18n.address.enterAddress.countryEngland
                 },
                 {
-                  value: "scotland",
-                  text: i18n.enterRegisteredOfficeAddressPage.countryScotland
+                  value: "GB-SCT",
+                  text: i18n.address.enterAddress.countryScotland
                 },
                 {
-                  value: "wales",
-                  text: i18n.enterRegisteredOfficeAddressPage.countryWales
+                  value: "GB-WLS",
+                  text: i18n.address.enterAddress.countryWales
                 },
                 {
-                  value: "northern-ireland",
-                  text: i18n.enterRegisteredOfficeAddressPage.countryNorthernIreland
+                  value: "GB-NIR",
+                  text: i18n.address.enterAddress.countryNorthernIreland
                 }
               ]
             }) }}
           </fieldset>
 
           {{ govukInsetText({
-            html: "<h2 class='govuk-heading-m'>" + i18n.enterRegisteredOfficeAddressPage.publicInformationTitle | escape + "</h2>
-              <p>" + i18n.enterRegisteredOfficeAddressPage.publicInformationLine1 | escape + "</p>"
+            html: "<h2 class='govuk-heading-m'>" + i18n.address.enterAddress.principalPlaceOfBusinessAddress.publicInformationTitle | escape + "</h2>
+              <p>" + i18n.address.enterAddress.principalPlaceOfBusinessAddress.publicInformationLine1 | escape + "</p>"
           }) }}
 
           {% include "includes/save-and-continue-button.njk" %}
@@ -181,5 +191,7 @@
       </form>
     </div>
   </div>
-  
+
+  {% include "includes/validators.njk" %}
+
 {% endblock %}
