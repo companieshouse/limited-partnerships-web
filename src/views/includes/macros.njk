@@ -41,6 +41,23 @@
   {{- capitalizedWords.join(' ') -}}
 {%- endmacro -%}
 
+{%- macro mapCountry(countryCode) -%}
+  {%- if countryCode == "GB-ENG" -%}
+    {%- set country = "England" -%}
+  {%- elif countryCode == "GB-WLS" -%}
+    {%- set country = "Wales" -%}
+  {%- elif countryCode == "GB-SCT" -%}
+    {%- set country = "Scotland" -%}
+  {%- elif countryCode == "GB-NIR" -%}
+    {%- set country = "Northern Ireland" -%}
+  {%- elif countryCode == "border" -%}
+    {%- set country = "" -%}
+  {%- else -%}
+    {%- set country = countryCode -%}
+  {%- endif -%}
+  {{- country -}}
+{%- endmacro -%}
+
 {% macro htmlInputErrorMessage(message, page, field) %}
 
   {% set event = "_paq.push(['trackEvent', 'Limited Partnerships "+ page +"', '"+ field +"', 'Error: " + message + "']);" %}

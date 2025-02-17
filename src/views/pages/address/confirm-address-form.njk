@@ -10,8 +10,9 @@
 
 {% set addressFirstLineForDisplay = address.premises + " " + address.address_line_1 %}
 
-<form class="form" action={{ props.currentUrl }} method="post">
+ <form class="form" action={{ props.currentUrl }} method="post">
     <input type="hidden" name="pageType" value={{ props.pageType }}>
+    <input type="hidden" name="address" value='{{address | dump}}'>
     {% include "includes/csrf_token.njk" %}
 
     {% include "includes/errors.njk" %}
@@ -23,7 +24,7 @@
     {% if address %}
         <p class="govuk-body-m">
         {{ macros.capitalizeEachWord(addressFirstLineForDisplay) }}
-            <br>
+        <br>
         {% if address.address_line_2 %}
             {{ macros.capitalizeEachWord(address.address_line_2) }}
             <br>
