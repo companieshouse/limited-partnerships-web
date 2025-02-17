@@ -71,7 +71,7 @@ describe("Postcode Principal Place Of Business Address Page", () => {
 
       expect(appDevDependencies.cacheRepository.cache).toEqual({
         [APPLICATION_CACHE_KEY]: {
-          [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}principal_place_of_business`]: {
+          [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}principal_place_of_business_address`]: {
             postal_code: "ST6 3LJ",
             address_line_1: "",
             address_line_2: "",
@@ -90,8 +90,6 @@ describe("Postcode Principal Place Of Business Address Page", () => {
         premises: addresses[0].premise,
         postal_code: addresses[0].postcode
       });
-
-      // const REDIRECT_URL = getUrl(CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL);
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);

@@ -17,3 +17,5 @@ export const CHOOSE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_TEMPLATE =
   AddressPageType.choosePrincipalPlaceOfBusinessAddress;
 export const ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_TEMPLATE =
   AddressPageType.enterPrincipalPlaceOfBusinessAddress;
+export const CONFIRM_RINCIPAL_PLACE_OF_BUSINESS_ADDRESS_TEMPLATE =
+  AddressPageType.confirmPrincipalPlaceOfBusinessAddress;

@@ -78,7 +78,7 @@ const addressRoutingPostcodePrincipalPlaceOfBusinessAddress = {
 const addressRoutingChoosePrincipalPlaceOfBusinessAddress = {
   previousUrl: POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   currentUrl: CHOOSE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
-  nextUrl: GENERAL_PARTNERS_URL,
+  nextUrl: CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   pageType: AddressPageType.choosePrincipalPlaceOfBusinessAddress
 };
 
@@ -89,10 +89,18 @@ const addressRoutingEnterPrincipalPlaceOfBusinessAddress = {
   pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress
 };
 
+const addressRoutingConfirmPrincipalPlaceOfBusinessAddress = {
+  previousUrl: CHOOSE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+  currentUrl: CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+  nextUrl: GENERAL_PARTNERS_URL,
+  pageType: AddressPageType.confirmPrincipalPlaceOfBusinessAddress,
+};
+
 const principalPlaceOfBusinessAddress = [
   addressRoutingPostcodePrincipalPlaceOfBusinessAddress,
   addressRoutingChoosePrincipalPlaceOfBusinessAddress,
-  addressRoutingEnterPrincipalPlaceOfBusinessAddress
+  addressRoutingEnterPrincipalPlaceOfBusinessAddress,
+  addressRoutingConfirmPrincipalPlaceOfBusinessAddress
 ];
 
 export const addressLookUpRouting: PagesRouting = new Map<
