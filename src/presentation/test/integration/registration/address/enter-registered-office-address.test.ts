@@ -29,7 +29,7 @@ describe("Enter Registered Office Address Page", () => {
       const res = await request(app).get(URL + "?lang=en");
 
       expect(res.status).toBe(200);
-      testTranslations(res.text, enTranslationText.address.enterAddress, [ "jurisdictionCountry" ]);
+      testTranslations(res.text, enTranslationText.address.enterAddress, [ "jurisdictionCountry", "principalPlaceOfBusinessAddress" ]);
       expect(res.text).not.toContain("WELSH -");
     });
 
@@ -39,7 +39,7 @@ describe("Enter Registered Office Address Page", () => {
       const res = await request(app).get(URL + "?lang=cy");
 
       expect(res.status).toBe(200);
-      testTranslations(res.text, cyTranslationText.address.enterAddress, [ "jurisdictionCountry" ]);
+      testTranslations(res.text, cyTranslationText.address.enterAddress, [ "jurisdictionCountry", "principalPlaceOfBusinessAddress" ]);
     });
   });
 

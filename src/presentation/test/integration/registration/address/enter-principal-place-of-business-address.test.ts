@@ -29,7 +29,7 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
       const res = await request(app).get(URL + "?lang=en");
 
       expect(res.status).toBe(200);
-      testTranslations(res.text, enTranslationText.address.enterAddress.principalPlaceOfBusinessAddress, [ "jurisdictionCountry" ]);
+      testTranslations(res.text, enTranslationText.address.enterAddress, [ "registeredOfficeAddress", "errorMessages" ]);
       expect(res.text).not.toContain("WELSH -");
     });
 
@@ -39,7 +39,7 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
       const res = await request(app).get(URL + "?lang=cy");
 
       expect(res.status).toBe(200);
-      testTranslations(res.text, cyTranslationText.address.enterAddress.principalPlaceOfBusinessAddress, [ "jurisdictionCountry" ]);
+      testTranslations(res.text, cyTranslationText.address.enterAddress, [ "registeredOfficeAddress", "errorMessages" ]);
     });
   });
 
