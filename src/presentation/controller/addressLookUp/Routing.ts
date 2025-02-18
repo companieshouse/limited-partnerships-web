@@ -3,7 +3,7 @@ import { PageRouting, PagesRouting } from "../PageRouting";
 import AddressPageType from "./PageType";
 import PageType from "../PageType";
 import {
-  GENERAL_PARTNERS_URL,
+  TERM_URL,
   WHERE_IS_THE_JURISDICTION_URL
 } from "../registration/url";
 import {
@@ -91,10 +91,13 @@ const addressRoutingEnterPrincipalPlaceOfBusinessAddress = {
 };
 
 const addressRoutingConfirmPrincipalPlaceOfBusinessAddress = {
-  previousUrl: CHOOSE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+  previousUrl: POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   currentUrl: CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
-  nextUrl: GENERAL_PARTNERS_URL,
+  nextUrl: TERM_URL,
   pageType: AddressPageType.confirmPrincipalPlaceOfBusinessAddress,
+  data: {
+    enterManualAddressPageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress
+  }
 };
 
 const principalPlaceOfBusinessAddress = [
