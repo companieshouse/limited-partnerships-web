@@ -5,17 +5,15 @@
 {% set validateTownOrCity = "validateInput(this, 50, '" + i18n.address.enterAddress.errorMessages.townOrCityMissing | escape + "', '" + i18n.address.enterAddress.errorMessages.townOrCityLength | escape + "');" %}
 {% set validatePostcode = "validateInput(this, 15, '" + i18n.address.enterAddress.errorMessages.postcodeMissing | escape + "', '" + i18n.address.enterAddress.errorMessages.postcodeLength | escape + "');" %}
 
-{% block content %}
-
-  <form class="form" action={{ props.currentUrl }} method="post">
-    <input type="hidden" name="pageType" value={{ props.pageType }}>      
-
+<form class="form" action={{ props.currentUrl }} method="post">
+    <input type="hidden" name="pageType" value={{ props.pageType }}>
     {% include "includes/csrf_token.njk" %}
 
     {% include "includes/errors.njk" %}
 
-    <div>
+    {% include "includes/validators.njk" %}
 
+    <div>
         <fieldset class="govuk-fieldset">
         <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
             <h1 class="govuk-heading-xl">
@@ -28,19 +26,21 @@
         <p class="govuk-hint">{{ addressTitleHint3 }}</p>
         
         <br>
-
         {{ govukInput({
-            label: {
+            label: 
+            {
             text: i18n.address.enterAddress.propertyNameOrNumber,
             classes: "govuk-!-margin-top-5"
             },
-            hint: {
+            hint: 
+            {
             text: i18n.address.enterAddress.propertyNameOrNumberHint
             },
             id: "premises",
             name: "premises",
             value: registeredOfficeAddress.premises,
-            attributes : {  
+            attributes : 
+            {  
             required : true,
             oninvalid: validateNameOrNumber,
             oninput: validateNameOrNumber,
@@ -49,13 +49,15 @@
         }) }}
 
         {{ govukInput({
-            label: {
+            label: 
+            {
             text: i18n.address.enterAddress.addressLine1
             },
             id: "address_line_1",
             name: "address_line_1",
             value: registeredOfficeAddress.address_line_1,
-            attributes : {
+            attributes : 
+            {
             required : true,
             oninvalid: validateAddressLine1,
             oninput: validateAddressLine1,
@@ -64,27 +66,31 @@
         }) }}
 
         {{ govukInput({
-            label: {
+            label: 
+            {
             text: i18n.address.enterAddress.addressLine2
             },
             id: "address_line_2",
             name: "address_line_2",
             value: registeredOfficeAddress.address_line_2,
-            attributes : {  
+            attributes : 
+            {  
             oninput: "validateLength(this, 50, '" + i18n.address.enterAddress.errorMessages.addressLine2Length | escape + "');",
             "data-event-id": "address-line-2"
             }
         }) }}
 
         {{ govukInput({
-            label: {
+            label: 
+            {
             text: i18n.address.enterAddress.townOrCity
             },
             classes: "govuk-!-width-two-thirds",
             id: "locality",
             name: "locality",
             value: registeredOfficeAddress.locality,
-            attributes : {
+            attributes : 
+            {
             required : true,
             oninvalid: validateTownOrCity,
             oninput: validateTownOrCity,
@@ -93,28 +99,32 @@
         }) }}
 
         {{ govukInput({
-            label: {
+            label: 
+            {
             text: i18n.address.enterAddress.county
             },
             classes: "govuk-!-width-two-thirds",
             id: "region",
             name: "region",
             value: registeredOfficeAddress.region,
-            attributes : {
+            attributes : 
+            {
             oninput: "validateLength(this, 50, '" + i18n.address.enterAddress.errorMessages.countyLength | escape + "');",
             "data-event-id": "county"
             }
         }) }}
 
         {{ govukInput({
-            label: {
+            label: 
+            {
             text: i18n.address.enterAddress.postcode
             },
             classes: "govuk-input--width-10",
             id: "postal_code",
             name: "postal_code",
             value: registeredOfficeAddress.postal_code,
-            attributes : {
+            attributes : 
+            {
             required : true,
             oninvalid: validatePostcode,
             oninput: validatePostcode,
@@ -126,17 +136,20 @@
             id: "country",
             name: "country",
             value: registeredOfficeAddress.country,
-            label: {
+            label: 
+            {
             text: i18n.address.enterAddress.country
             },
-            fieldset: {
+            fieldset: 
+            {
             legend: {
                 text: "Country",
                 isPageHeading: false,
                 classes: "govuk-!-font-weight-regular"
             }
             },
-            attributes : {
+            attributes : 
+            {
             required: "true",
             oninvalid: "this.setCustomValidity('" + i18n.address.enterAddress.errorMessages.countryMissing + "');",
             oninput: "this.setCustomValidity('');",
@@ -175,8 +188,6 @@
         {% include "includes/save-and-continue-button.njk" %}
 
     </div>
-  </form>
-
-  {% include "includes/validators.njk" %}
+</form>
 
 {% endblock %}
