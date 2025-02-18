@@ -3,17 +3,17 @@ import enTranslationText from "../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../locales/cy/translations.json";
 import app from "../../app";
 import {
-  CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
-  ENTER_REGISTERED_OFFICE_ADDRESS_URL
+  CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+  ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL
 } from "presentation/controller/addressLookUp/url";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import AddressPageType from "../../../../controller/addressLookUp/PageType";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import LimitedPartnershipBuilder from "../../../../../presentation/test/builder/LimitedPartnershipBuilder";
+import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
 import { Jurisdiction } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-describe("Enter Registered Office Address Page", () => {
-  const URL = getUrl(ENTER_REGISTERED_OFFICE_ADDRESS_URL);
+describe("Enter Principal Place Of Business Manual Address Page", () => {
+  const URL = getUrl(ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL);
 
   beforeEach(() => {
     setLocalesEnabled(false);
@@ -22,29 +22,29 @@ describe("Enter Registered Office Address Page", () => {
     appDevDependencies.limitedPartnershipGateway.feedErrors();
   });
 
-  describe("GET Enter Registered Office Address Page", () => {
-    it("should load the enter registered office address page with English text", async () => {
+  describe("GET Enter Principal Place Of Business Page", () => {
+    it("should load the enter principal place of business page with English text", async () => {
       setLocalesEnabled(true);
 
       const res = await request(app).get(URL + "?lang=en");
 
       expect(res.status).toBe(200);
-      testTranslations(res.text, enTranslationText.address.enterAddress, [ "jurisdictionCountry", "principalPlaceOfBusinessAddress" ]);
+      testTranslations(res.text, enTranslationText.address.enterAddress, [ "registeredOfficeAddress", "errorMessages" ]);
       expect(res.text).not.toContain("WELSH -");
     });
 
-    it("should load the enter registered office address page with Welsh text", async () => {
+    it("should load the enter principal place of business page with Welsh text", async () => {
       setLocalesEnabled(true);
 
       const res = await request(app).get(URL + "?lang=cy");
 
       expect(res.status).toBe(200);
-      testTranslations(res.text, cyTranslationText.address.enterAddress, [ "jurisdictionCountry", "principalPlaceOfBusinessAddress" ]);
+      testTranslations(res.text, cyTranslationText.address.enterAddress, [ "registeredOfficeAddress", "errorMessages" ]);
     });
   });
 
-  describe("POST Enter Registered Office Address Page", () => {
-    it("should redirect to the confirm address page", async () => {
+  describe("POST Enter Principal Place Of Business Address Page", () => {
+    it("should redirect to the confirm principal place of business address page", async () => {
       const limitedPartnership = new LimitedPartnershipBuilder()
         .withJurisdiction(Jurisdiction.ENGLAND_AND_WALES)
         .build();
@@ -54,11 +54,11 @@ describe("Enter Registered Office Address Page", () => {
       ]);
 
       const res = await request(app).post(URL).send({
-        pageType: AddressPageType.enterRegisteredOfficeAddress,
+        pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
         country: "GB-WLS"
       });
 
-      const redirectUrl = getUrl(CONFIRM_REGISTERED_OFFICE_ADDRESS_URL);
+      const redirectUrl = getUrl(CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL);
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
     });
@@ -91,7 +91,7 @@ describe("Enter Registered Office Address Page", () => {
       ]);
 
       const res = await request(app).post(URL).send({
-        pageType: AddressPageType.enterRegisteredOfficeAddress,
+        pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
         country: "GB-NIR"
       });
 
@@ -112,7 +112,7 @@ describe("Enter Registered Office Address Page", () => {
       ]);
 
       const res = await request(app).post(URL + "?lang=cy").send({
-        pageType: AddressPageType.enterRegisteredOfficeAddress,
+        pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
         country: "GB-NIR"
       });
 
@@ -131,7 +131,7 @@ describe("Enter Registered Office Address Page", () => {
       ]);
 
       const res = await request(app).post(URL).send({
-        pageType: AddressPageType.enterRegisteredOfficeAddress,
+        pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
         country: "GB-SCT"
       });
 
@@ -150,7 +150,7 @@ describe("Enter Registered Office Address Page", () => {
       ]);
 
       const res = await request(app).post(URL).send({
-        pageType: AddressPageType.enterRegisteredOfficeAddress,
+        pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
         country: "GB-SCT"
       });
 

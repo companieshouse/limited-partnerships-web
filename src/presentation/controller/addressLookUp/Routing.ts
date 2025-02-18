@@ -13,6 +13,7 @@ import {
   CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
   POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   CHOOSE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+  ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL
 } from "./url";
 
@@ -70,8 +71,8 @@ const addressRoutingPostcodePrincipalPlaceOfBusinessAddress = {
   nextUrl: CHOOSE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   pageType: AddressPageType.postcodePrincipalPlaceOfBusinessAddress,
   data: {
-    enterManualAddressPageType: "#",
-    confirmAddressUrl: "#"
+    enterManualAddressPageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
+    confirmAddressUrl: AddressPageType.confirmPrincipalPlaceOfBusinessAddress
   }
 };
 
@@ -80,6 +81,13 @@ const addressRoutingChoosePrincipalPlaceOfBusinessAddress = {
   currentUrl: CHOOSE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   nextUrl: CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   pageType: AddressPageType.choosePrincipalPlaceOfBusinessAddress
+};
+
+const addressRoutingEnterPrincipalPlaceOfBusinessAddress = {
+  previousUrl: POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+  currentUrl: ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+  nextUrl: CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+  pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress
 };
 
 const addressRoutingConfirmPrincipalPlaceOfBusinessAddress = {
@@ -92,6 +100,7 @@ const addressRoutingConfirmPrincipalPlaceOfBusinessAddress = {
 const principalPlaceOfBusinessAddress = [
   addressRoutingPostcodePrincipalPlaceOfBusinessAddress,
   addressRoutingChoosePrincipalPlaceOfBusinessAddress,
+  addressRoutingEnterPrincipalPlaceOfBusinessAddress,
   addressRoutingConfirmPrincipalPlaceOfBusinessAddress
 ];
 
