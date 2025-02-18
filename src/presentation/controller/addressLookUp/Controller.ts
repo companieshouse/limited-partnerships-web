@@ -347,6 +347,7 @@ class AddressLookUpController extends AbstractController {
 
     response.redirect(pageRouting.nextUrl);
   }
+
   private isPrincipalPlaceOfBusinessPage(pageType: AddressLookUpPageType): boolean {
     const allowedPages: AddressLookUpPageType[] = [
       AddressLookUpPageType.choosePrincipalPlaceOfBusinessAddress,
