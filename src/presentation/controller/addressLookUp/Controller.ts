@@ -335,7 +335,7 @@ class AddressLookUpController extends AbstractController {
     const pageRouting = super.getRouting(addressLookUpRouting, pageType, request);
 
     let cacheKey = "";
-    if (pageType === AddressLookUpPageType.choosePrincipalPlaceOfBusinessAddress || pageType === AddressLookUpPageType.enterPrincipalPlaceOfBusinessAddress || pageType === AddressLookUpPageType.confirmPrincipalPlaceOfBusinessAddress) {
+    if (this.isPrincipalPlaceOfBusinessPage(pageType)) {
       cacheKey = this.PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CACHE_KEY;
     } else {
       cacheKey = this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY;
@@ -346,6 +346,14 @@ class AddressLookUpController extends AbstractController {
     });
 
     response.redirect(pageRouting.nextUrl);
+  }
+  private isPrincipalPlaceOfBusinessPage(pageType: AddressLookUpPageType): boolean {
+    const allowedPages: AddressLookUpPageType[] = [
+      AddressLookUpPageType.choosePrincipalPlaceOfBusinessAddress,
+      AddressLookUpPageType.enterPrincipalPlaceOfBusinessAddress,
+      AddressLookUpPageType.confirmPrincipalPlaceOfBusinessAddress
+    ];
+    return (allowedPages.includes(pageType));
   }
 }
 
