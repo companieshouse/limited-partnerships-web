@@ -1,0 +1,56 @@
+{% import 'includes/macros.njk' as macros %}
+
+{% if props.data.cache[cacheKey] %}
+  {% set address = props.data.cache[cacheKey] %}
+{% elif data %}
+  {% set address = data %}
+{% else %}
+  {% set address = null %}
+{% endif %}
+
+{% set addressFirstLineForDisplay = address.premises + " " + address.address_line_1 %}
+
+ <form class="form" action={{ props.currentUrl }} method="post">
+    <input type="hidden" name="pageType" value={{ props.pageType }}>
+    <input type="hidden" name="address" value='{{address | dump}}'>
+    {% include "includes/csrf_token.njk" %}
+
+    {% include "includes/errors.njk" %}
+
+    {% include "includes/proposed-name.njk" %}
+
+    <h1 class="govuk-heading-xl">{{ pageTitle }}</h1>
+
+    {% if address %}
+        <p class="govuk-body-m">
+        {{ macros.capitalizeEachWord(addressFirstLineForDisplay) }}
+        <br>
+        {% if address.address_line_2 %}
+            {{ macros.capitalizeEachWord(address.address_line_2) }}
+            <br>
+        {% endif %}
+        {{ macros.capitalizeEachWord(address.locality) }}
+        <br>
+        {% if address.region %}
+            {{ macros.capitalizeEachWord(address.region) }}
+            <br>
+        {% endif %}
+        {{ address.postal_code | upper }}
+            <br>
+        {{ macros.mapCountry(address.country) }}
+            <br>
+        </p>
+        <p class="govuk-body-m">
+            <a href="{{ props.currentUrl | replace(props.pageType, props.data.enterManualAddressPageType) }}">{{ i18n.address.confirm.addressLink }} <span class="govuk-visually-hidden">{{ addressLinkHidden }}</span></a>
+        <p>
+    {% endif %}
+
+    {{ govukInsetText({
+      html: "<h2 class='govuk-heading-m'>" + i18n.address.confirm.publicRegisterTitle | escape + "</h2>"
+          + "<p>" + publicRegisterLine | escape + "</p>"
+    }) }}
+
+    {% include "includes/save-and-continue-button.njk" %}
+</form>
+
+

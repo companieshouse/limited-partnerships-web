@@ -1,0 +1,19 @@
+ <script>
+    function validateInput(input, maxLength, missingMessage, lengthMessage) {
+      if (!input.value) {
+        input.setCustomValidity(missingMessage);
+      } else if (input.value.length > maxLength) {
+        input.setCustomValidity(lengthMessage);
+      } else {
+        input.setCustomValidity('');
+      }
+    }
+
+    function validateLength(input, maxLength, lengthMessage) {
+      if (input.value.length > maxLength) {
+        input.setCustomValidity(lengthMessage);
+      } else {
+        input.setCustomValidity('');
+      }
+    }
+</script>

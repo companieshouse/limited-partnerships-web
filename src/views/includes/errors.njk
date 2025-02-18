@@ -1,6 +1,6 @@
 {% if props.errors and props.errors.errorList.length > 0 %}
   {{ govukErrorSummary({
-    titleText: "There is a problem",
+    titleText: i18n.govUk.error.title,
     errorList: props.errors.errorList,
     attributes: {
       "tabindex": "0"

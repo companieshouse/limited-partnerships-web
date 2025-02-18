@@ -1,19 +1,10 @@
 {% extends "layout.njk" %}
-{% import 'includes/macros.njk' as macros %}
 
-{% set pageTitle = i18n.confirmRegisteredOfficeAddressPage.title %}
-
-{% set registeredOfficeKey = "registration_registered_office_address" %}
-
-{% if props.data.cache[registeredOfficeKey] %}
-  {% set address = props.data.cache[registeredOfficeKey] %}
-{% elif props.data.limitedPartnership.data.registered_office_address %}
-  {% set address = props.data.limitedPartnership.data.registered_office_address %}
-{% else %}
-  {% set address = null %}
-{% endif %}
-
-{% set addressFirstLineForDisplay = address.premises + " " + address.address_line_1 %}
+{% set pageTitle = i18n.address.confirm.registeredOfficeAddress.title %}
+{% set publicRegisterLine = i18n.address.confirm.registeredOfficeAddress.publicRegisterLine1 %}
+{% set addressLinkHidden = i18n.address.confirm.registeredOfficeAddress.addressLinkHidden %}
+{% set cacheKey = "registration_registered_office_address" %}
+{% set data = props.data.limitedPartnership.data.registered_office_address %}
 
 {% block content %}
   <div class="govuk-grid-row">
@@ -60,6 +51,7 @@
 
         {% include "includes/save-and-continue-button.njk" %}
       </form>
+      {% include "pages/address/confirm-address-form.njk" %}
     </div>
   </div> 
 {% endblock %}
