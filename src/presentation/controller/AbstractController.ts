@@ -1,32 +1,20 @@
 import { Request } from "express";
 
-import {
-  BASE_URL,
-  BASE_WITH_IDS_URL,
-  SUBMISSION_ID,
-  TRANSACTION_ID
-} from "../../config/constants";
+import { BASE_URL, BASE_WITH_IDS_URL, SUBMISSION_ID, TRANSACTION_ID } from "../../config/constants";
 import { PageRouting, pageRoutingDefault, PagesRouting } from "./PageRouting";
 import PageType from "./PageType";
 import { NAME_URL } from "./registration/url";
+import { Session } from "@companieshouse/node-session-handler";
 
 abstract class AbstractController {
-  protected getRouting(
-    routing: PagesRouting,
-    pageType: PageType,
-    request: Request
-  ) {
+  protected getRouting(routing: PagesRouting, pageType: PageType, request: Request) {
     let pageRouting = routing.get(pageType);
 
     if (!pageRouting) {
       return pageRoutingDefault;
     }
 
-    pageRouting = this.insertIdsInAllUrl(
-      pageRouting,
-      request.params[TRANSACTION_ID],
-      request.params[SUBMISSION_ID]
-    );
+    pageRouting = this.insertIdsInAllUrl(pageRouting, request.params[TRANSACTION_ID], request.params[SUBMISSION_ID]);
 
     pageRouting = this.addLangToUrls(request.url, pageRouting);
 
@@ -37,6 +25,23 @@ abstract class AbstractController {
     const type = this.templateName(path);
 
     return type as PageType;
+  }
+
+  protected extract(request: Request) {
+    const session = request.session as Session;
+    const tokens = this.extractTokens(request);
+    const pageType = this.pageType(request.path);
+    const { transactionId, submissionId } = this.extractIds(request);
+
+    return {
+      session,
+      tokens,
+      pageType,
+      ids: {
+        transactionId,
+        submissionId
+      }
+    };
   }
 
   protected templateName(url: string): string {
@@ -52,11 +57,7 @@ abstract class AbstractController {
     return url;
   }
 
-  private replaceBaseUrlWithIds(
-    transactionId: string,
-    submissionId: string,
-    url: string
-  ) {
+  private replaceBaseUrlWithIds(transactionId: string, submissionId: string, url: string) {
     // urls that can exist with or without ids
     const URLS = [NAME_URL];
 
@@ -68,47 +69,24 @@ abstract class AbstractController {
   }
 
   protected insertTransactionId(url: string, transactionId: string): string {
-    return transactionId
-      ? url.replace(`:${TRANSACTION_ID}`, transactionId)
-      : url;
+    return transactionId ? url.replace(`:${TRANSACTION_ID}`, transactionId) : url;
   }
 
   protected insertSubmissionId(url: string, submissionId: string): string {
     return submissionId ? url.replace(`:${SUBMISSION_ID}`, submissionId) : url;
   }
 
-  protected insertIdsInAllUrl(
-    pageRouting: PageRouting,
-    transactionId: string,
-    submissionId: string
-  ): PageRouting {
+  protected insertIdsInAllUrl(pageRouting: PageRouting, transactionId: string, submissionId: string): PageRouting {
     return {
       ...pageRouting,
-      previousUrl: this.insertIdsInUrl(
-        pageRouting.previousUrl,
-        transactionId,
-        submissionId
-      ),
-      currentUrl: this.insertIdsInUrl(
-        pageRouting.currentUrl,
-        transactionId,
-        submissionId
-      ),
-      nextUrl: this.insertIdsInUrl(
-        pageRouting.nextUrl,
-        transactionId,
-        submissionId
-      )
+      previousUrl: this.insertIdsInUrl(pageRouting.previousUrl, transactionId, submissionId),
+      currentUrl: this.insertIdsInUrl(pageRouting.currentUrl, transactionId, submissionId),
+      nextUrl: this.insertIdsInUrl(pageRouting.nextUrl, transactionId, submissionId)
     };
   }
 
-  private addLangToUrls(
-    currentUrl: string,
-    pageRouting: PageRouting
-  ): PageRouting {
-    const currentUrlParams = new URLSearchParams(
-      new URL(`http://${currentUrl}`)?.search
-    );
+  private addLangToUrls(currentUrl: string, pageRouting: PageRouting): PageRouting {
+    const currentUrlParams = new URLSearchParams(new URL(`http://${currentUrl}`)?.search);
 
     if (currentUrlParams.has("lang")) {
       const langQuery = `?lang=${currentUrlParams.get("lang")}`;
@@ -124,10 +102,7 @@ abstract class AbstractController {
     return pageRouting;
   }
 
-  protected extractPageTypeOrThrowError(
-    request: Request,
-    pageTypeEnum: object
-  ) {
+  protected extractPageTypeOrThrowError(request: Request, pageTypeEnum: object) {
     const pageTypeList = Object.values(pageTypeEnum);
     const pageType = request.body.pageType;
 
@@ -139,10 +114,8 @@ abstract class AbstractController {
 
   protected extractTokens(request: Request) {
     return {
-      access_token:
-        request?.session?.data?.signin_info?.access_token?.access_token ?? "",
-      refresh_token:
-        request?.session?.data?.signin_info?.access_token?.refresh_token ?? ""
+      access_token: request?.session?.data?.signin_info?.access_token?.access_token ?? "",
+      refresh_token: request?.session?.data?.signin_info?.access_token?.refresh_token ?? ""
     };
   }
 

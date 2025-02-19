@@ -32,20 +32,17 @@ class AddressLookUpController extends AbstractController {
       try {
         this.addressService.setI18n(response.locals.i18n);
 
-        const session = request.session as Session;
-        const tokens = super.extractTokens(request);
-        const pageType = super.pageType(request.path);
-        const { transactionId, submissionId } = super.extractIds(request);
+        const { session, tokens, pageType, ids } = super.extract(request);
 
         const pageRouting = super.getRouting(addresssRouting, pageType, request);
 
         let limitedPartnership = {};
 
-        if (transactionId && submissionId) {
+        if (ids.transactionId && ids.submissionId) {
           limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
             tokens,
-            transactionId,
-            submissionId
+            ids.transactionId,
+            ids.submissionId
           );
         }
 
@@ -92,18 +89,17 @@ class AddressLookUpController extends AbstractController {
       try {
         this.addressService.setI18n(response.locals.i18n);
 
-        const session = request.session as Session;
-        const tokens = super.extractTokens(request);
-        const { transactionId, submissionId } = super.extractIds(request);
-        const pageType = super.extractPageTypeOrThrowError(request, AddressLookUpPageType);
+        const { session, tokens, ids } = super.extract(request);
+
         const { postal_code, premises } = request.body;
+        const pageType = super.extractPageTypeOrThrowError(request, AddressLookUpPageType);
 
         const pageRouting = super.getRouting(addressLookUpRouting, pageType, request);
 
         const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
           tokens,
-          transactionId,
-          submissionId
+          ids.transactionId,
+          ids.submissionId
         );
 
         const { address, errors } = await this.addressService.isValidUKPostcodeAndHasAnAddress(
@@ -139,7 +135,7 @@ class AddressLookUpController extends AbstractController {
 
         // if exact match - redirect to confirm page
         if (address.postal_code && address.premises && address.address_line_1) {
-          const url = super.insertIdsInUrl(pageRouting?.data?.confirmAddressUrl, transactionId, submissionId);
+          const url = super.insertIdsInUrl(pageRouting?.data?.confirmAddressUrl, ids.transactionId, ids.submissionId);
           response.redirect(url);
           return;
         }
@@ -182,13 +178,12 @@ class AddressLookUpController extends AbstractController {
           region
         };
 
-        const tokens = super.extractTokens(request);
-        const { transactionId, submissionId } = super.extractIds(request);
+        const { tokens, pageType, ids } = super.extract(request);
 
         const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
           tokens,
-          transactionId,
-          submissionId
+          ids.transactionId,
+          ids.submissionId
         );
 
         const errors = this.addressService.isValidJurisdictionAndCountry(
@@ -197,7 +192,7 @@ class AddressLookUpController extends AbstractController {
         );
 
         if (errors?.errors) {
-          const pageType = super.pageType(request.path);
+          // const pageType = super.pageType(request.path);
 
           const pageRouting = super.getRouting(addresssRouting, pageType, request);
 
@@ -227,9 +222,7 @@ class AddressLookUpController extends AbstractController {
       try {
         this.addressService.setI18n(response.locals.i18n);
 
-        const session = request.session as Session;
-        const tokens = super.extractTokens(request);
-        const { transactionId, submissionId } = super.extractIds(request);
+        const { session, tokens, ids } = super.extract(request);
 
         const pageType = super.extractPageTypeOrThrowError(request, AddressLookUpPageType);
 
@@ -238,7 +231,7 @@ class AddressLookUpController extends AbstractController {
         const cache = await this.cacheService.getDataFromCache(session);
 
         if (!request.body?.address) {
-          await this.handleAddressNotFound(tokens, transactionId, submissionId, pageRouting, cache, response);
+          await this.handleAddressNotFound(tokens, ids.transactionId, ids.submissionId, pageRouting, cache, response);
           return;
         }
 
@@ -255,8 +248,8 @@ class AddressLookUpController extends AbstractController {
         // store in api
         const result = await this.limitedPartnershipService.sendPageData(
           tokens,
-          transactionId,
-          submissionId,
+          ids.transactionId,
+          ids.submissionId,
           pageType,
           data
         );
@@ -264,8 +257,8 @@ class AddressLookUpController extends AbstractController {
         if (result?.errors) {
           const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
             tokens,
-            transactionId,
-            submissionId
+            ids.transactionId,
+            ids.submissionId
           );
 
           pageRouting.errors = result.errors.errors;
@@ -354,7 +347,7 @@ class AddressLookUpController extends AbstractController {
       AddressLookUpPageType.enterPrincipalPlaceOfBusinessAddress,
       AddressLookUpPageType.confirmPrincipalPlaceOfBusinessAddress
     ];
-    return (allowedPages.includes(pageType));
+    return allowedPages.includes(pageType);
   }
 }
 
