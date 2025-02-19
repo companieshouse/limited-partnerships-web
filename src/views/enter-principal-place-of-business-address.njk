@@ -2,13 +2,13 @@
 
 {% set principalPlaceOfBusinessKey = "registration_principal_place_of_business_address" %}
 {% if props.data.address %}
-  {% set principalPlaceOfBusinessAddress = props.data.address %}
+  {% set address = props.data.address %}
 {% elif props.data.cache[principalPlaceOfBusinessKey] %}
-  {% set principalPlaceOfBusinessAddress = props.data.cache[principalPlaceOfBusinessKey] %}
+  {% set address = props.data.cache[principalPlaceOfBusinessKey] %}
 {% elif props.data.limitedPartnership.data.principal_place_of_business_address %}
-  {% set principalPlaceOfBusinessAddress = props.data.principal_place_of_business_address %}
+  {% set address = props.data.principal_place_of_business_address %}
 {% else %}
-  {% set principalPlaceOfBusinessAddress = {} %}
+  {% set address = {} %}
 {% endif %}
 
 {% set pageTitle = i18n.address.enterAddress.principalPlaceOfBusinessAddress.title %}

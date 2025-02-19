@@ -36,7 +36,7 @@
             },
             id: "premises",
             name: "premises",
-            value: registeredOfficeAddress.premises,
+            value: address.premises,
             attributes : {  
                 required : true,
                 oninvalid: validateNameOrNumber,
@@ -51,7 +51,7 @@
             },
             id: "address_line_1",
             name: "address_line_1",
-            value: registeredOfficeAddress.address_line_1,
+            value: address.address_line_1,
             attributes : {
                 required : true,
                 oninvalid: validateAddressLine1,
@@ -66,7 +66,7 @@
             },
             id: "address_line_2",
             name: "address_line_2",
-            value: registeredOfficeAddress.address_line_2,
+            value: address.address_line_2,
             attributes : {  
                 oninput: "validateLength(this, 50, '" + i18n.address.enterAddress.errorMessages.addressLine2Length | escape + "');",
                 "data-event-id": "address-line-2"
@@ -80,7 +80,7 @@
             classes: "govuk-!-width-two-thirds",
             id: "locality",
             name: "locality",
-            value: registeredOfficeAddress.locality,
+            value: address.locality,
             attributes : {
                 required : true,
                 oninvalid: validateTownOrCity,
@@ -96,7 +96,7 @@
             classes: "govuk-!-width-two-thirds",
             id: "region",
             name: "region",
-            value: registeredOfficeAddress.region,
+            value: address.region,
             attributes : {
                 oninput: "validateLength(this, 50, '" + i18n.address.enterAddress.errorMessages.countyLength | escape + "');",
                 "data-event-id": "county"
@@ -110,7 +110,7 @@
             classes: "govuk-input--width-10",
             id: "postal_code",
             name: "postal_code",
-            value: registeredOfficeAddress.postal_code,
+            value: address.postal_code,
             attributes : {
                 required : true,
                 oninvalid: validatePostcode,
@@ -122,7 +122,7 @@
         {{ govukSelect({
             id: "country",
             name: "country",
-            value: registeredOfficeAddress.country,
+            value: address.country,
             label: {
                 text: i18n.address.enterAddress.country
             },
