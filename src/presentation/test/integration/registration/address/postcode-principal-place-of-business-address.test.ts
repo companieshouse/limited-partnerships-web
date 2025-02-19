@@ -9,7 +9,8 @@ import app from "../../app";
 
 import {
   POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
-  CHOOSE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL
+  CHOOSE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+  CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL
 } from "../../../../controller/addressLookUp/url";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
@@ -83,20 +84,21 @@ describe("Postcode Principal Place Of Business Address Page", () => {
       });
     });
 
-    // skip until the confirm page exists
-    it.skip("should validate the post code and find a matching address then redirect to the next page", async () => {
+    it("should validate the post code and find a matching address then redirect to the next page", async () => {
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.postcodePrincipalPlaceOfBusinessAddress,
         premises: addresses[0].premise,
         postal_code: addresses[0].postcode
       });
 
+      const REDIRECT_URL = getUrl(CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL);
+
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
 
       expect(appDevDependencies.cacheRepository.cache).toEqual({
         [APPLICATION_CACHE_KEY]: {
-          [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`]: {
+          [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}principal_place_of_business_address`]: {
             postal_code: "ST6 3LJ",
             premises: "2",
             address_line_1: "DUNCALF STREET",
