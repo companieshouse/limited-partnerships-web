@@ -5,6 +5,7 @@ import { PageRouting, pageRoutingDefault, PagesRouting } from "./PageRouting";
 import PageType from "./PageType";
 import { NAME_URL } from "./registration/url";
 import { Session } from "@companieshouse/node-session-handler";
+import UIErrors from "../../domain/entities/UIErrors";
 
 abstract class AbstractController {
   protected getRouting(routing: PagesRouting, pageType: PageType, request: Request) {
@@ -25,6 +26,23 @@ abstract class AbstractController {
     const type = this.templateName(path);
 
     return type as PageType;
+  }
+
+  protected makeProps(pageRouting: PageRouting, data: Record<string, any> | null, errors: UIErrors | null) {
+    if (data) {
+      pageRouting.data = {
+        ...pageRouting.data,
+        ...data
+      };
+    }
+
+    if (errors) {
+      pageRouting.errors = errors.errors;
+    }
+
+    return {
+      props: pageRouting
+    };
   }
 
   protected extract(request: Request) {

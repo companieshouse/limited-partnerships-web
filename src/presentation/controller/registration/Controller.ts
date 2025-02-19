@@ -43,20 +43,13 @@ class RegistrationController extends AbstractController {
 
         const cache = await this.cacheService.getDataFromCache(session);
 
-        pageRouting.data = {
-          ...pageRouting.data,
-          limitedPartnership,
-          generalPartner,
-          limitedPartner,
-          cache
-        };
-
         const redirect = this.conditionalRedirecting(request, response, pageType, limitedPartnership);
 
         if (!redirect) {
-          response.render(super.templateName(pageRouting.currentUrl), {
-            props: { ...pageRouting }
-          });
+          response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(pageRouting, { limitedPartnership, generalPartner, limitedPartner, cache }, null)
+          );
         }
       } catch (error) {
         next(error);
@@ -108,17 +101,10 @@ class RegistrationController extends AbstractController {
         if (result.errors) {
           const cache = await this.cacheService.getDataFromCache(session);
 
-          pageRouting.data = {
-            ...pageRouting.data,
-            limitedPartnership: { data: request.body },
-            cache
-          };
-
-          pageRouting.errors = result.errors?.errors;
-
-          response.render(super.templateName(pageRouting.currentUrl), {
-            props: { ...result, ...pageRouting }
-          });
+          response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(pageRouting, { limitedPartnership: { data: request.body }, cache }, result.errors)
+          );
 
           return;
         }
@@ -174,18 +160,17 @@ class RegistrationController extends AbstractController {
           request.body
         );
 
-        const registrationRouting = super.getRouting(registrationsRouting, pageType, request);
+        const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
         if (result?.errors) {
-          registrationRouting.errors = result.errors?.errors;
-
-          response.render(super.templateName(registrationRouting.currentUrl), {
-            props: { ...result, ...registrationRouting }
-          });
+          response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(pageRouting, null, result.errors)
+          );
           return;
         }
 
-        response.redirect(registrationRouting.nextUrl);
+        response.redirect(pageRouting.nextUrl);
       } catch (error) {
         next(error);
       }

@@ -61,16 +61,10 @@ class AddressLookUpController extends AbstractController {
           addressList = await this.addressService.getAddressListForPostcode(tokens, postcode);
         }
 
-        pageRouting.data = {
-          ...pageRouting.data,
-          limitedPartnership,
-          addressList,
-          cache
-        };
-
-        response.render(super.templateName(pageRouting.currentUrl), {
-          props: { ...pageRouting }
-        });
+        response.render(
+          super.templateName(pageRouting.currentUrl),
+          super.makeProps(pageRouting, { limitedPartnership, addressList, cache }, null)
+        );
       } catch (error) {
         next(error);
       }
@@ -110,16 +104,10 @@ class AddressLookUpController extends AbstractController {
         );
 
         if (errors?.errors) {
-          pageRouting.errors = errors?.errors;
-          pageRouting.data = {
-            ...pageRouting.data,
-            limitedPartnership,
-            ...request.body
-          };
-
-          response.render(super.templateName(pageRouting.currentUrl), {
-            props: { ...pageRouting }
-          });
+          response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(pageRouting, { limitedPartnership, ...request.body }, errors)
+          );
           return;
         }
 
@@ -196,16 +184,10 @@ class AddressLookUpController extends AbstractController {
 
           const pageRouting = super.getRouting(addresssRouting, pageType, request);
 
-          pageRouting.errors = errors?.errors;
-
-          pageRouting.data = {
-            ...pageRouting.data,
-            address
-          };
-
-          response.render(super.templateName(pageRouting.currentUrl), {
-            props: { ...pageRouting }
-          });
+          response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(pageRouting, { address }, errors)
+          );
 
           return;
         }
@@ -261,16 +243,10 @@ class AddressLookUpController extends AbstractController {
             ids.submissionId
           );
 
-          pageRouting.errors = result.errors.errors;
-          pageRouting.data = {
-            ...pageRouting.data,
-            cache,
-            limitedPartnership
-          };
-
-          response.render(super.templateName(pageRouting.currentUrl), {
-            props: { ...pageRouting }
-          });
+          response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(pageRouting, { cache, limitedPartnership }, result.errors)
+          );
           return;
         }
 
@@ -305,16 +281,10 @@ class AddressLookUpController extends AbstractController {
       submissionId
     );
 
-    pageRouting.errors = uiErrors.errors;
-    pageRouting.data = {
-      ...pageRouting.data,
-      cache,
-      limitedPartnership
-    };
-
-    return response.render(super.templateName(pageRouting.currentUrl), {
-      props: { ...pageRouting }
-    });
+    return response.render(
+      super.templateName(pageRouting.currentUrl),
+      super.makeProps(pageRouting, { cache, limitedPartnership }, uiErrors)
+    );
   }
 
   private async saveAndRedirectToNextPage(
