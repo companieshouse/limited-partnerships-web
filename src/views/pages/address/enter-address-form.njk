@@ -11,6 +11,8 @@
 
     {% include "includes/errors.njk" %}
 
+    {% include "includes/proposed-name.njk" %}
+        
     {% include "includes/validators.njk" %}
 
     <div>
@@ -40,8 +42,7 @@
             attributes : {  
                 required : true,
                 oninvalid: validateNameOrNumber,
-                oninput: validateNameOrNumber,
-                "data-event-id": "property-name-or-number"
+                oninput: validateNameOrNumber
             }
         }) }}
 
@@ -55,8 +56,7 @@
             attributes : {
                 required : true,
                 oninvalid: validateAddressLine1,
-                oninput: validateAddressLine1,
-                "data-event-id": "address-line-1"
+                oninput: validateAddressLine1
             }
         }) }}
 
@@ -68,9 +68,7 @@
             name: "address_line_2",
             value: address.address_line_2,
             attributes : {  
-                oninput: "validateLength(this, 50, '" + i18n.address.enterAddress.errorMessages.addressLine2Length | escape + "');",
-                "data-event-id": "address-line-2"
-            }
+                oninput: "validateLength(this, 50, '" + i18n.address.enterAddress.errorMessages.addressLine2Length | escape + "');"            }
         }) }}
 
         {{ govukInput({
@@ -84,8 +82,7 @@
             attributes : {
                 required : true,
                 oninvalid: validateTownOrCity,
-                oninput: validateTownOrCity,
-                "data-event-id": "town-or-city"
+                oninput: validateTownOrCity
             }
         }) }}
 
@@ -98,8 +95,7 @@
             name: "region",
             value: address.region,
             attributes : {
-                oninput: "validateLength(this, 50, '" + i18n.address.enterAddress.errorMessages.countyLength | escape + "');",
-                "data-event-id": "county"
+                oninput: "validateLength(this, 50, '" + i18n.address.enterAddress.errorMessages.countyLength | escape + "');"
             }
         }) }}
 
@@ -114,8 +110,7 @@
             attributes : {
                 required : true,
                 oninvalid: validatePostcode,
-                oninput: validatePostcode,
-                "data-event-id": "postcode"
+                oninput: validatePostcode
             }
         }) }}
 
@@ -136,8 +131,7 @@
             attributes : {
                 required: "true",
                 oninvalid: "this.setCustomValidity('" + i18n.address.enterAddress.errorMessages.countryMissing + "');",
-                oninput: "this.setCustomValidity('');",
-                "data-event-id": "country"
+                oninput: "this.setCustomValidity('');"
             },
             items: [{
                 value: "",
