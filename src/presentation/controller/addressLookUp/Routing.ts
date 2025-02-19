@@ -80,7 +80,10 @@ const addressRoutingChoosePrincipalPlaceOfBusinessAddress = {
   previousUrl: POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   currentUrl: CHOOSE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   nextUrl: CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
-  pageType: AddressPageType.choosePrincipalPlaceOfBusinessAddress
+  pageType: AddressPageType.choosePrincipalPlaceOfBusinessAddress,
+  data: {
+    enterManualAddressPageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress
+  }
 };
 
 const addressRoutingEnterPrincipalPlaceOfBusinessAddress = {
