@@ -1,0 +1,175 @@
+{% extends "layout.njk" %}
+
+{% set pageTitle = i18n.addGeneralPartnerPage.title %}
+
+{% set validateFirstName = "validateInput(this, 160, '" + i18n.addGeneralPartnerPage.errorMessages.firstNameMissing | escape + "', '" + i18n.addGeneralPartnerPage.errorMessages.firstNameLength | escape + "');" %}
+{% set validateLastName = "validateInput(this, 160, '" + i18n.addGeneralPartnerPage.errorMessages.lastNameMissing | escape + "', '" + i18n.addGeneralPartnerPage.errorMessages.lastNameLength | escape + "');" %}
+{% set validatePreviousName = "validateLength(this, 160, '" + i18n.addGeneralPartnerPage.errorMessages.previousNameLength | escape + "');" %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action={{ props.currentUrl }} method="post">
+        <input type="hidden" name="pageType" value={{ props.pageType }}>      
+        {% include "includes/csrf_token.njk" %}
+
+        {% include "includes/errors.njk" %}
+        
+        {% include "includes/proposed-name.njk" %}  
+    
+        <h1 class="govuk-heading-xl">{{ i18n.addGeneralPartnerPage.title }}</h1>
+
+        {{ govukInput({
+          label: {
+            text: i18n.addGeneralPartnerPage.firstName,
+            classes: "govuk-label--m",
+            isPageHeading: false
+          },
+          id: "firstName",
+          name: "firstName",
+          classes: "govuk-!-width-full",
+          attributes : {
+            required: true,
+            oninvalid: validateFirstName,
+            oninput: validateFirstName
+          },
+          pattern: "^[,.:; 0-9A-Z&@$£¥€?!/\\()\[\]{}]*$"
+        }) }}
+
+        {{ govukInput({
+          label: {
+            text: i18n.addGeneralPartnerPage.lastName,
+            classes: "govuk-label--m",
+            isPageHeading: false
+          },
+          id: "lastName",
+          name: "lastName",
+          classes: "govuk-!-width-full",
+          attributes : {
+            required : true,
+            oninvalid: validateLastName,
+            oninput: validateLastName
+          }
+        }) }}
+
+        {% set previousHtmlPerson %}
+          {{ govukInput({
+            label: {
+              text: i18n.addGeneralPartnerPage.previousName.yesHintTitle
+            },
+            hint: {
+              text: i18n.addGeneralPartnerPage.previousName.yesHint
+            },
+            id: "previousName",
+            name: "previousName",
+            attributes : {
+              oninvalid: validatePreviousName,
+              oninput: validatePreviousName
+            }
+          }) }}
+        {% endset -%}
+
+        {{ govukRadios({
+          classes: "govuk-radios",
+          name: "parameter",
+          value: data['generalPartner'],
+          fieldset: {
+            legend: {
+              text: i18n.addGeneralPartnerPage.previousName.title,
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          hint: {
+            text: i18n.addGeneralPartnerPage.previousName.hint
+          },
+
+          items: [
+            {
+              value: "previousNameYes",
+              text: i18n.addGeneralPartnerPage.previousName.yes,
+              id: "previousNameYes",
+              name: "previousNameYes",
+              attributes: {
+                required: true
+              },
+              conditional: {
+                html: previousHtmlPerson
+              }
+            },
+            {
+              value: "previousNameNo",
+              text: i18n.addGeneralPartnerPage.previousName.no,
+              id: "previousNameNo",
+              name: "previousNameNo",
+              attributes: {
+                required: true
+              }
+            }
+          ]
+        }) }}
+
+        {{ govukDateInput({
+          id: "dateOfBirth",
+          namePrefix: "dateOfBirth",
+          fieldset: {
+            legend: {
+              text: i18n.addGeneralPartnerPage.dateOfBirth,
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          hint: {
+            text: i18n.addGeneralPartnerPage.dateOfBirthHint
+          }
+        }) }}
+
+        {% set nationalityText = i18n.addGeneralPartnerPage.nationality %}
+        {% include "includes/nationalities.njk" %}
+
+
+        <!-- TODO Placeholder mark-up - correct implementation for second nationality is covered by LP-530 -->
+        <p class="govuk-!-margin-bottom-8">
+          <a href="#" id="second-nationality-link" class="govuk-link govuk-link--no-visited-state hidden">
+            Add a second nationality
+          </a>
+        </p>
+
+        {{ govukCheckboxes({
+          name: "disqualificationStatement",
+          classes: "govuk-!-margin-top-6",
+          fieldset: {
+            legend: {
+              text: i18n.addGeneralPartnerPage.disqualificationStatementLegend,
+              classes: "govuk-visually-hidden"
+            }
+          },
+          items: [
+            {
+              value: "disqualificationStatement",
+              text: i18n.addGeneralPartnerPage.disqualificationStatement,
+              attributes: {
+                required: true
+              }
+            }
+          ]
+        }) }}
+
+        <div>
+          {{ govukInsetText({
+            html: "<h2 class='govuk-heading-m'>" + i18n.addGeneralPartnerPage.publicRegisterTitle | escape + "</h2>" + 
+              "<p>" + i18n.addGeneralPartnerPage.publicRegisterLine1 | escape + "</p>" +
+              "<p>" + i18n.addGeneralPartnerPage.publicRegisterLine2 | escape + "</p>"
+          }) }}
+        </div>
+
+        {% include "includes/save-and-continue-button.njk" %}
+      </form>
+
+    </div>
+  </div>
+
+  {% include "includes/validators.njk" %}
+
+{% endblock %}
