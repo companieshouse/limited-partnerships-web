@@ -26,7 +26,6 @@ class RegistrationController extends AbstractController {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const { session, tokens, pageType, ids } = super.extract(request);
-
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
         let limitedPartnership = {};
@@ -87,16 +86,14 @@ class RegistrationController extends AbstractController {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const { session, tokens } = super.extract(request);
-
         const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
+        const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
         const result = await this.limitedPartnershipService.createTransactionAndFirstSubmission(
           tokens,
           pageType,
           request.body
         );
-
-        const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
         if (result.errors) {
           const cache = await this.cacheService.getDataFromCache(session);
@@ -128,8 +125,7 @@ class RegistrationController extends AbstractController {
       try {
         const session = request.session as Session;
         const type = super.extractPageTypeOrThrowError(request, RegistrationPageType);
-
-        const registrationRouting = super.getRouting(registrationsRouting, type, request);
+        const pageRouting = super.getRouting(registrationsRouting, type, request);
 
         const pageType = escape(request.body.pageType);
         const parameter = escape(request.body.parameter);
@@ -138,7 +134,7 @@ class RegistrationController extends AbstractController {
           [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${pageType}`]: parameter
         });
 
-        response.redirect(registrationRouting.nextUrl);
+        response.redirect(pageRouting.nextUrl);
       } catch (error) {
         next(error);
       }
@@ -149,8 +145,8 @@ class RegistrationController extends AbstractController {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const { tokens, ids } = super.extract(request);
-
         const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
+        const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
         const result = await this.limitedPartnershipService.sendPageData(
           tokens,
@@ -159,8 +155,6 @@ class RegistrationController extends AbstractController {
           pageType,
           request.body
         );
-
-        const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
         if (result?.errors) {
           response.render(
