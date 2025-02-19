@@ -11,6 +11,7 @@
   {% set address = {} %}
 {% endif %}
 
+{% set pageTitle = i18n.address.chooseAddress.registeredOfficeAddress.title %}
 {% set pageTitle = i18n.address.enterAddress.registeredOfficeAddress.title %}
 {% set addressTitleHint1 = i18n.address.enterAddress.registeredOfficeAddress.titleHint1 %}
 {% set addressTitleHint2 = i18n.address.enterAddress.registeredOfficeAddress.titleHint2 %}
@@ -19,11 +20,10 @@
 {% set publicInformationLine1 = i18n.address.enterAddress.registeredOfficeAddress.publicInformationLine1 %}
 
 {% block content %}
-
+  {% include "includes/proposed-name.njk" %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       {% include "pages/address/enter-address-form.njk" %}
     </div>
   </div> 
-
 {% endblock %}
