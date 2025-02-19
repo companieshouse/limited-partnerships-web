@@ -34,7 +34,7 @@
     }) }}
 
     <p>
-      <a href="{{ props.currentUrl | replace(props.pageType, pageType) }}" class="govuk-body-m govuk-link" data-event-id="address-not-on-list">{{ addressLink }}</a>
+      <a href="{{ props.currentUrl | replace(props.pageType, props.data.enterManualAddressPageType) }}" class="govuk-body-m govuk-link" data-event-id="address-not-on-list">{{ addressLink }}</a>
     <p>
 
     {{ govukButton({
