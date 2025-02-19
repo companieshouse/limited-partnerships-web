@@ -4,8 +4,7 @@ import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
 import {
   ADD_GENERAL_PARTNER_URL,
-  GENERAL_PARTNER_CHOICE_URL,
-  LIMITED_PARTNERS_URL
+  GENERAL_PARTNER_CHOICE_URL
 } from "../../../controller/registration/url";
 import RegistrationPageType from "../../../../presentation/controller/registration/PageType";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
