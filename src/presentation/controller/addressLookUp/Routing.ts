@@ -2,10 +2,7 @@ import { PageRouting, PagesRouting } from "../PageRouting";
 
 import AddressPageType from "./PageType";
 import PageType from "../PageType";
-import {
-  TERM_URL,
-  WHERE_IS_THE_JURISDICTION_URL
-} from "../registration/url";
+import { TERM_URL, WHERE_IS_THE_JURISDICTION_URL } from "../registration/url";
 import {
   POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
   CHOOSE_REGISTERED_OFFICE_ADDRESS_URL,
@@ -61,7 +58,7 @@ const registeredOfficeAddress = [
   addressRoutingPostcodeRegisteredOfficeAddress,
   addressRoutingChooseRegisteredOfficeAddress,
   addressRoutingEnterRegisteredOfficeAddress,
-  addressRoutingConfirmRegisteredOfficeAddress,
+  addressRoutingConfirmRegisteredOfficeAddress
 ];
 
 // principal place of business
@@ -72,7 +69,7 @@ const addressRoutingPostcodePrincipalPlaceOfBusinessAddress = {
   pageType: AddressPageType.postcodePrincipalPlaceOfBusinessAddress,
   data: {
     enterManualAddressPageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
-    confirmAddressUrl: AddressPageType.confirmPrincipalPlaceOfBusinessAddress
+    confirmAddressUrl: CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL
   }
 };
 
@@ -107,15 +104,10 @@ const principalPlaceOfBusinessAddress = [
   addressRoutingConfirmPrincipalPlaceOfBusinessAddress
 ];
 
-export const addressLookUpRouting: PagesRouting = new Map<
-  PageType,
-  PageRouting
->();
+export const addressLookUpRouting: PagesRouting = new Map<PageType, PageRouting>();
 
-[...registeredOfficeAddress, ...principalPlaceOfBusinessAddress].forEach(
-  (routing) => {
-    addressLookUpRouting.set(routing.pageType, routing);
-  }
-);
+[...registeredOfficeAddress, ...principalPlaceOfBusinessAddress].forEach((routing) => {
+  addressLookUpRouting.set(routing.pageType, routing);
+});
 
 export default addressLookUpRouting;

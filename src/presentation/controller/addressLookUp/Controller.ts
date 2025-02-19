@@ -180,8 +180,6 @@ class AddressLookUpController extends AbstractController {
         );
 
         if (errors?.errors) {
-          // const pageType = super.pageType(request.path);
-
           const pageRouting = super.getRouting(addresssRouting, pageType, request);
 
           response.render(
