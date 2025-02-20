@@ -219,10 +219,7 @@
             "title" : "WELSH - Scottish limited partnership name",
             "whatIsName" : "WELSH - What's the name of the Scottish limited partnership?",
             "nameEnding" : "WELSH - Which name ending would you prefer to go on the public record?"
-        },
-
-        "nameErrorMessage": "WELSH - Enter the name of the partnership",
-        "nameEndingErrorMessage": "WELSH - Select the name ending to go on the public record"
+        }
     },
 
     "pageNotFound" : {
