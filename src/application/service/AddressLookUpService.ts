@@ -53,9 +53,7 @@ class AddressLookUpService {
           return { address };
         }
 
-        const matchingAddress = ukAddresses.find(
-          (ukAddress) => ukAddress.postal_code === postalCode && ukAddress.premises === premises
-        );
+        const matchingAddress = this.getMatchingAddress(ukAddresses, postalCode, premises);
 
         if (matchingAddress) {
           return { address: matchingAddress };
@@ -68,6 +66,14 @@ class AddressLookUpService {
 
       throw error;
     }
+  }
+
+  private getMatchingAddress(ukAddresses: Address[], postalCode: string, premises: string) {
+    return ukAddresses.find(
+      (ukAddress) =>
+        ukAddress.postal_code.replace(/\s+/g, "").toLowerCase() === postalCode.replace(/\s+/g, "").toLowerCase() &&
+        ukAddress.premises.toLowerCase() === premises.toLowerCase()
+    );
   }
 
   isValidJurisdictionAndCountry(jurisdiction: string, country: string): UIErrors | undefined {
@@ -149,18 +155,13 @@ class AddressLookUpService {
     country: string,
     uiErrors: UIErrors
   ): boolean {
-
     const isValid =
       (jurisdiction === Jurisdiction.SCOTLAND && country === "GB-SCT") ||
       (jurisdiction === Jurisdiction.NORTHERN_IRELAND && country === "GB-NIR") ||
       (jurisdiction === Jurisdiction.ENGLAND_AND_WALES && (country === "GB-ENG" || country === "GB-WLS"));
 
     if (!isValid) {
-      this.setFieldError(
-        uiErrors,
-        "country",
-        this.i18n?.address?.enterAddress?.errorMessages?.jurisdictionCountry
-      );
+      this.setFieldError(uiErrors, "country", this.i18n?.address?.enterAddress?.errorMessages?.jurisdictionCountry);
     }
 
     return isValid;
