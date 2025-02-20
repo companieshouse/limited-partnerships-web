@@ -115,7 +115,7 @@ class AddressLookUpController extends AbstractController {
         if (errors?.errors) {
           response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { limitedPartnership, ...request.body }, errors)
+            super.makeProps(pageRouting, { limitedPartnership, ...request.body }, errors, response.locals.i18n)
           );
           return;
         }

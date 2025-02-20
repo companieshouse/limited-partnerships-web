@@ -41,6 +41,7 @@ abstract class AbstractController {
     }
 
     if (i18n) {
+      console.log(JSON.stringify(pageRouting, null, 2));
       return {
         props: pageRouting,
         templateOptions: {
@@ -66,6 +67,12 @@ abstract class AbstractController {
           findAddress: i18n.address.findPostcode.findAddress,
           publicRegisterTitle: i18n.address.findPostcode.registeredOfficeAddress.publicRegisterTitle,
           publicRegisterLine1: i18n.address.findPostcode.registeredOfficeAddress.publicRegisterLine1,
+          govUk: {
+            error: {
+              title: i18n.govUk.error.title
+            }
+          },
+          errors: pageRouting.errors,
           data: pageRouting.data
         }
       };
