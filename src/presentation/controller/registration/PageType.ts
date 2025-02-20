@@ -7,6 +7,7 @@ enum RegistrationPageType {
   generalPartners = "general-partners",
   limitedPartners = "limited-partners",
   generalPartnerChoice = "general-partner-choice",
+  addGeneralPartner = "add-general-partner",
   limitedPartnerChoice = "limited-partner-choice",
   checkYourAnswers = "check-your-answers",
   next = "next"
