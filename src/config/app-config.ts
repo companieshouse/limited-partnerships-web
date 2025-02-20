@@ -26,7 +26,6 @@ export const appConfig = (app: express.Application) => {
       path.join(__dirname, "../views"),
       "node_modules/@companieshouse",
       "node_modules/@companieshouse/ch-node-utils/templates/address",
-      "node_modules/@companieshouse/ch-node-utils/templates/address/includes",
       "node_modules/govuk-frontend",
       "node_modules/govuk-frontend/components",
     ],
