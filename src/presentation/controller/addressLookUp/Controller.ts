@@ -52,7 +52,7 @@ class AddressLookUpController extends AbstractController {
 
         response.render(
           super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { limitedPartnership, addressList, cache }, null)
+          super.makeProps(pageRouting, { limitedPartnership, addressList, cache }, null, response.locals.i18n)
         );
       } catch (error) {
         next(error);
