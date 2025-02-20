@@ -6,34 +6,28 @@
     {
       value: "Limited Partnership",
       text: "Limited Partnership",
-      id: "nameEnding-1",
+      id: "name_ending",
       name: "name_ending",
-      attributes: {
-        required: true,
-        oninvalid: nameEndingEventErrorMessage,
-        onclick: "this.setCustomValidity('')"
+      attributes : {
+        required : true
       }
     },
     {
       value: "LP",
       text: "LP",
-      id: "nameEnding-2",
+      id: "name_ending",
       name: "name_ending",
-      attributes: {
-        required: true,
-        oninvalid: nameEndingErrorMessage,
-        onclick: "this.setCustomValidity('')"
+      attributes : {
+        required : true
       }
     },
     {
       value: "L.P.",
       text: "L.P.",
-      id: "nameEnding-3",
+      id: "name_ending",
       name: "name_ending",
-      attributes: {
-        required: true,
-        oninvalid: nameEndingErrorMessage,
-        onclick: "this.setCustomValidity('')"
+      attributes : {
+        required : true
       }
     }
   ]
@@ -46,34 +40,28 @@
     {
       value: "Partneriaeth Cyfyngedig",
       text: "Partneriaeth Cyfyngedig",
-      id: "nameEnding-4",
+      id: "name_ending",
       name: "name_ending",
-      attributes: {
-        required: true,
-        oninvalid: nameEndingErrorMessage,
-        onclick: "this.setCustomValidity('')"
+      attributes : {
+        required : true
       }
     },
     {
       value: "PC",
       text: "PC",
-      id: "nameEnding-5",
+      id: "name_ending",
       name: "name_ending",
-      attributes: {
-        required: true,
-        oninvalid: nameEndingErrorMessage,
-        onclick: "this.setCustomValidity('')"
+      attributes : {
+        required : true
       }
     },
     {
       value: "P.C.",
       text: "P.C.",
-      id: "nameEnding-6",
+      id: "name_ending",
       name: "name_ending",
-      attributes: {
-        required: true,
-        oninvalid: nameEndingErrorMessage,
-        onclick: "this.setCustomValidity('')"
+      attributes : {
+        required : true
       }
     }
   ), nameEndingOptionsList) %}
@@ -82,7 +70,7 @@
 {% endif %}
 
 {{ govukRadios({
-  errorMessage: errors.name_ending if errors,
+  errorMessage: props.errors.name_ending if props.errors,
   classes: "govuk-radios",
   idPrefix: "name_ending",
   name: "name_ending",

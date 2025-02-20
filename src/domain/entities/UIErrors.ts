@@ -1,4 +1,8 @@
 export type UIValidationErrors = {
+  [key: string]: {
+    text: string;
+  };
+} & {
   errorList: {
     href: string;
     text: string;
@@ -9,7 +13,7 @@ export type ApiErrors = { errors: Record<string, string> };
 
 class UIErrors {
   apiErrors: ApiErrors;
-  errors: UIValidationErrors = { errorList: [] };
+  errors: UIValidationErrors = { errorList: [] } as any;
 
   formatValidationErrorToUiErrors(apiErrors: ApiErrors) {
     this.apiErrors = apiErrors;
@@ -17,6 +21,10 @@ class UIErrors {
 
     for (const property in list) {
       const href = this.formatHrefValue(property);
+
+      this.errors[href] = {
+        text: list[property]
+      };
 
       this.errors.errorList.push({
         href: `#${href}`,
