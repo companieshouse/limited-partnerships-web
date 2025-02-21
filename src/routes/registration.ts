@@ -27,132 +27,132 @@ export const registrationEndpoints = (
   router.get(
     WHICH_TYPE_URL,
     authentication,
-    dependencies.registrationController.getPageRouting()
+    dependencies.limitedPartnershipController.getPageRouting()
   );
   router.post(
     WHICH_TYPE_URL,
     authentication,
-    dependencies.registrationController.redirectAndCacheSelection()
+    dependencies.limitedPartnershipController.redirectAndCacheSelection()
   );
 
   router.get(
     NAME_URL,
     authentication,
-    dependencies.registrationController.getPageRouting()
+    dependencies.limitedPartnershipController.getPageRouting()
   );
   router.post(
     NAME_URL,
     authentication,
-    dependencies.registrationController.createTransactionAndFirstSubmission()
+    dependencies.limitedPartnershipController.createTransactionAndFirstSubmission()
   );
 
   router.get(
     NAME_WITH_IDS_URL,
     authentication,
-    dependencies.registrationController.getPageRouting()
+    dependencies.limitedPartnershipController.getPageRouting()
   );
   router.post(
     NAME_WITH_IDS_URL,
     authentication,
-    dependencies.registrationController.sendPageData()
+    dependencies.limitedPartnershipController.sendPageData()
   );
 
   router.get(
     EMAIL_URL,
     authentication,
-    dependencies.registrationController.getPageRouting()
+    dependencies.limitedPartnershipController.getPageRouting()
   );
   router.post(
     EMAIL_URL,
     authentication,
-    dependencies.registrationController.sendPageData()
+    dependencies.limitedPartnershipController.sendPageData()
   );
 
   router.get(
     WHERE_IS_THE_JURISDICTION_URL,
     authentication,
-    dependencies.registrationController.getPageRouting()
+    dependencies.limitedPartnershipController.getPageRouting()
   );
   router.post(
     WHERE_IS_THE_JURISDICTION_URL,
     authentication,
-    dependencies.registrationController.sendPageData()
+    dependencies.limitedPartnershipController.sendPageData()
   );
 
   router.get(
     TERM_URL,
     authentication,
-    dependencies.registrationController.getPageRouting()
+    dependencies.limitedPartnershipController.getPageRouting()
   );
   router.post(
     TERM_URL,
     authentication,
-    dependencies.registrationController.sendPageData()
+    dependencies.limitedPartnershipController.sendPageData()
   );
 
   router.get(
     GENERAL_PARTNERS_URL,
     authentication,
-    dependencies.registrationController.getPageRouting()
+    dependencies.limitedPartnershipController.getPageRouting()
   );
 
   router.get(
     GENERAL_PARTNER_CHOICE_URL,
     authentication,
-    dependencies.registrationController.getPageRouting()
+    dependencies.limitedPartnershipController.getPageRouting()
   );
   router.post(
     GENERAL_PARTNER_CHOICE_URL,
     authentication,
     // to be changed - use different method
-    dependencies.registrationController.redirectAndCacheSelection()
+    dependencies.limitedPartnershipController.redirectAndCacheSelection()
   );
 
   router.get(
     ADD_GENERAL_PARTNER_URL,
     authentication,
-    dependencies.registrationController.getPageRouting()
+    dependencies.generalPartnerController.getPageRouting()
   );
   router.post(
     ADD_GENERAL_PARTNER_URL,
     authentication,
-    dependencies.registrationController.sendPageData()
+    dependencies.generalPartnerController.createGeneralPartner()
   );
 
   router.get(
     LIMITED_PARTNERS_URL,
     authentication,
-    dependencies.registrationController.getPageRouting()
+    dependencies.limitedPartnershipController.getPageRouting()
   );
 
   router.get(
     LIMITED_PARTNER_CHOICE_URL,
     authentication,
-    dependencies.registrationController.getPageRouting()
+    dependencies.limitedPartnershipController.getPageRouting()
   );
   router.post(
     LIMITED_PARTNER_CHOICE_URL,
     authentication,
     // to be changed - use different method
-    dependencies.registrationController.redirectAndCacheSelection()
+    dependencies.limitedPartnershipController.redirectAndCacheSelection()
   );
 
   router.get(
     CHECK_YOUR_ANSWERS_URL,
     authentication,
-    dependencies.registrationController.getPageRouting()
+    dependencies.limitedPartnershipController.getPageRouting()
   );
 
   router.post(
     CHECK_YOUR_ANSWERS_URL,
     authentication,
-    dependencies.registrationController.redirectAndCacheSelection()
+    dependencies.limitedPartnershipController.redirectAndCacheSelection()
   );
 
   router.get(
     NEXT_URL,
     authentication,
-    dependencies.registrationController.getPageRouting()
+    dependencies.limitedPartnershipController.getPageRouting()
   );
 };
 
