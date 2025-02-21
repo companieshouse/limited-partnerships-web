@@ -1,7 +1,7 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
 import escape from "escape-html";
 import { Session } from "@companieshouse/node-session-handler";
-import { Address } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { Address, LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import AddressService from "../../../application/service/AddressLookUpService";
 import addresssRouting, { addressLookUpRouting } from "./Routing";
@@ -13,6 +13,7 @@ import LimitedPartnershipService from "../../../application/service/LimitedPartn
 import UIErrors from "../../../domain/entities/UIErrors";
 import { PageRouting, pageRoutingDefault } from "../PageRouting";
 import PageType from "../PageType";
+import { TemplateOptionsGeneratorFactory } from "./templateOptions/TemplateOptionsGeneratorFactory";
 
 class AddressLookUpController extends AbstractController {
   public readonly REGISTERED_OFFICE_ADDRESS_CACHE_KEY =
@@ -36,7 +37,7 @@ class AddressLookUpController extends AbstractController {
         const { session, tokens, pageType, ids } = super.extract(request);
         const pageRouting = super.getRouting(addresssRouting, pageType, request);
 
-        let limitedPartnership = {};
+        let limitedPartnership: LimitedPartnership = {};
 
         if (ids.transactionId && ids.submissionId) {
           limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
@@ -52,7 +53,12 @@ class AddressLookUpController extends AbstractController {
 
         response.render(
           super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { limitedPartnership, addressList, cache }, null, response.locals.i18n)
+          {
+            ...super.makeProps(pageRouting, { limitedPartnership, addressList, cache }, null),
+            ...TemplateOptionsGeneratorFactory
+              .getTemplateOptionsGenerator(pageType)
+              .getOptions(pageRouting, limitedPartnership, response.locals.i18n)
+          }
         );
       } catch (error) {
         next(error);
@@ -115,7 +121,12 @@ class AddressLookUpController extends AbstractController {
         if (errors?.errors) {
           response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { limitedPartnership, ...request.body }, errors, response.locals.i18n)
+            {
+              ...super.makeProps(pageRouting, { limitedPartnership, ...request.body }, errors),
+              ...TemplateOptionsGeneratorFactory
+                .getTemplateOptionsGenerator(pageType)
+                .getOptions(pageRouting, limitedPartnership, response.locals.i18n)
+            }
           );
           return;
         }

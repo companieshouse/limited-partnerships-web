@@ -28,7 +28,7 @@ abstract class AbstractController {
     return type as PageType;
   }
 
-  protected makeProps(pageRouting: PageRouting, data: Record<string, any> | null, errors: UIErrors | null, i18n?: any) {
+  protected makeProps(pageRouting: PageRouting, data: Record<string, any> | null, errors: UIErrors | null) {
     if (data) {
       pageRouting.data = {
         ...pageRouting.data,
@@ -40,42 +40,6 @@ abstract class AbstractController {
       pageRouting.errors = errors.errors;
     }
 
-    if (i18n) {
-      return {
-        props: pageRouting,
-        templateOptions: {
-          baseTemplate: "layout.njk",
-          whatIsOfficeAddress: i18n.address.findPostcode.registeredOfficeAddress.whatIsOfficeAddress,
-          proposedName: `${data?.limitedPartnership.data.partnership_name?.toUpperCase()} ${data?.limitedPartnership.data.name_ending?.toUpperCase()}`,
-          officialCommunication: i18n.address.findPostcode.registeredOfficeAddress.officialCommunication,
-          partnership_type: data?.limitedPartnership.data.partnership_type,
-          england: {
-            physicalAddress: i18n.address.findPostcode.registeredOfficeAddress.england.physicalAddress,
-            jurisdiction: i18n.address.findPostcode.registeredOfficeAddress.england.jurisdiction
-          },
-          scotland: {
-            physicalAddress: i18n.address.findPostcode.registeredOfficeAddress.scotland.physicalAddress,
-            jurisdiction: i18n.address.findPostcode.registeredOfficeAddress.scotland.jurisdiction
-          },
-          postcodeErrorMessage: i18n.address.findPostcode.errorPostcode,
-          templateName: pageRouting.pageType,
-          nameOrNumberHint: i18n.address.findPostcode.nameOrNumberHint,
-          postcodeHint: i18n.address.findPostcode.postcodeHint,
-          enterManualAddressUrl: pageRouting.currentUrl?.replace(pageRouting.pageType, pageRouting.data?.enterManualAddressPageType),
-          enterAddressManually: i18n.address.findPostcode.enterAddressManually,
-          findAddress: i18n.address.findPostcode.findAddress,
-          publicRegisterTitle: i18n.address.findPostcode.registeredOfficeAddress.publicRegisterTitle,
-          publicRegisterLine1: i18n.address.findPostcode.registeredOfficeAddress.publicRegisterLine1,
-          govUk: {
-            error: {
-              title: i18n.govUk.error.title
-            }
-          },
-          errors: pageRouting.errors,
-          data: pageRouting.data
-        }
-      };
-    }
     return {
       props: pageRouting
     };
