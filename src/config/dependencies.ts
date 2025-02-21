@@ -50,7 +50,7 @@ const addressLookUpController: AddressLookUpController =
     cacheService
   );
 const generalPartnerController: GeneralPartnerController =
-  new GeneralPartnerController(generalPartnerService);
+  new GeneralPartnerController(limitedPartnershipService, generalPartnerService);
 
 export const appDependencies = {
   globalController,

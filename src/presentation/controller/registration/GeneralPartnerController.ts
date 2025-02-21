@@ -1,29 +1,41 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
 
+import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 import registrationsRouting from "./Routing";
 import AbstractController from "../AbstractController";
 import RegistrationPageType from "./PageType";
 
 class GeneralPartnerController extends AbstractController {
+  private limitedPartnershipService: LimitedPartnershipService;
   private generalPartnerService: GeneralPartnerService;
 
-  constructor(generalPartnerService: GeneralPartnerService) {
+  constructor(limitedPartnershipService: LimitedPartnershipService, generalPartnerService: GeneralPartnerService) {
     super();
+    this.limitedPartnershipService = limitedPartnershipService;
     this.generalPartnerService = generalPartnerService;
   }
 
   getPageRouting(): RequestHandler {
-    return (request: Request, response: Response, next: NextFunction) => {
+    return async (request: Request, response: Response, next: NextFunction) => {
       try {
-        const { pageType } = super.extract(request);
+        const { tokens, pageType, ids } = super.extract(request);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
+        let limitedPartnership = {};
         const generalPartner = {};
+
+        if (ids.transactionId && ids.submissionId) {
+          limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+            tokens,
+            ids.transactionId,
+            ids.submissionId
+          );
+        }
 
         response.render(
           super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { generalPartner }, null)
+          super.makeProps(pageRouting, { limitedPartnership, generalPartner }, null)
         );
       } catch (error) {
         next(error);

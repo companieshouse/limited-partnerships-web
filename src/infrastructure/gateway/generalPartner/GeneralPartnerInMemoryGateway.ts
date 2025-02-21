@@ -7,13 +7,13 @@ import GeneralPartner from "../../../domain/entities/GeneralPartner";
 import UIErrors, { ApiErrors } from "../../../domain/entities/UIErrors";
 
 class GeneralPartnerInMemoryGateway implements IGeneralPartnerGateway {
-  submissionId = crypto.randomUUID().toString();
+  generalPartnerId = crypto.randomUUID().toString();
   error = false;
 
   generalPartners: GeneralPartner[] = [];
   uiErrors: UIErrors = new UIErrors();
 
-  feedLimitedPartnerships(
+  feedGeneralPartners(
     generalPartners: GeneralPartner[]
   ) {
     this.generalPartners = generalPartners;
@@ -38,33 +38,10 @@ class GeneralPartnerInMemoryGateway implements IGeneralPartnerGateway {
     transactionId: string,
     data: Record<string, any>
   ): Promise<string> {
-    const apiErrors: ApiErrors = {
-      errors: {}
-    };
-
-    if (!data.first_name) {
-      apiErrors.errors = {
-        ...apiErrors.errors,
-        "data.firstName": "first_name must be less than 160 characters"
-      };
-    }
-
-    if (!data.last_name) {
-      apiErrors.errors = {
-        ...apiErrors.errors,
-        "data.lastName": "last_name must be less than 160 characters"
-      };
-    }
-
-    if (Object.keys(apiErrors.errors).length > 0) {
-      this.uiErrors.formatValidationErrorToUiErrors(apiErrors);
-    }
-
     if (this.uiErrors.errors.errorList.length > 0) {
       throw this.uiErrors;
     }
 
-    // delete data["_csrf"];  // TODO double-check not needed. Is done for Limited Partnership 
     this.generalPartners.push({
       _id: this["_id"],
       first_name: data.first_name,
@@ -77,7 +54,7 @@ class GeneralPartnerInMemoryGateway implements IGeneralPartnerGateway {
       disqualification_statement: data.disqualification_statement
     });
 
-    return this.submissionId;
+    return this.generalPartnerId;
   }
 }
 
