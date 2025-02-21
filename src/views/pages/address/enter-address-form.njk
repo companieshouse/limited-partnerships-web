@@ -115,6 +115,7 @@
         }) }}
 
         {{ govukSelect({
+            errorMessage: props.errors.country if props.errors,
             id: "country",
             name: "country",
             value: address.country,
