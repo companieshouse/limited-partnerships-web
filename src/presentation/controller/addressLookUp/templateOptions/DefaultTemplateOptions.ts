@@ -1,8 +1,9 @@
 import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { PageRouting } from "presentation/controller/PageRouting";
-import { ITemplateOptionsGenerator } from "./ITemplateOptionsGenerator";
+import { ITemplateOptions } from "./ITemplateOptions";
 
-class DefaultTemplateOptions implements ITemplateOptionsGenerator {
+export class DefaultTemplateOptions implements ITemplateOptions {
+
   getOptions(_pageRouting: PageRouting,
              _limitedPartnership: LimitedPartnership,
              _i18n: any) {
@@ -10,4 +11,3 @@ class DefaultTemplateOptions implements ITemplateOptionsGenerator {
   }
 }
 
-export default DefaultTemplateOptions;

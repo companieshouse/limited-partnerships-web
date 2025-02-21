@@ -13,7 +13,8 @@ import LimitedPartnershipService from "../../../application/service/LimitedPartn
 import UIErrors from "../../../domain/entities/UIErrors";
 import { PageRouting, pageRoutingDefault } from "../PageRouting";
 import PageType from "../PageType";
-import { TemplateOptionsGeneratorFactory } from "./templateOptions/TemplateOptionsGeneratorFactory";
+import { TemplateOptionsFactory } from "./templateOptions/TemplateOptionsFactory";
+import { ITemplateOptions } from "./templateOptions/ITemplateOptions";
 
 class AddressLookUpController extends AbstractController {
   public readonly REGISTERED_OFFICE_ADDRESS_CACHE_KEY =
@@ -51,13 +52,15 @@ class AddressLookUpController extends AbstractController {
 
         const addressList = await this.getAddressList(pageRouting, pageType, cache, tokens);
 
+        // POC
+        const templateOptions: ITemplateOptions = TemplateOptionsFactory.getTemplateOptions(pageType);
+        const templateName = templateOptions.templateName || super.templateName(pageRouting.currentUrl);
+        // ...super.makeProps would be removed but leaving in for the templates not extracted
         response.render(
-          super.templateName(pageRouting.currentUrl),
+          templateName,
           {
             ...super.makeProps(pageRouting, { limitedPartnership, addressList, cache }, null),
-            ...TemplateOptionsGeneratorFactory
-              .getTemplateOptionsGenerator(pageType)
-              .getOptions(pageRouting, limitedPartnership, response.locals.i18n)
+            ...templateOptions.getOptions(pageRouting, limitedPartnership, response.locals.i18n)
           }
         );
       } catch (error) {
@@ -119,13 +122,16 @@ class AddressLookUpController extends AbstractController {
         );
 
         if (errors?.errors) {
+          // POC
+          const templateOptions: ITemplateOptions = TemplateOptionsFactory.getTemplateOptions(pageType);
+          const templateName = templateOptions.templateName || super.templateName(pageRouting.currentUrl);
+
+          // ...super.makeProps would be removed but leaving in for the templates not extracted
           response.render(
-            super.templateName(pageRouting.currentUrl),
+            templateName,
             {
               ...super.makeProps(pageRouting, { limitedPartnership, ...request.body }, errors),
-              ...TemplateOptionsGeneratorFactory
-                .getTemplateOptionsGenerator(pageType)
-                .getOptions(pageRouting, limitedPartnership, response.locals.i18n)
+              ...templateOptions.getOptions(pageRouting, limitedPartnership, response.locals.i18n)
             }
           );
           return;
