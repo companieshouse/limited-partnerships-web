@@ -41,7 +41,6 @@ abstract class AbstractController {
     }
 
     if (i18n) {
-      console.log(JSON.stringify(pageRouting, null, 2));
       return {
         props: pageRouting,
         templateOptions: {
