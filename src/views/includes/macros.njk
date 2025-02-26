@@ -57,36 +57,3 @@
   {%- endif -%}
   {{- country -}}
 {%- endmacro -%}
-
-{% macro htmlInputErrorMessage(message, page, field) %}
-
-  {% set event = "_paq.push(['trackEvent', 'Limited Partnerships "+ page +"', '"+ field +"', 'Error: " + message + "']);" %}
-  {% set validation = "this.setCustomValidity('" + message + "');" %}
-
-  {% set errorMessage = event + validation %}
-
-  {{ errorMessage }}
-{% endmacro %}
-
-{% macro htmlOptionErrorMessage(message, page, field, sendEvent) %}
-  {% set condition = "document.querySelectorAll('input[name=" + field + "]:checked').length === 0" %}
-
-  {% set event = "" %}
-  {% set validation = "this.setCustomValidity('')" %}
-
-  {% if condition %}
-    {% set validation = "this.setCustomValidity('" + message + "')" %}
-
-    {% if sendEvent %}
-      {% set event = "_paq.push(['trackEvent', 'Limited Partnerships " + page + "', '" + field + "', 'Error: " + message + "']);" %}
-    {% endif %}
-
-  {% else %}
-    {% set event = "" %}
-    {% set validation = "this.setCustomValidity('')" %}
-  {% endif %}
-  
-  {% set errorMessage = event + validation %}
-
-  {{ errorMessage }}
-{% endmacro %}
