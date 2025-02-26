@@ -1,9 +1,11 @@
 import AddressLookUpController from "../presentation/controller/addressLookUp/Controller";
 import GlobalController from "../presentation/controller/global/Controller";
-import RegistrationController from "../presentation/controller/registration/Controller";
+import LimitedPartnershipController from "../presentation/controller/registration/LimitedPartnershipController";
+import GeneralPartnerController from "../presentation/controller/registration/GeneralPartnerController";
 
 export type IDependencies = {
   globalController: GlobalController;
-  registrationController: RegistrationController;
+  limitedPartnershipController: LimitedPartnershipController;
+  generalPartnerController: GeneralPartnerController;
   addressLookUpController: AddressLookUpController;
 };
