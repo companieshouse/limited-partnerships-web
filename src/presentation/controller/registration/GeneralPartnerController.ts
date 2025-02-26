@@ -59,13 +59,14 @@ class GeneralPartnerController extends AbstractController {
         if (result.errors) {
           response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { generalPartner: { data: request.body } /* , cache */ }, result.errors)
+            super.makeProps(pageRouting, { generalPartner: { data: request.body } }, result.errors)
           );
 
           return;
         }
 
-        const url = super.insertIdsInUrl(pageRouting.nextUrl, ids.transactionId, /* result.transactionId, */ result.generalPartnerId);
+        // TODO Need to decide where general partner id should be in the URL
+        const url = super.insertIdsInUrl(pageRouting.nextUrl, ids.transactionId, result.generalPartnerId);
 
         response.redirect(url);
       } catch (error) {

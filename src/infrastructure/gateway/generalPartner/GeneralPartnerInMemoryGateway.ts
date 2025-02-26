@@ -43,15 +43,7 @@ class GeneralPartnerInMemoryGateway implements IGeneralPartnerGateway {
     }
 
     this.generalPartners.push({
-      _id: this["_id"],
-      first_name: data.first_name,
-      last_name: data.last_name,
-      previous_name: data.previous_name,
-      dob_day: data.dob_day,
-      dob_month: data.dob_month,
-      dob_year: data.dob_year,
-      nationality: data.nationality,
-      disqualification_statement: data.disqualification_statement
+      data
     });
 
     return this.generalPartnerId;
