@@ -270,5 +270,20 @@
             "SLP": "WELSH - Scottish limited partnership",
             "SPFLP": "WELSH - Private fund limited partnership in Scotland"
         }
-    }   
+    },
+
+    "applicationSubmittedPage": {
+        "submittedBanner": {
+            "title": "WELSH - Application Submitted",
+            "reference": "WELSH - Your reference number"
+        },
+        "recieved": "WELSH - We've recieved your application to rgeister. We've sent an email to confirm",
+        "informationNext": {
+            "title": "WELSH - What happens next",
+            "information": "WELSH - We'll process the application as soon as possible. We'll email to let you know if your application has been accepted or rejected.",
+            "howLong": "WELSH - This will usually take no more than 3 to 5 working days."
+        },
+        "survey": "WELSH - What did you think of this service?",
+        "surveyLength": "WELSH - (takes 30 seconds)"
+    }
 }
