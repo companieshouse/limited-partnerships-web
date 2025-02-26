@@ -69,14 +69,14 @@ abstract class AbstractController {
   }
 
   insertIdsInUrl(url: string, transactionId = "", submissionId = "", generalPartnerId = ""): string {
-    url = this.replaceBaseUrlWithIds(transactionId, submissionId, generalPartnerId, url);
+    url = this.replaceBaseUrlWithIds(transactionId, submissionId, url);
     url = this.insertSubmissionId(url, submissionId);
     url = this.insertTransactionId(url, transactionId);
     url = this.insertGeneralPartnerId(url, generalPartnerId);
     return url;
   }
 
-  private replaceBaseUrlWithIds(transactionId: string, submissionId: string, generalPartnerId: string, url: string) {
+  private replaceBaseUrlWithIds(transactionId: string, submissionId: string, url: string) {
     // urls that can exist with or without ids
     const URLS = [NAME_URL];
 
