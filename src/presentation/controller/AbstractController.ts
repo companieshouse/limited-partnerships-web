@@ -1,6 +1,6 @@
 import { Request } from "express";
 
-import { BASE_URL, BASE_WITH_IDS_URL, SUBMISSION_ID, TRANSACTION_ID } from "../../config/constants";
+import { BASE_URL, BASE_WITH_IDS_URL, GENERAL_PARTNER_ID, SUBMISSION_ID, TRANSACTION_ID } from "../../config/constants";
 import { PageRouting, pageRoutingDefault, PagesRouting } from "./PageRouting";
 import PageType from "./PageType";
 import { NAME_URL } from "./registration/url";
@@ -15,7 +15,7 @@ abstract class AbstractController {
       return pageRoutingDefault;
     }
 
-    pageRouting = this.insertIdsInAllUrl(pageRouting, request.params[TRANSACTION_ID], request.params[SUBMISSION_ID]);
+    pageRouting = this.insertIdsInAllUrl(pageRouting, request.params[TRANSACTION_ID], request.params[SUBMISSION_ID], request.params[GENERAL_PARTNER_ID]);
 
     pageRouting = this.addLangToUrls(request.url, pageRouting);
 
@@ -68,10 +68,11 @@ abstract class AbstractController {
     return splitted[splitted.length - 1];
   }
 
-  insertIdsInUrl(url: string, transactionId = "", submissionId = ""): string {
+  insertIdsInUrl(url: string, transactionId = "", submissionId = "", generalPartnerId = ""): string {
     url = this.replaceBaseUrlWithIds(transactionId, submissionId, url);
     url = this.insertSubmissionId(url, submissionId);
     url = this.insertTransactionId(url, transactionId);
+    url = this.insertGeneralPartnerId(url, generalPartnerId);
     return url;
   }
 
@@ -94,12 +95,16 @@ abstract class AbstractController {
     return submissionId ? url.replace(`:${SUBMISSION_ID}`, submissionId) : url;
   }
 
-  protected insertIdsInAllUrl(pageRouting: PageRouting, transactionId: string, submissionId: string): PageRouting {
+  protected insertGeneralPartnerId(url: string, generalPartnerId: string): string {
+    return generalPartnerId ? url.replace(`:${GENERAL_PARTNER_ID}`, generalPartnerId) : url;
+  }
+
+  protected insertIdsInAllUrl(pageRouting: PageRouting, transactionId: string, submissionId: string, generalPartnerId: string): PageRouting {
     return {
       ...pageRouting,
-      previousUrl: this.insertIdsInUrl(pageRouting.previousUrl, transactionId, submissionId),
-      currentUrl: this.insertIdsInUrl(pageRouting.currentUrl, transactionId, submissionId),
-      nextUrl: this.insertIdsInUrl(pageRouting.nextUrl, transactionId, submissionId)
+      previousUrl: this.insertIdsInUrl(pageRouting.previousUrl, transactionId, submissionId, generalPartnerId),
+      currentUrl: this.insertIdsInUrl(pageRouting.currentUrl, transactionId, submissionId, generalPartnerId),
+      nextUrl: this.insertIdsInUrl(pageRouting.nextUrl, transactionId, submissionId, generalPartnerId)
     };
   }
 
@@ -140,8 +145,9 @@ abstract class AbstractController {
   protected extractIds(request: Request) {
     const transactionId = request.params.transactionId;
     const submissionId = request.params.submissionId;
+    const generalPartnerId = request.params.generalPartnerId;
 
-    return { transactionId, submissionId };
+    return { transactionId, submissionId, generalPartnerId };
   }
 }
 

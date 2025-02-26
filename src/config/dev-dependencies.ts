@@ -1,8 +1,11 @@
 import GlobalController from "../presentation/controller/global/Controller";
 import LimitedPartnershipService from "../application/service/LimitedPartnershipService";
+import GeneralPartnerService from "../application/service/GeneralPartnerService";
 import RegistrationInMemoryGateway from "../infrastructure/gateway/limitedPartnership/LimitedPartnershipInMemoryGateway";
+import GeneralPartnerInMemoryGateway from "../infrastructure/gateway/generalPartner/GeneralPartnerInMemoryGateway";
 import CacheInMemoryRepository from "../infrastructure/repository/CacheInMemoryRepository";
-import RegistrationController from "../presentation/controller/registration/Controller";
+import LimitedPartnershipController from "../presentation/controller/registration/LimitedPartnershipController";
+import GeneralPartnerController from "../presentation/controller/registration/GeneralPartnerController";
 import CacheService from "../application/service/CacheService";
 import AddressLookUpInMemoryGateway from "../infrastructure/gateway/addressLookUp/AddressLookUpInMemoryGateway";
 import AddressLookUpService from "../application/service/AddressLookUpService";
@@ -19,6 +22,8 @@ const addressLookUpGateway: AddressLookUpInMemoryGateway =
   new AddressLookUpInMemoryGateway();
 const incorporationGateway: IncorporationInMemoryGateway =
   new IncorporationInMemoryGateway();
+const generalPartnerGateway: GeneralPartnerInMemoryGateway =
+  new GeneralPartnerInMemoryGateway();
 
 // REPOSITORIES
 const cacheRepository = new CacheInMemoryRepository();
@@ -34,26 +39,34 @@ const addressLookUpService: AddressLookUpService = new AddressLookUpService(
   addressLookUpGateway
 );
 const cacheService = new CacheService(cacheRepository);
+const generalPartnerService: GeneralPartnerService = new GeneralPartnerService(
+  generalPartnerGateway
+);
 
 // CONTROLLERS
 const globalController: GlobalController = new GlobalController();
-const registrationController: RegistrationController =
-  new RegistrationController(limitedPartnershipService, cacheService);
+const limitedPartnershipController: LimitedPartnershipController =
+  new LimitedPartnershipController(limitedPartnershipService, cacheService);
 const addressLookUpController: AddressLookUpController =
   new AddressLookUpController(
     addressLookUpService,
     limitedPartnershipService,
     cacheService
   );
+const generalPartnerController: GeneralPartnerController =
+  new GeneralPartnerController(limitedPartnershipService, generalPartnerService);
 
 export const appDevDependencies = {
   globalController,
   limitedPartnershipGateway,
+  generalPartnerGateway,
   transactionGateway,
   incorporationGateway,
   cacheRepository,
   limitedPartnershipService,
-  registrationController,
+  generalPartnerService,
+  limitedPartnershipController,
+  generalPartnerController,
   addressLookUpGateway,
   addressLookUpService,
   addressLookUpController

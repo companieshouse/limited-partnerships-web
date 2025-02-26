@@ -6,6 +6,7 @@ import { logger } from "../../utils";
 import UIErrors from "../../domain/entities/UIErrors";
 import ITransactionGateway from "../../domain/ITransactionGateway";
 import { IIncorporationGateway } from "../../domain/IIncorporationGateway";
+import { extractAPIErrors } from "./utils";
 
 class LimitedPartnershipService {
   constructor(
@@ -63,7 +64,7 @@ class LimitedPartnershipService {
 
       return { submissionId, transactionId };
     } catch (errors: any) {
-      const { apiErrors, isValidationErrors } = this.extractAPIErrors(errors);
+      const { apiErrors, isValidationErrors } = extractAPIErrors(errors);
 
       logger.error(
         `Error creating transaction or submission: ${JSON.stringify(apiErrors)}`
@@ -99,7 +100,7 @@ class LimitedPartnershipService {
         data
       );
     } catch (errors: any) {
-      const { apiErrors, isValidationErrors } = this.extractAPIErrors(errors);
+      const { apiErrors, isValidationErrors } = extractAPIErrors(errors);
 
       logger.error(`Error sending data: ${JSON.stringify(apiErrors)}`);
 
@@ -111,13 +112,6 @@ class LimitedPartnershipService {
         errors
       };
     }
-  }
-
-  private extractAPIErrors(errors: any) {
-    const isValidationErrors = errors instanceof UIErrors;
-    const apiErrors = isValidationErrors ? errors?.apiErrors : errors;
-
-    return { apiErrors, isValidationErrors };
   }
 }
 
