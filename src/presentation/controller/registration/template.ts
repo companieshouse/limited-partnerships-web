@@ -14,4 +14,6 @@ export const LIMITED_PARTNER_CHOICE_TEMPLATE =
   RegistrationPageType.limitedPartnerChoice;
 export const CHECK_YOUR_ANSWERS_TEMPLATE =
   RegistrationPageType.checkYourAnswers;
+export const APPLICATION_SUBMITTED_TEMPLATE =
+  RegistrationPageType.applicationSubmitted;
 export const NEXT_TEMPLATE = RegistrationPageType.next;
