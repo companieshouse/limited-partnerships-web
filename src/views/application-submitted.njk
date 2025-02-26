@@ -1,0 +1,33 @@
+{% extends "layout.njk" %}
+{% block backLink %}{% endblock %}
+
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+
+{% set mainClasses = "govuk-main-wrapper--l" %}
+{% set referenceNumber = "Your reference number<br><strong>" + props.data.transactionID + "</strong>" %}
+
+{% block content %}
+  <div class="govuk-grid-row" style="margin-top: 40px;">
+    <div class="govuk-grid-column-two-thirds">
+      {{ govukPanel({
+        titleText: "Application complete",
+        html: referenceNumber
+      }) }}
+
+      <p class="govuk-body">{{ i18n.applicationSubmittedPage.recieved }}</p>
+
+      <h2 class="govuk-heading-m">{{ i18n.applicationSubmittedPage.informationNext.title }}</h2>
+
+      <p class="govuk-body">
+        {{ i18n.applicationSubmittedPage.informationNext.information }}
+      </p>
+      <p class="govuk-body">
+        {{ i18n.applicationSubmittedPage.informationNext.howLong }}
+      </p>
+
+      <p class="govuk-body">
+        <a href="https://www.smartsurvey.co.uk/s/file-for-lp-conf/" class="govuk-link">{{ i18n.applicationSubmittedPage.survey}}</a> {{ i18n.applicationSubmittedPage.surveyLength }}
+      </p>
+    </div>
+  </div>
+{% endblock %}
