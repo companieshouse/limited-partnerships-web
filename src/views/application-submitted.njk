@@ -4,13 +4,13 @@
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
 
 {% set mainClasses = "govuk-main-wrapper--l" %}
-{% set referenceNumber = "Your reference number<br><strong>" + props.data.transactionID + "</strong>" %}
+{% set referenceNumber = i18n.applicationSubmittedPage.submittedBanner.reference + "<br><strong>" + props.data.ids.transactionId + "</strong>" %}
 
 {% block content %}
   <div class="govuk-grid-row" style="margin-top: 40px;">
     <div class="govuk-grid-column-two-thirds">
       {{ govukPanel({
-        titleText: "Application complete",
+        titleText: i18n.applicationSubmittedPage.submittedBanner.title,
         html: referenceNumber
       }) }}
 
