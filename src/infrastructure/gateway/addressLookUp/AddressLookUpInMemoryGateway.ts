@@ -21,11 +21,11 @@ class AddressLookUpInMemoryGateway implements IAddressLookUpGateway {
 
   async isValidUKPostcode(opt: { access_token: string; refresh_token: string }, postcode: string): Promise<boolean> {
     return (
-      postcode === this.englandAddresses[0].postcode ||
-      postcode === this.walesAddresses[0].postcode ||
-      postcode === this.scotlandAddresses[0].postcode ||
-      postcode === this.borderAddresses[0].postcode ||
-      postcode === this.northernIrelandAddresses[0].postcode
+      this.isSamePostalCode(postcode, this.englandAddresses[0].postcode) ||
+      this.isSamePostalCode(postcode, this.walesAddresses[0].postcode) ||
+      this.isSamePostalCode(postcode, this.scotlandAddresses[0].postcode) ||
+      this.isSamePostalCode(postcode, this.borderAddresses[0].postcode) ||
+      this.isSamePostalCode(postcode, this.northernIrelandAddresses[0].postcode)
     );
   }
 
@@ -37,27 +37,31 @@ class AddressLookUpInMemoryGateway implements IAddressLookUpGateway {
       throw new Error("Test 500 error");
     }
 
-    if (postcode === this.englandAddresses[0].postcode) {
+    if (this.isSamePostalCode(postcode, this.englandAddresses[0].postcode)) {
       return this.englandAddresses.map(postcodeLookUpAddressToAddress);
     }
 
-    if (postcode === this.walesAddresses[0].postcode) {
+    if (this.isSamePostalCode(postcode, this.walesAddresses[0].postcode)) {
       return this.walesAddresses.map(postcodeLookUpAddressToAddress);
     }
 
-    if (postcode === this.scotlandAddresses[0].postcode) {
+    if (this.isSamePostalCode(postcode, this.scotlandAddresses[0].postcode)) {
       return this.scotlandAddresses.map(postcodeLookUpAddressToAddress);
     }
 
-    if (postcode === this.borderAddresses[0].postcode) {
+    if (this.isSamePostalCode(postcode, this.borderAddresses[0].postcode)) {
       return this.borderAddresses.map(postcodeLookUpAddressToAddress);
     }
 
-    if (postcode === this.northernIrelandAddresses[0].postcode) {
+    if (this.isSamePostalCode(postcode, this.northernIrelandAddresses[0].postcode)) {
       return this.northernIrelandAddresses.map(postcodeLookUpAddressToAddress);
     }
 
     return [];
+  }
+
+  private isSamePostalCode(postalCode: string, postalCodeToCompare: string) {
+    return postalCode.replace(/\s+/g, "").toLowerCase() === postalCodeToCompare.replace(/\s+/g, "").toLowerCase();
   }
 }
 

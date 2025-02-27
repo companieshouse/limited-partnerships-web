@@ -117,6 +117,32 @@ describe("Postcode Registered Office Address Page", () => {
       });
     });
 
+    it("should validate the post code and find a matching address - premises and postcode uppercase", async () => {
+      const res = await request(app).post(URL).send({
+        pageType: AddressPageType.postcodeRegisteredOfficeAddress,
+        premises: appDevDependencies.addressLookUpGateway.englandAddresses[0].premise.toUpperCase(),
+        postal_code: appDevDependencies.addressLookUpGateway.englandAddresses[0].postcode.toUpperCase()
+      });
+
+      const REDIRECT_URL = getUrl(CONFIRM_REGISTERED_OFFICE_ADDRESS_URL);
+
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+    });
+
+    it("should validate the post code and find a matching address - premises and postcode lowercase", async () => {
+      const res = await request(app).post(URL).send({
+        pageType: AddressPageType.postcodeRegisteredOfficeAddress,
+        premises: appDevDependencies.addressLookUpGateway.englandAddresses[0].premise.toLowerCase(),
+        postal_code: appDevDependencies.addressLookUpGateway.englandAddresses[0].postcode.toLowerCase()
+      });
+
+      const REDIRECT_URL = getUrl(CONFIRM_REGISTERED_OFFICE_ADDRESS_URL);
+
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+    });
+
     it("should return an error if the postcode is not valid", async () => {
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,

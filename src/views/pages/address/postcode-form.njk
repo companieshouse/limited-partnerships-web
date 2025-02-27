@@ -1,9 +1,5 @@
 {% import 'includes/macros.njk' as macros %}
 
-{% set postcodeErrorMessage = macros.htmlInputErrorMessage(i18n.address.findPostcode.errorPostcode) %}
-
-{% set postalCodeErrorMessage = null %}
-
 {% if props.errors.errorList.length > 0 %}
   {% for el in props.errors.errorList %}
     {% if el.href === "#postal_code" %}
@@ -44,14 +40,9 @@
                 oninvalid: postcodeErrorMessage,
                 onclick: "this.setCustomValidity('')"
             },
-            pattern: "^[A-Za-z]{1,2}\\d[A-Za-z\\d]? ?\\d[A-Za-z]{2}$",
-            errorMessage: postalCodeErrorMessage
+            pattern: "^[A-Za-z]{1,2}\\d[A-Za-z\\d]? ?\\d[A-Za-z]{2}$"
         }) }}
-
-        <p>
-            <a href="{{ props.currentUrl | replace(props.pageType, props.data.enterManualAddressPageType) }}" class="govuk-body-m govuk-link" data-event-id="enter-address-manually">{{ i18n.address.findPostcode.enterAddressManually }}</a>
-        <p>
-
+       
         {{ govukButton({
             text: i18n.address.findPostcode.findAddress,
             attributes: {
@@ -59,5 +50,10 @@
                 "data-event-id": "find-address"
             }
         }) }}
+
+        <p>
+            <a href="{{ props.currentUrl | replace(props.pageType, props.data.enterManualAddressPageType) }}" class="govuk-body-m govuk-link" data-event-id="enter-address-manually">{{ i18n.address.findPostcode.enterAddressManually }}</a>
+        <p>
+
     </div>
 </form>
