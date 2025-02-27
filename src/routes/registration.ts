@@ -13,7 +13,7 @@ import {
   LIMITED_PARTNERS_URL,
   GENERAL_PARTNERS_URL,
   GENERAL_PARTNER_CHOICE_URL,
-  ADD_GENERAL_PARTNER_URL,
+  ADD_GENERAL_PARTNER_PERSON_URL,
   LIMITED_PARTNER_CHOICE_URL,
   CHECK_YOUR_ANSWERS_URL,
   NAME_WITH_IDS_URL,
@@ -109,12 +109,12 @@ export const registrationEndpoints = (
   );
 
   router.get(
-    ADD_GENERAL_PARTNER_URL,
+    ADD_GENERAL_PARTNER_PERSON_URL,
     authentication,
     dependencies.generalPartnerController.getPageRouting()
   );
   router.post(
-    ADD_GENERAL_PARTNER_URL,
+    ADD_GENERAL_PARTNER_PERSON_URL,
     authentication,
     dependencies.generalPartnerController.createGeneralPartner()
   );

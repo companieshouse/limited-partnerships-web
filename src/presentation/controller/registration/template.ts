@@ -10,8 +10,8 @@ export const GENERAL_PARTNERS_TEMPLATE = RegistrationPageType.generalPartners;
 export const LIMITED_PARTNERS_TEMPLATE = RegistrationPageType.limitedPartners;
 export const GENERAL_PARTNER_CHOICE_TEMPLATE =
   RegistrationPageType.generalPartnerChoice;
-export const ADD_GENERAL_PARTNER_TEMPLATE =
-  RegistrationPageType.addGeneralPartner;
+export const ADD_GENERAL_PARTNER_PERSON_TEMPLATE =
+  RegistrationPageType.addGeneralPartnerPerson;
 export const LIMITED_PARTNER_CHOICE_TEMPLATE =
   RegistrationPageType.limitedPartnerChoice;
 export const CHECK_YOUR_ANSWERS_TEMPLATE =

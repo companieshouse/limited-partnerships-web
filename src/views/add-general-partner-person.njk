@@ -1,10 +1,10 @@
 {% extends "layout.njk" %}
 
-{% set pageTitle = i18n.addGeneralPartnerPage.title %}
+{% set pageTitle = i18n.addGeneralPartnerPersonPage.title %}
 
-{% set validateFirstName = "validateInput(this, 160, '" + i18n.addGeneralPartnerPage.errorMessages.firstNameMissing | escape + "', '" + i18n.addGeneralPartnerPage.errorMessages.firstNameLength | escape + "');" %}
-{% set validateLastName = "validateInput(this, 160, '" + i18n.addGeneralPartnerPage.errorMessages.lastNameMissing | escape + "', '" + i18n.addGeneralPartnerPage.errorMessages.lastNameLength | escape + "');" %}
-{% set validatePreviousName = "validateLength(this, 160, '" + i18n.addGeneralPartnerPage.errorMessages.previousNameLength | escape + "');" %}
+{% set validateFirstName = "validateInput(this, 50, '" + i18n.addGeneralPartnerPersonPage.errorMessages.firstNameMissing | escape + "', '" + i18n.addGeneralPartnerPersonPage.errorMessages.firstNameLength | escape + "');" %}
+{% set validateLastName = "validateInput(this, 160, '" + i18n.addGeneralPartnerPersonPage.errorMessages.lastNameMissing | escape + "', '" + i18n.addGeneralPartnerPersonPage.errorMessages.lastNameLength | escape + "');" %}
+{% set validatePreviousName = "validateLength(this, 160, '" + i18n.addGeneralPartnerPersonPage.errorMessages.previousNameLength | escape + "');" %}
 
 {% block content %}
   <div class="govuk-grid-row">
@@ -18,17 +18,18 @@
         
         {% include "includes/proposed-name.njk" %}  
     
-        <h1 class="govuk-heading-xl">{{ i18n.addGeneralPartnerPage.title }}</h1>
+        <h1 class="govuk-heading-xl">{{ i18n.addGeneralPartnerPersonPage.title }}</h1>
 
         {{ govukInput({
           label: {
-            text: i18n.addGeneralPartnerPage.firstName,
+            text: i18n.addGeneralPartnerPersonPage.firstName,
             classes: "govuk-label--m",
             isPageHeading: false
           },
-          id: "firstName",
-          name: "firstName",
+          id: "forename",
+          name: "forename",
           classes: "govuk-!-width-full",
+          errorMessage: props.errors.forename if errors,
           attributes : {
             required: true,
             oninvalid: validateFirstName,
@@ -38,13 +39,14 @@
 
         {{ govukInput({
           label: {
-            text: i18n.addGeneralPartnerPage.lastName,
+            text: i18n.addGeneralPartnerPersonPage.lastName,
             classes: "govuk-label--m",
             isPageHeading: false
           },
-          id: "lastName",
-          name: "lastName",
+          id: "surname",
+          name: "surname",
           classes: "govuk-!-width-full",
+          errorMessage: props.errors.surname if errors,
           attributes : {
             required : true,
             oninvalid: validateLastName,
@@ -55,13 +57,14 @@
         {% set previousHtmlPerson %}
           {{ govukInput({
             label: {
-              text: i18n.addGeneralPartnerPage.previousName.yesHintTitle
+              text: i18n.addGeneralPartnerPersonPage.previousName.yesHintTitle
             },
             hint: {
-              text: i18n.addGeneralPartnerPage.previousName.yesHint
+              text: i18n.addGeneralPartnerPersonPage.previousName.yesHint
             },
-            id: "previousName",
-            name: "previousName",
+            id: "former_names",
+            name: "former_names",
+            errorMessage: props.errors.former_names if errors,
             attributes : {
               oninvalid: validatePreviousName,
               oninput: validatePreviousName
@@ -75,19 +78,19 @@
           value: data['generalPartner'],
           fieldset: {
             legend: {
-              text: i18n.addGeneralPartnerPage.previousName.title,
+              text: i18n.addGeneralPartnerPersonPage.previousName.title,
               isPageHeading: true,
               classes: "govuk-fieldset__legend--m"
             }
           },
           hint: {
-            text: i18n.addGeneralPartnerPage.previousName.hint
+            text: i18n.addGeneralPartnerPersonPage.previousName.hint
           },
 
           items: [
             {
               value: "previousNameYes",
-              text: i18n.addGeneralPartnerPage.previousName.yes,
+              text: i18n.addGeneralPartnerPersonPage.previousName.yes,
               id: "previousNameYes",
               name: "previousNameYes",
               attributes: {
@@ -99,7 +102,7 @@
             },
             {
               value: "previousNameNo",
-              text: i18n.addGeneralPartnerPage.previousName.no,
+              text: i18n.addGeneralPartnerPersonPage.previousName.no,
               id: "previousNameNo",
               name: "previousNameNo",
               attributes: {
@@ -110,21 +113,21 @@
         }) }}
 
         {{ govukDateInput({
-          id: "dateOfBirth",
-          namePrefix: "dateOfBirth",
+          id: "date_of_birth",
+          namePrefix: "date_of_birth",
           fieldset: {
             legend: {
-              text: i18n.addGeneralPartnerPage.dateOfBirth,
+              text: i18n.addGeneralPartnerPersonPage.dateOfBirth,
               isPageHeading: true,
               classes: "govuk-fieldset__legend--m"
             }
           },
           hint: {
-            text: i18n.addGeneralPartnerPage.dateOfBirthHint
+            text: i18n.addGeneralPartnerPersonPage.dateOfBirthHint
           }
         }) }}
 
-        {% set nationalityText = i18n.addGeneralPartnerPage.nationality %}
+        {% set nationalityText = i18n.addGeneralPartnerPersonPage.nationality %}
         {% include "includes/nationalities.njk" %}
 
 
@@ -136,18 +139,18 @@
         </p>
 
         {{ govukCheckboxes({
-          name: "disqualificationStatement",
+          name: "not_disqualified_statement_checked",
           classes: "govuk-!-margin-top-6",
           fieldset: {
             legend: {
-              text: i18n.addGeneralPartnerPage.disqualificationStatementLegend,
+              text: i18n.addGeneralPartnerPersonPage.disqualificationStatementLegend,
               classes: "govuk-visually-hidden"
             }
           },
           items: [
             {
-              value: "disqualificationStatement",
-              text: i18n.addGeneralPartnerPage.disqualificationStatement,
+              value: "true",
+              text: i18n.addGeneralPartnerPersonPage.disqualificationStatement,
               attributes: {
                 required: true
               }
@@ -157,9 +160,9 @@
 
         <div>
           {{ govukInsetText({
-            html: "<h2 class='govuk-heading-m'>" + i18n.addGeneralPartnerPage.publicRegisterTitle | escape + "</h2>" + 
-              "<p>" + i18n.addGeneralPartnerPage.publicRegisterLine1 | escape + "</p>" +
-              "<p>" + i18n.addGeneralPartnerPage.publicRegisterLine2 | escape + "</p>"
+            html: "<h2 class='govuk-heading-m'>" + i18n.addGeneralPartnerPersonPage.publicRegisterTitle | escape + "</h2>" + 
+              "<p>" + i18n.addGeneralPartnerPersonPage.publicRegisterLine1 | escape + "</p>" +
+              "<p>" + i18n.addGeneralPartnerPersonPage.publicRegisterLine2 | escape + "</p>"
           }) }}
         </div>
 

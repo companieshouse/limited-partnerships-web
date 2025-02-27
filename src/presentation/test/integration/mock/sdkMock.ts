@@ -77,11 +77,10 @@ const sdkMock = {
     getLimitedPartnership,
     postLimitedPartnershipIncorporation
   },
-  // TODO Include once SDK changes are done
-  // generalPartnerService: {
-  //   ...GeneralPartnerService.prototype,
-  //   postGeneralPartner,
-  // },
+  generalPartnerService: {
+    ...LimitedPartnershipsService.prototype,
+    postGeneralPartner,
+  },
   refreshToken: {
     ...RefreshTokenService.prototype,
     refresh

@@ -58,19 +58,19 @@ const registrationRoutingGeneralPartners = {
 const registrationRoutingGeneralPartnerChoice = {
   previousUrl: url.GENERAL_PARTNERS_URL,
   currentUrl: url.GENERAL_PARTNER_CHOICE_URL,
-  nextUrl: url.ADD_GENERAL_PARTNER_URL,
+  nextUrl: url.ADD_GENERAL_PARTNER_PERSON_URL,
   pageType: RegistrationPageType.generalPartnerChoice
 };
 
 const registrationRoutingAddGeneralPartner = {
   previousUrl: url.GENERAL_PARTNER_CHOICE_URL,
-  currentUrl: url.ADD_GENERAL_PARTNER_URL,
+  currentUrl: url.ADD_GENERAL_PARTNER_PERSON_URL,
   nextUrl: url.LIMITED_PARTNERS_URL,
-  pageType: RegistrationPageType.addGeneralPartner
+  pageType: RegistrationPageType.addGeneralPartnerPerson
 };
 
 const registrationRoutingLimitedPartners = {
-  previousUrl: url.ADD_GENERAL_PARTNER_URL,
+  previousUrl: url.ADD_GENERAL_PARTNER_PERSON_URL,
   currentUrl: url.LIMITED_PARTNERS_URL,
   nextUrl: url.LIMITED_PARTNER_CHOICE_URL,
   pageType: RegistrationPageType.limitedPartners

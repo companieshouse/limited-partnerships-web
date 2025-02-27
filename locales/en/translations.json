@@ -1,5 +1,5 @@
 {
-    "addGeneralPartnerPage" : {
+    "addGeneralPartnerPersonPage" : {
         "title" : "Add a General Partner (person)",
         "firstName" : "First name",
         "lastName" : "Last name",
@@ -21,7 +21,7 @@
         "publicRegisterLine2" : "We’ll show all the other information you provide on this screen on the public register.",
         "errorMessages": {
           "firstNameMissing": "Enter a first name",
-          "firstNameLength": "First name must be 160 characters or less",
+          "firstNameLength": "First name must be 50 characters or less",
           "lastNameMissing": "Enter a last name",
           "lastNameLength": "Last name must be 160 characters or less",
           "previousNameLength": "Previous name must be 160 characters or less"

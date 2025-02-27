@@ -1,5 +1,5 @@
 {
-    "addGeneralPartnerPage" : {
+    "addGeneralPartnerPersonPage" : {
         "title" : "WELSH - Add a General Partner (person)",
         "firstName" : "WELSH - First name",
         "lastName" : "WELSH - Last name",
@@ -21,7 +21,7 @@
         "publicRegisterLine2" : "WELSH - We’ll show all the other information you provide on this screen on the public register.",
         "errorMessages": {
           "firstNameMissing": "WELSH - Enter a first name",
-          "firstNameLength": "WELSH - First name must be 160 characters or less",
+          "firstNameLength": "WELSH - First name must be 50 characters or less",
           "lastNameMissing": "WELSH - Enter a last name",
           "lastNameLength": "WELSH - Last name must be 160 characters or less",
           "previousNameLength": "WELSH - Previous name must be 160 characters or less"

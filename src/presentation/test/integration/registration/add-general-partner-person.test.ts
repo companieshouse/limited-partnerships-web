@@ -2,15 +2,15 @@ import request from "supertest";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
-import { ADD_GENERAL_PARTNER_URL, LIMITED_PARTNERS_URL } from "../../../controller/registration/url";
+import { ADD_GENERAL_PARTNER_PERSON_URL, LIMITED_PARTNERS_URL } from "../../../controller/registration/url";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import { ApiErrors } from "../../../../domain/entities/UIErrors";
 
-describe("Add General Partner Page", () => {
-  const URL = getUrl(ADD_GENERAL_PARTNER_URL);
+describe("Add General Partner Person Page", () => {
+  const URL = getUrl(ADD_GENERAL_PARTNER_PERSON_URL);
   const REDIRECT_URL = getUrl(LIMITED_PARTNERS_URL);
 
   beforeEach(() => {
@@ -26,9 +26,9 @@ describe("Add General Partner Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${cyTranslationText.addGeneralPartnerPage.title} - ${cyTranslationText.service} - GOV.UK`
+        `${cyTranslationText.addGeneralPartnerPersonPage.title} - ${cyTranslationText.service} - GOV.UK`
       );
-      testTranslations(res.text, cyTranslationText.addGeneralPartnerPage, ["errorMessages"]);
+      testTranslations(res.text, cyTranslationText.addGeneralPartnerPersonPage, ["errorMessages"]);
     });
 
     it("should load the add general partner page with English text", async () => {
@@ -37,9 +37,9 @@ describe("Add General Partner Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${enTranslationText.addGeneralPartnerPage.title} - ${enTranslationText.service} - GOV.UK`
+        `${enTranslationText.addGeneralPartnerPersonPage.title} - ${enTranslationText.service} - GOV.UK`
       );
-      testTranslations(res.text, enTranslationText.addGeneralPartnerPage, ["errorMessages"]);
+      testTranslations(res.text, enTranslationText.addGeneralPartnerPersonPage, ["errorMessages"]);
       expect(res.text).not.toContain("WELSH -");
     });
 
@@ -62,7 +62,7 @@ describe("Add General Partner Page", () => {
   describe("Post Add General Partner", () => {
     it("should send the general partner details", async () => {
       const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.addGeneralPartner,
+        pageType: RegistrationPageType.addGeneralPartnerPerson,
         first_name: "test"
       });
 
@@ -78,7 +78,7 @@ describe("Add General Partner Page", () => {
       appDevDependencies.generalPartnerGateway.feedErrors(apiErrors);
 
       const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.addGeneralPartner,
+        pageType: RegistrationPageType.addGeneralPartnerPerson,
         first_name: "INVALID-CHARACTERS"
       });
 
