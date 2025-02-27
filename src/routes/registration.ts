@@ -16,7 +16,8 @@ import {
   LIMITED_PARTNER_CHOICE_URL,
   CHECK_YOUR_ANSWERS_URL,
   NAME_WITH_IDS_URL,
-  TERM_URL
+  TERM_URL,
+  APPLICATION_SUBMITTED_URL
 } from "../presentation/controller/registration/url";
 
 export const registrationEndpoints = (
@@ -135,6 +136,12 @@ export const registrationEndpoints = (
     CHECK_YOUR_ANSWERS_URL,
     authentication,
     dependencies.registrationController.redirectAndCacheSelection()
+  );
+
+  router.get(
+    APPLICATION_SUBMITTED_URL,
+    authentication,
+    dependencies.registrationController.getPageRouting(),
   );
 
   router.get(

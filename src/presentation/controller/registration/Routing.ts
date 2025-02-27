@@ -79,8 +79,15 @@ export const registrationRoutingLimitedPartnerChoice = {
 export const registrationRoutingCheckYourAnswers = {
   previousUrl: url.LIMITED_PARTNER_CHOICE_URL,
   currentUrl: url.CHECK_YOUR_ANSWERS_URL,
-  nextUrl: url.NEXT_URL,
+  nextUrl: url.APPLICATION_SUBMITTED_URL,
   pageType: RegistrationPageType.checkYourAnswers
+};
+
+export const registrationRoutingApplicationSubmitted = {
+  previousUrl: url.CHECK_YOUR_ANSWERS_URL,
+  currentUrl: url.APPLICATION_SUBMITTED_URL,
+  nextUrl: url.NEXT_URL,
+  pageType: RegistrationPageType.applicationSubmitted
 };
 
 const registrationRoutingNext = {
@@ -101,6 +108,7 @@ const list = [
   registrationRoutingGeneralPartnerChoice,
   registrationRoutingLimitedPartnerChoice,
   registrationRoutingCheckYourAnswers,
+  registrationRoutingApplicationSubmitted,
   registrationRoutingNext
 ];
 

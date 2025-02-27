@@ -47,7 +47,7 @@ class RegistrationController extends AbstractController {
         if (!redirect) {
           response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { limitedPartnership, generalPartner, limitedPartner, cache }, null)
+            super.makeProps(pageRouting, { limitedPartnership, generalPartner, limitedPartner, cache, ids }, null)
           );
         }
       } catch (error) {
