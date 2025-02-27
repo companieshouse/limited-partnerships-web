@@ -141,7 +141,7 @@ export const registrationEndpoints = (
   router.get(
     APPLICATION_SUBMITTED_URL,
     authentication,
-    dependencies.registrationController.getPageRouting()
+    dependencies.registrationController.getPageRouting(),
   );
 
   router.get(
