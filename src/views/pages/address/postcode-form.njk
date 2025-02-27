@@ -42,11 +42,7 @@
             },
             pattern: "^[A-Za-z]{1,2}\\d[A-Za-z\\d]? ?\\d[A-Za-z]{2}$"
         }) }}
-
-        <p>
-            <a href="{{ props.currentUrl | replace(props.pageType, props.data.enterManualAddressPageType) }}" class="govuk-body-m govuk-link" data-event-id="enter-address-manually">{{ i18n.address.findPostcode.enterAddressManually }}</a>
-        <p>
-
+       
         {{ govukButton({
             text: i18n.address.findPostcode.findAddress,
             attributes: {
@@ -54,5 +50,10 @@
                 "data-event-id": "find-address"
             }
         }) }}
+
+        <p>
+            <a href="{{ props.currentUrl | replace(props.pageType, props.data.enterManualAddressPageType) }}" class="govuk-body-m govuk-link" data-event-id="enter-address-manually">{{ i18n.address.findPostcode.enterAddressManually }}</a>
+        <p>
+
     </div>
 </form>
