@@ -274,10 +274,10 @@
 
     "applicationSubmittedPage": {
         "submittedBanner": {
-            "title": "WELSH - Application Submitted",
+            "title": "WELSH - Application submitted",
             "reference": "WELSH - Your reference number"
         },
-        "recieved": "WELSH - We've recieved your application to rgeister. We've sent an email to confirm",
+        "recieved": "WELSH - We've recieved your application to register. We've sent an email to confirm",
         "informationNext": {
             "title": "WELSH - What happens next",
             "information": "WELSH - We'll process the application as soon as possible. We'll email to let you know if your application has been accepted or rejected.",

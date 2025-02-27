@@ -274,10 +274,10 @@
 
     "applicationSubmittedPage": {
         "submittedBanner": {
-            "title": "Application Submitted",
+            "title": "Application submitted",
             "reference": "Your reference number"
         },
-        "recieved": "We've recieved your application to rgeister. We've sent an email to confirm",
+        "recieved": "We've recieved your application to register. We've sent an email to confirm.",
         "informationNext": {
             "title": "What happens next",
             "information": "We'll process the application as soon as possible. We'll email to let you know if your application has been accepted or rejected.",
