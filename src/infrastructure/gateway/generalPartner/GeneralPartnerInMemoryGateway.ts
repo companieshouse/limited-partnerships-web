@@ -2,8 +2,8 @@
 
 import crypto from "crypto";
 
+import { GeneralPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import IGeneralPartnerGateway from "../../../domain/IGeneralPartnerGateway";
-import GeneralPartner from "../../../domain/entities/GeneralPartner";
 import UIErrors, { ApiErrors } from "../../../domain/entities/UIErrors";
 
 class GeneralPartnerInMemoryGateway implements IGeneralPartnerGateway {
