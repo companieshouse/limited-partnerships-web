@@ -77,8 +77,8 @@
 
         {{ govukRadios({
           classes: "govuk-radios",
-          name: "parameter",
-          value: props.data.generalPartner.data.parameter,
+          name: "previousName",
+          value: props.data.generalPartner.data.previousName,
           fieldset: {
             legend: {
               text: i18n.addGeneralPartnerPersonPage.previousName.title,
@@ -92,7 +92,7 @@
 
           items: [
             {
-              value: "previousNameYes",
+              value: "true",
               text: i18n.addGeneralPartnerPersonPage.previousName.yes,
               id: "previousNameYes",
               name: "previousNameYes",
@@ -104,7 +104,7 @@
               }
             },
             {
-              value: "previousNameNo",
+              value: "false",
               text: i18n.addGeneralPartnerPersonPage.previousName.no,
               id: "previousNameNo",
               name: "previousNameNo",
