@@ -132,17 +132,26 @@
             {
               classes: "govuk-input--width-2",
               name: "day",
-              value: props.data.generalPartner.data["date_of_birth-day"]
+              value: props.data.generalPartner.data["date_of_birth-day"],
+              attributes: {
+                required: true
+              }
             },
             {
               classes: "govuk-input--width-2",
               name: "month",
-              value: props.data.generalPartner.data["date_of_birth-month"]
+              value: props.data.generalPartner.data["date_of_birth-month"],
+              attributes: {
+                required: true
+              }
             },
             {
               classes: "govuk-input--width-4",
               name: "year",
-              value: props.data.generalPartner.data["date_of_birth-year"]
+              value: props.data.generalPartner.data["date_of_birth-year"],
+              attributes: {
+                required: true
+              }
             }
           ]
         }) }}
