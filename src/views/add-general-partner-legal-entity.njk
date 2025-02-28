@@ -24,8 +24,8 @@
             classes: "govuk-label--m",
             isPageHeading: true
           },
-          id: "gp1EntityNamme",
-          name: "gp1EntityName"
+          id: "",
+          name: ""
         }) }}
 
         {{ govukInput({
@@ -36,8 +36,8 @@
           hint: {
             text: i18n.addGeneralPartnerLegalEntityPage.legalFormOrCorporateIdentityHint
           },
-          id: "gp1LegalForm",
-          name: "gp1LegalForm"
+          id: "legal_form",
+          name: "legal_form"
         }) }}
 
         {{ govukInput({
@@ -48,8 +48,8 @@
           hint: {
             text: i18n.addGeneralPartnerLegalEntityPage.governingLawHint
           },
-          id: "gp1GoverningLaw",
-          name: "gp1GoverningLaw"
+          id: "governing_law",
+          name: "governing_law"
         }) }}
 
         {{ govukInput({
@@ -60,12 +60,13 @@
           hint: {
             text: i18n.addGeneralPartnerLegalEntityPage.whichRegisterHint
           },
-          id: "gp1Register",
-          name: "gp1Register"
+          id: "legal_entity_register_name",
+          name: "legal_entity_register_name"
         }) }}
 
-        {% set countryField = props.data.generalPartner.data.country %}
+        {% set countryField = props.data.generalPartner.data.legal_entity_registration_location %}
         {% set countryText = i18n.addGeneralPartnerLegalEntityPage.countryRegistered %}
+        {% set countryFormId = "legal_entity_registration_location" %}
         {% include "includes/countries.njk" %}
 
         {{ govukInput({
@@ -76,15 +77,16 @@
           hint: {
             text: i18n.addGeneralPartnerLegalEntityPage.registrationNumberHint
           },
-          id: "gp1RegistrationNumber",
-          name: "gp1RegistrationNumber",
+          id: "registered_company_number",
+          name: "registered_company_number",
             classes: "govuk-!-width-one-half",
           inputmode: "numeric",
           spellcheck: false
         }) }}
 
         {{ govukCheckboxes({
-          name: "gp1LegalFormStatement",
+          id: "",
+          name: "",
           fieldset: {
             legend: {
               text: i18n.addGeneralPartnerLegalEntityPage.legalFormStatement,
@@ -94,7 +96,7 @@
           },
           items: [
             {
-              value: "gp1LegalFormStatement",
+              value: "true",
               text: i18n.addGeneralPartnerLegalEntityPage.legalFormStatement
             }
           ]

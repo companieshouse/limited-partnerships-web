@@ -12,6 +12,8 @@ export const GENERAL_PARTNER_CHOICE_TEMPLATE =
   RegistrationPageType.generalPartnerChoice;
 export const ADD_GENERAL_PARTNER_PERSON_TEMPLATE =
   RegistrationPageType.addGeneralPartnerPerson;
+export const ADD_GENERAL_PARTNER_LEGAL_ENTITY_TEMPLATE =
+  RegistrationPageType.addGeneralPartnerLegalEntity;
 export const LIMITED_PARTNER_CHOICE_TEMPLATE =
   RegistrationPageType.limitedPartnerChoice;
 export const CHECK_YOUR_ANSWERS_TEMPLATE =
