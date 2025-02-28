@@ -8,7 +8,12 @@
         "governingLawHint" : "This is the law that the entity operates under. For example, the Companies Act 2006.",
         "whichRegister" : "Which register is it entered in?",
         "whichRegisterHint" : "For example, the Companies House public register.",
-        "country" : "Which country is it registered in?"
+        "countryRegistered" : "Which country is it registered in?",
+        "registrationNumber" : "What is the registration number?",
+        "registrationNumberHint" : "For example, the company number.",
+        "legalFormStatement" : "I confirm the entity has legal personality.",
+        "publicRegisterTitle" : "What information we'll show on the public register",
+        "publicRegisterLine1" : "We'll show all of this information on the public register."
     },
 
     "addGeneralPartnerPersonPage" : {
@@ -327,6 +332,7 @@
     },
 
     "countries" : {
+        "selectOne" : "Select a country",
         "afghanistan" : "Afghanistan",
         "alandIslands" : "Aland Islands",
         "albania" : "Albania",
