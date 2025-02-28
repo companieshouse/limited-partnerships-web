@@ -10,7 +10,7 @@ export const removeEmptyStringValues = (data: Record<string, any>): Record<strin
   }
 
   return data;
-}
+};
 
 const zeroPadNumber = (input: string = ""): string => {
   if (input.length === 1) {
