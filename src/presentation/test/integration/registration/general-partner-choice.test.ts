@@ -8,10 +8,6 @@ import {
 } from "../../../controller/registration/url";
 import RegistrationPageType from "../../../../presentation/controller/registration/PageType";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
-import {
-  APPLICATION_CACHE_KEY,
-  APPLICATION_CACHE_KEY_PREFIX_REGISTRATION
-} from "../../../../config/constants";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 
@@ -60,14 +56,6 @@ describe("General Partner Choice Page", () => {
 
     expect(res.status).toBe(302);
     expect(res.text).toContain(REDIRECT_URL);
-
-    // to be removed - not store in cache
-    expect(appDevDependencies.cacheRepository.cache).toEqual({
-      [APPLICATION_CACHE_KEY]: {
-        [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.generalPartnerChoice}`]:
-          selectedType
-      }
-    });
   });
 
   it("should contain the proposed name - data from api", async () => {
