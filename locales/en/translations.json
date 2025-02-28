@@ -34,8 +34,8 @@
         "disqualificationStatement" : "I confirm the general partner is not disqualified under the directors disqualification legislation.",
         "disqualificationStatementLegend" : "General partner - person - disqualification statement",
         "publicRegisterTitle": "What information we'll show on the public register",
-        "publicRegisterLine1" : "We’ll only show the month and year of their birth date.",
-        "publicRegisterLine2" : "We’ll show all the other information you provide on this screen on the public register.",
+        "publicRegisterLine1" : "We'll only show the month and year of their birth date.",
+        "publicRegisterLine2" : "We'll show all the other information you provide on this screen on the public register.",
         "errorMessages": {
           "firstNameMissing": "Enter a first name",
           "firstNameLength": "First name must be 50 characters or less",

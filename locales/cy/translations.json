@@ -1,4 +1,21 @@
 {
+    "addGeneralPartnerLegalEntityPage" : {
+        "title" : "WELSH - Add a General Partner (legal entity)",
+        "legalEntityName" : "WELSH - What is the legal entity's name?",
+        "legalFormOrCorporateIdentity" : "WELSH - What is its legal form or corporate identity?",
+        "legalFormOrCorporateIdentityHint" : "WELSH - This is the corporate body type. For example, private limited company.",
+        "governingLaw" : "WELSH - What is the governing law?",
+        "governingLawHint" : "WELSH - This is the law that the entity operates under. For example, the Companies Act 2006.",
+        "whichRegister" : "WELSH - Which register is it entered in?",
+        "whichRegisterHint" : "WELSH - For example, the Companies House public register.",
+        "countryRegistered" : "WELSH - Which country is it registered in?",
+        "registrationNumber" : "WELSH - What is the registration number?",
+        "registrationNumberHint" : "WELSH - For example, the company number.",
+        "legalFormStatement" : "WELSH - I confirm the entity has legal personality.",
+        "publicRegisterTitle" : "WELSH - What information we'll show on the public register",
+        "publicRegisterLine1" : "WELSH - We'll show all of this information on the public register."
+    },
+
     "addGeneralPartnerPersonPage" : {
         "title" : "WELSH - Add a General Partner (person)",
         "firstName" : "WELSH - First name",
@@ -17,8 +34,8 @@
         "disqualificationStatement" : "WELSH - I confirm the general partner is not disqualified under the directors disqualification legislation.",
         "disqualificationStatementLegend" : "WELSH - General partner - person - disqualification statement",
         "publicRegisterTitle": "WELSH - What information we'll show on the public register",
-        "publicRegisterLine1" : "WELSH - We’ll only show the month and year of their birth date.",
-        "publicRegisterLine2" : "WELSH - We’ll show all the other information you provide on this screen on the public register.",
+        "publicRegisterLine1" : "WELSH - We'll only show the month and year of their birth date.",
+        "publicRegisterLine2" : "WELSH - We'll show all the other information you provide on this screen on the public register.",
         "errorMessages": {
           "firstNameMissing": "WELSH - Enter a first name",
           "firstNameLength": "WELSH - First name must be 50 characters or less",
