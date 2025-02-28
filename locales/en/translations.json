@@ -145,8 +145,6 @@
             "enterAddressManually": "Enter address manually",
             "findAddress": "Find address",
 
-            "errorPostcode": "Enter a postcode",
-
             "errorMessages": {
                 "jurisdictionEnglandAndWales": "You must enter a postcode which is in England or Wales",
                 "jurisdictionNorthernIreland": "You must enter a postcode which is in Northern Ireland",
@@ -260,10 +258,7 @@
             "title" : "Scottish limited partnership name",
             "whatIsName" : "What's the name of the Scottish limited partnership?",
             "nameEnding" : "Which name ending would you prefer to go on the public record?"
-        },
-
-        "nameErrorMessage": "Enter the name of the partnership",
-        "nameEndingErrorMessage": "Select the name ending to go on the public record"
+        }
     },
 
     "pageNotFound" : {
@@ -314,6 +309,21 @@
             "SLP": "Scottish limited partnership",
             "SPFLP": "Private fund limited partnership in Scotland"
         }
+    },
+
+    "applicationSubmittedPage": {
+        "submittedBanner": {
+            "title": "Application submitted",
+            "reference": "Your reference number"
+        },
+        "recieved": "We've recieved your application to register. We've sent an email to confirm.",
+        "informationNext": {
+            "title": "What happens next",
+            "information": "We'll process the application as soon as possible. We'll email to let you know if your application has been accepted or rejected.",
+            "howLong": "This will usually take no more than 3 to 5 working days."
+        },
+        "survey": "What did you think of this service?",
+        "surveyLength": "(takes 30 seconds)"
     },
 
     "countries" : {

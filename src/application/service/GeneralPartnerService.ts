@@ -29,7 +29,7 @@ class GeneralPartnerService {
       const { apiErrors, isValidationErrors } = extractAPIErrors(errors);
 
       logger.error(
-        `Error creating transaction or submission: ${JSON.stringify(apiErrors)}`
+        `Error creating general partner: ${JSON.stringify(apiErrors)}`
       );
 
       if (!isValidationErrors) {

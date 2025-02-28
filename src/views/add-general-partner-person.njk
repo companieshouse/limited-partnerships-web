@@ -28,8 +28,9 @@
           },
           id: "forename",
           name: "forename",
+          value: props.data.generalPartner.data.forename,
           classes: "govuk-!-width-full",
-          errorMessage: props.errors.forename if errors,
+          errorMessage: props.errors.forename if props.errors,
           attributes : {
             required: true,
             oninvalid: validateFirstName,
@@ -45,8 +46,9 @@
           },
           id: "surname",
           name: "surname",
+          value: props.data.generalPartner.data.surname,
           classes: "govuk-!-width-full",
-          errorMessage: props.errors.surname if errors,
+          errorMessage: props.errors.surname if props.errors,
           attributes : {
             required : true,
             oninvalid: validateLastName,
@@ -64,7 +66,8 @@
             },
             id: "former_names",
             name: "former_names",
-            errorMessage: props.errors.former_names if errors,
+            value: props.data.generalPartner.data.former_names,
+            errorMessage: props.errors.former_names if props.errors,
             attributes : {
               oninvalid: validatePreviousName,
               oninput: validatePreviousName
@@ -75,7 +78,7 @@
         {{ govukRadios({
           classes: "govuk-radios",
           name: "parameter",
-          value: data['generalPartner'],
+          value: props.data.generalPartner.data.parameter,
           fieldset: {
             legend: {
               text: i18n.addGeneralPartnerPersonPage.previousName.title,
@@ -124,12 +127,38 @@
           },
           hint: {
             text: i18n.addGeneralPartnerPersonPage.dateOfBirthHint
-          }
+          },
+          items: [
+            {
+              classes: "govuk-input--width-2",
+              name: "day",
+              value: props.data.generalPartner.data["date_of_birth-day"],
+              attributes: {
+                required: true
+              }
+            },
+            {
+              classes: "govuk-input--width-2",
+              name: "month",
+              value: props.data.generalPartner.data["date_of_birth-month"],
+              attributes: {
+                required: true
+              }
+            },
+            {
+              classes: "govuk-input--width-4",
+              name: "year",
+              value: props.data.generalPartner.data["date_of_birth-year"],
+              attributes: {
+                required: true
+              }
+            }
+          ]
         }) }}
 
+        {% set nationalityField = props.data.generalPartner.data.nationality1 %}
         {% set nationalityText = i18n.addGeneralPartnerPersonPage.nationality %}
         {% include "includes/nationalities.njk" %}
-
 
         <!-- TODO Placeholder mark-up - correct implementation for second nationality is covered by LP-530 -->
         <p class="govuk-!-margin-bottom-8">
