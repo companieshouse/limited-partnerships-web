@@ -1,8 +1,12 @@
 {% extends "layout.njk" %}
- 
+
+{% set validateLegalEntityName = "validateInput(this, 50, '" + i18n.addGeneralPartnerLegalEntityPage.errorMessages.legalEntityNameMissing | escape + "', '" + i18n.addGeneralPartnerLegalEntityPage.errorMessages.legalEntityNameLength | escape + "');" %}
+{% set validateLegalForm = "validateInput(this, 50, '" + i18n.addGeneralPartnerLegalEntityPage.errorMessages.legalFormMissing | escape + "', '" + i18n.addGeneralPartnerLegalEntityPage.errorMessages.legalFormLength | escape + "');" %}
+{% set validateGoverningLaw = "validateInput(this, 50, '" + i18n.addGeneralPartnerLegalEntityPage.errorMessages.governingLawMissing | escape + "', '" + i18n.addGeneralPartnerLegalEntityPage.errorMessages.governingLawLength | escape + "');" %}
+{% set validateWhichRegister = "validateInput(this, 50, '" + i18n.addGeneralPartnerLegalEntityPage.errorMessages.whichRegisterMissing | escape + "', '" + i18n.addGeneralPartnerLegalEntityPage.errorMessages.whichRegisterLength | escape + "');" %}
+{% set validateRegistrationNumber = "validateInput(this, 50, '" + i18n.addGeneralPartnerLegalEntityPage.errorMessages.registrationNumberMissing | escape + "', '" + i18n.addGeneralPartnerLegalEntityPage.errorMessages.registrationNumberLength | escape + "');" %}
+
 {% set pageTitle = i18n.addGeneralPartnerLegalEntityPage.title %}
-
-
 
 {% block content %}
   <div class="govuk-grid-row">
@@ -25,7 +29,12 @@
             isPageHeading: true
           },
           id: "",
-          name: ""
+          name: "",
+          attributes : {
+            required: true,
+            oninvalid: validateLegalEntityName,
+            oninput: validateLegalEntityName
+          }
         }) }}
 
         {{ govukInput({
@@ -37,7 +46,12 @@
             text: i18n.addGeneralPartnerLegalEntityPage.legalFormOrCorporateIdentityHint
           },
           id: "legal_form",
-          name: "legal_form"
+          name: "legal_form",
+          attributes : {
+            required: true,
+            oninvalid: validateLegalForm,
+            oninput: validateLegalForm
+          }
         }) }}
 
         {{ govukInput({
@@ -49,7 +63,12 @@
             text: i18n.addGeneralPartnerLegalEntityPage.governingLawHint
           },
           id: "governing_law",
-          name: "governing_law"
+          name: "governing_law",
+          attributes : {
+            required: true,
+            oninvalid: validateGoverningLaw,
+            oninput: validateGoverningLaw
+          }
         }) }}
 
         {{ govukInput({
@@ -61,7 +80,12 @@
             text: i18n.addGeneralPartnerLegalEntityPage.whichRegisterHint
           },
           id: "legal_entity_register_name",
-          name: "legal_entity_register_name"
+          name: "legal_entity_register_name",
+          attributes : {
+            required: true,
+            oninvalid: validateWhichRegister,
+            oninput: validateWhichRegister
+          }
         }) }}
 
         {% set countryField = props.data.generalPartner.data.legal_entity_registration_location %}
@@ -79,9 +103,14 @@
           },
           id: "registered_company_number",
           name: "registered_company_number",
-            classes: "govuk-!-width-one-half",
+          classes: "govuk-!-width-one-half",
           inputmode: "numeric",
-          spellcheck: false
+          spellcheck: false,
+          attributes : {
+            required: true,
+            oninvalid: validateRegistrationNumber,
+            oninput: validateRegistrationNumber
+          }
         }) }}
 
         {{ govukCheckboxes({
@@ -97,7 +126,10 @@
           items: [
             {
               value: "true",
-              text: i18n.addGeneralPartnerLegalEntityPage.legalFormStatement
+              text: i18n.addGeneralPartnerLegalEntityPage.legalFormStatement,
+              attributes : {
+                required: true
+              }
             }
           ]
         }) }}
@@ -111,5 +143,7 @@
       </form>
     </div>
   </div>
-  
+
+  {% include "includes/validators.njk" %}
+
 {% endblock %}

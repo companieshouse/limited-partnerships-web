@@ -13,7 +13,19 @@
         "registrationNumberHint" : "For example, the company number.",
         "legalFormStatement" : "I confirm the entity has legal personality.",
         "publicRegisterTitle" : "What information we'll show on the public register",
-        "publicRegisterLine1" : "We'll show all of this information on the public register."
+        "publicRegisterLine1" : "We'll show all of this information on the public register.",
+        "errorMessages": {
+          "legalEntityNameMissing": "Enter a legal entity name",
+          "legalEntityNameLength": "Legal entity name must be 50 characters or less",
+          "legalFormMissing" : "Enter a legal form",
+          "legalFormLength" : "Legal form must be 50 characters or less",
+          "governingLawMissing" : "Enter a governing law",
+          "governingLawLength" : "Governing law must be 50 characters or less",
+          "whichRegisterMissing" : "Enter a register",
+          "whichRegisterLength" : "Register must be 50 characters or less",
+          "registrationNumberMissing" : "Enter a registration number",
+          "registrationNumberLength" : "Registration number must be 50 characters or less"
+        }
     },
 
     "addGeneralPartnerPersonPage" : {
