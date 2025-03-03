@@ -12,7 +12,7 @@ import CacheService from "../../../application/service/CacheService";
 import PageType from "../PageType";
 import { GENERAL_PARTNERS_URL } from "./url";
 
-class RegistrationController extends AbstractController {
+class LimitedPartnershipController extends AbstractController {
   private limitedPartnershipService: LimitedPartnershipService;
   private cacheService: CacheService;
 
@@ -172,4 +172,4 @@ class RegistrationController extends AbstractController {
   }
 }
 
-export default RegistrationController;
+export default LimitedPartnershipController;

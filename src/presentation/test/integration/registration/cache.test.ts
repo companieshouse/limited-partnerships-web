@@ -4,7 +4,7 @@ import { Session } from "@companieshouse/node-session-handler";
 
 import { NAME_URL } from "../../../controller/registration/url";
 import RegistrationPageType from "../../../controller/registration/PageType";
-import RegistrationController from "../../../controller/registration/Controller";
+import LimitedPartnershipController from "../../../controller/registration/LimitedPartnershipController";
 import LimitedPartnershipService from "../../../../application/service/LimitedPartnershipService";
 import RegistrationInMemoryGateway from "../../../../infrastructure/gateway/limitedPartnership/LimitedPartnershipInMemoryGateway";
 import CacheRepository from "../../../../infrastructure/repository/CacheRepository";
@@ -13,10 +13,10 @@ import TransactionInMemoryGateway from "../../../../infrastructure/gateway/trans
 import IncorporationInMemoryGateway from "../../../../infrastructure/gateway/incorporation/IncorporationInMemoryGateway";
 
 describe("Cache", () => {
-  let registrationController: RegistrationController;
+  let limitedPartnershipController: LimitedPartnershipController;
 
   beforeAll(() => {
-    registrationController = new RegistrationController(
+    limitedPartnershipController = new LimitedPartnershipController(
       new LimitedPartnershipService(
         new RegistrationInMemoryGateway(),
         new TransactionInMemoryGateway(),
@@ -32,7 +32,7 @@ describe("Cache", () => {
     }));
     const setExtraData = jest.fn().mockImplementation(() => {});
 
-    await registrationController.redirectAndCacheSelection()(
+    await limitedPartnershipController.redirectAndCacheSelection()(
       {
         path: NAME_URL,
         session: {
@@ -51,7 +51,7 @@ describe("Cache", () => {
 
     expect(setExtraData).toHaveBeenCalled();
 
-    await registrationController.getPageRouting()(
+    await limitedPartnershipController.getPageRouting()(
       {
         path: NAME_URL,
         session: {

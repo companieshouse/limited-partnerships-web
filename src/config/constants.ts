@@ -60,9 +60,12 @@ export const SERVICE_UNAVAILABLE_TEMPLATE = "service-unavailable";
 
 // Routing Paths
 export const SUBMISSION_ID = "submissionId";
+export const GENERAL_PARTNER_ID = "generalPartnerId";
 export const TRANSACTION_ID = "transactionId";
 export const BASE_URL = "/limited-partnerships";
 export const BASE_WITH_IDS_URL = `${BASE_URL}/transaction/:${TRANSACTION_ID}/submission/:${SUBMISSION_ID}`;
+export const GENERAL_PARTNER_URL = BASE_WITH_IDS_URL + `/general-partner`;
+export const GENERAL_PARTNER_WITH_ID_URL = GENERAL_PARTNER_URL + `/:${GENERAL_PARTNER_ID}`;
 
 // services
 export const SDK_LIMITED_PARTNERSHIP_SERVICE = "limitedPartnershipsService";

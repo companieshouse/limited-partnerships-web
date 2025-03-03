@@ -200,7 +200,7 @@ describe("Gateway Update - Refresh Token", () => {
         }
       });
 
-      const url = appDevDependencies.registrationController.insertIdsInUrl(
+      const url = appDevDependencies.limitedPartnershipController.insertIdsInUrl(
         EMAIL_URL,
         appDevDependencies.transactionGateway.transactionId,
         "wrong-id"
