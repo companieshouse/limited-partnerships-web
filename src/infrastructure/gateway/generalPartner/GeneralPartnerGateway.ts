@@ -6,7 +6,7 @@ import {
   GeneralPartner,
   LimitedPartnershipResourceCreated
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-import { convertDateToIsoDateString, removeEmptyStringValues } from "../utils";
+import { convertValidDateToIsoDateString, removeEmptyStringValues } from "../utils";
 
 class GeneralPartnerGateway implements IGeneralPartnerGateway {
   async createGeneralPartner(
@@ -18,7 +18,14 @@ class GeneralPartnerGateway implements IGeneralPartnerGateway {
 
     if (data["forename"]) {
       // Only do this if General Partner Person data is being sent to the API
-      data["date_of_birth"] = convertDateToIsoDateString(data["date_of_birth-day"], data["date_of_birth-month"], data["date_of_birth-year"]);
+      data["date_of_birth"] = convertValidDateToIsoDateString(
+        {
+          day: data["date_of_birth-day"],
+          month: data["date_of_birth-month"],
+          year: data["date_of_birth-year"]
+        },
+        "date_of_birth"
+      );
     }
 
     const generalPartner: GeneralPartner = { data };
@@ -29,12 +36,9 @@ class GeneralPartnerGateway implements IGeneralPartnerGateway {
       args: [transactionId, generalPartner]
     };
 
-    const response = await makeApiCallWithRetry<
-      Resource<LimitedPartnershipResourceCreated>
-    >(opt, apiCall);
+    const response = await makeApiCallWithRetry<Resource<LimitedPartnershipResourceCreated>>(opt, apiCall);
 
-    const uiErrors =
-      checkForBadRequest<LimitedPartnershipResourceCreated>(response);
+    const uiErrors = checkForBadRequest<LimitedPartnershipResourceCreated>(response);
     if (uiErrors) {
       throw uiErrors;
     }
