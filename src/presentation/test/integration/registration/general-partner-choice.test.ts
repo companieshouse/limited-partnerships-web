@@ -3,8 +3,8 @@ import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
 import {
-  GENERAL_PARTNER_CHOICE_URL,
-  LIMITED_PARTNERS_URL
+  ADD_GENERAL_PARTNER_PERSON_URL,
+  GENERAL_PARTNER_CHOICE_URL
 } from "../../../controller/registration/url";
 import RegistrationPageType from "../../../../presentation/controller/registration/PageType";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
@@ -17,7 +17,7 @@ import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 
 describe("General Partner Choice Page", () => {
   const URL = getUrl(GENERAL_PARTNER_CHOICE_URL);
-  const REDIRECT_URL = getUrl(LIMITED_PARTNERS_URL);
+  const REDIRECT_URL = getUrl(ADD_GENERAL_PARTNER_PERSON_URL);
 
   beforeEach(() => {
     setLocalesEnabled(false);
