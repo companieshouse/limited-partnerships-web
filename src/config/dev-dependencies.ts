@@ -3,6 +3,7 @@ import LimitedPartnershipService from "../application/service/LimitedPartnership
 import RegistrationInMemoryGateway from "../infrastructure/gateway/limitedPartnership/LimitedPartnershipInMemoryGateway";
 import CacheInMemoryRepository from "../infrastructure/repository/CacheInMemoryRepository";
 import RegistrationController from "../presentation/controller/registration/Controller";
+import TransitionController from "../presentation/controller/transition/Controller";
 import CacheService from "../application/service/CacheService";
 import AddressLookUpInMemoryGateway from "../infrastructure/gateway/addressLookUp/AddressLookUpInMemoryGateway";
 import AddressLookUpService from "../application/service/AddressLookUpService";
@@ -45,6 +46,8 @@ const addressLookUpController: AddressLookUpController =
     limitedPartnershipService,
     cacheService
   );
+const transitionController: TransitionController =
+  new TransitionController(cacheService);
 
 export const appDevDependencies = {
   globalController,
@@ -56,5 +59,6 @@ export const appDevDependencies = {
   registrationController,
   addressLookUpGateway,
   addressLookUpService,
-  addressLookUpController
+  addressLookUpController,
+  transitionController
 };

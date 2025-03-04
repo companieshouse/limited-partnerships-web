@@ -1,0 +1,36 @@
+{% extends "layout.njk" %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+       <form class="form" action={{ props.currentUrl }} method="post">
+          <input type="hidden" name="partnershipNumber" value={{ props.partnershipNumber }}>   
+          {% include "includes/csrf_token.njk" %}
+          {% include "includes/errors.njk" %}
+
+          {{ govukInput({
+            label: {
+              text: i18n.companyNumber.whatIsPartnershipNumber,
+              classes: "govuk-label--xl",
+              isPageHeading: true
+            },
+            hint: {
+                text: i18n.companyNumber.hint
+            },
+            id: "company_number",
+            name: "company_number",
+            classes: "govuk-input--width-10",
+            value: props.data.limitedPartnership.data.company_number,
+            attributes: {
+                required: true,
+                "data-event-id": "company-number-transition",
+                oninvalid: companyNumberErrorMessage              
+            },
+            pattern: "^[A-Za-z]{1,2}\\d[A-Za-z\\d]? ?\\d[A-Za-z]{2}$"
+          }) }}
+       
+          {% include "includes/continue-button.njk" %}
+       </form>
+    </div>
+  </div>
+{% endblock %}
