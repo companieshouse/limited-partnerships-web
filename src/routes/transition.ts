@@ -17,8 +17,4 @@ export const transitionEndpoints = (
     authentication,
     dependencies.transitionController.getPageRouting()
   );
-  router.post(
-    COMPANY_NUMBER_URL,
-    authentication
-  );
 };
