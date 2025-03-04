@@ -24,9 +24,10 @@ describe("Gateway utils test suite", () => {
         ["month above 12", { day: "01", month: "13", year: "2011" }],
         ["day 31 for month of 30", { day: "31", month: "11", year: "2011" }],
         ["30 february", { day: "30", month: "02", year: "2011" }],
-        ["year incorrect", { day: "01", month: "10", year: "wrong" }],
+        ["day incorrect", { day: "wrong", month: "10", year: "2011" }],
         ["month incorrect", { day: "01", month: "wrong", year: "2011" }],
-        ["day incorrect", { day: "wrong", month: "10", year: "2011" }]
+        ["year incorrect", { day: "01", month: "10", year: "wrong" }],
+        ["year above 4 digits", { day: "01", month: "10", year: "12345" }]
       ])("should return false for invalid date - %s", (_desciption, date) => {
         let thrownError: UIErrors | null = null;
 
