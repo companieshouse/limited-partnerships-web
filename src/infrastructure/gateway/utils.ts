@@ -36,9 +36,9 @@ const isDateValid = (date: string): boolean => {
   const [year, month, day] = date.split("-");
   const days = daysInMonth(parseInt(month));
 
-  const isYearInCorrect = isNaN(parseInt(year)) || year.length !== 4;
+  const isYearInvalid = isNaN(parseInt(year)) || year.length !== 4;
 
-  if (parseInt(day) > days || isYearInCorrect) {
+  if (parseInt(day) > days || isYearInvalid) {
     return false;
   }
 
