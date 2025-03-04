@@ -22,11 +22,9 @@
             id: "company_number",
             name: "company_number",
             classes: "govuk-input--width-10",
-            value: props.data.limitedPartnership.data.company_number,
             attributes: {
                 required: true,
-                "data-event-id": "company-number-transition",
-                oninvalid: companyNumberErrorMessage              
+                "data-event-id": "company-number-transition"
             },
             pattern: "^[A-Za-z]{1,2}\\d[A-Za-z\\d]? ?\\d[A-Za-z]{2}$"
           }) }}
