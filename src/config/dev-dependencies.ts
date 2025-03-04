@@ -4,7 +4,7 @@ import GeneralPartnerService from "../application/service/GeneralPartnerService"
 import RegistrationInMemoryGateway from "../infrastructure/gateway/limitedPartnership/LimitedPartnershipInMemoryGateway";
 import GeneralPartnerInMemoryGateway from "../infrastructure/gateway/generalPartner/GeneralPartnerInMemoryGateway";
 import CacheInMemoryRepository from "../infrastructure/repository/CacheInMemoryRepository";
-import TransitionController from "../presentation/controller/transition/Controller";
+import TransitionController from "../presentation/controller/transition/TransitionController";
 import LimitedPartnershipController from "../presentation/controller/registration/LimitedPartnershipController";
 import GeneralPartnerController from "../presentation/controller/registration/GeneralPartnerController";
 import CacheService from "../application/service/CacheService";
