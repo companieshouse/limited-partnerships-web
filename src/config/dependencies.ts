@@ -51,7 +51,7 @@ const addressLookUpController: AddressLookUpController =
     cacheService
   );
 const transitionController: TransitionController =
-  new TransitionController(cacheService);
+  new TransitionController();
 
 const generalPartnerController: GeneralPartnerController =
   new GeneralPartnerController(limitedPartnershipService, generalPartnerService);
