@@ -3,6 +3,7 @@
 
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
 
+{% set pageTitle = title  %}
 {% set mainClasses = "govuk-main-wrapper--l" %}
 {% set referenceNumber = i18n.applicationSubmittedPage.submittedBanner.reference + "<br><strong>" + props.data.ids.transactionId + "</strong>" %}
 
