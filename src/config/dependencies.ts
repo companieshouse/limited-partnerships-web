@@ -10,6 +10,7 @@ import CacheService from "../application/service/CacheService";
 import AddressLookUpGateway from "../infrastructure/gateway/addressLookUp/AddressLookUpGateway";
 import AddressLookUpService from "../application/service/AddressLookUpService";
 import AddressLookUpController from "../presentation/controller/addressLookUp/Controller";
+import TransitionController from "../presentation/controller/transition/TransitionController";
 import TransactionGateway from "../infrastructure/gateway/transaction/TransactionGateway";
 import { IIncorporationGateway } from "../domain/IIncorporationGateway";
 import IncorporationGateway from "../infrastructure/gateway/incorporation/IncorporationGateway";
@@ -49,6 +50,9 @@ const addressLookUpController: AddressLookUpController =
     limitedPartnershipService,
     cacheService
   );
+const transitionController: TransitionController =
+  new TransitionController();
+
 const generalPartnerController: GeneralPartnerController =
   new GeneralPartnerController(limitedPartnershipService, generalPartnerService);
 
@@ -56,5 +60,6 @@ export const appDependencies = {
   globalController,
   limitedPartnershipController,
   generalPartnerController,
-  addressLookUpController
+  addressLookUpController,
+  transitionController
 };
