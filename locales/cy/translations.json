@@ -305,6 +305,7 @@
     },
 
     "applicationSubmittedPage": {
+        "title": "WELSH - Application Submitted",
         "submittedBanner": {
             "title": "WELSH - Application submitted",
             "reference": "WELSH - Your reference number"
