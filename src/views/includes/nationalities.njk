@@ -1,5 +1,5 @@
 {% set NATIONALITIES = [
-  { value: '', text: i18n.nationalities.selectOne },
+  { value: '', text: nationalityFieldSelectPrompt },
   { value: 'Afghan', text: i18n.nationalities.afghan, selected: nationalityField === 'Afghan' },
   { value: 'Albanian', text: i18n.nationalities.albanian, selected: nationalityField === 'Albanian' },
   { value: 'Algerian', text: i18n.nationalities.algerian, selected: nationalityField === 'Algerian' },
@@ -227,16 +227,22 @@
   { value: 'Zimbabwean', text: i18n.nationalities.zimbabwean, selected: nationalityField === 'Zimbabwean' }
 ] %}
 
+{% if nationalityFieldRequired == 'true' %}
+  {% set attributes = {required : "true"} %}
+{% endif %}
+
 {{ govukSelect({
-  id: "nationality1",
-  name: "nationality1",
+  errorMessage: props.errors[nationalityFieldNameId] if props.errors,
+  id: nationalityFieldNameId,
+  name: nationalityFieldNameId,
   label: {
-    text: nationalityText,
+    text: nationalityFieldText,
     classes: "govuk-label govuk-label--m",
     isPageHeading: false
   },
-  attributes : {
-    required: "true"
+  attributes : attributes,
+  hint: {
+    text: nationalityFieldHintText
   },
   items: NATIONALITIES
 }) }}
