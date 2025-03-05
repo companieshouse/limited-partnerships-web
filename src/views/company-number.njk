@@ -26,7 +26,8 @@
                 required: true,
                 "data-event-id": "company-number-transition"
             },
-            pattern: "^[A-Za-z]{1,2}\\d[A-Za-z\\d]? ?\\d[A-Za-z]{2}$"
+            pattern: "^[A-Za-z]{1,2}\\d[A-Za-z\\d]? ?\\d[A-Za-z]{2}$",
+            errorMessage: props.errors.company_number if props.errors
           }) }}
        
           {% include "includes/continue-button.njk" %}

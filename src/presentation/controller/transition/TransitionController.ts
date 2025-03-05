@@ -14,6 +14,7 @@ class TransitionController extends AbstractController {
       try {
         const { pageType } = super.extract(request);
         const pageRouting = super.getRouting(transitionRouting, pageType, request);
+
         response.render(
           super.templateName(pageRouting.currentUrl),
           super.makeProps(pageRouting, null, null)

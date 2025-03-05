@@ -6,9 +6,14 @@ import app from "../app";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import { COMPANY_NUMBER_URL } from "presentation/controller/transition/url";
 import TransitionPageType from "../../../controller/transition/PageType";
+import { appDevDependencies } from "../../../../config/dev-dependencies";
 
 describe("Company number page", () => {
   const URL = getUrl(COMPANY_NUMBER_URL);
+
+  beforeEach(() => {
+    appDevDependencies.companyGateway.setError(false);
+  });
 
   describe("GET company number", () => {
     it("should load company number page with english text", async () => {
@@ -45,6 +50,18 @@ describe("Company number page", () => {
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`/next`);
+    });
+
+    it("should return an error if company_number is not valid", async () => {
+      appDevDependencies.companyGateway.setError(true);
+
+      const res = await request(app).post(URL).send({
+        pageType: TransitionPageType.companyNumber,
+        company_number: "LP123456"
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain("The partnership cannot be found");
     });
   });
 });
