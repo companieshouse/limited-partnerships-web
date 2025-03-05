@@ -157,15 +157,20 @@
         }) }}
 
         {% set nationalityField = props.data.generalPartner.data.nationality1 %}
-        {% set nationalityText = i18n.addGeneralPartnerPersonPage.nationality %}
+        {% set nationalityFieldSelectPrompt = i18n.addGeneralPartnerPersonPage.nationalitySelectPrompt %}
+        {% set nationalityFieldRequired = "true" %}
+        {% set nationalityFieldText = i18n.addGeneralPartnerPersonPage.nationality %}
+        {% set nationalityFieldHintText = "" %}
+        {% set nationalityFieldNameId = "nationality1" %}
         {% include "includes/nationalities.njk" %}
 
-        <!-- TODO Placeholder mark-up - correct implementation for second nationality is covered by LP-530 -->
-        <p class="govuk-!-margin-bottom-8">
-          <a href="#" id="second-nationality-link" class="govuk-link govuk-link--no-visited-state hidden">
-            Add a second nationality
-          </a>
-        </p>
+        {% set nationalityField = props.data.generalPartner.data.nationality2 %}
+        {% set nationalityFieldSelectPrompt = i18n.addGeneralPartnerPersonPage.secondNationalitySelectPrompt %}
+        {% set nationalityFieldRequired = "false" %}
+        {% set nationalityFieldText = i18n.addGeneralPartnerPersonPage.secondNationality %}
+        {% set nationalityFieldHintText = i18n.addGeneralPartnerPersonPage.secondNationalityHint  %}
+        {% set nationalityFieldNameId = "nationality2" %}
+        {% include "includes/nationalities.njk" %}
 
         {{ govukCheckboxes({
           name: "not_disqualified_statement_checked",
