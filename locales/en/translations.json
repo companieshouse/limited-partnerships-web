@@ -305,6 +305,7 @@
     },
 
     "applicationSubmittedPage": {
+        "title": "Application Submitted",
         "submittedBanner": {
             "title": "Application submitted",
             "reference": "Your reference number"
