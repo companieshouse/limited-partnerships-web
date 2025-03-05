@@ -11,14 +11,9 @@ const transitionRoutingCompanyNumber = {
   pageType: TransitionPageType.companyNumber
 };
 
-const list = [
-  transitionRoutingCompanyNumber
-];
+const list = [transitionRoutingCompanyNumber];
 
-export const transitionRouting: PagesRouting = new Map<
-  PageType,
-  PageRouting
->();
+export const transitionRouting: PagesRouting = new Map<PageType, PageRouting>();
 
 list.forEach((routing) => {
   transitionRouting.set(routing.pageType, routing);
