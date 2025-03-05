@@ -14,6 +14,10 @@
         "dateOfBirth" : "Date of birth",
         "dateOfBirthHint" : "For example, 27 3 2000",
         "nationality" : "What is their nationality?",
+        "nationalitySelectPrompt": "Select a nationality",
+        "secondNationality" : "What is their second nationality (if relevant)?",
+        "secondNationalitySelectPrompt": "Select a second nationality",
+        "secondNationalityHint" : "Dual citizenship (also known as dual nationality) is allowed in some countries. This means you can be a citizen of your own country and another country.",
         "disqualificationStatement" : "I confirm the general partner is not disqualified under the directors disqualification legislation.",
         "disqualificationStatementLegend" : "General partner - person - disqualification statement",
         "publicRegisterTitle": "What information we'll show on the public register",
@@ -320,7 +324,6 @@
     },
 
     "nationalities" : {
-      "selectOne" : "Select a nationality",
       "afghan" : "Afghan",
       "albanian" : "Albanian",
       "algerian" : "Algerian",
