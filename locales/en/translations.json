@@ -1,6 +1,6 @@
 {
     "addGeneralPartnerPersonPage" : {
-        "title" : "Add a General Partner (person)",
+        "title" : "Add a general partner (person)",
         "firstName" : "First name",
         "lastName" : "Last name",
         "previousName" : {
