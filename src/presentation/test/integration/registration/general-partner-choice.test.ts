@@ -3,6 +3,7 @@ import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
 import {
+  ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
   ADD_GENERAL_PARTNER_PERSON_URL,
   GENERAL_PARTNER_CHOICE_URL
 } from "../../../controller/registration/url";
@@ -13,7 +14,6 @@ import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 
 describe("General Partner Choice Page", () => {
   const URL = getUrl(GENERAL_PARTNER_CHOICE_URL);
-  const REDIRECT_URL = getUrl(ADD_GENERAL_PARTNER_PERSON_URL);
 
   beforeEach(() => {
     setLocalesEnabled(false);
@@ -46,16 +46,24 @@ describe("General Partner Choice Page", () => {
 
   });
 
-  it("should redirect to next page when choice is selected", async () => {
-    const selectedType = "person";
-
+  it("should redirect to General Partner Person page when person is selected", async () => {
     const res = await request(app).post(URL).send({
       pageType: RegistrationPageType.generalPartnerChoice,
-      parameter: selectedType
+      parameter: "person"
     });
 
     expect(res.status).toBe(302);
-    expect(res.text).toContain(REDIRECT_URL);
+    expect(res.text).toContain(getUrl(ADD_GENERAL_PARTNER_PERSON_URL));
+  });
+
+  it("should redirect to General Partner Legal Entity page when legal entity is selected", async () => {
+    const res = await request(app).post(URL).send({
+      pageType: RegistrationPageType.generalPartnerChoice,
+      parameter: "legalEntity"
+    });
+
+    expect(res.status).toBe(302);
+    expect(res.text).toContain(getUrl(ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL));
   });
 
   it("should contain the proposed name - data from api", async () => {
