@@ -1,10 +1,12 @@
 import { LimitedPartnershipsService } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import TransactionService from "@companieshouse/api-sdk-node/dist/services/transaction/service";
 import { RefreshTokenService } from "@companieshouse/api-sdk-node/dist/services/refresh-token";
+import { PostcodeLookupService } from "@companieshouse/api-sdk-node/dist/services/postcode-lookup";
+import CompanyProfileService from "@companieshouse/api-sdk-node/dist/services/company-profile/service";
 
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
-import { PostcodeLookupService } from "@companieshouse/api-sdk-node/dist/services/postcode-lookup";
+import { companyProfile } from "../../../../infrastructure/gateway/companyProfile/CompanyInMemoryGateway";
 
 // Transaction service
 export const postTransaction = jest.fn().mockImplementation(() => ({
@@ -27,7 +29,9 @@ export const patchLimitedPartnership = jest.fn().mockImplementation(() => ({
 }));
 export const getLimitedPartnership = jest.fn().mockImplementation(() => ({
   httpStatusCode: 200,
-  resource: new LimitedPartnershipBuilder().withId(appDevDependencies.limitedPartnershipGateway.submissionId).build()
+  resource: new LimitedPartnershipBuilder()
+    .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+    .build()
 }));
 export const postLimitedPartnershipIncorporation = jest.fn().mockImplementation(() => ({
   httpStatusCode: 201,
@@ -65,6 +69,12 @@ export const getListOfValidPostcodeAddresses = jest.fn().mockImplementation(() =
   ]
 }));
 
+// Company Profile service
+export const getCompanyProfile = jest.fn().mockImplementation(() => ({
+  httpStatusCode: 200,
+  resource: companyProfile
+}));
+
 const sdkMock = {
   transaction: {
     ...TransactionService.prototype,
@@ -79,7 +89,7 @@ const sdkMock = {
   },
   generalPartnerService: {
     ...LimitedPartnershipsService.prototype,
-    postGeneralPartner,
+    postGeneralPartner
   },
   refreshToken: {
     ...RefreshTokenService.prototype,
@@ -89,6 +99,10 @@ const sdkMock = {
     ...PostcodeLookupService.prototype,
     isValidUKPostcode,
     getListOfValidPostcodeAddresses
+  },
+  companyProfile: {
+    ...CompanyProfileService.prototype,
+    getCompanyProfile
   }
 };
 

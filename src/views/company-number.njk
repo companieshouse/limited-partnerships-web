@@ -27,7 +27,8 @@
                 "data-event-id": "company-number-transition"
             },
             pattern: "^(LP|NL|SL)[0-9]{6}$",
-            errorMessage: props.errors.company_number if props.errors
+            errorMessage: props.errors.company_number if props.errors,
+            value: props.data.company_number
           }) }}
        
           {% include "includes/continue-button.njk" %}
