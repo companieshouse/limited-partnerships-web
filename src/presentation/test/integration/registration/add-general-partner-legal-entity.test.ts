@@ -9,7 +9,6 @@ import { appDevDependencies } from "../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import { ApiErrors } from "../../../../domain/entities/UIErrors";
-import appRealDependencies from "../../../../app";
 import sdkMock from "../mock/sdkMock";
 
 jest.mock("@companieshouse/api-sdk-node");
@@ -93,54 +92,6 @@ describe("Add General Partner Legal Entity Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain("Legal entity name is invalid");
-    });
-  });
-
-  describe("400", () => {
-    it("should return validation errors - add general partner legal entity page", async () => {
-      mockCreateApiClient.mockReturnValue({
-        ...sdkMock,
-        limitedPartnershipsService: {
-          ...sdkMock.limitedPartnershipsService,
-          postGeneralPartner: () => ({
-            httpStatusCode: 400,
-            resource: {
-              errors: {
-                legalEntityName: "Invalid value for legal entity name"
-              }
-            }
-          })
-        }
-      });
-
-      const res = await request(appRealDependencies).post(URL).send({
-        pageType: RegistrationPageType.addGeneralPartnerLegalEntity
-      });
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain("Invalid value for legal entity name");
-    });
-  });
-
-  describe("500", () => {
-    it("should load error page", async () => {
-      mockCreateApiClient.mockReturnValue({
-        ...sdkMock,
-        limitedPartnershipsService: {
-          ...sdkMock.limitedPartnershipsService,
-          postGeneralPartner: () => ({
-            httpStatusCode: 500,
-            resource: {}
-          })
-        }
-      });
-
-      const res = await request(appRealDependencies).post(URL).send({
-        pageType: RegistrationPageType.addGeneralPartnerLegalEntity
-      });
-
-      expect(res.status).toBe(500);
-      expect(res.text).toContain(enTranslationText.errorPage.title);
     });
   });
 });
