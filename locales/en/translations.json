@@ -16,15 +16,15 @@
         "publicRegisterLine1" : "We'll show all of this information on the public register.",
         "errorMessages": {
           "legalEntityNameMissing": "Enter a legal entity name",
-          "legalEntityNameLength": "Legal entity name must be 50 characters or less",
+          "legalEntityNameLength": "Legal entity name must be 160 characters or less",
           "legalFormMissing" : "Enter a legal form",
-          "legalFormLength" : "Legal form must be 50 characters or less",
+          "legalFormLength" : "Legal form must be 160 characters or less",
           "governingLawMissing" : "Enter a governing law",
-          "governingLawLength" : "Governing law must be 50 characters or less",
+          "governingLawLength" : "Governing law must be 160 characters or less",
           "whichRegisterMissing" : "Enter a register",
-          "whichRegisterLength" : "Register must be 50 characters or less",
+          "whichRegisterLength" : "Register must be 160 characters or less",
           "registrationNumberMissing" : "Enter a registration number",
-          "registrationNumberLength" : "Registration number must be 50 characters or less"
+          "registrationNumberLength" : "Registration number must be 160 characters or less"
         }
     },
 

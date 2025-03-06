@@ -13,7 +13,19 @@
         "registrationNumberHint" : "WELSH - For example, the company number.",
         "legalFormStatement" : "WELSH - I confirm the entity has legal personality.",
         "publicRegisterTitle" : "WELSH - What information we'll show on the public register",
-        "publicRegisterLine1" : "WELSH - We'll show all of this information on the public register."
+        "publicRegisterLine1" : "WELSH - We'll show all of this information on the public register.",
+        "errorMessages": {
+          "legalEntityNameMissing": "WELSH - Enter a legal entity name",
+          "legalEntityNameLength": "WELSH - Legal entity name must be 160 characters or less",
+          "legalFormMissing" : "WELSH - Enter a legal form",
+          "legalFormLength" : "WELSH - Legal form must be 160 characters or less",
+          "governingLawMissing" : "WELSH - Enter a governing law",
+          "governingLawLength" : "WELSH - Governing law must be 160 characters or less",
+          "whichRegisterMissing" : "WELSH - Enter a register",
+          "whichRegisterLength" : "WELSH - Register must be 160 characters or less",
+          "registrationNumberMissing" : "WELSH - Enter a registration number",
+          "registrationNumberLength" : "WELSH - Registration number must be 160 characters or less"
+        }
     },
 
     "addGeneralPartnerPersonPage" : {

@@ -77,7 +77,7 @@ const registrationRoutingAddGeneralPartnerLegalEntity = {
 };
 
 const registrationRoutingLimitedPartners = {
-  previousUrl: url.ADD_GENERAL_PARTNER_PERSON_URL,
+  previousUrl: url.GENERAL_PARTNER_CHOICE_URL,
   currentUrl: url.LIMITED_PARTNERS_URL,
   nextUrl: url.LIMITED_PARTNER_CHOICE_URL,
   pageType: RegistrationPageType.limitedPartners
