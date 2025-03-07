@@ -10,7 +10,7 @@ import RegistrationPageType from "./PageType";
 import { APPLICATION_CACHE_KEY_PREFIX_REGISTRATION } from "../../../config/constants";
 import CacheService from "../../../application/service/CacheService";
 import PageType from "../PageType";
-import { GENERAL_PARTNERS_URL } from "./url";
+import { ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL, ADD_GENERAL_PARTNER_PERSON_URL, GENERAL_PARTNERS_URL } from "./url";
 
 class LimitedPartnershipController extends AbstractController {
   private limitedPartnershipService: LimitedPartnershipService;
@@ -80,6 +80,24 @@ class LimitedPartnershipController extends AbstractController {
     }
 
     return redirect;
+  }
+
+  generalPartnerChoice(): RequestHandler {
+    return (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { ids } = super.extract(request);
+
+        let url = request.body.parameter === "person"
+          ? ADD_GENERAL_PARTNER_PERSON_URL
+          : ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL;
+
+        url = super.insertIdsInUrl(url, ids.transactionId, ids.submissionId);
+
+        response.redirect(url);
+      } catch (error) {
+        next(error);
+      }
+    };
   }
 
   createTransactionAndFirstSubmission(): RequestHandler {
