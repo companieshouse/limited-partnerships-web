@@ -1,0 +1,45 @@
+{% extends "layout.njk" %}
+
+{% set pageTitle = i18n.confirmLimitedPartnership.title %}
+
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds-from-desktop">
+      <h1 class="govuk-heading-xl">{{ pageTitle }}</h1>
+
+      {{ govukSummaryList({
+        classes: "govuk-!-margin-bottom-9",
+        rows: [
+          {
+            key: {
+              text: i18n.confirmLimitedPartnership.name
+            },
+            value: {
+              text: 
+            }
+          },
+          {
+            key: {
+              text: i18n.confirmLimitedPartnership.number
+            },
+            value: {
+              text: 
+            }
+          },
+          {
+            key: {
+              text: i18n.confirmLimitedPartnership.date
+            },
+            value: {
+              text: ""
+            }
+          }
+        ]
+      }) }}
+
+      {% include "includes/continue-button.njk" %}
+    </div>
+  </div>
+{% endblock %}

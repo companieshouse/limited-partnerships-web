@@ -5,7 +5,8 @@ import { authentication } from "../middlewares";
 import { IDependencies } from "../config/IDependencies";
 
 import {
-  COMPANY_NUMBER_URL
+  COMPANY_NUMBER_URL,
+  CONFIRM_LIMITED_PARTNERSHIP_URL
 } from "../presentation/controller/transition/url";
 
 export const transitionEndpoints = (
@@ -14,6 +15,12 @@ export const transitionEndpoints = (
 ): void => {
   router.get(
     COMPANY_NUMBER_URL,
+    authentication,
+    dependencies.transitionController.getPageRouting()
+  );
+
+  router.get(
+    CONFIRM_LIMITED_PARTNERSHIP_URL,
     authentication,
     dependencies.transitionController.getPageRouting()
   );

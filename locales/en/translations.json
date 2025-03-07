@@ -266,6 +266,13 @@
         "hint": "This is 2 letters followed by 6 numbers." 
     },
 
+    "confirmLimitedPartnership": {
+        "title": "Confirm this is the correct limited partnership",
+        "name": "Company name",
+        "number": "Company number",
+        "date": "Incorporation date"
+    },
+
     "service" : "Register a limited partnership",
 
     "startPage" : {
