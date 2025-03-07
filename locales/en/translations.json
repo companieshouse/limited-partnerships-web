@@ -1,6 +1,6 @@
 {
     "addGeneralPartnerLegalEntityPage" : {
-        "title" : "Add a General Partner (legal entity)",
+        "title" : "Add a general partner (legal entity)",
         "legalEntityName" : "What is the legal entity's name?",
         "legalFormOrCorporateIdentity" : "What is its legal form or corporate identity?",
         "legalFormOrCorporateIdentityHint" : "This is the corporate body type. For example, private limited company.",
