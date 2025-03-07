@@ -23,10 +23,7 @@ const list = [
   transitionRoutingConfirmLimitedPartnership
 ];
 
-export const transitionRouting: PagesRouting = new Map<
-  PageType,
-  PageRouting
->();
+export const transitionRouting: PagesRouting = new Map<PageType, PageRouting>();
 
 list.forEach((routing) => {
   transitionRouting.set(routing.pageType, routing);

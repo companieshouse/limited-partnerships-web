@@ -9,14 +9,16 @@ import {
   CONFIRM_LIMITED_PARTNERSHIP_URL
 } from "../presentation/controller/transition/url";
 
-export const transitionEndpoints = (
-  router: Router,
-  dependencies: IDependencies
-): void => {
+export const transitionEndpoints = (router: Router, dependencies: IDependencies): void => {
   router.get(
     COMPANY_NUMBER_URL,
     authentication,
     dependencies.transitionController.getPageRouting()
+  );
+  router.post(
+    COMPANY_NUMBER_URL,
+    authentication,
+    dependencies.transitionController.checkCompanyNumber()
   );
 
   router.get(

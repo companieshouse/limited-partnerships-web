@@ -13,51 +13,49 @@ import AddressLookUpService from "../application/service/AddressLookUpService";
 import AddressLookUpController from "../presentation/controller/addressLookUp/Controller";
 import TransactionInMemoryGateway from "../infrastructure/gateway/transaction/TransactionInMemoryGateway";
 import IncorporationInMemoryGateway from "../infrastructure/gateway/incorporation/IncorporationInMemoryGateway";
+import CompanyService from "../application/service/CompanyService";
+import CompanyInMemoryGateway from "../infrastructure/gateway/companyProfile/CompanyInMemoryGateway";
 
 // GATEWAYS
-const limitedPartnershipGateway: RegistrationInMemoryGateway =
-  new RegistrationInMemoryGateway();
-const transactionGateway: TransactionInMemoryGateway =
-  new TransactionInMemoryGateway();
-const addressLookUpGateway: AddressLookUpInMemoryGateway =
-  new AddressLookUpInMemoryGateway();
-const incorporationGateway: IncorporationInMemoryGateway =
-  new IncorporationInMemoryGateway();
-const generalPartnerGateway: GeneralPartnerInMemoryGateway =
-  new GeneralPartnerInMemoryGateway();
+const limitedPartnershipGateway: RegistrationInMemoryGateway = new RegistrationInMemoryGateway();
+const transactionGateway: TransactionInMemoryGateway = new TransactionInMemoryGateway();
+const addressLookUpGateway: AddressLookUpInMemoryGateway = new AddressLookUpInMemoryGateway();
+const incorporationGateway: IncorporationInMemoryGateway = new IncorporationInMemoryGateway();
+const generalPartnerGateway: GeneralPartnerInMemoryGateway = new GeneralPartnerInMemoryGateway();
+const companyGateway: CompanyInMemoryGateway = new CompanyInMemoryGateway();
 
 // REPOSITORIES
 const cacheRepository = new CacheInMemoryRepository();
 
 // SERVICES
-const limitedPartnershipService: LimitedPartnershipService =
-  new LimitedPartnershipService(
-    limitedPartnershipGateway,
-    transactionGateway,
-    incorporationGateway
-  );
-const addressLookUpService: AddressLookUpService = new AddressLookUpService(
-  addressLookUpGateway
+const limitedPartnershipService: LimitedPartnershipService = new LimitedPartnershipService(
+  limitedPartnershipGateway,
+  transactionGateway,
+  incorporationGateway
 );
+const addressLookUpService: AddressLookUpService = new AddressLookUpService(addressLookUpGateway);
 const cacheService = new CacheService(cacheRepository);
 const generalPartnerService: GeneralPartnerService = new GeneralPartnerService(
   generalPartnerGateway
 );
+const companyService = new CompanyService(companyGateway);
 
 // CONTROLLERS
 const globalController: GlobalController = new GlobalController();
-const limitedPartnershipController: LimitedPartnershipController =
-  new LimitedPartnershipController(limitedPartnershipService, cacheService);
-const addressLookUpController: AddressLookUpController =
-  new AddressLookUpController(
-    addressLookUpService,
-    limitedPartnershipService,
-    cacheService
-  );
-const transitionController: TransitionController =
-  new TransitionController();
-const generalPartnerController: GeneralPartnerController =
-  new GeneralPartnerController(limitedPartnershipService, generalPartnerService);
+const limitedPartnershipController: LimitedPartnershipController = new LimitedPartnershipController(
+  limitedPartnershipService,
+  cacheService
+);
+const addressLookUpController: AddressLookUpController = new AddressLookUpController(
+  addressLookUpService,
+  limitedPartnershipService,
+  cacheService
+);
+const transitionController: TransitionController = new TransitionController(companyService);
+const generalPartnerController: GeneralPartnerController = new GeneralPartnerController(
+  limitedPartnershipService,
+  generalPartnerService
+);
 
 export const appDevDependencies = {
   globalController,
@@ -73,5 +71,7 @@ export const appDevDependencies = {
   addressLookUpGateway,
   addressLookUpService,
   addressLookUpController,
-  transitionController
+  transitionController,
+  companyGateway,
+  companyService
 };
