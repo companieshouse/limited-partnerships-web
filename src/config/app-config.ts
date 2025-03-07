@@ -1,5 +1,4 @@
 import cookieParser from "cookie-parser";
-// import cookieSession from "cookie-session";
 import express from "express";
 import Redis from "ioredis";
 import * as nunjucks from "nunjucks";
@@ -83,12 +82,4 @@ export const appConfig = (app: express.Application) => {
     sessionCookieName: config.COOKIE_NAME
   });
   app.use(csrfProtectionMiddleware);
-
-  // app.use(
-  //   cookieSession({
-  //     name: "session",
-  //     keys: ["key1"],
-  //     maxAge: 24 * 60 * 60 * 1000 // 24 hours
-  //   })
-  // );
 };

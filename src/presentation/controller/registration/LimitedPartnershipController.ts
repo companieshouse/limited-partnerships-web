@@ -1,6 +1,5 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
 import escape from "escape-html";
-import { Session } from "express-session";
 import {
   LimitedPartnership,
   PartnershipType
@@ -10,7 +9,10 @@ import LimitedPartnershipService from "../../../application/service/LimitedPartn
 import registrationsRouting from "./Routing";
 import AbstractController from "../AbstractController";
 import RegistrationPageType from "./PageType";
-import { APPLICATION_CACHE_KEY_PREFIX_REGISTRATION } from "../../../config/constants";
+import {
+  APPLICATION_CACHE_KEY,
+  APPLICATION_CACHE_KEY_PREFIX_REGISTRATION
+} from "../../../config/constants";
 import CacheService from "../../../application/service/CacheService";
 import PageType from "../PageType";
 import { GENERAL_PARTNERS_URL } from "./url";
@@ -28,7 +30,7 @@ class LimitedPartnershipController extends AbstractController {
   getPageRouting(): RequestHandler {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
-        const { session, tokens, pageType, ids } = super.extract(request);
+        const { tokens, pageType, ids } = super.extract(request);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
         let limitedPartnership = {};
@@ -43,7 +45,7 @@ class LimitedPartnershipController extends AbstractController {
           );
         }
 
-        const cache = await this.cacheService.getDataFromCache(session);
+        const cache = this.cacheService.getDataFromCache(request.cookies);
 
         const redirect = this.conditionalRedirecting(
           request,
@@ -97,7 +99,7 @@ class LimitedPartnershipController extends AbstractController {
   createTransactionAndFirstSubmission(): RequestHandler {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
-        const { session, tokens } = super.extract(request);
+        const { tokens } = super.extract(request);
         const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
@@ -108,7 +110,7 @@ class LimitedPartnershipController extends AbstractController {
         );
 
         if (result.errors) {
-          const cache = await this.cacheService.getDataFromCache(session);
+          const cache = this.cacheService.getDataFromCache(request.cookies);
 
           response.render(
             super.templateName(pageRouting.currentUrl),
@@ -128,10 +130,11 @@ class LimitedPartnershipController extends AbstractController {
           result.submissionId
         );
 
-        await this.cacheService.removeDataFromCache(
-          session,
+        const cache = this.cacheService.removeDataFromCache(
+          request.cookies,
           `${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`
         );
+        response.cookie(APPLICATION_CACHE_KEY, cache);
 
         response.redirect(url);
       } catch (error) {
@@ -141,18 +144,18 @@ class LimitedPartnershipController extends AbstractController {
   }
 
   redirectAndCacheSelection(): RequestHandler {
-    return async (request: Request, response: Response, next: NextFunction) => {
+    return (request: Request, response: Response, next: NextFunction) => {
       try {
-        const session = request.session as unknown as Session;
         const type = super.extractPageTypeOrThrowError(request, RegistrationPageType);
         const pageRouting = super.getRouting(registrationsRouting, type, request);
 
         const pageType = escape(request.body.pageType);
         const parameter = escape(request.body.parameter);
 
-        await this.cacheService.addDataToCache(session, {
+        const cache = this.cacheService.addDataToCache(request.cookies, {
           [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${pageType}`]: parameter
         });
+        response.cookie(APPLICATION_CACHE_KEY, cache);
 
         response.redirect(pageRouting.nextUrl);
       } catch (error) {

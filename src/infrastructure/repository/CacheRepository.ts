@@ -1,33 +1,31 @@
-import { Session } from "express-session";
-
 import ICacheRepository from "../../domain/ICacheRepository";
 import { APPLICATION_CACHE_KEY } from "../../config/constants";
 
 class CacheRepository implements ICacheRepository {
-  async getData(session: Session): Promise<Record<string, any>> {
-    // const sess = await session?.[APPLICATION_CACHE_KEY];
-    // console.log(sess);
+  getData(cookies: any): Record<string, any> {
+    if (!cookies[APPLICATION_CACHE_KEY]) {
+      return {};
+    }
 
-    return (await session?.[APPLICATION_CACHE_KEY]) ?? {};
+    const data = JSON.parse(cookies[APPLICATION_CACHE_KEY]);
+    return data;
   }
 
-  async addData(session: Session, data: Record<string, any>): Promise<void> {
-    const cache = await this.getData(session);
+  addData(cookies: Record<string, any>, data: Record<string, any>): string {
+    const cache = this.getData(cookies);
 
-    const updatedCache = {
+    return JSON.stringify({
       ...cache,
       ...data
-    };
-
-    session[APPLICATION_CACHE_KEY] = updatedCache;
+    });
   }
 
-  async deleteData(session: Session, key: string): Promise<void> {
-    const cache = await this.getData(session);
+  deleteData(cookies: Record<string, any>, key: string): string {
+    const cache = this.getData(cookies);
 
     delete cache[key];
 
-    session[APPLICATION_CACHE_KEY] = cache;
+    return JSON.stringify(cache);
   }
 }
 

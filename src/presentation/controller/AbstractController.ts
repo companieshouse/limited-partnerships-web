@@ -1,5 +1,5 @@
 import { Request } from "express";
-import { Session } from "express-session";
+import { Session } from "@companieshouse/node-session-handler";
 
 import {
   BASE_URL,
@@ -61,7 +61,7 @@ abstract class AbstractController {
   }
 
   protected extract(request: Request) {
-    const session = request.session as unknown as Session;
+    const session = request.session as Session;
     const tokens = this.extractTokens(request);
     const pageType = this.pageType(request.path);
     const { transactionId, submissionId } = this.extractIds(request);
