@@ -6,7 +6,7 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
        <form class="form" action={{ props.currentUrl }} method="post">
-          <input type="hidden" name="partnershipNumber" value={{ props.partnershipNumber }}>   
+          <input type="hidden" name="pageType" value={{ props.pageType }}>  
           {% include "includes/csrf_token.njk" %}
           {% include "includes/errors.njk" %}
 
@@ -26,7 +26,9 @@
                 required: true,
                 "data-event-id": "company-number-transition"
             },
-            pattern: "^(LP|NL|SL)[0-9]{6}$"
+            pattern: "^(LP|NL|SL)[0-9]{6}$",
+            errorMessage: props.errors.company_number if props.errors,
+            value: props.data.company_number
           }) }}
        
           {% include "includes/continue-button.njk" %}
