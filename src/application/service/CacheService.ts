@@ -1,4 +1,4 @@
-import { Session } from "@companieshouse/node-session-handler";
+import { Session } from "express-session";
 
 import ICacheRepository from "../../domain/ICacheRepository";
 
@@ -13,10 +13,7 @@ class CacheService {
     return this.cacheRepository.getData(session);
   }
 
-  async addDataToCache(
-    session: Session,
-    data: Record<string, any>
-  ): Promise<void> {
+  async addDataToCache(session: Session, data: Record<string, any>): Promise<void> {
     await this.cacheRepository.addData(session, data);
   }
 

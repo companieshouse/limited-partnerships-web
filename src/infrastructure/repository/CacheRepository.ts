@@ -1,10 +1,14 @@
-import { Session } from "@companieshouse/node-session-handler";
+import { Session } from "express-session";
+
 import ICacheRepository from "../../domain/ICacheRepository";
 import { APPLICATION_CACHE_KEY } from "../../config/constants";
 
 class CacheRepository implements ICacheRepository {
   async getData(session: Session): Promise<Record<string, any>> {
-    return (await session?.getExtraData(APPLICATION_CACHE_KEY)) ?? {};
+    // const sess = await session?.[APPLICATION_CACHE_KEY];
+    // console.log(sess);
+
+    return (await session?.[APPLICATION_CACHE_KEY]) ?? {};
   }
 
   async addData(session: Session, data: Record<string, any>): Promise<void> {
@@ -12,10 +16,10 @@ class CacheRepository implements ICacheRepository {
 
     const updatedCache = {
       ...cache,
-      ...data,
+      ...data
     };
 
-    session?.setExtraData(APPLICATION_CACHE_KEY, updatedCache);
+    session[APPLICATION_CACHE_KEY] = updatedCache;
   }
 
   async deleteData(session: Session, key: string): Promise<void> {
@@ -23,7 +27,7 @@ class CacheRepository implements ICacheRepository {
 
     delete cache[key];
 
-    session?.setExtraData(APPLICATION_CACHE_KEY, cache);
+    session[APPLICATION_CACHE_KEY] = cache;
   }
 }
 

@@ -1,7 +1,10 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
 import escape from "escape-html";
-import { Session } from "@companieshouse/node-session-handler";
-import { LimitedPartnership, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { Session } from "express-session";
+import {
+  LimitedPartnership,
+  PartnershipType
+} from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import registrationsRouting from "./Routing";
@@ -42,12 +45,21 @@ class LimitedPartnershipController extends AbstractController {
 
         const cache = await this.cacheService.getDataFromCache(session);
 
-        const redirect = this.conditionalRedirecting(request, response, pageType, limitedPartnership);
+        const redirect = this.conditionalRedirecting(
+          request,
+          response,
+          pageType,
+          limitedPartnership
+        );
 
         if (!redirect) {
           response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { limitedPartnership, generalPartner, limitedPartner, cache, ids }, null)
+            super.makeProps(
+              pageRouting,
+              { limitedPartnership, generalPartner, limitedPartner, cache, ids },
+              null
+            )
           );
         }
       } catch (error) {
@@ -100,13 +112,21 @@ class LimitedPartnershipController extends AbstractController {
 
           response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { limitedPartnership: { data: request.body }, cache }, result.errors)
+            super.makeProps(
+              pageRouting,
+              { limitedPartnership: { data: request.body }, cache },
+              result.errors
+            )
           );
 
           return;
         }
 
-        const url = super.insertIdsInUrl(pageRouting.nextUrl, result.transactionId, result.submissionId);
+        const url = super.insertIdsInUrl(
+          pageRouting.nextUrl,
+          result.transactionId,
+          result.submissionId
+        );
 
         await this.cacheService.removeDataFromCache(
           session,
@@ -123,7 +143,7 @@ class LimitedPartnershipController extends AbstractController {
   redirectAndCacheSelection(): RequestHandler {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
-        const session = request.session as Session;
+        const session = request.session as unknown as Session;
         const type = super.extractPageTypeOrThrowError(request, RegistrationPageType);
         const pageRouting = super.getRouting(registrationsRouting, type, request);
 

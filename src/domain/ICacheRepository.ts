@@ -1,4 +1,4 @@
-import { Session } from "@companieshouse/node-session-handler";
+import { Session } from "express-session";
 
 interface ICacheRepository {
   getData(session: Session): Promise<Record<string, any>>;

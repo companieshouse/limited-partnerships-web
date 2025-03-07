@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import { Session } from "@companieshouse/node-session-handler";
+import { Session } from "express-session";
 
 import { APPLICATION_CACHE_KEY } from "../../config/constants";
 import ICacheRepository from "../../domain/ICacheRepository";
@@ -21,8 +21,8 @@ class CacheInMemoryRepository implements ICacheRepository {
       this.cache = {
         [APPLICATION_CACHE_KEY]: {
           ...this.cache?.[APPLICATION_CACHE_KEY],
-          ...data,
-        },
+          ...data
+        }
       };
 
       return;
@@ -30,8 +30,8 @@ class CacheInMemoryRepository implements ICacheRepository {
 
     this.cache = {
       [APPLICATION_CACHE_KEY]: {
-        ...data,
-      },
+        ...data
+      }
     };
   }
 
@@ -42,8 +42,8 @@ class CacheInMemoryRepository implements ICacheRepository {
 
     this.cache = {
       [APPLICATION_CACHE_KEY]: {
-        ...data,
-      },
+        ...data
+      }
     };
   }
 }

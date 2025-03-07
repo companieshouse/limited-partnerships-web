@@ -1,6 +1,6 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
 import escape from "escape-html";
-import { Session } from "@companieshouse/node-session-handler";
+import { Session } from "express-session";
 import { Address } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import AddressService from "../../../application/service/AddressLookUpService";
@@ -124,7 +124,11 @@ class AddressLookUpController extends AbstractController {
 
         // if exact match - redirect to confirm page
         if (address.postal_code && address.premises && address.address_line_1) {
-          const url = super.insertIdsInUrl(pageRouting?.data?.confirmAddressUrl, ids.transactionId, ids.submissionId);
+          const url = super.insertIdsInUrl(
+            pageRouting?.data?.confirmAddressUrl,
+            ids.transactionId,
+            ids.submissionId
+          );
           response.redirect(url);
           return;
         }
@@ -168,7 +172,8 @@ class AddressLookUpController extends AbstractController {
       try {
         this.addressService.setI18n(response.locals.i18n);
 
-        const { premises, address_line_1, address_line_2, locality, region, postal_code, country } = request.body;
+        const { premises, address_line_1, address_line_2, locality, region, postal_code, country } =
+          request.body;
         const address = {
           address_line_1,
           address_line_2,
@@ -221,7 +226,14 @@ class AddressLookUpController extends AbstractController {
         const cache = await this.cacheService.getDataFromCache(session);
 
         if (!request.body?.address) {
-          await this.handleAddressNotFound(tokens, ids.transactionId, ids.submissionId, pageRouting, cache, response);
+          await this.handleAddressNotFound(
+            tokens,
+            ids.transactionId,
+            ids.submissionId,
+            pageRouting,
+            cache,
+            response
+          );
           return;
         }
 
@@ -253,7 +265,10 @@ class AddressLookUpController extends AbstractController {
         }
 
         // clear address from cache
-        await this.cacheService.removeDataFromCache(session, this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY);
+        await this.cacheService.removeDataFromCache(
+          session,
+          this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY
+        );
 
         response.redirect(pageRouting.nextUrl);
       } catch (error) {
@@ -306,7 +321,7 @@ class AddressLookUpController extends AbstractController {
     response: Response<any, Record<string, any>>,
     dataToStore: any
   ) {
-    const session = request.session as Session;
+    const session = request.session as unknown as Session;
     const pageType = super.extractPageTypeOrThrowError(request, AddressLookUpPageType);
 
     const pageRouting = super.getRouting(addressLookUpRouting, pageType, request);

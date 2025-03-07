@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-import { Session } from "@companieshouse/node-session-handler";
 
 import { NAME_URL } from "../../../controller/registration/url";
 import RegistrationPageType from "../../../controller/registration/PageType";
@@ -27,18 +26,12 @@ describe("Cache", () => {
   });
 
   it("should get data from session", async () => {
-    const getExtraData = jest.fn().mockImplementation(() => ({
-      [RegistrationPageType.whichType]: PartnershipType.LP
-    }));
-    const setExtraData = jest.fn().mockImplementation(() => {});
+    const session = {};
 
     await limitedPartnershipController.redirectAndCacheSelection()(
       {
         path: NAME_URL,
-        session: {
-          getExtraData,
-          setExtraData
-        } as unknown as Session,
+        session,
         params: {},
         body: {
           pageType: RegistrationPageType.whichType,
@@ -49,21 +42,22 @@ describe("Cache", () => {
       jest.fn() as NextFunction
     );
 
-    expect(setExtraData).toHaveBeenCalled();
+    expect(session).toEqual({
+      limited_partnership: { "registration_which-type": PartnershipType.LP }
+    });
 
     await limitedPartnershipController.getPageRouting()(
       {
         path: NAME_URL,
-        session: {
-          getExtraData,
-          setExtraData
-        } as unknown as Session,
+        session,
         params: {}
       } as Request,
       { render: jest.fn() } as unknown as Response,
       jest.fn() as NextFunction
     );
 
-    expect(getExtraData).toHaveBeenCalled();
+    expect(session).toEqual({
+      limited_partnership: { "registration_which-type": PartnershipType.LP }
+    });
   });
 });

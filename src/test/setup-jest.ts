@@ -13,7 +13,10 @@ jest.mock("../middlewares/authentication.middleware", () => ({
 */
 jest.mock("@companieshouse/web-security-node", () => ({
   ...jest.requireActual("@companieshouse/web-security-node"),
-  CsrfProtectionMiddleware:
-    (_opts) => (req: Request, res: Response, next: NextFunction) =>
-      next()
+  CsrfProtectionMiddleware: (_opts) => (req: Request, res: Response, next: NextFunction) => next()
 }));
+
+jest.mock(
+  "cookie-session",
+  () => (_opts) => (req: Request, res: Response, next: NextFunction) => next()
+);
