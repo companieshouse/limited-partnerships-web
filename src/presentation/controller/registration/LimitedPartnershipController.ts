@@ -11,7 +11,8 @@ import AbstractController from "../AbstractController";
 import RegistrationPageType from "./PageType";
 import {
   APPLICATION_CACHE_KEY,
-  APPLICATION_CACHE_KEY_PREFIX_REGISTRATION
+  APPLICATION_CACHE_KEY_PREFIX_REGISTRATION,
+  cookieOptions
 } from "../../../config/constants";
 import CacheService from "../../../application/service/CacheService";
 import PageType from "../PageType";
@@ -45,7 +46,7 @@ class LimitedPartnershipController extends AbstractController {
           );
         }
 
-        const cache = this.cacheService.getDataFromCache(request.cookies);
+        const cache = this.cacheService.getDataFromCache(request.signedCookies);
 
         const redirect = this.conditionalRedirecting(
           request,
@@ -110,7 +111,7 @@ class LimitedPartnershipController extends AbstractController {
         );
 
         if (result.errors) {
-          const cache = this.cacheService.getDataFromCache(request.cookies);
+          const cache = this.cacheService.getDataFromCache(request.signedCookies);
 
           response.render(
             super.templateName(pageRouting.currentUrl),
@@ -131,10 +132,10 @@ class LimitedPartnershipController extends AbstractController {
         );
 
         const cache = this.cacheService.removeDataFromCache(
-          request.cookies,
+          request.signedCookies,
           `${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`
         );
-        response.cookie(APPLICATION_CACHE_KEY, cache);
+        response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
 
         response.redirect(url);
       } catch (error) {
@@ -152,10 +153,10 @@ class LimitedPartnershipController extends AbstractController {
         const pageType = escape(request.body.pageType);
         const parameter = escape(request.body.parameter);
 
-        const cache = this.cacheService.addDataToCache(request.cookies, {
+        const cache = this.cacheService.addDataToCache(request.signedCookies, {
           [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${pageType}`]: parameter
         });
-        response.cookie(APPLICATION_CACHE_KEY, cache);
+        response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
 
         response.redirect(pageRouting.nextUrl);
       } catch (error) {

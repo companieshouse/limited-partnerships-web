@@ -62,3 +62,11 @@ export const GENERAL_PARTNER_WITH_ID_URL = GENERAL_PARTNER_URL + `/:${GENERAL_PA
 export const SDK_LIMITED_PARTNERSHIP_SERVICE = "limitedPartnershipsService";
 export const SDK_POSTCODE_LOOKUP_SERVICE = "postCodeLookup";
 export const SDK_TRANSACTION_SERVICE = "transaction";
+
+// cookies
+export const cookieOptions = {
+  httpOnly: true,
+  domain: COOKIE_DOMAIN,
+  maxAge: parseInt(DEFAULT_SESSION_EXPIRATION, 10) * 1000, // 1 hour
+  signed: true
+};

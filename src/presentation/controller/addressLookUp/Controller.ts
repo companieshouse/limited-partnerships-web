@@ -9,7 +9,8 @@ import AddressLookUpPageType from "./PageType";
 import CacheService from "../../../application/service/CacheService";
 import {
   APPLICATION_CACHE_KEY,
-  APPLICATION_CACHE_KEY_PREFIX_REGISTRATION
+  APPLICATION_CACHE_KEY_PREFIX_REGISTRATION,
+  cookieOptions
 } from "../../../config/constants";
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import UIErrors from "../../../domain/entities/UIErrors";
@@ -48,9 +49,9 @@ class AddressLookUpController extends AbstractController {
           );
         }
 
-        const cache = this.cacheService.getDataFromCache(request.cookies);
+        const cache = this.cacheService.getDataFromCache(request.signedCookies);
         const cacheById = this.cacheService.getDataFromCacheById(
-          request.cookies,
+          request.signedCookies,
           ids.transactionId
         );
 
@@ -168,19 +169,19 @@ class AddressLookUpController extends AbstractController {
     response: Response
   ) {
     if (pageType === AddressLookUpPageType.postcodePrincipalPlaceOfBusinessAddress) {
-      const cache = this.cacheService.addDataToCache(request.cookies, {
+      const cache = this.cacheService.addDataToCache(request.signedCookies, {
         [transactionId]: {
           [this.PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CACHE_KEY]: address
         }
       });
-      response.cookie(APPLICATION_CACHE_KEY, cache);
+      response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
     } else {
-      const cache = this.cacheService.addDataToCache(request.cookies, {
+      const cache = this.cacheService.addDataToCache(request.signedCookies, {
         [transactionId]: {
           [this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY]: address
         }
       });
-      response.cookie(APPLICATION_CACHE_KEY, cache);
+      response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
     }
   }
 
@@ -254,7 +255,7 @@ class AddressLookUpController extends AbstractController {
         const { tokens, ids } = super.extract(request);
         const pageType = super.extractPageTypeOrThrowError(request, AddressLookUpPageType);
         const pageRouting = super.getRouting(addressLookUpRouting, pageType, request);
-        const cache = this.cacheService.getDataFromCache(request.cookies);
+        const cache = this.cacheService.getDataFromCache(request.signedCookies);
 
         if (!request.body?.address) {
           await this.handleAddressNotFound(
@@ -297,10 +298,10 @@ class AddressLookUpController extends AbstractController {
 
         // clear address from cache
         const cacheRemoved = this.cacheService.removeDataFromCache(
-          request.cookies,
+          request.signedCookies,
           ids.transactionId
         );
-        response.cookie(APPLICATION_CACHE_KEY, cacheRemoved);
+        response.cookie(APPLICATION_CACHE_KEY, cacheRemoved, cookieOptions);
 
         response.redirect(pageRouting.nextUrl);
       } catch (error) {
@@ -359,10 +360,10 @@ class AddressLookUpController extends AbstractController {
 
     const cacheKey = this.getCacheKey(pageType);
 
-    const cache = this.cacheService.addDataToCache(request.cookies, {
+    const cache = this.cacheService.addDataToCache(request.signedCookies, {
       [cacheKey]: dataToStore
     });
-    response.cookie(APPLICATION_CACHE_KEY, cache);
+    response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
 
     response.redirect(pageRouting.nextUrl);
   }
