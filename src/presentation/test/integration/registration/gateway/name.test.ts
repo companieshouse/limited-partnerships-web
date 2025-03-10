@@ -4,7 +4,11 @@ import { NameEndingType } from "@companieshouse/api-sdk-node/dist/services/limit
 
 import appRealDependencies from "../../../../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { EMAIL_URL, NAME_URL, WHERE_IS_THE_JURISDICTION_URL } from "../../../../controller/registration/url";
+import {
+  EMAIL_URL,
+  NAME_URL,
+  WHERE_IS_THE_JURISDICTION_URL
+} from "../../../../controller/registration/url";
 import RegistrationPageType from "../../../../controller/registration/PageType";
 import sdkMock, {
   postLimitedPartnership,
@@ -13,11 +17,20 @@ import sdkMock, {
 } from "../../mock/sdkMock";
 import { getUrl } from "../../../utils";
 import enTranslationText from "../../../../../../locales/en/translations.json";
+import CacheRepository from "../../../../../infrastructure/repository/CacheRepository";
 
 jest.mock("@companieshouse/api-sdk-node");
 
 const mockCreateApiClient = createApiClient as jest.Mock;
 mockCreateApiClient.mockReturnValue(sdkMock);
+
+jest.mock("../../../../../infrastructure/repository/CacheRepository");
+const mockSession = CacheRepository as jest.Mock;
+mockSession.mockReturnValue({
+  getData: jest.fn().mockImplementation(() => ({
+    limited_partnership: { "registration_which-type": "LP" }
+  }))
+});
 
 describe("Gateway Transaction - Incorporation - Partnership", () => {
   const URL = getUrl(NAME_URL);

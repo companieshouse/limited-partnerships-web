@@ -7,12 +7,14 @@ import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import { COMPANY_NUMBER_URL } from "presentation/controller/transition/url";
 import TransitionPageType from "../../../controller/transition/PageType";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
+import { APPLICATION_CACHE_KEY, APPLICATION_CACHE_KEY_PREFIX_REGISTRATION } from "../../../../config/constants";
 
 describe("Company number page", () => {
   const URL = getUrl(COMPANY_NUMBER_URL);
 
   beforeEach(() => {
     appDevDependencies.companyGateway.setError(false);
+    appDevDependencies.cacheRepository.feedCache(null);
   });
 
   describe("GET company number", () => {
@@ -50,6 +52,12 @@ describe("Company number page", () => {
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`/next`);
+
+      expect(appDevDependencies.cacheRepository.cache).toEqual({
+        [APPLICATION_CACHE_KEY]: {
+          [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}company_number`]: "LP123456"
+        }
+      });
     });
 
     it("should return an error if company_number is not valid", async () => {

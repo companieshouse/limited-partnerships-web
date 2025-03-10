@@ -18,8 +18,8 @@ describe("Choose Registered Office Address Page", () => {
     setLocalesEnabled(false);
     appDevDependencies.addressLookUpGateway.setError(false);
     appDevDependencies.cacheRepository.feedCache({
-      [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`]:
-        {
+      [appDevDependencies.transactionGateway.transactionId]: {
+        ["registered_office_address"]: {
           postal_code: "ST6 3LJ",
           premises: "",
           address_line_1: "",
@@ -27,6 +27,7 @@ describe("Choose Registered Office Address Page", () => {
           locality: "",
           country: ""
         }
+      }
     });
   });
 
@@ -37,10 +38,7 @@ describe("Choose Registered Office Address Page", () => {
       const res = await request(app).get(URL + "?lang=en");
 
       expect(res.status).toBe(200);
-      testTranslations(
-        res.text,
-        enTranslationText.address.chooseAddress.registeredOfficeAddress
-      );
+      testTranslations(res.text, enTranslationText.address.chooseAddress.registeredOfficeAddress);
       expect(res.text).not.toContain("WELSH -");
     });
 
@@ -50,10 +48,7 @@ describe("Choose Registered Office Address Page", () => {
       const res = await request(app).get(URL + "?lang=cy");
 
       expect(res.status).toBe(200);
-      testTranslations(
-        res.text,
-        cyTranslationText.address.chooseAddress.registeredOfficeAddress
-      );
+      testTranslations(res.text, cyTranslationText.address.chooseAddress.registeredOfficeAddress);
     });
 
     it("should populate the address list", async () => {
@@ -61,9 +56,7 @@ describe("Choose Registered Office Address Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain("2 Duncalf Street, Stoke-On-Trent, ST6 3LJ");
-      expect(res.text).toContain(
-        "The Lodge Duncalf Street, Castle Hill, Stoke-On-Trent, ST6 3LJ"
-      );
+      expect(res.text).toContain("The Lodge Duncalf Street, Castle Hill, Stoke-On-Trent, ST6 3LJ");
       expect(res.text).toContain("4 Duncalf Street, Stoke-On-Trent, ST6 3LJ");
       expect(res.text).toContain("6 Duncalf Street, Stoke-On-Trent, ST6 3LJ");
     });
@@ -99,17 +92,14 @@ describe("Choose Registered Office Address Page", () => {
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
 
       const cache = appDevDependencies.cacheRepository.cache;
-      expect(cache?.[`${config.APPLICATION_CACHE_KEY}`]).toHaveProperty(
-        `${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`,
-        {
-          postal_code: "ST6 3LJ",
-          premises: "4",
-          address_line_1: "DUNCALF STREET",
-          address_line_2: "",
-          locality: "STOKE-ON-TRENT",
-          country: "GB-ENG"
-        }
-      );
+      expect(cache?.[`${config.APPLICATION_CACHE_KEY}`]).toHaveProperty("registered_office_address", {
+        postal_code: "ST6 3LJ",
+        premises: "4",
+        address_line_1: "DUNCALF STREET",
+        address_line_2: "",
+        locality: "STOKE-ON-TRENT",
+        country: "GB-ENG"
+      });
     });
 
     it("should redirect to the error page if address can't be deserialised", async () => {

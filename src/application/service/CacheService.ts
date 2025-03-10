@@ -1,5 +1,3 @@
-import { Session } from "@companieshouse/node-session-handler";
-
 import ICacheRepository from "../../domain/ICacheRepository";
 
 class CacheService {
@@ -9,19 +7,22 @@ class CacheService {
     this.cacheRepository = cacheRepository;
   }
 
-  getDataFromCache(session: Session): Promise<Record<string, any>> {
-    return this.cacheRepository.getData(session);
+  getDataFromCache(cookies: Record<string, any>): Record<string, any> {
+    return this.cacheRepository.getData(cookies);
   }
 
-  async addDataToCache(
-    session: Session,
-    data: Record<string, any>
-  ): Promise<void> {
-    await this.cacheRepository.addData(session, data);
+  getDataFromCacheById(cookies: Record<string, any>, transactionId: string): Record<string, any> {
+    const cache = this.getDataFromCache(cookies);
+
+    return cache[transactionId] || {};
   }
 
-  async removeDataFromCache(session: Session, key: string): Promise<void> {
-    await this.cacheRepository.deleteData(session, key);
+  addDataToCache(cookies: Record<string, any>, data: Record<string, any>): string {
+    return this.cacheRepository.addData(cookies, data);
+  }
+
+  removeDataFromCache(cookies: Record<string, any>, key: string): string {
+    return this.cacheRepository.deleteData(cookies, key);
   }
 }
 
