@@ -118,6 +118,7 @@
         {{ govukDateInput({
           id: "date_of_birth",
           namePrefix: "date_of_birth",
+          errorMessage: props.errors.date_of_birth if props.errors,
           fieldset: {
             legend: {
               text: i18n.addGeneralPartnerPersonPage.dateOfBirth,
