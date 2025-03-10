@@ -8,7 +8,7 @@ class CacheRepository implements ICacheRepository {
     }
 
     const str = this.fromBase64(cookies[APPLICATION_CACHE_KEY]);
-    return JSON.parse(str);
+    return str ? JSON.parse(str) : {};
   }
 
   addData(cookies: Record<string, any>, data: Record<string, any>): string {

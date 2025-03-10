@@ -90,9 +90,8 @@ class LimitedPartnershipController extends AbstractController {
       try {
         const { ids } = super.extract(request);
 
-        let url = request.body.parameter === "person"
-          ? ADD_GENERAL_PARTNER_PERSON_URL
-          : ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL;
+        let url =
+          request.body.parameter === "person" ? ADD_GENERAL_PARTNER_PERSON_URL : ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL;
 
         url = super.insertIdsInUrl(url, ids.transactionId, ids.submissionId);
 

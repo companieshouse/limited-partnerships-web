@@ -6,7 +6,6 @@ import { CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL } from "../../../../../
 import { TERM_URL } from "../../../../../presentation/controller/registration/url";
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import * as config from "../../../../../config";
 import AddressPageType from "../../../../../presentation/controller/addressLookUp/PageType";
 import LimitedPartnershipBuilder from "../../../../../presentation/test/builder/LimitedPartnershipBuilder";
 import { ApiErrors } from "../../../../../domain/entities/UIErrors";
@@ -18,7 +17,7 @@ describe("Confirm Principal Place Of Business Address Page", () => {
     setLocalesEnabled(false);
     appDevDependencies.cacheRepository.feedCache({
       [appDevDependencies.transactionGateway.transactionId]: {
-        [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}principal_place_of_business_address`]: {
+        ["principal_place_of_business_address"]: {
           postal_code: "ST6 3LJ",
           premises: "4",
           address_line_1: "line 1",

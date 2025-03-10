@@ -8,7 +8,6 @@ import {
 } from "../../../../../presentation/controller/addressLookUp/url";
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import * as config from "../../../../../config";
 import AddressPageType from "../../../../../presentation/controller/addressLookUp/PageType";
 import LimitedPartnershipBuilder from "../../../../../presentation/test/builder/LimitedPartnershipBuilder";
 import { ApiErrors } from "../../../../../domain/entities/UIErrors";
@@ -20,7 +19,7 @@ describe("Confirm Registered Office Address Page", () => {
     setLocalesEnabled(false);
     appDevDependencies.cacheRepository.feedCache({
       [appDevDependencies.transactionGateway.transactionId]: {
-        [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`]: {
+        ["registered_office_address"]: {
           postal_code: "ST6 3LJ",
           premises: "4",
           address_line_1: "line 1",
@@ -61,7 +60,7 @@ describe("Confirm Registered Office Address Page", () => {
       it("should return Wales if country code is GB-WLS", async () => {
         appDevDependencies.cacheRepository.feedCache({
           [appDevDependencies.transactionGateway.transactionId]: {
-            [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`]: {
+            ["registered_office_address"]: {
               postal_code: "CF3 0AD",
               premises: "261",
               address_line_1: "OAKLANDS CLOSE",
@@ -81,7 +80,7 @@ describe("Confirm Registered Office Address Page", () => {
       it("should return Scotland if country code is GB-SCT", async () => {
         appDevDependencies.cacheRepository.feedCache({
           [appDevDependencies.transactionGateway.transactionId]: {
-            [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`]: {
+            ["registered_office_address"]: {
               postal_code: "IV18 0JT",
               premises: "1",
               address_line_1: "MAIN AVENUE",
@@ -101,7 +100,7 @@ describe("Confirm Registered Office Address Page", () => {
       it("should return Northern Ireland if country code is GB-NIR", async () => {
         appDevDependencies.cacheRepository.feedCache({
           [appDevDependencies.transactionGateway.transactionId]: {
-            [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`]: {
+            ["registered_office_address"]: {
               postal_code: "BT12 6QH",
               premises: "11E",
               address_line_1: "GLENMACHAN CLOSE",
