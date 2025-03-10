@@ -3,9 +3,15 @@ import AbstractController from "../AbstractController";
 import transitionRouting from "./Routing";
 import TransitionPageType from "./PageType";
 import CompanyService from "../../../application/service/CompanyService";
+import CacheService from "../../../application/service/CacheService";
+import {
+  APPLICATION_CACHE_KEY,
+  APPLICATION_CACHE_KEY_PREFIX_REGISTRATION,
+  cookieOptions
+} from "../../../config/constants";
 
 class TransitionController extends AbstractController {
-  constructor(private companyService: CompanyService) {
+  constructor(private companyService: CompanyService, private cacheService: CacheService) {
     super();
   }
 
@@ -15,9 +21,11 @@ class TransitionController extends AbstractController {
         const { pageType } = super.extract(request);
         const pageRouting = super.getRouting(transitionRouting, pageType, request);
 
+        const cache = this.cacheService.getDataFromCache(request.signedCookies);
+
         response.render(
           super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, null, null)
+          super.makeProps(pageRouting, { cache }, null)
         );
       } catch (error) {
         next(error);
@@ -43,6 +51,11 @@ class TransitionController extends AbstractController {
 
           return;
         }
+
+        const cache = this.cacheService.addDataToCache(request.signedCookies, {
+          [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}company_number`]: company_number
+        });
+        response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
 
         response.redirect(pageRouting.nextUrl);
       } catch (error) {

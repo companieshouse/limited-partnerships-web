@@ -53,7 +53,10 @@ const addressLookUpController: AddressLookUpController = new AddressLookUpContro
   limitedPartnershipService,
   cacheService
 );
-const transitionController: TransitionController = new TransitionController(companyService);
+const transitionController: TransitionController = new TransitionController(
+  companyService,
+  cacheService
+);
 const generalPartnerController: GeneralPartnerController = new GeneralPartnerController(
   limitedPartnershipService,
   generalPartnerService
