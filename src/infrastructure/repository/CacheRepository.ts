@@ -7,17 +7,19 @@ class CacheRepository implements ICacheRepository {
       return {};
     }
 
-    const data = JSON.parse(cookies[APPLICATION_CACHE_KEY]);
-    return data;
+    const str = this.fromBase64(cookies[APPLICATION_CACHE_KEY]);
+    return JSON.parse(str);
   }
 
   addData(cookies: Record<string, any>, data: Record<string, any>): string {
     const cache = this.getData(cookies);
 
-    return JSON.stringify({
-      ...cache,
-      ...data
-    });
+    return this.toBase64(
+      JSON.stringify({
+        ...cache,
+        ...data
+      })
+    );
   }
 
   deleteData(cookies: Record<string, any>, key: string): string {
@@ -26,6 +28,14 @@ class CacheRepository implements ICacheRepository {
     delete cache[key];
 
     return JSON.stringify(cache);
+  }
+
+  private toBase64(value: string): string {
+    return Buffer.from(value).toString("base64");
+  }
+
+  private fromBase64(value: string): string {
+    return Buffer.from(value, "base64").toString("utf-8");
   }
 }
 
