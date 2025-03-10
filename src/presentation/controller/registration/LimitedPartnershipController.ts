@@ -131,11 +131,11 @@ class LimitedPartnershipController extends AbstractController {
           result.submissionId
         );
 
-        const cache = this.cacheService.removeDataFromCache(
+        const cacheUpdated = this.cacheService.removeDataFromCache(
           request.signedCookies,
           `${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`
         );
-        response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
+        response.cookie(APPLICATION_CACHE_KEY, cacheUpdated, cookieOptions);
 
         response.redirect(url);
       } catch (error) {
