@@ -8,6 +8,8 @@
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
+      {% include "includes/errors.njk" %}
+      
       <h1 class="govuk-heading-xl">{{ pageTitle }}</h1>
       {{ govukSummaryList({
         classes: "govuk-!-margin-bottom-9",

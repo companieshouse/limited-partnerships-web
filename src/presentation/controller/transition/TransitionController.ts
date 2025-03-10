@@ -25,7 +25,6 @@ class TransitionController extends AbstractController {
 
         response.render(super.templateName(pageRouting.currentUrl), super.makeProps(pageRouting, { cache }, null));
       } catch (error) {
-        console.log("ercode:" + error);
         next(error);
       }
     };
@@ -37,13 +36,22 @@ class TransitionController extends AbstractController {
         const { tokens } = super.extract(request);
         const { pageType } = super.extract(request);
         const pageRouting = super.getRouting(transitionRouting, pageType, request);
-        const companyNumber = "LP123456";
 
-        const company = await this.companyService.getCompanyProfile(tokens, companyNumber);
+        const cache = this.cacheService.getDataFromCache(request.signedCookies);
+        const result = await this.companyService.getCompanyProfile(tokens, cache[`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}company_number`]);
+
+        if (result.errors) {
+          response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(pageRouting, null, result.errors)
+          );
+
+          return;
+        }
 
         response.render(
           super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { company: company.companyProfile }, null)
+          super.makeProps(pageRouting, { company: result.companyProfile }, null)
         );
       } catch (error) {
         next(error);
@@ -64,7 +72,7 @@ class TransitionController extends AbstractController {
         if (result.errors) {
           response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { companyProfile: result.companyProfile }, result.errors)
+            super.makeProps(pageRouting, { company_number }, result.errors)
           );
 
           return;
@@ -77,7 +85,6 @@ class TransitionController extends AbstractController {
 
         response.redirect(pageRouting.nextUrl);
       } catch (error) {
-        console.error(error);
         next(error);
       }
     };
