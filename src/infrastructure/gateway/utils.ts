@@ -43,7 +43,10 @@ const isDateValid = (date: string): boolean => {
   }
 
   const dateObj = new Date(date);
-  return dateObj instanceof Date && !isNaN(dateObj.getTime());
+  const now = new Date();
+  const dateInPast = dateObj < now;
+
+  return dateObj instanceof Date && !isNaN(dateObj.getTime()) && dateInPast;
 };
 
 const daysInMonth = (month: number) => {
