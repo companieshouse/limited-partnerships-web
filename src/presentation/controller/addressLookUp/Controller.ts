@@ -43,14 +43,13 @@ class AddressLookUpController extends AbstractController {
           );
         }
 
-        const cache = this.cacheService.getDataFromCache(request.signedCookies);
         const cacheById = this.cacheService.getDataFromCacheById(request.signedCookies, ids.transactionId);
 
-        const addressList = await this.getAddressList(pageRouting, pageType, ids.transactionId, cache, tokens);
+        const addressList = await this.getAddressList(pageRouting, pageType, ids.transactionId, cacheById, tokens);
 
         response.render(
           super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { limitedPartnership, addressList, cache: { ...cache, ...cacheById } }, null)
+          super.makeProps(pageRouting, { limitedPartnership, addressList, cache: { ...cacheById } }, null)
         );
       } catch (error) {
         next(error);
@@ -68,12 +67,11 @@ class AddressLookUpController extends AbstractController {
     let addressList: Address[] = [];
 
     if (this.isAddressListRequired(pageRouting.pageType)) {
-      const transactionCache = cache[transactionId];
       let postcode = "";
       if (pageType === AddressLookUpPageType.choosePrincipalPlaceOfBusinessAddress) {
-        postcode = transactionCache[this.PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CACHE_KEY]?.postal_code;
+        postcode = cache[this.PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CACHE_KEY]?.postal_code;
       } else {
-        postcode = transactionCache[this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY]?.postal_code;
+        postcode = cache[this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY]?.postal_code;
       }
 
       addressList = await this.addressService.getAddressListForPostcode(tokens, postcode);

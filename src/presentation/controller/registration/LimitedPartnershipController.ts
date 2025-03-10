@@ -44,22 +44,16 @@ class LimitedPartnershipController extends AbstractController {
         }
 
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
-        const cacheById = this.cacheService.getDataFromCacheById(request.signedCookies, ids.transactionId);
 
         const redirect = this.conditionalRedirecting(request, response, pageType, limitedPartnership);
 
         if (!redirect) {
           response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(
-              pageRouting,
-              { limitedPartnership, generalPartner, limitedPartner, cache: { ...cache, ...cacheById }, ids },
-              null
-            )
+            super.makeProps(pageRouting, { limitedPartnership, generalPartner, limitedPartner, cache, ids }, null)
           );
         }
       } catch (error) {
-        console.log(error);
         next(error);
       }
     };
