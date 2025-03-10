@@ -4,11 +4,11 @@
 
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 
+
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
       <h1 class="govuk-heading-xl">{{ pageTitle }}</h1>
-
       {{ govukSummaryList({
         classes: "govuk-!-margin-bottom-9",
         rows: [
@@ -17,7 +17,7 @@
               text: i18n.confirmLimitedPartnership.name
             },
             value: {
-              text: ""
+              text: props.data.company.companyName
             }
           },
           {
@@ -25,7 +25,7 @@
               text: i18n.confirmLimitedPartnership.number
             },
             value: {
-              text: ""
+              text: props.data.company.companyNumber
             }
           },
           {
@@ -33,7 +33,7 @@
               text: i18n.confirmLimitedPartnership.date
             },
             value: {
-              text: ""
+              text: props.data.company.dateOfCreation
             }
           }
         ]

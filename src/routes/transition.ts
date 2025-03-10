@@ -24,6 +24,6 @@ export const transitionEndpoints = (router: Router, dependencies: IDependencies)
   router.get(
     CONFIRM_LIMITED_PARTNERSHIP_URL,
     authentication,
-    dependencies.transitionController.getPageRouting()
+    dependencies.transitionController.getConfirmPage()
   );
 };

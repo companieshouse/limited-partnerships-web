@@ -26,6 +26,26 @@ class TransitionController extends AbstractController {
     };
   }
 
+  getConfirmPage(): RequestHandler {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { tokens } = super.extract(request);
+        const { pageType } = super.extract(request);
+        const pageRouting = super.getRouting(transitionRouting, pageType, request);
+        const companyNumber = "LP123456";
+
+        const company = await this.companyService.getCompanyProfile(tokens, companyNumber);
+
+        response.render(
+          super.templateName(pageRouting.currentUrl),
+          super.makeProps(pageRouting, { company: company.companyProfile }, null)
+        );
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
   checkCompanyNumber(): RequestHandler {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
@@ -39,7 +59,7 @@ class TransitionController extends AbstractController {
         if (result.errors) {
           response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { company_number }, result.errors)
+            super.makeProps(pageRouting, { companyProfile: result.companyProfile }, result.errors)
           );
 
           return;
