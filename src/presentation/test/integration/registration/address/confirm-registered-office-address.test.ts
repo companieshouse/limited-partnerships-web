@@ -1,8 +1,15 @@
 import request from "supertest";
 import enTranslationText from "../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../locales/cy/translations.json";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../../../presentation/test/utils";
-import { CONFIRM_REGISTERED_OFFICE_ADDRESS_URL, POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL } from "../../../../../presentation/controller/addressLookUp/url";
+import {
+  getUrl,
+  setLocalesEnabled,
+  testTranslations
+} from "../../../../../presentation/test/utils";
+import {
+  CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
+  POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL
+} from "../../../../../presentation/controller/addressLookUp/url";
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import * as config from "../../../../../config";
@@ -16,8 +23,8 @@ describe("Confirm Registered Office Address Page", () => {
   beforeEach(() => {
     setLocalesEnabled(false);
     appDevDependencies.cacheRepository.feedCache({
-      [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`]:
-        {
+      [appDevDependencies.transactionGateway.transactionId]: {
+        [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`]: {
           postal_code: "ST6 3LJ",
           premises: "4",
           address_line_1: "line 1",
@@ -26,15 +33,14 @@ describe("Confirm Registered Office Address Page", () => {
           region: "region",
           country: "GB-ENG"
         }
+      }
     });
 
     const limitedPartnership = new LimitedPartnershipBuilder()
       .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
       .build();
 
-    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
-      limitedPartnership
-    ]);
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
   });
 
   describe("GET Confirm Registered Office Address Page", () => {
@@ -44,10 +50,7 @@ describe("Confirm Registered Office Address Page", () => {
       const res = await request(app).get(URL + "?lang=en");
 
       expect(res.status).toBe(200);
-      testTranslations(
-        res.text,
-        enTranslationText.address.confirm.registeredOfficeAddress
-      );
+      testTranslations(res.text, enTranslationText.address.confirm.registeredOfficeAddress);
       expect(res.text).not.toContain("WELSH -");
 
       expect(res.text).toContain("4 Line 1");
@@ -61,8 +64,8 @@ describe("Confirm Registered Office Address Page", () => {
     describe("Map Country Code", () => {
       it("should return Wales if country code is GB-WLS", async () => {
         appDevDependencies.cacheRepository.feedCache({
-          [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`]:
-            {
+          [appDevDependencies.transactionGateway.transactionId]: {
+            [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`]: {
               postal_code: "CF3 0AD",
               premises: "261",
               address_line_1: "OAKLANDS CLOSE",
@@ -70,6 +73,7 @@ describe("Confirm Registered Office Address Page", () => {
               locality: "CARDIFF",
               country: "GB-WLS"
             }
+          }
         });
 
         const res = await request(app).get(URL);
@@ -80,8 +84,8 @@ describe("Confirm Registered Office Address Page", () => {
 
       it("should return Scotland if country code is GB-SCT", async () => {
         appDevDependencies.cacheRepository.feedCache({
-          [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`]:
-            {
+          [appDevDependencies.transactionGateway.transactionId]: {
+            [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`]: {
               postal_code: "IV18 0JT",
               premises: "1",
               address_line_1: "MAIN AVENUE",
@@ -89,6 +93,7 @@ describe("Confirm Registered Office Address Page", () => {
               locality: "INVERGORDON",
               country: "GB-SCT"
             }
+          }
         });
 
         const res = await request(app).get(URL);
@@ -99,8 +104,8 @@ describe("Confirm Registered Office Address Page", () => {
 
       it("should return Northern Ireland if country code is GB-NIR", async () => {
         appDevDependencies.cacheRepository.feedCache({
-          [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`]:
-            {
+          [appDevDependencies.transactionGateway.transactionId]: {
+            [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`]: {
               postal_code: "BT12 6QH",
               premises: "11E",
               address_line_1: "GLENMACHAN CLOSE",
@@ -108,6 +113,7 @@ describe("Confirm Registered Office Address Page", () => {
               locality: "BELFAST",
               country: "GB-NIR"
             }
+          }
         });
 
         const res = await request(app).get(URL);
@@ -123,21 +129,16 @@ describe("Confirm Registered Office Address Page", () => {
       const res = await request(app).get(URL + "?lang=cy");
 
       expect(res.status).toBe(200);
-      testTranslations(
-        res.text,
-        cyTranslationText.address.confirm.registeredOfficeAddress
-      );
+      testTranslations(res.text, cyTranslationText.address.confirm.registeredOfficeAddress);
     });
   });
 
   describe("POST Confirm Registered Office Address Page", () => {
     it("should redirect to the next page", async () => {
-      const res = await request(app)
-        .post(URL)
-        .send({
-          pageType: AddressPageType.confirmRegisteredOfficeAddress,
-          address: `{"postal_code": "ST6 3LJ","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": "GB-ENG"}`
-        });
+      const res = await request(app).post(URL).send({
+        pageType: AddressPageType.confirmRegisteredOfficeAddress,
+        address: `{"postal_code": "ST6 3LJ","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": "GB-ENG"}`
+      });
 
       const redirectUrl = getUrl(POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL);
       expect(res.status).toBe(302);
@@ -147,11 +148,9 @@ describe("Confirm Registered Office Address Page", () => {
     it("should show error message if address is not provided", async () => {
       appDevDependencies.cacheRepository.feedCache({});
 
-      const res = await request(app)
-        .post(URL)
-        .send({
-          pageType: AddressPageType.confirmRegisteredOfficeAddress
-        });
+      const res = await request(app).post(URL).send({
+        pageType: AddressPageType.confirmRegisteredOfficeAddress
+      });
 
       expect(res.status).toBe(200);
       expect(res.text).toContain("You must provide an address");
@@ -162,9 +161,7 @@ describe("Confirm Registered Office Address Page", () => {
         .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
         .build();
 
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
-        limitedPartnership
-      ]);
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
       const apiErrors: ApiErrors = {
         errors: {
@@ -174,12 +171,10 @@ describe("Confirm Registered Office Address Page", () => {
 
       appDevDependencies.limitedPartnershipGateway.feedErrors(apiErrors);
 
-      const res = await request(app)
-        .post(URL)
-        .send({
-          pageType: AddressPageType.confirmRegisteredOfficeAddress,
-          address: `{"postal_code": "ST6 3LJ","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": "GB-ENG"}`
-        });
+      const res = await request(app).post(URL).send({
+        pageType: AddressPageType.confirmRegisteredOfficeAddress,
+        address: `{"postal_code": "ST6 3LJ","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": "GB-ENG"}`
+      });
 
       expect(res.status).toBe(200);
       expect(res.text).toContain("must not be null");

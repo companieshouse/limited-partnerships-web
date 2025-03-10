@@ -11,6 +11,12 @@ class CacheService {
     return this.cacheRepository.getData(cookies);
   }
 
+  getDataFromCacheById(cookies: Record<string, any>, transactionId: string): Record<string, any> {
+    const cache = this.getDataFromCache(cookies);
+
+    return cache[transactionId] || {};
+  }
+
   addDataToCache(cookies: Record<string, any>, data: Record<string, any>): string {
     return this.cacheRepository.addData(cookies, data);
   }

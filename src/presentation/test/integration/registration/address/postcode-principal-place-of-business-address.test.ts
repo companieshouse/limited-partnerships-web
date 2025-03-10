@@ -15,7 +15,10 @@ import {
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
 import AddressPageType from "../../../../controller/addressLookUp/PageType";
-import { APPLICATION_CACHE_KEY, APPLICATION_CACHE_KEY_PREFIX_REGISTRATION } from "../../../../../config/constants";
+import {
+  APPLICATION_CACHE_KEY,
+  APPLICATION_CACHE_KEY_PREFIX_REGISTRATION
+} from "../../../../../config/constants";
 
 describe("Postcode Principal Place Of Business Address Page", () => {
   const URL = getUrl(POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL);
@@ -43,7 +46,10 @@ describe("Postcode Principal Place Of Business Address Page", () => {
       expect(res.text).toContain(
         `${enTranslationText.address.findPostcode.principalPlaceOfBusiness.whatIsPrincipalPlaceOfBusiness} - ${enTranslationText.service} - GOV.UK`
       );
-      testTranslations(res.text, enTranslationText.address.findPostcode, ["registeredOfficeAddress", "errorMessages"]);
+      testTranslations(res.text, enTranslationText.address.findPostcode, [
+        "registeredOfficeAddress",
+        "errorMessages"
+      ]);
       expect(res.text).not.toContain("WELSH -");
     });
 
@@ -55,7 +61,10 @@ describe("Postcode Principal Place Of Business Address Page", () => {
       expect(res.text).toContain(
         `${cyTranslationText.address.findPostcode.principalPlaceOfBusiness.whatIsPrincipalPlaceOfBusiness} - ${cyTranslationText.service} - GOV.UK`
       );
-      testTranslations(res.text, cyTranslationText.address.findPostcode, ["registeredOfficeAddress", "errorMessages"]);
+      testTranslations(res.text, cyTranslationText.address.findPostcode, [
+        "registeredOfficeAddress",
+        "errorMessages"
+      ]);
     });
   });
 
@@ -72,13 +81,15 @@ describe("Postcode Principal Place Of Business Address Page", () => {
 
       expect(appDevDependencies.cacheRepository.cache).toEqual({
         [APPLICATION_CACHE_KEY]: {
-          [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}principal_place_of_business_address`]: {
-            postal_code: "ST6 3LJ",
-            address_line_1: "",
-            address_line_2: "",
-            locality: "",
-            country: "",
-            premises: ""
+          [appDevDependencies.transactionGateway.transactionId]: {
+            [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}principal_place_of_business_address`]: {
+              postal_code: "ST6 3LJ",
+              address_line_1: "",
+              address_line_2: "",
+              locality: "",
+              country: "",
+              premises: ""
+            }
           }
         }
       });
@@ -98,13 +109,15 @@ describe("Postcode Principal Place Of Business Address Page", () => {
 
       expect(appDevDependencies.cacheRepository.cache).toEqual({
         [APPLICATION_CACHE_KEY]: {
-          [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}principal_place_of_business_address`]: {
-            postal_code: "ST6 3LJ",
-            premises: "2",
-            address_line_1: "DUNCALF STREET",
-            address_line_2: "",
-            locality: "STOKE-ON-TRENT",
-            country: "GB-ENG"
+          [appDevDependencies.transactionGateway.transactionId]: {
+            [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}principal_place_of_business_address`]: {
+              postal_code: "ST6 3LJ",
+              premises: "2",
+              address_line_1: "DUNCALF STREET",
+              address_line_2: "",
+              locality: "STOKE-ON-TRENT",
+              country: "GB-ENG"
+            }
           }
         }
       });
