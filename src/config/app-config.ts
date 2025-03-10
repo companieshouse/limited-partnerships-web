@@ -3,14 +3,11 @@ import express from "express";
 import Redis from "ioredis";
 import * as nunjucks from "nunjucks";
 import * as path from "path";
-import { createSummaryListLink } from "../utils/change-link";
 
-import {
-  SessionMiddleware,
-  SessionStore,
-} from "@companieshouse/node-session-handler";
+import { SessionMiddleware, SessionStore } from "@companieshouse/node-session-handler";
 import { CsrfProtectionMiddleware } from "@companieshouse/web-security-node";
 
+import { createSummaryListLink } from "../utils/change-link";
 import * as config from "./constants";
 import { localisationMiddleware } from "../middlewares";
 import { serviceAvailabilityMiddleware } from "../middlewares/service-availability.middleware";
@@ -26,11 +23,11 @@ export const appConfig = (app: express.Application) => {
       path.join(__dirname, "../views"),
       "node_modules/@companieshouse",
       "node_modules/govuk-frontend",
-      "node_modules/govuk-frontend/components",
+      "node_modules/govuk-frontend/components"
     ],
     {
       autoescape: true,
-      express: app,
+      express: app
     }
   );
 
@@ -38,9 +35,15 @@ export const appConfig = (app: express.Application) => {
   nunjucksEnv.addGlobal("MATOMO_ASSET_PATH", `//${config.CDN_HOST}`);
   nunjucksEnv.addGlobal("PIWIK_REGISTRATION_START_GOAL_ID", config.PIWIK_REGISTRATION_START_GOAL_ID);
   nunjucksEnv.addGlobal("PIWIK_REGISTRATION_LP_GOAL_ID", config.PIWIK_REGISTRATION_LP_GOAL_ID);
-  nunjucksEnv.addGlobal("PIWIK_REGISTRATION_PRIVATE_FUND_LP_GOAL_ID", config.PIWIK_REGISTRATION_PRIVATE_FUND_LP_GOAL_ID);
+  nunjucksEnv.addGlobal(
+    "PIWIK_REGISTRATION_PRIVATE_FUND_LP_GOAL_ID",
+    config.PIWIK_REGISTRATION_PRIVATE_FUND_LP_GOAL_ID
+  );
   nunjucksEnv.addGlobal("PIWIK_REGISTRATION_SCOTTISH_LP_GOAL_ID", config.PIWIK_REGISTRATION_SCOTTISH_LP_GOAL_ID);
-  nunjucksEnv.addGlobal("PIWIK_REGISTRATION_SCOTTISH_PRIVATE_FUND_LP_GOAL_ID", config.PIWIK_REGISTRATION_SCOTTISH_PRIVATE_FUND_LP_GOAL_ID);
+  nunjucksEnv.addGlobal(
+    "PIWIK_REGISTRATION_SCOTTISH_PRIVATE_FUND_LP_GOAL_ID",
+    config.PIWIK_REGISTRATION_SCOTTISH_PRIVATE_FUND_LP_GOAL_ID
+  );
   nunjucksEnv.addGlobal("PIWIK_SITE_ID", config.PIWIK_SITE_ID);
   nunjucksEnv.addGlobal("PIWIK_URL", config.PIWIK_URL);
   nunjucksEnv.addGlobal("SERVICE_NAME", config.SERVICE_NAME);
@@ -48,7 +51,7 @@ export const appConfig = (app: express.Application) => {
 
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
-  app.use(cookieParser());
+  app.use(cookieParser(config.COOKIE_SECRET));
 
   app.set("view engine", "njk");
 
@@ -60,18 +63,17 @@ export const appConfig = (app: express.Application) => {
     cookieName: "__SID",
     cookieSecret: config.COOKIE_SECRET,
     cookieDomain: config.COOKIE_DOMAIN,
-    cookieTimeToLiveInSeconds: parseInt(config.DEFAULT_SESSION_EXPIRATION, 10),
+    cookieTimeToLiveInSeconds: parseInt(config.DEFAULT_SESSION_EXPIRATION, 10)
   };
-  const sessionStore = new SessionStore(
-    new Redis(`redis://${config.CACHE_SERVER}`)
-  );
+  const sessionStore = new SessionStore(new Redis(`redis://${config.CACHE_SERVER}`));
+
   app.use(SessionMiddleware(cookieConfig, sessionStore));
 
   // csrf middleware
   const csrfProtectionMiddleware = CsrfProtectionMiddleware({
     sessionStore,
     enabled: true,
-    sessionCookieName: config.COOKIE_NAME,
+    sessionCookieName: config.COOKIE_NAME
   });
   app.use(csrfProtectionMiddleware);
 };

@@ -17,8 +17,8 @@ describe("Confirm Principal Place Of Business Address Page", () => {
   beforeEach(() => {
     setLocalesEnabled(false);
     appDevDependencies.cacheRepository.feedCache({
-      [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}principal_place_of_business_address`]:
-        {
+      [appDevDependencies.transactionGateway.transactionId]: {
+        [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}principal_place_of_business_address`]: {
           postal_code: "ST6 3LJ",
           premises: "4",
           address_line_1: "line 1",
@@ -27,15 +27,14 @@ describe("Confirm Principal Place Of Business Address Page", () => {
           region: "region",
           country: "GB-ENG"
         }
+      }
     });
 
     const limitedPartnership = new LimitedPartnershipBuilder()
       .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
       .build();
 
-    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
-      limitedPartnership
-    ]);
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
   });
 
   describe("GET Confirm Principal Place Of Business Address Page", () => {
@@ -45,10 +44,7 @@ describe("Confirm Principal Place Of Business Address Page", () => {
       const res = await request(app).get(URL + "?lang=en");
 
       expect(res.status).toBe(200);
-      testTranslations(
-        res.text,
-        enTranslationText.address.confirm.principalPlaceOfBusinessAddress
-      );
+      testTranslations(res.text, enTranslationText.address.confirm.principalPlaceOfBusinessAddress);
       expect(res.text).not.toContain("WELSH -");
 
       expect(res.text).toContain("4 Line 1");
@@ -65,22 +61,16 @@ describe("Confirm Principal Place Of Business Address Page", () => {
       const res = await request(app).get(URL + "?lang=cy");
 
       expect(res.status).toBe(200);
-      testTranslations(
-        res.text,
-        cyTranslationText.address.confirm.principalPlaceOfBusinessAddress
-      );
+      testTranslations(res.text, cyTranslationText.address.confirm.principalPlaceOfBusinessAddress);
     });
   });
 
   describe("POST Confirm Principal Place Of Business Address Page", () => {
-
     it("should redirect to the next page", async () => {
-      const res = await request(app)
-        .post(URL)
-        .send({
-          pageType: AddressPageType.confirmPrincipalPlaceOfBusinessAddress,
-          address: `{"postal_code": "ST6 3LJ","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": "GB-ENG"}`
-        });
+      const res = await request(app).post(URL).send({
+        pageType: AddressPageType.confirmPrincipalPlaceOfBusinessAddress,
+        address: `{"postal_code": "ST6 3LJ","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": "GB-ENG"}`
+      });
 
       const redirectUrl = getUrl(TERM_URL);
       expect(res.status).toBe(302);
@@ -90,11 +80,9 @@ describe("Confirm Principal Place Of Business Address Page", () => {
     it("should show error message if address is not provided", async () => {
       appDevDependencies.cacheRepository.feedCache({});
 
-      const res = await request(app)
-        .post(URL)
-        .send({
-          pageType: AddressPageType.confirmPrincipalPlaceOfBusinessAddress
-        });
+      const res = await request(app).post(URL).send({
+        pageType: AddressPageType.confirmPrincipalPlaceOfBusinessAddress
+      });
 
       expect(res.status).toBe(200);
       expect(res.text).toContain("You must provide an address");
@@ -105,9 +93,7 @@ describe("Confirm Principal Place Of Business Address Page", () => {
         .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
         .build();
 
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
-        limitedPartnership
-      ]);
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
       const apiErrors: ApiErrors = {
         errors: {
@@ -117,12 +103,10 @@ describe("Confirm Principal Place Of Business Address Page", () => {
 
       appDevDependencies.limitedPartnershipGateway.feedErrors(apiErrors);
 
-      const res = await request(app)
-        .post(URL)
-        .send({
-          pageType: AddressPageType.confirmPrincipalPlaceOfBusinessAddress,
-          address: `{"postal_code": "ST6 3LJ","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": "GB-ENG"}`
-        });
+      const res = await request(app).post(URL).send({
+        pageType: AddressPageType.confirmPrincipalPlaceOfBusinessAddress,
+        address: `{"postal_code": "ST6 3LJ","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": "GB-ENG"}`
+      });
 
       expect(res.status).toBe(200);
       expect(res.text).toContain("must not be null");

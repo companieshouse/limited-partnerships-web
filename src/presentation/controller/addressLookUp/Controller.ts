@@ -1,6 +1,5 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
 import escape from "escape-html";
-import { Session } from "@companieshouse/node-session-handler";
 import { Address } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import AddressService from "../../../application/service/AddressLookUpService";
@@ -8,17 +7,15 @@ import addresssRouting, { addressLookUpRouting } from "./Routing";
 import AbstractController from "../AbstractController";
 import AddressLookUpPageType from "./PageType";
 import CacheService from "../../../application/service/CacheService";
-import { APPLICATION_CACHE_KEY_PREFIX_REGISTRATION } from "../../../config/constants";
+import { APPLICATION_CACHE_KEY, cookieOptions } from "../../../config/constants";
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import UIErrors from "../../../domain/entities/UIErrors";
 import { PageRouting, pageRoutingDefault } from "../PageRouting";
 import PageType from "../PageType";
 
 class AddressLookUpController extends AbstractController {
-  public readonly REGISTERED_OFFICE_ADDRESS_CACHE_KEY =
-    APPLICATION_CACHE_KEY_PREFIX_REGISTRATION + "registered_office_address";
-  public readonly PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CACHE_KEY =
-    APPLICATION_CACHE_KEY_PREFIX_REGISTRATION + "principal_place_of_business_address";
+  public readonly REGISTERED_OFFICE_ADDRESS_CACHE_KEY = "registered_office_address";
+  public readonly PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CACHE_KEY = "principal_place_of_business_address";
 
   constructor(
     private addressService: AddressService,
@@ -33,7 +30,7 @@ class AddressLookUpController extends AbstractController {
       try {
         this.addressService.setI18n(response.locals.i18n);
 
-        const { session, tokens, pageType, ids } = super.extract(request);
+        const { tokens, pageType, ids } = super.extract(request);
         const pageRouting = super.getRouting(addresssRouting, pageType, request);
 
         let limitedPartnership = {};
@@ -46,13 +43,14 @@ class AddressLookUpController extends AbstractController {
           );
         }
 
-        const cache = await this.cacheService.getDataFromCache(session);
+        const cache = this.cacheService.getDataFromCache(request.signedCookies);
+        const cacheById = this.cacheService.getDataFromCacheById(request.signedCookies, ids.transactionId);
 
-        const addressList = await this.getAddressList(pageRouting, pageType, cache, tokens);
+        const addressList = await this.getAddressList(pageRouting, pageType, ids.transactionId, cache, tokens);
 
         response.render(
           super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { limitedPartnership, addressList, cache }, null)
+          super.makeProps(pageRouting, { limitedPartnership, addressList, cache: { ...cache, ...cacheById } }, null)
         );
       } catch (error) {
         next(error);
@@ -63,17 +61,19 @@ class AddressLookUpController extends AbstractController {
   private async getAddressList(
     pageRouting: PageRouting,
     pageType: PageType,
+    transactionId: string,
     cache: Record<string, any>,
     tokens: { access_token: string; refresh_token: string }
   ): Promise<Address[]> {
     let addressList: Address[] = [];
 
     if (this.isAddressListRequired(pageRouting.pageType)) {
+      const transactionCache = cache[transactionId];
       let postcode = "";
       if (pageType === AddressLookUpPageType.choosePrincipalPlaceOfBusinessAddress) {
-        postcode = cache[this.PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CACHE_KEY].postal_code;
+        postcode = transactionCache[this.PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CACHE_KEY]?.postal_code;
       } else {
-        postcode = cache[this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY].postal_code;
+        postcode = transactionCache[this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY]?.postal_code;
       }
 
       addressList = await this.addressService.getAddressListForPostcode(tokens, postcode);
@@ -94,7 +94,7 @@ class AddressLookUpController extends AbstractController {
       try {
         this.addressService.setI18n(response.locals.i18n);
 
-        const { session, tokens, ids } = super.extract(request);
+        const { tokens, ids } = super.extract(request);
         const { postal_code, premises } = request.body;
         const pageType = super.extractPageTypeOrThrowError(request, AddressLookUpPageType);
         const pageRouting = super.getRouting(addressLookUpRouting, pageType, request);
@@ -120,10 +120,10 @@ class AddressLookUpController extends AbstractController {
           return;
         }
 
-        await this.addAddressToCache(pageType, session, address);
+        this.addAddressToCache(pageType, ids.transactionId, address, request, response);
 
         // if exact match - redirect to confirm page
-        if (address.postal_code && address.premises && address.address_line_1) {
+        if (address?.postal_code && address?.premises && address?.address_line_1) {
           const url = super.insertIdsInUrl(pageRouting?.data?.confirmAddressUrl, ids.transactionId, ids.submissionId);
           response.redirect(url);
           return;
@@ -137,15 +137,27 @@ class AddressLookUpController extends AbstractController {
     };
   }
 
-  private async addAddressToCache(pageType: any, session: Session, address: Address) {
+  private addAddressToCache(
+    pageType: any,
+    transactionId: string,
+    address: Address,
+    request: Request,
+    response: Response
+  ) {
     if (pageType === AddressLookUpPageType.postcodePrincipalPlaceOfBusinessAddress) {
-      await this.cacheService.addDataToCache(session, {
-        [this.PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CACHE_KEY]: address
+      const cache = this.cacheService.addDataToCache(request.signedCookies, {
+        [transactionId]: {
+          [this.PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CACHE_KEY]: address
+        }
       });
+      response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
     } else {
-      await this.cacheService.addDataToCache(session, {
-        [this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY]: address
+      const cache = this.cacheService.addDataToCache(request.signedCookies, {
+        [transactionId]: {
+          [this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY]: address
+        }
       });
+      response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
     }
   }
 
@@ -215,10 +227,10 @@ class AddressLookUpController extends AbstractController {
       try {
         this.addressService.setI18n(response.locals.i18n);
 
-        const { session, tokens, ids } = super.extract(request);
+        const { tokens, ids } = super.extract(request);
         const pageType = super.extractPageTypeOrThrowError(request, AddressLookUpPageType);
         const pageRouting = super.getRouting(addressLookUpRouting, pageType, request);
-        const cache = await this.cacheService.getDataFromCache(session);
+        const cache = this.cacheService.getDataFromCache(request.signedCookies);
 
         if (!request.body?.address) {
           await this.handleAddressNotFound(tokens, ids.transactionId, ids.submissionId, pageRouting, cache, response);
@@ -253,7 +265,8 @@ class AddressLookUpController extends AbstractController {
         }
 
         // clear address from cache
-        await this.cacheService.removeDataFromCache(session, this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY);
+        const cacheRemoved = this.cacheService.removeDataFromCache(request.signedCookies, ids.transactionId);
+        response.cookie(APPLICATION_CACHE_KEY, cacheRemoved, cookieOptions);
 
         response.redirect(pageRouting.nextUrl);
       } catch (error) {
@@ -301,21 +314,17 @@ class AddressLookUpController extends AbstractController {
     );
   }
 
-  private async saveAndRedirectToNextPage(
-    request: Request,
-    response: Response<any, Record<string, any>>,
-    dataToStore: any
-  ) {
-    const session = request.session as Session;
+  private saveAndRedirectToNextPage(request: Request, response: Response<any, Record<string, any>>, dataToStore: any) {
     const pageType = super.extractPageTypeOrThrowError(request, AddressLookUpPageType);
 
     const pageRouting = super.getRouting(addressLookUpRouting, pageType, request);
 
     const cacheKey = this.getCacheKey(pageType);
 
-    await this.cacheService.addDataToCache(session, {
+    const cache = this.cacheService.addDataToCache(request.signedCookies, {
       [cacheKey]: dataToStore
     });
+    response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
 
     response.redirect(pageRouting.nextUrl);
   }

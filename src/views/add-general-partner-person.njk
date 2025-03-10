@@ -118,6 +118,7 @@
         {{ govukDateInput({
           id: "date_of_birth",
           namePrefix: "date_of_birth",
+          errorMessage: props.errors.date_of_birth if props.errors,
           fieldset: {
             legend: {
               text: i18n.addGeneralPartnerPersonPage.dateOfBirth,
@@ -173,11 +174,15 @@
         {% include "includes/nationalities.njk" %}
 
         {{ govukCheckboxes({
+          id: "not_disqualified_statement_checked",
           name: "not_disqualified_statement_checked",
+          value: props.data.generalPartner.data.not_disqualified_statement_checked,
+          errorMessage: props.errors.not_disqualified_statement_checked if props.errors,
           classes: "govuk-!-margin-top-6",
           fieldset: {
             legend: {
               text: i18n.addGeneralPartnerPersonPage.disqualificationStatementLegend,
+              isPageHeading: false,
               classes: "govuk-visually-hidden"
             }
           },
@@ -185,6 +190,7 @@
             {
               value: "true",
               text: i18n.addGeneralPartnerPersonPage.disqualificationStatement,
+              checked: props.data.generalPartner.data.not_disqualified_statement_checked,
               attributes: {
                 required: true
               }

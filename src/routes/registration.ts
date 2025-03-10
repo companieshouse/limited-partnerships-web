@@ -18,7 +18,8 @@ import {
   CHECK_YOUR_ANSWERS_URL,
   NAME_WITH_IDS_URL,
   TERM_URL,
-  APPLICATION_SUBMITTED_URL
+  APPLICATION_SUBMITTED_URL,
+  ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL
 } from "../presentation/controller/registration/url";
 
 export const registrationEndpoints = (
@@ -105,8 +106,7 @@ export const registrationEndpoints = (
   router.post(
     GENERAL_PARTNER_CHOICE_URL,
     authentication,
-    // to be changed - use different method
-    dependencies.limitedPartnershipController.redirectAndCacheSelection()
+    dependencies.limitedPartnershipController.generalPartnerChoice()
   );
 
   router.get(
@@ -116,6 +116,17 @@ export const registrationEndpoints = (
   );
   router.post(
     ADD_GENERAL_PARTNER_PERSON_URL,
+    authentication,
+    dependencies.generalPartnerController.createGeneralPartner()
+  );
+
+  router.get(
+    ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
+    authentication,
+    dependencies.generalPartnerController.getPageRouting()
+  );
+  router.post(
+    ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
     authentication,
     dependencies.generalPartnerController.createGeneralPartner()
   );

@@ -79,13 +79,15 @@ describe("Postcode Registered Office Address Page", () => {
 
       expect(appDevDependencies.cacheRepository.cache).toEqual({
         [config.APPLICATION_CACHE_KEY]: {
-          [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`]: {
-            postal_code: "ST6 3LJ",
-            address_line_1: "",
-            address_line_2: "",
-            locality: "",
-            country: "",
-            premises: ""
+          [appDevDependencies.transactionGateway.transactionId]: {
+            ["registered_office_address"]: {
+              postal_code: "ST6 3LJ",
+              address_line_1: "",
+              address_line_2: "",
+              locality: "",
+              country: "",
+              premises: ""
+            }
           }
         }
       });
@@ -105,13 +107,15 @@ describe("Postcode Registered Office Address Page", () => {
 
       expect(appDevDependencies.cacheRepository.cache).toEqual({
         [config.APPLICATION_CACHE_KEY]: {
-          [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`]: {
-            postal_code: "ST6 3LJ",
-            premises: "2",
-            address_line_1: "DUNCALF STREET",
-            address_line_2: "",
-            locality: "STOKE-ON-TRENT",
-            country: "GB-ENG"
+          [appDevDependencies.transactionGateway.transactionId]: {
+            ["registered_office_address"]: {
+              postal_code: "ST6 3LJ",
+              premises: "2",
+              address_line_1: "DUNCALF STREET",
+              address_line_2: "",
+              locality: "STOKE-ON-TRENT",
+              country: "GB-ENG"
+            }
           }
         }
       });

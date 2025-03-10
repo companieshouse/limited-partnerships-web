@@ -2,10 +2,7 @@ import request from "supertest";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
-import {
-  EMAIL_URL,
-  WHERE_IS_THE_JURISDICTION_URL
-} from "../../../controller/registration/url";
+import { EMAIL_URL, WHERE_IS_THE_JURISDICTION_URL } from "../../../controller/registration/url";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
@@ -29,9 +26,7 @@ describe("Email Page", () => {
 
       expect(res.status).toBe(200);
       testTranslations(res.text, enTranslationText.emailPage);
-      expect(res.text).toContain(
-        `${enTranslationText.emailPage.whatIsEmail} - ${enTranslationText.service} - GOV.UK`
-      );
+      expect(res.text).toContain(`${enTranslationText.emailPage.whatIsEmail} - ${enTranslationText.service} - GOV.UK`);
       expect(res.text).not.toContain("WELSH -");
     });
 
@@ -40,9 +35,7 @@ describe("Email Page", () => {
       const res = await request(app).get(URL + "?lang=cy");
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(
-        `${cyTranslationText.emailPage.whatIsEmail} - ${cyTranslationText.service} - GOV.UK`
-      );
+      expect(res.text).toContain(`${cyTranslationText.emailPage.whatIsEmail} - ${cyTranslationText.service} - GOV.UK`);
       testTranslations(res.text, cyTranslationText.emailPage);
       expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
     });
@@ -50,9 +43,7 @@ describe("Email Page", () => {
     it("should load the email page with data from api", async () => {
       const limitedPartnership = new LimitedPartnershipBuilder().build();
 
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
-        limitedPartnership
-      ]);
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
       const res = await request(app).get(URL);
 
@@ -70,9 +61,7 @@ describe("Email Page", () => {
         .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
         .build();
 
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
-        limitedPartnership
-      ]);
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.email,
@@ -88,9 +77,7 @@ describe("Email Page", () => {
         .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
         .build();
 
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
-        limitedPartnership
-      ]);
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
       const apiErrors: ApiErrors = {
         errors: { "data.email": "must be a well-formed email address" }

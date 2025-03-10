@@ -13,11 +13,29 @@ import {
 import AddressPageType from "../../../../controller/addressLookUp/PageType";
 import enTranslationText from "../../../../../../locales/en/translations.json";
 import { getUrl } from "../../../utils";
+import CacheRepository from "../../../../../infrastructure/repository/CacheRepository";
 
 jest.mock("@companieshouse/api-sdk-node");
 
 const mockCreateApiClient = createApiClient as jest.Mock;
 mockCreateApiClient.mockReturnValue(sdkMock);
+
+jest.mock("../../../../../infrastructure/repository/CacheRepository");
+const mockSession = CacheRepository as jest.Mock;
+mockSession.mockReturnValue({
+  getData: jest.fn().mockImplementation(() => ({
+    limited_partnership: {
+      [`registration_registered_office_address`]: {
+        postal_code: "ST6 3LJ",
+        address_line_1: "",
+        address_line_2: "",
+        locality: "",
+        country: "",
+        premises: ""
+      }
+    }
+  }))
+});
 
 describe("Gateway Address Look Up", () => {
   const URL = getUrl(POSTCODE_REGISTERED_OFFICE_ADDRESS_URL);

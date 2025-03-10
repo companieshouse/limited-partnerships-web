@@ -1,10 +1,10 @@
 import { Request } from "express";
+import { Session } from "@companieshouse/node-session-handler";
 
 import { BASE_URL, BASE_WITH_IDS_URL, GENERAL_PARTNER_ID, SUBMISSION_ID, TRANSACTION_ID } from "../../config/constants";
 import { PageRouting, pageRoutingDefault, PagesRouting } from "./PageRouting";
 import PageType from "./PageType";
 import { NAME_URL } from "./registration/url";
-import { Session } from "@companieshouse/node-session-handler";
 import UIErrors from "../../domain/entities/UIErrors";
 
 abstract class AbstractController {
@@ -15,7 +15,12 @@ abstract class AbstractController {
       return pageRoutingDefault;
     }
 
-    pageRouting = this.insertIdsInAllUrl(pageRouting, request.params[TRANSACTION_ID], request.params[SUBMISSION_ID], request.params[GENERAL_PARTNER_ID]);
+    pageRouting = this.insertIdsInAllUrl(
+      pageRouting,
+      request.params[TRANSACTION_ID],
+      request.params[SUBMISSION_ID],
+      request.params[GENERAL_PARTNER_ID]
+    );
 
     pageRouting = this.addLangToUrls(request.url, pageRouting);
 
@@ -99,7 +104,12 @@ abstract class AbstractController {
     return generalPartnerId ? url.replace(`:${GENERAL_PARTNER_ID}`, generalPartnerId) : url;
   }
 
-  protected insertIdsInAllUrl(pageRouting: PageRouting, transactionId: string, submissionId: string, generalPartnerId: string): PageRouting {
+  protected insertIdsInAllUrl(
+    pageRouting: PageRouting,
+    transactionId: string,
+    submissionId: string,
+    generalPartnerId: string
+  ): PageRouting {
     return {
       ...pageRouting,
       previousUrl: this.insertIdsInUrl(pageRouting.previousUrl, transactionId, submissionId, generalPartnerId),

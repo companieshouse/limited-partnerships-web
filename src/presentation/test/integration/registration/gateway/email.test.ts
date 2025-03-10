@@ -2,6 +2,7 @@ import request from "supertest";
 import { createApiClient } from "@companieshouse/api-sdk-node";
 import { RefreshTokenService } from "@companieshouse/api-sdk-node/dist/services/refresh-token";
 import { NameEndingType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import CacheRepository from "../../../../../infrastructure/repository/CacheRepository";
 
 import appRealDependencies from "../../../../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
@@ -19,6 +20,14 @@ jest.mock("@companieshouse/api-sdk-node");
 
 const mockCreateApiClient = createApiClient as jest.Mock;
 mockCreateApiClient.mockReturnValue(sdkMock);
+
+jest.mock("../../../../../infrastructure/repository/CacheRepository");
+const mockSession = CacheRepository as jest.Mock;
+mockSession.mockReturnValue({
+  getData: jest.fn().mockImplementation(() => ({
+    limited_partnership: { "registration_which-type": "LP" }
+  }))
+});
 
 describe("Gateway Update - Refresh Token", () => {
   const URL = getUrl(EMAIL_URL);
@@ -137,8 +146,7 @@ describe("Gateway Update - Refresh Token", () => {
               httpStatusCode: 400,
               resource: {
                 errors: {
-                  "data.partnershipName":
-                    "partnership_name must be less than 160"
+                  "data.partnershipName": "partnership_name must be less than 160"
                 }
               }
             })
