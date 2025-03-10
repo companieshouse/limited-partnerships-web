@@ -7,21 +7,16 @@ import addresssRouting, { addressLookUpRouting } from "./Routing";
 import AbstractController from "../AbstractController";
 import AddressLookUpPageType from "./PageType";
 import CacheService from "../../../application/service/CacheService";
-import {
-  APPLICATION_CACHE_KEY,
-  APPLICATION_CACHE_KEY_PREFIX_REGISTRATION,
-  cookieOptions
-} from "../../../config/constants";
+import { APPLICATION_CACHE_KEY, cookieOptions } from "../../../config/constants";
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import UIErrors from "../../../domain/entities/UIErrors";
 import { PageRouting, pageRoutingDefault } from "../PageRouting";
 import PageType from "../PageType";
 
 class AddressLookUpController extends AbstractController {
-  public readonly REGISTERED_OFFICE_ADDRESS_CACHE_KEY =
-    APPLICATION_CACHE_KEY_PREFIX_REGISTRATION + "registered_office_address";
+  public readonly REGISTERED_OFFICE_ADDRESS_CACHE_KEY = "registered_office_address";
   public readonly PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CACHE_KEY =
-    APPLICATION_CACHE_KEY_PREFIX_REGISTRATION + "principal_place_of_business_address";
+    "principal_place_of_business_address";
 
   constructor(
     private addressService: AddressService,

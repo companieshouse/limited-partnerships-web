@@ -19,7 +19,7 @@ describe("Choose Registered Office Address Page", () => {
     appDevDependencies.addressLookUpGateway.setError(false);
     appDevDependencies.cacheRepository.feedCache({
       [appDevDependencies.transactionGateway.transactionId]: {
-        [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`]: {
+        ["registered_office_address"]: {
           postal_code: "ST6 3LJ",
           premises: "",
           address_line_1: "",
@@ -93,7 +93,7 @@ describe("Choose Registered Office Address Page", () => {
 
       const cache = appDevDependencies.cacheRepository.cache;
       expect(cache?.[`${config.APPLICATION_CACHE_KEY}`]).toHaveProperty(
-        `${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`,
+        "registered_office_address",
         {
           postal_code: "ST6 3LJ",
           premises: "4",

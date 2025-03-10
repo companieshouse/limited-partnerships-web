@@ -15,10 +15,7 @@ import {
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
 import AddressPageType from "../../../../controller/addressLookUp/PageType";
-import {
-  APPLICATION_CACHE_KEY,
-  APPLICATION_CACHE_KEY_PREFIX_REGISTRATION
-} from "../../../../../config/constants";
+import { APPLICATION_CACHE_KEY } from "../../../../../config/constants";
 
 describe("Postcode Principal Place Of Business Address Page", () => {
   const URL = getUrl(POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL);
@@ -82,7 +79,7 @@ describe("Postcode Principal Place Of Business Address Page", () => {
       expect(appDevDependencies.cacheRepository.cache).toEqual({
         [APPLICATION_CACHE_KEY]: {
           [appDevDependencies.transactionGateway.transactionId]: {
-            [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}principal_place_of_business_address`]: {
+            ["principal_place_of_business_address"]: {
               postal_code: "ST6 3LJ",
               address_line_1: "",
               address_line_2: "",
@@ -110,7 +107,7 @@ describe("Postcode Principal Place Of Business Address Page", () => {
       expect(appDevDependencies.cacheRepository.cache).toEqual({
         [APPLICATION_CACHE_KEY]: {
           [appDevDependencies.transactionGateway.transactionId]: {
-            [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}principal_place_of_business_address`]: {
+            ["principal_place_of_business_address"]: {
               postal_code: "ST6 3LJ",
               premises: "2",
               address_line_1: "DUNCALF STREET",

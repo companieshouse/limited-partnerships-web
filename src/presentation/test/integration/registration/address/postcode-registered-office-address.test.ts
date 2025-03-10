@@ -80,7 +80,7 @@ describe("Postcode Registered Office Address Page", () => {
       expect(appDevDependencies.cacheRepository.cache).toEqual({
         [config.APPLICATION_CACHE_KEY]: {
           [appDevDependencies.transactionGateway.transactionId]: {
-            [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`]: {
+            ["registered_office_address"]: {
               postal_code: "ST6 3LJ",
               address_line_1: "",
               address_line_2: "",
@@ -108,7 +108,7 @@ describe("Postcode Registered Office Address Page", () => {
       expect(appDevDependencies.cacheRepository.cache).toEqual({
         [config.APPLICATION_CACHE_KEY]: {
           [appDevDependencies.transactionGateway.transactionId]: {
-            [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}registered_office_address`]: {
+            ["registered_office_address"]: {
               postal_code: "ST6 3LJ",
               premises: "2",
               address_line_1: "DUNCALF STREET",
