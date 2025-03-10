@@ -92,13 +92,17 @@ describe("Choose Registered Office Address Page", () => {
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
 
       const cache = appDevDependencies.cacheRepository.cache;
-      expect(cache?.[`${config.APPLICATION_CACHE_KEY}`]).toHaveProperty("registered_office_address", {
-        postal_code: "ST6 3LJ",
-        premises: "4",
-        address_line_1: "DUNCALF STREET",
-        address_line_2: "",
-        locality: "STOKE-ON-TRENT",
-        country: "GB-ENG"
+      expect(cache?.[`${config.APPLICATION_CACHE_KEY}`]).toEqual({
+        [appDevDependencies.transactionGateway.transactionId]: {
+          registered_office_address: {
+            postal_code: "ST6 3LJ",
+            premises: "4",
+            address_line_1: "DUNCALF STREET",
+            address_line_2: "",
+            locality: "STOKE-ON-TRENT",
+            country: "GB-ENG"
+          }
+        }
       });
     });
 

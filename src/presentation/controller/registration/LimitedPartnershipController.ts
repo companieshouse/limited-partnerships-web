@@ -44,16 +44,22 @@ class LimitedPartnershipController extends AbstractController {
         }
 
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
+        const cacheById = this.cacheService.getDataFromCacheById(request.signedCookies, ids.transactionId);
 
         const redirect = this.conditionalRedirecting(request, response, pageType, limitedPartnership);
 
         if (!redirect) {
           response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { limitedPartnership, generalPartner, limitedPartner, cache, ids }, null)
+            super.makeProps(
+              pageRouting,
+              { limitedPartnership, generalPartner, limitedPartner, cache: { ...cache, ...cacheById }, ids },
+              null
+            )
           );
         }
       } catch (error) {
+        console.log(error);
         next(error);
       }
     };
@@ -90,9 +96,8 @@ class LimitedPartnershipController extends AbstractController {
       try {
         const { ids } = super.extract(request);
 
-        let url = request.body.parameter === "person"
-          ? ADD_GENERAL_PARTNER_PERSON_URL
-          : ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL;
+        let url =
+          request.body.parameter === "person" ? ADD_GENERAL_PARTNER_PERSON_URL : ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL;
 
         url = super.insertIdsInUrl(url, ids.transactionId, ids.submissionId);
 
