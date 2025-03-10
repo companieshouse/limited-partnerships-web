@@ -33,19 +33,13 @@ export const appConfig = (app: express.Application) => {
 
   nunjucksEnv.addGlobal("CDN_HOST", config.CDN_HOST);
   nunjucksEnv.addGlobal("MATOMO_ASSET_PATH", `//${config.CDN_HOST}`);
-  nunjucksEnv.addGlobal(
-    "PIWIK_REGISTRATION_START_GOAL_ID",
-    config.PIWIK_REGISTRATION_START_GOAL_ID
-  );
+  nunjucksEnv.addGlobal("PIWIK_REGISTRATION_START_GOAL_ID", config.PIWIK_REGISTRATION_START_GOAL_ID);
   nunjucksEnv.addGlobal("PIWIK_REGISTRATION_LP_GOAL_ID", config.PIWIK_REGISTRATION_LP_GOAL_ID);
   nunjucksEnv.addGlobal(
     "PIWIK_REGISTRATION_PRIVATE_FUND_LP_GOAL_ID",
     config.PIWIK_REGISTRATION_PRIVATE_FUND_LP_GOAL_ID
   );
-  nunjucksEnv.addGlobal(
-    "PIWIK_REGISTRATION_SCOTTISH_LP_GOAL_ID",
-    config.PIWIK_REGISTRATION_SCOTTISH_LP_GOAL_ID
-  );
+  nunjucksEnv.addGlobal("PIWIK_REGISTRATION_SCOTTISH_LP_GOAL_ID", config.PIWIK_REGISTRATION_SCOTTISH_LP_GOAL_ID);
   nunjucksEnv.addGlobal(
     "PIWIK_REGISTRATION_SCOTTISH_PRIVATE_FUND_LP_GOAL_ID",
     config.PIWIK_REGISTRATION_SCOTTISH_PRIVATE_FUND_LP_GOAL_ID

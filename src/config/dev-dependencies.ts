@@ -35,9 +35,7 @@ const limitedPartnershipService: LimitedPartnershipService = new LimitedPartners
 );
 const addressLookUpService: AddressLookUpService = new AddressLookUpService(addressLookUpGateway);
 const cacheService = new CacheService(cacheRepository);
-const generalPartnerService: GeneralPartnerService = new GeneralPartnerService(
-  generalPartnerGateway
-);
+const generalPartnerService: GeneralPartnerService = new GeneralPartnerService(generalPartnerGateway);
 const companyService = new CompanyService(companyGateway);
 
 // CONTROLLERS
@@ -51,10 +49,7 @@ const addressLookUpController: AddressLookUpController = new AddressLookUpContro
   limitedPartnershipService,
   cacheService
 );
-const transitionController: TransitionController = new TransitionController(
-  companyService,
-  cacheService
-);
+const transitionController: TransitionController = new TransitionController(companyService, cacheService);
 const generalPartnerController: GeneralPartnerController = new GeneralPartnerController(
   limitedPartnershipService,
   generalPartnerService

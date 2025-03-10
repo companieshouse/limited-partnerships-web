@@ -91,17 +91,14 @@ describe("Choose Principal Place Of Business Address Page", () => {
       expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
 
       const cache = appDevDependencies.cacheRepository.cache;
-      expect(cache?.[`${config.APPLICATION_CACHE_KEY}`]).toHaveProperty(
-        "principal_place_of_business_address",
-        {
-          postal_code: "ST6 3LJ",
-          premises: "4",
-          address_line_1: "DUNCALF STREET",
-          address_line_2: "",
-          locality: "STOKE-ON-TRENT",
-          country: "GB-ENG"
-        }
-      );
+      expect(cache?.[`${config.APPLICATION_CACHE_KEY}`]).toHaveProperty("principal_place_of_business_address", {
+        postal_code: "ST6 3LJ",
+        premises: "4",
+        address_line_1: "DUNCALF STREET",
+        address_line_2: "",
+        locality: "STOKE-ON-TRENT",
+        country: "GB-ENG"
+      });
     });
 
     it("should redirect to the error page if address can't be deserialised", async () => {

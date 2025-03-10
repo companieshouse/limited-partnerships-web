@@ -29,7 +29,10 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
       const res = await request(app).get(URL + "?lang=en");
 
       expect(res.status).toBe(200);
-      testTranslations(res.text, enTranslationText.address.enterAddress, [ "registeredOfficeAddress", "jurisdictionCountry" ]);
+      testTranslations(res.text, enTranslationText.address.enterAddress, [
+        "registeredOfficeAddress",
+        "jurisdictionCountry"
+      ]);
       expect(res.text).not.toContain("WELSH -");
     });
 
@@ -39,7 +42,10 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
       const res = await request(app).get(URL + "?lang=cy");
 
       expect(res.status).toBe(200);
-      testTranslations(res.text, cyTranslationText.address.enterAddress, [ "registeredOfficeAddress", "jurisdictionCountry" ]);
+      testTranslations(res.text, cyTranslationText.address.enterAddress, [
+        "registeredOfficeAddress",
+        "jurisdictionCountry"
+      ]);
     });
   });
 
@@ -49,9 +55,7 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
         .withJurisdiction(Jurisdiction.ENGLAND_AND_WALES)
         .build();
 
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
-        limitedPartnership
-      ]);
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
@@ -64,13 +68,9 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
     });
 
     it("should redirect to the error page when error occurs during Post", async () => {
-      const limitedPartnership = new LimitedPartnershipBuilder()
-        .withJurisdiction(Jurisdiction.SCOTLAND)
-        .build();
+      const limitedPartnership = new LimitedPartnershipBuilder().withJurisdiction(Jurisdiction.SCOTLAND).build();
 
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
-        limitedPartnership
-      ]);
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
       const res = await request(app).post(URL).send({
         pageType: "Invalid page type",
@@ -82,13 +82,9 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
     });
 
     it("should return a validation error when jurisdiction of Scotland does not match country", async () => {
-      const limitedPartnership = new LimitedPartnershipBuilder()
-        .withJurisdiction(Jurisdiction.SCOTLAND)
-        .build();
+      const limitedPartnership = new LimitedPartnershipBuilder().withJurisdiction(Jurisdiction.SCOTLAND).build();
 
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
-        limitedPartnership
-      ]);
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
@@ -103,18 +99,16 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
     it("should return a Welsh validation error when jurisdiction of Scotland does not match country", async () => {
       setLocalesEnabled(true);
 
-      const limitedPartnership = new LimitedPartnershipBuilder()
-        .withJurisdiction(Jurisdiction.SCOTLAND)
-        .build();
+      const limitedPartnership = new LimitedPartnershipBuilder().withJurisdiction(Jurisdiction.SCOTLAND).build();
 
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
-        limitedPartnership
-      ]);
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-      const res = await request(app).post(URL + "?lang=cy").send({
-        pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
-        country: "GB-NIR"
-      });
+      const res = await request(app)
+        .post(URL + "?lang=cy")
+        .send({
+          pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
+          country: "GB-NIR"
+        });
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(cyTranslationText.address.enterAddress.errorMessages.jurisdictionCountry);
@@ -126,9 +120,7 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
         .withJurisdiction(Jurisdiction.NORTHERN_IRELAND)
         .build();
 
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
-        limitedPartnership
-      ]);
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
@@ -145,9 +137,7 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
         .withJurisdiction(Jurisdiction.ENGLAND_AND_WALES)
         .build();
 
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
-        limitedPartnership
-      ]);
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
@@ -159,5 +149,4 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
       expect(res.text).toContain(enTranslationText.govUk.error.title);
     });
   });
-
 });

@@ -23,10 +23,7 @@ class TransitionController extends AbstractController {
 
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
 
-        response.render(
-          super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { cache }, null)
-        );
+        response.render(super.templateName(pageRouting.currentUrl), super.makeProps(pageRouting, { cache }, null));
       } catch (error) {
         next(error);
       }

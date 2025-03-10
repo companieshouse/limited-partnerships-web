@@ -1,11 +1,7 @@
 import request from "supertest";
 import enTranslationText from "../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../locales/cy/translations.json";
-import {
-  getUrl,
-  setLocalesEnabled,
-  testTranslations
-} from "../../../../../presentation/test/utils";
+import { getUrl, setLocalesEnabled, testTranslations } from "../../../../../presentation/test/utils";
 import { CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL } from "../../../../../presentation/controller/addressLookUp/url";
 import { TERM_URL } from "../../../../../presentation/controller/registration/url";
 import app from "../../app";
@@ -22,16 +18,15 @@ describe("Confirm Principal Place Of Business Address Page", () => {
     setLocalesEnabled(false);
     appDevDependencies.cacheRepository.feedCache({
       [appDevDependencies.transactionGateway.transactionId]: {
-        [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}principal_place_of_business_address`]:
-          {
-            postal_code: "ST6 3LJ",
-            premises: "4",
-            address_line_1: "line 1",
-            address_line_2: "line 2",
-            locality: "stoke-on-trent",
-            region: "region",
-            country: "GB-ENG"
-          }
+        [`${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}principal_place_of_business_address`]: {
+          postal_code: "ST6 3LJ",
+          premises: "4",
+          address_line_1: "line 1",
+          address_line_2: "line 2",
+          locality: "stoke-on-trent",
+          region: "region",
+          country: "GB-ENG"
+        }
       }
     });
 

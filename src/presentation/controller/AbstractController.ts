@@ -1,13 +1,7 @@
 import { Request } from "express";
 import { Session } from "@companieshouse/node-session-handler";
 
-import {
-  BASE_URL,
-  BASE_WITH_IDS_URL,
-  GENERAL_PARTNER_ID,
-  SUBMISSION_ID,
-  TRANSACTION_ID
-} from "../../config/constants";
+import { BASE_URL, BASE_WITH_IDS_URL, GENERAL_PARTNER_ID, SUBMISSION_ID, TRANSACTION_ID } from "../../config/constants";
 import { PageRouting, pageRoutingDefault, PagesRouting } from "./PageRouting";
 import PageType from "./PageType";
 import { NAME_URL } from "./registration/url";
@@ -39,11 +33,7 @@ abstract class AbstractController {
     return type as PageType;
   }
 
-  protected makeProps(
-    pageRouting: PageRouting,
-    data: Record<string, any> | null,
-    errors: UIErrors | null
-  ) {
+  protected makeProps(pageRouting: PageRouting, data: Record<string, any> | null, errors: UIErrors | null) {
     if (data) {
       pageRouting.data = {
         ...pageRouting.data,
@@ -83,12 +73,7 @@ abstract class AbstractController {
     return splitted[splitted.length - 1];
   }
 
-  insertIdsInUrl(
-    url: string,
-    transactionId = "",
-    submissionId = "",
-    generalPartnerId = ""
-  ): string {
+  insertIdsInUrl(url: string, transactionId = "", submissionId = "", generalPartnerId = ""): string {
     url = this.replaceBaseUrlWithIds(transactionId, submissionId, url);
     url = this.insertSubmissionId(url, submissionId);
     url = this.insertTransactionId(url, transactionId);
@@ -127,24 +112,9 @@ abstract class AbstractController {
   ): PageRouting {
     return {
       ...pageRouting,
-      previousUrl: this.insertIdsInUrl(
-        pageRouting.previousUrl,
-        transactionId,
-        submissionId,
-        generalPartnerId
-      ),
-      currentUrl: this.insertIdsInUrl(
-        pageRouting.currentUrl,
-        transactionId,
-        submissionId,
-        generalPartnerId
-      ),
-      nextUrl: this.insertIdsInUrl(
-        pageRouting.nextUrl,
-        transactionId,
-        submissionId,
-        generalPartnerId
-      )
+      previousUrl: this.insertIdsInUrl(pageRouting.previousUrl, transactionId, submissionId, generalPartnerId),
+      currentUrl: this.insertIdsInUrl(pageRouting.currentUrl, transactionId, submissionId, generalPartnerId),
+      nextUrl: this.insertIdsInUrl(pageRouting.nextUrl, transactionId, submissionId, generalPartnerId)
     };
   }
 

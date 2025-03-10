@@ -125,8 +125,7 @@ describe("Postcode Registered Office Address Page", () => {
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
         premises: appDevDependencies.addressLookUpGateway.englandAddresses[0].premise.toUpperCase(),
-        postal_code:
-          appDevDependencies.addressLookUpGateway.englandAddresses[0].postcode.toUpperCase()
+        postal_code: appDevDependencies.addressLookUpGateway.englandAddresses[0].postcode.toUpperCase()
       });
 
       const REDIRECT_URL = getUrl(CONFIRM_REGISTERED_OFFICE_ADDRESS_URL);
@@ -139,8 +138,7 @@ describe("Postcode Registered Office Address Page", () => {
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
         premises: appDevDependencies.addressLookUpGateway.englandAddresses[0].premise.toLowerCase(),
-        postal_code:
-          appDevDependencies.addressLookUpGateway.englandAddresses[0].postcode.toLowerCase()
+        postal_code: appDevDependencies.addressLookUpGateway.englandAddresses[0].postcode.toLowerCase()
       });
 
       const REDIRECT_URL = getUrl(CONFIRM_REGISTERED_OFFICE_ADDRESS_URL);

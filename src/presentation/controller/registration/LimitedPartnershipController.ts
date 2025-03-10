@@ -1,9 +1,6 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
 import escape from "escape-html";
-import {
-  LimitedPartnership,
-  PartnershipType
-} from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { LimitedPartnership, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import registrationsRouting from "./Routing";
@@ -48,21 +45,12 @@ class LimitedPartnershipController extends AbstractController {
 
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
 
-        const redirect = this.conditionalRedirecting(
-          request,
-          response,
-          pageType,
-          limitedPartnership
-        );
+        const redirect = this.conditionalRedirecting(request, response, pageType, limitedPartnership);
 
         if (!redirect) {
           response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(
-              pageRouting,
-              { limitedPartnership, generalPartner, limitedPartner, cache, ids },
-              null
-            )
+            super.makeProps(pageRouting, { limitedPartnership, generalPartner, limitedPartner, cache, ids }, null)
           );
         }
       } catch (error) {
@@ -115,21 +103,13 @@ class LimitedPartnershipController extends AbstractController {
 
           response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(
-              pageRouting,
-              { limitedPartnership: { data: request.body }, cache },
-              result.errors
-            )
+            super.makeProps(pageRouting, { limitedPartnership: { data: request.body }, cache }, result.errors)
           );
 
           return;
         }
 
-        const url = super.insertIdsInUrl(
-          pageRouting.nextUrl,
-          result.transactionId,
-          result.submissionId
-        );
+        const url = super.insertIdsInUrl(pageRouting.nextUrl, result.transactionId, result.submissionId);
 
         const cacheUpdated = this.cacheService.removeDataFromCache(
           request.signedCookies,

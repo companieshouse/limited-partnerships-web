@@ -7,10 +7,7 @@ import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import { COMPANY_NUMBER_URL } from "presentation/controller/transition/url";
 import TransitionPageType from "../../../controller/transition/PageType";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
-import {
-  APPLICATION_CACHE_KEY,
-  APPLICATION_CACHE_KEY_PREFIX_REGISTRATION
-} from "../../../../config/constants";
+import { APPLICATION_CACHE_KEY, APPLICATION_CACHE_KEY_PREFIX_REGISTRATION } from "../../../../config/constants";
 
 describe("Company number page", () => {
   const URL = getUrl(COMPANY_NUMBER_URL);

@@ -1,11 +1,7 @@
 import request from "supertest";
 import enTranslationText from "../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../locales/cy/translations.json";
-import {
-  getUrl,
-  setLocalesEnabled,
-  testTranslations
-} from "../../../../../presentation/test/utils";
+import { getUrl, setLocalesEnabled, testTranslations } from "../../../../../presentation/test/utils";
 import {
   CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
   POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL
