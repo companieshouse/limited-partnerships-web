@@ -4,7 +4,7 @@ import { SDK_LIMITED_PARTNERSHIP_SERVICE } from "../../../config/constants";
 import { Resource } from "@companieshouse/api-sdk-node";
 import {
   GeneralPartner,
-  LimitedPartnershipResourceCreated,
+  LimitedPartnershipResourceCreated
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { convertValidDateToIsoDateString, removeEmptyStringValues } from "../utils";
 
@@ -22,7 +22,7 @@ class GeneralPartnerGateway implements IGeneralPartnerGateway {
         {
           day: data["date_of_birth-day"],
           month: data["date_of_birth-month"],
-          year: data["date_of_birth-year"],
+          year: data["date_of_birth-year"]
         },
         "date_of_birth"
       );
@@ -32,7 +32,7 @@ class GeneralPartnerGateway implements IGeneralPartnerGateway {
     const apiCall = {
       service: SDK_LIMITED_PARTNERSHIP_SERVICE,
       method: "postGeneralPartner",
-      args: [transactionId, generalPartner],
+      args: [transactionId, generalPartner]
     };
 
     const response = await makeApiCallWithRetry<

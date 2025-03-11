@@ -20,7 +20,7 @@ import {
   NAME_WITH_IDS_URL,
   TERM_URL,
   APPLICATION_SUBMITTED_URL,
-  ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
+  ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL
 } from "../presentation/controller/registration/url";
 
 export const registrationEndpoints = (

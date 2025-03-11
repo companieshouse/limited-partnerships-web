@@ -1,10 +1,16 @@
 import request from "supertest";
-import { APPLICATION_CACHE_KEY, APPLICATION_CACHE_KEY_PREFIX_REGISTRATION } from "../../../../config/constants";
+import {
+  APPLICATION_CACHE_KEY,
+  APPLICATION_CACHE_KEY_PREFIX_REGISTRATION
+} from "../../../../config/constants";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
-import { LIMITED_PARTNER_CHOICE_URL, CHECK_YOUR_ANSWERS_URL } from "../../../controller/registration/url";
+import {
+  LIMITED_PARTNER_CHOICE_URL,
+  CHECK_YOUR_ANSWERS_URL
+} from "../../../controller/registration/url";
 import { registrationRoutingLimitedPartnerChoice } from "../../../controller/registration/Routing";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
@@ -49,7 +55,7 @@ describe("Limited Partner Choice Page", () => {
 
     const res = await request(app).post(URL).send({
       pageType: registrationRoutingLimitedPartnerChoice.pageType,
-      parameter: selectedChoice,
+      parameter: selectedChoice
     });
 
     expect(res.status).toBe(302);
@@ -58,15 +64,18 @@ describe("Limited Partner Choice Page", () => {
     // to be removed - not store in cache
     expect(appDevDependencies.cacheRepository.cache).toEqual({
       [APPLICATION_CACHE_KEY]: {
-        [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.limitedPartnerChoice}`]: selectedChoice,
-      },
+        [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.limitedPartnerChoice}`]:
+          selectedChoice
+      }
     });
   });
 
   it("should contain the proposed name - data from api", async () => {
     const limitedPartnership = new LimitedPartnershipBuilder().build();
 
-    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
+      limitedPartnership
+    ]);
 
     const res = await request(app).get(URL);
 

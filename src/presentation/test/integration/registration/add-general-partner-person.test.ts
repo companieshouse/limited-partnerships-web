@@ -38,7 +38,7 @@ describe("Add General Partner Person Page", () => {
         `${cyTranslationText.addGeneralPartnerPersonPage.title} - ${cyTranslationText.service} - GOV.UK`
       );
       testTranslations(res.text, cyTranslationText.addGeneralPartnerPersonPage, [
-        "errorMessages",
+        "errorMessages"
       ]);
     });
 
@@ -51,7 +51,7 @@ describe("Add General Partner Person Page", () => {
         `${enTranslationText.addGeneralPartnerPersonPage.title} - ${enTranslationText.service} - GOV.UK`
       );
       testTranslations(res.text, enTranslationText.addGeneralPartnerPersonPage, [
-        "errorMessages",
+        "errorMessages"
       ]);
       expect(res.text).not.toContain("WELSH -");
     });
@@ -60,7 +60,7 @@ describe("Add General Partner Person Page", () => {
       const limitedPartnership = new LimitedPartnershipBuilder().build();
 
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
-        limitedPartnership,
+        limitedPartnership
       ]);
 
       const res = await request(app).get(URL);
@@ -76,7 +76,7 @@ describe("Add General Partner Person Page", () => {
     it("should send the general partner details", async () => {
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.addGeneralPartnerPerson,
-        first_name: "test",
+        first_name: "test"
       });
 
       expect(res.status).toBe(302);
@@ -84,14 +84,14 @@ describe("Add General Partner Person Page", () => {
 
     it("should return a validation error when invalid data is entered", async () => {
       const apiErrors: ApiErrors = {
-        errors: { first_name: "general partner name is invalid" },
+        errors: { first_name: "general partner name is invalid" }
       };
 
       appDevDependencies.generalPartnerGateway.feedErrors(apiErrors);
 
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.addGeneralPartnerPerson,
-        first_name: "INVALID-CHARACTERS",
+        first_name: "INVALID-CHARACTERS"
       });
 
       expect(res.status).toBe(200);
@@ -109,15 +109,15 @@ describe("Add General Partner Person Page", () => {
             httpStatusCode: 400,
             resource: {
               errors: {
-                nationality1: "Invalid value for nationality",
-              },
-            },
-          }),
-        },
+                nationality1: "Invalid value for nationality"
+              }
+            }
+          })
+        }
       });
 
       const res = await request(appRealDependencies).post(URL).send({
-        pageType: RegistrationPageType.name,
+        pageType: RegistrationPageType.name
       });
 
       expect(res.status).toBe(200);
@@ -133,13 +133,13 @@ describe("Add General Partner Person Page", () => {
           ...sdkMock.limitedPartnershipsService,
           postGeneralPartner: () => ({
             httpStatusCode: 500,
-            resource: {},
-          }),
-        },
+            resource: {}
+          })
+        }
       });
 
       const res = await request(appRealDependencies).post(URL).send({
-        pageType: RegistrationPageType.name,
+        pageType: RegistrationPageType.name
       });
 
       expect(res.status).toBe(500);
