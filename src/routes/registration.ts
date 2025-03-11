@@ -14,6 +14,7 @@ import {
   GENERAL_PARTNERS_URL,
   GENERAL_PARTNER_CHOICE_URL,
   ADD_GENERAL_PARTNER_PERSON_URL,
+  GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOICE_URL,
   LIMITED_PARTNER_CHOICE_URL,
   CHECK_YOUR_ANSWERS_URL,
   NAME_WITH_IDS_URL,
@@ -118,6 +119,17 @@ export const registrationEndpoints = (
     ADD_GENERAL_PARTNER_PERSON_URL,
     authentication,
     dependencies.generalPartnerController.createGeneralPartner()
+  );
+
+  router.get(
+    GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOICE_URL,
+    authentication,
+    dependencies.generalPartnerController.getPageRouting()
+  );
+  router.post(
+    GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOICE_URL,
+    authentication,
+    dependencies.limitedPartnershipController.redirectAndCacheSelection()
   );
 
   router.get(

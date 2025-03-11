@@ -3,7 +3,7 @@ import { createApiClient } from "@companieshouse/api-sdk-node";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
-import { ADD_GENERAL_PARTNER_PERSON_URL, LIMITED_PARTNERS_URL } from "../../../controller/registration/url";
+import { ADD_GENERAL_PARTNER_PERSON_URL, GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOICE_URL } from "../../../controller/registration/url";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
@@ -19,7 +19,7 @@ mockCreateApiClient.mockReturnValue(sdkMock);
 
 describe("Add General Partner Person Page", () => {
   const URL = getUrl(ADD_GENERAL_PARTNER_PERSON_URL);
-  const REDIRECT_URL = getUrl(LIMITED_PARTNERS_URL);
+  const REDIRECT_URL = getUrl(GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOICE_URL);
 
   beforeEach(() => {
     setLocalesEnabled(false);

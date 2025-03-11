@@ -1,0 +1,49 @@
+{% extends "layout.njk" %}
+
+{% set pageTitle =  i18n.generalPartnerUsualResidentialAddressChoicePage%}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action="{{ props.currentUrl }}" method="post">
+        <input type="hidden" name="pageType" value={{ props.pageType }}>
+        {% include "includes/csrf_token.njk" %}
+
+        {% include "includes/proposed-name.njk" %}  
+       
+        {{ govukRadios({
+           classes: "govuk-radios",
+          name: "parameter",
+          value: data['generalPartner']
+          fieldset: {
+            legend: {
+              text: i18n.generalPartnerUsualResidentialAddressChoicePage,
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--xl"
+            }
+          },
+          items: [
+            {
+              value: "overseas",
+              text: i18n.generalPartnerUsualResidentialAddressChoicePage.overseas,
+            },
+            {
+              value: "unitedKingdom",
+              text: i18n.generalPartnerUsualResidentialAddressChoicePage.unitedKingdom,
+            }
+          ]
+          hint: {
+            text: i18n.generalPartnerUsualResidentialAddressChoicePage.hintLine1
+          },hint: {
+            text: i18n.generalPartnerUsualResidentialAddressChoicePage.hintLine2
+          },
+        }) }}
+              
+        {{ govukButton({
+          text: i18n.buttons.continue,
+        }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}
