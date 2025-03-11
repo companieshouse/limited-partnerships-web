@@ -4,7 +4,11 @@ export const convertValidDateToIsoDateString = (
   date: { day: string; month: string; year: string },
   fieldName: string
 ): string => {
-  const dateStr = convertDateToIsoDateString(date.day, date.month, date.year);
+  const dateStr = convertDateToIsoDateString(
+    date.day.trim(),
+    date.month.trim(),
+    date.year.trim()
+  );
 
   if (!isDateValid(dateStr)) {
     const uiErrors = new UIErrors();
@@ -62,7 +66,9 @@ const daysInMonth = (month: number) => {
   }
 };
 
-export const removeEmptyStringValues = (data: Record<string, any>): Record<string, any> => {
+export const removeEmptyStringValues = (
+  data: Record<string, any>
+): Record<string, any> => {
   for (const key in data) {
     if (data[key] === "") {
       data[key] = null;

@@ -1,5 +1,8 @@
 import UIErrors from "../../../../domain/entities/UIErrors";
-import { convertValidDateToIsoDateString, removeEmptyStringValues } from "../../../../infrastructure/gateway/utils";
+import {
+  convertValidDateToIsoDateString,
+  removeEmptyStringValues
+} from "../../../../infrastructure/gateway/utils";
 
 describe("Gateway utils test suite", () => {
   describe("Date validation tests", () => {
@@ -7,16 +10,35 @@ describe("Gateway utils test suite", () => {
 
     describe("Date validation tests", () => {
       it("should build date string and correctly pad day field", () => {
-        const date: string = convertValidDateToIsoDateString({ day: "1", month: "12", year: "2011" }, "date_of_birth");
+        const date: string = convertValidDateToIsoDateString(
+          { day: "1", month: "12", year: "2011" },
+          "date_of_birth"
+        );
 
         expect(date).toBe("2011-12-01");
       });
 
       it("should build date string and correctly pad month field", () => {
-        const date: string = convertValidDateToIsoDateString({ day: "26", month: "4", year: "2011" }, "date_of_birth");
+        const date: string = convertValidDateToIsoDateString(
+          { day: "26", month: "4", year: "2011" },
+          "date_of_birth"
+        );
 
         expect(date).toBe("2011-04-26");
       });
+
+      it.each([
+        ["day", { day: " 11 ", month: "03", year: "1980" }],
+        ["month", { day: "11", month: " 03 ", year: "1980" }],
+        ["year", { day: "11", month: "03", year: " 1980 " }]
+      ])(
+        "it should format the date and trim leading and trailing spaces from the %s",
+        (_decription, date) => {
+          const result: string = convertValidDateToIsoDateString(date, "date_of_birth");
+
+          expect(result).toBe("1980-03-11");
+        }
+      );
 
       // failing scenarios
       it.each([
