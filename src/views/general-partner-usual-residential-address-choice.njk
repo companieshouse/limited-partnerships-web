@@ -1,6 +1,6 @@
 {% extends "layout.njk" %}
 
-{% set pageTitle =  i18n.generalPartnerUsualResidentialAddressChoicePage%}
+{% set pageTitle =  i18n.generalPartnerUsualResidentialAddressChoicePage.title %}
 
 {% block content %}
   <div class="govuk-grid-row">
@@ -15,10 +15,9 @@
         {{ govukRadios({
            classes: "govuk-radios",
           name: "parameter",
-          value: data['generalPartner']
           fieldset: {
             legend: {
-              text: i18n.generalPartnerUsualResidentialAddressChoicePage,
+              text: i18n.generalPartnerUsualResidentialAddressChoicePage.title,
               isPageHeading: true,
               classes: "govuk-fieldset__legend--xl"
             }
@@ -27,22 +26,33 @@
             {
               value: "overseas",
               text: i18n.generalPartnerUsualResidentialAddressChoicePage.overseas,
+              id: "overseas",
+              name: "overseas",
+              attributes: {
+                required: true
+              }
             },
             {
               value: "unitedKingdom",
               text: i18n.generalPartnerUsualResidentialAddressChoicePage.unitedKingdom,
+              id: "unitedKingdom",
+              name: "unitedKingdom",
+              attributes: {
+                required: true
+              }
             }
           ]
-          hint: {
-            text: i18n.generalPartnerUsualResidentialAddressChoicePage.hintLine1
-          },hint: {
-            text: i18n.generalPartnerUsualResidentialAddressChoicePage.hintLine2
-          },
         }) }}
               
         {{ govukButton({
-          text: i18n.buttons.continue,
+          text: i18n.buttons.continue
         }) }}
+
+        {{ govukInsetText({
+      html: "<h2 class='govuk-heading-m'>" + i18n.generalPartnerUsualResidentialAddressChoicePage.hintLine1 | escape + "</h2>"
+          + "<p>" + i18n.generalPartnerUsualResidentialAddressChoicePage.hintLine2 | escape + "</p>"
+    }) }}
+
       </form>
     </div>
   </div>

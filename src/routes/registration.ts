@@ -20,7 +20,7 @@ import {
   NAME_WITH_IDS_URL,
   TERM_URL,
   APPLICATION_SUBMITTED_URL,
-  ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL
+  ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
 } from "../presentation/controller/registration/url";
 
 export const registrationEndpoints = (
@@ -126,11 +126,6 @@ export const registrationEndpoints = (
     authentication,
     dependencies.generalPartnerController.getPageRouting()
   );
-  router.post(
-    GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOICE_URL,
-    authentication,
-    dependencies.limitedPartnershipController.redirectAndCacheSelection()
-  );
 
   router.get(
     ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
@@ -176,7 +171,7 @@ export const registrationEndpoints = (
   router.get(
     APPLICATION_SUBMITTED_URL,
     authentication,
-    dependencies.limitedPartnershipController.getPageRouting(),
+    dependencies.limitedPartnershipController.getPageRouting()
   );
 
   router.get(

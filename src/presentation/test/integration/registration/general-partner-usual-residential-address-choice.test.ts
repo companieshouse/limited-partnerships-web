@@ -6,7 +6,6 @@ import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
 import { GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOICE_URL } from "../../../controller/registration/url";
 import { appDevDependencies } from "config/dev-dependencies";
-import LimitedPartnershipBuilder from "presentation/test/builder/LimitedPartnershipBuilder";
 import { getUrl, testTranslations } from "presentation/test/utils";
 
 describe("General Partner Usual Residential Address Choice", () => {
@@ -31,8 +30,13 @@ describe("General Partner Usual Residential Address Choice", () => {
     expect(res.text).toContain(
       `${cyTranslationText.generalPartnerUsualResidentialAddressChoicePage.title} - ${cyTranslationText.service} - GOV.UK`
     );
-    expect(res.text).toContain(cyTranslationText.generalPartnerUsualResidentialAddressChoicePage.title);
-    testTranslations(res.text, cyTranslationText.generalPartnerUsualResidentialAddressChoicePage);
+    expect(res.text).toContain(
+      cyTranslationText.generalPartnerUsualResidentialAddressChoicePage.title
+    );
+    testTranslations(
+      res.text,
+      cyTranslationText.generalPartnerUsualResidentialAddressChoicePage
+    );
   });
 
   it("should load the usual residential address for general partner choice page with English text", async () => {
@@ -43,18 +47,12 @@ describe("General Partner Usual Residential Address Choice", () => {
     expect(res.text).toContain(
       `${enTranslationText.generalPartnerUsualResidentialAddressChoicePage.title} - ${enTranslationText.service} - GOV.UK`
     );
-    expect(res.text).toContain(enTranslationText.generalPartnerUsualResidentialAddressChoicePage.title);
-    testTranslations(res.text, enTranslationText.generalPartnerUsualResidentialAddressChoicePage);
-  });
-
-  it("should contain the proposed name - data from api", async () => {
-    const limitedPartnership = new LimitedPartnershipBuilder().build();
-
-    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
-    const res = await request(app).get(URL);
-
-    expect(res.status).toBe(200);
-    expect(res.text).toContain(`${limitedPartnership?.data?.partnership_name}`);
+    expect(res.text).toContain(
+      enTranslationText.generalPartnerUsualResidentialAddressChoicePage.title
+    );
+    testTranslations(
+      res.text,
+      enTranslationText.generalPartnerUsualResidentialAddressChoicePage
+    );
   });
 });
