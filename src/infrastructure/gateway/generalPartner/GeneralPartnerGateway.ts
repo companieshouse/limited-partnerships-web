@@ -29,8 +29,6 @@ class GeneralPartnerGateway implements IGeneralPartnerGateway {
     }
 
     const generalPartner: GeneralPartner = { data };
-    console.log(transactionId);
-    console.log(generalPartner);
     const apiCall = {
       service: SDK_LIMITED_PARTNERSHIP_SERVICE,
       method: "postGeneralPartner",
