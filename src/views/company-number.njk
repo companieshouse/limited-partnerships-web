@@ -26,7 +26,7 @@
                 required: true,
                 "data-event-id": "company-number-transition"
             },
-            pattern: "^(LP|NL|SL)[0-9]{6}$",
+            pattern: "^\\s*(LP|NL|SL)[0-9]{6}\\s*$",
             errorMessage: props.errors.company_number if props.errors,
             value: props.data.company_number
           }) }}
