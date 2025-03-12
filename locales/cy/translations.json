@@ -138,7 +138,6 @@
 
         "findPostcode": {
             "registeredOfficeAddress": {
-
                 "whatIsOfficeAddress": "WELSH - What is the registered office address of the partnership?",
                 "officialCommunication": "WELSH - This is where official communications will be sent.",
                 "england": {
@@ -159,6 +158,12 @@
                 "jurisdiction": "WELSH - It must be in the jurisdiction where the partnership was formed. It can be changed to an address outside of the jurisdiction after you've registered the partnership.",
                 "publicRegisterTitle": "WELSH - What information we'll show on the public register",
                 "publicRegisterLine1": "WELSH - We'll show the principal place of business  on the public register."
+            },
+
+            "usualResidentialAddress": {
+                "whatIsUsualResidentialAddress": "WELSH - What is the usual residential address of the partnership?",
+                "publicRegisterTitle": "WELSH - What information we'll show on the public register",
+                "publicRegisterLine1": "WELSH - We'll show the usual residential address on the public register."
             },
  
             "nameOrNumberHint": "WELSH - Property name or number (optional)",

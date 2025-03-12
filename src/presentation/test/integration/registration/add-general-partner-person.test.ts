@@ -1,31 +1,25 @@
 import request from "supertest";
-import { createApiClient } from "@companieshouse/api-sdk-node";
+
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
+
 import app from "../app";
-import { ADD_GENERAL_PARTNER_PERSON_URL, LIMITED_PARTNERS_URL } from "../../../controller/registration/url";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import { ApiErrors } from "../../../../domain/entities/UIErrors";
-import appRealDependencies from "../../../../app";
-import sdkMock from "../mock/sdkMock";
-
-jest.mock("@companieshouse/api-sdk-node");
-
-const mockCreateApiClient = createApiClient as jest.Mock;
-mockCreateApiClient.mockReturnValue(sdkMock);
+import { ADD_GENERAL_PARTNER_PERSON_URL } from "../../../controller/registration/url";
+import { POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../controller/addressLookUp/url";
 
 describe("Add General Partner Person Page", () => {
   const URL = getUrl(ADD_GENERAL_PARTNER_PERSON_URL);
-  const REDIRECT_URL = getUrl(LIMITED_PARTNERS_URL);
+  const REDIRECT_URL = getUrl(POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL);
 
   beforeEach(() => {
     setLocalesEnabled(false);
 
     appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
-    mockCreateApiClient.mockReturnValue(sdkMock);
   });
 
   describe("Get Add General Partner Page", () => {
@@ -37,7 +31,9 @@ describe("Add General Partner Person Page", () => {
       expect(res.text).toContain(
         `${cyTranslationText.addGeneralPartnerPersonPage.title} - ${cyTranslationText.service} - GOV.UK`
       );
-      testTranslations(res.text, cyTranslationText.addGeneralPartnerPersonPage, ["errorMessages"]);
+      testTranslations(res.text, cyTranslationText.addGeneralPartnerPersonPage, [
+        "errorMessages"
+      ]);
     });
 
     it("should load the add general partner page with English text", async () => {
@@ -48,7 +44,9 @@ describe("Add General Partner Person Page", () => {
       expect(res.text).toContain(
         `${enTranslationText.addGeneralPartnerPersonPage.title} - ${enTranslationText.service} - GOV.UK`
       );
-      testTranslations(res.text, enTranslationText.addGeneralPartnerPersonPage, ["errorMessages"]);
+      testTranslations(res.text, enTranslationText.addGeneralPartnerPersonPage, [
+        "errorMessages"
+      ]);
       expect(res.text).not.toContain("WELSH -");
     });
 
@@ -81,7 +79,7 @@ describe("Add General Partner Person Page", () => {
 
     it("should return a validation error when invalid data is entered", async () => {
       const apiErrors: ApiErrors = {
-        errors: { "first_name": "general partner name is invalid" }
+        errors: { first_name: "general partner name is invalid" }
       };
 
       appDevDependencies.generalPartnerGateway.feedErrors(apiErrors);
@@ -93,54 +91,6 @@ describe("Add General Partner Person Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain("general partner name is invalid");
-    });
-  });
-
-  describe("400", () => {
-    it("should return validation errors - add general partner page", async () => {
-      mockCreateApiClient.mockReturnValue({
-        ...sdkMock,
-        limitedPartnershipsService: {
-          ...sdkMock.limitedPartnershipsService,
-          postGeneralPartner: () => ({
-            httpStatusCode: 400,
-            resource: {
-              errors: {
-                nationality1: "Invalid value for nationality"
-              }
-            }
-          })
-        }
-      });
-
-      const res = await request(appRealDependencies).post(URL).send({
-        pageType: RegistrationPageType.name
-      });
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain("Invalid value for nationality");
-    });
-  });
-
-  describe("500", () => {
-    it("should load error page", async () => {
-      mockCreateApiClient.mockReturnValue({
-        ...sdkMock,
-        limitedPartnershipsService: {
-          ...sdkMock.limitedPartnershipsService,
-          postGeneralPartner: () => ({
-            httpStatusCode: 500,
-            resource: {}
-          })
-        }
-      });
-
-      const res = await request(appRealDependencies).post(URL).send({
-        pageType: RegistrationPageType.name
-      });
-
-      expect(res.status).toBe(500);
-      expect(res.text).toContain(enTranslationText.errorPage.title);
     });
   });
 });

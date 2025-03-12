@@ -1,0 +1,25 @@
+{% extends "layout.njk" %}
+
+{% set pageTitle = i18n.address.findPostcode.usualResidentialAddress.whatIsUsualResidentialAddress %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {% include "includes/errors.njk" %}
+
+      <div>
+        {% include "includes/proposed-name.njk" %}
+
+        <h1 class="govuk-heading-xl">{{ i18n.address.findPostcode.usualResidentialAddress.whatIsUsualResidentialAddress }}</h1>
+      </div>
+
+      {% include "pages/address/postcode-form.njk" %}
+
+    <div>
+      {{ govukInsetText({
+        html: "<h2 class='govuk-heading-m'>" + i18n.address.findPostcode.usualResidentialAddress.publicRegisterTitle | escape + "</h2> <p>" + i18n.address.findPostcode.usualResidentialAddress.publicRegisterLine1 | escape + "</p>"
+      }) }}
+    </div>
+  </div>
+
+{% endblock %}
