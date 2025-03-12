@@ -59,6 +59,21 @@ class TransitionController extends AbstractController {
     };
   }
 
+  limitedPartnershipConfirm(): RequestHandler {
+    return (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { pageType } = super.extract(request);
+        const pageRouting = super.getRouting(transitionRouting, pageType, request);
+
+        const url = super.insertIdsInUrl(pageRouting.nextUrl, "172202-524517-416155", "67cef1bd031413260a6c83a9");
+
+        response.redirect(url);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
   checkCompanyNumber(): RequestHandler {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {

@@ -18,9 +18,17 @@ const transitionRoutingConfirmLimitedPartnership = {
   pageType: TransitionPageType.confirmLimitedPartnership
 };
 
+const transitionRoutingNext = {
+  previousUrl: url.CONFIRM_LIMITED_PARTNERSHIP_URL,
+  currentUrl: NEXT_URL,
+  nextUrl: "/",
+  pageType: TransitionPageType.next
+};
+
 const list = [
   transitionRoutingCompanyNumber,
-  transitionRoutingConfirmLimitedPartnership
+  transitionRoutingConfirmLimitedPartnership,
+  transitionRoutingNext
 ];
 
 export const transitionRouting: PagesRouting = new Map<PageType, PageRouting>();
