@@ -5,7 +5,7 @@ import app from "../app";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import { CONFIRM_LIMITED_PARTNERSHIP_URL } from "presentation/controller/transition/url";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
-import { APPLICATION_CACHE_KEY_PREFIX_REGISTRATION } from "../../../../config";
+import { APPLICATION_CACHE_KEY_PREFIX_TRANSITION } from "../../../../config";
 
 describe("Confirm correct limited partnership page", () => {
   const URL = getUrl(CONFIRM_LIMITED_PARTNERSHIP_URL);
@@ -19,7 +19,7 @@ describe("Confirm correct limited partnership page", () => {
       setLocalesEnabled(true);
 
       appDevDependencies.cacheRepository.feedCache({
-        [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}company_number`]:
+        [`${APPLICATION_CACHE_KEY_PREFIX_TRANSITION}company_number`]:
           "LP123456"
       });
 
@@ -40,7 +40,7 @@ describe("Confirm correct limited partnership page", () => {
       setLocalesEnabled(true);
 
       appDevDependencies.cacheRepository.feedCache({
-        [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}company_number`]:
+        [`${APPLICATION_CACHE_KEY_PREFIX_TRANSITION}company_number`]:
           "LP123456"
       });
 

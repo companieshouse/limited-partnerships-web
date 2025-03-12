@@ -7,7 +7,7 @@ import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import { COMPANY_NUMBER_URL } from "presentation/controller/transition/url";
 import TransitionPageType from "../../../controller/transition/PageType";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
-import { APPLICATION_CACHE_KEY, APPLICATION_CACHE_KEY_PREFIX_REGISTRATION } from "../../../../config/constants";
+import { APPLICATION_CACHE_KEY, APPLICATION_CACHE_KEY_PREFIX_TRANSITION } from "../../../../config/constants";
 
 describe("Company number page", () => {
   const URL = getUrl(COMPANY_NUMBER_URL);
@@ -55,7 +55,7 @@ describe("Company number page", () => {
 
       expect(appDevDependencies.cacheRepository.cache).toEqual({
         [APPLICATION_CACHE_KEY]: {
-          [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}company_number`]: "LP123456"
+          [`${APPLICATION_CACHE_KEY_PREFIX_TRANSITION}company_number`]: "LP123456"
         }
       });
     });

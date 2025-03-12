@@ -6,7 +6,7 @@ import CompanyService from "../../../application/service/CompanyService";
 import CacheService from "../../../application/service/CacheService";
 import {
   APPLICATION_CACHE_KEY,
-  APPLICATION_CACHE_KEY_PREFIX_REGISTRATION,
+  APPLICATION_CACHE_KEY_PREFIX_TRANSITION,
   cookieOptions
 } from "../../../config/constants";
 
@@ -38,7 +38,7 @@ class TransitionController extends AbstractController {
         const pageRouting = super.getRouting(transitionRouting, pageType, request);
 
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
-        const result = await this.companyService.getCompanyProfile(tokens, cache[`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}company_number`]);
+        const result = await this.companyService.getCompanyProfile(tokens, cache[`${APPLICATION_CACHE_KEY_PREFIX_TRANSITION}company_number`]);
 
         if (result.errors) {
           response.render(
@@ -94,7 +94,7 @@ class TransitionController extends AbstractController {
         }
 
         const cache = this.cacheService.addDataToCache(request.signedCookies, {
-          [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}company_number`]: company_number
+          [`${APPLICATION_CACHE_KEY_PREFIX_TRANSITION}company_number`]: company_number
         });
         response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
 
