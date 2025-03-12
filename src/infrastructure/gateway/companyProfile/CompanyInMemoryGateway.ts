@@ -17,7 +17,7 @@ class CompanyInMemoryGateway implements ICompanyGateway {
     opt: { access_token: string; refresh_token: string },
     company_number: string
   ): Promise<Partial<CompanyProfile>> {
-    if (this.error) {
+    if (this.error || company_number !== this.companyProfile.companyNumber) {
       const uiErrors = new UIErrors();
       uiErrors.formatValidationErrorToUiErrors({
         errors: {
