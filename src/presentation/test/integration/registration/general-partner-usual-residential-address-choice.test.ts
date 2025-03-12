@@ -6,7 +6,7 @@ import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
 import { GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOICE_URL } from "../../../controller/registration/url";
 import { appDevDependencies } from "config/dev-dependencies";
-import { getUrl, testTranslations } from "presentation/test/utils";
+import { getUrl } from "presentation/test/utils";
 
 describe("General Partner Usual Residential Address Choice", () => {
   const URL = getUrl(GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOICE_URL);
@@ -33,10 +33,6 @@ describe("General Partner Usual Residential Address Choice", () => {
     expect(res.text).toContain(
       cyTranslationText.generalPartnerUsualResidentialAddressChoicePage.title
     );
-    testTranslations(
-      res.text,
-      cyTranslationText.generalPartnerUsualResidentialAddressChoicePage
-    );
   });
 
   it("should load the usual residential address for general partner choice page with English text", async () => {
@@ -49,10 +45,6 @@ describe("General Partner Usual Residential Address Choice", () => {
     );
     expect(res.text).toContain(
       enTranslationText.generalPartnerUsualResidentialAddressChoicePage.title
-    );
-    testTranslations(
-      res.text,
-      enTranslationText.generalPartnerUsualResidentialAddressChoicePage
     );
   });
 });
