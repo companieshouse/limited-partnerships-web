@@ -1,6 +1,9 @@
 import IGeneralPartnerGateway from "../../../domain/IGeneralPartnerGateway";
 import { checkForBadRequest, makeApiCallWithRetry } from "../api";
-import { SDK_LIMITED_PARTNERSHIP_SERVICE } from "../../../config/constants";
+import {
+  SDK_GENERAL_PARTNER_SERVICE,
+  SDK_LIMITED_PARTNERSHIP_SERVICE
+} from "../../../config/constants";
 import { Resource } from "@companieshouse/api-sdk-node";
 import {
   GeneralPartner,
@@ -49,6 +52,26 @@ class GeneralPartnerGateway implements IGeneralPartnerGateway {
     }
 
     return response?.resource?.id ?? "";
+  }
+
+  async getGeneralPartner(
+    opt: { access_token: string; refresh_token: string },
+    transactionId: string,
+    generalPartnerId: string
+  ): Promise<GeneralPartner> {
+    const apiCall = {
+      service: SDK_GENERAL_PARTNER_SERVICE,
+      method: "getGeneralPartner",
+      args: [transactionId, generalPartnerId]
+    };
+    console.log("try and error");
+    const response = await makeApiCallWithRetry<Resource<GeneralPartner>>(opt, apiCall);
+    console.log(response);
+    if (response.httpStatusCode !== 200) {
+      throw response;
+    }
+
+    return (response as Resource<GeneralPartner>)?.resource ?? {};
   }
 }
 

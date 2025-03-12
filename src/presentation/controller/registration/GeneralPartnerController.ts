@@ -10,7 +10,10 @@ class GeneralPartnerController extends AbstractController {
   private limitedPartnershipService: LimitedPartnershipService;
   private generalPartnerService: GeneralPartnerService;
 
-  constructor(limitedPartnershipService: LimitedPartnershipService, generalPartnerService: GeneralPartnerService) {
+  constructor(
+    limitedPartnershipService: LimitedPartnershipService,
+    generalPartnerService: GeneralPartnerService
+  ) {
     super();
     this.limitedPartnershipService = limitedPartnershipService;
     this.generalPartnerService = generalPartnerService;
@@ -23,13 +26,21 @@ class GeneralPartnerController extends AbstractController {
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
         let limitedPartnership = {};
-        const generalPartner = {};
+        let generalPartner = {};
 
         if (ids.transactionId && ids.submissionId) {
           limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
             tokens,
             ids.transactionId,
             ids.submissionId
+          );
+        }
+
+        if (ids.transactionId && ids.generalPartnerId) {
+          generalPartner = await this.generalPartnerService.getGeneralPartner(
+            tokens,
+            ids.transactionId,
+            ids.generalPartnerId
           );
         }
 
@@ -59,13 +70,22 @@ class GeneralPartnerController extends AbstractController {
         if (result.errors) {
           response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { generalPartner: { data: request.body } }, result.errors)
+            super.makeProps(
+              pageRouting,
+              { generalPartner: { data: request.body } },
+              result.errors
+            )
           );
 
           return;
         }
 
-        const url = super.insertIdsInUrl(pageRouting.nextUrl, ids.transactionId, ids.submissionId, result.generalPartnerId);
+        const url = super.insertIdsInUrl(
+          pageRouting.nextUrl,
+          ids.transactionId,
+          ids.submissionId,
+          result.generalPartnerId
+        );
 
         response.redirect(url);
       } catch (error) {
