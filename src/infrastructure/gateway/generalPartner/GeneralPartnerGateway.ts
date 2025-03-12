@@ -61,9 +61,7 @@ class GeneralPartnerGateway implements IGeneralPartnerGateway {
       method: "getGeneralPartner",
       args: [transactionId, generalPartnerId]
     };
-    console.log("try and error");
     const response = await makeApiCallWithRetry<Resource<GeneralPartner>>(opt, apiCall);
-    console.log(response);
     if (response.httpStatusCode !== 200) {
       throw response;
     }

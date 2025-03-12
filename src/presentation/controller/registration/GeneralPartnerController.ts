@@ -93,6 +93,19 @@ class GeneralPartnerController extends AbstractController {
       }
     };
   }
+
+  generalPartnerUsualResidentialaddressChoice(): RequestHandler {
+    return (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
+        const pageRouting = super.getRouting(registrationsRouting, pageType, request);
+
+        response.redirect(pageRouting.nextUrl);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
 }
 
 export default GeneralPartnerController;
