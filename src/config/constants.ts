@@ -71,7 +71,6 @@ export const GENERAL_PARTNER_WITH_ID_URL =
 
 // services
 export const SDK_LIMITED_PARTNERSHIP_SERVICE = "limitedPartnershipsService";
-export const SDK_GENERAL_PARTNER_SERVICE = "generalPartnerService";
 export const SDK_POSTCODE_LOOKUP_SERVICE = "postCodeLookup";
 export const SDK_TRANSACTION_SERVICE = "transaction";
 

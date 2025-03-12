@@ -68,18 +68,18 @@ const registrationRoutingAddGeneralPartnerPerson = {
   pageType: RegistrationPageType.addGeneralPartnerPerson
 };
 
+const registrationRoutingAddGeneralPartnerLegalEntity = {
+  previousUrl: url.GENERAL_PARTNER_CHOICE_URL,
+  currentUrl: url.ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
+  nextUrl: url.GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOICE_URL,
+  pageType: RegistrationPageType.addGeneralPartnerLegalEntity
+};
+
 const registrationRoutingGeneralPartnerUsualResidentialAddressChoice = {
   previousUrl: url.ADD_GENERAL_PARTNER_PERSON_URL,
   currentUrl: url.GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOICE_URL,
   nextUrl: url.LIMITED_PARTNERS_URL,
   pageType: RegistrationPageType.generalPartnerUsualResidentialAddressChoice
-};
-
-const registrationRoutingAddGeneralPartnerLegalEntity = {
-  previousUrl: url.GENERAL_PARTNER_CHOICE_URL,
-  currentUrl: url.ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
-  nextUrl: url.LIMITED_PARTNERS_URL,
-  pageType: RegistrationPageType.addGeneralPartnerLegalEntity
 };
 
 const registrationRoutingLimitedPartners = {

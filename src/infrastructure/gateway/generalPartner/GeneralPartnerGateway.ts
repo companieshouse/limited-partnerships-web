@@ -1,9 +1,6 @@
 import IGeneralPartnerGateway from "../../../domain/IGeneralPartnerGateway";
 import { checkForBadRequest, makeApiCallWithRetry } from "../api";
-import {
-  SDK_GENERAL_PARTNER_SERVICE,
-  SDK_LIMITED_PARTNERSHIP_SERVICE
-} from "../../../config/constants";
+import { SDK_LIMITED_PARTNERSHIP_SERVICE } from "../../../config/constants";
 import { Resource } from "@companieshouse/api-sdk-node";
 import {
   GeneralPartner,
@@ -60,7 +57,7 @@ class GeneralPartnerGateway implements IGeneralPartnerGateway {
     generalPartnerId: string
   ): Promise<GeneralPartner> {
     const apiCall = {
-      service: SDK_GENERAL_PARTNER_SERVICE,
+      service: SDK_LIMITED_PARTNERSHIP_SERVICE,
       method: "getGeneralPartner",
       args: [transactionId, generalPartnerId]
     };
