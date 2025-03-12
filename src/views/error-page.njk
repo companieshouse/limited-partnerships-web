@@ -2,6 +2,8 @@
 
 {% from "web-security-node/components/csrf-error/macro.njk" import csrfError %}
 
+{% set pageTitle = i18n.errorPage.title  %}
+
 {% block content %}
   {% if csrfErrors %}
     {{
