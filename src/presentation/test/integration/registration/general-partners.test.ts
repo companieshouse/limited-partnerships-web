@@ -52,4 +52,12 @@ describe("General Partners Page", () => {
       `${limitedPartnership?.data?.partnership_name?.toUpperCase()} ${limitedPartnership?.data?.name_ending?.toUpperCase()}`
     );
   });
+
+  it("should contain the back link to the Term page", async () => {
+    setLocalesEnabled(true);
+    const res = await request(app).get(URL + "?lang=en");
+
+    expect(res.status).toBe(200);
+    expect(res.text).toMatch(/\/limited-partnerships\/transaction\/.*\/submission\/.*\/term/);
+  });
 });
