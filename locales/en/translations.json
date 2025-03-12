@@ -110,8 +110,8 @@
             },
             "principalPlaceOfBusinessAddress" : {
                 "title": "What is the principal place of business?",
-                "titleHint1": "This is the address where the day to day running of the business takes place. It could be the same as the registered office address, or a differen addres.",
-                "titleHint2": "It must be in the jurisdiction where the partnership was formed. It can be changed to an address outside of the jurisdiction after you've registered the partnership",
+                "titleHint1": "This is the address where the day to day running of the business takes place. It could be the same as the registered office address, or a different address.",
+                "titleHint2": "It must be in the jurisdiction where the partnership was formed. It can be changed to an address outside of the jurisdiction after you've registered the partnership.",
                 "publicInformationTitle": "What information we'll show on the public register",
                 "publicInformationLine1": "We'll show the principal place of business on the public register."
             },
@@ -211,7 +211,8 @@
     },
 
     "errorPage" : {
-        "title" : "Sorry, the service is unavailable",
+        "title": "Service unavailable",
+        "sorryMessage" : "Sorry, the service is unavailable",
         "tryLater" : "You will be able to use the service at a later date.",
         "moreInfo" : "Email <a class='govuk-link' href='mailto: enquiries@companieshouse.gov.uk'>enquiries@companieshouse.gov.uk</a>, if you need more information."
     },
@@ -301,6 +302,13 @@
     "companyNumber" : {
         "whatIsPartnershipNumber": "What is the limited partnership number?",
         "hint": "This is 2 letters followed by 6 numbers." 
+    },
+
+    "confirmLimitedPartnership": {
+        "title": "Confirm this is the correct limited partnership",
+        "name": "Company name",
+        "number": "Company number",
+        "date": "Incorporation date"
     },
 
     "service" : "Register a limited partnership",

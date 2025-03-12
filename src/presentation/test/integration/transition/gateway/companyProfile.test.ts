@@ -32,7 +32,7 @@ describe("Comapny Profile", () => {
       expect(getCompanyProfile).toHaveBeenCalled();
 
       expect(res.status).toBe(302);
-      expect(res.text).toContain(`/next`);
+      expect(res.text).toContain("Redirecting to /limited-partnerships/transition/confirm-limited-partnership");
     });
 
     it("should load error page when error thrown from getCompanyProfile", async () => {

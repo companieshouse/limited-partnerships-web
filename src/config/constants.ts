@@ -52,6 +52,7 @@ export const SHOW_SERVICE_UNAVAILABLE_PAGE = getEnvironmentValueAsBoolean(
 );
 export const APPLICATION_CACHE_KEY = "limited_partnership";
 export const APPLICATION_CACHE_KEY_PREFIX_REGISTRATION = "registration_";
+export const APPLICATION_CACHE_KEY_PREFIX_TRANSITION = "transition_";
 
 // Templates
 export const ERROR_TEMPLATE = "error-page";
