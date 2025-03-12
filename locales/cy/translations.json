@@ -102,8 +102,8 @@
             },
             "principalPlaceOfBusinessAddress" : {
                 "title": "WELSH - What is the principal place of business?",
-                "titleHint1": "WELSH - This is the address where the day to day running of the business takes place. It could be the same as the registered office address, or a differen addres.",
-                "titleHint2": "WELSH - It must be in the jurisdiction where the partnership was formed. It can be changed to an address outside of the jurisdiction after you've registered the partnership",
+                "titleHint1": "WELSH - This is the address where the day to day running of the business takes place. It could be the same as the registered office address, or a different address.",
+                "titleHint2": "WELSH - It must be in the jurisdiction where the partnership was formed. It can be changed to an address outside of the jurisdiction after you've registered the partnership.",
                 "publicInformationTitle": "WELSH - What information we'll show on the public register",
                 "publicInformationLine1": "WELSH - We'll show the principal place of business on the public register."
             },
