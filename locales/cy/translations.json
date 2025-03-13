@@ -291,6 +291,18 @@
         "goToStartPage" : "WELSH - To register a limited partnership, go to the <a class='govuk-link' href='/limited-partnerships/start'>Register a limited partnership</a> start page."
     },
 
+    "companyNumber" : {
+        "whatIsPartnershipNumber": "WELSH - What is the limited partnership number?",
+        "hint": "WELSH - This is 2 letters followed by 6 numbers." 
+    },
+
+    "confirmLimitedPartnership": {
+        "title": "WELSH - Confirm this is the correct limited partnership",
+        "name": "WELSH - Company name",
+        "number": "WELSH - Company number",
+        "date": "WELSH - Incorporation date"
+    },
+
     "service" : "WELSH - Register a limited partnership",
 
     "startPage" : {
@@ -308,11 +320,6 @@
         "publicRegisterLine1": "WELSH - We'll show the term of partnership on the public register."
     },
     
-    "companyNumber" : {
-        "whatIsPartnershipNumber": "WELSH - What is the limited partnership number?",
-        "hint": "WELSH - This is 2 letters followed by 6 numbers." 
-    },
-
     "whereIsTheJurisdiction" : {
         "title" : "WELSH - Where is the jurisdiction?",
         "whereIsJurisdiction" : "WELSH - Where is the jurisdiction?",
