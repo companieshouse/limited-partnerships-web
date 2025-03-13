@@ -9,6 +9,7 @@ import {
   APPLICATION_CACHE_KEY_PREFIX_TRANSITION,
   cookieOptions
 } from "../../../config/constants";
+import { formatDate } from "../../../infrastructure/gateway/utils";
 
 class TransitionController extends AbstractController {
   constructor(private companyService: CompanyService, private cacheService: CacheService) {
@@ -49,7 +50,7 @@ class TransitionController extends AbstractController {
           return;
         }
 
-        const formattedDate = this.formatDate(result.companyProfile.dateOfCreation, response.locals.i18n);
+        const formattedDate = formatDate(result.companyProfile.dateOfCreation as string, response.locals.i18n);
 
         response.render(
           super.templateName(pageRouting.currentUrl),
@@ -105,31 +106,6 @@ class TransitionController extends AbstractController {
         next(error);
       }
     };
-  }
-
-  private formatDate(date: string | undefined, translation: Record<string, any>) {
-    const months: Record<string, string> = {
-      "01": translation.months.january,
-      "02": translation.months.february,
-      "03": translation.months.march,
-      "04": translation.months.april,
-      "05": translation.months.may,
-      "06": translation.months.june,
-      "07": translation.months.july,
-      "08": translation.months.august,
-      "09": translation.months.september,
-      "10": translation.months.october,
-      "11": translation.months.november,
-      "12": translation.months.december
-    };
-
-    if (date) {
-      const [year, month, day] = date.split("-");
-
-      const dayFormated = day[0] === "0" ? day.slice(1) : day;
-
-      return `${dayFormated} ${months[month]} ${year}`;
-    }
   }
 }
 
