@@ -125,9 +125,7 @@ class TransitionController extends AbstractController {
 
     if (date) {
       const [year, month, day] = date.split("-");
-      const formattedDate: string = `${day} ${months[month]} ${year}`;
-
-      return formattedDate;
+      return `${day} ${months[month]} ${year}`;
     }
   }
 }
