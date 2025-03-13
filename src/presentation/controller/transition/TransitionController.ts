@@ -109,21 +109,21 @@ class TransitionController extends AbstractController {
 
   private formatDate(date: string | undefined, translation: Record<string, any>) {
     const months: Record<string, string> = {
-      "01": translation.month.january,
-      "02": translation.month.february,
-      "03": translation.month.march,
-      "04": translation.month.april,
-      "05": translation.month.may,
-      "06": translation.month.june,
-      "07": translation.month.july,
-      "08": translation.month.august,
-      "09": translation.month.september,
-      "10": translation.month.october,
-      "11": translation.month.november,
-      "12": translation.month.december
+      "01": translation.months.january,
+      "02": translation.months.february,
+      "03": translation.months.march,
+      "04": translation.months.april,
+      "05": translation.months.may,
+      "06": translation.months.june,
+      "07": translation.months.july,
+      "08": translation.months.august,
+      "09": translation.months.september,
+      "10": translation.months.october,
+      "11": translation.months.november,
+      "12": translation.months.december
     };
 
-    if (date){
+    if (date) {
       const [year, month, day] = date.split("-");
       const formattedDate: string = `${day} ${months[month]} ${year}`;
 
