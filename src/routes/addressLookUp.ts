@@ -6,10 +6,7 @@ import { IDependencies } from "../config/IDependencies";
 
 import * as url from "../presentation/controller/addressLookUp/url";
 
-export const addressLookUpEndpoints = (
-  router: Router,
-  dependencies: IDependencies
-): void => {
+export const addressLookUpEndpoints = (router: Router, dependencies: IDependencies): void => {
   // Registered Office Address
   router.get(
     url.POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
@@ -105,6 +102,11 @@ export const addressLookUpEndpoints = (
     url.POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL,
     authentication,
     dependencies.addressLookUpController.getPageRouting()
+  );
+  router.post(
+    url.POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL,
+    authentication,
+    dependencies.addressLookUpController.postcodeValidation()
   );
 };
 

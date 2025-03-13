@@ -116,8 +116,8 @@ const addressRoutingPostcodeUsualResidentialAddress = {
   nextUrl: LIMITED_PARTNERS_URL, // will be changed to confirm residential address (not ready)
   pageType: AddressPageType.postcodeUsualResidentialAddress,
   data: {
-    enterManualAddressPageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress
-    // confirmAddressUrl: CONFIRM_USUAL_RESIDENTIAL_ADDRESS_URL // uncomment when ready
+    // enterManualAddressPageType: AddressPageType.enterUsualResidentialAddress, // uncomment when ready
+    confirmAddressUrl: LIMITED_PARTNERS_URL // will be changed to confirm residential address (not ready)
   }
 };
 
@@ -125,11 +125,7 @@ const ussualResidentialAddress = [addressRoutingPostcodeUsualResidentialAddress]
 
 export const addressLookUpRouting: PagesRouting = new Map<PageType, PageRouting>();
 
-[
-  ...registeredOfficeAddress,
-  ...principalPlaceOfBusinessAddress,
-  ...ussualResidentialAddress
-].forEach((routing) => {
+[...registeredOfficeAddress, ...principalPlaceOfBusinessAddress, ...ussualResidentialAddress].forEach((routing) => {
   addressLookUpRouting.set(routing.pageType, routing);
 });
 

@@ -79,7 +79,7 @@ const registrationRoutingAddGeneralPartnerLegalEntity = {
 // usual residential address
 
 const registrationRoutingLimitedPartners = {
-  previousUrl: url.GENERAL_PARTNER_CHOICE_URL, // will be changed to confirm residential address (not ready)
+  previousUrl: url.GENERAL_PARTNER_CHOICE_URL,
   currentUrl: url.LIMITED_PARTNERS_URL,
   nextUrl: url.LIMITED_PARTNER_CHOICE_URL,
   pageType: RegistrationPageType.limitedPartners
