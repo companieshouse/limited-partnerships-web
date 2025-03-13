@@ -71,6 +71,10 @@
     
             "registeredOfficeAddress" : {
                 "title": "WELSH - Choose the registered office address"                
+            },
+
+            "generalPartnerUsualResidentialAddress" : {
+                "title" : "WELSH - Choose the usual residential address of the general partner"
             }
         },
 

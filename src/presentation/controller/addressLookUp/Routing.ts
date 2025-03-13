@@ -2,7 +2,7 @@ import { PageRouting, PagesRouting } from "../PageRouting";
 
 import AddressPageType from "./PageType";
 import PageType from "../PageType";
-import { TERM_URL, WHERE_IS_THE_JURISDICTION_URL } from "../registration/url";
+import { TERM_URL, WHERE_IS_THE_JURISDICTION_URL, ADD_GENERAL_PARTNER_PERSON_URL } from "../registration/url";
 import {
   POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
   CHOOSE_REGISTERED_OFFICE_ADDRESS_URL,
@@ -11,7 +11,9 @@ import {
   POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   CHOOSE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
-  CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL
+  CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+  CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "./url";
 
 // Registered Office Address
@@ -100,11 +102,22 @@ const addressRoutingConfirmPrincipalPlaceOfBusinessAddress = {
   }
 };
 
+const addressRoutingChooseGeneralPartnerUsualResidentialAddress = {
+  previousUrl: ADD_GENERAL_PARTNER_PERSON_URL,
+  currentUrl: CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  nextUrl: CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL, 
+  pageType: AddressPageType.chooseGeneralPartnerUsualResidentialAddress,
+  data: {
+
+  }
+};
+
 const principalPlaceOfBusinessAddress = [
   addressRoutingPostcodePrincipalPlaceOfBusinessAddress,
   addressRoutingChoosePrincipalPlaceOfBusinessAddress,
   addressRoutingEnterPrincipalPlaceOfBusinessAddress,
-  addressRoutingConfirmPrincipalPlaceOfBusinessAddress
+  addressRoutingConfirmPrincipalPlaceOfBusinessAddress,
+  addressRoutingChooseGeneralPartnerUsualResidentialAddress
 ];
 
 export const addressLookUpRouting: PagesRouting = new Map<PageType, PageRouting>();
