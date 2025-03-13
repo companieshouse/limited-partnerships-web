@@ -1,4 +1,4 @@
-import { NameEndingType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { IncorporationKind, NameEndingType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import RegistrationPageType from "../../../controller/registration/PageType";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
@@ -103,7 +103,8 @@ describe("Create transaction and the first submission", () => {
         appDevDependencies.incorporationGateway.createIncorporation(
           { access_token: "access_token", refresh_token: "refresh_token" },
           RegistrationPageType.next,
-          transactionId
+          transactionId,
+          IncorporationKind.REGISTRATION
         )
       ).rejects.toThrow("Wrong page type to create a new incorporation");
     });

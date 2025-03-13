@@ -1,4 +1,4 @@
-import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { IncorporationKind, LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import RegistrationPageType from "../../presentation/controller/registration/PageType";
 import ILimitedPartnershipGateway from "../../domain/ILimitedPartnershipGateway";
@@ -51,7 +51,8 @@ class LimitedPartnershipService {
       await this.incorporationGateway.createIncorporation(
         opt,
         registrationType,
-        transactionId
+        transactionId,
+        IncorporationKind.REGISTRATION
       );
 
       const submissionId =

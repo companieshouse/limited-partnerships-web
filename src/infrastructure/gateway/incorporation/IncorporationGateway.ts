@@ -1,5 +1,5 @@
 import { Resource } from "@companieshouse/api-sdk-node";
-import { LimitedPartnershipResourceCreated } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
+import { Incorporation, IncorporationKind, LimitedPartnershipResourceCreated } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 import { IIncorporationGateway } from "../../../domain/IIncorporationGateway";
 import PageType from "../../../presentation/controller/PageType";
@@ -13,12 +13,15 @@ class IncorporationGateway implements IIncorporationGateway {
       refresh_token: string;
     },
     pageType: PageType,
-    transactionId: string
+    transactionId: string,
+    kind: IncorporationKind
   ): Promise<string> {
+    const incorporation: Incorporation = { data: { kind } };
+
     const apiCall = {
       service: SDK_LIMITED_PARTNERSHIP_SERVICE,
       method: "postLimitedPartnershipIncorporation",
-      args: [transactionId]
+      args: [transactionId, incorporation]
     };
 
     const response = await makeApiCallWithRetry<
