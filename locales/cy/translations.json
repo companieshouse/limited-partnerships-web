@@ -66,7 +66,7 @@
         "hintLine1": "WELSH - What information we'll show on the public register",
         "hintLine2": "Welsh - We will not show the general partner's usual residential address",
         "overseas": "WELSH - Overseas",
-        "inTheunitedKingdom": "WELSH - In the United Kingdom"
+        "unitedKingdom": "WELSH - In the United Kingdom"
     },
 
     "address": {
