@@ -59,7 +59,7 @@ describe("General Partners Page", () => {
     [PartnershipType.SLP, "term"],
     [PartnershipType.PFLP, "confirm-principal-place-of-business-address"],
     [PartnershipType.SPFLP, "confirm-principal-place-of-business-address"]
-  ])("should contain the correct back link based on partnerhip type", async (partnershipType: PartnershipType, backLink: string) => {
+  ])("should contain the correct back link based on partnership type", async (partnershipType: PartnershipType, backLink: string) => {
     setLocalesEnabled(true);
     const limitedPartnership = new LimitedPartnershipBuilder()
       .withPartnershipType(partnershipType)
