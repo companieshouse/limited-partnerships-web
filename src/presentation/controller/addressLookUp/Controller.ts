@@ -17,6 +17,7 @@ import GeneralPartnerService from "../../../application/service/GeneralPartnerSe
 class AddressLookUpController extends AbstractController {
   public readonly REGISTERED_OFFICE_ADDRESS_CACHE_KEY = "registered_office_address";
   public readonly PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CACHE_KEY = "principal_place_of_business_address";
+  public readonly USUAL_RESIDENTIAL_ADDRESS_CACHE_KEY = "usual_residential_address";
 
   constructor(
     private addressService: AddressService,
@@ -164,10 +165,17 @@ class AddressLookUpController extends AbstractController {
         }
       });
       response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
-    } else {
+    } else if (pageType === AddressLookUpPageType.postcodeRegisteredOfficeAddress) {
       const cache = this.cacheService.addDataToCache(request.signedCookies, {
         [transactionId]: {
           [this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY]: address
+        }
+      });
+      response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
+    } else if (pageType === AddressLookUpPageType.postcodeUsualResidentialAddress) {
+      const cache = this.cacheService.addDataToCache(request.signedCookies, {
+        [transactionId]: {
+          [this.USUAL_RESIDENTIAL_ADDRESS_CACHE_KEY]: address
         }
       });
       response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
