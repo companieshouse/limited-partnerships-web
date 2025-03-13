@@ -39,6 +39,7 @@ class TransitionController extends AbstractController {
 
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
         const result = await this.companyService.getCompanyProfile(tokens, cache[`${APPLICATION_CACHE_KEY_PREFIX_TRANSITION}company_number`]);
+        const formattedDate = this.formatDate(result.companyProfile.dateOfCreation);
 
         if (result.errors) {
           response.render(
@@ -51,7 +52,7 @@ class TransitionController extends AbstractController {
 
         response.render(
           super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { company: result.companyProfile }, null)
+          super.makeProps(pageRouting, { company: result.companyProfile, dateOfCreation: formattedDate }, null)
         );
       } catch (error) {
         next(error);
@@ -103,6 +104,31 @@ class TransitionController extends AbstractController {
         next(error);
       }
     };
+  }
+
+  private formatDate(date?: string) {
+    const months: Record<string, string> = {
+      January: "01",
+      February: "02",
+      March: "03",
+      April: "04",
+      May: "05",
+      June: "06",
+      July: "07",
+      August: "08",
+      September: "09",
+      October: "10",
+      November: "11",
+      December: "12"
+    };
+
+    if (date){
+      const [year, month, day] = date.split("-");
+      const monthWord = Object.keys(months).find(key => months[key] === month) || month;
+      const formattedDate: string = `${day} ${monthWord} ${year}`;
+
+      return formattedDate;
+    }
   }
 }
 
