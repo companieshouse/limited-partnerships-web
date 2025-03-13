@@ -14,12 +14,12 @@ class CacheRepository implements ICacheRepository {
   addData(cookies: Record<string, any>, data: Record<string, any>): string {
     const cache = this.getData(cookies);
 
-    return this.toBase64(
-      JSON.stringify({
-        ...cache,
-        ...data
-      })
-    );
+    const json = JSON.stringify({
+      ...cache,
+      ...data
+    });
+
+    return this.toBase64(json);
   }
 
   deleteData(cookies: Record<string, any>, key: string): string {
@@ -27,7 +27,9 @@ class CacheRepository implements ICacheRepository {
 
     delete cache[key];
 
-    return JSON.stringify(cache);
+    const cacheUpdated = JSON.stringify(cache);
+
+    return this.toBase64(cacheUpdated);
   }
 
   private toBase64(value: string): string {
