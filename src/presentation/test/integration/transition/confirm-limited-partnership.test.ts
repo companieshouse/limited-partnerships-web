@@ -44,6 +44,8 @@ describe("Confirm correct limited partnership page", () => {
           "LP123456"
       });
 
+      appDevDependencies.companyGateway.companyProfile.dateOfCreation = "2019-01-11";
+
       const res = await request(app).get(URL + "?lang=cy");
 
       expect(res.status).toBe(200);
@@ -54,7 +56,7 @@ describe("Confirm correct limited partnership page", () => {
       expect(res.text).toContain("WELSH -");
       expect(res.text).toContain("TEST COMPANY");
       expect(res.text).toContain("LP123456");
-      expect(res.text).toContain("1 WELSH - January 2019");
+      expect(res.text).toContain("11 WELSH - January 2019");
     });
 
     it("should return an error if company_number is not valid", async () => {

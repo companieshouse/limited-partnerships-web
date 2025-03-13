@@ -9,7 +9,7 @@ import {
   APPLICATION_CACHE_KEY_PREFIX_TRANSITION,
   cookieOptions
 } from "../../../config/constants";
-import { formatDate } from "../../../infrastructure/gateway/utils";
+import { formatDate } from "../../../utils/date-format";
 
 class TransitionController extends AbstractController {
   constructor(private companyService: CompanyService, private cacheService: CacheService) {
