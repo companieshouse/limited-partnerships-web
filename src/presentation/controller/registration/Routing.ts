@@ -48,7 +48,7 @@ const registrationRoutingTerm = {
 };
 
 const registrationRoutingGeneralPartners = {
-  previousUrl: url.TERM_URL,
+  previousUrl: CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   currentUrl: url.GENERAL_PARTNERS_URL,
   nextUrl: url.GENERAL_PARTNER_CHOICE_URL,
   pageType: RegistrationPageType.generalPartners

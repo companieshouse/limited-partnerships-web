@@ -6,6 +6,7 @@ import { GENERAL_PARTNERS_URL } from "../../../controller/registration/url";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
+import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 describe("General Partners Page", () => {
   const URL = getUrl(GENERAL_PARTNERS_URL);
@@ -53,11 +54,25 @@ describe("General Partners Page", () => {
     );
   });
 
-  it("should contain the back link to the Term page", async () => {
+  it.each([
+    [PartnershipType.LP, "term"],
+    [PartnershipType.SLP, "term"],
+    [PartnershipType.PFLP, "confirm-principal-place-of-business-address"],
+    [PartnershipType.SPFLP, "confirm-principal-place-of-business-address"]
+  ])("should contain the back link to the Term page", async (partnershipType: PartnershipType, backLink: string) => {
     setLocalesEnabled(true);
+    const limitedPartnership = new LimitedPartnershipBuilder()
+      .withPartnershipType(partnershipType)
+      .build();
+
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
+      limitedPartnership
+    ]);
+
     const res = await request(app).get(URL + "?lang=en");
 
     expect(res.status).toBe(200);
-    expect(res.text).toMatch(/\/limited-partnerships\/transaction\/.*\/submission\/.*\/term/);
+    const regex = new RegExp(`/limited-partnerships/transaction/.*?/submission/.*?/${backLink}`);
+    expect(res.text).toMatch(regex);
   });
 });
