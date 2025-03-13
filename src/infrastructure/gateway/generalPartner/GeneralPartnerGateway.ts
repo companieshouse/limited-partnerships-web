@@ -66,7 +66,7 @@ class GeneralPartnerGateway implements IGeneralPartnerGateway {
       throw response;
     }
 
-    return (response as Resource<GeneralPartner>)?.resource ?? {};
+    return response.resource ?? {};
   }
 }
 
