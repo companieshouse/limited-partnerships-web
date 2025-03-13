@@ -9,6 +9,7 @@ import {
   APPLICATION_CACHE_KEY_PREFIX_TRANSITION,
   cookieOptions
 } from "../../../config/constants";
+import { formatDate } from "../../../utils/date-format";
 
 class TransitionController extends AbstractController {
   constructor(private companyService: CompanyService, private cacheService: CacheService) {
@@ -49,9 +50,11 @@ class TransitionController extends AbstractController {
           return;
         }
 
+        const formattedDate = formatDate(result.companyProfile.dateOfCreation as string, response.locals.i18n);
+
         response.render(
           super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { company: result.companyProfile }, null)
+          super.makeProps(pageRouting, { company: result.companyProfile, dateOfCreation: formattedDate }, null)
         );
       } catch (error) {
         next(error);

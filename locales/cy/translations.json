@@ -853,5 +853,20 @@
       "yemeni" : "WELSH - Yemeni",
       "zambian" : "WELSH - Zambian",
       "zimbabwean" : "WELSH - Zimbabwean"
+    },
+
+    "months": {
+        "january": "WELSH - January",
+        "february": "WELSH - February",
+        "march": "WELSH - March",
+        "april": "WELSH - April",
+        "may": "WELSH - May",
+        "june": "WELSH - June",
+        "july": "WELSH - July",
+        "august": "WELSH - August",
+        "september": "WELSH - September",
+        "october": "WELSH - October",
+        "november": "WELSH - November",
+        "december": "WELSH - December"
     }
 }
