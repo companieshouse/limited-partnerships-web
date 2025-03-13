@@ -8,12 +8,14 @@ export const setLocalesEnabled = (bool: boolean) => {
   LocalesService.getInstance().enabled = bool;
 };
 
-export const getUrl = (url: string) =>
-  appDevDependencies.addressLookUpController.insertIdsInUrl(
+export const getUrl = (url: string) => {
+  return appDevDependencies.addressLookUpController.insertIdsInUrl(
     url,
     appDevDependencies.transactionGateway.transactionId,
-    appDevDependencies.limitedPartnershipGateway.submissionId
+    appDevDependencies.limitedPartnershipGateway.submissionId,
+    appDevDependencies.generalPartnerGateway.generalPartnerId
   );
+};
 
 const toEscapedHtml = (input: string) => {
   return input
@@ -24,11 +26,7 @@ const toEscapedHtml = (input: string) => {
     .replace(/'/g, "&#39;");
 };
 
-export const testTranslations = (
-  text: string,
-  translations: Record<string, any>,
-  exclude?: string[]
-) => {
+export const testTranslations = (text: string, translations: Record<string, any>, exclude?: string[]) => {
   for (const key in translations) {
     if (exclude?.includes(key)) {
       continue;

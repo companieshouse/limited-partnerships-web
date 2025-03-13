@@ -47,6 +47,7 @@ const limitedPartnershipController: LimitedPartnershipController = new LimitedPa
 const addressLookUpController: AddressLookUpController = new AddressLookUpController(
   addressLookUpService,
   limitedPartnershipService,
+  generalPartnerService,
   cacheService
 );
 const transitionController: TransitionController = new TransitionController(companyService, cacheService);

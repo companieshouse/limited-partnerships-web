@@ -13,9 +13,7 @@ class GeneralPartnerInMemoryGateway implements IGeneralPartnerGateway {
   generalPartners: GeneralPartner[] = [];
   uiErrors: UIErrors = new UIErrors();
 
-  feedGeneralPartners(
-    generalPartners: GeneralPartner[]
-  ) {
+  feedGeneralPartners(generalPartners: GeneralPartner[]) {
     this.generalPartners = generalPartners;
   }
 
@@ -47,6 +45,18 @@ class GeneralPartnerInMemoryGateway implements IGeneralPartnerGateway {
     });
 
     return this.generalPartnerId;
+  }
+
+  async getGeneralPartner(
+    opt: { access_token: string; refresh_token: string },
+    transactionId: string,
+    generalPartnerId: string
+  ): Promise<GeneralPartner> {
+    if (this.error) {
+      throw new Error(`Not found: ${generalPartnerId}`);
+    }
+
+    return this.generalPartners[0];
   }
 }
 

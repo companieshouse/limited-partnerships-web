@@ -106,7 +106,7 @@ export const registrationEndpoints = (
   router.post(
     GENERAL_PARTNER_CHOICE_URL,
     authentication,
-    dependencies.limitedPartnershipController.generalPartnerChoice()
+    dependencies.generalPartnerController.generalPartnerChoice()
   );
 
   router.get(
@@ -164,7 +164,7 @@ export const registrationEndpoints = (
   router.get(
     APPLICATION_SUBMITTED_URL,
     authentication,
-    dependencies.limitedPartnershipController.getPageRouting(),
+    dependencies.limitedPartnershipController.getPageRouting()
   );
 
   router.get(

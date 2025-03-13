@@ -1,6 +1,6 @@
 import * as template from "./template";
 
-import { BASE_WITH_IDS_URL } from "../../../config/constants";
+import { BASE_WITH_IDS_URL, GENERAL_PARTNER_WITH_ID_URL } from "../../../config/constants";
 
 // LIMITED PARTNERSHIP
 
@@ -19,4 +19,4 @@ export const CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL = `${BASE_WITH_IDS_
 // GENERAL PARTNER
 
 // usual residential address
-export const POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL = `${BASE_WITH_IDS_URL}/${template.POSTCODE_USUAL_RESIDENTIAL_ADDRESS_TEMPLATE}`;
+export const POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL = `${GENERAL_PARTNER_WITH_ID_URL}/${template.POSTCODE_USUAL_RESIDENTIAL_ADDRESS_TEMPLATE}`;

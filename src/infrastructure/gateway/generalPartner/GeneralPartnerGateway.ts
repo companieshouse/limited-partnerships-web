@@ -49,6 +49,25 @@ class GeneralPartnerGateway implements IGeneralPartnerGateway {
 
     return response?.resource?.id ?? "";
   }
+
+  async getGeneralPartner(
+    opt: { access_token: string; refresh_token: string },
+    transactionId: string,
+    generalPartnerId: string
+  ): Promise<GeneralPartner> {
+    const apiCall = {
+      service: SDK_LIMITED_PARTNERSHIP_SERVICE,
+      method: "getGeneralPartner",
+      args: [transactionId, generalPartnerId]
+    };
+    const response = await makeApiCallWithRetry<Resource<GeneralPartner>>(opt, apiCall);
+
+    if (response.httpStatusCode !== 200) {
+      throw response;
+    }
+
+    return (response as Resource<GeneralPartner>)?.resource ?? {};
+  }
 }
 
 export default GeneralPartnerGateway;
