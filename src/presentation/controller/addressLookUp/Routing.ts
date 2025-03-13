@@ -3,7 +3,7 @@ import { PageRouting, PagesRouting } from "../PageRouting";
 import AddressPageType from "./PageType";
 import PageType from "../PageType";
 import {
-  ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
+  GENERAL_PARTNER_CHOICE_URL,
   LIMITED_PARTNERS_URL,
   TERM_URL,
   WHERE_IS_THE_JURISDICTION_URL
@@ -111,7 +111,7 @@ const principalPlaceOfBusinessAddress = [
 // usual residential address
 
 const addressRoutingPostcodeUsualResidentialAddress = {
-  previousUrl: ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL, // will be changed to Where is the usual residential address (not ready)
+  previousUrl: GENERAL_PARTNER_CHOICE_URL, // will be changed to Where is the usual residential address (not ready)
   currentUrl: url.POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL,
   nextUrl: LIMITED_PARTNERS_URL, // will be changed to confirm residential address (not ready)
   pageType: AddressPageType.postcodeUsualResidentialAddress,
