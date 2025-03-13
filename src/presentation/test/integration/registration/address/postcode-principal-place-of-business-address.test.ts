@@ -31,7 +31,9 @@ describe("Postcode Principal Place Of Business Address Page", () => {
       .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
       .build();
 
-    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
+      limitedPartnership
+    ]);
   });
 
   describe("Get Postcode Principal Place Of Business Address Page", () => {
@@ -43,7 +45,11 @@ describe("Postcode Principal Place Of Business Address Page", () => {
       expect(res.text).toContain(
         `${enTranslationText.address.findPostcode.principalPlaceOfBusiness.whatIsPrincipalPlaceOfBusiness} - ${enTranslationText.service} - GOV.UK`
       );
-      testTranslations(res.text, enTranslationText.address.findPostcode, ["registeredOfficeAddress", "errorMessages"]);
+      testTranslations(res.text, enTranslationText.address.findPostcode, [
+        "registeredOfficeAddress",
+        "usualResidentialAddress",
+        "errorMessages"
+      ]);
       expect(res.text).not.toContain("WELSH -");
     });
 
@@ -55,7 +61,11 @@ describe("Postcode Principal Place Of Business Address Page", () => {
       expect(res.text).toContain(
         `${cyTranslationText.address.findPostcode.principalPlaceOfBusiness.whatIsPrincipalPlaceOfBusiness} - ${cyTranslationText.service} - GOV.UK`
       );
-      testTranslations(res.text, cyTranslationText.address.findPostcode, ["registeredOfficeAddress", "errorMessages"]);
+      testTranslations(res.text, cyTranslationText.address.findPostcode, [
+        "registeredOfficeAddress",
+        "usualResidentialAddress",
+        "errorMessages"
+      ]);
     });
   });
 

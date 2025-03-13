@@ -138,7 +138,6 @@
 
         "findPostcode": {
             "registeredOfficeAddress": {
-
                 "whatIsOfficeAddress": "What is the registered office address of the partnership?",
                 "officialCommunication": "This is where official communications will be sent.",
                 "england": {
@@ -159,6 +158,12 @@
                 "jurisdiction": "It must be in the jurisdiction where the partnership was formed. It can be changed to an address outside of the jurisdiction after you've registered the partnership.",
                 "publicRegisterTitle": "What information we'll show on the public register",
                 "publicRegisterLine1": "We'll show the principal place of business on the public register."
+            },
+
+            "usualResidentialAddress": {
+                "whatIsUsualResidentialAddress": "What is the usual residential address of the partnership?",
+                "publicRegisterTitle": "What information we'll show on the public register",
+                "publicRegisterLine1": "We'll show the usual residential address on the public register."
             },
  
             "nameOrNumberHint": "Property name or number (optional)",

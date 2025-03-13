@@ -54,7 +54,7 @@ abstract class AbstractController {
     const session = request.session as Session;
     const tokens = this.extractTokens(request);
     const pageType = this.pageType(request.path);
-    const { transactionId, submissionId } = this.extractIds(request);
+    const { transactionId, submissionId, generalPartnerId } = this.extractIds(request);
 
     return {
       session,
@@ -62,7 +62,8 @@ abstract class AbstractController {
       pageType,
       ids: {
         transactionId,
-        submissionId
+        submissionId,
+        generalPartnerId
       }
     };
   }
