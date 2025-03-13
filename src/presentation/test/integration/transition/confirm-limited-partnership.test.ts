@@ -54,7 +54,7 @@ describe("Confirm correct limited partnership page", () => {
       expect(res.text).toContain("WELSH -");
       expect(res.text).toContain("TEST COMPANY");
       expect(res.text).toContain("LP123456");
-      expect(res.text).toContain("01 January 2019");
+      expect(res.text).toContain("01 WELSH - January 2019");
     });
 
     it("should return an error if company_number is not valid", async () => {

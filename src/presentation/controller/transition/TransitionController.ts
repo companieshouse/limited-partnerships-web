@@ -39,7 +39,6 @@ class TransitionController extends AbstractController {
 
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
         const result = await this.companyService.getCompanyProfile(tokens, cache[`${APPLICATION_CACHE_KEY_PREFIX_TRANSITION}company_number`]);
-        const formattedDate = this.formatDate(result.companyProfile.dateOfCreation);
 
         if (result.errors) {
           response.render(
@@ -49,6 +48,8 @@ class TransitionController extends AbstractController {
 
           return;
         }
+
+        const formattedDate = this.formatDate(result.companyProfile.dateOfCreation, response.locals.i18n);
 
         response.render(
           super.templateName(pageRouting.currentUrl),
@@ -106,26 +107,25 @@ class TransitionController extends AbstractController {
     };
   }
 
-  private formatDate(date?: string) {
+  private formatDate(date: string | undefined, translation: Record<string, any>) {
     const months: Record<string, string> = {
-      January: "01",
-      February: "02",
-      March: "03",
-      April: "04",
-      May: "05",
-      June: "06",
-      July: "07",
-      August: "08",
-      September: "09",
-      October: "10",
-      November: "11",
-      December: "12"
+      "01": translation.month.january,
+      "02": translation.month.february,
+      "03": translation.month.march,
+      "04": translation.month.april,
+      "05": translation.month.may,
+      "06": translation.month.june,
+      "07": translation.month.july,
+      "08": translation.month.august,
+      "09": translation.month.september,
+      "10": translation.month.october,
+      "11": translation.month.november,
+      "12": translation.month.december
     };
 
     if (date){
       const [year, month, day] = date.split("-");
-      const monthWord = Object.keys(months).find(key => months[key] === month) || month;
-      const formattedDate: string = `${day} ${monthWord} ${year}`;
+      const formattedDate: string = `${day} ${months[month]} ${year}`;
 
       return formattedDate;
     }
