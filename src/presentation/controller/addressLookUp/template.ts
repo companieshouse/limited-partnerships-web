@@ -19,5 +19,5 @@ export const ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_TEMPLATE =
   AddressPageType.enterPrincipalPlaceOfBusinessAddress;
 export const CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_TEMPLATE =
   AddressPageType.confirmPrincipalPlaceOfBusinessAddress;
-export const CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_TEMPLATE = 
+export const CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_TEMPLATE =
   AddressPageType.chooseGeneralPartnerUsualResidentialAddress;

@@ -105,7 +105,7 @@ const addressRoutingConfirmPrincipalPlaceOfBusinessAddress = {
 const addressRoutingChooseGeneralPartnerUsualResidentialAddress = {
   previousUrl: ADD_GENERAL_PARTNER_PERSON_URL,
   currentUrl: CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-  nextUrl: CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL, 
+  nextUrl: CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   pageType: AddressPageType.chooseGeneralPartnerUsualResidentialAddress,
   data: {
 
