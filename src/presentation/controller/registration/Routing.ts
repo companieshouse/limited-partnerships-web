@@ -5,6 +5,7 @@ import PageType from "../PageType";
 import * as url from "./url";
 import {
   CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+  GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOOSE_TERRITORY_URL,
   POSTCODE_REGISTERED_OFFICE_ADDRESS_URL
 } from "../addressLookUp/url";
 
@@ -64,26 +65,19 @@ const registrationRoutingGeneralPartnerChoice = {
 const registrationRoutingAddGeneralPartnerPerson = {
   previousUrl: url.GENERAL_PARTNER_CHOICE_URL,
   currentUrl: url.ADD_GENERAL_PARTNER_PERSON_URL,
-  nextUrl: url.GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOICE_URL,
+  nextUrl: GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOOSE_TERRITORY_URL,
   pageType: RegistrationPageType.addGeneralPartnerPerson
 };
 
 const registrationRoutingAddGeneralPartnerLegalEntity = {
   previousUrl: url.GENERAL_PARTNER_CHOICE_URL,
   currentUrl: url.ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
-  nextUrl: url.GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOICE_URL,
+  nextUrl: GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOOSE_TERRITORY_URL,
   pageType: RegistrationPageType.addGeneralPartnerLegalEntity
 };
 
-const registrationRoutingGeneralPartnerUsualResidentialAddressChoice = {
-  previousUrl: url.ADD_GENERAL_PARTNER_PERSON_URL,
-  currentUrl: url.GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOICE_URL,
-  nextUrl: url.LIMITED_PARTNERS_URL,
-  pageType: RegistrationPageType.generalPartnerUsualResidentialAddressChoice
-};
-
 const registrationRoutingLimitedPartners = {
-  previousUrl: url.GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOICE_URL,
+  previousUrl: GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOOSE_TERRITORY_URL,
   currentUrl: url.LIMITED_PARTNERS_URL,
   nextUrl: url.LIMITED_PARTNER_CHOICE_URL,
   pageType: RegistrationPageType.limitedPartners
@@ -127,7 +121,6 @@ const list = [
   registrationRoutingLimitedPartners,
   registrationRoutingGeneralPartnerChoice,
   registrationRoutingAddGeneralPartnerPerson,
-  registrationRoutingGeneralPartnerUsualResidentialAddressChoice,
   registrationRoutingAddGeneralPartnerLegalEntity,
   registrationRoutingLimitedPartnerChoice,
   registrationRoutingCheckYourAnswers,

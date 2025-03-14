@@ -1,15 +1,15 @@
 import request from "supertest";
 import { LocalesService } from "@companieshouse/ch-node-utils";
-import * as config from "../../../../config/constants";
-import enTranslationText from "../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../locales/cy/translations.json";
-import app from "../app";
-import { GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOICE_URL } from "../../../controller/registration/url";
+import * as config from "../../../../../config/constants";
+import enTranslationText from "../../../../../../locales/en/translations.json";
+import cyTranslationText from "../../../../../../locales/cy/translations.json";
+import app from "../../app";
 import { appDevDependencies } from "config/dev-dependencies";
 import { getUrl } from "presentation/test/utils";
+import { GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOOSE_TERRITORY_URL } from "presentation/controller/addressLookUp/url";
 
 describe("General Partner Usual Residential Address Choice", () => {
-  const URL = getUrl(GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOICE_URL);
+  const URL = getUrl(GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOOSE_TERRITORY_URL);
   beforeEach(() => {
     setLocalesEnabled(false);
 

@@ -12,7 +12,8 @@ import {
   POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
   CHOOSE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
-  CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL
+  CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+  GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOOSE_TERRITORY_URL
 } from "../presentation/controller/addressLookUp/url";
 
 export const addressLookUpEndpoints = (
@@ -107,6 +108,12 @@ export const addressLookUpEndpoints = (
     CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
     authentication,
     dependencies.addressLookUpController.confirmAddress()
+  );
+
+  router.get(
+    GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOOSE_TERRITORY_URL,
+    authentication,
+    dependencies.addressLookUpController.getPageRouting()
   );
 };
 
