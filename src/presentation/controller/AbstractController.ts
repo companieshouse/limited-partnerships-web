@@ -5,12 +5,17 @@ import {
   BASE_URL,
   BASE_WITH_IDS_URL,
   GENERAL_PARTNER_ID,
+  GENERAL_PARTNER_WITH_ID_URL,
   SUBMISSION_ID,
   TRANSACTION_ID
 } from "../../config/constants";
 import { PageRouting, pageRoutingDefault, PagesRouting } from "./PageRouting";
 import PageType from "./PageType";
-import { NAME_URL } from "./registration/url";
+import {
+  ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
+  ADD_GENERAL_PARTNER_PERSON_URL,
+  NAME_URL
+} from "./registration/url";
 import UIErrors from "../../domain/entities/UIErrors";
 
 abstract class AbstractController {
@@ -90,7 +95,7 @@ abstract class AbstractController {
     submissionId = "",
     generalPartnerId = ""
   ): string {
-    url = this.replaceBaseUrlWithIds(transactionId, submissionId, url);
+    url = this.replaceBaseUrlWithIds(url, transactionId, submissionId, generalPartnerId);
     url = this.insertSubmissionId(url, submissionId);
     url = this.insertTransactionId(url, transactionId);
     url = this.insertGeneralPartnerId(url, generalPartnerId);
@@ -98,15 +103,26 @@ abstract class AbstractController {
   }
 
   private replaceBaseUrlWithIds(
+    url: string,
     transactionId: string,
     submissionId: string,
-    url: string
+    generalPartnerId: string
   ) {
-    // urls that can exist with or without ids
+    // limited partnership urls that can exist with or without ids
     const URLS = [NAME_URL];
 
     if (transactionId && submissionId && URLS.includes(url)) {
       url = url.replace(BASE_URL, BASE_WITH_IDS_URL);
+    }
+
+    // general partner urls that can exist with or without ids
+    const GP_URLS = [
+      ADD_GENERAL_PARTNER_PERSON_URL,
+      ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL
+    ];
+
+    if (transactionId && submissionId && generalPartnerId && GP_URLS.includes(url)) {
+      url = url.replace(BASE_WITH_IDS_URL, GENERAL_PARTNER_WITH_ID_URL);
     }
 
     return url;

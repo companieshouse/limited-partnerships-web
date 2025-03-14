@@ -39,7 +39,7 @@ export const postLimitedPartnershipIncorporation = jest.fn().mockImplementation(
   }
 }));
 
-// General Partner Service
+// General Partner
 export const postGeneralPartner = jest.fn().mockImplementation(() => ({
   httpStatusCode: 201,
   resource: {
@@ -52,6 +52,10 @@ export const getGeneralPartner = jest.fn().mockImplementation(() => ({
     .isPerson()
     .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
     .build()
+}));
+export const patchGeneralPartner = jest.fn().mockImplementation(() => ({
+  httpStatusCode: 200,
+  resource: {}
 }));
 
 // Refresh Token service
@@ -93,7 +97,8 @@ const sdkMock = {
     getLimitedPartnership,
     postLimitedPartnershipIncorporation,
     postGeneralPartner,
-    getGeneralPartner
+    getGeneralPartner,
+    patchGeneralPartner
   },
   refreshToken: {
     ...RefreshTokenService.prototype,
