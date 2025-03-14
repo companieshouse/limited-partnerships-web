@@ -12,14 +12,25 @@
 {% endif %}
 
 {% set pageTitle = i18n.address.enterAddress.principalPlaceOfBusinessAddress.title %}
-{% set addressTitleHint1 = i18n.address.enterAddress.principalPlaceOfBusinessAddress.titleHint1 %}
-{% set addressTitleHint2 = i18n.address.enterAddress.principalPlaceOfBusinessAddress.titleHint2 %}
-{% set addressTitleHint3 = i18n.address.enterAddress.principalPlaceOfBusinessAddress.titleHint3 %}
 {% set publicInformationLine1 = i18n.address.enterAddress.principalPlaceOfBusinessAddress.publicInformationLine1 %}
 
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
+      {% include "includes/proposed-name.njk" %}
+      
+      <fieldset class="govuk-fieldset">
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+            <h1 class="govuk-heading-xl">
+            {{ pageTitle }}
+            </h1>
+        </legend>
+
+        <p class="govuk-hint">{{ i18n.address.enterAddress.principalPlaceOfBusinessAddress.titleHint1 }}</p>
+        <p class="govuk-hint">{{ i18n.address.enterAddress.principalPlaceOfBusinessAddress.titleHint2 }}</p>
+        <p class="govuk-hint">{{ i18n.address.enterAddress.principalPlaceOfBusinessAddress.titleHint3 }}</p>
+        
+        <br>
       {% include "pages/address/enter-address-form.njk" %}
     </div>
   </div> 

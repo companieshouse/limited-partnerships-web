@@ -1,0 +1,31 @@
+{% extends "layout.njk" %}
+{% block titleHints %}{% endblock %}
+
+{% set usualResidentialAddressKey = "usual_residential_address" %}
+{% if props.data.address %}
+  {% set address = props.data.address %}
+{% elif props.data.cache[usualResidentialAddressKey] %}
+  {% set address = props.data.cache[usualResidentialAddressKey] %}
+{% elif props.data.limitedPartnership.data.usual_residential_address %}
+  {% set address = props.data.usual_residential_address %}
+{% else %}
+  {% set address = {} %}
+{% endif %}
+
+{% set pageTitle = i18n.address.enterAddress.usualResidentialAddress.title %}
+{% set publicInformationLine1 = i18n.address.enterAddress.usualResidentialAddress.publicInformationLine1 %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {% include "includes/general-partner-name.njk" %}
+      <fieldset class="govuk-fieldset">
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+            <h1 class="govuk-heading-xl">
+            {{ pageTitle }}
+            </h1>
+        </legend>
+      {% include "pages/address/enter-address-form.njk" %}
+    </div>
+  </div> 
+{% endblock %}

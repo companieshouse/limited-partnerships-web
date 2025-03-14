@@ -10,24 +10,10 @@
     {% include "includes/csrf_token.njk" %}
 
     {% include "includes/errors.njk" %}
-
-    {% include "includes/proposed-name.njk" %}
         
     {% include "includes/validators.njk" %}
 
     <div>
-        <fieldset class="govuk-fieldset">
-        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-            <h1 class="govuk-heading-xl">
-            {{ pageTitle }}
-            </h1>
-        </legend>
-
-        <p class="govuk-hint">{{ addressTitleHint1 }}</p>
-        <p class="govuk-hint">{{ addressTitleHint2 }}</p>
-        <p class="govuk-hint">{{ addressTitleHint3 }}</p>
-        
-        <br>
         {{ govukInput({
             label: {
                 text: i18n.address.enterAddress.propertyNameOrNumber,
