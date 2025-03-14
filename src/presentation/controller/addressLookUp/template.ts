@@ -27,3 +27,5 @@ export const CONFIRM_RINCIPAL_PLACE_OF_BUSINESS_ADDRESS_TEMPLATE =
 // usual residential address
 export const POSTCODE_USUAL_RESIDENTIAL_ADDRESS_TEMPLATE =
   AddressPageType.postcodeUsualResidentialAddress;
+export const ENTER_USUAL_RESIDENTIAL_ADDRESS_TEMPLATE =
+  AddressPageType.enterUsualResidentialAddress;

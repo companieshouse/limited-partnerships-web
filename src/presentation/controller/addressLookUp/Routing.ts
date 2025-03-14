@@ -116,12 +116,25 @@ const addressRoutingPostcodeUsualResidentialAddress = {
   nextUrl: LIMITED_PARTNERS_URL, // will be changed to confirm residential address (not ready)
   pageType: AddressPageType.postcodeUsualResidentialAddress,
   data: {
-    // enterManualAddressPageType: AddressPageType.enterUsualResidentialAddress, // uncomment when ready
+    enterManualAddressPageType: AddressPageType.enterUsualResidentialAddress, // uncomment when ready
     confirmAddressUrl: LIMITED_PARTNERS_URL // will be changed to confirm residential address (not ready)
   }
 };
 
-const ussualResidentialAddress = [addressRoutingPostcodeUsualResidentialAddress];
+const addressRoutingEnterUsualResidentialAddress = {
+  previousUrl: url.POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL,
+  currentUrl: url.ENTER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  nextUrl: LIMITED_PARTNERS_URL, // will be changed to confirm residential address (not ready)
+  pageType: AddressPageType.enterUsualResidentialAddress,
+  data: {
+    confirmAddressUrl: LIMITED_PARTNERS_URL
+  }
+};
+
+const ussualResidentialAddress = [
+  addressRoutingPostcodeUsualResidentialAddress,
+  addressRoutingEnterUsualResidentialAddress
+];
 
 export const addressLookUpRouting: PagesRouting = new Map<PageType, PageRouting>();
 

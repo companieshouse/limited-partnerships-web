@@ -108,6 +108,17 @@ export const addressLookUpEndpoints = (router: Router, dependencies: IDependenci
     authentication,
     dependencies.addressLookUpController.postcodeValidation()
   );
+
+  router.get(
+    url.ENTER_USUAL_RESIDENTIAL_ADDRESS_URL,
+    authentication,
+    dependencies.addressLookUpController.getPageRouting()
+  );
+  router.post(
+    url.ENTER_USUAL_RESIDENTIAL_ADDRESS_URL,
+    authentication,
+    dependencies.addressLookUpController.sendManualAddress
+  );
 };
 
 export default addressLookUpEndpoints;
