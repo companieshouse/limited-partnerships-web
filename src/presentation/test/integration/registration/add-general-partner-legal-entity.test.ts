@@ -1,29 +1,23 @@
 import request from "supertest";
-import { createApiClient } from "@companieshouse/api-sdk-node";
+
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
+
 import app from "../app";
-import { ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL } from "../../../controller/registration/url";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import { ApiErrors } from "../../../../domain/entities/UIErrors";
-import sdkMock from "../mock/sdkMock";
-
-jest.mock("@companieshouse/api-sdk-node");
-
-const mockCreateApiClient = createApiClient as jest.Mock;
-mockCreateApiClient.mockReturnValue(sdkMock);
+import { ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL } from "../../../controller/registration/url";
 
 describe("Add General Partner Legal Entity Page", () => {
   const URL = getUrl(ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL);
-
+  // add redirect when pages exist
   beforeEach(() => {
     setLocalesEnabled(false);
 
     appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
-    mockCreateApiClient.mockReturnValue(sdkMock);
   });
 
   describe("Get Add General Partner Legal Entity Page", () => {

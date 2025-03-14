@@ -76,6 +76,8 @@ const registrationRoutingAddGeneralPartnerLegalEntity = {
   pageType: RegistrationPageType.addGeneralPartnerLegalEntity
 };
 
+// usual residential address
+
 const registrationRoutingLimitedPartners = {
   previousUrl: GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOOSE_TERRITORY_URL,
   currentUrl: url.LIMITED_PARTNERS_URL,

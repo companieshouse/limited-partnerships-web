@@ -1,8 +1,8 @@
+import { GeneralPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import IGeneralPartnerGateway from "../../domain/IGeneralPartnerGateway";
 import { logger } from "../../utils";
 import UIErrors from "../../domain/entities/UIErrors";
 import { extractAPIErrors } from "./utils";
-import { GeneralPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 class GeneralPartnerService {
   constructor(private generalPartnerGateway: IGeneralPartnerGateway) {}

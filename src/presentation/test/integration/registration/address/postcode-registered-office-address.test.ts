@@ -30,7 +30,9 @@ describe("Postcode Registered Office Address Page", () => {
       .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
       .build();
 
-    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
+      limitedPartnership
+    ]);
   });
 
   describe("Get Postcode Registered Office Address Page", () => {
@@ -45,6 +47,7 @@ describe("Postcode Registered Office Address Page", () => {
       testTranslations(res.text, enTranslationText.address.findPostcode, [
         "scotland",
         "principalPlaceOfBusiness",
+        "usualResidentialAddress",
         "errorMessages"
       ]);
       expect(res.text).not.toContain("WELSH -");
@@ -61,6 +64,7 @@ describe("Postcode Registered Office Address Page", () => {
       testTranslations(res.text, cyTranslationText.address.findPostcode, [
         "scotland",
         "principalPlaceOfBusiness",
+        "usualResidentialAddress",
         "errorMessages"
       ]);
     });
@@ -124,8 +128,10 @@ describe("Postcode Registered Office Address Page", () => {
     it("should validate the post code and find a matching address - premises and postcode uppercase", async () => {
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
-        premises: appDevDependencies.addressLookUpGateway.englandAddresses[0].premise.toUpperCase(),
-        postal_code: appDevDependencies.addressLookUpGateway.englandAddresses[0].postcode.toUpperCase()
+        premises:
+          appDevDependencies.addressLookUpGateway.englandAddresses[0].premise.toUpperCase(),
+        postal_code:
+          appDevDependencies.addressLookUpGateway.englandAddresses[0].postcode.toUpperCase()
       });
 
       const REDIRECT_URL = getUrl(CONFIRM_REGISTERED_OFFICE_ADDRESS_URL);
@@ -137,8 +143,10 @@ describe("Postcode Registered Office Address Page", () => {
     it("should validate the post code and find a matching address - premises and postcode lowercase", async () => {
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.postcodeRegisteredOfficeAddress,
-        premises: appDevDependencies.addressLookUpGateway.englandAddresses[0].premise.toLowerCase(),
-        postal_code: appDevDependencies.addressLookUpGateway.englandAddresses[0].postcode.toLowerCase()
+        premises:
+          appDevDependencies.addressLookUpGateway.englandAddresses[0].premise.toLowerCase(),
+        postal_code:
+          appDevDependencies.addressLookUpGateway.englandAddresses[0].postcode.toLowerCase()
       });
 
       const REDIRECT_URL = getUrl(CONFIRM_REGISTERED_OFFICE_ADDRESS_URL);

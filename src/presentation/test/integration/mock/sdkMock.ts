@@ -7,6 +7,7 @@ import CompanyProfileService from "@companieshouse/api-sdk-node/dist/services/co
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import { companyProfile } from "../../../../infrastructure/gateway/companyProfile/CompanyInMemoryGateway";
+import GeneralPartnerBuilder from "../../builder/GeneralPartnerBuilder";
 
 // Transaction service
 export const postTransaction = jest.fn().mockImplementation(() => ({
@@ -29,9 +30,7 @@ export const patchLimitedPartnership = jest.fn().mockImplementation(() => ({
 }));
 export const getLimitedPartnership = jest.fn().mockImplementation(() => ({
   httpStatusCode: 200,
-  resource: new LimitedPartnershipBuilder()
-    .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
-    .build()
+  resource: new LimitedPartnershipBuilder().withId(appDevDependencies.limitedPartnershipGateway.submissionId).build()
 }));
 export const postLimitedPartnershipIncorporation = jest.fn().mockImplementation(() => ({
   httpStatusCode: 201,
@@ -46,6 +45,13 @@ export const postGeneralPartner = jest.fn().mockImplementation(() => ({
   resource: {
     id: appDevDependencies.generalPartnerGateway.generalPartnerId
   }
+}));
+export const getGeneralPartner = jest.fn().mockImplementation(() => ({
+  httpStatusCode: 200,
+  resource: new GeneralPartnerBuilder()
+    .isPerson()
+    .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+    .build()
 }));
 
 // Refresh Token service
@@ -85,11 +91,9 @@ const sdkMock = {
     postLimitedPartnership,
     patchLimitedPartnership,
     getLimitedPartnership,
-    postLimitedPartnershipIncorporation
-  },
-  generalPartnerService: {
-    ...LimitedPartnershipsService.prototype,
-    postGeneralPartner
+    postLimitedPartnershipIncorporation,
+    postGeneralPartner,
+    getGeneralPartner
   },
   refreshToken: {
     ...RefreshTokenService.prototype,

@@ -1,7 +1,8 @@
+import { Resource } from "@companieshouse/api-sdk-node";
+
 import IGeneralPartnerGateway from "../../../domain/IGeneralPartnerGateway";
 import { checkForBadRequest, makeApiCallWithRetry } from "../api";
 import { SDK_LIMITED_PARTNERSHIP_SERVICE } from "../../../config/constants";
-import { Resource } from "@companieshouse/api-sdk-node";
 import {
   GeneralPartner,
   LimitedPartnershipResourceCreated
@@ -62,11 +63,12 @@ class GeneralPartnerGateway implements IGeneralPartnerGateway {
       args: [transactionId, generalPartnerId]
     };
     const response = await makeApiCallWithRetry<Resource<GeneralPartner>>(opt, apiCall);
+
     if (response.httpStatusCode !== 200) {
       throw response;
     }
 
-    return response.resource ?? {};
+    return response?.resource ?? {};
   }
 }
 
