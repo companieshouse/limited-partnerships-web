@@ -5,7 +5,10 @@ import GeneralPartnerService from "../../../application/service/GeneralPartnerSe
 import registrationsRouting from "./Routing";
 import AbstractController from "../AbstractController";
 import RegistrationPageType from "./PageType";
-import { ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL, ADD_GENERAL_PARTNER_PERSON_URL } from "./url";
+import {
+  ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
+  ADD_GENERAL_PARTNER_PERSON_URL
+} from "./url";
 
 class GeneralPartnerController extends AbstractController {
   private limitedPartnershipService: LimitedPartnershipService;
@@ -61,7 +64,9 @@ class GeneralPartnerController extends AbstractController {
         const { ids } = super.extract(request);
 
         let url =
-          request.body.parameter === "person" ? ADD_GENERAL_PARTNER_PERSON_URL : ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL;
+          request.body.parameter === "person"
+            ? ADD_GENERAL_PARTNER_PERSON_URL
+            : ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL;
 
         url = super.insertIdsInUrl(url, ids.transactionId, ids.submissionId);
 
@@ -79,7 +84,11 @@ class GeneralPartnerController extends AbstractController {
         const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
-        const result = await this.generalPartnerService.createGeneralPartner(tokens, ids.transactionId, request.body);
+        const result = await this.generalPartnerService.createGeneralPartner(
+          tokens,
+          ids.transactionId,
+          request.body
+        );
 
         if (result.errors) {
           response.render(
@@ -102,19 +111,6 @@ class GeneralPartnerController extends AbstractController {
         );
 
         response.redirect(url);
-      } catch (error) {
-        next(error);
-      }
-    };
-  }
-
-  generalPartnerUsualResidentialaddressChoice(): RequestHandler {
-    return (request: Request, response: Response, next: NextFunction) => {
-      try {
-        const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
-        const pageRouting = super.getRouting(registrationsRouting, pageType, request);
-
-        response.redirect(pageRouting.nextUrl);
       } catch (error) {
         next(error);
       }
