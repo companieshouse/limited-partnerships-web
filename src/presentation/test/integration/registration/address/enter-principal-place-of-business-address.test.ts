@@ -31,6 +31,7 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
       expect(res.status).toBe(200);
       testTranslations(res.text, enTranslationText.address.enterAddress, [
         "registeredOfficeAddress",
+        "usualResidentialAddress",
         "jurisdictionCountry"
       ]);
       expect(res.text).not.toContain("WELSH -");
@@ -44,6 +45,7 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
       expect(res.status).toBe(200);
       testTranslations(res.text, cyTranslationText.address.enterAddress, [
         "registeredOfficeAddress",
+        "usualResidentialAddress",
         "jurisdictionCountry"
       ]);
     });
