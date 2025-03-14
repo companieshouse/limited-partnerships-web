@@ -10,12 +10,10 @@ import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import RegistrationPageType from "../../../../controller/registration/PageType";
 import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 import { ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL } from "../../../../controller/registration/url";
-import { POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../controller/addressLookUp/url";
 
 describe("Add General Partner Legal Entity Page", () => {
   const URL = getUrl(ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL);
-  const REDIRECT_URL = getUrl(POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL);
-
+  // add redirect when pages exist
   beforeEach(() => {
     setLocalesEnabled(false);
 
@@ -49,7 +47,9 @@ describe("Add General Partner Legal Entity Page", () => {
     it("should contain the proposed name - data from api", async () => {
       const limitedPartnership = new LimitedPartnershipBuilder().build();
 
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
+        limitedPartnership
+      ]);
 
       const res = await request(app).get(URL);
 
@@ -68,7 +68,6 @@ describe("Add General Partner Legal Entity Page", () => {
       });
 
       expect(res.status).toBe(302);
-      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
     });
 
     it("should return a validation error when invalid data is entered", async () => {

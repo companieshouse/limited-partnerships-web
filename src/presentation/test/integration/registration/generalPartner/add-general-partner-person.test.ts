@@ -13,13 +13,11 @@ import {
   ADD_GENERAL_PARTNER_PERSON_URL,
   ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL
 } from "../../../../controller/registration/url";
-import { POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../controller/addressLookUp/url";
 import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
 
 describe("Add General Partner Person Page", () => {
   const URL = getUrl(ADD_GENERAL_PARTNER_PERSON_URL);
-  const REDIRECT_URL = getUrl(POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL);
-
+  // add redirect when pages exist
   beforeEach(() => {
     setLocalesEnabled(false);
 
@@ -36,7 +34,9 @@ describe("Add General Partner Person Page", () => {
       expect(res.text).toContain(
         `${cyTranslationText.addGeneralPartnerPersonPage.title} - ${cyTranslationText.service} - GOV.UK`
       );
-      testTranslations(res.text, cyTranslationText.addGeneralPartnerPersonPage, ["errorMessages"]);
+      testTranslations(res.text, cyTranslationText.addGeneralPartnerPersonPage, [
+        "errorMessages"
+      ]);
     });
 
     it("should load the add general partner page with English text", async () => {
@@ -47,14 +47,18 @@ describe("Add General Partner Person Page", () => {
       expect(res.text).toContain(
         `${enTranslationText.addGeneralPartnerPersonPage.title} - ${enTranslationText.service} - GOV.UK`
       );
-      testTranslations(res.text, enTranslationText.addGeneralPartnerPersonPage, ["errorMessages"]);
+      testTranslations(res.text, enTranslationText.addGeneralPartnerPersonPage, [
+        "errorMessages"
+      ]);
       expect(res.text).not.toContain("WELSH -");
     });
 
     it("should contain the proposed name - data from api", async () => {
       const limitedPartnership = new LimitedPartnershipBuilder().build();
 
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
+        limitedPartnership
+      ]);
 
       const res = await request(app).get(URL);
 
@@ -73,7 +77,6 @@ describe("Add General Partner Person Page", () => {
       });
 
       expect(res.status).toBe(302);
-      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
     });
 
     it("should return a validation error when invalid data is entered", async () => {
@@ -110,7 +113,6 @@ describe("Add General Partner Person Page", () => {
       });
 
       expect(res.status).toBe(302);
-      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
     });
 
     it("should return a validation error when invalid data is entered", async () => {
