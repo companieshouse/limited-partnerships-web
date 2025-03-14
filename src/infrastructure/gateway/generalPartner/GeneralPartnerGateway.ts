@@ -15,8 +15,6 @@ class GeneralPartnerGateway implements IGeneralPartnerGateway {
     transactionId: string,
     data: Record<string, any>
   ): Promise<string> {
-    ;
-
     this.validAndFormatDateOfBirth(data);
 
     const generalPartner: GeneralPartner = { data: removeEmptyStringValues(data) };
@@ -96,9 +94,9 @@ class GeneralPartnerGateway implements IGeneralPartnerGateway {
       // Only do this if General Partner Person data is being sent to the API
       data["date_of_birth"] = convertValidDateToIsoDateString(
         {
-          day: data["date_of_birth-day"],
-          month: data["date_of_birth-month"],
-          year: data["date_of_birth-year"]
+          day: data.day,
+          month: data.month,
+          year: data.year
         },
         "date_of_birth"
       );

@@ -49,9 +49,7 @@ describe("Add General Partner Legal Entity Page", () => {
     it("should contain the proposed name - data from api", async () => {
       const limitedPartnership = new LimitedPartnershipBuilder().build();
 
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
-        limitedPartnership
-      ]);
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
       const res = await request(app).get(URL);
 
