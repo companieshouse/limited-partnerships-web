@@ -9,11 +9,18 @@ export const setLocalesEnabled = (bool: boolean) => {
 };
 
 export const getUrl = (url: string) => {
+  const submissionId = url.includes(config.SUBMISSION_ID)
+    ? appDevDependencies.limitedPartnershipGateway.submissionId
+    : "";
+  const generalPartnerId = url.includes(config.GENERAL_PARTNER_ID)
+    ? appDevDependencies.generalPartnerGateway.generalPartnerId
+    : "";
+
   return appDevDependencies.addressLookUpController.insertIdsInUrl(
     url,
     appDevDependencies.transactionGateway.transactionId,
-    appDevDependencies.limitedPartnershipGateway.submissionId,
-    appDevDependencies.generalPartnerGateway.generalPartnerId
+    submissionId,
+    generalPartnerId
   );
 };
 

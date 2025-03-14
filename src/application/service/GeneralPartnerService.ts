@@ -49,6 +49,31 @@ class GeneralPartnerService {
       throw error;
     }
   }
+
+  async sendPageData(
+    opt: { access_token: string; refresh_token: string },
+    transactionId: string,
+    generalPartnerId: string,
+    data: Record<string, any>
+  ): Promise<void | {
+    errors?: UIErrors;
+  }> {
+    try {
+      await this.generalPartnerGateway.sendPageData(opt, transactionId, generalPartnerId, data);
+    } catch (errors: any) {
+      const { apiErrors, isValidationErrors } = extractAPIErrors(errors);
+
+      logger.error(`Error sending data: ${JSON.stringify(apiErrors)}`);
+
+      if (!isValidationErrors) {
+        throw errors;
+      }
+
+      return {
+        errors
+      };
+    }
+  }
 }
 
 export default GeneralPartnerService;

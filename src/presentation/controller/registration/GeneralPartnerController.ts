@@ -24,13 +24,21 @@ class GeneralPartnerController extends AbstractController {
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
         let limitedPartnership = {};
-        const generalPartner = {};
+        let generalPartner = {};
 
         if (ids.transactionId && ids.submissionId) {
           limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
             tokens,
             ids.transactionId,
             ids.submissionId
+          );
+        }
+
+        if (ids.transactionId && ids.generalPartnerId) {
+          generalPartner = await this.generalPartnerService.getGeneralPartner(
+            tokens,
+            ids.transactionId,
+            ids.generalPartnerId
           );
         }
 
@@ -87,6 +95,35 @@ class GeneralPartnerController extends AbstractController {
         );
 
         response.redirect(url);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  sendPageData(): RequestHandler {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { tokens, ids } = super.extract(request);
+        const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
+        const pageRouting = super.getRouting(registrationsRouting, pageType, request);
+
+        const result = await this.generalPartnerService.sendPageData(
+          tokens,
+          ids.transactionId,
+          ids.generalPartnerId,
+          request.body
+        );
+
+        if (result?.errors) {
+          response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(pageRouting, null, result.errors)
+          );
+          return;
+        }
+
+        response.redirect(pageRouting.nextUrl);
       } catch (error) {
         next(error);
       }

@@ -19,7 +19,9 @@ import {
   NAME_WITH_IDS_URL,
   TERM_URL,
   APPLICATION_SUBMITTED_URL,
-  ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL
+  ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
+  ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL,
+  ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_ID_URL
 } from "../presentation/controller/registration/url";
 
 export const registrationEndpoints = (
@@ -121,6 +123,17 @@ export const registrationEndpoints = (
   );
 
   router.get(
+    ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL,
+    authentication,
+    dependencies.generalPartnerController.getPageRouting()
+  );
+  router.post(
+    ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL,
+    authentication,
+    dependencies.generalPartnerController.sendPageData()
+  );
+
+  router.get(
     ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
     authentication,
     dependencies.generalPartnerController.getPageRouting()
@@ -129,6 +142,17 @@ export const registrationEndpoints = (
     ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
     authentication,
     dependencies.generalPartnerController.createGeneralPartner()
+  );
+
+  router.get(
+    ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_ID_URL,
+    authentication,
+    dependencies.generalPartnerController.getPageRouting()
+  );
+  router.post(
+    ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_ID_URL,
+    authentication,
+    dependencies.generalPartnerController.sendPageData()
   );
 
   router.get(
