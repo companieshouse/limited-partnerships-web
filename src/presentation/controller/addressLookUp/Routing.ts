@@ -2,37 +2,30 @@ import { PageRouting, PagesRouting } from "../PageRouting";
 
 import AddressPageType from "./PageType";
 import PageType from "../PageType";
-import { TERM_URL, WHERE_IS_THE_JURISDICTION_URL, ADD_GENERAL_PARTNER_PERSON_URL } from "../registration/url";
 import {
-  POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
-  CHOOSE_REGISTERED_OFFICE_ADDRESS_URL,
-  ENTER_REGISTERED_OFFICE_ADDRESS_URL,
-  CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
-  POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
-  CHOOSE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
-  ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
-  CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
-  CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-  CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
-} from "./url";
+  GENERAL_PARTNER_CHOICE_URL,
+  LIMITED_PARTNERS_URL,
+  TERM_URL,
+  WHERE_IS_THE_JURISDICTION_URL
+} from "../registration/url";import * as url from "./url";
 
 // Registered Office Address
 
 const addressRoutingPostcodeRegisteredOfficeAddress = {
   previousUrl: WHERE_IS_THE_JURISDICTION_URL,
-  currentUrl: POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
-  nextUrl: CHOOSE_REGISTERED_OFFICE_ADDRESS_URL,
+  currentUrl: url.POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
+  nextUrl: url.CHOOSE_REGISTERED_OFFICE_ADDRESS_URL,
   pageType: AddressPageType.postcodeRegisteredOfficeAddress,
   data: {
     enterManualAddressPageType: AddressPageType.enterRegisteredOfficeAddress,
-    confirmAddressUrl: CONFIRM_REGISTERED_OFFICE_ADDRESS_URL
+    confirmAddressUrl: url.CONFIRM_REGISTERED_OFFICE_ADDRESS_URL
   }
 };
 
 const addressRoutingChooseRegisteredOfficeAddress = {
-  previousUrl: POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
-  currentUrl: CHOOSE_REGISTERED_OFFICE_ADDRESS_URL,
-  nextUrl: CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
+  previousUrl: url.POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
+  currentUrl: url.CHOOSE_REGISTERED_OFFICE_ADDRESS_URL,
+  nextUrl: url.CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
   pageType: AddressPageType.chooseRegisteredOfficeAddress,
   data: {
     enterManualAddressPageType: AddressPageType.enterRegisteredOfficeAddress
@@ -40,16 +33,16 @@ const addressRoutingChooseRegisteredOfficeAddress = {
 };
 
 const addressRoutingEnterRegisteredOfficeAddress = {
-  previousUrl: POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
-  currentUrl: ENTER_REGISTERED_OFFICE_ADDRESS_URL,
-  nextUrl: CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
+  previousUrl: url.POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
+  currentUrl: url.ENTER_REGISTERED_OFFICE_ADDRESS_URL,
+  nextUrl: url.CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
   pageType: AddressPageType.enterRegisteredOfficeAddress
 };
 
 const addressRoutingConfirmRegisteredOfficeAddress = {
-  previousUrl: POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
-  currentUrl: CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
-  nextUrl: POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+  previousUrl: url.POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
+  currentUrl: url.CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
+  nextUrl: url.POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   pageType: AddressPageType.confirmRegisteredOfficeAddress,
   data: {
     enterManualAddressPageType: AddressPageType.enterRegisteredOfficeAddress
@@ -64,21 +57,22 @@ const registeredOfficeAddress = [
 ];
 
 // principal place of business
+
 const addressRoutingPostcodePrincipalPlaceOfBusinessAddress = {
-  previousUrl: CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
-  currentUrl: POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
-  nextUrl: CHOOSE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+  previousUrl: url.CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
+  currentUrl: url.POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+  nextUrl: url.CHOOSE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   pageType: AddressPageType.postcodePrincipalPlaceOfBusinessAddress,
   data: {
     enterManualAddressPageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
-    confirmAddressUrl: CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL
+    confirmAddressUrl: url.CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL
   }
 };
 
 const addressRoutingChoosePrincipalPlaceOfBusinessAddress = {
-  previousUrl: POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
-  currentUrl: CHOOSE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
-  nextUrl: CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+  previousUrl: url.POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+  currentUrl: url.CHOOSE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+  nextUrl: url.CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   pageType: AddressPageType.choosePrincipalPlaceOfBusinessAddress,
   data: {
     enterManualAddressPageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress
@@ -86,15 +80,15 @@ const addressRoutingChoosePrincipalPlaceOfBusinessAddress = {
 };
 
 const addressRoutingEnterPrincipalPlaceOfBusinessAddress = {
-  previousUrl: POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
-  currentUrl: ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
-  nextUrl: CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+  previousUrl: url.POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+  currentUrl: url.ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+  nextUrl: url.CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress
 };
 
 const addressRoutingConfirmPrincipalPlaceOfBusinessAddress = {
-  previousUrl: POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
-  currentUrl: CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+  previousUrl: url.POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+  currentUrl: url.CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   nextUrl: TERM_URL,
   pageType: AddressPageType.confirmPrincipalPlaceOfBusinessAddress,
   data: {
@@ -102,27 +96,46 @@ const addressRoutingConfirmPrincipalPlaceOfBusinessAddress = {
   }
 };
 
-const addressRoutingChooseGeneralPartnerUsualResidentialAddress = {
-  previousUrl: ADD_GENERAL_PARTNER_PERSON_URL,
-  currentUrl: CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-  nextUrl: CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-  pageType: AddressPageType.chooseGeneralPartnerUsualResidentialAddress,
-  data: {
-
-  }
-};
-
 const principalPlaceOfBusinessAddress = [
   addressRoutingPostcodePrincipalPlaceOfBusinessAddress,
   addressRoutingChoosePrincipalPlaceOfBusinessAddress,
   addressRoutingEnterPrincipalPlaceOfBusinessAddress,
-  addressRoutingConfirmPrincipalPlaceOfBusinessAddress,
+  addressRoutingConfirmPrincipalPlaceOfBusinessAddress
+];
+
+// GENERAL PARTNER
+
+// usual residential address
+
+const addressRoutingPostcodeUsualResidentialAddress = {
+  previousUrl: GENERAL_PARTNER_CHOICE_URL, // will be changed to Where is the usual residential address (not ready)
+  currentUrl: url.POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL,
+  nextUrl: url.CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  pageType: AddressPageType.postcodeUsualResidentialAddress,
+  data: {
+    // enterManualAddressPageType: AddressPageType.enterUsualResidentialAddress, // uncomment when ready
+    confirmAddressUrl: LIMITED_PARTNERS_URL // will be changed to confirm residential address (not ready)
+  }
+};
+
+const addressRoutingChooseGeneralPartnerUsualResidentialAddress = {
+  previousUrl: url.POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL,
+  currentUrl: url.CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  nextUrl: url.CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  pageType: AddressPageType.chooseGeneralPartnerUsualResidentialAddress,
+  data: {
+    // enterManualAddressPageType: AddressPageType.enterUsualResidentialAddress, // uncomment when ready
+  }
+};
+
+const usualResidentialAddress = [
+  addressRoutingPostcodeUsualResidentialAddress,
   addressRoutingChooseGeneralPartnerUsualResidentialAddress
 ];
 
 export const addressLookUpRouting: PagesRouting = new Map<PageType, PageRouting>();
 
-[...registeredOfficeAddress, ...principalPlaceOfBusinessAddress].forEach((routing) => {
+[...registeredOfficeAddress, ...principalPlaceOfBusinessAddress, ...usualResidentialAddress].forEach((routing) => {
   addressLookUpRouting.set(routing.pageType, routing);
 });
 

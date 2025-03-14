@@ -1,5 +1,23 @@
 {% extends "layout.njk" %}
 
+{% block backLink %}
+  {% set partnershipType = props.data.limitedPartnership.data.partnership_type %}
+
+  {% if (partnershipType == "LP") or (partnershipType == "SLP") %}
+    {% set hrefValue = props.currentUrl | replace("general-partners", "term") %}
+  {% else %}
+     {% set hrefValue = props.previousUrl %}
+  {% endif %}
+
+  {{ govukBackLink({
+    text: "Back",
+    attributes: {
+      "data-event-id": "back-link"
+    },
+    href: hrefValue
+  }) }}
+{% endblock %}
+
 {% set pageTitle = i18n.generalPartnersPage.title  %}
 
 {% block content %}

@@ -12,14 +12,17 @@ import LimitedPartnershipService from "../../../application/service/LimitedPartn
 import UIErrors from "../../../domain/entities/UIErrors";
 import { PageRouting, pageRoutingDefault } from "../PageRouting";
 import PageType from "../PageType";
+import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 
 class AddressLookUpController extends AbstractController {
   public readonly REGISTERED_OFFICE_ADDRESS_CACHE_KEY = "registered_office_address";
   public readonly PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CACHE_KEY = "principal_place_of_business_address";
+  public readonly USUAL_RESIDENTIAL_ADDRESS_CACHE_KEY = "usual_residential_address";
 
   constructor(
     private addressService: AddressService,
     private limitedPartnershipService: LimitedPartnershipService,
+    private generalPartnerService: GeneralPartnerService,
     private cacheService: CacheService
   ) {
     super();
@@ -34,6 +37,7 @@ class AddressLookUpController extends AbstractController {
         const pageRouting = super.getRouting(addresssRouting, pageType, request);
 
         let limitedPartnership = {};
+        let generalPartner = {};
 
         if (ids.transactionId && ids.submissionId) {
           limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
@@ -43,13 +47,25 @@ class AddressLookUpController extends AbstractController {
           );
         }
 
+        if (ids.transactionId && ids.generalPartnerId) {
+          generalPartner = await this.generalPartnerService.getGeneralPartner(
+            tokens,
+            ids.transactionId,
+            ids.generalPartnerId
+          );
+        }
+
         const cacheById = this.cacheService.getDataFromCacheById(request.signedCookies, ids.transactionId);
 
         const addressList = await this.getAddressList(pageRouting, pageType, ids.transactionId, cacheById, tokens);
 
         response.render(
           super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { limitedPartnership, addressList, cache: { ...cacheById } }, null)
+          super.makeProps(
+            pageRouting,
+            { limitedPartnership, generalPartner, addressList, cache: { ...cacheById } },
+            null
+          )
         );
       } catch (error) {
         next(error);
@@ -70,8 +86,10 @@ class AddressLookUpController extends AbstractController {
       let postcode = "";
       if (pageType === AddressLookUpPageType.choosePrincipalPlaceOfBusinessAddress) {
         postcode = cache[this.PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CACHE_KEY]?.postal_code;
-      } else {
+      } else if (pageType === AddressLookUpPageType.chooseRegisteredOfficeAddress) {
         postcode = cache[this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY]?.postal_code;
+      } else if (pageType === AddressLookUpPageType.chooseGeneralPartnerUsualResidentialAddress) {
+        postcode = cache[this.USUAL_RESIDENTIAL_ADDRESS_CACHE_KEY]?.postal_code;
       }
 
       addressList = await this.addressService.getAddressListForPostcode(tokens, postcode);
@@ -83,7 +101,8 @@ class AddressLookUpController extends AbstractController {
   private isAddressListRequired(pageType: string): boolean {
     return (
       pageType === AddressLookUpPageType.chooseRegisteredOfficeAddress ||
-      pageType === AddressLookUpPageType.choosePrincipalPlaceOfBusinessAddress
+      pageType === AddressLookUpPageType.choosePrincipalPlaceOfBusinessAddress ||
+      pageType === AddressLookUpPageType.chooseGeneralPartnerUsualResidentialAddress
     );
   }
 
@@ -149,10 +168,17 @@ class AddressLookUpController extends AbstractController {
         }
       });
       response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
-    } else {
+    } else if (pageType === AddressLookUpPageType.postcodeRegisteredOfficeAddress) {
       const cache = this.cacheService.addDataToCache(request.signedCookies, {
         [transactionId]: {
           [this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY]: address
+        }
+      });
+      response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
+    } else if (pageType === AddressLookUpPageType.postcodeUsualResidentialAddress) {
+      const cache = this.cacheService.addDataToCache(request.signedCookies, {
+        [transactionId]: {
+          [this.USUAL_RESIDENTIAL_ADDRESS_CACHE_KEY]: address
         }
       });
       response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
