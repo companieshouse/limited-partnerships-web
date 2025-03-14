@@ -46,6 +46,7 @@ describe("Add General Partner Legal Entity Page", () => {
         month: "01",
         year: "2001",
         nationality1: "BRITISH",
+        former_names: "previous name",
         previousNames: "false"
       });
 
