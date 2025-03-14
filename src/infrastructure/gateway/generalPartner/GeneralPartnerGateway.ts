@@ -15,7 +15,7 @@ class GeneralPartnerGateway implements IGeneralPartnerGateway {
     transactionId: string,
     data: Record<string, any>
   ): Promise<string> {
-    this.validAndFormatDateOfBirth(data);
+    this.validateAndFormatDateOfBirth(data);
 
     const generalPartner: GeneralPartner = { data: removeEmptyStringValues(data) };
 
@@ -64,7 +64,7 @@ class GeneralPartnerGateway implements IGeneralPartnerGateway {
     generalPartnerId: string,
     data: Record<string, any>
   ): Promise<void> {
-    this.validAndFormatDateOfBirth(data);
+    this.validateAndFormatDateOfBirth(data);
 
     // if there was former_names and the selection changed to false (Person)
     if (data?.former_names && data?.previousNames === "false") {
@@ -89,7 +89,7 @@ class GeneralPartnerGateway implements IGeneralPartnerGateway {
     }
   }
 
-  private validAndFormatDateOfBirth(data: Record<string, any>) {
+  private validateAndFormatDateOfBirth(data: Record<string, any>) {
     if (data["forename"]) {
       // Only do this if General Partner Person data is being sent to the API
       data["date_of_birth"] = convertValidDateToIsoDateString(
