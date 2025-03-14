@@ -72,6 +72,10 @@ class GeneralPartnerInMemoryGateway implements IGeneralPartnerGateway {
 
     let index = this.generalPartners.findIndex((gp) => gp._id === generalPartnerId);
 
+    if (index === -1) {
+      throw new Error(`Not found: ${generalPartnerId}`);
+    }
+    
     this.generalPartners[index].data = data;
   }
 }

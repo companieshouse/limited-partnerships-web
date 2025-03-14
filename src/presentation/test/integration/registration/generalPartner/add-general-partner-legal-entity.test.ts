@@ -1,16 +1,16 @@
 import request from "supertest";
 
-import enTranslationText from "../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../locales/cy/translations.json";
+import enTranslationText from "../../../../../../locales/en/translations.json";
+import cyTranslationText from "../../../../../../locales/cy/translations.json";
 
-import app from "../app";
-import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
-import { appDevDependencies } from "../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
-import RegistrationPageType from "../../../controller/registration/PageType";
-import { ApiErrors } from "../../../../domain/entities/UIErrors";
-import { ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL } from "../../../controller/registration/url";
-import { POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../controller/addressLookUp/url";
+import app from "../../app";
+import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
+import { appDevDependencies } from "../../../../../config/dev-dependencies";
+import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
+import RegistrationPageType from "../../../../controller/registration/PageType";
+import { ApiErrors } from "../../../../../domain/entities/UIErrors";
+import { ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL } from "../../../../controller/registration/url";
+import { POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../controller/addressLookUp/url";
 
 describe("Add General Partner Legal Entity Page", () => {
   const URL = getUrl(ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL);
