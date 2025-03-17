@@ -11,7 +11,6 @@ import { APPLICATION_CACHE_KEY, cookieOptions } from "../../../config/constants"
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import UIErrors from "../../../domain/entities/UIErrors";
 import { PageRouting, pageRoutingDefault } from "../PageRouting";
-import PageType from "../PageType";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 
 class AddressLookUpController extends AbstractController {
@@ -57,7 +56,7 @@ class AddressLookUpController extends AbstractController {
 
         const cacheById = this.cacheService.getDataFromCacheById(request.signedCookies, ids.transactionId);
 
-        const addressList = await this.getAddressList(pageRouting, pageType, ids.transactionId, cacheById, tokens);
+        const addressList = await this.getAddressList(pageRouting, cacheById, tokens);
 
         response.render(
           super.templateName(pageRouting.currentUrl),
@@ -75,22 +74,13 @@ class AddressLookUpController extends AbstractController {
 
   private async getAddressList(
     pageRouting: PageRouting,
-    pageType: PageType,
-    transactionId: string,
     cache: Record<string, any>,
     tokens: { access_token: string; refresh_token: string }
   ): Promise<Address[]> {
     let addressList: Address[] = [];
 
     if (this.isAddressListRequired(pageRouting.pageType)) {
-      let postcode = "";
-      if (pageType === AddressLookUpPageType.choosePrincipalPlaceOfBusinessAddress) {
-        postcode = cache[this.PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CACHE_KEY]?.postal_code;
-      } else if (pageType === AddressLookUpPageType.chooseRegisteredOfficeAddress) {
-        postcode = cache[this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY]?.postal_code;
-      } else if (pageType === AddressLookUpPageType.chooseGeneralPartnerUsualResidentialAddress) {
-        postcode = cache[this.USUAL_RESIDENTIAL_ADDRESS_CACHE_KEY]?.postal_code;
-      }
+      const postcode = cache[this.getCacheKey(pageRouting.pageType)].postal_code;
 
       addressList = await this.addressService.getAddressListForPostcode(tokens, postcode);
     }
