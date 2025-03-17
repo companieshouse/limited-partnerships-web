@@ -72,7 +72,7 @@ const registrationRoutingAddGeneralPartnerPerson = {
 const registrationRoutingAddGeneralPartnerLegalEntity = {
   previousUrl: url.GENERAL_PARTNER_CHOICE_URL,
   currentUrl: url.ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
-  nextUrl: GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOOSE_TERRITORY_URL,
+  nextUrl: url.LIMITED_PARTNERS_URL,
   pageType: RegistrationPageType.addGeneralPartnerLegalEntity
 };
 
