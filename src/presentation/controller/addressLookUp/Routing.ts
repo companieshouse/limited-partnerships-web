@@ -7,7 +7,8 @@ import {
   LIMITED_PARTNERS_URL,
   TERM_URL,
   WHERE_IS_THE_JURISDICTION_URL
-} from "../registration/url";import * as url from "./url";
+} from "../registration/url";
+import * as url from "./url";
 
 // Registered Office Address
 
@@ -121,10 +122,10 @@ const addressRoutingPostcodeUsualResidentialAddress = {
 const addressRoutingChooseGeneralPartnerUsualResidentialAddress = {
   previousUrl: url.POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL,
   currentUrl: url.CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-  nextUrl: url.CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  nextUrl: LIMITED_PARTNERS_URL, // TODO Change to 'confirm URA page' when ready
   pageType: AddressPageType.chooseGeneralPartnerUsualResidentialAddress,
   data: {
-    // enterManualAddressPageType: AddressPageType.enterUsualResidentialAddress, // uncomment when ready
+    enterManualAddressPageType: AddressPageType.enterRegisteredOfficeAddress
   }
 };
 

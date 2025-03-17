@@ -117,7 +117,7 @@ export const addressLookUpEndpoints = (router: Router, dependencies: IDependenci
   router.post(
     url.CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
     authentication,
-    dependencies.addressLookUpController.confirmAddress()
+    dependencies.addressLookUpController.selectAddress()
   );
 };
 

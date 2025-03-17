@@ -361,9 +361,12 @@ class AddressLookUpController extends AbstractController {
     let cacheKey = "";
     if (this.isPrincipalPlaceOfBusinessPage(pageType)) {
       cacheKey = this.PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CACHE_KEY;
-    } else {
+    } else if (this.isRegisteredOfficeAddressPage(pageType)) {
       cacheKey = this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY;
+    } else {
+      cacheKey = this.USUAL_RESIDENTIAL_ADDRESS_CACHE_KEY;
     }
+
     return cacheKey;
   }
 
@@ -372,6 +375,15 @@ class AddressLookUpController extends AbstractController {
       AddressLookUpPageType.choosePrincipalPlaceOfBusinessAddress,
       AddressLookUpPageType.enterPrincipalPlaceOfBusinessAddress,
       AddressLookUpPageType.confirmPrincipalPlaceOfBusinessAddress
+    ];
+    return allowedPages.includes(pageType);
+  }
+
+  private isRegisteredOfficeAddressPage(pageType: AddressLookUpPageType): boolean {
+    const allowedPages: AddressLookUpPageType[] = [
+      AddressLookUpPageType.chooseRegisteredOfficeAddress,
+      AddressLookUpPageType.enterRegisteredOfficeAddress,
+      AddressLookUpPageType.confirmRegisteredOfficeAddress
     ];
     return allowedPages.includes(pageType);
   }
