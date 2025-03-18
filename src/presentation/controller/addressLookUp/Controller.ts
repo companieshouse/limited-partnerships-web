@@ -12,6 +12,7 @@ import LimitedPartnershipService from "../../../application/service/LimitedPartn
 import UIErrors from "../../../domain/entities/UIErrors";
 import { PageRouting, pageRoutingDefault } from "../PageRouting";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
+import { POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL } from "./url";
 
 class AddressLookUpController extends AbstractController {
   public readonly REGISTERED_OFFICE_ADDRESS_CACHE_KEY = "registered_office_address";
@@ -435,6 +436,25 @@ class AddressLookUpController extends AbstractController {
         const pageRouting = super.getRouting(addresssRouting, pageType, request);
 
         response.redirect(pageRouting.nextUrl);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  generalPartnerTerritoryChoice(): RequestHandler {
+    return (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { ids } = super.extract(request);
+
+        let url =
+          request.body.parameter === "unitedKingdom"
+            ? POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL
+            : POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL;
+
+        url = super.insertIdsInUrl(url, ids.transactionId, ids.submissionId, ids.generalPartnerId);
+
+        response.redirect(url);
       } catch (error) {
         next(error);
       }
