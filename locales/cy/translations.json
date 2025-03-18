@@ -117,7 +117,7 @@
             "county": "WELSH - County (optional)",
             "postcode": "WELSH - Postcode",
             "country": "WELSH - Country",
-            "countrySelect": "WELSH - Select country",
+            "countrySelect": "WELSH - Select a country",
             "countryEngland": "WELSH - England",
             "countryScotland": "WELSH - Scotland",
             "countryWales": "WELSH - Wales",
@@ -132,7 +132,7 @@
                 "townOrCityMissing": "WELSH - Enter a town or city",
                 "townOrCityLength": "WELSH - Town or city must be 50 characters or less",
                 "countyLength": "WELSH - County, state, province or region must be 50 characters or less",
-                "postcodeMissing": "WELSH - nter a postcode",
+                "postcodeMissing": "WELSH - Enter a postcode",
                 "postcodeLength": "WELSH - Postcode must be 15 characters or less",
                 "countryMissing": "WELSH - Select a country",
                 "jurisdictionCountry": "WELSH - You must enter a country that matches your jurisdiction"
