@@ -2,16 +2,17 @@ import request from "supertest";
 import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import app from "../app";
-import { NAME_URL, WHICH_TYPE_URL } from "../../../controller/registration/url";
+import { NAME_URL, NAME_WITH_IDS_URL, WHICH_TYPE_URL, WHICH_TYPE_WITH_IDS_URL } from "../../../controller/registration/url";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
-import RegistrationPageType from "../../../../presentation/controller/registration/PageType";
+import RegistrationPageType from "../../../controller/registration/PageType";
 import {
   APPLICATION_CACHE_KEY,
   APPLICATION_CACHE_KEY_PREFIX_REGISTRATION
 } from "../../../../config/constants";
-import { setLocalesEnabled, testTranslations } from "../../../../presentation/test/utils";
+import { setLocalesEnabled, testTranslations } from "../../utils";
+import LimitedPartnershipBuilder from "presentation/test/builder/LimitedPartnershipBuilder";
 
 describe("Which type Page", () => {
   beforeEach(() => {
@@ -84,4 +85,52 @@ describe("Which type Page", () => {
       }
     });
   });
+
+  it("should redirect to name page and retain ids in url if no change in type selected", async () => {
+    const limitedPartnership = new LimitedPartnershipBuilder()
+      .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+      .withPartnershipType(PartnershipType.PFLP)
+      .build();
+
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+    const txnId = appDevDependencies.transactionGateway.transactionId;
+    const submissionId = appDevDependencies.limitedPartnershipGateway.submissionId;
+
+    const whichTypeUrl = replaceIds(WHICH_TYPE_WITH_IDS_URL, txnId, submissionId);
+    const nameUrl = replaceIds(NAME_WITH_IDS_URL, txnId, submissionId);
+
+    const res = await request(app).post(whichTypeUrl).send({
+      pageType: RegistrationPageType.whichType,
+      parameter: PartnershipType.PFLP
+    });
+
+    expect(res.status).toBe(302);
+    expect(res.text).toContain(`Redirecting to ${nameUrl}`);
+  });
+
+  it("should redirect to name page and remove ids in url if change in type selected", async () => {
+    const limitedPartnership = new LimitedPartnershipBuilder()
+      .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+      .withPartnershipType(PartnershipType.PFLP)
+      .build();
+
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+    const txnId = appDevDependencies.transactionGateway.transactionId;
+    const submissionId = appDevDependencies.limitedPartnershipGateway.submissionId;
+
+    const whichTypeUrl = replaceIds(WHICH_TYPE_WITH_IDS_URL, txnId, submissionId);
+
+    const res = await request(app).post(whichTypeUrl).send({
+      pageType: RegistrationPageType.whichType,
+      parameter: PartnershipType.LP
+    });
+
+    expect(res.status).toBe(302);
+    expect(res.text).toContain(`Redirecting to ${NAME_URL}`);
+  });
+
+  const replaceIds = (url: string, transactionId: string, submissionId: string) =>
+    url.replace(":transactionId", transactionId).replace(":submissionId", submissionId);
 });

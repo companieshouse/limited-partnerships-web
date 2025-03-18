@@ -175,6 +175,16 @@ describe("Name Page", () => {
       expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
       expect(res.text).not.toContain("WELSH -");
     });
+
+    it("should load the name page with ids in back link url when name page has ids in url", async () => {
+      const URL = getUrl(NAME_WITH_IDS_URL);
+
+      const res = await request(app).get(URL);
+
+      expect(res.status).toBe(200);
+      const regex = new RegExp(`/limited-partnerships/transaction/.*?/submission/.*?/which-type`);
+      expect(res.text).toMatch(regex);
+    });
   });
 
   describe("Post Name Page", () => {
