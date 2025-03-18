@@ -13,7 +13,11 @@ import {
 } from "../../../config/constants";
 import CacheService from "../../../application/service/CacheService";
 import PageType from "../PageType";
-import { GENERAL_PARTNERS_URL, NAME_WITH_IDS_URL, WHICH_TYPE_WITH_IDS_URL } from "./url";
+import {
+  GENERAL_PARTNERS_URL,
+  NAME_WITH_IDS_URL,
+  WHICH_TYPE_WITH_IDS_URL
+} from "./url";
 import { PageRouting } from "../PageRouting";
 
 class LimitedPartnershipController extends AbstractController {
