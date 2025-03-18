@@ -111,13 +111,24 @@ const principalPlaceOfBusinessAddress = [
 
 // usual residential address
 
+const addressRoutingGeneralPartnerUsualResidentialAddressTerritoryChoice = {
+  previousUrl: ADD_GENERAL_PARTNER_PERSON_URL,
+  currentUrl: url.GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOOSE_TERRITORY_URL,
+  nextUrl: LIMITED_PARTNERS_URL,
+  pageType: AddressPageType.generalPartnerUsualResidentialAddressTerritoryChoice,
+  data: {
+    ukAddressConfirmUrl: url.POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL,
+    overseasAddressConfirmUrl: url.ENTER_USUAL_RESIDENTIAL_ADDRESS_URL
+  }
+};
+
 const addressRoutingPostcodeUsualResidentialAddress = {
   previousUrl: GENERAL_PARTNER_CHOICE_URL, // will be changed to Where is the usual residential address (not ready)
   currentUrl: url.POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL,
   nextUrl: LIMITED_PARTNERS_URL, // will be changed to confirm residential address (not ready)
   pageType: AddressPageType.postcodeUsualResidentialAddress,
   data: {
-    enterManualAddressPageType: AddressPageType.enterUsualResidentialAddress, // uncomment when ready
+    enterManualAddressPageType: AddressPageType.enterUsualResidentialAddress,
     confirmAddressUrl: LIMITED_PARTNERS_URL // will be changed to confirm residential address (not ready)
   }
 };
@@ -130,13 +141,6 @@ const addressRoutingEnterUsualResidentialAddress = {
   data: {
     confirmAddressUrl: LIMITED_PARTNERS_URL
   }
-};
-
-const addressRoutingGeneralPartnerUsualResidentialAddressTerritoryChoice = {
-  previousUrl: ADD_GENERAL_PARTNER_PERSON_URL,
-  currentUrl: url.GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOOSE_TERRITORY_URL,
-  nextUrl: LIMITED_PARTNERS_URL,
-  pageType: AddressPageType.generalPartnerUsualResidentialAddressTerritoryChoice
 };
 
 const ussualResidentialAddress = [
