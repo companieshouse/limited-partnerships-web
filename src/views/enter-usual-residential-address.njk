@@ -62,6 +62,7 @@
           {% set countryFormName = "country" %}
           {% set countryText = i18n.address.enterAddress.country %}
           {% set countryFormValue = address.country %}
+          {% set countryFont = "govuk-!-font-weight-regular"%}
           {% include "includes/countries.njk" %}
           
           {{ govukInsetText({

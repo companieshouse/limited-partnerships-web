@@ -100,6 +100,7 @@
         {% set countryText = i18n.addGeneralPartnerLegalEntityPage.countryRegistered %}
         {% set countryFormId = "legal_entity_registration_location" %}
         {% set countryErrorMessage = props.errors.legal_entity_registration_location if props.errors %}
+        {% set countryFont = "govuk-label govuk-label--m"%}
         {% include "includes/countries.njk" %}
 
         {{ govukInput({
