@@ -117,7 +117,7 @@ export const addressLookUpEndpoints = (router: Router, dependencies: IDependenci
   router.post(
     url.ENTER_USUAL_RESIDENTIAL_ADDRESS_URL,
     authentication,
-    dependencies.addressLookUpController.sendManualAddress
+    dependencies.addressLookUpController.sendManualAddress()
   );
 };
 
