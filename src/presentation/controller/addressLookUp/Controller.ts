@@ -219,15 +219,14 @@ class AddressLookUpController extends AbstractController {
           ids.transactionId,
           ids.submissionId
         );
+        const pageRouting = super.getRouting(addresssRouting, pageType, request);
 
-        const errors = this.addressService.isValidJurisdictionAndCountry(
+        const errors = pageType !== AddressLookUpPageType.enterUsualResidentialAddress ? this.addressService.isValidJurisdictionAndCountry(
           limitedPartnership?.data?.jurisdiction ?? "",
           country
-        );
+        ) : null;
 
         if (errors?.errors) {
-          const pageRouting = super.getRouting(addresssRouting, pageType, request);
-
           response.render(
             super.templateName(pageRouting.currentUrl),
             super.makeProps(pageRouting, { address }, errors)
