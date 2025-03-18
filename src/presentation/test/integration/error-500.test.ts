@@ -1,6 +1,5 @@
 import request from "supertest";
 import { NextFunction, Request, Response } from "express";
-
 import app from "./app";
 import { HEALTHCHECK_URL } from "../../controller/global/Routing";
 
@@ -9,6 +8,16 @@ jest.mock("../../controller/global/Controller", () => {
     return {
       ...jest.requireActual("../../controller/global/Controller"),
       getPageRouting: jest.fn().mockImplementation(() => {
+        return (_req: Request, _res: Response, next: NextFunction) => {
+          return next();
+        };
+      }),
+      getSignOut: jest.fn().mockImplementation(() => {
+        return (_req: Request, _res: Response, next: NextFunction) => {
+          return next();
+        };
+      }),
+      signOutChoice: jest.fn().mockImplementation(() => {
         return (_req: Request, _res: Response, next: NextFunction) => {
           return next();
         };
