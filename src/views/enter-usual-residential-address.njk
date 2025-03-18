@@ -1,5 +1,22 @@
 {% extends "layout.njk" %}
-{% block titleHints %}{% endblock %}
+
+{% block backLink %}
+  {% set countrySelected = address.country %}
+  {% set UKCountries = ["England", "Wales", "Scotland", "Northern Ireland"]%}
+  {% if countrySelected not in UKCountries %}
+    {% set hrefValue = props.alternativeBackUrl %}
+  {% else %}
+    {% set hrefValue = props.previousUrl %}
+  {% endif %}
+  
+  {{ govukBackLink({
+    text: "Back",
+    attributes: {
+      "data-event-id": "back-link"
+    },
+    href: hrefValue
+  }) }}
+{% endblock %}
 
 {% set usualResidentialAddressKey = "usual_residential_address" %}
 {% if props.data.address %}
@@ -12,6 +29,8 @@
   {% set address = {} %}
 {% endif %}
 
+
+
 {% set pageTitle = i18n.address.enterAddress.usualResidentialAddress.title %}
 {% set publicInformationLine1 = i18n.address.enterAddress.usualResidentialAddress.publicInformationLine1 %}
 
@@ -19,13 +38,39 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       {% include "includes/general-partner-name.njk" %}
+
       <fieldset class="govuk-fieldset">
         <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
             <h1 class="govuk-heading-xl">
             {{ pageTitle }}
             </h1>
         </legend>
-      {% include "pages/address/enter-address-form.njk" %}
+      <form class="form" action={{ props.currentUrl }} method="post">
+        <input type="hidden" name="pageType" value={{ props.pageType }}>
+          {% include "pages/address/enter-address-form.njk" %}
+
+          {{ govukInput({
+            label: {
+              text: i18n.address.enterAddress.postcode
+            },
+            classes: "govuk-input--width-10",
+            id: "postal_code",
+            name: "postal_code",
+            value: address.postal_code
+          }) }}
+          {% set countryFormId = "country" %}
+          {% set countryFormName = "country" %}
+          {% set countryText = i18n.address.enterAddress.country %}
+          {% set countryFormValue = address.country %}
+          {% include "includes/countries.njk" %}
+          
+          {{ govukInsetText({
+            html: "<h2 class='govuk-heading-m'>" + i18n.address.enterAddress.publicInformationTitle | escape + "</h2>
+            <p>" + i18n.address.enterAddress.usualResidentialAddress.publicInformationLine1 | escape + "</p>"
+          }) }}
+
+          {% include "includes/save-and-continue-button.njk" %}
+        </form>
     </div>
   </div> 
 {% endblock %}
