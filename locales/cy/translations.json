@@ -310,6 +310,11 @@
 
     "service" : "WELSH - Register a limited partnership",
 
+    "signOutPage": {
+        "title": "WELSH - Are you sure you want to sign out?",
+        "hint": "WELSH - We will save your application."
+   },
+
     "startPage" : {
         "title" : "Partneriaethau Cyfyngedig yw hyn",
         "errorStartAddressMissing" : "Rhowch gyfeiriad"

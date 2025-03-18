@@ -310,6 +310,11 @@
 
     "service" : "Register a limited partnership",
 
+    "signOutPage": {
+         "title": "Are you sure you want to sign out?",
+         "hint": "We will save your application."
+    },
+
     "startPage" : {
         "title" : "This is Limited Partnerships",
         "errorStartAddressMissing" : "Please enter an address"

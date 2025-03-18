@@ -13,6 +13,7 @@ import { PageRouting, pageRoutingDefault, PagesRouting } from "./PageRouting";
 import PageType from "./PageType";
 import { ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL, ADD_GENERAL_PARTNER_PERSON_URL, NAME_URL } from "./registration/url";
 import UIErrors from "../../domain/entities/UIErrors";
+import { START_URL } from "./global/Routing";
 
 abstract class AbstractController {
   protected getRouting(routing: PagesRouting, pageType: PageType, request: Request) {
@@ -173,6 +174,16 @@ abstract class AbstractController {
     const generalPartnerId = request.params.generalPartnerId;
 
     return { transactionId, submissionId, generalPartnerId };
+  }
+
+  protected getPreviousPageUrl(request: Request) {
+    const headers = request.rawHeaders;
+    const previousPageUrl = headers.filter(item => item.includes(BASE_URL))[0];
+    if (previousPageUrl) {
+      const startingIndexOfRelativePath = previousPageUrl.indexOf(BASE_URL);
+      return previousPageUrl.substring(startingIndexOfRelativePath);
+    }
+    return START_URL;
   }
 }
 
