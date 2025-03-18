@@ -97,7 +97,12 @@ abstract class AbstractController {
     return url;
   }
 
-  private replaceBaseUrlWithIds(url: string, transactionId: string, submissionId: string, generalPartnerId: string) {
+  private replaceBaseUrlWithIds(
+    url: string,
+    transactionId: string,
+    submissionId: string,
+    generalPartnerId: string
+  ) {
     // general partner urls that can exist with or without ids
     const GP_URLS = [
       ADD_GENERAL_PARTNER_PERSON_URL,
