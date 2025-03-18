@@ -25,7 +25,9 @@ class GeneralPartnerGateway implements IGeneralPartnerGateway {
       args: [transactionId, generalPartner]
     };
 
-    const response = await makeApiCallWithRetry<Resource<LimitedPartnershipResourceCreated>>(opt, apiCall);
+    const response = await makeApiCallWithRetry<
+      Resource<LimitedPartnershipResourceCreated>
+    >(opt, apiCall);
 
     const uiErrors = checkForBadRequest<LimitedPartnershipResourceCreated>(response);
     if (uiErrors) {
@@ -74,7 +76,11 @@ class GeneralPartnerGateway implements IGeneralPartnerGateway {
     const apiCall = {
       service: SDK_LIMITED_PARTNERSHIP_SERVICE,
       method: "patchGeneralPartner",
-      args: [transactionId, generalPartnerId, removeEmptyStringValues(data, ["former_names"])]
+      args: [
+        transactionId,
+        generalPartnerId,
+        removeEmptyStringValues(data, ["former_names"])
+      ]
     };
 
     const response = await makeApiCallWithRetry<Resource<void>>(opt, apiCall);
@@ -94,9 +100,9 @@ class GeneralPartnerGateway implements IGeneralPartnerGateway {
       // Only do this if General Partner Person data is being sent to the API
       data["date_of_birth"] = convertValidDateToIsoDateString(
         {
-          day: data.day,
-          month: data.month,
-          year: data.year
+          day: data["date_of_birth-day"],
+          month: data["date_of_birth-month"],
+          year: data["date_of_birth-year"]
         },
         "date_of_birth"
       );
