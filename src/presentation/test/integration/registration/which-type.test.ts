@@ -11,7 +11,7 @@ import {
   APPLICATION_CACHE_KEY,
   APPLICATION_CACHE_KEY_PREFIX_REGISTRATION
 } from "../../../../config/constants";
-import { setLocalesEnabled, testTranslations } from "../../utils";
+import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import LimitedPartnershipBuilder from "presentation/test/builder/LimitedPartnershipBuilder";
 
 describe("Which type Page", () => {
@@ -94,11 +94,8 @@ describe("Which type Page", () => {
 
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-    const txnId = appDevDependencies.transactionGateway.transactionId;
-    const submissionId = appDevDependencies.limitedPartnershipGateway.submissionId;
-
-    const whichTypeUrl = replaceIds(WHICH_TYPE_WITH_IDS_URL, txnId, submissionId);
-    const nameUrl = replaceIds(NAME_WITH_IDS_URL, txnId, submissionId);
+    const whichTypeUrl = getUrl(WHICH_TYPE_WITH_IDS_URL);
+    const nameUrl = getUrl(NAME_WITH_IDS_URL);
 
     const res = await request(app).post(whichTypeUrl).send({
       pageType: RegistrationPageType.whichType,
@@ -117,10 +114,7 @@ describe("Which type Page", () => {
 
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-    const txnId = appDevDependencies.transactionGateway.transactionId;
-    const submissionId = appDevDependencies.limitedPartnershipGateway.submissionId;
-
-    const whichTypeUrl = replaceIds(WHICH_TYPE_WITH_IDS_URL, txnId, submissionId);
+    const whichTypeUrl = getUrl(WHICH_TYPE_WITH_IDS_URL);
 
     const res = await request(app).post(whichTypeUrl).send({
       pageType: RegistrationPageType.whichType,
@@ -130,7 +124,4 @@ describe("Which type Page", () => {
     expect(res.status).toBe(302);
     expect(res.text).toContain(`Redirecting to ${NAME_URL}`);
   });
-
-  const replaceIds = (url: string, transactionId: string, submissionId: string) =>
-    url.replace(":transactionId", transactionId).replace(":submissionId", submissionId);
 });
