@@ -67,9 +67,14 @@ const daysInMonth = (month: number) => {
 };
 
 export const removeEmptyStringValues = (
-  data: Record<string, any>
+  data: Record<string, any>,
+  exclude: string[] = []
 ): Record<string, any> => {
   for (const key in data) {
+    if (exclude.includes(key)) {
+      continue;
+    }
+
     if (data[key] === "") {
       data[key] = null;
     }

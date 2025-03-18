@@ -1,25 +1,28 @@
 import request from "supertest";
 
-import enTranslationText from "../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../locales/cy/translations.json";
+import enTranslationText from "../../../../../../locales/en/translations.json";
+import cyTranslationText from "../../../../../../locales/cy/translations.json";
 
-import app from "../app";
-import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
-import { appDevDependencies } from "../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
-import RegistrationPageType from "../../../controller/registration/PageType";
-import { ApiErrors } from "../../../../domain/entities/UIErrors";
-import { ADD_GENERAL_PARTNER_PERSON_URL } from "../../../controller/registration/url";
-import { POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../controller/addressLookUp/url";
+import app from "../../app";
+import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
+import { appDevDependencies } from "../../../../../config/dev-dependencies";
+import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
+import RegistrationPageType from "../../../../controller/registration/PageType";
+import { ApiErrors } from "../../../../../domain/entities/UIErrors";
+import {
+  ADD_GENERAL_PARTNER_PERSON_URL,
+  ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL
+} from "../../../../controller/registration/url";
+import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
 
 describe("Add General Partner Person Page", () => {
   const URL = getUrl(ADD_GENERAL_PARTNER_PERSON_URL);
-  const REDIRECT_URL = getUrl(POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL);
-
+  // add redirect when pages exist
   beforeEach(() => {
     setLocalesEnabled(false);
 
     appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
+    appDevDependencies.generalPartnerGateway.feedErrors();
   });
 
   describe("Get Add General Partner Page", () => {
@@ -74,10 +77,54 @@ describe("Add General Partner Person Page", () => {
       });
 
       expect(res.status).toBe(302);
-      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
     });
 
     it("should return a validation error when invalid data is entered", async () => {
+      const apiErrors: ApiErrors = {
+        errors: { first_name: "general partner name is invalid" }
+      };
+
+      appDevDependencies.generalPartnerGateway.feedErrors(apiErrors);
+
+      const res = await request(app).post(URL).send({
+        pageType: RegistrationPageType.addGeneralPartnerPerson,
+        first_name: "INVALID-CHARACTERS"
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain("general partner name is invalid");
+    });
+  });
+
+  describe("Patch from Add General Partner", () => {
+    it("should send the general partner details", async () => {
+      const URL = getUrl(ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL);
+
+      const generalPartner = new GeneralPartnerBuilder()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .isPerson()
+        .build();
+
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+
+      const res = await request(app).post(URL).send({
+        pageType: RegistrationPageType.addGeneralPartnerPerson,
+        first_name: "test"
+      });
+
+      expect(res.status).toBe(302);
+    });
+
+    it("should return a validation error when invalid data is entered", async () => {
+      const URL = getUrl(ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL);
+
+      const generalPartner = new GeneralPartnerBuilder()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .isPerson()
+        .build();
+
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+
       const apiErrors: ApiErrors = {
         errors: { first_name: "general partner name is invalid" }
       };
