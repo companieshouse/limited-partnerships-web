@@ -12,7 +12,7 @@ import LimitedPartnershipService from "../../../application/service/LimitedPartn
 import UIErrors from "../../../domain/entities/UIErrors";
 import { PageRouting, pageRoutingDefault } from "../PageRouting";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
-import { POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL } from "./url";
+import { CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL, POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL } from "./url";
 
 class AddressLookUpController extends AbstractController {
   public readonly REGISTERED_OFFICE_ADDRESS_CACHE_KEY = "registered_office_address";
@@ -450,7 +450,7 @@ class AddressLookUpController extends AbstractController {
         let url =
           request.body.parameter === "unitedKingdom"
             ? POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL
-            : POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL;
+            : CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL;
 
         url = super.insertIdsInUrl(url, ids.transactionId, ids.submissionId, ids.generalPartnerId);
 
