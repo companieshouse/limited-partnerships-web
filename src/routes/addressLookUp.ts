@@ -117,6 +117,17 @@ export const addressLookUpEndpoints = (
     authentication,
     dependencies.addressLookUpController.getPageRouting()
   );
+
+  router.get(
+    url.CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+    authentication,
+    dependencies.addressLookUpController.getPageRouting()
+  );
+  router.post(
+    url.CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+    authentication,
+    dependencies.addressLookUpController.selectAddress()
+  );
 };
 
 export default addressLookUpEndpoints;
