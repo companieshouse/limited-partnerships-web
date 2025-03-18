@@ -6,19 +6,19 @@ import cyTranslationText from "../../../../../../../locales/cy/translations.json
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import app from "../../../app";
 
-import { POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../../controller/addressLookUp/url";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import GeneralPartnerBuilder, {
   generalPartnerLegalEntity,
   generalPartnerPerson
 } from "../../../../builder/GeneralPartnerBuilder";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
+import { CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL, POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../../controller/addressLookUp/url";
 import { LIMITED_PARTNERS_URL } from "../../../../../controller/registration/url";
 import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
 
 describe("Postcode Usual Residential Address Page", () => {
   const URL = getUrl(POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL);
-  const REDIRECT_URL = getUrl(LIMITED_PARTNERS_URL);
+  const REDIRECT_URL = getUrl(CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
 
   beforeEach(() => {
     setLocalesEnabled(false);

@@ -42,9 +42,9 @@ describe("Add General Partner Legal Entity Page", () => {
         pageType: RegistrationPageType.addGeneralPartnerLegalEntity,
         forename: "Joe",
         surname: "Doe",
-        day: "01",
-        month: "01",
-        year: "2001",
+        "date_of_birth-day": "01",
+        "date_of_birth-month": "01",
+        "date_of_birth-year": "2001",
         nationality1: "BRITISH",
         former_names: "previous name",
         previousNames: "false"
