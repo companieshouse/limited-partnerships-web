@@ -12,26 +12,25 @@
 {% endif %}
 
 {% set pageTitle = i18n.address.enterAddress.registeredOfficeAddress.title %}
-{% set publicInformationLine1 = i18n.address.enterAddress.registeredOfficeAddress.publicInformationLine1 %}
+{% set titleHint1 = i18n.address.enterAddress.registeredOfficeAddress.titleHint1 %}
+{% set titleHint2 = i18n.address.enterAddress.registeredOfficeAddress.titleHint2 %}
+{% set titleHint3 = i18n.address.enterAddress.registeredOfficeAddress.titleHint3 %}
 
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       {% include "includes/proposed-name.njk" %}
+      <form class="form" action={{ props.currentUrl }} method="post">
+        <input type="hidden" name="pageType" value={{ props.pageType }}>
+        {% include "includes/enter-address-common-fields.njk" %}
       
-      <fieldset class="govuk-fieldset">
-        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-            <h1 class="govuk-heading-xl">
-            {{ pageTitle }}
-            </h1>
-        </legend>
+        {{ govukInsetText({
+          html: "<h2 class='govuk-heading-m'>" + i18n.address.enterAddress.publicInformationTitle | escape + "</h2>
+          <p>" + i18n.address.enterAddress.registeredOfficeAddress.publicInformationLine1 | escape + "</p>"
+        }) }}
 
-        <p class="govuk-hint">{{ i18n.address.enterAddress.registeredOfficeAddress.titleHint1 }}</p>
-        <p class="govuk-hint">{{ i18n.address.enterAddress.registeredOfficeAddress.titleHint2 }}</p>
-        <p class="govuk-hint">{{ i18n.address.enterAddress.registeredOfficeAddress.titleHint3 }}</p>
-        
-        <br>
-      {% include "pages/address/enter-address-form.njk" %}
+        {% include "includes/save-and-continue-button.njk" %}
+      </form>
     </div>
   </div> 
 {% endblock %}
