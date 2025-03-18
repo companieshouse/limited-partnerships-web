@@ -21,7 +21,8 @@ import {
   APPLICATION_SUBMITTED_URL,
   ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
   ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL,
-  ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_ID_URL
+  ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_ID_URL,
+  WHICH_TYPE_WITH_IDS_URL
 } from "../presentation/controller/registration/url";
 
 export const registrationEndpoints = (
@@ -37,6 +38,17 @@ export const registrationEndpoints = (
     WHICH_TYPE_URL,
     authentication,
     dependencies.limitedPartnershipController.redirectAndCacheSelection()
+  );
+
+  router.get(
+    WHICH_TYPE_WITH_IDS_URL,
+    authentication,
+    dependencies.limitedPartnershipController.getPageRouting()
+  );
+  router.post(
+    WHICH_TYPE_WITH_IDS_URL,
+    authentication,
+    dependencies.limitedPartnershipController.redirectWhichTypeWithIds()
   );
 
   router.get(

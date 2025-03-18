@@ -7,7 +7,7 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-      <form class="form" action={{ props.currentUrl }} method="post">
+      <form class="form" method="post">
         <input type="hidden" name="pageType" value={{ props.pageType }}>
       
         {% include "includes/csrf_token.njk" %}
@@ -26,6 +26,7 @@
             {
               value: "LP",
               text: i18n.whichTypePage.options.LP,
+              checked: props.data.limitedPartnership.data.partnership_type === "LP",
               attributes: {
                 "required": true,
                 "data-goal-id": PIWIK_REGISTRATION_LP_GOAL_ID
@@ -34,6 +35,7 @@
             {
               value: "PFLP",
               text: i18n.whichTypePage.options.PFLP,
+              checked: props.data.limitedPartnership.data.partnership_type === "PFLP",
               attributes: {
                 "required": true,
                 "data-goal-id": PIWIK_REGISTRATION_PRIVATE_FUND_LP_GOAL_ID
@@ -42,6 +44,7 @@
             {
               value: "SLP",
               text: i18n.whichTypePage.options.SLP,
+              checked: props.data.limitedPartnership.data.partnership_type === "SLP",
               attributes: {
                 "required": true,
                 "data-goal-id": PIWIK_REGISTRATION_SCOTTISH_LP_GOAL_ID
@@ -50,6 +53,7 @@
             {
               value: "SPFLP",
               text: i18n.whichTypePage.options.SPFLP,
+              checked: props.data.limitedPartnership.data.partnership_type === "SPFLP",
               attributes: {
                 "required": true,
                 "data-goal-id": PIWIK_REGISTRATION_SCOTTISH_PRIVATE_FUND_LP_GOAL_ID
