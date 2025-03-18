@@ -5,15 +5,16 @@ import crypto from "crypto";
 import { GeneralPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import IGeneralPartnerGateway from "../../../domain/IGeneralPartnerGateway";
 import UIErrors, { ApiErrors } from "../../../domain/entities/UIErrors";
+import TransactionGeneralPartner from "../../../domain/entities/TransactionGeneralPartner";
 
 class GeneralPartnerInMemoryGateway implements IGeneralPartnerGateway {
   generalPartnerId = crypto.randomUUID().toString();
   error = false;
 
-  generalPartners: GeneralPartner[] = [];
+  generalPartners: TransactionGeneralPartner[] = [];
   uiErrors: UIErrors = new UIErrors();
 
-  feedGeneralPartners(generalPartners: GeneralPartner[]) {
+  feedGeneralPartners(generalPartners: TransactionGeneralPartner[]) {
     this.generalPartners = generalPartners;
   }
 
@@ -57,6 +58,25 @@ class GeneralPartnerInMemoryGateway implements IGeneralPartnerGateway {
     }
 
     return this.generalPartners[0];
+  }
+
+  async sendPageData(
+    opt: { access_token: string },
+    transactionId: string,
+    generalPartnerId: string,
+    data: Record<string, any>
+  ): Promise<void> {
+    if (this.uiErrors.errors.errorList.length > 0) {
+      throw this.uiErrors;
+    }
+
+    let index = this.generalPartners.findIndex((gp) => gp._id === generalPartnerId);
+
+    if (index === -1) {
+      throw new Error(`Not found: ${generalPartnerId}`);
+    }
+    
+    this.generalPartners[index].data = data;
   }
 }
 

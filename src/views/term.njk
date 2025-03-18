@@ -14,6 +14,7 @@
         {{ govukRadios({
           classes: "govuk-radios",
           name: "term",
+          value: props.data.limitedPartnership.data.term,
           fieldset: {
             legend: {
               text: i18n.termPage.title,

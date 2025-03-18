@@ -1,10 +1,21 @@
 import { Request } from "express";
 import { Session } from "@companieshouse/node-session-handler";
 
-import { BASE_URL, BASE_WITH_IDS_URL, GENERAL_PARTNER_ID, SUBMISSION_ID, TRANSACTION_ID } from "../../config/constants";
+import {
+  BASE_URL,
+  BASE_WITH_IDS_URL,
+  GENERAL_PARTNER_ID,
+  GENERAL_PARTNER_WITH_ID_URL,
+  SUBMISSION_ID,
+  TRANSACTION_ID
+} from "../../config/constants";
 import { PageRouting, pageRoutingDefault, PagesRouting } from "./PageRouting";
 import PageType from "./PageType";
-import { NAME_URL } from "./registration/url";
+import {
+  ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
+  ADD_GENERAL_PARTNER_PERSON_URL,
+  NAME_URL
+} from "./registration/url";
 import UIErrors from "../../domain/entities/UIErrors";
 
 abstract class AbstractController {
@@ -33,7 +44,11 @@ abstract class AbstractController {
     return type as PageType;
   }
 
-  protected makeProps(pageRouting: PageRouting, data: Record<string, any> | null, errors: UIErrors | null) {
+  protected makeProps(
+    pageRouting: PageRouting,
+    data: Record<string, any> | null,
+    errors: UIErrors | null
+  ) {
     if (data) {
       pageRouting.data = {
         ...pageRouting.data,
@@ -74,20 +89,40 @@ abstract class AbstractController {
     return splitted[splitted.length - 1];
   }
 
-  insertIdsInUrl(url: string, transactionId = "", submissionId = "", generalPartnerId = ""): string {
-    url = this.replaceBaseUrlWithIds(transactionId, submissionId, url);
+  insertIdsInUrl(
+    url: string,
+    transactionId = "",
+    submissionId = "",
+    generalPartnerId = ""
+  ): string {
+    url = this.replaceBaseUrlWithIds(url, transactionId, submissionId, generalPartnerId);
     url = this.insertSubmissionId(url, submissionId);
     url = this.insertTransactionId(url, transactionId);
     url = this.insertGeneralPartnerId(url, generalPartnerId);
     return url;
   }
 
-  private replaceBaseUrlWithIds(transactionId: string, submissionId: string, url: string) {
-    // urls that can exist with or without ids
+  private replaceBaseUrlWithIds(
+    url: string,
+    transactionId: string,
+    submissionId: string,
+    generalPartnerId: string
+  ) {
+    // limited partnership urls that can exist with or without ids
     const URLS = [NAME_URL];
 
     if (transactionId && submissionId && URLS.includes(url)) {
       url = url.replace(BASE_URL, BASE_WITH_IDS_URL);
+    }
+
+    // general partner urls that can exist with or without ids
+    const GP_URLS = [
+      ADD_GENERAL_PARTNER_PERSON_URL,
+      ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL
+    ];
+
+    if (transactionId && submissionId && generalPartnerId && GP_URLS.includes(url)) {
+      url = url.replace(BASE_WITH_IDS_URL, GENERAL_PARTNER_WITH_ID_URL);
     }
 
     return url;
@@ -102,7 +137,9 @@ abstract class AbstractController {
   }
 
   protected insertGeneralPartnerId(url: string, generalPartnerId: string): string {
-    return generalPartnerId ? url.replace(`:${GENERAL_PARTNER_ID}`, generalPartnerId) : url;
+    return generalPartnerId
+      ? url.replace(`:${GENERAL_PARTNER_ID}`, generalPartnerId)
+      : url;
   }
 
   protected insertIdsInAllUrl(
@@ -113,9 +150,24 @@ abstract class AbstractController {
   ): PageRouting {
     return {
       ...pageRouting,
-      previousUrl: this.insertIdsInUrl(pageRouting.previousUrl, transactionId, submissionId, generalPartnerId),
-      currentUrl: this.insertIdsInUrl(pageRouting.currentUrl, transactionId, submissionId, generalPartnerId),
-      nextUrl: this.insertIdsInUrl(pageRouting.nextUrl, transactionId, submissionId, generalPartnerId)
+      previousUrl: this.insertIdsInUrl(
+        pageRouting.previousUrl,
+        transactionId,
+        submissionId,
+        generalPartnerId
+      ),
+      currentUrl: this.insertIdsInUrl(
+        pageRouting.currentUrl,
+        transactionId,
+        submissionId,
+        generalPartnerId
+      ),
+      nextUrl: this.insertIdsInUrl(
+        pageRouting.nextUrl,
+        transactionId,
+        submissionId,
+        generalPartnerId
+      )
     };
   }
 
@@ -149,7 +201,8 @@ abstract class AbstractController {
   protected extractTokens(request: Request) {
     return {
       access_token: request?.session?.data?.signin_info?.access_token?.access_token ?? "",
-      refresh_token: request?.session?.data?.signin_info?.access_token?.refresh_token ?? ""
+      refresh_token:
+        request?.session?.data?.signin_info?.access_token?.refresh_token ?? ""
     };
   }
 

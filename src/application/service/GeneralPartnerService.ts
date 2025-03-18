@@ -1,5 +1,4 @@
 import { GeneralPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-
 import IGeneralPartnerGateway from "../../domain/IGeneralPartnerGateway";
 import { logger } from "../../utils";
 import UIErrors from "../../domain/entities/UIErrors";
@@ -17,7 +16,11 @@ class GeneralPartnerService {
     errors?: UIErrors;
   }> {
     try {
-      const generalPartnerId = await this.generalPartnerGateway.createGeneralPartner(opt, transactionId, data);
+      const generalPartnerId = await this.generalPartnerGateway.createGeneralPartner(
+        opt,
+        transactionId,
+        data
+      );
 
       return { generalPartnerId };
     } catch (errors: any) {
@@ -42,11 +45,40 @@ class GeneralPartnerService {
     generalPartnerId: string
   ): Promise<GeneralPartner> {
     try {
-      return await this.generalPartnerGateway.getGeneralPartner(opt, transactionId, generalPartnerId);
+      return await this.generalPartnerGateway.getGeneralPartner(
+        opt,
+        transactionId,
+        generalPartnerId
+      );
     } catch (error: any) {
       logger.error(`Error getting GeneralPartner ${JSON.stringify(error)}`);
 
       throw error;
+    }
+  }
+
+  async sendPageData(
+    opt: { access_token: string; refresh_token: string },
+    transactionId: string,
+    generalPartnerId: string,
+    data: Record<string, any>
+  ): Promise<void | {
+    errors?: UIErrors;
+  }> {
+    try {
+      await this.generalPartnerGateway.sendPageData(opt, transactionId, generalPartnerId, data);
+    } catch (errors: any) {
+      const { apiErrors, isValidationErrors } = extractAPIErrors(errors);
+
+      logger.error(`Error sending data: ${JSON.stringify(apiErrors)}`);
+
+      if (!isValidationErrors) {
+        throw errors;
+      }
+
+      return {
+        errors
+      };
     }
   }
 }
