@@ -118,6 +118,12 @@ export const addressLookUpEndpoints = (
     dependencies.addressLookUpController.getPageRouting()
   );
 
+  router.post(
+    url.GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOOSE_TERRITORY_URL,
+    authentication,
+    dependencies.addressLookUpController.generalPartnerTerritoryChoice()
+  );
+
   router.get(
     url.CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
     authentication,
