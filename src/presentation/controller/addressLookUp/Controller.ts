@@ -442,24 +442,6 @@ class AddressLookUpController extends AbstractController {
     };
   }
 
-  // generalPartnerTerritoryChoice(): RequestHandler {
-  //   return (request: Request, response: Response, next: NextFunction) => {
-  //     try {
-  //       const { ids } = super.extract(request);
-  //       response.cookie('territorySelection', request.body.parameter, { httpOnly: true });
-
-  //       let url =
-  //         request.body.parameter === "unitedKingdom"
-  //           ? POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL
-  //           : CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL;
-
-  //       url = super.insertIdsInUrl(url, ids.transactionId, ids.submissionId, ids.generalPartnerId);
-
-  //       response.redirect(url);
-  //     } catch (error) {
-  //       next(error);
-  //     }
-  //   };
   generalPartnerTerritoryChoice(): RequestHandler {
     return (request: Request, response: Response, next: NextFunction) => {
       try {
