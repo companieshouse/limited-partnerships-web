@@ -2,7 +2,7 @@ import { NextFunction, Request, RequestHandler, Response } from "express";
 
 import registrationsRouting from "./Routing";
 import AbstractController from "../AbstractController";
-import { ACCOUNTS_SIGN_OUT_URL } from "../../../config/constants";
+import { ACCOUNTS_SIGN_OUT_URL, BASE_URL } from "../../../config/constants";
 
 class GlobalController extends AbstractController {
   constructor() {
@@ -60,7 +60,7 @@ class GlobalController extends AbstractController {
         }
         const previousPage = request.body["previousPage"];
 
-        return response.redirect(previousPage);
+        return redirectWithChecks(response, previousPage);
       } catch (error) {
         next(error);
       }
@@ -77,5 +77,11 @@ class GlobalController extends AbstractController {
     };
   }
 }
+
+export const redirectWithChecks = (response: Response, url: string): void => {
+  if (url.startsWith(BASE_URL)) {
+    return response.redirect(url);
+  }
+};
 
 export default GlobalController;
