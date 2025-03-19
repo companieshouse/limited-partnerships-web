@@ -6,13 +6,16 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-{{ props.previousUrl | dump }} 
-
       <form class="form" method="post">
         <input type="hidden" name="pageType" value={{ props.pageType }}>
-        <input type="hidden" name="previousPage" value={{ props.previousUrl }}>
 
         {% include "includes/csrf_token.njk" %}
+
+        {{ govukInput({
+          value: props.previousUrl,
+          name: "previousPage",
+          classes: "govuk-visually-hidden"
+        }) }}
 
         {{ govukRadios({          
           classes: "govuk-radios--inline",
