@@ -14,7 +14,8 @@ describe("Sign out page", () => {
   const URL = getUrl(SIGN_OUT_URL);
 
   describe("GET sign out page", () => {
-    it("should load the sign out page page with Welsh text", async () => {
+
+    it("should load the sign out page with Welsh text", async () => {
       setLocalesEnabled(true);
 
       const res = await request(app).get(URL + "?lang=cy");
@@ -22,7 +23,7 @@ describe("Sign out page", () => {
       testTranslations(res.text, cyTranslationText.signOutPage);
     });
 
-    it("should load the sign out page page with English text", async () => {
+    it("should load the sign out page with English text", async () => {
       setLocalesEnabled(true);
 
       const res = await request(app).get(URL + "?lang=en");
@@ -34,7 +35,7 @@ describe("Sign out page", () => {
 
   describe("POST sign out page", () => {
 
-    it("Should redirct the CH search page when yes is selected", async () => {
+    it("should redirect to the CH search page when yes is selected", async () => {
       const previousPage = "";
       const res = await request(app).post(URL)
         .send({
@@ -45,7 +46,7 @@ describe("Sign out page", () => {
       expect(res.header.location).toEqual(ACCOUNTS_SIGN_OUT_URL);
     });
 
-    it("Should redirct the the specified previous page page when no is selected", async () => {
+    it("should redirect to the specified previous page when no is selected", async () => {
       const previousPage = `/limited-partnerships/transaction/abc-123/submission/456-xyz/${EMAIL_TEMPLATE}`;
       const res = await request(app).post(URL)
         .send({
