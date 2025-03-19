@@ -6,16 +6,25 @@
 {% set validateLastName = "validateInput(this, 160, '" + i18n.addGeneralPartnerPersonPage.errorMessages.lastNameMissing | escape + "', '" + i18n.addGeneralPartnerPersonPage.errorMessages.lastNameLength | escape + "');" %}
 {% set validatePreviousName = "validateLength(this, 160, '" + i18n.addGeneralPartnerPersonPage.errorMessages.previousNameLength | escape + "');" %}
 
-{% set date_of_birth = props.data.generalPartner.data.date_of_birth %}
-{% set year = date_of_birth[0] + date_of_birth[1] + date_of_birth[2] + date_of_birth[3] %}
-{% set month = date_of_birth[5] + date_of_birth[6] %}
-{% set day = date_of_birth[8] + date_of_birth[9] %}
-
-{% set previousNames = "false" %}
-{% if props.data.generalPartner.data.former_names  %}
-  {% set previousNames = "true" %}
+{% if props.data.generalPartner.data.date_of_birth  %}
+  {# This is for when saved data is pre-populated on the page #}
+  {% set date_of_birth = props.data.generalPartner.data.date_of_birth %}
+  {% set year = date_of_birth[0] + date_of_birth[1] + date_of_birth[2] + date_of_birth[3] %}
+  {% set month = date_of_birth[5] + date_of_birth[6] %}
+  {% set day = date_of_birth[8] + date_of_birth[9] %}
+{% else %}
+  {# And this covers the scenario when date validation fails and the page reloads #}
+  {% set year = props.data.generalPartner.data["date_of_birth-year"] %}
+  {% set month = props.data.generalPartner.data["date_of_birth-month"] %}
+  {% set day = props.data.generalPartner.data["date_of_birth-day"] %}
 {% endif %}
 
+{% if props.data.generalPartner.data.former_names %}
+  {% set previousNames = "true" %}
+{% elseif props.data.generalPartner.data.forename %}
+  {# After the first check, if any other general partner person field is set, they cannot have a previous name #}
+  {% set previousNames = "false" %}
+{% endif %}
 
 {% block content %}
   <div class="govuk-grid-row">

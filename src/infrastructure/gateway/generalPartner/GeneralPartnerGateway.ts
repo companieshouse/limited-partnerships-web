@@ -68,8 +68,8 @@ class GeneralPartnerGateway implements IGeneralPartnerGateway {
   ): Promise<void> {
     this.validateAndFormatDateOfBirth(data);
 
-    // if there was former_names and the selection changed to false (Person)
-    if (data?.former_names && data?.previousNames === "false") {
+    // If the GP (Person) had previous names but now the selection has changed to 'false', ensure that the previous names are removed
+    if (data?.former_names && data?.previousName === "false") {
       data.former_names = "";
     }
 

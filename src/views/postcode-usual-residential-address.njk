@@ -1,24 +1,5 @@
 {% extends "layout.njk" %}
 
-{# to be moved in general-partner-usual-residential-address-choice #}
-{% block backLink %}
-  {% if props.data.generalPartner.data.forename %}
-    {% set hrefValue = props.currentUrl | replace(props.pageType, "add-general-partner-person") %}
-  {% elif props.data.generalPartner.data.legal_entity_name %}
-    {% set hrefValue = props.currentUrl | replace(props.pageType, "add-general-partner-legal-entity") %}
-  {% else %}
-     {% set hrefValue = props.previousUrl %}
-  {% endif %}
-
-  {{ govukBackLink({
-    text: "Back",
-    attributes: {
-      "data-event-id": "back-link"
-    },
-    href: hrefValue
-  }) }}
-{% endblock %}
-
 {% set pageTitle = i18n.address.findPostcode.usualResidentialAddress.whatIsUsualResidentialAddress %}
 
 {% block content %}
