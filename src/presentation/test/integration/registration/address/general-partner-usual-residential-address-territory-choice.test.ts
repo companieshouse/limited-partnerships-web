@@ -10,7 +10,7 @@ import { CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL, GENERAL_PARTNER_U
 import AddressPageType from "presentation/controller/addressLookUp/PageType";
 import GeneralPartnerBuilder from "presentation/test/builder/GeneralPartnerBuilder";
 
-describe("General Partner Usual Residential Address Choice", () => {
+describe('GET /general-partner-territory-choice', () => {
   const URL = getUrl(GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOOSE_TERRITORY_URL);
   beforeEach(() => {
     setLocalesEnabled(false);
