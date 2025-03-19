@@ -7,11 +7,12 @@ import addresssRouting, { addressLookUpRouting } from "./Routing";
 import AbstractController from "../AbstractController";
 import AddressLookUpPageType from "./PageType";
 import CacheService from "../../../application/service/CacheService";
-import { APPLICATION_CACHE_KEY, cookieOptions } from "../../../config/constants";
+import { APPLICATION_CACHE_KEY, APPLICATION_CACHE_KEY_PREFIX_REGISTRATION, cookieOptions } from "../../../config/constants";
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import UIErrors from "../../../domain/entities/UIErrors";
 import { PageRouting, pageRoutingDefault } from "../PageRouting";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
+import { CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL, POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL } from "./url";
 
 class AddressLookUpController extends AbstractController {
   public readonly REGISTERED_OFFICE_ADDRESS_CACHE_KEY = "registered_office_address";
@@ -440,6 +441,35 @@ class AddressLookUpController extends AbstractController {
       }
     };
   }
+
+  generalPartnerTerritoryChoice(): RequestHandler {
+    return (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { ids } = super.extract(request);
+        const pageType = super.extractPageTypeOrThrowError(
+          request,
+          AddressLookUpPageType
+        );
+        const parameter = request.body.parameter;
+        const cache = this.cacheService.addDataToCache(request.signedCookies, {
+          [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${pageType}`]: parameter
+        });
+
+        response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
+        let url =
+          parameter === "unitedKingdom"
+            ? POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL
+            : CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL;
+
+        url = super.insertIdsInUrl(url, ids.transactionId, ids.submissionId, ids.generalPartnerId);
+
+        response.redirect(url);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
 }
 
 export default AddressLookUpController;
