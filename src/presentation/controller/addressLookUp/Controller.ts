@@ -7,7 +7,7 @@ import addresssRouting, { addressLookUpRouting } from "./Routing";
 import AbstractController from "../AbstractController";
 import AddressLookUpPageType from "./PageType";
 import CacheService from "../../../application/service/CacheService";
-import { APPLICATION_CACHE_KEY, cookieOptions } from "../../../config/constants";
+import { APPLICATION_CACHE_KEY, APPLICATION_CACHE_KEY_PREFIX_REGISTRATION, cookieOptions } from "../../../config/constants";
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import UIErrors from "../../../domain/entities/UIErrors";
 import { PageRouting, pageRoutingDefault } from "../PageRouting";
@@ -442,14 +442,41 @@ class AddressLookUpController extends AbstractController {
     };
   }
 
+  // generalPartnerTerritoryChoice(): RequestHandler {
+  //   return (request: Request, response: Response, next: NextFunction) => {
+  //     try {
+  //       const { ids } = super.extract(request);
+  //       response.cookie('territorySelection', request.body.parameter, { httpOnly: true });
+
+  //       let url =
+  //         request.body.parameter === "unitedKingdom"
+  //           ? POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL
+  //           : CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL;
+
+  //       url = super.insertIdsInUrl(url, ids.transactionId, ids.submissionId, ids.generalPartnerId);
+
+  //       response.redirect(url);
+  //     } catch (error) {
+  //       next(error);
+  //     }
+  //   };
   generalPartnerTerritoryChoice(): RequestHandler {
     return (request: Request, response: Response, next: NextFunction) => {
       try {
         const { ids } = super.extract(request);
-        response.cookie('territorySelection', request.body.parameter, { httpOnly: true });
+        const pageType = super.extractPageTypeOrThrowError(
+          request,
+          AddressLookUpPageType
+        );
+        const parameter = request.body.parameter;
+        const cache = this.cacheService.addDataToCache(request.signedCookies, {
+          [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${pageType}`]: parameter
+        });
 
+        const cookieOptions = { httpOnly: true, signed: true };
+        response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
         let url =
-          request.body.parameter === "unitedKingdom"
+          parameter === "unitedKingdom"
             ? POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL
             : CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL;
 
@@ -461,6 +488,7 @@ class AddressLookUpController extends AbstractController {
       }
     };
   }
+
 }
 
 export default AddressLookUpController;
