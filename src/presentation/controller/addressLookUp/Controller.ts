@@ -446,6 +446,7 @@ class AddressLookUpController extends AbstractController {
     return (request: Request, response: Response, next: NextFunction) => {
       try {
         const { ids } = super.extract(request);
+        response.cookie('territorySelection', request.body.parameter, { httpOnly: true });
 
         let url =
           request.body.parameter === "unitedKingdom"
