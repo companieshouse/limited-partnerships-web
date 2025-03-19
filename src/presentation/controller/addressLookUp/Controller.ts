@@ -11,7 +11,6 @@ import { APPLICATION_CACHE_KEY, cookieOptions } from "../../../config/constants"
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import UIErrors from "../../../domain/entities/UIErrors";
 import { PageRouting, pageRoutingDefault } from "../PageRouting";
-import PageType from "../PageType";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 
 class AddressLookUpController extends AbstractController {
@@ -61,13 +60,7 @@ class AddressLookUpController extends AbstractController {
           ids.transactionId
         );
 
-        const addressList = await this.getAddressList(
-          pageRouting,
-          pageType,
-          ids.transactionId,
-          cacheById,
-          tokens
-        );
+        const addressList = await this.getAddressList(pageRouting, cacheById, tokens);
 
         response.render(
           super.templateName(pageRouting.currentUrl),
@@ -85,20 +78,13 @@ class AddressLookUpController extends AbstractController {
 
   private async getAddressList(
     pageRouting: PageRouting,
-    pageType: PageType,
-    transactionId: string,
     cache: Record<string, any>,
     tokens: { access_token: string; refresh_token: string }
   ): Promise<Address[]> {
     let addressList: Address[] = [];
 
     if (this.isAddressListRequired(pageRouting.pageType)) {
-      let postcode = "";
-      if (pageType === AddressLookUpPageType.choosePrincipalPlaceOfBusinessAddress) {
-        postcode = cache[this.PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CACHE_KEY]?.postal_code;
-      } else {
-        postcode = cache[this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY]?.postal_code;
-      }
+      const postcode = cache[this.getCacheKey(pageRouting.pageType)].postal_code;
 
       addressList = await this.addressService.getAddressListForPostcode(tokens, postcode);
     }
@@ -109,7 +95,8 @@ class AddressLookUpController extends AbstractController {
   private isAddressListRequired(pageType: string): boolean {
     return (
       pageType === AddressLookUpPageType.chooseRegisteredOfficeAddress ||
-      pageType === AddressLookUpPageType.choosePrincipalPlaceOfBusinessAddress
+      pageType === AddressLookUpPageType.choosePrincipalPlaceOfBusinessAddress ||
+      pageType === AddressLookUpPageType.chooseGeneralPartnerUsualResidentialAddress
     );
   }
 
@@ -411,9 +398,12 @@ class AddressLookUpController extends AbstractController {
     let cacheKey = "";
     if (this.isPrincipalPlaceOfBusinessPage(pageType)) {
       cacheKey = this.PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CACHE_KEY;
-    } else {
+    } else if (this.isRegisteredOfficeAddressPage(pageType)) {
       cacheKey = this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY;
+    } else {
+      cacheKey = this.USUAL_RESIDENTIAL_ADDRESS_CACHE_KEY;
     }
+
     return cacheKey;
   }
 
@@ -422,6 +412,15 @@ class AddressLookUpController extends AbstractController {
       AddressLookUpPageType.choosePrincipalPlaceOfBusinessAddress,
       AddressLookUpPageType.enterPrincipalPlaceOfBusinessAddress,
       AddressLookUpPageType.confirmPrincipalPlaceOfBusinessAddress
+    ];
+    return allowedPages.includes(pageType);
+  }
+
+  private isRegisteredOfficeAddressPage(pageType: AddressLookUpPageType): boolean {
+    const allowedPages: AddressLookUpPageType[] = [
+      AddressLookUpPageType.chooseRegisteredOfficeAddress,
+      AddressLookUpPageType.enterRegisteredOfficeAddress,
+      AddressLookUpPageType.confirmRegisteredOfficeAddress
     ];
     return allowedPages.includes(pageType);
   }
