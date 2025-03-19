@@ -94,16 +94,13 @@ describe("Which type Page", () => {
 
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-    const whichTypeUrl = getUrl(WHICH_TYPE_WITH_IDS_URL);
-    const nameUrl = getUrl(NAME_WITH_IDS_URL);
-
-    const res = await request(app).post(whichTypeUrl).send({
+    const res = await request(app).post(getUrl(WHICH_TYPE_WITH_IDS_URL)).send({
       pageType: RegistrationPageType.whichType,
       parameter: PartnershipType.PFLP
     });
 
     expect(res.status).toBe(302);
-    expect(res.text).toContain(`Redirecting to ${nameUrl}`);
+    expect(res.text).toContain(`Redirecting to ${getUrl(NAME_WITH_IDS_URL)}`);
   });
 
   it("should redirect to name page and remove ids in url if change in type selected", async () => {
@@ -114,9 +111,7 @@ describe("Which type Page", () => {
 
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-    const whichTypeUrl = getUrl(WHICH_TYPE_WITH_IDS_URL);
-
-    const res = await request(app).post(whichTypeUrl).send({
+    const res = await request(app).post(getUrl(WHICH_TYPE_WITH_IDS_URL)).send({
       pageType: RegistrationPageType.whichType,
       parameter: PartnershipType.LP
     });
