@@ -455,7 +455,6 @@ class AddressLookUpController extends AbstractController {
           [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${pageType}`]: parameter
         });
 
-        const cookieOptions = { httpOnly: true, signed: true };
         response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
         let url =
           parameter === "unitedKingdom"
