@@ -77,6 +77,7 @@ describe("General Partner Usual Residential Address Choice", () => {
       expect(res.status).toBe(302);
       expect(res.text).toContain(POSTCODE_URL);
     });
+
     it("should redirect to What is the general partners URA? manual entry page when overseas is selected", async () => {
       const URL = getUrl(GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOOSE_TERRITORY_URL);
       const OVERSEAS_PARAMETER = 'overseas';
