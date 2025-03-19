@@ -45,7 +45,11 @@
         }) }}
               
         {{ govukButton({
-          text: i18n.buttons.continue
+          text: i18n.buttons.continue,
+          attributes: {
+            "id": "submit",
+            "onclick": "_paq.push(['trackEvent', ' general partner ura territory choice', 'selection', document.querySelector('input[name=parameter]:checked').nextElementSibling.innerHTML])"
+          }
         }) }}
 
         {{ govukInsetText({
