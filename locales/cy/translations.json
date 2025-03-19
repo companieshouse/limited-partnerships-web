@@ -324,7 +324,9 @@
 
     "signOutPage": {
         "title": "WELSH - Are you sure you want to sign out?",
-        "hint": "WELSH - We will save your application."
+        "hint": "WELSH - We will save your application.",
+         "saved": "WELSH - How do I find my saved applications?",
+         "filingsInfo": "WELSH - Sign in to your Companies House account and select Your filings to access your saved applications."
    },
 
     "startPage" : {
@@ -885,5 +887,10 @@
         "october": "WELSH - October",
         "november": "WELSH - November",
         "december": "WELSH - December"
+    },
+
+    "yesAndNo": {
+        "yes": "WELSH - Yes",
+        "no": "WELSH - No"
     }
 }

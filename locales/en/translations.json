@@ -324,7 +324,9 @@
 
     "signOutPage": {
          "title": "Are you sure you want to sign out?",
-         "hint": "We will save your application."
+         "hint": "We will save your application.",
+         "saved": "How do I find my saved applications?",
+         "filingsInfo": "Sign in to your Companies House account and select Your filings to access your saved applications."
     },
 
     "startPage" : {
@@ -885,5 +887,10 @@
         "october": "October",
         "november": "November",
         "december": "December"
+    },
+
+    "yesAndNo": {
+        "yes": "Yes",
+        "no": "No"
     }
 }

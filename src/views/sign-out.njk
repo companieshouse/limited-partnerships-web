@@ -11,12 +11,6 @@
 
         {% include "includes/csrf_token.njk" %}
 
-        {{ govukInput({
-          value: props.previousUrl,
-          name: "previousPage",
-          classes: "govuk-visually-hidden"
-        }) }}
-
         {{ govukRadios({          
           classes: "govuk-radios--inline",
           idPrefix: "sign_out",
@@ -34,14 +28,14 @@
         items: [
           {
             value: "yes",
-            text: "Yes",
+            text: i18n.yesAndNo.yes,
             attributes: {
               required: true
             }
           },
           {
             value: "no",
-            text: "No",
+            text: i18n.yesAndNo.no,
             attributes: {
               required: true
             }
@@ -52,13 +46,19 @@
         <details class="govuk-details" data-module="govuk-details" data-event-id="find-saved-information-details">
           <summary class="govuk-details__summary">
             <span class="govuk-details__summary-text">
-              How do I find my saved applications?
+              {{ i18n.signOutPage.saved }}
             </span>
           </summary>
           <div class="govuk-details__text">
-            Sign in to your Companies House account and select Your filings to access your saved applications.
+            {{ i18n.signOutPage.filingsInfo }}
           </div>  
         </details>
+
+        {{ govukInput({
+          value: props.previousUrl,
+          name: "previousPage",
+          classes: "govuk-visually-hidden"
+        }) }}
 
         {% include "includes/continue-button.njk" %}
       </form>

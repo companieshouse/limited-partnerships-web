@@ -1,6 +1,6 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
 
-import registrationsRouting from "./Routing";
+import globalsRouting from "./Routing";
 import AbstractController from "../AbstractController";
 import { ACCOUNTS_SIGN_OUT_URL, BASE_URL } from "../../../config/constants";
 
@@ -18,7 +18,7 @@ class GlobalController extends AbstractController {
         const pageType = super.pageType(request.path);
 
         const pageRouting = super.getRouting(
-          registrationsRouting,
+          globalsRouting,
           pageType,
           request
         );
@@ -38,7 +38,7 @@ class GlobalController extends AbstractController {
         const previousPageUrl = this.getPreviousPageUrl(request);
         const pageType = super.pageType(request.path);
         const pageRouting = super.getRouting(
-          registrationsRouting,
+          globalsRouting,
           pageType,
           request
         );
