@@ -173,9 +173,9 @@
             },
 
             "usualResidentialAddress": {
-                "whatIsUsualResidentialAddress": "What is the usual residential address of the partnership?",
+                "whatIsUsualResidentialAddress": "What is the general partner's usual residential address?",
                 "publicRegisterTitle": "What information we'll show on the public register",
-                "publicRegisterLine1": "We'll show the usual residential address on the public register."
+                "publicRegisterLine1": "We will not show the general partner's usual residential address."
             },
  
             "nameOrNumberHint": "Property name or number (optional)",

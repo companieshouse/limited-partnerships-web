@@ -6,7 +6,7 @@ import cyTranslationText from "../../../../../../../locales/cy/translations.json
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import app from "../../../app";
 
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
+import { getUrl, setLocalesEnabled, toEscapedHtml, testTranslations } from "../../../../utils";
 import GeneralPartnerBuilder, {
   generalPartnerLegalEntity,
   generalPartnerPerson
@@ -40,9 +40,7 @@ describe("Postcode Usual Residential Address Page", () => {
       const res = await request(app).get(URL + "?lang=en");
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(
-        `${enTranslationText.address.findPostcode.usualResidentialAddress.whatIsUsualResidentialAddress} - ${enTranslationText.service} - GOV.UK`
-      );
+      expect(res.text).toContain(toEscapedHtml(enTranslationText.address.findPostcode.usualResidentialAddress.whatIsUsualResidentialAddress) + ` - ${enTranslationText.service} - GOV.UK`);
       testTranslations(res.text, enTranslationText.address.findPostcode, [
         "registeredOfficeAddress",
         "principalPlaceOfBusiness",
@@ -67,9 +65,8 @@ describe("Postcode Usual Residential Address Page", () => {
       const res = await request(app).get(URL + "?lang=cy");
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(
-        `${cyTranslationText.address.findPostcode.usualResidentialAddress.whatIsUsualResidentialAddress} - ${cyTranslationText.service} - GOV.UK`
-      );
+
+      expect(res.text).toContain(toEscapedHtml(cyTranslationText.address.findPostcode.usualResidentialAddress.whatIsUsualResidentialAddress) + ` - ${cyTranslationText.service} - GOV.UK`);
       testTranslations(res.text, cyTranslationText.address.findPostcode, [
         "registeredOfficeAddress",
         "principalPlaceOfBusiness",
