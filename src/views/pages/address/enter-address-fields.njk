@@ -4,8 +4,6 @@
 {% set validateAddressLine1 = "validateInput(this, 50, '" + i18n.address.enterAddress.errorMessages.addressLine1Missing | escape + "', '" + i18n.address.enterAddress.errorMessages.addressLine1Length | escape + "');" %}
 {% set validateTownOrCity = "validateInput(this, 50, '" + i18n.address.enterAddress.errorMessages.townOrCityMissing | escape + "', '" + i18n.address.enterAddress.errorMessages.townOrCityLength | escape + "');" %}
 
-{% include "includes/csrf_token.njk" %}
-
 {% include "includes/errors.njk" %}
         
 {% include "includes/validators.njk" %}

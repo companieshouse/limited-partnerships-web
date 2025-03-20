@@ -22,6 +22,8 @@
       {% include "includes/proposed-name.njk" %}
       <form class="form" action={{ props.currentUrl }} method="post">
         <input type="hidden" name="pageType" value={{ props.pageType }}>
+        {% include "includes/csrf_token.njk" %}
+        
         {% include "includes/enter-address-common-fields.njk" %}
       
         {{ govukInsetText({
