@@ -57,6 +57,7 @@ class GlobalController extends AbstractController {
       try {
         if (request.body["sign_out"] === 'yes') {
           response.clearCookie(COOKIE_NAME, { domain: COOKIE_DOMAIN });
+          response.end();
           return response.redirect(ACCOUNTS_SIGN_OUT_URL);
         }
         const previousPage = request.body["previousPage"];
