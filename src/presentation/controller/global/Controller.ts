@@ -61,7 +61,7 @@ class GlobalController extends AbstractController {
         }
         const previousPage = request.body["previousPage"];
 
-        return redirectWithChecks(response, previousPage);
+        return this.redirectWithChecks(response, previousPage);
       } catch (error) {
         next(error);
       }
@@ -78,15 +78,16 @@ class GlobalController extends AbstractController {
     };
   }
 
-  clearCache(response: Response) {
-    return response.clearCookie(APPLICATION_CACHE_KEY, cookieOptions);
+  private clearCache(response: Response) {
+    const clearCookieOptions = { ...cookieOptions, maxAge: undefined };
+    return response.clearCookie(APPLICATION_CACHE_KEY, clearCookieOptions);
   }
-}
 
-export const redirectWithChecks = (response: Response, url: string): void => {
-  if (url.startsWith(BASE_URL)) {
-    return response.redirect(url);
-  }
-};
+  private redirectWithChecks(response: Response, url: string): void {
+    if (url.startsWith(BASE_URL)) {
+      return response.redirect(url);
+    }
+  };
+}
 
 export default GlobalController;
