@@ -5,6 +5,7 @@ import {
   BASE_WITH_IDS_URL,
   GENERAL_PARTNER_ID,
   GENERAL_PARTNER_WITH_ID_URL,
+  BASE_URL,
   SUBMISSION_ID,
   TRANSACTION_ID
 } from "../../config/constants";
