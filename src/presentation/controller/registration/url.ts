@@ -4,6 +4,7 @@ import { BASE_URL, BASE_WITH_IDS_URL, GENERAL_PARTNER_WITH_ID_URL } from "../../
 
 export const START_URL = `${BASE_URL}/start`;
 export const WHICH_TYPE_URL = `${BASE_URL}/${template.WHICH_TYPE_TEMPLATE}`;
+export const WHICH_TYPE_WITH_IDS_URL = `${BASE_WITH_IDS_URL}/${template.WHICH_TYPE_TEMPLATE}`;
 export const NAME_URL = `${BASE_URL}/${template.NAME_TEMPLATE}`;
 export const NAME_WITH_IDS_URL = `${BASE_WITH_IDS_URL}/${template.NAME_TEMPLATE}`;
 export const EMAIL_URL = `${BASE_WITH_IDS_URL}/${template.EMAIL_TEMPLATE}`;

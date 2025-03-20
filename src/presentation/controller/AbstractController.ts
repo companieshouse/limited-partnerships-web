@@ -2,7 +2,6 @@ import { Request } from "express";
 import { Session } from "@companieshouse/node-session-handler";
 
 import {
-  BASE_URL,
   BASE_WITH_IDS_URL,
   GENERAL_PARTNER_ID,
   GENERAL_PARTNER_WITH_ID_URL,
@@ -13,8 +12,7 @@ import { PageRouting, pageRoutingDefault, PagesRouting } from "./PageRouting";
 import PageType from "./PageType";
 import {
   ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
-  ADD_GENERAL_PARTNER_PERSON_URL,
-  NAME_URL
+  ADD_GENERAL_PARTNER_PERSON_URL
 } from "./registration/url";
 import UIErrors from "../../domain/entities/UIErrors";
 
@@ -108,13 +106,6 @@ abstract class AbstractController {
     submissionId: string,
     generalPartnerId: string
   ) {
-    // limited partnership urls that can exist with or without ids
-    const URLS = [NAME_URL];
-
-    if (transactionId && submissionId && URLS.includes(url)) {
-      url = url.replace(BASE_URL, BASE_WITH_IDS_URL);
-    }
-
     // general partner urls that can exist with or without ids
     const GP_URLS = [
       ADD_GENERAL_PARTNER_PERSON_URL,
