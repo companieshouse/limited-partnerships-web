@@ -2,7 +2,7 @@ import { NextFunction, Request, RequestHandler, Response } from "express";
 
 import globalsRouting from "./Routing";
 import AbstractController from "../AbstractController";
-import { ACCOUNTS_SIGN_OUT_URL, BASE_URL } from "../../../config/constants";
+import { ACCOUNTS_SIGN_OUT_URL, BASE_URL, COOKIE_NAME, COOKIE_DOMAIN } from "../../../config/constants";
 
 class GlobalController extends AbstractController {
   constructor() {
@@ -56,6 +56,7 @@ class GlobalController extends AbstractController {
     return (request: Request, response: Response, next: NextFunction) => {
       try {
         if (request.body["sign_out"] === 'yes') {
+          response.clearCookie(COOKIE_NAME, { domain: COOKIE_DOMAIN });
           return response.redirect(ACCOUNTS_SIGN_OUT_URL);
         }
         const previousPage = request.body["previousPage"];
