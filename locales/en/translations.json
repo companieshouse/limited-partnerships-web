@@ -322,6 +322,13 @@
 
     "service" : "Register a limited partnership",
 
+    "signOutPage": {
+         "title": "Are you sure you want to sign out?",
+         "hint": "We will save your application.",
+         "saved": "How do I find my saved applications?",
+         "filingsInfo": "Sign in to your Companies House account and select Your filings to access your saved applications."
+    },
+
     "startPage" : {
         "title" : "This is Limited Partnerships",
         "errorStartAddressMissing" : "Please enter an address"
@@ -880,5 +887,10 @@
         "october": "October",
         "november": "November",
         "december": "December"
+    },
+
+    "yesAndNo": {
+        "yes": "Yes",
+        "no": "No"
     }
 }

@@ -13,6 +13,16 @@ jest.mock("../../controller/global/Controller", () => {
           return next();
         };
       },
+      getSignOut: jest.fn().mockImplementation(() => {
+        return (_req: Request, _res: Response, next: NextFunction) => {
+          return next();
+        };
+      }),
+      signOutChoice: jest.fn().mockImplementation(() => {
+        return (_req: Request, _res: Response, next: NextFunction) => {
+          return next();
+        };
+      }),
       getHealthcheck: function () {
         return (_req: Request, _res: Response, next: NextFunction) => {
           next(new CsrfError("CSRF token mismatch"));

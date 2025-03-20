@@ -1,0 +1,67 @@
+{% extends "layout.njk" %}
+
+{% set pageTitle = i18n.signOutPage.title %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" method="post">
+        <input type="hidden" name="pageType" value={{ props.pageType }}>
+
+        {% include "includes/csrf_token.njk" %}
+
+        {{ govukRadios({          
+          classes: "govuk-radios--inline",
+          idPrefix: "sign_out",
+          name: "sign_out",
+          fieldset: {
+          legend: {
+            text: i18n.signOutPage.title,
+            isPageHeading: true,
+            classes: "govuk-fieldset__legend--l"
+          }
+        },
+        hint: {
+          text: i18n.signOutPage.hint
+        },
+        items: [
+          {
+            value: "yes",
+            text: i18n.yesAndNo.yes,
+            attributes: {
+              required: true
+            }
+          },
+          {
+            value: "no",
+            text: i18n.yesAndNo.no,
+            attributes: {
+              required: true
+            }
+          }
+        ]
+        }) }}
+
+        <details class="govuk-details" data-module="govuk-details" data-event-id="find-saved-information-details">
+          <summary class="govuk-details__summary">
+            <span class="govuk-details__summary-text">
+              {{ i18n.signOutPage.saved }}
+            </span>
+          </summary>
+          <div class="govuk-details__text">
+            {{ i18n.signOutPage.filingsInfo }}
+          </div>  
+        </details>
+
+        {{ govukInput({
+          value: props.previousUrl,
+          name: "previousPage",
+          classes: "govuk-visually-hidden"
+        }) }}
+
+        {% include "includes/continue-button.njk" %}
+      </form>
+    </div>
+  </div>
+{% endblock %}
