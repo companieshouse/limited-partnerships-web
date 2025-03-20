@@ -46,7 +46,7 @@
         <input type="hidden" name="pageType" value={{ props.pageType }}>
           {% include "includes/csrf_token.njk" %}
           
-          {% include "pages/address/enter-address-form.njk" %}
+          {% include "pages/address/enter-address-fields.njk" %}
 
           {{ govukInput({
             label: {
