@@ -1,12 +1,12 @@
 import request from "supertest";
 import { LocalesService } from "@companieshouse/ch-node-utils";
-import * as config from "../../../../../config/constants";
-import enTranslationText from "../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../locales/cy/translations.json";
-import app from "../../app";
+import * as config from "../../../../../../config/constants";
+import enTranslationText from "../../../../../../../locales/en/translations.json";
+import cyTranslationText from "../../../../../../../locales/cy/translations.json";
+import app from "../../../app";
 import { appDevDependencies } from "config/dev-dependencies";
 import { getUrl } from "presentation/test/utils";
-import { CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL, GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOOSE_TERRITORY_URL, POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL } from "presentation/controller/addressLookUp/url";
+import { ENTER_USUAL_RESIDENTIAL_ADDRESS_URL, GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOOSE_TERRITORY_URL, POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL } from "presentation/controller/addressLookUp/url";
 import AddressPageType from "presentation/controller/addressLookUp/PageType";
 import GeneralPartnerBuilder from "presentation/test/builder/GeneralPartnerBuilder";
 
@@ -76,7 +76,7 @@ describe("General Partner Usual Residential Address Choice", () => {
 
     it("should redirect to What is the general partners URA? manual entry page when overseas is selected", async () => {
       const OVERSEAS_PARAMETER = 'overseas';
-      const MANUAL_ENTRY_URL = getUrl(CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
+      const MANUAL_ENTRY_URL = getUrl(ENTER_USUAL_RESIDENTIAL_ADDRESS_URL);
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.generalPartnerUsualResidentialAddressTerritoryChoice,
         parameter: OVERSEAS_PARAMETER
