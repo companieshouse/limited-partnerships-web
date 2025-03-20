@@ -445,7 +445,7 @@ class AddressLookUpController extends AbstractController {
   }
 
   generalPartnerTerritoryChoice(): RequestHandler {
-    return async(request: Request, response: Response, next: NextFunction) => {
+    return (request: Request, response: Response, next: NextFunction) => {
       try {
         const { ids } = super.extract(request);
         const parameter = request.body.parameter;
@@ -457,7 +457,7 @@ class AddressLookUpController extends AbstractController {
 
         redirectUrl = super.insertIdsInUrl(redirectUrl, ids.transactionId, ids.submissionId, ids.generalPartnerId);
 
-        await this.saveTerritoryAndRedirectToCorrectPage(request, response, parameter, redirectUrl);
+        this.saveTerritoryAndRedirectToCorrectPage(request, response, parameter, redirectUrl);
       } catch (error) {
         next(error);
       }
