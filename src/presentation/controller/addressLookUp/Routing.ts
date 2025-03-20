@@ -113,11 +113,7 @@ const addressRoutingGeneralPartnerUsualResidentialAddressTerritoryChoice = {
   previousUrl: ADD_GENERAL_PARTNER_PERSON_URL,
   currentUrl: url.GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOOSE_TERRITORY_URL,
   nextUrl: LIMITED_PARTNERS_URL,
-  pageType: AddressPageType.generalPartnerUsualResidentialAddressTerritoryChoice,
-  data: {
-    ukAddressConfirmUrl: url.POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL,
-    overseasAddressConfirmUrl: url.ENTER_USUAL_RESIDENTIAL_ADDRESS_URL
-  }
+  pageType: AddressPageType.generalPartnerUsualResidentialAddressTerritoryChoice
 };
 
 const addressRoutingPostcodeUsualResidentialAddress = {
@@ -135,10 +131,7 @@ const addressRoutingEnterUsualResidentialAddress = {
   previousUrl: url.POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL,
   currentUrl: url.ENTER_USUAL_RESIDENTIAL_ADDRESS_URL,
   nextUrl: LIMITED_PARTNERS_URL, // will be changed to confirm residential address (not ready)
-  pageType: AddressPageType.enterUsualResidentialAddress,
-  data: {
-    confirmAddressUrl: LIMITED_PARTNERS_URL
-  }
+  pageType: AddressPageType.enterUsualResidentialAddress
 };
 
 const addressRoutingChooseGeneralPartnerUsualResidentialAddress = {
@@ -147,7 +140,7 @@ const addressRoutingChooseGeneralPartnerUsualResidentialAddress = {
   nextUrl: LIMITED_PARTNERS_URL, // TODO Change to 'confirm URA page' when ready
   pageType: AddressPageType.chooseGeneralPartnerUsualResidentialAddress,
   data: {
-    enterManualAddressPageType: AddressPageType.enterRegisteredOfficeAddress
+    enterManualAddressPageType: AddressPageType.enterUsualResidentialAddress
   }
 };
 
