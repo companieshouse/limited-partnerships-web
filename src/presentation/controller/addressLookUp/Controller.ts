@@ -457,14 +457,14 @@ class AddressLookUpController extends AbstractController {
 
         redirectUrl = super.insertIdsInUrl(redirectUrl, ids.transactionId, ids.submissionId, ids.generalPartnerId);
 
-        this.saveTerritoryAndRedirectToCorrectPage(request, response, parameter, redirectUrl);
+        this.cacheTerritoryAndRedirectToCorrectPage(request, response, parameter, redirectUrl);
       } catch (error) {
         next(error);
       }
     };
   }
 
-  private saveTerritoryAndRedirectToCorrectPage(
+  private cacheTerritoryAndRedirectToCorrectPage(
     request: Request,
     response: Response<any, Record<string, any>>,
     dataToStore: any,
