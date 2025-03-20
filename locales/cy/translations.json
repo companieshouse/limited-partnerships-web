@@ -118,8 +118,10 @@
                 "publicInformationLine1": "WELSH - We'll show the principal place of business on the public register."
             },
             "usualResidentialAddress":{
-                "title": "WELSH - Where is the usual residential address of the general partner",
-                "publicInformationLine1": "WELSH - We will not show the general partner's usual residential address."
+                "title": "WELSH - What is the general partner's usual residential address?",
+                "publicInformationLine1": "WELSH - We will not show the general partner's usual residential address.",
+                "postcodeOptional": "WELSH - Postcode (optional)"
+
             },
             "propertyNameOrNumber": "WELSH - Property name or number",
             "propertyNameOrNumberHint": "WELSH - For example, 'The Mill', '116' or 'Flat 37a'",
