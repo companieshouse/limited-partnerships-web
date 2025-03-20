@@ -51,13 +51,18 @@ describe("General Partner Usual Residential Address Choice", () => {
     });
 
     it("should contain the general partner name - data from API", async () => {
-      const generalPartner = new GeneralPartnerBuilder().build();
+      const generalPartner = new GeneralPartnerBuilder()
+        .withForename("John")
+        .withSurname("Smith")
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .build();
+
       appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
 
       const res = await request(app).get(URL);
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(`${generalPartner?.data?.forename?.toUpperCase()}`);
+      expect(res.text).toContain(`${generalPartner?.data?.forename?.toUpperCase()} ${generalPartner?.data?.surname?.toUpperCase()}`);
     });
   });
 

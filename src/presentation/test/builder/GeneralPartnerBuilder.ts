@@ -75,6 +75,16 @@ class GeneralPartnerBuilder {
     return this;
   }
 
+  withForename(forename: string) {
+    this.data.forename = forename;
+    return this;
+  }
+
+  withSurname(surname: string) {
+    this.data.surname = surname;
+    return this;
+  }
+
   isPerson() {
     generalPartnerPerson.forename = "Joe";
     generalPartnerPerson.surname = "Doe";
