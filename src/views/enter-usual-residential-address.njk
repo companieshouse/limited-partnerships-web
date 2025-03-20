@@ -1,14 +1,14 @@
 {% extends "layout.njk" %}
 
+{% set cache = props.data.cache['usual_residential_address'] %}
+
 {% block backLink %}
-  {% set countrySelected = props.data.limitedPartnership.data.territory_choice %}
-  {% set UKCountries = ["England", "Wales", "Scotland", "Northern Ireland"]%}
-  {% if countrySelected not in UKCountries %}
-    {% set hrefValue = props.alternativeBackUrl %}
+  {% if props.data.cache.territory_choice == "overseas" %}
+    {% set hrefValue = props.currentUrl | replace(props.pageType, "general-partner-usual-residential-address-territory-choice") %}
   {% else %}
-    {% set hrefValue = props.previousUrl %}
+    {% set hrefValue = props.currentUrl | replace(props.pageType, "postcode-usual-residential-address") %}
   {% endif %}
-  
+
   {{ govukBackLink({
     text: "Back",
     attributes: {
@@ -18,7 +18,6 @@
   }) }}
 {% endblock %}
 
-{% set usualResidentialAddressKey = "usual_residential_address" %}
 {% if props.data.address %}
   {% set address = props.data.address %}
 {% elif props.data.cache[usualResidentialAddressKey] %}
@@ -29,8 +28,6 @@
   {% set address = {} %}
 {% endif %}
 
-
-
 {% set pageTitle = i18n.address.enterAddress.usualResidentialAddress.title %}
 {% set publicInformationLine1 = i18n.address.enterAddress.usualResidentialAddress.publicInformationLine1 %}
 
@@ -40,7 +37,7 @@
       {% include "includes/general-partner-name.njk" %}
 
       <fieldset class="govuk-fieldset">
-        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
             <h1 class="govuk-heading-xl">
             {{ pageTitle }}
             </h1>
@@ -51,13 +48,14 @@
 
           {{ govukInput({
             label: {
-              text: i18n.address.enterAddress.postcode
+              text: i18n.address.enterAddress.usualResidentialAddress.postcodeOptional
             },
             classes: "govuk-input--width-10",
             id: "postal_code",
             name: "postal_code",
             value: address.postal_code
           }) }}
+
           {% set countryFormId = "country" %}
           {% set countryFormName = "country" %}
           {% set countryText = i18n.address.enterAddress.country %}
