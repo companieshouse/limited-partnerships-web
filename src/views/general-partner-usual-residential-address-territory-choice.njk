@@ -1,5 +1,8 @@
 {% extends "layout.njk" %}
 
+{% set cache = props.data.cache['address_territory_choice'] %}
+{% set territoryChoiceKey = "territory_choice" %}
+
 {% set pageTitle =  i18n.generalPartnerUsualResidentialAddressChoicePage.title %}
 
 {% block content %}
