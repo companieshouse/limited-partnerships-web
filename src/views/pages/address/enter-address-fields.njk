@@ -1,0 +1,84 @@
+{% import 'includes/macros.njk' as macros %}
+
+{% set validateNameOrNumber = "validateInput(this, 50, '" + i18n.address.enterAddress.errorMessages.nameOrNumberMissing | escape + "', '" + i18n.address.enterAddress.errorMessages.nameOrNumberLength | escape + "');" %}
+{% set validateAddressLine1 = "validateInput(this, 50, '" + i18n.address.enterAddress.errorMessages.addressLine1Missing | escape + "', '" + i18n.address.enterAddress.errorMessages.addressLine1Length | escape + "');" %}
+{% set validateTownOrCity = "validateInput(this, 50, '" + i18n.address.enterAddress.errorMessages.townOrCityMissing | escape + "', '" + i18n.address.enterAddress.errorMessages.townOrCityLength | escape + "');" %}
+
+{% include "includes/errors.njk" %}
+        
+{% include "includes/validators.njk" %}
+
+<div>
+    {{ govukInput({
+        label: {
+            text: i18n.address.enterAddress.propertyNameOrNumber,
+            classes: "govuk-!-margin-top-5"
+        },
+        hint: {
+            text: i18n.address.enterAddress.propertyNameOrNumberHint
+        },
+        id: "premises",
+        name: "premises",
+        value: address.premises,
+        attributes : {  
+            required : true,
+            oninvalid: validateNameOrNumber,
+            oninput: validateNameOrNumber
+        }
+    }) }}
+
+    {{ govukInput({
+        label: {
+            text: i18n.address.enterAddress.addressLine1
+        },
+        id: "address_line_1",
+        name: "address_line_1",
+        value: address.address_line_1,
+        attributes : {
+            required : true,
+            oninvalid: validateAddressLine1,
+            oninput: validateAddressLine1
+        }
+    }) }}
+
+    {{ govukInput({
+        label: {
+            text: i18n.address.enterAddress.addressLine2
+        },
+        id: "address_line_2",
+        name: "address_line_2",
+        value: address.address_line_2,
+        attributes : {  
+            oninput: "validateLength(this, 50, '" + i18n.address.enterAddress.errorMessages.addressLine2Length | escape + "');"            }
+    }) }}
+
+    {{ govukInput({
+        label: {
+            text: i18n.address.enterAddress.townOrCity
+        },
+        classes: "govuk-!-width-two-thirds",
+        id: "locality",
+        name: "locality",
+        value: address.locality,
+        attributes : {
+            required : true,
+            oninvalid: validateTownOrCity,
+            oninput: validateTownOrCity
+        }
+    }) }}
+
+    {{ govukInput({
+        label: {
+            text: i18n.address.enterAddress.county
+        },
+        classes: "govuk-!-width-two-thirds",
+        id: "region",
+        name: "region",
+        value: address.region,
+        attributes : {
+            oninput: "validateLength(this, 50, '" + i18n.address.enterAddress.errorMessages.countyLength | escape + "');"
+        }
+    }) }}
+</div>
+
+

@@ -121,9 +121,16 @@ const addressRoutingPostcodeUsualResidentialAddress = {
   nextUrl: url.CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   pageType: AddressPageType.postcodeUsualResidentialAddress,
   data: {
-    // enterManualAddressPageType: AddressPageType.enterUsualResidentialAddress, // uncomment when ready
+    enterManualAddressPageType: AddressPageType.enterUsualResidentialAddress,
     confirmAddressUrl: LIMITED_PARTNERS_URL // will be changed to confirm residential address (not ready)
   }
+};
+
+const addressRoutingEnterUsualResidentialAddress = {
+  previousUrl: url.POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL,
+  currentUrl: url.ENTER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  nextUrl: LIMITED_PARTNERS_URL, // will be changed to confirm residential address (not ready)
+  pageType: AddressPageType.enterUsualResidentialAddress
 };
 
 const addressRoutingChooseGeneralPartnerUsualResidentialAddress = {
@@ -132,13 +139,14 @@ const addressRoutingChooseGeneralPartnerUsualResidentialAddress = {
   nextUrl: LIMITED_PARTNERS_URL, // TODO Change to 'confirm URA page' when ready
   pageType: AddressPageType.chooseGeneralPartnerUsualResidentialAddress,
   data: {
-    enterManualAddressPageType: AddressPageType.enterRegisteredOfficeAddress
+    enterManualAddressPageType: AddressPageType.enterUsualResidentialAddress
   }
 };
 
 const usualResidentialAddress = [
   addressRoutingGeneralPartnerUsualResidentialAddressTerritoryChoice,
   addressRoutingPostcodeUsualResidentialAddress,
+  addressRoutingEnterUsualResidentialAddress,
   addressRoutingChooseGeneralPartnerUsualResidentialAddress
 ];
 

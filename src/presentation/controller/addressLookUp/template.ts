@@ -31,3 +31,5 @@ export const POSTCODE_USUAL_RESIDENTIAL_ADDRESS_TEMPLATE =
   AddressPageType.postcodeUsualResidentialAddress;
 export const CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_TEMPLATE =
   AddressPageType.chooseGeneralPartnerUsualResidentialAddress;
+export const ENTER_USUAL_RESIDENTIAL_ADDRESS_TEMPLATE =
+  AddressPageType.enterUsualResidentialAddress;

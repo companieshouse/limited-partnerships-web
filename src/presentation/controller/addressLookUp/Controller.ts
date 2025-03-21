@@ -7,18 +7,19 @@ import addresssRouting, { addressLookUpRouting } from "./Routing";
 import AbstractController from "../AbstractController";
 import AddressLookUpPageType from "./PageType";
 import CacheService from "../../../application/service/CacheService";
-import { APPLICATION_CACHE_KEY, APPLICATION_CACHE_KEY_PREFIX_REGISTRATION, cookieOptions } from "../../../config/constants";
+import { APPLICATION_CACHE_KEY, cookieOptions } from "../../../config/constants";
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import UIErrors from "../../../domain/entities/UIErrors";
 import { PageRouting, pageRoutingDefault } from "../PageRouting";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
-import { CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL, POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL } from "./url";
+import { ENTER_USUAL_RESIDENTIAL_ADDRESS_URL, POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL } from "./url";
 
 class AddressLookUpController extends AbstractController {
   public readonly REGISTERED_OFFICE_ADDRESS_CACHE_KEY = "registered_office_address";
   public readonly PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CACHE_KEY =
     "principal_place_of_business_address";
   public readonly USUAL_RESIDENTIAL_ADDRESS_CACHE_KEY = "usual_residential_address";
+  public readonly USUAL_RESIDENTIAL_ADDRESS_TERRITORY_CHOICE_CACHE_KEY = "territory_choice";
 
   constructor(
     private addressService: AddressService,
@@ -236,14 +237,15 @@ class AddressLookUpController extends AbstractController {
             ids.submissionId
           );
 
-        const errors = this.addressService.isValidJurisdictionAndCountry(
-          limitedPartnership?.data?.jurisdiction ?? "",
-          country
-        );
+        const pageRouting = super.getRouting(addressLookUpRouting, pageType, request);
+
+        const errors = pageType !== AddressLookUpPageType.enterUsualResidentialAddress ?
+          this.addressService.isValidJurisdictionAndCountry(
+            limitedPartnership?.data?.jurisdiction ?? "",
+            country
+          ) : null;
 
         if (errors?.errors) {
-          const pageRouting = super.getRouting(addresssRouting, pageType, request);
-
           response.render(
             super.templateName(pageRouting.currentUrl),
             super.makeProps(pageRouting, { address }, errors)
@@ -446,28 +448,40 @@ class AddressLookUpController extends AbstractController {
     return (request: Request, response: Response, next: NextFunction) => {
       try {
         const { ids } = super.extract(request);
-        const pageType = super.extractPageTypeOrThrowError(
-          request,
-          AddressLookUpPageType
-        );
         const parameter = request.body.parameter;
-        const cache = this.cacheService.addDataToCache(request.signedCookies, {
-          [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${pageType}`]: parameter
-        });
 
-        response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
-        let url =
+        let redirectUrl =
           parameter === "unitedKingdom"
             ? POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL
-            : CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL;
+            : ENTER_USUAL_RESIDENTIAL_ADDRESS_URL;
 
-        url = super.insertIdsInUrl(url, ids.transactionId, ids.submissionId, ids.generalPartnerId);
+        redirectUrl = super.insertIdsInUrl(redirectUrl, ids.transactionId, ids.submissionId, ids.generalPartnerId);
 
-        response.redirect(url);
+        this.cacheTerritoryAndRedirectToCorrectPage(request, response, parameter, redirectUrl);
       } catch (error) {
         next(error);
       }
     };
+  }
+
+  private cacheTerritoryAndRedirectToCorrectPage(
+    request: Request,
+    response: Response<any, Record<string, any>>,
+    dataToStore: any,
+    redirectUrl: any
+  ) {
+    const { ids } = super.extract(request);
+
+    const cacheKey = this.USUAL_RESIDENTIAL_ADDRESS_TERRITORY_CHOICE_CACHE_KEY;
+
+    const cache = this.cacheService.addDataToCache(request.signedCookies, {
+      [ids.transactionId]: {
+        [cacheKey]: dataToStore
+      }
+    });
+    response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
+
+    response.redirect(redirectUrl);
   }
 
 }

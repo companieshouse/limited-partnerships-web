@@ -25,7 +25,7 @@
         {{ govukInput({
           label: {
             text: i18n.addGeneralPartnerLegalEntityPage.legalEntityName,
-            classes: "govuk-label--m",
+            classes: "govuk-label govuk-label--m",
             isPageHeading: true
           },
           id: "legal_entity_name",
@@ -42,7 +42,7 @@
         {{ govukInput({
           label: {
             text: i18n.addGeneralPartnerLegalEntityPage.legalFormOrCorporateIdentity,
-            classes: "govuk-label--m"
+            classes: "govuk-label govuk-label--m"
           },
           hint: {
             text: i18n.addGeneralPartnerLegalEntityPage.legalFormOrCorporateIdentityHint
@@ -61,7 +61,7 @@
         {{ govukInput({
           label: {
             text: i18n.addGeneralPartnerLegalEntityPage.governingLaw,
-            classes: "govuk-label--m"
+            classes: "govuk-label govuk-label--m"
           },
           hint: {
             text: i18n.addGeneralPartnerLegalEntityPage.governingLawHint
@@ -80,7 +80,7 @@
         {{ govukInput({
           label: {
             text: i18n.addGeneralPartnerLegalEntityPage.whichRegister,
-            classes: "govuk-label--m"
+            classes: "govuk-label govuk-label--m"
           },
           hint: {
             text: i18n.addGeneralPartnerLegalEntityPage.whichRegisterHint
@@ -100,12 +100,13 @@
         {% set countryText = i18n.addGeneralPartnerLegalEntityPage.countryRegistered %}
         {% set countryFormId = "legal_entity_registration_location" %}
         {% set countryErrorMessage = props.errors.legal_entity_registration_location if props.errors %}
+        {% set countryFont = "govuk-label govuk-label--m"%}
         {% include "includes/countries.njk" %}
 
         {{ govukInput({
           label: {
             text: i18n.addGeneralPartnerLegalEntityPage.registrationNumber,
-            classes: "govuk-label--m"
+            classes: "govuk-label govuk-label--m"
           },
           hint: {
             text: i18n.addGeneralPartnerLegalEntityPage.registrationNumberHint

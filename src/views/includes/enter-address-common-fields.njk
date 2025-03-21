@@ -1,0 +1,74 @@
+{% set validatePostcode = "validateInput(this, 15, '" + i18n.address.enterAddress.errorMessages.postcodeMissing | escape + "', '" + i18n.address.enterAddress.errorMessages.postcodeLength | escape + "');" %}
+
+<fieldset class="govuk-fieldset">
+  <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+    <h1 class="govuk-heading-xl">
+      {{ pageTitle }}
+    </h1>
+  </legend>
+
+  <p class="govuk-hint">{{ titleHint1 }}</p>
+  <p class="govuk-hint">{{ titleHint2 }}</p>
+  <p class="govuk-hint">{{ titleHint3 }}</p>
+
+  <br>
+</fieldset>
+
+{% include "pages/address/enter-address-fields.njk" %}
+
+{{ govukInput({
+  label: {
+    text: i18n.address.enterAddress.postcode
+  },
+  classes: "govuk-input--width-10",
+  id: "postal_code",
+  name: "postal_code",
+  value: address.postal_code,
+  attributes : {
+  required : true,
+  oninvalid: validatePostcode,
+  oninput: validatePostcode
+  }
+}) }}
+
+{{ govukSelect({
+  errorMessage: props.errors.country if props.errors,
+  id: "country",
+  name: "country",
+  value: address.country,
+  label: {
+    text: i18n.address.enterAddress.country
+  },
+  fieldset: {
+    legend: {
+      text: "Country",
+      isPageHeading: false,
+      classes: "govuk-!-font-weight-regular"
+    }
+  },
+  attributes : {
+  required: "true",
+  oninvalid: "this.setCustomValidity('" + i18n.address.enterAddress.errorMessages.countryMissing + "');",
+  oninput: "this.setCustomValidity('');"
+  },
+  items: [{
+    value: "",
+    text: i18n.address.enterAddress.countrySelect
+  },
+  {
+    value: "GB-ENG",
+    text: i18n.address.enterAddress.countryEngland
+  },
+  {
+    value: "GB-SCT",
+    text: i18n.address.enterAddress.countryScotland
+  },
+  {
+    value: "GB-WLS",
+    text: i18n.address.enterAddress.countryWales
+  },
+  {
+    value: "GB-NIR",
+    text: i18n.address.enterAddress.countryNorthernIreland
+  }]
+}) }}

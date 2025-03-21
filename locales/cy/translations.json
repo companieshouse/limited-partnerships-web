@@ -109,15 +109,19 @@
                 "titleHint1": "WELSH - We'll use this address to send official communications.",
                 "titleHint2": "WELSH - It must be a physical address in the jurisdiction where the partnership was formed. You cannot use a PO Box address.",
                 "titleHint3": "WELSH - It is not the principal place of business. You'll need to provide this later.",
-                "publicInformationTitle": "WELSH - What information we'll show on the public online register",
                 "publicInformationLine1": "WELSH - We'll show the registered office address on the public register."
             },
             "principalPlaceOfBusinessAddress" : {
                 "title": "WELSH - What is the principal place of business?",
                 "titleHint1": "WELSH - This is the address where the day to day running of the business takes place. It could be the same as the registered office address, or a different address.",
                 "titleHint2": "WELSH - It must be in the jurisdiction where the partnership was formed. It can be changed to an address outside of the jurisdiction after you've registered the partnership.",
-                "publicInformationTitle": "WELSH - What information we'll show on the public register",
                 "publicInformationLine1": "WELSH - We'll show the principal place of business on the public register."
+            },
+            "usualResidentialAddress":{
+                "title": "WELSH - What is the general partner's usual residential address?",
+                "publicInformationLine1": "WELSH - We will not show the general partner's usual residential address.",
+                "postcodeOptional": "WELSH - Postcode (optional)"
+
             },
             "propertyNameOrNumber": "WELSH - Property name or number",
             "propertyNameOrNumberHint": "WELSH - For example, 'The Mill', '116' or 'Flat 37a'",
@@ -127,11 +131,12 @@
             "county": "WELSH - County (optional)",
             "postcode": "WELSH - Postcode",
             "country": "WELSH - Country",
-            "countrySelect": "WELSH - Select country",
+            "countrySelect": "WELSH - Select a country",
             "countryEngland": "WELSH - England",
             "countryScotland": "WELSH - Scotland",
             "countryWales": "WELSH - Wales",
             "countryNorthernIreland": "WELSH - Northern Ireland",
+            "publicInformationTitle": "WELSH - What information we'll show on the public register",
             "errorMessages": {
                 "nameOrNumberMissing": "WELSH - Enter a property name or number",
                 "nameOrNumberLength": "WELSH - Property name or number must be 50 characters or less",
@@ -141,7 +146,7 @@
                 "townOrCityMissing": "WELSH - Enter a town or city",
                 "townOrCityLength": "WELSH - Town or city must be 50 characters or less",
                 "countyLength": "WELSH - County, state, province or region must be 50 characters or less",
-                "postcodeMissing": "WELSH - nter a postcode",
+                "postcodeMissing": "WELSH - Enter a postcode",
                 "postcodeLength": "WELSH - Postcode must be 15 characters or less",
                 "countryMissing": "WELSH - Select a country",
                 "jurisdictionCountry": "WELSH - You must enter a country that matches your jurisdiction"

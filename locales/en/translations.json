@@ -109,15 +109,18 @@
                 "titleHint1": "We'll use this address to send official communications.",
                 "titleHint2": "It must be a physical address in the jurisdiction where the partnership was formed. You cannot use a PO Box address.",
                 "titleHint3": "It is not the principal place of business. You'll need to provide this later.",
-                "publicInformationTitle": "What information we'll show on the public online register",
                 "publicInformationLine1": "We'll show the registered office address on the public register."
             },
             "principalPlaceOfBusinessAddress" : {
                 "title": "What is the principal place of business?",
                 "titleHint1": "This is the address where the day to day running of the business takes place. It could be the same as the registered office address, or a different address.",
                 "titleHint2": "It must be in the jurisdiction where the partnership was formed. It can be changed to an address outside of the jurisdiction after you've registered the partnership.",
-                "publicInformationTitle": "What information we'll show on the public register",
                 "publicInformationLine1": "We'll show the principal place of business on the public register."
+            },
+            "usualResidentialAddress":{
+                "title": "What is the general partner's usual residential address",
+                "publicInformationLine1": "We will not show the general partner's usual residential address.",
+                "postcodeOptional": "Postcode (optional)"
             },
             "propertyNameOrNumber": "Property name or number",
             "propertyNameOrNumberHint": "For example, 'The Mill', '116' or 'Flat 37a'",
@@ -127,11 +130,12 @@
             "county": "County (optional)",
             "postcode": "Postcode",
             "country": "Country",
-            "countrySelect": "Select country",
+            "countrySelect": "Select a country",
             "countryEngland": "England",
             "countryScotland": "Scotland",
             "countryWales": "Wales",
             "countryNorthernIreland": "Northern Ireland",
+            "publicInformationTitle": "What information we'll show on the public register",
             "errorMessages": {
                 "nameOrNumberMissing": "Enter a property name or number",
                 "nameOrNumberLength": "Property name or number must be 50 characters or less",

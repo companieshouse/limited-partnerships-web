@@ -263,9 +263,10 @@
 {{ govukSelect({
   id: countryFormId,
   name: countryFormId,
+  value: countryFormValue,
   label: {
     text: countryText,
-    classes: "govuk-label govuk-label--m",
+    classes: countryFont,
     isPageHeading: false
   },
   errorMessage: countryErrorMessage,
