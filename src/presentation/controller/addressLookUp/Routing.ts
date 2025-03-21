@@ -4,7 +4,6 @@ import AddressPageType from "./PageType";
 import PageType from "../PageType";
 import {
   ADD_GENERAL_PARTNER_PERSON_URL,
-  GENERAL_PARTNER_CHOICE_URL,
   LIMITED_PARTNERS_URL,
   TERM_URL,
   WHERE_IS_THE_JURISDICTION_URL
@@ -109,8 +108,15 @@ const principalPlaceOfBusinessAddress = [
 
 // usual residential address
 
+const addressRoutingGeneralPartnerUsualResidentialAddressTerritoryChoice = {
+  previousUrl: ADD_GENERAL_PARTNER_PERSON_URL,
+  currentUrl: url.GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOOSE_TERRITORY_URL,
+  nextUrl: LIMITED_PARTNERS_URL,
+  pageType: AddressPageType.generalPartnerUsualResidentialAddressTerritoryChoice
+};
+
 const addressRoutingPostcodeUsualResidentialAddress = {
-  previousUrl: GENERAL_PARTNER_CHOICE_URL, // will be changed to Where is the usual residential address (not ready)
+  previousUrl: url.GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOOSE_TERRITORY_URL,
   currentUrl: url.POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL,
   nextUrl: url.CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   pageType: AddressPageType.postcodeUsualResidentialAddress,
@@ -118,13 +124,6 @@ const addressRoutingPostcodeUsualResidentialAddress = {
     // enterManualAddressPageType: AddressPageType.enterUsualResidentialAddress, // uncomment when ready
     confirmAddressUrl: LIMITED_PARTNERS_URL // will be changed to confirm residential address (not ready)
   }
-};
-
-const addressRoutingGeneralPartnerUsualResidentialAddressTerritoryChoice = {
-  previousUrl: ADD_GENERAL_PARTNER_PERSON_URL,
-  currentUrl: url.GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOOSE_TERRITORY_URL,
-  nextUrl: LIMITED_PARTNERS_URL,
-  pageType: AddressPageType.generalPartnerUsualResidentialAddressTerritoryChoice
 };
 
 const addressRoutingChooseGeneralPartnerUsualResidentialAddress = {
