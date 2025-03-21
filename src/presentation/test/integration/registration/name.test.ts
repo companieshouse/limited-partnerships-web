@@ -204,6 +204,8 @@ describe("Name Page", () => {
         [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]: PartnershipType.LP
       });
 
+      expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships.length).toEqual(0);
+
       const res = await request(app).post(NAME_URL).send({
         pageType: RegistrationPageType.name,
         partnership_name: "Test Limited Partnership",
@@ -217,6 +219,7 @@ describe("Name Page", () => {
       expect(appDevDependencies.cacheRepository.cache).toEqual({
         [APPLICATION_CACHE_KEY]: {}
       });
+      expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships.length).toEqual(1);
     });
 
     it("should update the submission if already exist", async () => {
@@ -226,6 +229,8 @@ describe("Name Page", () => {
         .build();
 
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+      expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships.length).toEqual(1);
 
       const URL = getUrl(NAME_WITH_IDS_URL);
 
@@ -238,6 +243,7 @@ describe("Name Page", () => {
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+      expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships.length).toEqual(1);
     });
 
     it("should return validation errors", async () => {
