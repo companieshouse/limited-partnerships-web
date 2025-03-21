@@ -24,7 +24,7 @@ export const getUrl = (url: string) => {
   );
 };
 
-const toEscapedHtml = (input: string) => {
+export const toEscapedHtml = (input: string) => {
   return input
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
