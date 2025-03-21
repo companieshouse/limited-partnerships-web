@@ -1,8 +1,5 @@
 {% extends "layout.njk" %}
 
-{% set cache = props.data.cache['address_territory_choice'] %}
-{% set territoryChoiceKey = "territory_choice" %}
-
 {% block backLink %}
   {% if props.data.generalPartner.data.forename %}
     {% set hrefValue = props.currentUrl | replace(props.pageType, "add-general-partner-person") %}
