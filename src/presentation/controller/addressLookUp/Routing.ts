@@ -4,7 +4,6 @@ import AddressPageType from "./PageType";
 import PageType from "../PageType";
 import {
   ADD_GENERAL_PARTNER_PERSON_URL,
-  GENERAL_PARTNER_CHOICE_URL,
   LIMITED_PARTNERS_URL,
   TERM_URL,
   WHERE_IS_THE_JURISDICTION_URL
@@ -117,7 +116,7 @@ const addressRoutingGeneralPartnerUsualResidentialAddressTerritoryChoice = {
 };
 
 const addressRoutingPostcodeUsualResidentialAddress = {
-  previousUrl: GENERAL_PARTNER_CHOICE_URL, // will be changed to Where is the usual residential address (not ready)
+  previousUrl: url.GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOOSE_TERRITORY_URL,
   currentUrl: url.POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL,
   nextUrl: url.CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   pageType: AddressPageType.postcodeUsualResidentialAddress,

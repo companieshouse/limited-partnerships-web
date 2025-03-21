@@ -3,6 +3,24 @@
 {% set cache = props.data.cache['address_territory_choice'] %}
 {% set territoryChoiceKey = "territory_choice" %}
 
+{% block backLink %}
+  {% if props.data.generalPartner.data.forename %}
+    {% set hrefValue = props.currentUrl | replace(props.pageType, "add-general-partner-person") %}
+  {% elif props.data.generalPartner.data.legal_entity_name %}
+    {% set hrefValue = props.currentUrl | replace(props.pageType, "add-general-partner-legal-entity") %}
+  {% else %}
+     {% set hrefValue = props.previousUrl %}
+  {% endif %}
+
+  {{ govukBackLink({
+    text: "Back",
+    attributes: {
+      "data-event-id": "back-link"
+    },
+    href: hrefValue
+  }) }}
+{% endblock %}
+
 {% set pageTitle =  i18n.generalPartnerUsualResidentialAddressChoicePage.title %}
 
 {% block content %}
@@ -48,7 +66,11 @@
         }) }}
               
         {{ govukButton({
-          text: i18n.buttons.continue
+          text: i18n.buttons.continue,
+          attributes: {
+            "id": "submit",
+            "onclick": "_paq.push(['trackEvent', 'general partner ura territory choice', 'selection', document.querySelector('input[name=parameter]:checked').nextElementSibling.innerHTML])"
+          }
         }) }}
 
         {{ govukInsetText({

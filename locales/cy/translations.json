@@ -178,9 +178,9 @@
             },
 
             "usualResidentialAddress": {
-                "whatIsUsualResidentialAddress": "WELSH - What is the usual residential address of the partnership?",
+                "whatIsUsualResidentialAddress": "WELSH - What is the general partner's usual residential address?",
                 "publicRegisterTitle": "WELSH - What information we'll show on the public register",
-                "publicRegisterLine1": "WELSH - We'll show the usual residential address on the public register."
+                "publicRegisterLine1": "WELSH - We will not show the general partner's usual residential address."
             },
  
             "nameOrNumberHint": "WELSH - Property name or number (optional)",
@@ -326,6 +326,13 @@
     },
 
     "service" : "WELSH - Register a limited partnership",
+
+    "signOutPage": {
+        "title": "WELSH - Are you sure you want to sign out?",
+        "hint": "WELSH - We will save your application.",
+         "saved": "WELSH - How do I find my saved applications?",
+         "filingsInfo": "WELSH - Sign in to your Companies House account and select Your filings to access your saved applications."
+   },
 
     "startPage" : {
         "title" : "Partneriaethau Cyfyngedig yw hyn",
@@ -885,5 +892,10 @@
         "october": "WELSH - October",
         "november": "WELSH - November",
         "december": "WELSH - December"
+    },
+
+    "yesAndNo": {
+        "yes": "WELSH - Yes",
+        "no": "WELSH - No"
     }
 }

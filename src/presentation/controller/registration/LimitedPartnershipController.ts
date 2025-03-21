@@ -13,7 +13,12 @@ import {
 } from "../../../config/constants";
 import CacheService from "../../../application/service/CacheService";
 import PageType from "../PageType";
-import { GENERAL_PARTNERS_URL } from "./url";
+import {
+  GENERAL_PARTNERS_URL,
+  NAME_WITH_IDS_URL,
+  WHICH_TYPE_WITH_IDS_URL
+} from "./url";
+import { PageRouting } from "../PageRouting";
 
 class LimitedPartnershipController extends AbstractController {
   private limitedPartnershipService: LimitedPartnershipService;
@@ -30,6 +35,8 @@ class LimitedPartnershipController extends AbstractController {
       try {
         const { tokens, pageType, ids } = super.extract(request);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
+
+        this.conditionalPreviousUrl(pageType, ids, pageRouting);
 
         let limitedPartnership = {};
         const generalPartner = {};
@@ -57,6 +64,19 @@ class LimitedPartnershipController extends AbstractController {
         next(error);
       }
     };
+  }
+
+  private conditionalPreviousUrl(
+    pageType: PageType,
+    ids: { transactionId: string; submissionId: string; generalPartnerId: string; },
+    pageRouting: PageRouting
+  ) {
+    if (pageType === RegistrationPageType.name) {
+      // change back link if we have ids in url
+      if (ids.transactionId && ids.submissionId) {
+        pageRouting.previousUrl = super.insertIdsInUrl(WHICH_TYPE_WITH_IDS_URL, ids.transactionId, ids.submissionId);
+      }
+    }
   }
 
   private conditionalRedirecting(
@@ -118,6 +138,32 @@ class LimitedPartnershipController extends AbstractController {
         response.cookie(APPLICATION_CACHE_KEY, cacheUpdated, cookieOptions);
 
         response.redirect(url);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  redirectWhichTypeWithIds(): RequestHandler {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { tokens, ids } = super.extract(request);
+
+        const selectedPartnershipType = escape(request.body.parameter);
+
+        const limitedPartnership: LimitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+          tokens,
+          ids.transactionId,
+          ids.submissionId
+        );
+
+        if (selectedPartnershipType !== limitedPartnership?.data?.partnership_type) {
+          return this.redirectAndCacheSelection()(request, response, next);
+        }
+
+        const redirectUrl = this.insertIdsInUrl(NAME_WITH_IDS_URL, ids.transactionId, ids.submissionId);
+        response.redirect(redirectUrl);
+
       } catch (error) {
         next(error);
       }

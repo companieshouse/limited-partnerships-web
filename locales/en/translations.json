@@ -177,9 +177,9 @@
             },
 
             "usualResidentialAddress": {
-                "whatIsUsualResidentialAddress": "What is the usual residential address of the partnership?",
+                "whatIsUsualResidentialAddress": "What is the general partner's usual residential address?",
                 "publicRegisterTitle": "What information we'll show on the public register",
-                "publicRegisterLine1": "We'll show the usual residential address on the public register."
+                "publicRegisterLine1": "We will not show the general partner's usual residential address."
             },
  
             "nameOrNumberHint": "Property name or number (optional)",
@@ -325,6 +325,13 @@
     },
 
     "service" : "Register a limited partnership",
+
+    "signOutPage": {
+         "title": "Are you sure you want to sign out?",
+         "hint": "We will save your application.",
+         "saved": "How do I find my saved applications?",
+         "filingsInfo": "Sign in to your Companies House account and select Your filings to access your saved applications."
+    },
 
     "startPage" : {
         "title" : "This is Limited Partnerships",
@@ -884,5 +891,10 @@
         "october": "October",
         "november": "November",
         "december": "December"
+    },
+
+    "yesAndNo": {
+        "yes": "Yes",
+        "no": "No"
     }
 }

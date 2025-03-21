@@ -67,6 +67,7 @@ export const BASE_URL = "/limited-partnerships";
 export const TRANSITION_BASE_URL = "/limited-partnerships/transition";
 export const BASE_WITH_IDS_URL = `${BASE_URL}/transaction/:${TRANSACTION_ID}/submission/:${SUBMISSION_ID}`;
 export const GENERAL_PARTNER_URL = BASE_WITH_IDS_URL + `/general-partner`;
+export const ACCOUNTS_SIGN_OUT_URL = `${ACCOUNT_URL}/signout`;
 export const GENERAL_PARTNER_WITH_ID_URL =
   GENERAL_PARTNER_URL + `/:${GENERAL_PARTNER_ID}`;
 
