@@ -108,46 +108,57 @@ const principalPlaceOfBusinessAddress = [
 
 // usual residential address
 
-const addressRoutingGeneralPartnerUsualResidentialAddressTerritoryChoice = {
+const addressRoutingTerritoryChoiceGeneralPartnerUsualResidentialAddress = {
   previousUrl: ADD_GENERAL_PARTNER_PERSON_URL,
-  currentUrl: url.GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOOSE_TERRITORY_URL,
+  currentUrl: url.TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   nextUrl: LIMITED_PARTNERS_URL,
-  pageType: AddressPageType.generalPartnerUsualResidentialAddressTerritoryChoice
+  pageType: AddressPageType.territoryChoiceGeneralPartnerUsualResidentialAddress
 };
 
-const addressRoutingPostcodeUsualResidentialAddress = {
-  previousUrl: url.GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOOSE_TERRITORY_URL,
-  currentUrl: url.POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL,
+const addressRoutingPostcodeGeneralPartnerUsualResidentialAddress = {
+  previousUrl: url.TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  currentUrl: url.POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   nextUrl: url.CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-  pageType: AddressPageType.postcodeUsualResidentialAddress,
+  pageType: AddressPageType.postcodeGeneralPartnerUsualResidentialAddress,
   data: {
-    enterManualAddressPageType: AddressPageType.enterUsualResidentialAddress,
+    enterManualAddressPageType: AddressPageType.enterGeneralPartnerUsualResidentialAddress,
     confirmAddressUrl: LIMITED_PARTNERS_URL // will be changed to confirm residential address (not ready)
   }
 };
 
-const addressRoutingEnterUsualResidentialAddress = {
-  previousUrl: url.POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL,
-  currentUrl: url.ENTER_USUAL_RESIDENTIAL_ADDRESS_URL,
+const addressRoutingEnterGeneralPartnerUsualResidentialAddress = {
+  previousUrl: url.POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  currentUrl: url.ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   nextUrl: LIMITED_PARTNERS_URL, // will be changed to confirm residential address (not ready)
-  pageType: AddressPageType.enterUsualResidentialAddress
+  pageType: AddressPageType.enterGeneralPartnerUsualResidentialAddress
 };
 
 const addressRoutingChooseGeneralPartnerUsualResidentialAddress = {
-  previousUrl: url.POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL,
+  previousUrl: url.POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   currentUrl: url.CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   nextUrl: LIMITED_PARTNERS_URL, // TODO Change to 'confirm URA page' when ready
   pageType: AddressPageType.chooseGeneralPartnerUsualResidentialAddress,
   data: {
-    enterManualAddressPageType: AddressPageType.enterUsualResidentialAddress
+    enterManualAddressPageType: AddressPageType.enterGeneralPartnerUsualResidentialAddress
+  }
+};
+
+const addressRoutingConfirmGeneralPartnerUsualResidentialAddress = {
+  previousUrl: url.POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  currentUrl: url.CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  nextUrl: LIMITED_PARTNERS_URL, // TODO Change when next page ready
+  pageType: AddressPageType.confirmGeneralPartnerUsualResidentialAddress,
+  data: {
+    enterManualAddressPageType: AddressPageType.enterGeneralPartnerUsualResidentialAddress
   }
 };
 
 const usualResidentialAddress = [
-  addressRoutingGeneralPartnerUsualResidentialAddressTerritoryChoice,
-  addressRoutingPostcodeUsualResidentialAddress,
-  addressRoutingEnterUsualResidentialAddress,
-  addressRoutingChooseGeneralPartnerUsualResidentialAddress
+  addressRoutingTerritoryChoiceGeneralPartnerUsualResidentialAddress,
+  addressRoutingPostcodeGeneralPartnerUsualResidentialAddress,
+  addressRoutingEnterGeneralPartnerUsualResidentialAddress,
+  addressRoutingChooseGeneralPartnerUsualResidentialAddress,
+  addressRoutingConfirmGeneralPartnerUsualResidentialAddress
 ];
 
 export const addressLookUpRouting: PagesRouting = new Map<PageType, PageRouting>();

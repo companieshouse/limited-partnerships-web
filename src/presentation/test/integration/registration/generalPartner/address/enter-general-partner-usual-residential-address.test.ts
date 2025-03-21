@@ -6,7 +6,7 @@ import cyTranslationText from "../../../../../../../locales/cy/translations.json
 import app from "../../../app";
 
 import * as config from "config";
-import { ENTER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../../controller/addressLookUp/url";
+import { ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../../controller/addressLookUp/url";
 import { LIMITED_PARTNERS_URL } from "../../../../../controller/registration/url";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
@@ -18,7 +18,7 @@ import GeneralPartnerBuilder, {
 import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
 
 describe("Enter Usual Residential Address Page", () => {
-  const URL = getUrl(ENTER_USUAL_RESIDENTIAL_ADDRESS_URL);
+  const URL = getUrl(ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
   const redirectUrl = getUrl(LIMITED_PARTNERS_URL);
 
   beforeEach(() => {
@@ -125,7 +125,7 @@ describe("Enter Usual Residential Address Page", () => {
       const res = await request(app)
         .post(URL)
         .send({
-          pageType: AddressPageType.enterUsualResidentialAddress,
+          pageType: AddressPageType.enterGeneralPartnerUsualResidentialAddress,
           postal_code: "",
           premises: "4",
           address_line_1: "DUNCALF STREET",
@@ -161,7 +161,7 @@ describe("Enter Usual Residential Address Page", () => {
       appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
 
       const res = await request(app).post(URL).send({
-        pageType: AddressPageType.enterUsualResidentialAddress,
+        pageType: AddressPageType.enterGeneralPartnerUsualResidentialAddress,
         addressLine1: ""
       });
 

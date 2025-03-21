@@ -16,10 +16,11 @@ enum AddressPageType {
   // GENERAL PARTNER
 
   // usual residential address
-  postcodeUsualResidentialAddress = "postcode-usual-residential-address",
-  enterUsualResidentialAddress = "enter-usual-residential-address",
+  postcodeGeneralPartnerUsualResidentialAddress = "postcode-general-partner-usual-residential-address",
+  enterGeneralPartnerUsualResidentialAddress = "enter-general-partner-usual-residential-address",
   chooseGeneralPartnerUsualResidentialAddress = "choose-general-partner-usual-residential-address",
-  generalPartnerUsualResidentialAddressTerritoryChoice = "general-partner-usual-residential-address-territory-choice"
+  territoryChoiceGeneralPartnerUsualResidentialAddress = "territory-choice-general-partner-usual-residential-address",
+  confirmGeneralPartnerUsualResidentialAddress = "confirm-general-partner-usual-residential-address"
 }
 
 export default AddressPageType;

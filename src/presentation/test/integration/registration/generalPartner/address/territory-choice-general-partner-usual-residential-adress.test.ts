@@ -6,12 +6,12 @@ import cyTranslationText from "../../../../../../../locales/cy/translations.json
 import app from "../../../app";
 import { appDevDependencies } from "config/dev-dependencies";
 import { getUrl } from "presentation/test/utils";
-import { ENTER_USUAL_RESIDENTIAL_ADDRESS_URL, GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOOSE_TERRITORY_URL, POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL } from "presentation/controller/addressLookUp/url";
+import { ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL, TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL, POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "presentation/controller/addressLookUp/url";
 import AddressPageType from "presentation/controller/addressLookUp/PageType";
 import GeneralPartnerBuilder from "presentation/test/builder/GeneralPartnerBuilder";
 
 describe("General Partner Usual Residential Address Choice", () => {
-  const URL = getUrl(GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOOSE_TERRITORY_URL);
+  const URL = getUrl(TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
 
   beforeEach(() => {
     setLocalesEnabled(false);
@@ -69,9 +69,9 @@ describe("General Partner Usual Residential Address Choice", () => {
   describe("POST /general-partner-territory-choice", () => {
     it("should redirect to What is the general partners URA? post code look up page when united kingdom is selected", async () => {
       const UNITED_KINGDOM_PARAMETER = 'unitedKingdom';
-      const POSTCODE_URL = getUrl(POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL);
+      const POSTCODE_URL = getUrl(POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
       const res = await request(app).post(URL).send({
-        pageType: AddressPageType.generalPartnerUsualResidentialAddressTerritoryChoice,
+        pageType: AddressPageType.territoryChoiceGeneralPartnerUsualResidentialAddress,
         parameter: UNITED_KINGDOM_PARAMETER
       });
 
@@ -81,9 +81,9 @@ describe("General Partner Usual Residential Address Choice", () => {
 
     it("should redirect to What is the general partners URA? manual entry page when overseas is selected", async () => {
       const OVERSEAS_PARAMETER = 'overseas';
-      const MANUAL_ENTRY_URL = getUrl(ENTER_USUAL_RESIDENTIAL_ADDRESS_URL);
+      const MANUAL_ENTRY_URL = getUrl(ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
       const res = await request(app).post(URL).send({
-        pageType: AddressPageType.generalPartnerUsualResidentialAddressTerritoryChoice,
+        pageType: AddressPageType.territoryChoiceGeneralPartnerUsualResidentialAddress,
         parameter: OVERSEAS_PARAMETER
       });
 

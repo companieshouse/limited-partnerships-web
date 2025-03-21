@@ -12,7 +12,7 @@ import LimitedPartnershipService from "../../../application/service/LimitedPartn
 import UIErrors from "../../../domain/entities/UIErrors";
 import { PageRouting, pageRoutingDefault } from "../PageRouting";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
-import { ENTER_USUAL_RESIDENTIAL_ADDRESS_URL, POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL } from "./url";
+import { ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL, POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "./url";
 
 class AddressLookUpController extends AbstractController {
   public readonly REGISTERED_OFFICE_ADDRESS_CACHE_KEY = "registered_office_address";
@@ -180,7 +180,7 @@ class AddressLookUpController extends AbstractController {
         }
       });
       response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
-    } else if (pageType === AddressLookUpPageType.postcodeUsualResidentialAddress) {
+    } else if (pageType === AddressLookUpPageType.postcodeGeneralPartnerUsualResidentialAddress) {
       const cache = this.cacheService.addDataToCache(request.signedCookies, {
         [transactionId]: {
           [this.USUAL_RESIDENTIAL_ADDRESS_CACHE_KEY]: address
@@ -239,7 +239,7 @@ class AddressLookUpController extends AbstractController {
 
         const pageRouting = super.getRouting(addressLookUpRouting, pageType, request);
 
-        const errors = pageType !== AddressLookUpPageType.enterUsualResidentialAddress ?
+        const errors = pageType !== AddressLookUpPageType.enterGeneralPartnerUsualResidentialAddress ?
           this.addressService.isValidJurisdictionAndCountry(
             limitedPartnership?.data?.jurisdiction ?? "",
             country
@@ -452,8 +452,8 @@ class AddressLookUpController extends AbstractController {
 
         let redirectUrl =
           parameter === "unitedKingdom"
-            ? POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL
-            : ENTER_USUAL_RESIDENTIAL_ADDRESS_URL;
+            ? POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
+            : ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL;
 
         redirectUrl = super.insertIdsInUrl(redirectUrl, ids.transactionId, ids.submissionId, ids.generalPartnerId);
 

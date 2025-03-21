@@ -12,12 +12,12 @@ import GeneralPartnerBuilder, {
   generalPartnerPerson
 } from "../../../../builder/GeneralPartnerBuilder";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
-import { CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL, POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../../controller/addressLookUp/url";
+import { CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL, POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../../controller/addressLookUp/url";
 import { LIMITED_PARTNERS_URL } from "../../../../../controller/registration/url";
 import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
 
 describe("Postcode Usual Residential Address Page", () => {
-  const URL = getUrl(POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL);
+  const URL = getUrl(POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
   const REDIRECT_URL = getUrl(CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
 
   beforeEach(() => {
@@ -80,7 +80,7 @@ describe("Postcode Usual Residential Address Page", () => {
   describe("Post postcode", () => {
     it("should validate the post code then redirect to the next page", async () => {
       const res = await request(app).post(URL).send({
-        pageType: AddressPageType.postcodeUsualResidentialAddress,
+        pageType: AddressPageType.postcodeGeneralPartnerUsualResidentialAddress,
         premises: null,
         postal_code: appDevDependencies.addressLookUpGateway.englandAddresses[0].postcode
       });
@@ -106,7 +106,7 @@ describe("Postcode Usual Residential Address Page", () => {
 
     it("should validate the post code and find a matching address then redirect to the next page", async () => {
       const res = await request(app).post(URL).send({
-        pageType: AddressPageType.postcodeUsualResidentialAddress,
+        pageType: AddressPageType.postcodeGeneralPartnerUsualResidentialAddress,
         premises: appDevDependencies.addressLookUpGateway.englandAddresses[0].premise,
         postal_code: appDevDependencies.addressLookUpGateway.englandAddresses[0].postcode
       });
@@ -134,7 +134,7 @@ describe("Postcode Usual Residential Address Page", () => {
 
     it("should validate the post code and find a matching address - premises and postcode uppercase", async () => {
       const res = await request(app).post(URL).send({
-        pageType: AddressPageType.postcodeUsualResidentialAddress,
+        pageType: AddressPageType.postcodeGeneralPartnerUsualResidentialAddress,
         premises: appDevDependencies.addressLookUpGateway.englandAddresses[0].premise.toUpperCase(),
         postal_code: appDevDependencies.addressLookUpGateway.englandAddresses[0].postcode.toUpperCase()
       });
@@ -147,7 +147,7 @@ describe("Postcode Usual Residential Address Page", () => {
 
     it("should validate the post code and find a matching address - premises and postcode lowercase", async () => {
       const res = await request(app).post(URL).send({
-        pageType: AddressPageType.postcodeUsualResidentialAddress,
+        pageType: AddressPageType.postcodeGeneralPartnerUsualResidentialAddress,
         premises: appDevDependencies.addressLookUpGateway.englandAddresses[0].premise.toLowerCase(),
         postal_code: appDevDependencies.addressLookUpGateway.englandAddresses[0].postcode.toLowerCase()
       });
@@ -160,7 +160,7 @@ describe("Postcode Usual Residential Address Page", () => {
 
     it("should return an error if the postcode is not valid", async () => {
       const res = await request(app).post(URL).send({
-        pageType: AddressPageType.postcodeUsualResidentialAddress,
+        pageType: AddressPageType.postcodeGeneralPartnerUsualResidentialAddress,
         premises: null,
         postal_code: "AA1 1AA"
       });
