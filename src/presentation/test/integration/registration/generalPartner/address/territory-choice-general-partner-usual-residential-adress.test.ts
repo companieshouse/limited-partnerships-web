@@ -1,16 +1,18 @@
 import request from "supertest";
-import { LocalesService } from "@companieshouse/ch-node-utils";
-import * as config from "../../../../../../config/constants";
 import enTranslationText from "../../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../../locales/cy/translations.json";
 import app from "../../../app";
-import { appDevDependencies } from "config/dev-dependencies";
-import { getUrl } from "presentation/test/utils";
-import { ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL, TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL, POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "presentation/controller/addressLookUp/url";
-import AddressPageType from "presentation/controller/addressLookUp/PageType";
-import GeneralPartnerBuilder from "presentation/test/builder/GeneralPartnerBuilder";
+import { appDevDependencies } from "../../../../../../config/dev-dependencies";
+import { getUrl, setLocalesEnabled, testTranslations } from "../../../../../../presentation/test/utils";
+import {
+  ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
+} from "../../../../../../presentation/controller/addressLookUp/url";
+import AddressPageType from "../../../../../../presentation/controller/addressLookUp/PageType";
+import GeneralPartnerBuilder from "../../../../../../presentation/test/builder/GeneralPartnerBuilder";
 
-describe("General Partner Usual Residential Address Choice", () => {
+describe("General Partner Usual Residential Address Territory Choice", () => {
   const URL = getUrl(TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
 
   beforeEach(() => {
@@ -18,36 +20,29 @@ describe("General Partner Usual Residential Address Choice", () => {
     appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
   });
 
-  const setLocalesEnabled = (bool) => {
-    jest.spyOn(config, "isLocalesEnabled").mockReturnValue(bool);
-    LocalesService.getInstance().enabled = bool;
-  };
-
   describe("GET /general-partner-usual-residential-address-choose-territory", () => {
-    it("should load the usual residential address for general partner choice page with Welsh text", async () => {
+    it("should load the general partner usual residential address territory choice page with Welsh text", async () => {
       setLocalesEnabled(true);
       const res = await request(app).get(URL + "?lang=cy");
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${cyTranslationText.generalPartnerUsualResidentialAddressChoicePage.title} - ${cyTranslationText.service} - GOV.UK`
+        `${cyTranslationText.generalPartnerUsualResidentialAddressTerritoryChoicePage.title} - ${cyTranslationText.service} - GOV.UK`
       );
-      expect(res.text).toContain(
-        cyTranslationText.generalPartnerUsualResidentialAddressChoicePage.title
-      );
+
+      testTranslations(res.text, cyTranslationText.generalPartnerUsualResidentialAddressTerritoryChoicePage);
     });
 
-    it("should load the usual residential address for general partner choice page with English text", async () => {
+    it("should load the general partner usual residential address territory choice page with English text", async () => {
       setLocalesEnabled(true);
       const res = await request(app).get(URL + "?lang=en");
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${enTranslationText.generalPartnerUsualResidentialAddressChoicePage.title} - ${enTranslationText.service} - GOV.UK`
+        `${enTranslationText.generalPartnerUsualResidentialAddressTerritoryChoicePage.title} - ${enTranslationText.service} - GOV.UK`
       );
-      expect(res.text).toContain(
-        enTranslationText.generalPartnerUsualResidentialAddressChoicePage.title
-      );
+
+      testTranslations(res.text, enTranslationText.generalPartnerUsualResidentialAddressTerritoryChoicePage);
     });
 
     it("should contain the general partner name - data from API", async () => {
