@@ -145,7 +145,8 @@ class AddressLookUpController extends AbstractController {
           const url = super.insertIdsInUrl(
             pageRouting?.data?.confirmAddressUrl,
             ids.transactionId,
-            ids.submissionId
+            ids.submissionId,
+            ids.generalPartnerId
           );
           response.redirect(url);
           return;
@@ -296,14 +297,25 @@ class AddressLookUpController extends AbstractController {
         const data = this.getAddressData(pageType, address);
 
         // store in api
-        const result = await this.limitedPartnershipService.sendPageData(
-          tokens,
-          ids.transactionId,
-          ids.submissionId,
-          pageType,
-          data
-        );
+        let result;
 
+        if (pageType !== AddressLookUpPageType.confirmGeneralPartnerUsualResidentialAddress){
+          result = await this.limitedPartnershipService.sendPageData(
+            tokens,
+            ids.transactionId,
+            ids.submissionId,
+            pageType,
+            data
+          );
+        };
+        if (pageType === AddressLookUpPageType.confirmGeneralPartnerUsualResidentialAddress) {
+          result = await this.generalPartnerService.sendPageData(
+            tokens,
+            ids.transactionId,
+            ids.generalPartnerId,
+            data
+          );
+        }
         if (result?.errors) {
           const limitedPartnership =
             await this.limitedPartnershipService.getLimitedPartnership(
@@ -311,12 +323,18 @@ class AddressLookUpController extends AbstractController {
               ids.transactionId,
               ids.submissionId
             );
+          const generalPartner =
+            await this.generalPartnerService.getGeneralPartner(
+              tokens,
+              ids.transactionId,
+              ids.generalPartnerId
+            );
 
           response.render(
             super.templateName(pageRouting.currentUrl),
             super.makeProps(
               pageRouting,
-              { cache: { ...cache, ...cacheById }, limitedPartnership },
+              { cache: { ...cache, ...cacheById }, limitedPartnership, generalPartner },
               result.errors
             )
           );

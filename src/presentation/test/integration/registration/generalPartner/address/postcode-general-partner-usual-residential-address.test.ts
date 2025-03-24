@@ -12,8 +12,7 @@ import GeneralPartnerBuilder, {
   generalPartnerPerson
 } from "../../../../builder/GeneralPartnerBuilder";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
-import { CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL, POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../../controller/addressLookUp/url";
-import { LIMITED_PARTNERS_URL } from "../../../../../controller/registration/url";
+import { CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL, CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL, POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../../controller/addressLookUp/url";
 import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
 
 describe("Postcode Usual Residential Address Page", () => {
@@ -24,6 +23,15 @@ describe("Postcode Usual Residential Address Page", () => {
     setLocalesEnabled(false);
 
     appDevDependencies.cacheRepository.feedCache(null);
+
+    const generalPartner = new GeneralPartnerBuilder()
+      .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+      .isPerson()
+      .build();
+
+    appDevDependencies.generalPartnerGateway.feedGeneralPartners([
+      generalPartner
+    ]);
   });
 
   describe("Get Postcode Usual Residential Address Page", () => {
@@ -111,8 +119,8 @@ describe("Postcode Usual Residential Address Page", () => {
         postal_code: appDevDependencies.addressLookUpGateway.englandAddresses[0].postcode
       });
 
-      const REDIRECT_URL = getUrl(LIMITED_PARTNERS_URL);
-
+      const REDIRECT_URL = getUrl(CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
+      console.log("****" + REDIRECT_URL);
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
 
@@ -139,20 +147,27 @@ describe("Postcode Usual Residential Address Page", () => {
         postal_code: appDevDependencies.addressLookUpGateway.englandAddresses[0].postcode.toUpperCase()
       });
 
-      const REDIRECT_URL = getUrl(LIMITED_PARTNERS_URL);
+      const REDIRECT_URL = getUrl(CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
     });
 
     it("should validate the post code and find a matching address - premises and postcode lowercase", async () => {
+      const generalPartner = new GeneralPartnerBuilder()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .isLegalEntity()
+        .build();
+
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.postcodeGeneralPartnerUsualResidentialAddress,
         premises: appDevDependencies.addressLookUpGateway.englandAddresses[0].premise.toLowerCase(),
         postal_code: appDevDependencies.addressLookUpGateway.englandAddresses[0].postcode.toLowerCase()
       });
 
-      const REDIRECT_URL = getUrl(LIMITED_PARTNERS_URL);
+      const REDIRECT_URL = getUrl(CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);

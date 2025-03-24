@@ -3,13 +3,13 @@ import enTranslationText from "../../../../../../../locales/en/translations.json
 import cyTranslationText from "../../../../../../../locales/cy/translations.json";
 import app from "../../../app";
 import {
-  CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
+  CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "presentation/controller/addressLookUp/url";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import { appDevDependencies } from "config/dev-dependencies";
 import * as config from "config";
 import AddressPageType from "presentation/controller/addressLookUp/PageType";
-import { LIMITED_PARTNERS_URL } from "presentation/controller/registration/url";
 
 describe("Choose usual residential address of the general partner page", () => {
 
@@ -31,7 +31,7 @@ describe("Choose usual residential address of the general partner page", () => {
   });
 
   const URL = getUrl(CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
-  const REDIRECT_URL = getUrl(LIMITED_PARTNERS_URL); // TODO Change to 'confirm URA page' when ready
+  const REDIRECT_URL = getUrl(CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
 
   describe("GET choose usual residential address of the general partner page", () => {
 
