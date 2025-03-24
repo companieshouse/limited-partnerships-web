@@ -120,7 +120,7 @@ describe("Postcode Usual Residential Address Page", () => {
       });
 
       const REDIRECT_URL = getUrl(CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
-      console.log("****" + REDIRECT_URL);
+
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
 

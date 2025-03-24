@@ -317,24 +317,30 @@ class AddressLookUpController extends AbstractController {
         };
 
         if (result?.errors) {
-          const limitedPartnership =
-            await this.limitedPartnershipService.getLimitedPartnership(
+          let result;
+
+          if (pageType === AddressLookUpPageType.confirmGeneralPartnerUsualResidentialAddress) {
+            result = await this.generalPartnerService.sendPageData(
               tokens,
               ids.transactionId,
-              ids.submissionId
+              ids.generalPartnerId,
+              data
             );
-          const generalPartner =
-            await this.generalPartnerService.getGeneralPartner(
+          } else {
+            result = await this.limitedPartnershipService.sendPageData(
               tokens,
               ids.transactionId,
-              ids.generalPartnerId
+              ids.submissionId,
+              pageType,
+              data
             );
+          };
 
           response.render(
             super.templateName(pageRouting.currentUrl),
             super.makeProps(
               pageRouting,
-              { cache: { ...cache, ...cacheById }, limitedPartnership, generalPartner },
+              { cache: { ...cache, ...cacheById }, result },
               result.errors
             )
           );
