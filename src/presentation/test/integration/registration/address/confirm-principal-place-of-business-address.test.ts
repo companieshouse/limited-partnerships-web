@@ -104,7 +104,7 @@ describe("Confirm Principal Place Of Business Address Page", () => {
 
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.confirmPrincipalPlaceOfBusinessAddress,
-        address: `{"postal_code": "ST6 3LJ","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": "GB-ENG"}`
+        address: `{"postal_code": "","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": "GB-ENG"}`
       });
 
       expect(res.status).toBe(200);
