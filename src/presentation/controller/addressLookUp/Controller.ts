@@ -316,7 +316,7 @@ class AddressLookUpController extends AbstractController {
             pageType,
             data
           );
-        };
+        }
 
         if (result?.errors) {
           if (isGeneralPartner) {
@@ -334,7 +334,7 @@ class AddressLookUpController extends AbstractController {
               pageType,
               data
             );
-          };
+          }
 
           response.render(
             super.templateName(pageRouting.currentUrl),
