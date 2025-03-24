@@ -296,10 +296,12 @@ class AddressLookUpController extends AbstractController {
 
         const data = this.getAddressData(pageType, address);
 
+        const isGeneralPartner = (pageType === AddressLookUpPageType.confirmGeneralPartnerUsualResidentialAddress);
+
         // store in api
         let result;
 
-        if (pageType === AddressLookUpPageType.confirmGeneralPartnerUsualResidentialAddress) {
+        if (isGeneralPartner) {
           result = await this.generalPartnerService.sendPageData(
             tokens,
             ids.transactionId,
@@ -317,9 +319,7 @@ class AddressLookUpController extends AbstractController {
         };
 
         if (result?.errors) {
-          let result;
-
-          if (pageType === AddressLookUpPageType.confirmGeneralPartnerUsualResidentialAddress) {
+          if (isGeneralPartner) {
             result = await this.generalPartnerService.sendPageData(
               tokens,
               ids.transactionId,
