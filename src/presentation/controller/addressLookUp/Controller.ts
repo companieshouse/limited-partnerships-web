@@ -299,7 +299,14 @@ class AddressLookUpController extends AbstractController {
         // store in api
         let result;
 
-        if (pageType !== AddressLookUpPageType.confirmGeneralPartnerUsualResidentialAddress){
+        if (pageType === AddressLookUpPageType.confirmGeneralPartnerUsualResidentialAddress) {
+          result = await this.generalPartnerService.sendPageData(
+            tokens,
+            ids.transactionId,
+            ids.generalPartnerId,
+            data
+          );
+        } else {
           result = await this.limitedPartnershipService.sendPageData(
             tokens,
             ids.transactionId,
@@ -308,14 +315,7 @@ class AddressLookUpController extends AbstractController {
             data
           );
         };
-        if (pageType === AddressLookUpPageType.confirmGeneralPartnerUsualResidentialAddress) {
-          result = await this.generalPartnerService.sendPageData(
-            tokens,
-            ids.transactionId,
-            ids.generalPartnerId,
-            data
-          );
-        }
+
         if (result?.errors) {
           const limitedPartnership =
             await this.limitedPartnershipService.getLimitedPartnership(
