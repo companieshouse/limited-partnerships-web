@@ -62,6 +62,13 @@ describe("Confirm General Partner Usual Residential Address Page", () => {
 
       expect(res.status).toBe(200);
       testTranslations(res.text, cyTranslationText.address.confirm.usualResidentialAddress);
+
+      expect(res.text).toContain("4 Line 1");
+      expect(res.text).toContain("Line 2");
+      expect(res.text).toContain("Stoke-On-Trent");
+      expect(res.text).toContain("Region");
+      expect(res.text).toContain("England");
+      expect(res.text).toContain("ST6 3LJ");
     });
   });
 
@@ -79,7 +86,7 @@ describe("Confirm General Partner Usual Residential Address Page", () => {
         }`
       });
 
-      const redirectUrl = getUrl(LIMITED_PARTNERS_URL);
+      const redirectUrl = getUrl(LIMITED_PARTNERS_URL); // TODO change to next page when ready
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
     });
