@@ -103,8 +103,7 @@
             },
             "usualResidentialAddress": {
                 "title": "Confirm the correspondence address of the general partner",
-                "addressLinkHidden": "usual residential address",
-                "publicRegisterLine1": ""
+                "addressLinkHidden": "usual residential address"
             }
         },
         
