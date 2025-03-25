@@ -105,15 +105,15 @@ describe("Confirm General Partner Usual Residential Address Page", () => {
 
       const apiErrors: ApiErrors = {
         errors: {
-          "registeredOfficeAddress.postalCode": "must not be null"
+          "usualResidentialAddress.postalCode": "must not be null"
         }
       };
 
-      appDevDependencies.limitedPartnershipGateway.feedErrors(apiErrors);
+      appDevDependencies.generalPartnerGateway.feedErrors(apiErrors);
 
       const res = await request(app).post(URL).send({
-        pageType: AddressPageType.confirmRegisteredOfficeAddress,
-        address: `{"postal_code": "ST6 3LJ","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": "GB-ENG"}`
+        pageType: AddressPageType.confirmGeneralPartnerUsualResidentialAddress,
+        address: `{"postal_code": "","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": "GB-ENG"}`
       });
 
       expect(res.status).toBe(200);

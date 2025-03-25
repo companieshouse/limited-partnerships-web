@@ -319,14 +319,15 @@ class AddressLookUpController extends AbstractController {
         }
 
         if (result?.errors) {
+          let partnerType;
           if (isGeneralPartner) {
-            result = await this.generalPartnerService.getGeneralPartner(
+            partnerType = await this.generalPartnerService.getGeneralPartner(
               tokens,
               ids.transactionId,
               ids.generalPartnerId
             );
           } else {
-            result = await this.limitedPartnershipService.getLimitedPartnership(
+            partnerType = await this.limitedPartnershipService.getLimitedPartnership(
               tokens,
               ids.transactionId,
               ids.submissionId
@@ -337,7 +338,7 @@ class AddressLookUpController extends AbstractController {
             super.templateName(pageRouting.currentUrl),
             super.makeProps(
               pageRouting,
-              { cache: { ...cache, ...cacheById }, result },
+              { cache: { ...cache, ...cacheById }, partnerType },
               result.errors
             )
           );
@@ -365,6 +366,8 @@ class AddressLookUpController extends AbstractController {
       data = { registered_office_address: address };
     } else if (AddressLookUpPageType.confirmPrincipalPlaceOfBusinessAddress) {
       data = { principal_place_of_business_address: address };
+    } else if (AddressLookUpPageType.confirmGeneralPartnerUsualResidentialAddress) {
+      data = { usual_residential_address: address };
     }
 
     return data;
