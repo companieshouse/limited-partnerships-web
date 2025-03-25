@@ -319,15 +319,17 @@ class AddressLookUpController extends AbstractController {
         }
 
         if (result?.errors) {
-          let partnerType;
+          let generalPartner;
+          let limitedPartnership;
+
           if (isGeneralPartner) {
-            partnerType = await this.generalPartnerService.getGeneralPartner(
+            generalPartner = await this.generalPartnerService.getGeneralPartner(
               tokens,
               ids.transactionId,
               ids.generalPartnerId
             );
           } else {
-            partnerType = await this.limitedPartnershipService.getLimitedPartnership(
+            limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
               tokens,
               ids.transactionId,
               ids.submissionId
@@ -338,7 +340,7 @@ class AddressLookUpController extends AbstractController {
             super.templateName(pageRouting.currentUrl),
             super.makeProps(
               pageRouting,
-              { cache: { ...cache, ...cacheById }, partnerType },
+              { cache: { ...cache, ...cacheById }, generalPartner, limitedPartnership },
               result.errors
             )
           );
