@@ -88,7 +88,7 @@
 
         "confirm": {
             "addressLink" : "WELSH - Change",
-            "publicRegisterTitle": "WELSH - What information we'll show on the public online register",
+            "publicRegisterTitle": "WELSH - What information we'll show on the public register",
 
             "registeredOfficeAddress" : {
                 "title" : "WELSH - Confirm the registered office address",
