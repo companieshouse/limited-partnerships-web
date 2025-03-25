@@ -25,11 +25,13 @@ export const CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_TEMPLATE =
 // GENERAL PARTNER
 
 // usual residential address
-export const GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOOSE_TERRITORY_TEMPLATE =
-  AddressPageType.generalPartnerUsualResidentialAddressTerritoryChoice;
-export const POSTCODE_USUAL_RESIDENTIAL_ADDRESS_TEMPLATE =
-  AddressPageType.postcodeUsualResidentialAddress;
+export const TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_TEMPLATE =
+  AddressPageType.territoryChoiceGeneralPartnerUsualResidentialAddress;
+export const POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_TEMPLATE =
+  AddressPageType.postcodeGeneralPartnerUsualResidentialAddress;
 export const CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_TEMPLATE =
   AddressPageType.chooseGeneralPartnerUsualResidentialAddress;
-export const ENTER_USUAL_RESIDENTIAL_ADDRESS_TEMPLATE =
-  AddressPageType.enterUsualResidentialAddress;
+export const ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_TEMPLATE =
+  AddressPageType.enterGeneralPartnerUsualResidentialAddress;
+export const CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_TEMPLATE =
+  AddressPageType.confirmGeneralPartnerUsualResidentialAddress;

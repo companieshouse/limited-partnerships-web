@@ -1,0 +1,17 @@
+{% extends "layout.njk" %}
+
+{% set pageTitle = i18n.address.confirm.usualResidentialAddress.title %}
+{% set publicRegisterLine = i18n.address.confirm.usualResidentialAddress.publicRegisterLine1 %}
+{% set addressLinkHidden = i18n.address.confirm.usualResidentialAddress.addressLinkHidden %}
+{% set cacheKey = "usual_residential_address" %}
+{% set data = props.data.limitedPartnership.data.usual_residential_address %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {% include "includes/general-partner-name.njk" %}
+
+      {% include "pages/address/confirm-address-form.njk" %}
+    </div>
+  </div> 
+{% endblock %}

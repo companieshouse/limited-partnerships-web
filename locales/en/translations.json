@@ -88,7 +88,7 @@
 
         "confirm": {
             "addressLink" : "Change",
-            "publicRegisterTitle": "What information we'll show on the public online register",
+            "publicRegisterTitle": "What information we'll show on the public register",
 
             "registeredOfficeAddress" : {
                 "title" : "Confirm the registered office address",
@@ -100,6 +100,10 @@
                 "title" : "Confirm the principal place of business address",              
                 "addressLinkHidden" : "principal place of business address",
                 "publicRegisterLine1": "We'll show the principal place of business address on the public register."
+            },
+            "usualResidentialAddress": {
+                "title": "Confirm the correspondence address of the general partner",
+                "addressLinkHidden": "usual residential address"
             }
         },
         

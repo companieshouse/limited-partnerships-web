@@ -1,12 +1,12 @@
 {% extends "layout.njk" %}
 
-{% set cache = props.data.cache['usual_residential_address'] %}
+{% set usualResidentialAddressKey = "usual_residential_address" %}
 
 {% block backLink %}
   {% if props.data.cache.territory_choice == "overseas" %}
-    {% set hrefValue = props.currentUrl | replace(props.pageType, "general-partner-usual-residential-address-territory-choice") %}
+    {% set hrefValue = props.currentUrl | replace(props.pageType, "territory-choice-general-partner-usual-residential-address") %}
   {% else %}
-    {% set hrefValue = props.currentUrl | replace(props.pageType, "postcode-usual-residential-address") %}
+    {% set hrefValue = props.currentUrl | replace(props.pageType, "postcode-general-partner-usual-residential-address") %}
   {% endif %}
 
   {{ govukBackLink({
@@ -65,6 +65,7 @@
           {% set countryFormName = "country" %}
           {% set countryText = i18n.address.enterAddress.country %}
           {% set countryFormValue = address.country %}
+          {% set countryField = address.country %}
           {% set countryFont = "govuk-!-font-weight-regular"%}
           {% include "includes/countries.njk" %}
           

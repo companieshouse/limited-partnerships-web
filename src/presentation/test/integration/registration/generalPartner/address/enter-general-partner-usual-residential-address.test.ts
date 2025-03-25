@@ -6,8 +6,7 @@ import cyTranslationText from "../../../../../../../locales/cy/translations.json
 import app from "../../../app";
 
 import * as config from "config";
-import { ENTER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../../controller/addressLookUp/url";
-import { LIMITED_PARTNERS_URL } from "../../../../../controller/registration/url";
+import { CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL, ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL, POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL, TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../../controller/addressLookUp/url";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
@@ -18,8 +17,8 @@ import GeneralPartnerBuilder, {
 import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
 
 describe("Enter Usual Residential Address Page", () => {
-  const URL = getUrl(ENTER_USUAL_RESIDENTIAL_ADDRESS_URL);
-  const redirectUrl = getUrl(LIMITED_PARTNERS_URL);
+  const URL = getUrl(ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
+  const redirectUrl = getUrl(CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
 
   beforeEach(() => {
     setLocalesEnabled(false);
@@ -83,10 +82,12 @@ describe("Enter Usual Residential Address Page", () => {
         }
       });
 
+      const redirectUrl = getUrl(TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
+
       const res = await request(app).get(URL);
       expect(res.status).toBe(200);
 
-      expect(res.text).toContain('/general-partner-usual-residential-address-territory-choice');
+      expect(res.text).toContain(redirectUrl);
 
     });
 
@@ -97,11 +98,11 @@ describe("Enter Usual Residential Address Page", () => {
           "territory_choice": "unitedKingdom"
         }
       });
-
+      const redirectUrl = getUrl(POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
       const res = await request(app).get(URL);
       expect(res.status).toBe(200);
 
-      expect(res.text).toContain('/postcode-usual-residential-address');
+      expect(res.text).toContain(redirectUrl);
 
     });
   });
@@ -125,7 +126,7 @@ describe("Enter Usual Residential Address Page", () => {
       const res = await request(app)
         .post(URL)
         .send({
-          pageType: AddressPageType.enterUsualResidentialAddress,
+          pageType: AddressPageType.enterGeneralPartnerUsualResidentialAddress,
           postal_code: "",
           premises: "4",
           address_line_1: "DUNCALF STREET",
@@ -133,6 +134,7 @@ describe("Enter Usual Residential Address Page", () => {
           locality: "STOKE-ON-TRENT",
           country: "GB-ENG",
         });
+
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
 
@@ -161,8 +163,8 @@ describe("Enter Usual Residential Address Page", () => {
       appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
 
       const res = await request(app).post(URL).send({
-        pageType: AddressPageType.enterUsualResidentialAddress,
-        addressLine1: ""
+        pageType: AddressPageType.enterGeneralPartnerUsualResidentialAddress,
+        addressLine1: "Mill Street"
       });
 
       expect(res.status).toBe(302);

@@ -12,7 +12,7 @@ import LimitedPartnershipService from "../../../application/service/LimitedPartn
 import UIErrors from "../../../domain/entities/UIErrors";
 import { PageRouting, pageRoutingDefault } from "../PageRouting";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
-import { ENTER_USUAL_RESIDENTIAL_ADDRESS_URL, POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL } from "./url";
+import { ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL, POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "./url";
 
 class AddressLookUpController extends AbstractController {
   public readonly REGISTERED_OFFICE_ADDRESS_CACHE_KEY = "registered_office_address";
@@ -145,7 +145,8 @@ class AddressLookUpController extends AbstractController {
           const url = super.insertIdsInUrl(
             pageRouting?.data?.confirmAddressUrl,
             ids.transactionId,
-            ids.submissionId
+            ids.submissionId,
+            ids.generalPartnerId
           );
           response.redirect(url);
           return;
@@ -180,7 +181,7 @@ class AddressLookUpController extends AbstractController {
         }
       });
       response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
-    } else if (pageType === AddressLookUpPageType.postcodeUsualResidentialAddress) {
+    } else if (pageType === AddressLookUpPageType.postcodeGeneralPartnerUsualResidentialAddress) {
       const cache = this.cacheService.addDataToCache(request.signedCookies, {
         [transactionId]: {
           [this.USUAL_RESIDENTIAL_ADDRESS_CACHE_KEY]: address
@@ -239,7 +240,7 @@ class AddressLookUpController extends AbstractController {
 
         const pageRouting = super.getRouting(addressLookUpRouting, pageType, request);
 
-        const errors = pageType !== AddressLookUpPageType.enterUsualResidentialAddress ?
+        const errors = pageType !== AddressLookUpPageType.enterGeneralPartnerUsualResidentialAddress ?
           this.addressService.isValidJurisdictionAndCountry(
             limitedPartnership?.data?.jurisdiction ?? "",
             country
@@ -295,28 +296,51 @@ class AddressLookUpController extends AbstractController {
 
         const data = this.getAddressData(pageType, address);
 
+        const isGeneralPartner = (pageType === AddressLookUpPageType.confirmGeneralPartnerUsualResidentialAddress);
+
         // store in api
-        const result = await this.limitedPartnershipService.sendPageData(
-          tokens,
-          ids.transactionId,
-          ids.submissionId,
-          pageType,
-          data
-        );
+        let result;
+
+        if (isGeneralPartner) {
+          result = await this.generalPartnerService.sendPageData(
+            tokens,
+            ids.transactionId,
+            ids.generalPartnerId,
+            data
+          );
+        } else {
+          result = await this.limitedPartnershipService.sendPageData(
+            tokens,
+            ids.transactionId,
+            ids.submissionId,
+            pageType,
+            data
+          );
+        }
 
         if (result?.errors) {
-          const limitedPartnership =
-            await this.limitedPartnershipService.getLimitedPartnership(
+          let generalPartner;
+          let limitedPartnership;
+
+          if (isGeneralPartner) {
+            generalPartner = await this.generalPartnerService.getGeneralPartner(
+              tokens,
+              ids.transactionId,
+              ids.generalPartnerId
+            );
+          } else {
+            limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
               tokens,
               ids.transactionId,
               ids.submissionId
             );
+          }
 
           response.render(
             super.templateName(pageRouting.currentUrl),
             super.makeProps(
               pageRouting,
-              { cache: { ...cache, ...cacheById }, limitedPartnership },
+              { cache: { ...cache, ...cacheById }, generalPartner, limitedPartnership },
               result.errors
             )
           );
@@ -344,6 +368,8 @@ class AddressLookUpController extends AbstractController {
       data = { registered_office_address: address };
     } else if (AddressLookUpPageType.confirmPrincipalPlaceOfBusinessAddress) {
       data = { principal_place_of_business_address: address };
+    } else if (AddressLookUpPageType.confirmGeneralPartnerUsualResidentialAddress) {
+      data = { usual_residential_address: address };
     }
 
     return data;
@@ -452,8 +478,8 @@ class AddressLookUpController extends AbstractController {
 
         let redirectUrl =
           parameter === "unitedKingdom"
-            ? POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL
-            : ENTER_USUAL_RESIDENTIAL_ADDRESS_URL;
+            ? POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
+            : ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL;
 
         redirectUrl = super.insertIdsInUrl(redirectUrl, ids.transactionId, ids.submissionId, ids.generalPartnerId);
 

@@ -2,7 +2,7 @@ import request from "supertest";
 import { createApiClient } from "@companieshouse/api-sdk-node";
 
 import sdkMock from "../../mock/sdkMock";
-import { POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../controller/addressLookUp/url";
+import { POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../controller/addressLookUp/url";
 import { getUrl, setLocalesEnabled } from "../../../utils";
 import appRealDependencies from "../../../../../app";
 
@@ -12,7 +12,7 @@ const mockCreateApiClient = createApiClient as jest.Mock;
 mockCreateApiClient.mockReturnValue(sdkMock);
 
 describe("Postcode Usual Residential Address Page", () => {
-  const URL = getUrl(POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL);
+  const URL = getUrl(POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
 
   beforeEach(() => {
     setLocalesEnabled(false);

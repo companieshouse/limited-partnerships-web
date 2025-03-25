@@ -103,23 +103,23 @@ export const addressLookUpEndpoints = (
   // usual residential address
 
   router.get(
-    url.GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOOSE_TERRITORY_URL,
+    url.TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
     authentication,
     dependencies.addressLookUpController.getPageRouting()
   );
   router.post(
-    url.GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_CHOOSE_TERRITORY_URL,
+    url.TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
     authentication,
     dependencies.addressLookUpController.generalPartnerTerritoryChoice()
   );
 
   router.get(
-    url.POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL,
+    url.POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
     authentication,
     dependencies.addressLookUpController.getPageRouting()
   );
   router.post(
-    url.POSTCODE_USUAL_RESIDENTIAL_ADDRESS_URL,
+    url.POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
     authentication,
     dependencies.addressLookUpController.postcodeValidation()
   );
@@ -136,14 +136,25 @@ export const addressLookUpEndpoints = (
   );
 
   router.get(
-    url.ENTER_USUAL_RESIDENTIAL_ADDRESS_URL,
+    url.ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
     authentication,
     dependencies.addressLookUpController.getPageRouting()
   );
   router.post(
-    url.ENTER_USUAL_RESIDENTIAL_ADDRESS_URL,
+    url.ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
     authentication,
     dependencies.addressLookUpController.sendManualAddress()
+  );
+
+  router.get(
+    url.CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+    authentication,
+    dependencies.addressLookUpController.getPageRouting()
+  );
+  router.post(
+    url.CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+    authentication,
+    dependencies.addressLookUpController.confirmAddress()
   );
 };
 
