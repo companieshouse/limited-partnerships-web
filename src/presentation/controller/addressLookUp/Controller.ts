@@ -320,19 +320,16 @@ class AddressLookUpController extends AbstractController {
 
         if (result?.errors) {
           if (isGeneralPartner) {
-            result = await this.generalPartnerService.sendPageData(
+            result = await this.generalPartnerService.getGeneralPartner(
               tokens,
               ids.transactionId,
-              ids.generalPartnerId,
-              data
+              ids.generalPartnerId
             );
           } else {
-            result = await this.limitedPartnershipService.sendPageData(
+            result = await this.limitedPartnershipService.getLimitedPartnership(
               tokens,
               ids.transactionId,
-              ids.submissionId,
-              pageType,
-              data
+              ids.submissionId
             );
           }
 
