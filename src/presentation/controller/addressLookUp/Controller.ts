@@ -192,13 +192,13 @@ class AddressLookUpController extends AbstractController {
   }
 
   selectAddress(): RequestHandler {
-    return async (request: Request, response: Response, next: NextFunction) => {
+    return (request: Request, response: Response, next: NextFunction) => {
       try {
         this.addressService.setI18n(response.locals.i18n);
 
         const address: Address = JSON.parse(request.body.selected_address);
 
-        await this.saveAndRedirectToNextPage(request, response, address);
+        this.saveAndRedirectToNextPage(request, response, address);
       } catch (error) {
         next(error);
       }
@@ -255,7 +255,7 @@ class AddressLookUpController extends AbstractController {
           return;
         }
 
-        await this.saveAndRedirectToNextPage(request, response, address);
+        this.saveAndRedirectToNextPage(request, response, address);
       } catch (error) {
         next(error);
       }
