@@ -87,7 +87,7 @@ class GlobalController extends AbstractController {
     if (url.startsWith(BASE_URL)) {
       return response.redirect(url);
     }
-  };
+  }
 }
 
 export default GlobalController;
