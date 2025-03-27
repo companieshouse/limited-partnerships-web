@@ -61,14 +61,6 @@
         }
     },
 
-    "generalPartnerUsualResidentialAddressTerritoryChoicePage": {
-        "title": "WELSH - Where is the usual residential address of the general partner?",
-        "hintLine1": "WELSH - What information we'll show on the public register",
-        "hintLine2": "Welsh - We will not show the general partner's usual residential address",
-        "overseas": "WELSH - Overseas",
-        "unitedKingdom": "WELSH - In the United Kingdom"
-    },
-
     "address": {
         "chooseAddress": { 
             "addressLink": "WELSH - The address is not on the list",
@@ -197,6 +189,25 @@
                 "jurisdictionNorthernIreland": "WELSH - You must enter a postcode which is in Northern Ireland",
                 "jurisdictionScotland": "WELSH - You must enter a postcode which is in Scotland"
             }
+        },
+
+        "territoryChoice": {
+            "generalPartnerPrincipalOfficeAddress": {
+                "title": "WELSH - Where is the general partner's principal office address?",
+                "titleHint": "WELSH - This is the address for the entity's main office",
+                "publicRegisterInformationHeading": "WELSH - What information we'll show on the public register",
+                "publicRegisterInformationLine1": "WELSH - We'll show the general partner's principal office address on the public register."
+            },
+            "generalPartnerUsualResidentialAddress": {
+                "title": "WELSH - Where is the usual residential address of the general partner?",
+                "publicRegisterInformationHeading": "WELSH - What information we'll show on the public register",
+                "publicRegisterInformationLine1": "WELSH - We will not show the general partner's usual residential address"
+            }
+        },
+
+        "territories": {
+            "overseas": "Overseas",
+            "unitedKingdom": "In the United Kingdom"
         }
     },
 

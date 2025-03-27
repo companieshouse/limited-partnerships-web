@@ -61,14 +61,6 @@
         }
     },
 
-    "generalPartnerUsualResidentialAddressTerritoryChoicePage": {
-        "title": "Where is the usual residential address of the general partner?",
-        "hintLine1": "What information we'll show on the public register",
-        "hintLine2": "We will not show the general partner's usual residential address",
-        "overseas": "Overseas",
-        "unitedKingdom": "In the United Kingdom"
-    },
-
     "address": {
         "chooseAddress": { 
             "addressLink": "The address is not on the list",
@@ -196,6 +188,25 @@
                 "jurisdictionNorthernIreland": "You must enter a postcode which is in Northern Ireland",
                 "jurisdictionScotland": "You must enter a postcode which is in Scotland"
             }
+        },
+
+        "territoryChoice": {
+            "generalPartnerPrincipalOfficeAddress": {
+                "title": "Where is the general partner's principal office address?",
+                "titleHint": "This is the address for the entity's main office",
+                "publicRegisterInformationHeading": "What information we'll show on the public register",
+                "publicRegisterInformationLine1": "We'll show the general partner's principal office address on the public register."
+            },
+            "generalPartnerUsualResidentialAddress": {
+                "title": "Where is the usual residential address of the general partner?",
+                "publicRegisterInformationHeading": "What information we'll show on the public register",
+                "publicRegisterInformationLine1": "We will not show the general partner's usual residential address"
+            }
+        },
+
+        "territories": {
+            "overseas": "Overseas",
+            "unitedKingdom": "In the United Kingdom"
         }
     },
 
