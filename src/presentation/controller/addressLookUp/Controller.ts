@@ -482,20 +482,21 @@ class AddressLookUpController extends AbstractController {
         const { ids, pageType } = super.extract(request);
         const parameter = request.body.parameter;
 
-        const isGeneralPartnerUsualAddressPage =
+        const isGeneralPartnerURAPage =
           pageType === AddressLookUpPageType.territoryChoiceGeneralPartnerUsualResidentialAddress;
 
         let redirectUrl = parameter === "unitedKingdom"
-          ? isGeneralPartnerUsualAddressPage
+          ? isGeneralPartnerURAPage
             ? POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
             : POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
-          : isGeneralPartnerUsualAddressPage
+          : isGeneralPartnerURAPage
             ? ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
             : ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL;
 
         redirectUrl = super.insertIdsInUrl(redirectUrl, ids.transactionId, ids.submissionId, ids.generalPartnerId);
 
-        const cacheKey = isGeneralPartnerUsualAddressPage
+        // TODO use getCacheKey
+        const cacheKey = isGeneralPartnerURAPage
           ? this.USUAL_RESIDENTIAL_ADDRESS_TERRITORY_CHOICE_CACHE_KEY
           : this.PRINCIPAL_OFFICE_ADDRESS_TERRITORY_CHOICE_CACHE_KEY;
 
