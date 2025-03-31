@@ -48,6 +48,7 @@ describe("Postcode Registered Office Address Page", () => {
         "scotland",
         "principalPlaceOfBusiness",
         "usualResidentialAddress",
+        "principalOfficeAddress",
         "errorMessages"
       ]);
       expect(res.text).not.toContain("WELSH -");
@@ -65,6 +66,7 @@ describe("Postcode Registered Office Address Page", () => {
         "scotland",
         "principalPlaceOfBusiness",
         "usualResidentialAddress",
+        "principalOfficeAddress",
         "errorMessages"
       ]);
     });

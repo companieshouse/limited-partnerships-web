@@ -52,6 +52,7 @@ describe("Postcode Usual Residential Address Page", () => {
       testTranslations(res.text, enTranslationText.address.findPostcode, [
         "registeredOfficeAddress",
         "principalPlaceOfBusiness",
+        "principalOfficeAddress",
         "errorMessages"
       ]);
       expect(res.text).not.toContain("WELSH -");
@@ -78,6 +79,7 @@ describe("Postcode Usual Residential Address Page", () => {
       testTranslations(res.text, cyTranslationText.address.findPostcode, [
         "registeredOfficeAddress",
         "principalPlaceOfBusiness",
+        "principalOfficeAddress",
         "errorMessages"
       ]);
       expect(res.text).toContain(generalPartner.data?.legal_entity_name?.toUpperCase());
