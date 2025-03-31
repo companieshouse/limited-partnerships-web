@@ -3,14 +3,14 @@ import enTranslationText from "../../../../../../../locales/en/translations.json
 import cyTranslationText from "../../../../../../../locales/cy/translations.json";
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../../../../presentation/test/utils";
+import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import {
   ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
-} from "../../../../../../presentation/controller/addressLookUp/url";
-import AddressPageType from "../../../../../../presentation/controller/addressLookUp/PageType";
-import GeneralPartnerBuilder from "../../../../../../presentation/test/builder/GeneralPartnerBuilder";
+} from "../../../../../controller/addressLookUp/url";
+import AddressPageType from "../../../../../controller/addressLookUp/PageType";
+import GeneralPartnerBuilder, { generalPartnerPerson } from "../../../../builder/GeneralPartnerBuilder";
 
 describe("General Partner Usual Residential Address Territory Choice", () => {
   const URL = getUrl(TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
@@ -27,10 +27,11 @@ describe("General Partner Usual Residential Address Territory Choice", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${cyTranslationText.generalPartnerUsualResidentialAddressTerritoryChoicePage.title} - ${cyTranslationText.service} - GOV.UK`
+        `${cyTranslationText.address.territoryChoice.generalPartnerUsualResidentialAddress.title} - ${cyTranslationText.service} - GOV.UK`
       );
 
-      testTranslations(res.text, cyTranslationText.generalPartnerUsualResidentialAddressTerritoryChoicePage);
+      testTranslations(res.text, cyTranslationText.address.territoryChoice.generalPartnerUsualResidentialAddress);
+      testTranslations(res.text, cyTranslationText.address.territories);
     });
 
     it("should load the general partner usual residential address territory choice page with English text", async () => {
@@ -39,16 +40,15 @@ describe("General Partner Usual Residential Address Territory Choice", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${enTranslationText.generalPartnerUsualResidentialAddressTerritoryChoicePage.title} - ${enTranslationText.service} - GOV.UK`
+        `${enTranslationText.address.territoryChoice.generalPartnerUsualResidentialAddress.title} - ${enTranslationText.service} - GOV.UK`
       );
 
-      testTranslations(res.text, enTranslationText.generalPartnerUsualResidentialAddressTerritoryChoicePage);
+      testTranslations(res.text, enTranslationText.address.territories);
     });
 
     it("should contain the general partner name - data from API", async () => {
       const generalPartner = new GeneralPartnerBuilder()
-        .withForename("John")
-        .withSurname("Smith")
+        .isPerson()
         .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
         .build();
 
@@ -57,7 +57,7 @@ describe("General Partner Usual Residential Address Territory Choice", () => {
       const res = await request(app).get(URL);
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(`${generalPartner?.data?.forename?.toUpperCase()} ${generalPartner?.data?.surname?.toUpperCase()}`);
+      expect(res.text).toContain(`${generalPartnerPerson.forename.toUpperCase()} ${generalPartnerPerson.surname.toUpperCase()}`);
     });
   });
 

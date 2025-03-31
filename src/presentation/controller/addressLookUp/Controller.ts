@@ -429,12 +429,17 @@ class AddressLookUpController extends AbstractController {
     response.redirect(pageRouting.nextUrl);
   }
 
+  // TODO As each pageType can have a cache key, add the key to each 'routing' object for each page and remove the if/elses
   private getCacheKey(pageType: any) {
     let cacheKey = "";
     if (this.isPrincipalPlaceOfBusinessPage(pageType)) {
       cacheKey = this.PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CACHE_KEY;
     } else if (this.isRegisteredOfficeAddressPage(pageType)) {
       cacheKey = this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY;
+    } else if (pageType === AddressLookUpPageType.territoryChoiceGeneralPartnerUsualResidentialAddress) {
+      cacheKey = this.USUAL_RESIDENTIAL_ADDRESS_TERRITORY_CHOICE_CACHE_KEY;
+    } else if (pageType === AddressLookUpPageType.territoryChoiceGeneralPartnerPrincipalOfficeAddress) {
+      cacheKey = this.PRINCIPAL_OFFICE_ADDRESS_TERRITORY_CHOICE_CACHE_KEY;
     } else {
       cacheKey = this.USUAL_RESIDENTIAL_ADDRESS_CACHE_KEY;
     }
@@ -495,10 +500,7 @@ class AddressLookUpController extends AbstractController {
 
         redirectUrl = super.insertIdsInUrl(redirectUrl, ids.transactionId, ids.submissionId, ids.generalPartnerId);
 
-        // TODO use getCacheKey
-        const cacheKey = isGeneralPartnerURAPage
-          ? this.USUAL_RESIDENTIAL_ADDRESS_TERRITORY_CHOICE_CACHE_KEY
-          : this.PRINCIPAL_OFFICE_ADDRESS_TERRITORY_CHOICE_CACHE_KEY;
+        const cacheKey = this.getCacheKey(pageType);
 
         this.cacheTerritoryAndRedirectToCorrectPage(request, response, cacheKey, parameter, redirectUrl);
       } catch (error) {
