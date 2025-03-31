@@ -21,6 +21,7 @@ import { START_URL } from "./global/Routing";
 abstract class AbstractController {
   protected getRouting(routing: PagesRouting, pageType: PageType, request: Request) {
     let pageRouting = routing.get(pageType);
+
     if (!pageRouting) {
       return pageRoutingDefault;
     }

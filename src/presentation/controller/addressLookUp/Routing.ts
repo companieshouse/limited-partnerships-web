@@ -4,7 +4,6 @@ import AddressPageType from "./PageType";
 import PageType from "../PageType";
 import {
   ADD_GENERAL_PARTNER_PERSON_URL,
-  LIMITED_PARTNERS_URL,
   TERM_URL,
   WHERE_IS_THE_JURISDICTION_URL
 } from "../registration/url";

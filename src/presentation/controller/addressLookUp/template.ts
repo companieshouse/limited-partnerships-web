@@ -35,5 +35,5 @@ export const ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_TEMPLATE =
   AddressPageType.enterGeneralPartnerUsualResidentialAddress;
 export const CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_TEMPLATE =
   AddressPageType.confirmGeneralPartnerUsualResidentialAddress;
-export const POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRES_TEMPLATE = 
+export const POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRES_TEMPLATE =
   AddressPageType.postcodeGeneralPartnerPrincipalOfficeAddress;

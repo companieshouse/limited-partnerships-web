@@ -9,67 +9,67 @@ import app from "../../../app";
 import { getUrl, setLocalesEnabled, toEscapedHtml, testTranslations } from "../../../../utils";
 import { POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "presentation/controller/addressLookUp/url";
 import GeneralPartnerBuilder, {
-    generalPartnerLegalEntity
-  } from "../../../../builder/GeneralPartnerBuilder";
+  generalPartnerLegalEntity
+} from "../../../../builder/GeneralPartnerBuilder";
 
 describe("Postcode general partner's principal office address page", () => {
   const URL = getUrl(POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
-  
+
   beforeEach(() => {
     setLocalesEnabled(false);
   });
 
   describe("Get postcode general partner's principal office address page", () => {
     it("should load the principal office address page with English text", async () => {
-        setLocalesEnabled(true);
-  
-        const generalPartner = new GeneralPartnerBuilder()
-          .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-          .isPerson()
-          .build();
-  
-        appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
-  
-        const res = await request(app).get(URL + "?lang=en");
-  
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(toEscapedHtml(enTranslationText.address.findPostcode.principalOfficeAddress.whatIsPrincipalOfficeAddress) + ` - ${enTranslationText.service} - GOV.UK`);
-        testTranslations(res.text, enTranslationText.address.findPostcode, [
-          "registeredOfficeAddress",
-          "principalPlaceOfBusiness",
-          "usualResidentialAddress",
-          "errorMessages"
-        ]);
-        expect(res.text).not.toContain("WELSH -");
-        expect(res.text).toContain(generalPartner.data?.forename?.toUpperCase());
-        expect(res.text).toContain(generalPartner.data?.surname?.toUpperCase());
-        expect(res.text).not.toContain(generalPartnerLegalEntity.legal_entity_name?.toUpperCase());
-      });
+      setLocalesEnabled(true);
 
-      it("should load the principal office address page with Welsh text", async () => {
-        setLocalesEnabled(true);
-  
-        const generalPartner = new GeneralPartnerBuilder()
-          .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-          .isPerson()
-          .build();
-  
-        appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
-  
-        const res = await request(app).get(URL + "?lang=cy");
-  
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(toEscapedHtml(cyTranslationText.address.findPostcode.principalOfficeAddress.whatIsPrincipalOfficeAddress) + ` - ${cyTranslationText.service} - GOV.UK`);
-        testTranslations(res.text, cyTranslationText.address.findPostcode, [
-          "registeredOfficeAddress",
-          "principalPlaceOfBusiness",
-          "usualResidentialAddress",
-          "errorMessages"
-        ]);
-        expect(res.text).toContain("WELSH -");
-        expect(res.text).toContain(generalPartner.data?.forename?.toUpperCase());
-        expect(res.text).toContain(generalPartner.data?.surname?.toUpperCase());
-        expect(res.text).not.toContain(generalPartnerLegalEntity.legal_entity_name?.toUpperCase());
-      });
+      const generalPartner = new GeneralPartnerBuilder()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .isPerson()
+        .build();
+
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+
+      const res = await request(app).get(URL + "?lang=en");
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(toEscapedHtml(enTranslationText.address.findPostcode.principalOfficeAddress.whatIsPrincipalOfficeAddress) + ` - ${enTranslationText.service} - GOV.UK`);
+      testTranslations(res.text, enTranslationText.address.findPostcode, [
+        "registeredOfficeAddress",
+        "principalPlaceOfBusiness",
+        "usualResidentialAddress",
+        "errorMessages"
+      ]);
+      expect(res.text).not.toContain("WELSH -");
+      expect(res.text).toContain(generalPartner.data?.forename?.toUpperCase());
+      expect(res.text).toContain(generalPartner.data?.surname?.toUpperCase());
+      expect(res.text).not.toContain(generalPartnerLegalEntity.legal_entity_name?.toUpperCase());
+    });
+
+    it("should load the principal office address page with Welsh text", async () => {
+      setLocalesEnabled(true);
+
+      const generalPartner = new GeneralPartnerBuilder()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .isPerson()
+        .build();
+
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+
+      const res = await request(app).get(URL + "?lang=cy");
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(toEscapedHtml(cyTranslationText.address.findPostcode.principalOfficeAddress.whatIsPrincipalOfficeAddress) + ` - ${cyTranslationText.service} - GOV.UK`);
+      testTranslations(res.text, cyTranslationText.address.findPostcode, [
+        "registeredOfficeAddress",
+        "principalPlaceOfBusiness",
+        "usualResidentialAddress",
+        "errorMessages"
+      ]);
+      expect(res.text).toContain("WELSH -");
+      expect(res.text).toContain(generalPartner.data?.forename?.toUpperCase());
+      expect(res.text).toContain(generalPartner.data?.surname?.toUpperCase());
+      expect(res.text).not.toContain(generalPartnerLegalEntity.legal_entity_name?.toUpperCase());
+    });
   });
 });
