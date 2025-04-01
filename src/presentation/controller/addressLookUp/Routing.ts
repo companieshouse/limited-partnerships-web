@@ -159,8 +159,15 @@ const addressRoutingConfirmGeneralPartnerUsualResidentialAddress = {
 const addressRoutingTerritoryChoiceGeneralPartnerPrincipalOfficeAddress = {
   previousUrl: ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
   currentUrl: url.TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
-  nextUrl: "",
+  nextUrl: url.POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   pageType: AddressPageType.territoryChoiceGeneralPartnerPrincipalOfficeAddress
+};
+
+const addressRoutingPostcodeGeneralPartnerPrincipalOfficeAddress = {
+  previousUrl: url.TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  currentUrl: url.POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  nextUrl: url.CHOOSE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  pageType: AddressPageType.postcodeGeneralPartnerPrincipalOfficeAddress,
 };
 
 const usualResidentialAddress = [
@@ -171,17 +178,18 @@ const usualResidentialAddress = [
   addressRoutingConfirmGeneralPartnerUsualResidentialAddress
 ];
 
-const principalOfficeAddress = [
-  addressRoutingTerritoryChoiceGeneralPartnerPrincipalOfficeAddress
+const generalPartnerPrincipalOfficeAddress = [
+  addressRoutingTerritoryChoiceGeneralPartnerPrincipalOfficeAddress,
+  addressRoutingPostcodeGeneralPartnerPrincipalOfficeAddress
 ];
 
 export const addressLookUpRouting: PagesRouting = new Map<PageType, PageRouting>();
-
 [
   ...registeredOfficeAddress,
   ...principalPlaceOfBusinessAddress,
   ...usualResidentialAddress,
-  ...principalOfficeAddress
+  ...generalPartnerPrincipalOfficeAddress
+
 ].forEach((routing) => {
   addressLookUpRouting.set(routing.pageType, routing);
 });

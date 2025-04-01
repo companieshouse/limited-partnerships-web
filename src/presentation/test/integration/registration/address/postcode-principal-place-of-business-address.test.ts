@@ -48,6 +48,7 @@ describe("Postcode Principal Place Of Business Address Page", () => {
       testTranslations(res.text, enTranslationText.address.findPostcode, [
         "registeredOfficeAddress",
         "usualResidentialAddress",
+        "principalOfficeAddress",
         "errorMessages"
       ]);
       expect(res.text).not.toContain("WELSH -");
@@ -64,6 +65,7 @@ describe("Postcode Principal Place Of Business Address Page", () => {
       testTranslations(res.text, cyTranslationText.address.findPostcode, [
         "registeredOfficeAddress",
         "usualResidentialAddress",
+        "principalOfficeAddress",
         "errorMessages"
       ]);
     });

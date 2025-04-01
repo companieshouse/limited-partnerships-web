@@ -177,6 +177,12 @@
                 "publicRegisterTitle": "What information we'll show on the public register",
                 "publicRegisterLine1": "We will not show the general partner's usual residential address."
             },
+
+            "principalOfficeAddress": {
+                "whatIsPrincipalOfficeAddress": "What is the the general partner's principal office address?",
+                "publicRegisterTitle" : "What information we'll show on the public register",
+                "publicRegisterLine1": "We will not show the general partner's principal office address."
+            },
  
             "nameOrNumberHint": "Property name or number (optional)",
             "postcodeHint": "Postcode",
