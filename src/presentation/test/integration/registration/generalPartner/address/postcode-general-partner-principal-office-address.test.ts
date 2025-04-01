@@ -29,7 +29,7 @@ describe("Postcode general partner's principal office address page", () => {
 
       const generalPartner = new GeneralPartnerBuilder()
         .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isPerson()
+        .isLegalEntity()
         .build();
 
       appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
@@ -47,7 +47,7 @@ describe("Postcode general partner's principal office address page", () => {
       expect(res.text).not.toContain("WELSH -");
       expect(res.text).toContain(generalPartner.data?.forename?.toUpperCase());
       expect(res.text).toContain(generalPartner.data?.surname?.toUpperCase());
-      expect(res.text).not.toContain(generalPartnerLegalEntity.legal_entity_name?.toUpperCase());
+      expect(res.text).toContain(generalPartnerLegalEntity.legal_entity_name?.toUpperCase());
     });
 
     it("should load the principal office address page with Welsh text", async () => {
@@ -55,7 +55,7 @@ describe("Postcode general partner's principal office address page", () => {
 
       const generalPartner = new GeneralPartnerBuilder()
         .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isPerson()
+        .isLegalEntity()
         .build();
 
       appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
@@ -73,7 +73,7 @@ describe("Postcode general partner's principal office address page", () => {
       expect(res.text).toContain("WELSH -");
       expect(res.text).toContain(generalPartner.data?.forename?.toUpperCase());
       expect(res.text).toContain(generalPartner.data?.surname?.toUpperCase());
-      expect(res.text).not.toContain(generalPartnerLegalEntity.legal_entity_name?.toUpperCase());
+      expect(res.text).toContain(generalPartnerLegalEntity.legal_entity_name?.toUpperCase());
     });
   });
 
