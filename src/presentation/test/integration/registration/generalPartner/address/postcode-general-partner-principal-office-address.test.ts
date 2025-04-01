@@ -21,7 +21,6 @@ describe("Postcode general partner's principal office address page", () => {
     setLocalesEnabled(false);
     appDevDependencies.cacheRepository.feedCache(null);
     appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
-
   });
 
   describe("Get postcode general partner's principal office address page", () => {
