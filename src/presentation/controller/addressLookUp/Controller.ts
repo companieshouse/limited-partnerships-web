@@ -12,14 +12,20 @@ import LimitedPartnershipService from "../../../application/service/LimitedPartn
 import UIErrors from "../../../domain/entities/UIErrors";
 import { PageRouting, pageRoutingDefault } from "../PageRouting";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
-import { ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL, POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "./url";
+import {
+  ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
+} from "./url";
 
 class AddressLookUpController extends AbstractController {
   public readonly REGISTERED_OFFICE_ADDRESS_CACHE_KEY = "registered_office_address";
   public readonly PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CACHE_KEY =
     "principal_place_of_business_address";
   public readonly USUAL_RESIDENTIAL_ADDRESS_CACHE_KEY = "usual_residential_address";
-  public readonly USUAL_RESIDENTIAL_ADDRESS_TERRITORY_CHOICE_CACHE_KEY = "territory_choice";
+  public readonly USUAL_RESIDENTIAL_ADDRESS_TERRITORY_CHOICE_CACHE_KEY = "ura_territory_choice";
+  public readonly PRINCIPAL_OFFICE_ADDRESS_TERRITORY_CHOICE_CACHE_KEY = "poa_territory_choice";
 
   constructor(
     private addressService: AddressService,
@@ -423,12 +429,17 @@ class AddressLookUpController extends AbstractController {
     response.redirect(pageRouting.nextUrl);
   }
 
+  // TODO As each pageType can have a cache key, add the key to each 'routing' object for each page and remove the if/elses
   private getCacheKey(pageType: any) {
     let cacheKey = "";
     if (this.isPrincipalPlaceOfBusinessPage(pageType)) {
       cacheKey = this.PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CACHE_KEY;
     } else if (this.isRegisteredOfficeAddressPage(pageType)) {
       cacheKey = this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY;
+    } else if (pageType === AddressLookUpPageType.territoryChoiceGeneralPartnerUsualResidentialAddress) {
+      cacheKey = this.USUAL_RESIDENTIAL_ADDRESS_TERRITORY_CHOICE_CACHE_KEY;
+    } else if (pageType === AddressLookUpPageType.territoryChoiceGeneralPartnerPrincipalOfficeAddress) {
+      cacheKey = this.PRINCIPAL_OFFICE_ADDRESS_TERRITORY_CHOICE_CACHE_KEY;
     } else {
       cacheKey = this.USUAL_RESIDENTIAL_ADDRESS_CACHE_KEY;
     }
@@ -473,17 +484,32 @@ class AddressLookUpController extends AbstractController {
   generalPartnerTerritoryChoice(): RequestHandler {
     return (request: Request, response: Response, next: NextFunction) => {
       try {
-        const { ids } = super.extract(request);
+        const { ids, pageType } = super.extract(request);
         const parameter = request.body.parameter;
 
-        let redirectUrl =
-          parameter === "unitedKingdom"
-            ? POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
-            : ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL;
+        const isGeneralPartnerURAPage =
+          pageType === AddressLookUpPageType.territoryChoiceGeneralPartnerUsualResidentialAddress;
+
+        let redirectUrl;
+        if (parameter === "unitedKingdom") {
+          if (isGeneralPartnerURAPage) {
+            redirectUrl = POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL;
+          } else {
+            redirectUrl = POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL;
+          }
+        } else {
+          if (isGeneralPartnerURAPage) {
+            redirectUrl = ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL;
+          } else {
+            redirectUrl = ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL;
+          }
+        }
 
         redirectUrl = super.insertIdsInUrl(redirectUrl, ids.transactionId, ids.submissionId, ids.generalPartnerId);
 
-        this.cacheTerritoryAndRedirectToCorrectPage(request, response, parameter, redirectUrl);
+        const cacheKey = this.getCacheKey(pageType);
+
+        this.cacheTerritoryAndRedirectToCorrectPage(request, response, cacheKey, parameter, redirectUrl);
       } catch (error) {
         next(error);
       }
@@ -493,12 +519,11 @@ class AddressLookUpController extends AbstractController {
   private cacheTerritoryAndRedirectToCorrectPage(
     request: Request,
     response: Response<any, Record<string, any>>,
+    cacheKey: string,
     dataToStore: any,
-    redirectUrl: any
+    redirectUrl: string
   ) {
     const { ids } = super.extract(request);
-
-    const cacheKey = this.USUAL_RESIDENTIAL_ADDRESS_TERRITORY_CHOICE_CACHE_KEY;
 
     const cache = this.cacheService.addDataToCache(request.signedCookies, {
       [ids.transactionId]: {
@@ -509,7 +534,6 @@ class AddressLookUpController extends AbstractController {
 
     response.redirect(redirectUrl);
   }
-
 }
 
 export default AddressLookUpController;

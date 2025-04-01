@@ -35,3 +35,12 @@ export const ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_TEMPLATE =
   AddressPageType.enterGeneralPartnerUsualResidentialAddress;
 export const CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_TEMPLATE =
   AddressPageType.confirmGeneralPartnerUsualResidentialAddress;
+
+// principal office address
+export const TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_TEMPLATE =
+  AddressPageType.territoryChoiceGeneralPartnerPrincipalOfficeAddress;
+export const POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_TEMPLATE =
+  AddressPageType.postcodeGeneralPartnerPrincipalOfficeAddress;
+export const ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_TEMPLATE =
+  AddressPageType.enterGeneralPartnerPrincipalOfficeAddress;
+

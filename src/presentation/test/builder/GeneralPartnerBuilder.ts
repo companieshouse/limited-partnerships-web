@@ -86,22 +86,18 @@ class GeneralPartnerBuilder {
   }
 
   isPerson() {
-    generalPartnerPerson.forename = "Joe";
-    generalPartnerPerson.surname = "Doe";
-    generalPartnerPerson.date_of_birth = "2001-01-01";
-    generalPartnerPerson.nationality1 = "BRITISH";
-    generalPartnerPerson.nationality2 = undefined;
+    this.data = {
+      ...this.data,
+      ...generalPartnerPerson
+    };
     return this;
   }
 
   isLegalEntity() {
-    generalPartnerLegalEntity.legal_entity_name = "My Company ltd";
-    generalPartnerLegalEntity.legal_form = "Limited Company";
-    generalPartnerLegalEntity.governing_law = "Act of law";
-    generalPartnerLegalEntity.legal_entity_register_name = "US Register";
-    generalPartnerLegalEntity.legal_entity_registration_location = "United States";
-    generalPartnerLegalEntity.registered_company_number = "12345678";
-    generalPartnerLegalEntity.not_disqualified_statement_checked = true;
+    this.data = {
+      ...this.data,
+      ...generalPartnerLegalEntity
+    };
     return this;
   }
 
