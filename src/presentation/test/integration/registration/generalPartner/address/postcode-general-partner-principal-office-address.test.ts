@@ -11,12 +11,15 @@ import { POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "presentat
 import GeneralPartnerBuilder, {
   generalPartnerLegalEntity
 } from "../../../../builder/GeneralPartnerBuilder";
+import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 
 describe("Postcode general partner's principal office address page", () => {
   const URL = getUrl(POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
 
   beforeEach(() => {
     setLocalesEnabled(false);
+    appDevDependencies.cacheRepository.feedCache(null);
+
   });
 
   describe("Get postcode general partner's principal office address page", () => {
@@ -70,6 +73,23 @@ describe("Postcode general partner's principal office address page", () => {
       expect(res.text).toContain(generalPartner.data?.forename?.toUpperCase());
       expect(res.text).toContain(generalPartner.data?.surname?.toUpperCase());
       expect(res.text).not.toContain(generalPartnerLegalEntity.legal_entity_name?.toUpperCase());
+    });
+  });
+
+  describe("Post postcode general partner's principal office address page", () => {
+    // LP-640 Test ACs 1-3 redirect to choose and confirm once those pages are added.
+
+    it("should return an error if the postcode is not valid", async () => {
+      const res = await request(app).post(URL).send({
+        pageType: AddressPageType.postcodeGeneralPartnerUsualResidentialAddress,
+        premises: null,
+        postal_code: "AA1 1AA"
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(`The postcode AA1 1AA cannot be found`);
+
+      expect(appDevDependencies.cacheRepository.cache).toEqual(null);
     });
   });
 });
