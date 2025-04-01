@@ -33,8 +33,10 @@
             {{ macros.capitalizeEachWord(address.region) }}
             <br>
         {% endif %}
-        {{ address.postal_code | upper }}
+        {% if address.postal_code %}
+            {{ address.postal_code | upper }}
             <br>
+        {% endif %}
         {{ macros.mapCountry(address.country) }}
             <br>
         </p>
