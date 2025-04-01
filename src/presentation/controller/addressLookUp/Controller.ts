@@ -490,7 +490,7 @@ class AddressLookUpController extends AbstractController {
         const isGeneralPartnerURAPage =
           pageType === AddressLookUpPageType.territoryChoiceGeneralPartnerUsualResidentialAddress;
 
-        let redirectUrl ;
+        let redirectUrl;
         if (parameter === "unitedKingdom") {
           if (isGeneralPartnerURAPage) {
             redirectUrl = POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL;
