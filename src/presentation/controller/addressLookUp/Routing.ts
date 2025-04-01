@@ -146,7 +146,7 @@ const addressRoutingChooseGeneralPartnerUsualResidentialAddress = {
 const addressRoutingConfirmGeneralPartnerUsualResidentialAddress = {
   previousUrl: url.POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   currentUrl: url.CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-  nextUrl: url.POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  nextUrl: url.TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   pageType: AddressPageType.confirmGeneralPartnerUsualResidentialAddress,
   data: {
     enterManualAddressPageType: AddressPageType.enterGeneralPartnerUsualResidentialAddress
@@ -158,8 +158,15 @@ const addressRoutingConfirmGeneralPartnerUsualResidentialAddress = {
 const addressRoutingTerritoryChoiceGeneralPartnerPrincipalOfficeAddress = {
   previousUrl: ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
   currentUrl: url.TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
-  nextUrl: "",
+  nextUrl: url.POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   pageType: AddressPageType.territoryChoiceGeneralPartnerPrincipalOfficeAddress
+};
+
+const addressRoutingPostcodeGeneralPartnerPrincipalOfficeAddress = {
+  previousUrl: url.TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  currentUrl: url.POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  nextUrl: url.CHOOSE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  pageType: AddressPageType.postcodeGeneralPartnerPrincipalOfficeAddress,
 };
 
 const usualResidentialAddress = [
@@ -169,13 +176,6 @@ const usualResidentialAddress = [
   addressRoutingChooseGeneralPartnerUsualResidentialAddress,
   addressRoutingConfirmGeneralPartnerUsualResidentialAddress
 ];
-
-const addressRoutingPostcodeGeneralPartnerPrincipalOfficeAddress = {
-  previousUrl: url.CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-  currentUrl: url.POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
-  nextUrl: url.CHOOSE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
-  pageType: AddressPageType.postcodeGeneralPartnerPrincipalOfficeAddress,
-};
 
 const generalPartnerPrincipalOfficeAddress = [
   addressRoutingTerritoryChoiceGeneralPartnerPrincipalOfficeAddress,
