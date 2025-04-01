@@ -490,13 +490,20 @@ class AddressLookUpController extends AbstractController {
         const isGeneralPartnerURAPage =
           pageType === AddressLookUpPageType.territoryChoiceGeneralPartnerUsualResidentialAddress;
 
-        let redirectUrl = parameter === "unitedKingdom"
-          ? isGeneralPartnerURAPage
-            ? POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
-            : POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
-          : isGeneralPartnerURAPage
-            ? ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
-            : ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL;
+        let redirectUrl ;
+        if (parameter === "unitedKingdom") {
+          if (isGeneralPartnerURAPage) {
+            redirectUrl = POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL;
+          } else {
+            redirectUrl = POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL;
+          }
+        } else {
+          if (isGeneralPartnerURAPage) {
+            redirectUrl = ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL;
+          } else {
+            redirectUrl = ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL;
+          }
+        }
 
         redirectUrl = super.insertIdsInUrl(redirectUrl, ids.transactionId, ids.submissionId, ids.generalPartnerId);
 
