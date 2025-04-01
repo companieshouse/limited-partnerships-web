@@ -94,8 +94,9 @@
                 "publicRegisterLine1": "WELSH - We'll show the principal place of business address on the public register."
             },
             "usualResidentialAddress": {
-                "title": "WELSH - Confirm the correspondence address of the general partner",
-                "addressLinkHidden": "WELSH - usual residential address"
+                "title": "WELSH - Confirm the general partner's usual residential address",
+                "addressLinkHidden": "WELSH - usual residential address",
+                "publicRegisterLine1": "WELSH - We will not show the general partner's usual residential address."
             }
         },
         

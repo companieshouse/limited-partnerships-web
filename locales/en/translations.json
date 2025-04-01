@@ -94,8 +94,9 @@
                 "publicRegisterLine1": "We'll show the principal place of business address on the public register."
             },
             "usualResidentialAddress": {
-                "title": "Confirm the correspondence address of the general partner",
-                "addressLinkHidden": "usual residential address"
+                "title": "Confirm the general partner's usual residential address",
+                "addressLinkHidden": "usual residential address",
+                "publicRegisterLine1": "We will not show the general partner's usual residential address."
             }
         },
         
