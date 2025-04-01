@@ -6,6 +6,7 @@ import {
   ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
   ADD_GENERAL_PARTNER_PERSON_URL,
   TERM_URL,
+  LIMITED_PARTNERS_URL,
   WHERE_IS_THE_JURISDICTION_URL
 } from "../registration/url";
 import * as url from "./url";
@@ -146,7 +147,7 @@ const addressRoutingChooseGeneralPartnerUsualResidentialAddress = {
 const addressRoutingConfirmGeneralPartnerUsualResidentialAddress = {
   previousUrl: url.POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   currentUrl: url.CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-  nextUrl: "",
+  nextUrl: LIMITED_PARTNERS_URL, // TODO Change when next page ready
   pageType: AddressPageType.confirmGeneralPartnerUsualResidentialAddress,
   data: {
     enterManualAddressPageType: AddressPageType.enterGeneralPartnerUsualResidentialAddress
