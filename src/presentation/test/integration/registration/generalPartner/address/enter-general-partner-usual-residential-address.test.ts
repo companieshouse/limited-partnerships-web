@@ -24,6 +24,7 @@ describe("Enter Usual Residential Address Page", () => {
     setLocalesEnabled(false);
 
     appDevDependencies.cacheRepository.feedCache(null);
+    appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
   });
 
   describe("GET Enter general partners usual residential address", () => {
@@ -33,6 +34,8 @@ describe("Enter Usual Residential Address Page", () => {
         .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
         .isPerson()
         .build();
+
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
 
       const res = await request(app).get(URL + "?lang=en");
 
@@ -46,8 +49,8 @@ describe("Enter Usual Residential Address Page", () => {
 
       ]);
       expect(res.text).not.toContain("WELSH -");
-      expect(res.text).toContain(generalPartner.data?.forename?.toUpperCase());
-      expect(res.text).toContain(generalPartner.data?.surname?.toUpperCase());
+      expect(res.text).toContain(generalPartnerPerson.forename?.toUpperCase());
+      expect(res.text).toContain(generalPartnerPerson.surname?.toUpperCase());
       expect(res.text).not.toContain(generalPartnerLegalEntity.legal_entity_name?.toUpperCase());
     });
 
@@ -58,6 +61,8 @@ describe("Enter Usual Residential Address Page", () => {
         .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
         .isPerson()
         .build();
+
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
 
       const res = await request(app).get(URL + "?lang=cy");
 
@@ -70,8 +75,10 @@ describe("Enter Usual Residential Address Page", () => {
         "postcodeLength",
         "postcode"
       ]);
-      expect(res.text).toContain(generalPartner.data?.legal_entity_name?.toUpperCase());
-      expect(res.text).not.toContain(generalPartnerPerson.forename?.toUpperCase());
+
+      expect(res.text).toContain(generalPartnerPerson.forename?.toUpperCase());
+      expect(res.text).toContain(generalPartnerPerson.surname?.toUpperCase());
+      expect(res.text).not.toContain(generalPartnerLegalEntity.legal_entity_name?.toUpperCase());
     });
 
     it("should load enter general partners usual residential address manual entry page with overseas back link", async () => {

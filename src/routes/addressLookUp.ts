@@ -156,11 +156,27 @@ export const addressLookUpEndpoints = (
     authentication,
     dependencies.addressLookUpController.confirmAddress()
   );
+
+  // principal office address
+
+  router.get(
+    url.TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+    authentication,
+    dependencies.addressLookUpController.getPageRouting()
+  );
+
   router.get(
     url.POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
     authentication,
     dependencies.addressLookUpController.getPageRouting()
   );
+
+  router.post(
+    url.TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+    authentication,
+    dependencies.addressLookUpController.generalPartnerTerritoryChoice()
+  );
+
   router.post(
     url.POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
     authentication,

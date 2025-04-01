@@ -1,0 +1,34 @@
+{{ govukRadios({
+  classes: "govuk-radios",
+  name: "parameter",
+  fieldset: {
+    legend: {
+      text: pageTitle,
+      isPageHeading: true,
+      classes: "govuk-fieldset__legend--xl"
+    }
+  },
+  hint: {
+    text: titleHint
+  },
+  items: [
+    {
+      value: "unitedKingdom",
+      text: i18n.address.territories.unitedKingdom,
+      id: "unitedKingdom",
+      name: "unitedKingdom",
+      attributes: {
+        required: true
+      }
+    },
+    {
+      value: "overseas",
+      text: i18n.address.territories.overseas,
+      id: "overseas",
+      name: "overseas",
+      attributes: {
+        required: true
+      }
+    }
+  ]
+}) }}
