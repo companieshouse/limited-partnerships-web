@@ -104,7 +104,7 @@
                 "title": "WELSH - What is the registered office address of the partnership?",
                 "titleHint1": "WELSH - We'll use this address to send official communications.",
                 "titleHint2": "WELSH - It must be a physical address in the jurisdiction where the partnership was formed. You cannot use a PO Box address.",
-                "titleHint3": "WELSH - It is not the principal place of business. You'll need to provide this later.",
+                "titleHint3": "WELSH - You'll need to provide the principal place of business next.",
                 "publicInformationLine1": "WELSH - We'll show the registered office address on the public register."
             },
             "principalPlaceOfBusinessAddress" : {
