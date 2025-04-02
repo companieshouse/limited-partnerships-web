@@ -152,15 +152,9 @@
         "findPostcode": {
             "registeredOfficeAddress": {
                 "whatIsOfficeAddress": "What is the registered office address of the partnership?",
-                "officialCommunication": "This is where official communications will be sent.",
-                "england": {
-                    "physicalAddress": "It must be a physical address in England, Wales or Northern Ireland. You cannot use a PO Box address.",
-                    "jurisdiction": "The partnership will be registered in the jurisdiction of this address (either England and Wales, or Northern Ireland)."
-                },
-                "scotland": {
-                    "physicalAddress": "It must be a physical address in Scotland. You cannot use a PO Box address.",
-                    "jurisdiction": "The partnership will be registered in the jurisdiction of this address (Scotland)."
-                },
+                "officialCommunication": "We'll use this address to send official communications.",
+                "physicalAddress": "It must be a physical address in the jurisdiction where the partnership was formed. You cannot use a PO Box address.",
+                "provideNext": "You'll need to provide the principal place of business next.",
                 "publicRegisterTitle": "What information we'll show on the public register",
                 "publicRegisterLine1": "We'll show the registered office address on the public register."
             },
