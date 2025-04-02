@@ -115,7 +115,7 @@
             },
             "usualResidentialAddress":{
                 "title": "WELSH - What is the general partner's usual residential address?",
-                "publicInformationLine1": "WELSH - We will not show the general partner's usual residential address",
+                "publicInformationLine1": "WELSH - We will not show the general partner's usual residential address.",
                 "postcodeOptional": "WELSH - Postcode (optional)"
 
             },
