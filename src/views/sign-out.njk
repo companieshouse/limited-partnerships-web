@@ -8,6 +8,8 @@
 
       <form class="form" method="post">
         <input type="hidden" name="pageType" value={{ props.pageType }}>
+        <input type="hidden" name="previousPage" value={{ props.previousUrl }}>
+
 
         {% include "includes/csrf_token.njk" %}
 
@@ -53,13 +55,7 @@
             {{ i18n.signOutPage.filingsInfo }}
           </div>  
         </details>
-
-        {{ govukInput({
-          value: props.previousUrl,
-          name: "previousPage",
-          classes: "govuk-visually-hidden"
-        }) }}
-
+        
         {% include "includes/continue-button.njk" %}
       </form>
     </div>
