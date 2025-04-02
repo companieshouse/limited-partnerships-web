@@ -45,8 +45,15 @@ const registrationRoutingJurisdiction = {
 const registrationRoutingTerm = {
   previousUrl: CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   currentUrl: url.TERM_URL,
-  nextUrl: url.GENERAL_PARTNERS_URL,
+  nextUrl: url.SIC_URL,
   pageType: RegistrationPageType.term
+};
+
+const registrationRoutingSic = {
+  previousUrl: url.TERM_URL,
+  currentUrl: url.SIC_URL,
+  nextUrl: url.GENERAL_PARTNERS_URL,
+  pageType: RegistrationPageType.sic
 };
 
 const registrationRoutingGeneralPartners = {
@@ -120,6 +127,7 @@ const list = [
   registrationRoutingEmail,
   registrationRoutingJurisdiction,
   registrationRoutingTerm,
+  registrationRoutingSic,
   registrationRoutingGeneralPartners,
   registrationRoutingLimitedPartners,
   registrationRoutingGeneralPartnerChoice,
