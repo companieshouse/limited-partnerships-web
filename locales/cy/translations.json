@@ -115,13 +115,13 @@
             },
             "usualResidentialAddress":{
                 "title": "WELSH - What is the general partner's usual residential address?",
-                "publicInformationLine1": "WELSH - We will not show the general partner's usual residential address on the public register",
+                "publicInformationLine1": "WELSH - We will not show the general partner's usual residential address",
                 "postcodeOptional": "WELSH - Postcode (optional)"
 
             },
             "principalOfficeAddress": {
                 "title": "WELSH - What is the general partner's principal office address?",
-                "publicInformationLine1": "WELSH - We will not show the general partner' principal office address",
+                "publicInformationLine1": "WELSH - We will not show the general partner' principal office address on the public register",
                 "postcodeOptional": "WELSH - Postcode (optional)"
             },
             "propertyNameOrNumber": "WELSH - Property name or number",
