@@ -372,9 +372,9 @@ class AddressLookUpController extends AbstractController {
 
     if (pageType === AddressLookUpPageType.confirmRegisteredOfficeAddress) {
       data = { registered_office_address: address };
-    } else if (AddressLookUpPageType.confirmPrincipalPlaceOfBusinessAddress) {
+    } else if (pageType === AddressLookUpPageType.confirmPrincipalPlaceOfBusinessAddress) {
       data = { principal_place_of_business_address: address };
-    } else if (AddressLookUpPageType.confirmGeneralPartnerUsualResidentialAddress) {
+    } else if (pageType === AddressLookUpPageType.confirmGeneralPartnerUsualResidentialAddress) {
       data = { usual_residential_address: address };
     }
 
