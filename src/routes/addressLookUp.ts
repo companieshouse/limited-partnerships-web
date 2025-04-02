@@ -171,6 +171,12 @@ export const addressLookUpEndpoints = (
     dependencies.addressLookUpController.getPageRouting()
   );
 
+  router.get(
+    url.ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+    authentication,
+    dependencies.addressLookUpController.getPageRouting()
+  );
+
   router.post(
     url.TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
     authentication,
@@ -179,6 +185,12 @@ export const addressLookUpEndpoints = (
 
   router.post(
     url.POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+    authentication,
+    dependencies.addressLookUpController.postcodeValidation()
+  );
+
+  router.post(
+    url.ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
     authentication,
     dependencies.addressLookUpController.postcodeValidation()
   );

@@ -168,6 +168,16 @@ const addressRoutingPostcodeGeneralPartnerPrincipalOfficeAddress = {
   currentUrl: url.POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   nextUrl: url.CHOOSE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   pageType: AddressPageType.postcodeGeneralPartnerPrincipalOfficeAddress,
+  data: {
+    enterManualAddressPageType: AddressPageType.enterGeneralPartnerPrincipalOfficeAddress
+  }
+};
+
+const addressRoutingEnterGeneralPartnerPrincipalOfficeAddress = {
+  previousUrl: url.POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  currentUrl: url.ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  nextUrl: url.CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  pageType: AddressPageType.enterGeneralPartnerPrincipalOfficeAddress
 };
 
 const usualResidentialAddress = [
@@ -180,7 +190,8 @@ const usualResidentialAddress = [
 
 const generalPartnerPrincipalOfficeAddress = [
   addressRoutingTerritoryChoiceGeneralPartnerPrincipalOfficeAddress,
-  addressRoutingPostcodeGeneralPartnerPrincipalOfficeAddress
+  addressRoutingPostcodeGeneralPartnerPrincipalOfficeAddress,
+  addressRoutingEnterGeneralPartnerPrincipalOfficeAddress
 ];
 
 export const addressLookUpRouting: PagesRouting = new Map<PageType, PageRouting>();

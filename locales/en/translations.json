@@ -118,6 +118,11 @@
                 "publicInformationLine1": "We will not show the general partner's usual residential address.",
                 "postcodeOptional": "Postcode (optional)"
             },
+            "principalOfficeAddress": {
+                "title": "What is the general partner's principal office address?",
+                "publicInformationLine1": "We will not show the general partner's principal office address on the public register",
+                "postcodeOptional": "Postcode (optional)"
+            },
             "propertyNameOrNumber": "Property name or number",
             "propertyNameOrNumberHint": "For example, 'The Mill', '116' or 'Flat 37a'",
             "addressLine1": "Address line 1",
