@@ -9,6 +9,8 @@ import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import { GENERAL_PARTNERS_URL, SIC_URL } from "../../../controller/registration/url";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
+import RegistrationPageType from "../../../controller/registration/PageType";
+import { ApiErrors } from "../../../../domain/entities/UIErrors";
 
 describe("Sic Codes", () => {
   const URL = getUrl(SIC_URL);
@@ -49,6 +51,24 @@ describe("Sic Codes", () => {
         testTranslations(res.text, cyTranslationText.sicCodePage);
         expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
       });
+
+      it("should load the page with data", async () => {
+        const limitedPartnership = new LimitedPartnershipBuilder()
+          .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+          .withPartnershipType(PartnershipType.LP)
+          .withSicCodes(["12345", "56789", "91011", "12131"])
+          .build();
+
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+        const res = await request(app).get(URL + "?lang=en");
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain("12345");
+        expect(res.text).toContain("56789");
+        expect(res.text).toContain("91011");
+        expect(res.text).toContain("12131");
+      });
     });
 
     describe("should redirect to general partner page", () => {
@@ -79,6 +99,55 @@ describe("Sic Codes", () => {
         expect(res.status).toBe(302);
         expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
       });
+    });
+  });
+
+  describe("Post Sic Codes", () => {
+    it("should send sic codes", async () => {
+      const limitedPartnership = new LimitedPartnershipBuilder()
+        .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+        .withPartnershipType(PartnershipType.LP)
+        .build();
+
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+      const res = await request(app).post(URL).send({
+        pageType: RegistrationPageType.sic,
+        sic1: "12345",
+        sic2: "56789",
+        sic3: "91011",
+        sic4: "12131"
+      });
+
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+      expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships[0].data).toEqual(
+        expect.objectContaining({
+          sic_codes: ["12345", "56789", "91011", "12131"]
+        })
+      );
+    });
+
+    it("should return a validation error", async () => {
+      const limitedPartnership = new LimitedPartnershipBuilder()
+        .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+        .build();
+
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+      const apiErrors: ApiErrors = {
+        errors: { "data.sic": "Sic code must be 5 numeric characters" }
+      };
+
+      appDevDependencies.limitedPartnershipGateway.feedErrors(apiErrors);
+
+      const res = await request(app).post(URL).send({
+        pageType: RegistrationPageType.email,
+        sic: "wrong-sic"
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain("Sic code must be 5 numeric characters");
     });
   });
 });

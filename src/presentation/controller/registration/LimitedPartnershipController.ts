@@ -71,46 +71,6 @@ class LimitedPartnershipController extends AbstractController {
     }
   }
 
-  getPageRoutingTermSic(): RequestHandler {
-    return async (request: Request, response: Response, next: NextFunction) => {
-      try {
-        const { tokens, pageType, ids } = super.extract(request);
-        const pageRouting = super.getRouting(registrationsRouting, pageType, request);
-
-        let limitedPartnership: LimitedPartnership = {};
-
-        if (ids.transactionId && ids.submissionId) {
-          limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
-            tokens,
-            ids.transactionId,
-            ids.submissionId
-          );
-        }
-
-        if (
-          (pageType === RegistrationPageType.term || pageType === RegistrationPageType.sic) &&
-          (limitedPartnership?.data?.partnership_type === PartnershipType.PFLP ||
-            limitedPartnership?.data?.partnership_type === PartnershipType.SPFLP)
-        ) {
-          const { transactionId, submissionId } = super.extractIds(request);
-
-          const url = super.insertIdsInUrl(GENERAL_PARTNERS_URL, transactionId, submissionId);
-
-          response.redirect(url);
-
-          return;
-        }
-
-        response.render(
-          super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { limitedPartnership, ids }, null)
-        );
-      } catch (error) {
-        next(error);
-      }
-    };
-  }
-
   createTransactionAndFirstSubmission(): RequestHandler {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
@@ -209,6 +169,84 @@ class LimitedPartnershipController extends AbstractController {
           ids.submissionId,
           pageType,
           request.body
+        );
+
+        if (result?.errors) {
+          response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(pageRouting, null, result.errors)
+          );
+          return;
+        }
+
+        response.redirect(pageRouting.nextUrl);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  getPageRoutingTermSic(): RequestHandler {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { tokens, pageType, ids } = super.extract(request);
+        const pageRouting = super.getRouting(registrationsRouting, pageType, request);
+
+        let limitedPartnership: LimitedPartnership = {};
+
+        if (ids.transactionId && ids.submissionId) {
+          limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+            tokens,
+            ids.transactionId,
+            ids.submissionId
+          );
+        }
+
+        if (
+          (pageType === RegistrationPageType.term || pageType === RegistrationPageType.sic) &&
+          (limitedPartnership?.data?.partnership_type === PartnershipType.PFLP ||
+            limitedPartnership?.data?.partnership_type === PartnershipType.SPFLP)
+        ) {
+          const { transactionId, submissionId } = super.extractIds(request);
+
+          const url = super.insertIdsInUrl(GENERAL_PARTNERS_URL, transactionId, submissionId);
+
+          response.redirect(url);
+
+          return;
+        }
+
+        response.render(
+          super.templateName(pageRouting.currentUrl),
+          super.makeProps(pageRouting, { limitedPartnership, ids }, null)
+        );
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  sendSicCodesPageData(): RequestHandler {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { tokens, ids } = super.extract(request);
+        const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
+        const pageRouting = super.getRouting(registrationsRouting, pageType, request);
+
+        const sic_codes: string[] = [];
+
+        for (let i = 1; i <= 4; i++) {
+          if (request.body[`sic${i}`]) {
+            sic_codes.push(request.body[`sic${i}`]);
+          }
+        }
+
+        const result = await this.limitedPartnershipService.sendPageData(
+          tokens,
+          ids.transactionId,
+          ids.submissionId,
+          pageType,
+          { sic_codes }
         );
 
         if (result?.errors) {

@@ -115,7 +115,7 @@ export const registrationEndpoints = (
   router.post(
     SIC_URL,
     authentication,
-    dependencies.limitedPartnershipController.sendPageData()
+    dependencies.limitedPartnershipController.sendSicCodesPageData()
   );
 
   router.get(

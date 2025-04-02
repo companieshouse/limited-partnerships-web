@@ -42,9 +42,7 @@ describe("General Partners Page", () => {
   it("should contain the proposed name - data from api", async () => {
     const limitedPartnership = new LimitedPartnershipBuilder().build();
 
-    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
-      limitedPartnership
-    ]);
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
     const res = await request(app).get(URL);
 
@@ -55,24 +53,23 @@ describe("General Partners Page", () => {
   });
 
   it.each([
-    [PartnershipType.LP, "term"],
-    [PartnershipType.SLP, "term"],
+    [PartnershipType.LP, "standard-industrial-classification-code"],
+    [PartnershipType.SLP, "standard-industrial-classification-code"],
     [PartnershipType.PFLP, "confirm-principal-place-of-business-address"],
     [PartnershipType.SPFLP, "confirm-principal-place-of-business-address"]
-  ])("should contain the correct back link based on partnership type", async (partnershipType: PartnershipType, backLink: string) => {
-    setLocalesEnabled(true);
-    const limitedPartnership = new LimitedPartnershipBuilder()
-      .withPartnershipType(partnershipType)
-      .build();
+  ])(
+    "should contain the correct back link based on partnership type",
+    async (partnershipType: PartnershipType, backLink: string) => {
+      setLocalesEnabled(true);
+      const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
 
-    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
-      limitedPartnership
-    ]);
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-    const res = await request(app).get(URL + "?lang=en");
+      const res = await request(app).get(URL + "?lang=en");
 
-    expect(res.status).toBe(200);
-    const regex = new RegExp(`/limited-partnerships/transaction/.*?/submission/.*?/${backLink}`);
-    expect(res.text).toMatch(regex);
-  });
+      expect(res.status).toBe(200);
+      const regex = new RegExp(`/limited-partnerships/transaction/.*?/submission/.*?/${backLink}`);
+      expect(res.text).toMatch(regex);
+    }
+  );
 });

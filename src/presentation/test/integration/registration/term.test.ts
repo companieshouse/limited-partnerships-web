@@ -108,28 +108,28 @@ describe("Email Page", () => {
         expect(res.status).toBe(302);
         expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
       });
-    });
 
-    it("should return a validation error", async () => {
-      const limitedPartnership = new LimitedPartnershipBuilder()
-        .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
-        .build();
+      it("should return a validation error", async () => {
+        const limitedPartnership = new LimitedPartnershipBuilder()
+          .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+          .build();
 
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-      const apiErrors: ApiErrors = {
-        errors: { "data.term": "Term must be valid" }
-      };
+        const apiErrors: ApiErrors = {
+          errors: { "data.term": "Term must be valid" }
+        };
 
-      appDevDependencies.limitedPartnershipGateway.feedErrors(apiErrors);
+        appDevDependencies.limitedPartnershipGateway.feedErrors(apiErrors);
 
-      const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.email,
-        term: "wrong-term"
+        const res = await request(app).post(URL).send({
+          pageType: RegistrationPageType.email,
+          term: "wrong-term"
+        });
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain("Term must be valid");
       });
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain("Term must be valid");
     });
   });
 });
