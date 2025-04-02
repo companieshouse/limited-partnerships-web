@@ -32,7 +32,8 @@ describe("Enter Registered Office Address Page", () => {
       testTranslations(res.text, enTranslationText.address.enterAddress, [
         "jurisdictionCountry",
         "usualResidentialAddress",
-        "principalPlaceOfBusinessAddress"
+        "principalPlaceOfBusinessAddress",
+        "principalOfficeAddress",
       ]);
       expect(res.text).not.toContain("WELSH -");
     });
@@ -46,7 +47,8 @@ describe("Enter Registered Office Address Page", () => {
       testTranslations(res.text, cyTranslationText.address.enterAddress, [
         "jurisdictionCountry",
         "usualResidentialAddress",
-        "principalPlaceOfBusinessAddress"
+        "principalPlaceOfBusinessAddress",
+        "principalOfficeAddress",
       ]);
     });
   });

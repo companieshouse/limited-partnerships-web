@@ -46,7 +46,7 @@ describe("Enter Usual Residential Address Page", () => {
         "jurisdictionCountry",
         "postcodeMissing",
         "postcodeLength",
-
+        "principalOfficeAddress",
       ]);
       expect(res.text).not.toContain("WELSH -");
       expect(res.text).toContain(generalPartnerPerson.forename?.toUpperCase());
@@ -73,7 +73,8 @@ describe("Enter Usual Residential Address Page", () => {
         "jurisdictionCountry",
         "postcodeMissing",
         "postcodeLength",
-        "postcode"
+        "postcode",
+        "principalOfficeAddress",
       ]);
 
       expect(res.text).toContain(generalPartnerPerson.forename?.toUpperCase());

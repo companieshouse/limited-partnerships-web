@@ -32,7 +32,8 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
       testTranslations(res.text, enTranslationText.address.enterAddress, [
         "registeredOfficeAddress",
         "usualResidentialAddress",
-        "jurisdictionCountry"
+        "jurisdictionCountry",
+        "principalOfficeAddress",
       ]);
       expect(res.text).not.toContain("WELSH -");
     });
@@ -46,7 +47,8 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
       testTranslations(res.text, cyTranslationText.address.enterAddress, [
         "registeredOfficeAddress",
         "usualResidentialAddress",
-        "jurisdictionCountry"
+        "jurisdictionCountry",
+        "principalOfficeAddress",
       ]);
     });
   });
