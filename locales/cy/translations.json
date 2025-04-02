@@ -346,7 +346,6 @@
         "title" : "WELSH - What is the Standard Industrial Classification (SIC) code?",
         "hint" : "WELSH - You should use the SIC code that best describes the partnership's nature of business.",
         "find": "WELSH - Find your SIC code using our look up tool (opens in new tab)",
-        "enter" : "WELSH - Enter the Standard Industrial Classification (SIC) code",
         "additionalHint" : "WELSH - Enter up to 3 additional SIC codes (optional):",
         "publicRegisterTitle": "WELSH - What information we'll show on the public register",
         "publicRegisterLine1": "WELSH - We'll show the SIC codes on the public register."

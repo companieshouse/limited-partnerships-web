@@ -30,11 +30,6 @@
         {% include "includes/csrf_token.njk" %}
 
         {{ govukInput({
-            label: {
-                text: i18n.sicCodePage.enter,
-                classes: "govuk-visually-hidden",
-                describedBy: "sic-hint"
-            },
             classes: "govuk-input--width-5 govuk-input--extra-letter-spacing",
             id: "sic1",
             name: "sic1",

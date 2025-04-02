@@ -16,6 +16,10 @@ describe("Sic Codes", () => {
   const URL = getUrl(SIC_URL);
   const REDIRECT_URL = getUrl(GENERAL_PARTNERS_URL);
 
+  beforeEach(() => {
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([]);
+  });
+
   describe("Get Sic Codes Page", () => {
     describe("should load page", () => {
       it("should load the page with English text", async () => {
@@ -124,6 +128,29 @@ describe("Sic Codes", () => {
       expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships[0].data).toEqual(
         expect.objectContaining({
           sic_codes: ["12345", "56789", "91011", "12131"]
+        })
+      );
+    });
+
+    it("should send sic codes - only 2 codes", async () => {
+      const limitedPartnership = new LimitedPartnershipBuilder()
+        .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+        .withPartnershipType(PartnershipType.LP)
+        .build();
+
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+      const res = await request(app).post(URL).send({
+        pageType: RegistrationPageType.sic,
+        sic1: "12345",
+        sic4: "12131"
+      });
+
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+      expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships[0].data).toEqual(
+        expect.objectContaining({
+          sic_codes: ["12345", "12131"]
         })
       );
     });
