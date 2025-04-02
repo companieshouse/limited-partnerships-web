@@ -1,0 +1,81 @@
+{% extends "layout.njk" %}
+
+{% set pageTitle = i18n.sicCodePage.title %}
+
+{% set sic1 = "" %}
+{% set sic2 = "" %}
+{% set sic3 = "" %}
+{% set sic4 = "" %}
+
+{% if props.data.limitedPartnership.data.sic_codes.length > 0  %}
+  {% set sic1 = props.data.limitedPartnership.data.sic_codes[0] %}
+  {% set sic2 = props.data.limitedPartnership.data.sic_codes[1] %}
+  {% set sic3 = props.data.limitedPartnership.data.sic_codes[2] %}
+  {% set sic4 = props.data.limitedPartnership.data.sic_codes[3] %}
+{% endif %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+    {% include "includes/proposed-name.njk" %} 
+
+    <h1 class="govuk-heading-xl">{{ i18n.sicCodePage.title }}</h1>
+
+    <p class="govuk-hint" id="sic-hint">{{ i18n.sicCodePage.hint }}</p>
+    <p class="govuk-!-margin-bottom-6"><a href="https://resources.companieshouse.gov.uk/sic/" class="govuk-link govuk-link--no-visited-state govuk-body-m" rel="noreferrer noopener" target="_blank">{{ i18n.sicCodePage.find }}</a>.</p>
+
+    <form class="form" action={{ props.currentUrl }} method="post">
+        <input type="hidden" name="pageType" value={{ props.pageType }}>
+        {% include "includes/csrf_token.njk" %}
+
+        {{ govukInput({
+            classes: "govuk-input--width-5 govuk-input--extra-letter-spacing",
+            id: "sic1",
+            name: "sic1",
+            value: sic1,
+            attributes: {
+                required: true
+            },
+            pattern: "\\d{5}"
+        }) }}
+
+        <p class="govuk-body">{{ i18n.sicCodePage.additionalHint}}</p>
+
+
+        {{ govukInput({
+            classes: "govuk-input--width-5 govuk-input--extra-letter-spacing",
+            id: "sic2",
+            name: "sic2",
+            value: sic2,
+            pattern: "\\d{5}"
+        }) }}
+
+        {{ govukInput({
+            classes: "govuk-input--width-5 govuk-input--extra-letter-spacing",
+            id: "sic3",
+            name: "sic3",
+            value: sic3,
+            pattern: "\\d{5}"
+        }) }}
+
+        {{ govukInput({
+            classes: "govuk-input--width-5 govuk-input--extra-letter-spacing",
+            id: "sic4",
+            name: "sic4",
+            value: sic4,
+            pattern: "\\d{5}"
+        }) }}
+
+        {{ govukInsetText({
+        html: "<h2 class='govuk-heading-m'>" + i18n.sicCodePage.publicRegisterTitle | escape + "</h2>" + 
+            "<p>" + i18n.sicCodePage.publicRegisterLine1 | escape + "</p>"
+        }) }}
+        
+        {% include "includes/save-and-continue-button.njk" %}
+
+    </form>
+      
+    </div>
+  </div>
+{% endblock %}

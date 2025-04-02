@@ -24,7 +24,8 @@ class LimitedPartnershipBuilder {
       region: "region",
       country: "england"
     },
-    term: Term.BY_AGREEMENT
+    term: Term.BY_AGREEMENT,
+    sic_codes: ["1234", "5678"]
   };
 
   withId(id: string) {
@@ -64,6 +65,11 @@ class LimitedPartnershipBuilder {
 
   withTerm(term: Term) {
     this.data.term = term;
+    return this;
+  }
+
+  withSicCodes(sicCodes: string[]) {
+    this.data.sic_codes = sicCodes;
     return this;
   }
 

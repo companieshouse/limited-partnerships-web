@@ -348,6 +348,15 @@
 
     "service" : "Register a limited partnership",
 
+    "sicCodePage" : {
+        "title" : "What is the Standard Industrial Classification (SIC) code?",
+        "hint" : "You should use the SIC code that best describes the partnership's nature of business.",
+        "find": "Find your SIC code using our look up tool (opens in new tab)",
+        "additionalHint" : "Enter up to 3 additional SIC codes (optional):",
+        "publicRegisterTitle": "What information we'll show on the public register",
+        "publicRegisterLine1": "We'll show the SIC codes on the public register."
+    },
+
     "signOutPage": {
          "title": "Are you sure you want to sign out?",
          "hint": "We will save your application.",

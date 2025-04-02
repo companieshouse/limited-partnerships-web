@@ -13,11 +13,7 @@ import {
 } from "../../../config/constants";
 import CacheService from "../../../application/service/CacheService";
 import PageType from "../PageType";
-import {
-  GENERAL_PARTNERS_URL,
-  NAME_WITH_IDS_URL,
-  WHICH_TYPE_WITH_IDS_URL
-} from "./url";
+import { GENERAL_PARTNERS_URL, NAME_WITH_IDS_URL, WHICH_TYPE_WITH_IDS_URL } from "./url";
 import { PageRouting } from "../PageRouting";
 
 class LimitedPartnershipController extends AbstractController {
@@ -52,14 +48,10 @@ class LimitedPartnershipController extends AbstractController {
 
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
 
-        const redirect = this.conditionalRedirecting(request, response, pageType, limitedPartnership);
-
-        if (!redirect) {
-          response.render(
-            super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { limitedPartnership, generalPartner, limitedPartner, cache, ids }, null)
-          );
-        }
+        response.render(
+          super.templateName(pageRouting.currentUrl),
+          super.makeProps(pageRouting, { limitedPartnership, generalPartner, limitedPartner, cache, ids }, null)
+        );
       } catch (error) {
         next(error);
       }
@@ -68,7 +60,7 @@ class LimitedPartnershipController extends AbstractController {
 
   private conditionalPreviousUrl(
     pageType: PageType,
-    ids: { transactionId: string; submissionId: string; generalPartnerId: string; },
+    ids: { transactionId: string; submissionId: string; generalPartnerId: string },
     pageRouting: PageRouting
   ) {
     if (pageType === RegistrationPageType.name) {
@@ -77,32 +69,6 @@ class LimitedPartnershipController extends AbstractController {
         pageRouting.previousUrl = super.insertIdsInUrl(WHICH_TYPE_WITH_IDS_URL, ids.transactionId, ids.submissionId);
       }
     }
-  }
-
-  private conditionalRedirecting(
-    request: Request,
-    response: Response,
-    pageType: PageType,
-    limitedPartnership: LimitedPartnership
-  ): boolean {
-    let redirect = false;
-
-    // Redirect to general partners page if partnership type is PFLP or SPFLP instead of term page
-    if (
-      pageType === RegistrationPageType.term &&
-      (limitedPartnership.data?.partnership_type === PartnershipType.PFLP ||
-        limitedPartnership.data?.partnership_type === PartnershipType.SPFLP)
-    ) {
-      const { transactionId, submissionId } = super.extractIds(request);
-
-      const url = super.insertIdsInUrl(GENERAL_PARTNERS_URL, transactionId, submissionId);
-
-      response.redirect(url);
-
-      redirect = true;
-    }
-
-    return redirect;
   }
 
   createTransactionAndFirstSubmission(): RequestHandler {
@@ -163,7 +129,6 @@ class LimitedPartnershipController extends AbstractController {
 
         const redirectUrl = this.insertIdsInUrl(NAME_WITH_IDS_URL, ids.transactionId, ids.submissionId);
         response.redirect(redirectUrl);
-
       } catch (error) {
         next(error);
       }
@@ -204,6 +169,84 @@ class LimitedPartnershipController extends AbstractController {
           ids.submissionId,
           pageType,
           request.body
+        );
+
+        if (result?.errors) {
+          response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(pageRouting, null, result.errors)
+          );
+          return;
+        }
+
+        response.redirect(pageRouting.nextUrl);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  getPageRoutingTermSic(): RequestHandler {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { tokens, pageType, ids } = super.extract(request);
+        const pageRouting = super.getRouting(registrationsRouting, pageType, request);
+
+        let limitedPartnership: LimitedPartnership = {};
+
+        if (ids.transactionId && ids.submissionId) {
+          limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+            tokens,
+            ids.transactionId,
+            ids.submissionId
+          );
+        }
+
+        if (
+          (pageType === RegistrationPageType.term || pageType === RegistrationPageType.sic) &&
+          (limitedPartnership?.data?.partnership_type === PartnershipType.PFLP ||
+            limitedPartnership?.data?.partnership_type === PartnershipType.SPFLP)
+        ) {
+          const { transactionId, submissionId } = super.extractIds(request);
+
+          const url = super.insertIdsInUrl(GENERAL_PARTNERS_URL, transactionId, submissionId);
+
+          response.redirect(url);
+
+          return;
+        }
+
+        response.render(
+          super.templateName(pageRouting.currentUrl),
+          super.makeProps(pageRouting, { limitedPartnership, ids }, null)
+        );
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  sendSicCodesPageData(): RequestHandler {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { tokens, ids } = super.extract(request);
+        const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
+        const pageRouting = super.getRouting(registrationsRouting, pageType, request);
+
+        const sic_codes: string[] = [];
+
+        for (let i = 1; i <= 4; i++) {
+          if (request.body[`sic${i}`]) {
+            sic_codes.push(request.body[`sic${i}`]);
+          }
+        }
+
+        const result = await this.limitedPartnershipService.sendPageData(
+          tokens,
+          ids.transactionId,
+          ids.submissionId,
+          pageType,
+          { sic_codes }
         );
 
         if (result?.errors) {
