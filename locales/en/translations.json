@@ -105,7 +105,7 @@
                 "title": "What is the registered office address of the partnership?",
                 "titleHint1": "We'll use this address to send official communications.",
                 "titleHint2": "It must be a physical address in the jurisdiction where the partnership was formed. You cannot use a PO Box address.",
-                "titleHint3": "It is not the principal place of business. You'll need to provide this later.",
+                "titleHint3": "You'll need to provide the principal place of business next.",
                 "publicInformationLine1": "We'll show the registered office address on the public register."
             },
             "principalPlaceOfBusinessAddress" : {
