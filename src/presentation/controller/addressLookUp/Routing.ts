@@ -173,6 +173,16 @@ const addressRoutingPostcodeGeneralPartnerPrincipalOfficeAddress = {
   }
 };
 
+const addressRoutingChooseGeneralPartnerPrincipalOfficeAddress = {
+  previousUrl: url.POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  currentUrl: url.CHOOSE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  nextUrl: url.CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  pageType: AddressPageType.chooseGeneralPartnerPrincipalOfficeAddress,
+  data: {
+    enterManualAddressPageType: AddressPageType.enterGeneralPartnerPrincipalOfficeAddress
+  }
+};
+
 const addressRoutingEnterGeneralPartnerPrincipalOfficeAddress = {
   previousUrl: url.POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   currentUrl: url.ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
@@ -191,6 +201,7 @@ const usualResidentialAddress = [
 const generalPartnerPrincipalOfficeAddress = [
   addressRoutingTerritoryChoiceGeneralPartnerPrincipalOfficeAddress,
   addressRoutingPostcodeGeneralPartnerPrincipalOfficeAddress,
+  addressRoutingChooseGeneralPartnerPrincipalOfficeAddress,
   addressRoutingEnterGeneralPartnerPrincipalOfficeAddress
 ];
 

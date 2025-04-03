@@ -25,6 +25,7 @@ enum AddressPageType {
   // principal office address
   territoryChoiceGeneralPartnerPrincipalOfficeAddress = "territory-choice-general-partner-principal-office-address",
   postcodeGeneralPartnerPrincipalOfficeAddress = "postcode-general-partner-principal-office-address",
+  chooseGeneralPartnerPrincipalOfficeAddress = "choose-general-partner-principal-office-address",
   enterGeneralPartnerPrincipalOfficeAddress = "enter-general-partner-principal-office-address",
 }
 
