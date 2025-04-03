@@ -216,15 +216,7 @@ class AddressLookUpController extends AbstractController {
       try {
         this.addressService.setI18n(response.locals.i18n);
 
-        const {
-          premises,
-          address_line_1,
-          address_line_2,
-          locality,
-          region,
-          postal_code,
-          country
-        } = request.body;
+        const { premises, address_line_1, address_line_2, locality, region, postal_code, country } = request.body;
         const address = {
           address_line_1,
           address_line_2,
@@ -245,10 +237,13 @@ class AddressLookUpController extends AbstractController {
 
         const pageRouting = super.getRouting(addressLookUpRouting, pageType, request);
 
-        const errors =
-          pageType !== AddressLookUpPageType.enterGeneralPartnerUsualResidentialAddress
-            ? this.addressService.isValidJurisdictionAndCountry(limitedPartnership?.data?.jurisdiction ?? "", country)
-            : null;
+        const isURAorPOA =
+          pageType === AddressLookUpPageType.enterGeneralPartnerUsualResidentialAddress ||
+          pageType === AddressLookUpPageType.enterGeneralPartnerPrincipalOfficeAddress;
+
+        const errors = isURAorPOA
+          ? null
+          : this.addressService.isValidJurisdictionAndCountry(limitedPartnership?.data?.jurisdiction ?? "", country);
 
         if (errors?.errors) {
           response.render(
