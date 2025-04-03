@@ -39,6 +39,7 @@ describe("Check Your Answers Page", () => {
     expect(res.text).toContain(limitedPartnership?.data?.partnership_name?.toUpperCase());
     expect(res.text).toContain(limitedPartnership?.data?.name_ending?.toUpperCase());
     expect(res.text).toContain(limitedPartnership?.data?.email);
+    expect(res.text).toContain(limitedPartnership?.data?.jurisdiction);
     expect(res.text).toContain("name#partnership_name");
     expect(res.text).toContain("email#email");
   });
