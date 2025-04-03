@@ -2,13 +2,13 @@
 
 {% set principalOfficeAddressKey = "principal_office_address" %}
 
-{% if props.data.cache.poa_territory_choice == "overseas" %}
-  {% set hrefValue = props.currentUrl | replace(props.pageType, "territory-choice-general-partner-principal-office-address") %}
-{% else %}
-  {% set hrefValue = props.currentUrl | replace(props.pageType, "postcode-general-partner-principal-office-address") %}
-{% endif %}
-
 {% block backLink %}
+  {% if props.data.cache.poa_territory_choice == "overseas" %}
+    {% set hrefValue = props.currentUrl | replace(props.pageType, "territory-choice-general-partner-principal-office-address") %}
+  {% else %}
+    {% set hrefValue = props.currentUrl | replace(props.pageType, "postcode-general-partner-principal-office-address") %}
+  {% endif %}
+
   {{ govukBackLink({
     text: "Back",
     attributes: {
