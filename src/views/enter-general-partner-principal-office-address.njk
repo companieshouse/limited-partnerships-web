@@ -2,13 +2,13 @@
 
 {% set principalOfficeAddressKey = "principal_office_address" %}
 
-{% block backLink %}
-  {% if props.data.cache.poa_territory_choice == "overseas" %}
-    {% set hrefValue = props.currentUrl | replace(props.pageType, "territory-choice-general-partner-principal-office-address") %}
-  {% else %}
-    {% set hrefValue = props.currentUrl | replace(props.pageType, "postcode-general-partner-principal-office-address") %}
-  {% endif %}
+{% if props.data.cache.poa_territory_choice == "overseas" %}
+  {% set hrefValue = props.currentUrl | replace(props.pageType, "territory-choice-general-partner-principal-office-address") %}
+{% else %}
+  {% set hrefValue = props.currentUrl | replace(props.pageType, "postcode-general-partner-principal-office-address") %}
+{% endif %}
 
+{% block backLink %}
   {{ govukBackLink({
     text: "Back",
     attributes: {
@@ -28,10 +28,7 @@
   {% set address = {} %}
 {% endif %}
 
-
 {% set pageTitle = i18n.address.enterAddress.principalOfficeAddress.title %}
-{% set publicInformationLine1 = i18n.address.enterAddress.principalOfficeAddress.publicInformationLine1 %}
-
 
 {% block content %}
   <div class="govuk-grid-row">
