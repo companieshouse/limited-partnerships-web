@@ -86,6 +86,8 @@ const registrationRoutingAddGeneralPartnerLegalEntity = {
 
 // usual residential address
 
+// principal office address
+
 const registrationRoutingLimitedPartners = {
   previousUrl: url.GENERAL_PARTNERS_URL,
   currentUrl: url.LIMITED_PARTNERS_URL,
