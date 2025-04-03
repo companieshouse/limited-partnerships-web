@@ -166,6 +166,8 @@ class AddressLookUpController extends AbstractController {
     request: Request,
     response: Response
   ) {
+    const cacheById = this.cacheService.getDataFromCacheById(request.signedCookies, transactionId);
+
     if (pageType === AddressLookUpPageType.postcodePrincipalPlaceOfBusinessAddress) {
       const cache = this.cacheService.addDataToCache(request.signedCookies, {
         [transactionId]: {
@@ -183,6 +185,7 @@ class AddressLookUpController extends AbstractController {
     } else if (pageType === AddressLookUpPageType.postcodeGeneralPartnerUsualResidentialAddress) {
       const cache = this.cacheService.addDataToCache(request.signedCookies, {
         [transactionId]: {
+          ...cacheById,
           [this.USUAL_RESIDENTIAL_ADDRESS_CACHE_KEY]: address
         }
       });
@@ -190,6 +193,7 @@ class AddressLookUpController extends AbstractController {
     } else if (pageType === AddressLookUpPageType.postcodeGeneralPartnerPrincipalOfficeAddress) {
       const cache = this.cacheService.addDataToCache(request.signedCookies, {
         [transactionId]: {
+          ...cacheById,
           [this.PRINCIPAL_OFFICE_ADDRESS_CACHE_KEY]: address
         }
       });
@@ -389,10 +393,12 @@ class AddressLookUpController extends AbstractController {
     const pageType = super.extractPageTypeOrThrowError(request, AddressLookUpPageType);
     const pageRouting = super.getRouting(addressLookUpRouting, pageType, request);
 
+    const cacheById = this.cacheService.getDataFromCacheById(request.signedCookies, ids.transactionId);
     const cacheKey = this.getCacheKey(pageType);
 
     const cache = this.cacheService.addDataToCache(request.signedCookies, {
       [ids.transactionId]: {
+        ...cacheById,
         [cacheKey]: dataToStore
       }
     });
