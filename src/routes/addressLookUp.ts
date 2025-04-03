@@ -165,6 +165,12 @@ export const addressLookUpEndpoints = (
     dependencies.addressLookUpController.getPageRouting()
   );
 
+  router.post(
+    url.TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+    authentication,
+    dependencies.addressLookUpController.generalPartnerTerritoryChoice()
+  );
+
   router.get(
     url.POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
     authentication,
@@ -172,13 +178,19 @@ export const addressLookUpEndpoints = (
   );
 
   router.post(
-    url.TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+    url.POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
     authentication,
-    dependencies.addressLookUpController.generalPartnerTerritoryChoice()
+    dependencies.addressLookUpController.postcodeValidation()
+  );
+
+  router.get(
+    url.ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+    authentication,
+    dependencies.addressLookUpController.getPageRouting()
   );
 
   router.post(
-    url.POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+    url.ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
     authentication,
     dependencies.addressLookUpController.postcodeValidation()
   );
