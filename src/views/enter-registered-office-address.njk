@@ -24,7 +24,7 @@
         <input type="hidden" name="pageType" value={{ props.pageType }}>
         {% include "includes/csrf_token.njk" %}
         
-        {% include "includes/enter-address-common-fields.njk" %}
+        {% include "includes/pages/address/enter-address-common-fields.njk" %}
       
         {{ govukInsetText({
           html: "<h2 class='govuk-heading-m'>" + i18n.address.enterAddress.publicInformationTitle | escape + "</h2>
