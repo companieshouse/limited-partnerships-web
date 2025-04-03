@@ -7,15 +7,17 @@ import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import app from "../../../app";
 
 import { getUrl, setLocalesEnabled, toEscapedHtml, testTranslations } from "../../../../utils";
-import { POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "presentation/controller/addressLookUp/url";
+import { POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL, CHOOSE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "presentation/controller/addressLookUp/url";
 import GeneralPartnerBuilder, {
   generalPartnerPerson,
   generalPartnerLegalEntity
 } from "../../../../builder/GeneralPartnerBuilder";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
+import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
 
 describe("Postcode general partner's principal office address page", () => {
   const URL = getUrl(POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
+  const REDIRECT_URL = getUrl(CHOOSE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
 
   beforeEach(() => {
     setLocalesEnabled(false);
@@ -79,6 +81,32 @@ describe("Postcode general partner's principal office address page", () => {
 
   describe("Post postcode general partner's principal office address page", () => {
     // LP-640 Test ACs 1-3 redirect to choose and confirm once those pages are added.
+
+    it("should validate the post code then redirect to the next page", async () => {
+      const res = await request(app).post(URL).send({
+        pageType: AddressPageType.postcodeGeneralPartnerPrincipalOfficeAddress,
+        premises: null,
+        postal_code: appDevDependencies.addressLookUpGateway.englandAddresses[0].postcode
+      });
+
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+
+      expect(appDevDependencies.cacheRepository.cache).toEqual({
+        [APPLICATION_CACHE_KEY]: {
+          [appDevDependencies.transactionGateway.transactionId]: {
+            ["principal_office_address"]: {
+              postal_code: "ST6 3LJ",
+              address_line_1: "",
+              address_line_2: "",
+              locality: "",
+              country: "",
+              premises: ""
+            }
+          }
+        }
+      });
+    });
 
     it("should return an error if the postcode is not valid", async () => {
       const res = await request(app).post(URL).send({
