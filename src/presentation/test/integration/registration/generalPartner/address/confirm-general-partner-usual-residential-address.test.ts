@@ -1,10 +1,14 @@
 import request from "supertest";
+
+import app from "../../../app";
 import enTranslationText from "../../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../../locales/cy/translations.json";
+
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
-import { CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../../controller/addressLookUp/url";
-import { LIMITED_PARTNERS_URL } from "../../../../../controller/registration/url";
-import app from "../../../app";
+import {
+  CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
+} from "../../../../../controller/addressLookUp/url";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
@@ -74,9 +78,11 @@ describe("Confirm General Partner Usual Residential Address Page", () => {
 
   describe("POST Confirm Usual Residential Address Page", () => {
     it("should redirect to the next page", async () => {
-      const res = await request(app).post(URL).send({
-        pageType: AddressPageType.confirmGeneralPartnerUsualResidentialAddress,
-        address: `{
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: AddressPageType.confirmGeneralPartnerUsualResidentialAddress,
+          address: `{
         "postal_code": "ST6 3LJ",
         "premises": "4",
         "address_line_1": "DUNCALF STREET",
@@ -84,9 +90,10 @@ describe("Confirm General Partner Usual Residential Address Page", () => {
         "locality": "STOKE-ON-TRENT",
         "country": "GB-ENG"
         }`
-      });
+        });
 
-      const redirectUrl = getUrl(LIMITED_PARTNERS_URL); // TODO change to next page when ready
+      const redirectUrl = getUrl(TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
+
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
     });

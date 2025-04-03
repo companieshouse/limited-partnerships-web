@@ -43,3 +43,5 @@ export const POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_TEMPLATE =
   AddressPageType.postcodeGeneralPartnerPrincipalOfficeAddress;
 export const ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_TEMPLATE =
   AddressPageType.enterGeneralPartnerPrincipalOfficeAddress;
+export const CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_TEMPLATE =
+  AddressPageType.confirmGeneralPartnerPrincipalOfficeAddress;

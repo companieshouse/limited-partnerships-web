@@ -101,7 +101,6 @@ export const addressLookUpEndpoints = (
   );
 
   // usual residential address
-
   router.get(
     url.TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
     authentication,
@@ -158,13 +157,11 @@ export const addressLookUpEndpoints = (
   );
 
   // principal office address
-
   router.get(
     url.TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
     authentication,
     dependencies.addressLookUpController.getPageRouting()
   );
-
   router.post(
     url.TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
     authentication,
@@ -176,7 +173,6 @@ export const addressLookUpEndpoints = (
     authentication,
     dependencies.addressLookUpController.getPageRouting()
   );
-
   router.post(
     url.POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
     authentication,
@@ -188,11 +184,16 @@ export const addressLookUpEndpoints = (
     authentication,
     dependencies.addressLookUpController.getPageRouting()
   );
-
   router.post(
     url.ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
     authentication,
     dependencies.addressLookUpController.postcodeValidation()
+  );
+
+  router.get(
+    url.CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+    authentication,
+    dependencies.addressLookUpController.getPageRouting()
   );
 };
 
