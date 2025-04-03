@@ -75,6 +75,10 @@
 
             "generalPartnerUsualResidentialAddress" : {
                 "title" : "WELSH - Choose the usual residential address of the general partner"
+            },
+
+            "generalPartnerPrincipalOfficeAddress": {
+                "title": "Choose the general partner's principal office address"
             }
         },
 
