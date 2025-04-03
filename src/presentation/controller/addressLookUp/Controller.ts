@@ -24,6 +24,7 @@ class AddressLookUpController extends AbstractController {
   public readonly PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CACHE_KEY =
     "principal_place_of_business_address";
   public readonly USUAL_RESIDENTIAL_ADDRESS_CACHE_KEY = "usual_residential_address";
+  public readonly PRINCIPAL_OFFICE_ADDRESS_CACHE_KEY = "principal_office_address";
   public readonly USUAL_RESIDENTIAL_ADDRESS_TERRITORY_CHOICE_CACHE_KEY = "ura_territory_choice";
   public readonly PRINCIPAL_OFFICE_ADDRESS_TERRITORY_CHOICE_CACHE_KEY = "poa_territory_choice";
 
@@ -104,7 +105,8 @@ class AddressLookUpController extends AbstractController {
     return (
       pageType === AddressLookUpPageType.chooseRegisteredOfficeAddress ||
       pageType === AddressLookUpPageType.choosePrincipalPlaceOfBusinessAddress ||
-      pageType === AddressLookUpPageType.chooseGeneralPartnerUsualResidentialAddress
+      pageType === AddressLookUpPageType.chooseGeneralPartnerUsualResidentialAddress ||
+      pageType === AddressLookUpPageType.chooseGeneralPartnerPrincipalOfficeAddress
     );
   }
 
@@ -191,6 +193,13 @@ class AddressLookUpController extends AbstractController {
       const cache = this.cacheService.addDataToCache(request.signedCookies, {
         [transactionId]: {
           [this.USUAL_RESIDENTIAL_ADDRESS_CACHE_KEY]: address
+        }
+      });
+      response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
+    } else if (pageType === AddressLookUpPageType.postcodeGeneralPartnerPrincipalOfficeAddress) {
+      const cache = this.cacheService.addDataToCache(request.signedCookies, {
+        [transactionId]: {
+          [this.PRINCIPAL_OFFICE_ADDRESS_CACHE_KEY]: address
         }
       });
       response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
@@ -440,8 +449,10 @@ class AddressLookUpController extends AbstractController {
       cacheKey = this.USUAL_RESIDENTIAL_ADDRESS_TERRITORY_CHOICE_CACHE_KEY;
     } else if (pageType === AddressLookUpPageType.territoryChoiceGeneralPartnerPrincipalOfficeAddress) {
       cacheKey = this.PRINCIPAL_OFFICE_ADDRESS_TERRITORY_CHOICE_CACHE_KEY;
-    } else {
+    } else if (this.isGeneralPartnerUsualResidentialAddressPage(pageType)) {
       cacheKey = this.USUAL_RESIDENTIAL_ADDRESS_CACHE_KEY;
+    } else if (this.isGeneralPartnerPrincipalOfficeAddressPage(pageType)) {
+      cacheKey = this.PRINCIPAL_OFFICE_ADDRESS_CACHE_KEY;
     }
 
     return cacheKey;
@@ -461,6 +472,23 @@ class AddressLookUpController extends AbstractController {
       AddressLookUpPageType.chooseRegisteredOfficeAddress,
       AddressLookUpPageType.enterRegisteredOfficeAddress,
       AddressLookUpPageType.confirmRegisteredOfficeAddress
+    ];
+    return allowedPages.includes(pageType);
+  }
+
+  private isGeneralPartnerUsualResidentialAddressPage(pageType: AddressLookUpPageType): boolean {
+    const allowedPages: AddressLookUpPageType[] = [
+      AddressLookUpPageType.chooseGeneralPartnerUsualResidentialAddress,
+      AddressLookUpPageType.enterGeneralPartnerUsualResidentialAddress,
+      AddressLookUpPageType.confirmGeneralPartnerUsualResidentialAddress
+    ];
+    return allowedPages.includes(pageType);
+  }
+
+  private isGeneralPartnerPrincipalOfficeAddressPage(pageType: AddressLookUpPageType): boolean {
+    const allowedPages: AddressLookUpPageType[] = [
+      AddressLookUpPageType.chooseGeneralPartnerPrincipalOfficeAddress,
+      AddressLookUpPageType.enterGeneralPartnerPrincipalOfficeAddress
     ];
     return allowedPages.includes(pageType);
   }
