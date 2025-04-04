@@ -97,10 +97,17 @@
                 "addressLinkHidden" : "principal place of business address",
                 "publicRegisterLine1": "We'll show the principal place of business address on the public register."
             },
+
             "usualResidentialAddress": {
                 "title": "Confirm the general partner's usual residential address",
                 "addressLinkHidden": "usual residential address",
                 "publicRegisterLine1": "We will not show the general partner's usual residential address."
+            },
+
+            "principalOfficeAddress": {
+                "title": "Confirm the general partner's principal office address",
+                "addressLinkHidden": "principal office address",
+                "publicRegisterLine1": "We will not show the general partner's principal office address."
             }
         },
         

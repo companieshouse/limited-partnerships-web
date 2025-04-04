@@ -22,7 +22,7 @@ class LimitedPartnershipBuilder {
       address_line_2: "line 2",
       locality: "stoke-on-trent",
       region: "region",
-      country: "england"
+      country: "England"
     },
     term: Term.BY_AGREEMENT,
     sic_codes: ["1234", "5678"]

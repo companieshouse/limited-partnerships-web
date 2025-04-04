@@ -5,21 +5,21 @@ import enTranslationText from "../../../../../../../locales/en/translations.json
 import cyTranslationText from "../../../../../../../locales/cy/translations.json";
 
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
-import { CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../../controller/addressLookUp/url";
+import { CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../../../../controller/addressLookUp/url";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
-import AddressPageType from "../../../../../controller/addressLookUp/PageType";
-import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
 import GeneralPartnerBuilder from "../../../../builder/GeneralPartnerBuilder";
+import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import { LIMITED_PARTNERS_URL } from "../../../../../controller/registration/url";
+import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
 
-describe("Confirm General Partner Usual Residential Address Page", () => {
-  const URL = getUrl(CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
+describe("Confirm General Partner Principal Office Address Page", () => {
+  const URL = getUrl(CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
 
   beforeEach(() => {
     setLocalesEnabled(false);
     appDevDependencies.cacheRepository.feedCache({
       [appDevDependencies.transactionGateway.transactionId]: {
-        ["usual_residential_address"]: {
+        ["principal_office_address"]: {
           postal_code: "ST6 3LJ",
           premises: "4",
           address_line_1: "line 1",
@@ -39,14 +39,14 @@ describe("Confirm General Partner Usual Residential Address Page", () => {
     appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
   });
 
-  describe("GET Confirm Usual Residential Address Page", () => {
-    it("should load the confirm usual residential address page with English text", async () => {
+  describe("GET Confirm Principal Office Address Page", () => {
+    it("should load the confirm principal office address page with English text", async () => {
       setLocalesEnabled(true);
 
       const res = await request(app).get(URL + "?lang=en");
 
       expect(res.status).toBe(200);
-      testTranslations(res.text, enTranslationText.address.confirm.usualResidentialAddress);
+      testTranslations(res.text, enTranslationText.address.confirm.principalOfficeAddress);
       expect(res.text).not.toContain("WELSH -");
 
       expect(res.text).toContain("4 Line 1");
@@ -57,13 +57,13 @@ describe("Confirm General Partner Usual Residential Address Page", () => {
       expect(res.text).toContain("ST6 3LJ");
     });
 
-    it("should load the confirm usual residential address page with Welsh text", async () => {
+    it("should load the confirm principal office address page with Welsh text", async () => {
       setLocalesEnabled(true);
 
       const res = await request(app).get(URL + "?lang=cy");
 
       expect(res.status).toBe(200);
-      testTranslations(res.text, cyTranslationText.address.confirm.usualResidentialAddress);
+      testTranslations(res.text, cyTranslationText.address.confirm.principalOfficeAddress);
 
       expect(res.text).toContain("4 Line 1");
       expect(res.text).toContain("Line 2");
@@ -74,12 +74,12 @@ describe("Confirm General Partner Usual Residential Address Page", () => {
     });
   });
 
-  describe("POST Confirm Usual Residential Address Page", () => {
+  describe("POST confirm Principal Office Address Page", () => {
     it("should redirect to the next page", async () => {
       const res = await request(app)
         .post(URL)
         .send({
-          pageType: AddressPageType.confirmGeneralPartnerUsualResidentialAddress,
+          pageType: AddressPageType.confirmGeneralPartnerPrincipalOfficeAddress,
           address: `{
             "postal_code": "ST6 3LJ",
             "premises": "4",
@@ -100,7 +100,7 @@ describe("Confirm General Partner Usual Residential Address Page", () => {
       appDevDependencies.cacheRepository.feedCache({});
 
       const res = await request(app).post(URL).send({
-        pageType: AddressPageType.confirmGeneralPartnerUsualResidentialAddress
+        pageType: AddressPageType.confirmGeneralPartnerPrincipalOfficeAddress
       });
 
       expect(res.status).toBe(200);
@@ -124,7 +124,7 @@ describe("Confirm General Partner Usual Residential Address Page", () => {
       appDevDependencies.generalPartnerGateway.feedErrors(apiErrors);
 
       const res = await request(app).post(URL).send({
-        pageType: AddressPageType.confirmGeneralPartnerUsualResidentialAddress,
+        pageType: AddressPageType.confirmGeneralPartnerPrincipalOfficeAddress,
         address: `{"postal_code": "ST6 3LJ","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": ""}`
       });
 

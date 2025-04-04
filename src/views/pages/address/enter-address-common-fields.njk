@@ -1,19 +1,5 @@
 {% set validatePostcode = "validateInput(this, 15, '" + i18n.address.enterAddress.errorMessages.postcodeMissing | escape + "', '" + i18n.address.enterAddress.errorMessages.postcodeLength | escape + "');" %}
 
-<fieldset class="govuk-fieldset">
-  <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-    <h1 class="govuk-heading-xl">
-      {{ pageTitle }}
-    </h1>
-  </legend>
-
-  <p class="govuk-hint">{{ titleHint1 }}</p>
-  <p class="govuk-hint">{{ titleHint2 }}</p>
-  <p class="govuk-hint">{{ titleHint3 }}</p>
-
-  <br>
-</fieldset>
-
 {% include "pages/address/enter-address-fields.njk" %}
 
 {{ govukInput({
@@ -56,19 +42,19 @@
     text: i18n.address.enterAddress.countrySelect
   },
   {
-    value: "GB-ENG",
+    value: "England",
     text: i18n.address.enterAddress.countryEngland
   },
   {
-    value: "GB-SCT",
+    value: "Scotland",
     text: i18n.address.enterAddress.countryScotland
   },
   {
-    value: "GB-WLS",
+    value: "Wales",
     text: i18n.address.enterAddress.countryWales
   },
   {
-    value: "GB-NIR",
+    value: "Northern Ireland",
     text: i18n.address.enterAddress.countryNorthernIreland
   }]
 }) }}

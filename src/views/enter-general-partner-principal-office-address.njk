@@ -3,10 +3,11 @@
 {% set principalOfficeAddressKey = "principal_office_address" %}
 
 {% block backLink %}
+
+  {% set hrefValue = props.previousUrl %}
+
   {% if props.data.cache.poa_territory_choice == "overseas" %}
     {% set hrefValue = props.currentUrl | replace(props.pageType, "territory-choice-general-partner-principal-office-address") %}
-  {% else %}
-    {% set hrefValue = props.currentUrl | replace(props.pageType, "postcode-general-partner-principal-office-address") %}
   {% endif %}
 
   {{ govukBackLink({
@@ -36,37 +37,44 @@
       {% include "includes/general-partner-name.njk" %}
 
       <fieldset class="govuk-fieldset">
-      <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
-        <h1 class="govuk-heading-xl">
-          {{ pageTitle }}
-        </h1>
-      </legend>
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+          <h1 class="govuk-heading-xl">
+            {{ pageTitle }}
+          </h1>
+        </legend>
+      </fieldset>
+      
       <form class="form" action={{ props.currentUrl }} method="post">
         <input type="hidden" name="pageType" value={{ props.pageType }}>
          {% include "includes/csrf_token.njk" %}
           
-          {% include "pages/address/enter-address-fields.njk" %}
+            {% if props.data.cache.poa_territory_choice == "overseas" %}
+              {% include "pages/address/enter-address-fields.njk" %}
 
-          {{ govukInput({
-            label: {
-              text: i18n.address.enterAddress.principalOfficeAddress.postcodeOptional
-            },
-            classes: "govuk-input--width-10",
-            id: "postal_code",
-            name: "postal_code",
-            value: address.postal_code,
-            attributes: {
-              oninput: "validateLength(this, 15, '" + i18n.address.enterAddress.errorMessages.postcodeLength | escape + "');"
-            }
-          }) }}
+              {{ govukInput({
+                label: {
+                  text: i18n.address.enterAddress.principalOfficeAddress.postcodeOptional
+                },
+                classes: "govuk-input--width-10",
+                id: "postal_code",
+                name: "postal_code",
+                value: address.postal_code,
+                attributes: {
+                  oninput: "validateLength(this, 15, '" + i18n.address.enterAddress.errorMessages.postcodeLength | escape + "');"
+                }
+              }) }}
 
-          {% set countryFormId = "country" %}
-          {% set countryFormName = "country" %}
-          {% set countryText = i18n.address.enterAddress.country %}
-          {% set countryFormValue = address.country %}
-          {% set countryField = address.country %}
-          {% set countryFont = "govuk-!-font-weight-regular"%}
-          {% include "includes/countries.njk" %}
+              {% set countryFormId = "country" %}
+              {% set countryFormName = "country" %}
+              {% set countryText = i18n.address.enterAddress.country %}
+              {% set countryFormValue = address.country %}
+              {% set countryField = address.country %}
+              {% set countryFont = "govuk-!-font-weight-regular"%}
+              {% include "includes/countries.njk" %}
+
+            {% else %}
+              {% include "pages/address/enter-address-common-fields.njk" %}
+            {% endif %}
           
           {{ govukInsetText({
             html: "<h2 class='govuk-heading-m'>" + i18n.address.enterAddress.publicInformationTitle | escape + "</h2>

@@ -31,9 +31,7 @@ describe("Postcode Principal Place Of Business Address Page", () => {
       .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
       .build();
 
-    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
-      limitedPartnership
-    ]);
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
   });
 
   describe("Get Postcode Principal Place Of Business Address Page", () => {
@@ -119,7 +117,7 @@ describe("Postcode Principal Place Of Business Address Page", () => {
               address_line_1: "DUNCALF STREET",
               address_line_2: "",
               locality: "STOKE-ON-TRENT",
-              country: "GB-ENG"
+              country: "England"
             }
           }
         }

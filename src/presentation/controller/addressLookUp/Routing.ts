@@ -147,7 +147,7 @@ const addressRoutingChooseGeneralPartnerUsualResidentialAddress = {
 const addressRoutingConfirmGeneralPartnerUsualResidentialAddress = {
   previousUrl: url.POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   currentUrl: url.CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-  nextUrl: LIMITED_PARTNERS_URL, // TODO Change when next page ready
+  nextUrl: LIMITED_PARTNERS_URL,
   pageType: AddressPageType.confirmGeneralPartnerUsualResidentialAddress,
   data: {
     enterManualAddressPageType: AddressPageType.enterGeneralPartnerUsualResidentialAddress
@@ -169,7 +169,8 @@ const addressRoutingPostcodeGeneralPartnerPrincipalOfficeAddress = {
   nextUrl: url.CHOOSE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   pageType: AddressPageType.postcodeGeneralPartnerPrincipalOfficeAddress,
   data: {
-    enterManualAddressPageType: AddressPageType.enterGeneralPartnerPrincipalOfficeAddress
+    enterManualAddressPageType: AddressPageType.enterGeneralPartnerPrincipalOfficeAddress,
+    confirmAddressUrl: url.CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
   }
 };
 
@@ -190,6 +191,16 @@ const addressRoutingEnterGeneralPartnerPrincipalOfficeAddress = {
   pageType: AddressPageType.enterGeneralPartnerPrincipalOfficeAddress
 };
 
+const addressRoutingConfirmGeneralPartnerPrincipalOfficeAddress = {
+  previousUrl: url.POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  currentUrl: url.CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  nextUrl: LIMITED_PARTNERS_URL,
+  pageType: AddressPageType.confirmGeneralPartnerPrincipalOfficeAddress,
+  data: {
+    enterManualAddressPageType: AddressPageType.enterGeneralPartnerPrincipalOfficeAddress
+  }
+};
+
 const usualResidentialAddress = [
   addressRoutingTerritoryChoiceGeneralPartnerUsualResidentialAddress,
   addressRoutingPostcodeGeneralPartnerUsualResidentialAddress,
@@ -201,8 +212,9 @@ const usualResidentialAddress = [
 const generalPartnerPrincipalOfficeAddress = [
   addressRoutingTerritoryChoiceGeneralPartnerPrincipalOfficeAddress,
   addressRoutingPostcodeGeneralPartnerPrincipalOfficeAddress,
+  addressRoutingEnterGeneralPartnerPrincipalOfficeAddress,
   addressRoutingChooseGeneralPartnerPrincipalOfficeAddress,
-  addressRoutingEnterGeneralPartnerPrincipalOfficeAddress
+  addressRoutingConfirmGeneralPartnerPrincipalOfficeAddress
 ];
 
 export const addressLookUpRouting: PagesRouting = new Map<PageType, PageRouting>();
@@ -211,7 +223,6 @@ export const addressLookUpRouting: PagesRouting = new Map<PageType, PageRouting>
   ...principalPlaceOfBusinessAddress,
   ...usualResidentialAddress,
   ...generalPartnerPrincipalOfficeAddress
-
 ].forEach((routing) => {
   addressLookUpRouting.set(routing.pageType, routing);
 });

@@ -78,13 +78,13 @@ describe("Choose Principal Place Of Business Address Page", () => {
         .send({
           pageType: AddressPageType.choosePrincipalPlaceOfBusinessAddress,
           selected_address: `{
-          "postal_code": "ST6 3LJ",
-          "premises": "4",
-          "address_line_1": "DUNCALF STREET",
-          "address_line_2": "",
-          "locality": "STOKE-ON-TRENT",
-          "country": "GB-ENG"
-        }`
+            "postal_code": "ST6 3LJ",
+            "premises": "4",
+            "address_line_1": "DUNCALF STREET",
+            "address_line_2": "",
+            "locality": "STOKE-ON-TRENT",
+            "country": "England"
+          }`
         });
 
       expect(res.status).toBe(302);
@@ -99,7 +99,7 @@ describe("Choose Principal Place Of Business Address Page", () => {
             address_line_1: "DUNCALF STREET",
             address_line_2: "",
             locality: "STOKE-ON-TRENT",
-            country: "GB-ENG"
+            country: "England"
           }
         }
       });

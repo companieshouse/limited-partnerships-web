@@ -24,7 +24,7 @@ describe("Confirm Principal Place Of Business Address Page", () => {
           address_line_2: "line 2",
           locality: "stoke-on-trent",
           region: "region",
-          country: "GB-ENG"
+          country: "England"
         }
       }
     });
@@ -68,7 +68,7 @@ describe("Confirm Principal Place Of Business Address Page", () => {
     it("should redirect to the next page", async () => {
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.confirmPrincipalPlaceOfBusinessAddress,
-        address: `{"postal_code": "ST6 3LJ","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": "GB-ENG"}`
+        address: `{"postal_code": "ST6 3LJ","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": "England"}`
       });
 
       const redirectUrl = getUrl(TERM_URL);
@@ -104,7 +104,7 @@ describe("Confirm Principal Place Of Business Address Page", () => {
 
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.confirmPrincipalPlaceOfBusinessAddress,
-        address: `{"postal_code": "ST6 3LJ","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": "GB-ENG"}`
+        address: `{"postal_code": "ST6 3LJ","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": "England"}`
       });
 
       expect(res.status).toBe(200);

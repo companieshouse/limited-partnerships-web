@@ -6,10 +6,7 @@ import { IDependencies } from "../config/IDependencies";
 
 import * as url from "../presentation/controller/addressLookUp/url";
 
-export const addressLookUpEndpoints = (
-  router: Router,
-  dependencies: IDependencies
-): void => {
+export const addressLookUpEndpoints = (router: Router, dependencies: IDependencies): void => {
   // Registered Office Address
   router.get(
     url.POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
@@ -101,7 +98,6 @@ export const addressLookUpEndpoints = (
   );
 
   // usual residential address
-
   router.get(
     url.TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
     authentication,
@@ -158,7 +154,6 @@ export const addressLookUpEndpoints = (
   );
 
   // principal office address
-
   router.get(
     url.TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
     authentication,
@@ -200,7 +195,18 @@ export const addressLookUpEndpoints = (
   router.post(
     url.ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
     authentication,
-    dependencies.addressLookUpController.postcodeValidation()
+    dependencies.addressLookUpController.sendManualAddress()
+  );
+
+  router.get(
+    url.CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+    authentication,
+    dependencies.addressLookUpController.getPageRouting()
+  );
+  router.post(
+    url.CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+    authentication,
+    dependencies.addressLookUpController.confirmAddress()
   );
 };
 
