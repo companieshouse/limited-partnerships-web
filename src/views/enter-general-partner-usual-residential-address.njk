@@ -46,28 +46,33 @@
         <input type="hidden" name="pageType" value={{ props.pageType }}>
           {% include "includes/csrf_token.njk" %}
           
-          {% include "pages/address/enter-address-fields.njk" %}
+          {% if props.data.cache.ura_territory_choice == "overseas" %}
+            {% include "pages/address/enter-address-fields.njk" %}
 
-          {{ govukInput({
-            label: {
-              text: i18n.address.enterAddress.usualResidentialAddress.postcodeOptional
-            },
-            classes: "govuk-input--width-10",
-            id: "postal_code",
-            name: "postal_code",
-            value: address.postal_code,
-            attributes: {
-              oninput: "validateLength(this, 15, '" + i18n.address.enterAddress.errorMessages.postcodeLength | escape + "');"
-            }
-          }) }}
+            {{ govukInput({
+              label: {
+                text: i18n.address.enterAddress.usualResidentialAddress.postcodeOptional
+              },
+              classes: "govuk-input--width-10",
+              id: "postal_code",
+              name: "postal_code",
+              value: address.postal_code,
+              attributes: {
+                oninput: "validateLength(this, 15, '" + i18n.address.enterAddress.errorMessages.postcodeLength | escape + "');"
+              }
+            }) }}
 
-          {% set countryFormId = "country" %}
-          {% set countryFormName = "country" %}
-          {% set countryText = i18n.address.enterAddress.country %}
-          {% set countryFormValue = address.country %}
-          {% set countryField = address.country %}
-          {% set countryFont = "govuk-!-font-weight-regular"%}
-          {% include "includes/countries.njk" %}
+            {% set countryFormId = "country" %}
+            {% set countryFormName = "country" %}
+            {% set countryText = i18n.address.enterAddress.country %}
+            {% set countryFormValue = address.country %}
+            {% set countryField = address.country %}
+            {% set countryFont = "govuk-!-font-weight-regular"%}
+            {% include "includes/countries.njk" %}
+
+          {% else %}
+            {% include "pages/address/enter-address-common-fields.njk" %}
+          {% endif %}
           
           {{ govukInsetText({
             html: "<h2 class='govuk-heading-m'>" + i18n.address.enterAddress.publicInformationTitle | escape + "</h2>

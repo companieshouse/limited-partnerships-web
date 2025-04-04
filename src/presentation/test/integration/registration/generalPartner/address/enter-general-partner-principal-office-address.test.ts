@@ -41,6 +41,7 @@ describe("Enter general partner's principal office manual address page", () => {
         "postcodeMissing",
         "postcodeLength",
         "usualResidentialAddress",
+        "principalOfficeAddress"
       ]);
       expect(res.text).not.toContain("WELSH -");
       expect(res.text).not.toContain(generalPartnerPerson.forename?.toUpperCase());
@@ -67,6 +68,7 @@ describe("Enter general partner's principal office manual address page", () => {
         "postcodeMissing",
         "postcodeLength",
         "usualResidentialAddress",
+        "principalOfficeAddress"
       ]);
       expect(res.text).toContain("WELSH -");
       expect(res.text).not.toContain(generalPartnerPerson.forename?.toUpperCase());
