@@ -6,7 +6,12 @@ import cyTranslationText from "../../../../../../../locales/cy/translations.json
 import app from "../../../app";
 
 import * as config from "config";
-import { CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL, ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL, POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL, TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../../controller/addressLookUp/url";
+import {
+  CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
+} from "../../../../../controller/addressLookUp/url";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
@@ -47,6 +52,7 @@ describe("Enter Usual Residential Address Page", () => {
         "postcodeMissing",
         "postcodeLength",
         "principalOfficeAddress",
+        "postcodeOptional"
       ]);
       expect(res.text).not.toContain("WELSH -");
       expect(res.text).toContain(generalPartnerPerson.forename?.toUpperCase());
@@ -63,6 +69,11 @@ describe("Enter Usual Residential Address Page", () => {
         .build();
 
       appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+      appDevDependencies.cacheRepository.feedCache({
+        [appDevDependencies.transactionGateway.transactionId]: {
+          ura_territory_choice: "overseas"
+        }
+      });
 
       const res = await request(app).get(URL + "?lang=cy");
 
@@ -74,7 +85,7 @@ describe("Enter Usual Residential Address Page", () => {
         "postcodeMissing",
         "postcodeLength",
         "postcode",
-        "principalOfficeAddress",
+        "principalOfficeAddress"
       ]);
 
       expect(res.text).toContain(generalPartnerPerson.forename?.toUpperCase());
@@ -83,10 +94,9 @@ describe("Enter Usual Residential Address Page", () => {
     });
 
     it("should load enter general partners usual residential address manual entry page with overseas back link", async () => {
-      appDevDependencies.cacheRepository.feedCache({ territory_choice: "overseas" });
       appDevDependencies.cacheRepository.feedCache({
         [appDevDependencies.transactionGateway.transactionId]: {
-          "territory_choice": "overseas"
+          ura_territory_choice: "overseas"
         }
       });
 
@@ -96,14 +106,12 @@ describe("Enter Usual Residential Address Page", () => {
       expect(res.status).toBe(200);
 
       expect(res.text).toContain(redirectUrl);
-
     });
 
     it("should load enter general partners usual residential address manual entry page with postcode lookup back link", async () => {
-      appDevDependencies.cacheRepository.feedCache({ territory_choice: "overseas" });
       appDevDependencies.cacheRepository.feedCache({
         [appDevDependencies.transactionGateway.transactionId]: {
-          "territory_choice": "unitedKingdom"
+          ura_territory_choice: "unitedKingdom"
         }
       });
       const redirectUrl = getUrl(POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
@@ -111,7 +119,6 @@ describe("Enter Usual Residential Address Page", () => {
       expect(res.status).toBe(200);
 
       expect(res.text).toContain(redirectUrl);
-
     });
   });
 
@@ -131,17 +138,15 @@ describe("Enter Usual Residential Address Page", () => {
           }
         }
       });
-      const res = await request(app)
-        .post(URL)
-        .send({
-          pageType: AddressPageType.enterGeneralPartnerUsualResidentialAddress,
-          postal_code: "",
-          premises: "4",
-          address_line_1: "DUNCALF STREET",
-          address_line_2: "",
-          locality: "STOKE-ON-TRENT",
-          country: "GB-ENG",
-        });
+      const res = await request(app).post(URL).send({
+        pageType: AddressPageType.enterGeneralPartnerUsualResidentialAddress,
+        postal_code: "",
+        premises: "4",
+        address_line_1: "DUNCALF STREET",
+        address_line_2: "",
+        locality: "STOKE-ON-TRENT",
+        country: "England"
+      });
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
@@ -155,7 +160,7 @@ describe("Enter Usual Residential Address Page", () => {
             address_line_1: "DUNCALF STREET",
             address_line_2: "",
             locality: "STOKE-ON-TRENT",
-            country: "GB-ENG",
+            country: "England",
             region: undefined
           }
         }
@@ -213,7 +218,7 @@ describe("Enter Usual Residential Address Page", () => {
 
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.confirmRegisteredOfficeAddress,
-        address: `{"postal_code": "","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": "GB-ENG"}`
+        address: `{"postal_code": "","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": "England"}`
       });
 
       expect(res.status).toBe(302);

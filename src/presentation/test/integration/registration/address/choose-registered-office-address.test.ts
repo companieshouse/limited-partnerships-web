@@ -78,13 +78,13 @@ describe("Choose Registered Office Address Page", () => {
         .send({
           pageType: AddressPageType.chooseRegisteredOfficeAddress,
           selected_address: `{
-          "postal_code": "ST6 3LJ",
-          "premises": "4",
-          "address_line_1": "DUNCALF STREET",
-          "address_line_2": "",
-          "locality": "STOKE-ON-TRENT",
-          "country": "GB-ENG"
-        }`
+            "postal_code": "ST6 3LJ",
+            "premises": "4",
+            "address_line_1": "DUNCALF STREET",
+            "address_line_2": "",
+            "locality": "STOKE-ON-TRENT",
+            "country": "England"
+          }`
         });
 
       const redirectUrl = getUrl(CONFIRM_REGISTERED_OFFICE_ADDRESS_URL);
@@ -100,7 +100,7 @@ describe("Choose Registered Office Address Page", () => {
             address_line_1: "DUNCALF STREET",
             address_line_2: "",
             locality: "STOKE-ON-TRENT",
-            country: "GB-ENG"
+            country: "England"
           }
         }
       });

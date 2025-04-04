@@ -26,7 +26,7 @@ describe("Confirm General Partner Principal Office Address Page", () => {
           address_line_2: "line 2",
           locality: "stoke-on-trent",
           region: "region",
-          country: "GB-ENG"
+          country: "England"
         }
       }
     });
@@ -86,7 +86,7 @@ describe("Confirm General Partner Principal Office Address Page", () => {
             "address_line_1": "DUNCALF STREET",
             "address_line_2": "",
             "locality": "STOKE-ON-TRENT",
-            "country": "GB-ENG"
+            "country": "England"
           }`
         });
 

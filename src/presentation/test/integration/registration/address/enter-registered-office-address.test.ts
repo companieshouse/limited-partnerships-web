@@ -33,7 +33,7 @@ describe("Enter Registered Office Address Page", () => {
         "jurisdictionCountry",
         "usualResidentialAddress",
         "principalPlaceOfBusinessAddress",
-        "principalOfficeAddress",
+        "principalOfficeAddress"
       ]);
       expect(res.text).not.toContain("WELSH -");
     });
@@ -48,7 +48,7 @@ describe("Enter Registered Office Address Page", () => {
         "jurisdictionCountry",
         "usualResidentialAddress",
         "principalPlaceOfBusinessAddress",
-        "principalOfficeAddress",
+        "principalOfficeAddress"
       ]);
     });
   });
@@ -63,7 +63,7 @@ describe("Enter Registered Office Address Page", () => {
 
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.enterRegisteredOfficeAddress,
-        country: "GB-WLS"
+        country: "Wales"
       });
 
       const redirectUrl = getUrl(CONFIRM_REGISTERED_OFFICE_ADDRESS_URL);
@@ -78,7 +78,7 @@ describe("Enter Registered Office Address Page", () => {
 
       const res = await request(app).post(URL).send({
         pageType: "Invalid page type",
-        country: "GB-SCT"
+        country: "Scotland"
       });
 
       expect(res.status).toBe(500);
@@ -92,7 +92,7 @@ describe("Enter Registered Office Address Page", () => {
 
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.enterRegisteredOfficeAddress,
-        country: "GB-NIR"
+        country: "Northern Ireland"
       });
 
       expect(res.status).toBe(200);
@@ -111,7 +111,7 @@ describe("Enter Registered Office Address Page", () => {
         .post(URL + "?lang=cy")
         .send({
           pageType: AddressPageType.enterRegisteredOfficeAddress,
-          country: "GB-NIR"
+          country: "Northern Ireland"
         });
 
       expect(res.status).toBe(200);
@@ -128,7 +128,7 @@ describe("Enter Registered Office Address Page", () => {
 
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.enterRegisteredOfficeAddress,
-        country: "GB-SCT"
+        country: "Scotland"
       });
 
       expect(res.status).toBe(200);
@@ -145,7 +145,7 @@ describe("Enter Registered Office Address Page", () => {
 
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.enterRegisteredOfficeAddress,
-        country: "GB-SCT"
+        country: "Scotland"
       });
 
       expect(res.status).toBe(200);

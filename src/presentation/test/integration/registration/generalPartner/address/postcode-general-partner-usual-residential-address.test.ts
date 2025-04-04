@@ -12,7 +12,11 @@ import GeneralPartnerBuilder, {
   generalPartnerPerson
 } from "../../../../builder/GeneralPartnerBuilder";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
-import { CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL, CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL, POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../../controller/addressLookUp/url";
+import {
+  CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
+} from "../../../../../controller/addressLookUp/url";
 import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
 
 describe("Postcode Usual Residential Address Page", () => {
@@ -29,9 +33,7 @@ describe("Postcode Usual Residential Address Page", () => {
       .isPerson()
       .build();
 
-    appDevDependencies.generalPartnerGateway.feedGeneralPartners([
-      generalPartner
-    ]);
+    appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
   });
 
   describe("Get Postcode Usual Residential Address Page", () => {
@@ -48,7 +50,10 @@ describe("Postcode Usual Residential Address Page", () => {
       const res = await request(app).get(URL + "?lang=en");
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(toEscapedHtml(enTranslationText.address.findPostcode.usualResidentialAddress.whatIsUsualResidentialAddress) + ` - ${enTranslationText.service} - GOV.UK`);
+      expect(res.text).toContain(
+        toEscapedHtml(enTranslationText.address.findPostcode.usualResidentialAddress.whatIsUsualResidentialAddress) +
+          ` - ${enTranslationText.service} - GOV.UK`
+      );
       testTranslations(res.text, enTranslationText.address.findPostcode, [
         "registeredOfficeAddress",
         "principalPlaceOfBusiness",
@@ -75,7 +80,10 @@ describe("Postcode Usual Residential Address Page", () => {
 
       expect(res.status).toBe(200);
 
-      expect(res.text).toContain(toEscapedHtml(cyTranslationText.address.findPostcode.usualResidentialAddress.whatIsUsualResidentialAddress) + ` - ${cyTranslationText.service} - GOV.UK`);
+      expect(res.text).toContain(
+        toEscapedHtml(cyTranslationText.address.findPostcode.usualResidentialAddress.whatIsUsualResidentialAddress) +
+          ` - ${cyTranslationText.service} - GOV.UK`
+      );
       testTranslations(res.text, cyTranslationText.address.findPostcode, [
         "registeredOfficeAddress",
         "principalPlaceOfBusiness",
@@ -135,7 +143,7 @@ describe("Postcode Usual Residential Address Page", () => {
               address_line_1: "DUNCALF STREET",
               address_line_2: "",
               locality: "STOKE-ON-TRENT",
-              country: "GB-ENG"
+              country: "England"
             }
           }
         }

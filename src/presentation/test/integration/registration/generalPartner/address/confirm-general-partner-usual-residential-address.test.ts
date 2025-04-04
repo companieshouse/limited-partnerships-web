@@ -28,7 +28,7 @@ describe("Confirm General Partner Usual Residential Address Page", () => {
           address_line_2: "line 2",
           locality: "stoke-on-trent",
           region: "region",
-          country: "GB-ENG"
+          country: "England"
         }
       }
     });
@@ -83,13 +83,13 @@ describe("Confirm General Partner Usual Residential Address Page", () => {
         .send({
           pageType: AddressPageType.confirmGeneralPartnerUsualResidentialAddress,
           address: `{
-        "postal_code": "ST6 3LJ",
-        "premises": "4",
-        "address_line_1": "DUNCALF STREET",
-        "address_line_2": "",
-        "locality": "STOKE-ON-TRENT",
-        "country": "GB-ENG"
-        }`
+            "postal_code": "ST6 3LJ",
+            "premises": "4",
+            "address_line_1": "DUNCALF STREET",
+            "address_line_2": "",
+            "locality": "STOKE-ON-TRENT",
+            "country": "England"
+          }`
         });
 
       const redirectUrl = getUrl(TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);

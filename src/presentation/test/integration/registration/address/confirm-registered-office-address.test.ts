@@ -26,7 +26,7 @@ describe("Confirm Registered Office Address Page", () => {
           address_line_2: "line 2",
           locality: "stoke-on-trent",
           region: "region",
-          country: "GB-ENG"
+          country: "England"
         }
       }
     });
@@ -57,7 +57,7 @@ describe("Confirm Registered Office Address Page", () => {
     });
 
     describe("Map Country Code", () => {
-      it("should return Wales if country code is GB-WLS", async () => {
+      it("should return Wales if country code is Wales", async () => {
         appDevDependencies.cacheRepository.feedCache({
           [appDevDependencies.transactionGateway.transactionId]: {
             ["registered_office_address"]: {
@@ -66,7 +66,7 @@ describe("Confirm Registered Office Address Page", () => {
               address_line_1: "OAKLANDS CLOSE",
               address_line_2: "",
               locality: "CARDIFF",
-              country: "GB-WLS"
+              country: "Wales"
             }
           }
         });
@@ -77,7 +77,7 @@ describe("Confirm Registered Office Address Page", () => {
         expect(res.text).toContain("Wales");
       });
 
-      it("should return Scotland if country code is GB-SCT", async () => {
+      it("should return Scotland if country code is Scotland", async () => {
         appDevDependencies.cacheRepository.feedCache({
           [appDevDependencies.transactionGateway.transactionId]: {
             ["registered_office_address"]: {
@@ -86,7 +86,7 @@ describe("Confirm Registered Office Address Page", () => {
               address_line_1: "MAIN AVENUE",
               address_line_2: "",
               locality: "INVERGORDON",
-              country: "GB-SCT"
+              country: "Scotland"
             }
           }
         });
@@ -97,7 +97,7 @@ describe("Confirm Registered Office Address Page", () => {
         expect(res.text).toContain("Scotland");
       });
 
-      it("should return Northern Ireland if country code is GB-NIR", async () => {
+      it("should return Northern Ireland if country code is Northern Ireland", async () => {
         appDevDependencies.cacheRepository.feedCache({
           [appDevDependencies.transactionGateway.transactionId]: {
             ["registered_office_address"]: {
@@ -106,7 +106,7 @@ describe("Confirm Registered Office Address Page", () => {
               address_line_1: "GLENMACHAN CLOSE",
               address_line_2: "",
               locality: "BELFAST",
-              country: "GB-NIR"
+              country: "Northern Ireland"
             }
           }
         });
@@ -132,7 +132,7 @@ describe("Confirm Registered Office Address Page", () => {
     it("should redirect to the next page", async () => {
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.confirmRegisteredOfficeAddress,
-        address: `{"postal_code": "ST6 3LJ","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": "GB-ENG"}`
+        address: `{"postal_code": "ST6 3LJ","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": "England"}`
       });
 
       const redirectUrl = getUrl(POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL);
@@ -168,7 +168,7 @@ describe("Confirm Registered Office Address Page", () => {
 
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.confirmRegisteredOfficeAddress,
-        address: `{"postal_code": "ST6 3LJ","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": "GB-ENG"}`
+        address: `{"postal_code": "ST6 3LJ","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": "England"}`
       });
 
       expect(res.status).toBe(200);

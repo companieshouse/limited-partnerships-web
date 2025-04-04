@@ -12,7 +12,6 @@ import * as config from "config";
 import AddressPageType from "presentation/controller/addressLookUp/PageType";
 
 describe("Choose usual residential address of the general partner page", () => {
-
   beforeEach(() => {
     setLocalesEnabled(false);
     appDevDependencies.addressLookUpGateway.setError(false);
@@ -34,7 +33,6 @@ describe("Choose usual residential address of the general partner page", () => {
   const REDIRECT_URL = getUrl(CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
 
   describe("GET choose usual residential address of the general partner page", () => {
-
     it("should load the choose usual residential address of the general partner page with Welsh text", async () => {
       setLocalesEnabled(true);
 
@@ -74,20 +72,19 @@ describe("Choose usual residential address of the general partner page", () => {
   });
 
   describe("POST choose usual residential address of the general partner page", () => {
-
     it("should redirect to the next page and add select address to cache", async () => {
       const res = await request(app)
         .post(URL)
         .send({
           pageType: AddressPageType.chooseGeneralPartnerUsualResidentialAddress,
           selected_address: `{
-          "postal_code": "ST6 3LJ",
-          "premises": "4",
-          "address_line_1": "DUNCALF STREET",
-          "address_line_2": "",
-          "locality": "STOKE-ON-TRENT",
-          "country": "GB-ENG"
-        }`
+            "postal_code": "ST6 3LJ",
+            "premises": "4",
+            "address_line_1": "DUNCALF STREET",
+            "address_line_2": "",
+            "locality": "STOKE-ON-TRENT",
+            "country": "England"
+          }`
         });
 
       expect(res.status).toBe(302);
@@ -102,7 +99,7 @@ describe("Choose usual residential address of the general partner page", () => {
             address_line_1: "DUNCALF STREET",
             address_line_2: "",
             locality: "STOKE-ON-TRENT",
-            country: "GB-ENG"
+            country: "England"
           }
         }
       });

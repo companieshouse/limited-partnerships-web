@@ -103,11 +103,11 @@ class AddressLookUpService {
     let isCorrectCountry = true;
 
     const IS_BORDER = ukAddresses[0]?.country === "border";
-    const ENGLAND = ["GB-ENG", "Channel Island", "Isle of Man"];
+    const ENGLAND = ["England", "Channel Island", "Isle of Man"];
     const IS_IN_ENGLAND = ENGLAND.includes(ukAddresses[0]?.country);
-    const IS_IN_WALES = ukAddresses[0]?.country === "GB-WLS";
-    const IS_IN_SCOTLAND = ukAddresses[0]?.country === "GB-SCT";
-    const IS_IN_NORTHEN_IRELAND = ukAddresses[0]?.country === "GB-NIR";
+    const IS_IN_WALES = ukAddresses[0]?.country === "Wales";
+    const IS_IN_SCOTLAND = ukAddresses[0]?.country === "Scotland";
+    const IS_IN_NORTHEN_IRELAND = ukAddresses[0]?.country === "Northern Ireland";
 
     if (IS_BORDER || ukAddresses[0]?.country === "") {
       return isCorrectCountry;
@@ -156,9 +156,9 @@ class AddressLookUpService {
     uiErrors: UIErrors
   ): boolean {
     const isValid =
-      (jurisdiction === Jurisdiction.SCOTLAND && country === "GB-SCT") ||
-      (jurisdiction === Jurisdiction.NORTHERN_IRELAND && country === "GB-NIR") ||
-      (jurisdiction === Jurisdiction.ENGLAND_AND_WALES && (country === "GB-ENG" || country === "GB-WLS"));
+      (jurisdiction === Jurisdiction.SCOTLAND && country === "Scotland") ||
+      (jurisdiction === Jurisdiction.NORTHERN_IRELAND && country === "Northern Ireland") ||
+      (jurisdiction === Jurisdiction.ENGLAND_AND_WALES && (country === "England" || country === "Wales"));
 
     if (!isValid) {
       this.setFieldError(uiErrors, "country", this.i18n?.address?.enterAddress?.errorMessages?.jurisdictionCountry);
