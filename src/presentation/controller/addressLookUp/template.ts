@@ -41,5 +41,8 @@ export const TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_TEMPLATE 
   AddressPageType.territoryChoiceGeneralPartnerPrincipalOfficeAddress;
 export const POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_TEMPLATE =
   AddressPageType.postcodeGeneralPartnerPrincipalOfficeAddress;
+export const CHOOSE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_TEMPLATE =
+  AddressPageType.chooseGeneralPartnerPrincipalOfficeAddress;
 export const ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_TEMPLATE =
   AddressPageType.enterGeneralPartnerPrincipalOfficeAddress;
+
