@@ -68,6 +68,22 @@
           },
           {
             key: {
+              text: i18n.checkYourAnswersPage.jurisdiction
+            },
+            value: {
+              text: props.data.limitedPartnership.data.jurisdiction
+            },
+            actions: {
+              items: [ CREATE_CHANGE_LINK(
+                i18n.checkYourAnswersPage.change,
+                currentUrl | replace(checkYourAnswers, "where-is-the-jurisdiction#jurisdiction"),
+                partnershipNameChangeText,
+                "change-jurisdiction-button"
+              ) ]
+            }
+          },
+          {
+            key: {
               text: i18n.checkYourAnswersPage.headingTerm
             },
             value: {

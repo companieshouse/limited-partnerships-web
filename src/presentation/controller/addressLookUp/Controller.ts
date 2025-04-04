@@ -416,10 +416,10 @@ class AddressLookUpController extends AbstractController {
       cacheKey = this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY;
     } else if (pageType === AddressLookUpPageType.territoryChoiceGeneralPartnerUsualResidentialAddress) {
       cacheKey = this.USUAL_RESIDENTIAL_ADDRESS_TERRITORY_CHOICE_CACHE_KEY;
-    } else if (this.isGeneralPartnerUsualResidentialAddressPage(pageType)) {
-      cacheKey = this.USUAL_RESIDENTIAL_ADDRESS_CACHE_KEY;
     } else if (pageType === AddressLookUpPageType.territoryChoiceGeneralPartnerPrincipalOfficeAddress) {
       cacheKey = this.PRINCIPAL_OFFICE_ADDRESS_TERRITORY_CHOICE_CACHE_KEY;
+    } else if (this.isGeneralPartnerUsualResidentialAddressPage(pageType)) {
+      cacheKey = this.USUAL_RESIDENTIAL_ADDRESS_CACHE_KEY;
     } else if (this.isGeneralPartnerPrincipalOfficeAddressPage(pageType)) {
       cacheKey = this.PRINCIPAL_OFFICE_ADDRESS_CACHE_KEY;
     }

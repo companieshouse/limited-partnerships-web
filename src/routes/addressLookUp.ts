@@ -177,6 +177,17 @@ export const addressLookUpEndpoints = (router: Router, dependencies: IDependenci
   );
 
   router.get(
+    url.CHOOSE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+    authentication,
+    dependencies.addressLookUpController.getPageRouting()
+  );
+  router.post(
+    url.CHOOSE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+    authentication,
+    dependencies.addressLookUpController.selectAddress()
+  );
+
+  router.get(
     url.ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
     authentication,
     dependencies.addressLookUpController.getPageRouting()
