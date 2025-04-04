@@ -146,7 +146,7 @@ const addressRoutingChooseGeneralPartnerUsualResidentialAddress = {
 const addressRoutingConfirmGeneralPartnerUsualResidentialAddress = {
   previousUrl: url.POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   currentUrl: url.CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-  nextUrl: url.TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  nextUrl: LIMITED_PARTNERS_URL,
   pageType: AddressPageType.confirmGeneralPartnerUsualResidentialAddress,
   data: {
     enterManualAddressPageType: AddressPageType.enterGeneralPartnerUsualResidentialAddress

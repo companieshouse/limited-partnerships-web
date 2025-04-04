@@ -1,19 +1,5 @@
 {% set validatePostcode = "validateInput(this, 15, '" + i18n.address.enterAddress.errorMessages.postcodeMissing | escape + "', '" + i18n.address.enterAddress.errorMessages.postcodeLength | escape + "');" %}
 
-<fieldset class="govuk-fieldset">
-  <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-    <h1 class="govuk-heading-xl">
-      {{ pageTitle }}
-    </h1>
-  </legend>
-
-  <p class="govuk-hint">{{ titleHint1 }}</p>
-  <p class="govuk-hint">{{ titleHint2 }}</p>
-  <p class="govuk-hint">{{ titleHint3 }}</p>
-
-  <br>
-</fieldset>
-
 {% include "pages/address/enter-address-fields.njk" %}
 
 {{ govukInput({

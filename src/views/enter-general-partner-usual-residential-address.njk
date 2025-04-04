@@ -3,10 +3,10 @@
 {% set usualResidentialAddressKey = "usual_residential_address" %}
 
 {% block backLink %}
+  {% set hrefValue = props.previousUrl %}
+
   {% if props.data.cache.ura_territory_choice == "overseas" %}
     {% set hrefValue = props.currentUrl | replace(props.pageType, "territory-choice-general-partner-usual-residential-address") %}
-  {% else %}
-    {% set hrefValue = props.currentUrl | replace(props.pageType, "postcode-general-partner-usual-residential-address") %}
   {% endif %}
 
   {{ govukBackLink({
@@ -42,6 +42,8 @@
             {{ pageTitle }}
             </h1>
         </legend>
+      </fieldset>
+      
       <form class="form" action={{ props.currentUrl }} method="post">
         <input type="hidden" name="pageType" value={{ props.pageType }}>
           {% include "includes/csrf_token.njk" %}

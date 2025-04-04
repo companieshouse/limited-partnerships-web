@@ -3,10 +3,11 @@
 {% set principalOfficeAddressKey = "principal_office_address" %}
 
 {% block backLink %}
+
+  {% set hrefValue = props.previousUrl %}
+
   {% if props.data.cache.poa_territory_choice == "overseas" %}
     {% set hrefValue = props.currentUrl | replace(props.pageType, "territory-choice-general-partner-principal-office-address") %}
-  {% else %}
-    {% set hrefValue = props.currentUrl | replace(props.pageType, "postcode-general-partner-principal-office-address") %}
   {% endif %}
 
   {{ govukBackLink({
@@ -36,11 +37,13 @@
       {% include "includes/general-partner-name.njk" %}
 
       <fieldset class="govuk-fieldset">
-      <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
-        <h1 class="govuk-heading-xl">
-          {{ pageTitle }}
-        </h1>
-      </legend>
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+          <h1 class="govuk-heading-xl">
+            {{ pageTitle }}
+          </h1>
+        </legend>
+      </fieldset>
+      
       <form class="form" action={{ props.currentUrl }} method="post">
         <input type="hidden" name="pageType" value={{ props.pageType }}>
          {% include "includes/csrf_token.njk" %}
