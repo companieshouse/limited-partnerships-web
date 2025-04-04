@@ -107,7 +107,7 @@ class AddressLookUpService {
     const IS_IN_ENGLAND = ENGLAND.includes(ukAddresses[0]?.country);
     const IS_IN_WALES = ukAddresses[0]?.country === "Wales";
     const IS_IN_SCOTLAND = ukAddresses[0]?.country === "Scotland";
-    const IS_IN_NORTHEN_IRELAND = ukAddresses[0]?.country === "Northern Ireland";
+    const IS_IN_NORTHERN_IRELAND = ukAddresses[0]?.country === "Northern Ireland";
 
     if (IS_BORDER || ukAddresses[0]?.country === "") {
       return isCorrectCountry;
@@ -129,7 +129,7 @@ class AddressLookUpService {
         "postal_code",
         this.i18n?.address?.findPostcode?.errorMessages?.jurisdictionScotland
       );
-    } else if (jurisdiction === Jurisdiction.NORTHERN_IRELAND && !IS_IN_NORTHEN_IRELAND) {
+    } else if (jurisdiction === Jurisdiction.NORTHERN_IRELAND && !IS_IN_NORTHERN_IRELAND) {
       isCorrectCountry = false;
 
       this.setFieldError(
