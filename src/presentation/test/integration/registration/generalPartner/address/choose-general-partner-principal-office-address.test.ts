@@ -11,6 +11,7 @@ import * as config from "config";
 import AddressPageType from "presentation/controller/addressLookUp/PageType";
 
 describe("Choose principal office address of the general partner page", () => {
+  const URL = getUrl(CHOOSE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
 
   beforeEach(() => {
     setLocalesEnabled(false);
@@ -28,9 +29,6 @@ describe("Choose principal office address of the general partner page", () => {
       }
     });
   });
-
-  const URL = getUrl(CHOOSE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
-  // const REDIRECT_URL = getUrl(CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL); TODO
 
   describe("GET choose principal office address of the general partner page", () => {
 
@@ -90,7 +88,7 @@ describe("Choose principal office address of the general partner page", () => {
         });
 
       expect(res.status).toBe(302);
-      // expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`); TODO
+      // TODO once confirm page ready: expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
 
       const cache = appDevDependencies.cacheRepository.cache;
       expect(cache?.[`${config.APPLICATION_CACHE_KEY}`]).toEqual({
