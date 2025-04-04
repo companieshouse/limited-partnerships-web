@@ -228,6 +228,7 @@
         "headingName" : "Partnership Name",
         "headingSic" : "Standard Industrial Classification (SIC) code",
         "headingEmail" : "Registered email address",
+        "jurisdiction": "Jurisdiction",
         "headingTerm" : "Term of partnership",
         "confirm" : "Confirm this statement",
         "futureLawful" : "I confirm that the intended future activities of the limited partnership are lawful.",
