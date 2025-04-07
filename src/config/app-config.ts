@@ -11,7 +11,6 @@ import { createSummaryListLink } from "../utils/change-link";
 import * as config from "./constants";
 import { localisationMiddleware } from "../middlewares";
 import { serviceAvailabilityMiddleware } from "../middlewares/service-availability.middleware";
-import { excludedPaths } from "./constants";
 
 export const appConfig = (app: express.Application) => {
   // set some app variables from the environment
@@ -68,7 +67,7 @@ export const appConfig = (app: express.Application) => {
   };
   const sessionStore = new SessionStore(new Redis(`redis://${config.CACHE_SERVER}`));
 
-  app.use(excludedPaths, SessionMiddleware(cookieConfig, sessionStore));
+  app.use(config.excludedPaths, SessionMiddleware(cookieConfig, sessionStore));
 
   // csrf middleware
   const csrfProtectionMiddleware = CsrfProtectionMiddleware({
@@ -76,5 +75,5 @@ export const appConfig = (app: express.Application) => {
     enabled: true,
     sessionCookieName: config.COOKIE_NAME
   });
-  app.use(excludedPaths, csrfProtectionMiddleware);
+  app.use(config.excludedPaths, csrfProtectionMiddleware);
 };
