@@ -11,6 +11,7 @@ import { createSummaryListLink } from "../utils/change-link";
 import * as config from "./constants";
 import { localisationMiddleware } from "../middlewares";
 import { serviceAvailabilityMiddleware } from "../middlewares/service-availability.middleware";
+import { excludedPaths } from "./constants";
 
 export const appConfig = (app: express.Application) => {
   // set some app variables from the environment
@@ -77,5 +78,3 @@ export const appConfig = (app: express.Application) => {
   });
   app.use(excludedPaths, csrfProtectionMiddleware);
 };
-
-const excludedPaths = /\/limited-partnerships\/((?!healthcheck).)*/;
