@@ -83,3 +83,6 @@ export const cookieOptions = {
   maxAge: parseInt(DEFAULT_SESSION_EXPIRATION, 10) * 1000, // 1 hour
   signed: true
 };
+
+// middleware
+export const excludedPaths = /\/limited-partnerships\/((?!healthcheck).)*/;
