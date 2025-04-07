@@ -105,8 +105,8 @@
       <br>
       <div class="govuk-button-group">
         <form class="form" action={{ props.currentUrl }} method="post">
-        <input type="hidden" name="pageType" value={{ props.pageType }}>
-        {% include "includes/csrf_token.njk" %}
+          <input type="hidden" name="pageType" value={{ props.pageType }}>
+          {% include "includes/csrf_token.njk" %}
 
           {{ govukCheckboxes({
             name: "lpStatement",            

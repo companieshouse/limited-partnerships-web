@@ -2,7 +2,7 @@
 
 import { Resource } from "@companieshouse/api-sdk-node";
 import { Transaction } from "@companieshouse/api-sdk-node/dist/services/transaction/types";
-import { ApiErrorResponse } from "@companieshouse/api-sdk-node/dist/services/resource";
+import { ApiResponse, ApiErrorResponse } from "@companieshouse/api-sdk-node/dist/services/resource";
 
 import { makeApiCallWithRetry } from "../api";
 import ITransactionGateway from "../../../domain/ITransactionGateway";
@@ -34,6 +34,32 @@ class TransactionGateway implements ITransactionGateway {
     }
 
     return (response as Resource<Transaction>)?.resource?.id ?? "";
+  }
+
+  async closeTransaction(
+    opt: { access_token: string; refresh_token: string },
+    transactionId: string
+  ): Promise<ApiResponse<Transaction>> {
+    const apiCall = {
+      service: SDK_TRANSACTION_SERVICE,
+      method: "putTransaction",
+      args: [
+        {
+          id: transactionId,
+          status: "closed"
+        }
+      ]
+    };
+
+    const response = await makeApiCallWithRetry<
+      ApiResponse<Transaction> | ApiErrorResponse
+    >(opt, apiCall);
+
+    if (response.httpStatusCode !== 204) {
+      throw response;
+    }
+
+    return (response as ApiResponse<Transaction>);
   }
 }
 

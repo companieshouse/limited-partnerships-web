@@ -2,6 +2,9 @@
 
 import crypto from "crypto";
 
+import { ApiResponse } from "@companieshouse/api-sdk-node/dist/services/resource";
+import { Transaction } from "@companieshouse/api-sdk-node/dist/services/transaction/types";
+
 import RegistrationPageType from "../../../presentation/controller/registration/PageType";
 import PageType from "../../../presentation/controller/PageType";
 import ITransactionGateway from "../../../domain/ITransactionGateway";
@@ -18,6 +21,19 @@ class TransactionInMemoryGateway implements ITransactionGateway {
     }
 
     return this.transactionId;
+  }
+
+  async closeTransaction(
+    opt: { access_token: string },
+    transactionId: string
+  ): Promise<ApiResponse<Transaction>> {
+    return {
+      resource: {
+        id: transactionId,
+        status: "closed"
+      } as Transaction,
+      httpStatusCode: 204
+    };
   }
 }
 

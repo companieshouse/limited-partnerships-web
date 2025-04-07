@@ -206,7 +206,7 @@ export const registrationEndpoints = (
   router.post(
     CHECK_YOUR_ANSWERS_URL,
     authentication,
-    dependencies.limitedPartnershipController.redirectAndCacheSelection()
+    dependencies.limitedPartnershipController.closeTransaction()
   );
 
   router.get(
