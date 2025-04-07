@@ -90,12 +90,10 @@ class LimitedPartnershipService {
     transactionId: string
   ): Promise<ApiResponse<Transaction>> {
     try {
-      const response = await this.transactionGateway.closeTransaction(
+      return await this.transactionGateway.closeTransaction(
         opt,
         transactionId
       );
-
-      return response;
     } catch (errors: any) {
       const { apiErrors } = extractAPIErrors(errors);
 
