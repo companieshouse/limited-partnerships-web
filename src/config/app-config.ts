@@ -67,7 +67,7 @@ export const appConfig = (app: express.Application) => {
   };
   const sessionStore = new SessionStore(new Redis(`redis://${config.CACHE_SERVER}`));
 
-  app.use(SessionMiddleware(cookieConfig, sessionStore));
+  app.use(excludedPaths, SessionMiddleware(cookieConfig, sessionStore));
 
   // csrf middleware
   const csrfProtectionMiddleware = CsrfProtectionMiddleware({
@@ -75,5 +75,7 @@ export const appConfig = (app: express.Application) => {
     enabled: true,
     sessionCookieName: config.COOKIE_NAME
   });
-  app.use(csrfProtectionMiddleware);
+  app.use(excludedPaths, csrfProtectionMiddleware);
 };
+
+const excludedPaths = /\/limited-partnerships\/((?!healthcheck).)*/;
