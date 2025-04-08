@@ -20,7 +20,7 @@ mockCreateApiClient.mockReturnValue(sdkMock);
 
 jest.mock("../../../../../infrastructure/repository/CacheRepository");
 
-describe("Gateway Transaction", () => {
+describe("Transaction Gateway Update tests for the 'Check Your Answers' page", () => {
   const URL = getUrl(CHECK_YOUR_ANSWERS_URL);
   const REDIRECT_URL = getUrl(APPLICATION_SUBMITTED_URL);
 

@@ -49,7 +49,7 @@ describe("Check Your Answers Page", () => {
   });
 
   describe("POST Check Your Answers Page", () => {
-    it.only("should navigate to next page", async () => {
+    it("should navigate to next page", async () => {
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.checkYourAnswers
       });
