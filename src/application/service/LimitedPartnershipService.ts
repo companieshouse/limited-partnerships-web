@@ -7,6 +7,8 @@ import UIErrors from "../../domain/entities/UIErrors";
 import ITransactionGateway from "../../domain/ITransactionGateway";
 import { IIncorporationGateway } from "../../domain/IIncorporationGateway";
 import { extractAPIErrors } from "./utils";
+import { ApiResponse } from "@companieshouse/api-sdk-node/dist/services/resource";
+import { Transaction } from "@companieshouse/api-sdk-node/dist/services/transaction/types";
 
 class LimitedPartnershipService {
   constructor(
@@ -80,6 +82,26 @@ class LimitedPartnershipService {
         transactionId: "",
         errors
       };
+    }
+  }
+
+  async closeTransaction(
+    opt: { access_token: string; refresh_token: string },
+    transactionId: string
+  ): Promise<ApiResponse<Transaction>> {
+    try {
+      return await this.transactionGateway.closeTransaction(
+        opt,
+        transactionId
+      );
+    } catch (errors: any) {
+      const { apiErrors } = extractAPIErrors(errors);
+
+      logger.error(
+        `Error closing transaction: ${JSON.stringify(apiErrors)}`
+      );
+
+      throw errors;
     }
   }
 

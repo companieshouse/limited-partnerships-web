@@ -110,6 +110,30 @@ class LimitedPartnershipController extends AbstractController {
     };
   }
 
+  closeTransaction(): RequestHandler {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { tokens, ids } = super.extract(request);
+
+        // TODO Use the response from this call to get hold of the payment URL, when the
+        //      payment journey is implemented
+        //
+        //      E.g.   apiResponse.headers?.["x-payment-required"];
+        await this.limitedPartnershipService.closeTransaction(
+          tokens,
+          ids.transactionId
+        );
+
+        const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
+        const pageRouting = super.getRouting(registrationsRouting, pageType, request);
+
+        response.redirect(pageRouting.nextUrl);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
   redirectWhichTypeWithIds(): RequestHandler {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {

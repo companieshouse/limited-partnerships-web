@@ -16,6 +16,10 @@ export const postTransaction = jest.fn().mockImplementation(() => ({
     id: appDevDependencies.transactionGateway.transactionId
   }
 }));
+export const putTransaction = jest.fn().mockImplementation(() => ({
+  httpStatusCode: 204,
+  resource: {}
+}));
 
 // Limited Partnerships Service
 export const postLimitedPartnership = jest.fn().mockImplementation(() => ({
@@ -88,7 +92,8 @@ export const getCompanyProfile = jest.fn().mockImplementation(() => ({
 const sdkMock = {
   transaction: {
     ...TransactionService.prototype,
-    postTransaction
+    postTransaction,
+    putTransaction
   },
   limitedPartnershipsService: {
     ...LimitedPartnershipsService.prototype,
