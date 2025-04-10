@@ -122,7 +122,7 @@
             },
             "principalOfficeAddress": {
                 "title": "WELSH - What is the general partner's principal office address?",
-                "publicInformationLine1": "WELSH - We will not show the general partner' principal office address on the public register",
+                "publicInformationLine1": "WELSH - We'll show the general partner's principal office address on the public register.",
                 "postcodeOptional": "WELSH - Postcode (optional)"
             },
             "propertyNameOrNumber": "WELSH - Property name or number",
