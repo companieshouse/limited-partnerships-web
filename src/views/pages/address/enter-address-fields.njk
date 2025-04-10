@@ -1,6 +1,6 @@
 {% import 'includes/macros.njk' as macros %}
 
-{% set validateNameOrNumber = "validateInput(this, 50, '" + i18n.address.enterAddress.errorMessages.nameOrNumberMissing | escape + "', '" + i18n.address.enterAddress.errorMessages.nameOrNumberLength | escape + "');" %}
+{% set validateNameOrNumber = "validateInput(this, 200, '" + i18n.address.enterAddress.errorMessages.nameOrNumberMissing | escape + "', '" + i18n.address.enterAddress.errorMessages.nameOrNumberLength | escape + "');" %}
 {% set validateAddressLine1 = "validateInput(this, 50, '" + i18n.address.enterAddress.errorMessages.addressLine1Missing | escape + "', '" + i18n.address.enterAddress.errorMessages.addressLine1Length | escape + "');" %}
 {% set validateTownOrCity = "validateInput(this, 50, '" + i18n.address.enterAddress.errorMessages.townOrCityMissing | escape + "', '" + i18n.address.enterAddress.errorMessages.townOrCityLength | escape + "');" %}
 
