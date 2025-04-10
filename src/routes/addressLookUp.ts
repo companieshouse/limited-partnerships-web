@@ -153,6 +153,13 @@ export const addressLookUpEndpoints = (router: Router, dependencies: IDependenci
     dependencies.addressLookUpController.confirmAddress()
   );
 
+  // correspondence address
+  router.get(
+    url.TERRITORY_CHOICE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
+    authentication,
+    dependencies.addressLookUpController.getPageRouting()
+  );
+
   // principal office address
   router.get(
     url.TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,

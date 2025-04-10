@@ -19,7 +19,7 @@ export const CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_TEMPLATE =
 
 // GENERAL PARTNER
 
-// usual residential address
+// usual residential address - Person
 export const TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_TEMPLATE =
   AddressPageType.territoryChoiceGeneralPartnerUsualResidentialAddress;
 export const POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_TEMPLATE =
@@ -31,7 +31,19 @@ export const ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_TEMPLATE =
 export const CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_TEMPLATE =
   AddressPageType.confirmGeneralPartnerUsualResidentialAddress;
 
-// principal office address
+// correspondence address - Person
+export const TERRITORY_CHOICE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_TEMPLATE =
+  AddressPageType.territoryChoiceGeneralPartnerCorrespondenceAddress;
+export const POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_TEMPLATE =
+  AddressPageType.postcodeGeneralPartnerCorrespondenceAddress;
+export const CHOOSE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_TEMPLATE =
+  AddressPageType.chooseGeneralPartnerCorrespondenceAddress;
+export const ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_TEMPLATE =
+  AddressPageType.enterGeneralPartnerCorrespondenceAddress;
+export const CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_TEMPLATE =
+  AddressPageType.confirmGeneralPartnerCorrespondenceAddress;
+
+// principal office address - Legal Entity
 export const TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_TEMPLATE =
   AddressPageType.territoryChoiceGeneralPartnerPrincipalOfficeAddress;
 export const POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_TEMPLATE =

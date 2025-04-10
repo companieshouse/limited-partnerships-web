@@ -107,7 +107,7 @@ const principalPlaceOfBusinessAddress = [
 
 // GENERAL PARTNER
 
-// usual residential address
+// usual residential address -person
 
 const addressRoutingTerritoryChoiceGeneralPartnerUsualResidentialAddress = {
   previousUrl: ADD_GENERAL_PARTNER_PERSON_URL,
@@ -147,14 +147,32 @@ const addressRoutingChooseGeneralPartnerUsualResidentialAddress = {
 const addressRoutingConfirmGeneralPartnerUsualResidentialAddress = {
   previousUrl: url.POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   currentUrl: url.CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-  nextUrl: LIMITED_PARTNERS_URL,
+  nextUrl: url.TERRITORY_CHOICE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   pageType: AddressPageType.confirmGeneralPartnerUsualResidentialAddress,
   data: {
     enterManualAddressPageType: AddressPageType.enterGeneralPartnerUsualResidentialAddress
   }
 };
 
-// principal office address
+const usualResidentialAddress = [
+  addressRoutingTerritoryChoiceGeneralPartnerUsualResidentialAddress,
+  addressRoutingPostcodeGeneralPartnerUsualResidentialAddress,
+  addressRoutingEnterGeneralPartnerUsualResidentialAddress,
+  addressRoutingChooseGeneralPartnerUsualResidentialAddress,
+  addressRoutingConfirmGeneralPartnerUsualResidentialAddress
+];
+
+// correspondence address - Person
+const addressRoutingTerritoryChoiceGeneralPartnerCorrespondanceAddress = {
+  previousUrl: url.CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  currentUrl: url.TERRITORY_CHOICE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
+  nextUrl: LIMITED_PARTNERS_URL,
+  pageType: AddressPageType.territoryChoiceGeneralPartnerCorrespondenceAddress
+};
+
+const correspondenceAddress = [addressRoutingTerritoryChoiceGeneralPartnerCorrespondanceAddress];
+
+// principal office address - legal entity
 
 const addressRoutingTerritoryChoiceGeneralPartnerPrincipalOfficeAddress = {
   previousUrl: ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
@@ -201,14 +219,6 @@ const addressRoutingConfirmGeneralPartnerPrincipalOfficeAddress = {
   }
 };
 
-const usualResidentialAddress = [
-  addressRoutingTerritoryChoiceGeneralPartnerUsualResidentialAddress,
-  addressRoutingPostcodeGeneralPartnerUsualResidentialAddress,
-  addressRoutingEnterGeneralPartnerUsualResidentialAddress,
-  addressRoutingChooseGeneralPartnerUsualResidentialAddress,
-  addressRoutingConfirmGeneralPartnerUsualResidentialAddress
-];
-
 const generalPartnerPrincipalOfficeAddress = [
   addressRoutingTerritoryChoiceGeneralPartnerPrincipalOfficeAddress,
   addressRoutingPostcodeGeneralPartnerPrincipalOfficeAddress,
@@ -222,6 +232,7 @@ export const addressLookUpRouting: PagesRouting = new Map<PageType, PageRouting>
   ...registeredOfficeAddress,
   ...principalPlaceOfBusinessAddress,
   ...usualResidentialAddress,
+  ...correspondenceAddress,
   ...generalPartnerPrincipalOfficeAddress
 ].forEach((routing) => {
   addressLookUpRouting.set(routing.pageType, routing);

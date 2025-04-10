@@ -5,12 +5,14 @@ import enTranslationText from "../../../../../../../locales/en/translations.json
 import cyTranslationText from "../../../../../../../locales/cy/translations.json";
 
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
-import { CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../../controller/addressLookUp/url";
+import {
+  CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  TERRITORY_CHOICE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL
+} from "../../../../../controller/addressLookUp/url";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
 import GeneralPartnerBuilder from "../../../../builder/GeneralPartnerBuilder";
-import { LIMITED_PARTNERS_URL } from "../../../../../controller/registration/url";
 
 describe("Confirm General Partner Usual Residential Address Page", () => {
   const URL = getUrl(CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
@@ -90,7 +92,7 @@ describe("Confirm General Partner Usual Residential Address Page", () => {
           }`
         });
 
-      const redirectUrl = getUrl(LIMITED_PARTNERS_URL);
+      const redirectUrl = getUrl(TERRITORY_CHOICE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL);
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
