@@ -64,21 +64,21 @@
     "address": {
         "chooseAddress": { 
             "addressLink": "The address is not on the list",
-
             "principalPlaceOfBusiness" : {
                "title": "Choose the principal place of business"            
             },
-    
             "registeredOfficeAddress" : {
                 "title": "Choose the registered office address"                
             },
-
             "generalPartnerUsualResidentialAddress" : {
                 "title" : "Choose the usual residential address of the general partner"
             },
-
             "generalPartnerPrincipalOfficeAddress": {
                 "title": "Choose the general partner's principal office address"
+            },
+            "generalPartnerCorrespondenceAddress" : {
+                "title" : "Choose the general partner's correspondence address",
+                "titleHint": "This is also known as the service address."
             }
         },
 

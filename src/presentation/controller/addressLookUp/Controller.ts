@@ -10,7 +10,7 @@ import CacheService from "../../../application/service/CacheService";
 import { APPLICATION_CACHE_KEY, cookieOptions } from "../../../config/constants";
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import UIErrors from "../../../domain/entities/UIErrors";
-import { PageRouting, pageRoutingDefault } from "../PageRouting";
+import { PageDefault, PageRouting, pageRoutingDefault } from "../PageRouting";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 import {
   ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
@@ -20,8 +20,17 @@ import {
   POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "./url";
+import PageType from "../PageType";
 
 class AddressLookUpController extends AbstractController {
+  private static readonly ADDRESS_LIST_REQUIRED_PAGES: Set<PageType | PageDefault> = new Set([
+    AddressLookUpPageType.chooseRegisteredOfficeAddress,
+    AddressLookUpPageType.choosePrincipalPlaceOfBusinessAddress,
+    AddressLookUpPageType.chooseGeneralPartnerUsualResidentialAddress,
+    AddressLookUpPageType.chooseGeneralPartnerPrincipalOfficeAddress,
+    AddressLookUpPageType.chooseGeneralPartnerCorrespondenceAddress
+  ]);
+
   constructor(
     private addressService: AddressService,
     private limitedPartnershipService: LimitedPartnershipService,
@@ -83,7 +92,7 @@ class AddressLookUpController extends AbstractController {
   ): Promise<Address[]> {
     let addressList: Address[] = [];
 
-    if (this.isAddressListRequired(pageRouting.pageType)) {
+    if (AddressLookUpController.ADDRESS_LIST_REQUIRED_PAGES.has(pageRouting.pageType)) {
       const cacheKey = pageRouting.data?.[AddressCacheKeys.addressCacheKey];
       const postcode = cache[cacheKey]?.postal_code;
 
@@ -91,15 +100,6 @@ class AddressLookUpController extends AbstractController {
     }
 
     return addressList;
-  }
-
-  private isAddressListRequired(pageType: string): boolean {
-    return (
-      pageType === AddressLookUpPageType.chooseRegisteredOfficeAddress ||
-      pageType === AddressLookUpPageType.choosePrincipalPlaceOfBusinessAddress ||
-      pageType === AddressLookUpPageType.chooseGeneralPartnerUsualResidentialAddress ||
-      pageType === AddressLookUpPageType.chooseGeneralPartnerPrincipalOfficeAddress
-    );
   }
 
   postcodeValidation(): RequestHandler {
