@@ -3,26 +3,17 @@
 import { Resource } from "@companieshouse/api-sdk-node";
 import { UKAddress } from "@companieshouse/api-sdk-node/dist/services/postcode-lookup";
 import IAddressLookUpGateway from "../../../domain/IAddressLookUpGateway";
-import {
-  POSTCODE_ADDRESSES_LOOKUP_URL,
-  SDK_POSTCODE_LOOKUP_SERVICE
-} from "../../../config/constants";
+import { POSTCODE_ADDRESSES_LOOKUP_URL, SDK_POSTCODE_LOOKUP_SERVICE } from "../../../config/constants";
 import { makeApiCallWithRetry } from "../api";
 import postcodeLookUpAddressToAddress from "./addressMapper";
 import { Address } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 class AddressLookUpGateway implements IAddressLookUpGateway {
-  async isValidUKPostcode(
-    opt: { access_token: string; refresh_token: string },
-    postalCode: string
-  ): Promise<boolean> {
+  async isValidUKPostcode(opt: { access_token: string; refresh_token: string }, postalCode: string): Promise<boolean> {
     const apiCall = {
       service: SDK_POSTCODE_LOOKUP_SERVICE,
       method: "isValidUKPostcode",
-      args: [
-        `${POSTCODE_ADDRESSES_LOOKUP_URL}/postcode`,
-        this.removeSpaceFromPostalCode(postalCode)
-      ]
+      args: [`${POSTCODE_ADDRESSES_LOOKUP_URL}/postcode`, this.removeSpaceFromPostalCode(postalCode)]
     };
 
     return makeApiCallWithRetry<boolean>(opt, apiCall);
@@ -35,18 +26,12 @@ class AddressLookUpGateway implements IAddressLookUpGateway {
     const apiCall = {
       service: SDK_POSTCODE_LOOKUP_SERVICE,
       method: "getListOfValidPostcodeAddresses",
-      args: [
-        `${POSTCODE_ADDRESSES_LOOKUP_URL}/multiple-addresses`,
-        this.removeSpaceFromPostalCode(postalCode)
-      ]
+      args: [`${POSTCODE_ADDRESSES_LOOKUP_URL}/multiple-addresses`, this.removeSpaceFromPostalCode(postalCode)]
     };
 
-    const response = await makeApiCallWithRetry<Resource<UKAddress[]>>(
-      opt,
-      apiCall
-    );
+    const response = await makeApiCallWithRetry<Resource<UKAddress[]>>(opt, apiCall);
 
-    const addresses = response?.resource ?? [];
+    const addresses = !response?.resource || !Array.isArray(response?.resource) ? [] : response?.resource;
 
     return addresses.map(postcodeLookUpAddressToAddress);
   }

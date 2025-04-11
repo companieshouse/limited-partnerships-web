@@ -12,6 +12,7 @@ import {
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import GeneralPartnerBuilder, { generalPartnerLegalEntity } from "../../../../builder/GeneralPartnerBuilder";
 import { GeneralPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
 
 describe("General Partner Principal Office Address Territory Choice", () => {
   const URL = getUrl(TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
@@ -28,7 +29,9 @@ describe("General Partner Principal Office Address Territory Choice", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        toEscapedHtml(`${cyTranslationText.address.territoryChoice.generalPartnerPrincipalOfficeAddress.title} - ${cyTranslationText.service} - GOV.UK`)
+        toEscapedHtml(
+          `${cyTranslationText.address.territoryChoice.generalPartnerPrincipalOfficeAddress.title} - ${cyTranslationText.service} - GOV.UK`
+        )
       );
 
       testTranslations(res.text, cyTranslationText.address.territoryChoice.generalPartnerPrincipalOfficeAddress);
@@ -41,7 +44,9 @@ describe("General Partner Principal Office Address Territory Choice", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        toEscapedHtml(`${enTranslationText.address.territoryChoice.generalPartnerPrincipalOfficeAddress.title} - ${enTranslationText.service} - GOV.UK`)
+        toEscapedHtml(
+          `${enTranslationText.address.territoryChoice.generalPartnerPrincipalOfficeAddress.title} - ${enTranslationText.service} - GOV.UK`
+        )
       );
 
       testTranslations(res.text, enTranslationText.address.territoryChoice.generalPartnerPrincipalOfficeAddress);
@@ -65,7 +70,7 @@ describe("General Partner Principal Office Address Territory Choice", () => {
 
   describe("Post general partner principal office address territory choice page", () => {
     it("should redirect to What is the general partner's principal office address? post code look up page when united kingdom is selected", async () => {
-      const UNITED_KINGDOM_PARAMETER = 'unitedKingdom';
+      const UNITED_KINGDOM_PARAMETER = "unitedKingdom";
       const POSTCODE_URL = getUrl(POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
 
       const res = await request(app).post(URL).send({
@@ -75,10 +80,17 @@ describe("General Partner Principal Office Address Territory Choice", () => {
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(POSTCODE_URL);
+      expect(appDevDependencies.cacheRepository.cache).toEqual({
+        [APPLICATION_CACHE_KEY]: {
+          [appDevDependencies.transactionGateway.transactionId]: {
+            ["poa_territory_choice"]: "unitedKingdom"
+          }
+        }
+      });
     });
 
     it("should redirect to What is the general partner's principal office address? manual entry page when overseas is selected", async () => {
-      const OVERSEAS_PARAMETER = 'overseas';
+      const OVERSEAS_PARAMETER = "overseas";
       const MANUAL_ENTRY_URL = getUrl(ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
 
       const res = await request(app).post(URL).send({
@@ -88,6 +100,13 @@ describe("General Partner Principal Office Address Territory Choice", () => {
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(MANUAL_ENTRY_URL);
+      expect(appDevDependencies.cacheRepository.cache).toEqual({
+        [APPLICATION_CACHE_KEY]: {
+          [appDevDependencies.transactionGateway.transactionId]: {
+            ["poa_territory_choice"]: "overseas"
+          }
+        }
+      });
     });
   });
 });
