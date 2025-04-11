@@ -217,7 +217,7 @@ export const addressLookUpEndpoints = (router: Router, dependencies: IDependenci
   router.post(
     url.POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
     authentication,
-    dependencies.addressLookUpController.confirmAddress()
+    dependencies.addressLookUpController.postcodeValidation()
   );
 };
 

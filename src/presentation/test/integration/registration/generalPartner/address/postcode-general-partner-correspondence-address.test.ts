@@ -12,6 +12,7 @@ import GeneralPartnerBuilder, {
   generalPartnerPerson,
   generalPartnerLegalEntity
 } from "../../../../builder/GeneralPartnerBuilder";
+import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 
 describe("Postcode general partner's correspondence address page", () => {
   const URL = getUrl(POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL);
@@ -69,6 +70,21 @@ describe("Postcode general partner's correspondence address page", () => {
       expect(res.text).not.toContain(generalPartnerPerson.forename.toUpperCase());
       expect(res.text).not.toContain(generalPartnerPerson.surname.toUpperCase());
       expect(res.text).toContain(generalPartnerLegalEntity.legal_entity_name?.toUpperCase());
+    });
+  });
+
+  describe("Post postcode general partner's correspondence address page", () => {
+    it("should return an error if the postcode is not valid", async () => {
+      const res = await request(app).post(URL).send({
+        pageType: AddressPageType.postcodeGeneralPartnerCorrespondenceAddress,
+        premises: null,
+        postal_code: "AA1 1AA"
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(`The postcode AA1 1AA cannot be found`);
+
+      expect(appDevDependencies.cacheRepository.cache).toEqual(null);
     });
   });
 });
