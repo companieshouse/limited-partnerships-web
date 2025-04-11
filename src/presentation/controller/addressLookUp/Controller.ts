@@ -400,6 +400,7 @@ class AddressLookUpController extends AbstractController {
         const parameter = request.body.parameter;
         const pageRouting = super.getRouting(addressLookUpRouting, pageType, request);
 
+        const isUnitedKingdom = parameter === "unitedKingdom";
         const isGeneralPartnerURAPage =
           pageType === AddressLookUpPageType.territoryChoiceGeneralPartnerUsualResidentialAddress;
         const isGeneralPartnerPOAPage =
@@ -410,20 +411,17 @@ class AddressLookUpController extends AbstractController {
         let redirectUrl;
 
         if (isGeneralPartnerURAPage) {
-          redirectUrl =
-            parameter === "unitedKingdom"
-              ? POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
-              : ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL;
+          redirectUrl = isUnitedKingdom
+            ? POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
+            : ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL;
         } else if (isGeneralPartnerPOAPage) {
-          redirectUrl =
-            parameter === "unitedKingdom"
-              ? POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
-              : ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL;
+          redirectUrl = isUnitedKingdom
+            ? POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
+            : ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL;
         } else if (isGeneralPartnerCorrespondenceAddressPage) {
-          redirectUrl =
-            parameter === "unitedKingdom"
-              ? POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL
-              : ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL;
+          redirectUrl = isUnitedKingdom
+            ? POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL
+            : ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL;
         }
 
         redirectUrl = super.insertIdsInUrl(redirectUrl, ids.transactionId, ids.submissionId, ids.generalPartnerId);
