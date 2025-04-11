@@ -64,21 +64,21 @@
     "address": {
         "chooseAddress": { 
             "addressLink": "WELSH - The address is not on the list",
-
             "principalPlaceOfBusiness" : {
                "title": "WELSH - Choose the principal place of business"            
             },
-    
             "registeredOfficeAddress" : {
                 "title": "WELSH - Choose the registered office address"                
             },
-
             "generalPartnerUsualResidentialAddress" : {
                 "title" : "WELSH - Choose the usual residential address of the general partner"
             },
-
             "generalPartnerPrincipalOfficeAddress": {
                 "title": "WELSH - Choose the general partner's principal office address"
+            },
+            "generalPartnerCorrespondenceAddress" : {
+                "title" : "WELSH - Choose the general partner's correspondence address",
+                "titleHint": "WELSH - This is also known as the service address."
             }
         },
 

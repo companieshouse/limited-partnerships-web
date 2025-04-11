@@ -1,7 +1,9 @@
 {% extends "layout.njk" %}
 
-{% set pageTitle = i18n.address.chooseAddress.generalPartnerUsualResidentialAddress.title %}
-{% set cache = props.data.cache['usual_residential_address'] %}
+{% set pageTitle = i18n.address.chooseAddress.generalPartnerCorrespondenceAddress.title %}
+{% set pageTitleHint = i18n.address.chooseAddress.generalPartnerCorrespondenceAddress.titleHint %}
+
+{% set cache = props.data.cache['correspondence_address'] %}
 {% set addressLink = i18n.address.chooseAddress.addressLink %}
 
 {% block content %}
