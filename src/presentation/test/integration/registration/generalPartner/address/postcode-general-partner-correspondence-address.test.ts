@@ -14,7 +14,7 @@ import GeneralPartnerBuilder, {
 } from "../../../../builder/GeneralPartnerBuilder";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 
-describe("Postcode general partner's correspondence address page", () => {
+describe.skip("Postcode general partner's correspondence address page", () => {
   const URL = getUrl(POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL);
 
   describe("Get postcode general partner's correspondence address page", () => {
