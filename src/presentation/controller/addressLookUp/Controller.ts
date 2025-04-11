@@ -13,8 +13,10 @@ import UIErrors from "../../../domain/entities/UIErrors";
 import { PageRouting, pageRoutingDefault } from "../PageRouting";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 import {
+  ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "./url";
@@ -422,6 +424,8 @@ class AddressLookUpController extends AbstractController {
       cacheKey = this.USUAL_RESIDENTIAL_ADDRESS_CACHE_KEY;
     } else if (this.isGeneralPartnerPrincipalOfficeAddressPage(pageType)) {
       cacheKey = this.PRINCIPAL_OFFICE_ADDRESS_CACHE_KEY;
+    } else if (pageType === AddressLookUpPageType.territoryChoiceGeneralPartnerCorrespondenceAddress) {
+      cacheKey = "ca_territory_choice";
     }
 
     return cacheKey;
@@ -484,19 +488,27 @@ class AddressLookUpController extends AbstractController {
 
         const isGeneralPartnerURAPage =
           pageType === AddressLookUpPageType.territoryChoiceGeneralPartnerUsualResidentialAddress;
+        const isGeneralPartnerPOAPage =
+          pageType === AddressLookUpPageType.territoryChoiceGeneralPartnerPrincipalOfficeAddress;
+        const isGeneralPartnerCorrespondenceAddressPage =
+          pageType === AddressLookUpPageType.territoryChoiceGeneralPartnerCorrespondenceAddress;
 
         let redirectUrl;
         if (parameter === "unitedKingdom") {
           if (isGeneralPartnerURAPage) {
             redirectUrl = POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL;
-          } else {
+          } else if (isGeneralPartnerPOAPage) {
             redirectUrl = POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL;
+          } else if (isGeneralPartnerCorrespondenceAddressPage) {
+            redirectUrl = POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL;
           }
         } else {
           if (isGeneralPartnerURAPage) {
             redirectUrl = ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL;
-          } else {
+          } else if (isGeneralPartnerPOAPage) {
             redirectUrl = ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL;
+          } else if (isGeneralPartnerCorrespondenceAddressPage) {
+            redirectUrl = ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL;
           }
         }
 

@@ -167,7 +167,10 @@ const addressRoutingTerritoryChoiceGeneralPartnerCorrespondanceAddress = {
   previousUrl: url.CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   currentUrl: url.TERRITORY_CHOICE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   nextUrl: LIMITED_PARTNERS_URL,
-  pageType: AddressPageType.territoryChoiceGeneralPartnerCorrespondenceAddress
+  pageType: AddressPageType.territoryChoiceGeneralPartnerCorrespondenceAddress,
+  data: {
+    cacheKey: "ca_territory_choice"
+  }
 };
 
 const correspondenceAddress = [addressRoutingTerritoryChoiceGeneralPartnerCorrespondanceAddress];
