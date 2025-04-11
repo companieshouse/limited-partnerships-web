@@ -84,7 +84,7 @@ class AddressLookUpController extends AbstractController {
     let addressList: Address[] = [];
 
     if (this.isAddressListRequired(pageRouting.pageType)) {
-      const cacheKey = pageRouting.data?.[AddressCacheKeys.addressCacheKey] || "";
+      const cacheKey = pageRouting.data?.[AddressCacheKeys.addressCacheKey];
       const postcode = cache[cacheKey]?.postal_code;
 
       addressList = await this.addressService.getAddressListForPostcode(tokens, postcode);
@@ -367,15 +367,17 @@ class AddressLookUpController extends AbstractController {
     const pageRouting = super.getRouting(addressLookUpRouting, pageType, request);
 
     const cacheById = this.cacheService.getDataFromCacheById(request.signedCookies, ids.transactionId);
-    const cacheKey = pageRouting.data?.[AddressCacheKeys.addressCacheKey] || "";
+    const cacheKey = pageRouting.data?.[AddressCacheKeys.addressCacheKey];
 
-    const cache = this.cacheService.addDataToCache(request.signedCookies, {
-      [ids.transactionId]: {
-        ...cacheById,
-        [cacheKey]: dataToStore
-      }
-    });
-    response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
+    if (cacheKey) {
+      const cache = this.cacheService.addDataToCache(request.signedCookies, {
+        [ids.transactionId]: {
+          ...cacheById,
+          [cacheKey]: dataToStore
+        }
+      });
+      response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
+    }
 
     response.redirect(pageRouting.nextUrl);
   }
@@ -426,14 +428,16 @@ class AddressLookUpController extends AbstractController {
 
         redirectUrl = super.insertIdsInUrl(redirectUrl, ids.transactionId, ids.submissionId, ids.generalPartnerId);
 
-        const cacheKey = pageRouting.data?.[AddressCacheKeys.territoryCacheKey] || "";
+        const cacheKey = pageRouting.data?.[AddressCacheKeys.territoryCacheKey];
 
-        const cache = this.cacheService.addDataToCache(request.signedCookies, {
-          [ids.transactionId]: {
-            [cacheKey]: parameter
-          }
-        });
-        response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
+        if (cacheKey) {
+          const cache = this.cacheService.addDataToCache(request.signedCookies, {
+            [ids.transactionId]: {
+              [cacheKey]: parameter
+            }
+          });
+          response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
+        }
 
         response.redirect(redirectUrl);
       } catch (error) {
