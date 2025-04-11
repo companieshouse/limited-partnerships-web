@@ -299,7 +299,6 @@ const generalPartnerPrincipalOfficeAddress = [
   addressRoutingConfirmGeneralPartnerPrincipalOfficeAddress
 ];
 
-
 export const addressLookUpRouting: PagesRouting = new Map<PageType, PageRouting>();
 [
   ...registeredOfficeAddress,

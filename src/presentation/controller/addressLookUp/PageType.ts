@@ -35,9 +35,6 @@ enum AddressPageType {
   chooseGeneralPartnerPrincipalOfficeAddress = "choose-general-partner-principal-office-address",
   enterGeneralPartnerPrincipalOfficeAddress = "enter-general-partner-principal-office-address",
   confirmGeneralPartnerPrincipalOfficeAddress = "confirm-general-partner-principal-office-address",
-
-  // Correspondence address
-  postcodeGeneralPartnerCorrespondenceAddress = "postcode-general-partner-correspondence-address"
 }
 
 export default AddressPageType;
