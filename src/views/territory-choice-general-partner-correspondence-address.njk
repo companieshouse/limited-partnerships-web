@@ -1,0 +1,33 @@
+{% extends "layout.njk" %}
+
+{% set pageTitle = i18n.address.territoryChoice.generalPartnerCorrespondenceAddress.title %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action="{{ props.currentUrl }}" method="post">
+        <input type="hidden" name="pageType" value={{ props.pageType }}>
+        {% include "includes/csrf_token.njk" %}
+
+        {% include "includes/general-partner-name.njk" %}  
+       
+        {% set titleHint = i18n.address.territoryChoice.generalPartnerCorrespondenceAddress.titleHint %}
+        {% include "includes/territory-choice-radios.njk" %}  
+
+        {% set publicRegisterInformationHeading = i18n.address.territoryChoice.generalPartnerCorrespondenceAddress.publicRegisterInformationHeading %}
+        {% set publicRegisterInformationLine1 = i18n.address.territoryChoice.generalPartnerCorrespondenceAddress.publicRegisterInformationLine1 %}
+        {% include "includes/public-register-information.njk" %}  
+
+        {{ govukButton({
+          text: i18n.buttons.continue,
+          attributes: {
+            "id": "submit",
+            "onclick": "_paq.push(['trackEvent', 'general partner correspondence address territory choice', 'selection', document.querySelector('input[name=parameter]:checked').nextElementSibling.innerHTML])"
+          }
+        }) }}
+
+      </form>
+    </div>
+  </div>
+{% endblock %}

@@ -3,7 +3,7 @@ import escape from "escape-html";
 import { Address } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import AddressService from "../../../application/service/AddressLookUpService";
-import addresssRouting, { addressLookUpRouting } from "./Routing";
+import addresssRouting, { AddressCacheKeys, addressLookUpRouting } from "./Routing";
 import AbstractController from "../AbstractController";
 import AddressLookUpPageType from "./PageType";
 import CacheService from "../../../application/service/CacheService";
@@ -13,20 +13,15 @@ import UIErrors from "../../../domain/entities/UIErrors";
 import { PageRouting, pageRoutingDefault } from "../PageRouting";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 import {
+  ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "./url";
 
 class AddressLookUpController extends AbstractController {
-  public readonly REGISTERED_OFFICE_ADDRESS_CACHE_KEY = "registered_office_address";
-  public readonly PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CACHE_KEY = "principal_place_of_business_address";
-  public readonly USUAL_RESIDENTIAL_ADDRESS_TERRITORY_CHOICE_CACHE_KEY = "ura_territory_choice";
-  public readonly USUAL_RESIDENTIAL_ADDRESS_CACHE_KEY = "usual_residential_address";
-  public readonly PRINCIPAL_OFFICE_ADDRESS_TERRITORY_CHOICE_CACHE_KEY = "poa_territory_choice";
-  public readonly PRINCIPAL_OFFICE_ADDRESS_CACHE_KEY = "principal_office_address";
-
   constructor(
     private addressService: AddressService,
     private limitedPartnershipService: LimitedPartnershipService,
@@ -89,7 +84,8 @@ class AddressLookUpController extends AbstractController {
     let addressList: Address[] = [];
 
     if (this.isAddressListRequired(pageRouting.pageType)) {
-      const postcode = cache[this.getCacheKey(pageRouting.pageType)].postal_code;
+      const cacheKey = pageRouting.data?.[AddressCacheKeys.addressCacheKey];
+      const postcode = cache[cacheKey]?.postal_code;
 
       addressList = await this.addressService.getAddressListForPostcode(tokens, postcode);
     }
@@ -137,7 +133,7 @@ class AddressLookUpController extends AbstractController {
           return;
         }
 
-        this.addAddressToCache(pageType, ids.transactionId, address, request, response);
+        this.addAddressToCache(request, response, pageType, ids.transactionId, address);
 
         // if exact match - redirect to confirm page
         if (address?.postal_code && address?.premises && address?.address_line_1) {
@@ -160,45 +156,22 @@ class AddressLookUpController extends AbstractController {
   }
 
   private addAddressToCache(
+    request: Request,
+    response: Response,
     pageType: any,
     transactionId: string,
-    address: Address,
-    request: Request,
-    response: Response
+    address: Address
   ) {
     const cacheById = this.cacheService.getDataFromCacheById(request.signedCookies, transactionId);
+    const pageRouting = super.getRouting(addressLookUpRouting, pageType, request);
 
-    if (pageType === AddressLookUpPageType.postcodePrincipalPlaceOfBusinessAddress) {
-      const cache = this.cacheService.addDataToCache(request.signedCookies, {
-        [transactionId]: {
-          [this.PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CACHE_KEY]: address
-        }
-      });
-      response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
-    } else if (pageType === AddressLookUpPageType.postcodeRegisteredOfficeAddress) {
-      const cache = this.cacheService.addDataToCache(request.signedCookies, {
-        [transactionId]: {
-          [this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY]: address
-        }
-      });
-      response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
-    } else if (pageType === AddressLookUpPageType.postcodeGeneralPartnerUsualResidentialAddress) {
-      const cache = this.cacheService.addDataToCache(request.signedCookies, {
-        [transactionId]: {
-          ...cacheById,
-          [this.USUAL_RESIDENTIAL_ADDRESS_CACHE_KEY]: address
-        }
-      });
-      response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
-    } else if (pageType === AddressLookUpPageType.postcodeGeneralPartnerPrincipalOfficeAddress) {
-      const cache = this.cacheService.addDataToCache(request.signedCookies, {
-        [transactionId]: {
-          ...cacheById,
-          [this.PRINCIPAL_OFFICE_ADDRESS_CACHE_KEY]: address
-        }
-      });
-      response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
-    }
+    const cache = this.cacheService.addDataToCache(request.signedCookies, {
+      [transactionId]: {
+        ...cacheById,
+        [pageRouting?.data?.[AddressCacheKeys.addressCacheKey]]: address
+      }
+    });
+    response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
   }
 
   selectAddress(): RequestHandler {
@@ -394,73 +367,19 @@ class AddressLookUpController extends AbstractController {
     const pageRouting = super.getRouting(addressLookUpRouting, pageType, request);
 
     const cacheById = this.cacheService.getDataFromCacheById(request.signedCookies, ids.transactionId);
-    const cacheKey = this.getCacheKey(pageType);
+    const cacheKey = pageRouting.data?.[AddressCacheKeys.addressCacheKey];
 
-    const cache = this.cacheService.addDataToCache(request.signedCookies, {
-      [ids.transactionId]: {
-        ...cacheById,
-        [cacheKey]: dataToStore
-      }
-    });
-    response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
-
-    response.redirect(pageRouting.nextUrl);
-  }
-
-  // TODO As each pageType can have a cache key, add the key to each 'routing' object for each page and remove the if/elses
-  private getCacheKey(pageType: any) {
-    let cacheKey = "";
-    if (this.isPrincipalPlaceOfBusinessPage(pageType)) {
-      cacheKey = this.PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CACHE_KEY;
-    } else if (this.isRegisteredOfficeAddressPage(pageType)) {
-      cacheKey = this.REGISTERED_OFFICE_ADDRESS_CACHE_KEY;
-    } else if (pageType === AddressLookUpPageType.territoryChoiceGeneralPartnerUsualResidentialAddress) {
-      cacheKey = this.USUAL_RESIDENTIAL_ADDRESS_TERRITORY_CHOICE_CACHE_KEY;
-    } else if (pageType === AddressLookUpPageType.territoryChoiceGeneralPartnerPrincipalOfficeAddress) {
-      cacheKey = this.PRINCIPAL_OFFICE_ADDRESS_TERRITORY_CHOICE_CACHE_KEY;
-    } else if (this.isGeneralPartnerUsualResidentialAddressPage(pageType)) {
-      cacheKey = this.USUAL_RESIDENTIAL_ADDRESS_CACHE_KEY;
-    } else if (this.isGeneralPartnerPrincipalOfficeAddressPage(pageType)) {
-      cacheKey = this.PRINCIPAL_OFFICE_ADDRESS_CACHE_KEY;
+    if (cacheKey) {
+      const cache = this.cacheService.addDataToCache(request.signedCookies, {
+        [ids.transactionId]: {
+          ...cacheById,
+          [cacheKey]: dataToStore
+        }
+      });
+      response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
     }
 
-    return cacheKey;
-  }
-
-  private isPrincipalPlaceOfBusinessPage(pageType: AddressLookUpPageType): boolean {
-    const allowedPages: AddressLookUpPageType[] = [
-      AddressLookUpPageType.choosePrincipalPlaceOfBusinessAddress,
-      AddressLookUpPageType.enterPrincipalPlaceOfBusinessAddress,
-      AddressLookUpPageType.confirmPrincipalPlaceOfBusinessAddress
-    ];
-    return allowedPages.includes(pageType);
-  }
-
-  private isRegisteredOfficeAddressPage(pageType: AddressLookUpPageType): boolean {
-    const allowedPages: AddressLookUpPageType[] = [
-      AddressLookUpPageType.chooseRegisteredOfficeAddress,
-      AddressLookUpPageType.enterRegisteredOfficeAddress,
-      AddressLookUpPageType.confirmRegisteredOfficeAddress
-    ];
-    return allowedPages.includes(pageType);
-  }
-
-  private isGeneralPartnerUsualResidentialAddressPage(pageType: AddressLookUpPageType): boolean {
-    const allowedPages: AddressLookUpPageType[] = [
-      AddressLookUpPageType.chooseGeneralPartnerUsualResidentialAddress,
-      AddressLookUpPageType.enterGeneralPartnerUsualResidentialAddress,
-      AddressLookUpPageType.confirmGeneralPartnerUsualResidentialAddress
-    ];
-    return allowedPages.includes(pageType);
-  }
-
-  private isGeneralPartnerPrincipalOfficeAddressPage(pageType: AddressLookUpPageType): boolean {
-    const allowedPages: AddressLookUpPageType[] = [
-      AddressLookUpPageType.chooseGeneralPartnerPrincipalOfficeAddress,
-      AddressLookUpPageType.enterGeneralPartnerPrincipalOfficeAddress,
-      AddressLookUpPageType.confirmGeneralPartnerPrincipalOfficeAddress
-    ];
-    return allowedPages.includes(pageType);
+    response.redirect(pageRouting.nextUrl);
   }
 
   generalPartnerUsualResidentialaddressChoice(): RequestHandler {
@@ -481,53 +400,50 @@ class AddressLookUpController extends AbstractController {
       try {
         const { ids, pageType } = super.extract(request);
         const parameter = request.body.parameter;
+        const pageRouting = super.getRouting(addressLookUpRouting, pageType, request);
 
+        const isUnitedKingdom = parameter === "unitedKingdom";
         const isGeneralPartnerURAPage =
           pageType === AddressLookUpPageType.territoryChoiceGeneralPartnerUsualResidentialAddress;
+        const isGeneralPartnerPOAPage =
+          pageType === AddressLookUpPageType.territoryChoiceGeneralPartnerPrincipalOfficeAddress;
+        const isGeneralPartnerCorrespondenceAddressPage =
+          pageType === AddressLookUpPageType.territoryChoiceGeneralPartnerCorrespondenceAddress;
 
         let redirectUrl;
-        if (parameter === "unitedKingdom") {
-          if (isGeneralPartnerURAPage) {
-            redirectUrl = POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL;
-          } else {
-            redirectUrl = POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL;
-          }
-        } else {
-          if (isGeneralPartnerURAPage) {
-            redirectUrl = ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL;
-          } else {
-            redirectUrl = ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL;
-          }
+
+        if (isGeneralPartnerURAPage) {
+          redirectUrl = isUnitedKingdom
+            ? POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
+            : ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL;
+        } else if (isGeneralPartnerPOAPage) {
+          redirectUrl = isUnitedKingdom
+            ? POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
+            : ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL;
+        } else if (isGeneralPartnerCorrespondenceAddressPage) {
+          redirectUrl = isUnitedKingdom
+            ? POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL
+            : ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL;
         }
 
         redirectUrl = super.insertIdsInUrl(redirectUrl, ids.transactionId, ids.submissionId, ids.generalPartnerId);
 
-        const cacheKey = this.getCacheKey(pageType);
+        const cacheKey = pageRouting.data?.[AddressCacheKeys.territoryCacheKey];
 
-        this.cacheTerritoryAndRedirectToCorrectPage(request, response, cacheKey, parameter, redirectUrl);
+        if (cacheKey) {
+          const cache = this.cacheService.addDataToCache(request.signedCookies, {
+            [ids.transactionId]: {
+              [cacheKey]: parameter
+            }
+          });
+          response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
+        }
+
+        response.redirect(redirectUrl);
       } catch (error) {
         next(error);
       }
     };
-  }
-
-  private cacheTerritoryAndRedirectToCorrectPage(
-    request: Request,
-    response: Response<any, Record<string, any>>,
-    cacheKey: string,
-    dataToStore: any,
-    redirectUrl: string
-  ) {
-    const { ids } = super.extract(request);
-
-    const cache = this.cacheService.addDataToCache(request.signedCookies, {
-      [ids.transactionId]: {
-        [cacheKey]: dataToStore
-      }
-    });
-    response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
-
-    response.redirect(redirectUrl);
   }
 }
 
