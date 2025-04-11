@@ -218,7 +218,7 @@ const addressRoutingTerritoryChoiceGeneralPartnerCorrespondanceAddress = {
   }
 };
 
-const addressRoutingPostcodeGeneralPartnerCorrespondenceAddress = {
+const addressRoutingPostcodeGeneralPartnerCorrespondanceAddress = {
   previousUrl: url.TERRITORY_CHOICE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   currentUrl: url.POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   nextUrl: LIMITED_PARTNERS_URL,
@@ -227,7 +227,7 @@ const addressRoutingPostcodeGeneralPartnerCorrespondenceAddress = {
 
 const correspondenceAddress = [
   addressRoutingTerritoryChoiceGeneralPartnerCorrespondanceAddress,
-  addressRoutingPostcodeGeneralPartnerCorrespondenceAddress
+  addressRoutingPostcodeGeneralPartnerCorrespondanceAddress
 ];
 
 // principal office address - legal entity
