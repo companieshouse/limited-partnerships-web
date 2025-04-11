@@ -205,6 +205,12 @@
                 "jurisdictionEnglandAndWales": "WELSH - You must enter a postcode which is in England or Wales",
                 "jurisdictionNorthernIreland": "WELSH - You must enter a postcode which is in Northern Ireland",
                 "jurisdictionScotland": "WELSH - You must enter a postcode which is in Scotland"
+            },
+
+            "correspondenceAddress": {
+                "whatIsPrincipalOfficeAddress": "WELSH - What is the the general partner's correspondence address?",
+                "publicRegisterTitle" : "WELSH - What information we'll show on the public register",
+                "publicRegisterLine1": "WELSH - We'll show the general partner's correspondence address on the public register"
             }
         },
 

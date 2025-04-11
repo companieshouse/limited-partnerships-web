@@ -201,6 +201,13 @@ const addressRoutingConfirmGeneralPartnerPrincipalOfficeAddress = {
   }
 };
 
+const addressRoutingConfirmGeneralPartnerCorrespondenceAddress = {
+  previousUrl: "",
+  currentUrl: url.POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
+  nextUrl: LIMITED_PARTNERS_URL,
+  pageType: AddressPageType.postcodeGeneralPartnerCorrespondenceAddress
+};
+
 const usualResidentialAddress = [
   addressRoutingTerritoryChoiceGeneralPartnerUsualResidentialAddress,
   addressRoutingPostcodeGeneralPartnerUsualResidentialAddress,
@@ -217,12 +224,17 @@ const generalPartnerPrincipalOfficeAddress = [
   addressRoutingConfirmGeneralPartnerPrincipalOfficeAddress
 ];
 
+const generalPartnerCorrespondenceAddress = [
+  addressRoutingConfirmGeneralPartnerCorrespondenceAddress
+];
+
 export const addressLookUpRouting: PagesRouting = new Map<PageType, PageRouting>();
 [
   ...registeredOfficeAddress,
   ...principalPlaceOfBusinessAddress,
   ...usualResidentialAddress,
-  ...generalPartnerPrincipalOfficeAddress
+  ...generalPartnerPrincipalOfficeAddress,
+  ...generalPartnerCorrespondenceAddress,
 ].forEach((routing) => {
   addressLookUpRouting.set(routing.pageType, routing);
 });
