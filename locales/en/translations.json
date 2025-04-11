@@ -224,6 +224,12 @@
                 "title": "Where is the usual residential address of the general partner?",
                 "publicRegisterInformationHeading": "What information we'll show on the public register",
                 "publicRegisterInformationLine1": "We will not show the general partner's usual residential address"
+            },
+            "generalPartnerCorrespondenceAddress": {
+                "title": "Where is the general partner's correspondence address?",
+                "titleHint": "This is also known as the service address.",
+                "publicRegisterInformationHeading": "What information we'll show on the public register",
+                "publicRegisterInformationLine1": "We'll show the general partner's correspondence address on the public register."
             }
         },
 
