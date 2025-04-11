@@ -31,7 +31,7 @@ class AddressLookUpGateway implements IAddressLookUpGateway {
 
     const response = await makeApiCallWithRetry<Resource<UKAddress[]>>(opt, apiCall);
 
-    const addresses = !response?.resource || !Array.isArray(response?.resource) ? [] : response?.resource;
+    const addresses = response?.resource?.length ? response?.resource : [];
 
     return addresses.map(postcodeLookUpAddressToAddress);
   }
