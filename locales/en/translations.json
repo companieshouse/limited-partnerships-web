@@ -64,6 +64,7 @@
     "address": {
         "chooseAddress": { 
             "addressLink": "The address is not on the list",
+            "publicRegisterTitle": "What information we'll show on the public register",
             "principalPlaceOfBusiness" : {
                "title": "Choose the principal place of business"            
             },
@@ -77,8 +78,9 @@
                 "title": "Choose the general partner's principal office address"
             },
             "generalPartnerCorrespondenceAddress" : {
-                "title" : "Choose the general partner's correspondence address",
-                "titleHint": "This is also known as the service address."
+                "title": "Choose the general partner's correspondence address",
+                "titleHint": "This is also known as the service address.",
+                "publicRegisterInformationLine1": "We'll show the general partner's correspondence address on the public register."
             }
         },
 

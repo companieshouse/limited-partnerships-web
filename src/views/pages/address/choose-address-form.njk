@@ -34,6 +34,14 @@
         items: addressItems
     }) }}
 
+    <p>
+      <a href="{{ props.currentUrl | replace(props.pageType, props.data.enterManualAddressPageType) }}" class="govuk-body-m govuk-link" data-event-id="address-not-on-list">{{ addressLink }}</a>
+    </p>
+
+    {% if publicRegisterInformationHeading %}
+      {% include "includes/public-register-information.njk" %}
+    {% endif %}
+
     {{ govukButton({
         text: i18n.buttons.continue,
         attributes: {
@@ -42,8 +50,5 @@
         }
     }) }}
 
-    <p>
-      <a href="{{ props.currentUrl | replace(props.pageType, props.data.enterManualAddressPageType) }}" class="govuk-body-m govuk-link" data-event-id="address-not-on-list">{{ addressLink }}</a>
-    <p>
 
 </form>
