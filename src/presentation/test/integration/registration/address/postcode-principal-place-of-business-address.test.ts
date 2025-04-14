@@ -47,6 +47,7 @@ describe("Postcode Principal Place Of Business Address Page", () => {
         "registeredOfficeAddress",
         "usualResidentialAddress",
         "principalOfficeAddress",
+        "correspondenceAddress",
         "errorMessages"
       ]);
       expect(res.text).not.toContain("WELSH -");
@@ -64,6 +65,7 @@ describe("Postcode Principal Place Of Business Address Page", () => {
         "registeredOfficeAddress",
         "usualResidentialAddress",
         "principalOfficeAddress",
+        "correspondenceAddress",
         "errorMessages"
       ]);
     });
