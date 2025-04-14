@@ -221,7 +221,7 @@ const addressRoutingTerritoryChoiceGeneralPartnerCorrespondanceAddress = {
 const addressRoutingPostcodeGeneralPartnerCorrespondenceAddress = {
   previousUrl: url.TERRITORY_CHOICE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   currentUrl: url.POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
-  nextUrl: LIMITED_PARTNERS_URL,
+  nextUrl: url.CHOOSE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   pageType: AddressPageType.postcodeGeneralPartnerCorrespondenceAddress,
   data: {
     ...correspondenceAddressCacheKeys
