@@ -38,7 +38,7 @@
       <a href="{{ props.currentUrl | replace(props.pageType, props.data.enterManualAddressPageType) }}" class="govuk-body-m govuk-link" data-event-id="address-not-on-list">{{ addressLink }}</a>
     </p>
 
-    {% if publicRegisterInformationHeading %}
+    {% if publicRegisterInformationLine1 %}
       {% include "includes/public-register-information.njk" %}
     {% endif %}
 
