@@ -12,7 +12,6 @@
         "registrationNumber" : "WELSH - What is the registration number?",
         "registrationNumberHint" : "WELSH - For example, the company number.",
         "legalFormStatement" : "WELSH - I confirm the entity has legal personality.",
-        "publicRegisterTitle" : "WELSH - What information we'll show on the public register",
         "publicRegisterLine1" : "WELSH - We'll show all of this information on the public register.",
         "errorMessages": {
           "legalEntityNameMissing": "WELSH - Enter a legal entity name",
@@ -49,7 +48,6 @@
         "secondNationalityHint" : "WELSH - Dual citizenship (also known as dual nationality) is allowed in some countries. This means you can be a citizen of your own country and another country.",
         "disqualificationStatement" : "WELSH - I confirm the general partner is not disqualified under the directors disqualification legislation.",
         "disqualificationStatementLegend" : "WELSH - General partner - person - disqualification statement",
-        "publicRegisterTitle": "WELSH - What information we'll show on the public register",
         "publicRegisterLine1" : "WELSH - We'll only show the month and year of their birth date.",
         "publicRegisterLine2" : "WELSH - We'll show all the other information you provide on this screen on the public register.",
         "errorMessages": {
@@ -64,7 +62,6 @@
     "address": {
         "chooseAddress": { 
             "addressLink": "WELSH - The address is not on the list",
-            "publicRegisterTitle": "WELSH - What information we'll show on the public register",
             "principalPlaceOfBusiness" : {
                "title": "WELSH - Choose the principal place of business"            
             },
@@ -86,8 +83,6 @@
 
         "confirm": {
             "addressLink" : "WELSH - Change",
-            "publicRegisterTitle": "WELSH - What information we'll show on the public register",
-
             "registeredOfficeAddress" : {
                 "title" : "WELSH - Confirm the registered office address",
                 "addressLinkHidden" : "WELSH - registered office address",
@@ -151,7 +146,6 @@
             "countryScotland": "WELSH - Scotland",
             "countryWales": "WELSH - Wales",
             "countryNorthernIreland": "WELSH - Northern Ireland",
-            "publicInformationTitle": "WELSH - What information we'll show on the public register",
             "errorMessages": {
                 "nameOrNumberMissing": "WELSH - Enter a property name or number",
                 "nameOrNumberLength": "WELSH - Property name or number must be 50 characters or less",
@@ -174,7 +168,6 @@
                 "officialCommunication": "WELSH - We'll use this address to send official communications.",
                 "physicalAddress": "WELSH - It must be a physical address in the jurisdiction where the partnership was formed. You cannot use a PO Box address.",
                 "provideNext": "WELSH - You'll need to provide the principal place of business next.",
-                "publicRegisterTitle": "WELSH - What information we'll show on the public register",
                 "publicRegisterLine1": "WELSH - We'll show the registered office address on the public register."
             },
 
@@ -182,26 +175,22 @@
                 "whatIsPrincipalPlaceOfBusiness": "WELSH - What is the principal place of business?",
                 "runningOfBusiness": "WELSH - This is the address where the day to day running of the business takes place. It could be the same as the registered office address, or a different address.",
                 "jurisdiction": "WELSH - It must be in the jurisdiction where the partnership was formed. It can be changed to an address outside of the jurisdiction after you've registered the partnership.",
-                "publicRegisterTitle": "WELSH - What information we'll show on the public register",
                 "publicRegisterLine1": "WELSH - We'll show the principal place of business  on the public register."
             },
 
             "usualResidentialAddress": {
                 "whatIsUsualResidentialAddress": "WELSH - What is the general partner's usual residential address?",
-                "publicRegisterTitle": "WELSH - What information we'll show on the public register",
                 "publicRegisterLine1": "WELSH - We will not show the general partner's usual residential address."
             },
 
             "principalOfficeAddress": {
                 "whatIsPrincipalOfficeAddress": "WELSH - What is the the general partner's principal office address?",
-                "publicRegisterTitle" : "WELSH - What information we'll show on the public register",
                 "publicRegisterLine1": "WELSH - We will not show the general partner's principal office address."
             },
 
             "correspondenceAddress": {
                 "whatIsCorrespondenceAddress": "WELSH - What is the general partner's correspondence address?",
                 "titleHint": "WELSH - This is also known as the service address.",
-                "publicRegisterTitle": "WELSH - What information we'll show on the public register",
                 "publicRegisterLine1": "WELSH - We'll show the general partner's correspondence address on the public register."
             },
  
@@ -221,18 +210,15 @@
             "generalPartnerPrincipalOfficeAddress": {
                 "title": "WELSH - Where is the general partner's principal office address?",
                 "titleHint": "WELSH - This is the address for the entity's main office",
-                "publicRegisterInformationHeading": "WELSH - What information we'll show on the public register",
                 "publicRegisterInformationLine1": "WELSH - We'll show the general partner's principal office address on the public register."
             },
             "generalPartnerUsualResidentialAddress": {
                 "title": "WELSH - Where is the usual residential address of the general partner?",
-                "publicRegisterInformationHeading": "WELSH - What information we'll show on the public register",
                 "publicRegisterInformationLine1": "WELSH - We will not show the general partner's usual residential address"
             },
             "generalPartnerCorrespondenceAddress": {
                 "title": "WELSH - Where is the general partner's correspondence address?",
                 "titleHint": "WELSH - This is also known as the service address.",
-                "publicRegisterInformationHeading": "WELSH - What information we'll show on the public register",
                 "publicRegisterInformationLine1": "WELSH - We'll show the general partner's correspondence address on the public register."
             }
         },
@@ -361,6 +347,10 @@
         "goToStartPage" : "WELSH - To register a limited partnership, go to the <a class='govuk-link' href='/limited-partnerships/start'>Register a limited partnership</a> start page."
     },
 
+    "publicRegister" : {
+        "title": "WELSH - What information we'll show on the public register"
+    },
+
     "companyNumber" : {
         "whatIsPartnershipNumber": "WELSH - What is the limited partnership number?",
         "hint": "WELSH - This is 2 letters followed by 6 numbers." 
@@ -380,7 +370,6 @@
         "hint" : "WELSH - You should use the SIC code that best describes the partnership's nature of business.",
         "find": "WELSH - Find your SIC code using our look up tool (opens in new tab)",
         "additionalHint" : "WELSH - Enter up to 3 additional SIC codes (optional):",
-        "publicRegisterTitle": "WELSH - What information we'll show on the public register",
         "publicRegisterLine1": "WELSH - We'll show the SIC codes on the public register."
     },
 
@@ -402,7 +391,6 @@
         "byAgreement": "WELSH - Such term as decided by the partners within the partnership agreement",
         "untilDissolution": "WELSH - Until the general partner determines the partnership is dissolved",
         "noTerm": "WELSH - No set term",
-        "publicRegisterTitle": "WELSH - What information we'll show on the public register",
         "publicRegisterLine1": "WELSH - We'll show the term of partnership on the public register."
     },
     

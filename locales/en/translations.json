@@ -12,7 +12,6 @@
         "registrationNumber" : "What is the registration number?",
         "registrationNumberHint" : "For example, the company number.",
         "legalFormStatement" : "I confirm the entity has legal personality.",
-        "publicRegisterTitle" : "What information we'll show on the public register",
         "publicRegisterLine1" : "We'll show all of this information on the public register.",
         "errorMessages": {
           "legalEntityNameMissing": "Enter a legal entity name",
@@ -49,7 +48,6 @@
         "secondNationalityHint" : "Dual citizenship (also known as dual nationality) is allowed in some countries. This means you can be a citizen of your own country and another country.",
         "disqualificationStatement" : "I confirm the general partner is not disqualified under the directors disqualification legislation.",
         "disqualificationStatementLegend" : "General partner - person - disqualification statement",
-        "publicRegisterTitle": "What information we'll show on the public register",
         "publicRegisterLine1" : "We'll only show the month and year of their birth date.",
         "publicRegisterLine2" : "We'll show all the other information you provide on this screen on the public register.",
         "errorMessages": {
@@ -64,7 +62,6 @@
     "address": {
         "chooseAddress": { 
             "addressLink": "The address is not on the list",
-            "publicRegisterTitle": "What information we'll show on the public register",
             "principalPlaceOfBusiness" : {
                "title": "Choose the principal place of business"            
             },
@@ -86,8 +83,6 @@
 
         "confirm": {
             "addressLink" : "Change",
-            "publicRegisterTitle": "What information we'll show on the public register",
-
             "registeredOfficeAddress" : {
                 "title" : "Confirm the registered office address",
                 "addressLinkHidden" : "registered office address",
@@ -150,7 +145,6 @@
             "countryScotland": "Scotland",
             "countryWales": "Wales",
             "countryNorthernIreland": "Northern Ireland",
-            "publicInformationTitle": "What information we'll show on the public register",
             "errorMessages": {
                 "nameOrNumberMissing": "Enter a property name or number",
                 "nameOrNumberLength": "Property name or number must be 200 characters or less",
@@ -173,7 +167,6 @@
                 "officialCommunication": "We'll use this address to send official communications.",
                 "physicalAddress": "It must be a physical address in the jurisdiction where the partnership was formed. You cannot use a PO Box address.",
                 "provideNext": "You'll need to provide the principal place of business next.",
-                "publicRegisterTitle": "What information we'll show on the public register",
                 "publicRegisterLine1": "We'll show the registered office address on the public register."
             },
 
@@ -181,26 +174,22 @@
                 "whatIsPrincipalPlaceOfBusiness": "What is the principal place of business?",
                 "runningOfBusiness": "This is the address where the day to day running of the business takes place. It could be the same as the registered office address, or a different address.",
                 "jurisdiction": "It must be in the jurisdiction where the partnership was formed. It can be changed to an address outside of the jurisdiction after you've registered the partnership.",
-                "publicRegisterTitle": "What information we'll show on the public register",
                 "publicRegisterLine1": "We'll show the principal place of business on the public register."
             },
 
             "usualResidentialAddress": {
                 "whatIsUsualResidentialAddress": "What is the general partner's usual residential address?",
-                "publicRegisterTitle": "What information we'll show on the public register",
                 "publicRegisterLine1": "We will not show the general partner's usual residential address."
             },
 
             "principalOfficeAddress": {
                 "whatIsPrincipalOfficeAddress": "What is the the general partner's principal office address?",
-                "publicRegisterTitle" : "What information we'll show on the public register",
                 "publicRegisterLine1": "We will not show the general partner's principal office address."
             },
 
             "correspondenceAddress": {
                 "whatIsCorrespondenceAddress": "What is the general partner's correspondence address?",
                 "titleHint": "This is also known as the service address.",
-                "publicRegisterTitle": "What information we'll show on the public register",
                 "publicRegisterLine1": "We'll show the general partner's correspondence address on the public register."
             },
  
@@ -220,18 +209,15 @@
             "generalPartnerPrincipalOfficeAddress": {
                 "title": "Where is the general partner's principal office address?",
                 "titleHint": "This is the address for the entity's main office",
-                "publicRegisterInformationHeading": "What information we'll show on the public register",
                 "publicRegisterInformationLine1": "We'll show the general partner's principal office address on the public register."
             },
             "generalPartnerUsualResidentialAddress": {
                 "title": "Where is the usual residential address of the general partner?",
-                "publicRegisterInformationHeading": "What information we'll show on the public register",
                 "publicRegisterInformationLine1": "We will not show the general partner's usual residential address"
             },
             "generalPartnerCorrespondenceAddress": {
                 "title": "Where is the general partner's correspondence address?",
                 "titleHint": "This is also known as the service address.",
-                "publicRegisterInformationHeading": "What information we'll show on the public register",
                 "publicRegisterInformationLine1": "We'll show the general partner's correspondence address on the public register."
             }
         },
@@ -360,6 +346,10 @@
         "goToStartPage" : "To register a limited partnership, go to the <a class='govuk-link' href='/limited-partnerships/start'>Register a limited partnership</a> start page."
     },
 
+    "publicRegisterInformation" : {
+        "title": "What information we'll show on the public register"
+    },
+
     "companyNumber" : {
         "whatIsPartnershipNumber": "What is the limited partnership number?",
         "hint": "This is 2 letters followed by 6 numbers." 
@@ -379,7 +369,6 @@
         "hint" : "You should use the SIC code that best describes the partnership's nature of business.",
         "find": "Find your SIC code using our look up tool (opens in new tab)",
         "additionalHint" : "Enter up to 3 additional SIC codes (optional):",
-        "publicRegisterTitle": "What information we'll show on the public register",
         "publicRegisterLine1": "We'll show the SIC codes on the public register."
     },
 
@@ -401,7 +390,6 @@
         "byAgreement": "Such term as decided by the partners within the partnership agreement",
         "untilDissolution": "Until the general partner determines the partnership is dissolved",
         "noTerm": "No set term",
-        "publicRegisterTitle": "What information we'll show on the public register",
         "publicRegisterLine1": "We'll show the term of partnership on the public register."
     },
 
