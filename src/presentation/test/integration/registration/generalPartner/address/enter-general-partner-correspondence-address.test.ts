@@ -5,7 +5,6 @@ import cyTranslationText from "../../../../../../../locales/cy/translations.json
 
 import app from "../../../app";
 
-import * as config from "config";
 import {
   // CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
@@ -151,7 +150,7 @@ describe("Enter Correspondence Address Page", () => {
       });
 
       expect(res.status).toBe(302);
-      // TODO Uncomment when correspondence address confirmation page is done 
+      // TODO Uncomment when correspondence address confirmation page is done
       // expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
 
       // const cache = appDevDependencies.cacheRepository.cache;
@@ -184,7 +183,7 @@ describe("Enter Correspondence Address Page", () => {
       });
 
       expect(res.status).toBe(302);
-      // TODO Uncomment when correspondence address confirmation page is done 
+      // TODO Uncomment when correspondence address confirmation page is done
       // expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
     });
 

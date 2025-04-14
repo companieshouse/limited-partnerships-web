@@ -135,6 +135,7 @@
             },
             "correspondenceAddress":{
                 "title": "WELSH - What is the general partner's correspondence address",
+                "titleHint1": "WELSH - This is also known as the service address.",
                 "publicInformationLine1": "WELSH - We'll show the general partner's correspondence address on the public register.",
                 "postcodeOptional": "WELSH - Postcode (optional)"
             },
