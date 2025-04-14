@@ -16,11 +16,7 @@ class GeneralPartnerService {
     errors?: UIErrors;
   }> {
     try {
-      const generalPartnerId = await this.generalPartnerGateway.createGeneralPartner(
-        opt,
-        transactionId,
-        data
-      );
+      const generalPartnerId = await this.generalPartnerGateway.createGeneralPartner(opt, transactionId, data);
 
       return { generalPartnerId };
     } catch (errors: any) {
@@ -45,13 +41,23 @@ class GeneralPartnerService {
     generalPartnerId: string
   ): Promise<GeneralPartner> {
     try {
-      return await this.generalPartnerGateway.getGeneralPartner(
-        opt,
-        transactionId,
-        generalPartnerId
-      );
+      return await this.generalPartnerGateway.getGeneralPartner(opt, transactionId, generalPartnerId);
     } catch (error: any) {
       logger.error(`Error getting GeneralPartner ${JSON.stringify(error)}`);
+
+      throw error;
+    }
+  }
+
+  async getGeneralPartners(
+    opt: { access_token: string; refresh_token: string },
+    transactionId: string,
+    submissionId: string
+  ): Promise<GeneralPartner[]> {
+    try {
+      return await this.generalPartnerGateway.getGeneralPartners(opt, transactionId, submissionId);
+    } catch (error: any) {
+      logger.error(`Error getting GeneralPartners ${JSON.stringify(error)}`);
 
       throw error;
     }

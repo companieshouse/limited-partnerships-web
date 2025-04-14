@@ -60,6 +60,18 @@ class GeneralPartnerInMemoryGateway implements IGeneralPartnerGateway {
     return this.generalPartners[0];
   }
 
+  async getGeneralPartners(
+    opt: { access_token: string; refresh_token: string },
+    transactionId: string,
+    submissionId: string
+  ): Promise<GeneralPartner[]> {
+    if (this.error) {
+      throw new Error(`Not found: ${submissionId}`);
+    }
+
+    return this.generalPartners;
+  }
+
   async sendPageData(
     opt: { access_token: string },
     transactionId: string,
@@ -75,7 +87,7 @@ class GeneralPartnerInMemoryGateway implements IGeneralPartnerGateway {
     if (index === -1) {
       throw new Error(`Not found: ${generalPartnerId}`);
     }
-    
+
     this.generalPartners[index].data = data;
   }
 }

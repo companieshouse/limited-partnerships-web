@@ -20,7 +20,7 @@
 
                 {% for item in props.data.generalPartners %}
 
-                    {% if item.forename %}
+                    {% if item.data.forename %}
 
                         {{ govukSummaryList({
                             classes: "govuk-!-margin-bottom-9",
@@ -30,7 +30,7 @@
                                         text: "Person"
                                     },
                                     value: {
-                                        text: item.forename + " " + item.surname
+                                        text: item.data.forename + " " + item.data.surname
                                     },
                                     actions: {
                                     items: [
@@ -48,7 +48,7 @@
                             ]
                         }) }} 
 
-                    {% elif item.legal_entity_name %}
+                    {% elif item.data.legal_entity_name %}
 
                         {{ govukSummaryList({
                             classes: "govuk-!-margin-bottom-9",
@@ -58,7 +58,7 @@
                                         text: "Legal entity"
                                     },
                                     value: {
-                                        text: item.legal_entity_name
+                                        text: item.data.legal_entity_name
                                     },
                                     actions: {
                                     items: [

@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { Resource } from "@companieshouse/api-sdk-node";
 
 import IGeneralPartnerGateway from "../../../domain/IGeneralPartnerGateway";
@@ -25,9 +27,7 @@ class GeneralPartnerGateway implements IGeneralPartnerGateway {
       args: [transactionId, generalPartner]
     };
 
-    const response = await makeApiCallWithRetry<
-      Resource<LimitedPartnershipResourceCreated>
-    >(opt, apiCall);
+    const response = await makeApiCallWithRetry<Resource<LimitedPartnershipResourceCreated>>(opt, apiCall);
 
     const uiErrors = checkForBadRequest<LimitedPartnershipResourceCreated>(response);
     if (uiErrors) {
@@ -60,6 +60,14 @@ class GeneralPartnerGateway implements IGeneralPartnerGateway {
     return response?.resource ?? {};
   }
 
+  async getGeneralPartners(
+    opt: { access_token: string; refresh_token: string },
+    transactionId: string,
+    submissionId: string
+  ): Promise<GeneralPartner[]> {
+    throw new Error("Method not implemented.");
+  }
+
   async sendPageData(
     opt: { access_token: string; refresh_token: string },
     transactionId: string,
@@ -76,11 +84,7 @@ class GeneralPartnerGateway implements IGeneralPartnerGateway {
     const apiCall = {
       service: SDK_LIMITED_PARTNERSHIP_SERVICE,
       method: "patchGeneralPartner",
-      args: [
-        transactionId,
-        generalPartnerId,
-        removeEmptyStringValues(data, ["former_names"])
-      ]
+      args: [transactionId, generalPartnerId, removeEmptyStringValues(data, ["former_names"])]
     };
 
     const response = await makeApiCallWithRetry<Resource<void>>(opt, apiCall);
