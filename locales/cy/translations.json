@@ -197,9 +197,9 @@
             },
 
             "correspondenceAddress": {
-                "whatIsCorrespondenceAddress": "What is the general partner's correspondence address?",
-                "publicRegisterTitle": "What information we'll show on the public register",
-                "publicRegisterLine1": "We'll  show the general partner's correspondence  address."
+                "whatIsCorrespondenceAddress": "WELSH - What is the general partner's correspondence address?",
+                "publicRegisterTitle": "WELSH - What information we'll show on the public register",
+                "publicRegisterLine1": "WELSH - We'll  show the general partner's correspondence  address."
             },
  
             "nameOrNumberHint": "WELSH - Property name or number (optional)",

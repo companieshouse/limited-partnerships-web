@@ -9,7 +9,6 @@ import app from "../../../app";
 import { getUrl, setLocalesEnabled, toEscapedHtml, testTranslations } from "../../../../utils";
 import { POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL } from "presentation/controller/addressLookUp/url";
 import GeneralPartnerBuilder, {
-  generalPartnerPerson,
   generalPartnerLegalEntity
 } from "../../../../builder/GeneralPartnerBuilder";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
@@ -23,7 +22,7 @@ describe("Postcode general partner's correspondence address page", () => {
 
       const generalPartner = new GeneralPartnerBuilder()
         .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isLegalEntity()
+        .isPerson()
         .build();
 
       appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
@@ -40,9 +39,9 @@ describe("Postcode general partner's correspondence address page", () => {
         "errorMessages"
       ]);
       expect(res.text).not.toContain("WELSH -");
-      expect(res.text).not.toContain(generalPartnerPerson.forename.toUpperCase());
-      expect(res.text).not.toContain(generalPartnerPerson.surname.toUpperCase());
-      expect(res.text).toContain(generalPartnerLegalEntity.legal_entity_name?.toUpperCase());
+      expect(res.text).toContain(generalPartner.data?.forename?.toUpperCase());
+      expect(res.text).toContain(generalPartner.data?.surname?.toUpperCase());
+      expect(res.text).not.toContain(generalPartnerLegalEntity.legal_entity_name?.toUpperCase());
     });
 
     it("should load the correspondence address page with Welsh text", async () => {
@@ -50,7 +49,7 @@ describe("Postcode general partner's correspondence address page", () => {
 
       const generalPartner = new GeneralPartnerBuilder()
         .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isLegalEntity()
+        .isPerson()
         .build();
 
       appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
@@ -67,9 +66,9 @@ describe("Postcode general partner's correspondence address page", () => {
         "errorMessages"
       ]);
       expect(res.text).toContain("WELSH -");
-      expect(res.text).not.toContain(generalPartnerPerson.forename.toUpperCase());
-      expect(res.text).not.toContain(generalPartnerPerson.surname.toUpperCase());
-      expect(res.text).toContain(generalPartnerLegalEntity.legal_entity_name?.toUpperCase());
+      expect(res.text).toContain(generalPartner.data?.forename?.toUpperCase());
+      expect(res.text).toContain(generalPartner.data?.surname?.toUpperCase());
+      expect(res.text).not.toContain(generalPartnerLegalEntity.legal_entity_name?.toUpperCase());
     });
   });
 
