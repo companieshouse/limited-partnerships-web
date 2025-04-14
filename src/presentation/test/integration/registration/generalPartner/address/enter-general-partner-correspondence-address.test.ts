@@ -5,8 +5,9 @@ import cyTranslationText from "../../../../../../../locales/cy/translations.json
 
 import app from "../../../app";
 
+import * as config from "config";
 import {
-  // CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
+  CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   TERRITORY_CHOICE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL
@@ -22,7 +23,7 @@ import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
 
 describe("Enter Correspondence Address Page", () => {
   const URL = getUrl(ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL);
-  // const redirectUrl = getUrl(CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL);
+  const redirectUrl = getUrl(CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL);
 
   beforeEach(() => {
     setLocalesEnabled(false);
@@ -101,12 +102,12 @@ describe("Enter Correspondence Address Page", () => {
         }
       });
 
-      const redirectUrl = getUrl(TERRITORY_CHOICE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL);
+      const backLinkUrl = getUrl(TERRITORY_CHOICE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL);
 
       const res = await request(app).get(URL);
       expect(res.status).toBe(200);
 
-      expect(res.text).toContain(redirectUrl);
+      expect(res.text).toContain(backLinkUrl);
     });
 
     it("should load enter general partners correspondence address manual entry page with postcode lookup back link", async () => {
@@ -115,11 +116,11 @@ describe("Enter Correspondence Address Page", () => {
           ca_territory_choice: "unitedKingdom"
         }
       });
-      const redirectUrl = getUrl(POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL);
+      const backLinkUrl = getUrl(POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL);
       const res = await request(app).get(URL);
       expect(res.status).toBe(200);
 
-      expect(res.text).toContain(redirectUrl);
+      expect(res.text).toContain(backLinkUrl);
     });
   });
 
@@ -150,23 +151,22 @@ describe("Enter Correspondence Address Page", () => {
       });
 
       expect(res.status).toBe(302);
-      // TODO Uncomment when correspondence address confirmation page is done
-      // expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+      expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
 
-      // const cache = appDevDependencies.cacheRepository.cache;
-      // expect(cache?.[`${config.APPLICATION_CACHE_KEY}`]).toEqual({
-      //   [appDevDependencies.transactionGateway.transactionId]: {
-      //     correspondence_address: {
-      //       postal_code: "",
-      //       premises: "4",
-      //       address_line_1: "DUNCALF STREET",
-      //       address_line_2: "",
-      //       locality: "STOKE-ON-TRENT",
-      //       country: "England",
-      //       region: undefined
-      //     }
-      //   }
-      // });
+      const cache = appDevDependencies.cacheRepository.cache;
+      expect(cache?.[`${config.APPLICATION_CACHE_KEY}`]).toEqual({
+        [appDevDependencies.transactionGateway.transactionId]: {
+          correspondence_address: {
+            postal_code: "",
+            premises: "4",
+            address_line_1: "DUNCALF STREET",
+            address_line_2: "",
+            locality: "STOKE-ON-TRENT",
+            country: "England",
+            region: undefined
+          }
+        }
+      });
     });
 
     it("should redirect to the confirm general partners correspondence address page", async () => {
@@ -183,8 +183,7 @@ describe("Enter Correspondence Address Page", () => {
       });
 
       expect(res.status).toBe(302);
-      // TODO Uncomment when correspondence address confirmation page is done
-      // expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+      expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
     });
 
     it("should redirect to the error page when error occurs during Post", async () => {

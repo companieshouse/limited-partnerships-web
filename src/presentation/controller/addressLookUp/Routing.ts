@@ -243,8 +243,11 @@ const addressRoutingChooseGeneralPartnerCorrespondenceAddress = {
 const addressRoutingEnterGeneralPartnerCorrespondenceAddress = {
   previousUrl: url.POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   currentUrl: url.ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
-  nextUrl: LIMITED_PARTNERS_URL, // TODO will be changed to confirm correspondence address (not ready)
-  pageType: AddressPageType.enterGeneralPartnerCorrespondenceAddress
+  nextUrl: url.CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
+  pageType: AddressPageType.enterGeneralPartnerCorrespondenceAddress,
+  data: {
+    ...correspondenceAddressCacheKeys
+  }
 };
 
 const correspondenceAddress = [

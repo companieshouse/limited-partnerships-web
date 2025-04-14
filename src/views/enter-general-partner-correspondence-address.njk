@@ -30,7 +30,8 @@
 
 {% set pageTitle = i18n.address.enterAddress.correspondenceAddress.title %}
 {% set titleHint1 = i18n.address.enterAddress.correspondenceAddress.titleHint1 %}
-{% set publicInformationLine1 = i18n.address.enterAddress.correspondenceAddress.publicInformationLine1 %}
+{% set publicRegisterInformationHeading = i18n.address.enterAddress.publicInformationTitle %}
+{% set publicRegisterInformationLine1 = i18n.address.enterAddress.correspondenceAddress.publicInformationLine1 %}
 
 {% block content %}
   <div class="govuk-grid-row">
@@ -79,10 +80,7 @@
             {% include "pages/address/enter-address-common-fields.njk" %}
           {% endif %}
           
-          {{ govukInsetText({
-            html: "<h2 class='govuk-heading-m'>" + i18n.address.enterAddress.publicInformationTitle | escape + "</h2>
-            <p>" + i18n.address.enterAddress.correspondenceAddress.publicInformationLine1 | escape + "</p>"
-          }) }}
+          {% include "includes/public-register-information.njk" %}
 
           {% include "includes/save-and-continue-button.njk" %}
         </form>
