@@ -218,7 +218,20 @@ const addressRoutingTerritoryChoiceGeneralPartnerCorrespondanceAddress = {
   }
 };
 
-const correspondenceAddress = [addressRoutingTerritoryChoiceGeneralPartnerCorrespondanceAddress];
+const addressRoutingPostcodeGeneralPartnerCorrespondanceAddress = {
+  previousUrl: url.TERRITORY_CHOICE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
+  currentUrl: url.POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
+  nextUrl: LIMITED_PARTNERS_URL,
+  pageType: AddressPageType.postcodeGeneralPartnerCorrespondenceAddress,
+  data: {
+    ...correspondenceAddressCacheKeys
+  }
+};
+
+const correspondenceAddress = [
+  addressRoutingTerritoryChoiceGeneralPartnerCorrespondanceAddress,
+  addressRoutingPostcodeGeneralPartnerCorrespondanceAddress
+];
 
 // principal office address - legal entity
 
