@@ -14,7 +14,7 @@
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
 
-            <h2 class="govuk-heading-m">{{ i18n.reviewGeneralPartnersPage.genaralPartnersAdded }}</h2>
+            <h2 class="govuk-heading-m">{{ i18n.reviewGeneralPartnersPage.genaralPartnersAdded.title }}</h2>
 
             {% if props.data.generalPartners.length  %}
 
@@ -23,7 +23,6 @@
                     {% if item.data.forename %}
 
                         {{ govukSummaryList({
-                            classes: "govuk-!-margin-bottom-9",
                             rows: [
                                 {
                                     key: {
@@ -34,14 +33,10 @@
                                     },
                                     actions: {
                                     items: [
-                                            {
-                                                href: pros.currentUrl | replace("review-general-partners", "general-partner/" + item.id + "/add-general-partner-person"),
-                                                text: "Change"
-                                            },
-                                            {
-                                                href: "gp-remove",
-                                                text: "Remove"
-                                            }
+                                            CREATE_CHANGE_LINK(
+                                                i18n.reviewGeneralPartnersPage.genaralPartnersAdded.changeLink,
+                                                props.currentUrl | replace("review-general-partners", "general-partner/" + item.id + "/add-general-partner-person")
+                                            )
                                         ]
                                     }
                                 }
@@ -51,7 +46,6 @@
                     {% elif item.data.legal_entity_name %}
 
                         {{ govukSummaryList({
-                            classes: "govuk-!-margin-bottom-9",
                             rows: [
                                 {
                                     key: {
@@ -62,14 +56,10 @@
                                     },
                                     actions: {
                                     items: [
-                                            {
-                                                href: pros.currentUrl | replace("review-general-partners", "general-partner/" + item.id + "/add-general-partner-legal-entity"),
-                                                text: "Change"
-                                            },
-                                            {
-                                                href: "#",
-                                                text: "Remove"
-                                            }
+                                            CREATE_CHANGE_LINK(
+                                                i18n.reviewGeneralPartnersPage.genaralPartnersAdded.changeLink,
+                                                props.currentUrl | replace("review-general-partners", "general-partner/" + item.id + "/add-general-partner-legal-entity")
+                                            )
                                         ]
                                     }
                                 }

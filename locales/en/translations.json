@@ -365,7 +365,10 @@
 
     "reviewGeneralPartnersPage": {
         "title": "General partners",
-        "genaralPartnersAdded": "General partners you have added so far:",
+        "genaralPartnersAdded": {
+            "title": "General partners you have added so far:",
+            "changeLink": "Change"
+        },
         "addGeneralPartner": {
             "title": "Do you need to add another general partner?",
             "optionPerson": "Yes, a person",

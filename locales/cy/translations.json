@@ -366,7 +366,10 @@
 
     "reviewGeneralPartnersPage": {
         "title": "WELSH - General partners",
-        "genaralPartnersAdded": "WELSH - General partners you have added so far:",
+        "genaralPartnersAdded": {
+            "title": "WELSH - General partners you have added so far:",
+            "changeLink": "WELSH - Change"
+        },
         "addGeneralPartner": {
             "title": "WELSH - Do you need to add another general partner?",
             "optionPerson": "WELSH - Yes, a person",

@@ -5,7 +5,7 @@ import PageType from "../PageType";
 import {
   ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
   ADD_GENERAL_PARTNER_PERSON_URL,
-  LIMITED_PARTNERS_URL,
+  REVIEW_GENERAL_PARTNERS_URL,
   TERM_URL,
   WHERE_IS_THE_JURISDICTION_URL
 } from "../registration/url";
@@ -211,7 +211,7 @@ const correspondenceAddressCacheKeys = {
 const addressRoutingTerritoryChoiceGeneralPartnerCorrespondanceAddress = {
   previousUrl: url.CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   currentUrl: url.TERRITORY_CHOICE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
-  nextUrl: LIMITED_PARTNERS_URL,
+  nextUrl: REVIEW_GENERAL_PARTNERS_URL,
   pageType: AddressPageType.territoryChoiceGeneralPartnerCorrespondenceAddress,
   data: {
     ...correspondenceAddressCacheKeys
@@ -273,7 +273,7 @@ const addressRoutingEnterGeneralPartnerPrincipalOfficeAddress = {
 const addressRoutingConfirmGeneralPartnerPrincipalOfficeAddress = {
   previousUrl: url.POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   currentUrl: url.CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
-  nextUrl: LIMITED_PARTNERS_URL,
+  nextUrl: REVIEW_GENERAL_PARTNERS_URL,
   pageType: AddressPageType.confirmGeneralPartnerPrincipalOfficeAddress,
   data: {
     ...principalOfficeAddressCacheKeys,

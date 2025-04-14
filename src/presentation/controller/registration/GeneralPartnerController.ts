@@ -86,11 +86,7 @@ class GeneralPartnerController extends AbstractController {
             ids.submissionId
           );
 
-          generalPartners = await this.generalPartnerService.getGeneralPartners(
-            tokens,
-            ids.transactionId,
-            ids.submissionId
-          );
+          generalPartners = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
         }
 
         response.render(

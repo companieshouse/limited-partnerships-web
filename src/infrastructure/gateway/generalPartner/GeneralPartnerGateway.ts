@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import { Resource } from "@companieshouse/api-sdk-node";
 
 import IGeneralPartnerGateway from "../../../domain/IGeneralPartnerGateway";
@@ -62,10 +60,20 @@ class GeneralPartnerGateway implements IGeneralPartnerGateway {
 
   async getGeneralPartners(
     opt: { access_token: string; refresh_token: string },
-    transactionId: string,
-    submissionId: string
+    transactionId: string
   ): Promise<GeneralPartner[]> {
-    throw new Error("Method not implemented.");
+    const apiCall = {
+      service: SDK_LIMITED_PARTNERSHIP_SERVICE,
+      method: "getGeneralPartners",
+      args: [transactionId]
+    };
+    const response = await makeApiCallWithRetry<Resource<GeneralPartner[]>>(opt, apiCall);
+
+    if (response.httpStatusCode !== 200) {
+      throw response;
+    }
+
+    return response?.resource ?? [];
   }
 
   async sendPageData(

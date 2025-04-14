@@ -51,11 +51,10 @@ class GeneralPartnerService {
 
   async getGeneralPartners(
     opt: { access_token: string; refresh_token: string },
-    transactionId: string,
-    submissionId: string
+    transactionId: string
   ): Promise<GeneralPartner[]> {
     try {
-      return await this.generalPartnerGateway.getGeneralPartners(opt, transactionId, submissionId);
+      return await this.generalPartnerGateway.getGeneralPartners(opt, transactionId);
     } catch (error: any) {
       logger.error(`Error getting GeneralPartners ${JSON.stringify(error)}`);
 

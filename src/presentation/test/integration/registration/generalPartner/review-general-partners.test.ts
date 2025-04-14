@@ -12,20 +12,18 @@ import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
 describe("Review General Partners Page", () => {
   const URL = getUrl(REVIEW_GENERAL_PARTNERS_URL);
 
+  const generalPartnerPerson = new GeneralPartnerBuilder().isPerson().build();
+  const generalPartnerLegalEntity = new GeneralPartnerBuilder().isLegalEntity().build();
+
   beforeEach(() => {
     setLocalesEnabled(false);
 
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([]);
-    appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
+    appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartnerPerson, generalPartnerLegalEntity]);
   });
 
   it("should load the review general partners page with English text", async () => {
     setLocalesEnabled(true);
-
-    const generalPartnerPerson = new GeneralPartnerBuilder().isPerson().build();
-    const generalPartnerLegalEntity = new GeneralPartnerBuilder().isLegalEntity().build();
-
-    appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartnerPerson, generalPartnerLegalEntity]);
 
     const res = await request(app).get(URL + "?lang=en");
 
