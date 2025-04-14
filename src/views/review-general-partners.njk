@@ -1,0 +1,134 @@
+{% extends "layout.njk" %}
+
+{% set pageTitle = i18n.reviewGeneralPartnersPage.title  %}
+
+{% block content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            {% include "includes/proposed-name.njk" %}
+
+            <h1 class="govuk-heading-xl">{{ pageTitle }}</h1>
+        </div>
+    </div>
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+
+            <h2 class="govuk-heading-m">{{ i18n.reviewGeneralPartnersPage.genaralPartnersAdded }}</h2>
+
+            {% if props.data.generalPartners.length  %}
+
+                {% for item in props.data.generalPartners %}
+
+                    {% if item.forename %}
+
+                        {{ govukSummaryList({
+                            classes: "govuk-!-margin-bottom-9",
+                            rows: [
+                                {
+                                    key: {
+                                        text: "Person"
+                                    },
+                                    value: {
+                                        text: item.forename + " " + item.surname
+                                    },
+                                    actions: {
+                                    items: [
+                                            {
+                                                href: pros.currentUrl | replace("review-general-partners", "general-partner/" + item.id + "/add-general-partner-person"),
+                                                text: "Change"
+                                            },
+                                            {
+                                                href: "gp-remove",
+                                                text: "Remove"
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }) }} 
+
+                    {% elif item.legal_entity_name %}
+
+                        {{ govukSummaryList({
+                            classes: "govuk-!-margin-bottom-9",
+                            rows: [
+                                {
+                                    key: {
+                                        text: "Legal entity"
+                                    },
+                                    value: {
+                                        text: item.legal_entity_name
+                                    },
+                                    actions: {
+                                    items: [
+                                            {
+                                                href: pros.currentUrl | replace("review-general-partners", "general-partner/" + item.id + "/add-general-partner-legal-entity"),
+                                                text: "Change"
+                                            },
+                                            {
+                                                href: "#",
+                                                text: "Remove"
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }) }} 
+
+                    {% endif %}
+
+                {% endfor %}
+            
+            {% else %}
+
+                <p>You need to add at least one Genaral Partner</p>
+
+            {% endif %}
+
+        </div>
+    </div>
+
+    </br>
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+
+            <form class="form" action={{ props.currentUrl }} method="post">
+                <input type="hidden" name="pageType" value={{ props.pageType }}>
+                
+                {% include "includes/csrf_token.njk" %}
+        
+                {{ govukRadios({
+                    name: "addAnotherGeneralPartner",
+                    fieldset: {
+                        legend: {
+                            text: i18n.reviewGeneralPartnersPage.addGeneralPartner.title,
+                            isPageHeading: false,
+                            classes: "govuk-fieldset__legend--m"
+                        }
+                    },
+
+                    items: [
+                        {
+                            value: "addPerson",
+                            text: i18n.reviewGeneralPartnersPage.addGeneralPartner.optionPerson
+                        },
+                        {
+                            value: "addEntity",
+                            text: i18n.reviewGeneralPartnersPage.addGeneralPartner.optionLegalEntity
+                        },
+                    
+                        {
+                            value: "no",
+                            text: i18n.reviewGeneralPartnersPage.addGeneralPartner.optionNo
+                        }
+                    ]
+                }) }}
+
+                {% include "includes/save-and-continue-button.njk" %}
+
+            </form>
+        </div>
+    </div>
+{% endblock %}

@@ -364,6 +364,17 @@
         "date": "WELSH - Incorporation date"
     },
 
+    "reviewGeneralPartnersPage": {
+        "title": "WELSH - General partners",
+        "genaralPartnersAdded": "WELSH - General partners you have added so far:",
+        "addGeneralPartner": {
+            "title": "WELSH - Do you need to add another general partner?",
+            "optionPerson": "WELSH - Yes, a person",
+            "optionLegalEntity": "WELSH - Yes, a legal entity",
+            "optionNo": "WELSH - No"
+        }
+    },
+
     "service" : "WELSH - Register a limited partnership",
 
     "sicCodePage" : {

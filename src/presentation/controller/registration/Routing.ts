@@ -86,10 +86,19 @@ const registrationRoutingAddGeneralPartnerLegalEntity = {
 
 // usual residential address
 
+// correspondence address
+
 // principal office address
 
+const registrationRoutingReviewGeneralPartners = {
+  previousUrl: url.GENERAL_PARTNER_CHOICE_URL,
+  currentUrl: url.REVIEW_GENERAL_PARTNERS_URL,
+  nextUrl: url.LIMITED_PARTNERS_URL,
+  pageType: RegistrationPageType.reviewGeneralPartners
+};
+
 const registrationRoutingLimitedPartners = {
-  previousUrl: url.GENERAL_PARTNERS_URL,
+  previousUrl: url.REVIEW_GENERAL_PARTNERS_URL,
   currentUrl: url.LIMITED_PARTNERS_URL,
   nextUrl: url.LIMITED_PARTNER_CHOICE_URL,
   pageType: RegistrationPageType.limitedPartners
@@ -130,11 +139,14 @@ const list = [
   registrationRoutingJurisdiction,
   registrationRoutingTerm,
   registrationRoutingSic,
+
   registrationRoutingGeneralPartners,
-  registrationRoutingLimitedPartners,
   registrationRoutingGeneralPartnerChoice,
   registrationRoutingAddGeneralPartnerPerson,
   registrationRoutingAddGeneralPartnerLegalEntity,
+  registrationRoutingReviewGeneralPartners,
+
+  registrationRoutingLimitedPartners,
   registrationRoutingLimitedPartnerChoice,
   registrationRoutingCheckYourAnswers,
   registrationRoutingApplicationSubmitted,
