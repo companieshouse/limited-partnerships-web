@@ -211,8 +211,18 @@ const correspondenceAddressCacheKeys = {
 const addressRoutingTerritoryChoiceGeneralPartnerCorrespondanceAddress = {
   previousUrl: url.CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   currentUrl: url.TERRITORY_CHOICE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
-  nextUrl: LIMITED_PARTNERS_URL,
+  nextUrl: url.POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   pageType: AddressPageType.territoryChoiceGeneralPartnerCorrespondenceAddress,
+  data: {
+    ...correspondenceAddressCacheKeys
+  }
+};
+
+const addressRoutingPostcodeGeneralPartnerCorrespondenceAddress = {
+  previousUrl: url.TERRITORY_CHOICE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
+  currentUrl: url.POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
+  nextUrl: url.CHOOSE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
+  pageType: AddressPageType.postcodeGeneralPartnerCorrespondenceAddress,
   data: {
     ...correspondenceAddressCacheKeys
   }
@@ -231,6 +241,7 @@ const addressRoutingChooseGeneralPartnerCorrespondenceAddress = {
 
 const correspondenceAddress = [
   addressRoutingTerritoryChoiceGeneralPartnerCorrespondanceAddress,
+  addressRoutingPostcodeGeneralPartnerCorrespondenceAddress,
   addressRoutingChooseGeneralPartnerCorrespondenceAddress
 ];
 

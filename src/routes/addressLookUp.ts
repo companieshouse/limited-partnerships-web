@@ -166,6 +166,17 @@ export const addressLookUpEndpoints = (router: Router, dependencies: IDependenci
   );
 
   router.get(
+    url.POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
+    authentication,
+    dependencies.addressLookUpController.getPageRouting()
+  );
+  router.post(
+    url.POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
+    authentication,
+    dependencies.addressLookUpController.postcodeValidation()
+  );
+
+  router.get(
     url.CHOOSE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
     authentication,
     dependencies.addressLookUpController.getPageRouting()

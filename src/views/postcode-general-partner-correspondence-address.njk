@@ -1,0 +1,27 @@
+{% extends "layout.njk" %}
+
+{% set pageTitle = i18n.address.findPostcode.correspondenceAddress.whatIsCorrespondenceAddress %}
+{% set titleHint = i18n.address.findPostcode.correspondenceAddress.titleHint %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {% include "includes/errors.njk" %}
+
+      <div>
+        {% include "includes/general-partner-name.njk" %}
+
+        <h1 class="govuk-heading-xl">{{ pageTitle }}</h1>
+        <p class="govuk-hint">{{ titleHint }}</p>
+      </div>
+
+      {% include "pages/address/postcode-form.njk" %}
+
+    <div>
+      {{ govukInsetText({
+        html: "<h2 class='govuk-heading-m'>" + i18n.address.findPostcode.correspondenceAddress.publicRegisterTitle | escape + "</h2> <p>" + i18n.address.findPostcode.correspondenceAddress.publicRegisterLine1 | escape + "</p>"
+      }) }}
+    </div>
+   </div>
+
+{% endblock %}
