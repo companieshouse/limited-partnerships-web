@@ -1,0 +1,19 @@
+{% extends "layout.njk" %}
+
+{% set pageTitle = i18n.address.chooseAddress.generalPartnerCorrespondenceAddress.title %}
+{% set pageTitleHint = i18n.address.chooseAddress.generalPartnerCorrespondenceAddress.titleHint %}
+{% set publicRegisterInformationHeading = i18n.address.chooseAddress.publicRegisterTitle %}
+{% set publicRegisterInformationLine1 = i18n.address.chooseAddress.generalPartnerCorrespondenceAddress.publicRegisterInformationLine1 %}
+
+{% set cache = props.data.cache['correspondence_address'] %}
+{% set addressLink = i18n.address.chooseAddress.addressLink %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {% include "includes/general-partner-name.njk" %}
+           
+      {% include "pages/address/choose-address-form.njk" %}
+    </div>
+  </div>
+{% endblock %}

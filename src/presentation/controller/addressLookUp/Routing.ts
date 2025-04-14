@@ -228,9 +228,21 @@ const addressRoutingPostcodeGeneralPartnerCorrespondenceAddress = {
   }
 };
 
+const addressRoutingChooseGeneralPartnerCorrespondenceAddress = {
+  previousUrl: url.POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
+  currentUrl: url.CHOOSE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
+  nextUrl: url.CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
+  pageType: AddressPageType.chooseGeneralPartnerCorrespondenceAddress,
+  data: {
+    ...correspondenceAddressCacheKeys,
+    enterManualAddressPageType: AddressPageType.enterGeneralPartnerCorrespondenceAddress
+  }
+};
+
 const correspondenceAddress = [
   addressRoutingTerritoryChoiceGeneralPartnerCorrespondanceAddress,
-  addressRoutingPostcodeGeneralPartnerCorrespondenceAddress
+  addressRoutingPostcodeGeneralPartnerCorrespondenceAddress,
+  addressRoutingChooseGeneralPartnerCorrespondenceAddress
 ];
 
 // principal office address - legal entity

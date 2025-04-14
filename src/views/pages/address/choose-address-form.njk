@@ -22,25 +22,33 @@
         name: "selected_address",
         value: cache | dump,
         fieldset: {
-        legend: {
+          legend: {
             text: pageTitle,
             isPageHeading: true,
             classes: "govuk-fieldset__legend--xl"
-        }
+          }
+        },
+        hint: {
+          text: pageTitleHint
         },
         items: addressItems
     }) }}
 
+    <p>
+      <a href="{{ props.currentUrl | replace(props.pageType, props.data.enterManualAddressPageType) }}" class="govuk-body-m govuk-link" data-event-id="address-not-on-list">{{ addressLink }}</a>
+    </p>
+
+    {% if publicRegisterInformationHeading %}
+      {% include "includes/public-register-information.njk" %}
+    {% endif %}
+
     {{ govukButton({
         text: i18n.buttons.continue,
         attributes: {
-        "id": "submit",
-        "onclick": "_paq.push(['trackEvent', 'Limited Partnerships', '" + props.pageType + "', document.querySelector('input[name=selected_address]:checked').getAttribute('radio-event-id')])"
+          "id": "submit",
+          "onclick": "_paq.push(['trackEvent', 'Limited Partnerships', '" + props.pageType + "', document.querySelector('input[name=selected_address]:checked').getAttribute('radio-event-id')])"
         }
     }) }}
 
-    <p>
-      <a href="{{ props.currentUrl | replace(props.pageType, props.data.enterManualAddressPageType) }}" class="govuk-body-m govuk-link" data-event-id="address-not-on-list">{{ addressLink }}</a>
-    <p>
 
 </form>
