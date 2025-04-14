@@ -198,6 +198,7 @@
 
             "correspondenceAddress": {
                 "whatIsCorrespondenceAddress": "WELSH - What is the general partner's correspondence address?",
+                "titleHint": "WELSH - This is also known as the service address.",
                 "publicRegisterTitle": "WELSH - What information we'll show on the public register",
                 "publicRegisterLine1": "WELSH - We'll show the general partner's correspondence address on the public register."
             },
