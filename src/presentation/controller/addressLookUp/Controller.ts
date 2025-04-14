@@ -214,11 +214,12 @@ class AddressLookUpController extends AbstractController {
 
         const pageRouting = super.getRouting(addressLookUpRouting, pageType, request);
 
-        const isURAorPOA =
+        const isGeneralPartnerAddress =
           pageType === AddressLookUpPageType.enterGeneralPartnerUsualResidentialAddress ||
+          pageType === AddressLookUpPageType.enterGeneralPartnerCorrespondenceAddress ||
           pageType === AddressLookUpPageType.enterGeneralPartnerPrincipalOfficeAddress;
 
-        const errors = isURAorPOA
+        const errors = isGeneralPartnerAddress
           ? null
           : this.addressService.isValidJurisdictionAndCountry(limitedPartnership?.data?.jurisdiction ?? "", country);
 

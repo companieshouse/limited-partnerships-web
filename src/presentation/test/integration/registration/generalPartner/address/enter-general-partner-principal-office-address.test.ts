@@ -41,6 +41,7 @@ describe("Enter general partner's principal office manual address page", () => {
         "postcodeMissing",
         "postcodeLength",
         "usualResidentialAddress",
+        "correspondenceAddress",
         "principalOfficeAddress"
       ]);
       expect(res.text).not.toContain("WELSH -");
@@ -68,6 +69,7 @@ describe("Enter general partner's principal office manual address page", () => {
         "postcodeMissing",
         "postcodeLength",
         "usualResidentialAddress",
+        "correspondenceAddress",
         "principalOfficeAddress"
       ]);
       expect(res.text).toContain("WELSH -");

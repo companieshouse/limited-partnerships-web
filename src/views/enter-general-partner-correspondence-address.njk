@@ -1,0 +1,91 @@
+{% extends "layout.njk" %}
+
+{% set correspondenceAddressKey = "correspondence_address" %}
+
+{% block backLink %}
+  {% set hrefValue = props.previousUrl %}
+
+  {% if props.data.cache.ca_territory_choice == "overseas" %}
+    {% set hrefValue = props.currentUrl | replace(props.pageType, "territory-choice-general-partner-correspondence-address") %}
+  {% endif %}
+
+  {{ govukBackLink({
+    text: "Back",
+    attributes: {
+      "data-event-id": "back-link"
+    },
+    href: hrefValue
+  }) }}
+{% endblock %}
+
+{% if props.data.address %}
+  {% set address = props.data.address %}
+{% elif props.data.cache[correspondenceAddressKey] %}
+  {% set address = props.data.cache[correspondenceAddressKey] %}
+{% elif props.data.limitedPartnership.data.service_address %}
+  {% set address = props.data.service_address %}
+{% else %}
+  {% set address = {} %}
+{% endif %}
+
+{% set pageTitle = i18n.address.enterAddress.correspondenceAddress.title %}
+{% set titleHint1 = i18n.address.enterAddress.correspondenceAddress.titleHint1 %}
+{% set publicInformationLine1 = i18n.address.enterAddress.correspondenceAddress.publicInformationLine1 %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {% include "includes/general-partner-name.njk" %}
+
+      <fieldset class="govuk-fieldset">
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+            <h1 class="govuk-heading-xl">
+            {{ pageTitle }}
+            </h1>
+        </legend>
+
+        <p class="govuk-hint">{{ titleHint1 }}</p>
+      </fieldset>
+      
+      <form class="form" action={{ props.currentUrl }} method="post">
+        <input type="hidden" name="pageType" value={{ props.pageType }}>
+          {% include "includes/csrf_token.njk" %}
+          
+          {% if props.data.cache.ca_territory_choice == "overseas" %}
+            {% include "pages/address/enter-address-fields.njk" %}
+
+            {{ govukInput({
+              label: {
+                text: i18n.address.enterAddress.correspondenceAddress.postcodeOptional
+              },
+              classes: "govuk-input--width-10",
+              id: "postal_code",
+              name: "postal_code",
+              value: address.postal_code,
+              attributes: {
+                oninput: "validateLength(this, 15, '" + i18n.address.enterAddress.errorMessages.postcodeLength | escape + "');"
+              }
+            }) }}
+
+            {% set countryFormId = "country" %}
+            {% set countryFormName = "country" %}
+            {% set countryText = i18n.address.enterAddress.country %}
+            {% set countryFormValue = address.country %}
+            {% set countryField = address.country %}
+            {% set countryFont = "govuk-!-font-weight-regular"%}
+            {% include "includes/countries.njk" %}
+
+          {% else %}
+            {% include "pages/address/enter-address-common-fields.njk" %}
+          {% endif %}
+          
+          {{ govukInsetText({
+            html: "<h2 class='govuk-heading-m'>" + i18n.address.enterAddress.publicInformationTitle | escape + "</h2>
+            <p>" + i18n.address.enterAddress.correspondenceAddress.publicInformationLine1 | escape + "</p>"
+          }) }}
+
+          {% include "includes/save-and-continue-button.njk" %}
+        </form>
+    </div>
+  </div> 
+{% endblock %}
