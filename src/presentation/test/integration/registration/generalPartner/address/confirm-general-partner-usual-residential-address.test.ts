@@ -74,6 +74,21 @@ describe("Confirm General Partner Usual Residential Address Page", () => {
       expect(res.text).toContain("England");
       expect(res.text).toContain("ST6 3LJ");
     });
+
+    it.each([
+      ["overseas", AddressPageType.enterGeneralPartnerUsualResidentialAddress],
+      ["unitedKingdom", AddressPageType.postcodeGeneralPartnerUsualResidentialAddress]
+    ])("should have the correct back link", async (territory, pageType) => {
+      appDevDependencies.cacheRepository.feedCache({
+        [appDevDependencies.transactionGateway.transactionId]: {
+          ["ura_territory_choice"]: territory
+        }
+      });
+
+      const res = await request(app).get(URL);
+
+      expect(res.text).toContain(pageType);
+    });
   });
 
   describe("POST Confirm Usual Residential Address Page", () => {
