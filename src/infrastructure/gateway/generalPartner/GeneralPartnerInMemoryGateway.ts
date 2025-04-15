@@ -64,10 +64,6 @@ class GeneralPartnerInMemoryGateway implements IGeneralPartnerGateway {
     opt: { access_token: string; refresh_token: string },
     transactionId: string
   ): Promise<GeneralPartner[]> {
-    if (this.error) {
-      throw new Error(`Not found: ${transactionId}`);
-    }
-
     return this.generalPartners;
   }
 
