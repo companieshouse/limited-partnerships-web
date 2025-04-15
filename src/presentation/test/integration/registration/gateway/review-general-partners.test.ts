@@ -31,4 +31,24 @@ describe("Review General Partner page", () => {
     expect(res.text).toContain("Joe");
     expect(res.text).toContain("Doe");
   });
+
+  it("should load error page", async () => {
+    mockCreateApiClient.mockReturnValue({
+      ...sdkMock,
+      limitedPartnershipsService: {
+        ...sdkMock.limitedPartnershipsService,
+        getGeneralPartners: () => ({
+          httpStatusCode: 500,
+          resource: []
+        })
+      }
+    });
+
+    const res = await request(appRealDependencies).get(URL).send({
+      pageType: RegistrationPageType.reviewGeneralPartners
+    });
+
+    expect(getGeneralPartners).toHaveBeenCalled();
+    expect(res.status).toBe(500);
+  });
 });
