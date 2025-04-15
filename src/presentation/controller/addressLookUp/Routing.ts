@@ -251,7 +251,7 @@ const addressRoutingEnterGeneralPartnerCorrespondenceAddress = {
 };
 
 const addressRoutingConfirmGeneralPartnerCorrespondenceAddress = {
-  previousUrl: url.POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  previousUrl: url.POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   currentUrl: url.CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   nextUrl: LIMITED_PARTNERS_URL,
   pageType: AddressPageType.confirmGeneralPartnerCorrespondenceAddress,
