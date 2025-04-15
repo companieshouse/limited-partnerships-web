@@ -160,7 +160,7 @@ class GeneralPartnerController extends AbstractController {
     };
   }
 
-  postReview(): RequestHandler {
+  postReviewPage(): RequestHandler {
     return (request: Request, response: Response, next: NextFunction) => {
       try {
         const { ids } = super.extract(request);
