@@ -32,6 +32,7 @@ describe("Enter Registered Office Address Page", () => {
       testTranslations(res.text, enTranslationText.address.enterAddress, [
         "jurisdictionCountry",
         "usualResidentialAddress",
+        "correspondenceAddress",
         "principalPlaceOfBusinessAddress",
         "principalOfficeAddress"
       ]);
@@ -47,6 +48,7 @@ describe("Enter Registered Office Address Page", () => {
       testTranslations(res.text, cyTranslationText.address.enterAddress, [
         "jurisdictionCountry",
         "usualResidentialAddress",
+        "correspondenceAddress",
         "principalPlaceOfBusinessAddress",
         "principalOfficeAddress"
       ]);

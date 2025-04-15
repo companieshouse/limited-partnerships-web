@@ -224,7 +224,8 @@ const addressRoutingPostcodeGeneralPartnerCorrespondenceAddress = {
   nextUrl: url.CHOOSE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   pageType: AddressPageType.postcodeGeneralPartnerCorrespondenceAddress,
   data: {
-    ...correspondenceAddressCacheKeys
+    ...correspondenceAddressCacheKeys,
+    enterManualAddressPageType: AddressPageType.enterGeneralPartnerCorrespondenceAddress
   }
 };
 
@@ -239,10 +240,21 @@ const addressRoutingChooseGeneralPartnerCorrespondenceAddress = {
   }
 };
 
+const addressRoutingEnterGeneralPartnerCorrespondenceAddress = {
+  previousUrl: url.POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
+  currentUrl: url.ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
+  nextUrl: url.CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
+  pageType: AddressPageType.enterGeneralPartnerCorrespondenceAddress,
+  data: {
+    ...correspondenceAddressCacheKeys
+  }
+};
+
 const correspondenceAddress = [
   addressRoutingTerritoryChoiceGeneralPartnerCorrespondanceAddress,
   addressRoutingPostcodeGeneralPartnerCorrespondenceAddress,
-  addressRoutingChooseGeneralPartnerCorrespondenceAddress
+  addressRoutingChooseGeneralPartnerCorrespondenceAddress,
+  addressRoutingEnterGeneralPartnerCorrespondenceAddress
 ];
 
 // principal office address - legal entity
