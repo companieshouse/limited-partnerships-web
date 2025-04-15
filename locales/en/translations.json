@@ -138,6 +138,12 @@
                 "publicInformationLine1": "We will not show the general partner's usual residential address.",
                 "postcodeOptional": "Postcode (optional)"
             },
+            "correspondenceAddress":{
+                "title": "What is the general partner's correspondence address",
+                "titleHint1": "This is also known as the service address.",
+                "publicInformationLine1": "We'll show the general partner's correspondence address on the public register.",
+                "postcodeOptional": "Postcode (optional)"
+            },
             "principalOfficeAddress": {
                 "title": "What is the general partner's principal office address?",
                 "publicInformationLine1": "We'll show the general partner's principal office address on the public register.",

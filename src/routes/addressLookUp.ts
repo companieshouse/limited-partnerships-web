@@ -188,6 +188,17 @@ export const addressLookUpEndpoints = (router: Router, dependencies: IDependenci
   );
 
   router.get(
+    url.ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
+    authentication,
+    dependencies.addressLookUpController.getPageRouting()
+  );
+  router.post(
+    url.ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
+    authentication,
+    dependencies.addressLookUpController.sendManualAddress()
+  );
+
+  router.get(
     url.CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
     authentication,
     dependencies.addressLookUpController.getPageRouting()
