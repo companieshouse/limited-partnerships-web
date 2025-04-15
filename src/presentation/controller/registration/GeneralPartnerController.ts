@@ -5,7 +5,7 @@ import GeneralPartnerService from "../../../application/service/GeneralPartnerSe
 import registrationsRouting from "./Routing";
 import AbstractController from "../AbstractController";
 import RegistrationPageType from "./PageType";
-import { ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL, ADD_GENERAL_PARTNER_PERSON_URL } from "./url";
+import { ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL, ADD_GENERAL_PARTNER_PERSON_URL, LIMITED_PARTNERS_URL } from "./url";
 import { GeneralPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 class GeneralPartnerController extends AbstractController {
@@ -154,6 +154,29 @@ class GeneralPartnerController extends AbstractController {
         }
 
         response.redirect(pageRouting.nextUrl);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  postReview(): RequestHandler {
+    return (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { ids } = super.extract(request);
+
+        const addAnotherGeneralPartner = request.body.addAnotherGeneralPartner;
+        let url = LIMITED_PARTNERS_URL;
+
+        if (addAnotherGeneralPartner === "addPerson") {
+          url = ADD_GENERAL_PARTNER_PERSON_URL;
+        } else if (addAnotherGeneralPartner === "addLegalEntity") {
+          url = ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL;
+        }
+
+        const redirectUrl = super.insertIdsInUrl(url, ids.transactionId, ids.submissionId);
+
+        response.redirect(redirectUrl);
       } catch (error) {
         next(error);
       }
