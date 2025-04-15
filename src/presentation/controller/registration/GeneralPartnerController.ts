@@ -70,7 +70,7 @@ class GeneralPartnerController extends AbstractController {
     };
   }
 
-  getReviewGeneralPartnersPage(): RequestHandler {
+  getReviewPage(): RequestHandler {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const { tokens, pageType, ids } = super.extract(request);

@@ -183,7 +183,7 @@ export const registrationEndpoints = (
   router.get(
     REVIEW_GENERAL_PARTNERS_URL,
     authentication,
-    dependencies.generalPartnerController.getReviewGeneralPartnersPage()
+    dependencies.generalPartnerController.getReviewPage()
   );
   router.post(
     REVIEW_GENERAL_PARTNERS_URL,
