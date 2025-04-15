@@ -1,0 +1,34 @@
+{% extends "layout.njk" %}
+
+{% set pageTitle = i18n.address.confirm.correspondenceAddress.title %}
+{% set publicRegisterLine = i18n.address.confirm.correspondenceAddress.publicRegisterLine1 %}
+{% set addressLinkHidden = i18n.address.confirm.correspondenceAddress.addressLinkHidden %}
+{% set cacheKey = "correspondence_address" %}
+{% set cacheKeyChoice = "ca_territory_choice" %}
+{% set data = props.data.generalPartner.data.correspondence_address %}
+
+{% block backLink %}
+  {% set hrefValue = props.previousUrl %}
+
+  {% if props.data.cache.ca_territory_choice == "overseas" %}
+     {% set hrefValue = props.currentUrl | replace(props.pageType, "enter-general-partner-correspondence-address") %}
+  {% endif %}
+
+  {{ govukBackLink({
+    text: "Back",
+    attributes: {
+      "data-event-id": "back-link"
+    },
+    href: hrefValue
+  }) }}
+{% endblock %}
+
+{% block content %}
+ <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {% include "includes/general-partner-name.njk" %}
+
+      {% include "pages/address/confirm-address-form.njk" %}
+    </div>
+  </div> 
+{% endblock %}

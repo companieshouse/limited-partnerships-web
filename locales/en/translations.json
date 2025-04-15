@@ -110,6 +110,12 @@
                 "title": "Confirm the general partner's principal office address",
                 "addressLinkHidden": "principal office address",
                 "publicRegisterLine1": "We will not show the general partner's principal office address."
+            },
+
+            "correspondenceAddress": {
+                "title": "Confirm the general partner's correspondence address",
+                "addressLinkHidden": "correspondence address",
+                "publicRegisterLine1": "We'll show the general partner's correspondence address on the public register."
             }
         },
         
