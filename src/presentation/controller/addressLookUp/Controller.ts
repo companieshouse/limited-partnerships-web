@@ -332,7 +332,7 @@ class AddressLookUpController extends AbstractController {
     } else if (pageType === AddressLookUpPageType.confirmGeneralPartnerPrincipalOfficeAddress) {
       data = { principal_office_address: address };
     } else if (pageType === AddressLookUpPageType.confirmGeneralPartnerCorrespondenceAddress) {
-      data = { correspondence_address: address };
+      data = { service_address: address };
     }
 
     return data;
