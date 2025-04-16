@@ -110,6 +110,12 @@
                 "title": "WELSH - Confirm the general partner's principal office address",
                 "addressLinkHidden": "WELSH - principal office address",
                 "publicRegisterLine1": "WELSH - We will not show the general partner's principal office address on the public register."
+            },
+
+            "correspondenceAddress": {
+                "title": "WELSH - Confirm the general partner's correspondence address",
+                "addressLinkHidden": "WELSH - correspondence address",
+                "publicRegisterLine1": "WELSH - We'll show the general partner's correspondence address on the public register."
             }
         },
         

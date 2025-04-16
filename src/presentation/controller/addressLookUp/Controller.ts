@@ -262,7 +262,8 @@ class AddressLookUpController extends AbstractController {
 
         const isGeneralPartner =
           pageType === AddressLookUpPageType.confirmGeneralPartnerUsualResidentialAddress ||
-          pageType === AddressLookUpPageType.confirmGeneralPartnerPrincipalOfficeAddress;
+          pageType === AddressLookUpPageType.confirmGeneralPartnerPrincipalOfficeAddress ||
+          pageType === AddressLookUpPageType.confirmGeneralPartnerCorrespondenceAddress;
 
         // store in api
         let result;
@@ -330,6 +331,8 @@ class AddressLookUpController extends AbstractController {
       data = { usual_residential_address: address };
     } else if (pageType === AddressLookUpPageType.confirmGeneralPartnerPrincipalOfficeAddress) {
       data = { principal_office_address: address };
+    } else if (pageType === AddressLookUpPageType.confirmGeneralPartnerCorrespondenceAddress) {
+      data = { service_address: address };
     }
 
     return data;
