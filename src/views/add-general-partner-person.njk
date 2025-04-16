@@ -1,6 +1,8 @@
 {% extends "layout.njk" %}
 
 {% set pageTitle = i18n.addGeneralPartnerPersonPage.title %}
+{% set publicRegisterInformationLine1 = i18n.addGeneralPartnerPersonPage.publicRegisterLine1 %}
+{% set publicRegisterInformationLine2 = i18n.addGeneralPartnerPersonPage.publicRegisterLine2 %}
 
 {% set validateFirstName = "validateInput(this, 50, '" + i18n.addGeneralPartnerPersonPage.errorMessages.firstNameMissing | escape + "', '" + i18n.addGeneralPartnerPersonPage.errorMessages.firstNameLength | escape + "');" %}
 {% set validateLastName = "validateInput(this, 160, '" + i18n.addGeneralPartnerPersonPage.errorMessages.lastNameMissing | escape + "', '" + i18n.addGeneralPartnerPersonPage.errorMessages.lastNameLength | escape + "');" %}
@@ -219,11 +221,7 @@
         }) }}
 
         <div>
-          {{ govukInsetText({
-            html: "<h2 class='govuk-heading-m'>" + i18n.publicRegisterInformation.title | escape + "</h2>" + 
-              "<p>" + i18n.addGeneralPartnerPersonPage.publicRegisterLine1 | escape + "</p>" +
-              "<p>" + i18n.addGeneralPartnerPersonPage.publicRegisterLine2 | escape + "</p>"
-          }) }}
+          {% include "includes/public-register-information.njk" %}
         </div>
 
         {% include "includes/save-and-continue-button.njk" %}
