@@ -1,5 +1,7 @@
 import request from "supertest";
 import app from "../app";
+
+import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { CHECK_YOUR_ANSWERS_URL, APPLICATION_SUBMITTED_URL } from "../../../controller/registration/url";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
@@ -31,7 +33,7 @@ describe("Check Your Answers Page", () => {
       expect(res.text).toContain("WELSH -");
     });
 
-    it("should load the check your answers page with data from api", async () => {
+    it("should load the check your answers page with data from api and show change links", async () => {
       const limitedPartnership = new LimitedPartnershipBuilder().build();
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
         limitedPartnership
@@ -43,9 +45,34 @@ describe("Check Your Answers Page", () => {
       expect(res.text).toContain(limitedPartnership?.data?.name_ending?.toUpperCase());
       expect(res.text).toContain(limitedPartnership?.data?.email);
       expect(res.text).toContain(limitedPartnership?.data?.jurisdiction);
+
       expect(res.text).toContain("name#partnership_name");
       expect(res.text).toContain("email#email");
+      expect(res.text).toContain("where-is-the-jurisdiction#jurisdiction");
     });
+
+    it.each([
+      [PartnershipType.LP, true],
+      [PartnershipType.SLP, false],
+      [PartnershipType.PFLP, true],
+      [PartnershipType.SPFLP, false]
+    ])(
+      "should show a change link for jurisdiction based on the partnership type",
+      async (partnershipType: PartnershipType, changeLinkExpected: boolean) => {
+        const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
+          limitedPartnership
+        ]);
+        const res = await request(app).get(URL);
+
+        expect(res.status).toBe(200);
+
+        if (changeLinkExpected) {
+          expect(res.text).toContain("where-is-the-jurisdiction#jurisdiction");
+        } else {
+          expect(res.text).not.toContain("where-is-the-jurisdiction#jurisdiction");
+        }
+      });
   });
 
   describe("POST Check Your Answers Page", () => {
