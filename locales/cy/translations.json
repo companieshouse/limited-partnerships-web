@@ -110,7 +110,6 @@
 
             "correspondenceAddress": {
                 "title": "WELSH - Confirm the general partner's correspondence address",
-                "addressLinkHidden": "WELSH - correspondence address",
                 "publicRegisterLine1": "WELSH - We'll show the general partner's correspondence address on the public register."
             }
         },
