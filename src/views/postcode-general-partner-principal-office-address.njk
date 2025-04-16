@@ -1,6 +1,7 @@
 {% extends "layout.njk" %}
 
 {% set pageTitle = i18n.address.findPostcode.principalOfficeAddress.whatIsPrincipalOfficeAddress %}
+{% set publicRegisterInformationLine1 = i18n.address.findPostcode.principalOfficeAddress.publicRegisterLine1 %}
 
 {% block content %}
   <div class="govuk-grid-row">
@@ -16,9 +17,7 @@
       {% include "pages/address/postcode-form.njk" %}
 
     <div>
-      {{ govukInsetText({
-        html: "<h2 class='govuk-heading-m'>" + i18n.address.findPostcode.principalOfficeAddress.publicRegisterTitle | escape + "</h2> <p>" + i18n.address.findPostcode.principalOfficeAddress.publicRegisterLine1 | escape + "</p>"
-      }) }}
+      {% include "includes/public-register-information.njk" %}
     </div>
   </div>
 

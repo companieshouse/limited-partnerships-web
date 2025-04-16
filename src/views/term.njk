@@ -1,6 +1,7 @@
 {% extends "layout.njk" %}
 
-{% set pageTitle = i18n.termPage.title  %}
+{% set pageTitle = i18n.termPage.title %}
+{% set publicRegisterInformationLine1 = i18n.termPage.publicRegisterLine1 %}
 
 {% block content %}
   <div class="govuk-grid-row">
@@ -52,9 +53,7 @@
         }) }}
 
         <div>
-          {{ govukInsetText({
-            html: "<h2 class='govuk-heading-m'>" + i18n.termPage.publicRegisterTitle | escape + "</h2> <p>" + i18n.termPage.publicRegisterLine1 | escape + "</p>"
-          }) }}
+          {% include "includes/public-register-information.njk" %}
         </div>
        
         {{ govukButton({

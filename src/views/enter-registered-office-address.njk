@@ -15,6 +15,7 @@
 {% set titleHint1 = i18n.address.enterAddress.registeredOfficeAddress.titleHint1 %}
 {% set titleHint2 = i18n.address.enterAddress.registeredOfficeAddress.titleHint2 %}
 {% set titleHint3 = i18n.address.enterAddress.registeredOfficeAddress.titleHint3 %}
+{% set publicRegisterInformationLine1 = i18n.address.enterAddress.registeredOfficeAddress.publicInformationLine1 %}
 
 {% block content %}
   <div class="govuk-grid-row">
@@ -41,10 +42,7 @@
         
         {% include "pages/address/enter-address-common-fields.njk" %}
       
-        {{ govukInsetText({
-          html: "<h2 class='govuk-heading-m'>" + i18n.address.enterAddress.publicInformationTitle | escape + "</h2>
-          <p>" + i18n.address.enterAddress.registeredOfficeAddress.publicInformationLine1 | escape + "</p>"
-        }) }}
+        {% include "includes/public-register-information.njk" %}
 
         {% include "includes/save-and-continue-button.njk" %}
       </form>

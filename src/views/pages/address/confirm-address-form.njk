@@ -45,10 +45,7 @@
         <p>
     {% endif %}
 
-    {{ govukInsetText({
-      html: "<h2 class='govuk-heading-m'>" + i18n.address.confirm.publicRegisterTitle | escape + "</h2>"
-          + "<p>" + publicRegisterLine | escape + "</p>"
-    }) }}
+    {% include "includes/public-register-information.njk" %}
 
     {% include "includes/save-and-continue-button.njk" %}
 </form>

@@ -1,6 +1,7 @@
 {% extends "layout.njk" %}
 
 {% set pageTitle = i18n.sicCodePage.title %}
+{% set publicRegisterInformationLine1 = i18n.sicCodePage.publicRegisterLine1 %}
 
 {% set sic1 = "" %}
 {% set sic2 = "" %}
@@ -67,10 +68,7 @@
             pattern: "\\d{5}"
         }) }}
 
-        {{ govukInsetText({
-        html: "<h2 class='govuk-heading-m'>" + i18n.sicCodePage.publicRegisterTitle | escape + "</h2>" + 
-            "<p>" + i18n.sicCodePage.publicRegisterLine1 | escape + "</p>"
-        }) }}
+        {% include "includes/public-register-information.njk" %}
         
         {% include "includes/save-and-continue-button.njk" %}
 

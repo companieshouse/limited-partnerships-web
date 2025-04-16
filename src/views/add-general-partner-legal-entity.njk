@@ -7,6 +7,7 @@
 {% set validateRegistrationNumber = "validateInput(this, 160, '" + i18n.addGeneralPartnerLegalEntityPage.errorMessages.registrationNumberMissing | escape + "', '" + i18n.addGeneralPartnerLegalEntityPage.errorMessages.registrationNumberLength | escape + "');" %}
 
 {% set pageTitle = i18n.addGeneralPartnerLegalEntityPage.title %}
+{% set publicRegisterInformationLine1 = i18n.addGeneralPartnerLegalEntityPage.publicRegisterLine1 %}
 
 {% block content %}
   <div class="govuk-grid-row">
@@ -148,10 +149,7 @@
           ]
         }) }}
 
-        {{ govukInsetText({
-            html: "<h2 class='govuk-heading-m'>" + i18n.addGeneralPartnerLegalEntityPage.publicRegisterTitle | escape + "</h2>" + 
-              "<p>" + i18n.addGeneralPartnerLegalEntityPage.publicRegisterLine1 | escape + "</p>"
-        }) }}
+        {% include "includes/public-register-information.njk" %}
  
         {% include "includes/save-and-continue-button.njk" %}
       </form>

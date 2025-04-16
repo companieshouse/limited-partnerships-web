@@ -1,4 +1,13 @@
+{% set publicRegisterInformationHtml = "<h2 class='govuk-heading-m'>" + i18n.publicRegisterInformation.title | escape + "</h2>" %}
+
+{% if publicRegisterInformationLine1 %}
+  {% set publicRegisterInformationHtml = publicRegisterInformationHtml + "<p>" + publicRegisterInformationLine1 | escape + "</p>" %}
+{% endif %}
+
+{% if publicRegisterInformationLine2 %}
+  {% set publicRegisterInformationHtml = publicRegisterInformationHtml + "<p>" + publicRegisterInformationLine2 | escape + "</p>" %}
+{% endif %}
+
 {{ govukInsetText({
-  html: "<h2 class='govuk-heading-m'>" + publicRegisterInformationHeading | escape + "</h2>"
-    + "<p>" + publicRegisterInformationLine1 | escape + "</p>"
+  html: publicRegisterInformationHtml
 }) }}
