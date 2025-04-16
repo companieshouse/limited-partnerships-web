@@ -85,26 +85,28 @@
             "addressLink" : "Change",
             "registeredOfficeAddress" : {
                 "title" : "Confirm the registered office address",
-                "addressLinkHidden" : "registered office address",
                 "publicRegisterLine1": "We'll show the registered office address on the public register."
             },
             
             "principalPlaceOfBusinessAddress" : {
                 "title" : "Confirm the principal place of business address",              
-                "addressLinkHidden" : "principal place of business address",
                 "publicRegisterLine1": "We'll show the principal place of business address on the public register."
             },
 
             "usualResidentialAddress": {
                 "title": "Confirm the general partner's usual residential address",
-                "addressLinkHidden": "usual residential address",
                 "publicRegisterLine1": "We will not show the general partner's usual residential address."
             },
 
             "principalOfficeAddress": {
                 "title": "Confirm the general partner's principal office address",
-                "addressLinkHidden": "principal office address",
                 "publicRegisterLine1": "We will not show the general partner's principal office address."
+            },
+
+            "correspondenceAddress": {
+                "title": "Confirm the general partner's correspondence address",
+                "addressLinkHidden": "correspondence address",
+                "publicRegisterLine1": "We'll show the general partner's correspondence address on the public register."
             }
         },
         
@@ -125,6 +127,12 @@
             "usualResidentialAddress":{
                 "title": "What is the general partner's usual residential address",
                 "publicInformationLine1": "We will not show the general partner's usual residential address.",
+                "postcodeOptional": "Postcode (optional)"
+            },
+            "correspondenceAddress":{
+                "title": "What is the general partner's correspondence address",
+                "titleHint1": "This is also known as the service address.",
+                "publicInformationLine1": "We'll show the general partner's correspondence address on the public register.",
                 "postcodeOptional": "Postcode (optional)"
             },
             "principalOfficeAddress": {
@@ -360,6 +368,20 @@
         "name": "Company name",
         "number": "Company number",
         "date": "Incorporation date"
+    },
+
+    "reviewGeneralPartnersPage": {
+        "title": "General partners",
+        "genaralPartnersAdded": {
+            "title": "General partners you have added so far:",
+            "changeLink": "Change"
+        },
+        "addGeneralPartner": {
+            "title": "Do you need to add another general partner?",
+            "optionPerson": "Yes, a person",
+            "optionLegalEntity": "Yes, a legal entity",
+            "optionNo": "No"
+        }
     },
 
     "service" : "Register a limited partnership",

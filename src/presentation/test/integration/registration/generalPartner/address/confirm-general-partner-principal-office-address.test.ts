@@ -9,7 +9,7 @@ import { CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../../.
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import GeneralPartnerBuilder from "../../../../builder/GeneralPartnerBuilder";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
-import { LIMITED_PARTNERS_URL } from "../../../../../controller/registration/url";
+import { REVIEW_GENERAL_PARTNERS_URL } from "../../../../../controller/registration/url";
 import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
 
 describe("Confirm General Partner Principal Office Address Page", () => {
@@ -90,7 +90,7 @@ describe("Confirm General Partner Principal Office Address Page", () => {
           }`
         });
 
-      const redirectUrl = getUrl(LIMITED_PARTNERS_URL);
+      const redirectUrl = getUrl(REVIEW_GENERAL_PARTNERS_URL);
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);

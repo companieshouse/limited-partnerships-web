@@ -6,6 +6,10 @@ interface IGeneralPartnerGateway {
     transactionId: string,
     data: Record<string, any>
   ): Promise<string>;
+  getGeneralPartners(
+    opt: { access_token: string; refresh_token: string },
+    transactionId: string
+  ): Promise<GeneralPartner[]>;
   getGeneralPartner(
     opt: { access_token: string; refresh_token: string },
     transactionId: string,

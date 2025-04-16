@@ -5,23 +5,21 @@ import enTranslationText from "../../../../../../../locales/en/translations.json
 import cyTranslationText from "../../../../../../../locales/cy/translations.json";
 
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
-import {
-  CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-  TERRITORY_CHOICE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL
-} from "../../../../../controller/addressLookUp/url";
+import { CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL } from "../../../../../controller/addressLookUp/url";
+import { REVIEW_GENERAL_PARTNERS_URL } from "../../../../../controller/registration/url";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
 import GeneralPartnerBuilder from "../../../../builder/GeneralPartnerBuilder";
 
-describe("Confirm General Partner Usual Residential Address Page", () => {
-  const URL = getUrl(CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
+describe("Confirm General Partner Correspondence Address Page", () => {
+  const URL = getUrl(CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL);
 
   beforeEach(() => {
     setLocalesEnabled(false);
     appDevDependencies.cacheRepository.feedCache({
       [appDevDependencies.transactionGateway.transactionId]: {
-        ["usual_residential_address"]: {
+        ["correspondence_address"]: {
           postal_code: "ST6 3LJ",
           premises: "4",
           address_line_1: "line 1",
@@ -41,14 +39,14 @@ describe("Confirm General Partner Usual Residential Address Page", () => {
     appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
   });
 
-  describe("GET Confirm Usual Residential Address Page", () => {
-    it("should load the confirm usual residential address page with English text", async () => {
+  describe("GET Confirm Correspondence Address Page", () => {
+    it("should load the confirm correspondence address page with English text", async () => {
       setLocalesEnabled(true);
 
       const res = await request(app).get(URL + "?lang=en");
 
       expect(res.status).toBe(200);
-      testTranslations(res.text, enTranslationText.address.confirm.usualResidentialAddress);
+      testTranslations(res.text, enTranslationText.address.confirm.correspondenceAddress);
       expect(res.text).not.toContain("WELSH -");
 
       expect(res.text).toContain("4 Line 1");
@@ -59,13 +57,13 @@ describe("Confirm General Partner Usual Residential Address Page", () => {
       expect(res.text).toContain("ST6 3LJ");
     });
 
-    it("should load the confirm usual residential address page with Welsh text", async () => {
+    it("should load the confirm correspondence address page with Welsh text", async () => {
       setLocalesEnabled(true);
 
       const res = await request(app).get(URL + "?lang=cy");
 
       expect(res.status).toBe(200);
-      testTranslations(res.text, cyTranslationText.address.confirm.usualResidentialAddress);
+      testTranslations(res.text, cyTranslationText.address.confirm.correspondenceAddress);
 
       expect(res.text).toContain("4 Line 1");
       expect(res.text).toContain("Line 2");
@@ -74,29 +72,14 @@ describe("Confirm General Partner Usual Residential Address Page", () => {
       expect(res.text).toContain("England");
       expect(res.text).toContain("ST6 3LJ");
     });
-
-    it.each([
-      ["overseas", AddressPageType.enterGeneralPartnerUsualResidentialAddress],
-      ["unitedKingdom", AddressPageType.postcodeGeneralPartnerUsualResidentialAddress]
-    ])("should have the correct back link", async (territory, pageType) => {
-      appDevDependencies.cacheRepository.feedCache({
-        [appDevDependencies.transactionGateway.transactionId]: {
-          ["ura_territory_choice"]: territory
-        }
-      });
-
-      const res = await request(app).get(URL);
-
-      expect(res.text).toContain(pageType);
-    });
   });
 
-  describe("POST Confirm Usual Residential Address Page", () => {
+  describe("POST Confirm Correspondence Address Page", () => {
     it("should redirect to the next page", async () => {
       const res = await request(app)
         .post(URL)
         .send({
-          pageType: AddressPageType.confirmGeneralPartnerUsualResidentialAddress,
+          pageType: AddressPageType.confirmGeneralPartnerCorrespondenceAddress,
           address: `{
             "postal_code": "ST6 3LJ",
             "premises": "4",
@@ -107,7 +90,7 @@ describe("Confirm General Partner Usual Residential Address Page", () => {
           }`
         });
 
-      const redirectUrl = getUrl(TERRITORY_CHOICE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL);
+      const redirectUrl = getUrl(REVIEW_GENERAL_PARTNERS_URL);
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
@@ -117,7 +100,7 @@ describe("Confirm General Partner Usual Residential Address Page", () => {
       appDevDependencies.cacheRepository.feedCache({});
 
       const res = await request(app).post(URL).send({
-        pageType: AddressPageType.confirmGeneralPartnerUsualResidentialAddress
+        pageType: AddressPageType.confirmGeneralPartnerCorrespondenceAddress
       });
 
       expect(res.status).toBe(200);
@@ -134,14 +117,14 @@ describe("Confirm General Partner Usual Residential Address Page", () => {
 
       const apiErrors: ApiErrors = {
         errors: {
-          "usualResidentialAddress.country": "must not be null"
+          "correspondenceAddress.country": "must not be null"
         }
       };
 
       appDevDependencies.generalPartnerGateway.feedErrors(apiErrors);
 
       const res = await request(app).post(URL).send({
-        pageType: AddressPageType.confirmGeneralPartnerUsualResidentialAddress,
+        pageType: AddressPageType.confirmGeneralPartnerCorrespondenceAddress,
         address: `{"postal_code": "ST6 3LJ","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": ""}`
       });
 

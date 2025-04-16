@@ -5,7 +5,7 @@ import PageType from "../PageType";
 import {
   ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
   ADD_GENERAL_PARTNER_PERSON_URL,
-  LIMITED_PARTNERS_URL,
+  REVIEW_GENERAL_PARTNERS_URL,
   TERM_URL,
   WHERE_IS_THE_JURISDICTION_URL
 } from "../registration/url";
@@ -224,7 +224,9 @@ const addressRoutingPostcodeGeneralPartnerCorrespondenceAddress = {
   nextUrl: url.CHOOSE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   pageType: AddressPageType.postcodeGeneralPartnerCorrespondenceAddress,
   data: {
-    ...correspondenceAddressCacheKeys
+    ...correspondenceAddressCacheKeys,
+    confirmAddressUrl: url.CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
+    enterManualAddressPageType: AddressPageType.enterGeneralPartnerCorrespondenceAddress
   }
 };
 
@@ -239,10 +241,33 @@ const addressRoutingChooseGeneralPartnerCorrespondenceAddress = {
   }
 };
 
+const addressRoutingEnterGeneralPartnerCorrespondenceAddress = {
+  previousUrl: url.POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
+  currentUrl: url.ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
+  nextUrl: url.CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
+  pageType: AddressPageType.enterGeneralPartnerCorrespondenceAddress,
+  data: {
+    ...correspondenceAddressCacheKeys
+  }
+};
+
+const addressRoutingConfirmGeneralPartnerCorrespondenceAddress = {
+  previousUrl: url.POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
+  currentUrl: url.CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
+  nextUrl: REVIEW_GENERAL_PARTNERS_URL,
+  pageType: AddressPageType.confirmGeneralPartnerCorrespondenceAddress,
+  data: {
+    ...correspondenceAddressCacheKeys,
+    enterManualAddressPageType: AddressPageType.enterGeneralPartnerCorrespondenceAddress
+  }
+};
+
 const correspondenceAddress = [
   addressRoutingTerritoryChoiceGeneralPartnerCorrespondanceAddress,
   addressRoutingPostcodeGeneralPartnerCorrespondenceAddress,
-  addressRoutingChooseGeneralPartnerCorrespondenceAddress
+  addressRoutingChooseGeneralPartnerCorrespondenceAddress,
+  addressRoutingEnterGeneralPartnerCorrespondenceAddress,
+  addressRoutingConfirmGeneralPartnerCorrespondenceAddress
 ];
 
 // principal office address - legal entity
@@ -298,7 +323,7 @@ const addressRoutingEnterGeneralPartnerPrincipalOfficeAddress = {
 const addressRoutingConfirmGeneralPartnerPrincipalOfficeAddress = {
   previousUrl: url.POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   currentUrl: url.CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
-  nextUrl: LIMITED_PARTNERS_URL,
+  nextUrl: REVIEW_GENERAL_PARTNERS_URL,
   pageType: AddressPageType.confirmGeneralPartnerPrincipalOfficeAddress,
   data: {
     ...principalOfficeAddressCacheKeys,

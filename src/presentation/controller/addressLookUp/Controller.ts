@@ -214,11 +214,12 @@ class AddressLookUpController extends AbstractController {
 
         const pageRouting = super.getRouting(addressLookUpRouting, pageType, request);
 
-        const isURAorPOA =
+        const isGeneralPartnerAddress =
           pageType === AddressLookUpPageType.enterGeneralPartnerUsualResidentialAddress ||
+          pageType === AddressLookUpPageType.enterGeneralPartnerCorrespondenceAddress ||
           pageType === AddressLookUpPageType.enterGeneralPartnerPrincipalOfficeAddress;
 
-        const errors = isURAorPOA
+        const errors = isGeneralPartnerAddress
           ? null
           : this.addressService.isValidJurisdictionAndCountry(limitedPartnership?.data?.jurisdiction ?? "", country);
 
@@ -261,7 +262,8 @@ class AddressLookUpController extends AbstractController {
 
         const isGeneralPartner =
           pageType === AddressLookUpPageType.confirmGeneralPartnerUsualResidentialAddress ||
-          pageType === AddressLookUpPageType.confirmGeneralPartnerPrincipalOfficeAddress;
+          pageType === AddressLookUpPageType.confirmGeneralPartnerPrincipalOfficeAddress ||
+          pageType === AddressLookUpPageType.confirmGeneralPartnerCorrespondenceAddress;
 
         // store in api
         let result;
@@ -329,6 +331,8 @@ class AddressLookUpController extends AbstractController {
       data = { usual_residential_address: address };
     } else if (pageType === AddressLookUpPageType.confirmGeneralPartnerPrincipalOfficeAddress) {
       data = { principal_office_address: address };
+    } else if (pageType === AddressLookUpPageType.confirmGeneralPartnerCorrespondenceAddress) {
+      data = { service_address: address };
     }
 
     return data;

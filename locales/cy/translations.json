@@ -85,26 +85,28 @@
             "addressLink" : "WELSH - Change",
             "registeredOfficeAddress" : {
                 "title" : "WELSH - Confirm the registered office address",
-                "addressLinkHidden" : "WELSH - registered office address",
                 "publicRegisterLine1": "WELSH - We'll show the registered office address on the public register."
             },
             
             "principalPlaceOfBusinessAddress" : {
                 "title" : "WELSH - Confirm the principal place of business address",              
-                "addressLinkHidden" : "WELSH - principal place of business address",
                 "publicRegisterLine1": "WELSH - We'll show the principal place of business address on the public register."
             },
 
             "usualResidentialAddress": {
                 "title": "WELSH - Confirm the general partner's usual residential address",
-                "addressLinkHidden": "WELSH - usual residential address",
                 "publicRegisterLine1": "WELSH - We will not show the general partner's usual residential address."
             },
 
             "principalOfficeAddress": {
                 "title": "WELSH - Confirm the general partner's principal office address",
-                "addressLinkHidden": "WELSH - principal office address",
                 "publicRegisterLine1": "WELSH - We will not show the general partner's principal office address on the public register."
+            },
+
+            "correspondenceAddress": {
+                "title": "WELSH - Confirm the general partner's correspondence address",
+                "addressLinkHidden": "WELSH - correspondence address",
+                "publicRegisterLine1": "WELSH - We'll show the general partner's correspondence address on the public register."
             }
         },
         
@@ -127,6 +129,12 @@
                 "publicInformationLine1": "WELSH - We will not show the general partner's usual residential address.",
                 "postcodeOptional": "WELSH - Postcode (optional)"
 
+            },
+            "correspondenceAddress":{
+                "title": "WELSH - What is the general partner's correspondence address",
+                "titleHint1": "WELSH - This is also known as the service address.",
+                "publicInformationLine1": "WELSH - We'll show the general partner's correspondence address on the public register.",
+                "postcodeOptional": "WELSH - Postcode (optional)"
             },
             "principalOfficeAddress": {
                 "title": "WELSH - What is the general partner's principal office address?",
@@ -361,6 +369,20 @@
         "name": "WELSH - Company name",
         "number": "WELSH - Company number",
         "date": "WELSH - Incorporation date"
+    },
+
+    "reviewGeneralPartnersPage": {
+        "title": "WELSH - General partners",
+        "genaralPartnersAdded": {
+            "title": "WELSH - General partners you have added so far:",
+            "changeLink": "WELSH - Change"
+        },
+        "addGeneralPartner": {
+            "title": "WELSH - Do you need to add another general partner?",
+            "optionPerson": "WELSH - Yes, a person",
+            "optionLegalEntity": "WELSH - Yes, a legal entity",
+            "optionNo": "WELSH - No"
+        }
     },
 
     "service" : "WELSH - Register a limited partnership",
