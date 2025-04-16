@@ -7,6 +7,7 @@ import {
   ADD_GENERAL_PARTNER_PERSON_URL,
   REVIEW_GENERAL_PARTNERS_URL,
   TERM_URL,
+  LIMITED_PARTNERS_URL,
   WHERE_IS_THE_JURISDICTION_URL
 } from "../registration/url";
 import * as url from "./url";
