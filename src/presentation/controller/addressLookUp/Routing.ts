@@ -225,6 +225,7 @@ const addressRoutingPostcodeGeneralPartnerCorrespondenceAddress = {
   pageType: AddressPageType.postcodeGeneralPartnerCorrespondenceAddress,
   data: {
     ...correspondenceAddressCacheKeys,
+    confirmAddressUrl: url.CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
     enterManualAddressPageType: AddressPageType.enterGeneralPartnerCorrespondenceAddress
   }
 };
@@ -253,7 +254,7 @@ const addressRoutingEnterGeneralPartnerCorrespondenceAddress = {
 const addressRoutingConfirmGeneralPartnerCorrespondenceAddress = {
   previousUrl: url.POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   currentUrl: url.CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
-  nextUrl: LIMITED_PARTNERS_URL,
+  nextUrl: REVIEW_GENERAL_PARTNERS_URL,
   pageType: AddressPageType.confirmGeneralPartnerCorrespondenceAddress,
   data: {
     ...correspondenceAddressCacheKeys,

@@ -5,10 +5,8 @@ import enTranslationText from "../../../../../../../locales/en/translations.json
 import cyTranslationText from "../../../../../../../locales/cy/translations.json";
 
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
-import {
-  CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL
-} from "../../../../../controller/addressLookUp/url";
-import { LIMITED_PARTNERS_URL } from "../../../../../controller/registration/url";
+import { CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL } from "../../../../../controller/addressLookUp/url";
+import { REVIEW_GENERAL_PARTNERS_URL } from "../../../../../controller/registration/url";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
@@ -92,7 +90,7 @@ describe("Confirm General Partner Correspondence Address Page", () => {
           }`
         });
 
-      const redirectUrl = getUrl(LIMITED_PARTNERS_URL);
+      const redirectUrl = getUrl(REVIEW_GENERAL_PARTNERS_URL);
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
