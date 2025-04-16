@@ -224,9 +224,14 @@ class AddressLookUpController extends AbstractController {
           : this.addressService.isValidJurisdictionAndCountry(limitedPartnership?.data?.jurisdiction ?? "", country);
 
         if (errors?.errors) {
+          const cacheById = this.cacheService.getDataFromCacheById(request.signedCookies, ids.transactionId);
           response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { address }, errors)
+            super.makeProps(
+              pageRouting,
+              { address, limitedPartnership, cache: { ...cacheById } },
+              errors
+            )
           );
 
           return;
