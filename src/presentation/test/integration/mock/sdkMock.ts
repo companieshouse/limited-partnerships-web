@@ -57,6 +57,12 @@ export const getGeneralPartner = jest.fn().mockImplementation(() => ({
     .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
     .build()
 }));
+export const getGeneralPartners = jest.fn().mockImplementation(() => ({
+  httpStatusCode: 200,
+  resource: [
+    new GeneralPartnerBuilder().isPerson().withId(appDevDependencies.generalPartnerGateway.generalPartnerId).build()
+  ]
+}));
 export const patchGeneralPartner = jest.fn().mockImplementation(() => ({
   httpStatusCode: 200,
   resource: {}
@@ -103,6 +109,7 @@ const sdkMock = {
     postLimitedPartnershipIncorporation,
     postGeneralPartner,
     getGeneralPartner,
+    getGeneralPartners,
     patchGeneralPartner
   },
   refreshToken: {

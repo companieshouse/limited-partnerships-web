@@ -23,7 +23,8 @@ import {
   ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL,
   ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_ID_URL,
   WHICH_TYPE_WITH_IDS_URL,
-  SIC_URL
+  SIC_URL,
+  REVIEW_GENERAL_PARTNERS_URL
 } from "../presentation/controller/registration/url";
 
 export const registrationEndpoints = (
@@ -177,6 +178,17 @@ export const registrationEndpoints = (
     ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_ID_URL,
     authentication,
     dependencies.generalPartnerController.sendPageData()
+  );
+
+  router.get(
+    REVIEW_GENERAL_PARTNERS_URL,
+    authentication,
+    dependencies.generalPartnerController.getReviewPage()
+  );
+  router.post(
+    REVIEW_GENERAL_PARTNERS_URL,
+    authentication,
+    dependencies.generalPartnerController.postReviewPage()
   );
 
   router.get(
