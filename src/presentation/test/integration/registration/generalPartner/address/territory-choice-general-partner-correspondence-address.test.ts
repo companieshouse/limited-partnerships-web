@@ -83,7 +83,7 @@ describe("General Partner Correspondence Address Territory Choice", () => {
       expect(appDevDependencies.cacheRepository.cache).toEqual({
         [APPLICATION_CACHE_KEY]: {
           [appDevDependencies.transactionGateway.transactionId]: {
-            ["ca_territory_choice"]: "unitedKingdom"
+            sa_territory_choice: "unitedKingdom"
           }
         }
       });
@@ -103,7 +103,7 @@ describe("General Partner Correspondence Address Territory Choice", () => {
       expect(appDevDependencies.cacheRepository.cache).toEqual({
         [APPLICATION_CACHE_KEY]: {
           [appDevDependencies.transactionGateway.transactionId]: {
-            ["ca_territory_choice"]: "overseas"
+            sa_territory_choice: "overseas"
           }
         }
       });

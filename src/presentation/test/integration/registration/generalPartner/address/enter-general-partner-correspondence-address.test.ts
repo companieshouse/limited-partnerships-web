@@ -72,7 +72,7 @@ describe("Enter Correspondence Address Page", () => {
       appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
       appDevDependencies.cacheRepository.feedCache({
         [appDevDependencies.transactionGateway.transactionId]: {
-          ca_territory_choice: "overseas"
+          sa_territory_choice: "overseas"
         }
       });
 
@@ -98,7 +98,7 @@ describe("Enter Correspondence Address Page", () => {
     it("should load enter general partners correspondence address manual entry page with overseas back link", async () => {
       appDevDependencies.cacheRepository.feedCache({
         [appDevDependencies.transactionGateway.transactionId]: {
-          ca_territory_choice: "overseas"
+          sa_territory_choice: "overseas"
         }
       });
 
@@ -113,7 +113,7 @@ describe("Enter Correspondence Address Page", () => {
     it("should load enter general partners correspondence address manual entry page with postcode lookup back link", async () => {
       appDevDependencies.cacheRepository.feedCache({
         [appDevDependencies.transactionGateway.transactionId]: {
-          ca_territory_choice: "unitedKingdom"
+          sa_territory_choice: "unitedKingdom"
         }
       });
       const backLinkUrl = getUrl(POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL);
@@ -129,7 +129,7 @@ describe("Enter Correspondence Address Page", () => {
       appDevDependencies.addressLookUpGateway.setError(false);
       appDevDependencies.cacheRepository.feedCache({
         [appDevDependencies.transactionGateway.transactionId]: {
-          ["correspondence_address"]: {
+          service_address: {
             address_line_1: "",
             address_line_2: "",
             country: "",
@@ -156,7 +156,7 @@ describe("Enter Correspondence Address Page", () => {
       const cache = appDevDependencies.cacheRepository.cache;
       expect(cache?.[`${config.APPLICATION_CACHE_KEY}`]).toEqual({
         [appDevDependencies.transactionGateway.transactionId]: {
-          correspondence_address: {
+          service_address: {
             postal_code: "",
             premises: "4",
             address_line_1: "DUNCALF STREET",

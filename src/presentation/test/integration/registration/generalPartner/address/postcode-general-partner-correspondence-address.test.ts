@@ -7,10 +7,11 @@ import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import app from "../../../app";
 
 import { getUrl, setLocalesEnabled, toEscapedHtml, testTranslations } from "../../../../utils";
-import { POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL, CHOOSE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL } from "presentation/controller/addressLookUp/url";
-import GeneralPartnerBuilder, {
-  generalPartnerLegalEntity
-} from "../../../../builder/GeneralPartnerBuilder";
+import {
+  POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
+  CHOOSE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL
+} from "presentation/controller/addressLookUp/url";
+import GeneralPartnerBuilder, { generalPartnerLegalEntity } from "../../../../builder/GeneralPartnerBuilder";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
 
@@ -38,7 +39,10 @@ describe("Postcode general partner's correspondence address page", () => {
       const res = await request(app).get(URL + "?lang=en");
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(toEscapedHtml(enTranslationText.address.findPostcode.correspondenceAddress.whatIsCorrespondenceAddress) + ` - ${enTranslationText.service} - GOV.UK`);
+      expect(res.text).toContain(
+        toEscapedHtml(enTranslationText.address.findPostcode.correspondenceAddress.whatIsCorrespondenceAddress) +
+          ` - ${enTranslationText.service} - GOV.UK`
+      );
       testTranslations(res.text, enTranslationText.address.findPostcode, [
         "registeredOfficeAddress",
         "principalPlaceOfBusiness",
@@ -65,7 +69,10 @@ describe("Postcode general partner's correspondence address page", () => {
       const res = await request(app).get(URL + "?lang=cy");
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(toEscapedHtml(cyTranslationText.address.findPostcode.correspondenceAddress.whatIsCorrespondenceAddress) + ` - ${cyTranslationText.service} - GOV.UK`);
+      expect(res.text).toContain(
+        toEscapedHtml(cyTranslationText.address.findPostcode.correspondenceAddress.whatIsCorrespondenceAddress) +
+          ` - ${cyTranslationText.service} - GOV.UK`
+      );
       testTranslations(res.text, cyTranslationText.address.findPostcode, [
         "registeredOfficeAddress",
         "principalPlaceOfBusiness",
@@ -81,7 +88,6 @@ describe("Postcode general partner's correspondence address page", () => {
   });
 
   describe("Post postcode general partner's correspondence address page", () => {
-
     it("should validate the post code then redirect to the next page", async () => {
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.postcodeGeneralPartnerCorrespondenceAddress,
@@ -95,7 +101,7 @@ describe("Postcode general partner's correspondence address page", () => {
       expect(appDevDependencies.cacheRepository.cache).toEqual({
         [APPLICATION_CACHE_KEY]: {
           [appDevDependencies.transactionGateway.transactionId]: {
-            ["correspondence_address"]: {
+            service_address: {
               postal_code: "ST6 3LJ",
               address_line_1: "",
               address_line_2: "",

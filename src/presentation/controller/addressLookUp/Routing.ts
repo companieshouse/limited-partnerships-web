@@ -204,8 +204,8 @@ const usualResidentialAddress = [
 // correspondence address - Person
 
 const correspondenceAddressCacheKeys = {
-  [AddressCacheKeys.addressCacheKey]: "correspondence_address",
-  [AddressCacheKeys.territoryCacheKey]: "ca_territory_choice"
+  [AddressCacheKeys.addressCacheKey]: "service_address",
+  [AddressCacheKeys.territoryCacheKey]: "sa_territory_choice"
 };
 
 const addressRoutingTerritoryChoiceGeneralPartnerCorrespondanceAddress = {
