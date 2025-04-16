@@ -4,7 +4,7 @@ import cyTranslationText from "../../../../../../../locales/cy/translations.json
 import app from "../../../app";
 import {
   CHOOSE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
-  CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
+  CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL
 } from "../../../../../../presentation/controller/addressLookUp/url";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
@@ -20,7 +20,7 @@ describe("Choose general partner correspondence address page", () => {
     appDevDependencies.addressLookUpGateway.setError(false);
     appDevDependencies.cacheRepository.feedCache({
       [appDevDependencies.transactionGateway.transactionId]: {
-        ["correspondence_address"]: {
+        service_address: {
           postal_code: "ST6 3LJ",
           premises: "",
           address_line_1: "",
@@ -33,7 +33,6 @@ describe("Choose general partner correspondence address page", () => {
   });
 
   describe("GET choose general partner correspondence address page", () => {
-
     it("should load the general partner choose correspondence address page with Welsh text", async () => {
       setLocalesEnabled(true);
 
@@ -73,7 +72,6 @@ describe("Choose general partner correspondence address page", () => {
   });
 
   describe("POST general partner choose correspondence address page", () => {
-
     it("should redirect to the next page and add select address to cache", async () => {
       const res = await request(app)
         .post(URL)
@@ -95,7 +93,7 @@ describe("Choose general partner correspondence address page", () => {
       const cache = appDevDependencies.cacheRepository.cache;
       expect(cache?.[`${config.APPLICATION_CACHE_KEY}`]).toEqual({
         [appDevDependencies.transactionGateway.transactionId]: {
-          correspondence_address: {
+          service_address: {
             postal_code: "ST6 3LJ",
             premises: "4",
             address_line_1: "DUNCALF STREET",

@@ -1,11 +1,11 @@
 {% extends "layout.njk" %}
 
-{% set correspondenceAddressKey = "correspondence_address" %}
+{% set correspondenceAddressKey = "service_address" %}
 
 {% block backLink %}
   {% set hrefValue = props.previousUrl %}
 
-  {% if props.data.cache.ca_territory_choice == "overseas" %}
+  {% if props.data.cache.sa_territory_choice == "overseas" %}
     {% set hrefValue = props.currentUrl | replace(props.pageType, "territory-choice-general-partner-correspondence-address") %}
   {% endif %}
 
@@ -51,7 +51,7 @@
         <input type="hidden" name="pageType" value={{ props.pageType }}>
           {% include "includes/csrf_token.njk" %}
           
-          {% if props.data.cache.ca_territory_choice == "overseas" %}
+          {% if props.data.cache.sa_territory_choice == "overseas" %}
             {% include "pages/address/enter-address-fields.njk" %}
 
             {{ govukInput({

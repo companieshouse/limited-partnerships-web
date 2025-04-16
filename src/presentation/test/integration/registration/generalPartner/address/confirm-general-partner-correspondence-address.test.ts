@@ -19,7 +19,7 @@ describe("Confirm General Partner Correspondence Address Page", () => {
     setLocalesEnabled(false);
     appDevDependencies.cacheRepository.feedCache({
       [appDevDependencies.transactionGateway.transactionId]: {
-        ["correspondence_address"]: {
+        service_address: {
           postal_code: "ST6 3LJ",
           premises: "4",
           address_line_1: "line 1",
