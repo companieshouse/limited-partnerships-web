@@ -90,25 +90,21 @@
 
             "registeredOfficeAddress" : {
                 "title" : "Confirm the registered office address",
-                "addressLinkHidden" : "registered office address",
                 "publicRegisterLine1": "We'll show the registered office address on the public register."
             },
             
             "principalPlaceOfBusinessAddress" : {
                 "title" : "Confirm the principal place of business address",              
-                "addressLinkHidden" : "principal place of business address",
                 "publicRegisterLine1": "We'll show the principal place of business address on the public register."
             },
 
             "usualResidentialAddress": {
                 "title": "Confirm the general partner's usual residential address",
-                "addressLinkHidden": "usual residential address",
                 "publicRegisterLine1": "We will not show the general partner's usual residential address."
             },
 
             "principalOfficeAddress": {
                 "title": "Confirm the general partner's principal office address",
-                "addressLinkHidden": "principal office address",
                 "publicRegisterLine1": "We will not show the general partner's principal office address."
             },
 
