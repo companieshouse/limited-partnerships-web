@@ -373,7 +373,10 @@
         "title": "General partners",
         "genaralPartnersAdded": {
             "title": "General partners you have added so far:",
-            "changeLink": "Change"
+            "changeLink": "Change",
+            "person": "Person",
+            "legalEntity": "Legal entity",
+            "emptyList": "You must add at least one Genaral Partner"
         },
         "addGeneralPartner": {
             "title": "Do you need to add another general partner?",
