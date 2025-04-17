@@ -372,9 +372,12 @@
 
     "reviewGeneralPartnersPage": {
         "title": "WELSH - General partners",
-        "genaralPartnersAdded": {
+        "generalPartnersAdded": {
             "title": "WELSH - General partners you have added so far:",
-            "changeLink": "WELSH - Change"
+            "changeLink": "WELSH - Change",
+            "person": "WELSH - Person",
+            "legalEntity": "WELSH - Legal entity",
+            "emptyList": "WELSH - You must add at least one General Partner"
         },
         "addGeneralPartner": {
             "title": "WELSH - Do you need to add another general partner?",

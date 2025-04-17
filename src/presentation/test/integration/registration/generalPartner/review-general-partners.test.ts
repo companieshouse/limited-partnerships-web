@@ -35,11 +35,12 @@ describe("Review General Partners Page", () => {
       const res = await request(app).get(URL + "?lang=en");
 
       expect(res.status).toBe(200);
+
       expect(res.text).toContain(
         `${enTranslationText.reviewGeneralPartnersPage.title} - ${enTranslationText.service} - GOV.UK`
       );
 
-      testTranslations(res.text, enTranslationText.reviewGeneralPartnersPage);
+      testTranslations(res.text, enTranslationText.reviewGeneralPartnersPage, ["emptyList"]);
 
       expect(res.text).toContain(`${generalPartnerPerson?.data?.forename} ${generalPartnerPerson?.data?.surname}`);
       expect(res.text).toContain(`${generalPartnerLegalEntity?.data?.legal_entity_name}`);
@@ -50,10 +51,26 @@ describe("Review General Partners Page", () => {
       const res = await request(app).get(URL + "?lang=cy");
 
       expect(res.status).toBe(200);
+
       expect(res.text).toContain(
         `${cyTranslationText.reviewGeneralPartnersPage.title} - ${cyTranslationText.service} - GOV.UK`
       );
-      testTranslations(res.text, cyTranslationText.reviewGeneralPartnersPage);
+      testTranslations(res.text, cyTranslationText.reviewGeneralPartnersPage, ["emptyList"]);
+    });
+
+    describe("Empty list", () => {
+      it("should load the review general partners page and contains empty list text", async () => {
+        appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
+
+        const res = await request(app).get(URL);
+
+        expect(res.status).toBe(200);
+
+        expect(res.text).toContain(
+          `${enTranslationText.reviewGeneralPartnersPage.title} - ${enTranslationText.service} - GOV.UK`
+        );
+        expect(res.text).toContain(enTranslationText.reviewGeneralPartnersPage.generalPartnersAdded.emptyList);
+      });
     });
   });
 

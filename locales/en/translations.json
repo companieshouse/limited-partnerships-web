@@ -371,9 +371,12 @@
 
     "reviewGeneralPartnersPage": {
         "title": "General partners",
-        "genaralPartnersAdded": {
+        "generalPartnersAdded": {
             "title": "General partners you have added so far:",
-            "changeLink": "Change"
+            "changeLink": "Change",
+            "person": "Person",
+            "legalEntity": "Legal entity",
+            "emptyList": "You must add at least one General Partner"
         },
         "addGeneralPartner": {
             "title": "Do you need to add another general partner?",
