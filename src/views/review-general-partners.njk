@@ -14,7 +14,7 @@
     <div class="govuk-grid-row govuk-!-margin-bottom-5">
         <div class="govuk-grid-column-full">
 
-            <h2 class="govuk-heading-m govuk-!-margin-bottom-5">{{ i18n.reviewGeneralPartnersPage.genaralPartnersAdded.title }}</h2>
+            <h2 class="govuk-heading-m govuk-!-margin-bottom-5">{{ i18n.reviewGeneralPartnersPage.generalPartnersAdded.title }}</h2>
 
             {% if props.data.generalPartners.length  %}
 
@@ -27,7 +27,7 @@
                             rows: [
                                 {
                                     key: {
-                                        text: i18n.reviewGeneralPartnersPage.genaralPartnersAdded.person
+                                        text: i18n.reviewGeneralPartnersPage.generalPartnersAdded.person
                                     },
                                     value: {
                                         text: item.data.forename + " " + item.data.surname
@@ -35,7 +35,7 @@
                                     actions: {
                                     items: [
                                             CREATE_CHANGE_LINK(
-                                                i18n.reviewGeneralPartnersPage.genaralPartnersAdded.changeLink,
+                                                i18n.reviewGeneralPartnersPage.generalPartnersAdded.changeLink,
                                                 props.currentUrl | replace("review-general-partners", "general-partner/" + item.id + "/add-general-partner-person")
                                             )
                                         ]
@@ -51,7 +51,7 @@
                             rows: [
                                 {
                                     key: {
-                                        text: i18n.reviewGeneralPartnersPage.genaralPartnersAdded.legalEntity
+                                        text: i18n.reviewGeneralPartnersPage.generalPartnersAdded.legalEntity
                                     },
                                     value: {
                                         text: item.data.legal_entity_name
@@ -59,7 +59,7 @@
                                     actions: {
                                     items: [
                                             CREATE_CHANGE_LINK(
-                                                i18n.reviewGeneralPartnersPage.genaralPartnersAdded.changeLink,
+                                                i18n.reviewGeneralPartnersPage.generalPartnersAdded.changeLink,
                                                 props.currentUrl | replace("review-general-partners", "general-partner/" + item.id + "/add-general-partner-legal-entity")
                                             )
                                         ]
@@ -74,7 +74,7 @@
             
             {% else %}
 
-                <p>{{ i18n.reviewGeneralPartnersPage.genaralPartnersAdded.emptyList }}</p>
+                <p>{{ i18n.reviewGeneralPartnersPage.generalPartnersAdded.emptyList }}</p>
 
             {% endif %}
 

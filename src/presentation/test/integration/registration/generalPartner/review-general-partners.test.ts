@@ -69,7 +69,7 @@ describe("Review General Partners Page", () => {
         expect(res.text).toContain(
           `${enTranslationText.reviewGeneralPartnersPage.title} - ${enTranslationText.service} - GOV.UK`
         );
-        expect(res.text).toContain(enTranslationText.reviewGeneralPartnersPage.genaralPartnersAdded.emptyList);
+        expect(res.text).toContain(enTranslationText.reviewGeneralPartnersPage.generalPartnersAdded.emptyList);
       });
     });
   });
