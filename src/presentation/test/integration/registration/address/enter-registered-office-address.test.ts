@@ -100,6 +100,7 @@ describe("Enter Registered Office Address Page", () => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.jurisdictionCountry);
       expect(res.text).toContain(enTranslationText.govUk.error.title);
+      expect(res.text).toContain(limitedPartnership.data?.partnership_name?.toUpperCase());
     });
 
     it("should return a Welsh validation error when jurisdiction of Scotland does not match country", async () => {
@@ -119,6 +120,7 @@ describe("Enter Registered Office Address Page", () => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(cyTranslationText.address.enterAddress.errorMessages.jurisdictionCountry);
       expect(res.text).toContain(cyTranslationText.govUk.error.title);
+      expect(res.text).toContain(limitedPartnership.data?.partnership_name?.toUpperCase());
     });
 
     it("should return a validation error when jurisdiction of Northern Ireland does not match country", async () => {
@@ -136,6 +138,7 @@ describe("Enter Registered Office Address Page", () => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.jurisdictionCountry);
       expect(res.text).toContain(enTranslationText.govUk.error.title);
+      expect(res.text).toContain(limitedPartnership.data?.partnership_name?.toUpperCase());
     });
 
     it("should return a validation error when jurisdiction of England and Wales does not match country", async () => {
@@ -153,6 +156,7 @@ describe("Enter Registered Office Address Page", () => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.jurisdictionCountry);
       expect(res.text).toContain(enTranslationText.govUk.error.title);
+      expect(res.text).toContain(limitedPartnership.data?.partnership_name?.toUpperCase());
     });
   });
 });
