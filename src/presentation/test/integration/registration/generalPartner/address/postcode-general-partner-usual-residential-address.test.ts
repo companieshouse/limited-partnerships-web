@@ -186,6 +186,14 @@ describe("Postcode Usual Residential Address Page", () => {
     });
 
     it("should return an error if the postcode is not valid", async () => {
+      const generalPartner = new GeneralPartnerBuilder()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .withForename("Dai")
+        .withSurname("Jones")
+        .build();
+
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.postcodeGeneralPartnerUsualResidentialAddress,
         premises: null,
@@ -194,6 +202,7 @@ describe("Postcode Usual Residential Address Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(`The postcode AA1 1AA cannot be found`);
+      expect(res.text).toContain(`${generalPartner.data?.forename?.toUpperCase()} ${generalPartner.data?.surname?.toUpperCase()}`);
 
       expect(appDevDependencies.cacheRepository.cache).toEqual(null);
     });
