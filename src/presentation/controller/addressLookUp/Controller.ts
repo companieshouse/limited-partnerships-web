@@ -31,6 +31,18 @@ class AddressLookUpController extends AbstractController {
     AddressLookUpPageType.chooseGeneralPartnerCorrespondenceAddress
   ]);
 
+  private static readonly GENERAL_PARTNER_ADDRESS_PAGES: Set<PageType | PageDefault> = new Set([
+    AddressLookUpPageType.postcodeGeneralPartnerUsualResidentialAddress,
+    AddressLookUpPageType.postcodeGeneralPartnerCorrespondenceAddress,
+    AddressLookUpPageType.postcodeGeneralPartnerPrincipalOfficeAddress,
+    AddressLookUpPageType.enterGeneralPartnerUsualResidentialAddress,
+    AddressLookUpPageType.enterGeneralPartnerCorrespondenceAddress,
+    AddressLookUpPageType.enterGeneralPartnerPrincipalOfficeAddress,
+    AddressLookUpPageType.confirmGeneralPartnerUsualResidentialAddress,
+    AddressLookUpPageType.confirmGeneralPartnerPrincipalOfficeAddress,
+    AddressLookUpPageType.confirmGeneralPartnerCorrespondenceAddress
+  ]);
+
   constructor(
     private addressService: AddressService,
     private limitedPartnershipService: LimitedPartnershipService,
@@ -126,9 +138,18 @@ class AddressLookUpController extends AbstractController {
         );
 
         if (errors?.errors) {
+          let generalPartner;
+          if ((AddressLookUpController.GENERAL_PARTNER_ADDRESS_PAGES.has(pageType))) {
+            generalPartner = await this.generalPartnerService.getGeneralPartner(
+              tokens,
+              ids.transactionId,
+              ids.generalPartnerId
+            );
+          }
+
           response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { limitedPartnership, ...request.body }, errors)
+            super.makeProps(pageRouting, { limitedPartnership, generalPartner, ...request.body }, errors)
           );
           return;
         }
@@ -214,12 +235,7 @@ class AddressLookUpController extends AbstractController {
 
         const pageRouting = super.getRouting(addressLookUpRouting, pageType, request);
 
-        const isGeneralPartnerAddress =
-          pageType === AddressLookUpPageType.enterGeneralPartnerUsualResidentialAddress ||
-          pageType === AddressLookUpPageType.enterGeneralPartnerCorrespondenceAddress ||
-          pageType === AddressLookUpPageType.enterGeneralPartnerPrincipalOfficeAddress;
-
-        const errors = isGeneralPartnerAddress
+        const errors = (AddressLookUpController.GENERAL_PARTNER_ADDRESS_PAGES.has(pageType))
           ? null
           : this.addressService.isValidJurisdictionAndCountry(limitedPartnership?.data?.jurisdiction ?? "", country);
 
@@ -265,15 +281,12 @@ class AddressLookUpController extends AbstractController {
 
         const data = this.getAddressData(pageType, address);
 
-        const isGeneralPartner =
-          pageType === AddressLookUpPageType.confirmGeneralPartnerUsualResidentialAddress ||
-          pageType === AddressLookUpPageType.confirmGeneralPartnerPrincipalOfficeAddress ||
-          pageType === AddressLookUpPageType.confirmGeneralPartnerCorrespondenceAddress;
+        const isGeneralPartnerAddress = (AddressLookUpController.GENERAL_PARTNER_ADDRESS_PAGES.has(pageType));
 
         // store in api
         let result;
 
-        if (isGeneralPartner) {
+        if (isGeneralPartnerAddress) {
           result = await this.generalPartnerService.sendPageData(tokens, ids.transactionId, ids.generalPartnerId, data);
         } else {
           result = await this.limitedPartnershipService.sendPageData(
@@ -289,7 +302,7 @@ class AddressLookUpController extends AbstractController {
           let generalPartner;
           let limitedPartnership;
 
-          if (isGeneralPartner) {
+          if (isGeneralPartnerAddress) {
             generalPartner = await this.generalPartnerService.getGeneralPartner(
               tokens,
               ids.transactionId,
