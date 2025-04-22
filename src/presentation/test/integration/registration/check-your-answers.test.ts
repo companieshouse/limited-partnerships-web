@@ -75,6 +75,29 @@ describe("Check Your Answers Page", () => {
       });
   });
 
+  it.each([
+    [PartnershipType.LP, true],
+    [PartnershipType.SLP, true],
+    [PartnershipType.PFLP, false],
+    [PartnershipType.SPFLP, false]
+  ])(
+    "should show term and change link based on the partnership type",
+    async (partnershipType: PartnershipType, changeLinkExpected: boolean) => {
+      const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
+        limitedPartnership
+      ]);
+      const res = await request(app).get(URL);
+
+      expect(res.status).toBe(200);
+
+      if (changeLinkExpected) {
+        expect(res.text).toContain("term#term");
+      } else {
+        expect(res.text).not.toContain("term#term");
+      }
+    });
+
   describe("POST Check Your Answers Page", () => {
     it("should navigate to next page", async () => {
       const res = await request(app).post(URL).send({
