@@ -22,7 +22,6 @@ describe("Check Your Answers Page", () => {
       expect(res.status).toBe(200);
       testTranslations(res.text, enTranslationText.checkYourAnswersPage, [
         "headingTerm",
-        "jurisdiction"
       ]);
       expect(res.text).not.toContain("WELSH -");
     });
@@ -34,7 +33,6 @@ describe("Check Your Answers Page", () => {
       expect(res.status).toBe(200);
       testTranslations(res.text, cyTranslationText.checkYourAnswersPage, [
         "headingTerm",
-        "jurisdiction"
       ]);
       expect(res.text).toContain("WELSH -");
     });
@@ -75,10 +73,8 @@ describe("Check Your Answers Page", () => {
 
         if (changeLinkExpected) {
           expect(res.text).toContain("where-is-the-jurisdiction#jurisdiction");
-          expect(res.text).toContain(enTranslationText.checkYourAnswersPage.jurisdiction);
         } else {
           expect(res.text).not.toContain("where-is-the-jurisdiction#jurisdiction");
-          expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.jurisdiction);
         }
       });
   });
