@@ -85,24 +85,24 @@
           },
           {
             key: {
-              text: i18n.checkYourAnswersPage.headingTerm
+            text: i18n.checkYourAnswersPage.headingTerm
             },
             value: {
               text: data['term-of-partners'] or "Term will be decided by some or all of the partners"
             },
             actions: {
-              items: [
-                {
-                  href: "javascript:void(0)",
-                  text: "Change",
-                  visuallyHiddenText: "term of partnership"
-                }
-              ]
-            }
-          }
-        ]          
-      }) }} 
- 
+              items: [ CREATE_CHANGE_LINK(
+                i18n.checkYourAnswersPage.change,
+                currentUrl | replace(checkYourAnswers, "term#term"),
+                partnershipNameChangeText,
+                "change-term-button" 
+              ) ]
+            } 
+          } if props.data.limitedPartnership.data.partnership_type === "LP"
+                or props.data.limitedPartnership.data.partnership_type === "SLP"
+        ]
+      }) }}
+
       <br>
       <div class="govuk-button-group">
         <form class="form" action={{ props.currentUrl }} method="post">

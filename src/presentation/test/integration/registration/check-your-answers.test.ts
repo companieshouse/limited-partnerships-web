@@ -20,7 +20,9 @@ describe("Check Your Answers Page", () => {
       const res = await request(app).get(URL + "?lang=en");
 
       expect(res.status).toBe(200);
-      testTranslations(res.text, enTranslationText.checkYourAnswersPage);
+      testTranslations(res.text, enTranslationText.checkYourAnswersPage, [
+        "headingTerm",
+      ]);
       expect(res.text).not.toContain("WELSH -");
     });
 
@@ -29,7 +31,9 @@ describe("Check Your Answers Page", () => {
       const res = await request(app).get(URL + "?lang=cy");
 
       expect(res.status).toBe(200);
-      testTranslations(res.text, cyTranslationText.checkYourAnswersPage);
+      testTranslations(res.text, cyTranslationText.checkYourAnswersPage, [
+        "headingTerm",
+      ]);
       expect(res.text).toContain("WELSH -");
     });
 
@@ -74,6 +78,31 @@ describe("Check Your Answers Page", () => {
         }
       });
   });
+
+  it.each([
+    [PartnershipType.LP, true],
+    [PartnershipType.SLP, true],
+    [PartnershipType.PFLP, false],
+    [PartnershipType.SPFLP, false]
+  ])(
+    "should show term and change link based on the partnership type",
+    async (partnershipType: PartnershipType, changeLinkExpected: boolean) => {
+      const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
+        limitedPartnership
+      ]);
+      const res = await request(app).get(URL);
+
+      expect(res.status).toBe(200);
+
+      if (changeLinkExpected) {
+        expect(res.text).toContain("term#term");
+        expect(res.text).toContain(enTranslationText.checkYourAnswersPage.headingTerm);
+      } else {
+        expect(res.text).not.toContain("term#term");
+        expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.headingTerm);
+      }
+    });
 
   describe("POST Check Your Answers Page", () => {
     it("should navigate to next page", async () => {
