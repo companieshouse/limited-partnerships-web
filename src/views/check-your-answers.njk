@@ -5,6 +5,25 @@
 {% set checkYourAnswers = "check-your-answers" %}
 {% set currentUrl = props.currentUrl %}
 {% set fullName = (props.data.limitedPartnership.data.partnership_name | upper) + " " + (props.data.limitedPartnership.data.name_ending | upper) %}
+{% set termRow = [] %}
+{% if props.data.limitedPartnership.data.partnership_type === "LP" or props.data.limitedPartnership.data.partnership_type === "SLP" %}
+  {% set termRow = [{
+    key: {
+      text: i18n.checkYourAnswersPage.headingTerm
+    },
+    value: {
+      text: data['term-of-partners'] or "Term will be decided by some or all of the partners"
+    },
+    actions: {
+      items: [ CREATE_CHANGE_LINK(
+        i18n.checkYourAnswersPage.change,
+        currentUrl | replace(checkYourAnswers, "term#term"),
+        partnershipNameChangeText,
+        "change-term-button" 
+      ) ]
+    }
+  }] %}
+{% endif %}
 
 {% block content %}
 
@@ -82,27 +101,10 @@
               ) ]
             } if props.data.limitedPartnership.data.partnership_type === "LP"
                 or props.data.limitedPartnership.data.partnership_type === "PFLP"
-          },
-          {
-            key: {
-              text: i18n.checkYourAnswersPage.headingTerm
-            },
-            value: {
-              text: data['term-of-partners'] or "Term will be decided by some or all of the partners"
-            },
-            actions: {
-              items: [ CREATE_CHANGE_LINK(
-                i18n.checkYourAnswersPage.change,
-                currentUrl | replace(checkYourAnswers, "term#term"),
-                partnershipNameChangeText,
-                "change-term-button"
-              )]          
-            } if props.data.limitedPartnership.data.partnership_type === "LP"
-                or props.data.limitedPartnership.data.partnership_type === "SLP"
           }
-        ]          
-      }) }} 
- 
+        ].concat(termRow)
+      }) }}
+
       <br>
       <div class="govuk-button-group">
         <form class="form" action={{ props.currentUrl }} method="post">

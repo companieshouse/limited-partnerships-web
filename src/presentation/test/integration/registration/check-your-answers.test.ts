@@ -20,7 +20,9 @@ describe("Check Your Answers Page", () => {
       const res = await request(app).get(URL + "?lang=en");
 
       expect(res.status).toBe(200);
-      testTranslations(res.text, enTranslationText.checkYourAnswersPage);
+      testTranslations(res.text, enTranslationText.checkYourAnswersPage, [
+        "headingTerm"
+      ]);
       expect(res.text).not.toContain("WELSH -");
     });
 
@@ -29,7 +31,9 @@ describe("Check Your Answers Page", () => {
       const res = await request(app).get(URL + "?lang=cy");
 
       expect(res.status).toBe(200);
-      testTranslations(res.text, cyTranslationText.checkYourAnswersPage);
+      testTranslations(res.text, cyTranslationText.checkYourAnswersPage, [
+        "headingTerm"
+      ]);
       expect(res.text).toContain("WELSH -");
     });
 
@@ -93,8 +97,10 @@ describe("Check Your Answers Page", () => {
 
       if (changeLinkExpected) {
         expect(res.text).toContain("term#term");
+        testTranslations(res.text, enTranslationText.checkYourAnswersPage);
       } else {
         expect(res.text).not.toContain("term#term");
+        testTranslations(res.text, enTranslationText.checkYourAnswersPage, ["headingTerm"]);
       }
     });
 
