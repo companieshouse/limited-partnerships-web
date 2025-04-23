@@ -369,11 +369,16 @@
         "date": "Incorporation date"
     },
 
+    "removeGeneralPartnerPage": {
+        "title": "Are you sure you want to remove"
+    },
+
     "reviewGeneralPartnersPage": {
         "title": "General partners",
         "generalPartnersAdded": {
             "title": "General partners you have added so far:",
             "changeLink": "Change",
+            "removeLink": "Remove",
             "person": "Person",
             "legalEntity": "Legal entity",
             "emptyList": "You must add at least one General Partner"
