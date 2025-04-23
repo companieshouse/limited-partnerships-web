@@ -86,6 +86,28 @@ class GeneralPartnerService {
       };
     }
   }
+
+  async removeGeneralPartner(
+    opt: { access_token: string; refresh_token: string },
+    transactionId: string,
+    generalPartnerId: string
+  ) {
+    try {
+      await this.generalPartnerGateway.removeGeneralPartner(opt, transactionId, generalPartnerId);
+    } catch (errors: any) {
+      const { apiErrors, isValidationErrors } = extractAPIErrors(errors);
+
+      logger.error(`Error removing general partner ${generalPartnerId}: ${JSON.stringify(apiErrors)}`);
+
+      if (!isValidationErrors) {
+        throw errors;
+      }
+
+      return {
+        errors
+      };
+    }
+  }
 }
 
 export default GeneralPartnerService;

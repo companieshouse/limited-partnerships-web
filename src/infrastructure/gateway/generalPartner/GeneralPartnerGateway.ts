@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { Resource } from "@companieshouse/api-sdk-node";
 
 import IGeneralPartnerGateway from "../../../domain/IGeneralPartnerGateway";
@@ -119,6 +121,14 @@ class GeneralPartnerGateway implements IGeneralPartnerGateway {
         "date_of_birth"
       );
     }
+  }
+
+  async removeGeneralPartner(
+    opt: { access_token: string; refresh_token: string },
+    transactionId: string,
+    generalPartnerId: string
+  ): Promise<void> {
+    throw new Error("Method not implemented.");
   }
 }
 

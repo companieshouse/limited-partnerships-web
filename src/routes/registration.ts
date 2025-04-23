@@ -197,6 +197,11 @@ export const registrationEndpoints = (
     authentication,
     dependencies.generalPartnerController.getPageRouting()
   );
+  router.post(
+    REMOVE_GENERAL_PARTNER_URL,
+    authentication,
+    dependencies.generalPartnerController.postRemovePage()
+  );
 
   router.get(
     LIMITED_PARTNERS_URL,

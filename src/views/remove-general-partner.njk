@@ -15,15 +15,13 @@
 
       <form class="form" method="post">
         <input type="hidden" name="pageType" value={{ props.pageType }}>
-        <input type="hidden" name="previousPage" value={{ props.previousUrl }}>
-
 
         {% include "includes/csrf_token.njk" %}
 
         {{ govukRadios({          
           classes: "govuk-radios--inline",
-          idPrefix: "sign_out",
-          name: "sign_out",
+          idPrefix: "remove",
+          name: "remove",
           fieldset: {
           legend: {
             text: i18n.removeGeneralPartnerPage.title + " " + name + "?",

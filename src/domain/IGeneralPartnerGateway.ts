@@ -21,6 +21,11 @@ interface IGeneralPartnerGateway {
     generalPartnerId: string,
     data: Record<string, any>
   ): Promise<void>;
+  removeGeneralPartner(
+    opt: { access_token: string; refresh_token: string },
+    transactionId: string,
+    generalPartnerId: string
+  ): Promise<void>;
 }
 
 export default IGeneralPartnerGateway;
