@@ -15,9 +15,9 @@ class AddressLookUpService {
 
   async isValidUKPostcodeAndHasAnAddress(
     opt: { access_token: string; refresh_token: string },
-    jurisdiction: string,
     postalCode: string,
-    premises?: string
+    premises?: string,
+    jurisdiction?: string
   ): Promise<{
     address: Address;
     errors?: UIErrors;
@@ -44,7 +44,7 @@ class AddressLookUpService {
 
       const ukAddresses: Address[] = await this.getAddressListForPostcode(opt, postalCode);
 
-      if (!this.isFromCorrectCountry(jurisdiction, ukAddresses, uiErrors)) {
+      if (jurisdiction && !this.isFromCorrectCountry(jurisdiction, ukAddresses, uiErrors)) {
         return { address, errors: uiErrors };
       }
 

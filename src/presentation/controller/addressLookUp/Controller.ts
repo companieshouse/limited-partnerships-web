@@ -23,6 +23,16 @@ import {
 import PageType from "../PageType";
 
 class AddressLookUpController extends AbstractController {
+  private static readonly LIMITED_PARTNERSHIP_POSTCODE_PAGES: Set<PageType | PageDefault> = new Set([
+    AddressLookUpPageType.postcodeRegisteredOfficeAddress,
+    AddressLookUpPageType.postcodePrincipalPlaceOfBusinessAddress
+  ]);
+
+  private static readonly LIMITED_PARTNERSHIP_MANUAL_PAGES: Set<PageType | PageDefault> = new Set([
+    AddressLookUpPageType.enterRegisteredOfficeAddress,
+    AddressLookUpPageType.enterPrincipalPlaceOfBusinessAddress
+  ]);
+
   private static readonly ADDRESS_LIST_REQUIRED_PAGES: Set<PageType | PageDefault> = new Set([
     AddressLookUpPageType.chooseRegisteredOfficeAddress,
     AddressLookUpPageType.choosePrincipalPlaceOfBusinessAddress,
@@ -130,16 +140,20 @@ class AddressLookUpController extends AbstractController {
           ids.submissionId
         );
 
+        const jurisdiction = AddressLookUpController.LIMITED_PARTNERSHIP_POSTCODE_PAGES.has(pageType)
+          ? limitedPartnership?.data?.jurisdiction
+          : undefined;
+
         const { address, errors } = await this.addressService.isValidUKPostcodeAndHasAnAddress(
           tokens,
-          limitedPartnership?.data?.jurisdiction ?? "",
           escape(postal_code),
-          escape(premises)
+          escape(premises),
+          jurisdiction
         );
 
         if (errors?.errors) {
           let generalPartner;
-          if ((AddressLookUpController.GENERAL_PARTNER_ADDRESS_PAGES.has(pageType))) {
+          if (AddressLookUpController.GENERAL_PARTNER_ADDRESS_PAGES.has(pageType)) {
             generalPartner = await this.generalPartnerService.getGeneralPartner(
               tokens,
               ids.transactionId,
@@ -235,19 +249,19 @@ class AddressLookUpController extends AbstractController {
 
         const pageRouting = super.getRouting(addressLookUpRouting, pageType, request);
 
-        const errors = (AddressLookUpController.GENERAL_PARTNER_ADDRESS_PAGES.has(pageType))
-          ? null
-          : this.addressService.isValidJurisdictionAndCountry(limitedPartnership?.data?.jurisdiction ?? "", country);
+        let errors: UIErrors | undefined;
+        if (AddressLookUpController.LIMITED_PARTNERSHIP_MANUAL_PAGES.has(pageType)) {
+          errors = this.addressService.isValidJurisdictionAndCountry(
+            limitedPartnership?.data?.jurisdiction ?? "",
+            country
+          );
+        }
 
         if (errors?.errors) {
           const cacheById = this.cacheService.getDataFromCacheById(request.signedCookies, ids.transactionId);
           response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(
-              pageRouting,
-              { address, limitedPartnership, cache: { ...cacheById } },
-              errors
-            )
+            super.makeProps(pageRouting, { address, limitedPartnership, cache: { ...cacheById } }, errors)
           );
 
           return;
@@ -281,7 +295,7 @@ class AddressLookUpController extends AbstractController {
 
         const data = this.getAddressData(pageType, address);
 
-        const isGeneralPartnerAddress = (AddressLookUpController.GENERAL_PARTNER_ADDRESS_PAGES.has(pageType));
+        const isGeneralPartnerAddress = AddressLookUpController.GENERAL_PARTNER_ADDRESS_PAGES.has(pageType);
 
         // store in api
         let result;
