@@ -1,4 +1,5 @@
 import request from "supertest";
+import { Jurisdiction } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 import enTranslationText from "../../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../../locales/cy/translations.json";
@@ -7,13 +8,17 @@ import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import app from "../../../app";
 
 import { getUrl, setLocalesEnabled, toEscapedHtml, testTranslations } from "../../../../utils";
-import { POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL, CHOOSE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "presentation/controller/addressLookUp/url";
+import {
+  POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  CHOOSE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
+} from "presentation/controller/addressLookUp/url";
+import AddressPageType from "../../../../../controller/addressLookUp/PageType";
+import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
 import GeneralPartnerBuilder, {
   generalPartnerPerson,
   generalPartnerLegalEntity
 } from "../../../../builder/GeneralPartnerBuilder";
-import AddressPageType from "../../../../../controller/addressLookUp/PageType";
-import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
+import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBuilder";
 
 describe("Postcode general partner's principal office address page", () => {
   const URL = getUrl(POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
@@ -39,7 +44,10 @@ describe("Postcode general partner's principal office address page", () => {
       const res = await request(app).get(URL + "?lang=en");
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(toEscapedHtml(enTranslationText.address.findPostcode.principalOfficeAddress.whatIsPrincipalOfficeAddress) + ` - ${enTranslationText.service} - GOV.UK`);
+      expect(res.text).toContain(
+        toEscapedHtml(enTranslationText.address.findPostcode.principalOfficeAddress.whatIsPrincipalOfficeAddress) +
+          ` - ${enTranslationText.service} - GOV.UK`
+      );
       testTranslations(res.text, enTranslationText.address.findPostcode, [
         "registeredOfficeAddress",
         "principalPlaceOfBusiness",
@@ -66,7 +74,10 @@ describe("Postcode general partner's principal office address page", () => {
       const res = await request(app).get(URL + "?lang=cy");
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(toEscapedHtml(cyTranslationText.address.findPostcode.principalOfficeAddress.whatIsPrincipalOfficeAddress) + ` - ${cyTranslationText.service} - GOV.UK`);
+      expect(res.text).toContain(
+        toEscapedHtml(cyTranslationText.address.findPostcode.principalOfficeAddress.whatIsPrincipalOfficeAddress) +
+          ` - ${cyTranslationText.service} - GOV.UK`
+      );
       testTranslations(res.text, cyTranslationText.address.findPostcode, [
         "registeredOfficeAddress",
         "principalPlaceOfBusiness",
@@ -108,6 +119,24 @@ describe("Postcode general partner's principal office address page", () => {
           }
         }
       });
+    });
+
+    it("should validate the post code then redirect to the next page even if LP jurisdiction is not in the same locality", async () => {
+      const limitedPartnership = new LimitedPartnershipBuilder()
+        .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+        .withJurisdiction(Jurisdiction.SCOTLAND)
+        .build();
+
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+      const res = await request(app).post(URL).send({
+        pageType: AddressPageType.postcodeGeneralPartnerPrincipalOfficeAddress,
+        premises: null,
+        postal_code: appDevDependencies.addressLookUpGateway.englandAddresses[0].postcode
+      });
+
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
     });
 
     it("should return an error if the postcode is not valid", async () => {
