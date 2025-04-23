@@ -394,7 +394,11 @@
         "hint" : "WELSH - You should use the SIC code that best describes the partnership's nature of business.",
         "find": "WELSH - Find your SIC code using our look up tool (opens in new tab)",
         "additionalHint" : "WELSH - Enter up to 3 additional SIC codes (optional):",
-        "publicRegisterLine1": "WELSH - We'll show the SIC codes on the public register."
+        "publicRegisterLine1": "WELSH - We'll show the SIC codes on the public register.",
+        "sicCode1": "WELSH - SIC code 1",
+        "sicCode2": "WELSH - SIC code 2 (optional)",
+        "sicCode3": "WELSH - SIC code 3 (optional)",
+        "sicCode4": "WELSH - SIC code 4 (optional)"
     },
 
     "signOutPage": {
