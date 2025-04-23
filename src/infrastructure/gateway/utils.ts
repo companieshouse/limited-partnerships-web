@@ -42,7 +42,7 @@ const isDateValid = (date: string): boolean => {
 
   const isYearInvalid = isNaN(parseInt(year)) || year.length !== 4;
 
-  if (parseInt(day) > days || isYearInvalid) {
+  if (!day.length || parseInt(day) > days || isYearInvalid) {
     return false;
   }
 

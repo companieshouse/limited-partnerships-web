@@ -50,7 +50,8 @@ describe("Gateway utils test suite", () => {
         ["month incorrect", { day: "01", month: "wrong", year: "2011" }],
         ["year incorrect", { day: "01", month: "10", year: "wrong" }],
         ["year above 4 digits", { day: "01", month: "10", year: "12345" }],
-        ["date in futur", { day: "11", month: "03", year: "2050" }]
+        ["date in futur", { day: "11", month: "03", year: "2050" }],
+        ["space as day", { day: " ", month: "03", year: "1980" }]
       ])("should return false for invalid date - %s", (_desciption, date) => {
         let thrownError: UIErrors | null = null;
 
