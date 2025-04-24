@@ -7,7 +7,11 @@ import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
 import { EMAIL_URL, NAME_URL, NAME_WITH_IDS_URL } from "../../../controller/registration/url";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
-import { APPLICATION_CACHE_KEY, APPLICATION_CACHE_KEY_PREFIX_REGISTRATION } from "../../../../config/constants";
+import {
+  APPLICATION_CACHE_KEY,
+  APPLICATION_CACHE_KEY_PREFIX_REGISTRATION,
+  REGISTRATION_BASE_URL
+} from "../../../../config/constants";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
@@ -182,7 +186,7 @@ describe("Name Page", () => {
       const res = await request(app).get(URL);
 
       expect(res.status).toBe(200);
-      const regex = new RegExp(`/limited-partnerships/transaction/.*?/submission/.*?/which-type`);
+      const regex = new RegExp(`${REGISTRATION_BASE_URL}/transaction/.*?/submission/.*?/which-type`);
       expect(res.text).toMatch(regex);
     });
   });

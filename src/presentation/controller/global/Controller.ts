@@ -2,7 +2,12 @@ import { NextFunction, Request, RequestHandler, Response } from "express";
 
 import globalsRouting from "./Routing";
 import AbstractController from "../AbstractController";
-import { ACCOUNTS_SIGN_OUT_URL, BASE_URL, APPLICATION_CACHE_KEY, cookieOptions } from "../../../config/constants";
+import {
+  ACCOUNTS_SIGN_OUT_URL,
+  REGISTRATION_BASE_URL,
+  APPLICATION_CACHE_KEY,
+  cookieOptions
+} from "../../../config/constants";
 
 class GlobalController extends AbstractController {
   constructor() {
@@ -17,11 +22,7 @@ class GlobalController extends AbstractController {
 
         const pageType = super.pageType(request.path);
 
-        const pageRouting = super.getRouting(
-          globalsRouting,
-          pageType,
-          request
-        );
+        const pageRouting = super.getRouting(globalsRouting, pageType, request);
 
         response.render(super.templateName(pageRouting.currentUrl), {
           props: pageRouting
@@ -37,11 +38,7 @@ class GlobalController extends AbstractController {
       try {
         const previousPageUrl = this.getPreviousPageUrl(request);
         const pageType = super.pageType(request.path);
-        const pageRouting = super.getRouting(
-          globalsRouting,
-          pageType,
-          request
-        );
+        const pageRouting = super.getRouting(globalsRouting, pageType, request);
         pageRouting.previousUrl = previousPageUrl;
         response.render(super.templateName(pageRouting.currentUrl), {
           props: pageRouting
@@ -55,7 +52,7 @@ class GlobalController extends AbstractController {
   signOutChoice(): RequestHandler {
     return (request: Request, response: Response, next: NextFunction) => {
       try {
-        if (request.body["sign_out"] === 'yes') {
+        if (request.body["sign_out"] === "yes") {
           this.clearCache(response);
           return response.redirect(ACCOUNTS_SIGN_OUT_URL);
         }
@@ -84,7 +81,7 @@ class GlobalController extends AbstractController {
   }
 
   private redirectWithChecks(response: Response, url: string): void {
-    if (url.startsWith(BASE_URL)) {
+    if (url.startsWith(REGISTRATION_BASE_URL)) {
       return response.redirect(url);
     }
   }
