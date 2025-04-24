@@ -6,7 +6,8 @@ import {
   ACCOUNTS_SIGN_OUT_URL,
   REGISTRATION_BASE_URL,
   APPLICATION_CACHE_KEY,
-  cookieOptions
+  cookieOptions,
+  TRANSITION_BASE_URL
 } from "../../../config/constants";
 
 class GlobalController extends AbstractController {
@@ -81,7 +82,7 @@ class GlobalController extends AbstractController {
   }
 
   private redirectWithChecks(response: Response, url: string): void {
-    if (url.startsWith(REGISTRATION_BASE_URL)) {
+    if (url.startsWith(REGISTRATION_BASE_URL) || url.startsWith(TRANSITION_BASE_URL)) {
       return response.redirect(url);
     }
   }
