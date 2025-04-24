@@ -161,11 +161,32 @@ class GeneralPartnerController extends AbstractController {
   }
 
   postReviewPage(): RequestHandler {
-    return (request: Request, response: Response, next: NextFunction) => {
+    return async (request: Request, response: Response, next: NextFunction) => {
       try {
-        const { ids } = super.extract(request);
+        const { ids, tokens } = super.extract(request);
+        const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
+        const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
         const addAnotherGeneralPartner = request.body.addAnotherGeneralPartner;
+
+        if (addAnotherGeneralPartner === "no") {
+          const generalPartners = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
+
+          if (generalPartners.length === 0) {
+            const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+              tokens,
+              ids.transactionId,
+              ids.submissionId
+            );
+
+            response.render(
+              super.templateName(pageRouting.currentUrl),
+              super.makeProps(pageRouting, { limitedPartnership, generalPartners }, null)
+            );
+            return;
+          }
+        }
+
         let url = LIMITED_PARTNERS_URL;
 
         if (addAnotherGeneralPartner === "addPerson") {
