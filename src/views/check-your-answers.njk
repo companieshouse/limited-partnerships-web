@@ -6,8 +6,8 @@
 {% set currentUrl = props.currentUrl %}
 {% set fullName = (props.data.limitedPartnership.data.partnership_name | upper) + " " + (props.data.limitedPartnership.data.name_ending | upper) %}
 
-{% block content %}
 
+{% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
       <h1 class="govuk-heading-l">{{ i18n.checkYourAnswersPage.title }}</h1>
@@ -88,7 +88,7 @@
             text: i18n.checkYourAnswersPage.headingTerm
             },
             value: {
-              text: data['term-of-partners'] or "Term will be decided by some or all of the partners"
+              text: props.data.limitedPartnership.data.term
             },
             actions: {
               items: [ CREATE_CHANGE_LINK(
