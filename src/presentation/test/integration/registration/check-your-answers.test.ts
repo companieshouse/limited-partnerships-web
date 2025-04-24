@@ -104,6 +104,26 @@ describe("Check Your Answers Page", () => {
       }
     });
 
+  it.each([
+    ["BY_AGREEMENT", enTranslationText.termPage.byAgreement],
+    ["UNTIL_DISSOLUTION", enTranslationText.termPage.untilDissolution],
+    ["NONE", enTranslationText.termPage.noTerm],
+    ["TERM_NOT_MATCHED", ""]
+  ])(
+    "should show the correct text for term based on term selected",
+    async (termKey: any, expectedTermText: string) => {
+      const limitedPartnership = new LimitedPartnershipBuilder().withTerm(termKey).build();
+
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
+        limitedPartnership
+      ]);
+
+      const res = await request(app).get(URL);
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(expectedTermText);
+    });
+
   describe("POST Check Your Answers Page", () => {
     it("should navigate to next page", async () => {
       const res = await request(app).post(URL).send({
