@@ -97,25 +97,25 @@ const registrationRoutingReviewGeneralPartners = {
   pageType: RegistrationPageType.reviewGeneralPartners
 };
 
-export const registrationRoutingLimitedPartnerChoice = {
+const registrationRoutingRemoveGeneralPartner = {
+  previousUrl: url.REVIEW_GENERAL_PARTNERS_URL,
+  currentUrl: url.REMOVE_GENERAL_PARTNER_URL,
+  nextUrl: url.REVIEW_GENERAL_PARTNERS_URL,
+  pageType: RegistrationPageType.removeGeneralPartner
+};
+
+const registrationRoutingLimitedPartnerChoice = {
   previousUrl: url.LIMITED_PARTNERS_URL,
   currentUrl: url.LIMITED_PARTNER_CHOICE_URL,
   nextUrl: "",
   pageType: RegistrationPageType.limitedPartnerChoice
 };
 
-export const registrationRoutingAddLimitedPartnerPerson = {
+const registrationRoutingAddLimitedPartnerPerson = {
   previousUrl: url.LIMITED_PARTNER_CHOICE_URL,
   currentUrl: url.ADD_LIMITED_PARTNER_PERSON_URL,
   nextUrl: url.CHECK_YOUR_ANSWERS_URL,
   pageType: RegistrationPageType.addLimitedPartnerPerson
-};
-
-const registrationRoutingRemoveGeneralPartner = {
-  previousUrl: url.REVIEW_GENERAL_PARTNERS_URL,
-  currentUrl: url.REMOVE_GENERAL_PARTNER_URL,
-  nextUrl: url.REVIEW_GENERAL_PARTNERS_URL,
-  pageType: RegistrationPageType.removeGeneralPartner
 };
 
 const registrationRoutingLimitedPartners = {
