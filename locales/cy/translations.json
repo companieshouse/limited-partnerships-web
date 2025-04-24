@@ -383,11 +383,16 @@
         "date": "WELSH - Incorporation date"
     },
 
+    "removeGeneralPartnerPage": {
+        "title": "WELSH - Are you sure you want to remove"
+    },
+
     "reviewGeneralPartnersPage": {
         "title": "WELSH - General partners",
         "generalPartnersAdded": {
             "title": "WELSH - General partners you have added so far:",
             "changeLink": "WELSH - Change",
+            "removeLink": "WELSH - Remove",
             "person": "WELSH - Person",
             "legalEntity": "WELSH - Legal entity",
             "emptyList": "WELSH - You must add at least one General Partner"

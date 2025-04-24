@@ -111,6 +111,13 @@ export const registrationRoutingAddLimitedPartnerPerson = {
   pageType: RegistrationPageType.addLimitedPartnerPerson
 };
 
+const registrationRoutingRemoveGeneralPartner = {
+  previousUrl: url.REVIEW_GENERAL_PARTNERS_URL,
+  currentUrl: url.REMOVE_GENERAL_PARTNER_URL,
+  nextUrl: url.REVIEW_GENERAL_PARTNERS_URL,
+  pageType: RegistrationPageType.removeGeneralPartner
+};
+
 const registrationRoutingLimitedPartners = {
   previousUrl: url.REVIEW_GENERAL_PARTNERS_URL,
   currentUrl: url.LIMITED_PARTNERS_URL,
@@ -152,6 +159,7 @@ const list = [
   registrationRoutingAddGeneralPartnerPerson,
   registrationRoutingAddGeneralPartnerLegalEntity,
   registrationRoutingReviewGeneralPartners,
+  registrationRoutingRemoveGeneralPartner,
 
   registrationRoutingLimitedPartners,
   registrationRoutingLimitedPartnerChoice,

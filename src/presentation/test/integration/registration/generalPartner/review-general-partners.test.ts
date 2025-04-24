@@ -104,5 +104,20 @@ describe("Review General Partners Page", () => {
       expect(res.status).toBe(302);
       expect(res.headers.location).toContain(getUrl(LIMITED_PARTNERS_URL));
     });
+
+    it("should reload the page if no general partner", async () => {
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
+
+      const res = await request(app).post(URL).send({
+        pageType: RegistrationPageType.reviewGeneralPartners,
+        addAnotherGeneralPartner: "no"
+      });
+
+      expect(res.status).toBe(200);
+
+      expect(res.text).toContain(
+        `${enTranslationText.reviewGeneralPartnersPage.title} - ${enTranslationText.service} - GOV.UK`
+      );
+    });
   });
 });

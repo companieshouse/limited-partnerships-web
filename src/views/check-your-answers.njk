@@ -5,9 +5,17 @@
 {% set checkYourAnswers = "check-your-answers" %}
 {% set currentUrl = props.currentUrl %}
 {% set fullName = (props.data.limitedPartnership.data.partnership_name | upper) + " " + (props.data.limitedPartnership.data.name_ending | upper) %}
+{% set termKey = props.data.limitedPartnership.data.term %}
+{% if termKey === "BY_AGREEMENT" %}
+  {% set term = i18n.termPage.byAgreement %}
+{% elif termKey === "UNTIL_DISSOLUTION" %}
+  {% set term = i18n.termPage.untilDissolution %}
+{% elif termKey === "NONE" %}
+  {% set term = i18n.termPage.noTerm %}
+{% endif %}
+
 
 {% block content %}
-
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
       <h1 class="govuk-heading-l">{{ i18n.checkYourAnswersPage.title }}</h1>
@@ -88,7 +96,7 @@
             text: i18n.checkYourAnswersPage.headingTerm
             },
             value: {
-              text: data['term-of-partners'] or "Term will be decided by some or all of the partners"
+              text: term
             },
             actions: {
               items: [ CREATE_CHANGE_LINK(

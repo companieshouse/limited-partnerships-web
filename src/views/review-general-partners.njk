@@ -37,6 +37,10 @@
                                             CREATE_CHANGE_LINK(
                                                 i18n.reviewGeneralPartnersPage.generalPartnersAdded.changeLink,
                                                 props.currentUrl | replace("review-general-partners", "general-partner/" + item.id + "/add-general-partner-person")
+                                            ),
+                                            CREATE_CHANGE_LINK(
+                                                i18n.reviewGeneralPartnersPage.generalPartnersAdded.removeLink,
+                                                props.currentUrl | replace("review-general-partners", "general-partner/" + item.id + "/remove-general-partner")
                                             )
                                         ]
                                     }
@@ -61,6 +65,10 @@
                                             CREATE_CHANGE_LINK(
                                                 i18n.reviewGeneralPartnersPage.generalPartnersAdded.changeLink,
                                                 props.currentUrl | replace("review-general-partners", "general-partner/" + item.id + "/add-general-partner-legal-entity")
+                                            ),
+                                            CREATE_CHANGE_LINK(
+                                                i18n.reviewGeneralPartnersPage.generalPartnersAdded.removeLink,
+                                                props.currentUrl | replace("review-general-partners", "general-partner/" + item.id + "/remove-general-partner")
                                             )
                                         ]
                                     }

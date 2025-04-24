@@ -85,6 +85,24 @@ class GeneralPartnerInMemoryGateway implements IGeneralPartnerGateway {
 
     this.generalPartners[index].data = data;
   }
+
+  async deleteGeneralPartner(
+    opt: { access_token: string; refresh_token: string },
+    transactionId: string,
+    generalPartnerId: string
+  ): Promise<void> {
+    if (this.uiErrors.errors.errorList.length > 0) {
+      throw this.uiErrors;
+    }
+
+    let index = this.generalPartners.findIndex((gp) => gp._id === generalPartnerId);
+
+    if (index === -1) {
+      throw new Error(`Not found: ${generalPartnerId}`);
+    }
+
+    this.generalPartners = this.generalPartners.filter((gp) => gp._id !== generalPartnerId);
+  }
 }
 
 export default GeneralPartnerInMemoryGateway;
