@@ -77,10 +77,12 @@ class LimitedPartnershipController extends AbstractController {
         const { tokens } = super.extract(request);
         const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
+        const journeyTypes = super.getJourneyTypes(pageRouting.currentUrl);
 
         const result = await this.limitedPartnershipService.createTransactionAndFirstSubmission(
           tokens,
           pageType,
+          journeyTypes,
           request.body
         );
 
@@ -119,10 +121,7 @@ class LimitedPartnershipController extends AbstractController {
         //      payment journey is implemented
         //
         //      E.g.   apiResponse.headers?.["x-payment-required"];
-        await this.limitedPartnershipService.closeTransaction(
-          tokens,
-          ids.transactionId
-        );
+        await this.limitedPartnershipService.closeTransaction(tokens, ids.transactionId);
 
         const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);

@@ -1,3 +1,4 @@
+import { Journey } from "../domain/entities/journey";
 import { getEnvironmentValue, getEnvironmentValueAsBoolean } from "../utils/environment.value";
 
 // APP CONFIG
@@ -50,8 +51,8 @@ export const GENERAL_PARTNER_ID = "generalPartnerId";
 
 export const BASE_URL = "/limited-partnerships";
 
-export const REGISTRATION_BASE_URL = `${BASE_URL}/registration`;
-export const TRANSITION_BASE_URL = `${BASE_URL}/transition`;
+export const REGISTRATION_BASE_URL = `${BASE_URL}/${Journey.registration}`;
+export const TRANSITION_BASE_URL = `${BASE_URL}/${Journey.transition}`;
 
 export const TRANSACTION_SUBMISSION_URL = `/transaction/:${TRANSACTION_ID}/submission/:${SUBMISSION_ID}`;
 

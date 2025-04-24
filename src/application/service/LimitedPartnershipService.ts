@@ -9,6 +9,7 @@ import { IIncorporationGateway } from "../../domain/IIncorporationGateway";
 import { extractAPIErrors } from "./utils";
 import { ApiResponse } from "@companieshouse/api-sdk-node/dist/services/resource";
 import { Transaction } from "@companieshouse/api-sdk-node/dist/services/transaction/types";
+import { JourneyTypes } from "../../domain/entities/journey";
 
 class LimitedPartnershipService {
   constructor(
@@ -23,11 +24,7 @@ class LimitedPartnershipService {
     submissionId: string
   ): Promise<LimitedPartnership> {
     try {
-      return await this.limitedPartnershipGateway.getLimitedPartnership(
-        opt,
-        transactionId,
-        submissionId
-      );
+      return await this.limitedPartnershipGateway.getLimitedPartnership(opt, transactionId, submissionId);
     } catch (error: any) {
       logger.error(`Error getting LimitedPartnership ${JSON.stringify(error)}`);
 
@@ -38,6 +35,7 @@ class LimitedPartnershipService {
   async createTransactionAndFirstSubmission(
     opt: { access_token: string; refresh_token: string },
     registrationType: RegistrationPageType,
+    journeyTypes: JourneyTypes,
     data: Record<string, any>
   ): Promise<{
     submissionId: string;
@@ -45,33 +43,26 @@ class LimitedPartnershipService {
     errors?: UIErrors;
   }> {
     try {
-      const transactionId = await this.transactionGateway.createTransaction(
-        opt,
-        registrationType
-      );
+      const transactionId = await this.transactionGateway.createTransaction(opt, registrationType);
 
-      await this.incorporationGateway.createIncorporation(
+      const incorporationKind = journeyTypes.isRegistration
+        ? IncorporationKind.REGISTRATION
+        : IncorporationKind.TRANSITION;
+
+      await this.incorporationGateway.createIncorporation(opt, registrationType, transactionId, incorporationKind);
+
+      const submissionId = await this.limitedPartnershipGateway.createSubmission(
         opt,
         registrationType,
         transactionId,
-        IncorporationKind.REGISTRATION
+        data
       );
-
-      const submissionId =
-        await this.limitedPartnershipGateway.createSubmission(
-          opt,
-          registrationType,
-          transactionId,
-          data
-        );
 
       return { submissionId, transactionId };
     } catch (errors: any) {
       const { apiErrors, isValidationErrors } = extractAPIErrors(errors);
 
-      logger.error(
-        `Error creating transaction or submission: ${JSON.stringify(apiErrors)}`
-      );
+      logger.error(`Error creating transaction or submission: ${JSON.stringify(apiErrors)}`);
 
       if (!isValidationErrors) {
         throw errors;
@@ -90,16 +81,11 @@ class LimitedPartnershipService {
     transactionId: string
   ): Promise<ApiResponse<Transaction>> {
     try {
-      return await this.transactionGateway.closeTransaction(
-        opt,
-        transactionId
-      );
+      return await this.transactionGateway.closeTransaction(opt, transactionId);
     } catch (errors: any) {
       const { apiErrors } = extractAPIErrors(errors);
 
-      logger.error(
-        `Error closing transaction: ${JSON.stringify(apiErrors)}`
-      );
+      logger.error(`Error closing transaction: ${JSON.stringify(apiErrors)}`);
 
       throw errors;
     }
@@ -115,13 +101,7 @@ class LimitedPartnershipService {
     errors?: UIErrors;
   }> {
     try {
-      await this.limitedPartnershipGateway.sendPageData(
-        opt,
-        transactionId,
-        submissionId,
-        registrationType,
-        data
-      );
+      await this.limitedPartnershipGateway.sendPageData(opt, transactionId, submissionId, registrationType, data);
     } catch (errors: any) {
       const { apiErrors, isValidationErrors } = extractAPIErrors(errors);
 

@@ -4,8 +4,14 @@ import RegistrationPageType from "../../../controller/registration/PageType";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import { ApiErrors } from "../../../../domain/entities/UIErrors";
+import { JourneyTypes } from "../../../../domain/entities/journey";
 
 describe("Create transaction and the first submission", () => {
+  const journeyTypes: JourneyTypes = {
+    isRegistration: true,
+    isTransition: false
+  };
+
   beforeEach(() => {
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([]);
     appDevDependencies.limitedPartnershipGateway.feedErrors();
@@ -20,6 +26,7 @@ describe("Create transaction and the first submission", () => {
       const result = await appDevDependencies.limitedPartnershipService.createTransactionAndFirstSubmission(
         { access_token: "access_token", refresh_token: "refresh_token" },
         RegistrationPageType.name,
+        journeyTypes,
         {
           partnership_name: limitedPartnership.data?.partnership_name,
           name_ending: limitedPartnership.data?.name_ending,
@@ -47,6 +54,7 @@ describe("Create transaction and the first submission", () => {
       const result = await appDevDependencies.limitedPartnershipService.createTransactionAndFirstSubmission(
         { access_token: "access_token", refresh_token: "refresh_token" },
         RegistrationPageType.name,
+        journeyTypes,
         {
           partnership_name: "Test Limited Partnership",
           name_ending: NameEndingType.LIMITED_PARTNERSHIP,
@@ -85,6 +93,7 @@ describe("Create transaction and the first submission", () => {
         appDevDependencies.limitedPartnershipService.createTransactionAndFirstSubmission(
           { access_token: "access_token", refresh_token: "refresh_token" },
           RegistrationPageType.next,
+          journeyTypes,
           {
             partnership_name: "Test Limited Partnership",
             name_ending: NameEndingType.LIMITED_PARTNERSHIP,

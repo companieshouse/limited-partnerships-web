@@ -16,6 +16,7 @@ import PageType from "./PageType";
 import { ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL, ADD_GENERAL_PARTNER_PERSON_URL } from "./registration/url";
 import UIErrors from "../../domain/entities/UIErrors";
 import { START_URL } from "./global/Routing";
+import { JourneyTypes } from "../../domain/entities/journey";
 
 abstract class AbstractController {
   protected getRouting(routing: PagesRouting, pageType: PageType, request: Request) {
@@ -96,9 +97,7 @@ abstract class AbstractController {
     // general partner urls that can exist with or without ids
     const GP_URLS = [ADD_GENERAL_PARTNER_PERSON_URL, ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL];
 
-    const urlWithIds = this.getJourneys(url).isRegistrationJourney
-      ? REGISTRATION_WITH_IDS_URL
-      : TRANSITION_WITH_IDS_URL;
+    const urlWithIds = this.getJourneyTypes(url).isRegistration ? REGISTRATION_WITH_IDS_URL : TRANSITION_WITH_IDS_URL;
 
     if (transactionId && submissionId && generalPartnerId && GP_URLS.includes(url)) {
       url = url.replace(urlWithIds, GENERAL_PARTNER_WITH_ID_URL);
@@ -192,13 +191,13 @@ abstract class AbstractController {
     return START_URL;
   }
 
-  protected getJourneys(url: string): { isRegistrationJourney: boolean; isTransitionJourney: boolean } {
-    const isRegistrationJourney = url.startsWith(REGISTRATION_BASE_URL);
-    const isTransitionJourney = url.startsWith(TRANSITION_BASE_URL);
+  protected getJourneyTypes(url: string): JourneyTypes {
+    const isRegistration = url.startsWith(REGISTRATION_BASE_URL);
+    const isTransition = url.startsWith(TRANSITION_BASE_URL);
 
     return {
-      isRegistrationJourney,
-      isTransitionJourney
+      isRegistration,
+      isTransition
     };
   }
 }
