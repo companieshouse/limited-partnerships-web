@@ -87,13 +87,13 @@ class GeneralPartnerService {
     }
   }
 
-  async removeGeneralPartner(
+  async deleteGeneralPartner(
     opt: { access_token: string; refresh_token: string },
     transactionId: string,
     generalPartnerId: string
   ) {
     try {
-      await this.generalPartnerGateway.removeGeneralPartner(opt, transactionId, generalPartnerId);
+      await this.generalPartnerGateway.deleteGeneralPartner(opt, transactionId, generalPartnerId);
     } catch (errors: any) {
       const { apiErrors, isValidationErrors } = extractAPIErrors(errors);
 

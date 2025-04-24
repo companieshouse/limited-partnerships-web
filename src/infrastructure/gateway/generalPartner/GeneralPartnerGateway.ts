@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import { Resource } from "@companieshouse/api-sdk-node";
 
 import IGeneralPartnerGateway from "../../../domain/IGeneralPartnerGateway";
@@ -123,12 +121,27 @@ class GeneralPartnerGateway implements IGeneralPartnerGateway {
     }
   }
 
-  async removeGeneralPartner(
+  async deleteGeneralPartner(
     opt: { access_token: string; refresh_token: string },
     transactionId: string,
     generalPartnerId: string
   ): Promise<void> {
-    throw new Error("Method not implemented.");
+    const apiCall = {
+      service: SDK_LIMITED_PARTNERSHIP_SERVICE,
+      method: "deleteGeneralPartner",
+      args: [transactionId, generalPartnerId]
+    };
+
+    const response = await makeApiCallWithRetry<Resource<void>>(opt, apiCall);
+
+    const uiErrors = checkForBadRequest<void>(response);
+    if (uiErrors) {
+      throw uiErrors;
+    }
+
+    if (response.httpStatusCode !== 204) {
+      throw response;
+    }
   }
 }
 

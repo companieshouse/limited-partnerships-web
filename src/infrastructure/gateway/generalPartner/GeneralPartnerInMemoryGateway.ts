@@ -86,7 +86,7 @@ class GeneralPartnerInMemoryGateway implements IGeneralPartnerGateway {
     this.generalPartners[index].data = data;
   }
 
-  async removeGeneralPartner(
+  async deleteGeneralPartner(
     opt: { access_token: string; refresh_token: string },
     transactionId: string,
     generalPartnerId: string

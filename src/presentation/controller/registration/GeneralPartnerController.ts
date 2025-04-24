@@ -193,7 +193,7 @@ class GeneralPartnerController extends AbstractController {
         const remove = request.body.remove;
 
         if (remove === "yes") {
-          await this.generalPartnerService.removeGeneralPartner(tokens, ids.transactionId, ids.generalPartnerId);
+          await this.generalPartnerService.deleteGeneralPartner(tokens, ids.transactionId, ids.generalPartnerId);
         }
 
         response.redirect(pageRouting.nextUrl);

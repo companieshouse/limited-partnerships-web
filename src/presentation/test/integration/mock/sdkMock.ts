@@ -67,6 +67,10 @@ export const patchGeneralPartner = jest.fn().mockImplementation(() => ({
   httpStatusCode: 200,
   resource: {}
 }));
+export const deleteGeneralPartner = jest.fn().mockImplementation(() => ({
+  httpStatusCode: 204,
+  resource: {}
+}));
 
 // Refresh Token service
 export const refresh = jest.fn().mockImplementation(() => ({
@@ -110,7 +114,8 @@ const sdkMock = {
     postGeneralPartner,
     getGeneralPartner,
     getGeneralPartners,
-    patchGeneralPartner
+    patchGeneralPartner,
+    deleteGeneralPartner
   },
   refreshToken: {
     ...RefreshTokenService.prototype,
