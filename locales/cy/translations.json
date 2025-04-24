@@ -27,18 +27,33 @@
         }
     },
 
-    "addGeneralPartnerPersonPage" : {
-        "title" : "WELSH - Add a general partner (person)",
+    "addPartnerPersonPage" : {
+        "generalPartner": {
+            "title" : "WELSH - Add a general partner (person)",
+            "previousName" : { 
+                "title" : "WELSH - Does the general partner have a previous name?",
+                "hint" : "WELSH - For example, if they've changed their name as a result of marriage or divorce.",
+                "yes" : "WELSH - Yes",
+                "yesHintTitle" : "WELSH - What is the general partner's previous name?",
+                "yesHint" : "WELSH - If the partner has more than one previous name, separate each name with a comma.",
+                "no" : "WELSH - No"
+            },
+            "disqualificationStatement" : "WELSH - I confirm the general partner is not disqualified under the directors disqualification legislation.",
+            "disqualificationStatementLegend" : "WELSH - General partner - person - disqualification statement"
+        },
+        "limitedPartner": {
+            "title": "WELSH - Add a limited partner (person)",
+            "previousName" : { 
+                "title" : "WELSH - Does the limited partner have a previous name?",
+                "hint" : "WELSH - For example, if they've changed their name as a result of marriage or divorce.",
+                "yes" : "WELSH - Yes",
+                "yesHintTitle" : "WELSH - What is the limited partner's previous name?",
+                "yesHint" : "WELSH - If the partner has more than one previous name, separate each name with a comma.",
+                "no" : "WELSH - No"
+            }
+        },
         "firstName" : "WELSH - First name",
         "lastName" : "WELSH - Last name",
-        "previousName" : {
-          "title" : "WELSH - Does the general partner have a previous name?",
-          "hint" : "WELSH - For example, if they've changed their name as a result of marriage or divorce.",
-          "yes" : "WELSH - Yes",
-          "yesHintTitle" : "WELSH - What is the general partner's previous name?",
-          "yesHint" : "WELSH - If the partner has more than one previous name, separate each name with a comma.",
-          "no" : "WELSH - No"
-        },
         "dateOfBirth" : "WELSH - Date of birth",
         "dateOfBirthHint" : "WELSH - For example, 27 3 2000",
         "nationality" : "WELSH - What is their nationality?",
@@ -46,8 +61,6 @@
         "secondNationality" : "WELSH - What is their second nationality (if relevant)?",
         "secondNationalitySelectPrompt": "WELSH - Select a second nationality",
         "secondNationalityHint" : "WELSH - Dual citizenship (also known as dual nationality) is allowed in some countries. This means you can be a citizen of your own country and another country.",
-        "disqualificationStatement" : "WELSH - I confirm the general partner is not disqualified under the directors disqualification legislation.",
-        "disqualificationStatementLegend" : "WELSH - General partner - person - disqualification statement",
         "publicRegisterLine1" : "WELSH - We'll only show the month and year of their birth date.",
         "publicRegisterLine2" : "WELSH - We'll show all the other information you provide on this screen on the public register.",
         "errorMessages": {

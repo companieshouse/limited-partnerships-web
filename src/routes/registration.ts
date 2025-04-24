@@ -15,6 +15,7 @@ import {
   GENERAL_PARTNER_CHOICE_URL,
   ADD_GENERAL_PARTNER_PERSON_URL,
   LIMITED_PARTNER_CHOICE_URL,
+  ADD_LIMITED_PARTNER_PERSON_URL,
   CHECK_YOUR_ANSWERS_URL,
   NAME_WITH_IDS_URL,
   TERM_URL,
@@ -206,7 +207,18 @@ export const registrationEndpoints = (
     LIMITED_PARTNER_CHOICE_URL,
     authentication,
     // to be changed - use different method
-    dependencies.limitedPartnershipController.redirectAndCacheSelection()
+    dependencies.limitedPartnerController.limitedPartnerChoice()
+  );
+
+  router.get(
+    ADD_LIMITED_PARTNER_PERSON_URL,
+    authentication,
+    dependencies.limitedPartnerController.getPageRouting()
+  );
+  router.post(
+    ADD_LIMITED_PARTNER_PERSON_URL,
+    authentication,
+    dependencies.limitedPartnerController.createLimitedPartner()
   );
 
   router.get(

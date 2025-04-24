@@ -5,6 +5,8 @@ import {
   BASE_WITH_IDS_URL,
   GENERAL_PARTNER_ID,
   GENERAL_PARTNER_WITH_ID_URL,
+  LIMITED_PARTNER_ID,
+  LIMITED_PARTNER_WITH_ID_URL,
   BASE_URL,
   SUBMISSION_ID,
   TRANSACTION_ID
@@ -13,7 +15,9 @@ import { PageRouting, pageRoutingDefault, PagesRouting } from "./PageRouting";
 import PageType from "./PageType";
 import {
   ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
-  ADD_GENERAL_PARTNER_PERSON_URL
+  ADD_GENERAL_PARTNER_PERSON_URL,
+  ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
+  ADD_LIMITED_PARTNER_PERSON_URL,
 } from "./registration/url";
 import UIErrors from "../../domain/entities/UIErrors";
 import { START_URL } from "./global/Routing";
@@ -30,7 +34,8 @@ abstract class AbstractController {
       pageRouting,
       request.params[TRANSACTION_ID],
       request.params[SUBMISSION_ID],
-      request.params[GENERAL_PARTNER_ID]
+      request.params[GENERAL_PARTNER_ID],
+      request.params[LIMITED_PARTNER_ID]
     );
 
     pageRouting = this.addLangToUrls(request.url, pageRouting);
@@ -69,7 +74,7 @@ abstract class AbstractController {
     const session = request.session as Session;
     const tokens = this.extractTokens(request);
     const pageType = this.pageType(request.path);
-    const { transactionId, submissionId, generalPartnerId } = this.extractIds(request);
+    const { transactionId, submissionId, generalPartnerId, limitedPartnerId } = this.extractIds(request);
 
     return {
       session,
@@ -78,7 +83,8 @@ abstract class AbstractController {
       ids: {
         transactionId,
         submissionId,
-        generalPartnerId
+        generalPartnerId,
+        limitedPartnerId
       }
     };
   }
@@ -93,12 +99,14 @@ abstract class AbstractController {
     url: string,
     transactionId = "",
     submissionId = "",
-    generalPartnerId = ""
+    generalPartnerId = "",
+    limitedPartnerId = ""
   ): string {
-    url = this.replaceBaseUrlWithIds(url, transactionId, submissionId, generalPartnerId);
+    url = this.replaceBaseUrlWithIds(url, transactionId, submissionId, generalPartnerId, limitedPartnerId);
     url = this.insertSubmissionId(url, submissionId);
     url = this.insertTransactionId(url, transactionId);
     url = this.insertGeneralPartnerId(url, generalPartnerId);
+    url = this.insertLimitedPartnerId(url, limitedPartnerId);
     return url;
   }
 
@@ -106,7 +114,8 @@ abstract class AbstractController {
     url: string,
     transactionId: string,
     submissionId: string,
-    generalPartnerId: string
+    generalPartnerId: string,
+    limitedPartnerId: string
   ) {
     // general partner urls that can exist with or without ids
     const GP_URLS = [
@@ -116,6 +125,16 @@ abstract class AbstractController {
 
     if (transactionId && submissionId && generalPartnerId && GP_URLS.includes(url)) {
       url = url.replace(BASE_WITH_IDS_URL, GENERAL_PARTNER_WITH_ID_URL);
+    }
+
+    // limited partner urls that can exist with or without ids
+    const LP_URLS = [
+      ADD_LIMITED_PARTNER_PERSON_URL,
+      ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL
+    ];
+
+    if (transactionId && submissionId && limitedPartnerId && LP_URLS.includes(url)) {
+      url = url.replace(BASE_WITH_IDS_URL, LIMITED_PARTNER_WITH_ID_URL);
     }
 
     return url;
@@ -135,11 +154,18 @@ abstract class AbstractController {
       : url;
   }
 
+  protected insertLimitedPartnerId(url: string, limitedPartnerId: string): string {
+    return limitedPartnerId
+      ? url.replace(`:${LIMITED_PARTNER_ID}`, limitedPartnerId)
+      : url;
+  }
+
   protected insertIdsInAllUrl(
     pageRouting: PageRouting,
     transactionId: string,
     submissionId: string,
-    generalPartnerId: string
+    generalPartnerId: string,
+    limitedPartnerId: string
   ): PageRouting {
     return {
       ...pageRouting,
@@ -147,19 +173,22 @@ abstract class AbstractController {
         pageRouting.previousUrl,
         transactionId,
         submissionId,
-        generalPartnerId
+        generalPartnerId,
+        limitedPartnerId
       ),
       currentUrl: this.insertIdsInUrl(
         pageRouting.currentUrl,
         transactionId,
         submissionId,
-        generalPartnerId
+        generalPartnerId,
+        limitedPartnerId
       ),
       nextUrl: this.insertIdsInUrl(
         pageRouting.nextUrl,
         transactionId,
         submissionId,
-        generalPartnerId
+        generalPartnerId,
+        limitedPartnerId
       )
     };
   }
@@ -203,8 +232,9 @@ abstract class AbstractController {
     const transactionId = request.params.transactionId;
     const submissionId = request.params.submissionId;
     const generalPartnerId = request.params.generalPartnerId;
+    const limitedPartnerId = request.params.limitedPartnerId;
 
-    return { transactionId, submissionId, generalPartnerId };
+    return { transactionId, submissionId, generalPartnerId, limitedPartnerId };
   }
 
   protected getPreviousPageUrl(request: Request) {

@@ -1,24 +1,19 @@
 import request from "supertest";
-import {
-  APPLICATION_CACHE_KEY,
-  APPLICATION_CACHE_KEY_PREFIX_REGISTRATION
-} from "../../../../config/constants";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
 import {
   LIMITED_PARTNER_CHOICE_URL,
-  CHECK_YOUR_ANSWERS_URL
+  ADD_LIMITED_PARTNER_PERSON_URL,
+  ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL
 } from "../../../controller/registration/url";
-import { registrationRoutingLimitedPartnerChoice } from "../../../controller/registration/Routing";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 
 describe("Limited Partner Choice Page", () => {
   const URL = getUrl(LIMITED_PARTNER_CHOICE_URL);
-  const REDIRECT_URL = getUrl(CHECK_YOUR_ANSWERS_URL);
 
   beforeEach(() => {
     setLocalesEnabled(false);
@@ -50,24 +45,22 @@ describe("Limited Partner Choice Page", () => {
     testTranslations(res.text, enTranslationText.limitedPartnerChoicePage);
   });
 
-  it("should store the limited partner choice to cache", async () => {
-    const selectedChoice = "person";
-
+  it("should redirect to Limited Partner Person page when person is selected", async () => {
     const res = await request(app).post(URL).send({
-      pageType: registrationRoutingLimitedPartnerChoice.pageType,
-      parameter: selectedChoice
+      pageType: RegistrationPageType.limitedPartnerChoice,
+      parameter: "person"
     });
-
     expect(res.status).toBe(302);
-    expect(res.header.location).toEqual(REDIRECT_URL);
+    expect(res.text).toContain(getUrl(ADD_LIMITED_PARTNER_PERSON_URL));
+  });
 
-    // to be removed - not store in cache
-    expect(appDevDependencies.cacheRepository.cache).toEqual({
-      [APPLICATION_CACHE_KEY]: {
-        [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.limitedPartnerChoice}`]:
-          selectedChoice
-      }
+  it("should redirect to Limited Partner Legal Entity page when legal entity is selected", async () => {
+    const res = await request(app).post(URL).send({
+      pageType: RegistrationPageType.limitedPartnerChoice,
+      parameter: "legalEntity"
     });
+    expect(res.status).toBe(302);
+    expect(res.text).toContain(getUrl(ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL));
   });
 
   it("should contain the proposed name - data from api", async () => {

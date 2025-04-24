@@ -1,6 +1,6 @@
 {% extends "layout.njk" %}
 
-{% set pageTitle = i18n.addPartnerPersonPage.generalPartner.title %}
+{% set pageTitle = i18n.addPartnerPersonPage.limitedPartner.title %}
 {% set publicRegisterInformationLine1 = i18n.addPartnerPersonPage.publicRegisterLine1 %}
 {% set publicRegisterInformationLine2 = i18n.addPartnerPersonPage.publicRegisterLine2 %}
 
@@ -8,23 +8,23 @@
 {% set validateLastName = "validateInput(this, 160, '" + i18n.addPartnerPersonPage.errorMessages.lastNameMissing | escape + "', '" + i18n.addPartnerPersonPage.errorMessages.lastNameLength | escape + "');" %}
 {% set validatePreviousName = "validateLength(this, 160, '" + i18n.addPartnerPersonPage.errorMessages.previousNameLength | escape + "');" %}
 
-{% if props.data.generalPartner.data.date_of_birth  %}
+{% if props.data.limitedPartner.data.date_of_birth  %}
   {# This is for when saved data is pre-populated on the page #}
-  {% set date_of_birth = props.data.generalPartner.data.date_of_birth %}
+  {% set date_of_birth = props.data.limitedPartner.data.date_of_birth %}
   {% set year = date_of_birth[0] + date_of_birth[1] + date_of_birth[2] + date_of_birth[3] %}
   {% set month = date_of_birth[5] + date_of_birth[6] %}
   {% set day = date_of_birth[8] + date_of_birth[9] %}
 {% else %}
   {# And this covers the scenario when date validation fails and the page reloads #}
-  {% set year = props.data.generalPartner.data["date_of_birth-year"] %}
-  {% set month = props.data.generalPartner.data["date_of_birth-month"] %}
-  {% set day = props.data.generalPartner.data["date_of_birth-day"] %}
+  {% set year = props.data.limitedPartner.data["date_of_birth-year"] %}
+  {% set month = props.data.limitedPartner.data["date_of_birth-month"] %}
+  {% set day = props.data.limitedPartner.data["date_of_birth-day"] %}
 {% endif %}
 
-{% if props.data.generalPartner.data.former_names %}
+{% if props.data.limitedPartner.data.former_names %}
   {% set previousNames = "true" %}
-{% elseif props.data.generalPartner.data.forename %}
-  {# After the first check, if any other general partner person field is set, they cannot have a previous name #}
+{% elseif props.data.limitedPartner.data.forename %}
+  {# After the first check, if any other limited partner person field is set, they cannot have a previous name #}
   {% set previousNames = "false" %}
 {% endif %}
 
@@ -40,7 +40,7 @@
         
         {% include "includes/proposed-name.njk" %}  
     
-        <h1 class="govuk-heading-xl">{{ i18n.addPartnerPersonPage.generalPartner.title }}</h1>
+        <h1 class="govuk-heading-xl">{{ i18n.addPartnerPersonPage.limitedPartner.title }}</h1>
 
         {{ govukInput({
           label: {
@@ -50,7 +50,7 @@
           },
           id: "forename",
           name: "forename",
-          value: props.data.generalPartner.data.forename,
+          value: props.data.limitedPartner.data.forename,
           classes: "govuk-!-width-full",
           errorMessage: props.errors.forename if props.errors,
           attributes : {
@@ -68,7 +68,7 @@
           },
           id: "surname",
           name: "surname",
-          value: props.data.generalPartner.data.surname,
+          value: props.data.limitedPartner.data.surname,
           classes: "govuk-!-width-full",
           errorMessage: props.errors.surname if props.errors,
           attributes : {
@@ -81,14 +81,14 @@
         {% set previousHtmlPerson %}
           {{ govukInput({
             label: {
-              text: i18n.addPartnerPersonPage.generalPartner.previousName.yesHintTitle
+              text: i18n.addPartnerPersonPage.limitedPartner.previousName.yesHintTitle
             },
             hint: {
-              text: i18n.addPartnerPersonPage.generalPartner.previousName.yesHint
+              text: i18n.addPartnerPersonPage.limitedPartner.previousName.yesHint
             },
             id: "former_names",
             name: "former_names",
-            value: props.data.generalPartner.data.former_names,
+            value: props.data.limitedPartner.data.former_names,
             errorMessage: props.errors.former_names if props.errors,
             attributes : {
               oninvalid: validatePreviousName,
@@ -103,19 +103,19 @@
           value: previousNames,
           fieldset: {
             legend: {
-              text: i18n.addPartnerPersonPage.generalPartner.previousName.title,
+              text: i18n.addPartnerPersonPage.limitedPartner.previousName.title,
               isPageHeading: true,
               classes: "govuk-label govuk-label--m"
             }
           },
           hint: {
-            text: i18n.addPartnerPersonPage.generalPartner.previousName.hint
+            text: i18n.addPartnerPersonPage.limitedPartner.previousName.hint
           },
 
           items: [
             {
               value: "true",
-              text: i18n.addPartnerPersonPage.generalPartner.previousName.yes,
+              text: i18n.addPartnerPersonPage.limitedPartner.previousName.yes,
               id: "previousNameYes",
               name: "previousNameYes",
               attributes: {
@@ -128,7 +128,7 @@
             },
             {
               value: "false",
-              text: i18n.addPartnerPersonPage.generalPartner.previousName.no,
+              text: i18n.addPartnerPersonPage.limitedPartner.previousName.no,
               id: "previousNameNo",
               name: "previousNameNo",
               attributes: {
@@ -180,7 +180,7 @@
           ]
         }) }}
 
-        {% set nationalityField = props.data.generalPartner.data.nationality1 %}
+        {% set nationalityField = props.data.limitedPartner.data.nationality1 %}
         {% set nationalityFieldSelectPrompt = i18n.addPartnerPersonPage.nationalitySelectPrompt %}
         {% set nationalityFieldRequired = "true" %}
         {% set nationalityFieldText = i18n.addPartnerPersonPage.nationality %}
@@ -188,38 +188,13 @@
         {% set nationalityFieldNameId = "nationality1" %}
         {% include "includes/nationalities.njk" %}
 
-        {% set nationalityField = props.data.generalPartner.data.nationality2 %}
+        {% set nationalityField = props.data.limitedPartner.data.nationality2 %}
         {% set nationalityFieldSelectPrompt = i18n.addPartnerPersonPage.secondNationalitySelectPrompt %}
         {% set nationalityFieldRequired = "false" %}
         {% set nationalityFieldText = i18n.addPartnerPersonPage.secondNationality %}
         {% set nationalityFieldHintText = i18n.addPartnerPersonPage.secondNationalityHint  %}
         {% set nationalityFieldNameId = "nationality2" %}
         {% include "includes/nationalities.njk" %}
-
-        {{ govukCheckboxes({
-          id: "not_disqualified_statement_checked",
-          name: "not_disqualified_statement_checked",
-          value: props.data.generalPartner.data.not_disqualified_statement_checked,
-          errorMessage: props.errors.not_disqualified_statement_checked if props.errors,
-          classes: "govuk-!-margin-top-6",
-          fieldset: {
-            legend: {
-              text: i18n.addPartnerPersonPage.generalPartner.disqualificationStatementLegend,
-              isPageHeading: false,
-              classes: "govuk-visually-hidden"
-            }
-          },
-          items: [
-            {
-              value: "true",
-              text: i18n.addPartnerPersonPage.generalPartner.disqualificationStatement,
-              checked: props.data.generalPartner.data.not_disqualified_statement_checked,
-              attributes: {
-                required: true
-              }
-            }
-          ]
-        }) }}
 
         <div>
           {% include "includes/public-register-information.njk" %}
