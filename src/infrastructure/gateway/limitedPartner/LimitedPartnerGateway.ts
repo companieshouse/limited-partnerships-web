@@ -58,6 +58,7 @@ class LimitedPartnerGateway implements ILimitedPartnerGateway {
     return response?.resource ?? {};
   }
 
+  // COMMENTED OUT FOR NOW DUE TO SONARQUBE ISSUES
   // async getLimitedPartners(
   //   opt: { access_token: string; refresh_token: string },
   //   transactionId: string

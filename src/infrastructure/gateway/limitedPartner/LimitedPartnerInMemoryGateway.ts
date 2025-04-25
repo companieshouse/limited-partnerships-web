@@ -59,32 +59,33 @@ class LimitedPartnerInMemoryGateway implements ILimitedPartnerGateway {
 
     return this.limitedPartners[0];
   }
+  
+  // COMMENTED OUT FOR NOW DUE TO SONARQUBE ISSUES
+  // async getLimitedPartners(
+  //   opt: { access_token: string; refresh_token: string },
+  //   transactionId: string
+  // ): Promise<LimitedPartner[]> {
+  //   return this.limitedPartners;
+  // }
 
-  async getLimitedPartners(
-    opt: { access_token: string; refresh_token: string },
-    transactionId: string
-  ): Promise<LimitedPartner[]> {
-    return this.limitedPartners;
-  }
+  // async sendPageData(
+  //   opt: { access_token: string },
+  //   transactionId: string,
+  //   limitedPartnerId: string,
+  //   data: Record<string, any>
+  // ): Promise<void> {
+  //   if (this.uiErrors.errors.errorList.length > 0) {
+  //     throw this.uiErrors;
+  //   }
 
-  async sendPageData(
-    opt: { access_token: string },
-    transactionId: string,
-    limitedPartnerId: string,
-    data: Record<string, any>
-  ): Promise<void> {
-    if (this.uiErrors.errors.errorList.length > 0) {
-      throw this.uiErrors;
-    }
+  //   let index = this.limitedPartners.findIndex((gp) => gp._id === limitedPartnerId);
 
-    let index = this.limitedPartners.findIndex((gp) => gp._id === limitedPartnerId);
+  //   if (index === -1) {
+  //     throw new Error(`Not found: ${limitedPartnerId}`);
+  //   }
 
-    if (index === -1) {
-      throw new Error(`Not found: ${limitedPartnerId}`);
-    }
-
-    this.limitedPartners[index].data = data;
-  }
+  //   this.limitedPartners[index].data = data;
+  // }
 }
 
 export default LimitedPartnerInMemoryGateway;
