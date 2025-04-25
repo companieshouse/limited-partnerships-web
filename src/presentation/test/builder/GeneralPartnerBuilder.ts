@@ -1,4 +1,5 @@
 import TransactionGeneralPartner from "../../../domain/entities/TransactionGeneralPartner";
+import AbstractPartnerBuilder from "./AbstractPartnerBuilder";
 
 export const generalPartnerPerson = {
   forename: "Joe",
@@ -18,70 +19,43 @@ export const generalPartnerLegalEntity = {
   not_disqualified_statement_checked: true
 };
 
-class GeneralPartnerBuilder {
-  _id = "123456";
-  data = {
-    forename: "",
-    surname: "",
-    former_names: "",
-    nationality1: "",
-    nationality2: undefined,
-    date_of_birth: "",
+class GeneralPartnerBuilder extends AbstractPartnerBuilder {
+  constructor() {
+    super();
+    this.init();
+  }
 
-    governing_law: "",
-    legal_entity_name: "",
-    legal_entity_register_name: "",
-    legal_entity_registration_location: "",
-    legal_form: "",
+  init() {
+    this.data = {
+      ...this.data,
 
-    date_effective_from: "",
-    etag: "",
-    kind: "",
-    not_disqualified_statement_checked: true,
-    legal_personality_statement_checked: true,
-    principal_office_address: {
-      postal_code: "ST6 3LJ",
-      premises: "4",
-      address_line_1: "line 1",
-      address_line_2: "line 2",
-      locality: "stoke-on-trent",
-      region: "region",
-      country: "england"
-    },
-    registered_company_number: "",
-    resignation_date: "",
-    service_address: {
-      postal_code: "ST6 3LJ",
-      premises: "4",
-      address_line_1: "line 1",
-      address_line_2: "line 2",
-      locality: "stoke-on-trent",
-      region: "region",
-      country: "england"
-    },
-    usual_residential_address: {
-      postal_code: "ST6 3LJ",
-      premises: "4",
-      address_line_1: "line 1",
-      address_line_2: "line 2",
-      locality: "stoke-on-trent",
-      region: "region",
-      country: "england"
-    }
-  };
+      not_disqualified_statement_checked: true,
+      legal_personality_statement_checked: true,
 
-  withId(id: string) {
-    this["_id"] = id;
+      service_address: {
+        postal_code: "ST6 3LJ",
+        premises: "4",
+        address_line_1: "line 1",
+        address_line_2: "line 2",
+        locality: "stoke-on-trent",
+        region: "region",
+        country: "england"
+      }
+    };
+  }
+
+  withNotDisqualifiedStatementChecked(notDisqualifiedStatementChecked: boolean) {
+    this.data.not_disqualified_statement_checked = notDisqualifiedStatementChecked;
     return this;
   }
 
-  withForename(forename: string) {
-    this.data.forename = forename;
+  withLegalPersonalityStatementChecked(legalPersonalityStatementChecked: boolean) {
+    this.data.legal_personality_statement_checked = legalPersonalityStatementChecked;
     return this;
   }
 
-  withSurname(surname: string) {
-    this.data.surname = surname;
+  withServiceAddress(serviceAddress: Record<string, any>) {
+    this.data.service_address = serviceAddress;
     return this;
   }
 

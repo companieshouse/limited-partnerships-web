@@ -8,6 +8,7 @@ import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import { companyProfile } from "../../../../infrastructure/gateway/companyProfile/CompanyInMemoryGateway";
 import GeneralPartnerBuilder from "../../builder/GeneralPartnerBuilder";
+import LimitedPartnerBuilder from "../../builder/LimitedPartnerBuilder";
 
 // Transaction service
 export const postTransaction = jest.fn().mockImplementation(() => ({
@@ -72,6 +73,35 @@ export const deleteGeneralPartner = jest.fn().mockImplementation(() => ({
   resource: {}
 }));
 
+// Limited Partner
+export const postLimitedPartner = jest.fn().mockImplementation(() => ({
+  httpStatusCode: 201,
+  resource: {
+    id: appDevDependencies.limitedPartnerGateway.limitedPartnerId
+  }
+}));
+export const getLimitedPartner = jest.fn().mockImplementation(() => ({
+  httpStatusCode: 200,
+  resource: new LimitedPartnerBuilder()
+    .isPerson()
+    .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+    .build()
+}));
+export const getLimitedPartners = jest.fn().mockImplementation(() => ({
+  httpStatusCode: 200,
+  resource: [
+    new LimitedPartnerBuilder().isPerson().withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId).build()
+  ]
+}));
+export const patchLimitedPartner = jest.fn().mockImplementation(() => ({
+  httpStatusCode: 200,
+  resource: {}
+}));
+export const deleteLimitedPartner = jest.fn().mockImplementation(() => ({
+  httpStatusCode: 204,
+  resource: {}
+}));
+
 // Refresh Token service
 export const refresh = jest.fn().mockImplementation(() => ({
   httpStatusCode: 201,
@@ -115,7 +145,12 @@ const sdkMock = {
     getGeneralPartner,
     getGeneralPartners,
     patchGeneralPartner,
-    deleteGeneralPartner
+    deleteGeneralPartner,
+    postLimitedPartner,
+    getLimitedPartner,
+    getLimitedPartners,
+    patchLimitedPartner,
+    deleteLimitedPartner
   },
   refreshToken: {
     ...RefreshTokenService.prototype,

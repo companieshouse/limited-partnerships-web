@@ -12,6 +12,7 @@ import LimitedPartnershipService from "../../../application/service/LimitedPartn
 import UIErrors from "../../../domain/entities/UIErrors";
 import { PageDefault, PageRouting, pageRoutingDefault } from "../PageRouting";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
+import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
 import {
   ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
@@ -57,6 +58,7 @@ class AddressLookUpController extends AbstractController {
     private addressService: AddressService,
     private limitedPartnershipService: LimitedPartnershipService,
     private generalPartnerService: GeneralPartnerService,
+    private readonly limitedPartnerService: LimitedPartnerService,
     private cacheService: CacheService
   ) {
     super();
