@@ -32,10 +32,7 @@ describe("Add Limited Partner Person Page", () => {
       expect(res.text).toContain(
         `${cyTranslationText.addPartnerPersonPage.limitedPartner.title} - ${cyTranslationText.service} - GOV.UK`
       );
-      testTranslations(res.text, cyTranslationText.addPartnerPersonPage, [
-        "errorMessages",
-        "generalPartner"
-      ]);
+      testTranslations(res.text, cyTranslationText.addPartnerPersonPage, ["errorMessages", "generalPartner"]);
     });
 
     it("should load the add limited partner page with English text", async () => {
@@ -46,19 +43,14 @@ describe("Add Limited Partner Person Page", () => {
       expect(res.text).toContain(
         `${enTranslationText.addPartnerPersonPage.limitedPartner.title} - ${enTranslationText.service} - GOV.UK`
       );
-      testTranslations(res.text, enTranslationText.addPartnerPersonPage, [
-        "errorMessages",
-        "generalPartner"
-      ]);
+      testTranslations(res.text, enTranslationText.addPartnerPersonPage, ["errorMessages", "generalPartner"]);
       expect(res.text).not.toContain("WELSH -");
     });
 
     it("should contain the proposed name - data from api", async () => {
       const limitedPartnership = new LimitedPartnershipBuilder().build();
 
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
-        limitedPartnership
-      ]);
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
       const res = await request(app).get(URL);
 
@@ -79,8 +71,7 @@ describe("Add Limited Partner Person Page", () => {
       const URL = getUrl(ADD_LIMITED_PARTNER_PERSON_WITH_ID_URL);
 
       const res = await request(app).get(URL);
-      console.log(limitedPartner.data?.forename);
-      console.log(limitedPartner.data?.surname);
+
       expect(res.status).toBe(200);
       expect(res.text).toContain("Joe");
       expect(res.text).toContain("Doe");
@@ -137,7 +128,7 @@ describe("Add Limited Partner Person Page", () => {
         "date_of_birth-Month": "11",
         "date_of_birth-Year": "1987",
         nationality1: "Mongolian",
-        nationality2: "Uzbek",
+        nationality2: "Uzbek"
       });
 
       expect(res.status).toBe(200);

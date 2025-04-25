@@ -1,4 +1,5 @@
 import TransactionLimitedPartner from "../../../domain/entities/TransactionLimitedPartner";
+import AbstractPartnerBuilder from "./AbstractPartnerBuilder";
 
 export const limitedPartnerPerson = {
   forename: "Joe",
@@ -14,66 +15,37 @@ export const limitedPartnerLegalEntity = {
   governing_law: "Act of law",
   legal_entity_register_name: "US Register",
   legal_entity_registration_location: "United States",
-  registered_company_number: "12345678",
+  registered_company_number: "12345678"
 };
 
-class LimitedPartnerBuilder {
-  _id = "123456";
-  data = {
-    contribution_currency_type: "",
-    contribution_currency_value: "",
-    contribution_non_monetary_value: "",
+class LimitedPartnerBuilder extends AbstractPartnerBuilder {
+  constructor() {
+    super();
+    this.init();
+  }
 
-    forename: "",
-    surname: "",
-    former_names: "",
-    nationality1: "",
-    nationality2: undefined,
-    date_of_birth: "",
+  init() {
+    this.data = {
+      ...this.data,
 
-    governing_law: "",
-    legal_entity_name: "",
-    legal_entity_register_name: "",
-    legal_entity_registration_location: "",
-    legal_form: "",
+      contribution_currency_type: "",
+      contribution_currency_value: "",
+      contribution_non_monetary_value: ""
+    };
+  }
 
-    date_effective_from: "",
-    etag: "",
-    kind: "",
-    principal_office_address: {
-      postal_code: "ST6 3LJ",
-      premises: "4",
-      address_line_1: "line 1",
-      address_line_2: "line 2",
-      locality: "stoke-on-trent",
-      region: "region",
-      country: "england"
-    },
-    registered_company_number: "",
-    resignation_date: "",
-    usual_residential_address: {
-      postal_code: "ST6 3LJ",
-      premises: "4",
-      address_line_1: "line 1",
-      address_line_2: "line 2",
-      locality: "stoke-on-trent",
-      region: "region",
-      country: "england"
-    }
-  };
-
-  withId(id: string) {
-    this["_id"] = id;
+  withContributionCurrencyType(contributionCurrencyType: string) {
+    this.data.contribution_currency_type = contributionCurrencyType;
     return this;
   }
 
-  withForename(forename: string) {
-    this.data.forename = forename;
+  withContributionCurrencyValue(contributionCurrencyValue: string) {
+    this.data.contribution_currency_value = contributionCurrencyValue;
     return this;
   }
 
-  withSurname(surname: string) {
-    this.data.surname = surname;
+  withContributionNonMonetaryValue(contributionNonMonetaryValue: string) {
+    this.data.contribution_non_monetary_value = contributionNonMonetaryValue;
     return this;
   }
 
