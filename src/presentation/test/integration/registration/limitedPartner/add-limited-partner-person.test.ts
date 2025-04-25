@@ -9,6 +9,7 @@ import RegistrationPageType from "../../../../controller/registration/PageType";
 import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 import {
   ADD_LIMITED_PARTNER_PERSON_URL,
+  ADD_LIMITED_PARTNER_PERSON_WITH_ID_URL
 } from "../../../../controller/registration/url";
 import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
 
@@ -65,6 +66,24 @@ describe("Add Limited Partner Person Page", () => {
       expect(res.text).toContain(
         `${limitedPartnership?.data?.partnership_name?.toUpperCase()} ${limitedPartnership?.data?.name_ending?.toUpperCase()}`
       );
+    });
+
+    it("should retrieve limited partner data from the api", async () => {
+      const limitedPartner = new LimitedPartnerBuilder()
+        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+        .isPerson()
+        .build();
+
+      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
+
+      const URL = getUrl(ADD_LIMITED_PARTNER_PERSON_WITH_ID_URL);
+
+      const res = await request(app).get(URL);
+      console.log(limitedPartner.data?.forename);
+      console.log(limitedPartner.data?.surname);
+      expect(res.status).toBe(200);
+      expect(res.text).toContain("Joe");
+      expect(res.text).toContain("Doe");
     });
   });
 

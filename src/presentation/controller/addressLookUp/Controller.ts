@@ -58,7 +58,7 @@ class AddressLookUpController extends AbstractController {
     private addressService: AddressService,
     private limitedPartnershipService: LimitedPartnershipService,
     private generalPartnerService: GeneralPartnerService,
-    private limitedPartnerService: LimitedPartnerService,
+    private readonly limitedPartnerService: LimitedPartnerService,
     private cacheService: CacheService
   ) {
     super();

@@ -6,21 +6,21 @@ interface ILimitedPartnerGateway {
     transactionId: string,
     data: Record<string, any>
   ): Promise<string>;
-  getLimitedPartners(
-    opt: { access_token: string; refresh_token: string },
-    transactionId: string
-  ): Promise<LimitedPartner[]>;
   getLimitedPartner(
     opt: { access_token: string; refresh_token: string },
     transactionId: string,
     limitedPartnerId: string
   ): Promise<LimitedPartner>;
-  sendPageData(
-    opt: { access_token: string; refresh_token: string },
-    transactionId: string,
-    limitedPartnerId: string,
-    data: Record<string, any>
-  ): Promise<void>;
+  // getLimitedPartners(
+  //   opt: { access_token: string; refresh_token: string },
+  //   transactionId: string
+  // ): Promise<LimitedPartner[]>;
+  // sendPageData(
+  //   opt: { access_token: string; refresh_token: string },
+  //   transactionId: string,
+  //   limitedPartnerId: string,
+  //   data: Record<string, any>
+  // ): Promise<void>;
 }
 
 export default ILimitedPartnerGateway;

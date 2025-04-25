@@ -4,10 +4,6 @@
 {% set publicRegisterInformationLine1 = i18n.addPartnerPersonPage.publicRegisterLine1 %}
 {% set publicRegisterInformationLine2 = i18n.addPartnerPersonPage.publicRegisterLine2 %}
 
-{% set validateFirstName = "validateInput(this, 50, '" + i18n.addPartnerPersonPage.errorMessages.firstNameMissing | escape + "', '" + i18n.addPartnerPersonPage.errorMessages.firstNameLength | escape + "');" %}
-{% set validateLastName = "validateInput(this, 160, '" + i18n.addPartnerPersonPage.errorMessages.lastNameMissing | escape + "', '" + i18n.addPartnerPersonPage.errorMessages.lastNameLength | escape + "');" %}
-{% set validatePreviousName = "validateLength(this, 160, '" + i18n.addPartnerPersonPage.errorMessages.previousNameLength | escape + "');" %}
-
 {% if props.data.limitedPartner.data.date_of_birth  %}
   {# This is for when saved data is pre-populated on the page #}
   {% set date_of_birth = props.data.limitedPartner.data.date_of_birth %}
@@ -55,8 +51,8 @@
           errorMessage: props.errors.forename if props.errors,
           attributes : {
             required: true,
-            oninvalid: validateFirstName,
-            oninput: validateFirstName
+            minlength: 1,
+            maxlength: 50
           }
         }) }}
 
@@ -73,8 +69,8 @@
           errorMessage: props.errors.surname if props.errors,
           attributes : {
             required : true,
-            oninvalid: validateLastName,
-            oninput: validateLastName
+            minlength: 1,
+            maxlength: 160
           }
         }) }}
 
@@ -90,9 +86,8 @@
             name: "former_names",
             value: props.data.limitedPartner.data.former_names,
             errorMessage: props.errors.former_names if props.errors,
-            attributes : {
-              oninvalid: validatePreviousName,
-              oninput: validatePreviousName
+            attributes: {
+              maxlength: 160
             }
           }) }}
         {% endset -%}
@@ -158,7 +153,10 @@
               name: "day",
               value: day,
               attributes: {
-                required: true
+                required: true,
+                minlength: 1,
+                maxlength: 2,
+                pattern: "[0-9]*"
               }
             },
             {
@@ -166,7 +164,10 @@
               name: "month",
               value: month,
               attributes: {
-                required: true
+                required: true,
+                minlength: 1,
+                maxlength: 2,
+                pattern: "[0-9]*"
               }
             },
             {
@@ -174,7 +175,10 @@
               name: "year",
               value: year,
               attributes: {
-                required: true
+                required: true,
+                minlength: 4,
+                maxlength: 4,
+                pattern: "[0-9]*"
               }
             }
           ]

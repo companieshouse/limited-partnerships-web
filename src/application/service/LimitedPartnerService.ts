@@ -5,7 +5,7 @@ import UIErrors from "../../domain/entities/UIErrors";
 import { extractAPIErrors } from "./utils";
 
 class LimitedPartnerService {
-  constructor(private limitedPartnerGateway: ILimitedPartnerGateway) {}
+  constructor(private readonly limitedPartnerGateway: ILimitedPartnerGateway) {}
 
   async createLimitedPartner(
     opt: { access_token: string; refresh_token: string },
@@ -49,43 +49,43 @@ class LimitedPartnerService {
     }
   }
 
-  async getLimitedPartners(
-    opt: { access_token: string; refresh_token: string },
-    transactionId: string
-  ): Promise<LimitedPartner[]> {
-    try {
-      return await this.limitedPartnerGateway.getLimitedPartners(opt, transactionId);
-    } catch (error: any) {
-      logger.error(`Error getting LimitedPartners ${JSON.stringify(error)}`);
+  // async getLimitedPartners(
+  //   opt: { access_token: string; refresh_token: string },
+  //   transactionId: string
+  // ): Promise<LimitedPartner[]> {
+  //   try {
+  //     return await this.limitedPartnerGateway.getLimitedPartners(opt, transactionId);
+  //   } catch (error: any) {
+  //     logger.error(`Error getting LimitedPartners ${JSON.stringify(error)}`);
 
-      throw error;
-    }
-  }
+  //     throw error;
+  //   }
+  // }
 
-  async sendPageData(
-    opt: { access_token: string; refresh_token: string },
-    transactionId: string,
-    limitedPartnerId: string,
-    data: Record<string, any>
-  ): Promise<void | {
-    errors?: UIErrors;
-  }> {
-    try {
-      await this.limitedPartnerGateway.sendPageData(opt, transactionId, limitedPartnerId, data);
-    } catch (errors: any) {
-      const { apiErrors, isValidationErrors } = extractAPIErrors(errors);
+  // async sendPageData(
+  //   opt: { access_token: string; refresh_token: string },
+  //   transactionId: string,
+  //   limitedPartnerId: string,
+  //   data: Record<string, any>
+  // ): Promise<void | {
+  //   errors?: UIErrors;
+  // }> {
+  //   try {
+  //     await this.limitedPartnerGateway.sendPageData(opt, transactionId, limitedPartnerId, data);
+  //   } catch (errors: any) {
+  //     const { apiErrors, isValidationErrors } = extractAPIErrors(errors);
 
-      logger.error(`Error sending data: ${JSON.stringify(apiErrors)}`);
+  //     logger.error(`Error sending data: ${JSON.stringify(apiErrors)}`);
 
-      if (!isValidationErrors) {
-        throw errors;
-      }
+  //     if (!isValidationErrors) {
+  //       throw errors;
+  //     }
 
-      return {
-        errors
-      };
-    }
-  }
+  //     return {
+  //       errors
+  //     };
+  //   }
+  // }
 }
 
 export default LimitedPartnerService;

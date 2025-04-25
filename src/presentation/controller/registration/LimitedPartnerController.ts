@@ -11,8 +11,8 @@ import {
 } from "./url";
 
 class LimitedPartnerController extends AbstractController {
-  private limitedPartnershipService: LimitedPartnershipService;
-  private limitedPartnerService: LimitedPartnerService;
+  private readonly limitedPartnershipService: LimitedPartnershipService;
+  private readonly limitedPartnerService: LimitedPartnerService;
 
   constructor(limitedPartnershipService: LimitedPartnershipService, limitedPartnerService: LimitedPartnerService) {
     super();
