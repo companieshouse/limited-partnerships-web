@@ -38,11 +38,17 @@ const zeroPadNumber = (input: string = ""): string => {
 
 const isDateValid = (date: string): boolean => {
   const [year, month, day] = date.split("-");
-  const days = daysInMonth(parseInt(month));
 
+  const isMonthInvalid = isNaN(parseInt(month));
   const isYearInvalid = isNaN(parseInt(year)) || year.length !== 4;
 
-  if (!day.length || parseInt(day) > days || isYearInvalid) {
+  if (isMonthInvalid || isYearInvalid) {
+    return false;
+  }
+
+  const days = daysInMonth(parseInt(month));
+
+  if (!day.length || parseInt(day) > days) {
     return false;
   }
 

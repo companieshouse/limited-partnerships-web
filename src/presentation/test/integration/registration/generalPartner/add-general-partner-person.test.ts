@@ -32,10 +32,11 @@ describe("Add General Partner Person Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${cyTranslationText.addGeneralPartnerPersonPage.title} - ${cyTranslationText.service} - GOV.UK`
+        `${cyTranslationText.addPartnerPersonPage.generalPartner.title} - ${cyTranslationText.service} - GOV.UK`
       );
-      testTranslations(res.text, cyTranslationText.addGeneralPartnerPersonPage, [
-        "errorMessages"
+      testTranslations(res.text, cyTranslationText.addPartnerPersonPage, [
+        "errorMessages",
+        "limitedPartner"
       ]);
     });
 
@@ -45,10 +46,11 @@ describe("Add General Partner Person Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${enTranslationText.addGeneralPartnerPersonPage.title} - ${enTranslationText.service} - GOV.UK`
+        `${enTranslationText.addPartnerPersonPage.generalPartner.title} - ${enTranslationText.service} - GOV.UK`
       );
-      testTranslations(res.text, enTranslationText.addGeneralPartnerPersonPage, [
-        "errorMessages"
+      testTranslations(res.text, enTranslationText.addPartnerPersonPage, [
+        "errorMessages",
+        "limitedPartner"
       ]);
       expect(res.text).not.toContain("WELSH -");
     });

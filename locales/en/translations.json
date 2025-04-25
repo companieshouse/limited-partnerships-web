@@ -27,18 +27,33 @@
         }
     },
 
-    "addGeneralPartnerPersonPage" : {
-        "title" : "Add a general partner (person)",
+    "addPartnerPersonPage" : {
+        "generalPartner": {
+            "title" : "Add a general partner (person)",
+            "previousName" : { 
+                "title" : "Does the general partner have a previous name?",
+                "hint" : "For example, if they've changed their name as a result of marriage or divorce.",
+                "yes" : "Yes",
+                "yesHintTitle" : "What is the general partner's previous name?",
+                "yesHint" : "If the partner has more than one previous name, separate each name with a comma.",
+                "no" : "No"
+            },
+            "disqualificationStatement" : "I confirm the general partner is not disqualified under the directors disqualification legislation.",
+            "disqualificationStatementLegend" : "General partner - person - disqualification statement"
+        },
+        "limitedPartner": {
+            "title": "Add a limited partner (person)",
+            "previousName" : { 
+                "title" : "Does the limited partner have a previous name?",
+                "hint" : "For example, if they've changed their name as a result of marriage or divorce.",
+                "yes" : "Yes",
+                "yesHintTitle" : "What is the limited partner's previous name?",
+                "yesHint" : "If the partner has more than one previous name, separate each name with a comma.",
+                "no" : "No"
+            }
+        },
         "firstName" : "First name",
         "lastName" : "Last name",
-        "previousName" : {
-          "title" : "Does the general partner have a previous name?",
-          "hint" : "For example, if they've changed their name as a result of marriage or divorce.",
-          "yes" : "Yes",
-          "yesHintTitle" : "What is the general partner's previous name?",
-          "yesHint" : "If the partner has more than one previous name, separate each name with a comma.",
-          "no" : "No"
-        },
         "dateOfBirth" : "Date of birth",
         "dateOfBirthHint" : "For example, 27 3 2000",
         "nationality" : "What is their nationality?",
@@ -46,8 +61,6 @@
         "secondNationality" : "What is their second nationality (if relevant)?",
         "secondNationalitySelectPrompt": "Select a second nationality",
         "secondNationalityHint" : "Dual citizenship (also known as dual nationality) is allowed in some countries. This means you can be a citizen of your own country and another country.",
-        "disqualificationStatement" : "I confirm the general partner is not disqualified under the directors disqualification legislation.",
-        "disqualificationStatementLegend" : "General partner - person - disqualification statement",
         "publicRegisterLine1" : "We'll only show the month and year of their birth date.",
         "publicRegisterLine2" : "We'll show all the other information you provide on this screen on the public register.",
         "errorMessages": {

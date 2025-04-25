@@ -48,6 +48,7 @@ export const SERVICE_UNAVAILABLE_TEMPLATE = "service-unavailable";
 export const TRANSACTION_ID = "transactionId";
 export const SUBMISSION_ID = "submissionId";
 export const GENERAL_PARTNER_ID = "generalPartnerId";
+export const LIMITED_PARTNER_ID = "limitedPartnerId";
 
 export const BASE_URL = "/limited-partnerships";
 
@@ -61,6 +62,9 @@ export const TRANSITION_WITH_IDS_URL = `${TRANSITION_BASE_URL}${TRANSACTION_SUBM
 
 export const GENERAL_PARTNER_URL = `/general-partner`;
 export const GENERAL_PARTNER_WITH_ID_URL = GENERAL_PARTNER_URL + `/:${GENERAL_PARTNER_ID}`;
+
+export const LIMITED_PARTNER_URL = `/limited-partner`;
+export const LIMITED_PARTNER_WITH_ID_URL = LIMITED_PARTNER_URL + `/:${LIMITED_PARTNER_ID}`;
 
 export const ACCOUNTS_SIGN_OUT_URL = `${ACCOUNT_URL}/signout`;
 

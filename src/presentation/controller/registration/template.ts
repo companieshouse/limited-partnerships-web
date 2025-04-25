@@ -16,6 +16,8 @@ export const REMOVE_GENERAL_PARTNER_TEMPLATE = RegistrationPageType.removeGenera
 
 export const LIMITED_PARTNERS_TEMPLATE = RegistrationPageType.limitedPartners;
 export const LIMITED_PARTNER_CHOICE_TEMPLATE = RegistrationPageType.limitedPartnerChoice;
+export const ADD_LIMITED_PARTNER_PERSON_TEMPLATE = RegistrationPageType.addLimitedPartnerPerson;
+export const ADD_LIMITED_PARTNER_LEGAL_ENTITY_TEMPLATE = RegistrationPageType.addLimitedPartnerLegalEntity;
 
 export const CHECK_YOUR_ANSWERS_TEMPLATE = RegistrationPageType.checkYourAnswers;
 export const APPLICATION_SUBMITTED_TEMPLATE = RegistrationPageType.applicationSubmitted;
