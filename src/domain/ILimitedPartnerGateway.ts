@@ -11,6 +11,9 @@ interface ILimitedPartnerGateway {
     transactionId: string,
     limitedPartnerId: string
   ): Promise<LimitedPartner>;
+
+  // COMMENTED OUT FOR NOW DUE TO SONARQUBE ISSUES
+
   // getLimitedPartners(
   //   opt: { access_token: string; refresh_token: string },
   //   transactionId: string

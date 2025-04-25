@@ -48,6 +48,7 @@ class LimitedPartnerService {
       throw error;
     }
   }
+  // COMMENTED OUT FOR NOW DUE TO SONARQUBE ISSUES
 
   // async getLimitedPartners(
   //   opt: { access_token: string; refresh_token: string },
