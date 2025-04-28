@@ -226,7 +226,7 @@ class AddressLookUpController extends AbstractController {
   }
 
   sendManualAddress(): RequestHandler {
-    return async (request: Request, response: Response, next: NextFunction) => {
+    return async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       try {
         this.addressService.setI18n(response.locals.i18n);
 
