@@ -104,7 +104,7 @@ class LimitedPartnerController extends AbstractController {
     };
   }
 
-  sendPageData(): RequestHandler {
+  sendPageData() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const { tokens, ids } = super.extract(request);
