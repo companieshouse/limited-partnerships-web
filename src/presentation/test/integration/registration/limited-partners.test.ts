@@ -2,7 +2,7 @@ import request from "supertest";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
-import { LIMITED_PARTNERS_URL, REVIEW_GENERAL_PARTNERS_URL } from "../../../controller/registration/url";
+import { LIMITED_PARTNERS_URL } from "../../../controller/registration/url";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
@@ -49,13 +49,5 @@ describe("Limited Partners Page", () => {
     expect(res.text).toContain(
       `${limitedPartnership?.data?.partnership_name?.toUpperCase()} ${limitedPartnership?.data?.name_ending?.toUpperCase()}`
     );
-  });
-
-  // TODO should eventually have back link to general partners summary page once completed
-  it("should have a back link to general partners", async () => {
-    const res = await request(app).get(URL);
-
-    expect(res.status).toBe(200);
-    expect(res.text).toContain(getUrl(REVIEW_GENERAL_PARTNERS_URL));
   });
 });

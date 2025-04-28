@@ -103,6 +103,35 @@ class LimitedPartnerController extends AbstractController {
       }
     };
   }
+
+  sendPageData(): RequestHandler {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { tokens, ids } = super.extract(request);
+        const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
+        const pageRouting = super.getRouting(registrationsRouting, pageType, request);
+
+        const result = await this.limitedPartnerService.sendPageData(
+          tokens,
+          ids.transactionId,
+          ids.limitedPartnerId,
+          request.body
+        );
+
+        if (result?.errors) {
+          response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(pageRouting, { limitedPartner: { data: request.body } }, result.errors)
+          );
+          return;
+        }
+
+        response.redirect(pageRouting.nextUrl);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
 }
 
 export default LimitedPartnerController;
