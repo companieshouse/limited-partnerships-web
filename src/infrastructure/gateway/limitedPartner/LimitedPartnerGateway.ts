@@ -7,7 +7,7 @@ import {
   LimitedPartner,
   LimitedPartnershipResourceCreated
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-import { convertValidDateToIsoDateString, removeEmptyStringValues } from "../utils";
+import { validateAndFormatPartnerDateOfBirth, removeEmptyStringValues } from "../utils";
 
 class LimitedPartnerGateway implements ILimitedPartnerGateway {
   async createLimitedPartner(
@@ -15,7 +15,7 @@ class LimitedPartnerGateway implements ILimitedPartnerGateway {
     transactionId: string,
     data: Record<string, any>
   ): Promise<string> {
-    this.validateAndFormatDateOfBirth(data);
+    validateAndFormatPartnerDateOfBirth(data);
 
     const limitedPartner: LimitedPartner = { data: removeEmptyStringValues(data) };
 
@@ -64,7 +64,7 @@ class LimitedPartnerGateway implements ILimitedPartnerGateway {
     limitedPartnerId: string,
     data: Record<string, any>
   ): Promise<void> {
-    this.validateAndFormatDateOfBirth(data);
+    validateAndFormatPartnerDateOfBirth(data);
 
     // If the LP (Person) had previous names but now the selection has changed to 'false', ensure that the previous names are removed
     if (data?.former_names && data?.previousName === "false") {
@@ -86,20 +86,6 @@ class LimitedPartnerGateway implements ILimitedPartnerGateway {
 
     if (response.httpStatusCode !== 200) {
       throw response;
-    }
-  }
-
-  private validateAndFormatDateOfBirth(data: Record<string, any>) {
-    if (data["forename"]) {
-      // Only do this if Limited Partner Person data is being sent to the API
-      data["date_of_birth"] = convertValidDateToIsoDateString(
-        {
-          day: data["date_of_birth-day"],
-          month: data["date_of_birth-month"],
-          year: data["date_of_birth-year"]
-        },
-        "date_of_birth"
-      );
     }
   }
 
