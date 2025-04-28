@@ -62,7 +62,7 @@ class LimitedPartnerService {
     } catch (errors: any) {
       const { apiErrors, isValidationErrors } = extractAPIErrors(errors);
 
-      logger.error(`Error sending data: ${JSON.stringify(apiErrors)}`);
+      logger.error(`Error sending limited partner data: ${JSON.stringify(apiErrors)}`);
 
       if (!isValidationErrors) {
         throw errors;
