@@ -1,4 +1,4 @@
-import { NextFunction, Request, RequestHandler, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import escape from "escape-html";
 import { LimitedPartnership, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
@@ -26,7 +26,7 @@ class LimitedPartnershipController extends AbstractController {
     this.cacheService = cacheService;
   }
 
-  getPageRouting(): RequestHandler {
+  getPageRouting() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const { tokens, pageType, ids } = super.extract(request);
@@ -71,7 +71,7 @@ class LimitedPartnershipController extends AbstractController {
     }
   }
 
-  createTransactionAndFirstSubmission(): RequestHandler {
+  createTransactionAndFirstSubmission() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const { tokens } = super.extract(request);
@@ -112,7 +112,7 @@ class LimitedPartnershipController extends AbstractController {
     };
   }
 
-  closeTransaction(): RequestHandler {
+  closeTransaction() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const { tokens, ids } = super.extract(request);
@@ -133,7 +133,7 @@ class LimitedPartnershipController extends AbstractController {
     };
   }
 
-  redirectWhichTypeWithIds(): RequestHandler {
+  redirectWhichTypeWithIds() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const { tokens, ids } = super.extract(request);
@@ -158,7 +158,7 @@ class LimitedPartnershipController extends AbstractController {
     };
   }
 
-  redirectAndCacheSelection(): RequestHandler {
+  redirectAndCacheSelection() {
     return (request: Request, response: Response, next: NextFunction) => {
       try {
         const type = super.extractPageTypeOrThrowError(request, RegistrationPageType);
@@ -179,7 +179,7 @@ class LimitedPartnershipController extends AbstractController {
     };
   }
 
-  sendPageData(): RequestHandler {
+  sendPageData() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const { tokens, ids } = super.extract(request);
@@ -209,7 +209,7 @@ class LimitedPartnershipController extends AbstractController {
     };
   }
 
-  getPageRoutingTermSic(): RequestHandler {
+  getPageRoutingTermSic() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const { tokens, pageType, ids } = super.extract(request);
@@ -249,7 +249,7 @@ class LimitedPartnershipController extends AbstractController {
     };
   }
 
-  sendSicCodesPageData(): RequestHandler {
+  sendSicCodesPageData() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const { tokens, ids } = super.extract(request);

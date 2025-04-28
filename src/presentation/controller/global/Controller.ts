@@ -1,4 +1,4 @@
-import { NextFunction, Request, RequestHandler, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 
 import globalsRouting from "./Routing";
 import AbstractController from "../AbstractController";
@@ -15,7 +15,7 @@ class GlobalController extends AbstractController {
     super();
   }
 
-  getPageRouting(): RequestHandler {
+  getPageRouting() {
     return (request: Request, response: Response, next: NextFunction) => {
       try {
         // example error message using the locales json files
@@ -34,7 +34,7 @@ class GlobalController extends AbstractController {
     };
   }
 
-  getSignOut(): RequestHandler {
+  getSignOut() {
     return (request: Request, response: Response, next: NextFunction) => {
       try {
         const previousPageUrl = this.getPreviousPageUrl(request);
@@ -50,7 +50,7 @@ class GlobalController extends AbstractController {
     };
   }
 
-  signOutChoice(): RequestHandler {
+  signOutChoice() {
     return (request: Request, response: Response, next: NextFunction) => {
       try {
         if (request.body["sign_out"] === "yes") {
@@ -66,7 +66,7 @@ class GlobalController extends AbstractController {
     };
   }
 
-  getHealthcheck(): RequestHandler {
+  getHealthcheck() {
     return (_request: Request, response: Response, next: NextFunction) => {
       try {
         response.status(200).json({ status: "OK" });

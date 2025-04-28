@@ -1,4 +1,4 @@
-import { NextFunction, Request, RequestHandler, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import escape from "escape-html";
 import { Address } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
@@ -64,7 +64,7 @@ class AddressLookUpController extends AbstractController {
     super();
   }
 
-  getPageRouting(): RequestHandler {
+  getPageRouting() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         this.addressService.setI18n(response.locals.i18n);
@@ -126,7 +126,7 @@ class AddressLookUpController extends AbstractController {
     return addressList;
   }
 
-  postcodeValidation(): RequestHandler {
+  postcodeValidation() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         this.addressService.setI18n(response.locals.i18n);
@@ -211,7 +211,7 @@ class AddressLookUpController extends AbstractController {
     response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
   }
 
-  selectAddress(): RequestHandler {
+  selectAddress() {
     return (request: Request, response: Response, next: NextFunction) => {
       try {
         this.addressService.setI18n(response.locals.i18n);
@@ -276,7 +276,7 @@ class AddressLookUpController extends AbstractController {
     };
   }
 
-  confirmAddress(): RequestHandler {
+  confirmAddress() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         this.addressService.setI18n(response.locals.i18n);
@@ -420,7 +420,7 @@ class AddressLookUpController extends AbstractController {
     response.redirect(pageRouting.nextUrl);
   }
 
-  generalPartnerUsualResidentialaddressChoice(): RequestHandler {
+  generalPartnerUsualResidentialaddressChoice() {
     return (request: Request, response: Response, next: NextFunction) => {
       try {
         const pageType = super.extractPageTypeOrThrowError(request, AddressLookUpPageType);
@@ -433,7 +433,7 @@ class AddressLookUpController extends AbstractController {
     };
   }
 
-  generalPartnerTerritoryChoice(): RequestHandler {
+  generalPartnerTerritoryChoice() {
     return (request: Request, response: Response, next: NextFunction) => {
       try {
         const { ids, pageType } = super.extract(request);

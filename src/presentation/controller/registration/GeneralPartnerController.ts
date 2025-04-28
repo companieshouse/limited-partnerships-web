@@ -1,4 +1,4 @@
-import { NextFunction, Request, RequestHandler, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
@@ -18,7 +18,7 @@ class GeneralPartnerController extends AbstractController {
     this.generalPartnerService = generalPartnerService;
   }
 
-  getPageRouting(): RequestHandler {
+  getPageRouting() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const { tokens, pageType, ids } = super.extract(request);
@@ -53,7 +53,7 @@ class GeneralPartnerController extends AbstractController {
     };
   }
 
-  generalPartnerChoice(): RequestHandler {
+  generalPartnerChoice() {
     return (request: Request, response: Response, next: NextFunction) => {
       try {
         const { ids } = super.extract(request);
@@ -70,7 +70,7 @@ class GeneralPartnerController extends AbstractController {
     };
   }
 
-  getReviewPage(): RequestHandler {
+  getReviewPage() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const { tokens, pageType, ids } = super.extract(request);
@@ -99,7 +99,7 @@ class GeneralPartnerController extends AbstractController {
     };
   }
 
-  createGeneralPartner(): RequestHandler {
+  createGeneralPartner() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const { tokens, ids } = super.extract(request);
@@ -131,7 +131,7 @@ class GeneralPartnerController extends AbstractController {
     };
   }
 
-  sendPageData(): RequestHandler {
+  sendPageData() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const { tokens, ids } = super.extract(request);
@@ -160,7 +160,7 @@ class GeneralPartnerController extends AbstractController {
     };
   }
 
-  postReviewPage(): RequestHandler {
+  postReviewPage() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const { ids, tokens } = super.extract(request);
@@ -204,7 +204,7 @@ class GeneralPartnerController extends AbstractController {
     };
   }
 
-  postRemovePage(): RequestHandler {
+  postRemovePage() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const { ids, tokens } = super.extract(request);

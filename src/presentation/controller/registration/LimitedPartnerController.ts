@@ -1,4 +1,4 @@
-import { NextFunction, Request, RequestHandler, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
@@ -20,7 +20,7 @@ class LimitedPartnerController extends AbstractController {
     this.limitedPartnerService = limitedPartnerService;
   }
 
-  getPageRouting(): RequestHandler {
+  getPageRouting() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const { tokens, pageType, ids } = super.extract(request);
@@ -55,7 +55,7 @@ class LimitedPartnerController extends AbstractController {
     };
   }
 
-  limitedPartnerChoice(): RequestHandler {
+  limitedPartnerChoice() {
     return (request: Request, response: Response, next: NextFunction) => {
       try {
         const { ids } = super.extract(request);
@@ -72,7 +72,7 @@ class LimitedPartnerController extends AbstractController {
     };
   }
 
-  createLimitedPartner(): RequestHandler {
+  createLimitedPartner() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const { tokens, ids } = super.extract(request);
