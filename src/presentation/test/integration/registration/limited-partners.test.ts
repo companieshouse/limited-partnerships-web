@@ -50,12 +50,4 @@ describe("Limited Partners Page", () => {
       `${limitedPartnership?.data?.partnership_name?.toUpperCase()} ${limitedPartnership?.data?.name_ending?.toUpperCase()}`
     );
   });
-
-  // TODO should eventually have back link to limited partners summary page once completed
-  // it("should have a back link to limited partners", async () => {
-  //   const res = await request(app).get(URL);
-
-  //   expect(res.status).toBe(200);
-  //   expect(res.text).toContain(getUrl(REVIEW_LIMITED_PARTNERS_URL));
-  // });
 });
