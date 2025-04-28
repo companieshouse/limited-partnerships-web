@@ -77,6 +77,31 @@ describe("Add Limited Partner Person Page", () => {
       expect(res.status).toBe(200);
       expect(res.text).toContain("Invalid value for person name");
     });
+
+    it("should return validation errors - add limited partner person page", async () => {
+      mockCreateApiClient.mockReturnValue({
+        ...sdkMock,
+        limitedPartnershipsService: {
+          ...sdkMock.limitedPartnershipsService,
+          patchLimitedPartner: () => ({
+            httpStatusCode: 400,
+            resource: {
+              errors: {
+                personName: "Invalid value for person name"
+              }
+            }
+          })
+        }
+      });
+      const URL = getUrl(ADD_LIMITED_PARTNER_PERSON_WITH_ID_URL);
+
+      const res = await request(appRealDependencies).post(URL).send({
+        pageType: RegistrationPageType.addLimitedPartnerPerson
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain("Invalid value for person name");
+    });
   });
 
   describe("500", () => {
@@ -93,7 +118,7 @@ describe("Add Limited Partner Person Page", () => {
       });
 
       const res = await request(appRealDependencies).post(URL).send({
-        pageType: RegistrationPageType.addLimitedPartnerLegalEntity
+        pageType: RegistrationPageType.addLimitedPartnerPerson
       });
 
       expect(res.status).toBe(500);
