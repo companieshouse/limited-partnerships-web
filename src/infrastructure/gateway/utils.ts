@@ -89,7 +89,7 @@ export const removeEmptyStringValues = (
   return data;
 };
 
-export const validateAndFormatPartnerDateOfBirth = (data: Record<string, any>) => {
+export const validateAndFormatPartnerPersonDateOfBirth = (data: Record<string, any>) => {
   if (data["forename"]) {
     // Only do this if Limited Partner Person data is being sent to the API
     data["date_of_birth"] = convertValidDateToIsoDateString(

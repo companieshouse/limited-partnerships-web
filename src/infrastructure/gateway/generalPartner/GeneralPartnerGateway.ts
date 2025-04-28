@@ -7,7 +7,7 @@ import {
   GeneralPartner,
   LimitedPartnershipResourceCreated
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-import { validateAndFormatPartnerDateOfBirth, removeEmptyStringValues } from "../utils";
+import { validateAndFormatPartnerPersonDateOfBirth, removeEmptyStringValues } from "../utils";
 
 class GeneralPartnerGateway implements IGeneralPartnerGateway {
   async createGeneralPartner(
@@ -15,7 +15,7 @@ class GeneralPartnerGateway implements IGeneralPartnerGateway {
     transactionId: string,
     data: Record<string, any>
   ): Promise<string> {
-    validateAndFormatPartnerDateOfBirth(data);
+    validateAndFormatPartnerPersonDateOfBirth(data);
 
     const generalPartner: GeneralPartner = { data: removeEmptyStringValues(data) };
 
@@ -82,7 +82,7 @@ class GeneralPartnerGateway implements IGeneralPartnerGateway {
     generalPartnerId: string,
     data: Record<string, any>
   ): Promise<void> {
-    validateAndFormatPartnerDateOfBirth(data);
+    validateAndFormatPartnerPersonDateOfBirth(data);
 
     // If the GP (Person) had previous names but now the selection has changed to 'false', ensure that the previous names are removed
     if (data?.former_names && data?.previousName === "false") {
