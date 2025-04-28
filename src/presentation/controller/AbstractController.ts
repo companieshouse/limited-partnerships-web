@@ -2,14 +2,16 @@ import { Request } from "express";
 import { Session } from "@companieshouse/node-session-handler";
 
 import {
-  BASE_WITH_IDS_URL,
   GENERAL_PARTNER_ID,
   GENERAL_PARTNER_WITH_ID_URL,
   LIMITED_PARTNER_ID,
   LIMITED_PARTNER_WITH_ID_URL,
-  BASE_URL,
+  REGISTRATION_BASE_URL,
+  REGISTRATION_WITH_IDS_URL,
   SUBMISSION_ID,
-  TRANSACTION_ID
+  TRANSACTION_ID,
+  TRANSITION_BASE_URL,
+  TRANSITION_WITH_IDS_URL
 } from "../../config/constants";
 import { PageRouting, pageRoutingDefault, PagesRouting } from "./PageRouting";
 import PageType from "./PageType";
@@ -17,10 +19,11 @@ import {
   ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
   ADD_GENERAL_PARTNER_PERSON_URL,
   ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
-  ADD_LIMITED_PARTNER_PERSON_URL,
+  ADD_LIMITED_PARTNER_PERSON_URL
 } from "./registration/url";
 import UIErrors from "../../domain/entities/UIErrors";
 import { START_URL } from "./global/Routing";
+import { JourneyTypes } from "../../domain/entities/journey";
 
 abstract class AbstractController {
   protected getRouting(routing: PagesRouting, pageType: PageType, request: Request) {
@@ -49,11 +52,7 @@ abstract class AbstractController {
     return type as PageType;
   }
 
-  protected makeProps(
-    pageRouting: PageRouting,
-    data: Record<string, any> | null,
-    errors: UIErrors | null
-  ) {
+  protected makeProps(pageRouting: PageRouting, data: Record<string, any> | null, errors: UIErrors | null) {
     if (data) {
       pageRouting.data = {
         ...pageRouting.data,
@@ -118,23 +117,19 @@ abstract class AbstractController {
     limitedPartnerId: string
   ) {
     // general partner urls that can exist with or without ids
-    const GP_URLS = [
-      ADD_GENERAL_PARTNER_PERSON_URL,
-      ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL
-    ];
+    const GP_URLS = [ADD_GENERAL_PARTNER_PERSON_URL, ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL];
+
+    const urlWithIds = this.getJourneyTypes(url).isRegistration ? REGISTRATION_WITH_IDS_URL : TRANSITION_WITH_IDS_URL;
 
     if (transactionId && submissionId && generalPartnerId && GP_URLS.includes(url)) {
-      url = url.replace(BASE_WITH_IDS_URL, GENERAL_PARTNER_WITH_ID_URL);
+      url = url.replace(urlWithIds, GENERAL_PARTNER_WITH_ID_URL);
     }
 
     // limited partner urls that can exist with or without ids
-    const LP_URLS = [
-      ADD_LIMITED_PARTNER_PERSON_URL,
-      ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL
-    ];
+    const LP_URLS = [ADD_LIMITED_PARTNER_PERSON_URL, ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL];
 
     if (transactionId && submissionId && limitedPartnerId && LP_URLS.includes(url)) {
-      url = url.replace(BASE_WITH_IDS_URL, LIMITED_PARTNER_WITH_ID_URL);
+      url = url.replace(urlWithIds, LIMITED_PARTNER_WITH_ID_URL);
     }
 
     return url;
@@ -149,15 +144,11 @@ abstract class AbstractController {
   }
 
   protected insertGeneralPartnerId(url: string, generalPartnerId: string): string {
-    return generalPartnerId
-      ? url.replace(`:${GENERAL_PARTNER_ID}`, generalPartnerId)
-      : url;
+    return generalPartnerId ? url.replace(`:${GENERAL_PARTNER_ID}`, generalPartnerId) : url;
   }
 
   protected insertLimitedPartnerId(url: string, limitedPartnerId: string): string {
-    return limitedPartnerId
-      ? url.replace(`:${LIMITED_PARTNER_ID}`, limitedPartnerId)
-      : url;
+    return limitedPartnerId ? url.replace(`:${LIMITED_PARTNER_ID}`, limitedPartnerId) : url;
   }
 
   protected insertIdsInAllUrl(
@@ -183,13 +174,7 @@ abstract class AbstractController {
         generalPartnerId,
         limitedPartnerId
       ),
-      nextUrl: this.insertIdsInUrl(
-        pageRouting.nextUrl,
-        transactionId,
-        submissionId,
-        generalPartnerId,
-        limitedPartnerId
-      )
+      nextUrl: this.insertIdsInUrl(pageRouting.nextUrl, transactionId, submissionId, generalPartnerId, limitedPartnerId)
     };
   }
 
@@ -223,8 +208,7 @@ abstract class AbstractController {
   protected extractTokens(request: Request) {
     return {
       access_token: request?.session?.data?.signin_info?.access_token?.access_token ?? "",
-      refresh_token:
-        request?.session?.data?.signin_info?.access_token?.refresh_token ?? ""
+      refresh_token: request?.session?.data?.signin_info?.access_token?.refresh_token ?? ""
     };
   }
 
@@ -239,12 +223,29 @@ abstract class AbstractController {
 
   protected getPreviousPageUrl(request: Request) {
     const headers = request.rawHeaders;
-    const previousPageUrl = headers.filter(item => item.includes(BASE_URL))[0];
-    if (previousPageUrl) {
-      const startingIndexOfRelativePath = previousPageUrl.indexOf(BASE_URL);
-      return previousPageUrl.substring(startingIndexOfRelativePath);
+
+    const previousPageUrlRegistration = headers.filter((item) => item.includes(REGISTRATION_BASE_URL))[0];
+    const previousPageUrlTransition = headers.filter((item) => item.includes(TRANSITION_BASE_URL))[0];
+
+    if (previousPageUrlRegistration) {
+      const startingIndexOfRelativePath = previousPageUrlRegistration.indexOf(REGISTRATION_BASE_URL);
+      return previousPageUrlRegistration.substring(startingIndexOfRelativePath);
+    } else if (previousPageUrlTransition) {
+      const startingIndexOfRelativePath = previousPageUrlTransition.indexOf(TRANSITION_BASE_URL);
+      return previousPageUrlTransition.substring(startingIndexOfRelativePath);
     }
+
     return START_URL;
+  }
+
+  protected getJourneyTypes(url: string): JourneyTypes {
+    const isRegistration = url.startsWith(REGISTRATION_BASE_URL);
+    const isTransition = url.startsWith(TRANSITION_BASE_URL);
+
+    return {
+      isRegistration,
+      isTransition
+    };
   }
 }
 

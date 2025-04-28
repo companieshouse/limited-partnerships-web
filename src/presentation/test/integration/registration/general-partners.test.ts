@@ -7,6 +7,7 @@ import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { REGISTRATION_BASE_URL } from "../../../../config/constants";
 
 describe("General Partners Page", () => {
   const URL = getUrl(GENERAL_PARTNERS_URL);
@@ -68,7 +69,7 @@ describe("General Partners Page", () => {
       const res = await request(app).get(URL + "?lang=en");
 
       expect(res.status).toBe(200);
-      const regex = new RegExp(`/limited-partnerships/transaction/.*?/submission/.*?/${backLink}`);
+      const regex = new RegExp(`${REGISTRATION_BASE_URL}/transaction/.*?/submission/.*?/${backLink}`);
       expect(res.text).toMatch(regex);
     }
   );
