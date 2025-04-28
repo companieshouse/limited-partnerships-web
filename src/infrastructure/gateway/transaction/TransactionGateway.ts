@@ -20,7 +20,7 @@ class TransactionGateway implements ITransactionGateway {
       args: [
         {
           reference: "LimitedPartnershipsReference",
-          description: "Limited Partnerships Transaction"
+          description: "Register a limited partnership"
         }
       ]
     };
