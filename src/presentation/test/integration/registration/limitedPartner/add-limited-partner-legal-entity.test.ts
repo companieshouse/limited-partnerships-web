@@ -13,6 +13,8 @@ import {
   ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_ID_URL
 } from "../../../../controller/registration/url";
 import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
+import RegistrationPageType from "../../../../controller/registration/PageType";
+import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 
 describe("Add Limited Partner Legal Entity Page", () => {
   const URL = getUrl(ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL);
@@ -73,6 +75,63 @@ describe("Add Limited Partner Legal Entity Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain("My Company ltd");
+    });
+  });
+
+  describe("Post Add Limited Partner", () => {
+    it("should send the Limited partner details", async () => {
+      const res = await request(app).post(URL).send({
+        pageType: RegistrationPageType.addLimitedPartnerLegalEntity,
+        forename: "test"
+      });
+
+      expect(res.status).toBe(302);
+    });
+
+    it("should return a validation error when invalid data is entered", async () => {
+      const apiErrors: ApiErrors = {
+        errors: { forename: "limited partner name is invalid" }
+      };
+
+      appDevDependencies.limitedPartnerGateway.feedErrors(apiErrors);
+
+      const res = await request(app).post(URL).send({
+        pageType: RegistrationPageType.addLimitedPartnerLegalEntity,
+        forename: "INVALID-CHARACTERS"
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain("limited partner name is invalid");
+    });
+
+    it("should replay entered data when invalid data is entered and a validation error occurs", async () => {
+      const limitedPartner = new LimitedPartnerBuilder()
+        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+        .isLegalEntity()
+        .build();
+
+      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
+
+      const apiErrors: ApiErrors = {
+        errors: { forename: "limited partner name is invalid" }
+      };
+
+      appDevDependencies.limitedPartnerGateway.feedErrors(apiErrors);
+
+      const res = await request(app).post(URL).send({
+        pageType: RegistrationPageType.addLimitedPartnerLegalEntity,
+        legal_entity_name: "INVALID-CHARACTERS-FORENAME",
+        legal_form: "Limited Company",
+        governing_law: "Act of law",
+        legal_entity_register_name: "US Register",
+        legal_entity_registration_location: "United States",
+        registered_company_number: "12345678"
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain("INVALID-CHARACTERS-FORENAME");
+      expect(res.text).toContain("Limited Company");
+      expect(res.text).toContain("United States");
     });
   });
 });
