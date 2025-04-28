@@ -15,8 +15,8 @@
 
     <div class="govuk-!-margin-top-8">
         {{ govukInput({
-            hint: {
-                text: i18n.address.findPostcode.nameOrNumberHint
+            label: {
+                text: i18n.address.findPostcode.nameOrNumber
             },
             id: "premises",
             name: "premises",
@@ -24,8 +24,8 @@
         }) }}
 
         {{ govukInput({
-            hint: {
-                text: i18n.address.findPostcode.postcodeHint
+            label: {
+                text: i18n.address.findPostcode.postcode
             },
             id: "postal_code",
             name: "postal_code",

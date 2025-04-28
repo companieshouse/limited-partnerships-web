@@ -214,8 +214,8 @@
                 "publicRegisterLine1": "WELSH - We'll show the general partner's correspondence address on the public register."
             },
  
-            "nameOrNumberHint": "WELSH - Property name or number (optional)",
-            "postcodeHint": "WELSH - Postcode",
+            "nameOrNumber": "WELSH - Property name or number (optional)",
+            "postcode": "WELSH - Postcode",
             "enterAddressManually": "WELSH - Enter address manually",
             "findAddress": "WELSH - Find address",
             

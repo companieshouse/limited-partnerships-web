@@ -213,8 +213,8 @@
                 "publicRegisterLine1": "We'll show the general partner's correspondence address on the public register."
             },
  
-            "nameOrNumberHint": "Property name or number (optional)",
-            "postcodeHint": "Postcode",
+            "nameOrNumber": "Property name or number (optional)",
+            "postcode": "Postcode",
             "enterAddressManually": "Enter address manually",
             "findAddress": "Find address",
 
