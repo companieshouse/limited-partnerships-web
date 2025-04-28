@@ -11,6 +11,12 @@ interface ILimitedPartnerGateway {
     transactionId: string,
     limitedPartnerId: string
   ): Promise<LimitedPartner>;
+  sendPageData(
+    opt: { access_token: string; refresh_token: string },
+    transactionId: string,
+    limitedPartnerId: string,
+    data: Record<string, any>
+  ): Promise<void>;
 
   // COMMENTED OUT FOR NOW DUE TO SONARQUBE ISSUES
 
@@ -18,12 +24,6 @@ interface ILimitedPartnerGateway {
   //   opt: { access_token: string; refresh_token: string },
   //   transactionId: string
   // ): Promise<LimitedPartner[]>;
-  // sendPageData(
-  //   opt: { access_token: string; refresh_token: string },
-  //   transactionId: string,
-  //   limitedPartnerId: string,
-  //   data: Record<string, any>
-  // ): Promise<void>;
 }
 
 export default ILimitedPartnerGateway;

@@ -139,4 +139,86 @@ describe("Add Limited Partner Person Page", () => {
       expect(res.text).toContain("Uzbek");
     });
   });
+
+  describe("Patch from Add Limited Partner", () => {
+    it("should send the limited partner details", async () => {
+      const URL = getUrl(ADD_LIMITED_PARTNER_PERSON_WITH_ID_URL);
+
+      const limitedPartner = new LimitedPartnerBuilder()
+        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+        .isPerson()
+        .build();
+
+      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
+
+      const res = await request(app).post(URL).send({
+        pageType: RegistrationPageType.addLimitedPartnerPerson,
+        forename: "test"
+      });
+
+      expect(res.status).toBe(302);
+    });
+
+    it("should return a validation error when invalid data is entered", async () => {
+      const URL = getUrl(ADD_LIMITED_PARTNER_PERSON_WITH_ID_URL);
+
+      const limitedPartner = new LimitedPartnerBuilder()
+        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+        .isPerson()
+        .build();
+
+      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
+
+      const apiErrors: ApiErrors = {
+        errors: { forename: "limited partner name is invalid" }
+      };
+
+      appDevDependencies.limitedPartnerGateway.feedErrors(apiErrors);
+
+      const res = await request(app).post(URL).send({
+        pageType: RegistrationPageType.addLimitedPartnerPerson,
+        forename: "INVALID-CHARACTERS"
+      });
+      expect(res.status).toBe(200);
+      expect(res.text).toContain("limited partner name is invalid");
+    });
+
+    it("should replay entered data when invalid data is entered and a validation error occurs", async () => {
+      const URL = getUrl(ADD_LIMITED_PARTNER_PERSON_WITH_ID_URL);
+
+      const limitedPartner = new LimitedPartnerBuilder()
+        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+        .isPerson()
+        .build();
+
+      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
+
+      const apiErrors: ApiErrors = {
+        errors: { forename: "limited partner name is invalid" }
+      };
+
+      appDevDependencies.limitedPartnerGateway.feedErrors(apiErrors);
+
+      const res = await request(app).post(URL).send({
+        pageType: RegistrationPageType.addLimitedPartnerPerson,
+        forename: "INVALID-CHARACTERS-FORENAME",
+        surname: "SURNAME",
+        former_names: "FORMER-NAMES",
+        previousName: "true",
+        "date_of_birth-Day": "01",
+        "date_of_birth-Month": "11",
+        "date_of_birth-Year": "1987",
+        nationality1: "Mongolian",
+        nationality2: "Uzbek",
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain("INVALID-CHARACTERS-FORENAME");
+      expect(res.text).toContain("SURNAME");
+      expect(res.text).toContain('id="previousNameYes" name="previousName" type="radio" value="true" checked');
+      expect(res.text).toContain("FORMER-NAMES");
+      expect(res.text).toContain("Mongolian");
+      expect(res.text).toContain("Uzbek");
+    });
+  });
 });
