@@ -7,7 +7,7 @@ import {
   GeneralPartner,
   LimitedPartnershipResourceCreated
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-import { convertValidDateToIsoDateString, removeEmptyStringValues } from "../utils";
+import { validateAndFormatPartnerPersonDateOfBirth, removeEmptyStringValues } from "../utils";
 
 class GeneralPartnerGateway implements IGeneralPartnerGateway {
   async createGeneralPartner(
@@ -15,7 +15,7 @@ class GeneralPartnerGateway implements IGeneralPartnerGateway {
     transactionId: string,
     data: Record<string, any>
   ): Promise<string> {
-    this.validateAndFormatDateOfBirth(data);
+    validateAndFormatPartnerPersonDateOfBirth(data);
 
     const generalPartner: GeneralPartner = { data: removeEmptyStringValues(data) };
 
@@ -82,7 +82,7 @@ class GeneralPartnerGateway implements IGeneralPartnerGateway {
     generalPartnerId: string,
     data: Record<string, any>
   ): Promise<void> {
-    this.validateAndFormatDateOfBirth(data);
+    validateAndFormatPartnerPersonDateOfBirth(data);
 
     // If the GP (Person) had previous names but now the selection has changed to 'false', ensure that the previous names are removed
     if (data?.former_names && data?.previousName === "false") {
@@ -104,20 +104,6 @@ class GeneralPartnerGateway implements IGeneralPartnerGateway {
 
     if (response.httpStatusCode !== 200) {
       throw response;
-    }
-  }
-
-  private validateAndFormatDateOfBirth(data: Record<string, any>) {
-    if (data["forename"]) {
-      // Only do this if General Partner Person data is being sent to the API
-      data["date_of_birth"] = convertValidDateToIsoDateString(
-        {
-          day: data["date_of_birth-day"],
-          month: data["date_of_birth-month"],
-          year: data["date_of_birth-year"]
-        },
-        "date_of_birth"
-      );
     }
   }
 

@@ -15,12 +15,16 @@ export const getUrl = (url: string) => {
   const generalPartnerId = url.includes(config.GENERAL_PARTNER_ID)
     ? appDevDependencies.generalPartnerGateway.generalPartnerId
     : "";
+  const limitedPartnerId = url.includes(config.LIMITED_PARTNER_ID)
+    ? appDevDependencies.limitedPartnerGateway.limitedPartnerId
+    : "";
 
   return appDevDependencies.addressLookUpController.insertIdsInUrl(
     url,
     appDevDependencies.transactionGateway.transactionId,
     submissionId,
-    generalPartnerId
+    generalPartnerId,
+    limitedPartnerId
   );
 };
 
