@@ -34,7 +34,16 @@ enum AddressPageType {
   postcodeGeneralPartnerPrincipalOfficeAddress = "postcode-general-partner-principal-office-address",
   chooseGeneralPartnerPrincipalOfficeAddress = "choose-general-partner-principal-office-address",
   enterGeneralPartnerPrincipalOfficeAddress = "enter-general-partner-principal-office-address",
-  confirmGeneralPartnerPrincipalOfficeAddress = "confirm-general-partner-principal-office-address"
+  confirmGeneralPartnerPrincipalOfficeAddress = "confirm-general-partner-principal-office-address",
+
+  // LIMITED PARTNER
+
+  // usual residential address - Person
+  territoryChoiceLimitedPartnerUsualResidentialAddress = "territory-choice-limited-partner-usual-residential-address",
+  postcodeLimitedPartnerUsualResidentialAddress = "postcode-limited-partner-usual-residential-address",
+  chooseLimitedPartnerUsualResidentialAddress = "choose-limited-partner-usual-residential-address",
+  enterLimitedPartnerUsualResidentialAddress = "enter-limited-partner-usual-residential-address",
+  confirmLimitedPartnerUsualResidentialAddress = "confirm-limited-partner-usual-residential-address"
 }
 
 export default AddressPageType;

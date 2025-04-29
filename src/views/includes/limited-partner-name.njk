@@ -1,0 +1,7 @@
+<span class="govuk-caption-l">
+  {% if props.data.limitedPartner.data.forename and props.data.limitedPartner.data.surname %}
+    {{ props.data.limitedPartner.data.forename | upper }} {{ props.data.limitedPartner.data.surname | upper }}
+  {% elif props.data.limitedPartner.data.legal_entity_name %}
+    {{ props.data.limitedPartner.data.legal_entity_name | upper }}
+  {% endif %}
+</span>

@@ -39,7 +39,8 @@ class AddressLookUpController extends AbstractController {
     AddressLookUpPageType.choosePrincipalPlaceOfBusinessAddress,
     AddressLookUpPageType.chooseGeneralPartnerUsualResidentialAddress,
     AddressLookUpPageType.chooseGeneralPartnerPrincipalOfficeAddress,
-    AddressLookUpPageType.chooseGeneralPartnerCorrespondenceAddress
+    AddressLookUpPageType.chooseGeneralPartnerCorrespondenceAddress,
+    AddressLookUpPageType.chooseLimitedPartnerUsualResidentialAddress
   ]);
 
   private static readonly GENERAL_PARTNER_ADDRESS_PAGES: Set<PageType | PageDefault> = new Set([
@@ -74,6 +75,7 @@ class AddressLookUpController extends AbstractController {
 
         let limitedPartnership = {};
         let generalPartner = {};
+        let limitedPartner = {};
 
         if (ids.transactionId && ids.submissionId) {
           limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
@@ -91,6 +93,14 @@ class AddressLookUpController extends AbstractController {
           );
         }
 
+        if (ids.transactionId && ids.limitedPartnerId) {
+          limitedPartner = await this.limitedPartnerService.getLimitedPartner(
+            tokens,
+            ids.transactionId,
+            ids.limitedPartnerId
+          );
+        }
+
         const cacheById = this.cacheService.getDataFromCacheById(request.signedCookies, ids.transactionId);
 
         const addressList = await this.getAddressList(pageRouting, cacheById, tokens);
@@ -99,7 +109,7 @@ class AddressLookUpController extends AbstractController {
           super.templateName(pageRouting.currentUrl),
           super.makeProps(
             pageRouting,
-            { limitedPartnership, generalPartner, addressList, cache: { ...cacheById } },
+            { limitedPartnership, generalPartner, limitedPartner, addressList, cache: { ...cacheById } },
             null
           )
         );

@@ -339,13 +339,36 @@ const generalPartnerPrincipalOfficeAddress = [
   addressRoutingConfirmGeneralPartnerPrincipalOfficeAddress
 ];
 
+// LIMITED PARTNER
+
+// usual residential address - Person
+
+const limitedPartnerUsualResidentialAddressCacheKeys = {
+  [AddressCacheKeys.addressCacheKey]: "usual_residential_address_limited_partner",
+  [AddressCacheKeys.territoryCacheKey]: "ura_territory_choice_limited_partner"
+};
+
+const addressRoutingChooseLimitedPartnerUsualResidentialAddress = {
+  previousUrl: url.POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  currentUrl: url.CHOOSE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  nextUrl: url.CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  pageType: AddressPageType.chooseLimitedPartnerUsualResidentialAddress,
+  data: {
+    ...limitedPartnerUsualResidentialAddressCacheKeys,
+    enterManualAddressPageType: AddressPageType.enterLimitedPartnerUsualResidentialAddress
+  }
+};
+
+const limitedPartnerUsualResidentialAddress = [addressRoutingChooseLimitedPartnerUsualResidentialAddress];
+
 export const addressLookUpRouting: PagesRouting = new Map<PageType, PageRouting>();
 [
   ...registeredOfficeAddress,
   ...principalPlaceOfBusinessAddress,
   ...usualResidentialAddress,
   ...correspondenceAddress,
-  ...generalPartnerPrincipalOfficeAddress
+  ...generalPartnerPrincipalOfficeAddress,
+  ...limitedPartnerUsualResidentialAddress
 ].forEach((routing) => {
   addressLookUpRouting.set(routing.pageType, routing);
 });
