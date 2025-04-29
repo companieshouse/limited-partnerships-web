@@ -45,7 +45,7 @@ describe("Postcode general partner's principal office address page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        toEscapedHtml(enTranslationText.address.findPostcode.principalOfficeAddress.whatIsPrincipalOfficeAddress) +
+        toEscapedHtml(enTranslationText.address.findPostcode.generalPartner.principalOfficeAddress.whatIsPrincipalOfficeAddress) +
           ` - ${enTranslationText.service} - GOV.UK`
       );
       testTranslations(res.text, enTranslationText.address.findPostcode, [
@@ -75,7 +75,7 @@ describe("Postcode general partner's principal office address page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        toEscapedHtml(cyTranslationText.address.findPostcode.principalOfficeAddress.whatIsPrincipalOfficeAddress) +
+        toEscapedHtml(cyTranslationText.address.findPostcode.generalPartner.principalOfficeAddress.whatIsPrincipalOfficeAddress) +
           ` - ${cyTranslationText.service} - GOV.UK`
       );
       testTranslations(res.text, cyTranslationText.address.findPostcode, [
