@@ -1,4 +1,4 @@
-import { NextFunction, Request, RequestHandler, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import AbstractController from "../AbstractController";
 import transitionRouting from "./Routing";
 import TransitionPageType from "./PageType";
@@ -16,7 +16,7 @@ class TransitionController extends AbstractController {
     super();
   }
 
-  getPageRouting(): RequestHandler {
+  getPageRouting() {
     return (request: Request, response: Response, next: NextFunction) => {
       try {
         const { pageType } = super.extract(request);
@@ -31,7 +31,7 @@ class TransitionController extends AbstractController {
     };
   }
 
-  getConfirmPage(): RequestHandler {
+  getConfirmPage() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const { tokens } = super.extract(request);
@@ -62,7 +62,7 @@ class TransitionController extends AbstractController {
     };
   }
 
-  limitedPartnershipConfirm(): RequestHandler {
+  limitedPartnershipConfirm() {
     return (request: Request, response: Response, next: NextFunction) => {
       try {
         const { pageType } = super.extract(request);
@@ -77,7 +77,7 @@ class TransitionController extends AbstractController {
     };
   }
 
-  checkCompanyNumber(): RequestHandler {
+  checkCompanyNumber() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const { tokens } = super.extract(request);
