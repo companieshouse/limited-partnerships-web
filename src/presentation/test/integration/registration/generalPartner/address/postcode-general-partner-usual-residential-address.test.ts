@@ -51,7 +51,7 @@ describe("Postcode Usual Residential Address Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        toEscapedHtml(enTranslationText.address.findPostcode.usualResidentialAddress.whatIsUsualResidentialAddress) +
+        toEscapedHtml(enTranslationText.address.findPostcode.generalPartner.usualResidentialAddress.whatIsUsualResidentialAddress) +
           ` - ${enTranslationText.service} - GOV.UK`
       );
       testTranslations(res.text, enTranslationText.address.findPostcode, [
@@ -59,6 +59,7 @@ describe("Postcode Usual Residential Address Page", () => {
         "principalPlaceOfBusiness",
         "principalOfficeAddress",
         "correspondenceAddress",
+        "limitedPartner",
         "errorMessages"
       ]);
       expect(res.text).not.toContain("WELSH -");
@@ -82,7 +83,7 @@ describe("Postcode Usual Residential Address Page", () => {
       expect(res.status).toBe(200);
 
       expect(res.text).toContain(
-        toEscapedHtml(cyTranslationText.address.findPostcode.usualResidentialAddress.whatIsUsualResidentialAddress) +
+        toEscapedHtml(cyTranslationText.address.findPostcode.generalPartner.usualResidentialAddress.whatIsUsualResidentialAddress) +
           ` - ${cyTranslationText.service} - GOV.UK`
       );
       testTranslations(res.text, cyTranslationText.address.findPostcode, [
@@ -90,6 +91,7 @@ describe("Postcode Usual Residential Address Page", () => {
         "principalPlaceOfBusiness",
         "principalOfficeAddress",
         "correspondenceAddress",
+        "limitedPartner",
         "errorMessages"
       ]);
       expect(res.text).toContain(generalPartner.data?.legal_entity_name?.toUpperCase());

@@ -1,7 +1,7 @@
 {% extends "layout.njk" %}
 
-{% set pageTitle = i18n.address.findPostcode.principalOfficeAddress.whatIsPrincipalOfficeAddress %}
-{% set publicRegisterInformationLine1 = i18n.address.findPostcode.principalOfficeAddress.publicRegisterLine1 %}
+{% set pageTitle = i18n.address.findPostcode.generalPartner.principalOfficeAddress.whatIsPrincipalOfficeAddress %}
+{% set publicRegisterInformationLine1 = i18n.address.findPostcode.generalPartner.principalOfficeAddress.publicRegisterLine1 %}
 
 {% block content %}
   <div class="govuk-grid-row">
@@ -11,7 +11,7 @@
       <div>
         {% include "includes/general-partner-name.njk" %}
 
-        <h1 class="govuk-heading-xl">{{ i18n.address.findPostcode.principalOfficeAddress.whatIsPrincipalOfficeAddress }}</h1>
+        <h1 class="govuk-heading-xl">{{ i18n.address.findPostcode.generalPartner.principalOfficeAddress.whatIsPrincipalOfficeAddress }}</h1>
       </div>
 
       {% include "pages/address/postcode-form.njk" %}
