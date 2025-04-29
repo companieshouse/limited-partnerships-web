@@ -262,6 +262,11 @@ export const registrationEndpoints = (
     authentication,
     dependencies.limitedPartnerController.getPageRouting()
   );
+  router.post(
+    ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_ID_URL,
+    authentication,
+    dependencies.limitedPartnerController.sendPageData()
+  );
 
   router.get(
     CHECK_YOUR_ANSWERS_URL,

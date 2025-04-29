@@ -122,14 +122,14 @@ abstract class AbstractController {
     const urlWithIds = this.getJourneyTypes(url).isRegistration ? REGISTRATION_WITH_IDS_URL : TRANSITION_WITH_IDS_URL;
 
     if (transactionId && submissionId && generalPartnerId && GP_URLS.includes(url)) {
-      url = url.replace(urlWithIds, GENERAL_PARTNER_WITH_ID_URL);
+      url = url.replace(urlWithIds, urlWithIds + GENERAL_PARTNER_WITH_ID_URL);
     }
 
     // limited partner urls that can exist with or without ids
     const LP_URLS = [ADD_LIMITED_PARTNER_PERSON_URL, ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL];
 
     if (transactionId && submissionId && limitedPartnerId && LP_URLS.includes(url)) {
-      url = url.replace(urlWithIds, LIMITED_PARTNER_WITH_ID_URL);
+      url = url.replace(urlWithIds, urlWithIds + LIMITED_PARTNER_WITH_ID_URL);
     }
 
     return url;
