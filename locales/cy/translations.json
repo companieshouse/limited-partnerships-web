@@ -1,6 +1,12 @@
 {
-    "addGeneralPartnerLegalEntityPage" : {
-        "title" : "WELSH - Add a general partner (legal entity)",
+    "addPartnerLegalEntityPage" : {
+        "generalPartner": {
+            "title" : "WELSH - Add a general partner (legal entity)"
+        },
+        "limitedPartner": {
+            "title": "WELSH - Add a limited partner (legal entity)"
+        },
+
         "legalEntityName" : "WELSH - What is the legal entity's name?",
         "legalFormOrCorporateIdentity" : "WELSH - What is its legal form or corporate identity?",
         "legalFormOrCorporateIdentityHint" : "WELSH - This is the corporate body type. For example, private limited company.",

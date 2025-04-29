@@ -27,7 +27,9 @@ import {
   WHICH_TYPE_WITH_IDS_URL,
   SIC_URL,
   REVIEW_GENERAL_PARTNERS_URL,
-  REMOVE_GENERAL_PARTNER_URL
+  REMOVE_GENERAL_PARTNER_URL,
+  ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
+  ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_ID_URL
 } from "../presentation/controller/registration/url";
 
 export const registrationEndpoints = (
@@ -240,6 +242,28 @@ export const registrationEndpoints = (
   );
   router.post(
     ADD_LIMITED_PARTNER_PERSON_WITH_ID_URL,
+    authentication,
+    dependencies.limitedPartnerController.sendPageData()
+  );
+
+  router.get(
+    ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
+    authentication,
+    dependencies.limitedPartnerController.getPageRouting()
+  );
+  router.post(
+    ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
+    authentication,
+    dependencies.limitedPartnerController.createLimitedPartner()
+  );
+
+  router.get(
+    ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_ID_URL,
+    authentication,
+    dependencies.limitedPartnerController.getPageRouting()
+  );
+  router.post(
+    ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_ID_URL,
     authentication,
     dependencies.limitedPartnerController.sendPageData()
   );
