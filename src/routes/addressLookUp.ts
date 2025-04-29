@@ -264,6 +264,20 @@ export const addressLookUpEndpoints = (router: Router, dependencies: IDependenci
     authentication,
     dependencies.addressLookUpController.confirmAddress()
   );
+
+  // LIMITED PARTNER
+
+  // usual residential address
+  router.get(
+    url.POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+    authentication,
+    dependencies.addressLookUpController.getPageRouting()
+  );
+  router.post(
+    url.POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+    authentication,
+    dependencies.addressLookUpController.postcodeValidation()
+  );
 };
 
 export default addressLookUpEndpoints;

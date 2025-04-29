@@ -54,3 +54,9 @@ export const ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_TEMPLATE =
   AddressPageType.enterGeneralPartnerPrincipalOfficeAddress;
 export const CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_TEMPLATE =
   AddressPageType.confirmGeneralPartnerPrincipalOfficeAddress;
+
+// LIMITED PARTNER
+
+// usual residential address - Person
+export const POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_TEMPLATE =
+  AddressPageType.postcodeLimitedPartnerUsualResidentialAddress;
