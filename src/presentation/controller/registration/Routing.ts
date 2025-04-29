@@ -104,6 +104,13 @@ const registrationRoutingRemoveGeneralPartner = {
   pageType: RegistrationPageType.removeGeneralPartner
 };
 
+const registrationRoutingLimitedPartners = {
+  previousUrl: url.REVIEW_GENERAL_PARTNERS_URL,
+  currentUrl: url.LIMITED_PARTNERS_URL,
+  nextUrl: url.LIMITED_PARTNER_CHOICE_URL,
+  pageType: RegistrationPageType.limitedPartners
+};
+
 const registrationRoutingLimitedPartnerChoice = {
   previousUrl: url.LIMITED_PARTNERS_URL,
   currentUrl: url.LIMITED_PARTNER_CHOICE_URL,
@@ -118,11 +125,11 @@ const registrationRoutingAddLimitedPartnerPerson = {
   pageType: RegistrationPageType.addLimitedPartnerPerson
 };
 
-const registrationRoutingLimitedPartners = {
-  previousUrl: url.REVIEW_GENERAL_PARTNERS_URL,
-  currentUrl: url.LIMITED_PARTNERS_URL,
-  nextUrl: url.LIMITED_PARTNER_CHOICE_URL,
-  pageType: RegistrationPageType.limitedPartners
+const registrationRoutingAddLimitedPartnerLegalEntity = {
+  previousUrl: url.LIMITED_PARTNER_CHOICE_URL,
+  currentUrl: url.ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
+  nextUrl: url.CHECK_YOUR_ANSWERS_URL,
+  pageType: RegistrationPageType.addLimitedPartnerLegalEntity
 };
 
 export const registrationRoutingCheckYourAnswers = {
@@ -164,6 +171,7 @@ const list = [
   registrationRoutingLimitedPartners,
   registrationRoutingLimitedPartnerChoice,
   registrationRoutingAddLimitedPartnerPerson,
+  registrationRoutingAddLimitedPartnerLegalEntity,
 
   registrationRoutingCheckYourAnswers,
   registrationRoutingApplicationSubmitted,
