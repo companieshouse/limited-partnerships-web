@@ -2,7 +2,7 @@
 
 {% set pageTitle = i18n.address.confirm.registeredOfficeAddress.title %}
 {% set publicRegisterInformationLine1 = i18n.address.confirm.registeredOfficeAddress.publicRegisterLine1 %}
-{% set cacheKey = "registered_office_address" %}
+{% set cacheKey = props.data.addressCacheKey %}
 {% set data = props.data.limitedPartnership.data.registered_office_address %}
 
 {% block content %}

@@ -2,7 +2,7 @@
 
 {% set pageTitle = i18n.address.confirm.usualResidentialAddress.title %}
 {% set publicRegisterInformationLine1 = i18n.address.confirm.usualResidentialAddress.publicRegisterLine1 %}
-{% set cacheKey = "usual_residential_address" %}
+{% set cacheKey = props.data.addressCacheKey %}
 {% set data = props.data.generalPartner.data.usual_residential_address %}
 
 {% block backLink %}

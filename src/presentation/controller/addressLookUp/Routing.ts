@@ -379,7 +379,7 @@ const addressRoutingConfirmLimitedPartnerUsualResidentialAddress = {
   nextUrl: CHECK_YOUR_ANSWERS_URL, // TODO Change to REVIEW_LIMITED_PARTNERS_URL
   pageType: AddressPageType.confirmLimitedPartnerUsualResidentialAddress,
   data: {
-    ...usualResidentialAddressCacheKeys,
+    ...limitedPartnerUsualResidentialAddressCacheKeys,
     enterManualAddressPageType: AddressPageType.enterLimitedPartnerUsualResidentialAddress
   }
 };
