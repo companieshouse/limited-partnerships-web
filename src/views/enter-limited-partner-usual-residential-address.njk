@@ -6,7 +6,7 @@
   {% set hrefValue = props.previousUrl %}
 
   {% if props.data.cache.ura_territory_choice_limited_partner == "overseas" %}
-    {% set hrefValue = props.currentUrl | replace(props.pageType, "territory-choice-limited-partner-usual-residential-address") %}
+    {% set hrefValue = props.currentUrl | replace(props.pageType, props.data.territoryPageType) %}
   {% endif %}
 
   {{ govukBackLink({
