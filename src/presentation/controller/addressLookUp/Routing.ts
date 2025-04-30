@@ -357,7 +357,7 @@ const addressRoutingPostcodeLimitedPartnerUsualResidentialAddress = {
   pageType: AddressPageType.postcodeLimitedPartnerUsualResidentialAddress,
   data: {
     ...limitedPartnerUsualResidentialAddressCacheKeys,
-    enterManualAddressPageType: CHECK_YOUR_ANSWERS_URL,
+    enterManualAddressPageType: AddressPageType.enterLimitedPartnerUsualResidentialAddress,
     confirmAddressUrl: CHECK_YOUR_ANSWERS_URL // TODO Change to confirm address page
   }
 };
@@ -373,9 +373,20 @@ const addressRoutingChooseLimitedPartnerUsualResidentialAddress = {
   }
 };
 
+const addressRoutingEnterLimitedPartnerUsualResidentialAddress = {
+  previousUrl: url.POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  currentUrl: url.ENTER_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  nextUrl: CHECK_YOUR_ANSWERS_URL, // TODO Change to confirm address page
+  pageType: AddressPageType.enterLimitedPartnerUsualResidentialAddress,
+  data: {
+    ...limitedPartnerUsualResidentialAddressCacheKeys
+  }
+};
+
 const limitedPartnerUsualResidentialAddress = [
   addressRoutingPostcodeLimitedPartnerUsualResidentialAddress,
-  addressRoutingChooseLimitedPartnerUsualResidentialAddress
+  addressRoutingChooseLimitedPartnerUsualResidentialAddress,
+  addressRoutingEnterLimitedPartnerUsualResidentialAddress
 ];
 
 export const addressLookUpRouting: PagesRouting = new Map<PageType, PageRouting>();

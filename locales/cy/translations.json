@@ -145,22 +145,31 @@
                 "titleHint2": "WELSH - It must be in the jurisdiction where the partnership was formed. It can be changed to an address outside of the jurisdiction after you've registered the partnership.",
                 "publicInformationLine1": "WELSH - We'll show the principal place of business on the public register."
             },
-            "usualResidentialAddress":{
-                "title": "WELSH - What is the general partner's usual residential address?",
-                "publicInformationLine1": "WELSH - We will not show the general partner's usual residential address.",
-                "postcodeOptional": "WELSH - Postcode (optional)"
+            "generalPartner":{
+              "usualResidentialAddress":{
+                  "title": "WELSH - What is the general partner's usual residential address?",
+                  "publicInformationLine1": "WELSH - We will not show the general partner's usual residential address.",
+                  "postcodeOptional": "WELSH - Postcode (optional)"
 
+              },
+              "correspondenceAddress":{
+                  "title": "WELSH - What is the general partner's correspondence address",
+                  "titleHint1": "WELSH - This is also known as the service address.",
+                  "publicInformationLine1": "WELSH - We'll show the general partner's correspondence address on the public register.",
+                  "postcodeOptional": "WELSH - Postcode (optional)"
+              },
+              "principalOfficeAddress": {
+                  "title": "WELSH - What is the general partner's principal office address?",
+                  "publicInformationLine1": "WELSH - We'll show the general partner's principal office address on the public register.",
+                  "postcodeOptional": "WELSH - Postcode (optional)"
+              }
             },
-            "correspondenceAddress":{
-                "title": "WELSH - What is the general partner's correspondence address",
-                "titleHint1": "WELSH - This is also known as the service address.",
-                "publicInformationLine1": "WELSH - We'll show the general partner's correspondence address on the public register.",
-                "postcodeOptional": "WELSH - Postcode (optional)"
-            },
-            "principalOfficeAddress": {
-                "title": "WELSH - What is the general partner's principal office address?",
-                "publicInformationLine1": "WELSH - We'll show the general partner's principal office address on the public register.",
-                "postcodeOptional": "WELSH - Postcode (optional)"
+            "limitedPartner":{
+              "usualResidentialAddress":{
+                  "title": "WELSH - What is the limited partner's usual residential address",
+                  "publicInformationLine1": "WELSH - We will not show the limited partner's usual residential address on the public register.",
+                  "postcodeOptional": "WELSH - Postcode (optional)"
+              }
             },
             "propertyNameOrNumber": "WELSH - Property name or number",
             "propertyNameOrNumberHint": "WELSH - For example, 'The Mill', '116' or 'Flat 37a'",

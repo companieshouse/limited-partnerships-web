@@ -28,9 +28,9 @@
   {% set address = {} %}
 {% endif %}
 
-{% set pageTitle = i18n.address.enterAddress.correspondenceAddress.title %}
-{% set titleHint1 = i18n.address.enterAddress.correspondenceAddress.titleHint1 %}
-{% set publicRegisterInformationLine1 = i18n.address.enterAddress.correspondenceAddress.publicInformationLine1 %}
+{% set pageTitle = i18n.address.enterAddress.generalPartner.correspondenceAddress.title %}
+{% set titleHint1 = i18n.address.enterAddress.generalPartner.correspondenceAddress.titleHint1 %}
+{% set publicRegisterInformationLine1 = i18n.address.enterAddress.generalPartner.correspondenceAddress.publicInformationLine1 %}
 
 {% block content %}
   <div class="govuk-grid-row">
@@ -56,7 +56,7 @@
 
             {{ govukInput({
               label: {
-                text: i18n.address.enterAddress.correspondenceAddress.postcodeOptional
+                text: i18n.address.enterAddress.generalPartner.correspondenceAddress.postcodeOptional
               },
               classes: "govuk-input--width-10",
               id: "postal_code",

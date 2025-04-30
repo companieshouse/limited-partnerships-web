@@ -1,13 +1,12 @@
 {% extends "layout.njk" %}
 
-{% set principalOfficeAddressKey = "principal_office_address" %}
+{% set usualResidentialAddressKey = "usual_residential_address_limited_partner" %}
 
 {% block backLink %}
-
   {% set hrefValue = props.previousUrl %}
 
-  {% if props.data.cache.poa_territory_choice == "overseas" %}
-    {% set hrefValue = props.currentUrl | replace(props.pageType, "territory-choice-general-partner-principal-office-address") %}
+  {% if props.data.cache.ura_territory_choice_limited_partner == "overseas" %}
+    {% set hrefValue = props.currentUrl | replace(props.pageType, "territory-choice-limited-partner-usual-residential-address") %}
   {% endif %}
 
   {{ govukBackLink({
@@ -21,41 +20,40 @@
 
 {% if props.data.address %}
   {% set address = props.data.address %}
-{% elif props.data.cache[principalOfficeAddressKey] %}
-  {% set address = props.data.cache[principalOfficeAddressKey] %}
-{% elif props.data.limitedPartnership.data.principal_office_address %}
-  {% set address = props.data.principal_office_address %}
+{% elif props.data.cache[usualResidentialAddressKey] %}
+  {% set address = props.data.cache[usualResidentialAddressKey] %}
+{% elif props.data.limitedPartnership.data.usual_residential_address %}
+  {% set address = props.data.usual_residential_address %}
 {% else %}
   {% set address = {} %}
 {% endif %}
 
-{% set pageTitle = i18n.address.enterAddress.generalPartner.principalOfficeAddress.title %}
-{% set publicRegisterInformationLine1 = i18n.address.enterAddress.generalPartner.principalOfficeAddress.publicInformationLine1 %}
-
+{% set pageTitle = i18n.address.enterAddress.limitedPartner.usualResidentialAddress.title %}
+{% set publicRegisterInformationLine1 = i18n.address.enterAddress.limitedPartner.usualResidentialAddress.publicInformationLine1 %}
 
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      {% include "includes/general-partner-name.njk" %}
+      {% include "includes/limited-partner-name.njk" %}
 
       <fieldset class="govuk-fieldset">
         <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
-          <h1 class="govuk-heading-xl">
+            <h1 class="govuk-heading-xl">
             {{ pageTitle }}
-          </h1>
+            </h1>
         </legend>
       </fieldset>
       
       <form class="form" action={{ props.currentUrl }} method="post">
         <input type="hidden" name="pageType" value={{ props.pageType }}>
           {% include "includes/csrf_token.njk" %}
-        
-          {% if props.data.cache.poa_territory_choice == "overseas" %}
+          
+          {% if props.data.cache.ura_territory_choice_limited_partner == "overseas" %}
             {% include "pages/address/enter-address-fields.njk" %}
 
             {{ govukInput({
               label: {
-                text: i18n.address.enterAddress.generalPartner.principalOfficeAddress.postcodeOptional
+                text: i18n.address.enterAddress.limitedPartner.usualResidentialAddress.postcodeOptional
               },
               classes: "govuk-input--width-10",
               id: "postal_code",
@@ -77,12 +75,11 @@
           {% else %}
             {% include "pages/address/enter-address-common-fields.njk" %}
           {% endif %}
-        
+          
           {% include "includes/public-register-information.njk" %}
 
           {% include "includes/save-and-continue-button.njk" %}
         </form>
-
     </div>
   </div> 
 {% endblock %}

@@ -145,21 +145,30 @@
                 "titleHint2": "It must be in the jurisdiction where the partnership was formed. It can be changed to an address outside of the jurisdiction after you've registered the partnership.",
                 "publicInformationLine1": "We'll show the principal place of business on the public register."
             },
-            "usualResidentialAddress":{
-                "title": "What is the general partner's usual residential address",
-                "publicInformationLine1": "We will not show the general partner's usual residential address.",
-                "postcodeOptional": "Postcode (optional)"
+            "generalPartner":{
+              "usualResidentialAddress":{
+                  "title": "What is the general partner's usual residential address",
+                  "publicInformationLine1": "We will not show the general partner's usual residential address.",
+                  "postcodeOptional": "Postcode (optional)"
+              },
+              "correspondenceAddress":{
+                  "title": "What is the general partner's correspondence address",
+                  "titleHint1": "This is also known as the service address.",
+                  "publicInformationLine1": "We'll show the general partner's correspondence address on the public register.",
+                  "postcodeOptional": "Postcode (optional)"
+              },
+              "principalOfficeAddress": {
+                  "title": "What is the general partner's principal office address?",
+                  "publicInformationLine1": "We'll show the general partner's principal office address on the public register.",
+                  "postcodeOptional": "Postcode (optional)"
+              }
             },
-            "correspondenceAddress":{
-                "title": "What is the general partner's correspondence address",
-                "titleHint1": "This is also known as the service address.",
-                "publicInformationLine1": "We'll show the general partner's correspondence address on the public register.",
-                "postcodeOptional": "Postcode (optional)"
-            },
-            "principalOfficeAddress": {
-                "title": "What is the general partner's principal office address?",
-                "publicInformationLine1": "We'll show the general partner's principal office address on the public register.",
-                "postcodeOptional": "Postcode (optional)"
+            "limitedPartner":{
+              "usualResidentialAddress":{
+                  "title": "What is the limited partner's usual residential address",
+                  "publicInformationLine1": "We will not show the limited partner's usual residential address on the public register.",
+                  "postcodeOptional": "Postcode (optional)"
+              }
             },
             "propertyNameOrNumber": "Property name or number",
             "propertyNameOrNumberHint": "For example, 'The Mill', '116' or 'Flat 37a'",
