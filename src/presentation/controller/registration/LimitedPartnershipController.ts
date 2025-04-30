@@ -15,6 +15,7 @@ import CacheService from "../../../application/service/CacheService";
 import PageType from "../PageType";
 import { GENERAL_PARTNERS_URL, NAME_WITH_IDS_URL, WHICH_TYPE_WITH_IDS_URL } from "./url";
 import { PageRouting } from "../PageRouting";
+import { getJourneyTypes } from "../../../utils";
 
 class LimitedPartnershipController extends AbstractController {
   private limitedPartnershipService: LimitedPartnershipService;
@@ -77,7 +78,7 @@ class LimitedPartnershipController extends AbstractController {
         const { tokens } = super.extract(request);
         const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
-        const journeyTypes = super.getJourneyTypes(pageRouting.currentUrl);
+        const journeyTypes = getJourneyTypes(pageRouting.currentUrl);
 
         const result = await this.limitedPartnershipService.createTransactionAndFirstSubmission(
           tokens,

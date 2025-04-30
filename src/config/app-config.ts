@@ -11,6 +11,7 @@ import { createSummaryListLink } from "../utils/change-link";
 import * as config from "./constants";
 import { localisationMiddleware } from "../middlewares";
 import { serviceAvailabilityMiddleware } from "../middlewares/service-availability.middleware";
+import { journeyDetectionMiddleware } from "../middlewares/journey.detection.middleware";
 
 export const appConfig = (app: express.Application) => {
   // set some app variables from the environment
@@ -46,7 +47,8 @@ export const appConfig = (app: express.Application) => {
   );
   nunjucksEnv.addGlobal("PIWIK_SITE_ID", config.PIWIK_SITE_ID);
   nunjucksEnv.addGlobal("PIWIK_URL", config.PIWIK_URL);
-  nunjucksEnv.addGlobal("SERVICE_NAME", config.SERVICE_NAME);
+  nunjucksEnv.addGlobal("SERVICE_NAME_REGISTRATION", config.SERVICE_NAME_REGISTRATION);
+  nunjucksEnv.addGlobal("SERVICE_NAME_TRANSITION", config.SERVICE_NAME_TRANSITION);
   nunjucksEnv.addGlobal("CREATE_CHANGE_LINK", createSummaryListLink);
 
   app.use(express.json());
@@ -57,6 +59,7 @@ export const appConfig = (app: express.Application) => {
 
   // middlewares
   app.use(serviceAvailabilityMiddleware);
+  app.use(config.excludedPaths, journeyDetectionMiddleware);
   app.use(localisationMiddleware);
 
   const cookieConfig = {

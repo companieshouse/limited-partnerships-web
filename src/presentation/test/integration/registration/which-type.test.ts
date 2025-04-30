@@ -9,10 +9,11 @@ import cyTranslationText from "../../../../../locales/cy/translations.json";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import {
   APPLICATION_CACHE_KEY,
-  APPLICATION_CACHE_KEY_PREFIX_REGISTRATION
+  APPLICATION_CACHE_KEY_PREFIX_REGISTRATION,
+  SERVICE_NAME_REGISTRATION
 } from "../../../../config/constants";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
-import LimitedPartnershipBuilder from "presentation/test/builder/LimitedPartnershipBuilder";
+import LimitedPartnershipBuilder from "../../../../presentation/test/builder/LimitedPartnershipBuilder";
 
 describe("Which type Page", () => {
   beforeEach(() => {
@@ -31,6 +32,7 @@ describe("Which type Page", () => {
     expect(res.status).toBe(200);
     testTranslations(res.text, enTranslationText.whichTypePage);
     expect(res.text).toContain(enTranslationText.buttons.continue);
+    expect(res.text).toContain(SERVICE_NAME_REGISTRATION);
   });
 
   it("should load the which-type page with Welsh text", async () => {
@@ -41,6 +43,7 @@ describe("Which type Page", () => {
     expect(res.status).toBe(200);
     testTranslations(res.text, cyTranslationText.whichTypePage);
     expect(res.text).toContain(cyTranslationText.buttons.continue);
+    expect(res.text).toContain(SERVICE_NAME_REGISTRATION);
   });
 
   it("should redirect to name page and cache contains the type selected", async () => {

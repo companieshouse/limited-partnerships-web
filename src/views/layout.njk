@@ -55,13 +55,7 @@
 {% endblock %}
 
 {% block header %}
-  {{ govukHeader({
-    homepageUrl: "//www.gov.uk",
-    serviceName: SERVICE_NAME,
-    serviceUrl: "/limited-partnerships",
-    containerClasses: "govuk-width-container",
-    useTudorCrown: true
-  }) }}
+  {% include "includes/header.njk"%}
 {% endblock %}
 
 {% block footer %}
