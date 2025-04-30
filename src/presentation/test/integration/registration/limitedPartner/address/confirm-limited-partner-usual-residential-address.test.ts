@@ -8,7 +8,11 @@ import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import LimitedPartnerBuilder from "../../../../builder/LimitedPartnerBuilder";
-import { CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../../controller/addressLookUp/url";
+import {
+  CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  ENTER_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
+} from "../../../../../controller/addressLookUp/url";
 import { CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/registration/url";
 import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
 
@@ -74,18 +78,18 @@ describe("Confirm Limited Partner Usual Residential Address Page", () => {
     });
 
     it.each([
-      ["overseas", AddressPageType.enterLimitedPartnerUsualResidentialAddress],
-      ["unitedKingdom", AddressPageType.postcodeLimitedPartnerUsualResidentialAddress]
-    ])("should have the correct back link", async (territory, pageType) => {
+      ["overseas", getUrl(ENTER_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL)],
+      ["unitedKingdom", getUrl(POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL)]
+    ])("should have the correct back link", async (territory, backLink) => {
       appDevDependencies.cacheRepository.feedCache({
         [appDevDependencies.transactionGateway.transactionId]: {
-          ["ura_territory_choice_limited_partner"]: territory
+          ura_territory_choice_limited_partner: territory
         }
       });
 
       const res = await request(app).get(URL);
 
-      expect(res.text).toContain(pageType);
+      expect(res.text).toContain(backLink);
     });
   });
 

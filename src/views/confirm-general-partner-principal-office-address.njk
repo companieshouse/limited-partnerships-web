@@ -9,7 +9,7 @@
   {% set hrefValue = props.previousUrl %}
 
   {% if props.data.cache.poa_territory_choice == "overseas" %}
-    {% set hrefValue = props.currentUrl | replace(props.pageType, "enter-general-partner-principal-office-address") %}
+    {% set hrefValue = props.currentUrl | replace(props.pageType, props.data.enterManualAddressPageType) %}
   {% endif %}
 
   {{ govukBackLink({
