@@ -1,35 +1,15 @@
-import request from "supertest";
-import { NextFunction, Request, Response } from "express";
-import app from "./app";
-import { HEALTHCHECK_URL } from "../../controller/global/Routing";
+import LimitedPartnershipController from "../../controller/registration/LimitedPartnershipController";
 
-jest.mock("../../controller/global/Controller", () => {
-  return jest.fn().mockImplementation(() => {
-    return {
-      ...jest.requireActual("../../controller/global/Controller"),
-      getPageRouting: jest.fn().mockImplementation(() => {
-        return (_req: Request, _res: Response, next: NextFunction) => {
-          return next();
-        };
-      }),
-      getSignOut: jest.fn().mockImplementation(() => {
-        return (_req: Request, _res: Response, next: NextFunction) => {
-          return next();
-        };
-      }),
-      signOutChoice: jest.fn().mockImplementation(() => {
-        return (_req: Request, _res: Response, next: NextFunction) => {
-          return next();
-        };
-      }),
-      getHealthcheck: jest.fn().mockImplementation(() => {
-        return (_req: Request, _res: Response, next: NextFunction) => {
-          next(new Error("Error 500"));
-        };
-      }),
-    };
-  });
+// we have to create the spy before the real one is initialised when we import app
+jest.spyOn(LimitedPartnershipController.prototype, "getPageRouting").mockImplementation(() => {
+  return (req, res, next) => {
+    return Promise.resolve().then(() => next(new Error("Mocked Error 500")));
+  };
 });
+
+import request from "supertest";
+import app from "./app";
+import { WHICH_TYPE_URL } from "presentation/controller/registration/url";
 
 describe("Error 500", () => {
   beforeEach(() => {
@@ -37,7 +17,7 @@ describe("Error 500", () => {
   });
 
   it("should render the 'error-page' page", async () => {
-    const response = await request(app).get(HEALTHCHECK_URL);
+    const response = await request(app).get(WHICH_TYPE_URL);
 
     expect(response.status).toEqual(500);
     expect(response.text).toContain("Sorry, the service is unavailable");
