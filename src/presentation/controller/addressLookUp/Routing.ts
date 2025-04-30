@@ -7,7 +7,9 @@ import {
   ADD_GENERAL_PARTNER_PERSON_URL,
   REVIEW_GENERAL_PARTNERS_URL,
   TERM_URL,
-  WHERE_IS_THE_JURISDICTION_URL
+  WHERE_IS_THE_JURISDICTION_URL,
+  LIMITED_PARTNER_CHOICE_URL,
+  CHECK_YOUR_ANSWERS_URL
 } from "../registration/url";
 import * as url from "./url";
 
@@ -193,7 +195,7 @@ const addressRoutingConfirmGeneralPartnerUsualResidentialAddress = {
   }
 };
 
-const usualResidentialAddress = [
+const generalPartnerUsualResidentialAddress = [
   addressRoutingTerritoryChoiceGeneralPartnerUsualResidentialAddress,
   addressRoutingPostcodeGeneralPartnerUsualResidentialAddress,
   addressRoutingEnterGeneralPartnerUsualResidentialAddress,
@@ -348,6 +350,18 @@ const limitedPartnerUsualResidentialAddressCacheKeys = {
   [AddressCacheKeys.territoryCacheKey]: "ura_territory_choice_limited_partner"
 };
 
+const addressRoutingPostcodeLimitedPartnerUsualResidentialAddress = {
+  previousUrl: LIMITED_PARTNER_CHOICE_URL, // TODO Change to territory choice page
+  currentUrl: url.POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  nextUrl: url.CHOOSE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  pageType: AddressPageType.postcodeLimitedPartnerUsualResidentialAddress,
+  data: {
+    ...limitedPartnerUsualResidentialAddressCacheKeys,
+    enterManualAddressPageType: CHECK_YOUR_ANSWERS_URL,
+    confirmAddressUrl: CHECK_YOUR_ANSWERS_URL // TODO Change to confirm address page
+  }
+};
+
 const addressRoutingChooseLimitedPartnerUsualResidentialAddress = {
   previousUrl: url.POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   currentUrl: url.CHOOSE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
@@ -359,13 +373,16 @@ const addressRoutingChooseLimitedPartnerUsualResidentialAddress = {
   }
 };
 
-const limitedPartnerUsualResidentialAddress = [addressRoutingChooseLimitedPartnerUsualResidentialAddress];
+const limitedPartnerUsualResidentialAddress = [
+  addressRoutingPostcodeLimitedPartnerUsualResidentialAddress,
+  addressRoutingChooseLimitedPartnerUsualResidentialAddress
+];
 
 export const addressLookUpRouting: PagesRouting = new Map<PageType, PageRouting>();
 [
   ...registeredOfficeAddress,
   ...principalPlaceOfBusinessAddress,
-  ...usualResidentialAddress,
+  ...generalPartnerUsualResidentialAddress,
   ...correspondenceAddress,
   ...generalPartnerPrincipalOfficeAddress,
   ...limitedPartnerUsualResidentialAddress

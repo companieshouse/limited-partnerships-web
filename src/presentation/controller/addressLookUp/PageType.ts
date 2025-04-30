@@ -45,5 +45,4 @@ enum AddressPageType {
   enterLimitedPartnerUsualResidentialAddress = "enter-limited-partner-usual-residential-address",
   confirmLimitedPartnerUsualResidentialAddress = "confirm-limited-partner-usual-residential-address"
 }
-
 export default AddressPageType;

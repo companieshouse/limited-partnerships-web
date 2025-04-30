@@ -55,12 +55,16 @@ class AddressLookUpController extends AbstractController {
     AddressLookUpPageType.confirmGeneralPartnerCorrespondenceAddress
   ]);
 
+  private static readonly LIMITED_PARTNER_ADDRESS_PAGES: Set<PageType | PageDefault> = new Set([
+    AddressLookUpPageType.postcodeLimitedPartnerUsualResidentialAddress
+  ]);
+
   constructor(
-    private addressService: AddressService,
-    private limitedPartnershipService: LimitedPartnershipService,
-    private generalPartnerService: GeneralPartnerService,
+    private readonly addressService: AddressService,
+    private readonly limitedPartnershipService: LimitedPartnershipService,
+    private readonly generalPartnerService: GeneralPartnerService,
     private readonly limitedPartnerService: LimitedPartnerService,
-    private cacheService: CacheService
+    private readonly cacheService: CacheService
   ) {
     super();
   }
@@ -173,9 +177,18 @@ class AddressLookUpController extends AbstractController {
             );
           }
 
+          let limitedPartner;
+          if (AddressLookUpController.LIMITED_PARTNER_ADDRESS_PAGES.has(pageType)) {
+            limitedPartner = await this.limitedPartnerService.getLimitedPartner(
+              tokens,
+              ids.transactionId,
+              ids.limitedPartnerId
+            );
+          }
+
           response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { limitedPartnership, generalPartner, ...request.body }, errors)
+            super.makeProps(pageRouting, { limitedPartnership, generalPartner, limitedPartner, ...request.body }, errors)
           );
           return;
         }
@@ -188,7 +201,8 @@ class AddressLookUpController extends AbstractController {
             pageRouting?.data?.confirmAddressUrl,
             ids.transactionId,
             ids.submissionId,
-            ids.generalPartnerId
+            ids.generalPartnerId,
+            ids.limitedPartnerId
           );
           response.redirect(url);
           return;
