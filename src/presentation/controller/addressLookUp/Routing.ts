@@ -365,7 +365,7 @@ const addressRoutingPostcodeLimitedPartnerUsualResidentialAddress = {
 const addressRoutingChooseLimitedPartnerUsualResidentialAddress = {
   previousUrl: url.POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   currentUrl: url.CHOOSE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-  nextUrl: url.CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  nextUrl: CHECK_YOUR_ANSWERS_URL, // TODO Change to confirm address page
   pageType: AddressPageType.chooseLimitedPartnerUsualResidentialAddress,
   data: {
     ...limitedPartnerUsualResidentialAddressCacheKeys,
