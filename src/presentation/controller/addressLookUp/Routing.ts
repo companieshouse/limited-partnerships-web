@@ -9,7 +9,6 @@ import {
   REVIEW_GENERAL_PARTNERS_URL,
   TERM_URL,
   WHERE_IS_THE_JURISDICTION_URL,
-  LIMITED_PARTNER_CHOICE_URL,
   CHECK_YOUR_ANSWERS_URL
 } from "../registration/url";
 import * as url from "./url";
@@ -362,7 +361,7 @@ const addressRoutingTerritoryChoiceLimitedPartnerUsualResidentialAddress = {
 };
 
 const addressRoutingPostcodeLimitedPartnerUsualResidentialAddress = {
-  previousUrl: LIMITED_PARTNER_CHOICE_URL, // TODO Change to territory choice page
+  previousUrl: url.TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   currentUrl: url.POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   nextUrl: url.CHOOSE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   pageType: AddressPageType.postcodeLimitedPartnerUsualResidentialAddress,
