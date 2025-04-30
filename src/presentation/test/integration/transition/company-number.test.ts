@@ -4,10 +4,10 @@ import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
-import { COMPANY_NUMBER_URL } from "presentation/controller/transition/url";
+import { COMPANY_NUMBER_URL } from "../../../../presentation/controller/transition/url";
 import TransitionPageType from "../../../controller/transition/PageType";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
-import { APPLICATION_CACHE_KEY, APPLICATION_CACHE_KEY_PREFIX_TRANSITION } from "../../../../config/constants";
+import { APPLICATION_CACHE_KEY, APPLICATION_CACHE_KEY_PREFIX_TRANSITION, SERVICE_NAME_TRANSITION } from "../../../../config/constants";
 
 describe("Company number page", () => {
   const URL = getUrl(COMPANY_NUMBER_URL);
@@ -28,6 +28,7 @@ describe("Company number page", () => {
         `${enTranslationText.companyNumber.whatIsPartnershipNumber} - ${enTranslationText.service} - GOV.UK`
       );
       expect(res.text).not.toContain("WELSH -");
+      expect(res.text).toContain(SERVICE_NAME_TRANSITION);
     });
 
     it("should load company number page with welsh text", async () => {
@@ -40,6 +41,7 @@ describe("Company number page", () => {
         `${cyTranslationText.companyNumber.whatIsPartnershipNumber} - ${cyTranslationText.service} - GOV.UK`
       );
       expect(res.text).toContain("WELSH -");
+      expect(res.text).toContain(SERVICE_NAME_TRANSITION);
     });
   });
 
