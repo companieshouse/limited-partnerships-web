@@ -1,0 +1,32 @@
+{% extends "layout.njk" %}
+
+{% set pageTitle = i18n.address.confirm.usualResidentialAddress.title %}
+{% set publicRegisterInformationLine1 = i18n.address.confirm.usualResidentialAddress.publicRegisterLine1 %}
+{% set cacheKey = "usual_residential_address_limited_partner" %}
+{% set data = props.data.limitedPartner.data.usual_residential_address_limited_partner %}
+
+{% block backLink %}
+  {% set hrefValue = props.previousUrl %}
+
+  {% if props.data.cache.ura_territory_choice_limited_partner == "overseas" %}
+    {% set hrefValue = props.currentUrl | replace(props.pageType, "enter-limited-partner-usual-residential-address") %}
+  {% endif %}
+
+  {{ govukBackLink({
+    text: "Back",
+    attributes: {
+      "data-event-id": "back-link"
+    },
+    href: hrefValue
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {% include "includes/limited-partner-name.njk" %}
+
+      {% include "pages/address/confirm-address-form.njk" %}
+    </div>
+  </div> 
+{% endblock %}

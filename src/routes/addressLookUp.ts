@@ -291,6 +291,17 @@ export const addressLookUpEndpoints = (router: Router, dependencies: IDependenci
     authentication,
     dependencies.addressLookUpController.selectAddress()
   );
+
+  router.get(
+    url.CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+    authentication,
+    dependencies.addressLookUpController.getPageRouting()
+  );
+  router.post(
+    url.CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+    authentication,
+    dependencies.addressLookUpController.confirmAddress()
+  );
 };
 
 export default addressLookUpEndpoints;

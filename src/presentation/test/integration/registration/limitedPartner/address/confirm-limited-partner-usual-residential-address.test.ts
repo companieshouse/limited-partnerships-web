@@ -1,0 +1,89 @@
+import request from "supertest";
+
+import app from "../../../app";
+import enTranslationText from "../../../../../../../locales/en/translations.json";
+import cyTranslationText from "../../../../../../../locales/cy/translations.json";
+
+import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
+import { CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../../controller/addressLookUp/url";
+import { appDevDependencies } from "../../../../../../config/dev-dependencies";
+import AddressPageType from "../../../../../controller/addressLookUp/PageType";
+import LimitedPartnerBuilder from "../../../../builder/LimitedPartnerBuilder";
+
+describe("Confirm Limited Partner Usual Residential Address Page", () => {
+  const URL = getUrl(CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
+
+  beforeEach(() => {
+    setLocalesEnabled(false);
+    appDevDependencies.cacheRepository.feedCache({
+      [appDevDependencies.transactionGateway.transactionId]: {
+        usual_residential_address_limited_partner: {
+          postal_code: "ST6 3LJ",
+          premises: "4",
+          address_line_1: "line 1",
+          address_line_2: "line 2",
+          locality: "stoke-on-trent",
+          region: "region",
+          country: "England"
+        }
+      }
+    });
+
+    const limitedPartner = new LimitedPartnerBuilder()
+      .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+      .isPerson()
+      .build();
+
+    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
+  });
+
+  describe("GET Confirm Usual Residential Address Page", () => {
+    it("should load the confirm usual residential address page with English text", async () => {
+      setLocalesEnabled(true);
+
+      const res = await request(app).get(URL + "?lang=en");
+
+      expect(res.status).toBe(200);
+      testTranslations(res.text, enTranslationText.address.confirm.usualResidentialAddress);
+      expect(res.text).not.toContain("WELSH -");
+
+      expect(res.text).toContain("4 Line 1");
+      expect(res.text).toContain("Line 2");
+      expect(res.text).toContain("Stoke-On-Trent");
+      expect(res.text).toContain("Region");
+      expect(res.text).toContain("England");
+      expect(res.text).toContain("ST6 3LJ");
+    });
+
+    it("should load the confirm usual residential address page with Welsh text", async () => {
+      setLocalesEnabled(true);
+
+      const res = await request(app).get(URL + "?lang=cy");
+
+      expect(res.status).toBe(200);
+      testTranslations(res.text, cyTranslationText.address.confirm.usualResidentialAddress);
+
+      expect(res.text).toContain("4 Line 1");
+      expect(res.text).toContain("Line 2");
+      expect(res.text).toContain("Stoke-On-Trent");
+      expect(res.text).toContain("Region");
+      expect(res.text).toContain("England");
+      expect(res.text).toContain("ST6 3LJ");
+    });
+
+    it.each([
+      ["overseas", AddressPageType.enterLimitedPartnerUsualResidentialAddress],
+      ["unitedKingdom", AddressPageType.postcodeLimitedPartnerUsualResidentialAddress]
+    ])("should have the correct back link", async (territory, pageType) => {
+      appDevDependencies.cacheRepository.feedCache({
+        [appDevDependencies.transactionGateway.transactionId]: {
+          ["ura_territory_choice_limited_partner"]: territory
+        }
+      });
+
+      const res = await request(app).get(URL);
+
+      expect(res.text).toContain(pageType);
+    });
+  });
+});
