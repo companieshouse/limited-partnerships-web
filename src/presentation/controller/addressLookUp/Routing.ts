@@ -5,6 +5,7 @@ import PageType from "../PageType";
 import {
   ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
   ADD_GENERAL_PARTNER_PERSON_URL,
+  ADD_LIMITED_PARTNER_PERSON_URL,
   REVIEW_GENERAL_PARTNERS_URL,
   TERM_URL,
   WHERE_IS_THE_JURISDICTION_URL,
@@ -362,8 +363,19 @@ const addressRoutingPostcodeLimitedPartnerUsualResidentialAddress = {
   }
 };
 
+const addressRoutingTerritoryChoiceLimitedPartnerUsualResidentialAddress = {
+  previousUrl: ADD_LIMITED_PARTNER_PERSON_URL,
+  currentUrl: url.TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  nextUrl: url.POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  pageType: AddressPageType.territoryChoiceLimitedPartnerUsualResidentialAddress,
+  data: {
+    ...limitedPartnerUsualResidentialAddressCacheKeys
+  }
+};
+
 const limitedPartnerUsualResidentialAddress = [
-  addressRoutingPostcodeLimitedPartnerUsualResidentialAddress
+  addressRoutingPostcodeLimitedPartnerUsualResidentialAddress,
+  addressRoutingTerritoryChoiceLimitedPartnerUsualResidentialAddress
 ];
 
 export const addressLookUpRouting: PagesRouting = new Map<PageType, PageRouting>();
