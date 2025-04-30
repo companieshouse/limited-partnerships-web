@@ -461,91 +461,85 @@ class AddressLookUpController extends AbstractController {
 
   generalPartnerTerritoryChoice() {
     return (request: Request, response: Response, next: NextFunction) => {
-      try {
-        const { ids, pageType } = super.extract(request);
-        const parameter = request.body.parameter;
-        const pageRouting = super.getRouting(addressLookUpRouting, pageType, request);
-
-        const isUnitedKingdom = parameter === "unitedKingdom";
-        const isGeneralPartnerURAPage =
-          pageType === AddressLookUpPageType.territoryChoiceGeneralPartnerUsualResidentialAddress;
-        const isGeneralPartnerPOAPage =
-          pageType === AddressLookUpPageType.territoryChoiceGeneralPartnerPrincipalOfficeAddress;
-        const isGeneralPartnerCorrespondenceAddressPage =
-          pageType === AddressLookUpPageType.territoryChoiceGeneralPartnerCorrespondenceAddress;
-
-        let redirectUrl;
-
-        if (isGeneralPartnerURAPage) {
-          redirectUrl = isUnitedKingdom
-            ? POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
-            : ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL;
-        } else if (isGeneralPartnerPOAPage) {
-          redirectUrl = isUnitedKingdom
-            ? POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
-            : ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL;
-        } else if (isGeneralPartnerCorrespondenceAddressPage) {
-          redirectUrl = isUnitedKingdom
-            ? POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL
-            : ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL;
+      this.handleTerritoryChoice(
+        request,
+        response,
+        next,
+        {
+          [AddressLookUpPageType.territoryChoiceGeneralPartnerUsualResidentialAddress]: {
+            ukUrl: POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+            nonUkUrl: ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
+          },
+          [AddressLookUpPageType.territoryChoiceGeneralPartnerPrincipalOfficeAddress]: {
+            ukUrl: POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+            nonUkUrl: ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
+          },
+          [AddressLookUpPageType.territoryChoiceGeneralPartnerCorrespondenceAddress]: {
+            ukUrl: POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
+            nonUkUrl: ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL
+          }
         }
-
-        redirectUrl = super.insertIdsInUrl(redirectUrl, ids.transactionId, ids.submissionId, ids.generalPartnerId);
-
-        const cacheKey = pageRouting.data?.[AddressCacheKeys.territoryCacheKey];
-
-        if (cacheKey) {
-          const cache = this.cacheService.addDataToCache(request.signedCookies, {
-            [ids.transactionId]: {
-              [cacheKey]: parameter
-            }
-          });
-          response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
-        }
-
-        response.redirect(redirectUrl);
-      } catch (error) {
-        next(error);
-      }
+      );
     };
   }
 
   limitedPartnerTerritoryChoice() {
     return (request: Request, response: Response, next: NextFunction) => {
-      try {
-        const { ids, pageType } = super.extract(request);
-        const parameter = request.body.parameter;
-        const pageRouting = super.getRouting(addressLookUpRouting, pageType, request);
-
-        const isUnitedKingdom = parameter === "unitedKingdom";
-        const isLimitedPartnerURAPage =
-          pageType === AddressLookUpPageType.territoryChoiceLimitedPartnerUsualResidentialAddress;
-
-        let redirectUrl;
-
-        if (isLimitedPartnerURAPage) {
-          redirectUrl = isUnitedKingdom
-            ? POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
-            : ENTER_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL;
+      this.handleTerritoryChoice(
+        request,
+        response,
+        next,
+        {
+          [AddressLookUpPageType.territoryChoiceLimitedPartnerUsualResidentialAddress]: {
+            ukUrl: POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+            nonUkUrl: ENTER_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
+          }
         }
-        redirectUrl = super.insertIdsInUrl(redirectUrl, ids.transactionId, ids.submissionId, "", ids.limitedPartnerId);
-
-        const cacheKey = pageRouting.data?.[AddressCacheKeys.territoryCacheKey];
-
-        if (cacheKey) {
-          const cache = this.cacheService.addDataToCache(request.signedCookies, {
-            [ids.transactionId]: {
-              [cacheKey]: parameter
-            }
-          });
-          response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
-        }
-
-        response.redirect(redirectUrl);
-      } catch (error) {
-        next(error);
-      }
+      );
     };
+  }
+
+  private handleTerritoryChoice(
+    request: Request,
+    response: Response,
+    next: NextFunction,
+    territoryRedirectMappings: Record<string, { ukUrl: string; nonUkUrl: string }>
+  ) {
+    try {
+      const { ids, pageType } = super.extract(request);
+      const parameter = request.body.parameter;
+      const pageRouting = super.getRouting(addressLookUpRouting, pageType, request);
+
+      const isUnitedKingdom = parameter === "unitedKingdom";
+      const mapping = territoryRedirectMappings[pageType];
+
+      if (!mapping) {
+        throw new Error(`No territory redirect mapping found for pageType: ${pageType}`);
+      }
+
+      const redirectUrl = super.insertIdsInUrl(
+        isUnitedKingdom ? mapping.ukUrl : mapping.nonUkUrl,
+        ids.transactionId,
+        ids.submissionId,
+        ids.generalPartnerId || "",
+        ids.limitedPartnerId || ""
+      );
+
+      const cacheKey = pageRouting.data?.[AddressCacheKeys.territoryCacheKey];
+
+      if (cacheKey) {
+        const cache = this.cacheService.addDataToCache(request.signedCookies, {
+          [ids.transactionId]: {
+            [cacheKey]: parameter,
+          },
+        });
+        response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
+      }
+
+      response.redirect(redirectUrl);
+    } catch (error) {
+      next(error);
+    }
   }
 }
 
