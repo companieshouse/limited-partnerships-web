@@ -325,7 +325,9 @@ class AddressLookUpController extends AbstractController {
 
         const address = JSON.parse(request.body?.address);
 
-        const data = this.getAddressData(pageType, address);
+        const data = {
+          [pageRouting.data?.[AddressCacheKeys.addressCacheKey]]: address
+        };
 
         const isGeneralPartnerAddress = AddressLookUpController.GENERAL_PARTNER_ADDRESS_PAGES.has(pageType);
         const isLimitedPartnershipAddress = AddressLookUpController.LIMITED_PARTNER_ADDRESS_PAGES.has(pageType);
@@ -391,27 +393,6 @@ class AddressLookUpController extends AbstractController {
         next(error);
       }
     };
-  }
-
-  private getAddressData(pageType: any, address: any) {
-    let data;
-
-    if (pageType === AddressLookUpPageType.confirmRegisteredOfficeAddress) {
-      data = { registered_office_address: address };
-    } else if (pageType === AddressLookUpPageType.confirmPrincipalPlaceOfBusinessAddress) {
-      data = { principal_place_of_business_address: address };
-    } else if (
-      pageType === AddressLookUpPageType.confirmGeneralPartnerUsualResidentialAddress ||
-      pageType === AddressLookUpPageType.confirmLimitedPartnerUsualResidentialAddress
-    ) {
-      data = { usual_residential_address: address };
-    } else if (pageType === AddressLookUpPageType.confirmGeneralPartnerPrincipalOfficeAddress) {
-      data = { principal_office_address: address };
-    } else if (pageType === AddressLookUpPageType.confirmGeneralPartnerCorrespondenceAddress) {
-      data = { service_address: address };
-    }
-
-    return data;
   }
 
   private async handleAddressNotFound(
