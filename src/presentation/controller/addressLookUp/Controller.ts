@@ -56,7 +56,9 @@ class AddressLookUpController extends AbstractController {
   ]);
 
   private static readonly LIMITED_PARTNER_ADDRESS_PAGES: Set<PageType | PageDefault> = new Set([
-    AddressLookUpPageType.postcodeLimitedPartnerUsualResidentialAddress
+    AddressLookUpPageType.postcodeLimitedPartnerUsualResidentialAddress,
+    AddressLookUpPageType.enterLimitedPartnerUsualResidentialAddress,
+    AddressLookUpPageType.confirmLimitedPartnerUsualResidentialAddress
   ]);
 
   constructor(
@@ -188,7 +190,11 @@ class AddressLookUpController extends AbstractController {
 
           response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { limitedPartnership, generalPartner, limitedPartner, ...request.body }, errors)
+            super.makeProps(
+              pageRouting,
+              { limitedPartnership, generalPartner, limitedPartner, ...request.body },
+              errors
+            )
           );
           return;
         }
@@ -322,12 +328,15 @@ class AddressLookUpController extends AbstractController {
         const data = this.getAddressData(pageType, address);
 
         const isGeneralPartnerAddress = AddressLookUpController.GENERAL_PARTNER_ADDRESS_PAGES.has(pageType);
+        const isLimitedPartnershipAddress = AddressLookUpController.LIMITED_PARTNER_ADDRESS_PAGES.has(pageType);
 
         // store in api
         let result;
 
         if (isGeneralPartnerAddress) {
           result = await this.generalPartnerService.sendPageData(tokens, ids.transactionId, ids.generalPartnerId, data);
+        } else if (isLimitedPartnershipAddress) {
+          result = await this.limitedPartnerService.sendPageData(tokens, ids.transactionId, ids.limitedPartnerId, data);
         } else {
           result = await this.limitedPartnershipService.sendPageData(
             tokens,
@@ -347,6 +356,12 @@ class AddressLookUpController extends AbstractController {
               tokens,
               ids.transactionId,
               ids.generalPartnerId
+            );
+          } else if (isLimitedPartnershipAddress) {
+            limitedPartnership = await this.limitedPartnerService.getLimitedPartner(
+              tokens,
+              ids.transactionId,
+              ids.limitedPartnerId
             );
           } else {
             limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
@@ -385,7 +400,10 @@ class AddressLookUpController extends AbstractController {
       data = { registered_office_address: address };
     } else if (pageType === AddressLookUpPageType.confirmPrincipalPlaceOfBusinessAddress) {
       data = { principal_place_of_business_address: address };
-    } else if (pageType === AddressLookUpPageType.confirmGeneralPartnerUsualResidentialAddress) {
+    } else if (
+      pageType === AddressLookUpPageType.confirmGeneralPartnerUsualResidentialAddress ||
+      pageType === AddressLookUpPageType.confirmLimitedPartnerUsualResidentialAddress
+    ) {
       data = { usual_residential_address: address };
     } else if (pageType === AddressLookUpPageType.confirmGeneralPartnerPrincipalOfficeAddress) {
       data = { principal_office_address: address };

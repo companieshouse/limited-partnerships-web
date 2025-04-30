@@ -5,10 +5,12 @@ import enTranslationText from "../../../../../../../locales/en/translations.json
 import cyTranslationText from "../../../../../../../locales/cy/translations.json";
 
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
-import { CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../../controller/addressLookUp/url";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import LimitedPartnerBuilder from "../../../../builder/LimitedPartnerBuilder";
+import { CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../../controller/addressLookUp/url";
+import { CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/registration/url";
+import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
 
 describe("Confirm Limited Partner Usual Residential Address Page", () => {
   const URL = getUrl(CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
@@ -84,6 +86,65 @@ describe("Confirm Limited Partner Usual Residential Address Page", () => {
       const res = await request(app).get(URL);
 
       expect(res.text).toContain(pageType);
+    });
+  });
+
+  describe("POST Confirm Usual Residential Address Page", () => {
+    it("should redirect to the next page", async () => {
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: AddressPageType.confirmLimitedPartnerUsualResidentialAddress,
+          address: `{
+            "postal_code": "ST6 3LJ",
+            "premises": "4",
+            "address_line_1": "DUNCALF STREET",
+            "address_line_2": "",
+            "locality": "STOKE-ON-TRENT",
+            "country": "England"
+          }`
+        });
+
+      const redirectUrl = getUrl(CHECK_YOUR_ANSWERS_URL);
+
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+    });
+
+    it("should show error message if address is not provided", async () => {
+      appDevDependencies.cacheRepository.feedCache({});
+
+      const res = await request(app).post(URL).send({
+        pageType: AddressPageType.confirmLimitedPartnerUsualResidentialAddress
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain("You must provide an address");
+    });
+
+    it("should show validation error message if validation error occurs when saving address", async () => {
+      const limitedPartner = new LimitedPartnerBuilder()
+        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+        .isPerson()
+        .build();
+
+      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
+
+      const apiErrors: ApiErrors = {
+        errors: {
+          "usualResidentialAddress.country": "must not be null"
+        }
+      };
+
+      appDevDependencies.limitedPartnerGateway.feedErrors(apiErrors);
+
+      const res = await request(app).post(URL).send({
+        pageType: AddressPageType.confirmLimitedPartnerUsualResidentialAddress,
+        address: `{"postal_code": "ST6 3LJ","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": ""}`
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain("must not be null");
     });
   });
 });
