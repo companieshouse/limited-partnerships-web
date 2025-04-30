@@ -58,5 +58,13 @@ export const CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_TEMPLATE =
 // LIMITED PARTNER
 
 // usual residential address - Person
+export const TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_TEMPLATE =
+  AddressPageType.territoryChoiceLimitedPartnerUsualResidentialAddress;
 export const POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_TEMPLATE =
   AddressPageType.postcodeLimitedPartnerUsualResidentialAddress;
+export const CHOOSE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_TEMPLATE =
+  AddressPageType.chooseLimitedPartnerUsualResidentialAddress;
+export const ENTER_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_TEMPLATE =
+  AddressPageType.enterLimitedPartnerUsualResidentialAddress;
+export const CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_TEMPLATE =
+  AddressPageType.confirmLimitedPartnerUsualResidentialAddress;

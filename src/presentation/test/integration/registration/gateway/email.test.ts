@@ -6,11 +6,7 @@ import CacheRepository from "../../../../../infrastructure/repository/CacheRepos
 
 import appRealDependencies from "../../../../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import {
-  EMAIL_URL,
-  NAME_URL,
-  WHERE_IS_THE_JURISDICTION_URL
-} from "../../../../controller/registration/url";
+import { EMAIL_URL, NAME_URL, WHERE_IS_THE_JURISDICTION_URL } from "../../../../controller/registration/url";
 import RegistrationPageType from "../../../../controller/registration/PageType";
 import enTranslationText from "../../../../../../locales/en/translations.json";
 import sdkMock from "../../mock/sdkMock";

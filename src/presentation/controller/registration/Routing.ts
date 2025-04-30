@@ -7,7 +7,8 @@ import {
   CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-  POSTCODE_REGISTERED_OFFICE_ADDRESS_URL
+  POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
+  POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "../addressLookUp/url";
 
 const registrationRoutingPartnershipType = {
@@ -121,7 +122,7 @@ const registrationRoutingLimitedPartnerChoice = {
 const registrationRoutingAddLimitedPartnerPerson = {
   previousUrl: url.LIMITED_PARTNER_CHOICE_URL,
   currentUrl: url.ADD_LIMITED_PARTNER_PERSON_URL,
-  nextUrl: url.CHECK_YOUR_ANSWERS_URL,
+  nextUrl: POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL, // TODO Change to territory choice page
   pageType: RegistrationPageType.addLimitedPartnerPerson
 };
 
@@ -131,6 +132,8 @@ const registrationRoutingAddLimitedPartnerLegalEntity = {
   nextUrl: url.CHECK_YOUR_ANSWERS_URL,
   pageType: RegistrationPageType.addLimitedPartnerLegalEntity
 };
+
+// usual residential address
 
 export const registrationRoutingCheckYourAnswers = {
   previousUrl: url.LIMITED_PARTNER_CHOICE_URL,
