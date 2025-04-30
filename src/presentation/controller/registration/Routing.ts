@@ -133,6 +133,8 @@ const registrationRoutingAddLimitedPartnerLegalEntity = {
   pageType: RegistrationPageType.addLimitedPartnerLegalEntity
 };
 
+// usual residential address
+
 export const registrationRoutingCheckYourAnswers = {
   previousUrl: url.LIMITED_PARTNER_CHOICE_URL,
   currentUrl: url.CHECK_YOUR_ANSWERS_URL,

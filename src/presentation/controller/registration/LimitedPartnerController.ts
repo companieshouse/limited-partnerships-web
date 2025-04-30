@@ -5,10 +5,7 @@ import LimitedPartnerService from "../../../application/service/LimitedPartnerSe
 import registrationsRouting from "./Routing";
 import AbstractController from "../AbstractController";
 import RegistrationPageType from "./PageType";
-import {
-  ADD_LIMITED_PARTNER_PERSON_URL,
-  ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL
-} from "./url";
+import { ADD_LIMITED_PARTNER_PERSON_URL, ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL } from "./url";
 
 class LimitedPartnerController extends AbstractController {
   private readonly limitedPartnershipService: LimitedPartnershipService;

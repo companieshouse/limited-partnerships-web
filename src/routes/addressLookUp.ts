@@ -97,6 +97,8 @@ export const addressLookUpEndpoints = (router: Router, dependencies: IDependenci
     dependencies.addressLookUpController.confirmAddress()
   );
 
+  // GENERAL PARTNER
+
   // usual residential address
   router.get(
     url.TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
@@ -288,6 +290,17 @@ export const addressLookUpEndpoints = (router: Router, dependencies: IDependenci
     url.TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
     authentication,
     dependencies.addressLookUpController.limitedPartnerTerritoryChoice()
+  );
+
+  router.get(
+    url.CHOOSE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+    authentication,
+    dependencies.addressLookUpController.getPageRouting()
+  );
+  router.post(
+    url.CHOOSE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+    authentication,
+    dependencies.addressLookUpController.selectAddress()
   );
 };
 

@@ -13,6 +13,7 @@ import LimitedPartnerBuilder, {
 } from "../../../../builder/LimitedPartnerBuilder";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import {
+  CHOOSE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "../../../../../controller/addressLookUp/url";
 import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
@@ -20,7 +21,7 @@ import { CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/registration/u
 
 describe("Postcode Usual Residential Address Page", () => {
   const URL = getUrl(POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
-  const REDIRECT_URL = getUrl(CHECK_YOUR_ANSWERS_URL); // TODO change to choose url
+  const REDIRECT_URL = getUrl(CHOOSE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
 
   beforeEach(() => {
     setLocalesEnabled(false);
@@ -50,8 +51,9 @@ describe("Postcode Usual Residential Address Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        toEscapedHtml(enTranslationText.address.findPostcode.limitedPartner.usualResidentialAddress.whatIsUsualResidentialAddress) +
-          ` - ${enTranslationText.service} - GOV.UK`
+        toEscapedHtml(
+          enTranslationText.address.findPostcode.limitedPartner.usualResidentialAddress.whatIsUsualResidentialAddress
+        ) + ` - ${enTranslationText.service} - GOV.UK`
       );
       testTranslations(res.text, enTranslationText.address.findPostcode, [
         "registeredOfficeAddress",
@@ -82,8 +84,9 @@ describe("Postcode Usual Residential Address Page", () => {
       expect(res.status).toBe(200);
 
       expect(res.text).toContain(
-        toEscapedHtml(cyTranslationText.address.findPostcode.limitedPartner.usualResidentialAddress.whatIsUsualResidentialAddress) +
-          ` - ${cyTranslationText.service} - GOV.UK`
+        toEscapedHtml(
+          cyTranslationText.address.findPostcode.limitedPartner.usualResidentialAddress.whatIsUsualResidentialAddress
+        ) + ` - ${cyTranslationText.service} - GOV.UK`
       );
       testTranslations(res.text, cyTranslationText.address.findPostcode, [
         "registeredOfficeAddress",
@@ -203,7 +206,9 @@ describe("Postcode Usual Residential Address Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(`The postcode AA1 1AA cannot be found`);
-      expect(res.text).toContain(`${limitedPartner.data?.forename?.toUpperCase()} ${limitedPartner.data?.surname?.toUpperCase()}`);
+      expect(res.text).toContain(
+        `${limitedPartner.data?.forename?.toUpperCase()} ${limitedPartner.data?.surname?.toUpperCase()}`
+      );
 
       expect(appDevDependencies.cacheRepository.cache).toEqual(null);
     });
