@@ -1,14 +1,14 @@
- {# journeyTypes is set on res.locals in journey.detection.middleware #}
-  {% if journeyTypes.isRegistration %}
-    {% set serviceName = SERVICE_NAME_REGISTRATION %}
-  {% elif journeyTypes.isTransition %}
-    {% set serviceName = SERVICE_NAME_TRANSITION %}
-  {% endif %}
+{# journeyTypes is set on res.locals in journey.detection.middleware #}
+{% if journeyTypes.isRegistration %}
+  {% set serviceName = SERVICE_NAME_REGISTRATION %}
+{% elif journeyTypes.isTransition %}
+  {% set serviceName = SERVICE_NAME_TRANSITION %}
+{% endif %}
 
-  {{ govukHeader({
-    homepageUrl: "//www.gov.uk",
-    serviceName: serviceName,
-    serviceUrl: "/limited-partnerships",
-    containerClasses: "govuk-width-container",
-    useTudorCrown: true
-  }) }}
+{{ govukHeader({
+  homepageUrl: "//www.gov.uk",
+  serviceName: serviceName,
+  serviceUrl: "/limited-partnerships",
+  containerClasses: "govuk-width-container",
+  useTudorCrown: true
+}) }}
