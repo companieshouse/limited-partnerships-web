@@ -470,7 +470,7 @@ const addressRoutingEnterLimitedPartnerPrincipalOfficeAddress = {
 const addressRoutingConfirmLimitedPartnerPrincipalOfficeAddress = {
   previousUrl: url.POSTCODE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   currentUrl: url.CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
-  nextUrl: CHECK_YOUR_ANSWERS_URL, // TODO Change to REVIEW_LIMITED_PARTNERS_URL
+  nextUrl: CHECK_YOUR_ANSWERS_URL, // TODO Change to REVIEW_LIMITED_PARTNERS_URL NOSONAR
   pageType: AddressPageType.confirmLimitedPartnerPrincipalOfficeAddress,
   data: {
     ...limitedPartnerPrincipalOfficeAddressCacheKeys,
