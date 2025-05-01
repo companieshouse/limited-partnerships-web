@@ -10,7 +10,7 @@ import {
   ENTER_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
 } from "../../../../../controller/addressLookUp/url";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
-import LimitedPartnerBuilder, { limitedPartnerPerson } from "../../../../builder/LimitedPartnerBuilder";
+import LimitedPartnerBuilder, { limitedPartnerLegalEntity } from "../../../../builder/LimitedPartnerBuilder";
 import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
 
 describe("Limited Partner Principal Office Address Territory Choice", () => {
@@ -49,7 +49,7 @@ describe("Limited Partner Principal Office Address Territory Choice", () => {
 
     it("should contain the limited partner name - data from API", async () => {
       const limitedPartner = new LimitedPartnerBuilder()
-        .isPerson()
+        .isLegalEntity()
         .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
         .build();
 
@@ -59,7 +59,7 @@ describe("Limited Partner Principal Office Address Territory Choice", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${limitedPartnerPerson.forename.toUpperCase()} ${limitedPartnerPerson.surname.toUpperCase()}`
+        `${limitedPartnerLegalEntity.legal_entity_name.toUpperCase()}`
       );
     });
   });
