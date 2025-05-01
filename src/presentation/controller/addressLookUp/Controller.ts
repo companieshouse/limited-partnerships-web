@@ -52,8 +52,9 @@ class AddressLookUpController extends AbstractController {
     AddressLookUpPageType.postcodeLimitedPartnerUsualResidentialAddress,
     AddressLookUpPageType.postcodeLimitedPartnerPrincipalOfficeAddress,
     AddressLookUpPageType.enterLimitedPartnerUsualResidentialAddress,
+    AddressLookUpPageType.enterLimitedPartnerPrincipalOfficeAddress,
     AddressLookUpPageType.confirmLimitedPartnerUsualResidentialAddress,
-    AddressLookUpPageType.enterLimitedPartnerPrincipalOfficeAddress
+    AddressLookUpPageType.confirmLimitedPartnerPrincipalOfficeAddress
   ]);
 
   constructor(
@@ -473,8 +474,8 @@ class AddressLookUpController extends AbstractController {
         if (cacheKey) {
           const cache = this.cacheService.addDataToCache(request.signedCookies, {
             [ids.transactionId]: {
-              [cacheKey]: parameter,
-            },
+              [cacheKey]: parameter
+            }
           });
           response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
         }
