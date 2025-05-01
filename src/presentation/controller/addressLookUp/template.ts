@@ -68,3 +68,15 @@ export const ENTER_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_TEMPLATE =
   AddressPageType.enterLimitedPartnerUsualResidentialAddress;
 export const CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_TEMPLATE =
   AddressPageType.confirmLimitedPartnerUsualResidentialAddress;
+
+// principal office address - Legal entity
+export const TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_TEMPLATE =
+  AddressPageType.territoryChoiceLimitedPartnerPrincipalOfficeAddress;
+export const POSTCODE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_TEMPLATE =
+  AddressPageType.postcodeLimitedPartnerPrincipalOfficeAddress;
+export const CHOOSE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_TEMPLATE =
+  AddressPageType.chooseLimitedPartnerPrincipalOfficeAddress;
+export const ENTER_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_TEMPLATE =
+  AddressPageType.enterLimitedPartnerPrincipalOfficeAddress;
+export const CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_TEMPLATE =
+  AddressPageType.confirmLimitedPartnerPrincipalOfficeAddress;
