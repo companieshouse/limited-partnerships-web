@@ -82,6 +82,7 @@ describe("Limited Partner Principal Office Address Territory Choice", () => {
         }
       });
     });
+
     it("should redirect to What is the limited partners POA? manual entry page when overseas is selected", async () => {
       const OVERSEAS_PARAMETER = "overseas";
       const MANUAL_ENTRY_URL = getUrl(ENTER_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
