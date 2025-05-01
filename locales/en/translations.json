@@ -130,7 +130,7 @@
             },
             "limitedPartnerUsualResidentialAddress": {
                 "title": "Confirm the limited partner's usual residential address",
-                "publicRegisterLine1": "We'll show the limited partner's usual residential address."
+                "publicRegisterLine1": "We will not show the limited partner's usual residential address."
             },
             "limitedPartnerPrincipalOfficeAddress": {
                 "title": "Confirm the limited partner's principal office address",
