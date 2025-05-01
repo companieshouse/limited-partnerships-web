@@ -100,6 +100,9 @@
             },
             "limitedPartnerUsualResidentialAddress" : {
                 "title" : "Choose the usual residential address of the limited partner"
+            },
+            "limitedPartnerPrincipalOfficeAddress": {
+                "title": "Choose the limited partner's principal office address"
             }
         },
 

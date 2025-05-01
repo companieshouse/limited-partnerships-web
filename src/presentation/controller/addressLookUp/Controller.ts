@@ -42,7 +42,8 @@ class AddressLookUpController extends AbstractController {
     AddressLookUpPageType.chooseGeneralPartnerUsualResidentialAddress,
     AddressLookUpPageType.chooseGeneralPartnerPrincipalOfficeAddress,
     AddressLookUpPageType.chooseGeneralPartnerCorrespondenceAddress,
-    AddressLookUpPageType.chooseLimitedPartnerUsualResidentialAddress
+    AddressLookUpPageType.chooseLimitedPartnerUsualResidentialAddress,
+    AddressLookUpPageType.chooseLimitedPartnerPrincipalOfficeAddress
   ]);
 
   private static readonly GENERAL_PARTNER_ADDRESS_PAGES: Set<PageType | PageDefault> = new Set([
