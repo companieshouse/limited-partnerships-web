@@ -221,7 +221,7 @@
                     "publicRegisterLine1": "We will not show the general partner's usual residential address."
                 },
                 "principalOfficeAddress": {
-                    "whatIsPrincipalOfficeAddress": "What is the the general partner's principal office address?",
+                    "whatIsPrincipalOfficeAddress": "What is the general partner's principal office address?",
                     "publicRegisterLine1": "We will not show the general partner's principal office address."
                 },
                 "correspondenceAddress": {
@@ -235,6 +235,10 @@
                 "usualResidentialAddress": {
                     "whatIsUsualResidentialAddress": "What is the limited partner's usual residential address?",
                     "publicRegisterLine1": "We will not show the limited partner's usual residential address on the public register."
+                },
+                "principalOfficeAddress": {
+                    "whatIsPrincipalOfficeAddress": "What is the limited partner's principal office address?",
+                    "publicRegisterLine1": "We'll show the limited partner's principal office address on the public register."
                 }
             },
 

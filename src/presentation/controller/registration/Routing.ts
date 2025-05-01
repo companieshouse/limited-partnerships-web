@@ -4,11 +4,12 @@ import RegistrationPageType from "./PageType";
 import PageType from "../PageType";
 import * as url from "./url";
 import {
+  POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
   CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-  POSTCODE_REGISTERED_OFFICE_ADDRESS_URL
+  TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
 } from "../addressLookUp/url";
 
 const registrationRoutingPartnershipType = {
@@ -129,7 +130,7 @@ const registrationRoutingAddLimitedPartnerPerson = {
 const registrationRoutingAddLimitedPartnerLegalEntity = {
   previousUrl: url.LIMITED_PARTNER_CHOICE_URL,
   currentUrl: url.ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
-  nextUrl: url.CHECK_YOUR_ANSWERS_URL,
+  nextUrl: TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   pageType: RegistrationPageType.addLimitedPartnerLegalEntity
 };
 
