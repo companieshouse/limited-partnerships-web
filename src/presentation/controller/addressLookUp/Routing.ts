@@ -467,10 +467,11 @@ const addressRoutingEnterLimitedPartnerPrincipalOfficeAddress = {
   }
 };
 
+// TODO Remove this TODO NOSONAR
 const addressRoutingConfirmLimitedPartnerPrincipalOfficeAddress = {
   previousUrl: url.POSTCODE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   currentUrl: url.CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
-  nextUrl: CHECK_YOUR_ANSWERS_URL, // TODO Change to REVIEW_LIMITED_PARTNERS_URL NOSONAR
+  nextUrl: CHECK_YOUR_ANSWERS_URL, // TODO Change to REVIEW_LIMITED_PARTNERS_URL
   pageType: AddressPageType.confirmLimitedPartnerPrincipalOfficeAddress,
   data: {
     ...limitedPartnerPrincipalOfficeAddressCacheKeys,
