@@ -2,14 +2,14 @@
 
 {% set pageTitle = i18n.address.confirm.correspondenceAddress.title %}
 {% set publicRegisterInformationLine1 = i18n.address.confirm.correspondenceAddress.publicRegisterLine1 %}
-{% set cacheKey = "service_address" %}
+{% set cacheKey = props.data.addressCacheKey %}
 {% set data = props.data.generalPartner.data.service_address %}
 
 {% block backLink %}
   {% set hrefValue = props.previousUrl %}
 
   {% if props.data.cache.sa_territory_choice == "overseas" %}
-     {% set hrefValue = props.currentUrl | replace(props.pageType, "enter-general-partner-correspondence-address") %}
+     {% set hrefValue = props.currentUrl | replace(props.pageType, props.data.enterManualAddressPageType) %}
   {% endif %}
 
   {{ govukBackLink({

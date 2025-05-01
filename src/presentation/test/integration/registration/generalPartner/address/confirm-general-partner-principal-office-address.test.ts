@@ -5,7 +5,11 @@ import enTranslationText from "../../../../../../../locales/en/translations.json
 import cyTranslationText from "../../../../../../../locales/cy/translations.json";
 
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
-import { CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../../../../controller/addressLookUp/url";
+import {
+  CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
+} from "../../../../../controller/addressLookUp/url";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import GeneralPartnerBuilder from "../../../../builder/GeneralPartnerBuilder";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
@@ -71,6 +75,21 @@ describe("Confirm General Partner Principal Office Address Page", () => {
       expect(res.text).toContain("Region");
       expect(res.text).toContain("England");
       expect(res.text).toContain("ST6 3LJ");
+    });
+
+    it.each([
+      ["overseas", getUrl(ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL)],
+      ["unitedKingdom", getUrl(POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL)]
+    ])("should have the correct back link", async (territory, backLink) => {
+      appDevDependencies.cacheRepository.feedCache({
+        [appDevDependencies.transactionGateway.transactionId]: {
+          poa_territory_choice: territory
+        }
+      });
+
+      const res = await request(app).get(URL);
+
+      expect(res.text).toContain(backLink);
     });
   });
 

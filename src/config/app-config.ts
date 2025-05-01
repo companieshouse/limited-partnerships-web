@@ -60,7 +60,7 @@ export const appConfig = (app: express.Application) => {
   // middlewares
   app.use(serviceAvailabilityMiddleware);
   app.use(config.excludedPaths, journeyDetectionMiddleware);
-  app.use(localisationMiddleware);
+  app.use(config.excludedPaths, localisationMiddleware);
 
   const cookieConfig = {
     cookieName: "__SID",

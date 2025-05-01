@@ -169,7 +169,8 @@ const addressRoutingEnterGeneralPartnerUsualResidentialAddress = {
   nextUrl: url.CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   pageType: AddressPageType.enterGeneralPartnerUsualResidentialAddress,
   data: {
-    ...usualResidentialAddressCacheKeys
+    ...usualResidentialAddressCacheKeys,
+    territoryPageType: AddressPageType.territoryChoiceGeneralPartnerUsualResidentialAddress
   }
 };
 
@@ -249,7 +250,8 @@ const addressRoutingEnterGeneralPartnerCorrespondenceAddress = {
   nextUrl: url.CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   pageType: AddressPageType.enterGeneralPartnerCorrespondenceAddress,
   data: {
-    ...correspondenceAddressCacheKeys
+    ...correspondenceAddressCacheKeys,
+    territoryPageType: AddressPageType.territoryChoiceGeneralPartnerCorrespondenceAddress
   }
 };
 
@@ -318,7 +320,8 @@ const addressRoutingEnterGeneralPartnerPrincipalOfficeAddress = {
   nextUrl: url.CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   pageType: AddressPageType.enterGeneralPartnerPrincipalOfficeAddress,
   data: {
-    ...principalOfficeAddressCacheKeys
+    ...principalOfficeAddressCacheKeys,
+    territoryPageType: AddressPageType.territoryChoiceGeneralPartnerPrincipalOfficeAddress
   }
 };
 
@@ -367,16 +370,38 @@ const addressRoutingPostcodeLimitedPartnerUsualResidentialAddress = {
   pageType: AddressPageType.postcodeLimitedPartnerUsualResidentialAddress,
   data: {
     ...limitedPartnerUsualResidentialAddressCacheKeys,
-    enterManualAddressPageType: CHECK_YOUR_ANSWERS_URL,
-    confirmAddressUrl: CHECK_YOUR_ANSWERS_URL // TODO Change to confirm address page
+    enterManualAddressPageType: AddressPageType.enterLimitedPartnerUsualResidentialAddress,
+    confirmAddressUrl: url.CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
   }
 };
 
 const addressRoutingChooseLimitedPartnerUsualResidentialAddress = {
   previousUrl: url.POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   currentUrl: url.CHOOSE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-  nextUrl: CHECK_YOUR_ANSWERS_URL, // TODO Change to confirm address page
+  nextUrl: url.CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   pageType: AddressPageType.chooseLimitedPartnerUsualResidentialAddress,
+  data: {
+    ...limitedPartnerUsualResidentialAddressCacheKeys,
+    enterManualAddressPageType: AddressPageType.enterLimitedPartnerUsualResidentialAddress
+  }
+};
+
+const addressRoutingEnterLimitedPartnerUsualResidentialAddress = {
+  previousUrl: url.POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  currentUrl: url.ENTER_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  nextUrl: url.CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  pageType: AddressPageType.enterLimitedPartnerUsualResidentialAddress,
+  data: {
+    ...limitedPartnerUsualResidentialAddressCacheKeys,
+    territoryPageType: AddressPageType.territoryChoiceLimitedPartnerUsualResidentialAddress
+  }
+};
+
+const addressRoutingConfirmLimitedPartnerUsualResidentialAddress = {
+  previousUrl: url.POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  currentUrl: url.CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  nextUrl: CHECK_YOUR_ANSWERS_URL, // TODO Change to REVIEW_LIMITED_PARTNERS_URL
+  pageType: AddressPageType.confirmLimitedPartnerUsualResidentialAddress,
   data: {
     ...limitedPartnerUsualResidentialAddressCacheKeys,
     enterManualAddressPageType: AddressPageType.enterLimitedPartnerUsualResidentialAddress
@@ -386,8 +411,9 @@ const addressRoutingChooseLimitedPartnerUsualResidentialAddress = {
 const limitedPartnerUsualResidentialAddress = [
   addressRoutingTerritoryChoiceLimitedPartnerUsualResidentialAddress,
   addressRoutingPostcodeLimitedPartnerUsualResidentialAddress,
-  addressRoutingChooseLimitedPartnerUsualResidentialAddress
-
+  addressRoutingChooseLimitedPartnerUsualResidentialAddress,
+  addressRoutingEnterLimitedPartnerUsualResidentialAddress,
+  addressRoutingConfirmLimitedPartnerUsualResidentialAddress
 ];
 
 export const addressLookUpRouting: PagesRouting = new Map<PageType, PageRouting>();

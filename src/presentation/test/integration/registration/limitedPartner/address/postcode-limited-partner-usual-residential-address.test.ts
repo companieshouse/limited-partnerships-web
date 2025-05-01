@@ -14,10 +14,10 @@ import LimitedPartnerBuilder, {
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import {
   CHOOSE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "../../../../../controller/addressLookUp/url";
 import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
-import { CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/registration/url";
 
 describe("Postcode Usual Residential Address Page", () => {
   const URL = getUrl(POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
@@ -135,7 +135,7 @@ describe("Postcode Usual Residential Address Page", () => {
         postal_code: appDevDependencies.addressLookUpGateway.englandAddresses[0].postcode
       });
 
-      const REDIRECT_URL = getUrl(CHECK_YOUR_ANSWERS_URL); // TODO Change to confirm page url
+      const REDIRECT_URL = getUrl(CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
@@ -163,7 +163,7 @@ describe("Postcode Usual Residential Address Page", () => {
         postal_code: appDevDependencies.addressLookUpGateway.englandAddresses[0].postcode.toUpperCase()
       });
 
-      const REDIRECT_URL = getUrl(CHECK_YOUR_ANSWERS_URL); // TODO Change to confirm url
+      const REDIRECT_URL = getUrl(CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
@@ -183,7 +183,7 @@ describe("Postcode Usual Residential Address Page", () => {
         postal_code: appDevDependencies.addressLookUpGateway.englandAddresses[0].postcode.toLowerCase()
       });
 
-      const REDIRECT_URL = getUrl(CHECK_YOUR_ANSWERS_URL); // TODO Change to confirm url
+      const REDIRECT_URL = getUrl(CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
