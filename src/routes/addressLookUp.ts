@@ -108,7 +108,7 @@ export const addressLookUpEndpoints = (router: Router, dependencies: IDependenci
   router.post(
     url.TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
     authentication,
-    dependencies.addressLookUpController.generalPartnerTerritoryChoice()
+    dependencies.addressLookUpController.handleTerritoryChoice()
   );
 
   router.get(
@@ -164,7 +164,7 @@ export const addressLookUpEndpoints = (router: Router, dependencies: IDependenci
   router.post(
     url.TERRITORY_CHOICE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
     authentication,
-    dependencies.addressLookUpController.generalPartnerTerritoryChoice()
+    dependencies.addressLookUpController.handleTerritoryChoice()
   );
 
   router.get(
@@ -220,7 +220,7 @@ export const addressLookUpEndpoints = (router: Router, dependencies: IDependenci
   router.post(
     url.TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
     authentication,
-    dependencies.addressLookUpController.generalPartnerTerritoryChoice()
+    dependencies.addressLookUpController.handleTerritoryChoice()
   );
 
   router.get(
@@ -289,7 +289,7 @@ export const addressLookUpEndpoints = (router: Router, dependencies: IDependenci
   router.post(
     url.TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
     authentication,
-    dependencies.addressLookUpController.limitedPartnerTerritoryChoice()
+    dependencies.addressLookUpController.handleTerritoryChoice()
   );
 
   router.get(
