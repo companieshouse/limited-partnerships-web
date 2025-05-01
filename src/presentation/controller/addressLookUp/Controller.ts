@@ -13,16 +13,6 @@ import UIErrors from "../../../domain/entities/UIErrors";
 import { PageDefault, PageRouting, pageRoutingDefault } from "../PageRouting";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
-import {
-  ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
-  ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
-  ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-  ENTER_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-  POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
-  POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
-  POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-  POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
-} from "./url";
 import PageType from "../PageType";
 
 class AddressLookUpController extends AbstractController {
@@ -458,87 +448,39 @@ class AddressLookUpController extends AbstractController {
     };
   }
 
-  generalPartnerTerritoryChoice() {
+  handleTerritoryChoice() {
     return (request: Request, response: Response, next: NextFunction) => {
-      this.handleTerritoryChoice(
-        request,
-        response,
-        next,
-        {
-          [AddressLookUpPageType.territoryChoiceGeneralPartnerUsualResidentialAddress]: {
-            ukUrl: POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-            nonUkUrl: ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
-          },
-          [AddressLookUpPageType.territoryChoiceGeneralPartnerPrincipalOfficeAddress]: {
-            ukUrl: POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
-            nonUkUrl: ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
-          },
-          [AddressLookUpPageType.territoryChoiceGeneralPartnerCorrespondenceAddress]: {
-            ukUrl: POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
-            nonUkUrl: ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL
-          }
+      try {
+        const { ids, pageType } = super.extract(request);
+        const parameter = request.body.parameter;
+        const pageRouting = super.getRouting(addressLookUpRouting, pageType, request);
+
+        const isUnitedKingdom = parameter === "unitedKingdom";
+
+        const redirectUrl = super.insertIdsInUrl(
+          isUnitedKingdom ? pageRouting.nextUrl : pageRouting.data?.["nextUrlOverseas"],
+          ids.transactionId,
+          ids.submissionId,
+          ids.generalPartnerId || "",
+          ids.limitedPartnerId || ""
+        );
+
+        const cacheKey = pageRouting.data?.[AddressCacheKeys.territoryCacheKey];
+
+        if (cacheKey) {
+          const cache = this.cacheService.addDataToCache(request.signedCookies, {
+            [ids.transactionId]: {
+              [cacheKey]: parameter,
+            },
+          });
+          response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
         }
-      );
-    };
-  }
 
-  limitedPartnerTerritoryChoice() {
-    return (request: Request, response: Response, next: NextFunction) => {
-      this.handleTerritoryChoice(
-        request,
-        response,
-        next,
-        {
-          [AddressLookUpPageType.territoryChoiceLimitedPartnerUsualResidentialAddress]: {
-            ukUrl: POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-            nonUkUrl: ENTER_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
-          }
-        }
-      );
-    };
-  }
-
-  private handleTerritoryChoice(
-    request: Request,
-    response: Response,
-    next: NextFunction,
-    territoryRedirectMappings: Record<string, { ukUrl: string; nonUkUrl: string }>
-  ) {
-    try {
-      const { ids, pageType } = super.extract(request);
-      const parameter = request.body.parameter;
-      const pageRouting = super.getRouting(addressLookUpRouting, pageType, request);
-
-      const isUnitedKingdom = parameter === "unitedKingdom";
-      const mapping = territoryRedirectMappings[pageType];
-
-      if (!mapping) {
-        throw new Error(`No territory redirect mapping found for pageType: ${pageType}`);
+        response.redirect(redirectUrl);
+      } catch (error) {
+        next(error);
       }
-
-      const redirectUrl = super.insertIdsInUrl(
-        isUnitedKingdom ? mapping.ukUrl : mapping.nonUkUrl,
-        ids.transactionId,
-        ids.submissionId,
-        ids.generalPartnerId || "",
-        ids.limitedPartnerId || ""
-      );
-
-      const cacheKey = pageRouting.data?.[AddressCacheKeys.territoryCacheKey];
-
-      if (cacheKey) {
-        const cache = this.cacheService.addDataToCache(request.signedCookies, {
-          [ids.transactionId]: {
-            [cacheKey]: parameter,
-          },
-        });
-        response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
-      }
-
-      response.redirect(redirectUrl);
-    } catch (error) {
-      next(error);
-    }
+    };
   }
 }
 

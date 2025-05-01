@@ -147,7 +147,8 @@ const addressRoutingTerritoryChoiceGeneralPartnerUsualResidentialAddress = {
   nextUrl: url.POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   pageType: AddressPageType.territoryChoiceGeneralPartnerUsualResidentialAddress,
   data: {
-    ...usualResidentialAddressCacheKeys
+    ...usualResidentialAddressCacheKeys,
+    nextUrlOverseas: url.ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
   }
 };
 
@@ -217,7 +218,8 @@ const addressRoutingTerritoryChoiceGeneralPartnerCorrespondanceAddress = {
   nextUrl: url.POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   pageType: AddressPageType.territoryChoiceGeneralPartnerCorrespondenceAddress,
   data: {
-    ...correspondenceAddressCacheKeys
+    ...correspondenceAddressCacheKeys,
+    nextUrlOverseas: url.ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL
   }
 };
 
@@ -287,7 +289,8 @@ const addressRoutingTerritoryChoiceGeneralPartnerPrincipalOfficeAddress = {
   nextUrl: url.POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   pageType: AddressPageType.territoryChoiceGeneralPartnerPrincipalOfficeAddress,
   data: {
-    ...principalOfficeAddressCacheKeys
+    ...principalOfficeAddressCacheKeys,
+    nextUrlOverseas: url.ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
   }
 };
 
@@ -359,7 +362,8 @@ const addressRoutingTerritoryChoiceLimitedPartnerUsualResidentialAddress = {
   nextUrl: url.POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   pageType: AddressPageType.territoryChoiceLimitedPartnerUsualResidentialAddress,
   data: {
-    ...limitedPartnerUsualResidentialAddressCacheKeys
+    ...limitedPartnerUsualResidentialAddressCacheKeys,
+    nextUrlOverseas: url.ENTER_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
   }
 };
 
