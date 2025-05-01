@@ -461,8 +461,8 @@ class AddressLookUpController extends AbstractController {
           isUnitedKingdom ? pageRouting.nextUrl : pageRouting.data?.["nextUrlOverseas"],
           ids.transactionId,
           ids.submissionId,
-          ids.generalPartnerId || "",
-          ids.limitedPartnerId || ""
+          ids.generalPartnerId,
+          ids.limitedPartnerId
         );
 
         const cacheKey = pageRouting.data?.[AddressCacheKeys.territoryCacheKey];
