@@ -1,5 +1,4 @@
 import request from "supertest";
-import { Jurisdiction } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 import enTranslationText from "../../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../../locales/cy/translations.json";
@@ -8,29 +7,36 @@ import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import app from "../../../app";
 
 import { getUrl, setLocalesEnabled, toEscapedHtml, testTranslations } from "../../../../utils";
-import {
-  POSTCODE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
-  CHOOSE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
-} from "presentation/controller/addressLookUp/url";
-import AddressPageType from "../../../../../controller/addressLookUp/PageType";
-import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
 import LimitedPartnerBuilder, {
-  limitedPartnerPerson,
-  limitedPartnerLegalEntity
+  limitedPartnerLegalEntity,
+  limitedPartnerPerson
 } from "../../../../builder/LimitedPartnerBuilder";
-import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBuilder";
+import AddressPageType from "../../../../../controller/addressLookUp/PageType";
+import {
+  CHOOSE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  POSTCODE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
+} from "../../../../../controller/addressLookUp/url";
+import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
 
-describe("Postcode limited partner's principal office address page", () => {
+describe("Postcode principal office address Page", () => {
   const URL = getUrl(POSTCODE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
   const REDIRECT_URL = getUrl(CHOOSE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
 
   beforeEach(() => {
     setLocalesEnabled(false);
+
     appDevDependencies.cacheRepository.feedCache(null);
-    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([]);
+
+    const limitedPartner = new LimitedPartnerBuilder()
+      .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+      .isLegalEntity()
+      .build();
+
+    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
   });
 
-  describe("Get postcode limited partner's principal office address page", () => {
+  describe("Get Postcode Principal Office Address Page", () => {
     it("should load the principal office address page with English text", async () => {
       setLocalesEnabled(true);
 
@@ -45,15 +51,16 @@ describe("Postcode limited partner's principal office address page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        toEscapedHtml(enTranslationText.address.findPostcode.limitedPartner.principalOfficeAddress.whatIsPrincipalOfficeAddress) +
-          ` - ${enTranslationText.service} - GOV.UK`
+        toEscapedHtml(
+          enTranslationText.address.findPostcode.limitedPartner.principalOfficeAddress.whatIsPrincipalOfficeAddress
+        ) + ` - ${enTranslationText.service} - GOV.UK`
       );
       testTranslations(res.text, enTranslationText.address.findPostcode, [
         "registeredOfficeAddress",
         "principalPlaceOfBusiness",
-        "usualResidentialAddress",
-        "correspondenceAddress",
-        "errorMessages"
+        "generalPartner",
+        "errorMessages",
+        "usualResidentialAddress"
       ]);
       expect(res.text).not.toContain("WELSH -");
       expect(res.text).not.toContain(limitedPartnerPerson.forename.toUpperCase());
@@ -74,27 +81,25 @@ describe("Postcode limited partner's principal office address page", () => {
       const res = await request(app).get(URL + "?lang=cy");
 
       expect(res.status).toBe(200);
+
       expect(res.text).toContain(
-        toEscapedHtml(cyTranslationText.address.findPostcode.limitedPartner.principalOfficeAddress.whatIsPrincipalOfficeAddress) +
-          ` - ${cyTranslationText.service} - GOV.UK`
+        toEscapedHtml(
+          cyTranslationText.address.findPostcode.limitedPartner.principalOfficeAddress.whatIsPrincipalOfficeAddress
+        ) + ` - ${cyTranslationText.service} - GOV.UK`
       );
       testTranslations(res.text, cyTranslationText.address.findPostcode, [
         "registeredOfficeAddress",
         "principalPlaceOfBusiness",
-        "usualResidentialAddress",
-        "correspondenceAddress",
-        "errorMessages"
+        "generalPartner",
+        "errorMessages",
+        "usualResidentialAddress"
       ]);
-      expect(res.text).toContain("WELSH -");
-      expect(res.text).not.toContain(limitedPartnerPerson.forename.toUpperCase());
-      expect(res.text).not.toContain(limitedPartnerPerson.forename.toUpperCase());
-      expect(res.text).toContain(limitedPartnerLegalEntity.legal_entity_name?.toUpperCase());
+      expect(res.text).toContain(limitedPartner.data?.legal_entity_name?.toUpperCase());
+      expect(res.text).not.toContain(limitedPartnerPerson.forename?.toUpperCase());
     });
   });
 
-  describe("Post postcode limited partner's principal office address page", () => {
-    // LP-640 Test ACs 1-3 redirect to choose and confirm once those pages are added.
-
+  describe("Post postcode", () => {
     it("should validate the post code then redirect to the next page", async () => {
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.postcodeLimitedPartnerPrincipalOfficeAddress,
@@ -121,25 +126,48 @@ describe("Postcode limited partner's principal office address page", () => {
       });
     });
 
-    it("should validate the post code then redirect to the next page even if LP jurisdiction is not in the same locality", async () => {
-      const limitedPartnership = new LimitedPartnershipBuilder()
-        .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
-        .withJurisdiction(Jurisdiction.SCOTLAND)
-        .build();
-
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
+    it("should validate the post code and find a matching address then redirect to the next page", async () => {
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.postcodeLimitedPartnerPrincipalOfficeAddress,
-        premises: null,
+        premises: appDevDependencies.addressLookUpGateway.englandAddresses[0].premise,
         postal_code: appDevDependencies.addressLookUpGateway.englandAddresses[0].postcode
       });
+
+      const REDIRECT_URL = getUrl(CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
+
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+
+      expect(appDevDependencies.cacheRepository.cache).toEqual({
+        [APPLICATION_CACHE_KEY]: {
+          [appDevDependencies.transactionGateway.transactionId]: {
+            ["principal_office_address"]: {
+              postal_code: "ST6 3LJ",
+              premises: "2",
+              address_line_1: "DUNCALF STREET",
+              address_line_2: "",
+              locality: "STOKE-ON-TRENT",
+              country: "England"
+            }
+          }
+        }
+      });
+    });
+
+    it("should validate the post code and find a matching address - premises and postcode uppercase", async () => {
+      const res = await request(app).post(URL).send({
+        pageType: AddressPageType.postcodeLimitedPartnerPrincipalOfficeAddress,
+        premises: appDevDependencies.addressLookUpGateway.englandAddresses[0].premise.toUpperCase(),
+        postal_code: appDevDependencies.addressLookUpGateway.englandAddresses[0].postcode.toUpperCase()
+      });
+
+      const REDIRECT_URL = getUrl(CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
     });
 
-    it("should return an error if the postcode is not valid", async () => {
+    it("should validate the post code and find a matching address - premises and postcode lowercase", async () => {
       const limitedPartner = new LimitedPartnerBuilder()
         .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
         .isLegalEntity()
@@ -148,14 +176,37 @@ describe("Postcode limited partner's principal office address page", () => {
       appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
 
       const res = await request(app).post(URL).send({
-        pageType: AddressPageType.postcodeLimitedPartnerUsualResidentialAddress,
+        pageType: AddressPageType.postcodeLimitedPartnerPrincipalOfficeAddress,
+        premises: appDevDependencies.addressLookUpGateway.englandAddresses[0].premise.toLowerCase(),
+        postal_code: appDevDependencies.addressLookUpGateway.englandAddresses[0].postcode.toLowerCase()
+      });
+
+      const REDIRECT_URL = getUrl(CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
+
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+    });
+
+    it("should return an error if the postcode is not valid", async () => {
+      const limitedPartner = new LimitedPartnerBuilder()
+        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+        .withForename("Dai")
+        .withSurname("Jones")
+        .build();
+
+      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
+
+      const res = await request(app).post(URL).send({
+        pageType: AddressPageType.postcodeLimitedPartnerPrincipalOfficeAddress,
         premises: null,
         postal_code: "AA1 1AA"
       });
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(`The postcode AA1 1AA cannot be found`);
-      expect(res.text).toContain(limitedPartner.data?.legal_entity_name?.toUpperCase());
+      expect(res.text).toContain(
+        `${limitedPartner.data?.legal_entity_name?.toUpperCase()}`
+      );
 
       expect(appDevDependencies.cacheRepository.cache).toEqual(null);
     });
