@@ -19,7 +19,7 @@ import {
 } from "../../../../../controller/addressLookUp/url";
 import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
 
-describe("Postcode principal office address Page", () => {
+describe("Postcode limited partner principal office address Page", () => {
   const URL = getUrl(POSTCODE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
   const REDIRECT_URL = getUrl(CHOOSE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
 
