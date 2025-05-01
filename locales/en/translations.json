@@ -171,8 +171,13 @@
                     "title": "What is the limited partner's usual residential address",
                     "publicInformationLine1": "We will not show the limited partner's usual residential address on the public register.",
                     "postcodeOptional": "Postcode (optional)"
+                },
+                "principalOfficeAddress":{
+                    "title": "What is the limited partner's principal address",
+                    "publicInformationLine1": "We'll show the limited partner's principal office address on the public register.",
+                    "postcodeOptional": "Postcode (optional)"
                 }
-            },
+          },
             "propertyNameOrNumber": "Property name or number",
             "propertyNameOrNumberHint": "For example, 'The Mill', '116' or 'Flat 37a'",
             "addressLine1": "Address line 1",

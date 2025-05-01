@@ -172,6 +172,11 @@
                     "title": "WELSH - What is the limited partner's usual residential address",
                     "publicInformationLine1": "WELSH - We will not show the limited partner's usual residential address on the public register.",
                     "postcodeOptional": "WELSH - Postcode (optional)"
+                },
+                "principalOfficeAddress":{
+                    "title": "WELSH - What is the limited partner's principal address",
+                    "publicInformationLine1": "WELSH - We'll show the limited partner's principal office address on the public register.",
+                    "postcodeOptional": "WELSH - Postcode (optional)"
                 }
             },
             "propertyNameOrNumber": "WELSH - Property name or number",
