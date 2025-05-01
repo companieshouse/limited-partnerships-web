@@ -1,14 +1,14 @@
 {% extends "layout.njk" %}
 
-{% set pageTitle = i18n.address.confirm.limitedPartnerUsualResidentialAddress.title %}
-{% set publicRegisterInformationLine1 = i18n.address.confirm.limitedPartnerUsualResidentialAddress.publicRegisterLine1 %}
+{% set pageTitle = i18n.address.confirm.limitedPartnerPrincipalOfficeAddress.title %}
+{% set publicRegisterInformationLine1 = i18n.address.confirm.limitedPartnerPrincipalOfficeAddress.publicRegisterLine1 %}
 {% set cacheKey = props.data.addressCacheKey %}
-{% set data = props.data.limitedPartner.data.usual_residential_address_limited_partner %}
+{% set data = props.data.limitedPartner.data.principal_office_address %}
 
 {% block backLink %}
   {% set hrefValue = props.previousUrl %}
 
-  {% if props.data.cache.ura_territory_choice_limited_partner == "overseas" %}
+  {% if props.data.cache.poa_territory_choice == "overseas" %}
     {% set hrefValue = props.currentUrl | replace(props.pageType, props.data.enterManualAddressPageType) %}
   {% endif %}
 
