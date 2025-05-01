@@ -271,17 +271,6 @@ export const addressLookUpEndpoints = (router: Router, dependencies: IDependenci
 
   // usual residential address
   router.get(
-    url.POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-    authentication,
-    dependencies.addressLookUpController.getPageRouting()
-  );
-  router.post(
-    url.POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-    authentication,
-    dependencies.addressLookUpController.postcodeValidation()
-  );
-
-  router.get(
     url.TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
     authentication,
     dependencies.addressLookUpController.getPageRouting()
@@ -290,6 +279,17 @@ export const addressLookUpEndpoints = (router: Router, dependencies: IDependenci
     url.TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
     authentication,
     dependencies.addressLookUpController.handleTerritoryChoice()
+  );
+
+  router.get(
+    url.POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+    authentication,
+    dependencies.addressLookUpController.getPageRouting()
+  );
+  router.post(
+    url.POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+    authentication,
+    dependencies.addressLookUpController.postcodeValidation()
   );
 
   router.get(
@@ -326,6 +326,7 @@ export const addressLookUpEndpoints = (router: Router, dependencies: IDependenci
   );
 
   // principal office address
+
   router.get(
     url.TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
     authentication,
@@ -346,6 +347,17 @@ export const addressLookUpEndpoints = (router: Router, dependencies: IDependenci
     url.POSTCODE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
     authentication,
     dependencies.addressLookUpController.postcodeValidation()
+  );
+
+  router.get(
+    url.CHOOSE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+    authentication,
+    dependencies.addressLookUpController.getPageRouting()
+  );
+  router.post(
+    url.CHOOSE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+    authentication,
+    dependencies.addressLookUpController.selectAddress()
   );
 };
 
