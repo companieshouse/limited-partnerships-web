@@ -6,7 +6,7 @@
   {% set hrefValue = props.previousUrl %}
 
   {% if props.data.cache.ura_territory_choice == "overseas" %}
-    {% set hrefValue = props.currentUrl | replace(props.pageType, "territory-choice-general-partner-usual-residential-address") %}
+    {% set hrefValue = props.currentUrl | replace(props.pageType, props.data.territoryPageType) %}
   {% endif %}
 
   {{ govukBackLink({
@@ -28,8 +28,8 @@
   {% set address = {} %}
 {% endif %}
 
-{% set pageTitle = i18n.address.enterAddress.usualResidentialAddress.title %}
-{% set publicRegisterInformationLine1 = i18n.address.enterAddress.usualResidentialAddress.publicInformationLine1 %}
+{% set pageTitle = i18n.address.enterAddress.generalPartner.usualResidentialAddress.title %}
+{% set publicRegisterInformationLine1 = i18n.address.enterAddress.generalPartner.usualResidentialAddress.publicInformationLine1 %}
 
 {% block content %}
   <div class="govuk-grid-row">
@@ -53,7 +53,7 @@
 
             {{ govukInput({
               label: {
-                text: i18n.address.enterAddress.usualResidentialAddress.postcodeOptional
+                text: i18n.address.enterAddress.generalPartner.usualResidentialAddress.postcodeOptional
               },
               classes: "govuk-input--width-10",
               id: "postal_code",
