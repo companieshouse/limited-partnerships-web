@@ -37,7 +37,7 @@ describe("Enter Limited Partner Principal Office Address Page", () => {
       setLocalesEnabled(true);
       const limitedPartner = new LimitedPartnerBuilder()
         .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isPerson()
+        .isLegalEntity()
         .build();
 
       appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
@@ -56,9 +56,9 @@ describe("Enter Limited Partner Principal Office Address Page", () => {
         "usualResidentialAddress"
       ]);
       expect(res.text).not.toContain("WELSH -");
-      expect(res.text).toContain(limitedPartnerPerson.forename?.toUpperCase());
-      expect(res.text).toContain(limitedPartnerPerson.surname?.toUpperCase());
-      expect(res.text).not.toContain(limitedPartnerLegalEntity.legal_entity_name?.toUpperCase());
+      expect(res.text).not.toContain(limitedPartnerPerson.forename?.toUpperCase());
+      expect(res.text).not.toContain(limitedPartnerPerson.surname?.toUpperCase());
+      expect(res.text).toContain(limitedPartnerLegalEntity.legal_entity_name?.toUpperCase());
     });
 
     it("should load enter limited partner's principal office address manual entry page with welsh text", async () => {
@@ -66,7 +66,7 @@ describe("Enter Limited Partner Principal Office Address Page", () => {
 
       const limitedPartner = new LimitedPartnerBuilder()
         .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isPerson()
+        .isLegalEntity()
         .build();
 
       appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
@@ -90,9 +90,9 @@ describe("Enter Limited Partner Principal Office Address Page", () => {
         "usualResidentialAddress"
       ]);
 
-      expect(res.text).toContain(limitedPartnerPerson.forename?.toUpperCase());
-      expect(res.text).toContain(limitedPartnerPerson.surname?.toUpperCase());
-      expect(res.text).not.toContain(limitedPartnerLegalEntity.legal_entity_name?.toUpperCase());
+      expect(res.text).not.toContain(limitedPartnerPerson.forename?.toUpperCase());
+      expect(res.text).not.toContain(limitedPartnerPerson.surname?.toUpperCase());
+      expect(res.text).toContain(limitedPartnerLegalEntity.legal_entity_name?.toUpperCase());
     });
 
     it("should load enter limited partner's principal office address manual entry page with overseas back link", async () => {
@@ -172,7 +172,7 @@ describe("Enter Limited Partner Principal Office Address Page", () => {
     it("should redirect to the confirm limited partner's principal office address page", async () => {
       const limitedPartner = new LimitedPartnerBuilder()
         .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isPerson()
+        .isLegalEntity()
         .build();
 
       appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
@@ -189,7 +189,7 @@ describe("Enter Limited Partner Principal Office Address Page", () => {
     it("should redirect to the error page when error occurs during Post", async () => {
       const limitedPartner = new LimitedPartnerBuilder()
         .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isPerson()
+        .isLegalEntity()
         .build();
 
       appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);

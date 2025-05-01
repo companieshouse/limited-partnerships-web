@@ -52,7 +52,8 @@ class AddressLookUpController extends AbstractController {
     AddressLookUpPageType.postcodeLimitedPartnerUsualResidentialAddress,
     AddressLookUpPageType.postcodeLimitedPartnerPrincipalOfficeAddress,
     AddressLookUpPageType.enterLimitedPartnerUsualResidentialAddress,
-    AddressLookUpPageType.confirmLimitedPartnerUsualResidentialAddress
+    AddressLookUpPageType.confirmLimitedPartnerUsualResidentialAddress,
+    AddressLookUpPageType.enterLimitedPartnerPrincipalOfficeAddress
   ]);
 
   constructor(
