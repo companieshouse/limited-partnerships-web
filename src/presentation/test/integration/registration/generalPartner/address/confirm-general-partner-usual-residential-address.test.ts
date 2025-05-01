@@ -7,6 +7,8 @@ import cyTranslationText from "../../../../../../../locales/cy/translations.json
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import {
   CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   TERRITORY_CHOICE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL
 } from "../../../../../controller/addressLookUp/url";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
@@ -76,18 +78,18 @@ describe("Confirm General Partner Usual Residential Address Page", () => {
     });
 
     it.each([
-      ["overseas", AddressPageType.enterGeneralPartnerUsualResidentialAddress],
-      ["unitedKingdom", AddressPageType.postcodeGeneralPartnerUsualResidentialAddress]
-    ])("should have the correct back link", async (territory, pageType) => {
+      ["overseas", getUrl(ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL)],
+      ["unitedKingdom", getUrl(POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL)]
+    ])("should have the correct back link", async (territory, backLink) => {
       appDevDependencies.cacheRepository.feedCache({
         [appDevDependencies.transactionGateway.transactionId]: {
-          ["ura_territory_choice"]: territory
+          ura_territory_choice: territory
         }
       });
 
       const res = await request(app).get(URL);
 
-      expect(res.text).toContain(pageType);
+      expect(res.text).toContain(backLink);
     });
   });
 

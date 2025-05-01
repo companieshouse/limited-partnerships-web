@@ -7,7 +7,7 @@ import app from "../../../app";
 
 import * as config from "config";
 import {
-  // CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   ENTER_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
@@ -20,11 +20,10 @@ import LimitedPartnerBuilder, {
   limitedPartnerPerson
 } from "../../../../builder/LimitedPartnerBuilder";
 import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
-import { CHECK_YOUR_ANSWERS_URL } from "presentation/controller/registration/url";
 
 describe("Enter Limited Partner Usual Residential Address Page", () => {
   const URL = getUrl(ENTER_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
-  const redirectUrl = getUrl(CHECK_YOUR_ANSWERS_URL); // TODO Change to confirm address page (CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL)
+  const redirectUrl = getUrl(CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
 
   beforeEach(() => {
     setLocalesEnabled(false);

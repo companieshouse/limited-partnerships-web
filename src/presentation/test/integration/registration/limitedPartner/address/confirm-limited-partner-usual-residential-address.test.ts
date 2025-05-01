@@ -5,25 +5,25 @@ import enTranslationText from "../../../../../../../locales/en/translations.json
 import cyTranslationText from "../../../../../../../locales/cy/translations.json";
 
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
-import {
-  CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
-  ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
-  POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL
-} from "../../../../../controller/addressLookUp/url";
-import { REVIEW_GENERAL_PARTNERS_URL } from "../../../../../controller/registration/url";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
+import LimitedPartnerBuilder from "../../../../builder/LimitedPartnerBuilder";
+import {
+  CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  ENTER_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
+} from "../../../../../controller/addressLookUp/url";
+import { CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/registration/url";
 import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
-import GeneralPartnerBuilder from "../../../../builder/GeneralPartnerBuilder";
 
-describe("Confirm General Partner Correspondence Address Page", () => {
-  const URL = getUrl(CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL);
+describe("Confirm Limited Partner Usual Residential Address Page", () => {
+  const URL = getUrl(CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
 
   beforeEach(() => {
     setLocalesEnabled(false);
     appDevDependencies.cacheRepository.feedCache({
       [appDevDependencies.transactionGateway.transactionId]: {
-        service_address: {
+        usual_residential_address_limited_partner: {
           postal_code: "ST6 3LJ",
           premises: "4",
           address_line_1: "line 1",
@@ -35,22 +35,22 @@ describe("Confirm General Partner Correspondence Address Page", () => {
       }
     });
 
-    const generalPartner = new GeneralPartnerBuilder()
-      .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+    const limitedPartner = new LimitedPartnerBuilder()
+      .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
       .isPerson()
       .build();
 
-    appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
   });
 
-  describe("GET Confirm Correspondence Address Page", () => {
-    it("should load the confirm correspondence address page with English text", async () => {
+  describe("GET Confirm Usual Residential Address Page", () => {
+    it("should load the confirm usual residential address page with English text", async () => {
       setLocalesEnabled(true);
 
       const res = await request(app).get(URL + "?lang=en");
 
       expect(res.status).toBe(200);
-      testTranslations(res.text, enTranslationText.address.confirm.correspondenceAddress);
+      testTranslations(res.text, enTranslationText.address.confirm.usualResidentialAddress);
       expect(res.text).not.toContain("WELSH -");
 
       expect(res.text).toContain("4 Line 1");
@@ -61,13 +61,13 @@ describe("Confirm General Partner Correspondence Address Page", () => {
       expect(res.text).toContain("ST6 3LJ");
     });
 
-    it("should load the confirm correspondence address page with Welsh text", async () => {
+    it("should load the confirm usual residential address page with Welsh text", async () => {
       setLocalesEnabled(true);
 
       const res = await request(app).get(URL + "?lang=cy");
 
       expect(res.status).toBe(200);
-      testTranslations(res.text, cyTranslationText.address.confirm.correspondenceAddress);
+      testTranslations(res.text, cyTranslationText.address.confirm.usualResidentialAddress);
 
       expect(res.text).toContain("4 Line 1");
       expect(res.text).toContain("Line 2");
@@ -78,12 +78,12 @@ describe("Confirm General Partner Correspondence Address Page", () => {
     });
 
     it.each([
-      ["overseas", getUrl(ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL)],
-      ["unitedKingdom", getUrl(POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL)]
+      ["overseas", getUrl(ENTER_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL)],
+      ["unitedKingdom", getUrl(POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL)]
     ])("should have the correct back link", async (territory, backLink) => {
       appDevDependencies.cacheRepository.feedCache({
         [appDevDependencies.transactionGateway.transactionId]: {
-          sa_territory_choice: territory
+          ura_territory_choice_limited_partner: territory
         }
       });
 
@@ -93,12 +93,12 @@ describe("Confirm General Partner Correspondence Address Page", () => {
     });
   });
 
-  describe("POST Confirm Correspondence Address Page", () => {
+  describe("POST Confirm Usual Residential Address Page", () => {
     it("should redirect to the next page", async () => {
       const res = await request(app)
         .post(URL)
         .send({
-          pageType: AddressPageType.confirmGeneralPartnerCorrespondenceAddress,
+          pageType: AddressPageType.confirmLimitedPartnerUsualResidentialAddress,
           address: `{
             "postal_code": "ST6 3LJ",
             "premises": "4",
@@ -109,7 +109,7 @@ describe("Confirm General Partner Correspondence Address Page", () => {
           }`
         });
 
-      const redirectUrl = getUrl(REVIEW_GENERAL_PARTNERS_URL);
+      const redirectUrl = getUrl(CHECK_YOUR_ANSWERS_URL);
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
@@ -119,7 +119,7 @@ describe("Confirm General Partner Correspondence Address Page", () => {
       appDevDependencies.cacheRepository.feedCache({});
 
       const res = await request(app).post(URL).send({
-        pageType: AddressPageType.confirmGeneralPartnerCorrespondenceAddress
+        pageType: AddressPageType.confirmLimitedPartnerUsualResidentialAddress
       });
 
       expect(res.status).toBe(200);
@@ -127,23 +127,23 @@ describe("Confirm General Partner Correspondence Address Page", () => {
     });
 
     it("should show validation error message if validation error occurs when saving address", async () => {
-      const generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+      const limitedPartner = new LimitedPartnerBuilder()
+        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
         .isPerson()
         .build();
 
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
 
       const apiErrors: ApiErrors = {
         errors: {
-          "correspondenceAddress.country": "must not be null"
+          "usualResidentialAddress.country": "must not be null"
         }
       };
 
-      appDevDependencies.generalPartnerGateway.feedErrors(apiErrors);
+      appDevDependencies.limitedPartnerGateway.feedErrors(apiErrors);
 
       const res = await request(app).post(URL).send({
-        pageType: AddressPageType.confirmGeneralPartnerCorrespondenceAddress,
+        pageType: AddressPageType.confirmLimitedPartnerUsualResidentialAddress,
         address: `{"postal_code": "ST6 3LJ","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": ""}`
       });
 

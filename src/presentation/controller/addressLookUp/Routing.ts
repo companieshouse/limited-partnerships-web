@@ -371,14 +371,14 @@ const addressRoutingPostcodeLimitedPartnerUsualResidentialAddress = {
   data: {
     ...limitedPartnerUsualResidentialAddressCacheKeys,
     enterManualAddressPageType: AddressPageType.enterLimitedPartnerUsualResidentialAddress,
-    confirmAddressUrl: CHECK_YOUR_ANSWERS_URL // TODO Change to confirm address page
+    confirmAddressUrl: url.CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
   }
 };
 
 const addressRoutingChooseLimitedPartnerUsualResidentialAddress = {
   previousUrl: url.POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   currentUrl: url.CHOOSE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-  nextUrl: CHECK_YOUR_ANSWERS_URL, // TODO Change to confirm address page
+  nextUrl: url.CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   pageType: AddressPageType.chooseLimitedPartnerUsualResidentialAddress,
   data: {
     ...limitedPartnerUsualResidentialAddressCacheKeys,
@@ -389,7 +389,7 @@ const addressRoutingChooseLimitedPartnerUsualResidentialAddress = {
 const addressRoutingEnterLimitedPartnerUsualResidentialAddress = {
   previousUrl: url.POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   currentUrl: url.ENTER_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-  nextUrl: CHECK_YOUR_ANSWERS_URL, // TODO Change to confirm address page
+  nextUrl: url.CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   pageType: AddressPageType.enterLimitedPartnerUsualResidentialAddress,
   data: {
     ...limitedPartnerUsualResidentialAddressCacheKeys,
@@ -397,11 +397,23 @@ const addressRoutingEnterLimitedPartnerUsualResidentialAddress = {
   }
 };
 
+const addressRoutingConfirmLimitedPartnerUsualResidentialAddress = {
+  previousUrl: url.POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  currentUrl: url.CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  nextUrl: CHECK_YOUR_ANSWERS_URL, // TODO Change to REVIEW_LIMITED_PARTNERS_URL
+  pageType: AddressPageType.confirmLimitedPartnerUsualResidentialAddress,
+  data: {
+    ...limitedPartnerUsualResidentialAddressCacheKeys,
+    enterManualAddressPageType: AddressPageType.enterLimitedPartnerUsualResidentialAddress
+  }
+};
+
 const limitedPartnerUsualResidentialAddress = [
   addressRoutingTerritoryChoiceLimitedPartnerUsualResidentialAddress,
   addressRoutingPostcodeLimitedPartnerUsualResidentialAddress,
   addressRoutingChooseLimitedPartnerUsualResidentialAddress,
-  addressRoutingEnterLimitedPartnerUsualResidentialAddress
+  addressRoutingEnterLimitedPartnerUsualResidentialAddress,
+  addressRoutingConfirmLimitedPartnerUsualResidentialAddress
 ];
 
 export const addressLookUpRouting: PagesRouting = new Map<PageType, PageRouting>();
