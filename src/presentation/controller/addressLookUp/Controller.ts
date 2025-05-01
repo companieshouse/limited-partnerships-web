@@ -59,6 +59,7 @@ class AddressLookUpController extends AbstractController {
 
   private static readonly LIMITED_PARTNER_ADDRESS_PAGES: Set<PageType | PageDefault> = new Set([
     AddressLookUpPageType.postcodeLimitedPartnerUsualResidentialAddress,
+    AddressLookUpPageType.postcodeLimitedPartnerPrincipalOfficeAddress,
     AddressLookUpPageType.enterLimitedPartnerUsualResidentialAddress,
     AddressLookUpPageType.confirmLimitedPartnerUsualResidentialAddress
   ]);

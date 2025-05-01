@@ -190,8 +190,7 @@ describe("Postcode principal office address Page", () => {
     it("should return an error if the postcode is not valid", async () => {
       const limitedPartner = new LimitedPartnerBuilder()
         .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .withForename("Dai")
-        .withSurname("Jones")
+        .isLegalEntity()
         .build();
 
       appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
