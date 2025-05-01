@@ -13,7 +13,6 @@ import {
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import LimitedPartnerBuilder from "../../../../builder/LimitedPartnerBuilder";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
-// import { REVIEW_LIMITED_PARTNERS_URL } from "../../../../../controller/registration/url";
 import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
 import { CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/registration/url";
 
