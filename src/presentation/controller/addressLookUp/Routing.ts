@@ -169,7 +169,8 @@ const addressRoutingEnterGeneralPartnerUsualResidentialAddress = {
   nextUrl: url.CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   pageType: AddressPageType.enterGeneralPartnerUsualResidentialAddress,
   data: {
-    ...usualResidentialAddressCacheKeys
+    ...usualResidentialAddressCacheKeys,
+    territoryPageType: AddressPageType.territoryChoiceGeneralPartnerUsualResidentialAddress
   }
 };
 
@@ -249,7 +250,8 @@ const addressRoutingEnterGeneralPartnerCorrespondenceAddress = {
   nextUrl: url.CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   pageType: AddressPageType.enterGeneralPartnerCorrespondenceAddress,
   data: {
-    ...correspondenceAddressCacheKeys
+    ...correspondenceAddressCacheKeys,
+    territoryPageType: AddressPageType.territoryChoiceGeneralPartnerCorrespondenceAddress
   }
 };
 
@@ -318,7 +320,8 @@ const addressRoutingEnterGeneralPartnerPrincipalOfficeAddress = {
   nextUrl: url.CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   pageType: AddressPageType.enterGeneralPartnerPrincipalOfficeAddress,
   data: {
-    ...principalOfficeAddressCacheKeys
+    ...principalOfficeAddressCacheKeys,
+    territoryPageType: AddressPageType.territoryChoiceGeneralPartnerPrincipalOfficeAddress
   }
 };
 
@@ -367,7 +370,7 @@ const addressRoutingPostcodeLimitedPartnerUsualResidentialAddress = {
   pageType: AddressPageType.postcodeLimitedPartnerUsualResidentialAddress,
   data: {
     ...limitedPartnerUsualResidentialAddressCacheKeys,
-    enterManualAddressPageType: CHECK_YOUR_ANSWERS_URL,
+    enterManualAddressPageType: AddressPageType.enterLimitedPartnerUsualResidentialAddress,
     confirmAddressUrl: CHECK_YOUR_ANSWERS_URL // TODO Change to confirm address page
   }
 };
@@ -383,11 +386,22 @@ const addressRoutingChooseLimitedPartnerUsualResidentialAddress = {
   }
 };
 
+const addressRoutingEnterLimitedPartnerUsualResidentialAddress = {
+  previousUrl: url.POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  currentUrl: url.ENTER_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  nextUrl: CHECK_YOUR_ANSWERS_URL, // TODO Change to confirm address page
+  pageType: AddressPageType.enterLimitedPartnerUsualResidentialAddress,
+  data: {
+    ...limitedPartnerUsualResidentialAddressCacheKeys,
+    territoryPageType: AddressPageType.territoryChoiceLimitedPartnerUsualResidentialAddress
+  }
+};
+
 const limitedPartnerUsualResidentialAddress = [
   addressRoutingTerritoryChoiceLimitedPartnerUsualResidentialAddress,
   addressRoutingPostcodeLimitedPartnerUsualResidentialAddress,
-  addressRoutingChooseLimitedPartnerUsualResidentialAddress
-
+  addressRoutingChooseLimitedPartnerUsualResidentialAddress,
+  addressRoutingEnterLimitedPartnerUsualResidentialAddress
 ];
 
 export const addressLookUpRouting: PagesRouting = new Map<PageType, PageRouting>();
