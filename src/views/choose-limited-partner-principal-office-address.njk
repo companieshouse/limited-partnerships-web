@@ -1,0 +1,15 @@
+{% extends "layout.njk" %}
+
+{% set pageTitle = i18n.address.chooseAddress.limitedPartnerPrincipalOfficeAddress.title %}
+{% set cache = props.data.cache['principal_office_address'] %}
+{% set addressLink = i18n.address.chooseAddress.addressLink %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {% include "includes/limited-partner-name.njk" %}
+           
+      {% include "pages/address/choose-address-form.njk" %}
+    </div>
+  </div>
+{% endblock %}
