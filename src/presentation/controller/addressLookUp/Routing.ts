@@ -433,7 +433,8 @@ const addressRoutingTerritoryChoiceLimitedPartnerPrincipalOfficeAddress = {
   nextUrl: url.POSTCODE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   pageType: AddressPageType.territoryChoiceLimitedPartnerPrincipalOfficeAddress,
   data: {
-    ...limitedPartnerPrincipalOfficeAddressCacheKeys
+    ...limitedPartnerPrincipalOfficeAddressCacheKeys,
+    nextUrlOverseas: url.ENTER_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
   }
 };
 
