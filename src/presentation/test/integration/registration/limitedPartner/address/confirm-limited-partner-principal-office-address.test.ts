@@ -38,7 +38,7 @@ describe("Confirm Limited Partner Principal Office Address Page", () => {
 
     const limitedPartner = new LimitedPartnerBuilder()
       .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-      .isPerson()
+      .isLegalEntity()
       .build();
 
     appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
@@ -130,7 +130,7 @@ describe("Confirm Limited Partner Principal Office Address Page", () => {
     it("should show validation error message if validation error occurs when saving address", async () => {
       const limitedPartner = new LimitedPartnerBuilder()
         .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isPerson()
+        .isLegalEntity()
         .build();
 
       appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
