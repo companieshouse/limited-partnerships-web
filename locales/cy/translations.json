@@ -269,6 +269,11 @@
             "limitedPartnerUsualResidentialAddress": {
                 "title": "WELSH - Where is the limited partner's usual residential address?",
                 "publicRegisterInformationLine1": "WELSH - We will not show the limited partner's usual residential address on the public register."
+            },
+            "limitedPartnerPrincipalOfficeAddress": {
+                "title": "WELSH - Where is the limited partner's principal office address?",
+                "titleHint": "WELSH - This is the address for the entity's main office",
+                "publicRegisterInformationLine1": "WELSH - We'll show the limited partner's principal office address on the public register."
             }
         },
 

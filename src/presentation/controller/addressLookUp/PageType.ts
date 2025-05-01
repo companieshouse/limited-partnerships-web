@@ -43,6 +43,7 @@ enum AddressPageType {
   postcodeLimitedPartnerUsualResidentialAddress = "postcode-limited-partner-usual-residential-address",
   chooseLimitedPartnerUsualResidentialAddress = "choose-limited-partner-usual-residential-address",
   enterLimitedPartnerUsualResidentialAddress = "enter-limited-partner-usual-residential-address",
-  confirmLimitedPartnerUsualResidentialAddress = "confirm-limited-partner-usual-residential-address"
+  confirmLimitedPartnerUsualResidentialAddress = "confirm-limited-partner-usual-residential-address",
+  territoryChoiceLimitedPartnerPrincipalOfficeAddress = "territory-choice-limited-partner-principal-office-address"
 }
 export default AddressPageType;

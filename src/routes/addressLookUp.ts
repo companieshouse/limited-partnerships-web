@@ -324,6 +324,16 @@ export const addressLookUpEndpoints = (router: Router, dependencies: IDependenci
     authentication,
     dependencies.addressLookUpController.confirmAddress()
   );
+  router.get(
+    url.TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+    authentication,
+    dependencies.addressLookUpController.getPageRouting()
+  );
+  router.post(
+    url.TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+    authentication,
+    dependencies.addressLookUpController.limitedPartnerTerritoryChoice()
+  );
 };
 
 export default addressLookUpEndpoints;

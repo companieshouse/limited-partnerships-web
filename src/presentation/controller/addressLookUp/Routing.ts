@@ -6,6 +6,7 @@ import {
   ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
   ADD_GENERAL_PARTNER_PERSON_URL,
   ADD_LIMITED_PARTNER_PERSON_URL,
+  ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
   REVIEW_GENERAL_PARTNERS_URL,
   TERM_URL,
   WHERE_IS_THE_JURISDICTION_URL,
@@ -408,12 +409,30 @@ const addressRoutingConfirmLimitedPartnerUsualResidentialAddress = {
   }
 };
 
+// principal office address - legal entity
+
+const limitedPartnerPrincipalOfficeAddressCacheKeys = {
+  [AddressCacheKeys.addressCacheKey]: "principal_office_address_limited_partner",
+  [AddressCacheKeys.territoryCacheKey]: "poa_territory_choice_limited_partner"
+};
+
+const addressRoutingTerritoryChoiceLimitedPartnerPrincipalOfficeAddress = {
+  previousUrl: ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
+  currentUrl: url.TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  nextUrl: url.POSTCODE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  pageType: AddressPageType.territoryChoiceLimitedPartnerPrincipalOfficeAddress,
+  data: {
+    ...limitedPartnerPrincipalOfficeAddressCacheKeys
+  }
+};
+
 const limitedPartnerUsualResidentialAddress = [
   addressRoutingTerritoryChoiceLimitedPartnerUsualResidentialAddress,
   addressRoutingPostcodeLimitedPartnerUsualResidentialAddress,
   addressRoutingChooseLimitedPartnerUsualResidentialAddress,
   addressRoutingEnterLimitedPartnerUsualResidentialAddress,
-  addressRoutingConfirmLimitedPartnerUsualResidentialAddress
+  addressRoutingConfirmLimitedPartnerUsualResidentialAddress,
+  addressRoutingTerritoryChoiceLimitedPartnerPrincipalOfficeAddress
 ];
 
 export const addressLookUpRouting: PagesRouting = new Map<PageType, PageRouting>();
