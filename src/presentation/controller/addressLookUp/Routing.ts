@@ -5,10 +5,10 @@ import PageType from "../PageType";
 import {
   ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
   ADD_GENERAL_PARTNER_PERSON_URL,
+  ADD_LIMITED_PARTNER_PERSON_URL,
   REVIEW_GENERAL_PARTNERS_URL,
   TERM_URL,
   WHERE_IS_THE_JURISDICTION_URL,
-  LIMITED_PARTNER_CHOICE_URL,
   CHECK_YOUR_ANSWERS_URL
 } from "../registration/url";
 import * as url from "./url";
@@ -350,8 +350,18 @@ const limitedPartnerUsualResidentialAddressCacheKeys = {
   [AddressCacheKeys.territoryCacheKey]: "ura_territory_choice_limited_partner"
 };
 
+const addressRoutingTerritoryChoiceLimitedPartnerUsualResidentialAddress = {
+  previousUrl: ADD_LIMITED_PARTNER_PERSON_URL,
+  currentUrl: url.TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  nextUrl: url.POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  pageType: AddressPageType.territoryChoiceLimitedPartnerUsualResidentialAddress,
+  data: {
+    ...limitedPartnerUsualResidentialAddressCacheKeys
+  }
+};
+
 const addressRoutingPostcodeLimitedPartnerUsualResidentialAddress = {
-  previousUrl: LIMITED_PARTNER_CHOICE_URL, // TODO Change to territory choice page
+  previousUrl: url.TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   currentUrl: url.POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   nextUrl: url.CHOOSE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   pageType: AddressPageType.postcodeLimitedPartnerUsualResidentialAddress,
@@ -385,6 +395,7 @@ const addressRoutingConfirmLimitedPartnerUsualResidentialAddress = {
 };
 
 const limitedPartnerUsualResidentialAddress = [
+  addressRoutingTerritoryChoiceLimitedPartnerUsualResidentialAddress,
   addressRoutingPostcodeLimitedPartnerUsualResidentialAddress,
   addressRoutingChooseLimitedPartnerUsualResidentialAddress,
   addressRoutingConfirmLimitedPartnerUsualResidentialAddress

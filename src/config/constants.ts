@@ -33,7 +33,8 @@ export const POSTCODE_ADDRESSES_LOOKUP_URL = getEnvironmentValue("POSTCODE_ADDRE
 export const isLocalesEnabled = () => getEnvironmentValueAsBoolean("LOCALES_ENABLED");
 export const REFRESH_TOKEN_GRANT_TYPE = "refresh_token";
 
-export const SERVICE_NAME = "File for a limited partnership";
+export const SERVICE_NAME_REGISTRATION = "Register a limited partnership";
+export const SERVICE_NAME_TRANSITION = "Transition a limited partnership";
 export const SHOW_SERVICE_UNAVAILABLE_PAGE = getEnvironmentValueAsBoolean("SHOW_SERVICE_UNAVAILABLE_PAGE");
 export const APPLICATION_CACHE_KEY = "limited_partnership";
 export const APPLICATION_CACHE_KEY_PREFIX_REGISTRATION = "registration_";

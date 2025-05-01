@@ -256,6 +256,10 @@
                 "title": "WELSH - Where is the general partner's correspondence address?",
                 "titleHint": "WELSH - This is also known as the service address.",
                 "publicRegisterInformationLine1": "WELSH - We'll show the general partner's correspondence address on the public register."
+            },
+            "limitedPartnerUsualResidentialAddress": {
+                "title": "WELSH - Where is the limited partner's usual residential address?",
+                "publicRegisterInformationLine1": "WELSH - We will not show the limited partner's usual residential address on the public register."
             }
         },
 

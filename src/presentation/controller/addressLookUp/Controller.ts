@@ -17,9 +17,11 @@ import {
   ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  ENTER_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
-  POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
+  POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "./url";
 import PageType from "../PageType";
 
@@ -488,6 +490,44 @@ class AddressLookUpController extends AbstractController {
         }
 
         redirectUrl = super.insertIdsInUrl(redirectUrl, ids.transactionId, ids.submissionId, ids.generalPartnerId);
+
+        const cacheKey = pageRouting.data?.[AddressCacheKeys.territoryCacheKey];
+
+        if (cacheKey) {
+          const cache = this.cacheService.addDataToCache(request.signedCookies, {
+            [ids.transactionId]: {
+              [cacheKey]: parameter
+            }
+          });
+          response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
+        }
+
+        response.redirect(redirectUrl);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  limitedPartnerTerritoryChoice() {
+    return (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { ids, pageType } = super.extract(request);
+        const parameter = request.body.parameter;
+        const pageRouting = super.getRouting(addressLookUpRouting, pageType, request);
+
+        const isUnitedKingdom = parameter === "unitedKingdom";
+        const isLimitedPartnerURAPage =
+          pageType === AddressLookUpPageType.territoryChoiceLimitedPartnerUsualResidentialAddress;
+
+        let redirectUrl;
+
+        if (isLimitedPartnerURAPage) {
+          redirectUrl = isUnitedKingdom
+            ? POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
+            : ENTER_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL;
+        }
+        redirectUrl = super.insertIdsInUrl(redirectUrl, ids.transactionId, ids.submissionId, "", ids.limitedPartnerId);
 
         const cacheKey = pageRouting.data?.[AddressCacheKeys.territoryCacheKey];
 
