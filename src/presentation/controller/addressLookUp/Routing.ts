@@ -419,7 +419,7 @@ const limitedPartnerUsualResidentialAddress = [
 // principal office address - Legal entity
 
 const limitedPartnerPrincipalOfficeAddressCacheKeys = {
-  [AddressCacheKeys.addressCacheKey]: "prinicpal_office_address",
+  [AddressCacheKeys.addressCacheKey]: "principal_office_address",
   [AddressCacheKeys.territoryCacheKey]: "poa_territory_choice"
 };
 
