@@ -420,6 +420,76 @@ const limitedPartnerUsualResidentialAddress = [
   addressRoutingConfirmLimitedPartnerUsualResidentialAddress
 ];
 
+// principal office address - Legal entity
+
+const limitedPartnerPrincipalOfficeAddressCacheKeys = {
+  [AddressCacheKeys.addressCacheKey]: "principal_office_address",
+  [AddressCacheKeys.territoryCacheKey]: "poa_territory_choice"
+};
+
+const addressRoutingTerritoryChoiceLimitedPartnerPrincipalOfficeAddress = {
+  previousUrl: ADD_LIMITED_PARTNER_PERSON_URL,
+  currentUrl: url.TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  nextUrl: url.POSTCODE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  pageType: AddressPageType.territoryChoiceLimitedPartnerPrincipalOfficeAddress,
+  data: {
+    ...limitedPartnerPrincipalOfficeAddressCacheKeys
+  }
+};
+
+const addressRoutingPostcodeLimitedPartnerPrincipalOfficeAddress = {
+  previousUrl: url.TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  currentUrl: url.POSTCODE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  nextUrl: url.CHOOSE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  pageType: AddressPageType.postcodeLimitedPartnerPrincipalOfficeAddress,
+  data: {
+    ...limitedPartnerPrincipalOfficeAddressCacheKeys,
+    enterManualAddressPageType: AddressPageType.enterLimitedPartnerPrincipalOfficeAddress,
+    confirmAddressUrl: url.CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
+  }
+};
+
+const addressRoutingChooseLimitedPartnerPrincipalOfficeAddress = {
+  previousUrl: url.POSTCODE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  currentUrl: url.CHOOSE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  nextUrl: url.CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  pageType: AddressPageType.chooseLimitedPartnerPrincipalOfficeAddress,
+  data: {
+    ...limitedPartnerPrincipalOfficeAddressCacheKeys,
+    enterManualAddressPageType: AddressPageType.enterLimitedPartnerPrincipalOfficeAddress
+  }
+};
+
+const addressRoutingEnterLimitedPartnerPrincipalOfficeAddress = {
+  previousUrl: url.POSTCODE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  currentUrl: url.ENTER_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  nextUrl: url.CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  pageType: AddressPageType.enterLimitedPartnerPrincipalOfficeAddress,
+  data: {
+    ...limitedPartnerPrincipalOfficeAddressCacheKeys,
+    territoryPageType: AddressPageType.territoryChoiceLimitedPartnerPrincipalOfficeAddress
+  }
+};
+
+const addressRoutingConfirmLimitedPartnerPrincipalOfficeAddress = {
+  previousUrl: url.POSTCODE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  currentUrl: url.CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  nextUrl: CHECK_YOUR_ANSWERS_URL, // TODO Change to REVIEW_LIMITED_PARTNERS_URL
+  pageType: AddressPageType.confirmLimitedPartnerPrincipalOfficeAddress,
+  data: {
+    ...limitedPartnerPrincipalOfficeAddressCacheKeys,
+    enterManualAddressPageType: AddressPageType.enterLimitedPartnerPrincipalOfficeAddress
+  }
+};
+
+const limitedPartnerPrincipalOfficeAddress = [
+  addressRoutingTerritoryChoiceLimitedPartnerPrincipalOfficeAddress,
+  addressRoutingPostcodeLimitedPartnerPrincipalOfficeAddress,
+  addressRoutingChooseLimitedPartnerPrincipalOfficeAddress,
+  addressRoutingEnterLimitedPartnerPrincipalOfficeAddress,
+  addressRoutingConfirmLimitedPartnerPrincipalOfficeAddress
+];
+
 export const addressLookUpRouting: PagesRouting = new Map<PageType, PageRouting>();
 [
   ...registeredOfficeAddress,
@@ -427,7 +497,8 @@ export const addressLookUpRouting: PagesRouting = new Map<PageType, PageRouting>
   ...generalPartnerUsualResidentialAddress,
   ...correspondenceAddress,
   ...generalPartnerPrincipalOfficeAddress,
-  ...limitedPartnerUsualResidentialAddress
+  ...limitedPartnerUsualResidentialAddress,
+  ...limitedPartnerPrincipalOfficeAddress
 ].forEach((routing) => {
   addressLookUpRouting.set(routing.pageType, routing);
 });
