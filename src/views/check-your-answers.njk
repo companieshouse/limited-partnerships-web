@@ -5,15 +5,20 @@
 {% set checkYourAnswers = "check-your-answers" %}
 {% set currentUrl = props.currentUrl %}
 {% set fullName = (props.data.limitedPartnership.data.partnership_name | upper) + " " + (props.data.limitedPartnership.data.name_ending | upper) %}
-{% set termKey = props.data.limitedPartnership.data.term %}
-{% if termKey === "BY_AGREEMENT" %}
-  {% set term = i18n.termPage.byAgreement %}
-{% elif termKey === "UNTIL_DISSOLUTION" %}
-  {% set term = i18n.termPage.untilDissolution %}
-{% elif termKey === "NONE" %}
-  {% set term = i18n.termPage.noTerm %}
-{% endif %}
-
+{% set termMap = {
+    "BY_AGREEMENT": i18n.termPage.byAgreement,
+    "UNTIL_DISSOLUTION": i18n.termPage.untilDissolution,
+    "NONE": i18n.termPage.noTerm
+    } 
+%}
+{% set term = termMap[props.data.limitedPartnership.data.term] %}
+{% set jurisdictionMap = {
+  "england-wales": i18n.checkYourAnswersPage.jurisdictions.englandAndWales,
+  "northern-ireland": i18n.checkYourAnswersPage.jurisdictions.northernIreland,
+  "scotland": i18n.checkYourAnswersPage.jurisdictions.scotland
+  } 
+%}
+{% set jurisdiction = jurisdictionMap[props.data.limitedPartnership.data.jurisdiction] %}
 
 {% block content %}
   <div class="govuk-grid-row">
@@ -76,10 +81,10 @@
           },
           {
             key: {
-              text: i18n.checkYourAnswersPage.jurisdiction
+              text: i18n.checkYourAnswersPage.headingJurisdiction
             },
             value: {
-              text: props.data.limitedPartnership.data.jurisdiction
+              text: jurisdiction
             },
             actions: {
               items: [ CREATE_CHANGE_LINK(
