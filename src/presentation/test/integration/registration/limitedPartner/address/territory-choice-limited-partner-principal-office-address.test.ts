@@ -28,7 +28,9 @@ describe("Limited Partner Principal Office Address Territory Choice", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        toEscapedHtml(`${cyTranslationText.address.territoryChoice.limitedPartnerPrincipalOfficeAddress.title} - ${cyTranslationText.service} - GOV.UK`)
+        toEscapedHtml(
+          `${cyTranslationText.address.territoryChoice.limitedPartnerPrincipalOfficeAddress.title} - ${cyTranslationText.service} - GOV.UK`
+        )
       );
 
       testTranslations(res.text, cyTranslationText.address.territoryChoice.limitedPartnerPrincipalOfficeAddress);
@@ -41,7 +43,9 @@ describe("Limited Partner Principal Office Address Territory Choice", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        toEscapedHtml(`${enTranslationText.address.territoryChoice.limitedPartnerPrincipalOfficeAddress.title} - ${enTranslationText.service} - GOV.UK`)
+        toEscapedHtml(
+          `${enTranslationText.address.territoryChoice.limitedPartnerPrincipalOfficeAddress.title} - ${enTranslationText.service} - GOV.UK`
+        )
       );
 
       testTranslations(res.text, enTranslationText.address.territories);
@@ -58,9 +62,7 @@ describe("Limited Partner Principal Office Address Territory Choice", () => {
       const res = await request(app).get(URL);
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(
-        `${limitedPartnerLegalEntity.legal_entity_name.toUpperCase()}`
-      );
+      expect(res.text).toContain(`${limitedPartnerLegalEntity.legal_entity_name.toUpperCase()}`);
     });
   });
 
@@ -68,12 +70,15 @@ describe("Limited Partner Principal Office Address Territory Choice", () => {
     it("should redirect to What is the limited partners POA? post code look up page when united kingdom is selected", async () => {
       const UNITED_KINGDOM_PARAMETER = "unitedKingdom";
       const POSTCODE_URL = getUrl(POSTCODE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
+
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.territoryChoiceLimitedPartnerPrincipalOfficeAddress,
         parameter: UNITED_KINGDOM_PARAMETER
       });
+
       expect(res.status).toBe(302);
       expect(res.text).toContain(POSTCODE_URL);
+
       expect(appDevDependencies.cacheRepository.cache).toEqual({
         [APPLICATION_CACHE_KEY]: {
           [appDevDependencies.transactionGateway.transactionId]: {
@@ -86,12 +91,15 @@ describe("Limited Partner Principal Office Address Territory Choice", () => {
     it("should redirect to What is the limited partners POA? manual entry page when overseas is selected", async () => {
       const OVERSEAS_PARAMETER = "overseas";
       const MANUAL_ENTRY_URL = getUrl(ENTER_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
+
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.territoryChoiceLimitedPartnerPrincipalOfficeAddress,
         parameter: OVERSEAS_PARAMETER
       });
+
       expect(res.status).toBe(302);
       expect(res.text).toContain(MANUAL_ENTRY_URL);
+
       expect(appDevDependencies.cacheRepository.cache).toEqual({
         [APPLICATION_CACHE_KEY]: {
           [appDevDependencies.transactionGateway.transactionId]: {
