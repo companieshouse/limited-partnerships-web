@@ -7,10 +7,10 @@ import app from "../../../app";
 
 import * as config from "config";
 import {
-  CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-  ENTER_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-  POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-  TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
+  CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  ENTER_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  POSTCODE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
 } from "../../../../../controller/addressLookUp/url";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
@@ -21,9 +21,9 @@ import LimitedPartnerBuilder, {
 } from "../../../../builder/LimitedPartnerBuilder";
 import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
 
-describe("Enter Limited Partner Usual Residential Address Page", () => {
-  const URL = getUrl(ENTER_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
-  const redirectUrl = getUrl(CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
+describe("Enter Limited Partner Principal Office Address Page", () => {
+  const URL = getUrl(ENTER_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
+  const redirectUrl = getUrl(CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
 
   beforeEach(() => {
     setLocalesEnabled(false);
@@ -32,12 +32,12 @@ describe("Enter Limited Partner Usual Residential Address Page", () => {
     appDevDependencies.limitedPartnerGateway.feedLimitedPartners([]);
   });
 
-  describe("GET Enter limited partners usual residential address", () => {
-    it("should load enter limited partner's usual residential address page with english text", async () => {
+  describe("GET Enter limited partners principal office address", () => {
+    it("should load enter limited partner's principal office address page with english text", async () => {
       setLocalesEnabled(true);
       const limitedPartner = new LimitedPartnerBuilder()
         .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isPerson()
+        .isLegalEntity()
         .build();
 
       appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
@@ -53,26 +53,26 @@ describe("Enter Limited Partner Usual Residential Address Page", () => {
         "postcodeLength",
         "postcodeOptional",
         "generalPartner",
-        "principalOfficeAddress"
+        "usualResidentialAddress"
       ]);
       expect(res.text).not.toContain("WELSH -");
-      expect(res.text).toContain(limitedPartnerPerson.forename?.toUpperCase());
-      expect(res.text).toContain(limitedPartnerPerson.surname?.toUpperCase());
-      expect(res.text).not.toContain(limitedPartnerLegalEntity.legal_entity_name?.toUpperCase());
+      expect(res.text).not.toContain(limitedPartnerPerson.forename?.toUpperCase());
+      expect(res.text).not.toContain(limitedPartnerPerson.surname?.toUpperCase());
+      expect(res.text).toContain(limitedPartnerLegalEntity.legal_entity_name?.toUpperCase());
     });
 
-    it("should load enter limited partner's usual residential address manual entry page with welsh text", async () => {
+    it("should load enter limited partner's principal office address manual entry page with welsh text", async () => {
       setLocalesEnabled(true);
 
       const limitedPartner = new LimitedPartnerBuilder()
         .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isPerson()
+        .isLegalEntity()
         .build();
 
       appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
       appDevDependencies.cacheRepository.feedCache({
         [appDevDependencies.transactionGateway.transactionId]: {
-          ura_territory_choice_limited_partner: "overseas"
+          poa_territory_choice: "overseas"
         }
       });
 
@@ -87,22 +87,22 @@ describe("Enter Limited Partner Usual Residential Address Page", () => {
         "postcodeLength",
         "postcode",
         "generalPartner",
-        "principalOfficeAddress"
+        "usualResidentialAddress"
       ]);
 
-      expect(res.text).toContain(limitedPartnerPerson.forename?.toUpperCase());
-      expect(res.text).toContain(limitedPartnerPerson.surname?.toUpperCase());
-      expect(res.text).not.toContain(limitedPartnerLegalEntity.legal_entity_name?.toUpperCase());
+      expect(res.text).not.toContain(limitedPartnerPerson.forename?.toUpperCase());
+      expect(res.text).not.toContain(limitedPartnerPerson.surname?.toUpperCase());
+      expect(res.text).toContain(limitedPartnerLegalEntity.legal_entity_name?.toUpperCase());
     });
 
-    it("should load enter limited partner's usual residential address manual entry page with overseas back link", async () => {
+    it("should load enter limited partner's principal office address manual entry page with overseas back link", async () => {
       appDevDependencies.cacheRepository.feedCache({
         [appDevDependencies.transactionGateway.transactionId]: {
-          ura_territory_choice_limited_partner: "overseas"
+          poa_territory_choice: "overseas"
         }
       });
 
-      const redirectUrl = getUrl(TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
+      const redirectUrl = getUrl(TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
 
       const res = await request(app).get(URL);
       expect(res.status).toBe(200);
@@ -110,13 +110,13 @@ describe("Enter Limited Partner Usual Residential Address Page", () => {
       expect(res.text).toContain(redirectUrl);
     });
 
-    it("should load enter limited partner's usual residential address manual entry page with postcode lookup back link", async () => {
+    it("should load enter limited partner's principal office address manual entry page with postcode lookup back link", async () => {
       appDevDependencies.cacheRepository.feedCache({
         [appDevDependencies.transactionGateway.transactionId]: {
-          ura_territory_choice_limited_partner: "unitedKingdom"
+          poa_territory_choice: "unitedKingdom"
         }
       });
-      const redirectUrl = getUrl(POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
+      const redirectUrl = getUrl(POSTCODE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
       const res = await request(app).get(URL);
       expect(res.status).toBe(200);
 
@@ -124,12 +124,12 @@ describe("Enter Limited Partner Usual Residential Address Page", () => {
     });
   });
 
-  describe("POST Enter limited partner's usual residential address Page", () => {
+  describe("POST Enter limited partner's principal office address Page", () => {
     it("should redirect and add entered address to the cache", async () => {
       appDevDependencies.addressLookUpGateway.setError(false);
       appDevDependencies.cacheRepository.feedCache({
         [appDevDependencies.transactionGateway.transactionId]: {
-          ["usual_residential_address_limited_partner"]: {
+          ["principal_office_address"]: {
             address_line_1: "",
             address_line_2: "",
             country: "",
@@ -141,7 +141,7 @@ describe("Enter Limited Partner Usual Residential Address Page", () => {
         }
       });
       const res = await request(app).post(URL).send({
-        pageType: AddressPageType.enterLimitedPartnerUsualResidentialAddress,
+        pageType: AddressPageType.enterLimitedPartnerPrincipalOfficeAddress,
         postal_code: "",
         premises: "4",
         address_line_1: "DUNCALF STREET",
@@ -156,7 +156,7 @@ describe("Enter Limited Partner Usual Residential Address Page", () => {
       const cache = appDevDependencies.cacheRepository.cache;
       expect(cache?.[`${config.APPLICATION_CACHE_KEY}`]).toEqual({
         [appDevDependencies.transactionGateway.transactionId]: {
-          usual_residential_address_limited_partner: {
+          principal_office_address: {
             postal_code: "",
             premises: "4",
             address_line_1: "DUNCALF STREET",
@@ -169,16 +169,16 @@ describe("Enter Limited Partner Usual Residential Address Page", () => {
       });
     });
 
-    it("should redirect to the confirm limited partner's usual residential address page", async () => {
+    it("should redirect to the confirm limited partner's principal office address page", async () => {
       const limitedPartner = new LimitedPartnerBuilder()
         .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isPerson()
+        .isLegalEntity()
         .build();
 
       appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
 
       const res = await request(app).post(URL).send({
-        pageType: AddressPageType.enterLimitedPartnerUsualResidentialAddress,
+        pageType: AddressPageType.enterLimitedPartnerPrincipalOfficeAddress,
         addressLine1: "Mill Street"
       });
 
@@ -189,7 +189,7 @@ describe("Enter Limited Partner Usual Residential Address Page", () => {
     it("should redirect to the error page when error occurs during Post", async () => {
       const limitedPartner = new LimitedPartnerBuilder()
         .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isPerson()
+        .isLegalEntity()
         .build();
 
       appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
@@ -212,14 +212,14 @@ describe("Enter Limited Partner Usual Residential Address Page", () => {
 
       const apiErrors: ApiErrors = {
         errors: {
-          "usualResidentialAddress.postalCode": "must not be null"
+          "principalOfficeAddress.postalCode": "must not be null"
         }
       };
 
       appDevDependencies.limitedPartnerGateway.feedErrors(apiErrors);
 
       const res = await request(app).post(URL).send({
-        pageType: AddressPageType.confirmRegisteredOfficeAddress,
+        pageType: AddressPageType.confirmLimitedPartnerPrincipalOfficeAddress,
         address: `{"postal_code": "","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": "England"}`
       });
 
