@@ -22,6 +22,7 @@ describe("Check Your Answers Page", () => {
       expect(res.status).toBe(200);
       testTranslations(res.text, enTranslationText.checkYourAnswersPage, [
         "headingTerm",
+        "headingSic"
       ]);
       expect(res.text).not.toContain("WELSH -");
     });
@@ -33,6 +34,7 @@ describe("Check Your Answers Page", () => {
       expect(res.status).toBe(200);
       testTranslations(res.text, cyTranslationText.checkYourAnswersPage, [
         "headingTerm",
+        "headingSic"
       ]);
       expect(res.text).toContain("WELSH -");
     });
@@ -89,8 +91,8 @@ describe("Check Your Answers Page", () => {
     [PartnershipType.PFLP, false],
     [PartnershipType.SPFLP, false]
   ])(
-    "should show term and change link based on the partnership type",
-    async (partnershipType: PartnershipType, changeLinkExpected: boolean) => {
+    "should show term, SIC codes and change links based on the partnership type",
+    async (partnershipType: PartnershipType, headingsAndChangeLinksExpected: boolean) => {
       const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
         limitedPartnership
@@ -99,12 +101,16 @@ describe("Check Your Answers Page", () => {
 
       expect(res.status).toBe(200);
 
-      if (changeLinkExpected) {
+      if (headingsAndChangeLinksExpected) {
         expect(res.text).toContain("term#term");
         expect(res.text).toContain(enTranslationText.checkYourAnswersPage.headingTerm);
+        expect(res.text).toContain("standard-industrial-classification-code#sic1");
+        expect(res.text).toContain(enTranslationText.checkYourAnswersPage.headingSic);
       } else {
         expect(res.text).not.toContain("term#term");
         expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.headingTerm);
+        expect(res.text).not.toContain("standard-industrial-classification-code#sic1");
+        expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.headingSic);
       }
     });
 
