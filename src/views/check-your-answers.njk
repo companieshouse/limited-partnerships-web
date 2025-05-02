@@ -43,23 +43,6 @@
           },
           {
             key: {
-              text: i18n.checkYourAnswersPage.headingSic
-            },
-            value: {
-              text: "62012 - Business and domestic software development"
-            },
-            actions: {
-              items: [
-                {
-                  href: "javascript:void(0)",
-                  text: "Change",
-                  visuallyHiddenText: "Standard Industrial Classification code"
-                }
-              ]
-            }
-          },
-          {
-            key: {
               text: i18n.checkYourAnswersPage.headingEmail
             },
             value: {
@@ -107,7 +90,25 @@
               ) ]
             } 
           } if props.data.limitedPartnership.data.partnership_type === "LP"
-                or props.data.limitedPartnership.data.partnership_type === "SLP"
+                or props.data.limitedPartnership.data.partnership_type === "SLP",
+          {
+            key: {
+              text: i18n.checkYourAnswersPage.headingSic
+            },
+            value: {
+              text: props.data.limitedPartnership.data.sic_codes
+            },
+            actions: {
+              items: [ 
+                CREATE_CHANGE_LINK(
+                  i18n.checkYourAnswersPage.change,
+                  currentUrl | replace(checkYourAnswers, "standard-industrial-classification-code#sic1"),
+                  partnershipNameChangeText,
+                  "change-sic-code-button"
+                )
+              ]
+            }
+          }
         ]
       }) }}
 
