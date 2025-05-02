@@ -9,7 +9,8 @@ import {
   REVIEW_GENERAL_PARTNERS_URL,
   TERM_URL,
   WHERE_IS_THE_JURISDICTION_URL,
-  CHECK_YOUR_ANSWERS_URL
+  CHECK_YOUR_ANSWERS_URL,
+  ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL
 } from "../registration/url";
 import * as url from "./url";
 
@@ -428,7 +429,7 @@ const limitedPartnerPrincipalOfficeAddressCacheKeys = {
 };
 
 const addressRoutingTerritoryChoiceLimitedPartnerPrincipalOfficeAddress = {
-  previousUrl: ADD_LIMITED_PARTNER_PERSON_URL,
+  previousUrl: ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
   currentUrl: url.TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   nextUrl: url.POSTCODE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   pageType: AddressPageType.territoryChoiceLimitedPartnerPrincipalOfficeAddress,

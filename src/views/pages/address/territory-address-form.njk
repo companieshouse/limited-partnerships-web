@@ -1,0 +1,18 @@
+<form class="form" action="{{ props.currentUrl }}" method="post">
+    <input type="hidden" name="pageType" value={{ props.pageType }}>
+    {% include "includes/csrf_token.njk" %}
+
+
+    {% include "includes/territory-choice-radios.njk" %}  
+
+    {% include "includes/public-register-information.njk" %}  
+
+    {{ govukButton({
+        text: i18n.buttons.continue,
+        attributes: {
+        "id": "submit",
+        "onclick": "_paq.push(['trackEvent', '" + addressEvent + " territory choice', 'selection', document.querySelector('input[name=parameter]:checked').nextElementSibling.innerHTML])"
+        }
+    }) }}
+
+</form>

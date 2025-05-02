@@ -3,8 +3,8 @@ import enTranslationText from "../../../../../../../locales/en/translations.json
 import cyTranslationText from "../../../../../../../locales/cy/translations.json";
 import app from "../../../app";
 import {
-  CHOOSE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
-  // CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
+  CHOOSE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "presentation/controller/addressLookUp/url";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import { appDevDependencies } from "config/dev-dependencies";
@@ -30,7 +30,7 @@ describe("Choose usual residential address of the limited partner page", () => {
   });
 
   const URL = getUrl(CHOOSE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
-  // const REDIRECT_URL = getUrl(CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
+  const REDIRECT_URL = getUrl(CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
 
   describe("GET choose usual residential address of the limited partner page", () => {
     it("should load the choose usual residential address of the limited partner page with Welsh text", async () => {
@@ -88,7 +88,7 @@ describe("Choose usual residential address of the limited partner page", () => {
         });
 
       expect(res.status).toBe(302);
-      // expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
 
       const cache = appDevDependencies.cacheRepository.cache;
       expect(cache?.[`${config.APPLICATION_CACHE_KEY}`]).toEqual({

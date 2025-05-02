@@ -15,10 +15,12 @@ import {
 import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
 import RegistrationPageType from "../../../../controller/registration/PageType";
 import { ApiErrors } from "../../../../../domain/entities/UIErrors";
+import { TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../../../controller/addressLookUp/url";
 
 describe("Add Limited Partner Legal Entity Page", () => {
   const URL = getUrl(ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL);
-  // add redirect when pages exist
+  const REDIRECT_URL = getUrl(TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
+
   beforeEach(() => {
     setLocalesEnabled(false);
 
@@ -86,6 +88,7 @@ describe("Add Limited Partner Legal Entity Page", () => {
       });
 
       expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
     });
 
     it("should return a validation error when invalid data is entered", async () => {
@@ -152,6 +155,7 @@ describe("Add Limited Partner Legal Entity Page", () => {
       });
 
       expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
     });
 
     it("should return a validation error when invalid data is entered", async () => {
