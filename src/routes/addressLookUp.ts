@@ -361,17 +361,6 @@ export const addressLookUpEndpoints = (router: Router, dependencies: IDependenci
   );
 
   router.get(
-    url.CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
-    authentication,
-    dependencies.addressLookUpController.getPageRouting()
-  );
-  router.post(
-    url.CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
-    authentication,
-    dependencies.addressLookUpController.confirmAddress()
-  );
-
-  router.get(
     url.ENTER_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
     authentication,
     dependencies.addressLookUpController.getPageRouting()
@@ -380,6 +369,17 @@ export const addressLookUpEndpoints = (router: Router, dependencies: IDependenci
     url.ENTER_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
     authentication,
     dependencies.addressLookUpController.sendManualAddress()
+  );
+
+  router.get(
+    url.CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+    authentication,
+    dependencies.addressLookUpController.getPageRouting()
+  );
+  router.post(
+    url.CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+    authentication,
+    dependencies.addressLookUpController.confirmAddress()
   );
 };
 
