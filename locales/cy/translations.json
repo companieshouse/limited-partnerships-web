@@ -312,7 +312,12 @@
         "headingName" : "WELSH - Partnership Name",
         "headingSic" : "WELSH - Standard Industrial Classification (SIC) code",
         "headingEmail" : "WELSH - Registered email address",
-        "jurisdiction": "WELSH - Jurisdiction",
+        "headingJurisdiction" : "WELSH - Jurisdiction",
+        "jurisdictions": {
+            "englandAndWales": "WELSH - England and Wales",
+            "northernIreland": "WELSH - Northern Ireland",
+            "scotland": "WELSH - Scotland"
+        },
         "headingTerm" : "WELSH - Term of partnership",
         "confirm" : "WELSH - Confirm this statement",
         "futureLawful" : "WELSH - I confirm that the intended future activities of the limited partnership are lawful.",
