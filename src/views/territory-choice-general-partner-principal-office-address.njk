@@ -8,32 +8,16 @@
 {% endif %}
 
 {% set pageTitle = i18n.address.territoryChoice.generalPartnerPrincipalOfficeAddress.title %}
+{% set titleHint = i18n.address.territoryChoice.generalPartnerPrincipalOfficeAddress.titleHint %}
+{% set publicRegisterInformationLine1 = i18n.address.territoryChoice.generalPartnerPrincipalOfficeAddress.publicRegisterInformationLine1 %}
+{% set addressEvent = "general partner principal office address" %}
 
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
+      {% include "includes/general-partner-name.njk" %}
 
-      <form class="form" action="{{ props.currentUrl }}" method="post">
-        <input type="hidden" name="pageType" value={{ props.pageType }}>
-        {% include "includes/csrf_token.njk" %}
-
-        {% include "includes/general-partner-name.njk" %}  
-       
-        {% set titleHint = i18n.address.territoryChoice.generalPartnerPrincipalOfficeAddress.titleHint %}
-        {% include "includes/territory-choice-radios.njk" %}  
-
-        {% set publicRegisterInformationLine1 = i18n.address.territoryChoice.generalPartnerPrincipalOfficeAddress.publicRegisterInformationLine1 %}
-        {% include "includes/public-register-information.njk" %}  
-
-        {{ govukButton({
-          text: i18n.buttons.continue,
-          attributes: {
-            "id": "submit",
-            "onclick": "_paq.push(['trackEvent', 'general partner principal office address territory choice', 'selection', document.querySelector('input[name=parameter]:checked').nextElementSibling.innerHTML])"
-          }
-        }) }}
-
-      </form>
+      {% include "pages/address/territory-address-form.njk" %}
     </div>
   </div>
 {% endblock %}

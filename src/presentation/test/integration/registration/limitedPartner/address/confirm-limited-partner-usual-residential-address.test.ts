@@ -109,7 +109,7 @@ describe("Confirm Limited Partner Usual Residential Address Page", () => {
           }`
         });
 
-      const redirectUrl = getUrl(CHECK_YOUR_ANSWERS_URL);
+      const redirectUrl = getUrl(CHECK_YOUR_ANSWERS_URL); // TODO change to REVIEW_LIMITED_PARTNERS_URL
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);

@@ -1,7 +1,7 @@
 import request from "supertest";
 import app from "../app";
 
-import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { Jurisdiction, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { CHECK_YOUR_ANSWERS_URL, APPLICATION_SUBMITTED_URL } from "../../../controller/registration/url";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
@@ -22,6 +22,7 @@ describe("Check Your Answers Page", () => {
       expect(res.status).toBe(200);
       testTranslations(res.text, enTranslationText.checkYourAnswersPage, [
         "headingTerm",
+        "jurisdictions",
         "headingSic"
       ]);
       expect(res.text).not.toContain("WELSH -");
@@ -34,6 +35,7 @@ describe("Check Your Answers Page", () => {
       expect(res.status).toBe(200);
       testTranslations(res.text, cyTranslationText.checkYourAnswersPage, [
         "headingTerm",
+        "jurisdictions",
         "headingSic"
       ]);
       expect(res.text).toContain("WELSH -");
@@ -50,7 +52,6 @@ describe("Check Your Answers Page", () => {
       expect(res.text).toContain(limitedPartnership?.data?.partnership_name?.toUpperCase());
       expect(res.text).toContain(limitedPartnership?.data?.name_ending?.toUpperCase());
       expect(res.text).toContain(limitedPartnership?.data?.email);
-      expect(res.text).toContain(limitedPartnership?.data?.jurisdiction);
       expect(res.text).toContain("Such term as decided by the partners within the partnership agreement");
       expect(res.text).toContain("12345,67890");
 
@@ -83,56 +84,74 @@ describe("Check Your Answers Page", () => {
           expect(res.text).not.toContain("where-is-the-jurisdiction#jurisdiction");
         }
       });
+
+    it.each([
+      [Jurisdiction.ENGLAND_AND_WALES, enTranslationText.checkYourAnswersPage.jurisdictions.englandAndWales],
+      [Jurisdiction.NORTHERN_IRELAND, enTranslationText.checkYourAnswersPage.jurisdictions.northernIreland],
+      [Jurisdiction.SCOTLAND, enTranslationText.checkYourAnswersPage.jurisdictions.scotland]
+    ])(
+      "should show correct jurisdiction text based on jurisdiction",
+      async (jurisdiction: Jurisdiction, jurisdictionTextExpected: string) => {
+        const limitedPartnership = new LimitedPartnershipBuilder().withJurisdiction(jurisdiction).build();
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
+          limitedPartnership
+        ]);
+        const res = await request(app).get(URL);
+
+        expect(res.status).toBe(200);
+
+        expect(res.text).toContain(jurisdictionTextExpected);
+      });
+
+    it.each([
+      [PartnershipType.LP, true],
+      [PartnershipType.SLP, true],
+      [PartnershipType.PFLP, false],
+      [PartnershipType.SPFLP, false]
+    ])(
+      "should show term, SIC codes and change links based on the partnership type",
+      async (partnershipType: PartnershipType, headingsAndChangeLinksExpected: boolean) => {
+        const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
+          limitedPartnership
+        ]);
+        const res = await request(app).get(URL);
+
+        expect(res.status).toBe(200);
+
+        if (headingsAndChangeLinksExpected) {
+          expect(res.text).toContain("term#term");
+          expect(res.text).toContain(enTranslationText.checkYourAnswersPage.headingTerm);
+          expect(res.text).toContain("standard-industrial-classification-code#sic1");
+          expect(res.text).toContain(enTranslationText.checkYourAnswersPage.headingSic);
+        } else {
+          expect(res.text).not.toContain("term#term");
+          expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.headingTerm);
+          expect(res.text).not.toContain("standard-industrial-classification-code#sic1");
+          expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.headingSic);
+        }
+      });
+
+    it.each([
+      ["BY_AGREEMENT", enTranslationText.termPage.byAgreement],
+      ["UNTIL_DISSOLUTION", enTranslationText.termPage.untilDissolution],
+      ["NONE", enTranslationText.termPage.noTerm],
+      ["TERM_NOT_MATCHED", ""]
+    ])(
+      "should show the correct text for term based on term selected",
+      async (termKey: any, expectedTermText: string) => {
+        const limitedPartnership = new LimitedPartnershipBuilder().withTerm(termKey).build();
+
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
+          limitedPartnership
+        ]);
+
+        const res = await request(app).get(URL);
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(expectedTermText);
+      });
   });
-
-  it.each([
-    [PartnershipType.LP, true],
-    [PartnershipType.SLP, true],
-    [PartnershipType.PFLP, false],
-    [PartnershipType.SPFLP, false]
-  ])(
-    "should show term, SIC codes and change links based on the partnership type",
-    async (partnershipType: PartnershipType, headingsAndChangeLinksExpected: boolean) => {
-      const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
-        limitedPartnership
-      ]);
-      const res = await request(app).get(URL);
-
-      expect(res.status).toBe(200);
-
-      if (headingsAndChangeLinksExpected) {
-        expect(res.text).toContain("term#term");
-        expect(res.text).toContain(enTranslationText.checkYourAnswersPage.headingTerm);
-        expect(res.text).toContain("standard-industrial-classification-code#sic1");
-        expect(res.text).toContain(enTranslationText.checkYourAnswersPage.headingSic);
-      } else {
-        expect(res.text).not.toContain("term#term");
-        expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.headingTerm);
-        expect(res.text).not.toContain("standard-industrial-classification-code#sic1");
-        expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.headingSic);
-      }
-    });
-
-  it.each([
-    ["BY_AGREEMENT", enTranslationText.termPage.byAgreement],
-    ["UNTIL_DISSOLUTION", enTranslationText.termPage.untilDissolution],
-    ["NONE", enTranslationText.termPage.noTerm],
-    ["TERM_NOT_MATCHED", ""]
-  ])(
-    "should show the correct text for term based on term selected",
-    async (termKey: any, expectedTermText: string) => {
-      const limitedPartnership = new LimitedPartnershipBuilder().withTerm(termKey).build();
-
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
-        limitedPartnership
-      ]);
-
-      const res = await request(app).get(URL);
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(expectedTermText);
-    });
 
   describe("POST Check Your Answers Page", () => {
     it("should navigate to next page", async () => {

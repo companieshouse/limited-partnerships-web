@@ -12,10 +12,12 @@ import {
   ADD_LIMITED_PARTNER_PERSON_WITH_ID_URL
 } from "../../../../controller/registration/url";
 import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
+import { TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../controller/addressLookUp/url";
 
 describe("Add Limited Partner Person Page", () => {
   const URL = getUrl(ADD_LIMITED_PARTNER_PERSON_URL);
-  // add redirect when pages exist
+  const REDIRECT_URL = getUrl(TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
+
   beforeEach(() => {
     setLocalesEnabled(false);
 
@@ -86,6 +88,7 @@ describe("Add Limited Partner Person Page", () => {
       });
 
       expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
     });
 
     it("should return a validation error when invalid data is entered", async () => {
@@ -209,7 +212,7 @@ describe("Add Limited Partner Person Page", () => {
         "date_of_birth-Month": "11",
         "date_of_birth-Year": "1987",
         nationality1: "Mongolian",
-        nationality2: "Uzbek",
+        nationality2: "Uzbek"
       });
 
       expect(res.status).toBe(200);

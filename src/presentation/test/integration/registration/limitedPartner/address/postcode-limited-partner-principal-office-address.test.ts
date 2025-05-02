@@ -203,9 +203,7 @@ describe("Postcode limited partner principal office address Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(`The postcode AA1 1AA cannot be found`);
-      expect(res.text).toContain(
-        `${limitedPartner.data?.legal_entity_name?.toUpperCase()}`
-      );
+      expect(res.text).toContain(`${limitedPartner.data?.legal_entity_name?.toUpperCase()}`);
 
       expect(appDevDependencies.cacheRepository.cache).toEqual(null);
     });
