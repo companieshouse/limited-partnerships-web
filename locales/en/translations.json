@@ -306,7 +306,7 @@
 
     "capitalContribution" : {
        "title" : "What is their total capital contribution?",
-       "hint" : "Enter the total value of all monetary and non-monetary contributions.",
+       "hint" : "Enter the total value of all monetary and non-monetary contributions",
        "compositionTitle" : "What is this total value made up of?",
        "compositionHint" : "Select all that apply",
        "money" : "Money",

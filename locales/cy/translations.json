@@ -307,7 +307,7 @@
     
     "capitalContribution" : {
         "title" : "WELSH - What is their total capital contribution?",
-        "hint" : "WELSH - Enter the total value of all monetary and non-monetary contributions.",
+        "hint" : "WELSH - Enter the total value of all monetary and non-monetary contributions",
         "compositionTitle" : "WELSH - What is this total value made up of?",
         "compositionHint" : "WELSH - Select all that apply",
         "money" : "WELSH - Money",
