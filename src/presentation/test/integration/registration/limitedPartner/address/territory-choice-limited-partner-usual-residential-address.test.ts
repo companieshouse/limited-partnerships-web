@@ -28,7 +28,9 @@ describe("Limited Partner Usual Residential Address Territory Choice", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        toEscapedHtml(`${cyTranslationText.address.territoryChoice.limitedPartnerUsualResidentialAddress.title} - ${cyTranslationText.service} - GOV.UK`)
+        toEscapedHtml(
+          `${cyTranslationText.address.territoryChoice.limitedPartnerUsualResidentialAddress.title} - ${cyTranslationText.service} - GOV.UK`
+        )
       );
 
       testTranslations(res.text, cyTranslationText.address.territoryChoice.limitedPartnerUsualResidentialAddress);
@@ -41,7 +43,9 @@ describe("Limited Partner Usual Residential Address Territory Choice", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        toEscapedHtml(`${enTranslationText.address.territoryChoice.limitedPartnerUsualResidentialAddress.title} - ${enTranslationText.service} - GOV.UK`)
+        toEscapedHtml(
+          `${enTranslationText.address.territoryChoice.limitedPartnerUsualResidentialAddress.title} - ${enTranslationText.service} - GOV.UK`
+        )
       );
 
       testTranslations(res.text, enTranslationText.address.territories);
@@ -68,6 +72,7 @@ describe("Limited Partner Usual Residential Address Territory Choice", () => {
     it("should redirect to What is the limited partners URA? post code look up page when united kingdom is selected", async () => {
       const UNITED_KINGDOM_PARAMETER = "unitedKingdom";
       const POSTCODE_URL = getUrl(POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
+
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.territoryChoiceLimitedPartnerUsualResidentialAddress,
         parameter: UNITED_KINGDOM_PARAMETER
@@ -75,6 +80,7 @@ describe("Limited Partner Usual Residential Address Territory Choice", () => {
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(POSTCODE_URL);
+
       expect(appDevDependencies.cacheRepository.cache).toEqual({
         [APPLICATION_CACHE_KEY]: {
           [appDevDependencies.transactionGateway.transactionId]: {
@@ -87,6 +93,7 @@ describe("Limited Partner Usual Residential Address Territory Choice", () => {
     it("should redirect to What is the limited partners URA? manual entry page when overseas is selected", async () => {
       const OVERSEAS_PARAMETER = "overseas";
       const MANUAL_ENTRY_URL = getUrl(ENTER_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
+
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.territoryChoiceLimitedPartnerUsualResidentialAddress,
         parameter: OVERSEAS_PARAMETER
@@ -94,6 +101,7 @@ describe("Limited Partner Usual Residential Address Territory Choice", () => {
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(MANUAL_ENTRY_URL);
+
       expect(appDevDependencies.cacheRepository.cache).toEqual({
         [APPLICATION_CACHE_KEY]: {
           [appDevDependencies.transactionGateway.transactionId]: {

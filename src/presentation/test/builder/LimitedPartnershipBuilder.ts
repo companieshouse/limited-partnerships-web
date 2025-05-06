@@ -25,7 +25,7 @@ class LimitedPartnershipBuilder {
       country: "England"
     },
     term: Term.BY_AGREEMENT,
-    sic_codes: ["1234", "5678"]
+    sic_codes: ["12345", "67890"]
   };
 
   withId(id: string) {
