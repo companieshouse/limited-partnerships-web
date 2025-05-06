@@ -122,7 +122,7 @@
             },
             "principalOfficeAddress": {
                 "title": "WELSH - Confirm the general partner's principal office address",
-                "publicRegisterLine1": "WELSH - We will not show the general partner's principal office address on the public register."
+                "publicRegisterLine1": "WELSH - We'll show the general partner's principal office address on the public register."
             },
             "correspondenceAddress": {
                 "title": "WELSH - Confirm the general partner's correspondence address",
@@ -236,7 +236,7 @@
                 },
                 "principalOfficeAddress": {
                     "whatIsPrincipalOfficeAddress": "WELSH - What is the general partner's principal office address?",
-                    "publicRegisterLine1": "WELSH - We will not show the general partner's principal office address."
+                    "publicRegisterLine1": "WELSH - We'll show the general partner's principal office address on the public register."
                 },
                 "correspondenceAddress": {
                 "whatIsCorrespondenceAddress": "WELSH - What is the general partner's correspondence address?",
