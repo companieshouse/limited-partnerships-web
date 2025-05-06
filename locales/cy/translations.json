@@ -303,7 +303,19 @@
     "buttons" : {
         "continue" : "WELSH - Continue",
         "saveAndContinue" : "WELSH - Save and continue"
-    },  
+    },
+    
+    "capitalContribution" : {
+        "title" : "WELSH - What is their total capital contribution?",
+        "hint" : "WELSH - Enter the total value of all monetary and non-monetary contributions.",
+        "compositionTitle" : "WELSH - What is this total value made up of?",
+        "compositionHint" : "WELSH - Select all that apply",
+        "money" : "WELSH - Money",
+        "landOrProperty" : "WELSH - Land or property",
+        "shares" : "WELSH - Shares",
+        "servicesOrGoods" : "WELSH - Services or goods",
+        "compositionErrorMessage" : "WELSH - Select a tick box"
+     },
 
     "checkYourAnswersPage" : {
         "title" : "WELSH - Check your answers before sending your application",

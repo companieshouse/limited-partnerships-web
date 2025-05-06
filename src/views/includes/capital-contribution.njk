@@ -1,0 +1,74 @@
+{% set partnershipType = props.data.limitedPartnership.data.partnership_type %}
+
+{% if (partnershipType == "LP") or (partnershipType == "SLP") %}
+  {{ govukInput({
+    label: {
+      text: i18n.capitalContribution.title,
+      classes: "govuk-label govuk-label--m",
+      isPageHeading: false
+    },
+    hint: {
+    text: i18n.capitalContribution.hint
+    },
+    classes: "govuk-input--width-4",
+    id: "amount",
+    name: "amount",
+    value: props.data.limitedPartner.data.capital_contribution_amount,
+    errorMessage: props.amount if props.errors,
+    attributes: {
+      required: true
+    }
+  }) }}
+
+  {% include "includes/currencies.njk" %}
+
+  {{ govukCheckboxes({
+    errorMessage: i18n.capitalContribution.compositionErrorMessage if props.errors,
+    idPrefix: "capital_contribution_composition",
+    name: "capital_contribution_composition",            
+    fieldset: {
+      legend: {
+        text: i18n.capitalContribution.compositionTitle,
+        isPageHeading: false,
+        classes: "govuk-label govuk-label--m"
+      }
+    },
+    hint: {
+      text: i18n.capitalContribution.compositionHint
+    },   
+    items: [
+      {        
+        value: capital_contribution_money,            
+        text: i18n.capitalContribution.money,
+        checked: capital_contribution_money === "MONEY",
+        attributes: {
+          "data-event-id": "capital_contribution_money"
+        } 
+      },
+      {        
+        value: capital_contribution_landOrProperty,           
+        text: i18n.capitalContribution.landOrProperty,
+        checked: capital_contribution_landOrProperty === "LAND_OR_PROPERTY",
+        attributes: {
+          "data-event-id": "capital_contribution_landOrProperty"
+        } 
+      },
+      {        
+        value: capital_contribution_shares,          
+        text: i18n.capitalContribution.shares,
+        checked: capital_contribution_shares === "SHARES",
+        attributes: {
+          "data-event-id": "capital_contribution_shares"
+        } 
+      },
+      {        
+        value: capital_contribution_servicesOrGoods,        
+        text: i18n.capitalContribution.servicesOrGoods,
+        checked: capital_contribution_servicesOrGoods === "SERVICES_OR_GOODS",
+        attributes: {
+          "data-event-id": "capital_contribution_servicesOrGoods"
+        } 
+      }
+    ]
+  }) }}
+{% endif %}

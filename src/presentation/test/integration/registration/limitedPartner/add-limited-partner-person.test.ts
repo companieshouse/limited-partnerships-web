@@ -12,6 +12,9 @@ import {
   ADD_LIMITED_PARTNER_PERSON_WITH_ID_URL
 } from "../../../../controller/registration/url";
 import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
+import {
+  PartnershipType
+} from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 describe("Add Limited Partner Person Page", () => {
   const URL = getUrl(ADD_LIMITED_PARTNER_PERSON_URL);
@@ -24,7 +27,16 @@ describe("Add Limited Partner Person Page", () => {
   });
 
   describe("Get Add Limited Partner Page", () => {
-    it("should load the add limited partner page with Welsh text", async () => {
+    it("should load the add limited partner page with Welsh text for LP", async () => {
+
+      const limitedPartnership = new LimitedPartnershipBuilder()
+        .withPartnershipType(PartnershipType.LP)
+        .build();
+
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
+        limitedPartnership
+      ]);
+
       setLocalesEnabled(true);
       const res = await request(app).get(URL + "?lang=cy");
 
@@ -33,9 +45,18 @@ describe("Add Limited Partner Person Page", () => {
         `${cyTranslationText.addPartnerPersonPage.limitedPartner.title} - ${cyTranslationText.service} - GOV.UK`
       );
       testTranslations(res.text, cyTranslationText.addPartnerPersonPage, ["errorMessages", "generalPartner"]);
+      testTranslations(res.text, cyTranslationText.capitalContribution, ["compositionErrorMessage"]);
     });
 
-    it("should load the add limited partner page with English text", async () => {
+    it("should load the add limited partner page with English text for LP", async () => {
+      const limitedPartnership = new LimitedPartnershipBuilder()
+        .withPartnershipType(PartnershipType.LP)
+        .build();
+
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
+        limitedPartnership
+      ]);
+
       setLocalesEnabled(true);
       const res = await request(app).get(URL + "?lang=en");
 
@@ -44,6 +65,133 @@ describe("Add Limited Partner Person Page", () => {
         `${enTranslationText.addPartnerPersonPage.limitedPartner.title} - ${enTranslationText.service} - GOV.UK`
       );
       testTranslations(res.text, enTranslationText.addPartnerPersonPage, ["errorMessages", "generalPartner"]);
+      testTranslations(res.text, enTranslationText.capitalContribution, ["compositionErrorMessage"]);
+      expect(res.text).not.toContain("WELSH -");
+    });
+
+    it("should load the add limited partner page with Welsh text for SLP", async () => {
+
+      const limitedPartnership = new LimitedPartnershipBuilder()
+        .withPartnershipType(PartnershipType.SLP)
+        .build();
+
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
+        limitedPartnership
+      ]);
+
+      setLocalesEnabled(true);
+      const res = await request(app).get(URL + "?lang=cy");
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(
+        `${cyTranslationText.addPartnerPersonPage.limitedPartner.title} - ${cyTranslationText.service} - GOV.UK`
+      );
+      testTranslations(res.text, cyTranslationText.addPartnerPersonPage, ["errorMessages", "generalPartner"]);
+      testTranslations(res.text, cyTranslationText.capitalContribution, ["compositionErrorMessage"]);
+    });
+
+    it("should load the add limited partner page with English text for SLP", async () => {
+      const limitedPartnership = new LimitedPartnershipBuilder()
+        .withPartnershipType(PartnershipType.SLP)
+        .build();
+
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
+        limitedPartnership
+      ]);
+
+      setLocalesEnabled(true);
+      const res = await request(app).get(URL + "?lang=en");
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(
+        `${enTranslationText.addPartnerPersonPage.limitedPartner.title} - ${enTranslationText.service} - GOV.UK`
+      );
+      testTranslations(res.text, enTranslationText.addPartnerPersonPage, ["errorMessages", "generalPartner"]);
+      testTranslations(res.text, enTranslationText.capitalContribution, ["compositionErrorMessage"]);
+      expect(res.text).not.toContain("WELSH -");
+    });
+
+    it("should load the add limited partner page with Welsh text for PFLP", async () => {
+
+      const limitedPartnership = new LimitedPartnershipBuilder()
+        .withPartnershipType(PartnershipType.PFLP)
+        .build();
+
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
+        limitedPartnership
+      ]);
+
+      setLocalesEnabled(true);
+      const res = await request(app).get(URL + "?lang=cy");
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(
+        `${cyTranslationText.addPartnerPersonPage.limitedPartner.title} - ${cyTranslationText.service} - GOV.UK`
+      );
+      testTranslations(res.text, enTranslationText.addPartnerPersonPage, ["errorMessages", "generalPartner"]);
+      expect(res.text).not.toContain(cyTranslationText.capitalContribution.title);
+    });
+
+    it("should load the add limited partner page with English text for PFLP", async () => {
+      const limitedPartnership = new LimitedPartnershipBuilder()
+        .withPartnershipType(PartnershipType.PFLP)
+        .build();
+
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
+        limitedPartnership
+      ]);
+
+      setLocalesEnabled(true);
+      const res = await request(app).get(URL + "?lang=en");
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(
+        `${enTranslationText.addPartnerPersonPage.limitedPartner.title} - ${enTranslationText.service} - GOV.UK`
+      );
+      testTranslations(res.text, enTranslationText.addPartnerPersonPage, ["errorMessages", "generalPartner"]);
+      expect(res.text).not.toContain(enTranslationText.capitalContribution.title);
+      expect(res.text).not.toContain("WELSH -");
+    });
+
+    it("should load the add limited partner page with Welsh text for SPFLP", async () => {
+
+      const limitedPartnership = new LimitedPartnershipBuilder()
+        .withPartnershipType(PartnershipType.SPFLP)
+        .build();
+
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
+        limitedPartnership
+      ]);
+
+      setLocalesEnabled(true);
+      const res = await request(app).get(URL + "?lang=cy");
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(
+        `${cyTranslationText.addPartnerPersonPage.limitedPartner.title} - ${cyTranslationText.service} - GOV.UK`
+      );
+      testTranslations(res.text, enTranslationText.addPartnerPersonPage, ["errorMessages", "generalPartner"]);
+      expect(res.text).not.toContain(cyTranslationText.capitalContribution.title);
+    });
+
+    it("should load the add limited partner page with English text for SPFLP", async () => {
+      const limitedPartnership = new LimitedPartnershipBuilder()
+        .withPartnershipType(PartnershipType.SPFLP)
+        .build();
+
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
+        limitedPartnership
+      ]);
+
+      setLocalesEnabled(true);
+      const res = await request(app).get(URL + "?lang=en");
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(
+        `${enTranslationText.addPartnerPersonPage.limitedPartner.title} - ${enTranslationText.service} - GOV.UK`
+      );
+      testTranslations(res.text, enTranslationText.addPartnerPersonPage, ["errorMessages", "generalPartner"]);
+      expect(res.text).not.toContain(enTranslationText.capitalContribution.title);
       expect(res.text).not.toContain("WELSH -");
     });
 
