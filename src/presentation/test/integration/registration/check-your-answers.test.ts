@@ -22,7 +22,8 @@ describe("Check Your Answers Page", () => {
       expect(res.status).toBe(200);
       testTranslations(res.text, enTranslationText.checkYourAnswersPage, [
         "headingTerm",
-        "jurisdictions"
+        "jurisdictions",
+        "headingSic"
       ]);
       expect(res.text).not.toContain("WELSH -");
     });
@@ -34,7 +35,8 @@ describe("Check Your Answers Page", () => {
       expect(res.status).toBe(200);
       testTranslations(res.text, cyTranslationText.checkYourAnswersPage, [
         "headingTerm",
-        "jurisdictions"
+        "jurisdictions",
+        "headingSic"
       ]);
       expect(res.text).toContain("WELSH -");
     });
@@ -50,10 +52,14 @@ describe("Check Your Answers Page", () => {
       expect(res.text).toContain(limitedPartnership?.data?.partnership_name?.toUpperCase());
       expect(res.text).toContain(limitedPartnership?.data?.name_ending?.toUpperCase());
       expect(res.text).toContain(limitedPartnership?.data?.email);
+      expect(res.text).toContain("Such term as decided by the partners within the partnership agreement");
+      expect(res.text).toContain("12345,67890");
 
       expect(res.text).toContain("name#partnership_name");
       expect(res.text).toContain("email#email");
       expect(res.text).toContain("where-is-the-jurisdiction#jurisdiction");
+      expect(res.text).toContain("term#term");
+      expect(res.text).toContain("standard-industrial-classification-code#sic1");
     });
 
     it.each([
@@ -103,8 +109,8 @@ describe("Check Your Answers Page", () => {
       [PartnershipType.PFLP, false],
       [PartnershipType.SPFLP, false]
     ])(
-      "should show term and change link based on the partnership type",
-      async (partnershipType: PartnershipType, changeLinkExpected: boolean) => {
+      "should show term, SIC codes and change links based on the partnership type",
+      async (partnershipType: PartnershipType, headingsAndChangeLinksExpected: boolean) => {
         const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
         appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
           limitedPartnership
@@ -113,12 +119,16 @@ describe("Check Your Answers Page", () => {
 
         expect(res.status).toBe(200);
 
-        if (changeLinkExpected) {
+        if (headingsAndChangeLinksExpected) {
           expect(res.text).toContain("term#term");
           expect(res.text).toContain(enTranslationText.checkYourAnswersPage.headingTerm);
+          expect(res.text).toContain("standard-industrial-classification-code#sic1");
+          expect(res.text).toContain(enTranslationText.checkYourAnswersPage.headingSic);
         } else {
           expect(res.text).not.toContain("term#term");
           expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.headingTerm);
+          expect(res.text).not.toContain("standard-industrial-classification-code#sic1");
+          expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.headingSic);
         }
       });
 
@@ -141,7 +151,6 @@ describe("Check Your Answers Page", () => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(expectedTermText);
       });
-
   });
 
   describe("POST Check Your Answers Page", () => {
