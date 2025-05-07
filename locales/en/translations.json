@@ -304,6 +304,18 @@
         "saveAndContinue" : "Save and continue"
     },
 
+    "capitalContribution" : {
+       "title" : "What is their total capital contribution?",
+       "hint" : "Enter the total value of all monetary and non-monetary contributions",
+       "compositionTitle" : "What is this total value made up of?",
+       "compositionHint" : "Select all that apply",
+       "money" : "Money",
+       "landOrProperty" : "Land or property",
+       "shares" : "Shares",
+       "servicesOrGoods" : "Services or goods",
+       "compositionErrorMessage" : "Select a tick box"
+    },
+
     "checkYourAnswersPage" : {
         "title" : "Check your answers before sending your application",
         "lpInfo" : "Limited partnership information",
