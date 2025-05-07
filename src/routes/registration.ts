@@ -274,6 +274,11 @@ export const registrationEndpoints = (
     authentication,
     dependencies.limitedPartnerController.getReviewPage()
   );
+  router.post(
+    REVIEW_LIMITED_PARTNERS_URL,
+    authentication,
+    dependencies.limitedPartnerController.postReviewPage()
+  );
 
   router.get(
     CHECK_YOUR_ANSWERS_URL,
