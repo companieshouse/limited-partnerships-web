@@ -37,6 +37,13 @@ class GlobalController extends AbstractController {
   getSignOut() {
     return (request: Request, response: Response, next: NextFunction) => {
       try {
+
+        for (const key in request.query) {
+          if (key === "error") {
+            response.locals.error = request.query[key];
+          }
+        }
+
         const previousPageUrl = this.getPreviousPageUrl(request);
         const pageType = super.pageType(request.path);
         const pageRouting = super.getRouting(globalsRouting, pageType, request);
