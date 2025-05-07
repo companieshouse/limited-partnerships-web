@@ -1,0 +1,142 @@
+{% extends "layout.njk" %}
+
+{% set pageTitle = i18n.reviewLimitedPartnersPage.title  %}
+
+{% block content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            {% include "includes/proposed-name.njk" %}
+
+            <h1 class="govuk-heading-xl">{{ pageTitle }}</h1>
+        </div>
+    </div>
+
+    <div class="govuk-grid-row govuk-!-margin-bottom-5">
+        <div class="govuk-grid-column-full">
+
+            <h2 class="govuk-heading-m govuk-!-margin-bottom-5">{{ i18n.reviewLimitedPartnersPage.limitedPartnersAdded.title }}</h2>
+
+            {% if props.data.limitedPartners.length  %}
+
+                {% for item in props.data.limitedPartners %}
+
+                    {% if item.data.forename %}
+
+                        {{ govukSummaryList({
+                            classes: "govuk-!-margin-bottom-0",
+                            rows: [
+                                {
+                                    key: {
+                                        text: i18n.reviewLimitedPartnersPage.limitedPartnersAdded.person
+                                    },
+                                    value: {
+                                        text: item.data.forename + " " + item.data.surname
+                                    },
+                                    actions: {
+                                    items: [
+                                            CREATE_CHANGE_LINK(
+                                                i18n.reviewLimitedPartnersPage.limitedPartnersAdded.changeLink,
+                                                props.currentUrl | replace("review-limited-partners", "limited-partner/" + item.id + "/add-limited-partner-person")
+                                            ),
+                                            CREATE_CHANGE_LINK(
+                                                i18n.reviewLimitedPartnersPage.limitedPartnersAdded.removeLink,
+                                                props.currentUrl | replace("review-limited-partners", "limited-partner/" + item.id + "/remove-limited-partner")
+                                            )
+                                        ]
+                                    }
+                                }
+                            ]
+                        }) }} 
+
+                    {% elif item.data.legal_entity_name %}
+
+                        {{ govukSummaryList({
+                            classes: "govuk-!-margin-bottom-0",
+                            rows: [
+                                {
+                                    key: {
+                                        text: i18n.reviewLimitedPartnersPage.limitedPartnersAdded.legalEntity
+                                    },
+                                    value: {
+                                        text: item.data.legal_entity_name
+                                    },
+                                    actions: {
+                                    items: [
+                                            CREATE_CHANGE_LINK(
+                                                i18n.reviewLimitedPartnersPage.limitedPartnersAdded.changeLink,
+                                                props.currentUrl | replace("review-limited-partners", "limited-partner/" + item.id + "/add-limited-partner-legal-entity")
+                                            ),
+                                            CREATE_CHANGE_LINK(
+                                                i18n.reviewLimitedPartnersPage.limitedPartnersAdded.removeLink,
+                                                props.currentUrl | replace("review-limited-partners", "limited-partner/" + item.id + "/remove-limited-partner")
+                                            )
+                                        ]
+                                    }
+                                }
+                            ]
+                        }) }} 
+
+                    {% endif %}
+
+                {% endfor %}
+            
+            {% else %}
+
+                <p>{{ i18n.reviewLimitedPartnersPage.limitedPartnersAdded.emptyList }}</p>
+
+            {% endif %}
+
+        </div>
+    </div>
+
+    </br>
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+
+            <form class="form" action={{ props.currentUrl }} method="post">
+                <input type="hidden" name="pageType" value={{ props.pageType }}>
+                
+                {% include "includes/csrf_token.njk" %}
+        
+                {{ govukRadios({
+                    name: "addAnotherLimitedPartner",
+                    fieldset: {
+                        legend: {
+                            text: i18n.reviewLimitedPartnersPage.addLimitedPartner.title,
+                            isPageHeading: false,
+                            classes: "govuk-fieldset__legend--m"
+                        }
+                    },
+
+                    items: [
+                        {
+                            value: "addPerson",
+                            text: i18n.reviewLimitedPartnersPage.addLimitedPartner.optionPerson,
+                            attributes: {
+                                required: true
+                            }
+                        },
+                        {
+                            value: "addLegalEntity",
+                            text: i18n.reviewLimitedPartnersPage.addLimitedPartner.optionLegalEntity,
+                            attributes: {
+                                required: true
+                            }
+                        },
+                        {
+                            value: "no",
+                            text: i18n.reviewLimitedPartnersPage.addLimitedPartner.optionNo,
+                            attributes: {
+                                required: true
+                            }
+                        }
+                    ]
+                }) }}
+
+                {% include "includes/save-and-continue-button.njk" %}
+
+            </form>
+        </div>
+    </div>
+{% endblock %}

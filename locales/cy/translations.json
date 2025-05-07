@@ -473,6 +473,24 @@
         }
     },
 
+    "reviewLimitedPartnersPage": {
+        "title": "WELSH - Limited partners",
+        "limitedPartnersAdded": {
+            "title": "WELSH - Limited partners you have added so far:",
+            "changeLink": "WELSH - Change",
+            "removeLink": "WELSH - Remove",
+            "person": "WELSH - Person",
+            "legalEntity": "WELSH - Legal entity",
+            "emptyList": "WELSH - You must add at least one Limited Partner"
+        },
+        "addLimitedPartner": {
+            "title": "WELSH - Do you need to add another limited partner?",
+            "optionPerson": "WELSH - Yes, a person",
+            "optionLegalEntity": "WELSH - Yes, a legal entity",
+            "optionNo": "WELSH - No"
+        }
+    },
+
     "service" : "WELSH - Register a limited partnership",
 
     "sicCodePage" : {

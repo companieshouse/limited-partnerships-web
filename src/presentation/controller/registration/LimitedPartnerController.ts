@@ -6,6 +6,7 @@ import registrationsRouting from "./Routing";
 import AbstractController from "../AbstractController";
 import RegistrationPageType from "./PageType";
 import { ADD_LIMITED_PARTNER_PERSON_URL, ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL } from "./url";
+import { LimitedPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 class LimitedPartnerController extends AbstractController {
   private readonly limitedPartnershipService: LimitedPartnershipService;
@@ -63,6 +64,35 @@ class LimitedPartnerController extends AbstractController {
         url = super.insertIdsInUrl(url, ids.transactionId, ids.submissionId);
 
         response.redirect(url);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  getReviewPage() {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { tokens, pageType, ids } = super.extract(request);
+        const pageRouting = super.getRouting(registrationsRouting, pageType, request);
+
+        let limitedPartnership = {};
+        let limitedPartners: LimitedPartner[] = [];
+
+        if (ids.transactionId && ids.submissionId) {
+          limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+            tokens,
+            ids.transactionId,
+            ids.submissionId
+          );
+
+          limitedPartners = await this.limitedPartnerService.getLimitedPartners(tokens, ids.transactionId);
+        }
+
+        response.render(
+          super.templateName(pageRouting.currentUrl),
+          super.makeProps(pageRouting, { limitedPartnership, limitedPartners }, null)
+        );
       } catch (error) {
         next(error);
       }

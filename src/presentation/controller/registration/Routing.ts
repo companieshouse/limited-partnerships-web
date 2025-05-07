@@ -136,8 +136,15 @@ const registrationRoutingAddLimitedPartnerLegalEntity = {
 
 // usual residential address
 
-export const registrationRoutingCheckYourAnswers = {
+const registrationRoutingReviewLimitedPartners = {
   previousUrl: url.LIMITED_PARTNER_CHOICE_URL,
+  currentUrl: url.REVIEW_LIMITED_PARTNERS_URL,
+  nextUrl: url.CHECK_YOUR_ANSWERS_URL,
+  pageType: RegistrationPageType.reviewLimitedPartners
+};
+
+export const registrationRoutingCheckYourAnswers = {
+  previousUrl: url.REVIEW_LIMITED_PARTNERS_URL,
   currentUrl: url.CHECK_YOUR_ANSWERS_URL,
   nextUrl: url.APPLICATION_SUBMITTED_URL,
   pageType: RegistrationPageType.checkYourAnswers
@@ -176,6 +183,7 @@ const list = [
   registrationRoutingLimitedPartnerChoice,
   registrationRoutingAddLimitedPartnerPerson,
   registrationRoutingAddLimitedPartnerLegalEntity,
+  registrationRoutingReviewLimitedPartners,
 
   registrationRoutingCheckYourAnswers,
   registrationRoutingApplicationSubmitted,
