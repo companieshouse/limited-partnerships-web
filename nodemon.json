@@ -1,5 +1,5 @@
 {
-    "exec": "ts-node ./src/bin/www.ts",
+    "exec": "ts-node ./src/bin/nodemon-entry.ts",
     "ext": "ts,njk,json",
     "watch": ["./src", "./locales"],
     "events": {
