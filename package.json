@@ -19,7 +19,7 @@
     "test:integration": "jest --testRegex=.test.ts",
     "test:integration:watch": "jest --testRegex=.test.ts --watch",
     "coverage": "jest --coverage --forceExit --passWithNoTests",
-    "chs-dev": "nodemon --legacy-watch"
+    "chs-dev": "nodemon"
   },
   "repository": {
     "type": "git",
