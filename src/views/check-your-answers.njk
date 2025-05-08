@@ -24,7 +24,7 @@
   {% include "includes/display-address.njk" %}
 {% endset %}
 
-{% set principalPlaceOfBusiness %}
+{% set principalPlaceOfBusinessAddress %}
   {% set address = props.data.limitedPartnership.data.principal_place_of_business_address %}
   {% include "includes/display-address.njk" %}
 {% endset %}
@@ -100,10 +100,10 @@
           },
           {
             key: {
-              text: i18n.checkYourAnswersPage.headingPrincipalPlaceOfBusiness
+              text: i18n.checkYourAnswersPage.headingPrincipalPlaceOfBusinessAddress
             },
             value: {
-              html: principalPlaceOfBusiness
+              html: principalPlaceOfBusinessAddress
             }
           },         
           {

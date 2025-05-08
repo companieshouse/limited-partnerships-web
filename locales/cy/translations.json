@@ -326,7 +326,7 @@
         "headingEmail" : "WELSH - Registered email address",
         "headingJurisdiction" : "WELSH - Jurisdiction",
         "headingRegisteredOfficeAddress" : "WELSH - Registered office address",
-        "headingPrincipalPlaceOfBusiness" : "WELSH - Principal place of business",
+        "headingPrincipalPlaceOfBusinessAddress" : "WELSH - Principal place of business",
         "jurisdictions": {
             "englandAndWales": "WELSH - England and Wales",
             "northernIreland": "WELSH - Northern Ireland",

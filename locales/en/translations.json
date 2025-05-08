@@ -325,7 +325,7 @@
         "headingEmail" : "Registered email address",
         "headingJurisdiction" : "Jurisdiction",
         "headingRegisteredOfficeAddress" : "Registered office address",
-        "headingPrincipalPlaceOfBusiness" : "Principal place of business",
+        "headingPrincipalPlaceOfBusinessAddress" : "Principal place of business",
         "jurisdictions": {
             "englandAndWales": "England and Wales",
             "northernIreland": "Northern Ireland",
