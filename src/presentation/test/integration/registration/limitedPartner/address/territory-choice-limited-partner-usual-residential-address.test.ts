@@ -84,7 +84,7 @@ describe("Limited Partner Usual Residential Address Territory Choice", () => {
       expect(appDevDependencies.cacheRepository.cache).toEqual({
         [APPLICATION_CACHE_KEY]: {
           [appDevDependencies.transactionGateway.transactionId]: {
-            ["ura_territory_choice_limited_partner"]: "unitedKingdom"
+            ura_territory_choice: "unitedKingdom"
           }
         }
       });
@@ -105,7 +105,7 @@ describe("Limited Partner Usual Residential Address Territory Choice", () => {
       expect(appDevDependencies.cacheRepository.cache).toEqual({
         [APPLICATION_CACHE_KEY]: {
           [appDevDependencies.transactionGateway.transactionId]: {
-            ["ura_territory_choice_limited_partner"]: "overseas"
+            ura_territory_choice: "overseas"
           }
         }
       });

@@ -23,7 +23,7 @@ describe("Confirm Limited Partner Usual Residential Address Page", () => {
     setLocalesEnabled(false);
     appDevDependencies.cacheRepository.feedCache({
       [appDevDependencies.transactionGateway.transactionId]: {
-        usual_residential_address_limited_partner: {
+        usual_residential_address: {
           postal_code: "ST6 3LJ",
           premises: "4",
           address_line_1: "line 1",
@@ -83,7 +83,7 @@ describe("Confirm Limited Partner Usual Residential Address Page", () => {
     ])("should have the correct back link", async (territory, backLink) => {
       appDevDependencies.cacheRepository.feedCache({
         [appDevDependencies.transactionGateway.transactionId]: {
-          ura_territory_choice_limited_partner: territory
+          ura_territory_choice: territory
         }
       });
 

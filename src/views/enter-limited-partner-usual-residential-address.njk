@@ -1,11 +1,11 @@
 {% extends "layout.njk" %}
 
-{% set usualResidentialAddressKey = "usual_residential_address_limited_partner" %}
+{% set usualResidentialAddressKey = "usual_residential_address" %}
 
 {% block backLink %}
   {% set hrefValue = props.previousUrl %}
 
-  {% if props.data.cache.ura_territory_choice_limited_partner == "overseas" %}
+  {% if props.data.cache.ura_territory_choice == "overseas" %}
     {% set hrefValue = props.currentUrl | replace(props.pageType, props.data.territoryPageType) %}
   {% endif %}
 
@@ -49,7 +49,7 @@
         <input type="hidden" name="pageType" value={{ props.pageType }}>
           {% include "includes/csrf_token.njk" %}
           
-          {% if props.data.cache.ura_territory_choice_limited_partner == "overseas" %}
+          {% if props.data.cache.ura_territory_choice == "overseas" %}
             {% include "pages/address/enter-address-fields.njk" %}
 
             {{ govukInput({
