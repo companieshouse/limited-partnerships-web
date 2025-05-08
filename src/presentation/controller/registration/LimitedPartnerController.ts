@@ -7,6 +7,7 @@ import AbstractController from "../AbstractController";
 import RegistrationPageType from "./PageType";
 import { ADD_LIMITED_PARTNER_PERSON_URL, ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL, CHECK_YOUR_ANSWERS_URL } from "./url";
 import { LimitedPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
+import { PageRouting } from "../PageRouting";
 
 class LimitedPartnerController extends AbstractController {
   private readonly limitedPartnershipService: LimitedPartnershipService;
@@ -23,6 +24,8 @@ class LimitedPartnerController extends AbstractController {
       try {
         const { tokens, pageType, ids } = super.extract(request);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
+
+        this.conditionalPreviousUrl(ids, pageRouting, request);
 
         let limitedPartnership = {};
         let limitedPartner = {};
@@ -51,6 +54,27 @@ class LimitedPartnerController extends AbstractController {
         next(error);
       }
     };
+  }
+
+  private conditionalPreviousUrl(
+    ids: { transactionId: string; submissionId: string; generalPartnerId: string },
+    pageRouting: PageRouting,
+    request: Request
+  ) {
+    const previousPageType = super.pageType(request.get("Referrer") ?? "");
+
+    if (
+      pageRouting.pageType === RegistrationPageType.addLimitedPartnerLegalEntity ||
+      pageRouting.pageType === RegistrationPageType.addLimitedPartnerPerson
+    ) {
+      if (previousPageType === RegistrationPageType.reviewLimitedPartners) {
+        pageRouting.previousUrl = super.insertIdsInUrl(
+          pageRouting.data?.customPreviousUrl,
+          ids.transactionId,
+          ids.submissionId
+        );
+      }
+    }
   }
 
   limitedPartnerChoice() {

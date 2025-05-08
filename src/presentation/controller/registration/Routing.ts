@@ -124,14 +124,20 @@ const registrationRoutingAddLimitedPartnerPerson = {
   previousUrl: url.LIMITED_PARTNER_CHOICE_URL,
   currentUrl: url.ADD_LIMITED_PARTNER_PERSON_URL,
   nextUrl: TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-  pageType: RegistrationPageType.addLimitedPartnerPerson
+  pageType: RegistrationPageType.addLimitedPartnerPerson,
+  data: {
+    customPreviousUrl: url.REVIEW_LIMITED_PARTNERS_URL
+  }
 };
 
 const registrationRoutingAddLimitedPartnerLegalEntity = {
   previousUrl: url.LIMITED_PARTNER_CHOICE_URL,
   currentUrl: url.ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
   nextUrl: TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
-  pageType: RegistrationPageType.addLimitedPartnerLegalEntity
+  pageType: RegistrationPageType.addLimitedPartnerLegalEntity,
+  data: {
+    customPreviousUrl: url.REVIEW_LIMITED_PARTNERS_URL
+  }
 };
 
 // usual residential address
@@ -143,14 +149,14 @@ const registrationRoutingReviewLimitedPartners = {
   pageType: RegistrationPageType.reviewLimitedPartners
 };
 
-export const registrationRoutingCheckYourAnswers = {
+const registrationRoutingCheckYourAnswers = {
   previousUrl: url.REVIEW_LIMITED_PARTNERS_URL,
   currentUrl: url.CHECK_YOUR_ANSWERS_URL,
   nextUrl: url.APPLICATION_SUBMITTED_URL,
   pageType: RegistrationPageType.checkYourAnswers
 };
 
-export const registrationRoutingApplicationSubmitted = {
+const registrationRoutingApplicationSubmitted = {
   previousUrl: url.CHECK_YOUR_ANSWERS_URL,
   currentUrl: url.APPLICATION_SUBMITTED_URL,
   nextUrl: url.NEXT_URL,
