@@ -81,7 +81,7 @@ export const removeEmptyStringValues = (
       continue;
     }
 
-    if (data[key] === "") {
+    if (data[key]?.trim() === "") {
       data[key] = null;
     }
   }
