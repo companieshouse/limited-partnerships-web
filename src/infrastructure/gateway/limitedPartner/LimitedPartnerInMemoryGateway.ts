@@ -60,6 +60,13 @@ class LimitedPartnerInMemoryGateway implements ILimitedPartnerGateway {
     return this.limitedPartners[0];
   }
 
+  async getLimitedPartners(
+    opt: { access_token: string; refresh_token: string },
+    transactionId: string
+  ): Promise<LimitedPartner[]> {
+    return this.limitedPartners;
+  }
+
   async sendPageData(
     opt: { access_token: string },
     transactionId: string,
@@ -78,15 +85,6 @@ class LimitedPartnerInMemoryGateway implements ILimitedPartnerGateway {
 
     this.limitedPartners[index].data = data;
   }
-  
-  // COMMENTED OUT FOR NOW DUE TO SONARQUBE ISSUES
-
-  // async getLimitedPartners(
-  //   opt: { access_token: string; refresh_token: string },
-  //   transactionId: string
-  // ): Promise<LimitedPartner[]> {
-  //   return this.limitedPartners;
-  // }
 }
 
 export default LimitedPartnerInMemoryGateway;

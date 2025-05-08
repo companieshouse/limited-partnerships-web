@@ -1,0 +1,16 @@
+{% extends "layout.njk" %}
+
+{% set pageTitle = i18n.reviewLimitedPartnersPage.title  %}
+
+{% set list = props.data.limitedPartners %}
+
+{% set partnersAdded = i18n.reviewLimitedPartnersPage.limitedPartnersAdded %}
+{% set addPartner = i18n.reviewLimitedPartnersPage.addLimitedPartner %}
+{% set kind = "limited-partner" %}
+{% set parameter = "addAnotherLimitedPartner" %}
+
+{% block content %}
+
+    {% include "pages/review-partners.njk" %}
+
+{% endblock %}
