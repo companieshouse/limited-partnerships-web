@@ -55,7 +55,11 @@ describe("Review Limited Partners Page", () => {
       expect(res.text).toContain(
         `${cyTranslationText.reviewLimitedPartnersPage.title} - ${cyTranslationText.service} - GOV.UK`
       );
+
       testTranslations(res.text, cyTranslationText.reviewLimitedPartnersPage, ["emptyList"]);
+
+      expect(res.text).toContain(`${limitedPartnerPerson?.data?.forename} ${limitedPartnerPerson?.data?.surname}`);
+      expect(res.text).toContain(`${limitedPartnerLegalEntity?.data?.legal_entity_name}`);
     });
 
     describe("Empty list", () => {
