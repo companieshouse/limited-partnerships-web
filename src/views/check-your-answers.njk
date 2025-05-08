@@ -1,4 +1,5 @@
 {% extends "layout.njk" %}
+{% import 'includes/macros.njk' as macros %}
 
 {% set pageTitle = i18n.checkYourAnswersPage.title %}
 
@@ -18,16 +19,6 @@
   "scotland": i18n.checkYourAnswersPage.jurisdictions.scotland
   } 
 %}
-
-{% set registeredOfficeAddress %}
-  {% set address = props.data.limitedPartnership.data.registered_office_address %}
-  {% include "includes/display-address.njk" %}
-{% endset %}
-
-{% set principalPlaceOfBusinessAddress %}
-  {% set address = props.data.limitedPartnership.data.principal_place_of_business_address %}
-  {% include "includes/display-address.njk" %}
-{% endset %}
 
 {% set jurisdiction = jurisdictionMap[props.data.limitedPartnership.data.jurisdiction] %}
 
@@ -95,7 +86,7 @@
               text: i18n.checkYourAnswersPage.headingRegisteredOfficeAddress
             },
             value: {
-              html: registeredOfficeAddress
+              text: macros.formatAddress(props.data.limitedPartnership.data.registered_office_address)
             }
           },
           {
@@ -103,7 +94,7 @@
               text: i18n.checkYourAnswersPage.headingPrincipalPlaceOfBusinessAddress
             },
             value: {
-              html: principalPlaceOfBusinessAddress
+              text: macros.formatAddress(props.data.limitedPartnership.data.principal_place_of_business_address)
             }
           },         
           {
