@@ -1,0 +1,25 @@
+{% import 'includes/macros.njk' as macros %}
+
+{% if address %}
+    {% set addressFirstLineForDisplay = address.premises + " " + address.address_line_1 %}
+    <p class="govuk-body-m">
+    {{ macros.capitalizeEachWord(addressFirstLineForDisplay) }}
+    <br>
+    {% if address.address_line_2 %}
+    {{ macros.capitalizeEachWord(address.address_line_2) }}
+        <br>
+    {% endif %}
+    {{ macros.capitalizeEachWord(address.locality) }}
+    <br>
+    {% if address.region %}
+    {{ macros.capitalizeEachWord(address.region) }}
+        <br>
+    {% endif %}
+    {% if address.postal_code %}
+    {{ address.postal_code | upper }}
+        <br>
+    {% endif %}
+    {{ address.country }}
+    <br>
+    </p>
+{% endif %}

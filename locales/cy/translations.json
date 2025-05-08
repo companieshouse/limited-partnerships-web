@@ -325,6 +325,8 @@
         "headingSic" : "WELSH - Standard Industrial Classification (SIC) code",
         "headingEmail" : "WELSH - Registered email address",
         "headingJurisdiction" : "WELSH - Jurisdiction",
+        "headingRegisteredOfficeAddress" : "WELSH - Registered office address",
+        "headingPrincipalPlaceOfBusiness" : "WELSH - Principal place of business",
         "jurisdictions": {
             "englandAndWales": "WELSH - England and Wales",
             "northernIreland": "WELSH - Northern Ireland",

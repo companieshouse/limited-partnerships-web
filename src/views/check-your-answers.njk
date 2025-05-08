@@ -18,6 +18,17 @@
   "scotland": i18n.checkYourAnswersPage.jurisdictions.scotland
   } 
 %}
+
+{% set registeredOfficeAddress %}
+  {% set address = props.data.limitedPartnership.data.registered_office_address %}
+  {% include "includes/display-address.njk" %}
+{% endset %}
+
+{% set principalPlaceOfBusiness %}
+  {% set address = props.data.limitedPartnership.data.principal_place_of_business_address %}
+  {% include "includes/display-address.njk" %}
+{% endset %}
+
 {% set jurisdiction = jurisdictionMap[props.data.limitedPartnership.data.jurisdiction] %}
 
 {% block content %}
@@ -79,6 +90,22 @@
             } if props.data.limitedPartnership.data.partnership_type === "LP"
                 or props.data.limitedPartnership.data.partnership_type === "PFLP"
           },
+          {
+            key: {
+              text: i18n.checkYourAnswersPage.headingRegisteredOfficeAddress
+            },
+            value: {
+              html: registeredOfficeAddress
+            }
+          },
+          {
+            key: {
+              text: i18n.checkYourAnswersPage.headingPrincipalPlaceOfBusiness
+            },
+            value: {
+              html: principalPlaceOfBusiness
+            }
+          },         
           {
             key: {
             text: i18n.checkYourAnswersPage.headingTerm
