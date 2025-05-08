@@ -353,8 +353,8 @@ const generalPartnerPrincipalOfficeAddress = [
 // usual residential address - Person
 
 const limitedPartnerUsualResidentialAddressCacheKeys = {
-  [AddressCacheKeys.addressCacheKey]: "usual_residential_address_limited_partner",
-  [AddressCacheKeys.territoryCacheKey]: "ura_territory_choice_limited_partner"
+  [AddressCacheKeys.addressCacheKey]: "usual_residential_address",
+  [AddressCacheKeys.territoryCacheKey]: "ura_territory_choice"
 };
 
 const addressRoutingTerritoryChoiceLimitedPartnerUsualResidentialAddress = {

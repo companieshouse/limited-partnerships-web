@@ -78,7 +78,7 @@ describe("General Partner Usual Residential Address Territory Choice", () => {
       expect(appDevDependencies.cacheRepository.cache).toEqual({
         [APPLICATION_CACHE_KEY]: {
           [appDevDependencies.transactionGateway.transactionId]: {
-            ["ura_territory_choice"]: "unitedKingdom"
+            ura_territory_choice: "unitedKingdom"
           }
         }
       });
@@ -97,7 +97,7 @@ describe("General Partner Usual Residential Address Territory Choice", () => {
       expect(appDevDependencies.cacheRepository.cache).toEqual({
         [APPLICATION_CACHE_KEY]: {
           [appDevDependencies.transactionGateway.transactionId]: {
-            ["ura_territory_choice"]: "overseas"
+            ura_territory_choice: "overseas"
           }
         }
       });
