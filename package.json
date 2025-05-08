@@ -19,7 +19,8 @@
     "test:unit:watch": "jest --testRegex=.spec.ts --watch",
     "test:integration": "jest --testRegex=.test.ts",
     "test:integration:watch": "jest --testRegex=.test.ts --watch",
-    "coverage": "jest --coverage --forceExit --passWithNoTests"
+    "coverage": "jest --coverage --forceExit --passWithNoTests",
+    "chs-dev": "nodemon --legacy-watch"
   },
   "repository": {
     "type": "git",
