@@ -467,8 +467,7 @@
         "addGeneralPartner": {
             "title": "Do you need to add another general partner?",
             "optionPerson": "Yes, a person",
-            "optionLegalEntity": "Yes, a legal entity",
-            "optionNo": "No"
+            "optionLegalEntity": "Yes, a legal entity"
         }
     },
 
@@ -485,8 +484,7 @@
         "addLimitedPartner": {
             "title": "Do you need to add another limited partner?",
             "optionPerson": "Yes, a person",
-            "optionLegalEntity": "Yes, a legal entity",
-            "optionNo": "No"
+            "optionLegalEntity": "Yes, a legal entity"
         }
     },
 

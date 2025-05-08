@@ -468,8 +468,7 @@
         "addGeneralPartner": {
             "title": "WELSH - Do you need to add another general partner?",
             "optionPerson": "WELSH - Yes, a person",
-            "optionLegalEntity": "WELSH - Yes, a legal entity",
-            "optionNo": "WELSH - No"
+            "optionLegalEntity": "WELSH - Yes, a legal entity"
         }
     },
 
@@ -486,8 +485,7 @@
         "addLimitedPartner": {
             "title": "WELSH - Do you need to add another limited partner?",
             "optionPerson": "WELSH - Yes, a person",
-            "optionLegalEntity": "WELSH - Yes, a legal entity",
-            "optionNo": "WELSH - No"
+            "optionLegalEntity": "WELSH - Yes, a legal entity"
         }
     },
 

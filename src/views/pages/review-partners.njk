@@ -29,7 +29,7 @@
                                         text: item.data.forename + " " + item.data.surname
                                     },
                                     actions: {
-                                    items: [
+                                        items: [
                                             CREATE_CHANGE_LINK(
                                                 partnersAdded.changeLink,
                                                 props.currentUrl | replace(props.pageType, kind + "/" + item.id + "/add-" + kind + "-person")
@@ -57,7 +57,7 @@
                                         text: item.data.legal_entity_name
                                     },
                                     actions: {
-                                    items: [
+                                        items: [
                                             CREATE_CHANGE_LINK(
                                                 partnersAdded.changeLink,
                                                 props.currentUrl | replace(props.pageType, kind + "/" + item.id + "/add-" + kind + "-legal-entity")
@@ -122,7 +122,7 @@
                         },
                         {
                             value: "no",
-                            text: addPartner.optionNo,
+                            text: i18n.yesAndNo.no,
                             attributes: {
                                 required: true
                             }
