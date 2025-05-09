@@ -12,14 +12,14 @@ jest.mock("@companieshouse/api-sdk-node");
 const mockCreateApiClient = createApiClient as jest.Mock;
 mockCreateApiClient.mockReturnValue(sdkMock);
 
-describe("Review Limited Partner page", () => {
+describe("Remove Limited Partner page", () => {
   const URL = getUrl(REMOVE_LIMITED_PARTNER_URL);
 
   beforeEach(() => {
     mockCreateApiClient.mockReturnValue(sdkMock);
   });
 
-  it("should delete general partner", async () => {
+  it("should delete limited partner", async () => {
     const res = await request(appRealDependencies).post(URL).send({
       pageType: RegistrationPageType.removeLimitedPartner,
       remove: "yes"
