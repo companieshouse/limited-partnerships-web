@@ -1,0 +1,16 @@
+{% extends "layout.njk" %}
+
+{% set pageTitle = i18n.removePartnerPage.title %}
+
+{% set name = "" %}
+{% if props.data.limitedPartner.data.forename %}
+  {% set name = props.data.limitedPartner.data.forename + " " + props.data.limitedPartner.data.surname %}
+{% elif props.data.limitedPartner.data.legal_entity_name %}
+  {% set name = props.data.limitedPartner.data.legal_entity_name %}
+{% endif %}
+
+{% block content %}
+
+  {% include "pages/remove-partner.njk" %}
+
+{% endblock %}

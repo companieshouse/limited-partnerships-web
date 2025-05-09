@@ -85,6 +85,24 @@ class LimitedPartnerInMemoryGateway implements ILimitedPartnerGateway {
 
     this.limitedPartners[index].data = data;
   }
+
+  async deleteLimitedPartner(
+    opt: { access_token: string; refresh_token: string },
+    transactionId: string,
+    limitedPartnerId: string
+  ): Promise<void> {
+    if (this.uiErrors.errors.errorList.length > 0) {
+      throw this.uiErrors;
+    }
+
+    let index = this.limitedPartners.findIndex((gp) => gp._id === limitedPartnerId);
+
+    if (index === -1) {
+      throw new Error(`Not found: ${limitedPartnerId}`);
+    }
+
+    this.limitedPartners = this.limitedPartners.filter((gp) => gp._id !== limitedPartnerId);
+  }
 }
 
 export default LimitedPartnerInMemoryGateway;

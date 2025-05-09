@@ -149,6 +149,13 @@ const registrationRoutingReviewLimitedPartners = {
   pageType: RegistrationPageType.reviewLimitedPartners
 };
 
+const registrationRoutingRemoveLimitedPartner = {
+  previousUrl: url.REVIEW_LIMITED_PARTNERS_URL,
+  currentUrl: url.REMOVE_LIMITED_PARTNER_URL,
+  nextUrl: url.REVIEW_LIMITED_PARTNERS_URL,
+  pageType: RegistrationPageType.removeLimitedPartner
+};
+
 const registrationRoutingCheckYourAnswers = {
   previousUrl: url.REVIEW_LIMITED_PARTNERS_URL,
   currentUrl: url.CHECK_YOUR_ANSWERS_URL,
@@ -190,6 +197,7 @@ const list = [
   registrationRoutingAddLimitedPartnerPerson,
   registrationRoutingAddLimitedPartnerLegalEntity,
   registrationRoutingReviewLimitedPartners,
+  registrationRoutingRemoveLimitedPartner,
 
   registrationRoutingCheckYourAnswers,
   registrationRoutingApplicationSubmitted,

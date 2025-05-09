@@ -1,0 +1,41 @@
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <form class="form" method="post">
+        <input type="hidden" name="pageType" value={{ props.pageType }}>
+
+        {% include "includes/csrf_token.njk" %}
+
+        {{ govukRadios({          
+            classes: "govuk-radios--inline",
+            idPrefix: "remove",
+            name: "remove",
+            fieldset: {
+                legend: {
+                    text: pageTitle + " " + name + "?",
+                    isPageHeading: true,
+                    classes: "govuk-fieldset__legend--l"
+                }
+            },
+            items: [
+                {
+                    value: "yes",
+                    text: i18n.yesAndNo.yes,
+                    attributes: {
+                        required: true
+                    }
+                },
+                {
+                    value: "no",
+                    text: i18n.yesAndNo.no,
+                    attributes: {
+                        required: true
+                    }
+                }
+            ]
+        }) }}
+        
+        {% include "includes/save-and-continue-button.njk" %}
+        </form>
+    </div>
+</div>

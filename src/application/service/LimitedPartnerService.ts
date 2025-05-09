@@ -86,6 +86,28 @@ class LimitedPartnerService {
       };
     }
   }
+
+  async deleteLimitedPartner(
+    opt: { access_token: string; refresh_token: string },
+    transactionId: string,
+    limitedPartnerId: string
+  ) {
+    try {
+      await this.limitedPartnerGateway.deleteLimitedPartner(opt, transactionId, limitedPartnerId);
+    } catch (errors: any) {
+      const { apiErrors, isValidationErrors } = extractAPIErrors(errors);
+
+      logger.error(`Error removing limited partner ${limitedPartnerId}: ${JSON.stringify(apiErrors)}`);
+
+      if (!isValidationErrors) {
+        throw errors;
+      }
+
+      return {
+        errors
+      };
+    }
+  }
 }
 
 export default LimitedPartnerService;

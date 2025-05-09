@@ -30,7 +30,8 @@ import {
   REMOVE_GENERAL_PARTNER_URL,
   ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
   ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_ID_URL,
-  REVIEW_LIMITED_PARTNERS_URL
+  REVIEW_LIMITED_PARTNERS_URL,
+  REMOVE_LIMITED_PARTNER_URL
 } from "../presentation/controller/registration/url";
 
 export const registrationEndpoints = (
@@ -278,6 +279,17 @@ export const registrationEndpoints = (
     REVIEW_LIMITED_PARTNERS_URL,
     authentication,
     dependencies.limitedPartnerController.postReviewPage()
+  );
+
+  router.get(
+    REMOVE_LIMITED_PARTNER_URL,
+    authentication,
+    dependencies.limitedPartnerController.getPageRouting()
+  );
+  router.post(
+    REMOVE_LIMITED_PARTNER_URL,
+    authentication,
+    dependencies.limitedPartnerController.postRemovePage()
   );
 
   router.get(
