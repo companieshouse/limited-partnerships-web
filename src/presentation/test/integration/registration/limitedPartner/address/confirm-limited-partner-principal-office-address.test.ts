@@ -14,7 +14,7 @@ import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import LimitedPartnerBuilder from "../../../../builder/LimitedPartnerBuilder";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
-import { CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/registration/url";
+import { REVIEW_LIMITED_PARTNERS_URL } from "../../../../../controller/registration/url";
 
 describe("Confirm Limited Partner Principal Office Address Page", () => {
   const URL = getUrl(CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
@@ -109,7 +109,7 @@ describe("Confirm Limited Partner Principal Office Address Page", () => {
           }`
         });
 
-      const redirectUrl = getUrl(CHECK_YOUR_ANSWERS_URL); // TODO change to REVIEW_LIMITED_PARTNERS_URL
+      const redirectUrl = getUrl(REVIEW_LIMITED_PARTNERS_URL);
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
