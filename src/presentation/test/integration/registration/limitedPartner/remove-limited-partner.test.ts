@@ -69,7 +69,7 @@ describe("Remove Limited Partner Page", () => {
   });
 
   describe("Post Remove Limited Partners Page", () => {
-    it("should redirect to the review limited partners page - gp removed", async () => {
+    it("should redirect to the review limited partners page - lp removed", async () => {
       setLocalesEnabled(true);
 
       const limitedPartnerPerson = new LimitedPartnerBuilder()
@@ -90,7 +90,7 @@ describe("Remove Limited Partner Page", () => {
       expect(appDevDependencies.limitedPartnerGateway.limitedPartners).toHaveLength(0);
     });
 
-    it("should redirect to the review limited partners page - gp not removed", async () => {
+    it("should redirect to the review limited partners page - lp not removed", async () => {
       setLocalesEnabled(true);
 
       const limitedPartnerLegalEntity = new LimitedPartnerBuilder()

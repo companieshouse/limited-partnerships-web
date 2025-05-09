@@ -95,13 +95,13 @@ class LimitedPartnerInMemoryGateway implements ILimitedPartnerGateway {
       throw this.uiErrors;
     }
 
-    let index = this.limitedPartners.findIndex((gp) => gp._id === limitedPartnerId);
+    let index = this.limitedPartners.findIndex((lp) => lp._id === limitedPartnerId);
 
     if (index === -1) {
       throw new Error(`Not found: ${limitedPartnerId}`);
     }
 
-    this.limitedPartners = this.limitedPartners.filter((gp) => gp._id !== limitedPartnerId);
+    this.limitedPartners = this.limitedPartners.filter((lp) => lp._id !== limitedPartnerId);
   }
 }
 
