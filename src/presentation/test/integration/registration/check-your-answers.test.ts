@@ -23,8 +23,7 @@ describe("Check Your Answers Page", () => {
       testTranslations(res.text, enTranslationText.checkYourAnswersPage, [
         "headingTerm",
         "jurisdictions",
-        "headingSic",
-        "types"
+        "headingSic"
       ]);
       expect(res.text).not.toContain("WELSH -");
     });
@@ -37,8 +36,7 @@ describe("Check Your Answers Page", () => {
       testTranslations(res.text, cyTranslationText.checkYourAnswersPage, [
         "headingTerm",
         "jurisdictions",
-        "headingSic",
-        "types"
+        "headingSic"
       ]);
       expect(res.text).toContain("WELSH -");
     });
