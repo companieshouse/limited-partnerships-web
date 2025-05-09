@@ -1,0 +1,138 @@
+<div>
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            {% include "includes/proposed-name.njk" %}
+
+            <h1 class="govuk-heading-xl">{{ pageTitle }}</h1>
+        </div>
+    </div>
+
+    <div class="govuk-grid-row govuk-!-margin-bottom-5">
+        <div class="govuk-grid-column-full">
+
+            <h2 class="govuk-heading-m govuk-!-margin-bottom-5">{{ partnersAdded.title }}</h2>
+
+            {% if list.length  %}
+
+                {% for item in list %}
+
+                    {% if item.data.forename %}
+
+                        {{ govukSummaryList({
+                            classes: "govuk-!-margin-bottom-0",
+                            rows: [
+                                {
+                                    key: {
+                                        text: partnersAdded.person
+                                    },
+                                    value: {
+                                        text: item.data.forename + " " + item.data.surname
+                                    },
+                                    actions: {
+                                        items: [
+                                            CREATE_CHANGE_LINK(
+                                                partnersAdded.changeLink,
+                                                props.currentUrl | replace(props.pageType, kind + "/" + item.id + "/add-" + kind + "-person")
+                                            ),
+                                            CREATE_CHANGE_LINK(
+                                                partnersAdded.removeLink,
+                                                props.currentUrl | replace(props.pageType, kind + "/" + item.id + "/remove-" + kind + "")
+                                            )
+                                        ]
+                                    }
+                                }
+                            ]
+                        }) }} 
+
+                    {% elif item.data.legal_entity_name %}
+
+                        {{ govukSummaryList({
+                            classes: "govuk-!-margin-bottom-0",
+                            rows: [
+                                {
+                                    key: {
+                                        text: partnersAdded.legalEntity
+                                    },
+                                    value: {
+                                        text: item.data.legal_entity_name
+                                    },
+                                    actions: {
+                                        items: [
+                                            CREATE_CHANGE_LINK(
+                                                partnersAdded.changeLink,
+                                                props.currentUrl | replace(props.pageType, kind + "/" + item.id + "/add-" + kind + "-legal-entity")
+                                            ),
+                                            CREATE_CHANGE_LINK(
+                                                partnersAdded.removeLink,
+                                                props.currentUrl | replace(props.pageType, kind + "/" + item.id + "/remove-" + kind + "")
+                                            )
+                                        ]
+                                    }
+                                }
+                            ]
+                        }) }} 
+
+                    {% endif %}
+
+                {% endfor %}
+            
+            {% else %}
+
+                <p>{{ partnersAdded.emptyList }}</p>
+
+            {% endif %}
+
+        </div>
+    </div>
+
+    </br>
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+
+            <form class="form" action={{ props.currentUrl }} method="post">
+                <input type="hidden" name="pageType" value={{ props.pageType }}>
+                
+                {% include "includes/csrf_token.njk" %}
+        
+                {{ govukRadios({
+                    name: parameter,
+                    fieldset: {
+                        legend: {
+                            text: addPartner.title,
+                            isPageHeading: false,
+                            classes: "govuk-fieldset__legend--m"
+                        }
+                    },
+
+                    items: [
+                        {
+                            value: "addPerson",
+                            text: addPartner.optionPerson,
+                            attributes: {
+                                required: true
+                            }
+                        },
+                        {
+                            value: "addLegalEntity",
+                            text: addPartner.optionLegalEntity,
+                            attributes: {
+                                required: true
+                            }
+                        },
+                        {
+                            value: "no",
+                            text: i18n.yesAndNo.no,
+                            attributes: {
+                                required: true
+                            }
+                        }
+                    ]
+                }) }}
+
+                {% include "includes/save-and-continue-button.njk" %}
+
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,4 +1,5 @@
 {% extends "layout.njk" %}
+{% import 'includes/macros.njk' as macros %}
 
 {% set pageTitle = i18n.checkYourAnswersPage.title %}
 
@@ -18,6 +19,7 @@
   "scotland": i18n.checkYourAnswersPage.jurisdictions.scotland
   } 
 %}
+
 {% set jurisdiction = jurisdictionMap[props.data.limitedPartnership.data.jurisdiction] %}
 
 {% block content %}
@@ -79,6 +81,22 @@
             } if props.data.limitedPartnership.data.partnership_type === "LP"
                 or props.data.limitedPartnership.data.partnership_type === "PFLP"
           },
+          {
+            key: {
+              text: i18n.checkYourAnswersPage.headingRegisteredOfficeAddress
+            },
+            value: {
+              text: macros.formatAddress(props.data.limitedPartnership.data.registered_office_address)
+            }
+          },
+          {
+            key: {
+              text: i18n.checkYourAnswersPage.headingPrincipalPlaceOfBusinessAddress
+            },
+            value: {
+              text: macros.formatAddress(props.data.limitedPartnership.data.principal_place_of_business_address)
+            }
+          },         
           {
             key: {
             text: i18n.checkYourAnswersPage.headingTerm

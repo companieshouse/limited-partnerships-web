@@ -325,6 +325,8 @@
         "headingSic" : "WELSH - Standard Industrial Classification (SIC) code",
         "headingEmail" : "WELSH - Registered email address",
         "headingJurisdiction" : "WELSH - Jurisdiction",
+        "headingRegisteredOfficeAddress" : "WELSH - Registered office address",
+        "headingPrincipalPlaceOfBusinessAddress" : "WELSH - Principal place of business",
         "jurisdictions": {
             "englandAndWales": "WELSH - England and Wales",
             "northernIreland": "WELSH - Northern Ireland",
@@ -468,8 +470,24 @@
         "addGeneralPartner": {
             "title": "WELSH - Do you need to add another general partner?",
             "optionPerson": "WELSH - Yes, a person",
-            "optionLegalEntity": "WELSH - Yes, a legal entity",
-            "optionNo": "WELSH - No"
+            "optionLegalEntity": "WELSH - Yes, a legal entity"
+        }
+    },
+
+    "reviewLimitedPartnersPage": {
+        "title": "WELSH - Limited partners",
+        "limitedPartnersAdded": {
+            "title": "WELSH - Limited partners you have added so far:",
+            "changeLink": "WELSH - Change",
+            "removeLink": "WELSH - Remove",
+            "person": "WELSH - Person",
+            "legalEntity": "WELSH - Legal entity",
+            "emptyList": "WELSH - You must add at least one Limited Partner"
+        },
+        "addLimitedPartner": {
+            "title": "WELSH - Do you need to add another limited partner?",
+            "optionPerson": "WELSH - Yes, a person",
+            "optionLegalEntity": "WELSH - Yes, a legal entity"
         }
     },
 

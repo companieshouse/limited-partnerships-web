@@ -58,6 +58,24 @@ class LimitedPartnerGateway implements ILimitedPartnerGateway {
     return response?.resource ?? {};
   }
 
+  async getLimitedPartners(
+    opt: { access_token: string; refresh_token: string },
+    transactionId: string
+  ): Promise<LimitedPartner[]> {
+    const apiCall = {
+      service: SDK_LIMITED_PARTNERSHIP_SERVICE,
+      method: "getLimitedPartners",
+      args: [transactionId]
+    };
+    const response = await makeApiCallWithRetry<Resource<LimitedPartner[]>>(opt, apiCall);
+
+    if (response.httpStatusCode !== 200) {
+      throw response;
+    }
+
+    return response?.resource ?? [];
+  }
+
   async sendPageData(
     opt: { access_token: string; refresh_token: string },
     transactionId: string,
@@ -88,26 +106,6 @@ class LimitedPartnerGateway implements ILimitedPartnerGateway {
       throw response;
     }
   }
-
-  // COMMENTED OUT FOR NOW DUE TO SONARQUBE ISSUES
-
-  // async getLimitedPartners(
-  //   opt: { access_token: string; refresh_token: string },
-  //   transactionId: string
-  // ): Promise<LimitedPartner[]> {
-  //   const apiCall = {
-  //     service: SDK_LIMITED_PARTNERSHIP_SERVICE,
-  //     method: "getLimitedPartners",
-  //     args: [transactionId]
-  //   };
-  //   const response = await makeApiCallWithRetry<Resource<LimitedPartner[]>>(opt, apiCall);
-
-  //   if (response.httpStatusCode !== 200) {
-  //     throw response;
-  //   }
-
-  //   return response?.resource ?? [];
-  // }
 }
 
 export default LimitedPartnerGateway;

@@ -49,6 +49,19 @@ class LimitedPartnerService {
     }
   }
 
+  async getLimitedPartners(
+    opt: { access_token: string; refresh_token: string },
+    transactionId: string
+  ): Promise<LimitedPartner[]> {
+    try {
+      return await this.limitedPartnerGateway.getLimitedPartners(opt, transactionId);
+    } catch (error: any) {
+      logger.error(`Error getting LimitedPartners ${JSON.stringify(error)}`);
+
+      throw error;
+    }
+  }
+
   async sendPageData(
     opt: { access_token: string; refresh_token: string },
     transactionId: string,
@@ -73,21 +86,6 @@ class LimitedPartnerService {
       };
     }
   }
-
-  // COMMENTED OUT FOR NOW DUE TO SONARQUBE ISSUES
-
-  // async getLimitedPartners(
-  //   opt: { access_token: string; refresh_token: string },
-  //   transactionId: string
-  // ): Promise<LimitedPartner[]> {
-  //   try {
-  //     return await this.limitedPartnerGateway.getLimitedPartners(opt, transactionId);
-  //   } catch (error: any) {
-  //     logger.error(`Error getting LimitedPartners ${JSON.stringify(error)}`);
-
-  //     throw error;
-  //   }
-  // }
 }
 
 export default LimitedPartnerService;

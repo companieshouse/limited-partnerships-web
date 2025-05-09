@@ -24,6 +24,15 @@ class LimitedPartnershipBuilder {
       region: "region",
       country: "England"
     },
+    principal_place_of_business_address: {
+      postal_code: "DE6 3LJ",
+      premises: "2",
+      address_line_1: "line 3",
+      address_line_2: "line 4",
+      locality: "burton-on-trent",
+      region: "regionPp",
+      country: "England"
+    },
     term: Term.BY_AGREEMENT,
     sic_codes: ["12345", "67890"]
   };
@@ -60,6 +69,11 @@ class LimitedPartnershipBuilder {
 
   withRegisteredOfficeAddress(address: Address) {
     this.data.registered_office_address = address as any;
+    return this;
+  }
+
+  withPrincipalPlaceOfBusinessAddress(address: Address) {
+    this.data.principal_place_of_business_address = address as any;
     return this;
   }
 

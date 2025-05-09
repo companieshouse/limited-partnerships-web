@@ -72,7 +72,7 @@ describe("Enter Limited Partner Usual Residential Address Page", () => {
       appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
       appDevDependencies.cacheRepository.feedCache({
         [appDevDependencies.transactionGateway.transactionId]: {
-          ura_territory_choice_limited_partner: "overseas"
+          ura_territory_choice: "overseas"
         }
       });
 
@@ -98,7 +98,7 @@ describe("Enter Limited Partner Usual Residential Address Page", () => {
     it("should load enter limited partner's usual residential address manual entry page with overseas back link", async () => {
       appDevDependencies.cacheRepository.feedCache({
         [appDevDependencies.transactionGateway.transactionId]: {
-          ura_territory_choice_limited_partner: "overseas"
+          ura_territory_choice: "overseas"
         }
       });
 
@@ -113,7 +113,7 @@ describe("Enter Limited Partner Usual Residential Address Page", () => {
     it("should load enter limited partner's usual residential address manual entry page with postcode lookup back link", async () => {
       appDevDependencies.cacheRepository.feedCache({
         [appDevDependencies.transactionGateway.transactionId]: {
-          ura_territory_choice_limited_partner: "unitedKingdom"
+          ura_territory_choice: "unitedKingdom"
         }
       });
       const redirectUrl = getUrl(POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
@@ -129,7 +129,7 @@ describe("Enter Limited Partner Usual Residential Address Page", () => {
       appDevDependencies.addressLookUpGateway.setError(false);
       appDevDependencies.cacheRepository.feedCache({
         [appDevDependencies.transactionGateway.transactionId]: {
-          ["usual_residential_address_limited_partner"]: {
+          ["usual_residential_address"]: {
             address_line_1: "",
             address_line_2: "",
             country: "",
@@ -156,7 +156,7 @@ describe("Enter Limited Partner Usual Residential Address Page", () => {
       const cache = appDevDependencies.cacheRepository.cache;
       expect(cache?.[`${config.APPLICATION_CACHE_KEY}`]).toEqual({
         [appDevDependencies.transactionGateway.transactionId]: {
-          usual_residential_address_limited_partner: {
+          usual_residential_address: {
             postal_code: "",
             premises: "4",
             address_line_1: "DUNCALF STREET",
