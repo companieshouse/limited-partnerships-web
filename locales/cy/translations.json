@@ -336,13 +336,7 @@
         "headingTerm" : "WELSH - Term of partnership",
         "confirm" : "WELSH - Confirm this statement",
         "futureLawful" : "WELSH - I confirm that the intended future activities of the limited partnership are lawful.",
-        "payment" : "WELSH - Continue to payment",
-        "types": {
-            "LP": "WELSH - Limited partnership in England, Wales or Northern Ireland",
-            "PFLP": "WELSH - Private fund limited partnership in England, Wales or Northern Ireland",
-            "SLP": "WELSH - Scottish limited partnership",
-            "SPFLP": "WELSH - Private fund limited partnership in Scotland"
-        }
+        "payment" : "WELSH - Continue to payment"
     },
 
     "emailPage" : {
@@ -532,6 +526,13 @@
         "noTerm": "WELSH - No set term",
         "publicRegisterLine1": "WELSH - We'll show the term of partnership on the public register."
     },
+
+    "types": {
+        "LP": "WELSH - Limited partnership in England, Wales or Northern Ireland",
+        "PFLP": "WELSH - Private fund limited partnership in England, Wales or Northern Ireland",
+        "SLP": "WELSH - Scottish limited partnership",
+        "SPFLP": "WELSH - Private fund limited partnership in Scotland"
+    },
     
     "whereIsTheJurisdiction" : {
         "title" : "WELSH - Where is the jurisdiction?",
@@ -546,16 +547,10 @@
             "information" : "WELSH - This means the partnership's registered office address and principal place of business will need to be in Scotland. Select to continue, if this is correct.",
             "ifNotScotland" : "WELSH - If these addresses are in England, Wales or Northern Ireland, you will need to go back to change the type of partnership you are registering."
         }
-    }, 
+    },
 
     "whichTypePage": {
-        "title": "WELSH - Which type of partnership do you want to register?",
-        "options": {
-            "LP": "WELSH - Limited partnership in England, Wales or Northern Ireland",
-            "PFLP": "WELSH - Private fund limited partnership in England, Wales or Northern Ireland",
-            "SLP": "WELSH - Scottish limited partnership",
-            "SPFLP": "WELSH - Private fund limited partnership in Scotland"
-        }
+        "title": "WELSH - Which type of partnership do you want to register?"
     },
 
     "applicationSubmittedPage": {

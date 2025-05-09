@@ -163,10 +163,10 @@ describe("Check Your Answers Page", () => {
   });
 
   it.each([
-    [PartnershipType.LP, enTranslationText.checkYourAnswersPage.types.LP],
-    [PartnershipType.SLP, enTranslationText.checkYourAnswersPage.types.SLP],
-    [PartnershipType.PFLP, enTranslationText.checkYourAnswersPage.types.PFLP],
-    [PartnershipType.SPFLP, enTranslationText.checkYourAnswersPage.types.SPFLP]
+    [PartnershipType.LP, enTranslationText.types.LP],
+    [PartnershipType.SLP, enTranslationText.types.SLP],
+    [PartnershipType.PFLP, enTranslationText.types.PFLP],
+    [PartnershipType.SPFLP, enTranslationText.types.SPFLP]
   ])("should show the partnership type", async (partnershipType: PartnershipType, text: string) => {
     const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
