@@ -321,6 +321,7 @@
         "lpInfo" : "Limited partnership information",
         "change" : "Change",
         "headingName" : "Name",
+        "headingType" : "Type",
         "headingSic" : "Standard Industrial Classification (SIC) code",
         "headingEmail" : "Registered email address",
         "headingJurisdiction" : "Jurisdiction",
@@ -525,6 +526,13 @@
         "publicRegisterLine1": "We'll show the term of partnership on the public register."
     },
 
+    "types": {
+        "LP": "Limited partnership in England, Wales or Northern Ireland",
+        "PFLP": "Private fund limited partnership in England, Wales or Northern Ireland",
+        "SLP": "Scottish limited partnership",
+        "SPFLP": "Private fund limited partnership in Scotland"
+    },
+
     "whereIsTheJurisdiction" : {
         "title" : "Where is the jurisdiction?",
         "whereIsJurisdiction" : "Where is the jurisdiction?",
@@ -538,16 +546,10 @@
             "information" : "This means the partnership's registered office address and principal place of business will need to be in Scotland. Select to continue, if this is correct.",
             "ifNotScotland" : "If these addresses are in England, Wales or Northern Ireland, you will need to go back to change the type of partnership you are registering."
         }
-    }, 
+    },
 
     "whichTypePage": {
-        "title": "Which type of partnership do you want to register?",
-        "options": {
-            "LP": "Limited partnership in England, Wales or Northern Ireland",
-            "PFLP": "Private fund limited partnership in England, Wales or Northern Ireland",
-            "SLP": "Scottish limited partnership",
-            "SPFLP": "Private fund limited partnership in Scotland"
-        }
+        "title": "Which type of partnership do you want to register?"
     },
 
     "applicationSubmittedPage": {

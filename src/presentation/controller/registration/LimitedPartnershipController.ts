@@ -12,8 +12,7 @@ import {
   cookieOptions
 } from "../../../config/constants";
 import CacheService from "../../../application/service/CacheService";
-import PageType from "../PageType";
-import { GENERAL_PARTNERS_URL, NAME_WITH_IDS_URL, WHICH_TYPE_WITH_IDS_URL } from "./url";
+import { CHECK_YOUR_ANSWERS_URL, GENERAL_PARTNERS_URL, NAME_WITH_IDS_URL, WHICH_TYPE_WITH_IDS_URL } from "./url";
 import { PageRouting } from "../PageRouting";
 import { getJourneyTypes } from "../../../utils";
 
@@ -33,7 +32,7 @@ class LimitedPartnershipController extends AbstractController {
         const { tokens, pageType, ids } = super.extract(request);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
-        this.conditionalPreviousUrl(pageType, ids, pageRouting);
+        this.conditionalPreviousUrl(ids, pageRouting, request);
 
         let limitedPartnership = {};
         const generalPartner = {};
@@ -60,11 +59,15 @@ class LimitedPartnershipController extends AbstractController {
   }
 
   private conditionalPreviousUrl(
-    pageType: PageType,
     ids: { transactionId: string; submissionId: string; generalPartnerId: string },
-    pageRouting: PageRouting
+    pageRouting: PageRouting,
+    request: Request
   ) {
-    if (pageType === RegistrationPageType.name) {
+    const previousPageType = super.pageType(request.get("Referrer") ?? "");
+
+    if (previousPageType === RegistrationPageType.checkYourAnswers) {
+      pageRouting.previousUrl = super.insertIdsInUrl(CHECK_YOUR_ANSWERS_URL, ids.transactionId, ids.submissionId);
+    } else if (pageRouting.pageType === RegistrationPageType.name) {
       // change back link if we have ids in url
       if (ids.transactionId && ids.submissionId) {
         pageRouting.previousUrl = super.insertIdsInUrl(WHICH_TYPE_WITH_IDS_URL, ids.transactionId, ids.submissionId);
@@ -215,6 +218,8 @@ class LimitedPartnershipController extends AbstractController {
       try {
         const { tokens, pageType, ids } = super.extract(request);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
+
+        this.conditionalPreviousUrl(ids, pageRouting, request);
 
         let limitedPartnership: LimitedPartnership = {};
 

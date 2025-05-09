@@ -50,6 +50,24 @@
           },
           {
             key: {
+              text: i18n.checkYourAnswersPage.headingType
+            },
+            value: {
+              text: i18n.types[props.data.limitedPartnership.data.partnership_type]
+            },
+            actions: {
+              items: [ 
+                CREATE_CHANGE_LINK(
+                  i18n.checkYourAnswersPage.change,
+                  currentUrl | replace(checkYourAnswers, "which-type"),
+                  partnershipNameChangeText,
+                  "change-partnership-type-button"
+                )
+              ]
+            }
+          },
+          {
+            key: {
               text: i18n.checkYourAnswersPage.headingEmail
             },
             value: {
