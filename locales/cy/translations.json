@@ -322,6 +322,7 @@
         "lpInfo" : "WELSH - Limited partnership information",
         "change" : "WELSH - Change",
         "headingName" : "WELSH - Name",
+        "headingType" : "WELSH - Type",
         "headingSic" : "WELSH - Standard Industrial Classification (SIC) code",
         "headingEmail" : "WELSH - Registered email address",
         "headingJurisdiction" : "WELSH - Jurisdiction",
@@ -335,7 +336,13 @@
         "headingTerm" : "WELSH - Term of partnership",
         "confirm" : "WELSH - Confirm this statement",
         "futureLawful" : "WELSH - I confirm that the intended future activities of the limited partnership are lawful.",
-        "payment" : "WELSH - Continue to payment"
+        "payment" : "WELSH - Continue to payment",
+        "types": {
+            "LP": "WELSH - Limited partnership in England, Wales or Northern Ireland",
+            "PFLP": "WELSH - Private fund limited partnership in England, Wales or Northern Ireland",
+            "SLP": "WELSH - Scottish limited partnership",
+            "SPFLP": "WELSH - Private fund limited partnership in Scotland"
+        }
     },
 
     "emailPage" : {

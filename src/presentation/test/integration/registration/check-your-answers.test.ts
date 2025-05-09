@@ -23,7 +23,8 @@ describe("Check Your Answers Page", () => {
       testTranslations(res.text, enTranslationText.checkYourAnswersPage, [
         "headingTerm",
         "jurisdictions",
-        "headingSic"
+        "headingSic",
+        "types"
       ]);
       expect(res.text).not.toContain("WELSH -");
     });
@@ -36,16 +37,15 @@ describe("Check Your Answers Page", () => {
       testTranslations(res.text, cyTranslationText.checkYourAnswersPage, [
         "headingTerm",
         "jurisdictions",
-        "headingSic"
+        "headingSic",
+        "types"
       ]);
       expect(res.text).toContain("WELSH -");
     });
 
     it("should load the check your answers page with data from api and show change links", async () => {
       const limitedPartnership = new LimitedPartnershipBuilder().build();
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
-        limitedPartnership
-      ]);
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
       const res = await request(app).get(URL);
 
       expect(res.status).toBe(200);
@@ -84,9 +84,7 @@ describe("Check Your Answers Page", () => {
       "should show a change link for jurisdiction based on the partnership type",
       async (partnershipType: PartnershipType, changeLinkExpected: boolean) => {
         const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
-        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
-          limitedPartnership
-        ]);
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
         const res = await request(app).get(URL);
 
         expect(res.status).toBe(200);
@@ -96,7 +94,8 @@ describe("Check Your Answers Page", () => {
         } else {
           expect(res.text).not.toContain("where-is-the-jurisdiction#jurisdiction");
         }
-      });
+      }
+    );
 
     it.each([
       [Jurisdiction.ENGLAND_AND_WALES, enTranslationText.checkYourAnswersPage.jurisdictions.englandAndWales],
@@ -106,15 +105,14 @@ describe("Check Your Answers Page", () => {
       "should show correct jurisdiction text based on jurisdiction",
       async (jurisdiction: Jurisdiction, jurisdictionTextExpected: string) => {
         const limitedPartnership = new LimitedPartnershipBuilder().withJurisdiction(jurisdiction).build();
-        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
-          limitedPartnership
-        ]);
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
         const res = await request(app).get(URL);
 
         expect(res.status).toBe(200);
 
         expect(res.text).toContain(jurisdictionTextExpected);
-      });
+      }
+    );
 
     it.each([
       [PartnershipType.LP, true],
@@ -125,9 +123,7 @@ describe("Check Your Answers Page", () => {
       "should show term, SIC codes and change links based on the partnership type",
       async (partnershipType: PartnershipType, headingsAndChangeLinksExpected: boolean) => {
         const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
-        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
-          limitedPartnership
-        ]);
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
         const res = await request(app).get(URL);
 
         expect(res.status).toBe(200);
@@ -143,7 +139,8 @@ describe("Check Your Answers Page", () => {
           expect(res.text).not.toContain("standard-industrial-classification-code#sic1");
           expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.headingSic);
         }
-      });
+      }
+    );
 
     it.each([
       ["BY_AGREEMENT", enTranslationText.termPage.byAgreement],
@@ -155,15 +152,30 @@ describe("Check Your Answers Page", () => {
       async (termKey: any, expectedTermText: string) => {
         const limitedPartnership = new LimitedPartnershipBuilder().withTerm(termKey).build();
 
-        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
-          limitedPartnership
-        ]);
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
         const res = await request(app).get(URL);
 
         expect(res.status).toBe(200);
         expect(res.text).toContain(expectedTermText);
-      });
+      }
+    );
+  });
+
+  it.each([
+    [PartnershipType.LP, enTranslationText.checkYourAnswersPage.types.LP],
+    [PartnershipType.SLP, enTranslationText.checkYourAnswersPage.types.SLP],
+    [PartnershipType.PFLP, enTranslationText.checkYourAnswersPage.types.PFLP],
+    [PartnershipType.SPFLP, enTranslationText.checkYourAnswersPage.types.SPFLP]
+  ])("should show the partnership type", async (partnershipType: PartnershipType, text: string) => {
+    const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+    const res = await request(app).get(URL);
+
+    expect(res.status).toBe(200);
+
+    expect(res.text).toContain("which-type");
+    expect(res.text).toContain(text);
   });
 
   describe("POST Check Your Answers Page", () => {

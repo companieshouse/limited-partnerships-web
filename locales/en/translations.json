@@ -321,6 +321,7 @@
         "lpInfo" : "Limited partnership information",
         "change" : "Change",
         "headingName" : "Name",
+        "headingType" : "Type",
         "headingSic" : "Standard Industrial Classification (SIC) code",
         "headingEmail" : "Registered email address",
         "headingJurisdiction" : "Jurisdiction",
@@ -334,7 +335,13 @@
         "headingTerm" : "Term of partnership",
         "confirm" : "Confirm this statement",
         "futureLawful" : "I confirm that the intended future activities of the limited partnership are lawful.",
-        "payment" : "Continue to payment"
+        "payment" : "Continue to payment",
+        "types": {
+            "LP": "Limited partnership in England, Wales or Northern Ireland",
+            "PFLP": "Private fund limited partnership in England, Wales or Northern Ireland",
+            "SLP": "Scottish limited partnership",
+            "SPFLP": "Private fund limited partnership in Scotland"
+        }
     },   
 
     "emailPage" : {
