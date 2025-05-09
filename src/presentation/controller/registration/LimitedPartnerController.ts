@@ -228,6 +228,26 @@ class LimitedPartnerController extends AbstractController {
       }
     };
   }
+
+  postRemovePage() {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { ids, tokens } = super.extract(request);
+        const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
+        const pageRouting = super.getRouting(registrationsRouting, pageType, request);
+
+        const remove = request.body.remove;
+
+        if (remove === "yes") {
+          await this.limitedPartnerService.deleteLimitedPartner(tokens, ids.transactionId, ids.limitedPartnerId);
+        }
+
+        response.redirect(pageRouting.nextUrl);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
 }
 
 export default LimitedPartnerController;

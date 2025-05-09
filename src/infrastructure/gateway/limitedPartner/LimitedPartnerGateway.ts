@@ -106,6 +106,29 @@ class LimitedPartnerGateway implements ILimitedPartnerGateway {
       throw response;
     }
   }
+
+  async deleteLimitedPartner(
+    opt: { access_token: string; refresh_token: string },
+    transactionId: string,
+    limitedPartnerId: string
+  ): Promise<void> {
+    const apiCall = {
+      service: SDK_LIMITED_PARTNERSHIP_SERVICE,
+      method: "deleteLimitedPartner",
+      args: [transactionId, limitedPartnerId]
+    };
+
+    const response = await makeApiCallWithRetry<Resource<void>>(opt, apiCall);
+
+    const uiErrors = checkForBadRequest<void>(response);
+    if (uiErrors) {
+      throw uiErrors;
+    }
+
+    if (response.httpStatusCode !== 204) {
+      throw response;
+    }
+  }
 }
 
 export default LimitedPartnerGateway;

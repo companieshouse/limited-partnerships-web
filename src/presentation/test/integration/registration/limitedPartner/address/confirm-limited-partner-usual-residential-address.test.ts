@@ -13,7 +13,7 @@ import {
   ENTER_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "../../../../../controller/addressLookUp/url";
-import { CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/registration/url";
+import { REVIEW_LIMITED_PARTNERS_URL } from "../../../../../controller/registration/url";
 import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
 
 describe("Confirm Limited Partner Usual Residential Address Page", () => {
@@ -109,7 +109,7 @@ describe("Confirm Limited Partner Usual Residential Address Page", () => {
           }`
         });
 
-      const redirectUrl = getUrl(CHECK_YOUR_ANSWERS_URL); // TODO change to REVIEW_LIMITED_PARTNERS_URL
+      const redirectUrl = getUrl(REVIEW_LIMITED_PARTNERS_URL);
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);

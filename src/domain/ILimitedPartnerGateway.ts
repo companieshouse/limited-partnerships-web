@@ -21,6 +21,11 @@ interface ILimitedPartnerGateway {
     limitedPartnerId: string,
     data: Record<string, any>
   ): Promise<void>;
+  deleteLimitedPartner(
+    opt: { access_token: string; refresh_token: string },
+    transactionId: string,
+    limitedPartnerId: string
+  ): Promise<void>;
 }
 
 export default ILimitedPartnerGateway;

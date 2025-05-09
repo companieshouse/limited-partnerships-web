@@ -9,8 +9,8 @@ import {
   REVIEW_GENERAL_PARTNERS_URL,
   TERM_URL,
   WHERE_IS_THE_JURISDICTION_URL,
-  CHECK_YOUR_ANSWERS_URL,
-  ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL
+  ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
+  REVIEW_LIMITED_PARTNERS_URL
 } from "../registration/url";
 import * as url from "./url";
 
@@ -405,7 +405,7 @@ const addressRoutingEnterLimitedPartnerUsualResidentialAddress = {
 const addressRoutingConfirmLimitedPartnerUsualResidentialAddress = {
   previousUrl: url.POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   currentUrl: url.CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-  nextUrl: CHECK_YOUR_ANSWERS_URL, // TODO Change to REVIEW_LIMITED_PARTNERS_URL
+  nextUrl: REVIEW_LIMITED_PARTNERS_URL,
   pageType: AddressPageType.confirmLimitedPartnerUsualResidentialAddress,
   data: {
     ...limitedPartnerUsualResidentialAddressCacheKeys,
@@ -476,7 +476,7 @@ const addressRoutingEnterLimitedPartnerPrincipalOfficeAddress = {
 const addressRoutingConfirmLimitedPartnerPrincipalOfficeAddress = {
   previousUrl: url.POSTCODE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   currentUrl: url.CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
-  nextUrl: CHECK_YOUR_ANSWERS_URL, // TODO Change to REVIEW_LIMITED_PARTNERS_URL
+  nextUrl: REVIEW_LIMITED_PARTNERS_URL,
   pageType: AddressPageType.confirmLimitedPartnerPrincipalOfficeAddress,
   data: {
     ...limitedPartnerPrincipalOfficeAddressCacheKeys,

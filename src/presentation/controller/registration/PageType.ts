@@ -18,6 +18,7 @@ enum RegistrationPageType {
   addLimitedPartnerPerson = "add-limited-partner-person",
   addLimitedPartnerLegalEntity = "add-limited-partner-legal-entity",
   reviewLimitedPartners = "review-limited-partners",
+  removeLimitedPartner = "remove-limited-partner",
 
   checkYourAnswers = "check-your-answers",
   applicationSubmitted = "application-submitted",
