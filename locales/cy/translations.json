@@ -199,7 +199,7 @@
             "countryNorthernIreland": "WELSH - Northern Ireland",
             "errorMessages": {
                 "nameOrNumberMissing": "WELSH - Enter a property name or number",
-                "nameOrNumberLength": "WELSH - Property name or number must be 50 characters or less",
+                "nameOrNumberLength": "WELSH - Property name or number must be 200 characters or less",
                 "addressLine1Missing": "WELSH - Enter an address",
                 "addressLine1Length": "WELSH - Address line 1 must be 50 characters or less",
                 "addressLine2Length": "WELSH - Address line 2 must be 50 characters or less",
