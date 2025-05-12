@@ -9,13 +9,7 @@ class PaymentsInMemoryGateway implements IPaymentsGateway {
   async createPayment(
     opt: { access_token: string; refresh_token: string },
     createPaymentRequest: CreatePaymentRequest) {
-    return await this.generatePaymentResult(opt, createPaymentRequest);
-  }
 
-  private generatePaymentResult(
-    opt: { access_token: string; refresh_token: string },
-    createPaymentRequest: CreatePaymentRequest):
-    ApiResult<ApiResponse<Payment>> {
     return {
       isFailure (): this is Failure<ApiResponse<Payment>, ApiErrorResponse> {
         return false;
