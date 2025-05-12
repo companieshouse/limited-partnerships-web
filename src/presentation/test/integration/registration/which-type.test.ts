@@ -2,7 +2,12 @@ import request from "supertest";
 import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import app from "../app";
-import { NAME_URL, NAME_WITH_IDS_URL, WHICH_TYPE_URL, WHICH_TYPE_WITH_IDS_URL } from "../../../controller/registration/url";
+import {
+  NAME_URL,
+  NAME_WITH_IDS_URL,
+  WHICH_TYPE_URL,
+  WHICH_TYPE_WITH_IDS_URL
+} from "../../../controller/registration/url";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
@@ -31,6 +36,7 @@ describe("Which type Page", () => {
 
     expect(res.status).toBe(200);
     testTranslations(res.text, enTranslationText.whichTypePage);
+    testTranslations(res.text, enTranslationText.types);
     expect(res.text).toContain(enTranslationText.buttons.continue);
     expect(res.text).toContain(SERVICE_NAME_REGISTRATION);
   });
@@ -59,16 +65,14 @@ describe("Which type Page", () => {
 
     expect(appDevDependencies.cacheRepository.cache).toEqual({
       [APPLICATION_CACHE_KEY]: {
-        [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]:
-          selectedType
+        [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]: selectedType
       }
     });
   });
 
   it("should redirect to name page and update type in cache", async () => {
     appDevDependencies.cacheRepository.feedCache({
-      [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]:
-        PartnershipType.LP
+      [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]: PartnershipType.LP
     });
 
     const selectedType = PartnershipType.PFLP;
@@ -83,8 +87,7 @@ describe("Which type Page", () => {
 
     expect(appDevDependencies.cacheRepository.cache).toEqual({
       [APPLICATION_CACHE_KEY]: {
-        [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]:
-          selectedType
+        [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]: selectedType
       }
     });
   });
