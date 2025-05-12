@@ -81,11 +81,11 @@ describe("Gateway utils test suite", () => {
 
   describe("Data conversion tests", () => {
     it("should remove empty string values from input data", () => {
-      let data: Record<string, any> = { field1: "value1", field2: "", field3: "value3" };
+      let data: Record<string, any> = { field1: "value1", field2: "", field3: "value3", field4: 123, field5: undefined, field6: false, field7: { field7A: "" } };
 
       data = removeEmptyStringValues(data);
 
-      expect(data).toStrictEqual({ field1: "value1", field2: null, field3: "value3" });
+      expect(data).toStrictEqual({ field1: "value1", field2: null, field3: "value3", field4: 123, field5: undefined, field6: false, field7: { field7A: null } });
     });
   });
 });

@@ -83,6 +83,9 @@ export const removeEmptyStringValues = (
 
     if (typeof data[key] === "string" && data[key]?.trim() === "") {
       data[key] = null;
+    } else if (typeof data[key] === "object") {
+      removeEmptyStringValues(data[key], exclude);
+      continue;
     }
   }
 
