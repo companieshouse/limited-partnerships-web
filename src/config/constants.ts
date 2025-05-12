@@ -73,6 +73,7 @@ export const ACCOUNTS_SIGN_OUT_URL = `${ACCOUNT_URL}/signout`;
 export const SDK_LIMITED_PARTNERSHIP_SERVICE = "limitedPartnershipsService";
 export const SDK_POSTCODE_LOOKUP_SERVICE = "postCodeLookup";
 export const SDK_TRANSACTION_SERVICE = "transaction";
+export const SDK_PAYMENTS_SERVICE = "payments";
 
 // cookies
 export const cookieOptions = {
