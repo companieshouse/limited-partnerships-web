@@ -1,8 +1,5 @@
 import IPaymentsGateway from "../../../domain/IPaymentsGateway";
 import { Payment, CreatePaymentRequest } from "@companieshouse/api-sdk-node/dist/services/payment";
-import { StatusCodes } from "http-status-codes";
-import { ApiResult, ApiResponse, ApiErrorResponse } from "@companieshouse/api-sdk-node/dist/services/resource";
-import { Failure, Success } from "@companieshouse/api-sdk-node/dist/services/result";
 
 class PaymentsInMemoryGateway implements IPaymentsGateway {
 
@@ -10,20 +7,8 @@ class PaymentsInMemoryGateway implements IPaymentsGateway {
     opt: { access_token: string; refresh_token: string },
     createPaymentRequest: CreatePaymentRequest) {
 
-    return {
-      isFailure (): this is Failure<ApiResponse<Payment>, ApiErrorResponse> {
-        return false;
-      },
-      isSuccess (): this is Success<ApiResponse<Payment>, ApiErrorResponse> {
-        return true;
-      },
-      value: {
-        httpStatusCode: StatusCodes.CREATED,
-        headers: {},
-        resource: this.generatePayment(opt, createPaymentRequest)
-      }
-    };
-  } 
+    return this.generatePayment(opt, createPaymentRequest);
+  }
 
   private generatePayment (
     opt: { access_token: string; refresh_token: string },
