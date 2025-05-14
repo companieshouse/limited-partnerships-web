@@ -3,6 +3,7 @@ import escape from "escape-html";
 import { LimitedPartnership, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
+import PaymentService from "../../../application/service/PaymentService";
 import registrationsRouting from "./Routing";
 import AbstractController from "../AbstractController";
 import RegistrationPageType from "./PageType";
@@ -20,11 +21,17 @@ import { getJourneyTypes } from "../../../utils";
 class LimitedPartnershipController extends AbstractController {
   private limitedPartnershipService: LimitedPartnershipService;
   private cacheService: CacheService;
+  private paymentService: PaymentService;
 
-  constructor(limitedPartnershipService: LimitedPartnershipService, cacheService: CacheService) {
+  constructor(
+    limitedPartnershipService: LimitedPartnershipService, 
+    cacheService: CacheService,
+    paymentService: PaymentService
+  ) {
     super();
     this.limitedPartnershipService = limitedPartnershipService;
     this.cacheService = cacheService;
+    this.paymentService = paymentService;
   }
 
   getPageRouting() {
@@ -123,12 +130,10 @@ class LimitedPartnershipController extends AbstractController {
         //
         //      E.g.   apiResponse.headers?.["x-payment-required"];
         await this.limitedPartnershipService.closeTransaction(tokens, ids.transactionId);
+        const paymentRedirect = await this.paymentService.startPaymentSession(tokens, ids.transactionId, ids.submissionId);
 
-        const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
-        const pageRouting = super.getRouting(registrationsRouting, pageType, request);
-
-        response.redirect(pageRouting.nextUrl);
-      } catch (error) {
+        response.redirect(paymentRedirect);
+      } catch (error) {        
         next(error);
       }
     };

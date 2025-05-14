@@ -2,7 +2,7 @@ import request from "supertest";
 import app from "../app";
 
 import { Jurisdiction, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-import { CHECK_YOUR_ANSWERS_URL, APPLICATION_SUBMITTED_URL } from "../../../controller/registration/url";
+import { CHECK_YOUR_ANSWERS_URL } from "../../../controller/registration/url";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
@@ -12,8 +12,8 @@ import RegistrationPageType from "../../../controller/registration/PageType";
 
 describe("Check Your Answers Page", () => {
   const URL = getUrl(CHECK_YOUR_ANSWERS_URL);
-  const REDIRECT_URL = getUrl(APPLICATION_SUBMITTED_URL);
-
+  const PAYMENT_LINK_JOURNEY = "http://api-payments.chs.local:4001";
+ 
   describe("GET Check Your Answers Page", () => {
     it("should GET Check Your Answers Page English text", async () => {
       setLocalesEnabled(true);
@@ -173,7 +173,7 @@ describe("Check Your Answers Page", () => {
       });
 
       expect(res.status).toBe(302);
-      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+      expect(res.text).toContain(`Redirecting to ${PAYMENT_LINK_JOURNEY}`);
     });
   });
 });
