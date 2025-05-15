@@ -54,7 +54,7 @@ const paymentService = new PaymentService(paymentGateway);
 const globalController: GlobalController = new GlobalController();
 const limitedPartnershipController: LimitedPartnershipController = new LimitedPartnershipController(
   limitedPartnershipService,
-  cacheService, 
+  cacheService,
   paymentService
 );
 const addressLookUpController: AddressLookUpController = new AddressLookUpController(

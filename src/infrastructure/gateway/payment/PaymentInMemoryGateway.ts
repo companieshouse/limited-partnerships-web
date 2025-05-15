@@ -3,14 +3,14 @@ import { Payment, CreatePaymentRequest } from "@companieshouse/api-sdk-node/dist
 
 class PaymentsInMemoryGateway implements IPaymentsGateway {
 
-  async createPayment(
+  async createPayment (
     _opt: { access_token: string; refresh_token: string },
     createPaymentRequest: CreatePaymentRequest) {
 
-    return this.generatePayment(createPaymentRequest);
+    return await this.generatePayment(createPaymentRequest);
   }
 
-  private generatePayment (    
+  private generatePayment (
     createPaymentRequest: CreatePaymentRequest
   ): Payment {
     return {
@@ -20,23 +20,23 @@ class PaymentsInMemoryGateway implements IPaymentsGateway {
       completedAt: "12-12-20",
       createdAt: "12-12-20",
       createdBy: {
-          email: "email",
-          forename: "forname",
-          id: "0000001",
-          surname: "surname"
+        email: "email",
+        forename: "forname",
+        id: "0000001",
+        surname: "surname"
       },
       description: "description",
       etag: "etag",
       kind: "kind",
       links: {
-          journey: "http://api-payments.chs.local:4001",
-          resource: "resource",
-          self: "payment-session#payment-session"
+        journey: "http://api-payments.chs.local:4001",
+        resource: "resource",
+        self: "payment-session#payment-session"
       },
       paymentMethod: "credit-card",
-      reference: "reference",
+      reference: createPaymentRequest.reference,
       status: "paid"
-    }  
+    };
   }
 }
 export default PaymentsInMemoryGateway;

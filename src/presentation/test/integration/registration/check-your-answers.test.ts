@@ -13,7 +13,7 @@ import RegistrationPageType from "../../../controller/registration/PageType";
 describe("Check Your Answers Page", () => {
   const URL = getUrl(CHECK_YOUR_ANSWERS_URL);
   const PAYMENT_LINK_JOURNEY = "http://api-payments.chs.local:4001";
- 
+
   describe("GET Check Your Answers Page", () => {
     it("should GET Check Your Answers Page English text", async () => {
       setLocalesEnabled(true);

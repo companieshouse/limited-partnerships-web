@@ -132,7 +132,7 @@ export const getCompanyProfile = jest.fn().mockImplementation(() => ({
 
 // Payment Service
 
-export const createPaymentWithFullUrl = jest.fn().mockImplementation(() => ({ 
+export const createPaymentWithFullUrl = jest.fn().mockImplementation(() => ({
   isSuccess: () => true,
   isFailure: () => false,
   value: {
@@ -144,26 +144,25 @@ export const createPaymentWithFullUrl = jest.fn().mockImplementation(() => ({
       completedAt: "12-12-20",
       createdAt: "12-12-20",
       createdBy: {
-          email: "email",
-          forename: "forname",
-          id: "0000001",
-          surname: "surname"
+        email: "email",
+        forename: "forname",
+        id: "0000001",
+        surname: "surname"
       },
       description: "description",
       etag: "etag",
       kind: "kind",
       links: {
-          journey: "http://api-payments.chs.local:4001",
-          resource: "resource",
-          self: "payment-session#payment-session"
+        journey: "http://api-payments.chs.local:4001",
+        resource: "resource",
+        self: "payment-session#payment-session"
       },
       paymentMethod: "credit-card",
       reference: "reference",
       status: "paid"
-    }  
+    }
   }
 }));
- 
 
 const sdkMock = {
   transaction: {

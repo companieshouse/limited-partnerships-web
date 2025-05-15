@@ -24,7 +24,7 @@ class LimitedPartnershipController extends AbstractController {
   private paymentService: PaymentService;
 
   constructor(
-    limitedPartnershipService: LimitedPartnershipService, 
+    limitedPartnershipService: LimitedPartnershipService,
     cacheService: CacheService,
     paymentService: PaymentService
   ) {
@@ -133,7 +133,7 @@ class LimitedPartnershipController extends AbstractController {
         const paymentRedirect = await this.paymentService.startPaymentSession(tokens, ids.transactionId, ids.submissionId);
 
         response.redirect(paymentRedirect);
-      } catch (error) {        
+      } catch (error) {
         next(error);
       }
     };

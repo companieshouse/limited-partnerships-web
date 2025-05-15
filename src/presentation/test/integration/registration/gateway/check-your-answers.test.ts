@@ -2,7 +2,7 @@ import request from "supertest";
 import { createApiClient } from "@companieshouse/api-sdk-node";
 
 import appRealDependencies from "../../../../../app";
-import {  
+import {
   CHECK_YOUR_ANSWERS_URL
 } from "../../../../controller/registration/url";
 import RegistrationPageType from "../../../../controller/registration/PageType";

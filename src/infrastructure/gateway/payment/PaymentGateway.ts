@@ -1,5 +1,4 @@
 import { Payment, CreatePaymentRequest } from "@companieshouse/api-sdk-node/dist/services/payment";
-import { Resource } from "@companieshouse/api-sdk-node";
 import IPaymentGateway from "../../../domain/IPaymentGateway";
 import { SDK_PAYMENT_SERVICE } from "../../../config/constants";
 import { makeApiCallWithRetry } from "../api";
@@ -18,7 +17,7 @@ class PaymentGateway implements IPaymentGateway {
     };
 
     const response = await makeApiCallWithRetry<ApiResult<ApiResponse<Payment>>>(opt, apiCall);
- 
+
     if (response.isFailure() || !response.isSuccess()) {
       const errorResponse = response.value;
       const msgErrorStatusCode = `http response status code=${ errorResponse?.httpStatusCode ?? "No Status Code found in response" }`;
@@ -26,7 +25,7 @@ class PaymentGateway implements IPaymentGateway {
       const msgError = `payment.service failure to create payment, ${msgErrorStatusCode}, ${msgErrorResponse}.`;
 
       throw new Error(msgError);
-    } 
+    }
 
     if (!response.value?.resource) {
       throw new Error("Failed to retrieve payment resource");
@@ -36,7 +35,7 @@ class PaymentGateway implements IPaymentGateway {
     logger.info(`Create payment, status_code=${ response.value.httpStatusCode }, status=${ paymentResource.status }, links= ${ JSON.stringify(paymentResource.links ) } `);
 
     return paymentResource;
-    
+
   }
 }
 
