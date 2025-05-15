@@ -19,7 +19,6 @@ import GeneralPartnerBuilder, {
   generalPartnerLegalEntity,
   generalPartnerPerson
 } from "../../../../builder/GeneralPartnerBuilder";
-import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
 
 describe("Enter Usual Residential Address Page", () => {
   const URL = getUrl(ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
@@ -54,7 +53,8 @@ describe("Enter Usual Residential Address Page", () => {
         "correspondenceAddress",
         "principalOfficeAddress",
         "postcodeOptional",
-        "limitedPartner"
+        "limitedPartner",
+        "errorMessages"
       ]);
       expect(res.text).not.toContain("WELSH -");
       expect(res.text).toContain(generalPartnerPerson.forename?.toUpperCase());
@@ -89,7 +89,8 @@ describe("Enter Usual Residential Address Page", () => {
         "postcode",
         "correspondenceAddress",
         "principalOfficeAddress",
-        "limitedPartner"
+        "limitedPartner",
+        "errorMessages"
       ]);
 
       expect(res.text).toContain(generalPartnerPerson.forename?.toUpperCase());
@@ -144,7 +145,7 @@ describe("Enter Usual Residential Address Page", () => {
       });
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.enterGeneralPartnerUsualResidentialAddress,
-        postal_code: "",
+        postal_code: "CF3 2DS",
         premises: "4",
         address_line_1: "DUNCALF STREET",
         address_line_2: "",
@@ -159,7 +160,7 @@ describe("Enter Usual Residential Address Page", () => {
       expect(cache?.[`${config.APPLICATION_CACHE_KEY}`]).toEqual({
         [appDevDependencies.transactionGateway.transactionId]: {
           usual_residential_address: {
-            postal_code: "",
+            postal_code: "CF3 2DS",
             premises: "4",
             address_line_1: "DUNCALF STREET",
             address_line_2: "",
@@ -181,7 +182,7 @@ describe("Enter Usual Residential Address Page", () => {
 
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.enterGeneralPartnerUsualResidentialAddress,
-        addressLine1: "Mill Street"
+        ...generalPartner.data?.usual_residential_address
       });
 
       expect(res.status).toBe(302);
@@ -205,28 +206,30 @@ describe("Enter Usual Residential Address Page", () => {
       expect(res.text).toContain(enTranslationText.errorPage.title);
     });
 
-    it("should redirect if postcode is null", async () => {
-      const generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .build();
+    // TODO re-include and change as a null postcode should now not allow redirection
+    //
+    // it("should redirect if postcode is null", async () => {
+    //   const generalPartner = new GeneralPartnerBuilder()
+    //     .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+    //     .build();
 
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+    //   appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
 
-      const apiErrors: ApiErrors = {
-        errors: {
-          "usualResidentialAddress.postalCode": "must not be null"
-        }
-      };
+    //   const apiErrors: ApiErrors = {
+    //     errors: {
+    //       "usualResidentialAddress.postalCode": "must not be null"
+    //     }
+    //   };
 
-      appDevDependencies.generalPartnerGateway.feedErrors(apiErrors);
+    //   appDevDependencies.generalPartnerGateway.feedErrors(apiErrors);
 
-      const res = await request(app).post(URL).send({
-        pageType: AddressPageType.confirmRegisteredOfficeAddress,
-        address: `{"postal_code": "","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": "England"}`
-      });
+    //   const res = await request(app).post(URL).send({
+    //     pageType: AddressPageType.confirmRegisteredOfficeAddress,
+    //     address: `{"postal_code": "","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": "England"}`
+    //   });
 
-      expect(res.status).toBe(302);
-      expect(res.text).not.toContain("must not be null");
-    });
+    //   expect(res.status).toBe(302);
+    //   expect(res.text).not.toContain("must not be null");
+    // });
   });
 });

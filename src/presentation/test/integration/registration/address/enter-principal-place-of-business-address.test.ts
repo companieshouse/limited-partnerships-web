@@ -34,7 +34,8 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
         "usualResidentialAddress",
         "correspondenceAddress",
         "jurisdictionCountry",
-        "principalOfficeAddress"
+        "principalOfficeAddress",
+        "errorMessages"
       ]);
       expect(res.text).not.toContain("WELSH -");
     });
@@ -50,7 +51,8 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
         "usualResidentialAddress",
         "correspondenceAddress",
         "jurisdictionCountry",
-        "principalOfficeAddress"
+        "principalOfficeAddress",
+        "errorMessages"
       ]);
     });
   });
@@ -65,7 +67,7 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
 
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
-        country: "Wales"
+        ...limitedPartnership.data?.principal_place_of_business_address
       });
 
       const redirectUrl = getUrl(CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL);
@@ -94,6 +96,7 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
 
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
+        ...limitedPartnership.data?.principal_place_of_business_address,
         country: "Northern Ireland"
       });
 
@@ -113,6 +116,7 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
         .post(URL + "?lang=cy")
         .send({
           pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
+          ...limitedPartnership.data?.principal_place_of_business_address,
           country: "Northern Ireland"
         });
 
@@ -130,6 +134,7 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
 
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
+        ...limitedPartnership.data?.principal_place_of_business_address,
         country: "Scotland"
       });
 
@@ -147,6 +152,7 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
 
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
+        ...limitedPartnership.data?.principal_place_of_business_address,
         country: "Scotland"
       });
 

@@ -15,8 +15,6 @@
     <input type="hidden" name="address" value='{{address | dump}}'>
     {% include "includes/csrf_token.njk" %}
 
-    {% include "includes/errors.njk" %}
-
     <h1 class="govuk-heading-xl">{{ pageTitle }}</h1>
 
     {% if address %}

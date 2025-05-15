@@ -12,7 +12,7 @@ import GeneralPartnerController from "../presentation/controller/registration/Ge
 import LimitedPartnerController from "../presentation/controller/registration/LimitedPartnerController";
 import CacheService from "../application/service/CacheService";
 import AddressLookUpInMemoryGateway from "../infrastructure/gateway/addressLookUp/AddressLookUpInMemoryGateway";
-import AddressLookUpService from "../application/service/AddressLookUpService";
+import AddressLookUpService from "../application/service/AddressService";
 import AddressLookUpController from "../presentation/controller/addressLookUp/Controller";
 import TransactionInMemoryGateway from "../infrastructure/gateway/transaction/TransactionInMemoryGateway";
 import IncorporationInMemoryGateway from "../infrastructure/gateway/incorporation/IncorporationInMemoryGateway";

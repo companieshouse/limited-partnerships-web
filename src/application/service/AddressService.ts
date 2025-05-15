@@ -4,7 +4,17 @@ import IAddressLookUpGateway from "../../domain/IAddressLookUpGateway";
 
 import { logger } from "../../utils";
 
-class AddressLookUpService {
+class AddressService {
+  private static readonly UK_COUNTRIES: Set<string> = new Set([
+    "Scotland",
+    "Northern Ireland",
+    "England",
+    "Wales"
+  ]);
+
+  private static readonly VALID_UK_POSTCODE_FORMAT = /^[A-Za-z]{1,2}\d[A-Za-z\d]? ?\d[A-Za-z]{2}$/;
+  private static readonly VALID_CHARACTERS = /^[-,.:; 0-9A-Z&@$£¥€'"«»?!/\\()[\]{}<>*=#%+ÀÁÂÃÄÅĀĂĄÆǼÇĆĈĊČÞĎÐÈÉÊËĒĔĖĘĚĜĞĠĢĤĦÌÍÎÏĨĪĬĮİĴĶĹĻĽĿŁÑŃŅŇŊÒÓÔÕÖØŌŎŐǾŒŔŖŘŚŜŞŠŢŤŦÙÚÛÜŨŪŬŮŰŲŴẀẂẄỲÝŶŸŹŻŽa-zſƒǺàáâãäåāăąæǽçćĉċčþďðèéêëēĕėęěĝģğġĥħìíîïĩīĭįĵķĺļľŀłñńņňŋòóôõöøōŏőǿœŕŗřśŝşšţťŧùúûüũūŭůűųŵẁẃẅỳýŷÿźżž]*$/;
+
   i18n: any;
 
   constructor(private addressGateway: IAddressLookUpGateway) {}
@@ -76,12 +86,33 @@ class AddressLookUpService {
     );
   }
 
-  isValidJurisdictionAndCountry(jurisdiction: string, country: string): UIErrors | undefined {
-    const uiErrors = new UIErrors();
+  hasAddressGotInvalidCharacters(address: Address, uiErrors: UIErrors | undefined): UIErrors | undefined {
+    uiErrors = this.checkAddressFieldForInvalidCharacters("premises", address.premises, this.i18n?.address?.enterAddress?.propertyNameOrNumber, uiErrors);
+    uiErrors = this.checkAddressFieldForInvalidCharacters("address_line_1", address.address_line_1, this.i18n?.address?.enterAddress?.addressLine1, uiErrors);
+    uiErrors = this.checkAddressFieldForInvalidCharacters("address_line_2", address.address_line_2 ?? "", this.i18n?.address?.enterAddress?.addressLine2Title, uiErrors);
+    uiErrors = this.checkAddressFieldForInvalidCharacters("locality", address.locality, this.i18n?.address?.enterAddress?.townOrCity, uiErrors);
+    uiErrors = this.checkAddressFieldForInvalidCharacters("region", address.region ?? "", this.i18n?.address?.enterAddress?.countyTitle, uiErrors);
 
-    if (!this.isJurisdictionAndCountryCombinationAllowed(jurisdiction, country, uiErrors)) {
-      return uiErrors;
+    return uiErrors;
+  }
+
+  isValidPostcode(postalCode: string, country: string, uiErrors: UIErrors | undefined): UIErrors | undefined {
+    if (AddressService.UK_COUNTRIES.has(country)
+       && !postalCode.match(AddressService.VALID_UK_POSTCODE_FORMAT)) {
+      uiErrors ??= new UIErrors();
+
+      this.setFieldError(
+        uiErrors,
+        "postal_code",
+        this.i18n?.address?.enterAddress?.errorMessages?.postcodeFormat
+      );
     }
+
+    return uiErrors;
+  }
+
+  isValidJurisdictionAndCountry(jurisdiction: string, country: string, uiErrors: UIErrors | undefined): UIErrors | undefined {
+    return this.checkJurisdictionAndCountryCombinationAllowed(jurisdiction, country, uiErrors);
   }
 
   async getAddressListForPostcode(
@@ -97,6 +128,25 @@ class AddressLookUpService {
 
       throw error;
     }
+  }
+
+  private checkAddressFieldForInvalidCharacters(
+    fieldName: string,
+    fieldValue: string,
+    fieldTitle: string,
+    uiErrors: UIErrors | undefined
+  ): UIErrors | undefined {
+    if (!fieldValue.match(AddressService.VALID_CHARACTERS)) {
+      uiErrors ??= new UIErrors();
+
+      this.setFieldError(
+        uiErrors,
+        fieldName,
+        fieldTitle + " " + this.i18n?.address?.enterAddress?.errorMessages?.invalidCharacters
+      );
+    }
+
+    return uiErrors;
   }
 
   private isFromCorrectCountry(jurisdiction: string, ukAddresses: Address[], uiErrors: UIErrors): boolean {
@@ -150,22 +200,24 @@ class AddressLookUpService {
     });
   }
 
-  private isJurisdictionAndCountryCombinationAllowed(
+  private checkJurisdictionAndCountryCombinationAllowed(
     jurisdiction: string,
     country: string,
-    uiErrors: UIErrors
-  ): boolean {
+    uiErrors: UIErrors | undefined
+  ): UIErrors | undefined {
     const isValid =
       (jurisdiction === Jurisdiction.SCOTLAND && country === "Scotland") ||
       (jurisdiction === Jurisdiction.NORTHERN_IRELAND && country === "Northern Ireland") ||
       (jurisdiction === Jurisdiction.ENGLAND_AND_WALES && (country === "England" || country === "Wales"));
 
     if (!isValid) {
+      uiErrors ??= new UIErrors();
+
       this.setFieldError(uiErrors, "country", this.i18n?.address?.enterAddress?.errorMessages?.jurisdictionCountry);
     }
 
-    return isValid;
+    return uiErrors;
   }
 }
 
-export default AddressLookUpService;
+export default AddressService;

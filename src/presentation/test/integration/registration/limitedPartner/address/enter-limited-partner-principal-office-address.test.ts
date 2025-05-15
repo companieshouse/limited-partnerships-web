@@ -19,7 +19,6 @@ import LimitedPartnerBuilder, {
   limitedPartnerLegalEntity,
   limitedPartnerPerson
 } from "../../../../builder/LimitedPartnerBuilder";
-import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
 
 describe("Enter Limited Partner Principal Office Address Page", () => {
   const URL = getUrl(ENTER_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
@@ -53,7 +52,8 @@ describe("Enter Limited Partner Principal Office Address Page", () => {
         "postcodeLength",
         "postcodeOptional",
         "generalPartner",
-        "usualResidentialAddress"
+        "usualResidentialAddress",
+        "errorMessages"
       ]);
       expect(res.text).not.toContain("WELSH -");
       expect(res.text).not.toContain(limitedPartnerPerson.forename?.toUpperCase());
@@ -87,7 +87,8 @@ describe("Enter Limited Partner Principal Office Address Page", () => {
         "postcodeLength",
         "postcode",
         "generalPartner",
-        "usualResidentialAddress"
+        "usualResidentialAddress",
+        "errorMessages"
       ]);
 
       expect(res.text).not.toContain(limitedPartnerPerson.forename?.toUpperCase());
@@ -142,7 +143,7 @@ describe("Enter Limited Partner Principal Office Address Page", () => {
       });
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.enterLimitedPartnerPrincipalOfficeAddress,
-        postal_code: "",
+        postal_code: "CF3 2DS",
         premises: "4",
         address_line_1: "DUNCALF STREET",
         address_line_2: "",
@@ -157,7 +158,7 @@ describe("Enter Limited Partner Principal Office Address Page", () => {
       expect(cache?.[`${config.APPLICATION_CACHE_KEY}`]).toEqual({
         [appDevDependencies.transactionGateway.transactionId]: {
           principal_office_address: {
-            postal_code: "",
+            postal_code: "CF3 2DS",
             premises: "4",
             address_line_1: "DUNCALF STREET",
             address_line_2: "",
@@ -179,7 +180,7 @@ describe("Enter Limited Partner Principal Office Address Page", () => {
 
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.enterLimitedPartnerPrincipalOfficeAddress,
-        addressLine1: "Mill Street"
+        ...limitedPartner.data?.principal_office_address
       });
 
       expect(res.status).toBe(302);
@@ -203,28 +204,30 @@ describe("Enter Limited Partner Principal Office Address Page", () => {
       expect(res.text).toContain(enTranslationText.errorPage.title);
     });
 
-    it("should redirect if postcode is null", async () => {
-      const limitedPartner = new LimitedPartnerBuilder()
-        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .build();
+    // TODO re-include and change as a null postcode should now not allow redirection
+    //
+    // it("should redirect if postcode is null", async () => {
+    //   const limitedPartner = new LimitedPartnerBuilder()
+    //     .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+    //     .build();
 
-      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
+    //   appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
 
-      const apiErrors: ApiErrors = {
-        errors: {
-          "principalOfficeAddress.postalCode": "must not be null"
-        }
-      };
+    //   const apiErrors: ApiErrors = {
+    //     errors: {
+    //       "principalOfficeAddress.postalCode": "must not be null"
+    //     }
+    //   };
 
-      appDevDependencies.limitedPartnerGateway.feedErrors(apiErrors);
+    //   appDevDependencies.limitedPartnerGateway.feedErrors(apiErrors);
 
-      const res = await request(app).post(URL).send({
-        pageType: AddressPageType.confirmLimitedPartnerPrincipalOfficeAddress,
-        address: `{"postal_code": "","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": "England"}`
-      });
+    //   const res = await request(app).post(URL).send({
+    //     pageType: AddressPageType.confirmLimitedPartnerPrincipalOfficeAddress,
+    //     address: `{"postal_code": "","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": "England"}`
+    //   });
 
-      expect(res.status).toBe(302);
-      expect(res.text).not.toContain("must not be null");
-    });
+    //   expect(res.status).toBe(302);
+    //   expect(res.text).not.toContain("must not be null");
+    // });
   });
 });

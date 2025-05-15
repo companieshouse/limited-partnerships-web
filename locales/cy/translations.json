@@ -188,8 +188,10 @@
             "propertyNameOrNumberHint": "WELSH - For example, 'The Mill', '116' or 'Flat 37a'",
             "addressLine1": "WELSH - Address line 1",
             "addressLine2": "WELSH - Address line 2 (optional)",
+            "addressLine2Title": "WELSH - Address line 2",
             "townOrCity": "WELSH - Town or city",
             "county": "WELSH - County (optional)",
+            "countyTitle": "WELSH - County",
             "postcode": "WELSH - Postcode",
             "country": "WELSH - Country",
             "countrySelect": "WELSH - Select a country",
@@ -208,8 +210,10 @@
                 "countyLength": "WELSH - County, state, province or region must be 50 characters or less",
                 "postcodeMissing": "WELSH - Enter a postcode",
                 "postcodeLength": "WELSH - Postcode must be 15 characters or less",
+                "postcodeFormat": "WELSH - Invalid postcode format",
                 "countryMissing": "WELSH - Select a country",
-                "jurisdictionCountry": "WELSH - You must enter a country that matches your jurisdiction"
+                "jurisdictionCountry": "WELSH - You must enter a country that matches your jurisdiction",
+                "invalidCharacters": "WELSH - must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes"
             }
         },
 

@@ -8,6 +8,7 @@
 
 <div>
     {{ govukInput({
+        errorMessage: props.errors.premises if props.errors,
         label: {
             text: i18n.address.enterAddress.propertyNameOrNumber,
             classes: "govuk-!-margin-top-5"
@@ -26,6 +27,7 @@
     }) }}
 
     {{ govukInput({
+        errorMessage: props.errors.address_line_1 if props.errors,
         label: {
             text: i18n.address.enterAddress.addressLine1
         },
@@ -40,6 +42,7 @@
     }) }}
 
     {{ govukInput({
+        errorMessage: props.errors.address_line_2 if props.errors,
         label: {
             text: i18n.address.enterAddress.addressLine2
         },
@@ -52,6 +55,7 @@
     }) }}
 
     {{ govukInput({
+        errorMessage: props.errors.locality if props.errors,
         label: {
             text: i18n.address.enterAddress.townOrCity
         },
@@ -67,6 +71,7 @@
     }) }}
 
     {{ govukInput({
+        errorMessage: props.errors.region if props.errors,
         label: {
             text: i18n.address.enterAddress.county
         },

@@ -34,7 +34,8 @@ describe("Enter Registered Office Address Page", () => {
         "usualResidentialAddress",
         "correspondenceAddress",
         "principalPlaceOfBusinessAddress",
-        "principalOfficeAddress"
+        "principalOfficeAddress",
+        "errorMessages"
       ]);
       expect(res.text).not.toContain("WELSH -");
     });
@@ -50,7 +51,8 @@ describe("Enter Registered Office Address Page", () => {
         "usualResidentialAddress",
         "correspondenceAddress",
         "principalPlaceOfBusinessAddress",
-        "principalOfficeAddress"
+        "principalOfficeAddress",
+        "errorMessages"
       ]);
     });
   });
@@ -65,7 +67,7 @@ describe("Enter Registered Office Address Page", () => {
 
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.enterRegisteredOfficeAddress,
-        country: "Wales"
+        ...limitedPartnership.data?.registered_office_address,
       });
 
       const redirectUrl = getUrl(CONFIRM_REGISTERED_OFFICE_ADDRESS_URL);
@@ -94,6 +96,7 @@ describe("Enter Registered Office Address Page", () => {
 
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.enterRegisteredOfficeAddress,
+        ...limitedPartnership.data?.registered_office_address,
         country: "Northern Ireland"
       });
 
@@ -114,6 +117,7 @@ describe("Enter Registered Office Address Page", () => {
         .post(URL + "?lang=cy")
         .send({
           pageType: AddressPageType.enterRegisteredOfficeAddress,
+          ...limitedPartnership.data?.registered_office_address,
           country: "Northern Ireland"
         });
 
@@ -132,6 +136,7 @@ describe("Enter Registered Office Address Page", () => {
 
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.enterRegisteredOfficeAddress,
+        ...limitedPartnership.data?.registered_office_address,
         country: "Scotland"
       });
 
@@ -150,6 +155,7 @@ describe("Enter Registered Office Address Page", () => {
 
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.enterRegisteredOfficeAddress,
+        ...limitedPartnership.data?.registered_office_address,
         country: "Scotland"
       });
 
