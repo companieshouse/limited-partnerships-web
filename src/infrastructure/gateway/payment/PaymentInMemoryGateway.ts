@@ -7,7 +7,7 @@ class PaymentsInMemoryGateway implements IPaymentsGateway {
     _opt: { access_token: string; refresh_token: string },
     createPaymentRequest: CreatePaymentRequest) {
 
-    return await this.generatePayment(createPaymentRequest);
+    return this.generatePayment(createPaymentRequest);
   }
 
   private generatePayment (
