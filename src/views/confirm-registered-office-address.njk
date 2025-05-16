@@ -7,9 +7,10 @@
 
 {% block content %}
   <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
+    <div class="govuk-grid-column-two-thirds">     
+      {% include "includes/errors.njk" %}
       {% include "includes/proposed-name.njk" %} 
-      
+
       {% include "pages/address/confirm-address-form.njk" %}
     </div>
   </div> 

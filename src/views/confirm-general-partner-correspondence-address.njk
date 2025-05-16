@@ -24,6 +24,7 @@
 {% block content %}
  <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
+      {% include "includes/errors.njk" %}
       {% include "includes/general-partner-name.njk" %}
 
       {% include "pages/address/confirm-address-form.njk" %}

@@ -183,12 +183,14 @@
                     "postcodeOptional": "Postcode (optional)"
                 }
           },
-            "propertyNameOrNumber": "Property name or number",
-            "propertyNameOrNumberHint": "For example, 'The Mill', '116' or 'Flat 37a'",
+            "premises": "Property name or number",
+            "premisesHint": "For example, 'The Mill', '116' or 'Flat 37a'",
             "addressLine1": "Address line 1",
             "addressLine2": "Address line 2 (optional)",
-            "townOrCity": "Town or city",
-            "county": "County (optional)",
+            "addressLine2Title": "Address line 2",
+            "locality": "Town or city",
+            "region": "County (optional)",
+            "regionTitle": "County",
             "postcode": "Postcode",
             "country": "Country",
             "countrySelect": "Select a country",
@@ -197,18 +199,20 @@
             "countryWales": "Wales",
             "countryNorthernIreland": "Northern Ireland",
             "errorMessages": {
-                "nameOrNumberMissing": "Enter a property name or number",
-                "nameOrNumberLength": "Property name or number must be 200 characters or less",
+                "premisesMissing": "Enter a property name or number",
+                "premisesLength": "Property name or number must be 200 characters or less",
                 "addressLine1Missing": "Enter an address",
                 "addressLine1Length": "Address line 1 must be 50 characters or less",
                 "addressLine2Length": "Address line 2 must be 50 characters or less",
-                "townOrCityMissing": "Enter a town or city",
-                "townOrCityLength": "Town or city must be 50 characters or less",
-                "countyLength": "County, state, province or region must be 50 characters or less",
+                "localityMissing": "Enter a town or city",
+                "localityLength": "Town or city must be 50 characters or less",
+                "regionLength": "County, state, province or region must be 50 characters or less",
                 "postcodeMissing": "Enter a postcode",
                 "postcodeLength": "Postcode must be 15 characters or less",
+                "postcodeFormat": "Invalid postcode format",
                 "countryMissing": "Select a country",
-                "jurisdictionCountry": "You must enter a country that matches your jurisdiction"
+                "jurisdictionCountry": "You must enter a country that matches your jurisdiction",
+                "invalidCharacters": "must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes"
             }
         },
 

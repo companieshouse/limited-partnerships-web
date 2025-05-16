@@ -3,6 +3,7 @@
 {% include "pages/address/enter-address-fields.njk" %}
 
 {{ govukInput({
+  errorMessage: props.errors.postal_code if props.errors,
   label: {
     text: i18n.address.enterAddress.postcode
   },

@@ -39,7 +39,7 @@ class GeneralPartnerBuilder extends AbstractPartnerBuilder {
         address_line_2: "line 2",
         locality: "stoke-on-trent",
         region: "region",
-        country: "england"
+        country: "England"
       }
     };
   }
