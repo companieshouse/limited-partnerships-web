@@ -3,7 +3,7 @@ import IPaymentGateway from "../../domain/IPaymentGateway";
 import { v4 as uuidv4 } from 'uuid';
 import {
   CHS_URL,
-  PAYMENTS_API_URL,
+  API_URL,
   PAYMENT, REFERENCE,
   REGISTRATION_WITH_IDS_URL
 } from "../../config/constants";
@@ -17,23 +17,23 @@ class PaymentService {
   async startPaymentSession (
     opt: { access_token: string; refresh_token: string },
     transactionId: string,
-    submissionId: string
+    submissionId: string,
+    startPaymentSessionUrl: string
   ) {
     const createPaymentRequest: CreatePaymentRequest = this.buildCreatePaymentRequest(transactionId, submissionId);
-    const paymentResource: Payment = await this.paymentGateway.createPayment(opt, createPaymentRequest);
+    console.log("\n\n\n\n>>>>>>>>>>>>>>>>>> payment request " + JSON.stringify(createPaymentRequest));
+    const paymentResource: Payment = await this.paymentGateway.createPayment(opt, createPaymentRequest, startPaymentSessionUrl);
     return paymentResource.links.journey;
   }
 
-  private buildCreatePaymentRequest(transactionId: string, submissionId: string, baseURL?: string) {
+  private buildCreatePaymentRequest(transactionId: string, submissionId: string) {
 
-    if (!baseURL) {
-      baseURL = `${CHS_URL}${REGISTRATION_WITH_IDS_URL}`;
-    }
-
-    const paymentResourceUri = `${PAYMENTS_API_URL}/transactions/${transactionId}/${PAYMENT}`;
+    const paymentResourceUri = `${API_URL}/transactions/${transactionId}/${PAYMENT}`;
     const reference = `${REFERENCE}_${transactionId}`;
+
+    const baseURL = `${CHS_URL}${REGISTRATION_WITH_IDS_URL}`;
     const activeSubmissionBasePathWithIds = getUrlWithTransactionIdAndSubmissionId(baseURL, transactionId, submissionId);
-    const redirectUri = `${activeSubmissionBasePathWithIds}${PAYMENT}`;
+    const redirectUri = `${activeSubmissionBasePathWithIds}/${PAYMENT}`;
 
     return {
       resource: paymentResourceUri,

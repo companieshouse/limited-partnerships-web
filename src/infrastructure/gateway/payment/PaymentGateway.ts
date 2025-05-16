@@ -4,12 +4,19 @@ import { SDK_PAYMENT_SERVICE } from "../../../config/constants";
 import { makeApiCallWithRetry } from "../api";
 import { ApiResult, ApiResponse } from "@companieshouse/api-sdk-node/dist/services/resource";
 import { logger } from "../../../utils/logger";
+import { createApiClient } from "@companieshouse/api-sdk-node";
+import ApiClient from "@companieshouse/api-sdk-node/dist/client";
 
 class PaymentGateway implements IPaymentGateway {
   async createPayment(
     opt: { access_token: string; refresh_token: string },
-    createPaymentRequest: CreatePaymentRequest ): Promise<Payment> {
+    createPaymentRequest: CreatePaymentRequest,
+    startPaymentSessionUrl: string ): Promise<Payment> {
 
+    console.log("\n\n\n\n>>>>>>>>>>>>>>>>>> start payment session url " + startPaymentSessionUrl);
+    const apiClient: ApiClient = createApiClient(undefined, opt.access_token, startPaymentSessionUrl);
+    const response = await apiClient.payment.createPaymentWithFullUrl(createPaymentRequest);
+   /*
     const apiCall = {
       service: SDK_PAYMENT_SERVICE,
       method: "createPaymentWithFullUrl",
@@ -17,7 +24,8 @@ class PaymentGateway implements IPaymentGateway {
     };
 
     const response = await makeApiCallWithRetry<ApiResult<ApiResponse<Payment>>>(opt, apiCall);
-
+    */
+    console.log("\n\n\n\n>>>>>>>>>>>>>>>>>> payment response " + JSON.stringify(response));
     if (response.isFailure() || !response.isSuccess()) {
       const errorResponse = response.value;
       const msgErrorStatusCode = `http response status code=${ errorResponse?.httpStatusCode ?? "No Status Code found in response" }`;

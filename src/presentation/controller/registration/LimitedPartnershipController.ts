@@ -129,8 +129,11 @@ class LimitedPartnershipController extends AbstractController {
         //      payment journey is implemented
         //
         //      E.g.   apiResponse.headers?.["x-payment-required"];
-        await this.limitedPartnershipService.closeTransaction(tokens, ids.transactionId);
-        const paymentRedirect = await this.paymentService.startPaymentSession(tokens, ids.transactionId, ids.submissionId);
+        const closeTransactionResponse = await this.limitedPartnershipService.closeTransaction(tokens, ids.transactionId);
+        console.log("\n\n\n\n\n >>>>>>>>>>>>>>> closeTransactionResponse " + JSON.stringify(closeTransactionResponse));
+      
+        const startPaymentSessionUrl: string = closeTransactionResponse.headers?.["x-payment-required"];
+        const paymentRedirect = await this.paymentService.startPaymentSession(tokens, ids.transactionId, ids.submissionId, startPaymentSessionUrl);
 
         response.redirect(paymentRedirect);
       } catch (error) {

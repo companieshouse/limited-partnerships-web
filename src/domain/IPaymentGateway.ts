@@ -3,7 +3,8 @@ import { Payment, CreatePaymentRequest } from "@companieshouse/api-sdk-node/dist
 interface IPaymentGateway {
     createPayment(
         opt: { access_token: string; refresh_token: string },
-        createPaymentRequest: CreatePaymentRequest
+        createPaymentRequest: CreatePaymentRequest,
+        startPaymentSessionUrl: string
     ): Promise<Payment>
 }
 
