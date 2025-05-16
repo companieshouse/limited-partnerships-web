@@ -20,6 +20,7 @@ export const postTransaction = jest.fn().mockImplementation(() => ({
 }));
 export const putTransaction = jest.fn().mockImplementation(() => ({
   httpStatusCode: 204,
+  headers: { "x-payment-required": "/abc" },
   resource: {}
 }));
 

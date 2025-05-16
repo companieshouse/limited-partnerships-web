@@ -124,16 +124,23 @@ class LimitedPartnershipController extends AbstractController {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const { tokens, ids } = super.extract(request);
-
-        // TODO Use the response from this call to get hold of the payment URL, when the
-        //      payment journey is implemented
-        //
-        //      E.g.   apiResponse.headers?.["x-payment-required"];
         const closeTransactionResponse = await this.limitedPartnershipService.closeTransaction(tokens, ids.transactionId);
-        console.log("\n\n\n\n\n >>>>>>>>>>>>>>> closeTransactionResponse " + JSON.stringify(closeTransactionResponse));
-      
         const startPaymentSessionUrl: string = closeTransactionResponse.headers?.["x-payment-required"];
-        const paymentRedirect = await this.paymentService.startPaymentSession(tokens, ids.transactionId, ids.submissionId, startPaymentSessionUrl);
+
+        if (!startPaymentSessionUrl) {
+          throw new Error("No payment URL found in the response");
+        }
+
+        const paymentRedirect = await this.paymentService.startPaymentSession(
+          tokens,
+          ids.transactionId,
+          ids.submissionId,
+          startPaymentSessionUrl
+        );
+
+        if (!paymentRedirect) {
+          throw new Error("No payment URL found in the response");
+        }
 
         response.redirect(paymentRedirect);
       } catch (error) {

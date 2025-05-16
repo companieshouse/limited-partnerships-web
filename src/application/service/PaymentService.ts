@@ -21,7 +21,6 @@ class PaymentService {
     startPaymentSessionUrl: string
   ) {
     const createPaymentRequest: CreatePaymentRequest = this.buildCreatePaymentRequest(transactionId, submissionId);
-    console.log("\n\n\n\n>>>>>>>>>>>>>>>>>> payment request " + JSON.stringify(createPaymentRequest));
     const paymentResource: Payment = await this.paymentGateway.createPayment(opt, createPaymentRequest, startPaymentSessionUrl);
     return paymentResource.links.journey;
   }
