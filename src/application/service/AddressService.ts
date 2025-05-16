@@ -86,12 +86,30 @@ class AddressService {
     );
   }
 
-  hasAddressGotInvalidCharacters(address: Address, uiErrors: UIErrors | undefined): UIErrors | undefined {
-    uiErrors = this.checkAddressFieldForInvalidCharacters("premises", address.premises, this.i18n?.address?.enterAddress?.propertyNameOrNumber, uiErrors);
-    uiErrors = this.checkAddressFieldForInvalidCharacters("address_line_1", address.address_line_1, this.i18n?.address?.enterAddress?.addressLine1, uiErrors);
-    uiErrors = this.checkAddressFieldForInvalidCharacters("address_line_2", address.address_line_2 ?? "", this.i18n?.address?.enterAddress?.addressLine2Title, uiErrors);
-    uiErrors = this.checkAddressFieldForInvalidCharacters("locality", address.locality, this.i18n?.address?.enterAddress?.townOrCity, uiErrors);
-    uiErrors = this.checkAddressFieldForInvalidCharacters("region", address.region ?? "", this.i18n?.address?.enterAddress?.countyTitle, uiErrors);
+  public hasAddressGotInvalidCharacters(address: Address, uiErrors: UIErrors | undefined): UIErrors | undefined {
+    let fieldErrors = {};
+    const ignoredFields = ["country", "postal_code"];
+
+    for (const key in address) {
+      if (ignoredFields.includes(key)) {
+        continue;
+      }
+
+      let i18nFieldTitleKey = this.snakeCaseToCamelCase(key);
+      if (key === "address_line_2" || key === "region") {
+        i18nFieldTitleKey += "Title";
+      }
+
+      fieldErrors = {
+        ...fieldErrors,
+        ...this.checkAddressFieldForInvalidCharacters(key, address[key] ?? "", this.i18n?.address?.enterAddress?.[i18nFieldTitleKey])
+      };
+    }
+
+    if (Object.keys(fieldErrors).length !== 0) {
+      uiErrors ??= new UIErrors();
+      uiErrors.formatValidationErrorToUiErrors({ errors: fieldErrors });
+    }
 
     return uiErrors;
   }
@@ -133,20 +151,19 @@ class AddressService {
   private checkAddressFieldForInvalidCharacters(
     fieldName: string,
     fieldValue: string,
-    fieldTitle: string,
-    uiErrors: UIErrors | undefined
-  ): UIErrors | undefined {
+    fieldTitle: string
+  ): Record<string, string> {
     if (!AddressService.VALID_CHARACTERS.exec(fieldValue)) {
-      uiErrors ??= new UIErrors();
-
-      this.setFieldError(
-        uiErrors,
-        fieldName,
-        fieldTitle + " " + this.i18n?.address?.enterAddress?.errorMessages?.invalidCharacters
-      );
+      return {
+        [fieldName]: fieldTitle + " " + this.i18n?.address?.enterAddress?.errorMessages?.invalidCharacters
+      };
     }
 
-    return uiErrors;
+    return {};
+  }
+
+  private snakeCaseToCamelCase(str: string): string {
+    return str.replace(/_([a-zA-Z0-9])/g, (_, char) => char.toUpperCase());
   }
 
   private isFromCorrectCountry(jurisdiction: string, ukAddresses: Address[], uiErrors: UIErrors): boolean {

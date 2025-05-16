@@ -176,15 +176,15 @@ describe("Enter general partner's principal office manual address page", () => {
       });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.propertyNameOrNumber + " "
+      expect(res.text).toContain(enTranslationText.address.enterAddress.premises + " "
         + enTranslationText.address.enterAddress.errorMessages.invalidCharacters);
       expect(res.text).toContain(enTranslationText.address.enterAddress.addressLine1 + " "
         + enTranslationText.address.enterAddress.errorMessages.invalidCharacters);
       expect(res.text).toContain(enTranslationText.address.enterAddress.addressLine2Title + " "
         + enTranslationText.address.enterAddress.errorMessages.invalidCharacters);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.townOrCity + " "
+      expect(res.text).toContain(enTranslationText.address.enterAddress.locality + " "
         + enTranslationText.address.enterAddress.errorMessages.invalidCharacters);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.countyTitle + " "
+      expect(res.text).toContain(enTranslationText.address.enterAddress.regionTitle + " "
         + enTranslationText.address.enterAddress.errorMessages.invalidCharacters);
       expect(res.text).toContain(enTranslationText.govUk.error.title);
     });
