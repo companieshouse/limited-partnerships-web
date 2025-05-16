@@ -19,6 +19,7 @@ import GeneralPartnerBuilder, {
   generalPartnerLegalEntity,
   generalPartnerPerson
 } from "../../../../builder/GeneralPartnerBuilder";
+import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
 
 describe("Enter Usual Residential Address Page", () => {
   const URL = getUrl(ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
@@ -206,30 +207,114 @@ describe("Enter Usual Residential Address Page", () => {
       expect(res.text).toContain(enTranslationText.errorPage.title);
     });
 
-    // TODO re-include and change as a null postcode should now not allow redirection
-    //
-    // it("should redirect if postcode is null", async () => {
-    //   const generalPartner = new GeneralPartnerBuilder()
-    //     .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-    //     .build();
+    it("should redirect if postcode is null", async () => {
+      const generalPartner = new GeneralPartnerBuilder()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .build();
 
-    //   appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
 
-    //   const apiErrors: ApiErrors = {
-    //     errors: {
-    //       "usualResidentialAddress.postalCode": "must not be null"
-    //     }
-    //   };
+      const apiErrors: ApiErrors = {
+        errors: {
+          "usualResidentialAddress.postalCode": "must not be null"
+        }
+      };
 
-    //   appDevDependencies.generalPartnerGateway.feedErrors(apiErrors);
+      appDevDependencies.generalPartnerGateway.feedErrors(apiErrors);
 
-    //   const res = await request(app).post(URL).send({
-    //     pageType: AddressPageType.confirmRegisteredOfficeAddress,
-    //     address: `{"postal_code": "","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": "England"}`
-    //   });
+      const res = await request(app).post(URL).send({
+        pageType: AddressPageType.confirmRegisteredOfficeAddress,
+        address: `{"postal_code": "","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": "England"}`
+      });
 
-    //   expect(res.status).toBe(302);
-    //   expect(res.text).not.toContain("must not be null");
-    // });
+      expect(res.status).toBe(302);
+      expect(res.text).not.toContain("must not be null");
+    });
+
+    it("should not return a validation error when an overseas address and postcode does not conform to UK format", async () => {
+      const generalPartner = new GeneralPartnerBuilder()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .isPerson()
+        .build();
+
+      const res = await request(app).post(URL).send({
+        pageType: AddressPageType.enterGeneralPartnerUsualResidentialAddress,
+        ...generalPartner.data?.usual_residential_address,
+        postal_code: "here",
+        country: "Vatican City"
+      });
+
+      const redirectUrl = getUrl(CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+    });
+
+    it("should return a validation error when a UK address and postcode format is invalid", async () => {
+      const generalPartner = new GeneralPartnerBuilder()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .isPerson()
+        .build();
+
+      const res = await request(app).post(URL).send({
+        pageType: AddressPageType.enterGeneralPartnerUsualResidentialAddress,
+        ...generalPartner.data?.usual_residential_address,
+        postal_code: "here"
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.postcodeFormat);
+      expect(res.text).toContain(enTranslationText.govUk.error.title);
+    });
+
+    it("should not return validation errors when address fields contain valid but non alpha-numeric characters", async () => {
+      const generalPartner = new GeneralPartnerBuilder()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .isPerson()
+        .build();
+
+      const res = await request(app).post(URL).send({
+        pageType: AddressPageType.enterGeneralPartnerUsualResidentialAddress,
+        ...generalPartner.data?.usual_residential_address,
+        premises: "-,.:; &@$£¥€'?!/\\",
+        address_line_1: "()[]{}<>*=#%+ÀÁÂÃÄÅĀĂĄÆǼÇĆĈĊČÞĎÐÈÉÊËĒĔĖĘĚĜĞĠĢ",
+        address_line_2: "ĤĦÌÍÎÏĨĪĬĮİĴĶĹĻĽĿŁÑŃŅŇŊÒÓÔÕÖØŌŎŐǾŒŔŖŘŚŜŞŠŢŤŦ",
+        locality: "ÙÚÛÜŨŪŬŮŰŲŴẀẂẄỲÝŶŸŹŻŽa-zÀÖØſƒǺẀỲàáâãäåāăąæǽçćĉċč",
+        region: "þďðèéêëēĕėęěĝģğġĥħìíîïĩīĭįĵķĺļľŀłñńņňŋòóôõöøōŏőǿœŕŗřśŝşšţťŧùúûüũūŭůűųŵẁẃẅỳýŷÿźżž",
+      });
+
+      const redirectUrl = getUrl(CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+    });
+
+    it("should return validation errors when address fields contain invalid characters", async () => {
+      const generalPartner = new GeneralPartnerBuilder()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .isPerson()
+        .build();
+
+      const res = await request(app).post(URL).send({
+        pageType: AddressPageType.enterGeneralPartnerUsualResidentialAddress,
+        ...generalPartner.data?.usual_residential_address,
+        premises: "±",
+        address_line_1: "±",
+        address_line_2: "±",
+        locality: "±",
+        region: "±",
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(enTranslationText.address.enterAddress.propertyNameOrNumber + " "
+        + enTranslationText.address.enterAddress.errorMessages.invalidCharacters);
+      expect(res.text).toContain(enTranslationText.address.enterAddress.addressLine1 + " "
+        + enTranslationText.address.enterAddress.errorMessages.invalidCharacters);
+      expect(res.text).toContain(enTranslationText.address.enterAddress.addressLine2Title + " "
+        + enTranslationText.address.enterAddress.errorMessages.invalidCharacters);
+      expect(res.text).toContain(enTranslationText.address.enterAddress.townOrCity + " "
+        + enTranslationText.address.enterAddress.errorMessages.invalidCharacters);
+      expect(res.text).toContain(enTranslationText.address.enterAddress.countyTitle + " "
+        + enTranslationText.address.enterAddress.errorMessages.invalidCharacters);
+      expect(res.text).toContain(enTranslationText.govUk.error.title);
+    });
   });
 });

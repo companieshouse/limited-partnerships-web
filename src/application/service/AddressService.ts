@@ -98,7 +98,7 @@ class AddressService {
 
   isValidPostcode(postalCode: string, country: string, uiErrors: UIErrors | undefined): UIErrors | undefined {
     if (AddressService.UK_COUNTRIES.has(country)
-       && !postalCode.match(AddressService.VALID_UK_POSTCODE_FORMAT)) {
+        && !AddressService.VALID_UK_POSTCODE_FORMAT.exec(postalCode)) {
       uiErrors ??= new UIErrors();
 
       this.setFieldError(
@@ -136,7 +136,7 @@ class AddressService {
     fieldTitle: string,
     uiErrors: UIErrors | undefined
   ): UIErrors | undefined {
-    if (!fieldValue.match(AddressService.VALID_CHARACTERS)) {
+    if (!AddressService.VALID_CHARACTERS.exec(fieldValue)) {
       uiErrors ??= new UIErrors();
 
       this.setFieldError(

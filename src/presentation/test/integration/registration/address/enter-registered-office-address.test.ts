@@ -82,6 +82,7 @@ describe("Enter Registered Office Address Page", () => {
 
       const res = await request(app).post(URL).send({
         pageType: "Invalid page type",
+        ...limitedPartnership.data?.registered_office_address,
         country: "Scotland"
       });
 
@@ -161,6 +162,73 @@ describe("Enter Registered Office Address Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.jurisdictionCountry);
+      expect(res.text).toContain(enTranslationText.govUk.error.title);
+      expect(res.text).toContain(limitedPartnership.data?.partnership_name?.toUpperCase());
+    });
+
+    it("should return a validation error when postcode format is invalid", async () => {
+      const limitedPartnership = new LimitedPartnershipBuilder().withJurisdiction(Jurisdiction.ENGLAND_AND_WALES).build();
+
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+      const res = await request(app).post(URL).send({
+        pageType: AddressPageType.enterRegisteredOfficeAddress,
+        ...limitedPartnership.data?.registered_office_address,
+        postal_code: "here"
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.postcodeFormat);
+      expect(res.text).toContain(enTranslationText.govUk.error.title);
+      expect(res.text).toContain(limitedPartnership.data?.partnership_name?.toUpperCase());
+    });
+
+    it("should not return validation errors when address fields contain valid but non alpha-numeric characters", async () => {
+      const limitedPartnership = new LimitedPartnershipBuilder().withJurisdiction(Jurisdiction.ENGLAND_AND_WALES).build();
+
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+      const res = await request(app).post(URL).send({
+        pageType: AddressPageType.enterRegisteredOfficeAddress,
+        ...limitedPartnership.data?.registered_office_address,
+        premises: "-,.:; &@$£¥€'?!/\\",
+        address_line_1: "()[]{}<>*=#%+ÀÁÂÃÄÅĀĂĄÆǼÇĆĈĊČÞĎÐÈÉÊËĒĔĖĘĚĜĞĠĢ",
+        address_line_2: "ĤĦÌÍÎÏĨĪĬĮİĴĶĹĻĽĿŁÑŃŅŇŊÒÓÔÕÖØŌŎŐǾŒŔŖŘŚŜŞŠŢŤŦ",
+        locality: "ÙÚÛÜŨŪŬŮŰŲŴẀẂẄỲÝŶŸŹŻŽa-zÀÖØſƒǺẀỲàáâãäåāăąæǽçćĉċč",
+        region: "þďðèéêëēĕėęěĝģğġĥħìíîïĩīĭįĵķĺļľŀłñńņňŋòóôõöøōŏőǿœŕŗřśŝşšţťŧùúûüũūŭůűųŵẁẃẅỳýŷÿźżž",
+      });
+
+      const redirectUrl = getUrl(CONFIRM_REGISTERED_OFFICE_ADDRESS_URL);
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+    });
+
+    it("should return validation errors when address fields contain invalid characters", async () => {
+      const limitedPartnership = new LimitedPartnershipBuilder().withJurisdiction(Jurisdiction.ENGLAND_AND_WALES).build();
+
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+      const res = await request(app).post(URL).send({
+        pageType: AddressPageType.enterRegisteredOfficeAddress,
+        ...limitedPartnership.data?.registered_office_address,
+        premises: "±",
+        address_line_1: "±",
+        address_line_2: "±",
+        locality: "±",
+        region: "±",
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(enTranslationText.address.enterAddress.propertyNameOrNumber + " "
+        + enTranslationText.address.enterAddress.errorMessages.invalidCharacters);
+      expect(res.text).toContain(enTranslationText.address.enterAddress.addressLine1 + " "
+        + enTranslationText.address.enterAddress.errorMessages.invalidCharacters);
+      expect(res.text).toContain(enTranslationText.address.enterAddress.addressLine2Title + " "
+        + enTranslationText.address.enterAddress.errorMessages.invalidCharacters);
+      expect(res.text).toContain(enTranslationText.address.enterAddress.townOrCity + " "
+        + enTranslationText.address.enterAddress.errorMessages.invalidCharacters);
+      expect(res.text).toContain(enTranslationText.address.enterAddress.countyTitle + " "
+        + enTranslationText.address.enterAddress.errorMessages.invalidCharacters);
       expect(res.text).toContain(enTranslationText.govUk.error.title);
       expect(res.text).toContain(limitedPartnership.data?.partnership_name?.toUpperCase());
     });
