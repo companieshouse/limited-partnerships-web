@@ -3,6 +3,7 @@ import escape from "escape-html";
 import { LimitedPartnership, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
+import PaymentService from "../../../application/service/PaymentService";
 import registrationsRouting from "./Routing";
 import AbstractController from "../AbstractController";
 import RegistrationPageType from "./PageType";
@@ -19,11 +20,17 @@ import { getJourneyTypes } from "../../../utils";
 class LimitedPartnershipController extends AbstractController {
   private limitedPartnershipService: LimitedPartnershipService;
   private cacheService: CacheService;
+  private paymentService: PaymentService;
 
-  constructor(limitedPartnershipService: LimitedPartnershipService, cacheService: CacheService) {
+  constructor(
+    limitedPartnershipService: LimitedPartnershipService,
+    cacheService: CacheService,
+    paymentService: PaymentService
+  ) {
     super();
     this.limitedPartnershipService = limitedPartnershipService;
     this.cacheService = cacheService;
+    this.paymentService = paymentService;
   }
 
   getPageRouting() {
@@ -120,17 +127,25 @@ class LimitedPartnershipController extends AbstractController {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const { tokens, ids } = super.extract(request);
+        const closeTransactionResponse = await this.limitedPartnershipService.closeTransaction(tokens, ids.transactionId);
+        const startPaymentSessionUrl: string = closeTransactionResponse.headers?.["x-payment-required"];
 
-        // TODO Use the response from this call to get hold of the payment URL, when the
-        //      payment journey is implemented
-        //
-        //      E.g.   apiResponse.headers?.["x-payment-required"];
-        await this.limitedPartnershipService.closeTransaction(tokens, ids.transactionId);
+        if (!startPaymentSessionUrl) {
+          throw new Error("No payment URL found in the response");
+        }
 
-        const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
-        const pageRouting = super.getRouting(registrationsRouting, pageType, request);
+        const paymentRedirect = await this.paymentService.startPaymentSession(
+          tokens,
+          ids.transactionId,
+          ids.submissionId,
+          startPaymentSessionUrl
+        );
 
-        response.redirect(pageRouting.nextUrl);
+        if (!paymentRedirect) {
+          throw new Error("No payment URL found in the response");
+        }
+
+        response.redirect(paymentRedirect);
       } catch (error) {
         next(error);
       }

@@ -32,7 +32,8 @@ class TransactionInMemoryGateway implements ITransactionGateway {
         id: transactionId,
         status: "closed"
       } as Transaction,
-      httpStatusCode: 204
+      httpStatusCode: 204,
+      headers:{"x-payment-required":"/abc"},
     };
   }
 }

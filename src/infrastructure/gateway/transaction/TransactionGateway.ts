@@ -55,7 +55,7 @@ class TransactionGateway implements ITransactionGateway {
       ApiResponse<Transaction> | ApiErrorResponse
     >(opt, apiCall);
 
-    if (response.httpStatusCode !== 204) {
+    if (response.httpStatusCode !== 204 && response.httpStatusCode !== 202) {
       throw response;
     }
 
