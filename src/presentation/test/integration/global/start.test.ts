@@ -2,7 +2,7 @@ import request from "supertest";
 
 import app from "../app";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
-import { START_URL } from "../../../controller/global/Routing";
+import { START_URL } from "../../../controller/global/url";
 
 describe("Create Transaction", () => {
   beforeAll(() => {

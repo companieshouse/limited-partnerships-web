@@ -1,7 +1,7 @@
 import request from "supertest";
 
 import app from "../app";
-import { HEALTHCHECK_URL } from "../../../controller/global/Routing";
+import { HEALTHCHECK_URL } from "../../../controller/global/url";
 
 describe("GET /healthcheck", () => {
   it("should return status OK", async () => {

@@ -3,7 +3,7 @@ import { CsrfError } from "@companieshouse/web-security-node";
 import { NextFunction, Request, Response } from "express";
 
 import app from "./app";
-import { HEALTHCHECK_URL } from "../../controller/global/Routing";
+import { HEALTHCHECK_URL } from "../../controller/global/url";
 
 jest.mock("../../controller/global/Controller", () => {
   return function () {
@@ -28,6 +28,11 @@ jest.mock("../../controller/global/Controller", () => {
           next(new CsrfError("CSRF token mismatch"));
         };
       },
+      getPaymentRouting: jest.fn().mockImplementation(() => {
+        return (_req: Request, _res: Response, next: NextFunction) => {
+          return next();
+        };
+      })
     };
   };
 });

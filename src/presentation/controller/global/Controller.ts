@@ -18,9 +18,6 @@ class GlobalController extends AbstractController {
   getPageRouting() {
     return (request: Request, response: Response, next: NextFunction) => {
       try {
-        // example error message using the locales json files
-        // const errorMessage = response.locals.i18n["startPage"]["errorStartAddressMissing"];
-
         const pageType = super.pageType(request.path);
 
         const pageRouting = super.getRouting(globalsRouting, pageType, request);
@@ -70,6 +67,19 @@ class GlobalController extends AbstractController {
     return (_request: Request, response: Response, next: NextFunction) => {
       try {
         response.status(200).json({ status: "OK" });
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  getPaymentRouting() {
+    return (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const pageType = super.pageType(request.path);
+        const pageRouting = super.getRouting(globalsRouting, pageType, request);
+
+        response.redirect(pageRouting.nextUrl);
       } catch (error) {
         next(error);
       }
