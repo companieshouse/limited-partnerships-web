@@ -59,7 +59,7 @@ describe("Transaction Gateway Update tests for the 'Check Your Answers' page", (
     expect(res.text).toContain(enTranslationText.errorPage.title);
   });
 
-  it("should load the error page if payment call fails", async () => {
+  it("should load the error page if payment http response is not 2xx", async () => {
     mockCreateApiClient.mockReturnValue({
       ...sdkMock,
       payment: {
@@ -67,6 +67,29 @@ describe("Transaction Gateway Update tests for the 'Check Your Answers' page", (
         createPaymentWithFullUrl: () => ({
           httpStatusCode: 500,
           resource: {}
+        })
+      }
+    });
+
+    const res = await request(appRealDependencies).post(URL).send({
+      pageType: RegistrationPageType.checkYourAnswers
+    });
+
+    expect(res.status).toBe(500);
+    expect(res.text).toContain(enTranslationText.errorPage.title);
+  });
+
+  it("should load the error page if payment call fails", async () => {
+    mockCreateApiClient.mockReturnValue({
+      ...sdkMock,
+      payment: {
+        createPaymentWithFullUrl: () => ({
+          isSuccess: () => false,
+          isFailure: () => true,
+          value: {
+            httpStatusCode: 201,
+            resource: {}
+          }
         })
       }
     });

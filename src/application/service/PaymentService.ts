@@ -11,7 +11,7 @@ import { getUrlWithTransactionIdAndSubmissionId } from "./utils";
 
 class PaymentService {
   constructor(
-    private paymentGateway: IPaymentGateway
+    private readonly paymentGateway: IPaymentGateway
   ) {}
 
   async startPaymentSession (

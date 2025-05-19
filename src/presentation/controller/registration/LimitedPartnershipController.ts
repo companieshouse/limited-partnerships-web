@@ -21,7 +21,7 @@ import { getJourneyTypes } from "../../../utils";
 class LimitedPartnershipController extends AbstractController {
   private limitedPartnershipService: LimitedPartnershipService;
   private cacheService: CacheService;
-  private paymentService: PaymentService;
+  private readonly paymentService: PaymentService;
 
   constructor(
     limitedPartnershipService: LimitedPartnershipService,

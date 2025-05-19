@@ -18,7 +18,6 @@ class PaymentGateway implements IPaymentGateway {
       const msgErrorStatusCode = `http response status code=${ errorResponse?.httpStatusCode ?? "No Status Code found in response" }`;
       const msgErrorResponse = `http errors response=${ JSON.stringify(errorResponse?.errors ?? "No Errors found in response") }`;
       const msgError = `payment.service failure to create payment, ${msgErrorStatusCode}, ${msgErrorResponse}.`;
-
       throw new Error(msgError);
     }
 

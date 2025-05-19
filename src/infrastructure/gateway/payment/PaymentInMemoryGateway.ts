@@ -68,7 +68,7 @@ class PaymentsInMemoryGateway implements IPaymentsGateway {
   }
 
   private generatePayment (): Payment {
-    return this.payment
+    return this.payment;
   }
 }
 export default PaymentsInMemoryGateway;
