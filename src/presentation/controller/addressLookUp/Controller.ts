@@ -267,12 +267,12 @@ class AddressLookUpController extends AbstractController {
 
         const { premises, address_line_1, address_line_2, locality, region, postal_code, country } = request.body;
         const address = {
+          premises,
           address_line_1,
           address_line_2,
           country,
           locality,
           postal_code,
-          premises,
           region
         };
 
