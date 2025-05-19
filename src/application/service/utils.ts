@@ -6,3 +6,4 @@ export const extractAPIErrors = (errors: any) => {
 
   return { apiErrors, isValidationErrors };
 };
+

@@ -9,6 +9,7 @@ import { appDevDependencies } from "../../../../config/dev-dependencies";
 import { companyProfile } from "../../../../infrastructure/gateway/companyProfile/CompanyInMemoryGateway";
 import GeneralPartnerBuilder from "../../builder/GeneralPartnerBuilder";
 import LimitedPartnerBuilder from "../../builder/LimitedPartnerBuilder";
+import { PaymentService } from "@companieshouse/api-sdk-node/dist/services/payment";
 
 // Transaction service
 export const postTransaction = jest.fn().mockImplementation(() => ({
@@ -19,6 +20,7 @@ export const postTransaction = jest.fn().mockImplementation(() => ({
 }));
 export const putTransaction = jest.fn().mockImplementation(() => ({
   httpStatusCode: 204,
+  headers: { "x-payment-required": "/abc" },
   resource: {}
 }));
 
@@ -129,6 +131,40 @@ export const getCompanyProfile = jest.fn().mockImplementation(() => ({
   resource: companyProfile
 }));
 
+// Payment Service
+
+export const createPaymentWithFullUrl = jest.fn().mockImplementation(() => ({
+  isSuccess: () => true,
+  isFailure: () => false,
+  value: {
+    httpStatusCode: 201,
+    resource: {
+      amount: "amount",
+      availablePaymentMethods: ["credit-card", "account"],
+      companyNumber: "companyNumber",
+      completedAt: "12-12-20",
+      createdAt: "12-12-20",
+      createdBy: {
+        email: "email",
+        forename: "forname",
+        id: "0000001",
+        surname: "surname"
+      },
+      description: "description",
+      etag: "etag",
+      kind: "kind",
+      links: {
+        journey: "https://api-test-payments.chs.local:4001",
+        resource: "resource",
+        self: "payment-session#payment-session"
+      },
+      paymentMethod: "credit-card",
+      reference: "reference",
+      status: "paid"
+    }
+  }
+}));
+
 const sdkMock = {
   transaction: {
     ...TransactionService.prototype,
@@ -164,6 +200,10 @@ const sdkMock = {
   companyProfile: {
     ...CompanyProfileService.prototype,
     getCompanyProfile
+  },
+  payment: {
+    ...PaymentService.prototype,
+    createPaymentWithFullUrl
   }
 };
 

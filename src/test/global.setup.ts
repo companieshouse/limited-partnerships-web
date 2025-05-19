@@ -14,6 +14,7 @@ export default () => {
   process.env.NODE_ENV = "development";
   process.env.OAUTH2_CLIENT_ID = "OAUTH2_CLIENT_ID";
   process.env.OAUTH2_CLIENT_SECRET = "OAUTH2_CLIENT_SECRET";
+  process.env.PAYMENTS_API_URL = "https://api-test-payments.chs.local:4001";
   process.env.PIWIK_REGISTRATION_START_GOAL_ID = "45";
   process.env.PIWIK_REGISTRATION_LP_GOAL_ID = "53";
   process.env.PIWIK_REGISTRATION_PRIVATE_FUND_LP_GOAL_ID = "54";

@@ -18,6 +18,8 @@ import TransactionInMemoryGateway from "../infrastructure/gateway/transaction/Tr
 import IncorporationInMemoryGateway from "../infrastructure/gateway/incorporation/IncorporationInMemoryGateway";
 import CompanyService from "../application/service/CompanyService";
 import CompanyInMemoryGateway from "../infrastructure/gateway/companyProfile/CompanyInMemoryGateway";
+import PaymentService from "../application/service/PaymentService";
+import PaymentInMemoryGateway from "../infrastructure/gateway/payment/PaymentInMemoryGateway";
 
 // GATEWAYS
 const limitedPartnershipGateway: RegistrationInMemoryGateway = new RegistrationInMemoryGateway();
@@ -27,6 +29,7 @@ const incorporationGateway: IncorporationInMemoryGateway = new IncorporationInMe
 const generalPartnerGateway: GeneralPartnerInMemoryGateway = new GeneralPartnerInMemoryGateway();
 const limitedPartnerGateway: LimitedPartnerInMemoryGateway = new LimitedPartnerInMemoryGateway();
 const companyGateway: CompanyInMemoryGateway = new CompanyInMemoryGateway();
+const paymentGateway: PaymentInMemoryGateway = new PaymentInMemoryGateway();
 
 // REPOSITORIES
 const cacheRepository = new CacheInMemoryRepository();
@@ -42,12 +45,14 @@ const cacheService = new CacheService(cacheRepository);
 const generalPartnerService: GeneralPartnerService = new GeneralPartnerService(generalPartnerGateway);
 const limitedPartnerService: LimitedPartnerService = new LimitedPartnerService(limitedPartnerGateway);
 const companyService = new CompanyService(companyGateway);
+const paymentService = new PaymentService(paymentGateway);
 
 // CONTROLLERS
 const globalController: GlobalController = new GlobalController();
 const limitedPartnershipController: LimitedPartnershipController = new LimitedPartnershipController(
   limitedPartnershipService,
-  cacheService
+  cacheService,
+  paymentService
 );
 const addressLookUpController: AddressLookUpController = new AddressLookUpController(
   addressLookUpService,
@@ -85,5 +90,7 @@ export const appDevDependencies = {
   addressLookUpController,
   transitionController,
   companyGateway,
-  companyService
+  companyService,
+  paymentGateway,
+  paymentService
 };

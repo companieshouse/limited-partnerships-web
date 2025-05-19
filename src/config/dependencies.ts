@@ -20,6 +20,9 @@ import IncorporationGateway from "../infrastructure/gateway/incorporation/Incorp
 import ICompanyGateway from "../domain/ICompanyGateway";
 import CompanyGateway from "../infrastructure/gateway/companyProfile/CompanyGateway";
 import CompanyService from "../application/service/CompanyService";
+import PaymentService from "../application/service/PaymentService";
+import PaymentGateway from "../infrastructure/gateway/payment/PaymentGateway";
+import IPaymentGateway from "../domain/IPaymentGateway";
 
 // GATEWAYS
 const limitedPartnershipGateway: LimitedPartnershipGateway = new LimitedPartnershipGateway();
@@ -29,6 +32,7 @@ const incorporationGateway: IIncorporationGateway = new IncorporationGateway();
 const generalPartnerGateway: GeneralPartnerGateway = new GeneralPartnerGateway();
 const limitedPartnerGateway: LimitedPartnerGateway = new LimitedPartnerGateway();
 const companyGateway: ICompanyGateway = new CompanyGateway();
+const paymentGateway: IPaymentGateway = new PaymentGateway();
 
 // REPOSITORIES
 const cacheRepository = new CacheRepository();
@@ -44,12 +48,14 @@ const cacheService = new CacheService(cacheRepository);
 const generalPartnerService: GeneralPartnerService = new GeneralPartnerService(generalPartnerGateway);
 const limitedPartnerService: LimitedPartnerService = new LimitedPartnerService(limitedPartnerGateway);
 const companyService = new CompanyService(companyGateway);
+const paymentService = new PaymentService(paymentGateway);
 
 // CONTROLLERS
 const globalController: GlobalController = new GlobalController();
 const limitedPartnershipController: LimitedPartnershipController = new LimitedPartnershipController(
   limitedPartnershipService,
-  cacheService
+  cacheService,
+  paymentService
 );
 const addressLookUpController: AddressLookUpController = new AddressLookUpController(
   addressLookUpService,
