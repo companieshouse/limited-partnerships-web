@@ -1,4 +1,4 @@
-{% macro formatAddress(address) %}
+{% macro formatAddress(address, isIncludingCountry) %}
   {% set premises = '' %}
   {% set address_line_1 = '' %}
   {% set address_line_2 = '' %}
@@ -20,7 +20,12 @@
     {% set locality = capitalizeEachWord(address.locality) + ', ' %} 
   {% endif %}
 
-  {% set address = premises + address_line_1 + address_line_2 + locality + address.postal_code %}
+  {% if address.country and isIncludingCountry %} 
+    {% set country = capitalizeEachWord(address.country) + ', ' %}
+    {% set address = premises + address_line_1 + address_line_2 + locality + country + address.postal_code %} 
+  {% else %}
+    {% set address = premises + address_line_1 + address_line_2 + locality + address.postal_code %}
+  {% endif %}  
 
   {{ address }}
 {% endmacro %}
