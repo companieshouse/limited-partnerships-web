@@ -64,7 +64,7 @@ class PaymentsInMemoryGateway implements IPaymentsGateway {
     _createPaymentRequest: CreatePaymentRequest,
     _startPaymentSessionUrl: string) {
 
-    return this.generatePayment();
+    return await this.generatePayment();
   }
 
   private generatePayment (): Payment {
