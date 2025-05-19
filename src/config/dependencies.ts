@@ -11,7 +11,7 @@ import GeneralPartnerController from "../presentation/controller/registration/Ge
 import LimitedPartnerController from "../presentation/controller/registration/LimitedPartnerController";
 import CacheService from "../application/service/CacheService";
 import AddressLookUpGateway from "../infrastructure/gateway/addressLookUp/AddressLookUpGateway";
-import AddressLookUpService from "../application/service/AddressLookUpService";
+import AddressLookUpService from "../application/service/AddressService";
 import AddressLookUpController from "../presentation/controller/addressLookUp/Controller";
 import TransitionController from "../presentation/controller/transition/TransitionController";
 import TransactionGateway from "../infrastructure/gateway/transaction/TransactionGateway";

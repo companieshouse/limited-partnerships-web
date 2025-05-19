@@ -1,31 +1,33 @@
 {% import 'includes/macros.njk' as macros %}
 
-{% set validateNameOrNumber = "validateInput(this, 200, '" + i18n.address.enterAddress.errorMessages.nameOrNumberMissing | escape + "', '" + i18n.address.enterAddress.errorMessages.nameOrNumberLength | escape + "');" %}
+{% set validatePremises = "validateInput(this, 200, '" + i18n.address.enterAddress.errorMessages.premisesMissing | escape + "', '" + i18n.address.enterAddress.errorMessages.premisesLength | escape + "');" %}
 {% set validateAddressLine1 = "validateInput(this, 50, '" + i18n.address.enterAddress.errorMessages.addressLine1Missing | escape + "', '" + i18n.address.enterAddress.errorMessages.addressLine1Length | escape + "');" %}
-{% set validateTownOrCity = "validateInput(this, 50, '" + i18n.address.enterAddress.errorMessages.townOrCityMissing | escape + "', '" + i18n.address.enterAddress.errorMessages.townOrCityLength | escape + "');" %}
+{% set validateLocality = "validateInput(this, 50, '" + i18n.address.enterAddress.errorMessages.localityMissing | escape + "', '" + i18n.address.enterAddress.errorMessages.localityLength | escape + "');" %}
 
 {% include "includes/validators.njk" %}
 
 <div>
     {{ govukInput({
+        errorMessage: props.errors.premises if props.errors,
         label: {
-            text: i18n.address.enterAddress.propertyNameOrNumber,
+            text: i18n.address.enterAddress.premises,
             classes: "govuk-!-margin-top-5"
         },
         hint: {
-            text: i18n.address.enterAddress.propertyNameOrNumberHint
+            text: i18n.address.enterAddress.premisesHint
         },
         id: "premises",
         name: "premises",
         value: address.premises,
         attributes : {  
             required : true,
-            oninvalid: validateNameOrNumber,
-            oninput: validateNameOrNumber
+            oninvalid: validatePremises,
+            oninput: validatePremises
         }
     }) }}
 
     {{ govukInput({
+        errorMessage: props.errors.address_line_1 if props.errors,
         label: {
             text: i18n.address.enterAddress.addressLine1
         },
@@ -40,6 +42,7 @@
     }) }}
 
     {{ govukInput({
+        errorMessage: props.errors.address_line_2 if props.errors,
         label: {
             text: i18n.address.enterAddress.addressLine2
         },
@@ -52,8 +55,9 @@
     }) }}
 
     {{ govukInput({
+        errorMessage: props.errors.locality if props.errors,
         label: {
-            text: i18n.address.enterAddress.townOrCity
+            text: i18n.address.enterAddress.locality
         },
         classes: "govuk-!-width-two-thirds",
         id: "locality",
@@ -61,21 +65,22 @@
         value: address.locality,
         attributes : {
             required : true,
-            oninvalid: validateTownOrCity,
-            oninput: validateTownOrCity
+            oninvalid: validateLocality,
+            oninput: validateLocality
         }
     }) }}
 
     {{ govukInput({
+        errorMessage: props.errors.region if props.errors,
         label: {
-            text: i18n.address.enterAddress.county
+            text: i18n.address.enterAddress.region
         },
         classes: "govuk-!-width-two-thirds",
         id: "region",
         name: "region",
         value: address.region,
         attributes : {
-            oninput: "validateLength(this, 50, '" + i18n.address.enterAddress.errorMessages.countyLength | escape + "');"
+            oninput: "validateLength(this, 50, '" + i18n.address.enterAddress.errorMessages.regionLength | escape + "');"
         }
     }) }}
 </div>

@@ -24,7 +24,7 @@ abstract class AbstractPartnerBuilder {
       address_line_2: "line 2",
       locality: "stoke-on-trent",
       region: "region",
-      country: "england"
+      country: "England"
     },
     registered_company_number: "",
     resignation_date: "",
@@ -35,7 +35,7 @@ abstract class AbstractPartnerBuilder {
       address_line_2: "line 2",
       locality: "stoke-on-trent",
       region: "region",
-      country: "england"
+      country: "England"
     }
   };
 

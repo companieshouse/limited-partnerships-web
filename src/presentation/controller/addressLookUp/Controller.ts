@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import escape from "escape-html";
 import { Address } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-import AddressService from "../../../application/service/AddressLookUpService";
+import AddressService from "../../../application/service/AddressService";
 import addresssRouting, { AddressCacheKeys, addressLookUpRouting } from "./Routing";
 import AbstractController from "../AbstractController";
 import AddressLookUpPageType from "./PageType";
@@ -24,6 +24,15 @@ class AddressLookUpController extends AbstractController {
   private static readonly LIMITED_PARTNERSHIP_MANUAL_PAGES: Set<PageType | PageDefault> = new Set([
     AddressLookUpPageType.enterRegisteredOfficeAddress,
     AddressLookUpPageType.enterPrincipalPlaceOfBusinessAddress
+  ]);
+
+  private static readonly MANUAL_PAGES: Set<PageType | PageDefault> = new Set([
+    ...AddressLookUpController.LIMITED_PARTNERSHIP_MANUAL_PAGES,
+    AddressLookUpPageType.enterGeneralPartnerUsualResidentialAddress,
+    AddressLookUpPageType.enterGeneralPartnerPrincipalOfficeAddress,
+    AddressLookUpPageType.enterGeneralPartnerCorrespondenceAddress,
+    AddressLookUpPageType.enterLimitedPartnerUsualResidentialAddress,
+    AddressLookUpPageType.enterLimitedPartnerPrincipalOfficeAddress
   ]);
 
   private static readonly ADDRESS_LIST_REQUIRED_PAGES: Set<PageType | PageDefault> = new Set([
@@ -258,12 +267,12 @@ class AddressLookUpController extends AbstractController {
 
         const { premises, address_line_1, address_line_2, locality, region, postal_code, country } = request.body;
         const address = {
+          premises,
           address_line_1,
           address_line_2,
           country,
           locality,
           postal_code,
-          premises,
           region
         };
 
@@ -278,10 +287,21 @@ class AddressLookUpController extends AbstractController {
         const pageRouting = super.getRouting(addressLookUpRouting, pageType, request);
 
         let errors: UIErrors | undefined;
+        if (AddressLookUpController.MANUAL_PAGES.has(pageType)) {
+          errors = this.addressService.hasAddressGotInvalidCharacters(address, errors);
+
+          errors = this.addressService.isValidPostcode(
+            postal_code ?? "",
+            country,
+            errors
+          );
+        }
+
         if (AddressLookUpController.LIMITED_PARTNERSHIP_MANUAL_PAGES.has(pageType)) {
           errors = this.addressService.isValidJurisdictionAndCountry(
             limitedPartnership?.data?.jurisdiction ?? "",
-            country
+            country,
+            errors
           );
         }
 
