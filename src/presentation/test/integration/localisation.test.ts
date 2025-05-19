@@ -3,7 +3,7 @@ import request from "supertest";
 import app from "./app";
 import enTranslationText from "../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../locales/cy/translations.json";
-import { START_URL } from "../../../presentation/controller/global/Routing";
+import { START_URL } from "../../../presentation/controller/global/url";
 import { setLocalesEnabled } from "../utils";
 
 describe("Localisation tests", () => {

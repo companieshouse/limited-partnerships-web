@@ -6,7 +6,8 @@ import {
   HEALTHCHECK_URL,
   START_URL,
   SIGN_OUT_URL,
-} from "../presentation/controller/global/Routing";
+  PAYMENT_URL,
+} from "../presentation/controller/global/url";
 
 export const globalEndpoints = (
   router: Router,
@@ -30,6 +31,12 @@ export const globalEndpoints = (
     SIGN_OUT_URL,
     authentication,
     dependencies.globalController.signOutChoice()
+  );
+
+  router.get(
+    PAYMENT_URL,
+    authentication,
+    dependencies.globalController.getPaymentRouting()
   );
 };
 
