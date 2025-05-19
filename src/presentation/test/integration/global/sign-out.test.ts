@@ -2,7 +2,7 @@ import request from "supertest";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
-import { SIGN_OUT_URL } from "../../../controller/global/Routing";
+import { SIGN_OUT_URL } from "../../../controller/global/url";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import { ACCOUNTS_SIGN_OUT_URL, REGISTRATION_BASE_URL } from "../../../../config";
 import { EMAIL_TEMPLATE } from "presentation/controller/registration/template";

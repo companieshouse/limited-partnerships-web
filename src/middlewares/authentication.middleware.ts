@@ -1,21 +1,14 @@
 import { Request, Response, NextFunction } from "express";
 
 import { logger, checkUserSignedIn, getLoggedInUserEmail } from "../utils";
-import { START_URL } from "../presentation/controller/global/Routing";
+import { SIGN_OUT_URL, START_URL } from "../presentation/controller/global/url";
 
-export const authentication = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): void => {
+export const authentication = (req: Request, res: Response, next: NextFunction): void => {
   try {
     if (!checkUserSignedIn(req.session)) {
-      logger.infoRequest(
-        req,
-        "User not authenticated, redirecting to sign in page, status_code=302"
-      );
+      logger.infoRequest(req, "User not authenticated, redirecting to sign in page, status_code=302");
 
-      const returnToUrl = START_URL;
+      const returnToUrl = req.url === SIGN_OUT_URL ? START_URL : req.url;
 
       return res.redirect(`/signin?return_to=${returnToUrl}`);
     }

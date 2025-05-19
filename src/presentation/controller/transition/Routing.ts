@@ -1,6 +1,7 @@
 import * as url from "./url";
 import TransitionPageType from "./PageType";
-import { START_URL, NEXT_URL } from "../registration/url";
+import { START_URL } from "../registration/url";
+import { NEXT_URL } from "./url";
 import { PageRouting, PagesRouting } from "../PageRouting";
 import PageType from "../PageType";
 
@@ -25,11 +26,7 @@ const transitionRoutingNext = {
   pageType: TransitionPageType.next
 };
 
-const list = [
-  transitionRoutingCompanyNumber,
-  transitionRoutingConfirmLimitedPartnership,
-  transitionRoutingNext
-];
+const list = [transitionRoutingCompanyNumber, transitionRoutingConfirmLimitedPartnership, transitionRoutingNext];
 
 export const transitionRouting: PagesRouting = new Map<PageType, PageRouting>();
 

@@ -1,31 +1,30 @@
 import { PageRouting, PagesRouting } from "../PageRouting";
+import { WHICH_TYPE_URL } from "../registration/url";
 import GlobalPageType from "./PageType";
-import { BASE_URL, REGISTRATION_BASE_URL } from "../../../config/constants";
+import * as url from "./url";
 
-export const HEALTHCHECK_URL = `${BASE_URL}/healthcheck`;
-export const START_TEMPLATE = GlobalPageType.start;
-export const SIGN_OUT_TEMPLATE = GlobalPageType.signOut;
-
-export const SIGN_OUT_URL = `${BASE_URL}/${SIGN_OUT_TEMPLATE}`;
-
-const WHICH_TYPE_URL = `${REGISTRATION_BASE_URL}/which-type`;
-export const START_URL = `${REGISTRATION_BASE_URL}/${START_TEMPLATE}`;
-
-export const globalRoutingStart = {
+const globalRoutingStart = {
   previousUrl: "/",
-  currentUrl: START_URL,
+  currentUrl: url.START_URL,
   nextUrl: WHICH_TYPE_URL,
   pageType: GlobalPageType.start
 };
 
-export const globalRoutingSignOut = {
+const globalRoutingSignOut = {
   previousUrl: "/",
-  currentUrl: SIGN_OUT_URL,
+  currentUrl: url.SIGN_OUT_URL,
   nextUrl: "/",
   pageType: GlobalPageType.signOut
 };
 
-const list = [globalRoutingStart, globalRoutingSignOut];
+const globalRoutingPayment = {
+  previousUrl: "/",
+  currentUrl: url.PAYMENT_URL,
+  nextUrl: url.NEXT_URL,
+  pageType: GlobalPageType.paymentReturn
+};
+
+const list = [globalRoutingStart, globalRoutingSignOut, globalRoutingPayment];
 
 export const globalsRouting: PagesRouting = new Map<GlobalPageType, PageRouting>();
 

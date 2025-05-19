@@ -22,7 +22,7 @@ import {
   ADD_LIMITED_PARTNER_PERSON_URL
 } from "./registration/url";
 import UIErrors from "../../domain/entities/UIErrors";
-import { START_URL } from "./global/Routing";
+import { START_URL } from "./global/url";
 import { getJourneyTypes } from "../../utils";
 
 abstract class AbstractController {

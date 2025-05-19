@@ -50,9 +50,7 @@
           classes: "govuk-!-width-full",
           errorMessage: props.errors.forename if props.errors,
           attributes : {
-            required: true,
-            minlength: 1,
-            maxlength: 50
+            required: true
           }
         }) }}
 
@@ -68,9 +66,7 @@
           classes: "govuk-!-width-full",
           errorMessage: props.errors.surname if props.errors,
           attributes : {
-            required : true,
-            minlength: 1,
-            maxlength: 160
+            required : true
           }
         }) }}
 
@@ -87,7 +83,6 @@
             value: props.data.limitedPartner.data.former_names,
             errorMessage: props.errors.former_names if props.errors,
             attributes: {
-              maxlength: 160
             }
           }) }}
         {% endset -%}
@@ -154,8 +149,6 @@
               value: day,
               attributes: {
                 required: true,
-                minlength: 1,
-                maxlength: 2,
                 pattern: "[0-9]*"
               }
             },
@@ -165,8 +158,6 @@
               value: month,
               attributes: {
                 required: true,
-                minlength: 1,
-                maxlength: 2,
                 pattern: "[0-9]*"
               }
             },
@@ -176,8 +167,6 @@
               value: year,
               attributes: {
                 required: true,
-                minlength: 4,
-                maxlength: 4,
                 pattern: "[0-9]*"
               }
             }
