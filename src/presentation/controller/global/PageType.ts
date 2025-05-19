@@ -2,7 +2,7 @@ enum GlobalPageType {
   healthcheck = "healthcheck",
   start = "start",
   signOut = "sign-out",
-  payment = "payment",
+  paymentReturn = "payment-return",
   next = "next"
 }
 

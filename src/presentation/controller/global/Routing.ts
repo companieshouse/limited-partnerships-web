@@ -21,7 +21,7 @@ const globalRoutingPayment = {
   previousUrl: "/",
   currentUrl: url.PAYMENT_URL,
   nextUrl: url.NEXT_URL,
-  pageType: GlobalPageType.payment
+  pageType: GlobalPageType.paymentReturn
 };
 
 const list = [globalRoutingStart, globalRoutingSignOut, globalRoutingPayment];
