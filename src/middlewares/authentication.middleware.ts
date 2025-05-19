@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 
 import { logger, checkUserSignedIn, getLoggedInUserEmail } from "../utils";
-import { SIGN_OUT_URL, START_URL } from "../presentation/controller/global/Routing";
+import { SIGN_OUT_URL, START_URL } from "../presentation/controller/global/url";
 
 export const authentication = (req: Request, res: Response, next: NextFunction): void => {
   try {
