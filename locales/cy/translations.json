@@ -207,7 +207,7 @@
                 "addressLine2Length": "WELSH - Address line 2 must be 50 characters or less",
                 "localityMissing": "WELSH - Enter a town or city",
                 "localityLength": "WELSH - Town or city must be 50 characters or less",
-                "countyLength": "WELSH - County, state, province or region must be 50 characters or less",
+                "regionLength": "WELSH - County, state, province or region must be 50 characters or less",
                 "postcodeMissing": "WELSH - Enter a postcode",
                 "postcodeLength": "WELSH - Postcode must be 15 characters or less",
                 "postcodeFormat": "WELSH - Invalid postcode format",
