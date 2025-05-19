@@ -168,12 +168,24 @@ describe("Check Your Answers Page", () => {
 
   describe("POST Check Your Answers Page", () => {
     it("should navigate to next page", async () => {
+      appDevDependencies.paymentGateway.feedPayment();
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.checkYourAnswers
       });
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${PAYMENT_LINK_JOURNEY}`);
+    });
+
+    it("should throw error when payment redirect url is missing", async () => {
+      // call transaction gateway and ovverride so there is no payment header
+      appDevDependencies.paymentGateway.feedPaymentWithNoRedirect();
+      const res = await request(app).post(URL).send({
+        pageType: RegistrationPageType.checkYourAnswers
+      });
+
+      expect(res.status).toBe(500);
+      expect(res.text).not.toContain(`Redirecting to ${PAYMENT_LINK_JOURNEY}`);
     });
   });
 });

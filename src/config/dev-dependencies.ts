@@ -20,7 +20,6 @@ import CompanyService from "../application/service/CompanyService";
 import CompanyInMemoryGateway from "../infrastructure/gateway/companyProfile/CompanyInMemoryGateway";
 import PaymentService from "../application/service/PaymentService";
 import PaymentInMemoryGateway from "../infrastructure/gateway/payment/PaymentInMemoryGateway";
-import IPaymentGateway from "../domain/IPaymentGateway";
 
 // GATEWAYS
 const limitedPartnershipGateway: RegistrationInMemoryGateway = new RegistrationInMemoryGateway();
@@ -30,7 +29,7 @@ const incorporationGateway: IncorporationInMemoryGateway = new IncorporationInMe
 const generalPartnerGateway: GeneralPartnerInMemoryGateway = new GeneralPartnerInMemoryGateway();
 const limitedPartnerGateway: LimitedPartnerInMemoryGateway = new LimitedPartnerInMemoryGateway();
 const companyGateway: CompanyInMemoryGateway = new CompanyInMemoryGateway();
-const paymentGateway: IPaymentGateway = new PaymentInMemoryGateway();
+const paymentGateway: PaymentInMemoryGateway = new PaymentInMemoryGateway();
 
 // REPOSITORIES
 const cacheRepository = new CacheInMemoryRepository();

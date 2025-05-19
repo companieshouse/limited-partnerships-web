@@ -3,18 +3,10 @@ import { Payment, CreatePaymentRequest } from "@companieshouse/api-sdk-node/dist
 
 class PaymentsInMemoryGateway implements IPaymentsGateway {
 
-  async createPayment (
-    _opt: { access_token: string; refresh_token: string },
-    createPaymentRequest: CreatePaymentRequest,
-    _startPaymentSessionUrl: string) {
+  payment: Payment;
 
-    return this.generatePayment(createPaymentRequest);
-  }
-
-  private generatePayment (
-    createPaymentRequest: CreatePaymentRequest
-  ): Payment {
-    return {
+  feedPayment() {
+    this.payment = {
       amount: "amount",
       availablePaymentMethods: ["credit-card", "account"],
       companyNumber: "companyNumber",
@@ -35,9 +27,48 @@ class PaymentsInMemoryGateway implements IPaymentsGateway {
         self: "payment-session#payment-session"
       },
       paymentMethod: "credit-card",
-      reference: createPaymentRequest.reference,
+      reference: "reference",
       status: "paid"
     };
+  }
+
+  feedPaymentWithNoRedirect() {
+    this.payment = {
+      amount: "amount",
+      availablePaymentMethods: ["credit-card", "account"],
+      companyNumber: "companyNumber",
+      completedAt: "12-12-20",
+      createdAt: "12-12-20",
+      createdBy: {
+        email: "email",
+        forename: "forname",
+        id: "0000001",
+        surname: "surname"
+      },
+      description: "description",
+      etag: "etag",
+      kind: "kind",
+      links: {
+        journey: "",
+        resource: "resource",
+        self: "payment-session#payment-session"
+      },
+      paymentMethod: "credit-card",
+      reference: "reference",
+      status: "paid"
+    };
+  }
+
+  async createPayment (
+    _opt: { access_token: string; refresh_token: string },
+    _createPaymentRequest: CreatePaymentRequest,
+    _startPaymentSessionUrl: string) {
+
+    return this.generatePayment();
+  }
+
+  private generatePayment (): Payment {
+    return this.payment
   }
 }
 export default PaymentsInMemoryGateway;
