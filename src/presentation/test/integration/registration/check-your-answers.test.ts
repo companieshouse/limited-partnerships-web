@@ -12,7 +12,7 @@ import RegistrationPageType from "../../../controller/registration/PageType";
 
 describe("Check Your Answers Page", () => {
   const URL = getUrl(CHECK_YOUR_ANSWERS_URL);
-  const PAYMENT_LINK_JOURNEY = "http://api-payments.chs.local:4001";
+  const PAYMENT_LINK_JOURNEY = "https://api-test-payments.chs.local:4001";
 
   describe("GET Check Your Answers Page", () => {
     it("should GET Check Your Answers Page English text", async () => {
@@ -178,7 +178,6 @@ describe("Check Your Answers Page", () => {
 
   describe("POST Check Your Answers Page", () => {
     it("should navigate to next page", async () => {
-      appDevDependencies.paymentGateway.feedPayment();
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.checkYourAnswers
       });
@@ -189,7 +188,7 @@ describe("Check Your Answers Page", () => {
 
     it("should throw error when payment redirect url is missing", async () => {
       // call transaction gateway and ovverride so there is no payment header
-      appDevDependencies.paymentGateway.feedPaymentWithNoRedirect();
+      appDevDependencies.paymentGateway.feedPaymentWithEmptyJourney();
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.checkYourAnswers
       });

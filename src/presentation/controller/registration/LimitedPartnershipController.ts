@@ -10,12 +10,14 @@ import RegistrationPageType from "./PageType";
 import {
   APPLICATION_CACHE_KEY,
   APPLICATION_CACHE_KEY_PREFIX_REGISTRATION,
+  CHS_URL,
   cookieOptions
 } from "../../../config/constants";
 import CacheService from "../../../application/service/CacheService";
 import { CHECK_YOUR_ANSWERS_URL, GENERAL_PARTNERS_URL, NAME_WITH_IDS_URL, WHICH_TYPE_WITH_IDS_URL } from "./url";
 import { PageRouting } from "../PageRouting";
 import { getJourneyTypes } from "../../../utils";
+import { PAYMENT_URL } from "../global/url";
 
 class LimitedPartnershipController extends AbstractController {
   private limitedPartnershipService: LimitedPartnershipService;
@@ -131,18 +133,18 @@ class LimitedPartnershipController extends AbstractController {
         const startPaymentSessionUrl: string = closeTransactionResponse.headers?.["x-payment-required"];
 
         if (!startPaymentSessionUrl) {
-          throw new Error("No payment URL found in the response");
+          throw new Error("No payment URL found in response header from closeTransaction");
         }
-
+        const paymentReturnUri = super.insertIdsInUrl(`${CHS_URL}${PAYMENT_URL}`, ids.transactionId, ids.submissionId);
         const paymentRedirect = await this.paymentService.startPaymentSession(
           tokens,
-          ids.transactionId,
-          ids.submissionId,
-          startPaymentSessionUrl
+          startPaymentSessionUrl,
+          paymentReturnUri,
+          ids.transactionId
         );
 
         if (!paymentRedirect) {
-          throw new Error("No payment URL found in the response");
+          throw new Error("No payment redirect URL returned from start payment session");
         }
 
         response.redirect(paymentRedirect);

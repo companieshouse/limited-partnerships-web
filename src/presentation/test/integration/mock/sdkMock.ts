@@ -154,7 +154,7 @@ export const createPaymentWithFullUrl = jest.fn().mockImplementation(() => ({
       etag: "etag",
       kind: "kind",
       links: {
-        journey: "http://api-payments.chs.local:4001",
+        journey: "https://api-test-payments.chs.local:4001",
         resource: "resource",
         self: "payment-session#payment-session"
       },

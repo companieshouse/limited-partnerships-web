@@ -22,7 +22,7 @@ jest.mock("../../../../../infrastructure/repository/CacheRepository");
 
 describe("Transaction Gateway Update tests for the 'Check Your Answers' page", () => {
   const URL = getUrl(CHECK_YOUR_ANSWERS_URL);
-  const REDIRECT_URL = "http://api-payments.chs.local:4001";
+  const REDIRECT_URL = "https://api-test-payments.chs.local:4001";
 
   beforeEach(() => {
     mockCreateApiClient.mockReturnValue(sdkMock);
