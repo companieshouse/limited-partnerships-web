@@ -4,7 +4,7 @@
 {% for address in props.data.addressList %}
   {% set newItem = {
     value: address | dump,
-    text: macros.formatAddress(address),
+    text: macros.formatAddress(address, false),
     attributes: {
       required: true,
       "radio-event-id": "address-radio-selected"
