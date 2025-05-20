@@ -36,7 +36,7 @@ export const globalEndpoints = (
   router.get(
     CONFIRMATION_URL,
     authentication,
-    dependencies.globalController.getPaymentRouting()
+    dependencies.globalController.getConfirmationPage()
   );
 };
 

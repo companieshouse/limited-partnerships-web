@@ -28,7 +28,7 @@ jest.mock("../../controller/global/Controller", () => {
           next(new CsrfError("CSRF token mismatch"));
         };
       },
-      getPaymentRouting: jest.fn().mockImplementation(() => {
+      getConfirmationPage: jest.fn().mockImplementation(() => {
         return (_req: Request, _res: Response, next: NextFunction) => {
           return next();
         };

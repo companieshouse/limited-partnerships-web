@@ -74,7 +74,7 @@ class GlobalController extends AbstractController {
     };
   }
 
-  getPaymentRouting() {
+  getConfirmationPage() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const { tokens, pageType, ids } = super.extract(request);
