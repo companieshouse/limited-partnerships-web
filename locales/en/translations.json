@@ -354,12 +354,6 @@
             "title": "If the application is rejected",
             "explain": "We'll explain why your application has been rejected and what you can do next. We'll also refund the £X registration fee."
         },
-        "provideMoreInformation": "You'll need to provide more information",
-        "tellUsAboutPSCs": "If we accept your application, you'll need to tell us about any people with significant control (PSCs) within 14 days.",
-        "download": {
-            "beforeLink": "To check what information you'll need to provide, download the relevant",
-            "afterLink": "forms for Scottish limited partnerships (opens in a new tab)"
-        },
         "filing": {
             "partnershipName": "We've received your filing for",
             "sentEmail": "We've sent an email to",

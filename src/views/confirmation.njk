@@ -11,7 +11,7 @@
         html: i18n.confirmationPage.referenceNumber + "<br><strong>" + props.data.ids.transactionId + "</strong>"
     }) }}
 
-    {% if props.data.limitedPartnership.data.partnership_type in ["LP", "PFLP"] and journeyTypes.isRegistration %}
+    {% if journeyTypes.isRegistration %}
 
       <p class="govuk-body">{{ i18n.confirmationPage.sentEmailTo }} <strong>{{ props.data.limitedPartnership.data.email }}</strong>.</p>
 
@@ -27,25 +27,6 @@
             
       <h2 class="govuk-heading-m">{{ i18n.confirmationPage.rejected.title }}</h2>
       <p class="govuk-body">{{ i18n.confirmationPage.rejected.explain }}</p>
-
-    {% elif props.data.limitedPartnership.data.partnership_type in ["SLP", "SPFLP"] and journeyTypes.isRegistration %}
-      
-      <p class="govuk-body">{{ i18n.confirmationPage.sentEmailTo }} <strong>{{ props.data.limitedPartnership.data.email }}</strong>.</p>
-    
-      <h2 class="govuk-heading-m">{{ i18n.confirmationPage.happensNext }}</h2>
-    
-      <p class="govuk-body">{{ i18n.confirmationPage.applicationProcess }}</p>
-      <p class="govuk-body">{{ i18n.confirmationPage.willEmail }} <strong>{{ props.data.limitedPartnership.data.email }}</strong> {{ i18n.confirmationPage.applicationAcceptedOrRejected }}</p>
-  
-      <h2 class="govuk-heading-m">{{ i18n.confirmationPage.provideMoreInformation }}</h2>
-
-      <p class="govuk-body">{{ i18n.confirmationPage.tellUsAboutPSCs }}</p>
-        
-      <p class="govuk-body">{{ i18n.confirmationPage.download.beforeLink }} <a href="https://www.gov.uk/government/collections/companies-house-forms-for-scottish-limited-partnerships#people-with-significant-control-(psc)" target="_blank">{{ i18n.confirmationPage.download.afterLink }}</a>.</p>
-      
-      <h2 class="govuk-heading-m">{{ i18n.confirmationPage.rejected }} </h2>
-      <p class="govuk-body">{{ i18n.confirmationPage.rejected.explain }}</p>
-    
            
     {% elif journeyTypes.isTransition %}
 

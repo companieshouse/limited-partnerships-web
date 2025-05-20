@@ -10,7 +10,6 @@ import { appDevDependencies } from "../../../../config/dev-dependencies";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { JOURNEY_TYPE_PARAM } from "../../../../config";
 import { Journey } from "../../../../domain/entities/journey";
-import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 describe("Confirmation Page", () => {
   const REGISTRATION_URL = getUrl(CONFIRMATION_URL).replace(JOURNEY_TYPE_PARAM, Journey.registration);
@@ -46,27 +45,6 @@ describe("Confirmation Page", () => {
         expect(res.text).toContain(appDevDependencies.transactionGateway.transactionId);
       });
 
-      it("should load confirmation page (SLP) - registration", async () => {
-        limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(PartnershipType.SLP).build();
-        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
-        const res = await request(app).get(REGISTRATION_URL);
-
-        expect(res.status).toBe(200);
-
-        testTranslations(res.text, enTranslationText.confirmationPage, [
-          "accepted",
-          "rejected",
-          "filing",
-          "processUpdate",
-          "willSendEmailTo",
-          "updatePublicRegister"
-        ]);
-
-        expect(res.text).toContain(limitedPartnership.data?.email);
-        expect(res.text).toContain(appDevDependencies.transactionGateway.transactionId);
-      });
-
       it("should load confirmation page - transition", async () => {
         const res = await request(app).get(TRANSITION_URL);
 
@@ -78,10 +56,7 @@ describe("Confirmation Page", () => {
           "willEmail",
           "applicationAcceptedOrRejected",
           "accepted",
-          "rejected",
-          "provideMoreInformation",
-          "tellUsAboutPSCs",
-          "download"
+          "rejected"
         ]);
 
         expect(res.text).toContain(limitedPartnership.data?.email);
@@ -121,10 +96,7 @@ describe("Confirmation Page", () => {
         "willEmail",
         "applicationAcceptedOrRejected",
         "accepted",
-        "rejected",
-        "provideMoreInformation",
-        "tellUsAboutPSCs",
-        "download"
+        "rejected"
       ]);
 
       expect(res.text).toContain(limitedPartnership.data?.email);
