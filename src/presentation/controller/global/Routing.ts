@@ -20,7 +20,7 @@ const globalRoutingSignOut = {
 const globalRoutingConfirmation = {
   previousUrl: "/",
   currentUrl: url.CONFIRMATION_URL,
-  nextUrl: url.NEXT_URL,
+  nextUrl: "/",
   pageType: GlobalPageType.confirmation
 };
 
