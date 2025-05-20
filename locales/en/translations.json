@@ -255,6 +255,7 @@
                 },
                 "principalOfficeAddress": {
                     "whatIsPrincipalOfficeAddress": "What is the limited partner's principal office address?",
+                    "hint": "This is the address for the entity's main office",
                     "publicRegisterLine1": "We'll show the limited partner's principal office address on the public register."
                 }
             },
