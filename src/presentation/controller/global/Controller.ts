@@ -12,7 +12,7 @@ import {
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 
 class GlobalController extends AbstractController {
-  constructor(private limitedPartnershipService: LimitedPartnershipService) {
+  constructor(private readonly limitedPartnershipService: LimitedPartnershipService) {
     super();
   }
 
