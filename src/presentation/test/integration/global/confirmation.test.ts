@@ -43,6 +43,7 @@ describe("Confirmation Page", () => {
         ]);
 
         expect(res.text).toContain(limitedPartnership.data?.email);
+        expect(res.text).toContain(appDevDependencies.transactionGateway.transactionId);
       });
 
       it("should load confirmation page (SLP) - registration", async () => {
@@ -63,6 +64,7 @@ describe("Confirmation Page", () => {
         ]);
 
         expect(res.text).toContain(limitedPartnership.data?.email);
+        expect(res.text).toContain(appDevDependencies.transactionGateway.transactionId);
       });
 
       it("should load confirmation page - transition", async () => {
@@ -83,6 +85,7 @@ describe("Confirmation Page", () => {
         ]);
 
         expect(res.text).toContain(limitedPartnership.data?.email);
+        expect(res.text).toContain(appDevDependencies.transactionGateway.transactionId);
         expect(res.text).toContain(limitedPartnership.data?.partnership_name?.toUpperCase());
       });
     });
@@ -125,6 +128,7 @@ describe("Confirmation Page", () => {
       ]);
 
       expect(res.text).toContain(limitedPartnership.data?.email);
+      expect(res.text).toContain(appDevDependencies.transactionGateway.transactionId);
       expect(res.text).toContain(limitedPartnership.data?.partnership_name?.toUpperCase());
     });
   });

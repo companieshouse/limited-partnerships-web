@@ -8,7 +8,7 @@
 
     {{ govukPanel({
         titleText: pageTitle,
-        html: i18n.confirmationPage.referenceNumber + "<br><strong>HDJ2123F</strong>"
+        html: i18n.confirmationPage.referenceNumber + "<br><strong>" + props.data.ids.transactionId + "</strong>"
     }) }}
 
     {% if props.data.limitedPartnership.data.partnership_type in ["LP", "PFLP"] and journeyTypes.isRegistration %}

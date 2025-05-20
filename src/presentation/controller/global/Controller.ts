@@ -91,7 +91,7 @@ class GlobalController extends AbstractController {
 
         response.render(
           super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { limitedPartnership }, null)
+          super.makeProps(pageRouting, { limitedPartnership, ids }, null)
         );
       } catch (error) {
         next(error);
