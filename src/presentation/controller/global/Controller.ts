@@ -9,9 +9,10 @@ import {
   cookieOptions,
   TRANSITION_BASE_URL
 } from "../../../config/constants";
+import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 
 class GlobalController extends AbstractController {
-  constructor() {
+  constructor(private limitedPartnershipService: LimitedPartnershipService) {
     super();
   }
 
@@ -74,12 +75,24 @@ class GlobalController extends AbstractController {
   }
 
   getPaymentRouting() {
-    return (request: Request, response: Response, next: NextFunction) => {
+    return async (request: Request, response: Response, next: NextFunction) => {
       try {
-        const pageType = super.pageType(request.path);
+        const { tokens, pageType, ids } = super.extract(request);
         const pageRouting = super.getRouting(globalsRouting, pageType, request);
 
-        response.redirect(pageRouting.nextUrl);
+        let limitedPartnership = {};
+        if (ids.transactionId && ids.submissionId) {
+          limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+            tokens,
+            ids.transactionId,
+            ids.submissionId
+          );
+        }
+
+        response.render(
+          super.templateName(pageRouting.currentUrl),
+          super.makeProps(pageRouting, { limitedPartnership }, null)
+        );
       } catch (error) {
         next(error);
       }

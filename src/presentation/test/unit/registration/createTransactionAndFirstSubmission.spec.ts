@@ -4,12 +4,13 @@ import RegistrationPageType from "../../../controller/registration/PageType";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import { ApiErrors } from "../../../../domain/entities/UIErrors";
-import { JourneyTypes } from "../../../../domain/entities/journey";
+import { Journey, JourneyTypes } from "../../../../domain/entities/journey";
 
 describe("Create transaction and the first submission", () => {
   const journeyTypes: JourneyTypes = {
     isRegistration: true,
-    isTransition: false
+    isTransition: false,
+    journey: Journey.registration
   };
 
   beforeEach(() => {

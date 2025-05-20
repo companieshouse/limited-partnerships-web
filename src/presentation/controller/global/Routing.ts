@@ -17,14 +17,14 @@ const globalRoutingSignOut = {
   pageType: GlobalPageType.signOut
 };
 
-const globalRoutingPayment = {
+const globalRoutingConfirmation = {
   previousUrl: "/",
-  currentUrl: url.PAYMENT_URL,
+  currentUrl: url.CONFIRMATION_URL,
   nextUrl: url.NEXT_URL,
-  pageType: GlobalPageType.paymentReturn
+  pageType: GlobalPageType.confirmation
 };
 
-const list = [globalRoutingStart, globalRoutingSignOut, globalRoutingPayment];
+const list = [globalRoutingStart, globalRoutingSignOut, globalRoutingConfirmation];
 
 export const globalsRouting: PagesRouting = new Map<GlobalPageType, PageRouting>();
 

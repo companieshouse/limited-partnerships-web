@@ -339,6 +339,42 @@
         "payment" : "WELSH - Continue to payment"
     },
 
+    "confirmationPage" : {
+        "title" : "WELSH - Application submitted",
+        "referenceNumber" : "WELSH - our reference number",
+        "sentEmailTo" : "WELSH - We have sent a confirmation email to",
+        "happensNext" : "WELSH - What happens next",
+        "applicationProcess" : "WELSH - We'll process the application as soon as possible. This will usually take no more than 3 to 5 working days.",
+        "willEmail": "WELSH - We'll email",
+        "applicationAcceptedOrRejected" : "WELSH - to let you know if your application has been accepted or rejected.",
+        "accepted": {
+            "title": "WELSH - If the application is accepted",
+            "publicRegister": "WELSH - We'll register the limited partnership and add the details to the Companies House public register."
+        },
+        "rejected": {
+            "title": "WELSH - If the application is rejected",
+            "explain": "WELSH - We'll explain why your application has been rejected and what you can do next. We'll also refund the £X registration fee."
+        },
+        "provideMoreInformation": "WELSH - You'll need to provide more information",
+        "tellUsAboutPSCs": "WELSH - If we accept your application, you'll need to tell us about any people with significant control (PSCs) within 14 days.",
+        "download": {
+            "beforeLink": "WELSH - To check what information you'll need to provide, download the relevant",
+            "afterLink": "WELSH - forms for Scottish limited partnerships (opens in a new tab)"
+        },
+        "filing": {
+            "partnershipName": "WELSH - We've received your filing for",
+            "sentEmail": "WELSH - We've sent an email to",
+            "confirm": "WELSH - to confirm."
+        },
+        "processUpdate": "WELSH - We'll process the update as soon as possible. This will usually take no more than 5 working days.",
+        "willSendEmailTo": "WELSH - We'll send an email to",
+        "updatePublicRegister": "WELSH - to confirm when we've updated the information on the public register.",
+        "avis": {
+            "message": "WELSH - What did you think of this service?",
+            "time": "WELSH - (takes 30 seconds)"
+        }
+    },
+
     "emailPage" : {
         "whatIsEmail" : "WELSH - What is the registered email address for the partnership?",
         "emailHint" : "WELSH - Partners must be able to access emails that are sent to this address.",

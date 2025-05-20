@@ -6,4 +6,5 @@ export enum Journey {
 export type JourneyTypes = {
   isRegistration: boolean;
   isTransition: boolean;
+  journey: Journey;
 };

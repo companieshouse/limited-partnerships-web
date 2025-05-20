@@ -48,7 +48,7 @@ const companyService = new CompanyService(companyGateway);
 const paymentService = new PaymentService(paymentGateway);
 
 // CONTROLLERS
-const globalController: GlobalController = new GlobalController();
+const globalController: GlobalController = new GlobalController(limitedPartnershipService);
 const limitedPartnershipController: LimitedPartnershipController = new LimitedPartnershipController(
   limitedPartnershipService,
   cacheService,
