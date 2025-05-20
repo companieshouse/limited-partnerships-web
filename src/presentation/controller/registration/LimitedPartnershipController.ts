@@ -139,11 +139,14 @@ class LimitedPartnershipController extends AbstractController {
         if (!startPaymentSessionUrl) {
           throw new Error("No payment URL found in response header from closeTransaction");
         }
-        const paymentReturnUri = super.insertIdsInUrl(
-          `${CHS_URL}/${CONFIRMATION_URL}`.replace(JOURNEY_TYPE_PARAM, getJourneyTypes(request.url).journey),
-          ids.transactionId,
-          ids.submissionId
+
+        const urlWithJourney = `${CHS_URL}${CONFIRMATION_URL}`.replace(
+          JOURNEY_TYPE_PARAM,
+          getJourneyTypes(request.url).journey
         );
+
+        const paymentReturnUri = super.insertIdsInUrl(urlWithJourney, ids.transactionId, ids.submissionId);
+
         const paymentRedirect = await this.paymentService.startPaymentSession(
           tokens,
           startPaymentSessionUrl,
