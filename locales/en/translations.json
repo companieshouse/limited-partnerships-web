@@ -341,7 +341,37 @@
         "confirm" : "Confirm this statement",
         "futureLawful" : "I confirm that the intended future activities of the limited partnership are lawful.",
         "payment" : "Continue to payment"
-    },   
+    },
+
+    "confirmationPage" : {
+        "title" : "Application submitted",
+        "referenceNumber" : "our reference number",
+        "sentEmailTo" : "We have sent a confirmation email to",
+        "happensNext" : "What happens next",
+        "applicationProcess" : "We'll process the application as soon as possible. This will usually take no more than 3 to 5 working days.",
+        "willEmail": "We'll email",
+        "applicationAcceptedOrRejected" : "to let you know if your application has been accepted or rejected.",
+        "accepted": {
+            "title": "If the application is accepted",
+            "publicRegister": "We'll register the limited partnership and add the details to the Companies House public register."
+        },
+        "rejected": {
+            "title": "If the application is rejected",
+            "explain": "We'll explain why your application has been rejected and what you can do next. We'll also refund the £X registration fee."
+        },
+        "filing": {
+            "partnershipName": "We've received your filing for",
+            "sentEmail": "We've sent an email to",
+            "confirm": "to confirm."
+        },
+        "processUpdate": "We'll process the update as soon as possible. This will usually take no more than 5 working days.",
+        "willSendEmailTo": "We'll send an email to",
+        "updatePublicRegister": "to confirm when we've updated the information on the public register.",
+        "avis": {
+            "message": "What did you think of this service?",
+            "time": "(takes 30 seconds)"
+        }
+    },
 
     "emailPage" : {
         "whatIsEmail" : "What is the registered email address for the partnership?",
@@ -555,22 +585,6 @@
 
     "whichTypePage": {
         "title": "Which type of partnership do you want to register?"
-    },
-
-    "applicationSubmittedPage": {
-        "title": "Application Submitted",
-        "submittedBanner": {
-            "title": "Application submitted",
-            "reference": "Your reference number"
-        },
-        "recieved": "We've recieved your application to register. We've sent an email to confirm.",
-        "informationNext": {
-            "title": "What happens next",
-            "information": "We'll process the application as soon as possible. We'll email to let you know if your application has been accepted or rejected.",
-            "howLong": "This will usually take no more than 3 to 5 working days."
-        },
-        "survey": "What did you think of this service?",
-        "surveyLength": "(takes 30 seconds)"
     },
 
     "countries" : {

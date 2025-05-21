@@ -50,6 +50,7 @@ export const TRANSACTION_ID = "transactionId";
 export const SUBMISSION_ID = "submissionId";
 export const GENERAL_PARTNER_ID = "generalPartnerId";
 export const LIMITED_PARTNER_ID = "limitedPartnerId";
+export const JOURNEY_TYPE_PARAM = ":journeyType";
 
 export const BASE_URL = "/limited-partnerships";
 
@@ -59,6 +60,7 @@ export const TRANSITION_BASE_URL = `${BASE_URL}/${Journey.transition}`;
 export const TRANSACTION_SUBMISSION_URL = `/transaction/:${TRANSACTION_ID}/submission/:${SUBMISSION_ID}`;
 
 export const BASE_WITH_IDS_URL = `${BASE_URL}${TRANSACTION_SUBMISSION_URL}`;
+export const BASE_WITH_JOURNEY_TYPE_AND_IDS_URL = `${BASE_URL}/${JOURNEY_TYPE_PARAM}${TRANSACTION_SUBMISSION_URL}`;
 export const REGISTRATION_WITH_IDS_URL = `${REGISTRATION_BASE_URL}${TRANSACTION_SUBMISSION_URL}`;
 export const TRANSITION_WITH_IDS_URL = `${TRANSITION_BASE_URL}${TRANSACTION_SUBMISSION_URL}`;
 

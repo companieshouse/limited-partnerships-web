@@ -344,6 +344,36 @@
         "payment" : "WELSH - Continue to payment"
     },
 
+    "confirmationPage" : {
+        "title" : "WELSH - Application submitted",
+        "referenceNumber" : "WELSH - our reference number",
+        "sentEmailTo" : "WELSH - We have sent a confirmation email to",
+        "happensNext" : "WELSH - What happens next",
+        "applicationProcess" : "WELSH - We'll process the application as soon as possible. This will usually take no more than 3 to 5 working days.",
+        "willEmail": "WELSH - We'll email",
+        "applicationAcceptedOrRejected" : "WELSH - to let you know if your application has been accepted or rejected.",
+        "accepted": {
+            "title": "WELSH - If the application is accepted",
+            "publicRegister": "WELSH - We'll register the limited partnership and add the details to the Companies House public register."
+        },
+        "rejected": {
+            "title": "WELSH - If the application is rejected",
+            "explain": "WELSH - We'll explain why your application has been rejected and what you can do next. We'll also refund the £X registration fee."
+        },
+        "filing": {
+            "partnershipName": "WELSH - We've received your filing for",
+            "sentEmail": "WELSH - We've sent an email to",
+            "confirm": "WELSH - to confirm."
+        },
+        "processUpdate": "WELSH - We'll process the update as soon as possible. This will usually take no more than 5 working days.",
+        "willSendEmailTo": "WELSH - We'll send an email to",
+        "updatePublicRegister": "WELSH - to confirm when we've updated the information on the public register.",
+        "avis": {
+            "message": "WELSH - What did you think of this service?",
+            "time": "WELSH - (takes 30 seconds)"
+        }
+    },
+
     "emailPage" : {
         "whatIsEmail" : "WELSH - What is the registered email address for the partnership?",
         "emailHint" : "WELSH - Partners must be able to access emails that are sent to this address.",
@@ -556,22 +586,6 @@
 
     "whichTypePage": {
         "title": "WELSH - Which type of partnership do you want to register?"
-    },
-
-    "applicationSubmittedPage": {
-        "title": "WELSH - Application Submitted",
-        "submittedBanner": {
-            "title": "WELSH - Application submitted",
-            "reference": "WELSH - Your reference number"
-        },
-        "recieved": "WELSH - We've recieved your application to register. We've sent an email to confirm",
-        "informationNext": {
-            "title": "WELSH - What happens next",
-            "information": "WELSH - We'll process the application as soon as possible. We'll email to let you know if your application has been accepted or rejected.",
-            "howLong": "WELSH - This will usually take no more than 3 to 5 working days."
-        },
-        "survey": "WELSH - What did you think of this service?",
-        "surveyLength": "WELSH - (takes 30 seconds)"
     },
 
     "countries" : {

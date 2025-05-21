@@ -20,7 +20,6 @@ import {
   CHECK_YOUR_ANSWERS_URL,
   NAME_WITH_IDS_URL,
   TERM_URL,
-  APPLICATION_SUBMITTED_URL,
   ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
   ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL,
   ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_ID_URL,
@@ -302,12 +301,6 @@ export const registrationEndpoints = (
     CHECK_YOUR_ANSWERS_URL,
     authentication,
     dependencies.limitedPartnershipController.closeTransaction()
-  );
-
-  router.get(
-    APPLICATION_SUBMITTED_URL,
-    authentication,
-    dependencies.limitedPartnershipController.getPageRouting()
   );
 
   router.get(

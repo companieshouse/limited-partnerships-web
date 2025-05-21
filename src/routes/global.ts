@@ -6,7 +6,7 @@ import {
   HEALTHCHECK_URL,
   START_URL,
   SIGN_OUT_URL,
-  PAYMENT_URL,
+  CONFIRMATION_URL,
 } from "../presentation/controller/global/url";
 
 export const globalEndpoints = (
@@ -34,9 +34,9 @@ export const globalEndpoints = (
   );
 
   router.get(
-    PAYMENT_URL,
+    CONFIRMATION_URL,
     authentication,
-    dependencies.globalController.getPaymentRouting()
+    dependencies.globalController.getConfirmationPage()
   );
 };
 
