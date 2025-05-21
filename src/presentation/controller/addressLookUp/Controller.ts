@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import escape from "escape-html";
-import { Address, LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { Address } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import AddressService from "../../../application/service/AddressService";
 import addresssRouting, { AddressCacheKeys, addressLookUpRouting } from "./Routing";
@@ -421,13 +421,7 @@ class AddressLookUpController extends AbstractController {
         const cacheRemoved = this.cacheService.removeDataFromCache(request.signedCookies, ids.transactionId);
         response.cookie(APPLICATION_CACHE_KEY, cacheRemoved, cookieOptions);
 
-        const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
-          tokens,
-          ids.transactionId,
-          ids.submissionId
-        );
-
-        this.conditionalNextUrl(ids, pageRouting, limitedPartnership);
+        await this.conditionalNextUrl(tokens, ids, pageRouting);
 
         response.redirect(pageRouting.nextUrl);
       } catch (error) {
@@ -436,11 +430,17 @@ class AddressLookUpController extends AbstractController {
     };
   }
 
-  private conditionalNextUrl(
+  private async conditionalNextUrl(
+    tokens: { access_token: string; refresh_token: string },
     ids: { transactionId: string; submissionId: string; generalPartnerId: string },
-    pageRouting: PageRouting,
-    limitedPartnership: LimitedPartnership
+    pageRouting: PageRouting
   ) {
+    const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+      tokens,
+      ids.transactionId,
+      ids.submissionId
+    );
+
     if (
       pageRouting.pageType === AddressLookUpPageType.confirmRegisteredOfficeAddress &&
       limitedPartnership.data?.principal_place_of_business_address
