@@ -255,6 +255,8 @@ describe("Enter Correspondence Address Page", () => {
         .isPerson()
         .build();
 
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.enterGeneralPartnerCorrespondenceAddress,
         ...generalPartner.data?.service_address,
@@ -264,6 +266,7 @@ describe("Enter Correspondence Address Page", () => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.postcodeFormat);
       expect(res.text).toContain(enTranslationText.govUk.error.title);
+      expect(res.text).toContain(`${generalPartner.data?.forename?.toUpperCase()} ${generalPartner.data?.surname?.toUpperCase()}`);
     });
 
     it("should not return validation errors when address fields contain valid but non alpha-numeric characters", async () => {

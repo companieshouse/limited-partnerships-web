@@ -253,6 +253,8 @@ describe("Enter Limited Partner Principal Office Address Page", () => {
         .isLegalEntity()
         .build();
 
+      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
+
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.enterLimitedPartnerPrincipalOfficeAddress,
         ...limitedPartner.data?.principal_office_address,
@@ -262,6 +264,7 @@ describe("Enter Limited Partner Principal Office Address Page", () => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.postcodeFormat);
       expect(res.text).toContain(enTranslationText.govUk.error.title);
+      expect(res.text).toContain(limitedPartner.data?.legal_entity_name?.toUpperCase());
     });
 
     it("should not return validation errors when address fields contain valid but non alpha-numeric characters", async () => {
