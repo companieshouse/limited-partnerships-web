@@ -15,9 +15,10 @@ import {
   JOURNEY_TYPE_PARAM
 } from "../../../config/constants";
 import CacheService from "../../../application/service/CacheService";
-import { CHECK_YOUR_ANSWERS_URL, GENERAL_PARTNERS_URL, NAME_WITH_IDS_URL, WHICH_TYPE_WITH_IDS_URL } from "./url";
 import { PageRouting } from "../PageRouting";
 import { getJourneyTypes } from "../../../utils";
+import { CHECK_YOUR_ANSWERS_URL, GENERAL_PARTNERS_URL, NAME_WITH_IDS_URL, WHICH_TYPE_WITH_IDS_URL } from "./url";
+import { CONFIRM_REGISTERED_OFFICE_ADDRESS_URL } from "../addressLookUp/url";
 import { CONFIRMATION_URL } from "../global/url";
 
 class LimitedPartnershipController extends AbstractController {
@@ -58,6 +59,8 @@ class LimitedPartnershipController extends AbstractController {
 
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
 
+        this.conditionalCurrentUrl(ids, pageRouting, limitedPartnership);
+
         response.render(
           super.templateName(pageRouting.currentUrl),
           super.makeProps(pageRouting, { limitedPartnership, generalPartner, limitedPartner, cache, ids }, null)
@@ -82,6 +85,23 @@ class LimitedPartnershipController extends AbstractController {
       if (ids.transactionId && ids.submissionId) {
         pageRouting.previousUrl = super.insertIdsInUrl(WHICH_TYPE_WITH_IDS_URL, ids.transactionId, ids.submissionId);
       }
+    }
+  }
+
+  private conditionalCurrentUrl(
+    ids: { transactionId: string; submissionId: string; generalPartnerId: string },
+    pageRouting: PageRouting,
+    limitedPartnership: LimitedPartnership
+  ) {
+    if (
+      pageRouting.pageType === RegistrationPageType.whereIsTheJurisdiction &&
+      limitedPartnership.data?.registered_office_address
+    ) {
+      pageRouting.currentUrl = super.insertIdsInUrl(
+        CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
+        ids.transactionId,
+        ids.submissionId
+      );
     }
   }
 

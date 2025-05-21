@@ -67,12 +67,12 @@ class LimitedPartnershipBuilder {
     return this;
   }
 
-  withRegisteredOfficeAddress(address: Address) {
+  withRegisteredOfficeAddress(address: Address | null) {
     this.data.registered_office_address = address as any;
     return this;
   }
 
-  withPrincipalPlaceOfBusinessAddress(address: Address) {
+  withPrincipalPlaceOfBusinessAddress(address: Address | null) {
     this.data.principal_place_of_business_address = address as any;
     return this;
   }
