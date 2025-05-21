@@ -306,10 +306,26 @@ class AddressLookUpController extends AbstractController {
         }
 
         if (errors?.errors) {
+          let generalPartner;
+          let limitedPartner;
+          if (AddressLookUpController.GENERAL_PARTNER_ADDRESS_PAGES.has(pageType)) {
+            generalPartner = await this.generalPartnerService.getGeneralPartner(
+              tokens,
+              ids.transactionId,
+              ids.generalPartnerId
+            );
+          } else if (AddressLookUpController.LIMITED_PARTNER_ADDRESS_PAGES.has(pageType)) {
+            limitedPartner = await this.limitedPartnerService.getLimitedPartner(
+              tokens,
+              ids.transactionId,
+              ids.limitedPartnerId
+            );
+          }
+
           const cacheById = this.cacheService.getDataFromCacheById(request.signedCookies, ids.transactionId);
           response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { address, limitedPartnership, cache: { ...cacheById } }, errors)
+            super.makeProps(pageRouting, { address, limitedPartnership, generalPartner, limitedPartner, cache: { ...cacheById } }, errors)
           );
 
           return;
