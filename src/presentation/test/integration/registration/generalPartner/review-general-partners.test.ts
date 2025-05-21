@@ -8,6 +8,7 @@ import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import {
   ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
   ADD_GENERAL_PARTNER_PERSON_URL,
+  GENERAL_PARTNERS_URL,
   LIMITED_PARTNERS_URL,
   REVIEW_GENERAL_PARTNERS_URL
 } from "../../../../controller/registration/url";
@@ -59,17 +60,14 @@ describe("Review General Partners Page", () => {
     });
 
     describe("Empty list", () => {
-      it("should load the review general partners page and contains empty list text", async () => {
+      it("should redirect to general partners start page when list is empty", async () => {
         appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
 
         const res = await request(app).get(URL);
 
-        expect(res.status).toBe(200);
-
-        expect(res.text).toContain(
-          `${enTranslationText.reviewGeneralPartnersPage.title} - ${enTranslationText.service} - GOV.UK`
-        );
-        expect(res.text).toContain(enTranslationText.reviewGeneralPartnersPage.generalPartnersAdded.emptyList);
+        const redirectUrl = getUrl(GENERAL_PARTNERS_URL);
+        expect(res.status).toBe(302);
+        expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
       });
     });
   });
