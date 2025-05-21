@@ -59,8 +59,6 @@ class LimitedPartnershipController extends AbstractController {
 
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
 
-        this.conditionalCurrentUrl(ids, pageRouting, limitedPartnership);
-
         response.render(
           super.templateName(pageRouting.currentUrl),
           super.makeProps(pageRouting, { limitedPartnership, generalPartner, limitedPartner, cache, ids }, null)
@@ -85,23 +83,6 @@ class LimitedPartnershipController extends AbstractController {
       if (ids.transactionId && ids.submissionId) {
         pageRouting.previousUrl = super.insertIdsInUrl(WHICH_TYPE_WITH_IDS_URL, ids.transactionId, ids.submissionId);
       }
-    }
-  }
-
-  private conditionalCurrentUrl(
-    ids: { transactionId: string; submissionId: string; generalPartnerId: string },
-    pageRouting: PageRouting,
-    limitedPartnership: LimitedPartnership
-  ) {
-    if (
-      pageRouting.pageType === RegistrationPageType.whereIsTheJurisdiction &&
-      limitedPartnership.data?.registered_office_address
-    ) {
-      pageRouting.currentUrl = super.insertIdsInUrl(
-        CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
-        ids.transactionId,
-        ids.submissionId
-      );
     }
   }
 
@@ -254,11 +235,35 @@ class LimitedPartnershipController extends AbstractController {
           return;
         }
 
+        await this.conditionalNextUrl(tokens, ids, pageRouting);
+
         response.redirect(pageRouting.nextUrl);
       } catch (error) {
         next(error);
       }
     };
+  }
+
+  private async conditionalNextUrl(
+    tokens: { access_token: string; refresh_token: string },
+    ids: { transactionId: string; submissionId: string },
+    pageRouting: PageRouting
+  ) {
+    if (pageRouting.pageType === RegistrationPageType.email) {
+      const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+        tokens,
+        ids.transactionId,
+        ids.submissionId
+      );
+
+      if (limitedPartnership.data?.registered_office_address) {
+        pageRouting.nextUrl = super.insertIdsInUrl(
+          CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
+          ids.transactionId,
+          ids.submissionId
+        );
+      }
+    }
   }
 
   getPageRoutingTermSic() {

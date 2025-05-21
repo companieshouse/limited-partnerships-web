@@ -14,6 +14,7 @@ import { PageDefault, PageRouting, pageRoutingDefault } from "../PageRouting";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
 import PageType from "../PageType";
+import { CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL } from "./url";
 
 class AddressLookUpController extends AbstractController {
   private static readonly LIMITED_PARTNERSHIP_POSTCODE_PAGES: Set<PageType | PageDefault> = new Set([
@@ -290,11 +291,7 @@ class AddressLookUpController extends AbstractController {
         if (AddressLookUpController.MANUAL_PAGES.has(pageType)) {
           errors = this.addressService.hasAddressGotInvalidCharacters(address, errors);
 
-          errors = this.addressService.isValidPostcode(
-            postal_code ?? "",
-            country,
-            errors
-          );
+          errors = this.addressService.isValidPostcode(postal_code ?? "", country, errors);
         }
 
         if (AddressLookUpController.LIMITED_PARTNERSHIP_MANUAL_PAGES.has(pageType)) {
@@ -325,7 +322,11 @@ class AddressLookUpController extends AbstractController {
           const cacheById = this.cacheService.getDataFromCacheById(request.signedCookies, ids.transactionId);
           response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { address, limitedPartnership, generalPartner, limitedPartner, cache: { ...cacheById } }, errors)
+            super.makeProps(
+              pageRouting,
+              { address, limitedPartnership, generalPartner, limitedPartner, cache: { ...cacheById } },
+              errors
+            )
           );
 
           return;
@@ -420,11 +421,35 @@ class AddressLookUpController extends AbstractController {
         const cacheRemoved = this.cacheService.removeDataFromCache(request.signedCookies, ids.transactionId);
         response.cookie(APPLICATION_CACHE_KEY, cacheRemoved, cookieOptions);
 
+        await this.conditionalNextUrl(tokens, ids, pageRouting);
+
         response.redirect(pageRouting.nextUrl);
       } catch (error) {
         next(error);
       }
     };
+  }
+
+  private async conditionalNextUrl(
+    tokens: { access_token: string; refresh_token: string },
+    ids: { transactionId: string; submissionId: string },
+    pageRouting: PageRouting
+  ) {
+    if (pageRouting.pageType === AddressLookUpPageType.confirmRegisteredOfficeAddress) {
+      const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+        tokens,
+        ids.transactionId,
+        ids.submissionId
+      );
+
+      if (limitedPartnership.data?.principal_place_of_business_address) {
+        pageRouting.nextUrl = super.insertIdsInUrl(
+          CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+          ids.transactionId,
+          ids.submissionId
+        );
+      }
+    }
   }
 
   private async handleAddressNotFound(

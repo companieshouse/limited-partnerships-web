@@ -20,10 +20,7 @@ describe("Where is the jurisdiction page", () => {
     it("should load the jurisdiction page with English text for EnglandWales LP jurisdiction", async () => {
       setLocalesEnabled(true);
 
-      const limitedPartnership = new LimitedPartnershipBuilder()
-        .withPartnershipType(PartnershipType.LP)
-        .withRegisteredOfficeAddress(null)
-        .build();
+      const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(PartnershipType.LP).build();
 
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
@@ -40,10 +37,7 @@ describe("Where is the jurisdiction page", () => {
     it("should load the jurisdiction page with Welsh text for EnglandWales LP jurisdiction", async () => {
       setLocalesEnabled(true);
 
-      const limitedPartnership = new LimitedPartnershipBuilder()
-        .withPartnershipType(PartnershipType.LP)
-        .withRegisteredOfficeAddress(null)
-        .build();
+      const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(PartnershipType.LP).build();
 
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
@@ -60,10 +54,7 @@ describe("Where is the jurisdiction page", () => {
     it("should load the jurisdiction page with English text for EnglandWales PFLP jurisdiction", async () => {
       setLocalesEnabled(true);
 
-      const limitedPartnership = new LimitedPartnershipBuilder()
-        .withPartnershipType(PartnershipType.PFLP)
-        .withRegisteredOfficeAddress(null)
-        .build();
+      const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(PartnershipType.PFLP).build();
 
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
@@ -80,10 +71,7 @@ describe("Where is the jurisdiction page", () => {
     it("should load the jurisdiction page with Welsh text for EnglandWales PFLP jurisdiction", async () => {
       setLocalesEnabled(true);
 
-      const limitedPartnership = new LimitedPartnershipBuilder()
-        .withPartnershipType(PartnershipType.PFLP)
-        .withRegisteredOfficeAddress(null)
-        .build();
+      const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(PartnershipType.PFLP).build();
 
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
@@ -100,10 +88,7 @@ describe("Where is the jurisdiction page", () => {
     it("should load the jurisdiction page with English text for Scotland SLP jurisdiction", async () => {
       setLocalesEnabled(false);
 
-      const limitedPartnership = new LimitedPartnershipBuilder()
-        .withPartnershipType(PartnershipType.SLP)
-        .withRegisteredOfficeAddress(null)
-        .build();
+      const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(PartnershipType.SLP).build();
 
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
@@ -120,10 +105,7 @@ describe("Where is the jurisdiction page", () => {
     it("should load the jurisdiction page with English text for Scotland SPFLP jurisdiction", async () => {
       setLocalesEnabled(false);
 
-      const limitedPartnership = new LimitedPartnershipBuilder()
-        .withPartnershipType(PartnershipType.SPFLP)
-        .withRegisteredOfficeAddress(null)
-        .build();
+      const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(PartnershipType.SPFLP).build();
 
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
@@ -135,27 +117,6 @@ describe("Where is the jurisdiction page", () => {
       );
       testTranslations(res.text, enTranslationText.whereIsTheJurisdiction.scotland);
       expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
-    });
-  });
-
-  describe("GET Confirm registered office address page - conditional current url", () => {
-    it("should redirect to the page CONFIRM_REGISTERED_OFFICE_ADDRESS_URL if the registered office address is already saved", async () => {
-      const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(PartnershipType.LP).build();
-
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
-      const res = await request(app).get(URL + "?lang=en");
-
-      expect(res.status).toBe(200);
-
-      testTranslations(res.text, enTranslationText.address.confirm.registeredOfficeAddress);
-
-      expect(res.text).toContain("4 Line 1");
-      expect(res.text).toContain("Line 2");
-      expect(res.text).toContain("Stoke-On-Trent");
-      expect(res.text).toContain("Region");
-      expect(res.text).toContain("England");
-      expect(res.text).toContain("ST6 3LJ");
     });
   });
 });
