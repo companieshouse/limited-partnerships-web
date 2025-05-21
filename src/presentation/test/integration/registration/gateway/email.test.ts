@@ -11,6 +11,7 @@ import RegistrationPageType from "../../../../controller/registration/PageType";
 import enTranslationText from "../../../../../../locales/en/translations.json";
 import sdkMock from "../../mock/sdkMock";
 import { getUrl } from "../../../utils";
+import { CONFIRM_REGISTERED_OFFICE_ADDRESS_URL } from "../../../../controller/addressLookUp/url";
 
 jest.mock("@companieshouse/api-sdk-node");
 
@@ -125,7 +126,7 @@ describe("Gateway Update - Refresh Token", () => {
 
         expect(refreshToken).toHaveBeenCalled();
 
-        const REDIRECT_URL = getUrl(WHERE_IS_THE_JURISDICTION_URL);
+        const REDIRECT_URL = getUrl(CONFIRM_REGISTERED_OFFICE_ADDRESS_URL);
 
         expect(res.status).toBe(302);
         expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);

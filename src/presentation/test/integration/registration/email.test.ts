@@ -8,6 +8,7 @@ import RegistrationPageType from "../../../controller/registration/PageType";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { ApiErrors } from "../../../../domain/entities/UIErrors";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
+import { CONFIRM_REGISTERED_OFFICE_ADDRESS_URL } from "../../../controller/addressLookUp/url";
 
 describe("Email Page", () => {
   const URL = getUrl(EMAIL_URL);
@@ -59,6 +60,7 @@ describe("Email Page", () => {
     it("should send email", async () => {
       const limitedPartnership = new LimitedPartnershipBuilder()
         .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+        .withRegisteredOfficeAddress(null)
         .build();
 
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
@@ -67,6 +69,22 @@ describe("Email Page", () => {
         pageType: RegistrationPageType.email,
         email: "test@example.com"
       });
+
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+    });
+
+    it("should redirect to the page CONFIRM_REGISTERED_OFFICE_ADDRESS_URL if the registered office address is already saved", async () => {
+      const limitedPartnership = new LimitedPartnershipBuilder().build();
+
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+      const res = await request(app).post(URL).send({
+        pageType: RegistrationPageType.email,
+        email: "test@example.com"
+      });
+
+      const REDIRECT_URL = getUrl(CONFIRM_REGISTERED_OFFICE_ADDRESS_URL);
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
