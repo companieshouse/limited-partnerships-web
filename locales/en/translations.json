@@ -582,22 +582,6 @@
         "title": "Which type of partnership do you want to register?"
     },
 
-    "applicationSubmittedPage": {
-        "title": "Application Submitted",
-        "submittedBanner": {
-            "title": "Application submitted",
-            "reference": "Your reference number"
-        },
-        "recieved": "We've recieved your application to register. We've sent an email to confirm.",
-        "informationNext": {
-            "title": "What happens next",
-            "information": "We'll process the application as soon as possible. We'll email to let you know if your application has been accepted or rejected.",
-            "howLong": "This will usually take no more than 3 to 5 working days."
-        },
-        "survey": "What did you think of this service?",
-        "surveyLength": "(takes 30 seconds)"
-    },
-
     "countries" : {
         "selectOne" : "Select a country",
         "afghanistan" : "Afghanistan",

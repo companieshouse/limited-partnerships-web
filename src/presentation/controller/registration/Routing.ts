@@ -159,15 +159,8 @@ const registrationRoutingRemoveLimitedPartner = {
 const registrationRoutingCheckYourAnswers = {
   previousUrl: url.REVIEW_LIMITED_PARTNERS_URL,
   currentUrl: url.CHECK_YOUR_ANSWERS_URL,
-  nextUrl: url.APPLICATION_SUBMITTED_URL,
+  nextUrl: "/",
   pageType: RegistrationPageType.checkYourAnswers
-};
-
-const registrationRoutingApplicationSubmitted = {
-  previousUrl: url.CHECK_YOUR_ANSWERS_URL,
-  currentUrl: url.APPLICATION_SUBMITTED_URL,
-  nextUrl: url.NEXT_URL,
-  pageType: RegistrationPageType.applicationSubmitted
 };
 
 const registrationRoutingNext = {
@@ -200,7 +193,6 @@ const list = [
   registrationRoutingRemoveLimitedPartner,
 
   registrationRoutingCheckYourAnswers,
-  registrationRoutingApplicationSubmitted,
   registrationRoutingNext
 ];
 

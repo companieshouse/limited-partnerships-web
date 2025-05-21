@@ -21,7 +21,6 @@ enum RegistrationPageType {
   removeLimitedPartner = "remove-limited-partner",
 
   checkYourAnswers = "check-your-answers",
-  applicationSubmitted = "application-submitted",
   next = "next"
 }
 
