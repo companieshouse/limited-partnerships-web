@@ -92,12 +92,12 @@ class GeneralPartnerController extends AbstractController {
         if (generalPartners.length === 0) {
           const redirect = super.insertIdsInUrl(GENERAL_PARTNERS_URL, ids.transactionId, ids.submissionId);
           response.redirect(redirect);
-        } else {
-          response.render(
-            super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { limitedPartnership, generalPartners }, null)
-          );
+          return;
         }
+        response.render(
+          super.templateName(pageRouting.currentUrl),
+          super.makeProps(pageRouting, { limitedPartnership, generalPartners }, null)
+        );
       } catch (error) {
         next(error);
       }
