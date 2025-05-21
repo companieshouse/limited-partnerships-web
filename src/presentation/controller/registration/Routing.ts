@@ -76,14 +76,20 @@ const registrationRoutingAddGeneralPartnerPerson = {
   previousUrl: url.GENERAL_PARTNER_CHOICE_URL,
   currentUrl: url.ADD_GENERAL_PARTNER_PERSON_URL,
   nextUrl: TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-  pageType: RegistrationPageType.addGeneralPartnerPerson
+  pageType: RegistrationPageType.addGeneralPartnerPerson,
+  data: {
+    customPreviousUrl: url.REVIEW_GENERAL_PARTNERS_URL
+  }
 };
 
 const registrationRoutingAddGeneralPartnerLegalEntity = {
   previousUrl: url.GENERAL_PARTNER_CHOICE_URL,
   currentUrl: url.ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
   nextUrl: TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
-  pageType: RegistrationPageType.addGeneralPartnerLegalEntity
+  pageType: RegistrationPageType.addGeneralPartnerLegalEntity,
+  data: {
+    customPreviousUrl: url.REVIEW_GENERAL_PARTNERS_URL
+  }
 };
 
 // usual residential address
