@@ -435,21 +435,20 @@ class AddressLookUpController extends AbstractController {
     ids: { transactionId: string; submissionId: string; generalPartnerId: string },
     pageRouting: PageRouting
   ) {
-    const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
-      tokens,
-      ids.transactionId,
-      ids.submissionId
-    );
-
-    if (
-      pageRouting.pageType === AddressLookUpPageType.confirmRegisteredOfficeAddress &&
-      limitedPartnership.data?.principal_place_of_business_address
-    ) {
-      pageRouting.nextUrl = super.insertIdsInUrl(
-        CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+    if (pageRouting.pageType === AddressLookUpPageType.confirmRegisteredOfficeAddress) {
+      const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+        tokens,
         ids.transactionId,
         ids.submissionId
       );
+
+      if (limitedPartnership.data?.principal_place_of_business_address) {
+        pageRouting.nextUrl = super.insertIdsInUrl(
+          CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+          ids.transactionId,
+          ids.submissionId
+        );
+      }
     }
   }
 
