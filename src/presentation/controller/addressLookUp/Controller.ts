@@ -432,7 +432,7 @@ class AddressLookUpController extends AbstractController {
 
   private async conditionalNextUrl(
     tokens: { access_token: string; refresh_token: string },
-    ids: { transactionId: string; submissionId: string; generalPartnerId: string },
+    ids: { transactionId: string; submissionId: string },
     pageRouting: PageRouting
   ) {
     if (pageRouting.pageType === AddressLookUpPageType.confirmRegisteredOfficeAddress) {
