@@ -1,6 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 import escape from "escape-html";
-import { LimitedPartnership, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import {
+  GeneralPartner,
+  LimitedPartner,
+  LimitedPartnership,
+  PartnershipType
+} from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import PaymentService from "../../../application/service/PaymentService";
@@ -27,11 +32,13 @@ import {
 import { CONFIRM_REGISTERED_OFFICE_ADDRESS_URL } from "../addressLookUp/url";
 import { CONFIRMATION_URL } from "../global/url";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
+import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
 
 class LimitedPartnershipController extends AbstractController {
   constructor(
     private readonly limitedPartnershipService: LimitedPartnershipService,
     private readonly generalPartnerService: GeneralPartnerService,
+    private readonly limitedPartnerService: LimitedPartnerService,
     private readonly cacheService: CacheService,
     private readonly paymentService: PaymentService
   ) {
@@ -47,8 +54,8 @@ class LimitedPartnershipController extends AbstractController {
         this.conditionalPreviousUrl(ids, pageRouting, request);
 
         let limitedPartnership = {};
-        const generalPartner = {};
-        const limitedPartner = {};
+        let generalPartners: GeneralPartner[] = [];
+        let limitedPartners: LimitedPartner[] = [];
 
         if (ids.transactionId && ids.submissionId) {
           limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
@@ -58,11 +65,17 @@ class LimitedPartnershipController extends AbstractController {
           );
         }
 
+        if (pageRouting.pageType === RegistrationPageType.checkYourAnswers) {
+          generalPartners = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
+
+          limitedPartners = await this.limitedPartnerService.getLimitedPartners(tokens, ids.transactionId);
+        }
+
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
 
         response.render(
           super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { limitedPartnership, generalPartner, limitedPartner, cache, ids }, null)
+          super.makeProps(pageRouting, { limitedPartnership, generalPartners, limitedPartners, cache, ids }, null)
         );
       } catch (error) {
         next(error);

@@ -166,7 +166,10 @@ const registrationRoutingCheckYourAnswers = {
   previousUrl: url.REVIEW_LIMITED_PARTNERS_URL,
   currentUrl: url.CHECK_YOUR_ANSWERS_URL,
   nextUrl: "/",
-  pageType: RegistrationPageType.checkYourAnswers
+  pageType: RegistrationPageType.checkYourAnswers,
+  data: {
+    reviewGeneralPartnersType: RegistrationPageType.reviewGeneralPartners
+  }
 };
 
 const registrationRoutingNext = {

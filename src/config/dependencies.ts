@@ -55,6 +55,7 @@ const globalController: GlobalController = new GlobalController(limitedPartnersh
 const limitedPartnershipController: LimitedPartnershipController = new LimitedPartnershipController(
   limitedPartnershipService,
   generalPartnerService,
+  limitedPartnerService,
   cacheService,
   paymentService
 );

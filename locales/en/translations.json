@@ -340,7 +340,29 @@
         "headingTerm" : "Term of partnership",
         "confirm" : "Confirm this statement",
         "futureLawful" : "I confirm that the intended future activities of the limited partnership are lawful.",
-        "payment" : "Continue to payment"
+        "payment" : "Continue to payment",
+
+        "generalPartners": {
+            "title": "General partners",
+            "changeRemoveOrAdd": "Change, remove or add a general partners",
+            "person": {
+                "name": "Name",
+                "previousName": "Previous name",
+                "dateOfBirth": "Date of birth",
+                "nationality": "Nationality",
+                "usualResidentialAddress": "Usual residential address",
+                "correspondenceAddress": "Correspondence address"
+            },
+            "legalEntity": {
+                "name": "Name",
+                "legalForm": "Legal form or corporate identity",
+                "governingLaw": "Governing law",
+                "register": "Register",
+                "countryRegisteredIn": "Country registered in",
+                "registrationNumber": "Registration number",
+                "principalOfficeAddress": "Principal office address"
+            }
+        } 
     },
 
     "confirmationPage" : {
