@@ -111,7 +111,7 @@ const addressRoutingEnterPrincipalPlaceOfBusinessAddress = {
   nextUrl: url.CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
   data: {
-    [AddressCacheKeys.addressCacheKey]: "principal_place_of_business_address"
+    ...principalPlaceOfBusinessAddressCacheKeys
   }
 };
 

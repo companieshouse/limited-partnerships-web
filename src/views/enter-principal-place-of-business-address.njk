@@ -6,7 +6,7 @@
 {% elif props.data.cache[principalPlaceOfBusinessKey] %}
   {% set address = props.data.cache[principalPlaceOfBusinessKey] %}
 {% elif props.data.limitedPartnership.data.principal_place_of_business_address %}
-  {% set address = props.data.principal_place_of_business_address %}
+  {% set address = props.data.limitedPartnership.data.principal_place_of_business_address %}
 {% else %}
   {% set address = {} %}
 {% endif %}

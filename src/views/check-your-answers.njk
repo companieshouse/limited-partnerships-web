@@ -105,6 +105,16 @@
             },
             value: {
               text: macros.formatAddress(props.data.limitedPartnership.data.registered_office_address, true)
+            },
+            actions: {
+              items: [ 
+                CREATE_CHANGE_LINK(
+                  i18n.checkYourAnswersPage.change,
+                  currentUrl | replace(checkYourAnswers, "enter-registered-office-address#premises"),
+                  partnershipRegisteredOfficeAddressText,
+                  "change-partnership-registered-office-address-button"
+                )
+              ]
             }
           },
           {
@@ -113,6 +123,16 @@
             },
             value: {
               text: macros.formatAddress(props.data.limitedPartnership.data.principal_place_of_business_address, true)
+            },
+            actions: {
+              items: [ 
+                CREATE_CHANGE_LINK(
+                  i18n.checkYourAnswersPage.change,
+                  currentUrl | replace(checkYourAnswers, "enter-principal-place-of-business-address#premises"),
+                  partnershipPrincipalPlaceOfBusinessAddressText,
+                  "change-principal-place-of-business-address-button"
+                )
+              ]
             }
           },         
           {
