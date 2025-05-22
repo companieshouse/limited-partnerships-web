@@ -264,12 +264,6 @@ class LimitedPartnershipController extends AbstractController {
           ids.submissionId
         );
       }
-    } else if (pageRouting.pageType === RegistrationPageType.sic) {
-      const generalPartners = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
-
-      if (generalPartners.length > 0) {
-        pageRouting.nextUrl = super.insertIdsInUrl(REVIEW_GENERAL_PARTNERS_URL, ids.transactionId, ids.submissionId);
-      }
     }
   }
 
