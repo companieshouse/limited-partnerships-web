@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import escape from "escape-html";
-import { Address } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { Address, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import AddressService from "../../../application/service/AddressService";
 import addresssRouting, { AddressCacheKeys, addressLookUpRouting } from "./Routing";
@@ -15,6 +15,7 @@ import GeneralPartnerService from "../../../application/service/GeneralPartnerSe
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
 import PageType from "../PageType";
 import { CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL } from "./url";
+import { REVIEW_GENERAL_PARTNERS_URL } from "../registration/url";
 
 class AddressLookUpController extends AbstractController {
   private static readonly LIMITED_PARTNERSHIP_POSTCODE_PAGES: Set<PageType | PageDefault> = new Set([
@@ -435,19 +436,38 @@ class AddressLookUpController extends AbstractController {
     ids: { transactionId: string; submissionId: string },
     pageRouting: PageRouting
   ) {
-    if (pageRouting.pageType === AddressLookUpPageType.confirmRegisteredOfficeAddress) {
-      const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+    const pageTypes: Array<PageType | PageDefault> = [
+      AddressLookUpPageType.confirmRegisteredOfficeAddress,
+      AddressLookUpPageType.confirmPrincipalPlaceOfBusinessAddress
+    ];
+
+    let limitedPartnership;
+
+    if (pageTypes.includes(pageRouting.pageType)) {
+      limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
         tokens,
         ids.transactionId,
         ids.submissionId
       );
+    }
 
+    if (pageRouting.pageType === AddressLookUpPageType.confirmRegisteredOfficeAddress) {
       if (limitedPartnership.data?.principal_place_of_business_address) {
         pageRouting.nextUrl = super.insertIdsInUrl(
           CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
           ids.transactionId,
           ids.submissionId
         );
+      }
+    } else if (pageRouting.pageType === AddressLookUpPageType.confirmPrincipalPlaceOfBusinessAddress) {
+      const generalPartners = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
+
+      if (
+        (limitedPartnership?.data?.partnership_type === PartnershipType.PFLP ||
+          limitedPartnership?.data?.partnership_type === PartnershipType.SPFLP) &&
+        generalPartners.length > 0
+      ) {
+        pageRouting.nextUrl = super.insertIdsInUrl(REVIEW_GENERAL_PARTNERS_URL, ids.transactionId, ids.submissionId);
       }
     }
   }
