@@ -54,6 +54,7 @@ const paymentService = new PaymentService(paymentGateway);
 const globalController: GlobalController = new GlobalController(limitedPartnershipService);
 const limitedPartnershipController: LimitedPartnershipController = new LimitedPartnershipController(
   limitedPartnershipService,
+  generalPartnerService,
   cacheService,
   paymentService
 );

@@ -7,10 +7,11 @@ import cyTranslationText from "../../../../../locales/cy/translations.json";
 
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
-import { GENERAL_PARTNERS_URL, SIC_URL } from "../../../controller/registration/url";
+import { GENERAL_PARTNERS_URL, REVIEW_GENERAL_PARTNERS_URL, SIC_URL } from "../../../controller/registration/url";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import { ApiErrors } from "../../../../domain/entities/UIErrors";
+import GeneralPartnerBuilder from "../../builder/GeneralPartnerBuilder";
 
 describe("Sic Codes", () => {
   const URL = getUrl(SIC_URL);
@@ -18,6 +19,7 @@ describe("Sic Codes", () => {
 
   beforeEach(() => {
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([]);
+    appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
   });
 
   describe("Get Sic Codes Page", () => {
@@ -107,7 +109,7 @@ describe("Sic Codes", () => {
   });
 
   describe("Post Sic Codes", () => {
-    it("should send sic codes", async () => {
+    it("should send sic codes and go to the next page - no GP", async () => {
       const limitedPartnership = new LimitedPartnershipBuilder()
         .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
         .withPartnershipType(PartnershipType.LP)
@@ -122,6 +124,39 @@ describe("Sic Codes", () => {
         sic3: "91011",
         sic4: "12131"
       });
+
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+      expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships[0].data).toEqual(
+        expect.objectContaining({
+          sic_codes: ["12345", "56789", "91011", "12131"]
+        })
+      );
+    });
+
+    it("should send sic codes and go to review general partners - GPs", async () => {
+      const limitedPartnership = new LimitedPartnershipBuilder()
+        .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+        .withPartnershipType(PartnershipType.LP)
+        .build();
+
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+      const generalPartner = new GeneralPartnerBuilder()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .build();
+
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+
+      const res = await request(app).post(URL).send({
+        pageType: RegistrationPageType.sic,
+        sic1: "12345",
+        sic2: "56789",
+        sic3: "91011",
+        sic4: "12131"
+      });
+
+      const REDIRECT_URL = getUrl(REVIEW_GENERAL_PARTNERS_URL);
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
