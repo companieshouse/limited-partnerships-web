@@ -10,11 +10,13 @@ import {
   ADD_GENERAL_PARTNER_PERSON_URL,
   GENERAL_PARTNERS_URL,
   LIMITED_PARTNERS_URL,
-  REVIEW_GENERAL_PARTNERS_URL
+  REVIEW_GENERAL_PARTNERS_URL,
+  REVIEW_LIMITED_PARTNERS_URL
 } from "../../../../controller/registration/url";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
 import RegistrationPageType from "../../../../controller/registration/PageType";
+import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
 
 describe("Review General Partners Page", () => {
   const URL = getUrl(REVIEW_GENERAL_PARTNERS_URL);
@@ -27,6 +29,7 @@ describe("Review General Partners Page", () => {
 
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([]);
     appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartnerPerson, generalPartnerLegalEntity]);
+    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([]);
   });
 
   describe("Get Review General Partners Page", () => {
@@ -93,29 +96,30 @@ describe("Review General Partners Page", () => {
       expect(res.headers.location).toContain(getUrl(ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL));
     });
 
-    it("should redirect to the limited partners page", async () => {
-      const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.reviewGeneralPartners,
-        addAnotherGeneralPartner: "no"
+    describe("Selecting no more general partners", () => {
+      it("should redirect to the limited partners page - no LPs", async () => {
+        const res = await request(app).post(URL).send({
+          pageType: RegistrationPageType.reviewGeneralPartners,
+          addAnotherGeneralPartner: "no"
+        });
+
+        expect(res.status).toBe(302);
+        expect(res.headers.location).toContain(getUrl(LIMITED_PARTNERS_URL));
       });
 
-      expect(res.status).toBe(302);
-      expect(res.headers.location).toContain(getUrl(LIMITED_PARTNERS_URL));
-    });
+      it("should redirect to the review limited partners page - LPs", async () => {
+        const limitedPartner = new LimitedPartnerBuilder().isPerson().build();
 
-    it("should reload the page if no general partner", async () => {
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
+        appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
 
-      const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.reviewGeneralPartners,
-        addAnotherGeneralPartner: "no"
+        const res = await request(app).post(URL).send({
+          pageType: RegistrationPageType.reviewGeneralPartners,
+          addAnotherGeneralPartner: "no"
+        });
+
+        expect(res.status).toBe(302);
+        expect(res.headers.location).toContain(getUrl(REVIEW_LIMITED_PARTNERS_URL));
       });
-
-      expect(res.status).toBe(200);
-
-      expect(res.text).toContain(
-        `${enTranslationText.reviewGeneralPartnersPage.title} - ${enTranslationText.service} - GOV.UK`
-      );
     });
   });
 });

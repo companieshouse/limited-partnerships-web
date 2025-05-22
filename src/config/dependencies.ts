@@ -68,7 +68,8 @@ const addressLookUpController: AddressLookUpController = new AddressLookUpContro
 const transitionController: TransitionController = new TransitionController(companyService, cacheService);
 const generalPartnerController: GeneralPartnerController = new GeneralPartnerController(
   limitedPartnershipService,
-  generalPartnerService
+  generalPartnerService,
+  limitedPartnerService
 );
 const limitedPartnerController: LimitedPartnerController = new LimitedPartnerController(
   limitedPartnershipService,

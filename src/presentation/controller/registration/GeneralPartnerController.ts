@@ -5,18 +5,24 @@ import GeneralPartnerService from "../../../application/service/GeneralPartnerSe
 import registrationsRouting from "./Routing";
 import AbstractController from "../AbstractController";
 import RegistrationPageType from "./PageType";
-import { ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL, ADD_GENERAL_PARTNER_PERSON_URL, GENERAL_PARTNERS_URL, LIMITED_PARTNERS_URL } from "./url";
+import {
+  ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
+  ADD_GENERAL_PARTNER_PERSON_URL,
+  GENERAL_PARTNERS_URL,
+  LIMITED_PARTNERS_URL,
+  REVIEW_LIMITED_PARTNERS_URL
+} from "./url";
 import { GeneralPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 import { PageRouting } from "../PageRouting";
+import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
 
 class GeneralPartnerController extends AbstractController {
-  private limitedPartnershipService: LimitedPartnershipService;
-  private generalPartnerService: GeneralPartnerService;
-
-  constructor(limitedPartnershipService: LimitedPartnershipService, generalPartnerService: GeneralPartnerService) {
+  constructor(
+    private readonly limitedPartnershipService: LimitedPartnershipService,
+    private readonly generalPartnerService: GeneralPartnerService,
+    private readonly limitedPartnerService: LimitedPartnerService
+  ) {
     super();
-    this.limitedPartnershipService = limitedPartnershipService;
-    this.generalPartnerService = generalPartnerService;
   }
 
   getPageRouting() {
@@ -118,6 +124,7 @@ class GeneralPartnerController extends AbstractController {
           response.redirect(redirect);
           return;
         }
+
         response.render(
           super.templateName(pageRouting.currentUrl),
           super.makeProps(pageRouting, { limitedPartnership, generalPartners }, null)
@@ -199,21 +206,10 @@ class GeneralPartnerController extends AbstractController {
         const addAnotherGeneralPartner = request.body.addAnotherGeneralPartner;
 
         if (addAnotherGeneralPartner === "no") {
-          const generalPartners = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
+          await this.conditionalNextUrl(tokens, ids, pageRouting);
 
-          if (generalPartners.length === 0) {
-            const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
-              tokens,
-              ids.transactionId,
-              ids.submissionId
-            );
-
-            response.render(
-              super.templateName(pageRouting.currentUrl),
-              super.makeProps(pageRouting, { limitedPartnership, generalPartners }, null)
-            );
-            return;
-          }
+          response.redirect(pageRouting.nextUrl);
+          return;
         }
 
         let url = LIMITED_PARTNERS_URL;
@@ -231,6 +227,18 @@ class GeneralPartnerController extends AbstractController {
         next(error);
       }
     };
+  }
+
+  private async conditionalNextUrl(
+    tokens: { access_token: string; refresh_token: string },
+    ids: { transactionId: string; submissionId: string },
+    pageRouting: PageRouting
+  ) {
+    const limitedPartners = await this.limitedPartnerService.getLimitedPartners(tokens, ids.transactionId);
+
+    if (limitedPartners.length > 0) {
+      pageRouting.nextUrl = super.insertIdsInUrl(REVIEW_LIMITED_PARTNERS_URL, ids.transactionId, ids.submissionId);
+    }
   }
 
   postRemovePage() {
