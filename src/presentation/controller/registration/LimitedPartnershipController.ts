@@ -17,24 +17,25 @@ import {
 import CacheService from "../../../application/service/CacheService";
 import { PageRouting } from "../PageRouting";
 import { getJourneyTypes } from "../../../utils";
-import { CHECK_YOUR_ANSWERS_URL, GENERAL_PARTNERS_URL, NAME_WITH_IDS_URL, WHICH_TYPE_WITH_IDS_URL } from "./url";
+import {
+  CHECK_YOUR_ANSWERS_URL,
+  GENERAL_PARTNERS_URL,
+  NAME_WITH_IDS_URL,
+  REVIEW_GENERAL_PARTNERS_URL,
+  WHICH_TYPE_WITH_IDS_URL
+} from "./url";
 import { CONFIRM_REGISTERED_OFFICE_ADDRESS_URL } from "../addressLookUp/url";
 import { CONFIRMATION_URL } from "../global/url";
+import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 
 class LimitedPartnershipController extends AbstractController {
-  private limitedPartnershipService: LimitedPartnershipService;
-  private cacheService: CacheService;
-  private readonly paymentService: PaymentService;
-
   constructor(
-    limitedPartnershipService: LimitedPartnershipService,
-    cacheService: CacheService,
-    paymentService: PaymentService
+    private readonly limitedPartnershipService: LimitedPartnershipService,
+    private readonly generalPartnerService: GeneralPartnerService,
+    private readonly cacheService: CacheService,
+    private readonly paymentService: PaymentService
   ) {
     super();
-    this.limitedPartnershipService = limitedPartnershipService;
-    this.cacheService = cacheService;
-    this.paymentService = paymentService;
   }
 
   getPageRouting() {
@@ -263,6 +264,12 @@ class LimitedPartnershipController extends AbstractController {
           ids.submissionId
         );
       }
+    } else if (pageRouting.pageType === RegistrationPageType.sic) {
+      const generalPartners = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
+
+      if (generalPartners.length > 0) {
+        pageRouting.nextUrl = super.insertIdsInUrl(REVIEW_GENERAL_PARTNERS_URL, ids.transactionId, ids.submissionId);
+      }
     }
   }
 
@@ -339,11 +346,25 @@ class LimitedPartnershipController extends AbstractController {
           return;
         }
 
+        await this.conditionalSicCodeNextUrl(tokens, ids, pageRouting);
+
         response.redirect(pageRouting.nextUrl);
       } catch (error) {
         next(error);
       }
     };
+  }
+
+  private async conditionalSicCodeNextUrl(
+    tokens: { access_token: string; refresh_token: string },
+    ids: { transactionId: string; submissionId: string },
+    pageRouting: PageRouting
+  ) {
+    const generalPartners = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
+
+    if (generalPartners.length > 0) {
+      pageRouting.nextUrl = super.insertIdsInUrl(REVIEW_GENERAL_PARTNERS_URL, ids.transactionId, ids.submissionId);
+    }
   }
 }
 
