@@ -51,7 +51,9 @@ describe("Check Your Answers Page", () => {
       expect(res.text).toContain(limitedPartnership?.data?.name_ending?.toUpperCase());
       expect(res.text).toContain(limitedPartnership?.data?.email);
       expect(res.text).toContain("4 Line 1, Line 2, Stoke-On-Trent, England, ST6 3LJ");
+      expect(res.text).toContain("enter-registered-office-address#premises");
       expect(res.text).toContain("2 Line 3, Line 4, Burton-On-Trent, England, DE6 3LJ");
+      expect(res.text).toContain("enter-principal-place-of-business-address#premises");
       expect(res.text).toContain("Such term as decided by the partners within the partnership agreement");
       expect(res.text).toContain("12345,67890");
       expect(res.text).toContain("name#partnership_name");
