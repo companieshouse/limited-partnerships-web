@@ -9,6 +9,7 @@ import {
   ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
   ADD_LIMITED_PARTNER_PERSON_URL,
   CHECK_YOUR_ANSWERS_URL,
+  LIMITED_PARTNERS_URL,
   REVIEW_LIMITED_PARTNERS_URL
 } from "../../../../controller/registration/url";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
@@ -63,17 +64,14 @@ describe("Review Limited Partners Page", () => {
     });
 
     describe("Empty list", () => {
-      it("should load the review limited partners page and contains empty list text", async () => {
+      it("should redirect to limited partners start page when list is empty", async () => {
         appDevDependencies.limitedPartnerGateway.feedLimitedPartners([]);
 
         const res = await request(app).get(URL);
 
-        expect(res.status).toBe(200);
-
-        expect(res.text).toContain(
-          `${enTranslationText.reviewLimitedPartnersPage.title} - ${enTranslationText.service} - GOV.UK`
-        );
-        expect(res.text).toContain(enTranslationText.reviewLimitedPartnersPage.limitedPartnersAdded.emptyList);
+        const redirectUrl = getUrl(LIMITED_PARTNERS_URL);
+        expect(res.status).toBe(302);
+        expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
       });
     });
   });
