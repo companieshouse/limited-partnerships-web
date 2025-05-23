@@ -1,7 +1,7 @@
 import request from "supertest";
 import app from "../app";
 
-import { Jurisdiction, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { Jurisdiction, LimitedPartnership, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { CHECK_YOUR_ANSWERS_URL } from "../../../controller/registration/url";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
@@ -165,6 +165,25 @@ describe("Check Your Answers Page", () => {
   });
 
   describe("POST Check Your Answers Page", () => {
+
+    it("should send lawful purpose statement", async () => {
+      const limitedPartnership = new LimitedPartnershipBuilder()
+        .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+        .build();
+
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+      const res = await request(app).post(URL).send({
+        pageType: RegistrationPageType.checkYourAnswers,
+        lawful_purpose_statement_checked: "true"
+      });
+
+      const lp: LimitedPartnership = await appDevDependencies.limitedPartnershipGateway.getLimitedPartnership({ access_token: "", refresh_token: "" }, "", "");
+      expect(lp.data?.lawful_purpose_statement_checked).toBe("true");
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${PAYMENT_LINK_JOURNEY}`);
+    });
+
     it("should navigate to next page", async () => {
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.checkYourAnswers
