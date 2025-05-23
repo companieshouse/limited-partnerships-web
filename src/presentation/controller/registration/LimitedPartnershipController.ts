@@ -141,10 +141,20 @@ class LimitedPartnershipController extends AbstractController {
     };
   }
 
-  closeTransaction() {
+  postCheckYourAnswers() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const { tokens, ids } = super.extract(request);
+        const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
+
+        await this.limitedPartnershipService.sendPageData(
+          tokens,
+          ids.transactionId,
+          ids.submissionId,
+          pageType,
+          request.body
+        );
+
         const closeTransactionResponse = await this.limitedPartnershipService.closeTransaction(
           tokens,
           ids.transactionId
