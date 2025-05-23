@@ -24,7 +24,7 @@
 
 {% block content %}
   <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds-from-desktop">
+    <div class="govuk-grid-column-two-thirds-from-desktop">      
       <h1 class="govuk-heading-l">{{ i18n.checkYourAnswersPage.title }}</h1>
       <h2 class="govuk-heading-m">{{ i18n.checkYourAnswersPage.lpInfo }}</h2>
       {{ govukSummaryList({
@@ -161,7 +161,7 @@
           {% include "includes/csrf_token.njk" %}
 
           {{ govukCheckboxes({
-            id: "lawful_purpose_statement_checked", 
+            id: "lawfulPurposeStatementChecked", 
             name: "lawful_purpose_statement_checked",            
             fieldset: {
               legend: {
@@ -174,7 +174,6 @@
               {
                 value: "true",
                 text: i18n.checkYourAnswersPage.futureLawful,
-                checked: props.data.limitedPartnership.data.lawful_purpose_statement_checked,
                 attributes: {
                   required: true
                 }
