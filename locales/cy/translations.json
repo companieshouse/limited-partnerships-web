@@ -343,9 +343,16 @@
         "futureLawful" : "WELSH - I confirm that the intended future activities of the limited partnership are lawful.",
         "payment" : "WELSH - Continue to payment",
 
-        "generalPartners": {
-            "title": "WELSH - General partners",
-            "changeRemoveOrAdd": "WELSH - Change, remove or add a general partners",
+        "partners": {
+            "generalPartners" : {
+                "title": "WELSH - General partners",
+                "changeRemoveOrAdd": "WELSH - Change, remove or add a general partners"
+            },
+            "limitedPartners" : {
+                "title": "WELSH - Limited partners",
+                "changeRemoveOrAdd": "WELSH - Change, remove or add a limited partners",
+                "amountContributed": "WELSH - Amount contributed"
+            },
             "person": {
                 "name": "WELSH - Name",
                 "previousName": "WELSH - Previous name",

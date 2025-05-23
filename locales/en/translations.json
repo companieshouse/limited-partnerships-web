@@ -342,9 +342,16 @@
         "futureLawful" : "I confirm that the intended future activities of the limited partnership are lawful.",
         "payment" : "Continue to payment",
 
-        "generalPartners": {
-            "title": "General partners",
-            "changeRemoveOrAdd": "Change, remove or add a general partners",
+        "partners": {
+            "generalPartners" : {
+                "title": "General partners",
+                "changeRemoveOrAdd": "Change, remove or add a general partners"
+            },
+            "limitedPartners" : {
+                "title": "Limited partners",
+                "changeRemoveOrAdd": "Change, remove or add a limited partners",
+                "amountContributed": "Amount contributed"
+            },
             "person": {
                 "name": "Name",
                 "previousName": "Previous name",

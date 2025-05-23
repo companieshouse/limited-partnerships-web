@@ -20,7 +20,7 @@ abstract class AbstractPartnerBuilder {
     principal_office_address: {
       postal_code: "ST6 3LJ",
       premises: "4",
-      address_line_1: "line 1",
+      address_line_1: "principal office address line 1",
       address_line_2: "line 2",
       locality: "stoke-on-trent",
       region: "region",
@@ -31,7 +31,7 @@ abstract class AbstractPartnerBuilder {
     usual_residential_address: {
       postal_code: "ST6 3LJ",
       premises: "4",
-      address_line_1: "line 1",
+      address_line_1: "usual residential address line 1",
       address_line_2: "line 2",
       locality: "stoke-on-trent",
       region: "region",

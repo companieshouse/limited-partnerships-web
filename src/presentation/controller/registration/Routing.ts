@@ -168,7 +168,8 @@ const registrationRoutingCheckYourAnswers = {
   nextUrl: "/",
   pageType: RegistrationPageType.checkYourAnswers,
   data: {
-    reviewGeneralPartnersType: RegistrationPageType.reviewGeneralPartners
+    reviewGeneralPartnersType: RegistrationPageType.reviewGeneralPartners,
+    reviewLimitedPartnersType: RegistrationPageType.reviewLimitedPartners
   }
 };
 

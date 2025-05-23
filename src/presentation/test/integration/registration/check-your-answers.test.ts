@@ -46,7 +46,8 @@ describe("Check Your Answers Page", () => {
       testTranslations(res.text, enTranslationText.checkYourAnswersPage, [
         "headingTerm",
         "jurisdictions",
-        "headingSic"
+        "headingSic",
+        "amountContributed"
       ]);
       expect(res.text).not.toContain("WELSH -");
     });
@@ -59,7 +60,8 @@ describe("Check Your Answers Page", () => {
       testTranslations(res.text, cyTranslationText.checkYourAnswersPage, [
         "headingTerm",
         "jurisdictions",
-        "headingSic"
+        "headingSic",
+        "amountContributed"
       ]);
       expect(res.text).toContain("WELSH -");
     });
@@ -192,11 +194,15 @@ describe("Check Your Answers Page", () => {
 
     expect(res.status).toBe(200);
 
-    testTranslations(res.text, enTranslationText.checkYourAnswersPage, ["scotland"]);
+    testTranslations(res.text, enTranslationText.checkYourAnswersPage, ["scotland", "amountContributed"]);
 
     checkIfValuesInText(res, generalPartnerPerson);
 
     checkIfValuesInText(res, generalPartnerLegalEntity);
+
+    checkIfValuesInText(res, limitedPartnerPerson);
+
+    checkIfValuesInText(res, limitedPartnerLegalEntity);
   });
 
   it("should load the check your answers page with partners - CY", async () => {
@@ -204,11 +210,19 @@ describe("Check Your Answers Page", () => {
 
     expect(res.status).toBe(200);
 
-    testTranslations(res.text, cyTranslationText.checkYourAnswersPage, ["scotland", "northernIreland"]);
+    testTranslations(res.text, cyTranslationText.checkYourAnswersPage, [
+      "scotland",
+      "northernIreland",
+      "amountContributed"
+    ]);
 
     checkIfValuesInText(res, generalPartnerPerson);
 
     checkIfValuesInText(res, generalPartnerLegalEntity);
+
+    checkIfValuesInText(res, limitedPartnerPerson);
+
+    checkIfValuesInText(res, limitedPartnerLegalEntity);
   });
 
   describe("POST Check Your Answers Page", () => {
@@ -238,13 +252,18 @@ const checkIfValuesInText = (res: request.Response, generalPartnerPerson: any) =
   for (const key in generalPartnerPerson.data) {
     if (typeof generalPartnerPerson.data[key] === "string" || typeof generalPartnerPerson.data[key] === "object") {
       if (key === "nationality1") {
-        const capitalizedNationalities =
+        const capitalized =
           generalPartnerPerson.data[key].charAt(0).toUpperCase() +
           generalPartnerPerson.data[key].slice(1).toLowerCase();
 
-        expect(res.text).toContain(capitalizedNationalities);
+        expect(res.text).toContain(capitalized);
       } else if (key.includes("address")) {
-        expect(res.text).toContain(generalPartnerPerson.data[key].postal_code);
+        const capitalized = generalPartnerPerson.data[key].address_line_1
+          .split(" ")
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+          .join(" ");
+
+        expect(res.text).toContain(capitalized);
       } else {
         expect(res.text).toContain(generalPartnerPerson.data[key]);
       }
