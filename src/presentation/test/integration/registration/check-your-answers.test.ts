@@ -173,15 +173,13 @@ describe("Check Your Answers Page", () => {
 
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-      const res = await request(app).post(URL).send({
+      await request(app).post(URL).send({
         pageType: RegistrationPageType.checkYourAnswers,
         lawful_purpose_statement_checked: "true"
       });
 
       const lp: LimitedPartnership = await appDevDependencies.limitedPartnershipGateway.getLimitedPartnership({ access_token: "", refresh_token: "" }, "", "");
       expect(lp.data?.lawful_purpose_statement_checked).toBe("true");
-      expect(res.status).toBe(302);
-      expect(res.text).toContain(`Redirecting to ${PAYMENT_LINK_JOURNEY}`);
     });
 
     it("should navigate to next page", async () => {
