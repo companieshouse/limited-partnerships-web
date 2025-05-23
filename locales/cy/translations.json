@@ -341,7 +341,36 @@
         "headingTerm" : "WELSH - Term of partnership",
         "confirm" : "WELSH - Confirm this statement",
         "futureLawful" : "WELSH - I confirm that the intended future activities of the limited partnership are lawful.",
-        "payment" : "WELSH - Continue to payment"
+        "payment" : "WELSH - Continue to payment",
+
+        "partners": {
+            "generalPartners" : {
+                "title": "WELSH - General partners",
+                "changeRemoveOrAdd": "WELSH - Change, remove or add a general partners"
+            },
+            "limitedPartners" : {
+                "title": "WELSH - Limited partners",
+                "changeRemoveOrAdd": "WELSH - Change, remove or add a limited partners",
+                "amountContributed": "WELSH - Amount contributed"
+            },
+            "person": {
+                "name": "WELSH - Name",
+                "previousName": "WELSH - Previous name",
+                "dateOfBirth": "WELSH - Date of birth",
+                "nationality": "WELSH - Nationality",
+                "usualResidentialAddress": "WELSH - Usual residential address",
+                "correspondenceAddress": "WELSH - Correspondence address"
+            },
+            "legalEntity": {
+                "name": "WELSH - Name",
+                "legalForm": "WELSH - Legal form or corporate identity",
+                "governingLaw": "WELSH - Governing law",
+                "register": "WELSH - Register",
+                "countryRegisteredIn": "WELSH - Country registered in",
+                "registrationNumber": "WELSH - Registration number",
+                "principalOfficeAddress": "WELSH - Principal office address"
+            }
+        } 
     },
 
     "confirmationPage" : {

@@ -10,7 +10,7 @@
     "BY_AGREEMENT": i18n.termPage.byAgreement,
     "UNTIL_DISSOLUTION": i18n.termPage.untilDissolution,
     "NONE": i18n.termPage.noTerm
-    } 
+    }
 %}
 {% set term = termMap[props.data.limitedPartnership.data.term] %}
 {% set jurisdictionMap = {
@@ -28,7 +28,7 @@
       <h1 class="govuk-heading-l">{{ i18n.checkYourAnswersPage.title }}</h1>
       <h2 class="govuk-heading-m">{{ i18n.checkYourAnswersPage.lpInfo }}</h2>
       {{ govukSummaryList({
-        classes: "govuk-!-margin-bottom-9",
+        classes: "govuk-!-margin-bottom-7",
         rows: [
           {
             key: {
@@ -173,6 +173,260 @@
                 or props.data.limitedPartnership.data.partnership_type === "SLP"
         ]
       }) }}
+
+      <br>
+
+      {% if props.data.generalPartners.length > 0 %}
+        <h2 class="govuk-heading-m">{{ i18n.checkYourAnswersPage.partners.generalPartners.title }}</h2>
+        {% for item in props.data.generalPartners %}
+          {% if item.data.forename %}
+
+            {% set nationalities = item.data.nationality1 %}
+            {% if item.data.nationality2 %}
+              {% set nationalities = item.data.nationality1 + ", " + item.data.nationality2 | capitalize %}
+            {% endif %}
+
+            {{ govukSummaryList({
+                classes: "govuk-!-margin-bottom-7",
+                rows: [
+                  {
+                    key: {
+                        text: i18n.checkYourAnswersPage.partners.person.name
+                    },
+                    value: {
+                        text: item.data.forename + " " + item.data.surname
+                    }
+                  },
+                  {
+                    key: {
+                        text: i18n.checkYourAnswersPage.partners.person.previousName
+                    },
+                    value: {
+                        text: item.data.previous_name
+                    }
+                  } if item.data.previous_name,
+                  {
+                    key: {
+                        text: i18n.checkYourAnswersPage.partners.person.dateOfBirth
+                    },
+                    value: {
+                        text: item.data.date_of_birth
+                    }
+                  },
+                  {
+                    key: {
+                        text: i18n.checkYourAnswersPage.partners.person.nationality
+                    },
+                    value: {
+                        text: nationalities
+                    }
+                  },
+                  {
+                    key: {
+                        text: i18n.checkYourAnswersPage.partners.person.usualResidentialAddress
+                    },
+                    value: {
+                        text: macros.formatAddress(item.data.usual_residential_address, true)
+                    }
+                  },
+                  {
+                    key: {
+                        text: i18n.checkYourAnswersPage.partners.person.correspondenceAddress
+                    },
+                    value: {
+                        text: macros.formatAddress(item.data.service_address, true)
+                    }
+                  }
+                ]
+            }) }}
+          {% elif item.data.legal_entity_name %}
+            {{ govukSummaryList({
+              classes: "govuk-!-margin-bottom-7",
+              rows: [
+                {
+                  key: {
+                      text: i18n.checkYourAnswersPage.partners.legalEntity.name
+                  },
+                  value: {
+                      text: item.data.legal_entity_name
+                  }
+                },
+                {
+                  key: {
+                      text: i18n.checkYourAnswersPage.partners.legalEntity.legalForm
+                  },
+                  value: {
+                      text: item.data.legal_form
+                  }
+                },
+                {
+                  key: {
+                      text: i18n.checkYourAnswersPage.partners.legalEntity.governingLaw
+                  },
+                  value: {
+                      text: item.data.governing_law
+                  }
+                },
+                {
+                  key: {
+                      text: i18n.checkYourAnswersPage.partners.legalEntity.register
+                  },
+                  value: {
+                      text: item.data.legal_entity_register_name
+                  }
+                },
+                {
+                  key: {
+                      text: i18n.checkYourAnswersPage.partners.legalEntity.countryRegisteredIn
+                  },
+                  value: {
+                      text: item.data.legal_entity_registration_location
+                  }
+                },
+                {
+                  key: {
+                      text: i18n.checkYourAnswersPage.partners.legalEntity.registrationNumber
+                  },
+                  value: {
+                      text: item.data.registered_company_number
+                  }
+                },
+                {
+                  key: {
+                      text: i18n.checkYourAnswersPage.partners.legalEntity.principalOfficeAddress
+                  },
+                  value: {
+                      text: macros.formatAddress(item.data.principal_office_address)
+                  }
+                }
+              ]
+            }) }}
+          {% endif %}
+        {% endfor %}
+        
+        <p class="govuk-body-m govuk-!-margin-bottom-9">
+          <a href="{{ props.currentUrl | replace(props.pageType, props.data.reviewGeneralPartnersType) }}"  class="govuk-body-m govuk-link" data-event-id="change-link">{{ i18n.checkYourAnswersPage.partners.generalPartners.changeRemoveOrAdd }}</a>
+        <p>
+          
+      {% endif %}
+
+      {% if props.data.limitedPartners.length > 0 %}
+        <h2 class="govuk-heading-m">{{ i18n.checkYourAnswersPage.partners.limitedPartners.title }}</h2>
+        {% for item in props.data.limitedPartners %}
+          {% if item.data.forename %}
+
+            {% set nationalities = item.data.nationality1 | capitalize %}
+            {% if item.data.nationality2 %}
+              {% set nationalities = item.data.nationality1 + ", " + item.data.nationality2 | capitalize %}
+            {% endif %}
+
+            {{ govukSummaryList({
+                classes: "govuk-!-margin-bottom-7",
+                rows: [
+                  {
+                    key: {
+                        text: i18n.checkYourAnswersPage.partners.person.name
+                    },
+                    value: {
+                        text: item.data.forename + " " + item.data.surname
+                    }
+                  },
+                  {
+                    key: {
+                        text: i18n.checkYourAnswersPage.partners.person.dateOfBirth
+                    },
+                    value: {
+                        text: item.data.date_of_birth
+                    }
+                  },
+                  {
+                    key: {
+                        text: i18n.checkYourAnswersPage.partners.person.nationality
+                    },
+                    value: {
+                        text: nationalities
+                    }
+                  },
+                  {
+                    key: {
+                        text: i18n.checkYourAnswersPage.partners.person.usualResidentialAddress
+                    },
+                    value: {
+                        text: macros.formatAddress(item.data.usual_residential_address, true)
+                    }
+                  }
+                ]
+            }) }}
+          {% elif item.data.legal_entity_name %}
+            {{ govukSummaryList({
+              classes: "govuk-!-margin-bottom-7",
+              rows: [
+                {
+                  key: {
+                      text: i18n.checkYourAnswersPage.partners.legalEntity.name
+                  },
+                  value: {
+                      text: item.data.legal_entity_name
+                  }
+                },
+                {
+                  key: {
+                      text: i18n.checkYourAnswersPage.partners.legalEntity.legalForm
+                  },
+                  value: {
+                      text: item.data.legal_form
+                  }
+                },
+                {
+                  key: {
+                      text: i18n.checkYourAnswersPage.partners.legalEntity.governingLaw
+                  },
+                  value: {
+                      text: item.data.governing_law
+                  }
+                },
+                {
+                  key: {
+                      text: i18n.checkYourAnswersPage.partners.legalEntity.register
+                  },
+                  value: {
+                      text: item.data.legal_entity_register_name
+                  }
+                },
+                {
+                  key: {
+                      text: i18n.checkYourAnswersPage.partners.legalEntity.countryRegisteredIn
+                  },
+                  value: {
+                      text: item.data.legal_entity_registration_location
+                  }
+                },
+                {
+                  key: {
+                      text: i18n.checkYourAnswersPage.partners.legalEntity.registrationNumber
+                  },
+                  value: {
+                      text: item.data.registered_company_number
+                  }
+                },
+                {
+                  key: {
+                      text: i18n.checkYourAnswersPage.partners.legalEntity.principalOfficeAddress
+                  },
+                  value: {
+                      text: macros.formatAddress(item.data.principal_office_address)
+                  }
+                }
+              ]
+            }) }}
+          {% endif %}
+        {% endfor %}
+        
+        <p class="govuk-body-m govuk-!-margin-bottom-7">
+          <a href="{{ props.currentUrl | replace(props.pageType, props.data.reviewLimitedPartnersType) }}"  class="govuk-body-m govuk-link" data-event-id="change-link">{{ i18n.checkYourAnswersPage.partners.limitedPartners.changeRemoveOrAdd }}</a>
+        <p>
+          
+      {% endif %}
 
       <br>
       <div class="govuk-button-group">

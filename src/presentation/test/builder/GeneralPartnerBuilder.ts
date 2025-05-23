@@ -2,15 +2,15 @@ import TransactionGeneralPartner from "../../../domain/entities/TransactionGener
 import AbstractPartnerBuilder from "./AbstractPartnerBuilder";
 
 export const generalPartnerPerson = {
-  forename: "Joe",
-  surname: "Doe",
+  forename: "Joe - GP",
+  surname: "Doe - GP",
   date_of_birth: "2001-01-01",
   nationality1: "BRITISH",
   nationality2: undefined
 };
 
 export const generalPartnerLegalEntity = {
-  legal_entity_name: "My Company ltd",
+  legal_entity_name: "My Company ltd - GP",
   legal_form: "Limited Company",
   governing_law: "Act of law",
   legal_entity_register_name: "US Register",
@@ -35,7 +35,7 @@ class GeneralPartnerBuilder extends AbstractPartnerBuilder {
       service_address: {
         postal_code: "ST6 3LJ",
         premises: "4",
-        address_line_1: "line 1",
+        address_line_1: "service address line 1",
         address_line_2: "line 2",
         locality: "stoke-on-trent",
         region: "region",
@@ -64,6 +64,11 @@ class GeneralPartnerBuilder extends AbstractPartnerBuilder {
       ...this.data,
       ...generalPartnerPerson
     };
+    return this;
+  }
+
+  withPreviousName(previousName: string) {
+    this.data.previous_name = previousName;
     return this;
   }
 

@@ -9,10 +9,33 @@ import { appDevDependencies } from "../../../../config/dev-dependencies";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import RegistrationPageType from "../../../controller/registration/PageType";
+import GeneralPartnerBuilder from "../../builder/GeneralPartnerBuilder";
+import LimitedPartnerBuilder from "../../builder/LimitedPartnerBuilder";
 
 describe("Check Your Answers Page", () => {
   const URL = getUrl(CHECK_YOUR_ANSWERS_URL);
   const PAYMENT_LINK_JOURNEY = "https://api-test-payments.chs.local:4001";
+
+  let limitedPartnership;
+  let generalPartnerPerson;
+  let generalPartnerLegalEntity;
+  let limitedPartnerPerson;
+  let limitedPartnerLegalEntity;
+
+  beforeEach(() => {
+    limitedPartnership = new LimitedPartnershipBuilder().build();
+
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+    generalPartnerPerson = new GeneralPartnerBuilder().isPerson().withPreviousName("Joe Dee").build();
+    generalPartnerLegalEntity = new GeneralPartnerBuilder().isLegalEntity().build();
+
+    appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartnerPerson, generalPartnerLegalEntity]);
+
+    limitedPartnerPerson = new LimitedPartnerBuilder().isPerson().build();
+    limitedPartnerLegalEntity = new LimitedPartnerBuilder().isLegalEntity().build();
+    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerPerson, limitedPartnerLegalEntity]);
+  });
 
   describe("GET Check Your Answers Page", () => {
     it("should GET Check Your Answers Page English text", async () => {
@@ -23,7 +46,8 @@ describe("Check Your Answers Page", () => {
       testTranslations(res.text, enTranslationText.checkYourAnswersPage, [
         "headingTerm",
         "jurisdictions",
-        "headingSic"
+        "headingSic",
+        "amountContributed"
       ]);
       expect(res.text).not.toContain("WELSH -");
     });
@@ -36,14 +60,13 @@ describe("Check Your Answers Page", () => {
       testTranslations(res.text, cyTranslationText.checkYourAnswersPage, [
         "headingTerm",
         "jurisdictions",
-        "headingSic"
+        "headingSic",
+        "amountContributed"
       ]);
       expect(res.text).toContain("WELSH -");
     });
 
     it("should load the check your answers page with data from api and show change links", async () => {
-      const limitedPartnership = new LimitedPartnershipBuilder().build();
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
       const res = await request(app).get(URL);
 
       expect(res.status).toBe(200);
@@ -166,6 +189,42 @@ describe("Check Your Answers Page", () => {
     expect(res.text).toContain(text);
   });
 
+  it("should load the check your answers page with partners - EN", async () => {
+    const res = await request(app).get(URL);
+
+    expect(res.status).toBe(200);
+
+    testTranslations(res.text, enTranslationText.checkYourAnswersPage, ["scotland", "amountContributed"]);
+
+    checkIfValuesInText(res, generalPartnerPerson);
+
+    checkIfValuesInText(res, generalPartnerLegalEntity);
+
+    checkIfValuesInText(res, limitedPartnerPerson);
+
+    checkIfValuesInText(res, limitedPartnerLegalEntity);
+  });
+
+  it("should load the check your answers page with partners - CY", async () => {
+    const res = await request(app).get(URL + "?lang=cy");
+
+    expect(res.status).toBe(200);
+
+    testTranslations(res.text, cyTranslationText.checkYourAnswersPage, [
+      "scotland",
+      "northernIreland",
+      "amountContributed"
+    ]);
+
+    checkIfValuesInText(res, generalPartnerPerson);
+
+    checkIfValuesInText(res, generalPartnerLegalEntity);
+
+    checkIfValuesInText(res, limitedPartnerPerson);
+
+    checkIfValuesInText(res, limitedPartnerLegalEntity);
+  });
+
   describe("POST Check Your Answers Page", () => {
     it("should navigate to next page", async () => {
       const res = await request(app).post(URL).send({
@@ -188,3 +247,26 @@ describe("Check Your Answers Page", () => {
     });
   });
 });
+
+const checkIfValuesInText = (res: request.Response, generalPartnerPerson: any) => {
+  for (const key in generalPartnerPerson.data) {
+    if (typeof generalPartnerPerson.data[key] === "string" || typeof generalPartnerPerson.data[key] === "object") {
+      if (key === "nationality1") {
+        const capitalized =
+          generalPartnerPerson.data[key].charAt(0).toUpperCase() +
+          generalPartnerPerson.data[key].slice(1).toLowerCase();
+
+        expect(res.text).toContain(capitalized);
+      } else if (key.includes("address")) {
+        const capitalized = generalPartnerPerson.data[key].address_line_1
+          .split(" ")
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+          .join(" ");
+
+        expect(res.text).toContain(capitalized);
+      } else {
+        expect(res.text).toContain(generalPartnerPerson.data[key]);
+      }
+    }
+  }
+};
