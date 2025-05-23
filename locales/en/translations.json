@@ -212,7 +212,8 @@
                 "postcodeFormat": "Invalid postcode format",
                 "countryMissing": "Select a country",
                 "jurisdictionCountry": "You must enter a country that matches your jurisdiction",
-                "invalidCharacters": "must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes"
+                "invalidCharacters": "must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "newKey" : "new value"
             }
         },
 
