@@ -161,7 +161,8 @@
           {% include "includes/csrf_token.njk" %}
 
           {{ govukCheckboxes({
-            name: "lpStatement",            
+            id: "lawful_purpose_statement_checked", 
+            name: "lawful_purpose_statement_checked",            
             fieldset: {
               legend: {
                 text: i18n.checkYourAnswersPage.confirm,
@@ -171,8 +172,9 @@
             },
             items: [
               {
-                value: "lp-statement",
+                value: "true",
                 text: i18n.checkYourAnswersPage.futureLawful,
+                checked: props.data.limitedPartnership.data.lawful_purpose_statement_checked,
                 attributes: {
                   required: true
                 }

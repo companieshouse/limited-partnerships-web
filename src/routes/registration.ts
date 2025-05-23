@@ -300,7 +300,7 @@ export const registrationEndpoints = (
   router.post(
     CHECK_YOUR_ANSWERS_URL,
     authentication,
-    dependencies.limitedPartnershipController.closeTransaction()
+    dependencies.limitedPartnershipController.postCheckYourAnswers()
   );
 
   router.get(
