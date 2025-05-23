@@ -102,7 +102,8 @@
                 "title" : "Choose the usual residential address of the limited partner"
             },
             "limitedPartnerPrincipalOfficeAddress": {
-                "title": "Choose the limited partner's principal office address"
+                "title": "Choose the limited partner's principal office address",
+                "titleHint": "This is the address for the entity's main office"
             }
         },
 
