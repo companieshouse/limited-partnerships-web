@@ -1,4 +1,5 @@
 import { Journey } from "../domain/entities/journey";
+
 import { getEnvironmentValue, getEnvironmentValueAsBoolean } from "../utils/environment.value";
 
 // APP CONFIG
