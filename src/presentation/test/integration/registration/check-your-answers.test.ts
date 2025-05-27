@@ -1,7 +1,7 @@
 import request from "supertest";
 import app from "../app";
 
-import { Jurisdiction, LimitedPartnership, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { Jurisdiction, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { CHECK_YOUR_ANSWERS_URL } from "../../../controller/registration/url";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
@@ -178,8 +178,7 @@ describe("Check Your Answers Page", () => {
         lawful_purpose_statement_checked: "true"
       });
 
-      const lp: LimitedPartnership = await appDevDependencies.limitedPartnershipGateway.getLimitedPartnership({ access_token: "", refresh_token: "" }, "", "");
-      expect(lp.data?.lawful_purpose_statement_checked).toBe("true");
+      expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships[0]?.data?.lawful_purpose_statement_checked).toBe("true");
     });
 
     it("should navigate to next page", async () => {
