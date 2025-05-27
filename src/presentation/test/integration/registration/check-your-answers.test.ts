@@ -226,6 +226,22 @@ describe("Check Your Answers Page", () => {
   });
 
   describe("POST Check Your Answers Page", () => {
+
+    it("should send lawful purpose statement", async () => {
+      const limitedPartnership = new LimitedPartnershipBuilder()
+        .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+        .build();
+
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+      await request(app).post(URL).send({
+        pageType: RegistrationPageType.checkYourAnswers,
+        lawful_purpose_statement_checked: "true"
+      });
+
+      expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships[0]?.data?.lawful_purpose_statement_checked).toBe("true");
+    });
+
     it("should navigate to next page", async () => {
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.checkYourAnswers
