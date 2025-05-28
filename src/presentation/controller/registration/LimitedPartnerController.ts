@@ -8,6 +8,7 @@ import RegistrationPageType from "./PageType";
 import { ADD_LIMITED_PARTNER_PERSON_URL, ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL, CHECK_YOUR_ANSWERS_URL, LIMITED_PARTNERS_URL } from "./url";
 import { LimitedPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 import { PageRouting } from "../PageRouting";
+import { appendLangParamToUrl } from "../../../utils/append-lang-param";
 
 class LimitedPartnerController extends AbstractController {
   private readonly limitedPartnershipService: LimitedPartnershipService;
@@ -80,14 +81,16 @@ class LimitedPartnerController extends AbstractController {
   limitedPartnerChoice() {
     return (request: Request, response: Response, next: NextFunction) => {
       try {
-        const { ids } = super.extract(request);
+        const { pageType, ids } = super.extract(request);
 
         let url =
           request.body.parameter === "person" ? ADD_LIMITED_PARTNER_PERSON_URL : ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL;
 
         url = super.insertIdsInUrl(url, ids.transactionId, ids.submissionId);
 
-        response.redirect(url);
+        const pageRouting = super.getRouting(registrationsRouting, pageType, request);
+
+        response.redirect(appendLangParamToUrl(pageRouting.currentUrl, url));
       } catch (error) {
         next(error);
       }
@@ -115,7 +118,7 @@ class LimitedPartnerController extends AbstractController {
 
         if (limitedPartners.length === 0) {
           const redirect = super.insertIdsInUrl(LIMITED_PARTNERS_URL, ids.transactionId, ids.submissionId);
-          response.redirect(redirect);
+          response.redirect(appendLangParamToUrl(pageRouting.currentUrl, redirect));
           return;
         }
 
@@ -228,7 +231,7 @@ class LimitedPartnerController extends AbstractController {
 
         const redirectUrl = super.insertIdsInUrl(url, ids.transactionId, ids.submissionId);
 
-        response.redirect(redirectUrl);
+        response.redirect(appendLangParamToUrl(pageRouting.currentUrl, redirectUrl));
       } catch (error) {
         next(error);
       }
