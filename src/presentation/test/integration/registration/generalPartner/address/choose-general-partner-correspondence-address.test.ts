@@ -56,7 +56,7 @@ describe("Choose general partner correspondence address page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain("2 Duncalf Street, Stoke-On-Trent, ST6 3LJ");
-      expect(res.text).toContain("The Lodge Duncalf Street, Castle Hill, Stoke-On-Trent, ST6 3LJ");
+      expect(res.text).toContain("The Lodge Duncalf&#39;s Street, Castle Hill, Stoke-On-Trent, ST6 3LJ");
       expect(res.text).toContain("4 Duncalf Street, Stoke-On-Trent, ST6 3LJ");
       expect(res.text).toContain("6 Duncalf Street, Stoke-On-Trent, ST6 3LJ");
     });

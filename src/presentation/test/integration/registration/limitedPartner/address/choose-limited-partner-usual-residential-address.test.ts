@@ -42,7 +42,7 @@ describe("Choose usual residential address of the limited partner page", () => {
       testTranslations(res.text, cyTranslationText.address.chooseAddress.limitedPartnerUsualResidentialAddress);
       expect(res.text).toContain(cyTranslationText.address.chooseAddress.addressLink);
       expect(res.text).toContain("2 Duncalf Street, Stoke-On-Trent, ST6 3LJ");
-      expect(res.text).toContain("The Lodge Duncalf Street, Castle Hill, Stoke-On-Trent, ST6 3LJ");
+      expect(res.text).toContain("The Lodge Duncalf&#39;s Street, Castle Hill, Stoke-On-Trent, ST6 3LJ");
       expect(res.text).toContain("4 Duncalf Street, Stoke-On-Trent, ST6 3LJ");
       expect(res.text).toContain("6 Duncalf Street, Stoke-On-Trent, ST6 3LJ");
     });
@@ -56,7 +56,7 @@ describe("Choose usual residential address of the limited partner page", () => {
       testTranslations(res.text, enTranslationText.address.chooseAddress.limitedPartnerUsualResidentialAddress);
       expect(res.text).toContain(enTranslationText.address.chooseAddress.addressLink);
       expect(res.text).toContain("2 Duncalf Street, Stoke-On-Trent, ST6 3LJ");
-      expect(res.text).toContain("The Lodge Duncalf Street, Castle Hill, Stoke-On-Trent, ST6 3LJ");
+      expect(res.text).toContain("The Lodge Duncalf&#39;s Street, Castle Hill, Stoke-On-Trent, ST6 3LJ");
       expect(res.text).toContain("4 Duncalf Street, Stoke-On-Trent, ST6 3LJ");
       expect(res.text).toContain("6 Duncalf Street, Stoke-On-Trent, ST6 3LJ");
     });

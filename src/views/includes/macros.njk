@@ -27,7 +27,7 @@
     {% set address = premises + address_line_1 + address_line_2 + locality + address.postal_code %}
   {% endif %}  
 
-  {{ address }}
+  {{ address | safe }}
 {% endmacro %}
 
 {%- macro capitalizeEachWord(str) -%}
