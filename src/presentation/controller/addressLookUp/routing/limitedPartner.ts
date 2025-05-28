@@ -6,7 +6,7 @@ import {
 } from "../../registration/url";
 import * as url from "../url";
 
-export enum AddressCacheKeys {
+enum AddressCacheKeys {
   addressCacheKey = "addressCacheKey",
   territoryCacheKey = "territoryCacheKey"
 }
