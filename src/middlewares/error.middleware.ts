@@ -50,6 +50,9 @@ const globalErrorHandler = (
 
   res.status(500).render(config.ERROR_TEMPLATE, {
     templateName: config.ERROR_TEMPLATE,
+    props: {
+      previousUrl: req.get("Referrer")
+    }
   });
 };
 
