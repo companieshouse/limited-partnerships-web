@@ -7,7 +7,6 @@ describe('appendLangParamToUrl test suite', () => {
     const redirectUrl = `${ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL}`;
 
     const resultRedirectUrl = appendLangParamToUrl(currentUrl, redirectUrl);
-
     expect(resultRedirectUrl).toBe(`${ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL}?lang=cy`);
   });
 

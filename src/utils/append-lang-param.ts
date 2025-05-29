@@ -1,14 +1,13 @@
 export const appendLangParamToUrl = (currentUrl: string, redirectUrl: string): string => {
   try {
     const currentUrlParams = new URLSearchParams(new URL(`http://${currentUrl}`)?.search);
-    const redirectUrlObj = new URL(redirectUrl, `http://${redirectUrl}`);
+    const redirectUrlParams = new URLSearchParams(new URL(`http://${redirectUrl}`)?.search);
 
-    if (redirectUrlObj.searchParams.has("lang")) {
+    if (redirectUrlParams.has("lang")) {
       return redirectUrl;
     }
     if (currentUrlParams.has("lang")) {
       const langQuery = `?lang=${currentUrlParams.get("lang")}`;
-      console.log(`Added the param! ${redirectUrl}${langQuery}`);
       return `${redirectUrl}${langQuery}`;
     }
     return redirectUrl;
