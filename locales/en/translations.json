@@ -450,6 +450,11 @@
         "pageInformation": "If the partnership has more than one limited partner, you'll add them one at a time."
     },
 
+    "links" : {
+      "back": "Back",
+      "signOut": "Sign out"
+    },
+
     "namePage" : {
         "title" : "Limited partnership name",
         "whatIsName" : "What is the limited partnership name?",
