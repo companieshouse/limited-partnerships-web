@@ -1,4 +1,4 @@
-import { Request } from "express";
+import { Request, Response } from "express";
 import { Session } from "@companieshouse/node-session-handler";
 
 import {
@@ -96,16 +96,15 @@ abstract class AbstractController {
 
   insertIdsInUrl(
     url: string,
-    transactionId = "",
-    submissionId = "",
-    generalPartnerId = "",
-    limitedPartnerId = ""
+    ids,
+    response?: Response
   ): string {
-    url = this.replaceBaseUrlWithIds(url, transactionId, submissionId, generalPartnerId, limitedPartnerId);
-    url = this.insertSubmissionId(url, submissionId);
-    url = this.insertTransactionId(url, transactionId);
-    url = this.insertGeneralPartnerId(url, generalPartnerId);
-    url = this.insertLimitedPartnerId(url, limitedPartnerId);
+    url = response?.locals.languageEnabled ? `${url}?lang=${response.locals.lang}` : url;
+    url = this.replaceBaseUrlWithIds(url, ids.transactionId, ids.submissionId, ids.generalPartnerId, ids.limitedPartnerId);
+    url = this.insertSubmissionId(url, ids.submissionId);
+    url = this.insertTransactionId(url, ids.transactionId);
+    url = this.insertGeneralPartnerId(url, ids.generalPartnerId);
+    url = this.insertLimitedPartnerId(url, ids.limitedPartnerId);
     return url;
   }
 
@@ -153,28 +152,24 @@ abstract class AbstractController {
 
   protected insertIdsInAllUrl(
     pageRouting: PageRouting,
-    transactionId: string,
-    submissionId: string,
-    generalPartnerId: string,
-    limitedPartnerId: string
+    transactionId,
+    submissionId,
+    generalPartnerId,
+    limitedPartnerId,
   ): PageRouting {
+    const ids = { transactionId, submissionId, generalPartnerId, limitedPartnerId };
+
     return {
       ...pageRouting,
       previousUrl: this.insertIdsInUrl(
         pageRouting.previousUrl,
-        transactionId,
-        submissionId,
-        generalPartnerId,
-        limitedPartnerId
+        ids
       ),
       currentUrl: this.insertIdsInUrl(
         pageRouting.currentUrl,
-        transactionId,
-        submissionId,
-        generalPartnerId,
-        limitedPartnerId
+        ids
       ),
-      nextUrl: this.insertIdsInUrl(pageRouting.nextUrl, transactionId, submissionId, generalPartnerId, limitedPartnerId)
+      nextUrl: this.insertIdsInUrl(pageRouting.nextUrl, ids)
     };
   }
 

@@ -204,11 +204,11 @@ describe("Gateway Update - Refresh Token", () => {
           })
         }
       });
+      const ids = { transactionId: appDevDependencies.transactionGateway.transactionId, wrongId: "wrong-id" };
 
       const url = appDevDependencies.limitedPartnershipController.insertIdsInUrl(
         EMAIL_URL,
-        appDevDependencies.transactionGateway.transactionId,
-        "wrong-id"
+        ids
       );
 
       const res = await request(appRealDependencies).get(url);

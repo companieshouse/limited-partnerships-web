@@ -76,8 +76,7 @@ class GeneralPartnerController extends AbstractController {
       if (previousPageType === RegistrationPageType.reviewGeneralPartners) {
         pageRouting.previousUrl = super.insertIdsInUrl(
           pageRouting.data?.customPreviousUrl,
-          ids.transactionId,
-          ids.submissionId
+          ids
         );
       }
     }
@@ -91,9 +90,7 @@ class GeneralPartnerController extends AbstractController {
         let url =
           request.body.parameter === "person" ? ADD_GENERAL_PARTNER_PERSON_URL : ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL;
 
-        url = super.insertIdsInUrl(url, ids.transactionId, ids.submissionId);
-
-        url = response.locals.languageEnabled ? `${url}?lang=${response.locals.lang}` : url;
+        url = super.insertIdsInUrl(url, ids, response);
 
         response.redirect(url);
       } catch (error) {
@@ -122,7 +119,7 @@ class GeneralPartnerController extends AbstractController {
         }
 
         if (generalPartners.length === 0) {
-          let redirect = super.insertIdsInUrl(GENERAL_PARTNERS_URL, ids.transactionId, ids.submissionId);
+          let redirect = super.insertIdsInUrl(GENERAL_PARTNERS_URL, ids, response);
 
           redirect = response.locals.languageEnabled ? `${redirect}?lang=${response.locals.lang}` : redirect;
 
@@ -157,12 +154,11 @@ class GeneralPartnerController extends AbstractController {
 
           return;
         }
+        const newIds = { ...ids, generalPartnerId: result.generalPartnerId };
 
         const url = super.insertIdsInUrl(
           pageRouting.nextUrl,
-          ids.transactionId,
-          ids.submissionId,
-          result.generalPartnerId
+          newIds
         );
 
         response.redirect(url);
@@ -225,9 +221,7 @@ class GeneralPartnerController extends AbstractController {
           url = ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL;
         }
 
-        let redirectUrl = super.insertIdsInUrl(url, ids.transactionId, ids.submissionId);
-
-        redirectUrl = response.locals.languageEnabled ? `${redirectUrl}?lang=${response.locals.lang}` : redirectUrl;
+        const redirectUrl = super.insertIdsInUrl(url, ids, response);
 
         response.redirect(redirectUrl);
       } catch (error) {
@@ -244,7 +238,7 @@ class GeneralPartnerController extends AbstractController {
     const limitedPartners = await this.limitedPartnerService.getLimitedPartners(tokens, ids.transactionId);
 
     if (limitedPartners.length > 0) {
-      pageRouting.nextUrl = super.insertIdsInUrl(REVIEW_LIMITED_PARTNERS_URL, ids.transactionId, ids.submissionId);
+      pageRouting.nextUrl = super.insertIdsInUrl(REVIEW_LIMITED_PARTNERS_URL, ids);
     }
   }
 

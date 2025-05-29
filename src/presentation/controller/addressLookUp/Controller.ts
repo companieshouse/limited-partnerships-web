@@ -210,15 +210,11 @@ class AddressLookUpController extends AbstractController {
 
         // if exact match - redirect to confirm page
         if (address?.postal_code && address?.premises && address?.address_line_1) {
-          let url = super.insertIdsInUrl(
+          const url = super.insertIdsInUrl(
             pageRouting?.data?.confirmAddressUrl,
-            ids.transactionId,
-            ids.submissionId,
-            ids.generalPartnerId,
-            ids.limitedPartnerId
+            ids,
+            response
           );
-
-          url = response.locals.languageEnabled ? `${url}?lang=${response.locals.lang}` : url;
 
           response.redirect(url);
           return;
@@ -458,8 +454,7 @@ class AddressLookUpController extends AbstractController {
       if (limitedPartnership.data?.principal_place_of_business_address) {
         pageRouting.nextUrl = super.insertIdsInUrl(
           CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
-          ids.transactionId,
-          ids.submissionId
+          ids
         );
       }
     } else if (pageRouting.pageType === AddressLookUpPageType.confirmPrincipalPlaceOfBusinessAddress) {
@@ -470,7 +465,7 @@ class AddressLookUpController extends AbstractController {
           limitedPartnership?.data?.partnership_type === PartnershipType.SPFLP) &&
         generalPartners.length > 0
       ) {
-        pageRouting.nextUrl = super.insertIdsInUrl(REVIEW_GENERAL_PARTNERS_URL, ids.transactionId, ids.submissionId);
+        pageRouting.nextUrl = super.insertIdsInUrl(REVIEW_GENERAL_PARTNERS_URL, ids);
       }
     }
   }
@@ -547,10 +542,7 @@ class AddressLookUpController extends AbstractController {
 
         const redirectUrl = super.insertIdsInUrl(
           isUnitedKingdom ? pageRouting.nextUrl : pageRouting.data?.["nextUrlOverseas"],
-          ids.transactionId,
-          ids.submissionId,
-          ids.generalPartnerId,
-          ids.limitedPartnerId
+          ids
         );
 
         const cacheKey = pageRouting.data?.[AddressCacheKeys.territoryCacheKey];
