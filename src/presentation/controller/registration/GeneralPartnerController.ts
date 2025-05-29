@@ -15,7 +15,6 @@ import {
 import { GeneralPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 import { PageRouting } from "../PageRouting";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
-import { appendLangParamToUrl } from "../../../utils/append-lang-param";
 
 class GeneralPartnerController extends AbstractController {
   constructor(
@@ -87,16 +86,16 @@ class GeneralPartnerController extends AbstractController {
   generalPartnerChoice() {
     return (request: Request, response: Response, next: NextFunction) => {
       try {
-        const { pageType, ids } = super.extract(request);
+        const { ids } = super.extract(request);
 
         let url =
           request.body.parameter === "person" ? ADD_GENERAL_PARTNER_PERSON_URL : ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL;
 
         url = super.insertIdsInUrl(url, ids.transactionId, ids.submissionId);
 
-        const pageRouting = super.getRouting(registrationsRouting, pageType, request);
+        url = response.locals.languageEnabled ? `${url}?lang=${response.locals.lang}` : url;
 
-        response.redirect(appendLangParamToUrl(pageRouting.currentUrl, url));
+        response.redirect(url);
       } catch (error) {
         next(error);
       }
@@ -123,8 +122,11 @@ class GeneralPartnerController extends AbstractController {
         }
 
         if (generalPartners.length === 0) {
-          const redirect = super.insertIdsInUrl(GENERAL_PARTNERS_URL, ids.transactionId, ids.submissionId);
-          response.redirect(appendLangParamToUrl(pageRouting.currentUrl, redirect));
+          let redirect = super.insertIdsInUrl(GENERAL_PARTNERS_URL, ids.transactionId, ids.submissionId);
+
+          redirect = response.locals.languageEnabled ? `${redirect}?lang=${response.locals.lang}` : redirect;
+
+          response.redirect(redirect);
           return;
         }
 
@@ -223,9 +225,11 @@ class GeneralPartnerController extends AbstractController {
           url = ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL;
         }
 
-        const redirectUrl = super.insertIdsInUrl(url, ids.transactionId, ids.submissionId);
+        let redirectUrl = super.insertIdsInUrl(url, ids.transactionId, ids.submissionId);
 
-        response.redirect(appendLangParamToUrl(pageRouting.currentUrl, redirectUrl));
+        redirectUrl = response.locals.languageEnabled ? `${redirectUrl}?lang=${response.locals.lang}` : redirectUrl;
+
+        response.redirect(redirectUrl);
       } catch (error) {
         next(error);
       }

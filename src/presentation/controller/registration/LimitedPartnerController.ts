@@ -8,7 +8,6 @@ import RegistrationPageType from "./PageType";
 import { ADD_LIMITED_PARTNER_PERSON_URL, ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL, CHECK_YOUR_ANSWERS_URL, LIMITED_PARTNERS_URL } from "./url";
 import { LimitedPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 import { PageRouting } from "../PageRouting";
-import { appendLangParamToUrl } from "../../../utils/append-lang-param";
 
 class LimitedPartnerController extends AbstractController {
   private readonly limitedPartnershipService: LimitedPartnershipService;
@@ -81,16 +80,16 @@ class LimitedPartnerController extends AbstractController {
   limitedPartnerChoice() {
     return (request: Request, response: Response, next: NextFunction) => {
       try {
-        const { pageType, ids } = super.extract(request);
+        const { ids } = super.extract(request);
 
         let url =
           request.body.parameter === "person" ? ADD_LIMITED_PARTNER_PERSON_URL : ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL;
 
         url = super.insertIdsInUrl(url, ids.transactionId, ids.submissionId);
 
-        const pageRouting = super.getRouting(registrationsRouting, pageType, request);
+        url = response.locals.languageEnabled ? `${url}?lang=${response.locals.lang}` : url;
 
-        response.redirect(appendLangParamToUrl(pageRouting.currentUrl, url));
+        response.redirect(url);
       } catch (error) {
         next(error);
       }
@@ -117,8 +116,11 @@ class LimitedPartnerController extends AbstractController {
         }
 
         if (limitedPartners.length === 0) {
-          const redirect = super.insertIdsInUrl(LIMITED_PARTNERS_URL, ids.transactionId, ids.submissionId);
-          response.redirect(appendLangParamToUrl(pageRouting.currentUrl, redirect));
+          let redirect = super.insertIdsInUrl(LIMITED_PARTNERS_URL, ids.transactionId, ids.submissionId);
+
+          redirect = response.locals.languageEnabled ? `${redirect}?lang=${response.locals.lang}` : redirect;
+
+          response.redirect(redirect);
           return;
         }
 
@@ -229,9 +231,11 @@ class LimitedPartnerController extends AbstractController {
           url = ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL;
         }
 
-        const redirectUrl = super.insertIdsInUrl(url, ids.transactionId, ids.submissionId);
+        let redirectUrl = super.insertIdsInUrl(url, ids.transactionId, ids.submissionId);
 
-        response.redirect(appendLangParamToUrl(pageRouting.currentUrl, redirectUrl));
+        redirectUrl = response.locals.languageEnabled ? `${redirectUrl}?lang=${response.locals.lang}` : redirectUrl;
+
+        response.redirect(redirectUrl);
       } catch (error) {
         next(error);
       }

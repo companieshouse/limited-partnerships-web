@@ -16,7 +16,6 @@ import LimitedPartnerService from "../../../application/service/LimitedPartnerSe
 import PageType from "../PageType";
 import { CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL } from "./url";
 import { REVIEW_GENERAL_PARTNERS_URL } from "../registration/url";
-import { appendLangParamToUrl } from "../../../utils/append-lang-param";
 
 class AddressLookUpController extends AbstractController {
   private static readonly LIMITED_PARTNERSHIP_POSTCODE_PAGES: Set<PageType | PageDefault> = new Set([
@@ -211,14 +210,17 @@ class AddressLookUpController extends AbstractController {
 
         // if exact match - redirect to confirm page
         if (address?.postal_code && address?.premises && address?.address_line_1) {
-          const url = super.insertIdsInUrl(
+          let url = super.insertIdsInUrl(
             pageRouting?.data?.confirmAddressUrl,
             ids.transactionId,
             ids.submissionId,
             ids.generalPartnerId,
             ids.limitedPartnerId
           );
-          response.redirect(appendLangParamToUrl(pageRouting.currentUrl, url));
+
+          url = response.locals.languageEnabled ? `${url}?lang=${response.locals.lang}` : url;
+
+          response.redirect(url);
           return;
         }
 
