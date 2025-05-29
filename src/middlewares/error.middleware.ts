@@ -3,7 +3,7 @@ import { CsrfError } from "@companieshouse/web-security-node";
 
 import { logger } from "../utils";
 import * as config from "../config/constants";
-import { WHICH_TYPE_URL } from "presentation/controller/registration/url";
+import { WHICH_TYPE_URL } from "../presentation/controller/registration/url";
 
 const pageNotFound = (req: Request, res: Response) => {
   return res.status(404).render(config.NOT_FOUND_TEMPLATE, {
