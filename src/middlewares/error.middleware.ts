@@ -49,10 +49,7 @@ const globalErrorHandler = (
     `An error has occurred. Re-routing to the error screen - ${err.stack}`
   );
 
-  let previous = req.get("Referrer") ?? "";
-  if (previous.length === 0) {
-    previous = WHICH_TYPE_URL;
-  }
+  const previous = req.get("Referrer") ?? WHICH_TYPE_URL;
   res.status(500).render(config.ERROR_TEMPLATE, {
     templateName: config.ERROR_TEMPLATE,
     props: {
