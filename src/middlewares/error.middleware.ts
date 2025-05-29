@@ -3,6 +3,7 @@ import { CsrfError } from "@companieshouse/web-security-node";
 
 import { logger } from "../utils";
 import * as config from "../config/constants";
+import { WHICH_TYPE_URL } from "presentation/controller/registration/url";
 
 const pageNotFound = (req: Request, res: Response) => {
   return res.status(404).render(config.NOT_FOUND_TEMPLATE, {
@@ -48,10 +49,14 @@ const globalErrorHandler = (
     `An error has occurred. Re-routing to the error screen - ${err.stack}`
   );
 
+  let previous = req.get("Referrer") ?? "";
+  if (previous.length === 0) {
+    previous = WHICH_TYPE_URL;
+  }
   res.status(500).render(config.ERROR_TEMPLATE, {
     templateName: config.ERROR_TEMPLATE,
     props: {
-      previousUrl: req.get("Referrer")
+      previousUrl: previous
     }
   });
 };
