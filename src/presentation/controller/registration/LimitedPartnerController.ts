@@ -148,6 +148,7 @@ class LimitedPartnerController extends AbstractController {
         }
 
         const newIds = { ...ids, limitedPartnerId: result.limitedPartnerId };
+
         const url = super.insertIdsInUrl(
           pageRouting.nextUrl,
           newIds

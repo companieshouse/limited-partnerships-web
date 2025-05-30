@@ -119,9 +119,7 @@ class GeneralPartnerController extends AbstractController {
         }
 
         if (generalPartners.length === 0) {
-          let redirect = super.insertIdsInUrl(GENERAL_PARTNERS_URL, ids, response);
-
-          redirect = response.locals.languageEnabled ? `${redirect}?lang=${response.locals.lang}` : redirect;
+          const redirect = super.insertIdsInUrl(GENERAL_PARTNERS_URL, ids, response);
 
           response.redirect(redirect);
           return;
