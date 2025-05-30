@@ -70,8 +70,7 @@ class LimitedPartnerController extends AbstractController {
       if (previousPageType === RegistrationPageType.reviewLimitedPartners) {
         pageRouting.previousUrl = super.insertIdsInUrl(
           pageRouting.data?.customPreviousUrl,
-          ids.transactionId,
-          ids.submissionId
+          ids
         );
       }
     }
@@ -85,7 +84,7 @@ class LimitedPartnerController extends AbstractController {
         let url =
           request.body.parameter === "person" ? ADD_LIMITED_PARTNER_PERSON_URL : ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL;
 
-        url = super.insertIdsInUrl(url, ids.transactionId, ids.submissionId);
+        url = super.insertIdsInUrl(url, ids, response);
 
         response.redirect(url);
       } catch (error) {
@@ -114,7 +113,8 @@ class LimitedPartnerController extends AbstractController {
         }
 
         if (limitedPartners.length === 0) {
-          const redirect = super.insertIdsInUrl(LIMITED_PARTNERS_URL, ids.transactionId, ids.submissionId);
+          const redirect = super.insertIdsInUrl(LIMITED_PARTNERS_URL, ids, response);
+
           response.redirect(redirect);
           return;
         }
@@ -147,12 +147,11 @@ class LimitedPartnerController extends AbstractController {
           return;
         }
 
+        const newIds = { ...ids, limitedPartnerId: result.limitedPartnerId };
+
         const url = super.insertIdsInUrl(
           pageRouting.nextUrl,
-          ids.transactionId,
-          ids.submissionId,
-          "",
-          result.limitedPartnerId
+          newIds
         );
 
         response.redirect(url);
@@ -226,7 +225,7 @@ class LimitedPartnerController extends AbstractController {
           url = ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL;
         }
 
-        const redirectUrl = super.insertIdsInUrl(url, ids.transactionId, ids.submissionId);
+        const redirectUrl = super.insertIdsInUrl(url, ids, response);
 
         response.redirect(redirectUrl);
       } catch (error) {

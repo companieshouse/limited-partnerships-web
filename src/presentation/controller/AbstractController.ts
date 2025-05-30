@@ -1,4 +1,4 @@
-import { Request } from "express";
+import { Request, Response } from "express";
 import { Session } from "@companieshouse/node-session-handler";
 
 import {
@@ -25,6 +25,13 @@ import UIErrors from "../../domain/entities/UIErrors";
 import { START_URL } from "./global/url";
 import { getJourneyTypes } from "../../utils";
 
+type Ids = {
+  transactionId: string,
+  submissionId: string,
+  generalPartnerId?: string,
+  limitedPartnerId?: string
+};
+
 abstract class AbstractController {
   protected getRouting(routing: PagesRouting, pageType: PageType, request: Request) {
     let pageRouting = routing.get(pageType);
@@ -35,10 +42,12 @@ abstract class AbstractController {
 
     pageRouting = this.insertIdsInAllUrl(
       pageRouting,
-      request.params[TRANSACTION_ID],
-      request.params[SUBMISSION_ID],
-      request.params[GENERAL_PARTNER_ID],
-      request.params[LIMITED_PARTNER_ID]
+      {
+        transactionId: request.params[TRANSACTION_ID],
+        submissionId: request.params[SUBMISSION_ID],
+        generalPartnerId: request.params[GENERAL_PARTNER_ID],
+        limitedPartnerId: request.params[LIMITED_PARTNER_ID]
+      } as Ids
     );
 
     pageRouting = this.addLangToUrls(request.url, pageRouting);
@@ -96,39 +105,35 @@ abstract class AbstractController {
 
   insertIdsInUrl(
     url: string,
-    transactionId = "",
-    submissionId = "",
-    generalPartnerId = "",
-    limitedPartnerId = ""
+    ids: Ids,
+    response?: Response
   ): string {
-    url = this.replaceBaseUrlWithIds(url, transactionId, submissionId, generalPartnerId, limitedPartnerId);
-    url = this.insertSubmissionId(url, submissionId);
-    url = this.insertTransactionId(url, transactionId);
-    url = this.insertGeneralPartnerId(url, generalPartnerId);
-    url = this.insertLimitedPartnerId(url, limitedPartnerId);
+    url = response?.locals.languageEnabled ? `${url}?lang=${response.locals.lang}` : url;
+    url = this.replaceBaseUrlWithIds(url, ids);
+    url = this.insertSubmissionId(url, ids.submissionId);
+    url = this.insertTransactionId(url, ids.transactionId);
+    url = this.insertGeneralPartnerId(url, ids.generalPartnerId);
+    url = this.insertLimitedPartnerId(url, ids.limitedPartnerId);
     return url;
   }
 
   private replaceBaseUrlWithIds(
     url: string,
-    transactionId: string,
-    submissionId: string,
-    generalPartnerId: string,
-    limitedPartnerId: string
+    ids: Ids
   ) {
     // general partner urls that can exist with or without ids
     const GP_URLS = [ADD_GENERAL_PARTNER_PERSON_URL, ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL];
 
     const urlWithIds = getJourneyTypes(url).isRegistration ? REGISTRATION_WITH_IDS_URL : TRANSITION_WITH_IDS_URL;
 
-    if (transactionId && submissionId && generalPartnerId && GP_URLS.includes(url)) {
+    if (ids.transactionId && ids.submissionId && ids.generalPartnerId && GP_URLS.includes(url)) {
       url = url.replace(urlWithIds, urlWithIds + GENERAL_PARTNER_WITH_ID_URL);
     }
 
     // limited partner urls that can exist with or without ids
     const LP_URLS = [ADD_LIMITED_PARTNER_PERSON_URL, ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL];
 
-    if (transactionId && submissionId && limitedPartnerId && LP_URLS.includes(url)) {
+    if (ids.transactionId && ids.submissionId && ids.limitedPartnerId && LP_URLS.includes(url)) {
       url = url.replace(urlWithIds, urlWithIds + LIMITED_PARTNER_WITH_ID_URL);
     }
 
@@ -143,38 +148,30 @@ abstract class AbstractController {
     return submissionId ? url.replace(`:${SUBMISSION_ID}`, submissionId) : url;
   }
 
-  protected insertGeneralPartnerId(url: string, generalPartnerId: string): string {
+  protected insertGeneralPartnerId(url: string, generalPartnerId?: string): string {
     return generalPartnerId ? url.replace(`:${GENERAL_PARTNER_ID}`, generalPartnerId) : url;
   }
 
-  protected insertLimitedPartnerId(url: string, limitedPartnerId: string): string {
+  protected insertLimitedPartnerId(url: string, limitedPartnerId?: string): string {
     return limitedPartnerId ? url.replace(`:${LIMITED_PARTNER_ID}`, limitedPartnerId) : url;
   }
 
   protected insertIdsInAllUrl(
     pageRouting: PageRouting,
-    transactionId: string,
-    submissionId: string,
-    generalPartnerId: string,
-    limitedPartnerId: string
+    ids: Ids
   ): PageRouting {
+
     return {
       ...pageRouting,
       previousUrl: this.insertIdsInUrl(
         pageRouting.previousUrl,
-        transactionId,
-        submissionId,
-        generalPartnerId,
-        limitedPartnerId
+        ids
       ),
       currentUrl: this.insertIdsInUrl(
         pageRouting.currentUrl,
-        transactionId,
-        submissionId,
-        generalPartnerId,
-        limitedPartnerId
+        ids
       ),
-      nextUrl: this.insertIdsInUrl(pageRouting.nextUrl, transactionId, submissionId, generalPartnerId, limitedPartnerId)
+      nextUrl: this.insertIdsInUrl(pageRouting.nextUrl, ids)
     };
   }
 
