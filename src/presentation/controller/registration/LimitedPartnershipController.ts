@@ -312,9 +312,7 @@ class LimitedPartnershipController extends AbstractController {
           (limitedPartnership?.data?.partnership_type === PartnershipType.PFLP ||
             limitedPartnership?.data?.partnership_type === PartnershipType.SPFLP)
         ) {
-          const { transactionId, submissionId } = super.extractIds(request);
-
-          const ids = { transactionId, submissionId };
+          const { ids } = super.extract(request);
 
           const url = super.insertIdsInUrl(GENERAL_PARTNERS_URL, ids);
 
