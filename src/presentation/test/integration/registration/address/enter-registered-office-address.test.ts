@@ -216,6 +216,7 @@ describe("Enter Registered Office Address Page", () => {
         address_line_2: "±",
         locality: "±",
         region: "±",
+        postal_code: "±"
       });
 
       expect(res.status).toBe(200);
@@ -229,6 +230,9 @@ describe("Enter Registered Office Address Page", () => {
         + enTranslationText.address.enterAddress.errorMessages.invalidCharacters);
       expect(res.text).toContain(enTranslationText.address.enterAddress.regionTitle + " "
         + enTranslationText.address.enterAddress.errorMessages.invalidCharacters);
+      expect(res.text).toContain(enTranslationText.address.enterAddress.postcode + " "
+        + enTranslationText.address.enterAddress.errorMessages.invalidCharacters);
+
       expect(res.text).toContain(enTranslationText.govUk.error.title);
       expect(res.text).toContain(limitedPartnership.data?.partnership_name?.toUpperCase());
     });
