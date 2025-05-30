@@ -103,7 +103,7 @@
             },
             "limitedPartnerPrincipalOfficeAddress": {
                 "title": "Choose the limited partner's principal office address",
-                "titleHint": "This is the address for the entity's main office"
+                "titleHint": "This is the address for the entity's main office."
             }
         },
 
@@ -256,7 +256,7 @@
                 },
                 "principalOfficeAddress": {
                     "whatIsPrincipalOfficeAddress": "What is the limited partner's principal office address?",
-                    "hint": "This is the address for the entity's main office",
+                    "hint": "This is the address for the entity's main office.",
                     "publicRegisterLine1": "We'll show the limited partner's principal office address on the public register."
                 }
             },
@@ -276,7 +276,7 @@
         "territoryChoice": {
             "generalPartnerPrincipalOfficeAddress": {
                 "title": "Where is the general partner's principal office address?",
-                "titleHint": "This is the address for the entity's main office",
+                "titleHint": "This is the address for the entity's main office.",
                 "publicRegisterInformationLine1": "We'll show the general partner's principal office address on the public register."
             },
             "generalPartnerUsualResidentialAddress": {
@@ -294,7 +294,7 @@
             },
             "limitedPartnerPrincipalOfficeAddress": {
                 "title": "Where is the limited partner's principal office address?",
-                "titleHint": "This is the address for the entity's main office",
+                "titleHint": "This is the address for the entity's main office.",
                 "publicRegisterInformationLine1": "We'll show the limited partner's principal office address on the public register."
             }
         },

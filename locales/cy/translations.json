@@ -103,7 +103,7 @@
             },
             "limitedPartnerPrincipalOfficeAddress": {
                 "title": "WELSH - Choose the limited partner's principal office address",
-                "titleHint": "WELSH - This is the address for the entity's main office"
+                "titleHint": "WELSH - This is the address for the entity's main office."
             }
         },
 
@@ -257,7 +257,7 @@
                 },
                 "principalOfficeAddress": {
                     "whatIsPrincipalOfficeAddress": "WELSH - What is the limited partner's principal office address?",
-                    "hint": "WELSH - This is the address for the entity's main office",
+                    "hint": "WELSH - This is the address for the entity's main office.",
                     "publicRegisterLine1": "WELSH - We'll show the limited partner's principal office address on the public register."
                 }
             },
@@ -277,7 +277,7 @@
         "territoryChoice": {
             "generalPartnerPrincipalOfficeAddress": {
                 "title": "WELSH - Where is the general partner's principal office address?",
-                "titleHint": "WELSH - This is the address for the entity's main office",
+                "titleHint": "WELSH - This is the address for the entity's main office.",
                 "publicRegisterInformationLine1": "WELSH - We'll show the general partner's principal office address on the public register."
             },
             "generalPartnerUsualResidentialAddress": {
@@ -295,7 +295,7 @@
             },
             "limitedPartnerPrincipalOfficeAddress": {
                 "title": "WELSH - Where is the limited partner's principal office address?",
-                "titleHint": "WELSH - This is the address for the entity's main office",
+                "titleHint": "WELSH - This is the address for the entity's main office.",
                 "publicRegisterInformationLine1": "WELSH - We'll show the limited partner's principal office address on the public register."
             }
         },
