@@ -282,7 +282,7 @@
             },
             "generalPartnerUsualResidentialAddress": {
                 "title": "WELSH - Where is the usual residential address of the general partner?",
-                "publicRegisterInformationLine1": "WELSH - We will not show the general partner's usual residential address"
+                "publicRegisterInformationLine1": "WELSH - We will not show the general partner's usual residential address."
             },
             "generalPartnerCorrespondenceAddress": {
                 "title": "WELSH - Where is the general partner's correspondence address?",
