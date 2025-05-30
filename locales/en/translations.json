@@ -193,6 +193,7 @@
             "region": "County (optional)",
             "regionTitle": "County",
             "postcode": "Postcode",
+            "postalCodeTitle": "Postcode",
             "country": "Country",
             "countrySelect": "Select a country",
             "countryEngland": "England",

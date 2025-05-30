@@ -5,15 +5,11 @@ import IAddressLookUpGateway from "../../domain/IAddressLookUpGateway";
 import { logger } from "../../utils";
 
 class AddressService {
-  private static readonly UK_COUNTRIES: Set<string> = new Set([
-    "Scotland",
-    "Northern Ireland",
-    "England",
-    "Wales"
-  ]);
+  private static readonly UK_COUNTRIES: Set<string> = new Set(["Scotland", "Northern Ireland", "England", "Wales"]);
 
   private static readonly VALID_UK_POSTCODE_FORMAT = /^[A-Za-z]{1,2}\d[A-Za-z\d]? ?\d[A-Za-z]{2}$/;
-  private static readonly VALID_CHARACTERS = /^[-,.:; 0-9A-Z&@$£¥€'"«»?!/\\()[\]{}<>*=#%+ÀÁÂÃÄÅĀĂĄÆǼÇĆĈĊČÞĎÐÈÉÊËĒĔĖĘĚĜĞĠĢĤĦÌÍÎÏĨĪĬĮİĴĶĹĻĽĿŁÑŃŅŇŊÒÓÔÕÖØŌŎŐǾŒŔŖŘŚŜŞŠŢŤŦÙÚÛÜŨŪŬŮŰŲŴẀẂẄỲÝŶŸŹŻŽa-zſƒǺàáâãäåāăąæǽçćĉċčþďðèéêëēĕėęěĝģğġĥħìíîïĩīĭįĵķĺļľŀłñńņňŋòóôõöøōŏőǿœŕŗřśŝşšţťŧùúûüũūŭůűųŵẁẃẅỳýŷÿźżž]*$/;
+  private static readonly VALID_CHARACTERS =
+    /^[-,.:; 0-9A-Z&@$£¥€'"«»?!/\\()[\]{}<>*=#%+ÀÁÂÃÄÅĀĂĄÆǼÇĆĈĊČÞĎÐÈÉÊËĒĔĖĘĚĜĞĠĢĤĦÌÍÎÏĨĪĬĮİĴĶĹĻĽĿŁÑŃŅŇŊÒÓÔÕÖØŌŎŐǾŒŔŖŘŚŜŞŠŢŤŦÙÚÛÜŨŪŬŮŰŲŴẀẂẄỲÝŶŸŹŻŽa-zſƒǺàáâãäåāăąæǽçćĉċčþďðèéêëēĕėęěĝģğġĥħìíîïĩīĭįĵķĺļľŀłñńņňŋòóôõöøōŏőǿœŕŗřśŝşšţťŧùúûüũūŭůűųŵẁẃẅỳýŷÿźżž]*$/;
 
   i18n: any;
 
@@ -88,7 +84,7 @@ class AddressService {
 
   public hasAddressGotInvalidCharacters(address: Address, uiErrors: UIErrors | undefined): UIErrors | undefined {
     let fieldErrors = {};
-    const ignoredFields = ["country", "postal_code"];
+    const ignoredFields = ["country"];
 
     for (const key in address) {
       if (ignoredFields.includes(key)) {
@@ -96,13 +92,17 @@ class AddressService {
       }
 
       let i18nFieldTitleKey = this.snakeCaseToCamelCase(key);
-      if (key === "address_line_2" || key === "region") {
+      if (key === "address_line_2" || key === "region" || key === "postal_code") {
         i18nFieldTitleKey += "Title";
       }
 
       fieldErrors = {
         ...fieldErrors,
-        ...this.checkAddressFieldForInvalidCharacters(key, address[key] ?? "", this.i18n?.address?.enterAddress?.[i18nFieldTitleKey])
+        ...this.checkAddressFieldForInvalidCharacters(
+          key,
+          address[key] ?? "",
+          this.i18n?.address?.enterAddress?.[i18nFieldTitleKey]
+        )
       };
     }
 
@@ -115,21 +115,20 @@ class AddressService {
   }
 
   isValidPostcode(postalCode: string, country: string, uiErrors: UIErrors | undefined): UIErrors | undefined {
-    if (AddressService.UK_COUNTRIES.has(country)
-        && !AddressService.VALID_UK_POSTCODE_FORMAT.exec(postalCode)) {
+    if (AddressService.UK_COUNTRIES.has(country) && !AddressService.VALID_UK_POSTCODE_FORMAT.exec(postalCode)) {
       uiErrors ??= new UIErrors();
 
-      this.setFieldError(
-        uiErrors,
-        "postal_code",
-        this.i18n?.address?.enterAddress?.errorMessages?.postcodeFormat
-      );
+      this.setFieldError(uiErrors, "postal_code", this.i18n?.address?.enterAddress?.errorMessages?.postcodeFormat);
     }
 
     return uiErrors;
   }
 
-  isValidJurisdictionAndCountry(jurisdiction: string, country: string, uiErrors: UIErrors | undefined): UIErrors | undefined {
+  isValidJurisdictionAndCountry(
+    jurisdiction: string,
+    country: string,
+    uiErrors: UIErrors | undefined
+  ): UIErrors | undefined {
     return this.checkJurisdictionAndCountryCombinationAllowed(jurisdiction, country, uiErrors);
   }
 
