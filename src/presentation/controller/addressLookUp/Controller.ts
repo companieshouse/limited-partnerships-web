@@ -3,7 +3,7 @@ import escape from "escape-html";
 import { Address, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import AddressService from "../../../application/service/AddressService";
-import addresssRouting, { AddressCacheKeys, addressLookUpRouting } from "./Routing";
+import addresssRouting, { AddressCacheKeys } from "./Routing";
 import AbstractController from "../AbstractController";
 import AddressLookUpPageType from "./PageType";
 import CacheService from "../../../application/service/CacheService";
@@ -157,7 +157,7 @@ class AddressLookUpController extends AbstractController {
         const { tokens, ids } = super.extract(request);
         const { postal_code, premises } = request.body;
         const pageType = super.extractPageTypeOrThrowError(request, AddressLookUpPageType);
-        const pageRouting = super.getRouting(addressLookUpRouting, pageType, request);
+        const pageRouting = super.getRouting(addresssRouting, pageType, request);
 
         const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
           tokens,
@@ -236,7 +236,7 @@ class AddressLookUpController extends AbstractController {
     address: Address
   ) {
     const cacheById = this.cacheService.getDataFromCacheById(request.signedCookies, transactionId);
-    const pageRouting = super.getRouting(addressLookUpRouting, pageType, request);
+    const pageRouting = super.getRouting(addresssRouting, pageType, request);
 
     const cache = this.cacheService.addDataToCache(request.signedCookies, {
       [transactionId]: {
@@ -285,7 +285,7 @@ class AddressLookUpController extends AbstractController {
           ids.submissionId
         );
 
-        const pageRouting = super.getRouting(addressLookUpRouting, pageType, request);
+        const pageRouting = super.getRouting(addresssRouting, pageType, request);
 
         let errors: UIErrors | undefined;
         if (AddressLookUpController.MANUAL_PAGES.has(pageType)) {
@@ -346,7 +346,7 @@ class AddressLookUpController extends AbstractController {
 
         const { tokens, ids } = super.extract(request);
         const pageType = super.extractPageTypeOrThrowError(request, AddressLookUpPageType);
-        const pageRouting = super.getRouting(addressLookUpRouting, pageType, request);
+        const pageRouting = super.getRouting(addresssRouting, pageType, request);
 
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
         const cacheById = this.cacheService.getDataFromCacheById(request.signedCookies, ids.transactionId);
@@ -500,7 +500,7 @@ class AddressLookUpController extends AbstractController {
   private saveAndRedirectToNextPage(request: Request, response: Response<any, Record<string, any>>, dataToStore: any) {
     const { ids } = super.extract(request);
     const pageType = super.extractPageTypeOrThrowError(request, AddressLookUpPageType);
-    const pageRouting = super.getRouting(addressLookUpRouting, pageType, request);
+    const pageRouting = super.getRouting(addresssRouting, pageType, request);
 
     const cacheById = this.cacheService.getDataFromCacheById(request.signedCookies, ids.transactionId);
     const cacheKey = pageRouting.data?.[AddressCacheKeys.addressCacheKey];
@@ -536,7 +536,7 @@ class AddressLookUpController extends AbstractController {
       try {
         const { ids, pageType } = super.extract(request);
         const parameter = request.body.parameter;
-        const pageRouting = super.getRouting(addressLookUpRouting, pageType, request);
+        const pageRouting = super.getRouting(addresssRouting, pageType, request);
 
         const isUnitedKingdom = parameter === "unitedKingdom";
 

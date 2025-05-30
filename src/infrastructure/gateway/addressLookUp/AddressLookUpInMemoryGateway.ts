@@ -95,7 +95,7 @@ const englandAddresses: UKAddress[] = [
   {
     postcode: "ST6 3LJ",
     premise: "THE LODGE",
-    addressLine1: "DUNCALF STREET",
+    addressLine1: "DUNCALF'S STREET",
     addressLine2: "CASTLE HILL",
     postTown: "STOKE-ON-TRENT",
     country: "GB-ENG"
