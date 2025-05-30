@@ -112,12 +112,8 @@ abstract class AbstractController {
     url = this.replaceBaseUrlWithIds(url, ids);
     url = this.insertSubmissionId(url, ids.submissionId);
     url = this.insertTransactionId(url, ids.transactionId);
-    if (ids.generalPartnerId) {
-      url = this.insertGeneralPartnerId(url, ids.generalPartnerId);
-    }
-    if (ids.limitedPartnerId) {
-      url = this.insertLimitedPartnerId(url, ids.limitedPartnerId);
-    }
+    url = this.insertGeneralPartnerId(url, ids.generalPartnerId);
+    url = this.insertLimitedPartnerId(url, ids.limitedPartnerId);
     return url;
   }
 
@@ -152,11 +148,11 @@ abstract class AbstractController {
     return submissionId ? url.replace(`:${SUBMISSION_ID}`, submissionId) : url;
   }
 
-  protected insertGeneralPartnerId(url: string, generalPartnerId: string): string {
+  protected insertGeneralPartnerId(url: string, generalPartnerId?: string): string {
     return generalPartnerId ? url.replace(`:${GENERAL_PARTNER_ID}`, generalPartnerId) : url;
   }
 
-  protected insertLimitedPartnerId(url: string, limitedPartnerId: string): string {
+  protected insertLimitedPartnerId(url: string, limitedPartnerId?: string): string {
     return limitedPartnerId ? url.replace(`:${LIMITED_PARTNER_ID}`, limitedPartnerId) : url;
   }
 
