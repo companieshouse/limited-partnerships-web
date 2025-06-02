@@ -199,12 +199,12 @@
                   },
                   {
                     key: {
-                        text: i18n.checkYourAnswersPage.partners.person.previousName
+                        text: i18n.checkYourAnswersPage.partners.person.formerNames
                     },
                     value: {
-                        text: item.data.previous_name
+                        text: item.data.former_names
                     }
-                  } if item.data.previous_name,
+                  } if item.data.former_names,
                   {
                     key: {
                         text: i18n.checkYourAnswersPage.partners.person.dateOfBirth
@@ -331,6 +331,14 @@
                         text: item.data.forename + " " + item.data.surname
                     }
                   },
+                  {
+                    key: {
+                        text: i18n.checkYourAnswersPage.partners.person.formerNames
+                    },
+                    value: {
+                        text: item.data.former_names
+                    }
+                  } if item.data.former_names,
                   {
                     key: {
                         text: i18n.checkYourAnswersPage.partners.person.dateOfBirth

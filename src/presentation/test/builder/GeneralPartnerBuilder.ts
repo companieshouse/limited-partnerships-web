@@ -67,8 +67,8 @@ class GeneralPartnerBuilder extends AbstractPartnerBuilder {
     return this;
   }
 
-  withPreviousName(previousName: string) {
-    this.data.previous_name = previousName;
+  withFormerNames(formerNames: string) {
+    this.data.former_names = formerNames;
     return this;
   }
 
