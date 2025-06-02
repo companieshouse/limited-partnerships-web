@@ -452,6 +452,11 @@
         "pageInformation": "WELSH - If the partnership has more than one limited partner, you'll add them one at a time."
     },
 
+    "links" : {
+      "back": "WELSH - Back",
+      "signOut": "WELSH - Sign out"
+    },
+
     "namePage" : {
         "title" : "WELSH - Limited partnership name",
         "whatIsName" : "WELSH - What is the limited partnership name?",
