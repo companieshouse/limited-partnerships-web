@@ -11,7 +11,7 @@ import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import GeneralPartnerBuilder from "../../builder/GeneralPartnerBuilder";
 import LimitedPartnerBuilder from "../../builder/LimitedPartnerBuilder";
-import { formatDate } from "utils/date-format";
+import { formatDate } from "../../../../utils/date-format";
 
 describe("Check Your Answers Page", () => {
   const URL = getUrl(CHECK_YOUR_ANSWERS_URL);
@@ -197,16 +197,16 @@ describe("Check Your Answers Page", () => {
 
     testTranslations(res.text, enTranslationText.checkYourAnswersPage, ["scotland", "amountContributed"]);
 
-    checkIfValuesInText(res, generalPartnerPerson, true);
+    checkIfValuesInText(res, generalPartnerPerson, enTranslationText);
 
-    checkIfValuesInText(res, generalPartnerLegalEntity, true);
+    checkIfValuesInText(res, generalPartnerLegalEntity, enTranslationText);
 
-    checkIfValuesInText(res, limitedPartnerPerson, true);
+    checkIfValuesInText(res, limitedPartnerPerson, enTranslationText);
 
-    checkIfValuesInText(res, limitedPartnerLegalEntity, true);
+    checkIfValuesInText(res, limitedPartnerLegalEntity, enTranslationText);
   });
 
-  it.skip("should load the check your answers page with partners - CY", async () => {
+  it("should load the check your answers page with partners - CY", async () => {
     const res = await request(app).get(URL + "?lang=cy");
 
     expect(res.status).toBe(200);
@@ -217,13 +217,13 @@ describe("Check Your Answers Page", () => {
       "amountContributed"
     ]);
 
-    checkIfValuesInText(res, generalPartnerPerson, false);
+    checkIfValuesInText(res, generalPartnerPerson, cyTranslationText);
 
-    checkIfValuesInText(res, generalPartnerLegalEntity, false);
+    checkIfValuesInText(res, generalPartnerLegalEntity, cyTranslationText);
 
-    checkIfValuesInText(res, limitedPartnerPerson, false);
+    checkIfValuesInText(res, limitedPartnerPerson, cyTranslationText);
 
-    checkIfValuesInText(res, limitedPartnerLegalEntity, false);
+    checkIfValuesInText(res, limitedPartnerLegalEntity, cyTranslationText);
   });
 
   describe("POST Check Your Answers Page", () => {
@@ -265,7 +265,7 @@ describe("Check Your Answers Page", () => {
   });
 });
 
-const checkIfValuesInText = (res: request.Response, partner: GeneralPartner | LimitedPartner, isEnglishUi: boolean) => {
+const checkIfValuesInText = (res: request.Response, partner: GeneralPartner | LimitedPartner, translationText: Record<string, any>) => {
   for (const key in partner.data) {
     if (typeof partner.data[key] === "string" || typeof partner.data[key] === "object") {
       if (key === "nationality1") {
@@ -275,7 +275,7 @@ const checkIfValuesInText = (res: request.Response, partner: GeneralPartner | Li
 
         expect(res.text).toContain(capitalized);
       } else if (key.includes("date_of_birth") && partner.data[key]) {
-        expect(res.text).toContain(formatDate(partner.data[key], isEnglishUi ? enTranslationText : cyTranslationText));
+        expect(res.text).toContain(formatDate(partner.data[key], translationText));
       } else if (key.includes("address")) {
         const capitalized = partner.data[key].address_line_1
           .split(" ")
