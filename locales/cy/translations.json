@@ -194,6 +194,7 @@
             "region": "WELSH - County (optional)",
             "regionTitle": "WELSH - County",
             "postcode": "WELSH - Postcode",
+            "postalCodeTitle": "WELSH - Postcode",
             "country": "WELSH - Country",
             "countrySelect": "WELSH - Select a country",
             "countryEngland": "WELSH - England",
