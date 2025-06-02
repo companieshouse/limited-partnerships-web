@@ -91,7 +91,7 @@ class LimitedPartnershipController extends AbstractController {
       ...partner,
       data: {
         ...partner.data,
-        date_of_birth: partner.data?.date_of_birth ? formatDate(partner.data?.date_of_birth as string, response.locals.i18n) : undefined
+        date_of_birth: partner.data?.date_of_birth ? formatDate(partner.data?.date_of_birth, response.locals.i18n) : undefined
       }
     };
   };
