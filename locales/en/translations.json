@@ -356,7 +356,7 @@
             },
             "person": {
                 "name": "Name",
-                "previousName": "Previous name",
+                "formerNames": "Previous name",
                 "dateOfBirth": "Date of birth",
                 "nationality": "Nationality",
                 "usualResidentialAddress": "Usual residential address",

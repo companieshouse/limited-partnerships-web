@@ -27,12 +27,12 @@ describe("Check Your Answers Page", () => {
 
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-    generalPartnerPerson = new GeneralPartnerBuilder().isPerson().withPreviousName("Joe Dee").build();
+    generalPartnerPerson = new GeneralPartnerBuilder().isPerson().withFormerNames("Joe Dee").build();
     generalPartnerLegalEntity = new GeneralPartnerBuilder().isLegalEntity().build();
 
     appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartnerPerson, generalPartnerLegalEntity]);
 
-    limitedPartnerPerson = new LimitedPartnerBuilder().isPerson().build();
+    limitedPartnerPerson = new LimitedPartnerBuilder().isPerson().withFormerNames("Joe Dee").build();
     limitedPartnerLegalEntity = new LimitedPartnerBuilder().isLegalEntity().build();
     appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerPerson, limitedPartnerLegalEntity]);
   });
@@ -226,7 +226,6 @@ describe("Check Your Answers Page", () => {
   });
 
   describe("POST Check Your Answers Page", () => {
-
     it("should send lawful purpose statement", async () => {
       const limitedPartnership = new LimitedPartnershipBuilder()
         .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
@@ -239,7 +238,9 @@ describe("Check Your Answers Page", () => {
         lawful_purpose_statement_checked: "true"
       });
 
-      expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships[0]?.data?.lawful_purpose_statement_checked).toBe("true");
+      expect(
+        appDevDependencies.limitedPartnershipGateway.limitedPartnerships[0]?.data?.lawful_purpose_statement_checked
+      ).toBe("true");
     });
 
     it("should navigate to next page", async () => {
