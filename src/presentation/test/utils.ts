@@ -19,12 +19,10 @@ export const getUrl = (url: string) => {
     ? appDevDependencies.limitedPartnerGateway.limitedPartnerId
     : "";
 
+  const ids = { transactionId: appDevDependencies.transactionGateway.transactionId, submissionId, generalPartnerId, limitedPartnerId };
   return appDevDependencies.addressLookUpController.insertIdsInUrl(
     url,
-    appDevDependencies.transactionGateway.transactionId,
-    submissionId,
-    generalPartnerId,
-    limitedPartnerId
+    ids
   );
 };
 
