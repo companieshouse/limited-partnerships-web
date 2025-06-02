@@ -33,6 +33,7 @@ import { CONFIRM_REGISTERED_OFFICE_ADDRESS_URL } from "../addressLookUp/url";
 import { CONFIRMATION_URL } from "../global/url";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
+import { formatDate } from "../../../utils/date-format";
 
 class LimitedPartnershipController extends AbstractController {
   constructor(
@@ -67,8 +68,10 @@ class LimitedPartnershipController extends AbstractController {
 
         if (pageRouting.pageType === RegistrationPageType.checkYourAnswers) {
           generalPartners = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
+          generalPartners = generalPartners.map((partner) => this.formatPartnerDob(partner, response));
 
           limitedPartners = await this.limitedPartnerService.getLimitedPartners(tokens, ids.transactionId);
+          limitedPartners = limitedPartners.map((partner) => this.formatPartnerDob(partner, response));
         }
 
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
@@ -82,6 +85,16 @@ class LimitedPartnershipController extends AbstractController {
       }
     };
   }
+
+  private formatPartnerDob(partner: GeneralPartner | LimitedPartner, response: Response): GeneralPartner | LimitedPartner {
+    return {
+      ...partner,
+      data: {
+        ...partner.data,
+        date_of_birth: partner.data?.date_of_birth ? formatDate(partner.data?.date_of_birth as string, response.locals.i18n) : undefined
+      }
+    };
+  };
 
   private conditionalPreviousUrl(
     ids: { transactionId: string; submissionId: string; generalPartnerId: string },
