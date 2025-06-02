@@ -1,12 +1,9 @@
 {% if userEmail %}
 
-  {% set signOutPath = '/limited-partnerships/sign-out' %}
-  {% set signOutText = i18n.links.signOut %}
-
   <ul id="navigation" class="sign-out-user-banner">
     <li class="content-email">{{ userEmail }}</li>
     <li>
-      <a class="govuk-link" href="{{ signOutPath }}" data-event-id="signout">{{ signOutText }}</a>
+      <a class="govuk-link" href="/limited-partnerships/sign-out" data-event-id="signout">{{ i18n.links.signOut }}</a>
     </li>
   </ul>
 
