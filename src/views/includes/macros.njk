@@ -3,6 +3,8 @@
   {% set address_line_1 = '' %}
   {% set address_line_2 = '' %}
   {% set locality = '' %}
+  {% set region = '' %}
+  {% set country = '' %}
 
   {% if address.premises %}
     {% set premises = capitalizeEachWord(address.premises) %}
@@ -20,14 +22,18 @@
     {% set locality = capitalizeEachWord(address.locality) %} 
   {% endif %}
 
+  {% if address.region %}
+    {% set region = capitalizeEachWord(address.region) %}
+  {% endif %}
+
   {% if address.country and isIncludingCountry %} 
     {% set country = capitalizeEachWord(address.country) %}
   {% endif %}
 
   {# Format the address by combining the available fields, can't use string concatenation as it escapes chars eg. apostrophe #}
   {# and has to be on one line as macros preserve spacing, meaning that it will render ok on page if output on separate lines but when viewing html in tests it will be spread over multiple lines #}
-  {{ premises }} {% if address_line_1 %}{{ address_line_1 }}, {% endif %}{% if address_line_2 %}{{ address_line_2 }}, {% endif %}{% if locality %}{{ locality }}, {% endif %}{% if country %}{{ country }}, {% endif %}{{ address.postal_code }}
-{% endmacro %}
+  {{ premises }} {% if address_line_1 %}{{ address_line_1 }}, {% endif %}{% if address_line_2 %}{{ address_line_2 }}, {% endif %}{% if locality %}{{ locality }}, {% endif %}{% if region %}{{ region }}, {% endif %}{% if country %}{{ country }}, {% endif %}{{ address.postal_code }}
+  {% endmacro %}
 
 {%- macro capitalizeEachWord(str) -%}
   {%- set words = str.split(' ') -%}

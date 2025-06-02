@@ -73,9 +73,9 @@ describe("Check Your Answers Page", () => {
       expect(res.text).toContain(limitedPartnership?.data?.partnership_name?.toUpperCase());
       expect(res.text).toContain(limitedPartnership?.data?.name_ending?.toUpperCase());
       expect(res.text).toContain(limitedPartnership?.data?.email);
-      expect(res.text).toContain("4 Line 1, Line 2, Stoke-On-Trent, England, ST6 3LJ");
+      expect(res.text).toContain("4 Line 1, Line 2, Stoke-On-Trent, Region, England, ST6 3LJ");
       expect(res.text).toContain("enter-registered-office-address#premises");
-      expect(res.text).toContain("2 Line 3, Line 4, Burton-On-Trent, England, DE6 3LJ");
+      expect(res.text).toContain("2 Line 3, Line 4, Burton-On-Trent, Regionpp, England, DE6 3LJ");
       expect(res.text).toContain("enter-principal-place-of-business-address#premises");
       expect(res.text).toContain("Such term as decided by the partners within the partnership agreement");
       expect(res.text).toContain("12345,67890");
@@ -265,24 +265,24 @@ describe("Check Your Answers Page", () => {
   });
 });
 
-const checkIfValuesInText = (res: request.Response, generalPartnerPerson: any) => {
-  for (const key in generalPartnerPerson.data) {
-    if (typeof generalPartnerPerson.data[key] === "string" || typeof generalPartnerPerson.data[key] === "object") {
+const checkIfValuesInText = (res: request.Response, partner: any) => {
+  for (const key in partner.data) {
+    if (typeof partner.data[key] === "string" || typeof partner.data[key] === "object") {
       if (key === "nationality1") {
         const capitalized =
-          generalPartnerPerson.data[key].charAt(0).toUpperCase() +
-          generalPartnerPerson.data[key].slice(1).toLowerCase();
+          partner.data[key].charAt(0).toUpperCase() +
+          partner.data[key].slice(1).toLowerCase();
 
         expect(res.text).toContain(capitalized);
       } else if (key.includes("address")) {
-        const capitalized = generalPartnerPerson.data[key].address_line_1
+        const capitalized = partner.data[key].address_line_1
           .split(" ")
           .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
           .join(" ");
 
         expect(res.text).toContain(capitalized);
       } else {
-        expect(res.text).toContain(generalPartnerPerson.data[key]);
+        expect(res.text).toContain(partner.data[key]);
       }
     }
   }
