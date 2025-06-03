@@ -270,9 +270,7 @@ const checkIfValuesInText = (res: request.Response, partner: GeneralPartner | Li
   for (const key in partner.data) {
     if (typeof partner.data[key] === "string" || typeof partner.data[key] === "object") {
       if (key === "nationality1") {
-        const capitalized =
-        partner.data[key].charAt(0).toUpperCase() +
-        partner.data[key].slice(1).toLowerCase();
+        const capitalized = partner.data[key].charAt(0).toUpperCase() + partner.data[key].slice(1).toLowerCase();
 
         expect(res.text).toContain(capitalized);
       } else if (key.includes("date_of_birth") && partner.data[key]) {
