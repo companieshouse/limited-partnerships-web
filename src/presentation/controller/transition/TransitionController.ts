@@ -12,8 +12,10 @@ import {
 import { formatDate } from "../../../utils/date-format";
 
 class TransitionController extends AbstractController {
-  constructor(private readonly companyService: CompanyService,
-              private readonly cacheService: CacheService) {
+  constructor(
+    private readonly companyService: CompanyService,
+    private readonly cacheService: CacheService
+  ) {
     super();
   }
 
