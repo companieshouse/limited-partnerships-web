@@ -357,7 +357,7 @@
             },
             "person": {
                 "name": "WELSH - Name",
-                "previousName": "WELSH - Previous name",
+                "formerNames": "WELSH - Previous name",
                 "dateOfBirth": "WELSH - Date of birth",
                 "nationality": "WELSH - Nationality",
                 "usualResidentialAddress": "WELSH - Usual residential address",

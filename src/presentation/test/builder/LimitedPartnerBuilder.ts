@@ -60,6 +60,11 @@ class LimitedPartnerBuilder extends AbstractPartnerBuilder {
     return this;
   }
 
+  withFormerNames(formerNames: string) {
+    this.data.former_names = formerNames;
+    return this;
+  }
+
   isLegalEntity() {
     this.data = {
       ...this.data,

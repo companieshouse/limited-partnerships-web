@@ -28,12 +28,12 @@ describe("Check Your Answers Page", () => {
 
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-    generalPartnerPerson = new GeneralPartnerBuilder().isPerson().withPreviousName("Joe Dee").build();
+    generalPartnerPerson = new GeneralPartnerBuilder().isPerson().withFormerNames("Joe Dee").build();
     generalPartnerLegalEntity = new GeneralPartnerBuilder().isLegalEntity().build();
 
     appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartnerPerson, generalPartnerLegalEntity]);
 
-    limitedPartnerPerson = new LimitedPartnerBuilder().isPerson().build();
+    limitedPartnerPerson = new LimitedPartnerBuilder().isPerson().withFormerNames("Joe Dee").build();
     limitedPartnerLegalEntity = new LimitedPartnerBuilder().isLegalEntity().build();
     appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerPerson, limitedPartnerLegalEntity]);
   });
@@ -74,9 +74,9 @@ describe("Check Your Answers Page", () => {
       expect(res.text).toContain(limitedPartnership?.data?.partnership_name?.toUpperCase());
       expect(res.text).toContain(limitedPartnership?.data?.name_ending?.toUpperCase());
       expect(res.text).toContain(limitedPartnership?.data?.email);
-      expect(res.text).toContain("4 Line 1, Line 2, Stoke-On-Trent, England, ST6 3LJ");
+      expect(res.text).toContain("4 Line 1, Line 2, Stoke-On-Trent, Region, England, ST6 3LJ");
       expect(res.text).toContain("enter-registered-office-address#premises");
-      expect(res.text).toContain("2 Line 3, Line 4, Burton-On-Trent, England, DE6 3LJ");
+      expect(res.text).toContain("2 Line 3, Line 4, Burton-On-Trent, Regionpp, England, DE6 3LJ");
       expect(res.text).toContain("enter-principal-place-of-business-address#premises");
       expect(res.text).toContain("Such term as decided by the partners within the partnership agreement");
       expect(res.text).toContain("12345,67890");
@@ -227,7 +227,6 @@ describe("Check Your Answers Page", () => {
   });
 
   describe("POST Check Your Answers Page", () => {
-
     it("should send lawful purpose statement", async () => {
       const limitedPartnership = new LimitedPartnershipBuilder()
         .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
@@ -240,7 +239,9 @@ describe("Check Your Answers Page", () => {
         lawful_purpose_statement_checked: "true"
       });
 
-      expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships[0]?.data?.lawful_purpose_statement_checked).toBe("true");
+      expect(
+        appDevDependencies.limitedPartnershipGateway.limitedPartnerships[0]?.data?.lawful_purpose_statement_checked
+      ).toBe("true");
     });
 
     it("should navigate to next page", async () => {
