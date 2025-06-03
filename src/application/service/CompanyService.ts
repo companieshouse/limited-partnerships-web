@@ -6,7 +6,7 @@ import UIErrors from "../../domain/entities/UIErrors";
 import { extractAPIErrors } from "./utils";
 
 class CompanyService {
-  constructor(private companyGateway: ICompanyGateway) {}
+  constructor(private readonly companyGateway: ICompanyGateway) {}
 
   async getCompanyProfile(
     opt: { access_token: string; refresh_token: string },

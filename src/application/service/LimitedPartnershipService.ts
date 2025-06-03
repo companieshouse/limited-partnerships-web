@@ -13,9 +13,9 @@ import { JourneyTypes } from "../../domain/entities/journey";
 
 class LimitedPartnershipService {
   constructor(
-    private limitedPartnershipGateway: ILimitedPartnershipGateway,
-    private transactionGateway: ITransactionGateway,
-    private incorporationGateway: IIncorporationGateway
+    private readonly limitedPartnershipGateway: ILimitedPartnershipGateway,
+    private readonly transactionGateway: ITransactionGateway,
+    private readonly incorporationGateway: IIncorporationGateway
   ) {}
 
   async getLimitedPartnership(

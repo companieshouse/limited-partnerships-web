@@ -13,7 +13,7 @@ class AddressService {
 
   i18n: any;
 
-  constructor(private addressGateway: IAddressLookUpGateway) {}
+  constructor(private readonly addressGateway: IAddressLookUpGateway) {}
 
   setI18n(i18n: any) {
     this.i18n = i18n;

@@ -5,7 +5,7 @@ import UIErrors from "../../domain/entities/UIErrors";
 import { extractAPIErrors } from "./utils";
 
 class GeneralPartnerService {
-  constructor(private generalPartnerGateway: IGeneralPartnerGateway) {}
+  constructor(private readonly generalPartnerGateway: IGeneralPartnerGateway) {}
 
   async createGeneralPartner(
     opt: { access_token: string; refresh_token: string },
