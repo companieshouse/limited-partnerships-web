@@ -15,7 +15,7 @@ export const formatDate = (date: string, translation: Record<string, any>): stri
   };
 
   const [year, month, day] = date.split("-");
-  const dayFormated = day[0] === "0" ? day.slice(1) : day;
+  const dayFormated = day.startsWith("0") ? day.slice(1) : day;
 
   return `${dayFormated} ${months[month]} ${year}`;
 };
