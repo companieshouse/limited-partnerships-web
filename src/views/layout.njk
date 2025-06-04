@@ -20,7 +20,7 @@
   <!--[if !IE 8]><!-->
   <link rel="stylesheet" type="text/css" media="all" href="//{{CDN_HOST}}/stylesheets/govuk-frontend/v4.6.0/govuk-frontend-4.6.0.min.css" />
   <link href="//{{CDN_HOST}}/stylesheets/extensions/languages-nav.css" rel="stylesheet"/>
-  {% include "includes/styles.njk" %}
+  {% include "includes/styles/styles.njk" %}
   <!--<![endif]-->
 
   <link rel="SHORTCUT ICON" href="//{{CDN_HOST}}/images/govuk-frontend/v3.5.0/images/favicon.ico" />
@@ -43,7 +43,7 @@
 
 {% block beforeContent %}
   {% include "includes/phase_banner.njk" %}
-  <div style="margin-bottom: 25px; border-bottom: 1px solid #b1b4b6;">
+  <div id="user-banner" style="margin-bottom: 25px; border-bottom: 1px solid #b1b4b6;">
     {% include "ch-node-utils/templates/locales-banner.njk" %}
 
     {% block backLink %}
