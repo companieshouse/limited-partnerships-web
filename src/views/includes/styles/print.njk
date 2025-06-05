@@ -1,110 +1,100 @@
 
 <style>
-@media print {
-
-  /* We could reduce these further as there's a lot of repetition, but for the sake of clarity to see what's
-     being hidden, etc., I've chosen to increase the number of elements/classes being referred to. */
-
-  /* Also, to test the styles we don't have to waste reams and reams of paper. */
-
-  /* Chrome:
-     1. Select "View > Developer > Developer Tools"
-     2. From the kebab menu (three dots) choose "More tools > Rendering"
-     3. Scroll to the bottom of the list, find "Emulate CSS media type" and choose "Print" */
-
-  /* Set spacing at top and bottom of page */
-  .govuk-main-wrapper {
-    padding-top: 30px;
-    padding-bottom: 0;
-  }
-
- 
-
-  /* Hide the alpha/beta/live phase banner */
-  div.govuk-phase-banner {
-    display: none;
-  }
-
-  /* Hide the banner and header */
-  nav.govuk-language-select, div#user-banner, dd.govuk-summary-list__actions, button#submit {
-    display: none;
-  }
-
-  /* Remove horizontol lines between each row */
-  .govuk-summary-list__row {
-    border-bottom: none;
-  }
-
-  /* Override body style setting the page margin to 0 */
-  body {
-    margin: 0;
-  }
-
-   h1 {
-    display: none !important;
-  }
-
-  /* Override body, all headers (h1, h2, h3, and, h4) and p styles setting their colour and background colours
-     We are setting the font colour to be black and the background colour on which it sits to be white */
-  body, h1, h2, h3, h4, p {
-    color: #000;
-    background-color: #fff;
-  }
-
-  /* Set spacing at bottom of page heading */
-  h1.govuk-heading-l {
-    margin-bottom: 50px;
-  }
-
-
-  /* Set a specific class of the h2 element to a new font size */
-  h2.govuk-heading-l {
-    font-size: 20pt;
-  }
-
-  /* Set a specific class of both the h3 and h4 elements to a new font size */
-  h3.govuk-heading-m, h4.govuk-heading-s {
-    font-size: 18pt;
-  }
-
-  /* Font size adjustments for 'Check your answers' specific classes brought into line with
-     parpagraph and list elements so as they become the same size */
-  dt.govuk-summary-list_key, dd.govuk-summary-list_value, p, li {
-    font-size: 13pt;
-  }
-
   
-  .govuk-link {
-    display: none;
+  @media print {
+
+    /* To test the styles */
+
+    /* Chrome:
+      1. Select "View > Developer > Developer Tools"
+      2. From the kebab menu (three dots) choose "More tools > Rendering"
+      3. Scroll to the bottom of the list, find "Emulate CSS media type" and choose "Print" */
+
+    /* Set spacing around main part of page */
+    .govuk-main-wrapper {
+      padding-top: 30px;
+      padding-bottom: 0;
+    }
+
+    /* Remove the alpha/beta/live phase banner */
+    div.govuk-phase-banner {
+      display: none;
+    }
+
+    /* Remove the language selection */
+    .govuk-language-select {
+      display: none;
+    }
+
+    /* Remove the user banner */
+    #user-banner {
+      display: none;
+    }
+
+    /* Override body style setting the page margin to 0 */
+    body {
+      margin: 0;
+    }
+
+    /* Remove the page heading */
+    h1 {
+      display: none !important;
+    }
+
+    /* Override body, headers h2, h3, and, h4 (h1 is removed) and p styles setting their colour and background colours
+      We are setting the font colour to be black and the background colour on which it sits to be white */
+    body, h2, h3, h4, p {
+      color: #000;
+      background-color: #fff;
+    }
+
+    /* Remove the action segment from the end of each summary-list row */
+    .govuk-summary-list__actions {
+      display: none;
+    }
+
+    /* Remove horizontal lines between each row */
+    .govuk-summary-list__row {
+      border-bottom: none;
+    }
+
+    /* Remove change links */
+    .govuk-link {
+      display: none;
+    }
+
+    /* Set a specific class of the h2 element to a new font size */
+    h2.govuk-heading-l {
+      font-size: 20pt;
+    }
+
+    /* Set a specific class of both the h3 and h4 elements to a new font size */
+    h3.govuk-heading-m, h4.govuk-heading-s {
+      font-size: 18pt;
+    }
+
+    /* Font size adjustments for 'Check your answers' specific classes brought into line with
+      parpagraph and list elements so as they become the same size */
+    dt.govuk-summary-list_key, dd.govuk-summary-list_value, p, li {
+      font-size: 13pt;
+    }
+
+    /* Remove any buttons */
+    .govuk-button {
+      display: none;
+    }
+
+    /* Set the content of the main div to 100%
+      (it looks better with respect to section breaks, etc., but doesn't necessarily force the content to be 100% width) */
+    div.govuk-grid-column-two-thirds-from-desktop {
+      width: 100%;
+    }
+
+    /* Remove the grey GOVUK footer, along with the content held within it */
+    footer.govuk-footer, div.govuk-footer__meta {
+      display: none;
+    }
+
   }
-
-  .govuk-button {
-    display: none;
-  }
-
-
- 
-
-
-
-
-
-  /* Set the content of the main div to 100%
-     (it looks better with respect to section breaks, etc., but doesn't necessarily force the content to be 100% width) */
-  div.govuk-grid-column-two-thirds-from-desktop {
-    width: 100%;
-  }
-
-  /* Hide horizontal rule (there's only at the top of the page I believe) */
-  hr {
-    visibility: hidden;
-  }
-
-  /* Hide the grey GOVUK footer, along with the content held within it */
-  footer.govuk-footer, div.govuk-footer__meta {
-    visibility: hidden;
-  }
-
-}
 
 </style>
