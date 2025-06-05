@@ -30,8 +30,7 @@ class GeneralPartnerController extends AbstractController {
       try {
         const { tokens, pageType, ids } = super.extract(request);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
-
-        this.conditionalPreviousUrl(ids, pageRouting, request);
+        await this.conditionalPreviousUrl(ids, pageRouting, request, tokens);
 
         let limitedPartnership = {};
         let generalPartner = {};
@@ -62,10 +61,11 @@ class GeneralPartnerController extends AbstractController {
     };
   }
 
-  private conditionalPreviousUrl(
+  private async conditionalPreviousUrl(
     ids: { transactionId: string; submissionId: string; generalPartnerId: string },
     pageRouting: PageRouting,
-    request: Request
+    request: Request,
+    tokens
   ) {
     const previousPageType = super.pageType(request.get("Referrer") ?? "");
 
@@ -73,7 +73,8 @@ class GeneralPartnerController extends AbstractController {
       pageRouting.pageType === RegistrationPageType.addGeneralPartnerLegalEntity ||
       pageRouting.pageType === RegistrationPageType.addGeneralPartnerPerson
     ) {
-      if (previousPageType === RegistrationPageType.reviewGeneralPartners) {
+      const generalPartners: GeneralPartner[] = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
+      if (previousPageType === RegistrationPageType.reviewGeneralPartners || generalPartners.length > 0) {
         pageRouting.previousUrl = super.insertIdsInUrl(
           pageRouting.data?.customPreviousUrl,
           ids
