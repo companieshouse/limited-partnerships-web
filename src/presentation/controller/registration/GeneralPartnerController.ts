@@ -208,14 +208,15 @@ class GeneralPartnerController extends AbstractController {
         const addAnotherGeneralPartner = request.body.addAnotherGeneralPartner;
 
         if (addAnotherGeneralPartner === "no") {
-          const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
-            tokens,
-            ids.transactionId,
-            ids.submissionId
-          );
           const result = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
 
           if (result?.errors?.errors?.errorList.length) {
+            const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+              tokens,
+              ids.transactionId,
+              ids.submissionId
+            );
+
             response.render(
               super.templateName(pageRouting.currentUrl),
               super.makeProps(
