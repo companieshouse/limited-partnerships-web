@@ -5,9 +5,15 @@ import LimitedPartnerService from "../../../application/service/LimitedPartnerSe
 import registrationsRouting from "./Routing";
 import AbstractController from "../AbstractController";
 import RegistrationPageType from "./PageType";
-import { ADD_LIMITED_PARTNER_PERSON_URL, ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL, CHECK_YOUR_ANSWERS_URL, LIMITED_PARTNERS_URL } from "./url";
+import {
+  ADD_LIMITED_PARTNER_PERSON_URL,
+  ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
+  CHECK_YOUR_ANSWERS_URL,
+  LIMITED_PARTNERS_URL
+} from "./url";
 import { LimitedPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 import { PageRouting } from "../PageRouting";
+import UIErrors from "../../../domain/entities/UIErrors";
 
 class LimitedPartnerController extends AbstractController {
   private readonly limitedPartnershipService: LimitedPartnershipService;
@@ -68,10 +74,7 @@ class LimitedPartnerController extends AbstractController {
       pageRouting.pageType === RegistrationPageType.addLimitedPartnerPerson
     ) {
       if (previousPageType === RegistrationPageType.reviewLimitedPartners) {
-        pageRouting.previousUrl = super.insertIdsInUrl(
-          pageRouting.data?.customPreviousUrl,
-          ids
-        );
+        pageRouting.previousUrl = super.insertIdsInUrl(pageRouting.data?.customPreviousUrl, ids);
       }
     }
   }
@@ -96,11 +99,14 @@ class LimitedPartnerController extends AbstractController {
   getReviewPage() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
+        this.limitedPartnerService.setI18n(response.locals.i18n);
+
         const { tokens, pageType, ids } = super.extract(request);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
         let limitedPartnership = {};
         let limitedPartners: LimitedPartner[] = [];
+        let errors: UIErrors | null = null;
 
         if (ids.transactionId && ids.submissionId) {
           limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
@@ -109,7 +115,9 @@ class LimitedPartnerController extends AbstractController {
             ids.submissionId
           );
 
-          limitedPartners = await this.limitedPartnerService.getLimitedPartners(tokens, ids.transactionId);
+          const result = await this.limitedPartnerService.getLimitedPartners(tokens, ids.transactionId);
+          limitedPartners = result.limitedPartners;
+          errors = result.errors ?? null;
         }
 
         if (limitedPartners.length === 0) {
@@ -121,7 +129,7 @@ class LimitedPartnerController extends AbstractController {
 
         response.render(
           super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { limitedPartnership, limitedPartners }, null)
+          super.makeProps(pageRouting, { limitedPartnership, limitedPartners }, errors)
         );
       } catch (error) {
         next(error);
@@ -149,10 +157,7 @@ class LimitedPartnerController extends AbstractController {
 
         const newIds = { ...ids, limitedPartnerId: result.limitedPartnerId };
 
-        const url = super.insertIdsInUrl(
-          pageRouting.nextUrl,
-          newIds
-        );
+        const url = super.insertIdsInUrl(pageRouting.nextUrl, newIds);
 
         response.redirect(url);
       } catch (error) {
@@ -193,6 +198,8 @@ class LimitedPartnerController extends AbstractController {
   postReviewPage() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
+        this.limitedPartnerService.setI18n(response.locals.i18n);
+
         const { ids, tokens } = super.extract(request);
         const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
@@ -200,9 +207,9 @@ class LimitedPartnerController extends AbstractController {
         const addAnotherLimitedPartner = request.body.addAnotherLimitedPartner;
 
         if (addAnotherLimitedPartner === "no") {
-          const limitedPartners = await this.limitedPartnerService.getLimitedPartners(tokens, ids.transactionId);
+          const result = await this.limitedPartnerService.getLimitedPartners(tokens, ids.transactionId);
 
-          if (limitedPartners.length === 0) {
+          if (result.limitedPartners.length === 0 || result?.errors?.errors?.errorList.length) {
             const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
               tokens,
               ids.transactionId,
@@ -211,7 +218,11 @@ class LimitedPartnerController extends AbstractController {
 
             response.render(
               super.templateName(pageRouting.currentUrl),
-              super.makeProps(pageRouting, { limitedPartnership, limitedPartners }, null)
+              super.makeProps(
+                pageRouting,
+                { limitedPartnership, limitedPartners: result.limitedPartners },
+                result.errors ?? null
+              )
             );
             return;
           }

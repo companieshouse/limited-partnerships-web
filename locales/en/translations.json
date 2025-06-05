@@ -563,6 +563,10 @@
             "title": "Do you need to add another limited partner?",
             "optionPerson": "Yes, a person",
             "optionLegalEntity": "Yes, a legal entity"
+        },
+        "errorMessage": {
+            "beforeName": "You must provide all information for",
+            "afterName": "before continuing. Select Change to provide more information"
         }
     },
 

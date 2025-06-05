@@ -2,7 +2,7 @@ import { GeneralPartner } from "@companieshouse/api-sdk-node/dist/services/limit
 import IGeneralPartnerGateway from "../../domain/IGeneralPartnerGateway";
 import { logger } from "../../utils";
 import UIErrors from "../../domain/entities/UIErrors";
-import { extractAPIErrors } from "./utils";
+import { extractAPIErrors, incompletePartnerErrorList } from "./utils";
 
 class GeneralPartnerService {
   i18n: any;
@@ -62,18 +62,7 @@ class GeneralPartnerService {
     try {
       const generalPartners = await this.generalPartnerGateway.getGeneralPartners(opt, transactionId);
 
-      let errorList = {};
-
-      generalPartners
-        .filter((gp) => gp?.data?.completed === false)
-        .forEach((gp) => {
-          const name = gp.data?.forename ? `${gp.data.forename} ${gp.data.surname}` : gp.data?.legal_entity_name ?? "";
-
-          errorList = {
-            ...errorList,
-            [name.toLowerCase()]: `${this.i18n.reviewGeneralPartnersPage.errorMessage.beforeName} ${name} ${this.i18n.reviewGeneralPartnersPage.errorMessage.afterName}`
-          };
-        });
+      const errorList = incompletePartnerErrorList(generalPartners, this.i18n);
 
       const uiErrors = new UIErrors();
       uiErrors.formatValidationErrorToUiErrors({ errors: errorList });

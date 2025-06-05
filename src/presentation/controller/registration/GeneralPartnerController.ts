@@ -258,9 +258,9 @@ class GeneralPartnerController extends AbstractController {
     ids: { transactionId: string; submissionId: string },
     pageRouting: PageRouting
   ) {
-    const limitedPartners = await this.limitedPartnerService.getLimitedPartners(tokens, ids.transactionId);
+    const result = await this.limitedPartnerService.getLimitedPartners(tokens, ids.transactionId);
 
-    if (limitedPartners.length > 0) {
+    if (result.limitedPartners.length > 0) {
       pageRouting.nextUrl = super.insertIdsInUrl(REVIEW_LIMITED_PARTNERS_URL, ids);
     }
   }

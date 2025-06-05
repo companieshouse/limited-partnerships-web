@@ -67,11 +67,11 @@ class LimitedPartnershipController extends AbstractController {
         }
 
         if (pageRouting.pageType === RegistrationPageType.checkYourAnswers) {
-          const result = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
-          generalPartners = result.generalPartners.map((partner) => this.formatPartnerDob(partner, response));
+          const gpResult = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
+          generalPartners = gpResult.generalPartners.map((partner) => this.formatPartnerDob(partner, response));
 
-          limitedPartners = await this.limitedPartnerService.getLimitedPartners(tokens, ids.transactionId);
-          limitedPartners = limitedPartners.map((partner) => this.formatPartnerDob(partner, response));
+          const lpResult = await this.limitedPartnerService.getLimitedPartners(tokens, ids.transactionId);
+          limitedPartners = lpResult.limitedPartners.map((partner) => this.formatPartnerDob(partner, response));
         }
 
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
