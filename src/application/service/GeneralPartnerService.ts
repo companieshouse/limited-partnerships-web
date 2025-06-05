@@ -5,7 +5,13 @@ import UIErrors from "../../domain/entities/UIErrors";
 import { extractAPIErrors } from "./utils";
 
 class GeneralPartnerService {
+  i18n: any;
+
   constructor(private readonly generalPartnerGateway: IGeneralPartnerGateway) {}
+
+  setI18n(i18n: any) {
+    this.i18n = i18n;
+  }
 
   async createGeneralPartner(
     opt: { access_token: string; refresh_token: string },
@@ -52,9 +58,30 @@ class GeneralPartnerService {
   async getGeneralPartners(
     opt: { access_token: string; refresh_token: string },
     transactionId: string
-  ): Promise<GeneralPartner[]> {
+  ): Promise<{ generalPartners: GeneralPartner[]; errors?: UIErrors }> {
     try {
-      return await this.generalPartnerGateway.getGeneralPartners(opt, transactionId);
+      const generalPartners = await this.generalPartnerGateway.getGeneralPartners(opt, transactionId);
+
+      let errorList = {};
+
+      generalPartners
+        .filter((gp) => gp?.data?.completed === false)
+        .forEach((gp) => {
+          const name = gp.data?.forename ? `${gp.data.forename} ${gp.data.surname}` : gp.data?.legal_entity_name ?? "";
+
+          errorList = {
+            ...errorList,
+            [name.toLowerCase()]: `${this.i18n.reviewGeneralPartnersPage.errorMessage.beforeName} ${name} ${this.i18n.reviewGeneralPartnersPage.errorMessage.afterName}`
+          };
+        });
+
+      const uiErrors = new UIErrors();
+      uiErrors.formatValidationErrorToUiErrors({ errors: errorList });
+
+      return {
+        generalPartners,
+        errors: uiErrors
+      };
     } catch (error: any) {
       logger.error(`Error getting GeneralPartners ${JSON.stringify(error)}`);
 

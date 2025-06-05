@@ -1,6 +1,8 @@
 <div>
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
+            {% include "includes/errors.njk" %}
+
             {% include "includes/proposed-name.njk" %}
 
             <h1 class="govuk-heading-xl">{{ pageTitle }}</h1>
@@ -14,67 +16,65 @@
 
             {% if list.length  %}
 
+                {% set rows = [] %}
+
                 {% for item in list %}
 
                     {% if item.data.forename %}
-
-                        {{ govukSummaryList({
-                            classes: "govuk-!-margin-bottom-0",
-                            rows: [
-                                {
-                                    key: {
-                                        text: partnersAdded.person
-                                    },
-                                    value: {
-                                        text: item.data.forename + " " + item.data.surname
-                                    },
-                                    actions: {
-                                        items: [
-                                            CREATE_CHANGE_LINK(
-                                                partnersAdded.changeLink,
-                                                props.currentUrl | replace(props.pageType, kind + "/" + item.id + "/add-" + kind + "-person")
-                                            ),
-                                            CREATE_CHANGE_LINK(
-                                                partnersAdded.removeLink,
-                                                props.currentUrl | replace(props.pageType, kind + "/" + item.id + "/remove-" + kind + "")
-                                            )
-                                        ]
-                                    }
+                        {% set rows = rows.concat({
+                                key: {
+                                    text: partnersAdded.person,
+                                    classes: "govuk-form-group govuk-form-group--error" if props.errors[(item.data.forename + " " + item.data.surname | lower)]
+                                },
+                                value: {
+                                    text: item.data.forename + " " + item.data.surname
+                                },
+                                actions: {
+                                    items: [
+                                        CREATE_CHANGE_LINK(
+                                            partnersAdded.changeLink,
+                                            props.currentUrl | replace(props.pageType, kind + "/" + item.id + "/add-" + kind + "-person")
+                                        ),
+                                        CREATE_CHANGE_LINK(
+                                            partnersAdded.removeLink,
+                                            props.currentUrl | replace(props.pageType, kind + "/" + item.id + "/remove-" + kind + "")
+                                        )
+                                    ]
                                 }
-                            ]
-                        }) }} 
-
+                            })
+                        %}
                     {% elif item.data.legal_entity_name %}
-
-                        {{ govukSummaryList({
-                            classes: "govuk-!-margin-bottom-0",
-                            rows: [
-                                {
-                                    key: {
-                                        text: partnersAdded.legalEntity
-                                    },
-                                    value: {
-                                        text: item.data.legal_entity_name
-                                    },
-                                    actions: {
-                                        items: [
-                                            CREATE_CHANGE_LINK(
-                                                partnersAdded.changeLink,
-                                                props.currentUrl | replace(props.pageType, kind + "/" + item.id + "/add-" + kind + "-legal-entity")
-                                            ),
-                                            CREATE_CHANGE_LINK(
-                                                partnersAdded.removeLink,
-                                                props.currentUrl | replace(props.pageType, kind + "/" + item.id + "/remove-" + kind + "")
-                                            )
-                                        ]
-                                    }
+                        {{ props.errors[item.data.legal_entity_name] }}
+                        {% set rows = rows.concat({
+                                key: {
+                                    text: partnersAdded.legalEntity,
+                                    classes: "govuk-form-group govuk-form-group--error" if props.errors[(item.data.legal_entity_name | lower)]
+                                },
+                                value: {
+                                    text: item.data.legal_entity_name
+                                },
+                                actions: {
+                                    items: [
+                                        CREATE_CHANGE_LINK(
+                                            partnersAdded.changeLink,
+                                            props.currentUrl | replace(props.pageType, kind + "/" + item.id + "/add-" + kind + "-legal-entity")
+                                        ),
+                                        CREATE_CHANGE_LINK(
+                                            partnersAdded.removeLink,
+                                            props.currentUrl | replace(props.pageType, kind + "/" + item.id + "/remove-" + kind + "")
+                                        )
+                                    ]
                                 }
-                            ]
-                        }) }} 
-
+                            })
+                        %}
                     {% endif %}
 
                 {% endfor %}
+
+                {{ govukSummaryList({
+                    classes: "govuk-!-margin-bottom-0",
+                    rows: rows
+                }) }}
             
             {% else %}
 

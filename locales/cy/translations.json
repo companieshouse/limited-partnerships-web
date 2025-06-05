@@ -543,6 +543,10 @@
             "title": "WELSH - Do you need to add another general partner?",
             "optionPerson": "WELSH - Yes, a person",
             "optionLegalEntity": "WELSH - Yes, a legal entity"
+        },
+        "errorMessage": {
+            "beforeName": "WELSH - You must provide all information for",
+            "afterName": "WELSH - before continuing. Select Change to provide more information"
         }
     },
 
