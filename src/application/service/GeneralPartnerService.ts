@@ -67,7 +67,7 @@ class GeneralPartnerService {
       generalPartners
         .filter((gp) => gp?.data?.completed === false)
         .forEach((gp) => {
-          const name = gp.data?.forename ? `${gp.data.forename} ${gp.data.surname}` : gp.data?.legal_entity_name || "";
+          const name = gp.data?.forename ? `${gp.data.forename} ${gp.data.surname}` : gp.data?.legal_entity_name ?? "";
 
           errorList = {
             ...errorList,

@@ -128,6 +128,24 @@ describe("Review General Partners Page", () => {
         expect(res.status).toBe(302);
         expect(res.headers.location).toContain(getUrl(REVIEW_LIMITED_PARTNERS_URL));
       });
+
+      it("should render the review general partners page with errors", async () => {
+        const generalPartnerPerson = new GeneralPartnerBuilder().isPerson().build();
+        const generalPartnerLegalEntity = new GeneralPartnerBuilder().isLegalEntity().withCompleted(false).build();
+
+        appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartnerPerson, generalPartnerLegalEntity]);
+
+        const res = await request(app).post(URL).send({
+          pageType: RegistrationPageType.reviewGeneralPartners,
+          addAnotherGeneralPartner: "no"
+        });
+
+        expect(res.status).toBe(200);
+
+        expect(res.text).toContain(
+          `You must provide all information for ${generalPartnerLegalEntity?.data?.legal_entity_name} before continuing. Select Change to provide more information`
+        );
+      });
     });
   });
 });
