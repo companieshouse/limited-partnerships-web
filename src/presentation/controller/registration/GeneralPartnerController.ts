@@ -15,6 +15,7 @@ import {
 import { GeneralPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 import { PageRouting } from "../PageRouting";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
+import UIErrors from "../../../domain/entities/UIErrors";
 
 class GeneralPartnerController extends AbstractController {
   constructor(
@@ -74,10 +75,7 @@ class GeneralPartnerController extends AbstractController {
       pageRouting.pageType === RegistrationPageType.addGeneralPartnerPerson
     ) {
       if (previousPageType === RegistrationPageType.reviewGeneralPartners) {
-        pageRouting.previousUrl = super.insertIdsInUrl(
-          pageRouting.data?.customPreviousUrl,
-          ids
-        );
+        pageRouting.previousUrl = super.insertIdsInUrl(pageRouting.data?.customPreviousUrl, ids);
       }
     }
   }
@@ -107,6 +105,7 @@ class GeneralPartnerController extends AbstractController {
 
         let limitedPartnership = {};
         let generalPartners: GeneralPartner[] = [];
+        let errors: UIErrors | null = null;
 
         if (ids.transactionId && ids.submissionId) {
           limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
@@ -115,7 +114,10 @@ class GeneralPartnerController extends AbstractController {
             ids.submissionId
           );
 
-          generalPartners = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
+          const result = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
+
+          generalPartners = result.generalPartners;
+          errors = result.errors ?? null;
         }
 
         if (generalPartners.length === 0) {
@@ -127,7 +129,7 @@ class GeneralPartnerController extends AbstractController {
 
         response.render(
           super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { limitedPartnership, generalPartners }, null)
+          super.makeProps(pageRouting, { limitedPartnership, generalPartners }, errors)
         );
       } catch (error) {
         next(error);
@@ -154,10 +156,7 @@ class GeneralPartnerController extends AbstractController {
         }
         const newIds = { ...ids, generalPartnerId: result.generalPartnerId };
 
-        const url = super.insertIdsInUrl(
-          pageRouting.nextUrl,
-          newIds
-        );
+        const url = super.insertIdsInUrl(pageRouting.nextUrl, newIds);
 
         response.redirect(url);
       } catch (error) {
@@ -205,6 +204,25 @@ class GeneralPartnerController extends AbstractController {
         const addAnotherGeneralPartner = request.body.addAnotherGeneralPartner;
 
         if (addAnotherGeneralPartner === "no") {
+          const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+            tokens,
+            ids.transactionId,
+            ids.submissionId
+          );
+          const result = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
+
+          if (result?.errors?.errors?.errorList.length) {
+            response.render(
+              super.templateName(pageRouting.currentUrl),
+              super.makeProps(
+                pageRouting,
+                { limitedPartnership, generalPartners: result.generalPartners },
+                result.errors ?? null
+              )
+            );
+            return;
+          }
+
           await this.conditionalNextUrl(tokens, ids, pageRouting);
 
           response.redirect(pageRouting.nextUrl);

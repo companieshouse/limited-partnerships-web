@@ -52,9 +52,30 @@ class GeneralPartnerService {
   async getGeneralPartners(
     opt: { access_token: string; refresh_token: string },
     transactionId: string
-  ): Promise<GeneralPartner[]> {
+  ): Promise<{ generalPartners: GeneralPartner[]; errors?: UIErrors }> {
     try {
-      return await this.generalPartnerGateway.getGeneralPartners(opt, transactionId);
+      const generalPartners = await this.generalPartnerGateway.getGeneralPartners(opt, transactionId);
+
+      let errorList = {};
+
+      generalPartners
+        .filter((gp) => gp?.data?.completed === false)
+        .forEach((gp) => {
+          const name = gp.data?.forename ? `${gp.data.forename} ${gp.data.surname}` : gp.data?.legal_entity_name || "";
+
+          errorList = {
+            ...errorList,
+            [name.toLowerCase()]: `You must provide all information for ${name} before continuing. Select Change to provide more information`
+          };
+        });
+
+      const uiErrors = new UIErrors();
+      uiErrors.formatValidationErrorToUiErrors({ errors: errorList });
+
+      return {
+        generalPartners,
+        errors: uiErrors
+      };
     } catch (error: any) {
       logger.error(`Error getting GeneralPartners ${JSON.stringify(error)}`);
 

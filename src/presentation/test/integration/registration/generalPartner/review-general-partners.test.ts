@@ -34,6 +34,11 @@ describe("Review General Partners Page", () => {
 
   describe("Get Review General Partners Page", () => {
     it("should load the review general partners page with English text", async () => {
+      const generalPartnerPerson = new GeneralPartnerBuilder().isPerson().build();
+      const generalPartnerLegalEntity = new GeneralPartnerBuilder().isLegalEntity().withCompleted(false).build();
+
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartnerPerson, generalPartnerLegalEntity]);
+
       setLocalesEnabled(true);
 
       const res = await request(app).get(URL + "?lang=en");
@@ -48,6 +53,9 @@ describe("Review General Partners Page", () => {
 
       expect(res.text).toContain(`${generalPartnerPerson?.data?.forename} ${generalPartnerPerson?.data?.surname}`);
       expect(res.text).toContain(`${generalPartnerLegalEntity?.data?.legal_entity_name}`);
+      expect(res.text).toContain(
+        `You must provide all information for ${generalPartnerLegalEntity?.data?.legal_entity_name} before continuing. Select Change to provide more information`
+      );
     });
 
     it("should load the review general partners page with Welsh text", async () => {
