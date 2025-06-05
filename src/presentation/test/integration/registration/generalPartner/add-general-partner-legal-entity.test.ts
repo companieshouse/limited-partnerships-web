@@ -84,6 +84,7 @@ describe("Add General Partner Legal Entity Page", () => {
       const regex = new RegExp(`${REGISTRATION_BASE_URL}/transaction/.*?/submission/.*?/${GENERAL_PARTNER_CHOICE_TEMPLATE}`);
       expect(res.text).toMatch(regex);
     });
+
   });
 
   describe("Post Add General Partner Legal Entity", () => {
