@@ -9,8 +9,11 @@ import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import RegistrationPageType from "../../../../controller/registration/PageType";
 import { ApiErrors } from "../../../../../domain/entities/UIErrors";
-import { ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL } from "../../../../controller/registration/url";
+import { ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL, ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_ID_URL } from "../../../../controller/registration/url";
 import { TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../../../controller/addressLookUp/url";
+import { GENERAL_PARTNER_CHOICE_TEMPLATE, REVIEW_GENERAL_PARTNERS_TEMPLATE } from "presentation/controller/registration/template";
+import { REGISTRATION_BASE_URL } from "config";
+import GeneralPartnerBuilder from "presentation/test/builder/GeneralPartnerBuilder";
 
 describe("Add General Partner Legal Entity Page", () => {
   const URL = getUrl(ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL);
@@ -58,6 +61,30 @@ describe("Add General Partner Legal Entity Page", () => {
         `${limitedPartnership?.data?.partnership_name?.toUpperCase()} ${limitedPartnership?.data?.name_ending?.toUpperCase()}`
       );
     });
+
+    it("should contain a back link to the reviw page when general partners are present", async () => {
+      const generalPartner = new GeneralPartnerBuilder()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .isPerson()
+        .build();
+
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+      const res = await request(app).get(getUrl(ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_ID_URL) + "?lang=en");
+
+      expect(res.status).toBe(200);
+      const regex = new RegExp(`${REGISTRATION_BASE_URL}/transaction/.*?/submission/.*?/${REVIEW_GENERAL_PARTNERS_TEMPLATE}`);
+      expect(res.text).toMatch(regex);
+    });
+
+    it("should contain a back link to the choice page when general partners are not present", async () => {
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
+      const res = await request(app).get(getUrl(ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_ID_URL) + "?lang=en");
+
+      expect(res.status).toBe(200);
+      const regex = new RegExp(`${REGISTRATION_BASE_URL}/transaction/.*?/submission/.*?/${GENERAL_PARTNER_CHOICE_TEMPLATE}`);
+      expect(res.text).toMatch(regex);
+    });
+
   });
 
   describe("Post Add General Partner Legal Entity", () => {
