@@ -2,10 +2,16 @@ import { LimitedPartner } from "@companieshouse/api-sdk-node/dist/services/limit
 import ILimitedPartnerGateway from "../../domain/ILimitedPartnerGateway";
 import { logger } from "../../utils";
 import UIErrors from "../../domain/entities/UIErrors";
-import { extractAPIErrors } from "./utils";
+import { extractAPIErrors, incompletePartnerErrorList } from "./utils";
 
 class LimitedPartnerService {
+  i18n: any;
+
   constructor(private readonly limitedPartnerGateway: ILimitedPartnerGateway) {}
+
+  setI18n(i18n: any) {
+    this.i18n = i18n;
+  }
 
   async createLimitedPartner(
     opt: { access_token: string; refresh_token: string },
@@ -52,9 +58,19 @@ class LimitedPartnerService {
   async getLimitedPartners(
     opt: { access_token: string; refresh_token: string },
     transactionId: string
-  ): Promise<LimitedPartner[]> {
+  ): Promise<{ limitedPartners: LimitedPartner[]; errors?: UIErrors }> {
     try {
-      return await this.limitedPartnerGateway.getLimitedPartners(opt, transactionId);
+      const limitedPartners = await this.limitedPartnerGateway.getLimitedPartners(opt, transactionId);
+
+      const errorList = incompletePartnerErrorList(limitedPartners, this.i18n);
+
+      const uiErrors = new UIErrors();
+      uiErrors.formatValidationErrorToUiErrors({ errors: errorList });
+
+      return {
+        limitedPartners,
+        errors: uiErrors
+      };
     } catch (error: any) {
       logger.error(`Error getting LimitedPartners ${JSON.stringify(error)}`);
 

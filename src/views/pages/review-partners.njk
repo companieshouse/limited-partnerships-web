@@ -24,7 +24,7 @@
                         {% set rows = rows.concat({
                                 key: {
                                     text: partnersAdded.person,
-                                    classes: "govuk-form-group govuk-form-group--error" if props.errors[(item.data.forename + " " + item.data.surname | lower)]
+                                    classes: "govuk-form-group govuk-form-group--error" if props.errors[(item.data.forename | lower + " " + item.data.surname | lower)]
                                 },
                                 value: {
                                     text: item.data.forename + " " + item.data.surname
