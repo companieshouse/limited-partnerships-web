@@ -5,7 +5,13 @@ import UIErrors from "../../domain/entities/UIErrors";
 import { extractAPIErrors } from "./utils";
 
 class GeneralPartnerService {
+  i18n: any;
+
   constructor(private readonly generalPartnerGateway: IGeneralPartnerGateway) {}
+
+  setI18n(i18n: any) {
+    this.i18n = i18n;
+  }
 
   async createGeneralPartner(
     opt: { access_token: string; refresh_token: string },
@@ -65,7 +71,7 @@ class GeneralPartnerService {
 
           errorList = {
             ...errorList,
-            [name.toLowerCase()]: `You must provide all information for ${name} before continuing. Select Change to provide more information`
+            [name.toLowerCase()]: `${this.i18n.reviewGeneralPartnersPage.errorMessage.beforeName} ${name} ${this.i18n.reviewGeneralPartnersPage.errorMessage.afterName}`
           };
         });
 

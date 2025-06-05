@@ -67,7 +67,7 @@ describe("Review General Partners Page", () => {
       expect(res.text).toContain(
         `${cyTranslationText.reviewGeneralPartnersPage.title} - ${cyTranslationText.service} - GOV.UK`
       );
-      testTranslations(res.text, cyTranslationText.reviewGeneralPartnersPage, ["emptyList"]);
+      testTranslations(res.text, cyTranslationText.reviewGeneralPartnersPage, ["emptyList", "errorMessage"]);
     });
 
     describe("Empty list", () => {
