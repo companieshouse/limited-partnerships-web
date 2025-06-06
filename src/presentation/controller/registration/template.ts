@@ -22,4 +22,3 @@ export const REVIEW_LIMITED_PARTNERS_TEMPLATE = RegistrationPageType.reviewLimit
 export const REMOVE_LIMITED_PARTNER_TEMPLATE = RegistrationPageType.removeLimitedPartner;
 
 export const CHECK_YOUR_ANSWERS_TEMPLATE = RegistrationPageType.checkYourAnswers;
-export const NEXT_TEMPLATE = RegistrationPageType.next;

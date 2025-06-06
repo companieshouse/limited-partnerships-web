@@ -19,10 +19,10 @@ import {
   ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
   ADD_GENERAL_PARTNER_PERSON_URL,
   ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
-  ADD_LIMITED_PARTNER_PERSON_URL
+  ADD_LIMITED_PARTNER_PERSON_URL,
+  WHICH_TYPE_URL
 } from "./registration/url";
 import UIErrors from "../../domain/entities/UIErrors";
-import { START_URL } from "./global/url";
 import { getJourneyTypes } from "../../utils";
 
 type Ids = {
@@ -232,7 +232,7 @@ abstract class AbstractController {
       return previousPageUrlTransition.substring(startingIndexOfRelativePath);
     }
 
-    return START_URL;
+    return WHICH_TYPE_URL;
   }
 }
 

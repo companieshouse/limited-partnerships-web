@@ -6,7 +6,7 @@ import {
 } from "../../addressLookUp/url";
 
 const registrationRoutingPartnershipType = {
-  previousUrl: url.START_URL,
+  previousUrl: "/",
   currentUrl: url.WHICH_TYPE_URL,
   nextUrl: url.NAME_URL,
   pageType: RegistrationPageType.whichType
@@ -62,13 +62,6 @@ const registrationRoutingCheckYourAnswers = {
   }
 };
 
-const registrationRoutingNext = {
-  previousUrl: url.CHECK_YOUR_ANSWERS_URL,
-  currentUrl: url.NEXT_URL,
-  nextUrl: "/",
-  pageType: RegistrationPageType.next
-};
-
 const limitedPartnershipRouting = [
   registrationRoutingPartnershipType,
   registrationRoutingName,
@@ -77,8 +70,7 @@ const limitedPartnershipRouting = [
   registrationRoutingTerm,
   registrationRoutingSic,
 
-  registrationRoutingCheckYourAnswers,
-  registrationRoutingNext
+  registrationRoutingCheckYourAnswers
 ];
 
 export default limitedPartnershipRouting;

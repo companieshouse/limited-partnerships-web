@@ -506,7 +506,7 @@
         "spelling" : "WELSH - If you typed the web address, check it is spelled correctly.",
         "copiedAddress" : "WELSH - If you pasted the web address, check you copied the entire address.",
         "movedPage" : "WELSH - If the web address is correct or you selected a link, the page may have moved.",
-        "goToStartPage" : "WELSH - To register a limited partnership, go to the <a class='govuk-link' href='/limited-partnerships/start'>Register a limited partnership</a> start page."
+        "goToStartPage" : "WELSH - To register a limited partnership, go to the <a class='govuk-link' href='/limited-partnerships/registration/which-type'>Register a limited partnership</a> start page."
     },
 
     "publicRegisterInformation" : {
@@ -591,11 +591,6 @@
          "saved": "WELSH - How do I find my saved applications?",
          "filingsInfo": "WELSH - Sign in to your Companies House account and select Your filings to access your saved applications."
    },
-
-    "startPage" : {
-        "title" : "Partneriaethau Cyfyngedig yw hyn",
-        "errorStartAddressMissing" : "Rhowch gyfeiriad"
-    },
 
     "termPage": {
         "title": "WELSH - What is the term of the partnership?",

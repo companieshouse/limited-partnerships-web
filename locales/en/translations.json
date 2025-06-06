@@ -505,7 +505,7 @@
         "spelling" : "If you typed the web address, check it is spelled correctly.",
         "copiedAddress" : "If you pasted the web address, check you copied the entire address.",
         "movedPage" : "If the web address is correct or you selected a link, the page may have moved.",
-        "goToStartPage" : "To register a limited partnership, go to the <a class='govuk-link' href='/limited-partnerships/start'>Register a limited partnership</a> start page."
+        "goToStartPage" : "To register a limited partnership, go to the <a class='govuk-link' href='/limited-partnerships/registration/which-type'>Register a limited partnership</a> start page."
     },
 
     "publicRegisterInformation" : {
@@ -589,11 +589,6 @@
          "hint": "We will save your application.",
          "saved": "How do I find my saved applications?",
          "filingsInfo": "Sign in to your Companies House account and select Your filings to access your saved applications."
-    },
-
-    "startPage" : {
-        "title" : "This is Limited Partnerships",
-        "errorStartAddressMissing" : "Please enter an address"
     },
 
     "termPage": {
