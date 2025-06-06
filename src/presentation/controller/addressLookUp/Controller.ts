@@ -289,7 +289,7 @@ class AddressLookUpController extends AbstractController {
 
         let errors: UIErrors | undefined;
         if (AddressLookUpController.MANUAL_PAGES.has(pageType)) {
-          errors = this.addressService.hasAddressGotInvalidCharacters(address, errors);
+          errors = this.addressService.validateAddressCharactersAndLength(address, errors);
 
           errors = this.addressService.isValidPostcode(postal_code ?? "", country, errors);
         }
