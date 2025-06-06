@@ -6,7 +6,7 @@ import {
 } from "../../addressLookUp/url";
 
 const registrationRoutingPartnershipType = {
-  previousUrl: url.START_URL,
+  previousUrl: "/",
   currentUrl: url.WHICH_TYPE_URL,
   nextUrl: url.NAME_URL,
   pageType: RegistrationPageType.whichType

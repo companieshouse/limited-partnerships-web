@@ -1,12 +1,11 @@
 import * as url from "./url";
 import TransitionPageType from "./PageType";
-import { START_URL } from "../registration/url";
 import { NEXT_URL } from "./url";
 import { PageRouting, PagesRouting } from "../PageRouting";
 import PageType from "../PageType";
 
 const transitionRoutingCompanyNumber = {
-  previousUrl: START_URL,
+  previousUrl: "/",
   currentUrl: url.COMPANY_NUMBER_URL,
   nextUrl: url.CONFIRM_LIMITED_PARTNERSHIP_URL,
   pageType: TransitionPageType.companyNumber
