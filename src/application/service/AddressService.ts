@@ -98,16 +98,18 @@ class AddressService {
         i18nFieldTitleKey += "Title";
       }
 
+      const addressValue = address[key] ?? "";
+
       fieldErrors = {
         ...fieldErrors,
         ...this.checkAddressFieldForInvalidCharacters(
           key,
-          address[key] ?? "",
+          addressValue,
           this.i18n?.address?.enterAddress?.[i18nFieldTitleKey]
         ),
         ...this.checkAddressFieldForCharacterLimit(
           key,
-          address[key] ?? ""
+          addressValue
         )
       };
     }
