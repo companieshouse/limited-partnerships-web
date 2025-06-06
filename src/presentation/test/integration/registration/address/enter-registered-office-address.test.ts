@@ -236,5 +236,28 @@ describe("Enter Registered Office Address Page", () => {
       expect(res.text).toContain(enTranslationText.govUk.error.title);
       expect(res.text).toContain(limitedPartnership.data?.partnership_name?.toUpperCase());
     });
+
+    it("should return validation errors when address fields exceed character limit", async () => {
+      const limitedPartnership = new LimitedPartnershipBuilder().withJurisdiction(Jurisdiction.ENGLAND_AND_WALES).build();
+
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+      const res = await request(app).post(URL).send({
+        pageType: AddressPageType.enterRegisteredOfficeAddress,
+        ...limitedPartnership.data?.registered_office_address,
+        premises: "toomanycharacterstoomanycharacterstoomanycharacterstoomanycharacterstoomanycharacterstoomanycharacterstoomanycharacterstoomanycharacterstoomanycharacterstoomanycharacterstoomanycharacterstoomanycharacterstoomanycharacters",
+        address_line_1: "toomanycharacterstoomanycharacterstoomanycharacterstoomanycharacters",
+        address_line_2: "toomanycharacterstoomanycharacterstoomanycharacterstoomanycharacters",
+        locality: "toomanycharacterstoomanycharacterstoomanycharacterstoomanycharacters",
+        region: "toomanycharacterstoomanycharacterstoomanycharacterstoomanycharacters"
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.premisesLength);
+      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.addressLine1Length);
+      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.addressLine2Length);
+      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.localityLength);
+      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.regionLength);
+    });
   });
 });

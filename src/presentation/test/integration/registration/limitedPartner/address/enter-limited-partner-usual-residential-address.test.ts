@@ -317,5 +317,29 @@ describe("Enter Limited Partner Usual Residential Address Page", () => {
         + enTranslationText.address.enterAddress.errorMessages.invalidCharacters);
       expect(res.text).toContain(enTranslationText.govUk.error.title);
     });
+
+    it("should return validation errors when address fields exceed character limit", async () => {
+      const limitedPartner = new LimitedPartnerBuilder()
+        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+        .isLegalEntity()
+        .build();
+
+      const res = await request(app).post(URL).send({
+        pageType: AddressPageType.enterLimitedPartnerUsualResidentialAddress,
+        ...limitedPartner.data?.usual_residential_address,
+        premises: "toomanycharacterstoomanycharacterstoomanycharacterstoomanycharacterstoomanycharacterstoomanycharacterstoomanycharacterstoomanycharacterstoomanycharacterstoomanycharacterstoomanycharacterstoomanycharacterstoomanycharacters",
+        address_line_1: "toomanycharacterstoomanycharacterstoomanycharacterstoomanycharacters",
+        address_line_2: "toomanycharacterstoomanycharacterstoomanycharacterstoomanycharacters",
+        locality: "toomanycharacterstoomanycharacterstoomanycharacterstoomanycharacters",
+        region: "toomanycharacterstoomanycharacterstoomanycharacterstoomanycharacters"
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.premisesLength);
+      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.addressLine1Length);
+      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.addressLine2Length);
+      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.localityLength);
+      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.regionLength);
+    });
   });
 });
