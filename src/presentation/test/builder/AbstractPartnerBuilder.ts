@@ -1,6 +1,8 @@
 abstract class AbstractPartnerBuilder {
   _id = "123456";
   data: Record<string, any> = {
+    completed: true,
+
     forename: "",
     surname: "",
     former_names: "",
@@ -15,8 +17,7 @@ abstract class AbstractPartnerBuilder {
     legal_form: "",
 
     date_effective_from: "",
-    etag: "",
-    kind: "",
+
     principal_office_address: {
       postal_code: "ST6 3LJ",
       premises: "4",
@@ -36,7 +37,10 @@ abstract class AbstractPartnerBuilder {
       locality: "stoke-on-trent",
       region: "region",
       country: "England"
-    }
+    },
+
+    etag: "",
+    kind: ""
   };
 
   withId(id: string) {
@@ -51,6 +55,11 @@ abstract class AbstractPartnerBuilder {
 
   withSurname(surname: string) {
     this.data.surname = surname;
+    return this;
+  }
+
+  withCompleted(completed: boolean) {
+    this.data.completed = completed;
     return this;
   }
 }

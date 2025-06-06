@@ -34,6 +34,11 @@ describe("Review General Partners Page", () => {
 
   describe("Get Review General Partners Page", () => {
     it("should load the review general partners page with English text", async () => {
+      const generalPartnerPerson = new GeneralPartnerBuilder().isPerson().build();
+      const generalPartnerLegalEntity = new GeneralPartnerBuilder().isLegalEntity().withCompleted(false).build();
+
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartnerPerson, generalPartnerLegalEntity]);
+
       setLocalesEnabled(true);
 
       const res = await request(app).get(URL + "?lang=en");
@@ -48,6 +53,9 @@ describe("Review General Partners Page", () => {
 
       expect(res.text).toContain(`${generalPartnerPerson?.data?.forename} ${generalPartnerPerson?.data?.surname}`);
       expect(res.text).toContain(`${generalPartnerLegalEntity?.data?.legal_entity_name}`);
+      expect(res.text).toContain(
+        `You must provide all information for ${generalPartnerLegalEntity?.data?.legal_entity_name} before continuing. Select Change to provide more information`
+      );
     });
 
     it("should load the review general partners page with Welsh text", async () => {
@@ -59,7 +67,7 @@ describe("Review General Partners Page", () => {
       expect(res.text).toContain(
         `${cyTranslationText.reviewGeneralPartnersPage.title} - ${cyTranslationText.service} - GOV.UK`
       );
-      testTranslations(res.text, cyTranslationText.reviewGeneralPartnersPage, ["emptyList"]);
+      testTranslations(res.text, cyTranslationText.reviewGeneralPartnersPage, ["emptyList", "errorMessage"]);
     });
 
     describe("Empty list", () => {
@@ -119,6 +127,24 @@ describe("Review General Partners Page", () => {
 
         expect(res.status).toBe(302);
         expect(res.headers.location).toContain(getUrl(REVIEW_LIMITED_PARTNERS_URL));
+      });
+
+      it("should render the review general partners page with errors", async () => {
+        const generalPartnerPerson = new GeneralPartnerBuilder().isPerson().build();
+        const generalPartnerLegalEntity = new GeneralPartnerBuilder().isLegalEntity().withCompleted(false).build();
+
+        appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartnerPerson, generalPartnerLegalEntity]);
+
+        const res = await request(app).post(URL).send({
+          pageType: RegistrationPageType.reviewGeneralPartners,
+          addAnotherGeneralPartner: "no"
+        });
+
+        expect(res.status).toBe(200);
+
+        expect(res.text).toContain(
+          `You must provide all information for ${generalPartnerLegalEntity?.data?.legal_entity_name} before continuing. Select Change to provide more information`
+        );
       });
     });
   });

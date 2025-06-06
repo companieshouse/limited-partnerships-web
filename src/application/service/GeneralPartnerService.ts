@@ -2,10 +2,16 @@ import { GeneralPartner } from "@companieshouse/api-sdk-node/dist/services/limit
 import IGeneralPartnerGateway from "../../domain/IGeneralPartnerGateway";
 import { logger } from "../../utils";
 import UIErrors from "../../domain/entities/UIErrors";
-import { extractAPIErrors } from "./utils";
+import { extractAPIErrors, incompletePartnerErrorList } from "./utils";
 
 class GeneralPartnerService {
+  i18n: any;
+
   constructor(private readonly generalPartnerGateway: IGeneralPartnerGateway) {}
+
+  setI18n(i18n: any) {
+    this.i18n = i18n;
+  }
 
   async createGeneralPartner(
     opt: { access_token: string; refresh_token: string },
@@ -52,9 +58,19 @@ class GeneralPartnerService {
   async getGeneralPartners(
     opt: { access_token: string; refresh_token: string },
     transactionId: string
-  ): Promise<GeneralPartner[]> {
+  ): Promise<{ generalPartners: GeneralPartner[]; errors?: UIErrors }> {
     try {
-      return await this.generalPartnerGateway.getGeneralPartners(opt, transactionId);
+      const generalPartners = await this.generalPartnerGateway.getGeneralPartners(opt, transactionId);
+
+      const errorList = incompletePartnerErrorList(generalPartners, this.i18n);
+
+      const uiErrors = new UIErrors();
+      uiErrors.formatValidationErrorToUiErrors({ errors: errorList });
+
+      return {
+        generalPartners,
+        errors: uiErrors
+      };
     } catch (error: any) {
       logger.error(`Error getting GeneralPartners ${JSON.stringify(error)}`);
 
