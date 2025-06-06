@@ -1,6 +1,5 @@
 import * as url from "./url";
 import TransitionPageType from "./PageType";
-import { NEXT_URL } from "./url";
 import { PageRouting, PagesRouting } from "../PageRouting";
 import PageType from "../PageType";
 
@@ -14,18 +13,11 @@ const transitionRoutingCompanyNumber = {
 const transitionRoutingConfirmLimitedPartnership = {
   previousUrl: url.COMPANY_NUMBER_URL,
   currentUrl: url.CONFIRM_LIMITED_PARTNERSHIP_URL,
-  nextUrl: NEXT_URL,
+  nextUrl: "/",
   pageType: TransitionPageType.confirmLimitedPartnership
 };
 
-const transitionRoutingNext = {
-  previousUrl: url.CONFIRM_LIMITED_PARTNERSHIP_URL,
-  currentUrl: NEXT_URL,
-  nextUrl: "/",
-  pageType: TransitionPageType.next
-};
-
-const list = [transitionRoutingCompanyNumber, transitionRoutingConfirmLimitedPartnership, transitionRoutingNext];
+const list = [transitionRoutingCompanyNumber, transitionRoutingConfirmLimitedPartnership];
 
 export const transitionRouting: PagesRouting = new Map<PageType, PageRouting>();
 

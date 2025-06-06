@@ -1,8 +1,7 @@
 import { BASE_URL, BASE_WITH_JOURNEY_TYPE_AND_IDS_URL } from "../../../config/constants";
 import GlobalPageType from "./PageType";
-import { NEXT_TEMPLATE, SIGN_OUT_TEMPLATE } from "./template";
+import { SIGN_OUT_TEMPLATE } from "./template";
 
 export const HEALTHCHECK_URL = `${BASE_URL}/healthcheck`;
 export const SIGN_OUT_URL = `${BASE_URL}/${SIGN_OUT_TEMPLATE}`;
 export const CONFIRMATION_URL = `${BASE_WITH_JOURNEY_TYPE_AND_IDS_URL}/${GlobalPageType.confirmation}`;
-export const NEXT_URL = `${BASE_URL}/${NEXT_TEMPLATE}`;

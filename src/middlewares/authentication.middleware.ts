@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 
 import { logger, checkUserSignedIn, getLoggedInUserEmail } from "../utils";
 import { SIGN_OUT_URL } from "../presentation/controller/global/url";
-import { WHICH_TYPE_URL } from "presentation/controller/registration/url";
+import { WHICH_TYPE_URL } from "../presentation/controller/registration/url";
 
 export const authentication = (req: Request, res: Response, next: NextFunction): void => {
   try {
