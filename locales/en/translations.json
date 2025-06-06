@@ -508,6 +508,11 @@
         "goToStartPage" : "To register a limited partnership, go to the <a class='govuk-link' href='/limited-partnerships/start'>Register a limited partnership</a> start page."
     },
 
+    "print" : {
+        "buttonText" : "Print this page",
+        "buttonTextNoJs" : "To print this page, select print from your browser menu."
+    },
+
     "publicRegisterInformation" : {
         "title": "What information we'll show on the public register"
     },

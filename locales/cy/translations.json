@@ -509,6 +509,11 @@
         "goToStartPage" : "WELSH - To register a limited partnership, go to the <a class='govuk-link' href='/limited-partnerships/start'>Register a limited partnership</a> start page."
     },
 
+    "print" : {
+        "buttonText" : "WELSH - Print this page",
+        "buttonTextNoJs" : "WELSH - To print this page, select print from your browser menu."
+    },
+
     "publicRegisterInformation" : {
         "title": "WELSH - What information we'll show on the public register"
     },
