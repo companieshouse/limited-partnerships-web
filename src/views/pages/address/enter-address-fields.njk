@@ -1,9 +1,5 @@
 {% import 'includes/macros.njk' as macros %}
 
-{% set validatePremises = "validateInput(this, 200, '" + i18n.address.enterAddress.errorMessages.premisesMissing | escape + "', '" + i18n.address.enterAddress.errorMessages.premisesLength | escape + "');" %}
-{% set validateAddressLine1 = "validateInput(this, 50, '" + i18n.address.enterAddress.errorMessages.addressLine1Missing | escape + "', '" + i18n.address.enterAddress.errorMessages.addressLine1Length | escape + "');" %}
-{% set validateLocality = "validateInput(this, 50, '" + i18n.address.enterAddress.errorMessages.localityMissing | escape + "', '" + i18n.address.enterAddress.errorMessages.localityLength | escape + "');" %}
-
 {% include "includes/validators.njk" %}
 
 <div>
@@ -20,9 +16,7 @@
         name: "premises",
         value: address.premises,
         attributes : {  
-            required : true,
-            oninvalid: validatePremises,
-            oninput: validatePremises
+            required : true
         }
     }) }}
 
@@ -35,9 +29,7 @@
         name: "address_line_1",
         value: address.address_line_1,
         attributes : {
-            required : true,
-            oninvalid: validateAddressLine1,
-            oninput: validateAddressLine1
+            required : true
         }
     }) }}
 
@@ -48,10 +40,7 @@
         },
         id: "address_line_2",
         name: "address_line_2",
-        value: address.address_line_2,
-        attributes : {  
-            oninput: "validateLength(this, 50, '" + i18n.address.enterAddress.errorMessages.addressLine2Length | escape + "');"            
-        }
+        value: address.address_line_2
     }) }}
 
     {{ govukInput({
@@ -64,9 +53,7 @@
         name: "locality",
         value: address.locality,
         attributes : {
-            required : true,
-            oninvalid: validateLocality,
-            oninput: validateLocality
+            required : true
         }
     }) }}
 
@@ -78,10 +65,7 @@
         classes: "govuk-!-width-two-thirds",
         id: "region",
         name: "region",
-        value: address.region,
-        attributes : {
-            oninput: "validateLength(this, 50, '" + i18n.address.enterAddress.errorMessages.regionLength | escape + "');"
-        }
+        value: address.region
     }) }}
 </div>
 

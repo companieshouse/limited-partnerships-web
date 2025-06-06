@@ -1,11 +1,5 @@
 {% extends "layout.njk" %}
 
-{% set validateLegalEntityName = "validateInput(this, 160, '" + i18n.addPartnerLegalEntityPage.errorMessages.legalEntityNameMissing | escape + "', '" + i18n.addPartnerLegalEntityPage.errorMessages.legalEntityNameLength | escape + "');" %}
-{% set validateLegalForm = "validateInput(this, 160, '" + i18n.addPartnerLegalEntityPage.errorMessages.legalFormMissing | escape + "', '" + i18n.addPartnerLegalEntityPage.errorMessages.legalFormLength | escape + "');" %}
-{% set validateGoverningLaw = "validateInput(this, 160, '" + i18n.addPartnerLegalEntityPage.errorMessages.governingLawMissing | escape + "', '" + i18n.addPartnerLegalEntityPage.errorMessages.governingLawLength | escape + "');" %}
-{% set validateWhichRegister = "validateInput(this, 160, '" + i18n.addPartnerLegalEntityPage.errorMessages.whichRegisterMissing | escape + "', '" + i18n.addPartnerLegalEntityPage.errorMessages.whichRegisterLength | escape + "');" %}
-{% set validateRegistrationNumber = "validateInput(this, 160, '" + i18n.addPartnerLegalEntityPage.errorMessages.registrationNumberMissing | escape + "', '" + i18n.addPartnerLegalEntityPage.errorMessages.registrationNumberLength | escape + "');" %}
-
 {% set pageTitle = i18n.addPartnerLegalEntityPage.generalPartner.title %}
 {% set publicRegisterInformationLine1 = i18n.addPartnerLegalEntityPage.publicRegisterLine1 %}
 
@@ -34,9 +28,7 @@
           value: props.data.generalPartner.data.legal_entity_name,
           errorMessage: props.errors.legal_entity_name if props.errors,
           attributes : {
-            required: true,
-            oninvalid: validateLegalEntityName,
-            oninput: validateLegalEntityName
+            required: true
           }
         }) }}
 
@@ -53,9 +45,7 @@
           value: props.data.generalPartner.data.legal_form,
           errorMessage: props.errors.legal_form if props.errors,
           attributes : {
-            required: true,
-            oninvalid: validateLegalForm,
-            oninput: validateLegalForm
+            required: true
           }
         }) }}
 
@@ -72,9 +62,7 @@
           value: props.data.generalPartner.data.governing_law,
           errorMessage: props.errors.governing_law if props.errors,
           attributes : {
-            required: true,
-            oninvalid: validateGoverningLaw,
-            oninput: validateGoverningLaw
+            required: true
           }
         }) }}
 
@@ -91,9 +79,7 @@
           value: props.data.generalPartner.data.legal_entity_register_name,
           errorMessage: props.errors.legal_entity_register_name if props.errors,
           attributes : {
-            required: true,
-            oninvalid: validateWhichRegister,
-            oninput: validateWhichRegister
+            required: true
           }
         }) }}
 
@@ -119,9 +105,7 @@
           value: props.data.generalPartner.data.registered_company_number,
           errorMessage: props.errors.registered_company_number if props.errors,
           attributes : {
-            required: true,
-            oninvalid: validateRegistrationNumber,
-            oninput: validateRegistrationNumber
+            required: true
           }
         }) }}
 

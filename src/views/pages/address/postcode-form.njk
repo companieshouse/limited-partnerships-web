@@ -1,17 +1,8 @@
 {% import 'includes/macros.njk' as macros %}
 
-{% if props.errors.errorList.length > 0 %}
-  {% for el in props.errors.errorList %}
-    {% if el.href === "#postal_code" %}
-      {% set postalCodeErrorMessage = { text: el.text } %}
-    {% endif %}
-  {% endfor %}
-{% endif %}
-
 <form class="form" action={{ props.currentUrl }} method="post">
     <input type="hidden" name="pageType" value={{ props.pageType }}>      
     {% include "includes/csrf_token.njk" %}
-
 
     <div class="govuk-!-margin-top-8">
         {{ govukInput({
@@ -24,6 +15,7 @@
         }) }}
 
         {{ govukInput({
+            errorMessage: props.errors.postal_code if props.errors,
             label: {
                 text: i18n.address.findPostcode.postcode
             },
@@ -32,11 +24,9 @@
             classes: "govuk-input--width-10",
             value: props.data.postal_code,
             attributes: {
-                required: true,               
-                oninvalid: postcodeErrorMessage,
-                onclick: "this.setCustomValidity('')"
-            },
-            pattern: "^[A-Za-z]{1,2}\\d[A-Za-z\\d]? ?\\d[A-Za-z]{2}$"
+                required: true,
+                pattern: "^[A-Za-z]{1,2}\\d[A-Za-z\\d]? ?\\d[A-Za-z]{2}$"
+            }
         }) }}
        
         {{ govukButton({
