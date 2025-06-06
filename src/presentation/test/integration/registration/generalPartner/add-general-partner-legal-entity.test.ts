@@ -19,6 +19,7 @@ import {
   REVIEW_GENERAL_PARTNERS_TEMPLATE
 } from "../../../../controller/registration/template";
 import { REGISTRATION_BASE_URL } from "../../../../../config/constants";
+
 import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
 
 describe("Add General Partner Legal Entity Page", () => {

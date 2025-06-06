@@ -31,7 +31,7 @@ class LimitedPartnerController extends AbstractController {
         const { tokens, pageType, ids } = super.extract(request);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
-        this.conditionalPreviousUrl(ids, pageRouting, request);
+        await this.conditionalPreviousUrl(ids, pageRouting, request, tokens);
 
         let limitedPartnership = {};
         let limitedPartner = {};
@@ -62,10 +62,11 @@ class LimitedPartnerController extends AbstractController {
     };
   }
 
-  private conditionalPreviousUrl(
+  private async conditionalPreviousUrl(
     ids: { transactionId: string; submissionId: string; generalPartnerId: string },
     pageRouting: PageRouting,
-    request: Request
+    request: Request,
+    tokens
   ) {
     const previousPageType = super.pageType(request.get("Referrer") ?? "");
 
@@ -73,7 +74,8 @@ class LimitedPartnerController extends AbstractController {
       pageRouting.pageType === RegistrationPageType.addLimitedPartnerLegalEntity ||
       pageRouting.pageType === RegistrationPageType.addLimitedPartnerPerson
     ) {
-      if (previousPageType === RegistrationPageType.reviewLimitedPartners) {
+      const result = await this.limitedPartnerService.getLimitedPartners(tokens, ids.transactionId);
+      if (previousPageType === RegistrationPageType.reviewLimitedPartners || result.limitedPartners.length > 0) {
         pageRouting.previousUrl = super.insertIdsInUrl(pageRouting.data?.customPreviousUrl, ids);
       }
     }
