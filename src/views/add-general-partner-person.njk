@@ -4,10 +4,6 @@
 {% set publicRegisterInformationLine1 = i18n.addPartnerPersonPage.publicRegisterLine1 %}
 {% set publicRegisterInformationLine2 = i18n.addPartnerPersonPage.publicRegisterLine2 %}
 
-{% set validateFirstName = "validateInput(this, 50, '" + i18n.addPartnerPersonPage.errorMessages.firstNameMissing | escape + "', '" + i18n.addPartnerPersonPage.errorMessages.firstNameLength | escape + "');" %}
-{% set validateLastName = "validateInput(this, 160, '" + i18n.addPartnerPersonPage.errorMessages.lastNameMissing | escape + "', '" + i18n.addPartnerPersonPage.errorMessages.lastNameLength | escape + "');" %}
-{% set validatePreviousName = "validateLength(this, 160, '" + i18n.addPartnerPersonPage.errorMessages.previousNameLength | escape + "');" %}
-
 {% if props.data.generalPartner.data.date_of_birth  %}
   {# This is for when saved data is pre-populated on the page #}
   {% set date_of_birth = props.data.generalPartner.data.date_of_birth %}
@@ -54,9 +50,7 @@
           classes: "govuk-!-width-full",
           errorMessage: props.errors.forename if props.errors,
           attributes : {
-            required: true,
-            oninvalid: validateFirstName,
-            oninput: validateFirstName
+            required: true
           }
         }) }}
 
@@ -72,9 +66,7 @@
           classes: "govuk-!-width-full",
           errorMessage: props.errors.surname if props.errors,
           attributes : {
-            required : true,
-            oninvalid: validateLastName,
-            oninput: validateLastName
+            required : true
           }
         }) }}
 
@@ -89,11 +81,7 @@
             id: "former_names",
             name: "former_names",
             value: props.data.generalPartner.data.former_names,
-            errorMessage: props.errors.former_names if props.errors,
-            attributes : {
-              oninvalid: validatePreviousName,
-              oninput: validatePreviousName
-            }
+            errorMessage: props.errors.former_names if props.errors
           }) }}
         {% endset -%}
 
