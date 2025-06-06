@@ -17,7 +17,7 @@ import RegistrationPageType from "../../../../controller/registration/PageType";
 import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 import { TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../../../controller/addressLookUp/url";
 import { REGISTRATION_BASE_URL } from "config";
-import { LIMITED_PARTNER_CHOICE_TEMPLATE, REVIEW_LIMITED_PARTNERS_TEMPLATE } from "presentation/controller/registration/template";
+import { LIMITED_PARTNER_CHOICE_TEMPLATE, REVIEW_LIMITED_PARTNERS_TEMPLATE } from "../../../../../presentation/controller/registration/template";
 
 describe("Add Limited Partner Legal Entity Page", () => {
   const URL = getUrl(ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL);

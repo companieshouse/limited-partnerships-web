@@ -13,7 +13,7 @@ import { ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL, ADD_GENERAL_PARTNER_LEGAL_ENTITY_
 import { TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../../../controller/addressLookUp/url";
 import { GENERAL_PARTNER_CHOICE_TEMPLATE, REVIEW_GENERAL_PARTNERS_TEMPLATE } from "presentation/controller/registration/template";
 import { REGISTRATION_BASE_URL } from "config";
-import GeneralPartnerBuilder from "presentation/test/builder/GeneralPartnerBuilder";
+import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
 
 describe("Add General Partner Legal Entity Page", () => {
   const URL = getUrl(ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL);
