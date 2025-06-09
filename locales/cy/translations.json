@@ -271,7 +271,8 @@
             "errorMessages": {
                 "jurisdictionEnglandAndWales": "WELSH - You must enter a postcode which is in England or Wales",
                 "jurisdictionNorthernIreland": "WELSH - You must enter a postcode which is in Northern Ireland",
-                "jurisdictionScotland": "WELSH - You must enter a postcode which is in Scotland"
+                "jurisdictionScotland": "WELSH - You must enter a postcode which is in Scotland",
+                "notMainland": "WELSH - Enter a UK mainland postcode"
             }
         },
 
