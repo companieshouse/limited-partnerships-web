@@ -50,6 +50,11 @@ class AddressService {
 
       const ukAddresses: Address[] = await this.getAddressListForPostcode(opt, postalCode);
 
+      if (ukAddresses.length === 0) {
+        this.setFieldError(uiErrors, "postal_code", `The postcode ${postalCode} cannot be found`);
+        return { address, errors: uiErrors };
+      }
+
       if (jurisdiction && !this.isFromCorrectCountry(jurisdiction, ukAddresses, uiErrors)) {
         return { address, errors: uiErrors };
       }
