@@ -173,15 +173,17 @@ class AddressService {
   private isFromCorrectCountry(uiErrors: UIErrors, ukAddresses: Address[], jurisdiction?: string): boolean {
     let isCorrectCountry = true;
 
-    const IS_BORDER = ukAddresses[0]?.country === "border";
-    const IS_IN_ENGLAND = ukAddresses[0]?.country === "England";
-    const IS_IN_WALES = ukAddresses[0]?.country === "Wales";
-    const IS_IN_SCOTLAND = ukAddresses[0]?.country === "Scotland";
-    const IS_IN_NORTHERN_IRELAND = ukAddresses[0]?.country === "Northern Ireland";
-    const NOT_MAINLAND = ["Channel Island", "Isle of Man"];
-    const IS_NOT_MAINLAND = NOT_MAINLAND.includes(ukAddresses[0]?.country);
+    const country = ukAddresses[0]?.country;
 
-    if (IS_BORDER || ukAddresses[0]?.country === "") {
+    const IS_BORDER = country === "border";
+    const IS_IN_ENGLAND = country === "England";
+    const IS_IN_WALES = country === "Wales";
+    const IS_IN_SCOTLAND = country === "Scotland";
+    const IS_IN_NORTHERN_IRELAND = country === "Northern Ireland";
+    const NOT_MAINLAND = ["Channel Island", "Isle of Man"];
+    const IS_NOT_MAINLAND = NOT_MAINLAND.includes(country);
+
+    if (IS_BORDER || country === "") {
       return isCorrectCountry;
     }
 
