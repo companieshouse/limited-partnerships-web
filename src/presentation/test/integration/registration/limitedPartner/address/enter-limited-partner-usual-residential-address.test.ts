@@ -327,11 +327,11 @@ describe("Enter Limited Partner Usual Residential Address Page", () => {
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.enterLimitedPartnerUsualResidentialAddress,
         ...limitedPartner.data?.usual_residential_address,
-        premises: "toomanycharacterstoomanycharacterstoomanycharacterstoomanycharacterstoomanycharacterstoomanycharacterstoomanycharacterstoomanycharacterstoomanycharacterstoomanycharacterstoomanycharacterstoomanycharacterstoomanycharacters",
-        address_line_1: "toomanycharacterstoomanycharacterstoomanycharacterstoomanycharacters",
-        address_line_2: "toomanycharacterstoomanycharacterstoomanycharacterstoomanycharacters",
-        locality: "toomanycharacterstoomanycharacterstoomanycharacterstoomanycharacters",
-        region: "toomanycharacterstoomanycharacterstoomanycharacterstoomanycharacters"
+        premises: "toomanycharacters".repeat(13),
+        address_line_1: "toomanycharacters".repeat(4),
+        address_line_2: "toomanycharacters".repeat(4),
+        locality: "toomanycharacters".repeat(4),
+        region: "toomanycharacters".repeat(4)
       });
 
       expect(res.status).toBe(200);
