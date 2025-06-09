@@ -36,7 +36,8 @@
                 oninvalid: postcodeErrorMessage,
                 onclick: "this.setCustomValidity('')"
             },
-            pattern: "^[A-Za-z]{1,2}\\d[A-Za-z\\d]? ?\\d[A-Za-z]{2}$"
+            pattern: "^[A-Za-z]{1,2}\\d[A-Za-z\\d]? ?\\d[A-Za-z]{2}$",
+            errorMessage: props.errors.postal_code if props.errors.postal_code
         }) }}
        
         {{ govukButton({

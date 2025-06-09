@@ -50,7 +50,7 @@ class AddressService {
 
       const ukAddresses: Address[] = await this.getAddressListForPostcode(opt, postalCode);
 
-      if (jurisdiction && !this.isFromCorrectCountry(jurisdiction, ukAddresses, uiErrors)) {
+      if (!this.isFromCorrectCountry(uiErrors, ukAddresses, jurisdiction)) {
         return { address, errors: uiErrors };
       }
 
@@ -165,21 +165,26 @@ class AddressService {
     return str.replace(/_([a-zA-Z0-9])/g, (_, char) => char.toUpperCase());
   }
 
-  private isFromCorrectCountry(jurisdiction: string, ukAddresses: Address[], uiErrors: UIErrors): boolean {
+  private isFromCorrectCountry(uiErrors: UIErrors, ukAddresses: Address[], jurisdiction?: string): boolean {
     let isCorrectCountry = true;
 
     const IS_BORDER = ukAddresses[0]?.country === "border";
-    const ENGLAND = ["England", "Channel Island", "Isle of Man"];
-    const IS_IN_ENGLAND = ENGLAND.includes(ukAddresses[0]?.country);
+    const IS_IN_ENGLAND = ukAddresses[0]?.country === "England";
     const IS_IN_WALES = ukAddresses[0]?.country === "Wales";
     const IS_IN_SCOTLAND = ukAddresses[0]?.country === "Scotland";
     const IS_IN_NORTHERN_IRELAND = ukAddresses[0]?.country === "Northern Ireland";
+    const NOT_MAINLAND = ["Channel Island", "Isle of Man"];
+    const IS_NOT_MAINLAND = NOT_MAINLAND.includes(ukAddresses[0]?.country);
 
     if (IS_BORDER || ukAddresses[0]?.country === "") {
       return isCorrectCountry;
     }
 
-    if (jurisdiction === Jurisdiction.ENGLAND_AND_WALES && !IS_IN_ENGLAND && !IS_IN_WALES) {
+    if (IS_NOT_MAINLAND) {
+      isCorrectCountry = false;
+
+      this.setFieldError(uiErrors, "postal_code", this.i18n?.address?.findPostcode?.errorMessages?.notMainland);
+    } else if (jurisdiction === Jurisdiction.ENGLAND_AND_WALES && !IS_IN_ENGLAND && !IS_IN_WALES) {
       isCorrectCountry = false;
 
       this.setFieldError(
