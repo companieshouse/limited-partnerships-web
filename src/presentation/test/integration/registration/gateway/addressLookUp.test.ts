@@ -97,5 +97,20 @@ describe("Gateway Address Look Up", () => {
       expect(res.status).toBe(500);
       expect(res.text).toContain(enTranslationText.errorPage.title);
     });
+
+    it("should return an error when address list returned is empty", async () => {
+      getListOfValidPostcodeAddresses.mockResolvedValueOnce([]);
+
+      const res = await request(appRealDependencies).post(URL).send({
+        pageType: AddressPageType.postcodeRegisteredOfficeAddress,
+        premises: null,
+        postal_code: "CF14 3UZ"
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(`The postcode CF14 3UZ cannot be found`);
+
+      expect(appDevDependencies.cacheRepository.cache).toEqual(null);
+    });
   });
 });
