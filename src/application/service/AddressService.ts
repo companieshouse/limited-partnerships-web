@@ -10,6 +10,8 @@ class AddressService {
   private static readonly VALID_UK_POSTCODE_FORMAT = /^[A-Za-z]{1,2}\d[A-Za-z\d]? ?\d[A-Za-z]{2}$/;
   private static readonly VALID_CHARACTERS =
     /^[-,.:; 0-9A-Z&@$£¥€'"«»?!/\\()[\]{}<>*=#%+ÀÁÂÃÄÅĀĂĄÆǼÇĆĈĊČÞĎÐÈÉÊËĒĔĖĘĚĜĞĠĢĤĦÌÍÎÏĨĪĬĮİĴĶĹĻĽĿŁÑŃŅŇŊÒÓÔÕÖØŌŎŐǾŒŔŖŘŚŜŞŠŢŤŦÙÚÛÜŨŪŬŮŰŲŴẀẂẄỲÝŶŸŹŻŽa-zſƒǺàáâãäåāăąæǽçćĉċčþďðèéêëēĕėęěĝģğġĥħìíîïĩīĭįĵķĺļľŀłñńņňŋòóôõöøōŏőǿœŕŗřśŝşšţťŧùúûüũūŭůűųŵẁẃẅỳýŷÿźżž]*$/;
+  private static readonly PREMISES_MAX_LENGTH = 200;
+  private static readonly MAX_LENGTH = 50;
 
   i18n: any;
 
@@ -87,7 +89,7 @@ class AddressService {
     );
   }
 
-  public hasAddressGotInvalidCharacters(address: Address, uiErrors: UIErrors | undefined): UIErrors | undefined {
+  public validateAddressCharactersAndLength(address: Address, uiErrors: UIErrors | undefined): UIErrors | undefined {
     let fieldErrors = {};
     const ignoredFields = ["country"];
 
@@ -101,12 +103,18 @@ class AddressService {
         i18nFieldTitleKey += "Title";
       }
 
+      const addressValue = address[key] ?? "";
+
       fieldErrors = {
         ...fieldErrors,
         ...this.checkAddressFieldForInvalidCharacters(
           key,
-          address[key] ?? "",
+          addressValue,
           this.i18n?.address?.enterAddress?.[i18nFieldTitleKey]
+        ),
+        ...this.checkAddressFieldForCharacterLimit(
+          key,
+          addressValue
         )
       };
     }
@@ -150,6 +158,33 @@ class AddressService {
 
       throw error;
     }
+  }
+
+  private checkAddressFieldForCharacterLimit(
+    fieldName: string,
+    fieldValue: string,
+  ): Record<string, string> {
+    const fieldNamesWithMaxLength = {
+      address_line_1: "addressLine1Length",
+      address_line_2: "addressLine2Length",
+      locality: "localityLength",
+      region: "regionLength"
+    };
+
+    if (fieldName === "premises") {
+      if (fieldValue.length > AddressService.PREMISES_MAX_LENGTH) {
+        return {
+          [fieldName]: " " + this.i18n?.address?.enterAddress?.errorMessages?.premisesLength
+        };
+      }
+    } else if (fieldNamesWithMaxLength[fieldName] && fieldValue.length > AddressService.MAX_LENGTH) {
+      const errorKey = fieldNamesWithMaxLength[fieldName];
+      return {
+        [fieldName]: " " + this.i18n?.address?.enterAddress?.errorMessages?.[errorKey]
+      };
+    }
+
+    return {};
   }
 
   private checkAddressFieldForInvalidCharacters(

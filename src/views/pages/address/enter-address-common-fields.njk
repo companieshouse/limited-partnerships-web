@@ -1,5 +1,3 @@
-{% set validatePostcode = "validateInput(this, 15, '" + i18n.address.enterAddress.errorMessages.postcodeMissing | escape + "', '" + i18n.address.enterAddress.errorMessages.postcodeLength | escape + "');" %}
-
 {% include "pages/address/enter-address-fields.njk" %}
 
 {{ govukInput({
@@ -12,9 +10,7 @@
   name: "postal_code",
   value: address.postal_code,
   attributes : {
-  required : true,
-  oninvalid: validatePostcode,
-  oninput: validatePostcode
+  required : true
   }
 }) }}
 
@@ -34,9 +30,7 @@
     }
   },
   attributes : {
-  required: "true",
-  oninvalid: "this.setCustomValidity('" + i18n.address.enterAddress.errorMessages.countryMissing + "');",
-  oninput: "this.setCustomValidity('');"
+  required: "true"
   },
   items: [{
     value: "",
