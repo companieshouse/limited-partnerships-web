@@ -1,0 +1,28 @@
+<noscript>
+  <style>
+    a[id="print-button"] {
+      display: none;
+    }
+    .check-your-answers-javascript-disabled-text-style {
+      display: block !important;
+    }
+  </style>
+</noscript>
+
+<style>
+  .check-your-answers-javascript-disabled-text-style {
+    display: none;
+  }
+</style>
+
+{{ govukButton({
+  text: i18n.print.buttonText,
+  classes: "govuk-button--secondary",
+  href: "javascript: window.print()",
+  attributes: {
+      "id": "print-button",
+      "data-event-id": "print-button"
+  }
+}) }}
+
+<p class="govuk-body govuk-!-font-size-20 check-your-answers-javascript-disabled-text-style">{{ i18n.print.buttonTextNoJs }}</p>
