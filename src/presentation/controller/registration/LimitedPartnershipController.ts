@@ -49,6 +49,9 @@ class LimitedPartnershipController extends AbstractController {
   getPageRouting() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
+        this.generalPartnerService.setI18n(response.locals.i18n);
+        this.limitedPartnerService.setI18n(response.locals.i18n);
+
         const { tokens, pageType, ids } = super.extract(request);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
@@ -349,6 +352,9 @@ class LimitedPartnershipController extends AbstractController {
   sendSicCodesPageData() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
+        this.generalPartnerService.setI18n(response.locals.i18n);
+        this.limitedPartnerService.setI18n(response.locals.i18n);
+
         const { tokens, ids } = super.extract(request);
         const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);

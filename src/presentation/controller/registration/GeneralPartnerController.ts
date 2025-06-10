@@ -29,6 +29,8 @@ class GeneralPartnerController extends AbstractController {
   getPageRouting() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
+        this.generalPartnerService.setI18n(response.locals.i18n);
+
         const { tokens, pageType, ids } = super.extract(request);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
         await this.conditionalPreviousUrl(ids, pageRouting, request, tokens);
