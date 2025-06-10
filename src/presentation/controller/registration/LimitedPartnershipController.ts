@@ -30,7 +30,7 @@ import {
   WHICH_TYPE_WITH_IDS_URL
 } from "./url";
 import { CONFIRM_REGISTERED_OFFICE_ADDRESS_URL } from "../addressLookUp/url";
-import { CONFIRMATION_URL } from "../global/url";
+import { PAYMENT_RESPONSE_URL } from "../global/url";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
 import { formatDate } from "../../../utils/date-format";
@@ -186,7 +186,7 @@ class LimitedPartnershipController extends AbstractController {
           throw new Error("No payment URL found in response header from closeTransaction");
         }
 
-        const urlWithJourney = `${CHS_URL}${CONFIRMATION_URL}`.replace(
+        const urlWithJourney = `${CHS_URL}${PAYMENT_RESPONSE_URL}`.replace(
           JOURNEY_TYPE_PARAM,
           getJourneyTypes(request.url).journey
         );

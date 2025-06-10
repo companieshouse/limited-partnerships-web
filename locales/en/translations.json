@@ -509,6 +509,16 @@
         "goToStartPage" : "To register a limited partnership, go to the <a class='govuk-link' href='/limited-partnerships/registration/which-type'>Register a limited partnership</a> start page."
     },
 
+    "paymentFailedPage" : {
+      "title" : "Payment failed",
+      "reasonHeading" : "Your application has not been submitted because we have not been able to take payment. This could be because:",
+      "cancelled" : "you cancelled your payment",
+      "declined" : "your payment was declined",
+      "expired" : "your payment expired",
+      "error" : "there was an error (for example, a technical error)",
+      "retry" : "Your application has been saved in Your Filings. To submit the application, you will need to <a class='govuk-link' href='/user/transactions'>find the application in Your Filings</a> and complete payment."
+    },
+
     "print" : {
         "buttonText" : "Print this page",
         "buttonTextNoJs" : "To print this page, select print from your browser menu."

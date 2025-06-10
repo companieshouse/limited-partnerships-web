@@ -7,9 +7,12 @@ import {
   REGISTRATION_BASE_URL,
   APPLICATION_CACHE_KEY,
   cookieOptions,
-  TRANSITION_BASE_URL
+  TRANSITION_BASE_URL,
+  JOURNEY_TYPE_PARAM
 } from "../../../config/constants";
+import { CONFIRMATION_URL, PAYMENT_FAILED_URL } from "../../../presentation/controller/global/url";
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
+import { getJourneyTypes } from "../../../utils";
 
 class GlobalController extends AbstractController {
   constructor(private readonly limitedPartnershipService: LimitedPartnershipService) {
@@ -68,6 +71,28 @@ class GlobalController extends AbstractController {
     return (_request: Request, response: Response, next: NextFunction) => {
       try {
         response.status(200).json({ status: "OK" });
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  getPaymentDecision() {
+    return (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { status } = request.query;
+        const { ids } = super.extract(request);
+
+        const nextPageUrl = (status === "paid") ? CONFIRMATION_URL : PAYMENT_FAILED_URL;
+
+        const nextPageUrlWithJourney = nextPageUrl.replace(
+          JOURNEY_TYPE_PARAM,
+          getJourneyTypes(request.url).journey
+        );
+
+        const nextPageUrlWithJourneyAndIds = super.insertIdsInUrl(nextPageUrlWithJourney, ids);
+
+        return response.redirect(nextPageUrlWithJourneyAndIds);
       } catch (error) {
         next(error);
       }
