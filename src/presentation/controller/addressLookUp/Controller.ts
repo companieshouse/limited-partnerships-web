@@ -339,6 +339,8 @@ class AddressLookUpController extends AbstractController {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         this.addressService.setI18n(response.locals.i18n);
+        this.generalPartnerService.setI18n(response.locals.i18n);
+        this.limitedPartnerService.setI18n(response.locals.i18n);
 
         const { tokens, ids } = super.extract(request);
         const pageType = super.extractPageTypeOrThrowError(request, AddressLookUpPageType);
