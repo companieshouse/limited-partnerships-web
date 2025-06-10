@@ -16,6 +16,8 @@ import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
 import RegistrationPageType from "../../../../controller/registration/PageType";
 import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 import { TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../../../controller/addressLookUp/url";
+import { REGISTRATION_BASE_URL } from "config";
+import { LIMITED_PARTNER_CHOICE_TEMPLATE, REVIEW_LIMITED_PARTNERS_TEMPLATE } from "../../../../../presentation/controller/registration/template";
 
 describe("Add Limited Partner Legal Entity Page", () => {
   const URL = getUrl(ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL);
@@ -77,6 +79,29 @@ describe("Add Limited Partner Legal Entity Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain("My Company ltd");
+    });
+
+    it("should contain a back link to the reviw page when limited partners are present", async () => {
+      const limitedPartner = new LimitedPartnerBuilder()
+        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+        .isPerson()
+        .build();
+
+      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
+      const res = await request(app).get(getUrl(ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_ID_URL) + "?lang=en");
+
+      expect(res.status).toBe(200);
+      const regex = new RegExp(`${REGISTRATION_BASE_URL}/transaction/.*?/submission/.*?/${REVIEW_LIMITED_PARTNERS_TEMPLATE}`);
+      expect(res.text).toMatch(regex);
+    });
+
+    it("should contain a back link to the choice page when limited partners are not present", async () => {
+      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([]);
+      const res = await request(app).get(getUrl(ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_ID_URL) + "?lang=en");
+
+      expect(res.status).toBe(200);
+      const regex = new RegExp(`${REGISTRATION_BASE_URL}/transaction/.*?/submission/.*?/${LIMITED_PARTNER_CHOICE_TEMPLATE}`);
+      expect(res.text).toMatch(regex);
     });
   });
 

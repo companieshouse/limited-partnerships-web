@@ -270,7 +270,8 @@
             "errorMessages": {
                 "jurisdictionEnglandAndWales": "You must enter a postcode which is in England or Wales",
                 "jurisdictionNorthernIreland": "You must enter a postcode which is in Northern Ireland",
-                "jurisdictionScotland": "You must enter a postcode which is in Scotland"
+                "jurisdictionScotland": "You must enter a postcode which is in Scotland",
+                "notMainland": "Enter a UK mainland postcode"
             }
         },
 
@@ -505,7 +506,7 @@
         "spelling" : "If you typed the web address, check it is spelled correctly.",
         "copiedAddress" : "If you pasted the web address, check you copied the entire address.",
         "movedPage" : "If the web address is correct or you selected a link, the page may have moved.",
-        "goToStartPage" : "To register a limited partnership, go to the <a class='govuk-link' href='/limited-partnerships/start'>Register a limited partnership</a> start page."
+        "goToStartPage" : "To register a limited partnership, go to the <a class='govuk-link' href='/limited-partnerships/registration/which-type'>Register a limited partnership</a> start page."
     },
 
     "publicRegisterInformation" : {
@@ -542,6 +543,10 @@
             "title": "Do you need to add another general partner?",
             "optionPerson": "Yes, a person",
             "optionLegalEntity": "Yes, a legal entity"
+        },
+        "errorMessage": {
+            "beforeName": "You must provide all information for",
+            "afterName": "before continuing. Select Change to provide more information"
         }
     },
 
@@ -559,6 +564,10 @@
             "title": "Do you need to add another limited partner?",
             "optionPerson": "Yes, a person",
             "optionLegalEntity": "Yes, a legal entity"
+        },
+        "errorMessage": {
+            "beforeName": "You must provide all information for",
+            "afterName": "before continuing. Select Change to provide more information"
         }
     },
 
@@ -581,11 +590,6 @@
          "hint": "We will save your application.",
          "saved": "How do I find my saved applications?",
          "filingsInfo": "Sign in to your Companies House account and select Your filings to access your saved applications."
-    },
-
-    "startPage" : {
-        "title" : "This is Limited Partnerships",
-        "errorStartAddressMissing" : "Please enter an address"
     },
 
     "termPage": {

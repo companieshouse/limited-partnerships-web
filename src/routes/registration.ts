@@ -8,7 +8,6 @@ import {
   EMAIL_URL,
   WHERE_IS_THE_JURISDICTION_URL,
   NAME_URL,
-  NEXT_URL,
   WHICH_TYPE_URL,
   LIMITED_PARTNERS_URL,
   GENERAL_PARTNERS_URL,
@@ -301,12 +300,6 @@ export const registrationEndpoints = (
     CHECK_YOUR_ANSWERS_URL,
     authentication,
     dependencies.limitedPartnershipController.postCheckYourAnswers()
-  );
-
-  router.get(
-    NEXT_URL,
-    authentication,
-    dependencies.limitedPartnershipController.getPageRouting()
   );
 };
 

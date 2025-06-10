@@ -67,11 +67,11 @@ class LimitedPartnershipController extends AbstractController {
         }
 
         if (pageRouting.pageType === RegistrationPageType.checkYourAnswers) {
-          generalPartners = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
-          generalPartners = generalPartners.map((partner) => this.formatPartnerDob(partner, response));
+          const gpResult = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
+          generalPartners = gpResult.generalPartners.map((partner) => this.formatPartnerDob(partner, response));
 
-          limitedPartners = await this.limitedPartnerService.getLimitedPartners(tokens, ids.transactionId);
-          limitedPartners = limitedPartners.map((partner) => this.formatPartnerDob(partner, response));
+          const lpResult = await this.limitedPartnerService.getLimitedPartners(tokens, ids.transactionId);
+          limitedPartners = lpResult.limitedPartners.map((partner) => this.formatPartnerDob(partner, response));
         }
 
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
@@ -86,15 +86,20 @@ class LimitedPartnershipController extends AbstractController {
     };
   }
 
-  private formatPartnerDob(partner: GeneralPartner | LimitedPartner, response: Response): GeneralPartner | LimitedPartner {
+  private formatPartnerDob(
+    partner: GeneralPartner | LimitedPartner,
+    response: Response
+  ): GeneralPartner | LimitedPartner {
     return {
       ...partner,
       data: {
         ...partner.data,
-        date_of_birth: partner.data?.date_of_birth ? formatDate(partner.data?.date_of_birth, response.locals.i18n) : undefined
+        date_of_birth: partner.data?.date_of_birth
+          ? formatDate(partner.data?.date_of_birth, response.locals.i18n)
+          : undefined
       }
     };
-  };
+  }
 
   private conditionalPreviousUrl(
     ids: { transactionId: string; submissionId: string; generalPartnerId: string },
@@ -294,10 +299,7 @@ class LimitedPartnershipController extends AbstractController {
       );
 
       if (limitedPartnership.data?.registered_office_address) {
-        pageRouting.nextUrl = super.insertIdsInUrl(
-          CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
-          ids
-        );
+        pageRouting.nextUrl = super.insertIdsInUrl(CONFIRM_REGISTERED_OFFICE_ADDRESS_URL, ids);
       }
     }
   }
@@ -389,9 +391,9 @@ class LimitedPartnershipController extends AbstractController {
     ids: { transactionId: string; submissionId: string },
     pageRouting: PageRouting
   ) {
-    const generalPartners = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
+    const result = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
 
-    if (generalPartners.length > 0) {
+    if (result.generalPartners.length > 0) {
       pageRouting.nextUrl = super.insertIdsInUrl(REVIEW_GENERAL_PARTNERS_URL, ids);
     }
   }

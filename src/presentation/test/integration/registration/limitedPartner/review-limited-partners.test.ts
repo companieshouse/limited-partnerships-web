@@ -31,6 +31,11 @@ describe("Review Limited Partners Page", () => {
 
   describe("Get Review Limited Partners Page", () => {
     it("should load the review limited partners page with English text", async () => {
+      const limitedPartnerPerson = new LimitedPartnerBuilder().isPerson().build();
+      const limitedPartnerLegalEntity = new LimitedPartnerBuilder().isLegalEntity().withCompleted(false).build();
+
+      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerPerson, limitedPartnerLegalEntity]);
+
       setLocalesEnabled(true);
 
       const res = await request(app).get(URL + "?lang=en");
@@ -45,6 +50,9 @@ describe("Review Limited Partners Page", () => {
 
       expect(res.text).toContain(`${limitedPartnerPerson?.data?.forename} ${limitedPartnerPerson?.data?.surname}`);
       expect(res.text).toContain(`${limitedPartnerLegalEntity?.data?.legal_entity_name}`);
+      expect(res.text).toContain(
+        `You must provide all information for ${limitedPartnerLegalEntity?.data?.legal_entity_name} before continuing. Select Change to provide more information`
+      );
     });
 
     it("should load the review limited partners page with Welsh text", async () => {
@@ -57,7 +65,7 @@ describe("Review Limited Partners Page", () => {
         `${cyTranslationText.reviewLimitedPartnersPage.title} - ${cyTranslationText.service} - GOV.UK`
       );
 
-      testTranslations(res.text, cyTranslationText.reviewLimitedPartnersPage, ["emptyList"]);
+      testTranslations(res.text, cyTranslationText.reviewLimitedPartnersPage, ["emptyList", "errorMessage"]);
 
       expect(res.text).toContain(`${limitedPartnerPerson?.data?.forename} ${limitedPartnerPerson?.data?.surname}`);
       expect(res.text).toContain(`${limitedPartnerLegalEntity?.data?.legal_entity_name}`);
@@ -119,6 +127,24 @@ describe("Review Limited Partners Page", () => {
 
       expect(res.text).toContain(
         `${enTranslationText.reviewLimitedPartnersPage.title} - ${enTranslationText.service} - GOV.UK`
+      );
+    });
+
+    it("should render the review limited partners page with errors", async () => {
+      const limitedPartnerPerson = new LimitedPartnerBuilder().isPerson().build();
+      const limitedPartnerLegalEntity = new LimitedPartnerBuilder().isLegalEntity().withCompleted(false).build();
+
+      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerPerson, limitedPartnerLegalEntity]);
+
+      const res = await request(app).post(URL).send({
+        pageType: RegistrationPageType.reviewLimitedPartners,
+        addAnotherLimitedPartner: "no"
+      });
+
+      expect(res.status).toBe(200);
+
+      expect(res.text).toContain(
+        `You must provide all information for ${limitedPartnerLegalEntity?.data?.legal_entity_name} before continuing. Select Change to provide more information`
       );
     });
   });

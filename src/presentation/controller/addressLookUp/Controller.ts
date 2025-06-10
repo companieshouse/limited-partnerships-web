@@ -210,11 +210,7 @@ class AddressLookUpController extends AbstractController {
 
         // if exact match - redirect to confirm page
         if (address?.postal_code && address?.premises && address?.address_line_1) {
-          const url = super.insertIdsInUrl(
-            pageRouting?.data?.confirmAddressUrl,
-            ids,
-            response
-          );
+          const url = super.insertIdsInUrl(pageRouting?.data?.confirmAddressUrl, ids, response);
 
           response.redirect(url);
           return;
@@ -452,18 +448,15 @@ class AddressLookUpController extends AbstractController {
 
     if (pageRouting.pageType === AddressLookUpPageType.confirmRegisteredOfficeAddress) {
       if (limitedPartnership.data?.principal_place_of_business_address) {
-        pageRouting.nextUrl = super.insertIdsInUrl(
-          CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
-          ids
-        );
+        pageRouting.nextUrl = super.insertIdsInUrl(CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL, ids);
       }
     } else if (pageRouting.pageType === AddressLookUpPageType.confirmPrincipalPlaceOfBusinessAddress) {
-      const generalPartners = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
+      const result = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
 
       if (
         (limitedPartnership?.data?.partnership_type === PartnershipType.PFLP ||
           limitedPartnership?.data?.partnership_type === PartnershipType.SPFLP) &&
-        generalPartners.length > 0
+        result.generalPartners.length > 0
       ) {
         pageRouting.nextUrl = super.insertIdsInUrl(REVIEW_GENERAL_PARTNERS_URL, ids);
       }
