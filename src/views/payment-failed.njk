@@ -1,0 +1,22 @@
+{% set suppressBackLink = true %}
+
+{% extends "layout.njk" %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-l">{{ i18n.paymentFailedPage.title }}</h1>
+
+      <p class="govuk-body">{{ i18n.paymentFailedPage.reasonHeading }}</p>
+
+      <ul class="govuk-list govuk-list--bullet">
+        <li>{{ i18n.paymentFailedPage.cancelled }}</li>
+        <li>{{ i18n.paymentFailedPage.declined }}</li>
+        <li>{{ i18n.paymentFailedPage.expired }}</li>
+        <li>{{ i18n.paymentFailedPage.error }}</li>
+      </ul>
+
+      <p class="govuk-body">{{ i18n.paymentFailedPage.retry | safe }}</p>
+    </div>
+  </div>
+{% endblock %}
