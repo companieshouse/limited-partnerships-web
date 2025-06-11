@@ -9,7 +9,7 @@ Requires >= Node v20
 2. run 'npm run build' to compile
 3. run 'npm run start' to start the service
 
-use localhost:3000/limited-partnerships/start to view the test page
+Use localhost:3000/limited-partnerships/start to view the test page
 
 ## Technologies and Utils
 
