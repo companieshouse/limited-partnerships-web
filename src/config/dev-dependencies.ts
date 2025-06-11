@@ -20,6 +20,7 @@ import CompanyService from "../application/service/CompanyService";
 import CompanyInMemoryGateway from "../infrastructure/gateway/companyProfile/CompanyInMemoryGateway";
 import PaymentService from "../application/service/PaymentService";
 import PaymentInMemoryGateway from "../infrastructure/gateway/payment/PaymentInMemoryGateway";
+import TransactionService from "../application/service/TransactionService";
 
 // GATEWAYS
 const limitedPartnershipGateway: RegistrationInMemoryGateway = new RegistrationInMemoryGateway();
@@ -46,9 +47,14 @@ const generalPartnerService: GeneralPartnerService = new GeneralPartnerService(g
 const limitedPartnerService: LimitedPartnerService = new LimitedPartnerService(limitedPartnerGateway);
 const companyService = new CompanyService(companyGateway);
 const paymentService = new PaymentService(paymentGateway);
+const transactionService = new TransactionService(transactionGateway);
 
 // CONTROLLERS
-const globalController: GlobalController = new GlobalController(limitedPartnershipService);
+const globalController: GlobalController = new GlobalController(
+  limitedPartnershipService,
+  paymentService,
+  transactionService
+);
 const limitedPartnershipController: LimitedPartnershipController = new LimitedPartnershipController(
   limitedPartnershipService,
   generalPartnerService,
@@ -95,5 +101,6 @@ export const appDevDependencies = {
   companyGateway,
   companyService,
   paymentGateway,
-  paymentService
+  paymentService,
+  transactionService
 };

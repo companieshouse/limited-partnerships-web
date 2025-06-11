@@ -7,7 +7,7 @@
     "build": "rm -rf dist && tsc && cp -r src/views dist/ && cp -r locales dist/",
     "lint": "eslint '{src,test}/**/*' *.mjs",
     "lint:fix": "eslint '{src,test}/**/*' *.mjs --fix",
-    "prepare": "husky",
+    "prepare": "husky install && npm install --save https://github.com/companieshouse/api-sdk-node/tarball/lp-857-add-filing-mode-to-transaction && cd node_modules/@companieshouse/api-sdk-node && npm run build",
     "sonarqube": "branch=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD); if [[ $branch == \"HEAD\" ]]; then echo $branch && npm run sonarqube-base-branch; else echo $branch && npm run sonarqube-pull-request; fi;",
     "sonarqube-base-branch": "sonar-scanner",
     "sonarqube-pull-request": "sonar-scanner -D sonar.pullrequest.base=main",
@@ -33,7 +33,7 @@
   "license": "MIT",
   "homepage": "https://github.com/companieshouse/limited-partnerships-web#readme",
   "dependencies": {
-    "@companieshouse/api-sdk-node": "^2.0.263",
+    "@companieshouse/api-sdk-node": "https://github.com/companieshouse/api-sdk-node/tarball/lp-857-add-filing-mode-to-transaction",
     "@companieshouse/ch-node-utils": "^1.3.13",
     "@companieshouse/node-session-handler": "^5.0.1",
     "@companieshouse/structured-logging-node": "^2.0.1",
