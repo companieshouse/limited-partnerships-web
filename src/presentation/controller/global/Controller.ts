@@ -20,8 +20,25 @@ import { CONFIRMATION_URL } from "./url";
 import { WHICH_TYPE_WITH_IDS_URL } from "../registration/url";
 import { COMPANY_NUMBER_URL } from "../transition/url";
 import TransactionService from "../../../application/service/TransactionService";
+import { TransactionKind, TransactionStatus } from "../../../domain/entities/TransactionTypes";
 
 class GlobalController extends AbstractController {
+
+  private static readonly FILING_MODE_URL_MAP: Record<string, { journey: string; resumeUrl: string }> = {
+    [TransactionKind.registration]: {
+      journey: Journey.registration,
+      resumeUrl: WHICH_TYPE_WITH_IDS_URL
+    },
+    [TransactionKind.transition]: {
+      journey: Journey.transition,
+      resumeUrl: COMPANY_NUMBER_URL // TODO: change to email url when built
+    },
+    [TransactionKind.postTransition]: {
+      journey: "", // TODO: update when available
+      resumeUrl: "" // TODO: update when available
+    }
+  };
+
   constructor(
     private readonly limitedPartnershipService: LimitedPartnershipService,
     private readonly paymentService: PaymentService,
@@ -132,26 +149,27 @@ class GlobalController extends AbstractController {
 
         const transaction = await this.transactionService.getTransaction(tokens, ids.transactionId);
 
-        if (!transaction?.filingMode) {
-          logger.errorRequest(request, "Transaction filing mode is undefined when resuming journey");
-          return next(new Error("Transaction filing mode is undefined when resuming journey"));
+        if (!transaction?.filingMode || transaction.filingMode === "") {
+          return next(new Error("Transaction filing mode is undefined or empty when resuming journey"));
         }
+
+        const { journey, resumeUrl } = this.getFilingModeUrls(transaction.filingMode);
 
         if (this.isPendingPayment(transaction)) {
-          return this.handlePendingPayment(request, response, tokens, ids, transaction);
+          return this.handlePendingPayment(request, response, tokens, ids, journey);
         }
 
-        return this.redirectToResumePage(response, transaction.filingMode, ids);
+        const resumePage = super.insertIdsInUrl(resumeUrl, ids);
+        return response.redirect(resumePage);
 
       } catch (error) {
-        logger.errorRequest(request, `Error in resumeJourney: ${error.message}`);
         next(error);
       }
     };
   }
 
   private isPendingPayment(transaction: any): boolean {
-    return transaction.status === "closed pending payment";
+    return transaction.status === TransactionStatus.closedPendingPayment;
   }
 
   private async handlePendingPayment(
@@ -159,10 +177,10 @@ class GlobalController extends AbstractController {
     response: Response,
     tokens: any,
     ids: any,
-    transaction: any
+    journey: string
   ) {
     const startPaymentSessionUrl = PAYMENTS_API_URL + "/payments";
-    const paymentReturnUrl = `${CHS_URL}${CONFIRMATION_URL}`.replace(JOURNEY_TYPE_PARAM, this.getJourneyUrl(transaction.filingMode));
+    const paymentReturnUrl = `${CHS_URL}${CONFIRMATION_URL}`.replace(JOURNEY_TYPE_PARAM, journey);
     const paymentReturnUrlWithIds = super.insertIdsInUrl(paymentReturnUrl, ids);
     const redirectToPaymentServiceUrl = await this.paymentService.startPaymentSession(
       tokens,
@@ -170,44 +188,16 @@ class GlobalController extends AbstractController {
       paymentReturnUrlWithIds,
       ids.transactionId
     );
-    logger.infoRequest(request, `Payments session started on resume link with transaction: ${ids.transactionId}, submission: ${ids.submissionId}`);
+    logger.infoRequest(request, `Payments session started resuming transaction: ${ids.transactionId}, submission: ${ids.submissionId}`);
     return response.redirect(redirectToPaymentServiceUrl);
   }
 
-  private redirectToResumePage(response: Response, filingMode: string, ids: any) {
-    const resumePage = super.insertIdsInUrl(this.getResumeUrl(filingMode), ids);
-    return response.redirect(resumePage);
-  }
-
-  private static readonly FILING_MODE_URL_MAP: Record<string, { journey: string; resumeUrl: string }> = {
-    "limited-partnership-registration": {
-      journey: Journey.registration,
-      resumeUrl: WHICH_TYPE_WITH_IDS_URL
-    },
-    "limited-partnership-transition": {
-      journey: Journey.transition,
-      resumeUrl: COMPANY_NUMBER_URL // TODO: change to email url
-    },
-    "limited-partnership-post-transition": {
-      journey: "", // TODO: update when available
-      resumeUrl: "" // TODO: update when available
-    }
-  };
-
-  private getJourneyUrl(filingMode: string): string {
-    const entry = GlobalController.FILING_MODE_URL_MAP[filingMode];
-    if (!entry) {
-      throw new Error(`Unknown transaction filing_mode '${filingMode}' found when resuming payment journey`);
-    }
-    return entry.journey;
-  }
-
-  private getResumeUrl(filingMode: string): string {
+  private getFilingModeUrls(filingMode: string): { journey: string; resumeUrl: string } {
     const entry = GlobalController.FILING_MODE_URL_MAP[filingMode];
     if (!entry) {
       throw new Error(`Unknown transaction filing_mode '${filingMode}' found when resuming journey`);
     }
-    return entry.resumeUrl;
+    return entry;
   }
 }
 

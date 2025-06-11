@@ -8,12 +8,13 @@ import { CONFIRMATION_URL, RESUME_JOURNEY_URL } from "../../../../presentation/c
 import { WHICH_TYPE_WITH_IDS_URL } from "../../../../presentation/controller/registration/url";
 import { COMPANY_NUMBER_URL } from "../../../../presentation/controller/transition/url";
 import { getUrl } from "../../utils";
-import { CHS_URL, JOURNEY_TYPE_PARAM } from "config";
-import { Journey } from "domain/entities/journey";
+import { CHS_URL, JOURNEY_TYPE_PARAM } from "../../../../config";
+import { Journey } from "../../../../domain/entities/journey";
+import { TransactionKind, TransactionStatus } from "../../../../domain/entities/TransactionTypes";
 
 function buildTransaction(
   filingMode: string,
-  status: string = "open"
+  status: string = TransactionStatus.open
 ): Transaction {
   return {
     id: appDevDependencies.transactionGateway.transactionId,
@@ -33,11 +34,11 @@ describe("Resume a journey", () => {
 
   it.each([
     {
-      filingMode: "limited-partnership-registration",
+      filingMode: TransactionKind.registration,
       expectedLocation: getUrl(WHICH_TYPE_WITH_IDS_URL)
     },
     {
-      filingMode: "limited-partnership-transition",
+      filingMode: TransactionKind.transition,
       expectedLocation: getUrl(COMPANY_NUMBER_URL)
     }
   ])(
@@ -56,17 +57,17 @@ describe("Resume a journey", () => {
 
   it.each([
     {
-      filingMode: "limited-partnership-registration",
+      filingMode: TransactionKind.registration,
       expectedPaymentReturnUrl: getUrl(`${CHS_URL}${CONFIRMATION_URL}`).replace(JOURNEY_TYPE_PARAM, Journey.registration)
     },
     {
-      filingMode: "limited-partnership-transition",
+      filingMode: TransactionKind.transition,
       expectedPaymentReturnUrl: getUrl(`${CHS_URL}${CONFIRMATION_URL}`).replace(JOURNEY_TYPE_PARAM, Journey.transition)
     }
   ])(
     "should resume a pay now $filingMode journey",
     async ({ filingMode, expectedPaymentReturnUrl }) => {
-      const transaction = buildTransaction(filingMode, "closed pending payment");
+      const transaction = buildTransaction(filingMode, TransactionStatus.closedPendingPayment);
       appDevDependencies.transactionGateway.feedTransactions([transaction]);
 
       const res = await request(app).get(RESUME_URL);
@@ -79,4 +80,32 @@ describe("Resume a journey", () => {
         .toEqual(expectedPaymentReturnUrl);
     }
   );
+
+  it.each([
+    { filingMode: undefined, description: "undefined" },
+    { filingMode: "", description: "empty string" }
+  ])(
+    "should throw error if transaction filing mode is $description",
+    async ({ filingMode }) => {
+      const transaction = buildTransaction(filingMode as unknown as string);
+      appDevDependencies.transactionGateway.feedTransactions([transaction]);
+
+      const res = await request(app).get(RESUME_URL);
+      expect(res.status).toBeGreaterThanOrEqual(500);
+    }
+  );
+
+  it("should handle unexpected errors gracefully", async () => {
+    // Simulate an error in the transaction gateway
+    jest.spyOn(appDevDependencies.transactionGateway, "getTransaction").mockImplementation(() => {
+      throw new Error("Unexpected error");
+    });
+
+    const res = await request(app).get(RESUME_URL);
+    expect(res.status).toBeGreaterThanOrEqual(500);
+
+    // Restore the mock
+    (appDevDependencies.transactionGateway.getTransaction as jest.Mock).mockRestore();
+  });
 });
+

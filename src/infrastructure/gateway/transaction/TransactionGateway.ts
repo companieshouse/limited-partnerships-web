@@ -78,7 +78,6 @@ class TransactionGateway implements ITransactionGateway {
       ApiResponse<Transaction> | ApiErrorResponse
     >(opt, apiCall);
 
-    console.log(JSON.stringify(response, null, 2));
     if (response.httpStatusCode !== 200) {
       throw response;
     }
