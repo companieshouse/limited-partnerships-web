@@ -82,12 +82,12 @@ describe("Resume a journey", () => {
   );
 
   it.each([
-    { filingMode: undefined, description: "undefined" },
+    { filingMode: undefined as unknown as string, description: "undefined" },
     { filingMode: "", description: "empty string" }
   ])(
     "should throw error if transaction filing mode is $description",
     async ({ filingMode }) => {
-      const transaction = buildTransaction(filingMode as unknown as string);
+      const transaction = buildTransaction(filingMode);
       appDevDependencies.transactionGateway.feedTransactions([transaction]);
 
       const res = await request(app).get(RESUME_URL);
