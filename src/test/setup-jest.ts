@@ -15,3 +15,8 @@ jest.mock("@companieshouse/web-security-node", () => ({
   ...jest.requireActual("@companieshouse/web-security-node"),
   CsrfProtectionMiddleware: (_opts) => (req: Request, res: Response, next: NextFunction) => next()
 }));
+
+jest.mock("../utils/session", () => ({
+  ...jest.requireActual("../utils/session"),
+  getLoggedInUserEmail: jest.fn(() => "test@email.com")
+}));
