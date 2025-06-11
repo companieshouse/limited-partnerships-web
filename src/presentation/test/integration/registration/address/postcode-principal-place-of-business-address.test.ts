@@ -140,7 +140,7 @@ describe("Postcode Principal Place Of Business Address Page", () => {
     });
 
     describe("UK mainland postcode", () => {
-      it("should return an error if the postcode is Jersey", async () => {
+      it("should return an error if the postcode is from Jersey", async () => {
         const res = await request(app).post(URL).send({
           pageType: AddressPageType.postcodePrincipalPlaceOfBusinessAddress,
           premises: null,
@@ -153,7 +153,7 @@ describe("Postcode Principal Place Of Business Address Page", () => {
         expect(appDevDependencies.cacheRepository.cache).toEqual(null);
       });
 
-      it("should return an error if the postcode is Guernsey", async () => {
+      it("should return an error if the postcode is from Guernsey", async () => {
         const res = await request(app).post(URL).send({
           pageType: AddressPageType.postcodePrincipalPlaceOfBusinessAddress,
           premises: null,
@@ -166,7 +166,7 @@ describe("Postcode Principal Place Of Business Address Page", () => {
         expect(appDevDependencies.cacheRepository.cache).toEqual(null);
       });
 
-      it("should return an error if the postcode is Isle of man", async () => {
+      it("should return an error if the postcode is from Isle of man", async () => {
         const res = await request(app).post(URL).send({
           pageType: AddressPageType.postcodePrincipalPlaceOfBusinessAddress,
           premises: null,

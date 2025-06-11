@@ -6,6 +6,7 @@ import { logger } from "../../utils";
 
 class AddressService {
   private static readonly UK_COUNTRIES: Set<string> = new Set(["Scotland", "Northern Ireland", "England", "Wales"]);
+  private static readonly UK_POSTCODE_LETTERS_NOT_MAINLAND: Set<string> = new Set(["JE", "GY", "IM"]);
 
   private static readonly VALID_UK_POSTCODE_FORMAT = /^[A-Za-z]{1,2}\d[A-Za-z\d]? ?\d[A-Za-z]{2}$/;
   private static readonly VALID_CHARACTERS =
@@ -112,10 +113,7 @@ class AddressService {
           addressValue,
           this.i18n?.address?.enterAddress?.[i18nFieldTitleKey]
         ),
-        ...this.checkAddressFieldForCharacterLimit(
-          key,
-          addressValue
-        )
+        ...this.checkAddressFieldForCharacterLimit(key, addressValue)
       };
     }
 
@@ -132,6 +130,15 @@ class AddressService {
       uiErrors ??= new UIErrors();
 
       this.setFieldError(uiErrors, "postal_code", this.i18n?.address?.enterAddress?.errorMessages?.postcodeFormat);
+    }
+
+    if (
+      AddressService.UK_COUNTRIES.has(country) &&
+      AddressService.UK_POSTCODE_LETTERS_NOT_MAINLAND.has(postalCode.slice(0, 2))
+    ) {
+      uiErrors ??= new UIErrors();
+
+      this.setFieldError(uiErrors, "postal_code", this.i18n?.address?.findPostcode?.errorMessages?.notMainland);
     }
 
     return uiErrors;
@@ -160,10 +167,7 @@ class AddressService {
     }
   }
 
-  private checkAddressFieldForCharacterLimit(
-    fieldName: string,
-    fieldValue: string,
-  ): Record<string, string> {
+  private checkAddressFieldForCharacterLimit(fieldName: string, fieldValue: string): Record<string, string> {
     const fieldNamesWithMaxLength = {
       address_line_1: "addressLine1Length",
       address_line_2: "addressLine2Length",
