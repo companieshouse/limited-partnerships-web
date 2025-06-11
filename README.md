@@ -9,7 +9,7 @@ Requires >= Node v20
 2. run 'npm run build' to compile
 3. run 'npm run start' to start the service
 
-Use localhost:3000/limited-partnerships/start to view the test page
+use http://chs.local/limited-partnerships/registration/which-type to view the first page of the journey.
 
 ## Technologies and Utils
 
