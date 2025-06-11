@@ -138,5 +138,46 @@ describe("Postcode Principal Place Of Business Address Page", () => {
 
       expect(appDevDependencies.cacheRepository.cache).toEqual(null);
     });
+
+    describe("UK mainland postcode", () => {
+      it("should return an error if the postcode is from Jersey", async () => {
+        const res = await request(app).post(URL).send({
+          pageType: AddressPageType.postcodePrincipalPlaceOfBusinessAddress,
+          premises: null,
+          postal_code: "JE2 3AA"
+        });
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(`Enter a UK mainland postcode`);
+
+        expect(appDevDependencies.cacheRepository.cache).toEqual(null);
+      });
+
+      it("should return an error if the postcode is from Guernsey", async () => {
+        const res = await request(app).post(URL).send({
+          pageType: AddressPageType.postcodePrincipalPlaceOfBusinessAddress,
+          premises: null,
+          postal_code: "GY1 2AL"
+        });
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(`Enter a UK mainland postcode`);
+
+        expect(appDevDependencies.cacheRepository.cache).toEqual(null);
+      });
+
+      it("should return an error if the postcode is from Isle of man", async () => {
+        const res = await request(app).post(URL).send({
+          pageType: AddressPageType.postcodePrincipalPlaceOfBusinessAddress,
+          premises: null,
+          postal_code: "IM2 4NN"
+        });
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(`Enter a UK mainland postcode`);
+
+        expect(appDevDependencies.cacheRepository.cache).toEqual(null);
+      });
+    });
   });
 });

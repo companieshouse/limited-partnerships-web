@@ -6,10 +6,13 @@ import { logger } from "../../utils";
 
 class AddressService {
   private static readonly UK_COUNTRIES: Set<string> = new Set(["Scotland", "Northern Ireland", "England", "Wales"]);
+  private static readonly UK_POSTCODE_LETTERS_NOT_MAINLAND: Set<string> = new Set(["JE", "GY", "IM"]);
 
   private static readonly VALID_UK_POSTCODE_FORMAT = /^[A-Za-z]{1,2}\d[A-Za-z\d]? ?\d[A-Za-z]{2}$/;
   private static readonly VALID_CHARACTERS =
     /^[-,.:; 0-9A-Z&@$£¥€'"«»?!/\\()[\]{}<>*=#%+ÀÁÂÃÄÅĀĂĄÆǼÇĆĈĊČÞĎÐÈÉÊËĒĔĖĘĚĜĞĠĢĤĦÌÍÎÏĨĪĬĮİĴĶĹĻĽĿŁÑŃŅŇŊÒÓÔÕÖØŌŎŐǾŒŔŖŘŚŜŞŠŢŤŦÙÚÛÜŨŪŬŮŰŲŴẀẂẄỲÝŶŸŹŻŽa-zſƒǺàáâãäåāăąæǽçćĉċčþďðèéêëēĕėęěĝģğġĥħìíîïĩīĭįĵķĺļľŀłñńņňŋòóôõöøōŏőǿœŕŗřśŝşšţťŧùúûüũūŭůűųŵẁẃẅỳýŷÿźżž]*$/;
+  private static readonly PREMISES_MAX_LENGTH = 200;
+  private static readonly MAX_LENGTH = 50;
 
   i18n: any;
 
@@ -55,7 +58,7 @@ class AddressService {
         return { address, errors: uiErrors };
       }
 
-      if (jurisdiction && !this.isFromCorrectCountry(jurisdiction, ukAddresses, uiErrors)) {
+      if (!this.isFromCorrectCountry(uiErrors, ukAddresses, jurisdiction)) {
         return { address, errors: uiErrors };
       }
 
@@ -87,7 +90,7 @@ class AddressService {
     );
   }
 
-  public hasAddressGotInvalidCharacters(address: Address, uiErrors: UIErrors | undefined): UIErrors | undefined {
+  public validateAddressCharactersAndLength(address: Address, uiErrors: UIErrors | undefined): UIErrors | undefined {
     let fieldErrors = {};
     const ignoredFields = ["country"];
 
@@ -101,13 +104,16 @@ class AddressService {
         i18nFieldTitleKey += "Title";
       }
 
+      const addressValue = address[key] ?? "";
+
       fieldErrors = {
         ...fieldErrors,
         ...this.checkAddressFieldForInvalidCharacters(
           key,
-          address[key] ?? "",
+          addressValue,
           this.i18n?.address?.enterAddress?.[i18nFieldTitleKey]
-        )
+        ),
+        ...this.checkAddressFieldForCharacterLimit(key, addressValue)
       };
     }
 
@@ -124,6 +130,15 @@ class AddressService {
       uiErrors ??= new UIErrors();
 
       this.setFieldError(uiErrors, "postal_code", this.i18n?.address?.enterAddress?.errorMessages?.postcodeFormat);
+    }
+
+    if (
+      AddressService.UK_COUNTRIES.has(country) &&
+      AddressService.UK_POSTCODE_LETTERS_NOT_MAINLAND.has(postalCode.slice(0, 2))
+    ) {
+      uiErrors ??= new UIErrors();
+
+      this.setFieldError(uiErrors, "postal_code", this.i18n?.address?.findPostcode?.errorMessages?.notMainland);
     }
 
     return uiErrors;
@@ -152,6 +167,30 @@ class AddressService {
     }
   }
 
+  private checkAddressFieldForCharacterLimit(fieldName: string, fieldValue: string): Record<string, string> {
+    const fieldNamesWithMaxLength = {
+      address_line_1: "addressLine1Length",
+      address_line_2: "addressLine2Length",
+      locality: "localityLength",
+      region: "regionLength"
+    };
+
+    if (fieldName === "premises") {
+      if (fieldValue.length > AddressService.PREMISES_MAX_LENGTH) {
+        return {
+          [fieldName]: " " + this.i18n?.address?.enterAddress?.errorMessages?.premisesLength
+        };
+      }
+    } else if (fieldNamesWithMaxLength[fieldName] && fieldValue.length > AddressService.MAX_LENGTH) {
+      const errorKey = fieldNamesWithMaxLength[fieldName];
+      return {
+        [fieldName]: " " + this.i18n?.address?.enterAddress?.errorMessages?.[errorKey]
+      };
+    }
+
+    return {};
+  }
+
   private checkAddressFieldForInvalidCharacters(
     fieldName: string,
     fieldValue: string,
@@ -170,21 +209,28 @@ class AddressService {
     return str.replace(/_([a-zA-Z0-9])/g, (_, char) => char.toUpperCase());
   }
 
-  private isFromCorrectCountry(jurisdiction: string, ukAddresses: Address[], uiErrors: UIErrors): boolean {
+  private isFromCorrectCountry(uiErrors: UIErrors, ukAddresses: Address[], jurisdiction?: string): boolean {
     let isCorrectCountry = true;
 
-    const IS_BORDER = ukAddresses[0]?.country === "border";
-    const ENGLAND = ["England", "Channel Island", "Isle of Man"];
-    const IS_IN_ENGLAND = ENGLAND.includes(ukAddresses[0]?.country);
-    const IS_IN_WALES = ukAddresses[0]?.country === "Wales";
-    const IS_IN_SCOTLAND = ukAddresses[0]?.country === "Scotland";
-    const IS_IN_NORTHERN_IRELAND = ukAddresses[0]?.country === "Northern Ireland";
+    const country = ukAddresses[0]?.country;
 
-    if (IS_BORDER || ukAddresses[0]?.country === "") {
+    const IS_BORDER = country === "border";
+    const IS_IN_ENGLAND = country === "England";
+    const IS_IN_WALES = country === "Wales";
+    const IS_IN_SCOTLAND = country === "Scotland";
+    const IS_IN_NORTHERN_IRELAND = country === "Northern Ireland";
+    const NOT_MAINLAND = ["Channel Island", "Isle of Man"];
+    const IS_NOT_MAINLAND = NOT_MAINLAND.includes(country);
+
+    if (IS_BORDER || country === "") {
       return isCorrectCountry;
     }
 
-    if (jurisdiction === Jurisdiction.ENGLAND_AND_WALES && !IS_IN_ENGLAND && !IS_IN_WALES) {
+    if (IS_NOT_MAINLAND) {
+      isCorrectCountry = false;
+
+      this.setFieldError(uiErrors, "postal_code", this.i18n?.address?.findPostcode?.errorMessages?.notMainland);
+    } else if (jurisdiction === Jurisdiction.ENGLAND_AND_WALES && !IS_IN_ENGLAND && !IS_IN_WALES) {
       isCorrectCountry = false;
 
       this.setFieldError(

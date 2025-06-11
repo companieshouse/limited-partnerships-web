@@ -4,6 +4,7 @@ import { NextFunction, Request, Response } from "express";
 
 import app from "./app";
 import { HEALTHCHECK_URL } from "../../controller/global/url";
+import enTranslationText from "../../../../locales/en/translations.json";
 
 jest.mock("../../controller/global/Controller", () => {
   return function () {
@@ -24,10 +25,16 @@ jest.mock("../../controller/global/Controller", () => {
         };
       }),
       getHealthcheck: function () {
-        return (_req: Request, _res: Response, next: NextFunction) => {
+        return (_req: Request, res: Response, next: NextFunction) => {
+          res.locals.i18n = enTranslationText;
           next(new CsrfError("CSRF token mismatch"));
         };
       },
+      getPaymentDecision: jest.fn().mockImplementation(() => {
+        return (_req: Request, _res: Response, next: NextFunction) => {
+          return next();
+        };
+      }),
       getConfirmationPage: jest.fn().mockImplementation(() => {
         return (_req: Request, _res: Response, next: NextFunction) => {
           return next();
@@ -55,5 +62,7 @@ describe("Error csrf", () => {
     expect(response.text).toContain(
       "We have not been able to save the information you submitted on the previous screen."
     );
+    expect(response.text).toContain(enTranslationText.links.back);
+    expect(response.text).toContain(enTranslationText.links.signOut);
   });
 });

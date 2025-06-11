@@ -10,6 +10,7 @@ jest.spyOn(LimitedPartnershipController.prototype, "getPageRouting").mockImpleme
 import request from "supertest";
 import app from "./app";
 import { WHICH_TYPE_URL } from "presentation/controller/registration/url";
+import enTranslationText from "../../../../locales/en/translations.json";
 
 describe("Error 500", () => {
   beforeEach(() => {
@@ -20,6 +21,8 @@ describe("Error 500", () => {
     const response = await request(app).get(WHICH_TYPE_URL);
 
     expect(response.status).toEqual(500);
-    expect(response.text).toContain("Sorry, the service is unavailable");
+    expect(response.text).toContain(enTranslationText.errorPage.sorryMessage);
+    expect(response.text).toContain(enTranslationText.links.back);
+    expect(response.text).toContain(enTranslationText.links.signOut);
   });
 });

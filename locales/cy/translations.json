@@ -17,7 +17,6 @@
         "countryRegistered" : "WELSH - Which country is it registered in?",
         "registrationNumber" : "WELSH - What is the registration number?",
         "registrationNumberHint" : "WELSH - For example, the company number.",
-        "legalFormStatement" : "WELSH - I confirm the entity has legal personality.",
         "publicRegisterLine1" : "WELSH - We'll show all of this information on the public register.",
         "errorMessages": {
           "legalEntityNameMissing": "WELSH - Enter a legal entity name",
@@ -271,7 +270,8 @@
             "errorMessages": {
                 "jurisdictionEnglandAndWales": "WELSH - You must enter a postcode which is in England or Wales",
                 "jurisdictionNorthernIreland": "WELSH - You must enter a postcode which is in Northern Ireland",
-                "jurisdictionScotland": "WELSH - You must enter a postcode which is in Scotland"
+                "jurisdictionScotland": "WELSH - You must enter a postcode which is in Scotland",
+                "notMainland": "WELSH - Enter a UK mainland postcode"
             }
         },
 
@@ -507,6 +507,21 @@
         "copiedAddress" : "WELSH - If you pasted the web address, check you copied the entire address.",
         "movedPage" : "WELSH - If the web address is correct or you selected a link, the page may have moved.",
         "goToStartPage" : "WELSH - To register a limited partnership, go to the <a class='govuk-link' href='/limited-partnerships/registration/which-type'>Register a limited partnership</a> start page."
+    },
+
+    "paymentFailedPage" : {
+      "title" : "WELSH - Payment failed",
+      "reasonHeading" : "WELSH - Your application has not been submitted because we have not been able to take payment. This could be because:",
+      "cancelled" : "WELSH - you cancelled your payment",
+      "declined" : "WELSH - your payment was declined",
+      "expired" : "WELSH - your payment expired",
+      "error" : "WELSH - there was an error (for example, a technical error)",
+      "retry" : "WELSH - Your application has been saved in Your Filings. To submit the application, you will need to <a class='govuk-link' href='/user/transactions'>find the application in Your Filings</a> and complete payment."
+    },
+
+    "print" : {
+        "buttonText" : "WELSH - Print this page",
+        "buttonTextNoJs" : "WELSH - To print this page, select print from your browser menu."
     },
 
     "publicRegisterInformation" : {

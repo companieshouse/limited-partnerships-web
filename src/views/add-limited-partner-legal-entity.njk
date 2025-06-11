@@ -28,8 +28,7 @@
           value: props.data.limitedPartner.data.legal_entity_name,
           errorMessage: props.errors.legal_entity_name if props.errors,
           attributes : {
-            required: true,
-            maxLength: 160
+            required: true
           }
         }) }}
 
@@ -46,8 +45,7 @@
           value: props.data.limitedPartner.data.legal_form,
           errorMessage: props.errors.legal_form if props.errors,
           attributes : {
-            required: true,
-            maxLength: 160
+            required: true
           }
         }) }}
 
@@ -64,8 +62,7 @@
           value: props.data.limitedPartner.data.governing_law,
           errorMessage: props.errors.governing_law if props.errors,
           attributes : {
-            required: true,
-            maxLength: 160
+            required: true
           }
         }) }}
 
@@ -82,8 +79,7 @@
           value: props.data.limitedPartner.data.legal_entity_register_name,
           errorMessage: props.errors.legal_entity_register_name if props.errors,
           attributes : {
-            required: true,
-            maxLength: 160
+            required: true
           }
         }) }}
 
@@ -109,33 +105,8 @@
           value: props.data.limitedPartner.data.registered_company_number,
           errorMessage: props.errors.registered_company_number if props.errors,
           attributes : {
-            required: true,
-            maxLength: 160
+            required: true
           }
-        }) }}
-
-        {{ govukCheckboxes({
-          id: "legal_personality_statement_checked",
-          name: "legal_personality_statement_checked",
-          value: props.data.limitedPartner.data.legal_personality_statement_checked,
-          errorMessage: props.errors.legal_personality_statement_checked if props.errors,
-          fieldset: {
-            legend: {
-              text: i18n.addPartnerLegalEntityPage.legalFormStatement,
-              isPageHeading: false,
-              classes: "govuk-visually-hidden"
-            }
-          },
-          items: [
-            {
-              value: "true",            
-              text: i18n.addPartnerLegalEntityPage.legalFormStatement,
-              checked: props.data.limitedPartner.data.legal_personality_statement_checked,
-              attributes : {
-                required: true
-              }
-            }
-          ]
         }) }}
 
         {% include "includes/public-register-information.njk" %}

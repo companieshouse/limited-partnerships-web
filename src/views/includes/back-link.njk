@@ -1,7 +1,11 @@
-{{ govukBackLink({
-  text: i18n.links.back,
-  attributes: {
-    "data-event-id": "back-link"
-  },
-  href: props.previousUrl
-}) }}
+{% if not suppressBackLink %}
+
+  {{ govukBackLink({
+    text: i18n.links.back,
+    attributes: {
+      "data-event-id": "back-link"
+    },
+    href: props.previousUrl
+  }) }}
+
+{% endif %}

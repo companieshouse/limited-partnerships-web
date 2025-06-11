@@ -285,7 +285,7 @@ class AddressLookUpController extends AbstractController {
 
         let errors: UIErrors | undefined;
         if (AddressLookUpController.MANUAL_PAGES.has(pageType)) {
-          errors = this.addressService.hasAddressGotInvalidCharacters(address, errors);
+          errors = this.addressService.validateAddressCharactersAndLength(address, errors);
 
           errors = this.addressService.isValidPostcode(postal_code ?? "", country, errors);
         }
@@ -339,6 +339,8 @@ class AddressLookUpController extends AbstractController {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         this.addressService.setI18n(response.locals.i18n);
+        this.generalPartnerService.setI18n(response.locals.i18n);
+        this.limitedPartnerService.setI18n(response.locals.i18n);
 
         const { tokens, ids } = super.extract(request);
         const pageType = super.extractPageTypeOrThrowError(request, AddressLookUpPageType);

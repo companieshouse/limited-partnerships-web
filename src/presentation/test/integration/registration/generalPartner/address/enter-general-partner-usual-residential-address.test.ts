@@ -278,11 +278,11 @@ describe("Enter Usual Residential Address Page", () => {
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.enterGeneralPartnerUsualResidentialAddress,
         ...generalPartner.data?.usual_residential_address,
-        premises: "-,.:; &@$£¥€'?!/\\",
+        premises: "-,.:; &@$£¥€'?!/\\řśŝşšţťŧùúûüũūŭůűųŵẁẃẅỳýŷÿźżžñńņňŋòóôõöøōŏőǿœŕŗàáâãäåāăąæǽçćĉċč",
         address_line_1: "()[]{}<>*=#%+ÀÁÂÃÄÅĀĂĄÆǼÇĆĈĊČÞĎÐÈÉÊËĒĔĖĘĚĜĞĠĢ",
         address_line_2: "ĤĦÌÍÎÏĨĪĬĮİĴĶĹĻĽĿŁÑŃŅŇŊÒÓÔÕÖØŌŎŐǾŒŔŖŘŚŜŞŠŢŤŦ",
-        locality: "ÙÚÛÜŨŪŬŮŰŲŴẀẂẄỲÝŶŸŹŻŽa-zÀÖØſƒǺẀỲàáâãäåāăąæǽçćĉċč",
-        region: "þďðèéêëēĕėęěĝģğġĥħìíîïĩīĭįĵķĺļľŀłñńņňŋòóôõöøōŏőǿœŕŗřśŝşšţťŧùúûüũūŭůűųŵẁẃẅỳýŷÿźżž",
+        locality: "ÙÚÛÜŨŪŬŮŰŲŴẀẂẄỲÝŶŸŹŻŽa-zÀÖØſƒǺẀỲ",
+        region: "þďðèéêëēĕėęěĝģğġĥħìíîïĩīĭįĵķĺļľŀł"
       });
 
       const redirectUrl = getUrl(CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
@@ -318,6 +318,30 @@ describe("Enter Usual Residential Address Page", () => {
       expect(res.text).toContain(enTranslationText.address.enterAddress.regionTitle + " "
         + enTranslationText.address.enterAddress.errorMessages.invalidCharacters);
       expect(res.text).toContain(enTranslationText.govUk.error.title);
+    });
+
+    it("should return validation errors when address fields exceed character limit", async () => {
+      const generalPartner = new GeneralPartnerBuilder()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .isPerson()
+        .build();
+
+      const res = await request(app).post(URL).send({
+        pageType: AddressPageType.enterGeneralPartnerUsualResidentialAddress,
+        ...generalPartner.data?.usual_residential_address,
+        premises: "toomanycharacters".repeat(13),
+        address_line_1: "toomanycharacters".repeat(4),
+        address_line_2: "toomanycharacters".repeat(4),
+        locality: "toomanycharacters".repeat(4),
+        region: "toomanycharacters".repeat(4)
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.premisesLength);
+      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.addressLine1Length);
+      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.addressLine2Length);
+      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.localityLength);
+      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.regionLength);
     });
   });
 });

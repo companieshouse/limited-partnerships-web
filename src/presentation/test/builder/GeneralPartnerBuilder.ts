@@ -30,7 +30,6 @@ class GeneralPartnerBuilder extends AbstractPartnerBuilder {
       ...this.data,
 
       not_disqualified_statement_checked: true,
-      legal_personality_statement_checked: true,
 
       service_address: {
         postal_code: "ST6 3LJ",
@@ -46,11 +45,6 @@ class GeneralPartnerBuilder extends AbstractPartnerBuilder {
 
   withNotDisqualifiedStatementChecked(notDisqualifiedStatementChecked: boolean) {
     this.data.not_disqualified_statement_checked = notDisqualifiedStatementChecked;
-    return this;
-  }
-
-  withLegalPersonalityStatementChecked(legalPersonalityStatementChecked: boolean) {
-    this.data.legal_personality_statement_checked = legalPersonalityStatementChecked;
     return this;
   }
 

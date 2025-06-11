@@ -13,10 +13,10 @@ import {
   JOURNEY_TYPE_PARAM
 } from "../../../config/constants";
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
-import { logger } from "../../../utils";
+import { getJourneyTypes, logger } from "../../../utils";
 import PaymentService from "../../../application/service/PaymentService";
 import { Journey } from "../../../domain/entities/journey";
-import { CONFIRMATION_URL } from "./url";
+import { CONFIRMATION_URL, PAYMENT_FAILED_URL } from "./url";
 import { WHICH_TYPE_WITH_IDS_URL } from "../registration/url";
 import { COMPANY_NUMBER_URL } from "../transition/url";
 import TransactionService from "../../../application/service/TransactionService";
@@ -99,6 +99,28 @@ class GlobalController extends AbstractController {
     return (_request: Request, response: Response, next: NextFunction) => {
       try {
         response.status(200).json({ status: "OK" });
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  getPaymentDecision() {
+    return (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { status } = request.query;
+        const { ids } = super.extract(request);
+
+        const nextPageUrl = (status === "paid") ? CONFIRMATION_URL : PAYMENT_FAILED_URL;
+
+        const nextPageUrlWithJourney = nextPageUrl.replace(
+          JOURNEY_TYPE_PARAM,
+          getJourneyTypes(request.url).journey
+        );
+
+        const nextPageUrlWithJourneyAndIds = super.insertIdsInUrl(nextPageUrlWithJourney, ids);
+
+        return response.redirect(nextPageUrlWithJourneyAndIds);
       } catch (error) {
         next(error);
       }

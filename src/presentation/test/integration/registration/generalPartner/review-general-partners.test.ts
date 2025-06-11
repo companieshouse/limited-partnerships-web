@@ -146,6 +146,42 @@ describe("Review General Partners Page", () => {
           `You must provide all information for ${generalPartnerLegalEntity?.data?.legal_entity_name} before continuing. Select Change to provide more information`
         );
       });
+
+      it("should render the review general partners page when trying to add a new partner person if any partner data is incomplete", async () => {
+        const generalPartnerPerson = new GeneralPartnerBuilder().isPerson().build();
+        const generalPartnerLegalEntity = new GeneralPartnerBuilder().isLegalEntity().withCompleted(false).build();
+
+        appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartnerPerson, generalPartnerLegalEntity]);
+
+        const res = await request(app).post(URL).send({
+          pageType: RegistrationPageType.reviewGeneralPartners,
+          addAnotherGeneralPartner: "addPerson"
+        });
+
+        expect(res.status).toBe(200);
+
+        expect(res.text).toContain(
+          `You must provide all information for ${generalPartnerLegalEntity?.data?.legal_entity_name} before continuing. Select Change to provide more information`
+        );
+      });
+
+      it("should render the review general partners page when trying to add a new partner legal entity if any partner data is incomplete", async () => {
+        const generalPartnerPerson = new GeneralPartnerBuilder().isPerson().build();
+        const generalPartnerLegalEntity = new GeneralPartnerBuilder().isLegalEntity().withCompleted(false).build();
+
+        appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartnerPerson, generalPartnerLegalEntity]);
+
+        const res = await request(app).post(URL).send({
+          pageType: RegistrationPageType.reviewGeneralPartners,
+          addAnotherGeneralPartner: "addLegalEntity"
+        });
+
+        expect(res.status).toBe(200);
+
+        expect(res.text).toContain(
+          `You must provide all information for ${generalPartnerLegalEntity?.data?.legal_entity_name} before continuing. Select Change to provide more information`
+        );
+      });
     });
   });
 });

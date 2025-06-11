@@ -12,6 +12,9 @@ class AddressLookUpInMemoryGateway implements IAddressLookUpGateway {
   scotlandAddresses: UKAddress[] = scotlandAddresses;
   borderAddresses: UKAddress[] = borderAddresses;
   northernIrelandAddresses: UKAddress[] = northernIrelandAddresses;
+  jerseyAddresses: UKAddress[] = jerseyAddresses;
+  guernseyAddresses: UKAddress[] = guernseyAddresses;
+  isleOfManAddresses: UKAddress[] = isleOfManAddresses;
 
   error = false;
 
@@ -25,7 +28,10 @@ class AddressLookUpInMemoryGateway implements IAddressLookUpGateway {
       this.isSamePostalCode(postcode, this.walesAddresses[0].postcode) ||
       this.isSamePostalCode(postcode, this.scotlandAddresses[0].postcode) ||
       this.isSamePostalCode(postcode, this.borderAddresses[0].postcode) ||
-      this.isSamePostalCode(postcode, this.northernIrelandAddresses[0].postcode)
+      this.isSamePostalCode(postcode, this.northernIrelandAddresses[0].postcode) ||
+      this.isSamePostalCode(postcode, this.jerseyAddresses[0].postcode) ||
+      this.isSamePostalCode(postcode, this.guernseyAddresses[0].postcode) ||
+      this.isSamePostalCode(postcode, this.isleOfManAddresses[0].postcode)
     );
   }
 
@@ -55,6 +61,18 @@ class AddressLookUpInMemoryGateway implements IAddressLookUpGateway {
 
     if (this.isSamePostalCode(postcode, this.northernIrelandAddresses[0].postcode)) {
       return this.northernIrelandAddresses.map(postcodeLookUpAddressToAddress);
+    }
+
+    if (this.isSamePostalCode(postcode, this.jerseyAddresses[0].postcode)) {
+      return this.jerseyAddresses.map(postcodeLookUpAddressToAddress);
+    }
+
+    if (this.isSamePostalCode(postcode, this.guernseyAddresses[0].postcode)) {
+      return this.guernseyAddresses.map(postcodeLookUpAddressToAddress);
+    }
+
+    if (this.isSamePostalCode(postcode, this.isleOfManAddresses[0].postcode)) {
+      return this.isleOfManAddresses.map(postcodeLookUpAddressToAddress);
     }
 
     return [];
@@ -143,5 +161,38 @@ const northernIrelandAddresses: UKAddress[] = [
     addressLine2: "",
     postTown: "BELFAST",
     country: "GB-NIR"
+  }
+];
+
+const jerseyAddresses: UKAddress[] = [
+  {
+    postcode: "JE2 3AA",
+    premise: "9 HELIER LES VANNIERS",
+    addressLine1: "LA ROUTE DE ST. AUBIN",
+    addressLine2: "",
+    postTown: "JERSEY",
+    country: "Channel Island"
+  }
+];
+
+const guernseyAddresses: UKAddress[] = [
+  {
+    postcode: "GY1 2AL",
+    premise: "1",
+    addressLine1: "LA ROUTE DE ST. AUBIN",
+    addressLine2: "",
+    postTown: "GUERNSEY",
+    country: "Channel Island"
+  }
+];
+
+const isleOfManAddresses: UKAddress[] = [
+  {
+    postcode: "IM2 4NN",
+    premise: "1",
+    addressLine1: "LANSDOWNE",
+    addressLine2: "",
+    postTown: "ISLE OF MAN",
+    country: "Isle of Man"
   }
 ];
