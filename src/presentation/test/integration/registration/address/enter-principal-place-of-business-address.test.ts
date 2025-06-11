@@ -65,10 +65,12 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
 
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-      const res = await request(app).post(URL).send({
-        pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
-        ...limitedPartnership.data?.principal_place_of_business_address
-      });
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
+          ...limitedPartnership.data?.principal_place_of_business_address
+        });
 
       const redirectUrl = getUrl(CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL);
       expect(res.status).toBe(302);
@@ -80,11 +82,13 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
 
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-      const res = await request(app).post(URL).send({
-        pageType: "Invalid page type",
-        ...limitedPartnership.data?.principal_place_of_business_address,
-        country: "Scotland"
-      });
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: "Invalid page type",
+          ...limitedPartnership.data?.principal_place_of_business_address,
+          country: "Scotland"
+        });
 
       expect(res.status).toBe(500);
       expect(res.text).toContain(enTranslationText.errorPage.title);
@@ -95,11 +99,13 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
 
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-      const res = await request(app).post(URL).send({
-        pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
-        ...limitedPartnership.data?.principal_place_of_business_address,
-        country: "Northern Ireland"
-      });
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
+          ...limitedPartnership.data?.principal_place_of_business_address,
+          country: "Northern Ireland"
+        });
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.jurisdictionCountry);
@@ -133,11 +139,13 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
 
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-      const res = await request(app).post(URL).send({
-        pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
-        ...limitedPartnership.data?.principal_place_of_business_address,
-        country: "Scotland"
-      });
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
+          ...limitedPartnership.data?.principal_place_of_business_address,
+          country: "Scotland"
+        });
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.jurisdictionCountry);
@@ -151,11 +159,13 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
 
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-      const res = await request(app).post(URL).send({
-        pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
-        ...limitedPartnership.data?.principal_place_of_business_address,
-        country: "Scotland"
-      });
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
+          ...limitedPartnership.data?.principal_place_of_business_address,
+          country: "Scotland"
+        });
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.jurisdictionCountry);
@@ -163,15 +173,19 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
     });
 
     it("should return a validation error when postcode format is invalid", async () => {
-      const limitedPartnership = new LimitedPartnershipBuilder().withJurisdiction(Jurisdiction.ENGLAND_AND_WALES).build();
+      const limitedPartnership = new LimitedPartnershipBuilder()
+        .withJurisdiction(Jurisdiction.ENGLAND_AND_WALES)
+        .build();
 
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-      const res = await request(app).post(URL).send({
-        pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
-        ...limitedPartnership.data?.principal_place_of_business_address,
-        postal_code: "here"
-      });
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
+          ...limitedPartnership.data?.principal_place_of_business_address,
+          postal_code: "here"
+        });
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.postcodeFormat);
@@ -180,19 +194,23 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
     });
 
     it("should not return validation errors when address fields contain valid but non alpha-numeric characters", async () => {
-      const limitedPartnership = new LimitedPartnershipBuilder().withJurisdiction(Jurisdiction.ENGLAND_AND_WALES).build();
+      const limitedPartnership = new LimitedPartnershipBuilder()
+        .withJurisdiction(Jurisdiction.ENGLAND_AND_WALES)
+        .build();
 
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-      const res = await request(app).post(URL).send({
-        pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
-        ...limitedPartnership.data?.principal_place_of_business_address,
-        premises: "-,.:; &@$£¥€'?!/\\řśŝşšţťŧùúûüũūŭůűųŵẁẃẅỳýŷÿźżžñńņňŋòóôõöøōŏőǿœŕŗàáâãäåāăąæǽçćĉċč",
-        address_line_1: "()[]{}<>*=#%+ÀÁÂÃÄÅĀĂĄÆǼÇĆĈĊČÞĎÐÈÉÊËĒĔĖĘĚĜĞĠĢ",
-        address_line_2: "ĤĦÌÍÎÏĨĪĬĮİĴĶĹĻĽĿŁÑŃŅŇŊÒÓÔÕÖØŌŎŐǾŒŔŖŘŚŜŞŠŢŤŦ",
-        locality: "ÙÚÛÜŨŪŬŮŰŲŴẀẂẄỲÝŶŸŹŻŽa-zÀÖØſƒǺẀỲ",
-        region: "þďðèéêëēĕėęěĝģğġĥħìíîïĩīĭįĵķĺļľŀł"
-      });
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
+          ...limitedPartnership.data?.principal_place_of_business_address,
+          premises: "-,.:; &@$£¥€'?!/\\řśŝşšţťŧùúûüũūŭůűųŵẁẃẅỳýŷÿźżžñńņňŋòóôõöøōŏőǿœŕŗàáâãäåāăąæǽçćĉċč",
+          address_line_1: "()[]{}<>*=#%+ÀÁÂÃÄÅĀĂĄÆǼÇĆĈĊČÞĎÐÈÉÊËĒĔĖĘĚĜĞĠĢ",
+          address_line_2: "ĤĦÌÍÎÏĨĪĬĮİĴĶĹĻĽĿŁÑŃŅŇŊÒÓÔÕÖØŌŎŐǾŒŔŖŘŚŜŞŠŢŤŦ",
+          locality: "ÙÚÛÜŨŪŬŮŰŲŴẀẂẄỲÝŶŸŹŻŽa-zÀÖØſƒǺẀỲ",
+          region: "þďðèéêëēĕėęěĝģğġĥħìíîïĩīĭįĵķĺļľŀł"
+        });
 
       const redirectUrl = getUrl(CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL);
       expect(res.status).toBe(302);
@@ -200,49 +218,72 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
     });
 
     it("should return validation errors when address fields contain invalid characters", async () => {
-      const limitedPartnership = new LimitedPartnershipBuilder().withJurisdiction(Jurisdiction.ENGLAND_AND_WALES).build();
+      const limitedPartnership = new LimitedPartnershipBuilder()
+        .withJurisdiction(Jurisdiction.ENGLAND_AND_WALES)
+        .build();
 
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-      const res = await request(app).post(URL).send({
-        pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
-        ...limitedPartnership.data?.principal_place_of_business_address,
-        premises: "±",
-        address_line_1: "±",
-        address_line_2: "±",
-        locality: "±",
-        region: "±",
-      });
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
+          ...limitedPartnership.data?.principal_place_of_business_address,
+          premises: "±",
+          address_line_1: "±",
+          address_line_2: "±",
+          locality: "±",
+          region: "±"
+        });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.premises + " "
-        + enTranslationText.address.enterAddress.errorMessages.invalidCharacters);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.addressLine1 + " "
-        + enTranslationText.address.enterAddress.errorMessages.invalidCharacters);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.addressLine2Title + " "
-        + enTranslationText.address.enterAddress.errorMessages.invalidCharacters);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.locality + " "
-        + enTranslationText.address.enterAddress.errorMessages.invalidCharacters);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.regionTitle + " "
-        + enTranslationText.address.enterAddress.errorMessages.invalidCharacters);
+      expect(res.text).toContain(
+        enTranslationText.address.enterAddress.premises +
+          " " +
+          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
+      );
+      expect(res.text).toContain(
+        enTranslationText.address.enterAddress.addressLine1 +
+          " " +
+          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
+      );
+      expect(res.text).toContain(
+        enTranslationText.address.enterAddress.addressLine2Title +
+          " " +
+          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
+      );
+      expect(res.text).toContain(
+        enTranslationText.address.enterAddress.locality +
+          " " +
+          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
+      );
+      expect(res.text).toContain(
+        enTranslationText.address.enterAddress.regionTitle +
+          " " +
+          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
+      );
       expect(res.text).toContain(enTranslationText.govUk.error.title);
       expect(res.text).toContain(limitedPartnership.data?.partnership_name?.toUpperCase());
     });
 
     it("should return validation errors when address fields exceed character limit", async () => {
-      const limitedPartnership = new LimitedPartnershipBuilder().withJurisdiction(Jurisdiction.ENGLAND_AND_WALES).build();
+      const limitedPartnership = new LimitedPartnershipBuilder()
+        .withJurisdiction(Jurisdiction.ENGLAND_AND_WALES)
+        .build();
 
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-      const res = await request(app).post(URL).send({
-        pageType: AddressPageType.enterRegisteredOfficeAddress,
-        ...limitedPartnership.data?.registered_office_address,
-        premises: "toomanycharacters".repeat(13),
-        address_line_1: "toomanycharacters".repeat(4),
-        address_line_2: "toomanycharacters".repeat(4),
-        locality: "toomanycharacters".repeat(4),
-        region: "toomanycharacters".repeat(4)
-      });
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: AddressPageType.enterRegisteredOfficeAddress,
+          ...limitedPartnership.data?.registered_office_address,
+          premises: "toomanycharacters".repeat(13),
+          address_line_1: "toomanycharacters".repeat(4),
+          address_line_2: "toomanycharacters".repeat(4),
+          locality: "toomanycharacters".repeat(4),
+          region: "toomanycharacters".repeat(4)
+        });
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.premisesLength);
@@ -250,6 +291,53 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
       expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.addressLine2Length);
       expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.localityLength);
       expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.regionLength);
+    });
+
+    describe("UK not mainland", () => {
+      let limitedPartnership;
+
+      beforeEach(() => {
+        limitedPartnership = new LimitedPartnershipBuilder().build();
+      });
+
+      it("should return an error if the postcode is from Jersey", async () => {
+        const res = await request(app)
+          .post(URL)
+          .send({
+            pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
+            ...limitedPartnership.data?.principal_place_of_business_address,
+            postal_code: "JE2 3AA"
+          });
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(`Enter a UK mainland postcode`);
+      });
+
+      it("should return an error if the postcode is from Guernsey", async () => {
+        const res = await request(app)
+          .post(URL)
+          .send({
+            pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
+            ...limitedPartnership.data?.principal_place_of_business_address,
+            postal_code: "GY1 2AL"
+          });
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(`Enter a UK mainland postcode`);
+      });
+
+      it("should return an error if the postcode is from Isle of Man", async () => {
+        const res = await request(app)
+          .post(URL)
+          .send({
+            pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
+            ...limitedPartnership.data?.principal_place_of_business_address,
+            postal_code: "IM2 4NN"
+          });
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(`Enter a UK mainland postcode`);
+      });
     });
   });
 });
