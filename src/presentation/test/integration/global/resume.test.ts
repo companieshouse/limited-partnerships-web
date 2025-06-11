@@ -28,6 +28,7 @@ describe("Resume a journey", () => {
 
   beforeEach(() => {
     appDevDependencies.transactionGateway.feedTransactions([]);
+    appDevDependencies.transactionGateway.setError(false);
     // Clear previous requests
     appDevDependencies.paymentGateway.lastCreatePaymentRequest = undefined;
   });
@@ -96,16 +97,10 @@ describe("Resume a journey", () => {
   );
 
   it("should handle unexpected errors gracefully", async () => {
-    // Simulate an error in the transaction gateway
-    jest.spyOn(appDevDependencies.transactionGateway, "getTransaction").mockImplementation(() => {
-      throw new Error("Unexpected error");
-    });
+    appDevDependencies.transactionGateway.setError(true);
 
     const res = await request(app).get(RESUME_URL);
     expect(res.status).toBeGreaterThanOrEqual(500);
-
-    // Restore the mock
-    (appDevDependencies.transactionGateway.getTransaction as jest.Mock).mockRestore();
   });
 });
 
