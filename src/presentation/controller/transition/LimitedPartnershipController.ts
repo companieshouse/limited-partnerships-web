@@ -11,11 +11,8 @@ import {
 } from "../../../config/constants";
 import { formatDate } from "../../../utils/date-format";
 
-class TransitionController extends AbstractController {
-  constructor(
-    private readonly companyService: CompanyService,
-    private readonly cacheService: CacheService
-  ) {
+class LimitedPartnershipController extends AbstractController {
+  constructor(private readonly companyService: CompanyService, private readonly cacheService: CacheService) {
     super();
   }
 
@@ -42,7 +39,10 @@ class TransitionController extends AbstractController {
         const pageRouting = super.getRouting(transitionRouting, pageType, request);
 
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
-        const result = await this.companyService.getCompanyProfile(tokens, cache[`${APPLICATION_CACHE_KEY_PREFIX_TRANSITION}company_number`]);
+        const result = await this.companyService.getCompanyProfile(
+          tokens,
+          cache[`${APPLICATION_CACHE_KEY_PREFIX_TRANSITION}company_number`]
+        );
 
         if (result.errors) {
           response.render(
@@ -112,4 +112,4 @@ class TransitionController extends AbstractController {
   }
 }
 
-export default TransitionController;
+export default LimitedPartnershipController;

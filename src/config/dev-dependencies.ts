@@ -6,8 +6,8 @@ import RegistrationInMemoryGateway from "../infrastructure/gateway/limitedPartne
 import GeneralPartnerInMemoryGateway from "../infrastructure/gateway/generalPartner/GeneralPartnerInMemoryGateway";
 import LimitedPartnerInMemoryGateway from "../infrastructure/gateway/limitedPartner/LimitedPartnerInMemoryGateway";
 import CacheInMemoryRepository from "../infrastructure/repository/CacheInMemoryRepository";
-import TransitionController from "../presentation/controller/transition/TransitionController";
 import LimitedPartnershipController from "../presentation/controller/registration/LimitedPartnershipController";
+import LimitedPartnershipTransitionController from "../presentation/controller/transition/LimitedPartnershipController";
 import GeneralPartnerController from "../presentation/controller/registration/GeneralPartnerController";
 import LimitedPartnerController from "../presentation/controller/registration/LimitedPartnerController";
 import CacheService from "../application/service/CacheService";
@@ -63,7 +63,6 @@ const addressLookUpController: AddressLookUpController = new AddressLookUpContro
   limitedPartnerService,
   cacheService
 );
-const transitionController: TransitionController = new TransitionController(companyService, cacheService);
 const generalPartnerController: GeneralPartnerController = new GeneralPartnerController(
   limitedPartnershipService,
   generalPartnerService,
@@ -73,6 +72,9 @@ const limitedPartnerController: LimitedPartnerController = new LimitedPartnerCon
   limitedPartnershipService,
   limitedPartnerService
 );
+
+const limitedPartnershipTransitionController: LimitedPartnershipTransitionController =
+  new LimitedPartnershipTransitionController(companyService, cacheService);
 
 export const appDevDependencies = {
   globalController,
@@ -91,7 +93,7 @@ export const appDevDependencies = {
   addressLookUpGateway,
   addressLookUpService,
   addressLookUpController,
-  transitionController,
+  limitedPartnershipTransitionController,
   companyGateway,
   companyService,
   paymentGateway,
