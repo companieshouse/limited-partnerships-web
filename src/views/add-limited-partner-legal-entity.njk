@@ -109,30 +109,6 @@
           }
         }) }}
 
-        {{ govukCheckboxes({
-          id: "legal_personality_statement_checked",
-          name: "legal_personality_statement_checked",
-          value: props.data.limitedPartner.data.legal_personality_statement_checked,
-          errorMessage: props.errors.legal_personality_statement_checked if props.errors,
-          fieldset: {
-            legend: {
-              text: i18n.addPartnerLegalEntityPage.legalFormStatement,
-              isPageHeading: false,
-              classes: "govuk-visually-hidden"
-            }
-          },
-          items: [
-            {
-              value: "true",            
-              text: i18n.addPartnerLegalEntityPage.legalFormStatement,
-              checked: props.data.limitedPartner.data.legal_personality_statement_checked,
-              attributes : {
-                required: true
-              }
-            }
-          ]
-        }) }}
-
         {% include "includes/public-register-information.njk" %}
  
         {% include "includes/save-and-continue-button.njk" %}
