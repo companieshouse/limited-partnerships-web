@@ -209,29 +209,29 @@ class GeneralPartnerController extends AbstractController {
         const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
+        const result = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
+
+        if (result?.errors?.errors?.errorList.length) {
+          const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+            tokens,
+            ids.transactionId,
+            ids.submissionId
+          );
+
+          response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(
+              pageRouting,
+              { limitedPartnership, generalPartners: result.generalPartners },
+              result.errors ?? null
+            )
+          );
+          return;
+        }
+
         const addAnotherGeneralPartner = request.body.addAnotherGeneralPartner;
 
         if (addAnotherGeneralPartner === "no") {
-          const result = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
-
-          if (result?.errors?.errors?.errorList.length) {
-            const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
-              tokens,
-              ids.transactionId,
-              ids.submissionId
-            );
-
-            response.render(
-              super.templateName(pageRouting.currentUrl),
-              super.makeProps(
-                pageRouting,
-                { limitedPartnership, generalPartners: result.generalPartners },
-                result.errors ?? null
-              )
-            );
-            return;
-          }
-
           await this.conditionalNextUrl(tokens, ids, pageRouting);
 
           response.redirect(pageRouting.nextUrl);
