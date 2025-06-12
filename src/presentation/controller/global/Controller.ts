@@ -210,7 +210,6 @@ class GlobalController extends AbstractController {
       paymentReturnUrlWithIds,
       ids.transactionId
     );
-    logger.infoRequest(request, `Payments session started resuming transaction: ${ids.transactionId}, submission: ${ids.submissionId}`);
     return response.redirect(redirectToPaymentServiceUrl);
   }
 
