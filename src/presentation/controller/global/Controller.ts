@@ -172,7 +172,7 @@ class GlobalController extends AbstractController {
         const transaction = await this.transactionService.getTransaction(tokens, ids.transactionId);
 
         if (!transaction?.filingMode || transaction.filingMode === "") {
-          return next(new Error("Transaction filing mode is undefined or empty when resuming journey"));
+          throw new Error("Transaction filing mode is undefined or empty when resuming journey");
         }
 
         const { journey, resumeUrl } = this.getFilingModeUrls(transaction.filingMode);
