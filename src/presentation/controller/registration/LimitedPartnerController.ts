@@ -208,36 +208,35 @@ class LimitedPartnerController extends AbstractController {
         const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
-        const addAnotherLimitedPartner = request.body.addAnotherLimitedPartner;
+        const result = await this.limitedPartnerService.getLimitedPartners(tokens, ids.transactionId);
 
-        if (addAnotherLimitedPartner === "no") {
-          const result = await this.limitedPartnerService.getLimitedPartners(tokens, ids.transactionId);
+        if (result.limitedPartners.length === 0 || result?.errors?.errors?.errorList.length) {
+          const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+            tokens,
+            ids.transactionId,
+            ids.submissionId
+          );
 
-          if (result.limitedPartners.length === 0 || result?.errors?.errors?.errorList.length) {
-            const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
-              tokens,
-              ids.transactionId,
-              ids.submissionId
-            );
-
-            response.render(
-              super.templateName(pageRouting.currentUrl),
-              super.makeProps(
-                pageRouting,
-                { limitedPartnership, limitedPartners: result.limitedPartners },
-                result.errors ?? null
-              )
-            );
-            return;
-          }
+          response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(
+              pageRouting,
+              { limitedPartnership, limitedPartners: result.limitedPartners },
+              result.errors ?? null
+            )
+          );
+          return;
         }
 
         let url = CHECK_YOUR_ANSWERS_URL;
+        const addAnotherLimitedPartner = request.body.addAnotherLimitedPartner;
 
-        if (addAnotherLimitedPartner === "addPerson") {
-          url = ADD_LIMITED_PARTNER_PERSON_URL;
-        } else if (addAnotherLimitedPartner === "addLegalEntity") {
-          url = ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL;
+        if (addAnotherLimitedPartner !== "no") {
+          if (addAnotherLimitedPartner === "addPerson") {
+            url = ADD_LIMITED_PARTNER_PERSON_URL;
+          } else if (addAnotherLimitedPartner === "addLegalEntity") {
+            url = ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL;
+          }
         }
 
         const redirectUrl = super.insertIdsInUrl(url, ids, response);
