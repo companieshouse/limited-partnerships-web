@@ -2,17 +2,13 @@ import { Transaction } from "@companieshouse/api-sdk-node/dist/services/transact
 import { TransactionStatus } from "../../../domain/entities/TransactionTypes";
 
 class TransactionBuilder {
-  private readonly transaction: Transaction;
-
-  constructor() {
-    this.transaction = {
-      id: "test-id",
-      reference: "test-ref",
-      status: TransactionStatus.open,
-      filingMode: "limited-partnership-registration",
-      description: "test-description"
-    };
-  }
+  private readonly transaction: Transaction = {
+    id: "test-id",
+    reference: "test-ref",
+    status: TransactionStatus.open,
+    filingMode: "limited-partnership-registration",
+    description: "test-description"
+  };
 
   withId(id: string) {
     this.transaction.id = id;
