@@ -231,12 +231,10 @@ class LimitedPartnerController extends AbstractController {
         let url = CHECK_YOUR_ANSWERS_URL;
         const addAnotherLimitedPartner = request.body.addAnotherLimitedPartner;
 
-        if (addAnotherLimitedPartner !== "no") {
-          if (addAnotherLimitedPartner === "addPerson") {
-            url = ADD_LIMITED_PARTNER_PERSON_URL;
-          } else if (addAnotherLimitedPartner === "addLegalEntity") {
-            url = ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL;
-          }
+        if (addAnotherLimitedPartner === "addPerson") {
+          url = ADD_LIMITED_PARTNER_PERSON_URL;
+        } else if (addAnotherLimitedPartner === "addLegalEntity") {
+          url = ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL;
         }
 
         const redirectUrl = super.insertIdsInUrl(url, ids, response);
