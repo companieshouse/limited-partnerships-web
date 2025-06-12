@@ -23,6 +23,7 @@ import CompanyService from "../application/service/CompanyService";
 import PaymentService from "../application/service/PaymentService";
 import PaymentGateway from "../infrastructure/gateway/payment/PaymentGateway";
 import IPaymentGateway from "../domain/IPaymentGateway";
+import TransactionService from "../application/service/TransactionService";
 
 // GATEWAYS
 const limitedPartnershipGateway: LimitedPartnershipGateway = new LimitedPartnershipGateway();
@@ -49,9 +50,14 @@ const generalPartnerService: GeneralPartnerService = new GeneralPartnerService(g
 const limitedPartnerService: LimitedPartnerService = new LimitedPartnerService(limitedPartnerGateway);
 const companyService = new CompanyService(companyGateway);
 const paymentService = new PaymentService(paymentGateway);
+const transactionService = new TransactionService(transactionGateway);
 
 // CONTROLLERS
-const globalController: GlobalController = new GlobalController(limitedPartnershipService);
+const globalController: GlobalController = new GlobalController(
+  limitedPartnershipService,
+  paymentService,
+  transactionService
+);
 const limitedPartnershipController: LimitedPartnershipController = new LimitedPartnershipController(
   limitedPartnershipService,
   generalPartnerService,
