@@ -2,7 +2,7 @@ import { Transaction } from "@companieshouse/api-sdk-node/dist/services/transact
 import { TransactionStatus } from "../../../domain/entities/TransactionTypes";
 
 class TransactionBuilder {
-  private transaction: Transaction;
+  private readonly transaction: Transaction;
 
   constructor() {
     this.transaction = {
