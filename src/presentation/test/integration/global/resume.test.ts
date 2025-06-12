@@ -1,5 +1,3 @@
-import { Transaction } from "@companieshouse/api-sdk-node/dist/services/transaction/types";
-
 import request from "supertest";
 import app from "../app";
 
@@ -11,17 +9,7 @@ import { getUrl } from "../../utils";
 import { CHS_URL, JOURNEY_TYPE_PARAM } from "../../../../config";
 import { Journey } from "../../../../domain/entities/journey";
 import { TransactionKind, TransactionStatus } from "../../../../domain/entities/TransactionTypes";
-
-function buildTransaction(
-  filingMode: string,
-  status: string = TransactionStatus.open
-): Transaction {
-  return {
-    id: appDevDependencies.transactionGateway.transactionId,
-    status,
-    filingMode
-  } as Transaction;
-}
+import TransactionBuilder from "presentation/test/builder/TransactionBuilder";
 
 describe("Resume a journey", () => {
   const RESUME_URL = getUrl(RESUME_JOURNEY_URL);
@@ -45,7 +33,9 @@ describe("Resume a journey", () => {
   ])(
     "should resume a no payment $filingMode journey",
     async ({ filingMode, expectedLocation }) => {
-      const transaction = buildTransaction(filingMode);
+      const transaction = new TransactionBuilder()
+        .withFilingMode(filingMode)
+        .build();
 
       appDevDependencies.transactionGateway.feedTransactions([transaction]);
 
@@ -68,7 +58,11 @@ describe("Resume a journey", () => {
   ])(
     "should resume a pay now $filingMode journey",
     async ({ filingMode, expectedPaymentReturnUrl }) => {
-      const transaction = buildTransaction(filingMode, TransactionStatus.closedPendingPayment);
+      const transaction = new TransactionBuilder()
+        .withFilingMode(filingMode)
+        .withStatus(TransactionStatus.closedPendingPayment)
+        .build();
+
       appDevDependencies.transactionGateway.feedTransactions([transaction]);
 
       const res = await request(app).get(RESUME_URL);
@@ -88,7 +82,10 @@ describe("Resume a journey", () => {
   ])(
     "should throw error if transaction filing mode is $description",
     async ({ filingMode }) => {
-      const transaction = buildTransaction(filingMode);
+      const transaction = new TransactionBuilder()
+        .withFilingMode(filingMode)
+        .build();
+
       appDevDependencies.transactionGateway.feedTransactions([transaction]);
 
       const res = await request(app).get(RESUME_URL);
@@ -96,7 +93,7 @@ describe("Resume a journey", () => {
     }
   );
 
-  it("should handle unexpected errors gracefully", async () => {
+  it("should handle unexpected errors", async () => {
     appDevDependencies.transactionGateway.setError(true);
 
     const res = await request(app).get(RESUME_URL);
