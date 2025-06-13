@@ -1,6 +1,8 @@
 {% if userEmail %}
   {% set signOutUrl = "/limited-partnerships/sign-out" %}
-  {% set langQuery = props.currentUrl.split("?") %}
+  {% if props.currentUrl %}
+    {% set langQuery = props.currentUrl.split("?") %}
+  {% endif %}
   {% if langQuery[1] %}
     {% set signOutUrl = signOutUrl + "?" + langQuery[1] %}
   {% endif %}

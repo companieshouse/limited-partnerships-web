@@ -109,11 +109,13 @@ abstract class AbstractController {
     requestUrl?: string
   ): string {
     if (requestUrl) {
-      const requestUrlParams = new URLSearchParams(new URL(`http://${requestUrl}`)?.search);
-      const langQuery = `?lang=${requestUrlParams.get("lang")}`;
-      url = requestUrlParams.has("lang") ? url + langQuery : url;
+      const requestParams = new URLSearchParams(requestUrl.split("?")[1] || "");
+      const urlParams = new URLSearchParams(url.split("?")[1] || "");
+      const lang = requestParams.get("lang");
+      if (lang && !urlParams.has("lang")) {
+        url += (url.includes("?") ? "&" : "?") + `lang=${lang}`;
+      }
     }
-    // url = response?.locals.languageEnabled ? `${url}?lang=${response.locals.lang}` : url;
     url = this.replaceBaseUrlWithIds(url, ids);
     url = this.insertSubmissionId(url, ids.submissionId);
     url = this.insertTransactionId(url, ids.transactionId);

@@ -79,7 +79,7 @@ class GeneralPartnerController extends AbstractController {
       const result = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
 
       if (previousPageType === RegistrationPageType.reviewGeneralPartners || result.generalPartners.length > 0) {
-        pageRouting.previousUrl = super.insertIdsInUrl(pageRouting.data?.customPreviousUrl, ids);
+        pageRouting.previousUrl = super.insertIdsInUrl(pageRouting.data?.customPreviousUrl, ids, request.url);
       }
     }
   }
@@ -92,7 +92,7 @@ class GeneralPartnerController extends AbstractController {
         let url =
           request.body.parameter === "person" ? ADD_GENERAL_PARTNER_PERSON_URL : ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL;
 
-        url = super.insertIdsInUrl(url, ids, response);
+        url = super.insertIdsInUrl(url, ids, request.url);
 
         response.redirect(url);
       } catch (error) {
@@ -127,7 +127,7 @@ class GeneralPartnerController extends AbstractController {
         }
 
         if (generalPartners.length === 0) {
-          const redirect = super.insertIdsInUrl(GENERAL_PARTNERS_URL, ids, response);
+          const redirect = super.insertIdsInUrl(GENERAL_PARTNERS_URL, ids, request.url);
 
           response.redirect(redirect);
           return;
@@ -162,7 +162,7 @@ class GeneralPartnerController extends AbstractController {
         }
         const newIds = { ...ids, generalPartnerId: result.generalPartnerId };
 
-        const url = super.insertIdsInUrl(pageRouting.nextUrl, newIds);
+        const url = super.insertIdsInUrl(pageRouting.nextUrl, newIds, request.url);
 
         response.redirect(url);
       } catch (error) {
@@ -234,7 +234,7 @@ class GeneralPartnerController extends AbstractController {
         if (addAnotherGeneralPartner === "no") {
           await this.conditionalNextUrl(tokens, ids, pageRouting);
 
-          const redirectUrl = super.insertIdsInUrl(pageRouting.nextUrl, ids, response);
+          const redirectUrl = super.insertIdsInUrl(pageRouting.nextUrl, ids, request.url);
 
           response.redirect(redirectUrl);
           return;
@@ -248,7 +248,7 @@ class GeneralPartnerController extends AbstractController {
           url = ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL;
         }
 
-        const redirectUrl = super.insertIdsInUrl(url, ids, response);
+        const redirectUrl = super.insertIdsInUrl(url, ids, request.url);
 
         response.redirect(redirectUrl);
       } catch (error) {
