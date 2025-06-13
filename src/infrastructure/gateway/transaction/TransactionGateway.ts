@@ -65,6 +65,29 @@ class TransactionGateway implements ITransactionGateway {
 
     return response as ApiResponse<Transaction>;
   }
+
+   async getTransaction(
+    opt: { access_token: string; refresh_token: string },
+    transactionId: string
+  ): Promise<Transaction> {
+    const apiCall = {
+      service: SDK_TRANSACTION_SERVICE,
+      method: "getTransaction",
+      args: [
+        transactionId
+      ]
+    };
+
+    const response = await makeApiCallWithRetry<
+      ApiResponse<Transaction> | ApiErrorResponse
+    >(opt, apiCall);
+
+    if (response.httpStatusCode !== 200) {
+      throw response;
+    }
+
+    return (response as ApiResponse<Transaction>)?.resource ?? {} as Transaction;
+  }
 }
 
 export default TransactionGateway;

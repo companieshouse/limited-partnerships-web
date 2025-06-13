@@ -147,5 +147,41 @@ describe("Review Limited Partners Page", () => {
         `You must provide all information for ${limitedPartnerLegalEntity?.data?.legal_entity_name} before continuing. Select Change to provide more information`
       );
     });
+
+    it("should render the review limited partners page when trying to add a new person if any partner data is incomplete", async () => {
+      const limitedPartnerPerson = new LimitedPartnerBuilder().isPerson().build();
+      const limitedPartnerLegalEntity = new LimitedPartnerBuilder().isLegalEntity().withCompleted(false).build();
+
+      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerPerson, limitedPartnerLegalEntity]);
+
+      const res = await request(app).post(URL).send({
+        pageType: RegistrationPageType.reviewLimitedPartners,
+        addAnotherLimitedPartner: "addPerson"
+      });
+
+      expect(res.status).toBe(200);
+
+      expect(res.text).toContain(
+        `You must provide all information for ${limitedPartnerLegalEntity?.data?.legal_entity_name} before continuing. Select Change to provide more information`
+      );
+    });
+
+    it("should render the review limited partners page when trying to add a new legal entity if any partner data is incomplete", async () => {
+      const limitedPartnerPerson = new LimitedPartnerBuilder().isPerson().build();
+      const limitedPartnerLegalEntity = new LimitedPartnerBuilder().isLegalEntity().withCompleted(false).build();
+
+      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerPerson, limitedPartnerLegalEntity]);
+
+      const res = await request(app).post(URL).send({
+        pageType: RegistrationPageType.reviewLimitedPartners,
+        addAnotherLimitedPartner: "addLegalEntity"
+      });
+
+      expect(res.status).toBe(200);
+
+      expect(res.text).toContain(
+        `You must provide all information for ${limitedPartnerLegalEntity?.data?.legal_entity_name} before continuing. Select Change to provide more information`
+      );
+    });
   });
 });

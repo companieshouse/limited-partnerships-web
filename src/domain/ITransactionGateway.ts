@@ -10,7 +10,14 @@ interface ITransactionGateway {
     incorporationKind: IncorporationKind,
     pageType: PageType
   ): Promise<string>;
-  closeTransaction(opt: { access_token: string }, transactionId: string): Promise<ApiResponse<Transaction>>;
+  closeTransaction(
+    opt: { access_token: string },
+    transactionId: string
+  ): Promise<ApiResponse<Transaction>>;
+  getTransaction(
+    opt: { access_token: string },
+    transactionId: string
+  ): Promise<Transaction>;
 }
 
 export default ITransactionGateway;

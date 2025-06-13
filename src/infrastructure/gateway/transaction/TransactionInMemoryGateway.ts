@@ -13,6 +13,17 @@ import TransitionPageType from "../../../presentation/controller/transition/Page
 
 class TransactionInMemoryGateway implements ITransactionGateway {
   transactionId = crypto.randomUUID().toString();
+  error = false;
+
+  transactions: Transaction[] = [];
+
+  setError(value: boolean) {
+    this.error = value;
+  }
+
+  feedTransactions(transactions: Transaction[]) {
+    this.transactions = transactions;
+  }
 
   async createTransaction(
     opt: { access_token: string },
@@ -35,6 +46,17 @@ class TransactionInMemoryGateway implements ITransactionGateway {
       httpStatusCode: 204,
       headers: { "x-payment-required": "/abc" }
     };
+  }
+
+  async getTransaction(
+    opt: { access_token: string },
+    transactionId: string
+  ): Promise<Transaction> {
+    if (this.error) {
+      throw new Error(`Not found: ${transactionId}`);
+    }
+    
+    return this.transactions[0];
   }
 }
 
