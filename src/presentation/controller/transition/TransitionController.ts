@@ -71,7 +71,7 @@ class TransitionController extends AbstractController {
         const { pageType, ids } = super.extract(request);
         const pageRouting = super.getRouting(transitionRouting, pageType, request);
 
-        const url = super.insertIdsInUrl(pageRouting.nextUrl, ids);
+        const url = super.insertIdsInUrl(pageRouting.nextUrl, ids, request.url);
 
         response.redirect(url);
       } catch (error) {

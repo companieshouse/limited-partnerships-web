@@ -112,11 +112,11 @@ class LimitedPartnershipController extends AbstractController {
     const previousPageType = super.pageType(request.get("Referrer") ?? "");
 
     if (previousPageType === RegistrationPageType.checkYourAnswers) {
-      pageRouting.previousUrl = super.insertIdsInUrl(CHECK_YOUR_ANSWERS_URL, ids);
+      pageRouting.previousUrl = super.insertIdsInUrl(CHECK_YOUR_ANSWERS_URL, ids, request.url);
     } else if (pageRouting.pageType === RegistrationPageType.name) {
       // change back link if we have ids in url
       if (ids.transactionId && ids.submissionId) {
-        pageRouting.previousUrl = super.insertIdsInUrl(WHICH_TYPE_WITH_IDS_URL, ids);
+        pageRouting.previousUrl = super.insertIdsInUrl(WHICH_TYPE_WITH_IDS_URL, ids, request.url);
       }
     }
   }
@@ -147,7 +147,7 @@ class LimitedPartnershipController extends AbstractController {
           return;
         }
         const ids = { transactionId: result.transactionId, submissionId: result.submissionId };
-        const url = super.insertIdsInUrl(pageRouting.nextUrl, ids);
+        const url = super.insertIdsInUrl(pageRouting.nextUrl, ids, request.url);
 
         const cacheUpdated = this.cacheService.removeDataFromCache(
           request.signedCookies,
@@ -191,7 +191,7 @@ class LimitedPartnershipController extends AbstractController {
           getJourneyTypes(request.url).journey
         );
 
-        const paymentReturnUri = super.insertIdsInUrl(urlWithJourney, ids);
+        const paymentReturnUri = super.insertIdsInUrl(urlWithJourney, ids, request.url);
 
         const paymentRedirect = await this.paymentService.startPaymentSession(
           tokens,
@@ -228,7 +228,7 @@ class LimitedPartnershipController extends AbstractController {
           return this.redirectAndCacheSelection()(request, response, next);
         }
 
-        const redirectUrl = this.insertIdsInUrl(NAME_WITH_IDS_URL, ids);
+        const redirectUrl = this.insertIdsInUrl(NAME_WITH_IDS_URL, ids, request.url);
         response.redirect(redirectUrl);
       } catch (error) {
         next(error);
@@ -280,7 +280,7 @@ class LimitedPartnershipController extends AbstractController {
           return;
         }
 
-        await this.conditionalNextUrl(tokens, ids, pageRouting);
+        await this.conditionalNextUrl(tokens, ids, pageRouting, request);
 
         response.redirect(pageRouting.nextUrl);
       } catch (error) {
@@ -292,7 +292,8 @@ class LimitedPartnershipController extends AbstractController {
   private async conditionalNextUrl(
     tokens: { access_token: string; refresh_token: string },
     ids: { transactionId: string; submissionId: string },
-    pageRouting: PageRouting
+    pageRouting: PageRouting,
+    request: Request
   ) {
     if (pageRouting.pageType === RegistrationPageType.email) {
       const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
@@ -302,7 +303,7 @@ class LimitedPartnershipController extends AbstractController {
       );
 
       if (limitedPartnership.data?.registered_office_address) {
-        pageRouting.nextUrl = super.insertIdsInUrl(CONFIRM_REGISTERED_OFFICE_ADDRESS_URL, ids);
+        pageRouting.nextUrl = super.insertIdsInUrl(CONFIRM_REGISTERED_OFFICE_ADDRESS_URL, ids, request.url);
       }
     }
   }
@@ -332,7 +333,7 @@ class LimitedPartnershipController extends AbstractController {
         ) {
           const { ids } = super.extract(request);
 
-          const url = super.insertIdsInUrl(GENERAL_PARTNERS_URL, ids);
+          const url = super.insertIdsInUrl(GENERAL_PARTNERS_URL, ids, request.url);
 
           response.redirect(url);
 
@@ -383,7 +384,7 @@ class LimitedPartnershipController extends AbstractController {
           return;
         }
 
-        await this.conditionalSicCodeNextUrl(tokens, ids, pageRouting);
+        await this.conditionalSicCodeNextUrl(tokens, ids, pageRouting, request);
 
         response.redirect(pageRouting.nextUrl);
       } catch (error) {
@@ -395,12 +396,13 @@ class LimitedPartnershipController extends AbstractController {
   private async conditionalSicCodeNextUrl(
     tokens: { access_token: string; refresh_token: string },
     ids: { transactionId: string; submissionId: string },
-    pageRouting: PageRouting
+    pageRouting: PageRouting,
+    request: Request
   ) {
     const result = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
 
     if (result.generalPartners.length > 0) {
-      pageRouting.nextUrl = super.insertIdsInUrl(REVIEW_GENERAL_PARTNERS_URL, ids);
+      pageRouting.nextUrl = super.insertIdsInUrl(REVIEW_GENERAL_PARTNERS_URL, ids, request.url);
     }
   }
 }

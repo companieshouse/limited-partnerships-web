@@ -13,6 +13,13 @@ import GeneralPartnerBuilder from "../../builder/GeneralPartnerBuilder";
 import LimitedPartnerBuilder from "../../builder/LimitedPartnerBuilder";
 import { formatDate } from "../../../../utils/date-format";
 
+jest.mock("../../../../middlewares/authentication.middleware", () => ({
+  authentication: (req: any, res: any, next: any) => {
+    res.locals.userEmail = "test@example.com";
+    next();
+  }
+}));
+
 describe("Check Your Answers Page", () => {
   const URL = getUrl(CHECK_YOUR_ANSWERS_URL);
   const PAYMENT_LINK_JOURNEY = "https://api-test-payments.chs.local:4001";
@@ -70,6 +77,21 @@ describe("Check Your Answers Page", () => {
       expect(res.text).toContain(cyTranslationText.print.buttonTextNoJs);
       expect(res.text).toContain("WELSH -");
     });
+
+    it.each([
+      [URL + "?lang=en", "/limited-partnerships/sign-out?lang=en"],
+      [URL + "?lang=cy", "/limited-partnerships/sign-out?lang=cy"],
+      [URL, "/limited-partnerships/sign-out"]
+    ])(
+      "should set the signout link href correctly for url: %s",
+      async (testUrl: string, expectedHref: string) => {
+        setLocalesEnabled(true);
+        const res = await request(app).get(testUrl);
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(expectedHref);
+      }
+    );
 
     it("should load the check your answers page with data from api and show change links", async () => {
       const res = await request(app).get(URL);
