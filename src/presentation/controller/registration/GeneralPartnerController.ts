@@ -162,7 +162,7 @@ class GeneralPartnerController extends AbstractController {
         }
         const newIds = { ...ids, generalPartnerId: result.generalPartnerId };
 
-        const url = super.insertIdsInUrl(pageRouting.nextUrl, newIds, request.url);
+        const url = super.insertIdsInUrl(pageRouting.nextUrl, newIds);
 
         response.redirect(url);
       } catch (error) {
