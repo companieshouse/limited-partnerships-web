@@ -34,7 +34,7 @@ export const isLocalesEnabled = () => getEnvironmentValueAsBoolean("LOCALES_ENAB
 export const REFRESH_TOKEN_GRANT_TYPE = "refresh_token";
 
 export const SERVICE_NAME_REGISTRATION = "Register a limited partnership";
-export const SERVICE_NAME_TRANSITION = "Provide information about a limited partnership to meet new requirements";
+export const SERVICE_NAME_TRANSITION = "Provide information about a limited partnership";
 export const SHOW_SERVICE_UNAVAILABLE_PAGE = getEnvironmentValueAsBoolean("SHOW_SERVICE_UNAVAILABLE_PAGE");
 export const APPLICATION_CACHE_KEY = "limited_partnership";
 export const APPLICATION_CACHE_KEY_PREFIX_REGISTRATION = "registration_";
