@@ -26,7 +26,7 @@ class TransactionBuilder {
     return this;
   }
 
-  withDescrition(description: string) {
+  withDescription(description: string) {
     this.transaction.description = description;
     return this;
   }

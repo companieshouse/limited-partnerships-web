@@ -39,7 +39,7 @@ class TransactionInMemoryGateway implements ITransactionGateway {
     const description =
       incorporationKind === IncorporationKind.REGISTRATION ? SERVICE_NAME_REGISTRATION : SERVICE_NAME_TRANSITION;
 
-    const transaction = new TransactionBuilder().withId(this.transactionId).withDescrition(description).build();
+    const transaction = new TransactionBuilder().withId(this.transactionId).withDescription(description).build();
 
     this.transactions.push(transaction);
 
