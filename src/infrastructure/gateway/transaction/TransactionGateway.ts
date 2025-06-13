@@ -3,15 +3,20 @@
 import { Resource } from "@companieshouse/api-sdk-node";
 import { Transaction } from "@companieshouse/api-sdk-node/dist/services/transaction/types";
 import { ApiResponse, ApiErrorResponse } from "@companieshouse/api-sdk-node/dist/services/resource";
+import { IncorporationKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 import { makeApiCallWithRetry } from "../api";
 import ITransactionGateway from "../../../domain/ITransactionGateway";
 import PageType from "../../../presentation/controller/PageType";
-import { SDK_TRANSACTION_SERVICE } from "../../../config/constants";
+import { SDK_TRANSACTION_SERVICE, SERVICE_NAME_REGISTRATION, SERVICE_NAME_TRANSITION } from "../../../config/constants";
 
 class TransactionGateway implements ITransactionGateway {
+  registrationDescritpion = SERVICE_NAME_REGISTRATION;
+  transitionDescription = SERVICE_NAME_TRANSITION;
+
   async createTransaction(
     opt: { access_token: string; refresh_token: string },
+    incorporationKind: IncorporationKind,
     pageType: PageType
   ): Promise<string> {
     const apiCall = {
@@ -20,14 +25,15 @@ class TransactionGateway implements ITransactionGateway {
       args: [
         {
           reference: "LimitedPartnershipsReference",
-          description: "Register a limited partnership"
+          description:
+            incorporationKind === IncorporationKind.REGISTRATION
+              ? this.registrationDescritpion
+              : this.transitionDescription
         }
       ]
     };
 
-    const response = await makeApiCallWithRetry<
-      Resource<Transaction> | ApiErrorResponse
-    >(opt, apiCall);
+    const response = await makeApiCallWithRetry<Resource<Transaction> | ApiErrorResponse>(opt, apiCall);
 
     if (response.httpStatusCode !== 201) {
       throw response;
@@ -51,15 +57,13 @@ class TransactionGateway implements ITransactionGateway {
       ]
     };
 
-    const response = await makeApiCallWithRetry<
-      ApiResponse<Transaction> | ApiErrorResponse
-    >(opt, apiCall);
+    const response = await makeApiCallWithRetry<ApiResponse<Transaction> | ApiErrorResponse>(opt, apiCall);
 
     if (response.httpStatusCode !== 204 && response.httpStatusCode !== 202) {
       throw response;
     }
 
-    return (response as ApiResponse<Transaction>);
+    return response as ApiResponse<Transaction>;
   }
 }
 

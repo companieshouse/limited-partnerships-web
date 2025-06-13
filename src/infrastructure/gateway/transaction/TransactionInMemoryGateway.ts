@@ -4,6 +4,7 @@ import crypto from "crypto";
 
 import { ApiResponse } from "@companieshouse/api-sdk-node/dist/services/resource";
 import { Transaction } from "@companieshouse/api-sdk-node/dist/services/transaction/types";
+import { IncorporationKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 import RegistrationPageType from "../../../presentation/controller/registration/PageType";
 import PageType from "../../../presentation/controller/PageType";
@@ -13,7 +14,11 @@ import TransitionPageType from "../../../presentation/controller/transition/Page
 class TransactionInMemoryGateway implements ITransactionGateway {
   transactionId = crypto.randomUUID().toString();
 
-  async createTransaction(opt: { access_token: string }, pageType: PageType): Promise<string> {
+  async createTransaction(
+    opt: { access_token: string },
+    incorporationKind: IncorporationKind,
+    pageType: PageType
+  ): Promise<string> {
     if (pageType !== RegistrationPageType.name && pageType !== TransitionPageType.confirmLimitedPartnership) {
       throw new Error("Wrong page type to create a new transaction");
     }

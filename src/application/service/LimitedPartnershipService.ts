@@ -44,11 +44,11 @@ class LimitedPartnershipService {
     errors?: UIErrors;
   }> {
     try {
-      const transactionId = await this.transactionGateway.createTransaction(opt, pageType);
-
       const incorporationKind = journeyTypes.isRegistration
         ? IncorporationKind.REGISTRATION
         : IncorporationKind.TRANSITION;
+
+      const transactionId = await this.transactionGateway.createTransaction(opt, incorporationKind, pageType);
 
       await this.incorporationGateway.createIncorporation(opt, pageType, transactionId, incorporationKind);
 
