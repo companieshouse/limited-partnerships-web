@@ -228,7 +228,7 @@ class LimitedPartnershipController extends AbstractController {
           return this.redirectAndCacheSelection()(request, response, next);
         }
 
-        const redirectUrl = this.insertIdsInUrl(NAME_WITH_IDS_URL, ids);
+        const redirectUrl = this.insertIdsInUrl(NAME_WITH_IDS_URL, ids, response);
         response.redirect(redirectUrl);
       } catch (error) {
         next(error);

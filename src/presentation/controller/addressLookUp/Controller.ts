@@ -210,7 +210,7 @@ class AddressLookUpController extends AbstractController {
 
         // if exact match - redirect to confirm page
         if (address?.postal_code && address?.premises && address?.address_line_1) {
-          const url = super.insertIdsInUrl(pageRouting?.data?.confirmAddressUrl, ids, response);
+          const url = super.insertIdsInUrl(pageRouting?.data?.confirmAddressUrl, ids, request);
 
           response.redirect(url);
           return;
@@ -537,7 +537,8 @@ class AddressLookUpController extends AbstractController {
 
         const redirectUrl = super.insertIdsInUrl(
           isUnitedKingdom ? pageRouting.nextUrl : pageRouting.data?.["nextUrlOverseas"],
-          ids
+          ids,
+          response
         );
 
         const cacheKey = pageRouting.data?.[AddressCacheKeys.territoryCacheKey];

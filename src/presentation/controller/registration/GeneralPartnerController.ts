@@ -234,7 +234,9 @@ class GeneralPartnerController extends AbstractController {
         if (addAnotherGeneralPartner === "no") {
           await this.conditionalNextUrl(tokens, ids, pageRouting);
 
-          response.redirect(pageRouting.nextUrl);
+          const redirectUrl = super.insertIdsInUrl(pageRouting.nextUrl, ids, response);
+
+          response.redirect(redirectUrl);
           return;
         }
 

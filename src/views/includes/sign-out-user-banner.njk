@@ -1,9 +1,14 @@
 {% if userEmail %}
-
+  {% set signOutUrl = "/limited-partnerships/sign-out" %}
+  {% set langQuery = props.currentUrl.split("?") %}
+  {% if langQuery[1] %}
+    {% set signOutUrl = signOutUrl + "?" + langQuery[1] %}
+  {% endif %}
+  
   <ul id="navigation" class="sign-out-user-banner">
     <li class="content-email">{{ userEmail }}</li>
     <li>
-      <a class="govuk-link" href="/limited-partnerships/sign-out" data-event-id="signout">{{ i18n.links.signOut }}</a>
+      <a class="govuk-link" href={{ signOutUrl }} data-event-id="signout">{{ i18n.links.signOut }}</a>
     </li>
   </ul>
 
