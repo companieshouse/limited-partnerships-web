@@ -6,7 +6,7 @@ import LimitedPartnershipGateway from "../infrastructure/gateway/limitedPartners
 import GeneralPartnerGateway from "../infrastructure/gateway/generalPartner/GeneralPartnerGateway";
 import LimitedPartnerGateway from "../infrastructure/gateway/limitedPartner/LimitedPartnerGateway";
 import CacheRepository from "../infrastructure/repository/CacheRepository";
-import LimitedPartnershipController from "../presentation/controller/registration/LimitedPartnershipController";
+import LimitedPartnershipRegistrationController from "../presentation/controller/registration/LimitedPartnershipController";
 import GeneralPartnerController from "../presentation/controller/registration/GeneralPartnerController";
 import LimitedPartnerController from "../presentation/controller/registration/LimitedPartnerController";
 import CacheService from "../application/service/CacheService";
@@ -58,13 +58,14 @@ const globalController: GlobalController = new GlobalController(
   paymentService,
   transactionService
 );
-const limitedPartnershipController: LimitedPartnershipController = new LimitedPartnershipController(
-  limitedPartnershipService,
-  generalPartnerService,
-  limitedPartnerService,
-  cacheService,
-  paymentService
-);
+const limitedPartnershipRegistrationController: LimitedPartnershipRegistrationController =
+  new LimitedPartnershipRegistrationController(
+    limitedPartnershipService,
+    generalPartnerService,
+    limitedPartnerService,
+    cacheService,
+    paymentService
+  );
 const addressLookUpController: AddressLookUpController = new AddressLookUpController(
   addressLookUpService,
   limitedPartnershipService,
@@ -87,7 +88,7 @@ const limitedPartnershipTransitionController: LimitedPartnershipTransitionContro
 
 export const appDependencies = {
   globalController,
-  limitedPartnershipController,
+  limitedPartnershipRegistrationController,
   generalPartnerController,
   limitedPartnerController,
   addressLookUpController,

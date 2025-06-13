@@ -6,7 +6,7 @@ import RegistrationInMemoryGateway from "../infrastructure/gateway/limitedPartne
 import GeneralPartnerInMemoryGateway from "../infrastructure/gateway/generalPartner/GeneralPartnerInMemoryGateway";
 import LimitedPartnerInMemoryGateway from "../infrastructure/gateway/limitedPartner/LimitedPartnerInMemoryGateway";
 import CacheInMemoryRepository from "../infrastructure/repository/CacheInMemoryRepository";
-import LimitedPartnershipController from "../presentation/controller/registration/LimitedPartnershipController";
+import LimitedPartnershipRegistrationController from "../presentation/controller/registration/LimitedPartnershipController";
 import LimitedPartnershipTransitionController from "../presentation/controller/transition/LimitedPartnershipController";
 import GeneralPartnerController from "../presentation/controller/registration/GeneralPartnerController";
 import LimitedPartnerController from "../presentation/controller/registration/LimitedPartnerController";
@@ -55,13 +55,14 @@ const globalController: GlobalController = new GlobalController(
   paymentService,
   transactionService
 );
-const limitedPartnershipController: LimitedPartnershipController = new LimitedPartnershipController(
-  limitedPartnershipService,
-  generalPartnerService,
-  limitedPartnerService,
-  cacheService,
-  paymentService
-);
+const limitedPartnershipRegistrationController: LimitedPartnershipRegistrationController =
+  new LimitedPartnershipRegistrationController(
+    limitedPartnershipService,
+    generalPartnerService,
+    limitedPartnerService,
+    cacheService,
+    paymentService
+  );
 const addressLookUpController: AddressLookUpController = new AddressLookUpController(
   addressLookUpService,
   limitedPartnershipService,
@@ -93,7 +94,7 @@ export const appDevDependencies = {
   limitedPartnershipService,
   generalPartnerService,
   limitedPartnerService,
-  limitedPartnershipController,
+  limitedPartnershipRegistrationController,
   generalPartnerController,
   limitedPartnerController,
   addressLookUpGateway,
