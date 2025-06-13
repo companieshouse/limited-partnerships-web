@@ -74,7 +74,7 @@ const limitedPartnerController: LimitedPartnerController = new LimitedPartnerCon
 );
 
 const limitedPartnershipTransitionController: LimitedPartnershipTransitionController =
-  new LimitedPartnershipTransitionController(companyService, cacheService);
+  new LimitedPartnershipTransitionController(companyService, cacheService, limitedPartnershipService);
 
 export const appDevDependencies = {
   globalController,
