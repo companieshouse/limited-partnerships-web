@@ -28,6 +28,8 @@ class PaymentsInMemoryGateway implements IPaymentsGateway {
     status: "paid"
   };
 
+  lastCreatePaymentRequest?: CreatePaymentRequest;
+
   feedPaymentWithEmptyJourney() {
     this.payment = {
       ...this.payment,
@@ -41,9 +43,10 @@ class PaymentsInMemoryGateway implements IPaymentsGateway {
 
   async createPayment (
     _opt: { access_token: string; refresh_token: string },
-    _createPaymentRequest: CreatePaymentRequest,
-    _startPaymentSessionUrl: string) {
-
+    createPaymentRequest: CreatePaymentRequest,
+    _startPaymentSessionUrl: string
+  ) {
+    this.lastCreatePaymentRequest = createPaymentRequest;
     return await Promise.resolve(this.payment);
   }
 }
