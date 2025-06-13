@@ -118,7 +118,7 @@ class GlobalController extends AbstractController {
           getJourneyTypes(request.url).journey
         );
 
-        const nextPageUrlWithJourneyAndIds = super.insertIdsInUrl(nextPageUrlWithJourney, ids, request.url);
+        const nextPageUrlWithJourneyAndIds = super.insertIdsInUrl(nextPageUrlWithJourney, ids);
 
         return response.redirect(nextPageUrlWithJourneyAndIds);
       } catch (error) {

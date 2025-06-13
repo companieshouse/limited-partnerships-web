@@ -109,11 +109,10 @@ abstract class AbstractController {
     requestUrl?: string
   ): string {
     if (requestUrl) {
-      const requestParams = new URLSearchParams(requestUrl.split("?")[1] || "");
-      const urlParams = new URLSearchParams(url.split("?")[1] || "");
-      const lang = requestParams.get("lang");
-      if (lang && !urlParams.has("lang")) {
-        url += (url.includes("?") ? "&" : "?") + `lang=${lang}`;
+      const requestParam = requestUrl.split("?")[1];
+      const urlParam = url.split("?")[1];
+      if (requestParam && !urlParam) {
+        url = `${url}?${requestParam}`;
       }
     }
     url = this.replaceBaseUrlWithIds(url, ids);
