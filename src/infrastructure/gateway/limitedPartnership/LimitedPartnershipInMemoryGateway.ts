@@ -1,16 +1,14 @@
 /* eslint-disable */
 
 import crypto from "crypto";
-import {
-  LimitedPartnership,
-  NameEndingType
-} from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import RegistrationPageType from "../../../presentation/controller/registration/PageType";
 import ILimitedPartnershipGateway from "../../../domain/ILimitedPartnershipGateway";
 import TransactionLimitedPartnership from "../../../domain/entities/TransactionLimitedPartnership";
 import LimitedPartnershipGatewayBuilder from "./LimitedPartnershipGatewayBuilder";
 import UIErrors, { ApiErrors } from "../../../domain/entities/UIErrors";
+import PageType from "../../../presentation/controller/PageType";
 
 class LimitedPartnershipInMemoryGateway implements ILimitedPartnershipGateway {
   submissionId = crypto.randomUUID().toString();
@@ -19,9 +17,7 @@ class LimitedPartnershipInMemoryGateway implements ILimitedPartnershipGateway {
   limitedPartnerships: TransactionLimitedPartnership[] = [];
   uiErrors: UIErrors = new UIErrors();
 
-  feedLimitedPartnerships(
-    limitedPartnerships: TransactionLimitedPartnership[]
-  ) {
+  feedLimitedPartnerships(limitedPartnerships: TransactionLimitedPartnership[]) {
     this.limitedPartnerships = limitedPartnerships;
   }
 
@@ -41,7 +37,7 @@ class LimitedPartnershipInMemoryGateway implements ILimitedPartnershipGateway {
 
   async createSubmission(
     opt: { access_token: string },
-    registrationPageType: RegistrationPageType,
+    pageType: PageType,
     transactionId: string,
     data: Record<string, any>
   ): Promise<string> {
@@ -56,15 +52,6 @@ class LimitedPartnershipInMemoryGateway implements ILimitedPartnershipGateway {
       };
     }
 
-    if (!data.name_ending) {
-      apiErrors.errors = {
-        ...apiErrors.errors,
-        "data.nameEnding": `name_ending must be one of ${Object.values(
-          NameEndingType
-        ).join(", ")}`
-      };
-    }
-
     if (Object.keys(apiErrors.errors).length > 0) {
       this.uiErrors.formatValidationErrorToUiErrors(apiErrors);
     }
@@ -75,7 +62,7 @@ class LimitedPartnershipInMemoryGateway implements ILimitedPartnershipGateway {
 
     const limitedPartnershipBuilder = new LimitedPartnershipGatewayBuilder();
 
-    limitedPartnershipBuilder.withData(registrationPageType, data);
+    limitedPartnershipBuilder.withData(pageType, data);
 
     this.limitedPartnerships.push(limitedPartnershipBuilder.build());
 
@@ -103,14 +90,12 @@ class LimitedPartnershipInMemoryGateway implements ILimitedPartnershipGateway {
     if (Object.keys(apiErrors.errors).length > 0) {
       this.uiErrors.formatValidationErrorToUiErrors(apiErrors);
     }
-    
+
     if (this.uiErrors.errors.errorList.length > 0) {
       throw this.uiErrors;
     }
 
-    let index = this.limitedPartnerships.findIndex(
-      (lp) => lp._id === submissionId
-    );
+    let index = this.limitedPartnerships.findIndex((lp) => lp._id === submissionId);
 
     const limitedPartnershipBuilder = new LimitedPartnershipGatewayBuilder({
       _id: submissionId,
@@ -131,9 +116,7 @@ class LimitedPartnershipInMemoryGateway implements ILimitedPartnershipGateway {
       throw new Error(`Not found: ${submissionId}`);
     }
 
-    return new LimitedPartnershipGatewayBuilder(
-      this.limitedPartnerships[0]
-    ).build();
+    return new LimitedPartnershipGatewayBuilder(this.limitedPartnerships[0]).build();
   }
 }
 

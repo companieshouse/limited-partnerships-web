@@ -39,101 +39,101 @@ export const registrationEndpoints = (
   router.get(
     WHICH_TYPE_URL,
     authentication,
-    dependencies.limitedPartnershipController.getPageRouting()
+    dependencies.limitedPartnershipRegistrationController.getPageRouting()
   );
   router.post(
     WHICH_TYPE_URL,
     authentication,
-    dependencies.limitedPartnershipController.redirectAndCacheSelection()
+    dependencies.limitedPartnershipRegistrationController.redirectAndCacheSelection()
   );
 
   router.get(
     WHICH_TYPE_WITH_IDS_URL,
     authentication,
-    dependencies.limitedPartnershipController.getPageRouting()
+    dependencies.limitedPartnershipRegistrationController.getPageRouting()
   );
   router.post(
     WHICH_TYPE_WITH_IDS_URL,
     authentication,
-    dependencies.limitedPartnershipController.redirectWhichTypeWithIds()
+    dependencies.limitedPartnershipRegistrationController.redirectWhichTypeWithIds()
   );
 
   router.get(
     NAME_URL,
     authentication,
-    dependencies.limitedPartnershipController.getPageRouting()
+    dependencies.limitedPartnershipRegistrationController.getPageRouting()
   );
   router.post(
     NAME_URL,
     authentication,
-    dependencies.limitedPartnershipController.createTransactionAndFirstSubmission()
+    dependencies.limitedPartnershipRegistrationController.createTransactionAndFirstSubmission()
   );
 
   router.get(
     NAME_WITH_IDS_URL,
     authentication,
-    dependencies.limitedPartnershipController.getPageRouting()
+    dependencies.limitedPartnershipRegistrationController.getPageRouting()
   );
   router.post(
     NAME_WITH_IDS_URL,
     authentication,
-    dependencies.limitedPartnershipController.sendPageData()
+    dependencies.limitedPartnershipRegistrationController.sendPageData()
   );
 
   router.get(
     EMAIL_URL,
     authentication,
-    dependencies.limitedPartnershipController.getPageRouting()
+    dependencies.limitedPartnershipRegistrationController.getPageRouting()
   );
   router.post(
     EMAIL_URL,
     authentication,
-    dependencies.limitedPartnershipController.sendPageData()
+    dependencies.limitedPartnershipRegistrationController.sendPageData()
   );
 
   router.get(
     WHERE_IS_THE_JURISDICTION_URL,
     authentication,
-    dependencies.limitedPartnershipController.getPageRouting()
+    dependencies.limitedPartnershipRegistrationController.getPageRouting()
   );
   router.post(
     WHERE_IS_THE_JURISDICTION_URL,
     authentication,
-    dependencies.limitedPartnershipController.sendPageData()
+    dependencies.limitedPartnershipRegistrationController.sendPageData()
   );
 
   router.get(
     TERM_URL,
     authentication,
-    dependencies.limitedPartnershipController.getPageRoutingTermSic()
+    dependencies.limitedPartnershipRegistrationController.getPageRoutingTermSic()
   );
   router.post(
     TERM_URL,
     authentication,
-    dependencies.limitedPartnershipController.sendPageData()
+    dependencies.limitedPartnershipRegistrationController.sendPageData()
   );
 
   router.get(
     SIC_URL,
     authentication,
-    dependencies.limitedPartnershipController.getPageRoutingTermSic()
+    dependencies.limitedPartnershipRegistrationController.getPageRoutingTermSic()
   );
   router.post(
     SIC_URL,
     authentication,
-    dependencies.limitedPartnershipController.sendSicCodesPageData()
+    dependencies.limitedPartnershipRegistrationController.sendSicCodesPageData()
   );
 
   router.get(
     GENERAL_PARTNERS_URL,
     authentication,
-    dependencies.limitedPartnershipController.getPageRouting()
+    dependencies.limitedPartnershipRegistrationController.getPageRouting()
   );
 
   router.get(
     GENERAL_PARTNER_CHOICE_URL,
     authentication,
-    dependencies.limitedPartnershipController.getPageRouting()
+    dependencies.limitedPartnershipRegistrationController.getPageRouting()
   );
   router.post(
     GENERAL_PARTNER_CHOICE_URL,
@@ -210,13 +210,13 @@ export const registrationEndpoints = (
   router.get(
     LIMITED_PARTNERS_URL,
     authentication,
-    dependencies.limitedPartnershipController.getPageRouting()
+    dependencies.limitedPartnershipRegistrationController.getPageRouting()
   );
 
   router.get(
     LIMITED_PARTNER_CHOICE_URL,
     authentication,
-    dependencies.limitedPartnershipController.getPageRouting()
+    dependencies.limitedPartnershipRegistrationController.getPageRouting()
   );
   router.post(
     LIMITED_PARTNER_CHOICE_URL,
@@ -293,13 +293,13 @@ export const registrationEndpoints = (
   router.get(
     CHECK_YOUR_ANSWERS_URL,
     authentication,
-    dependencies.limitedPartnershipController.getPageRouting()
+    dependencies.limitedPartnershipRegistrationController.getPageRouting()
   );
 
   router.post(
     CHECK_YOUR_ANSWERS_URL,
     authentication,
-    dependencies.limitedPartnershipController.postCheckYourAnswers()
+    dependencies.limitedPartnershipRegistrationController.postCheckYourAnswers()
   );
 };
 

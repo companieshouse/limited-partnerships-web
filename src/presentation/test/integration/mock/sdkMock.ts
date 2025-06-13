@@ -6,10 +6,10 @@ import CompanyProfileService from "@companieshouse/api-sdk-node/dist/services/co
 
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
-import { companyProfile } from "../../../../infrastructure/gateway/companyProfile/CompanyInMemoryGateway";
 import GeneralPartnerBuilder from "../../builder/GeneralPartnerBuilder";
 import LimitedPartnerBuilder from "../../builder/LimitedPartnerBuilder";
 import { PaymentService } from "@companieshouse/api-sdk-node/dist/services/payment";
+import CompanyProfileBuilder from "../../builder/CompanyProfileBuilder";
 
 // Transaction service
 export const postTransaction = jest.fn().mockImplementation(() => ({
@@ -128,7 +128,7 @@ export const getListOfValidPostcodeAddresses = jest.fn().mockImplementation(() =
 // Company Profile service
 export const getCompanyProfile = jest.fn().mockImplementation(() => ({
   httpStatusCode: 200,
-  resource: companyProfile
+  resource: new CompanyProfileBuilder().build().data
 }));
 
 // Payment Service

@@ -10,7 +10,8 @@ import { appDevDependencies } from "../../../../config/dev-dependencies";
 import {
   APPLICATION_CACHE_KEY,
   APPLICATION_CACHE_KEY_PREFIX_REGISTRATION,
-  REGISTRATION_BASE_URL
+  REGISTRATION_BASE_URL,
+  SERVICE_NAME_REGISTRATION
 } from "../../../../config/constants";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
@@ -224,6 +225,8 @@ describe("Name Page", () => {
         [APPLICATION_CACHE_KEY]: {}
       });
       expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships.length).toEqual(1);
+
+      expect(appDevDependencies.transactionGateway.transactions[0].description).toEqual(SERVICE_NAME_REGISTRATION);
     });
 
     it("should update the submission if already exist", async () => {
