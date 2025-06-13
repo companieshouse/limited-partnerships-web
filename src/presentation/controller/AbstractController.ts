@@ -109,10 +109,10 @@ abstract class AbstractController {
     requestUrl?: string
   ): string {
     if (requestUrl) {
-      const requestParam = requestUrl.split("?")[1];
+      const requestUrlParam = requestUrl.split("?")[1];
       const urlParam = url.split("?")[1];
-      if (requestParam && !urlParam) {
-        url = `${url}?${requestParam}`;
+      if (requestUrlParam && !urlParam) {
+        url = `${url}?${requestUrlParam}`;
       }
     }
     url = this.replaceBaseUrlWithIds(url, ids);
