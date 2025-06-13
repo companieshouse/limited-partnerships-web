@@ -11,9 +11,6 @@ import PageType from "../../../presentation/controller/PageType";
 import { SDK_TRANSACTION_SERVICE, SERVICE_NAME_REGISTRATION, SERVICE_NAME_TRANSITION } from "../../../config/constants";
 
 class TransactionGateway implements ITransactionGateway {
-  registrationDescritpion = SERVICE_NAME_REGISTRATION;
-  transitionDescription = SERVICE_NAME_TRANSITION;
-
   async createTransaction(
     opt: { access_token: string; refresh_token: string },
     incorporationKind: IncorporationKind,
@@ -26,9 +23,7 @@ class TransactionGateway implements ITransactionGateway {
         {
           reference: "LimitedPartnershipsReference",
           description:
-            incorporationKind === IncorporationKind.REGISTRATION
-              ? this.registrationDescritpion
-              : this.transitionDescription
+            incorporationKind === IncorporationKind.REGISTRATION ? SERVICE_NAME_REGISTRATION : SERVICE_NAME_TRANSITION
         }
       ]
     };
@@ -66,27 +61,23 @@ class TransactionGateway implements ITransactionGateway {
     return response as ApiResponse<Transaction>;
   }
 
-   async getTransaction(
+  async getTransaction(
     opt: { access_token: string; refresh_token: string },
     transactionId: string
   ): Promise<Transaction> {
     const apiCall = {
       service: SDK_TRANSACTION_SERVICE,
       method: "getTransaction",
-      args: [
-        transactionId
-      ]
+      args: [transactionId]
     };
 
-    const response = await makeApiCallWithRetry<
-      ApiResponse<Transaction> | ApiErrorResponse
-    >(opt, apiCall);
+    const response = await makeApiCallWithRetry<ApiResponse<Transaction> | ApiErrorResponse>(opt, apiCall);
 
     if (response.httpStatusCode !== 200) {
       throw response;
     }
 
-    return (response as ApiResponse<Transaction>)?.resource ?? {} as Transaction;
+    return (response as ApiResponse<Transaction>)?.resource ?? ({} as Transaction);
   }
 }
 

@@ -5,7 +5,7 @@ import app from "../app";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import { CONFIRM_LIMITED_PARTNERSHIP_URL } from "presentation/controller/transition/url";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
-import { APPLICATION_CACHE_KEY_PREFIX_TRANSITION } from "../../../../config";
+import { APPLICATION_CACHE_KEY_PREFIX_TRANSITION, SERVICE_NAME_TRANSITION } from "../../../../config";
 import CompanyProfileBuilder from "../../builder/CompanyProfileBuilder";
 import { Jurisdiction, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
@@ -70,28 +70,49 @@ describe("Confirm correct limited partnership page", () => {
   });
 
   describe("Post confirm limited partnership page", () => {
-    it("should create a transaction and a LP - england-wales", async () => {
-      expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships.length).toEqual(0);
-
-      const res = await request(app).post(URL);
-
-      expect(res.status).toBe(302);
-      // expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
-
-      expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships.length).toEqual(1);
-      expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships?.[0]?.data?.partnership_number).toEqual(
-        companyProfile.data.companyNumber
-      );
-      expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships?.[0]?.data?.partnership_name).toEqual(
-        companyProfile.data.companyName
-      );
-      expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships?.[0]?.data?.partnership_type).toEqual(
-        PartnershipType.LP
-      );
-    });
-
-    it("should create a transaction and a PFLP - england-wales", async () => {
-      const companyProfile = new CompanyProfileBuilder().withSubtype().build();
+    it.each([
+      {
+        description: "LP - england-wales",
+        jurisdiction: Jurisdiction.ENGLAND_AND_WALES,
+        subtype: false,
+        partnershipType: PartnershipType.LP
+      },
+      {
+        description: "PFLP - england-wales",
+        jurisdiction: Jurisdiction.ENGLAND_AND_WALES,
+        subtype: true,
+        partnershipType: PartnershipType.PFLP
+      },
+      {
+        description: "LP - northern-ireland",
+        jurisdiction: Jurisdiction.NORTHERN_IRELAND,
+        subtype: false,
+        partnershipType: PartnershipType.LP
+      },
+      {
+        description: "PFLP - northern-ireland",
+        jurisdiction: Jurisdiction.NORTHERN_IRELAND,
+        subtype: true,
+        partnershipType: PartnershipType.PFLP
+      },
+      {
+        description: "SLP - scotland",
+        jurisdiction: Jurisdiction.SCOTLAND,
+        subtype: false,
+        partnershipType: PartnershipType.SLP
+      },
+      {
+        description: "PFSLP - scotland",
+        jurisdiction: Jurisdiction.SCOTLAND,
+        subtype: true,
+        partnershipType: PartnershipType.SPFLP
+      }
+    ])(`should create a transaction and a $description`, async ({ jurisdiction, subtype, partnershipType }) => {
+      const companyProfile = new CompanyProfileBuilder().withJurisdiction(jurisdiction);
+      if (subtype) {
+        companyProfile.withSubtype();
+      }
+      companyProfile.build();
       appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
       expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships.length).toEqual(0);
@@ -109,103 +130,10 @@ describe("Confirm correct limited partnership page", () => {
         companyProfile.data.companyName
       );
       expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships?.[0]?.data?.partnership_type).toEqual(
-        PartnershipType.PFLP
+        partnershipType
       );
-    });
 
-    it("should create a transaction and a LP - northern-ireland", async () => {
-      const companyProfile = new CompanyProfileBuilder().withJurisdiction(Jurisdiction.NORTHERN_IRELAND).build();
-      appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
-
-      expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships.length).toEqual(0);
-
-      const res = await request(app).post(URL);
-
-      expect(res.status).toBe(302);
-      // expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
-
-      expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships.length).toEqual(1);
-      expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships?.[0]?.data?.partnership_number).toEqual(
-        companyProfile.data.companyNumber
-      );
-      expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships?.[0]?.data?.partnership_name).toEqual(
-        companyProfile.data.companyName
-      );
-      expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships?.[0]?.data?.partnership_type).toEqual(
-        PartnershipType.LP
-      );
-    });
-
-    it("should create a transaction and a PFLP - northern-ireland", async () => {
-      const companyProfile = new CompanyProfileBuilder()
-        .withJurisdiction(Jurisdiction.NORTHERN_IRELAND)
-        .withSubtype()
-        .build();
-      appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
-
-      expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships.length).toEqual(0);
-
-      const res = await request(app).post(URL);
-
-      expect(res.status).toBe(302);
-      // expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
-
-      expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships.length).toEqual(1);
-      expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships?.[0]?.data?.partnership_number).toEqual(
-        companyProfile.data.companyNumber
-      );
-      expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships?.[0]?.data?.partnership_name).toEqual(
-        companyProfile.data.companyName
-      );
-      expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships?.[0]?.data?.partnership_type).toEqual(
-        PartnershipType.PFLP
-      );
-    });
-
-    it("should create a transaction and a SLP - scotland", async () => {
-      const companyProfile = new CompanyProfileBuilder().withJurisdiction(Jurisdiction.SCOTLAND).build();
-      appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
-
-      expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships.length).toEqual(0);
-
-      const res = await request(app).post(URL);
-
-      expect(res.status).toBe(302);
-      // expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
-
-      expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships.length).toEqual(1);
-      expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships?.[0]?.data?.partnership_number).toEqual(
-        companyProfile.data.companyNumber
-      );
-      expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships?.[0]?.data?.partnership_name).toEqual(
-        companyProfile.data.companyName
-      );
-      expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships?.[0]?.data?.partnership_type).toEqual(
-        PartnershipType.SLP
-      );
-    });
-
-    it("should create a transaction and a SPFLP - scotland", async () => {
-      const companyProfile = new CompanyProfileBuilder().withJurisdiction(Jurisdiction.SCOTLAND).withSubtype().build();
-      appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
-
-      expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships.length).toEqual(0);
-
-      const res = await request(app).post(URL);
-
-      expect(res.status).toBe(302);
-      // expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
-
-      expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships.length).toEqual(1);
-      expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships?.[0]?.data?.partnership_number).toEqual(
-        companyProfile.data.companyNumber
-      );
-      expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships?.[0]?.data?.partnership_name).toEqual(
-        companyProfile.data.companyName
-      );
-      expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships?.[0]?.data?.partnership_type).toEqual(
-        PartnershipType.SPFLP
-      );
+      expect(appDevDependencies.transactionGateway.transactions[0].description).toEqual(SERVICE_NAME_TRANSITION);
     });
   });
 });
