@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import crypto from "crypto";
-import { LimitedPartnership, NameEndingType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import RegistrationPageType from "../../../presentation/controller/registration/PageType";
 import ILimitedPartnershipGateway from "../../../domain/ILimitedPartnershipGateway";
