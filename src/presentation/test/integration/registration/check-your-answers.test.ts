@@ -13,13 +13,6 @@ import GeneralPartnerBuilder from "../../builder/GeneralPartnerBuilder";
 import LimitedPartnerBuilder from "../../builder/LimitedPartnerBuilder";
 import { formatDate } from "../../../../utils/date-format";
 
-jest.mock("../../../../middlewares/authentication.middleware", () => ({
-  authentication: (req: any, res: any, next: any) => {
-    res.locals.userEmail = "test@example.com";
-    next();
-  }
-}));
-
 describe("Check Your Answers Page", () => {
   const URL = getUrl(CHECK_YOUR_ANSWERS_URL);
   const PAYMENT_LINK_JOURNEY = "https://api-test-payments.chs.local:4001";

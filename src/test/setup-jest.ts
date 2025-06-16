@@ -20,3 +20,10 @@ jest.mock("../utils/session", () => ({
   ...jest.requireActual("../utils/session"),
   getLoggedInUserEmail: jest.fn(() => "test@email.com")
 }));
+
+jest.mock("../middlewares/authentication.middleware", () => ({
+  authentication: (req: any, res: any, next: any) => {
+    res.locals.userEmail = "test@example.com";
+    next();
+  }
+}));
