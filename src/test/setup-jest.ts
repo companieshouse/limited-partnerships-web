@@ -4,7 +4,10 @@ jest.mock("ioredis");
 jest.mock("../utils/logger");
 
 jest.mock("../middlewares/authentication.middleware", () => ({
-  authentication: (req: Request, res: Response, next: NextFunction) => next()
+  authentication: (req: any, res: any, next: any) => {
+    res.locals.userEmail = "test@example.com";
+    next();
+  }
 }));
 
 /*
@@ -21,9 +24,3 @@ jest.mock("../utils/session", () => ({
   getLoggedInUserEmail: jest.fn(() => "test@email.com")
 }));
 
-jest.mock("../middlewares/authentication.middleware", () => ({
-  authentication: (req: any, res: any, next: any) => {
-    res.locals.userEmail = "test@example.com";
-    next();
-  }
-}));
