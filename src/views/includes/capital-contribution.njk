@@ -11,9 +11,9 @@
       text: i18n.capitalContribution.hint
     },
     classes: "govuk-input--width-4",
-    id: "amount",
-    name: "amount",
-    value: props.data.limitedPartner.data.capital_contribution_amount,
+    id: "contribution_currency_value",
+    name: "contribution_currency_value",
+    value: props.data.limitedPartner.data.contribution_currency_value,
     errorMessage: props.amount if props.errors,
     attributes: {
       required: true
@@ -24,8 +24,8 @@
 
   {{ govukCheckboxes({
     errorMessage: i18n.capitalContribution.compositionErrorMessage if props.errors,
-    idPrefix: "capital_contribution_composition",
-    name: "capital_contribution_composition",            
+    idPrefix: "contribution_sub_types",
+    name: "contribution_sub_types",            
     fieldset: {
       legend: {
         text: i18n.capitalContribution.compositionTitle,
@@ -38,33 +38,33 @@
     },   
     items: [
       {        
-        value: capital_contribution_money,            
+        value: "money",            
         text: i18n.capitalContribution.money,
-        checked: capital_contribution_money === "MONEY",
+        checked: true if contribution_sub_types.money else false,
         attributes: {
           "data-event-id": "capital_contribution_money"
         } 
       },
       {        
-        value: capital_contribution_landOrProperty,           
+        value: "landOrProperty",           
         text: i18n.capitalContribution.landOrProperty,
-        checked: capital_contribution_landOrProperty === "LAND_OR_PROPERTY",
+        checked: true if contribution_sub_types.landOrProperty else false,
         attributes: {
           "data-event-id": "capital_contribution_landOrProperty"
         } 
       },
       {        
-        value: capital_contribution_shares,          
+        value: "shares",          
         text: i18n.capitalContribution.shares,
-        checked: capital_contribution_shares === "SHARES",
+        checked: true if contribution_sub_types.shares else false,
         attributes: {
           "data-event-id": "capital_contribution_shares"
         } 
       },
       {        
-        value: capital_contribution_servicesOrGoods,        
+        value: "servicesOrGoods",        
         text: i18n.capitalContribution.servicesOrGoods,
-        checked: capital_contribution_servicesOrGoods === "SERVICES_OR_GOODS",
+        checked: true if contribution_sub_types.servicesOrGoods else false,
         attributes: {
           "data-event-id": "capital_contribution_servicesOrGoods"
         } 
