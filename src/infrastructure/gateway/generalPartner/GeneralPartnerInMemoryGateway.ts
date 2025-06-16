@@ -37,7 +37,7 @@ class GeneralPartnerInMemoryGateway implements IGeneralPartnerGateway {
     transactionId: string,
     data: Record<string, any>
   ): Promise<string> {
-    if (this.uiErrors.errors.errorList.length > 0) {
+    if (this.uiErrors?.hasErrors()) {
       throw this.uiErrors;
     }
 
@@ -73,7 +73,7 @@ class GeneralPartnerInMemoryGateway implements IGeneralPartnerGateway {
     generalPartnerId: string,
     data: Record<string, any>
   ): Promise<void> {
-    if (this.uiErrors.errors.errorList.length > 0) {
+    if (this.uiErrors?.hasErrors()) {
       throw this.uiErrors;
     }
 
@@ -91,7 +91,7 @@ class GeneralPartnerInMemoryGateway implements IGeneralPartnerGateway {
     transactionId: string,
     generalPartnerId: string
   ): Promise<void> {
-    if (this.uiErrors.errors.errorList.length > 0) {
+    if (this.uiErrors?.hasErrors()) {
       throw this.uiErrors;
     }
 

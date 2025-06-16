@@ -176,7 +176,7 @@ class AddressLookUpController extends AbstractController {
           jurisdiction
         );
 
-        if (errors?.errors) {
+        if (errors?.hasErrors()) {
           let generalPartner;
           if (AddressLookUpController.GENERAL_PARTNER_ADDRESS_PAGES.has(pageType)) {
             generalPartner = await this.generalPartnerService.getGeneralPartner(
@@ -298,7 +298,7 @@ class AddressLookUpController extends AbstractController {
           );
         }
 
-        if (errors?.errors) {
+        if (errors?.hasErrors()) {
           let generalPartner;
           let limitedPartner;
           if (AddressLookUpController.GENERAL_PARTNER_ADDRESS_PAGES.has(pageType)) {
