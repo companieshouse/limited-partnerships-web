@@ -99,7 +99,7 @@ class LimitedPartnershipController extends AbstractController {
         }
 
         const ids = { transactionId: result.transactionId, submissionId: result.submissionId };
-        const url = super.insertIdsInUrl(pageRouting.nextUrl, ids);
+        const url = super.insertIdsInUrl(pageRouting.nextUrl, ids, request.url);
 
         const cacheUpdated = this.cacheService.removeDataFromCache(
           request.signedCookies,

@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request } from "express";
 import { Session } from "@companieshouse/node-session-handler";
 
 import {
@@ -106,9 +106,15 @@ abstract class AbstractController {
   insertIdsInUrl(
     url: string,
     ids: Ids,
-    response?: Response
+    requestUrl?: string
   ): string {
-    url = response?.locals.languageEnabled ? `${url}?lang=${response.locals.lang}` : url;
+    if (requestUrl) {
+      const requestUrlParam = requestUrl.split("?")[1];
+      const urlParam = url.split("?")[1];
+      if (requestUrlParam && !urlParam) {
+        url = `${url}?${requestUrlParam}`;
+      }
+    }
     url = this.replaceBaseUrlWithIds(url, ids);
     url = this.insertSubmissionId(url, ids.submissionId);
     url = this.insertTransactionId(url, ids.transactionId);
