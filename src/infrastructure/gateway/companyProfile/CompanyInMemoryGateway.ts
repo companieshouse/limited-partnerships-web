@@ -67,5 +67,6 @@ export const companyProfile: CompanyProfile = {
     region: "region"
   },
   sicCodes: ["12345"],
-  type: "ltd"
+  type: "ltd",
+  subtype: "subtype"
 };
