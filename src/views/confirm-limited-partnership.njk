@@ -7,44 +7,37 @@
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
+      {% include "includes/errors.njk" %}
+
       <form class="form" action={{ props.currentUrl }} method="post">
         <input type="hidden" name="pageType" value={{ props.pageType }}> 
         {% include "includes/csrf_token.njk" %}
-        {% include "includes/errors.njk" %}
 
         <h1 class="govuk-heading-xl">{{ pageTitle }}</h1>
 
         {{ govukSummaryList({
             classes: "govuk-!-margin-bottom-9",
             rows: [
-            {
-              key: {
-                text: i18n.confirmLimitedPartnership.name
+              {
+                key: {
+                  text: i18n.confirmLimitedPartnership.name
+                },
+                value: {
+                  text: props.data.company.companyName
+                }
               },
-              value: {
-                text: props.data.company.companyName
+              {
+                key: {
+                  text: i18n.confirmLimitedPartnership.number
+                },
+                value: {
+                  text: props.data.company.companyNumber
+                }
               }
-            },
-            {
-              key: {
-                text: i18n.confirmLimitedPartnership.number
-              },
-              value: {
-                text: props.data.company.companyNumber
-              }
-            },
-            {
-              key: {
-                text: i18n.confirmLimitedPartnership.date
-              },
-              value: {
-                text: props.data.dateOfCreation
-              }
-            }
             ]
         }) }}
 
-        {% include "includes/continue-button.njk" %}
+        {% include "includes/save-and-continue-button.njk" %}
       </form>
     </div>
   </div>

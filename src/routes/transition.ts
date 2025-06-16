@@ -13,22 +13,22 @@ export const transitionEndpoints = (router: Router, dependencies: IDependencies)
   router.get(
     COMPANY_NUMBER_URL,
     authentication,
-    dependencies.transitionController.getPageRouting()
+    dependencies.limitedPartnershipTransitionController.getPageRouting()
   );
   router.post(
     COMPANY_NUMBER_URL,
     authentication,
-    dependencies.transitionController.checkCompanyNumber()
+    dependencies.limitedPartnershipTransitionController.checkCompanyNumber()
   );
 
   router.get(
     CONFIRM_LIMITED_PARTNERSHIP_URL,
     authentication,
-    dependencies.transitionController.getConfirmPage()
+    dependencies.limitedPartnershipTransitionController.getConfirmPage()
   );
   router.post(
     CONFIRM_LIMITED_PARTNERSHIP_URL,
     authentication,
-    dependencies.transitionController.limitedPartnershipConfirm()
+    dependencies.limitedPartnershipTransitionController.limitedPartnershipConfirm()
   );
 };

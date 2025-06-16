@@ -10,6 +10,7 @@ import { extractAPIErrors } from "./utils";
 import { ApiResponse } from "@companieshouse/api-sdk-node/dist/services/resource";
 import { Transaction } from "@companieshouse/api-sdk-node/dist/services/transaction/types";
 import { JourneyTypes } from "../../domain/entities/journey";
+import PageType from "../../presentation/controller/PageType";
 
 class LimitedPartnershipService {
   constructor(
@@ -34,7 +35,7 @@ class LimitedPartnershipService {
 
   async createTransactionAndFirstSubmission(
     opt: { access_token: string; refresh_token: string },
-    registrationType: RegistrationPageType,
+    pageType: PageType,
     journeyTypes: JourneyTypes,
     data: Record<string, any>
   ): Promise<{
@@ -43,20 +44,15 @@ class LimitedPartnershipService {
     errors?: UIErrors;
   }> {
     try {
-      const transactionId = await this.transactionGateway.createTransaction(opt, registrationType);
-
       const incorporationKind = journeyTypes.isRegistration
         ? IncorporationKind.REGISTRATION
         : IncorporationKind.TRANSITION;
 
-      await this.incorporationGateway.createIncorporation(opt, registrationType, transactionId, incorporationKind);
+      const transactionId = await this.transactionGateway.createTransaction(opt, incorporationKind, pageType);
 
-      const submissionId = await this.limitedPartnershipGateway.createSubmission(
-        opt,
-        registrationType,
-        transactionId,
-        data
-      );
+      await this.incorporationGateway.createIncorporation(opt, pageType, transactionId, incorporationKind);
+
+      const submissionId = await this.limitedPartnershipGateway.createSubmission(opt, pageType, transactionId, data);
 
       return { submissionId, transactionId };
     } catch (errors: any) {
