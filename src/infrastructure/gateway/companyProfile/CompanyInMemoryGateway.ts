@@ -5,12 +5,16 @@ import ICompanyGateway from "../../../domain/ICompanyGateway";
 import UIErrors from "../../../domain/entities/UIErrors";
 
 class CompanyInMemoryGateway implements ICompanyGateway {
-  companyProfile = companyProfile;
+  companyProfile: Partial<CompanyProfile>;
 
   private error = false;
 
   setError(value: boolean) {
     this.error = value;
+  }
+
+  feedCompanyProfile(companyProfile: Partial<CompanyProfile>): void {
+    this.companyProfile = companyProfile;
   }
 
   async getCompanyProfile(
@@ -33,40 +37,3 @@ class CompanyInMemoryGateway implements ICompanyGateway {
 }
 
 export default CompanyInMemoryGateway;
-
-export const companyProfile: CompanyProfile = {
-  accounts: {
-    nextAccounts: {
-      periodStartOn: "2020-09-30",
-      periodEndOn: "2020-12-31"
-    },
-    nextDue: "2020-09-30",
-    overdue: false
-  },
-  companyName: "TEST COMPANY",
-  companyNumber: "LP123456",
-  companyStatus: "active",
-  companyStatusDetail: "company status detail",
-  dateOfCreation: "2019-01-01",
-  hasBeenLiquidated: false,
-  hasCharges: false,
-  hasInsolvencyHistory: false,
-  jurisdiction: "england-wales",
-  links: {
-    filingHistory: "/company/00000000/filing-history"
-  },
-  registeredOfficeAddress: {
-    addressLineOne: "address line 1",
-    addressLineTwo: "address line 2",
-    careOf: "care of",
-    country: "country",
-    locality: "locality",
-    poBox: "po box",
-    postalCode: "postal code",
-    premises: "premises",
-    region: "region"
-  },
-  sicCodes: ["12345"],
-  type: "ltd",
-  subtype: "subtype"
-};

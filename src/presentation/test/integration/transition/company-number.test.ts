@@ -7,7 +7,12 @@ import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import { COMPANY_NUMBER_URL } from "../../../../presentation/controller/transition/url";
 import TransitionPageType from "../../../controller/transition/PageType";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
-import { APPLICATION_CACHE_KEY, APPLICATION_CACHE_KEY_PREFIX_TRANSITION, SERVICE_NAME_TRANSITION } from "../../../../config/constants";
+import {
+  APPLICATION_CACHE_KEY,
+  APPLICATION_CACHE_KEY_PREFIX_TRANSITION,
+  SERVICE_NAME_TRANSITION
+} from "../../../../config/constants";
+import CompanyProfileBuilder from "../../builder/CompanyProfileBuilder";
 
 describe("Company number page", () => {
   const URL = getUrl(COMPANY_NUMBER_URL);
@@ -15,6 +20,9 @@ describe("Company number page", () => {
   beforeEach(() => {
     appDevDependencies.companyGateway.setError(false);
     appDevDependencies.cacheRepository.feedCache(null);
+
+    const companyProfile = new CompanyProfileBuilder().build();
+    appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
   });
 
   describe("GET company number", () => {

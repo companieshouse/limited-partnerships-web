@@ -71,6 +71,21 @@ describe("Check Your Answers Page", () => {
       expect(res.text).toContain("WELSH -");
     });
 
+    it.each([
+      [URL + "?lang=en", "/limited-partnerships/sign-out?lang=en"],
+      [URL + "?lang=cy", "/limited-partnerships/sign-out?lang=cy"],
+      [URL, "/limited-partnerships/sign-out"]
+    ])(
+      "should set the signout link href correctly for url: %s",
+      async (testUrl: string, expectedHref: string) => {
+        setLocalesEnabled(true);
+        const res = await request(app).get(testUrl);
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(expectedHref);
+      }
+    );
+
     it("should load the check your answers page with data from api and show change links", async () => {
       const res = await request(app).get(URL);
 

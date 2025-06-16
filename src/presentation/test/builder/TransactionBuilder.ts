@@ -1,5 +1,6 @@
 import { Transaction } from "@companieshouse/api-sdk-node/dist/services/transaction/types";
 import { TransactionStatus } from "../../../domain/entities/TransactionTypes";
+import { SERVICE_NAME_REGISTRATION } from "../../../config/constants";
 
 class TransactionBuilder {
   private readonly transaction: Transaction = {
@@ -7,7 +8,7 @@ class TransactionBuilder {
     reference: "test-ref",
     status: TransactionStatus.open,
     filingMode: "limited-partnership-registration",
-    description: "test-description"
+    description: SERVICE_NAME_REGISTRATION
   };
 
   withId(id: string) {
@@ -22,6 +23,11 @@ class TransactionBuilder {
 
   withFilingMode(filingMode: string) {
     this.transaction.filingMode = filingMode;
+    return this;
+  }
+
+  withDescription(description: string) {
+    this.transaction.description = description;
     return this;
   }
 

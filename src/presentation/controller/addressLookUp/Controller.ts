@@ -210,7 +210,7 @@ class AddressLookUpController extends AbstractController {
 
         // if exact match - redirect to confirm page
         if (address?.postal_code && address?.premises && address?.address_line_1) {
-          const url = super.insertIdsInUrl(pageRouting?.data?.confirmAddressUrl, ids, response);
+          const url = super.insertIdsInUrl(pageRouting?.data?.confirmAddressUrl, ids, request.url);
 
           response.redirect(url);
           return;
@@ -419,7 +419,7 @@ class AddressLookUpController extends AbstractController {
         const cacheRemoved = this.cacheService.removeDataFromCache(request.signedCookies, ids.transactionId);
         response.cookie(APPLICATION_CACHE_KEY, cacheRemoved, cookieOptions);
 
-        await this.conditionalNextUrl(tokens, ids, pageRouting);
+        await this.conditionalNextUrl(tokens, ids, pageRouting, request);
 
         response.redirect(pageRouting.nextUrl);
       } catch (error) {
@@ -431,7 +431,8 @@ class AddressLookUpController extends AbstractController {
   private async conditionalNextUrl(
     tokens: { access_token: string; refresh_token: string },
     ids: { transactionId: string; submissionId: string },
-    pageRouting: PageRouting
+    pageRouting: PageRouting,
+    request: Request
   ) {
     const pageTypes: Array<PageType | PageDefault> = [
       AddressLookUpPageType.confirmRegisteredOfficeAddress,
@@ -450,7 +451,7 @@ class AddressLookUpController extends AbstractController {
 
     if (pageRouting.pageType === AddressLookUpPageType.confirmRegisteredOfficeAddress) {
       if (limitedPartnership.data?.principal_place_of_business_address) {
-        pageRouting.nextUrl = super.insertIdsInUrl(CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL, ids);
+        pageRouting.nextUrl = super.insertIdsInUrl(CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL, ids, request.url);
       }
     } else if (pageRouting.pageType === AddressLookUpPageType.confirmPrincipalPlaceOfBusinessAddress) {
       const result = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
@@ -460,7 +461,7 @@ class AddressLookUpController extends AbstractController {
           limitedPartnership?.data?.partnership_type === PartnershipType.SPFLP) &&
         result.generalPartners.length > 0
       ) {
-        pageRouting.nextUrl = super.insertIdsInUrl(REVIEW_GENERAL_PARTNERS_URL, ids);
+        pageRouting.nextUrl = super.insertIdsInUrl(REVIEW_GENERAL_PARTNERS_URL, ids, request.url);
       }
     }
   }
@@ -537,7 +538,8 @@ class AddressLookUpController extends AbstractController {
 
         const redirectUrl = super.insertIdsInUrl(
           isUnitedKingdom ? pageRouting.nextUrl : pageRouting.data?.["nextUrlOverseas"],
-          ids
+          ids,
+          request.url
         );
 
         const cacheKey = pageRouting.data?.[AddressCacheKeys.territoryCacheKey];
