@@ -210,7 +210,7 @@ class LimitedPartnerController extends AbstractController {
 
         const result = await this.limitedPartnerService.getLimitedPartners(tokens, ids.transactionId);
 
-        if (result.limitedPartners.length === 0 || result?.errors?.errors?.errorList.length) {
+        if (result.limitedPartners.length === 0 || result?.errors?.hasErrors()) {
           const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
             tokens,
             ids.transactionId,

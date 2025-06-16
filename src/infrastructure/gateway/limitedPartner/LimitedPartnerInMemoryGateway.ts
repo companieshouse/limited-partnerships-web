@@ -37,7 +37,7 @@ class LimitedPartnerInMemoryGateway implements ILimitedPartnerGateway {
     transactionId: string,
     data: Record<string, any>
   ): Promise<string> {
-    if (this.uiErrors.errors.errorList.length > 0) {
+    if (this.uiErrors?.hasErrors()) {
       throw this.uiErrors;
     }
 
@@ -73,7 +73,7 @@ class LimitedPartnerInMemoryGateway implements ILimitedPartnerGateway {
     limitedPartnerId: string,
     data: Record<string, any>
   ): Promise<void> {
-    if (this.uiErrors.errors.errorList.length > 0) {
+    if (this.uiErrors?.hasErrors()) {
       throw this.uiErrors;
     }
 
@@ -91,7 +91,7 @@ class LimitedPartnerInMemoryGateway implements ILimitedPartnerGateway {
     transactionId: string,
     limitedPartnerId: string
   ): Promise<void> {
-    if (this.uiErrors.errors.errorList.length > 0) {
+    if (this.uiErrors?.hasErrors()) {
       throw this.uiErrors;
     }
 

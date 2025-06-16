@@ -211,7 +211,7 @@ class GeneralPartnerController extends AbstractController {
 
         const result = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
 
-        if (result?.errors?.errors?.errorList.length) {
+        if (result?.errors?.hasErrors()) {
           const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
             tokens,
             ids.transactionId,

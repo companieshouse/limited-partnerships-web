@@ -56,7 +56,7 @@ class LimitedPartnershipInMemoryGateway implements ILimitedPartnershipGateway {
       this.uiErrors.formatValidationErrorToUiErrors(apiErrors);
     }
 
-    if (this.uiErrors.errors.errorList.length > 0) {
+    if (this.uiErrors?.hasErrors()) {
       throw this.uiErrors;
     }
 
@@ -91,7 +91,7 @@ class LimitedPartnershipInMemoryGateway implements ILimitedPartnershipGateway {
       this.uiErrors.formatValidationErrorToUiErrors(apiErrors);
     }
 
-    if (this.uiErrors.errors.errorList.length > 0) {
+    if (this.uiErrors?.hasErrors()) {
       throw this.uiErrors;
     }
 

@@ -33,6 +33,10 @@ class UIErrors {
     }
   }
 
+  public hasErrors(): boolean {
+    return this.errors.errorList.length > 0;
+  }
+
   private formatHrefValue(property: string): string {
     if (property === "data") {
       return "";
