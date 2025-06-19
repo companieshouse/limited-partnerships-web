@@ -11,7 +11,7 @@ import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 
 describe("Email Page", () => {
   const URL = getUrl(EMAIL_URL);
-  // const REDIRECT_URL = getUrl(POSTCODE_REGISTERED_OFFICE_ADDRESS_URL).replace(JOURNEY_TYPE_PARAM, Journey.transition);
+  // const REDIRECT_URL = getUrl(POSTCODE_REGISTERED_OFFICE_ADDRESS_URL).replace(JOURNEY_TYPE_PARAM, Journey.transition); ToBeDone
 
   beforeEach(() => {
     setLocalesEnabled(false);

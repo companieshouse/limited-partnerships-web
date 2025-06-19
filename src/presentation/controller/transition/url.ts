@@ -1,5 +1,6 @@
 import * as template from "./template";
-import { TRANSITION_BASE_URL } from "../../../config/constants";
+import { TRANSITION_BASE_URL, TRANSITION_WITH_IDS_URL } from "../../../config/constants";
 
 export const COMPANY_NUMBER_URL = `${TRANSITION_BASE_URL}/${template.COMPANY_NUMBER_TEMPLATE}`;
 export const CONFIRM_LIMITED_PARTNERSHIP_URL = `${TRANSITION_BASE_URL}/${template.CONFIRM_LIMITED_PARTNERSHIP_TEMPLATE}`;
+export const EMAIL_URL = `${TRANSITION_WITH_IDS_URL}/${template.EMAIL_TEMPLATE}`;
