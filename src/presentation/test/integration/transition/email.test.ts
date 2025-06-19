@@ -2,17 +2,16 @@ import request from "supertest";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
-import { EMAIL_URL, WHERE_IS_THE_JURISDICTION_URL } from "../../../controller/registration/url";
+import { EMAIL_URL } from "../../../controller/transition/url";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { ApiErrors } from "../../../../domain/entities/UIErrors";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
-import { CONFIRM_REGISTERED_OFFICE_ADDRESS_URL } from "../../../controller/addressLookUp/url";
 
 describe("Email Page", () => {
   const URL = getUrl(EMAIL_URL);
-  const REDIRECT_URL = getUrl(WHERE_IS_THE_JURISDICTION_URL);
+  // const REDIRECT_URL = getUrl(POSTCODE_REGISTERED_OFFICE_ADDRESS_URL).replace(JOURNEY_TYPE_PARAM, Journey.transition); ToBeDone
 
   beforeEach(() => {
     setLocalesEnabled(false);
@@ -20,39 +19,45 @@ describe("Email Page", () => {
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([]);
   });
 
-  describe("Get Email Page", () => {
-    it("should load the name page with English text", async () => {
-      setLocalesEnabled(true);
-      const res = await request(app).get(URL + "?lang=en");
+  describe("Get /email", () => {
+    describe("English", () => {
+      it("should load the name page with English text", async () => {
+        setLocalesEnabled(true);
+        const res = await request(app).get(URL + "?lang=en");
 
-      expect(res.status).toBe(200);
-      testTranslations(res.text, enTranslationText.emailPage, ["transition"]);
-      expect(res.text).toContain(`${enTranslationText.emailPage.whatIsEmail} - ${enTranslationText.service} - GOV.UK`);
-      expect(res.text).not.toContain("WELSH -");
+        expect(res.status).toBe(200);
+        testTranslations(res.text, enTranslationText.emailPage, ["registration"]);
+        expect(res.text).toContain(`${enTranslationText.emailPage.whatIsEmail} - ${enTranslationText.service} - GOV.UK`);
+        expect(res.text).not.toContain("WELSH -");
+      });
     });
 
-    it("should load the email page with Welsh text", async () => {
-      setLocalesEnabled(true);
-      const res = await request(app).get(URL + "?lang=cy");
+    describe("Welsh", () => {
+      it("should load the email page with Welsh text", async () => {
+        setLocalesEnabled(true);
+        const res = await request(app).get(URL + "?lang=cy");
 
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(`${cyTranslationText.emailPage.whatIsEmail} - ${cyTranslationText.service} - GOV.UK`);
-      testTranslations(res.text, cyTranslationText.emailPage, ["transition"]);
-      expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(`${cyTranslationText.emailPage.whatIsEmail} - ${cyTranslationText.service} - GOV.UK`);
+        testTranslations(res.text, cyTranslationText.emailPage, ["registration"]);
+        expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
+      });
     });
 
-    it("should load the email page with data from api", async () => {
-      const limitedPartnership = new LimitedPartnershipBuilder().build();
+    describe("replay previously entered data", () => {
+      it("should load the email page with data from api - transition", async () => {
+        const limitedPartnership = new LimitedPartnershipBuilder().build();
 
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-      const res = await request(app).get(URL);
+        const res = await request(app).get(URL);
 
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(limitedPartnership?.data?.email);
-      expect(res.text).toContain(
-        `${limitedPartnership?.data?.partnership_name?.toUpperCase()} ${limitedPartnership?.data?.name_ending?.toUpperCase()}`
-      );
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(limitedPartnership?.data?.email);
+        expect(res.text).toContain(
+          `${limitedPartnership?.data?.partnership_name?.toUpperCase()} (${limitedPartnership?.data?.partnership_number?.toUpperCase()})`
+        );
+      });
     });
   });
 
@@ -71,10 +76,10 @@ describe("Email Page", () => {
       });
 
       expect(res.status).toBe(302);
-      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+      expect(res.text).toContain(`Redirecting to /`);
     });
 
-    it("should redirect to the page CONFIRM_REGISTERED_OFFICE_ADDRESS_URL if the registered office address is already saved", async () => {
+    it("should redirect to the CONFIRM_REGISTERED_OFFICE_ADDRESS_URL page if the registered office address is already saved", async () => {
       const limitedPartnership = new LimitedPartnershipBuilder().build();
 
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
@@ -84,10 +89,10 @@ describe("Email Page", () => {
         email: "test@example.com"
       });
 
-      const REDIRECT_URL = getUrl(CONFIRM_REGISTERED_OFFICE_ADDRESS_URL);
+      // const REDIRECT_URL = getUrl(CONFIRM_REGISTERED_OFFICE_ADDRESS_URL).replace(JOURNEY_TYPE_PARAM, Journey.transition); ToBeDone
 
       expect(res.status).toBe(302);
-      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+      expect(res.text).toContain(`Redirecting to /`);
     });
 
     it("should return a validation error", async () => {

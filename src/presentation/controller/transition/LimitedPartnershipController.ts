@@ -24,14 +24,24 @@ class LimitedPartnershipController extends AbstractController {
   }
 
   getPageRouting() {
-    return (request: Request, response: Response, next: NextFunction) => {
+    return async (request: Request, response: Response, next: NextFunction) => {
       try {
-        const { pageType } = super.extract(request);
+        const { tokens, pageType, ids } = super.extract(request);
         const pageRouting = super.getRouting(transitionRouting, pageType, request);
+
+        let limitedPartnership = {};
+
+        if (ids.transactionId && ids.submissionId) {
+          limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+            tokens,
+            ids.transactionId,
+            ids.submissionId
+          );
+        }
 
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
 
-        response.render(super.templateName(pageRouting.currentUrl), super.makeProps(pageRouting, { cache }, null));
+        response.render(super.templateName(pageRouting.currentUrl), super.makeProps(pageRouting, { limitedPartnership, cache }, null));
       } catch (error) {
         next(error);
       }
@@ -162,6 +172,50 @@ class LimitedPartnershipController extends AbstractController {
           [`${APPLICATION_CACHE_KEY_PREFIX_TRANSITION}company_number`]: company_number
         });
         response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
+
+        response.redirect(pageRouting.nextUrl);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  sendPageData() {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { tokens, ids } = super.extract(request);
+        const pageType = super.extractPageTypeOrThrowError(request, TransitionPageType);
+        const pageRouting = super.getRouting(transitionRouting, pageType, request);
+
+        const result = await this.limitedPartnershipService.sendPageData(
+          tokens,
+          ids.transactionId,
+          ids.submissionId,
+          pageType,
+          request.body
+        );
+
+        if (result?.errors) {
+          const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+            tokens,
+            ids.transactionId,
+            ids.submissionId
+          );
+
+          response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(pageRouting, {
+              limitedPartnership: {
+                ...limitedPartnership,
+                data: {
+                  ...limitedPartnership.data,
+                  email: request.body.email
+                }
+              }
+            }, result.errors)
+          );
+          return;
+        }
 
         response.redirect(pageRouting.nextUrl);
       } catch (error) {

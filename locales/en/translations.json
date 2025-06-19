@@ -418,11 +418,18 @@
 
     "emailPage" : {
         "whatIsEmail" : "What is the registered email address for the partnership?",
-        "emailHint" : "Partners must be able to access emails that are sent to this address.",
-        "emailUsedFor" : { 
-            "title": "What is the registered email address used for?",
-            "sendInformation": "In future we'll use this to send important information that relates to the limited partnership. For example, new legislative requirements or warnings about missed deadlines.",
-            "publicRegister": "It will not be shown on the public register."
+        "registration": {
+            "emailHint": "Partners must be able to access emails that are sent to this address.",
+            "emailUsedFor": { 
+                "title": "What is the registered email address used for?",
+                "sendInformation": "In future we'll use this to send important information that relates to the limited partnership. For example, new legislative requirements or warnings about missed deadlines.",
+                "publicRegister": "It will not be shown on the public register."
+            }
+        },
+        "transition": {
+            "requirement": "This is a new requirement. We do not hold a registered email address for the limited partnership yet.",
+            "emailUsedFor": "We'll use this email address to send important information that relates to the partnership. For example, new legislative requirements or warnings about missed deadlines.",
+            "publicRegisterInformation": "We will not show the registered email address on the public register."
         }
     },
 

@@ -15,48 +15,65 @@
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-    <form class="form" action={{ props.currentUrl }} method="post">
-      <input type="hidden" name="pageType" value={{ props.pageType }}>      
-      {% include "includes/csrf_token.njk" %}
+      <form class="form" action={{ props.currentUrl }} method="post">
+        <input type="hidden" name="pageType" value={{ props.pageType }}>
 
-      {% include "includes/errors.njk" %}
-      
-      {% include "includes/proposed-name.njk" %}  
-   
-      {{ govukInput({
-        label: {
-          text: i18n.emailPage.whatIsEmail,
-          classes: "govuk-label--xl",
-          isPageHeading: true
-        },
-        hint: {
-          text: i18n.emailPage.emailHint
-        },
-        id: "email",
-        name: "email",
-        value: props.data.limitedPartnership.data.email,
-        type: "email",
-        attributes : {
-          required : true
-        },
-        errorMessage: emailErrorMessage
-      }) }}
+        {% include "includes/csrf_token.njk" %}
 
-      <details class="govuk-details" data-module="govuk-details">
-        <summary class="govuk-details__summary">
-          <span class="govuk-details__summary-text">
-            {{ i18n.emailPage.emailUsedFor.title }}
-          </span>
-        </summary>
-        <div class="govuk-details__text">
-          <p class="govuk-body">{{ i18n.emailPage.emailUsedFor.sendInformation }}</p>
-          <p class="govuk-body">{{ i18n.emailPage.emailUsedFor.publicRegister }}</p>
-        </div>
-      </details>
+        {% include "includes/errors.njk" %}
 
-      {% include "includes/save-and-continue-button.njk" %}
-    </form>
+        {% if journeyTypes.isRegistration %}
+          {% include "includes/proposed-name.njk" %}
+        {% else %}
+          {% include "includes/company-name.njk" %}
+        {% endif %}
+
+        <h1 class="govuk-heading-xl govuk-!-margin-bottom-2">{{ i18n.emailPage.whatIsEmail }}</h1>
+
+        {% if journeyTypes.isTransition %}
+          <p class="govuk-hint">{{ i18n.emailPage.transition.requirement }}</p>
+          <p class="govuk-hint">{{ i18n.emailPage.transition.emailUsedFor }}</p>
+        {% else %}
+          <p class="govuk-hint">{{ i18n.emailPage.registration.emailHint }}</p>
+        {% endif %}
+
+        {{ govukInput({
+          id: "email",
+          name: "email",
+          value: props.data.limitedPartnership.data.email,
+          type: "email",
+          attributes : {
+            required : true
+          },
+          errorMessage: emailErrorMessage
+        }) }}
+
+        {% if journeyTypes.isRegistration %}
+        <details class="govuk-details" data-module="govuk-details">
+          <summary class="govuk-details__summary">
+            <span class="govuk-details__summary-text">
+              {{ i18n.emailPage.registration.emailUsedFor.title }}
+            </span>
+          </summary>
+          <div class="govuk-details__text">
+            <p class="govuk-body">{{ i18n.emailPage.registration.emailUsedFor.sendInformation }}</p>
+            <p class="govuk-body">{{ i18n.emailPage.registration.emailUsedFor.publicRegister }}</p>
+          </div>
+        </details>
+        
+        {% else %}
+
+          {% set publicRegisterInformationLine1 = i18n.emailPage.transition.publicRegisterInformation %} 
+
+          <div>
+            {% include "includes/public-register-information.njk" %}
+          </div>
+
+        {% endif %}
+
+        {% include "includes/save-and-continue-button.njk" %}
+
+      </form>
+    </div>
   </div>
-</div>
-
 {% endblock %}
