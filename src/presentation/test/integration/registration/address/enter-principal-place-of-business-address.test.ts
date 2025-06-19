@@ -5,7 +5,7 @@ import app from "../../app";
 import {
   CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL
-} from "presentation/controller/addressLookUp/url";
+} from "presentation/controller/addressLookUp/url/registration";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import AddressPageType from "../../../../controller/addressLookUp/PageType";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";

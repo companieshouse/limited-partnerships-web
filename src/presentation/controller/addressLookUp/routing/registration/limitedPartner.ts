@@ -1,10 +1,10 @@
-import AddressPageType from "../PageType";
+import AddressPageType from "../../PageType";
 import {
   ADD_LIMITED_PARTNER_PERSON_URL,
   ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
   REVIEW_LIMITED_PARTNERS_URL
-} from "../../registration/url";
-import * as url from "../url";
+} from "../../../registration/url";
+import * as url from "../../url/registration";
 
 enum AddressCacheKeys {
   addressCacheKey = "addressCacheKey",

@@ -11,7 +11,7 @@ import {
   POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   CHOOSE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL
-} from "../../../../controller/addressLookUp/url";
+} from "../../../../controller/addressLookUp/url/registration";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
 import AddressPageType from "../../../../controller/addressLookUp/PageType";

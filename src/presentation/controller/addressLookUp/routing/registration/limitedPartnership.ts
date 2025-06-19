@@ -1,6 +1,6 @@
-import AddressPageType from "../PageType";
-import { TERM_URL, WHERE_IS_THE_JURISDICTION_URL } from "../../registration/url";
-import * as url from "../url";
+import AddressPageType from "../../PageType";
+import { TERM_URL, WHERE_IS_THE_JURISDICTION_URL } from "../../../registration/url";
+import * as url from "../../url/registration";
 
 enum AddressCacheKeys {
   addressCacheKey = "addressCacheKey",

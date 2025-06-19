@@ -9,7 +9,7 @@ import {
   CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   ENTER_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   POSTCODE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
-} from "../../../../../controller/addressLookUp/url";
+} from "../../../../../controller/addressLookUp/url/registration";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import LimitedPartnerBuilder from "../../../../builder/LimitedPartnerBuilder";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";

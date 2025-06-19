@@ -11,7 +11,7 @@ import { getUrl, setLocalesEnabled, toEscapedHtml, testTranslations } from "../.
 import {
   POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   CHOOSE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
-} from "presentation/controller/addressLookUp/url";
+} from "presentation/controller/addressLookUp/url/registration";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
 import GeneralPartnerBuilder, {
@@ -45,8 +45,9 @@ describe("Postcode general partner's principal office address page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        toEscapedHtml(enTranslationText.address.findPostcode.generalPartner.principalOfficeAddress.whatIsPrincipalOfficeAddress) +
-          ` - ${enTranslationText.service} - GOV.UK`
+        toEscapedHtml(
+          enTranslationText.address.findPostcode.generalPartner.principalOfficeAddress.whatIsPrincipalOfficeAddress
+        ) + ` - ${enTranslationText.service} - GOV.UK`
       );
       testTranslations(res.text, enTranslationText.address.findPostcode, [
         "registeredOfficeAddress",
@@ -76,8 +77,9 @@ describe("Postcode general partner's principal office address page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        toEscapedHtml(cyTranslationText.address.findPostcode.generalPartner.principalOfficeAddress.whatIsPrincipalOfficeAddress) +
-          ` - ${cyTranslationText.service} - GOV.UK`
+        toEscapedHtml(
+          cyTranslationText.address.findPostcode.generalPartner.principalOfficeAddress.whatIsPrincipalOfficeAddress
+        ) + ` - ${cyTranslationText.service} - GOV.UK`
       );
       testTranslations(res.text, cyTranslationText.address.findPostcode, [
         "registeredOfficeAddress",

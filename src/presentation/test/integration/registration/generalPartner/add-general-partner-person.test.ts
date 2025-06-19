@@ -14,7 +14,7 @@ import {
   ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL
 } from "../../../../controller/registration/url";
 import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
-import { TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../controller/addressLookUp/url";
+import { TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../controller/addressLookUp/url/registration";
 import { REGISTRATION_BASE_URL } from "../../../../../config/constants";
 import {
   GENERAL_PARTNER_CHOICE_TEMPLATE,

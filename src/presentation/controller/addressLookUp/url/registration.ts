@@ -1,10 +1,10 @@
-import * as template from "./template";
+import * as template from "../template";
 
 import {
   REGISTRATION_WITH_IDS_URL,
   GENERAL_PARTNER_WITH_ID_URL,
   LIMITED_PARTNER_WITH_ID_URL
-} from "../../../config/constants";
+} from "../../../../config/constants";
 
 // LIMITED PARTNERSHIP
 

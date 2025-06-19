@@ -12,7 +12,7 @@ import {
   CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   ENTER_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
-} from "../../../../../controller/addressLookUp/url";
+} from "../../../../../controller/addressLookUp/url/registration";
 import { REVIEW_LIMITED_PARTNERS_URL } from "../../../../../controller/registration/url";
 import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
 

@@ -12,7 +12,7 @@ import {
   CHOOSE_REGISTERED_OFFICE_ADDRESS_URL,
   CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
   POSTCODE_REGISTERED_OFFICE_ADDRESS_URL
-} from "../../../../controller/addressLookUp/url/registration";
+} from "../../../../controller/addressLookUp/url/transition";
 import AddressPageType from "../../../../controller/addressLookUp/PageType";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";

@@ -3,7 +3,7 @@ import * as url from "../url";
 import {
   POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
   CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL
-} from "../../addressLookUp/url";
+} from "../../addressLookUp/url/registration";
 
 const registrationRoutingPartnershipType = {
   previousUrl: "/",

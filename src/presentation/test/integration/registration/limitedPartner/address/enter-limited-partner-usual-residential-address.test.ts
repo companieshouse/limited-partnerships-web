@@ -11,7 +11,7 @@ import {
   ENTER_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
-} from "../../../../../controller/addressLookUp/url";
+} from "../../../../../controller/addressLookUp/url/registration";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
@@ -179,10 +179,12 @@ describe("Enter Limited Partner Usual Residential Address Page", () => {
 
       appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
 
-      const res = await request(app).post(URL).send({
-        pageType: AddressPageType.enterLimitedPartnerUsualResidentialAddress,
-        ...limitedPartner.data?.usual_residential_address
-      });
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: AddressPageType.enterLimitedPartnerUsualResidentialAddress,
+          ...limitedPartner.data?.usual_residential_address
+        });
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
@@ -235,12 +237,14 @@ describe("Enter Limited Partner Usual Residential Address Page", () => {
         .isLegalEntity()
         .build();
 
-      const res = await request(app).post(URL).send({
-        pageType: AddressPageType.enterLimitedPartnerUsualResidentialAddress,
-        ...limitedPartner.data?.usual_residential_address,
-        postal_code: "here",
-        country: "Vatican City"
-      });
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: AddressPageType.enterLimitedPartnerUsualResidentialAddress,
+          ...limitedPartner.data?.usual_residential_address,
+          postal_code: "here",
+          country: "Vatican City"
+        });
 
       const redirectUrl = getUrl(CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
       expect(res.status).toBe(302);
@@ -255,11 +259,13 @@ describe("Enter Limited Partner Usual Residential Address Page", () => {
 
       appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
 
-      const res = await request(app).post(URL).send({
-        pageType: AddressPageType.enterLimitedPartnerUsualResidentialAddress,
-        ...limitedPartner.data?.usual_residential_address,
-        postal_code: "here"
-      });
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: AddressPageType.enterLimitedPartnerUsualResidentialAddress,
+          ...limitedPartner.data?.usual_residential_address,
+          postal_code: "here"
+        });
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.postcodeFormat);
@@ -273,15 +279,17 @@ describe("Enter Limited Partner Usual Residential Address Page", () => {
         .isLegalEntity()
         .build();
 
-      const res = await request(app).post(URL).send({
-        pageType: AddressPageType.enterLimitedPartnerUsualResidentialAddress,
-        ...limitedPartner.data?.usual_residential_address,
-        premises: "-,.:; &@$£¥€'?!/\\řśŝşšţťŧùúûüũūŭůűųŵẁẃẅỳýŷÿźżžñńņňŋòóôõöøōŏőǿœŕŗàáâãäåāăąæǽçćĉċč",
-        address_line_1: "()[]{}<>*=#%+ÀÁÂÃÄÅĀĂĄÆǼÇĆĈĊČÞĎÐÈÉÊËĒĔĖĘĚĜĞĠĢ",
-        address_line_2: "ĤĦÌÍÎÏĨĪĬĮİĴĶĹĻĽĿŁÑŃŅŇŊÒÓÔÕÖØŌŎŐǾŒŔŖŘŚŜŞŠŢŤŦ",
-        locality: "ÙÚÛÜŨŪŬŮŰŲŴẀẂẄỲÝŶŸŹŻŽa-zÀÖØſƒǺẀỲ",
-        region: "þďðèéêëēĕėęěĝģğġĥħìíîïĩīĭįĵķĺļľŀł"
-      });
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: AddressPageType.enterLimitedPartnerUsualResidentialAddress,
+          ...limitedPartner.data?.usual_residential_address,
+          premises: "-,.:; &@$£¥€'?!/\\řśŝşšţťŧùúûüũūŭůűųŵẁẃẅỳýŷÿźżžñńņňŋòóôõöøōŏőǿœŕŗàáâãäåāăąæǽçćĉċč",
+          address_line_1: "()[]{}<>*=#%+ÀÁÂÃÄÅĀĂĄÆǼÇĆĈĊČÞĎÐÈÉÊËĒĔĖĘĚĜĞĠĢ",
+          address_line_2: "ĤĦÌÍÎÏĨĪĬĮİĴĶĹĻĽĿŁÑŃŅŇŊÒÓÔÕÖØŌŎŐǾŒŔŖŘŚŜŞŠŢŤŦ",
+          locality: "ÙÚÛÜŨŪŬŮŰŲŴẀẂẄỲÝŶŸŹŻŽa-zÀÖØſƒǺẀỲ",
+          region: "þďðèéêëēĕėęěĝģğġĥħìíîïĩīĭįĵķĺļľŀł"
+        });
 
       const redirectUrl = getUrl(CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
       expect(res.status).toBe(302);
@@ -294,27 +302,44 @@ describe("Enter Limited Partner Usual Residential Address Page", () => {
         .isLegalEntity()
         .build();
 
-      const res = await request(app).post(URL).send({
-        pageType: AddressPageType.enterLimitedPartnerUsualResidentialAddress,
-        ...limitedPartner.data?.usual_residential_address,
-        premises: "±",
-        address_line_1: "±",
-        address_line_2: "±",
-        locality: "±",
-        region: "±",
-      });
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: AddressPageType.enterLimitedPartnerUsualResidentialAddress,
+          ...limitedPartner.data?.usual_residential_address,
+          premises: "±",
+          address_line_1: "±",
+          address_line_2: "±",
+          locality: "±",
+          region: "±"
+        });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.premises + " "
-        + enTranslationText.address.enterAddress.errorMessages.invalidCharacters);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.addressLine1 + " "
-        + enTranslationText.address.enterAddress.errorMessages.invalidCharacters);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.addressLine2Title + " "
-        + enTranslationText.address.enterAddress.errorMessages.invalidCharacters);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.locality + " "
-        + enTranslationText.address.enterAddress.errorMessages.invalidCharacters);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.regionTitle + " "
-        + enTranslationText.address.enterAddress.errorMessages.invalidCharacters);
+      expect(res.text).toContain(
+        enTranslationText.address.enterAddress.premises +
+          " " +
+          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
+      );
+      expect(res.text).toContain(
+        enTranslationText.address.enterAddress.addressLine1 +
+          " " +
+          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
+      );
+      expect(res.text).toContain(
+        enTranslationText.address.enterAddress.addressLine2Title +
+          " " +
+          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
+      );
+      expect(res.text).toContain(
+        enTranslationText.address.enterAddress.locality +
+          " " +
+          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
+      );
+      expect(res.text).toContain(
+        enTranslationText.address.enterAddress.regionTitle +
+          " " +
+          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
+      );
       expect(res.text).toContain(enTranslationText.govUk.error.title);
     });
 
@@ -324,15 +349,17 @@ describe("Enter Limited Partner Usual Residential Address Page", () => {
         .isLegalEntity()
         .build();
 
-      const res = await request(app).post(URL).send({
-        pageType: AddressPageType.enterLimitedPartnerUsualResidentialAddress,
-        ...limitedPartner.data?.usual_residential_address,
-        premises: "toomanycharacters".repeat(13),
-        address_line_1: "toomanycharacters".repeat(4),
-        address_line_2: "toomanycharacters".repeat(4),
-        locality: "toomanycharacters".repeat(4),
-        region: "toomanycharacters".repeat(4)
-      });
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: AddressPageType.enterLimitedPartnerUsualResidentialAddress,
+          ...limitedPartner.data?.usual_residential_address,
+          premises: "toomanycharacters".repeat(13),
+          address_line_1: "toomanycharacters".repeat(4),
+          address_line_2: "toomanycharacters".repeat(4),
+          locality: "toomanycharacters".repeat(4),
+          region: "toomanycharacters".repeat(4)
+        });
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.premisesLength);

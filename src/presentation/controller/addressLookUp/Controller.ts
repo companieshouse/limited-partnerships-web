@@ -3,7 +3,8 @@ import escape from "escape-html";
 import { Address, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import AddressService from "../../../application/service/AddressService";
-import addresssRouting, { AddressCacheKeys } from "./Routing";
+import registrationAddressRouting, { AddressCacheKeys } from "./routing/registration/routing";
+import transitionAddressRouting from "./routing/transition/routing";
 import AbstractController from "../AbstractController";
 import AddressLookUpPageType from "./PageType";
 import CacheService from "../../../application/service/CacheService";
@@ -14,8 +15,9 @@ import { PageDefault, PageRouting, pageRoutingDefault } from "../PageRouting";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
 import PageType from "../PageType";
-import { CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL } from "./url";
+import { CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL } from "./url/registration";
 import { REVIEW_GENERAL_PARTNERS_URL } from "../registration/url";
+import { getJourneyTypes } from "../../../utils";
 
 class AddressLookUpController extends AbstractController {
   private static readonly LIMITED_PARTNERSHIP_POSTCODE_PAGES: Set<PageType | PageDefault> = new Set([
@@ -84,7 +86,8 @@ class AddressLookUpController extends AbstractController {
         this.addressService.setI18n(response.locals.i18n);
 
         const { tokens, pageType, ids } = super.extract(request);
-        const pageRouting = super.getRouting(addresssRouting, pageType, request);
+        const addressRouting = this.getAddressRouting(request.url);
+        const pageRouting = super.getRouting(addressRouting, pageType, request);
 
         let limitedPartnership = {};
         let generalPartner = {};
@@ -157,7 +160,8 @@ class AddressLookUpController extends AbstractController {
         const { tokens, ids } = super.extract(request);
         const { postal_code, premises } = request.body;
         const pageType = super.extractPageTypeOrThrowError(request, AddressLookUpPageType);
-        const pageRouting = super.getRouting(addresssRouting, pageType, request);
+        const addressRouting = this.getAddressRouting(request.url);
+        const pageRouting = super.getRouting(addressRouting, pageType, request);
 
         const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
           tokens,
@@ -232,7 +236,8 @@ class AddressLookUpController extends AbstractController {
     address: Address
   ) {
     const cacheById = this.cacheService.getDataFromCacheById(request.signedCookies, transactionId);
-    const pageRouting = super.getRouting(addresssRouting, pageType, request);
+    const addressRouting = this.getAddressRouting(request.url);
+    const pageRouting = super.getRouting(addressRouting, pageType, request);
 
     const cache = this.cacheService.addDataToCache(request.signedCookies, {
       [transactionId]: {
@@ -281,7 +286,8 @@ class AddressLookUpController extends AbstractController {
           ids.submissionId
         );
 
-        const pageRouting = super.getRouting(addresssRouting, pageType, request);
+        const addressRouting = this.getAddressRouting(request.url);
+        const pageRouting = super.getRouting(addressRouting, pageType, request);
 
         let errors: UIErrors | undefined;
         if (AddressLookUpController.MANUAL_PAGES.has(pageType)) {
@@ -344,7 +350,8 @@ class AddressLookUpController extends AbstractController {
 
         const { tokens, ids } = super.extract(request);
         const pageType = super.extractPageTypeOrThrowError(request, AddressLookUpPageType);
-        const pageRouting = super.getRouting(addresssRouting, pageType, request);
+        const addressRouting = this.getAddressRouting(request.url);
+        const pageRouting = super.getRouting(addressRouting, pageType, request);
 
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
         const cacheById = this.cacheService.getDataFromCacheById(request.signedCookies, ids.transactionId);
@@ -496,7 +503,8 @@ class AddressLookUpController extends AbstractController {
   private saveAndRedirectToNextPage(request: Request, response: Response<any, Record<string, any>>, dataToStore: any) {
     const { ids } = super.extract(request);
     const pageType = super.extractPageTypeOrThrowError(request, AddressLookUpPageType);
-    const pageRouting = super.getRouting(addresssRouting, pageType, request);
+    const addressRouting = this.getAddressRouting(request.url);
+    const pageRouting = super.getRouting(addressRouting, pageType, request);
 
     const cacheById = this.cacheService.getDataFromCacheById(request.signedCookies, ids.transactionId);
     const cacheKey = pageRouting.data?.[AddressCacheKeys.addressCacheKey];
@@ -518,7 +526,8 @@ class AddressLookUpController extends AbstractController {
     return (request: Request, response: Response, next: NextFunction) => {
       try {
         const pageType = super.extractPageTypeOrThrowError(request, AddressLookUpPageType);
-        const pageRouting = super.getRouting(addresssRouting, pageType, request);
+        const addressRouting = this.getAddressRouting(request.url);
+        const pageRouting = super.getRouting(addressRouting, pageType, request);
 
         response.redirect(pageRouting.nextUrl);
       } catch (error) {
@@ -532,7 +541,8 @@ class AddressLookUpController extends AbstractController {
       try {
         const { ids, pageType } = super.extract(request);
         const parameter = request.body.parameter;
-        const pageRouting = super.getRouting(addresssRouting, pageType, request);
+        const addressRouting = this.getAddressRouting(request.url);
+        const pageRouting = super.getRouting(addressRouting, pageType, request);
 
         const isUnitedKingdom = parameter === "unitedKingdom";
 
@@ -558,6 +568,10 @@ class AddressLookUpController extends AbstractController {
         next(error);
       }
     };
+  }
+
+  private getAddressRouting(url: string) {
+    return getJourneyTypes(url).isRegistration ? registrationAddressRouting : transitionAddressRouting;
   }
 }
 

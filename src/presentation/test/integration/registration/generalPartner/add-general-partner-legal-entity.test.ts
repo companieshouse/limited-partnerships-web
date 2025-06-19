@@ -13,7 +13,7 @@ import {
   ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
   ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_ID_URL
 } from "../../../../controller/registration/url";
-import { TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../../../controller/addressLookUp/url";
+import { TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../../../controller/addressLookUp/url/registration";
 import {
   GENERAL_PARTNER_CHOICE_TEMPLATE,
   REVIEW_GENERAL_PARTNERS_TEMPLATE

@@ -4,7 +4,7 @@ import { authentication } from "../middlewares";
 
 import { IDependencies } from "../config/IDependencies";
 
-import * as url from "../presentation/controller/addressLookUp/url";
+import * as url from "../presentation/controller/addressLookUp/url/registration";
 
 export const addressLookUpEndpoints = (router: Router, dependencies: IDependencies): void => {
   // Registered Office Address

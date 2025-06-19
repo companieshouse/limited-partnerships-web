@@ -5,7 +5,7 @@ import app from "../../../app";
 import {
   CHOOSE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
-} from "presentation/controller/addressLookUp/url";
+} from "presentation/controller/addressLookUp/url/registration";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import { appDevDependencies } from "config/dev-dependencies";
 import * as config from "config";

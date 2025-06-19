@@ -2,7 +2,7 @@ import request from "supertest";
 import { createApiClient } from "@companieshouse/api-sdk-node";
 
 import sdkMock from "../../mock/sdkMock";
-import { POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../controller/addressLookUp/url";
+import { POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../controller/addressLookUp/url/registration";
 import { getUrl, setLocalesEnabled } from "../../../utils";
 import appRealDependencies from "../../../../../app";
 

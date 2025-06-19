@@ -8,7 +8,7 @@ import RegistrationPageType from "../../../controller/registration/PageType";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { ApiErrors } from "../../../../domain/entities/UIErrors";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
-import { CONFIRM_REGISTERED_OFFICE_ADDRESS_URL } from "../../../controller/addressLookUp/url";
+import { CONFIRM_REGISTERED_OFFICE_ADDRESS_URL } from "../../../controller/addressLookUp/url/registration";
 
 describe("Email Page", () => {
   const URL = getUrl(EMAIL_URL);

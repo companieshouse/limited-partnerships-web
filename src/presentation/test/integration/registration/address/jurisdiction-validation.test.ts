@@ -7,7 +7,7 @@ import app from "../../app";
 import {
   CHOOSE_REGISTERED_OFFICE_ADDRESS_URL,
   POSTCODE_REGISTERED_OFFICE_ADDRESS_URL
-} from "../../../../controller/addressLookUp/url";
+} from "../../../../controller/addressLookUp/url/registration";
 import AddressPageType from "../../../../controller/addressLookUp/PageType";
 import { getUrl, setLocalesEnabled } from "../../../utils";
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";

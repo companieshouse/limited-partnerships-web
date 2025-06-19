@@ -16,7 +16,7 @@ import {
   CHOOSE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   POSTCODE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
-} from "../../../../../controller/addressLookUp/url";
+} from "../../../../../controller/addressLookUp/url/registration";
 import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
 
 describe("Postcode limited partner principal office address Page", () => {

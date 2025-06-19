@@ -29,7 +29,7 @@ import {
   REVIEW_GENERAL_PARTNERS_URL,
   WHICH_TYPE_WITH_IDS_URL
 } from "./url";
-import { CONFIRM_REGISTERED_OFFICE_ADDRESS_URL } from "../addressLookUp/url";
+import { CONFIRM_REGISTERED_OFFICE_ADDRESS_URL } from "../addressLookUp/url/registration";
 import { PAYMENT_RESPONSE_URL } from "../global/url";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
