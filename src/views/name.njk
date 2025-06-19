@@ -97,4 +97,35 @@
   </div>
 </div>
 
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const suffixDiv = document.querySelector('.govuk-input__suffix');
+    const radioButtons = document.querySelectorAll('input[name="name_ending"]');
+
+    radioButtons.forEach(function(radioButton) {
+      // set suffix value on loading
+      if (radioButton.checked) {
+          suffixDiv.textContent = radioButton.value;
+      }
+
+      // set suffix value on change
+      radioButton.addEventListener('change', function() {
+        if (radioButton.checked) {
+          suffixDiv.textContent = radioButton.value;
+        }
+      });
+    });
+
+    const nameField = document.getElementById('partnership_name');
+    const form = document.querySelector('.form');
+
+    form.addEventListener('submit', function(evt) {
+      if (!suffixDiv.textContent) {
+        evt.preventDefault();
+      }
+      nameField.value = nameField.value.trim();
+    });
+  });
+</script>
+
 {% endblock %}
