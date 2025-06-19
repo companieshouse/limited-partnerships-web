@@ -48,7 +48,8 @@ describe("Postcode Registered Office Address Page", () => {
         "usualResidentialAddress",
         "principalOfficeAddress",
         "correspondenceAddress",
-        "errorMessages"
+        "errorMessages",
+        "newRequirement"
       ]);
       expect(res.text).not.toContain("WELSH -");
     });
@@ -67,7 +68,8 @@ describe("Postcode Registered Office Address Page", () => {
         "usualResidentialAddress",
         "principalOfficeAddress",
         "correspondenceAddress",
-        "errorMessages"
+        "errorMessages",
+        "newRequirement"
       ]);
     });
   });

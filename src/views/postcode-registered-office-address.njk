@@ -12,9 +12,15 @@
         {% include "includes/proposed-name.njk" %}
 
         <h1 class="govuk-heading-xl">{{ i18n.address.findPostcode.registeredOfficeAddress.whatIsOfficeAddress }}</h1>
+
+        {% if journeyTypes.isTransition %}
+          <p class="govuk-hint">{{ i18n.address.findPostcode.registeredOfficeAddress.newRequirement }}</p>
+        {% endif %}
         <p class="govuk-hint">{{ i18n.address.findPostcode.registeredOfficeAddress.officialCommunication }}</p>
         <p class="govuk-hint">{{ i18n.address.findPostcode.registeredOfficeAddress.physicalAddress }}</p>
-        <p class="govuk-hint">{{ i18n.address.findPostcode.registeredOfficeAddress.provideNext }}</p>
+        {% if journeyTypes.isRegistration %}
+          <p class="govuk-hint">{{ i18n.address.findPostcode.registeredOfficeAddress.provideNext }}</p>
+        {% endif %}
       </div>
 
       {% include "pages/address/postcode-form.njk" %}

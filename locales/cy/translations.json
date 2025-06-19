@@ -221,6 +221,7 @@
         "findPostcode": {
             "registeredOfficeAddress": {
                 "whatIsOfficeAddress": "WELSH - What is the registered office address of the partnership?",
+                "newRequirement": "WELSH - This is a new requirement. We do not hold a registered office address for the limited partnership yet. It may be different from the principal place of business address that we already hold.",
                 "officialCommunication": "WELSH - We'll use this address to send official communications.",
                 "physicalAddress": "WELSH - It must be a physical address in the jurisdiction where the partnership was formed. You cannot use a PO Box address.",
                 "provideNext": "WELSH - You'll need to provide the principal place of business next.",
