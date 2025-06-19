@@ -4,7 +4,7 @@ import app from "../app";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import { CONFIRMATION_URL, RESUME_JOURNEY_URL } from "../../../../presentation/controller/global/url";
 import { WHICH_TYPE_WITH_IDS_URL } from "../../../../presentation/controller/registration/url";
-import { COMPANY_NUMBER_URL } from "../../../../presentation/controller/transition/url";
+import { EMAIL_URL } from "../../../../presentation/controller/transition/url";
 import { getUrl } from "../../utils";
 import { CHS_URL, JOURNEY_TYPE_PARAM } from "../../../../config";
 import { Journey } from "../../../../domain/entities/journey";
@@ -28,7 +28,7 @@ describe("Resume a journey", () => {
     },
     {
       filingMode: TransactionKind.transition,
-      expectedLocation: getUrl(COMPANY_NUMBER_URL)
+      expectedLocation: getUrl(EMAIL_URL)
     }
   ])(
     "should resume a no payment $filingMode journey",

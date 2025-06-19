@@ -1,4 +1,4 @@
-import { CONFIRM_LIMITED_PARTNERSHIP_URL } from "../../../transition/url";
+import { EMAIL_URL } from "../../../transition/url";
 import AddressPageType from "../../PageType";
 import * as url from "../../url/transition";
 
@@ -14,7 +14,7 @@ const registeredOfficeAddressCacheKeys = {
 };
 
 const transitionAddressRoutingPostcodeRegisteredOfficeAddress = {
-  previousUrl: CONFIRM_LIMITED_PARTNERSHIP_URL, // TODO update to the correct previous URL in the flow: email
+  previousUrl: EMAIL_URL,
   currentUrl: url.POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
   nextUrl: url.CHOOSE_REGISTERED_OFFICE_ADDRESS_URL,
   pageType: AddressPageType.postcodeRegisteredOfficeAddress,

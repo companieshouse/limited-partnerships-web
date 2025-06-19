@@ -18,7 +18,7 @@ import PaymentService from "../../../application/service/PaymentService";
 import { Journey } from "../../../domain/entities/journey";
 import { CONFIRMATION_URL, PAYMENT_FAILED_URL } from "./url";
 import { WHICH_TYPE_WITH_IDS_URL } from "../registration/url";
-import { COMPANY_NUMBER_URL } from "../transition/url";
+import { EMAIL_URL } from "../transition/url";
 import TransactionService from "../../../application/service/TransactionService";
 import { TransactionKind, TransactionStatus } from "../../../domain/entities/TransactionTypes";
 
@@ -31,7 +31,7 @@ class GlobalController extends AbstractController {
     },
     [TransactionKind.transition]: {
       journey: Journey.transition,
-      resumeUrl: COMPANY_NUMBER_URL // TODO: change to email url when built
+      resumeUrl: EMAIL_URL
     },
     [TransactionKind.postTransition]: {
       journey: "", // TODO: update when available
