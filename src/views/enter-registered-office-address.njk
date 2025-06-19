@@ -30,10 +30,14 @@
           </h1>
         </legend>
 
+        {% if journeyTypes.isTransition %}
+          <p class="govuk-hint">{{ i18n.address.findPostcode.registeredOfficeAddress.newRequirement }}</p>
+        {% endif %}
         <p class="govuk-hint">{{ titleHint1 }}</p>
         <p class="govuk-hint">{{ titleHint2 }}</p>
-        <p class="govuk-hint">{{ titleHint3 }}</p>
-
+        {% if journeyTypes.isRegistration %}
+          <p class="govuk-hint">{{ titleHint3 }}</p>
+        {% endif %}
         <br>
       </fieldset>
 

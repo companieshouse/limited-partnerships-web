@@ -54,8 +54,6 @@ describe("Choose Registered Office Address Page", () => {
     it("should populate the address list", async () => {
       const res = await request(app).get(URL);
 
-      console.log(URL);
-
       expect(res.status).toBe(200);
       expect(res.text).toContain("2 Duncalf Street, Stoke-On-Trent, ST6 3LJ");
       expect(res.text).toContain("The Lodge Duncalf&#39;s Street, Castle Hill, Stoke-On-Trent, ST6 3LJ");

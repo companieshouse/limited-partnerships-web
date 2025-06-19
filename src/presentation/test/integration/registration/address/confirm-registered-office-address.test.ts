@@ -126,7 +126,7 @@ describe("Confirm Registered Office Address Page", () => {
       const res = await request(app).get(URL + "?lang=cy");
 
       expect(res.status).toBe(200);
-      testTranslations(res.text, cyTranslationText.address.confirm.registeredOfficeAddress);
+      testTranslations(res.text, cyTranslationText.address.confirm.registeredOfficeAddress, ["newRequirement"]);
     });
   });
 

@@ -35,7 +35,8 @@ describe("Enter Registered Office Address Page", () => {
         "correspondenceAddress",
         "principalPlaceOfBusinessAddress",
         "principalOfficeAddress",
-        "errorMessages"
+        "errorMessages",
+        "newRequirement"
       ]);
       expect(res.text).not.toContain("WELSH -");
     });
@@ -52,7 +53,8 @@ describe("Enter Registered Office Address Page", () => {
         "correspondenceAddress",
         "principalPlaceOfBusinessAddress",
         "principalOfficeAddress",
-        "errorMessages"
+        "errorMessages",
+        "newRequirement"
       ]);
     });
   });
