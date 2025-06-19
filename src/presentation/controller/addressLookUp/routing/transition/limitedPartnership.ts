@@ -13,7 +13,7 @@ const registeredOfficeAddressCacheKeys = {
   [AddressCacheKeys.addressCacheKey]: "registered_office_address"
 };
 
-const addressRoutingPostcodeRegisteredOfficeAddress = {
+const transitionAddressRoutingPostcodeRegisteredOfficeAddress = {
   previousUrl: CONFIRM_LIMITED_PARTNERSHIP_URL, // TODO update to the correct previous URL in the flow: email
   currentUrl: url.POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
   nextUrl: url.CHOOSE_REGISTERED_OFFICE_ADDRESS_URL,
@@ -25,7 +25,7 @@ const addressRoutingPostcodeRegisteredOfficeAddress = {
   }
 };
 
-const addressRoutingChooseRegisteredOfficeAddress = {
+const transitionAddressRoutingChooseRegisteredOfficeAddress = {
   previousUrl: url.POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
   currentUrl: url.CHOOSE_REGISTERED_OFFICE_ADDRESS_URL,
   nextUrl: url.CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
@@ -36,7 +36,7 @@ const addressRoutingChooseRegisteredOfficeAddress = {
   }
 };
 
-const addressRoutingEnterRegisteredOfficeAddress = {
+const transitionAddressRoutingEnterRegisteredOfficeAddress = {
   previousUrl: url.POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
   currentUrl: url.ENTER_REGISTERED_OFFICE_ADDRESS_URL,
   nextUrl: url.CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
@@ -46,7 +46,7 @@ const addressRoutingEnterRegisteredOfficeAddress = {
   }
 };
 
-const addressRoutingConfirmRegisteredOfficeAddress = {
+const transitionAddressRoutingConfirmRegisteredOfficeAddress = {
   previousUrl: url.POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
   currentUrl: url.CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
   nextUrl: "/", // TODO update to the next URL in the flow
@@ -58,10 +58,10 @@ const addressRoutingConfirmRegisteredOfficeAddress = {
 };
 
 const registeredOfficeAddress = [
-  addressRoutingPostcodeRegisteredOfficeAddress,
-  addressRoutingChooseRegisteredOfficeAddress,
-  addressRoutingEnterRegisteredOfficeAddress,
-  addressRoutingConfirmRegisteredOfficeAddress
+  transitionAddressRoutingPostcodeRegisteredOfficeAddress,
+  transitionAddressRoutingChooseRegisteredOfficeAddress,
+  transitionAddressRoutingEnterRegisteredOfficeAddress,
+  transitionAddressRoutingConfirmRegisteredOfficeAddress
 ];
 
 const limitedPartnershipRouting = [...registeredOfficeAddress];

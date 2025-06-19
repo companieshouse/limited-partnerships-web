@@ -13,7 +13,7 @@ const registeredOfficeAddressCacheKeys = {
   [AddressCacheKeys.addressCacheKey]: "registered_office_address"
 };
 
-const addressRoutingPostcodeRegisteredOfficeAddress = {
+const registrationAddressRoutingPostcodeRegisteredOfficeAddress = {
   previousUrl: WHERE_IS_THE_JURISDICTION_URL,
   currentUrl: url.POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
   nextUrl: url.CHOOSE_REGISTERED_OFFICE_ADDRESS_URL,
@@ -25,7 +25,7 @@ const addressRoutingPostcodeRegisteredOfficeAddress = {
   }
 };
 
-const addressRoutingChooseRegisteredOfficeAddress = {
+const registrationAddressRoutingChooseRegisteredOfficeAddress = {
   previousUrl: url.POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
   currentUrl: url.CHOOSE_REGISTERED_OFFICE_ADDRESS_URL,
   nextUrl: url.CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
@@ -36,7 +36,7 @@ const addressRoutingChooseRegisteredOfficeAddress = {
   }
 };
 
-const addressRoutingEnterRegisteredOfficeAddress = {
+const registrationAddressRoutingEnterRegisteredOfficeAddress = {
   previousUrl: url.POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
   currentUrl: url.ENTER_REGISTERED_OFFICE_ADDRESS_URL,
   nextUrl: url.CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
@@ -46,7 +46,7 @@ const addressRoutingEnterRegisteredOfficeAddress = {
   }
 };
 
-const addressRoutingConfirmRegisteredOfficeAddress = {
+const registrationAddressRoutingConfirmRegisteredOfficeAddress = {
   previousUrl: url.POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
   currentUrl: url.CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
   nextUrl: url.POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
@@ -58,10 +58,10 @@ const addressRoutingConfirmRegisteredOfficeAddress = {
 };
 
 const registeredOfficeAddress = [
-  addressRoutingPostcodeRegisteredOfficeAddress,
-  addressRoutingChooseRegisteredOfficeAddress,
-  addressRoutingEnterRegisteredOfficeAddress,
-  addressRoutingConfirmRegisteredOfficeAddress
+  registrationAddressRoutingPostcodeRegisteredOfficeAddress,
+  registrationAddressRoutingChooseRegisteredOfficeAddress,
+  registrationAddressRoutingEnterRegisteredOfficeAddress,
+  registrationAddressRoutingConfirmRegisteredOfficeAddress
 ];
 
 // principal place of business
@@ -70,7 +70,7 @@ const principalPlaceOfBusinessAddressCacheKeys = {
   [AddressCacheKeys.addressCacheKey]: "principal_place_of_business_address"
 };
 
-const addressRoutingPostcodePrincipalPlaceOfBusinessAddress = {
+const registrationAddressRoutingPostcodePrincipalPlaceOfBusinessAddress = {
   previousUrl: url.CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
   currentUrl: url.POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   nextUrl: url.CHOOSE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
@@ -82,7 +82,7 @@ const addressRoutingPostcodePrincipalPlaceOfBusinessAddress = {
   }
 };
 
-const addressRoutingChoosePrincipalPlaceOfBusinessAddress = {
+const registrationAddressRoutingChoosePrincipalPlaceOfBusinessAddress = {
   previousUrl: url.POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   currentUrl: url.CHOOSE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   nextUrl: url.CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
@@ -93,7 +93,7 @@ const addressRoutingChoosePrincipalPlaceOfBusinessAddress = {
   }
 };
 
-const addressRoutingEnterPrincipalPlaceOfBusinessAddress = {
+const registrationAddressRoutingEnterPrincipalPlaceOfBusinessAddress = {
   previousUrl: url.POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   currentUrl: url.ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   nextUrl: url.CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
@@ -103,7 +103,7 @@ const addressRoutingEnterPrincipalPlaceOfBusinessAddress = {
   }
 };
 
-const addressRoutingConfirmPrincipalPlaceOfBusinessAddress = {
+const registrationAddressRoutingConfirmPrincipalPlaceOfBusinessAddress = {
   previousUrl: url.POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   currentUrl: url.CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   nextUrl: TERM_URL,
@@ -115,10 +115,10 @@ const addressRoutingConfirmPrincipalPlaceOfBusinessAddress = {
 };
 
 const principalPlaceOfBusinessAddress = [
-  addressRoutingPostcodePrincipalPlaceOfBusinessAddress,
-  addressRoutingChoosePrincipalPlaceOfBusinessAddress,
-  addressRoutingEnterPrincipalPlaceOfBusinessAddress,
-  addressRoutingConfirmPrincipalPlaceOfBusinessAddress
+  registrationAddressRoutingPostcodePrincipalPlaceOfBusinessAddress,
+  registrationAddressRoutingChoosePrincipalPlaceOfBusinessAddress,
+  registrationAddressRoutingEnterPrincipalPlaceOfBusinessAddress,
+  registrationAddressRoutingConfirmPrincipalPlaceOfBusinessAddress
 ];
 
 const limitedPartnershipRouting = [...registeredOfficeAddress, ...principalPlaceOfBusinessAddress];

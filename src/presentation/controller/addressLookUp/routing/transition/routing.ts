@@ -7,10 +7,10 @@ export enum AddressCacheKeys {
   territoryCacheKey = "territoryCacheKey"
 }
 
-const addresssRouting: PagesRouting = new Map<PageType, PageRouting>();
+const transitionAddresssRouting: PagesRouting = new Map<PageType, PageRouting>();
 
 [...limitedPartnershipTransitionRouting].forEach((routing) => {
-  addresssRouting.set(routing.pageType, routing);
+  transitionAddresssRouting.set(routing.pageType, routing);
 });
 
-export default addresssRouting;
+export default transitionAddresssRouting;

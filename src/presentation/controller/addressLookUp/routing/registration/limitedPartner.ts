@@ -18,7 +18,7 @@ const limitedPartnerUsualResidentialAddressCacheKeys = {
   [AddressCacheKeys.territoryCacheKey]: "ura_territory_choice"
 };
 
-const addressRoutingTerritoryChoiceLimitedPartnerUsualResidentialAddress = {
+const registrationAddressRoutingTerritoryChoiceLimitedPartnerUsualResidentialAddress = {
   previousUrl: ADD_LIMITED_PARTNER_PERSON_URL,
   currentUrl: url.TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   nextUrl: url.POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
@@ -29,7 +29,7 @@ const addressRoutingTerritoryChoiceLimitedPartnerUsualResidentialAddress = {
   }
 };
 
-const addressRoutingPostcodeLimitedPartnerUsualResidentialAddress = {
+const registrationAddressRoutingPostcodeLimitedPartnerUsualResidentialAddress = {
   previousUrl: url.TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   currentUrl: url.POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   nextUrl: url.CHOOSE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
@@ -41,7 +41,7 @@ const addressRoutingPostcodeLimitedPartnerUsualResidentialAddress = {
   }
 };
 
-const addressRoutingChooseLimitedPartnerUsualResidentialAddress = {
+const registrationAddressRoutingChooseLimitedPartnerUsualResidentialAddress = {
   previousUrl: url.POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   currentUrl: url.CHOOSE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   nextUrl: url.CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
@@ -52,7 +52,7 @@ const addressRoutingChooseLimitedPartnerUsualResidentialAddress = {
   }
 };
 
-const addressRoutingEnterLimitedPartnerUsualResidentialAddress = {
+const registrationAddressRoutingEnterLimitedPartnerUsualResidentialAddress = {
   previousUrl: url.POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   currentUrl: url.ENTER_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   nextUrl: url.CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
@@ -63,7 +63,7 @@ const addressRoutingEnterLimitedPartnerUsualResidentialAddress = {
   }
 };
 
-const addressRoutingConfirmLimitedPartnerUsualResidentialAddress = {
+const registrationAddressRoutingConfirmLimitedPartnerUsualResidentialAddress = {
   previousUrl: url.POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   currentUrl: url.CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   nextUrl: REVIEW_LIMITED_PARTNERS_URL,
@@ -75,11 +75,11 @@ const addressRoutingConfirmLimitedPartnerUsualResidentialAddress = {
 };
 
 const usualResidentialAddress = [
-  addressRoutingTerritoryChoiceLimitedPartnerUsualResidentialAddress,
-  addressRoutingPostcodeLimitedPartnerUsualResidentialAddress,
-  addressRoutingChooseLimitedPartnerUsualResidentialAddress,
-  addressRoutingEnterLimitedPartnerUsualResidentialAddress,
-  addressRoutingConfirmLimitedPartnerUsualResidentialAddress
+  registrationAddressRoutingTerritoryChoiceLimitedPartnerUsualResidentialAddress,
+  registrationAddressRoutingPostcodeLimitedPartnerUsualResidentialAddress,
+  registrationAddressRoutingChooseLimitedPartnerUsualResidentialAddress,
+  registrationAddressRoutingEnterLimitedPartnerUsualResidentialAddress,
+  registrationAddressRoutingConfirmLimitedPartnerUsualResidentialAddress
 ];
 
 // principal office address - Legal entity
@@ -89,7 +89,7 @@ const limitedPartnerPrincipalOfficeAddressCacheKeys = {
   [AddressCacheKeys.territoryCacheKey]: "poa_territory_choice"
 };
 
-const addressRoutingTerritoryChoiceLimitedPartnerPrincipalOfficeAddress = {
+const registrationAddressRoutingTerritoryChoiceLimitedPartnerPrincipalOfficeAddress = {
   previousUrl: ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
   currentUrl: url.TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   nextUrl: url.POSTCODE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
@@ -100,7 +100,7 @@ const addressRoutingTerritoryChoiceLimitedPartnerPrincipalOfficeAddress = {
   }
 };
 
-const addressRoutingPostcodeLimitedPartnerPrincipalOfficeAddress = {
+const registrationAddressRoutingPostcodeLimitedPartnerPrincipalOfficeAddress = {
   previousUrl: url.TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   currentUrl: url.POSTCODE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   nextUrl: url.CHOOSE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
@@ -112,7 +112,7 @@ const addressRoutingPostcodeLimitedPartnerPrincipalOfficeAddress = {
   }
 };
 
-const addressRoutingChooseLimitedPartnerPrincipalOfficeAddress = {
+const registrationAddressRoutingChooseLimitedPartnerPrincipalOfficeAddress = {
   previousUrl: url.POSTCODE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   currentUrl: url.CHOOSE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   nextUrl: url.CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
@@ -123,7 +123,7 @@ const addressRoutingChooseLimitedPartnerPrincipalOfficeAddress = {
   }
 };
 
-const addressRoutingEnterLimitedPartnerPrincipalOfficeAddress = {
+const registrationAddressRoutingEnterLimitedPartnerPrincipalOfficeAddress = {
   previousUrl: url.POSTCODE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   currentUrl: url.ENTER_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   nextUrl: url.CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
@@ -134,7 +134,7 @@ const addressRoutingEnterLimitedPartnerPrincipalOfficeAddress = {
   }
 };
 
-const addressRoutingConfirmLimitedPartnerPrincipalOfficeAddress = {
+const registrationAddressRoutingConfirmLimitedPartnerPrincipalOfficeAddress = {
   previousUrl: url.POSTCODE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   currentUrl: url.CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   nextUrl: REVIEW_LIMITED_PARTNERS_URL,
@@ -146,11 +146,11 @@ const addressRoutingConfirmLimitedPartnerPrincipalOfficeAddress = {
 };
 
 const principalOfficeAddress = [
-  addressRoutingTerritoryChoiceLimitedPartnerPrincipalOfficeAddress,
-  addressRoutingPostcodeLimitedPartnerPrincipalOfficeAddress,
-  addressRoutingChooseLimitedPartnerPrincipalOfficeAddress,
-  addressRoutingEnterLimitedPartnerPrincipalOfficeAddress,
-  addressRoutingConfirmLimitedPartnerPrincipalOfficeAddress
+  registrationAddressRoutingTerritoryChoiceLimitedPartnerPrincipalOfficeAddress,
+  registrationAddressRoutingPostcodeLimitedPartnerPrincipalOfficeAddress,
+  registrationAddressRoutingChooseLimitedPartnerPrincipalOfficeAddress,
+  registrationAddressRoutingEnterLimitedPartnerPrincipalOfficeAddress,
+  registrationAddressRoutingConfirmLimitedPartnerPrincipalOfficeAddress
 ];
 
 const limitedPartnerRouting = [...usualResidentialAddress, ...principalOfficeAddress];
