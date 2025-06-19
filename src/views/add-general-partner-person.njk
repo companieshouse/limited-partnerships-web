@@ -143,26 +143,32 @@
           items: [
             {
               classes: "govuk-input--width-2",
+              label: i18n.addPartnerPersonPage.dateOfBirthDay,
               name: "day",
               value: day,
               attributes: {
-                required: true
+                required: true,
+                pattern: "[0-9]*"
               }
             },
             {
               classes: "govuk-input--width-2",
+              label: i18n.addPartnerPersonPage.dateOfBirthMonth,
               name: "month",
               value: month,
               attributes: {
-                required: true
+                required: true,
+                pattern: "[0-9]*"
               }
             },
             {
               classes: "govuk-input--width-4",
+              label: i18n.addPartnerPersonPage.dateOfBirthYear,
               name: "year",
               value: year,
               attributes: {
-                required: true
+                required: true,
+                pattern: "[0-9]*"
               }
             }
           ]

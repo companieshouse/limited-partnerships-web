@@ -12,10 +12,21 @@ const transitionRoutingCompanyNumber = {
 const transitionRoutingConfirmLimitedPartnership = {
   previousUrl: url.COMPANY_NUMBER_URL,
   currentUrl: url.CONFIRM_LIMITED_PARTNERSHIP_URL,
-  nextUrl: POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
+  nextUrl: url.EMAIL_URL,
   pageType: TransitionPageType.confirmLimitedPartnership
 };
 
-const limitedPartnershipRouting = [transitionRoutingCompanyNumber, transitionRoutingConfirmLimitedPartnership];
+const transitionRoutingEmail = {
+  previousUrl: url.COMPANY_NUMBER_URL,
+  currentUrl: url.EMAIL_URL,
+  nextUrl: POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
+  pageType: TransitionPageType.email
+};
+
+const limitedPartnershipRouting = [
+  transitionRoutingCompanyNumber,
+  transitionRoutingConfirmLimitedPartnership,
+  transitionRoutingEmail
+];
 
 export default limitedPartnershipRouting;

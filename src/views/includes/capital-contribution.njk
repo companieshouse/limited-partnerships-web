@@ -1,5 +1,3 @@
-{% set partnershipType = props.data.limitedPartnership.data.partnership_type %}
-
 {% if (partnershipType == "LP") or (partnershipType == "SLP") %}
   {{ govukInput({
     label: {
@@ -11,21 +9,22 @@
       text: i18n.capitalContribution.hint
     },
     classes: "govuk-input--width-4",
-    id: "amount",
-    name: "amount",
-    value: props.data.limitedPartner.data.capital_contribution_amount,
+    id: "contribution_currency_value",
+    name: "contribution_currency_value",
+    value: props.data.limitedPartner.data.contribution_currency_value,
     errorMessage: props.amount if props.errors,
     attributes: {
       required: true
     }
   }) }}
 
+  {% set contributionCurrencyTypeId = "contribution_currency_type" %}
   {% include "includes/currencies.njk" %}
 
   {{ govukCheckboxes({
     errorMessage: i18n.capitalContribution.compositionErrorMessage if props.errors,
-    idPrefix: "capital_contribution_composition",
-    name: "capital_contribution_composition",            
+    idPrefix: "contribution_sub_types",
+    name: "contribution_sub_types",            
     fieldset: {
       legend: {
         text: i18n.capitalContribution.compositionTitle,
@@ -38,35 +37,43 @@
     },   
     items: [
       {        
-        value: capital_contribution_money,            
+        value: "MONEY",            
         text: i18n.capitalContribution.money,
-        checked: capital_contribution_money === "MONEY",
+        checked: true if contribution_sub_types.MONEY else false,
         attributes: {
           "data-event-id": "capital_contribution_money"
         } 
       },
       {        
-        value: capital_contribution_landOrProperty,           
+        value: "LAND_OR_PROPERTY",           
         text: i18n.capitalContribution.landOrProperty,
-        checked: capital_contribution_landOrProperty === "LAND_OR_PROPERTY",
+        checked: true if contribution_sub_types.LAND_OR_PROPERTY else false,
         attributes: {
           "data-event-id": "capital_contribution_landOrProperty"
         } 
       },
       {        
-        value: capital_contribution_shares,          
+        value: "SHARES",          
         text: i18n.capitalContribution.shares,
-        checked: capital_contribution_shares === "SHARES",
+        checked: true if contribution_sub_types.SHARES else false,
         attributes: {
           "data-event-id": "capital_contribution_shares"
         } 
       },
       {        
-        value: capital_contribution_servicesOrGoods,        
+        value: "SERVICES_OR_GOODS",        
         text: i18n.capitalContribution.servicesOrGoods,
-        checked: capital_contribution_servicesOrGoods === "SERVICES_OR_GOODS",
+        checked: true if contribution_sub_types.SERVICES_OR_GOODS else false,
         attributes: {
           "data-event-id": "capital_contribution_servicesOrGoods"
+        } 
+      },
+      {
+        value: "ANY_OTHER_ASSET",        
+        text: i18n.capitalContribution.anyOtherAsset,
+        checked: true if contribution_sub_types.ANY_OTHER_ASSET else false,
+        attributes: {
+          "data-event-id": "capital_contribution_anyOtherAsset"
         } 
       }
     ]
