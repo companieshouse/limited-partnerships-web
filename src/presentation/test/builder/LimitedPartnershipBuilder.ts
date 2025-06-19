@@ -12,6 +12,7 @@ class LimitedPartnershipBuilder {
   data = {
     partnership_name: "partnership_name test",
     name_ending: NameEndingType.LIMITED_PARTNERSHIP,
+    partnership_number: "LP123456",
     partnership_type: PartnershipType.LP,
     email: "test@email.com",
     jurisdiction: Jurisdiction.ENGLAND_AND_WALES,
