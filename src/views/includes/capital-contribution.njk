@@ -1,5 +1,3 @@
-{% set partnershipType = props.data.limitedPartnership.data.partnership_type %}
-
 {% if (partnershipType == "LP") or (partnershipType == "SLP") %}
   {{ govukInput({
     label: {
@@ -68,6 +66,14 @@
         checked: true if contribution_sub_types.SERVICES_OR_GOODS else false,
         attributes: {
           "data-event-id": "capital_contribution_servicesOrGoods"
+        } 
+      },
+      {
+        value: "ANY_OTHER_ASSET",        
+        text: i18n.capitalContribution.anyOtherAsset,
+        checked: true if contribution_sub_types.ANY_OTHER_ASSET else false,
+        attributes: {
+          "data-event-id": "capital_contribution_anyOtherAsset"
         } 
       }
     ]
