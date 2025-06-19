@@ -196,9 +196,23 @@ class LimitedPartnershipController extends AbstractController {
         );
 
         if (result?.errors) {
+          const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+            tokens,
+            ids.transactionId,
+            ids.submissionId
+          );
+
           response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, null, result.errors)
+            super.makeProps(pageRouting, {
+              limitedPartnership: {
+                ...limitedPartnership,
+                data: {
+                  ...limitedPartnership.data,
+                  email: request.body.email
+                }
+              }
+            }, result.errors)
           );
           return;
         }
