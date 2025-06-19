@@ -5,11 +5,11 @@ import app from "../../app";
 import {
   CHOOSE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL
-} from "presentation/controller/addressLookUp/url/registration";
+} from "../../../../controller/addressLookUp/url/registration";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
-import { appDevDependencies } from "config/dev-dependencies";
-import * as config from "config";
-import AddressPageType from "presentation/controller/addressLookUp/PageType";
+import { appDevDependencies } from "../../../../../config/dev-dependencies";
+import * as config from "../../../../../config";
+import AddressPageType from "../../../../controller/addressLookUp/PageType";
 
 describe("Choose Principal Place Of Business Address Page", () => {
   const URL = getUrl(CHOOSE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL);

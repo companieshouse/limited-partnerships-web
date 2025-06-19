@@ -5,7 +5,7 @@ import app from "../../app";
 import {
   CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
   ENTER_REGISTERED_OFFICE_ADDRESS_URL
-} from "presentation/controller/addressLookUp/url/transition";
+} from "../../../../controller/addressLookUp/url/transition";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import AddressPageType from "../../../../controller/addressLookUp/PageType";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
