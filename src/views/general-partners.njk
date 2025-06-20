@@ -1,21 +1,12 @@
 {% extends "layout.njk" %}
 
+{% set originalPage = "general-partners" %}
+{% set newPage = "standard-industrial-classification-code" %}
+
 {% block backLink %}
-  {% set partnershipType = props.data.limitedPartnership.data.partnership_type %}
 
-  {% if (partnershipType == "LP") or (partnershipType == "SLP") %}
-    {% set hrefValue = props.currentUrl | replace("general-partners", "standard-industrial-classification-code") %}
-  {% else %}
-     {% set hrefValue = props.previousUrl %}
-  {% endif %}
+  {% include "includes/configurable-back-link.njk" %}
 
-  {{ govukBackLink({
-    text: i18n.links.back,
-    attributes: {
-      "data-event-id": "back-link"
-    },
-    href: hrefValue
-  }) }}
 {% endblock %}
 
 {% set pageTitle = i18n.generalPartnersPage.title  %}

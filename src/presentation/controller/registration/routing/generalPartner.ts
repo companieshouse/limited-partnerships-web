@@ -47,7 +47,7 @@ const registrationRoutingAddGeneralPartnerLegalEntity = {
 // principal office address
 
 const registrationRoutingReviewGeneralPartners = {
-  previousUrl: url.GENERAL_PARTNER_CHOICE_URL,
+  previousUrl: CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   currentUrl: url.REVIEW_GENERAL_PARTNERS_URL,
   nextUrl: url.LIMITED_PARTNERS_URL,
   pageType: RegistrationPageType.reviewGeneralPartners
