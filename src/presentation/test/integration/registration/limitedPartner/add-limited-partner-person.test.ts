@@ -51,7 +51,11 @@ describe("Add Limited Partner Person Page", () => {
         expect(res.text).toContain(
           `${cyTranslationText.addPartnerPersonPage.limitedPartner.title} - ${cyTranslationText.service} - GOV.UK`
         );
-        testTranslations(res.text, cyTranslationText.addPartnerPersonPage, ["errorMessages", "generalPartner"]);
+        testTranslations(res.text, cyTranslationText.addPartnerPersonPage, [
+          "errorMessages",
+          "generalPartner",
+          "dateEffectiveFrom"
+        ]);
 
         if (isCapitalContributionPresent) {
           testTranslations(res.text, cyTranslationText.capitalContribution, ["compositionErrorMessage"]);
@@ -80,7 +84,11 @@ describe("Add Limited Partner Person Page", () => {
         expect(res.text).toContain(
           `${enTranslationText.addPartnerPersonPage.limitedPartner.title} - ${enTranslationText.service} - GOV.UK`
         );
-        testTranslations(res.text, enTranslationText.addPartnerPersonPage, ["errorMessages", "generalPartner"]);
+        testTranslations(res.text, enTranslationText.addPartnerPersonPage, [
+          "errorMessages",
+          "generalPartner",
+          "dateEffectiveFrom"
+        ]);
         expect(res.text).not.toContain("WELSH -");
 
         if (isCapitalContributionPresent) {

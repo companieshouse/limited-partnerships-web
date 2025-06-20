@@ -47,8 +47,6 @@ class GeneralPartnerController extends AbstractController {
           );
         }
 
-        console.log(generalPartner);
-
         response.render(
           super.templateName(pageRouting.currentUrl),
           super.makeProps(pageRouting, { limitedPartnership, generalPartner }, null)

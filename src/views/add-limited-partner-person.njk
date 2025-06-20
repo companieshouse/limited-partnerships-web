@@ -5,17 +5,17 @@
 {% set publicRegisterInformationLine2 = i18n.addPartnerPersonPage.publicRegisterLine2 %}
 {% set partnershipType = props.data.limitedPartnership.data.partnership_type %}
 
-{% if props.data.limitedPartner.data.date_of_birth  %}
+{% if props.data.generalPartner.data.date_of_birth  %}
   {# This is for when saved data is pre-populated on the page #}
-  {% set date_of_birth = props.data.limitedPartner.data.date_of_birth %}
-  {% set year = date_of_birth[0] + date_of_birth[1] + date_of_birth[2] + date_of_birth[3] %}
-  {% set month = date_of_birth[5] + date_of_birth[6] %}
-  {% set day = date_of_birth[8] + date_of_birth[9] %}
-{% else %}
+  {% set date_of_birth = props.data.generalPartner.data.date_of_birth %}
+  {% set date_of_birth_year = date_of_birth[0] + date_of_birth[1] + date_of_birth[2] + date_of_birth[3] %}
+  {% set date_of_birth_month = date_of_birth[5] + date_of_birth[6] %}
+  {% set date_of_birth_day = date_of_birth[8] + date_of_birth[9] %}
+{% elif props.data.generalPartner.data["date_of_birth-year"] %}
   {# And this covers the scenario when date validation fails and the page reloads #}
-  {% set year = props.data.limitedPartner.data["date_of_birth-year"] %}
-  {% set month = props.data.limitedPartner.data["date_of_birth-month"] %}
-  {% set day = props.data.limitedPartner.data["date_of_birth-day"] %}
+  {% set date_of_birth_year = props.data.generalPartner.data["date_of_birth-year"] %}
+  {% set date_of_birth_month = props.data.generalPartner.data["date_of_birth-month"] %}
+  {% set date_of_birth_day = props.data.generalPartner.data["date_of_birth-day"] %}
 {% endif %}
 
 {% if props.data.limitedPartner.data.former_names %}
@@ -140,14 +140,14 @@
             }
           },
           hint: {
-            text: i18n.addPartnerPersonPage.dateOfBirthHint
+            text: i18n.addPartnerPersonPage.dateHint
           },
           items: [
             {
               classes: "govuk-input--width-2",
-              label: i18n.addPartnerPersonPage.dateOfBirthDay,
+              label: i18n.addPartnerPersonPage.dateDay,
               name: "day",
-              value: day,
+              value: date_of_birth_day,
               attributes: {
                 required: true,
                 pattern: "[0-9]*"
@@ -155,9 +155,9 @@
             },
             {
               classes: "govuk-input--width-2",
-              label: i18n.addPartnerPersonPage.dateOfBirthMonth,
+              label: i18n.addPartnerPersonPage.dateMonth,
               name: "month",
-              value: month,
+              value: date_of_birth_month,
               attributes: {
                 required: true,
                 pattern: "[0-9]*"
@@ -165,9 +165,9 @@
             },
             {
               classes: "govuk-input--width-4",
-              label: i18n.addPartnerPersonPage.dateOfBirthYear,
+              label: i18n.addPartnerPersonPage.dateYear,
               name: "year",
-              value: year,
+              value: date_of_birth_year,
               attributes: {
                 required: true,
                 pattern: "[0-9]*"
