@@ -93,6 +93,7 @@ describe("Confirm General Partner Usual Residential Address Page", () => {
   });
 
   describe("POST Confirm Usual Residential Address Page", () => {
+    // TODO once correspondence address loop is done, uncomment the lines below
     it.skip("should redirect to the next page", async () => {
       const res = await request(app)
         .post(URL)
