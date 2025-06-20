@@ -5,11 +5,11 @@ import app from "../../../app";
 import {
   CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
-} from "../../../../../../presentation/controller/addressLookUp/url/transition";
+} from "../../../../../controller/addressLookUp/url/transition";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import * as config from "../../../../../../config";
-import AddressPageType from "../../../../../../presentation/controller/addressLookUp/PageType";
+import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 
 describe("Choose usual residential address of the general partner page", () => {
   beforeEach(() => {
