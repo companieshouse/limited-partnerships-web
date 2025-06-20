@@ -5,7 +5,7 @@ import app from "../../../app";
 import {
   CHOOSE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
-} from "presentation/controller/addressLookUp/url";
+} from "presentation/controller/addressLookUp/url/registration";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import { appDevDependencies } from "config/dev-dependencies";
 import * as config from "config";
@@ -33,7 +33,6 @@ describe("Choose principal office address of the general partner page", () => {
   });
 
   describe("GET choose principal office address of the general partner page", () => {
-
     it("should load the choose principal office address of the general partner page with Welsh text", async () => {
       setLocalesEnabled(true);
 
@@ -73,7 +72,6 @@ describe("Choose principal office address of the general partner page", () => {
   });
 
   describe("POST choose principal office address of the general partner page", () => {
-
     it("should redirect to the next page and add select address to cache", async () => {
       const res = await request(app)
         .post(URL)

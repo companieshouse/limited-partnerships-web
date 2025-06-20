@@ -5,7 +5,7 @@ import app from "../../../app";
 import {
   CHOOSE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL
-} from "../../../../../../presentation/controller/addressLookUp/url";
+} from "../../../../../controller/addressLookUp/url/registration";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import * as config from "../../../../../../config";

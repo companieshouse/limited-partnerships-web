@@ -7,7 +7,7 @@ import app from "../../../app";
 import {
   ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
-} from "presentation/controller/addressLookUp/url";
+} from "presentation/controller/addressLookUp/url/registration";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import GeneralPartnerBuilder, {
@@ -109,12 +109,14 @@ describe("Enter general partner's principal office manual address page", () => {
         .isPerson()
         .build();
 
-      const res = await request(app).post(URL).send({
-        pageType: AddressPageType.enterGeneralPartnerPrincipalOfficeAddress,
-        ...generalPartner.data?.principal_office_address,
-        postal_code: "here",
-        country: "Vatican City"
-      });
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: AddressPageType.enterGeneralPartnerPrincipalOfficeAddress,
+          ...generalPartner.data?.principal_office_address,
+          postal_code: "here",
+          country: "Vatican City"
+        });
 
       const redirectUrl = getUrl(CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
       expect(res.status).toBe(302);
@@ -129,16 +131,20 @@ describe("Enter general partner's principal office manual address page", () => {
 
       appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
 
-      const res = await request(app).post(URL).send({
-        pageType: AddressPageType.enterGeneralPartnerPrincipalOfficeAddress,
-        ...generalPartner.data?.principal_office_address,
-        postal_code: "here"
-      });
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: AddressPageType.enterGeneralPartnerPrincipalOfficeAddress,
+          ...generalPartner.data?.principal_office_address,
+          postal_code: "here"
+        });
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.postcodeFormat);
       expect(res.text).toContain(enTranslationText.govUk.error.title);
-      expect(res.text).toContain(`${generalPartner.data?.forename?.toUpperCase()} ${generalPartner.data?.surname?.toUpperCase()}`);
+      expect(res.text).toContain(
+        `${generalPartner.data?.forename?.toUpperCase()} ${generalPartner.data?.surname?.toUpperCase()}`
+      );
     });
 
     it("should not return validation errors when address fields contain valid but non alpha-numeric characters", async () => {
@@ -147,15 +153,17 @@ describe("Enter general partner's principal office manual address page", () => {
         .isPerson()
         .build();
 
-      const res = await request(app).post(URL).send({
-        pageType: AddressPageType.enterGeneralPartnerPrincipalOfficeAddress,
-        ...generalPartner.data?.principal_office_address,
-        premises: "-,.:; &@$£¥€'?!/\\řśŝşšţťŧùúûüũūŭůűųŵẁẃẅỳýŷÿźżžñńņňŋòóôõöøōŏőǿœŕŗàáâãäåāăąæǽçćĉċč",
-        address_line_1: "()[]{}<>*=#%+ÀÁÂÃÄÅĀĂĄÆǼÇĆĈĊČÞĎÐÈÉÊËĒĔĖĘĚĜĞĠĢ",
-        address_line_2: "ĤĦÌÍÎÏĨĪĬĮİĴĶĹĻĽĿŁÑŃŅŇŊÒÓÔÕÖØŌŎŐǾŒŔŖŘŚŜŞŠŢŤŦ",
-        locality: "ÙÚÛÜŨŪŬŮŰŲŴẀẂẄỲÝŶŸŹŻŽa-zÀÖØſƒǺẀỲ",
-        region: "þďðèéêëēĕėęěĝģğġĥħìíîïĩīĭįĵķĺļľŀł"
-      });
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: AddressPageType.enterGeneralPartnerPrincipalOfficeAddress,
+          ...generalPartner.data?.principal_office_address,
+          premises: "-,.:; &@$£¥€'?!/\\řśŝşšţťŧùúûüũūŭůűųŵẁẃẅỳýŷÿźżžñńņňŋòóôõöøōŏőǿœŕŗàáâãäåāăąæǽçćĉċč",
+          address_line_1: "()[]{}<>*=#%+ÀÁÂÃÄÅĀĂĄÆǼÇĆĈĊČÞĎÐÈÉÊËĒĔĖĘĚĜĞĠĢ",
+          address_line_2: "ĤĦÌÍÎÏĨĪĬĮİĴĶĹĻĽĿŁÑŃŅŇŊÒÓÔÕÖØŌŎŐǾŒŔŖŘŚŜŞŠŢŤŦ",
+          locality: "ÙÚÛÜŨŪŬŮŰŲŴẀẂẄỲÝŶŸŹŻŽa-zÀÖØſƒǺẀỲ",
+          region: "þďðèéêëēĕėęěĝģğġĥħìíîïĩīĭįĵķĺļľŀł"
+        });
 
       const redirectUrl = getUrl(CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
       expect(res.status).toBe(302);
@@ -168,27 +176,44 @@ describe("Enter general partner's principal office manual address page", () => {
         .isPerson()
         .build();
 
-      const res = await request(app).post(URL).send({
-        pageType: AddressPageType.enterGeneralPartnerPrincipalOfficeAddress,
-        ...generalPartner.data?.principal_office_address,
-        premises: "±",
-        address_line_1: "±",
-        address_line_2: "±",
-        locality: "±",
-        region: "±",
-      });
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: AddressPageType.enterGeneralPartnerPrincipalOfficeAddress,
+          ...generalPartner.data?.principal_office_address,
+          premises: "±",
+          address_line_1: "±",
+          address_line_2: "±",
+          locality: "±",
+          region: "±"
+        });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.premises + " "
-        + enTranslationText.address.enterAddress.errorMessages.invalidCharacters);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.addressLine1 + " "
-        + enTranslationText.address.enterAddress.errorMessages.invalidCharacters);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.addressLine2Title + " "
-        + enTranslationText.address.enterAddress.errorMessages.invalidCharacters);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.locality + " "
-        + enTranslationText.address.enterAddress.errorMessages.invalidCharacters);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.regionTitle + " "
-        + enTranslationText.address.enterAddress.errorMessages.invalidCharacters);
+      expect(res.text).toContain(
+        enTranslationText.address.enterAddress.premises +
+          " " +
+          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
+      );
+      expect(res.text).toContain(
+        enTranslationText.address.enterAddress.addressLine1 +
+          " " +
+          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
+      );
+      expect(res.text).toContain(
+        enTranslationText.address.enterAddress.addressLine2Title +
+          " " +
+          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
+      );
+      expect(res.text).toContain(
+        enTranslationText.address.enterAddress.locality +
+          " " +
+          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
+      );
+      expect(res.text).toContain(
+        enTranslationText.address.enterAddress.regionTitle +
+          " " +
+          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
+      );
       expect(res.text).toContain(enTranslationText.govUk.error.title);
     });
 
@@ -198,15 +223,17 @@ describe("Enter general partner's principal office manual address page", () => {
         .isPerson()
         .build();
 
-      const res = await request(app).post(URL).send({
-        pageType: AddressPageType.enterGeneralPartnerPrincipalOfficeAddress,
-        ...generalPartner.data?.principal_office_address,
-        premises: "toomanycharacters".repeat(13),
-        address_line_1: "toomanycharacters".repeat(4),
-        address_line_2: "toomanycharacters".repeat(4),
-        locality: "toomanycharacters".repeat(4),
-        region: "toomanycharacters".repeat(4)
-      });
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: AddressPageType.enterGeneralPartnerPrincipalOfficeAddress,
+          ...generalPartner.data?.principal_office_address,
+          premises: "toomanycharacters".repeat(13),
+          address_line_1: "toomanycharacters".repeat(4),
+          address_line_2: "toomanycharacters".repeat(4),
+          locality: "toomanycharacters".repeat(4),
+          region: "toomanycharacters".repeat(4)
+        });
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.premisesLength);

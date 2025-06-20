@@ -15,9 +15,12 @@ import {
 import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
 import RegistrationPageType from "../../../../controller/registration/PageType";
 import { ApiErrors } from "../../../../../domain/entities/UIErrors";
-import { TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../../../controller/addressLookUp/url";
+import { TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../../../controller/addressLookUp/url/registration";
 import { REGISTRATION_BASE_URL } from "config";
-import { LIMITED_PARTNER_CHOICE_TEMPLATE, REVIEW_LIMITED_PARTNERS_TEMPLATE } from "../../../../../presentation/controller/registration/template";
+import {
+  LIMITED_PARTNER_CHOICE_TEMPLATE,
+  REVIEW_LIMITED_PARTNERS_TEMPLATE
+} from "../../../../../presentation/controller/registration/template";
 
 describe("Add Limited Partner Legal Entity Page", () => {
   const URL = getUrl(ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL);
@@ -91,7 +94,9 @@ describe("Add Limited Partner Legal Entity Page", () => {
       const res = await request(app).get(getUrl(ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_ID_URL) + "?lang=en");
 
       expect(res.status).toBe(200);
-      const regex = new RegExp(`${REGISTRATION_BASE_URL}/transaction/.*?/submission/.*?/${REVIEW_LIMITED_PARTNERS_TEMPLATE}`);
+      const regex = new RegExp(
+        `${REGISTRATION_BASE_URL}/transaction/.*?/submission/.*?/${REVIEW_LIMITED_PARTNERS_TEMPLATE}`
+      );
       expect(res.text).toMatch(regex);
     });
 
@@ -100,7 +105,9 @@ describe("Add Limited Partner Legal Entity Page", () => {
       const res = await request(app).get(getUrl(ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_ID_URL) + "?lang=en");
 
       expect(res.status).toBe(200);
-      const regex = new RegExp(`${REGISTRATION_BASE_URL}/transaction/.*?/submission/.*?/${LIMITED_PARTNER_CHOICE_TEMPLATE}`);
+      const regex = new RegExp(
+        `${REGISTRATION_BASE_URL}/transaction/.*?/submission/.*?/${LIMITED_PARTNER_CHOICE_TEMPLATE}`
+      );
       expect(res.text).toMatch(regex);
     });
   });

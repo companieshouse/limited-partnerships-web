@@ -16,7 +16,7 @@ import {
   CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
-} from "../../../../../controller/addressLookUp/url";
+} from "../../../../../controller/addressLookUp/url/registration";
 import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
 
 describe("Postcode Usual Residential Address Page", () => {
@@ -51,8 +51,9 @@ describe("Postcode Usual Residential Address Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        toEscapedHtml(enTranslationText.address.findPostcode.generalPartner.usualResidentialAddress.whatIsUsualResidentialAddress) +
-          ` - ${enTranslationText.service} - GOV.UK`
+        toEscapedHtml(
+          enTranslationText.address.findPostcode.generalPartner.usualResidentialAddress.whatIsUsualResidentialAddress
+        ) + ` - ${enTranslationText.service} - GOV.UK`
       );
       testTranslations(res.text, enTranslationText.address.findPostcode, [
         "registeredOfficeAddress",
@@ -83,8 +84,9 @@ describe("Postcode Usual Residential Address Page", () => {
       expect(res.status).toBe(200);
 
       expect(res.text).toContain(
-        toEscapedHtml(cyTranslationText.address.findPostcode.generalPartner.usualResidentialAddress.whatIsUsualResidentialAddress) +
-          ` - ${cyTranslationText.service} - GOV.UK`
+        toEscapedHtml(
+          cyTranslationText.address.findPostcode.generalPartner.usualResidentialAddress.whatIsUsualResidentialAddress
+        ) + ` - ${cyTranslationText.service} - GOV.UK`
       );
       testTranslations(res.text, cyTranslationText.address.findPostcode, [
         "registeredOfficeAddress",
@@ -204,7 +206,9 @@ describe("Postcode Usual Residential Address Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(`The postcode AA1 1AA cannot be found`);
-      expect(res.text).toContain(`${generalPartner.data?.forename?.toUpperCase()} ${generalPartner.data?.surname?.toUpperCase()}`);
+      expect(res.text).toContain(
+        `${generalPartner.data?.forename?.toUpperCase()} ${generalPartner.data?.surname?.toUpperCase()}`
+      );
 
       expect(appDevDependencies.cacheRepository.cache).toEqual(null);
     });

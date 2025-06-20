@@ -2,7 +2,7 @@ import request from "supertest";
 import enTranslationText from "../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../locales/cy/translations.json";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../../../presentation/test/utils";
-import { CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL } from "../../../../../presentation/controller/addressLookUp/url";
+import { CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL } from "../../../../controller/addressLookUp/url/registration";
 import { REVIEW_GENERAL_PARTNERS_URL, TERM_URL } from "../../../../../presentation/controller/registration/url";
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";

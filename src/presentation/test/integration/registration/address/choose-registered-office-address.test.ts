@@ -5,11 +5,11 @@ import app from "../../app";
 import {
   CHOOSE_REGISTERED_OFFICE_ADDRESS_URL,
   CONFIRM_REGISTERED_OFFICE_ADDRESS_URL
-} from "presentation/controller/addressLookUp/url";
+} from "../../../../controller/addressLookUp/url/registration";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
-import { appDevDependencies } from "config/dev-dependencies";
-import * as config from "config";
-import AddressPageType from "presentation/controller/addressLookUp/PageType";
+import { appDevDependencies } from "../../../../../config/dev-dependencies";
+import * as config from "../../../../../config";
+import AddressPageType from "../../../../controller/addressLookUp/PageType";
 
 describe("Choose Registered Office Address Page", () => {
   const URL = getUrl(CHOOSE_REGISTERED_OFFICE_ADDRESS_URL);

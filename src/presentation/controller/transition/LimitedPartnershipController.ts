@@ -13,6 +13,8 @@ import {
 import { getJourneyTypes } from "../../../utils/journey";
 import { Jurisdiction, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
+import { PageRouting } from "../PageRouting";
+import { CONFIRM_REGISTERED_OFFICE_ADDRESS_URL } from "../addressLookUp/url/transition";
 
 class LimitedPartnershipController extends AbstractController {
   constructor(
@@ -41,7 +43,10 @@ class LimitedPartnershipController extends AbstractController {
 
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
 
-        response.render(super.templateName(pageRouting.currentUrl), super.makeProps(pageRouting, { limitedPartnership, cache }, null));
+        response.render(
+          super.templateName(pageRouting.currentUrl),
+          super.makeProps(pageRouting, { limitedPartnership, cache }, null)
+        );
       } catch (error) {
         next(error);
       }
@@ -204,24 +209,49 @@ class LimitedPartnershipController extends AbstractController {
 
           response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, {
-              limitedPartnership: {
-                ...limitedPartnership,
-                data: {
-                  ...limitedPartnership.data,
-                  email: request.body.email
+            super.makeProps(
+              pageRouting,
+              {
+                limitedPartnership: {
+                  ...limitedPartnership,
+                  data: {
+                    ...limitedPartnership.data,
+                    email: request.body.email
+                  }
                 }
-              }
-            }, result.errors)
+              },
+              result.errors
+            )
           );
           return;
         }
+
+        await this.conditionalNextUrl(tokens, ids, pageRouting, request);
 
         response.redirect(pageRouting.nextUrl);
       } catch (error) {
         next(error);
       }
     };
+  }
+
+  private async conditionalNextUrl(
+    tokens: { access_token: string; refresh_token: string },
+    ids: { transactionId: string; submissionId: string },
+    pageRouting: PageRouting,
+    request: Request
+  ) {
+    if (pageRouting.pageType === TransitionPageType.email) {
+      const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+        tokens,
+        ids.transactionId,
+        ids.submissionId
+      );
+
+      if (limitedPartnership.data?.registered_office_address) {
+        pageRouting.nextUrl = super.insertIdsInUrl(CONFIRM_REGISTERED_OFFICE_ADDRESS_URL, ids, request.url);
+      }
+    }
   }
 }
 

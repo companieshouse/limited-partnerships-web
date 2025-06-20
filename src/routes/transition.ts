@@ -10,7 +10,7 @@ import {
   EMAIL_URL
 } from "../presentation/controller/transition/url";
 
-export const transitionEndpoints = (router: Router, dependencies: IDependencies): void => {
+const transitionEndpoints = (router: Router, dependencies: IDependencies): void => {
   router.get(
     COMPANY_NUMBER_URL,
     authentication,
@@ -44,3 +44,5 @@ export const transitionEndpoints = (router: Router, dependencies: IDependencies)
     dependencies.limitedPartnershipTransitionController.sendPageData()
   );
 };
+
+export default transitionEndpoints;

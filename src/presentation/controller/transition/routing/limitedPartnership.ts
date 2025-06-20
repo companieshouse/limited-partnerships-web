@@ -1,5 +1,6 @@
 import * as url from "../url";
 import TransitionPageType from "../PageType";
+import { POSTCODE_REGISTERED_OFFICE_ADDRESS_URL } from "../../addressLookUp/url/transition";
 
 const transitionRoutingCompanyNumber = {
   previousUrl: "/",
@@ -18,10 +19,14 @@ const transitionRoutingConfirmLimitedPartnership = {
 const transitionRoutingEmail = {
   previousUrl: url.COMPANY_NUMBER_URL,
   currentUrl: url.EMAIL_URL,
-  nextUrl: "/",
+  nextUrl: POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
   pageType: TransitionPageType.email
 };
 
-const limitedPartnershipRouting = [transitionRoutingCompanyNumber, transitionRoutingConfirmLimitedPartnership, transitionRoutingEmail];
+const limitedPartnershipRouting = [
+  transitionRoutingCompanyNumber,
+  transitionRoutingConfirmLimitedPartnership,
+  transitionRoutingEmail
+];
 
 export default limitedPartnershipRouting;

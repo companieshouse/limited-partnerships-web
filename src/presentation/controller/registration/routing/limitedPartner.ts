@@ -3,7 +3,7 @@ import * as url from "../url";
 import {
   TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
-} from "../../addressLookUp/url";
+} from "../../addressLookUp/url/registration";
 
 const registrationRoutingLimitedPartners = {
   previousUrl: url.REVIEW_GENERAL_PARTNERS_URL,

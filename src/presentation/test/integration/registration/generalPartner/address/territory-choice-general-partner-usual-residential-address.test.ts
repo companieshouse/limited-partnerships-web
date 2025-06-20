@@ -8,7 +8,7 @@ import {
   ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
-} from "../../../../../controller/addressLookUp/url";
+} from "../../../../../controller/addressLookUp/url/registration";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import GeneralPartnerBuilder, { generalPartnerPerson } from "../../../../builder/GeneralPartnerBuilder";
 import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";

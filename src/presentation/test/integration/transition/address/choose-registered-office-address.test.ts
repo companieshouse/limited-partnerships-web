@@ -3,24 +3,23 @@ import enTranslationText from "../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../locales/cy/translations.json";
 import app from "../../app";
 import {
-  CHOOSE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
-  CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL
-} from "../../../../controller/addressLookUp/url/registration";
+  CHOOSE_REGISTERED_OFFICE_ADDRESS_URL,
+  CONFIRM_REGISTERED_OFFICE_ADDRESS_URL
+} from "../../../../controller/addressLookUp/url/transition";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import * as config from "../../../../../config";
 import AddressPageType from "../../../../controller/addressLookUp/PageType";
 
-describe("Choose Principal Place Of Business Address Page", () => {
-  const URL = getUrl(CHOOSE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL);
-  const REDIRECT_URL = getUrl(CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL);
+describe("Choose Registered Office Address Page", () => {
+  const URL = getUrl(CHOOSE_REGISTERED_OFFICE_ADDRESS_URL);
 
   beforeEach(() => {
     setLocalesEnabled(false);
     appDevDependencies.addressLookUpGateway.setError(false);
     appDevDependencies.cacheRepository.feedCache({
       [appDevDependencies.transactionGateway.transactionId]: {
-        ["principal_place_of_business_address"]: {
+        ["registered_office_address"]: {
           postal_code: "ST6 3LJ",
           premises: "",
           address_line_1: "",
@@ -32,23 +31,24 @@ describe("Choose Principal Place Of Business Address Page", () => {
     });
   });
 
-  describe("GET Choose Principal Place Of Business Address Page", () => {
-    it("should load the choose principal place of business address page with Welsh text", async () => {
-      setLocalesEnabled(true);
-
-      const res = await request(app).get(URL + "?lang=cy");
-
-      expect(res.status).toBe(200);
-      testTranslations(res.text, cyTranslationText.address.chooseAddress.principalPlaceOfBusiness);
-    });
-
-    it("should load the choose principal place of business address page with English text", async () => {
+  describe("GET Choose Registered Office Address Page", () => {
+    it("should load the choose registered office address page with English text", async () => {
       setLocalesEnabled(true);
 
       const res = await request(app).get(URL + "?lang=en");
 
       expect(res.status).toBe(200);
-      testTranslations(res.text, enTranslationText.address.chooseAddress.principalPlaceOfBusiness);
+      testTranslations(res.text, enTranslationText.address.chooseAddress.registeredOfficeAddress);
+      expect(res.text).not.toContain("WELSH -");
+    });
+
+    it("should load the choose registered office address page with Welsh text", async () => {
+      setLocalesEnabled(true);
+
+      const res = await request(app).get(URL + "?lang=cy");
+
+      expect(res.status).toBe(200);
+      testTranslations(res.text, cyTranslationText.address.chooseAddress.registeredOfficeAddress);
     });
 
     it("should populate the address list", async () => {
@@ -71,12 +71,12 @@ describe("Choose Principal Place Of Business Address Page", () => {
     });
   });
 
-  describe("POST Choose Principal Place Of Business Page", () => {
+  describe("POST Choose Registered Office Address Page", () => {
     it("should redirect to the next page and add select address to cache", async () => {
       const res = await request(app)
         .post(URL)
         .send({
-          pageType: AddressPageType.choosePrincipalPlaceOfBusinessAddress,
+          pageType: AddressPageType.chooseRegisteredOfficeAddress,
           selected_address: `{
             "postal_code": "ST6 3LJ",
             "premises": "4",
@@ -87,13 +87,14 @@ describe("Choose Principal Place Of Business Address Page", () => {
           }`
         });
 
+      const redirectUrl = getUrl(CONFIRM_REGISTERED_OFFICE_ADDRESS_URL);
       expect(res.status).toBe(302);
-      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+      expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
 
       const cache = appDevDependencies.cacheRepository.cache;
       expect(cache?.[`${config.APPLICATION_CACHE_KEY}`]).toEqual({
         [appDevDependencies.transactionGateway.transactionId]: {
-          principal_place_of_business_address: {
+          registered_office_address: {
             postal_code: "ST6 3LJ",
             premises: "4",
             address_line_1: "DUNCALF STREET",
@@ -107,7 +108,7 @@ describe("Choose Principal Place Of Business Address Page", () => {
 
     it("should redirect to the error page if address can't be deserialised", async () => {
       const res = await request(app).post(URL).send({
-        pageType: AddressPageType.choosePrincipalPlaceOfBusinessAddress,
+        pageType: AddressPageType.chooseRegisteredOfficeAddress,
         selected_address: `some address`
       });
 
@@ -116,7 +117,7 @@ describe("Choose Principal Place Of Business Address Page", () => {
 
       const cache = appDevDependencies.cacheRepository.cache;
       expect(cache?.[`${config.APPLICATION_CACHE_KEY}`]).not.toHaveProperty(
-        `${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${AddressPageType.choosePrincipalPlaceOfBusinessAddress}`
+        `${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${AddressPageType.chooseRegisteredOfficeAddress}`
       );
     });
   });

@@ -11,7 +11,7 @@ import RegistrationPageType from "../../../../controller/registration/PageType";
 import enTranslationText from "../../../../../../locales/en/translations.json";
 import sdkMock from "../../mock/sdkMock";
 import { getUrl } from "../../../utils";
-import { CONFIRM_REGISTERED_OFFICE_ADDRESS_URL } from "../../../../controller/addressLookUp/url";
+import { CONFIRM_REGISTERED_OFFICE_ADDRESS_URL } from "../../../../controller/addressLookUp/url/registration";
 
 jest.mock("@companieshouse/api-sdk-node");
 

@@ -8,7 +8,7 @@ import {
   ENTER_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
-} from "../../../../../controller/addressLookUp/url";
+} from "../../../../../controller/addressLookUp/url/registration";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import LimitedPartnerBuilder, { limitedPartnerPerson } from "../../../../builder/LimitedPartnerBuilder";
 import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";

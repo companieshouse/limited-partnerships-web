@@ -5,7 +5,7 @@ import app from "../../app";
 import {
   CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
   ENTER_REGISTERED_OFFICE_ADDRESS_URL
-} from "presentation/controller/addressLookUp/url";
+} from "../../../../controller/addressLookUp/url/registration";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import AddressPageType from "../../../../controller/addressLookUp/PageType";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
@@ -35,7 +35,8 @@ describe("Enter Registered Office Address Page", () => {
         "correspondenceAddress",
         "principalPlaceOfBusinessAddress",
         "principalOfficeAddress",
-        "errorMessages"
+        "errorMessages",
+        "newRequirement"
       ]);
       expect(res.text).not.toContain("WELSH -");
     });
@@ -52,7 +53,8 @@ describe("Enter Registered Office Address Page", () => {
         "correspondenceAddress",
         "principalPlaceOfBusinessAddress",
         "principalOfficeAddress",
-        "errorMessages"
+        "errorMessages",
+        "newRequirement"
       ]);
     });
   });
@@ -65,10 +67,12 @@ describe("Enter Registered Office Address Page", () => {
 
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-      const res = await request(app).post(URL).send({
-        pageType: AddressPageType.enterRegisteredOfficeAddress,
-        ...limitedPartnership.data?.registered_office_address,
-      });
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: AddressPageType.enterRegisteredOfficeAddress,
+          ...limitedPartnership.data?.registered_office_address
+        });
 
       const redirectUrl = getUrl(CONFIRM_REGISTERED_OFFICE_ADDRESS_URL);
       expect(res.status).toBe(302);
@@ -80,11 +84,13 @@ describe("Enter Registered Office Address Page", () => {
 
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-      const res = await request(app).post(URL).send({
-        pageType: "Invalid page type",
-        ...limitedPartnership.data?.registered_office_address,
-        country: "Scotland"
-      });
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: "Invalid page type",
+          ...limitedPartnership.data?.registered_office_address,
+          country: "Scotland"
+        });
 
       expect(res.status).toBe(500);
       expect(res.text).toContain(enTranslationText.errorPage.title);
@@ -95,11 +101,13 @@ describe("Enter Registered Office Address Page", () => {
 
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-      const res = await request(app).post(URL).send({
-        pageType: AddressPageType.enterRegisteredOfficeAddress,
-        ...limitedPartnership.data?.registered_office_address,
-        country: "Northern Ireland"
-      });
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: AddressPageType.enterRegisteredOfficeAddress,
+          ...limitedPartnership.data?.registered_office_address,
+          country: "Northern Ireland"
+        });
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.jurisdictionCountry);
@@ -135,11 +143,13 @@ describe("Enter Registered Office Address Page", () => {
 
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-      const res = await request(app).post(URL).send({
-        pageType: AddressPageType.enterRegisteredOfficeAddress,
-        ...limitedPartnership.data?.registered_office_address,
-        country: "Scotland"
-      });
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: AddressPageType.enterRegisteredOfficeAddress,
+          ...limitedPartnership.data?.registered_office_address,
+          country: "Scotland"
+        });
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.jurisdictionCountry);
@@ -154,11 +164,13 @@ describe("Enter Registered Office Address Page", () => {
 
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-      const res = await request(app).post(URL).send({
-        pageType: AddressPageType.enterRegisteredOfficeAddress,
-        ...limitedPartnership.data?.registered_office_address,
-        country: "Scotland"
-      });
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: AddressPageType.enterRegisteredOfficeAddress,
+          ...limitedPartnership.data?.registered_office_address,
+          country: "Scotland"
+        });
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.jurisdictionCountry);
@@ -167,15 +179,19 @@ describe("Enter Registered Office Address Page", () => {
     });
 
     it("should return a validation error when postcode format is invalid", async () => {
-      const limitedPartnership = new LimitedPartnershipBuilder().withJurisdiction(Jurisdiction.ENGLAND_AND_WALES).build();
+      const limitedPartnership = new LimitedPartnershipBuilder()
+        .withJurisdiction(Jurisdiction.ENGLAND_AND_WALES)
+        .build();
 
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-      const res = await request(app).post(URL).send({
-        pageType: AddressPageType.enterRegisteredOfficeAddress,
-        ...limitedPartnership.data?.registered_office_address,
-        postal_code: "here"
-      });
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: AddressPageType.enterRegisteredOfficeAddress,
+          ...limitedPartnership.data?.registered_office_address,
+          postal_code: "here"
+        });
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.postcodeFormat);
@@ -184,19 +200,23 @@ describe("Enter Registered Office Address Page", () => {
     });
 
     it("should not return validation errors when address fields contain valid but non alpha-numeric characters", async () => {
-      const limitedPartnership = new LimitedPartnershipBuilder().withJurisdiction(Jurisdiction.ENGLAND_AND_WALES).build();
+      const limitedPartnership = new LimitedPartnershipBuilder()
+        .withJurisdiction(Jurisdiction.ENGLAND_AND_WALES)
+        .build();
 
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-      const res = await request(app).post(URL).send({
-        pageType: AddressPageType.enterRegisteredOfficeAddress,
-        ...limitedPartnership.data?.registered_office_address,
-        premises: "-,.:; &@$£¥€'?!/\\řśŝşšţťŧùúûüũūŭůűųŵẁẃẅỳýŷÿźżžñńņňŋòóôõöøōŏőǿœŕŗàáâãäåāăąæǽçćĉċč",
-        address_line_1: "()[]{}<>*=#%+ÀÁÂÃÄÅĀĂĄÆǼÇĆĈĊČÞĎÐÈÉÊËĒĔĖĘĚĜĞĠĢ",
-        address_line_2: "ĤĦÌÍÎÏĨĪĬĮİĴĶĹĻĽĿŁÑŃŅŇŊÒÓÔÕÖØŌŎŐǾŒŔŖŘŚŜŞŠŢŤŦ",
-        locality: "ÙÚÛÜŨŪŬŮŰŲŴẀẂẄỲÝŶŸŹŻŽa-zÀÖØſƒǺẀỲ",
-        region: "þďðèéêëēĕėęěĝģğġĥħìíîïĩīĭįĵķĺļľŀł"
-      });
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: AddressPageType.enterRegisteredOfficeAddress,
+          ...limitedPartnership.data?.registered_office_address,
+          premises: "-,.:; &@$£¥€'?!/\\řśŝşšţťŧùúûüũūŭůűųŵẁẃẅỳýŷÿźżžñńņňŋòóôõöøōŏőǿœŕŗàáâãäåāăąæǽçćĉċč",
+          address_line_1: "()[]{}<>*=#%+ÀÁÂÃÄÅĀĂĄÆǼÇĆĈĊČÞĎÐÈÉÊËĒĔĖĘĚĜĞĠĢ",
+          address_line_2: "ĤĦÌÍÎÏĨĪĬĮİĴĶĹĻĽĿŁÑŃŅŇŊÒÓÔÕÖØŌŎŐǾŒŔŖŘŚŜŞŠŢŤŦ",
+          locality: "ÙÚÛÜŨŪŬŮŰŲŴẀẂẄỲÝŶŸŹŻŽa-zÀÖØſƒǺẀỲ",
+          region: "þďðèéêëēĕėęěĝģğġĥħìíîïĩīĭįĵķĺļľŀł"
+        });
 
       const redirectUrl = getUrl(CONFIRM_REGISTERED_OFFICE_ADDRESS_URL);
       expect(res.status).toBe(302);
@@ -204,53 +224,79 @@ describe("Enter Registered Office Address Page", () => {
     });
 
     it("should return validation errors when address fields contain invalid characters", async () => {
-      const limitedPartnership = new LimitedPartnershipBuilder().withJurisdiction(Jurisdiction.ENGLAND_AND_WALES).build();
+      const limitedPartnership = new LimitedPartnershipBuilder()
+        .withJurisdiction(Jurisdiction.ENGLAND_AND_WALES)
+        .build();
 
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-      const res = await request(app).post(URL).send({
-        pageType: AddressPageType.enterRegisteredOfficeAddress,
-        ...limitedPartnership.data?.registered_office_address,
-        premises: "±",
-        address_line_1: "±",
-        address_line_2: "±",
-        locality: "±",
-        region: "±",
-        postal_code: "±"
-      });
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: AddressPageType.enterRegisteredOfficeAddress,
+          ...limitedPartnership.data?.registered_office_address,
+          premises: "±",
+          address_line_1: "±",
+          address_line_2: "±",
+          locality: "±",
+          region: "±",
+          postal_code: "±"
+        });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.premises + " "
-        + enTranslationText.address.enterAddress.errorMessages.invalidCharacters);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.addressLine1 + " "
-        + enTranslationText.address.enterAddress.errorMessages.invalidCharacters);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.addressLine2Title + " "
-        + enTranslationText.address.enterAddress.errorMessages.invalidCharacters);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.locality + " "
-        + enTranslationText.address.enterAddress.errorMessages.invalidCharacters);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.regionTitle + " "
-        + enTranslationText.address.enterAddress.errorMessages.invalidCharacters);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.postcode + " "
-        + enTranslationText.address.enterAddress.errorMessages.invalidCharacters);
+      expect(res.text).toContain(
+        enTranslationText.address.enterAddress.premises +
+          " " +
+          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
+      );
+      expect(res.text).toContain(
+        enTranslationText.address.enterAddress.addressLine1 +
+          " " +
+          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
+      );
+      expect(res.text).toContain(
+        enTranslationText.address.enterAddress.addressLine2Title +
+          " " +
+          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
+      );
+      expect(res.text).toContain(
+        enTranslationText.address.enterAddress.locality +
+          " " +
+          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
+      );
+      expect(res.text).toContain(
+        enTranslationText.address.enterAddress.regionTitle +
+          " " +
+          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
+      );
+      expect(res.text).toContain(
+        enTranslationText.address.enterAddress.postcode +
+          " " +
+          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
+      );
 
       expect(res.text).toContain(enTranslationText.govUk.error.title);
       expect(res.text).toContain(limitedPartnership.data?.partnership_name?.toUpperCase());
     });
 
     it("should return validation errors when address fields exceed character limit", async () => {
-      const limitedPartnership = new LimitedPartnershipBuilder().withJurisdiction(Jurisdiction.ENGLAND_AND_WALES).build();
+      const limitedPartnership = new LimitedPartnershipBuilder()
+        .withJurisdiction(Jurisdiction.ENGLAND_AND_WALES)
+        .build();
 
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-      const res = await request(app).post(URL).send({
-        pageType: AddressPageType.enterRegisteredOfficeAddress,
-        ...limitedPartnership.data?.registered_office_address,
-        premises: "toomanycharacters".repeat(13),
-        address_line_1: "toomanycharacters".repeat(4),
-        address_line_2: "toomanycharacters".repeat(4),
-        locality: "toomanycharacters".repeat(4),
-        region: "toomanycharacters".repeat(4)
-      });
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: AddressPageType.enterRegisteredOfficeAddress,
+          ...limitedPartnership.data?.registered_office_address,
+          premises: "toomanycharacters".repeat(13),
+          address_line_1: "toomanycharacters".repeat(4),
+          address_line_2: "toomanycharacters".repeat(4),
+          locality: "toomanycharacters".repeat(4),
+          region: "toomanycharacters".repeat(4)
+        });
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.premisesLength);

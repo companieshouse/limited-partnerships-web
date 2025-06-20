@@ -3,17 +3,17 @@ import enTranslationText from "../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../locales/cy/translations.json";
 import app from "../../app";
 import {
-  CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
-  ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL
-} from "../../../../controller/addressLookUp/url/registration";
+  CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
+  ENTER_REGISTERED_OFFICE_ADDRESS_URL
+} from "../../../../controller/addressLookUp/url/transition";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import AddressPageType from "../../../../controller/addressLookUp/PageType";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
+import LimitedPartnershipBuilder from "../../../../../presentation/test/builder/LimitedPartnershipBuilder";
 import { Jurisdiction } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-describe("Enter Principal Place Of Business Manual Address Page", () => {
-  const URL = getUrl(ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL);
+describe("Enter Registered Office Address Page", () => {
+  const URL = getUrl(ENTER_REGISTERED_OFFICE_ADDRESS_URL);
 
   beforeEach(() => {
     setLocalesEnabled(false);
@@ -22,43 +22,45 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
     appDevDependencies.limitedPartnershipGateway.feedErrors();
   });
 
-  describe("GET Enter Principal Place Of Business Page", () => {
-    it("should load the enter principal place of business page with English text", async () => {
+  describe("GET Enter Registered Office Address Page", () => {
+    it("should load the enter registered office address page with English text", async () => {
       setLocalesEnabled(true);
 
       const res = await request(app).get(URL + "?lang=en");
 
       expect(res.status).toBe(200);
       testTranslations(res.text, enTranslationText.address.enterAddress, [
-        "registeredOfficeAddress",
+        "jurisdictionCountry",
         "usualResidentialAddress",
         "correspondenceAddress",
-        "jurisdictionCountry",
+        "principalPlaceOfBusinessAddress",
         "principalOfficeAddress",
-        "errorMessages"
+        "errorMessages",
+        "titleHint3"
       ]);
       expect(res.text).not.toContain("WELSH -");
     });
 
-    it("should load the enter principal place of business page with Welsh text", async () => {
+    it("should load the enter registered office address page with Welsh text", async () => {
       setLocalesEnabled(true);
 
       const res = await request(app).get(URL + "?lang=cy");
 
       expect(res.status).toBe(200);
       testTranslations(res.text, cyTranslationText.address.enterAddress, [
-        "registeredOfficeAddress",
+        "jurisdictionCountry",
         "usualResidentialAddress",
         "correspondenceAddress",
-        "jurisdictionCountry",
+        "principalPlaceOfBusinessAddress",
         "principalOfficeAddress",
-        "errorMessages"
+        "errorMessages",
+        "titleHint3"
       ]);
     });
   });
 
-  describe("POST Enter Principal Place Of Business Address Page", () => {
-    it("should redirect to the confirm principal place of business address page", async () => {
+  describe("POST Enter Registered Office Address Page", () => {
+    it("should redirect to the confirm address page", async () => {
       const limitedPartnership = new LimitedPartnershipBuilder()
         .withJurisdiction(Jurisdiction.ENGLAND_AND_WALES)
         .build();
@@ -68,11 +70,11 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
       const res = await request(app)
         .post(URL)
         .send({
-          pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
-          ...limitedPartnership.data?.principal_place_of_business_address
+          pageType: AddressPageType.enterRegisteredOfficeAddress,
+          ...limitedPartnership.data?.registered_office_address
         });
 
-      const redirectUrl = getUrl(CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL);
+      const redirectUrl = getUrl(CONFIRM_REGISTERED_OFFICE_ADDRESS_URL);
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
     });
@@ -86,7 +88,7 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
         .post(URL)
         .send({
           pageType: "Invalid page type",
-          ...limitedPartnership.data?.principal_place_of_business_address,
+          ...limitedPartnership.data?.registered_office_address,
           country: "Scotland"
         });
 
@@ -102,14 +104,15 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
       const res = await request(app)
         .post(URL)
         .send({
-          pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
-          ...limitedPartnership.data?.principal_place_of_business_address,
+          pageType: AddressPageType.enterRegisteredOfficeAddress,
+          ...limitedPartnership.data?.registered_office_address,
           country: "Northern Ireland"
         });
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.jurisdictionCountry);
       expect(res.text).toContain(enTranslationText.govUk.error.title);
+      expect(res.text).toContain(limitedPartnership.data?.partnership_name?.toUpperCase());
     });
 
     it("should return a Welsh validation error when jurisdiction of Scotland does not match country", async () => {
@@ -122,14 +125,15 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
       const res = await request(app)
         .post(URL + "?lang=cy")
         .send({
-          pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
-          ...limitedPartnership.data?.principal_place_of_business_address,
+          pageType: AddressPageType.enterRegisteredOfficeAddress,
+          ...limitedPartnership.data?.registered_office_address,
           country: "Northern Ireland"
         });
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(cyTranslationText.address.enterAddress.errorMessages.jurisdictionCountry);
       expect(res.text).toContain(cyTranslationText.govUk.error.title);
+      expect(res.text).toContain(limitedPartnership.data?.partnership_name?.toUpperCase());
     });
 
     it("should return a validation error when jurisdiction of Northern Ireland does not match country", async () => {
@@ -142,14 +146,15 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
       const res = await request(app)
         .post(URL)
         .send({
-          pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
-          ...limitedPartnership.data?.principal_place_of_business_address,
+          pageType: AddressPageType.enterRegisteredOfficeAddress,
+          ...limitedPartnership.data?.registered_office_address,
           country: "Scotland"
         });
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.jurisdictionCountry);
       expect(res.text).toContain(enTranslationText.govUk.error.title);
+      expect(res.text).toContain(limitedPartnership.data?.partnership_name?.toUpperCase());
     });
 
     it("should return a validation error when jurisdiction of England and Wales does not match country", async () => {
@@ -162,14 +167,15 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
       const res = await request(app)
         .post(URL)
         .send({
-          pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
-          ...limitedPartnership.data?.principal_place_of_business_address,
+          pageType: AddressPageType.enterRegisteredOfficeAddress,
+          ...limitedPartnership.data?.registered_office_address,
           country: "Scotland"
         });
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.jurisdictionCountry);
       expect(res.text).toContain(enTranslationText.govUk.error.title);
+      expect(res.text).toContain(limitedPartnership.data?.partnership_name?.toUpperCase());
     });
 
     it("should return a validation error when postcode format is invalid", async () => {
@@ -182,8 +188,8 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
       const res = await request(app)
         .post(URL)
         .send({
-          pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
-          ...limitedPartnership.data?.principal_place_of_business_address,
+          pageType: AddressPageType.enterRegisteredOfficeAddress,
+          ...limitedPartnership.data?.registered_office_address,
           postal_code: "here"
         });
 
@@ -203,8 +209,8 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
       const res = await request(app)
         .post(URL)
         .send({
-          pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
-          ...limitedPartnership.data?.principal_place_of_business_address,
+          pageType: AddressPageType.enterRegisteredOfficeAddress,
+          ...limitedPartnership.data?.registered_office_address,
           premises: "-,.:; &@$£¥€'?!/\\řśŝşšţťŧùúûüũūŭůűųŵẁẃẅỳýŷÿźżžñńņňŋòóôõöøōŏőǿœŕŗàáâãäåāăąæǽçćĉċč",
           address_line_1: "()[]{}<>*=#%+ÀÁÂÃÄÅĀĂĄÆǼÇĆĈĊČÞĎÐÈÉÊËĒĔĖĘĚĜĞĠĢ",
           address_line_2: "ĤĦÌÍÎÏĨĪĬĮİĴĶĹĻĽĿŁÑŃŅŇŊÒÓÔÕÖØŌŎŐǾŒŔŖŘŚŜŞŠŢŤŦ",
@@ -212,7 +218,7 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
           region: "þďðèéêëēĕėęěĝģğġĥħìíîïĩīĭįĵķĺļľŀł"
         });
 
-      const redirectUrl = getUrl(CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL);
+      const redirectUrl = getUrl(CONFIRM_REGISTERED_OFFICE_ADDRESS_URL);
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
     });
@@ -227,13 +233,14 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
       const res = await request(app)
         .post(URL)
         .send({
-          pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
-          ...limitedPartnership.data?.principal_place_of_business_address,
+          pageType: AddressPageType.enterRegisteredOfficeAddress,
+          ...limitedPartnership.data?.registered_office_address,
           premises: "±",
           address_line_1: "±",
           address_line_2: "±",
           locality: "±",
-          region: "±"
+          region: "±",
+          postal_code: "±"
         });
 
       expect(res.status).toBe(200);
@@ -262,6 +269,12 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
           " " +
           enTranslationText.address.enterAddress.errorMessages.invalidCharacters
       );
+      expect(res.text).toContain(
+        enTranslationText.address.enterAddress.postcode +
+          " " +
+          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
+      );
+
       expect(res.text).toContain(enTranslationText.govUk.error.title);
       expect(res.text).toContain(limitedPartnership.data?.partnership_name?.toUpperCase());
     });
@@ -291,53 +304,6 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
       expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.addressLine2Length);
       expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.localityLength);
       expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.regionLength);
-    });
-
-    describe("UK not mainland", () => {
-      let limitedPartnership;
-
-      beforeEach(() => {
-        limitedPartnership = new LimitedPartnershipBuilder().build();
-      });
-
-      it("should return an error if the postcode is from Jersey", async () => {
-        const res = await request(app)
-          .post(URL)
-          .send({
-            pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
-            ...limitedPartnership.data?.principal_place_of_business_address,
-            postal_code: "JE2 3AA"
-          });
-
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(`Enter a UK mainland postcode`);
-      });
-
-      it("should return an error if the postcode is from Guernsey", async () => {
-        const res = await request(app)
-          .post(URL)
-          .send({
-            pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
-            ...limitedPartnership.data?.principal_place_of_business_address,
-            postal_code: "GY1 2AL"
-          });
-
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(`Enter a UK mainland postcode`);
-      });
-
-      it("should return an error if the postcode is from Isle of Man", async () => {
-        const res = await request(app)
-          .post(URL)
-          .send({
-            pageType: AddressPageType.enterPrincipalPlaceOfBusinessAddress,
-            ...limitedPartnership.data?.principal_place_of_business_address,
-            postal_code: "IM2 4NN"
-          });
-
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(`Enter a UK mainland postcode`);
-      });
     });
   });
 });

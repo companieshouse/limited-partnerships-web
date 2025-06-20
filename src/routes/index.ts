@@ -4,16 +4,19 @@ import { IDependencies } from "../config";
 
 import globalEndpoints from "./global";
 import registrationEndpoints from "./registration";
-import addressLookUpEndpoints from "./addressLookUp";
-import { transitionEndpoints } from "./transition";
+import addressRegistrationEndpoints from "./addressRegistration";
+import transitionEndpoints from "./transition";
+import addressTransitionEndpoints from "./addressTransition";
 
 const appRouter = (dependencies: IDependencies): Router => {
   const router = Router();
 
   globalEndpoints(router, dependencies);
   registrationEndpoints(router, dependencies);
-  addressLookUpEndpoints(router, dependencies);
+  addressRegistrationEndpoints(router, dependencies);
+
   transitionEndpoints(router, dependencies);
+  addressTransitionEndpoints(router, dependencies);
 
   return router;
 };
