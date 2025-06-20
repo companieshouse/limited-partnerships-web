@@ -129,7 +129,7 @@ describe("Add Limited Partner Person Page", () => {
       expect(res.text).toContain("Doe");
     });
 
-    it("should contain a back link to the reviw page when limited partners are present", async () => {
+    it("should contain a back link to the review page when limited partners are present", async () => {
       const limitedPartner = new LimitedPartnerBuilder()
         .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
         .isPerson()
