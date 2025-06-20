@@ -19,7 +19,7 @@ import { GENERAL_PARTNER_CHOICE_TEMPLATE } from "../../../../controller/transiti
 
 describe("Add General Partner Person Page", () => {
   const URL = getUrl(ADD_GENERAL_PARTNER_PERSON_URL);
-  // const REDIRECT_URL = getUrl(TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
+  // const REDIRECT_URL = getUrl(TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL); // TODO - Uncomment when TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL is available
 
   beforeEach(() => {
     setLocalesEnabled(false);
@@ -75,6 +75,7 @@ describe("Add General Partner Person Page", () => {
       const res = await request(app).get(getUrl(ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL) + "?lang=en");
 
       expect(res.status).toBe(200);
+      // TODO - Uncomment when the review template is available
       // const regex = new RegExp(
       //   `${TRANSITION_BASE_URL}/transaction/.*?/submission/.*?/${REVIEW_GENERAL_PARTNERS_TEMPLATE}`
       // );
@@ -100,7 +101,7 @@ describe("Add General Partner Person Page", () => {
       });
 
       expect(res.status).toBe(302);
-      // expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+      // expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`); // TODO - Uncomment when the redirect URL is available
     });
 
     it("should return a validation error when invalid data is entered", async () => {
