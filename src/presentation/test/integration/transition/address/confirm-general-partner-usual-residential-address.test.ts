@@ -93,27 +93,26 @@ describe("Confirm General Partner Usual Residential Address Page", () => {
   });
 
   describe("POST Confirm Usual Residential Address Page", () => {
-    // TODO
-    // it("should redirect to the next page", async () => {
-    //   const res = await request(app)
-    //     .post(URL)
-    //     .send({
-    //       pageType: AddressPageType.confirmGeneralPartnerUsualResidentialAddress,
-    //       address: `{
-    //         "postal_code": "ST6 3LJ",
-    //         "premises": "4",
-    //         "address_line_1": "DUNCALF STREET",
-    //         "address_line_2": "",
-    //         "locality": "STOKE-ON-TRENT",
-    //         "country": "England"
-    //       }`
-    //     });
+    it.skip("should redirect to the next page", async () => {
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: AddressPageType.confirmGeneralPartnerUsualResidentialAddress,
+          address: `{
+            "postal_code": "ST6 3LJ",
+            "premises": "4",
+            "address_line_1": "DUNCALF STREET",
+            "address_line_2": "",
+            "locality": "STOKE-ON-TRENT",
+            "country": "England"
+          }`
+        });
 
-    //   const redirectUrl = getUrl(TERRITORY_CHOICE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL);
+      // const redirectUrl = getUrl(TERRITORY_CHOICE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL);
 
-    //   expect(res.status).toBe(302);
-    //   expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
-    // });
+      expect(res.status).toBe(302);
+      // expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+    });
 
     it("should show error message if address is not provided", async () => {
       appDevDependencies.cacheRepository.feedCache({});
