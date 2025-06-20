@@ -1,5 +1,14 @@
 {% extends "layout.njk" %}
 
+{% set currentPage = "review-general-partners" %}
+{% set backPage = "standard-industrial-classification-code" %}
+
+{% block backLink %}
+
+  {% include "includes/configurable-back-link.njk" %}
+
+{% endblock %}
+
 {% set pageTitle = i18n.reviewGeneralPartnersPage.title  %}
 
 {% set list = props.data.generalPartners %}
@@ -11,6 +20,6 @@
 
 {% block content %}
 
-    {% include "pages/review-partners.njk" %}
+  {% include "pages/review-partners.njk" %}
 
 {% endblock %}
