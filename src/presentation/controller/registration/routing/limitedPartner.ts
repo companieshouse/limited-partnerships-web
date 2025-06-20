@@ -42,7 +42,7 @@ const registrationRoutingAddLimitedPartnerLegalEntity = {
 // usual residential address
 
 const registrationRoutingReviewLimitedPartners = {
-  previousUrl: url.LIMITED_PARTNER_CHOICE_URL,
+  previousUrl: url.REVIEW_GENERAL_PARTNERS_URL,
   currentUrl: url.REVIEW_LIMITED_PARTNERS_URL,
   nextUrl: url.CHECK_YOUR_ANSWERS_URL,
   pageType: RegistrationPageType.reviewLimitedPartners
