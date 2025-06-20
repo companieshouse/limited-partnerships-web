@@ -69,7 +69,7 @@
         "secondNationality" : "What is their second nationality (if relevant)?",
         "secondNationalitySelectPrompt": "Select a second nationality",
         "secondNationalityHint" : "Dual citizenship (also known as dual nationality) is allowed in some countries. This means you can be a citizen of your own country and another country.",
-        "publicRegisterLine1" : "We'll only show the month and year of their birth date.",
+        "publicRegisterLine1" : "We'll show the month and year of the partner's date of birth, but not the exact date.",
         "publicRegisterLine2" : "We'll show all the other information you provide on this screen on the public register.",
         "errorMessages": {
           "firstNameMissing": "Enter a first name",
