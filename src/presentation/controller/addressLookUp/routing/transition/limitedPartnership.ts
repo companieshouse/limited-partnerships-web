@@ -1,4 +1,4 @@
-import { EMAIL_URL } from "../../../transition/url";
+import { EMAIL_URL, GENERAL_PARTNERS_URL } from "../../../transition/url";
 import AddressPageType from "../../PageType";
 import * as url from "../../url/transition";
 
@@ -49,7 +49,7 @@ const transitionAddressRoutingEnterRegisteredOfficeAddress = {
 const transitionAddressRoutingConfirmRegisteredOfficeAddress = {
   previousUrl: url.POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
   currentUrl: url.CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
-  nextUrl: "/", // TODO update to the next URL in the flow
+  nextUrl: GENERAL_PARTNERS_URL,
   pageType: AddressPageType.confirmRegisteredOfficeAddress,
   data: {
     ...registeredOfficeAddressCacheKeys,

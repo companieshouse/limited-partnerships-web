@@ -7,23 +7,19 @@ import app from "../../app";
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
-import RegistrationPageType from "../../../../controller/registration/PageType";
+import TransitionPageType from "../../../../controller/transition/PageType";
 import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 import {
   ADD_GENERAL_PARTNER_PERSON_URL,
   ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL
-} from "../../../../controller/registration/url";
+} from "../../../../controller/transition/url";
 import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
-import { TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../controller/addressLookUp/url/registration";
-import { REGISTRATION_BASE_URL } from "../../../../../config/constants";
-import {
-  GENERAL_PARTNER_CHOICE_TEMPLATE,
-  REVIEW_GENERAL_PARTNERS_TEMPLATE
-} from "../../../../controller/registration/template";
+import { TRANSITION_BASE_URL } from "../../../../../config/constants";
+import { GENERAL_PARTNER_CHOICE_TEMPLATE } from "../../../../controller/transition/template";
 
 describe("Add General Partner Person Page", () => {
   const URL = getUrl(ADD_GENERAL_PARTNER_PERSON_URL);
-  const REDIRECT_URL = getUrl(TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
+  // const REDIRECT_URL = getUrl(TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL); // TODO - Uncomment when TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL is available
 
   beforeEach(() => {
     setLocalesEnabled(false);
@@ -41,11 +37,7 @@ describe("Add General Partner Person Page", () => {
       expect(res.text).toContain(
         `${cyTranslationText.addPartnerPersonPage.generalPartner.title} - ${cyTranslationText.service} - GOV.UK`
       );
-      testTranslations(res.text, cyTranslationText.addPartnerPersonPage, [
-        "errorMessages",
-        "limitedPartner",
-        "dateEffectiveFrom"
-      ]);
+      testTranslations(res.text, cyTranslationText.addPartnerPersonPage, ["errorMessages", "limitedPartner"]);
     });
 
     it("should load the add general partner page with English text", async () => {
@@ -56,11 +48,7 @@ describe("Add General Partner Person Page", () => {
       expect(res.text).toContain(
         `${enTranslationText.addPartnerPersonPage.generalPartner.title} - ${enTranslationText.service} - GOV.UK`
       );
-      testTranslations(res.text, enTranslationText.addPartnerPersonPage, [
-        "errorMessages",
-        "limitedPartner",
-        "dateEffectiveFrom"
-      ]);
+      testTranslations(res.text, enTranslationText.addPartnerPersonPage, ["errorMessages", "limitedPartner"]);
       expect(res.text).not.toContain("WELSH -");
     });
 
@@ -87,10 +75,11 @@ describe("Add General Partner Person Page", () => {
       const res = await request(app).get(getUrl(ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL) + "?lang=en");
 
       expect(res.status).toBe(200);
-      const regex = new RegExp(
-        `${REGISTRATION_BASE_URL}/transaction/.*?/submission/.*?/${REVIEW_GENERAL_PARTNERS_TEMPLATE}`
-      );
-      expect(res.text).toMatch(regex);
+      // TODO - Uncomment when the review template is available
+      // const regex = new RegExp(
+      //   `${TRANSITION_BASE_URL}/transaction/.*?/submission/.*?/${REVIEW_GENERAL_PARTNERS_TEMPLATE}`
+      // );
+      // expect(res.text).toMatch(regex);
     });
 
     it("should contain a back link to the choice page when general partners are not present", async () => {
@@ -98,7 +87,7 @@ describe("Add General Partner Person Page", () => {
 
       expect(res.status).toBe(200);
       const regex = new RegExp(
-        `${REGISTRATION_BASE_URL}/transaction/.*?/submission/.*?/${GENERAL_PARTNER_CHOICE_TEMPLATE}`
+        `${TRANSITION_BASE_URL}/transaction/.*?/submission/.*?/${GENERAL_PARTNER_CHOICE_TEMPLATE}`
       );
       expect(res.text).toMatch(regex);
     });
@@ -107,12 +96,12 @@ describe("Add General Partner Person Page", () => {
   describe("Post Add General Partner", () => {
     it("should send the general partner details", async () => {
       const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.addGeneralPartnerPerson,
+        pageType: TransitionPageType.addGeneralPartnerPerson,
         forename: "test"
       });
 
       expect(res.status).toBe(302);
-      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+      // expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`); // TODO - Uncomment when the redirect URL is available
     });
 
     it("should return a validation error when invalid data is entered", async () => {
@@ -123,7 +112,7 @@ describe("Add General Partner Person Page", () => {
       appDevDependencies.generalPartnerGateway.feedErrors(apiErrors);
 
       const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.addGeneralPartnerPerson,
+        pageType: TransitionPageType.addGeneralPartnerPerson,
         forename: "INVALID-CHARACTERS"
       });
 
@@ -146,7 +135,7 @@ describe("Add General Partner Person Page", () => {
       appDevDependencies.generalPartnerGateway.feedErrors(apiErrors);
 
       const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.addGeneralPartnerPerson,
+        pageType: TransitionPageType.addGeneralPartnerPerson,
         forename: "INVALID-CHARACTERS-FORENAME",
         surname: "SURNAME",
         former_names: "",
@@ -181,7 +170,7 @@ describe("Add General Partner Person Page", () => {
       appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
 
       const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.addGeneralPartnerPerson,
+        pageType: TransitionPageType.addGeneralPartnerPerson,
         forename: "test"
       });
 
@@ -205,7 +194,7 @@ describe("Add General Partner Person Page", () => {
       appDevDependencies.generalPartnerGateway.feedErrors(apiErrors);
 
       const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.addGeneralPartnerPerson,
+        pageType: TransitionPageType.addGeneralPartnerPerson,
         forename: "INVALID-CHARACTERS"
       });
 
@@ -230,7 +219,7 @@ describe("Add General Partner Person Page", () => {
       appDevDependencies.generalPartnerGateway.feedErrors(apiErrors);
 
       const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.addGeneralPartnerPerson,
+        pageType: TransitionPageType.addGeneralPartnerPerson,
         forename: "INVALID-CHARACTERS-FORENAME",
         surname: "SURNAME",
         former_names: "FORMER-NAMES",

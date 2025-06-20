@@ -69,7 +69,7 @@ describe("Add General Partner Legal Entity Page", () => {
       );
     });
 
-    it("should contain a back link to the reviw page when general partners are present", async () => {
+    it("should contain a back link to the review page when general partners are present", async () => {
       const generalPartner = new GeneralPartnerBuilder()
         .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
         .isPerson()

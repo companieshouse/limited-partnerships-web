@@ -1,39 +1,39 @@
-import GlobalController from "../presentation/controller/global/Controller";
-import LimitedPartnershipService from "../application/service/LimitedPartnershipService";
-import GeneralPartnerService from "../application/service/GeneralPartnerService";
-import LimitedPartnerService from "../application/service/LimitedPartnerService";
+import CacheRepository from "../infrastructure/repository/CacheRepository";
+import AddressLookUpGateway from "../infrastructure/gateway/addressLookUp/AddressLookUpGateway";
 import LimitedPartnershipGateway from "../infrastructure/gateway/limitedPartnership/LimitedPartnershipGateway";
 import GeneralPartnerGateway from "../infrastructure/gateway/generalPartner/GeneralPartnerGateway";
 import LimitedPartnerGateway from "../infrastructure/gateway/limitedPartner/LimitedPartnerGateway";
-import CacheRepository from "../infrastructure/repository/CacheRepository";
-import LimitedPartnershipRegistrationController from "../presentation/controller/registration/LimitedPartnershipController";
-import GeneralPartnerController from "../presentation/controller/registration/GeneralPartnerController";
-import LimitedPartnerController from "../presentation/controller/registration/LimitedPartnerController";
-import CacheService from "../application/service/CacheService";
-import AddressLookUpGateway from "../infrastructure/gateway/addressLookUp/AddressLookUpGateway";
-import AddressLookUpService from "../application/service/AddressService";
-import AddressLookUpController from "../presentation/controller/addressLookUp/Controller";
-import LimitedPartnershipTransitionController from "../presentation/controller/transition/LimitedPartnershipController";
 import TransactionGateway from "../infrastructure/gateway/transaction/TransactionGateway";
-import { IIncorporationGateway } from "../domain/IIncorporationGateway";
 import IncorporationGateway from "../infrastructure/gateway/incorporation/IncorporationGateway";
-import ICompanyGateway from "../domain/ICompanyGateway";
 import CompanyGateway from "../infrastructure/gateway/companyProfile/CompanyGateway";
+import PaymentGateway from "../infrastructure/gateway/payment/PaymentGateway";
+
+import CacheService from "../application/service/CacheService";
+import AddressLookUpService from "../application/service/AddressService";
+import LimitedPartnershipService from "../application/service/LimitedPartnershipService";
+import GeneralPartnerService from "../application/service/GeneralPartnerService";
+import LimitedPartnerService from "../application/service/LimitedPartnerService";
 import CompanyService from "../application/service/CompanyService";
 import PaymentService from "../application/service/PaymentService";
-import PaymentGateway from "../infrastructure/gateway/payment/PaymentGateway";
-import IPaymentGateway from "../domain/IPaymentGateway";
 import TransactionService from "../application/service/TransactionService";
+
+import GlobalController from "../presentation/controller/global/Controller";
+import AddressLookUpController from "../presentation/controller/addressLookUp/Controller";
+import LimitedPartnershipRegistrationController from "../presentation/controller/registration/LimitedPartnershipController";
+import GeneralPartnerRegistrationController from "../presentation/controller/registration/GeneralPartnerController";
+import LimitedPartnerController from "../presentation/controller/registration/LimitedPartnerController";
+import LimitedPartnershipTransitionController from "../presentation/controller/transition/LimitedPartnershipController";
+import GeneralPartnerTransitionController from "../presentation/controller/transition/GeneralPartnerController";
 
 // GATEWAYS
 const limitedPartnershipGateway: LimitedPartnershipGateway = new LimitedPartnershipGateway();
 const transactionGateway: TransactionGateway = new TransactionGateway();
 const addressLookUpGateway: AddressLookUpGateway = new AddressLookUpGateway();
-const incorporationGateway: IIncorporationGateway = new IncorporationGateway();
+const incorporationGateway: IncorporationGateway = new IncorporationGateway();
 const generalPartnerGateway: GeneralPartnerGateway = new GeneralPartnerGateway();
 const limitedPartnerGateway: LimitedPartnerGateway = new LimitedPartnerGateway();
-const companyGateway: ICompanyGateway = new CompanyGateway();
-const paymentGateway: IPaymentGateway = new PaymentGateway();
+const companyGateway: CompanyGateway = new CompanyGateway();
+const paymentGateway: PaymentGateway = new PaymentGateway();
 
 // REPOSITORIES
 const cacheRepository = new CacheRepository();
@@ -73,11 +73,8 @@ const addressLookUpController: AddressLookUpController = new AddressLookUpContro
   limitedPartnerService,
   cacheService
 );
-const generalPartnerController: GeneralPartnerController = new GeneralPartnerController(
-  limitedPartnershipService,
-  generalPartnerService,
-  limitedPartnerService
-);
+const generalPartnerRegistrationController: GeneralPartnerRegistrationController =
+  new GeneralPartnerRegistrationController(limitedPartnershipService, generalPartnerService, limitedPartnerService);
 const limitedPartnerController: LimitedPartnerController = new LimitedPartnerController(
   limitedPartnershipService,
   limitedPartnerService
@@ -85,12 +82,20 @@ const limitedPartnerController: LimitedPartnerController = new LimitedPartnerCon
 
 const limitedPartnershipTransitionController: LimitedPartnershipTransitionController =
   new LimitedPartnershipTransitionController(companyService, cacheService, limitedPartnershipService);
+const generalPartnerTransitionController: GeneralPartnerTransitionController = new GeneralPartnerTransitionController(
+  limitedPartnershipService,
+  generalPartnerService,
+  limitedPartnerService
+);
 
 export const appDependencies = {
   globalController,
-  limitedPartnershipRegistrationController,
-  generalPartnerController,
-  limitedPartnerController,
   addressLookUpController,
-  limitedPartnershipTransitionController
+
+  limitedPartnershipRegistrationController,
+  generalPartnerRegistrationController,
+  limitedPartnerController,
+
+  limitedPartnershipTransitionController,
+  generalPartnerTransitionController
 };
