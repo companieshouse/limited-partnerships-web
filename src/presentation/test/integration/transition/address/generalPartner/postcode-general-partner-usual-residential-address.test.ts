@@ -1,23 +1,23 @@
 import request from "supertest";
 
-import enTranslationText from "../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../locales/cy/translations.json";
+import enTranslationText from "../../../../../../../locales/en/translations.json";
+import cyTranslationText from "../../../../../../../locales/cy/translations.json";
 
-import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import app from "../../app";
+import { appDevDependencies } from "../../../../../../config/dev-dependencies";
+import app from "../../../app";
 
-import { getUrl, setLocalesEnabled, toEscapedHtml, testTranslations } from "../../../utils";
+import { getUrl, setLocalesEnabled, toEscapedHtml, testTranslations } from "../../../../utils";
 import GeneralPartnerBuilder, {
   generalPartnerLegalEntity,
   generalPartnerPerson
-} from "../../../builder/GeneralPartnerBuilder";
-import AddressPageType from "../../../../controller/addressLookUp/PageType";
+} from "../../../../builder/GeneralPartnerBuilder";
+import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import {
   CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
-} from "../../../../controller/addressLookUp/url/transition";
-import { APPLICATION_CACHE_KEY } from "../../../../../config/constants";
+} from "../../../../../controller/addressLookUp/url/transition";
+import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
 
 describe("Postcode Usual Residential Address Page", () => {
   const URL = getUrl(POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);

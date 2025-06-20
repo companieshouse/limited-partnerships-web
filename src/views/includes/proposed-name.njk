@@ -1,9 +1,7 @@
-{% if journeyTypes.isRegistration %}
-    <span class="govuk-caption-l">
+<span class="govuk-caption-l">
+    {% if journeyTypes.isRegistration %}
         {{ props.data.limitedPartnership.data.partnership_name | upper }} {{ props.data.limitedPartnership.data.name_ending | upper }}
-    </span>
-{% elif journeyTypes.isTransition %}
-    <span class="govuk-caption-l">
-    {{ props.data.limitedPartnership.data.partnership_name | upper }} ({{ props.data.limitedPartnership.data.partnership_number | upper }})
-    </span>
-{% endif %}
+    {% elif journeyTypes.isTransition %}
+        {{ props.data.limitedPartnership.data.partnership_name | upper }} ({{ props.data.limitedPartnership.data.partnership_number | upper }})
+    {% endif %}
+</span>

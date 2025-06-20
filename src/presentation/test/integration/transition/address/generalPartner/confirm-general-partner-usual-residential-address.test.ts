@@ -1,19 +1,19 @@
 import request from "supertest";
 
-import app from "../../app";
-import enTranslationText from "../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../locales/cy/translations.json";
+import app from "../../../app";
+import enTranslationText from "../../../../../../../locales/en/translations.json";
+import cyTranslationText from "../../../../../../../locales/cy/translations.json";
 
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
+import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import {
   CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-} from "../../../../controller/addressLookUp/url/transition";
-import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import AddressPageType from "../../../../controller/addressLookUp/PageType";
-import { ApiErrors } from "../../../../../domain/entities/UIErrors";
-import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
+} from "../../../../../controller/addressLookUp/url/transition";
+import { appDevDependencies } from "../../../../../../config/dev-dependencies";
+import AddressPageType from "../../../../../controller/addressLookUp/PageType";
+import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
+import GeneralPartnerBuilder from "../../../../builder/GeneralPartnerBuilder";
 
 describe("Confirm General Partner Usual Residential Address Page", () => {
   const URL = getUrl(CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
