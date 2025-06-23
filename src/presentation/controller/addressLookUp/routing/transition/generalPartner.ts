@@ -1,3 +1,4 @@
+import { ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL } from "../../../transition/url";
 import AddressPageType from "../../PageType";
 import * as url from "../../url/transition";
 
@@ -148,6 +149,77 @@ const correspondenceAddress = [
   registrationAddressRoutingConfirmGeneralPartnerCorrespondenceAddress
 ];
 
-const generalPartnerRouting = [...usualResidentialAddress, ...correspondenceAddress];
+// principal office address - legal entity
+
+const principalOfficeAddressCacheKeys = {
+  [AddressCacheKeys.addressCacheKey]: "principal_office_address",
+  [AddressCacheKeys.territoryCacheKey]: "poa_territory_choice"
+};
+
+const registrationAddressRoutingTerritoryChoiceGeneralPartnerPrincipalOfficeAddress = {
+  previousUrl: ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
+  currentUrl: url.TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  nextUrl: url.POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  pageType: AddressPageType.territoryChoiceGeneralPartnerPrincipalOfficeAddress,
+  data: {
+    ...principalOfficeAddressCacheKeys,
+    nextUrlOverseas: url.ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
+  }
+};
+
+const registrationAddressRoutingPostcodeGeneralPartnerPrincipalOfficeAddress = {
+  previousUrl: url.TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  currentUrl: url.POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  nextUrl: url.CHOOSE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  pageType: AddressPageType.postcodeGeneralPartnerPrincipalOfficeAddress,
+  data: {
+    ...principalOfficeAddressCacheKeys,
+    enterManualAddressPageType: AddressPageType.enterGeneralPartnerPrincipalOfficeAddress,
+    confirmAddressUrl: url.CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
+  }
+};
+
+const registrationAddressRoutingChooseGeneralPartnerPrincipalOfficeAddress = {
+  previousUrl: url.POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  currentUrl: url.CHOOSE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  nextUrl: url.CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  pageType: AddressPageType.chooseGeneralPartnerPrincipalOfficeAddress,
+  data: {
+    ...principalOfficeAddressCacheKeys,
+    enterManualAddressPageType: AddressPageType.enterGeneralPartnerPrincipalOfficeAddress
+  }
+};
+
+const registrationAddressRoutingEnterGeneralPartnerPrincipalOfficeAddress = {
+  previousUrl: url.POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  currentUrl: url.ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  nextUrl: url.CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  pageType: AddressPageType.enterGeneralPartnerPrincipalOfficeAddress,
+  data: {
+    ...principalOfficeAddressCacheKeys,
+    territoryPageType: AddressPageType.territoryChoiceGeneralPartnerPrincipalOfficeAddress
+  }
+};
+
+const registrationAddressRoutingConfirmGeneralPartnerPrincipalOfficeAddress = {
+  previousUrl: url.POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  currentUrl: url.CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  nextUrl: "/", // TODO change to review page when ready
+  pageType: AddressPageType.confirmGeneralPartnerPrincipalOfficeAddress,
+  data: {
+    ...principalOfficeAddressCacheKeys,
+    enterManualAddressPageType: AddressPageType.enterGeneralPartnerPrincipalOfficeAddress
+  }
+};
+
+const principalOfficeAddress = [
+  registrationAddressRoutingTerritoryChoiceGeneralPartnerPrincipalOfficeAddress,
+  registrationAddressRoutingPostcodeGeneralPartnerPrincipalOfficeAddress,
+  registrationAddressRoutingEnterGeneralPartnerPrincipalOfficeAddress,
+  registrationAddressRoutingChooseGeneralPartnerPrincipalOfficeAddress,
+  registrationAddressRoutingConfirmGeneralPartnerPrincipalOfficeAddress
+];
+
+const generalPartnerRouting = [...usualResidentialAddress, ...correspondenceAddress, ...principalOfficeAddress];
 
 export default generalPartnerRouting;
