@@ -11,6 +11,10 @@ import GeneralPartnerService from "../../../application/service/GeneralPartnerSe
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
 import { PageRouting } from "../PageRouting";
 import UIErrors from "../../../domain/entities/UIErrors";
+import {
+  CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
+} from "../addressLookUp/url/transition";
 
 class GeneralPartnerController extends AbstractController {
   constructor(
@@ -156,6 +160,7 @@ class GeneralPartnerController extends AbstractController {
 
           return;
         }
+
         const newIds = { ...ids, generalPartnerId: result.generalPartnerId };
 
         const url = super.insertIdsInUrl(pageRouting.nextUrl, newIds);
@@ -189,11 +194,53 @@ class GeneralPartnerController extends AbstractController {
           return;
         }
 
+        await this.conditionalGeneralPartner(ids, pageRouting, request, tokens);
+
         response.redirect(pageRouting.nextUrl);
       } catch (error) {
         next(error);
       }
     };
+  }
+
+  private async conditionalGeneralPartner(
+    ids: { transactionId: string; submissionId: string; generalPartnerId: string },
+    pageRouting: PageRouting,
+    request: Request,
+    tokens: {
+      access_token: string;
+      refresh_token: string;
+    }
+  ) {
+    if (pageRouting.pageType === TransitionPageType.addGeneralPartnerPerson) {
+      const generalPartner = await this.generalPartnerService.getGeneralPartner(
+        tokens,
+        ids.transactionId,
+        ids.generalPartnerId
+      );
+
+      if (generalPartner?.data?.usual_residential_address?.address_line_1) {
+        pageRouting.nextUrl = super.insertIdsInUrl(
+          CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+          ids,
+          request.url
+        );
+      }
+    } else if (pageRouting.pageType === TransitionPageType.addGeneralPartnerLegalEntity) {
+      const generalPartner = await this.generalPartnerService.getGeneralPartner(
+        tokens,
+        ids.transactionId,
+        ids.generalPartnerId
+      );
+
+      if (generalPartner?.data?.principal_office_address?.address_line_1) {
+        pageRouting.nextUrl = super.insertIdsInUrl(
+          CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+          ids,
+          request.url
+        );
+      }
+    }
   }
 
   postReviewPage() {

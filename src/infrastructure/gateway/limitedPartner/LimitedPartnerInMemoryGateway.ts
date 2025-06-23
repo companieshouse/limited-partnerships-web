@@ -83,7 +83,7 @@ class LimitedPartnerInMemoryGateway implements ILimitedPartnerGateway {
       throw new Error(`Not found: ${limitedPartnerId}`);
     }
 
-    this.limitedPartners[index].data = data;
+    this.limitedPartners[index].data = { ...this.limitedPartners[index].data, ...data };
   }
 
   async deleteLimitedPartner(

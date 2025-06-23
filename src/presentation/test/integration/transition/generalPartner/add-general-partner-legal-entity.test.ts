@@ -7,7 +7,7 @@ import app from "../../app";
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
-import RegistrationPageType from "../../../../controller/transition/PageType";
+import TransitionPageType from "../../../../controller/transition/PageType";
 import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 import {
   ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
@@ -17,7 +17,10 @@ import {
   GENERAL_PARTNER_CHOICE_TEMPLATE,
   REVIEW_GENERAL_PARTNERS_TEMPLATE
 } from "../../../../controller/transition/template";
-import { TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../../../controller/addressLookUp/url/transition";
+import {
+  CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
+} from "../../../../controller/addressLookUp/url/transition";
 import { TRANSITION_BASE_URL } from "../../../../../config/constants";
 
 import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
@@ -30,6 +33,7 @@ describe("Add General Partner Legal Entity Page", () => {
     setLocalesEnabled(false);
 
     appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
+    appDevDependencies.generalPartnerGateway.feedErrors();
   });
 
   describe("Get Add General Partner Legal Entity Page", () => {
@@ -100,7 +104,7 @@ describe("Add General Partner Legal Entity Page", () => {
   describe("Post Add General Partner Legal Entity", () => {
     it("should send the general partner legal entity details", async () => {
       const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.addGeneralPartnerLegalEntity,
+        pageType: TransitionPageType.addGeneralPartnerLegalEntity,
         legal_entity_name: "test"
       });
 
@@ -116,12 +120,35 @@ describe("Add General Partner Legal Entity Page", () => {
       appDevDependencies.generalPartnerGateway.feedErrors(apiErrors);
 
       const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.addGeneralPartnerLegalEntity,
+        pageType: TransitionPageType.addGeneralPartnerLegalEntity,
         legal_entity_name: "INVALID-CHARACTERS"
       });
 
       expect(res.status).toBe(200);
       expect(res.text).toContain("Legal entity name is invalid");
+    });
+
+    it("should send the general partner details and go to confirm ura address page if already saved", async () => {
+      const generalPartner = new GeneralPartnerBuilder()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .isLegalEntity()
+        .build();
+
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+
+      const URL = getUrl(ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_ID_URL);
+
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: TransitionPageType.addGeneralPartnerLegalEntity,
+          ...generalPartner.data
+        });
+
+      const REDIRECT_URL = getUrl(CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
+
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
     });
   });
 });

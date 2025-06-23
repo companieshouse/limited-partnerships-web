@@ -6,10 +6,11 @@ import cyTranslationText from "../../../../../../../locales/cy/translations.json
 
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import {
+  CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-  TERRITORY_CHOICE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
+  TERRITORY_CHOICE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL
 } from "../../../../../controller/addressLookUp/url/transition";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
@@ -41,6 +42,7 @@ describe("Confirm General Partner Usual Residential Address Page", () => {
       .build();
 
     appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+    appDevDependencies.generalPartnerGateway.feedErrors();
   });
 
   describe("GET Confirm Usual Residential Address Page", () => {
@@ -95,6 +97,14 @@ describe("Confirm General Partner Usual Residential Address Page", () => {
 
   describe("POST Confirm Usual Residential Address Page", () => {
     it("should redirect to the next page", async () => {
+      const generalPartner = new GeneralPartnerBuilder()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .isPerson()
+        .withServiceAddress(null)
+        .build();
+
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+
       const res = await request(app)
         .post(URL)
         .send({
@@ -149,6 +159,42 @@ describe("Confirm General Partner Usual Residential Address Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain("must not be null");
+    });
+
+    it("should redirect to the confirm correspondance address if already saved", async () => {
+      const generalPartner = new GeneralPartnerBuilder()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .isPerson()
+        .withServiceAddress({
+          postal_code: "ST6 3LJ",
+          premises: "4",
+          address_line_1: "DUNCALF STREET",
+          address_line_2: "",
+          locality: "STOKE-ON-TRENT",
+          country: "England"
+        })
+        .build();
+
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: AddressPageType.confirmGeneralPartnerUsualResidentialAddress,
+          address: `{
+            "postal_code": "ST6 3LJ",
+            "premises": "4",
+            "address_line_1": "DUNCALF STREET",
+            "address_line_2": "",
+            "locality": "STOKE-ON-TRENT",
+            "country": "England"
+          }`
+        });
+
+      const redirectUrl = getUrl(CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL);
+
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
     });
   });
 });

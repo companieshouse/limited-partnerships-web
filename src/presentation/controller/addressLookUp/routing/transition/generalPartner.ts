@@ -66,7 +66,8 @@ const transitionAddressRoutingConfirmGeneralPartnerUsualResidentialAddress = {
   pageType: AddressPageType.confirmGeneralPartnerUsualResidentialAddress,
   data: {
     ...usualResidentialAddressCacheKeys,
-    enterManualAddressPageType: AddressPageType.enterGeneralPartnerUsualResidentialAddress
+    enterManualAddressPageType: AddressPageType.enterGeneralPartnerUsualResidentialAddress,
+    confirmAddressUrl: url.CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL
   }
 };
 

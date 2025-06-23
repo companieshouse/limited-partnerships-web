@@ -13,7 +13,10 @@ import {
   ADD_GENERAL_PARTNER_PERSON_URL,
   ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL
 } from "../../../../controller/transition/url";
-import { TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../controller/addressLookUp/url/transition";
+import {
+  CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
+} from "../../../../controller/addressLookUp/url/transition";
 import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
 import { TRANSITION_BASE_URL } from "../../../../../config/constants";
 import {
@@ -172,12 +175,17 @@ describe("Add General Partner Person Page", () => {
 
       appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
 
-      const res = await request(app).post(URL).send({
-        pageType: TransitionPageType.addGeneralPartnerPerson,
-        forename: "test"
-      });
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: TransitionPageType.addGeneralPartnerPerson,
+          ...generalPartner.data
+        });
+
+      const REDIRECT_URL = getUrl(CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
 
       expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
     });
 
     it("should return a validation error when invalid data is entered", async () => {
@@ -243,6 +251,29 @@ describe("Add General Partner Person Page", () => {
       expect(res.text).toContain("Mongolian");
       expect(res.text).toContain("Uzbek");
       expect(res.text).toContain('name="not_disqualified_statement_checked" type="checkbox" value="true"');
+    });
+
+    it("should send the general partner details and go to confirm ura address page if already saved", async () => {
+      const generalPartner = new GeneralPartnerBuilder()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .isPerson()
+        .build();
+
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+
+      const URL = getUrl(ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL);
+
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: TransitionPageType.addGeneralPartnerPerson,
+          ...generalPartner.data
+        });
+
+      const REDIRECT_URL = getUrl(CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
+
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
     });
   });
 });

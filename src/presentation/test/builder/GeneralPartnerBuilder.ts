@@ -48,7 +48,7 @@ class GeneralPartnerBuilder extends AbstractPartnerBuilder {
     return this;
   }
 
-  withServiceAddress(serviceAddress: Record<string, any>) {
+  withServiceAddress(serviceAddress: Record<string, any> | null) {
     this.data.service_address = serviceAddress;
     return this;
   }
