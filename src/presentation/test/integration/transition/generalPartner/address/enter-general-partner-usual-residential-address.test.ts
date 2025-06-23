@@ -11,7 +11,7 @@ import {
   ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
-} from "../../../../../controller/addressLookUp/url/registration";
+} from "../../../../../controller/addressLookUp/url/transition";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";

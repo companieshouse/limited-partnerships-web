@@ -22,11 +22,8 @@
 
         {% include "includes/errors.njk" %}
 
-        {% if journeyTypes.isRegistration %}
-          {% include "includes/proposed-name.njk" %}
-        {% else %}
-          {% include "includes/company-name.njk" %}
-        {% endif %}
+        {% include "includes/proposed-name.njk" %}
+        
 
         <h1 class="govuk-heading-xl govuk-!-margin-bottom-2">{{ i18n.emailPage.whatIsEmail }}</h1>
 
