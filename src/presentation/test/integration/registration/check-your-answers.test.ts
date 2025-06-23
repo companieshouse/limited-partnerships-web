@@ -48,7 +48,7 @@ describe("Check Your Answers Page", () => {
         "headingTerm",
         "jurisdictions",
         "headingSic",
-        "amountContributed"
+        "capitalContribution"
       ]);
       expect(res.text).toContain(enTranslationText.print.buttonText);
       expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
@@ -64,7 +64,7 @@ describe("Check Your Answers Page", () => {
         "headingTerm",
         "jurisdictions",
         "headingSic",
-        "amountContributed"
+        "capitalContribution"
       ]);
       expect(res.text).toContain(cyTranslationText.print.buttonText);
       expect(res.text).toContain(cyTranslationText.print.buttonTextNoJs);
@@ -214,7 +214,7 @@ describe("Check Your Answers Page", () => {
 
     expect(res.status).toBe(200);
 
-    testTranslations(res.text, enTranslationText.checkYourAnswersPage, ["scotland", "amountContributed"]);
+    testTranslations(res.text, enTranslationText.checkYourAnswersPage, ["scotland", "capitalContribution"]);
 
     checkIfValuesInText(res, generalPartnerPerson, enTranslationText);
 
@@ -233,7 +233,7 @@ describe("Check Your Answers Page", () => {
     testTranslations(res.text, cyTranslationText.checkYourAnswersPage, [
       "scotland",
       "northernIreland",
-      "amountContributed"
+      "capitalContribution"
     ]);
 
     checkIfValuesInText(res, generalPartnerPerson, cyTranslationText);
@@ -299,8 +299,12 @@ const checkIfValuesInText = (res: request.Response, partner: GeneralPartner | Li
           .split(" ")
           .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
           .join(" ");
-
         expect(res.text).toContain(capitalized);
+      } else if (key.includes("contribution_sub_types")) {
+        const str = partner.data[key]
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+          .join(" / ");
+        expect(res.text).toContain(str.replaceAll("_", " "));
       } else {
         expect(res.text).toContain(partner.data[key]);
       }
