@@ -13,7 +13,9 @@ import {
   CONFIRM_LIMITED_PARTNERSHIP_URL,
   EMAIL_URL,
   GENERAL_PARTNER_CHOICE_URL,
-  GENERAL_PARTNERS_URL
+  GENERAL_PARTNERS_URL,
+  REMOVE_GENERAL_PARTNER_URL,
+  REVIEW_GENERAL_PARTNERS_URL
 } from "../presentation/controller/transition/url";
 
 const transitionEndpoints = (router: Router, dependencies: IDependencies): void => {
@@ -109,6 +111,28 @@ const transitionEndpoints = (router: Router, dependencies: IDependencies): void 
     ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_ID_URL,
     authentication,
     dependencies.generalPartnerTransitionController.sendPageData()
+  );
+
+  router.get(
+    REVIEW_GENERAL_PARTNERS_URL,
+    authentication,
+    dependencies.generalPartnerTransitionController.getReviewPage()
+  );
+  router.post(
+    REVIEW_GENERAL_PARTNERS_URL,
+    authentication,
+    dependencies.generalPartnerTransitionController.postReviewPage()
+  );
+
+  router.get(
+    REMOVE_GENERAL_PARTNER_URL,
+    authentication,
+    dependencies.generalPartnerTransitionController.getPageRouting()
+  );
+  router.post(
+    REMOVE_GENERAL_PARTNER_URL,
+    authentication,
+    dependencies.generalPartnerTransitionController.postRemovePage()
   );
 };
 

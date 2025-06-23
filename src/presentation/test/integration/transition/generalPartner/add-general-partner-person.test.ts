@@ -16,7 +16,10 @@ import {
 import { TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../controller/addressLookUp/url/transition";
 import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
 import { TRANSITION_BASE_URL } from "../../../../../config/constants";
-import { GENERAL_PARTNER_CHOICE_TEMPLATE } from "../../../../controller/transition/template";
+import {
+  GENERAL_PARTNER_CHOICE_TEMPLATE,
+  REVIEW_GENERAL_PARTNERS_TEMPLATE
+} from "../../../../controller/transition/template";
 
 describe("Add General Partner Person Page", () => {
   const URL = getUrl(ADD_GENERAL_PARTNER_PERSON_URL);
@@ -76,11 +79,10 @@ describe("Add General Partner Person Page", () => {
       const res = await request(app).get(getUrl(ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL) + "?lang=en");
 
       expect(res.status).toBe(200);
-      // TODO - Uncomment when the review template is available
-      // const regex = new RegExp(
-      //   `${TRANSITION_BASE_URL}/transaction/.*?/submission/.*?/${REVIEW_GENERAL_PARTNERS_TEMPLATE}`
-      // );
-      // expect(res.text).toMatch(regex);
+      const regex = new RegExp(
+        `${TRANSITION_BASE_URL}/transaction/.*?/submission/.*?/${REVIEW_GENERAL_PARTNERS_TEMPLATE}`
+      );
+      expect(res.text).toMatch(regex);
     });
 
     it("should contain a back link to the choice page when general partners are not present", async () => {

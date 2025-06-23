@@ -1,6 +1,9 @@
 import TransitionPageType from "../PageType";
 import * as url from "../url";
-import { CONFIRM_REGISTERED_OFFICE_ADDRESS_URL, TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../addressLookUp/url/transition";
+import {
+  CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
+  TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
+} from "../../addressLookUp/url/transition";
 
 const transitionRoutingGeneralPartners = {
   previousUrl: CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
@@ -22,7 +25,7 @@ const transitionRoutingAddGeneralPartnerPerson = {
   nextUrl: TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   pageType: TransitionPageType.addGeneralPartnerPerson,
   data: {
-    // customPreviousUrl: url.REVIEW_GENERAL_PARTNERS_URL // TODO enable custom previous URL when available
+    customPreviousUrl: url.REVIEW_GENERAL_PARTNERS_URL
   }
 };
 
@@ -32,15 +35,37 @@ const transitionRoutingAddGeneralPartnerLegalEntity = {
   nextUrl: "/", // TODO set to next page URL when available: TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
   pageType: TransitionPageType.addGeneralPartnerLegalEntity,
   data: {
-    // customPreviousUrl: url.REVIEW_GENERAL_PARTNERS_URL // TODO unable custom previous URL when available
+    customPreviousUrl: url.REVIEW_GENERAL_PARTNERS_URL
   }
+};
+
+// usual residential address
+
+// correspondence address
+
+// principal office address
+
+const transitionnRoutingReviewGeneralPartners = {
+  previousUrl: CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
+  currentUrl: url.REVIEW_GENERAL_PARTNERS_URL,
+  nextUrl: "/", // TODO set to next page URL when available: url.LIMITED_PARTNERS_URL
+  pageType: TransitionPageType.reviewGeneralPartners
+};
+
+const transitionnRoutingRemoveGeneralPartner = {
+  previousUrl: url.REVIEW_GENERAL_PARTNERS_URL,
+  currentUrl: url.REMOVE_GENERAL_PARTNER_URL,
+  nextUrl: url.REVIEW_GENERAL_PARTNERS_URL,
+  pageType: TransitionPageType.removeGeneralPartner
 };
 
 const generalPartnerRouting = [
   transitionRoutingGeneralPartners,
   transitionRoutingGeneralPartnerChoice,
   transitionRoutingAddGeneralPartnerPerson,
-  transitionRoutingAddGeneralPartnerLegalEntity
+  transitionRoutingAddGeneralPartnerLegalEntity,
+  transitionnRoutingReviewGeneralPartners,
+  transitionnRoutingRemoveGeneralPartner
 ];
 
 export default generalPartnerRouting;

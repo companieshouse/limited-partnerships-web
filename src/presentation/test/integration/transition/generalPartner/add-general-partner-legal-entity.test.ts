@@ -13,7 +13,10 @@ import {
   ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
   ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_ID_URL
 } from "../../../../controller/transition/url";
-import { GENERAL_PARTNER_CHOICE_TEMPLATE } from "../../../../controller/transition/template";
+import {
+  GENERAL_PARTNER_CHOICE_TEMPLATE,
+  REVIEW_GENERAL_PARTNERS_TEMPLATE
+} from "../../../../controller/transition/template";
 import { TRANSITION_BASE_URL } from "../../../../../config/constants";
 
 import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
@@ -61,7 +64,7 @@ describe("Add General Partner Legal Entity Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${limitedPartnership?.data?.partnership_name?.toUpperCase()} ${limitedPartnership?.data?.name_ending?.toUpperCase()}`
+        `${limitedPartnership?.data?.partnership_name?.toUpperCase()} (${limitedPartnership?.data?.partnership_number})`
       );
     });
 
@@ -76,11 +79,10 @@ describe("Add General Partner Legal Entity Page", () => {
 
       expect(res.status).toBe(200);
 
-      // TODO - Uncomment when the review template is available
-      // const regex = new RegExp(
-      //   `${TRANSITION_BASE_URL}/transaction/.*?/submission/.*?/${REVIEW_GENERAL_PARTNERS_TEMPLATE}`
-      // );
-      // expect(res.text).toMatch(regex);
+      const regex = new RegExp(
+        `${TRANSITION_BASE_URL}/transaction/.*?/submission/.*?/${REVIEW_GENERAL_PARTNERS_TEMPLATE}`
+      );
+      expect(res.text).toMatch(regex);
     });
 
     it("should contain a back link to the choice page when general partners are not present", async () => {
