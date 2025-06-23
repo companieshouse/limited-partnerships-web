@@ -17,13 +17,14 @@ import {
   GENERAL_PARTNER_CHOICE_TEMPLATE,
   REVIEW_GENERAL_PARTNERS_TEMPLATE
 } from "../../../../controller/transition/template";
+import { TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../../../controller/addressLookUp/url/transition";
 import { TRANSITION_BASE_URL } from "../../../../../config/constants";
 
 import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
 
 describe("Add General Partner Legal Entity Page", () => {
   const URL = getUrl(ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL);
-  // const REDIRECT_URL = getUrl(TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL); // // TODO - Uncomment when TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL is available
+  const REDIRECT_URL = getUrl(TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
 
   beforeEach(() => {
     setLocalesEnabled(false);
@@ -64,7 +65,7 @@ describe("Add General Partner Legal Entity Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${limitedPartnership?.data?.partnership_name?.toUpperCase()} (${limitedPartnership?.data?.partnership_number})`
+        `${limitedPartnership?.data?.partnership_name?.toUpperCase()} (${limitedPartnership?.data?.partnership_number?.toUpperCase()})`
       );
     });
 
@@ -104,7 +105,7 @@ describe("Add General Partner Legal Entity Page", () => {
       });
 
       expect(res.status).toBe(302);
-      // expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`); // TODO - Uncomment when the redirect URL is available
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
     });
 
     it("should return a validation error when invalid data is entered", async () => {
