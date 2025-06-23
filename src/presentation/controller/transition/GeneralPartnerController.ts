@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from "express";
 import transitionRouting from "./Routing";
 import AbstractController from "../AbstractController";
 import RegistrationPageType from "./PageType";
-import { ADD_GENERAL_PARTNER_PERSON_URL } from "./url";
+import { ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL, ADD_GENERAL_PARTNER_PERSON_URL } from "./url";
 
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
@@ -62,7 +62,8 @@ class GeneralPartnerController extends AbstractController {
       try {
         const { ids } = super.extract(request);
 
-        let url = request.body.parameter === "person" ? ADD_GENERAL_PARTNER_PERSON_URL : "/"; // TODO: Set to next page URL when available - ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL
+        let url =
+          request.body.parameter === "person" ? ADD_GENERAL_PARTNER_PERSON_URL : ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL;
 
         url = super.insertIdsInUrl(url, ids, request.url);
 

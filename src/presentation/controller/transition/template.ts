@@ -8,3 +8,4 @@ export const EMAIL_TEMPLATE = TransitionPageType.email;
 export const GENERAL_PARTNERS_TEMPLATE = TransitionPageType.generalPartners;
 export const GENERAL_PARTNER_CHOICE_TEMPLATE = TransitionPageType.generalPartnerChoice;
 export const ADD_GENERAL_PARTNER_PERSON_TEMPLATE = TransitionPageType.addGeneralPartnerPerson;
+export const ADD_GENERAL_PARTNER_LEGAL_ENTITY_TEMPLATE = TransitionPageType.addGeneralPartnerLegalEntity;

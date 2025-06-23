@@ -26,10 +26,21 @@ const transitionRoutingAddGeneralPartnerPerson = {
   }
 };
 
+const transitionRoutingAddGeneralPartnerLegalEntity = {
+  previousUrl: url.GENERAL_PARTNER_CHOICE_URL,
+  currentUrl: url.ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
+  nextUrl: "/", // TODO set to next page URL when available: TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
+  pageType: TransitionPageType.addGeneralPartnerLegalEntity,
+  data: {
+    // customPreviousUrl: url.REVIEW_GENERAL_PARTNERS_URL // TODO unable custom previous URL when available
+  }
+};
+
 const generalPartnerRouting = [
   transitionRoutingGeneralPartners,
   transitionRoutingGeneralPartnerChoice,
-  transitionRoutingAddGeneralPartnerPerson
+  transitionRoutingAddGeneralPartnerPerson,
+  transitionRoutingAddGeneralPartnerLegalEntity
 ];
 
 export default generalPartnerRouting;

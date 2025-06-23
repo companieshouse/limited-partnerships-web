@@ -5,6 +5,8 @@ import { authentication } from "../middlewares";
 import { IDependencies } from "../config/IDependencies";
 
 import {
+  ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
+  ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_ID_URL,
   ADD_GENERAL_PARTNER_PERSON_URL,
   ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL,
   COMPANY_NUMBER_URL,
@@ -83,6 +85,28 @@ const transitionEndpoints = (router: Router, dependencies: IDependencies): void 
   );
   router.post(
     ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL,
+    authentication,
+    dependencies.generalPartnerTransitionController.sendPageData()
+  );
+
+  router.get(
+    ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
+    authentication,
+    dependencies.generalPartnerTransitionController.getPageRouting()
+  );
+  router.post(
+    ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
+    authentication,
+    dependencies.generalPartnerTransitionController.createGeneralPartner()
+  );
+
+  router.get(
+    ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_ID_URL,
+    authentication,
+    dependencies.generalPartnerTransitionController.getPageRouting()
+  );
+  router.post(
+    ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_ID_URL,
     authentication,
     dependencies.generalPartnerTransitionController.sendPageData()
   );
