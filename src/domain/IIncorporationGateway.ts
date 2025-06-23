@@ -1,7 +1,7 @@
 import PageType from "../presentation/controller/PageType";
 import { IncorporationKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-export interface IIncorporationGateway {
+interface IIncorporationGateway {
   createIncorporation(
     opt: {
       access_token: string;
@@ -12,3 +12,5 @@ export interface IIncorporationGateway {
     kind: IncorporationKind
   ): Promise<string>;
 }
+
+export default IIncorporationGateway;

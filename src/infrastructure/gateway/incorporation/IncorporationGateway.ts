@@ -1,7 +1,7 @@
 import { Resource } from "@companieshouse/api-sdk-node";
 import { Incorporation, IncorporationKind, LimitedPartnershipResourceCreated } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
-import { IIncorporationGateway } from "../../../domain/IIncorporationGateway";
+import IIncorporationGateway from "../../../domain/IIncorporationGateway";
 import PageType from "../../../presentation/controller/PageType";
 import { checkForBadRequest, makeApiCallWithRetry } from "../api";
 import { SDK_LIMITED_PARTNERSHIP_SERVICE } from "../../../config/constants";

@@ -5,7 +5,7 @@ import ILimitedPartnershipGateway from "../../domain/ILimitedPartnershipGateway"
 import { logger } from "../../utils";
 import UIErrors from "../../domain/entities/UIErrors";
 import ITransactionGateway from "../../domain/ITransactionGateway";
-import { IIncorporationGateway } from "../../domain/IIncorporationGateway";
+import IIncorporationGateway from "../../domain/IIncorporationGateway";
 import { extractAPIErrors } from "./utils";
 import { ApiResponse } from "@companieshouse/api-sdk-node/dist/services/resource";
 import { Transaction } from "@companieshouse/api-sdk-node/dist/services/transaction/types";
