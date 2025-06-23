@@ -14,6 +14,7 @@ import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
 import GeneralPartnerBuilder from "../../../../builder/GeneralPartnerBuilder";
+import { REVIEW_GENERAL_PARTNERS_URL } from "../../../../../controller/transition/url";
 
 describe("Confirm General Partner Correspondence Address Page", () => {
   const URL = getUrl(CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL);
@@ -93,8 +94,7 @@ describe("Confirm General Partner Correspondence Address Page", () => {
   });
 
   describe("POST Confirm Correspondence Address Page", () => {
-    // TODO once review page is ready
-    it.skip("should redirect to the next page", async () => {
+    it("should redirect to the next page", async () => {
       const res = await request(app)
         .post(URL)
         .send({
@@ -109,10 +109,10 @@ describe("Confirm General Partner Correspondence Address Page", () => {
           }`
         });
 
-      // const redirectUrl = getUrl(REVIEW_GENERAL_PARTNERS_URL); uncomment when review page is ready
+      const redirectUrl = getUrl(REVIEW_GENERAL_PARTNERS_URL);
 
       expect(res.status).toBe(302);
-      // expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+      expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
     });
 
     it("should show error message if address is not provided", async () => {

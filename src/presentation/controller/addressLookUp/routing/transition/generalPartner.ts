@@ -1,4 +1,4 @@
-import { ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL } from "../../../transition/url";
+import { ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL, REVIEW_GENERAL_PARTNERS_URL } from "../../../transition/url";
 import AddressPageType from "../../PageType";
 import * as url from "../../url/transition";
 
@@ -133,7 +133,7 @@ const registrationAddressRoutingEnterGeneralPartnerCorrespondenceAddress = {
 const registrationAddressRoutingConfirmGeneralPartnerCorrespondenceAddress = {
   previousUrl: url.POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   currentUrl: url.CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
-  nextUrl: "/", // TODO nextUrl set to review page once ready
+  nextUrl: REVIEW_GENERAL_PARTNERS_URL,
   pageType: AddressPageType.confirmGeneralPartnerCorrespondenceAddress,
   data: {
     ...correspondenceAddressCacheKeys,
@@ -204,7 +204,7 @@ const registrationAddressRoutingEnterGeneralPartnerPrincipalOfficeAddress = {
 const registrationAddressRoutingConfirmGeneralPartnerPrincipalOfficeAddress = {
   previousUrl: url.POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   currentUrl: url.CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
-  nextUrl: "/", // TODO change to review page when ready
+  nextUrl: REVIEW_GENERAL_PARTNERS_URL,
   pageType: AddressPageType.confirmGeneralPartnerPrincipalOfficeAddress,
   data: {
     ...principalOfficeAddressCacheKeys,
