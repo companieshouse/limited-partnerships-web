@@ -9,7 +9,6 @@ import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 
 import {
   ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
-  // ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
   ADD_GENERAL_PARTNER_PERSON_URL,
   GENERAL_PARTNER_CHOICE_URL
 } from "../../../../controller/transition/url";
