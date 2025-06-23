@@ -51,7 +51,7 @@ describe("General Partners Page", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
-      `${limitedPartnership?.data?.partnership_name?.toUpperCase()} ${limitedPartnership?.data?.name_ending?.toUpperCase()}`
+      `${limitedPartnership?.data?.partnership_name?.toUpperCase()} (${limitedPartnership?.data?.partnership_number?.toUpperCase()})`
     );
   });
 
