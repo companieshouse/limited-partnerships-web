@@ -8,7 +8,7 @@ import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 
 import {
-  // ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
+  ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
   ADD_GENERAL_PARTNER_PERSON_URL,
   GENERAL_PARTNER_CHOICE_URL
 } from "../../../../controller/transition/url";
@@ -58,14 +58,14 @@ describe("General Partner Choice Page", () => {
     expect(res.text).toContain(getUrl(ADD_GENERAL_PARTNER_PERSON_URL));
   });
 
-  it.skip("should redirect to General Partner Legal Entity page when legal entity is selected", async () => {
+  it("should redirect to General Partner Legal Entity page when legal entity is selected", async () => {
     const res = await request(app).post(URL).send({
       pageType: TransitionPageType.generalPartnerChoice,
       parameter: "legalEntity"
     });
 
     expect(res.status).toBe(302);
-    // expect(res.text).toContain(getUrl(ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL));
+    expect(res.text).toContain(getUrl(ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL));
   });
 
   it("should contain the proposed name - data from api", async () => {
