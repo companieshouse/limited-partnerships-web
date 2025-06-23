@@ -1,0 +1,15 @@
+{% set partnershipType = props.data.limitedPartnership.data.partnership_type %}
+
+{% if (partnershipType == "LP") or (partnershipType == "SLP") %}
+  {% set hrefValue = props.currentUrl | replace(currentPage, backPage) %}
+{% else %}
+    {% set hrefValue = props.previousUrl %}
+{% endif %}
+
+{{ govukBackLink({
+  text: i18n.links.back,
+  attributes: {
+    "data-event-id": "back-link"
+  },
+  href: hrefValue
+}) }}

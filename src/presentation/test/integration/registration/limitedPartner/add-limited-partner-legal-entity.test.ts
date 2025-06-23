@@ -84,7 +84,7 @@ describe("Add Limited Partner Legal Entity Page", () => {
       expect(res.text).toContain("My Company ltd");
     });
 
-    it("should contain a back link to the reviw page when limited partners are present", async () => {
+    it("should contain a back link to the review page when limited partners are present", async () => {
       const limitedPartner = new LimitedPartnerBuilder()
         .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
         .isPerson()

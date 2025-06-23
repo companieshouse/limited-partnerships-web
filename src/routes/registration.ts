@@ -138,73 +138,73 @@ export const registrationEndpoints = (
   router.post(
     GENERAL_PARTNER_CHOICE_URL,
     authentication,
-    dependencies.generalPartnerController.generalPartnerChoice()
+    dependencies.generalPartnerRegistrationController.generalPartnerChoice()
   );
 
   router.get(
     ADD_GENERAL_PARTNER_PERSON_URL,
     authentication,
-    dependencies.generalPartnerController.getPageRouting()
+    dependencies.generalPartnerRegistrationController.getPageRouting()
   );
   router.post(
     ADD_GENERAL_PARTNER_PERSON_URL,
     authentication,
-    dependencies.generalPartnerController.createGeneralPartner()
+    dependencies.generalPartnerRegistrationController.createGeneralPartner()
   );
 
   router.get(
     ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL,
     authentication,
-    dependencies.generalPartnerController.getPageRouting()
+    dependencies.generalPartnerRegistrationController.getPageRouting()
   );
   router.post(
     ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL,
     authentication,
-    dependencies.generalPartnerController.sendPageData()
+    dependencies.generalPartnerRegistrationController.sendPageData()
   );
 
   router.get(
     ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
     authentication,
-    dependencies.generalPartnerController.getPageRouting()
+    dependencies.generalPartnerRegistrationController.getPageRouting()
   );
   router.post(
     ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
     authentication,
-    dependencies.generalPartnerController.createGeneralPartner()
+    dependencies.generalPartnerRegistrationController.createGeneralPartner()
   );
 
   router.get(
     ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_ID_URL,
     authentication,
-    dependencies.generalPartnerController.getPageRouting()
+    dependencies.generalPartnerRegistrationController.getPageRouting()
   );
   router.post(
     ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_ID_URL,
     authentication,
-    dependencies.generalPartnerController.sendPageData()
+    dependencies.generalPartnerRegistrationController.sendPageData()
   );
 
   router.get(
     REVIEW_GENERAL_PARTNERS_URL,
     authentication,
-    dependencies.generalPartnerController.getReviewPage()
+    dependencies.generalPartnerRegistrationController.getReviewPage()
   );
   router.post(
     REVIEW_GENERAL_PARTNERS_URL,
     authentication,
-    dependencies.generalPartnerController.postReviewPage()
+    dependencies.generalPartnerRegistrationController.postReviewPage()
   );
 
   router.get(
     REMOVE_GENERAL_PARTNER_URL,
     authentication,
-    dependencies.generalPartnerController.getPageRouting()
+    dependencies.generalPartnerRegistrationController.getPageRouting()
   );
   router.post(
     REMOVE_GENERAL_PARTNER_URL,
     authentication,
-    dependencies.generalPartnerController.postRemovePage()
+    dependencies.generalPartnerRegistrationController.postRemovePage()
   );
 
   router.get(
