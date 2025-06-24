@@ -6,10 +6,7 @@ export const limitedPartnerPerson = {
   surname: "Doe - LP",
   date_of_birth: "2001-01-01",
   nationality1: "BRITISH",
-  nationality2: undefined,
-  contribution_currency_type: "GBP",
-  contribution_currency_value: "5.00",
-  contribution_sub_types: ["MONEY", "LAND_OR_PROPERTY"]
+  nationality2: undefined
 };
 
 export const limitedPartnerLegalEntity = {
@@ -18,10 +15,7 @@ export const limitedPartnerLegalEntity = {
   governing_law: "Act of law",
   legal_entity_register_name: "US Register",
   legal_entity_registration_location: "United States",
-  registered_company_number: "12345678",
-  contribution_currency_type: "GBP",
-  contribution_currency_value: "5.00",
-  contribution_sub_types: ["MONEY", "LAND_OR_PROPERTY"]
+  registered_company_number: "12345678"
 };
 
 class LimitedPartnerBuilder extends AbstractPartnerBuilder {
@@ -36,7 +30,7 @@ class LimitedPartnerBuilder extends AbstractPartnerBuilder {
 
       contribution_currency_type: "",
       contribution_currency_value: "",
-      contribution_non_monetary_value: ""
+      contribution_sub_types: []
     };
   }
 
@@ -50,8 +44,8 @@ class LimitedPartnerBuilder extends AbstractPartnerBuilder {
     return this;
   }
 
-  withContributionNonMonetaryValue(contributionNonMonetaryValue: string) {
-    this.data.contribution_non_monetary_value = contributionNonMonetaryValue;
+  withContributionSubtypes(contributionSubTypes: string[]) {
+    this.data.contribution_sub_types = contributionSubTypes;
     return this;
   }
 

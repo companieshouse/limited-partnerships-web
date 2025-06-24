@@ -242,6 +242,22 @@ describe("Check Your Answers Page", () => {
     checkIfValuesInText(res, limitedPartnerLegalEntity, cyTranslationText);
   });
 
+  it("should load the check your answers page with capital contribution data for limited partner person", async () => {
+
+    const limitedPartnerPerson = new LimitedPartnerBuilder().isPerson().withFormerNames("Joe Dee")
+      .withContributionCurrencyType("GBP")
+      .withContributionCurrencyValue("5.00")
+      .withContributionSubtypes(["MONEY", "LAND_OR_PROPERTY"])
+      .build();
+
+    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerPerson]);
+
+    const res = await request(app).get(URL);
+
+    expect(res.status).toBe(200);
+    expect(res.text).toContain("5.00 Pound Sterling (GBP) Money / Land or property");
+  });
+
   describe("POST Check Your Answers Page", () => {
     it("should send lawful purpose statement", async () => {
       const limitedPartnership = new LimitedPartnershipBuilder()
