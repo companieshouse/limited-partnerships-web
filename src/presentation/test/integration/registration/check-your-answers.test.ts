@@ -47,8 +47,7 @@ describe("Check Your Answers Page", () => {
       testTranslations(res.text, enTranslationText.checkYourAnswersPage, [
         "headingTerm",
         "jurisdictions",
-        "headingSic",
-        "capitalContribution"
+        "headingSic"
       ]);
       expect(res.text).toContain(enTranslationText.print.buttonText);
       expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
@@ -63,8 +62,7 @@ describe("Check Your Answers Page", () => {
       testTranslations(res.text, cyTranslationText.checkYourAnswersPage, [
         "headingTerm",
         "jurisdictions",
-        "headingSic",
-        "capitalContribution"
+        "headingSic"
       ]);
       expect(res.text).toContain(cyTranslationText.print.buttonText);
       expect(res.text).toContain(cyTranslationText.print.buttonTextNoJs);
@@ -214,7 +212,7 @@ describe("Check Your Answers Page", () => {
 
     expect(res.status).toBe(200);
 
-    testTranslations(res.text, enTranslationText.checkYourAnswersPage, ["scotland", "capitalContribution"]);
+    testTranslations(res.text, enTranslationText.checkYourAnswersPage, ["scotland"]);
 
     checkIfValuesInText(res, generalPartnerPerson, enTranslationText);
 
@@ -232,8 +230,7 @@ describe("Check Your Answers Page", () => {
 
     testTranslations(res.text, cyTranslationText.checkYourAnswersPage, [
       "scotland",
-      "northernIreland",
-      "capitalContribution"
+      "northernIreland"
     ]);
 
     checkIfValuesInText(res, generalPartnerPerson, cyTranslationText);
