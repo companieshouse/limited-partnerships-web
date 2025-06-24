@@ -50,3 +50,12 @@
   {%- endfor -%}
   {{- capitalizedWords.join(' ') -}}
 {%- endmacro -%}
+
+{%- macro buildFormattedListFromArray(array) -%}
+  {%- set returnValue = [] -%}  
+  {%- for item in array -%}
+    {%- set str = item | capitalize | replace("_", " ") -%}
+    {%- set returnValue = returnValue.concat(str) -%}
+  {%- endfor -%}
+  {{- returnValue.join(' / ') -}}
+{%- endmacro -%}

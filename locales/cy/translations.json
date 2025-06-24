@@ -359,7 +359,7 @@
             "limitedPartners" : {
                 "title": "WELSH - Limited partners",
                 "changeRemoveOrAdd": "WELSH - Change, remove or add a limited partners",
-                "amountContributed": "WELSH - Amount contributed"
+                "capitalContribution": "WELSH - Total capital contribuion"
             },
             "person": {
                 "name": "WELSH - Name",

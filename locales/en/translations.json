@@ -358,7 +358,7 @@
             "limitedPartners" : {
                 "title": "Limited partners",
                 "changeRemoveOrAdd": "Change, remove or add a limited partners",
-                "amountContributed": "Amount contributed"
+                "capitalContribution": "Total capital contribuion"
             },
             "person": {
                 "name": "Name",

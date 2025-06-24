@@ -47,8 +47,7 @@ describe("Check Your Answers Page", () => {
       testTranslations(res.text, enTranslationText.checkYourAnswersPage, [
         "headingTerm",
         "jurisdictions",
-        "headingSic",
-        "amountContributed"
+        "headingSic"
       ]);
       expect(res.text).toContain(enTranslationText.print.buttonText);
       expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
@@ -63,8 +62,7 @@ describe("Check Your Answers Page", () => {
       testTranslations(res.text, cyTranslationText.checkYourAnswersPage, [
         "headingTerm",
         "jurisdictions",
-        "headingSic",
-        "amountContributed"
+        "headingSic"
       ]);
       expect(res.text).toContain(cyTranslationText.print.buttonText);
       expect(res.text).toContain(cyTranslationText.print.buttonTextNoJs);
@@ -214,7 +212,7 @@ describe("Check Your Answers Page", () => {
 
     expect(res.status).toBe(200);
 
-    testTranslations(res.text, enTranslationText.checkYourAnswersPage, ["scotland", "amountContributed"]);
+    testTranslations(res.text, enTranslationText.checkYourAnswersPage, ["scotland"]);
 
     checkIfValuesInText(res, generalPartnerPerson, enTranslationText);
 
@@ -232,8 +230,7 @@ describe("Check Your Answers Page", () => {
 
     testTranslations(res.text, cyTranslationText.checkYourAnswersPage, [
       "scotland",
-      "northernIreland",
-      "amountContributed"
+      "northernIreland"
     ]);
 
     checkIfValuesInText(res, generalPartnerPerson, cyTranslationText);
@@ -243,6 +240,38 @@ describe("Check Your Answers Page", () => {
     checkIfValuesInText(res, limitedPartnerPerson, cyTranslationText);
 
     checkIfValuesInText(res, limitedPartnerLegalEntity, cyTranslationText);
+  });
+
+  it("should load the check your answers page with capital contribution data for limited partner person", async () => {
+
+    const limitedPartnerPerson = new LimitedPartnerBuilder().isPerson().withFormerNames("Joe Dee")
+      .withContributionCurrencyType("GBP")
+      .withContributionCurrencyValue("5.00")
+      .withContributionSubtypes(["MONEY", "LAND_OR_PROPERTY"])
+      .build();
+
+    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerPerson]);
+
+    const res = await request(app).get(URL);
+
+    expect(res.status).toBe(200);
+    expect(res.text).toContain("5.00 Pound Sterling (GBP) Money / Land or property");
+  });
+
+  it("should load the check your answers page with capital contribution data for limited partner legal entity", async () => {
+
+    const limitedPartnerLegalEntity = new LimitedPartnerBuilder().isLegalEntity()
+      .withContributionCurrencyType("GBP")
+      .withContributionCurrencyValue("5.00")
+      .withContributionSubtypes(["MONEY", "LAND_OR_PROPERTY"])
+      .build();
+
+    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerLegalEntity]);
+
+    const res = await request(app).get(URL);
+
+    expect(res.status).toBe(200);
+    expect(res.text).toContain("5.00 Pound Sterling (GBP) Money / Land or property");
   });
 
   describe("POST Check Your Answers Page", () => {
@@ -299,8 +328,12 @@ const checkIfValuesInText = (res: request.Response, partner: GeneralPartner | Li
           .split(" ")
           .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
           .join(" ");
-
         expect(res.text).toContain(capitalized);
+      } else if (key.includes("contribution_sub_types")) {
+        const str = partner.data[key]
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+          .join(" / ");
+        expect(res.text).toContain(str.replaceAll("_", " "));
       } else {
         expect(res.text).toContain(partner.data[key]);
       }
