@@ -383,6 +383,8 @@
                 ]
             }) }}
           {% elif item.data.legal_entity_name %}
+            {% set capitalContribution = item.data.contribution_currency_value + " " + i18n.currencies[item.data.contribution_currency_type] 
+               + " " + macros.buildFormattedListFromArray(item.data.contribution_sub_types) %}
             {{ govukSummaryList({
               classes: "govuk-!-margin-bottom-7",
               rows: [
