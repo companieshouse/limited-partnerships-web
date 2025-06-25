@@ -44,7 +44,6 @@
                             })
                         %}
                     {% elif item.data.legal_entity_name %}
-                        {{ props.errors[item.data.legal_entity_name] }}
                         {% set rows = rows.concat({
                                 key: {
                                     text: partnersAdded.legalEntity,

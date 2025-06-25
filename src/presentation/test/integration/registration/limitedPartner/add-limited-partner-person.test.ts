@@ -14,11 +14,11 @@ import {
 import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
 import { TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../controller/addressLookUp/url/registration";
 import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-import { REGISTRATION_BASE_URL } from "config";
+import { REGISTRATION_BASE_URL } from "../../../../../config";
 import {
   LIMITED_PARTNER_CHOICE_TEMPLATE,
   REVIEW_LIMITED_PARTNERS_TEMPLATE
-} from "presentation/controller/registration/template";
+} from "../../../../../presentation/controller/registration/template";
 
 describe("Add Limited Partner Person Page", () => {
   const URL = getUrl(ADD_LIMITED_PARTNER_PERSON_URL);
@@ -39,7 +39,7 @@ describe("Add Limited Partner Person Page", () => {
       ["for type SPFLP", PartnershipType.SPFLP, false]
     ])(
       "should load the add limited partner page with Welsh text for %s",
-      async (_desciption, partnershipType, isCapitalContributionPresent) => {
+      async (_description, partnershipType, isCapitalContributionPresent) => {
         const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
 
         appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);

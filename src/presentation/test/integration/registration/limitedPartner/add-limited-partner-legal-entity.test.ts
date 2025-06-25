@@ -21,6 +21,7 @@ import {
   LIMITED_PARTNER_CHOICE_TEMPLATE,
   REVIEW_LIMITED_PARTNERS_TEMPLATE
 } from "../../../../../presentation/controller/registration/template";
+import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 describe("Add Limited Partner Legal Entity Page", () => {
   const URL = getUrl(ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL);
@@ -29,33 +30,70 @@ describe("Add Limited Partner Legal Entity Page", () => {
   beforeEach(() => {
     setLocalesEnabled(false);
 
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([]);
     appDevDependencies.limitedPartnerGateway.feedLimitedPartners([]);
     appDevDependencies.limitedPartnerGateway.feedErrors();
   });
 
   describe("Get Add Limited Partner Page", () => {
-    it("should load the add limited partner page with Welsh text", async () => {
-      setLocalesEnabled(true);
-      const res = await request(app).get(URL + "?lang=cy");
+    it.each([
+      ["for type LP", PartnershipType.LP, true],
+      ["for type SLP", PartnershipType.SLP, true],
+      ["for type PFLP", PartnershipType.PFLP, false],
+      ["for type SPFLP", PartnershipType.SPFLP, false]
+    ])(
+      "should load the add limited partner legal entity page %s with Welsh text",
+      async (_description, partnershipType, isCapitalContributionPresent) => {
+        setLocalesEnabled(true);
 
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(
-        `${cyTranslationText.addPartnerLegalEntityPage.limitedPartner.title} - ${cyTranslationText.service} - GOV.UK`
-      );
-      testTranslations(res.text, cyTranslationText.addPartnerLegalEntityPage, ["errorMessages", "generalPartner"]);
-    });
+        const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-    it("should load the add limited partner page with English text", async () => {
-      setLocalesEnabled(true);
-      const res = await request(app).get(URL + "?lang=en");
+        const res = await request(app).get(URL + "?lang=cy");
 
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(
-        `${enTranslationText.addPartnerLegalEntityPage.limitedPartner.title} - ${enTranslationText.service} - GOV.UK`
-      );
-      testTranslations(res.text, enTranslationText.addPartnerLegalEntityPage, ["errorMessages", "generalPartner"]);
-      expect(res.text).not.toContain("WELSH -");
-    });
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(
+          `${cyTranslationText.addPartnerLegalEntityPage.limitedPartner.title} - ${cyTranslationText.service} - GOV.UK`
+        );
+        testTranslations(res.text, cyTranslationText.addPartnerLegalEntityPage, ["errorMessages", "generalPartner"]);
+
+        if (isCapitalContributionPresent) {
+          testTranslations(res.text, cyTranslationText.capitalContribution, ["compositionErrorMessage"]);
+        } else {
+          expect(res.text).not.toContain(cyTranslationText.capitalContribution.title);
+        }
+      }
+    );
+
+    it.each([
+      ["for type LP", PartnershipType.LP, true],
+      ["for type SLP", PartnershipType.SLP, true],
+      ["for type PFLP", PartnershipType.PFLP, false],
+      ["for type SPFLP", PartnershipType.SPFLP, false]
+    ])(
+      "should load the add limited partner legal entity page %s with English text",
+      async (_desciption, partnershipType, isCapitalContributionPresent) => {
+        const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
+
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+        setLocalesEnabled(true);
+        const res = await request(app).get(URL + "?lang=en");
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(
+          `${enTranslationText.addPartnerLegalEntityPage.limitedPartner.title} - ${enTranslationText.service} - GOV.UK`
+        );
+        testTranslations(res.text, enTranslationText.addPartnerLegalEntityPage, ["errorMessages", "generalPartner"]);
+        expect(res.text).not.toContain("WELSH -");
+
+        if (isCapitalContributionPresent) {
+          testTranslations(res.text, enTranslationText.capitalContribution, ["compositionErrorMessage"]);
+        } else {
+          expect(res.text).not.toContain(enTranslationText.capitalContribution.title);
+        }
+      }
+    );
 
     it("should contain the proposed name - data from api", async () => {
       const limitedPartnership = new LimitedPartnershipBuilder().build();
@@ -84,7 +122,7 @@ describe("Add Limited Partner Legal Entity Page", () => {
       expect(res.text).toContain("My Company ltd");
     });
 
-    it("should contain a back link to the reviw page when limited partners are present", async () => {
+    it("should contain a back link to the review page when limited partners are present", async () => {
       const limitedPartner = new LimitedPartnerBuilder()
         .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
         .isPerson()
@@ -160,13 +198,20 @@ describe("Add Limited Partner Legal Entity Page", () => {
         governing_law: "Act of law",
         legal_entity_register_name: "US Register",
         legal_entity_registration_location: "United States",
-        registered_company_number: "12345678"
+        registered_company_number: "12345678",
+        contribution_currency_value: "11111",
+        contribution_currency_type: "EUR",
+        contribution_sub_types: "SHARES",
+        partnershipType: PartnershipType.LP
       });
 
       expect(res.status).toBe(200);
       expect(res.text).toContain("INVALID-CHARACTERS-FORENAME");
       expect(res.text).toContain("Limited Company");
       expect(res.text).toContain("United States");
+      expect(res.text).toContain("11111");
+      expect(res.text).toContain("EUR");
+      expect(res.text).toContain("SHARES");
     });
   });
 

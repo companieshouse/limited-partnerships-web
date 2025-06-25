@@ -19,7 +19,13 @@
   }) }}
 
   {% set contributionCurrencyTypeId = "contribution_currency_type" %}
+  {% set currencyField = props.data.limitedPartner.data.contribution_currency_type %}
   {% include "includes/currencies.njk" %}
+
+  {% set contribution_sub_types = [] %}
+  {% if props.data.limitedPartner.data.contribution_sub_types %}
+    {% set contribution_sub_types = props.data.limitedPartner.data.contribution_sub_types %}
+  {% endif %}
 
   {{ govukCheckboxes({
     errorMessage: i18n.capitalContribution.compositionErrorMessage if props.errors,
@@ -39,7 +45,7 @@
       {        
         value: "MONEY",            
         text: i18n.capitalContribution.money,
-        checked: true if contribution_sub_types.MONEY else false,
+        checked: true if "MONEY" in contribution_sub_types else false,
         attributes: {
           "data-event-id": "capital_contribution_money"
         } 
@@ -47,7 +53,7 @@
       {        
         value: "LAND_OR_PROPERTY",           
         text: i18n.capitalContribution.landOrProperty,
-        checked: true if contribution_sub_types.LAND_OR_PROPERTY else false,
+        checked: true if "LAND_OR_PROPERTY" in contribution_sub_types else false,
         attributes: {
           "data-event-id": "capital_contribution_landOrProperty"
         } 
@@ -55,7 +61,7 @@
       {        
         value: "SHARES",          
         text: i18n.capitalContribution.shares,
-        checked: true if contribution_sub_types.SHARES else false,
+        checked: true if "SHARES" in contribution_sub_types else false,
         attributes: {
           "data-event-id": "capital_contribution_shares"
         } 
@@ -63,7 +69,7 @@
       {        
         value: "SERVICES_OR_GOODS",        
         text: i18n.capitalContribution.servicesOrGoods,
-        checked: true if contribution_sub_types.SERVICES_OR_GOODS else false,
+        checked: true if "SERVICES_OR_GOODS" in contribution_sub_types else false,
         attributes: {
           "data-event-id": "capital_contribution_servicesOrGoods"
         } 
@@ -71,7 +77,7 @@
       {
         value: "ANY_OTHER_ASSET",        
         text: i18n.capitalContribution.anyOtherAsset,
-        checked: true if contribution_sub_types.ANY_OTHER_ASSET else false,
+        checked: true if "ANY_OTHER_ASSET" in contribution_sub_types else false,
         attributes: {
           "data-event-id": "capital_contribution_anyOtherAsset"
         } 

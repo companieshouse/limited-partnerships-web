@@ -2,13 +2,16 @@
 
 {% set pageTitle = i18n.addPartnerLegalEntityPage.limitedPartner.title %}
 {% set publicRegisterInformationLine1 = i18n.addPartnerLegalEntityPage.publicRegisterLine1 %}
+{% set partnershipType = props.data.limitedPartnership.data.partnership_type %}
 
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
       <form class="form" action={{ props.currentUrl }} method="post">
-        <input type="hidden" name="pageType" value={{ props.pageType }}>      
+        <input type="hidden" name="pageType" value={{ props.pageType }}>
+        <input type="hidden" name="partnershipType" value={{ partnershipType }}>
+  
         {% include "includes/csrf_token.njk" %}
 
         {% include "includes/errors.njk" %}
@@ -108,6 +111,8 @@
             required: true
           }
         }) }}
+        
+        {% include "includes/capital-contribution.njk" %}     
 
         {% include "includes/public-register-information.njk" %}
  
