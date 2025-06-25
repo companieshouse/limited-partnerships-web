@@ -60,16 +60,17 @@
         "firstName" : "First name",
         "lastName" : "Last name",
         "dateOfBirth" : "Date of birth",
-        "dateOfBirthHint" : "For example, 27 3 2000",
-        "dateOfBirthDay" : "Day",
-        "dateOfBirthMonth" : "Month",
-        "dateOfBirthYear" : "Year",
+        "dateEffectiveFrom" : "When did they become a general partner for this partnership?",
+        "dateHint" : "For example, 27 3 2000",
+        "dateDay" : "Day",
+        "dateMonth" : "Month",
+        "dateYear" : "Year",
         "nationality" : "What is their nationality?",
         "nationalitySelectPrompt": "Select a nationality",
         "secondNationality" : "What is their second nationality (if relevant)?",
         "secondNationalitySelectPrompt": "Select a second nationality",
         "secondNationalityHint" : "Dual citizenship (also known as dual nationality) is allowed in some countries. This means you can be a citizen of your own country and another country.",
-        "publicRegisterLine1" : "We'll only show the month and year of their birth date.",
+        "publicRegisterLine1" : "We'll show the month and year of the partner's date of birth, but not the exact date.",
         "publicRegisterLine2" : "We'll show all the other information you provide on this screen on the public register.",
         "errorMessages": {
           "firstNameMissing": "Enter a first name",
@@ -319,6 +320,9 @@
     "capitalContribution" : {
        "title" : "What is their total capital contribution?",
        "hint" : "Enter the total value of all monetary and non-monetary contributions",
+       "amountHint": "Enter the value, for example:",
+       "amountMinHint": "if they contributed £0.01 enter 0.01", 
+       "amountMaxHint": "if they contributed £25,000 enter 25000.00",
        "compositionTitle" : "What is this total value made up of?",
        "compositionHint" : "Select all that apply",
        "money" : "Money",
@@ -358,7 +362,7 @@
             "limitedPartners" : {
                 "title": "Limited partners",
                 "changeRemoveOrAdd": "Change, remove or add a limited partners",
-                "amountContributed": "Amount contributed"
+                "capitalContribution": "Total capital contribuion"
             },
             "person": {
                 "name": "Name",

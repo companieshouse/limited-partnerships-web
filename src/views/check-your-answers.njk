@@ -328,6 +328,9 @@
               {% set nationalities = item.data.nationality1 + ", " + item.data.nationality2 | capitalize %}
             {% endif %}
 
+            {% set capitalContribution = item.data.contribution_currency_value + " " + i18n.currencies[item.data.contribution_currency_type] 
+               + " " + macros.buildFormattedListFromArray(item.data.contribution_sub_types) %}
+
             {{ govukSummaryList({
                 classes: "govuk-!-margin-bottom-7",
                 rows: [
@@ -370,10 +373,20 @@
                     value: {
                         text: macros.formatAddress(item.data.usual_residential_address, true)
                     }
-                  }
+                  },
+                  {
+                    key: {
+                        text: i18n.checkYourAnswersPage.partners.limitedPartners.capitalContribution
+                    },
+                    value: {
+                        text: capitalContribution
+                    }
+                  }       
                 ]
             }) }}
           {% elif item.data.legal_entity_name %}
+            {% set capitalContribution = item.data.contribution_currency_value + " " + i18n.currencies[item.data.contribution_currency_type] 
+               + " " + macros.buildFormattedListFromArray(item.data.contribution_sub_types) %}
             {{ govukSummaryList({
               classes: "govuk-!-margin-bottom-7",
               rows: [
@@ -432,7 +445,15 @@
                   value: {
                       text: macros.formatAddress(item.data.principal_office_address, true)
                   }
-                }
+                },
+                {
+                  key: {
+                      text: i18n.checkYourAnswersPage.partners.limitedPartners.capitalContribution
+                  },
+                  value: {
+                      text: capitalContribution
+                  }
+                }                       
               ]
             }) }}
           {% endif %}

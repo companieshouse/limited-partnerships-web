@@ -22,14 +22,18 @@ import {
   ADD_LIMITED_PARTNER_PERSON_URL,
   WHICH_TYPE_URL
 } from "./registration/url";
+import {
+  ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL as ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL_TRANSITION,
+  ADD_GENERAL_PARTNER_PERSON_URL as ADD_GENERAL_PARTNER_PERSON_URL_TRANSITION
+} from "./transition/url";
 import UIErrors from "../../domain/entities/UIErrors";
 import { getJourneyTypes } from "../../utils";
 
 type Ids = {
-  transactionId: string,
-  submissionId: string,
-  generalPartnerId?: string,
-  limitedPartnerId?: string
+  transactionId: string;
+  submissionId: string;
+  generalPartnerId?: string;
+  limitedPartnerId?: string;
 };
 
 abstract class AbstractController {
@@ -40,15 +44,12 @@ abstract class AbstractController {
       return pageRoutingDefault;
     }
 
-    pageRouting = this.insertIdsInAllUrl(
-      pageRouting,
-      {
-        transactionId: request.params[TRANSACTION_ID],
-        submissionId: request.params[SUBMISSION_ID],
-        generalPartnerId: request.params[GENERAL_PARTNER_ID],
-        limitedPartnerId: request.params[LIMITED_PARTNER_ID]
-      } as Ids
-    );
+    pageRouting = this.insertIdsInAllUrl(pageRouting, {
+      transactionId: request.params[TRANSACTION_ID],
+      submissionId: request.params[SUBMISSION_ID],
+      generalPartnerId: request.params[GENERAL_PARTNER_ID],
+      limitedPartnerId: request.params[LIMITED_PARTNER_ID]
+    } as Ids);
 
     pageRouting = this.addLangToUrls(request.url, pageRouting);
 
@@ -103,11 +104,7 @@ abstract class AbstractController {
     return splitted[splitted.length - 1];
   }
 
-  insertIdsInUrl(
-    url: string,
-    ids: Ids,
-    requestUrl?: string
-  ): string {
+  insertIdsInUrl(url: string, ids: Ids, requestUrl?: string): string {
     if (requestUrl) {
       const requestUrlParam = requestUrl.split("?")[1];
       const urlParam = url.split("?")[1];
@@ -123,12 +120,14 @@ abstract class AbstractController {
     return url;
   }
 
-  private replaceBaseUrlWithIds(
-    url: string,
-    ids: Ids
-  ) {
+  private replaceBaseUrlWithIds(url: string, ids: Ids) {
     // general partner urls that can exist with or without ids
-    const GP_URLS = [ADD_GENERAL_PARTNER_PERSON_URL, ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL];
+    const GP_URLS = [
+      ADD_GENERAL_PARTNER_PERSON_URL,
+      ADD_GENERAL_PARTNER_PERSON_URL_TRANSITION,
+      ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
+      ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL_TRANSITION
+    ];
 
     const urlWithIds = getJourneyTypes(url).isRegistration ? REGISTRATION_WITH_IDS_URL : TRANSITION_WITH_IDS_URL;
 
@@ -162,21 +161,11 @@ abstract class AbstractController {
     return limitedPartnerId ? url.replace(`:${LIMITED_PARTNER_ID}`, limitedPartnerId) : url;
   }
 
-  protected insertIdsInAllUrl(
-    pageRouting: PageRouting,
-    ids: Ids
-  ): PageRouting {
-
+  protected insertIdsInAllUrl(pageRouting: PageRouting, ids: Ids): PageRouting {
     return {
       ...pageRouting,
-      previousUrl: this.insertIdsInUrl(
-        pageRouting.previousUrl,
-        ids
-      ),
-      currentUrl: this.insertIdsInUrl(
-        pageRouting.currentUrl,
-        ids
-      ),
+      previousUrl: this.insertIdsInUrl(pageRouting.previousUrl, ids),
+      currentUrl: this.insertIdsInUrl(pageRouting.currentUrl, ids),
       nextUrl: this.insertIdsInUrl(pageRouting.nextUrl, ids)
     };
   }

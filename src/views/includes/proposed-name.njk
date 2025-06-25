@@ -1,3 +1,7 @@
 <span class="govuk-caption-l">
-    {{ props.data.limitedPartnership.data.partnership_name | upper }} {{ props.data.limitedPartnership.data.name_ending | upper }}
+    {% if journeyTypes.isRegistration %}
+        {{ props.data.limitedPartnership.data.partnership_name | upper }} {{ props.data.limitedPartnership.data.name_ending | upper }}
+    {% elif journeyTypes.isTransition %}
+        {{ props.data.limitedPartnership.data.partnership_name | upper }} ({{ props.data.limitedPartnership.data.partnership_number | upper }})
+    {% endif %}
 </span>

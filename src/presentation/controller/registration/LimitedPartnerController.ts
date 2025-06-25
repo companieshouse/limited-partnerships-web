@@ -186,7 +186,9 @@ class LimitedPartnerController extends AbstractController {
         if (result?.errors) {
           response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { limitedPartner: { data: request.body } }, result.errors)
+            super.makeProps(pageRouting, { limitedPartnership: {
+              data: { partnership_type: request.body.partnershipType } },
+            limitedPartner: { data: request.body } }, result.errors)
           );
           return;
         }

@@ -4,11 +4,7 @@ export const convertValidDateToIsoDateString = (
   date: { day: string; month: string; year: string },
   fieldName: string
 ): string => {
-  const dateStr = convertDateToIsoDateString(
-    date.day.trim(),
-    date.month.trim(),
-    date.year.trim()
-  );
+  const dateStr = convertDateToIsoDateString(date.day.trim(), date.month.trim(), date.year.trim());
 
   if (!isDateValid(dateStr)) {
     const uiErrors = new UIErrors();
@@ -72,10 +68,7 @@ const daysInMonth = (month: number) => {
   }
 };
 
-export const removeEmptyStringValues = (
-  data: Record<string, any>,
-  exclude: string[] = []
-): Record<string, any> => {
+export const removeEmptyStringValues = (data: Record<string, any>, exclude: string[] = []): Record<string, any> => {
   for (const key in data) {
     if (exclude.includes(key)) {
       continue;
@@ -104,6 +97,19 @@ export const validateAndFormatPartnerPersonDateOfBirth = (data: Record<string, a
         year: data["date_of_birth-year"]
       },
       "date_of_birth"
+    );
+  }
+};
+
+export const validateAndFormatPartnerDateEffectiveFrom = (data: Record<string, any>) => {
+  if (data["date_effective_from-day"]) {
+    data["date_effective_from"] = convertValidDateToIsoDateString(
+      {
+        day: data["date_effective_from-day"],
+        month: data["date_effective_from-month"],
+        year: data["date_effective_from-year"]
+      },
+      "date_effective_from"
     );
   }
 };

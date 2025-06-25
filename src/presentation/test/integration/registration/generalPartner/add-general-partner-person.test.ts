@@ -41,7 +41,11 @@ describe("Add General Partner Person Page", () => {
       expect(res.text).toContain(
         `${cyTranslationText.addPartnerPersonPage.generalPartner.title} - ${cyTranslationText.service} - GOV.UK`
       );
-      testTranslations(res.text, cyTranslationText.addPartnerPersonPage, ["errorMessages", "limitedPartner"]);
+      testTranslations(res.text, cyTranslationText.addPartnerPersonPage, [
+        "errorMessages",
+        "limitedPartner",
+        "dateEffectiveFrom"
+      ]);
     });
 
     it("should load the add general partner page with English text", async () => {
@@ -52,7 +56,11 @@ describe("Add General Partner Person Page", () => {
       expect(res.text).toContain(
         `${enTranslationText.addPartnerPersonPage.generalPartner.title} - ${enTranslationText.service} - GOV.UK`
       );
-      testTranslations(res.text, enTranslationText.addPartnerPersonPage, ["errorMessages", "limitedPartner"]);
+      testTranslations(res.text, enTranslationText.addPartnerPersonPage, [
+        "errorMessages",
+        "limitedPartner",
+        "dateEffectiveFrom"
+      ]);
       expect(res.text).not.toContain("WELSH -");
     });
 
@@ -69,7 +77,7 @@ describe("Add General Partner Person Page", () => {
       );
     });
 
-    it("should contain a back link to the reviw page when general partners are present", async () => {
+    it("should contain a back link to the review page when general partners are present", async () => {
       const generalPartner = new GeneralPartnerBuilder()
         .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
         .isPerson()

@@ -83,7 +83,7 @@ class GeneralPartnerInMemoryGateway implements IGeneralPartnerGateway {
       throw new Error(`Not found: ${generalPartnerId}`);
     }
 
-    this.generalPartners[index].data = data;
+    this.generalPartners[index].data = { ...this.generalPartners[index].data, ...data };
   }
 
   async deleteGeneralPartner(
