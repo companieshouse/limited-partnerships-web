@@ -319,6 +319,9 @@
     "capitalContribution" : {
        "title" : "What is their total capital contribution?",
        "hint" : "Enter the total value of all monetary and non-monetary contributions",
+       "amountHint": "Enter the value, for example:",
+       "amountMinHint": "if they contributed £0.01 enter 0.01", 
+       "amountMaxHint": "if they contributed £25,000 enter 25000.00",
        "compositionTitle" : "What is this total value made up of?",
        "compositionHint" : "Select all that apply",
        "money" : "Money",
@@ -358,7 +361,7 @@
             "limitedPartners" : {
                 "title": "Limited partners",
                 "changeRemoveOrAdd": "Change, remove or add a limited partners",
-                "amountContributed": "Amount contributed"
+                "capitalContribution": "Total capital contribuion"
             },
             "person": {
                 "name": "Name",

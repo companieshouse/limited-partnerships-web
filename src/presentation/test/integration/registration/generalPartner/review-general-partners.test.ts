@@ -17,6 +17,9 @@ import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
 import RegistrationPageType from "../../../../controller/registration/PageType";
 import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
+import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
+import { REGISTRATION_BASE_URL } from "../../../../../config/constants";
+import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 describe("Review General Partners Page", () => {
   const URL = getUrl(REVIEW_GENERAL_PARTNERS_URL);
@@ -69,6 +72,27 @@ describe("Review General Partners Page", () => {
       );
       testTranslations(res.text, cyTranslationText.reviewGeneralPartnersPage, ["emptyList", "errorMessage"]);
     });
+
+    it.each([
+      [PartnershipType.LP, "standard-industrial-classification-code"],
+      [PartnershipType.SLP, "standard-industrial-classification-code"],
+      [PartnershipType.PFLP, "confirm-principal-place-of-business-address"],
+      [PartnershipType.SPFLP, "confirm-principal-place-of-business-address"]
+    ])(
+      "should contain the correct back link based on partnership type",
+      async (partnershipType: PartnershipType, backLink: string) => {
+        setLocalesEnabled(true);
+        const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
+
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+        const res = await request(app).get(URL + "?lang=en");
+
+        expect(res.status).toBe(200);
+        const regex = new RegExp(`${REGISTRATION_BASE_URL}/transaction/.*?/submission/.*?/${backLink}`);
+        expect(res.text).toMatch(regex);
+      }
+    );
 
     describe("Empty list", () => {
       it("should redirect to general partners start page when list is empty", async () => {

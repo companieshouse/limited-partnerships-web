@@ -1,13 +1,30 @@
 {% if (partnershipType == "LP") or (partnershipType == "SLP") %}
-  {{ govukInput({
-    label: {
-      text: i18n.capitalContribution.title,
-      classes: "govuk-label govuk-label--m",
-      isPageHeading: false
-    },
+    
+  <h2 class="govuk-heading-m">{{ i18n.capitalContribution.title}}</h2>
+
+  <p class="govuk-hint">{{ i18n.capitalContribution.hint }}</p>
+ 
+  {% set contributionCurrencyTypeId = "contribution_currency_type" %}
+  {% set currencyField = props.data.limitedPartner.data.contribution_currency_type %}
+  {% include "includes/currencies.njk" %}
+
+  {% set contribution_sub_types = [] %}
+  {% if props.data.limitedPartner.data.contribution_sub_types %}
+    {% set contribution_sub_types = props.data.limitedPartner.data.contribution_sub_types %}
+  {% endif %}
+
+  {% set hintHtml -%}
+    <p class="govuk-body">{{ i18n.capitalContribution.amountHint }}</p>
+    <ul class="govuk-list govuk-list--bullet">
+      <li class="govuk-body">{{ i18n.capitalContribution.amountMinHint }}</li>
+      <li class="govuk-body">{{ i18n.capitalContribution.amountMaxHint }}</li>       
+    </ul>
+  {%- endset %}
+
+  {{ govukInput({ 
     hint: {
-      text: i18n.capitalContribution.hint
-    },
+      html: hintHtml
+    },  
     classes: "govuk-input--width-4",
     id: "contribution_currency_value",
     name: "contribution_currency_value",
@@ -17,15 +34,6 @@
       required: true
     }
   }) }}
-
-  {% set contributionCurrencyTypeId = "contribution_currency_type" %}
-  {% set currencyField = props.data.limitedPartner.data.contribution_currency_type %}
-  {% include "includes/currencies.njk" %}
-
-  {% set contribution_sub_types = [] %}
-  {% if props.data.limitedPartner.data.contribution_sub_types %}
-    {% set contribution_sub_types = props.data.limitedPartner.data.contribution_sub_types %}
-  {% endif %}
 
   {{ govukCheckboxes({
     errorMessage: i18n.capitalContribution.compositionErrorMessage if props.errors,
