@@ -158,9 +158,15 @@ abstract class GeneralPartnerController extends AbstractController {
         const result = await this.generalPartnerService.createGeneralPartner(tokens, ids.transactionId, request.body);
 
         if (result.errors) {
+          const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+            tokens,
+            ids.transactionId,
+            ids.submissionId
+          );
+
           response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { generalPartner: { data: request.body } }, result.errors)
+            super.makeProps(pageRouting, { limitedPartnership, generalPartner: { data: request.body } }, result.errors)
           );
 
           return;
@@ -197,9 +203,15 @@ abstract class GeneralPartnerController extends AbstractController {
         );
 
         if (result?.errors) {
+          const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+            tokens,
+            ids.transactionId,
+            ids.submissionId
+          );
+
           response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { generalPartner: { data: request.body } }, result.errors)
+            super.makeProps(pageRouting, { limitedPartnership, generalPartner: { data: request.body } }, result.errors)
           );
           return;
         }

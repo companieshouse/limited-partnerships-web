@@ -32,7 +32,7 @@
 
 {% if props.data.generalPartner.data.former_names %}
   {% set previousNames = "true" %}
-{% elseif props.data.generalPartner.data.forename %}
+{% elif props.data.generalPartner.data.forename %}
   {# After the first check, if any other general partner person field is set, they cannot have a previous name #}
   {% set previousNames = "false" %}
 {% endif %}
