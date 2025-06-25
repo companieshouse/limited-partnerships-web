@@ -11,16 +11,21 @@ import {
   cookieOptions
 } from "../../../config/constants";
 import { getJourneyTypes } from "../../../utils/journey";
-import { Jurisdiction, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { GeneralPartner, Jurisdiction, LimitedPartner, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import { PageRouting } from "../PageRouting";
 import { CONFIRM_REGISTERED_OFFICE_ADDRESS_URL } from "../addressLookUp/url/transition";
+import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
+import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
+import { formatDate } from "../../../utils/date-format";
 
 class LimitedPartnershipController extends AbstractController {
   constructor(
     private readonly companyService: CompanyService,
     private readonly cacheService: CacheService,
-    private readonly limitedPartnershipService: LimitedPartnershipService
+    private readonly limitedPartnershipService: LimitedPartnershipService,
+    private readonly generalPartnerService: GeneralPartnerService,
+    private readonly limitedPartnerService: LimitedPartnerService
   ) {
     super();
   }
@@ -32,6 +37,8 @@ class LimitedPartnershipController extends AbstractController {
         const pageRouting = super.getRouting(transitionRouting, pageType, request);
 
         let limitedPartnership = {};
+        let generalPartners: GeneralPartner[] = [];
+        let limitedPartners: LimitedPartner[] = [];
 
         if (ids.transactionId && ids.submissionId) {
           limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
@@ -41,14 +48,37 @@ class LimitedPartnershipController extends AbstractController {
           );
         }
 
+        if (pageRouting.pageType === TransitionPageType.checkYourAnswers) {
+          const gpResult = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
+          generalPartners = gpResult.generalPartners.map((partner) => this.formatPartnerDob(partner, response));
+
+          const lpResult = await this.limitedPartnerService.getLimitedPartners(tokens, ids.transactionId);
+          limitedPartners = lpResult.limitedPartners.map((partner) => this.formatPartnerDob(partner, response));
+        }
+
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
 
         response.render(
           super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { limitedPartnership, cache }, null)
+          super.makeProps(pageRouting, { limitedPartnership, generalPartners, limitedPartners, cache }, null)
         );
       } catch (error) {
         next(error);
+      }
+    };
+  }
+
+  private formatPartnerDob(
+    partner: GeneralPartner | LimitedPartner,
+    response: Response
+  ): GeneralPartner | LimitedPartner {
+    return {
+      ...partner,
+      data: {
+        ...partner.data,
+        date_of_birth: partner.data?.date_of_birth
+          ? formatDate(partner.data?.date_of_birth, response.locals.i18n)
+          : undefined
       }
     };
   }
