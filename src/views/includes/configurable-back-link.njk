@@ -1,6 +1,6 @@
 {% set partnershipType = props.data.limitedPartnership.data.partnership_type %}
 
-{% if (partnershipType == "LP") or (partnershipType == "SLP") %}
+{% if ((partnershipType == "LP") or (partnershipType == "SLP")) and journeyTypes.isRegistration %}
   {% set hrefValue = props.currentUrl | replace(currentPage, backPage) %}
 {% else %}
     {% set hrefValue = props.previousUrl %}

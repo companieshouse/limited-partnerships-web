@@ -62,6 +62,16 @@ abstract class AbstractPartnerBuilder {
     this.data.completed = completed;
     return this;
   }
+
+  withPrincipalOfficeAddress(principalOfficeAddress: Record<string, any> | null) {
+    this.data.principal_office_address = principalOfficeAddress;
+    return this;
+  }
+
+  withUsualResidentialAddress(usualResidentialAddress: Record<string, any> | null) {
+    this.data.usual_residential_address = usualResidentialAddress;
+    return this;
+  }
 }
 
 export default AbstractPartnerBuilder;

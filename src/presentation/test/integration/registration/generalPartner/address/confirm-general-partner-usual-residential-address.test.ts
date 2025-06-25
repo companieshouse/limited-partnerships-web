@@ -95,6 +95,14 @@ describe("Confirm General Partner Usual Residential Address Page", () => {
 
   describe("POST Confirm Usual Residential Address Page", () => {
     it("should redirect to the next page", async () => {
+      const generalPartner = new GeneralPartnerBuilder()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .isPerson()
+        .withServiceAddress(null)
+        .build();
+
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+
       const res = await request(app)
         .post(URL)
         .send({
