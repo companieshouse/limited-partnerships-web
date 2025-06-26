@@ -4,23 +4,23 @@ import enTranslationText from "../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../locales/cy/translations.json";
 
 import app from "../../app";
-import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
+import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
-import TransitionPageType from "../../../../controller/transition/PageType";
 import {
-  ADD_LIMITED_PARTNER_PERSON_URL,
-  ADD_LIMITED_PARTNER_PERSON_WITH_ID_URL
+  ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
+  ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_ID_URL
 } from "../../../../controller/transition/url";
-import { TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../controller/addressLookUp/url/transition";
 import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
+import RegistrationPageType from "../../../../controller/transition/PageType";
+import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 import { TRANSITION_BASE_URL } from "config";
+import { LIMITED_PARTNER_CHOICE_TEMPLATE } from "../../../../../presentation/controller/transition/template";
 
-describe("Add Limited Partner Person Page", () => {
-  const URL = getUrl(ADD_LIMITED_PARTNER_PERSON_URL);
-  const REDIRECT_URL = getUrl(TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
+describe("Add Limited Partner Legal Entity Page", () => {
+  const URL = getUrl(ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL);
+  // const REDIRECT_URL = getUrl(TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL); // TODO - uncomment when TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL is defined
 
   beforeEach(() => {
     setLocalesEnabled(false);
@@ -31,38 +31,26 @@ describe("Add Limited Partner Person Page", () => {
 
   describe("Get Add Limited Partner Page", () => {
     it("should load the add limited partner page with Welsh text", async () => {
-      const limitedPartnership = new LimitedPartnershipBuilder().build();
-
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
       setLocalesEnabled(true);
       const res = await request(app).get(URL + "?lang=cy");
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${cyTranslationText.addPartnerPersonPage.limitedPartner.title} - ${cyTranslationText.service} - GOV.UK`
+        `${cyTranslationText.addPartnerLegalEntityPage.limitedPartner.title} - ${cyTranslationText.service} - GOV.UK`
       );
-      testTranslations(res.text, cyTranslationText.addPartnerPersonPage, ["errorMessages", "generalPartner"]);
-
-      expect(res.text).not.toContain(enTranslationText.capitalContribution.title);
+      testTranslations(res.text, cyTranslationText.addPartnerLegalEntityPage, ["errorMessages", "generalPartner"]);
     });
 
     it("should load the add limited partner page with English text", async () => {
-      const limitedPartnership = new LimitedPartnershipBuilder().build();
-
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
       setLocalesEnabled(true);
       const res = await request(app).get(URL + "?lang=en");
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${enTranslationText.addPartnerPersonPage.limitedPartner.title} - ${enTranslationText.service} - GOV.UK`
+        `${enTranslationText.addPartnerLegalEntityPage.limitedPartner.title} - ${enTranslationText.service} - GOV.UK`
       );
-      testTranslations(res.text, enTranslationText.addPartnerPersonPage, ["errorMessages", "generalPartner"]);
+      testTranslations(res.text, enTranslationText.addPartnerLegalEntityPage, ["errorMessages", "generalPartner"]);
       expect(res.text).not.toContain("WELSH -");
-
-      expect(res.text).not.toContain(enTranslationText.capitalContribution.title);
     });
 
     it("should contain the proposed name - data from api", async () => {
@@ -81,18 +69,17 @@ describe("Add Limited Partner Person Page", () => {
     it("should retrieve limited partner data from the api", async () => {
       const limitedPartner = new LimitedPartnerBuilder()
         .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isPerson()
+        .isLegalEntity()
         .build();
 
       appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
 
-      const URL = getUrl(ADD_LIMITED_PARTNER_PERSON_WITH_ID_URL);
+      const URL = getUrl(ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_ID_URL);
 
       const res = await request(app).get(URL);
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain("Joe");
-      expect(res.text).toContain("Doe");
+      expect(res.text).toContain("My Company ltd");
     });
 
     it("should contain a back link to the review page when limited partners are present", async () => {
@@ -102,24 +89,24 @@ describe("Add Limited Partner Person Page", () => {
         .build();
 
       appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
-      const res = await request(app).get(getUrl(ADD_LIMITED_PARTNER_PERSON_WITH_ID_URL) + "?lang=en");
+      const res = await request(app).get(getUrl(ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_ID_URL) + "?lang=en");
 
       expect(res.status).toBe(200);
 
-      // TODO uncomment when REVIEW_LIMITED_PARTNERS_URL is defined
+      // TODO - uncomment when REVIEW_LIMITED_PARTNERS_TEMPLATE is defined
       // const regex = new RegExp(
-      //   `${TRANSITION_BASE_URL}/transaction/.*?/submission/.*?/${TransitionPageType.limitedPartnerChoice}`
+      //   `${TRANSITION_BASE_URL}/transaction/.*?/submission/.*?/${REVIEW_LIMITED_PARTNERS_TEMPLATE}`
       // );
       // expect(res.text).toMatch(regex);
     });
 
     it("should contain a back link to the choice page when limited partners are not present", async () => {
       appDevDependencies.limitedPartnerGateway.feedLimitedPartners([]);
-      const res = await request(app).get(getUrl(ADD_LIMITED_PARTNER_PERSON_WITH_ID_URL) + "?lang=en");
+      const res = await request(app).get(getUrl(ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_ID_URL) + "?lang=en");
 
       expect(res.status).toBe(200);
       const regex = new RegExp(
-        `${TRANSITION_BASE_URL}/transaction/.*?/submission/.*?/${TransitionPageType.limitedPartnerChoice}`
+        `${TRANSITION_BASE_URL}/transaction/.*?/submission/.*?/${LIMITED_PARTNER_CHOICE_TEMPLATE}`
       );
       expect(res.text).toMatch(regex);
     });
@@ -128,12 +115,12 @@ describe("Add Limited Partner Person Page", () => {
   describe("Post Add Limited Partner", () => {
     it("should send the Limited partner details", async () => {
       const res = await request(app).post(URL).send({
-        pageType: TransitionPageType.addLimitedPartnerPerson,
+        pageType: RegistrationPageType.addLimitedPartnerLegalEntity,
         forename: "test"
       });
 
       expect(res.status).toBe(302);
-      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+      // expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`); // TODO - uncomment when TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL is defined
     });
 
     it("should return a validation error when invalid data is entered", async () => {
@@ -144,7 +131,7 @@ describe("Add Limited Partner Person Page", () => {
       appDevDependencies.limitedPartnerGateway.feedErrors(apiErrors);
 
       const res = await request(app).post(URL).send({
-        pageType: TransitionPageType.addLimitedPartnerPerson,
+        pageType: RegistrationPageType.addLimitedPartnerLegalEntity,
         forename: "INVALID-CHARACTERS"
       });
 
@@ -155,7 +142,7 @@ describe("Add Limited Partner Person Page", () => {
     it("should replay entered data when invalid data is entered and a validation error occurs", async () => {
       const limitedPartner = new LimitedPartnerBuilder()
         .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isPerson()
+        .isLegalEntity()
         .build();
 
       appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
@@ -167,40 +154,35 @@ describe("Add Limited Partner Person Page", () => {
       appDevDependencies.limitedPartnerGateway.feedErrors(apiErrors);
 
       const res = await request(app).post(URL).send({
-        pageType: TransitionPageType.addLimitedPartnerPerson,
-        forename: "INVALID-CHARACTERS-FORENAME",
-        surname: "SURNAME",
-        former_names: "",
-        previousName: "false",
-        "date_of_birth-Day": "01",
-        "date_of_birth-Month": "11",
-        "date_of_birth-Year": "1987",
-        nationality1: "Mongolian",
-        nationality2: "Uzbek"
+        pageType: RegistrationPageType.addLimitedPartnerLegalEntity,
+        legal_entity_name: "INVALID-CHARACTERS-FORENAME",
+        legal_form: "Limited Company",
+        governing_law: "Act of law",
+        legal_entity_register_name: "US Register",
+        legal_entity_transition_location: "United States",
+        registered_company_number: "12345678"
       });
 
       expect(res.status).toBe(200);
       expect(res.text).toContain("INVALID-CHARACTERS-FORENAME");
-      expect(res.text).toContain("SURNAME");
-      expect(res.text).toContain('id="previousNameNo" name="previousName" type="radio" value="false" checked');
-      expect(res.text).toContain("Mongolian");
-      expect(res.text).toContain("Uzbek");
+      expect(res.text).toContain("Limited Company");
+      expect(res.text).toContain("United States");
     });
   });
 
-  describe("Patch from Add Limited Partner", () => {
+  describe("Patch Add Limited Partner", () => {
     it("should send the limited partner details", async () => {
-      const URL = getUrl(ADD_LIMITED_PARTNER_PERSON_WITH_ID_URL);
+      const URL = getUrl(ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_ID_URL);
 
       const limitedPartner = new LimitedPartnerBuilder()
         .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isPerson()
+        .isLegalEntity()
         .build();
 
       appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
 
       const res = await request(app).post(URL).send({
-        pageType: TransitionPageType.addLimitedPartnerPerson,
+        pageType: RegistrationPageType.addLimitedPartnerLegalEntity,
         forename: "test"
       });
 
@@ -208,11 +190,11 @@ describe("Add Limited Partner Person Page", () => {
     });
 
     it("should return a validation error when invalid data is entered", async () => {
-      const URL = getUrl(ADD_LIMITED_PARTNER_PERSON_WITH_ID_URL);
+      const URL = getUrl(ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_ID_URL);
 
       const limitedPartner = new LimitedPartnerBuilder()
         .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isPerson()
+        .isLegalEntity()
         .build();
 
       appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
@@ -224,7 +206,7 @@ describe("Add Limited Partner Person Page", () => {
       appDevDependencies.limitedPartnerGateway.feedErrors(apiErrors);
 
       const res = await request(app).post(URL).send({
-        pageType: TransitionPageType.addLimitedPartnerPerson,
+        pageType: RegistrationPageType.addLimitedPartnerLegalEntity,
         forename: "INVALID-CHARACTERS"
       });
       expect(res.status).toBe(200);
@@ -232,11 +214,11 @@ describe("Add Limited Partner Person Page", () => {
     });
 
     it("should replay entered data when invalid data is entered and a validation error occurs", async () => {
-      const URL = getUrl(ADD_LIMITED_PARTNER_PERSON_WITH_ID_URL);
+      const URL = getUrl(ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_ID_URL);
 
       const limitedPartner = new LimitedPartnerBuilder()
         .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isPerson()
+        .isLegalEntity()
         .build();
 
       appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
@@ -248,25 +230,19 @@ describe("Add Limited Partner Person Page", () => {
       appDevDependencies.limitedPartnerGateway.feedErrors(apiErrors);
 
       const res = await request(app).post(URL).send({
-        pageType: TransitionPageType.addLimitedPartnerPerson,
-        forename: "INVALID-CHARACTERS-FORENAME",
-        surname: "SURNAME",
-        former_names: "FORMER-NAMES",
-        previousName: "true",
-        "date_of_birth-Day": "01",
-        "date_of_birth-Month": "11",
-        "date_of_birth-Year": "1987",
-        nationality1: "Mongolian",
-        nationality2: "Uzbek"
+        pageType: RegistrationPageType.addLimitedPartnerLegalEntity,
+        legal_entity_name: "INVALID-CHARACTERS-FORENAME",
+        legal_form: "Limited Company",
+        governing_law: "Act of law",
+        legal_entity_register_name: "US Register",
+        legal_entity_transition_location: "United States",
+        registered_company_number: "12345678"
       });
 
       expect(res.status).toBe(200);
       expect(res.text).toContain("INVALID-CHARACTERS-FORENAME");
-      expect(res.text).toContain("SURNAME");
-      expect(res.text).toContain('id="previousNameYes" name="previousName" type="radio" value="true" checked');
-      expect(res.text).toContain("FORMER-NAMES");
-      expect(res.text).toContain("Mongolian");
-      expect(res.text).toContain("Uzbek");
+      expect(res.text).toContain("Limited Company");
+      expect(res.text).toContain("United States");
     });
   });
 });

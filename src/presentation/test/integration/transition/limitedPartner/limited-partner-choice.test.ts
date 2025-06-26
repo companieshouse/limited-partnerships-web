@@ -6,7 +6,11 @@ import cyTranslationText from "../../../../../../locales/cy/translations.json";
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 
-import { LIMITED_PARTNER_CHOICE_URL, ADD_LIMITED_PARTNER_PERSON_URL } from "../../../../controller/transition/url";
+import {
+  LIMITED_PARTNER_CHOICE_URL,
+  ADD_LIMITED_PARTNER_PERSON_URL,
+  ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL
+} from "../../../../controller/transition/url";
 import TransitionPageType from "../../../../controller/transition/PageType";
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
@@ -59,7 +63,7 @@ describe("Limited Partner Choice Page", () => {
       parameter: "legalEntity"
     });
     expect(res.status).toBe(302);
-    // expect(res.text).toContain(getUrl(ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL)); // TODO - Uncomment when ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL is defined
+    expect(res.text).toContain(getUrl(ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL));
   });
 
   it("should contain the proposed name - data from api", async () => {

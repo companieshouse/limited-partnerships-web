@@ -26,10 +26,21 @@ const transitionRoutingAddLimitedPartnerPerson = {
   }
 };
 
+const transitionRoutingAddLimitedPartnerLegalEntity = {
+  previousUrl: url.LIMITED_PARTNER_CHOICE_URL,
+  currentUrl: url.ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
+  nextUrl: "/", // TODO set to TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
+  pageType: TransitionPageType.addLimitedPartnerLegalEntity,
+  data: {
+    customPreviousUrl: url.REVIEW_LIMITED_PARTNERS_URL
+  }
+};
+
 const limitedPartnerRouting = [
   transitionRoutingLimitedPartners,
   transitionRoutingLimitedPartnerChoice,
-  transitionRoutingAddLimitedPartnerPerson
+  transitionRoutingAddLimitedPartnerPerson,
+  transitionRoutingAddLimitedPartnerLegalEntity
 ];
 
 export default limitedPartnerRouting;

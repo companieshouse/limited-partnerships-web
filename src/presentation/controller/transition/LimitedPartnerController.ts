@@ -1,7 +1,7 @@
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
 
-import { ADD_LIMITED_PARTNER_PERSON_URL, LIMITED_PARTNERS_URL } from "./url";
+import { ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL, ADD_LIMITED_PARTNER_PERSON_URL, LIMITED_PARTNERS_URL } from "./url";
 import LimitedPartnerController from "../common/LimitedPartnerController";
 import { CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../addressLookUp/url/transition";
 
@@ -17,7 +17,7 @@ class LimitedPartnerTransitionController extends LimitedPartnerController {
   limitedPartnerChoice() {
     return super.limitedPartnerChoice({
       addPersonUrl: ADD_LIMITED_PARTNER_PERSON_URL,
-      addLegalEntityUrl: "/" // TODO set to ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL
+      addLegalEntityUrl: ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL
     });
   }
 
@@ -39,7 +39,7 @@ class LimitedPartnerTransitionController extends LimitedPartnerController {
   postReviewPage() {
     return super.postReviewPage({
       addLimitedPartnerPersonUrl: ADD_LIMITED_PARTNER_PERSON_URL,
-      addLimitedPartnerLegalEntityUrl: "/", // TODO set to ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL
+      addLimitedPartnerLegalEntityUrl: ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
       checkYourAnswersUrl: "/" // TODO set to CHECK_YOUR_ANSWERS_URL
     });
   }

@@ -205,7 +205,9 @@
         {% set nationalityFieldNameId = "nationality2" %}
         {% include "includes/nationalities.njk" %}
         
-        {% include "includes/capital-contribution.njk" %}   
+        {% if journeyTypes.isRegistration %}
+          {% include "includes/capital-contribution.njk" %}
+        {% endif %} 
 
         {% if journeyTypes.isTransition %}
           {{ govukDateInput({
