@@ -1,13 +1,14 @@
 {
     "addPartnerLegalEntityPage" : {
         "generalPartner": {
-            "title" : "Add a general partner (legal entity)"
+            "title" : "Add a general partner (legal entity)",
+            "dateEffectiveFrom" : "When did they become a general partner for this partnership?"
         },
         "limitedPartner": {
-            "title": "Add a limited partner (legal entity)"
+            "title": "Add a limited partner (legal entity)",
+            "dateEffectiveFrom" : "When did they become a limited partner for this partnership?"
         },
 
-        "dateEffectiveFrom" : "When did they become a general partner for this partnership?",
         "dateHint" : "For example, 27 3 2000",
         "dateDay" : "Day",
         "dateMonth" : "Month",
@@ -40,6 +41,7 @@
     "addPartnerPersonPage" : {
         "generalPartner": {
             "title" : "Add a general partner (person)",
+            "dateEffectiveFrom" : "When did they become a general partner for this partnership?",
             "previousName" : { 
                 "title" : "Does the general partner have a previous name?",
                 "hint" : "For example, if they've changed their name as a result of marriage or divorce.",
@@ -53,6 +55,7 @@
         },
         "limitedPartner": {
             "title": "Add a limited partner (person)",
+            "dateEffectiveFrom" : "When did they become a limited partner for this partnership?",
             "previousName" : { 
                 "title" : "Does the limited partner have a previous name?",
                 "hint" : "For example, if they've changed their name as a result of marriage or divorce.",
@@ -65,7 +68,6 @@
         "firstName" : "First name",
         "lastName" : "Last name",
         "dateOfBirth" : "Date of birth",
-        "dateEffectiveFrom" : "When did they become a general partner for this partnership?",
         "dateHint" : "For example, 27 3 2000",
         "dateDay" : "Day",
         "dateMonth" : "Month",
