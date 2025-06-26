@@ -7,16 +7,16 @@ import app from "../../app";
 
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
+import { TRANSITION_BASE_URL } from "config";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
+import { ApiErrors } from "../../../../../domain/entities/UIErrors";
+
 import {
   ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
   ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_ID_URL
 } from "../../../../controller/transition/url";
 import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
-import RegistrationPageType from "../../../../controller/transition/PageType";
-import { ApiErrors } from "../../../../../domain/entities/UIErrors";
-import { TRANSITION_BASE_URL } from "config";
-import { LIMITED_PARTNER_CHOICE_TEMPLATE } from "../../../../../presentation/controller/transition/template";
+import TransitionPageType from "../../../../controller/transition/PageType";
 
 describe("Add Limited Partner Legal Entity Page", () => {
   const URL = getUrl(ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL);
@@ -93,11 +93,10 @@ describe("Add Limited Partner Legal Entity Page", () => {
 
       expect(res.status).toBe(200);
 
-      // TODO - uncomment when REVIEW_LIMITED_PARTNERS_TEMPLATE is defined
-      // const regex = new RegExp(
-      //   `${TRANSITION_BASE_URL}/transaction/.*?/submission/.*?/${REVIEW_LIMITED_PARTNERS_TEMPLATE}`
-      // );
-      // expect(res.text).toMatch(regex);
+      const regex = new RegExp(
+        `${TRANSITION_BASE_URL}/transaction/.*?/submission/.*?/${TransitionPageType.reviewLimitedPartners}`
+      );
+      expect(res.text).toMatch(regex);
     });
 
     it("should contain a back link to the choice page when limited partners are not present", async () => {
@@ -106,7 +105,7 @@ describe("Add Limited Partner Legal Entity Page", () => {
 
       expect(res.status).toBe(200);
       const regex = new RegExp(
-        `${TRANSITION_BASE_URL}/transaction/.*?/submission/.*?/${LIMITED_PARTNER_CHOICE_TEMPLATE}`
+        `${TRANSITION_BASE_URL}/transaction/.*?/submission/.*?/${TransitionPageType.limitedPartnerChoice}`
       );
       expect(res.text).toMatch(regex);
     });
@@ -115,7 +114,7 @@ describe("Add Limited Partner Legal Entity Page", () => {
   describe("Post Add Limited Partner", () => {
     it("should send the Limited partner details", async () => {
       const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.addLimitedPartnerLegalEntity,
+        pageType: TransitionPageType.addLimitedPartnerLegalEntity,
         forename: "test"
       });
 
@@ -131,7 +130,7 @@ describe("Add Limited Partner Legal Entity Page", () => {
       appDevDependencies.limitedPartnerGateway.feedErrors(apiErrors);
 
       const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.addLimitedPartnerLegalEntity,
+        pageType: TransitionPageType.addLimitedPartnerLegalEntity,
         forename: "INVALID-CHARACTERS"
       });
 
@@ -154,7 +153,7 @@ describe("Add Limited Partner Legal Entity Page", () => {
       appDevDependencies.limitedPartnerGateway.feedErrors(apiErrors);
 
       const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.addLimitedPartnerLegalEntity,
+        pageType: TransitionPageType.addLimitedPartnerLegalEntity,
         legal_entity_name: "INVALID-CHARACTERS-FORENAME",
         legal_form: "Limited Company",
         governing_law: "Act of law",
@@ -182,7 +181,7 @@ describe("Add Limited Partner Legal Entity Page", () => {
       appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
 
       const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.addLimitedPartnerLegalEntity,
+        pageType: TransitionPageType.addLimitedPartnerLegalEntity,
         forename: "test"
       });
 
@@ -206,7 +205,7 @@ describe("Add Limited Partner Legal Entity Page", () => {
       appDevDependencies.limitedPartnerGateway.feedErrors(apiErrors);
 
       const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.addLimitedPartnerLegalEntity,
+        pageType: TransitionPageType.addLimitedPartnerLegalEntity,
         forename: "INVALID-CHARACTERS"
       });
       expect(res.status).toBe(200);
@@ -230,7 +229,7 @@ describe("Add Limited Partner Legal Entity Page", () => {
       appDevDependencies.limitedPartnerGateway.feedErrors(apiErrors);
 
       const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.addLimitedPartnerLegalEntity,
+        pageType: TransitionPageType.addLimitedPartnerLegalEntity,
         legal_entity_name: "INVALID-CHARACTERS-FORENAME",
         legal_form: "Limited Company",
         governing_law: "Act of law",

@@ -10,7 +10,8 @@ import {
   ADD_GENERAL_PARTNER_PERSON_URL,
   GENERAL_PARTNERS_URL,
   LIMITED_PARTNERS_URL,
-  REVIEW_GENERAL_PARTNERS_URL
+  REVIEW_GENERAL_PARTNERS_URL,
+  REVIEW_LIMITED_PARTNERS_URL
 } from "../../../../controller/transition/url";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
@@ -149,7 +150,7 @@ describe("Review General Partners Page", () => {
         });
 
         expect(res.status).toBe(302);
-        // expect(res.headers.location).toContain(getUrl(REVIEW_LIMITED_PARTNERS_URL)); // TODO: enable when limited partners page is available
+        expect(res.headers.location).toContain(getUrl(REVIEW_LIMITED_PARTNERS_URL));
       });
 
       it("should render the review general partners page with errors", async () => {

@@ -6,9 +6,10 @@ import cyTranslationText from "../../../../../../locales/cy/translations.json";
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { ApiErrors } from "../../../../../domain/entities/UIErrors";
+import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
+import { TRANSITION_BASE_URL } from "config";
 
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import TransitionPageType from "../../../../controller/transition/PageType";
 import {
   ADD_LIMITED_PARTNER_PERSON_URL,
@@ -16,7 +17,6 @@ import {
 } from "../../../../controller/transition/url";
 import { TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../controller/addressLookUp/url/transition";
 import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
-import { TRANSITION_BASE_URL } from "config";
 
 describe("Add Limited Partner Person Page", () => {
   const URL = getUrl(ADD_LIMITED_PARTNER_PERSON_URL);
@@ -106,11 +106,10 @@ describe("Add Limited Partner Person Page", () => {
 
       expect(res.status).toBe(200);
 
-      // TODO uncomment when REVIEW_LIMITED_PARTNERS_URL is defined
-      // const regex = new RegExp(
-      //   `${TRANSITION_BASE_URL}/transaction/.*?/submission/.*?/${TransitionPageType.limitedPartnerChoice}`
-      // );
-      // expect(res.text).toMatch(regex);
+      const regex = new RegExp(
+        `${TRANSITION_BASE_URL}/transaction/.*?/submission/.*?/${TransitionPageType.reviewLimitedPartners}`
+      );
+      expect(res.text).toMatch(regex);
     });
 
     it("should contain a back link to the choice page when limited partners are not present", async () => {
