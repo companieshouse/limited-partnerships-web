@@ -1,5 +1,4 @@
 import request from "supertest";
-import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import enTranslationText from "../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../locales/cy/translations.json";
@@ -30,64 +29,40 @@ describe("Add Limited Partner Person Page", () => {
   });
 
   describe("Get Add Limited Partner Page", () => {
-    it.each([
-      ["for type LP", PartnershipType.LP, true],
-      ["for type SLP", PartnershipType.SLP, true],
-      ["for type PFLP", PartnershipType.PFLP, false],
-      ["for type SPFLP", PartnershipType.SPFLP, false]
-    ])(
-      "should load the add limited partner page with Welsh text for %s",
-      async (_desciption, partnershipType, isCapitalContributionPresent) => {
-        const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
+    it("should load the add limited partner page with Welsh text", async () => {
+      const limitedPartnership = new LimitedPartnershipBuilder().build();
 
-        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-        setLocalesEnabled(true);
-        const res = await request(app).get(URL + "?lang=cy");
+      setLocalesEnabled(true);
+      const res = await request(app).get(URL + "?lang=cy");
 
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(
-          `${cyTranslationText.addPartnerPersonPage.limitedPartner.title} - ${cyTranslationText.service} - GOV.UK`
-        );
-        testTranslations(res.text, cyTranslationText.addPartnerPersonPage, ["errorMessages", "generalPartner"]);
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(
+        `${cyTranslationText.addPartnerPersonPage.limitedPartner.title} - ${cyTranslationText.service} - GOV.UK`
+      );
+      testTranslations(res.text, cyTranslationText.addPartnerPersonPage, ["errorMessages", "generalPartner"]);
 
-        if (isCapitalContributionPresent) {
-          testTranslations(res.text, cyTranslationText.capitalContribution, ["compositionErrorMessage"]);
-        } else {
-          expect(res.text).not.toContain(cyTranslationText.capitalContribution.title);
-        }
-      }
-    );
+      expect(res.text).not.toContain(enTranslationText.capitalContribution.title);
+    });
 
-    it.each([
-      ["for type LP", PartnershipType.LP, true],
-      ["for type SLP", PartnershipType.SLP, true],
-      ["for type PFLP", PartnershipType.PFLP, false],
-      ["for type SPFLP", PartnershipType.SPFLP, false]
-    ])(
-      "should load the add limited partner page with English text %s",
-      async (_desciption, partnershipType, isCapitalContributionPresent) => {
-        const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
+    it("should load the add limited partner page with English text", async () => {
+      const limitedPartnership = new LimitedPartnershipBuilder().build();
 
-        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-        setLocalesEnabled(true);
-        const res = await request(app).get(URL + "?lang=en");
+      setLocalesEnabled(true);
+      const res = await request(app).get(URL + "?lang=en");
 
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(
-          `${enTranslationText.addPartnerPersonPage.limitedPartner.title} - ${enTranslationText.service} - GOV.UK`
-        );
-        testTranslations(res.text, enTranslationText.addPartnerPersonPage, ["errorMessages", "generalPartner"]);
-        expect(res.text).not.toContain("WELSH -");
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(
+        `${enTranslationText.addPartnerPersonPage.limitedPartner.title} - ${enTranslationText.service} - GOV.UK`
+      );
+      testTranslations(res.text, enTranslationText.addPartnerPersonPage, ["errorMessages", "generalPartner"]);
+      expect(res.text).not.toContain("WELSH -");
 
-        if (isCapitalContributionPresent) {
-          testTranslations(res.text, enTranslationText.capitalContribution, ["compositionErrorMessage"]);
-        } else {
-          expect(res.text).not.toContain(enTranslationText.capitalContribution.title);
-        }
-      }
-    );
+      expect(res.text).not.toContain(enTranslationText.capitalContribution.title);
+    });
 
     it("should contain the proposed name - data from api", async () => {
       const limitedPartnership = new LimitedPartnershipBuilder().build();
