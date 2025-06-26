@@ -7,6 +7,11 @@
             "title": "Add a limited partner (legal entity)"
         },
 
+        "dateEffectiveFrom" : "When did they become a general partner for this partnership?",
+        "dateHint" : "For example, 27 3 2000",
+        "dateDay" : "Day",
+        "dateMonth" : "Month",
+        "dateYear" : "Year",
         "legalEntityName" : "What is the legal entity's name?",
         "legalFormOrCorporateIdentity" : "What is its legal form or corporate identity?",
         "legalFormOrCorporateIdentityHint" : "This is the corporate body type. For example, private limited company.",

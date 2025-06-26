@@ -1,19 +1,10 @@
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
 
-import {
-  ADD_LIMITED_PARTNER_PERSON_URL,
-  ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
-  CHECK_YOUR_ANSWERS_URL,
-  LIMITED_PARTNERS_URL
-} from "./url";
+import { ADD_LIMITED_PARTNER_PERSON_URL, LIMITED_PARTNERS_URL } from "./url";
 import LimitedPartnerController from "../common/LimitedPartnerController";
-import {
-  CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
-  CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
-} from "../addressLookUp/url/registration";
 
-class LimitedPartnerRegistrationController extends LimitedPartnerController {
+class LimitedPartnerTransitionController extends LimitedPartnerController {
   constructor(limitedPartnershipService: LimitedPartnershipService, limitedPartnerService: LimitedPartnerService) {
     super(limitedPartnershipService, limitedPartnerService);
   }
@@ -25,7 +16,7 @@ class LimitedPartnerRegistrationController extends LimitedPartnerController {
   limitedPartnerChoice() {
     return super.limitedPartnerChoice({
       addPersonUrl: ADD_LIMITED_PARTNER_PERSON_URL,
-      addLegalEntityUrl: ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL
+      addLegalEntityUrl: "/" // TODO set to ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL
     });
   }
 
@@ -39,16 +30,16 @@ class LimitedPartnerRegistrationController extends LimitedPartnerController {
 
   sendPageData() {
     return super.sendPageData({
-      confirmLimitedPartnerUsualResidentialAddressUrl: CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-      confirmLimitedPartnerPrincipalOfficeAddressUrl: CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
+      confirmLimitedPartnerUsualResidentialAddressUrl: "/", // TODO set to CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
+      confirmLimitedPartnerPrincipalOfficeAddressUrl: "/" // TODO set to CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
     });
   }
 
   postReviewPage() {
     return super.postReviewPage({
       addLimitedPartnerPersonUrl: ADD_LIMITED_PARTNER_PERSON_URL,
-      addLimitedPartnerLegalEntityUrl: ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
-      checkYourAnswersUrl: CHECK_YOUR_ANSWERS_URL
+      addLimitedPartnerLegalEntityUrl: "/", // TODO set to ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL
+      checkYourAnswersUrl: "/" // TODO set to CHECK_YOUR_ANSWERS_URL
     });
   }
 
@@ -57,4 +48,4 @@ class LimitedPartnerRegistrationController extends LimitedPartnerController {
   }
 }
 
-export default LimitedPartnerRegistrationController;
+export default LimitedPartnerTransitionController;

@@ -49,7 +49,7 @@ const transitionRoutingAddGeneralPartnerLegalEntity = {
 const transitionnRoutingReviewGeneralPartners = {
   previousUrl: CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
   currentUrl: url.REVIEW_GENERAL_PARTNERS_URL,
-  nextUrl: "/", // TODO set to next page URL when available: url.LIMITED_PARTNERS_URL
+  nextUrl: url.LIMITED_PARTNERS_URL,
   pageType: TransitionPageType.reviewGeneralPartners
 };
 

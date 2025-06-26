@@ -18,6 +18,19 @@
   {% set date_of_birth_day = props.data.limitedPartner.data["date_of_birth-day"] %}
 {% endif %}
 
+{% if props.data.limitedPartner.data.date_effective_from  %}
+  {# This is for when saved data is pre-populated on the page #}
+  {% set date_effective_from = props.data.limitedPartner.data.date_effective_from %}
+  {% set date_effective_from_year = date_effective_from[0] + date_effective_from[1] + date_effective_from[2] + date_effective_from[3] %}
+  {% set date_effective_from_month = date_effective_from[5] + date_effective_from[6] %}
+  {% set date_effective_from_day = date_effective_from[8] + date_effective_from[9] %}
+{% elif props.data.limitedPartner.data["date_effective_from-year"] %}
+  {# And this covers the scenario when date validation fails and the page reloads #}
+  {% set date_effective_from_year = props.data.limitedPartner.data["date_effective_from-year"] %}
+  {% set date_effective_from_month = props.data.limitedPartner.data["date_effective_from-month"] %}
+  {% set date_effective_from_day = props.data.limitedPartner.data["date_effective_from-day"] %}
+{% endif %}
+
 {% if props.data.limitedPartner.data.former_names %}
   {% set previousNames = "true" %}
 {% elseif props.data.limitedPartner.data.forename %}
@@ -192,7 +205,57 @@
         {% set nationalityFieldNameId = "nationality2" %}
         {% include "includes/nationalities.njk" %}
         
-        {% include "includes/capital-contribution.njk" %}     
+        {% include "includes/capital-contribution.njk" %}   
+
+        {% if journeyTypes.isTransition %}
+          {{ govukDateInput({
+            id: "date_effective_from",
+            namePrefix: "date_effective_from",
+            errorMessage: props.errors.date_effective_from if props.errors,
+            fieldset: {
+              legend: {
+                text: i18n.addPartnerPersonPage.dateEffectiveFrom,
+                isPageHeading: true,
+                classes: "govuk-label govuk-label--m"
+              }
+            },
+            hint: {
+              text: i18n.addPartnerPersonPage.dateHint
+            },
+            items: [
+              {
+                classes: "govuk-input--width-2",
+                label: i18n.addPartnerPersonPage.dateDay,
+                name: "day",
+                value: date_effective_from_day,
+                attributes: {
+                  required: true,
+                  pattern: "[0-9]*"
+                }
+              },
+              {
+                classes: "govuk-input--width-2",
+                label: i18n.addPartnerPersonPage.dateMonth,
+                name: "month",
+                value: date_effective_from_month,
+                attributes: {
+                  required: true,
+                  pattern: "[0-9]*"
+                }
+              },
+              {
+                classes: "govuk-input--width-4",
+                label: i18n.addPartnerPersonPage.dateYear,
+                name: "year",
+                value: date_effective_from_year,
+                attributes: {
+                  required: true,
+                  pattern: "[0-9]*"
+                }
+              }
+            ]
+          }) }}
+        {% endif %}  
 
         <div>
           {% include "includes/public-register-information.njk" %}

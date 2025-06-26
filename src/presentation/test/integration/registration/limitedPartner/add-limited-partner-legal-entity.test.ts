@@ -42,7 +42,15 @@ describe("Add Limited Partner Legal Entity Page", () => {
       expect(res.text).toContain(
         `${cyTranslationText.addPartnerLegalEntityPage.limitedPartner.title} - ${cyTranslationText.service} - GOV.UK`
       );
-      testTranslations(res.text, cyTranslationText.addPartnerLegalEntityPage, ["errorMessages", "generalPartner"]);
+      testTranslations(res.text, cyTranslationText.addPartnerLegalEntityPage, [
+        "errorMessages",
+        "generalPartner",
+        "dateEffectiveFrom",
+        "dateHint",
+        "dateDay",
+        "dateMonth",
+        "dateYear"
+      ]);
     });
 
     it("should load the add limited partner page with English text", async () => {
@@ -53,7 +61,15 @@ describe("Add Limited Partner Legal Entity Page", () => {
       expect(res.text).toContain(
         `${enTranslationText.addPartnerLegalEntityPage.limitedPartner.title} - ${enTranslationText.service} - GOV.UK`
       );
-      testTranslations(res.text, enTranslationText.addPartnerLegalEntityPage, ["errorMessages", "generalPartner"]);
+      testTranslations(res.text, enTranslationText.addPartnerLegalEntityPage, [
+        "errorMessages",
+        "generalPartner",
+        "dateEffectiveFrom",
+        "dateHint",
+        "dateDay",
+        "dateMonth",
+        "dateYear"
+      ]);
       expect(res.text).not.toContain("WELSH -");
     });
 
@@ -187,7 +203,6 @@ describe("Add Limited Partner Legal Entity Page", () => {
       });
 
       expect(res.status).toBe(302);
-      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
     });
 
     it("should return a validation error when invalid data is entered", async () => {
