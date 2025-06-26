@@ -9,11 +9,15 @@ import {
   ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_ID_URL,
   ADD_GENERAL_PARTNER_PERSON_URL,
   ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL,
+  ADD_LIMITED_PARTNER_PERSON_URL,
+  ADD_LIMITED_PARTNER_PERSON_WITH_ID_URL,
   COMPANY_NUMBER_URL,
   CONFIRM_LIMITED_PARTNERSHIP_URL,
   EMAIL_URL,
   GENERAL_PARTNER_CHOICE_URL,
   GENERAL_PARTNERS_URL,
+  LIMITED_PARTNER_CHOICE_URL,
+  LIMITED_PARTNERS_URL,
   REMOVE_GENERAL_PARTNER_URL,
   REVIEW_GENERAL_PARTNERS_URL
 } from "../presentation/controller/transition/url";
@@ -134,6 +138,46 @@ const transitionEndpoints = (router: Router, dependencies: IDependencies): void 
     authentication,
     dependencies.generalPartnerTransitionController.postRemovePage()
   );
+
+  router.get(
+    LIMITED_PARTNERS_URL,
+    authentication,
+    dependencies.limitedPartnershipTransitionController.getPageRouting()
+  );
+
+  router.get(
+    LIMITED_PARTNER_CHOICE_URL,
+    authentication,
+    dependencies.limitedPartnershipTransitionController.getPageRouting()
+  );
+  router.post(
+    LIMITED_PARTNER_CHOICE_URL,
+    authentication,
+    dependencies.limitedPartnerTransitionController.limitedPartnerChoice()
+  );
+
+  router.get(
+    ADD_LIMITED_PARTNER_PERSON_URL,
+    authentication,
+    dependencies.limitedPartnerTransitionController.getPageRouting()
+  );
+  router.post(
+    ADD_LIMITED_PARTNER_PERSON_URL,
+    authentication,
+    dependencies.limitedPartnerTransitionController.createLimitedPartner()
+  );
+
+  router.get(
+    ADD_LIMITED_PARTNER_PERSON_WITH_ID_URL,
+    authentication,
+    dependencies.limitedPartnerTransitionController.getPageRouting()
+  );
+  router.post(
+    ADD_LIMITED_PARTNER_PERSON_WITH_ID_URL,
+    authentication,
+    dependencies.limitedPartnerTransitionController.sendPageData()
+  );
+
 };
 
 export default transitionEndpoints;
