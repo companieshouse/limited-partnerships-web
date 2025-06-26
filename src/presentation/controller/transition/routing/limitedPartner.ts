@@ -1,21 +1,21 @@
 import TransitionnPageType from "../PageType";
 import * as url from "../url";
 
-const transactionnRoutingLimitedPartners = {
+const transactionRoutingLimitedPartners = {
   previousUrl: url.REVIEW_GENERAL_PARTNERS_URL,
   currentUrl: url.LIMITED_PARTNERS_URL,
   nextUrl: url.LIMITED_PARTNER_CHOICE_URL,
   pageType: TransitionnPageType.limitedPartners
 };
 
-const transactionnRoutingLimitedPartnerChoice = {
+const transactionRoutingLimitedPartnerChoice = {
   previousUrl: url.LIMITED_PARTNERS_URL,
   currentUrl: url.LIMITED_PARTNER_CHOICE_URL,
   nextUrl: "",
   pageType: TransitionnPageType.limitedPartnerChoice
 };
 
-const transactionnRoutingAddLimitedPartnerPerson = {
+const transactionRoutingAddLimitedPartnerPerson = {
   previousUrl: url.LIMITED_PARTNER_CHOICE_URL,
   currentUrl: url.ADD_LIMITED_PARTNER_PERSON_URL,
   nextUrl: "/", // TODO set to TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
@@ -25,10 +25,21 @@ const transactionnRoutingAddLimitedPartnerPerson = {
   }
 };
 
+const transactionRoutingAddLimitedPartnerLegalEntity = {
+  previousUrl: url.LIMITED_PARTNER_CHOICE_URL,
+  currentUrl: url.ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
+  nextUrl: "/", // TODO set to TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
+  pageType: TransitionnPageType.addLimitedPartnerLegalEntity,
+  data: {
+    customPreviousUrl: url.REVIEW_LIMITED_PARTNERS_URL
+  }
+};
+
 const limitedPartnerRouting = [
-  transactionnRoutingLimitedPartners,
-  transactionnRoutingLimitedPartnerChoice,
-  transactionnRoutingAddLimitedPartnerPerson
+  transactionRoutingLimitedPartners,
+  transactionRoutingLimitedPartnerChoice,
+  transactionRoutingAddLimitedPartnerPerson,
+  transactionRoutingAddLimitedPartnerLegalEntity
 ];
 
 export default limitedPartnerRouting;
