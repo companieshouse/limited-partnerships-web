@@ -21,7 +21,9 @@ import {
   LIMITED_PARTNER_CHOICE_URL,
   LIMITED_PARTNERS_URL,
   REMOVE_GENERAL_PARTNER_URL,
-  REVIEW_GENERAL_PARTNERS_URL
+  REMOVE_LIMITED_PARTNER_URL,
+  REVIEW_GENERAL_PARTNERS_URL,
+  REVIEW_LIMITED_PARTNERS_URL
 } from "../presentation/controller/transition/url";
 
 const transitionEndpoints = (router: Router, dependencies: IDependencies): void => {
@@ -200,6 +202,28 @@ const transitionEndpoints = (router: Router, dependencies: IDependencies): void 
     ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_ID_URL,
     authentication,
     dependencies.limitedPartnerTransitionController.sendPageData()
+  );
+
+  router.get(
+    REVIEW_LIMITED_PARTNERS_URL,
+    authentication,
+    dependencies.limitedPartnerTransitionController.getReviewPage()
+  );
+  router.post(
+    REVIEW_LIMITED_PARTNERS_URL,
+    authentication,
+    dependencies.limitedPartnerTransitionController.postReviewPage()
+  );
+
+  router.get(
+    REMOVE_LIMITED_PARTNER_URL,
+    authentication,
+    dependencies.limitedPartnerTransitionController.getPageRouting()
+  );
+  router.post(
+    REMOVE_LIMITED_PARTNER_URL,
+    authentication,
+    dependencies.limitedPartnerTransitionController.postRemovePage()
   );
 };
 
