@@ -108,10 +108,10 @@ describe("Confirm Limited Partner Usual Residential Address Page", () => {
           }`
         });
 
-      // const redirectUrl = getUrl(REVIEW_LIMITED_PARTNERS_URL); // uncomment when review page ready
+      // const redirectUrl = getUrl(REVIEW_LIMITED_PARTNERS_URL); // TODO uncomment when review page ready
 
       expect(res.status).toBe(302);
-      // expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+      // expect(res.text).toContain(`Redirecting to ${redirectUrl}`); // TODO uncomment when review page ready
     });
 
     it("should show error message if address is not provided", async () => {
