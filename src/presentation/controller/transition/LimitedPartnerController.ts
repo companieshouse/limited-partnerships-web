@@ -3,6 +3,7 @@ import LimitedPartnerService from "../../../application/service/LimitedPartnerSe
 
 import { ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL, ADD_LIMITED_PARTNER_PERSON_URL, LIMITED_PARTNERS_URL } from "./url";
 import LimitedPartnerController from "../common/LimitedPartnerController";
+import { CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../addressLookUp/url/transition";
 
 class LimitedPartnerTransitionController extends LimitedPartnerController {
   constructor(limitedPartnershipService: LimitedPartnershipService, limitedPartnerService: LimitedPartnerService) {
@@ -30,7 +31,7 @@ class LimitedPartnerTransitionController extends LimitedPartnerController {
 
   sendPageData() {
     return super.sendPageData({
-      confirmLimitedPartnerUsualResidentialAddressUrl: "/", // TODO set to CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
+      confirmLimitedPartnerUsualResidentialAddressUrl: CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
       confirmLimitedPartnerPrincipalOfficeAddressUrl: "/" // TODO set to CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
     });
   }
