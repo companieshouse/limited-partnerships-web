@@ -40,12 +40,6 @@ const transitionRoutingAddGeneralPartnerLegalEntity = {
   }
 };
 
-// usual residential address
-
-// correspondence address
-
-// principal office address
-
 const transitionnRoutingReviewGeneralPartners = {
   previousUrl: CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
   currentUrl: url.REVIEW_GENERAL_PARTNERS_URL,

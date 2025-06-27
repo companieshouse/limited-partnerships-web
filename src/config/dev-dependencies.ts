@@ -81,7 +81,7 @@ const limitedPartnerController: LimitedPartnerController = new LimitedPartnerCon
 );
 
 const limitedPartnershipTransitionController: LimitedPartnershipTransitionController =
-  new LimitedPartnershipTransitionController(companyService, cacheService, limitedPartnershipService);
+  new LimitedPartnershipTransitionController(companyService, cacheService, limitedPartnershipService, generalPartnerService, limitedPartnerService);
 const generalPartnerTransitionController: GeneralPartnerTransitionController = new GeneralPartnerTransitionController(
   limitedPartnershipService,
   generalPartnerService,
