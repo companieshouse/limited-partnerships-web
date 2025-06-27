@@ -151,9 +151,14 @@ class LimitedPartnerController extends AbstractController {
         const result = await this.limitedPartnerService.createLimitedPartner(tokens, ids.transactionId, request.body);
 
         if (result.errors) {
+          const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+            tokens,
+            ids.transactionId,
+            ids.submissionId
+          );
           response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { limitedPartnership: { data: { partnership_type: request.body.partnershipType } }, limitedPartner: { data: request.body } }, result.errors)
+            super.makeProps(pageRouting, { limitedPartnership, limitedPartner: { data: request.body } }, result.errors)
           );
           return;
         }
@@ -184,11 +189,14 @@ class LimitedPartnerController extends AbstractController {
         );
 
         if (result?.errors) {
+          const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+            tokens,
+            ids.transactionId,
+            ids.submissionId
+          );
           response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { limitedPartnership: {
-              data: { partnership_type: request.body.partnershipType } },
-            limitedPartner: { data: request.body } }, result.errors)
+            super.makeProps(pageRouting, { limitedPartnership, limitedPartner: { data: request.body } }, result.errors)
           );
           return;
         }

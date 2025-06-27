@@ -8,7 +8,7 @@ import {
 } from "presentation/controller/addressLookUp/url/registration";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import { appDevDependencies } from "config/dev-dependencies";
-import * as config from "config";
+import * as config from "../../../../../../config";
 import AddressPageType from "presentation/controller/addressLookUp/PageType";
 
 describe("Choose principal office address of the general partner page", () => {

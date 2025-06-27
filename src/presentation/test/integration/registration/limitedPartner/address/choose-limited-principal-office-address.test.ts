@@ -5,11 +5,11 @@ import app from "../../../app";
 import {
   CHOOSE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
-} from "presentation/controller/addressLookUp/url/registration";
+} from "../../../../../../presentation/controller/addressLookUp/url/registration";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
-import { appDevDependencies } from "config/dev-dependencies";
-import * as config from "config";
-import AddressPageType from "presentation/controller/addressLookUp/PageType";
+import { appDevDependencies } from "../../../../../../config/dev-dependencies";
+import * as config from "../../../../../../config";
+import AddressPageType from "../../../../../../presentation/controller/addressLookUp/PageType";
 
 describe("Choose principal office address of the limited partner page", () => {
   const URL = getUrl(CHOOSE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
