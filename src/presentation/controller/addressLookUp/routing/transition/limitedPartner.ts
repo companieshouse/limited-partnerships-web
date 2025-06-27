@@ -1,7 +1,8 @@
 import AddressPageType from "../../PageType";
 import {
   ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
-  ADD_LIMITED_PARTNER_PERSON_URL
+  ADD_LIMITED_PARTNER_PERSON_URL,
+  REVIEW_LIMITED_PARTNERS_URL
 } from "../../../transition/url";
 import * as url from "../../url/transition";
 
@@ -134,7 +135,7 @@ const transitionAddressRoutingEnterLimitedPartnerPrincipalOfficeAddress = {
 const transitionAddressRoutingConfirmLimitedPartnerPrincipalOfficeAddress = {
   previousUrl: url.POSTCODE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   currentUrl: url.CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
-  nextUrl: "/", // TODO change to review page when ready
+  nextUrl: REVIEW_LIMITED_PARTNERS_URL,
   pageType: AddressPageType.confirmLimitedPartnerPrincipalOfficeAddress,
   data: {
     ...limitedPartnerPrincipalOfficeAddressCacheKeys,

@@ -7,7 +7,7 @@ import {
   CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
 } from "../../../../../controller/addressLookUp/url/transition";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
-import { appDevDependencies } from "config/dev-dependencies";
+import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import * as config from "config";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 

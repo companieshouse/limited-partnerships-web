@@ -14,6 +14,7 @@ import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import LimitedPartnerBuilder from "../../../../builder/LimitedPartnerBuilder";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
+import { REVIEW_LIMITED_PARTNERS_URL } from "../../../../../controller/transition/url";
 
 describe("Confirm Limited Partner Principal Office Address Page", () => {
   const URL = getUrl(CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
@@ -108,10 +109,10 @@ describe("Confirm Limited Partner Principal Office Address Page", () => {
           }`
         });
 
-      // const redirectUrl = getUrl(REVIEW_LIMITED_PARTNERS_URL); // TODO uncomment when review page ready
+      const redirectUrl = getUrl(REVIEW_LIMITED_PARTNERS_URL);
 
       expect(res.status).toBe(302);
-      // expect(res.text).toContain(`Redirecting to ${redirectUrl}`); // TODO uncomment when review page ready
+      expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
     });
 
     it("should show error message if address is not provided", async () => {
