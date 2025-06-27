@@ -44,7 +44,7 @@
 
       <form class="form" action={{ props.currentUrl }} method="post">
         <input type="hidden" name="pageType" value={{ props.pageType }}>     
-        <input type="hidden" name="partnershipType" value={{ partnershipType }}>
+
         {% include "includes/csrf_token.njk" %}
 
         {% include "includes/errors.njk" %}
@@ -257,7 +257,7 @@
               }
             ]
           }) }}
-        {% endif %}  
+        {% endif %}
 
         <div>
           {% include "includes/public-register-information.njk" %}

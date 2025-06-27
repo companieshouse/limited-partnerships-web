@@ -13,6 +13,7 @@ import {
   ENTER_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "../../../../../controller/addressLookUp/url/transition";
+import { REVIEW_LIMITED_PARTNERS_URL } from "../../../../../controller/transition/url";
 import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
 
 describe("Confirm Limited Partner Usual Residential Address Page", () => {
@@ -108,10 +109,10 @@ describe("Confirm Limited Partner Usual Residential Address Page", () => {
           }`
         });
 
-      // const redirectUrl = getUrl(REVIEW_LIMITED_PARTNERS_URL); // TODO uncomment when review page ready
+      const redirectUrl = getUrl(REVIEW_LIMITED_PARTNERS_URL);
 
       expect(res.status).toBe(302);
-      // expect(res.text).toContain(`Redirecting to ${redirectUrl}`); // TODO uncomment when review page ready
+      expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
     });
 
     it("should show error message if address is not provided", async () => {

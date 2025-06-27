@@ -2,6 +2,7 @@
 
 {% set pageTitle = i18n.addPartnerLegalEntityPage.limitedPartner.title %}
 {% set publicRegisterInformationLine1 = i18n.addPartnerLegalEntityPage.publicRegisterLine1 %}
+{% set partnershipType = props.data.limitedPartnership.data.partnership_type %}
 
 {% if props.data.limitedPartner.data.date_effective_from  %}
   {# This is for when saved data is pre-populated on the page #}
@@ -21,7 +22,8 @@
     <div class="govuk-grid-column-two-thirds">
 
       <form class="form" action={{ props.currentUrl }} method="post">
-        <input type="hidden" name="pageType" value={{ props.pageType }}>      
+        <input type="hidden" name="pageType" value={{ props.pageType }}>
+  
         {% include "includes/csrf_token.njk" %}
 
         {% include "includes/errors.njk" %}
@@ -121,6 +123,10 @@
             required: true
           }
         }) }}
+        
+        {% if journeyTypes.isRegistration %}
+          {% include "includes/capital-contribution.njk" %}
+        {% endif %}
 
         {% if journeyTypes.isTransition %}
           {{ govukDateInput({

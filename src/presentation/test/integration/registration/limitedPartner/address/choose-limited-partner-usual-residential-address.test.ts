@@ -5,10 +5,10 @@ import app from "../../../app";
 import {
   CHOOSE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
-} from "presentation/controller/addressLookUp/url/registration";
+} from "../../../../../../presentation/controller/addressLookUp/url/registration";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import { appDevDependencies } from "config/dev-dependencies";
-import * as config from "config";
+import * as config from "../../../../../../config";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 
 describe("Choose usual residential address of the limited partner page", () => {

@@ -66,7 +66,7 @@ const transitionAddressRoutingEnterLimitedPartnerUsualResidentialAddress = {
 const transitionAddressRoutingConfirmLimitedPartnerUsualResidentialAddress = {
   previousUrl: url.POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   currentUrl: url.CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-  nextUrl: "/", // TODO change to review page when ready
+  nextUrl: REVIEW_LIMITED_PARTNERS_URL,
   pageType: AddressPageType.confirmLimitedPartnerUsualResidentialAddress,
   data: {
     ...limitedPartnerUsualResidentialAddressCacheKeys,
