@@ -90,7 +90,7 @@ const correspondenceAddressCacheKeys = {
   [AddressCacheKeys.territoryCacheKey]: "sa_territory_choice"
 };
 
-const registrationAddressRoutingTerritoryChoiceGeneralPartnerCorrespondanceAddress = {
+const transitionAddressRoutingTerritoryChoiceGeneralPartnerCorrespondanceAddress = {
   previousUrl: url.CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   currentUrl: url.TERRITORY_CHOICE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   nextUrl: url.POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
@@ -101,7 +101,7 @@ const registrationAddressRoutingTerritoryChoiceGeneralPartnerCorrespondanceAddre
   }
 };
 
-const registrationAddressRoutingPostcodeGeneralPartnerCorrespondenceAddress = {
+const transitionAddressRoutingPostcodeGeneralPartnerCorrespondenceAddress = {
   previousUrl: url.TERRITORY_CHOICE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   currentUrl: url.POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   nextUrl: url.CHOOSE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
@@ -113,7 +113,7 @@ const registrationAddressRoutingPostcodeGeneralPartnerCorrespondenceAddress = {
   }
 };
 
-const registrationAddressRoutingChooseGeneralPartnerCorrespondenceAddress = {
+const transitionAddressRoutingChooseGeneralPartnerCorrespondenceAddress = {
   previousUrl: url.POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   currentUrl: url.CHOOSE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   nextUrl: url.CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
@@ -124,7 +124,7 @@ const registrationAddressRoutingChooseGeneralPartnerCorrespondenceAddress = {
   }
 };
 
-const registrationAddressRoutingEnterGeneralPartnerCorrespondenceAddress = {
+const transitionAddressRoutingEnterGeneralPartnerCorrespondenceAddress = {
   previousUrl: url.POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   currentUrl: url.ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   nextUrl: url.CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
@@ -135,7 +135,7 @@ const registrationAddressRoutingEnterGeneralPartnerCorrespondenceAddress = {
   }
 };
 
-const registrationAddressRoutingConfirmGeneralPartnerCorrespondenceAddress = {
+const transitionAddressRoutingConfirmGeneralPartnerCorrespondenceAddress = {
   previousUrl: url.POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   currentUrl: url.CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   nextUrl: REVIEW_GENERAL_PARTNERS_URL,
@@ -147,11 +147,11 @@ const registrationAddressRoutingConfirmGeneralPartnerCorrespondenceAddress = {
 };
 
 const correspondenceAddress = [
-  registrationAddressRoutingTerritoryChoiceGeneralPartnerCorrespondanceAddress,
-  registrationAddressRoutingPostcodeGeneralPartnerCorrespondenceAddress,
-  registrationAddressRoutingChooseGeneralPartnerCorrespondenceAddress,
-  registrationAddressRoutingEnterGeneralPartnerCorrespondenceAddress,
-  registrationAddressRoutingConfirmGeneralPartnerCorrespondenceAddress
+  transitionAddressRoutingTerritoryChoiceGeneralPartnerCorrespondanceAddress,
+  transitionAddressRoutingPostcodeGeneralPartnerCorrespondenceAddress,
+  transitionAddressRoutingChooseGeneralPartnerCorrespondenceAddress,
+  transitionAddressRoutingEnterGeneralPartnerCorrespondenceAddress,
+  transitionAddressRoutingConfirmGeneralPartnerCorrespondenceAddress
 ];
 
 // principal office address - legal entity
@@ -161,7 +161,7 @@ const principalOfficeAddressCacheKeys = {
   [AddressCacheKeys.territoryCacheKey]: "poa_territory_choice"
 };
 
-const registrationAddressRoutingTerritoryChoiceGeneralPartnerPrincipalOfficeAddress = {
+const transitionAddressRoutingTerritoryChoiceGeneralPartnerPrincipalOfficeAddress = {
   previousUrl: ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
   currentUrl: url.TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   nextUrl: url.POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
@@ -172,7 +172,7 @@ const registrationAddressRoutingTerritoryChoiceGeneralPartnerPrincipalOfficeAddr
   }
 };
 
-const registrationAddressRoutingPostcodeGeneralPartnerPrincipalOfficeAddress = {
+const transitionAddressRoutingPostcodeGeneralPartnerPrincipalOfficeAddress = {
   previousUrl: url.TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   currentUrl: url.POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   nextUrl: url.CHOOSE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
@@ -184,7 +184,7 @@ const registrationAddressRoutingPostcodeGeneralPartnerPrincipalOfficeAddress = {
   }
 };
 
-const registrationAddressRoutingChooseGeneralPartnerPrincipalOfficeAddress = {
+const transitionAddressRoutingChooseGeneralPartnerPrincipalOfficeAddress = {
   previousUrl: url.POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   currentUrl: url.CHOOSE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   nextUrl: url.CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
@@ -195,7 +195,7 @@ const registrationAddressRoutingChooseGeneralPartnerPrincipalOfficeAddress = {
   }
 };
 
-const registrationAddressRoutingEnterGeneralPartnerPrincipalOfficeAddress = {
+const transitionAddressRoutingEnterGeneralPartnerPrincipalOfficeAddress = {
   previousUrl: url.POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   currentUrl: url.ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   nextUrl: url.CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
@@ -206,7 +206,7 @@ const registrationAddressRoutingEnterGeneralPartnerPrincipalOfficeAddress = {
   }
 };
 
-const registrationAddressRoutingConfirmGeneralPartnerPrincipalOfficeAddress = {
+const transitionAddressRoutingConfirmGeneralPartnerPrincipalOfficeAddress = {
   previousUrl: url.POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   currentUrl: url.CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   nextUrl: REVIEW_GENERAL_PARTNERS_URL,
@@ -218,11 +218,11 @@ const registrationAddressRoutingConfirmGeneralPartnerPrincipalOfficeAddress = {
 };
 
 const principalOfficeAddress = [
-  registrationAddressRoutingTerritoryChoiceGeneralPartnerPrincipalOfficeAddress,
-  registrationAddressRoutingPostcodeGeneralPartnerPrincipalOfficeAddress,
-  registrationAddressRoutingEnterGeneralPartnerPrincipalOfficeAddress,
-  registrationAddressRoutingChooseGeneralPartnerPrincipalOfficeAddress,
-  registrationAddressRoutingConfirmGeneralPartnerPrincipalOfficeAddress
+  transitionAddressRoutingTerritoryChoiceGeneralPartnerPrincipalOfficeAddress,
+  transitionAddressRoutingPostcodeGeneralPartnerPrincipalOfficeAddress,
+  transitionAddressRoutingEnterGeneralPartnerPrincipalOfficeAddress,
+  transitionAddressRoutingChooseGeneralPartnerPrincipalOfficeAddress,
+  transitionAddressRoutingConfirmGeneralPartnerPrincipalOfficeAddress
 ];
 
 const generalPartnerRouting = [...usualResidentialAddress, ...correspondenceAddress, ...principalOfficeAddress];

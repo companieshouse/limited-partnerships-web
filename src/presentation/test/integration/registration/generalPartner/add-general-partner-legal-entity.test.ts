@@ -41,7 +41,15 @@ describe("Add General Partner Legal Entity Page", () => {
       expect(res.text).toContain(
         `${cyTranslationText.addPartnerLegalEntityPage.generalPartner.title} - ${cyTranslationText.service} - GOV.UK`
       );
-      testTranslations(res.text, cyTranslationText.addPartnerLegalEntityPage, ["limitedPartner", "errorMessages"]);
+      testTranslations(res.text, cyTranslationText.addPartnerLegalEntityPage, [
+        "limitedPartner",
+        "errorMessages",
+        "dateEffectiveFrom",
+        "dateHint",
+        "dateDay",
+        "dateMonth",
+        "dateYear"
+      ]);
     });
 
     it("should load the add general partner legal entity page with English text", async () => {
@@ -52,7 +60,15 @@ describe("Add General Partner Legal Entity Page", () => {
       expect(res.text).toContain(
         `${enTranslationText.addPartnerLegalEntityPage.generalPartner.title} - ${enTranslationText.service} - GOV.UK`
       );
-      testTranslations(res.text, enTranslationText.addPartnerLegalEntityPage, ["limitedPartner", "errorMessages"]);
+      testTranslations(res.text, enTranslationText.addPartnerLegalEntityPage, [
+        "limitedPartner",
+        "errorMessages",
+        "dateEffectiveFrom",
+        "dateHint",
+        "dateDay",
+        "dateMonth",
+        "dateYear"
+      ]);
       expect(res.text).not.toContain("WELSH -");
     });
 

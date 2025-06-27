@@ -3,7 +3,13 @@ import GeneralPartnerService from "../../../application/service/GeneralPartnerSe
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
 import GeneralPartnerController from "../common/GeneralPartnerController";
 
-import { ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL, ADD_GENERAL_PARTNER_PERSON_URL, GENERAL_PARTNERS_URL } from "./url";
+import {
+  ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
+  ADD_GENERAL_PARTNER_PERSON_URL,
+  GENERAL_PARTNERS_URL,
+  LIMITED_PARTNERS_URL,
+  REVIEW_LIMITED_PARTNERS_URL
+} from "./url";
 import {
   CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
@@ -48,8 +54,8 @@ class GeneralPartnerTransitionController extends GeneralPartnerController {
     return super.postReviewPage({
       addGeneralPartnerPersonUrl: ADD_GENERAL_PARTNER_PERSON_URL,
       addGeneralPartnerLegalEntityUrl: ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
-      reviewLimitedPartnersUrl: "/", // TODO change to REVIEW_LIMITED_PARTNERS_URL
-      limitedPartnerUrl: "/" // TODO change to LIMITED_PARTNERS_URL
+      reviewLimitedPartnersUrl: REVIEW_LIMITED_PARTNERS_URL,
+      limitedPartnerUrl: LIMITED_PARTNERS_URL
     });
   }
 
