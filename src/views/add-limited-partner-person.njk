@@ -31,7 +31,7 @@
 
       <form class="form" action={{ props.currentUrl }} method="post">
         <input type="hidden" name="pageType" value={{ props.pageType }}>     
-        <input type="hidden" name="partnershipType" value={{ partnershipType }}>
+
         {% include "includes/csrf_token.njk" %}
 
         {% include "includes/errors.njk" %}
@@ -192,7 +192,9 @@
         {% set nationalityFieldNameId = "nationality2" %}
         {% include "includes/nationalities.njk" %}
         
-        {% include "includes/capital-contribution.njk" %}     
+        {% if journeyTypes.isRegistration %}
+          {% include "includes/capital-contribution.njk" %}
+        {% endif %}
 
         <div>
           {% include "includes/public-register-information.njk" %}

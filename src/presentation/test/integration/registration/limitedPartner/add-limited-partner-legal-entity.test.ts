@@ -16,7 +16,7 @@ import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
 import RegistrationPageType from "../../../../controller/registration/PageType";
 import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 import { TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../../../controller/addressLookUp/url/registration";
-import { REGISTRATION_BASE_URL } from "config";
+import { REGISTRATION_BASE_URL } from "../../../../../config";
 import {
   LIMITED_PARTNER_CHOICE_TEMPLATE,
   REVIEW_LIMITED_PARTNERS_TEMPLATE
@@ -178,6 +178,9 @@ describe("Add Limited Partner Legal Entity Page", () => {
     });
 
     it("should replay entered data when invalid data is entered and a validation error occurs", async () => {
+      const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(PartnershipType.LP).build();
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
       const limitedPartner = new LimitedPartnerBuilder()
         .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
         .isLegalEntity()
