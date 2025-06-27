@@ -3,10 +3,11 @@ import GlobalController from "../presentation/controller/global/Controller";
 
 import LimitedPartnershipRegistrationController from "../presentation/controller/registration/LimitedPartnershipController";
 import GeneralPartnerRegistrationController from "../presentation/controller/registration/GeneralPartnerController";
-import LimitedPartnerController from "../presentation/controller/registration/LimitedPartnerController";
+import LimitedPartnerRegistrationController from "../presentation/controller/registration/LimitedPartnerController";
 
 import LimitedPartnershipTransitionController from "../presentation/controller/transition/LimitedPartnershipController";
 import GeneralPartnerTransitionController from "../presentation/controller/transition/GeneralPartnerController";
+import LimitedPartnerTransitionController from "../presentation/controller/transition/LimitedPartnerController";
 
 export type IDependencies = {
   globalController: GlobalController;
@@ -14,8 +15,9 @@ export type IDependencies = {
 
   limitedPartnershipRegistrationController: LimitedPartnershipRegistrationController;
   generalPartnerRegistrationController: GeneralPartnerRegistrationController;
-  limitedPartnerController: LimitedPartnerController;
+  limitedPartnerRegistrationController: LimitedPartnerRegistrationController;
 
   limitedPartnershipTransitionController: LimitedPartnershipTransitionController;
   generalPartnerTransitionController: GeneralPartnerTransitionController;
+  limitedPartnerTransitionController: LimitedPartnerTransitionController;
 };

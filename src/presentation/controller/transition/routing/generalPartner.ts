@@ -40,14 +40,20 @@ const transitionRoutingAddGeneralPartnerLegalEntity = {
   }
 };
 
-const transitionnRoutingReviewGeneralPartners = {
+// usual residential address
+
+// correspondence address
+
+// principal office address
+
+const transitionRoutingReviewGeneralPartners = {
   previousUrl: CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
   currentUrl: url.REVIEW_GENERAL_PARTNERS_URL,
-  nextUrl: "/", // TODO set to next page URL when available: url.LIMITED_PARTNERS_URL
+  nextUrl: url.LIMITED_PARTNERS_URL,
   pageType: TransitionPageType.reviewGeneralPartners
 };
 
-const transitionnRoutingRemoveGeneralPartner = {
+const transitionRoutingRemoveGeneralPartner = {
   previousUrl: url.REVIEW_GENERAL_PARTNERS_URL,
   currentUrl: url.REMOVE_GENERAL_PARTNER_URL,
   nextUrl: url.REVIEW_GENERAL_PARTNERS_URL,
@@ -59,8 +65,8 @@ const generalPartnerRouting = [
   transitionRoutingGeneralPartnerChoice,
   transitionRoutingAddGeneralPartnerPerson,
   transitionRoutingAddGeneralPartnerLegalEntity,
-  transitionnRoutingReviewGeneralPartners,
-  transitionnRoutingRemoveGeneralPartner
+  transitionRoutingReviewGeneralPartners,
+  transitionRoutingRemoveGeneralPartner
 ];
 
 export default generalPartnerRouting;

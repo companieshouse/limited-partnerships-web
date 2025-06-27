@@ -3,24 +3,21 @@ import enTranslationText from "../../../../../../../locales/en/translations.json
 import cyTranslationText from "../../../../../../../locales/cy/translations.json";
 import app from "../../../app";
 import {
-  CHOOSE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
-  CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
-} from "presentation/controller/addressLookUp/url/registration";
+  CHOOSE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
+} from "presentation/controller/addressLookUp/url/transition";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import { appDevDependencies } from "config/dev-dependencies";
-import * as config from "../../../../../../config";
-import AddressPageType from "presentation/controller/addressLookUp/PageType";
+import * as config from "config";
+import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 
-describe("Choose principal office address of the general partner page", () => {
-  const URL = getUrl(CHOOSE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
-  const REDIRECT_URL = getUrl(CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
-
+describe("Choose usual residential address of the limited partner page", () => {
   beforeEach(() => {
     setLocalesEnabled(false);
     appDevDependencies.addressLookUpGateway.setError(false);
     appDevDependencies.cacheRepository.feedCache({
       [appDevDependencies.transactionGateway.transactionId]: {
-        ["principal_office_address"]: {
+        ["usual_residential_address"]: {
           postal_code: "ST6 3LJ",
           premises: "",
           address_line_1: "",
@@ -32,29 +29,32 @@ describe("Choose principal office address of the general partner page", () => {
     });
   });
 
-  describe("GET choose principal office address of the general partner page", () => {
-    it("should load the choose principal office address of the general partner page with Welsh text", async () => {
+  const URL = getUrl(CHOOSE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
+  const REDIRECT_URL = getUrl(CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
+
+  describe("GET choose usual residential address of the limited partner page", () => {
+    it("should load the choose usual residential address of the limited partner page with Welsh text", async () => {
       setLocalesEnabled(true);
 
       const res = await request(app).get(URL + "?lang=cy");
 
       expect(res.status).toBe(200);
-      testTranslations(res.text, cyTranslationText.address.chooseAddress.generalPartnerPrincipalOfficeAddress);
+      testTranslations(res.text, cyTranslationText.address.chooseAddress.limitedPartnerUsualResidentialAddress);
+      expect(res.text).toContain(cyTranslationText.address.chooseAddress.addressLink);
+      expect(res.text).toContain("2 Duncalf Street, Stoke-On-Trent, ST6 3LJ");
+      expect(res.text).toContain("The Lodge Duncalf&#39;s Street, Castle Hill, Stoke-On-Trent, ST6 3LJ");
+      expect(res.text).toContain("4 Duncalf Street, Stoke-On-Trent, ST6 3LJ");
+      expect(res.text).toContain("6 Duncalf Street, Stoke-On-Trent, ST6 3LJ");
     });
 
-    it("should load the choose principal office address of the general partner page with English text", async () => {
+    it("should load the choose usual residential address of the limited partner page with English text", async () => {
       setLocalesEnabled(true);
 
       const res = await request(app).get(URL + "?lang=en");
 
       expect(res.status).toBe(200);
-      testTranslations(res.text, enTranslationText.address.chooseAddress.generalPartnerPrincipalOfficeAddress);
-    });
-
-    it("should populate the address list", async () => {
-      const res = await request(app).get(URL);
-
-      expect(res.status).toBe(200);
+      testTranslations(res.text, enTranslationText.address.chooseAddress.limitedPartnerUsualResidentialAddress);
+      expect(res.text).toContain(enTranslationText.address.chooseAddress.addressLink);
       expect(res.text).toContain("2 Duncalf Street, Stoke-On-Trent, ST6 3LJ");
       expect(res.text).toContain("The Lodge Duncalf&#39;s Street, Castle Hill, Stoke-On-Trent, ST6 3LJ");
       expect(res.text).toContain("4 Duncalf Street, Stoke-On-Trent, ST6 3LJ");
@@ -71,19 +71,19 @@ describe("Choose principal office address of the general partner page", () => {
     });
   });
 
-  describe("POST choose principal office address of the general partner page", () => {
+  describe("POST choose usual residential address of the limited partner page", () => {
     it("should redirect to the next page and add select address to cache", async () => {
       const res = await request(app)
         .post(URL)
         .send({
-          pageType: AddressPageType.chooseGeneralPartnerPrincipalOfficeAddress,
+          pageType: AddressPageType.chooseLimitedPartnerUsualResidentialAddress,
           selected_address: `{
             "postal_code": "ST6 3LJ",
             "premises": "4",
             "address_line_1": "DUNCALF STREET",
             "address_line_2": "",
             "locality": "STOKE-ON-TRENT",
-            "country": "GB-ENG"
+            "country": "England"
           }`
         });
 
@@ -93,13 +93,13 @@ describe("Choose principal office address of the general partner page", () => {
       const cache = appDevDependencies.cacheRepository.cache;
       expect(cache?.[`${config.APPLICATION_CACHE_KEY}`]).toEqual({
         [appDevDependencies.transactionGateway.transactionId]: {
-          principal_office_address: {
+          usual_residential_address: {
             postal_code: "ST6 3LJ",
             premises: "4",
             address_line_1: "DUNCALF STREET",
             address_line_2: "",
             locality: "STOKE-ON-TRENT",
-            country: "GB-ENG"
+            country: "England"
           }
         }
       });
@@ -107,7 +107,7 @@ describe("Choose principal office address of the general partner page", () => {
 
     it("should redirect to the error page if address can't be deserialised", async () => {
       const res = await request(app).post(URL).send({
-        pageType: AddressPageType.chooseGeneralPartnerPrincipalOfficeAddress,
+        pageType: AddressPageType.chooseLimitedPartnerUsualResidentialAddress,
         selected_address: `some address`
       });
 
@@ -116,7 +116,7 @@ describe("Choose principal office address of the general partner page", () => {
 
       const cache = appDevDependencies.cacheRepository.cache;
       expect(cache?.[`${config.APPLICATION_CACHE_KEY}`]).not.toHaveProperty(
-        `${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${AddressPageType.chooseGeneralPartnerPrincipalOfficeAddress}`
+        `${config.APPLICATION_CACHE_KEY_PREFIX_TRANSITION}${AddressPageType.chooseLimitedPartnerUsualResidentialAddress}`
       );
     });
   });

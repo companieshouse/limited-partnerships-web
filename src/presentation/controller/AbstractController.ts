@@ -24,7 +24,9 @@ import {
 } from "./registration/url";
 import {
   ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL as ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL_TRANSITION,
-  ADD_GENERAL_PARTNER_PERSON_URL as ADD_GENERAL_PARTNER_PERSON_URL_TRANSITION
+  ADD_GENERAL_PARTNER_PERSON_URL as ADD_GENERAL_PARTNER_PERSON_URL_TRANSITION,
+  ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL as ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL_TRANSITION,
+  ADD_LIMITED_PARTNER_PERSON_URL as ADD_LIMITED_PARTNER_PERSON_URL_TRANSITION
 } from "./transition/url";
 import UIErrors from "../../domain/entities/UIErrors";
 import { getJourneyTypes } from "../../utils";
@@ -124,8 +126,8 @@ abstract class AbstractController {
     // general partner urls that can exist with or without ids
     const GP_URLS = [
       ADD_GENERAL_PARTNER_PERSON_URL,
-      ADD_GENERAL_PARTNER_PERSON_URL_TRANSITION,
       ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
+      ADD_GENERAL_PARTNER_PERSON_URL_TRANSITION,
       ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL_TRANSITION
     ];
 
@@ -136,7 +138,12 @@ abstract class AbstractController {
     }
 
     // limited partner urls that can exist with or without ids
-    const LP_URLS = [ADD_LIMITED_PARTNER_PERSON_URL, ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL];
+    const LP_URLS = [
+      ADD_LIMITED_PARTNER_PERSON_URL,
+      ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
+      ADD_LIMITED_PARTNER_PERSON_URL_TRANSITION,
+      ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL_TRANSITION
+    ];
 
     if (ids.transactionId && ids.submissionId && ids.limitedPartnerId && LP_URLS.includes(url)) {
       url = url.replace(urlWithIds, urlWithIds + LIMITED_PARTNER_WITH_ID_URL);

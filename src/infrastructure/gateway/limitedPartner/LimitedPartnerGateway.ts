@@ -7,7 +7,11 @@ import {
   LimitedPartner,
   LimitedPartnershipResourceCreated
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-import { validateAndFormatPartnerPersonDateOfBirth, removeEmptyStringValues } from "../utils";
+import {
+  validateAndFormatPartnerPersonDateOfBirth,
+  removeEmptyStringValues,
+  validateAndFormatPartnerDateEffectiveFrom
+} from "../utils";
 
 class LimitedPartnerGateway implements ILimitedPartnerGateway {
   async createLimitedPartner(
@@ -16,6 +20,7 @@ class LimitedPartnerGateway implements ILimitedPartnerGateway {
     data: Record<string, any>
   ): Promise<string> {
     validateAndFormatPartnerPersonDateOfBirth(data);
+    validateAndFormatPartnerDateEffectiveFrom(data);
 
     const limitedPartner: LimitedPartner = { data: removeEmptyStringValues(data) };
 
@@ -83,6 +88,7 @@ class LimitedPartnerGateway implements ILimitedPartnerGateway {
     data: Record<string, any>
   ): Promise<void> {
     validateAndFormatPartnerPersonDateOfBirth(data);
+    validateAndFormatPartnerDateEffectiveFrom(data);
 
     // If the LP (Person) had previous names but now the selection has changed to 'false', ensure that the previous names are removed
     if (data?.former_names && data?.previousName === "false") {

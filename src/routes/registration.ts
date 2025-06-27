@@ -221,73 +221,73 @@ export const registrationEndpoints = (
   router.post(
     LIMITED_PARTNER_CHOICE_URL,
     authentication,
-    dependencies.limitedPartnerController.limitedPartnerChoice()
+    dependencies.limitedPartnerRegistrationController.limitedPartnerChoice()
   );
 
   router.get(
     ADD_LIMITED_PARTNER_PERSON_URL,
     authentication,
-    dependencies.limitedPartnerController.getPageRouting()
+    dependencies.limitedPartnerRegistrationController.getPageRouting()
   );
   router.post(
     ADD_LIMITED_PARTNER_PERSON_URL,
     authentication,
-    dependencies.limitedPartnerController.createLimitedPartner()
+    dependencies.limitedPartnerRegistrationController.createLimitedPartner()
   );
 
   router.get(
     ADD_LIMITED_PARTNER_PERSON_WITH_ID_URL,
     authentication,
-    dependencies.limitedPartnerController.getPageRouting()
+    dependencies.limitedPartnerRegistrationController.getPageRouting()
   );
   router.post(
     ADD_LIMITED_PARTNER_PERSON_WITH_ID_URL,
     authentication,
-    dependencies.limitedPartnerController.sendPageData()
+    dependencies.limitedPartnerRegistrationController.sendPageData()
   );
 
   router.get(
     ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
     authentication,
-    dependencies.limitedPartnerController.getPageRouting()
+    dependencies.limitedPartnerRegistrationController.getPageRouting()
   );
   router.post(
     ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
     authentication,
-    dependencies.limitedPartnerController.createLimitedPartner()
+    dependencies.limitedPartnerRegistrationController.createLimitedPartner()
   );
 
   router.get(
     ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_ID_URL,
     authentication,
-    dependencies.limitedPartnerController.getPageRouting()
+    dependencies.limitedPartnerRegistrationController.getPageRouting()
   );
   router.post(
     ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_ID_URL,
     authentication,
-    dependencies.limitedPartnerController.sendPageData()
+    dependencies.limitedPartnerRegistrationController.sendPageData()
   );
 
   router.get(
     REVIEW_LIMITED_PARTNERS_URL,
     authentication,
-    dependencies.limitedPartnerController.getReviewPage()
+    dependencies.limitedPartnerRegistrationController.getReviewPage()
   );
   router.post(
     REVIEW_LIMITED_PARTNERS_URL,
     authentication,
-    dependencies.limitedPartnerController.postReviewPage()
+    dependencies.limitedPartnerRegistrationController.postReviewPage()
   );
 
   router.get(
     REMOVE_LIMITED_PARTNER_URL,
     authentication,
-    dependencies.limitedPartnerController.getPageRouting()
+    dependencies.limitedPartnerRegistrationController.getPageRouting()
   );
   router.post(
     REMOVE_LIMITED_PARTNER_URL,
     authentication,
-    dependencies.limitedPartnerController.postRemovePage()
+    dependencies.limitedPartnerRegistrationController.postRemovePage()
   );
 
   router.get(

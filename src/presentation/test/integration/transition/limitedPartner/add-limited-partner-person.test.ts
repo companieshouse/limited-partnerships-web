@@ -1,24 +1,22 @@
 import request from "supertest";
+
 import enTranslationText from "../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../locales/cy/translations.json";
+
 import app from "../../app";
-import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
-import RegistrationPageType from "../../../../controller/registration/PageType";
 import { ApiErrors } from "../../../../../domain/entities/UIErrors";
+import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
+import { TRANSITION_BASE_URL } from "config";
+
+import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
+import TransitionPageType from "../../../../controller/transition/PageType";
 import {
   ADD_LIMITED_PARTNER_PERSON_URL,
   ADD_LIMITED_PARTNER_PERSON_WITH_ID_URL
-} from "../../../../controller/registration/url";
+} from "../../../../controller/transition/url";
+import { TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../controller/addressLookUp/url/transition";
 import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
-import { TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../controller/addressLookUp/url/registration";
-import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-import { REGISTRATION_BASE_URL } from "../../../../../config";
-import {
-  LIMITED_PARTNER_CHOICE_TEMPLATE,
-  REVIEW_LIMITED_PARTNERS_TEMPLATE
-} from "../../../../../presentation/controller/registration/template";
 
 describe("Add Limited Partner Person Page", () => {
   const URL = getUrl(ADD_LIMITED_PARTNER_PERSON_URL);
@@ -32,72 +30,40 @@ describe("Add Limited Partner Person Page", () => {
   });
 
   describe("Get Add Limited Partner Page", () => {
-    it.each([
-      ["for type LP", PartnershipType.LP, true],
-      ["for type SLP", PartnershipType.SLP, true],
-      ["for type PFLP", PartnershipType.PFLP, false],
-      ["for type SPFLP", PartnershipType.SPFLP, false]
-    ])(
-      "should load the add limited partner page with Welsh text for %s",
-      async (_description, partnershipType, isCapitalContributionPresent) => {
-        const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
+    it("should load the add limited partner page with Welsh text", async () => {
+      const limitedPartnership = new LimitedPartnershipBuilder().build();
 
-        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-        setLocalesEnabled(true);
-        const res = await request(app).get(URL + "?lang=cy");
+      setLocalesEnabled(true);
+      const res = await request(app).get(URL + "?lang=cy");
 
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(
-          `${cyTranslationText.addPartnerPersonPage.limitedPartner.title} - ${cyTranslationText.service} - GOV.UK`
-        );
-        testTranslations(res.text, cyTranslationText.addPartnerPersonPage, [
-          "errorMessages",
-          "generalPartner",
-          "dateEffectiveFrom"
-        ]);
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(
+        `${cyTranslationText.addPartnerPersonPage.limitedPartner.title} - ${cyTranslationText.service} - GOV.UK`
+      );
+      testTranslations(res.text, cyTranslationText.addPartnerPersonPage, ["errorMessages", "generalPartner"]);
 
-        if (isCapitalContributionPresent) {
-          testTranslations(res.text, cyTranslationText.capitalContribution, ["compositionErrorMessage"]);
-        } else {
-          expect(res.text).not.toContain(cyTranslationText.capitalContribution.title);
-        }
-      }
-    );
+      expect(res.text).not.toContain(enTranslationText.capitalContribution.title);
+    });
 
-    it.each([
-      ["for type LP", PartnershipType.LP, true],
-      ["for type SLP", PartnershipType.SLP, true],
-      ["for type PFLP", PartnershipType.PFLP, false],
-      ["for type SPFLP", PartnershipType.SPFLP, false]
-    ])(
-      "should load the add limited partner page with English text %s",
-      async (_desciption, partnershipType, isCapitalContributionPresent) => {
-        const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
+    it("should load the add limited partner page with English text", async () => {
+      const limitedPartnership = new LimitedPartnershipBuilder().build();
 
-        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-        setLocalesEnabled(true);
-        const res = await request(app).get(URL + "?lang=en");
+      setLocalesEnabled(true);
+      const res = await request(app).get(URL + "?lang=en");
 
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(
-          `${enTranslationText.addPartnerPersonPage.limitedPartner.title} - ${enTranslationText.service} - GOV.UK`
-        );
-        testTranslations(res.text, enTranslationText.addPartnerPersonPage, [
-          "errorMessages",
-          "generalPartner",
-          "dateEffectiveFrom"
-        ]);
-        expect(res.text).not.toContain("WELSH -");
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(
+        `${enTranslationText.addPartnerPersonPage.limitedPartner.title} - ${enTranslationText.service} - GOV.UK`
+      );
+      testTranslations(res.text, enTranslationText.addPartnerPersonPage, ["errorMessages", "generalPartner"]);
+      expect(res.text).not.toContain("WELSH -");
 
-        if (isCapitalContributionPresent) {
-          testTranslations(res.text, enTranslationText.capitalContribution, ["compositionErrorMessage"]);
-        } else {
-          expect(res.text).not.toContain(enTranslationText.capitalContribution.title);
-        }
-      }
-    );
+      expect(res.text).not.toContain(enTranslationText.capitalContribution.title);
+    });
 
     it("should contain the proposed name - data from api", async () => {
       const limitedPartnership = new LimitedPartnershipBuilder().build();
@@ -108,7 +74,7 @@ describe("Add Limited Partner Person Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${limitedPartnership?.data?.partnership_name?.toUpperCase()} ${limitedPartnership?.data?.name_ending?.toUpperCase()}`
+        `${limitedPartnership?.data?.partnership_name?.toUpperCase()} (${limitedPartnership?.data?.partnership_number?.toUpperCase()})`
       );
     });
 
@@ -139,8 +105,9 @@ describe("Add Limited Partner Person Page", () => {
       const res = await request(app).get(getUrl(ADD_LIMITED_PARTNER_PERSON_WITH_ID_URL) + "?lang=en");
 
       expect(res.status).toBe(200);
+
       const regex = new RegExp(
-        `${REGISTRATION_BASE_URL}/transaction/.*?/submission/.*?/${REVIEW_LIMITED_PARTNERS_TEMPLATE}`
+        `${TRANSITION_BASE_URL}/transaction/.*?/submission/.*?/${TransitionPageType.reviewLimitedPartners}`
       );
       expect(res.text).toMatch(regex);
     });
@@ -151,7 +118,7 @@ describe("Add Limited Partner Person Page", () => {
 
       expect(res.status).toBe(200);
       const regex = new RegExp(
-        `${REGISTRATION_BASE_URL}/transaction/.*?/submission/.*?/${LIMITED_PARTNER_CHOICE_TEMPLATE}`
+        `${TRANSITION_BASE_URL}/transaction/.*?/submission/.*?/${TransitionPageType.limitedPartnerChoice}`
       );
       expect(res.text).toMatch(regex);
     });
@@ -160,7 +127,7 @@ describe("Add Limited Partner Person Page", () => {
   describe("Post Add Limited Partner", () => {
     it("should send the Limited partner details", async () => {
       const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.addLimitedPartnerPerson,
+        pageType: TransitionPageType.addLimitedPartnerPerson,
         forename: "test"
       });
 
@@ -176,7 +143,7 @@ describe("Add Limited Partner Person Page", () => {
       appDevDependencies.limitedPartnerGateway.feedErrors(apiErrors);
 
       const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.addLimitedPartnerPerson,
+        pageType: TransitionPageType.addLimitedPartnerPerson,
         forename: "INVALID-CHARACTERS"
       });
 
@@ -199,7 +166,7 @@ describe("Add Limited Partner Person Page", () => {
       appDevDependencies.limitedPartnerGateway.feedErrors(apiErrors);
 
       const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.addLimitedPartnerPerson,
+        pageType: TransitionPageType.addLimitedPartnerPerson,
         forename: "INVALID-CHARACTERS-FORENAME",
         surname: "SURNAME",
         former_names: "",
@@ -232,7 +199,7 @@ describe("Add Limited Partner Person Page", () => {
       appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
 
       const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.addLimitedPartnerPerson,
+        pageType: TransitionPageType.addLimitedPartnerPerson,
         forename: "test"
       });
 
@@ -256,7 +223,7 @@ describe("Add Limited Partner Person Page", () => {
       appDevDependencies.limitedPartnerGateway.feedErrors(apiErrors);
 
       const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.addLimitedPartnerPerson,
+        pageType: TransitionPageType.addLimitedPartnerPerson,
         forename: "INVALID-CHARACTERS"
       });
       expect(res.status).toBe(200);
@@ -280,7 +247,7 @@ describe("Add Limited Partner Person Page", () => {
       appDevDependencies.limitedPartnerGateway.feedErrors(apiErrors);
 
       const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.addLimitedPartnerPerson,
+        pageType: TransitionPageType.addLimitedPartnerPerson,
         forename: "INVALID-CHARACTERS-FORENAME",
         surname: "SURNAME",
         former_names: "FORMER-NAMES",
