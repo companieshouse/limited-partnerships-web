@@ -98,7 +98,6 @@ describe("Confirm General Partner Usual Residential Address Page", () => {
       const generalPartner = new GeneralPartnerBuilder()
         .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
         .isPerson()
-        .withServiceAddress(null)
         .build();
 
       appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);

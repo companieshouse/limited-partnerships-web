@@ -232,6 +232,11 @@ const transitionEndpoints = (router: Router, dependencies: IDependencies): void 
     authentication,
     dependencies.limitedPartnershipTransitionController.getPageRouting()
   );
+  router.post(
+    CHECK_YOUR_ANSWERS_URL,
+    authentication,
+    dependencies.limitedPartnershipTransitionController.postCheckYourAnswers()
+  );
 };
 
 export default transitionEndpoints;

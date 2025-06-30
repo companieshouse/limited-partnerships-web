@@ -5,7 +5,7 @@ export const generalPartnerPerson = {
   forename: "Joe - GP",
   surname: "Doe - GP",
   date_of_birth: "2001-01-01",
-  nationality1: "BRITISH",
+  nationality1: "British",
   nationality2: undefined
 };
 
@@ -16,7 +16,6 @@ export const generalPartnerLegalEntity = {
   legal_entity_register_name: "US Register",
   legal_entity_registration_location: "United States",
   registered_company_number: "12345678",
-  not_disqualified_statement_checked: true
 };
 
 class GeneralPartnerBuilder extends AbstractPartnerBuilder {
@@ -27,20 +26,13 @@ class GeneralPartnerBuilder extends AbstractPartnerBuilder {
 
   init() {
     this.data = {
-      ...this.data,
-
-      not_disqualified_statement_checked: true,
-
-      service_address: {
-        postal_code: "ST6 3LJ",
-        premises: "4",
-        address_line_1: "service address line 1",
-        address_line_2: "line 2",
-        locality: "stoke-on-trent",
-        region: "region",
-        country: "England"
-      }
+      ...this.data
     };
+  }
+
+  withDateEffectiveFrom(dateEffectiveFrom: string) {
+    this.data.date_effective_from = dateEffectiveFrom;
+    return this;
   }
 
   withNotDisqualifiedStatementChecked(notDisqualifiedStatementChecked: boolean) {
@@ -48,8 +40,16 @@ class GeneralPartnerBuilder extends AbstractPartnerBuilder {
     return this;
   }
 
-  withServiceAddress(serviceAddress: Record<string, any> | null) {
-    this.data.service_address = serviceAddress;
+  withServiceAddress() {
+    this.data.service_address = {
+      postal_code: "ST6 3LJ",
+      premises: "4",
+      address_line_1: "service address line 1",
+      address_line_2: "line 2",
+      locality: "stoke-on-trent",
+      region: "region",
+      country: "England"
+    };
     return this;
   }
 

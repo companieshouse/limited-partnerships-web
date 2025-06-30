@@ -27,11 +27,12 @@ class LimitedPartnerBuilder extends AbstractPartnerBuilder {
   init() {
     this.data = {
       ...this.data,
-
-      contribution_currency_type: "",
-      contribution_currency_value: "",
-      contribution_sub_types: []
     };
+  }
+
+  withDateEffectiveFrom(dateEffectiveFrom: string) {
+    this.data.date_effective_from = dateEffectiveFrom;
+    return this;
   }
 
   withContributionCurrencyType(contributionCurrencyType: string) {

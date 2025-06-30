@@ -346,6 +346,7 @@
         "lpInfo" : "WELSH - Limited partnership information",
         "change" : "WELSH - Change",
         "headingName" : "WELSH - Name",
+        "headingNumber": "WELSH - Partnership number",
         "headingType" : "WELSH - Type",
         "headingSic" : "WELSH - Standard Industrial Classification (SIC) code",
         "headingEmail" : "WELSH - Registered email address",
@@ -360,6 +361,13 @@
         "headingTerm" : "WELSH - Term of partnership",
         "confirm" : "WELSH - Confirm this statement",
         "futureLawful" : "WELSH - I confirm that the intended future activities of the limited partnership are lawful.",
+        "warningMessage": {
+            "warning": "WELSH - This is the last time you'll be able to view sensitive information about the partnership and its partners. To keep a record of this information, print or save the details on this page before you submit.",
+            "information": "WELSH - Sensitive information includes the:",
+            "email": "WELSH - partnership's registered email address",
+            "dob": "WELSH - full dates of birth of any partners who are people",
+            "ura": "WELSH - usual residential addresses of any partners who are people"
+        },
         "payment" : "WELSH - Continue to payment",
 
         "partners": {
@@ -372,7 +380,7 @@
                 "title": "WELSH - Limited partners",
                 "dateEffectiveFrom": "WELSH - Date they became a limited partner",
                 "changeRemoveOrAdd": "WELSH - Change, remove or add a limited partners",
-                "capitalContribution": "WELSH - Total capital contribuion"
+                "capitalContribution": "WELSH - Total capital contribution"
             },
             "person": {
                 "name": "WELSH - Name",

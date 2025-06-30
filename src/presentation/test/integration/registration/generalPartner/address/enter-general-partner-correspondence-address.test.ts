@@ -29,13 +29,17 @@ describe("Enter Correspondence Address Page", () => {
 
   beforeEach(() => {
     setLocalesEnabled(false);
-
-    appDevDependencies.cacheRepository.feedCache(null);
+    appDevDependencies.cacheRepository.feedCache({
+      [appDevDependencies.transactionGateway.transactionId]: {
+        sa_territory_choice: "unitedKingdom"
+      }
+    });
     appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
 
     generalPartner = new GeneralPartnerBuilder()
       .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
       .isPerson()
+      .withServiceAddress()
       .build();
 
     appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);

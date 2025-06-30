@@ -100,7 +100,6 @@ describe("Confirm General Partner Usual Residential Address Page", () => {
       const generalPartner = new GeneralPartnerBuilder()
         .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
         .isPerson()
-        .withServiceAddress(null)
         .build();
 
       appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
@@ -165,14 +164,7 @@ describe("Confirm General Partner Usual Residential Address Page", () => {
       const generalPartner = new GeneralPartnerBuilder()
         .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
         .isPerson()
-        .withServiceAddress({
-          postal_code: "ST6 3LJ",
-          premises: "4",
-          address_line_1: "DUNCALF STREET",
-          address_line_2: "",
-          locality: "STOKE-ON-TRENT",
-          country: "England"
-        })
+        .withServiceAddress()
         .build();
 
       appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);

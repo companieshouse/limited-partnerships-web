@@ -40,7 +40,7 @@ const transitionRoutingAddLimitedPartnerLegalEntity = {
 const transitionRoutingReviewLimitedPartners = {
   previousUrl: url.REVIEW_GENERAL_PARTNERS_URL,
   currentUrl: url.REVIEW_LIMITED_PARTNERS_URL,
-  nextUrl: "/", // TODO set to CHECK_YOUR_ANSWERS_URL
+  nextUrl: url.CHECK_YOUR_ANSWERS_URL,
   pageType: TransitionPageType.reviewLimitedPartners
 };
 

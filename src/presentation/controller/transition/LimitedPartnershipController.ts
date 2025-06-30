@@ -50,17 +50,17 @@ class LimitedPartnershipController extends AbstractController {
 
         if (pageRouting.pageType === TransitionPageType.checkYourAnswers) {
           const gpResult = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
-          generalPartners = gpResult.generalPartners.map((partner) => this.formatPartnerDob(partner, response));
+          generalPartners = gpResult.generalPartners.map((partner) => this.formatPartnerDates(partner, response));
 
           const lpResult = await this.limitedPartnerService.getLimitedPartners(tokens, ids.transactionId);
-          limitedPartners = lpResult.limitedPartners.map((partner) => this.formatPartnerDob(partner, response));
+          limitedPartners = lpResult.limitedPartners.map((partner) => this.formatPartnerDates(partner, response));
         }
 
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
 
         response.render(
           super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { limitedPartnership, generalPartners, limitedPartners, cache }, null)
+          super.makeProps(pageRouting, { limitedPartnership, generalPartners, limitedPartners, cache, ids }, null)
         );
       } catch (error) {
         next(error);
@@ -68,7 +68,7 @@ class LimitedPartnershipController extends AbstractController {
     };
   }
 
-  private formatPartnerDob(
+  private formatPartnerDates(
     partner: GeneralPartner | LimitedPartner,
     response: Response
   ): GeneralPartner | LimitedPartner {
@@ -78,6 +78,9 @@ class LimitedPartnershipController extends AbstractController {
         ...partner.data,
         date_of_birth: partner.data?.date_of_birth
           ? formatDate(partner.data?.date_of_birth, response.locals.i18n)
+          : undefined,
+        date_effective_from: partner.data?.date_effective_from
+          ? formatDate(partner.data?.date_effective_from, response.locals.i18n)
           : undefined
       }
     };
@@ -282,6 +285,32 @@ class LimitedPartnershipController extends AbstractController {
         pageRouting.nextUrl = super.insertIdsInUrl(CONFIRM_REGISTERED_OFFICE_ADDRESS_URL, ids, request.url);
       }
     }
+  }
+
+  postCheckYourAnswers() {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { tokens, ids } = super.extract(request);
+        const pageType = super.extractPageTypeOrThrowError(request, TransitionPageType);
+        const pageRouting = super.getRouting(transitionRouting, pageType, request);
+
+        const closeTransactionResponse = await this.limitedPartnershipService.closeTransaction(
+          tokens,
+          ids.transactionId
+        );
+
+        if (closeTransactionResponse.httpStatusCode === 500) {
+          return response.status(500).render("error", {
+            message: "An internal server error occurred while closing the transaction."
+          });
+        }
+
+        response.redirect(pageRouting.nextUrl);
+
+      } catch (error) {
+        next(error);
+      }
+    };
   }
 }
 

@@ -11,9 +11,13 @@ import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import GeneralPartnerBuilder from "../../builder/GeneralPartnerBuilder";
 import LimitedPartnerBuilder from "../../builder/LimitedPartnerBuilder";
 import { formatDate } from "../../../../utils/date-format";
+import { TransactionKind } from "../../../../domain/entities/TransactionTypes";
+import TransactionBuilder from "../../builder/TransactionBuilder";
+import TransitionPageType from "../../../controller/transition/PageType";
 
 describe("Check Your Answers Page", () => {
   const URL = getUrl(CHECK_YOUR_ANSWERS_URL);
+  const REDIRECT_URL = getUrl("/");
 
   let limitedPartnership;
   let generalPartnerPerson;
@@ -22,17 +26,20 @@ describe("Check Your Answers Page", () => {
   let limitedPartnerLegalEntity;
 
   beforeEach(() => {
+    const transaction = new TransactionBuilder().withFilingMode(TransactionKind.transition).build();
+    appDevDependencies.transactionGateway.feedTransactions([transaction]);
+
     limitedPartnership = new LimitedPartnershipBuilder().build();
 
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-    generalPartnerPerson = new GeneralPartnerBuilder().isPerson().withFormerNames("Joe Dee").build();
-    generalPartnerLegalEntity = new GeneralPartnerBuilder().isLegalEntity().build();
+    generalPartnerPerson = new GeneralPartnerBuilder().isPerson().withFormerNames("Joe Dee").withDateEffectiveFrom("2024-10-10").build();
+    generalPartnerLegalEntity = new GeneralPartnerBuilder().isLegalEntity().withDateEffectiveFrom("2024-10-10").build();
 
     appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartnerPerson, generalPartnerLegalEntity]);
 
-    limitedPartnerPerson = new LimitedPartnerBuilder().isPerson().withFormerNames("Joe Dee").build();
-    limitedPartnerLegalEntity = new LimitedPartnerBuilder().isLegalEntity().build();
+    limitedPartnerPerson = new LimitedPartnerBuilder().isPerson().withFormerNames("Joe Dee").withDateEffectiveFrom("2024-10-10").build();
+    limitedPartnerLegalEntity = new LimitedPartnerBuilder().isLegalEntity().withDateEffectiveFrom("2024-10-10").build();
     appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerPerson, limitedPartnerLegalEntity]);
   });
 
@@ -50,7 +57,8 @@ describe("Check Your Answers Page", () => {
         "headingPrincipalPlaceOfBusinessAddress",
         "confirm",
         "futureLawful",
-        "capitalContribution"
+        "capitalContribution",
+        "payment"
       ]);
       expect(res.text).toContain(enTranslationText.print.buttonText);
       expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
@@ -70,7 +78,8 @@ describe("Check Your Answers Page", () => {
         "headingPrincipalPlaceOfBusinessAddress",
         "confirm",
         "futureLawful",
-        "capitalContribution"
+        "capitalContribution",
+        "payment"
       ]);
       expect(res.text).toContain(cyTranslationText.print.buttonText);
       expect(res.text).toContain(cyTranslationText.print.buttonTextNoJs);
@@ -97,6 +106,7 @@ describe("Check Your Answers Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(limitedPartnership?.data?.partnership_name?.toUpperCase());
+      expect(res.text).toContain(limitedPartnership?.data?.partnership_number?.toUpperCase());
       expect(res.text).toContain(limitedPartnership?.data?.name_ending?.toUpperCase());
       expect(res.text).toContain(limitedPartnership?.data?.email);
       expect(res.text).toContain("4 Line 1, Line 2, Stoke-On-Trent, Region, England, ST6 3LJ");
@@ -153,16 +163,15 @@ describe("Check Your Answers Page", () => {
     });
   });
 
-  // describe("POST Check Your Answers Page", () => {
-  //   it("should navigate to next page", async () => {
-  //     const res = await request(app).post(URL).send({
-  //       pageType: TransitionPageType.checkYourAnswers
-  //     });
-
-  //     expect(res.status).toBe(302);
-  //     expect(res.text).toContain(`Redirecting to ${getUrl("/")}`);
-  //   });
-  // });
+  describe("POST Check Your Answers Page", () => {
+    it("should navigate to next page", async () => {
+      const res = await request(app).post(URL).send({
+        pageType: TransitionPageType.checkYourAnswers
+      });
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+    });
+  });
 });
 
 const checkIfValuesInText = (res: request.Response, partner: GeneralPartner | LimitedPartner, translationText: Record<string, any>) => {
@@ -180,11 +189,8 @@ const checkIfValuesInText = (res: request.Response, partner: GeneralPartner | Li
           .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
           .join(" ");
         expect(res.text).toContain(capitalized);
-      } else if (key.includes("contribution_sub_types")) {
-        const str = partner.data[key]
-          .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-          .join(" / ");
-        expect(res.text).toContain(str.replaceAll("_", " "));
+      } else if (key.includes("date_effective_from")) {
+        expect(res.text).toContain(formatDate(partner.data[key], translationText));
       } else {
         expect(res.text).toContain(partner.data[key]);
       }
