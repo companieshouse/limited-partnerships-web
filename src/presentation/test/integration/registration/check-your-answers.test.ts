@@ -125,9 +125,9 @@ describe("Check Your Answers Page", () => {
         }
 
         if (capitalContributionHeadingExpected) {
-          expect(res.text).toContain(enTranslationText.checkYourAnswersPage.headingCapitalContribution);
+          expect(res.text).toContain(enTranslationText.checkYourAnswersPage.partners.limitedPartners.capitalContribution);
         } else {
-          expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.headingCapitalContribution);
+          expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.partners.limitedPartners.capitalContribution);
         }
       }
     );

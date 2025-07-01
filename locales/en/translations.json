@@ -358,7 +358,6 @@
         "headingJurisdiction" : "Jurisdiction",
         "headingRegisteredOfficeAddress" : "Registered office address",
         "headingPrincipalPlaceOfBusinessAddress" : "Principal place of business",
-        "headingCapitalContribution" : "Total capital contribuion",
         "jurisdictions": {
             "englandAndWales": "England and Wales",
             "northernIreland": "Northern Ireland",
@@ -377,7 +376,7 @@
             "limitedPartners" : {
                 "title": "Limited partners",
                 "changeRemoveOrAdd": "Change, remove or add a limited partners",
-                "capitalContribution": "Total capital contribuion"
+                "capitalContribution": "Total capital contribution"
             },
             "person": {
                 "name": "Name",
