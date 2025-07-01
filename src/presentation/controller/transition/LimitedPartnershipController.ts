@@ -17,7 +17,7 @@ import { PageRouting } from "../PageRouting";
 import { CONFIRM_REGISTERED_OFFICE_ADDRESS_URL } from "../addressLookUp/url/transition";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
-import { getPartners } from "../../../utils/getPartners";
+import { formatPartnerDates } from "../../../utils/formatPartnerDates";
 
 class LimitedPartnershipController extends AbstractController {
   constructor(
@@ -37,8 +37,6 @@ class LimitedPartnershipController extends AbstractController {
         const pageRouting = super.getRouting(transitionRouting, pageType, request);
 
         let limitedPartnership = {};
-        let generalPartners: GeneralPartner[] = [];
-        let limitedPartners: LimitedPartner[] = [];
 
         if (ids.transactionId && ids.submissionId) {
           limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
@@ -48,11 +46,9 @@ class LimitedPartnershipController extends AbstractController {
           );
         }
 
-        if (pageRouting.pageType === TransitionPageType.checkYourAnswers) {
-          const partners = await getPartners(tokens, ids.transactionId, response, this.generalPartnerService, this.limitedPartnerService);
-          generalPartners = partners?.generalPartners;
-          limitedPartners = partners?.limitedPartners;
-        }
+        const partners = await this.getPartners(pageRouting, tokens, ids.transactionId, response);
+        const generalPartners: GeneralPartner[] | undefined = partners?.generalPartners;
+        const limitedPartners: LimitedPartner[] | undefined = partners?.limitedPartners;
 
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
 
@@ -64,6 +60,24 @@ class LimitedPartnershipController extends AbstractController {
         next(error);
       }
     };
+  }
+
+  private async getPartners(
+    pageRouting: PageRouting,
+    tokens: { access_token: string; refresh_token: string },
+    transactionId: string,
+    response: Response
+  ): Promise<{ generalPartners: GeneralPartner[]; limitedPartners: LimitedPartner[] } | undefined > {
+    if (pageRouting.pageType === TransitionPageType.checkYourAnswers) {
+      const gpResult = await this.generalPartnerService.getGeneralPartners(tokens, transactionId);
+      const generalPartners = gpResult.generalPartners.map((partner) => formatPartnerDates(partner, response.locals.i18n));
+
+      const lpResult = await this.limitedPartnerService.getLimitedPartners(tokens, transactionId);
+      const limitedPartners = lpResult.limitedPartners.map((partner) => formatPartnerDates(partner, response.locals.i18n));
+
+      return { generalPartners, limitedPartners };
+    }
+    return;
   }
 
   getConfirmPage() {
