@@ -6,7 +6,15 @@ export const getJourneyTypes = (url: string): JourneyTypes => {
   const isTransition = url.startsWith(TRANSITION_BASE_URL);
   const isPostTransition = url.startsWith(POST_TRANSITION_BASE_URL);
 
-  const journey = isRegistration ? Journey.registration : isTransition ? Journey.transition : Journey.postTransition;
+  let journey;
+
+  if (isRegistration) {
+    journey = Journey.registration;
+  } else if (isTransition) {
+    journey = Journey.transition;
+  } else {
+    journey = Journey.postTransition;
+  }
 
   return {
     isRegistration,

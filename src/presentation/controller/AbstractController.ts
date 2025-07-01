@@ -127,11 +127,15 @@ abstract class AbstractController {
   private replaceBaseUrlWithIds(url: string, ids: Ids) {
     const journey = getJourneyTypes(url);
 
-    const urlWithIds = journey.isRegistration
-      ? REGISTRATION_WITH_IDS_URL
-      : journey.isTransition
-        ? TRANSITION_WITH_IDS_URL
-        : POST_TRANSITION_WITH_IDS_URL;
+    let urlWithIds;
+
+    if (journey.isRegistration) {
+      urlWithIds = REGISTRATION_WITH_IDS_URL;
+    } else if (journey.isTransition) {
+      urlWithIds = TRANSITION_WITH_IDS_URL;
+    } else {
+      urlWithIds = POST_TRANSITION_WITH_IDS_URL;
+    }
 
     // general partner urls that can exist with or without ids
     const GP_URLS = [
