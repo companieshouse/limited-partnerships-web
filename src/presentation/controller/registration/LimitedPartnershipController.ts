@@ -33,7 +33,7 @@ import { CONFIRM_REGISTERED_OFFICE_ADDRESS_URL } from "../addressLookUp/url/regi
 import { PAYMENT_RESPONSE_URL } from "../global/url";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
-import { formatDate } from "../../../utils/date-format";
+import { getPartners } from "../../../utils/getPartners";
 
 class LimitedPartnershipController extends AbstractController {
   constructor(
@@ -70,11 +70,9 @@ class LimitedPartnershipController extends AbstractController {
         }
 
         if (pageRouting.pageType === RegistrationPageType.checkYourAnswers) {
-          const gpResult = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
-          generalPartners = gpResult.generalPartners.map((partner) => this.formatPartnerDob(partner, response));
-
-          const lpResult = await this.limitedPartnerService.getLimitedPartners(tokens, ids.transactionId);
-          limitedPartners = lpResult.limitedPartners.map((partner) => this.formatPartnerDob(partner, response));
+          const partners = await getPartners(tokens, ids.transactionId, response, this.generalPartnerService, this.limitedPartnerService);
+          generalPartners = partners?.generalPartners;
+          limitedPartners = partners?.limitedPartners;
         }
 
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
@@ -85,21 +83,6 @@ class LimitedPartnershipController extends AbstractController {
         );
       } catch (error) {
         next(error);
-      }
-    };
-  }
-
-  private formatPartnerDob(
-    partner: GeneralPartner | LimitedPartner,
-    response: Response
-  ): GeneralPartner | LimitedPartner {
-    return {
-      ...partner,
-      data: {
-        ...partner.data,
-        date_of_birth: partner.data?.date_of_birth
-          ? formatDate(partner.data?.date_of_birth, response.locals.i18n)
-          : undefined
       }
     };
   }

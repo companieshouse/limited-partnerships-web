@@ -17,7 +17,7 @@ import { PageRouting } from "../PageRouting";
 import { CONFIRM_REGISTERED_OFFICE_ADDRESS_URL } from "../addressLookUp/url/transition";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
-import { formatDate } from "../../../utils/date-format";
+import { getPartners } from "../../../utils/getPartners";
 
 class LimitedPartnershipController extends AbstractController {
   constructor(
@@ -49,11 +49,9 @@ class LimitedPartnershipController extends AbstractController {
         }
 
         if (pageRouting.pageType === TransitionPageType.checkYourAnswers) {
-          const gpResult = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
-          generalPartners = gpResult.generalPartners.map((partner) => this.formatPartnerDates(partner, response));
-
-          const lpResult = await this.limitedPartnerService.getLimitedPartners(tokens, ids.transactionId);
-          limitedPartners = lpResult.limitedPartners.map((partner) => this.formatPartnerDates(partner, response));
+          const partners = await getPartners(tokens, ids.transactionId, response, this.generalPartnerService, this.limitedPartnerService);
+          generalPartners = partners?.generalPartners;
+          limitedPartners = partners?.limitedPartners;
         }
 
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
@@ -64,24 +62,6 @@ class LimitedPartnershipController extends AbstractController {
         );
       } catch (error) {
         next(error);
-      }
-    };
-  }
-
-  private formatPartnerDates(
-    partner: GeneralPartner | LimitedPartner,
-    response: Response
-  ): GeneralPartner | LimitedPartner {
-    return {
-      ...partner,
-      data: {
-        ...partner.data,
-        date_of_birth: partner.data?.date_of_birth
-          ? formatDate(partner.data?.date_of_birth, response.locals.i18n)
-          : undefined,
-        date_effective_from: partner.data?.date_effective_from
-          ? formatDate(partner.data?.date_effective_from, response.locals.i18n)
-          : undefined
       }
     };
   }
