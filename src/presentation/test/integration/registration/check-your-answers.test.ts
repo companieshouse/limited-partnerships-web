@@ -105,13 +105,13 @@ describe("Check Your Answers Page", () => {
     });
 
     it.each([
-      [PartnershipType.LP, true],
-      [PartnershipType.SLP, false],
-      [PartnershipType.PFLP, true],
-      [PartnershipType.SPFLP, false]
+      [PartnershipType.LP, true, true],
+      [PartnershipType.SLP, false, true],
+      [PartnershipType.PFLP, true, false],
+      [PartnershipType.SPFLP, false, false]
     ])(
       "should show a change link for jurisdiction based on the partnership type",
-      async (partnershipType: PartnershipType, changeLinkExpected: boolean) => {
+      async (partnershipType: PartnershipType, changeLinkExpected: boolean, capitalContributionHeadingExpected: boolean) => {
         const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
         appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
         const res = await request(app).get(URL);
@@ -122,6 +122,12 @@ describe("Check Your Answers Page", () => {
           expect(res.text).toContain("where-is-the-jurisdiction#jurisdiction");
         } else {
           expect(res.text).not.toContain("where-is-the-jurisdiction#jurisdiction");
+        }
+
+        if (capitalContributionHeadingExpected) {
+          expect(res.text).toContain(enTranslationText.checkYourAnswersPage.headingCapitalContribution);
+        } else {
+          expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.headingCapitalContribution);
         }
       }
     );
@@ -247,7 +253,7 @@ describe("Check Your Answers Page", () => {
     const limitedPartnerPerson = new LimitedPartnerBuilder().isPerson().withFormerNames("Joe Dee")
       .withContributionCurrencyType("GBP")
       .withContributionCurrencyValue("5.00")
-      .withContributionSubtypes(["MONEY", "LAND_OR_PROPERTY"])
+      .withContributionSubtypes(["MONEY", "SERVICES_OR_GOODS", "LAND_OR_PROPERTY"])
       .build();
 
     appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerPerson]);
@@ -255,8 +261,8 @@ describe("Check Your Answers Page", () => {
     const res = await request(app).get(URL);
 
     expect(res.status).toBe(200);
-    // expect(res.text).toContain("5.00 Pound Sterling (GBP)");
-    // expect(res.text).toContain("Money / Land or property");
+    expect(res.text).toContain("5.00 Pound Sterling (GBP)");
+    expect(res.text).toContain("Money / Services or goods / Land or property");
   });
 
   it("should load the check your answers page with capital contribution data for limited partner legal entity", async () => {
@@ -264,7 +270,7 @@ describe("Check Your Answers Page", () => {
     const limitedPartnerLegalEntity = new LimitedPartnerBuilder().isLegalEntity()
       .withContributionCurrencyType("GBP")
       .withContributionCurrencyValue("5.00")
-      .withContributionSubtypes(["MONEY", "LAND_OR_PROPERTY"])
+      .withContributionSubtypes(["SHARES", "ANY_OTHER_ASSET"])
       .build();
 
     appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerLegalEntity]);
@@ -272,8 +278,8 @@ describe("Check Your Answers Page", () => {
     const res = await request(app).get(URL);
 
     expect(res.status).toBe(200);
-    // expect(res.text).toContain("5.00 Pound Sterling (GBP)");
-    // expect(res.text).toContain("Money / Land or property");
+    expect(res.text).toContain("5.00 Pound Sterling (GBP)");
+    expect(res.text).toContain("Shares / Any other asset");
   });
 
   describe("POST Check Your Answers Page", () => {

@@ -358,6 +358,7 @@
         "headingJurisdiction" : "Jurisdiction",
         "headingRegisteredOfficeAddress" : "Registered office address",
         "headingPrincipalPlaceOfBusinessAddress" : "Principal place of business",
+        "headingCapitalContribution" : "Total capital contribuion",
         "jurisdictions": {
             "englandAndWales": "England and Wales",
             "northernIreland": "Northern Ireland",
