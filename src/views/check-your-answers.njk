@@ -327,8 +327,11 @@
             {% endif %}
 
             {% set capitalContributionHtml -%}
-              <p class="govuk-body">{{ item.data.contribution_currency_value }} {{ i18n.currencies[item.data.contribution_currency_type] }}</p>
-              <p class="govuk-body">{{ macros.buildFormattedListFromArray(item.data.contribution_sub_types) }}</p>
+              <p class="govuk-body">
+                {{ item.data.contribution_currency_value }} {{ i18n.currencies[item.data.contribution_currency_type] }}
+                <br>
+                {{ macros.buildFormattedListFromArray(item.data.contribution_sub_types) }}
+              </p>
             {%- endset %}   
 
             {{ govukSummaryList({
@@ -385,8 +388,13 @@
                 ]
             }) }}
           {% elif item.data.legal_entity_name %}
-            {% set capitalContribution = item.data.contribution_currency_value + " " + i18n.currencies[item.data.contribution_currency_type] 
-               + " " + macros.buildFormattedListFromArray(item.data.contribution_sub_types) %}
+            {% set capitalContributionHtml -%}
+              <p class="govuk-body">
+                {{ item.data.contribution_currency_value }} {{ i18n.currencies[item.data.contribution_currency_type] }}
+                <br>
+                {{ macros.buildFormattedListFromArray(item.data.contribution_sub_types) }}
+              </p>
+            {%- endset %}
             {{ govukSummaryList({
               classes: "govuk-!-margin-bottom-7",
               rows: [
