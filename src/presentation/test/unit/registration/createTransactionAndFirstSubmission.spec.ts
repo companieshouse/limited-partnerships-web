@@ -10,6 +10,7 @@ describe("Create transaction and the first submission", () => {
   const journeyTypes: JourneyTypes = {
     isRegistration: true,
     isTransition: false,
+    isPostTransition: false,
     journey: Journey.registration
   };
 

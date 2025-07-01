@@ -35,10 +35,12 @@ export const REFRESH_TOKEN_GRANT_TYPE = "refresh_token";
 
 export const SERVICE_NAME_REGISTRATION = "Register a limited partnership";
 export const SERVICE_NAME_TRANSITION = "Provide information about a limited partnership";
+export const SERVICE_NAME_POST_TRANSITION = "File for a limited partnership";
 export const SHOW_SERVICE_UNAVAILABLE_PAGE = getEnvironmentValueAsBoolean("SHOW_SERVICE_UNAVAILABLE_PAGE");
 export const APPLICATION_CACHE_KEY = "limited_partnership";
 export const APPLICATION_CACHE_KEY_PREFIX_REGISTRATION = "registration_";
 export const APPLICATION_CACHE_KEY_PREFIX_TRANSITION = "transition_";
+export const APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION = "post-transition_";
 
 // Templates
 export const ERROR_TEMPLATE = "error-page";
@@ -56,6 +58,7 @@ export const BASE_URL = "/limited-partnerships";
 
 export const REGISTRATION_BASE_URL = `${BASE_URL}/${Journey.registration}`;
 export const TRANSITION_BASE_URL = `${BASE_URL}/${Journey.transition}`;
+export const POST_TRANSITION_BASE_URL = `${BASE_URL}/${Journey.postTransition}`;
 
 export const TRANSACTION_SUBMISSION_URL = `/transaction/:${TRANSACTION_ID}/submission/:${SUBMISSION_ID}`;
 
@@ -63,6 +66,7 @@ export const BASE_WITH_IDS_URL = `${BASE_URL}${TRANSACTION_SUBMISSION_URL}`;
 export const BASE_WITH_JOURNEY_TYPE_AND_IDS_URL = `${BASE_URL}/${JOURNEY_TYPE_PARAM}${TRANSACTION_SUBMISSION_URL}`;
 export const REGISTRATION_WITH_IDS_URL = `${REGISTRATION_BASE_URL}${TRANSACTION_SUBMISSION_URL}`;
 export const TRANSITION_WITH_IDS_URL = `${TRANSITION_BASE_URL}${TRANSACTION_SUBMISSION_URL}`;
+export const POST_TRANSITION_WITH_IDS_URL = `${POST_TRANSITION_BASE_URL}${TRANSACTION_SUBMISSION_URL}`;
 
 export const GENERAL_PARTNER_URL = `/general-partner`;
 export const GENERAL_PARTNER_WITH_ID_URL = GENERAL_PARTNER_URL + `/:${GENERAL_PARTNER_ID}`;
