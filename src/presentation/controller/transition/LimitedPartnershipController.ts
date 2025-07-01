@@ -286,32 +286,6 @@ class LimitedPartnershipController extends AbstractController {
       }
     }
   }
-
-  postCheckYourAnswers() {
-    return async (request: Request, response: Response, next: NextFunction) => {
-      try {
-        const { tokens, ids } = super.extract(request);
-        const pageType = super.extractPageTypeOrThrowError(request, TransitionPageType);
-        const pageRouting = super.getRouting(transitionRouting, pageType, request);
-
-        const closeTransactionResponse = await this.limitedPartnershipService.closeTransaction(
-          tokens,
-          ids.transactionId
-        );
-
-        if (closeTransactionResponse.httpStatusCode === 500) {
-          return response.status(500).render("error", {
-            message: "An internal server error occurred while closing the transaction."
-          });
-        }
-
-        response.redirect(pageRouting.nextUrl);
-
-      } catch (error) {
-        next(error);
-      }
-    };
-  }
 }
 
 export default LimitedPartnershipController;

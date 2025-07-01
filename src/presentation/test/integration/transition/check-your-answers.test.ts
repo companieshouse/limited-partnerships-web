@@ -13,11 +13,9 @@ import LimitedPartnerBuilder from "../../builder/LimitedPartnerBuilder";
 import { formatDate } from "../../../../utils/date-format";
 import { TransactionKind } from "../../../../domain/entities/TransactionTypes";
 import TransactionBuilder from "../../builder/TransactionBuilder";
-import TransitionPageType from "../../../controller/transition/PageType";
 
 describe("Check Your Answers Page", () => {
   const URL = getUrl(CHECK_YOUR_ANSWERS_URL);
-  const REDIRECT_URL = getUrl("/");
 
   let limitedPartnership;
   let generalPartnerPerson;
@@ -160,16 +158,6 @@ describe("Check Your Answers Page", () => {
       checkIfValuesInText(res, limitedPartnerPerson, cyTranslationText);
 
       checkIfValuesInText(res, limitedPartnerLegalEntity, cyTranslationText);
-    });
-  });
-
-  describe("POST Check Your Answers Page", () => {
-    it("should navigate to next page", async () => {
-      const res = await request(app).post(URL).send({
-        pageType: TransitionPageType.checkYourAnswers
-      });
-      expect(res.status).toBe(302);
-      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
     });
   });
 });
