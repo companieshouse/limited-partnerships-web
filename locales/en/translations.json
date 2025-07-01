@@ -337,7 +337,25 @@
        "shares" : "Shares",
        "servicesOrGoods" : "Services or goods",
        "anyOtherAsset" : "Any other asset",
-       "compositionErrorMessage" : "Select a tick box"
+       "compositionErrorMessage" : "Select a tick box",
+       "contributionSubTypes": {
+            "money": "Money",
+            "landOrProperty": "Land or property",
+            "shares": "Shares",
+            "servicesOrGoods": "Services or goods",
+            "anyOtherAsset": "Any other asset"
+        },
+        "currencyType" : {
+            "title" : "What is the currency type?",
+            "selectPrompt" : "Select a currency type",
+            "errorMessage" : "Select a currency type"
+        },
+        "errorMessages": {
+          "contributionCurrencyValueMissing": "Enter a total capital contribution",
+          "contributionCurrencyValueInvalidFormat": "Total capital contribution must be a number with up to 2 decimal places",
+          "contributionCurrencyValueMin": "Total capital contribution must be at least £0.01",
+          "contributionCurrencyValueMax": "Total capital contribution must be no more than £999,999,999.99" 
+       }
     },
 
     "checkYourAnswersPage" : {

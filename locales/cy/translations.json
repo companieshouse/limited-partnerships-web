@@ -338,7 +338,25 @@
         "shares" : "WELSH - Shares",
         "anyOtherAsset" : "WELSH - Any other asset",
         "servicesOrGoods" : "WELSH - Services or goods",
-        "compositionErrorMessage" : "WELSH - Select a tick box"
+        "compositionErrorMessage" : "WELSH - Select a tick box",
+        "contributionSubTypes": {
+            "money": "WELSH - Money",
+            "landOrProperty": "WELSH - Land or property",
+            "shares": "WELSH - Shares",
+            "servicesOrGoods": "WELSH - Services or goods",
+            "anyOtherAsset": "WELSH - Any other asset"
+        },
+         "currencyType" : {
+            "title" : "WELSH - What is the currency type?",
+            "selectPrompt" : "WELSH - Select a currency type",
+            "errorMessage" : "WELSH - Select a currency type"
+        },
+        "errorMessages": {
+          "contributionCurrencyValueMissing": "WELSH - Enter a total capital contribution",
+          "contributionCurrencyValueInvalidFormat": "WELSH - Total capital contribution must be a number with up to 2 decimal places",
+          "contributionCurrencyValueMin": "WELSH - Total capital contribution must be at least £0.01",
+          "contributionCurrencyValueMax": "WELSH - Total capital contribution must be no more than £999,999,999.99" 
+       }
      },
 
     "checkYourAnswersPage" : {

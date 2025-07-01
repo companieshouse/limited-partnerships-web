@@ -329,10 +329,11 @@
             {% set capitalContributionHtml -%}
               <p class="govuk-body">
                 {{ item.data.contribution_currency_value }} {{ i18n.currencies[item.data.contribution_currency_type] }}
-                <br>
+              </p>
+              <p class="govuk-body"> 
                 {{ macros.buildFormattedListFromArray(item.data.contribution_sub_types) }}
               </p>
-            {%- endset %}   
+            {%- endset %}
 
             {{ govukSummaryList({
                 classes: "govuk-!-margin-bottom-7",
@@ -384,17 +385,20 @@
                     value: {
                         html: capitalContributionHtml
                     }
-                  }       
+                  } if props.data.limitedPartnership.data.partnership_type === "LP"
+                      or props.data.limitedPartnership.data.partnership_type === "SLP"                  
                 ]
             }) }}
           {% elif item.data.legal_entity_name %}
             {% set capitalContributionHtml -%}
               <p class="govuk-body">
                 {{ item.data.contribution_currency_value }} {{ i18n.currencies[item.data.contribution_currency_type] }}
-                <br>
+              </p>
+              <p class="govuk-body"> 
                 {{ macros.buildFormattedListFromArray(item.data.contribution_sub_types) }}
               </p>
             {%- endset %}
+            
             {{ govukSummaryList({
               classes: "govuk-!-margin-bottom-7",
               rows: [
@@ -461,7 +465,8 @@
                   value: {
                       html: capitalContributionHtml
                   }
-                }                       
+                } if props.data.limitedPartnership.data.partnership_type === "LP"
+                      or props.data.limitedPartnership.data.partnership_type === "SLP"                       
               ]
             }) }}
           {% endif %}
