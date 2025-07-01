@@ -26,6 +26,8 @@ import LimitedPartnershipTransitionController from "../presentation/controller/t
 import GeneralPartnerTransitionController from "../presentation/controller/transition/GeneralPartnerController";
 import LimitedPartnerTransitionController from "../presentation/controller/transition/LimitedPartnerController";
 
+import LimitedPartnershipPostTransitionController from "../presentation/controller/postTransition/LimitedPartnershipController";
+
 // GATEWAYS
 const limitedPartnershipGateway: LimitedPartnershipGateway = new LimitedPartnershipGateway();
 const transactionGateway: TransactionGateway = new TransactionGateway();
@@ -91,6 +93,9 @@ const limitedPartnerTransitionController: LimitedPartnerTransitionController = n
   limitedPartnerService
 );
 
+const limitedPartnershipPostTransitionController: LimitedPartnershipPostTransitionController =
+  new LimitedPartnershipPostTransitionController(companyService, cacheService, limitedPartnershipService);
+
 export const appDependencies = {
   globalController,
   addressLookUpController,
@@ -101,5 +106,7 @@ export const appDependencies = {
 
   limitedPartnershipTransitionController,
   generalPartnerTransitionController,
-  limitedPartnerTransitionController
+  limitedPartnerTransitionController,
+
+  limitedPartnershipPostTransitionController
 };

@@ -49,6 +49,7 @@ export const appConfig = (app: express.Application) => {
   nunjucksEnv.addGlobal("PIWIK_URL", config.PIWIK_URL);
   nunjucksEnv.addGlobal("SERVICE_NAME_REGISTRATION", config.SERVICE_NAME_REGISTRATION);
   nunjucksEnv.addGlobal("SERVICE_NAME_TRANSITION", config.SERVICE_NAME_TRANSITION);
+  nunjucksEnv.addGlobal("SERVICE_NAME_POST_TRANSITION", config.SERVICE_NAME_POST_TRANSITION);
   nunjucksEnv.addGlobal("CREATE_CHANGE_LINK", createSummaryListLink);
 
   app.use(express.json());

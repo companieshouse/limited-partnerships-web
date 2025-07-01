@@ -11,7 +11,9 @@ import {
   SUBMISSION_ID,
   TRANSACTION_ID,
   TRANSITION_BASE_URL,
-  TRANSITION_WITH_IDS_URL
+  TRANSITION_WITH_IDS_URL,
+  POST_TRANSITION_BASE_URL,
+  POST_TRANSITION_WITH_IDS_URL
 } from "../../config/constants";
 import { PageRouting, pageRoutingDefault, PagesRouting } from "./PageRouting";
 import PageType from "./PageType";
@@ -123,6 +125,18 @@ abstract class AbstractController {
   }
 
   private replaceBaseUrlWithIds(url: string, ids: Ids) {
+    const journey = getJourneyTypes(url);
+
+    let urlWithIds;
+
+    if (journey.isRegistration) {
+      urlWithIds = REGISTRATION_WITH_IDS_URL;
+    } else if (journey.isTransition) {
+      urlWithIds = TRANSITION_WITH_IDS_URL;
+    } else {
+      urlWithIds = POST_TRANSITION_WITH_IDS_URL;
+    }
+
     // general partner urls that can exist with or without ids
     const GP_URLS = [
       ADD_GENERAL_PARTNER_PERSON_URL,
@@ -130,8 +144,6 @@ abstract class AbstractController {
       ADD_GENERAL_PARTNER_PERSON_URL_TRANSITION,
       ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL_TRANSITION
     ];
-
-    const urlWithIds = getJourneyTypes(url).isRegistration ? REGISTRATION_WITH_IDS_URL : TRANSITION_WITH_IDS_URL;
 
     if (ids.transactionId && ids.submissionId && ids.generalPartnerId && GP_URLS.includes(url)) {
       url = url.replace(urlWithIds, urlWithIds + GENERAL_PARTNER_WITH_ID_URL);
@@ -225,6 +237,7 @@ abstract class AbstractController {
 
     const previousPageUrlRegistration = headers.filter((item) => item.includes(REGISTRATION_BASE_URL))[0];
     const previousPageUrlTransition = headers.filter((item) => item.includes(TRANSITION_BASE_URL))[0];
+    const previousPageUrlPostTransition = headers.filter((item) => item.includes(POST_TRANSITION_BASE_URL))[0];
 
     if (previousPageUrlRegistration) {
       const startingIndexOfRelativePath = previousPageUrlRegistration.indexOf(REGISTRATION_BASE_URL);
@@ -232,6 +245,9 @@ abstract class AbstractController {
     } else if (previousPageUrlTransition) {
       const startingIndexOfRelativePath = previousPageUrlTransition.indexOf(TRANSITION_BASE_URL);
       return previousPageUrlTransition.substring(startingIndexOfRelativePath);
+    } else if (previousPageUrlPostTransition) {
+      const startingIndexOfRelativePath = previousPageUrlPostTransition.indexOf(POST_TRANSITION_BASE_URL);
+      return previousPageUrlPostTransition.substring(startingIndexOfRelativePath);
     }
 
     return WHICH_TYPE_URL;

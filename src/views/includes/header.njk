@@ -3,6 +3,8 @@
   {% set serviceName = SERVICE_NAME_REGISTRATION %}
 {% elif journeyTypes.isTransition %}
   {% set serviceName = SERVICE_NAME_TRANSITION %}
+{% elif journeyTypes.isPostTransition %}
+  {% set serviceName = SERVICE_NAME_POST_TRANSITION %}
 {% endif %}
 
 {{ govukHeader({
