@@ -33,7 +33,7 @@ import { CONFIRM_REGISTERED_OFFICE_ADDRESS_URL } from "../addressLookUp/url/regi
 import { PAYMENT_RESPONSE_URL } from "../global/url";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
-import { formatPartnerDates } from "../../../utils/formatPartnerDates";
+import { formatDate } from "../../../utils/date-format";
 
 class LimitedPartnershipController extends AbstractController {
   constructor(
@@ -67,9 +67,7 @@ class LimitedPartnershipController extends AbstractController {
           );
         }
 
-        const partners = await this.getPartners(pageRouting, tokens, ids.transactionId, response);
-        const generalPartners: GeneralPartner[] | undefined = partners?.generalPartners;
-        const limitedPartners: LimitedPartner[] | undefined = partners?.limitedPartners;
+        const { generalPartners, limitedPartners } = await this.getPartners(pageRouting, tokens, ids.transactionId, response);
 
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
 
@@ -88,17 +86,32 @@ class LimitedPartnershipController extends AbstractController {
     tokens: { access_token: string; refresh_token: string },
     transactionId: string,
     response: Response
-  ): Promise<{ generalPartners: GeneralPartner[]; limitedPartners: LimitedPartner[] } | undefined > {
+  ): Promise<{ generalPartners: GeneralPartner[]; limitedPartners: LimitedPartner[] } > {
     if (pageRouting.pageType === RegistrationPageType.checkYourAnswers) {
       const gpResult = await this.generalPartnerService.getGeneralPartners(tokens, transactionId);
-      const generalPartners = gpResult.generalPartners.map((partner) => formatPartnerDates(partner, response.locals.i18n));
+      const generalPartners = gpResult.generalPartners.map((partner) => ({
+        ...partner,
+        data: {
+          ...partner.data,
+          date_of_birth: partner.data?.date_of_birth
+            ? formatDate(partner.data?.date_of_birth, response.locals.i18n)
+            : undefined
+        }
+      }));
 
       const lpResult = await this.limitedPartnerService.getLimitedPartners(tokens, transactionId);
-      const limitedPartners = lpResult.limitedPartners.map((partner) => formatPartnerDates(partner, response.locals.i18n));
-
+      const limitedPartners = lpResult.limitedPartners.map((partner) => ({
+        ...partner,
+        data: {
+          ...partner.data,
+          date_of_birth: partner.data?.date_of_birth
+            ? formatDate(partner.data?.date_of_birth, response.locals.i18n)
+            : undefined
+        }
+      }));
       return { generalPartners, limitedPartners };
     }
-    return;
+    return { generalPartners: [], limitedPartners: [] };
   }
 
   private conditionalPreviousUrl(
