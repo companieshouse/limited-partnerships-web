@@ -326,8 +326,10 @@
               {% set nationalities = item.data.nationality1 + ", " + item.data.nationality2 | capitalize %}
             {% endif %}
 
-            {% set capitalContribution = item.data.contribution_currency_value + " " + i18n.currencies[item.data.contribution_currency_type] 
-               + " " + macros.buildFormattedListFromArray(item.data.contribution_sub_types) %}
+            {% set capitalContributionHtml -%}
+              <p class="govuk-body">{{ item.data.contribution_currency_value }} {{ i18n.currencies[item.data.contribution_currency_type] }}</p>
+              <p class="govuk-body">{{ macros.buildFormattedListFromArray(item.data.contribution_sub_types) }}</p>
+            {%- endset %}   
 
             {{ govukSummaryList({
                 classes: "govuk-!-margin-bottom-7",
@@ -377,7 +379,7 @@
                         text: i18n.checkYourAnswersPage.partners.limitedPartners.capitalContribution
                     },
                     value: {
-                        text: capitalContribution
+                        html: capitalContributionHtml
                     }
                   }       
                 ]
@@ -449,7 +451,7 @@
                       text: i18n.checkYourAnswersPage.partners.limitedPartners.capitalContribution
                   },
                   value: {
-                      text: capitalContribution
+                      html: capitalContributionHtml
                   }
                 }                       
               ]
