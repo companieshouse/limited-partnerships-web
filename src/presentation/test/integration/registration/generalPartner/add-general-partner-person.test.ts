@@ -64,6 +64,29 @@ describe("Add General Partner Person Page", () => {
       expect(res.text).not.toContain("WELSH -");
     });
 
+    it("should load the add general partner page and replay previously saved data", async () => {
+      const generalPartner = new GeneralPartnerBuilder()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .isPerson()
+        .withNotDisqualifiedStatementChecked(true)
+        .withFormerNames("FORMER-NAMES")
+        .build();
+
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+
+      setLocalesEnabled(true);
+      const URL = getUrl(ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL);
+      const res = await request(app).get(URL);
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain("Joe - GP");
+      expect(res.text).toContain("Doe - GP");
+      expect(res.text).toContain('id="previousNameYes" name="previousName" type="radio" value="true" checked');
+      expect(res.text).toContain("FORMER-NAMES");
+      expect(res.text).toContain('<option value="British" selected>British</option>');
+      expect(res.text).toContain('name="not_disqualified_statement_checked" type="checkbox" value="true" checked');
+    });
+
     it("should contain the proposed name - data from api", async () => {
       const limitedPartnership = new LimitedPartnershipBuilder().build();
 
@@ -132,13 +155,6 @@ describe("Add General Partner Person Page", () => {
     });
 
     it("should replay entered data when invalid data is entered and a validation error occurs", async () => {
-      const generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isPerson()
-        .build();
-
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
-
       const apiErrors: ApiErrors = {
         errors: { forename: "general partner name is invalid" }
       };
@@ -163,9 +179,9 @@ describe("Add General Partner Person Page", () => {
       expect(res.text).toContain("INVALID-CHARACTERS-FORENAME");
       expect(res.text).toContain("SURNAME");
       expect(res.text).toContain('id="previousNameNo" name="previousName" type="radio" value="false" checked');
-      expect(res.text).toContain("Mongolian");
-      expect(res.text).toContain("Uzbek");
-      expect(res.text).toContain('name="not_disqualified_statement_checked" type="checkbox" value="true"');
+      expect(res.text).toContain('<option value="Mongolian" selected>Mongolian</option>');
+      expect(res.text).toContain('<option value="Uzbek" selected>Uzbek</option>');
+      expect(res.text).toContain('name="not_disqualified_statement_checked" type="checkbox" value="true" checked');
     });
   });
 
@@ -214,15 +230,6 @@ describe("Add General Partner Person Page", () => {
     });
 
     it("should replay entered data when invalid data is entered and a validation error occurs", async () => {
-      const URL = getUrl(ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL);
-
-      const generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isPerson()
-        .build();
-
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
-
       const apiErrors: ApiErrors = {
         errors: { forename: "general partner name is invalid" }
       };
@@ -248,9 +255,9 @@ describe("Add General Partner Person Page", () => {
       expect(res.text).toContain("SURNAME");
       expect(res.text).toContain('id="previousNameYes" name="previousName" type="radio" value="true" checked');
       expect(res.text).toContain("FORMER-NAMES");
-      expect(res.text).toContain("Mongolian");
-      expect(res.text).toContain("Uzbek");
-      expect(res.text).toContain('name="not_disqualified_statement_checked" type="checkbox" value="true"');
+      expect(res.text).toContain('<option value="Mongolian" selected>Mongolian</option>');
+      expect(res.text).toContain('<option value="Uzbek" selected>Uzbek</option>');
+      expect(res.text).toContain('name="not_disqualified_statement_checked" type="checkbox" value="true" checked');
     });
   });
 });

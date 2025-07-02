@@ -1,4 +1,5 @@
 {% extends "layout.njk" %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 
 {% block head %}
   {{ super() }}
@@ -61,8 +62,16 @@
                   "change-partnership-name-button"
                 )
               ]
-            }
+            } if journeyTypes.isRegistration
           },
+          {
+            key: {
+              text: i18n.checkYourAnswersPage.headingNumber
+            },
+            value: {
+              text: props.data.limitedPartnership.data.partnership_number
+            }
+          } if journeyTypes.isTransition,
           {
             key: {
               text: i18n.checkYourAnswersPage.headingType
@@ -79,7 +88,7 @@
                   "change-partnership-type-button"
                 )
               ]
-            }
+            } if journeyTypes.isRegistration
           },
           {
             key: {
@@ -113,7 +122,7 @@
               ) ]
             } if props.data.limitedPartnership.data.partnership_type === "LP"
                 or props.data.limitedPartnership.data.partnership_type === "PFLP"
-          },
+          } if journeyTypes.isRegistration,
           {
             key: {
               text: i18n.checkYourAnswersPage.headingRegisteredOfficeAddress
@@ -149,7 +158,7 @@
                 )
               ]
             }
-          },         
+          } if journeyTypes.isRegistration,         
           {
             key: {
               text: i18n.checkYourAnswersPage.headingTerm
@@ -165,8 +174,8 @@
                 "change-term-button" 
               ) ]
             } 
-          } if props.data.limitedPartnership.data.partnership_type === "LP"
-              or props.data.limitedPartnership.data.partnership_type === "SLP",
+          } if (props.data.limitedPartnership.data.partnership_type === "LP"
+              or props.data.limitedPartnership.data.partnership_type === "SLP") and journeyTypes.isRegistration,
           {
             key: {
               text: i18n.checkYourAnswersPage.headingSic
@@ -184,8 +193,9 @@
                 )
               ]
             }
-          } if props.data.limitedPartnership.data.partnership_type === "LP"
-              or props.data.limitedPartnership.data.partnership_type === "SLP"
+          } if (props.data.limitedPartnership.data.partnership_type === "LP"
+              or props.data.limitedPartnership.data.partnership_type === "SLP")
+              and journeyTypes.isRegistration
         ]
       }) }}
 
@@ -193,9 +203,15 @@
 
       {% if props.data.generalPartners.length > 0 %}
         <h2 class="govuk-heading-m">{{ i18n.checkYourAnswersPage.partners.generalPartners.title }}</h2>
+
+        {% if journeyTypes.isTransition %}
+          <p class="govuk-body-m govuk-!-margin-bottom-6">
+            <a href="{{ props.currentUrl | replace(props.pageType, props.data.reviewGeneralPartnersType) }}"  class="govuk-body-m govuk-link" data-event-id="change-link">{{ i18n.checkYourAnswersPage.partners.generalPartners.changeRemoveOrAdd }}</a>
+          <p>
+        {% endif %}
+
         {% for item in props.data.generalPartners %}
           {% if item.data.forename %}
-
             {% set nationalities = item.data.nationality1 %}
             {% if item.data.nationality2 %}
               {% set nationalities = item.data.nationality1 + ", " + item.data.nationality2 | capitalize %}
@@ -206,52 +222,60 @@
                 rows: [
                   {
                     key: {
-                        text: i18n.checkYourAnswersPage.partners.person.name
+                      text: i18n.checkYourAnswersPage.partners.person.name
                     },
                     value: {
-                        text: item.data.forename + " " + item.data.surname
+                      text: item.data.forename + " " + item.data.surname
                     }
                   },
                   {
                     key: {
-                        text: i18n.checkYourAnswersPage.partners.person.formerNames
+                      text: i18n.checkYourAnswersPage.partners.person.formerNames
                     },
                     value: {
-                        text: item.data.former_names
+                      text: item.data.former_names
                     }
                   } if item.data.former_names,
                   {
                     key: {
-                        text: i18n.checkYourAnswersPage.partners.person.dateOfBirth
+                      text: i18n.checkYourAnswersPage.partners.person.dateOfBirth
                     },
                     value: {
-                        text: item.data.date_of_birth
+                      text: item.data.date_of_birth
                     }
                   },
                   {
                     key: {
-                        text: i18n.checkYourAnswersPage.partners.person.nationality
+                      text: i18n.checkYourAnswersPage.partners.person.nationality
                     },
                     value: {
-                        text: nationalities
+                      text: nationalities
                     }
                   },
                   {
                     key: {
-                        text: i18n.checkYourAnswersPage.partners.person.usualResidentialAddress
+                      text: i18n.checkYourAnswersPage.partners.person.usualResidentialAddress
                     },
                     value: {
-                        text: macros.formatAddress(item.data.usual_residential_address, true)
+                      text: macros.formatAddress(item.data.usual_residential_address, true)
                     }
                   },
                   {
                     key: {
-                        text: i18n.checkYourAnswersPage.partners.person.correspondenceAddress
+                      text: i18n.checkYourAnswersPage.partners.person.correspondenceAddress
                     },
                     value: {
-                        text: macros.formatAddress(item.data.service_address, true)
+                      text: macros.formatAddress(item.data.service_address, true)
                     }
-                  }
+                  },
+                  {
+                    key: {
+                      text: i18n.checkYourAnswersPage.partners.generalPartners.dateEffectiveFrom
+                    },
+                    value: {
+                      text: item.data.date_effective_from
+                    }
+                  } if journeyTypes.isTransition
                 ]
             }) }}
           {% elif item.data.legal_entity_name %}
@@ -260,73 +284,90 @@
               rows: [
                 {
                   key: {
-                      text: i18n.checkYourAnswersPage.partners.legalEntity.name
+                    text: i18n.checkYourAnswersPage.partners.legalEntity.name
                   },
                   value: {
-                      text: item.data.legal_entity_name
+                    text: item.data.legal_entity_name
                   }
                 },
                 {
                   key: {
-                      text: i18n.checkYourAnswersPage.partners.legalEntity.legalForm
+                    text: i18n.checkYourAnswersPage.partners.legalEntity.legalForm
                   },
                   value: {
-                      text: item.data.legal_form
+                    text: item.data.legal_form
                   }
                 },
                 {
                   key: {
-                      text: i18n.checkYourAnswersPage.partners.legalEntity.governingLaw
+                    text: i18n.checkYourAnswersPage.partners.legalEntity.governingLaw
                   },
                   value: {
-                      text: item.data.governing_law
+                    text: item.data.governing_law
                   }
                 },
                 {
                   key: {
-                      text: i18n.checkYourAnswersPage.partners.legalEntity.register
+                    text: i18n.checkYourAnswersPage.partners.legalEntity.register
                   },
                   value: {
-                      text: item.data.legal_entity_register_name
+                    text: item.data.legal_entity_register_name
                   }
                 },
                 {
                   key: {
-                      text: i18n.checkYourAnswersPage.partners.legalEntity.countryRegisteredIn
+                    text: i18n.checkYourAnswersPage.partners.legalEntity.countryRegisteredIn
                   },
                   value: {
-                      text: item.data.legal_entity_registration_location
+                    text: item.data.legal_entity_registration_location
                   }
                 },
                 {
                   key: {
-                      text: i18n.checkYourAnswersPage.partners.legalEntity.registrationNumber
+                    text: i18n.checkYourAnswersPage.partners.legalEntity.registrationNumber
                   },
                   value: {
-                      text: item.data.registered_company_number
+                    text: item.data.registered_company_number
                   }
                 },
                 {
                   key: {
-                      text: i18n.checkYourAnswersPage.partners.legalEntity.principalOfficeAddress
+                    text: i18n.checkYourAnswersPage.partners.legalEntity.principalOfficeAddress
                   },
                   value: {
-                      text: macros.formatAddress(item.data.principal_office_address, true)
+                    text: macros.formatAddress(item.data.principal_office_address, true)
                   }
-                }
+                },
+                {
+                  key: {
+                    text: i18n.checkYourAnswersPage.partners.generalPartners.dateEffectiveFrom
+                  },
+                  value: {
+                    text: item.data.date_effective_from
+                  }
+                } if journeyTypes.isTransition
               ]
             }) }}
           {% endif %}
         {% endfor %}
-        
-        <p class="govuk-body-m govuk-!-margin-bottom-9">
-          <a href="{{ props.currentUrl | replace(props.pageType, props.data.reviewGeneralPartnersType) }}"  class="govuk-body-m govuk-link" data-event-id="change-link">{{ i18n.checkYourAnswersPage.partners.generalPartners.changeRemoveOrAdd }}</a>
-        <p>
-          
+
+        {% if journeyTypes.isRegistration %}
+            <p class="govuk-body-m govuk-!-margin-bottom-9">
+              <a href="{{ props.currentUrl | replace(props.pageType, props.data.reviewGeneralPartnersType) }}"  class="govuk-body-m govuk-link" data-event-id="change-link">{{ i18n.checkYourAnswersPage.partners.generalPartners.changeRemoveOrAdd }}</a>
+            <p>
+        {% endif %}
+
       {% endif %}
 
       {% if props.data.limitedPartners.length > 0 %}
         <h2 class="govuk-heading-m">{{ i18n.checkYourAnswersPage.partners.limitedPartners.title }}</h2>
+
+        {% if journeyTypes.isTransition %}
+          <p class="govuk-body-m govuk-!-margin-bottom-6">
+            <a href="{{ props.currentUrl | replace(props.pageType, props.data.reviewLimitedPartnersType) }}"  class="govuk-body-m govuk-link" data-event-id="change-link">{{ i18n.checkYourAnswersPage.partners.limitedPartners.changeRemoveOrAdd }}</a>
+          <p>
+        {% endif %}
+
         {% for item in props.data.limitedPartners %}
           {% if item.data.forename %}
 
@@ -334,15 +375,17 @@
             {% if item.data.nationality2 %}
               {% set nationalities = item.data.nationality1 + ", " + item.data.nationality2 | capitalize %}
             {% endif %}
-
-            {% set capitalContributionHtml -%}
+            
+            {% if journeyTypes.isRegistration %}
+              {% set capitalContributionHtml -%}
               <p class="govuk-body">
                 {{ item.data.contribution_currency_value }} {{ i18n.currencies[item.data.contribution_currency_type] }}
-              </p>
+               </p>
               <p class="govuk-body"> 
                 {{ macros.buildFormattedListFromArray(capitalContributionSubTypesMap, item.data.contribution_sub_types) }}
               </p>
-            {%- endset %}
+              {%- endset %}
+            {% endif %}
 
             {{ govukSummaryList({
                 classes: "govuk-!-margin-bottom-7",
@@ -396,18 +439,29 @@
                     }
                   } if (props.data.limitedPartnership.data.partnership_type === "LP"
                       or props.data.limitedPartnership.data.partnership_type === "SLP")
-                      and item.data.contribution_currency_value               
+                      and item.data.contribution_currency_value
+                      and journeyTypes.isRegistration,
+                  {
+                    key: {
+                      text: i18n.checkYourAnswersPage.partners.limitedPartners.dateEffectiveFrom
+                    },
+                    value: {
+                      text: item.data.date_effective_from
+                    } 
+                  } if journeyTypes.isTransition                
                 ]
             }) }}
           {% elif item.data.legal_entity_name %}
-            {% set capitalContributionHtml -%}
-              <p class="govuk-body">
-                {{ item.data.contribution_currency_value }} {{ i18n.currencies[item.data.contribution_currency_type] }}
-              </p>
-              <p class="govuk-body"> 
-                {{ macros.buildFormattedListFromArray(capitalContributionSubTypesMap, item.data.contribution_sub_types) }}
-              </p>
-            {%- endset %}
+            {% if journeyTypes.isRegistration%}
+              {% set capitalContributionHtml -%}
+                <p class="govuk-body">
+                  {{ item.data.contribution_currency_value }} {{ i18n.currencies[item.data.contribution_currency_type] }}
+                </p>
+                <p class="govuk-body"> 
+                  {{ macros.buildFormattedListFromArray(capitalContributionSubTypesMap, item.data.contribution_sub_types) }}
+                </p>
+              {%- endset %}
+            {% endif %}
             
             {{ govukSummaryList({
               classes: "govuk-!-margin-bottom-7",
@@ -477,53 +531,88 @@
                   }
                 } if (props.data.limitedPartnership.data.partnership_type === "LP"
                       or props.data.limitedPartnership.data.partnership_type === "SLP")
-                      and item.data.contribution_currency_value                        
+                      and item.data.contribution_currency_value
+                      and journeyTypes.isRegistration,
+                {
+                  key: {
+                    text: i18n.checkYourAnswersPage.partners.limitedPartners.dateEffectiveFrom
+                  },
+                  value: {
+                    text: item.data.date_effective_from
+                  } 
+                } if journeyTypes.isTransition  
               ]
             }) }}
           {% endif %}
         {% endfor %}
-        
-        <p class="govuk-body-m govuk-!-margin-bottom-7">
-          <a href="{{ props.currentUrl | replace(props.pageType, props.data.reviewLimitedPartnersType) }}"  class="govuk-body-m govuk-link" data-event-id="change-link">{{ i18n.checkYourAnswersPage.partners.limitedPartners.changeRemoveOrAdd }}</a>
-        <p>
+
+        {% if journeyTypes.isRegistration %}
+            <p class="govuk-body-m govuk-!-margin-bottom-9">
+              <a href="{{ props.currentUrl | replace(props.pageType, props.data.reviewLimitedPartnersType) }}"  class="govuk-body-m govuk-link" data-event-id="change-link">{{ i18n.checkYourAnswersPage.partners.limitedPartners.changeRemoveOrAdd }}</a>
+            <p>
+        {% endif %}
           
       {% endif %}
 
       <br>
-      <div class="govuk-button-group">
+      <div>
         <form class="form" action={{ props.currentUrl }} method="post">
           <input type="hidden" name="pageType" value={{ props.pageType }}>
           {% include "includes/csrf_token.njk" %}
 
-          {{ govukCheckboxes({
-            id: "lawfulPurposeStatementChecked", 
-            name: "lawful_purpose_statement_checked",            
-            fieldset: {
-              legend: {
-                text: i18n.checkYourAnswersPage.confirm,
-                isPageHeading: false,
-                classes: "govuk-visually-hidden"
-              }
-            },
-            items: [
-              {
-                value: "true",
-                text: i18n.checkYourAnswersPage.futureLawful,
-                attributes: {
-                  required: true
+          {% if journeyTypes.isRegistration %}
+            {{ govukCheckboxes({
+              id: "lawfulPurposeStatementChecked", 
+              name: "lawful_purpose_statement_checked",            
+              fieldset: {
+                legend: {
+                  text: i18n.checkYourAnswersPage.confirm,
+                  isPageHeading: false,
+                  classes: "govuk-visually-hidden"
                 }
-              }
-            ]
+              },
+              items: [
+                {
+                  value: "true",
+                  text: i18n.checkYourAnswersPage.futureLawful,
+                  attributes: {
+                    required: true
+                  }
+                }
+              ]
+            }) }}
+
+            <div class="govuk-button-group">
+              {{ govukButton({
+                text: i18n.checkYourAnswersPage.payment,
+                attributes: {
+                  "id": "submit",
+                  "data-event-id": "check-your-answers-continue-to-payment-page-button"
+                }
+              }) }}
+              {% include "includes/print-button.njk" %} 
+            </div> 
+          {% endif %}
+
+          {% if journeyTypes.isTransition %}
+          {{ govukWarningText({
+            text: i18n.checkYourAnswersPage.warningMessage.warning,
+            iconFallbackText: "Warning"
           }) }}
 
-          {{ govukButton({
-            text: i18n.checkYourAnswersPage.payment,
-            attributes: {
-              "id": "submit",
-              "data-event-id": "check-your-answers-continue-to-payment-page-button"
-            }
-          }) }}
-          {% include "includes/print-button.njk" %}    
+          <p class="govuk-body">{{ i18n.checkYourAnswersPage.warningMessage.information }}</p>
+          <ul class="govuk-list govuk-list--bullet">
+            <li>{{ i18n.checkYourAnswersPage.warningMessage.email }}</li>
+            <li>{{ i18n.checkYourAnswersPage.warningMessage.dob }}</li>
+            <li>{{ i18n.checkYourAnswersPage.warningMessage.ura }}</li>
+          </ul>
+
+          {% include "includes/print-button.njk" %}
+          <div>
+            {% include "includes/continue-button.njk" %}
+          </div>
+          {% endif %}
+
         </form>
       </div>
     </div>

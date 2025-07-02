@@ -11,16 +11,21 @@ import {
   cookieOptions
 } from "../../../config/constants";
 import { getJourneyTypes } from "../../../utils/journey";
-import { Jurisdiction, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { GeneralPartner, Jurisdiction, LimitedPartner, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import { PageRouting } from "../PageRouting";
 import { CONFIRM_REGISTERED_OFFICE_ADDRESS_URL } from "../addressLookUp/url/transition";
+import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
+import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
+import { formatDate } from "../../../utils/date-format";
 
 class LimitedPartnershipController extends AbstractController {
   constructor(
     private readonly companyService: CompanyService,
     private readonly cacheService: CacheService,
-    private readonly limitedPartnershipService: LimitedPartnershipService
+    private readonly limitedPartnershipService: LimitedPartnershipService,
+    private readonly generalPartnerService: GeneralPartnerService,
+    private readonly limitedPartnerService: LimitedPartnerService
   ) {
     super();
   }
@@ -41,16 +46,57 @@ class LimitedPartnershipController extends AbstractController {
           );
         }
 
+        const { generalPartners, limitedPartners } = await this.getPartners(pageRouting, tokens, ids.transactionId, response);
+
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
 
         response.render(
           super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { limitedPartnership, cache }, null)
+          super.makeProps(pageRouting, { limitedPartnership, generalPartners, limitedPartners, cache, ids }, null)
         );
       } catch (error) {
         next(error);
       }
     };
+  }
+
+  private async getPartners(
+    pageRouting: PageRouting,
+    tokens: { access_token: string; refresh_token: string },
+    transactionId: string,
+    response: Response
+  ): Promise<{ generalPartners: GeneralPartner[]; limitedPartners: LimitedPartner[] } > {
+    if (pageRouting.pageType === TransitionPageType.checkYourAnswers) {
+      const gpResult = await this.generalPartnerService.getGeneralPartners(tokens, transactionId);
+      const generalPartners = gpResult.generalPartners.map((partner) => ({
+        ...partner,
+        data: {
+          ...partner.data,
+          date_of_birth: partner.data?.date_of_birth
+            ? formatDate(partner.data?.date_of_birth, response.locals.i18n)
+            : undefined,
+          date_effective_from: partner.data?.date_effective_from
+            ? formatDate(partner.data?.date_effective_from, response.locals.i18n)
+            : undefined
+        }
+      }));
+
+      const lpResult = await this.limitedPartnerService.getLimitedPartners(tokens, transactionId);
+      const limitedPartners = lpResult.limitedPartners.map((partner) => ({
+        ...partner,
+        data: {
+          ...partner.data,
+          date_of_birth: partner.data?.date_of_birth
+            ? formatDate(partner.data?.date_of_birth, response.locals.i18n)
+            : undefined,
+          date_effective_from: partner.data?.date_effective_from
+            ? formatDate(partner.data?.date_effective_from, response.locals.i18n)
+            : undefined
+        }
+      }));
+      return { generalPartners, limitedPartners };
+    }
+    return { generalPartners: [], limitedPartners: [] };
   }
 
   getConfirmPage() {

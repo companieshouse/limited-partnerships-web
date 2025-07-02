@@ -23,10 +23,22 @@ const transitionRoutingEmail = {
   pageType: TransitionPageType.email
 };
 
+const transitionRoutingCheckYourAnswers = {
+  previousUrl: url.REVIEW_LIMITED_PARTNERS_URL,
+  currentUrl: url.CHECK_YOUR_ANSWERS_URL,
+  nextUrl: "/",
+  pageType: TransitionPageType.checkYourAnswers,
+  data: {
+    reviewGeneralPartnersType: TransitionPageType.reviewGeneralPartners,
+    reviewLimitedPartnersType: TransitionPageType.reviewLimitedPartners
+  }
+};
+
 const limitedPartnershipRouting = [
   transitionRoutingCompanyNumber,
   transitionRoutingConfirmLimitedPartnership,
-  transitionRoutingEmail
+  transitionRoutingEmail,
+  transitionRoutingCheckYourAnswers
 ];
 
 export default limitedPartnershipRouting;

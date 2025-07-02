@@ -23,7 +23,8 @@ import {
   REMOVE_GENERAL_PARTNER_URL,
   REMOVE_LIMITED_PARTNER_URL,
   REVIEW_GENERAL_PARTNERS_URL,
-  REVIEW_LIMITED_PARTNERS_URL
+  REVIEW_LIMITED_PARTNERS_URL,
+  CHECK_YOUR_ANSWERS_URL
 } from "../presentation/controller/transition/url";
 
 const transitionEndpoints = (router: Router, dependencies: IDependencies): void => {
@@ -224,6 +225,12 @@ const transitionEndpoints = (router: Router, dependencies: IDependencies): void 
     REMOVE_LIMITED_PARTNER_URL,
     authentication,
     dependencies.limitedPartnerTransitionController.postRemovePage()
+  );
+
+  router.get(
+    CHECK_YOUR_ANSWERS_URL,
+    authentication,
+    dependencies.limitedPartnershipTransitionController.getPageRouting()
   );
 };
 

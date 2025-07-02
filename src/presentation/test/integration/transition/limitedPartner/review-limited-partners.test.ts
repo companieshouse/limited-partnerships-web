@@ -8,6 +8,7 @@ import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import {
   ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
   ADD_LIMITED_PARTNER_PERSON_URL,
+  CHECK_YOUR_ANSWERS_URL,
   LIMITED_PARTNERS_URL,
   REVIEW_LIMITED_PARTNERS_URL
 } from "../../../../controller/transition/url";
@@ -111,7 +112,7 @@ describe("Review Limited Partners Page", () => {
       });
 
       expect(res.status).toBe(302);
-      // expect(res.headers.location).toContain(getUrl(CHECK_YOUR_ANSWERS_URL)); // TODO: Update this when the check your answers page is implemented
+      expect(res.headers.location).toContain(getUrl(CHECK_YOUR_ANSWERS_URL));
     });
 
     it("should reload the page if no limited partner", async () => {

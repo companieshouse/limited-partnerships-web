@@ -158,8 +158,8 @@ describe("Add General Partner Person Page", () => {
       expect(res.text).toContain("INVALID-CHARACTERS-FORENAME");
       expect(res.text).toContain("SURNAME");
       expect(res.text).toContain('id="previousNameNo" name="previousName" type="radio" value="false" checked');
-      expect(res.text).toContain("Mongolian");
-      expect(res.text).toContain("Uzbek");
+      expect(res.text).toContain('<option value="Mongolian" selected>Mongolian</option>');
+      expect(res.text).toContain('<option value="Uzbek" selected>Uzbek</option>');
       expect(res.text).toContain('name="not_disqualified_statement_checked" type="checkbox" value="true"');
     });
   });
@@ -219,6 +219,7 @@ describe("Add General Partner Person Page", () => {
       const generalPartner = new GeneralPartnerBuilder()
         .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
         .isPerson()
+        .withNotDisqualifiedStatementChecked(true)
         .build();
 
       appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
@@ -248,8 +249,8 @@ describe("Add General Partner Person Page", () => {
       expect(res.text).toContain("SURNAME");
       expect(res.text).toContain('id="previousNameYes" name="previousName" type="radio" value="true" checked');
       expect(res.text).toContain("FORMER-NAMES");
-      expect(res.text).toContain("Mongolian");
-      expect(res.text).toContain("Uzbek");
+      expect(res.text).toContain('<option value="Mongolian" selected>Mongolian</option>');
+      expect(res.text).toContain('<option value="Uzbek" selected>Uzbek</option>');
       expect(res.text).toContain('name="not_disqualified_statement_checked" type="checkbox" value="true"');
     });
 

@@ -36,6 +36,7 @@ describe("Enter Correspondence Address Page", () => {
     generalPartner = new GeneralPartnerBuilder()
       .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
       .isPerson()
+      .withServiceAddress()
       .build();
 
     appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);

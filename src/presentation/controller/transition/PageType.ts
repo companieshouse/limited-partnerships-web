@@ -15,7 +15,9 @@ enum TransitionPageType {
   addLimitedPartnerPerson = "add-limited-partner-person",
   addLimitedPartnerLegalEntity = "add-limited-partner-legal-entity",
   reviewLimitedPartners = "review-limited-partners",
-  removeLimitedPartner = "remove-limited-partner"
+  removeLimitedPartner = "remove-limited-partner",
+
+  checkYourAnswers = "check-your-answers"
 }
 
 export default TransitionPageType;

@@ -345,6 +345,7 @@
         "lpInfo" : "Limited partnership information",
         "change" : "Change",
         "headingName" : "Name",
+        "headingNumber": "Partnership number",
         "headingType" : "Type",
         "headingSic" : "Standard Industrial Classification (SIC) code",
         "headingEmail" : "Registered email address",
@@ -359,15 +360,24 @@
         "headingTerm" : "Term of partnership",
         "confirm" : "Confirm this statement",
         "futureLawful" : "I confirm that the intended future activities of the limited partnership are lawful.",
+        "warningMessage": {
+            "warning": "This is the last time you'll be able to view sensitive information about the partnership and its partners. To keep a record of this information, print or save the details on this page before you submit.",
+            "information": "Sensitive information includes the:",
+            "email": "partnership's registered email address",
+            "dob": "full dates of birth of any partners who are people",
+            "ura": "usual residential addresses of any partners who are people"
+        },
         "payment" : "Continue to payment",
 
         "partners": {
             "generalPartners" : {
                 "title": "General partners",
+                "dateEffectiveFrom": "Date they became a general partner",
                 "changeRemoveOrAdd": "Change, remove or add a general partners"
             },
             "limitedPartners" : {
                 "title": "Limited partners",
+                "dateEffectiveFrom": "Date they became a limited partner",
                 "changeRemoveOrAdd": "Change, remove or add a limited partners",
                 "capitalContribution": "Total capital contribution"
             },

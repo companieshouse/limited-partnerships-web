@@ -58,8 +58,6 @@ class LimitedPartnershipController extends AbstractController {
         this.conditionalPreviousUrl(ids, pageRouting, request);
 
         let limitedPartnership = {};
-        let generalPartners: GeneralPartner[] = [];
-        let limitedPartners: LimitedPartner[] = [];
 
         if (ids.transactionId && ids.submissionId) {
           limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
@@ -69,13 +67,7 @@ class LimitedPartnershipController extends AbstractController {
           );
         }
 
-        if (pageRouting.pageType === RegistrationPageType.checkYourAnswers) {
-          const gpResult = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
-          generalPartners = gpResult.generalPartners.map((partner) => this.formatPartnerDob(partner, response));
-
-          const lpResult = await this.limitedPartnerService.getLimitedPartners(tokens, ids.transactionId);
-          limitedPartners = lpResult.limitedPartners.map((partner) => this.formatPartnerDob(partner, response));
-        }
+        const { generalPartners, limitedPartners } = await this.getPartners(pageRouting, tokens, ids.transactionId, response);
 
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
 
@@ -89,19 +81,37 @@ class LimitedPartnershipController extends AbstractController {
     };
   }
 
-  private formatPartnerDob(
-    partner: GeneralPartner | LimitedPartner,
+  private async getPartners(
+    pageRouting: PageRouting,
+    tokens: { access_token: string; refresh_token: string },
+    transactionId: string,
     response: Response
-  ): GeneralPartner | LimitedPartner {
-    return {
-      ...partner,
-      data: {
-        ...partner.data,
-        date_of_birth: partner.data?.date_of_birth
-          ? formatDate(partner.data?.date_of_birth, response.locals.i18n)
-          : undefined
-      }
-    };
+  ): Promise<{ generalPartners: GeneralPartner[]; limitedPartners: LimitedPartner[] } > {
+    if (pageRouting.pageType === RegistrationPageType.checkYourAnswers) {
+      const gpResult = await this.generalPartnerService.getGeneralPartners(tokens, transactionId);
+      const generalPartners = gpResult.generalPartners.map((partner) => ({
+        ...partner,
+        data: {
+          ...partner.data,
+          date_of_birth: partner.data?.date_of_birth
+            ? formatDate(partner.data?.date_of_birth, response.locals.i18n)
+            : undefined
+        }
+      }));
+
+      const lpResult = await this.limitedPartnerService.getLimitedPartners(tokens, transactionId);
+      const limitedPartners = lpResult.limitedPartners.map((partner) => ({
+        ...partner,
+        data: {
+          ...partner.data,
+          date_of_birth: partner.data?.date_of_birth
+            ? formatDate(partner.data?.date_of_birth, response.locals.i18n)
+            : undefined
+        }
+      }));
+      return { generalPartners, limitedPartners };
+    }
+    return { generalPartners: [], limitedPartners: [] };
   }
 
   private conditionalPreviousUrl(
