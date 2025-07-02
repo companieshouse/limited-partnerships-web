@@ -53,7 +53,7 @@ describe("Postcode Usual Residential Address Page", () => {
       expect(res.text).toContain(
         toEscapedHtml(
           enTranslationText.address.findPostcode.limitedPartner.usualResidentialAddress.whatIsUsualResidentialAddress
-        ) + ` - ${enTranslationText.service} - GOV.UK`
+        ) + ` - ${enTranslationText.serviceRegistration} - GOV.UK`
       );
       testTranslations(res.text, enTranslationText.address.findPostcode, [
         "registeredOfficeAddress",
@@ -86,7 +86,7 @@ describe("Postcode Usual Residential Address Page", () => {
       expect(res.text).toContain(
         toEscapedHtml(
           cyTranslationText.address.findPostcode.limitedPartner.usualResidentialAddress.whatIsUsualResidentialAddress
-        ) + ` - ${cyTranslationText.service} - GOV.UK`
+        ) + ` - ${cyTranslationText.serviceRegistration} - GOV.UK`
       );
       testTranslations(res.text, cyTranslationText.address.findPostcode, [
         "registeredOfficeAddress",

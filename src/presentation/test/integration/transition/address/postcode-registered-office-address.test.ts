@@ -40,7 +40,7 @@ describe("Postcode Registered Office Address Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${enTranslationText.address.findPostcode.registeredOfficeAddress.whatIsOfficeAddress} - ${enTranslationText.service} - GOV.UK`
+        `${enTranslationText.address.findPostcode.registeredOfficeAddress.whatIsOfficeAddress} - ${enTranslationText.serviceTransition} - GOV.UK`
       );
       testTranslations(res.text, enTranslationText.address.findPostcode, [
         "scotland",
@@ -60,7 +60,7 @@ describe("Postcode Registered Office Address Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${cyTranslationText.address.findPostcode.registeredOfficeAddress.whatIsOfficeAddress} - ${cyTranslationText.service} - GOV.UK`
+        `${cyTranslationText.address.findPostcode.registeredOfficeAddress.whatIsOfficeAddress} - ${cyTranslationText.serviceTransition} - GOV.UK`
       );
       testTranslations(res.text, cyTranslationText.address.findPostcode, [
         "scotland",

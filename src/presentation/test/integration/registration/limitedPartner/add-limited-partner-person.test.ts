@@ -49,7 +49,7 @@ describe("Add Limited Partner Person Page", () => {
 
         expect(res.status).toBe(200);
         expect(res.text).toContain(
-          `${cyTranslationText.addPartnerPersonPage.limitedPartner.title} - ${cyTranslationText.service} - GOV.UK`
+          `${cyTranslationText.addPartnerPersonPage.limitedPartner.title} - ${cyTranslationText.serviceRegistration} - GOV.UK`
         );
         testTranslations(res.text, cyTranslationText.addPartnerPersonPage, [
           "errorMessages",
@@ -82,7 +82,7 @@ describe("Add Limited Partner Person Page", () => {
 
         expect(res.status).toBe(200);
         expect(res.text).toContain(
-          `${enTranslationText.addPartnerPersonPage.limitedPartner.title} - ${enTranslationText.service} - GOV.UK`
+          `${enTranslationText.addPartnerPersonPage.limitedPartner.title} - ${enTranslationText.serviceRegistration} - GOV.UK`
         );
         testTranslations(res.text, enTranslationText.addPartnerPersonPage, [
           "errorMessages",

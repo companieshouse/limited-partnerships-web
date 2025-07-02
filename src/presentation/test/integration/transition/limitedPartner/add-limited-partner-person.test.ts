@@ -40,7 +40,7 @@ describe("Add Limited Partner Person Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${cyTranslationText.addPartnerPersonPage.limitedPartner.title} - ${cyTranslationText.service} - GOV.UK`
+        `${cyTranslationText.addPartnerPersonPage.limitedPartner.title} - ${cyTranslationText.serviceTransition} - GOV.UK`
       );
       testTranslations(res.text, cyTranslationText.addPartnerPersonPage, ["errorMessages", "generalPartner"]);
 
@@ -57,7 +57,7 @@ describe("Add Limited Partner Person Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${enTranslationText.addPartnerPersonPage.limitedPartner.title} - ${enTranslationText.service} - GOV.UK`
+        `${enTranslationText.addPartnerPersonPage.limitedPartner.title} - ${enTranslationText.serviceTransition} - GOV.UK`
       );
       testTranslations(res.text, enTranslationText.addPartnerPersonPage, ["errorMessages", "generalPartner"]);
       expect(res.text).not.toContain("WELSH -");

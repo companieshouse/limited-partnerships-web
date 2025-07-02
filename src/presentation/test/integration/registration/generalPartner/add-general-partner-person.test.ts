@@ -39,7 +39,7 @@ describe("Add General Partner Person Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${cyTranslationText.addPartnerPersonPage.generalPartner.title} - ${cyTranslationText.service} - GOV.UK`
+        `${cyTranslationText.addPartnerPersonPage.generalPartner.title} - ${cyTranslationText.serviceRegistration} - GOV.UK`
       );
       testTranslations(res.text, cyTranslationText.addPartnerPersonPage, [
         "errorMessages",
@@ -54,7 +54,7 @@ describe("Add General Partner Person Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${enTranslationText.addPartnerPersonPage.generalPartner.title} - ${enTranslationText.service} - GOV.UK`
+        `${enTranslationText.addPartnerPersonPage.generalPartner.title} - ${enTranslationText.serviceRegistration} - GOV.UK`
       );
       testTranslations(res.text, enTranslationText.addPartnerPersonPage, [
         "errorMessages",

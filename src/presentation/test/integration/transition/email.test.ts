@@ -34,7 +34,7 @@ describe("Email Page", () => {
         expect(res.status).toBe(200);
         testTranslations(res.text, enTranslationText.emailPage, ["registration"]);
         expect(res.text).toContain(
-          `${enTranslationText.emailPage.whatIsEmail} - ${enTranslationText.service} - GOV.UK`
+          `${enTranslationText.emailPage.whatIsEmail} - ${enTranslationText.serviceTransition} - GOV.UK`
         );
         expect(res.text).not.toContain("WELSH -");
       });
@@ -47,7 +47,7 @@ describe("Email Page", () => {
 
         expect(res.status).toBe(200);
         expect(res.text).toContain(
-          `${cyTranslationText.emailPage.whatIsEmail} - ${cyTranslationText.service} - GOV.UK`
+          `${cyTranslationText.emailPage.whatIsEmail} - ${cyTranslationText.serviceTransition} - GOV.UK`
         );
         testTranslations(res.text, cyTranslationText.emailPage, ["registration"]);
         expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);

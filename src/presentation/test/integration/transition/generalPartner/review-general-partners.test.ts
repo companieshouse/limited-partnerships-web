@@ -49,7 +49,7 @@ describe("Review General Partners Page", () => {
       expect(res.status).toBe(200);
 
       expect(res.text).toContain(
-        `${enTranslationText.reviewGeneralPartnersPage.title} - ${enTranslationText.service} - GOV.UK`
+        `${enTranslationText.reviewGeneralPartnersPage.title} - ${enTranslationText.serviceTransition} - GOV.UK`
       );
 
       testTranslations(res.text, enTranslationText.reviewGeneralPartnersPage, ["emptyList"]);
@@ -68,7 +68,7 @@ describe("Review General Partners Page", () => {
       expect(res.status).toBe(200);
 
       expect(res.text).toContain(
-        `${cyTranslationText.reviewGeneralPartnersPage.title} - ${cyTranslationText.service} - GOV.UK`
+        `${cyTranslationText.reviewGeneralPartnersPage.title} - ${cyTranslationText.serviceTransition} - GOV.UK`
       );
       testTranslations(res.text, cyTranslationText.reviewGeneralPartnersPage, ["emptyList", "errorMessage"]);
     });

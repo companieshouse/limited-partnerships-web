@@ -24,7 +24,7 @@ describe("General Partners Page", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
-      `${cyTranslationText.generalPartnersPage.title} - ${cyTranslationText.service} - GOV.UK`
+      `${cyTranslationText.generalPartnersPage.title} - ${cyTranslationText.serviceRegistration} - GOV.UK`
     );
     testTranslations(res.text, cyTranslationText.generalPartnersPage);
   });
@@ -35,7 +35,7 @@ describe("General Partners Page", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
-      `${enTranslationText.generalPartnersPage.title} - ${enTranslationText.service} - GOV.UK`
+      `${enTranslationText.generalPartnersPage.title} - ${enTranslationText.serviceRegistration} - GOV.UK`
     );
     testTranslations(res.text, enTranslationText.generalPartnersPage);
   });

@@ -29,7 +29,7 @@ describe("Limited Partner Usual Residential Address Territory Choice", () => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(
         toEscapedHtml(
-          `${cyTranslationText.address.territoryChoice.limitedPartnerUsualResidentialAddress.title} - ${cyTranslationText.service} - GOV.UK`
+          `${cyTranslationText.address.territoryChoice.limitedPartnerUsualResidentialAddress.title} - ${cyTranslationText.serviceTransition} - GOV.UK`
         )
       );
 
@@ -44,7 +44,7 @@ describe("Limited Partner Usual Residential Address Territory Choice", () => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(
         toEscapedHtml(
-          `${enTranslationText.address.territoryChoice.limitedPartnerUsualResidentialAddress.title} - ${enTranslationText.service} - GOV.UK`
+          `${enTranslationText.address.territoryChoice.limitedPartnerUsualResidentialAddress.title} - ${enTranslationText.serviceTransition} - GOV.UK`
         )
       );
 

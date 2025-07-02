@@ -22,7 +22,7 @@ describe("Limited Partners Page", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
-      `${cyTranslationText.limitedPartnersPage.title} - ${cyTranslationText.service} - GOV.UK`
+      `${cyTranslationText.limitedPartnersPage.title} - ${cyTranslationText.serviceRegistration} - GOV.UK`
     );
     testTranslations(res.text, cyTranslationText.limitedPartnersPage);
   });
@@ -33,7 +33,7 @@ describe("Limited Partners Page", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
-      `${enTranslationText.limitedPartnersPage.title} - ${enTranslationText.service} - GOV.UK`
+      `${enTranslationText.limitedPartnersPage.title} - ${enTranslationText.serviceRegistration} - GOV.UK`
     );
     testTranslations(res.text, enTranslationText.limitedPartnersPage);
   });

@@ -43,7 +43,7 @@ describe("Review Limited Partners Page", () => {
       expect(res.status).toBe(200);
 
       expect(res.text).toContain(
-        `${enTranslationText.reviewLimitedPartnersPage.title} - ${enTranslationText.service} - GOV.UK`
+        `${enTranslationText.reviewLimitedPartnersPage.title} - ${enTranslationText.serviceTransition} - GOV.UK`
       );
 
       testTranslations(res.text, enTranslationText.reviewLimitedPartnersPage, ["emptyList"]);
@@ -62,7 +62,7 @@ describe("Review Limited Partners Page", () => {
       expect(res.status).toBe(200);
 
       expect(res.text).toContain(
-        `${cyTranslationText.reviewLimitedPartnersPage.title} - ${cyTranslationText.service} - GOV.UK`
+        `${cyTranslationText.reviewLimitedPartnersPage.title} - ${cyTranslationText.serviceTransition} - GOV.UK`
       );
 
       testTranslations(res.text, cyTranslationText.reviewLimitedPartnersPage, ["emptyList", "errorMessage"]);
@@ -126,7 +126,7 @@ describe("Review Limited Partners Page", () => {
       expect(res.status).toBe(200);
 
       expect(res.text).toContain(
-        `${enTranslationText.reviewLimitedPartnersPage.title} - ${enTranslationText.service} - GOV.UK`
+        `${enTranslationText.reviewLimitedPartnersPage.title} - ${enTranslationText.serviceTransition} - GOV.UK`
       );
     });
 
