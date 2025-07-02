@@ -384,7 +384,7 @@
               <p class="govuk-body"> 
                 {{ macros.buildFormattedListFromArray(capitalContributionSubTypesMap, item.data.contribution_sub_types) }}
               </p>
-            {%- endset %}
+              {%- endset %}
             {% endif %}
 
             {{ govukSummaryList({
@@ -439,7 +439,8 @@
                     }
                   } if (props.data.limitedPartnership.data.partnership_type === "LP"
                       or props.data.limitedPartnership.data.partnership_type === "SLP")
-                      and item.data.contribution_currency_value,
+                      and item.data.contribution_currency_value
+                      and journeyTypes.isRegistration,
                   {
                     key: {
                       text: i18n.checkYourAnswersPage.partners.limitedPartners.dateEffectiveFrom
@@ -451,14 +452,16 @@
                 ]
             }) }}
           {% elif item.data.legal_entity_name %}
-            {% set capitalContributionHtml -%}
-              <p class="govuk-body">
-                {{ item.data.contribution_currency_value }} {{ i18n.currencies[item.data.contribution_currency_type] }}
-              </p>
-              <p class="govuk-body"> 
-                {{ macros.buildFormattedListFromArray(capitalContributionSubTypesMap, item.data.contribution_sub_types) }}
-              </p>
-            {%- endset %}
+            {% if journeyTypes.isRegistration%}
+              {% set capitalContributionHtml -%}
+                <p class="govuk-body">
+                  {{ item.data.contribution_currency_value }} {{ i18n.currencies[item.data.contribution_currency_type] }}
+                </p>
+                <p class="govuk-body"> 
+                  {{ macros.buildFormattedListFromArray(capitalContributionSubTypesMap, item.data.contribution_sub_types) }}
+                </p>
+              {%- endset %}
+            {% endif %}
             
             {{ govukSummaryList({
               classes: "govuk-!-margin-bottom-7",
@@ -528,7 +531,8 @@
                   }
                 } if (props.data.limitedPartnership.data.partnership_type === "LP"
                       or props.data.limitedPartnership.data.partnership_type === "SLP")
-                      and item.data.contribution_currency_value,
+                      and item.data.contribution_currency_value
+                      and journeyTypes.isRegistration,
                 {
                   key: {
                     text: i18n.checkYourAnswersPage.partners.limitedPartners.dateEffectiveFrom

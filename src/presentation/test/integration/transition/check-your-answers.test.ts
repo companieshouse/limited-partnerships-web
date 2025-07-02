@@ -133,6 +133,8 @@ describe("Check Your Answers Page", () => {
 
       expect(res.status).toBe(200);
 
+      expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.partners.limitedPartners.capitalContribution);
+
       testTranslations(res.text, enTranslationText.checkYourAnswersPage.partners, ["capitalContribution"]);
 
       checkIfValuesInText(res, generalPartnerPerson, enTranslationText);
@@ -148,6 +150,8 @@ describe("Check Your Answers Page", () => {
       const res = await request(app).get(URL + "?lang=cy");
 
       expect(res.status).toBe(200);
+
+      expect(res.text).not.toContain(cyTranslationText.checkYourAnswersPage.partners.limitedPartners.capitalContribution);
 
       testTranslations(res.text, cyTranslationText.checkYourAnswersPage.partners, ["capitalContribution"]);
 
