@@ -337,7 +337,7 @@
        "shares" : "Shares",
        "servicesOrGoods" : "Services or goods",
        "anyOtherAsset" : "Any other asset",
-       "compositionErrorMessage" : "Select a tick box"
+       "compositionErrorMessage" : "Select a tick box"       
     },
 
     "checkYourAnswersPage" : {
@@ -369,7 +369,7 @@
             "limitedPartners" : {
                 "title": "Limited partners",
                 "changeRemoveOrAdd": "Change, remove or add a limited partners",
-                "capitalContribution": "Total capital contribuion"
+                "capitalContribution": "Total capital contribution"
             },
             "person": {
                 "name": "Name",
