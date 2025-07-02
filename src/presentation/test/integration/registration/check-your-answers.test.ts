@@ -282,6 +282,24 @@ describe("Check Your Answers Page", () => {
     expect(res.text).toContain("Shares / Any other asset");
   });
 
+  it("should load the check your answers page with capital contribution data in Welsh", async () => {
+
+    const limitedPartnerLegalEntity = new LimitedPartnerBuilder().isLegalEntity()
+      .withContributionCurrencyType("GBP")
+      .withContributionCurrencyValue("5.00")
+      .withContributionSubtypes(["SHARES", "ANY_OTHER_ASSET"])
+      .build();
+
+    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerLegalEntity]);
+
+    setLocalesEnabled(true);
+    const res = await request(app).get(URL + "?lang=cy");
+
+    expect(res.status).toBe(200);
+    expect(res.text).toContain("5.00 WELSH - Pound Sterling (GBP)");
+    expect(res.text).toContain("WELSH - Shares / WELSH - Any other asset");
+  });
+
   describe("POST Check Your Answers Page", () => {
     it("should send lawful purpose statement", async () => {
       const limitedPartnership = new LimitedPartnershipBuilder()

@@ -337,14 +337,7 @@
        "shares" : "Shares",
        "servicesOrGoods" : "Services or goods",
        "anyOtherAsset" : "Any other asset",
-       "compositionErrorMessage" : "Select a tick box",
-       "contributionSubTypes": {
-            "money": "Money",
-            "landOrProperty": "Land or property",
-            "shares": "Shares",
-            "servicesOrGoods": "Services or goods",
-            "anyOtherAsset": "Any other asset"
-        }
+       "compositionErrorMessage" : "Select a tick box"       
     },
 
     "checkYourAnswersPage" : {
