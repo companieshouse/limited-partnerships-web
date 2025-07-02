@@ -37,7 +37,11 @@
             ]
         }) }}
 
-        {% include "includes/save-and-continue-button.njk" %}
+        {% if journeyTypes.isPostTransition %}
+          {% include "includes/continue-button.njk" %}
+        {% else %}
+          {% include "includes/save-and-continue-button.njk" %}
+        {% endif %}
       </form>
     </div>
   </div>

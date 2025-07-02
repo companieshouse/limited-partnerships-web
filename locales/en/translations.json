@@ -337,7 +337,7 @@
        "shares" : "Shares",
        "servicesOrGoods" : "Services or goods",
        "anyOtherAsset" : "Any other asset",
-       "compositionErrorMessage" : "Select a tick box"
+       "compositionErrorMessage" : "Select a tick box"       
     },
 
     "checkYourAnswersPage" : {

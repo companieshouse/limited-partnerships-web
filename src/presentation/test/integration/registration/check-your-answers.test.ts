@@ -24,6 +24,7 @@ describe("Check Your Answers Page", () => {
   let limitedPartnerLegalEntity;
 
   beforeEach(() => {
+
     limitedPartnership = new LimitedPartnershipBuilder().build();
 
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
@@ -33,8 +34,19 @@ describe("Check Your Answers Page", () => {
 
     appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartnerPerson, generalPartnerLegalEntity]);
 
-    limitedPartnerPerson = new LimitedPartnerBuilder().isPerson().withFormerNames("Joe Dee").build();
-    limitedPartnerLegalEntity = new LimitedPartnerBuilder().isLegalEntity().build();
+    limitedPartnerPerson = new LimitedPartnerBuilder()
+      .isPerson()
+      .withContributionCurrencyType("GBP")
+      .withContributionCurrencyValue("5.00")
+      .withContributionSubtypes(["SHARES", "ANY_OTHER_ASSET"])
+      .withFormerNames("Joe Dee").build();
+
+    limitedPartnerLegalEntity = new LimitedPartnerBuilder()
+      .isLegalEntity()
+      .withContributionCurrencyType("GBP")
+      .withContributionCurrencyValue("5.00")
+      .withContributionSubtypes(["SHARES", "ANY_OTHER_ASSET"])
+      .build();
     appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerPerson, limitedPartnerLegalEntity]);
   });
 
@@ -128,6 +140,28 @@ describe("Check Your Answers Page", () => {
           expect(res.text).toContain("where-is-the-jurisdiction#jurisdiction");
         } else {
           expect(res.text).not.toContain("where-is-the-jurisdiction#jurisdiction");
+        }
+      }
+    );
+
+    it.each([
+      [PartnershipType.LP, true],
+      [PartnershipType.SLP, true],
+      [PartnershipType.PFLP, false],
+      [PartnershipType.SPFLP, false]
+    ])(
+      "should show the captial contribution fields based on the partnership type",
+      async (partnershipType: PartnershipType, capitalContributionHeadingExpected: boolean) => {
+        const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+        const res = await request(app).get(URL);
+
+        expect(res.status).toBe(200);
+
+        if (capitalContributionHeadingExpected) {
+          expect(res.text).toContain(enTranslationText.checkYourAnswersPage.partners.limitedPartners.capitalContribution);
+        } else {
+          expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.partners.limitedPartners.capitalContribution);
         }
       }
     );
@@ -230,6 +264,7 @@ describe("Check Your Answers Page", () => {
   });
 
   it("should load the check your answers page with partners - CY", async () => {
+
     const res = await request(app).get(URL + "?lang=cy");
 
     expect(res.status).toBe(200);
@@ -256,7 +291,7 @@ describe("Check Your Answers Page", () => {
     const limitedPartnerPerson = new LimitedPartnerBuilder().isPerson().withFormerNames("Joe Dee")
       .withContributionCurrencyType("GBP")
       .withContributionCurrencyValue("5.00")
-      .withContributionSubtypes(["MONEY", "LAND_OR_PROPERTY"])
+      .withContributionSubtypes(["MONEY", "SERVICES_OR_GOODS", "LAND_OR_PROPERTY"])
       .build();
 
     appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerPerson]);
@@ -264,7 +299,8 @@ describe("Check Your Answers Page", () => {
     const res = await request(app).get(URL);
 
     expect(res.status).toBe(200);
-    expect(res.text).toContain("5.00 Pound Sterling (GBP) Money / Land or property");
+    expect(res.text).toContain("5.00 Pound Sterling (GBP)");
+    expect(res.text).toContain("Money / Services or goods / Land or property");
   });
 
   it("should load the check your answers page with capital contribution data for limited partner legal entity", async () => {
@@ -272,7 +308,7 @@ describe("Check Your Answers Page", () => {
     const limitedPartnerLegalEntity = new LimitedPartnerBuilder().isLegalEntity()
       .withContributionCurrencyType("GBP")
       .withContributionCurrencyValue("5.00")
-      .withContributionSubtypes(["MONEY", "LAND_OR_PROPERTY"])
+      .withContributionSubtypes(["SHARES", "ANY_OTHER_ASSET"])
       .build();
 
     appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerLegalEntity]);
@@ -280,7 +316,26 @@ describe("Check Your Answers Page", () => {
     const res = await request(app).get(URL);
 
     expect(res.status).toBe(200);
-    expect(res.text).toContain("5.00 Pound Sterling (GBP) Money / Land or property");
+    expect(res.text).toContain("5.00 Pound Sterling (GBP)");
+    expect(res.text).toContain("Shares / Any other asset");
+  });
+
+  it("should load the check your answers page with capital contribution data in Welsh", async () => {
+
+    const limitedPartnerLegalEntity = new LimitedPartnerBuilder().isLegalEntity()
+      .withContributionCurrencyType("GBP")
+      .withContributionCurrencyValue("5.00")
+      .withContributionSubtypes(["SHARES", "ANY_OTHER_ASSET"])
+      .build();
+
+    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerLegalEntity]);
+
+    setLocalesEnabled(true);
+    const res = await request(app).get(URL + "?lang=cy");
+
+    expect(res.status).toBe(200);
+    expect(res.text).toContain("5.00 WELSH - Pound Sterling (GBP)");
+    expect(res.text).toContain("WELSH - Shares / WELSH - Any other asset");
   });
 
   describe("POST Check Your Answers Page", () => {
@@ -339,8 +394,17 @@ const checkIfValuesInText = (res: request.Response, partner: GeneralPartner | Li
           .join(" ");
         expect(res.text).toContain(capitalized);
       } else if (key.includes("contribution_sub_types")) {
+
+        const capitalContributionSubTypesMap = {
+          MONEY: translationText.capitalContribution.money,
+          LAND_OR_PROPERTY: translationText.capitalContribution.landOrProperty,
+          SHARES: translationText.capitalContribution.shares,
+          SERVICES_OR_GOODS: translationText.capitalContribution.servicesOrGoods,
+          ANY_OTHER_ASSET: translationText.capitalContribution.anyOtherAsset
+        };
+
         const str = partner.data[key]
-          .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+          .map((word) => capitalContributionSubTypesMap[word] )
           .join(" / ");
         expect(res.text).toContain(str.replaceAll("_", " "));
       } else {

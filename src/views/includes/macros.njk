@@ -51,11 +51,10 @@
   {{- capitalizedWords.join(' ') -}}
 {%- endmacro -%}
 
-{%- macro buildFormattedListFromArray(array) -%}
+{%- macro buildFormattedListFromArray(capitalContributionSubTypesMap, array) -%}
   {%- set returnValue = [] -%}  
-  {%- for item in array -%}
-    {%- set str = item | capitalize | replace("_", " ") -%}
-    {%- set returnValue = returnValue.concat(str) -%}
+    {%- for item in array -%}
+    {%- set returnValue = returnValue.concat(capitalContributionSubTypesMap[item]) -%}
   {%- endfor -%}
   {{- returnValue.join(' / ') -}}
 {%- endmacro -%}
