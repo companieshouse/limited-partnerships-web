@@ -105,13 +105,13 @@ describe("Check Your Answers Page", () => {
     });
 
     it.each([
-      [PartnershipType.LP, true, true],
-      [PartnershipType.SLP, false, true],
-      [PartnershipType.PFLP, true, false],
-      [PartnershipType.SPFLP, false, false]
+      [PartnershipType.LP, true],
+      [PartnershipType.SLP, false],
+      [PartnershipType.PFLP, true],
+      [PartnershipType.SPFLP, false]
     ])(
       "should show a change link for jurisdiction based on the partnership type",
-      async (partnershipType: PartnershipType, changeLinkExpected: boolean, capitalContributionHeadingExpected: boolean) => {
+      async (partnershipType: PartnershipType, changeLinkExpected: boolean) => {
         const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
         appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
         const res = await request(app).get(URL);
@@ -123,6 +123,22 @@ describe("Check Your Answers Page", () => {
         } else {
           expect(res.text).not.toContain("where-is-the-jurisdiction#jurisdiction");
         }
+      }
+    );
+
+    it.each([
+      [PartnershipType.LP, true],
+      [PartnershipType.SLP, true],
+      [PartnershipType.PFLP, false],
+      [PartnershipType.SPFLP, false]
+    ])(
+      "should show the captial contribution fields based on the partnership type",
+      async (partnershipType: PartnershipType, capitalContributionHeadingExpected: boolean) => {
+        const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+        const res = await request(app).get(URL);
+
+        expect(res.status).toBe(200);
 
         if (capitalContributionHeadingExpected) {
           expect(res.text).toContain(enTranslationText.checkYourAnswersPage.partners.limitedPartners.capitalContribution);
