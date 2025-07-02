@@ -24,6 +24,7 @@ describe("Check Your Answers Page", () => {
   let limitedPartnerLegalEntity;
 
   beforeEach(() => {
+
     limitedPartnership = new LimitedPartnershipBuilder().build();
 
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
@@ -33,8 +34,19 @@ describe("Check Your Answers Page", () => {
 
     appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartnerPerson, generalPartnerLegalEntity]);
 
-    limitedPartnerPerson = new LimitedPartnerBuilder().isPerson().withFormerNames("Joe Dee").build();
-    limitedPartnerLegalEntity = new LimitedPartnerBuilder().isLegalEntity().build();
+    limitedPartnerPerson = new LimitedPartnerBuilder()
+      .isPerson()
+      .withContributionCurrencyType("GBP")
+      .withContributionCurrencyValue("5.00")
+      .withContributionSubtypes(["SHARES", "ANY_OTHER_ASSET"])
+      .withFormerNames("Joe Dee").build();
+
+    limitedPartnerLegalEntity = new LimitedPartnerBuilder()
+      .isLegalEntity()
+      .withContributionCurrencyType("GBP")
+      .withContributionCurrencyValue("5.00")
+      .withContributionSubtypes(["SHARES", "ANY_OTHER_ASSET"])
+      .build();
     appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerPerson, limitedPartnerLegalEntity]);
   });
 
@@ -246,6 +258,7 @@ describe("Check Your Answers Page", () => {
   });
 
   it("should load the check your answers page with partners - CY", async () => {
+
     const res = await request(app).get(URL + "?lang=cy");
 
     expect(res.status).toBe(200);
@@ -372,8 +385,17 @@ const checkIfValuesInText = (res: request.Response, partner: GeneralPartner | Li
           .join(" ");
         expect(res.text).toContain(capitalized);
       } else if (key.includes("contribution_sub_types")) {
+
+        const capitalContributionSubTypesMap = {
+          MONEY: translationText.capitalContribution.money,
+          LAND_OR_PROPERTY: translationText.capitalContribution.landOrProperty,
+          SHARES: translationText.capitalContribution.shares,
+          SERVICES_OR_GOODS: translationText.capitalContribution.servicesOrGoods,
+          ANY_OTHER_ASSET: translationText.capitalContribution.anyOtherAsset
+        };
+
         const str = partner.data[key]
-          .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+          .map((word) => capitalContributionSubTypesMap[word] )
           .join(" / ");
         expect(res.text).toContain(str.replaceAll("_", " "));
       } else {
