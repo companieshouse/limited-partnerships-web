@@ -41,7 +41,7 @@ describe("Postcode Principal Place Of Business Address Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${enTranslationText.address.findPostcode.principalPlaceOfBusiness.whatIsPrincipalPlaceOfBusiness} - ${enTranslationText.service} - GOV.UK`
+        `${enTranslationText.address.findPostcode.principalPlaceOfBusiness.whatIsPrincipalPlaceOfBusiness} - ${enTranslationText.serviceRegistration} - GOV.UK`
       );
       testTranslations(res.text, enTranslationText.address.findPostcode, [
         "registeredOfficeAddress",
@@ -59,7 +59,7 @@ describe("Postcode Principal Place Of Business Address Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${cyTranslationText.address.findPostcode.principalPlaceOfBusiness.whatIsPrincipalPlaceOfBusiness} - ${cyTranslationText.service} - GOV.UK`
+        `${cyTranslationText.address.findPostcode.principalPlaceOfBusiness.whatIsPrincipalPlaceOfBusiness} - ${cyTranslationText.serviceRegistration} - GOV.UK`
       );
       testTranslations(res.text, cyTranslationText.address.findPostcode, [
         "registeredOfficeAddress",

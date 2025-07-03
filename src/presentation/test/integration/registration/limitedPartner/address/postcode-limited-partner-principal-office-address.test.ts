@@ -53,7 +53,7 @@ describe("Postcode limited partner principal office address Page", () => {
       expect(res.text).toContain(
         toEscapedHtml(
           enTranslationText.address.findPostcode.limitedPartner.principalOfficeAddress.whatIsPrincipalOfficeAddress
-        ) + ` - ${enTranslationText.service} - GOV.UK`
+        ) + ` - ${enTranslationText.serviceRegistration} - GOV.UK`
       );
       testTranslations(res.text, enTranslationText.address.findPostcode, [
         "registeredOfficeAddress",
@@ -85,7 +85,7 @@ describe("Postcode limited partner principal office address Page", () => {
       expect(res.text).toContain(
         toEscapedHtml(
           cyTranslationText.address.findPostcode.limitedPartner.principalOfficeAddress.whatIsPrincipalOfficeAddress
-        ) + ` - ${cyTranslationText.service} - GOV.UK`
+        ) + ` - ${cyTranslationText.serviceRegistration} - GOV.UK`
       );
       testTranslations(res.text, cyTranslationText.address.findPostcode, [
         "registeredOfficeAddress",

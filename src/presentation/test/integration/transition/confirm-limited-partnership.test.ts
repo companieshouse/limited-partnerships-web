@@ -35,7 +35,7 @@ describe("Confirm correct limited partnership page", () => {
       expect(res.status).toBe(200);
       testTranslations(res.text, enTranslationText.confirmLimitedPartnership);
       expect(res.text).toContain(
-        `${enTranslationText.confirmLimitedPartnership.title} - ${enTranslationText.service} - GOV.UK`
+        `${enTranslationText.confirmLimitedPartnership.title} - ${enTranslationText.serviceTransition} - GOV.UK`
       );
       expect(res.text).not.toContain("WELSH -");
       expect(res.text).toContain("TEST LP");
@@ -52,7 +52,7 @@ describe("Confirm correct limited partnership page", () => {
       expect(res.status).toBe(200);
       testTranslations(res.text, enTranslationText.confirmLimitedPartnership);
       expect(res.text).toContain(
-        `${cyTranslationText.confirmLimitedPartnership.title} - ${cyTranslationText.service} - GOV.UK`
+        `${cyTranslationText.confirmLimitedPartnership.title} - ${cyTranslationText.serviceTransition} - GOV.UK`
       );
       expect(res.text).toContain("WELSH -");
       expect(res.text).toContain("TEST LP");

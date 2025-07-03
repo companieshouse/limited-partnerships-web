@@ -618,7 +618,9 @@
         }
     },
 
-    "service" : "Register a limited partnership",
+    "serviceRegistration" : "Register a limited partnership",
+    "serviceTransition" : "Provide information about a limited partnership",
+    "servicePostTransition" : "File for a limited partnership",
 
     "sicCodePage" : {
         "title" : "What is the Standard Industrial Classification (SIC) code?",

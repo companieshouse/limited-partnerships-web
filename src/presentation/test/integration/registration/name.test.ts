@@ -39,7 +39,7 @@ describe("Name Page", () => {
       const res = await request(app).get(NAME_URL + "?lang=cy");
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(`${cyTranslationText.namePage.title} - ${cyTranslationText.service} - GOV.UK`);
+      expect(res.text).toContain(`${cyTranslationText.namePage.title} - ${cyTranslationText.serviceRegistration} - GOV.UK`);
       testTranslations(res.text, cyTranslationText.namePage, ["privateFund", "scottish"]);
       expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
     });
@@ -54,7 +54,7 @@ describe("Name Page", () => {
       const res = await request(app).get(NAME_URL + "?lang=en");
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(`${enTranslationText.namePage.title} - ${enTranslationText.service} - GOV.UK`);
+      expect(res.text).toContain(`${enTranslationText.namePage.title} - ${enTranslationText.serviceRegistration} - GOV.UK`);
       testTranslations(res.text, enTranslationText.namePage, ["privateFund", "scottish"]);
       expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
       expect(res.text).not.toContain("WELSH -");
@@ -88,7 +88,7 @@ describe("Name Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${cyTranslationText.namePage.privateFund.title} - ${cyTranslationText.service} - GOV.UK`
+        `${cyTranslationText.namePage.privateFund.title} - ${cyTranslationText.serviceRegistration} - GOV.UK`
       );
       testTranslations(res.text, cyTranslationText.namePage.privateFund, ["scottish"]);
       expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
@@ -105,7 +105,7 @@ describe("Name Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${enTranslationText.namePage.privateFund.title} - ${enTranslationText.service} - GOV.UK`
+        `${enTranslationText.namePage.privateFund.title} - ${enTranslationText.serviceRegistration} - GOV.UK`
       );
       testTranslations(res.text, enTranslationText.namePage.privateFund, ["scottish"]);
       expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
@@ -123,7 +123,7 @@ describe("Name Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${cyTranslationText.namePage.scottish.title} - ${cyTranslationText.service} - GOV.UK`
+        `${cyTranslationText.namePage.scottish.title} - ${cyTranslationText.serviceRegistration} - GOV.UK`
       );
       testTranslations(res.text, cyTranslationText.namePage.scottish);
       expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
@@ -140,7 +140,7 @@ describe("Name Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${enTranslationText.namePage.scottish.title} - ${enTranslationText.service} - GOV.UK`
+        `${enTranslationText.namePage.scottish.title} - ${enTranslationText.serviceRegistration} - GOV.UK`
       );
       testTranslations(res.text, enTranslationText.namePage.scottish);
       expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
@@ -173,7 +173,7 @@ describe("Name Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${enTranslationText.namePage.privateFund.scottish.title} - ${enTranslationText.service} - GOV.UK`
+        `${enTranslationText.namePage.privateFund.scottish.title} - ${enTranslationText.serviceRegistration} - GOV.UK`
       );
       testTranslations(res.text, enTranslationText.namePage.privateFund.scottish);
       expect(res.text).toContain(enTranslationText.namePage.whatIsNameHint);
