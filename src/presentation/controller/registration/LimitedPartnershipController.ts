@@ -67,7 +67,12 @@ class LimitedPartnershipController extends AbstractController {
           );
         }
 
-        const { generalPartners, limitedPartners } = await this.getPartners(pageRouting, tokens, ids.transactionId, response);
+        const { generalPartners, limitedPartners } = await this.getPartners(
+          pageRouting,
+          tokens,
+          ids.transactionId,
+          response
+        );
 
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
 
@@ -86,7 +91,7 @@ class LimitedPartnershipController extends AbstractController {
     tokens: { access_token: string; refresh_token: string },
     transactionId: string,
     response: Response
-  ): Promise<{ generalPartners: GeneralPartner[]; limitedPartners: LimitedPartner[] } > {
+  ): Promise<{ generalPartners: GeneralPartner[]; limitedPartners: LimitedPartner[] }> {
     if (pageRouting.pageType === RegistrationPageType.checkYourAnswers) {
       const gpResult = await this.generalPartnerService.getGeneralPartners(tokens, transactionId);
       const generalPartners = gpResult.generalPartners.map((partner) => ({
@@ -283,9 +288,27 @@ class LimitedPartnershipController extends AbstractController {
         );
 
         if (result?.errors) {
+          const limitedPartnership: LimitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+            tokens,
+            ids.transactionId,
+            ids.submissionId
+          );
+
           response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, null, result.errors)
+            super.makeProps(
+              pageRouting,
+              {
+                limitedPartnership: {
+                  ...limitedPartnership,
+                  data: {
+                    ...limitedPartnership.data,
+                    ...request.body
+                  }
+                }
+              },
+              result.errors
+            )
           );
           return;
         }
