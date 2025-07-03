@@ -178,7 +178,7 @@ class GlobalController extends AbstractController {
         const { journey, resumeUrl } = this.getFilingModeUrls(transaction.filingMode);
 
         if (this.isPendingPayment(transaction)) {
-          return this.handlePendingPayment(request, response, tokens, ids, journey);
+          return this.handlePendingPayment(response, tokens, ids, journey);
         }
 
         const resumePage = super.insertIdsInUrl(resumeUrl, ids);
@@ -195,7 +195,6 @@ class GlobalController extends AbstractController {
   }
 
   private async handlePendingPayment(
-    request: Request,
     response: Response,
     tokens: any,
     ids: any,

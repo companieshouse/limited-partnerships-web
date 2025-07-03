@@ -2,7 +2,7 @@ import request from "supertest";
 import app from "../app";
 
 import { appDevDependencies } from "../../../../config/dev-dependencies";
-import { CONFIRMATION_URL, RESUME_JOURNEY_URL } from "../../../../presentation/controller/global/url";
+import { PAYMENT_RESPONSE_URL, RESUME_JOURNEY_URL } from "../../../../presentation/controller/global/url";
 import { WHICH_TYPE_WITH_IDS_URL } from "../../../../presentation/controller/registration/url";
 import { EMAIL_URL } from "../../../../presentation/controller/transition/url";
 import { getUrl } from "../../utils";
@@ -49,11 +49,11 @@ describe("Resume a journey", () => {
   it.each([
     {
       filingMode: TransactionKind.registration,
-      expectedPaymentReturnUrl: getUrl(`${CHS_URL}${CONFIRMATION_URL}`).replace(JOURNEY_TYPE_PARAM, Journey.registration)
+      expectedPaymentReturnUrl: getUrl(`${CHS_URL}${PAYMENT_RESPONSE_URL}`).replace(JOURNEY_TYPE_PARAM, Journey.registration)
     },
     {
       filingMode: TransactionKind.transition,
-      expectedPaymentReturnUrl: getUrl(`${CHS_URL}${CONFIRMATION_URL}`).replace(JOURNEY_TYPE_PARAM, Journey.transition)
+      expectedPaymentReturnUrl: getUrl(`${CHS_URL}${PAYMENT_RESPONSE_URL}`).replace(JOURNEY_TYPE_PARAM, Journey.transition)
     }
   ])(
     "should resume a pay now $filingMode journey",
