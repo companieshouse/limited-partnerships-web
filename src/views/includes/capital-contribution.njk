@@ -29,14 +29,14 @@
     id: "contribution_currency_value",
     name: "contribution_currency_value",
     value: props.data.limitedPartner.data.contribution_currency_value,
-    errorMessage: props.amount if props.errors,
+    errorMessage: props.errors.contribution_currency_value if props.errors.contribution_currency_value,
     attributes: {
       required: true
     }
   }) }}
 
   {{ govukCheckboxes({
-    errorMessage: i18n.capitalContribution.compositionErrorMessage if props.errors,
+    errorMessage: i18n.capitalContribution.compositionErrorMessage if props.errors.contribution_sub_types,
     idPrefix: "contribution_sub_types",
     name: "contribution_sub_types",            
     fieldset: {
