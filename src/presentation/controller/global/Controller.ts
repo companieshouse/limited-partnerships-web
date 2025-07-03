@@ -16,7 +16,7 @@ import LimitedPartnershipService from "../../../application/service/LimitedPartn
 import { getJourneyTypes, logger } from "../../../utils";
 import PaymentService from "../../../application/service/PaymentService";
 import { Journey } from "../../../domain/entities/journey";
-import { CONFIRMATION_URL, PAYMENT_FAILED_URL } from "./url";
+import { CONFIRMATION_URL, PAYMENT_FAILED_URL, PAYMENT_RESPONSE_URL } from "./url";
 import { WHICH_TYPE_WITH_IDS_URL } from "../registration/url";
 import { EMAIL_URL } from "../transition/url";
 import TransactionService from "../../../application/service/TransactionService";
@@ -202,7 +202,7 @@ class GlobalController extends AbstractController {
     journey: string
   ) {
     const startPaymentSessionUrl = PAYMENTS_API_URL + "/payments";
-    const paymentReturnUrl = `${CHS_URL}${CONFIRMATION_URL}`.replace(JOURNEY_TYPE_PARAM, journey);
+    const paymentReturnUrl = `${CHS_URL}${PAYMENT_RESPONSE_URL}`.replace(JOURNEY_TYPE_PARAM, journey);
     const paymentReturnUrlWithIds = super.insertIdsInUrl(paymentReturnUrl, ids);
     const redirectToPaymentServiceUrl = await this.paymentService.startPaymentSession(
       tokens,
