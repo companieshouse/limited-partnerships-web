@@ -8,7 +8,8 @@ import LimitedPartnershipService from "../../../application/service/LimitedPartn
 import {
   APPLICATION_CACHE_KEY,
   APPLICATION_CACHE_KEY_PREFIX_TRANSITION,
-  cookieOptions
+  cookieOptions,
+  JOURNEY_TYPE_PARAM
 } from "../../../config/constants";
 import { getJourneyTypes } from "../../../utils/journey";
 import { GeneralPartner, Jurisdiction, LimitedPartner, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
@@ -18,6 +19,7 @@ import { CONFIRM_REGISTERED_OFFICE_ADDRESS_URL } from "../addressLookUp/url/tran
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
 import { formatDate } from "../../../utils/date-format";
+import { CONFIRMATION_URL } from "../global/url";
 
 class LimitedPartnershipController extends AbstractController {
   constructor(
@@ -65,7 +67,7 @@ class LimitedPartnershipController extends AbstractController {
     tokens: { access_token: string; refresh_token: string },
     transactionId: string,
     response: Response
-  ): Promise<{ generalPartners: GeneralPartner[]; limitedPartners: LimitedPartner[] } > {
+  ): Promise<{ generalPartners: GeneralPartner[]; limitedPartners: LimitedPartner[] }> {
     if (pageRouting.pageType === TransitionPageType.checkYourAnswers) {
       const gpResult = await this.generalPartnerService.getGeneralPartners(tokens, transactionId);
       const generalPartners = gpResult.generalPartners.map((partner) => ({
@@ -298,6 +300,33 @@ class LimitedPartnershipController extends AbstractController {
         pageRouting.nextUrl = super.insertIdsInUrl(CONFIRM_REGISTERED_OFFICE_ADDRESS_URL, ids, request.url);
       }
     }
+  }
+
+  postCheckYourAnswers() {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { tokens, ids } = super.extract(request);
+        const pageType = super.extractPageTypeOrThrowError(request, TransitionPageType);
+
+        await this.limitedPartnershipService.sendPageData(
+          tokens,
+          ids.transactionId,
+          ids.submissionId,
+          pageType,
+          request.body
+        );
+
+        await this.limitedPartnershipService.closeTransaction(tokens, ids.transactionId);
+
+        const url = super
+          .insertIdsInUrl(CONFIRMATION_URL, ids, request.url)
+          .replace(JOURNEY_TYPE_PARAM, getJourneyTypes(request.url).journey);
+
+        response.redirect(url);
+      } catch (error) {
+        next(error);
+      }
+    };
   }
 }
 

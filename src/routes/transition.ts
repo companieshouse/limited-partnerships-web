@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { authentication } from "../middlewares";
+import { authentication, companyAuthentication } from "../middlewares";
 
 import { IDependencies } from "../config/IDependencies";
 
@@ -42,6 +42,7 @@ const transitionEndpoints = (router: Router, dependencies: IDependencies): void 
   router.get(
     CONFIRM_LIMITED_PARTNERSHIP_URL,
     authentication,
+    companyAuthentication,
     dependencies.limitedPartnershipTransitionController.getConfirmPage()
   );
   router.post(
@@ -231,6 +232,11 @@ const transitionEndpoints = (router: Router, dependencies: IDependencies): void 
     CHECK_YOUR_ANSWERS_URL,
     authentication,
     dependencies.limitedPartnershipTransitionController.getPageRouting()
+  );
+  router.post(
+    CHECK_YOUR_ANSWERS_URL,
+    authentication,
+    dependencies.limitedPartnershipTransitionController.postCheckYourAnswers()
   );
 };
 
