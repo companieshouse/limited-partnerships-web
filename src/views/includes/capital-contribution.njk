@@ -36,7 +36,7 @@
   }) }}
 
   {{ govukCheckboxes({
-    errorMessage: i18n.capitalContribution.compositionErrorMessage if props.errors.contribution_sub_types,
+    errorMessage: props.errors.contribution_sub_types if props.errors.contribution_sub_types,
     idPrefix: "contribution_sub_types",
     name: "contribution_sub_types",            
     fieldset: {
