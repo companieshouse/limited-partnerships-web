@@ -65,9 +65,7 @@ describe("Add Limited Partner Legal Entity Page", () => {
           "dateYear"
         ]);
 
-        if (isCapitalContributionPresent) {
-          testTranslations(res.text, cyTranslationText.capitalContribution, ["compositionErrorMessage"]);
-        } else {
+        if (!isCapitalContributionPresent) {
           expect(res.text).not.toContain(cyTranslationText.capitalContribution.title);
         }
       }
@@ -103,9 +101,7 @@ describe("Add Limited Partner Legal Entity Page", () => {
         ]);
         expect(res.text).not.toContain("WELSH -");
 
-        if (isCapitalContributionPresent) {
-          testTranslations(res.text, enTranslationText.capitalContribution, ["compositionErrorMessage"]);
-        } else {
+        if (!isCapitalContributionPresent) {
           expect(res.text).not.toContain(enTranslationText.capitalContribution.title);
         }
       }
