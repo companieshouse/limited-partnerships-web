@@ -56,6 +56,7 @@
               label: {
                 text: i18n.address.enterAddress.limitedPartner.usualResidentialAddress.postcodeOptional
               },
+              errorMessage: props.errors.postal_code if props.errors,
               classes: "govuk-input--width-10",
               id: "postal_code",
               name: "postal_code",
