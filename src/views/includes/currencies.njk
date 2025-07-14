@@ -174,11 +174,11 @@
 ] %}
 
 {{ govukSelect({
-  idPrefix: contributionCurrencyTypeId,
+  id: contributionCurrencyTypeId,
   name: contributionCurrencyTypeId,
   value: contributionCurrencyValue,
   label: {
-    text: currencyText,
+    text: i18n.capitalContribution.currencyTypeLabel,
     classes: currencyFont,
     isPageHeading: false
   },

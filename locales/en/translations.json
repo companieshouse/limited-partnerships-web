@@ -326,6 +326,8 @@
 
     "capitalContribution" : {
        "title" : "What is their total capital contribution?",
+       "currencyTypeLabel": "Contribution currency type",
+       "valueLabel": "Contribution currency value",
        "hint" : "Enter the total value of all monetary and non-monetary contributions",
        "amountHint": "Enter the value, for example:",
        "amountMinHint": "if they contributed £0.01 enter 0.01", 
