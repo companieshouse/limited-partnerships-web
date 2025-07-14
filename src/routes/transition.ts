@@ -39,6 +39,7 @@ const transitionEndpoints = (router: Router, dependencies: IDependencies): void 
     dependencies.limitedPartnershipTransitionController.checkCompanyNumber()
   );
 
+  // TODO Check why company authentication is run before company is actually confirmed?
   router.get(
     CONFIRM_LIMITED_PARTNERSHIP_URL,
     authentication,

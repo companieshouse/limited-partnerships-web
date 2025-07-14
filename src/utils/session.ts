@@ -16,3 +16,8 @@ export const checkUserSignedIn = (session): boolean => {
   const signInInfo = getSignInInfo(session);
   return signInInfo?.[SignInInfoKeys.SignedIn] === 1;
 };
+
+export const getLoggedInAcspNumber = (session: any): string => {
+  const signInInfo = getSignInInfo(session);
+  return signInInfo?.[SignInInfoKeys.AcspNumber] as string;
+};
