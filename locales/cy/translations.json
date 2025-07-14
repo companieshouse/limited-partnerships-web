@@ -327,6 +327,8 @@
     
     "capitalContribution" : {
         "title" : "WELSH - What is their total capital contribution?",
+        "currencyTypeLabel": "WELSH - Contribution currency type",
+        "valueLabel": "WELSH - Contribution currency value",
         "hint" : "WELSH - Enter the total value of all monetary and non-monetary contributions",
         "amountHint": "WELSH - Enter the value, for example:",
         "amountMinHint": "WELSH - if they contributed £0.01 enter 0.01", 

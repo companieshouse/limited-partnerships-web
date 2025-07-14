@@ -22,6 +22,11 @@
   {%- endset %}
 
   {{ govukInput({ 
+    label: {
+      text: i18n.capitalContribution.valueLabel,
+      classes: "govuk-label govuk-label--m",
+      isPageHeading: false
+     },
     hint: {
       html: hintHtml
     },  
