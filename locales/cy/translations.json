@@ -50,7 +50,7 @@
                 "yesHint" : "WELSH - If the partner has more than one previous name, separate each name with a comma.",
                 "no" : "WELSH - No"
             },
-            "disqualificationStatement" : "WELSH - I confirm the general partner is not disqualified under the directors disqualification legislation.",
+            "disqualificationStatement" : "WELSH - I confirm that the general partner is not disqualified under the directors disqualification legislation, as defined in the Limited Partnership Act 1907.",
             "disqualificationStatementLegend" : "WELSH - General partner - person - disqualification statement"
         },
         "limitedPartner": {
