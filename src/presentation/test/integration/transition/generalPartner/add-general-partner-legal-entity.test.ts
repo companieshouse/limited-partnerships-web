@@ -59,6 +59,7 @@ describe("Add General Partner Legal Entity Page", () => {
       );
       testTranslations(res.text, enTranslationText.addPartnerLegalEntityPage, ["limitedPartner", "errorMessages"]);
       testTranslations(res.text, enTranslationText.generalPartnersPage, ["title", "pageInformation", "disqualificationStatement", "disqualificationStatementLegend"]);
+      expect(res.text).not.toContain("WELSH -");
     });
 
     it("should contain the proposed name - data from api", async () => {
