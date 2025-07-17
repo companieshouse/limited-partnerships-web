@@ -49,9 +49,7 @@
                 "yesHintTitle" : "What is the general partner's previous name?",
                 "yesHint" : "If the partner has more than one previous name, separate each name with a comma.",
                 "no" : "No"
-            },
-            "disqualificationStatement" : "I confirm that the general partner is not disqualified under the directors disqualification legislation, as defined in the Limited Partnership Act 1907.",
-            "disqualificationStatementLegend" : "General partner - person - disqualification statement"
+            }            
         },
         "limitedPartner": {
             "title": "Add a limited partner (person)",
@@ -476,7 +474,9 @@
 
     "generalPartnersPage": {
         "title": "You now need to tell us about the general partners",
-        "pageInformation": "If the partnership has more than one general partner, you'll add them one at a time."
+        "pageInformation": "If the partnership has more than one general partner, you'll add them one at a time.",
+        "disqualificationStatement" : "I confirm that the general partner is not disqualified under the directors disqualification legislation, as defined in the Limited Partnership Act 1907.",
+        "disqualificationStatementLegend" : "General partner - person - disqualification statement"
     },
 
     "govUk" : {

@@ -46,6 +46,7 @@ describe("Add General Partner Person Page", () => {
         "limitedPartner",
         "dateEffectiveFrom"
       ]);
+      expect(res.text).toContain("WELSH - I confirm that the general partner is not disqualified under the directors disqualification legislation, as defined in the Limited Partnership Act 1907.");
     });
 
     it("should load the add general partner page with English text", async () => {
@@ -61,6 +62,7 @@ describe("Add General Partner Person Page", () => {
         "limitedPartner",
         "dateEffectiveFrom"
       ]);
+      expect(res.text).toContain("I confirm that the general partner is not disqualified under the directors disqualification legislation, as defined in the Limited Partnership Act 1907.");
       expect(res.text).not.toContain("WELSH -");
     });
 

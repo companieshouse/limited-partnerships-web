@@ -44,6 +44,7 @@ describe("Add General Partner Person Page", () => {
       expect(res.text).toContain(
         `${cyTranslationText.addPartnerPersonPage.generalPartner.title} - ${cyTranslationText.serviceTransition} - GOV.UK`
       );
+      expect(res.text).not.toContain("WELSH - I confirm that the general partner is not disqualified under the directors disqualification legislation, as defined in the Limited Partnership Act 1907.");
       testTranslations(res.text, cyTranslationText.addPartnerPersonPage, ["errorMessages", "limitedPartner"]);
     });
 
@@ -56,6 +57,7 @@ describe("Add General Partner Person Page", () => {
         `${enTranslationText.addPartnerPersonPage.generalPartner.title} - ${enTranslationText.serviceTransition} - GOV.UK`
       );
       testTranslations(res.text, enTranslationText.addPartnerPersonPage, ["errorMessages", "limitedPartner"]);
+      expect(res.text).not.toContain("I confirm that the general partner is not disqualified under the directors disqualification legislation, as defined in the Limited Partnership Act 1907.");
       expect(res.text).not.toContain("WELSH -");
     });
 
@@ -160,7 +162,6 @@ describe("Add General Partner Person Page", () => {
       expect(res.text).toContain('id="previousNameNo" name="previousName" type="radio" value="false" checked');
       expect(res.text).toContain('<option value="Mongolian" selected>Mongolian</option>');
       expect(res.text).toContain('<option value="Uzbek" selected>Uzbek</option>');
-      expect(res.text).toContain('name="not_disqualified_statement_checked" type="checkbox" value="true"');
     });
   });
 
@@ -251,7 +252,6 @@ describe("Add General Partner Person Page", () => {
       expect(res.text).toContain("FORMER-NAMES");
       expect(res.text).toContain('<option value="Mongolian" selected>Mongolian</option>');
       expect(res.text).toContain('<option value="Uzbek" selected>Uzbek</option>');
-      expect(res.text).toContain('name="not_disqualified_statement_checked" type="checkbox" value="true"');
     });
 
     it("should send the general partner details and go to confirm ura address page if already saved", async () => {

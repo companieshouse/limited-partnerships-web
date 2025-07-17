@@ -28,7 +28,10 @@ describe("General Partners Page", () => {
     expect(res.text).toContain(
       `${cyTranslationText.generalPartnersPage.title} - ${cyTranslationText.serviceTransition} - GOV.UK`
     );
-    testTranslations(res.text, cyTranslationText.generalPartnersPage);
+    testTranslations(res.text, cyTranslationText.generalPartnersPage, [
+      "disqualificationStatement",
+      "disqualificationStatementLegend"
+    ]);
   });
 
   it("should load the general partners page with English text", async () => {
@@ -39,7 +42,10 @@ describe("General Partners Page", () => {
     expect(res.text).toContain(
       `${enTranslationText.generalPartnersPage.title} - ${enTranslationText.serviceTransition} - GOV.UK`
     );
-    testTranslations(res.text, enTranslationText.generalPartnersPage);
+    testTranslations(res.text, enTranslationText.generalPartnersPage, [
+      "disqualificationStatement",
+      "disqualificationStatementLegend"
+    ]);
   });
 
   it("should contain the proposed name - data from api", async () => {
