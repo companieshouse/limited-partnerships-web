@@ -44,7 +44,7 @@ describe("Add General Partner Person Page", () => {
       expect(res.text).toContain(
         `${cyTranslationText.addPartnerPersonPage.generalPartner.title} - ${cyTranslationText.serviceTransition} - GOV.UK`
       );
-      testTranslations(res.text, enTranslationText.generalPartnersPage, ["title", "pageInformation", "disqualificationStatement", "disqualificationStatementLegend"]);
+      testTranslations(res.text, cyTranslationText.generalPartnersPage, ["title", "pageInformation", "disqualificationStatement", "disqualificationStatementLegend"]);
       testTranslations(res.text, cyTranslationText.addPartnerPersonPage, ["errorMessages", "limitedPartner"]);
     });
 

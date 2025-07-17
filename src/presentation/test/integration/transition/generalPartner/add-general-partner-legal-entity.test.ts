@@ -46,7 +46,7 @@ describe("Add General Partner Legal Entity Page", () => {
         `${cyTranslationText.addPartnerLegalEntityPage.generalPartner.title} - ${cyTranslationText.serviceTransition} - GOV.UK`
       );
       testTranslations(res.text, cyTranslationText.addPartnerLegalEntityPage, ["limitedPartner", "errorMessages"]);
-      testTranslations(res.text, enTranslationText.generalPartnersPage, ["title", "pageInformation", "disqualificationStatement", "disqualificationStatementLegend"]);
+      testTranslations(res.text, cyTranslationText.generalPartnersPage, ["title", "pageInformation", "disqualificationStatement", "disqualificationStatementLegend"]);
     });
 
     it("should load the add general partner legal entity page with English text", async () => {
