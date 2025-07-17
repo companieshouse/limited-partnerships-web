@@ -46,7 +46,7 @@ describe("Add General Partner Legal Entity Page", () => {
         `${cyTranslationText.addPartnerLegalEntityPage.generalPartner.title} - ${cyTranslationText.serviceTransition} - GOV.UK`
       );
       testTranslations(res.text, cyTranslationText.addPartnerLegalEntityPage, ["limitedPartner", "errorMessages"]);
-      expect(res.text).not.toContain("WELSH - I confirm that the general partner is not disqualified under the directors disqualification legislation, as defined in the Limited Partnership Act 1907.");
+      testTranslations(res.text, enTranslationText.generalPartnersPage, ["title", "pageInformation", "disqualificationStatement", "disqualificationStatementLegend"]);
     });
 
     it("should load the add general partner legal entity page with English text", async () => {
@@ -58,8 +58,7 @@ describe("Add General Partner Legal Entity Page", () => {
         `${enTranslationText.addPartnerLegalEntityPage.generalPartner.title} - ${enTranslationText.serviceTransition} - GOV.UK`
       );
       testTranslations(res.text, enTranslationText.addPartnerLegalEntityPage, ["limitedPartner", "errorMessages"]);
-      expect(res.text).not.toContain("I confirm that the general partner is not disqualified under the directors disqualification legislation, as defined in the Limited Partnership Act 1907.");
-      expect(res.text).not.toContain("WELSH -");
+      testTranslations(res.text, enTranslationText.generalPartnersPage, ["title", "pageInformation", "disqualificationStatement", "disqualificationStatementLegend"]);
     });
 
     it("should contain the proposed name - data from api", async () => {
