@@ -50,6 +50,7 @@ describe("Add General Partner Legal Entity Page", () => {
         "dateMonth",
         "dateYear"
       ]);
+      testTranslations(res.text, cyTranslationText.generalPartnersPage, ["title", "pageInformation"]);
     });
 
     it("should load the add general partner legal entity page with English text", async () => {
@@ -69,6 +70,7 @@ describe("Add General Partner Legal Entity Page", () => {
         "dateMonth",
         "dateYear"
       ]);
+      testTranslations(res.text, enTranslationText.generalPartnersPage, ["title", "pageInformation"]);
       expect(res.text).not.toContain("WELSH -");
     });
 

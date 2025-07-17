@@ -46,6 +46,7 @@ describe("Add General Partner Person Page", () => {
         "limitedPartner",
         "dateEffectiveFrom"
       ]);
+      testTranslations(res.text, cyTranslationText.generalPartnersPage, ["title", "pageInformation"]);
     });
 
     it("should load the add general partner page with English text", async () => {
@@ -61,6 +62,7 @@ describe("Add General Partner Person Page", () => {
         "limitedPartner",
         "dateEffectiveFrom"
       ]);
+      testTranslations(res.text, enTranslationText.generalPartnersPage, ["title", "pageInformation"]);
       expect(res.text).not.toContain("WELSH -");
     });
 
