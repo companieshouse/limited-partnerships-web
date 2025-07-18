@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { authentication } from "../middlewares";
+import { authentication, companyAuthentication } from "../middlewares";
 
 import { IDependencies } from "../config/IDependencies";
 
@@ -39,9 +39,11 @@ const transitionEndpoints = (router: Router, dependencies: IDependencies): void 
     dependencies.limitedPartnershipTransitionController.checkCompanyNumber()
   );
 
+  // TODO Check why company authentication is run before company is actually confirmed?
   router.get(
     CONFIRM_LIMITED_PARTNERSHIP_URL,
     authentication,
+    companyAuthentication,
     dependencies.limitedPartnershipTransitionController.getConfirmPage()
   );
   router.post(
@@ -231,6 +233,11 @@ const transitionEndpoints = (router: Router, dependencies: IDependencies): void 
     CHECK_YOUR_ANSWERS_URL,
     authentication,
     dependencies.limitedPartnershipTransitionController.getPageRouting()
+  );
+  router.post(
+    CHECK_YOUR_ANSWERS_URL,
+    authentication,
+    dependencies.limitedPartnershipTransitionController.postCheckYourAnswers()
   );
 };
 
