@@ -508,7 +508,6 @@
         "partnershipRulesHint" : {
             "rules" : "WELSH - The partnership name needs to meet set rules. For example, it cannot be the same as another registered partnership or company, or include certain words or phrases.",
             "rulesLinkStart" : "WELSH - To find out the rules the limited partnership's name needs to meet,",
-            "rulesLink" : "https://www.gov.uk/limited-company-formation/choose-company-name",
             "rulesLinkEnd" : "WELSH - read the guidance on choosing a company name (opens in a new tab)"
         },
         "warning" : "WELSH - You must check the name meets the rules before you register the partnership. If it does not, we may reject your application, or you may need to change it later.",
