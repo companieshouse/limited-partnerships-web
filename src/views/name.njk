@@ -33,11 +33,11 @@
       <input type="hidden" name="pageType" value={{ props.pageType }}>
       <input type="hidden" name="partnership_type" value={{ partnershipType }}>      
 
-      <h1 class="govuk-heading-xl">{{ title }}</h1>
-
       {% include "includes/csrf_token.njk" %}
 
       {% include "includes/errors.njk" %}
+
+      <h1 class="govuk-heading-xl">{{ title }}</h1>
 
       <p class="govuk-body">{{ i18n.namePage.partnershipRulesHint.rules }}</p>
 
