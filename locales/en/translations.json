@@ -513,12 +513,6 @@
         "title" : "Limited partnership name",
         "whatIsName" : "What's the name of the partnership?",
         "whatIsNameHint" : "Do not enter a name ending like Limited Partnership or LP. We will add this for you.",
-        "sensitiveWordHint" : {
-            "start" : "If the name includes",
-            "url" : "https://www.gov.uk/government/publications/incorporation-and-names/annex-a-sensitive-words-and-expressions-or-words-that-could-imply-a-connection-with-government",
-            "urlName" : "sensitive words or expressions that require approval (opens in a new tab)",
-            "end" : "you must get permission before you register."
-        },       
         "nameEnding" : "Which name ending would you prefer to go on the public record?",
         "nameEndingHint" : "There's no difference between the name endings Limited Partnership, LP and L.P. except how they look.",
         "nameEndingWelshHint" : "There's no difference between the name endings Limited Partnership, LP and L.P. except how they look. Partneriaeth Cyfyngedig, PC, and P.C. can only be used if the partnership's principal place of business is in Wales.",
