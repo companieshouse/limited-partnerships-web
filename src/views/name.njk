@@ -12,21 +12,16 @@
 
 {% if partnershipType == "LP" %}
   {% set title = i18n.namePage.title %}
-  {% set whatIsName = i18n.namePage.whatIsName %}
-  {% set nameEnding = i18n.namePage.nameEnding %}
 {% elif partnershipType == "PFLP" %}
   {% set title = i18n.namePage.privateFund.title %}
-  {% set whatIsName = i18n.namePage.privateFund.whatIsName %}
-  {% set nameEnding = i18n.namePage.privateFund.nameEnding %}
 {% elif partnershipType == "SLP" %}
   {% set title = i18n.namePage.scottish.title %}
-  {% set whatIsName = i18n.namePage.scottish.whatIsName %}
-  {% set nameEnding = i18n.namePage.scottish.nameEnding %}
 {% elif partnershipType == "SPFLP" %}
   {% set title = i18n.namePage.privateFund.scottish.title %}
-  {% set whatIsName = i18n.namePage.privateFund.scottish.whatIsName %}
-  {% set nameEnding = i18n.namePage.privateFund.nameEnding %}
 {% endif %}
+
+{% set whatIsName = i18n.namePage.whatIsName %}
+{% set nameEnding = i18n.namePage.nameEnding %} 
 
 {% set pageTitle = title  %}
 
@@ -36,13 +31,22 @@
   <div class="govuk-grid-column-two-thirds">
     <form class="form" method="post">
       <input type="hidden" name="pageType" value={{ props.pageType }}>
-      <input type="hidden" name="partnership_type" value={{ partnershipType }}>
-      
+      <input type="hidden" name="partnership_type" value={{ partnershipType }}>      
+
+      <h1 class="govuk-heading-xl">{{ title }}</h1>
+
       {% include "includes/csrf_token.njk" %}
 
       {% include "includes/errors.njk" %}
 
-      <h1 class="govuk-heading-xl">{{ title }}</h1>
+      <p class="govuk-body">{{ i18n.namePage.partnershipRulesHint.rules }}</p>
+
+      <p class="govuk-body">{{ i18n.namePage.partnershipRulesHint.rulesLinkStart }}<a class='govuk-link' href=" + i18n.namePage.partnershipRulesHint.rulesLink + " target="_blank"> {{ i18n.namePage.partnershipRulesHint.rulesLinkEnd }} </a></p>
+
+      {{ govukWarningText({
+        text: i18n.namePage.warning,
+        iconFallbackText: "Warning"
+      }) }}      
 
       <div class="govuk-form-group">
 
@@ -71,13 +75,6 @@
         }) }}
 
       </div>
-
-      {{ govukInsetText({
-        html: '<p>' + i18n.namePage.existingPartnershipHint.start | escape + ' <a href="' + i18n.namePage.existingPartnershipHint.url | escape + '" target="_blank">' + i18n.namePage.existingPartnershipHint.urlName | escape + '</a>. ' + i18n.namePage.existingPartnershipHint.end | escape
-          + '</p><p>' + i18n.namePage.sensitiveWordHint.start | escape + ' <a href="' + i18n.namePage.sensitiveWordHint.url | escape + '" target="_blank">' + i18n.namePage.sensitiveWordHint.urlName | escape + '</a>, ' + i18n.namePage.sensitiveWordHint.end | escape
-          + '</p><p>' + i18n.namePage.existingTrademarkHint.start | escape + ' <a href="' + i18n.namePage.existingTrademarkHint.url | escape + '" target="_blank">' + i18n.namePage.existingTrademarkHint.urlName | escape + '</a> ' + i18n.namePage.existingTrademarkHint.end | escape
-          + '</p>'
-      }) }}
 
       <div class="govuk-form-group">
         <fieldset class="govuk-fieldset" aria-describedby="name_ending-hint">
