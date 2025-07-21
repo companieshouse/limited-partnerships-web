@@ -86,6 +86,43 @@ class LimitedPartnerController extends AbstractController {
     }
   }
 
+  getLimitedPartner(urls: { reviewLimitedPartnersUrl: string }) {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        this.limitedPartnerService.setI18n(response.locals.i18n);
+
+        const routing = this.getJourneyPageRouting(request.url);
+
+        const { tokens, pageType, ids } = super.extract(request);
+        const pageRouting = super.getRouting(routing, pageType, request);
+
+        const result = await this.limitedPartnerService.getLimitedPartners(tokens, ids.transactionId);
+
+        if (result.limitedPartners.length > 0) {
+          response.redirect(super.insertIdsInUrl(urls.reviewLimitedPartnersUrl, ids, request.url));
+          return;
+        }
+
+        let limitedPartnership = {};
+
+        if (ids.transactionId && ids.submissionId) {
+          limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+            tokens,
+            ids.transactionId,
+            ids.submissionId
+          );
+        }
+
+        response.render(
+          super.templateName(pageRouting.currentUrl),
+          super.makeProps(pageRouting, { limitedPartnership }, null)
+        );
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
   limitedPartnerChoice(urls: { addPersonUrl: string; addLegalEntityUrl: string }) {
     return (request: Request, response: Response, next: NextFunction) => {
       try {

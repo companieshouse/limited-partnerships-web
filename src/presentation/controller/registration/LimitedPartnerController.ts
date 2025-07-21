@@ -5,7 +5,8 @@ import {
   ADD_LIMITED_PARTNER_PERSON_URL,
   ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
   CHECK_YOUR_ANSWERS_URL,
-  LIMITED_PARTNERS_URL
+  LIMITED_PARTNERS_URL,
+  REVIEW_LIMITED_PARTNERS_URL
 } from "./url";
 import LimitedPartnerController from "../common/LimitedPartnerController";
 import {
@@ -20,6 +21,10 @@ class LimitedPartnerRegistrationController extends LimitedPartnerController {
 
   getPageRouting() {
     return super.getPageRouting();
+  }
+
+  getLimitedPartner() {
+    return super.getLimitedPartner({ reviewLimitedPartnersUrl: REVIEW_LIMITED_PARTNERS_URL });
   }
 
   limitedPartnerChoice() {
