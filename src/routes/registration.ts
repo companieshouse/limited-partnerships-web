@@ -127,13 +127,13 @@ export const registrationEndpoints = (
   router.get(
     GENERAL_PARTNERS_URL,
     authentication,
-    dependencies.limitedPartnershipRegistrationController.getPageRouting()
+    dependencies.generalPartnerRegistrationController.getGeneralPartner()
   );
 
   router.get(
     GENERAL_PARTNER_CHOICE_URL,
     authentication,
-    dependencies.limitedPartnershipRegistrationController.getPageRouting()
+    dependencies.generalPartnerRegistrationController.getPageRouting()
   );
   router.post(
     GENERAL_PARTNER_CHOICE_URL,

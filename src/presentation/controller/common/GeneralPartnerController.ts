@@ -86,6 +86,43 @@ abstract class GeneralPartnerController extends AbstractController {
     }
   }
 
+  getGeneralPartner(urls: { reviewGeneralPartnersUrl: string }) {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        this.generalPartnerService.setI18n(response.locals.i18n);
+
+        const routing = this.getJourneyPageRouting(request.url);
+
+        const { tokens, pageType, ids } = super.extract(request);
+        const pageRouting = super.getRouting(routing, pageType, request);
+
+        const result = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
+
+        if (result.generalPartners.length > 0) {
+          response.redirect(super.insertIdsInUrl(urls.reviewGeneralPartnersUrl, ids, request.url));
+          return;
+        }
+
+        let limitedPartnership = {};
+
+        if (ids.transactionId && ids.submissionId) {
+          limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+            tokens,
+            ids.transactionId,
+            ids.submissionId
+          );
+        }
+
+        response.render(
+          super.templateName(pageRouting.currentUrl),
+          super.makeProps(pageRouting, { limitedPartnership }, null)
+        );
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
   generalPartnerChoice(urls: { addPersonUrl: string; addLegalEntityUrl: string }) {
     return (request: Request, response: Response, next: NextFunction) => {
       try {

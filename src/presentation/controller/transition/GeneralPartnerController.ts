@@ -8,6 +8,7 @@ import {
   ADD_GENERAL_PARTNER_PERSON_URL,
   GENERAL_PARTNERS_URL,
   LIMITED_PARTNERS_URL,
+  REVIEW_GENERAL_PARTNERS_URL,
   REVIEW_LIMITED_PARTNERS_URL
 } from "./url";
 import {
@@ -26,6 +27,10 @@ class GeneralPartnerTransitionController extends GeneralPartnerController {
 
   getPageRouting() {
     return super.getPageRouting();
+  }
+
+  getGeneralPartner() {
+    return super.getGeneralPartner({ reviewGeneralPartnersUrl: REVIEW_GENERAL_PARTNERS_URL });
   }
 
   generalPartnerChoice() {

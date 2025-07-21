@@ -64,13 +64,13 @@ const transitionEndpoints = (router: Router, dependencies: IDependencies): void 
   router.get(
     GENERAL_PARTNERS_URL,
     authentication,
-    dependencies.limitedPartnershipTransitionController.getPageRouting()
+    dependencies.generalPartnerTransitionController.getGeneralPartner()
   );
 
   router.get(
     GENERAL_PARTNER_CHOICE_URL,
     authentication,
-    dependencies.limitedPartnershipTransitionController.getPageRouting()
+    dependencies.generalPartnerTransitionController.getPageRouting()
   );
   router.post(
     GENERAL_PARTNER_CHOICE_URL,
