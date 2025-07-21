@@ -201,7 +201,6 @@ describe("Name Page", () => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(toEscapedHtml(enTranslationText.namePage.whatIsName));
     });
-
   });
 
   describe("Post Name Page", () => {
