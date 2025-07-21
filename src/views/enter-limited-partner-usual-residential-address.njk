@@ -28,7 +28,12 @@
   {% set address = {} %}
 {% endif %}
 
-{% set pageTitle = i18n.address.enterAddress.limitedPartner.usualResidentialAddress.title %}
+{% if props.errors and props.errors.errorList.length > 0 %}  
+  {% set pageTitle = "Error: " +  i18n.address.enterAddress.limitedPartner.usualResidentialAddress.title %}
+{% else %}
+  {% set pageTitle = i18n.address.enterAddress.limitedPartner.usualResidentialAddress.title %}
+{% endif %}
+
 {% set publicRegisterInformationLine1 = i18n.address.enterAddress.limitedPartner.usualResidentialAddress.publicInformationLine1 %}
 
 {% block content %}

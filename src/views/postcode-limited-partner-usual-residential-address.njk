@@ -1,6 +1,11 @@
 {% extends "layout.njk" %}
 
-{% set pageTitle = i18n.address.findPostcode.limitedPartner.usualResidentialAddress.whatIsUsualResidentialAddress %}
+{% if props.errors and props.errors.errorList.length > 0 %}  
+  {% set pageTitle = "Error: " + i18n.address.findPostcode.limitedPartner.usualResidentialAddress.whatIsUsualResidentialAddress %}
+{% else %}
+  {% set pageTitle = i18n.address.findPostcode.limitedPartner.usualResidentialAddress.whatIsUsualResidentialAddress %}
+{% endif %}
+
 {% set publicRegisterInformationLine1 = i18n.address.findPostcode.limitedPartner.usualResidentialAddress.publicRegisterLine1 %}
 
 {% block content %}

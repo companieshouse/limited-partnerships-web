@@ -11,7 +11,12 @@
   {% set address = {} %}
 {% endif %}
 
-{% set pageTitle = i18n.address.enterAddress.principalPlaceOfBusinessAddress.title %}
+{% if props.errors and props.errors.errorList.length > 0 %}  
+  {% set pageTitle = "Error: " + i18n.address.enterAddress.principalPlaceOfBusinessAddress.title %}
+{% else %}  
+  {% set pageTitle = i18n.address.enterAddress.principalPlaceOfBusinessAddress.title %}
+{% endif %}
+
 {% set titleHint1 = i18n.address.enterAddress.principalPlaceOfBusinessAddress.titleHint1 %}
 {% set titleHint2 = i18n.address.enterAddress.principalPlaceOfBusinessAddress.titleHint2 %}
 {% set titleHint3 = i18n.address.enterAddress.principalPlaceOfBusinessAddress.titleHint3 %}

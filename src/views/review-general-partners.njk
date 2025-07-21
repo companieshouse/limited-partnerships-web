@@ -9,7 +9,11 @@
 
 {% endblock %}
 
-{% set pageTitle = i18n.reviewGeneralPartnersPage.title  %}
+{% if props.errors and props.errors.errorList.length > 0 %}  
+  {% set pageTitle = "Error: " + i18n.reviewGeneralPartnersPage.title %}
+{% else %}
+  {% set pageTitle = i18n.reviewGeneralPartnersPage.title  %}
+{% endif %}
 
 {% set list = props.data.generalPartners %}
 

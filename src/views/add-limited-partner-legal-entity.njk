@@ -1,6 +1,11 @@
 {% extends "layout.njk" %}
 
-{% set pageTitle = i18n.addPartnerLegalEntityPage.limitedPartner.title %}
+{% if props.errors and props.errors.errorList.length > 0 %}  
+  {% set pageTitle = "Error: " + i18n.addPartnerLegalEntityPage.limitedPartner.title %}
+{% else %}
+  {% set pageTitle = i18n.addPartnerLegalEntityPage.limitedPartner.title %}
+{% endif %}
+
 {% set publicRegisterInformationLine1 = i18n.addPartnerLegalEntityPage.publicRegisterLine1 %}
 {% set partnershipType = props.data.limitedPartnership.data.partnership_type %}
 

@@ -29,9 +29,13 @@
   {% set address = {} %}
 {% endif %}
 
-{% set pageTitle = i18n.address.enterAddress.generalPartner.principalOfficeAddress.title %}
-{% set publicRegisterInformationLine1 = i18n.address.enterAddress.generalPartner.principalOfficeAddress.publicInformationLine1 %}
+{% if props.errors and props.errors.errorList.length > 0 %}  
+  {% set pageTitle = "Error: " + i18n.address.enterAddress.generalPartner.principalOfficeAddress.title %}
+{% else %}
+  {% set pageTitle = i18n.address.enterAddress.generalPartner.principalOfficeAddress.title %}
+{% endif %}
 
+{% set publicRegisterInformationLine1 = i18n.address.enterAddress.generalPartner.principalOfficeAddress.publicInformationLine1 %}
 
 {% block content %}
   <div class="govuk-grid-row">

@@ -1,6 +1,11 @@
 {% extends "layout.njk" %}
 
-{% set pageTitle = i18n.address.findPostcode.registeredOfficeAddress.whatIsOfficeAddress %}
+{% if props.errors and props.errors.errorList.length > 0 %}  
+  {% set pageTitle = "Error: " + i18n.address.findPostcode.registeredOfficeAddress.whatIsOfficeAddress %}
+{% else %}
+  {% set pageTitle = i18n.address.findPostcode.registeredOfficeAddress.whatIsOfficeAddress %}
+{% endif %}
+
 {% set publicRegisterInformationLine1 = i18n.address.findPostcode.registeredOfficeAddress.publicRegisterLine1 %}
 
 {% block content %}
