@@ -15,7 +15,7 @@ import {
 } from "../../../../config/constants";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
+import { getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../utils";
 
 describe("Name Page", () => {
   const REDIRECT_URL = getUrl(EMAIL_URL);
@@ -90,7 +90,7 @@ describe("Name Page", () => {
       expect(res.text).toContain(
         `${cyTranslationText.namePage.privateFund.title} - ${cyTranslationText.serviceRegistration} - GOV.UK`
       );
-      testTranslations(res.text, cyTranslationText.namePage.privateFund, ["scottish"]);
+      testTranslations(res.text, cyTranslationText.namePage.privateFund, ["scottish", "nameEnding"]);
       expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
     });
 
@@ -107,7 +107,7 @@ describe("Name Page", () => {
       expect(res.text).toContain(
         `${enTranslationText.namePage.privateFund.title} - ${enTranslationText.serviceRegistration} - GOV.UK`
       );
-      testTranslations(res.text, enTranslationText.namePage.privateFund, ["scottish"]);
+      testTranslations(res.text, enTranslationText.namePage.privateFund, ["scottish", "nameEnding"]);
       expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
       expect(res.text).not.toContain("WELSH -");
     });
@@ -190,9 +190,7 @@ describe("Name Page", () => {
       const regex = new RegExp(`${REGISTRATION_BASE_URL}/transaction/.*?/submission/.*?/which-type`);
       expect(res.text).toMatch(regex);
     });
-  });
 
-  describe("Post Name Page", () => {
     it("should load the name page with status 200", async () => {
       appDevDependencies.cacheRepository.feedCache({
         [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]: PartnershipType.LP
@@ -201,8 +199,11 @@ describe("Name Page", () => {
       const res = await request(app).get(NAME_URL);
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain("What is the limited partnership name?");
+      expect(res.text).toContain(toEscapedHtml(enTranslationText.namePage.whatIsName));
     });
+  });
+
+  describe("Post Name Page", () => {
 
     it("should create a transaction and the first submission", async () => {
       appDevDependencies.cacheRepository.feedCache({
