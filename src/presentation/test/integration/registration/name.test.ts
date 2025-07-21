@@ -190,9 +190,7 @@ describe("Name Page", () => {
       const regex = new RegExp(`${REGISTRATION_BASE_URL}/transaction/.*?/submission/.*?/which-type`);
       expect(res.text).toMatch(regex);
     });
-  });
 
-  describe("Post Name Page", () => {
     it("should load the name page with status 200", async () => {
       appDevDependencies.cacheRepository.feedCache({
         [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]: PartnershipType.LP
@@ -203,6 +201,10 @@ describe("Name Page", () => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(toEscapedHtml(enTranslationText.namePage.whatIsName));
     });
+
+  });
+
+  describe("Post Name Page", () => {
 
     it("should create a transaction and the first submission", async () => {
       appDevDependencies.cacheRepository.feedCache({
