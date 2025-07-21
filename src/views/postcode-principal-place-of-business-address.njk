@@ -2,7 +2,7 @@
 
 
 {% if props.errors and props.errors.errorList.length > 0 %}  
-  {% set pageTitle = "Error: " + i18n.address.findPostcode.principalPlaceOfBusiness.whatIsPrincipalPlaceOfBusiness %}
+  {% set pageTitle = i18n.error + i18n.address.findPostcode.principalPlaceOfBusiness.whatIsPrincipalPlaceOfBusiness %}
 {% else %}
   {% set pageTitle = i18n.address.findPostcode.principalPlaceOfBusiness.whatIsPrincipalPlaceOfBusiness %}
 {% endif %}

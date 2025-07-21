@@ -12,7 +12,7 @@
 {% endif %}
 
 {% if props.errors and props.errors.errorList.length > 0 %}  
-  {% set pageTitle = "Error: " + i18n.address.enterAddress.registeredOfficeAddress.title %}
+  {% set pageTitle = i18n.error + i18n.address.enterAddress.registeredOfficeAddress.title %}
 {% else %}
   {% set pageTitle = i18n.address.enterAddress.registeredOfficeAddress.title %}
 {% endif %}

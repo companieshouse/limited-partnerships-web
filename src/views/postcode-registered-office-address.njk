@@ -1,7 +1,7 @@
 {% extends "layout.njk" %}
 
 {% if props.errors and props.errors.errorList.length > 0 %}  
-  {% set pageTitle = "Error: " + i18n.address.findPostcode.registeredOfficeAddress.whatIsOfficeAddress %}
+  {% set pageTitle = i18n.error + i18n.address.findPostcode.registeredOfficeAddress.whatIsOfficeAddress %}
 {% else %}
   {% set pageTitle = i18n.address.findPostcode.registeredOfficeAddress.whatIsOfficeAddress %}
 {% endif %}

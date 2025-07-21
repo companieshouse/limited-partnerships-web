@@ -1,7 +1,7 @@
 {% extends "layout.njk" %}
 
 {% if props.errors and props.errors.errorList.length > 0 %}  
-  {% set pageTitle = "Error: " + i18n.addPartnerPersonPage.generalPartner.title %}
+  {% set pageTitle = i18n.error + i18n.addPartnerPersonPage.generalPartner.title %}
 {% else %}
   {% set pageTitle = i18n.addPartnerPersonPage.generalPartner.title %}
 {% endif %}

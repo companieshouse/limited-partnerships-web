@@ -29,7 +29,7 @@
 {% endif %}
 
 {% if props.errors and props.errors.errorList.length > 0 %}  
-  {% set pageTitle = "Error: " +  i18n.address.enterAddress.limitedPartner.principalOfficeAddress.title %}
+  {% set pageTitle = i18n.error + i18n.address.enterAddress.limitedPartner.principalOfficeAddress.title %}
 {% else %}
   {% set pageTitle = i18n.address.enterAddress.limitedPartner.principalOfficeAddress.title %}
 {% endif %}
