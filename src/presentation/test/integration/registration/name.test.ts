@@ -201,7 +201,7 @@ describe("Name Page", () => {
       const res = await request(app).get(NAME_URL);
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(toEscapedHtml("What's the name of the partnership?"));
+      expect(res.text).toContain(toEscapedHtml(enTranslationText.namePage.whatIsName));
     });
 
     it("should create a transaction and the first submission", async () => {

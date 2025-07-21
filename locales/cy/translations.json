@@ -511,6 +511,7 @@
             "rulesLinkEnd" : "WELSH - read the guidance on choosing a company name (opens in a new tab)"
         },
         "warning" : "WELSH - You must check the name meets the rules before you register the partnership. If it does not, we may reject your application, or you may need to change it later.",
+        "warningFallback" : "WELSH - Warning",
         "title" : "WELSH - Limited partnership name",
         "whatIsName" : "WELSH - What's the name of the partnership?",
         "whatIsNameHint" : "WELSH - Do not enter a name ending like Limited Partnership or LP. We will add this for you.",
