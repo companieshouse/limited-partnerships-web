@@ -1,7 +1,12 @@
+{% set prefix = "" %}
+{% if props.errors and props.errors.errorList.length > 0  %}
+    {% set prefix = i18n.error %}
+{% endif %}  
+
 {% if journeyTypes.isRegistration %}
-    {{ pageTitle }} - {{ i18n.serviceRegistration }} - GOV.UK
+    {{ prefix }} {{ pageTitle }} - {{ i18n.serviceRegistration }} - GOV.UK
 {% elif journeyTypes.isTransition %}
-    {{ pageTitle }} - {{ i18n.serviceTransition }} - GOV.UK
+    {{ prefix }} {{ pageTitle }} - {{ i18n.serviceTransition }} - GOV.UK
 {% else %}
-    {{ pageTitle }} - {{ i18n.servicePostTransition }} - GOV.UK
+    {{ prefix }} {{ pageTitle }} - {{ i18n.servicePostTransition }} - GOV.UK
 {% endif %}

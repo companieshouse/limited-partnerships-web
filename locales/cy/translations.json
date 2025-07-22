@@ -460,6 +460,8 @@
         
     },
 
+    "error" : "WELSH - Error: ",
+
     "errorPage" : {
         "title": "WELSH - Service unavailable",
         "sorryMessage" : "WELSH - Sorry, the service is unavailable",

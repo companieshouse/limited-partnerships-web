@@ -458,6 +458,8 @@
         }
     },
 
+    "error" : "Error: ",
+
     "errorPage" : {
         "title": "Service unavailable",
         "sorryMessage" : "Sorry, the service is unavailable",
