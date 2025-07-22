@@ -443,21 +443,11 @@
     },
 
     "emailPage" : {
-        "whatIsEmail" : "WELSH - What is the registered email address for the partnership?",
-        "registration": {
-            "emailHint" : "WELSH - Partners must be able to access emails that are sent to this address.",
-            "emailUsedFor" : { 
-                "title": "WELSH - What is the registered email address used for?",
-                "sendInformation": "WELSH - In future we'll use this to send important information that relates to the limited partnership. For example, new legislative requirements or warnings about missed deadlines.",
-                "publicRegister": "WELSH - It will not be shown on the public register."
-            }
-        },
-        "transition": {
-            "requirement": "WELSH - This is a new requirement. We do not hold a registered email address for the limited partnership yet.",
-            "emailUsedFor": "WELSH - We'll use this email address to send important information that relates to the partnership. For example, new legislative requirements or warnings about missed deadlines.",
-            "publicRegisterInformation": "WELSH - We will not show the registered email address on the public register."
+        "title" : "WELSH - What is the registered email address for the partnership?",
+        "hint": "WELSH - We'll use this email address to send important information that relates to the partnership. For example, new legislative requirements or warnings about missed deadlines.",
+        "publicRegisterInformation" : {
+            "line1": "WELSH - We will not show the registered email address on the public register."
         }
-        
     },
 
     "error" : "WELSH - Error: ",
