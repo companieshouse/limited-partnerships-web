@@ -2,12 +2,13 @@ import request from "supertest";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
-import { GENERAL_PARTNERS_URL } from "../../../controller/registration/url";
+import { GENERAL_PARTNERS_URL, REVIEW_GENERAL_PARTNERS_URL } from "../../../controller/registration/url";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { REGISTRATION_BASE_URL } from "../../../../config/constants";
+import GeneralPartnerBuilder from "../../builder/GeneralPartnerBuilder";
 
 describe("General Partners Page", () => {
   const URL = getUrl(GENERAL_PARTNERS_URL);
@@ -79,4 +80,16 @@ describe("General Partners Page", () => {
       expect(res.text).toMatch(regex);
     }
   );
+
+  it("should redirect to review page if list not empty", async () => {
+    const generalPartner = new GeneralPartnerBuilder().isPerson().build();
+    appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+
+    const res = await request(app).get(URL);
+
+    const REDIRECT_URL = getUrl(REVIEW_GENERAL_PARTNERS_URL);
+
+    expect(res.status).toBe(302);
+    expect(res.text).toContain(REDIRECT_URL);
+  });
 });
