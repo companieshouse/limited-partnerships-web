@@ -113,3 +113,9 @@ export const validateAndFormatPartnerDateEffectiveFrom = (data: Record<string, a
     );
   }
 };
+
+export const resetFormerNamesIfPreviousNameIsFalse = (data: Record<string, any>) => {
+  if (data?.former_names && data?.previousName === "false") {
+    data.former_names = "";
+  }
+};
