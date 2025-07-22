@@ -292,8 +292,8 @@
                 "publicRegisterInformationLine1": "We'll show the general partner's principal office address on the public register."
             },
             "generalPartnerUsualResidentialAddress": {
-                "title": "Where is the usual residential address of the general partner?",
-                "publicRegisterInformationLine1": "We will not show the general partner's usual residential address."
+                "title": "Where is the general partner’s usual residential address?",
+                "publicRegisterInformationLine1": "We will not show this address on the public register, unless it's also used as the general partner’s correspondence address."
             },
             "generalPartnerCorrespondenceAddress": {
                 "title": "Where is the general partner's correspondence address?",
