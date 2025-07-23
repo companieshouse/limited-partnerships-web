@@ -65,25 +65,6 @@ class LimitedPartnerController extends AbstractController {
     };
   }
 
-  private async conditionalPreviousUrl(
-    ids: { transactionId: string; submissionId: string; limitedPartnerId: string },
-    pageRouting: PageRouting,
-    request: Request,
-    tokens
-  ) {
-    const pageType = this.getJourneyPageTypes(request.url);
-
-    if (
-      pageRouting.pageType === pageType.addLimitedPartnerLegalEntity ||
-      pageRouting.pageType === pageType.addLimitedPartnerPerson
-    ) {
-      const result = await this.limitedPartnerService.getLimitedPartners(tokens, ids.transactionId);
-      if (result.limitedPartners.length > 0) {
-        pageRouting.previousUrl = super.insertIdsInUrl(pageRouting.data?.customPreviousUrl, ids, request.url);
-      }
-    }
-  }
-
   getLimitedPartner(urls: { reviewLimitedPartnersUrl: string }) {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
@@ -409,6 +390,25 @@ class LimitedPartnerController extends AbstractController {
         next(error);
       }
     };
+  }
+
+  private async conditionalPreviousUrl(
+    ids: { transactionId: string; submissionId: string; limitedPartnerId: string },
+    pageRouting: PageRouting,
+    request: Request,
+    tokens
+  ) {
+    const pageType = this.getJourneyPageTypes(request.url);
+
+    if (
+      pageRouting.pageType === pageType.addLimitedPartnerLegalEntity ||
+      pageRouting.pageType === pageType.addLimitedPartnerPerson
+    ) {
+      const result = await this.limitedPartnerService.getLimitedPartners(tokens, ids.transactionId);
+      if (result.limitedPartners.length > 0) {
+        pageRouting.previousUrl = super.insertIdsInUrl(pageRouting.data?.customPreviousUrl, ids, request.url);
+      }
+    }
   }
 
   private getJourneyPageTypes(url: string) {
