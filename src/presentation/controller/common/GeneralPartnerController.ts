@@ -64,28 +64,6 @@ abstract class GeneralPartnerController extends AbstractController {
     };
   }
 
-  private async conditionalPreviousUrl(
-    ids: { transactionId: string; submissionId: string; generalPartnerId: string },
-    pageRouting: PageRouting,
-    request: Request,
-    tokens
-  ) {
-    const previousPageType = super.pageType(request.get("Referrer") ?? "");
-
-    const pageType = this.getJourneyPageTypes(request.url);
-
-    if (
-      pageRouting.pageType === pageType.addGeneralPartnerLegalEntity ||
-      pageRouting.pageType === pageType.addGeneralPartnerPerson
-    ) {
-      const result = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
-
-      if (previousPageType === pageType.reviewGeneralPartners || result.generalPartners.length > 0) {
-        pageRouting.previousUrl = super.insertIdsInUrl(pageRouting.data?.customPreviousUrl, ids, request.url);
-      }
-    }
-  }
-
   getGeneralPartner(urls: { reviewGeneralPartnersUrl: string }) {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
@@ -248,9 +226,18 @@ abstract class GeneralPartnerController extends AbstractController {
             ids.submissionId
           );
 
+          await this.conditionalPreviousUrl(ids, pageRouting, request, tokens);
+
           response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { limitedPartnership, generalPartner: { data: request.body } }, result.errors)
+            super.makeProps(
+              pageRouting,
+              {
+                limitedPartnership,
+                generalPartner: { data: request.body }
+              },
+              result.errors
+            )
           );
           return;
         }
@@ -380,21 +367,6 @@ abstract class GeneralPartnerController extends AbstractController {
     };
   }
 
-  private async conditionalNextUrl(
-    tokens: { access_token: string; refresh_token: string },
-    ids: { transactionId: string; submissionId: string },
-    pageRouting: PageRouting,
-    urls: {
-      reviewLimitedPartnersUrl: string;
-    }
-  ) {
-    const result = await this.limitedPartnerService.getLimitedPartners(tokens, ids.transactionId);
-
-    if (result.limitedPartners.length > 0) {
-      pageRouting.nextUrl = super.insertIdsInUrl(urls.reviewLimitedPartnersUrl, ids);
-    }
-  }
-
   postRemovePage() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
@@ -416,6 +388,41 @@ abstract class GeneralPartnerController extends AbstractController {
         next(error);
       }
     };
+  }
+
+  private async conditionalPreviousUrl(
+    ids: { transactionId: string; submissionId: string; generalPartnerId: string },
+    pageRouting: PageRouting,
+    request: Request,
+    tokens
+  ) {
+    const pageType = this.getJourneyPageTypes(request.url);
+
+    if (
+      pageRouting.pageType === pageType.addGeneralPartnerLegalEntity ||
+      pageRouting.pageType === pageType.addGeneralPartnerPerson
+    ) {
+      const result = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
+
+      if (result.generalPartners.length > 0) {
+        pageRouting.previousUrl = super.insertIdsInUrl(pageRouting.data?.customPreviousUrl, ids, request.url);
+      }
+    }
+  }
+
+  private async conditionalNextUrl(
+    tokens: { access_token: string; refresh_token: string },
+    ids: { transactionId: string; submissionId: string },
+    pageRouting: PageRouting,
+    urls: {
+      reviewLimitedPartnersUrl: string;
+    }
+  ) {
+    const result = await this.limitedPartnerService.getLimitedPartners(tokens, ids.transactionId);
+
+    if (result.limitedPartners.length > 0) {
+      pageRouting.nextUrl = super.insertIdsInUrl(urls.reviewLimitedPartnersUrl, ids);
+    }
   }
 
   private getJourneyPageTypes(url: string) {
