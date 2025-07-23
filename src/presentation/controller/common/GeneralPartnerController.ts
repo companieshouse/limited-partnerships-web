@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { GeneralPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 import AbstractController from "../AbstractController";
+import { Ids, Tokens } from "../../../domain/types";
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
@@ -255,13 +256,10 @@ abstract class GeneralPartnerController extends AbstractController {
   }
 
   private async conditionalGeneralPartner(
-    ids: { transactionId: string; submissionId: string; generalPartnerId: string },
+    ids: Ids,
     pageRouting: PageRouting,
     request: Request,
-    tokens: {
-      access_token: string;
-      refresh_token: string;
-    },
+    tokens: Tokens,
     urls: {
       confirmGeneralPartnerUsualResidentialAddressUrl: string;
       confirmGeneralPartnerPrincipalOfficeAddressUrl: string;
@@ -390,12 +388,7 @@ abstract class GeneralPartnerController extends AbstractController {
     };
   }
 
-  private async conditionalPreviousUrl(
-    ids: { transactionId: string; submissionId: string; generalPartnerId: string },
-    pageRouting: PageRouting,
-    request: Request,
-    tokens
-  ) {
+  private async conditionalPreviousUrl(ids: Ids, pageRouting: PageRouting, request: Request, tokens: Tokens) {
     const pageType = this.getJourneyPageTypes(request.url);
 
     if (
@@ -411,8 +404,8 @@ abstract class GeneralPartnerController extends AbstractController {
   }
 
   private async conditionalNextUrl(
-    tokens: { access_token: string; refresh_token: string },
-    ids: { transactionId: string; submissionId: string },
+    tokens: Tokens,
+    ids: Ids,
     pageRouting: PageRouting,
     urls: {
       reviewLimitedPartnersUrl: string;

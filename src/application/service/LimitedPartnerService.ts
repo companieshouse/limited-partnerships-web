@@ -3,6 +3,7 @@ import ILimitedPartnerGateway from "../../domain/ILimitedPartnerGateway";
 import { logger } from "../../utils";
 import UIErrors from "../../domain/entities/UIErrors";
 import { extractAPIErrors, incompletePartnerErrorList } from "./utils";
+import { Tokens } from "../../domain/types";
 
 class LimitedPartnerService {
   i18n: any;
@@ -14,7 +15,7 @@ class LimitedPartnerService {
   }
 
   async createLimitedPartner(
-    opt: { access_token: string; refresh_token: string },
+    opt: Tokens,
     transactionId: string,
     data: Record<string, any>
   ): Promise<{
@@ -41,11 +42,7 @@ class LimitedPartnerService {
     }
   }
 
-  async getLimitedPartner(
-    opt: { access_token: string; refresh_token: string },
-    transactionId: string,
-    limitedPartnerId: string
-  ): Promise<LimitedPartner> {
+  async getLimitedPartner(opt: Tokens, transactionId: string, limitedPartnerId: string): Promise<LimitedPartner> {
     try {
       return await this.limitedPartnerGateway.getLimitedPartner(opt, transactionId, limitedPartnerId);
     } catch (error: any) {
@@ -56,7 +53,7 @@ class LimitedPartnerService {
   }
 
   async getLimitedPartners(
-    opt: { access_token: string; refresh_token: string },
+    opt: Tokens,
     transactionId: string
   ): Promise<{ limitedPartners: LimitedPartner[]; errors?: UIErrors }> {
     try {
@@ -79,7 +76,7 @@ class LimitedPartnerService {
   }
 
   async sendPageData(
-    opt: { access_token: string; refresh_token: string },
+    opt: Tokens,
     transactionId: string,
     limitedPartnerId: string,
     data: Record<string, any>
@@ -103,11 +100,7 @@ class LimitedPartnerService {
     }
   }
 
-  async deleteLimitedPartner(
-    opt: { access_token: string; refresh_token: string },
-    transactionId: string,
-    limitedPartnerId: string
-  ) {
+  async deleteLimitedPartner(opt: Tokens, transactionId: string, limitedPartnerId: string) {
     try {
       await this.limitedPartnerGateway.deleteLimitedPartner(opt, transactionId, limitedPartnerId);
     } catch (errors: any) {

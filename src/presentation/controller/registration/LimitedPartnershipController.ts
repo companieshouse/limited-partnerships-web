@@ -11,6 +11,7 @@ import LimitedPartnershipService from "../../../application/service/LimitedPartn
 import PaymentService from "../../../application/service/PaymentService";
 import registrationsRouting from "./Routing";
 import AbstractController from "../AbstractController";
+import { Ids, Tokens } from "../../../domain/types";
 import RegistrationPageType from "./PageType";
 import {
   APPLICATION_CACHE_KEY,
@@ -88,7 +89,7 @@ class LimitedPartnershipController extends AbstractController {
 
   private async getPartners(
     pageRouting: PageRouting,
-    tokens: { access_token: string; refresh_token: string },
+    tokens: Tokens,
     transactionId: string,
     response: Response
   ): Promise<{ generalPartners: GeneralPartner[]; limitedPartners: LimitedPartner[] }> {
@@ -119,11 +120,7 @@ class LimitedPartnershipController extends AbstractController {
     return { generalPartners: [], limitedPartners: [] };
   }
 
-  private conditionalPreviousUrl(
-    ids: { transactionId: string; submissionId: string; generalPartnerId: string },
-    pageRouting: PageRouting,
-    request: Request
-  ) {
+  private conditionalPreviousUrl(ids: Ids, pageRouting: PageRouting, request: Request) {
     const previousPageType = super.pageType(request.get("Referrer") ?? "");
 
     if (previousPageType === RegistrationPageType.checkYourAnswers) {
@@ -161,7 +158,7 @@ class LimitedPartnershipController extends AbstractController {
 
           return;
         }
-        const ids = { transactionId: result.transactionId, submissionId: result.submissionId };
+        const ids = { transactionId: result.transactionId, submissionId: result.submissionId } as Ids;
         const url = super.insertIdsInUrl(pageRouting.nextUrl, ids, request.url);
 
         const cacheUpdated = this.cacheService.removeDataFromCache(
@@ -322,12 +319,7 @@ class LimitedPartnershipController extends AbstractController {
     };
   }
 
-  private async conditionalNextUrl(
-    tokens: { access_token: string; refresh_token: string },
-    ids: { transactionId: string; submissionId: string },
-    pageRouting: PageRouting,
-    request: Request
-  ) {
+  private async conditionalNextUrl(tokens: Tokens, ids: Ids, pageRouting: PageRouting, request: Request) {
     if (pageRouting.pageType === RegistrationPageType.email) {
       const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
         tokens,
@@ -426,12 +418,7 @@ class LimitedPartnershipController extends AbstractController {
     };
   }
 
-  private async conditionalSicCodeNextUrl(
-    tokens: { access_token: string; refresh_token: string },
-    ids: { transactionId: string; submissionId: string },
-    pageRouting: PageRouting,
-    request: Request
-  ) {
+  private async conditionalSicCodeNextUrl(tokens: Tokens, ids: Ids, pageRouting: PageRouting, request: Request) {
     const result = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
 
     if (result.generalPartners.length > 0) {

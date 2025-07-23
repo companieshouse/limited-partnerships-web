@@ -3,6 +3,7 @@ import IGeneralPartnerGateway from "../../domain/IGeneralPartnerGateway";
 import { logger } from "../../utils";
 import UIErrors from "../../domain/entities/UIErrors";
 import { extractAPIErrors, incompletePartnerErrorList } from "./utils";
+import { Tokens } from "../../domain/types";
 
 class GeneralPartnerService {
   i18n: any;
@@ -14,7 +15,7 @@ class GeneralPartnerService {
   }
 
   async createGeneralPartner(
-    opt: { access_token: string; refresh_token: string },
+    opt: Tokens,
     transactionId: string,
     data: Record<string, any>
   ): Promise<{
@@ -41,11 +42,7 @@ class GeneralPartnerService {
     }
   }
 
-  async getGeneralPartner(
-    opt: { access_token: string; refresh_token: string },
-    transactionId: string,
-    generalPartnerId: string
-  ): Promise<GeneralPartner> {
+  async getGeneralPartner(opt: Tokens, transactionId: string, generalPartnerId: string): Promise<GeneralPartner> {
     try {
       return await this.generalPartnerGateway.getGeneralPartner(opt, transactionId, generalPartnerId);
     } catch (error: any) {
@@ -56,7 +53,7 @@ class GeneralPartnerService {
   }
 
   async getGeneralPartners(
-    opt: { access_token: string; refresh_token: string },
+    opt: Tokens,
     transactionId: string
   ): Promise<{ generalPartners: GeneralPartner[]; errors?: UIErrors }> {
     try {
@@ -79,7 +76,7 @@ class GeneralPartnerService {
   }
 
   async sendPageData(
-    opt: { access_token: string; refresh_token: string },
+    opt: Tokens,
     transactionId: string,
     generalPartnerId: string,
     data: Record<string, any>
@@ -103,11 +100,7 @@ class GeneralPartnerService {
     }
   }
 
-  async deleteGeneralPartner(
-    opt: { access_token: string; refresh_token: string },
-    transactionId: string,
-    generalPartnerId: string
-  ) {
+  async deleteGeneralPartner(opt: Tokens, transactionId: string, generalPartnerId: string) {
     try {
       await this.generalPartnerGateway.deleteGeneralPartner(opt, transactionId, generalPartnerId);
     } catch (errors: any) {

@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 
 import AbstractController from "../AbstractController";
+import { Ids, Tokens } from "../../../domain/types";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 
@@ -261,13 +262,10 @@ class LimitedPartnerController extends AbstractController {
   }
 
   private async conditionalLimitedPartner(
-    ids: { transactionId: string; submissionId: string; limitedPartnerId: string },
+    ids: Ids,
     pageRouting: PageRouting,
     request: Request,
-    tokens: {
-      access_token: string;
-      refresh_token: string;
-    },
+    tokens: Tokens,
     urls: {
       confirmLimitedPartnerUsualResidentialAddressUrl: string;
       confirmLimitedPartnerPrincipalOfficeAddressUrl: string;
@@ -392,12 +390,7 @@ class LimitedPartnerController extends AbstractController {
     };
   }
 
-  private async conditionalPreviousUrl(
-    ids: { transactionId: string; submissionId: string; limitedPartnerId: string },
-    pageRouting: PageRouting,
-    request: Request,
-    tokens
-  ) {
+  private async conditionalPreviousUrl(ids: Ids, pageRouting: PageRouting, request: Request, tokens) {
     const pageType = this.getJourneyPageTypes(request.url);
 
     if (

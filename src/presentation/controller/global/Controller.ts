@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 
 import globalsRouting from "./Routing";
 import AbstractController from "../AbstractController";
+import { Ids, Tokens } from "../../../domain/types";
 import {
   ACCOUNTS_SIGN_OUT_URL,
   REGISTRATION_BASE_URL,
@@ -23,7 +24,6 @@ import TransactionService from "../../../application/service/TransactionService"
 import { TransactionKind, TransactionStatus } from "../../../domain/entities/TransactionTypes";
 
 class GlobalController extends AbstractController {
-
   private static readonly FILING_MODE_URL_MAP: Record<string, { journey: string; resumeUrl: string }> = {
     [TransactionKind.registration]: {
       journey: Journey.registration,
@@ -111,12 +111,9 @@ class GlobalController extends AbstractController {
         const { status } = request.query;
         const { ids } = super.extract(request);
 
-        const nextPageUrl = (status === "paid") ? CONFIRMATION_URL : PAYMENT_FAILED_URL;
+        const nextPageUrl = status === "paid" ? CONFIRMATION_URL : PAYMENT_FAILED_URL;
 
-        const nextPageUrlWithJourney = nextPageUrl.replace(
-          JOURNEY_TYPE_PARAM,
-          getJourneyTypes(request.url).journey
-        );
+        const nextPageUrlWithJourney = nextPageUrl.replace(JOURNEY_TYPE_PARAM, getJourneyTypes(request.url).journey);
 
         const nextPageUrlWithJourneyAndIds = super.insertIdsInUrl(nextPageUrlWithJourney, ids);
 
@@ -167,7 +164,10 @@ class GlobalController extends AbstractController {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const { tokens, ids } = super.extract(request);
-        logger.infoRequest(request, `Resuming journey for transaction: ${ids.transactionId}, submission: ${ids.submissionId}`);
+        logger.infoRequest(
+          request,
+          `Resuming journey for transaction: ${ids.transactionId}, submission: ${ids.submissionId}`
+        );
 
         const transaction = await this.transactionService.getTransaction(tokens, ids.transactionId);
 
@@ -183,7 +183,6 @@ class GlobalController extends AbstractController {
 
         const resumePage = super.insertIdsInUrl(resumeUrl, ids);
         return response.redirect(resumePage);
-
       } catch (error) {
         next(error);
       }
@@ -194,12 +193,7 @@ class GlobalController extends AbstractController {
     return transaction.status === TransactionStatus.closedPendingPayment;
   }
 
-  private async handlePendingPayment(
-    response: Response,
-    tokens: any,
-    ids: any,
-    journey: string
-  ) {
+  private async handlePendingPayment(response: Response, tokens: Tokens, ids: Ids, journey: string) {
     const startPaymentSessionUrl = PAYMENTS_API_URL + "/payments";
     const paymentReturnUrl = `${CHS_URL}${PAYMENT_RESPONSE_URL}`.replace(JOURNEY_TYPE_PARAM, journey);
     const paymentReturnUrlWithIds = super.insertIdsInUrl(paymentReturnUrl, ids);
