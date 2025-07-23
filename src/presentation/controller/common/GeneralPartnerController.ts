@@ -70,8 +70,6 @@ abstract class GeneralPartnerController extends AbstractController {
     request: Request,
     tokens
   ) {
-    const previousPageType = super.pageType(request.get("Referrer") ?? "");
-
     const pageType = this.getJourneyPageTypes(request.url);
 
     if (
@@ -80,7 +78,7 @@ abstract class GeneralPartnerController extends AbstractController {
     ) {
       const result = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
 
-      if (previousPageType === pageType.reviewGeneralPartners || result.generalPartners.length > 0) {
+      if (result.generalPartners.length > 0) {
         pageRouting.previousUrl = super.insertIdsInUrl(pageRouting.data?.customPreviousUrl, ids, request.url);
       }
     }
@@ -248,9 +246,18 @@ abstract class GeneralPartnerController extends AbstractController {
             ids.submissionId
           );
 
+          await this.conditionalPreviousUrl(ids, pageRouting, request, tokens);
+
           response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { limitedPartnership, generalPartner: { data: request.body } }, result.errors)
+            super.makeProps(
+              pageRouting,
+              {
+                limitedPartnership,
+                generalPartner: { data: request.body }
+              },
+              result.errors
+            )
           );
           return;
         }

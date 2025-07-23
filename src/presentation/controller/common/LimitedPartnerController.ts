@@ -71,8 +71,6 @@ class LimitedPartnerController extends AbstractController {
     request: Request,
     tokens
   ) {
-    const previousPageType = super.pageType(request.get("Referrer") ?? "");
-
     const pageType = this.getJourneyPageTypes(request.url);
 
     if (
@@ -80,7 +78,7 @@ class LimitedPartnerController extends AbstractController {
       pageRouting.pageType === pageType.addLimitedPartnerPerson
     ) {
       const result = await this.limitedPartnerService.getLimitedPartners(tokens, ids.transactionId);
-      if (previousPageType === pageType.reviewLimitedPartners || result.limitedPartners.length > 0) {
+      if (result.limitedPartners.length > 0) {
         pageRouting.previousUrl = super.insertIdsInUrl(pageRouting.data?.customPreviousUrl, ids, request.url);
       }
     }
@@ -252,6 +250,8 @@ class LimitedPartnerController extends AbstractController {
             ids.transactionId,
             ids.submissionId
           );
+
+          await this.conditionalPreviousUrl(ids, pageRouting, request, tokens);
 
           response.render(
             super.templateName(pageRouting.currentUrl),
