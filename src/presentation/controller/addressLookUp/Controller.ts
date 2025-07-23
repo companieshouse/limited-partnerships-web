@@ -6,6 +6,7 @@ import AddressService from "../../../application/service/AddressService";
 import registrationAddressRouting, { AddressCacheKeys } from "./routing/registration/routing";
 import transitionAddressRouting from "./routing/transition/routing";
 import AbstractController from "../AbstractController";
+import { Ids, Tokens } from "../../../domain/types";
 import AddressLookUpPageType from "./PageType";
 import CacheService from "../../../application/service/CacheService";
 import { APPLICATION_CACHE_KEY, cookieOptions } from "../../../config/constants";
@@ -138,7 +139,7 @@ class AddressLookUpController extends AbstractController {
   private async getAddressList(
     pageRouting: PageRouting,
     cache: Record<string, any>,
-    tokens: { access_token: string; refresh_token: string }
+    tokens: Tokens
   ): Promise<Address[]> {
     let addressList: Address[] = [];
 
@@ -435,12 +436,7 @@ class AddressLookUpController extends AbstractController {
     };
   }
 
-  private async conditionalNextUrl(
-    tokens: { access_token: string; refresh_token: string },
-    ids: { transactionId: string; submissionId: string; generalPartnerId: string },
-    pageRouting: PageRouting,
-    request: Request
-  ) {
+  private async conditionalNextUrl(tokens: Tokens, ids: Ids, pageRouting: PageRouting, request: Request) {
     const pageTypes: Array<PageType | PageDefault> = [
       AddressLookUpPageType.confirmRegisteredOfficeAddress,
       AddressLookUpPageType.confirmPrincipalPlaceOfBusinessAddress
@@ -484,7 +480,7 @@ class AddressLookUpController extends AbstractController {
   }
 
   private async handleAddressNotFound(
-    tokens: { access_token: string; refresh_token: string },
+    tokens: Tokens,
     transactionId: string,
     submissionId: string,
     pageRouting: PageRouting | typeof pageRoutingDefault,

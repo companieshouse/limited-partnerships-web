@@ -4,9 +4,10 @@ import ApiClient from "@companieshouse/api-sdk-node/dist/client";
 import { API_URL, OAUTH2_CLIENT_ID, OAUTH2_CLIENT_SECRET, REFRESH_TOKEN_GRANT_TYPE } from "../../config/constants";
 import { logger } from "../../utils";
 import UIErrors from "../../domain/entities/UIErrors";
+import { Tokens } from "../../domain/types";
 
 export const makeApiCallWithRetry = async <T>(
-  tokens: { access_token: string; refresh_token: string },
+  tokens: Tokens,
   info: { service: string; method: string; args: any[] }
 ): Promise<T> => {
   logger.info(`Making a ${info.method} call on ${info.service} service with token ${tokens.access_token}`);
