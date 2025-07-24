@@ -30,6 +30,7 @@
 {% endif %}
 
 {% set pageTitle = i18n.address.enterAddress.generalPartner.principalOfficeAddress.title %}
+{% set titleHint1 = i18n.address.enterAddress.generalPartner.principalOfficeAddress.hint %}
 {% set publicRegisterInformationLine1 = i18n.address.enterAddress.generalPartner.principalOfficeAddress.publicInformationLine1 %}
 
 
@@ -41,10 +42,12 @@
 
       <fieldset class="govuk-fieldset">
         <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
-          <h1 class="govuk-heading-xl">
+          <h1 class="govuk-heading-xl govuk-!-margin-bottom-1">
             {{ pageTitle }}
           </h1>
         </legend>
+
+        <p class="govuk-hint">{{ titleHint1 }}</p>
       </fieldset>
       
       <form class="form" action={{ props.currentUrl }} method="post">
