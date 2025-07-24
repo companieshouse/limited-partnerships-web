@@ -414,7 +414,7 @@
 
     "confirmationPage" : {
         "title" : "WELSH - Application submitted",
-        "referenceNumber" : "WELSH - our reference number",
+        "referenceNumber" : "WELSH - Your reference number",
         "sentEmailTo" : "WELSH - We have sent a confirmation email to",
         "happensNext" : "WELSH - What happens next",
         "applicationProcess" : "WELSH - We'll process the application as soon as possible. This will usually take no more than 3 to 5 working days.",

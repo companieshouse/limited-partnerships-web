@@ -413,7 +413,7 @@
 
     "confirmationPage" : {
         "title" : "Application submitted",
-        "referenceNumber" : "our reference number",
+        "referenceNumber" : "Your reference number",
         "sentEmailTo" : "We have sent a confirmation email to",
         "happensNext" : "What happens next",
         "applicationProcess" : "We'll process the application as soon as possible. This will usually take no more than 3 to 5 working days.",
