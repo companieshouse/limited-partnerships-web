@@ -16,6 +16,7 @@
         "legalEntityName" : "What is the legal entity's name?",
         "legalFormOrCorporateIdentity" : "What is its legal form or corporate identity?",
         "legalFormOrCorporateIdentityHint" : "This is the corporate body type. For example, private limited company.",
+        "legalPersonalityWarning" : "By providing this information, you are confirming that this entity has legal personality.",
         "governingLaw" : "What is the governing law?",
         "governingLawHint" : "This is the law that the entity operates under. For example, the Companies Act 2006.",
         "whichRegister" : "Which register is it entered in?",
