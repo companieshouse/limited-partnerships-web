@@ -252,6 +252,7 @@
                 },
                 "principalOfficeAddress": {
                     "whatIsPrincipalOfficeAddress": "WELSH - What is the general partner's principal office address?",
+                    "hint": "WELSH - This is the address for the entity's main office.",
                     "publicRegisterLine1": "WELSH - We'll show the general partner's principal office address on the public register."
                 },
                 "correspondenceAddress": {
