@@ -204,11 +204,9 @@
       {% if props.data.generalPartners.length > 0 %}
         <h2 class="govuk-heading-m">{{ i18n.checkYourAnswersPage.partners.generalPartners.title }}</h2>
 
-        {% if journeyTypes.isTransition %}
-          <p class="govuk-body-m govuk-!-margin-bottom-6">
-            <a href="{{ props.currentUrl | replace(props.pageType, props.data.reviewGeneralPartnersType) }}"  class="govuk-body-m govuk-link" data-event-id="change-link">{{ i18n.checkYourAnswersPage.partners.generalPartners.changeRemoveOrAdd }}</a>
-          <p>
-        {% endif %}
+        <p class="govuk-body-m govuk-!-margin-bottom-6">
+          <a href="{{ props.currentUrl | replace(props.pageType, props.data.reviewGeneralPartnersType) }}"  class="govuk-body-m govuk-link" data-event-id="change-link">{{ i18n.checkYourAnswersPage.partners.generalPartners.changeRemoveOrAdd }}</a>
+        <p>
 
         {% for item in props.data.generalPartners %}
           {% if item.data.forename %}
@@ -350,23 +348,14 @@
             }) }}
           {% endif %}
         {% endfor %}
-
-        {% if journeyTypes.isRegistration %}
-            <p class="govuk-body-m govuk-!-margin-bottom-9">
-              <a href="{{ props.currentUrl | replace(props.pageType, props.data.reviewGeneralPartnersType) }}"  class="govuk-body-m govuk-link" data-event-id="change-link">{{ i18n.checkYourAnswersPage.partners.generalPartners.changeRemoveOrAdd }}</a>
-            <p>
-        {% endif %}
-
       {% endif %}
 
       {% if props.data.limitedPartners.length > 0 %}
         <h2 class="govuk-heading-m">{{ i18n.checkYourAnswersPage.partners.limitedPartners.title }}</h2>
 
-        {% if journeyTypes.isTransition %}
-          <p class="govuk-body-m govuk-!-margin-bottom-6">
-            <a href="{{ props.currentUrl | replace(props.pageType, props.data.reviewLimitedPartnersType) }}"  class="govuk-body-m govuk-link" data-event-id="change-link">{{ i18n.checkYourAnswersPage.partners.limitedPartners.changeRemoveOrAdd }}</a>
-          <p>
-        {% endif %}
+        <p class="govuk-body-m govuk-!-margin-bottom-6">
+          <a href="{{ props.currentUrl | replace(props.pageType, props.data.reviewLimitedPartnersType) }}"  class="govuk-body-m govuk-link" data-event-id="change-link">{{ i18n.checkYourAnswersPage.partners.limitedPartners.changeRemoveOrAdd }}</a>
+        <p>
 
         {% for item in props.data.limitedPartners %}
           {% if item.data.forename %}
@@ -545,13 +534,6 @@
             }) }}
           {% endif %}
         {% endfor %}
-
-        {% if journeyTypes.isRegistration %}
-            <p class="govuk-body-m govuk-!-margin-bottom-9">
-              <a href="{{ props.currentUrl | replace(props.pageType, props.data.reviewLimitedPartnersType) }}"  class="govuk-body-m govuk-link" data-event-id="change-link">{{ i18n.checkYourAnswersPage.partners.limitedPartners.changeRemoveOrAdd }}</a>
-            <p>
-        {% endif %}
-          
       {% endif %}
 
       <br>
