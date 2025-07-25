@@ -41,8 +41,12 @@
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
+      {% include "includes/proposed-name.njk" %}
+
       <h1 class="govuk-heading-l">{{ i18n.checkYourAnswersPage.title }}</h1>
+
       <h2 class="govuk-heading-m">{{ i18n.checkYourAnswersPage.lpInfo }}</h2>
+
       {{ govukSummaryList({
         classes: "govuk-!-margin-bottom-7",
         rows: [
@@ -64,14 +68,6 @@
               ]
             } if journeyTypes.isRegistration
           },
-          {
-            key: {
-              text: i18n.checkYourAnswersPage.headingNumber
-            },
-            value: {
-              text: props.data.limitedPartnership.data.partnership_number
-            }
-          } if journeyTypes.isTransition,
           {
             key: {
               text: i18n.checkYourAnswersPage.headingType

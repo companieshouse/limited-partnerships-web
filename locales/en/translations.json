@@ -352,7 +352,6 @@
         "lpInfo" : "Limited partnership information",
         "change" : "Change",
         "headingName" : "Name",
-        "headingNumber": "Partnership number",
         "headingType" : "Type",
         "headingSic" : "Standard Industrial Classification (SIC) code",
         "headingEmail" : "Registered email address",
