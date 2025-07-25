@@ -100,7 +100,9 @@
                 "title" : "WELSH - Choose the usual residential address of the general partner"
             },
             "generalPartnerPrincipalOfficeAddress": {
-                "title": "WELSH - Choose the general partner's principal office address"
+                "title": "WELSH - Choose the general partner's principal office address",
+                "hint": "WELSH - This is the address for the entity's main office.",
+                "publicRegisterInformationLine1": "WELSH - We'll show the general partner's principal office address on the public register."
             },
             "generalPartnerCorrespondenceAddress" : {
                 "title" : "WELSH - Choose the general partner's correspondence address",
@@ -112,7 +114,8 @@
             },
             "limitedPartnerPrincipalOfficeAddress": {
                 "title": "WELSH - Choose the limited partner's principal office address",
-                "titleHint": "WELSH - This is the address for the entity's main office."
+                "hint": "WELSH - This is the address for the entity's main office.",
+                "publicRegisterInformationLine1": "WELSH - We'll show the limited partner's principal office address on the public register."
             }
         },
 
@@ -178,6 +181,7 @@
                 },
                 "principalOfficeAddress": {
                     "title": "WELSH - What is the general partner's principal office address?",
+                    "hint": "WELSH - This is the address for the entity's main office.",
                     "publicInformationLine1": "WELSH - We'll show the general partner's principal office address on the public register.",
                     "postcodeOptional": "WELSH - Postcode (optional)"
                 }
@@ -190,7 +194,7 @@
                 },
                 "principalOfficeAddress":{
                     "title": "WELSH - What is the limited partner's principal office address?",
-                    "titleHint1": "WELSH - This is the address for the entity's main office.",
+                    "hint": "WELSH - This is the address for the entity's main office.",
                     "publicInformationLine1": "WELSH - We'll show the limited partner's principal office address on the public register.",
                     "postcodeOptional": "WELSH - Postcode (optional)"
                 }
@@ -253,6 +257,7 @@
                 },
                 "principalOfficeAddress": {
                     "whatIsPrincipalOfficeAddress": "WELSH - What is the general partner's principal office address?",
+                    "hint": "WELSH - This is the address for the entity's main office.",
                     "publicRegisterLine1": "WELSH - We'll show the general partner's principal office address on the public register."
                 },
                 "correspondenceAddress": {
