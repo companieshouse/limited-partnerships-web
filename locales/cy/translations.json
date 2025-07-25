@@ -326,7 +326,8 @@
 
     "buttons" : {
         "continue" : "WELSH - Continue",
-        "saveAndContinue" : "WELSH - Save and continue"
+        "saveAndContinue" : "WELSH - Save and continue",
+        "submitFiling": "WELSH - Submit filing"
     },
     
     "capitalContribution" : {

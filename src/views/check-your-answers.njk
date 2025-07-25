@@ -585,9 +585,16 @@
             <li>{{ i18n.checkYourAnswersPage.warningMessage.ura }}</li>
           </ul>
 
-          {% include "includes/print-button.njk" %}
-          <div>
-            {% include "includes/continue-button.njk" %}
+          <div class="govuk-button-group">
+            {{ govukButton({
+              text: i18n.buttons.submitFiling,
+              attributes: {
+                "id": "submit",
+                "data-event-id": "submit-filing"
+              }
+            }) }}
+
+            {% include "includes/print-button.njk" %}
           </div>
           {% endif %}
 
