@@ -40,7 +40,7 @@ class AddressLookUpController extends AbstractController {
     AddressLookUpPageType.enterLimitedPartnerPrincipalOfficeAddress
   ]);
 
-  private static readonly ADDRESS_LIST_REQUIRED_PAGES: Set<PageType | PageDefault> = new Set([
+  private static readonly LIST_PAGES: Set<PageType | PageDefault> = new Set([
     AddressLookUpPageType.chooseRegisteredOfficeAddress,
     AddressLookUpPageType.choosePrincipalPlaceOfBusinessAddress,
     AddressLookUpPageType.chooseGeneralPartnerUsualResidentialAddress,
@@ -50,7 +50,7 @@ class AddressLookUpController extends AbstractController {
     AddressLookUpPageType.chooseLimitedPartnerPrincipalOfficeAddress
   ]);
 
-  private static readonly GENERAL_PARTNER_ADDRESS_PAGES: Set<PageType | PageDefault> = new Set([
+  private static readonly GENERAL_PARTNER_PAGES: Set<PageType | PageDefault> = new Set([
     AddressLookUpPageType.postcodeGeneralPartnerUsualResidentialAddress,
     AddressLookUpPageType.postcodeGeneralPartnerCorrespondenceAddress,
     AddressLookUpPageType.postcodeGeneralPartnerPrincipalOfficeAddress,
@@ -62,7 +62,7 @@ class AddressLookUpController extends AbstractController {
     AddressLookUpPageType.confirmGeneralPartnerCorrespondenceAddress
   ]);
 
-  private static readonly LIMITED_PARTNER_ADDRESS_PAGES: Set<PageType | PageDefault> = new Set([
+  private static readonly LIMITED_PARTNER_PAGES: Set<PageType | PageDefault> = new Set([
     AddressLookUpPageType.postcodeLimitedPartnerUsualResidentialAddress,
     AddressLookUpPageType.postcodeLimitedPartnerPrincipalOfficeAddress,
     AddressLookUpPageType.enterLimitedPartnerUsualResidentialAddress,
@@ -90,33 +90,7 @@ class AddressLookUpController extends AbstractController {
         const addressRouting = this.getAddressRouting(request.url);
         const pageRouting = super.getRouting(addressRouting, pageType, request);
 
-        let limitedPartnership = {};
-        let generalPartner = {};
-        let limitedPartner = {};
-
-        if (ids.transactionId && ids.submissionId) {
-          limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
-            tokens,
-            ids.transactionId,
-            ids.submissionId
-          );
-        }
-
-        if (ids.transactionId && ids.generalPartnerId) {
-          generalPartner = await this.generalPartnerService.getGeneralPartner(
-            tokens,
-            ids.transactionId,
-            ids.generalPartnerId
-          );
-        }
-
-        if (ids.transactionId && ids.limitedPartnerId) {
-          limitedPartner = await this.limitedPartnerService.getLimitedPartner(
-            tokens,
-            ids.transactionId,
-            ids.limitedPartnerId
-          );
-        }
+        const { limitedPartnership, generalPartner, limitedPartner } = await this.getData(ids, tokens);
 
         const cacheById = this.cacheService.getDataFromCacheById(request.signedCookies, ids.transactionId);
 
@@ -134,23 +108,6 @@ class AddressLookUpController extends AbstractController {
         next(error);
       }
     };
-  }
-
-  private async getAddressList(
-    pageRouting: PageRouting,
-    cache: Record<string, any>,
-    tokens: Tokens
-  ): Promise<Address[]> {
-    let addressList: Address[] = [];
-
-    if (AddressLookUpController.ADDRESS_LIST_REQUIRED_PAGES.has(pageRouting.pageType)) {
-      const cacheKey = pageRouting.data?.[AddressCacheKeys.addressCacheKey];
-      const postcode = cache[cacheKey]?.postal_code;
-
-      addressList = await this.addressService.getAddressListForPostcode(tokens, postcode);
-    }
-
-    return addressList;
   }
 
   postcodeValidation() {
@@ -182,23 +139,7 @@ class AddressLookUpController extends AbstractController {
         );
 
         if (errors?.hasErrors()) {
-          let generalPartner;
-          if (AddressLookUpController.GENERAL_PARTNER_ADDRESS_PAGES.has(pageType)) {
-            generalPartner = await this.generalPartnerService.getGeneralPartner(
-              tokens,
-              ids.transactionId,
-              ids.generalPartnerId
-            );
-          }
-
-          let limitedPartner;
-          if (AddressLookUpController.LIMITED_PARTNER_ADDRESS_PAGES.has(pageType)) {
-            limitedPartner = await this.limitedPartnerService.getLimitedPartner(
-              tokens,
-              ids.transactionId,
-              ids.limitedPartnerId
-            );
-          }
+          const { generalPartner, limitedPartner } = await this.getPartnerGPandLP(pageType, tokens, ids);
 
           response.render(
             super.templateName(pageRouting.currentUrl),
@@ -227,26 +168,6 @@ class AddressLookUpController extends AbstractController {
         next(error);
       }
     };
-  }
-
-  private addAddressToCache(
-    request: Request,
-    response: Response,
-    pageType: any,
-    transactionId: string,
-    address: Address
-  ) {
-    const cacheById = this.cacheService.getDataFromCacheById(request.signedCookies, transactionId);
-    const addressRouting = this.getAddressRouting(request.url);
-    const pageRouting = super.getRouting(addressRouting, pageType, request);
-
-    const cache = this.cacheService.addDataToCache(request.signedCookies, {
-      [transactionId]: {
-        ...cacheById,
-        [pageRouting?.data?.[AddressCacheKeys.addressCacheKey]]: address
-      }
-    });
-    response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
   }
 
   selectAddress() {
@@ -306,23 +227,10 @@ class AddressLookUpController extends AbstractController {
         }
 
         if (errors?.hasErrors()) {
-          let generalPartner;
-          let limitedPartner;
-          if (AddressLookUpController.GENERAL_PARTNER_ADDRESS_PAGES.has(pageType)) {
-            generalPartner = await this.generalPartnerService.getGeneralPartner(
-              tokens,
-              ids.transactionId,
-              ids.generalPartnerId
-            );
-          } else if (AddressLookUpController.LIMITED_PARTNER_ADDRESS_PAGES.has(pageType)) {
-            limitedPartner = await this.limitedPartnerService.getLimitedPartner(
-              tokens,
-              ids.transactionId,
-              ids.limitedPartnerId
-            );
-          }
+          const { generalPartner, limitedPartner } = await this.getPartnerGPandLP(pageType, tokens, ids);
 
           const cacheById = this.cacheService.getDataFromCacheById(request.signedCookies, ids.transactionId);
+
           response.render(
             super.templateName(pageRouting.currentUrl),
             super.makeProps(
@@ -368,15 +276,15 @@ class AddressLookUpController extends AbstractController {
           [pageRouting.data?.[AddressCacheKeys.addressCacheKey]]: address
         };
 
-        const isGeneralPartnerAddress = AddressLookUpController.GENERAL_PARTNER_ADDRESS_PAGES.has(pageType);
-        const isLimitedPartnershipAddress = AddressLookUpController.LIMITED_PARTNER_ADDRESS_PAGES.has(pageType);
+        const isGeneralPartnerAddress = AddressLookUpController.GENERAL_PARTNER_PAGES.has(pageType);
+        const isLimitedPartnerAddress = AddressLookUpController.LIMITED_PARTNER_PAGES.has(pageType);
 
         // store in api
         let result;
 
         if (isGeneralPartnerAddress) {
           result = await this.generalPartnerService.sendPageData(tokens, ids.transactionId, ids.generalPartnerId, data);
-        } else if (isLimitedPartnershipAddress) {
+        } else if (isLimitedPartnerAddress) {
           result = await this.limitedPartnerService.sendPageData(tokens, ids.transactionId, ids.limitedPartnerId, data);
         } else {
           result = await this.limitedPartnershipService.sendPageData(
@@ -389,22 +297,11 @@ class AddressLookUpController extends AbstractController {
         }
 
         if (result?.errors) {
-          let generalPartner;
+          const { generalPartner, limitedPartner } = await this.getPartnerGPandLP(pageType, tokens, ids);
+
           let limitedPartnership;
 
-          if (isGeneralPartnerAddress) {
-            generalPartner = await this.generalPartnerService.getGeneralPartner(
-              tokens,
-              ids.transactionId,
-              ids.generalPartnerId
-            );
-          } else if (isLimitedPartnershipAddress) {
-            limitedPartnership = await this.limitedPartnerService.getLimitedPartner(
-              tokens,
-              ids.transactionId,
-              ids.limitedPartnerId
-            );
-          } else {
+          if (!isGeneralPartnerAddress && !isLimitedPartnerAddress) {
             limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
               tokens,
               ids.transactionId,
@@ -416,7 +313,7 @@ class AddressLookUpController extends AbstractController {
             super.templateName(pageRouting.currentUrl),
             super.makeProps(
               pageRouting,
-              { cache: { ...cache, ...cacheById }, generalPartner, limitedPartnership },
+              { cache: { ...cache, ...cacheById }, generalPartner, limitedPartner, limitedPartnership },
               result.errors
             )
           );
@@ -434,6 +331,127 @@ class AddressLookUpController extends AbstractController {
         next(error);
       }
     };
+  }
+
+  generalPartnerUsualResidentialaddressChoice() {
+    return (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const pageType = super.extractPageTypeOrThrowError(request, AddressLookUpPageType);
+        const addressRouting = this.getAddressRouting(request.url);
+        const pageRouting = super.getRouting(addressRouting, pageType, request);
+
+        response.redirect(pageRouting.nextUrl);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  handleTerritoryChoice() {
+    return (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { ids, pageType } = super.extract(request);
+        const parameter = request.body.parameter;
+        const addressRouting = this.getAddressRouting(request.url);
+        const pageRouting = super.getRouting(addressRouting, pageType, request);
+
+        const isUnitedKingdom = parameter === "unitedKingdom";
+
+        const redirectUrl = super.insertIdsInUrl(
+          isUnitedKingdom ? pageRouting.nextUrl : pageRouting.data?.["nextUrlOverseas"],
+          ids,
+          request.url
+        );
+
+        const cacheKey = pageRouting.data?.[AddressCacheKeys.territoryCacheKey];
+
+        if (cacheKey) {
+          const cache = this.cacheService.addDataToCache(request.signedCookies, {
+            [ids.transactionId]: {
+              [cacheKey]: parameter
+            }
+          });
+          response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
+        }
+
+        response.redirect(redirectUrl);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  private getAddressRouting(url: string) {
+    return getJourneyTypes(url).isRegistration ? registrationAddressRouting : transitionAddressRouting;
+  }
+
+  private async getData(ids: Ids, tokens: Tokens) {
+    let limitedPartnership = {};
+    let generalPartner = {};
+    let limitedPartner = {};
+
+    if (ids.transactionId && ids.submissionId) {
+      limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+        tokens,
+        ids.transactionId,
+        ids.submissionId
+      );
+    }
+
+    if (ids.transactionId && ids.generalPartnerId) {
+      generalPartner = await this.generalPartnerService.getGeneralPartner(
+        tokens,
+        ids.transactionId,
+        ids.generalPartnerId
+      );
+    }
+
+    if (ids.transactionId && ids.limitedPartnerId) {
+      limitedPartner = await this.limitedPartnerService.getLimitedPartner(
+        tokens,
+        ids.transactionId,
+        ids.limitedPartnerId
+      );
+    }
+
+    return { limitedPartnership, generalPartner, limitedPartner };
+  }
+
+  private async getAddressList(
+    pageRouting: PageRouting,
+    cache: Record<string, any>,
+    tokens: Tokens
+  ): Promise<Address[]> {
+    let addressList: Address[] = [];
+
+    if (AddressLookUpController.LIST_PAGES.has(pageRouting.pageType)) {
+      const cacheKey = pageRouting.data?.[AddressCacheKeys.addressCacheKey];
+      const postcode = cache[cacheKey]?.postal_code;
+
+      addressList = await this.addressService.getAddressListForPostcode(tokens, postcode);
+    }
+
+    return addressList;
+  }
+
+  private addAddressToCache(
+    request: Request,
+    response: Response,
+    pageType: any,
+    transactionId: string,
+    address: Address
+  ) {
+    const cacheById = this.cacheService.getDataFromCacheById(request.signedCookies, transactionId);
+    const addressRouting = this.getAddressRouting(request.url);
+    const pageRouting = super.getRouting(addressRouting, pageType, request);
+
+    const cache = this.cacheService.addDataToCache(request.signedCookies, {
+      [transactionId]: {
+        ...cacheById,
+        [pageRouting?.data?.[AddressCacheKeys.addressCacheKey]]: address
+      }
+    });
+    response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
   }
 
   private async conditionalNextUrl(tokens: Tokens, ids: Ids, pageRouting: PageRouting, request: Request) {
@@ -528,56 +546,27 @@ class AddressLookUpController extends AbstractController {
     response.redirect(pageRouting.nextUrl);
   }
 
-  generalPartnerUsualResidentialaddressChoice() {
-    return (request: Request, response: Response, next: NextFunction) => {
-      try {
-        const pageType = super.extractPageTypeOrThrowError(request, AddressLookUpPageType);
-        const addressRouting = this.getAddressRouting(request.url);
-        const pageRouting = super.getRouting(addressRouting, pageType, request);
+  private async getPartnerGPandLP(pageType: any, tokens: Tokens, ids: Ids) {
+    let generalPartner = {};
+    let limitedPartner = {};
 
-        response.redirect(pageRouting.nextUrl);
-      } catch (error) {
-        next(error);
-      }
-    };
-  }
+    if (AddressLookUpController.GENERAL_PARTNER_PAGES.has(pageType)) {
+      generalPartner = await this.generalPartnerService.getGeneralPartner(
+        tokens,
+        ids.transactionId,
+        ids.generalPartnerId
+      );
+    }
 
-  handleTerritoryChoice() {
-    return (request: Request, response: Response, next: NextFunction) => {
-      try {
-        const { ids, pageType } = super.extract(request);
-        const parameter = request.body.parameter;
-        const addressRouting = this.getAddressRouting(request.url);
-        const pageRouting = super.getRouting(addressRouting, pageType, request);
+    if (AddressLookUpController.LIMITED_PARTNER_PAGES.has(pageType)) {
+      limitedPartner = await this.limitedPartnerService.getLimitedPartner(
+        tokens,
+        ids.transactionId,
+        ids.limitedPartnerId
+      );
+    }
 
-        const isUnitedKingdom = parameter === "unitedKingdom";
-
-        const redirectUrl = super.insertIdsInUrl(
-          isUnitedKingdom ? pageRouting.nextUrl : pageRouting.data?.["nextUrlOverseas"],
-          ids,
-          request.url
-        );
-
-        const cacheKey = pageRouting.data?.[AddressCacheKeys.territoryCacheKey];
-
-        if (cacheKey) {
-          const cache = this.cacheService.addDataToCache(request.signedCookies, {
-            [ids.transactionId]: {
-              [cacheKey]: parameter
-            }
-          });
-          response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
-        }
-
-        response.redirect(redirectUrl);
-      } catch (error) {
-        next(error);
-      }
-    };
-  }
-
-  private getAddressRouting(url: string) {
-    return getJourneyTypes(url).isRegistration ? registrationAddressRouting : transitionAddressRouting;
+    return { generalPartner, limitedPartner };
   }
 }
 
