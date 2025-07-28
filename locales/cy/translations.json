@@ -326,8 +326,7 @@
 
     "buttons" : {
         "continue" : "WELSH - Continue",
-        "saveAndContinue" : "WELSH - Save and continue",
-        "submitFiling": "WELSH - Submit filing"
+        "saveAndContinue" : "WELSH - Save and continue"
     },
     
     "capitalContribution" : {
@@ -373,7 +372,9 @@
             "dob": "WELSH - full dates of birth of any partners who are people",
             "ura": "WELSH - usual residential addresses of any partners who are people"
         },
+        
         "payment" : "WELSH - Continue to payment",
+        "submitFiling" : "WELSH - Submit filing",
 
         "partners": {
             "generalPartners" : {

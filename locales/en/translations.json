@@ -327,8 +327,7 @@
 
     "buttons" : {
         "continue" : "Continue",
-        "saveAndContinue" : "Save and continue",
-        "submitFiling": "Submit filing"
+        "saveAndContinue" : "Save and continue"
     },
 
     "capitalContribution" : {
@@ -374,7 +373,9 @@
             "dob": "full dates of birth of any partners who are people",
             "ura": "usual residential addresses of any partners who are people"
         },
+        
         "payment" : "Continue to payment",
+        "submitFiling": "Submit filing",
 
         "partners": {
             "generalPartners" : {

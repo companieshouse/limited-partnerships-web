@@ -1,7 +1,12 @@
 import request from "supertest";
 import app from "../app";
 
-import { GeneralPartner, LimitedPartner, Jurisdiction, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import {
+  GeneralPartner,
+  LimitedPartner,
+  Jurisdiction,
+  PartnershipType
+} from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { CHECK_YOUR_ANSWERS_URL } from "../../../controller/registration/url";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
@@ -24,7 +29,6 @@ describe("Check Your Answers Page", () => {
   let limitedPartnerLegalEntity;
 
   beforeEach(() => {
-
     limitedPartnership = new LimitedPartnershipBuilder().build();
 
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
@@ -39,7 +43,8 @@ describe("Check Your Answers Page", () => {
       .withContributionCurrencyType("GBP")
       .withContributionCurrencyValue("5.00")
       .withContributionSubtypes(["SHARES", "ANY_OTHER_ASSET"])
-      .withFormerNames("Joe Dee").build();
+      .withFormerNames("Joe Dee")
+      .build();
 
     limitedPartnerLegalEntity = new LimitedPartnerBuilder()
       .isLegalEntity()
@@ -62,7 +67,8 @@ describe("Check Your Answers Page", () => {
         "headingSic",
         "dateEffectiveFrom",
         "warningMessage",
-        "headingNumber"
+        "headingNumber",
+        "submitFiling"
       ]);
       expect(res.text).toContain(enTranslationText.print.buttonText);
       expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
@@ -80,7 +86,8 @@ describe("Check Your Answers Page", () => {
         "headingSic",
         "dateEffectiveFrom",
         "warningMessage",
-        "headingNumber"
+        "headingNumber",
+        "submitFiling"
       ]);
       expect(res.text).toContain(cyTranslationText.print.buttonText);
       expect(res.text).toContain(cyTranslationText.print.buttonTextNoJs);
@@ -91,16 +98,13 @@ describe("Check Your Answers Page", () => {
       [URL + "?lang=en", "/limited-partnerships/sign-out?lang=en"],
       [URL + "?lang=cy", "/limited-partnerships/sign-out?lang=cy"],
       [URL, "/limited-partnerships/sign-out"]
-    ])(
-      "should set the signout link href correctly for url: %s",
-      async (testUrl: string, expectedHref: string) => {
-        setLocalesEnabled(true);
-        const res = await request(app).get(testUrl);
+    ])("should set the signout link href correctly for url: %s", async (testUrl: string, expectedHref: string) => {
+      setLocalesEnabled(true);
+      const res = await request(app).get(testUrl);
 
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(expectedHref);
-      }
-    );
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(expectedHref);
+    });
 
     it("should load the check your answers page with data from api and show change links", async () => {
       const res = await request(app).get(URL);
@@ -159,9 +163,13 @@ describe("Check Your Answers Page", () => {
         expect(res.status).toBe(200);
 
         if (capitalContributionHeadingExpected) {
-          expect(res.text).toContain(enTranslationText.checkYourAnswersPage.partners.limitedPartners.capitalContribution);
+          expect(res.text).toContain(
+            enTranslationText.checkYourAnswersPage.partners.limitedPartners.capitalContribution
+          );
         } else {
-          expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.partners.limitedPartners.capitalContribution);
+          expect(res.text).not.toContain(
+            enTranslationText.checkYourAnswersPage.partners.limitedPartners.capitalContribution
+          );
         }
       }
     );
@@ -252,7 +260,13 @@ describe("Check Your Answers Page", () => {
 
     expect(res.status).toBe(200);
 
-    testTranslations(res.text, enTranslationText.checkYourAnswersPage, ["scotland", "dateEffectiveFrom", "warningMessage", "headingNumber"]);
+    testTranslations(res.text, enTranslationText.checkYourAnswersPage, [
+      "scotland",
+      "dateEffectiveFrom",
+      "warningMessage",
+      "headingNumber",
+      "submitFiling"
+    ]);
 
     checkIfValuesInText(res, generalPartnerPerson, enTranslationText);
 
@@ -264,7 +278,6 @@ describe("Check Your Answers Page", () => {
   });
 
   it("should load the check your answers page with partners - CY", async () => {
-
     const res = await request(app).get(URL + "?lang=cy");
 
     expect(res.status).toBe(200);
@@ -274,7 +287,8 @@ describe("Check Your Answers Page", () => {
       "northernIreland",
       "dateEffectiveFrom",
       "warningMessage",
-      "headingNumber"
+      "headingNumber",
+      "submitFiling"
     ]);
 
     checkIfValuesInText(res, generalPartnerPerson, cyTranslationText);
@@ -287,8 +301,9 @@ describe("Check Your Answers Page", () => {
   });
 
   it("should load the check your answers page with capital contribution data for limited partner person", async () => {
-
-    const limitedPartnerPerson = new LimitedPartnerBuilder().isPerson().withFormerNames("Joe Dee")
+    const limitedPartnerPerson = new LimitedPartnerBuilder()
+      .isPerson()
+      .withFormerNames("Joe Dee")
       .withContributionCurrencyType("GBP")
       .withContributionCurrencyValue("5.00")
       .withContributionSubtypes(["MONEY", "SERVICES_OR_GOODS", "LAND_OR_PROPERTY"])
@@ -304,8 +319,8 @@ describe("Check Your Answers Page", () => {
   });
 
   it("should load the check your answers page with capital contribution data for limited partner legal entity", async () => {
-
-    const limitedPartnerLegalEntity = new LimitedPartnerBuilder().isLegalEntity()
+    const limitedPartnerLegalEntity = new LimitedPartnerBuilder()
+      .isLegalEntity()
       .withContributionCurrencyType("GBP")
       .withContributionCurrencyValue("5.00")
       .withContributionSubtypes(["SHARES", "ANY_OTHER_ASSET"])
@@ -321,8 +336,8 @@ describe("Check Your Answers Page", () => {
   });
 
   it("should load the check your answers page with capital contribution data in Welsh", async () => {
-
-    const limitedPartnerLegalEntity = new LimitedPartnerBuilder().isLegalEntity()
+    const limitedPartnerLegalEntity = new LimitedPartnerBuilder()
+      .isLegalEntity()
       .withContributionCurrencyType("GBP")
       .withContributionCurrencyValue("5.00")
       .withContributionSubtypes(["SHARES", "ANY_OTHER_ASSET"])
@@ -378,7 +393,11 @@ describe("Check Your Answers Page", () => {
   });
 });
 
-const checkIfValuesInText = (res: request.Response, partner: GeneralPartner | LimitedPartner, translationText: Record<string, any>) => {
+const checkIfValuesInText = (
+  res: request.Response,
+  partner: GeneralPartner | LimitedPartner,
+  translationText: Record<string, any>
+) => {
   for (const key in partner.data) {
     if (typeof partner.data[key] === "string" || typeof partner.data[key] === "object") {
       if (key === "nationality1") {
@@ -394,7 +413,6 @@ const checkIfValuesInText = (res: request.Response, partner: GeneralPartner | Li
           .join(" ");
         expect(res.text).toContain(capitalized);
       } else if (key.includes("contribution_sub_types")) {
-
         const capitalContributionSubTypesMap = {
           MONEY: translationText.capitalContribution.money,
           LAND_OR_PROPERTY: translationText.capitalContribution.landOrProperty,
@@ -403,9 +421,7 @@ const checkIfValuesInText = (res: request.Response, partner: GeneralPartner | Li
           ANY_OTHER_ASSET: translationText.capitalContribution.anyOtherAsset
         };
 
-        const str = partner.data[key]
-          .map((word) => capitalContributionSubTypesMap[word] )
-          .join(" / ");
+        const str = partner.data[key].map((word) => capitalContributionSubTypesMap[word]).join(" / ");
         expect(res.text).toContain(str.replaceAll("_", " "));
       } else {
         expect(res.text).toContain(partner.data[key]);

@@ -38,6 +38,11 @@
   } 
 %}
 
+{% set submitButtonText = i18n.checkYourAnswersPage.payment %}
+{% if journeyTypes.isTransition %}
+  {% set submitButtonText = i18n.checkYourAnswersPage.submitFiling %}
+{% endif %}
+
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
@@ -559,20 +564,8 @@
                 }
               ]
             }) }}
-
-            <div class="govuk-button-group">
-              {{ govukButton({
-                text: i18n.checkYourAnswersPage.payment,
-                attributes: {
-                  "id": "submit",
-                  "data-event-id": "check-your-answers-continue-to-payment-page-button"
-                }
-              }) }}
-              {% include "includes/print-button.njk" %} 
-            </div> 
           {% endif %}
 
-          {% if journeyTypes.isTransition %}
           {{ govukWarningText({
             text: i18n.checkYourAnswersPage.warningMessage.warning,
             iconFallbackText: "Warning"
@@ -587,16 +580,15 @@
 
           <div class="govuk-button-group">
             {{ govukButton({
-              text: i18n.buttons.submitFiling,
+              text: submitButtonText,
               attributes: {
                 "id": "submit",
-                "data-event-id": "submit-filing"
+                "data-event-id": "check-your-answers-continue-to-payment-page-button"
               }
             }) }}
 
             {% include "includes/print-button.njk" %}
           </div>
-          {% endif %}
 
         </form>
       </div>
