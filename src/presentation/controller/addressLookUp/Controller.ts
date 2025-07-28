@@ -40,7 +40,7 @@ class AddressLookUpController extends AbstractController {
     AddressLookUpPageType.enterLimitedPartnerPrincipalOfficeAddress
   ]);
 
-  private static readonly ADDRESS_LIST_REQUIRED_PAGES: Set<PageType | PageDefault> = new Set([
+  private static readonly LIST_PAGES: Set<PageType | PageDefault> = new Set([
     AddressLookUpPageType.chooseRegisteredOfficeAddress,
     AddressLookUpPageType.choosePrincipalPlaceOfBusinessAddress,
     AddressLookUpPageType.chooseGeneralPartnerUsualResidentialAddress,
@@ -50,7 +50,7 @@ class AddressLookUpController extends AbstractController {
     AddressLookUpPageType.chooseLimitedPartnerPrincipalOfficeAddress
   ]);
 
-  private static readonly GENERAL_PARTNER_ADDRESS_PAGES: Set<PageType | PageDefault> = new Set([
+  private static readonly GENERAL_PARTNER_PAGES: Set<PageType | PageDefault> = new Set([
     AddressLookUpPageType.postcodeGeneralPartnerUsualResidentialAddress,
     AddressLookUpPageType.postcodeGeneralPartnerCorrespondenceAddress,
     AddressLookUpPageType.postcodeGeneralPartnerPrincipalOfficeAddress,
@@ -62,7 +62,7 @@ class AddressLookUpController extends AbstractController {
     AddressLookUpPageType.confirmGeneralPartnerCorrespondenceAddress
   ]);
 
-  private static readonly LIMITED_PARTNER_ADDRESS_PAGES: Set<PageType | PageDefault> = new Set([
+  private static readonly LIMITED_PARTNER_PAGES: Set<PageType | PageDefault> = new Set([
     AddressLookUpPageType.postcodeLimitedPartnerUsualResidentialAddress,
     AddressLookUpPageType.postcodeLimitedPartnerPrincipalOfficeAddress,
     AddressLookUpPageType.enterLimitedPartnerUsualResidentialAddress,
@@ -90,33 +90,7 @@ class AddressLookUpController extends AbstractController {
         const addressRouting = this.getAddressRouting(request.url);
         const pageRouting = super.getRouting(addressRouting, pageType, request);
 
-        let limitedPartnership = {};
-        let generalPartner = {};
-        let limitedPartner = {};
-
-        if (ids.transactionId && ids.submissionId) {
-          limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
-            tokens,
-            ids.transactionId,
-            ids.submissionId
-          );
-        }
-
-        if (ids.transactionId && ids.generalPartnerId) {
-          generalPartner = await this.generalPartnerService.getGeneralPartner(
-            tokens,
-            ids.transactionId,
-            ids.generalPartnerId
-          );
-        }
-
-        if (ids.transactionId && ids.limitedPartnerId) {
-          limitedPartner = await this.limitedPartnerService.getLimitedPartner(
-            tokens,
-            ids.transactionId,
-            ids.limitedPartnerId
-          );
-        }
+        const { limitedPartnership, generalPartner, limitedPartner } = await this.getData(ids, tokens);
 
         const cacheById = this.cacheService.getDataFromCacheById(request.signedCookies, ids.transactionId);
 
@@ -136,6 +110,38 @@ class AddressLookUpController extends AbstractController {
     };
   }
 
+  private async getData(ids: Ids, tokens: Tokens) {
+    let limitedPartnership = {};
+    let generalPartner = {};
+    let limitedPartner = {};
+
+    if (ids.transactionId && ids.submissionId) {
+      limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+        tokens,
+        ids.transactionId,
+        ids.submissionId
+      );
+    }
+
+    if (ids.transactionId && ids.generalPartnerId) {
+      generalPartner = await this.generalPartnerService.getGeneralPartner(
+        tokens,
+        ids.transactionId,
+        ids.generalPartnerId
+      );
+    }
+
+    if (ids.transactionId && ids.limitedPartnerId) {
+      limitedPartner = await this.limitedPartnerService.getLimitedPartner(
+        tokens,
+        ids.transactionId,
+        ids.limitedPartnerId
+      );
+    }
+
+    return { limitedPartnership, generalPartner, limitedPartner };
+  }
+
   private async getAddressList(
     pageRouting: PageRouting,
     cache: Record<string, any>,
@@ -143,7 +149,7 @@ class AddressLookUpController extends AbstractController {
   ): Promise<Address[]> {
     let addressList: Address[] = [];
 
-    if (AddressLookUpController.ADDRESS_LIST_REQUIRED_PAGES.has(pageRouting.pageType)) {
+    if (AddressLookUpController.LIST_PAGES.has(pageRouting.pageType)) {
       const cacheKey = pageRouting.data?.[AddressCacheKeys.addressCacheKey];
       const postcode = cache[cacheKey]?.postal_code;
 
@@ -182,23 +188,7 @@ class AddressLookUpController extends AbstractController {
         );
 
         if (errors?.hasErrors()) {
-          let generalPartner;
-          if (AddressLookUpController.GENERAL_PARTNER_ADDRESS_PAGES.has(pageType)) {
-            generalPartner = await this.generalPartnerService.getGeneralPartner(
-              tokens,
-              ids.transactionId,
-              ids.generalPartnerId
-            );
-          }
-
-          let limitedPartner;
-          if (AddressLookUpController.LIMITED_PARTNER_ADDRESS_PAGES.has(pageType)) {
-            limitedPartner = await this.limitedPartnerService.getLimitedPartner(
-              tokens,
-              ids.transactionId,
-              ids.limitedPartnerId
-            );
-          }
+          const { generalPartner, limitedPartner } = await this.getPartnerGPandLP(pageType, tokens, ids);
 
           response.render(
             super.templateName(pageRouting.currentUrl),
@@ -306,23 +296,10 @@ class AddressLookUpController extends AbstractController {
         }
 
         if (errors?.hasErrors()) {
-          let generalPartner;
-          let limitedPartner;
-          if (AddressLookUpController.GENERAL_PARTNER_ADDRESS_PAGES.has(pageType)) {
-            generalPartner = await this.generalPartnerService.getGeneralPartner(
-              tokens,
-              ids.transactionId,
-              ids.generalPartnerId
-            );
-          } else if (AddressLookUpController.LIMITED_PARTNER_ADDRESS_PAGES.has(pageType)) {
-            limitedPartner = await this.limitedPartnerService.getLimitedPartner(
-              tokens,
-              ids.transactionId,
-              ids.limitedPartnerId
-            );
-          }
+          const { generalPartner, limitedPartner } = await this.getPartnerGPandLP(pageType, tokens, ids);
 
           const cacheById = this.cacheService.getDataFromCacheById(request.signedCookies, ids.transactionId);
+
           response.render(
             super.templateName(pageRouting.currentUrl),
             super.makeProps(
@@ -368,15 +345,15 @@ class AddressLookUpController extends AbstractController {
           [pageRouting.data?.[AddressCacheKeys.addressCacheKey]]: address
         };
 
-        const isGeneralPartnerAddress = AddressLookUpController.GENERAL_PARTNER_ADDRESS_PAGES.has(pageType);
-        const isLimitedPartnershipAddress = AddressLookUpController.LIMITED_PARTNER_ADDRESS_PAGES.has(pageType);
+        const isGeneralPartnerAddress = AddressLookUpController.GENERAL_PARTNER_PAGES.has(pageType);
+        const isLimitedPartnerAddress = AddressLookUpController.LIMITED_PARTNER_PAGES.has(pageType);
 
         // store in api
         let result;
 
         if (isGeneralPartnerAddress) {
           result = await this.generalPartnerService.sendPageData(tokens, ids.transactionId, ids.generalPartnerId, data);
-        } else if (isLimitedPartnershipAddress) {
+        } else if (isLimitedPartnerAddress) {
           result = await this.limitedPartnerService.sendPageData(tokens, ids.transactionId, ids.limitedPartnerId, data);
         } else {
           result = await this.limitedPartnershipService.sendPageData(
@@ -389,22 +366,11 @@ class AddressLookUpController extends AbstractController {
         }
 
         if (result?.errors) {
-          let generalPartner;
+          const { generalPartner, limitedPartner } = await this.getPartnerGPandLP(pageType, tokens, ids);
+
           let limitedPartnership;
 
-          if (isGeneralPartnerAddress) {
-            generalPartner = await this.generalPartnerService.getGeneralPartner(
-              tokens,
-              ids.transactionId,
-              ids.generalPartnerId
-            );
-          } else if (isLimitedPartnershipAddress) {
-            limitedPartnership = await this.limitedPartnerService.getLimitedPartner(
-              tokens,
-              ids.transactionId,
-              ids.limitedPartnerId
-            );
-          } else {
+          if (!isGeneralPartnerAddress && !isLimitedPartnerAddress) {
             limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
               tokens,
               ids.transactionId,
@@ -416,7 +382,7 @@ class AddressLookUpController extends AbstractController {
             super.templateName(pageRouting.currentUrl),
             super.makeProps(
               pageRouting,
-              { cache: { ...cache, ...cacheById }, generalPartner, limitedPartnership },
+              { cache: { ...cache, ...cacheById }, generalPartner, limitedPartner, limitedPartnership },
               result.errors
             )
           );
@@ -578,6 +544,29 @@ class AddressLookUpController extends AbstractController {
 
   private getAddressRouting(url: string) {
     return getJourneyTypes(url).isRegistration ? registrationAddressRouting : transitionAddressRouting;
+  }
+
+  private async getPartnerGPandLP(pageType: any, tokens: Tokens, ids: Ids) {
+    let generalPartner = {};
+    let limitedPartner = {};
+
+    if (AddressLookUpController.GENERAL_PARTNER_PAGES.has(pageType)) {
+      generalPartner = await this.generalPartnerService.getGeneralPartner(
+        tokens,
+        ids.transactionId,
+        ids.generalPartnerId
+      );
+    }
+
+    if (AddressLookUpController.LIMITED_PARTNER_PAGES.has(pageType)) {
+      limitedPartner = await this.limitedPartnerService.getLimitedPartner(
+        tokens,
+        ids.transactionId,
+        ids.limitedPartnerId
+      );
+    }
+
+    return { generalPartner, limitedPartner };
   }
 }
 
