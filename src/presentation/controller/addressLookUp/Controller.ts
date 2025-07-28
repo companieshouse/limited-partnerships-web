@@ -110,55 +110,6 @@ class AddressLookUpController extends AbstractController {
     };
   }
 
-  private async getData(ids: Ids, tokens: Tokens) {
-    let limitedPartnership = {};
-    let generalPartner = {};
-    let limitedPartner = {};
-
-    if (ids.transactionId && ids.submissionId) {
-      limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
-        tokens,
-        ids.transactionId,
-        ids.submissionId
-      );
-    }
-
-    if (ids.transactionId && ids.generalPartnerId) {
-      generalPartner = await this.generalPartnerService.getGeneralPartner(
-        tokens,
-        ids.transactionId,
-        ids.generalPartnerId
-      );
-    }
-
-    if (ids.transactionId && ids.limitedPartnerId) {
-      limitedPartner = await this.limitedPartnerService.getLimitedPartner(
-        tokens,
-        ids.transactionId,
-        ids.limitedPartnerId
-      );
-    }
-
-    return { limitedPartnership, generalPartner, limitedPartner };
-  }
-
-  private async getAddressList(
-    pageRouting: PageRouting,
-    cache: Record<string, any>,
-    tokens: Tokens
-  ): Promise<Address[]> {
-    let addressList: Address[] = [];
-
-    if (AddressLookUpController.LIST_PAGES.has(pageRouting.pageType)) {
-      const cacheKey = pageRouting.data?.[AddressCacheKeys.addressCacheKey];
-      const postcode = cache[cacheKey]?.postal_code;
-
-      addressList = await this.addressService.getAddressListForPostcode(tokens, postcode);
-    }
-
-    return addressList;
-  }
-
   postcodeValidation() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
@@ -217,26 +168,6 @@ class AddressLookUpController extends AbstractController {
         next(error);
       }
     };
-  }
-
-  private addAddressToCache(
-    request: Request,
-    response: Response,
-    pageType: any,
-    transactionId: string,
-    address: Address
-  ) {
-    const cacheById = this.cacheService.getDataFromCacheById(request.signedCookies, transactionId);
-    const addressRouting = this.getAddressRouting(request.url);
-    const pageRouting = super.getRouting(addressRouting, pageType, request);
-
-    const cache = this.cacheService.addDataToCache(request.signedCookies, {
-      [transactionId]: {
-        ...cacheById,
-        [pageRouting?.data?.[AddressCacheKeys.addressCacheKey]]: address
-      }
-    });
-    response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
   }
 
   selectAddress() {
@@ -402,6 +333,127 @@ class AddressLookUpController extends AbstractController {
     };
   }
 
+  generalPartnerUsualResidentialaddressChoice() {
+    return (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const pageType = super.extractPageTypeOrThrowError(request, AddressLookUpPageType);
+        const addressRouting = this.getAddressRouting(request.url);
+        const pageRouting = super.getRouting(addressRouting, pageType, request);
+
+        response.redirect(pageRouting.nextUrl);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  handleTerritoryChoice() {
+    return (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { ids, pageType } = super.extract(request);
+        const parameter = request.body.parameter;
+        const addressRouting = this.getAddressRouting(request.url);
+        const pageRouting = super.getRouting(addressRouting, pageType, request);
+
+        const isUnitedKingdom = parameter === "unitedKingdom";
+
+        const redirectUrl = super.insertIdsInUrl(
+          isUnitedKingdom ? pageRouting.nextUrl : pageRouting.data?.["nextUrlOverseas"],
+          ids,
+          request.url
+        );
+
+        const cacheKey = pageRouting.data?.[AddressCacheKeys.territoryCacheKey];
+
+        if (cacheKey) {
+          const cache = this.cacheService.addDataToCache(request.signedCookies, {
+            [ids.transactionId]: {
+              [cacheKey]: parameter
+            }
+          });
+          response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
+        }
+
+        response.redirect(redirectUrl);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  private getAddressRouting(url: string) {
+    return getJourneyTypes(url).isRegistration ? registrationAddressRouting : transitionAddressRouting;
+  }
+
+  private async getData(ids: Ids, tokens: Tokens) {
+    let limitedPartnership = {};
+    let generalPartner = {};
+    let limitedPartner = {};
+
+    if (ids.transactionId && ids.submissionId) {
+      limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+        tokens,
+        ids.transactionId,
+        ids.submissionId
+      );
+    }
+
+    if (ids.transactionId && ids.generalPartnerId) {
+      generalPartner = await this.generalPartnerService.getGeneralPartner(
+        tokens,
+        ids.transactionId,
+        ids.generalPartnerId
+      );
+    }
+
+    if (ids.transactionId && ids.limitedPartnerId) {
+      limitedPartner = await this.limitedPartnerService.getLimitedPartner(
+        tokens,
+        ids.transactionId,
+        ids.limitedPartnerId
+      );
+    }
+
+    return { limitedPartnership, generalPartner, limitedPartner };
+  }
+
+  private async getAddressList(
+    pageRouting: PageRouting,
+    cache: Record<string, any>,
+    tokens: Tokens
+  ): Promise<Address[]> {
+    let addressList: Address[] = [];
+
+    if (AddressLookUpController.LIST_PAGES.has(pageRouting.pageType)) {
+      const cacheKey = pageRouting.data?.[AddressCacheKeys.addressCacheKey];
+      const postcode = cache[cacheKey]?.postal_code;
+
+      addressList = await this.addressService.getAddressListForPostcode(tokens, postcode);
+    }
+
+    return addressList;
+  }
+
+  private addAddressToCache(
+    request: Request,
+    response: Response,
+    pageType: any,
+    transactionId: string,
+    address: Address
+  ) {
+    const cacheById = this.cacheService.getDataFromCacheById(request.signedCookies, transactionId);
+    const addressRouting = this.getAddressRouting(request.url);
+    const pageRouting = super.getRouting(addressRouting, pageType, request);
+
+    const cache = this.cacheService.addDataToCache(request.signedCookies, {
+      [transactionId]: {
+        ...cacheById,
+        [pageRouting?.data?.[AddressCacheKeys.addressCacheKey]]: address
+      }
+    });
+    response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
+  }
+
   private async conditionalNextUrl(tokens: Tokens, ids: Ids, pageRouting: PageRouting, request: Request) {
     const pageTypes: Array<PageType | PageDefault> = [
       AddressLookUpPageType.confirmRegisteredOfficeAddress,
@@ -492,58 +544,6 @@ class AddressLookUpController extends AbstractController {
     }
 
     response.redirect(pageRouting.nextUrl);
-  }
-
-  generalPartnerUsualResidentialaddressChoice() {
-    return (request: Request, response: Response, next: NextFunction) => {
-      try {
-        const pageType = super.extractPageTypeOrThrowError(request, AddressLookUpPageType);
-        const addressRouting = this.getAddressRouting(request.url);
-        const pageRouting = super.getRouting(addressRouting, pageType, request);
-
-        response.redirect(pageRouting.nextUrl);
-      } catch (error) {
-        next(error);
-      }
-    };
-  }
-
-  handleTerritoryChoice() {
-    return (request: Request, response: Response, next: NextFunction) => {
-      try {
-        const { ids, pageType } = super.extract(request);
-        const parameter = request.body.parameter;
-        const addressRouting = this.getAddressRouting(request.url);
-        const pageRouting = super.getRouting(addressRouting, pageType, request);
-
-        const isUnitedKingdom = parameter === "unitedKingdom";
-
-        const redirectUrl = super.insertIdsInUrl(
-          isUnitedKingdom ? pageRouting.nextUrl : pageRouting.data?.["nextUrlOverseas"],
-          ids,
-          request.url
-        );
-
-        const cacheKey = pageRouting.data?.[AddressCacheKeys.territoryCacheKey];
-
-        if (cacheKey) {
-          const cache = this.cacheService.addDataToCache(request.signedCookies, {
-            [ids.transactionId]: {
-              [cacheKey]: parameter
-            }
-          });
-          response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
-        }
-
-        response.redirect(redirectUrl);
-      } catch (error) {
-        next(error);
-      }
-    };
-  }
-
-  private getAddressRouting(url: string) {
-    return getJourneyTypes(url).isRegistration ? registrationAddressRouting : transitionAddressRouting;
   }
 
   private async getPartnerGPandLP(pageType: any, tokens: Tokens, ids: Ids) {
