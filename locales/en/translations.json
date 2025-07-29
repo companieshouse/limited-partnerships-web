@@ -352,7 +352,6 @@
         "lpInfo" : "Limited partnership information",
         "change" : "Change",
         "headingName" : "Name",
-        "headingNumber": "Partnership number",
         "headingType" : "Type",
         "headingSic" : "Standard Industrial Classification (SIC) code",
         "headingEmail" : "Registered email address",
@@ -374,7 +373,9 @@
             "dob": "full dates of birth of any partners who are people",
             "ura": "usual residential addresses of any partners who are people"
         },
+        
         "payment" : "Continue to payment",
+        "submitFiling": "Submit filing",
 
         "partners": {
             "generalPartners" : {

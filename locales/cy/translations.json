@@ -351,7 +351,6 @@
         "lpInfo" : "WELSH - Limited partnership information",
         "change" : "WELSH - Change",
         "headingName" : "WELSH - Name",
-        "headingNumber": "WELSH - Partnership number",
         "headingType" : "WELSH - Type",
         "headingSic" : "WELSH - Standard Industrial Classification (SIC) code",
         "headingEmail" : "WELSH - Registered email address",
@@ -373,7 +372,9 @@
             "dob": "WELSH - full dates of birth of any partners who are people",
             "ura": "WELSH - usual residential addresses of any partners who are people"
         },
+        
         "payment" : "WELSH - Continue to payment",
+        "submitFiling" : "WELSH - Submit filing",
 
         "partners": {
             "generalPartners" : {

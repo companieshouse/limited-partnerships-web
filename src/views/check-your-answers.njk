@@ -38,11 +38,20 @@
   } 
 %}
 
+{% set submitButtonText = i18n.checkYourAnswersPage.payment %}
+{% if journeyTypes.isTransition %}
+  {% set submitButtonText = i18n.checkYourAnswersPage.submitFiling %}
+{% endif %}
+
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
+      {% include "includes/proposed-name.njk" %}
+
       <h1 class="govuk-heading-l">{{ i18n.checkYourAnswersPage.title }}</h1>
+
       <h2 class="govuk-heading-m">{{ i18n.checkYourAnswersPage.lpInfo }}</h2>
+
       {{ govukSummaryList({
         classes: "govuk-!-margin-bottom-7",
         rows: [
@@ -64,14 +73,6 @@
               ]
             } if journeyTypes.isRegistration
           },
-          {
-            key: {
-              text: i18n.checkYourAnswersPage.headingNumber
-            },
-            value: {
-              text: props.data.limitedPartnership.data.partnership_number
-            }
-          } if journeyTypes.isTransition,
           {
             key: {
               text: i18n.checkYourAnswersPage.headingType
@@ -204,11 +205,9 @@
       {% if props.data.generalPartners.length > 0 %}
         <h2 class="govuk-heading-m">{{ i18n.checkYourAnswersPage.partners.generalPartners.title }}</h2>
 
-        {% if journeyTypes.isTransition %}
-          <p class="govuk-body-m govuk-!-margin-bottom-6">
-            <a href="{{ props.currentUrl | replace(props.pageType, props.data.reviewGeneralPartnersType) }}"  class="govuk-body-m govuk-link" data-event-id="change-link">{{ i18n.checkYourAnswersPage.partners.generalPartners.changeRemoveOrAdd }}</a>
-          <p>
-        {% endif %}
+        <p class="govuk-body-m govuk-!-margin-bottom-6">
+          <a href="{{ props.currentUrl | replace(props.pageType, props.data.reviewGeneralPartnersType) }}"  class="govuk-body-m govuk-link" data-event-id="change-link">{{ i18n.checkYourAnswersPage.partners.generalPartners.changeRemoveOrAdd }}</a>
+        <p>
 
         {% for item in props.data.generalPartners %}
           {% if item.data.forename %}
@@ -350,23 +349,14 @@
             }) }}
           {% endif %}
         {% endfor %}
-
-        {% if journeyTypes.isRegistration %}
-            <p class="govuk-body-m govuk-!-margin-bottom-9">
-              <a href="{{ props.currentUrl | replace(props.pageType, props.data.reviewGeneralPartnersType) }}"  class="govuk-body-m govuk-link" data-event-id="change-link">{{ i18n.checkYourAnswersPage.partners.generalPartners.changeRemoveOrAdd }}</a>
-            <p>
-        {% endif %}
-
       {% endif %}
 
       {% if props.data.limitedPartners.length > 0 %}
         <h2 class="govuk-heading-m">{{ i18n.checkYourAnswersPage.partners.limitedPartners.title }}</h2>
 
-        {% if journeyTypes.isTransition %}
-          <p class="govuk-body-m govuk-!-margin-bottom-6">
-            <a href="{{ props.currentUrl | replace(props.pageType, props.data.reviewLimitedPartnersType) }}"  class="govuk-body-m govuk-link" data-event-id="change-link">{{ i18n.checkYourAnswersPage.partners.limitedPartners.changeRemoveOrAdd }}</a>
-          <p>
-        {% endif %}
+        <p class="govuk-body-m govuk-!-margin-bottom-6">
+          <a href="{{ props.currentUrl | replace(props.pageType, props.data.reviewLimitedPartnersType) }}"  class="govuk-body-m govuk-link" data-event-id="change-link">{{ i18n.checkYourAnswersPage.partners.limitedPartners.changeRemoveOrAdd }}</a>
+        <p>
 
         {% for item in props.data.limitedPartners %}
           {% if item.data.forename %}
@@ -545,13 +535,6 @@
             }) }}
           {% endif %}
         {% endfor %}
-
-        {% if journeyTypes.isRegistration %}
-            <p class="govuk-body-m govuk-!-margin-bottom-9">
-              <a href="{{ props.currentUrl | replace(props.pageType, props.data.reviewLimitedPartnersType) }}"  class="govuk-body-m govuk-link" data-event-id="change-link">{{ i18n.checkYourAnswersPage.partners.limitedPartners.changeRemoveOrAdd }}</a>
-            <p>
-        {% endif %}
-          
       {% endif %}
 
       <br>
@@ -581,20 +564,8 @@
                 }
               ]
             }) }}
-
-            <div class="govuk-button-group">
-              {{ govukButton({
-                text: i18n.checkYourAnswersPage.payment,
-                attributes: {
-                  "id": "submit",
-                  "data-event-id": "check-your-answers-continue-to-payment-page-button"
-                }
-              }) }}
-              {% include "includes/print-button.njk" %} 
-            </div> 
           {% endif %}
 
-          {% if journeyTypes.isTransition %}
           {{ govukWarningText({
             text: i18n.checkYourAnswersPage.warningMessage.warning,
             iconFallbackText: "Warning"
@@ -607,11 +578,17 @@
             <li>{{ i18n.checkYourAnswersPage.warningMessage.ura }}</li>
           </ul>
 
-          {% include "includes/print-button.njk" %}
-          <div>
-            {% include "includes/continue-button.njk" %}
+          <div class="govuk-button-group">
+            {{ govukButton({
+              text: submitButtonText,
+              attributes: {
+                "id": "submit",
+                "data-event-id": "check-your-answers-continue-to-payment-page-button"
+              }
+            }) }}
+
+            {% include "includes/print-button.njk" %}
           </div>
-          {% endif %}
 
         </form>
       </div>
