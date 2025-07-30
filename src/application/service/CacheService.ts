@@ -1,4 +1,4 @@
-import ICacheRepository from "../../domain/ICacheRepository";
+import ICacheRepository from "@domain/ICacheRepository";
 
 class CacheService {
   cacheRepository: ICacheRepository;

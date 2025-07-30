@@ -1,9 +1,9 @@
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 
-import { logger } from "../../utils";
-import ICompanyGateway from "../../domain/ICompanyGateway";
-import UIErrors from "../../domain/entities/UIErrors";
-import { extractAPIErrors } from "./utils";
+import { logger } from "@utils";
+import ICompanyGateway from "@domain/ICompanyGateway";
+import UIErrors from "@domain/entities/UIErrors";
+import { extractAPIErrors } from "@service/utils";
 
 class CompanyService {
   constructor(private readonly companyGateway: ICompanyGateway) {}

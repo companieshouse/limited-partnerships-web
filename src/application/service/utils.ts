@@ -1,6 +1,6 @@
 import { GeneralPartner, LimitedPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-import UIErrors from "../../domain/entities/UIErrors";
+import UIErrors from "@domain/entities/UIErrors";
 
 export const extractAPIErrors = (errors: any) => {
   const isValidationErrors = errors instanceof UIErrors;

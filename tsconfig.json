@@ -12,7 +12,19 @@
     "experimentalDecorators": true,
     "strictNullChecks": true,
     "esModuleInterop": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "paths": {
+      "@config/*": ["config/*"],
+      "@domain/*": ["domain/*"],
+      "@infrastructure/*": ["infrastructure/*"],
+      "@middlewares/*": ["middlewares/*"],
+      "@presentation/*": ["presentation/*"],
+      "@routes/*": ["routes/*"],
+      "@service/*": ["application/service/*"],
+      "@utils/*": ["utils/*"],
+      "@utils": ["utils/index"],
+      "@views/*": ["views/*"]
+    }
   },
   "include": [
     "src/**/*"

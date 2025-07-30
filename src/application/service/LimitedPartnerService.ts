@@ -1,9 +1,9 @@
 import { LimitedPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-import ILimitedPartnerGateway from "../../domain/ILimitedPartnerGateway";
-import { logger } from "../../utils";
-import UIErrors from "../../domain/entities/UIErrors";
-import { extractAPIErrors, incompletePartnerErrorList } from "./utils";
-import { Tokens } from "../../domain/types";
+import ILimitedPartnerGateway from "@domain/ILimitedPartnerGateway";
+import { logger } from "@utils";
+import UIErrors from "@domain/entities/UIErrors";
+import { extractAPIErrors, incompletePartnerErrorList } from "@service/utils";
+import { Tokens } from "@domain/types";
 
 class LimitedPartnerService {
   i18n: any;

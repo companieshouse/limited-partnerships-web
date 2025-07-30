@@ -1,8 +1,8 @@
 import { Address, Jurisdiction } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-import UIErrors from "../../domain/entities/UIErrors";
-import IAddressLookUpGateway from "../../domain/IAddressLookUpGateway";
+import UIErrors from "@domain/entities/UIErrors";
+import IAddressLookUpGateway from "@domain/IAddressLookUpGateway";
 
-import { logger } from "../../utils";
+import { logger } from "@utils";
 
 class AddressService {
   private static readonly UK_COUNTRIES: Set<string> = new Set(["Scotland", "Northern Ireland", "England", "Wales"]);

@@ -1,11 +1,11 @@
 import { CreatePaymentRequest, Payment } from "@companieshouse/api-sdk-node/dist/services/payment";
-import IPaymentGateway from "../../domain/IPaymentGateway";
+import IPaymentGateway from "@domain/IPaymentGateway";
 import { v4 as uuidv4 } from 'uuid';
 import {
   API_URL,
   PAYMENT,
   REFERENCE
-} from "../../config/constants";
+} from "@config/constants";
 
 class PaymentService {
   constructor(

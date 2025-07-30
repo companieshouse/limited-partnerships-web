@@ -1,7 +1,7 @@
 import { Transaction } from "@companieshouse/api-sdk-node/dist/services/transaction/types";
-import ITransactionGateway from "../../domain/ITransactionGateway";
-import { logger } from "../../utils";
-import { extractAPIErrors } from "./utils";
+import ITransactionGateway from "@domain/ITransactionGateway";
+import { logger } from "@utils";
+import { extractAPIErrors } from "@service/utils";
 
 class TransactionService {
   constructor(

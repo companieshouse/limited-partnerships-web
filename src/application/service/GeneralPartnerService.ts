@@ -1,9 +1,9 @@
 import { GeneralPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-import IGeneralPartnerGateway from "../../domain/IGeneralPartnerGateway";
-import { logger } from "../../utils";
-import UIErrors from "../../domain/entities/UIErrors";
-import { extractAPIErrors, incompletePartnerErrorList } from "./utils";
-import { Tokens } from "../../domain/types";
+import IGeneralPartnerGateway from "@domain/IGeneralPartnerGateway";
+import { logger } from "@utils";
+import UIErrors from "@domain/entities/UIErrors";
+import { extractAPIErrors, incompletePartnerErrorList } from "@service/utils";
+import { Tokens } from "@domain/types";
 
 class GeneralPartnerService {
   i18n: any;
