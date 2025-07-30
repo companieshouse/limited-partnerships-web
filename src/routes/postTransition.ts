@@ -25,7 +25,7 @@ const transitionEndpoints = (router: Router, dependencies: IDependencies): void 
   router.get(
     CONFIRM_LIMITED_PARTNERSHIP_URL,
     authentication,
-    dependencies.limitedPartnershipPostTransitionController.getConfirmPage()
+    dependencies.limitedPartnershipPostTransitionController.getCompanyPage()
   );
   router.post(
     CONFIRM_LIMITED_PARTNERSHIP_URL,
@@ -36,7 +36,7 @@ const transitionEndpoints = (router: Router, dependencies: IDependencies): void 
   router.get(
     LANDING_PAGE_URL,
     authentication,
-    dependencies.limitedPartnershipPostTransitionController.getLandingPage()
+    dependencies.limitedPartnershipPostTransitionController.getCompanyPage()
   );
 };
 
