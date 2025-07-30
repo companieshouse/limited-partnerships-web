@@ -102,7 +102,7 @@
             "generalPartnerPrincipalOfficeAddress": {
                 "title": "Choose the general partner's principal office address",
                 "hint": "This is the address for the entity's main office.",
-                "publicRegisterInformationLine1": "We'll show the general partner's correspondence address on the public register."
+                "publicRegisterInformationLine1": "We'll show the general partner's principal office address on the public register."
 
             },
             "generalPartnerCorrespondenceAddress" : {
