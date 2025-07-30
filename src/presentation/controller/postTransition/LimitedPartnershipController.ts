@@ -127,6 +127,38 @@ class LimitedPartnershipController extends AbstractController {
       }
     };
   }
+
+  getLandingPage() {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { tokens } = super.extract(request);
+        const { pageType } = super.extract(request);
+        const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
+
+        const cache = this.cacheService.getDataFromCache(request.signedCookies);
+        const result = await this.companyService.getCompanyProfile(
+          tokens,
+          cache[`${APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION}company_number`]
+        );
+
+        if (result.errors) {
+          response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(pageRouting, null, result.errors)
+          );
+
+          return;
+        }
+
+        response.render(
+          super.templateName(pageRouting.currentUrl),
+          super.makeProps(pageRouting, { company: result.companyProfile }, null)
+        );
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
 }
 
 export default LimitedPartnershipController;
