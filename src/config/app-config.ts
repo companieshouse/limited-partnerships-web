@@ -35,8 +35,7 @@ export const appConfig = (app: express.Application) => {
 
   nunjucksEnv.addGlobal("govukFrontendVersion", getGOVUKFrontendVersion());
   nunjucksEnv.addGlobal("govukRebrand", true);
-  nunjucksEnv.addGlobal("cdnHost", "//" + config.CDN_HOST);
-
+  nunjucksEnv.addGlobal("cdnHost", `//${config.CDN_HOST}`);
   nunjucksEnv.addGlobal("MATOMO_ASSET_PATH", `//${config.CDN_HOST}`);
   nunjucksEnv.addGlobal("PIWIK_REGISTRATION_START_GOAL_ID", config.PIWIK_REGISTRATION_START_GOAL_ID);
   nunjucksEnv.addGlobal("PIWIK_REGISTRATION_LP_GOAL_ID", config.PIWIK_REGISTRATION_LP_GOAL_ID);
