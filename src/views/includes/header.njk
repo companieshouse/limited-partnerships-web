@@ -9,8 +9,10 @@
 
 {{ govukHeader({
   homepageUrl: "//www.gov.uk",
-  serviceName: serviceName,
-  serviceUrl: "/limited-partnerships",
   containerClasses: "govuk-width-container",
   useTudorCrown: true
+}) }}
+{{ govukServiceNavigation({
+  serviceName: serviceName,
+  serviceUrl: "/limited-partnerships"
 }) }}

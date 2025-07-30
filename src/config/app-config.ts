@@ -6,6 +6,7 @@ import * as path from "path";
 
 import { SessionMiddleware, SessionStore } from "@companieshouse/node-session-handler";
 import { CsrfProtectionMiddleware } from "@companieshouse/web-security-node";
+import { getGOVUKFrontendVersion } from "@companieshouse/ch-node-utils";
 
 import { createSummaryListLink } from "../utils/change-link";
 import * as config from "./constants";
@@ -23,8 +24,8 @@ export const appConfig = (app: express.Application) => {
     [
       path.join(__dirname, "../views"),
       "node_modules/@companieshouse",
-      "node_modules/govuk-frontend",
-      "node_modules/govuk-frontend/components"
+      "node_modules/govuk-frontend/dist/",
+      "node_modules/govuk-frontend/dist/govuk/components"
     ],
     {
       autoescape: true,
@@ -32,7 +33,10 @@ export const appConfig = (app: express.Application) => {
     }
   );
 
-  nunjucksEnv.addGlobal("CDN_HOST", config.CDN_HOST);
+  nunjucksEnv.addGlobal("govukFrontendVersion", getGOVUKFrontendVersion());
+  nunjucksEnv.addGlobal("govukRebrand", true);
+  nunjucksEnv.addGlobal("cdnHost", "//" + config.CDN_HOST);
+
   nunjucksEnv.addGlobal("MATOMO_ASSET_PATH", `//${config.CDN_HOST}`);
   nunjucksEnv.addGlobal("PIWIK_REGISTRATION_START_GOAL_ID", config.PIWIK_REGISTRATION_START_GOAL_ID);
   nunjucksEnv.addGlobal("PIWIK_REGISTRATION_LP_GOAL_ID", config.PIWIK_REGISTRATION_LP_GOAL_ID);
