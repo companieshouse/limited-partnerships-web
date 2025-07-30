@@ -1,4 +1,5 @@
 enum RegistrationPageType {
+  continueSavedFiling = "continue-saved-filing",
   whichType = "which-type",
   name = "name",
   email = "email",

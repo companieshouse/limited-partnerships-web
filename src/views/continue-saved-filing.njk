@@ -1,0 +1,62 @@
+{% extends "layout.njk" %}
+
+{% set pageTitle = i18n.continueSavedFilingPage.title %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" method="post">
+        <input type="hidden" name="pageType" value={{ props.pageType }}>
+      
+        {% include "includes/csrf_token.njk" %}
+
+        {{ govukRadios({
+          classes: "govuk-radios",
+          name: "continue_saved_filing",
+          fieldset: {
+            legend: {
+              text: i18n.continueSavedFilingPage.title,
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--xl"
+            }
+          },
+          hint: {
+            text: i18n.continueSavedFilingPage.hint
+          },
+          items: [
+            {
+              value: "YES",
+              text: i18n.continueSavedFilingPage.yes.text,
+              hint: {
+                text: i18n.continueSavedFilingPage.yes.hint
+              },
+              attributes: {
+                "required": true,
+                "data-goal-id": PIWIK_REGISTRATION_LP_GOAL_ID
+              }
+            },
+            {
+              value: "NO",
+              text: i18n.continueSavedFilingPage.no.text,
+              hint: {
+                text: i18n.continueSavedFilingPage.no.hint
+              },
+              attributes: {
+                "required": true,
+                "data-goal-id": PIWIK_REGISTRATION_PRIVATE_FUND_LP_GOAL_ID
+              }
+            }
+          ]
+        }) }}
+
+        <button class="govuk-button" data-module="govuk-button" id="submit" onclick="_paq.push(['trackGoal', document.querySelector('input[name=continue_saved_filing]:checked').getAttribute('data-goal-id')])">
+          {{ i18n.buttons.continue }}
+        </button>
+
+      </form>
+    </div>
+  </div>
+
+{% endblock %}

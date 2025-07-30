@@ -449,6 +449,19 @@
         }
     },
 
+    "continueSavedFilingPage": {
+        "title": "WELSH - Do you want to continue with a saved filing?",
+        "hint": "WELSH - If you have saved filings, you can continue with one of these or start a new one",
+        "yes": {
+          "text": "WELSH - Yes, continue with a saved filing",
+          "hint": "WELSH - You’ll be able to choose which filing you want to continue with"          
+        },
+        "no": {
+          "text": "WELSH - No, start a new filing",
+          "hint": "WELSH - This will not delete any saved filings"          
+        }
+    },
+
     "emailPage" : {
         "title" : "WELSH - What is the registered email address for the partnership?",
         "hint": "WELSH - We'll use this email address to send important information that relates to the partnership. For example, new legislative requirements or warnings about missed deadlines.",
@@ -537,7 +550,7 @@
         "spelling" : "WELSH - If you typed the web address, check it is spelled correctly.",
         "copiedAddress" : "WELSH - If you pasted the web address, check you copied the entire address.",
         "movedPage" : "WELSH - If the web address is correct or you selected a link, the page may have moved.",
-        "goToStartPage" : "WELSH - To register a limited partnership, go to the <a class='govuk-link' href='/limited-partnerships/registration/which-type'>Register a limited partnership</a> start page."
+        "goToStartPage" : "WELSH - To register a limited partnership, go to the <a class='govuk-link' href='/limited-partnerships/registration/continue-saved-filing'>Register a limited partnership</a> start page."
     },
 
     "paymentFailedPage" : {

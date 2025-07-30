@@ -8,6 +8,7 @@ import {
   EMAIL_URL,
   WHERE_IS_THE_JURISDICTION_URL,
   NAME_URL,
+  CONTINUE_SAVED_FILING_URL,
   WHICH_TYPE_URL,
   LIMITED_PARTNERS_URL,
   GENERAL_PARTNERS_URL,
@@ -36,6 +37,17 @@ export const registrationEndpoints = (
   router: Router,
   dependencies: IDependencies
 ): void => {
+  router.get(
+    CONTINUE_SAVED_FILING_URL,
+    authentication,
+    dependencies.limitedPartnershipRegistrationController.getPageRouting()
+  );
+  router.post(
+    CONTINUE_SAVED_FILING_URL,
+    authentication,
+    dependencies.limitedPartnershipRegistrationController.continueSavedFiling()
+  );
+
   router.get(
     WHICH_TYPE_URL,
     authentication,
