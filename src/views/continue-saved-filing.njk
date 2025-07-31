@@ -33,8 +33,7 @@
                 text: i18n.continueSavedFilingPage.yes.hint
               },
               attributes: {
-                "required": true,
-                "data-goal-id": PIWIK_REGISTRATION_LP_GOAL_ID
+                "required": true
               }
             },
             {
@@ -44,16 +43,13 @@
                 text: i18n.continueSavedFilingPage.no.hint
               },
               attributes: {
-                "required": true,
-                "data-goal-id": PIWIK_REGISTRATION_PRIVATE_FUND_LP_GOAL_ID
+                "required": true
               }
             }
           ]
         }) }}
 
-        <button class="govuk-button" data-module="govuk-button" id="submit" onclick="_paq.push(['trackGoal', document.querySelector('input[name=continue_saved_filing]:checked').getAttribute('data-goal-id')])">
-          {{ i18n.buttons.continue }}
-        </button>
+        {% include "includes/continue-button.njk" %}
 
       </form>
     </div>
