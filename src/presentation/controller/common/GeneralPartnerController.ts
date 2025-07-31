@@ -12,14 +12,21 @@ import UIErrors from "../../../domain/entities/UIErrors";
 import { getJourneyTypes } from "../../../utils/journey";
 import RegistrationPageType from "../registration/PageType";
 import TransitionPageType from "../transition/PageType";
+import PostTransitionPageType from "../postTransition/pageType";
 import registrationRouting from "../registration/Routing";
 import transitionRouting from "../transition/Routing";
+import postTransitionRouting from "../postTransition/routing";
+import CompanyService from "../../../application/service/CompanyService";
+import CacheService from "../../../application/service/CacheService";
+import { APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION } from "../../../config/constants";
 
 abstract class GeneralPartnerController extends AbstractController {
   constructor(
     protected readonly limitedPartnershipService: LimitedPartnershipService,
     protected readonly generalPartnerService: GeneralPartnerService,
-    protected readonly limitedPartnerService: LimitedPartnerService
+    protected readonly limitedPartnerService: LimitedPartnerService,
+    protected readonly companyService?: CompanyService,
+    protected readonly cacheService?: CacheService
   ) {
     super();
   }
@@ -55,9 +62,15 @@ abstract class GeneralPartnerController extends AbstractController {
           );
         }
 
+        const cache = this.cacheService ? this.cacheService.getDataFromCache(request.signedCookies) : null;
+        const company = this.companyService ? await this.companyService.getCompanyProfile(
+          tokens,
+          cache ? cache[`${APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION}company_number`] : undefined
+        ) : undefined;
+
         response.render(
           super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { limitedPartnership, generalPartner }, null)
+          super.makeProps(pageRouting, { limitedPartnership, generalPartner, company: company?.companyProfile }, null)
         );
       } catch (error) {
         next(error);
@@ -419,11 +432,25 @@ abstract class GeneralPartnerController extends AbstractController {
   }
 
   private getJourneyPageTypes(url: string) {
-    return getJourneyTypes(url).isRegistration ? RegistrationPageType : TransitionPageType;
+    const journeyType = getJourneyTypes(url);
+    if (journeyType.isRegistration) {
+      return RegistrationPageType;
+    } else if (journeyType.isTransition) {
+      return TransitionPageType;
+    } else {
+      return PostTransitionPageType;
+    }
   }
 
   private getJourneyPageRouting(url: string) {
-    return getJourneyTypes(url).isRegistration ? registrationRouting : transitionRouting;
+    const journeyType = getJourneyTypes(url);
+    if (journeyType.isRegistration) {
+      return registrationRouting;
+    } else if (journeyType.isTransition) {
+      return transitionRouting;
+    } else {
+      return postTransitionRouting;
+    }
   }
 }
 

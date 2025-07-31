@@ -3,5 +3,7 @@
         {{ props.data.limitedPartnership.data.partnership_name | upper }} {{ props.data.limitedPartnership.data.name_ending | upper }}
     {% elif journeyTypes.isTransition %}
         {{ props.data.limitedPartnership.data.partnership_name | upper }} ({{ props.data.limitedPartnership.data.partnership_number | upper }})
+    {% else %}
+        {{ props.data.company.companyName | upper }} ({{ props.data.company.companyNumber | upper }})
     {% endif %}
 </span>
