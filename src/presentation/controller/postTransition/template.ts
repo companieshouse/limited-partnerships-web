@@ -6,3 +6,5 @@ export const LANDING_PAGE_TEMPLATE = PostTransitionPageType.landingPage;
 
 // general partner
 export const GENERAL_PARTNER_CHOICE_TEMPLATE = PostTransitionPageType.generalPartnerChoice;
+export const ADD_GENERAL_PARTNER_PERSON_TEMPLATE = PostTransitionPageType.addGeneralPartnerPerson;
+export const ADD_GENERAL_PARTNER_LEGAL_ENTITY_TEMPLATE = PostTransitionPageType.addGeneralPartnerLegalEntity;
