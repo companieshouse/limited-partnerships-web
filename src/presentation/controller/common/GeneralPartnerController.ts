@@ -45,6 +45,7 @@ abstract class GeneralPartnerController extends AbstractController {
 
         let limitedPartnership = {};
         let generalPartner = {};
+        let companyProfile = {};
 
         if (ids.transactionId && ids.submissionId) {
           limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
@@ -62,15 +63,15 @@ abstract class GeneralPartnerController extends AbstractController {
           );
         }
 
-        const cache = this.cacheService ? this.cacheService.getDataFromCache(request.signedCookies) : null;
-        const company = this.companyService ? await this.companyService.getCompanyProfile(
-          tokens,
-          cache ? cache[`${APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION}company_number`] : undefined
-        ) : undefined;
+        if (this.cacheService && this.companyService) {
+          const cache = this.cacheService?.getDataFromCache(request.signedCookies);
+          const company = await this.companyService.getCompanyProfile(tokens, cache[`${APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION}company_number`]);
+          companyProfile = company.companyProfile;
+        }
 
         response.render(
           super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { limitedPartnership, generalPartner, company: company?.companyProfile }, null)
+          super.makeProps(pageRouting, { limitedPartnership, generalPartner, company: companyProfile }, null)
         );
       } catch (error) {
         next(error);
