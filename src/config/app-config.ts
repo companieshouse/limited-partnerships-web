@@ -13,6 +13,8 @@ import * as config from "./constants";
 import { localisationMiddleware } from "../middlewares";
 import { serviceAvailabilityMiddleware } from "../middlewares/service-availability.middleware";
 import { journeyDetectionMiddleware } from "../middlewares/journey.detection.middleware";
+import { TRANSITION_START_URL } from "../presentation/controller/transition/url";
+import { REGISTRATION_START_URL } from "../presentation/controller/registration/url";
 
 export const appConfig = (app: express.Application) => {
   // set some app variables from the environment
@@ -53,6 +55,8 @@ export const appConfig = (app: express.Application) => {
   nunjucksEnv.addGlobal("SERVICE_NAME_REGISTRATION", config.SERVICE_NAME_REGISTRATION);
   nunjucksEnv.addGlobal("SERVICE_NAME_TRANSITION", config.SERVICE_NAME_TRANSITION);
   nunjucksEnv.addGlobal("SERVICE_NAME_POST_TRANSITION", config.SERVICE_NAME_POST_TRANSITION);
+  nunjucksEnv.addGlobal("SERVICE_START_URL_REGISTRATION", REGISTRATION_START_URL);
+  nunjucksEnv.addGlobal("SERVICE_START_URL_TRANSITION", TRANSITION_START_URL);
   nunjucksEnv.addGlobal("CREATE_CHANGE_LINK", createSummaryListLink);
 
   app.use(express.json());

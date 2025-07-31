@@ -7,6 +7,8 @@ import {
   LIMITED_PARTNER_WITH_ID_URL
 } from "../../../config/constants";
 
+export const REGISTRATION_START_URL = `${REGISTRATION_BASE_URL}/start`;
+
 export const WHICH_TYPE_URL = `${REGISTRATION_BASE_URL}/${template.WHICH_TYPE_TEMPLATE}`;
 export const WHICH_TYPE_WITH_IDS_URL = `${REGISTRATION_WITH_IDS_URL}/${template.WHICH_TYPE_TEMPLATE}`;
 export const NAME_URL = `${REGISTRATION_BASE_URL}/${template.NAME_TEMPLATE}`;
