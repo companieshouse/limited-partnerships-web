@@ -13,7 +13,7 @@ import {
 import CompanyService from "../../../application/service/CompanyService";
 import CacheService from "../../../application/service/CacheService";
 import TransactionService from "../../../application/service/TransactionService";
-import { IncorporationKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { IncorporationKind, PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import PostTransitionPageType from "../postTransition/pageType";
 import postTransitionRouting from "../postTransition/routing";
@@ -50,13 +50,13 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
 
         const resultTransaction = await this.transactionService.createTransaction(
           tokens,
-          "limited-partnership-post-transition" as IncorporationKind,
+          IncorporationKind.POST_TRANSITION,
           "Add a general partner (legal entity)"
         );
 
         const result = await this.generalPartnerService.createGeneralPartner(tokens, resultTransaction.transactionId, {
           ...request.body,
-          kind: "limited-partnership#general-partner-legal-entity"
+          kind: PartnerKind.ADD_GENERAL_PARTNER_LEGAL_ENTITY
         });
 
         if (result.errors) {

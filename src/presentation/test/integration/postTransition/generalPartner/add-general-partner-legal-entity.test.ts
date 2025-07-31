@@ -20,6 +20,7 @@ import {
 
 import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
+import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 describe("Add General Partner Legal Entity Page", () => {
   const URL = getUrl(ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL);
@@ -115,7 +116,7 @@ describe("Add General Partner Legal Entity Page", () => {
 
       expect(appDevDependencies.generalPartnerGateway.generalPartners).toHaveLength(1);
       expect(appDevDependencies.generalPartnerGateway.generalPartners[0].data?.kind).toEqual(
-        "limited-partnership#general-partner-legal-entity"
+        PartnerKind.ADD_GENERAL_PARTNER_LEGAL_ENTITY
       );
     });
 
