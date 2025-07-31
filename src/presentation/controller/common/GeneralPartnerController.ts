@@ -71,7 +71,7 @@ abstract class GeneralPartnerController extends AbstractController {
 
         response.render(
           super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { limitedPartnership, generalPartner, company: companyProfile }, null)
+          super.makeProps(pageRouting, { limitedPartnership, generalPartner, companyProfile }, null)
         );
       } catch (error) {
         next(error);

@@ -4,6 +4,6 @@
     {% elif journeyTypes.isTransition %}
         {{ props.data.limitedPartnership.data.partnership_name | upper }} ({{ props.data.limitedPartnership.data.partnership_number | upper }})
     {% else %}
-        {{ props.data.company.companyName | upper }} ({{ props.data.company.companyNumber | upper }})
+        {{ props.data.companyProfile.companyName | upper }} ({{ props.data.companyProfile.companyNumber | upper }})
     {% endif %}
 </span>
