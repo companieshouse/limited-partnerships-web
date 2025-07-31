@@ -6,7 +6,8 @@ import { IDependencies } from "../config/IDependencies";
 
 import {
   COMPANY_NUMBER_URL,
-  CONFIRM_LIMITED_PARTNERSHIP_URL
+  CONFIRM_LIMITED_PARTNERSHIP_URL,
+  LANDING_PAGE_URL
 } from "../presentation/controller/postTransition/url";
 
 const transitionEndpoints = (router: Router, dependencies: IDependencies): void => {
@@ -24,12 +25,18 @@ const transitionEndpoints = (router: Router, dependencies: IDependencies): void 
   router.get(
     CONFIRM_LIMITED_PARTNERSHIP_URL,
     authentication,
-    dependencies.limitedPartnershipPostTransitionController.getConfirmPage()
+    dependencies.limitedPartnershipPostTransitionController.getCompanyPage()
   );
   router.post(
     CONFIRM_LIMITED_PARTNERSHIP_URL,
     authentication,
     dependencies.limitedPartnershipPostTransitionController.limitedPartnershipConfirm()
+  );
+
+  router.get(
+    LANDING_PAGE_URL,
+    authentication,
+    dependencies.limitedPartnershipPostTransitionController.getCompanyPage()
   );
 };
 
