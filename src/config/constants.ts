@@ -54,6 +54,8 @@ export const GENERAL_PARTNER_ID = "generalPartnerId";
 export const LIMITED_PARTNER_ID = "limitedPartnerId";
 export const JOURNEY_TYPE_PARAM = ":journeyType";
 
+export const YOUR_FILINGS_URL = "/user/transactions";
+
 export const BASE_URL = "/limited-partnerships";
 
 export const REGISTRATION_BASE_URL = `${BASE_URL}/${Journey.registration}`;

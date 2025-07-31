@@ -7,10 +7,7 @@ import app from "../app";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 
-import {
-  COMPANY_NUMBER_URL,
-  CONFIRM_LIMITED_PARTNERSHIP_URL
-} from "../../../../presentation/controller/postTransition/url";
+import { COMPANY_NUMBER_URL, CONFIRM_LIMITED_PARTNERSHIP_URL } from "../../../controller/postTransition/url";
 import {
   APPLICATION_CACHE_KEY,
   APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION,

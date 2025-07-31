@@ -50,7 +50,7 @@ class LimitedPartnershipController extends AbstractController {
     };
   }
 
-  getConfirmPage() {
+  getCompanyPage() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const { tokens } = super.extract(request);
