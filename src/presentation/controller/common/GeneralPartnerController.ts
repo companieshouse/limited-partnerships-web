@@ -12,14 +12,23 @@ import UIErrors from "../../../domain/entities/UIErrors";
 import { getJourneyTypes } from "../../../utils/journey";
 import RegistrationPageType from "../registration/PageType";
 import TransitionPageType from "../transition/PageType";
+import PostTransitionPageType from "../postTransition/pageType";
+
 import registrationRouting from "../registration/Routing";
 import transitionRouting from "../transition/Routing";
+import postTransitionRouting from "../postTransition/routing";
+
+import { APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION } from "../../../config/constants";
+import CacheService from "../../../application/service/CacheService";
+import CompanyService from "../../../application/service/CompanyService";
 
 abstract class GeneralPartnerController extends AbstractController {
   constructor(
     protected readonly limitedPartnershipService: LimitedPartnershipService,
     protected readonly generalPartnerService: GeneralPartnerService,
-    protected readonly limitedPartnerService: LimitedPartnerService
+    protected readonly limitedPartnerService: LimitedPartnerService,
+    protected readonly cacheService?: CacheService,
+    protected readonly companyService?: CompanyService
   ) {
     super();
   }
@@ -47,6 +56,10 @@ abstract class GeneralPartnerController extends AbstractController {
           );
         }
 
+        if (this.cacheService && this.companyService) {
+          limitedPartnership = await this.getLimitedPartnershipDetails(request, tokens);
+        }
+
         if (ids.transactionId && ids.generalPartnerId) {
           generalPartner = await this.generalPartnerService.getGeneralPartner(
             tokens,
@@ -60,7 +73,24 @@ abstract class GeneralPartnerController extends AbstractController {
           super.makeProps(pageRouting, { limitedPartnership, generalPartner }, null)
         );
       } catch (error) {
+        console.log("Error in getPageRouting:", error);
         next(error);
+      }
+    };
+  }
+
+  private async getLimitedPartnershipDetails(request: Request, tokens: Tokens): Promise<Record<string, any>> {
+    const cache = (this.cacheService as CacheService).getDataFromCache(request.signedCookies);
+
+    const result = await (this.companyService as CompanyService).getCompanyProfile(
+      tokens,
+      cache[`${APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION}company_number`]
+    );
+
+    return {
+      data: {
+        partnership_name: result.companyProfile.companyName,
+        partnership_number: result.companyProfile.companyNumber
       }
     };
   }
@@ -419,11 +449,27 @@ abstract class GeneralPartnerController extends AbstractController {
   }
 
   private getJourneyPageTypes(url: string) {
-    return getJourneyTypes(url).isRegistration ? RegistrationPageType : TransitionPageType;
+    const journeyTypes = getJourneyTypes(url);
+
+    if (journeyTypes.isRegistration) {
+      return RegistrationPageType;
+    } else if (journeyTypes.isTransition) {
+      return TransitionPageType;
+    } else {
+      return PostTransitionPageType;
+    }
   }
 
   private getJourneyPageRouting(url: string) {
-    return getJourneyTypes(url).isRegistration ? registrationRouting : transitionRouting;
+    const journeyTypes = getJourneyTypes(url);
+
+    if (journeyTypes.isRegistration) {
+      return registrationRouting;
+    } else if (journeyTypes.isTransition) {
+      return transitionRouting;
+    } else {
+      return postTransitionRouting;
+    }
   }
 }
 
