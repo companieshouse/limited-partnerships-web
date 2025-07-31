@@ -90,23 +90,6 @@ describe("Create transaction and the first submission", () => {
       });
     });
 
-    it("should return an error if wrong page type - transaction", async () => {
-      await expect(
-        appDevDependencies.limitedPartnershipService.createTransactionAndFirstSubmission(
-          { access_token: "access_token", refresh_token: "refresh_token" },
-          RegistrationPageType.next,
-          journeyTypes,
-          {
-            partnership_name: "Test Limited Partnership",
-            name_ending: NameEndingType.LIMITED_PARTNERSHIP,
-            partnership_type: "LP"
-          }
-        )
-      ).rejects.toThrow("Wrong page type to create a new transaction");
-
-      expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships.length).toEqual(0);
-    });
-
     it("should return an error if wrong page type - incorporation", async () => {
       const transactionId = appDevDependencies.transactionGateway.transactionId;
 

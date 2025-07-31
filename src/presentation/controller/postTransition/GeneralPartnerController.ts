@@ -1,3 +1,5 @@
+import { NextFunction, Request, Response } from "express";
+
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
@@ -10,6 +12,11 @@ import {
 } from "../addressLookUp/url/transition";
 import CompanyService from "../../../application/service/CompanyService";
 import CacheService from "../../../application/service/CacheService";
+import TransactionService from "../../../application/service/TransactionService";
+import { IncorporationKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+
+import PostTransitionPageType from "../postTransition/pageType";
+import postTransitionRouting from "../postTransition/routing";
 
 class GeneralPartnerPostTransitionController extends GeneralPartnerController {
   constructor(
@@ -17,7 +24,8 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
     generalPartnerService: GeneralPartnerService,
     limitedPartnerService: LimitedPartnerService,
     cacheService: CacheService,
-    companyService: CompanyService
+    companyService: CompanyService,
+    private readonly transactionService: TransactionService
   ) {
     super(limitedPartnershipService, generalPartnerService, limitedPartnerService, cacheService, companyService);
   }
@@ -34,7 +42,48 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
   }
 
   createGeneralPartner() {
-    return super.createGeneralPartner();
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { tokens, ids } = super.extract(request);
+        const pageType = super.extractPageTypeOrThrowError(request, PostTransitionPageType);
+        const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
+
+        const resultTransaction = await this.transactionService.createTransaction(
+          tokens,
+          "limited-partnership-post-transition" as IncorporationKind,
+          "Add a general partner (legal entity)"
+        );
+
+        const result = await this.generalPartnerService.createGeneralPartner(tokens, resultTransaction.transactionId, {
+          ...request.body,
+          kind: "limited-partnership#general-partner-legal-entity"
+        });
+
+        if (result.errors) {
+          const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+            tokens,
+            ids.transactionId,
+            ids.submissionId
+          );
+
+          response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(pageRouting, { limitedPartnership, generalPartner: { data: request.body } }, result.errors)
+          );
+
+          return;
+        }
+
+        const newIds = { ...ids, generalPartnerId: result.generalPartnerId };
+
+        const url = super.insertIdsInUrl(pageRouting.nextUrl, newIds);
+
+        response.redirect(url);
+      } catch (error) {
+        console.log("Error creating general partner:", error);
+        next(error);
+      }
+    };
   }
 
   sendPageData() {

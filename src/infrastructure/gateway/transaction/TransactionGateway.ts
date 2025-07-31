@@ -14,16 +14,23 @@ class TransactionGateway implements ITransactionGateway {
   async createTransaction(
     opt: { access_token: string; refresh_token: string },
     incorporationKind: IncorporationKind,
-    pageType: PageType
+    description?: string
   ): Promise<string> {
+    let transactionDecription = SERVICE_NAME_REGISTRATION;
+
+    if (incorporationKind === IncorporationKind.TRANSITION) {
+      transactionDecription = SERVICE_NAME_TRANSITION;
+    } else if (description) {
+      transactionDecription = description;
+    }
+
     const apiCall = {
       service: SDK_TRANSACTION_SERVICE,
       method: "postTransaction",
       args: [
         {
           reference: "LimitedPartnershipsReference",
-          description:
-            incorporationKind === IncorporationKind.REGISTRATION ? SERVICE_NAME_REGISTRATION : SERVICE_NAME_TRANSITION
+          description: transactionDecription
         }
       ]
     };

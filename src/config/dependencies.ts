@@ -108,7 +108,8 @@ const generalPartnerPostTransitionController: GeneralPartnerPostTransitionContro
     generalPartnerService,
     limitedPartnerService,
     cacheService,
-    companyService
+    companyService,
+    transactionService
   );
 
 export const appDependencies = {
