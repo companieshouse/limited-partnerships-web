@@ -39,7 +39,7 @@ class TransactionService {
     } catch (errors: any) {
       const { apiErrors, isValidationErrors } = extractAPIErrors(errors);
 
-      logger.error(`Error creating transaction or submission: ${JSON.stringify(apiErrors)}`);
+      logger.error(`Error creating transaction: ${JSON.stringify(apiErrors)}`);
 
       if (!isValidationErrors) {
         throw errors;
