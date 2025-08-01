@@ -41,7 +41,7 @@ describe("Continue Saved Filing Page", () => {
     expect(res.text).toContain(SERVICE_NAME_TRANSITION);
   });
 
-  it("should redirect to which-type page", async () => {
+  it("should redirect to company number page", async () => {
     const res = await request(app).post(CONTINUE_SAVED_FILING_URL).send({
       pageType: TransitionPageType.continueSavedFiling,
       continue_saved_filing: "NO"
