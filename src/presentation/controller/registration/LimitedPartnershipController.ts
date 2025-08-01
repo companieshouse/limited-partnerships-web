@@ -18,7 +18,8 @@ import {
   APPLICATION_CACHE_KEY_PREFIX_REGISTRATION,
   CHS_URL,
   cookieOptions,
-  JOURNEY_TYPE_PARAM
+  JOURNEY_TYPE_PARAM,
+  YOUR_FILINGS_URL
 } from "../../../config/constants";
 import CacheService from "../../../application/service/CacheService";
 import { PageRouting } from "../PageRouting";
@@ -331,6 +332,23 @@ class LimitedPartnershipController extends AbstractController {
         pageRouting.nextUrl = super.insertIdsInUrl(CONFIRM_REGISTERED_OFFICE_ADDRESS_URL, ids, request.url);
       }
     }
+  }
+
+  continueSavedFiling() {
+    return (request: Request, response: Response, next: NextFunction) => {
+      try {
+        if (request.body["continue_saved_filing"] === 'YES') {
+          return response.redirect(YOUR_FILINGS_URL);
+        }
+
+        const type = super.extractPageTypeOrThrowError(request, RegistrationPageType);
+        const pageRouting = super.getRouting(registrationsRouting, type, request);
+
+        return response.redirect(pageRouting.nextUrl);
+      } catch (error) {
+        next(error);
+      }
+    };
   }
 
   getPageRoutingTermSic() {
