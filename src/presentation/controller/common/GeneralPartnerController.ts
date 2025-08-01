@@ -429,7 +429,7 @@ abstract class GeneralPartnerController extends AbstractController {
   }
 
   private async conditionalPreviousUrl(ids: Ids, pageRouting: PageRouting, request: Request, tokens: Tokens) {
-    if (ids.transactionId) {
+    if (ids.submissionId) {
       const pageType = this.getJourneyPageTypes(request.url);
 
       if (
