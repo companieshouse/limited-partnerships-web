@@ -1,4 +1,8 @@
-import { GENERAL_PARTNER_WITH_ID_URL, POST_TRANSITION_BASE_URL, POST_TRANSITION_WITH_IDS_URL } from "../../../config/constants";
+import {
+  GENERAL_PARTNER_WITH_ID_URL,
+  POST_TRANSITION_BASE_URL,
+  POST_TRANSITION_WITH_IDS_URL
+} from "../../../config/constants";
 import * as template from "./template";
 
 export const COMPANY_NUMBER_URL = `${POST_TRANSITION_BASE_URL}/${template.COMPANY_NUMBER_TEMPLATE}`;

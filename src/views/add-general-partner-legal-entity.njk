@@ -20,13 +20,14 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
+      {% include "includes/errors.njk" %}
+      
+      {% include "includes/proposed-name.njk" %}  
+
       <form class="form" action={{ props.currentUrl }} method="post">
         <input type="hidden" name="pageType" value={{ props.pageType }}>      
         {% include "includes/csrf_token.njk" %}
 
-        {% include "includes/errors.njk" %}
-        
-        {% include "includes/proposed-name.njk" %}  
 
         <h1 class="govuk-heading-xl">{{ i18n.addPartnerLegalEntityPage.generalPartner.title }}</h1>
 
@@ -126,7 +127,7 @@
           }
         }) }}
 
-        {% if journeyTypes.isTransition %}
+        {% if journeyTypes.isTransition or journeyTypes.isPostTransition %}
           {{ govukDateInput({
             id: "date_effective_from",
             namePrefix: "date_effective_from",

@@ -83,7 +83,13 @@ const limitedPartnerRegistrationController: LimitedPartnerRegistrationController
   new LimitedPartnerRegistrationController(limitedPartnershipService, limitedPartnerService);
 
 const limitedPartnershipTransitionController: LimitedPartnershipTransitionController =
-  new LimitedPartnershipTransitionController(companyService, cacheService, limitedPartnershipService, generalPartnerService, limitedPartnerService);
+  new LimitedPartnershipTransitionController(
+    companyService,
+    cacheService,
+    limitedPartnershipService,
+    generalPartnerService,
+    limitedPartnerService
+  );
 const generalPartnerTransitionController: GeneralPartnerTransitionController = new GeneralPartnerTransitionController(
   limitedPartnershipService,
   generalPartnerService,
@@ -97,7 +103,14 @@ const limitedPartnerTransitionController: LimitedPartnerTransitionController = n
 const limitedPartnershipPostTransitionController: LimitedPartnershipPostTransitionController =
   new LimitedPartnershipPostTransitionController(companyService, cacheService, limitedPartnershipService);
 const generalPartnerPostTransitionController: GeneralPartnerPostTransitionController =
-  new GeneralPartnerPostTransitionController(limitedPartnershipService, generalPartnerService, limitedPartnerService, companyService, cacheService);
+  new GeneralPartnerPostTransitionController(
+    limitedPartnershipService,
+    generalPartnerService,
+    limitedPartnerService,
+    cacheService,
+    companyService,
+    transactionService
+  );
 
 export const appDependencies = {
   globalController,
