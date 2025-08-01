@@ -9,7 +9,6 @@ import {
 } from "../../../../controller/postTransition/url";
 import PostTransitionPageType from "../../../../controller/postTransition/pageType";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 import { APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION } from "../../../../../config/constants";
@@ -75,12 +74,6 @@ describe("General Partner Choice Page", () => {
   });
 
   it("should contain the proposed name - data from api", async () => {
-    const limitedPartnership = new LimitedPartnershipBuilder().build();
-
-    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
-      limitedPartnership
-    ]);
-
     const res = await request(app).get(URL);
 
     expect(res.status).toBe(200);

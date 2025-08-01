@@ -17,6 +17,7 @@ import { IncorporationKind, PartnerKind } from "@companieshouse/api-sdk-node/dis
 
 import PostTransitionPageType from "../postTransition/pageType";
 import postTransitionRouting from "../postTransition/routing";
+import { APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION } from "../../../config/constants";
 
 class GeneralPartnerPostTransitionController extends GeneralPartnerController {
   constructor(
@@ -48,27 +49,32 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
         const pageType = super.extractPageTypeOrThrowError(request, PostTransitionPageType);
         const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
 
+        const description = pageType === PostTransitionPageType.addGeneralPartnerLegalEntity
+          ? "Add a general partner (legal entity)" : "Add a general partner (person)";
+
         const resultTransaction = await this.transactionService.createTransaction(
           tokens,
           IncorporationKind.POST_TRANSITION,
-          "Add a general partner (legal entity)"
+          description
         );
 
         const result = await this.generalPartnerService.createGeneralPartner(tokens, resultTransaction.transactionId, {
           ...request.body,
-          kind: PartnerKind.ADD_GENERAL_PARTNER_LEGAL_ENTITY
+          kind: pageType === PostTransitionPageType.addGeneralPartnerLegalEntity ?
+            PartnerKind.ADD_GENERAL_PARTNER_LEGAL_ENTITY : PartnerKind.ADD_GENERAL_PARTNER_PERSON
         });
 
-        if (result.errors) {
-          const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+        if (result.errors && this.cacheService && this.companyService) {
+          const cache = this.cacheService?.getDataFromCache(request.signedCookies);
+          const company = await this.companyService.getCompanyProfile(
             tokens,
-            ids.transactionId,
-            ids.submissionId
+            cache[`${APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION}company_number`]
           );
+          const companyProfile = company.companyProfile;
 
           response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { limitedPartnership, generalPartner: { data: request.body } }, result.errors)
+            super.makeProps(pageRouting, { companyProfile, generalPartner: { data: request.body } }, result.errors)
           );
 
           return;
