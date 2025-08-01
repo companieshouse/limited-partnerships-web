@@ -419,16 +419,18 @@ abstract class GeneralPartnerController extends AbstractController {
   }
 
   private async conditionalPreviousUrl(ids: Ids, pageRouting: PageRouting, request: Request, tokens: Tokens) {
-    const pageType = this.getJourneyPageTypes(request.url);
+    if (ids.transactionId) {
+      const pageType = this.getJourneyPageTypes(request.url);
 
-    if (
-      pageRouting.pageType === pageType.addGeneralPartnerLegalEntity ||
-      pageRouting.pageType === pageType.addGeneralPartnerPerson
-    ) {
-      const result = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
+      if (
+        pageRouting.pageType === pageType.addGeneralPartnerLegalEntity ||
+        pageRouting.pageType === pageType.addGeneralPartnerPerson
+      ) {
+        const result = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
 
-      if (result.generalPartners.length > 0) {
-        pageRouting.previousUrl = super.insertIdsInUrl(pageRouting.data?.customPreviousUrl, ids, request.url);
+        if (result.generalPartners.length > 0) {
+          pageRouting.previousUrl = super.insertIdsInUrl(pageRouting.data?.customPreviousUrl, ids, request.url);
+        }
       }
     }
   }
