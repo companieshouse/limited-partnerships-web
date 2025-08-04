@@ -1,0 +1,58 @@
+{% extends "layout.njk" %}
+
+{% set pageTitle = i18n.continueSavedFilingPage.title %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" method="post">
+        <input type="hidden" name="pageType" value={{ props.pageType }}>
+      
+        {% include "includes/csrf_token.njk" %}
+
+        {{ govukRadios({
+          classes: "govuk-radios",
+          name: "continue_saved_filing",
+          fieldset: {
+            legend: {
+              text: i18n.continueSavedFilingPage.title,
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--xl"
+            }
+          },
+          hint: {
+            text: i18n.continueSavedFilingPage.hint
+          },
+          items: [
+            {
+              value: "YES",
+              text: i18n.continueSavedFilingPage.yes.text,
+              hint: {
+                text: i18n.continueSavedFilingPage.yes.hint
+              },
+              attributes: {
+                "required": true
+              }
+            },
+            {
+              value: "NO",
+              text: i18n.continueSavedFilingPage.no.text,
+              hint: {
+                text: i18n.continueSavedFilingPage.no.hint
+              },
+              attributes: {
+                "required": true
+              }
+            }
+          ]
+        }) }}
+
+        {% include "includes/continue-button.njk" %}
+
+      </form>
+    </div>
+  </div>
+
+{% endblock %}

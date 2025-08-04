@@ -48,7 +48,7 @@ class LimitedPartnershipService {
         ? IncorporationKind.REGISTRATION
         : IncorporationKind.TRANSITION;
 
-      const transactionId = await this.transactionGateway.createTransaction(opt, incorporationKind, pageType);
+      const transactionId = await this.transactionGateway.createTransaction(opt, incorporationKind);
 
       await this.incorporationGateway.createIncorporation(opt, pageType, transactionId, incorporationKind);
 
