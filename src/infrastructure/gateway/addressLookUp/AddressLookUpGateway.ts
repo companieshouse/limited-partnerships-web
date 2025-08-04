@@ -2,7 +2,7 @@
 
 import { Resource } from "@companieshouse/api-sdk-node";
 import { UKAddress } from "@companieshouse/api-sdk-node/dist/services/postcode-lookup";
-import IAddressLookUpGateway from "@domain/IAddressLookUpGateway";
+import IAddressLookUpGateway from "../../../domain/IAddressLookUpGateway";
 import { POSTCODE_ADDRESSES_LOOKUP_URL, SDK_POSTCODE_LOOKUP_SERVICE } from "../../../config/constants";
 import { makeApiCallWithRetry } from "../api";
 import postcodeLookUpAddressToAddress from "./addressMapper";
