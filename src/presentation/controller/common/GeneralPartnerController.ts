@@ -375,7 +375,7 @@ abstract class GeneralPartnerController extends AbstractController {
           return;
         }
 
-        const addAnotherGeneralPartner = request.body.addAnotherGeneralPartner;
+        const addAnotherGeneralPartner = request.body.addAnotherPartner;
 
         if (addAnotherGeneralPartner === "no") {
           await this.conditionalNextUrl(tokens, ids, pageRouting, {
