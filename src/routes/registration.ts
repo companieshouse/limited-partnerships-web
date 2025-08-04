@@ -32,6 +32,8 @@ import {
   REVIEW_LIMITED_PARTNERS_URL,
   REMOVE_LIMITED_PARTNER_URL
 } from "../presentation/controller/registration/url";
+import RegistrationPageType from "../presentation/controller/registration/PageType";
+import registrationsRouting from "../presentation/controller/registration/Routing";
 
 export const registrationEndpoints = (
   router: Router,
@@ -45,7 +47,7 @@ export const registrationEndpoints = (
   router.post(
     CONTINUE_SAVED_FILING_URL,
     authentication,
-    dependencies.limitedPartnershipRegistrationController.continueSavedFiling()
+    dependencies.limitedPartnershipRegistrationController.continueSavedFiling(RegistrationPageType, registrationsRouting)
   );
 
   router.get(
