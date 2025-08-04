@@ -49,19 +49,17 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
         const pageType = super.extractPageTypeOrThrowError(request, PostTransitionPageType);
         const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
 
-        const description = pageType === PostTransitionPageType.addGeneralPartnerLegalEntity
-          ? "Add a general partner (legal entity)" : "Add a general partner (person)";
+        const isLegalEntity = pageType === PostTransitionPageType.addGeneralPartnerLegalEntity;
 
         const resultTransaction = await this.transactionService.createTransaction(
           tokens,
           IncorporationKind.POST_TRANSITION,
-          description
+          isLegalEntity ? "Add a general partner (legal entity)" : "Add a general partner (person)"
         );
 
         const result = await this.generalPartnerService.createGeneralPartner(tokens, resultTransaction.transactionId, {
           ...request.body,
-          kind: pageType === PostTransitionPageType.addGeneralPartnerLegalEntity ?
-            PartnerKind.ADD_GENERAL_PARTNER_LEGAL_ENTITY : PartnerKind.ADD_GENERAL_PARTNER_PERSON
+          kind: isLegalEntity ? PartnerKind.ADD_GENERAL_PARTNER_LEGAL_ENTITY : PartnerKind.ADD_GENERAL_PARTNER_PERSON
         });
 
         if (result.errors && this.cacheService && this.companyService) {
