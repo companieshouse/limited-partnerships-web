@@ -2,40 +2,46 @@
     <div class="govuk-grid-column-two-thirds">
 
         <form class="form" method="post">
-        <input type="hidden" name="pageType" value={{ props.pageType }}>
+            <input type="hidden" name="pageType" value={{ props.pageType }}>
 
-        {% include "includes/csrf_token.njk" %}
+            {% include "includes/csrf_token.njk" %}
 
-        {{ govukRadios({          
-            classes: "govuk-radios--inline",
-            idPrefix: "remove",
-            name: "remove",
-            fieldset: {
-                legend: {
-                    text: pageTitle + " " + name + "?",
-                    isPageHeading: true,
-                    classes: "govuk-fieldset__legend--l"
-                }
-            },
-            items: [
-                {
-                    value: "yes",
-                    text: i18n.yesAndNo.yes,
-                    attributes: {
-                        required: true
+            {{ govukRadios({          
+                classes: "govuk-radios--inline",
+                idPrefix: "remove",
+                name: "remove",
+                fieldset: {
+                    legend: {
+                        text: pageTitle + " " + name + "?",
+                        isPageHeading: true,
+                        classes: "govuk-fieldset__legend--l"
                     }
                 },
-                {
-                    value: "no",
-                    text: i18n.yesAndNo.no,
-                    attributes: {
-                        required: true
+                items: [
+                    {
+                        value: "yes",
+                        text: i18n.yesAndNo.yes,
+                        attributes: {
+                            required: true
+                        }
+                    },
+                    {
+                        value: "no",
+                        text: i18n.yesAndNo.no,
+                        attributes: {
+                            required: true
+                        }
                     }
+                ]
+            }) }}
+            
+            {{ govukButton({
+                text: i18n.buttons.saveAndContinue,
+                attributes: {
+                "id": "submit",
+                "onclick": "_paq.push(['trackEvent', 'Limited Partnerships', 'Are you sure you want to remove partner', document.querySelector('input[name=remove]:checked').nextElementSibling.innerHTML])"
                 }
-            ]
-        }) }}
-        
-        {% include "includes/save-and-continue-button.njk" %}
+            }) }}
         </form>
     </div>
 </div>
