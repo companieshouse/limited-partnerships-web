@@ -3,10 +3,13 @@ import { Router } from "express";
 import { IDependencies } from "../config";
 
 import globalEndpoints from "./global";
-import registrationEndpoints from "./registration";
+
 import addressRegistrationEndpoints from "./addressRegistration";
-import transitionEndpoints from "./transition";
 import addressTransitionEndpoints from "./addressTransition";
+import addressPostTransitionEndpoints from "./addressPostTransition";
+
+import registrationEndpoints from "./registration";
+import transitionEndpoints from "./transition";
 import postTransitionEndpoints from "./postTransition";
 
 const appRouter = (dependencies: IDependencies): Router => {
@@ -16,6 +19,7 @@ const appRouter = (dependencies: IDependencies): Router => {
 
   addressRegistrationEndpoints(router, dependencies);
   addressTransitionEndpoints(router, dependencies);
+  addressPostTransitionEndpoints(router, dependencies);
 
   registrationEndpoints(router, dependencies);
   transitionEndpoints(router, dependencies);

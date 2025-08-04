@@ -14,7 +14,11 @@ class TransactionGateway implements ITransactionGateway {
   async createTransaction(
     opt: { access_token: string; refresh_token: string },
     incorporationKind: IncorporationKind,
-    description?: string
+    description?: string,
+    company?: {
+      companyName: string;
+      companyNumber: string;
+    }
   ): Promise<string> {
     let transactionDecription = SERVICE_NAME_REGISTRATION;
 
@@ -24,15 +28,28 @@ class TransactionGateway implements ITransactionGateway {
       transactionDecription = description;
     }
 
+    let data: {
+      reference: string;
+      description: string;
+      companyName?: string;
+      companyNumber?: string;
+    } = {
+      reference: "LimitedPartnershipsReference",
+      description: transactionDecription
+    };
+
+    if (company) {
+      data = {
+        ...data,
+        companyName: company.companyName,
+        companyNumber: company.companyNumber
+      };
+    }
+
     const apiCall = {
       service: SDK_TRANSACTION_SERVICE,
       method: "postTransaction",
-      args: [
-        {
-          reference: "LimitedPartnershipsReference",
-          description: transactionDecription
-        }
-      ]
+      args: [data]
     };
 
     const response = await makeApiCallWithRetry<Resource<Transaction> | ApiErrorResponse>(opt, apiCall);

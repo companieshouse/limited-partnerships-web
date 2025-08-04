@@ -21,10 +21,11 @@ import {
 import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
+import { TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../../../controller/addressLookUp/url/postTransition";
 
 describe("Add General Partner Legal Entity Page", () => {
   const URL = getUrl(ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL);
-  // const REDIRECT_URL = getUrl(TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL); // TODO - uncomment when the URL is available
+  const REDIRECT_URL = getUrl(TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
 
   let companyProfile;
 
@@ -107,7 +108,7 @@ describe("Add General Partner Legal Entity Page", () => {
         });
 
       expect(res.status).toBe(302);
-      // expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`); // TODO - uncomment when the URL is available
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
 
       expect(appDevDependencies.transactionGateway.transactions).toHaveLength(1);
       expect(appDevDependencies.transactionGateway.transactions[0].description).toBe(

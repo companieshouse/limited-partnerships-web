@@ -6,7 +6,11 @@ interface ITransactionGateway {
   createTransaction(
     opt: { access_token: string },
     incorporationKind: IncorporationKind,
-    description?: string
+    description?: string,
+    company?: {
+      companyName: string;
+      companyNumber: string;
+    }
   ): Promise<string>;
   closeTransaction(opt: { access_token: string }, transactionId: string): Promise<ApiResponse<Transaction>>;
   getTransaction(opt: { access_token: string }, transactionId: string): Promise<Transaction>;
