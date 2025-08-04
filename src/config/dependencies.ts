@@ -17,8 +17,8 @@ import CompanyService from "../application/service/CompanyService";
 import PaymentService from "../application/service/PaymentService";
 import TransactionService from "../application/service/TransactionService";
 
-import GlobalController from "@presentation/controller/global/Controller";
-import AddressLookUpController from "@presentation/controller/addressLookUp/Controller";
+import GlobalController from "../presentation/controller/global/Controller";
+import AddressLookUpController from "../presentation/controller/addressLookUp/Controller";
 import LimitedPartnershipRegistrationController from "../presentation/controller/registration/LimitedPartnershipController";
 import GeneralPartnerRegistrationController from "../presentation/controller/registration/GeneralPartnerController";
 import LimitedPartnerRegistrationController from "../presentation/controller/registration/LimitedPartnerController";
