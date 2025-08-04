@@ -17,6 +17,7 @@
       "@config/*": ["config/*"],
       "@domain/*": ["domain/*"],
       "@infrastructure/*": ["infrastructure/*"],
+      "@locales/*": ["../locales/*"],
       "@middlewares/*": ["middlewares/*"],
       "@presentation/*": ["presentation/*"],
       "@routes/*": ["routes/*"],

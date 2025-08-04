@@ -1,24 +1,24 @@
 import request from "supertest";
 import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-import app from "../app";
+import app from "@presentation/test/integration/app";
 import {
   NAME_URL,
   NAME_WITH_IDS_URL,
   WHICH_TYPE_URL,
   WHICH_TYPE_WITH_IDS_URL
-} from "../../../controller/registration/url";
-import { appDevDependencies } from "../../../../config/dev-dependencies";
-import enTranslationText from "../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../locales/cy/translations.json";
-import RegistrationPageType from "../../../controller/registration/PageType";
+} from "@presentation/controller/registration/url";
+import { appDevDependencies } from "@config/dev-dependencies";
+import enTranslationText from "@locales/en/translations.json";
+import cyTranslationText from "@locales/cy/translations.json";
+import RegistrationPageType from "@presentation/controller/registration/PageType";
 import {
   APPLICATION_CACHE_KEY,
   APPLICATION_CACHE_KEY_PREFIX_REGISTRATION,
   SERVICE_NAME_REGISTRATION
-} from "../../../../config/constants";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
-import LimitedPartnershipBuilder from "../../../../presentation/test/builder/LimitedPartnershipBuilder";
+} from "@config/constants";
+import { getUrl, setLocalesEnabled, testTranslations } from "@presentation/test/utils";
+import LimitedPartnershipBuilder from "@presentation/test/builder/LimitedPartnershipBuilder";
 
 describe("Which type Page", () => {
   beforeEach(() => {
