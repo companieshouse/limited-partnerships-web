@@ -49,12 +49,23 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
         const pageType = super.extractPageTypeOrThrowError(request, PostTransitionPageType);
         const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
 
+        const cache = this.cacheService?.getDataFromCache(request.signedCookies);
+
+        const companyResult = await this.companyService?.getCompanyProfile(
+          tokens,
+          cache?.[`${APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION}company_number`]
+        );
+
         const isLegalEntity = pageType === PostTransitionPageType.addGeneralPartnerLegalEntity;
 
         const resultTransaction = await this.transactionService.createTransaction(
           tokens,
           IncorporationKind.POST_TRANSITION,
-          isLegalEntity ? "Add a general partner (legal entity)" : "Add a general partner (person)"
+          isLegalEntity ? "Add a general partner (legal entity)" : "Add a general partner (person)",
+          {
+            companyName: companyResult?.companyProfile?.companyName || "",
+            companyNumber: companyResult?.companyProfile?.companyNumber || ""
+          }
         );
 
         const result = await this.generalPartnerService.createGeneralPartner(tokens, resultTransaction.transactionId, {
@@ -62,13 +73,8 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
           kind: isLegalEntity ? PartnerKind.ADD_GENERAL_PARTNER_LEGAL_ENTITY : PartnerKind.ADD_GENERAL_PARTNER_PERSON
         });
 
-        if (result.errors && this.cacheService && this.companyService) {
-          const cache = this.cacheService?.getDataFromCache(request.signedCookies);
-          const company = await this.companyService.getCompanyProfile(
-            tokens,
-            cache[`${APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION}company_number`]
-          );
-          const companyProfile = company.companyProfile;
+        if (result.errors && cache && companyResult) {
+          const companyProfile = companyResult.companyProfile;
 
           response.render(
             super.templateName(pageRouting.currentUrl),
@@ -78,7 +84,11 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
           return;
         }
 
-        const newIds = { ...ids, generalPartnerId: result.generalPartnerId };
+        const newIds = {
+          ...ids,
+          transactionId: resultTransaction.transactionId,
+          generalPartnerId: result.generalPartnerId
+        };
 
         const url = super.insertIdsInUrl(pageRouting.nextUrl, newIds);
 

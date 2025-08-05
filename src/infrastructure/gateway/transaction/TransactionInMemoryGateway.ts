@@ -28,7 +28,15 @@ class TransactionInMemoryGateway implements ITransactionGateway {
     this.transactions = transactions;
   }
 
-  async createTransaction(opt: Tokens, incorporationKind: IncorporationKind, description?: string): Promise<string> {
+  async createTransaction(
+    opt: Tokens,
+    incorporationKind: IncorporationKind,
+    description?: string,
+    company?: {
+      companyName: string;
+      companyNumber: string;
+    }
+  ): Promise<string> {
     let transactionDecription = SERVICE_NAME_REGISTRATION;
 
     if (incorporationKind === IncorporationKind.TRANSITION) {
