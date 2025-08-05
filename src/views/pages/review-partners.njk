@@ -110,7 +110,7 @@
                 {% include "includes/csrf_token.njk" %}
         
                 {{ govukRadios({
-                    name: parameter,
+                    name: "addAnotherPartner",
                     fieldset: {
                         legend: {
                             text: addPartner.title,
@@ -124,27 +124,34 @@
                             value: "addPerson",
                             text: addPartner.optionPerson,
                             attributes: {
-                                required: true
+                              required: true
                             }
                         },
                         {
                             value: "addLegalEntity",
                             text: addPartner.optionLegalEntity,
                             attributes: {
-                                required: true
+                              required: true
                             }
                         },
                         {
                             value: "no",
                             text: i18n.yesAndNo.no,
                             attributes: {
-                                required: true
+                              required: true
                             }
                         }
                     ]
                 }) }}
 
-                {% include "includes/save-and-continue-button.njk" %}
+                {{ govukButton({
+                  text: i18n.buttons.saveAndContinue,
+                  attributes: {
+                    "id": "submit",
+                    "onclick": "_paq.push(['trackEvent', 'Limited Partnerships', 'Do you want to add another partner?', document.querySelector('input[name=addAnotherPartner]:checked').nextElementSibling.innerHTML])"                  
+                    }
+                }) }}
+
 
             </form>
         </div>
