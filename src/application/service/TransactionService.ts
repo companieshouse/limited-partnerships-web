@@ -27,13 +27,22 @@ class TransactionService {
   async createTransaction(
     opt: Tokens,
     incorporationKind: IncorporationKind,
-    description?: string
+    description?: string,
+    company?: {
+      companyName: string;
+      companyNumber: string;
+    }
   ): Promise<{
     transactionId: string;
     errors?: UIErrors;
   }> {
     try {
-      const transactionId = await this.transactionGateway.createTransaction(opt, incorporationKind, description);
+      const transactionId = await this.transactionGateway.createTransaction(
+        opt,
+        incorporationKind,
+        description,
+        company
+      );
 
       return { transactionId };
     } catch (errors: any) {

@@ -17,6 +17,7 @@ import { IncorporationKind, PartnerKind } from "@companieshouse/api-sdk-node/dis
 
 import PostTransitionPageType from "../postTransition/pageType";
 import postTransitionRouting from "../postTransition/routing";
+import { APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION } from "../../../config/constants";
 
 class GeneralPartnerPostTransitionController extends GeneralPartnerController {
   constructor(
@@ -48,33 +49,46 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
         const pageType = super.extractPageTypeOrThrowError(request, PostTransitionPageType);
         const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
 
+        const cache = this.cacheService?.getDataFromCache(request.signedCookies);
+
+        const companyResult = await this.companyService?.getCompanyProfile(
+          tokens,
+          cache?.[`${APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION}company_number`]
+        );
+
+        const isLegalEntity = pageType === PostTransitionPageType.addGeneralPartnerLegalEntity;
+
         const resultTransaction = await this.transactionService.createTransaction(
           tokens,
           IncorporationKind.POST_TRANSITION,
-          "Add a general partner (legal entity)"
+          isLegalEntity ? "Add a general partner (legal entity)" : "Add a general partner (person)",
+          {
+            companyName: companyResult?.companyProfile?.companyName || "",
+            companyNumber: companyResult?.companyProfile?.companyNumber || ""
+          }
         );
 
         const result = await this.generalPartnerService.createGeneralPartner(tokens, resultTransaction.transactionId, {
           ...request.body,
-          kind: PartnerKind.ADD_GENERAL_PARTNER_LEGAL_ENTITY
+          kind: isLegalEntity ? PartnerKind.ADD_GENERAL_PARTNER_LEGAL_ENTITY : PartnerKind.ADD_GENERAL_PARTNER_PERSON
         });
 
-        if (result.errors) {
-          const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
-            tokens,
-            ids.transactionId,
-            ids.submissionId
-          );
+        if (result.errors && cache && companyResult) {
+          const companyProfile = companyResult.companyProfile;
 
           response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { limitedPartnership, generalPartner: { data: request.body } }, result.errors)
+            super.makeProps(pageRouting, { companyProfile, generalPartner: { data: request.body } }, result.errors)
           );
 
           return;
         }
 
-        const newIds = { ...ids, generalPartnerId: result.generalPartnerId };
+        const newIds = {
+          ...ids,
+          transactionId: resultTransaction.transactionId,
+          generalPartnerId: result.generalPartnerId
+        };
 
         const url = super.insertIdsInUrl(pageRouting.nextUrl, newIds);
 
