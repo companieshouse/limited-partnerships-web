@@ -1,5 +1,5 @@
-import { 
-  ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL, 
+import {
+  ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
   ADD_GENERAL_PARTNER_PERSON_URL
 } from "../../../postTransition/url";
 import AddressPageType from "../../PageType";
@@ -152,7 +152,6 @@ const correspondenceAddress = [
   postTransitionAddressRoutingEnterGeneralPartnerCorrespondenceAddress,
   postTransitionAddressRoutingConfirmGeneralPartnerCorrespondenceAddress
 ];
-
 
 // principal office address - legal entity
 
