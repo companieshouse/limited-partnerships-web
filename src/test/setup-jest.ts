@@ -10,19 +10,14 @@ jest.mock("../middlewares/authentication.middleware", () => ({
   }
 }));
 
-jest.mock("../middlewares/company-authentication.middleware", () => ({
-  companyAuthentication: (req: any, res: any, next: any) => {
-    next();
-  }
-}));
-
 /*
   Mock Implementation of Web Node Security CsrfProtectionMiddleware.
   Note: this needs to be imported before the 'app' component in each test module in order for 'app' to be able to mock it.
 */
 jest.mock("@companieshouse/web-security-node", () => ({
   ...jest.requireActual("@companieshouse/web-security-node"),
-  CsrfProtectionMiddleware: (_opts) => (req: Request, res: Response, next: NextFunction) => next()
+  CsrfProtectionMiddleware: (_opts) => (req: Request, res: Response, next: NextFunction) => next(),
+  authMiddleware: () => jest.fn(() => (req: Request, res: Response, next: NextFunction) => next())
 }));
 
 jest.mock("../utils/session", () => ({
