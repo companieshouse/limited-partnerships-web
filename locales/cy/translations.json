@@ -16,6 +16,7 @@
         "legalEntityName" : "WELSH - What is the legal entity's name?",
         "legalFormOrCorporateIdentity" : "WELSH - What is its legal form or corporate identity?",
         "legalFormOrCorporateIdentityHint" : "WELSH - This is the corporate body type. For example, private limited company.",
+        "legalPersonalityWarning" : "WELSH - By providing this information, you are confirming that this entity has legal personality.",
         "governingLaw" : "WELSH - What is the governing law?",
         "governingLawHint" : "WELSH - This is the law that the entity operates under. For example, the Companies Act 2006.",
         "whichRegister" : "WELSH - Which register is it entered in?",
@@ -49,9 +50,7 @@
                 "yesHintTitle" : "WELSH - What is the general partner's previous name?",
                 "yesHint" : "WELSH - If the partner has more than one previous name, separate each name with a comma.",
                 "no" : "WELSH - No"
-            },
-            "disqualificationStatement" : "WELSH - I confirm the general partner is not disqualified under the directors disqualification legislation.",
-            "disqualificationStatementLegend" : "WELSH - General partner - person - disqualification statement"
+            }            
         },
         "limitedPartner": {
             "title": "WELSH - Add a limited partner (person)",
@@ -101,7 +100,9 @@
                 "title" : "WELSH - Choose the usual residential address of the general partner"
             },
             "generalPartnerPrincipalOfficeAddress": {
-                "title": "WELSH - Choose the general partner's principal office address"
+                "title": "WELSH - Choose the general partner's principal office address",
+                "hint": "WELSH - This is the address for the entity's main office.",
+                "publicRegisterInformationLine1": "WELSH - We'll show the general partner's principal office address on the public register."
             },
             "generalPartnerCorrespondenceAddress" : {
                 "title" : "WELSH - Choose the general partner's correspondence address",
@@ -113,7 +114,8 @@
             },
             "limitedPartnerPrincipalOfficeAddress": {
                 "title": "WELSH - Choose the limited partner's principal office address",
-                "titleHint": "WELSH - This is the address for the entity's main office."
+                "hint": "WELSH - This is the address for the entity's main office.",
+                "publicRegisterInformationLine1": "WELSH - We'll show the limited partner's principal office address on the public register."
             }
         },
 
@@ -179,6 +181,7 @@
                 },
                 "principalOfficeAddress": {
                     "title": "WELSH - What is the general partner's principal office address?",
+                    "hint": "WELSH - This is the address for the entity's main office.",
                     "publicInformationLine1": "WELSH - We'll show the general partner's principal office address on the public register.",
                     "postcodeOptional": "WELSH - Postcode (optional)"
                 }
@@ -191,7 +194,7 @@
                 },
                 "principalOfficeAddress":{
                     "title": "WELSH - What is the limited partner's principal office address?",
-                    "titleHint1": "WELSH - This is the address for the entity's main office.",
+                    "hint": "WELSH - This is the address for the entity's main office.",
                     "publicInformationLine1": "WELSH - We'll show the limited partner's principal office address on the public register.",
                     "postcodeOptional": "WELSH - Postcode (optional)"
                 }
@@ -254,6 +257,7 @@
                 },
                 "principalOfficeAddress": {
                     "whatIsPrincipalOfficeAddress": "WELSH - What is the general partner's principal office address?",
+                    "hint": "WELSH - This is the address for the entity's main office.",
                     "publicRegisterLine1": "WELSH - We'll show the general partner's principal office address on the public register."
                 },
                 "correspondenceAddress": {
@@ -295,8 +299,8 @@
                 "publicRegisterInformationLine1": "WELSH - We'll show the general partner's principal office address on the public register."
             },
             "generalPartnerUsualResidentialAddress": {
-                "title": "WELSH - Where is the usual residential address of the general partner?",
-                "publicRegisterInformationLine1": "WELSH - We will not show the general partner's usual residential address."
+                "title": "WELSH - Where is the general partner’s usual residential address?",
+                "publicRegisterInformationLine1": "WELSH - We will not show this address on the public register, unless it's also used as the general partner’s correspondence address."
             },
             "generalPartnerCorrespondenceAddress": {
                 "title": "WELSH - Where is the general partner's correspondence address?",
@@ -327,6 +331,8 @@
     
     "capitalContribution" : {
         "title" : "WELSH - What is their total capital contribution?",
+        "currencyTypeLabel": "WELSH - Contribution currency type",
+        "valueLabel": "WELSH - Contribution currency value",
         "hint" : "WELSH - Enter the total value of all monetary and non-monetary contributions",
         "amountHint": "WELSH - Enter the value, for example:",
         "amountMinHint": "WELSH - if they contributed £0.01 enter 0.01", 
@@ -337,8 +343,7 @@
         "landOrProperty" : "WELSH - Land or property",
         "shares" : "WELSH - Shares",
         "anyOtherAsset" : "WELSH - Any other asset",
-        "servicesOrGoods" : "WELSH - Services or goods",
-        "compositionErrorMessage" : "WELSH - Select a tick box"
+        "servicesOrGoods" : "WELSH - Services or goods"
      },
 
     "checkYourAnswersPage" : {
@@ -346,7 +351,6 @@
         "lpInfo" : "WELSH - Limited partnership information",
         "change" : "WELSH - Change",
         "headingName" : "WELSH - Name",
-        "headingNumber": "WELSH - Partnership number",
         "headingType" : "WELSH - Type",
         "headingSic" : "WELSH - Standard Industrial Classification (SIC) code",
         "headingEmail" : "WELSH - Registered email address",
@@ -368,7 +372,9 @@
             "dob": "WELSH - full dates of birth of any partners who are people",
             "ura": "WELSH - usual residential addresses of any partners who are people"
         },
+        
         "payment" : "WELSH - Continue to payment",
+        "submitFiling" : "WELSH - Submit filing",
 
         "partners": {
             "generalPartners" : {
@@ -415,7 +421,7 @@
 
     "confirmationPage" : {
         "title" : "WELSH - Application submitted",
-        "referenceNumber" : "WELSH - our reference number",
+        "referenceNumber" : "WELSH - Your reference number",
         "sentEmailTo" : "WELSH - We have sent a confirmation email to",
         "happensNext" : "WELSH - What happens next",
         "applicationProcess" : "WELSH - We'll process the application as soon as possible. This will usually take no more than 3 to 5 working days.",
@@ -443,23 +449,28 @@
         }
     },
 
-    "emailPage" : {
-        "whatIsEmail" : "WELSH - What is the registered email address for the partnership?",
-        "registration": {
-            "emailHint" : "WELSH - Partners must be able to access emails that are sent to this address.",
-            "emailUsedFor" : { 
-                "title": "WELSH - What is the registered email address used for?",
-                "sendInformation": "WELSH - In future we'll use this to send important information that relates to the limited partnership. For example, new legislative requirements or warnings about missed deadlines.",
-                "publicRegister": "WELSH - It will not be shown on the public register."
-            }
+    "continueSavedFilingPage": {
+        "title": "WELSH - Do you want to continue with a saved filing?",
+        "hint": "WELSH - If you have saved filings, you can continue with one of these or start a new one",
+        "yes": {
+          "text": "WELSH - Yes, continue with a saved filing",
+          "hint": "WELSH - You’ll be able to choose which filing you want to continue with"          
         },
-        "transition": {
-            "requirement": "WELSH - This is a new requirement. We do not hold a registered email address for the limited partnership yet.",
-            "emailUsedFor": "WELSH - We'll use this email address to send important information that relates to the partnership. For example, new legislative requirements or warnings about missed deadlines.",
-            "publicRegisterInformation": "WELSH - We will not show the registered email address on the public register."
+        "no": {
+          "text": "WELSH - No, start a new filing",
+          "hint": "WELSH - This will not delete any saved filings"          
         }
-        
     },
+
+    "emailPage" : {
+        "title" : "WELSH - What is the registered email address for the partnership?",
+        "hint": "WELSH - We'll use this email address to send important information that relates to the partnership. For example, new legislative requirements or warnings about missed deadlines.",
+        "publicRegisterInformation" : {
+            "line1": "WELSH - We will not show the registered email address on the public register."
+        }
+    },
+
+    "error" : "WELSH - Error: ",
 
     "errorPage" : {
         "title": "WELSH - Service unavailable",
@@ -477,12 +488,19 @@
 
     "generalPartnersPage": {
         "title": "WELSH - You now need to tell us about the general partners",
-        "pageInformation": "WELSH - If the partnership has more than one general partner, you'll add them one at a time."
+        "pageInformation": "WELSH - If the partnership has more than one general partner, you'll add them one at a time.",
+        "disqualificationStatement" : "WELSH - I confirm that the general partner is not disqualified under the directors disqualification legislation, as defined in the Limited Partnership Act 1907.",
+        "disqualificationStatementLegend" : "WELSH - General partner - person - disqualification statement"
     },
 
     "govUk" : {
+        "banner" : {
+          "tag": "WELSH - Beta",
+          "titleRegistration": "WELSH - This is a new service - your <a class='govuk-link' href='https://www.smartsurvey.co.uk/s/file-for-lp-fdbk/'>feedback</a> will help us to improve it.",
+          "titleTransition": "WELSH - This is a new service - your <a class='govuk-link' href='https://www.smartsurvey.co.uk/s/provideinfoaboutlp-fdbk/'>feedback</a> will help us to improve it."
+        },
         "error" : {
-            "title" : "WELSH - There is a problem"
+          "title" : "WELSH - There is a problem"
         }
     },
 
@@ -504,46 +522,31 @@
     },
 
     "namePage" : {
+        "partnershipRulesHint" : {
+            "rules" : "WELSH - The partnership name needs to meet set rules. For example, it cannot be the same as another registered partnership or company, or include certain words or phrases.",
+            "rulesLinkStart" : "WELSH - To find out the rules the limited partnership's name needs to meet,",
+            "rulesLinkEnd" : "WELSH - read the guidance on choosing a company name (opens in a new tab)"
+        },
+        "warning" : "WELSH - You must check the name meets the rules before you register the partnership. If it does not, we may reject your application, or you may need to change it later.",
+        "warningFallback" : "WELSH - Warning",
         "title" : "WELSH - Limited partnership name",
-        "whatIsName" : "WELSH - What is the limited partnership name?",
+        "whatIsName" : "WELSH - What's the name of the partnership?",
         "whatIsNameHint" : "WELSH - Do not enter a name ending like Limited Partnership or LP. We will add this for you.",
-        "existingPartnershipHint" : {
-            "start" : "WELSH - You must check the name is not the same as an existing partnership or company on the",
-            "url" : "WELSH - https://find-and-update.company-information.service.gov.uk/company-name-availability",
-            "urlName" : "WELSH - Companies House register (opens in a new tab)",
-            "end" : "WELSH - If it is, we'll reject your application."
-        },
-        "sensitiveWordHint" : {
-            "start" : "WELSH - If the name includes",
-            "url" : "WELSH - https://www.gov.uk/government/publications/incorporation-and-names/annex-a-sensitive-words-and-expressions-or-words-that-could-imply-a-connection-with-government",
-            "urlName" : "WELSH - sensitive words or expressions that require approval (opens in a new tab)",
-            "end" : "WELSH - you must get permission before you register."
-        },
-        "existingTrademarkHint" : {
-            "start" : "WELSH - You should also use the",
-            "url" : "WELSH - https://www.gov.uk/search-for-trademark",
-            "urlName" : "WELSH - trade mark search (opens in a new tab)",
-            "end" : "WELSH - to check if your name matches an existing trade mark. If it does, consider choosing a different name. Companies House will not carry out this check for you."
-        },
-        "nameEnding" : "WELSH - Which limited partnership name ending would you prefer to go on the public record?",
+        "nameEnding" : "WELSH - Which name ending would you prefer to go on the public record?",
         "nameEndingHint" : "WELSH - There's no difference between the name endings Limited Partnership, LP and L.P. except how they look.",
         "nameEndingWelshHint" : "WELSH - There's no difference between the name endings Limited Partnership, LP and L.P. except how they look. Partneriaeth Cyfyngedig, PC, and P.C. can only be used if the partnership's principal place of business is in Wales.",
-
+       
         "privateFund" : {
-            "title" : "WELSH - Private fund limited partnership name",
-            "whatIsName" : "WELSH - What's the name of the private fund limited partnership?",
+            "title" : "WELSH - Private fund limited partnership name",           
             "nameEnding" : "WELSH - Which private fund limited partnership name ending would you prefer to go on the public record?",
     
             "scottish" : {
-                "title" : "WELSH - Scottish private fund limited partnership name",
-                "whatIsName" : "WELSH - What's the name of the private fund limited partnership?"        
+                "title" : "WELSH - Scottish private fund limited partnership name"                     
             }    
         },
 
         "scottish" : {
-            "title" : "WELSH - Scottish limited partnership name",
-            "whatIsName" : "WELSH - What's the name of the Scottish limited partnership?",
-            "nameEnding" : "WELSH - Which name ending would you prefer to go on the public record?"
+            "title" : "WELSH - Scottish limited partnership name"
         }
     },
 
@@ -552,7 +555,7 @@
         "spelling" : "WELSH - If you typed the web address, check it is spelled correctly.",
         "copiedAddress" : "WELSH - If you pasted the web address, check you copied the entire address.",
         "movedPage" : "WELSH - If the web address is correct or you selected a link, the page may have moved.",
-        "goToStartPage" : "WELSH - To register a limited partnership, go to the <a class='govuk-link' href='/limited-partnerships/registration/which-type'>Register a limited partnership</a> start page."
+        "goToStartPage" : "WELSH - To register a limited partnership, go to the <a class='govuk-link' href='/limited-partnerships/registration/continue-saved-filing'>Register a limited partnership</a> start page."
     },
 
     "paymentFailedPage" : {
@@ -620,7 +623,9 @@
         }
     },
 
-    "service" : "WELSH - Register a limited partnership",
+    "serviceRegistration" : "WELSH - Register a limited partnership",
+    "serviceTransition" : "WELSH - Provide information about a limited partnership",
+    "servicePostTransition" : "WELSH - File for a limited partnership",
 
     "sicCodePage" : {
         "title" : "WELSH - What is the Standard Industrial Classification (SIC) code?",
@@ -654,7 +659,7 @@
         "LP": "WELSH - Limited partnership in England, Wales or Northern Ireland",
         "PFLP": "WELSH - Private fund limited partnership in England, Wales or Northern Ireland",
         "SLP": "WELSH - Scottish limited partnership",
-        "SPFLP": "WELSH - Private fund limited partnership in Scotland"
+        "SPFLP": "WELSH - Scottish private fund limited partnership"
     },
     
     "whereIsTheJurisdiction" : {

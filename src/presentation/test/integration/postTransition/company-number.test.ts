@@ -7,10 +7,7 @@ import app from "../app";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 
-import {
-  COMPANY_NUMBER_URL,
-  CONFIRM_LIMITED_PARTNERSHIP_URL
-} from "../../../../presentation/controller/postTransition/url";
+import { COMPANY_NUMBER_URL, CONFIRM_LIMITED_PARTNERSHIP_URL } from "../../../controller/postTransition/url";
 import {
   APPLICATION_CACHE_KEY,
   APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION,
@@ -39,7 +36,7 @@ describe("Company number page", () => {
       expect(res.status).toBe(200);
       testTranslations(res.text, enTranslationText.companyNumber);
       expect(res.text).toContain(
-        `${enTranslationText.companyNumber.whatIsPartnershipNumber} - ${enTranslationText.service} - GOV.UK`
+        `${enTranslationText.companyNumber.whatIsPartnershipNumber} - ${enTranslationText.servicePostTransition} - GOV.UK`
       );
       expect(res.text).not.toContain("WELSH -");
       expect(res.text).toContain(SERVICE_NAME_POST_TRANSITION);
@@ -52,7 +49,7 @@ describe("Company number page", () => {
       expect(res.status).toBe(200);
       testTranslations(res.text, enTranslationText.companyNumber);
       expect(res.text).toContain(
-        `${cyTranslationText.companyNumber.whatIsPartnershipNumber} - ${cyTranslationText.service} - GOV.UK`
+        `${cyTranslationText.companyNumber.whatIsPartnershipNumber} - ${cyTranslationText.servicePostTransition} - GOV.UK`
       );
       expect(res.text).toContain("WELSH -");
       expect(res.text).toContain(SERVICE_NAME_POST_TRANSITION);

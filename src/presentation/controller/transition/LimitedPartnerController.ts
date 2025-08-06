@@ -1,9 +1,18 @@
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
 
-import { ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL, ADD_LIMITED_PARTNER_PERSON_URL, CHECK_YOUR_ANSWERS_URL, LIMITED_PARTNERS_URL } from "./url";
+import {
+  ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
+  ADD_LIMITED_PARTNER_PERSON_URL,
+  CHECK_YOUR_ANSWERS_URL,
+  LIMITED_PARTNERS_URL,
+  REVIEW_LIMITED_PARTNERS_URL
+} from "./url";
 import LimitedPartnerController from "../common/LimitedPartnerController";
-import { CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL, CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../addressLookUp/url/transition";
+import {
+  CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
+} from "../addressLookUp/url/transition";
 
 class LimitedPartnerTransitionController extends LimitedPartnerController {
   constructor(limitedPartnershipService: LimitedPartnershipService, limitedPartnerService: LimitedPartnerService) {
@@ -12,6 +21,10 @@ class LimitedPartnerTransitionController extends LimitedPartnerController {
 
   getPageRouting() {
     return super.getPageRouting();
+  }
+
+  getLimitedPartner() {
+    return super.getLimitedPartner({ reviewLimitedPartnersUrl: REVIEW_LIMITED_PARTNERS_URL });
   }
 
   limitedPartnerChoice() {

@@ -1,4 +1,4 @@
-import { Request } from "express";
+import { NextFunction, Request, Response } from "express";
 import { Session } from "@companieshouse/node-session-handler";
 
 import {
@@ -6,14 +6,15 @@ import {
   GENERAL_PARTNER_WITH_ID_URL,
   LIMITED_PARTNER_ID,
   LIMITED_PARTNER_WITH_ID_URL,
+  POST_TRANSITION_BASE_URL,
+  POST_TRANSITION_WITH_IDS_URL,
   REGISTRATION_BASE_URL,
   REGISTRATION_WITH_IDS_URL,
   SUBMISSION_ID,
   TRANSACTION_ID,
   TRANSITION_BASE_URL,
   TRANSITION_WITH_IDS_URL,
-  POST_TRANSITION_BASE_URL,
-  POST_TRANSITION_WITH_IDS_URL
+  YOUR_FILINGS_URL
 } from "../../config/constants";
 import { PageRouting, pageRoutingDefault, PagesRouting } from "./PageRouting";
 import PageType from "./PageType";
@@ -32,13 +33,7 @@ import {
 } from "./transition/url";
 import UIErrors from "../../domain/entities/UIErrors";
 import { getJourneyTypes } from "../../utils";
-
-type Ids = {
-  transactionId: string;
-  submissionId: string;
-  generalPartnerId?: string;
-  limitedPartnerId?: string;
-};
+import { Ids, Tokens } from "../../domain/types";
 
 abstract class AbstractController {
   protected getRouting(routing: PagesRouting, pageType: PageType, request: Request) {
@@ -216,14 +211,14 @@ abstract class AbstractController {
     return pageType;
   }
 
-  protected extractTokens(request: Request) {
+  protected extractTokens(request: Request): Tokens {
     return {
       access_token: request?.session?.data?.signin_info?.access_token?.access_token ?? "",
       refresh_token: request?.session?.data?.signin_info?.access_token?.refresh_token ?? ""
     };
   }
 
-  protected extractIds(request: Request) {
+  protected extractIds(request: Request): Ids {
     const transactionId = request.params.transactionId;
     const submissionId = request.params.submissionId;
     const generalPartnerId = request.params.generalPartnerId;
@@ -251,6 +246,23 @@ abstract class AbstractController {
     }
 
     return WHICH_TYPE_URL;
+  }
+
+  continueSavedFiling(pageType, routing) {
+    return (request: Request, response: Response, next: NextFunction) => {
+      try {
+        if (request.body["continue_saved_filing"] === 'YES') {
+          return response.redirect(YOUR_FILINGS_URL);
+        }
+
+        const type = this.extractPageTypeOrThrowError(request, pageType);
+        const pageRouting = this.getRouting(routing, type, request);
+
+        return response.redirect(pageRouting.nextUrl);
+      } catch (error) {
+        next(error);
+      }
+    };
   }
 }
 

@@ -36,7 +36,7 @@ describe("Remove General Partner Page", () => {
       expect(res.status).toBe(200);
 
       expect(res.text).toContain(
-        `${enTranslationText.removePartnerPage.title} - ${enTranslationText.service} - GOV.UK`
+        `${enTranslationText.removePartnerPage.title} - ${enTranslationText.serviceRegistration} - GOV.UK`
       );
 
       testTranslations(res.text, enTranslationText.removePartnerPage);
@@ -59,7 +59,7 @@ describe("Remove General Partner Page", () => {
       expect(res.status).toBe(200);
 
       expect(res.text).toContain(
-        `${cyTranslationText.removePartnerPage.title} - ${cyTranslationText.service} - GOV.UK`
+        `${cyTranslationText.removePartnerPage.title} - ${cyTranslationText.serviceRegistration} - GOV.UK`
       );
 
       testTranslations(res.text, cyTranslationText.removePartnerPage);

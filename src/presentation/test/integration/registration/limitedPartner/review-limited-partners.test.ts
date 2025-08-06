@@ -43,7 +43,7 @@ describe("Review Limited Partners Page", () => {
       expect(res.status).toBe(200);
 
       expect(res.text).toContain(
-        `${enTranslationText.reviewLimitedPartnersPage.title} - ${enTranslationText.service} - GOV.UK`
+        `${enTranslationText.reviewLimitedPartnersPage.title} - ${enTranslationText.serviceRegistration} - GOV.UK`
       );
 
       testTranslations(res.text, enTranslationText.reviewLimitedPartnersPage, ["emptyList"]);
@@ -62,7 +62,7 @@ describe("Review Limited Partners Page", () => {
       expect(res.status).toBe(200);
 
       expect(res.text).toContain(
-        `${cyTranslationText.reviewLimitedPartnersPage.title} - ${cyTranslationText.service} - GOV.UK`
+        `${cyTranslationText.reviewLimitedPartnersPage.title} - ${cyTranslationText.serviceRegistration} - GOV.UK`
       );
 
       testTranslations(res.text, cyTranslationText.reviewLimitedPartnersPage, ["emptyList", "errorMessage"]);
@@ -88,7 +88,7 @@ describe("Review Limited Partners Page", () => {
     it("should redirect to the Add Limited Partner Person", async () => {
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.reviewLimitedPartners,
-        addAnotherLimitedPartner: "addPerson"
+        addAnotherPartner: "addPerson"
       });
 
       expect(res.status).toBe(302);
@@ -98,7 +98,7 @@ describe("Review Limited Partners Page", () => {
     it("should redirect to the Add Limited Partner Legal Entity", async () => {
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.reviewLimitedPartners,
-        addAnotherLimitedPartner: "addLegalEntity"
+        addAnotherPartner: "addLegalEntity"
       });
 
       expect(res.status).toBe(302);
@@ -108,7 +108,7 @@ describe("Review Limited Partners Page", () => {
     it("should redirect to the limited partners page", async () => {
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.reviewLimitedPartners,
-        addAnotherLimitedPartner: "no"
+        addAnotherPartner: "no"
       });
 
       expect(res.status).toBe(302);
@@ -120,13 +120,13 @@ describe("Review Limited Partners Page", () => {
 
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.reviewLimitedPartners,
-        addAnotherLimitedPartner: "no"
+        addAnotherPartner: "no"
       });
 
       expect(res.status).toBe(200);
 
       expect(res.text).toContain(
-        `${enTranslationText.reviewLimitedPartnersPage.title} - ${enTranslationText.service} - GOV.UK`
+        `${enTranslationText.reviewLimitedPartnersPage.title} - ${enTranslationText.serviceRegistration} - GOV.UK`
       );
     });
 
@@ -138,7 +138,7 @@ describe("Review Limited Partners Page", () => {
 
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.reviewLimitedPartners,
-        addAnotherLimitedPartner: "no"
+        addAnotherPartner: "no"
       });
 
       expect(res.status).toBe(200);
@@ -156,7 +156,7 @@ describe("Review Limited Partners Page", () => {
 
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.reviewLimitedPartners,
-        addAnotherLimitedPartner: "addPerson"
+        addAnotherPartner: "addPerson"
       });
 
       expect(res.status).toBe(200);
@@ -174,7 +174,7 @@ describe("Review Limited Partners Page", () => {
 
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.reviewLimitedPartners,
-        addAnotherLimitedPartner: "addLegalEntity"
+        addAnotherPartner: "addLegalEntity"
       });
 
       expect(res.status).toBe(200);

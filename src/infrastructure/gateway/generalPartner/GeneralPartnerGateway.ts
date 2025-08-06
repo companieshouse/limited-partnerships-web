@@ -10,7 +10,8 @@ import {
 import {
   validateAndFormatPartnerPersonDateOfBirth,
   removeEmptyStringValues,
-  validateAndFormatPartnerDateEffectiveFrom
+  validateAndFormatPartnerDateEffectiveFrom,
+  resetFormerNamesIfPreviousNameIsFalse
 } from "../utils";
 
 class GeneralPartnerGateway implements IGeneralPartnerGateway {
@@ -21,6 +22,7 @@ class GeneralPartnerGateway implements IGeneralPartnerGateway {
   ): Promise<string> {
     validateAndFormatPartnerPersonDateOfBirth(data);
     validateAndFormatPartnerDateEffectiveFrom(data);
+    resetFormerNamesIfPreviousNameIsFalse(data);
 
     const generalPartner: GeneralPartner = { data: removeEmptyStringValues(data) };
 
@@ -89,11 +91,7 @@ class GeneralPartnerGateway implements IGeneralPartnerGateway {
   ): Promise<void> {
     validateAndFormatPartnerPersonDateOfBirth(data);
     validateAndFormatPartnerDateEffectiveFrom(data);
-
-    // If the GP (Person) had previous names but now the selection has changed to 'false', ensure that the previous names are removed
-    if (data?.former_names && data?.previousName === "false") {
-      data.former_names = "";
-    }
+    resetFormerNamesIfPreviousNameIsFalse(data);
 
     const apiCall = {
       service: SDK_LIMITED_PARTNERSHIP_SERVICE,

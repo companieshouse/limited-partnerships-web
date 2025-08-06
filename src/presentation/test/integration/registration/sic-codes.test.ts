@@ -36,7 +36,7 @@ describe("Sic Codes", () => {
 
         expect(res.status).toBe(200);
         testTranslations(res.text, enTranslationText.sicCodePage);
-        expect(res.text).toContain(`${enTranslationText.sicCodePage.title} - ${enTranslationText.service} - GOV.UK`);
+        expect(res.text).toContain(`${enTranslationText.sicCodePage.title} - ${enTranslationText.serviceRegistration} - GOV.UK`);
         expect(res.text).not.toContain("WELSH -");
       });
 
@@ -53,7 +53,7 @@ describe("Sic Codes", () => {
         const res = await request(app).get(URL + "?lang=cy");
 
         expect(res.status).toBe(200);
-        expect(res.text).toContain(`${cyTranslationText.sicCodePage.title} - ${cyTranslationText.service} - GOV.UK`);
+        expect(res.text).toContain(`${cyTranslationText.sicCodePage.title} - ${cyTranslationText.serviceRegistration} - GOV.UK`);
         testTranslations(res.text, cyTranslationText.sicCodePage);
         expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
       });

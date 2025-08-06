@@ -1,3 +1,10 @@
+{% if props.pageType === "review-general-partners" %}
+    {% set partnerType = "general-partner" %}
+{% else %}
+    {% set partnerType = "limited-partner" %}
+{% endif %}
+
+
 <div>
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
@@ -33,11 +40,15 @@
                                     items: [
                                         CREATE_CHANGE_LINK(
                                             partnersAdded.changeLink,
-                                            props.currentUrl | replace(props.pageType, kind + "/" + item.id + "/add-" + kind + "-person")
+                                            props.currentUrl | replace(props.pageType, kind + "/" + item.id + "/add-" + kind + "-person"),
+                                            null,
+                                            "change-" + partnerType + "-person"
                                         ),
                                         CREATE_CHANGE_LINK(
                                             partnersAdded.removeLink,
-                                            props.currentUrl | replace(props.pageType, kind + "/" + item.id + "/remove-" + kind + "")
+                                            props.currentUrl | replace(props.pageType, kind + "/" + item.id + "/remove-" + kind + ""),
+                                            null,
+                                            "delete-" + partnerType + "-person"
                                         )
                                     ]
                                 }
@@ -56,11 +67,15 @@
                                     items: [
                                         CREATE_CHANGE_LINK(
                                             partnersAdded.changeLink,
-                                            props.currentUrl | replace(props.pageType, kind + "/" + item.id + "/add-" + kind + "-legal-entity")
+                                            props.currentUrl | replace(props.pageType, kind + "/" + item.id + "/add-" + kind + "-legal-entity"),
+                                            null,
+                                            "change-" + partnerType + "-legal-entity"
                                         ),
                                         CREATE_CHANGE_LINK(
                                             partnersAdded.removeLink,
-                                            props.currentUrl | replace(props.pageType, kind + "/" + item.id + "/remove-" + kind + "")
+                                            props.currentUrl | replace(props.pageType, kind + "/" + item.id + "/remove-" + kind + ""),
+                                            null,
+                                            "delete-" + partnerType + "-legal-entity"
                                         )
                                     ]
                                 }
@@ -95,7 +110,7 @@
                 {% include "includes/csrf_token.njk" %}
         
                 {{ govukRadios({
-                    name: parameter,
+                    name: "addAnotherPartner",
                     fieldset: {
                         legend: {
                             text: addPartner.title,
@@ -109,27 +124,34 @@
                             value: "addPerson",
                             text: addPartner.optionPerson,
                             attributes: {
-                                required: true
+                              required: true
                             }
                         },
                         {
                             value: "addLegalEntity",
                             text: addPartner.optionLegalEntity,
                             attributes: {
-                                required: true
+                              required: true
                             }
                         },
                         {
                             value: "no",
                             text: i18n.yesAndNo.no,
                             attributes: {
-                                required: true
+                              required: true
                             }
                         }
                     ]
                 }) }}
 
-                {% include "includes/save-and-continue-button.njk" %}
+                {{ govukButton({
+                  text: i18n.buttons.saveAndContinue,
+                  attributes: {
+                    "id": "submit",
+                    "onclick": "_paq.push(['trackEvent', 'Limited Partnerships', 'Do you want to add another partner?', document.querySelector('input[name=addAnotherPartner]:checked').nextElementSibling.innerHTML])"                  
+                    }
+                }) }}
+
 
             </form>
         </div>

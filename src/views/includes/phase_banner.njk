@@ -1,6 +1,12 @@
+{% if journeyTypes.isRegistration %}
+  {% set bannerTitle = i18n.govUk.banner.titleRegistration %}
+{% else %}
+  {% set bannerTitle = i18n.govUk.banner.titleTransition %}
+{% endif %}
+
 {{ govukPhaseBanner({
   tag: {
-    text: "beta"
+    text: i18n.govUk.banner.tag
   },
-  html: 'This is a new service - your <a class="govuk-link" href="https://www.smartsurvey.co.uk/s/lp-feedback/">feedback</a> will help us to improve it.'
+  html: bannerTitle
 }) }}

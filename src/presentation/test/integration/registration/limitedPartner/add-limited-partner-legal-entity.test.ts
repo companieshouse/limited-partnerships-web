@@ -53,7 +53,7 @@ describe("Add Limited Partner Legal Entity Page", () => {
 
         expect(res.status).toBe(200);
         expect(res.text).toContain(
-          `${cyTranslationText.addPartnerLegalEntityPage.limitedPartner.title} - ${cyTranslationText.service} - GOV.UK`
+          `${cyTranslationText.addPartnerLegalEntityPage.limitedPartner.title} - ${cyTranslationText.serviceRegistration} - GOV.UK`
         );
         testTranslations(res.text, cyTranslationText.addPartnerLegalEntityPage, [
           "errorMessages",
@@ -65,9 +65,7 @@ describe("Add Limited Partner Legal Entity Page", () => {
           "dateYear"
         ]);
 
-        if (isCapitalContributionPresent) {
-          testTranslations(res.text, cyTranslationText.capitalContribution, ["compositionErrorMessage"]);
-        } else {
+        if (!isCapitalContributionPresent) {
           expect(res.text).not.toContain(cyTranslationText.capitalContribution.title);
         }
       }
@@ -90,7 +88,7 @@ describe("Add Limited Partner Legal Entity Page", () => {
 
         expect(res.status).toBe(200);
         expect(res.text).toContain(
-          `${enTranslationText.addPartnerLegalEntityPage.limitedPartner.title} - ${enTranslationText.service} - GOV.UK`
+          `${enTranslationText.addPartnerLegalEntityPage.limitedPartner.title} - ${enTranslationText.serviceRegistration} - GOV.UK`
         );
         testTranslations(res.text, enTranslationText.addPartnerLegalEntityPage, [
           "errorMessages",
@@ -103,9 +101,7 @@ describe("Add Limited Partner Legal Entity Page", () => {
         ]);
         expect(res.text).not.toContain("WELSH -");
 
-        if (isCapitalContributionPresent) {
-          testTranslations(res.text, enTranslationText.capitalContribution, ["compositionErrorMessage"]);
-        } else {
+        if (!isCapitalContributionPresent) {
           expect(res.text).not.toContain(enTranslationText.capitalContribution.title);
         }
       }

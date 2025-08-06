@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 
 import AbstractController from "../AbstractController";
+import { Ids, Tokens } from "../../../domain/types";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 
@@ -65,25 +66,41 @@ class LimitedPartnerController extends AbstractController {
     };
   }
 
-  private async conditionalPreviousUrl(
-    ids: { transactionId: string; submissionId: string; limitedPartnerId: string },
-    pageRouting: PageRouting,
-    request: Request,
-    tokens
-  ) {
-    const previousPageType = super.pageType(request.get("Referrer") ?? "");
+  getLimitedPartner(urls: { reviewLimitedPartnersUrl: string }) {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        this.limitedPartnerService.setI18n(response.locals.i18n);
 
-    const pageType = this.getJourneyPageTypes(request.url);
+        const routing = this.getJourneyPageRouting(request.url);
 
-    if (
-      pageRouting.pageType === pageType.addLimitedPartnerLegalEntity ||
-      pageRouting.pageType === pageType.addLimitedPartnerPerson
-    ) {
-      const result = await this.limitedPartnerService.getLimitedPartners(tokens, ids.transactionId);
-      if (previousPageType === pageType.reviewLimitedPartners || result.limitedPartners.length > 0) {
-        pageRouting.previousUrl = super.insertIdsInUrl(pageRouting.data?.customPreviousUrl, ids, request.url);
+        const { tokens, pageType, ids } = super.extract(request);
+        const pageRouting = super.getRouting(routing, pageType, request);
+
+        const result = await this.limitedPartnerService.getLimitedPartners(tokens, ids.transactionId);
+
+        if (result.limitedPartners.length > 0) {
+          response.redirect(super.insertIdsInUrl(urls.reviewLimitedPartnersUrl, ids, request.url));
+          return;
+        }
+
+        let limitedPartnership = {};
+
+        if (ids.transactionId && ids.submissionId) {
+          limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+            tokens,
+            ids.transactionId,
+            ids.submissionId
+          );
+        }
+
+        response.render(
+          super.templateName(pageRouting.currentUrl),
+          super.makeProps(pageRouting, { limitedPartnership }, null)
+        );
+      } catch (error) {
+        next(error);
       }
-    }
+    };
   }
 
   limitedPartnerChoice(urls: { addPersonUrl: string; addLegalEntityUrl: string }) {
@@ -216,6 +233,8 @@ class LimitedPartnerController extends AbstractController {
             ids.submissionId
           );
 
+          await this.conditionalPreviousUrl(ids, pageRouting, request, tokens);
+
           response.render(
             super.templateName(pageRouting.currentUrl),
             super.makeProps(
@@ -243,13 +262,10 @@ class LimitedPartnerController extends AbstractController {
   }
 
   private async conditionalLimitedPartner(
-    ids: { transactionId: string; submissionId: string; limitedPartnerId: string },
+    ids: Ids,
     pageRouting: PageRouting,
     request: Request,
-    tokens: {
-      access_token: string;
-      refresh_token: string;
-    },
+    tokens: Tokens,
     urls: {
       confirmLimitedPartnerUsualResidentialAddressUrl: string;
       confirmLimitedPartnerPrincipalOfficeAddressUrl: string;
@@ -324,9 +340,9 @@ class LimitedPartnerController extends AbstractController {
           return;
         }
 
-        const addAnotherGeneralPartner = request.body.addAnotherGeneralPartner;
+        const addAnotherLimitedPartner = request.body.addAnotherPartner;
 
-        if (addAnotherGeneralPartner === "no") {
+        if (addAnotherLimitedPartner === "no") {
           const redirectUrl = super.insertIdsInUrl(pageRouting.nextUrl, ids, request.url);
 
           response.redirect(redirectUrl);
@@ -334,7 +350,6 @@ class LimitedPartnerController extends AbstractController {
         }
 
         let url = urls.checkYourAnswersUrl;
-        const addAnotherLimitedPartner = request.body.addAnotherLimitedPartner;
 
         if (addAnotherLimitedPartner === "addPerson") {
           url = urls.addLimitedPartnerPersonUrl;
@@ -372,6 +387,20 @@ class LimitedPartnerController extends AbstractController {
         next(error);
       }
     };
+  }
+
+  private async conditionalPreviousUrl(ids: Ids, pageRouting: PageRouting, request: Request, tokens) {
+    const pageType = this.getJourneyPageTypes(request.url);
+
+    if (
+      pageRouting.pageType === pageType.addLimitedPartnerLegalEntity ||
+      pageRouting.pageType === pageType.addLimitedPartnerPerson
+    ) {
+      const result = await this.limitedPartnerService.getLimitedPartners(tokens, ids.transactionId);
+      if (result.limitedPartners.length > 0) {
+        pageRouting.previousUrl = super.insertIdsInUrl(pageRouting.data?.customPreviousUrl, ids, request.url);
+      }
+    }
   }
 
   private getJourneyPageTypes(url: string) {

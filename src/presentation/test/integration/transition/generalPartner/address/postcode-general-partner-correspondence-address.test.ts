@@ -42,7 +42,7 @@ describe("Postcode general partner's correspondence address page", () => {
       expect(res.text).toContain(
         toEscapedHtml(
           enTranslationText.address.findPostcode.generalPartner.correspondenceAddress.whatIsCorrespondenceAddress
-        ) + ` - ${enTranslationText.service} - GOV.UK`
+        ) + ` - ${enTranslationText.serviceTransition} - GOV.UK`
       );
       testTranslations(res.text, enTranslationText.address.findPostcode, [
         "registeredOfficeAddress",
@@ -73,7 +73,7 @@ describe("Postcode general partner's correspondence address page", () => {
       expect(res.text).toContain(
         toEscapedHtml(
           cyTranslationText.address.findPostcode.generalPartner.correspondenceAddress.whatIsCorrespondenceAddress
-        ) + ` - ${cyTranslationText.service} - GOV.UK`
+        ) + ` - ${cyTranslationText.serviceTransition} - GOV.UK`
       );
       testTranslations(res.text, cyTranslationText.address.findPostcode, [
         "registeredOfficeAddress",

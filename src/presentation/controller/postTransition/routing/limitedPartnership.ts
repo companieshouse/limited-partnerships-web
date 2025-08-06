@@ -11,10 +11,24 @@ const postTransitionRoutingCompanyNumber = {
 const postTransitionRoutingConfirmLimitedPartnership = {
   previousUrl: url.COMPANY_NUMBER_URL,
   currentUrl: url.CONFIRM_LIMITED_PARTNERSHIP_URL,
-  nextUrl: "/", // TODO update with landing page URL when available
+  nextUrl: url.LANDING_PAGE_URL,
   pageType: PostTransitionPageType.confirmLimitedPartnership
 };
 
-const limitedPartnershipRouting = [postTransitionRoutingCompanyNumber, postTransitionRoutingConfirmLimitedPartnership];
+const postTransitionRoutingLandingPage = {
+  previousUrl: url.CONFIRM_LIMITED_PARTNERSHIP_URL,
+  currentUrl: url.LANDING_PAGE_URL,
+  nextUrl: "/",
+  pageType: PostTransitionPageType.landingPage,
+  data: {
+    addGeneralPartner: url.GENERAL_PARTNER_CHOICE_URL
+  }
+};
+
+const limitedPartnershipRouting = [
+  postTransitionRoutingCompanyNumber,
+  postTransitionRoutingConfirmLimitedPartnership,
+  postTransitionRoutingLandingPage
+];
 
 export default limitedPartnershipRouting;

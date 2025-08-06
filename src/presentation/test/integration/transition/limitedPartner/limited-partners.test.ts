@@ -7,8 +7,9 @@ import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 
-import { LIMITED_PARTNERS_URL } from "../../../../controller/registration/url";
+import { LIMITED_PARTNERS_URL, REVIEW_LIMITED_PARTNERS_URL } from "../../../../controller/transition/url";
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
+import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
 
 describe("Limited Partners Page", () => {
   const URL = getUrl(LIMITED_PARTNERS_URL);
@@ -25,7 +26,7 @@ describe("Limited Partners Page", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
-      `${cyTranslationText.limitedPartnersPage.title} - ${cyTranslationText.service} - GOV.UK`
+      `${cyTranslationText.limitedPartnersPage.title} - ${cyTranslationText.serviceTransition} - GOV.UK`
     );
     testTranslations(res.text, cyTranslationText.limitedPartnersPage);
   });
@@ -36,7 +37,7 @@ describe("Limited Partners Page", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
-      `${enTranslationText.limitedPartnersPage.title} - ${enTranslationText.service} - GOV.UK`
+      `${enTranslationText.limitedPartnersPage.title} - ${enTranslationText.serviceTransition} - GOV.UK`
     );
     testTranslations(res.text, enTranslationText.limitedPartnersPage);
   });
@@ -50,7 +51,19 @@ describe("Limited Partners Page", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
-      `${limitedPartnership?.data?.partnership_name?.toUpperCase()} ${limitedPartnership?.data?.name_ending?.toUpperCase()}`
+      `${limitedPartnership?.data?.partnership_name?.toUpperCase()} (${limitedPartnership?.data?.partnership_number?.toUpperCase()})`
     );
+  });
+
+  it("should redirect to review page if list not empty", async () => {
+    const limitedPartner = new LimitedPartnerBuilder().isPerson().build();
+    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
+
+    const res = await request(app).get(URL);
+
+    const REDIRECT_URL = getUrl(REVIEW_LIMITED_PARTNERS_URL);
+
+    expect(res.status).toBe(302);
+    expect(res.text).toContain(REDIRECT_URL);
   });
 });

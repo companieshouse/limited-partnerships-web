@@ -33,7 +33,7 @@ describe("Company number page", () => {
       expect(res.status).toBe(200);
       testTranslations(res.text, enTranslationText.companyNumber);
       expect(res.text).toContain(
-        `${enTranslationText.companyNumber.whatIsPartnershipNumber} - ${enTranslationText.service} - GOV.UK`
+        `${enTranslationText.companyNumber.whatIsPartnershipNumber} - ${enTranslationText.serviceTransition} - GOV.UK`
       );
       expect(res.text).not.toContain("WELSH -");
       expect(res.text).toContain(SERVICE_NAME_TRANSITION);
@@ -46,7 +46,7 @@ describe("Company number page", () => {
       expect(res.status).toBe(200);
       testTranslations(res.text, enTranslationText.companyNumber);
       expect(res.text).toContain(
-        `${cyTranslationText.companyNumber.whatIsPartnershipNumber} - ${cyTranslationText.service} - GOV.UK`
+        `${cyTranslationText.companyNumber.whatIsPartnershipNumber} - ${cyTranslationText.serviceTransition} - GOV.UK`
       );
       expect(res.text).toContain("WELSH -");
       expect(res.text).toContain(SERVICE_NAME_TRANSITION);

@@ -20,15 +20,20 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
+      {% include "includes/errors.njk" %}
+      
+      {% include "includes/proposed-name.njk" %}  
+
       <form class="form" action={{ props.currentUrl }} method="post">
         <input type="hidden" name="pageType" value={{ props.pageType }}>      
         {% include "includes/csrf_token.njk" %}
 
-        {% include "includes/errors.njk" %}
-        
-        {% include "includes/proposed-name.njk" %}  
 
         <h1 class="govuk-heading-xl">{{ i18n.addPartnerLegalEntityPage.generalPartner.title }}</h1>
+
+        {{ govukWarningText({
+          text: i18n.addPartnerLegalEntityPage.legalPersonalityWarning
+        }) }}
 
         {{ govukInput({
           label: {
@@ -122,7 +127,7 @@
           }
         }) }}
 
-        {% if journeyTypes.isTransition %}
+        {% if journeyTypes.isTransition or journeyTypes.isPostTransition %}
           {{ govukDateInput({
             id: "date_effective_from",
             namePrefix: "date_effective_from",
@@ -130,8 +135,8 @@
             fieldset: {
               legend: {
                 text: i18n.addPartnerPersonPage.generalPartner.dateEffectiveFrom,
-                isPageHeading: true,
-                classes: "govuk-label govuk-label--m"
+                isPageHeading: false,
+                classes: "govuk-fieldset__legend--m"
               }
             },
             hint: {
@@ -170,6 +175,8 @@
               }
             ]
           }) }}
+        {% else %}          
+          {% include "includes/disqualification-statement.njk" %}  
         {% endif %}
 
         {% include "includes/public-register-information.njk" %}

@@ -28,7 +28,7 @@ describe("General Partner Usual Residential Address Territory Choice", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${cyTranslationText.address.territoryChoice.generalPartnerUsualResidentialAddress.title} - ${cyTranslationText.service} - GOV.UK`
+        `${cyTranslationText.address.territoryChoice.generalPartnerUsualResidentialAddress.title} - ${cyTranslationText.serviceTransition} - GOV.UK`
       );
 
       testTranslations(res.text, cyTranslationText.address.territoryChoice.generalPartnerUsualResidentialAddress);
@@ -41,7 +41,7 @@ describe("General Partner Usual Residential Address Territory Choice", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${enTranslationText.address.territoryChoice.generalPartnerUsualResidentialAddress.title} - ${enTranslationText.service} - GOV.UK`
+        `${enTranslationText.address.territoryChoice.generalPartnerUsualResidentialAddress.title} - ${enTranslationText.serviceTransition} - GOV.UK`
       );
 
       testTranslations(res.text, enTranslationText.address.territories);

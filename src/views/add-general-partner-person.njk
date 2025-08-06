@@ -105,14 +105,13 @@
           fieldset: {
             legend: {
               text: i18n.addPartnerPersonPage.generalPartner.previousName.title,
-              isPageHeading: true,
-              classes: "govuk-label govuk-label--m"
+              isPageHeading: false,
+              classes: "govuk-fieldset__legend--m"
             }
           },
           hint: {
             text: i18n.addPartnerPersonPage.generalPartner.previousName.hint
           },
-
           items: [
             {
               value: "true",
@@ -146,8 +145,8 @@
           fieldset: {
             legend: {
               text: i18n.addPartnerPersonPage.dateOfBirth,
-              isPageHeading: true,
-              classes: "govuk-label govuk-label--m"
+              isPageHeading: false,
+              classes: "govuk-fieldset__legend--m"
             }
           },
           hint: {
@@ -203,32 +202,7 @@
         {% set nationalityFieldNameId = "nationality2" %}
         {% include "includes/nationalities.njk" %}
 
-        {{ govukCheckboxes({
-          id: "not_disqualified_statement_checked",
-          name: "not_disqualified_statement_checked",
-          value: props.data.generalPartner.data.not_disqualified_statement_checked,
-          errorMessage: props.errors.not_disqualified_statement_checked if props.errors,
-          classes: "govuk-!-margin-top-6",
-          fieldset: {
-            legend: {
-              text: i18n.addPartnerPersonPage.generalPartner.disqualificationStatementLegend,
-              isPageHeading: false,
-              classes: "govuk-visually-hidden"
-            }
-          },
-          items: [
-            {
-              value: "true",
-              text: i18n.addPartnerPersonPage.generalPartner.disqualificationStatement,
-              checked: props.data.generalPartner.data.not_disqualified_statement_checked,
-              attributes: {
-                required: true
-              }
-            }
-          ]
-        }) }}
-
-        {% if journeyTypes.isTransition %}
+        {% if journeyTypes.isTransition or journeyTypes.isPostTransition %}
           {{ govukDateInput({
             id: "date_effective_from",
             namePrefix: "date_effective_from",
@@ -236,8 +210,8 @@
             fieldset: {
               legend: {
                 text: i18n.addPartnerPersonPage.generalPartner.dateEffectiveFrom,
-                isPageHeading: true,
-                classes: "govuk-label govuk-label--m"
+                isPageHeading: false,
+                classes: "govuk-fieldset__legend--m"
               }
             },
             hint: {
@@ -276,6 +250,8 @@
               }
             ]
           }) }}
+        {% else %}        
+          {% include "includes/disqualification-statement.njk" %}  
         {% endif %}
 
         <div>

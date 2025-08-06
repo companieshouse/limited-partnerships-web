@@ -2,11 +2,12 @@ import { Transaction } from "@companieshouse/api-sdk-node/dist/services/transact
 import ITransactionGateway from "../../domain/ITransactionGateway";
 import { logger } from "../../utils";
 import { extractAPIErrors } from "./utils";
+import UIErrors from "../../domain/entities/UIErrors";
+import { Tokens } from "../../domain/types";
+import { IncorporationKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 class TransactionService {
-  constructor(
-    private readonly transactionGateway: ITransactionGateway,
-  ) {}
+  constructor(private readonly transactionGateway: ITransactionGateway) {}
 
   async getTransaction(
     opt: { access_token: string; refresh_token: string },
@@ -23,7 +24,42 @@ class TransactionService {
     }
   }
 
+  async createTransaction(
+    opt: Tokens,
+    incorporationKind: IncorporationKind,
+    description?: string,
+    company?: {
+      companyName: string;
+      companyNumber: string;
+    }
+  ): Promise<{
+    transactionId: string;
+    errors?: UIErrors;
+  }> {
+    try {
+      const transactionId = await this.transactionGateway.createTransaction(
+        opt,
+        incorporationKind,
+        description,
+        company
+      );
+
+      return { transactionId };
+    } catch (errors: any) {
+      const { apiErrors, isValidationErrors } = extractAPIErrors(errors);
+
+      logger.error(`Error creating transaction: ${JSON.stringify(apiErrors)}`);
+
+      if (!isValidationErrors) {
+        throw errors;
+      }
+
+      return {
+        transactionId: "",
+        errors
+      };
+    }
+  }
 }
 
 export default TransactionService;
-

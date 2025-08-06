@@ -32,6 +32,10 @@
 
         <h1 class="govuk-heading-xl">{{ i18n.addPartnerLegalEntityPage.limitedPartner.title }}</h1>
 
+        {{ govukWarningText({
+          text: i18n.addPartnerLegalEntityPage.legalPersonalityWarning
+        }) }}
+
         {{ govukInput({
           label: {
             text: i18n.addPartnerLegalEntityPage.legalEntityName,
@@ -136,8 +140,8 @@
             fieldset: {
               legend: {
                 text: i18n.addPartnerPersonPage.limitedPartner.dateEffectiveFrom,
-                isPageHeading: true,
-                classes: "govuk-label govuk-label--m"
+                isPageHeading: false,
+                classes: "govuk-fieldset__legend--m"
               }
             },
             hint: {

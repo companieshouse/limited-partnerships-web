@@ -5,8 +5,15 @@ import {
   CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL
 } from "../../addressLookUp/url/registration";
 
-const registrationRoutingPartnershipType = {
+const registrationRoutingContinueSavedFiling = {
   previousUrl: "/",
+  currentUrl: url.CONTINUE_SAVED_FILING_URL,
+  nextUrl: url.WHICH_TYPE_URL,
+  pageType: RegistrationPageType.continueSavedFiling
+};
+
+const registrationRoutingPartnershipType = {
+  previousUrl: url.CONTINUE_SAVED_FILING_URL,
   currentUrl: url.WHICH_TYPE_URL,
   nextUrl: url.NAME_URL,
   pageType: RegistrationPageType.whichType
@@ -63,6 +70,7 @@ const registrationRoutingCheckYourAnswers = {
 };
 
 const limitedPartnershipRouting = [
+  registrationRoutingContinueSavedFiling,
   registrationRoutingPartnershipType,
   registrationRoutingName,
   registrationRoutingEmail,

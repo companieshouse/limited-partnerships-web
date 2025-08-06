@@ -12,6 +12,7 @@ import enTranslationText from "../../../../../../locales/en/translations.json";
 import sdkMock from "../../mock/sdkMock";
 import { getUrl } from "../../../utils";
 import { CONFIRM_REGISTERED_OFFICE_ADDRESS_URL } from "../../../../controller/addressLookUp/url/registration";
+import { Ids } from "../../../../../domain/types";
 
 jest.mock("@companieshouse/api-sdk-node");
 
@@ -190,7 +191,7 @@ describe("Gateway Update - Refresh Token", () => {
       const res = await request(appRealDependencies).get(URL);
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(enTranslationText.emailPage.whatIsEmail);
+      expect(res.text).toContain(enTranslationText.emailPage.title);
     });
 
     it("should load error page if submissionId is incorrect", async () => {
@@ -204,7 +205,10 @@ describe("Gateway Update - Refresh Token", () => {
           })
         }
       });
-      const ids = { transactionId: appDevDependencies.transactionGateway.transactionId, submissionId: "wrong-id" };
+      const ids = {
+        transactionId: appDevDependencies.transactionGateway.transactionId,
+        submissionId: "wrong-id"
+      } as Ids;
 
       const url = appDevDependencies.limitedPartnershipRegistrationController.insertIdsInUrl(EMAIL_URL, ids);
 

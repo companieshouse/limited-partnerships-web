@@ -16,6 +16,7 @@
         "legalEntityName" : "What is the legal entity's name?",
         "legalFormOrCorporateIdentity" : "What is its legal form or corporate identity?",
         "legalFormOrCorporateIdentityHint" : "This is the corporate body type. For example, private limited company.",
+        "legalPersonalityWarning" : "By providing this information, you are confirming that this entity has legal personality.",
         "governingLaw" : "What is the governing law?",
         "governingLawHint" : "This is the law that the entity operates under. For example, the Companies Act 2006.",
         "whichRegister" : "Which register is it entered in?",
@@ -49,9 +50,7 @@
                 "yesHintTitle" : "What is the general partner's previous name?",
                 "yesHint" : "If the partner has more than one previous name, separate each name with a comma.",
                 "no" : "No"
-            },
-            "disqualificationStatement" : "I confirm the general partner is not disqualified under the directors disqualification legislation.",
-            "disqualificationStatementLegend" : "General partner - person - disqualification statement"
+            }            
         },
         "limitedPartner": {
             "title": "Add a limited partner (person)",
@@ -101,7 +100,10 @@
                 "title" : "Choose the usual residential address of the general partner"
             },
             "generalPartnerPrincipalOfficeAddress": {
-                "title": "Choose the general partner's principal office address"
+                "title": "Choose the general partner's principal office address",
+                "hint": "This is the address for the entity's main office.",
+                "publicRegisterInformationLine1": "We'll show the general partner's principal office address on the public register."
+
             },
             "generalPartnerCorrespondenceAddress" : {
                 "title": "Choose the general partner's correspondence address",
@@ -113,7 +115,9 @@
             },
             "limitedPartnerPrincipalOfficeAddress": {
                 "title": "Choose the limited partner's principal office address",
-                "titleHint": "This is the address for the entity's main office."
+                "hint": "This is the address for the entity's main office.",
+                "publicRegisterInformationLine1": "We'll show the limited partner's principal office address on the public register."
+
             }
         },
 
@@ -178,6 +182,7 @@
                 },
                 "principalOfficeAddress": {
                     "title": "What is the general partner's principal office address?",
+                    "hint": "This is the address for the entity's main office.",
                     "publicInformationLine1": "We'll show the general partner's principal office address on the public register.",
                     "postcodeOptional": "Postcode (optional)"
                 }
@@ -190,7 +195,7 @@
                 },
                 "principalOfficeAddress":{
                     "title": "What is the limited partner's principal office address?",
-                    "titleHint1": "This is the address for the entity's main office.",
+                    "hint": "This is the address for the entity's main office.",
                     "publicInformationLine1": "We'll show the limited partner's principal office address on the public register.",
                     "postcodeOptional": "Postcode (optional)"
                 }
@@ -253,6 +258,7 @@
                 },
                 "principalOfficeAddress": {
                     "whatIsPrincipalOfficeAddress": "What is the general partner's principal office address?",
+                    "hint": "This is the address for the entity's main office.",
                     "publicRegisterLine1": "We'll show the general partner's principal office address on the public register."
                 },
                 "correspondenceAddress": {
@@ -294,8 +300,8 @@
                 "publicRegisterInformationLine1": "We'll show the general partner's principal office address on the public register."
             },
             "generalPartnerUsualResidentialAddress": {
-                "title": "Where is the usual residential address of the general partner?",
-                "publicRegisterInformationLine1": "We will not show the general partner's usual residential address."
+                "title": "Where is the general partner’s usual residential address?",
+                "publicRegisterInformationLine1": "We will not show this address on the public register, unless it's also used as the general partner’s correspondence address."
             },
             "generalPartnerCorrespondenceAddress": {
                 "title": "Where is the general partner's correspondence address?",
@@ -326,6 +332,8 @@
 
     "capitalContribution" : {
        "title" : "What is their total capital contribution?",
+       "currencyTypeLabel": "Contribution currency type",
+       "valueLabel": "Contribution currency value",
        "hint" : "Enter the total value of all monetary and non-monetary contributions",
        "amountHint": "Enter the value, for example:",
        "amountMinHint": "if they contributed £0.01 enter 0.01", 
@@ -336,8 +344,7 @@
        "landOrProperty" : "Land or property",
        "shares" : "Shares",
        "servicesOrGoods" : "Services or goods",
-       "anyOtherAsset" : "Any other asset",
-       "compositionErrorMessage" : "Select a tick box"       
+       "anyOtherAsset" : "Any other asset"   
     },
 
     "checkYourAnswersPage" : {
@@ -345,7 +352,6 @@
         "lpInfo" : "Limited partnership information",
         "change" : "Change",
         "headingName" : "Name",
-        "headingNumber": "Partnership number",
         "headingType" : "Type",
         "headingSic" : "Standard Industrial Classification (SIC) code",
         "headingEmail" : "Registered email address",
@@ -367,7 +373,9 @@
             "dob": "full dates of birth of any partners who are people",
             "ura": "usual residential addresses of any partners who are people"
         },
+        
         "payment" : "Continue to payment",
+        "submitFiling": "Submit filing",
 
         "partners": {
             "generalPartners" : {
@@ -414,7 +422,7 @@
 
     "confirmationPage" : {
         "title" : "Application submitted",
-        "referenceNumber" : "our reference number",
+        "referenceNumber" : "Your reference number",
         "sentEmailTo" : "We have sent a confirmation email to",
         "happensNext" : "What happens next",
         "applicationProcess" : "We'll process the application as soon as possible. This will usually take no more than 3 to 5 working days.",
@@ -442,22 +450,28 @@
         }
     },
 
-    "emailPage" : {
-        "whatIsEmail" : "What is the registered email address for the partnership?",
-        "registration": {
-            "emailHint": "Partners must be able to access emails that are sent to this address.",
-            "emailUsedFor": { 
-                "title": "What is the registered email address used for?",
-                "sendInformation": "In future we'll use this to send important information that relates to the limited partnership. For example, new legislative requirements or warnings about missed deadlines.",
-                "publicRegister": "It will not be shown on the public register."
-            }
+    "continueSavedFilingPage": {
+        "title": "Do you want to continue with a saved filing?",
+        "hint": "If you have saved filings, you can continue with one of these or start a new one",
+        "yes": {
+          "text": "Yes, continue with a saved filing",
+          "hint": "You’ll be able to choose which filing you want to continue with"          
         },
-        "transition": {
-            "requirement": "This is a new requirement. We do not hold a registered email address for the limited partnership yet.",
-            "emailUsedFor": "We'll use this email address to send important information that relates to the partnership. For example, new legislative requirements or warnings about missed deadlines.",
-            "publicRegisterInformation": "We will not show the registered email address on the public register."
+        "no": {
+          "text": "No, start a new filing",
+          "hint": "This will not delete any saved filings"          
         }
     },
+
+    "emailPage" : {
+        "title" : "What is the registered email address for the partnership?",
+        "hint": "We'll use this email address to send important information that relates to the partnership. For example, new legislative requirements or warnings about missed deadlines.",
+        "publicRegisterInformation" : {
+            "line1": "We will not show the registered email address on the public register."
+        }
+    },
+
+    "error" : "Error: ",
 
     "errorPage" : {
         "title": "Service unavailable",
@@ -475,12 +489,19 @@
 
     "generalPartnersPage": {
         "title": "You now need to tell us about the general partners",
-        "pageInformation": "If the partnership has more than one general partner, you'll add them one at a time."
+        "pageInformation": "If the partnership has more than one general partner, you'll add them one at a time.",
+        "disqualificationStatement" : "I confirm that the general partner is not disqualified under the directors disqualification legislation, as defined in the Limited Partnership Act 1907.",
+        "disqualificationStatementLegend" : "General partner - person - disqualification statement"
     },
 
     "govUk" : {
+        "banner" : {
+          "tag": "Beta",
+          "titleRegistration": "This is a new service - your <a class='govuk-link' href='https://www.smartsurvey.co.uk/s/file-for-lp-fdbk/'>feedback</a> will help us to improve it.",
+          "titleTransition": "This is a new service - your <a class='govuk-link' href='https://www.smartsurvey.co.uk/s/provideinfoaboutlp-fdbk/'>feedback</a> will help us to improve it."
+        },
         "error" : {
-            "title" : "There is a problem"
+          "title" : "There is a problem"
         }
     },
     
@@ -502,46 +523,31 @@
     },
 
     "namePage" : {
+        "partnershipRulesHint" : {
+            "rules" : "The partnership name needs to meet set rules. For example, it cannot be the same as another registered partnership or company, or include certain words or phrases.",
+            "rulesLinkStart" : "To find out the rules the limited partnership's name needs to meet,",          
+            "rulesLinkEnd" : "read the guidance on choosing a company name (opens in a new tab)"
+        },
+        "warning" : "You must check the name meets the rules before you register the partnership. If it does not, we may reject your application, or you may need to change it later.",
+        "warningFallback" : "Warning",
         "title" : "Limited partnership name",
-        "whatIsName" : "What is the limited partnership name?",
+        "whatIsName" : "What's the name of the partnership?",
         "whatIsNameHint" : "Do not enter a name ending like Limited Partnership or LP. We will add this for you.",
-        "existingPartnershipHint" : {
-            "start" : "You must check the name is not the same as an existing partnership or company on the",
-            "url" : "https://find-and-update.company-information.service.gov.uk/company-name-availability",
-            "urlName" : "Companies House register (opens in a new tab)",
-            "end" : "If it is, we'll reject your application."
-        },
-        "sensitiveWordHint" : {
-            "start" : "If the name includes",
-            "url" : "https://www.gov.uk/government/publications/incorporation-and-names/annex-a-sensitive-words-and-expressions-or-words-that-could-imply-a-connection-with-government",
-            "urlName" : "sensitive words or expressions that require approval (opens in a new tab)",
-            "end" : "you must get permission before you register."
-        },
-        "existingTrademarkHint" : {
-            "start" : "You should also use the",
-            "url" : "https://www.gov.uk/search-for-trademark",
-            "urlName" : "trade mark search (opens in a new tab)",
-            "end" : "to check if your name matches an existing trade mark. If it does, consider choosing a different name. Companies House will not carry out this check for you."
-        },
-        "nameEnding" : "Which limited partnership name ending would you prefer to go on the public record?",
+        "nameEnding" : "Which name ending would you prefer to go on the public record?",
         "nameEndingHint" : "There's no difference between the name endings Limited Partnership, LP and L.P. except how they look.",
         "nameEndingWelshHint" : "There's no difference between the name endings Limited Partnership, LP and L.P. except how they look. Partneriaeth Cyfyngedig, PC, and P.C. can only be used if the partnership's principal place of business is in Wales.",
 
         "privateFund" : {
-            "title" : "Private fund limited partnership name",
-            "whatIsName" : "What's the name of the private fund limited partnership?",
+            "title" : "Private fund limited partnership name",           
             "nameEnding" : "Which private fund limited partnership name ending would you prefer to go on the public record?",
     
             "scottish" : {
-                "title" : "Scottish private fund limited partnership name",
-                "whatIsName" : "What's the name of the private fund limited partnership?"        
+                "title" : "Scottish private fund limited partnership name"                     
             }    
         },
 
         "scottish" : {
-            "title" : "Scottish limited partnership name",
-            "whatIsName" : "What's the name of the Scottish limited partnership?",
-            "nameEnding" : "Which name ending would you prefer to go on the public record?"
+            "title" : "Scottish limited partnership name"
         }
     },
 
@@ -550,7 +556,7 @@
         "spelling" : "If you typed the web address, check it is spelled correctly.",
         "copiedAddress" : "If you pasted the web address, check you copied the entire address.",
         "movedPage" : "If the web address is correct or you selected a link, the page may have moved.",
-        "goToStartPage" : "To register a limited partnership, go to the <a class='govuk-link' href='/limited-partnerships/registration/which-type'>Register a limited partnership</a> start page."
+        "goToStartPage" : "To register a limited partnership, go to the <a class='govuk-link' href='/limited-partnerships/registration/continue-saved-filing'>Register a limited partnership</a> start page."
     },
 
     "paymentFailedPage" : {
@@ -618,7 +624,9 @@
         }
     },
 
-    "service" : "Register a limited partnership",
+    "serviceRegistration" : "Register a limited partnership",
+    "serviceTransition" : "Provide information about a limited partnership",
+    "servicePostTransition" : "File for a limited partnership",
 
     "sicCodePage" : {
         "title" : "What is the Standard Industrial Classification (SIC) code?",
@@ -652,7 +660,7 @@
         "LP": "Limited partnership in England, Wales or Northern Ireland",
         "PFLP": "Private fund limited partnership in England, Wales or Northern Ireland",
         "SLP": "Scottish limited partnership",
-        "SPFLP": "Private fund limited partnership in Scotland"
+        "SPFLP": "Scottish private fund limited partnership"
     },
 
     "whereIsTheJurisdiction" : {

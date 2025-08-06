@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import AbstractController from "../AbstractController";
+import { Ids, Tokens } from "../../../domain/types";
 import transitionRouting from "./Routing";
 import TransitionPageType from "./PageType";
 import CompanyService from "../../../application/service/CompanyService";
@@ -12,7 +13,12 @@ import {
   JOURNEY_TYPE_PARAM
 } from "../../../config/constants";
 import { getJourneyTypes } from "../../../utils/journey";
-import { GeneralPartner, Jurisdiction, LimitedPartner, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import {
+  GeneralPartner,
+  Jurisdiction,
+  LimitedPartner,
+  PartnershipType
+} from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import { PageRouting } from "../PageRouting";
 import { CONFIRM_REGISTERED_OFFICE_ADDRESS_URL } from "../addressLookUp/url/transition";
@@ -48,7 +54,12 @@ class LimitedPartnershipController extends AbstractController {
           );
         }
 
-        const { generalPartners, limitedPartners } = await this.getPartners(pageRouting, tokens, ids.transactionId, response);
+        const { generalPartners, limitedPartners } = await this.getPartners(
+          pageRouting,
+          tokens,
+          ids.transactionId,
+          response
+        );
 
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
 
@@ -64,7 +75,7 @@ class LimitedPartnershipController extends AbstractController {
 
   private async getPartners(
     pageRouting: PageRouting,
-    tokens: { access_token: string; refresh_token: string },
+    tokens: Tokens,
     transactionId: string,
     response: Response
   ): Promise<{ generalPartners: GeneralPartner[]; limitedPartners: LimitedPartner[] }> {
@@ -161,7 +172,7 @@ class LimitedPartnershipController extends AbstractController {
           return;
         }
 
-        const ids = { transactionId: result.transactionId, submissionId: result.submissionId };
+        const ids = { transactionId: result.transactionId, submissionId: result.submissionId } as Ids;
         const url = super.insertIdsInUrl(pageRouting.nextUrl, ids, request.url);
 
         const cacheUpdated = this.cacheService.removeDataFromCache(
@@ -283,12 +294,7 @@ class LimitedPartnershipController extends AbstractController {
     };
   }
 
-  private async conditionalNextUrl(
-    tokens: { access_token: string; refresh_token: string },
-    ids: { transactionId: string; submissionId: string },
-    pageRouting: PageRouting,
-    request: Request
-  ) {
+  private async conditionalNextUrl(tokens: Tokens, ids: Ids, pageRouting: PageRouting, request: Request) {
     if (pageRouting.pageType === TransitionPageType.email) {
       const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
         tokens,

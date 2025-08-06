@@ -12,6 +12,7 @@ import ITransactionGateway from "../../../domain/ITransactionGateway";
 import TransitionPageType from "../../../presentation/controller/transition/PageType";
 import { SERVICE_NAME_REGISTRATION, SERVICE_NAME_TRANSITION } from "../../../config/constants";
 import TransactionBuilder from "../../../presentation/test/builder/TransactionBuilder";
+import { Tokens } from "../../../domain/types";
 
 class TransactionInMemoryGateway implements ITransactionGateway {
   transactionId = crypto.randomUUID().toString();
@@ -28,25 +29,33 @@ class TransactionInMemoryGateway implements ITransactionGateway {
   }
 
   async createTransaction(
-    opt: { access_token: string },
+    opt: Tokens,
     incorporationKind: IncorporationKind,
-    pageType: PageType
+    description?: string,
+    company?: {
+      companyName: string;
+      companyNumber: string;
+    }
   ): Promise<string> {
-    if (pageType !== RegistrationPageType.name && pageType !== TransitionPageType.confirmLimitedPartnership) {
-      throw new Error("Wrong page type to create a new transaction");
+    let transactionDecription = SERVICE_NAME_REGISTRATION;
+
+    if (incorporationKind === IncorporationKind.TRANSITION) {
+      transactionDecription = SERVICE_NAME_TRANSITION;
+    } else if (description) {
+      transactionDecription = description;
     }
 
-    const description =
-      incorporationKind === IncorporationKind.REGISTRATION ? SERVICE_NAME_REGISTRATION : SERVICE_NAME_TRANSITION;
-
-    const transaction = new TransactionBuilder().withId(this.transactionId).withDescription(description).build();
+    const transaction = new TransactionBuilder()
+      .withId(this.transactionId)
+      .withDescription(transactionDecription)
+      .build();
 
     this.transactions.push(transaction);
 
     return this.transactionId;
   }
 
-  async closeTransaction(opt: { access_token: string }, transactionId: string): Promise<ApiResponse<Transaction>> {
+  async closeTransaction(opt: Tokens, transactionId: string): Promise<ApiResponse<Transaction>> {
     return {
       resource: {
         id: transactionId,

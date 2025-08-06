@@ -49,7 +49,7 @@ describe("Review General Partners Page", () => {
       expect(res.status).toBe(200);
 
       expect(res.text).toContain(
-        `${enTranslationText.reviewGeneralPartnersPage.title} - ${enTranslationText.service} - GOV.UK`
+        `${enTranslationText.reviewGeneralPartnersPage.title} - ${enTranslationText.serviceTransition} - GOV.UK`
       );
 
       testTranslations(res.text, enTranslationText.reviewGeneralPartnersPage, ["emptyList"]);
@@ -68,7 +68,7 @@ describe("Review General Partners Page", () => {
       expect(res.status).toBe(200);
 
       expect(res.text).toContain(
-        `${cyTranslationText.reviewGeneralPartnersPage.title} - ${cyTranslationText.service} - GOV.UK`
+        `${cyTranslationText.reviewGeneralPartnersPage.title} - ${cyTranslationText.serviceTransition} - GOV.UK`
       );
       testTranslations(res.text, cyTranslationText.reviewGeneralPartnersPage, ["emptyList", "errorMessage"]);
     });
@@ -111,7 +111,7 @@ describe("Review General Partners Page", () => {
     it("should redirect to the Add General Partner Person", async () => {
       const res = await request(app).post(URL).send({
         pageType: TransitionPageType.reviewGeneralPartners,
-        addAnotherGeneralPartner: "addPerson"
+        addAnotherPartner: "addPerson"
       });
 
       expect(res.status).toBe(302);
@@ -121,7 +121,7 @@ describe("Review General Partners Page", () => {
     it("should redirect to the Add General Partner Legal Entity", async () => {
       const res = await request(app).post(URL).send({
         pageType: TransitionPageType.reviewGeneralPartners,
-        addAnotherGeneralPartner: "addLegalEntity"
+        addAnotherPartner: "addLegalEntity"
       });
 
       expect(res.status).toBe(302);
@@ -132,7 +132,7 @@ describe("Review General Partners Page", () => {
       it("should redirect to the limited partners page - no LPs", async () => {
         const res = await request(app).post(URL).send({
           pageType: TransitionPageType.reviewGeneralPartners,
-          addAnotherGeneralPartner: "no"
+          addAnotherPartner: "no"
         });
 
         expect(res.status).toBe(302);
@@ -146,7 +146,7 @@ describe("Review General Partners Page", () => {
 
         const res = await request(app).post(URL).send({
           pageType: TransitionPageType.reviewGeneralPartners,
-          addAnotherGeneralPartner: "no"
+          addAnotherPartner: "no"
         });
 
         expect(res.status).toBe(302);
@@ -161,7 +161,7 @@ describe("Review General Partners Page", () => {
 
         const res = await request(app).post(URL).send({
           pageType: TransitionPageType.reviewGeneralPartners,
-          addAnotherGeneralPartner: "no"
+          addAnotherPartner: "no"
         });
 
         expect(res.status).toBe(200);
@@ -179,7 +179,7 @@ describe("Review General Partners Page", () => {
 
         const res = await request(app).post(URL).send({
           pageType: TransitionPageType.reviewGeneralPartners,
-          addAnotherGeneralPartner: "addPerson"
+          addAnotherPartner: "addPerson"
         });
 
         expect(res.status).toBe(200);
@@ -197,7 +197,7 @@ describe("Review General Partners Page", () => {
 
         const res = await request(app).post(URL).send({
           pageType: TransitionPageType.reviewGeneralPartners,
-          addAnotherGeneralPartner: "addLegalEntity"
+          addAnotherPartner: "addLegalEntity"
         });
 
         expect(res.status).toBe(200);

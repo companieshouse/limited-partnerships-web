@@ -30,7 +30,7 @@ describe("General Partner Principal Office Address Territory Choice", () => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(
         toEscapedHtml(
-          `${cyTranslationText.address.territoryChoice.generalPartnerPrincipalOfficeAddress.title} - ${cyTranslationText.service} - GOV.UK`
+          `${cyTranslationText.address.territoryChoice.generalPartnerPrincipalOfficeAddress.title} - ${cyTranslationText.serviceRegistration} - GOV.UK`
         )
       );
 
@@ -45,7 +45,7 @@ describe("General Partner Principal Office Address Territory Choice", () => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(
         toEscapedHtml(
-          `${enTranslationText.address.territoryChoice.generalPartnerPrincipalOfficeAddress.title} - ${enTranslationText.service} - GOV.UK`
+          `${enTranslationText.address.territoryChoice.generalPartnerPrincipalOfficeAddress.title} - ${enTranslationText.serviceRegistration} - GOV.UK`
         )
       );
 

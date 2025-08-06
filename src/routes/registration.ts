@@ -8,6 +8,7 @@ import {
   EMAIL_URL,
   WHERE_IS_THE_JURISDICTION_URL,
   NAME_URL,
+  CONTINUE_SAVED_FILING_URL,
   WHICH_TYPE_URL,
   LIMITED_PARTNERS_URL,
   GENERAL_PARTNERS_URL,
@@ -31,11 +32,24 @@ import {
   REVIEW_LIMITED_PARTNERS_URL,
   REMOVE_LIMITED_PARTNER_URL
 } from "../presentation/controller/registration/url";
+import RegistrationPageType from "../presentation/controller/registration/PageType";
+import registrationsRouting from "../presentation/controller/registration/Routing";
 
 export const registrationEndpoints = (
   router: Router,
   dependencies: IDependencies
 ): void => {
+  router.get(
+    CONTINUE_SAVED_FILING_URL,
+    authentication,
+    dependencies.limitedPartnershipRegistrationController.getPageRouting()
+  );
+  router.post(
+    CONTINUE_SAVED_FILING_URL,
+    authentication,
+    dependencies.limitedPartnershipRegistrationController.continueSavedFiling(RegistrationPageType, registrationsRouting)
+  );
+
   router.get(
     WHICH_TYPE_URL,
     authentication,
@@ -127,13 +141,13 @@ export const registrationEndpoints = (
   router.get(
     GENERAL_PARTNERS_URL,
     authentication,
-    dependencies.limitedPartnershipRegistrationController.getPageRouting()
+    dependencies.generalPartnerRegistrationController.getGeneralPartner()
   );
 
   router.get(
     GENERAL_PARTNER_CHOICE_URL,
     authentication,
-    dependencies.limitedPartnershipRegistrationController.getPageRouting()
+    dependencies.generalPartnerRegistrationController.getPageRouting()
   );
   router.post(
     GENERAL_PARTNER_CHOICE_URL,
@@ -210,13 +224,13 @@ export const registrationEndpoints = (
   router.get(
     LIMITED_PARTNERS_URL,
     authentication,
-    dependencies.limitedPartnershipRegistrationController.getPageRouting()
+    dependencies.limitedPartnerRegistrationController.getLimitedPartner()
   );
 
   router.get(
     LIMITED_PARTNER_CHOICE_URL,
     authentication,
-    dependencies.limitedPartnershipRegistrationController.getPageRouting()
+    dependencies.limitedPartnerRegistrationController.getPageRouting()
   );
   router.post(
     LIMITED_PARTNER_CHOICE_URL,
