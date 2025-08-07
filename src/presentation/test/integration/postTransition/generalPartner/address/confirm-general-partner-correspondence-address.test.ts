@@ -108,8 +108,8 @@ describe("Confirm General Partner Correspondence Address Page", () => {
           }`
         });
 
-      // TODO add this back when the review page for post transition is implemented
-      // const redirectUrl = getUrl(REVIEW_GENERAL_PARTNERS_URL);
+      // TODO add this back when the check your answers page for post transition is implemented
+      // const redirectUrl = getUrl();
 
       expect(res.status).toBe(302);
 
