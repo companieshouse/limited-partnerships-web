@@ -116,7 +116,7 @@ describe("Choose general partner correspondence address page", () => {
 
       const cache = appDevDependencies.cacheRepository.cache;
       expect(cache?.[`${config.APPLICATION_CACHE_KEY}`]).not.toHaveProperty(
-        `${config.APPLICATION_CACHE_KEY_PREFIX_TRANSITION}${AddressPageType.chooseGeneralPartnerCorrespondenceAddress}`
+        `${config.APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION}${AddressPageType.chooseGeneralPartnerCorrespondenceAddress}`
       );
     });
   });
