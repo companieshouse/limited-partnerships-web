@@ -202,7 +202,7 @@
         {% set nationalityFieldNameId = "nationality2" %}
         {% include "includes/nationalities.njk" %}
 
-        {% if journeyTypes.isTransition %}
+        {% if journeyTypes.isTransition or journeyTypes.isPostTransition %}
           {{ govukDateInput({
             id: "date_effective_from",
             namePrefix: "date_effective_from",

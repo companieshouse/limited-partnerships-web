@@ -17,9 +17,17 @@ const postTransitionRoutingAddGeneralPartnerLegalEntity = {
   pageType: PostTransitionPageType.addGeneralPartnerLegalEntity
 };
 
+const postTransitionRoutingAddGeneralPartnerPerson = {
+  previousUrl: url.GENERAL_PARTNER_CHOICE_URL,
+  currentUrl: url.ADD_GENERAL_PARTNER_PERSON_URL,
+  nextUrl: "/", // TODO - replace with the next URL when available,
+  pageType: PostTransitionPageType.addGeneralPartnerPerson
+};
+
 const generalPartnerRouting = [
   postTransitionRoutingGeneralPartnerChoice,
-  postTransitionRoutingAddGeneralPartnerLegalEntity
+  postTransitionRoutingAddGeneralPartnerLegalEntity,
+  postTransitionRoutingAddGeneralPartnerPerson
 ];
 
 export default generalPartnerRouting;

@@ -495,8 +495,13 @@
     },
 
     "govUk" : {
+        "banner" : {
+          "tag": "Beta",
+          "titleRegistration": "This is a new service - your <a class='govuk-link' href='https://www.smartsurvey.co.uk/s/file-for-lp-fdbk/'>feedback</a> will help us to improve it.",
+          "titleTransition": "This is a new service - your <a class='govuk-link' href='https://www.smartsurvey.co.uk/s/provideinfoaboutlp-fdbk/'>feedback</a> will help us to improve it."
+        },
         "error" : {
-            "title" : "There is a problem"
+          "title" : "There is a problem"
         }
     },
     

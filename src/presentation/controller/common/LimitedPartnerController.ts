@@ -340,9 +340,9 @@ class LimitedPartnerController extends AbstractController {
           return;
         }
 
-        const addAnotherGeneralPartner = request.body.addAnotherGeneralPartner;
+        const addAnotherLimitedPartner = request.body.addAnotherPartner;
 
-        if (addAnotherGeneralPartner === "no") {
+        if (addAnotherLimitedPartner === "no") {
           const redirectUrl = super.insertIdsInUrl(pageRouting.nextUrl, ids, request.url);
 
           response.redirect(redirectUrl);
@@ -350,7 +350,6 @@ class LimitedPartnerController extends AbstractController {
         }
 
         let url = urls.checkYourAnswersUrl;
-        const addAnotherLimitedPartner = request.body.addAnotherLimitedPartner;
 
         if (addAnotherLimitedPartner === "addPerson") {
           url = urls.addLimitedPartnerPersonUrl;
