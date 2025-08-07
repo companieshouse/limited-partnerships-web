@@ -28,7 +28,7 @@ class TransactionGateway implements ITransactionGateway {
       transactionDecription = description;
     }
 
-     let data: {
+    let data: {
       reference: string;
       description: string;
       companyName?: string;

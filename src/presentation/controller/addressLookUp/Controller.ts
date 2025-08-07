@@ -2,10 +2,13 @@ import { NextFunction, Request, Response } from "express";
 import escape from "escape-html";
 import { Address, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
+import AbstractController from "../AbstractController";
 import AddressService from "../../../application/service/AddressService";
+
 import registrationAddressRouting, { AddressCacheKeys } from "./routing/registration/routing";
 import transitionAddressRouting from "./routing/transition/routing";
-import AbstractController from "../AbstractController";
+import postTransitionRouting from "./routing/postTransition/routing";
+
 import { Ids, Tokens } from "../../../domain/types";
 import AddressLookUpPageType from "./PageType";
 import CacheService from "../../../application/service/CacheService";
@@ -121,11 +124,14 @@ class AddressLookUpController extends AbstractController {
         const addressRouting = this.getAddressRouting(request.url);
         const pageRouting = super.getRouting(addressRouting, pageType, request);
 
-        const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
-          tokens,
-          ids.transactionId,
-          ids.submissionId
-        );
+        let limitedPartnership;
+        if (ids.transactionId && ids.submissionId) {
+          limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+            tokens,
+            ids.transactionId,
+            ids.submissionId
+          );
+        }
 
         const jurisdiction = AddressLookUpController.LIMITED_PARTNERSHIP_POSTCODE_PAGES.has(pageType)
           ? limitedPartnership?.data?.jurisdiction
@@ -202,11 +208,14 @@ class AddressLookUpController extends AbstractController {
 
         const { tokens, pageType, ids } = super.extract(request);
 
-        const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
-          tokens,
-          ids.transactionId,
-          ids.submissionId
-        );
+        let limitedPartnership;
+        if (ids.transactionId && ids.submissionId) {
+          limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+            tokens,
+            ids.transactionId,
+            ids.submissionId
+          );
+        }
 
         const addressRouting = this.getAddressRouting(request.url);
         const pageRouting = super.getRouting(addressRouting, pageType, request);
@@ -301,7 +310,7 @@ class AddressLookUpController extends AbstractController {
 
           let limitedPartnership;
 
-          if (!isGeneralPartnerAddress && !isLimitedPartnerAddress) {
+          if (!isGeneralPartnerAddress && !isLimitedPartnerAddress && ids.transactionId && ids.submissionId) {
             limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
               tokens,
               ids.transactionId,
@@ -382,7 +391,15 @@ class AddressLookUpController extends AbstractController {
   }
 
   private getAddressRouting(url: string) {
-    return getJourneyTypes(url).isRegistration ? registrationAddressRouting : transitionAddressRouting;
+    const journeyTypes = getJourneyTypes(url);
+
+    if (journeyTypes.isRegistration) {
+      return registrationAddressRouting;
+    } else if (journeyTypes.isTransition) {
+      return transitionAddressRouting;
+    } else {
+      return postTransitionRouting;
+    }
   }
 
   private async getData(ids: Ids, tokens: Tokens) {
@@ -462,7 +479,7 @@ class AddressLookUpController extends AbstractController {
 
     let limitedPartnership;
 
-    if (pageTypes.includes(pageRouting.pageType)) {
+    if (pageTypes.includes(pageRouting.pageType) && ids.transactionId && ids.submissionId) {
       limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
         tokens,
         ids.transactionId,
@@ -512,11 +529,17 @@ class AddressLookUpController extends AbstractController {
       }
     });
 
-    const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
-      tokens,
-      transactionId,
-      submissionId
-    );
+    const ids = super.extractIds(response.req);
+
+    let limitedPartnership;
+
+    if (ids.transactionId && ids.submissionId) {
+      limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+        tokens,
+        transactionId,
+        submissionId
+      );
+    }
 
     return response.render(
       super.templateName(pageRouting.currentUrl),
