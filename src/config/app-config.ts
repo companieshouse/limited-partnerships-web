@@ -10,7 +10,7 @@ import { getGOVUKFrontendVersion } from "@companieshouse/ch-node-utils";
 
 import { createSummaryListLink } from "../utils/change-link";
 import * as config from "./constants";
-import { localisationMiddleware } from "../middlewares";
+import { authentication, localisationMiddleware } from "../middlewares";
 import { serviceAvailabilityMiddleware } from "../middlewares/service-availability.middleware";
 import { journeyDetectionMiddleware } from "../middlewares/journey.detection.middleware";
 import { TRANSITION_START_URL } from "../presentation/controller/transition/url";
@@ -87,4 +87,6 @@ export const appConfig = (app: express.Application) => {
     sessionCookieName: config.COOKIE_NAME
   });
   app.use(config.excludedPaths, csrfProtectionMiddleware);
+
+  app.use(config.excludedPaths, authentication);
 };
