@@ -116,7 +116,7 @@ describe("Choose usual residential address of the general partner page", () => {
 
       const cache = appDevDependencies.cacheRepository.cache;
       expect(cache?.[`${config.APPLICATION_CACHE_KEY}`]).not.toHaveProperty(
-        `${config.APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${AddressPageType.chooseGeneralPartnerUsualResidentialAddress}`
+        `${config.APPLICATION_CACHE_KEY_PREFIX_TRANSITION}${AddressPageType.chooseGeneralPartnerUsualResidentialAddress}`
       );
     });
   });
