@@ -25,3 +25,7 @@ jest.mock("../utils/session", () => ({
   getLoggedInUserEmail: jest.fn(() => "test@email.com")
 }));
 
+jest.mock("@companieshouse/node-session-handler", () => ({
+  ...jest.requireActual("@companieshouse/node-session-handler"),
+  SessionMiddleware: jest.fn(() => (req: Request, res: Response, next: NextFunction) => next())
+}));

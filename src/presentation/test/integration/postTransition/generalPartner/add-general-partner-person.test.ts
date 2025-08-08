@@ -13,10 +13,7 @@ import {
   ADD_GENERAL_PARTNER_PERSON_URL,
   ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL
 } from "../../../../controller/postTransition/url";
-import {
-  APPLICATION_CACHE_KEY_COMPANY_NUMBER,
-  POST_TRANSITION_BASE_URL
-} from "../../../../../config/constants";
+import { APPLICATION_CACHE_KEY_COMPANY_NUMBER, POST_TRANSITION_BASE_URL } from "../../../../../config/constants";
 
 import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
@@ -28,6 +25,7 @@ import {
 
 describe("Add General Partner Person Page", () => {
   const URL = getUrl(ADD_GENERAL_PARTNER_PERSON_URL);
+  const REDIRECT = getUrl(TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
 
   let companyProfile;
 
@@ -108,7 +106,7 @@ describe("Add General Partner Person Page", () => {
   });
 
   describe("Post Add General Partner Person", () => {
-    it.skip("should send the general partner person details", async () => {
+    it("should send the general partner person details", async () => {
       const generalPartner = new GeneralPartnerBuilder().isPerson().build();
 
       const res = await request(app)
@@ -119,12 +117,10 @@ describe("Add General Partner Person Page", () => {
         });
 
       expect(res.status).toBe(302);
-      expect(res.text).toContain(`Redirecting to ${TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL}`);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT}`);
 
       expect(appDevDependencies.transactionGateway.transactions).toHaveLength(1);
-      expect(appDevDependencies.transactionGateway.transactions[0].description).toBe(
-        "Add a general partner (person)"
-      );
+      expect(appDevDependencies.transactionGateway.transactions[0].description).toBe("Add a general partner (person)");
 
       expect(appDevDependencies.generalPartnerGateway.generalPartners).toHaveLength(1);
       expect(appDevDependencies.generalPartnerGateway.generalPartners[0].data?.kind).toEqual(
@@ -148,7 +144,7 @@ describe("Add General Partner Person Page", () => {
       expect(res.text).toContain("first name is invalid");
     });
 
-    it.skip("should send the general partner details and go to confirm ura address page if already saved", async () => {
+    it("should send the general partner details and go to confirm ura address page if already saved", async () => {
       const generalPartner = new GeneralPartnerBuilder()
         .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
         .isPerson()
@@ -165,8 +161,10 @@ describe("Add General Partner Person Page", () => {
           ...generalPartner.data
         });
 
+      const REDIRECT = getUrl(CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
+
       expect(res.status).toBe(302);
-      expect(res.text).toContain(`Found. Redirecting to ${CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL}`);
+      expect(res.text).toContain(`Found. Redirecting to ${REDIRECT}`);
     });
   });
 });
