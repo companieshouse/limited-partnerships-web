@@ -18,7 +18,7 @@ import registrationRouting from "../registration/Routing";
 import transitionRouting from "../transition/Routing";
 import postTransitionRouting from "../postTransition/routing";
 
-import { APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION } from "../../../config/constants";
+import { APPLICATION_CACHE_KEY_COMPANY_NUMBER } from "../../../config/constants";
 import CacheService from "../../../application/service/CacheService";
 import CompanyService from "../../../application/service/CompanyService";
 
@@ -73,7 +73,7 @@ abstract class GeneralPartnerController extends AbstractController {
           const cache = this.cacheService?.getDataFromCache(request.signedCookies);
           const company = await this.companyService.getCompanyProfile(
             tokens,
-            cache[`${APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION}company_number`]
+            cache[APPLICATION_CACHE_KEY_COMPANY_NUMBER]
           );
           companyProfile = company.companyProfile;
         }
@@ -94,7 +94,7 @@ abstract class GeneralPartnerController extends AbstractController {
 
     const result = await (this.companyService as CompanyService).getCompanyProfile(
       tokens,
-      cache[`${APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION}company_number`]
+      cache[APPLICATION_CACHE_KEY_COMPANY_NUMBER]
     );
 
     return {
