@@ -5,7 +5,7 @@ import app from "../../../app";
 import {
   CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
-} from "../../../../../controller/addressLookUp/url/transition";
+} from "../../../../../controller/addressLookUp/url/postTransition";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import * as config from "../../../../../../config";
@@ -116,7 +116,7 @@ describe("Choose usual residential address of the general partner page", () => {
 
       const cache = appDevDependencies.cacheRepository.cache;
       expect(cache?.[`${config.APPLICATION_CACHE_KEY}`]).not.toHaveProperty(
-        `${config.APPLICATION_CACHE_KEY_PREFIX_TRANSITION}${AddressPageType.chooseGeneralPartnerUsualResidentialAddress}`
+        `${config.APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION}${AddressPageType.chooseGeneralPartnerUsualResidentialAddress}`
       );
     });
   });
