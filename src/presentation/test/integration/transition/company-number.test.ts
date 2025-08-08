@@ -9,7 +9,7 @@ import TransitionPageType from "../../../controller/transition/PageType";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import {
   APPLICATION_CACHE_KEY,
-  APPLICATION_CACHE_KEY_PREFIX_TRANSITION,
+  APPLICATION_CACHE_KEY_COMPANY_NUMBER,
   SERVICE_NAME_TRANSITION
 } from "../../../../config/constants";
 import CompanyProfileBuilder from "../../builder/CompanyProfileBuilder";
@@ -65,7 +65,7 @@ describe("Company number page", () => {
 
       expect(appDevDependencies.cacheRepository.cache).toEqual({
         [APPLICATION_CACHE_KEY]: {
-          [`${APPLICATION_CACHE_KEY_PREFIX_TRANSITION}company_number`]: "LP123456"
+          [APPLICATION_CACHE_KEY_COMPANY_NUMBER]: "LP123456"
         }
       });
     });

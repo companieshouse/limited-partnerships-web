@@ -6,7 +6,7 @@ import { getUrl } from "../../utils";
 
 import { LANDING_PAGE_URL } from "../../../controller/postTransition/url";
 import CompanyProfileBuilder from "../../builder/CompanyProfileBuilder";
-import { APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION } from "../../../../config/constants";
+import { APPLICATION_CACHE_KEY_COMPANY_NUMBER } from "../../../../config/constants";
 
 describe("Landing page", () => {
   const URL = getUrl(LANDING_PAGE_URL);
@@ -18,7 +18,7 @@ describe("Landing page", () => {
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
     appDevDependencies.cacheRepository.feedCache({
-      [`${APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION}company_number`]: companyProfile.data.companyNumber
+      [APPLICATION_CACHE_KEY_COMPANY_NUMBER]: companyProfile.data.companyNumber
     });
   });
 

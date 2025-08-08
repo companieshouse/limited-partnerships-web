@@ -10,7 +10,7 @@ import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import { COMPANY_NUMBER_URL, CONFIRM_LIMITED_PARTNERSHIP_URL } from "../../../controller/postTransition/url";
 import {
   APPLICATION_CACHE_KEY,
-  APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION,
+  APPLICATION_CACHE_KEY_COMPANY_NUMBER,
   SERVICE_NAME_POST_TRANSITION
 } from "../../../../config/constants";
 
@@ -68,7 +68,7 @@ describe("Company number page", () => {
 
       expect(appDevDependencies.cacheRepository.cache).toEqual({
         [APPLICATION_CACHE_KEY]: {
-          [`${APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION}company_number`]: "LP123456"
+          [APPLICATION_CACHE_KEY_COMPANY_NUMBER]: "LP123456"
         }
       });
     });

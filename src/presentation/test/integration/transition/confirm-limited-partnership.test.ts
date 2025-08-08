@@ -5,7 +5,7 @@ import app from "../app";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import { CONFIRM_LIMITED_PARTNERSHIP_URL } from "presentation/controller/transition/url";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
-import { APPLICATION_CACHE_KEY_PREFIX_TRANSITION, SERVICE_NAME_TRANSITION } from "../../../../config";
+import { APPLICATION_CACHE_KEY_COMPANY_NUMBER, SERVICE_NAME_TRANSITION } from "../../../../config";
 import CompanyProfileBuilder from "../../builder/CompanyProfileBuilder";
 import { Jurisdiction, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
@@ -22,7 +22,7 @@ describe("Confirm correct limited partnership page", () => {
     appDevDependencies.companyGateway.setError(false);
 
     appDevDependencies.cacheRepository.feedCache({
-      [`${APPLICATION_CACHE_KEY_PREFIX_TRANSITION}company_number`]: companyProfile.data.companyNumber
+      [APPLICATION_CACHE_KEY_COMPANY_NUMBER]: companyProfile.data.companyNumber
     });
   });
 

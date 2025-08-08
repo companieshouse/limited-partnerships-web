@@ -12,7 +12,7 @@ import {
   CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
 } from "presentation/controller/addressLookUp/url/postTransition";
 import AddressPageType from "presentation/controller/addressLookUp/PageType";
-import { APPLICATION_CACHE_KEY, APPLICATION_CACHE_KEY_PREFIX_TRANSITION } from "../../../../../../config/constants";
+import { APPLICATION_CACHE_KEY, APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION } from "../../../../../../config/constants";
 
 describe("Choose principal office address of the general partner page", () => {
   const URL = getUrl(CHOOSE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
@@ -119,7 +119,7 @@ describe("Choose principal office address of the general partner page", () => {
 
       const cache = appDevDependencies.cacheRepository.cache;
       expect(cache?.[`${APPLICATION_CACHE_KEY}`]).not.toHaveProperty(
-        `${APPLICATION_CACHE_KEY_PREFIX_TRANSITION}${AddressPageType.chooseGeneralPartnerPrincipalOfficeAddress}`
+        `${APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION}${AddressPageType.chooseGeneralPartnerPrincipalOfficeAddress}`
       );
     });
   });

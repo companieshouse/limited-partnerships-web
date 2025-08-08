@@ -8,8 +8,9 @@ import CacheService from "../../../application/service/CacheService";
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import {
   APPLICATION_CACHE_KEY,
-  APPLICATION_CACHE_KEY_PREFIX_TRANSITION,
-  cookieOptions
+  APPLICATION_CACHE_KEY_COMPANY_NUMBER,
+  cookieOptions,
+  JOURNEY_TYPE_PARAM
 } from "../../../config/constants";
 import { getJourneyTypes } from "../../../utils/journey";
 import {
@@ -24,6 +25,7 @@ import { CONFIRM_REGISTERED_OFFICE_ADDRESS_URL } from "../addressLookUp/url/tran
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
 import { formatDate } from "../../../utils/date-format";
+import { CONFIRMATION_URL } from "../global/url";
 
 class LimitedPartnershipController extends AbstractController {
   constructor(
@@ -120,7 +122,7 @@ class LimitedPartnershipController extends AbstractController {
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
         const result = await this.companyService.getCompanyProfile(
           tokens,
-          cache[`${APPLICATION_CACHE_KEY_PREFIX_TRANSITION}company_number`]
+          cache[APPLICATION_CACHE_KEY_COMPANY_NUMBER]
         );
 
         if (result.errors) {
@@ -150,7 +152,7 @@ class LimitedPartnershipController extends AbstractController {
         const journeyTypes = getJourneyTypes(pageRouting.currentUrl);
 
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
-        const company_number = cache[`${APPLICATION_CACHE_KEY_PREFIX_TRANSITION}company_number`];
+        const company_number = cache[APPLICATION_CACHE_KEY_COMPANY_NUMBER];
 
         const companyResult = await this.companyService.getCompanyProfile(tokens, company_number);
 
@@ -175,7 +177,7 @@ class LimitedPartnershipController extends AbstractController {
 
         const cacheUpdated = this.cacheService.removeDataFromCache(
           request.signedCookies,
-          `${APPLICATION_CACHE_KEY_PREFIX_TRANSITION}company_number`
+          APPLICATION_CACHE_KEY_COMPANY_NUMBER
         );
         response.cookie(APPLICATION_CACHE_KEY, cacheUpdated, cookieOptions);
 
@@ -231,7 +233,7 @@ class LimitedPartnershipController extends AbstractController {
         }
 
         const cache = this.cacheService.addDataToCache(request.signedCookies, {
-          [`${APPLICATION_CACHE_KEY_PREFIX_TRANSITION}company_number`]: company_number
+          [APPLICATION_CACHE_KEY_COMPANY_NUMBER]: company_number
         });
         response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
 
@@ -304,6 +306,33 @@ class LimitedPartnershipController extends AbstractController {
         pageRouting.nextUrl = super.insertIdsInUrl(CONFIRM_REGISTERED_OFFICE_ADDRESS_URL, ids, request.url);
       }
     }
+  }
+
+  postCheckYourAnswers() {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { tokens, ids } = super.extract(request);
+        const pageType = super.extractPageTypeOrThrowError(request, TransitionPageType);
+
+        await this.limitedPartnershipService.sendPageData(
+          tokens,
+          ids.transactionId,
+          ids.submissionId,
+          pageType,
+          request.body
+        );
+
+        await this.limitedPartnershipService.closeTransaction(tokens, ids.transactionId);
+
+        const url = super
+          .insertIdsInUrl(CONFIRMATION_URL, ids, request.url)
+          .replace(JOURNEY_TYPE_PARAM, getJourneyTypes(request.url).journey);
+
+        response.redirect(url);
+      } catch (error) {
+        next(error);
+      }
+    };
   }
 }
 

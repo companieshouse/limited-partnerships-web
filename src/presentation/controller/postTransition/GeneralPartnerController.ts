@@ -9,7 +9,7 @@ import { ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL, ADD_GENERAL_PARTNER_PERSON_URL } 
 import {
   CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
-} from "../addressLookUp/url/transition";
+} from "../addressLookUp/url/postTransition";
 import CompanyService from "../../../application/service/CompanyService";
 import CacheService from "../../../application/service/CacheService";
 import TransactionService from "../../../application/service/TransactionService";
@@ -17,7 +17,7 @@ import { IncorporationKind, PartnerKind } from "@companieshouse/api-sdk-node/dis
 
 import PostTransitionPageType from "../postTransition/pageType";
 import postTransitionRouting from "../postTransition/routing";
-import { APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION } from "../../../config/constants";
+import { APPLICATION_CACHE_KEY_COMPANY_NUMBER } from "../../../config/constants";
 
 class GeneralPartnerPostTransitionController extends GeneralPartnerController {
   constructor(
@@ -53,7 +53,7 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
 
         const companyResult = await this.companyService?.getCompanyProfile(
           tokens,
-          cache?.[`${APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION}company_number`]
+          cache?.[APPLICATION_CACHE_KEY_COMPANY_NUMBER]
         );
 
         const isLegalEntity = pageType === PostTransitionPageType.addGeneralPartnerLegalEntity;
