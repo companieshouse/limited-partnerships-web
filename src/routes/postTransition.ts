@@ -15,7 +15,7 @@ import {
   LANDING_PAGE_URL
 } from "../presentation/controller/postTransition/url";
 
-const transitionEndpoints = (router: Router, dependencies: IDependencies): void => {
+const postTransitionEndpoints = (router: Router, dependencies: IDependencies): void => {
   router.get(
     LANDING_PAGE_URL,
     authentication,
@@ -112,4 +112,4 @@ const transitionEndpoints = (router: Router, dependencies: IDependencies): void 
   );
 };
 
-export default transitionEndpoints;
+export default postTransitionEndpoints;

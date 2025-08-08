@@ -137,7 +137,7 @@ const postTransitionAddressRoutingEnterGeneralPartnerCorrespondenceAddress = {
 const postTransitionAddressRoutingConfirmGeneralPartnerCorrespondenceAddress = {
   previousUrl: url.POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   currentUrl: url.CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
-  nextUrl: "",
+  nextUrl: "/", // TODO update this to the next page URL when available
   pageType: AddressPageType.confirmGeneralPartnerCorrespondenceAddress,
   data: {
     ...correspondenceAddressCacheKeys,

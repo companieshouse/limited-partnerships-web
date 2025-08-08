@@ -1,7 +1,7 @@
 import * as url from "../url";
 import PostTransitionPageType from "../pageType";
 
-import { TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../addressLookUp/url/postTransition";
+import { TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL, TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../addressLookUp/url/postTransition";
 
 const postTransitionRoutingGeneralPartnerChoice = {
   previousUrl: url.LANDING_PAGE_URL,
@@ -20,7 +20,7 @@ const postTransitionRoutingAddGeneralPartnerLegalEntity = {
 const postTransitionRoutingAddGeneralPartnerPerson = {
   previousUrl: url.GENERAL_PARTNER_CHOICE_URL,
   currentUrl: url.ADD_GENERAL_PARTNER_PERSON_URL,
-  nextUrl: "/", // TODO - replace with the next URL when available,
+  nextUrl: TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   pageType: PostTransitionPageType.addGeneralPartnerPerson
 };
 
