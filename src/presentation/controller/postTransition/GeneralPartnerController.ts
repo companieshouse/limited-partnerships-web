@@ -17,7 +17,7 @@ import { IncorporationKind, PartnerKind } from "@companieshouse/api-sdk-node/dis
 
 import PostTransitionPageType from "../postTransition/pageType";
 import postTransitionRouting from "../postTransition/routing";
-import { APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION } from "../../../config/constants";
+import { APPLICATION_CACHE_KEY_COMPANY_NUMBER } from "../../../config/constants";
 
 class GeneralPartnerPostTransitionController extends GeneralPartnerController {
   constructor(
@@ -53,7 +53,7 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
 
         const companyResult = await this.companyService?.getCompanyProfile(
           tokens,
-          cache?.[`${APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION}company_number`]
+          cache?.[APPLICATION_CACHE_KEY_COMPANY_NUMBER]
         );
 
         const isLegalEntity = pageType === PostTransitionPageType.addGeneralPartnerLegalEntity;

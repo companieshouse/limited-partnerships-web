@@ -11,7 +11,7 @@ import PostTransitionPageType from "../../../../controller/postTransition/pageTy
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
-import { APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION } from "../../../../../config/constants";
+import { APPLICATION_CACHE_KEY_COMPANY_NUMBER } from "../../../../../config/constants";
 
 describe("General Partner Choice Page", () => {
   const URL = getUrl(GENERAL_PARTNER_CHOICE_URL);
@@ -25,7 +25,7 @@ describe("General Partner Choice Page", () => {
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
     appDevDependencies.cacheRepository.feedCache({
-      [`${APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION}company_number`]: companyProfile.data.companyNumber
+      [APPLICATION_CACHE_KEY_COMPANY_NUMBER]: companyProfile.data.companyNumber
     });
 
   });
