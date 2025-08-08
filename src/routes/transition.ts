@@ -62,194 +62,229 @@ const transitionEndpoints = (router: Router, dependencies: IDependencies): void 
   router.post(
     CONFIRM_LIMITED_PARTNERSHIP_URL,
     authentication,
+    companyAuthentication,
     dependencies.limitedPartnershipTransitionController.limitedPartnershipConfirm()
   );
 
   router.get(
     EMAIL_URL,
     authentication,
+    companyAuthentication,
     dependencies.limitedPartnershipTransitionController.getPageRouting()
   );
   router.post(
     EMAIL_URL,
     authentication,
+    companyAuthentication,
     dependencies.limitedPartnershipTransitionController.sendPageData()
   );
 
   router.get(
     GENERAL_PARTNERS_URL,
     authentication,
+    companyAuthentication,
     dependencies.generalPartnerTransitionController.getGeneralPartner()
   );
 
   router.get(
     GENERAL_PARTNER_CHOICE_URL,
     authentication,
+    companyAuthentication,
     dependencies.generalPartnerTransitionController.getPageRouting()
   );
   router.post(
     GENERAL_PARTNER_CHOICE_URL,
     authentication,
+    companyAuthentication,
     dependencies.generalPartnerTransitionController.generalPartnerChoice()
   );
 
   router.get(
     ADD_GENERAL_PARTNER_PERSON_URL,
     authentication,
+    companyAuthentication,
     dependencies.generalPartnerTransitionController.getPageRouting()
   );
   router.post(
     ADD_GENERAL_PARTNER_PERSON_URL,
     authentication,
+    companyAuthentication,
     dependencies.generalPartnerTransitionController.createGeneralPartner()
   );
 
   router.get(
     ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL,
     authentication,
+    companyAuthentication,
     dependencies.generalPartnerTransitionController.getPageRouting()
   );
   router.post(
     ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL,
     authentication,
+    companyAuthentication,
     dependencies.generalPartnerTransitionController.sendPageData()
   );
 
   router.get(
     ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
     authentication,
+    companyAuthentication,
     dependencies.generalPartnerTransitionController.getPageRouting()
   );
   router.post(
     ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
     authentication,
+    companyAuthentication,
     dependencies.generalPartnerTransitionController.createGeneralPartner()
   );
 
   router.get(
     ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_ID_URL,
     authentication,
+    companyAuthentication,
     dependencies.generalPartnerTransitionController.getPageRouting()
   );
   router.post(
     ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_ID_URL,
     authentication,
+    companyAuthentication,
     dependencies.generalPartnerTransitionController.sendPageData()
   );
 
   router.get(
     REVIEW_GENERAL_PARTNERS_URL,
     authentication,
+    companyAuthentication,
     dependencies.generalPartnerTransitionController.getReviewPage()
   );
   router.post(
     REVIEW_GENERAL_PARTNERS_URL,
     authentication,
+    companyAuthentication,
     dependencies.generalPartnerTransitionController.postReviewPage()
   );
 
   router.get(
     REMOVE_GENERAL_PARTNER_URL,
     authentication,
+    companyAuthentication,
     dependencies.generalPartnerTransitionController.getPageRouting()
   );
   router.post(
     REMOVE_GENERAL_PARTNER_URL,
     authentication,
+    companyAuthentication,
     dependencies.generalPartnerTransitionController.postRemovePage()
   );
 
   router.get(
     LIMITED_PARTNERS_URL,
     authentication,
+    companyAuthentication,
     dependencies.limitedPartnerTransitionController.getLimitedPartner()
   );
 
   router.get(
     LIMITED_PARTNER_CHOICE_URL,
     authentication,
+    companyAuthentication,
     dependencies.limitedPartnerTransitionController.getPageRouting()
   );
   router.post(
     LIMITED_PARTNER_CHOICE_URL,
     authentication,
+    companyAuthentication,
     dependencies.limitedPartnerTransitionController.limitedPartnerChoice()
   );
 
   router.get(
     ADD_LIMITED_PARTNER_PERSON_URL,
     authentication,
+    companyAuthentication,
     dependencies.limitedPartnerTransitionController.getPageRouting()
   );
   router.post(
     ADD_LIMITED_PARTNER_PERSON_URL,
     authentication,
+    companyAuthentication,
     dependencies.limitedPartnerTransitionController.createLimitedPartner()
   );
 
   router.get(
     ADD_LIMITED_PARTNER_PERSON_WITH_ID_URL,
     authentication,
+    companyAuthentication,
     dependencies.limitedPartnerTransitionController.getPageRouting()
   );
   router.post(
     ADD_LIMITED_PARTNER_PERSON_WITH_ID_URL,
     authentication,
+    companyAuthentication,
     dependencies.limitedPartnerTransitionController.sendPageData()
   );
 
   router.get(
     ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
     authentication,
+    companyAuthentication,
     dependencies.limitedPartnerTransitionController.getPageRouting()
   );
   router.post(
     ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
     authentication,
+    companyAuthentication,
     dependencies.limitedPartnerTransitionController.createLimitedPartner()
   );
 
   router.get(
     ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_ID_URL,
     authentication,
+    companyAuthentication,
     dependencies.limitedPartnerTransitionController.getPageRouting()
   );
   router.post(
     ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_ID_URL,
     authentication,
+    companyAuthentication,
     dependencies.limitedPartnerTransitionController.sendPageData()
   );
 
   router.get(
     REVIEW_LIMITED_PARTNERS_URL,
     authentication,
+    companyAuthentication,
     dependencies.limitedPartnerTransitionController.getReviewPage()
   );
   router.post(
     REVIEW_LIMITED_PARTNERS_URL,
     authentication,
+    companyAuthentication,
     dependencies.limitedPartnerTransitionController.postReviewPage()
   );
 
   router.get(
     REMOVE_LIMITED_PARTNER_URL,
     authentication,
+    companyAuthentication,
     dependencies.limitedPartnerTransitionController.getPageRouting()
   );
   router.post(
     REMOVE_LIMITED_PARTNER_URL,
     authentication,
+    companyAuthentication,
     dependencies.limitedPartnerTransitionController.postRemovePage()
   );
 
   router.get(
     CHECK_YOUR_ANSWERS_URL,
     authentication,
+    companyAuthentication,
     dependencies.limitedPartnershipTransitionController.getPageRouting()
   );
   router.post(
     CHECK_YOUR_ANSWERS_URL,
     authentication,
+    companyAuthentication,
     dependencies.limitedPartnershipTransitionController.postCheckYourAnswers()
   );
 };
