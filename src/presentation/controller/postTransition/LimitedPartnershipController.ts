@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from "express";
 import AbstractController from "../AbstractController";
 import {
   APPLICATION_CACHE_KEY,
-  APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION,
+  APPLICATION_CACHE_KEY_COMPANY_NUMBER,
   cookieOptions
 } from "../../../config/constants";
 
@@ -60,7 +60,7 @@ class LimitedPartnershipController extends AbstractController {
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
         const result = await this.companyService.getCompanyProfile(
           tokens,
-          cache[`${APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION}company_number`]
+          cache[APPLICATION_CACHE_KEY_COMPANY_NUMBER]
         );
 
         if (result.errors) {
@@ -102,7 +102,7 @@ class LimitedPartnershipController extends AbstractController {
         }
 
         const cache = this.cacheService.addDataToCache(request.signedCookies, {
-          [`${APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION}company_number`]: company_number
+          [APPLICATION_CACHE_KEY_COMPANY_NUMBER]: company_number
         });
         response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
 

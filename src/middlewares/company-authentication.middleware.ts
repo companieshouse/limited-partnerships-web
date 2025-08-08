@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { authMiddleware, AuthOptions } from "@companieshouse/web-security-node";
 
 import { logger } from "../utils";
-import { APPLICATION_CACHE_KEY, APPLICATION_CACHE_KEY_PREFIX_TRANSITION, CHS_URL } from "../config/constants";
+import { APPLICATION_CACHE_KEY, APPLICATION_CACHE_KEY_COMPANY_NUMBER, CHS_URL } from "../config/constants";
 
 export const companyAuthentication = (request: Request, response: Response, next: NextFunction) => {
   try {
@@ -33,7 +33,7 @@ const getCompanyNumberCache = (request: Request): string => {
   if (cookies[APPLICATION_CACHE_KEY]) {
     const str = fromBase64(cookies[APPLICATION_CACHE_KEY]);
     const cache = str ? JSON.parse(str) : {};
-    companyNumberCache = cache[`${APPLICATION_CACHE_KEY_PREFIX_TRANSITION}company_number`];
+    companyNumberCache = cache[APPLICATION_CACHE_KEY_COMPANY_NUMBER];
   }
 
   return companyNumberCache;

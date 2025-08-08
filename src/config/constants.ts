@@ -41,6 +41,7 @@ export const APPLICATION_CACHE_KEY = "limited_partnership";
 export const APPLICATION_CACHE_KEY_PREFIX_REGISTRATION = "registration_";
 export const APPLICATION_CACHE_KEY_PREFIX_TRANSITION = "transition_";
 export const APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION = "post-transition_";
+export const APPLICATION_CACHE_KEY_COMPANY_NUMBER = "company_number";
 
 // Templates
 export const ERROR_TEMPLATE = "error-page";

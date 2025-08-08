@@ -2,10 +2,11 @@ import { Request, Response } from "express";
 import { companyAuthentication } from "../../../middlewares/company-authentication.middleware";
 import * as constants from "../../../config/constants";
 import { Session } from "@companieshouse/node-session-handler";
+import { APPLICATION_CACHE_KEY_COMPANY_NUMBER } from "../../../config/constants";
 
 const signedCookies = {
   [constants.APPLICATION_CACHE_KEY]: Buffer.from(
-    JSON.stringify({ [`${constants.APPLICATION_CACHE_KEY_PREFIX_TRANSITION}company_number`]: "12345678" })
+    JSON.stringify({ [APPLICATION_CACHE_KEY_COMPANY_NUMBER]: "12345678" })
   ).toString("base64")
 };
 

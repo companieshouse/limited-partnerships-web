@@ -8,7 +8,7 @@ import CacheService from "../../../application/service/CacheService";
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import {
   APPLICATION_CACHE_KEY,
-  APPLICATION_CACHE_KEY_PREFIX_TRANSITION,
+  APPLICATION_CACHE_KEY_COMPANY_NUMBER,
   cookieOptions,
   JOURNEY_TYPE_PARAM
 } from "../../../config/constants";
@@ -122,7 +122,7 @@ class LimitedPartnershipController extends AbstractController {
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
         const result = await this.companyService.getCompanyProfile(
           tokens,
-          cache[`${APPLICATION_CACHE_KEY_PREFIX_TRANSITION}company_number`]
+          cache[APPLICATION_CACHE_KEY_COMPANY_NUMBER]
         );
 
         if (result.errors) {
@@ -152,7 +152,7 @@ class LimitedPartnershipController extends AbstractController {
         const journeyTypes = getJourneyTypes(pageRouting.currentUrl);
 
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
-        const company_number = cache[`${APPLICATION_CACHE_KEY_PREFIX_TRANSITION}company_number`];
+        const company_number = cache[APPLICATION_CACHE_KEY_COMPANY_NUMBER];
 
         const companyResult = await this.companyService.getCompanyProfile(tokens, company_number);
 
@@ -177,7 +177,7 @@ class LimitedPartnershipController extends AbstractController {
 
         const cacheUpdated = this.cacheService.removeDataFromCache(
           request.signedCookies,
-          `${APPLICATION_CACHE_KEY_PREFIX_TRANSITION}company_number`
+          APPLICATION_CACHE_KEY_COMPANY_NUMBER
         );
         response.cookie(APPLICATION_CACHE_KEY, cacheUpdated, cookieOptions);
 
@@ -233,7 +233,7 @@ class LimitedPartnershipController extends AbstractController {
         }
 
         const cache = this.cacheService.addDataToCache(request.signedCookies, {
-          [`${APPLICATION_CACHE_KEY_PREFIX_TRANSITION}company_number`]: company_number
+          [APPLICATION_CACHE_KEY_COMPANY_NUMBER]: company_number
         });
         response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
 

@@ -14,7 +14,7 @@ import {
   ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_ID_URL
 } from "../../../../controller/postTransition/url";
 import {
-  APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION,
+  APPLICATION_CACHE_KEY_COMPANY_NUMBER,
   POST_TRANSITION_BASE_URL
 } from "../../../../../config/constants";
 
@@ -35,7 +35,7 @@ describe("Add General Partner Legal Entity Page", () => {
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
     appDevDependencies.cacheRepository.feedCache({
-      [`${APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION}company_number`]: companyProfile.data.companyNumber
+      [APPLICATION_CACHE_KEY_COMPANY_NUMBER]: companyProfile.data.companyNumber
     });
 
     appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
