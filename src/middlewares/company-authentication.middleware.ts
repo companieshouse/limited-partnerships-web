@@ -14,8 +14,7 @@ export const companyAuthentication = (request: Request, response: Response, next
     if (companyNumberSesssion && (companyNumberSesssion === companyNumberCache || !companyNumberCache)) {
       logger.info(`Company number from session (${companyNumberSesssion}) matches cache or cache is empty.`);
 
-      next();
-      return;
+      return next();
     }
 
     invokeAuthMiddleware(companyNumberCache, request, response, next);
