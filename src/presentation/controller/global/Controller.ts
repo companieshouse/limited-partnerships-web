@@ -181,7 +181,7 @@ class GlobalController extends AbstractController {
           return this.handlePendingPayment(response, tokens, ids, journey);
         }
 
-        const resumePage = super.insertIdsInUrl(resumeUrl, { ...ids, companyId: transaction.companyNumber || "" });
+        const resumePage = super.insertIdsInUrl(resumeUrl, { ...ids, companyId: transaction.companyNumber ?? "" });
 
         return response.redirect(resumePage);
       } catch (error) {

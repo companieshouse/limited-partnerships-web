@@ -150,8 +150,8 @@ class LimitedPartnershipController extends AbstractController {
           journeyTypes,
           this.mapCompanyProfileData(companyResult.companyProfile),
           {
-            companyName: companyResult?.companyProfile?.companyName || "",
-            companyNumber: companyResult?.companyProfile?.companyNumber || ""
+            companyName: companyResult?.companyProfile?.companyName ?? "",
+            companyNumber: companyResult?.companyProfile?.companyNumber ?? ""
           }
         );
 

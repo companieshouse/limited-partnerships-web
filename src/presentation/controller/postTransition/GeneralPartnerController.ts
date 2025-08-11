@@ -58,8 +58,8 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
           tokens,
           IncorporationKind.POST_TRANSITION,
           {
-            companyName: companyResult?.companyProfile?.companyName || "",
-            companyNumber: companyResult?.companyProfile?.companyNumber || ""
+            companyName: companyResult?.companyProfile?.companyName ?? "",
+            companyNumber: companyResult?.companyProfile?.companyNumber ?? ""
           },
           isLegalEntity ? "Add a general partner (legal entity)" : "Add a general partner (person)"
         );
