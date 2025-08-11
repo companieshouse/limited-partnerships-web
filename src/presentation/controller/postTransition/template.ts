@@ -8,3 +8,4 @@ export const LANDING_PAGE_TEMPLATE = PostTransitionPageType.landingPage;
 export const GENERAL_PARTNER_CHOICE_TEMPLATE = PostTransitionPageType.generalPartnerChoice;
 export const ADD_GENERAL_PARTNER_PERSON_TEMPLATE = PostTransitionPageType.addGeneralPartnerPerson;
 export const ADD_GENERAL_PARTNER_LEGAL_ENTITY_TEMPLATE = PostTransitionPageType.addGeneralPartnerLegalEntity;
+export const GENERAL_PARTNER_CHECK_YOUR_ANSWERS_TEMPLATE = PostTransitionPageType.generalPartnerCheckYourAnswers;
