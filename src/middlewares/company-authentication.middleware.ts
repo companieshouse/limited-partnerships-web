@@ -18,8 +18,6 @@ export const companyAuthentication = (request: Request, response: Response, next
     }
 
     invokeAuthMiddleware(companyNumberCache, request, response, next);
-
-    next();
   } catch (err) {
     next(err);
   }
