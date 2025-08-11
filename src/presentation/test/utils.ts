@@ -9,6 +9,7 @@ export const setLocalesEnabled = (bool: boolean) => {
 };
 
 export const getUrl = (url: string) => {
+  const companyId = url.includes(config.COMPANY_ID) ? "LP123456" : "";
   const submissionId = url.includes(config.SUBMISSION_ID)
     ? appDevDependencies.limitedPartnershipGateway.submissionId
     : "";
@@ -19,11 +20,14 @@ export const getUrl = (url: string) => {
     ? appDevDependencies.limitedPartnerGateway.limitedPartnerId
     : "";
 
-  const ids = { transactionId: appDevDependencies.transactionGateway.transactionId, submissionId, generalPartnerId, limitedPartnerId };
-  return appDevDependencies.addressLookUpController.insertIdsInUrl(
-    url,
-    ids
-  );
+  const ids = {
+    companyId,
+    transactionId: appDevDependencies.transactionGateway.transactionId,
+    submissionId,
+    generalPartnerId,
+    limitedPartnerId
+  };
+  return appDevDependencies.addressLookUpController.insertIdsInUrl(url, ids);
 };
 
 export const toEscapedHtml = (input: string) => {

@@ -13,7 +13,7 @@ import {
   ADD_GENERAL_PARTNER_PERSON_URL,
   ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL
 } from "../../../../controller/postTransition/url";
-import { APPLICATION_CACHE_KEY_COMPANY_NUMBER, POST_TRANSITION_BASE_URL } from "../../../../../config/constants";
+import { POST_TRANSITION_WITH_ID_URL } from "../../../../../config/constants";
 
 import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
@@ -34,10 +34,6 @@ describe("Add General Partner Person Page", () => {
 
     companyProfile = new CompanyProfileBuilder().build();
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
-
-    appDevDependencies.cacheRepository.feedCache({
-      [APPLICATION_CACHE_KEY_COMPANY_NUMBER]: companyProfile.data.companyNumber
-    });
 
     appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
     appDevDependencies.generalPartnerGateway.feedErrors();
@@ -91,7 +87,7 @@ describe("Add General Partner Person Page", () => {
       const res = await request(app).get(getUrl(ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL) + "?lang=en");
 
       expect(res.status).toBe(200);
-      const regex = new RegExp(`${POST_TRANSITION_BASE_URL}/${PostTransitionPageType.generalPartnerChoice}`);
+      const regex = new RegExp(`${getUrl(POST_TRANSITION_WITH_ID_URL)}/${PostTransitionPageType.generalPartnerChoice}`);
       expect(res.text).toMatch(regex);
     });
 

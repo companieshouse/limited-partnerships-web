@@ -1,11 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 
 import AbstractController from "../AbstractController";
-import {
-  APPLICATION_CACHE_KEY,
-  APPLICATION_CACHE_KEY_COMPANY_NUMBER,
-  cookieOptions
-} from "../../../config/constants";
 
 import CompanyService from "../../../application/service/CompanyService";
 import CacheService from "../../../application/service/CacheService";
@@ -54,14 +49,10 @@ class LimitedPartnershipController extends AbstractController {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const { tokens } = super.extract(request);
-        const { pageType } = super.extract(request);
-        const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
+        const { ids, pageType } = super.extract(request);
+        let pageRouting = super.getRouting(postTransitionRouting, pageType, request);
 
-        const cache = this.cacheService.getDataFromCache(request.signedCookies);
-        const result = await this.companyService.getCompanyProfile(
-          tokens,
-          cache[APPLICATION_CACHE_KEY_COMPANY_NUMBER]
-        );
+        const result = await this.companyService.getCompanyProfile(tokens, ids.companyId);
 
         if (result.errors) {
           response.render(
@@ -70,6 +61,16 @@ class LimitedPartnershipController extends AbstractController {
           );
 
           return;
+        }
+
+        if (pageRouting?.data?.addGeneralPartner) {
+          pageRouting = {
+            ...pageRouting,
+            data: {
+              addGeneralPartner: super.insertIdsInUrl(pageRouting?.data?.addGeneralPartner, ids) // insert company number into the link
+            },
+            errors: undefined
+          };
         }
 
         response.render(
@@ -85,7 +86,7 @@ class LimitedPartnershipController extends AbstractController {
   checkCompanyNumber() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
-        const { tokens } = super.extract(request);
+        const { ids, tokens } = super.extract(request);
         const pageType = super.extractPageTypeOrThrowError(request, PostTransitionPageType);
         const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
         const { company_number } = request.body;
@@ -101,12 +102,12 @@ class LimitedPartnershipController extends AbstractController {
           return;
         }
 
-        const cache = this.cacheService.addDataToCache(request.signedCookies, {
-          [APPLICATION_CACHE_KEY_COMPANY_NUMBER]: company_number
+        const url = super.insertIdsInUrl(pageRouting.nextUrl, {
+          ...ids,
+          companyId: company_number
         });
-        response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
 
-        response.redirect(pageRouting.nextUrl);
+        response.redirect(url);
       } catch (error) {
         next(error);
       }

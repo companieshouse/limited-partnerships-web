@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { Session } from "@companieshouse/node-session-handler";
 
 import {
+  COMPANY_ID,
   GENERAL_PARTNER_ID,
   GENERAL_PARTNER_WITH_ID_URL,
   LIMITED_PARTNER_ID,
@@ -44,6 +45,7 @@ abstract class AbstractController {
     }
 
     pageRouting = this.insertIdsInAllUrl(pageRouting, {
+      companyId: request.params[COMPANY_ID],
       transactionId: request.params[TRANSACTION_ID],
       submissionId: request.params[SUBMISSION_ID],
       generalPartnerId: request.params[GENERAL_PARTNER_ID],
@@ -82,13 +84,14 @@ abstract class AbstractController {
     const session = request.session as Session;
     const tokens = this.extractTokens(request);
     const pageType = this.pageType(request.path);
-    const { transactionId, submissionId, generalPartnerId, limitedPartnerId } = this.extractIds(request);
+    const { companyId, transactionId, submissionId, generalPartnerId, limitedPartnerId } = this.extractIds(request);
 
     return {
       session,
       tokens,
       pageType,
       ids: {
+        companyId,
         transactionId,
         submissionId,
         generalPartnerId,
@@ -112,8 +115,9 @@ abstract class AbstractController {
       }
     }
     url = this.replaceBaseUrlWithIds(url, ids);
-    url = this.insertSubmissionId(url, ids.submissionId);
+    url = this.insertCompanyId(url, ids.companyId);
     url = this.insertTransactionId(url, ids.transactionId);
+    url = this.insertSubmissionId(url, ids.submissionId);
     url = this.insertGeneralPartnerId(url, ids.generalPartnerId);
     url = this.insertLimitedPartnerId(url, ids.limitedPartnerId);
     return url;
@@ -157,6 +161,10 @@ abstract class AbstractController {
     }
 
     return url;
+  }
+
+  protected insertCompanyId(url: string, companyId: string): string {
+    return companyId ? url.replace(`:${COMPANY_ID}`, companyId) : url;
   }
 
   protected insertTransactionId(url: string, transactionId: string): string {
@@ -219,12 +227,13 @@ abstract class AbstractController {
   }
 
   protected extractIds(request: Request): Ids {
+    const companyId = request.params.companyId;
     const transactionId = request.params.transactionId;
     const submissionId = request.params.submissionId;
     const generalPartnerId = request.params.generalPartnerId;
     const limitedPartnerId = request.params.limitedPartnerId;
 
-    return { transactionId, submissionId, generalPartnerId, limitedPartnerId };
+    return { transactionId, submissionId, companyId, generalPartnerId, limitedPartnerId };
   }
 
   protected getPreviousPageUrl(request: Request) {
@@ -251,7 +260,7 @@ abstract class AbstractController {
   continueSavedFiling(pageType, routing) {
     return (request: Request, response: Response, next: NextFunction) => {
       try {
-        if (request.body["continue_saved_filing"] === 'YES') {
+        if (request.body["continue_saved_filing"] === "YES") {
           return response.redirect(YOUR_FILINGS_URL);
         }
 
