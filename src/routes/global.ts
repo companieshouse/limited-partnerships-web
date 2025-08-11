@@ -1,7 +1,6 @@
 import { Router } from "express";
 
 import { IDependencies } from "../config/IDependencies";
-import { authentication } from "../middlewares";
 import {
   HEALTHCHECK_URL,
   SIGN_OUT_URL,
@@ -19,37 +18,31 @@ export const globalEndpoints = (
 
   router.get(
     SIGN_OUT_URL,
-    authentication,
     dependencies.globalController.getSignOut()
   );
 
   router.post(
     SIGN_OUT_URL,
-    authentication,
     dependencies.globalController.signOutChoice()
   );
 
   router.get(
     PAYMENT_RESPONSE_URL,
-    authentication,
     dependencies.globalController.getPaymentDecision()
   );
 
   router.get(
     CONFIRMATION_URL,
-    authentication,
     dependencies.globalController.getConfirmationPage()
   );
 
   router.get(
     RESUME_JOURNEY_URL,
-    authentication,
     dependencies.globalController.resumeJourney()
   );
 
   router.get(
     PAYMENT_FAILED_URL,
-    authentication,
     dependencies.globalController.getPageRouting()
   );
 };

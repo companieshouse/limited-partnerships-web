@@ -100,4 +100,4 @@ export const cookieOptions = {
 };
 
 // middleware
-export const excludedPaths = /\/limited-partnerships\/((?!healthcheck).)*/;
+export const allPathsExceptHealthcheck = /\/limited-partnerships\/((?!healthcheck).)*/;

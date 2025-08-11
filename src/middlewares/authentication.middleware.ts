@@ -9,7 +9,7 @@ export const authentication = (req: Request, res: Response, next: NextFunction):
     if (!checkUserSignedIn(req.session)) {
       logger.infoRequest(req, "User not authenticated, redirecting to sign in page, status_code=302");
 
-      const returnToUrl = req.url === SIGN_OUT_URL ? WHICH_TYPE_URL : req.url;
+      const returnToUrl = req.originalUrl === SIGN_OUT_URL ? WHICH_TYPE_URL : req.originalUrl;
 
       return res.redirect(`/signin?return_to=${returnToUrl}`);
     }

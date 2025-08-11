@@ -10,7 +10,7 @@ import { getGOVUKFrontendVersion } from "@companieshouse/ch-node-utils";
 
 import { createSummaryListLink } from "../utils/change-link";
 import * as config from "./constants";
-import { localisationMiddleware } from "../middlewares";
+import { authentication, localisationMiddleware } from "../middlewares";
 import { serviceAvailabilityMiddleware } from "../middlewares/service-availability.middleware";
 import { journeyDetectionMiddleware } from "../middlewares/journey.detection.middleware";
 import { TRANSITION_START_URL } from "../presentation/controller/transition/url";
@@ -67,8 +67,8 @@ export const appConfig = (app: express.Application) => {
 
   // middlewares
   app.use(serviceAvailabilityMiddleware);
-  app.use(config.excludedPaths, journeyDetectionMiddleware);
-  app.use(config.excludedPaths, localisationMiddleware);
+  app.use(config.allPathsExceptHealthcheck, journeyDetectionMiddleware);
+  app.use(config.allPathsExceptHealthcheck, localisationMiddleware);
 
   const cookieConfig = {
     cookieName: "__SID",
@@ -78,7 +78,7 @@ export const appConfig = (app: express.Application) => {
   };
   const sessionStore = new SessionStore(new Redis(`redis://${config.CACHE_SERVER}`));
 
-  app.use(config.excludedPaths, SessionMiddleware(cookieConfig, sessionStore));
+  app.use(config.allPathsExceptHealthcheck, SessionMiddleware(cookieConfig, sessionStore));
 
   // csrf middleware
   const csrfProtectionMiddleware = CsrfProtectionMiddleware({
@@ -86,5 +86,7 @@ export const appConfig = (app: express.Application) => {
     enabled: true,
     sessionCookieName: config.COOKIE_NAME
   });
-  app.use(config.excludedPaths, csrfProtectionMiddleware);
+  app.use(config.allPathsExceptHealthcheck, csrfProtectionMiddleware);
+
+  app.use(config.allPathsExceptHealthcheck, authentication);
 };
