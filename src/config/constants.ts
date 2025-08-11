@@ -41,7 +41,6 @@ export const APPLICATION_CACHE_KEY = "limited_partnership";
 export const APPLICATION_CACHE_KEY_PREFIX_REGISTRATION = "registration_";
 export const APPLICATION_CACHE_KEY_PREFIX_TRANSITION = "transition_";
 export const APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION = "post-transition_";
-export const APPLICATION_CACHE_KEY_COMPANY_NUMBER = "company_number";
 
 // Templates
 export const ERROR_TEMPLATE = "error-page";
@@ -49,9 +48,9 @@ export const NOT_FOUND_TEMPLATE = "page-not-found";
 export const SERVICE_UNAVAILABLE_TEMPLATE = "service-unavailable";
 
 // Routing Paths
+export const COMPANY_ID = "companyId";
 export const TRANSACTION_ID = "transactionId";
 export const SUBMISSION_ID = "submissionId";
-export const COMPANY_ID = "companyId";
 export const GENERAL_PARTNER_ID = "generalPartnerId";
 export const LIMITED_PARTNER_ID = "limitedPartnerId";
 export const JOURNEY_TYPE_PARAM = ":journeyType";
@@ -71,8 +70,12 @@ export const TRANSACTION_SUBMISSION_URL = `${TRANSACTION_URL}/submission/:${SUBM
 
 export const BASE_WITH_IDS_URL = `${BASE_URL}${TRANSACTION_SUBMISSION_URL}`;
 export const BASE_WITH_JOURNEY_TYPE_AND_IDS_URL = `${BASE_URL}/${JOURNEY_TYPE_PARAM}${TRANSACTION_SUBMISSION_URL}`;
+
 export const REGISTRATION_WITH_IDS_URL = `${REGISTRATION_BASE_URL}${TRANSACTION_SUBMISSION_URL}`;
-export const TRANSITION_WITH_IDS_URL = `${TRANSITION_BASE_URL}${TRANSACTION_SUBMISSION_URL}`;
+
+export const TRANSITION_WITH_ID_URL = `${TRANSITION_BASE_URL}${COMPANY_URL}`;
+export const TRANSITION_WITH_IDS_URL = `${TRANSITION_BASE_URL}${COMPANY_URL}${TRANSACTION_SUBMISSION_URL}`;
+
 export const POST_TRANSITION_WITH_ID_URL = `${POST_TRANSITION_BASE_URL}${COMPANY_URL}`;
 export const POST_TRANSITION_WITH_IDS_URL = `${POST_TRANSITION_BASE_URL}${COMPANY_URL}${TRANSACTION_URL}`;
 

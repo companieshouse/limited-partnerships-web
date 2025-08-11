@@ -18,11 +18,7 @@ import {
   TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "../../../../controller/addressLookUp/url/transition";
 import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
-import { TRANSITION_BASE_URL } from "../../../../../config/constants";
-import {
-  GENERAL_PARTNER_CHOICE_TEMPLATE,
-  REVIEW_GENERAL_PARTNERS_TEMPLATE
-} from "../../../../controller/transition/template";
+import { TRANSITION_WITH_IDS_URL } from "../../../../../config/constants";
 
 describe("Add General Partner Person Page", () => {
   const URL = getUrl(ADD_GENERAL_PARTNER_PERSON_URL);
@@ -44,7 +40,12 @@ describe("Add General Partner Person Page", () => {
       expect(res.text).toContain(
         `${cyTranslationText.addPartnerPersonPage.generalPartner.title} - ${cyTranslationText.serviceTransition} - GOV.UK`
       );
-      testTranslations(res.text, cyTranslationText.generalPartnersPage, ["title", "pageInformation", "disqualificationStatement", "disqualificationStatementLegend"]);
+      testTranslations(res.text, cyTranslationText.generalPartnersPage, [
+        "title",
+        "pageInformation",
+        "disqualificationStatement",
+        "disqualificationStatementLegend"
+      ]);
       testTranslations(res.text, cyTranslationText.addPartnerPersonPage, ["errorMessages", "limitedPartner"]);
     });
 
@@ -57,7 +58,12 @@ describe("Add General Partner Person Page", () => {
         `${enTranslationText.addPartnerPersonPage.generalPartner.title} - ${enTranslationText.serviceTransition} - GOV.UK`
       );
       testTranslations(res.text, enTranslationText.addPartnerPersonPage, ["errorMessages", "limitedPartner"]);
-      testTranslations(res.text, enTranslationText.generalPartnersPage, ["title", "pageInformation", "disqualificationStatement", "disqualificationStatementLegend"]);
+      testTranslations(res.text, enTranslationText.generalPartnersPage, [
+        "title",
+        "pageInformation",
+        "disqualificationStatement",
+        "disqualificationStatementLegend"
+      ]);
       expect(res.text).not.toContain("WELSH -");
     });
 
@@ -84,9 +90,10 @@ describe("Add General Partner Person Page", () => {
       const res = await request(app).get(getUrl(ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL) + "?lang=en");
 
       expect(res.status).toBe(200);
-      const regex = new RegExp(
-        `${TRANSITION_BASE_URL}/transaction/.*?/submission/.*?/${REVIEW_GENERAL_PARTNERS_TEMPLATE}`
-      );
+
+      const BACK_LINK = `${getUrl(TRANSITION_WITH_IDS_URL)}/${TransitionPageType.reviewGeneralPartners}`;
+      const regex = new RegExp(BACK_LINK);
+
       expect(res.text).toMatch(regex);
     });
 
@@ -94,9 +101,10 @@ describe("Add General Partner Person Page", () => {
       const res = await request(app).get(getUrl(ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL) + "?lang=en");
 
       expect(res.status).toBe(200);
-      const regex = new RegExp(
-        `${TRANSITION_BASE_URL}/transaction/.*?/submission/.*?/${GENERAL_PARTNER_CHOICE_TEMPLATE}`
-      );
+
+      const BACK_LINK = `${getUrl(TRANSITION_WITH_IDS_URL)}/${TransitionPageType.generalPartnerChoice}`;
+
+      const regex = new RegExp(BACK_LINK);
       expect(res.text).toMatch(regex);
     });
   });

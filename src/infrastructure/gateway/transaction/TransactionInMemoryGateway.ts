@@ -31,11 +31,11 @@ class TransactionInMemoryGateway implements ITransactionGateway {
   async createTransaction(
     opt: Tokens,
     incorporationKind: IncorporationKind,
-    description?: string,
     company?: {
       companyName: string;
       companyNumber: string;
-    }
+    },
+    description?: string
   ): Promise<string> {
     let transactionDecription = SERVICE_NAME_REGISTRATION;
 

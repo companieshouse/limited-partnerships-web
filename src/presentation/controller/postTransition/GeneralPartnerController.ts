@@ -57,11 +57,11 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
         const resultTransaction = await this.transactionService.createTransaction(
           tokens,
           IncorporationKind.POST_TRANSITION,
-          isLegalEntity ? "Add a general partner (legal entity)" : "Add a general partner (person)",
           {
             companyName: companyResult?.companyProfile?.companyName || "",
             companyNumber: companyResult?.companyProfile?.companyNumber || ""
-          }
+          },
+          isLegalEntity ? "Add a general partner (legal entity)" : "Add a general partner (person)"
         );
 
         const result = await this.generalPartnerService.createGeneralPartner(tokens, resultTransaction.transactionId, {

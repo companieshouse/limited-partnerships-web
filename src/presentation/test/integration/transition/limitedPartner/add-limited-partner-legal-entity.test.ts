@@ -7,7 +7,7 @@ import app from "../../app";
 
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { TRANSITION_BASE_URL } from "config";
+import { TRANSITION_WITH_IDS_URL } from "config";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 
@@ -94,9 +94,9 @@ describe("Add Limited Partner Legal Entity Page", () => {
 
       expect(res.status).toBe(200);
 
-      const regex = new RegExp(
-        `${TRANSITION_BASE_URL}/transaction/.*?/submission/.*?/${TransitionPageType.reviewLimitedPartners}`
-      );
+      const BACK_LINK = `${getUrl(TRANSITION_WITH_IDS_URL)}/${TransitionPageType.reviewLimitedPartners}`;
+
+      const regex = new RegExp(BACK_LINK);
       expect(res.text).toMatch(regex);
     });
 
@@ -105,9 +105,9 @@ describe("Add Limited Partner Legal Entity Page", () => {
       const res = await request(app).get(getUrl(ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_ID_URL) + "?lang=en");
 
       expect(res.status).toBe(200);
-      const regex = new RegExp(
-        `${TRANSITION_BASE_URL}/transaction/.*?/submission/.*?/${TransitionPageType.limitedPartnerChoice}`
-      );
+
+      const BACK_LINK = `${getUrl(TRANSITION_WITH_IDS_URL)}/${TransitionPageType.limitedPartnerChoice}`;
+      const regex = new RegExp(BACK_LINK);
       expect(res.text).toMatch(regex);
     });
   });
