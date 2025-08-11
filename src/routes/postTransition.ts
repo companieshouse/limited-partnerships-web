@@ -11,6 +11,7 @@ import {
   ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL,
   COMPANY_NUMBER_URL,
   CONFIRM_LIMITED_PARTNERSHIP_URL,
+  GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL,
   GENERAL_PARTNER_CHOICE_URL,
   LANDING_PAGE_URL
 } from "../presentation/controller/postTransition/url";
@@ -94,6 +95,13 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
     ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL,
     companyAuthentication,
     dependencies.generalPartnerPostTransitionController.sendPageData()
+  );
+
+  router.get(
+    GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL,
+    authentication,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.getPageRouting()
   );
 };
 

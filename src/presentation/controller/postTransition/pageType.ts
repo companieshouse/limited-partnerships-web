@@ -5,7 +5,8 @@ enum PostTransitionPageType {
 
   generalPartnerChoice = "general-partner-choice",
   addGeneralPartnerPerson = "add-general-partner-person",
-  addGeneralPartnerLegalEntity = "add-general-partner-legal-entity"
+  addGeneralPartnerLegalEntity = "add-general-partner-legal-entity",
+  generalPartnerCheckYourAnswers = "general-partner-check-your-answers",
 }
 
 export default PostTransitionPageType;

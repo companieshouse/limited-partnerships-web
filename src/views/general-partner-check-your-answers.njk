@@ -1,0 +1,52 @@
+{% extends "layout.njk" %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+
+{% block head %}
+  {{ super() }}
+  {% include "includes/styles/print.njk" %}
+{% endblock %}
+
+{% set pageTitle = i18n.checkYourAnswersPage.title %}
+
+{% set item = props.data.generalPartner %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds-from-desktop">
+      <div>
+        <form class="form" action={{ props.currentUrl }} method="post">
+          <input type="hidden" name="pageType" value={{ props.pageType }}>
+          {% include "includes/csrf_token.njk" %}
+          
+          {% include "pages/checkYourAnswers/general-partner.njk" %}
+
+          {{ govukWarningText({
+            text: i18n.checkYourAnswersPage.warningMessage.warning,
+            iconFallbackText: "Warning"
+          }) }}
+
+          <p class="govuk-body">{{ i18n.checkYourAnswersPage.warningMessage.information }}</p>
+          <ul class="govuk-list govuk-list--bullet">
+            <li>{{ i18n.checkYourAnswersPage.warningMessage.email }}</li>
+            <li>{{ i18n.checkYourAnswersPage.warningMessage.dob }}</li>
+            <li>{{ i18n.checkYourAnswersPage.warningMessage.ura }}</li>
+          </ul>
+
+          <div class="govuk-button-group">
+            {{ govukButton({
+              text: submitButtonText,
+              attributes: {
+                "id": "submit",
+                "data-event-id": "check-your-answers-continue-to-payment-page-button"
+              }
+            }) }}
+
+           {% include "includes/print-button.njk" %}
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
