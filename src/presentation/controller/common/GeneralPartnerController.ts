@@ -18,7 +18,6 @@ import registrationRouting from "../registration/Routing";
 import transitionRouting from "../transition/Routing";
 import postTransitionRouting from "../postTransition/routing";
 
-import CacheService from "../../../application/service/CacheService";
 import CompanyService from "../../../application/service/CompanyService";
 
 abstract class GeneralPartnerController extends AbstractController {
@@ -26,7 +25,6 @@ abstract class GeneralPartnerController extends AbstractController {
     protected readonly limitedPartnershipService: LimitedPartnershipService,
     protected readonly generalPartnerService: GeneralPartnerService,
     protected readonly limitedPartnerService: LimitedPartnerService,
-    protected readonly cacheService?: CacheService,
     protected readonly companyService?: CompanyService
   ) {
     super();
@@ -56,7 +54,7 @@ abstract class GeneralPartnerController extends AbstractController {
           );
         }
 
-        if (this.cacheService && this.companyService) {
+        if (this.companyService) {
           limitedPartnership = await this.getLimitedPartnershipDetails(tokens, ids.companyId);
         }
 

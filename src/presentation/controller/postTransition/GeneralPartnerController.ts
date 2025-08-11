@@ -11,7 +11,6 @@ import {
   CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "../addressLookUp/url/postTransition";
 import CompanyService from "../../../application/service/CompanyService";
-import CacheService from "../../../application/service/CacheService";
 import TransactionService from "../../../application/service/TransactionService";
 import { IncorporationKind, PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
@@ -23,11 +22,10 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
     limitedPartnershipService: LimitedPartnershipService,
     generalPartnerService: GeneralPartnerService,
     limitedPartnerService: LimitedPartnerService,
-    cacheService: CacheService,
     companyService: CompanyService,
     private readonly transactionService: TransactionService
   ) {
-    super(limitedPartnershipService, generalPartnerService, limitedPartnerService, cacheService, companyService);
+    super(limitedPartnershipService, generalPartnerService, limitedPartnerService, companyService);
   }
 
   getPageRouting() {
@@ -48,8 +46,6 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
         const pageType = super.extractPageTypeOrThrowError(request, PostTransitionPageType);
         const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
 
-        const cache = this.cacheService?.getDataFromCache(request.signedCookies);
-
         const companyResult = await this.companyService?.getCompanyProfile(tokens, ids.companyId);
 
         const isLegalEntity = pageType === PostTransitionPageType.addGeneralPartnerLegalEntity;
@@ -69,7 +65,7 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
           kind: isLegalEntity ? PartnerKind.ADD_GENERAL_PARTNER_LEGAL_ENTITY : PartnerKind.ADD_GENERAL_PARTNER_PERSON
         });
 
-        if (result.errors && cache && companyResult) {
+        if (result.errors && companyResult) {
           const companyProfile = companyResult.companyProfile;
 
           response.render(

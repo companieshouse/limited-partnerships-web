@@ -107,7 +107,6 @@ const generalPartnerPostTransitionController: GeneralPartnerPostTransitionContro
     limitedPartnershipService,
     generalPartnerService,
     limitedPartnerService,
-    cacheService,
     companyService,
     transactionService
   );
