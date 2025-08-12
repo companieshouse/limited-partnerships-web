@@ -14,14 +14,10 @@ import {
   ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_ID_URL
 } from "../../../../controller/transition/url";
 import {
-  GENERAL_PARTNER_CHOICE_TEMPLATE,
-  REVIEW_GENERAL_PARTNERS_TEMPLATE
-} from "../../../../controller/transition/template";
-import {
   CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
 } from "../../../../controller/addressLookUp/url/transition";
-import { TRANSITION_BASE_URL } from "../../../../../config/constants";
+import { TRANSITION_WITH_IDS_URL } from "../../../../../config/constants";
 
 import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
 
@@ -46,7 +42,12 @@ describe("Add General Partner Legal Entity Page", () => {
         `${cyTranslationText.addPartnerLegalEntityPage.generalPartner.title} - ${cyTranslationText.serviceTransition} - GOV.UK`
       );
       testTranslations(res.text, cyTranslationText.addPartnerLegalEntityPage, ["limitedPartner", "errorMessages"]);
-      testTranslations(res.text, cyTranslationText.generalPartnersPage, ["title", "pageInformation", "disqualificationStatement", "disqualificationStatementLegend"]);
+      testTranslations(res.text, cyTranslationText.generalPartnersPage, [
+        "title",
+        "pageInformation",
+        "disqualificationStatement",
+        "disqualificationStatementLegend"
+      ]);
     });
 
     it("should load the add general partner legal entity page with English text", async () => {
@@ -58,7 +59,12 @@ describe("Add General Partner Legal Entity Page", () => {
         `${enTranslationText.addPartnerLegalEntityPage.generalPartner.title} - ${enTranslationText.serviceTransition} - GOV.UK`
       );
       testTranslations(res.text, enTranslationText.addPartnerLegalEntityPage, ["limitedPartner", "errorMessages"]);
-      testTranslations(res.text, enTranslationText.generalPartnersPage, ["title", "pageInformation", "disqualificationStatement", "disqualificationStatementLegend"]);
+      testTranslations(res.text, enTranslationText.generalPartnersPage, [
+        "title",
+        "pageInformation",
+        "disqualificationStatement",
+        "disqualificationStatementLegend"
+      ]);
       expect(res.text).not.toContain("WELSH -");
     });
 
@@ -86,9 +92,9 @@ describe("Add General Partner Legal Entity Page", () => {
 
       expect(res.status).toBe(200);
 
-      const regex = new RegExp(
-        `${TRANSITION_BASE_URL}/transaction/.*?/submission/.*?/${REVIEW_GENERAL_PARTNERS_TEMPLATE}`
-      );
+      const BACK_LINK = `${getUrl(TRANSITION_WITH_IDS_URL)}/${TransitionPageType.reviewGeneralPartners}`;
+
+      const regex = new RegExp(BACK_LINK);
       expect(res.text).toMatch(regex);
     });
 
@@ -96,9 +102,10 @@ describe("Add General Partner Legal Entity Page", () => {
       const res = await request(app).get(getUrl(ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_ID_URL) + "?lang=en");
 
       expect(res.status).toBe(200);
-      const regex = new RegExp(
-        `${TRANSITION_BASE_URL}/transaction/.*?/submission/.*?/${GENERAL_PARTNER_CHOICE_TEMPLATE}`
-      );
+
+      const BACK_LINK = `${getUrl(TRANSITION_WITH_IDS_URL)}/${TransitionPageType.generalPartnerChoice}`;
+
+      const regex = new RegExp(BACK_LINK);
       expect(res.text).toMatch(regex);
     });
   });

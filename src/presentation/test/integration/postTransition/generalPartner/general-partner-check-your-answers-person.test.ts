@@ -7,9 +7,6 @@ import cyTranslationText from "../../../../../../locales/cy/translations.json";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
-import {
-  APPLICATION_CACHE_KEY_COMPANY_NUMBER,
-} from "../../../../../config/constants";
 import { GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL } from "../../../../controller/postTransition/url";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import { formatDate } from "../../../../../utils/date-format";
@@ -24,10 +21,10 @@ describe("General Partner Check Your Answers Page", () => {
     beforeEach(() => {
       const companyProfile = new CompanyProfileBuilder().build();
       appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
-
+/*
       appDevDependencies.cacheRepository.feedCache({
         [APPLICATION_CACHE_KEY_COMPANY_NUMBER]: companyProfile.data.companyNumber
-      });
+      });*/
       generalPartnerPerson = new GeneralPartnerBuilder().isPerson().withFormerNames("Joe Dee").withDateEffectiveFrom("2024-10-10").build();
       appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartnerPerson]);
     });

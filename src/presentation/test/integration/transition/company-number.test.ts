@@ -4,14 +4,13 @@ import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
-import { COMPANY_NUMBER_URL } from "../../../../presentation/controller/transition/url";
+import {
+  COMPANY_NUMBER_URL,
+  CONFIRM_LIMITED_PARTNERSHIP_URL
+} from "../../../../presentation/controller/transition/url";
 import TransitionPageType from "../../../controller/transition/PageType";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
-import {
-  APPLICATION_CACHE_KEY,
-  APPLICATION_CACHE_KEY_COMPANY_NUMBER,
-  SERVICE_NAME_TRANSITION
-} from "../../../../config/constants";
+import { SERVICE_NAME_TRANSITION } from "../../../../config/constants";
 import CompanyProfileBuilder from "../../builder/CompanyProfileBuilder";
 
 describe("Company number page", () => {
@@ -60,14 +59,10 @@ describe("Company number page", () => {
         company_number: "LP123456"
       });
 
-      expect(res.status).toBe(302);
-      expect(res.text).toContain("Redirecting to /limited-partnerships/transition/confirm-limited-partnership");
+      const REDIRECT_URL = getUrl(CONFIRM_LIMITED_PARTNERSHIP_URL);
 
-      expect(appDevDependencies.cacheRepository.cache).toEqual({
-        [APPLICATION_CACHE_KEY]: {
-          [APPLICATION_CACHE_KEY_COMPANY_NUMBER]: "LP123456"
-        }
-      });
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
     });
 
     it("should return an error if company_number is not valid", async () => {

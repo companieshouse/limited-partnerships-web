@@ -18,16 +18,15 @@ import registrationRouting from "../registration/Routing";
 import transitionRouting from "../transition/Routing";
 import postTransitionRouting from "../postTransition/routing";
 
-import { APPLICATION_CACHE_KEY_COMPANY_NUMBER } from "../../../config/constants";
-import CacheService from "../../../application/service/CacheService";
 import CompanyService from "../../../application/service/CompanyService";
+
+import { formatDate } from "../../../utils/date-format";
 
 abstract class GeneralPartnerController extends AbstractController {
   constructor(
     protected readonly limitedPartnershipService: LimitedPartnershipService,
     protected readonly generalPartnerService: GeneralPartnerService,
     protected readonly limitedPartnerService: LimitedPartnerService,
-    protected readonly cacheService?: CacheService,
     protected readonly companyService?: CompanyService
   ) {
     super();
@@ -47,7 +46,6 @@ abstract class GeneralPartnerController extends AbstractController {
 
         let limitedPartnership = {};
         let generalPartner = {};
-        let companyProfile = {};
 
         if (ids.transactionId && ids.submissionId) {
           limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
@@ -57,8 +55,8 @@ abstract class GeneralPartnerController extends AbstractController {
           );
         }
 
-        if (this.cacheService && this.companyService) {
-          limitedPartnership = await this.getLimitedPartnershipDetails(request, tokens);
+        if (this.companyService) {
+          limitedPartnership = await this.getLimitedPartnershipDetails(tokens, ids.companyId);
         }
 
         if (ids.transactionId && ids.generalPartnerId) {
@@ -67,20 +65,16 @@ abstract class GeneralPartnerController extends AbstractController {
             ids.transactionId,
             ids.generalPartnerId
           );
-        }
-
-        if (this.cacheService && this.companyService) {
-          const cache = this.cacheService?.getDataFromCache(request.signedCookies);
-          const company = await this.companyService.getCompanyProfile(
-            tokens,
-            cache[APPLICATION_CACHE_KEY_COMPANY_NUMBER]
-          );
-          companyProfile = company.companyProfile;
+          generalPartner = this.formatGeneralPartnerDatesAndSetPreviousUrl(
+            generalPartner,
+            pageRouting,
+            request,
+            response.locals.i18n);
         }
 
         response.render(
           super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { limitedPartnership, generalPartner, companyProfile }, null)
+          super.makeProps(pageRouting, { limitedPartnership, generalPartner }, null)
         );
       } catch (error) {
         console.log("Error in getPageRouting:", error);
@@ -89,13 +83,8 @@ abstract class GeneralPartnerController extends AbstractController {
     };
   }
 
-  private async getLimitedPartnershipDetails(request: Request, tokens: Tokens): Promise<Record<string, any>> {
-    const cache = (this.cacheService as CacheService).getDataFromCache(request.signedCookies);
-
-    const result = await (this.companyService as CompanyService).getCompanyProfile(
-      tokens,
-      cache[APPLICATION_CACHE_KEY_COMPANY_NUMBER]
-    );
+  private async getLimitedPartnershipDetails(tokens: Tokens, companyId: string): Promise<Record<string, any>> {
+    const result = await (this.companyService as CompanyService).getCompanyProfile(tokens, companyId);
 
     return {
       data: {
@@ -459,6 +448,38 @@ abstract class GeneralPartnerController extends AbstractController {
       pageRouting.nextUrl = super.insertIdsInUrl(urls.reviewLimitedPartnersUrl, ids);
     }
   }
+
+  private formatGeneralPartnerDatesAndSetPreviousUrl(
+    partner: GeneralPartner,
+    pageRouting: PageRouting,
+    request: Request,
+    i18n: any
+  ): GeneralPartner {
+    const { pageType, ids } = super.extract(request);
+
+    const isPostTransitionCheckYourAnswers = getJourneyTypes(pageRouting.currentUrl).isPostTransition &&
+     pageType === PostTransitionPageType.generalPartnerCheckYourAnswers;
+
+    if (isPostTransitionCheckYourAnswers) {
+      const formattedPartner = {
+        ...partner,
+        data: {
+          ...partner.data,
+          date_of_birth: partner.data?.date_of_birth
+            ? formatDate(partner.data.date_of_birth, i18n)
+            : undefined,
+          date_effective_from: partner.data?.date_effective_from
+            ? formatDate(partner.data.date_effective_from, i18n)
+            : undefined,
+        }
+      };
+      pageRouting.previousUrl = partner.data?.legal_entity_name
+        ? super.insertIdsInUrl(pageRouting.data?.confirmPrincipalOfficeAddres, ids, request.url)
+        : super.insertIdsInUrl(pageRouting.data?.confirmCorrespondenceAddress, ids, request.url);
+      return formattedPartner;
+    }
+    return partner;
+  };
 
   private getJourneyPageTypes(url: string) {
     const journeyTypes = getJourneyTypes(url);

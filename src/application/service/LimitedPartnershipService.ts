@@ -37,7 +37,12 @@ class LimitedPartnershipService {
     opt: { access_token: string; refresh_token: string },
     pageType: PageType,
     journeyTypes: JourneyTypes,
-    data: Record<string, any>
+    data: Record<string, any>,
+    company?: {
+      companyName: string;
+      companyNumber: string;
+    },
+    description?: string
   ): Promise<{
     submissionId: string;
     transactionId: string;
@@ -48,7 +53,12 @@ class LimitedPartnershipService {
         ? IncorporationKind.REGISTRATION
         : IncorporationKind.TRANSITION;
 
-      const transactionId = await this.transactionGateway.createTransaction(opt, incorporationKind);
+      const transactionId = await this.transactionGateway.createTransaction(
+        opt,
+        incorporationKind,
+        company,
+        description
+      );
 
       await this.incorporationGateway.createIncorporation(opt, pageType, transactionId, incorporationKind);
 

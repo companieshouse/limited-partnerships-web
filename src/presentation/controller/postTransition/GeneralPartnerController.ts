@@ -11,24 +11,21 @@ import {
   CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "../addressLookUp/url/postTransition";
 import CompanyService from "../../../application/service/CompanyService";
-import CacheService from "../../../application/service/CacheService";
 import TransactionService from "../../../application/service/TransactionService";
 import { IncorporationKind, PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import PostTransitionPageType from "../postTransition/pageType";
 import postTransitionRouting from "../postTransition/routing";
-import { APPLICATION_CACHE_KEY_COMPANY_NUMBER } from "../../../config/constants";
 
 class GeneralPartnerPostTransitionController extends GeneralPartnerController {
   constructor(
     limitedPartnershipService: LimitedPartnershipService,
     generalPartnerService: GeneralPartnerService,
     limitedPartnerService: LimitedPartnerService,
-    cacheService: CacheService,
     companyService: CompanyService,
     private readonly transactionService: TransactionService
   ) {
-    super(limitedPartnershipService, generalPartnerService, limitedPartnerService, cacheService, companyService);
+    super(limitedPartnershipService, generalPartnerService, limitedPartnerService, companyService);
   }
 
   getPageRouting() {
@@ -49,23 +46,18 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
         const pageType = super.extractPageTypeOrThrowError(request, PostTransitionPageType);
         const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
 
-        const cache = this.cacheService?.getDataFromCache(request.signedCookies);
-
-        const companyResult = await this.companyService?.getCompanyProfile(
-          tokens,
-          cache?.[APPLICATION_CACHE_KEY_COMPANY_NUMBER]
-        );
+        const companyResult = await this.companyService?.getCompanyProfile(tokens, ids.companyId);
 
         const isLegalEntity = pageType === PostTransitionPageType.addGeneralPartnerLegalEntity;
 
         const resultTransaction = await this.transactionService.createTransaction(
           tokens,
           IncorporationKind.POST_TRANSITION,
-          isLegalEntity ? "Add a general partner (legal entity)" : "Add a general partner (person)",
           {
-            companyName: companyResult?.companyProfile?.companyName || "",
-            companyNumber: companyResult?.companyProfile?.companyNumber || ""
-          }
+            companyName: companyResult?.companyProfile?.companyName ?? "",
+            companyNumber: companyResult?.companyProfile?.companyNumber ?? ""
+          },
+          isLegalEntity ? "Add a general partner (legal entity)" : "Add a general partner (person)"
         );
 
         const result = await this.generalPartnerService.createGeneralPartner(tokens, resultTransaction.transactionId, {
@@ -73,12 +65,22 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
           kind: isLegalEntity ? PartnerKind.ADD_GENERAL_PARTNER_LEGAL_ENTITY : PartnerKind.ADD_GENERAL_PARTNER_PERSON
         });
 
-        if (result.errors && cache && companyResult) {
-          const companyProfile = companyResult.companyProfile;
-
+        if (result.errors) {
           response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { companyProfile, generalPartner: { data: request.body } }, result.errors)
+            super.makeProps(
+              pageRouting,
+              {
+                limitedPartnership: {
+                  data: {
+                    partnership_name: companyResult?.companyProfile?.companyName,
+                    partnership_number: companyResult?.companyProfile?.companyNumber
+                  }
+                },
+                generalPartner: { data: request.body }
+              },
+              result.errors
+            )
           );
 
           return;

@@ -11,9 +11,9 @@ import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 import PostTransitionPageType from "../../../../controller/postTransition/pageType";
 import {
   ADD_GENERAL_PARTNER_PERSON_URL,
-  ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL
+  ADD_GENERAL_PARTNER_PERSON_WITH_IDS_URL
 } from "../../../../controller/postTransition/url";
-import { APPLICATION_CACHE_KEY_COMPANY_NUMBER, POST_TRANSITION_BASE_URL } from "../../../../../config/constants";
+import { POST_TRANSITION_WITH_ID_URL } from "../../../../../config/constants";
 
 import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
@@ -34,10 +34,6 @@ describe("Add General Partner Person Page", () => {
 
     companyProfile = new CompanyProfileBuilder().build();
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
-
-    appDevDependencies.cacheRepository.feedCache({
-      [APPLICATION_CACHE_KEY_COMPANY_NUMBER]: companyProfile.data.companyNumber
-    });
 
     appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
     appDevDependencies.generalPartnerGateway.feedErrors();
@@ -88,10 +84,10 @@ describe("Add General Partner Person Page", () => {
     });
 
     it("should contain a back link to the choice page when general partners are not present", async () => {
-      const res = await request(app).get(getUrl(ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL) + "?lang=en");
+      const res = await request(app).get(getUrl(ADD_GENERAL_PARTNER_PERSON_WITH_IDS_URL) + "?lang=en");
 
       expect(res.status).toBe(200);
-      const regex = new RegExp(`${POST_TRANSITION_BASE_URL}/${PostTransitionPageType.generalPartnerChoice}`);
+      const regex = new RegExp(`${getUrl(POST_TRANSITION_WITH_ID_URL)}/${PostTransitionPageType.generalPartnerChoice}`);
       expect(res.text).toMatch(regex);
     });
 
@@ -103,11 +99,34 @@ describe("Add General Partner Person Page", () => {
         `${companyProfile.data.companyName.toUpperCase()} (${companyProfile.data.companyNumber.toUpperCase()})`
       );
     });
+
+    it("should load the add general partner person page and replay previously saved data", async () => {
+      const generalPartner = new GeneralPartnerBuilder()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .isPerson()
+        .withNotDisqualifiedStatementChecked(true)
+        .withFormerNames("FORMER-NAMES")
+        .build();
+
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+
+      setLocalesEnabled(true);
+      const URL = getUrl(ADD_GENERAL_PARTNER_PERSON_WITH_IDS_URL);
+      const res = await request(app).get(URL);
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain("Joe - GP");
+      expect(res.text).toContain("Doe - GP");
+      expect(res.text).toContain('id="previousNameYes" name="previousName" type="radio" value="true" checked');
+      expect(res.text).toContain("FORMER-NAMES");
+      expect(res.text).toContain('<option value="British" selected>British</option>');
+      expect(res.text).toContain('name="not_disqualified_statement_checked" type="checkbox" value="true" checked');
+    });
   });
 
   describe("Post Add General Partner Person", () => {
     it("should send the general partner person details", async () => {
-      const generalPartner = new GeneralPartnerBuilder().isPerson().build();
+      const generalPartner = new GeneralPartnerBuilder().isPerson().withNotDisqualifiedStatementChecked(true).build();
 
       const res = await request(app)
         .post(URL)
@@ -152,7 +171,7 @@ describe("Add General Partner Person Page", () => {
 
       appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
 
-      const URL = getUrl(ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL);
+      const URL = getUrl(ADD_GENERAL_PARTNER_PERSON_WITH_IDS_URL);
 
       const res = await request(app)
         .post(URL)
@@ -165,6 +184,36 @@ describe("Add General Partner Person Page", () => {
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Found. Redirecting to ${REDIRECT}`);
+    });
+
+    it("should replay entered data when invalid data is entered and a validation error occurs", async () => {
+      const apiErrors: ApiErrors = {
+        errors: { forename: "general partner name is invalid" }
+      };
+
+      appDevDependencies.generalPartnerGateway.feedErrors(apiErrors);
+
+      const res = await request(app).post(URL).send({
+        pageType: PostTransitionPageType.addGeneralPartnerPerson,
+        forename: "INVALID-CHARACTERS-FORENAME",
+        surname: "SURNAME",
+        former_names: "",
+        previousName: "false",
+        "date_of_birth-Day": "01",
+        "date_of_birth-Month": "11",
+        "date_of_birth-Year": "1987",
+        nationality1: "Mongolian",
+        nationality2: "Uzbek",
+        not_disqualified_statement_checked: "true"
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain("INVALID-CHARACTERS-FORENAME");
+      expect(res.text).toContain("SURNAME");
+      expect(res.text).toContain('id="previousNameNo" name="previousName" type="radio" value="false" checked');
+      expect(res.text).toContain('<option value="Mongolian" selected>Mongolian</option>');
+      expect(res.text).toContain('<option value="Uzbek" selected>Uzbek</option>');
+      expect(res.text).toContain('name="not_disqualified_statement_checked" type="checkbox" value="true" checked');
     });
   });
 });
