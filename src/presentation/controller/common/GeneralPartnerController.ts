@@ -20,6 +20,8 @@ import postTransitionRouting from "../postTransition/routing";
 
 import CompanyService from "../../../application/service/CompanyService";
 
+import { formatDate } from "../../../utils/date-format";
+
 abstract class GeneralPartnerController extends AbstractController {
   constructor(
     protected readonly limitedPartnershipService: LimitedPartnershipService,
@@ -63,6 +65,11 @@ abstract class GeneralPartnerController extends AbstractController {
             ids.transactionId,
             ids.generalPartnerId
           );
+          generalPartner = this.formatGeneralPartnerDatesAndSetPreviousUrl(
+            generalPartner,
+            pageRouting,
+            request,
+            response.locals.i18n);
         }
 
         response.render(
@@ -441,6 +448,38 @@ abstract class GeneralPartnerController extends AbstractController {
       pageRouting.nextUrl = super.insertIdsInUrl(urls.reviewLimitedPartnersUrl, ids);
     }
   }
+
+  private formatGeneralPartnerDatesAndSetPreviousUrl(
+    partner: GeneralPartner,
+    pageRouting: PageRouting,
+    request: Request,
+    i18n: any
+  ): GeneralPartner {
+    const { pageType, ids } = super.extract(request);
+
+    const isPostTransitionCheckYourAnswers = getJourneyTypes(pageRouting.currentUrl).isPostTransition &&
+     pageType === PostTransitionPageType.generalPartnerCheckYourAnswers;
+
+    if (isPostTransitionCheckYourAnswers) {
+      const formattedPartner = {
+        ...partner,
+        data: {
+          ...partner.data,
+          date_of_birth: partner.data?.date_of_birth
+            ? formatDate(partner.data.date_of_birth, i18n)
+            : undefined,
+          date_effective_from: partner.data?.date_effective_from
+            ? formatDate(partner.data.date_effective_from, i18n)
+            : undefined,
+        }
+      };
+      pageRouting.previousUrl = partner.data?.legal_entity_name
+        ? super.insertIdsInUrl(pageRouting.data?.confirmPrincipalOfficeAddres, ids, request.url)
+        : super.insertIdsInUrl(pageRouting.data?.confirmCorrespondenceAddress, ids, request.url);
+      return formattedPartner;
+    }
+    return partner;
+  };
 
   private getJourneyPageTypes(url: string) {
     const journeyTypes = getJourneyTypes(url);
