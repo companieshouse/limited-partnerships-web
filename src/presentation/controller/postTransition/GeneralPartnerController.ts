@@ -65,12 +65,12 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
           kind: isLegalEntity ? PartnerKind.ADD_GENERAL_PARTNER_LEGAL_ENTITY : PartnerKind.ADD_GENERAL_PARTNER_PERSON
         });
 
-        if (result.errors && companyResult) {
-          const companyProfile = companyResult.companyProfile;
+        if (result.errors) {
+          const limitedPartnership = await this.getLimitedPartnershipDetails(tokens, ids.companyId);
 
           response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { companyProfile, generalPartner: { data: request.body } }, result.errors)
+            super.makeProps(pageRouting, { limitedPartnership, generalPartner: { data: request.body } }, result.errors)
           );
 
           return;
