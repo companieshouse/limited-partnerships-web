@@ -349,7 +349,6 @@
 
     "checkYourAnswersPage" : {
         "title" : "Check your answers before sending your application",
-        "updateTitle" : "Check your answers before submitting this update",
         "lpInfo" : "Limited partnership information",
         "change" : "Change",
         "headingName" : "Name",
@@ -493,6 +492,10 @@
         "pageInformation": "If the partnership has more than one general partner, you'll add them one at a time.",
         "disqualificationStatement" : "I confirm that the general partner is not disqualified under the directors disqualification legislation, as defined in the Limited Partnership Act 1907.",
         "disqualificationStatementLegend" : "General partner - person - disqualification statement"
+    },
+
+    "generalPartnercheckYourAnswersPage" : {
+        "title" : "Check your answers before submitting this update"
     },
 
     "govUk" : {

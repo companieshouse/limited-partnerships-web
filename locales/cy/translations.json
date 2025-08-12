@@ -348,7 +348,6 @@
 
     "checkYourAnswersPage" : {
         "title" : "WELSH - Check your answers before sending your application",
-        "updateTitle" : "WELSH - Check your answers before submitting this update",
         "lpInfo" : "WELSH - Limited partnership information",
         "change" : "WELSH - Change",
         "headingName" : "WELSH - Name",
@@ -492,6 +491,10 @@
         "pageInformation": "WELSH - If the partnership has more than one general partner, you'll add them one at a time.",
         "disqualificationStatement" : "WELSH - I confirm that the general partner is not disqualified under the directors disqualification legislation, as defined in the Limited Partnership Act 1907.",
         "disqualificationStatementLegend" : "WELSH - General partner - person - disqualification statement"
+    },
+
+    "generalPartnercheckYourAnswersPage" : {
+        "title" : "WELSH - Check your answers before submitting this update"
     },
 
     "govUk" : {
