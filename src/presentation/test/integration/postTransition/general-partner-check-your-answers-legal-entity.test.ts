@@ -80,6 +80,16 @@ describe("Check Your Answers Page", () => {
       expect(res.text).not.toContain(getUrl(CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL));
     });
 
+    it("Should not contain back link to confirm principal office adddress page if not legal entity", async () => {
+      const generalPartnerPerson = new GeneralPartnerBuilder().isPerson().withDateEffectiveFrom("2024-10-10").build();
+
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartnerPerson]);
+      const res = await request(app).get(URL);
+
+      expect(res.status).toBe(200);
+      expect(res.text).not.toContain(getUrl(CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL));
+    });
+
     it("should load the check your answers page with partners - EN", async () => {
       const res = await request(app).get(URL);
 
