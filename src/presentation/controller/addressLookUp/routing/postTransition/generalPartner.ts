@@ -1,6 +1,6 @@
 import {
-  ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
-  ADD_GENERAL_PARTNER_PERSON_URL
+  ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
+  ADD_GENERAL_PARTNER_PERSON_WITH_IDS_URL
 } from "../../../postTransition/url";
 import AddressPageType from "../../PageType";
 import * as url from "../../url/postTransition";
@@ -18,7 +18,7 @@ const usualResidentialAddressCacheKeys = {
 };
 
 const postTransitionAddressRoutingTerritoryChoiceGeneralPartnerUsualResidentialAddress = {
-  previousUrl: ADD_GENERAL_PARTNER_PERSON_URL,
+  previousUrl: ADD_GENERAL_PARTNER_PERSON_WITH_IDS_URL,
   currentUrl: url.TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   nextUrl: url.POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   pageType: AddressPageType.territoryChoiceGeneralPartnerUsualResidentialAddress,
@@ -161,7 +161,7 @@ const principalOfficeAddressCacheKeys = {
 };
 
 const postTransitionAddressRoutingTerritoryChoiceGeneralPartnerPrincipalOfficeAddress = {
-  previousUrl: ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
+  previousUrl: ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
   currentUrl: url.TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   nextUrl: url.POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   pageType: AddressPageType.territoryChoiceGeneralPartnerPrincipalOfficeAddress,
