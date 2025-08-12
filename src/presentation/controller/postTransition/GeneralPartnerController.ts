@@ -72,8 +72,10 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
               pageRouting,
               {
                 limitedPartnership: {
-                  partnership_name: companyResult?.companyProfile?.companyName,
-                  partnership_number: companyResult?.companyProfile?.companyNumber
+                  data: {
+                    partnership_name: companyResult?.companyProfile?.companyName,
+                    partnership_number: companyResult?.companyProfile?.companyNumber
+                  }
                 },
                 generalPartner: { data: request.body }
               },
