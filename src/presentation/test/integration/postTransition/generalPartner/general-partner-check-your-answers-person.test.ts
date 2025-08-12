@@ -11,7 +11,7 @@ import { GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL } from "../../../../controller/p
 import { getUrl, setLocalesEnabled } from "../../../utils";
 import { formatDate } from "../../../../../utils/date-format";
 import { GeneralPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-import { CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL, CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../../../controller/addressLookUp/url/registration";
+import { CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL, CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../../../controller/addressLookUp/url/postTransition";
 
 describe("General Partner Check Your Answers Page", () => {
   const URL = getUrl(GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL);
@@ -65,7 +65,7 @@ describe("General Partner Check Your Answers Page", () => {
     }
   );
 
-  it.skip("Should contain a back link to the confirm correspondence address page", async () => {
+  it("Should contain a back link to the confirm correspondence address page", async () => {
     const res = await request(app).get(URL);
 
     expect(res.status).toBe(200);
