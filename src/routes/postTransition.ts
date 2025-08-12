@@ -99,7 +99,6 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
 
   router.get(
     GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL,
-    authentication,
     companyAuthentication,
     dependencies.generalPartnerPostTransitionController.getPageRouting()
   );

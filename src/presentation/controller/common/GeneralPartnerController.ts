@@ -22,6 +22,8 @@ import { APPLICATION_CACHE_KEY_COMPANY_NUMBER } from "../../../config/constants"
 import CacheService from "../../../application/service/CacheService";
 import CompanyService from "../../../application/service/CompanyService";
 
+import { formatDate } from "../../../utils/date-format";
+
 abstract class GeneralPartnerController extends AbstractController {
   constructor(
     protected readonly limitedPartnershipService: LimitedPartnershipService,
@@ -46,7 +48,7 @@ abstract class GeneralPartnerController extends AbstractController {
         await this.conditionalPreviousUrl(ids, pageRouting, request, tokens);
 
         let limitedPartnership = {};
-        let generalPartner = {};
+        let generalPartner: GeneralPartner = {};
         let companyProfile = {};
 
         if (ids.transactionId && ids.submissionId) {
@@ -67,6 +69,23 @@ abstract class GeneralPartnerController extends AbstractController {
             ids.transactionId,
             ids.generalPartnerId
           );
+          if (getJourneyTypes(pageRouting.currentUrl).isPostTransition && pageType === "general-partner-check-your-answers") {
+            generalPartner = {
+              ...generalPartner,
+              data: {
+                ...generalPartner.data,
+                date_of_birth: generalPartner.data?.date_of_birth
+                  ? formatDate(generalPartner.data.date_of_birth, response.locals.i18n)
+                  : undefined,
+                date_effective_from: generalPartner.data?.date_effective_from
+                  ? formatDate(generalPartner.data.date_effective_from, response.locals.i18n)
+                  : undefined,
+              }
+            };
+            pageRouting.previousUrl = generalPartner.data?.legal_entity_name ?
+              super.insertIdsInUrl(pageRouting.data?.confirmPrincipalOfficeAddres, ids, request.url) :
+              super.insertIdsInUrl(pageRouting.data?.confirmCorrespondenceAddress, ids, request.url);
+          }
         }
 
         if (this.cacheService && this.companyService) {

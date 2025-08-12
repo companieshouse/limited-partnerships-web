@@ -1,7 +1,7 @@
 import * as url from "../url";
 import PostTransitionPageType from "../pageType";
 
-import { TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL, TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../addressLookUp/url/postTransition";
+import { CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL, CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL, TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL, TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../addressLookUp/url/postTransition";
 
 const postTransitionRoutingGeneralPartnerChoice = {
   previousUrl: url.LANDING_PAGE_URL,
@@ -24,10 +24,22 @@ const postTransitionRoutingAddGeneralPartnerPerson = {
   pageType: PostTransitionPageType.addGeneralPartnerPerson
 };
 
+const postTransitionRoutingGeneralPartnerCheckYourAnswers = {
+  previousUrl: "/",
+  currentUrl: url.GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL,
+  nextUrl: "/",
+  pageType: PostTransitionPageType.generalPartnerCheckYourAnswers,
+  data: {
+    confirmPrincipalOfficeAddres: CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+    confirmCorrespondenceAddress: CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL
+  }
+};
+
 const generalPartnerRouting = [
   postTransitionRoutingGeneralPartnerChoice,
   postTransitionRoutingAddGeneralPartnerLegalEntity,
-  postTransitionRoutingAddGeneralPartnerPerson
+  postTransitionRoutingAddGeneralPartnerPerson,
+  postTransitionRoutingGeneralPartnerCheckYourAnswers
 ];
 
 export default generalPartnerRouting;
