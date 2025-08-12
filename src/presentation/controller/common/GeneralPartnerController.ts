@@ -69,12 +69,7 @@ abstract class GeneralPartnerController extends AbstractController {
             ids.transactionId,
             ids.generalPartnerId
           );
-          if (getJourneyTypes(pageRouting.currentUrl).isPostTransition && pageType === "general-partner-check-your-answers") {
-            generalPartner = this.formatGeneralPartnerDates(generalPartner, response.locals.i18n);
-            pageRouting.previousUrl = generalPartner.data?.legal_entity_name ?
-              super.insertIdsInUrl(pageRouting.data?.confirmPrincipalOfficeAddres, ids, request.url) :
-              super.insertIdsInUrl(pageRouting.data?.confirmCorrespondenceAddress, ids, request.url);
-          }
+          generalPartner = this.formatGeneralPartnerDatesAndSetPreviousUrl(generalPartner, pageRouting, pageType, ids, request, response.locals.i18n);
         }
 
         if (this.cacheService && this.companyService) {
@@ -468,18 +463,34 @@ abstract class GeneralPartnerController extends AbstractController {
     }
   }
 
-  private formatGeneralPartnerDates = (partner: GeneralPartner, i18n: any) => ({
-    ...partner,
-    data: {
-      ...partner.data,
-      date_of_birth: partner.data?.date_of_birth
-        ? formatDate(partner.data.date_of_birth, i18n)
-        : undefined,
-      date_effective_from: partner.data?.date_effective_from
-        ? formatDate(partner.data.date_effective_from, i18n)
-        : undefined,
+  private formatGeneralPartnerDatesAndSetPreviousUrl(
+    partner: GeneralPartner,
+    pageRouting: PageRouting,
+    pageType: string,
+    ids: Ids,
+    request: Request,
+    i18n: any
+  ): GeneralPartner {
+    if (getJourneyTypes(pageRouting.currentUrl).isPostTransition && pageType === "general-partner-check-your-answers") {
+      const formattedPartner = {
+        ...partner,
+        data: {
+          ...partner.data,
+          date_of_birth: partner.data?.date_of_birth
+            ? formatDate(partner.data.date_of_birth, i18n)
+            : undefined,
+          date_effective_from: partner.data?.date_effective_from
+            ? formatDate(partner.data.date_effective_from, i18n)
+            : undefined,
+        }
+      };
+      pageRouting.previousUrl = partner.data?.legal_entity_name
+        ? super.insertIdsInUrl(pageRouting.data?.confirmPrincipalOfficeAddres, ids, request.url)
+        : super.insertIdsInUrl(pageRouting.data?.confirmCorrespondenceAddress, ids, request.url);
+      return formattedPartner;
     }
-  });
+    return partner;
+  };
 
   private getJourneyPageTypes(url: string) {
     const journeyTypes = getJourneyTypes(url);
