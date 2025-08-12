@@ -66,11 +66,19 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
         });
 
         if (result.errors) {
-          const limitedPartnership = await this.getLimitedPartnershipDetails(tokens, ids.companyId);
-
           response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { limitedPartnership, generalPartner: { data: request.body } }, result.errors)
+            super.makeProps(
+              pageRouting,
+              {
+                limitedPartnership: {
+                  partnership_name: companyResult?.companyProfile?.companyName,
+                  partnership_number: companyResult?.companyProfile?.companyNumber
+                },
+                generalPartner: { data: request.body }
+              },
+              result.errors
+            )
           );
 
           return;
