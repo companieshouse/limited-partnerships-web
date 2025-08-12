@@ -6,9 +6,9 @@ import { IDependencies } from "../config/IDependencies";
 
 import {
   ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
-  ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_ID_URL,
+  ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
   ADD_GENERAL_PARTNER_PERSON_URL,
-  ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL,
+  ADD_GENERAL_PARTNER_PERSON_WITH_IDS_URL,
   COMPANY_NUMBER_URL,
   CONFIRM_LIMITED_PARTNERSHIP_URL,
   GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL,
@@ -66,12 +66,12 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
   );
 
   router.get(
-    ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_ID_URL,
+    ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
     companyAuthentication,
     dependencies.generalPartnerPostTransitionController.getPageRouting()
   );
   router.post(
-    ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_ID_URL,
+    ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
     companyAuthentication,
     dependencies.generalPartnerPostTransitionController.sendPageData()
   );
@@ -88,12 +88,12 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
   );
 
   router.get(
-    ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL,
+    ADD_GENERAL_PARTNER_PERSON_WITH_IDS_URL,
     companyAuthentication,
     dependencies.generalPartnerPostTransitionController.getPageRouting()
   );
   router.post(
-    ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL,
+    ADD_GENERAL_PARTNER_PERSON_WITH_IDS_URL,
     companyAuthentication,
     dependencies.generalPartnerPostTransitionController.sendPageData()
   );
