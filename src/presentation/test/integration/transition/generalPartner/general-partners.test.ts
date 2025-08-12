@@ -6,7 +6,7 @@ import cyTranslationText from "../../../../../../locales/cy/translations.json";
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
-import { TRANSITION_BASE_URL } from "../../../../../config/constants";
+import { TRANSITION_WITH_IDS_URL } from "../../../../../config/constants";
 
 import { GENERAL_PARTNERS_URL, REVIEW_GENERAL_PARTNERS_URL } from "../../../../controller/transition/url";
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
@@ -72,7 +72,10 @@ describe("General Partners Page", () => {
     const res = await request(app).get(URL + "?lang=en");
 
     expect(res.status).toBe(200);
-    const regex = new RegExp(`${TRANSITION_BASE_URL}/transaction/.*?/submission/.*?/general-partner-choice`);
+
+    const BACK_LINK = `${getUrl(TRANSITION_WITH_IDS_URL)}/general-partner-choice`;
+
+    const regex = new RegExp(`${BACK_LINK}`);
     expect(res.text).toMatch(regex);
   });
 

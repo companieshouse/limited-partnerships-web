@@ -8,7 +8,9 @@ class TransactionBuilder {
     reference: "test-ref",
     status: TransactionStatus.open,
     filingMode: "limited-partnership-registration",
-    description: SERVICE_NAME_REGISTRATION
+    description: SERVICE_NAME_REGISTRATION,
+    companyName: "",
+    companyNumber: ""
   };
 
   withId(id: string) {
@@ -28,6 +30,16 @@ class TransactionBuilder {
 
   withDescription(description: string) {
     this.transaction.description = description;
+    return this;
+  }
+
+  withCompanyName(companyName: string) {
+    this.transaction.companyName = companyName;
+    return this;
+  }
+
+  withCompanyNumber(companyNumber: string) {
+    this.transaction.companyNumber = companyNumber;
     return this;
   }
 

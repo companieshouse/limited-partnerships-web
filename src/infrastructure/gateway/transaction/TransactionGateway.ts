@@ -14,11 +14,11 @@ class TransactionGateway implements ITransactionGateway {
   async createTransaction(
     opt: { access_token: string; refresh_token: string },
     incorporationKind: IncorporationKind,
-    description?: string,
     company?: {
       companyName: string;
       companyNumber: string;
-    }
+    },
+    description?: string
   ): Promise<string> {
     let transactionDecription = SERVICE_NAME_REGISTRATION;
 

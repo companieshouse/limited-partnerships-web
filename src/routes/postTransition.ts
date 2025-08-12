@@ -17,10 +17,6 @@ import {
 } from "../presentation/controller/postTransition/url";
 
 const postTransitionEndpoints = (router: Router, dependencies: IDependencies): void => {
-  router.get(
-    LANDING_PAGE_URL,
-    dependencies.limitedPartnershipPostTransitionController.getCompanyPage()
-  );
 
   router.get(
     COMPANY_NUMBER_URL,
@@ -40,6 +36,11 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
     CONFIRM_LIMITED_PARTNERSHIP_URL,
     companyAuthentication,
     dependencies.limitedPartnershipPostTransitionController.limitedPartnershipConfirm()
+  );
+
+  router.get(
+    LANDING_PAGE_URL,
+    dependencies.limitedPartnershipPostTransitionController.getCompanyPage()
   );
 
   router.get(

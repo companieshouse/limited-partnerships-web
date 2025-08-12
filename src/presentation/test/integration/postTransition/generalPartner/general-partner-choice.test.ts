@@ -11,7 +11,6 @@ import PostTransitionPageType from "../../../../controller/postTransition/pageTy
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
-import { APPLICATION_CACHE_KEY_COMPANY_NUMBER } from "../../../../../config/constants";
 
 describe("General Partner Choice Page", () => {
   const URL = getUrl(GENERAL_PARTNER_CHOICE_URL);
@@ -23,11 +22,6 @@ describe("General Partner Choice Page", () => {
 
     companyProfile = new CompanyProfileBuilder().build();
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
-
-    appDevDependencies.cacheRepository.feedCache({
-      [APPLICATION_CACHE_KEY_COMPANY_NUMBER]: companyProfile.data.companyNumber
-    });
-
   });
 
   it("should load the general partner choice page with Welsh text", async () => {
@@ -50,7 +44,6 @@ describe("General Partner Choice Page", () => {
       `${enTranslationText.generalPartnerChoicePage.title} - ${enTranslationText.servicePostTransition} - GOV.UK`
     );
     testTranslations(res.text, enTranslationText.generalPartnerChoicePage, ["hint"]);
-
   });
 
   it("should redirect to General Partner Person page when person is selected", async () => {

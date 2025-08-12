@@ -18,7 +18,7 @@ import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
 import TransitionPageType from "../../../../controller/transition/PageType";
 import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
-import { TRANSITION_BASE_URL } from "../../../../../config/constants";
+import { TRANSITION_WITH_IDS_URL } from "../../../../../config/constants";
 import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 describe("Review General Partners Page", () => {
@@ -89,7 +89,10 @@ describe("Review General Partners Page", () => {
         const res = await request(app).get(URL + "?lang=en");
 
         expect(res.status).toBe(200);
-        const regex = new RegExp(`${TRANSITION_BASE_URL}/transaction/.*?/submission/.*?/${backLink}`);
+
+        const BACK_LINK = `${getUrl(TRANSITION_WITH_IDS_URL)}/${backLink}`;
+
+        const regex = new RegExp(`${BACK_LINK}`);
         expect(res.text).toMatch(regex);
       }
     );
