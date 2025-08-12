@@ -44,7 +44,6 @@ abstract class GeneralPartnerController extends AbstractController {
 
         let limitedPartnership = {};
         let generalPartner = {};
-        const companyProfile = {};
 
         if (ids.transactionId && ids.submissionId) {
           limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
@@ -68,7 +67,7 @@ abstract class GeneralPartnerController extends AbstractController {
 
         response.render(
           super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { limitedPartnership, generalPartner, companyProfile }, null)
+          super.makeProps(pageRouting, { limitedPartnership, generalPartner }, null)
         );
       } catch (error) {
         console.log("Error in getPageRouting:", error);
