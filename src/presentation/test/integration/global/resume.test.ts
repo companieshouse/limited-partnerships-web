@@ -30,68 +30,70 @@ describe("Resume a journey", () => {
       filingMode: TransactionKind.transition,
       expectedLocation: getUrl(EMAIL_URL)
     }
-  ])(
-    "should resume a no payment $filingMode journey",
-    async ({ filingMode, expectedLocation }) => {
-      const transaction = new TransactionBuilder()
-        .withFilingMode(filingMode)
-        .build();
+  ])("should resume a no payment $filingMode journey", async ({ filingMode, expectedLocation }) => {
+    const transaction = new TransactionBuilder()
+      .withFilingMode(filingMode)
+      .withCompanyName("Test Company")
+      .withCompanyNumber("LP123456")
+      .build();
 
-      appDevDependencies.transactionGateway.feedTransactions([transaction]);
+    appDevDependencies.transactionGateway.feedTransactions([transaction]);
 
-      const res = await request(app).get(RESUME_URL);
+    const res = await request(app).get(RESUME_URL);
 
-      expect(res.status).toEqual(302);
-      expect(res.headers.location).toEqual(expectedLocation);
-    }
-  );
+    expect(res.status).toEqual(302);
+    expect(res.headers.location).toEqual(expectedLocation);
+  });
 
   it.each([
     {
       filingMode: TransactionKind.registration,
-      expectedPaymentReturnUrl: getUrl(`${CHS_URL}${PAYMENT_RESPONSE_URL}`).replace(JOURNEY_TYPE_PARAM, Journey.registration)
+      expectedPaymentReturnUrl: getUrl(`${CHS_URL}${PAYMENT_RESPONSE_URL}`).replace(
+        JOURNEY_TYPE_PARAM,
+        Journey.registration
+      )
     },
     {
       filingMode: TransactionKind.transition,
-      expectedPaymentReturnUrl: getUrl(`${CHS_URL}${PAYMENT_RESPONSE_URL}`).replace(JOURNEY_TYPE_PARAM, Journey.transition)
+      expectedPaymentReturnUrl: getUrl(`${CHS_URL}${PAYMENT_RESPONSE_URL}`).replace(
+        JOURNEY_TYPE_PARAM,
+        Journey.transition
+      )
     }
-  ])(
-    "should resume a pay now $filingMode journey",
-    async ({ filingMode, expectedPaymentReturnUrl }) => {
-      const transaction = new TransactionBuilder()
-        .withFilingMode(filingMode)
-        .withStatus(TransactionStatus.closedPendingPayment)
-        .build();
+  ])("should resume a pay now $filingMode journey", async ({ filingMode, expectedPaymentReturnUrl }) => {
+    const transaction = new TransactionBuilder()
+      .withFilingMode(filingMode)
+      .withCompanyName("Test Company")
+      .withCompanyNumber("LP123456")
+      .withStatus(TransactionStatus.closedPendingPayment)
+      .build();
 
-      appDevDependencies.transactionGateway.feedTransactions([transaction]);
+    appDevDependencies.transactionGateway.feedTransactions([transaction]);
 
-      const res = await request(app).get(RESUME_URL);
+    const res = await request(app).get(RESUME_URL);
 
-      expect(res.status).toEqual(302);
-      expect(res.headers.location).toEqual(appDevDependencies.paymentGateway.payment.links.journey);
+    expect(res.status).toEqual(302);
+    expect(res.headers.location).toEqual(appDevDependencies.paymentGateway.payment.links.journey);
 
-      // Assert the payment return Url
-      expect(appDevDependencies.paymentGateway.lastCreatePaymentRequest?.redirectUri)
-        .toEqual(expectedPaymentReturnUrl);
-    }
-  );
+    // Assert the payment return Url
+    expect(appDevDependencies.paymentGateway.lastCreatePaymentRequest?.redirectUri).toEqual(expectedPaymentReturnUrl);
+  });
 
   it.each([
     { filingMode: undefined as unknown as string, description: "undefined" },
     { filingMode: "", description: "empty string" }
-  ])(
-    "should throw error if transaction filing mode is $description",
-    async ({ filingMode }) => {
-      const transaction = new TransactionBuilder()
-        .withFilingMode(filingMode)
-        .build();
+  ])("should throw error if transaction filing mode is $description", async ({ filingMode }) => {
+    const transaction = new TransactionBuilder()
+      .withFilingMode(filingMode)
+      .withCompanyName("Test Company")
+      .withCompanyNumber("LP123456")
+      .build();
 
-      appDevDependencies.transactionGateway.feedTransactions([transaction]);
+    appDevDependencies.transactionGateway.feedTransactions([transaction]);
 
-      const res = await request(app).get(RESUME_URL);
-      expect(res.status).toBeGreaterThanOrEqual(500);
-    }
-  );
+    const res = await request(app).get(RESUME_URL);
+    expect(res.status).toBeGreaterThanOrEqual(500);
+  });
 
   it("should handle unexpected errors", async () => {
     appDevDependencies.transactionGateway.setError(true);
@@ -100,4 +102,3 @@ describe("Resume a journey", () => {
     expect(res.status).toBeGreaterThanOrEqual(500);
   });
 });
-

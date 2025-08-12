@@ -1,6 +1,7 @@
 export type Ids = {
   transactionId: string;
   submissionId: string;
+  companyId: string;
   generalPartnerId: string;
   limitedPartnerId: string;
 };

@@ -18,8 +18,6 @@ import registrationRouting from "../registration/Routing";
 import transitionRouting from "../transition/Routing";
 import postTransitionRouting from "../postTransition/routing";
 
-import { APPLICATION_CACHE_KEY_COMPANY_NUMBER } from "../../../config/constants";
-import CacheService from "../../../application/service/CacheService";
 import CompanyService from "../../../application/service/CompanyService";
 
 import { formatDate } from "../../../utils/date-format";
@@ -29,7 +27,6 @@ abstract class GeneralPartnerController extends AbstractController {
     protected readonly limitedPartnershipService: LimitedPartnershipService,
     protected readonly generalPartnerService: GeneralPartnerService,
     protected readonly limitedPartnerService: LimitedPartnerService,
-    protected readonly cacheService?: CacheService,
     protected readonly companyService?: CompanyService
   ) {
     super();
@@ -48,8 +45,8 @@ abstract class GeneralPartnerController extends AbstractController {
         await this.conditionalPreviousUrl(ids, pageRouting, request, tokens);
 
         let limitedPartnership = {};
-        let generalPartner: GeneralPartner = {};
-        let companyProfile = {};
+        let generalPartner = {};
+        const companyProfile = {};
 
         if (ids.transactionId && ids.submissionId) {
           limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
@@ -59,8 +56,8 @@ abstract class GeneralPartnerController extends AbstractController {
           );
         }
 
-        if (this.cacheService && this.companyService) {
-          limitedPartnership = await this.getLimitedPartnershipDetails(request, tokens);
+        if (this.companyService) {
+          limitedPartnership = await this.getLimitedPartnershipDetails(tokens, ids.companyId);
         }
 
         if (ids.transactionId && ids.generalPartnerId) {
@@ -76,15 +73,6 @@ abstract class GeneralPartnerController extends AbstractController {
             response.locals.i18n);
         }
 
-        if (this.cacheService && this.companyService) {
-          const cache = this.cacheService?.getDataFromCache(request.signedCookies);
-          const company = await this.companyService.getCompanyProfile(
-            tokens,
-            cache[APPLICATION_CACHE_KEY_COMPANY_NUMBER]
-          );
-          companyProfile = company.companyProfile;
-        }
-
         response.render(
           super.templateName(pageRouting.currentUrl),
           super.makeProps(pageRouting, { limitedPartnership, generalPartner, companyProfile }, null)
@@ -96,13 +84,8 @@ abstract class GeneralPartnerController extends AbstractController {
     };
   }
 
-  private async getLimitedPartnershipDetails(request: Request, tokens: Tokens): Promise<Record<string, any>> {
-    const cache = (this.cacheService as CacheService).getDataFromCache(request.signedCookies);
-
-    const result = await (this.companyService as CompanyService).getCompanyProfile(
-      tokens,
-      cache[APPLICATION_CACHE_KEY_COMPANY_NUMBER]
-    );
+  private async getLimitedPartnershipDetails(tokens: Tokens, companyId: string): Promise<Record<string, any>> {
+    const result = await (this.companyService as CompanyService).getCompanyProfile(tokens, companyId);
 
     return {
       data: {
