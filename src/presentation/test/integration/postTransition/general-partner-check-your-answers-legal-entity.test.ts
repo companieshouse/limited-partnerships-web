@@ -10,6 +10,8 @@ import { GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL } from "../../../controller/post
 import { APPLICATION_CACHE_KEY_COMPANY_NUMBER } from "../../../../config/constants";
 import CompanyProfileBuilder from "../../builder/CompanyProfileBuilder";
 import { CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL, CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL } from "../../../controller/addressLookUp/url/postTransition";
+import { GeneralPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
+import { formatDate } from "../../../../utils/date-format";
 
 describe("Check Your Answers Page", () => {
   const URL = getUrl(GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL);
@@ -117,6 +119,48 @@ describe("Check Your Answers Page", () => {
       expect(res.text).toContain(getUrl(CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL));
       expect(res.text).not.toContain(getUrl(CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL));
     });
+
+    it("should load the check your answers page with partners - EN", async () => {
+      const res = await request(app).get(URL);
+
+      expect(res.status).toBe(200);
+
+      expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.partners.limitedPartners.capitalContribution);
+
+      testTranslations(res.text, enTranslationText.checkYourAnswersPage.partners, ["capitalContribution", "title", "changeRemoveOrAdd", "limitedPartners", "person"]);
+
+      checkIfValuesInText(res, generalPartnerLegalEntity, enTranslationText);
+    });
+
+    it("should load the check your answers page with partners - CY", async () => {
+      const res = await request(app).get(URL + "?lang=cy");
+
+      expect(res.status).toBe(200);
+
+      expect(res.text).not.toContain(cyTranslationText.checkYourAnswersPage.partners.limitedPartners.capitalContribution);
+
+      testTranslations(res.text, cyTranslationText.checkYourAnswersPage.partners, ["capitalContribution", "title", "changeRemoveOrAdd", "limitedPartners", "person"]);
+
+      checkIfValuesInText(res, generalPartnerLegalEntity, cyTranslationText);
+    });
   });
 });
+
+const checkIfValuesInText = (res: request.Response, partner: GeneralPartner, translationText: Record<string, any>) => {
+  for (const key in partner.data) {
+    if (typeof partner.data[key] === "string" || typeof partner.data[key] === "object") {
+      if (key === "principal_office_address" && partner.data[key]?.address_line_1) {
+        const capitalized = partner.data[key].address_line_1
+          .split(" ")
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+          .join(" ");
+        expect(res.text).toContain(capitalized);
+      } else if (key.includes("date_effective_from")) {
+        expect(res.text).toContain(formatDate(partner.data[key], translationText));
+      } else if (!key.includes("address")) {
+        expect(res.text).toContain(partner.data[key]);
+      }
+    }
+  }
+};
 
