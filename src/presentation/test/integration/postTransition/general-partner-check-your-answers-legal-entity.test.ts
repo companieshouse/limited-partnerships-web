@@ -9,7 +9,7 @@ import GeneralPartnerBuilder from "../../builder/GeneralPartnerBuilder";
 import { GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL } from "../../../controller/postTransition/url";
 import { APPLICATION_CACHE_KEY_COMPANY_NUMBER } from "../../../../config/constants";
 import CompanyProfileBuilder from "../../builder/CompanyProfileBuilder";
-import { CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../../controller/addressLookUp/url/postTransition";
+import { CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL, CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL } from "../../../controller/addressLookUp/url/postTransition";
 
 describe("Check Your Answers Page", () => {
   const URL = getUrl(GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL);
@@ -115,6 +115,7 @@ describe("Check Your Answers Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(getUrl(CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL));
+      expect(res.text).not.toContain(getUrl(CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL));
     });
   });
 });

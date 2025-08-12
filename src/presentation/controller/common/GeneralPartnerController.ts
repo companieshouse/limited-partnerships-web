@@ -72,8 +72,6 @@ abstract class GeneralPartnerController extends AbstractController {
           generalPartner = this.formatGeneralPartnerDatesAndSetPreviousUrl(
             generalPartner,
             pageRouting,
-            pageType,
-            ids,
             request,
             response.locals.i18n);
         }
@@ -472,12 +470,15 @@ abstract class GeneralPartnerController extends AbstractController {
   private formatGeneralPartnerDatesAndSetPreviousUrl(
     partner: GeneralPartner,
     pageRouting: PageRouting,
-    pageType: string,
-    ids: Ids,
     request: Request,
     i18n: any
   ): GeneralPartner {
-    if (getJourneyTypes(pageRouting.currentUrl).isPostTransition && pageType === "general-partner-check-your-answers") {
+    const { pageType, ids } = super.extract(request);
+
+    const isPostTransitionCheckYourAnswers = getJourneyTypes(pageRouting.currentUrl).isPostTransition &&
+     pageType === PostTransitionPageType.generalPartnerCheckYourAnswers;
+
+    if (isPostTransitionCheckYourAnswers) {
       const formattedPartner = {
         ...partner,
         data: {
