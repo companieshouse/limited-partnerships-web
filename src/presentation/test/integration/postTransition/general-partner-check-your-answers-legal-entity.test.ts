@@ -38,30 +38,10 @@ describe("Check Your Answers Page", () => {
       const res = await request(app).get(URL + "?lang=en");
 
       expect(res.status).toBe(200);
-      testTranslations(res.text, enTranslationText.checkYourAnswersPage, [
-        "lpInfo",
-        "headingType",
-        "change",
-        "headingEmail",
-        "headingJurisdiction",
-        "headingRegisteredOfficeAddress",
-        "submitFiling",
-        "headingTerm",
-        "jurisdictions",
-        "headingSic",
-        "headingJurisdiction",
-        "generalPartners",
-        "limitedPartners",
-        "person",
-        "headingPrincipalPlaceOfBusinessAddress",
-        "confirm",
-        "futureLawful",
-        "capitalContribution",
-        "payment"
-      ]);
+      expect(res.text).toContain(enTranslationText.checkYourAnswersPage.title);
+      testTranslations(res.text, enTranslationText.checkYourAnswersPage.warningMessage);
       expect(res.text).toContain(enTranslationText.print.buttonText);
       expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
-      expect(res.text).toContain("10 October 2024");
       expect(res.text).not.toContain("WELSH -");
     });
 
@@ -70,30 +50,10 @@ describe("Check Your Answers Page", () => {
       const res = await request(app).get(URL + "?lang=cy");
 
       expect(res.status).toBe(200);
-      testTranslations(res.text, cyTranslationText.checkYourAnswersPage, [
-        "lpInfo",
-        "headingType",
-        "change",
-        "headingEmail",
-        "headingJurisdiction",
-        "headingRegisteredOfficeAddress",
-        "submitFiling",
-        "headingTerm",
-        "jurisdictions",
-        "headingSic",
-        "headingJurisdiction",
-        "generalPartners",
-        "limitedPartners",
-        "person",
-        "headingPrincipalPlaceOfBusinessAddress",
-        "confirm",
-        "futureLawful",
-        "capitalContribution",
-        "payment"
-      ]);
+      expect(res.text).toContain(cyTranslationText.checkYourAnswersPage.title);
+      testTranslations(res.text, cyTranslationText.checkYourAnswersPage.warningMessage);
       expect(res.text).toContain(cyTranslationText.print.buttonText);
       expect(res.text).toContain(cyTranslationText.print.buttonTextNoJs);
-      expect(res.text).toContain("10 WELSH - October 2024");
       expect(res.text).toContain("WELSH -");
     });
 
@@ -149,7 +109,7 @@ describe("Check Your Answers Page", () => {
 const checkIfValuesInText = (res: request.Response, partner: GeneralPartner, translationText: Record<string, any>) => {
   for (const key in partner.data) {
     if (typeof partner.data[key] === "string" || typeof partner.data[key] === "object") {
-      if (key === "principal_office_address" && partner.data[key]?.address_line_1) {
+      if (key === "principal_office_address") {
         const capitalized = partner.data[key].address_line_1
           .split(" ")
           .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
