@@ -202,6 +202,10 @@
         {% set nationalityFieldNameId = "nationality2" %}
         {% include "includes/nationalities.njk" %}
 
+        {% if journeyTypes.isRegistration or journeyTypes.isPostTransition %}        
+          {% include "includes/disqualification-statement.njk" %}  
+        {% endif %}
+
         {% if journeyTypes.isTransition or journeyTypes.isPostTransition %}
           {{ govukDateInput({
             id: "date_effective_from",
@@ -250,9 +254,7 @@
               }
             ]
           }) }}
-        {% else %}        
-          {% include "includes/disqualification-statement.njk" %}  
-        {% endif %}
+          {% endif %}
 
         <div>
           {% include "includes/public-register-information.njk" %}
