@@ -7,7 +7,6 @@ import { appDevDependencies } from "../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import GeneralPartnerBuilder from "../../builder/GeneralPartnerBuilder";
 import { GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL } from "../../../controller/postTransition/url";
-import { APPLICATION_CACHE_KEY_COMPANY_NUMBER } from "../../../../config/constants";
 import CompanyProfileBuilder from "../../builder/CompanyProfileBuilder";
 import { CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL, CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL } from "../../../controller/addressLookUp/url/postTransition";
 import { GeneralPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
@@ -22,10 +21,6 @@ describe("Check Your Answers Page", () => {
   beforeEach(() => {
     companyProfile = new CompanyProfileBuilder().build();
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
-
-    appDevDependencies.cacheRepository.feedCache({
-      [APPLICATION_CACHE_KEY_COMPANY_NUMBER]: companyProfile.data.companyNumber
-    });
 
     generalPartnerLegalEntity = new GeneralPartnerBuilder().isLegalEntity().withDateEffectiveFrom("2024-10-10").build();
 
