@@ -11,7 +11,7 @@ import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 import PostTransitionPageType from "../../../../controller/postTransition/pageType";
 import {
   ADD_GENERAL_PARTNER_PERSON_URL,
-  ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL
+  ADD_GENERAL_PARTNER_PERSON_WITH_IDS_URL
 } from "../../../../controller/postTransition/url";
 import { POST_TRANSITION_WITH_ID_URL } from "../../../../../config/constants";
 
@@ -84,7 +84,7 @@ describe("Add General Partner Person Page", () => {
     });
 
     it("should contain a back link to the choice page when general partners are not present", async () => {
-      const res = await request(app).get(getUrl(ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL) + "?lang=en");
+      const res = await request(app).get(getUrl(ADD_GENERAL_PARTNER_PERSON_WITH_IDS_URL) + "?lang=en");
 
       expect(res.status).toBe(200);
       const regex = new RegExp(`${getUrl(POST_TRANSITION_WITH_ID_URL)}/${PostTransitionPageType.generalPartnerChoice}`);
@@ -111,7 +111,7 @@ describe("Add General Partner Person Page", () => {
       appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
 
       setLocalesEnabled(true);
-      const URL = getUrl(ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL);
+      const URL = getUrl(ADD_GENERAL_PARTNER_PERSON_WITH_IDS_URL);
       const res = await request(app).get(URL);
 
       expect(res.status).toBe(200);
@@ -171,7 +171,7 @@ describe("Add General Partner Person Page", () => {
 
       appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
 
-      const URL = getUrl(ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL);
+      const URL = getUrl(ADD_GENERAL_PARTNER_PERSON_WITH_IDS_URL);
 
       const res = await request(app)
         .post(URL)
