@@ -348,6 +348,7 @@
 
     "checkYourAnswersPage" : {
         "title" : "WELSH - Check your answers before sending your application",
+        "updateTitle" : "WELSH - Check your answers before submitting this update",
         "lpInfo" : "WELSH - Limited partnership information",
         "change" : "WELSH - Change",
         "headingName" : "WELSH - Name",
