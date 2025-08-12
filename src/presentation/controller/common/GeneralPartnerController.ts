@@ -70,18 +70,7 @@ abstract class GeneralPartnerController extends AbstractController {
             ids.generalPartnerId
           );
           if (getJourneyTypes(pageRouting.currentUrl).isPostTransition && pageType === "general-partner-check-your-answers") {
-            generalPartner = {
-              ...generalPartner,
-              data: {
-                ...generalPartner.data,
-                date_of_birth: generalPartner.data?.date_of_birth
-                  ? formatDate(generalPartner.data.date_of_birth, response.locals.i18n)
-                  : undefined,
-                date_effective_from: generalPartner.data?.date_effective_from
-                  ? formatDate(generalPartner.data.date_effective_from, response.locals.i18n)
-                  : undefined,
-              }
-            };
+            generalPartner = this.formatGeneralPartnerDates(generalPartner, response.locals.i18n);
             pageRouting.previousUrl = generalPartner.data?.legal_entity_name ?
               super.insertIdsInUrl(pageRouting.data?.confirmPrincipalOfficeAddres, ids, request.url) :
               super.insertIdsInUrl(pageRouting.data?.confirmCorrespondenceAddress, ids, request.url);
@@ -478,6 +467,19 @@ abstract class GeneralPartnerController extends AbstractController {
       pageRouting.nextUrl = super.insertIdsInUrl(urls.reviewLimitedPartnersUrl, ids);
     }
   }
+
+  private formatGeneralPartnerDates = (partner: GeneralPartner, i18n: any) => ({
+    ...partner,
+    data: {
+      ...partner.data,
+      date_of_birth: partner.data?.date_of_birth
+        ? formatDate(partner.data.date_of_birth, i18n)
+        : undefined,
+      date_effective_from: partner.data?.date_effective_from
+        ? formatDate(partner.data.date_effective_from, i18n)
+        : undefined,
+    }
+  });
 
   private getJourneyPageTypes(url: string) {
     const journeyTypes = getJourneyTypes(url);
