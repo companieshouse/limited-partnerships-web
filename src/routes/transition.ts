@@ -25,12 +25,20 @@ import {
   REMOVE_LIMITED_PARTNER_URL,
   REVIEW_GENERAL_PARTNERS_URL,
   REVIEW_LIMITED_PARTNERS_URL,
-  CHECK_YOUR_ANSWERS_URL
+  CHECK_YOUR_ANSWERS_URL,
+  TRANSITION_START_URL
 } from "../presentation/controller/transition/url";
 import TransitionPageType from "../presentation/controller/transition/PageType";
 import transitionsRouting from "../presentation/controller/transition/Routing";
 
 const transitionEndpoints = (router: Router, dependencies: IDependencies): void => {
+  router.get(
+    TRANSITION_START_URL,
+    (_req, res) => {
+      res.redirect(CONTINUE_SAVED_FILING_URL);
+    }
+  );
+
   router.get(
     CONTINUE_SAVED_FILING_URL,
     dependencies.limitedPartnershipTransitionController.getPageRouting()
