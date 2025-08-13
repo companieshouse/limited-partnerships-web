@@ -494,6 +494,10 @@
         "disqualificationStatementLegend" : "WELSH - General partner - person - disqualification statement"
     },
 
+    "generalPartnercheckYourAnswersPage" : {
+        "title" : "WELSH - Check your answers before submitting this update"
+    },
+
     "govUk" : {
         "banner" : {
           "tag": "WELSH - Beta",

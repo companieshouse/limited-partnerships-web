@@ -495,6 +495,10 @@
         "disqualificationStatementLegend" : "General partner - person - disqualification statement"
     },
 
+    "generalPartnercheckYourAnswersPage" : {
+        "title" : "Check your answers before submitting this update"
+    },
+
     "govUk" : {
         "banner" : {
           "tag": "Beta",
