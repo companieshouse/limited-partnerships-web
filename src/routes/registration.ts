@@ -28,7 +28,8 @@ import {
   ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
   ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_ID_URL,
   REVIEW_LIMITED_PARTNERS_URL,
-  REMOVE_LIMITED_PARTNER_URL
+  REMOVE_LIMITED_PARTNER_URL,
+  REGISTRATION_START_URL
 } from "../presentation/controller/registration/url";
 import RegistrationPageType from "../presentation/controller/registration/PageType";
 import registrationsRouting from "../presentation/controller/registration/Routing";
@@ -37,6 +38,13 @@ export const registrationEndpoints = (
   router: Router,
   dependencies: IDependencies
 ): void => {
+  router.get(
+    REGISTRATION_START_URL,
+    (_req, res) => {
+      res.redirect(CONTINUE_SAVED_FILING_URL);
+    }
+  );
+
   router.get(
     CONTINUE_SAVED_FILING_URL,
     dependencies.limitedPartnershipRegistrationController.getPageRouting()
