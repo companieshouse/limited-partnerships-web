@@ -14,14 +14,18 @@ import { PageRouting } from "../PageRouting";
 import { LimitedPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 import UIErrors from "../../../domain/entities/UIErrors";
 
-class LimitedPartnerController extends AbstractController {
-  private readonly limitedPartnershipService: LimitedPartnershipService;
-  private readonly limitedPartnerService: LimitedPartnerService;
+import CompanyService from "../../../application/service/CompanyService";
 
-  constructor(limitedPartnershipService: LimitedPartnershipService, limitedPartnerService: LimitedPartnerService) {
+class LimitedPartnerController extends AbstractController {
+  protected readonly limitedPartnershipService: LimitedPartnershipService;
+  protected readonly limitedPartnerService: LimitedPartnerService;
+  protected readonly companyService?: CompanyService;
+
+  constructor(limitedPartnershipService: LimitedPartnershipService, limitedPartnerService: LimitedPartnerService, companyService?: CompanyService) {
     super();
     this.limitedPartnershipService = limitedPartnershipService;
     this.limitedPartnerService = limitedPartnerService;
+    this.companyService = companyService;
   }
 
   getPageRouting() {
@@ -45,6 +49,10 @@ class LimitedPartnerController extends AbstractController {
             ids.transactionId,
             ids.submissionId
           );
+        }
+
+        if (this.companyService) {
+          limitedPartnership = await this.getLimitedPartnershipDetails(tokens, ids.companyId);
         }
 
         if (ids.transactionId && ids.limitedPartnerId) {
@@ -409,6 +417,17 @@ class LimitedPartnerController extends AbstractController {
 
   private getJourneyPageRouting(url: string) {
     return getJourneyTypes(url).isRegistration ? registrationRouting : transitionRouting;
+  }
+
+  private async getLimitedPartnershipDetails(tokens: Tokens, companyId: string): Promise<Record<string, any>> {
+    const result = await (this.companyService as CompanyService).getCompanyProfile(tokens, companyId);
+
+    return {
+      data: {
+        partnership_name: result.companyProfile.companyName,
+        partnership_number: result.companyProfile.companyNumber
+      }
+    };
   }
 }
 

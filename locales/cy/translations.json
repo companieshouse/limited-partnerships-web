@@ -510,6 +510,7 @@
     },
 
     "limitedPartnerChoicePage" : {
+        "title": "WELSH - Is the limited partner a person or a legal entity?",
         "isPersonOrLegalEntity" : "WELSH - Is the limited partner a person or a legal entity?",
         "isPersonOrLegalEntityHint" : "WELSH - You can add more later.",
         "person" : "WELSH - A person",

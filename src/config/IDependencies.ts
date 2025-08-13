@@ -11,6 +11,7 @@ import LimitedPartnerTransitionController from "../presentation/controller/trans
 
 import LimitedPartnershipPostTransitionController from "../presentation/controller/postTransition/LimitedPartnershipController";
 import GeneralPartnerPostTransitionController from "../presentation/controller/postTransition/GeneralPartnerController";
+import LimitedPartnerPostTransitionController from "../presentation/controller/postTransition/LimitedPartnerController";
 
 export type IDependencies = {
   globalController: GlobalController;
@@ -26,4 +27,5 @@ export type IDependencies = {
 
   limitedPartnershipPostTransitionController: LimitedPartnershipPostTransitionController;
   generalPartnerPostTransitionController: GeneralPartnerPostTransitionController;
+  limitedPartnerPostTransitionController: LimitedPartnerPostTransitionController;
 };

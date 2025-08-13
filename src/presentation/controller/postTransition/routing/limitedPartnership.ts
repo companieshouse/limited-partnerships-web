@@ -21,7 +21,8 @@ const postTransitionRoutingLandingPage = {
   nextUrl: "/",
   pageType: PostTransitionPageType.landingPage,
   data: {
-    addGeneralPartner: url.GENERAL_PARTNER_CHOICE_URL
+    addGeneralPartner: url.GENERAL_PARTNER_CHOICE_URL,
+    addLimitedPartner: url.LIMITED_PARTNER_CHOICE_URL
   }
 };
 
