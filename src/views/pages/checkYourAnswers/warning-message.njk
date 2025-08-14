@@ -1,0 +1,11 @@
+{{ govukWarningText({
+  text: i18n.checkYourAnswersPage.warningMessage.warning,
+  iconFallbackText: "Warning"
+}) }}
+
+<p class="govuk-body">{{ i18n.checkYourAnswersPage.warningMessage.information }}</p>
+<ul class="govuk-list govuk-list--bullet">
+  <li>{{ i18n.checkYourAnswersPage.warningMessage.email }}</li>
+  <li>{{ i18n.checkYourAnswersPage.warningMessage.dob }}</li>
+  <li>{{ i18n.checkYourAnswersPage.warningMessage.ura }}</li>
+</ul>
