@@ -431,9 +431,9 @@ class LimitedPartnerController extends AbstractController {
       return RegistrationPageType;
     } else if (journeyTypes.isTransition) {
       return TransitionPageType;
-    } else {
-      return PostTransitionPageType;
     }
+
+    return PostTransitionPageType;
   }
 
   private getJourneyPageRouting(url: string) {
@@ -443,9 +443,9 @@ class LimitedPartnerController extends AbstractController {
       return registrationRouting;
     } else if (journeyTypes.isTransition) {
       return transitionRouting;
-    } else {
-      return postTransitionRouting;
     }
+
+    return postTransitionRouting;
   }
 }
 
