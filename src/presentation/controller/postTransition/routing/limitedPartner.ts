@@ -1,7 +1,7 @@
 import * as url from "../url";
 import PostTransitionPageType from "../pageType";
 
-import { TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../addressLookUp/url/postTransition";
+import { TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL, TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../addressLookUp/url/postTransition";
 
 const postTransitionRoutingLimitedPartnerChoice = {
   previousUrl: url.LANDING_PAGE_URL,
@@ -17,6 +17,17 @@ const postTransitionRoutingAddLimitedPartnerPerson = {
   pageType: PostTransitionPageType.addLimitedPartnerPerson
 };
 
-const limitedPartnerRouting = [postTransitionRoutingLimitedPartnerChoice, postTransitionRoutingAddLimitedPartnerPerson];
+const postTransitionRoutingAddLimitedPartnerLegalEntity = {
+  previousUrl: url.LIMITED_PARTNER_CHOICE_URL,
+  currentUrl: url.ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
+  nextUrl: TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  pageType: PostTransitionPageType.addLimitedPartnerLegalEntity
+};
+
+const limitedPartnerRouting = [
+  postTransitionRoutingLimitedPartnerChoice,
+  postTransitionRoutingAddLimitedPartnerPerson,
+  postTransitionRoutingAddLimitedPartnerLegalEntity
+];
 
 export default limitedPartnerRouting;

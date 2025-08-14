@@ -9,6 +9,8 @@ import {
   ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
   ADD_GENERAL_PARTNER_PERSON_URL,
   ADD_GENERAL_PARTNER_PERSON_WITH_IDS_URL,
+  ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
+  ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
   ADD_LIMITED_PARTNER_PERSON_URL,
   ADD_LIMITED_PARTNER_PERSON_WITH_IDS_URL,
   COMPANY_NUMBER_URL,
@@ -138,6 +140,28 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
   );
   router.post(
     ADD_LIMITED_PARTNER_PERSON_WITH_IDS_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.sendPageData()
+  );
+
+  router.get(
+    ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.getPageRouting()
+  );
+  router.post(
+    ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.createLimitedPartner()
+  );
+
+  router.get(
+    ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.getPageRouting()
+  );
+  router.post(
+    ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
     companyAuthentication,
     dependencies.limitedPartnerPostTransitionController.sendPageData()
   );
