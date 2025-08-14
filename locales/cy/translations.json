@@ -560,7 +560,7 @@
         "spelling" : "WELSH - If you typed the web address, check it is spelled correctly.",
         "copiedAddress" : "WELSH - If you pasted the web address, check you copied the entire address.",
         "movedPage" : "WELSH - If the web address is correct or you selected a link, the page may have moved.",
-        "goToStartPage" : "WELSH - To register a limited partnership, go to the <a class='govuk-link' href='/limited-partnerships/registration/continue-saved-filing'>Register a limited partnership</a> start page."
+        "goToStartPage" : "WELSH - To register a limited partnership, go to the <a class='govuk-link' href='/limited-partnerships/registration/start'>Register a limited partnership</a> start page."
     },
 
     "paymentFailedPage" : {

@@ -9,8 +9,8 @@ Requires >= Node v20
 2. run 'npm run build' to compile
 3. run 'npm run start' to start the service
 
-Use http://chs.local/limited-partnerships/registration/continue-saved-filing to view the first page of the registration journey and
-http://chs.local/limited-partnerships/transition/continue-saved-filing to view the first page of the transition journey.
+Use http://chs.local/limited-partnerships/registration/start to view the first page of the registration journey and
+http://chs.local/limited-partnerships/transition/start to view the first page of the transition journey.
 
 ## Technologies and Utils
 
