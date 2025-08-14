@@ -66,8 +66,7 @@ const postTransitionAddressRoutingConfirmLimitedPartnerUsualResidentialAddress =
   pageType: AddressPageType.confirmLimitedPartnerUsualResidentialAddress,
   data: {
     ...usualResidentialAddressCacheKeys,
-    enterManualAddressPageType: AddressPageType.enterLimitedPartnerUsualResidentialAddress,
-    confirmAddressUrl: "" // TODO - change to check your answer
+    enterManualAddressPageType: AddressPageType.enterLimitedPartnerUsualResidentialAddress
   }
 };
 
