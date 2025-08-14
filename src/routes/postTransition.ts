@@ -9,6 +9,8 @@ import {
   ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
   ADD_GENERAL_PARTNER_PERSON_URL,
   ADD_GENERAL_PARTNER_PERSON_WITH_IDS_URL,
+  ADD_LIMITED_PARTNER_PERSON_URL,
+  ADD_LIMITED_PARTNER_PERSON_WITH_IDS_URL,
   COMPANY_NUMBER_URL,
   CONFIRM_LIMITED_PARTNERSHIP_URL,
   GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL,
@@ -102,6 +104,30 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
     GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL,
     companyAuthentication,
     dependencies.generalPartnerPostTransitionController.getPageRouting()
+  );
+
+  // Limited Partner
+
+  router.get(
+    ADD_LIMITED_PARTNER_PERSON_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.getPageRouting()
+  );
+  router.post(
+    ADD_LIMITED_PARTNER_PERSON_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.createLimitedPartner()
+  );
+
+  router.get(
+    ADD_LIMITED_PARTNER_PERSON_WITH_IDS_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.getPageRouting()
+  );
+  router.post(
+    ADD_LIMITED_PARTNER_PERSON_WITH_IDS_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.sendPageData()
   );
 };
 
