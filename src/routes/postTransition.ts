@@ -154,6 +154,7 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
     companyAuthentication,
     dependencies.limitedPartnerPostTransitionController.createLimitedPartner()
   );
+
   router.get(
     ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
     companyAuthentication,
