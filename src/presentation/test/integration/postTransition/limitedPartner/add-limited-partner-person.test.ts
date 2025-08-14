@@ -80,14 +80,14 @@ describe("Add Limited Partner Person Page", () => {
       );
 
       testTranslations(res.text, cyTranslationText.addPartnerPersonPage, ["errorMessages", "generalPartner"]);
-      testTranslations(res.text, enTranslationText.limitedPartnersPage, [
+      testTranslations(res.text, cyTranslationText.limitedPartnersPage, [
         "title",
         "pageInformation",
         "disqualificationStatement",
         "disqualificationStatementLegend"
       ]);
 
-      expect(res.text).not.toContain(enTranslationText.capitalContribution.title);
+      expect(res.text).not.toContain(cyTranslationText.capitalContribution.title);
     });
 
     it("should contain a back link to the choice page when limited partners are not present", async () => {

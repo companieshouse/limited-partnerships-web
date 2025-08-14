@@ -69,7 +69,6 @@ class LimitedPartnerController extends AbstractController {
           super.makeProps(pageRouting, { limitedPartnership, limitedPartner }, null)
         );
       } catch (error) {
-        console.error("Error in getPageRouting:", error);
         next(error);
       }
     };
