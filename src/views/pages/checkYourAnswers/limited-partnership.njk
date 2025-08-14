@@ -1,0 +1,171 @@
+{% set checkYourAnswers = "check-your-answers" %}
+
+{% set termMap = {
+  "BY_AGREEMENT": i18n.termPage.byAgreement,
+  "UNTIL_DISSOLUTION": i18n.termPage.untilDissolution,
+  "NONE": i18n.termPage.noTerm
+} %}
+{% set term = termMap[props.data.limitedPartnership.data.term] %}
+
+{% set jurisdictionMap = {
+  "england-wales": i18n.checkYourAnswersPage.jurisdictions.englandAndWales,
+  "northern-ireland": i18n.checkYourAnswersPage.jurisdictions.northernIreland,
+  "scotland": i18n.checkYourAnswersPage.jurisdictions.scotland
+} %}
+{% set jurisdiction = jurisdictionMap[props.data.limitedPartnership.data.jurisdiction] %}
+
+{% set fullName = (props.data.limitedPartnership.data.partnership_name | upper) + " " + (props.data.limitedPartnership.data.name_ending | upper) %}
+
+{{ govukSummaryList({
+  classes: "govuk-!-margin-bottom-7",
+  rows: [
+    {
+      key: {
+        text: i18n.checkYourAnswersPage.headingName
+      },
+      value: {
+        text: fullName
+      },
+      actions: {
+        items: [
+          CREATE_CHANGE_LINK(
+            i18n.checkYourAnswersPage.change,
+            (currentUrl | replace(checkYourAnswers, "name") ~ "#partnership_name"),
+            partnershipNameChangeText,
+            "change-partnership-name-button"
+          )
+        ]
+      } if journeyTypes.isRegistration
+    },
+    {
+      key: {
+        text: i18n.checkYourAnswersPage.headingType
+      },
+      value: {
+        text: i18n.types[props.data.limitedPartnership.data.partnership_type]
+      },
+      actions: {
+        items: [
+          CREATE_CHANGE_LINK(
+            i18n.checkYourAnswersPage.change,
+            currentUrl | replace(checkYourAnswers, "which-type"),
+            partnershipNameChangeText,
+            "change-partnership-type-button"
+          )
+        ]
+      } if journeyTypes.isRegistration
+    },
+    {
+      key: {
+        text: i18n.checkYourAnswersPage.headingEmail
+      },
+      value: {
+        text: props.data.limitedPartnership.data.email
+      },
+      actions: {
+        items: [
+          CREATE_CHANGE_LINK(
+            i18n.checkYourAnswersPage.change,
+            (currentUrl | replace(checkYourAnswers, "email") ~ "#email"),
+            partnershipNameChangeText,
+            "change-email-button"
+          )
+        ]
+      }
+    },
+    {
+      key: {
+        text: i18n.checkYourAnswersPage.headingJurisdiction
+      },
+      value: {
+        text: jurisdiction
+      },
+      actions: {
+        items: [
+          CREATE_CHANGE_LINK(
+            i18n.checkYourAnswersPage.change,
+            (currentUrl | replace(checkYourAnswers, "where-is-the-jurisdiction") ~ "#jurisdiction"),
+            partnershipNameChangeText,
+            "change-jurisdiction-button"
+          )
+        ]
+      } if props.data.limitedPartnership.data.partnership_type === "LP"
+          or props.data.limitedPartnership.data.partnership_type === "PFLP"
+    } if journeyTypes.isRegistration,
+    {
+      key: {
+        text: i18n.checkYourAnswersPage.headingRegisteredOfficeAddress
+      },
+      value: {
+        text: macros.formatAddress(props.data.limitedPartnership.data.registered_office_address, true)
+      },
+      actions: {
+        items: [
+          CREATE_CHANGE_LINK(
+            i18n.checkYourAnswersPage.change,
+            (currentUrl | replace(checkYourAnswers, "enter-registered-office-address") ~ "#premises"),
+            partnershipRegisteredOfficeAddressText,
+            "change-partnership-registered-office-address-button"
+          )
+        ]
+      }
+    },
+    {
+      key: {
+        text: i18n.checkYourAnswersPage.headingPrincipalPlaceOfBusinessAddress
+      },
+      value: {
+        text: macros.formatAddress(props.data.limitedPartnership.data.principal_place_of_business_address, true)
+      },
+      actions: {
+        items: [
+          CREATE_CHANGE_LINK(
+            i18n.checkYourAnswersPage.change,
+            (currentUrl | replace(checkYourAnswers, "enter-principal-place-of-business-address") ~ "#premises"),
+            partnershipPrincipalPlaceOfBusinessAddressText,
+            "change-principal-place-of-business-address-button"
+          )
+        ]
+      }
+    } if journeyTypes.isRegistration,
+    {
+      key: {
+        text: i18n.checkYourAnswersPage.headingTerm
+      },
+      value: {
+        text: term
+      },
+      actions: {
+        items: [
+          CREATE_CHANGE_LINK(
+            i18n.checkYourAnswersPage.change,
+            (currentUrl | replace(checkYourAnswers, "term") ~ "#term"),
+            partnershipNameChangeText,
+            "change-term-button"
+          )
+        ]
+      }
+    } if (props.data.limitedPartnership.data.partnership_type === "LP"
+        or props.data.limitedPartnership.data.partnership_type === "SLP") and journeyTypes.isRegistration,
+    {
+      key: {
+        text: i18n.checkYourAnswersPage.headingSic
+      },
+      value: {
+        text: props.data.limitedPartnership.data.sic_codes
+      },
+      actions: {
+        items: [
+          CREATE_CHANGE_LINK(
+            i18n.checkYourAnswersPage.change,
+            (currentUrl | replace(checkYourAnswers, "standard-industrial-classification-code") ~ "#sic1"),
+            partnershipNameChangeText,
+            "change-sic-code-button"
+          )
+        ]
+      }
+    } if (props.data.limitedPartnership.data.partnership_type === "LP"
+        or props.data.limitedPartnership.data.partnership_type === "SLP")
+        and journeyTypes.isRegistration
+  ]
+}) }}

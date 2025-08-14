@@ -1,0 +1,20 @@
+{{ govukCheckboxes({
+  id: "lawfulPurposeStatementChecked", 
+  name: "lawful_purpose_statement_checked",            
+  fieldset: {
+    legend: {
+      text: i18n.checkYourAnswersPage.confirm,
+      isPageHeading: false,
+      classes: "govuk-visually-hidden"
+    }
+  },
+  items: [
+    {
+      value: "true",
+      text: i18n.checkYourAnswersPage.futureLawful,
+      attributes: {
+        required: true
+      }
+    }
+  ]
+}) }}

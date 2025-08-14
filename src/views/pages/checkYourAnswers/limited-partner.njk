@@ -1,0 +1,186 @@
+{% set capitalContributionSubTypesMap = {
+  "MONEY": i18n.capitalContribution.money,
+  "LAND_OR_PROPERTY": i18n.capitalContribution.landOrProperty,
+  "SHARES": i18n.capitalContribution.shares,
+  "SERVICES_OR_GOODS": i18n.capitalContribution.servicesOrGoods,
+  "ANY_OTHER_ASSET": i18n.capitalContribution.anyOtherAsset
+  } 
+%}
+
+{% if item.data.forename %}
+
+  {% set nationalities = item.data.nationality1 | capitalize %}
+  {% if item.data.nationality2 %}
+    {% set nationalities = item.data.nationality1 + ", " + item.data.nationality2 | capitalize %}
+  {% endif %}
+  
+  {% if journeyTypes.isRegistration %}
+    {% set capitalContributionHtml -%}
+      <p class="govuk-body">
+        {{ item.data.contribution_currency_value }} {{ i18n.currencies[item.data.contribution_currency_type] }}
+      </p>
+      <p class="govuk-body"> 
+        {{ macros.buildFormattedListFromArray(capitalContributionSubTypesMap, item.data.contribution_sub_types) }}
+      </p>
+    {%- endset %}
+  {% endif %}
+
+  {{ govukSummaryList({
+    classes: "govuk-!-margin-bottom-7",
+    rows: [
+      {
+        key: {
+          text: i18n.checkYourAnswersPage.partners.person.name
+        },
+        value: {
+          text: item.data.forename + " " + item.data.surname
+        }
+      },
+      {
+        key: {
+          text: i18n.checkYourAnswersPage.partners.person.formerNames
+        },
+        value: {
+          text: item.data.former_names
+        }
+      } if item.data.former_names,
+      {
+        key: {
+          text: i18n.checkYourAnswersPage.partners.person.dateOfBirth
+        },
+        value: {
+          text: item.data.date_of_birth
+        }
+      },
+      {
+        key: {
+          text: i18n.checkYourAnswersPage.partners.person.nationality
+        },
+        value: {
+          text: nationalities
+        }
+      },
+      {
+        key: {
+          text: i18n.checkYourAnswersPage.partners.person.usualResidentialAddress
+        },
+        value: {
+          text: macros.formatAddress(item.data.usual_residential_address, true)
+        }
+      },
+      {
+        key: {
+          text: i18n.checkYourAnswersPage.partners.limitedPartners.capitalContribution
+        },
+        value: {
+          html: capitalContributionHtml
+        }
+      } if (props.data.limitedPartnership.data.partnership_type === "LP"
+            or props.data.limitedPartnership.data.partnership_type === "SLP")
+            and item.data.contribution_currency_value
+            and journeyTypes.isRegistration,
+      {
+        key: {
+          text: i18n.checkYourAnswersPage.partners.limitedPartners.dateEffectiveFrom
+        },
+        value: {
+          text: item.data.date_effective_from
+        } 
+      } if journeyTypes.isTransition                
+    ]
+  }) }}
+
+{% elif item.data.legal_entity_name %}
+
+  {% if journeyTypes.isRegistration %}
+    {% set capitalContributionHtml -%}
+      <p class="govuk-body">
+        {{ item.data.contribution_currency_value }} {{ i18n.currencies[item.data.contribution_currency_type] }}
+      </p>
+      <p class="govuk-body"> 
+        {{ macros.buildFormattedListFromArray(capitalContributionSubTypesMap, item.data.contribution_sub_types) }}
+      </p>
+    {%- endset %}
+  {% endif %}
+  
+  {{ govukSummaryList({
+    classes: "govuk-!-margin-bottom-7",
+    rows: [
+      {
+        key: {
+          text: i18n.checkYourAnswersPage.partners.legalEntity.name
+        },
+        value: {
+          text: item.data.legal_entity_name
+        }
+      },
+      {
+        key: {
+          text: i18n.checkYourAnswersPage.partners.legalEntity.legalForm
+        },
+        value: {
+          text: item.data.legal_form
+        }
+      },
+      {
+        key: {
+          text: i18n.checkYourAnswersPage.partners.legalEntity.governingLaw
+        },
+        value: {
+          text: item.data.governing_law
+        }
+      },
+      {
+        key: {
+          text: i18n.checkYourAnswersPage.partners.legalEntity.register
+        },
+        value: {
+          text: item.data.legal_entity_register_name
+        }
+      },
+      {
+        key: {
+          text: i18n.checkYourAnswersPage.partners.legalEntity.countryRegisteredIn
+        },
+        value: {
+          text: item.data.legal_entity_registration_location
+        }
+      },
+      {
+        key: {
+          text: i18n.checkYourAnswersPage.partners.legalEntity.registrationNumber
+        },
+        value: {
+          text: item.data.registered_company_number
+        }
+      },
+      {
+        key: {
+          text: i18n.checkYourAnswersPage.partners.legalEntity.principalOfficeAddress
+        },
+        value: {
+          text: macros.formatAddress(item.data.principal_office_address, true)
+        }
+      },
+      {
+        key: {
+          text: i18n.checkYourAnswersPage.partners.limitedPartners.capitalContribution
+        },
+        value: {
+          html: capitalContributionHtml
+        }
+      } if (props.data.limitedPartnership.data.partnership_type === "LP"
+            or props.data.limitedPartnership.data.partnership_type === "SLP")
+            and item.data.contribution_currency_value
+            and journeyTypes.isRegistration,
+      {
+        key: {
+          text: i18n.checkYourAnswersPage.partners.limitedPartners.dateEffectiveFrom
+        },
+        value: {
+          text: item.data.date_effective_from
+        } 
+      } if journeyTypes.isTransition  
+    ]
+  }) }}
+{% endif %}
