@@ -111,11 +111,13 @@ const generalPartnerPostTransitionController: GeneralPartnerPostTransitionContro
     companyService,
     transactionService
   );
+
 const limitedPartnerPostTransitionController: LimitedPartnerPostTransitionController =
   new LimitedPartnerPostTransitionController(
     limitedPartnershipService,
     limitedPartnerService,
-    companyService
+    companyService,
+    transactionService
   );
 
 export const appDevDependencies = {

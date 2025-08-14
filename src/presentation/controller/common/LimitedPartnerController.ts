@@ -1,18 +1,22 @@
 import { NextFunction, Request, Response } from "express";
+import { LimitedPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 import AbstractController from "../AbstractController";
 import { Ids, Tokens } from "../../../domain/types";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
+import { PageRouting } from "../PageRouting";
+import UIErrors from "../../../domain/entities/UIErrors";
 
 import { getJourneyTypes } from "../../../utils/journey";
+
 import RegistrationPageType from "../registration/PageType";
 import TransitionPageType from "../transition/PageType";
+import PostTransitionPageType from "../postTransition/pageType";
+
 import registrationRouting from "../registration/Routing";
 import transitionRouting from "../transition/Routing";
-import { PageRouting } from "../PageRouting";
-import { LimitedPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
-import UIErrors from "../../../domain/entities/UIErrors";
+import postTransitionRouting from "../postTransition/routing";
 
 import CompanyService from "../../../application/service/CompanyService";
 
@@ -65,8 +69,18 @@ class LimitedPartnerController extends AbstractController {
           super.makeProps(pageRouting, { limitedPartnership, limitedPartner }, null)
         );
       } catch (error) {
-        console.error("Error in getPageRouting:", error);
         next(error);
+      }
+    };
+  }
+
+  private async getLimitedPartnershipDetails(tokens: Tokens, companyId: string): Promise<Record<string, any>> {
+    const result = await (this.companyService as CompanyService).getCompanyProfile(tokens, companyId);
+
+    return {
+      data: {
+        partnership_name: result.companyProfile.companyName,
+        partnership_number: result.companyProfile.companyNumber
       }
     };
   }
@@ -398,8 +412,9 @@ class LimitedPartnerController extends AbstractController {
     const pageType = this.getJourneyPageTypes(request.url);
 
     if (
-      pageRouting.pageType === pageType.addLimitedPartnerLegalEntity ||
-      pageRouting.pageType === pageType.addLimitedPartnerPerson
+      (pageRouting.pageType === pageType.addLimitedPartnerLegalEntity ||
+        pageRouting.pageType === pageType.addLimitedPartnerPerson) &&
+      pageRouting.data?.customPreviousUrl
     ) {
       const result = await this.limitedPartnerService.getLimitedPartners(tokens, ids.transactionId);
       if (result.limitedPartners.length > 0) {
@@ -409,22 +424,27 @@ class LimitedPartnerController extends AbstractController {
   }
 
   private getJourneyPageTypes(url: string) {
-    return getJourneyTypes(url).isRegistration ? RegistrationPageType : TransitionPageType;
+    const journeyTypes = getJourneyTypes(url);
+
+    if (journeyTypes.isRegistration) {
+      return RegistrationPageType;
+    } else if (journeyTypes.isTransition) {
+      return TransitionPageType;
+    }
+
+    return PostTransitionPageType;
   }
 
   private getJourneyPageRouting(url: string) {
-    return getJourneyTypes(url).isRegistration ? registrationRouting : transitionRouting;
-  }
+    const journeyTypes = getJourneyTypes(url);
 
-  private async getLimitedPartnershipDetails(tokens: Tokens, companyId: string): Promise<Record<string, any>> {
-    const result = await (this.companyService as CompanyService).getCompanyProfile(tokens, companyId);
+    if (journeyTypes.isRegistration) {
+      return registrationRouting;
+    } else if (journeyTypes.isTransition) {
+      return transitionRouting;
+    }
 
-    return {
-      data: {
-        partnership_name: result.companyProfile.companyName,
-        partnership_number: result.companyProfile.companyNumber
-      }
-    };
+    return postTransitionRouting;
   }
 }
 

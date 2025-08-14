@@ -5,7 +5,7 @@ export const limitedPartnerPerson = {
   forename: "Joe - LP",
   surname: "Doe - LP",
   date_of_birth: "2001-01-01",
-  nationality1: "BRITISH",
+  nationality1: "British",
   nationality2: undefined
 };
 
@@ -26,12 +26,17 @@ class LimitedPartnerBuilder extends AbstractPartnerBuilder {
 
   init() {
     this.data = {
-      ...this.data,
+      ...this.data
     };
   }
 
   withDateEffectiveFrom(dateEffectiveFrom: string) {
     this.data.date_effective_from = dateEffectiveFrom;
+    return this;
+  }
+
+  withNotDisqualifiedStatementChecked(notDisqualifiedStatementChecked: boolean) {
+    this.data.not_disqualified_statement_checked = notDisqualifiedStatementChecked;
     return this;
   }
 

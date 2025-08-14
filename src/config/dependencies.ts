@@ -115,7 +115,8 @@ const limitedPartnerPostTransitionController: LimitedPartnerPostTransitionContro
   new LimitedPartnerPostTransitionController(
     limitedPartnershipService,
     limitedPartnerService,
-    companyService
+    companyService,
+    transactionService
   );
 
 export const appDependencies = {

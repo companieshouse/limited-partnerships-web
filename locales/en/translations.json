@@ -511,7 +511,6 @@
     },
     
     "limitedPartnerChoicePage" : {
-        "title": "Is the limited partner a person or a legal entity?",
         "isPersonOrLegalEntity" : "Is the limited partner a person or a legal entity?",
         "isPersonOrLegalEntityHint" : "You can add more later.",
         "person" : "A person",

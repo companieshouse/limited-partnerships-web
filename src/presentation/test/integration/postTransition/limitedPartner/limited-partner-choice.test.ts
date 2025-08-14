@@ -30,7 +30,7 @@ describe("Limited Partner Choice Page", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
-      `${cyTranslationText.limitedPartnerChoicePage.title} - ${cyTranslationText.servicePostTransition} - GOV.UK`
+      `${cyTranslationText.limitedPartnerChoicePage.isPersonOrLegalEntity} - ${cyTranslationText.servicePostTransition} - GOV.UK`
     );
     testTranslations(res.text, cyTranslationText.limitedPartnerChoicePage, ["hint"]);
   });
@@ -41,7 +41,7 @@ describe("Limited Partner Choice Page", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
-      `${enTranslationText.limitedPartnerChoicePage.title} - ${enTranslationText.servicePostTransition} - GOV.UK`
+      `${enTranslationText.limitedPartnerChoicePage.isPersonOrLegalEntity} - ${enTranslationText.servicePostTransition} - GOV.UK`
     );
     testTranslations(res.text, enTranslationText.limitedPartnerChoicePage, ["hint"]);
   });
