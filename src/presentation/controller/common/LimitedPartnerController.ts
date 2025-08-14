@@ -17,15 +17,12 @@ import UIErrors from "../../../domain/entities/UIErrors";
 import CompanyService from "../../../application/service/CompanyService";
 
 class LimitedPartnerController extends AbstractController {
-  protected readonly limitedPartnershipService: LimitedPartnershipService;
-  protected readonly limitedPartnerService: LimitedPartnerService;
-  protected readonly companyService?: CompanyService;
-
-  constructor(limitedPartnershipService: LimitedPartnershipService, limitedPartnerService: LimitedPartnerService, companyService?: CompanyService) {
+  constructor(
+    protected readonly limitedPartnershipService: LimitedPartnershipService,
+    protected readonly limitedPartnerService: LimitedPartnerService,
+    protected readonly companyService?: CompanyService
+  ) {
     super();
-    this.limitedPartnershipService = limitedPartnershipService;
-    this.limitedPartnerService = limitedPartnerService;
-    this.companyService = companyService;
   }
 
   getPageRouting() {
