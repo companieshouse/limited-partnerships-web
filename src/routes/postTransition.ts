@@ -15,7 +15,8 @@ import {
   CONFIRM_LIMITED_PARTNERSHIP_URL,
   GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL,
   GENERAL_PARTNER_CHOICE_URL,
-  LANDING_PAGE_URL
+  LANDING_PAGE_URL,
+  LIMITED_PARTNER_CHOICE_URL
 } from "../presentation/controller/postTransition/url";
 
 const postTransitionEndpoints = (router: Router, dependencies: IDependencies): void => {
@@ -107,6 +108,17 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
   );
 
   // Limited Partner
+
+  router.get(
+    LIMITED_PARTNER_CHOICE_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.getPageRouting()
+  );
+  router.post(
+    LIMITED_PARTNER_CHOICE_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.limitedPartnerChoice()
+  );
 
   router.get(
     ADD_LIMITED_PARTNER_PERSON_URL,

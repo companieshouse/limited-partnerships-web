@@ -63,11 +63,13 @@ class LimitedPartnershipController extends AbstractController {
           return;
         }
 
-        if (pageRouting?.data?.addGeneralPartner) {
+        if (pageRouting?.data) {
           pageRouting = {
             ...pageRouting,
             data: {
-              addGeneralPartner: super.insertIdsInUrl(pageRouting?.data?.addGeneralPartner, ids) // insert company number into the link
+              ...pageRouting.data,
+              addGeneralPartner: super.insertIdsInUrl(pageRouting?.data?.addGeneralPartner, ids), // insert company number into the link
+              addLimitedPartner: super.insertIdsInUrl(pageRouting?.data?.addLimitedPartner, ids) // insert company number into the link
             },
             errors: undefined
           };
