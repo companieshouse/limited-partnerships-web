@@ -46,7 +46,7 @@ class LimitedPartnerPostTransitionController extends LimitedPartnerController {
 
         const companyResult = await this.companyService?.getCompanyProfile(tokens, ids.companyId);
 
-        const isLegalEntity = pageType === PostTransitionPageType.addGeneralPartnerLegalEntity;
+        const isLegalEntity = pageType === PostTransitionPageType.addLimitedPartnerLegalEntity;
 
         const resultTransaction = await this.transactionService.createTransaction(
           tokens,

@@ -132,7 +132,7 @@
           {% include "includes/capital-contribution.njk" %}
         {% endif %}
 
-        {% if journeyTypes.isTransition %}
+        {% if not journeyTypes.isRegistration %}
           {{ govukDateInput({
             id: "date_effective_from",
             namePrefix: "date_effective_from",
