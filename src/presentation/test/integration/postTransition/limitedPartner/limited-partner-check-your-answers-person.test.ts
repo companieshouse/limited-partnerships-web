@@ -26,7 +26,7 @@ describe("Limited Partner Check Your Answers Page for Person", () => {
     appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerPerson]);
   });
 
-  it("should GET Check Your Answers Page English text", async () => {
+  it("should GET Check Your Answers Page English text with no Date of birth", async () => {
     setLocalesEnabled(true);
     const res = await request(app).get(URL + "?lang=en");
 
@@ -75,7 +75,32 @@ describe("Limited Partner Check Your Answers Page for Person", () => {
     expect(res.text).toContain(getUrl(CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL));
   });
 
-  it("should load the check your answers page with partners - EN", async () => {
+  it("should load the check your answers page with partners with no dates - EN", async () => {
+    limitedPartnerPerson = new LimitedPartnerBuilder()
+      .isPerson()
+      .withFormerNames("Joe Dee")
+      .withDateOfBirth(undefined as unknown as string)
+      .withDateEffectiveFrom(undefined as unknown as string)
+      .build();
+
+    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerPerson]);
+
+    const res = await request(app).get(URL);
+
+    expect(res.status).toBe(200);
+    checkIfValuesInText(res, limitedPartnerPerson, enTranslationText);
+  });
+
+  it("should load the check your answers page with partners with dates- EN", async () => {
+    limitedPartnerPerson = new LimitedPartnerBuilder()
+      .isPerson()
+      .withFormerNames("Joe Dee")
+      .withDateOfBirth("1984-11-03")
+      .withDateEffectiveFrom("2024-10-10")
+      .build();
+
+    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerPerson]);
+
     const res = await request(app).get(URL);
 
     expect(res.status).toBe(200);
