@@ -1,4 +1,4 @@
-import { ADD_LIMITED_PARTNER_PERSON_WITH_IDS_URL } from "../../../postTransition/url";
+import { ADD_LIMITED_PARTNER_PERSON_WITH_IDS_URL, LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL } from "../../../postTransition/url";
 import AddressPageType from "../../PageType";
 import * as url from "../../url/postTransition";
 
@@ -62,7 +62,7 @@ const postTransitionAddressRoutingChooseLimitedPartnerUsualResidentialAddress = 
 const postTransitionAddressRoutingConfirmLimitedPartnerUsualResidentialAddress = {
   previousUrl: url.POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   currentUrl: url.CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-  nextUrl: "/", // TODO - change to check your answer
+  nextUrl: LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL,
   pageType: AddressPageType.confirmLimitedPartnerUsualResidentialAddress,
   data: {
     ...usualResidentialAddressCacheKeys,

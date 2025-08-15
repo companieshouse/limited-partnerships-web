@@ -5,25 +5,25 @@ import enTranslationText from "../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../locales/cy/translations.json";
 
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
-import { GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL } from "../../../../controller/postTransition/url";
-import { getUrl, setLocalesEnabled } from "../../../utils";
+import { LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL } from "../../../../controller/postTransition/url";
+import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import { formatDate } from "../../../../../utils/date-format";
-import { GeneralPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-import { CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL, CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../../../controller/addressLookUp/url/postTransition";
+import { LimitedPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL, CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../controller/addressLookUp/url/postTransition";
+import LimitedPartnerBuilder from "../../../../../presentation/test/builder/LimitedPartnerBuilder";
 
-describe("General Partner Check Your Answers Page", () => {
-  const URL = getUrl(GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL);
+describe("Limited Partner Check Your Answers Page for Person", () => {
+  const URL = getUrl(LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL);
 
-  let generalPartnerPerson;
+  let limitedPartnerPerson;
 
   beforeEach(() => {
     const companyProfile = new CompanyProfileBuilder().build();
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
-    generalPartnerPerson = new GeneralPartnerBuilder().isPerson().withFormerNames("Joe Dee").withDateEffectiveFrom("2024-10-10").build();
-    appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartnerPerson]);
+    limitedPartnerPerson = new LimitedPartnerBuilder().isPerson().withFormerNames("Joe Dee").withDateEffectiveFrom("2024-10-10").build();
+    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerPerson]);
   });
 
   it("should GET Check Your Answers Page English text", async () => {
@@ -35,6 +35,7 @@ describe("General Partner Check Your Answers Page", () => {
     expect(res.text).toContain(enTranslationText.checkYourAnswersPage.update.title);
     expect(res.text).toContain(enTranslationText.print.buttonText);
     expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
+    testTranslations(res.text, enTranslationText.checkYourAnswersPage.warningMessage);
     expect(res.text).not.toContain("WELSH -");
   });
 
@@ -47,6 +48,7 @@ describe("General Partner Check Your Answers Page", () => {
     expect(res.text).toContain(cyTranslationText.checkYourAnswersPage.update.title);
     expect(res.text).toContain(cyTranslationText.print.buttonText);
     expect(res.text).toContain(cyTranslationText.print.buttonTextNoJs);
+    testTranslations(res.text, cyTranslationText.checkYourAnswersPage.warningMessage);
     expect(res.text).toContain("WELSH -");
   });
 
@@ -65,23 +67,23 @@ describe("General Partner Check Your Answers Page", () => {
     }
   );
 
-  it("Should contain a back link to the confirm correspondence address page", async () => {
+  it("Should contain a back link to the confirm usual residential address page", async () => {
     const res = await request(app).get(URL);
 
     expect(res.status).toBe(200);
-    expect(res.text).not.toContain(getUrl(CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL));
-    expect(res.text).toContain(getUrl(CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL));
+    expect(res.text).not.toContain(getUrl(CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL));
+    expect(res.text).toContain(getUrl(CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL));
   });
 
   it("should load the check your answers page with partners - EN", async () => {
     const res = await request(app).get(URL);
 
     expect(res.status).toBe(200);
-    checkIfValuesInText(res, generalPartnerPerson, enTranslationText);
+    checkIfValuesInText(res, limitedPartnerPerson, enTranslationText);
   });
 });
 
-const checkIfValuesInText = (res: request.Response, partner: GeneralPartner, translationText: Record<string, any>) => {
+const checkIfValuesInText = (res: request.Response, partner: LimitedPartner, translationText: Record<string, any>) => {
   for (const key in partner.data) {
     if (typeof partner.data[key] === "string" || typeof partner.data[key] === "object") {
       if (key === "nationality1") {

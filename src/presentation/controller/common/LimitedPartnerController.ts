@@ -19,6 +19,7 @@ import transitionRouting from "../transition/Routing";
 import postTransitionRouting from "../postTransition/routing";
 
 import CompanyService from "../../../application/service/CompanyService";
+import { formatDate } from "../../../utils/date-format";
 
 class LimitedPartnerController extends AbstractController {
   constructor(
@@ -61,6 +62,13 @@ class LimitedPartnerController extends AbstractController {
             tokens,
             ids.transactionId,
             ids.limitedPartnerId
+          );
+
+          limitedPartner = this.formatLimitedPartnerDatesAndSetPreviousUrl(
+            limitedPartner,
+            pageRouting,
+            request,
+            response.locals.i18n
           );
         }
 
@@ -446,6 +454,38 @@ class LimitedPartnerController extends AbstractController {
 
     return postTransitionRouting;
   }
+
+  private formatLimitedPartnerDatesAndSetPreviousUrl(
+    partner: LimitedPartner,
+    pageRouting: PageRouting,
+    request: Request,
+    i18n: any
+  ): LimitedPartner {
+    const { pageType, ids } = super.extract(request);
+
+    const isPostTransitionCheckYourAnswers = getJourneyTypes(pageRouting.currentUrl).isPostTransition &&
+     pageType === PostTransitionPageType.limitedPartnerCheckYourAnswers;
+
+    if (isPostTransitionCheckYourAnswers) {
+      const formattedPartner = {
+        ...partner,
+        data: {
+          ...partner.data,
+          date_of_birth: partner.data?.date_of_birth
+            ? formatDate(partner.data.date_of_birth, i18n)
+            : undefined,
+          date_effective_from: partner.data?.date_effective_from
+            ? formatDate(partner.data.date_effective_from, i18n)
+            : undefined,
+        }
+      };
+      pageRouting.previousUrl = partner.data?.legal_entity_name
+        ? super.insertIdsInUrl(pageRouting.data?.confirmPrincipalOfficeAddres, ids, request.url)
+        : super.insertIdsInUrl(pageRouting.data?.confirmUsualResidentialAddress, ids, request.url);
+      return formattedPartner;
+    }
+    return partner;
+  };
 }
 
 export default LimitedPartnerController;
