@@ -1,7 +1,7 @@
 import * as url from "../url";
 import PostTransitionPageType from "../pageType";
 
-import { CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL, TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL, TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../addressLookUp/url/postTransition";
+import { CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL, CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL, TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL, TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../addressLookUp/url/postTransition";
 
 const postTransitionRoutingLimitedPartnerChoice = {
   previousUrl: url.LANDING_PAGE_URL,
@@ -31,6 +31,7 @@ const postTransitionRoutingLimitedPartnerCheckYourAnswers = {
   pageType: PostTransitionPageType.limitedPartnerCheckYourAnswers,
   data: {
     confirmUsualResidentialAddress: CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+    confirmPrincipalOfficeAddress: CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
   }
 };
 
