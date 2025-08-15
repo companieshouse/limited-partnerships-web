@@ -30,7 +30,12 @@ class LimitedPartnerBuilder extends AbstractPartnerBuilder {
     };
   }
 
-  withDateEffectiveFrom(dateEffectiveFrom: string) {
+  withDateOfBirth(dateOfBirth: string | undefined) {
+    this.data.date_of_birth = dateOfBirth;
+    return this;
+  }
+
+  withDateEffectiveFrom(dateEffectiveFrom: string | undefined) {
     this.data.date_effective_from = dateEffectiveFrom;
     return this;
   }

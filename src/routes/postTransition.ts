@@ -18,6 +18,7 @@ import {
   GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL,
   GENERAL_PARTNER_CHOICE_URL,
   LANDING_PAGE_URL,
+  LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL,
   LIMITED_PARTNER_CHOICE_URL
 } from "../presentation/controller/postTransition/url";
 
@@ -164,6 +165,12 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
     ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
     companyAuthentication,
     dependencies.limitedPartnerPostTransitionController.sendPageData()
+  );
+
+  router.get(
+    LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.getPageRouting()
   );
 };
 

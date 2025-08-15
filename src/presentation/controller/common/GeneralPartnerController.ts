@@ -65,11 +65,13 @@ abstract class GeneralPartnerController extends AbstractController {
             ids.transactionId,
             ids.generalPartnerId
           );
+
           generalPartner = this.formatGeneralPartnerDatesAndSetPreviousUrl(
             generalPartner,
             pageRouting,
             request,
-            response.locals.i18n);
+            response.locals.i18n
+          );
         }
 
         response.render(
