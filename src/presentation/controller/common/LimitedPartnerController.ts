@@ -480,8 +480,9 @@ class LimitedPartnerController extends AbstractController {
         }
       };
       pageRouting.previousUrl = partner.data?.legal_entity_name
-        ? super.insertIdsInUrl(pageRouting.data?.confirmPrincipalOfficeAddres, ids, request.url)
+        ? super.insertIdsInUrl(pageRouting.data?.confirmPrincipalOfficeAddress, ids, request.url)
         : super.insertIdsInUrl(pageRouting.data?.confirmUsualResidentialAddress, ids, request.url);
+
       return formattedPartner;
     }
     return partner;

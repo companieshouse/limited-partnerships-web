@@ -67,6 +67,21 @@ describe("Limited Partner Check Your Answers Page for Person", () => {
     }
   );
 
+  // TODO move this to limited-partner-check-your-answers-legal-entity-test.ts
+  it("Should contain a back link to the confirm principal office address page", async () => {
+    const limitedPartnerLegalEntity = new LimitedPartnerBuilder()
+      .isLegalEntity()
+      .build();
+
+    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerLegalEntity]);
+
+    const res = await request(app).get(URL);
+
+    expect(res.status).toBe(200);
+    expect(res.text).toContain(getUrl(CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL));
+    expect(res.text).not.toContain(getUrl(CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL));
+  });
+
   it("Should contain a back link to the confirm usual residential address page", async () => {
     const res = await request(app).get(URL);
 
