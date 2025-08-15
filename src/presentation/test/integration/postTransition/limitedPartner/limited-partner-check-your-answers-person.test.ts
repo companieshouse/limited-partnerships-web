@@ -94,8 +94,8 @@ describe("Limited Partner Check Your Answers Page for Person", () => {
     limitedPartnerPerson = new LimitedPartnerBuilder()
       .isPerson()
       .withFormerNames("Joe Dee")
-      .withDateOfBirth(undefined as unknown as string)
-      .withDateEffectiveFrom(undefined as unknown as string)
+      .withDateOfBirth(undefined)
+      .withDateEffectiveFrom(undefined)
       .build();
 
     appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerPerson]);
