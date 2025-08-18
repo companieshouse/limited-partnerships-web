@@ -407,7 +407,10 @@
                 "registrationNumber": "Registration number",
                 "principalOfficeAddress": "Principal office address"
             }
-        } 
+        },
+         "update": {
+            "title" : "Check your answers before submitting this update"
+        }
     },
 
     "companyNumber" : {
@@ -495,10 +498,6 @@
         "disqualificationStatementLegend" : "General partner - person - disqualification statement"
     },
 
-    "generalPartnercheckYourAnswersPage" : {
-        "title" : "Check your answers before submitting this update"
-    },
-
     "govUk" : {
         "banner" : {
           "tag": "Beta",
@@ -575,8 +574,8 @@
     },
 
     "print" : {
-        "buttonText" : "Print this page",
-        "buttonTextNoJs" : "To print this page, select print from your browser menu."
+        "buttonText" : "Print",
+        "buttonTextNoJs" : "To print this page, select Print from your browser menu."
     },
 
     "publicRegisterInformation" : {

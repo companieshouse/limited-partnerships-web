@@ -56,7 +56,8 @@ describe("Check Your Answers Page", () => {
         "confirm",
         "futureLawful",
         "capitalContribution",
-        "payment"
+        "payment",
+        "update"
       ]);
       expect(res.text).toContain(enTranslationText.print.buttonText);
       expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
@@ -77,7 +78,8 @@ describe("Check Your Answers Page", () => {
         "confirm",
         "futureLawful",
         "capitalContribution",
-        "payment"
+        "payment",
+        "update"
       ]);
       expect(res.text).toContain(cyTranslationText.print.buttonText);
       expect(res.text).toContain(cyTranslationText.print.buttonTextNoJs);

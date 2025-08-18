@@ -406,7 +406,10 @@
                 "registrationNumber": "WELSH - Registration number",
                 "principalOfficeAddress": "WELSH - Principal office address"
             }
-        } 
+        },
+        "update": {
+            "title" : "WELSH - Check your answers before submitting this update"
+        }
     },
 
     "companyNumber" : {
@@ -494,10 +497,6 @@
         "disqualificationStatementLegend" : "WELSH - General partner - person - disqualification statement"
     },
 
-    "generalPartnercheckYourAnswersPage" : {
-        "title" : "WELSH - Check your answers before submitting this update"
-    },
-
     "govUk" : {
         "banner" : {
           "tag": "WELSH - Beta",
@@ -574,8 +573,8 @@
     },
 
     "print" : {
-        "buttonText" : "WELSH - Print this page",
-        "buttonTextNoJs" : "WELSH - To print this page, select print from your browser menu."
+        "buttonText" : "WELSH - Print",
+        "buttonTextNoJs" : "WELSH - To print this page, select Print from your browser menu."
     },
 
     "publicRegisterInformation" : {

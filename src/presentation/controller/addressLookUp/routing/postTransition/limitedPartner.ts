@@ -62,7 +62,7 @@ const postTransitionAddressRoutingChooseLimitedPartnerUsualResidentialAddress = 
 const postTransitionAddressRoutingConfirmLimitedPartnerUsualResidentialAddress = {
   previousUrl: url.POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   currentUrl: url.CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-  nextUrl: "/", // TODO - change to check your answer
+  nextUrl: LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL,
   pageType: AddressPageType.confirmLimitedPartnerUsualResidentialAddress,
   data: {
     ...usualResidentialAddressCacheKeys,
