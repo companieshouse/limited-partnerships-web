@@ -61,7 +61,9 @@ const transactionService = new TransactionService(transactionGateway);
 const globalController: GlobalController = new GlobalController(
   limitedPartnershipService,
   paymentService,
-  transactionService
+  transactionService,
+  companyService,
+  generalPartnerService
 );
 const limitedPartnershipRegistrationController: LimitedPartnershipRegistrationController =
   new LimitedPartnershipRegistrationController(

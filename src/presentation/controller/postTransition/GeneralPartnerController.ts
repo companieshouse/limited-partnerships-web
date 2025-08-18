@@ -16,6 +16,9 @@ import { IncorporationKind, PartnerKind } from "@companieshouse/api-sdk-node/dis
 
 import PostTransitionPageType from "../postTransition/pageType";
 import postTransitionRouting from "../postTransition/routing";
+import { CONFIRMATION_POST_TRANSITION_URL } from "../global/url";
+import { JOURNEY_TYPE_PARAM } from "../../../config/constants";
+import { getJourneyTypes } from "../../../utils/journey";
 
 class GeneralPartnerPostTransitionController extends GeneralPartnerController {
   constructor(
@@ -108,6 +111,32 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
       confirmGeneralPartnerPrincipalOfficeAddressUrl: CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
     });
   }
+
+  postCheckYourAnswers() {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { tokens, ids } = super.extract(request);
+
+        await this.generalPartnerService.sendPageData(
+          tokens,
+          ids.transactionId,
+          ids.generalPartnerId,
+          request.body
+        );
+
+        await this.limitedPartnershipService.closeTransaction(tokens, ids.transactionId);
+
+        const url = super
+          .insertIdsInUrl(CONFIRMATION_POST_TRANSITION_URL, ids, request.url)
+          .replace(JOURNEY_TYPE_PARAM, getJourneyTypes(request.url).journey);
+
+        response.redirect(url);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
 }
 
 export default GeneralPartnerPostTransitionController;

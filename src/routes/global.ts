@@ -8,6 +8,7 @@ import {
   PAYMENT_FAILED_URL,
   CONFIRMATION_URL,
   RESUME_JOURNEY_URL,
+  CONFIRMATION_POST_TRANSITION_URL,
 } from "../presentation/controller/global/url";
 
 export const globalEndpoints = (
@@ -34,6 +35,11 @@ export const globalEndpoints = (
   router.get(
     CONFIRMATION_URL,
     dependencies.globalController.getConfirmationPage()
+  );
+
+  router.get(
+    CONFIRMATION_POST_TRANSITION_URL,
+    dependencies.globalController.getConfirmationPagePostTransition()
   );
 
   router.get(

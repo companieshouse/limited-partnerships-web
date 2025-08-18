@@ -40,6 +40,11 @@ jest.mock("../../controller/global/Controller", () => {
           return next();
         };
       }),
+      getConfirmationPagePostTransition: jest.fn().mockImplementation(() => {
+        return (_req: Request, _res: Response, next: NextFunction) => {
+          return next();
+        };
+      }),
       resumeJourney: jest.fn().mockImplementation(() => {
         return (_req: Request, _res: Response, next: NextFunction) => {
           return next();

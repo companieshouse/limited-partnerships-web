@@ -12,9 +12,12 @@ import { getUrl, setLocalesEnabled } from "../../../utils";
 import { formatDate } from "../../../../../utils/date-format";
 import { GeneralPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL, CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../../../controller/addressLookUp/url/postTransition";
+import PostTransitionPageType from "../../../../controller/postTransition/pageType";
+import { CONFIRMATION_POST_TRANSITION_URL } from "../../../../controller/global/url";
 
 describe("General Partner Check Your Answers Page", () => {
   const URL = getUrl(GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL);
+  const REDIRECT_URL = getUrl(CONFIRMATION_POST_TRANSITION_URL);
 
   let generalPartnerPerson;
 
@@ -78,6 +81,20 @@ describe("General Partner Check Your Answers Page", () => {
 
     expect(res.status).toBe(200);
     checkIfValuesInText(res, generalPartnerPerson, enTranslationText);
+  });
+
+  describe("POST Check Your Answers Page", () => {
+    it("should navigate to next page", async () => {
+      generalPartnerPerson = new GeneralPartnerBuilder().isLegalEntity().withId(appDevDependencies.generalPartnerGateway.generalPartnerId).withDateEffectiveFrom("2024-10-10").build();
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartnerPerson]);
+
+      const res = await request(app).post(URL).send({
+        pageType: PostTransitionPageType.addGeneralPartnerPerson
+      });
+
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+    });
   });
 });
 

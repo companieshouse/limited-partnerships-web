@@ -109,6 +109,11 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
     companyAuthentication,
     dependencies.generalPartnerPostTransitionController.getPageRouting()
   );
+  router.post(
+    GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.postCheckYourAnswers()
+  );
 
   // Limited Partner
 

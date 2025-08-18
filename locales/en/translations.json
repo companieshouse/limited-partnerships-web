@@ -451,6 +451,19 @@
         "avis": {
             "message": "What did you think of this service?",
             "time": "(takes 30 seconds)"
+        },
+        "postTransition": {
+            "generalPartner":{
+              "generalPartnerName": "We've received your filing to add",
+              "generalPartnerType": "as a general partner of",
+              "updateWontShow": "This update will not show on the public register until we accept the filing.",
+              "processFiling": "We'll process this filing withing 5 working days, and email",
+              "processFilingConfirmation": "to let you know if it's been accepted or rejected.",
+              "filingAccepted": "If it's accepted, we'll publish the new information on the public register.",
+              "filingRejected": "If its rejected, we'll explain why and tell you what you can do next.",
+              "confirmationStatementTitle": "If you need to file a confirmation statement",
+              "confirmationStatementBody": "As long as all required updates have been submitted, you can file a confirmation statement. You do not need to wait for the updates to be accepted."
+            } 
         }
     },
 
