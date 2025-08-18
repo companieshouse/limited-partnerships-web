@@ -14,6 +14,7 @@ import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
 import GeneralPartnerBuilder from "../../../../builder/GeneralPartnerBuilder";
+import { GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/postTransition/url";
 
 describe("Confirm General Partner Correspondence Address Page", () => {
   const URL = getUrl(CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL);
@@ -108,12 +109,11 @@ describe("Confirm General Partner Correspondence Address Page", () => {
           }`
         });
 
-      // TODO add this back when the check your answers page for post transition is implemented
-      // const redirectUrl = getUrl();
+      const redirectUrl = getUrl(GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL);
 
       expect(res.status).toBe(302);
 
-      // expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+      expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
     });
 
     it("should show error message if address is not provided", async () => {

@@ -14,7 +14,7 @@ import {
   JOURNEY_TYPE_PARAM
 } from "../../../config/constants";
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
-import { getJourneyTypes, logger } from "../../../utils";
+import { getJourneyTypes, getLoggedInUserEmail, logger } from "../../../utils";
 import PaymentService from "../../../application/service/PaymentService";
 import { Journey } from "../../../domain/entities/journey";
 import { CONFIRMATION_URL, PAYMENT_FAILED_URL, PAYMENT_RESPONSE_URL } from "./url";
@@ -22,6 +22,9 @@ import { WHICH_TYPE_WITH_IDS_URL } from "../registration/url";
 import { EMAIL_URL } from "../transition/url";
 import TransactionService from "../../../application/service/TransactionService";
 import { TransactionKind, TransactionStatus } from "../../../domain/entities/TransactionTypes";
+import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
+import CompanyService from "../../../application/service/CompanyService";
+import { GeneralPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 class GlobalController extends AbstractController {
   private static readonly FILING_MODE_URL_MAP: Record<string, { journey: string; resumeUrl: string }> = {
@@ -42,7 +45,9 @@ class GlobalController extends AbstractController {
   constructor(
     private readonly limitedPartnershipService: LimitedPartnershipService,
     private readonly paymentService: PaymentService,
-    private readonly transactionService: TransactionService
+    private readonly transactionService: TransactionService,
+    private readonly companyService: CompanyService,
+    private readonly generalPartnerService: GeneralPartnerService
   ) {
     super();
   }
@@ -145,6 +150,49 @@ class GlobalController extends AbstractController {
         );
       } catch (error) {
         next(error);
+      }
+    };
+  }
+
+  getConfirmationPagePostTransition() {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { tokens, pageType, ids } = super.extract(request);
+        const pageRouting = super.getRouting(globalsRouting, pageType, request);
+
+        const generalPartner = await this.getGeneralPartnerDetails(tokens, ids.transactionId);
+        const limitedPartnership = await this.getLimitedPartnershipDetails(tokens, ids.companyId);
+        const userEmail = getLoggedInUserEmail(request.session);
+
+        response.render(
+          super.templateName(pageRouting.currentUrl),
+          super.makeProps(pageRouting, { limitedPartnership, generalPartner, userEmail, ids }, null)
+        );
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  private async getGeneralPartnerDetails(tokens: Tokens, transactionId: string): Promise<GeneralPartner> {
+    const result = await this.generalPartnerService.getGeneralPartners(tokens, transactionId);
+    const generalPartner: GeneralPartner = result.generalPartners[0];
+    return {
+      data: {
+        forename: generalPartner.data?.forename,
+        surname: generalPartner.data?.surname,
+        legal_entity_name: generalPartner.data?.legal_entity_name,
+      }
+    };
+  }
+
+  private async getLimitedPartnershipDetails(tokens: Tokens, companyId: string): Promise<Record<string, any>> {
+    const result = await this.companyService.getCompanyProfile(tokens, companyId);
+
+    return {
+      data: {
+        partnership_name: result.companyProfile.companyName,
+        partnership_number: result.companyProfile.companyNumber
       }
     };
   }

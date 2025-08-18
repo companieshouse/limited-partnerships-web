@@ -38,7 +38,8 @@ describe("Confirmation Page", () => {
           "filing",
           "processUpdate",
           "willSendEmailTo",
-          "updatePublicRegister"
+          "updatePublicRegister",
+          "postTransition"
         ]);
 
         expect(res.text).toContain(limitedPartnership.data?.email);
@@ -56,7 +57,8 @@ describe("Confirmation Page", () => {
           "willEmail",
           "applicationAcceptedOrRejected",
           "accepted",
-          "rejected"
+          "rejected",
+          "postTransition"
         ]);
 
         expect(res.text).toContain(limitedPartnership.data?.email);
@@ -79,7 +81,8 @@ describe("Confirmation Page", () => {
         "filing",
         "processUpdate",
         "willSendEmailTo",
-        "updatePublicRegister"
+        "updatePublicRegister",
+        "postTransition"
       ]);
 
       expect(res.text).toContain(limitedPartnership.data?.email);
@@ -96,7 +99,8 @@ describe("Confirmation Page", () => {
         "willEmail",
         "applicationAcceptedOrRejected",
         "accepted",
-        "rejected"
+        "rejected",
+        "postTransition"
       ]);
 
       expect(res.text).toContain(limitedPartnership.data?.email);

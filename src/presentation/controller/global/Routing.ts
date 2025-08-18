@@ -16,6 +16,13 @@ const globalRoutingConfirmation = {
   pageType: GlobalPageType.confirmation
 };
 
+const globalRoutingConfirmationPostTransition = {
+  previousUrl: "/",
+  currentUrl: url.CONFIRMATION_POST_TRANSITION_URL,
+  nextUrl: "/",
+  pageType: GlobalPageType.confirmation
+};
+
 const globalRoutingPaymentFailed = {
   previousUrl: "/",
   currentUrl: url.PAYMENT_FAILED_URL,
@@ -23,7 +30,7 @@ const globalRoutingPaymentFailed = {
   pageType: GlobalPageType.paymentFailed
 };
 
-const list = [globalRoutingSignOut, globalRoutingConfirmation, globalRoutingPaymentFailed];
+const list = [globalRoutingSignOut, globalRoutingConfirmation, globalRoutingConfirmationPostTransition, globalRoutingPaymentFailed];
 
 export const globalsRouting: PagesRouting = new Map<GlobalPageType, PageRouting>();
 

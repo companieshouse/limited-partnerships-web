@@ -16,6 +16,7 @@ import {
 
 import GeneralPartnerBuilder from "../../../../builder/GeneralPartnerBuilder";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
+import { GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/postTransition/url";
 
 describe("Confirm General Partner Principal Office Address Page", () => {
   const URL = getUrl(CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
@@ -110,10 +111,10 @@ describe("Confirm General Partner Principal Office Address Page", () => {
           }`
         });
 
-      // const redirectUrl = getUrl(REVIEW_GENERAL_PARTNERS_URL); // TODO update this to the next page URL when available
+      const redirectUrl = getUrl(GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL);
 
       expect(res.status).toBe(302);
-      // expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+      expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
     });
 
     it("should show error message if address is not provided", async () => {

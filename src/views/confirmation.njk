@@ -1,6 +1,11 @@
 {% extends "layout.njk" %}
 
 {% set pageTitle = i18n.confirmationPage.title %}
+{% if props.data.generalPartner.data.legal_entity_name %}
+  {% set generalPartnerName = props.data.generalPartner.data.legal_entity_name %}
+{% else %}
+  {% set generalPartnerName = props.data.generalPartner.data.forename ~ ' ' ~ props.data.generalPartner.data.surname %}
+{% endif %}
 
 {% block content %}
   <div class="govuk-grid-row">
@@ -37,12 +42,33 @@
       <p class="govuk-body">{{ i18n.confirmationPage.processUpdate }}</p>
       <p class="govuk-body">{{ i18n.confirmationPage.willSendEmailTo }} <strong>{{ props.data.limitedPartnership.data.email }}</strong> {{ i18n.confirmationPage.updatePublicRegister }}</p>
 
+    {% elif journeyTypes.isPostTransition %}
+      <p class="govuk-body">{{ i18n.confirmationPage.postTransition.generalPartner.generalPartnerName }} {{ generalPartnerName }} {{ i18n.confirmationPage.postTransition.generalPartner.generalPartnerType}} {{ props.data.limitedPartnership.data.partnership_name | upper }} (LP123456).</p>
+
+      <p class="govuk-body">{{ i18n.confirmationPage.sentEmailTo }} <strong>{{ props.data.userEmail }}</strong>.</p>
+
+      {{ govukInsetText({
+        text: i18n.confirmationPage.postTransition.generalPartner.updateWontShow
+      }) }}
+
+      <h2 class="govuk-heading-m">{{ i18n.confirmationPage.happensNext }}</h2>
+
+      <p class="govuk-body">{{ i18n.confirmationPage.postTransition.generalPartner.processFiling }} <strong>{{ props.data.userEmail }}</strong> {{ i18n.confirmationPage.postTransition.generalPartner.processFilingConfirmation }}</p>
+
+      <p class="govuk-body">{{ i18n.confirmationPage.postTransition.generalPartner.filingAccepted }}</p>
+
+      <p class="govuk-body">{{ i18n.confirmationPage.postTransition.generalPartner.filingRejected }}</p>
+
+      <h2 class="govuk-heading-m">{{ i18n.confirmationPage.postTransition.generalPartner.confirmationStatementTitle }}</h2>
+      
+      <p class="govuk-body">{{ i18n.confirmationPage.postTransition.generalPartner.confirmationStatementBody }}</p>
     {% endif %}
 
+    {% if not journeyTypes.isPostTransition %}
       <p class="govuk-body">
         <a href="https://www.smartsurvey.co.uk/s/file-for-lp-conf/" target="_blank" class="govuk-link">{{ i18n.confirmationPage.avis.message }}</a> {{ i18n.confirmationPage.avis.time }}
       </p>
-      
+    {% endif %}
     </div>
   </div>
 {% endblock %}

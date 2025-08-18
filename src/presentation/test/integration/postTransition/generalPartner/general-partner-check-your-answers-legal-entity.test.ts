@@ -1,19 +1,22 @@
 import request from "supertest";
-import app from "../app";
+import app from "../../app";
 
-import enTranslationText from "../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../locales/cy/translations.json";
-import { appDevDependencies } from "../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
-import GeneralPartnerBuilder from "../../builder/GeneralPartnerBuilder";
-import { GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL } from "../../../controller/postTransition/url";
-import CompanyProfileBuilder from "../../builder/CompanyProfileBuilder";
-import { CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL, CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL } from "../../../controller/addressLookUp/url/postTransition";
+import enTranslationText from "../../../../../../locales/en/translations.json";
+import cyTranslationText from "../../../../../../locales/cy/translations.json";
+import { appDevDependencies } from "../../../../../config/dev-dependencies";
+import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
+import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
+import { GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL } from "../../../../controller/postTransition/url";
+import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
+import { CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL, CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL } from "../../../../controller/addressLookUp/url/postTransition";
 import { GeneralPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
-import { formatDate } from "../../../../utils/date-format";
+import { formatDate } from "../../../../../utils/date-format";
+import PostTransitionPageType from "../../../../controller/postTransition/pageType";
+import { CONFIRMATION_POST_TRANSITION_URL } from "../../../../controller/global/url";
 
 describe("Check Your Answers Page", () => {
   const URL = getUrl(GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL);
+  const REDIRECT_URL = getUrl(CONFIRMATION_POST_TRANSITION_URL);
 
   let companyProfile;
   let generalPartnerLegalEntity;
@@ -23,7 +26,6 @@ describe("Check Your Answers Page", () => {
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
     generalPartnerLegalEntity = new GeneralPartnerBuilder().isLegalEntity().withDateEffectiveFrom("2024-10-10").build();
-
     appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartnerLegalEntity]);
   });
 
@@ -107,6 +109,19 @@ describe("Check Your Answers Page", () => {
       testTranslations(res.text, cyTranslationText.checkYourAnswersPage.partners, ["capitalContribution", "title", "changeRemoveOrAdd", "limitedPartners", "person"]);
 
       checkIfValuesInText(res, generalPartnerLegalEntity, cyTranslationText);
+    });
+  });
+  describe("POST Check Your Answers Page", () => {
+    it("should navigate to next page", async () => {
+      generalPartnerLegalEntity = new GeneralPartnerBuilder().isLegalEntity().withId(appDevDependencies.generalPartnerGateway.generalPartnerId).withDateEffectiveFrom("2024-10-10").build();
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartnerLegalEntity]);
+
+      const res = await request(app).post(URL).send({
+        pageType: PostTransitionPageType.addGeneralPartnerLegalEntity
+      });
+
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
     });
   });
 });
