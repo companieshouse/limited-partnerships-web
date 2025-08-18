@@ -9,7 +9,7 @@ import {
 } from "../../../../controller/postTransition/url";
 import PostTransitionPageType from "../../../../controller/postTransition/pageType";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled } from "../../../utils";
+import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 
 describe("Limited Partner Choice Page", () => {
@@ -32,6 +32,7 @@ describe("Limited Partner Choice Page", () => {
     expect(res.text).toContain(
       `${cyTranslationText.limitedPartnerChoicePage.isPersonOrLegalEntity} - ${cyTranslationText.servicePostTransition} - GOV.UK`
     );
+    testTranslations(res.text, cyTranslationText.limitedPartnerChoicePage, ["isPersonOrLegalEntityHint"]);
     expect(res.text).not.toContain(cyTranslationText.limitedPartnerChoicePage.isPersonOrLegalEntityHint);
   });
 
@@ -43,6 +44,7 @@ describe("Limited Partner Choice Page", () => {
     expect(res.text).toContain(
       `${enTranslationText.limitedPartnerChoicePage.isPersonOrLegalEntity} - ${enTranslationText.servicePostTransition} - GOV.UK`
     );
+    testTranslations(res.text, enTranslationText.limitedPartnerChoicePage, ["isPersonOrLegalEntityHint"]);
     expect(res.text).not.toContain(enTranslationText.limitedPartnerChoicePage.isPersonOrLegalEntityHint);
   });
 
