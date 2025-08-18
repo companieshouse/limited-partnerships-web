@@ -132,7 +132,6 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
 
         response.redirect(url);
       } catch (error) {
-        console.error("POST Check Your Answers error:", error);
         next(error);
       }
     };
