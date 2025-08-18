@@ -16,6 +16,7 @@ import {
 
 import LimitedPartnerBuilder from "../../../../builder/LimitedPartnerBuilder";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
+import { LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/postTransition/url";
 
 describe("Confirm Limited Partner Principal Office Address Page", () => {
   const URL = getUrl(CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
@@ -110,10 +111,10 @@ describe("Confirm Limited Partner Principal Office Address Page", () => {
           }`
         });
 
-      // const redirectUrl = getUrl(REVIEW_LIMITED_PARTNERS_URL); // TODO update this to the next page URL when available
+      const redirectUrl = getUrl(LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL);
 
       expect(res.status).toBe(302);
-      // expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+      expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
     });
 
     it("should show error message if address is not provided", async () => {
