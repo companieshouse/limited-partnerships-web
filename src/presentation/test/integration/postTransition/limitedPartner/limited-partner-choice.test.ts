@@ -32,7 +32,8 @@ describe("Limited Partner Choice Page", () => {
     expect(res.text).toContain(
       `${cyTranslationText.limitedPartnerChoicePage.isPersonOrLegalEntity} - ${cyTranslationText.servicePostTransition} - GOV.UK`
     );
-    testTranslations(res.text, cyTranslationText.limitedPartnerChoicePage, ["hint"]);
+    testTranslations(res.text, cyTranslationText.limitedPartnerChoicePage, ["isPersonOrLegalEntityHint"]);
+    expect(res.text).not.toContain(cyTranslationText.limitedPartnerChoicePage.isPersonOrLegalEntityHint);
   });
 
   it("should load the limited partner choice page with English text", async () => {
@@ -43,7 +44,8 @@ describe("Limited Partner Choice Page", () => {
     expect(res.text).toContain(
       `${enTranslationText.limitedPartnerChoicePage.isPersonOrLegalEntity} - ${enTranslationText.servicePostTransition} - GOV.UK`
     );
-    testTranslations(res.text, enTranslationText.limitedPartnerChoicePage, ["hint"]);
+    testTranslations(res.text, enTranslationText.limitedPartnerChoicePage, ["isPersonOrLegalEntityHint"]);
+    expect(res.text).not.toContain(enTranslationText.limitedPartnerChoicePage.isPersonOrLegalEntityHint);
   });
 
   it("should redirect to limitedPartner Person page when person is selected", async () => {

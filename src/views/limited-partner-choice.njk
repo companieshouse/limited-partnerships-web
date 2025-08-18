@@ -24,7 +24,7 @@
           },
           hint: {
             text: i18n.limitedPartnerChoicePage.isPersonOrLegalEntityHint
-          },
+          } if not journeyTypes.isPostTransition,
           items: [
             {
               value: "person",
