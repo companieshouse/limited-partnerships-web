@@ -14,6 +14,7 @@ import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
 import LimitedPartnerBuilder from "../../../../builder/LimitedPartnerBuilder";
+import { LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL } from "presentation/controller/postTransition/url";
 
 describe("Confirm Limited Partner Usual Residential Address Page", () => {
   const URL = getUrl(CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
@@ -116,7 +117,7 @@ describe("Confirm Limited Partner Usual Residential Address Page", () => {
           }`
         });
 
-      const redirectUrl = getUrl(""); // TODO - redirect to check your answer page
+      const redirectUrl = getUrl(LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL);
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);

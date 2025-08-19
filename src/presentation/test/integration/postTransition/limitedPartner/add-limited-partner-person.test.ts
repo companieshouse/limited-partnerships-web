@@ -14,7 +14,7 @@ import {
   ADD_LIMITED_PARTNER_PERSON_URL,
   ADD_LIMITED_PARTNER_PERSON_WITH_IDS_URL
 } from "../../../../controller/postTransition/url";
-import { TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../controller/addressLookUp/url/postTransition";
+import { CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL, TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../controller/addressLookUp/url/postTransition";
 import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 import { POST_TRANSITION_WITH_ID_URL } from "../../../../../config/constants";
@@ -247,6 +247,29 @@ describe("Add Limited Partner Person Page", () => {
       });
       expect(res.status).toBe(200);
       expect(res.text).toContain("limited partner name is invalid");
+    });
+
+    it("should send the limited partner details and go to confirm ura address page if already saved", async () => {
+      const limitedPartner = new LimitedPartnerBuilder()
+        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+        .isPerson()
+        .build();
+
+      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
+
+      const URL = getUrl(ADD_LIMITED_PARTNER_PERSON_WITH_IDS_URL);
+
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: PostTransitionPageType.addLimitedPartnerPerson,
+          ...limitedPartner.data
+        });
+
+      const REDIRECT = getUrl(CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
+
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Found. Redirecting to ${REDIRECT}`);
     });
 
     it("should replay entered data when invalid data is entered and a validation error occurs", async () => {
