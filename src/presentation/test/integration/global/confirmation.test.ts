@@ -43,6 +43,8 @@ describe("Confirmation Page", () => {
         ]);
 
         expect(res.text).toContain(limitedPartnership.data?.email);
+        expect(res.text).toContain(enTranslationText.print.buttonText);
+        expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
         expect(res.text).toContain(appDevDependencies.transactionGateway.transactionId);
       });
 
@@ -62,6 +64,8 @@ describe("Confirmation Page", () => {
         ]);
 
         expect(res.text).toContain(limitedPartnership.data?.email);
+        expect(res.text).toContain(enTranslationText.print.buttonText);
+        expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
         expect(res.text).toContain(appDevDependencies.transactionGateway.transactionId);
         expect(res.text).toContain(limitedPartnership.data?.partnership_name?.toUpperCase());
       });
@@ -85,6 +89,8 @@ describe("Confirmation Page", () => {
         "postTransition"
       ]);
 
+      expect(res.text).toContain(cyTranslationText.print.buttonText);
+      expect(res.text).toContain(cyTranslationText.print.buttonTextNoJs);
       expect(res.text).toContain(limitedPartnership.data?.email);
     });
 
@@ -104,6 +110,8 @@ describe("Confirmation Page", () => {
       ]);
 
       expect(res.text).toContain(limitedPartnership.data?.email);
+      expect(res.text).toContain(cyTranslationText.print.buttonText);
+      expect(res.text).toContain(cyTranslationText.print.buttonTextNoJs);
       expect(res.text).toContain(appDevDependencies.transactionGateway.transactionId);
       expect(res.text).toContain(limitedPartnership.data?.partnership_name?.toUpperCase());
     });

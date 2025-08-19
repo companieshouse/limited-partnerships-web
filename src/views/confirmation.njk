@@ -1,5 +1,10 @@
 {% extends "layout.njk" %}
 
+{% block head %}
+  {{ super() }}
+  {% include "includes/styles/print.njk" %}
+{% endblock %}
+
 {% set pageTitle = i18n.confirmationPage.title %}
 {% if props.data.generalPartner.data.legal_entity_name %}
   {% set generalPartnerName = props.data.generalPartner.data.legal_entity_name %}
@@ -69,6 +74,8 @@
         <a href="https://www.smartsurvey.co.uk/s/file-for-lp-conf/" target="_blank" class="govuk-link">{{ i18n.confirmationPage.avis.message }}</a> {{ i18n.confirmationPage.avis.time }}
       </p>
     {% endif %}
+
+    {% include "includes/print-button.njk" %}   
     </div>
   </div>
 {% endblock %}
