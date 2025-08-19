@@ -14,7 +14,7 @@ import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
 import LimitedPartnerBuilder from "../../../../builder/LimitedPartnerBuilder";
-import { LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL } from "presentation/controller/postTransition/url";
+import { LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/postTransition/url";
 
 describe("Confirm Limited Partner Usual Residential Address Page", () => {
   const URL = getUrl(CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
