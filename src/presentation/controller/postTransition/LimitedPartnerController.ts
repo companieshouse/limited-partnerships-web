@@ -97,7 +97,6 @@ class LimitedPartnerPostTransitionController extends LimitedPartnerController {
 
         response.redirect(url);
       } catch (error) {
-        console.log("Error creating limited partner:", error);
         next(error);
       }
     };
