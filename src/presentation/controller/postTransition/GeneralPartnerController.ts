@@ -99,7 +99,6 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
 
         response.redirect(url);
       } catch (error) {
-        console.log("Error creating general partner:", error);
         next(error);
       }
     };

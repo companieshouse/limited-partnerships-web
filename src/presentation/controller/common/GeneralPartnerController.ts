@@ -79,7 +79,6 @@ abstract class GeneralPartnerController extends AbstractController {
           super.makeProps(pageRouting, { limitedPartnership, generalPartner }, null)
         );
       } catch (error) {
-        console.log("Error in getPageRouting:", error);
         next(error);
       }
     };
