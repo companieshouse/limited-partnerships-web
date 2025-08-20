@@ -27,7 +27,6 @@ import CompanyService from "../../../application/service/CompanyService";
 import { GeneralPartner, LimitedPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
 import PostTransitionPageType from "../postTransition/pageType";
-import { GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL, LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL } from "../postTransition/url";
 
 class GlobalController extends AbstractController {
   private static readonly FILING_MODE_URL_MAP: Record<string, { journey: string; resumeUrl: string }> = {
@@ -189,7 +188,7 @@ class GlobalController extends AbstractController {
     if (isGeneralPartnerReferrer) {
       const result = await this.generalPartnerService.getGeneralPartners(tokens, transactionId);
       generalPartner = result.generalPartners[0];
-      generalPartner =  {
+      generalPartner = {
         data: {
           forename: generalPartner.data?.forename,
           surname: generalPartner.data?.surname,

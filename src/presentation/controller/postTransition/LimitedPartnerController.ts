@@ -111,29 +111,29 @@ class LimitedPartnerPostTransitionController extends LimitedPartnerController {
   }
 
   postCheckYourAnswers() {
-      return async (request: Request, response: Response, next: NextFunction) => {
-        try {
-          const { tokens, ids } = super.extract(request);
-  
-          await this.limitedPartnerService.sendPageData(
-            tokens,
-            ids.transactionId,
-            ids.limitedPartnerId,
-            request.body
-          );
-  
-          await this.limitedPartnershipService.closeTransaction(tokens, ids.transactionId);
-  
-          const url = super
-            .insertIdsInUrl(CONFIRMATION_POST_TRANSITION_URL, ids, request.url)
-            .replace(JOURNEY_TYPE_PARAM, getJourneyTypes(request.url).journey);
-  
-          response.redirect(url);
-        } catch (error) {
-          next(error);
-        }
-      };
-    }
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { tokens, ids } = super.extract(request);
+
+        await this.limitedPartnerService.sendPageData(
+          tokens,
+          ids.transactionId,
+          ids.limitedPartnerId,
+          request.body
+        );
+
+        await this.limitedPartnershipService.closeTransaction(tokens, ids.transactionId);
+
+        const url = super
+          .insertIdsInUrl(CONFIRMATION_POST_TRANSITION_URL, ids, request.url)
+          .replace(JOURNEY_TYPE_PARAM, getJourneyTypes(request.url).journey);
+
+        response.redirect(url);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
 }
 
 export default LimitedPartnerPostTransitionController;

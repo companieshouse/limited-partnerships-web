@@ -118,7 +118,7 @@ describe("Check Your Answers Page", () => {
         .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
         .withDateEffectiveFrom("2024-10-10")
         .build();
-        
+
       appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartnerLegalEntity]);
 
       const res = await request(app).post(URL).send({
