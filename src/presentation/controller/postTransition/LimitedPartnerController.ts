@@ -15,6 +15,9 @@ import { IncorporationKind, PartnerKind } from "@companieshouse/api-sdk-node/dis
 
 import PostTransitionPageType from "../postTransition/pageType";
 import postTransitionRouting from "../postTransition/routing";
+import { CONFIRMATION_POST_TRANSITION_URL } from "../global/url";
+import { JOURNEY_TYPE_PARAM } from "../../../config/constants";
+import { getJourneyTypes } from "../../../utils/journey";
 
 class LimitedPartnerPostTransitionController extends LimitedPartnerController {
   constructor(
@@ -106,6 +109,31 @@ class LimitedPartnerPostTransitionController extends LimitedPartnerController {
       confirmLimitedPartnerPrincipalOfficeAddressUrl: CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
     });
   }
+
+  postCheckYourAnswers() {
+      return async (request: Request, response: Response, next: NextFunction) => {
+        try {
+          const { tokens, ids } = super.extract(request);
+  
+          await this.limitedPartnerService.sendPageData(
+            tokens,
+            ids.transactionId,
+            ids.limitedPartnerId,
+            request.body
+          );
+  
+          await this.limitedPartnershipService.closeTransaction(tokens, ids.transactionId);
+  
+          const url = super
+            .insertIdsInUrl(CONFIRMATION_POST_TRANSITION_URL, ids, request.url)
+            .replace(JOURNEY_TYPE_PARAM, getJourneyTypes(request.url).journey);
+  
+          response.redirect(url);
+        } catch (error) {
+          next(error);
+        }
+      };
+    }
 }
 
 export default LimitedPartnerPostTransitionController;

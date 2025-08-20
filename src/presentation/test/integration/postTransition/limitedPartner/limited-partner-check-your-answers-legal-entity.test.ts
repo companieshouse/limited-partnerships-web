@@ -12,18 +12,21 @@ import { getUrl, setLocalesEnabled } from "../../../utils";
 import { formatDate } from "../../../../../utils/date-format";
 import { LimitedPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL, CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../../../controller/addressLookUp/url/postTransition";
+import PostTransitionPageType from "../../../../controller/postTransition/pageType";
+import { CONFIRMATION_POST_TRANSITION_URL } from "../../../../controller/global/url";
 
 describe("Limited Partner Check Your Answers Page", () => {
   const URL = getUrl(LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL);
+  const REDIRECT_URL = getUrl(CONFIRMATION_POST_TRANSITION_URL);
 
-  let limitedPartnerPerson;
+  let limitedPartnerLegalEntity;
 
   beforeEach(() => {
     const companyProfile = new CompanyProfileBuilder().build();
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
-    limitedPartnerPerson = new LimitedPartnerBuilder().isPerson().withFormerNames("Joe Dee").withDateEffectiveFrom("2024-10-10").build();
-    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerPerson]);
+    limitedPartnerLegalEntity = new LimitedPartnerBuilder().isLegalEntity().withDateEffectiveFrom("2024-10-10").build();
+    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerLegalEntity]);
   });
 
   it("should GET Check Your Answers Page English text", async () => {
@@ -83,20 +86,33 @@ describe("Limited Partner Check Your Answers Page", () => {
     const res = await request(app).get(URL);
 
     expect(res.status).toBe(200);
-    checkIfValuesInText(res, limitedPartnerPerson, enTranslationText);
+    checkIfValuesInText(res, limitedPartnerLegalEntity, enTranslationText);
+  });
+
+  describe("POST Check Your Answers Page", () => {
+    it("should navigate to next page", async () => {
+      limitedPartnerLegalEntity = new LimitedPartnerBuilder()
+        .isLegalEntity()
+        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+        .withDateEffectiveFrom("2024-10-10")
+        .build();
+
+      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerLegalEntity]);
+
+      const res = await request(app).post(URL).send({
+        pageType: PostTransitionPageType.limitedPartnerCheckYourAnswers
+      });
+
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+    });
   });
 });
 
 const checkIfValuesInText = (res: request.Response, partner: LimitedPartner, translationText: Record<string, any>) => {
   for (const key in partner.data) {
     if (typeof partner.data[key] === "string" || typeof partner.data[key] === "object") {
-      if (key === "nationality1") {
-        const capitalized = partner.data[key].charAt(0).toUpperCase() + partner.data[key].slice(1).toLowerCase();
-
-        expect(res.text).toContain(capitalized);
-      } else if (key.includes("date_of_birth") && partner.data[key]) {
-        expect(res.text).toContain(formatDate(partner.data[key], translationText));
-      } else if (key.includes("usual_residential_address")) {
+      if (key === "principal_office_address") {
         const capitalized = partner.data[key].address_line_1
           .split(" ")
           .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
@@ -104,6 +120,8 @@ const checkIfValuesInText = (res: request.Response, partner: LimitedPartner, tra
         expect(res.text).toContain(capitalized);
       } else if (key.includes("date_effective_from")) {
         expect(res.text).toContain(formatDate(partner.data[key], translationText));
+      } else if (!key.includes("address")) {
+        expect(res.text).toContain(partner.data[key]);
       }
     }
   }
