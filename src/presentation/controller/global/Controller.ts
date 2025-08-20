@@ -188,23 +188,9 @@ class GlobalController extends AbstractController {
     if (isGeneralPartnerReferrer) {
       const result = await this.generalPartnerService.getGeneralPartners(tokens, transactionId);
       generalPartner = result.generalPartners[0];
-      generalPartner = {
-        data: {
-          forename: generalPartner.data?.forename,
-          surname: generalPartner.data?.surname,
-          legal_entity_name: generalPartner.data?.legal_entity_name
-        }
-      };
     } else {
       const result = await this.limitedPartnerService.getLimitedPartners(tokens, transactionId);
       limitedPartner = result.limitedPartners[0];
-      limitedPartner = {
-        data: {
-          forename: limitedPartner.data?.forename,
-          surname: limitedPartner.data?.surname,
-          legal_entity_name: limitedPartner.data?.legal_entity_name
-        }
-      };
     };
     return { generalPartner, limitedPartner };
   }

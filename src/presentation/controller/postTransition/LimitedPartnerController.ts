@@ -115,13 +115,6 @@ class LimitedPartnerPostTransitionController extends LimitedPartnerController {
       try {
         const { tokens, ids } = super.extract(request);
 
-        await this.limitedPartnerService.sendPageData(
-          tokens,
-          ids.transactionId,
-          ids.limitedPartnerId,
-          request.body
-        );
-
         await this.limitedPartnershipService.closeTransaction(tokens, ids.transactionId);
 
         const url = super

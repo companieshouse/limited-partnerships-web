@@ -117,13 +117,6 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
       try {
         const { tokens, ids } = super.extract(request);
 
-        await this.generalPartnerService.sendPageData(
-          tokens,
-          ids.transactionId,
-          ids.generalPartnerId,
-          request.body
-        );
-
         await this.limitedPartnershipService.closeTransaction(tokens, ids.transactionId);
 
         const url = super
