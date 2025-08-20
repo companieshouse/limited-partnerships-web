@@ -63,7 +63,8 @@ const globalController: GlobalController = new GlobalController(
   paymentService,
   transactionService,
   companyService,
-  generalPartnerService
+  generalPartnerService,
+  limitedPartnerService
 );
 const limitedPartnershipRegistrationController: LimitedPartnershipRegistrationController =
   new LimitedPartnershipRegistrationController(

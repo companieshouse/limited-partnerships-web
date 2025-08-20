@@ -12,9 +12,12 @@ import { formatDate } from "../../../../../utils/date-format";
 import { LimitedPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL, CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../controller/addressLookUp/url/postTransition";
 import LimitedPartnerBuilder from "../../../../../presentation/test/builder/LimitedPartnerBuilder";
+import PostTransitionPageType from "../../../../controller/postTransition/pageType";
+import { CONFIRMATION_POST_TRANSITION_URL } from "../../../../controller/global/url";
 
 describe("Limited Partner Check Your Answers Page for Person", () => {
   const URL = getUrl(LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL);
+  const REDIRECT_URL = getUrl(CONFIRMATION_POST_TRANSITION_URL);
 
   let limitedPartnerPerson;
 
@@ -105,6 +108,25 @@ describe("Limited Partner Check Your Answers Page for Person", () => {
 
     expect(res.status).toBe(200);
     checkIfValuesInText(res, limitedPartnerPerson, enTranslationText);
+  });
+
+  describe("POST Check Your Answers Page", () => {
+    it("should navigate to next page", async () => {
+      limitedPartnerPerson = new LimitedPartnerBuilder()
+        .isPerson()
+        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+        .withDateEffectiveFrom("2024-10-10")
+        .build();
+
+      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerPerson]);
+
+      const res = await request(app).post(URL).send({
+        pageType: PostTransitionPageType.limitedPartnerCheckYourAnswers
+      });
+
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+    });
   });
 });
 

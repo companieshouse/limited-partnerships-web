@@ -453,9 +453,10 @@
             "time": "(takes 30 seconds)"
         },
         "postTransition": {
-            "generalPartner":{
-              "generalPartnerName": "We've received your filing to add",
+            "partner":{
+              "partnerName": "We've received your filing to add",
               "generalPartnerType": "as a general partner of",
+              "limitedPartnerType": "as a limited partner of",
               "updateWontShow": "This update will not show on the public register until we accept the filing.",
               "processFiling": "We'll process this filing withing 5 working days, and email",
               "processFilingConfirmation": "to let you know if it's been accepted or rejected.",

@@ -452,9 +452,10 @@
             "time": "WELSH - (takes 30 seconds)"
         },
         "postTransition": {
-            "generalPartner":{
-              "generalPartnerName": "WELSH - We've received your filing to add",
+            "partner":{
+              "partnerName": "WELSH - We've received your filing to add",
               "generalPartnerType": "WELSH - as a general partner of",
+              "limitedPartnerType": "WELSH - as a limited partner of",
               "updateWontShow": "WELSH - This update will not show on the public register until we accept the filing.",
               "processFiling": "WELSH - We'll process this filing withing 5 working days, and email",
               "processFilingConfirmation": "WELSH - to let you know if it's been accepted or rejected.",

@@ -6,10 +6,20 @@
 {% endblock %}
 
 {% set pageTitle = i18n.confirmationPage.title %}
-{% if props.data.generalPartner.data.legal_entity_name %}
-  {% set generalPartnerName = props.data.generalPartner.data.legal_entity_name %}
-{% else %}
-  {% set generalPartnerName = props.data.generalPartner.data.forename ~ ' ' ~ props.data.generalPartner.data.surname %}
+{% if props.data.generalPartner %}
+  {% set partnerType = i18n.confirmationPage.postTransition.partner.generalPartnerType %}
+  {% if props.data.generalPartner.data.legal_entity_name %}
+    {% set partnerName = props.data.generalPartner.data.legal_entity_name %}
+  {% else %}
+    {% set partnerName = props.data.generalPartner.data.forename ~ ' ' ~ props.data.generalPartner.data.surname %}
+  {% endif %}
+{% elif props.data.limitedPartner %}
+  {% set partnerType = i18n.confirmationPage.postTransition.partner.limitedPartnerType %}
+  {% if props.data.limitedPartner.data.legal_entity_name %}
+    {% set partnerName = props.data.limitedPartner.data.legal_entity_name %}
+  {% else %}
+    {% set partnerName = props.data.limitedPartner.data.forename ~ ' ' ~ props.data.limitedPartner.data.surname %}
+  {% endif %}
 {% endif %}
 
 {% block content %}
@@ -40,7 +50,7 @@
            
     {% elif journeyTypes.isTransition %}
 
-      <p class="govuk-body">{{ i18n.confirmationPage.filing.partnershipName }} {{ props.data.limitedPartnership.data.partnership_name | upper }} (LP123456). {{ i18n.confirmationPage.filing.sentEmail }} <strong>{{ props.data.limitedPartnership.data.email }}</strong> {{ i18n.confirmationPage.filing.confirm }}</p>
+      <p class="govuk-body">{{ i18n.confirmationPage.filing.partnershipName }} {{ props.data.limitedPartnership.data.partnership_name | upper }} ({{ props.data.limitedPartnership.data.partnership_number }}). {{ i18n.confirmationPage.filing.sentEmail }} <strong>{{ props.data.limitedPartnership.data.email }}</strong> {{ i18n.confirmationPage.filing.confirm }}</p>
 
       <h2 class="govuk-heading-m">{{ i18n.confirmationPage.happensNext }}</h2>
 
@@ -48,25 +58,27 @@
       <p class="govuk-body">{{ i18n.confirmationPage.willSendEmailTo }} <strong>{{ props.data.limitedPartnership.data.email }}</strong> {{ i18n.confirmationPage.updatePublicRegister }}</p>
 
     {% elif journeyTypes.isPostTransition %}
-      <p class="govuk-body">{{ i18n.confirmationPage.postTransition.generalPartner.generalPartnerName }} {{ generalPartnerName }} {{ i18n.confirmationPage.postTransition.generalPartner.generalPartnerType}} {{ props.data.limitedPartnership.data.partnership_name | upper }} (LP123456).</p>
+
+      <p class="govuk-body">{{ i18n.confirmationPage.postTransition.partner.partnerName }} {{ partnerName }} {{ partnerType }} {{ props.data.limitedPartnership.data.partnership_name | upper }} ({{ props.data.limitedPartnership.data.partnership_number }}).</p>
 
       <p class="govuk-body">{{ i18n.confirmationPage.sentEmailTo }} <strong>{{ props.data.userEmail }}</strong>.</p>
 
       {{ govukInsetText({
-        text: i18n.confirmationPage.postTransition.generalPartner.updateWontShow
+        text: i18n.confirmationPage.postTransition.partner.updateWontShow
       }) }}
 
       <h2 class="govuk-heading-m">{{ i18n.confirmationPage.happensNext }}</h2>
 
-      <p class="govuk-body">{{ i18n.confirmationPage.postTransition.generalPartner.processFiling }} <strong>{{ props.data.userEmail }}</strong> {{ i18n.confirmationPage.postTransition.generalPartner.processFilingConfirmation }}</p>
+      <p class="govuk-body">{{ i18n.confirmationPage.postTransition.partner.processFiling }} <strong>{{ props.data.userEmail }}</strong> {{ i18n.confirmationPage.postTransition.partner.processFilingConfirmation }}</p>
 
-      <p class="govuk-body">{{ i18n.confirmationPage.postTransition.generalPartner.filingAccepted }}</p>
+      <p class="govuk-body">{{ i18n.confirmationPage.postTransition.partner.filingAccepted }}</p>
 
-      <p class="govuk-body">{{ i18n.confirmationPage.postTransition.generalPartner.filingRejected }}</p>
+      <p class="govuk-body">{{ i18n.confirmationPage.postTransition.partner.filingRejected }}</p>
 
-      <h2 class="govuk-heading-m">{{ i18n.confirmationPage.postTransition.generalPartner.confirmationStatementTitle }}</h2>
+      <h2 class="govuk-heading-m">{{ i18n.confirmationPage.postTransition.partner.confirmationStatementTitle }}</h2>
       
-      <p class="govuk-body">{{ i18n.confirmationPage.postTransition.generalPartner.confirmationStatementBody }}</p>
+      <p class="govuk-body">{{ i18n.confirmationPage.postTransition.partner.confirmationStatementBody }}</p>
+
     {% endif %}
 
     {% if not journeyTypes.isPostTransition %}

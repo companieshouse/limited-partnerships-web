@@ -85,11 +85,16 @@ describe("General Partner Check Your Answers Page", () => {
 
   describe("POST Check Your Answers Page", () => {
     it("should navigate to next page", async () => {
-      generalPartnerPerson = new GeneralPartnerBuilder().isLegalEntity().withId(appDevDependencies.generalPartnerGateway.generalPartnerId).withDateEffectiveFrom("2024-10-10").build();
+      generalPartnerPerson = new GeneralPartnerBuilder()
+        .isPerson()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .withDateEffectiveFrom("2024-10-10")
+        .build();
+
       appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartnerPerson]);
 
       const res = await request(app).post(URL).send({
-        pageType: PostTransitionPageType.addGeneralPartnerPerson
+        pageType: PostTransitionPageType.generalPartnerCheckYourAnswers
       });
 
       expect(res.status).toBe(302);

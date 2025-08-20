@@ -24,7 +24,9 @@ import TransactionService from "../../../application/service/TransactionService"
 import { TransactionKind, TransactionStatus } from "../../../domain/entities/TransactionTypes";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 import CompanyService from "../../../application/service/CompanyService";
-import { GeneralPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
+import { GeneralPartner, LimitedPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
+import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
+import PostTransitionPageType from "../postTransition/pageType";
 
 class GlobalController extends AbstractController {
   private static readonly FILING_MODE_URL_MAP: Record<string, { journey: string; resumeUrl: string }> = {
@@ -47,7 +49,8 @@ class GlobalController extends AbstractController {
     private readonly paymentService: PaymentService,
     private readonly transactionService: TransactionService,
     private readonly companyService: CompanyService,
-    private readonly generalPartnerService: GeneralPartnerService
+    private readonly generalPartnerService: GeneralPartnerService,
+    private readonly limitedPartnerService: LimitedPartnerService
   ) {
     super();
   }
@@ -159,14 +162,16 @@ class GlobalController extends AbstractController {
       try {
         const { tokens, pageType, ids } = super.extract(request);
         const pageRouting = super.getRouting(globalsRouting, pageType, request);
+        const previousUrl = request.get("Referrer");
 
-        const generalPartner = await this.getGeneralPartnerDetails(tokens, ids.transactionId);
+        const { generalPartner, limitedPartner } = await this.getPartnerDetails(tokens, ids.transactionId, previousUrl);
+
         const limitedPartnership = await this.getLimitedPartnershipDetails(tokens, ids.companyId);
         const userEmail = getLoggedInUserEmail(request.session);
 
         response.render(
           super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { limitedPartnership, generalPartner, userEmail, ids }, null)
+          super.makeProps(pageRouting, { limitedPartnership, generalPartner, limitedPartner, userEmail, ids }, null)
         );
       } catch (error) {
         next(error);
@@ -174,16 +179,20 @@ class GlobalController extends AbstractController {
     };
   }
 
-  private async getGeneralPartnerDetails(tokens: Tokens, transactionId: string): Promise<GeneralPartner> {
-    const result = await this.generalPartnerService.getGeneralPartners(tokens, transactionId);
-    const generalPartner: GeneralPartner = result.generalPartners[0];
-    return {
-      data: {
-        forename: generalPartner.data?.forename,
-        surname: generalPartner.data?.surname,
-        legal_entity_name: generalPartner.data?.legal_entity_name,
-      }
+  private async getPartnerDetails(tokens: Tokens, transactionId: string, referrer: string | undefined): Promise<{generalPartner: GeneralPartner | undefined, limitedPartner: LimitedPartner | undefined}> {
+    let generalPartner;
+    let limitedPartner;
+
+    const isGeneralPartnerReferrer = referrer?.includes(PostTransitionPageType.generalPartnerCheckYourAnswers);
+
+    if (isGeneralPartnerReferrer) {
+      const result = await this.generalPartnerService.getGeneralPartners(tokens, transactionId);
+      generalPartner = result.generalPartners[0];
+    } else {
+      const result = await this.limitedPartnerService.getLimitedPartners(tokens, transactionId);
+      limitedPartner = result.limitedPartners[0];
     };
+    return { generalPartner, limitedPartner };
   }
 
   private async getLimitedPartnershipDetails(tokens: Tokens, companyId: string): Promise<Record<string, any>> {
