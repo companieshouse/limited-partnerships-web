@@ -453,7 +453,8 @@
             "time": "(takes 30 seconds)"
         },
         "postTransition": {
-            "partner":{
+            "title": "Update submitted", 
+            "partner": {
               "partnerName": "We've received your filing to add",
               "generalPartnerType": "as a general partner of",
               "limitedPartnerType": "as a limited partner of",

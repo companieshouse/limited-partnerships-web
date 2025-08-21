@@ -45,6 +45,8 @@ describe("Confirmation Page", () => {
           expect(res.text).toContain("test@email.com");
           expect(res.text).toContain("Joe - GP");
           expect(res.text).toContain("Doe - GP");
+          expect(res.text).toContain(enTranslationText.confirmationPage.postTransition.title);
+          expect(res.text).not.toContain(enTranslationText.confirmationPage.title);
           testTranslations(res.text, enTranslationText.confirmationPage.postTransition.partner, ["limitedPartnerType"]);
           expect(res.text).toContain(appDevDependencies.transactionGateway.transactionId);
           expect(res.text).toContain(companyProfile.data?.companyName?.toUpperCase());
@@ -63,6 +65,8 @@ describe("Confirmation Page", () => {
           expect(res.status).toBe(200);
           expect(res.text).toContain("test@email.com");
           expect(res.text).toContain("My Company ltd - GP");
+          expect(res.text).toContain(enTranslationText.confirmationPage.postTransition.title);
+          expect(res.text).not.toContain(enTranslationText.confirmationPage.title);
           testTranslations(res.text, enTranslationText.confirmationPage.postTransition.partner, ["limitedPartnerType"]);
           expect(res.text).toContain(appDevDependencies.transactionGateway.transactionId);
           expect(res.text).toContain(companyProfile.data?.companyName?.toUpperCase());
@@ -85,6 +89,8 @@ describe("Confirmation Page", () => {
         expect(res.text).toContain("test@email.com");
         expect(res.text).toContain("Joe - GP");
         expect(res.text).toContain("Doe - GP");
+        expect(res.text).toContain(cyTranslationText.confirmationPage.postTransition.title);
+        expect(res.text).not.toContain(cyTranslationText.confirmationPage.title);
         testTranslations(res.text, cyTranslationText.confirmationPage.postTransition.partner, ["limitedPartnerType"]);
         expect(res.text).toContain(appDevDependencies.transactionGateway.transactionId);
         expect(res.text).toContain(companyProfile.data?.companyName?.toUpperCase());
@@ -103,6 +109,8 @@ describe("Confirmation Page", () => {
         expect(res.status).toBe(200);
         expect(res.text).toContain("test@email.com");
         expect(res.text).toContain("My Company ltd - GP");
+        expect(res.text).toContain(cyTranslationText.confirmationPage.postTransition.title);
+        expect(res.text).not.toContain(cyTranslationText.confirmationPage.title);
         testTranslations(res.text, cyTranslationText.confirmationPage.postTransition.partner, ["limitedPartnerType"]);
         expect(res.text).toContain(appDevDependencies.transactionGateway.transactionId);
         expect(res.text).toContain(companyProfile.data?.companyName?.toUpperCase());
@@ -125,6 +133,8 @@ describe("Confirmation Page", () => {
           expect(res.text).toContain("test@email.com");
           expect(res.text).toContain("Joe - LP");
           expect(res.text).toContain("Doe - LP");
+          expect(res.text).toContain(enTranslationText.confirmationPage.postTransition.title);
+          expect(res.text).not.toContain(enTranslationText.confirmationPage.title);
           testTranslations(res.text, enTranslationText.confirmationPage.postTransition.partner, ["generalPartnerType"]);
           expect(res.text).toContain(appDevDependencies.transactionGateway.transactionId);
           expect(res.text).toContain(companyProfile.data?.companyName?.toUpperCase());
@@ -143,6 +153,8 @@ describe("Confirmation Page", () => {
           expect(res.status).toBe(200);
           expect(res.text).toContain("test@email.com");
           expect(res.text).toContain("My Company ltd - LP");
+          expect(res.text).toContain(enTranslationText.confirmationPage.postTransition.title);
+          expect(res.text).not.toContain(enTranslationText.confirmationPage.title);
           testTranslations(res.text, enTranslationText.confirmationPage.postTransition.partner, ["generalPartnerType"]);
           expect(res.text).toContain(appDevDependencies.transactionGateway.transactionId);
           expect(res.text).toContain(companyProfile.data?.companyName?.toUpperCase());
@@ -165,6 +177,8 @@ describe("Confirmation Page", () => {
         expect(res.text).toContain("test@email.com");
         expect(res.text).toContain("Joe - LP");
         expect(res.text).toContain("Doe - LP");
+        expect(res.text).toContain(cyTranslationText.confirmationPage.postTransition.title);
+        expect(res.text).not.toContain(cyTranslationText.confirmationPage.title);
         testTranslations(res.text, cyTranslationText.confirmationPage.postTransition.partner, ["generalPartnerType"]);
         expect(res.text).toContain(appDevDependencies.transactionGateway.transactionId);
         expect(res.text).toContain(companyProfile.data?.companyName?.toUpperCase());
@@ -183,6 +197,8 @@ describe("Confirmation Page", () => {
         expect(res.status).toBe(200);
         expect(res.text).toContain("test@email.com");
         expect(res.text).toContain("My Company ltd - LP");
+        expect(res.text).toContain(cyTranslationText.confirmationPage.postTransition.title);
+        expect(res.text).not.toContain(cyTranslationText.confirmationPage.title);
         testTranslations(res.text, cyTranslationText.confirmationPage.postTransition.partner, ["generalPartnerType"]);
         expect(res.text).toContain(appDevDependencies.transactionGateway.transactionId);
         expect(res.text).toContain(companyProfile.data?.companyName?.toUpperCase());

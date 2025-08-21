@@ -46,6 +46,7 @@ describe("Confirmation Page", () => {
         expect(res.text).toContain(enTranslationText.print.buttonText);
         expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
         expect(res.text).toContain(appDevDependencies.transactionGateway.transactionId);
+        expect(res.text).not.toContain(enTranslationText.confirmationPage.postTransition.title);
       });
 
       it("should load confirmation page - transition", async () => {
@@ -67,6 +68,7 @@ describe("Confirmation Page", () => {
         expect(res.text).toContain(enTranslationText.print.buttonText);
         expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
         expect(res.text).toContain(appDevDependencies.transactionGateway.transactionId);
+        expect(res.text).not.toContain(enTranslationText.confirmationPage.postTransition.title);
         expect(res.text).toContain(limitedPartnership.data?.partnership_name?.toUpperCase());
       });
     });
@@ -92,6 +94,8 @@ describe("Confirmation Page", () => {
       expect(res.text).toContain(cyTranslationText.print.buttonText);
       expect(res.text).toContain(cyTranslationText.print.buttonTextNoJs);
       expect(res.text).toContain(limitedPartnership.data?.email);
+      expect(res.text).not.toContain(cyTranslationText.confirmationPage.postTransition.title);
+
     });
 
     it("should load confirmation page - transition", async () => {
@@ -113,6 +117,7 @@ describe("Confirmation Page", () => {
       expect(res.text).toContain(cyTranslationText.print.buttonText);
       expect(res.text).toContain(cyTranslationText.print.buttonTextNoJs);
       expect(res.text).toContain(appDevDependencies.transactionGateway.transactionId);
+      expect(res.text).not.toContain(cyTranslationText.confirmationPage.postTransition.title);
       expect(res.text).toContain(limitedPartnership.data?.partnership_name?.toUpperCase());
     });
   });
