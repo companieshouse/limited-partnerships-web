@@ -32,6 +32,10 @@
         {% include "includes/csrf_token.njk" %}
 
         {{ govukInput({
+          label: {
+            text: "email",
+            classes: "govuk-visually-hidden"
+          },
           id: "email",
           name: "email",
           value: props.data.limitedPartnership.data.email,
