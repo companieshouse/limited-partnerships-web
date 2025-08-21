@@ -67,6 +67,8 @@ class LimitedPartnerPostTransitionController extends LimitedPartnerController {
         });
 
         if (result.errors) {
+          super.resetFormerNamesIfPreviousNameIsFalse(request.body);
+
           response.render(
             super.templateName(pageRouting.currentUrl),
             super.makeProps(

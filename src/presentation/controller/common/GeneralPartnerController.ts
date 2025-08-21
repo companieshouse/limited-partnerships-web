@@ -205,6 +205,8 @@ abstract class GeneralPartnerController extends AbstractController {
         const result = await this.generalPartnerService.createGeneralPartner(tokens, ids.transactionId, request.body);
 
         if (result.errors) {
+          this.resetFormerNamesIfPreviousNameIsFalse(request.body);
+
           const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
             tokens,
             ids.transactionId,
@@ -251,6 +253,8 @@ abstract class GeneralPartnerController extends AbstractController {
         );
 
         if (result?.errors) {
+          this.resetFormerNamesIfPreviousNameIsFalse(request.body);
+
           const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
             tokens,
             ids.transactionId,
@@ -458,20 +462,19 @@ abstract class GeneralPartnerController extends AbstractController {
   ): GeneralPartner {
     const { pageType, ids } = super.extract(request);
 
-    const isPostTransitionCheckYourAnswers = getJourneyTypes(pageRouting.currentUrl).isPostTransition &&
-     pageType === PostTransitionPageType.generalPartnerCheckYourAnswers;
+    const isPostTransitionCheckYourAnswers =
+      getJourneyTypes(pageRouting.currentUrl).isPostTransition &&
+      pageType === PostTransitionPageType.generalPartnerCheckYourAnswers;
 
     if (isPostTransitionCheckYourAnswers) {
       const formattedPartner = {
         ...partner,
         data: {
           ...partner.data,
-          date_of_birth: partner.data?.date_of_birth
-            ? formatDate(partner.data.date_of_birth, i18n)
-            : undefined,
+          date_of_birth: partner.data?.date_of_birth ? formatDate(partner.data.date_of_birth, i18n) : undefined,
           date_effective_from: partner.data?.date_effective_from
             ? formatDate(partner.data.date_effective_from, i18n)
-            : undefined,
+            : undefined
         }
       };
       pageRouting.previousUrl = partner.data?.legal_entity_name
@@ -480,7 +483,7 @@ abstract class GeneralPartnerController extends AbstractController {
       return formattedPartner;
     }
     return partner;
-  };
+  }
 
   private getJourneyPageTypes(url: string) {
     const journeyTypes = getJourneyTypes(url);
@@ -503,6 +506,12 @@ abstract class GeneralPartnerController extends AbstractController {
       return transitionRouting;
     } else {
       return postTransitionRouting;
+    }
+  }
+
+  protected resetFormerNamesIfPreviousNameIsFalse(data: Record<string, any>) {
+    if (data?.former_names && data?.previousName === "false") {
+      data.former_names = "";
     }
   }
 }

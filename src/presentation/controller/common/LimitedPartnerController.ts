@@ -202,6 +202,8 @@ class LimitedPartnerController extends AbstractController {
         const result = await this.limitedPartnerService.createLimitedPartner(tokens, ids.transactionId, request.body);
 
         if (result.errors) {
+          this.resetFormerNamesIfPreviousNameIsFalse(request.body);
+
           const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
             tokens,
             ids.transactionId,
@@ -254,6 +256,8 @@ class LimitedPartnerController extends AbstractController {
         );
 
         if (result?.errors) {
+          this.resetFormerNamesIfPreviousNameIsFalse(request.body);
+
           const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
             tokens,
             ids.transactionId,
@@ -463,20 +467,19 @@ class LimitedPartnerController extends AbstractController {
   ): LimitedPartner {
     const { pageType, ids } = super.extract(request);
 
-    const isPostTransitionCheckYourAnswers = getJourneyTypes(pageRouting.currentUrl).isPostTransition &&
-     pageType === PostTransitionPageType.limitedPartnerCheckYourAnswers;
+    const isPostTransitionCheckYourAnswers =
+      getJourneyTypes(pageRouting.currentUrl).isPostTransition &&
+      pageType === PostTransitionPageType.limitedPartnerCheckYourAnswers;
 
     if (isPostTransitionCheckYourAnswers) {
       const formattedPartner = {
         ...partner,
         data: {
           ...partner.data,
-          date_of_birth: partner.data?.date_of_birth
-            ? formatDate(partner.data.date_of_birth, i18n)
-            : undefined,
+          date_of_birth: partner.data?.date_of_birth ? formatDate(partner.data.date_of_birth, i18n) : undefined,
           date_effective_from: partner.data?.date_effective_from
             ? formatDate(partner.data.date_effective_from, i18n)
-            : undefined,
+            : undefined
         }
       };
       pageRouting.previousUrl = partner.data?.legal_entity_name
@@ -486,7 +489,13 @@ class LimitedPartnerController extends AbstractController {
       return formattedPartner;
     }
     return partner;
-  };
+  }
+
+  protected resetFormerNamesIfPreviousNameIsFalse(data: Record<string, any>) {
+    if (data?.former_names && data?.previousName === "false") {
+      data.former_names = "";
+    }
+  }
 }
 
 export default LimitedPartnerController;
