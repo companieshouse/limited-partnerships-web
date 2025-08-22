@@ -6,6 +6,10 @@
 {% endblock %}
 
 {% set pageTitle = i18n.confirmationPage.title %}
+{% if journeyTypes.isPostTransition %}
+  {% set pageTitle = i18n.confirmationPage.postTransition.title %}
+{% endif %}
+
 {% if props.data.generalPartner %}
   {% set partnerType = i18n.confirmationPage.postTransition.partner.generalPartnerType %}
   {% if props.data.generalPartner.data.legal_entity_name %}

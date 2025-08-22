@@ -452,6 +452,7 @@
             "time": "WELSH - (takes 30 seconds)"
         },
         "postTransition": {
+            "title": "WELSH - Update submitted",
             "partner":{
               "partnerName": "WELSH - We've received your filing to add",
               "generalPartnerType": "WELSH - as a general partner of",
