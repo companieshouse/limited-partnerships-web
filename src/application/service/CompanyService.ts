@@ -25,13 +25,13 @@ class CompanyService {
           partnership_type: this.calculatePartnershipType(companyProfile),
           jurisdiction: companyProfile.jurisdiction as Jurisdiction,
           registered_office_address: {
-            address_line_1: roa?.addressLineOne || "",
-            address_line_2: roa?.addressLineTwo || "",
-            premises: roa?.premises || "",
-            locality: roa?.locality || "",
-            region: roa?.region || "",
-            country: roa?.country || "",
-            postal_code: roa?.postalCode || ""
+            address_line_1: roa?.addressLineOne ?? "",
+            address_line_2: roa?.addressLineTwo ?? "",
+            premises: roa?.premises ?? "",
+            locality: roa?.locality ?? "",
+            region: roa?.region ?? "",
+            country: roa?.country ?? "",
+            postal_code: roa?.postalCode ?? ""
           }
         }
       };
