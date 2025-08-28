@@ -9,7 +9,7 @@ import { extractAPIErrors } from "./utils";
 class CompanyService {
   constructor(private readonly companyGateway: ICompanyGateway) {}
 
-  public async buildLimitedPartnershipFromProfile(
+  public async buildLimitedPartnershipFromCompanyProfile(
     opt: { access_token: string; refresh_token: string },
     company_number: string
   ): Promise<{ limitedPartnership: Partial<LimitedPartnership>; errors?: UIErrors }> {

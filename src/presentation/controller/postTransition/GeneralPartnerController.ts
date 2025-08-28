@@ -49,7 +49,7 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
         const pageType = super.extractPageTypeOrThrowError(request, PostTransitionPageType);
         const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
 
-        const limitedPartnershipResult = await this.companyService?.buildLimitedPartnershipFromProfile(tokens, ids.companyId);
+        const limitedPartnershipResult = await this.companyService?.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId);
 
         const isLegalEntity = pageType === PostTransitionPageType.addGeneralPartnerLegalEntity;
 
