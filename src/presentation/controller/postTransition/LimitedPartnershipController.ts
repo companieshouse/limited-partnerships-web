@@ -52,7 +52,7 @@ class LimitedPartnershipController extends AbstractController {
         const { ids, pageType } = super.extract(request);
         let pageRouting = super.getRouting(postTransitionRouting, pageType, request);
 
-        const result = await this.companyService.getCompanyProfile(tokens, ids.companyId);
+        const result = await this.companyService.buildLimitedPartnershipFromProfile(tokens, ids.companyId);
 
         if (result.errors) {
           response.render(
@@ -77,7 +77,7 @@ class LimitedPartnershipController extends AbstractController {
 
         response.render(
           super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { company: result.companyProfile }, null)
+          super.makeProps(pageRouting, { limitedPartnership: result.limitedPartnership.data }, null)
         );
       } catch (error) {
         next(error);
@@ -93,7 +93,7 @@ class LimitedPartnershipController extends AbstractController {
         const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
         const { company_number } = request.body;
 
-        const result = await this.companyService.getCompanyProfile(tokens, company_number);
+        const result = await this.companyService.buildLimitedPartnershipFromProfile(tokens, company_number);
 
         if (result.errors) {
           response.render(

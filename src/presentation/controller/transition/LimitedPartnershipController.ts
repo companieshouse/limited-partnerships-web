@@ -10,11 +10,8 @@ import { JOURNEY_TYPE_PARAM } from "../../../config/constants";
 import { getJourneyTypes } from "../../../utils/journey";
 import {
   GeneralPartner,
-  Jurisdiction,
   LimitedPartner,
-  PartnershipType
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import { PageRouting } from "../PageRouting";
 import { CONFIRM_REGISTERED_OFFICE_ADDRESS_URL } from "../addressLookUp/url/transition";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
@@ -114,7 +111,7 @@ class LimitedPartnershipController extends AbstractController {
         const { ids, pageType } = super.extract(request);
         const pageRouting = super.getRouting(transitionRouting, pageType, request);
 
-        const result = await this.companyService.getCompanyProfile(tokens, ids.companyId);
+        const result = await this.companyService.buildLimitedPartnershipFromProfile(tokens, ids.companyId);
 
         if (result.errors) {
           response.render(
@@ -127,7 +124,7 @@ class LimitedPartnershipController extends AbstractController {
 
         response.render(
           super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { company: result.companyProfile }, null)
+          super.makeProps(pageRouting, { limitedPartnership: result.limitedPartnership.data }, null)
         );
       } catch (error) {
         next(error);
@@ -141,31 +138,36 @@ class LimitedPartnershipController extends AbstractController {
         const { ids, pageType, tokens } = super.extract(request);
         const pageRouting = super.getRouting(transitionRouting, pageType, request);
         const journeyTypes = getJourneyTypes(pageRouting.currentUrl);
+        const limitedPartnershipResult = await this.companyService.buildLimitedPartnershipFromProfile(tokens, ids.companyId);
 
-        const companyResult = await this.companyService.getCompanyProfile(tokens, ids.companyId);
+        const limitedPartnershipData = limitedPartnershipResult.limitedPartnership.data;
 
         const result = await this.limitedPartnershipService.createTransactionAndFirstSubmission(
           tokens,
           pageType,
           journeyTypes,
-          this.mapCompanyProfileData(companyResult.companyProfile),
           {
-            companyName: companyResult?.companyProfile?.companyName ?? "",
-            companyNumber: companyResult?.companyProfile?.companyNumber ?? ""
+            partnership_name: limitedPartnershipData?.partnership_name,
+            partnership_type: limitedPartnershipData?.partnership_type,
+            jurisdiction: limitedPartnershipData?.jurisdiction,
+            partnership_number: limitedPartnershipData?.partnership_number
+          },
+          {
+            companyName: limitedPartnershipData?.partnership_name ?? "",
+            companyNumber: limitedPartnershipData?.partnership_number ?? ""
           }
         );
-
         if (result.errors) {
           response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { company: companyResult.companyProfile }, result.errors)
+            super.makeProps(pageRouting, { limitedPartnership: limitedPartnershipData }, result.errors)
           );
 
           return;
         }
 
         const newIds = {
-          companyId: companyResult?.companyProfile?.companyNumber,
+          companyId: limitedPartnershipData?.partnership_number,
           transactionId: result.transactionId,
           submissionId: result.submissionId
         } as Ids;
@@ -178,31 +180,6 @@ class LimitedPartnershipController extends AbstractController {
     };
   }
 
-  private mapCompanyProfileData(companyProfile: Partial<CompanyProfile>): Record<string, any> {
-    const data = {
-      partnership_name: companyProfile.companyName,
-      partnership_type: PartnershipType.LP,
-      jurisdiction: companyProfile.jurisdiction,
-      partnership_number: companyProfile.companyNumber
-    };
-
-    const subtype = "private-fund-limited-partnership";
-
-    if (
-      (companyProfile.jurisdiction === Jurisdiction.ENGLAND_AND_WALES ||
-        companyProfile.jurisdiction === Jurisdiction.NORTHERN_IRELAND) &&
-      companyProfile.subtype === subtype
-    ) {
-      data.partnership_type = PartnershipType.PFLP;
-    } else if (companyProfile.jurisdiction === Jurisdiction.SCOTLAND && !companyProfile.subtype) {
-      data.partnership_type = PartnershipType.SLP;
-    } else if (companyProfile.jurisdiction === Jurisdiction.SCOTLAND && companyProfile.subtype === subtype) {
-      data.partnership_type = PartnershipType.SPFLP;
-    }
-
-    return data;
-  }
-
   checkCompanyNumber() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
@@ -211,7 +188,7 @@ class LimitedPartnershipController extends AbstractController {
         const pageRouting = super.getRouting(transitionRouting, pageType, request);
         const { company_number } = request.body;
 
-        const result = await this.companyService.getCompanyProfile(tokens, company_number);
+        const result = await this.companyService.buildLimitedPartnershipFromProfile(tokens, company_number);
 
         if (result.errors) {
           response.render(

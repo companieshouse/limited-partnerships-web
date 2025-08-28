@@ -49,16 +49,18 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
         const pageType = super.extractPageTypeOrThrowError(request, PostTransitionPageType);
         const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
 
-        const companyResult = await this.companyService?.getCompanyProfile(tokens, ids.companyId);
+        const limitedPartnershipResult = await this.companyService?.buildLimitedPartnershipFromProfile(tokens, ids.companyId);
 
         const isLegalEntity = pageType === PostTransitionPageType.addGeneralPartnerLegalEntity;
+
+        const limitedPartnershipData = limitedPartnershipResult?.limitedPartnership?.data;
 
         const resultTransaction = await this.transactionService.createTransaction(
           tokens,
           IncorporationKind.POST_TRANSITION,
           {
-            companyName: companyResult?.companyProfile?.companyName ?? "",
-            companyNumber: companyResult?.companyProfile?.companyNumber ?? ""
+            companyName: limitedPartnershipData?.partnership_name ?? "",
+            companyNumber: limitedPartnershipData?.partnership_number ?? ""
           },
           isLegalEntity ? "Add a general partner (legal entity)" : "Add a general partner (person)"
         );
@@ -76,12 +78,7 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
             super.makeProps(
               pageRouting,
               {
-                limitedPartnership: {
-                  data: {
-                    partnership_name: companyResult?.companyProfile?.companyName,
-                    partnership_number: companyResult?.companyProfile?.companyNumber
-                  }
-                },
+                limitedPartnership: limitedPartnershipResult?.limitedPartnership,
                 generalPartner: { data: request.body }
               },
               result.errors
