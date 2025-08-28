@@ -83,14 +83,8 @@ class LimitedPartnerController extends AbstractController {
   }
 
   private async getLimitedPartnershipDetails(tokens: Tokens, companyId: string): Promise<Record<string, any>> {
-    const result = await (this.companyService as CompanyService).getCompanyProfile(tokens, companyId);
-
-    return {
-      data: {
-        partnership_name: result.companyProfile.companyName,
-        partnership_number: result.companyProfile.companyNumber
-      }
-    };
+    const result = await (this.companyService as CompanyService).buildLimitedPartnershipFromCompanyProfile(tokens, companyId);
+    return result.limitedPartnership;
   }
 
   getLimitedPartner(urls: { reviewLimitedPartnersUrl: string }) {

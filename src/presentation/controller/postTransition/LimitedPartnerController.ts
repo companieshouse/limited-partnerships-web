@@ -47,16 +47,18 @@ class LimitedPartnerPostTransitionController extends LimitedPartnerController {
         const pageType = super.extractPageTypeOrThrowError(request, PostTransitionPageType);
         const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
 
-        const companyResult = await this.companyService?.getCompanyProfile(tokens, ids.companyId);
+        const limitedPartnershipResult = await this.companyService?.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId);
 
         const isLegalEntity = pageType === PostTransitionPageType.addLimitedPartnerLegalEntity;
+
+        const limitedPartnershipData = limitedPartnershipResult?.limitedPartnership?.data;
 
         const resultTransaction = await this.transactionService.createTransaction(
           tokens,
           IncorporationKind.POST_TRANSITION,
           {
-            companyName: companyResult?.companyProfile?.companyName ?? "",
-            companyNumber: companyResult?.companyProfile?.companyNumber ?? ""
+            companyName: limitedPartnershipData?.partnership_name ?? "",
+            companyNumber: limitedPartnershipData?.partnership_number ?? ""
           },
           isLegalEntity ? "Add a limited partner (legal entity)" : "Add a limited partner (person)"
         );
@@ -74,12 +76,7 @@ class LimitedPartnerPostTransitionController extends LimitedPartnerController {
             super.makeProps(
               pageRouting,
               {
-                limitedPartnership: {
-                  data: {
-                    partnership_name: companyResult?.companyProfile?.companyName,
-                    partnership_number: companyResult?.companyProfile?.companyNumber
-                  }
-                },
+                limitedPartnership: limitedPartnershipResult?.limitedPartnership,
                 limitedPartner: { data: request.body }
               },
               result.errors

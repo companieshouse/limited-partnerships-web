@@ -196,14 +196,8 @@ class GlobalController extends AbstractController {
   }
 
   private async getLimitedPartnershipDetails(tokens: Tokens, companyId: string): Promise<Record<string, any>> {
-    const result = await this.companyService.getCompanyProfile(tokens, companyId);
-
-    return {
-      data: {
-        partnership_name: result.companyProfile.companyName,
-        partnership_number: result.companyProfile.companyNumber
-      }
-    };
+    const result = await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, companyId);
+    return result.limitedPartnership;
   }
 
   private clearCache(response: Response) {
