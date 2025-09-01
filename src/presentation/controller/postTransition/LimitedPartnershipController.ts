@@ -11,6 +11,7 @@ import TransactionService from "../../../application/service/TransactionService"
 import { IncorporationKind, LimitedPartnership, PartnershipKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 import AddressService from "../../../application/service/AddressService";
 import UIErrors from "../../../domain/entities/UIErrors";
+
 class LimitedPartnershipController extends AbstractController {
   constructor(
     private readonly addressService: AddressService,
@@ -203,7 +204,7 @@ class LimitedPartnershipController extends AbstractController {
         if (resultTransaction.errors) {
           return response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { limitedPartnership, ...request.body }, resultTransaction.errors)
+            super.makeProps(pageRouting, { address: { ...request.body }, limitedPartnership }, resultTransaction.errors)
           );
         }
 
@@ -222,7 +223,7 @@ class LimitedPartnershipController extends AbstractController {
         if (resultLimitedPartnershipCreate.errors) {
           return response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, request.body, resultLimitedPartnershipCreate.errors)
+            super.makeProps(pageRouting, { address: { ...request.body }, limitedPartnership }, resultLimitedPartnershipCreate.errors)
           );
         }
 
