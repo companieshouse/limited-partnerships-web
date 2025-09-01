@@ -596,6 +596,10 @@
         "title": "WELSH - What information we'll show on the public register"
     },
 
+    "registeredOfficeAddressChangeDatePage" : {
+      "title": "WELSH - When did the registered office address change?"
+    },
+
     "removePartnerPage": {
         "title": "WELSH - Are you sure you want to remove"
     },

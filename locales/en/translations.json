@@ -597,6 +597,10 @@
         "title": "What information we'll show on the public register"
     },
 
+    "registeredOfficeAddressChangeDatePage" : {
+      "title": "When did the registered office address change?"
+    },
+
     "removePartnerPage": {
         "title": "Are you sure you want to remove"
     },

@@ -1,0 +1,38 @@
+{% extends "layout.njk" %}
+
+{% set pageName="When did the registered office address change?" %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      {% include "includes/errors.njk" %}
+
+      {% include "includes/proposed-name.njk" %}
+
+      <form class="form" action={{ props.currentUrl }} method="post">
+
+      {{ govukDateInput({
+        id: "dateChange",
+        namePrefix: "dateChange",
+        fieldset: {
+            legend: {
+              text: i18n.registeredOfficeAddressChangeDatePage.title,
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--xl"
+            }
+        },
+        hint: {
+            text: "For example, 27 3 2025"
+        }
+        }) }}
+
+        {% include "includes/save-and-continue-button.njk" %}
+      </form>
+      <div>
+        {% include "includes/public-register-information.njk" %}
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
