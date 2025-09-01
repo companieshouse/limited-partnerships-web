@@ -8,7 +8,8 @@ import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import LimitedPartnershipBuilder from "../../../../../presentation/test/builder/LimitedPartnershipBuilder";
 import { Jurisdiction } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import CompanyProfileBuilder from "../../../../../presentation/test/builder/CompanyProfileBuilder";
-import PostTransitionPageType from "presentation/controller/postTransition/pageType";
+import PostTransitionPageType from "../../../../../presentation/controller/postTransition/pageType";
+import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 
 describe("Enter Registered Office Address Page", () => {
   const URL = getUrl(ENTER_REGISTERED_OFFICE_ADDRESS_URL);
@@ -21,6 +22,8 @@ describe("Enter Registered Office Address Page", () => {
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([]);
     appDevDependencies.limitedPartnershipGateway.feedErrors();
+    appDevDependencies.limitedPartnershipGateway.setError(false);
+
   });
 
   describe("GET Enter Registered Office Address Page", () => {
@@ -97,6 +100,29 @@ describe("Enter Registered Office Address Page", () => {
 
       expect(res.status).toBe(500);
       expect(res.text).toContain(enTranslationText.errorPage.title);
+    });
+
+    it("should return a validation error if api validation error occurs creating LimitedPartnership", async () => {
+      const limitedPartnership = new LimitedPartnershipBuilder().withJurisdiction(Jurisdiction.SCOTLAND).build();
+      appDevDependencies.limitedPartnershipGateway.setError(true);
+
+      const apiErrors: ApiErrors = {
+        errors: { something: "Something is invalid" }
+      };
+
+      appDevDependencies.limitedPartnershipGateway.feedErrors(apiErrors);
+
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: PostTransitionPageType.enterRegisteredOfficeAddress,
+          ...limitedPartnership.data?.registered_office_address
+        });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(enTranslationText.govUk.error.title);
+      expect(res.text).toContain(companyProfile.data.companyName.toUpperCase());
+      expect(res.text).toContain("Something is invalid");
     });
 
     it("should return a validation error when jurisdiction of Scotland does not match country", async () => {

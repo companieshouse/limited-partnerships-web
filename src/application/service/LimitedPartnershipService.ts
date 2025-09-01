@@ -35,8 +35,7 @@ class LimitedPartnershipService {
     } catch (errors: any) {
       const { apiErrors, isValidationErrors } = extractAPIErrors(errors);
 
-      logger.error(`Error creating limited partnership: ${JSON.stringify(apiErrors)}`);
-
+      logger.error(`Error creating limited partnership: txnId: ${transactionId} ${JSON.stringify(apiErrors)}`);
       if (!isValidationErrors) {
         throw errors;
       }
