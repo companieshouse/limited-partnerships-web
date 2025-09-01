@@ -2,7 +2,7 @@ import request from "supertest";
 import enTranslationText from "../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../locales/cy/translations.json";
 import app from "../../app";
-import { ENTER_REGISTERED_OFFICE_ADDRESS_URL, WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE } from "../../../../controller/postTransition/url";
+import { ENTER_REGISTERED_OFFICE_ADDRESS_URL, ENTER_REGISTERED_OFFICE_ADDRESS_WITH_ALL_IDS_URL, WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE } from "../../../../controller/postTransition/url";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import LimitedPartnershipBuilder from "../../../../../presentation/test/builder/LimitedPartnershipBuilder";
@@ -13,6 +13,7 @@ import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 
 describe("Enter Registered Office Address Page", () => {
   const URL = getUrl(ENTER_REGISTERED_OFFICE_ADDRESS_URL);
+  const URL_WITH_IDS = getUrl(ENTER_REGISTERED_OFFICE_ADDRESS_WITH_ALL_IDS_URL);
 
   let companyProfile;
 
@@ -75,6 +76,25 @@ describe("Enter Registered Office Address Page", () => {
 
       const res = await request(app)
         .post(URL)
+        .send({
+          pageType: PostTransitionPageType.enterRegisteredOfficeAddress,
+          ...limitedPartnership.data?.registered_office_address
+        });
+
+      const redirectUrl = getUrl(WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE);
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+    });
+
+    it("should redirect to the When did the ROA change page when using ids in url", async () => {
+      const limitedPartnership = new LimitedPartnershipBuilder()
+        .withJurisdiction(Jurisdiction.ENGLAND_AND_WALES)
+        .build();
+
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+      const res = await request(app)
+        .post(URL_WITH_IDS)
         .send({
           pageType: PostTransitionPageType.enterRegisteredOfficeAddress,
           ...limitedPartnership.data?.registered_office_address
