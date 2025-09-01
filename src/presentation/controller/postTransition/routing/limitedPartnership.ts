@@ -22,14 +22,23 @@ const postTransitionRoutingLandingPage = {
   pageType: PostTransitionPageType.landingPage,
   data: {
     addGeneralPartner: url.GENERAL_PARTNER_CHOICE_URL,
-    addLimitedPartner: url.LIMITED_PARTNER_CHOICE_URL
+    addLimitedPartner: url.LIMITED_PARTNER_CHOICE_URL,
+    updateROA: url.ENTER_REGISTERED_OFFICE_ADDRESS_URL
   }
+};
+
+const postTransitionRoutingEnterRegisteredOfficeAddress = {
+  previousUrl: url.LANDING_PAGE_URL,
+  currentUrl: url.ENTER_REGISTERED_OFFICE_ADDRESS_URL,
+  nextUrl: url.WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE,
+  pageType: PostTransitionPageType.enterRegisteredOfficeAddress
 };
 
 const limitedPartnershipRouting = [
   postTransitionRoutingCompanyNumber,
   postTransitionRoutingConfirmLimitedPartnership,
-  postTransitionRoutingLandingPage
+  postTransitionRoutingLandingPage,
+  postTransitionRoutingEnterRegisteredOfficeAddress
 ];
 
 export default limitedPartnershipRouting;

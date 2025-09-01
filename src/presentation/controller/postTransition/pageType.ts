@@ -11,7 +11,10 @@ enum PostTransitionPageType {
   limitedPartnerChoice = "limited-partner-choice",
   addLimitedPartnerPerson = "add-limited-partner-person",
   addLimitedPartnerLegalEntity = "add-limited-partner-legal-entity",
-  limitedPartnerCheckYourAnswers = "limited-partner-check-your-answers"
+  limitedPartnerCheckYourAnswers = "limited-partner-check-your-answers",
+
+  enterRegisteredOfficeAddress = "enter-registered-office-address",
+  whenDidTheRegisteredOfficeAddressChange = "when-did-the-registered-office-address-change"
 }
 
 export default PostTransitionPageType;
