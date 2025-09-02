@@ -16,3 +16,7 @@ export const LIMITED_PARTNER_CHOICE_TEMPLATE = PostTransitionPageType.limitedPar
 export const ADD_LIMITED_PARTNER_PERSON_TEMPLATE = PostTransitionPageType.addLimitedPartnerPerson;
 export const ADD_LIMITED_PARTNER_LEGAL_ENTITY_TEMPLATE = PostTransitionPageType.addLimitedPartnerLegalEntity;
 export const LIMITED_PARTNER_CHECK_YOUR_ANSWERS_TEMPLATE = PostTransitionPageType.limitedPartnerCheckYourAnswers;
+
+// limited partnership
+export const ENTER_REGISTERED_OFFICE_ADDRESSS_TEMPLATE = PostTransitionPageType.enterRegisteredOfficeAddress;
+export const WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_TEMPLATE = PostTransitionPageType.whenDidTheRegisteredOfficeAddressChange;

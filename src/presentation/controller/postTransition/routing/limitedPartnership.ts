@@ -22,12 +22,20 @@ const postTransitionRoutingLandingPage = {
   pageType: PostTransitionPageType.landingPage,
   data: {
     addGeneralPartner: url.GENERAL_PARTNER_CHOICE_URL,
-    addLimitedPartner: url.LIMITED_PARTNER_CHOICE_URL
+    addLimitedPartner: url.LIMITED_PARTNER_CHOICE_URL,
+    updateROA: url.ENTER_REGISTERED_OFFICE_ADDRESS_URL
   }
 };
 
+const postTransitionRoutingEnterRegisteredOfficeAddress = {
+  previousUrl: url.LANDING_PAGE_URL,
+  currentUrl: url.ENTER_REGISTERED_OFFICE_ADDRESS_URL,
+  nextUrl: url.WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE,
+  pageType: PostTransitionPageType.enterRegisteredOfficeAddress
+};
+
 const postTransitionRoutingRegisteredOfficeAddressChange = {
-  previousUrl: "", // TODO registered office address url for post transition journey
+  previousUrl: url.ENTER_REGISTERED_OFFICE_ADDRESS_URL,
   currentUrl: url.WHEN_REGISTERED_OFFICE_ADDRESS_CHANGE_URL,
   nextUrl: url.LANDING_PAGE_URL,
   pageType: PostTransitionPageType.whenRegisteredOfficeAddressChange
@@ -37,6 +45,7 @@ const limitedPartnershipRouting = [
   postTransitionRoutingCompanyNumber,
   postTransitionRoutingConfirmLimitedPartnership,
   postTransitionRoutingLandingPage,
+  postTransitionRoutingEnterRegisteredOfficeAddress,
   postTransitionRoutingRegisteredOfficeAddressChange
 ];
 

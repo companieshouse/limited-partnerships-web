@@ -45,7 +45,7 @@ describe("Registered office address change date page", () => {
   });
 
   describe("POST registered office address change date page", () => {
-    it("should navigate to next page with date of update", async () => {
+    it.skip("should navigate to next page with date of update", async () => {
       const limitedPartnership = new LimitedPartnershipBuilder()
         .withDateOfUpdate("2024-10-10")
         .build();

@@ -12,7 +12,10 @@ class CompanyService {
   public async buildLimitedPartnershipFromCompanyProfile(
     opt: { access_token: string; refresh_token: string },
     company_number: string
-  ): Promise<{ limitedPartnership: Partial<LimitedPartnership>; errors?: UIErrors }> {
+  ): Promise<{
+    limitedPartnership: Partial<LimitedPartnership>;
+    errors?: UIErrors
+  }> {
     const { companyProfile, errors } = await this.getCompanyProfile(opt, company_number);
     let limitedPartnership: LimitedPartnership = {};
 
