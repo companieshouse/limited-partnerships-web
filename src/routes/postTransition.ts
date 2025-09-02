@@ -58,7 +58,7 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
   router.post(
     WHEN_REGISTERED_OFFICE_ADDRESS_CHANGE_URL,
     companyAuthentication,
-    //dependencies.limitedPartnershipPostTransitionController.createTransactionAndFirstSubmission()
+    // dependencies.limitedPartnershipPostTransitionController.createTransactionAndFirstSubmission()
   );
 
   router.get(

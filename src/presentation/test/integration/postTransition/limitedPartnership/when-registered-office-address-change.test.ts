@@ -25,7 +25,7 @@ describe("Registered office address change date page", () => {
       setLocalesEnabled(true);
       const res = await request(app).get(URL + "?lang=en");
 
-      expect(res.status).toBe(200);      
+      expect(res.status).toBe(200);
       expect(res.text).toContain(
         `${enTranslationText.whenRegisteredOfficeAddressChangePage.title}`
       );
@@ -36,17 +36,17 @@ describe("Registered office address change date page", () => {
       setLocalesEnabled(true);
       const res = await request(app).get(URL + "?lang=cy");
 
-      expect(res.status).toBe(200);     
+      expect(res.status).toBe(200);
       expect(res.text).toContain(
         `${cyTranslationText.whenRegisteredOfficeAddressChangePage.title}`
       );
       expect(res.text).toContain("WELSH -");
     });
   });
-  
+
   describe("POST registered office address change date page", () => {
     it("should navigate to next page with date of update", async () => {
-      const limitedPartnership = new LimitedPartnershipBuilder()        
+      const limitedPartnership = new LimitedPartnershipBuilder()
         .withDateOfUpdate("2024-10-10")
         .build();
 
@@ -60,4 +60,4 @@ describe("Registered office address change date page", () => {
       // expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`); TODO when the check your answers page is decided as this test
     });
   });
-});  
+});

@@ -31,7 +31,7 @@ const postTransitionRoutingRegisteredOfficeAddressChange = {
   currentUrl: url.WHEN_REGISTERED_OFFICE_ADDRESS_CHANGE_URL,
   nextUrl: url.LANDING_PAGE_URL,
   pageType: PostTransitionPageType.whenRegisteredOfficeAddressChange
-}
+};
 
 const limitedPartnershipRouting = [
   postTransitionRoutingCompanyNumber,
