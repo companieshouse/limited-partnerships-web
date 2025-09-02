@@ -19,6 +19,34 @@ class LimitedPartnershipService {
     private readonly incorporationGateway: IIncorporationGateway
   ) {}
 
+  async createLimitedPartnership(
+    opt: { access_token: string; refresh_token: string },
+    transactionId: string,
+    pageType: PageType,
+    data: Record<string, any>
+  ): Promise<{
+      submissionId: string;
+      errors?: UIErrors;
+    }> {
+    try {
+      const submissionId = await this.limitedPartnershipGateway.createSubmission(opt, pageType, transactionId, data);
+      return { submissionId };
+
+    } catch (errors: any) {
+      const { apiErrors, isValidationErrors } = extractAPIErrors(errors);
+
+      logger.error(`Error creating limited partnership: txnId: ${transactionId} ${JSON.stringify(apiErrors)}`);
+      if (!isValidationErrors) {
+        throw errors;
+      }
+
+      return {
+        submissionId: "",
+        errors
+      };
+    }
+  }
+
   async getLimitedPartnership(
     opt: { access_token: string; refresh_token: string },
     transactionId: string,
@@ -27,7 +55,7 @@ class LimitedPartnershipService {
     try {
       return await this.limitedPartnershipGateway.getLimitedPartnership(opt, transactionId, submissionId);
     } catch (error: any) {
-      logger.error(`Error getting LimitedPartnership ${JSON.stringify(error)}`);
+      logger.error(`Error getting LimitedPartnership txnId: ${transactionId} submissionId: ${submissionId} ${JSON.stringify(error)}`);
 
       throw error;
     }

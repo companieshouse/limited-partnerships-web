@@ -15,6 +15,8 @@ import {
   ADD_LIMITED_PARTNER_PERSON_WITH_IDS_URL,
   COMPANY_NUMBER_URL,
   CONFIRM_LIMITED_PARTNERSHIP_URL,
+  ENTER_REGISTERED_OFFICE_ADDRESS_URL,
+  ENTER_REGISTERED_OFFICE_ADDRESS_WITH_ALL_IDS_URL,
   GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL,
   GENERAL_PARTNER_CHOICE_URL,
   LANDING_PAGE_URL,
@@ -181,6 +183,29 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
     LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL,
     companyAuthentication,
     dependencies.limitedPartnerPostTransitionController.postCheckYourAnswers()
+  );
+
+  // Limited Partnership
+  router.get(
+    ENTER_REGISTERED_OFFICE_ADDRESS_URL,
+    companyAuthentication,
+    dependencies.limitedPartnershipPostTransitionController.getPageRouting()
+  );
+  router.post(
+    ENTER_REGISTERED_OFFICE_ADDRESS_URL,
+    companyAuthentication,
+    dependencies.limitedPartnershipPostTransitionController.createRegisteredOfficeAddress()
+  );
+
+  router.get(
+    ENTER_REGISTERED_OFFICE_ADDRESS_WITH_ALL_IDS_URL,
+    companyAuthentication,
+    dependencies.limitedPartnershipPostTransitionController.getPageRouting()
+  );
+  router.post(
+    ENTER_REGISTERED_OFFICE_ADDRESS_WITH_ALL_IDS_URL,
+    companyAuthentication,
+    dependencies.limitedPartnershipPostTransitionController.sendPageData()
   );
 };
 
