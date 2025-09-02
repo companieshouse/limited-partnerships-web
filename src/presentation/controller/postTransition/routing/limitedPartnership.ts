@@ -26,10 +26,18 @@ const postTransitionRoutingLandingPage = {
   }
 };
 
+const postTransitionRoutingRegisteredOfficeAddressChange = {
+  previousUrl: "", // TODO registered office address url for post transition journey
+  currentUrl: url.WHEN_REGISTERED_OFFICE_ADDRESS_CHANGE_URL,
+  nextUrl: url.LANDING_PAGE_URL,
+  pageType: PostTransitionPageType.whenRegisteredOfficeAddressChange
+}
+
 const limitedPartnershipRouting = [
   postTransitionRoutingCompanyNumber,
   postTransitionRoutingConfirmLimitedPartnership,
-  postTransitionRoutingLandingPage
+  postTransitionRoutingLandingPage,
+  postTransitionRoutingRegisteredOfficeAddressChange
 ];
 
 export default limitedPartnershipRouting;

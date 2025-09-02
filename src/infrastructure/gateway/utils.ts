@@ -114,6 +114,19 @@ export const validateAndFormatPartnerDateEffectiveFrom = (data: Record<string, a
   }
 };
 
+export const validateAndFormatPartnerDateOfUpdate = (data: Record<string, any>) => {
+  if (data["date_of_update-day"]) {
+    data["date_of_update"] = convertValidDateToIsoDateString(
+      {
+        day: data["date_of_update-day"],
+        month: data["date_of_update-month"],
+        year: data["date_of_update-year"]
+      },
+      "date_of_update"
+    );
+  }
+};
+
 export const resetFormerNamesIfPreviousNameIsFalse = (data: Record<string, any>) => {
   if (data?.former_names && data?.previousName === "false") {
     data.former_names = "";

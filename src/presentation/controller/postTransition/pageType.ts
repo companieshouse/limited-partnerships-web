@@ -2,6 +2,7 @@ enum PostTransitionPageType {
   companyNumber = "company-number",
   confirmLimitedPartnership = "confirm-limited-partnership",
   landingPage = "landing-page",
+  whenRegisteredOfficeAddressChange = "when-registered-office-address-change",
 
   generalPartnerChoice = "general-partner-choice",
   addGeneralPartnerPerson = "add-general-partner-person",

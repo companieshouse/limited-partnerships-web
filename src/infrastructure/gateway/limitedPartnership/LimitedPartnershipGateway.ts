@@ -11,6 +11,7 @@ import ILimitedPartnershipGateway from "../../../domain/ILimitedPartnershipGatew
 import LimitedPartnershipGatewayBuilder from "./LimitedPartnershipGatewayBuilder";
 import { SDK_LIMITED_PARTNERSHIP_SERVICE } from "../../../config/constants";
 import PageType from "../../../presentation/controller/PageType";
+import { validateAndFormatPartnerDateOfUpdate } from "../utils";
 
 class LimitedPartnershipGateway implements ILimitedPartnershipGateway {
   async createSubmission(
@@ -50,6 +51,7 @@ class LimitedPartnershipGateway implements ILimitedPartnershipGateway {
     registrationType: RegistrationPageType,
     data: Record<string, any>
   ): Promise<void> {
+    validateAndFormatPartnerDateOfUpdate(data);
     const limitedPartnershipBuilder = new LimitedPartnershipGatewayBuilder();
     limitedPartnershipBuilder.withData(registrationType, data);
     const limitedPartnership = limitedPartnershipBuilder.build();
