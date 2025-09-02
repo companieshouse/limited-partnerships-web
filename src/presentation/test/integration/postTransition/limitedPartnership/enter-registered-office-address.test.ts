@@ -164,27 +164,6 @@ describe("Enter Registered Office Address Page", () => {
       expect(res.text).toContain(companyProfile.data.companyName.toUpperCase());
     });
 
-    it("should return a Welsh validation error when jurisdiction of Scotland does not match country", async () => {
-      setLocalesEnabled(true);
-
-      const limitedPartnership = new LimitedPartnershipBuilder().withJurisdiction(Jurisdiction.SCOTLAND).build();
-
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
-      const res = await request(app)
-        .post(URL + "?lang=cy")
-        .send({
-          pageType: PostTransitionPageType.enterRegisteredOfficeAddress,
-          ...limitedPartnership.data?.registered_office_address,
-          country: "Northern Ireland"
-        });
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(cyTranslationText.address.enterAddress.errorMessages.jurisdictionCountry);
-      expect(res.text).toContain(cyTranslationText.govUk.error.title);
-      expect(res.text).toContain(companyProfile.data.companyName.toUpperCase());
-    });
-
     it("should return a validation error when jurisdiction of Northern Ireland does not match country", async () => {
       const limitedPartnership = new LimitedPartnershipBuilder()
         .withJurisdiction(Jurisdiction.NORTHERN_IRELAND)

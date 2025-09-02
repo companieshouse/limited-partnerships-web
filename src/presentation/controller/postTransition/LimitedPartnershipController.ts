@@ -181,8 +181,7 @@ class LimitedPartnershipController extends AbstractController {
         const pageType = super.extractPageTypeOrThrowError(request, PostTransitionPageType);
         const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
 
-        const buildlimitedPartnershipResult = await this.companyService?.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId);
-        const limitedPartnership = buildlimitedPartnershipResult.limitedPartnership;
+        const { limitedPartnership } = await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId);
 
         const errors = this.validateAddress(request, response, limitedPartnership);
         if (errors?.hasErrors()) {
@@ -251,8 +250,7 @@ class LimitedPartnershipController extends AbstractController {
         let data = request.body;
 
         if (pageType === PostTransitionPageType.enterRegisteredOfficeAddress) {
-          const buildlimitedPartnershipResult = await this.companyService?.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId);
-          const limitedPartnership = buildlimitedPartnershipResult.limitedPartnership;
+          const { limitedPartnership } = await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId);
 
           const errors = this.validateAddress(request, response, limitedPartnership);
           if (errors?.hasErrors()) {
