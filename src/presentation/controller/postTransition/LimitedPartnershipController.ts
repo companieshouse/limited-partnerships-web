@@ -249,8 +249,9 @@ class LimitedPartnershipController extends AbstractController {
 
         let data = request.body;
 
+        const { limitedPartnership } = await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId);
+
         if (pageType === PostTransitionPageType.enterRegisteredOfficeAddress) {
-          const { limitedPartnership } = await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId);
 
           const errors = this.validateAddress(request, response, limitedPartnership);
           if (errors?.hasErrors()) {
@@ -275,7 +276,7 @@ class LimitedPartnershipController extends AbstractController {
         if (patchResult?.errors) {
           return response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, request.body, patchResult.errors)
+            super.makeProps(pageRouting, { ...request.body, limitedPartnership }, patchResult.errors)
           );
         }
 
