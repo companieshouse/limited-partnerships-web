@@ -21,7 +21,8 @@ import {
   GENERAL_PARTNER_CHOICE_URL,
   LANDING_PAGE_URL,
   LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL,
-  LIMITED_PARTNER_CHOICE_URL
+  LIMITED_PARTNER_CHOICE_URL,
+  WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL
 } from "../presentation/controller/postTransition/url";
 
 const postTransitionEndpoints = (router: Router, dependencies: IDependencies): void => {
@@ -204,6 +205,17 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
   );
   router.post(
     ENTER_REGISTERED_OFFICE_ADDRESS_WITH_ALL_IDS_URL,
+    companyAuthentication,
+    dependencies.limitedPartnershipPostTransitionController.sendPageData()
+  );
+
+  router.get(
+    WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL,
+    companyAuthentication,
+    dependencies.limitedPartnershipPostTransitionController.getPageRouting()
+  );
+  router.post(
+    WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL,
     companyAuthentication,
     dependencies.limitedPartnershipPostTransitionController.sendPageData()
   );

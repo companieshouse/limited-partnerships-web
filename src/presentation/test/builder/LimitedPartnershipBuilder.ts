@@ -35,7 +35,8 @@ class LimitedPartnershipBuilder {
       country: "England"
     },
     term: Term.BY_AGREEMENT,
-    sic_codes: ["12345", "67890"]
+    sic_codes: ["12345", "67890"],
+    date_of_update: "2023-01-01"
   };
 
   withId(id: string) {
@@ -85,6 +86,11 @@ class LimitedPartnershipBuilder {
 
   withSicCodes(sicCodes: string[]) {
     this.data.sic_codes = sicCodes;
+    return this;
+  }
+
+  withDateOfUpdate(dateOfUpdate: string) {
+    this.data.date_of_update = dateOfUpdate;
     return this;
   }
 

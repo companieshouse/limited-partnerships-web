@@ -597,6 +597,15 @@
         "title": "What information we'll show on the public register"
     },
 
+    "whenDidTheRegisteredOfficeAddressChangePage" : {
+      "title": "When did the registered office address change?",
+      "dateHint": "For example, 27 3 2025",
+      "dateDay" : "Day",
+      "dateMonth" : "Month",
+      "dateYear" : "Year",
+      "publicInformationLine1": "We'll show the date on the public register."
+    },
+
     "removePartnerPage": {
         "title": "Are you sure you want to remove"
     },

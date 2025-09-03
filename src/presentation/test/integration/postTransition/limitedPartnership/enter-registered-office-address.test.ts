@@ -2,7 +2,7 @@ import request from "supertest";
 import enTranslationText from "../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../locales/cy/translations.json";
 import app from "../../app";
-import { ENTER_REGISTERED_OFFICE_ADDRESS_URL, ENTER_REGISTERED_OFFICE_ADDRESS_WITH_ALL_IDS_URL, WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE } from "../../../../controller/postTransition/url";
+import { ENTER_REGISTERED_OFFICE_ADDRESS_URL, ENTER_REGISTERED_OFFICE_ADDRESS_WITH_ALL_IDS_URL, WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL } from "../../../../controller/postTransition/url";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import LimitedPartnershipBuilder from "../../../../../presentation/test/builder/LimitedPartnershipBuilder";
@@ -81,7 +81,7 @@ describe("Enter Registered Office Address Page", () => {
           ...limitedPartnership.data?.registered_office_address
         });
 
-      const redirectUrl = getUrl(WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE);
+      const redirectUrl = getUrl(WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL);
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
     });
@@ -100,7 +100,7 @@ describe("Enter Registered Office Address Page", () => {
           ...limitedPartnership.data?.registered_office_address
         });
 
-      const redirectUrl = getUrl(WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE);
+      const redirectUrl = getUrl(WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL);
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
     });
@@ -246,7 +246,7 @@ describe("Enter Registered Office Address Page", () => {
           region: "þďðèéêëēĕėęěĝģğġĥħìíîïĩīĭįĵķĺļľŀł"
         });
 
-      const redirectUrl = getUrl(WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE);
+      const redirectUrl = getUrl(WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL);
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
     });
