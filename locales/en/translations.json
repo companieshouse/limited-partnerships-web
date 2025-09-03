@@ -589,7 +589,7 @@
     },
 
     "print" : {
-        "buttonText" : "Print",
+        "buttonText" : "Print this page",
         "buttonTextNoJs" : "To print this page, select Print from your browser menu."
     },
 
