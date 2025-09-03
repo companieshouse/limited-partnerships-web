@@ -597,7 +597,10 @@
     },
 
     "whenRegisteredOfficeAddressChangePage" : {
-      "title": "WELSH - When did the registered office address change?",
+      "title": "WELSH - When did the registered office address change?"
+    },
+
+    "whenDidTheAddressChangePage" : {      
       "dateHint": "WELSH - For example, 27 3 2025",
       "dateDay" : "WELSH - Day",
       "dateMonth" : "WELSH - Month",

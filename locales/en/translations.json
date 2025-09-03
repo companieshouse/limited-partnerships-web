@@ -598,7 +598,10 @@
     },
 
     "whenRegisteredOfficeAddressChangePage" : {
-      "title": "When did the registered office address change?",
+      "title": "When did the registered office address change?"
+    },
+
+    "whenDidTheAddressChangePage" : {
       "dateHint": "For example, 27 3 2025",
       "dateDay" : "Day",
       "dateMonth" : "Month",
