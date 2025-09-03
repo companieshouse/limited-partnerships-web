@@ -597,11 +597,8 @@
         "title": "What information we'll show on the public register"
     },
 
-    "whenRegisteredOfficeAddressChangePage" : {
-      "title": "When did the registered office address change?"
-    },
-
-    "whenDidTheAddressChangePage" : {
+    "whenDidTheRegisteredOfficeAddressChangePage" : {
+      "title": "When did the registered office address change?",
       "dateHint": "For example, 27 3 2025",
       "dateDay" : "Day",
       "dateMonth" : "Month",

@@ -28,7 +28,7 @@ describe("Registered office address change date page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${enTranslationText.whenRegisteredOfficeAddressChangePage.title}`
+        `${enTranslationText.whenDidTheRegisteredOfficeAddressChangePage.title}`
       );
       expect(res.text).not.toContain("WELSH -");
     });
@@ -39,7 +39,7 @@ describe("Registered office address change date page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${cyTranslationText.whenRegisteredOfficeAddressChangePage.title}`
+        `${cyTranslationText.whenDidTheRegisteredOfficeAddressChangePage.title}`
       );
       expect(res.text).toContain("WELSH -");
     });

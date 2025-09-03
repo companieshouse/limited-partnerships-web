@@ -596,11 +596,8 @@
         "title": "WELSH - What information we'll show on the public register"
     },
 
-    "whenRegisteredOfficeAddressChangePage" : {
-      "title": "WELSH - When did the registered office address change?"
-    },
-
-    "whenDidTheAddressChangePage" : {      
+    "whenDidTheRegisteredOfficeAddressChangePage" : {
+      "title": "WELSH - When did the registered office address change?",    
       "dateHint": "WELSH - For example, 27 3 2025",
       "dateDay" : "WELSH - Day",
       "dateMonth" : "WELSH - Month",
