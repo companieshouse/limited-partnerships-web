@@ -8,7 +8,7 @@ import { WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL } from "../../../../c
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 import PostTransitionPageType from "../../../../controller/postTransition/pageType";
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
-import { ApiErrors } from "domain/entities/UIErrors";
+import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 
 describe("Registered office address change date page", () => {
   const URL = getUrl(WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL);
