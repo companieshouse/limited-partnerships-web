@@ -56,7 +56,7 @@ abstract class GeneralPartnerController extends AbstractController {
         }
 
         if (this.companyService) {
-          limitedPartnership = (await (this.companyService as CompanyService).buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId)).limitedPartnership;
+          limitedPartnership = (await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId)).limitedPartnership;
         }
 
         if (ids.transactionId && ids.generalPartnerId) {
@@ -255,7 +255,7 @@ abstract class GeneralPartnerController extends AbstractController {
           }
 
           if (this.companyService) {
-            limitedPartnership = (await (this.companyService as CompanyService).buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId)).limitedPartnership;
+            limitedPartnership = (await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId)).limitedPartnership;
           }
 
           await this.conditionalPreviousUrl(ids, pageRouting, request, tokens);
