@@ -38,19 +38,26 @@ import { Ids, Tokens } from "../../domain/types";
 
 abstract class AbstractController {
   protected getRouting(routing: PagesRouting, pageType: PageType, request: Request) {
-    let pageRouting = routing.get(pageType);
+    let pageRouting = { ...routing.get(pageType) } as PageRouting;
 
     if (!pageRouting) {
       return pageRoutingDefault;
     }
 
-    pageRouting = this.insertIdsInAllUrl(pageRouting, {
+    const ids = {
       companyId: request.params[COMPANY_ID],
       transactionId: request.params[TRANSACTION_ID],
       submissionId: request.params[SUBMISSION_ID],
       generalPartnerId: request.params[GENERAL_PARTNER_ID],
       limitedPartnerId: request.params[LIMITED_PARTNER_ID]
-    } as Ids);
+    } as Ids;
+
+    // replace the currentUrl with currentUrlWithIds if transactionId exists
+    if (pageRouting.currentUrlWithIds && ids.transactionId) {
+      pageRouting.currentUrl = pageRouting.currentUrlWithIds;
+    }
+
+    pageRouting = this.insertIdsInAllUrl(pageRouting, ids);
 
     pageRouting = this.addLangToUrls(request.url, pageRouting);
 

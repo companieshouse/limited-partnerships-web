@@ -2,7 +2,7 @@ import request from "supertest";
 import enTranslationText from "../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../locales/cy/translations.json";
 import app from "../../app";
-import { ENTER_REGISTERED_OFFICE_ADDRESS_URL, ENTER_REGISTERED_OFFICE_ADDRESS_WITH_ALL_IDS_URL, WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL } from "../../../../controller/postTransition/url";
+import { ENTER_REGISTERED_OFFICE_ADDRESS_URL, ENTER_REGISTERED_OFFICE_ADDRESS_WITH_IDS_URL, WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL } from "../../../../controller/postTransition/url";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import LimitedPartnershipBuilder from "../../../../../presentation/test/builder/LimitedPartnershipBuilder";
@@ -13,7 +13,7 @@ import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 
 describe("Enter Registered Office Address Page", () => {
   const URL = getUrl(ENTER_REGISTERED_OFFICE_ADDRESS_URL);
-  const URL_WITH_IDS = getUrl(ENTER_REGISTERED_OFFICE_ADDRESS_WITH_ALL_IDS_URL);
+  const URL_WITH_IDS = getUrl(ENTER_REGISTERED_OFFICE_ADDRESS_WITH_IDS_URL);
 
   let companyProfile;
 
@@ -122,7 +122,18 @@ describe("Enter Registered Office Address Page", () => {
       expect(res.text).toContain(enTranslationText.errorPage.title);
     });
 
-    it("should return a validation error if api validation error occurs creating LimitedPartnership", async () => {
+    it.each([
+      {
+        url: URL,
+        expectContainUrl: URL,
+        expectNotContainUrl: URL_WITH_IDS
+      },
+      {
+        url: URL_WITH_IDS,
+        expectContainUrl: URL_WITH_IDS,
+        expectNotContainUrl: URL
+      }
+    ]) ("should return a validation error if api validation error occurs creating LimitedPartnership", async ({ url, expectContainUrl, expectNotContainUrl }) => {
       const limitedPartnership = new LimitedPartnershipBuilder().withJurisdiction(Jurisdiction.SCOTLAND).build();
       appDevDependencies.limitedPartnershipGateway.setError(true);
 
@@ -133,7 +144,7 @@ describe("Enter Registered Office Address Page", () => {
       appDevDependencies.limitedPartnershipGateway.feedErrors(apiErrors);
 
       const res = await request(app)
-        .post(URL)
+        .post(url)
         .send({
           pageType: PostTransitionPageType.enterRegisteredOfficeAddress,
           ...limitedPartnership.data?.registered_office_address
@@ -143,6 +154,8 @@ describe("Enter Registered Office Address Page", () => {
       expect(res.text).toContain(enTranslationText.govUk.error.title);
       expect(res.text).toContain(companyProfile.data.companyName.toUpperCase());
       expect(res.text).toContain("Something is invalid");
+      expect(res.text).toContain(expectContainUrl);
+      expect(res.text).not.toContain(expectNotContainUrl);
     });
 
     it("should return a validation error when jurisdiction of Scotland does not match country", async () => {

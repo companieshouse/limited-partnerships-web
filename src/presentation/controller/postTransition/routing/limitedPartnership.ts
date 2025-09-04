@@ -30,12 +30,13 @@ const postTransitionRoutingLandingPage = {
 const postTransitionRoutingEnterRegisteredOfficeAddress = {
   previousUrl: url.LANDING_PAGE_URL,
   currentUrl: url.ENTER_REGISTERED_OFFICE_ADDRESS_URL,
+  currentUrlWithIds: url.ENTER_REGISTERED_OFFICE_ADDRESS_WITH_IDS_URL,
   nextUrl: url.WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL,
   pageType: PostTransitionPageType.enterRegisteredOfficeAddress
 };
 
 const postTransitionRoutingRegisteredOfficeAddressChange = {
-  previousUrl: url.ENTER_REGISTERED_OFFICE_ADDRESS_URL,
+  previousUrl: url.ENTER_REGISTERED_OFFICE_ADDRESS_WITH_IDS_URL,
   currentUrl: url.WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL,
   nextUrl: url.LANDING_PAGE_URL,
   pageType: PostTransitionPageType.whenDidTheRegisteredOfficeAddressChange

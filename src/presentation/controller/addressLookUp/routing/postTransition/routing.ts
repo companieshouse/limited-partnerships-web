@@ -1,18 +1,18 @@
 import { PageRouting, PagesRouting } from "../../../PageRouting";
 import PageType from "../../../PageType";
 
-import generalPartnerPostTransitionRouting from "./generalPartner";
-import limitedPartnerPostTransitionRouting from "./limitedPartner";
+import generalPartnerPostTransitionAddressRouting from "./generalPartner";
+import limitedPartnerPostTransitionAddressRouting from "./limitedPartner";
 
 export enum AddressCacheKeys {
   addressCacheKey = "addressCacheKey",
   territoryCacheKey = "territoryCacheKey"
 }
 
-const postTransitionAddresssRouting: PagesRouting = new Map<PageType, PageRouting>();
+const postTransitionAddressRouting: PagesRouting = new Map<PageType, PageRouting>();
 
-[...generalPartnerPostTransitionRouting, ...limitedPartnerPostTransitionRouting].forEach((routing) => {
-  postTransitionAddresssRouting.set(routing.pageType, routing);
+[...generalPartnerPostTransitionAddressRouting, ...limitedPartnerPostTransitionAddressRouting].forEach((routing) => {
+  postTransitionAddressRouting.set(routing.pageType, routing);
 });
 
-export default postTransitionAddresssRouting;
+export default postTransitionAddressRouting;
