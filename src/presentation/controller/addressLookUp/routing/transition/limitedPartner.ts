@@ -1,7 +1,7 @@
 import AddressPageType from "../../PageType";
 import {
-  ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
-  ADD_LIMITED_PARTNER_PERSON_URL,
+  ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_ID_URL,
+  ADD_LIMITED_PARTNER_PERSON_WITH_ID_URL,
   REVIEW_LIMITED_PARTNERS_URL
 } from "../../../transition/url";
 import * as url from "../../url/transition";
@@ -19,7 +19,7 @@ const limitedPartnerUsualResidentialAddressCacheKeys = {
 };
 
 const transitionAddressRoutingTerritoryChoiceLimitedPartnerUsualResidentialAddress = {
-  previousUrl: ADD_LIMITED_PARTNER_PERSON_URL,
+  previousUrl: ADD_LIMITED_PARTNER_PERSON_WITH_ID_URL,
   currentUrl: url.TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   nextUrl: url.POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   pageType: AddressPageType.territoryChoiceLimitedPartnerUsualResidentialAddress,
@@ -88,7 +88,7 @@ const limitedPartnerPrincipalOfficeAddressCacheKeys = {
 };
 
 const transitionAddressRoutingTerritoryChoiceLimitedPartnerPrincipalOfficeAddress = {
-  previousUrl: ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
+  previousUrl: ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_ID_URL,
   currentUrl: url.TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   nextUrl: url.POSTCODE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   pageType: AddressPageType.territoryChoiceLimitedPartnerPrincipalOfficeAddress,

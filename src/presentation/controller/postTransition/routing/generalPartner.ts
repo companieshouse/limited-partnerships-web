@@ -13,7 +13,7 @@ const postTransitionRoutingGeneralPartnerChoice = {
 const postTransitionRoutingAddGeneralPartnerLegalEntity = {
   previousUrl: url.GENERAL_PARTNER_CHOICE_URL,
   currentUrl: url.ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
-  currentUrlWithIds: url.ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
+  currentUrlWithGeneralPartnerId: url.ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
   nextUrl: TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   pageType: PostTransitionPageType.addGeneralPartnerLegalEntity
 };
@@ -21,7 +21,7 @@ const postTransitionRoutingAddGeneralPartnerLegalEntity = {
 const postTransitionRoutingAddGeneralPartnerPerson = {
   previousUrl: url.GENERAL_PARTNER_CHOICE_URL,
   currentUrl: url.ADD_GENERAL_PARTNER_PERSON_URL,
-  currentUrlWithIds: url.ADD_GENERAL_PARTNER_PERSON_WITH_IDS_URL,
+  currentUrlWithGeneralPartnerId: url.ADD_GENERAL_PARTNER_PERSON_WITH_IDS_URL,
   nextUrl: TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   pageType: PostTransitionPageType.addGeneralPartnerPerson
 };

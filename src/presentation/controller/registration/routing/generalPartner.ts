@@ -23,6 +23,7 @@ const registrationRoutingGeneralPartnerChoice = {
 const registrationRoutingAddGeneralPartnerPerson = {
   previousUrl: url.GENERAL_PARTNER_CHOICE_URL,
   currentUrl: url.ADD_GENERAL_PARTNER_PERSON_URL,
+  currentUrlWithGeneralPartnerId: url.ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL,
   nextUrl: TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   pageType: RegistrationPageType.addGeneralPartnerPerson,
   data: {
@@ -33,6 +34,7 @@ const registrationRoutingAddGeneralPartnerPerson = {
 const registrationRoutingAddGeneralPartnerLegalEntity = {
   previousUrl: url.GENERAL_PARTNER_CHOICE_URL,
   currentUrl: url.ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
+  currentUrlWithGeneralPartnerId: url.ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_ID_URL,
   nextUrl: TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   pageType: RegistrationPageType.addGeneralPartnerLegalEntity,
   data: {

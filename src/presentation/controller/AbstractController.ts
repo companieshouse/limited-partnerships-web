@@ -4,36 +4,20 @@ import { Session } from "@companieshouse/node-session-handler";
 import {
   COMPANY_ID,
   GENERAL_PARTNER_ID,
-  GENERAL_PARTNER_WITH_ID_URL,
   LIMITED_PARTNER_ID,
-  LIMITED_PARTNER_WITH_ID_URL,
   POST_TRANSITION_BASE_URL,
-  POST_TRANSITION_WITH_IDS_URL,
   REGISTRATION_BASE_URL,
-  REGISTRATION_WITH_IDS_URL,
   SUBMISSION_ID,
   TRANSACTION_ID,
   TRANSITION_BASE_URL,
-  TRANSITION_WITH_IDS_URL,
   YOUR_FILINGS_URL
 } from "../../config/constants";
 import { PageRouting, pageRoutingDefault, PagesRouting } from "./PageRouting";
 import PageType from "./PageType";
 import {
-  ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
-  ADD_GENERAL_PARTNER_PERSON_URL,
-  ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
-  ADD_LIMITED_PARTNER_PERSON_URL,
   WHICH_TYPE_URL
 } from "./registration/url";
-import {
-  ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL as ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL_TRANSITION,
-  ADD_GENERAL_PARTNER_PERSON_URL as ADD_GENERAL_PARTNER_PERSON_URL_TRANSITION,
-  ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL as ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL_TRANSITION,
-  ADD_LIMITED_PARTNER_PERSON_URL as ADD_LIMITED_PARTNER_PERSON_URL_TRANSITION
-} from "./transition/url";
 import UIErrors from "../../domain/entities/UIErrors";
-import { getJourneyTypes } from "../../utils";
 import { Ids, Tokens } from "../../domain/types";
 
 abstract class AbstractController {
@@ -52,10 +36,7 @@ abstract class AbstractController {
       limitedPartnerId: request.params[LIMITED_PARTNER_ID]
     } as Ids;
 
-    // replace the currentUrl with currentUrlWithIds if transactionId exists
-    if (pageRouting.currentUrlWithIds && ids.transactionId) {
-      pageRouting.currentUrl = pageRouting.currentUrlWithIds;
-    }
+    pageRouting = this.replaceCurrentUrlWithIds(pageRouting, ids);
 
     pageRouting = this.insertIdsInAllUrl(pageRouting, ids);
 
@@ -68,6 +49,20 @@ abstract class AbstractController {
     const type = this.templateName(path);
 
     return type as PageType;
+  }
+
+  private replaceCurrentUrlWithIds(pageRouting: PageRouting, ids: Ids): PageRouting {
+    if (pageRouting.currentUrlWithLimitedPartnerId && ids.limitedPartnerId) {
+      return { ...pageRouting, currentUrl: pageRouting.currentUrlWithLimitedPartnerId };
+    }
+    if (pageRouting.currentUrlWithGeneralPartnerId && ids.generalPartnerId) {
+      return { ...pageRouting, currentUrl: pageRouting.currentUrlWithGeneralPartnerId };
+    }
+    // submission id is aka limited partnership id
+    if (pageRouting.currentUrlWithLimitedPartnershipId && ids.submissionId) {
+      return { ...pageRouting, currentUrl: pageRouting.currentUrlWithLimitedPartnershipId };
+    }
+    return pageRouting;
   }
 
   protected makeProps(pageRouting: PageRouting, data: Record<string, any> | null, errors: UIErrors | null) {
@@ -121,52 +116,11 @@ abstract class AbstractController {
         url = `${url}?${requestUrlParam}`;
       }
     }
-    url = this.replaceBaseUrlWithIds(url, ids);
     url = this.insertCompanyId(url, ids.companyId);
     url = this.insertTransactionId(url, ids.transactionId);
     url = this.insertSubmissionId(url, ids.submissionId);
     url = this.insertGeneralPartnerId(url, ids.generalPartnerId);
     url = this.insertLimitedPartnerId(url, ids.limitedPartnerId);
-    return url;
-  }
-
-  private replaceBaseUrlWithIds(url: string, ids: Ids) {
-    const journey = getJourneyTypes(url);
-
-    let urlWithIds;
-
-    if (journey.isRegistration) {
-      urlWithIds = REGISTRATION_WITH_IDS_URL;
-    } else if (journey.isTransition) {
-      urlWithIds = TRANSITION_WITH_IDS_URL;
-    } else {
-      urlWithIds = POST_TRANSITION_WITH_IDS_URL;
-    }
-
-    // general partner urls that can exist with or without ids
-    const GP_URLS = [
-      ADD_GENERAL_PARTNER_PERSON_URL,
-      ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
-      ADD_GENERAL_PARTNER_PERSON_URL_TRANSITION,
-      ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL_TRANSITION
-    ];
-
-    if (ids.transactionId && ids.submissionId && ids.generalPartnerId && GP_URLS.includes(url)) {
-      url = url.replace(urlWithIds, urlWithIds + GENERAL_PARTNER_WITH_ID_URL);
-    }
-
-    // limited partner urls that can exist with or without ids
-    const LP_URLS = [
-      ADD_LIMITED_PARTNER_PERSON_URL,
-      ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
-      ADD_LIMITED_PARTNER_PERSON_URL_TRANSITION,
-      ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL_TRANSITION
-    ];
-
-    if (ids.transactionId && ids.submissionId && ids.limitedPartnerId && LP_URLS.includes(url)) {
-      url = url.replace(urlWithIds, urlWithIds + LIMITED_PARTNER_WITH_ID_URL);
-    }
-
     return url;
   }
 
