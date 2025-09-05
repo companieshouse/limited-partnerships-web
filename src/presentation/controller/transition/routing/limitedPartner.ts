@@ -20,6 +20,7 @@ const transitionRoutingLimitedPartnerChoice = {
 const transitionRoutingAddLimitedPartnerPerson = {
   previousUrl: url.LIMITED_PARTNER_CHOICE_URL,
   currentUrl: url.ADD_LIMITED_PARTNER_PERSON_URL,
+  currentUrlWithLimitedPartnerId: url.ADD_LIMITED_PARTNER_PERSON_WITH_ID_URL,
   nextUrl: TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   pageType: TransitionPageType.addLimitedPartnerPerson,
   data: {
@@ -30,6 +31,7 @@ const transitionRoutingAddLimitedPartnerPerson = {
 const transitionRoutingAddLimitedPartnerLegalEntity = {
   previousUrl: url.LIMITED_PARTNER_CHOICE_URL,
   currentUrl: url.ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
+  currentUrlWithLimitedPartnerId: url.ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_ID_URL,
   nextUrl: TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   pageType: TransitionPageType.addLimitedPartnerLegalEntity,
   data: {
