@@ -11,6 +11,10 @@ import TransactionService from "../../../application/service/TransactionService"
 import { IncorporationKind, LimitedPartnership, PartnershipKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 import AddressService from "../../../application/service/AddressService";
 import UIErrors from "../../../domain/entities/UIErrors";
+import { formatDate } from "../../../utils/date-format";
+import { CONFIRMATION_POST_TRANSITION_URL } from "../global/url";
+import { JOURNEY_TYPE_PARAM } from "../../../config";
+import { getJourneyTypes } from "../../../utils";
 
 class LimitedPartnershipController extends AbstractController {
   constructor(
@@ -42,6 +46,11 @@ class LimitedPartnershipController extends AbstractController {
         }
 
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
+
+        const data = limitedPartnership["data"];
+        if (pageRouting.pageType === PostTransitionPageType.registeredOfficeAddressCheckYourAnswers && data) {
+          data.date_of_update = formatDate(data.date_of_update, response.locals.i18n);
+        }
 
         response.render(
           super.templateName(pageRouting.currentUrl),
@@ -288,6 +297,22 @@ class LimitedPartnershipController extends AbstractController {
     };
   }
 
+  postCheckYourAnswers() {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { tokens, ids } = super.extract(request);
+        await this.limitedPartnershipService.closeTransaction(tokens, ids.transactionId);
+
+        const url = super
+          .insertIdsInUrl(CONFIRMATION_POST_TRANSITION_URL, ids, request.url)
+          .replace(JOURNEY_TYPE_PARAM, getJourneyTypes(request.url).journey);
+
+        response.redirect(url);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
 }
 
 export default LimitedPartnershipController;

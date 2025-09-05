@@ -409,7 +409,8 @@
             }
         },
          "update": {
-            "title" : "Check your answers before submitting this update"
+            "title" : "Check your answers before submitting this update",
+            "dateOfChange" : "Date of change"
         }
     },
 

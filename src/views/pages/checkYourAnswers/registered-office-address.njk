@@ -1,0 +1,41 @@
+{{ govukSummaryList({
+  classes: "govuk-!-margin-bottom-7",
+  rows: [
+   {
+      key: {
+        text: i18n.checkYourAnswersPage.headingRegisteredOfficeAddress
+      },
+      value: {
+        text: macros.formatAddress(props.data.limitedPartnership.data.registered_office_address, true)
+      },
+      actions: {
+        items: [
+          CREATE_CHANGE_LINK(
+            i18n.checkYourAnswersPage.change,
+            (currentUrl | replace(checkYourAnswers, "enter-registered-office-address")),
+            partnershipRegisteredOfficeAddressText,
+            "change-partnership-registered-office-address-button"
+          )
+        ]
+      }
+    },
+    {
+      key: {
+        text: i18n.checkYourAnswersPage.update.dateOfChange
+      },
+      value: {
+        text: props.data.limitedPartnership.data.date_of_update
+      },
+      actions: {
+        items: [ 
+          CREATE_CHANGE_LINK(
+            i18n.checkYourAnswersPage.change,
+            (currentUrl | replace(checkYourAnswers, "when-did-the-registered-office-address-change")),
+            partnershipRegisteredOfficeAddressText,
+            "change-partnership-registered-office-address-button"
+          )
+        ]
+      }
+    }
+  ]
+}) }}    

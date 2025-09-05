@@ -38,8 +38,15 @@ const postTransitionRoutingEnterRegisteredOfficeAddress = {
 const postTransitionRoutingRegisteredOfficeAddressChange = {
   previousUrl: url.ENTER_REGISTERED_OFFICE_ADDRESS_WITH_IDS_URL,
   currentUrl: url.WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL,
-  nextUrl: url.LANDING_PAGE_URL,
+  nextUrl: url.REGISTERED_OFFICE_ADDRESS_CHECK_YOUR_ANSWERS_URL,
   pageType: PostTransitionPageType.whenDidTheRegisteredOfficeAddressChange
+};
+
+const postTransitionRoutingRegisteredOfficeAddressCheckYourAnswers = {
+  previousUrl: url.WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL,
+  currentUrl: url.REGISTERED_OFFICE_ADDRESS_CHECK_YOUR_ANSWERS_URL,
+  nextUrl: "/",
+  pageType: PostTransitionPageType.registeredOfficeAddressCheckYourAnswers
 };
 
 const limitedPartnershipRouting = [
@@ -47,7 +54,8 @@ const limitedPartnershipRouting = [
   postTransitionRoutingConfirmLimitedPartnership,
   postTransitionRoutingLandingPage,
   postTransitionRoutingEnterRegisteredOfficeAddress,
-  postTransitionRoutingRegisteredOfficeAddressChange
+  postTransitionRoutingRegisteredOfficeAddressChange,
+  postTransitionRoutingRegisteredOfficeAddressCheckYourAnswers
 ];
 
 export default limitedPartnershipRouting;
