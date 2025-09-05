@@ -19,3 +19,4 @@ export const LIMITED_PARTNER_CHECK_YOUR_ANSWERS_TEMPLATE = PostTransitionPageTyp
 // limited partnership
 export const ENTER_REGISTERED_OFFICE_ADDRESSS_TEMPLATE = PostTransitionPageType.enterRegisteredOfficeAddress;
 export const WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_TEMPLATE = PostTransitionPageType.whenDidTheRegisteredOfficeAddressChange;
+export const REGISTERED_OFFICE_ADDRESS_CHECK_YOUR_ANSWERS_TEMPLATE = PostTransitionPageType.registeredOfficeAddressCheckYourAnswers;
