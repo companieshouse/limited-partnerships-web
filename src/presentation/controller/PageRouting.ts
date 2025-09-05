@@ -5,6 +5,7 @@ export type PageRouting =
   | {
       previousUrl: string;
       currentUrl: string;
+      currentUrlWithIds?: string;
       nextUrl: string;
       pageType: PageType | PageDefault;
       data?: Record<string, any>;
@@ -21,6 +22,7 @@ export enum PageDefault {
 export const pageRoutingDefault = {
   previousUrl: "",
   currentUrl: "",
+  currentUrlWithIds: "",
   nextUrl: "",
   pageType: PageDefault.default,
   data: null,

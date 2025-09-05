@@ -7,7 +7,7 @@ import AddressService from "../../../application/service/AddressService";
 
 import registrationAddressRouting, { AddressCacheKeys } from "./routing/registration/routing";
 import transitionAddressRouting from "./routing/transition/routing";
-import postTransitionRouting from "./routing/postTransition/routing";
+import postTransitionAddressRouting from "./routing/postTransition/routing";
 
 import { Ids, Tokens } from "../../../domain/types";
 import AddressLookUpPageType from "./PageType";
@@ -398,7 +398,7 @@ class AddressLookUpController extends AbstractController {
     } else if (journeyTypes.isTransition) {
       return transitionAddressRouting;
     } else {
-      return postTransitionRouting;
+      return postTransitionAddressRouting;
     }
   }
 

@@ -225,7 +225,7 @@ describe("Enter Usual Residential Address Page", () => {
       appDevDependencies.generalPartnerGateway.feedErrors(apiErrors);
 
       const res = await request(app).post(URL).send({
-        pageType: AddressPageType.confirmRegisteredOfficeAddress,
+        pageType: AddressPageType.enterGeneralPartnerUsualResidentialAddress,
         address: `{"postal_code": "","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": "England"}`
       });
 

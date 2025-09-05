@@ -56,7 +56,7 @@ abstract class GeneralPartnerController extends AbstractController {
         }
 
         if (this.companyService) {
-          limitedPartnership = await this.getLimitedPartnershipDetails(tokens, ids.companyId);
+          limitedPartnership = (await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId))?.limitedPartnership;
         }
 
         if (ids.transactionId && ids.generalPartnerId) {
@@ -82,11 +82,6 @@ abstract class GeneralPartnerController extends AbstractController {
         next(error);
       }
     };
-  }
-
-  private async getLimitedPartnershipDetails(tokens: Tokens, companyId: string): Promise<Record<string, any>> {
-    const result = await (this.companyService as CompanyService).buildLimitedPartnershipFromCompanyProfile(tokens, companyId);
-    return result.limitedPartnership;
   }
 
   getGeneralPartner(urls: { reviewGeneralPartnersUrl: string }) {
@@ -249,11 +244,19 @@ abstract class GeneralPartnerController extends AbstractController {
         if (result?.errors) {
           this.resetFormerNamesIfPreviousNameIsFalse(request.body);
 
-          const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
-            tokens,
-            ids.transactionId,
-            ids.submissionId
-          );
+          let limitedPartnership = {};
+
+          if (ids.transactionId && ids.submissionId) {
+            limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+              tokens,
+              ids.transactionId,
+              ids.submissionId
+            );
+          }
+
+          if (this.companyService) {
+            limitedPartnership = (await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId))?.limitedPartnership;
+          }
 
           await this.conditionalPreviousUrl(ids, pageRouting, request, tokens);
 

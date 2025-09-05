@@ -10,7 +10,7 @@ import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import {
   ENTER_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
-} from "presentation/controller/addressLookUp/url/postTransition";
+} from "../../../../../../presentation/controller/addressLookUp/url/postTransition";
 import LimitedPartnerBuilder, {
   limitedPartnerLegalEntity,
   limitedPartnerPerson
