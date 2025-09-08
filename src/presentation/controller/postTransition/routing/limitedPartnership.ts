@@ -30,7 +30,6 @@ const postTransitionRoutingLandingPage = {
 const postTransitionRoutingEnterRegisteredOfficeAddress = {
   previousUrl: url.LANDING_PAGE_URL,
   currentUrl: url.ENTER_REGISTERED_OFFICE_ADDRESS_URL,
-  currentUrlWithIds: url.ENTER_REGISTERED_OFFICE_ADDRESS_WITH_IDS_URL,
   nextUrl: url.WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL,
   pageType: PostTransitionPageType.enterRegisteredOfficeAddress
 };
