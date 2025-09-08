@@ -15,7 +15,7 @@ enum PostTransitionPageType {
 
   enterRegisteredOfficeAddress = "enter-registered-office-address",
   whenDidTheRegisteredOfficeAddressChange = "when-did-the-registered-office-address-change",
-  registeredOfficeAddressCheckYourAnswers = "registered-office-address-check-your-answers"
+  registeredOfficeAddressCheckYourAnswers = "post-transition-limited-partnership-check-your-answers"
 }
 
 export default PostTransitionPageType;

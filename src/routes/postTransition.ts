@@ -224,7 +224,7 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
   router.get(
     REGISTERED_OFFICE_ADDRESS_CHECK_YOUR_ANSWERS_URL,
     companyAuthentication,
-    dependencies.limitedPartnershipPostTransitionController.getPageRouting()
+    dependencies.limitedPartnershipPostTransitionController.getCheckYourAnswersPageRouting()
   );
   router.post(
     REGISTERED_OFFICE_ADDRESS_CHECK_YOUR_ANSWERS_URL,

@@ -32,23 +32,29 @@ class LimitedPartnershipController extends AbstractController {
       try {
         const { tokens, pageType, ids } = super.extract(request);
         const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
+        const limitedPartnership = await this.getLimitedPartnershipForIds(ids, tokens);
+        const cache = this.cacheService.getDataFromCache(request.signedCookies);
 
-        let limitedPartnership = {};
+        response.render(
+          super.templateName(pageRouting.currentUrl),
+          super.makeProps(pageRouting, { limitedPartnership, cache }, null)
+        );
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
 
-        if (ids.transactionId && ids.submissionId) {
-          limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
-            tokens,
-            ids.transactionId,
-            ids.submissionId
-          );
-        } else {
-          limitedPartnership = (await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId)).limitedPartnership;
-        }
-
+  getCheckYourAnswersPageRouting() {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { tokens, pageType, ids } = super.extract(request);
+        const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
+        const limitedPartnership = await this.getLimitedPartnershipForIds(ids, tokens);
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
 
         const data = limitedPartnership["data"];
-        if (pageRouting.pageType === PostTransitionPageType.registeredOfficeAddressCheckYourAnswers && data) {
+        if (data) {
           data.date_of_update = formatDate(data.date_of_update, response.locals.i18n);
         }
 
@@ -60,6 +66,21 @@ class LimitedPartnershipController extends AbstractController {
         next(error);
       }
     };
+  }
+
+  async getLimitedPartnershipForIds(ids, tokens) {
+    let limitedPartnership = {};
+
+    if (ids.transactionId && ids.submissionId) {
+      limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+        tokens,
+        ids.transactionId,
+        ids.submissionId
+      );
+    } else {
+      limitedPartnership = (await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId)).limitedPartnership;
+    }
+    return limitedPartnership;
   }
 
   getCompanyPage() {

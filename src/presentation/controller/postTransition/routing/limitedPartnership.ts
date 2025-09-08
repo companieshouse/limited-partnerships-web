@@ -46,7 +46,10 @@ const postTransitionRoutingRegisteredOfficeAddressCheckYourAnswers = {
   previousUrl: url.WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL,
   currentUrl: url.REGISTERED_OFFICE_ADDRESS_CHECK_YOUR_ANSWERS_URL,
   nextUrl: "/",
-  pageType: PostTransitionPageType.registeredOfficeAddressCheckYourAnswers
+  pageType: PostTransitionPageType.registeredOfficeAddressCheckYourAnswers,
+  data: {
+    pageKey: "registered-office-address"
+  }
 };
 
 const limitedPartnershipRouting = [
