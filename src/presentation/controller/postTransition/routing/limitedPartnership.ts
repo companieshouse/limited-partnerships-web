@@ -48,7 +48,7 @@ const postTransitionRoutingRegisteredOfficeAddressCheckYourAnswers = {
   nextUrl: "/",
   pageType: PostTransitionPageType.registeredOfficeAddressCheckYourAnswers,
   data: {
-    pageKey: "registered-office-address"
+    pageKey: "registeredOfficeAddress"
   }
 };
 

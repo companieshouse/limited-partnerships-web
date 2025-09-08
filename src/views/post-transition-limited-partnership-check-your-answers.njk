@@ -16,7 +16,7 @@
        {{ govukSummaryList({
           classes: "govuk-!-margin-bottom-7",
           rows: [
-          {
+            {
               key: {
                 text: i18n.checkYourAnswersPage.headingRegisteredOfficeAddress
               },
@@ -33,7 +33,7 @@
                   )
                 ]
               }
-            } if props.data.pageKey === "registered-office-address",
+            } if props.data.pageKey === "registeredOfficeAddress",
             {
               key: {
                 text: i18n.checkYourAnswersPage.update.dateOfChange
@@ -45,9 +45,9 @@
                 items: [ 
                   CREATE_CHANGE_LINK(
                     i18n.checkYourAnswersPage.change,
-                    (currentUrl | replace(ptCheckYourAnswers, "when-did-the-registered-office-address-change")),
+                    (currentUrl | replace(ptCheckYourAnswers, "date-of-update")),
                     partnershipRegisteredOfficeAddressText,
-                    "change-partnership-registered-office-address-button"
+                    "change-partnership-date-of-update-button"
                   )
                 ]
               }
