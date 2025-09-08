@@ -16,6 +16,7 @@ import {
 import AddressService from "../../../application/service/AddressService";
 import UIErrors from "../../../domain/entities/UIErrors";
 import { DATE_OF_UPDATE_TYPE_PREFIX, DATE_OF_UPDATE_TEMPLATE } from "../../../config/constants";
+import { Ids, Tokens } from "../../../domain/types";
 
 class LimitedPartnershipController extends AbstractController {
   constructor(
@@ -34,19 +35,7 @@ class LimitedPartnershipController extends AbstractController {
         const { tokens, pageType, ids } = super.extract(request);
         const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
 
-        let limitedPartnership = {};
-
-        if (ids.transactionId && ids.submissionId) {
-          limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
-            tokens,
-            ids.transactionId,
-            ids.submissionId
-          );
-        } else {
-          limitedPartnership = (
-            await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId)
-          ).limitedPartnership;
-        }
+        const limitedPartnership = await this.getLimitedPartnership(ids, tokens);
 
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
 
@@ -313,19 +302,7 @@ class LimitedPartnershipController extends AbstractController {
         const { tokens, pageType, ids } = super.extract(request);
         const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
 
-        let limitedPartnership = {};
-
-        if (ids.transactionId && ids.submissionId) {
-          limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
-            tokens,
-            ids.transactionId,
-            ids.submissionId
-          );
-        } else {
-          limitedPartnership = (
-            await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId)
-          ).limitedPartnership;
-        }
+        const limitedPartnership = await this.getLimitedPartnership(ids, tokens);
 
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
 
@@ -334,6 +311,23 @@ class LimitedPartnershipController extends AbstractController {
         next(error);
       }
     };
+  }
+
+  private async getLimitedPartnership(ids: Ids, tokens: Tokens) {
+    let limitedPartnership = {};
+
+    if (ids.transactionId && ids.submissionId) {
+      limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+        tokens,
+        ids.transactionId,
+        ids.submissionId
+      );
+    } else {
+      limitedPartnership = (await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId))
+        .limitedPartnership;
+    }
+
+    return limitedPartnership;
   }
 }
 
