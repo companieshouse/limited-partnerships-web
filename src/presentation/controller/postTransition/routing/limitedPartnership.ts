@@ -38,17 +38,30 @@ const postTransitionRoutingEnterRegisteredOfficeAddress = {
 const postTransitionRoutingRegisteredOfficeAddressChange = {
   previousUrl: url.ENTER_REGISTERED_OFFICE_ADDRESS_WITH_IDS_URL,
   currentUrl: url.WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL,
-  nextUrl: url.REGISTERED_OFFICE_ADDRESS_CHECK_YOUR_ANSWERS_URL,
-  pageType: PostTransitionPageType.whenDidTheRegisteredOfficeAddressChange
+  nextUrl: url.REGISTERED_OFFICE_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL,
+  pageType: PostTransitionPageType.whenDidTheRegisteredOfficeAddressChange,
+  data: {
+    titleKey: "registeredOfficeAddress"
+  }
 };
 
-const postTransitionRoutingRegisteredOfficeAddressCheckYourAnswers = {
+const postTransitionRoutingRegisteredOfficeAddressChangeCheckYourAnswers = {
   previousUrl: url.WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL,
-  currentUrl: url.REGISTERED_OFFICE_ADDRESS_CHECK_YOUR_ANSWERS_URL,
+  currentUrl: url.REGISTERED_OFFICE_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL,
   nextUrl: "/",
-  pageType: PostTransitionPageType.registeredOfficeAddressCheckYourAnswers,
+  pageType: PostTransitionPageType.registeredOfficeAddressChangeCheckYourAnswers,
   data: {
     pageKey: "registeredOfficeAddress"
+  }
+};
+
+const postTransitionRoutingPartnershipNameChange = {
+  previousUrl: url.PARTNERSHIP_NAME_WITH_IDS_URL,
+  currentUrl: url.WHEN_DID_THE_PARTNERSHIP_NAME_CHANGE_URL,
+  nextUrl: url.LANDING_PAGE_URL,
+  pageType: PostTransitionPageType.whenDidThePartnershipNameChange,
+  data: {
+    titleKey: "partnershipName"
   }
 };
 
@@ -58,7 +71,8 @@ const limitedPartnershipRouting = [
   postTransitionRoutingLandingPage,
   postTransitionRoutingEnterRegisteredOfficeAddress,
   postTransitionRoutingRegisteredOfficeAddressChange,
-  postTransitionRoutingRegisteredOfficeAddressCheckYourAnswers
+  postTransitionRoutingRegisteredOfficeAddressChangeCheckYourAnswers,
+  postTransitionRoutingPartnershipNameChange
 ];
 
 export default limitedPartnershipRouting;

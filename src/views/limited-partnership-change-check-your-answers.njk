@@ -1,7 +1,7 @@
 {% extends "layout.njk" %}
 {% import 'includes/macros.njk' as macros %}
 
-{% set ptCheckYourAnswers = "post-transition-limited-partnership-check-your-answers" %}
+{% set checkYourAnswersUrlSuffix = "limited-partnership-change-check-your-answers" %}
 
 {% block content %}
   <div class="govuk-grid-row">
@@ -27,7 +27,7 @@
                 items: [
                   CREATE_CHANGE_LINK(
                     i18n.checkYourAnswersPage.change,
-                    (currentUrl | replace(ptCheckYourAnswers, "enter-registered-office-address")),
+                    (currentUrl | replace(checkYourAnswersUrlSuffix, "enter-registered-office-address")),
                     partnershipRegisteredOfficeAddressText,
                     "change-partnership-registered-office-address-button"
                   )
@@ -45,7 +45,7 @@
                 items: [ 
                   CREATE_CHANGE_LINK(
                     i18n.checkYourAnswersPage.change,
-                    (currentUrl | replace(ptCheckYourAnswers, "date-of-update")),
+                    (currentUrl | replace(checkYourAnswersUrlSuffix, "date-of-update")),
                     partnershipRegisteredOfficeAddressText,
                     "change-partnership-date-of-update-button"
                   )

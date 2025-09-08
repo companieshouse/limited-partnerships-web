@@ -1,14 +1,14 @@
 import request from "supertest";
-import enTranslationText from "../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../locales/cy/translations.json";
-import app from "../../app";
-import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled } from "../../../utils";
-import { REGISTERED_OFFICE_ADDRESS_CHECK_YOUR_ANSWERS_URL, WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL } from "../../../../controller/postTransition/url";
-import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
-import PostTransitionPageType from "../../../../controller/postTransition/pageType";
-import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
-import { ApiErrors } from "../../../../../domain/entities/UIErrors";
+import enTranslationText from "../../../../../../../locales/en/translations.json";
+import cyTranslationText from "../../../../../../../locales/cy/translations.json";
+import app from "../../../app";
+import { appDevDependencies } from "../../../../../../config/dev-dependencies";
+import { getUrl, setLocalesEnabled } from "../../../../utils";
+import { REGISTERED_OFFICE_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL, WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL } from "../../../../../controller/postTransition/url";
+import CompanyProfileBuilder from "../../../../builder/CompanyProfileBuilder";
+import PostTransitionPageType from "../../../../../controller/postTransition/pageType";
+import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBuilder";
+import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
 
 describe("Registered office address change date page", () => {
   const URL = getUrl(WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL);
@@ -27,9 +27,7 @@ describe("Registered office address change date page", () => {
       const res = await request(app).get(URL + "?lang=en");
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(
-        `${enTranslationText.whenDidTheRegisteredOfficeAddressChangePage.title}`
-      );
+      expect(res.text).toContain(`${enTranslationText.dateOfUpdate.registeredOfficeAddress.title}`);
       expect(res.text).not.toContain("WELSH -");
     });
 
@@ -38,18 +36,14 @@ describe("Registered office address change date page", () => {
       const res = await request(app).get(URL + "?lang=cy");
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(
-        `${cyTranslationText.whenDidTheRegisteredOfficeAddressChangePage.title}`
-      );
+      expect(res.text).toContain(`${cyTranslationText.dateOfUpdate.registeredOfficeAddress.title}`);
       expect(res.text).toContain("WELSH -");
     });
   });
 
   describe("POST registered office address change date page", () => {
     it("should navigate to next page with date of update", async () => {
-      const limitedPartnership = new LimitedPartnershipBuilder()
-        .withDateOfUpdate("2024-10-10")
-        .build();
+      const limitedPartnership = new LimitedPartnershipBuilder().withDateOfUpdate("2024-10-10").build();
 
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
@@ -57,17 +51,14 @@ describe("Registered office address change date page", () => {
         pageType: PostTransitionPageType.whenDidTheRegisteredOfficeAddressChange
       });
 
-      const redirectUrl = getUrl(REGISTERED_OFFICE_ADDRESS_CHECK_YOUR_ANSWERS_URL);
+      const redirectUrl = getUrl(REGISTERED_OFFICE_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL);
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
     });
   });
 
   it("should replay entered data when invalid date of update is entered and a validation error occurs", async () => {
-
-    const limitedPartnership = new LimitedPartnershipBuilder()
-      .withDateOfUpdate("2024-10-10")
-      .build();
+    const limitedPartnership = new LimitedPartnershipBuilder().withDateOfUpdate("2024-10-10").build();
 
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
