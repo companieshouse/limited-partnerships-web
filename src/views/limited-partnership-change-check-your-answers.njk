@@ -1,0 +1,78 @@
+{% extends "layout.njk" %}
+{% import 'includes/macros.njk' as macros %}
+
+{% if props.data.pageKey === "registeredOfficeAddress" %}
+  {% set checkYourAnswersUrlSuffix = "registered-office-address-change-check-your-answers"  %}
+  {% set dateChangeUrl = "when-did-the-registered-office-address-change"  %}
+{% endif %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds-from-desktop">
+
+      {% include "includes/proposed-name.njk" %}
+      <h1 class="govuk-heading-l">{{ i18n.checkYourAnswersPage.update.title }}</h1>
+
+      <form class="form" action={{ props.currentUrl }} method="post">
+       {% include "includes/csrf_token.njk" %}
+  
+       {{ govukSummaryList({
+          classes: "govuk-!-margin-bottom-7",
+          rows: [
+            {
+              key: {
+                text: i18n.checkYourAnswersPage.headingRegisteredOfficeAddress
+              },
+              value: {
+                text: macros.formatAddress(props.data.limitedPartnership.data.registered_office_address, true)
+              },
+              actions: {
+                items: [
+                  CREATE_CHANGE_LINK(
+                    i18n.checkYourAnswersPage.change,
+                    (currentUrl | replace(checkYourAnswersUrlSuffix, "enter-registered-office-address")),
+                    partnershipRegisteredOfficeAddressText,
+                    "change-partnership-registered-office-address-button"
+                  )
+                ]
+              }
+            } if props.data.pageKey === "registeredOfficeAddress",
+            {
+              key: {
+                text: i18n.checkYourAnswersPage.update.dateOfChange
+              },
+              value: {
+                text: props.data.limitedPartnership.data.date_of_update
+              },
+              actions: {
+                items: [ 
+                  CREATE_CHANGE_LINK(
+                    i18n.checkYourAnswersPage.change,
+                    (currentUrl | replace(checkYourAnswersUrlSuffix, dateChangeUrl)),
+                    partnershipRegisteredOfficeAddressText,
+                    "change-partnership-date-of-update-button"
+                  )
+                ]
+              }
+            }
+          ]
+        }) }}  
+
+       <div class="govuk-button-group">
+         {% include "includes/print-button.njk" %}
+       </div>
+
+        <div class="govuk-button-group">
+          {{ govukButton({
+            text: i18n.buttons.submit,
+            attributes: {
+              "id": "submit",
+              "data-event-id": "check-your-answers-update-registered-office-address-submit-button"
+            }
+          }) }} 
+        </div>
+      </form>    
+    </div>
+  </div>    
+
+{% endblock %}

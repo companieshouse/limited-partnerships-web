@@ -18,7 +18,8 @@ enum PostTransitionPageType {
   enterRegisteredOfficeAddress = "enter-registered-office-address",
   whenDidTheRegisteredOfficeAddressChange = `${DATE_OF_UPDATE_TYPE_PREFIX}-the-registered-office-address-change`,
   partnershipName = "name",
-  whenDidThePartnershipNameChange = `${DATE_OF_UPDATE_TYPE_PREFIX}-the-partnership-name-change`
+  whenDidThePartnershipNameChange = `${DATE_OF_UPDATE_TYPE_PREFIX}-the-partnership-name-change`,
+  registeredOfficeAddressChangeCheckYourAnswers = "registered-office-address-change-check-your-answers",
 }
 
 export default PostTransitionPageType;

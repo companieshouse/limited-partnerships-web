@@ -4,7 +4,7 @@ import cyTranslationText from "../../../../../../../locales/cy/translations.json
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled } from "../../../../utils";
-import { WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL } from "../../../../../controller/postTransition/url";
+import { REGISTERED_OFFICE_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL, WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL } from "../../../../../controller/postTransition/url";
 import CompanyProfileBuilder from "../../../../builder/CompanyProfileBuilder";
 import PostTransitionPageType from "../../../../../controller/postTransition/pageType";
 import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBuilder";
@@ -51,8 +51,9 @@ describe("Registered office address change date page", () => {
         pageType: PostTransitionPageType.whenDidTheRegisteredOfficeAddressChange
       });
 
+      const redirectUrl = getUrl(REGISTERED_OFFICE_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL);
       expect(res.status).toBe(302);
-      // expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`); TODO when the check your answers page is decided as this test
+      expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
     });
   });
 

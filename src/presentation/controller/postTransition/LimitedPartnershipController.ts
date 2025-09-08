@@ -15,8 +15,11 @@ import {
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 import AddressService from "../../../application/service/AddressService";
 import UIErrors from "../../../domain/entities/UIErrors";
-import { DATE_OF_UPDATE_TYPE_PREFIX, DATE_OF_UPDATE_TEMPLATE } from "../../../config/constants";
+import { DATE_OF_UPDATE_TYPE_PREFIX, DATE_OF_UPDATE_TEMPLATE, JOURNEY_TYPE_PARAM } from "../../../config/constants";
 import { Ids, Tokens } from "../../../domain/types";
+import { formatDate } from "../../../utils/date-format";
+import { CONFIRMATION_POST_TRANSITION_URL } from "../global/url";
+import { getJourneyTypes } from "../../../utils";
 
 class LimitedPartnershipController extends AbstractController {
   constructor(
@@ -313,7 +316,29 @@ class LimitedPartnershipController extends AbstractController {
     };
   }
 
-  private async getLimitedPartnership(ids: Ids, tokens: Tokens) {
+  getCheckYourAnswersPageRouting() {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { tokens, pageType, ids } = super.extract(request);
+        const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
+        const limitedPartnership = await this.getLimitedPartnership(ids, tokens);
+        const cache = this.cacheService.getDataFromCache(request.signedCookies);
+
+        if (limitedPartnership?.data?.date_of_update) {
+          limitedPartnership.data.date_of_update = formatDate(limitedPartnership.data.date_of_update, response.locals.i18n);
+        }
+
+        response.render(
+          "limited-partnership-change-check-your-answers",
+          super.makeProps(pageRouting, { limitedPartnership, cache }, null)
+        );
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  private async getLimitedPartnership(ids: Ids, tokens: Tokens): Promise<LimitedPartnership> {
     let limitedPartnership = {};
 
     if (ids.transactionId && ids.submissionId) {
@@ -328,6 +353,23 @@ class LimitedPartnershipController extends AbstractController {
     }
 
     return limitedPartnership;
+  }
+
+  postCheckYourAnswers() {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { tokens, ids } = super.extract(request);
+        await this.limitedPartnershipService.closeTransaction(tokens, ids.transactionId);
+
+        const url = super
+          .insertIdsInUrl(CONFIRMATION_POST_TRANSITION_URL, ids, request.url)
+          .replace(JOURNEY_TYPE_PARAM, getJourneyTypes(request.url).journey);
+
+        response.redirect(url);
+      } catch (error) {
+        next(error);
+      }
+    };
   }
 }
 
