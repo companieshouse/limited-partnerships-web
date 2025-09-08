@@ -16,7 +16,7 @@ import { IncorporationKind, PartnerKind } from "@companieshouse/api-sdk-node/dis
 import PostTransitionPageType from "../postTransition/pageType";
 import postTransitionRouting from "../postTransition/routing";
 import { CONFIRMATION_POST_TRANSITION_URL } from "../global/url";
-import { JOURNEY_TYPE_PARAM } from "../../../config/constants";
+import { JOURNEY_TYPE_PARAM, TRANSACTION_DESCRIPTION_ADD_LIMITED_PARTNER_LEGAL_ENTITY, TRANSACTION_DESCRIPTION_ADD_LIMITED_PARTNER_PERSON } from "../../../config/constants";
 import { getJourneyTypes } from "../../../utils/journey";
 
 class LimitedPartnerPostTransitionController extends LimitedPartnerController {
@@ -60,7 +60,7 @@ class LimitedPartnerPostTransitionController extends LimitedPartnerController {
             companyName: limitedPartnershipData?.partnership_name ?? "",
             companyNumber: limitedPartnershipData?.partnership_number ?? ""
           },
-          isLegalEntity ? "Add a limited partner (legal entity)" : "Add a limited partner (person)"
+          isLegalEntity ? TRANSACTION_DESCRIPTION_ADD_LIMITED_PARTNER_LEGAL_ENTITY : TRANSACTION_DESCRIPTION_ADD_LIMITED_PARTNER_PERSON
         );
 
         const result = await this.limitedPartnerService.createLimitedPartner(tokens, resultTransaction.transactionId, {

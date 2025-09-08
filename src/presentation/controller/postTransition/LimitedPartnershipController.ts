@@ -15,7 +15,7 @@ import {
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 import AddressService from "../../../application/service/AddressService";
 import UIErrors from "../../../domain/entities/UIErrors";
-import { DATE_OF_UPDATE_TYPE_PREFIX, DATE_OF_UPDATE_TEMPLATE, JOURNEY_TYPE_PARAM } from "../../../config/constants";
+import { DATE_OF_UPDATE_TYPE_PREFIX, DATE_OF_UPDATE_TEMPLATE, JOURNEY_TYPE_PARAM, TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNERSHIP } from "../../../config/constants";
 import { Ids, Tokens } from "../../../domain/types";
 import { formatDate } from "../../../utils/date-format";
 import { CONFIRMATION_POST_TRANSITION_URL } from "../global/url";
@@ -199,7 +199,7 @@ class LimitedPartnershipController extends AbstractController {
             companyName: limitedPartnership?.data?.partnership_name ?? "",
             companyNumber: limitedPartnership?.data?.partnership_number ?? ""
           },
-          "Update registered office address"
+          TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNERSHIP
         );
         if (resultTransaction.errors) {
           return response.render(

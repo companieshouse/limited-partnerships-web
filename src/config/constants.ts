@@ -42,6 +42,13 @@ export const APPLICATION_CACHE_KEY_PREFIX_REGISTRATION = "registration_";
 export const APPLICATION_CACHE_KEY_PREFIX_TRANSITION = "transition_";
 export const APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION = "post-transition_";
 
+// Transaction descriptions
+export const TRANSACTION_DESCRIPTION_ADD_LIMITED_PARTNER_PERSON = "Add a limited partner (person)";
+export const TRANSACTION_DESCRIPTION_ADD_LIMITED_PARTNER_LEGAL_ENTITY = "Add a limited partner (legal entity)";
+export const TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_PERSON = "Add a general partner (person)";
+export const TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_LEGAL_ENTITY = "Add a general partner (legal entity)";
+export const TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNERSHIP = "Update limited partnership details";
+
 // Templates
 export const ERROR_TEMPLATE = "error-page";
 export const NOT_FOUND_TEMPLATE = "page-not-found";
