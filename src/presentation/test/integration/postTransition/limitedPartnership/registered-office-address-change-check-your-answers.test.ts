@@ -2,12 +2,12 @@ import request from "supertest";
 import enTranslationText from "../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../locales/cy/translations.json";
 import app from "../../app";
-import { REGISTERED_OFFICE_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL } from "../../../../../presentation/controller/postTransition/url";
+import { REGISTERED_OFFICE_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL } from "../../../../controller/postTransition/url";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled } from "../../../utils";
-import CompanyProfileBuilder from "../../../../../presentation/test/builder/CompanyProfileBuilder";
-import PostTransitionPageType from "../../../../../presentation/controller/postTransition/pageType";
-import { CONFIRMATION_POST_TRANSITION_URL } from "../../../../../presentation/controller/global/url";
+import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
+import PostTransitionPageType from "../../../../controller/postTransition/pageType";
+import { CONFIRMATION_POST_TRANSITION_URL } from "../../../../controller/global/url";
 
 describe("Registered office address check your answers page", () => {
   const URL = getUrl(REGISTERED_OFFICE_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL);
