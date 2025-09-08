@@ -22,6 +22,7 @@ import {
   LANDING_PAGE_URL,
   LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL,
   LIMITED_PARTNER_CHOICE_URL,
+  WHEN_DID_THE_PARTNERSHIP_NAME_CHANGE_URL,
   WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL
 } from "../presentation/controller/postTransition/url";
 
@@ -216,6 +217,17 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
   );
   router.post(
     WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL,
+    companyAuthentication,
+    dependencies.limitedPartnershipPostTransitionController.sendPageData()
+  );
+
+  router.get(
+    WHEN_DID_THE_PARTNERSHIP_NAME_CHANGE_URL,
+    companyAuthentication,
+    dependencies.limitedPartnershipPostTransitionController.getDateOfUpdate()
+  );
+  router.post(
+    WHEN_DID_THE_PARTNERSHIP_NAME_CHANGE_URL,
     companyAuthentication,
     dependencies.limitedPartnershipPostTransitionController.sendPageData()
   );

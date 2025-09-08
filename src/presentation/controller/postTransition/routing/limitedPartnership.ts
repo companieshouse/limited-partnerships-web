@@ -45,12 +45,23 @@ const postTransitionRoutingRegisteredOfficeAddressChange = {
   }
 };
 
+const postTransitionRoutingPartnershipNameChange = {
+  previousUrl: url.PARTNERSHIP_NAME_WITH_IDS_URL,
+  currentUrl: url.WHEN_DID_THE_PARTNERSHIP_NAME_CHANGE_URL,
+  nextUrl: url.LANDING_PAGE_URL,
+  pageType: PostTransitionPageType.whenDidThePartnershipNameChange,
+  data: {
+    titleKey: "partnershipName"
+  }
+};
+
 const limitedPartnershipRouting = [
   postTransitionRoutingCompanyNumber,
   postTransitionRoutingConfirmLimitedPartnership,
   postTransitionRoutingLandingPage,
   postTransitionRoutingEnterRegisteredOfficeAddress,
-  postTransitionRoutingRegisteredOfficeAddressChange
+  postTransitionRoutingRegisteredOfficeAddressChange,
+  postTransitionRoutingPartnershipNameChange
 ];
 
 export default limitedPartnershipRouting;

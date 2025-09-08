@@ -490,6 +490,9 @@
 
       "registeredOfficeAddress" : {
           "title": "WELSH - When did the registered office address change?"
+      },
+      "partnershipName" : {
+          "title": "WELSH - When did the name of the partnership change?"
       }
     },
 

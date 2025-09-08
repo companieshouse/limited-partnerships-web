@@ -491,6 +491,9 @@
 
       "registeredOfficeAddress" : {
           "title": "When did the registered office address change?"
+      },
+      "partnershipName" : {
+          "title": "When did the name of the partnership change?"
       }
     },
 
