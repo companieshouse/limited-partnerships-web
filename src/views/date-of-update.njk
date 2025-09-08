@@ -13,7 +13,7 @@
   {% set date_of_update_day = props.data.limitedPartnership.data["date_of_update-day"] %}
 {% endif %}
 
-{% set publicRegisterInformationLine1 = i18n.whenDidTheRegisteredOfficeAddressChangePage.publicInformationLine1 %}
+{% set publicRegisterInformationLine1 = i18n.dateOfUpdate.publicInformationLine1 %}
 
 {% block content %}
   <div class="govuk-grid-row">
@@ -33,18 +33,18 @@
           errorMessage: props.errors.date_of_update if props.errors,
           fieldset: {
             legend: {
-              text:  i18n.whenDidTheRegisteredOfficeAddressChangePage.title,
+              text:  i18n.dateOfUpdate[props.data.titleKey].title,
               isPageHeading: false,
               classes: "govuk-fieldset__legend--xl"
             }
           },
           hint: {
-            text: i18n.whenDidTheRegisteredOfficeAddressChangePage.dateHint
+            text: i18n.dateOfUpdate.dateHint
           },
           items: [
             {
               classes: "govuk-input--width-2",
-              label: i18n.whenDidTheRegisteredOfficeAddressChangePage.dateDay,
+              label: i18n.dateOfUpdate.dateDay,
               name: "day",
               value: date_of_update_day,
               attributes: {
@@ -54,7 +54,7 @@
             },
             {
               classes: "govuk-input--width-2",
-              label: i18n.whenDidTheRegisteredOfficeAddressChangePage.dateMonth,
+              label: i18n.dateOfUpdate.dateMonth,
               name: "month",
               value: date_of_update_month,
               attributes: {
@@ -64,7 +64,7 @@
             },
             {
               classes: "govuk-input--width-4",
-              label: i18n.whenDidTheRegisteredOfficeAddressChangePage.dateYear,
+              label: i18n.dateOfUpdate.dateYear,
               name: "year",
               value: date_of_update_year,
               attributes: {

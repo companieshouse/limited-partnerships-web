@@ -481,6 +481,21 @@
         }
     },
 
+    "dateOfUpdate" : { 
+      "dateHint": "WELSH - For example, 27 3 2025",
+      "dateDay" : "WELSH - Day",
+      "dateMonth" : "WELSH - Month",
+      "dateYear" : "WELSH - Year",
+      "publicInformationLine1": "WELSH - We'll show the date on the public register.",
+
+      "registeredOfficeAddress" : {
+          "title": "WELSH - When did the registered office address change?"
+      },
+      "partnershipName" : {
+          "title": "WELSH - When did the name of the partnership change?"
+      }
+    },
+
     "emailPage" : {
         "title" : "WELSH - What is the registered email address for the partnership?",
         "hint": "WELSH - We'll use this email address to send important information that relates to the partnership. For example, new legislative requirements or warnings about missed deadlines.",
@@ -594,15 +609,6 @@
 
     "publicRegisterInformation" : {
         "title": "WELSH - What information we'll show on the public register"
-    },
-
-    "whenDidTheRegisteredOfficeAddressChangePage" : {
-      "title": "WELSH - When did the registered office address change?",    
-      "dateHint": "WELSH - For example, 27 3 2025",
-      "dateDay" : "WELSH - Day",
-      "dateMonth" : "WELSH - Month",
-      "dateYear" : "WELSH - Year",
-      "publicInformationLine1": "WELSH - We'll show the date on the public register."
     },
 
     "removePartnerPage": {

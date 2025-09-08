@@ -39,7 +39,20 @@ const postTransitionRoutingRegisteredOfficeAddressChange = {
   previousUrl: url.ENTER_REGISTERED_OFFICE_ADDRESS_WITH_IDS_URL,
   currentUrl: url.WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL,
   nextUrl: url.LANDING_PAGE_URL,
-  pageType: PostTransitionPageType.whenDidTheRegisteredOfficeAddressChange
+  pageType: PostTransitionPageType.whenDidTheRegisteredOfficeAddressChange,
+  data: {
+    titleKey: "registeredOfficeAddress"
+  }
+};
+
+const postTransitionRoutingPartnershipNameChange = {
+  previousUrl: url.PARTNERSHIP_NAME_WITH_IDS_URL,
+  currentUrl: url.WHEN_DID_THE_PARTNERSHIP_NAME_CHANGE_URL,
+  nextUrl: url.LANDING_PAGE_URL,
+  pageType: PostTransitionPageType.whenDidThePartnershipNameChange,
+  data: {
+    titleKey: "partnershipName"
+  }
 };
 
 const limitedPartnershipRouting = [
@@ -47,7 +60,8 @@ const limitedPartnershipRouting = [
   postTransitionRoutingConfirmLimitedPartnership,
   postTransitionRoutingLandingPage,
   postTransitionRoutingEnterRegisteredOfficeAddress,
-  postTransitionRoutingRegisteredOfficeAddressChange
+  postTransitionRoutingRegisteredOfficeAddressChange,
+  postTransitionRoutingPartnershipNameChange
 ];
 
 export default limitedPartnershipRouting;
