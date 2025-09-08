@@ -1,7 +1,10 @@
 {% extends "layout.njk" %}
 {% import 'includes/macros.njk' as macros %}
 
-{% set checkYourAnswersUrlSuffix = "limited-partnership-change-check-your-answers" %}
+{% if props.data.pageKey === "registeredOfficeAddress" %}
+  {% set checkYourAnswersUrlSuffix = "registered-office-address-change-check-your-answers"  %}
+  {% set dateChangeUrl = "when-did-the-registered-office-address-change"  %}
+{% endif %}
 
 {% block content %}
   <div class="govuk-grid-row">
@@ -45,7 +48,7 @@
                 items: [ 
                   CREATE_CHANGE_LINK(
                     i18n.checkYourAnswersPage.change,
-                    (currentUrl | replace(checkYourAnswersUrlSuffix, "date-of-update")),
+                    (currentUrl | replace(checkYourAnswersUrlSuffix, dateChangeUrl)),
                     partnershipRegisteredOfficeAddressText,
                     "change-partnership-date-of-update-button"
                   )
