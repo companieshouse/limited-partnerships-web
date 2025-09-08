@@ -1,3 +1,5 @@
+import { DATE_OF_UPDATE_TYPE_PREFIX } from "../../../config/constants";
+
 enum PostTransitionPageType {
   companyNumber = "company-number",
   confirmLimitedPartnership = "confirm-limited-partnership",
@@ -14,7 +16,7 @@ enum PostTransitionPageType {
   limitedPartnerCheckYourAnswers = "limited-partner-check-your-answers",
 
   enterRegisteredOfficeAddress = "enter-registered-office-address",
-  whenDidTheRegisteredOfficeAddressChange = "when-did-the-registered-office-address-change"
+  whenDidTheRegisteredOfficeAddressChange = `${DATE_OF_UPDATE_TYPE_PREFIX}-the-registered-office-address-change`
 }
 
 export default PostTransitionPageType;

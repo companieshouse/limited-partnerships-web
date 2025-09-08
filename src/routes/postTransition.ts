@@ -212,7 +212,7 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
   router.get(
     WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL,
     companyAuthentication,
-    dependencies.limitedPartnershipPostTransitionController.getPageRouting()
+    dependencies.limitedPartnershipPostTransitionController.getDateOfUpdate()
   );
   router.post(
     WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL,

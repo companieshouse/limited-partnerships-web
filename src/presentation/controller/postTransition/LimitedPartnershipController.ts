@@ -8,9 +8,14 @@ import LimitedPartnershipService from "../../../application/service/LimitedPartn
 import postTransitionRouting from "./routing";
 import PostTransitionPageType from "./pageType";
 import TransactionService from "../../../application/service/TransactionService";
-import { IncorporationKind, LimitedPartnership, PartnershipKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
+import {
+  IncorporationKind,
+  LimitedPartnership,
+  PartnershipKind
+} from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 import AddressService from "../../../application/service/AddressService";
 import UIErrors from "../../../domain/entities/UIErrors";
+import { DATE_OF_UPDATE_TYPE_PREFIX, DATE_OF_UPDATE_TEMPLATE } from "../../../config/constants";
 
 class LimitedPartnershipController extends AbstractController {
   constructor(
@@ -38,7 +43,9 @@ class LimitedPartnershipController extends AbstractController {
             ids.submissionId
           );
         } else {
-          limitedPartnership = (await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId)).limitedPartnership;
+          limitedPartnership = (
+            await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId)
+          ).limitedPartnership;
         }
 
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
@@ -145,7 +152,6 @@ class LimitedPartnershipController extends AbstractController {
     response: Response,
     limitedPartnership: LimitedPartnership
   ): UIErrors | undefined {
-
     this.addressService.setI18n(response.locals.i18n);
 
     let errors: UIErrors | undefined;
@@ -181,7 +187,10 @@ class LimitedPartnershipController extends AbstractController {
         const pageType = super.extractPageTypeOrThrowError(request, PostTransitionPageType);
         const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
 
-        const { limitedPartnership } = await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId);
+        const { limitedPartnership } = await this.companyService.buildLimitedPartnershipFromCompanyProfile(
+          tokens,
+          ids.companyId
+        );
 
         const errors = this.validateAddress(request, response, limitedPartnership);
         if (errors?.hasErrors()) {
@@ -222,7 +231,11 @@ class LimitedPartnershipController extends AbstractController {
         if (resultLimitedPartnershipCreate.errors) {
           return response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { address: { ...request.body }, limitedPartnership }, resultLimitedPartnershipCreate.errors)
+            super.makeProps(
+              pageRouting,
+              { address: { ...request.body }, limitedPartnership },
+              resultLimitedPartnershipCreate.errors
+            )
           );
         }
 
@@ -233,7 +246,6 @@ class LimitedPartnershipController extends AbstractController {
         };
         const url = super.insertIdsInUrl(pageRouting.nextUrl, newIds);
         response.redirect(url);
-
       } catch (error) {
         next(error);
       }
@@ -249,10 +261,12 @@ class LimitedPartnershipController extends AbstractController {
 
         let data = request.body;
 
-        const { limitedPartnership } = await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId);
+        const { limitedPartnership } = await this.companyService.buildLimitedPartnershipFromCompanyProfile(
+          tokens,
+          ids.companyId
+        );
 
         if (pageType === PostTransitionPageType.enterRegisteredOfficeAddress) {
-
           const errors = this.validateAddress(request, response, limitedPartnership);
           if (errors?.hasErrors()) {
             return response.render(
@@ -273,9 +287,14 @@ class LimitedPartnershipController extends AbstractController {
           pageType,
           data
         );
+
+        const template = pageRouting.currentUrl.includes(DATE_OF_UPDATE_TYPE_PREFIX)
+          ? DATE_OF_UPDATE_TEMPLATE
+          : super.templateName(pageRouting.currentUrl);
+
         if (patchResult?.errors) {
           return response.render(
-            super.templateName(pageRouting.currentUrl),
+            template,
             super.makeProps(pageRouting, { ...request.body, limitedPartnership }, patchResult.errors)
           );
         }
@@ -288,6 +307,34 @@ class LimitedPartnershipController extends AbstractController {
     };
   }
 
+  getDateOfUpdate() {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { tokens, pageType, ids } = super.extract(request);
+        const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
+
+        let limitedPartnership = {};
+
+        if (ids.transactionId && ids.submissionId) {
+          limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+            tokens,
+            ids.transactionId,
+            ids.submissionId
+          );
+        } else {
+          limitedPartnership = (
+            await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId)
+          ).limitedPartnership;
+        }
+
+        const cache = this.cacheService.getDataFromCache(request.signedCookies);
+
+        response.render(DATE_OF_UPDATE_TEMPLATE, super.makeProps(pageRouting, { limitedPartnership, cache }, null));
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
 }
 
 export default LimitedPartnershipController;

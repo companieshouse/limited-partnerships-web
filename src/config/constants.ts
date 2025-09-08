@@ -88,6 +88,10 @@ export const LIMITED_PARTNER_WITH_ID_URL = LIMITED_PARTNER_URL + `/:${LIMITED_PA
 
 export const ACCOUNTS_SIGN_OUT_URL = `${ACCOUNT_URL}/signout`;
 
+// Date of update
+export const DATE_OF_UPDATE_TYPE_PREFIX = "when-did";
+export const DATE_OF_UPDATE_TEMPLATE = "date-of-update";
+
 // services
 export const SDK_LIMITED_PARTNERSHIP_SERVICE = "limitedPartnershipsService";
 export const SDK_POSTCODE_LOOKUP_SERVICE = "postCodeLookup";
