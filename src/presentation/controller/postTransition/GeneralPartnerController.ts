@@ -17,7 +17,7 @@ import { IncorporationKind, PartnerKind } from "@companieshouse/api-sdk-node/dis
 import PostTransitionPageType from "../postTransition/pageType";
 import postTransitionRouting from "../postTransition/routing";
 import { CONFIRMATION_POST_TRANSITION_URL } from "../global/url";
-import { JOURNEY_TYPE_PARAM } from "../../../config/constants";
+import { JOURNEY_TYPE_PARAM, TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_LEGAL_ENTITY, TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_PERSON } from "../../../config/constants";
 import { getJourneyTypes } from "../../../utils/journey";
 
 class GeneralPartnerPostTransitionController extends GeneralPartnerController {
@@ -62,7 +62,7 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
             companyName: limitedPartnershipData?.partnership_name ?? "",
             companyNumber: limitedPartnershipData?.partnership_number ?? ""
           },
-          isLegalEntity ? "Add a general partner (legal entity)" : "Add a general partner (person)"
+          isLegalEntity ? TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_LEGAL_ENTITY : TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_PERSON
         );
 
         const result = await this.generalPartnerService.createGeneralPartner(tokens, resultTransaction.transactionId, {
