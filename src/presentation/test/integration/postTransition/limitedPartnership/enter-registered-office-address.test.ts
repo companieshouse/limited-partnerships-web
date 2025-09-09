@@ -2,7 +2,11 @@ import request from "supertest";
 import enTranslationText from "../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../locales/cy/translations.json";
 import app from "../../app";
-import { ENTER_REGISTERED_OFFICE_ADDRESS_URL, ENTER_REGISTERED_OFFICE_ADDRESS_WITH_IDS_URL, WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL } from "../../../../controller/postTransition/url";
+import {
+  ENTER_REGISTERED_OFFICE_ADDRESS_URL,
+  ENTER_REGISTERED_OFFICE_ADDRESS_WITH_IDS_URL,
+  WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL
+} from "../../../../controller/postTransition/url";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import LimitedPartnershipBuilder from "../../../../../presentation/test/builder/LimitedPartnershipBuilder";
@@ -24,7 +28,6 @@ describe("Enter Registered Office Address Page", () => {
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([]);
     appDevDependencies.limitedPartnershipGateway.feedErrors();
     appDevDependencies.limitedPartnershipGateway.setError(false);
-
   });
 
   describe("GET Enter Registered Office Address Page", () => {
@@ -122,34 +125,40 @@ describe("Enter Registered Office Address Page", () => {
       expect(res.text).toContain(enTranslationText.errorPage.title);
     });
 
-    it.each([
-      URL,
-      URL_WITH_IDS
-    ]) ("should return a validation error if api validation error occurs creating LimitedPartnership", async (url) => {
-      const limitedPartnership = new LimitedPartnershipBuilder().withJurisdiction(Jurisdiction.SCOTLAND).build();
-      appDevDependencies.limitedPartnershipGateway.setError(true);
+    it.each([URL, URL_WITH_IDS])(
+      "should return a validation error if api validation error occurs creating LimitedPartnership",
+      async (url) => {
+        const limitedPartnership = new LimitedPartnershipBuilder()
+          .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+          .withPartnershipName(companyProfile.data.companyName)
+          .build();
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-      const apiErrors: ApiErrors = {
-        errors: { something: "Something is invalid" }
-      };
+        const apiErrors: ApiErrors = {
+          errors: { something: "Something is invalid" }
+        };
 
-      appDevDependencies.limitedPartnershipGateway.feedErrors(apiErrors);
+        appDevDependencies.limitedPartnershipGateway.feedErrors(apiErrors);
 
-      const res = await request(app)
-        .post(url)
-        .send({
-          pageType: PostTransitionPageType.enterRegisteredOfficeAddress,
-          ...limitedPartnership.data?.registered_office_address
-        });
+        const res = await request(app)
+          .post(url)
+          .send({
+            pageType: PostTransitionPageType.enterRegisteredOfficeAddress,
+            ...limitedPartnership.data?.registered_office_address
+          });
 
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(enTranslationText.govUk.error.title);
-      expect(res.text).toContain(companyProfile.data.companyName.toUpperCase());
-      expect(res.text).toContain("Something is invalid");
-    });
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(enTranslationText.govUk.error.title);
+        expect(res.text).toContain(companyProfile.data.companyName.toUpperCase());
+        expect(res.text).toContain("Something is invalid");
+      }
+    );
 
     it("should return a validation error when jurisdiction of Scotland does not match country", async () => {
-      const limitedPartnership = new LimitedPartnershipBuilder().withJurisdiction(Jurisdiction.SCOTLAND).build();
+      const limitedPartnership = new LimitedPartnershipBuilder()
+        .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+        .withJurisdiction(Jurisdiction.SCOTLAND)
+        .build();
 
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
