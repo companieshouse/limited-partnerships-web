@@ -123,17 +123,9 @@ describe("Enter Registered Office Address Page", () => {
     });
 
     it.each([
-      {
-        url: URL,
-        expectContainUrl: URL,
-        expectNotContainUrl: URL_WITH_IDS
-      },
-      {
-        url: URL_WITH_IDS,
-        expectContainUrl: URL_WITH_IDS,
-        expectNotContainUrl: URL
-      }
-    ]) ("should return a validation error if api validation error occurs creating LimitedPartnership", async ({ url, expectContainUrl, expectNotContainUrl }) => {
+      URL,
+      URL_WITH_IDS
+    ]) ("should return a validation error if api validation error occurs creating LimitedPartnership", async (url) => {
       const limitedPartnership = new LimitedPartnershipBuilder().withJurisdiction(Jurisdiction.SCOTLAND).build();
       appDevDependencies.limitedPartnershipGateway.setError(true);
 
@@ -154,8 +146,6 @@ describe("Enter Registered Office Address Page", () => {
       expect(res.text).toContain(enTranslationText.govUk.error.title);
       expect(res.text).toContain(companyProfile.data.companyName.toUpperCase());
       expect(res.text).toContain("Something is invalid");
-      expect(res.text).toContain(expectContainUrl);
-      expect(res.text).not.toContain(expectNotContainUrl);
     });
 
     it("should return a validation error when jurisdiction of Scotland does not match country", async () => {

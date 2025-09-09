@@ -20,7 +20,8 @@ import {
   DATE_OF_UPDATE_TEMPLATE,
   JOURNEY_TYPE_PARAM,
   CHECK_YOUR_ANSWERS_TYPE_SUFFIX,
-  CHECK_YOUR_ANSWERS_TEMPLATE
+  CHECK_YOUR_ANSWERS_TEMPLATE,
+  TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNERSHIP
 } from "../../../config/constants";
 import { Ids, Tokens } from "../../../domain/types";
 import { formatDate } from "../../../utils/date-format";
@@ -208,7 +209,7 @@ class LimitedPartnershipController extends AbstractController {
             companyName: limitedPartnership?.data?.partnership_name ?? "",
             companyNumber: limitedPartnership?.data?.partnership_number ?? ""
           },
-          "Update registered office address"
+          TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNERSHIP
         );
         if (resultTransaction.errors) {
           return response.render(
