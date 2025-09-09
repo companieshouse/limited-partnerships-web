@@ -13,6 +13,7 @@
   {% set date_of_update_day = props.data.limitedPartnership.data["date_of_update-day"] %}
 {% endif %}
 
+{% set pageTitle = i18n.dateOfUpdate[props.data.titleKey].title %}
 {% set publicRegisterInformationLine1 = i18n.dateOfUpdate.publicInformationLine1 %}
 
 {% block content %}
@@ -33,7 +34,7 @@
           errorMessage: props.errors.date_of_update if props.errors,
           fieldset: {
             legend: {
-              text:  i18n.dateOfUpdate[props.data.titleKey].title,
+              text: pageTitle,
               isPageHeading: false,
               classes: "govuk-fieldset__legend--xl"
             }
