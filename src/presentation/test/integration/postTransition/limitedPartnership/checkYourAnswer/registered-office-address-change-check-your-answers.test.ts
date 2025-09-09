@@ -1,13 +1,17 @@
 import request from "supertest";
-import enTranslationText from "../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../locales/cy/translations.json";
-import app from "../../app";
-import { REGISTERED_OFFICE_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL } from "../../../../controller/postTransition/url";
-import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled } from "../../../utils";
-import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
-import PostTransitionPageType from "../../../../controller/postTransition/pageType";
-import { CONFIRMATION_POST_TRANSITION_URL } from "../../../../controller/global/url";
+
+import enTranslationText from "../../../../../../../locales/en/translations.json";
+import cyTranslationText from "../../../../../../../locales/cy/translations.json";
+
+import app from "../../../app";
+import { appDevDependencies } from "../../../../../../config/dev-dependencies";
+import { getUrl, setLocalesEnabled } from "../../../../utils";
+
+import { REGISTERED_OFFICE_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/postTransition/url";
+import { CONFIRMATION_POST_TRANSITION_URL } from "../../../../../controller/global/url";
+import CompanyProfileBuilder from "../../../../builder/CompanyProfileBuilder";
+import PostTransitionPageType from "../../../../../controller/postTransition/pageType";
+import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBuilder";
 
 describe("Registered office address check your answers page", () => {
   const URL = getUrl(REGISTERED_OFFICE_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL);
@@ -18,6 +22,11 @@ describe("Registered office address check your answers page", () => {
 
     const companyProfile = new CompanyProfileBuilder().build();
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
+
+    const limitedPartnership = new LimitedPartnershipBuilder()
+      .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+      .build();
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
   });
 
   describe("GET registered office address check your answers page", () => {
@@ -26,9 +35,7 @@ describe("Registered office address check your answers page", () => {
       const res = await request(app).get(URL + "?lang=en");
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(
-        `${enTranslationText.checkYourAnswersPage.update.title}`
-      );
+      expect(res.text).toContain(`${enTranslationText.checkYourAnswersPage.update.title}`);
       expect(res.text).toContain(enTranslationText.print.buttonText);
       expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
       expect(res.text).not.toContain("WELSH -");
@@ -39,9 +46,7 @@ describe("Registered office address check your answers page", () => {
       const res = await request(app).get(URL + "?lang=cy");
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(
-        `${cyTranslationText.checkYourAnswersPage.update.title}`
-      );
+      expect(res.text).toContain(`${cyTranslationText.checkYourAnswersPage.update.title}`);
       expect(res.text).toContain(enTranslationText.print.buttonText);
       expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
       expect(res.text).toContain("WELSH -");
@@ -55,6 +60,7 @@ describe("Registered office address check your answers page", () => {
       });
 
       const redirectUrl = getUrl(CONFIRMATION_POST_TRANSITION_URL);
+
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
     });

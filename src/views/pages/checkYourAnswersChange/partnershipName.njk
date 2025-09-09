@@ -1,0 +1,27 @@
+{% set dateChangeUrl = "when-did-the-partnership-name-change"  %}
+
+{{ govukSummaryList({
+    classes: "govuk-!-margin-bottom-7",
+    rows: [
+        {
+            key: {
+                text: i18n.checkYourAnswersPage.headingPartnershipName
+            },
+            value: {
+                text: props.data.limitedPartnership.data.partnership_name
+            },
+            actions: {
+            items: [
+                    CREATE_CHANGE_LINK(
+                    i18n.checkYourAnswersPage.change,
+                    (currentUrl | replace(props.pageType, "name")),
+                    partnership_name,
+                    "change-partnership-name-button"
+                    )
+                ]
+            }
+        },
+        
+        SET_DATE_OF_UPDATE_SECTION(props, i18n, dateChangeUrl)
+    ]
+}) }}  

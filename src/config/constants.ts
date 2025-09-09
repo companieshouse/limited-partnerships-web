@@ -99,6 +99,10 @@ export const ACCOUNTS_SIGN_OUT_URL = `${ACCOUNT_URL}/signout`;
 export const DATE_OF_UPDATE_TYPE_PREFIX = "when-did";
 export const DATE_OF_UPDATE_TEMPLATE = "date-of-update";
 
+// Check your answer
+export const CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX = "change-check-your-answers";
+export const CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE = "limited-partnership-change-check-your-answers";
+
 // services
 export const SDK_LIMITED_PARTNERSHIP_SERVICE = "limitedPartnershipsService";
 export const SDK_POSTCODE_LOOKUP_SERVICE = "postCodeLookup";
