@@ -13,9 +13,7 @@ describe("Update Submission", () => {
       .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
       .build();
 
-    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
-      limitedPartnership
-    ]);
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
     await appDevDependencies.limitedPartnershipService.sendPageData(
       { access_token: "access_token", refresh_token: "refresh_token" },
@@ -27,9 +25,7 @@ describe("Update Submission", () => {
       }
     );
 
-    expect(
-      appDevDependencies.limitedPartnershipGateway.limitedPartnerships[0]
-    ).toEqual({
+    expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships[0]).toEqual({
       ...limitedPartnership,
       data: { ...limitedPartnership.data, email: "email@example.com" }
     });
@@ -40,22 +36,25 @@ describe("Update Submission", () => {
       .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
       .build();
 
-    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
-      limitedPartnership
-    ]);
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-    const result =
-      await appDevDependencies.limitedPartnershipService.sendPageData(
-        { access_token: "access_token", refresh_token: "refresh_token" },
-        appDevDependencies.transactionGateway.transactionId,
-        limitedPartnership["_id"] as string,
-        RegistrationPageType.email,
-        {}
-      );
+    const apiErrors = {
+      errors: {
+        "data.email": "must be a well-formed email address"
+      }
+    };
 
-    expect(
-      appDevDependencies.limitedPartnershipGateway.limitedPartnerships[0]
-    ).not.toEqual({
+    appDevDependencies.limitedPartnershipGateway.feedErrors(apiErrors);
+
+    const result = await appDevDependencies.limitedPartnershipService.sendPageData(
+      { access_token: "access_token", refresh_token: "refresh_token" },
+      appDevDependencies.transactionGateway.transactionId,
+      limitedPartnership["_id"] as string,
+      RegistrationPageType.email,
+      {}
+    );
+
+    expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships[0]).not.toEqual({
       ...limitedPartnership,
       data: { ...limitedPartnership.data, email: "email@example.com" }
     });

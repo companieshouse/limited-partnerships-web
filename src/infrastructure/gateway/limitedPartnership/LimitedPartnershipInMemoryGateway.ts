@@ -76,21 +76,6 @@ class LimitedPartnershipInMemoryGateway implements ILimitedPartnershipGateway {
     registrationPageType: RegistrationPageType,
     data: Record<string, any>
   ): Promise<void> {
-    const apiErrors: ApiErrors = {
-      errors: {}
-    };
-
-    if (registrationPageType === RegistrationPageType.email && !data.email) {
-      apiErrors.errors = {
-        ...apiErrors.errors,
-        "data.email": "must be a well-formed email address"
-      };
-    }
-
-    if (Object.keys(apiErrors.errors).length > 0) {
-      this.uiErrors.formatValidationErrorToUiErrors(apiErrors);
-    }
-
     if (this.uiErrors?.hasErrors()) {
       throw this.uiErrors;
     }

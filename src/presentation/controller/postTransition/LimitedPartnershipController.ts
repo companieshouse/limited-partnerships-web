@@ -263,10 +263,7 @@ class LimitedPartnershipController extends AbstractController {
 
         let data = request.body;
 
-        const { limitedPartnership } = await this.companyService.buildLimitedPartnershipFromCompanyProfile(
-          tokens,
-          ids.companyId
-        );
+        const limitedPartnership = await this.getLimitedPartnership(ids, tokens);
 
         if (pageType === PostTransitionPageType.enterRegisteredOfficeAddress) {
           const errors = this.validateAddress(request, response, limitedPartnership);
