@@ -19,8 +19,8 @@ import {
   DATE_OF_UPDATE_TYPE_PREFIX,
   DATE_OF_UPDATE_TEMPLATE,
   JOURNEY_TYPE_PARAM,
-  CHECK_YOUR_ANSWERS_TYPE_SUFFIX,
-  CHECK_YOUR_ANSWERS_TEMPLATE,
+  CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX,
+  CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE,
   TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNERSHIP
 } from "../../../config/constants";
 import { Ids, Tokens } from "../../../domain/types";
@@ -294,8 +294,8 @@ class LimitedPartnershipController extends AbstractController {
 
         if (pageRouting.currentUrl.includes(DATE_OF_UPDATE_TYPE_PREFIX)) {
           template = DATE_OF_UPDATE_TEMPLATE;
-        } else if (pageRouting.currentUrl.includes(CHECK_YOUR_ANSWERS_TYPE_SUFFIX)) {
-          template = CHECK_YOUR_ANSWERS_TEMPLATE;
+        } else if (pageRouting.currentUrl.includes(CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX)) {
+          template = CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE;
         }
 
         if (patchResult?.errors) {
@@ -349,7 +349,10 @@ class LimitedPartnershipController extends AbstractController {
           );
         }
 
-        response.render(CHECK_YOUR_ANSWERS_TEMPLATE, super.makeProps(pageRouting, { limitedPartnership, cache }, null));
+        response.render(
+          CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE,
+          super.makeProps(pageRouting, { limitedPartnership, cache }, null)
+        );
       } catch (error) {
         next(error);
       }
@@ -395,7 +398,7 @@ class LimitedPartnershipController extends AbstractController {
 
     const endOfPreviousUrl = pageRouting.previousUrl.split("/").pop() ?? "";
 
-    if (previousPageType.includes(CHECK_YOUR_ANSWERS_TYPE_SUFFIX)) {
+    if (previousPageType.includes(CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX)) {
       pageRouting.previousUrl = pageRouting.previousUrl.replace(endOfPreviousUrl, previousPageType);
     }
   }

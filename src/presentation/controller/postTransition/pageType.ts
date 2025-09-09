@@ -1,4 +1,4 @@
-import { CHECK_YOUR_ANSWERS_TYPE_SUFFIX, DATE_OF_UPDATE_TYPE_PREFIX } from "../../../config/constants";
+import { CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX, DATE_OF_UPDATE_TYPE_PREFIX } from "../../../config/constants";
 
 enum PostTransitionPageType {
   companyNumber = "company-number",
@@ -17,11 +17,11 @@ enum PostTransitionPageType {
 
   enterRegisteredOfficeAddress = "enter-registered-office-address",
   whenDidTheRegisteredOfficeAddressChange = `${DATE_OF_UPDATE_TYPE_PREFIX}-the-registered-office-address-change`,
-  registeredOfficeAddressChangeCheckYourAnswers = `registered-office-address-${CHECK_YOUR_ANSWERS_TYPE_SUFFIX}`,
+  registeredOfficeAddressChangeCheckYourAnswers = `registered-office-address-${CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX}`,
 
   partnershipName = "name",
   whenDidThePartnershipNameChange = `${DATE_OF_UPDATE_TYPE_PREFIX}-the-partnership-name-change`,
-  partnershipNameChangeCheckYourAnswers = `partnership-name-${CHECK_YOUR_ANSWERS_TYPE_SUFFIX}`
+  partnershipNameChangeCheckYourAnswers = `partnership-name-${CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX}`
 }
 
 export default PostTransitionPageType;
