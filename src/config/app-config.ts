@@ -9,6 +9,7 @@ import { CsrfProtectionMiddleware } from "@companieshouse/web-security-node";
 import { getGOVUKFrontendVersion } from "@companieshouse/ch-node-utils";
 
 import { createSummaryListLink } from "../utils/change-link";
+import setDateOfUpdateSection from "../utils/date-of-update";
 import * as config from "./constants";
 import { authentication, localisationMiddleware } from "../middlewares";
 import { serviceAvailabilityMiddleware } from "../middlewares/service-availability.middleware";
@@ -58,6 +59,7 @@ export const appConfig = (app: express.Application) => {
   nunjucksEnv.addGlobal("SERVICE_START_URL_REGISTRATION", REGISTRATION_START_URL);
   nunjucksEnv.addGlobal("SERVICE_START_URL_TRANSITION", TRANSITION_START_URL);
   nunjucksEnv.addGlobal("CREATE_CHANGE_LINK", createSummaryListLink);
+  nunjucksEnv.addGlobal("SET_DATE_OF_UPDATE_SECTION", setDateOfUpdateSection);
 
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));

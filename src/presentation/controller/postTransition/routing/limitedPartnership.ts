@@ -35,13 +35,15 @@ const postTransitionRoutingEnterRegisteredOfficeAddress = {
   pageType: PostTransitionPageType.enterRegisteredOfficeAddress
 };
 
+const REGISTERED_OFFICE_ADDRESS_KEY = "registeredOfficeAddress";
+
 const postTransitionRoutingRegisteredOfficeAddressChange = {
   previousUrl: url.ENTER_REGISTERED_OFFICE_ADDRESS_WITH_IDS_URL,
   currentUrl: url.WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL,
   nextUrl: url.REGISTERED_OFFICE_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL,
   pageType: PostTransitionPageType.whenDidTheRegisteredOfficeAddressChange,
   data: {
-    titleKey: "registeredOfficeAddress"
+    titleKey: REGISTERED_OFFICE_ADDRESS_KEY
   }
 };
 
@@ -51,9 +53,11 @@ const postTransitionRoutingRegisteredOfficeAddressChangeCheckYourAnswers = {
   nextUrl: "/",
   pageType: PostTransitionPageType.registeredOfficeAddressChangeCheckYourAnswers,
   data: {
-    pageKey: "registeredOfficeAddress"
+    pageKey: REGISTERED_OFFICE_ADDRESS_KEY
   }
 };
+
+const PARTNERSHIP_NAME_KEY = "partnershipName";
 
 const postTransitionRoutingPartnershipNameChange = {
   previousUrl: url.PARTNERSHIP_NAME_WITH_IDS_URL,
@@ -61,7 +65,17 @@ const postTransitionRoutingPartnershipNameChange = {
   nextUrl: url.LANDING_PAGE_URL,
   pageType: PostTransitionPageType.whenDidThePartnershipNameChange,
   data: {
-    titleKey: "partnershipName"
+    titleKey: PARTNERSHIP_NAME_KEY
+  }
+};
+
+const postTransitionRoutingPartnershipNameChangeCheckYourAnswers = {
+  previousUrl: url.WHEN_DID_THE_PARTNERSHIP_NAME_CHANGE_URL,
+  currentUrl: url.PARTNERSHIP_NAME_CHANGE_CHECK_YOUR_ANSWERS_URL,
+  nextUrl: "/",
+  pageType: PostTransitionPageType.partnershipNameChangeCheckYourAnswers,
+  data: {
+    pageKey: PARTNERSHIP_NAME_KEY
   }
 };
 
@@ -72,7 +86,8 @@ const limitedPartnershipRouting = [
   postTransitionRoutingEnterRegisteredOfficeAddress,
   postTransitionRoutingRegisteredOfficeAddressChange,
   postTransitionRoutingRegisteredOfficeAddressChangeCheckYourAnswers,
-  postTransitionRoutingPartnershipNameChange
+  postTransitionRoutingPartnershipNameChange,
+  postTransitionRoutingPartnershipNameChangeCheckYourAnswers
 ];
 
 export default limitedPartnershipRouting;

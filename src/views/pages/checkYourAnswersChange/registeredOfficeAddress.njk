@@ -1,0 +1,27 @@
+{% set dateChangeUrl = "when-did-the-registered-office-address-change"  %}
+
+{{ govukSummaryList({
+    classes: "govuk-!-margin-bottom-7",
+    rows: [
+        {
+            key: {
+                text: i18n.checkYourAnswersPage.headingRegisteredOfficeAddress
+            },
+            value: {
+                text: macros.formatAddress(props.data.limitedPartnership.data.registered_office_address, true)
+            },
+            actions: {
+            items: [
+                    CREATE_CHANGE_LINK(
+                    i18n.checkYourAnswersPage.change,
+                    (currentUrl | replace(props.pageType, "enter-registered-office-address")),
+                    partnership_registered_office_address,
+                    "change-partnership-registered-office-address-button"
+                    )
+                ]
+            }
+        },
+
+        SET_DATE_OF_UPDATE_SECTION(props, i18n, dateChangeUrl)
+    ]
+}) }}  

@@ -15,11 +15,18 @@ import {
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 import AddressService from "../../../application/service/AddressService";
 import UIErrors from "../../../domain/entities/UIErrors";
-import { DATE_OF_UPDATE_TYPE_PREFIX, DATE_OF_UPDATE_TEMPLATE, JOURNEY_TYPE_PARAM } from "../../../config/constants";
+import {
+  DATE_OF_UPDATE_TYPE_PREFIX,
+  DATE_OF_UPDATE_TEMPLATE,
+  JOURNEY_TYPE_PARAM,
+  CHECK_YOUR_ANSWERS_TYPE_SUFFIX,
+  CHECK_YOUR_ANSWERS_TEMPLATE
+} from "../../../config/constants";
 import { Ids, Tokens } from "../../../domain/types";
 import { formatDate } from "../../../utils/date-format";
 import { CONFIRMATION_POST_TRANSITION_URL } from "../global/url";
 import { getJourneyTypes } from "../../../utils";
+import { PageRouting } from "../PageRouting";
 
 class LimitedPartnershipController extends AbstractController {
   constructor(
@@ -37,6 +44,8 @@ class LimitedPartnershipController extends AbstractController {
       try {
         const { tokens, pageType, ids } = super.extract(request);
         const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
+
+        this.conditionalPreviousUrl(pageRouting, request);
 
         const limitedPartnership = await this.getLimitedPartnership(ids, tokens);
 
@@ -280,9 +289,13 @@ class LimitedPartnershipController extends AbstractController {
           data
         );
 
-        const template = pageRouting.currentUrl.includes(DATE_OF_UPDATE_TYPE_PREFIX)
-          ? DATE_OF_UPDATE_TEMPLATE
-          : super.templateName(pageRouting.currentUrl);
+        let template = super.templateName(pageRouting.currentUrl);
+
+        if (pageRouting.currentUrl.includes(DATE_OF_UPDATE_TYPE_PREFIX)) {
+          template = DATE_OF_UPDATE_TEMPLATE;
+        } else if (pageRouting.currentUrl.includes(CHECK_YOUR_ANSWERS_TYPE_SUFFIX)) {
+          template = CHECK_YOUR_ANSWERS_TEMPLATE;
+        }
 
         if (patchResult?.errors) {
           return response.render(
@@ -305,6 +318,8 @@ class LimitedPartnershipController extends AbstractController {
         const { tokens, pageType, ids } = super.extract(request);
         const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
 
+        this.conditionalPreviousUrl(pageRouting, request);
+
         const limitedPartnership = await this.getLimitedPartnership(ids, tokens);
 
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
@@ -321,17 +336,36 @@ class LimitedPartnershipController extends AbstractController {
       try {
         const { tokens, pageType, ids } = super.extract(request);
         const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
+
         const limitedPartnership = await this.getLimitedPartnership(ids, tokens);
+
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
 
         if (limitedPartnership?.data?.date_of_update) {
-          limitedPartnership.data.date_of_update = formatDate(limitedPartnership.data.date_of_update, response.locals.i18n);
+          limitedPartnership.data.date_of_update = formatDate(
+            limitedPartnership.data.date_of_update,
+            response.locals.i18n
+          );
         }
 
-        response.render(
-          "limited-partnership-change-check-your-answers",
-          super.makeProps(pageRouting, { limitedPartnership, cache }, null)
-        );
+        response.render(CHECK_YOUR_ANSWERS_TEMPLATE, super.makeProps(pageRouting, { limitedPartnership, cache }, null));
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  postCheckYourAnswers() {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { tokens, ids } = super.extract(request);
+        await this.limitedPartnershipService.closeTransaction(tokens, ids.transactionId);
+
+        const url = super
+          .insertIdsInUrl(CONFIRMATION_POST_TRANSITION_URL, ids, request.url)
+          .replace(JOURNEY_TYPE_PARAM, getJourneyTypes(request.url).journey);
+
+        response.redirect(url);
       } catch (error) {
         next(error);
       }
@@ -355,21 +389,14 @@ class LimitedPartnershipController extends AbstractController {
     return limitedPartnership;
   }
 
-  postCheckYourAnswers() {
-    return async (request: Request, response: Response, next: NextFunction) => {
-      try {
-        const { tokens, ids } = super.extract(request);
-        await this.limitedPartnershipService.closeTransaction(tokens, ids.transactionId);
+  private conditionalPreviousUrl(pageRouting: PageRouting, request: Request) {
+    const previousPageType = super.pageType(request.get("Referrer") ?? "");
 
-        const url = super
-          .insertIdsInUrl(CONFIRMATION_POST_TRANSITION_URL, ids, request.url)
-          .replace(JOURNEY_TYPE_PARAM, getJourneyTypes(request.url).journey);
+    const endOfPreviousUrl = pageRouting.previousUrl.split("/").pop() ?? "";
 
-        response.redirect(url);
-      } catch (error) {
-        next(error);
-      }
-    };
+    if (previousPageType.includes(CHECK_YOUR_ANSWERS_TYPE_SUFFIX)) {
+      pageRouting.previousUrl = pageRouting.previousUrl.replace(endOfPreviousUrl, previousPageType);
+    }
   }
 }
 
