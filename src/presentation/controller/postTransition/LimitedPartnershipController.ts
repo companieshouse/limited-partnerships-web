@@ -51,10 +51,11 @@ class LimitedPartnershipController extends AbstractController {
         const limitedPartnership = await this.getLimitedPartnership(ids, tokens);
 
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
+        const submissionId = ids.submissionId;
 
         response.render(
           super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { limitedPartnership, cache }, null)
+          super.makeProps(pageRouting, { limitedPartnership, cache, submissionId }, null)
         );
       } catch (error) {
         next(error);

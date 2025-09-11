@@ -23,7 +23,8 @@
 {% set whatIsName = i18n.namePage.whatIsName %}
 {% set nameEnding = i18n.namePage.nameEnding %} 
 
-{% if not journeyTypes.isPostTransition %}
+{% if not journeyTypes.isPostTransition or
+  (journeyTypes.isPostTransition and props.data.submissionId) %}
   {% set name = props.data.limitedPartnership.data.partnership_name %}
 {% endif %}
 
