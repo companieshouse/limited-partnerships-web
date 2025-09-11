@@ -36,6 +36,12 @@
                 href: props.data.updateROA
             }) }}
         </div>
+         <div class="govuk-button-group govuk-!-margin-top-8">
+            {{ govukButton({
+                text: "Update Partnership Name",
+                href: props.data.updateName
+            }) }}
+        </div>
         {% if props.data.limitedPartnership.partnership_type === "LP" or props.data.limitedPartnership.partnership_type === "SLP" %}
             <div class="govuk-button-group govuk-!-margin-top-8">
                 {{ govukButton({

@@ -23,7 +23,8 @@ const postTransitionRoutingLandingPage = {
   data: {
     addGeneralPartner: url.GENERAL_PARTNER_CHOICE_URL,
     addLimitedPartner: url.LIMITED_PARTNER_CHOICE_URL,
-    updateROA: url.ENTER_REGISTERED_OFFICE_ADDRESS_URL
+    updateROA: url.ENTER_REGISTERED_OFFICE_ADDRESS_URL,
+    updateName: url.PARTNERSHIP_NAME_URL
   }
 };
 
@@ -57,6 +58,13 @@ const postTransitionRoutingRegisteredOfficeAddressChangeCheckYourAnswers = {
 };
 
 const PARTNERSHIP_NAME_KEY = "partnershipName";
+
+const postTransitionRoutingPartnershipName = {
+  previousUrl: url.LANDING_PAGE_URL,
+  currentUrl: url.PARTNERSHIP_NAME_URL,
+  nextUrl: url.WHEN_DID_THE_PARTNERSHIP_NAME_CHANGE_URL,
+  pageType: PostTransitionPageType.partnershipName
+};
 
 const postTransitionRoutingPartnershipNameChange = {
   previousUrl: url.PARTNERSHIP_NAME_WITH_IDS_URL,
@@ -94,6 +102,7 @@ const limitedPartnershipRouting = [
   postTransitionRoutingRegisteredOfficeAddressChange,
   postTransitionRoutingRegisteredOfficeAddressChangeCheckYourAnswers,
 
+  postTransitionRoutingPartnershipName,
   postTransitionRoutingPartnershipNameChange,
   postTransitionRoutingPartnershipNameChangeCheckYourAnswers,
 

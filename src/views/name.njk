@@ -23,6 +23,11 @@
 {% set whatIsName = i18n.namePage.whatIsName %}
 {% set nameEnding = i18n.namePage.nameEnding %} 
 
+{% if not journeyTypes.isPostTransition or
+  (journeyTypes.isPostTransition and props.data.submissionId) %}
+  {% set name = props.data.limitedPartnership.data.partnership_name %}
+{% endif %}
+
 {% set pageTitle = title  %}
 
 {% block content %}
@@ -55,7 +60,7 @@
           errorMessage: props.errors.partnership_name if props.errors,
           id: "partnership_name",
           name: "partnership_name",
-          value: props.data.limitedPartnership.data.partnership_name,
+          value: name,
           label: {
             text: whatIsName,
             classes: "govuk-label--l",
