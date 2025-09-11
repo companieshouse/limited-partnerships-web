@@ -78,15 +78,26 @@ const postTransitionRoutingPartnershipNameChangeCheckYourAnswers = {
   }
 };
 
+const postTransitionRoutingTerm = {
+  previousUrl: url.LANDING_PAGE_URL,
+  currentUrl: url.TERM_URL,
+  nextUrl: url.WHEN_DID_THE_TERM_CHANGE_URL,
+  pageType: PostTransitionPageType.term
+};
+
 const limitedPartnershipRouting = [
   postTransitionRoutingCompanyNumber,
   postTransitionRoutingConfirmLimitedPartnership,
   postTransitionRoutingLandingPage,
+
   postTransitionRoutingEnterRegisteredOfficeAddress,
   postTransitionRoutingRegisteredOfficeAddressChange,
   postTransitionRoutingRegisteredOfficeAddressChangeCheckYourAnswers,
+
   postTransitionRoutingPartnershipNameChange,
-  postTransitionRoutingPartnershipNameChangeCheckYourAnswers
+  postTransitionRoutingPartnershipNameChangeCheckYourAnswers,
+
+  postTransitionRoutingTerm
 ];
 
 export default limitedPartnershipRouting;

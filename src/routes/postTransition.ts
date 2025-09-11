@@ -24,6 +24,8 @@ import {
   LIMITED_PARTNER_CHOICE_URL,
   PARTNERSHIP_NAME_CHANGE_CHECK_YOUR_ANSWERS_URL,
   REGISTERED_OFFICE_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL,
+  TERM_URL,
+  TERM_WITH_IDS_URL,
   WHEN_DID_THE_PARTNERSHIP_NAME_CHANGE_URL,
   WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL
 } from "../presentation/controller/postTransition/url";
@@ -254,6 +256,28 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
     PARTNERSHIP_NAME_CHANGE_CHECK_YOUR_ANSWERS_URL,
     companyAuthentication,
     dependencies.limitedPartnershipPostTransitionController.postCheckYourAnswers()
+  );
+
+  router.get(
+    TERM_URL,
+    companyAuthentication,
+    dependencies.limitedPartnershipPostTransitionController.getPageRouting()
+  );
+  router.post(
+    TERM_URL,
+    companyAuthentication,
+    dependencies.limitedPartnershipPostTransitionController.createRegisteredOfficeAddress()
+  );
+
+  router.get(
+    TERM_WITH_IDS_URL,
+    companyAuthentication,
+    dependencies.limitedPartnershipPostTransitionController.getPageRouting()
+  );
+  router.post(
+    TERM_WITH_IDS_URL,
+    companyAuthentication,
+    dependencies.limitedPartnershipPostTransitionController.sendPageData()
   );
 };
 
