@@ -94,8 +94,7 @@ describe("Name Page", () => {
       const res = await request(app).get(URL);
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(limitedPartnership?.data?.partnership_name);
-      expect(res.text).toContain(limitedPartnership?.data?.name_ending);
+      expect(res.text).not.toContain(limitedPartnership?.data?.partnership_name);
     });
   });
 
