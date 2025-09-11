@@ -295,8 +295,6 @@ class LimitedPartnershipController extends AbstractController {
           template = CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE;
         }
 
-        console.log(request.body);
-
         if (patchResult?.errors) {
           return response.render(
             template,
