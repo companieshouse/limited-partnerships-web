@@ -1,5 +1,5 @@
 import request from "supertest";
-import { PartnershipType, Term } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { Jurisdiction, PartnershipType, Term } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import enTranslationText from "../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../locales/cy/translations.json";
@@ -73,17 +73,13 @@ describe("Email Page", () => {
       });
     });
 
-    describe.skip("should redirect to landing page", () => {
+    describe("should redirect to landing page", () => {
       it(`should redirect to landing page if ${PartnershipType.PFLP}`, async () => {
         const REDIRECT_URL = getUrl(LANDING_PAGE_URL);
 
-        const limitedPartnership = new LimitedPartnershipBuilder()
-          .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
-          .withPartnershipType(PartnershipType.PFLP)
-          .withPartnershipName(companyProfile.data.companyName)
-          .build();
+        companyProfile.data.subtype = "private-fund-limited-partnership";
 
-        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+        appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
         const res = await request(app).get(URL);
 
@@ -94,13 +90,10 @@ describe("Email Page", () => {
       it(`should redirect to landing page if ${PartnershipType.SPFLP}`, async () => {
         const REDIRECT_URL = getUrl(LANDING_PAGE_URL);
 
-        const limitedPartnership = new LimitedPartnershipBuilder()
-          .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
-          .withPartnershipType(PartnershipType.SPFLP)
-          .withPartnershipName(companyProfile.data.companyName)
-          .build();
+        companyProfile.data.jurisdiction = Jurisdiction.SCOTLAND;
+        companyProfile.data.subtype = "private-fund-limited-partnership";
 
-        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+        appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
         const res = await request(app).get(URL);
 

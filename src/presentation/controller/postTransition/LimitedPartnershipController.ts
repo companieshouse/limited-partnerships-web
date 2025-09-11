@@ -1,20 +1,18 @@
 import { NextFunction, Request, Response } from "express";
-
-import AbstractController from "../AbstractController";
-
-import CompanyService from "../../../application/service/CompanyService";
-import CacheService from "../../../application/service/CacheService";
-import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
-import postTransitionRouting from "./routing";
-import PostTransitionPageType from "./pageType";
-import TransactionService from "../../../application/service/TransactionService";
 import {
   IncorporationKind,
   LimitedPartnership,
-  PartnershipKind
+  PartnershipKind,
+  PartnershipType
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
-import AddressService from "../../../application/service/AddressService";
+
+import AbstractController from "../AbstractController";
 import UIErrors from "../../../domain/entities/UIErrors";
+import { Ids, Tokens } from "../../../domain/types";
+import { PageRouting } from "../PageRouting";
+
+import postTransitionRouting from "./routing";
+import PostTransitionPageType from "./pageType";
 import {
   DATE_OF_UPDATE_TYPE_PREFIX,
   DATE_OF_UPDATE_TEMPLATE,
@@ -23,11 +21,17 @@ import {
   CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE,
   TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNERSHIP
 } from "../../../config/constants";
-import { Ids, Tokens } from "../../../domain/types";
 import { formatDate } from "../../../utils/date-format";
-import { CONFIRMATION_POST_TRANSITION_URL } from "../global/url";
 import { getJourneyTypes } from "../../../utils";
-import { PageRouting } from "../PageRouting";
+
+import CompanyService from "../../../application/service/CompanyService";
+import CacheService from "../../../application/service/CacheService";
+import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
+import TransactionService from "../../../application/service/TransactionService";
+import AddressService from "../../../application/service/AddressService";
+
+import { CONFIRMATION_POST_TRANSITION_URL } from "../global/url";
+import { LANDING_PAGE_URL } from "./url";
 
 class LimitedPartnershipController extends AbstractController {
   constructor(
@@ -89,7 +93,8 @@ class LimitedPartnershipController extends AbstractController {
               addGeneralPartner: super.insertIdsInUrl(pageRouting?.data?.addGeneralPartner, ids), // insert company number into the link
               addLimitedPartner: super.insertIdsInUrl(pageRouting?.data?.addLimitedPartner, ids),
               updateROA: super.insertIdsInUrl(pageRouting?.data?.updateROA, ids),
-              updateName: super.insertIdsInUrl(pageRouting?.data?.updateName, ids)
+              updateName: super.insertIdsInUrl(pageRouting?.data?.updateName, ids),
+              updateTerm: super.insertIdsInUrl(pageRouting?.data?.updateTerm, ids)
             },
             errors: undefined
           };
@@ -479,6 +484,39 @@ class LimitedPartnershipController extends AbstractController {
 
         response.redirect(url);
       } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  getTermRouting() {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { tokens, pageType, ids } = super.extract(request);
+        const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
+
+        this.conditionalPreviousUrl(pageRouting, request);
+
+        const limitedPartnership = await this.getLimitedPartnership(ids, tokens);
+
+        if (
+          limitedPartnership?.data?.partnership_type === PartnershipType.PFLP ||
+          limitedPartnership?.data?.partnership_type === PartnershipType.SPFLP
+        ) {
+          response.redirect(
+            super
+              .insertIdsInUrl(LANDING_PAGE_URL, ids, request.url)
+              .replace(JOURNEY_TYPE_PARAM, getJourneyTypes(request.url).journey)
+          );
+          return;
+        }
+
+        response.render(
+          super.templateName(pageRouting.currentUrl),
+          super.makeProps(pageRouting, { limitedPartnership }, null)
+        );
+      } catch (error) {
+        console.log(error);
         next(error);
       }
     };

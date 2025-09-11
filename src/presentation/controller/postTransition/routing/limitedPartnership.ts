@@ -24,7 +24,8 @@ const postTransitionRoutingLandingPage = {
     addGeneralPartner: url.GENERAL_PARTNER_CHOICE_URL,
     addLimitedPartner: url.LIMITED_PARTNER_CHOICE_URL,
     updateROA: url.ENTER_REGISTERED_OFFICE_ADDRESS_URL,
-    updateName: url.PARTNERSHIP_NAME_URL
+    updateName: url.PARTNERSHIP_NAME_URL,
+    updateTerm: url.TERM_URL
   }
 };
 
