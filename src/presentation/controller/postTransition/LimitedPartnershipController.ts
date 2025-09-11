@@ -50,11 +50,11 @@ class LimitedPartnershipController extends AbstractController {
 
         const limitedPartnership = await this.getLimitedPartnership(ids, tokens);
 
-        const cache = this.cacheService.getDataFromCache(request.signedCookies);
+        const submissionId = ids.submissionId;
 
         response.render(
           super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { limitedPartnership, cache }, null)
+          super.makeProps(pageRouting, { limitedPartnership, submissionId }, null)
         );
       } catch (error) {
         next(error);
@@ -87,7 +87,8 @@ class LimitedPartnershipController extends AbstractController {
               ...pageRouting.data,
               addGeneralPartner: super.insertIdsInUrl(pageRouting?.data?.addGeneralPartner, ids), // insert company number into the link
               addLimitedPartner: super.insertIdsInUrl(pageRouting?.data?.addLimitedPartner, ids),
-              updateROA: super.insertIdsInUrl(pageRouting?.data?.updateROA, ids)
+              updateROA: super.insertIdsInUrl(pageRouting?.data?.updateROA, ids),
+              updateName: super.insertIdsInUrl(pageRouting?.data?.updateName, ids)
             },
             errors: undefined
           };
@@ -211,6 +212,7 @@ class LimitedPartnershipController extends AbstractController {
           },
           TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNERSHIP
         );
+
         if (resultTransaction.errors) {
           return response.render(
             super.templateName(pageRouting.currentUrl),
@@ -230,6 +232,7 @@ class LimitedPartnershipController extends AbstractController {
             registered_office_address: request.body
           }
         );
+
         if (resultLimitedPartnershipCreate.errors) {
           return response.render(
             super.templateName(pageRouting.currentUrl),
@@ -252,6 +255,104 @@ class LimitedPartnershipController extends AbstractController {
         next(error);
       }
     };
+  }
+
+  createPartnershipName() {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { tokens, ids } = super.extract(request);
+        const { limitedPartnership } = await this.companyService.buildLimitedPartnershipFromCompanyProfile(
+          tokens,
+          ids.companyId
+        );
+
+        const resultTransaction = await this.createTransaction(limitedPartnership, tokens);
+        const pageType = super.extractPageTypeOrThrowError(request, PostTransitionPageType);
+        const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
+
+        if (resultTransaction.errors) {
+          return response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(
+              pageRouting,
+              {
+                limitedPartnership: {
+                  ...limitedPartnership,
+                  data: { ...limitedPartnership.data, ...request.body }
+                }
+              },
+              resultTransaction.errors
+            )
+          );
+        }
+
+        const resultLimitedPartnershipCreate = await this.createPartnership(
+          request,
+          limitedPartnership,
+          tokens,
+          resultTransaction,
+          pageType,
+          PartnershipKind.UPDATE_PARTNERSHIP_NAME
+        );
+
+        if (resultLimitedPartnershipCreate.errors) {
+          return response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(
+              pageRouting,
+              { address: { ...request.body }, limitedPartnership },
+              resultLimitedPartnershipCreate.errors
+            )
+          );
+        }
+
+        const newIds = {
+          ...ids,
+          transactionId: resultTransaction.transactionId,
+          submissionId: resultLimitedPartnershipCreate.submissionId
+        };
+        const url = super.insertIdsInUrl(pageRouting.nextUrl, newIds);
+        response.redirect(url);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  async createTransaction(limitedPartnership: LimitedPartnership, tokens) {
+    const resultTransaction = await this.transactionService.createTransaction(
+      tokens,
+      IncorporationKind.POST_TRANSITION,
+      {
+        companyName: limitedPartnership?.data?.partnership_name ?? "",
+        companyNumber: limitedPartnership?.data?.partnership_number ?? ""
+      },
+      TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNERSHIP
+    );
+    return resultTransaction;
+  }
+
+  async createPartnership(
+    request,
+    limitedPartnership: LimitedPartnership,
+    tokens,
+    resultTransaction,
+    pageType,
+    partnershipKind: PartnershipKind
+  ) {
+    const resultLimitedPartnershipCreate = await this.limitedPartnershipService.createLimitedPartnership(
+      tokens,
+      resultTransaction.transactionId,
+      pageType,
+      {
+        partnership_number: limitedPartnership?.data?.partnership_number,
+        partnership_name: limitedPartnership?.data?.partnership_name,
+        partnership_type: limitedPartnership?.data?.partnership_type,
+        kind: partnershipKind,
+        ...request.body
+      }
+    );
+    return resultLimitedPartnershipCreate;
   }
 
   sendPageData() {

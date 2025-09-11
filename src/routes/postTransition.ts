@@ -22,6 +22,8 @@ import {
   LANDING_PAGE_URL,
   LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL,
   LIMITED_PARTNER_CHOICE_URL,
+  PARTNERSHIP_NAME_URL,
+  PARTNERSHIP_NAME_WITH_IDS_URL,
   PARTNERSHIP_NAME_CHANGE_CHECK_YOUR_ANSWERS_URL,
   REGISTERED_OFFICE_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL,
   WHEN_DID_THE_PARTNERSHIP_NAME_CHANGE_URL,
@@ -232,6 +234,28 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
     REGISTERED_OFFICE_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL,
     companyAuthentication,
     dependencies.limitedPartnershipPostTransitionController.postCheckYourAnswers()
+  );
+
+  router.get(
+    PARTNERSHIP_NAME_URL,
+    companyAuthentication,
+    dependencies.limitedPartnershipPostTransitionController.getPageRouting()
+  );
+  router.post(
+    PARTNERSHIP_NAME_URL,
+    companyAuthentication,
+    dependencies.limitedPartnershipPostTransitionController.createPartnershipName()
+  );
+
+  router.get(
+    PARTNERSHIP_NAME_WITH_IDS_URL,
+    companyAuthentication,
+    dependencies.limitedPartnershipPostTransitionController.getPageRouting()
+  );
+  router.post(
+    PARTNERSHIP_NAME_WITH_IDS_URL,
+    companyAuthentication,
+    dependencies.limitedPartnershipPostTransitionController.sendPageData()
   );
 
   router.get(
