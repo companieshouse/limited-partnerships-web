@@ -295,10 +295,21 @@ class LimitedPartnershipController extends AbstractController {
           template = CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE;
         }
 
+        console.log(request.body);
+
         if (patchResult?.errors) {
           return response.render(
             template,
-            super.makeProps(pageRouting, { ...request.body, limitedPartnership }, patchResult.errors)
+            super.makeProps(
+              pageRouting,
+              {
+                limitedPartnership: {
+                  ...limitedPartnership,
+                  data: { ...limitedPartnership.data, ...request.body }
+                }
+              },
+              patchResult.errors
+            )
           );
         }
 
