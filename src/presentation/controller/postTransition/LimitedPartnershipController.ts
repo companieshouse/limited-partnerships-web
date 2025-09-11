@@ -266,18 +266,27 @@ class LimitedPartnershipController extends AbstractController {
           ids.companyId
         );
 
-        const resultTransaction = await this.getResultTransaction(limitedPartnership, tokens);
+        const resultTransaction = await this.createTransaction(limitedPartnership, tokens);
         const pageType = super.extractPageTypeOrThrowError(request, PostTransitionPageType);
         const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
 
         if (resultTransaction.errors) {
           return response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { address: { ...request.body }, limitedPartnership }, resultTransaction.errors)
+            super.makeProps(
+              pageRouting,
+              {
+                limitedPartnership: {
+                  ...limitedPartnership,
+                  data: { ...limitedPartnership.data, ...request.body }
+                }
+              },
+              resultTransaction.errors
+            )
           );
         }
 
-        const resultLimitedPartnershipCreate = await this.getCreateResult(
+        const resultLimitedPartnershipCreate = await this.createPartnership(
           request,
           limitedPartnership,
           tokens,
@@ -310,7 +319,7 @@ class LimitedPartnershipController extends AbstractController {
     };
   }
 
-  async getResultTransaction(limitedPartnership: LimitedPartnership, tokens) {
+  async createTransaction(limitedPartnership: LimitedPartnership, tokens) {
     const resultTransaction = await this.transactionService.createTransaction(
       tokens,
       IncorporationKind.POST_TRANSITION,
@@ -323,7 +332,7 @@ class LimitedPartnershipController extends AbstractController {
     return resultTransaction;
   }
 
-  async getCreateResult(
+  async createPartnership(
     request,
     limitedPartnership: LimitedPartnership,
     tokens,

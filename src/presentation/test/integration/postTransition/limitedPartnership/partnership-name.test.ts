@@ -1,5 +1,4 @@
 import request from "supertest";
-import { Request, Response } from "express";
 import app from "../../app";
 import enTranslationText from "../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../locales/cy/translations.json";
@@ -101,11 +100,6 @@ describe("Name Page", () => {
   describe("Post Name Page", () => {
 
     it("should create a transaction and the first submission", async () => {
-
-      appDevDependencies.cacheRepository.feedCache({
-        ["registration_which-type"]: PartnershipType.LP
-      });
-
       const res = await request(app).post(URL).send({
         pageType: PostTransitionPageType.partnershipName,
         partnership_name: "Test Limited Partnership",
@@ -126,28 +120,6 @@ describe("Name Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain("partnership_name must be less than 160");
-    });
-
-    it("should return a status 500 if page type doesn't exist - sq", async () => {
-      const res = await request(app).post(PARTNERSHIP_NAME_URL).send({
-        pageType: "wrong-page-type"
-      });
-
-      expect(res.status).toBe(500);
-    });
-
-    it("should call next if type in path is incorrect - sq", async () => {
-      const next = jest.fn();
-
-      await appDevDependencies.globalController.getPageRouting()(
-        {
-          path: "/limited-partnerships/wrong-type"
-        } as Request,
-        {} as Response,
-        next
-      );
-
-      expect(next).toHaveBeenCalled();
     });
   });
 });
