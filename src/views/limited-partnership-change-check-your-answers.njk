@@ -1,6 +1,11 @@
 {% extends "layout.njk" %}
 {% import 'includes/macros.njk' as macros %}
 
+{% block head %}
+  {{ super() }}
+  {% include "includes/styles/print.njk" %}
+{% endblock %}
+
 {% set pageTitle = i18n.checkYourAnswersPage.update.title %}
 
 {% block content %}
