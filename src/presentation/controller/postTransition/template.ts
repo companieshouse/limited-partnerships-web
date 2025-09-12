@@ -27,3 +27,6 @@ export const PARTNERSHIP_NAME_TEMPLATE = PostTransitionPageType.partnershipName;
 export const WHEN_DID_THE_PARTNERSHIP_NAME_CHANGE_TEMPLATE = PostTransitionPageType.whenDidThePartnershipNameChange;
 export const PARTNERSHIP_NAME_CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE =
   PostTransitionPageType.partnershipNameChangeCheckYourAnswers;
+
+export const TERM_TEMPLATE = PostTransitionPageType.term;
+export const WHEN_DID_TERM_CHANGE_TEMPLATE = PostTransitionPageType.whenDidTheTermChange;
