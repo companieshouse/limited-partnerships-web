@@ -70,7 +70,7 @@ const postTransitionRoutingPartnershipName = {
 const postTransitionRoutingPartnershipNameChange = {
   previousUrl: url.PARTNERSHIP_NAME_WITH_IDS_URL,
   currentUrl: url.WHEN_DID_THE_PARTNERSHIP_NAME_CHANGE_URL,
-  nextUrl: url.LANDING_PAGE_URL,
+  nextUrl: url.PARTNERSHIP_NAME_CHANGE_CHECK_YOUR_ANSWERS_URL,
   pageType: PostTransitionPageType.whenDidThePartnershipNameChange,
   data: {
     titleKey: PARTNERSHIP_NAME_KEY

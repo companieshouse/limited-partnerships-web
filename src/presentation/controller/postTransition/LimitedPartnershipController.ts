@@ -156,124 +156,6 @@ class LimitedPartnershipController extends AbstractController {
     };
   }
 
-  createRegisteredOfficeAddress() {
-    return async (request: Request, response: Response, next: NextFunction) => {
-      try {
-        const { tokens, ids } = super.extract(request);
-        const pageType = super.extractPageTypeOrThrowError(request, PostTransitionPageType);
-        const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
-
-        const { limitedPartnership } = await this.companyService.buildLimitedPartnershipFromCompanyProfile(
-          tokens,
-          ids.companyId
-        );
-
-        const errors = this.validateAddress(request, response, limitedPartnership);
-        if (errors?.hasErrors()) {
-          return response.render(
-            super.templateName(pageRouting.currentUrl),
-            super.makeProps(
-              pageRouting,
-              this.makeErrorData(limitedPartnership, { address: { ...request.body } }),
-              errors
-            )
-          );
-        }
-
-        const resultTransaction = await this.createTransaction(limitedPartnership, tokens);
-        if (resultTransaction.errors) {
-          return response.render(
-            super.templateName(pageRouting.currentUrl),
-            super.makeProps(
-              pageRouting,
-              this.makeErrorData(limitedPartnership, { address: { ...request.body } }),
-              resultTransaction.errors
-            )
-          );
-        }
-
-        const resultLimitedPartnershipCreate = await this.createPartnership(
-          request,
-          limitedPartnership,
-          resultTransaction.transactionId,
-          PartnershipKind.UPDATE_PARTNERSHIP_REGISTERED_OFFICE_ADDRESS,
-          { registered_office_address: request.body }
-        );
-        if (resultLimitedPartnershipCreate.errors) {
-          return response.render(
-            super.templateName(pageRouting.currentUrl),
-            super.makeProps(
-              pageRouting,
-              this.makeErrorData(limitedPartnership, { address: { ...request.body } }),
-              resultLimitedPartnershipCreate.errors
-            )
-          );
-        }
-
-        const newIds = {
-          ...ids,
-          transactionId: resultTransaction.transactionId,
-          submissionId: resultLimitedPartnershipCreate.submissionId
-        };
-        const url = super.insertIdsInUrl(pageRouting.nextUrl, newIds);
-        response.redirect(url);
-      } catch (error) {
-        next(error);
-      }
-    };
-  }
-
-  createPartnershipName() {
-    return async (request: Request, response: Response, next: NextFunction) => {
-      try {
-        const { tokens, ids } = super.extract(request);
-        const pageType = super.extractPageTypeOrThrowError(request, PostTransitionPageType);
-        const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
-
-        const { limitedPartnership } = await this.companyService.buildLimitedPartnershipFromCompanyProfile(
-          tokens,
-          ids.companyId
-        );
-
-        const resultTransaction = await this.createTransaction(limitedPartnership, tokens);
-        if (resultTransaction.errors) {
-          return response.render(
-            super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, this.makeErrorData(limitedPartnership, request.body), resultTransaction.errors)
-          );
-        }
-
-        const resultLimitedPartnershipCreate = await this.createPartnership(
-          request,
-          limitedPartnership,
-          resultTransaction.transactionId,
-          PartnershipKind.UPDATE_PARTNERSHIP_NAME,
-          request.body
-        );
-        if (resultLimitedPartnershipCreate.errors) {
-          return response.render(
-            super.templateName(pageRouting.currentUrl),
-            super.makeProps(
-              pageRouting,
-              this.makeErrorData(limitedPartnership, request.body),
-              resultLimitedPartnershipCreate.errors
-            )
-          );
-        }
-
-        const newIds = {
-          ...ids,
-          transactionId: resultTransaction.transactionId,
-          submissionId: resultLimitedPartnershipCreate.submissionId
-        };
-        const url = super.insertIdsInUrl(pageRouting.nextUrl, newIds);
-        response.redirect(url);
-      } catch (error) {
-        next(error);
-      }
-    };
-  }
-
   getTermRouting() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
@@ -307,7 +189,19 @@ class LimitedPartnershipController extends AbstractController {
     };
   }
 
-  createTerm() {
+  /**
+   * Handles the creation of a limited partnership entity.
+   *
+   * This method returns an Express middleware function that processes the creation flow for a limited partnership,
+   * including validation, transaction creation, and partnership submission. It supports conditional address validation
+   * and error handling at each step, rendering the appropriate template with error data if necessary, or redirecting
+   * to the next page on success.
+   *
+   * @param partnershipKind - The type of partnership to create.
+   * @param addressKey - (Optional) The key for the address field to validate and process.
+   * @returns An Express middleware function for handling the limited partnership creation request.
+   */
+  create(partnershipKind: PartnershipKind, addressKey?: string) {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const { tokens, ids } = super.extract(request);
@@ -319,11 +213,26 @@ class LimitedPartnershipController extends AbstractController {
           ids.companyId
         );
 
+        const errorData = this.makeErrorData(
+          limitedPartnership,
+          addressKey ? { [addressKey]: { ...request.body } } : request.body
+        );
+
+        if (addressKey) {
+          const errors = this.validateAddress(request, response, limitedPartnership);
+          if (errors?.hasErrors()) {
+            return response.render(
+              super.templateName(pageRouting.currentUrl),
+              super.makeProps(pageRouting, errorData, errors)
+            );
+          }
+        }
+
         const resultTransaction = await this.createTransaction(limitedPartnership, tokens);
         if (resultTransaction.errors) {
           return response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, this.makeErrorData(limitedPartnership, request.body), resultTransaction.errors)
+            super.makeProps(pageRouting, errorData, resultTransaction.errors)
           );
         }
 
@@ -331,17 +240,13 @@ class LimitedPartnershipController extends AbstractController {
           request,
           limitedPartnership,
           resultTransaction.transactionId,
-          PartnershipKind.UPDATE_PARTNERSHIP_TERM,
-          request.body
+          partnershipKind,
+          addressKey ? { [addressKey]: request.body } : request.body
         );
         if (resultLimitedPartnershipCreate.errors) {
           return response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(
-              pageRouting,
-              this.makeErrorData(limitedPartnership, request.body),
-              resultLimitedPartnershipCreate.errors
-            )
+            super.makeProps(pageRouting, errorData, resultLimitedPartnershipCreate.errors)
           );
         }
 
@@ -358,33 +263,43 @@ class LimitedPartnershipController extends AbstractController {
     };
   }
 
-  sendPageData() {
+  /**
+   * Handles the update of a limited partnership entity.
+   *
+   * This method returns an Express middleware function that:
+   * - Extracts tokens, IDs, and page type from the request.
+   * - Retrieves the limited partnership data.
+   * - Validates address data if an address key is provided.
+   * - Renders the page with errors if validation fails.
+   * - Sends the page data to the limited partnership service.
+   * - Renders the page with service errors if any are returned.
+   * - Redirects to the next page upon successful submission.
+   *
+   * @param addressKey - Optional key indicating which address is being processed.
+   * @returns An Express middleware function to handle the request.
+   */
+  sendPageData(addressKey?: string) {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const { tokens, ids } = super.extract(request);
         const pageType = super.extractPageTypeOrThrowError(request, PostTransitionPageType);
         const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
 
-        let data = request.body;
-
         const limitedPartnership = await this.getLimitedPartnership(ids, tokens);
 
-        if (pageType === PostTransitionPageType.enterRegisteredOfficeAddress) {
+        const errorData = this.makeErrorData(
+          limitedPartnership,
+          addressKey ? { [addressKey]: { ...request.body } } : request.body
+        );
+
+        if (addressKey) {
           const errors = this.validateAddress(request, response, limitedPartnership);
           if (errors?.hasErrors()) {
             return response.render(
               super.templateName(pageRouting.currentUrl),
-              super.makeProps(
-                pageRouting,
-                this.makeErrorData(limitedPartnership, { address: { ...request.body } }),
-                errors
-              )
+              super.makeProps(pageRouting, errorData, errors)
             );
           }
-
-          data = {
-            registered_office_address: request.body
-          };
         }
 
         const patchResult = await this.limitedPartnershipService.sendPageData(
@@ -392,7 +307,7 @@ class LimitedPartnershipController extends AbstractController {
           ids.transactionId,
           ids.submissionId,
           pageType,
-          data
+          addressKey ? { [addressKey]: request.body } : request.body
         );
 
         let template = super.templateName(pageRouting.currentUrl);
@@ -404,20 +319,10 @@ class LimitedPartnershipController extends AbstractController {
         }
 
         if (patchResult?.errors) {
-          return response.render(
-            template,
-            super.makeProps(
-              pageRouting,
-              this.makeErrorData(
-                limitedPartnership,
-                pageType === PostTransitionPageType.enterRegisteredOfficeAddress
-                  ? { address: { ...request.body } }
-                  : request.body
-              ),
-              patchResult.errors
-            )
-          );
+          return response.render(template, super.makeProps(pageRouting, errorData, patchResult.errors));
         }
+
+        console.log("Redirecting to next page", pageRouting);
 
         const url = super.insertIdsInUrl(pageRouting.nextUrl, ids);
         response.redirect(url);
