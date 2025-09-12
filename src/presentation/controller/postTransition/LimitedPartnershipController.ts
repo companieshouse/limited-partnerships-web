@@ -228,6 +228,7 @@ class LimitedPartnershipController extends AbstractController {
             partnership_number: limitedPartnership?.data?.partnership_number,
             partnership_name: limitedPartnership?.data?.partnership_name,
             partnership_type: limitedPartnership?.data?.partnership_type,
+            jurisdiction: limitedPartnership?.data?.jurisdiction,
             kind: PartnershipKind.UPDATE_PARTNERSHIP_REGISTERED_OFFICE_ADDRESS,
             registered_office_address: request.body
           }
