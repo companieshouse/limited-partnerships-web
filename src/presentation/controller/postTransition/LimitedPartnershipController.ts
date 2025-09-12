@@ -307,6 +307,57 @@ class LimitedPartnershipController extends AbstractController {
     };
   }
 
+  createTerm() {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { tokens, ids } = super.extract(request);
+        const pageType = super.extractPageTypeOrThrowError(request, PostTransitionPageType);
+        const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
+
+        const { limitedPartnership } = await this.companyService.buildLimitedPartnershipFromCompanyProfile(
+          tokens,
+          ids.companyId
+        );
+
+        const resultTransaction = await this.createTransaction(limitedPartnership, tokens);
+        if (resultTransaction.errors) {
+          return response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(pageRouting, this.makeErrorData(limitedPartnership, request.body), resultTransaction.errors)
+          );
+        }
+
+        const resultLimitedPartnershipCreate = await this.createPartnership(
+          request,
+          limitedPartnership,
+          resultTransaction.transactionId,
+          PartnershipKind.UPDATE_PARTNERSHIP_TERM,
+          request.body
+        );
+        if (resultLimitedPartnershipCreate.errors) {
+          return response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(
+              pageRouting,
+              this.makeErrorData(limitedPartnership, request.body),
+              resultLimitedPartnershipCreate.errors
+            )
+          );
+        }
+
+        const newIds = {
+          ...ids,
+          transactionId: resultTransaction.transactionId,
+          submissionId: resultLimitedPartnershipCreate.submissionId
+        };
+        const url = super.insertIdsInUrl(pageRouting.nextUrl, newIds);
+        response.redirect(url);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
   sendPageData() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {

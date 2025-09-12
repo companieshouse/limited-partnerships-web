@@ -12,7 +12,8 @@ import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 import {
   LANDING_PAGE_URL,
   TERM_URL,
-  WHEN_DID_THE_PARTNERSHIP_NAME_CHANGE_URL
+  TERM_WITH_IDS_URL,
+  WHEN_DID_THE_TERM_CHANGE_URL
 } from "../../../../controller/postTransition/url";
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
 import PostTransitionPageType from "../../../../controller/postTransition/pageType";
@@ -20,7 +21,7 @@ import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 
 describe("Email Page", () => {
   const URL = getUrl(TERM_URL);
-  const REDIRECT_URL = getUrl(WHEN_DID_THE_PARTNERSHIP_NAME_CHANGE_URL);
+  const REDIRECT_URL = getUrl(WHEN_DID_THE_TERM_CHANGE_URL);
 
   let companyProfile;
 
@@ -102,7 +103,7 @@ describe("Email Page", () => {
       });
     });
 
-    describe.skip("Post term", () => {
+    describe("Post term", () => {
       it("should send term", async () => {
         const limitedPartnership = new LimitedPartnershipBuilder()
           .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
@@ -121,9 +122,31 @@ describe("Email Page", () => {
         expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
       });
 
+      it("should update term", async () => {
+        const limitedPartnership = new LimitedPartnershipBuilder()
+          .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+          .withPartnershipType(PartnershipType.LP)
+          .withPartnershipName(companyProfile.data.companyName)
+          .withTerm(Term.BY_AGREEMENT)
+          .build();
+
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+        const URL = getUrl(TERM_WITH_IDS_URL);
+
+        const res = await request(app).post(URL).send({
+          pageType: PostTransitionPageType.term,
+          term: Term.UNTIL_DISSOLUTION
+        });
+
+        expect(res.status).toBe(302);
+        expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+      });
+
       it("should return a validation error", async () => {
         const limitedPartnership = new LimitedPartnershipBuilder()
           .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+          .withPartnershipName(companyProfile.data.companyName)
           .build();
 
         appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);

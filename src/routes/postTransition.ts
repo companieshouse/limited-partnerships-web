@@ -287,22 +287,22 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
     companyAuthentication,
     dependencies.limitedPartnershipPostTransitionController.getTermRouting()
   );
-  // router.post(
-  //   TERM_URL,
-  //   companyAuthentication,
-  //   dependencies.limitedPartnershipPostTransitionController.createRegisteredOfficeAddress()
-  // );
+  router.post(
+    TERM_URL,
+    companyAuthentication,
+    dependencies.limitedPartnershipPostTransitionController.createTerm()
+  );
 
   router.get(
     TERM_WITH_IDS_URL,
     companyAuthentication,
     dependencies.limitedPartnershipPostTransitionController.getTermRouting()
   );
-  // router.post(
-  //   TERM_WITH_IDS_URL,
-  //   companyAuthentication,
-  //   dependencies.limitedPartnershipPostTransitionController.sendPageData()
-  // );
+  router.post(
+    TERM_WITH_IDS_URL,
+    companyAuthentication,
+    dependencies.limitedPartnershipPostTransitionController.sendPageData()
+  );
 };
 
 export default postTransitionEndpoints;
