@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { PartnershipKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 import { companyAuthentication } from "../middlewares";
 
@@ -26,6 +27,8 @@ import {
   PARTNERSHIP_NAME_WITH_IDS_URL,
   PARTNERSHIP_NAME_CHANGE_CHECK_YOUR_ANSWERS_URL,
   REGISTERED_OFFICE_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL,
+  TERM_URL,
+  TERM_WITH_IDS_URL,
   WHEN_DID_THE_PARTNERSHIP_NAME_CHANGE_URL,
   WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL
 } from "../presentation/controller/postTransition/url";
@@ -200,7 +203,10 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
   router.post(
     ENTER_REGISTERED_OFFICE_ADDRESS_URL,
     companyAuthentication,
-    dependencies.limitedPartnershipPostTransitionController.createRegisteredOfficeAddress()
+    dependencies.limitedPartnershipPostTransitionController.create(
+      PartnershipKind.UPDATE_PARTNERSHIP_REGISTERED_OFFICE_ADDRESS,
+      "registered_office_address"
+    )
   );
 
   router.get(
@@ -211,7 +217,7 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
   router.post(
     ENTER_REGISTERED_OFFICE_ADDRESS_WITH_IDS_URL,
     companyAuthentication,
-    dependencies.limitedPartnershipPostTransitionController.sendPageData()
+    dependencies.limitedPartnershipPostTransitionController.sendPageData("registered_office_address")
   );
 
   router.get(
@@ -244,7 +250,7 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
   router.post(
     PARTNERSHIP_NAME_URL,
     companyAuthentication,
-    dependencies.limitedPartnershipPostTransitionController.createPartnershipName()
+    dependencies.limitedPartnershipPostTransitionController.create(PartnershipKind.UPDATE_PARTNERSHIP_NAME)
   );
 
   router.get(
@@ -278,6 +284,28 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
     PARTNERSHIP_NAME_CHANGE_CHECK_YOUR_ANSWERS_URL,
     companyAuthentication,
     dependencies.limitedPartnershipPostTransitionController.postCheckYourAnswers()
+  );
+
+  router.get(
+    TERM_URL,
+    companyAuthentication,
+    dependencies.limitedPartnershipPostTransitionController.getTermRouting()
+  );
+  router.post(
+    TERM_URL,
+    companyAuthentication,
+    dependencies.limitedPartnershipPostTransitionController.create(PartnershipKind.UPDATE_PARTNERSHIP_TERM)
+  );
+
+  router.get(
+    TERM_WITH_IDS_URL,
+    companyAuthentication,
+    dependencies.limitedPartnershipPostTransitionController.getTermRouting()
+  );
+  router.post(
+    TERM_WITH_IDS_URL,
+    companyAuthentication,
+    dependencies.limitedPartnershipPostTransitionController.sendPageData()
   );
 };
 

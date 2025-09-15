@@ -42,6 +42,14 @@
                 href: props.data.updateName
             }) }}
         </div>
+        {% if props.data.limitedPartnership.partnership_type === "LP" or props.data.limitedPartnership.partnership_type === "SLP" %}
+            <div class="govuk-button-group govuk-!-margin-top-8">
+                {{ govukButton({
+                    text: "Update Term",
+                    href: props.data.updateTerm
+                }) }}
+            </div>
+        {% endif %}
     </div>
   </div>
 {% endblock %}

@@ -24,7 +24,8 @@ const postTransitionRoutingLandingPage = {
     addGeneralPartner: url.GENERAL_PARTNER_CHOICE_URL,
     addLimitedPartner: url.LIMITED_PARTNER_CHOICE_URL,
     updateROA: url.ENTER_REGISTERED_OFFICE_ADDRESS_URL,
-    updateName: url.PARTNERSHIP_NAME_URL
+    updateName: url.PARTNERSHIP_NAME_URL,
+    updateTerm: url.TERM_URL
   }
 };
 
@@ -69,7 +70,7 @@ const postTransitionRoutingPartnershipName = {
 const postTransitionRoutingPartnershipNameChange = {
   previousUrl: url.PARTNERSHIP_NAME_WITH_IDS_URL,
   currentUrl: url.WHEN_DID_THE_PARTNERSHIP_NAME_CHANGE_URL,
-  nextUrl: url.LANDING_PAGE_URL,
+  nextUrl: url.PARTNERSHIP_NAME_CHANGE_CHECK_YOUR_ANSWERS_URL,
   pageType: PostTransitionPageType.whenDidThePartnershipNameChange,
   data: {
     titleKey: PARTNERSHIP_NAME_KEY
@@ -86,16 +87,27 @@ const postTransitionRoutingPartnershipNameChangeCheckYourAnswers = {
   }
 };
 
+const postTransitionRoutingTerm = {
+  previousUrl: url.LANDING_PAGE_URL,
+  currentUrl: url.TERM_URL,
+  nextUrl: url.WHEN_DID_THE_TERM_CHANGE_URL,
+  pageType: PostTransitionPageType.term
+};
+
 const limitedPartnershipRouting = [
   postTransitionRoutingCompanyNumber,
   postTransitionRoutingConfirmLimitedPartnership,
   postTransitionRoutingLandingPage,
+
   postTransitionRoutingEnterRegisteredOfficeAddress,
   postTransitionRoutingRegisteredOfficeAddressChange,
   postTransitionRoutingRegisteredOfficeAddressChangeCheckYourAnswers,
+
   postTransitionRoutingPartnershipName,
   postTransitionRoutingPartnershipNameChange,
-  postTransitionRoutingPartnershipNameChangeCheckYourAnswers
+  postTransitionRoutingPartnershipNameChangeCheckYourAnswers,
+
+  postTransitionRoutingTerm
 ];
 
 export default limitedPartnershipRouting;
