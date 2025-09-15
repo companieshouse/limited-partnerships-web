@@ -30,3 +30,4 @@ export const PARTNERSHIP_NAME_CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE =
 
 export const TERM_TEMPLATE = PostTransitionPageType.term;
 export const WHEN_DID_TERM_CHANGE_TEMPLATE = PostTransitionPageType.whenDidTheTermChange;
+export const TERM_CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE = PostTransitionPageType.termChangeCheckYourAnswers;

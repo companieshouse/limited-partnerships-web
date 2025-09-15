@@ -30,7 +30,8 @@ import {
   TERM_URL,
   TERM_WITH_IDS_URL,
   WHEN_DID_THE_PARTNERSHIP_NAME_CHANGE_URL,
-  WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL
+  WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL,
+  WHEN_DID_THE_TERM_CHANGE_URL
 } from "../presentation/controller/postTransition/url";
 
 const postTransitionEndpoints = (router: Router, dependencies: IDependencies): void => {
@@ -304,6 +305,17 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
   );
   router.post(
     TERM_WITH_IDS_URL,
+    companyAuthentication,
+    dependencies.limitedPartnershipPostTransitionController.sendPageData()
+  );
+
+  router.get(
+    WHEN_DID_THE_TERM_CHANGE_URL,
+    companyAuthentication,
+    dependencies.limitedPartnershipPostTransitionController.getDateOfUpdate()
+  );
+  router.post(
+    WHEN_DID_THE_TERM_CHANGE_URL,
     companyAuthentication,
     dependencies.limitedPartnershipPostTransitionController.sendPageData()
   );
