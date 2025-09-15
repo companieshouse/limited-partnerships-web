@@ -1,5 +1,10 @@
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
-import { Jurisdiction, LimitedPartnership, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
+import {
+  Jurisdiction,
+  LimitedPartnership,
+  PartnershipType,
+  Term
+} from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 import { logger } from "../../utils";
 import ICompanyGateway from "../../domain/ICompanyGateway";
@@ -14,7 +19,7 @@ class CompanyService {
     company_number: string
   ): Promise<{
     limitedPartnership: Partial<LimitedPartnership>;
-    errors?: UIErrors
+    errors?: UIErrors;
   }> {
     const { companyProfile, errors } = await this.getCompanyProfile(opt, company_number);
     let limitedPartnership: LimitedPartnership = {};
@@ -27,6 +32,7 @@ class CompanyService {
           partnership_number: companyProfile.companyNumber,
           partnership_type: this.calculatePartnershipType(companyProfile),
           jurisdiction: companyProfile.jurisdiction as Jurisdiction,
+          term: this.mapPartnershipTerm(companyProfile),
           registered_office_address: {
             address_line_1: roa?.addressLineOne ?? "",
             address_line_2: roa?.addressLineTwo ?? "",
@@ -72,8 +78,7 @@ class CompanyService {
     const profileSubtype = companyProfile.subtype;
 
     if (
-      (jurisdiction === Jurisdiction.ENGLAND_AND_WALES ||
-        jurisdiction === Jurisdiction.NORTHERN_IRELAND) &&
+      (jurisdiction === Jurisdiction.ENGLAND_AND_WALES || jurisdiction === Jurisdiction.NORTHERN_IRELAND) &&
       profileSubtype === pflpSubtype
     ) {
       return PartnershipType.PFLP;
@@ -88,6 +93,13 @@ class CompanyService {
     }
 
     return PartnershipType.LP;
+  }
+
+  // TODO - update company-profile-api to get term field
+  private mapPartnershipTerm(companyProfile: Partial<CompanyProfile>): Term | undefined {
+    const profileTerm = companyProfile?.term ? companyProfile.term.replace(/-/g, "_").toUpperCase() : "";
+
+    return Term[profileTerm];
   }
 }
 
