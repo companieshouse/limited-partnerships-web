@@ -101,7 +101,6 @@
             },
             "generalPartnerPrincipalOfficeAddress": {
                 "title": "Choose the general partner's principal office address",
-                "hint": "This is the address for the entity's main office.",
                 "publicRegisterInformationLine1": "We'll show the general partner's principal office address on the public register."
 
             },
@@ -114,8 +113,7 @@
                 "title" : "Choose the usual residential address of the limited partner"
             },
             "limitedPartnerPrincipalOfficeAddress": {
-                "title": "Choose the limited partner's principal office address",
-                "hint": "This is the address for the entity's main office.",
+                "title": "Choose the limited partner's principal office address",                
                 "publicRegisterInformationLine1": "We'll show the limited partner's principal office address on the public register."
 
             }
