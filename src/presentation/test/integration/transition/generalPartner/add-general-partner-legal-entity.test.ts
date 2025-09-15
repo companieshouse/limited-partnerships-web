@@ -41,7 +41,15 @@ describe("Add General Partner Legal Entity Page", () => {
       expect(res.text).toContain(
         `${cyTranslationText.addPartnerLegalEntityPage.generalPartner.title} - ${cyTranslationText.serviceTransition} - GOV.UK`
       );
-      testTranslations(res.text, cyTranslationText.addPartnerLegalEntityPage, ["limitedPartner", "errorMessages"]);
+      testTranslations(res.text, cyTranslationText.addPartnerLegalEntityPage, [
+        "limitedPartner",
+        "errorMessages",
+        "dateEffectiveFrom",
+        "dateHint",
+        "dateDay",
+        "dateMonth",
+        "dateYear"
+      ]);
       testTranslations(res.text, cyTranslationText.generalPartnersPage, [
         "title",
         "pageInformation",
@@ -58,7 +66,15 @@ describe("Add General Partner Legal Entity Page", () => {
       expect(res.text).toContain(
         `${enTranslationText.addPartnerLegalEntityPage.generalPartner.title} - ${enTranslationText.serviceTransition} - GOV.UK`
       );
-      testTranslations(res.text, enTranslationText.addPartnerLegalEntityPage, ["limitedPartner", "errorMessages"]);
+      testTranslations(res.text, enTranslationText.addPartnerLegalEntityPage, [
+        "limitedPartner",
+        "errorMessages",
+        "dateEffectiveFrom",
+        "dateHint",
+        "dateDay",
+        "dateMonth",
+        "dateYear"
+      ]);
       testTranslations(res.text, enTranslationText.generalPartnersPage, [
         "title",
         "pageInformation",
