@@ -404,9 +404,6 @@ class LimitedPartnershipController extends AbstractController {
 
           const paymentReturnUri = super.insertIdsInUrl(urlWithJourney, ids, request.url);
 
-          console.log("Start payment session URL: ", startPaymentSessionUrl);
-          console.log("Payment return URI: ", paymentReturnUri);
-
           redirectUrl = await this.paymentService.startPaymentSession(
             tokens,
             startPaymentSessionUrl,
