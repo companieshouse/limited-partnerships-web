@@ -1,11 +1,6 @@
-{% set checkYourAnswers = "check-your-answers" %}
+{% import 'includes/macros.njk' as macros %}
 
-{% set termMap = {
-  "BY_AGREEMENT": i18n.termPage.byAgreement,
-  "UNTIL_DISSOLUTION": i18n.termPage.untilDissolution,
-  "NONE": i18n.termPage.noTerm
-} %}
-{% set term = termMap[props.data.limitedPartnership.data.term] %}
+{% set checkYourAnswers = "check-your-answers" %}
 
 {% set jurisdictionMap = {
   "england-wales": i18n.checkYourAnswersPage.jurisdictions.englandAndWales,
@@ -133,7 +128,7 @@
         text: i18n.checkYourAnswersPage.headingTerm
       },
       value: {
-        text: term
+        text: macros.mapTerm(props.data.limitedPartnership.data.term, i18n)
       },
       actions: {
         items: [

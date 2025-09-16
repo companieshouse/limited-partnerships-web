@@ -71,6 +71,7 @@ describe("Check Your Answers Page", () => {
         "submitFiling",
         "update"
       ]);
+      expect(res.text).toContain(enTranslationText.termPage.byAgreement);
       expect(res.text).toContain(enTranslationText.print.buttonText);
       expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
       expect(res.text).not.toContain("WELSH -");
@@ -91,6 +92,7 @@ describe("Check Your Answers Page", () => {
         "submitFiling",
         "update"
       ]);
+      expect(res.text).toContain(cyTranslationText.termPage.byAgreement);
       expect(res.text).toContain(cyTranslationText.print.buttonText);
       expect(res.text).toContain(cyTranslationText.print.buttonTextNoJs);
       expect(res.text).toContain("WELSH -");
