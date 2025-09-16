@@ -169,9 +169,11 @@ class GlobalController extends AbstractController {
         const limitedPartnership = await this.getLimitedPartnershipDetails(tokens, ids.companyId);
         const userEmail = getLoggedInUserEmail(request.session);
 
+        const subtype = previousUrl?.substring(previousUrl.lastIndexOf("/") + 1, previousUrl.length);
+
         response.render(
           super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { limitedPartnership, generalPartner, limitedPartner, userEmail, ids }, null)
+          super.makeProps(pageRouting, { limitedPartnership, generalPartner, limitedPartner, userEmail, ids, subtype }, null)
         );
       } catch (error) {
         next(error);
