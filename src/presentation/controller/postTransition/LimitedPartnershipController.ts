@@ -322,8 +322,6 @@ class LimitedPartnershipController extends AbstractController {
           return response.render(template, super.makeProps(pageRouting, errorData, patchResult.errors));
         }
 
-        console.log("Redirecting to next page", pageRouting);
-
         const url = super.insertIdsInUrl(pageRouting.nextUrl, ids);
         response.redirect(url);
       } catch (error) {

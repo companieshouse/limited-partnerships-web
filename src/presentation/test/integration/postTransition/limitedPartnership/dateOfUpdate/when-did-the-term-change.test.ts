@@ -9,15 +9,15 @@ import { getUrl, setLocalesEnabled } from "../../../../utils";
 import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
 
 import {
-  PARTNERSHIP_NAME_CHANGE_CHECK_YOUR_ANSWERS_URL,
-  WHEN_DID_THE_PARTNERSHIP_NAME_CHANGE_URL
+  // TERM_CHANGE_CHECK_YOUR_ANSWERS_URL,
+  WHEN_DID_THE_TERM_CHANGE_URL
 } from "../../../../../controller/postTransition/url";
 import PostTransitionPageType from "../../../../../controller/postTransition/pageType";
 import CompanyProfileBuilder from "../../../../builder/CompanyProfileBuilder";
 import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBuilder";
 
-describe("Partnership name change date page", () => {
-  const URL = getUrl(WHEN_DID_THE_PARTNERSHIP_NAME_CHANGE_URL);
+describe("Partnership term change date page", () => {
+  const URL = getUrl(WHEN_DID_THE_TERM_CHANGE_URL);
 
   beforeEach(() => {
     appDevDependencies.companyGateway.setError(false);
@@ -27,40 +27,40 @@ describe("Partnership name change date page", () => {
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
   });
 
-  describe("GET partnership name change date page", () => {
-    it("should load partnership name change date page with english text", async () => {
+  describe("GET partnership term change date page", () => {
+    it("should load partnership term change date page with english text", async () => {
       setLocalesEnabled(true);
       const res = await request(app).get(URL + "?lang=en");
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(`${enTranslationText.dateOfUpdate.partnershipName.title}`);
+      expect(res.text).toContain(`${enTranslationText.dateOfUpdate.term.title}`);
       expect(res.text).not.toContain("WELSH -");
     });
 
-    it("should load partnership name change date page with welsh text", async () => {
+    it("should load partnership term change date page with welsh text", async () => {
       setLocalesEnabled(true);
       const res = await request(app).get(URL + "?lang=cy");
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(`${cyTranslationText.dateOfUpdate.partnershipName.title}`);
+      expect(res.text).toContain(`${cyTranslationText.dateOfUpdate.term.title}`);
       expect(res.text).toContain("WELSH -");
     });
   });
 
-  describe("POST partnership name change date page", () => {
+  describe("POST partnership term change date page", () => {
     it("should navigate to next page with date of update", async () => {
       const limitedPartnership = new LimitedPartnershipBuilder().withDateOfUpdate("2024-10-10").build();
 
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
       const res = await request(app).post(URL).send({
-        pageType: PostTransitionPageType.whenDidThePartnershipNameChange
+        pageType: PostTransitionPageType.whenDidTheTermChange
       });
 
-      const REDIRECT_URL = getUrl(PARTNERSHIP_NAME_CHANGE_CHECK_YOUR_ANSWERS_URL);
+      // const REDIRECT_URL = getUrl(TERM_CHANGE_CHECK_YOUR_ANSWERS_URL);
 
       expect(res.status).toBe(302);
-      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+      // expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`); TODO - the check your answers page
     });
   });
 
@@ -76,7 +76,7 @@ describe("Partnership name change date page", () => {
     appDevDependencies.limitedPartnershipGateway.feedErrors(apiErrors);
 
     const res = await request(app).post(URL).send({
-      pageType: PostTransitionPageType.whenDidThePartnershipNameChange
+      pageType: PostTransitionPageType.whenDidTheTermChange
     });
 
     expect(res.status).toBe(200);

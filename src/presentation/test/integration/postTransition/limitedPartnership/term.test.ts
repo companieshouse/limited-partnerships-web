@@ -36,14 +36,6 @@ describe("Email Page", () => {
   describe("Get Term Page", () => {
     describe("should load page", () => {
       it("should load the page with English text", async () => {
-        const limitedPartnership = new LimitedPartnershipBuilder()
-          .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
-          .withPartnershipType(PartnershipType.LP)
-          .withPartnershipName(companyProfile.data.companyName)
-          .build();
-
-        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
         const res = await request(app).get(URL + "?lang=en");
 
         expect(res.status).toBe(200);
@@ -55,14 +47,6 @@ describe("Email Page", () => {
       });
 
       it("should load the page with Welsh text", async () => {
-        const limitedPartnership = new LimitedPartnershipBuilder()
-          .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
-          .withPartnershipType(PartnershipType.SLP)
-          .withPartnershipName(companyProfile.data.companyName)
-          .build();
-
-        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
         const res = await request(app).get(URL + "?lang=cy");
 
         expect(res.status).toBe(200);
@@ -71,6 +55,27 @@ describe("Email Page", () => {
         );
         testTranslations(res.text, cyTranslationText.termPage);
         expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
+      });
+
+      it("should load the page with ids", async () => {
+        const limitedPartnership = new LimitedPartnershipBuilder()
+          .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+          .withPartnershipType(PartnershipType.LP)
+          .withPartnershipName(companyProfile.data.companyName)
+          .build();
+
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+        const URL = getUrl(TERM_WITH_IDS_URL);
+
+        const res = await request(app).get(URL + "?lang=en");
+
+        expect(res.status).toBe(200);
+        testTranslations(res.text, enTranslationText.termPage);
+        expect(res.text).toContain(
+          `${enTranslationText.termPage.title} - ${enTranslationText.servicePostTransition} - GOV.UK`
+        );
+        expect(res.text).not.toContain("WELSH -");
       });
     });
 

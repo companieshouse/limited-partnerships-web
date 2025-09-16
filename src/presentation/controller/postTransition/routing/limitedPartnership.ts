@@ -94,6 +94,18 @@ const postTransitionRoutingTerm = {
   pageType: PostTransitionPageType.term
 };
 
+const TERM_KEY = "term";
+
+const postTransitionRoutingTermChange = {
+  previousUrl: url.TERM_WITH_IDS_URL,
+  currentUrl: url.WHEN_DID_THE_TERM_CHANGE_URL,
+  nextUrl: url.TERM_CHANGE_CHECK_YOUR_ANSWERS_URL,
+  pageType: PostTransitionPageType.whenDidTheTermChange,
+  data: {
+    titleKey: TERM_KEY
+  }
+};
+
 const limitedPartnershipRouting = [
   postTransitionRoutingCompanyNumber,
   postTransitionRoutingConfirmLimitedPartnership,
@@ -107,7 +119,8 @@ const limitedPartnershipRouting = [
   postTransitionRoutingPartnershipNameChange,
   postTransitionRoutingPartnershipNameChangeCheckYourAnswers,
 
-  postTransitionRoutingTerm
+  postTransitionRoutingTerm,
+  postTransitionRoutingTermChange
 ];
 
 export default limitedPartnershipRouting;

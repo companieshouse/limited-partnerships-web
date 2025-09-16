@@ -493,6 +493,9 @@
       },
       "partnershipName" : {
           "title": "When did the name of the partnership change?"
+      },
+      "term" : {
+          "title": "When did the term change?"
       }
     },
 
