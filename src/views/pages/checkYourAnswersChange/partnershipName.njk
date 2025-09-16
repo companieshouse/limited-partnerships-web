@@ -1,5 +1,7 @@
 {% set dateChangeUrl = "when-did-the-partnership-name-change"  %}
 
+{% set fullName = (props.data.limitedPartnership.data.partnership_name | upper) + " " + (props.data.limitedPartnership.data.name_ending | upper) %}
+
 {{ govukSummaryList({
     classes: "govuk-!-margin-bottom-7",
     rows: [
@@ -8,7 +10,7 @@
                 text: i18n.checkYourAnswersPage.headingName
             },
             value: {
-                text: props.data.limitedPartnership.data.partnership_name
+                text: fullName
             },
             actions: {
             items: [

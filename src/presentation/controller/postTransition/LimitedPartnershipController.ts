@@ -19,7 +19,8 @@ import {
   JOURNEY_TYPE_PARAM,
   CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX,
   CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE,
-  TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNERSHIP
+  TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNERSHIP,
+  CHS_URL
 } from "../../../config/constants";
 import { formatDate } from "../../../utils/date-format";
 import { getJourneyTypes } from "../../../utils";
@@ -30,8 +31,9 @@ import LimitedPartnershipService from "../../../application/service/LimitedPartn
 import TransactionService from "../../../application/service/TransactionService";
 import AddressService from "../../../application/service/AddressService";
 
-import { CONFIRMATION_POST_TRANSITION_URL } from "../global/url";
+import { CONFIRMATION_POST_TRANSITION_URL, PAYMENT_RESPONSE_URL } from "../global/url";
 import { LANDING_PAGE_URL } from "./url";
+import PaymentService from "../../../application/service/PaymentService";
 
 class LimitedPartnershipController extends AbstractController {
   constructor(
@@ -39,7 +41,8 @@ class LimitedPartnershipController extends AbstractController {
     private readonly companyService: CompanyService,
     private readonly cacheService: CacheService,
     private readonly limitedPartnershipService: LimitedPartnershipService,
-    private readonly transactionService: TransactionService
+    private readonly transactionService: TransactionService,
+    private readonly paymentService: PaymentService
   ) {
     super();
   }
@@ -373,17 +376,47 @@ class LimitedPartnershipController extends AbstractController {
     };
   }
 
-  postCheckYourAnswers() {
+  postCheckYourAnswers(payment = false) {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const { tokens, ids } = super.extract(request);
-        await this.limitedPartnershipService.closeTransaction(tokens, ids.transactionId);
 
-        const url = super
+        let redirectUrl = super
           .insertIdsInUrl(CONFIRMATION_POST_TRANSITION_URL, ids, request.url)
           .replace(JOURNEY_TYPE_PARAM, getJourneyTypes(request.url).journey);
 
-        response.redirect(url);
+        const closeTransactionResponse = await this.limitedPartnershipService.closeTransaction(
+          tokens,
+          ids.transactionId
+        );
+
+        if (payment) {
+          const startPaymentSessionUrl: string = closeTransactionResponse.headers?.["x-payment-required"];
+
+          if (!startPaymentSessionUrl) {
+            throw new Error("No payment URL found in response header from closeTransaction");
+          }
+
+          const urlWithJourney = `${CHS_URL}${PAYMENT_RESPONSE_URL}`.replace(
+            JOURNEY_TYPE_PARAM,
+            getJourneyTypes(request.url).journey
+          );
+
+          const paymentReturnUri = super.insertIdsInUrl(urlWithJourney, ids, request.url);
+
+          redirectUrl = await this.paymentService.startPaymentSession(
+            tokens,
+            startPaymentSessionUrl,
+            paymentReturnUri,
+            ids.transactionId
+          );
+
+          if (!redirectUrl) {
+            throw new Error("No payment redirect URL returned from start payment session");
+          }
+        }
+
+        response.redirect(redirectUrl);
       } catch (error) {
         next(error);
       }

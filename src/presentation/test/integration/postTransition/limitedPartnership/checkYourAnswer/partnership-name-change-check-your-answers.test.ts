@@ -8,13 +8,13 @@ import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled } from "../../../../utils";
 
 import { PARTNERSHIP_NAME_CHANGE_CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/postTransition/url";
-import { CONFIRMATION_POST_TRANSITION_URL } from "../../../../../controller/global/url";
 import CompanyProfileBuilder from "../../../../builder/CompanyProfileBuilder";
 import PostTransitionPageType from "../../../../../controller/postTransition/pageType";
 import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBuilder";
 
 describe("Partnership name check your answers page", () => {
   const URL = getUrl(PARTNERSHIP_NAME_CHANGE_CHECK_YOUR_ANSWERS_URL);
+  const PAYMENT_LINK_JOURNEY = "https://api-test-payments.chs.local:4001";
 
   beforeEach(() => {
     appDevDependencies.companyGateway.setError(false);
@@ -56,13 +56,11 @@ describe("Partnership name check your answers page", () => {
   describe("POST partnership name check your answers page", () => {
     it("should navigate to next page", async () => {
       const res = await request(app).post(URL).send({
-        pageType: PostTransitionPageType.registeredOfficeAddressChangeCheckYourAnswers
+        pageType: PostTransitionPageType.partnershipNameChangeCheckYourAnswers
       });
 
-      const redirectUrl = getUrl(CONFIRMATION_POST_TRANSITION_URL);
-
       expect(res.status).toBe(302);
-      expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+      expect(res.text).toContain(`Redirecting to ${PAYMENT_LINK_JOURNEY}`);
     });
   });
 });

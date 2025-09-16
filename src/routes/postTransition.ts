@@ -285,7 +285,7 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
   router.post(
     PARTNERSHIP_NAME_CHANGE_CHECK_YOUR_ANSWERS_URL,
     companyAuthentication,
-    dependencies.limitedPartnershipPostTransitionController.postCheckYourAnswers()
+    dependencies.limitedPartnershipPostTransitionController.postCheckYourAnswers(true)
   );
 
   router.get(

@@ -105,7 +105,14 @@ const limitedPartnerTransitionController: LimitedPartnerTransitionController = n
 );
 
 const limitedPartnershipPostTransitionController: LimitedPartnershipPostTransitionController =
-  new LimitedPartnershipPostTransitionController(addressLookUpService, companyService, cacheService, limitedPartnershipService, transactionService);
+  new LimitedPartnershipPostTransitionController(
+    addressLookUpService,
+    companyService,
+    cacheService,
+    limitedPartnershipService,
+    transactionService,
+    paymentService
+  );
 const generalPartnerPostTransitionController: GeneralPartnerPostTransitionController =
   new GeneralPartnerPostTransitionController(
     limitedPartnershipService,
