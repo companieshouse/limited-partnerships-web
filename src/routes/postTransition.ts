@@ -31,7 +31,8 @@ import {
   TERM_WITH_IDS_URL,
   WHEN_DID_THE_PARTNERSHIP_NAME_CHANGE_URL,
   WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL,
-  WHEN_DID_THE_TERM_CHANGE_URL
+  WHEN_DID_THE_TERM_CHANGE_URL,
+  TERM_CHANGE_CHECK_YOUR_ANSWERS_URL
 } from "../presentation/controller/postTransition/url";
 
 const postTransitionEndpoints = (router: Router, dependencies: IDependencies): void => {
@@ -318,6 +319,17 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
     WHEN_DID_THE_TERM_CHANGE_URL,
     companyAuthentication,
     dependencies.limitedPartnershipPostTransitionController.sendPageData()
+  );
+
+  router.get(
+    TERM_CHANGE_CHECK_YOUR_ANSWERS_URL,
+    companyAuthentication,
+    dependencies.limitedPartnershipPostTransitionController.getCheckYourAnswersPageRouting()
+  );
+  router.post(
+    TERM_CHANGE_CHECK_YOUR_ANSWERS_URL,
+    companyAuthentication,
+    dependencies.limitedPartnershipPostTransitionController.postCheckYourAnswers()
   );
 };
 

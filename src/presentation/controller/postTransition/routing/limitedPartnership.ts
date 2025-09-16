@@ -106,6 +106,16 @@ const postTransitionRoutingTermChange = {
   }
 };
 
+const postTransitionRoutingTermChangeCheckYourAnswers = {
+  previousUrl: url.WHEN_DID_THE_TERM_CHANGE_URL,
+  currentUrl: url.TERM_CHANGE_CHECK_YOUR_ANSWERS_URL,
+  nextUrl: "/",
+  pageType: PostTransitionPageType.termChangeCheckYourAnswers,
+  data: {
+    pageKey: TERM_KEY
+  }
+};
+
 const limitedPartnershipRouting = [
   postTransitionRoutingCompanyNumber,
   postTransitionRoutingConfirmLimitedPartnership,
@@ -120,7 +130,8 @@ const limitedPartnershipRouting = [
   postTransitionRoutingPartnershipNameChangeCheckYourAnswers,
 
   postTransitionRoutingTerm,
-  postTransitionRoutingTermChange
+  postTransitionRoutingTermChange,
+  postTransitionRoutingTermChangeCheckYourAnswers
 ];
 
 export default limitedPartnershipRouting;

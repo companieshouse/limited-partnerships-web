@@ -1,3 +1,5 @@
+{% import 'includes/macros.njk' as macros %}
+
 {% set dateChangeUrl = "when-did-the-partnership-name-change"  %}
 
 {{ govukSummaryList({
@@ -5,18 +7,18 @@
     rows: [
         {
             key: {
-                text: i18n.checkYourAnswersPage.headingName
+                text: i18n.checkYourAnswersPage.headingTerm
             },
             value: {
-                text: props.data.limitedPartnership.data.partnership_name
+                text: macros.mapTerm(props.data.limitedPartnership.data.term, i18n)
             },
             actions: {
             items: [
                     CREATE_CHANGE_LINK(
                     i18n.checkYourAnswersPage.change,
-                    (currentUrl | replace(props.pageType, "name")),
-                    partnership_name,
-                    "change-partnership-name-button"
+                    (currentUrl | replace(props.pageType, "term")),
+                    term,
+                    "change-term-button"
                     )
                 ]
             }

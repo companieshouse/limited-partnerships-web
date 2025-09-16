@@ -33,7 +33,7 @@
   {# Format the address by combining the available fields, can't use string concatenation as it escapes chars eg. apostrophe #}
   {# and has to be on one line as macros preserve spacing, meaning that it will render ok on page if output on separate lines but when viewing html in tests it will be spread over multiple lines #}
   {{ premises }} {% if address_line_1 %}{{ address_line_1 }}, {% endif %}{% if address_line_2 %}{{ address_line_2 }}, {% endif %}{% if locality %}{{ locality }}, {% endif %}{% if region %}{{ region }}, {% endif %}{% if country %}{{ country }}, {% endif %}{{ address.postal_code }}
-  {% endmacro %}
+{% endmacro %}
 
 {%- macro capitalizeEachWord(str) -%}
   {%- set words = str.split(' ') -%}
@@ -58,3 +58,15 @@
   {%- endfor -%}
   {{- returnValue.join(' / ') -}}
 {%- endmacro -%}
+
+{% macro mapTerm(term, i18n) %}
+  {% set termMap = {
+    "BY_AGREEMENT": i18n.termPage.byAgreement,
+    "UNTIL_DISSOLUTION": i18n.termPage.untilDissolution,
+    "NONE": i18n.termPage.noTerm
+  } %}
+
+  {% set term = termMap[term] %}
+
+  {{ term }}
+{% endmacro %}

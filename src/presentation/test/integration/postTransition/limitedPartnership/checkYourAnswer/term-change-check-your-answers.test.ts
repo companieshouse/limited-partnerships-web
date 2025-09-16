@@ -1,0 +1,68 @@
+import request from "supertest";
+import { Term } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+
+import enTranslationText from "../../../../../../../locales/en/translations.json";
+import cyTranslationText from "../../../../../../../locales/cy/translations.json";
+
+import app from "../../../app";
+import { appDevDependencies } from "../../../../../../config/dev-dependencies";
+import { getUrl, setLocalesEnabled } from "../../../../utils";
+
+import { TERM_CHANGE_CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/postTransition/url";
+import { CONFIRMATION_POST_TRANSITION_URL } from "../../../../../controller/global/url";
+import PostTransitionPageType from "../../../../../controller/postTransition/pageType";
+import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBuilder";
+
+describe("Term change check your answers page", () => {
+  const URL = getUrl(TERM_CHANGE_CHECK_YOUR_ANSWERS_URL);
+
+  beforeEach(() => {
+    appDevDependencies.companyGateway.setError(false);
+    appDevDependencies.cacheRepository.feedCache(null);
+
+    const limitedPartnership = new LimitedPartnershipBuilder()
+      .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+      .withTerm(Term.BY_AGREEMENT)
+      .build();
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+  });
+
+  describe("GET term change check your answers page", () => {
+    it("should load term change check your answers page with english text", async () => {
+      setLocalesEnabled(true);
+      const res = await request(app).get(URL + "?lang=en");
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(`${enTranslationText.checkYourAnswersPage.update.title}`);
+      expect(res.text).toContain(enTranslationText.termPage.byAgreement);
+      expect(res.text).toContain(enTranslationText.print.buttonText);
+      expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
+      expect(res.text).not.toContain("WELSH -");
+    });
+
+    it("should load term change check your answers page with welsh text", async () => {
+      setLocalesEnabled(true);
+      const res = await request(app).get(URL + "?lang=cy");
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(`${cyTranslationText.checkYourAnswersPage.update.title}`);
+      expect(res.text).toContain(cyTranslationText.termPage.byAgreement);
+      expect(res.text).toContain(enTranslationText.print.buttonText);
+      expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
+      expect(res.text).toContain("WELSH -");
+    });
+  });
+
+  describe("POST term change check your answers page", () => {
+    it("should navigate to next page", async () => {
+      const res = await request(app).post(URL).send({
+        pageType: PostTransitionPageType.termChangeCheckYourAnswers
+      });
+
+      const redirectUrl = getUrl(CONFIRMATION_POST_TRANSITION_URL);
+
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+    });
+  });
+});

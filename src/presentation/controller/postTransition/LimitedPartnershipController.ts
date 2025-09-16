@@ -61,7 +61,6 @@ class LimitedPartnershipController extends AbstractController {
           super.makeProps(pageRouting, { limitedPartnership, submissionId }, null)
         );
       } catch (error) {
-        console.log(error);
         next(error);
       }
     };
@@ -335,8 +334,6 @@ class LimitedPartnershipController extends AbstractController {
       try {
         const { tokens, pageType, ids } = super.extract(request);
         const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
-
-        this.conditionalPreviousUrl(pageRouting, request);
 
         const limitedPartnership = await this.getLimitedPartnership(ids, tokens);
 
