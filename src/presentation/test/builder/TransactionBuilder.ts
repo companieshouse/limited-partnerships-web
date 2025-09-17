@@ -43,6 +43,18 @@ class TransactionBuilder {
     return this;
   }
 
+  withKind(kind: string) {
+    this.transaction.resources = {
+      "limited-partnership/partnership": {
+        kind: kind,
+        links: {
+          resource: "",
+        }
+      }
+    };
+    return this;
+  }
+
   build(): Transaction {
     return { ...this.transaction };
   }

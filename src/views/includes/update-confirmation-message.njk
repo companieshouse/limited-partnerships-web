@@ -1,5 +1,5 @@
 {% set message = i18n.confirmationPage.postTransition.partner.partnerName %}  
-{% if props.data.subtype === "registered-office-address-change-check-your-answers" %}
+{% if props.data.subtype === "limited-partnership#update-partnership-registered-office-address" %}
   {% set message = i18n.confirmationPage.postTransition.registeredOfficeAddress %}
 {% endif %}
 <p class="govuk-body">{{ message }} {{ partnerName }} {{ partnerType }} {{ props.data.limitedPartnership.data.partnership_name | upper }} ({{ props.data.limitedPartnership.data.partnership_number }}).</p>

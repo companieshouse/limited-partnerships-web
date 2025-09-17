@@ -169,7 +169,16 @@ class GlobalController extends AbstractController {
         const limitedPartnership = await this.getLimitedPartnershipDetails(tokens, ids.companyId);
         const userEmail = getLoggedInUserEmail(request.session);
 
-        const subtype = previousUrl?.substring(previousUrl.lastIndexOf("/") + 1, previousUrl.length);
+        const transaction = await this.transactionService.getTransaction(tokens, ids.transactionId);
+
+        let subtype;
+
+        if (transaction.resources) {
+          const resource = Object.keys(transaction.resources).find(key => key.includes("limited-partnership/partnership"));
+          if (resource){
+            subtype = transaction.resources[resource].kind;
+          }
+        }
 
         response.render(
           super.templateName(pageRouting.currentUrl),
