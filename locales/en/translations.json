@@ -454,6 +454,7 @@
         "postTransition": {
             "title": "Update submitted",
             "registeredOfficeAddress": "We've received your filing to update the registered office address for",
+            "term": "We've received your filing to update the term of the partnership for",
             "partner": {
               "partnerName": "We've received your filing to add",
               "generalPartnerType": "as a general partner of",

@@ -11,7 +11,7 @@ import { JOURNEY_TYPE_PARAM } from "../../../../config";
 import { Journey } from "../../../../domain/entities/journey";
 import CompanyProfileBuilder from "../../builder/CompanyProfileBuilder";
 import GeneralPartnerBuilder from "../../builder/GeneralPartnerBuilder";
-import { GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL, LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL, REGISTERED_OFFICE_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL } from "../../../controller/postTransition/url";
+import { GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL, LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL, REGISTERED_OFFICE_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL, TERM_CHANGE_CHECK_YOUR_ANSWERS_URL } from "../../../controller/postTransition/url";
 import LimitedPartnerBuilder from "../../builder/LimitedPartnerBuilder";
 import TransactionBuilder from "presentation/test/builder/TransactionBuilder";
 import LimitedPartnershipBuilder from "presentation/test/builder/LimitedPartnershipBuilder";
@@ -215,8 +215,9 @@ describe("Confirmation Page", () => {
     describe("Limited Partnership", () => {
 
       it.each([
-        [ "limited-partnership#update-partnership-registered-office-address", REGISTERED_OFFICE_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL ]
-      ])("should load confirmation page - for limited partnership with english message text for the specific journey", async (kind: string, referrer: string) => {
+        [ "limited-partnership#update-partnership-registered-office-address", REGISTERED_OFFICE_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL, enTranslationText.confirmationPage.postTransition.registeredOfficeAddress ],
+        [ "limited-partnership#update-partnership-term", TERM_CHANGE_CHECK_YOUR_ANSWERS_URL, enTranslationText.confirmationPage.postTransition.term ]
+      ])("should load confirmation page - for limited partnership with english message text for the specific journey", async (kind: string, referrer: string, message: string) => {
         const transaction = new TransactionBuilder()
           .withKind(kind)
           .build();
@@ -231,14 +232,15 @@ describe("Confirmation Page", () => {
         const res = await request(app).get(URL + "?lang=en").set("Referrer", referrer);
 
         expect(res.status).toBe(200);
-        expect(res.text).toContain(toEscapedHtml(enTranslationText.confirmationPage.postTransition.registeredOfficeAddress));
+        expect(res.text).toContain(toEscapedHtml(message));
         expect(res.text).toContain(companyProfile.data?.companyName?.toUpperCase());
         expect(res.text).toContain(companyProfile.data?.companyNumber?.toUpperCase());
       });
 
       it.each([
-        [ "limited-partnership#update-partnership-registered-office-address", REGISTERED_OFFICE_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL ]
-      ])("should load confirmation page - for limited partnership with welsh message text for the specific journey", async (kind: string, referrer: string) => {
+        [ "limited-partnership#update-partnership-registered-office-address", REGISTERED_OFFICE_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL, cyTranslationText.confirmationPage.postTransition.registeredOfficeAddress ],
+        [ "limited-partnership#update-partnership-term", TERM_CHANGE_CHECK_YOUR_ANSWERS_URL, cyTranslationText.confirmationPage.postTransition.term ]
+      ])("should load confirmation page - for limited partnership with welsh message text for the specific journey", async (kind: string, referrer: string, message: string) => {
         const transaction = new TransactionBuilder()
           .withKind(kind)
           .build();
@@ -253,7 +255,7 @@ describe("Confirmation Page", () => {
         const res = await request(app).get(URL + "?lang=cy").set("Referrer", referrer);
 
         expect(res.status).toBe(200);
-        expect(res.text).toContain(toEscapedHtml(cyTranslationText.confirmationPage.postTransition.registeredOfficeAddress));
+        expect(res.text).toContain(toEscapedHtml(message));
         expect(res.text).toContain(companyProfile.data?.companyName?.toUpperCase());
         expect(res.text).toContain(companyProfile.data?.companyNumber?.toUpperCase());
       });
