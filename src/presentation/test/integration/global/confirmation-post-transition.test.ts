@@ -5,14 +5,16 @@ import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 
 import { CONFIRMATION_POST_TRANSITION_URL } from "../../../controller/global/url";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
+import { getUrl, toEscapedHtml, setLocalesEnabled, testTranslations } from "../../utils";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import { JOURNEY_TYPE_PARAM } from "../../../../config";
 import { Journey } from "../../../../domain/entities/journey";
 import CompanyProfileBuilder from "../../builder/CompanyProfileBuilder";
 import GeneralPartnerBuilder from "../../builder/GeneralPartnerBuilder";
-import { GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL, LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL } from "../../../controller/postTransition/url";
+import { GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL, LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL, REGISTERED_OFFICE_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL } from "../../../controller/postTransition/url";
 import LimitedPartnerBuilder from "../../builder/LimitedPartnerBuilder";
+import TransactionBuilder from "presentation/test/builder/TransactionBuilder";
+import LimitedPartnershipBuilder from "presentation/test/builder/LimitedPartnershipBuilder";
 
 describe("Confirmation Page", () => {
   const URL = getUrl(CONFIRMATION_POST_TRANSITION_URL).replace(JOURNEY_TYPE_PARAM, Journey.postTransition);
@@ -23,6 +25,10 @@ describe("Confirmation Page", () => {
     setLocalesEnabled(true);
 
     companyProfile = new CompanyProfileBuilder().build();
+    const transaction = new TransactionBuilder()
+      .build();
+
+    appDevDependencies.transactionGateway.feedTransactions([transaction]);
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
     appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
@@ -201,6 +207,53 @@ describe("Confirmation Page", () => {
         expect(res.text).not.toContain(cyTranslationText.confirmationPage.title);
         testTranslations(res.text, cyTranslationText.confirmationPage.postTransition.partner, ["generalPartnerType"]);
         expect(res.text).toContain(appDevDependencies.transactionGateway.transactionId);
+        expect(res.text).toContain(companyProfile.data?.companyName?.toUpperCase());
+        expect(res.text).toContain(companyProfile.data?.companyNumber?.toUpperCase());
+      });
+    });
+
+    describe("Limited Partnership", () => {
+
+      it.each([
+        [ "limited-partnership#update-partnership-registered-office-address", REGISTERED_OFFICE_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL ]
+      ])("should load confirmation page - for limited partnership with english message text for the specific journey", async (kind: string, referrer: string) => {
+        const transaction = new TransactionBuilder()
+          .withKind(kind)
+          .build();
+
+        appDevDependencies.transactionGateway.feedTransactions([transaction]);
+
+        const limitedPartnership = new LimitedPartnershipBuilder()
+          .build();
+
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+        const res = await request(app).get(URL + "?lang=en").set("Referrer", referrer);
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(toEscapedHtml(enTranslationText.confirmationPage.postTransition.registeredOfficeAddress));
+        expect(res.text).toContain(companyProfile.data?.companyName?.toUpperCase());
+        expect(res.text).toContain(companyProfile.data?.companyNumber?.toUpperCase());
+      });
+
+      it.each([
+        [ "limited-partnership#update-partnership-registered-office-address", REGISTERED_OFFICE_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL ]
+      ])("should load confirmation page - for limited partnership with welsh message text for the specific journey", async (kind: string, referrer: string) => {
+        const transaction = new TransactionBuilder()
+          .withKind(kind)
+          .build();
+
+        appDevDependencies.transactionGateway.feedTransactions([transaction]);
+
+        const limitedPartnership = new LimitedPartnershipBuilder()
+          .build();
+
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+        const res = await request(app).get(URL + "?lang=cy").set("Referrer", referrer);
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(toEscapedHtml(cyTranslationText.confirmationPage.postTransition.registeredOfficeAddress));
         expect(res.text).toContain(companyProfile.data?.companyName?.toUpperCase());
         expect(res.text).toContain(companyProfile.data?.companyNumber?.toUpperCase());
       });
