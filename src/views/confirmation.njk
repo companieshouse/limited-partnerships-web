@@ -62,11 +62,7 @@
       <p class="govuk-body">{{ i18n.confirmationPage.willSendEmailTo }} <strong>{{ props.data.limitedPartnership.data.email }}</strong> {{ i18n.confirmationPage.updatePublicRegister }}</p>
 
     {% elif journeyTypes.isPostTransition %}
-      {% if partnerName %}
-        <p class="govuk-body">{{ i18n.confirmationPage.postTransition.partner.partnerName }} {{ partnerName }} {{ partnerType }} {{ props.data.limitedPartnership.data.partnership_name | upper }} ({{ props.data.limitedPartnership.data.partnership_number }}).</p>
-      {% else %}
-        {% include "includes/confirmation-message.njk" %}  
-      {% endif %} 
+      {% include "includes/confirmation-message.njk" %}  
 
       <p class="govuk-body">{{ i18n.confirmationPage.sentEmailTo }} <strong>{{ props.data.userEmail }}</strong>.</p>
 
