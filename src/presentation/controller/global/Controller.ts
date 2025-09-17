@@ -171,14 +171,7 @@ class GlobalController extends AbstractController {
 
         const transaction = await this.transactionService.getTransaction(tokens, ids.transactionId);
 
-        let subtype;
-
-        if (transaction.resources) {
-          const resource = Object.keys(transaction.resources).find(key => key.includes("limited-partnership/partnership"));
-          if (resource){
-            subtype = transaction.resources[resource].kind;
-          }
-        }
+        const subtype = Object.values(transaction?.resources ?? {})[0]?.kind;
 
         response.render(
           super.templateName(pageRouting.currentUrl),
