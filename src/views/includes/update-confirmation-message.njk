@@ -1,6 +1,8 @@
 {% set message = i18n.confirmationPage.postTransition.partner.partnerName %}  
 {% if props.data.subtype === "limited-partnership#update-partnership-registered-office-address" %}
   {% set message = i18n.confirmationPage.postTransition.registeredOfficeAddress %}
+{% elif props.data.subtype === "limited-partnership#update-partnership-name" %}
+  {% set message = i18n.confirmationPage.postTransition.name %}
 {% elif props.data.subtype === "limited-partnership#update-partnership-term" %}
   {% set message = i18n.confirmationPage.postTransition.term %}
 {% endif %}

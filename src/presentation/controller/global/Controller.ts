@@ -17,7 +17,7 @@ import LimitedPartnershipService from "../../../application/service/LimitedPartn
 import { getJourneyTypes, getLoggedInUserEmail, logger } from "../../../utils";
 import PaymentService from "../../../application/service/PaymentService";
 import { Journey } from "../../../domain/entities/journey";
-import { CONFIRMATION_URL, PAYMENT_FAILED_URL, PAYMENT_RESPONSE_URL } from "./url";
+import { CONFIRMATION_URL, PAYMENT_FAILED_URL, PAYMENT_RESPONSE_URL, CONFIRMATION_POST_TRANSITION_URL } from "./url";
 import { WHICH_TYPE_WITH_IDS_URL } from "../registration/url";
 import { EMAIL_URL } from "../transition/url";
 import TransactionService from "../../../application/service/TransactionService";
@@ -114,15 +114,23 @@ class GlobalController extends AbstractController {
   }
 
   getPaymentDecision() {
-    return (request: Request, response: Response, next: NextFunction) => {
+    return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const { status } = request.query;
-        const { ids } = super.extract(request);
+        const { tokens, ids } = super.extract(request);
 
-        const nextPageUrl = status === "paid" ? CONFIRMATION_URL : PAYMENT_FAILED_URL;
+        const journeyTypes = getJourneyTypes(request.url);
+        const confirmationUrl = journeyTypes.isPostTransition ? CONFIRMATION_POST_TRANSITION_URL : CONFIRMATION_URL;
+        const nextPageUrl = status === "paid" ? confirmationUrl : PAYMENT_FAILED_URL;
 
-        const nextPageUrlWithJourney = nextPageUrl.replace(JOURNEY_TYPE_PARAM, getJourneyTypes(request.url).journey);
+        const nextPageUrlWithJourney = nextPageUrl.replace(JOURNEY_TYPE_PARAM, journeyTypes.journey);
 
+        if (status === "paid" && !ids.companyId) {
+          const transaction = await this.transactionService.getTransaction(tokens, ids.transactionId);
+          if (transaction.companyNumber) {
+            ids.companyId = transaction.companyNumber;
+          }
+        }
         const nextPageUrlWithJourneyAndIds = super.insertIdsInUrl(nextPageUrlWithJourney, ids);
 
         return response.redirect(nextPageUrlWithJourneyAndIds);
