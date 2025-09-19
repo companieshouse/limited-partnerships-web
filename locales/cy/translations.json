@@ -453,6 +453,7 @@
         "postTransition": {
             "title": "WELSH - Update submitted",
             "registeredOfficeAddress": "WELSH - We've received your filing to update the registered office address for",
+            "name": "WELSH - We've received your filing to update the name of",
             "term": "WELSH - We've received your filing to update the term of the partnership for",
             "partner":{
               "partnerName": "WELSH - We've received your filing to add",
