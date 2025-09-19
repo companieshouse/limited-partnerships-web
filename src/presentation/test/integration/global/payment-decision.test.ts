@@ -27,16 +27,14 @@ describe("Payment decision routing", () => {
     });
 
     it("should redirect to the confirmation page when post-transition payment is successful", async () => {
+
       const companyProfile = new CompanyProfileBuilder().build();
       appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
-      const companyNumber = appDevDependencies.companyGateway.companyProfile.companyNumber;
-      if (companyNumber) {
-        const transaction = new TransactionBuilder()
-          .withCompanyNumber(companyNumber)
-          .build();
+      const transaction = new TransactionBuilder()
+        .withCompanyNumber(companyProfile.Id)
+        .build();
 
-        appDevDependencies.transactionGateway.feedTransactions([transaction]);
-      }
+      appDevDependencies.transactionGateway.feedTransactions([transaction]);
 
       const res = await request(app).get(POST_TRANSITION_URL + "?status=paid");
       expect(res.status).toEqual(302);
