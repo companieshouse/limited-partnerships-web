@@ -1,9 +1,8 @@
 import request from "supertest";
 import app from "../app";
-import { PAYMENT_RESPONSE_URL } from "../../../controller/global/url";
+import { CONFIRMATION_POST_TRANSITION_URL, CONFIRMATION_URL, PAYMENT_FAILED_URL, PAYMENT_RESPONSE_URL } from "../../../controller/global/url";
 import { getUrl } from "../../utils";
-import { JOURNEY_TYPE_PARAM, POST_TRANSITION_BASE_URL, TRANSITION_BASE_URL } from "../../../../config";
-import GlobalPageType from "presentation/controller/global/PageType";
+import { JOURNEY_TYPE_PARAM } from "../../../../config";
 import { appDevDependencies } from "config/dev-dependencies";
 import { Journey } from "../../../../domain/entities/journey";
 import TransactionBuilder from "../../../../presentation/test/builder/TransactionBuilder";
@@ -22,7 +21,7 @@ describe("Payment decision routing", () => {
       const res = await request(app).get(TRANSITION_URL + "?status=paid");
       expect(res.status).toEqual(302);
 
-      const nextPage = `${TRANSITION_BASE_URL}/transaction/${appDevDependencies.transactionGateway.transactionId}/submission/${appDevDependencies.limitedPartnershipGateway.submissionId}/${GlobalPageType.confirmation}`;
+      const nextPage = getUrl(CONFIRMATION_URL).replace(JOURNEY_TYPE_PARAM, Journey.transition);
       expect(res.header.location).toEqual(nextPage);
     });
 
@@ -37,7 +36,8 @@ describe("Payment decision routing", () => {
       const res = await request(app).get(POST_TRANSITION_URL + "?status=paid");
       expect(res.status).toEqual(302);
 
-      const nextPage = `${POST_TRANSITION_BASE_URL}/company/${companyNumber}/transaction/${appDevDependencies.transactionGateway.transactionId}/${GlobalPageType.confirmation}`;
+      let nextPage = getUrl(CONFIRMATION_POST_TRANSITION_URL).replace(JOURNEY_TYPE_PARAM, Journey.postTransition);
+      nextPage = nextPage.replace("LP123456", companyNumber);
       expect(res.header.location).toEqual(nextPage);
     });
 
@@ -45,7 +45,7 @@ describe("Payment decision routing", () => {
       const res = await request(app).get(TRANSITION_URL + "?status=failed");
       expect(res.status).toEqual(302);
 
-      const nextPage = `${TRANSITION_BASE_URL}/transaction/${appDevDependencies.transactionGateway.transactionId}/submission/${appDevDependencies.limitedPartnershipGateway.submissionId}/${GlobalPageType.paymentFailed}`;
+      const nextPage = getUrl(PAYMENT_FAILED_URL).replace(JOURNEY_TYPE_PARAM, Journey.transition);
       expect(res.header.location).toEqual(nextPage);
     });
 
@@ -53,7 +53,7 @@ describe("Payment decision routing", () => {
       const res = await request(app).get(POST_TRANSITION_URL + "?status=failed");
       expect(res.status).toEqual(302);
 
-      const nextPage = `${POST_TRANSITION_BASE_URL}/transaction/${appDevDependencies.transactionGateway.transactionId}/submission/${appDevDependencies.limitedPartnershipGateway.submissionId}/${GlobalPageType.paymentFailed}`;
+      const nextPage = getUrl(PAYMENT_FAILED_URL).replace(JOURNEY_TYPE_PARAM, Journey.postTransition);
       expect(res.header.location).toEqual(nextPage);
     });
   });
