@@ -73,6 +73,19 @@ class CompanyService {
   }
 
   private calculatePartnershipType(companyProfile: Partial<CompanyProfile>): PartnershipType | undefined {
+    const isCompanyInTransition =
+      !companyProfile.subtype ||
+      companyProfile.subtype === "" ||
+      companyProfile.subtype === "private-fund-limited-partnership";
+
+    if (isCompanyInTransition) {
+      return this.calculatePartnershipTypeTransition(companyProfile);
+    }
+
+    return PartnershipType[companyProfile.subtype?.toUpperCase() || ""];
+  }
+
+  private calculatePartnershipTypeTransition(companyProfile: Partial<CompanyProfile>): PartnershipType | undefined {
     const pflpSubtype = "private-fund-limited-partnership";
     const jurisdiction = companyProfile.jurisdiction;
     const profileSubtype = companyProfile.subtype;
@@ -95,7 +108,6 @@ class CompanyService {
     return PartnershipType.LP;
   }
 
-  // TODO - update company-profile-api to get term field
   private mapPartnershipTerm(companyProfile: Partial<CompanyProfile>): Term | undefined {
     const profileTerm = companyProfile?.term ? companyProfile.term.replace(/-/g, "_").toUpperCase() : "";
 
