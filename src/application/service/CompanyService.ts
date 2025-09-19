@@ -82,7 +82,7 @@ class CompanyService {
       return this.calculatePartnershipTypeTransition(companyProfile);
     }
 
-    return PartnershipType[companyProfile.subtype?.toUpperCase() || ""];
+    return PartnershipType[companyProfile.subtype?.toUpperCase() ?? ""];
   }
 
   private calculatePartnershipTypeTransition(companyProfile: Partial<CompanyProfile>): PartnershipType | undefined {
