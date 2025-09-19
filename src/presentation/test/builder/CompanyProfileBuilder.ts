@@ -91,8 +91,8 @@ class CompanyProfileBuilder {
     return this;
   }
 
-  withSubtype() {
-    this.data.subtype = "private-fund-limited-partnership";
+  withSubtype(subtype = "private-fund-limited-partnership") {
+    this.data.subtype = subtype;
     return this;
   }
 
