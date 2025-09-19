@@ -6,6 +6,7 @@ import { JOURNEY_TYPE_PARAM } from "../../../../config";
 import { appDevDependencies } from "config/dev-dependencies";
 import { Journey } from "../../../../domain/entities/journey";
 import TransactionBuilder from "../../../../presentation/test/builder/TransactionBuilder";
+import CompanyProfileBuilder from "presentation/test/builder/CompanyProfileBuilder";
 
 describe("Payment decision routing", () => {
   const TRANSITION_URL = getUrl(PAYMENT_RESPONSE_URL).replace(JOURNEY_TYPE_PARAM, Journey.transition);
@@ -26,18 +27,22 @@ describe("Payment decision routing", () => {
     });
 
     it("should redirect to the confirmation page when post-transition payment is successful", async () => {
-      const companyNumber = "12345678";
-      const transaction = new TransactionBuilder()
-        .withCompanyNumber(companyNumber)
-        .build();
+      const companyProfile = new CompanyProfileBuilder().build();
+      appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
+      const companyNumber = appDevDependencies.companyGateway.companyProfile.companyNumber;
+      if (companyNumber) {
+        const transaction = new TransactionBuilder()
+          .withCompanyNumber(companyNumber)
+          .build();
 
-      appDevDependencies.transactionGateway.feedTransactions([transaction]);
+        appDevDependencies.transactionGateway.feedTransactions([transaction]);
+      }
 
       const res = await request(app).get(POST_TRANSITION_URL + "?status=paid");
       expect(res.status).toEqual(302);
 
-      let nextPage = getUrl(CONFIRMATION_POST_TRANSITION_URL).replace(JOURNEY_TYPE_PARAM, Journey.postTransition);
-      nextPage = nextPage.replace("LP123456", companyNumber);
+      const nextPage = getUrl(CONFIRMATION_POST_TRANSITION_URL).replace(JOURNEY_TYPE_PARAM, Journey.postTransition);
+
       expect(res.header.location).toEqual(nextPage);
     });
 
