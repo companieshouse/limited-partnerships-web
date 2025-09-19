@@ -109,14 +109,42 @@ describe("Email Page", () => {
     });
 
     describe("Post term", () => {
-      it("should send term", async () => {
-        const limitedPartnership = new LimitedPartnershipBuilder()
-          .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
-          .withPartnershipType(PartnershipType.LP)
-          .withPartnershipName(companyProfile.data.companyName)
-          .build();
+      it.each([
+        {
+          jurisdiction: Jurisdiction.ENGLAND_AND_WALES,
+          subtype: "lp",
+          partnershipType: PartnershipType.LP
+        },
+        {
+          jurisdiction: Jurisdiction.ENGLAND_AND_WALES,
+          subtype: "pflp",
+          partnershipType: PartnershipType.PFLP
+        },
+        {
+          jurisdiction: Jurisdiction.NORTHERN_IRELAND,
+          subtype: "lp",
+          partnershipType: PartnershipType.LP
+        },
+        {
+          jurisdiction: Jurisdiction.NORTHERN_IRELAND,
+          subtype: "pflp",
+          partnershipType: PartnershipType.PFLP
+        },
+        {
+          jurisdiction: Jurisdiction.SCOTLAND,
+          subtype: "slp",
+          partnershipType: PartnershipType.SLP
+        },
+        {
+          jurisdiction: Jurisdiction.SCOTLAND,
+          subtype: "spflp",
+          partnershipType: PartnershipType.SPFLP
+        }
+      ])("should send term", async ({ jurisdiction, subtype, partnershipType }) => {
+        const companyProfile = new CompanyProfileBuilder().withJurisdiction(jurisdiction).withSubtype(subtype).build();
+        appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
-        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+        expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships.length).toEqual(0);
 
         const res = await request(app).post(URL).send({
           pageType: PostTransitionPageType.term,
@@ -125,6 +153,10 @@ describe("Email Page", () => {
 
         expect(res.status).toBe(302);
         expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+
+        expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships?.[0]?.data?.partnership_type).toEqual(
+          partnershipType
+        );
       });
 
       it("should update term", async () => {

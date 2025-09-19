@@ -3,7 +3,7 @@ import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
-import { CONFIRM_LIMITED_PARTNERSHIP_URL } from "presentation/controller/transition/url";
+import { CONFIRM_LIMITED_PARTNERSHIP_URL, EMAIL_URL } from "presentation/controller/transition/url";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import { SERVICE_NAME_TRANSITION } from "../../../../config";
 import CompanyProfileBuilder from "../../builder/CompanyProfileBuilder";
@@ -113,10 +113,12 @@ describe("Confirm correct limited partnership page", () => {
 
       expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships.length).toEqual(0);
 
+      const REDIRECT_URL = getUrl(EMAIL_URL);
+
       const res = await request(app).post(URL);
 
       expect(res.status).toBe(302);
-      // expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
 
       expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships.length).toEqual(1);
       expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships?.[0]?.data?.partnership_number).toEqual(
