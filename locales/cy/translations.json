@@ -564,16 +564,16 @@
         "partnershipRulesHint" : {
             "rules" : "WELSH - The partnership name needs to meet set rules. For example, it cannot be the same as another registered partnership or company, or include certain words or phrases.",
             "rulesLinkStart" : "WELSH - To find out the rules the limited partnership's name needs to meet,",
-            "rulesLinkEnd" : "WELSH - read the guidance on choosing a company name (opens in a new tab)"
+            "rulesLinkEnd" : "WELSH - read the guidance on choosing a company name (opens in a new tab)."
         },
         "warning" : "WELSH - You must check the name meets the rules before you register the partnership. If it does not, we may reject your application, or you may need to change it later.",
         "warningFallback" : "WELSH - Warning",
         "title" : "WELSH - Limited partnership name",
         "whatIsName" : "WELSH - What's the name of the partnership?",
-        "whatIsNameHint" : "WELSH - Do not enter a name ending like Limited Partnership or LP. We will add this for you.",
+        "whatIsNameHint" : "WELSH - Do not enter a name ending, like Limited Partnership or LP. We'll add this for you.",
         "nameEnding" : "WELSH - Which name ending would you prefer to go on the public record?",
         "nameEndingHint" : "WELSH - There's no difference between the name endings Limited Partnership, LP and L.P. except how they look.",
-        "nameEndingWelshHint" : "WELSH - There's no difference between the name endings Limited Partnership, LP and L.P. except how they look. Partneriaeth Cyfyngedig, PC, and P.C. can only be used if the partnership's principal place of business is in Wales.",
+        "nameEndingWelshHint" : "WELSH - There's no difference between the name endings Limited Partnership, LP and L.P. except how they look. Partneriaeth Cyfyngedig, PC and P.C. can only be used if the partnership's principal place of business is in Wales.",
        
         "privateFund" : {
             "title" : "WELSH - Private fund limited partnership name",           
