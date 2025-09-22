@@ -158,7 +158,7 @@ describe("Name Page", () => {
 
       expect(res.status).toBe(200);
       testTranslations(res.text, cyTranslationText.namePage.privateFund.scottish);
-      expect(res.text).toContain(cyTranslationText.namePage.whatIsNameHint);
+      expect(res.text).toContain(toEscapedHtml(cyTranslationText.namePage.whatIsNameHint));
       expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
     });
 
@@ -176,7 +176,7 @@ describe("Name Page", () => {
         `${enTranslationText.namePage.privateFund.scottish.title} - ${enTranslationText.serviceRegistration} - GOV.UK`
       );
       testTranslations(res.text, enTranslationText.namePage.privateFund.scottish);
-      expect(res.text).toContain(enTranslationText.namePage.whatIsNameHint);
+      expect(res.text).toContain(toEscapedHtml(enTranslationText.namePage.whatIsNameHint));
       expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
       expect(res.text).not.toContain("WELSH -");
     });
