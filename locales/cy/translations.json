@@ -436,7 +436,7 @@
         },
         "rejected": {
             "title": "WELSH - If the application is rejected",
-            "explain": "WELSH - We'll explain why your application has been rejected and what you can do next. We'll also refund the £X registration fee."
+            "explain": "WELSH - We'll explain why your application has been rejected and what you can do next. We'll also refund the registration fee."
         },
         "filing": {
             "partnershipName": "WELSH - We've received your filing for",
