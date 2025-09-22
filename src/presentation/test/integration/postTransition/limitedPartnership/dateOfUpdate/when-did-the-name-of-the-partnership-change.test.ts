@@ -1,4 +1,5 @@
 import request from "supertest";
+import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 import enTranslationText from "../../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../../locales/cy/translations.json";
@@ -13,18 +14,19 @@ import {
   WHEN_DID_THE_PARTNERSHIP_NAME_CHANGE_URL
 } from "../../../../../controller/postTransition/url";
 import PostTransitionPageType from "../../../../../controller/postTransition/pageType";
-import CompanyProfileBuilder from "../../../../builder/CompanyProfileBuilder";
 import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBuilder";
 
 describe("Partnership name change date page", () => {
   const URL = getUrl(WHEN_DID_THE_PARTNERSHIP_NAME_CHANGE_URL);
 
+  let partnership: LimitedPartnership;
+
   beforeEach(() => {
     appDevDependencies.companyGateway.setError(false);
     appDevDependencies.cacheRepository.feedCache(null);
 
-    const companyProfile = new CompanyProfileBuilder().build();
-    appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
+    partnership = new LimitedPartnershipBuilder().build();
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([partnership]);
   });
 
   describe("GET partnership name change date page", () => {
@@ -35,6 +37,10 @@ describe("Partnership name change date page", () => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(`${enTranslationText.dateOfUpdate.partnershipName.title}`);
       expect(res.text).not.toContain("WELSH -");
+
+      expect(res.text).toContain(
+        `${partnership.data?.partnership_name?.toUpperCase()} ${partnership.data?.name_ending?.toUpperCase()} (${partnership.data?.partnership_number?.toUpperCase()})`
+      );
     });
 
     it("should load partnership name change date page with welsh text", async () => {
@@ -44,6 +50,10 @@ describe("Partnership name change date page", () => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(`${cyTranslationText.dateOfUpdate.partnershipName.title}`);
       expect(res.text).toContain("WELSH -");
+
+      expect(res.text).toContain(
+        `${partnership.data?.partnership_name?.toUpperCase()} ${partnership.data?.name_ending?.toUpperCase()} (${partnership.data?.partnership_number?.toUpperCase()})`
+      );
     });
   });
 
