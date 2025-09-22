@@ -1,7 +1,9 @@
 <span class="govuk-caption-l">
     {% if journeyTypes.isRegistration %}
         {{ props.data.limitedPartnership.data.partnership_name | upper }} {{ props.data.limitedPartnership.data.name_ending | upper }}
-    {% elif journeyTypes.isTransition or journeyTypes.isPostTransition %}
+    {% elif journeyTypes.isTransition %}
         {{ props.data.limitedPartnership.data.partnership_name | upper }} ({{ props.data.limitedPartnership.data.partnership_number | upper }})
+    {% elif journeyTypes.isPostTransition %}
+        {{ props.data.limitedPartnership.data.partnership_name | upper }}{{ " " + (props.data.limitedPartnership.data.name_ending | upper) + " " if props.data.limitedPartnership.data.name_ending else " " }}({{ props.data.limitedPartnership.data.partnership_number | upper }})
     {% endif %}
 </span>
