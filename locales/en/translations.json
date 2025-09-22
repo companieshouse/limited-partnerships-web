@@ -437,7 +437,7 @@
         },
         "rejected": {
             "title": "If the application is rejected",
-            "explain": "We'll explain why your application has been rejected and what you can do next. We'll also refund the £X registration fee."
+            "explain": "We'll explain why your application has been rejected and what you can do next. We'll also refund the registration fee."
         },
         "filing": {
             "partnershipName": "We've received your filing for",
