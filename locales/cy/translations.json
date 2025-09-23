@@ -379,12 +379,12 @@
             "generalPartners" : {
                 "title": "WELSH - General partners",
                 "dateEffectiveFrom": "WELSH - Date they became a general partner",
-                "changeRemoveOrAdd": "WELSH - Change, remove or add a general partners"
+                "changeRemoveOrAdd": "WELSH - Change, remove or add general partners"
             },
             "limitedPartners" : {
                 "title": "WELSH - Limited partners",
                 "dateEffectiveFrom": "WELSH - Date they became a limited partner",
-                "changeRemoveOrAdd": "WELSH - Change, remove or add a limited partners",
+                "changeRemoveOrAdd": "WELSH - Change, remove or add limited partners",
                 "capitalContribution": "WELSH - Total capital contribution"
             },
             "person": {
