@@ -185,7 +185,6 @@ class LimitedPartnershipController extends AbstractController {
           super.makeProps(pageRouting, { limitedPartnership }, null)
         );
       } catch (error) {
-        console.log(error);
         next(error);
       }
     };

@@ -22,8 +22,8 @@
   {% set address = props.data.address %}
 {% elif props.data.cache[usualResidentialAddressKey] %}
   {% set address = props.data.cache[usualResidentialAddressKey] %}
-{% elif props.data.limitedPartnership.data.usual_residential_address %}
-  {% set address = props.data.usual_residential_address %}
+{% elif props.data.limitedPartner.data.usual_residential_address %}
+  {% set address = props.data.limitedPartner.data.usual_residential_address %}
 {% else %}
   {% set address = {} %}
 {% endif %}
