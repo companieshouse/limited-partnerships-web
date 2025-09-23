@@ -462,8 +462,9 @@
               "updateWontShow": "WELSH - This update will not show on the public register until we accept the filing.",
               "processFiling": "WELSH - We'll process this filing withing 5 working days, and email",
               "processFilingConfirmation": "WELSH - to let you know if it's been accepted or rejected.",
-              "filingAccepted": "WELSH - If it's accepted, we'll publish the new information on the public register.",
-              "filingRejected": "WELSH - If its rejected, we'll explain why and tell you what you can do next.",
+              "filingAccepted": "WELSH - If it's accepted, we'll update the partnership's name on the public register. We'll also publish a certificate confirming the change, and send a copy to",
+              "filingAcceptedHighlighted": "WELSH - the partnership's registered email address.",
+              "filingRejected": "WELSH - If it's rejected, we'll explain why and tell you what you can do next. We'll also refund the fee.",
               "confirmationStatementTitle": "WELSH - If you need to file a confirmation statement",
               "confirmationStatementBody": "WELSH - As long as all required updates have been submitted, you can file a confirmation statement. You do not need to wait for the updates to be accepted."
             } 
