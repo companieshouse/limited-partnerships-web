@@ -380,12 +380,12 @@
             "generalPartners" : {
                 "title": "General partners",
                 "dateEffectiveFrom": "Date they became a general partner",
-                "changeRemoveOrAdd": "Change, remove or add a general partners"
+                "changeRemoveOrAdd": "Change, remove or add general partners"
             },
             "limitedPartners" : {
                 "title": "Limited partners",
                 "dateEffectiveFrom": "Date they became a limited partner",
-                "changeRemoveOrAdd": "Change, remove or add a limited partners",
+                "changeRemoveOrAdd": "Change, remove or add limited partners",
                 "capitalContribution": "Total capital contribution"
             },
             "person": {
