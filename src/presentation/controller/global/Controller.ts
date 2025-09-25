@@ -24,9 +24,10 @@ import TransactionService from "../../../application/service/TransactionService"
 import { TransactionKind, TransactionStatus } from "../../../domain/entities/TransactionTypes";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 import CompanyService from "../../../application/service/CompanyService";
-import { GeneralPartner, LimitedPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
+import { GeneralPartner, LimitedPartner, PartnerKind, PartnershipKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
 import PostTransitionPageType from "../postTransition/pageType";
+import { ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_IDS_URL, ADD_GENERAL_PARTNER_PERSON_WITH_IDS_URL, ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_IDS_URL, ADD_LIMITED_PARTNER_PERSON_WITH_IDS_URL, ENTER_REGISTERED_OFFICE_ADDRESS_WITH_IDS_URL, PARTNERSHIP_NAME_WITH_IDS_URL, TERM_WITH_IDS_URL } from "../postTransition/url";
 
 class GlobalController extends AbstractController {
   private static readonly FILING_MODE_URL_MAP: Record<string, { journey: string; resumeUrl: string }> = {
@@ -37,10 +38,43 @@ class GlobalController extends AbstractController {
     [TransactionKind.transition]: {
       journey: Journey.transition,
       resumeUrl: EMAIL_URL
+    }
+  };
+
+  public static readonly RESUME_GENERAL_PARTNER_URL_MAP: Record<string, { journey: string; resumeUrl: string }> = {
+    [PartnerKind.ADD_GENERAL_PARTNER_PERSON]: {
+      journey: Journey.postTransition,
+      resumeUrl: ADD_GENERAL_PARTNER_PERSON_WITH_IDS_URL
     },
-    [TransactionKind.postTransition]: {
-      journey: "", // TODO: update when available
-      resumeUrl: "" // TODO: update when available
+    [PartnerKind.ADD_GENERAL_PARTNER_LEGAL_ENTITY]: {
+      journey: Journey.postTransition,
+      resumeUrl: ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_IDS_URL
+    }
+  };
+
+  public static readonly RESUME_LIMITED_PARTNER_URL_MAP: Record<string, { journey: string; resumeUrl: string }> = {
+    [PartnerKind.ADD_LIMITED_PARTNER_PERSON]: {
+      journey: Journey.postTransition,
+      resumeUrl: ADD_LIMITED_PARTNER_PERSON_WITH_IDS_URL
+    },
+    [PartnerKind.ADD_LIMITED_PARTNER_LEGAL_ENTITY]: {
+      journey: Journey.postTransition,
+      resumeUrl: ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_IDS_URL
+    }
+  };
+
+  public static readonly RESUME_PARTNERSHIP_URL_MAP: Record<string, { journey: string; resumeUrl: string }> = {
+    [PartnershipKind.UPDATE_PARTNERSHIP_NAME]: {
+      journey: Journey.postTransition,
+      resumeUrl: PARTNERSHIP_NAME_WITH_IDS_URL
+    },
+    [PartnershipKind.UPDATE_PARTNERSHIP_REGISTERED_OFFICE_ADDRESS]: {
+      journey: Journey.postTransition,
+      resumeUrl: ENTER_REGISTERED_OFFICE_ADDRESS_WITH_IDS_URL
+    },
+    [PartnershipKind.UPDATE_PARTNERSHIP_TERM]: {
+      journey: Journey.postTransition,
+      resumeUrl: TERM_WITH_IDS_URL
     }
   };
 
@@ -229,7 +263,7 @@ class GlobalController extends AbstractController {
         const { tokens, ids } = super.extract(request);
         logger.infoRequest(
           request,
-          `Resuming journey for transaction: ${ids.transactionId}, submission: ${ids.submissionId}`
+          `Resuming journey for transaction: ${ids.transactionId}`
         );
 
         const transaction = await this.transactionService.getTransaction(tokens, ids.transactionId);
@@ -239,6 +273,41 @@ class GlobalController extends AbstractController {
         }
 
         const { journey, resumeUrl } = this.getFilingModeUrls(transaction.filingMode);
+
+        if (this.isPendingPayment(transaction)) {
+          return this.handlePendingPayment(response, tokens, ids, journey);
+        }
+
+        const resumePage = super.insertIdsInUrl(resumeUrl, { ...ids, companyId: transaction.companyNumber ?? "" });
+
+        return response.redirect(resumePage);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  resumeJourneyPostTransition(map: Record<string, { journey: string; resumeUrl: string }> ) {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { tokens, ids } = super.extract(request);
+        logger.infoRequest(
+          request,
+          `Resuming journey for transaction: ${ids.transactionId}`
+        );
+
+        const transaction = await this.transactionService.getTransaction(tokens, ids.transactionId);
+
+        if (!transaction.resources || Object.keys(transaction.resources).length === 0) {
+          throw new Error("Transaction resources are undefined or empty when resuming post transition journey");
+        }
+
+        const resource = Object.values(transaction.resources)[0];
+        if (!map[resource.kind]) {
+          throw new Error(`Unknown transaction resource kind '${resource.kind}' found when resuming post transition journey`);
+        }
+
+        const { journey, resumeUrl } = map[resource.kind];
 
         if (this.isPendingPayment(transaction)) {
           return this.handlePendingPayment(response, tokens, ids, journey);

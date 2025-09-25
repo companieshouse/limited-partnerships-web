@@ -9,7 +9,11 @@ import {
   CONFIRMATION_URL,
   RESUME_JOURNEY_URL,
   CONFIRMATION_POST_TRANSITION_URL,
+  RESUME_JOURNEY_POST_TRANSITION_GENERAL_PARTNER_URL,
+  RESUME_JOURNEY_POST_TRANSITION_LIMITED_PARTNER_URL,
+  RESUME_JOURNEY_POST_TRANSITION_PARTNERSHIP_URL,
 } from "../presentation/controller/global/url";
+import GlobalController from "../presentation/controller/global/Controller";
 
 export const globalEndpoints = (
   router: Router,
@@ -45,6 +49,21 @@ export const globalEndpoints = (
   router.get(
     RESUME_JOURNEY_URL,
     dependencies.globalController.resumeJourney()
+  );
+
+  router.get(
+    RESUME_JOURNEY_POST_TRANSITION_GENERAL_PARTNER_URL,
+    dependencies.globalController.resumeJourneyPostTransition(GlobalController.RESUME_GENERAL_PARTNER_URL_MAP)
+  );
+
+  router.get(
+    RESUME_JOURNEY_POST_TRANSITION_LIMITED_PARTNER_URL,
+    dependencies.globalController.resumeJourneyPostTransition(GlobalController.RESUME_LIMITED_PARTNER_URL_MAP)
+  );
+
+  router.get(
+    RESUME_JOURNEY_POST_TRANSITION_PARTNERSHIP_URL,
+    dependencies.globalController.resumeJourneyPostTransition(GlobalController.RESUME_PARTNERSHIP_URL_MAP)
   );
 
   router.get(

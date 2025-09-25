@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import { Resource } from "@companieshouse/api-sdk-node";
 import { Transaction } from "@companieshouse/api-sdk-node/dist/services/transaction/types";
 import { ApiResponse, ApiErrorResponse } from "@companieshouse/api-sdk-node/dist/services/resource";
@@ -7,7 +5,6 @@ import { IncorporationKind } from "@companieshouse/api-sdk-node/dist/services/li
 
 import { makeApiCallWithRetry } from "../api";
 import ITransactionGateway from "../../../domain/ITransactionGateway";
-import PageType from "../../../presentation/controller/PageType";
 import { SDK_TRANSACTION_SERVICE, SERVICE_NAME_REGISTRATION, SERVICE_NAME_TRANSITION } from "../../../config/constants";
 
 class TransactionGateway implements ITransactionGateway {
