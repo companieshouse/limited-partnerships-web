@@ -117,16 +117,11 @@ const postTransitionRoutingTermChangeCheckYourAnswers = {
   }
 };
 
-const PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_KEY = "principalPlaceOfBusinessAddress";
-
 const postTransitionRoutingPrincipalPlaceOfBusinessAddress = {
   previousUrl: url.LANDING_PAGE_URL,
   currentUrl: url.ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   nextUrl: url.WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_CHANGE_URL,
-  pageType: PostTransitionPageType.enterPrincipalPlaceOfBusinessAddress,
-  data: {
-    titleKey: PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_KEY
-  }
+  pageType: PostTransitionPageType.enterPrincipalPlaceOfBusinessAddress
 };
 
 const limitedPartnershipRouting = [
