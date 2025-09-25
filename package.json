@@ -33,7 +33,7 @@
   "license": "MIT",
   "homepage": "https://github.com/companieshouse/limited-partnerships-web#readme",
   "dependencies": {
-    "@companieshouse/api-sdk-node": "^2.0.291",
+    "@companieshouse/api-sdk-node": "^2.0.295",
     "@companieshouse/ch-node-utils": "^2.1.8",
     "@companieshouse/node-session-handler": "^5.0.1",
     "@companieshouse/structured-logging-node": "^2.0.1",

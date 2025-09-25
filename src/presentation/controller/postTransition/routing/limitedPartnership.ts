@@ -24,6 +24,7 @@ const postTransitionRoutingLandingPage = {
     addGeneralPartner: url.GENERAL_PARTNER_CHOICE_URL,
     addLimitedPartner: url.LIMITED_PARTNER_CHOICE_URL,
     updateROA: url.ENTER_REGISTERED_OFFICE_ADDRESS_URL,
+    updatePPOB: url.ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
     updateName: url.PARTNERSHIP_NAME_URL,
     updateTerm: url.TERM_URL
   }
@@ -116,6 +117,13 @@ const postTransitionRoutingTermChangeCheckYourAnswers = {
   }
 };
 
+const postTransitionRoutingPrincipalPlaceOfBusinessAddress = {
+  previousUrl: url.LANDING_PAGE_URL,
+  currentUrl: url.ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+  nextUrl: url.WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_CHANGE_URL,
+  pageType: PostTransitionPageType.enterPrincipalPlaceOfBusinessAddress
+};
+
 const limitedPartnershipRouting = [
   postTransitionRoutingCompanyNumber,
   postTransitionRoutingConfirmLimitedPartnership,
@@ -131,7 +139,9 @@ const limitedPartnershipRouting = [
 
   postTransitionRoutingTerm,
   postTransitionRoutingTermChange,
-  postTransitionRoutingTermChangeCheckYourAnswers
+  postTransitionRoutingTermChangeCheckYourAnswers,
+
+  postTransitionRoutingPrincipalPlaceOfBusinessAddress
 ];
 
 export default limitedPartnershipRouting;
