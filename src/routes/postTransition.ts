@@ -32,7 +32,9 @@ import {
   WHEN_DID_THE_PARTNERSHIP_NAME_CHANGE_URL,
   WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL,
   WHEN_DID_THE_TERM_CHANGE_URL,
-  TERM_CHANGE_CHECK_YOUR_ANSWERS_URL
+  TERM_CHANGE_CHECK_YOUR_ANSWERS_URL,
+  ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+  ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_WITH_IDS_URL
 } from "../presentation/controller/postTransition/url";
 
 const postTransitionEndpoints = (router: Router, dependencies: IDependencies): void => {
@@ -330,6 +332,31 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
     TERM_CHANGE_CHECK_YOUR_ANSWERS_URL,
     companyAuthentication,
     dependencies.limitedPartnershipPostTransitionController.postCheckYourAnswers()
+  );
+
+  router.get(
+    ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+    companyAuthentication,
+    dependencies.limitedPartnershipPostTransitionController.getPageRouting()
+  );
+  router.post(
+    ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+    companyAuthentication,
+    dependencies.limitedPartnershipPostTransitionController.create(
+      PartnershipKind.UPDATE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS,
+      "principal_place_of_business_address"
+    )
+  );
+
+  router.get(
+    ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_WITH_IDS_URL,
+    companyAuthentication,
+    dependencies.limitedPartnershipPostTransitionController.getPageRouting()
+  );
+  router.post(
+    ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_WITH_IDS_URL,
+    companyAuthentication,
+    dependencies.limitedPartnershipPostTransitionController.sendPageData("principal_place_of_business_address")
   );
 };
 

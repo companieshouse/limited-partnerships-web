@@ -95,6 +95,7 @@ class LimitedPartnershipController extends AbstractController {
               addGeneralPartner: super.insertIdsInUrl(pageRouting?.data?.addGeneralPartner, ids), // insert company number into the link
               addLimitedPartner: super.insertIdsInUrl(pageRouting?.data?.addLimitedPartner, ids),
               updateROA: super.insertIdsInUrl(pageRouting?.data?.updateROA, ids),
+              updatePPOB: super.insertIdsInUrl(pageRouting?.data?.updatePPOB, ids),
               updateName: super.insertIdsInUrl(pageRouting?.data?.updateName, ids),
               updateTerm: super.insertIdsInUrl(pageRouting?.data?.updateTerm, ids)
             },

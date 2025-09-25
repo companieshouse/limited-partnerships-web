@@ -31,3 +31,5 @@ export const PARTNERSHIP_NAME_CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE =
 export const TERM_TEMPLATE = PostTransitionPageType.term;
 export const WHEN_DID_TERM_CHANGE_TEMPLATE = PostTransitionPageType.whenDidTheTermChange;
 export const TERM_CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE = PostTransitionPageType.termChangeCheckYourAnswers;
+
+export const ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_TEMPLATE = PostTransitionPageType.enterPrincipalPlaceOfBusinessAddress;
