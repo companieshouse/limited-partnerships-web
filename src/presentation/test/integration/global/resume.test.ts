@@ -2,7 +2,7 @@ import request from "supertest";
 import app from "../app";
 
 import { appDevDependencies } from "../../../../config/dev-dependencies";
-import { PAYMENT_RESPONSE_URL, RESUME_JOURNEY_URL } from "../../../../presentation/controller/global/url";
+import { PAYMENT_RESPONSE_URL, RESUME_JOURNEY_REGISTRATION_OR_TRANSITION_URL } from "../../../../presentation/controller/global/url";
 import { WHICH_TYPE_WITH_IDS_URL } from "../../../../presentation/controller/registration/url";
 import { EMAIL_URL } from "../../../../presentation/controller/transition/url";
 import { getUrl } from "../../utils";
@@ -12,7 +12,7 @@ import { TransactionKind, TransactionStatus } from "../../../../domain/entities/
 import TransactionBuilder from "presentation/test/builder/TransactionBuilder";
 
 describe("Resume a journey", () => {
-  const RESUME_URL = getUrl(RESUME_JOURNEY_URL);
+  const RESUME_URL = getUrl(RESUME_JOURNEY_REGISTRATION_OR_TRANSITION_URL);
 
   beforeEach(() => {
     appDevDependencies.transactionGateway.feedTransactions([]);

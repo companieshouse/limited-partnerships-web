@@ -45,7 +45,12 @@ jest.mock("../../controller/global/Controller", () => {
           return next();
         };
       }),
-      resumeJourney: jest.fn().mockImplementation(() => {
+      resumeJourneyRegistrationOrTransition: jest.fn().mockImplementation(() => {
+        return (_req: Request, _res: Response, next: NextFunction) => {
+          return next();
+        };
+      }),
+      resumeJourneyPostTransition: jest.fn().mockImplementation(() => {
         return (_req: Request, _res: Response, next: NextFunction) => {
           return next();
         };

@@ -7,13 +7,17 @@ import {
   PAYMENT_RESPONSE_URL,
   PAYMENT_FAILED_URL,
   CONFIRMATION_URL,
-  RESUME_JOURNEY_URL,
   CONFIRMATION_POST_TRANSITION_URL,
   RESUME_JOURNEY_POST_TRANSITION_GENERAL_PARTNER_URL,
   RESUME_JOURNEY_POST_TRANSITION_LIMITED_PARTNER_URL,
   RESUME_JOURNEY_POST_TRANSITION_PARTNERSHIP_URL,
+  RESUME_JOURNEY_REGISTRATION_OR_TRANSITION_URL,
 } from "../presentation/controller/global/url";
-import GlobalController from "../presentation/controller/global/Controller";
+import {
+  RESUME_GENERAL_PARTNER_URL_MAP,
+  RESUME_LIMITED_PARTNER_URL_MAP,
+  RESUME_PARTNERSHIP_URL_MAP
+} from "../presentation/controller/global/Routing";
 
 export const globalEndpoints = (
   router: Router,
@@ -47,23 +51,23 @@ export const globalEndpoints = (
   );
 
   router.get(
-    RESUME_JOURNEY_URL,
-    dependencies.globalController.resumeJourney()
+    RESUME_JOURNEY_REGISTRATION_OR_TRANSITION_URL,
+    dependencies.globalController.resumeJourneyRegistrationOrTransition()
   );
 
   router.get(
     RESUME_JOURNEY_POST_TRANSITION_GENERAL_PARTNER_URL,
-    dependencies.globalController.resumeJourneyPostTransition(GlobalController.RESUME_GENERAL_PARTNER_URL_MAP)
+    dependencies.globalController.resumeJourneyPostTransition(RESUME_GENERAL_PARTNER_URL_MAP)
   );
 
   router.get(
     RESUME_JOURNEY_POST_TRANSITION_LIMITED_PARTNER_URL,
-    dependencies.globalController.resumeJourneyPostTransition(GlobalController.RESUME_LIMITED_PARTNER_URL_MAP)
+    dependencies.globalController.resumeJourneyPostTransition(RESUME_LIMITED_PARTNER_URL_MAP)
   );
 
   router.get(
     RESUME_JOURNEY_POST_TRANSITION_PARTNERSHIP_URL,
-    dependencies.globalController.resumeJourneyPostTransition(GlobalController.RESUME_PARTNERSHIP_URL_MAP)
+    dependencies.globalController.resumeJourneyPostTransition(RESUME_PARTNERSHIP_URL_MAP)
   );
 
   router.get(

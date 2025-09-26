@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 
-import globalsRouting from "./Routing";
+import globalsRouting, { RESUME_REGISTRATION_OR_TRANSITION_URL_MAP } from "./Routing";
 import AbstractController from "../AbstractController";
 import { Ids, Tokens } from "../../../domain/types";
 import {
@@ -16,67 +16,17 @@ import {
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import { getJourneyTypes, getLoggedInUserEmail, logger } from "../../../utils";
 import PaymentService from "../../../application/service/PaymentService";
-import { Journey } from "../../../domain/entities/journey";
 import { CONFIRMATION_URL, PAYMENT_FAILED_URL, PAYMENT_RESPONSE_URL, CONFIRMATION_POST_TRANSITION_URL } from "./url";
-import { WHICH_TYPE_WITH_IDS_URL } from "../registration/url";
-import { EMAIL_URL } from "../transition/url";
 import TransactionService from "../../../application/service/TransactionService";
-import { TransactionKind, TransactionStatus } from "../../../domain/entities/TransactionTypes";
+import { TransactionStatus } from "../../../domain/entities/TransactionTypes";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 import CompanyService from "../../../application/service/CompanyService";
-import { GeneralPartner, LimitedPartner, PartnerKind, PartnershipKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
+import { GeneralPartner, LimitedPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
 import PostTransitionPageType from "../postTransition/pageType";
-import { ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_IDS_URL, ADD_GENERAL_PARTNER_PERSON_WITH_IDS_URL, ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_IDS_URL, ADD_LIMITED_PARTNER_PERSON_WITH_IDS_URL, ENTER_REGISTERED_OFFICE_ADDRESS_WITH_IDS_URL, PARTNERSHIP_NAME_WITH_IDS_URL, TERM_WITH_IDS_URL } from "../postTransition/url";
+import { Transaction } from "@companieshouse/api-sdk-node/dist/services/transaction/types";
 
 class GlobalController extends AbstractController {
-  private static readonly FILING_MODE_URL_MAP: Record<string, { journey: string; resumeUrl: string }> = {
-    [TransactionKind.registration]: {
-      journey: Journey.registration,
-      resumeUrl: WHICH_TYPE_WITH_IDS_URL
-    },
-    [TransactionKind.transition]: {
-      journey: Journey.transition,
-      resumeUrl: EMAIL_URL
-    }
-  };
-
-  public static readonly RESUME_GENERAL_PARTNER_URL_MAP: Record<string, { journey: string; resumeUrl: string }> = {
-    [PartnerKind.ADD_GENERAL_PARTNER_PERSON]: {
-      journey: Journey.postTransition,
-      resumeUrl: ADD_GENERAL_PARTNER_PERSON_WITH_IDS_URL
-    },
-    [PartnerKind.ADD_GENERAL_PARTNER_LEGAL_ENTITY]: {
-      journey: Journey.postTransition,
-      resumeUrl: ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_IDS_URL
-    }
-  };
-
-  public static readonly RESUME_LIMITED_PARTNER_URL_MAP: Record<string, { journey: string; resumeUrl: string }> = {
-    [PartnerKind.ADD_LIMITED_PARTNER_PERSON]: {
-      journey: Journey.postTransition,
-      resumeUrl: ADD_LIMITED_PARTNER_PERSON_WITH_IDS_URL
-    },
-    [PartnerKind.ADD_LIMITED_PARTNER_LEGAL_ENTITY]: {
-      journey: Journey.postTransition,
-      resumeUrl: ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_IDS_URL
-    }
-  };
-
-  public static readonly RESUME_PARTNERSHIP_URL_MAP: Record<string, { journey: string; resumeUrl: string }> = {
-    [PartnershipKind.UPDATE_PARTNERSHIP_NAME]: {
-      journey: Journey.postTransition,
-      resumeUrl: PARTNERSHIP_NAME_WITH_IDS_URL
-    },
-    [PartnershipKind.UPDATE_PARTNERSHIP_REGISTERED_OFFICE_ADDRESS]: {
-      journey: Journey.postTransition,
-      resumeUrl: ENTER_REGISTERED_OFFICE_ADDRESS_WITH_IDS_URL
-    },
-    [PartnershipKind.UPDATE_PARTNERSHIP_TERM]: {
-      journey: Journey.postTransition,
-      resumeUrl: TERM_WITH_IDS_URL
-    }
-  };
 
   constructor(
     private readonly limitedPartnershipService: LimitedPartnershipService,
@@ -257,69 +207,125 @@ class GlobalController extends AbstractController {
     }
   }
 
-  resumeJourney() {
-    return async (request: Request, response: Response, next: NextFunction) => {
-      try {
-        const { tokens, ids } = super.extract(request);
-        logger.infoRequest(
-          request,
-          `Resuming journey for transaction: ${ids.transactionId}`
-        );
+  // resumeJourneyRegistrationOrTransition() {
+  //   return async (request: Request, response: Response, next: NextFunction) => {
+  //     try {
+  //       const { tokens, ids } = super.extract(request);
+  //       logger.infoRequest(
+  //         request,
+  //         `Resuming journey for transaction: ${ids.transactionId}`
+  //       );
 
-        const transaction = await this.transactionService.getTransaction(tokens, ids.transactionId);
+  //       const transaction = await this.transactionService.getTransaction(tokens, ids.transactionId);
 
+  //       if (!transaction?.filingMode || transaction.filingMode === "") {
+  //         throw new Error("Transaction filing mode is undefined or empty when resuming journey");
+  //       }
+
+  //       const { journey, resumeUrl } = this.getFilingModeUrls(transaction.filingMode);
+
+  //       if (this.isPendingPayment(transaction)) {
+  //         return this.handlePendingPayment(response, tokens, ids, journey);
+  //       }
+
+  //       const resumePage = super.insertIdsInUrl(resumeUrl, { ...ids, companyId: transaction.companyNumber ?? "" });
+
+  //       return response.redirect(resumePage);
+  //     } catch (error) {
+  //       next(error);
+  //     }
+  //   };
+  // }
+
+  // resumeJourneyPostTransition(map: Record<string, { journey: string; resumeUrl: string }> ) {
+  //   return async (request: Request, response: Response, next: NextFunction) => {
+  //     try {
+  //       const { tokens, ids } = super.extract(request);
+  //       logger.infoRequest(
+  //         request,
+  //         `Resuming journey for transaction: ${ids.transactionId}`
+  //       );
+
+  //       const transaction = await this.transactionService.getTransaction(tokens, ids.transactionId);
+
+  //       if (!transaction.resources || Object.keys(transaction.resources).length === 0) {
+  //         throw new Error("Transaction resources are undefined or empty when resuming post transition journey");
+  //       }
+
+  //       const resource = Object.values(transaction.resources)[0];
+  //       if (!map[resource.kind]) {
+  //         throw new Error(`Unknown transaction resource kind '${resource.kind}' found when resuming post transition journey`);
+  //       }
+
+  //       const { journey, resumeUrl } = map[resource.kind];
+
+  //       if (this.isPendingPayment(transaction)) {
+  //         return this.handlePendingPayment(response, tokens, ids, journey);
+  //       }
+
+  //       const resumePage = super.insertIdsInUrl(resumeUrl, { ...ids, companyId: transaction.companyNumber ?? "" });
+
+  //       return response.redirect(resumePage);
+  //     } catch (error) {
+  //       next(error);
+  //     }
+  //   };
+  // }
+
+  resumeJourneyRegistrationOrTransition() {
+    return (request: Request, response: Response, next: NextFunction) => {
+      this.handleResumeJourney(request, response, next, (transaction: Transaction) => {
         if (!transaction?.filingMode || transaction.filingMode === "") {
           throw new Error("Transaction filing mode is undefined or empty when resuming journey");
         }
-
-        const { journey, resumeUrl } = this.getFilingModeUrls(transaction.filingMode);
-
-        if (this.isPendingPayment(transaction)) {
-          return this.handlePendingPayment(response, tokens, ids, journey);
+        const resumeData = RESUME_REGISTRATION_OR_TRANSITION_URL_MAP[transaction.filingMode];
+        if (!resumeData) {
+          throw new Error(`Unknown transaction filing_mode '${transaction.filingMode}' found when resuming journey`);
         }
-
-        const resumePage = super.insertIdsInUrl(resumeUrl, { ...ids, companyId: transaction.companyNumber ?? "" });
-
-        return response.redirect(resumePage);
-      } catch (error) {
-        next(error);
-      }
+        return resumeData;
+      });
     };
   }
 
-  resumeJourneyPostTransition(map: Record<string, { journey: string; resumeUrl: string }> ) {
-    return async (request: Request, response: Response, next: NextFunction) => {
-      try {
-        const { tokens, ids } = super.extract(request);
-        logger.infoRequest(
-          request,
-          `Resuming journey for transaction: ${ids.transactionId}`
-        );
-
-        const transaction = await this.transactionService.getTransaction(tokens, ids.transactionId);
-
+  resumeJourneyPostTransition(resumeUrlMap: Record<string, { journey: string; resumeUrl: string }>) {
+    return (request: Request, response: Response, next: NextFunction) => {
+      this.handleResumeJourney(request, response, next, (transaction: Transaction) => {
         if (!transaction.resources || Object.keys(transaction.resources).length === 0) {
           throw new Error("Transaction resources are undefined or empty when resuming post transition journey");
         }
-
         const resource = Object.values(transaction.resources)[0];
-        if (!map[resource.kind]) {
+        const resumeData = resumeUrlMap[resource.kind];
+        if (!resumeData) {
           throw new Error(`Unknown transaction resource kind '${resource.kind}' found when resuming post transition journey`);
         }
-
-        const { journey, resumeUrl } = map[resource.kind];
-
-        if (this.isPendingPayment(transaction)) {
-          return this.handlePendingPayment(response, tokens, ids, journey);
-        }
-
-        const resumePage = super.insertIdsInUrl(resumeUrl, { ...ids, companyId: transaction.companyNumber ?? "" });
-
-        return response.redirect(resumePage);
-      } catch (error) {
-        next(error);
-      }
+        return resumeData;
+      });
     };
+  }
+
+  private async handleResumeJourney(
+    request: Request,
+    response: Response,
+    next: NextFunction,
+    getJourneyAndUrl: (transaction: any) => { journey: string; resumeUrl: string }
+  ) {
+    try {
+      const { tokens, ids } = super.extract(request);
+      logger.infoRequest(request, `Resuming journey for transaction: ${ids.transactionId}`);
+
+      const transaction = await this.transactionService.getTransaction(tokens, ids.transactionId);
+
+      const { journey, resumeUrl } = getJourneyAndUrl(transaction);
+
+      if (this.isPendingPayment(transaction)) {
+        return this.handlePendingPayment(response, tokens, ids, journey);
+      }
+
+      const resumePage = super.insertIdsInUrl(resumeUrl, { ...ids, companyId: transaction.companyNumber ?? "" });
+      return response.redirect(resumePage);
+    } catch (error) {
+      next(error);
+    }
   }
 
   private isPendingPayment(transaction: any): boolean {
@@ -337,14 +343,6 @@ class GlobalController extends AbstractController {
       ids.transactionId
     );
     return response.redirect(redirectToPaymentServiceUrl);
-  }
-
-  private getFilingModeUrls(filingMode: string): { journey: string; resumeUrl: string } {
-    const entry = GlobalController.FILING_MODE_URL_MAP[filingMode];
-    if (!entry) {
-      throw new Error(`Unknown transaction filing_mode '${filingMode}' found when resuming journey`);
-    }
-    return entry;
   }
 }
 
