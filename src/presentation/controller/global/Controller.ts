@@ -294,6 +294,11 @@ class GlobalController extends AbstractController {
           throw new Error("Transaction resources are undefined or empty when resuming post transition journey");
         }
         const resource = Object.values(transaction.resources)[0];
+
+        if (!resource.kind) {
+          throw new Error("Transaction resource kind is undefined when resuming post transition journey");
+        }
+
         const resumeData = resumeUrlMap[resource.kind];
         if (!resumeData) {
           throw new Error(`Unknown transaction resource kind '${resource.kind}' found when resuming post transition journey`);
