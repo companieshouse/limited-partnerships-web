@@ -17,7 +17,7 @@ import {
   RESUME_GENERAL_PARTNER_URL_MAP,
   RESUME_LIMITED_PARTNER_URL_MAP,
   RESUME_PARTNERSHIP_URL_MAP
-} from "../presentation/controller/global/Routing";
+} from "../presentation/controller/global/resumeUrlMapping";
 
 export const globalEndpoints = (
   router: Router,

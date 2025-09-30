@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 
-import globalsRouting, { RESUME_REGISTRATION_OR_TRANSITION_URL_MAP } from "./Routing";
+import globalsRouting from "./Routing";
 import AbstractController from "../AbstractController";
 import { Ids, Tokens } from "../../../domain/types";
 import {
@@ -25,6 +25,7 @@ import { GeneralPartner, LimitedPartner } from "@companieshouse/api-sdk-node/dis
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
 import PostTransitionPageType from "../postTransition/pageType";
 import { Transaction } from "@companieshouse/api-sdk-node/dist/services/transaction/types";
+import { RESUME_REGISTRATION_OR_TRANSITION_URL_MAP } from "./resumeUrlMapping";
 
 class GlobalController extends AbstractController {
 
