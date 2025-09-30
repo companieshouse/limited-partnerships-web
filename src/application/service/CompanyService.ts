@@ -1,6 +1,8 @@
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import {
+  GeneralPartner,
   Jurisdiction,
+  LimitedPartner,
   LimitedPartnership,
   PartnershipType,
   Term
@@ -11,6 +13,10 @@ import ICompanyGateway from "../../domain/ICompanyGateway";
 import UIErrors from "../../domain/entities/UIErrors";
 import { extractAPIErrors } from "./utils";
 
+type DataIncludingPartners = {
+  data: LimitedPartnership["data"] & { partners?: GeneralPartner[]; limitedPartners?: LimitedPartner[] };
+};
+
 class CompanyService {
   constructor(private readonly companyGateway: ICompanyGateway) {}
 
@@ -18,13 +24,23 @@ class CompanyService {
     opt: { access_token: string; refresh_token: string },
     company_number: string
   ): Promise<{
-    limitedPartnership: Partial<LimitedPartnership>;
+    limitedPartnership: Partial<LimitedPartnership & DataIncludingPartners>;
     errors?: UIErrors;
   }> {
     const { companyProfile, errors } = await this.getCompanyProfile(opt, company_number);
-    let limitedPartnership: LimitedPartnership = {};
+    let limitedPartnership: Partial<LimitedPartnership & DataIncludingPartners> = {};
 
     if (companyProfile.companyName) {
+      const { companyOfficers, errors: officersErrors } = await this.getCompanyOfficers(opt, company_number);
+      errors?.errors.errorList.push(...(officersErrors?.errors.errorList || []));
+
+      const partners = {
+        generalPartners:
+          companyOfficers.filter((officer) => officer.officerRole === "general-partner-in-a-limited-partnership") || [],
+        limitedPartners:
+          companyOfficers.filter((officer) => officer.officerRole === "limited-partner-in-a-limited-partnership") || []
+      };
+
       const roa = companyProfile.registeredOfficeAddress;
       limitedPartnership = {
         data: {
@@ -41,7 +57,8 @@ class CompanyService {
             region: roa?.region ?? "",
             country: roa?.country ?? "",
             postal_code: roa?.postalCode ?? ""
-          }
+          },
+          ...partners
         }
       };
     }
@@ -67,6 +84,29 @@ class CompanyService {
 
       return {
         companyProfile: {},
+        errors
+      };
+    }
+  }
+
+  private async getCompanyOfficers(
+    opt: { access_token: string; refresh_token: string },
+    company_number: string
+  ): Promise<{ companyOfficers: any[]; errors?: UIErrors }> {
+    try {
+      const companyOfficers = await this.companyGateway.getCompanyOfficers(opt, company_number);
+      return { companyOfficers: companyOfficers?.items || [] };
+    } catch (errors: any) {
+      const { isValidationErrors } = extractAPIErrors(errors);
+
+      logger.error(`Error retrieving Company officers: ${company_number} ${JSON.stringify(errors)}`);
+
+      if (!isValidationErrors) {
+        throw errors;
+      }
+
+      return {
+        companyOfficers: [],
         errors
       };
     }

@@ -3,6 +3,7 @@ import TransactionService from "@companieshouse/api-sdk-node/dist/services/trans
 import { RefreshTokenService } from "@companieshouse/api-sdk-node/dist/services/refresh-token";
 import { PostcodeLookupService } from "@companieshouse/api-sdk-node/dist/services/postcode-lookup";
 import CompanyProfileService from "@companieshouse/api-sdk-node/dist/services/company-profile/service";
+import CompanyOfficersService from "@companieshouse/api-sdk-node/dist/services/company-officers/service";
 
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
@@ -131,6 +132,11 @@ export const getCompanyProfile = jest.fn().mockImplementation(() => ({
   resource: new CompanyProfileBuilder().build().data
 }));
 
+export const getCompanyOfficers = jest.fn().mockImplementation(() => ({
+  httpStatusCode: 200,
+  resource: [new GeneralPartnerBuilder().isPerson().build(), new LimitedPartnerBuilder().isLegalEntity().build()]
+}));
+
 // Payment Service
 
 export const createPaymentWithFullUrl = jest.fn().mockImplementation(() => ({
@@ -200,6 +206,10 @@ const sdkMock = {
   companyProfile: {
     ...CompanyProfileService.prototype,
     getCompanyProfile
+  },
+  companyOfficers: {
+    ...CompanyOfficersService.prototype,
+    getCompanyOfficers
   },
   payment: {
     ...PaymentService.prototype,
