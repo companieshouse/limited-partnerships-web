@@ -120,8 +120,20 @@ const postTransitionRoutingTermChangeCheckYourAnswers = {
 const postTransitionRoutingPrincipalPlaceOfBusinessAddress = {
   previousUrl: url.LANDING_PAGE_URL,
   currentUrl: url.ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
-  nextUrl: url.WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_CHANGE_URL,
+  nextUrl: url.WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_URL,
   pageType: PostTransitionPageType.enterPrincipalPlaceOfBusinessAddress
+};
+
+const PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_KEY = "principalPlaceOfBusinessAddress";
+
+const postTransitionRoutingPrincipalPlaceOfBusinessAddressChange = {
+  previousUrl: url.ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+  currentUrl: url.WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_URL,
+  nextUrl: url.PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL,
+  pageType: PostTransitionPageType.whenDidThePrincipalPlaceOfBusinessAddressChange,
+  data: {
+    titleKey: PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_KEY
+  }
 };
 
 const limitedPartnershipRouting = [
@@ -141,7 +153,8 @@ const limitedPartnershipRouting = [
   postTransitionRoutingTermChange,
   postTransitionRoutingTermChangeCheckYourAnswers,
 
-  postTransitionRoutingPrincipalPlaceOfBusinessAddress
+  postTransitionRoutingPrincipalPlaceOfBusinessAddress,
+  postTransitionRoutingPrincipalPlaceOfBusinessAddressChange
 ];
 
 export default limitedPartnershipRouting;

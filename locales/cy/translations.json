@@ -494,6 +494,9 @@
       "registeredOfficeAddress" : {
           "title": "WELSH - When did the registered office address change?"
       },
+      "principalPlaceOfBusinessAddress" : {
+          "title": "WELSH - When did the principal place of business address change?"
+      },
       "partnershipName" : {
           "title": "WELSH - When did the name of the partnership change?"
       },
