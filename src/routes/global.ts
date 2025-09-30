@@ -52,22 +52,22 @@ export const globalEndpoints = (
 
   router.get(
     RESUME_JOURNEY_REGISTRATION_OR_TRANSITION_URL,
-    dependencies.globalController.resumeJourneyRegistrationOrTransition()
+    dependencies.globalController.resumeRegistrationOrTransitionJourney()
   );
 
   router.get(
     RESUME_JOURNEY_POST_TRANSITION_GENERAL_PARTNER_URL,
-    dependencies.globalController.resumeJourneyPostTransition(RESUME_GENERAL_PARTNER_URL_MAP)
+    dependencies.globalController.resumePostTransitionJourney(RESUME_GENERAL_PARTNER_URL_MAP)
   );
 
   router.get(
     RESUME_JOURNEY_POST_TRANSITION_LIMITED_PARTNER_URL,
-    dependencies.globalController.resumeJourneyPostTransition(RESUME_LIMITED_PARTNER_URL_MAP)
+    dependencies.globalController.resumePostTransitionJourney(RESUME_LIMITED_PARTNER_URL_MAP)
   );
 
   router.get(
     RESUME_JOURNEY_POST_TRANSITION_PARTNERSHIP_URL,
-    dependencies.globalController.resumeJourneyPostTransition(RESUME_PARTNERSHIP_URL_MAP)
+    dependencies.globalController.resumePostTransitionJourney(RESUME_PARTNERSHIP_URL_MAP)
   );
 
   router.get(

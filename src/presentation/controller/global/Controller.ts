@@ -207,7 +207,7 @@ class GlobalController extends AbstractController {
     }
   }
 
-  resumeJourneyRegistrationOrTransition() {
+  resumeRegistrationOrTransitionJourney() {
     return (request: Request, response: Response, next: NextFunction) => {
       this.handleResumeJourney(request, response, next, (transaction: Transaction) => {
         if (!transaction?.filingMode || transaction.filingMode === "") {
@@ -222,7 +222,7 @@ class GlobalController extends AbstractController {
     };
   }
 
-  resumeJourneyPostTransition(resumeUrlMap: Record<string, { journey: string; resumeUrl: string }>) {
+  resumePostTransitionJourney(resumeUrlMap: Record<string, { journey: string; resumeUrl: string }>) {
     return (request: Request, response: Response, next: NextFunction) => {
       this.handleResumeJourney(request, response, next, (transaction: Transaction) => {
         if (!transaction.resources || Object.keys(transaction.resources).length === 0) {
