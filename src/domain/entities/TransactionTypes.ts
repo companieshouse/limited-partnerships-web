@@ -1,7 +1,7 @@
 export enum TransactionKind {
   registration = "limited-partnership-registration",
   transition = "limited-partnership-transition",
-  postTransition = "limited-partnership-post-transition" // TODO confirm this is correct value
+  postTransition = "limited-partnership-post-transition"
 }
 
 export enum TransactionStatus {

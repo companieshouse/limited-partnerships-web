@@ -16,33 +16,18 @@ import {
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import { getJourneyTypes, getLoggedInUserEmail, logger } from "../../../utils";
 import PaymentService from "../../../application/service/PaymentService";
-import { Journey } from "../../../domain/entities/journey";
 import { CONFIRMATION_URL, PAYMENT_FAILED_URL, PAYMENT_RESPONSE_URL, CONFIRMATION_POST_TRANSITION_URL } from "./url";
-import { WHICH_TYPE_WITH_IDS_URL } from "../registration/url";
-import { EMAIL_URL } from "../transition/url";
 import TransactionService from "../../../application/service/TransactionService";
-import { TransactionKind, TransactionStatus } from "../../../domain/entities/TransactionTypes";
+import { TransactionStatus } from "../../../domain/entities/TransactionTypes";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 import CompanyService from "../../../application/service/CompanyService";
 import { GeneralPartner, LimitedPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
 import PostTransitionPageType from "../postTransition/pageType";
+import { Transaction } from "@companieshouse/api-sdk-node/dist/services/transaction/types";
+import { RESUME_REGISTRATION_OR_TRANSITION_URL_MAP } from "./resumeUrlMapping";
 
 class GlobalController extends AbstractController {
-  private static readonly FILING_MODE_URL_MAP: Record<string, { journey: string; resumeUrl: string }> = {
-    [TransactionKind.registration]: {
-      journey: Journey.registration,
-      resumeUrl: WHICH_TYPE_WITH_IDS_URL
-    },
-    [TransactionKind.transition]: {
-      journey: Journey.transition,
-      resumeUrl: EMAIL_URL
-    },
-    [TransactionKind.postTransition]: {
-      journey: "", // TODO: update when available
-      resumeUrl: "" // TODO: update when available
-    }
-  };
 
   constructor(
     private readonly limitedPartnershipService: LimitedPartnershipService,
@@ -223,34 +208,65 @@ class GlobalController extends AbstractController {
     }
   }
 
-  resumeJourney() {
-    return async (request: Request, response: Response, next: NextFunction) => {
-      try {
-        const { tokens, ids } = super.extract(request);
-        logger.infoRequest(
-          request,
-          `Resuming journey for transaction: ${ids.transactionId}, submission: ${ids.submissionId}`
-        );
-
-        const transaction = await this.transactionService.getTransaction(tokens, ids.transactionId);
-
+  resumeRegistrationOrTransitionJourney() {
+    return (request: Request, response: Response, next: NextFunction) => {
+      this.handleResumeJourney(request, response, next, (transaction: Transaction) => {
         if (!transaction?.filingMode || transaction.filingMode === "") {
           throw new Error("Transaction filing mode is undefined or empty when resuming journey");
         }
+        const resumeData = RESUME_REGISTRATION_OR_TRANSITION_URL_MAP[transaction.filingMode];
+        if (!resumeData) {
+          throw new Error(`Unknown transaction filing_mode '${transaction.filingMode}' found when resuming journey`);
+        }
+        return resumeData;
+      });
+    };
+  }
 
-        const { journey, resumeUrl } = this.getFilingModeUrls(transaction.filingMode);
+  resumePostTransitionJourney(resumeUrlMap: Record<string, { journey: string; resumeUrl: string }>) {
+    return (request: Request, response: Response, next: NextFunction) => {
+      this.handleResumeJourney(request, response, next, (transaction: Transaction) => {
+        if (!transaction.resources || Object.keys(transaction.resources).length === 0) {
+          throw new Error("Transaction resources are undefined or empty when resuming post transition journey");
+        }
+        const resource = Object.values(transaction.resources)[0];
 
-        if (this.isPendingPayment(transaction)) {
-          return this.handlePendingPayment(response, tokens, ids, journey);
+        if (!resource.kind) {
+          throw new Error("Transaction resource kind is undefined when resuming post transition journey");
         }
 
-        const resumePage = super.insertIdsInUrl(resumeUrl, { ...ids, companyId: transaction.companyNumber ?? "" });
-
-        return response.redirect(resumePage);
-      } catch (error) {
-        next(error);
-      }
+        const resumeData = resumeUrlMap[resource.kind];
+        if (!resumeData) {
+          throw new Error(`Unknown transaction resource kind '${resource.kind}' found when resuming post transition journey`);
+        }
+        return resumeData;
+      });
     };
+  }
+
+  private async handleResumeJourney(
+    request: Request,
+    response: Response,
+    next: NextFunction,
+    getJourneyAndUrl: (transaction: any) => { journey: string; resumeUrl: string }
+  ) {
+    try {
+      const { tokens, ids } = super.extract(request);
+      logger.infoRequest(request, `Resuming journey for transaction: ${ids.transactionId}`);
+
+      const transaction = await this.transactionService.getTransaction(tokens, ids.transactionId);
+
+      const { journey, resumeUrl } = getJourneyAndUrl(transaction);
+
+      if (this.isPendingPayment(transaction)) {
+        return this.handlePendingPayment(response, tokens, ids, journey);
+      }
+
+      const resumePage = super.insertIdsInUrl(resumeUrl, { ...ids, companyId: transaction.companyNumber ?? "" });
+      return response.redirect(resumePage);
+    } catch (error) {
+      next(error);
+    }
   }
 
   private isPendingPayment(transaction: any): boolean {
@@ -268,14 +284,6 @@ class GlobalController extends AbstractController {
       ids.transactionId
     );
     return response.redirect(redirectToPaymentServiceUrl);
-  }
-
-  private getFilingModeUrls(filingMode: string): { journey: string; resumeUrl: string } {
-    const entry = GlobalController.FILING_MODE_URL_MAP[filingMode];
-    if (!entry) {
-      throw new Error(`Unknown transaction filing_mode '${filingMode}' found when resuming journey`);
-    }
-    return entry;
   }
 }
 

@@ -55,6 +55,11 @@ class TransactionBuilder {
     return this;
   }
 
+  withResources(resources: Record<string, { kind: string; links: { resource: string } }>) {
+    this.transaction.resources = resources;
+    return this;
+  }
+
   build(): Transaction {
     return { ...this.transaction };
   }
