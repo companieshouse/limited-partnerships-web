@@ -3,7 +3,11 @@ import enTranslationText from "../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../locales/cy/translations.json";
 import app from "../../app";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../../../presentation/test/utils";
-import { ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL, ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_WITH_IDS_URL, WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_CHANGE_URL } from "../../../../../presentation/controller/postTransition/url";
+import {
+  ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+  ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_WITH_IDS_URL,
+  WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_URL
+} from "../../../../../presentation/controller/postTransition/url";
 import CompanyProfileBuilder from "../../../../../presentation/test/builder/CompanyProfileBuilder";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import PostTransitionPageType from "../../../../../presentation/controller/postTransition/pageType";
@@ -80,7 +84,7 @@ describe("Enter Principal Place Of Business Address Page", () => {
           ...limitedPartnership.data?.principal_place_of_business_address
         });
 
-      const redirectUrl = getUrl(WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_CHANGE_URL);
+      const redirectUrl = getUrl(WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_URL);
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
     });
@@ -100,7 +104,7 @@ describe("Enter Principal Place Of Business Address Page", () => {
         ...limitedPartnership.data?.principal_place_of_business_address
       });
 
-    const redirectUrl = getUrl(WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_CHANGE_URL);
+    const redirectUrl = getUrl(WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_URL);
     expect(res.status).toBe(302);
     expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
   });
@@ -255,7 +259,7 @@ describe("Enter Principal Place Of Business Address Page", () => {
         region: "þďðèéêëēĕėęěĝģğġĥħìíîïĩīĭįĵķĺļľŀł"
       });
 
-    const redirectUrl = getUrl(WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_CHANGE_URL);
+    const redirectUrl = getUrl(WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_URL);
     expect(res.status).toBe(302);
     expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
   });

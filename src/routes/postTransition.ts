@@ -34,7 +34,8 @@ import {
   WHEN_DID_THE_TERM_CHANGE_URL,
   TERM_CHANGE_CHECK_YOUR_ANSWERS_URL,
   ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
-  ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_WITH_IDS_URL
+  ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_WITH_IDS_URL,
+  WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_URL
 } from "../presentation/controller/postTransition/url";
 
 const postTransitionEndpoints = (router: Router, dependencies: IDependencies): void => {
@@ -343,7 +344,7 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
     ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
     companyAuthentication,
     dependencies.limitedPartnershipPostTransitionController.create(
-      PartnershipKind.UPDATE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS,
+      PartnershipKind.UPDATE_PARTNERSHIP_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS,
       "principal_place_of_business_address"
     )
   );
@@ -357,6 +358,17 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
     ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_WITH_IDS_URL,
     companyAuthentication,
     dependencies.limitedPartnershipPostTransitionController.sendPageData("principal_place_of_business_address")
+  );
+
+  router.get(
+    WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_URL,
+    companyAuthentication,
+    dependencies.limitedPartnershipPostTransitionController.getDateOfUpdate()
+  );
+  router.post(
+    WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_URL,
+    companyAuthentication,
+    dependencies.limitedPartnershipPostTransitionController.sendPageData()
   );
 };
 

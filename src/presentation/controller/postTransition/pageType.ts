@@ -28,6 +28,7 @@ enum PostTransitionPageType {
   termChangeCheckYourAnswers = `term-${CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX}`,
 
   enterPrincipalPlaceOfBusinessAddress = "enter-principal-place-of-business-address",
+  whenDidThePrincipalPlaceOfBusinessAddressChange = `${DATE_OF_UPDATE_TYPE_PREFIX}-the-principal-place-of-business-address-change`,
 }
 
 export default PostTransitionPageType;
