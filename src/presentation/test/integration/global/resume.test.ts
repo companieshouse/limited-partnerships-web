@@ -88,7 +88,7 @@ describe("Resume a journey", () => {
     },
     {
       resumeUrl: RESUME_POST_TRANSITION_PARTNERSHIP_URL,
-      resourceKind: PartnershipKind.UPDATE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS,
+      resourceKind: PartnershipKind.UPDATE_PARTNERSHIP_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS,
       expectedLocation: getUrl(ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_WITH_IDS_URL)
     },
   ])("should resume a no payment post-transition $resourceKind journey", async ({ resumeUrl, resourceKind, expectedLocation }) => {
