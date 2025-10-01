@@ -29,6 +29,7 @@ enum PostTransitionPageType {
 
   enterPrincipalPlaceOfBusinessAddress = "enter-principal-place-of-business-address",
   whenDidThePrincipalPlaceOfBusinessAddressChange = `${DATE_OF_UPDATE_TYPE_PREFIX}-the-principal-place-of-business-address-change`,
+  principalPlaceOfBusinessAddressChangeCheckYourAnswers = `principal-place-of-business-address-${CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX}`
 }
 
 export default PostTransitionPageType;

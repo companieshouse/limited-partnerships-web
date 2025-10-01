@@ -1,0 +1,28 @@
+{% set dateChangeUrl = "when-did-the-principal-place-of-business-address-change"  %}
+
+{{ govukSummaryList({
+    classes: "govuk-!-margin-bottom-7",
+    rows: [
+        {
+            key: {
+                text: i18n.checkYourAnswersPage.headingPrincipalPlaceOfBusinessAddress
+            },
+            value: {
+                text: macros.formatAddress(props.data.limitedPartnership.data.principal_place_of_business_address, true)
+            },
+            actions: {
+            items: [
+                    CREATE_CHANGE_LINK(
+                    i18n.checkYourAnswersPage.change,
+                    (currentUrl | replace(props.pageType, "enter-principal-place-of-business-address")),
+                    partnership_registered_office_address,
+                    "change-partnership-principal-place-of-business-address-button"
+                    )
+                ]
+            }
+        },
+
+        SET_DATE_OF_UPDATE_SECTION(props, i18n, dateChangeUrl)
+    ]    
+}) }}
+ 
