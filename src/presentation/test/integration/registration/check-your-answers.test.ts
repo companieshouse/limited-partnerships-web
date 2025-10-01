@@ -69,8 +69,6 @@ describe("Check Your Answers Page", () => {
         "warningMessage",
         "headingNumber",
         "submitFiling",
-        "printWarning",
-        "information",
         "update"
       ]);
       expect(res.text).toContain(enTranslationText.termPage.byAgreement);
@@ -92,8 +90,6 @@ describe("Check Your Answers Page", () => {
         "warningMessage",
         "headingNumber",
         "submitFiling",
-        "printWarning",
-        "information",
         "update"
       ]);
       expect(res.text).toContain(cyTranslationText.termPage.byAgreement);
@@ -274,8 +270,6 @@ describe("Check Your Answers Page", () => {
       "warningMessage",
       "headingNumber",
       "submitFiling",
-      "printWarning",
-      "information",
       "update"
     ]);
 
@@ -300,8 +294,6 @@ describe("Check Your Answers Page", () => {
       "warningMessage",
       "headingNumber",
       "submitFiling",
-      "printWarning",
-      "information",
       "update"
     ]);
 
