@@ -21,11 +21,11 @@
        {% include "pages/checkYourAnswersChange/" + props.data.pageKey + ".njk" %}
 
         {{ govukWarningText({
-          text: i18n.checkYourAnswersPage.printWarning,
+          text: i18n.checkYourAnswersPage.update.printWarning,
           iconFallbackText: "Warning"
         }) }} 
 
-        <p class="govuk-body">{{ i18n.checkYourAnswersPage.information }}</p>
+        <p class="govuk-body">{{ i18n.checkYourAnswersPage.update.information }}</p>
 
         <div class="govuk-button-group">
           {{ govukButton({

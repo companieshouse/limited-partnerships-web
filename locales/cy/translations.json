@@ -407,10 +407,10 @@
         },
         "update": {
             "title" : "WELSH - Check your answers before submitting this update",
-            "dateOfChange" : "WELSH - Date of change"
-        },
-        "printWarning": "WELSH - Print or save this page before you submit the filing, for your own records.",
-        "information": "WELSH - We will not send you or the partnership a copy of this information."
+            "dateOfChange" : "WELSH - Date of change",
+            "printWarning": "WELSH - Print or save this page before you submit the filing, for your own records.",
+            "information": "WELSH - We will not send you or the partnership a copy of this information."
+        }
     },
 
     "companyNumber" : {
