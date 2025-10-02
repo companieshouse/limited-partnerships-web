@@ -35,7 +35,8 @@ import {
   TERM_CHANGE_CHECK_YOUR_ANSWERS_URL,
   ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_WITH_IDS_URL,
-  WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_URL
+  WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_URL,
+  PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL
 } from "../presentation/controller/postTransition/url";
 
 const postTransitionEndpoints = (router: Router, dependencies: IDependencies): void => {
@@ -369,6 +370,17 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
     WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_URL,
     companyAuthentication,
     dependencies.limitedPartnershipPostTransitionController.sendPageData()
+  );
+
+  router.get(
+    PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL,
+    companyAuthentication,
+    dependencies.limitedPartnershipPostTransitionController.getCheckYourAnswersPageRouting()
+  );
+  router.post(
+    PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL,
+    companyAuthentication,
+    dependencies.limitedPartnershipPostTransitionController.postCheckYourAnswers()
   );
 };
 

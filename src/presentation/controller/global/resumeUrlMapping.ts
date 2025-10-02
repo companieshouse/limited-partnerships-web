@@ -60,7 +60,7 @@ export const RESUME_PARTNERSHIP_URL_MAP: Record<string, { journey: string; resum
     journey: Journey.postTransition,
     resumeUrl: TERM_WITH_IDS_URL
   },
-  [PartnershipKind.UPDATE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS]: {
+  [PartnershipKind.UPDATE_PARTNERSHIP_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS]: {
     journey: Journey.postTransition,
     resumeUrl: ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_WITH_IDS_URL
   }

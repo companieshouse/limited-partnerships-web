@@ -136,6 +136,16 @@ const postTransitionRoutingPrincipalPlaceOfBusinessAddressChange = {
   }
 };
 
+const postTransitionRoutingPrincipalPlaceOfBusinessAddressChangeCheckYourAnswers = {
+  previousUrl: url.WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_URL,
+  currentUrl: url.PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL,
+  nextUrl: "/",
+  pageType: PostTransitionPageType.principalPlaceOfBusinessAddressChangeCheckYourAnswers,
+  data: {
+    pageKey: PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_KEY
+  }
+};
+
 const limitedPartnershipRouting = [
   postTransitionRoutingCompanyNumber,
   postTransitionRoutingConfirmLimitedPartnership,
@@ -154,7 +164,8 @@ const limitedPartnershipRouting = [
   postTransitionRoutingTermChangeCheckYourAnswers,
 
   postTransitionRoutingPrincipalPlaceOfBusinessAddress,
-  postTransitionRoutingPrincipalPlaceOfBusinessAddressChange
+  postTransitionRoutingPrincipalPlaceOfBusinessAddressChange,
+  postTransitionRoutingPrincipalPlaceOfBusinessAddressChangeCheckYourAnswers
 ];
 
 export default limitedPartnershipRouting;
