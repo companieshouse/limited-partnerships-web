@@ -42,6 +42,8 @@ class CompanyService {
       };
 
       const roa = companyProfile.registeredOfficeAddress;
+      const ppob = companyProfile.serviceAddress;
+
       limitedPartnership = {
         data: {
           partnership_name: companyProfile.companyName,
@@ -57,6 +59,15 @@ class CompanyService {
             region: roa?.region ?? "",
             country: roa?.country ?? "",
             postal_code: roa?.postalCode ?? ""
+          },
+          principal_place_of_business_address: {
+            address_line_1: ppob?.addressLineOne ?? "",
+            address_line_2: ppob?.addressLineTwo ?? "",
+            premises: ppob?.premises ?? "",
+            locality: ppob?.locality ?? "",
+            region: ppob?.region ?? "",
+            country: ppob?.country ?? "",
+            postal_code: ppob?.postalCode ?? ""
           },
           ...partners
         }

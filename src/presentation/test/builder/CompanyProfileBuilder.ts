@@ -25,6 +25,17 @@ class CompanyProfileBuilder {
       careOf: "",
       region: ""
     },
+    serviceAddress: {
+      premises: "4",
+      addressLineOne: "duncalf street",
+      addressLineTwo: "",
+      postalCode: "ST6 3LJ",
+      country: "England",
+      locality: "stroke-on-trent",
+      poBox: "",
+      careOf: "",
+      region: ""
+    },
     registeredOfficeIsInDispute: false,
     accounts: {
       overdue: false,

@@ -127,7 +127,7 @@ const postTransitionRoutingPrincipalPlaceOfBusinessAddress = {
 const PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_KEY = "principalPlaceOfBusinessAddress";
 
 const postTransitionRoutingPrincipalPlaceOfBusinessAddressChange = {
-  previousUrl: url.ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+  previousUrl: url.ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_WITH_IDS_URL,
   currentUrl: url.WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_URL,
   nextUrl: url.PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL,
   pageType: PostTransitionPageType.whenDidThePrincipalPlaceOfBusinessAddressChange,
