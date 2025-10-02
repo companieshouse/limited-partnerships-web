@@ -5,5 +5,7 @@
   {% set message = i18n.confirmationPage.postTransition.name %}
 {% elif props.data.subtype === "limited-partnership#update-partnership-term" %}
   {% set message = i18n.confirmationPage.postTransition.term %}
+{% elif props.data.subtype === "limited-partnership#update-partnership-principal-place-of-business-address" %}
+  {% set message = i18n.confirmationPage.postTransition.principalPlaceOfBusinessAddress %}
 {% endif %}
 <p class="govuk-body">{{ message }} {{ partnerName }} {{ partnerType }} {{ props.data.limitedPartnership.data.partnership_name | upper }} ({{ props.data.limitedPartnership.data.partnership_number }}).</p>

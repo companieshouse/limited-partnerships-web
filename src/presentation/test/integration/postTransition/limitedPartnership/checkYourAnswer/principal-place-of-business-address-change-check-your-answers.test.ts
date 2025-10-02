@@ -10,6 +10,7 @@ import PostTransitionPageType from "../../../../../../presentation/controller/po
 import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import LimitedPartnershipBuilder from "../../../../../../presentation/test/builder/LimitedPartnershipBuilder";
+import { CONFIRMATION_POST_TRANSITION_URL } from "presentation/controller/global/url";
 
 describe("Principal place of business address check your answers page", () => {
   const URL = getUrl(PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL);
@@ -54,11 +55,9 @@ describe("Principal place of business address check your answers page", () => {
         pageType: PostTransitionPageType.principalPlaceOfBusinessAddressChangeCheckYourAnswers
       });
 
-      // Introduce when confirmation page handling is completed
-      // const redirectUrl = getUrl(CONFIRMATION_POST_TRANSITION_URL);
-
+      const redirectUrl = getUrl(CONFIRMATION_POST_TRANSITION_URL);
       expect(res.status).toBe(302);
-      // expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+      expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
     });
   });
 });
