@@ -458,6 +458,7 @@
             "registeredOfficeAddress": "We've received your filing to update the registered office address for",
             "name": "We've received your filing to update the name of",
             "term": "We've received your filing to update the term of the partnership for",
+            "principalPlaceOfBusinessAddress": "We've received your filing to update the principal place of business address for",
             "partner": {
               "partnerName": "We've received your filing to add",
               "generalPartnerType": "as a general partner of",
