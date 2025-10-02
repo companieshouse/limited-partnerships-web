@@ -2,60 +2,247 @@
 
 {% set pageTitle = "Landing page" %}
 
+{% set generalPartnerList = props.data.limitedPartnership.data.generalPartners %}
+{% set generalPartnersAdded = i18n.reviewGeneralPartnersPage.generalPartnersAdded  %}
+{% set generalPartnerKind = "general-partner" %}
+{% set limitedPartnerList = props.data.limitedPartnership.data.limitedPartners %}
+{% set limitedPartnersAdded = i18n.reviewLimitedPartnersPage.limitedPartnersAdded %}
+{% set limitedPartnerKind = "limited-partner" %}
+
 {% block content %}
   <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-
+    <div class="govuk-grid-column-two-fourths">
         <h1 class="govuk-heading-xl govuk-!-margin-bottom-2">Landing page</h1>
 
         <div class="govuk-body">
             <p>
-                Partnership name: {{ props.data.limitedPartnership.partnership_name }}
+                Partnership name: {{ props.data.limitedPartnership.data.partnership_name }}
             </p>
 
             <p>
-                Partnership number: {{ props.data.limitedPartnership.partnership_number }}
+                Partnership number: {{ props.data.limitedPartnership.data.partnership_number }}
             </p>
         </div>
 
-        <div class="govuk-button-group govuk-!-margin-top-8">
-            {{ govukButton({
-                text: "Add General Partner",
-                href: props.data.addGeneralPartner
-            }) }}
-        </div>
-        <div class="govuk-button-group govuk-!-margin-top-8">
-            {{ govukButton({
-                text: "Add Limited Partner",
-                href: props.data.addLimitedPartner
-            }) }}
-        </div>
-         <div class="govuk-button-group govuk-!-margin-top-8">
-            {{ govukButton({
-                text: "Update Registered Office Address",
-                href: props.data.updateROA
-            }) }}
-        </div>
-        <div class="govuk-button-group govuk-!-margin-top-8">
-            {{ govukButton({
-                text: "Update Principal Place Of Business Address",
-                href: props.data.updatePPOB
-            }) }}
-        </div>
-         <div class="govuk-button-group govuk-!-margin-top-8">
-            {{ govukButton({
-                text: "Update Partnership Name",
-                href: props.data.updateName
-            }) }}
-        </div>
-        {% if props.data.limitedPartnership.partnership_type === "LP" or props.data.limitedPartnership.partnership_type === "SLP" %}
-            <div class="govuk-button-group govuk-!-margin-top-8">
+        <div class="govuk-button-group">
+            <div class="govuk-!-margin-top-6">
                 {{ govukButton({
-                    text: "Update Term",
-                    href: props.data.updateTerm
+                    text: "Add General Partner",
+                    href: props.data.addGeneralPartner
                 }) }}
             </div>
-        {% endif %}
+            <span class="govuk-!-margin-right-2"></span>
+            <div class="govuk-!-margin-top-6">
+                {{ govukButton({
+                    text: "Add Limited Partner",
+                    href: props.data.addLimitedPartner
+                }) }}
+            </div>
+        </div>
+        <div class="govuk-button-group">
+            <div class="govuk-!-margin-top-6">
+                {{ govukButton({
+                    text: "Update Registered Office Address",
+                    href: props.data.updateROA
+                }) }}
+            </div>
+            <span class="govuk-!-margin-right-2"></span>
+            <div class="govuk-!-margin-top-6">
+                {{ govukButton({
+                    text: "Update Principal Place Of Business Address",
+                    href: props.data.updatePPOB
+                }) }}
+            </div>
+        </div>
+        <div class="govuk-button-group">
+            <div class="govuk-!-margin-top-6">
+                {{ govukButton({
+                    text: "Update Partnership Name",
+                    href: props.data.updateName
+                }) }}
+            </div>
+            <span class="govuk-!-margin-right-2"></span>
+            {% if props.data.limitedPartnership.partnership_type === "LP" or props.data.limitedPartnership.partnership_type === "SLP" %}
+                <div class="govuk-!-margin-top-6">
+                    {{ govukButton({
+                        text: "Update Term",
+                        href: props.data.updateTerm
+                    }) }}
+                </div>
+            {% endif %}
+        </div>
     </div>
+
+    </br>
+
+    <div class="govuk-grid-row govuk-!-margin-bottom-5 govuk-!-margin-top-6">
+        <div class="govuk-grid-column-full">
+
+            <h2 class="govuk-heading-m govuk-!-margin-bottom-5">{{ generalPartnersAdded.title }}</h2>
+
+            {% if generalPartnerList.length  %}
+
+                {% set rows = [] %}
+
+                {% for item in generalPartnerList %}
+
+                    {% if item.nationality %}
+                        {% set rows = rows.concat({
+                                key: {
+                                    text: generalPartnersAdded.person,
+                                    classes: "govuk-form-group govuk-form-group--error" if props.errors[(item.name | lower)]
+                                },
+                                value: {
+                                    text: item.name
+                                },
+                                actions: {
+                                    items: [
+                                        CREATE_CHANGE_LINK(
+                                            generalPartnersAdded.changeLink,
+                                            props.currentUrl | replace(props.pageType, generalPartnerKind + "/" + item.id + "/add-" + generalPartnerKind + "-person"),
+                                            null,
+                                            "change-" + partnerType + "-person"
+                                        ),
+                                        CREATE_CHANGE_LINK(
+                                            generalPartnersAdded.removeLink,
+                                            props.currentUrl | replace(props.pageType, generalPartnerKind + "/" + item.id + "/remove-" + generalPartnerKind + "-person"),
+                                            null,
+                                            "delete-" + partnerType + "-person"
+                                        )
+                                    ]
+                                }
+                            })
+                        %}
+                    {% elif not item.nationality %}
+                        {% set rows = rows.concat({
+                                key: {
+                                    text: generalPartnersAdded.legalEntity,
+                                    classes: "govuk-form-group govuk-form-group--error" if props.errors[(item.name | lower)]
+                                },
+                                value: {
+                                    text: item.name
+                                },
+                                actions: {
+                                    items: [
+                                        CREATE_CHANGE_LINK(
+                                            generalPartnersAdded.changeLink,
+                                            props.currentUrl | replace(props.pageType, generalPartnerKind + "/" + item.id + "/add-" + generalPartnerKind + "-legal-entity"),
+                                            null,
+                                            "change-" + partnerType + "-legal-entity"
+                                        ),
+                                        CREATE_CHANGE_LINK(
+                                            generalPartnersAdded.removeLink,
+                                            props.currentUrl | replace(props.pageType, generalPartnerKind + "/" + item.id + "/remove-" + generalPartnerKind + "-legal-entity"),
+                                            null,
+                                            "delete-" + partnerType + "-legal-entity"
+                                        )
+                                    ]
+                                }
+                            })
+                        %}
+                    {% endif %}
+
+                {% endfor %}
+
+                {{ govukSummaryList({
+                    classes: "govuk-!-margin-bottom-0",
+                    rows: rows
+                }) }}
+            
+            {% else %}
+
+                <p>{{ partnersAdded.emptyList }}</p>
+
+            {% endif %}
+
+        </div>
+    </div>
+
+    </br>
+
+    <div class="govuk-grid-row govuk-!-margin-bottom-5">
+        <div class="govuk-grid-column-full">
+
+            <h2 class="govuk-heading-m govuk-!-margin-bottom-5">{{ limitedPartnersAdded.title }}</h2>
+
+            {% if limitedPartnerList.length  %}
+
+                {% set rows = [] %}
+
+                {% for item in limitedPartnerList %}
+
+                    {% if item.nationality %}
+                        {% set rows = rows.concat({
+                                key: {
+                                    text: limitedPartnersAdded.person,
+                                    classes: "govuk-form-group govuk-form-group--error" if props.errors[(item.name | lower)]
+                                },
+                                value: {
+                                    text: item.name
+                                },
+                                actions: {
+                                    items: [
+                                        CREATE_CHANGE_LINK(
+                                            limitedPartnersAdded.changeLink,
+                                            props.currentUrl | replace(props.pageType, limitedPartnerKind + "/" + item.id + "/add-" + limitedPartnerKind + "-person"),
+                                            null,
+                                            "change-" + partnerType + "-person"
+                                        ),
+                                        CREATE_CHANGE_LINK(
+                                            limitedPartnersAdded.removeLink,
+                                            props.currentUrl | replace(props.pageType, limitedPartnerKind + "/" + item.id + "/remove-" + limitedPartnerKind + "-person"),
+                                            null,
+                                            "delete-" + partnerType + "-person"
+                                        )
+                                    ]
+                                }
+                            })
+                        %}
+                    {% elif not item.nationality %}
+                        {% set rows = rows.concat({
+                                key: {
+                                    text: limitedPartnersAdded.legalEntity,
+                                    classes: "govuk-form-group govuk-form-group--error" if props.errors[(item.name | lower)]
+                                },
+                                value: {
+                                    text: item.name
+                                },
+                                actions: {
+                                    items: [
+                                        CREATE_CHANGE_LINK(
+                                            limitedPartnersAdded.changeLink,
+                                            props.currentUrl | replace(props.pageType, limitedPartnerKind + "/" + item.id + "/add-" + limitedPartnerKind + "-legal-entity"),
+                                            null,
+                                            "change-" + partnerType + "-legal-entity"
+                                        ),
+                                        CREATE_CHANGE_LINK(
+                                            limitedPartnersAdded.removeLink,
+                                            props.currentUrl | replace(props.pageType, limitedPartnerKind + "/" + item.id + "/remove-" + limitedPartnerKind + "-legal-entity"),
+                                            null,
+                                            "delete-" + partnerType + "-legal-entity"
+                                        )
+                                    ]
+                                }
+                            })
+                        %}
+                    {% endif %}
+
+                {% endfor %}
+
+                {{ govukSummaryList({
+                    classes: "govuk-!-margin-bottom-0",
+                    rows: rows
+                }) }}
+            
+            {% else %}
+
+                <p>{{ partnersAdded.emptyList }}</p>
+
+            {% endif %}
+
+        </div>
+    </div>
+
+
   </div>
 {% endblock %}

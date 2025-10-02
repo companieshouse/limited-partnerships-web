@@ -8,6 +8,13 @@ interface ICompanyGateway {
     },
     company_number: string
   ): Promise<Partial<CompanyProfile>>;
+  getCompanyOfficers(
+    opt: {
+      access_token: string;
+      refresh_token: string;
+    },
+    company_number: string
+  ): Promise<any>;
 }
 
 export default ICompanyGateway;

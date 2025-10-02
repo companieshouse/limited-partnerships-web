@@ -8,10 +8,7 @@ import CacheService from "../../../application/service/CacheService";
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import { JOURNEY_TYPE_PARAM } from "../../../config/constants";
 import { getJourneyTypes } from "../../../utils/journey";
-import {
-  GeneralPartner,
-  LimitedPartner,
-} from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { GeneralPartner, LimitedPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { PageRouting } from "../PageRouting";
 import { CONFIRM_REGISTERED_OFFICE_ADDRESS_URL } from "../addressLookUp/url/transition";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
@@ -124,7 +121,7 @@ class LimitedPartnershipController extends AbstractController {
 
         response.render(
           super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { limitedPartnership: result.limitedPartnership.data }, null)
+          super.makeProps(pageRouting, { limitedPartnership: result.limitedPartnership }, null)
         );
       } catch (error) {
         next(error);
@@ -138,36 +135,37 @@ class LimitedPartnershipController extends AbstractController {
         const { ids, pageType, tokens } = super.extract(request);
         const pageRouting = super.getRouting(transitionRouting, pageType, request);
         const journeyTypes = getJourneyTypes(pageRouting.currentUrl);
-        const limitedPartnershipResult = await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId);
-
-        const limitedPartnershipData = limitedPartnershipResult.limitedPartnership.data;
+        const { limitedPartnership } = await this.companyService.buildLimitedPartnershipFromCompanyProfile(
+          tokens,
+          ids.companyId
+        );
 
         const result = await this.limitedPartnershipService.createTransactionAndFirstSubmission(
           tokens,
           pageType,
           journeyTypes,
           {
-            partnership_name: limitedPartnershipData?.partnership_name,
-            partnership_type: limitedPartnershipData?.partnership_type,
-            jurisdiction: limitedPartnershipData?.jurisdiction,
-            partnership_number: limitedPartnershipData?.partnership_number
+            partnership_name: limitedPartnership.data?.partnership_name,
+            partnership_type: limitedPartnership.data?.partnership_type,
+            jurisdiction: limitedPartnership.data?.jurisdiction,
+            partnership_number: limitedPartnership.data?.partnership_number
           },
           {
-            companyName: limitedPartnershipData?.partnership_name ?? "",
-            companyNumber: limitedPartnershipData?.partnership_number ?? ""
+            companyName: limitedPartnership.data?.partnership_name ?? "",
+            companyNumber: limitedPartnership.data?.partnership_number ?? ""
           }
         );
         if (result.errors) {
           response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { limitedPartnership: limitedPartnershipData }, result.errors)
+            super.makeProps(pageRouting, { limitedPartnership }, result.errors)
           );
 
           return;
         }
 
         const newIds = {
-          companyId: limitedPartnershipData?.partnership_number,
+          companyId: limitedPartnership.data?.partnership_number,
           transactionId: result.transactionId,
           submissionId: result.submissionId
         } as Ids;
