@@ -82,7 +82,7 @@ class CompanyService {
     company_number: string
   ) {
     const { companyOfficers, errors: officersErrors } = await this.getCompanyOfficers(opt, company_number);
-    errors?.errors.errorList.push(...(officersErrors?.errors.errorList || []));
+    errors?.errors.errorList.push(...(officersErrors?.errors.errorList ?? []));
 
     const partners = {
       generalPartners:
@@ -102,7 +102,7 @@ class CompanyService {
       let appointment_id = "";
 
       if (officer?.links?.self.includes(company_number)) {
-        appointment_id = officer.links.self.split("/").pop() || "";
+        appointment_id = officer.links.self.split("/").pop() ?? "";
       }
 
       return { ...officer, appointment_id };
@@ -115,7 +115,7 @@ class CompanyService {
   ): Promise<{ companyOfficers: CompanyOfficer[]; errors?: UIErrors }> {
     try {
       const companyOfficers = await this.companyGateway.getCompanyOfficers(opt, company_number);
-      return { companyOfficers: companyOfficers?.items || [] };
+      return { companyOfficers: companyOfficers?.items ?? [] };
     } catch (errors: any) {
       const { isValidationErrors } = extractAPIErrors(errors);
 
