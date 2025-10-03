@@ -42,6 +42,8 @@ class CompanyService {
       };
 
       const roa = companyProfile.registeredOfficeAddress;
+      const ppob = companyProfile.serviceAddress;
+
       limitedPartnership = {
         data: {
           partnership_name: companyProfile.companyName,
@@ -49,15 +51,8 @@ class CompanyService {
           partnership_type: this.calculatePartnershipType(companyProfile),
           jurisdiction: companyProfile.jurisdiction as Jurisdiction,
           term: this.mapPartnershipTerm(companyProfile),
-          registered_office_address: {
-            address_line_1: roa?.addressLineOne ?? "",
-            address_line_2: roa?.addressLineTwo ?? "",
-            premises: roa?.premises ?? "",
-            locality: roa?.locality ?? "",
-            region: roa?.region ?? "",
-            country: roa?.country ?? "",
-            postal_code: roa?.postalCode ?? ""
-          },
+          registered_office_address: this.mapAddress(roa),
+          principal_place_of_business_address: this.mapAddress(ppob),
           ...partners
         }
       };
@@ -152,6 +147,18 @@ class CompanyService {
     const profileTerm = companyProfile?.term ? companyProfile.term.replace(/-/g, "_").toUpperCase() : "";
 
     return Term[profileTerm];
+  }
+
+  private mapAddress(address) {
+    return {
+      address_line_1: address?.addressLineOne ?? "",
+      address_line_2: address?.addressLineTwo ?? "",
+      premises: address?.premises ?? "",
+      locality: address?.locality ?? "",
+      region: address?.region ?? "",
+      country: address?.country ?? "",
+      postal_code: address?.postalCode ?? ""
+    };
   }
 }
 

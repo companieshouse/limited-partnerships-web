@@ -48,6 +48,12 @@ describe("Enter Principal Place Of Business Address Page", () => {
         "newRequirement"
       ]);
       expect(res.text).not.toContain("WELSH -");
+
+      expect(res.text).toContain(companyProfile.data.serviceAddress.premises);
+      expect(res.text).toContain(companyProfile.data.serviceAddress.addressLineOne);
+      expect(res.text).toContain(companyProfile.data.serviceAddress.postalCode);
+      expect(res.text).toContain(companyProfile.data.serviceAddress.locality);
+      expect(res.text).toContain(companyProfile.data.serviceAddress.country);
     });
 
     it("should load the enter principal place of business address page with Welsh text", async () => {
@@ -91,9 +97,7 @@ describe("Enter Principal Place Of Business Address Page", () => {
   });
 
   it("should redirect to the When did the PPOB change page when using ids in url", async () => {
-    const limitedPartnership = new LimitedPartnershipBuilder()
-      .withJurisdiction(Jurisdiction.ENGLAND_AND_WALES)
-      .build();
+    const limitedPartnership = new LimitedPartnershipBuilder().withJurisdiction(Jurisdiction.ENGLAND_AND_WALES).build();
 
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
@@ -178,9 +182,7 @@ describe("Enter Principal Place Of Business Address Page", () => {
   });
 
   it("should return a validation error when jurisdiction of Northern Ireland does not match country", async () => {
-    const limitedPartnership = new LimitedPartnershipBuilder()
-      .withJurisdiction(Jurisdiction.NORTHERN_IRELAND)
-      .build();
+    const limitedPartnership = new LimitedPartnershipBuilder().withJurisdiction(Jurisdiction.NORTHERN_IRELAND).build();
 
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
@@ -199,9 +201,7 @@ describe("Enter Principal Place Of Business Address Page", () => {
   });
 
   it("should return a validation error when jurisdiction of England and Wales does not match country", async () => {
-    const limitedPartnership = new LimitedPartnershipBuilder()
-      .withJurisdiction(Jurisdiction.ENGLAND_AND_WALES)
-      .build();
+    const limitedPartnership = new LimitedPartnershipBuilder().withJurisdiction(Jurisdiction.ENGLAND_AND_WALES).build();
 
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
@@ -220,9 +220,7 @@ describe("Enter Principal Place Of Business Address Page", () => {
   });
 
   it("should return a validation error when postcode format is invalid", async () => {
-    const limitedPartnership = new LimitedPartnershipBuilder()
-      .withJurisdiction(Jurisdiction.ENGLAND_AND_WALES)
-      .build();
+    const limitedPartnership = new LimitedPartnershipBuilder().withJurisdiction(Jurisdiction.ENGLAND_AND_WALES).build();
 
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
@@ -241,9 +239,7 @@ describe("Enter Principal Place Of Business Address Page", () => {
   });
 
   it("should not return validation errors when address fields contain valid but non alpha-numeric characters", async () => {
-    const limitedPartnership = new LimitedPartnershipBuilder()
-      .withJurisdiction(Jurisdiction.ENGLAND_AND_WALES)
-      .build();
+    const limitedPartnership = new LimitedPartnershipBuilder().withJurisdiction(Jurisdiction.ENGLAND_AND_WALES).build();
 
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
@@ -265,9 +261,7 @@ describe("Enter Principal Place Of Business Address Page", () => {
   });
 
   it("should return validation errors when address fields contain invalid characters", async () => {
-    const limitedPartnership = new LimitedPartnershipBuilder()
-      .withJurisdiction(Jurisdiction.ENGLAND_AND_WALES)
-      .build();
+    const limitedPartnership = new LimitedPartnershipBuilder().withJurisdiction(Jurisdiction.ENGLAND_AND_WALES).build();
 
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
@@ -321,9 +315,7 @@ describe("Enter Principal Place Of Business Address Page", () => {
   });
 
   it("should return validation errors when address fields exceed character limit", async () => {
-    const limitedPartnership = new LimitedPartnershipBuilder()
-      .withJurisdiction(Jurisdiction.ENGLAND_AND_WALES)
-      .build();
+    const limitedPartnership = new LimitedPartnershipBuilder().withJurisdiction(Jurisdiction.ENGLAND_AND_WALES).build();
 
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
