@@ -37,5 +37,35 @@ describe("CompanyService", () => {
         postal_code: companyProfile.data.serviceAddress?.postalCode
       });
     });
+
+    it("should return empty addresses", async () => {
+      companyProfile.data.registeredOfficeAddress = null;
+      companyProfile.data.serviceAddress = null;
+
+      const result = await appDevDependencies.companyService.buildLimitedPartnershipFromCompanyProfile(
+        { access_token: "token", refresh_token: "token" },
+        companyProfile.data.companyNumber
+      );
+
+      expect(result.limitedPartnership.data?.registered_office_address).toEqual({
+        address_line_1: "",
+        address_line_2: "",
+        premises: "",
+        locality: "",
+        region: "",
+        country: "",
+        postal_code: ""
+      });
+
+      expect(result.limitedPartnership.data?.principal_place_of_business_address).toEqual({
+        address_line_1: "",
+        address_line_2: "",
+        premises: "",
+        locality: "",
+        region: "",
+        country: "",
+        postal_code: ""
+      });
+    });
   });
 });
