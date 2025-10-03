@@ -38,7 +38,31 @@
         <input type="hidden" name="pageType" value={{ props.pageType }}>
         {% include "includes/csrf_token.njk" %}
         
-        {% include "pages/address/enter-address-common-fields.njk" %}
+        {% if journeyTypes.isPostTransition %}
+          {% include "pages/address/enter-address-fields.njk" %}
+
+          {{ govukInput({
+            errorMessage: props.errors.postal_code if props.errors,
+            label: {
+              text: i18n.address.enterAddress.postcode
+            },
+            classes: "govuk-input--width-10",
+            id: "postal_code",
+            name: "postal_code",
+            value: address.postal_code,
+            attributes : {
+              required : true
+            }
+          }) }}
+
+          {% set countryText = i18n.address.enterAddress.country %}
+          {% set countryFormId = "country" %}
+          {% set countryErrorMessage = props.errors.country if props.errors %}
+         
+          {% include "includes/all-countries.njk" %}
+        {% else %}
+          {% include "pages/address/enter-address-common-fields.njk" %}
+        {% endif %}
       
         {% include "includes/public-register-information.njk" %}
 
