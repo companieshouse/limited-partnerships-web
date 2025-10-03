@@ -1,4 +1,5 @@
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
+import { CompanyOfficers } from "@companieshouse/api-sdk-node/dist/services/company-officers/types";
 import { Resource } from "@companieshouse/api-sdk-node";
 
 import ICompanyGateway from "../../../domain/ICompanyGateway";
@@ -34,7 +35,7 @@ class CompanyGateway implements ICompanyGateway {
     return response?.resource;
   }
 
-  async getCompanyOfficers(opt: Tokens, company_number: string): Promise<any> {
+  async getCompanyOfficers(opt: Tokens, company_number: string): Promise<CompanyOfficers> {
     const apiCall = {
       service: "companyOfficers",
       method: "getCompanyOfficers",

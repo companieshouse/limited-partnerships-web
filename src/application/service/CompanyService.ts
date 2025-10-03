@@ -1,8 +1,6 @@
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import {
-  GeneralPartner,
   Jurisdiction,
-  LimitedPartner,
   LimitedPartnership,
   PartnershipType,
   Term
@@ -12,9 +10,10 @@ import { logger } from "../../utils";
 import ICompanyGateway from "../../domain/ICompanyGateway";
 import UIErrors from "../../domain/entities/UIErrors";
 import { extractAPIErrors } from "./utils";
+import { CompanyOfficer } from "@companieshouse/api-sdk-node/dist/services/company-officers/types";
 
 type DataIncludingPartners = {
-  data: LimitedPartnership["data"] & { partners?: GeneralPartner[]; limitedPartners?: LimitedPartner[] };
+  data: LimitedPartnership["data"] & { partners?: CompanyOfficer[]; limitedPartners?: CompanyOfficer[] };
 };
 
 class CompanyService {
@@ -31,15 +30,7 @@ class CompanyService {
     let limitedPartnership: Partial<LimitedPartnership & DataIncludingPartners> = {};
 
     if (companyProfile.companyName) {
-      const { companyOfficers, errors: officersErrors } = await this.getCompanyOfficers(opt, company_number);
-      errors?.errors.errorList.push(...(officersErrors?.errors.errorList || []));
-
-      const partners = {
-        generalPartners:
-          companyOfficers.filter((officer) => officer.officerRole === "general-partner-in-a-limited-partnership") || [],
-        limitedPartners:
-          companyOfficers.filter((officer) => officer.officerRole === "limited-partner-in-a-limited-partnership") || []
-      };
+      const partners = await this.getPartners(errors, opt, company_number);
 
       const roa = companyProfile.registeredOfficeAddress;
       const ppob = companyProfile.serviceAddress;
@@ -84,10 +75,44 @@ class CompanyService {
     }
   }
 
+  // to be removed - temporary methods - start
+  private async getPartners(
+    errors: UIErrors | undefined,
+    opt: { access_token: string; refresh_token: string },
+    company_number: string
+  ) {
+    const { companyOfficers, errors: officersErrors } = await this.getCompanyOfficers(opt, company_number);
+    errors?.errors.errorList.push(...(officersErrors?.errors.errorList || []));
+
+    const partners = {
+      generalPartners:
+        this.addAppointmentId(companyOfficers, company_number).filter(
+          (officer) => officer.officerRole === "general-partner-in-a-limited-partnership"
+        ) || [],
+      limitedPartners:
+        this.addAppointmentId(companyOfficers, company_number).filter(
+          (officer) => officer.officerRole === "limited-partner-in-a-limited-partnership"
+        ) || []
+    };
+    return partners;
+  }
+
+  private addAppointmentId(companyOfficers: CompanyOfficer[], company_number: string): CompanyOfficer[] {
+    return companyOfficers.map((officer) => {
+      let appointment_id = "";
+
+      if (officer?.links?.self.includes(company_number)) {
+        appointment_id = officer.links.self.split("/").pop() || "";
+      }
+
+      return { ...officer, appointment_id };
+    });
+  }
+
   private async getCompanyOfficers(
     opt: { access_token: string; refresh_token: string },
     company_number: string
-  ): Promise<{ companyOfficers: any[]; errors?: UIErrors }> {
+  ): Promise<{ companyOfficers: CompanyOfficer[]; errors?: UIErrors }> {
     try {
       const companyOfficers = await this.companyGateway.getCompanyOfficers(opt, company_number);
       return { companyOfficers: companyOfficers?.items || [] };
@@ -106,6 +131,7 @@ class CompanyService {
       };
     }
   }
+  // to be removed - temporary methods - end
 
   private calculatePartnershipType(companyProfile: Partial<CompanyProfile>): PartnershipType | undefined {
     const isCompanyInTransition =
