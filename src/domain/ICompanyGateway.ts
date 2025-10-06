@@ -1,3 +1,4 @@
+import { CompanyOfficers } from "@companieshouse/api-sdk-node/dist/services/company-officers/types";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 
 interface ICompanyGateway {
@@ -14,7 +15,7 @@ interface ICompanyGateway {
       refresh_token: string;
     },
     company_number: string
-  ): Promise<any>;
+  ): Promise<CompanyOfficers>;
 }
 
 export default ICompanyGateway;
