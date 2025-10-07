@@ -1,5 +1,7 @@
 {% extends "layout.njk" %}
 
+{% import 'includes/all-countries.njk' as macros %}
+
 {% set principalPlaceOfBusinessKey = "principal_place_of_business_address" %}
 {% if props.data.address %}
   {% set address = props.data.address %}
@@ -55,8 +57,8 @@
           {% set countryText = i18n.address.enterAddress.country %}
           {% set countryFormId = "country" %}
           {% set countryErrorMessage = props.errors.country if props.errors %}
-         
-          {% include "includes/all-countries.njk" %}
+                  
+          {{ macros.getSpecifiedCountryList(i18n, "") }}
         {% else %}
           {% include "pages/address/enter-address-common-fields.njk" %}
         {% endif %}
