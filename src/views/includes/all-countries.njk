@@ -266,11 +266,11 @@
     { value: 'Zimbabwe', text: i18n.countries.zimbabwe, selected: countryField === 'Zimbabwe' }
   ] %}
 
-  {% set list  = COUNTRIES %} 
+  {% set list = COUNTRIES %} 
   {% if subsetType === "UK" %}
-    {% set list  = COUNTRIES.slice(0,5) %} 
+    {% set list = COUNTRIES.slice(0,5) %} 
   {% elseif subsetType === "OVERSEAS" %}
-    {% set list  = COUNTRIES.slice(0,1).concat(COUNTRIES.slice(5)) %} 
+    {% set list = COUNTRIES.slice(0,1).concat(COUNTRIES.slice(5)) %} 
   {% endif %}
 
   {{ govukSelect({
