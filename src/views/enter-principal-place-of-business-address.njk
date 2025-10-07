@@ -1,6 +1,6 @@
 {% extends "layout.njk" %}
 
-{% import 'includes/all-countries.njk' as macros %}
+{% import 'includes/countries.njk' as macros %}
 
 {% set principalPlaceOfBusinessKey = "principal_place_of_business_address" %}
 {% if props.data.address %}
@@ -54,9 +54,12 @@
             value: address.postal_code            
           }) }}
           
+          {% set countryFormId = "principal_place_of_business_country" %}
+          {% set countryText = i18n.address.enterAddress.country %}
+          {% set countryFont = "govuk-input--width-10" %}
           {% set countryErrorMessage = props.errors.country if props.errors %}
                   
-          {{ macros.getSpecifiedCountryList(i18n, "") }}
+          {{ macros.getSpecifiedCountryList(i18n, "", countryFormId, countryText, countryFont, countryErrorMessage) }}
         {% else %}
           {% include "pages/address/enter-address-common-fields.njk" %}
         {% endif %}

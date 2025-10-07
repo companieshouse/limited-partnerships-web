@@ -1,4 +1,5 @@
 {% extends "layout.njk" %}
+{% import 'includes/countries.njk' as macros %}
 
 {% set principalOfficeAddressKey = "principal_office_address" %}
 
@@ -72,12 +73,11 @@
             }) }}
 
             {% set countryFormId = "country" %}
-            {% set countryFormName = "country" %}
             {% set countryText = i18n.address.enterAddress.country %}
             {% set countryFormValue = address.country %}
             {% set countryField = address.country %}
             {% set countryFont = "govuk-!-font-weight-regular"%}
-            {% include "includes/countries.njk" %}
+            {{ macros.getSpecifiedCountryList(i18n, "OVERSEAS", countryFormId, countryText, countryFont, countryFormValue, countryErrorMessage) }}
 
           {% else %}
             {% include "pages/address/enter-address-common-fields.njk" %}

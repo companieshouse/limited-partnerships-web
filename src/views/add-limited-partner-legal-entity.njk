@@ -1,4 +1,5 @@
 {% extends "layout.njk" %}
+{% import 'includes/countries.njk' as macros %}
 
 {% set pageTitle = i18n.addPartnerLegalEntityPage.limitedPartner.title %}
 {% set publicRegisterInformationLine1 = i18n.addPartnerLegalEntityPage.publicRegisterLine1 %}
@@ -107,7 +108,7 @@
         {% set countryFormId = "legal_entity_registration_location" %}
         {% set countryErrorMessage = props.errors.legal_entity_registration_location if props.errors %}
         {% set countryFont = "govuk-label govuk-label--m"%}
-        {% include "includes/countries.njk" %}
+        {{ macros.getSpecifiedCountryList(i18n, "OVERSEAS", countryFormId, countryText, countryFont, "", countryErrorMessage) }}
 
         {{ govukInput({
           label: {
