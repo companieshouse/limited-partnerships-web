@@ -1,4 +1,5 @@
 {% include "pages/address/enter-address-fields.njk" %}
+{% import 'includes/countries.njk' as macros %}
 
 {{ govukInput({
   errorMessage: props.errors.postal_code if props.errors,
@@ -14,42 +15,11 @@
   }
 }) }}
 
-{{ govukSelect({
-  errorMessage: props.errors.country if props.errors,
-  id: "country",
-  name: "country",
-  value: address.country,
-  label: {
-    text: i18n.address.enterAddress.country
-  },
-  fieldset: {
-    legend: {
-      text: "Country",
-      isPageHeading: false,
-      classes: "govuk-!-font-weight-regular"
-    }
-  },
-  attributes : {
-  required: "true"
-  },
-  items: [{
-    value: "",
-    text: i18n.address.enterAddress.countrySelect
-  },
-  {
-    value: "England",
-    text: i18n.address.enterAddress.countryEngland
-  },
-  {
-    value: "Scotland",
-    text: i18n.address.enterAddress.countryScotland
-  },
-  {
-    value: "Wales",
-    text: i18n.address.enterAddress.countryWales
-  },
-  {
-    value: "Northern Ireland",
-    text: i18n.address.enterAddress.countryNorthernIreland
-  }]
-}) }}
+{% set countryFormId = "country" %}
+{% set countryText = i18n.address.enterAddress.country %}
+{% set countryFormValue = address.country %}
+{% set countryField = address.country %}
+{% set countryFont = "govuk-!-font-weight-regular"%}
+{% set countryErrorMessage = props.errors.country if props.error %}
+
+{{ macros.getSpecifiedCountryList(i18n, "UK", countryFormId, countryText, countryFont, countryFormValue, countryErrorMessage) }}

@@ -272,18 +272,20 @@ class AddressService {
     country: string,
     uiErrors: UIErrors | undefined
   ): UIErrors | undefined {
-    const isValid =
-      (jurisdiction === Jurisdiction.SCOTLAND && country === "Scotland") ||
-      (jurisdiction === Jurisdiction.NORTHERN_IRELAND && country === "Northern Ireland") ||
-      (jurisdiction === Jurisdiction.ENGLAND_AND_WALES && (country === "England" || country === "Wales"));
+    if (AddressService.UK_COUNTRIES.has(country) ) {
+      const isValid =
+        (jurisdiction === Jurisdiction.SCOTLAND && country === "Scotland") ||
+        (jurisdiction === Jurisdiction.NORTHERN_IRELAND && country === "Northern Ireland") ||
+        (jurisdiction === Jurisdiction.ENGLAND_AND_WALES && (country === "England" || country === "Wales"));
 
-    if (!isValid) {
-      uiErrors ??= new UIErrors();
+      if (!isValid) {
+        uiErrors ??= new UIErrors();
 
-      this.setFieldError(uiErrors, "country", this.i18n?.address?.enterAddress?.errorMessages?.jurisdictionCountry);
+        this.setFieldError(uiErrors, "country", this.i18n?.address?.enterAddress?.errorMessages?.jurisdictionCountry);
+      }
+
+      return uiErrors;
     }
-
-    return uiErrors;
   }
 }
 

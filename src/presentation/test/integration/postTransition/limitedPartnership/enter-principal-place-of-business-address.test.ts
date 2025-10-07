@@ -18,6 +18,7 @@ import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 describe("Enter Principal Place Of Business Address Page", () => {
   const URL = getUrl(ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL);
   const URL_WITH_IDS = getUrl(ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_WITH_IDS_URL);
+  const REDIRECT_URL = getUrl(WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_URL);
 
   let companyProfile;
 
@@ -108,9 +109,8 @@ describe("Enter Principal Place Of Business Address Page", () => {
         ...limitedPartnership.data?.principal_place_of_business_address
       });
 
-    const redirectUrl = getUrl(WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_URL);
     expect(res.status).toBe(302);
-    expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+    expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
   });
 
   it("should redirect to the error page when error occurs during Post", async () => {
@@ -337,5 +337,28 @@ describe("Enter Principal Place Of Business Address Page", () => {
     expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.addressLine2Length);
     expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.localityLength);
     expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.regionLength);
+  });
+
+  it("should not return a validation error when jurisdiction is overseas", async () => {
+    const limitedPartnership = new LimitedPartnershipBuilder()
+      .withJurisdiction(Jurisdiction.ENGLAND_AND_WALES)
+      .build();
+
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+    const res = await request(app)
+      .post(URL)
+      .send({
+        pageType: PostTransitionPageType.enterPrincipalPlaceOfBusinessAddress,
+        ...limitedPartnership.data?.principal_place_of_business_address,
+        postal_code: "",
+        country: "Afghanistan"
+      });
+
+    expect(res.status).toBe(302);
+    expect(res.text).not.toContain(enTranslationText.address.enterAddress.errorMessages.jurisdictionCountry);
+    expect(res.text).not.toContain(enTranslationText.address.enterAddress.errorMessages.postcodeFormat);
+    expect(res.text).not.toContain(enTranslationText.address.enterAddress.errorMessages.invalidCharacters);
+    expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
   });
 });

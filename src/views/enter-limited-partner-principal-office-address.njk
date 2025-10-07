@@ -1,4 +1,5 @@
 {% extends "layout.njk" %}
+{% import 'includes/countries.njk' as macros %}
 
 {% set principalOfficeAddressKey = "principal_office_address" %}
 
@@ -75,7 +76,7 @@
             {% set countryFormValue = address.country %}
             {% set countryField = address.country %}
             {% set countryFont = "govuk-!-font-weight-regular"%}
-            {% include "includes/countries.njk" %}
+            {{ macros.getSpecifiedCountryList(i18n, "OVERSEAS", countryFormId, countryText, countryFont, countryFormValue, countryErrorMessage) }}
 
           {% else %}
             {% include "pages/address/enter-address-common-fields.njk" %}
