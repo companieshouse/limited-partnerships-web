@@ -53,9 +53,7 @@
             name: "postal_code",
             value: address.postal_code            
           }) }}
-
-          {% set countryText = i18n.address.enterAddress.country %}
-          {% set countryFormId = "country" %}
+          
           {% set countryErrorMessage = props.errors.country if props.errors %}
                   
           {{ macros.getSpecifiedCountryList(i18n, "") }}

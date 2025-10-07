@@ -274,11 +274,11 @@
   {% endif %}
 
   {{ govukSelect({
-    id: countryFormId,
-    name: countryFormId,
+    id: "country",
+    name: "country",
     value: countryFormValue,
     label: {
-      text: countryText,
+      text: i18n.address.enterAddress.country,
       classes: countryFont,
       isPageHeading: false
     },
