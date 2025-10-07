@@ -62,7 +62,7 @@
                 }) }}
             </div>
             <span class="govuk-!-margin-right-2"></span>
-            {% if props.data.limitedPartnership.partnership_type === "LP" or props.data.limitedPartnership.partnership_type === "SLP" %}
+            {% if props.data.limitedPartnership.data.partnership_type === "LP" or props.data.limitedPartnership.data.partnership_type === "SLP" %}
                 <div class="govuk-!-margin-top-6">
                     {{ govukButton({
                         text: "Update Term",
