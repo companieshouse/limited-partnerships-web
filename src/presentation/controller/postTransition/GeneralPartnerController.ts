@@ -139,7 +139,7 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
 
         response.render(
           CEASE_DATE_TEMPLATE,
-          super.makeProps(pageRouting, { limitedPartnership, appointment_id: ids.generalPartnerId }, null)
+          super.makeProps(pageRouting, { limitedPartnership, appointment_id: ids.appointmentId }, null)
         );
       } catch (error) {
         next(error);
