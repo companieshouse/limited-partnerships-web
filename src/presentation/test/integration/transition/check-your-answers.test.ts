@@ -36,13 +36,13 @@ describe("Check Your Answers Page", () => {
 
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-    generalPartnerPerson = new GeneralPartnerBuilder().isPerson().withFormerNames("Joe Dee").withDateEffectiveFrom("2024-10-10").build();
-    generalPartnerLegalEntity = new GeneralPartnerBuilder().isLegalEntity().withDateEffectiveFrom("2024-10-10").build();
+    generalPartnerPerson = new GeneralPartnerBuilder().isPerson().withFormerNames("Joe Dee").build();
+    generalPartnerLegalEntity = new GeneralPartnerBuilder().isLegalEntity().build();
 
     appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartnerPerson, generalPartnerLegalEntity]);
 
-    limitedPartnerPerson = new LimitedPartnerBuilder().isPerson().withFormerNames("Joe Dee").withDateEffectiveFrom("2024-10-10").build();
-    limitedPartnerLegalEntity = new LimitedPartnerBuilder().isLegalEntity().withDateEffectiveFrom("2024-10-10").build();
+    limitedPartnerPerson = new LimitedPartnerBuilder().isPerson().withFormerNames("Joe Dee").build();
+    limitedPartnerLegalEntity = new LimitedPartnerBuilder().isLegalEntity().build();
     appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerPerson, limitedPartnerLegalEntity]);
   });
 
@@ -61,6 +61,7 @@ describe("Check Your Answers Page", () => {
         "confirm",
         "futureLawful",
         "capitalContribution",
+        "dateEffectiveFrom",
         "payment",
         "update"
       ]);
@@ -83,6 +84,7 @@ describe("Check Your Answers Page", () => {
         "confirm",
         "futureLawful",
         "capitalContribution",
+        "dateEffectiveFrom",
         "payment",
         "update"
       ]);
@@ -142,7 +144,7 @@ describe("Check Your Answers Page", () => {
 
       expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.partners.limitedPartners.capitalContribution);
 
-      testTranslations(res.text, enTranslationText.checkYourAnswersPage.partners, ["capitalContribution"]);
+      testTranslations(res.text, enTranslationText.checkYourAnswersPage.partners, ["capitalContribution", "dateEffectiveFrom"]);
 
       checkIfValuesInText(res, generalPartnerPerson, enTranslationText);
 
@@ -160,7 +162,7 @@ describe("Check Your Answers Page", () => {
 
       expect(res.text).not.toContain(cyTranslationText.checkYourAnswersPage.partners.limitedPartners.capitalContribution);
 
-      testTranslations(res.text, cyTranslationText.checkYourAnswersPage.partners, ["capitalContribution"]);
+      testTranslations(res.text, cyTranslationText.checkYourAnswersPage.partners, ["capitalContribution", "dateEffectiveFrom"]);
 
       checkIfValuesInText(res, generalPartnerPerson, cyTranslationText);
 
@@ -199,8 +201,6 @@ const checkIfValuesInText = (res: request.Response, partner: GeneralPartner | Li
           .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
           .join(" ");
         expect(res.text).toContain(capitalized);
-      } else if (key.includes("date_effective_from")) {
-        expect(res.text).toContain(formatDate(partner.data[key], translationText));
       } else {
         expect(res.text).toContain(partner.data[key]);
       }
