@@ -50,7 +50,7 @@ class CompanyInMemoryGateway implements ICompanyGateway {
       throw uiErrors;
     }
 
-    return this.companyOfficers;
+    return { items: this.companyOfficers };
   }
 }
 

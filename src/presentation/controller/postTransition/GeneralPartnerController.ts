@@ -137,10 +137,12 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
           limitedPartnership = lp;
         }
 
-        response.render(
-          CEASE_DATE_TEMPLATE,
-          super.makeProps(pageRouting, { limitedPartnership, appointment_id: ids.appointmentId }, null)
-        );
+        let partner = {};
+        if (request.url.includes("general-partner")) {
+          partner = (limitedPartnership as any).data.generalPartners[0];
+        }
+
+        response.render(CEASE_DATE_TEMPLATE, super.makeProps(pageRouting, { limitedPartnership, partner }, null));
       } catch (error) {
         next(error);
       }

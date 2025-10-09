@@ -25,6 +25,9 @@
       {% include "includes/proposed-name.njk" %}
       <h1 class="govuk-heading-xl" >{{i18n.ceaseDate[props.data.titleKey].title}}</h1>
 
+      {{ props.data.partner.name }}
+      <h2 class="govuk-heading-l" >{{pageTitle}}</h2>
+
       <form class="form" action={{ props.currentUrl }} method="post">
         <input type="hidden" name="pageType" value={{ props.pageType }}> 
         {% include "includes/csrf_token.njk" %}
@@ -33,13 +36,6 @@
           id: "cease_date",
           namePrefix: "cease_date",
           errorMessage: props.errors.cease_date if props.errors,
-          fieldset: {
-            legend: {
-              text: pageTitle,
-              isPageHeading: false,
-              classes: "govuk-fieldset__legend--l"
-            }
-          },
           hint: {
             text: i18n.ceaseDate.dateHint
           },

@@ -9,6 +9,7 @@ import { getUrl, setLocalesEnabled } from "../../../utils";
 
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 import { WHEN_DID_THE_GENERAL_PARTNER_PERSON_CEASE_URL } from "../../../../controller/postTransition/url";
+import CompanyOfficerBuilder from "../../../builder/CompanyOfficerBuilder";
 
 describe("General Partner cease date page", () => {
   const URL = getUrl(WHEN_DID_THE_GENERAL_PARTNER_PERSON_CEASE_URL);
@@ -23,6 +24,11 @@ describe("General Partner cease date page", () => {
 
     companyProfile = new CompanyProfileBuilder().build();
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
+
+    const generalPartner = new CompanyOfficerBuilder()
+      .withOfficerRole("general-partner-in-a-limited-partnership")
+      .build();
+    appDevDependencies.companyGateway.feedCompanyOfficers([generalPartner]);
   });
 
   describe("GET general partner cease date page", () => {
