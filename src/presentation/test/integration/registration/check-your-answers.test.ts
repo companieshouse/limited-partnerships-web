@@ -17,6 +17,8 @@ import RegistrationPageType from "../../../controller/registration/PageType";
 import GeneralPartnerBuilder from "../../builder/GeneralPartnerBuilder";
 import LimitedPartnerBuilder from "../../builder/LimitedPartnerBuilder";
 import { formatDate } from "../../../../utils/date-format";
+import { EMAIL_TEMPLATE, NAME_TEMPLATE, TERM_TEMPLATE, WHERE_IS_THE_JURISDICTION_TEMPLATE, WHICH_TYPE_TEMPLATE } from "../../../../presentation/controller/registration/template";
+import { ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_TEMPLATE, ENTER_REGISTERED_OFFICE_ADDRESS_TEMPLATE } from "../../../../presentation/controller/addressLookUp/template";
 
 describe("Check Your Answers Page", () => {
   const URL = getUrl(CHECK_YOUR_ANSWERS_URL);
@@ -58,7 +60,8 @@ describe("Check Your Answers Page", () => {
   describe("GET Check Your Answers Page", () => {
     it("should GET Check Your Answers Page English text", async () => {
       setLocalesEnabled(true);
-      const res = await request(app).get(URL + "?lang=en");
+      const langEn = "?lang=en";
+      const res = await request(app).get(URL + langEn);
 
       expect(res.status).toBe(200);
       testTranslations(res.text, enTranslationText.checkYourAnswersPage, [
@@ -75,11 +78,21 @@ describe("Check Your Answers Page", () => {
       expect(res.text).toContain(enTranslationText.print.buttonText);
       expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
       expect(res.text).not.toContain("WELSH -");
+
+      //  change links should retain the lang query parameter
+      expect(res.text).toContain(`${NAME_TEMPLATE}${langEn}`);
+      expect(res.text).toContain(`${WHICH_TYPE_TEMPLATE}${langEn}`);
+      expect(res.text).toContain(`${EMAIL_TEMPLATE}${langEn}`);
+      expect(res.text).toContain(`${WHERE_IS_THE_JURISDICTION_TEMPLATE}${langEn}`);
+      expect(res.text).toContain(`${ENTER_REGISTERED_OFFICE_ADDRESS_TEMPLATE}${langEn}`);
+      expect(res.text).toContain(`${ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_TEMPLATE}${langEn}`);
+      expect(res.text).toContain(`${TERM_TEMPLATE}${langEn}`);
     });
 
     it("should GET Check Your Answers Page Welsh text", async () => {
       setLocalesEnabled(true);
-      const res = await request(app).get(URL + "?lang=cy");
+      const langCy = "?lang=cy";
+      const res = await request(app).get(URL + langCy);
 
       expect(res.status).toBe(200);
       testTranslations(res.text, cyTranslationText.checkYourAnswersPage, [
@@ -96,6 +109,15 @@ describe("Check Your Answers Page", () => {
       expect(res.text).toContain(cyTranslationText.print.buttonText);
       expect(res.text).toContain(cyTranslationText.print.buttonTextNoJs);
       expect(res.text).toContain("WELSH -");
+
+      //  change links should retain the lang query parameter
+      expect(res.text).toContain(`${NAME_TEMPLATE}${langCy}`);
+      expect(res.text).toContain(`${WHICH_TYPE_TEMPLATE}${langCy}`);
+      expect(res.text).toContain(`${EMAIL_TEMPLATE}${langCy}`);
+      expect(res.text).toContain(`${WHERE_IS_THE_JURISDICTION_TEMPLATE}${langCy}`);
+      expect(res.text).toContain(`${ENTER_REGISTERED_OFFICE_ADDRESS_TEMPLATE}${langCy}`);
+      expect(res.text).toContain(`${ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_TEMPLATE}${langCy}`);
+      expect(res.text).toContain(`${TERM_TEMPLATE}${langCy}`);
     });
 
     it.each([

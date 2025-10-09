@@ -14,7 +14,7 @@
             items: [
                     CREATE_CHANGE_LINK(
                     i18n.checkYourAnswersPage.change,
-                    (currentUrl | replace(props.pageType, "enter-principal-place-of-business-address")),
+                    (props.currentUrl | replace(props.pageType, "enter-principal-place-of-business-address")),
                     partnership_registered_office_address,
                     "change-partnership-principal-place-of-business-address-button"
                     )
