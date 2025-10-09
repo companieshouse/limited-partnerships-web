@@ -36,7 +36,8 @@ import {
   ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_WITH_IDS_URL,
   WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_URL,
-  PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL
+  PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL,
+  WHEN_DID_THE_GENERAL_PARTNER_PERSON_CEASE_URL
 } from "../presentation/controller/postTransition/url";
 
 const postTransitionEndpoints = (router: Router, dependencies: IDependencies): void => {
@@ -381,6 +382,13 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
     PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL,
     companyAuthentication,
     dependencies.limitedPartnershipPostTransitionController.postCheckYourAnswers()
+  );
+
+  // Remove General Partner
+  router.get(
+    WHEN_DID_THE_GENERAL_PARTNER_PERSON_CEASE_URL,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.getCeaseDate()
   );
 };
 

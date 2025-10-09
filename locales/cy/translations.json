@@ -345,6 +345,21 @@
         "servicesOrGoods" : "WELSH - Services or goods"
      },
 
+    "ceaseDate" : {
+      "dateHint": "WELSH - For example, 27 3 2025",
+      "dateDay" : "WELSH - Day",
+      "dateMonth" : "WELSH - Month",
+      "dateYear" : "WELSH - Year",
+      "publicInformationLine1": "WELSH - We'll show the date on the public register.",
+
+      "removeGeneralPartner" : {
+        "title": "WELSH - Remove a general partner",
+        "person": {
+            "subTitle": "WELSH - When did this person cease to be a general partner?"
+        }
+      }
+    },
+
     "checkYourAnswersPage" : {
         "title" : "WELSH - Check your answers before sending your application",
         "lpInfo" : "WELSH - Limited partnership information",

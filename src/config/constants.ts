@@ -61,6 +61,7 @@ export const SUBMISSION_ID = "submissionId";
 export const GENERAL_PARTNER_ID = "generalPartnerId";
 export const LIMITED_PARTNER_ID = "limitedPartnerId";
 export const JOURNEY_TYPE_PARAM = ":journeyType";
+export const APPOINTMENT_ID = ":appointmentId";
 
 export const YOUR_FILINGS_URL = "/user/transactions";
 
@@ -93,11 +94,14 @@ export const GENERAL_PARTNER_WITH_ID_URL = GENERAL_PARTNER_URL + `/:${GENERAL_PA
 export const LIMITED_PARTNER_URL = `/limited-partner`;
 export const LIMITED_PARTNER_WITH_ID_URL = LIMITED_PARTNER_URL + `/:${LIMITED_PARTNER_ID}`;
 
+export const APPOINTMENT_ID_URL = `/appointment/${APPOINTMENT_ID}`;
+
 export const ACCOUNTS_SIGN_OUT_URL = `${ACCOUNT_URL}/signout`;
 
-// Date of update
+// Date of update - Cease date
 export const DATE_OF_UPDATE_TYPE_PREFIX = "when-did";
 export const DATE_OF_UPDATE_TEMPLATE = "date-of-update";
+export const CEASE_DATE_TEMPLATE = "cease-date";
 
 // Check your answer
 export const CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX = "change-check-your-answers";

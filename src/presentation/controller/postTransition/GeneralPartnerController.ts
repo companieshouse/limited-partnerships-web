@@ -17,7 +17,12 @@ import { IncorporationKind, PartnerKind } from "@companieshouse/api-sdk-node/dis
 import PostTransitionPageType from "../postTransition/pageType";
 import postTransitionRouting from "../postTransition/routing";
 import { CONFIRMATION_POST_TRANSITION_URL } from "../global/url";
-import { JOURNEY_TYPE_PARAM, TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_LEGAL_ENTITY, TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_PERSON } from "../../../config/constants";
+import {
+  CEASE_DATE_TEMPLATE,
+  JOURNEY_TYPE_PARAM,
+  TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_LEGAL_ENTITY,
+  TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_PERSON
+} from "../../../config/constants";
 import { getJourneyTypes } from "../../../utils/journey";
 
 class GeneralPartnerPostTransitionController extends GeneralPartnerController {
@@ -49,7 +54,10 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
         const pageType = super.extractPageTypeOrThrowError(request, PostTransitionPageType);
         const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
 
-        const limitedPartnershipResult = await this.companyService?.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId);
+        const limitedPartnershipResult = await this.companyService?.buildLimitedPartnershipFromCompanyProfile(
+          tokens,
+          ids.companyId
+        );
 
         const isLegalEntity = pageType === PostTransitionPageType.addGeneralPartnerLegalEntity;
 
@@ -62,7 +70,9 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
             companyName: limitedPartnershipData?.partnership_name ?? "",
             companyNumber: limitedPartnershipData?.partnership_number ?? ""
           },
-          isLegalEntity ? TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_LEGAL_ENTITY : TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_PERSON
+          isLegalEntity
+            ? TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_LEGAL_ENTITY
+            : TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_PERSON
         );
 
         const result = await this.generalPartnerService.createGeneralPartner(tokens, resultTransaction.transactionId, {
@@ -108,6 +118,33 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
       confirmGeneralPartnerUsualResidentialAddressUrl: CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
       confirmGeneralPartnerPrincipalOfficeAddressUrl: CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
     });
+  }
+
+  getCeaseDate() {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { ids, pageType, tokens } = super.extract(request);
+        const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
+
+        let limitedPartnership = {};
+
+        if (this.companyService) {
+          const { limitedPartnership: lp } = await this.companyService.buildLimitedPartnershipFromCompanyProfile(
+            tokens,
+            ids.companyId
+          );
+
+          limitedPartnership = lp;
+        }
+
+        response.render(
+          CEASE_DATE_TEMPLATE,
+          super.makeProps(pageRouting, { limitedPartnership, appointment_id: ids.generalPartnerId }, null)
+        );
+      } catch (error) {
+        next(error);
+      }
+    };
   }
 
   postCheckYourAnswers() {
