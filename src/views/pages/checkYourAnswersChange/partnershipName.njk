@@ -16,7 +16,7 @@
             items: [
                     CREATE_CHANGE_LINK(
                     i18n.checkYourAnswersPage.change,
-                    (currentUrl | replace(props.pageType, "name")),
+                    (props.currentUrl | replace(props.pageType, "name")),
                     partnership_name,
                     "change-partnership-name-button"
                     )

@@ -12,6 +12,10 @@ import { CONFIRMATION_POST_TRANSITION_URL } from "../../../../../controller/glob
 import CompanyProfileBuilder from "../../../../builder/CompanyProfileBuilder";
 import PostTransitionPageType from "../../../../../controller/postTransition/pageType";
 import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBuilder";
+import {
+  ENTER_REGISTERED_OFFICE_ADDRESSS_TEMPLATE,
+  WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_TEMPLATE
+} from "../../../../../../presentation/controller/postTransition/template";
 
 describe("Registered office address check your answers page", () => {
   const URL = getUrl(REGISTERED_OFFICE_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL);
@@ -39,6 +43,10 @@ describe("Registered office address check your answers page", () => {
       expect(res.text).toContain(enTranslationText.print.buttonText);
       expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
       expect(res.text).not.toContain("WELSH -");
+
+      //  change links should retain the lang query parameter
+      expect(res.text).toContain(`${ENTER_REGISTERED_OFFICE_ADDRESSS_TEMPLATE}?lang=en`);
+      expect(res.text).toContain(`${WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_TEMPLATE}?lang=en`);
     });
 
     it("should load registered office address check your answers page with welsh text", async () => {
@@ -50,6 +58,10 @@ describe("Registered office address check your answers page", () => {
       expect(res.text).toContain(enTranslationText.print.buttonText);
       expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
       expect(res.text).toContain("WELSH -");
+
+      //  change links should retain the lang query parameter
+      expect(res.text).toContain(`${ENTER_REGISTERED_OFFICE_ADDRESSS_TEMPLATE}?lang=cy`);
+      expect(res.text).toContain(`${WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_TEMPLATE}?lang=cy`);
     });
   });
 
