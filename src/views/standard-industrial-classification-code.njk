@@ -24,7 +24,7 @@
     <h1 class="govuk-heading-xl">{{ i18n.sicCodePage.title }}</h1>
 
     <p class="govuk-hint" id="sic-hint">{{ i18n.sicCodePage.hint }}</p>
-    <p class="govuk-!-margin-bottom-6"><a href="https://resources.companieshouse.gov.uk/sic/" class="govuk-link govuk-link--no-visited-state govuk-body-m" rel="noreferrer noopener" target="_blank">{{ i18n.sicCodePage.find }}</a>.</p>
+    <p class="govuk-!-margin-bottom-6"><a href="{{ i18n.sicCodePage.findUrl }}" class="govuk-link govuk-link--no-visited-state govuk-body-m" rel="noreferrer noopener" target="_blank">{{ i18n.sicCodePage.find }}</a>.</p>
 
     <form class="form" action={{ props.currentUrl }} method="post">
         <input type="hidden" name="pageType" value={{ props.pageType }}>
