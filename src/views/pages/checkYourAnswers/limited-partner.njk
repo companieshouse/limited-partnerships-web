@@ -86,7 +86,7 @@
         value: {
           text: item.data.date_effective_from
         } 
-      } if not journeyTypes.isRegistration                
+      } if journeyTypes.isPostTransition    
     ]
   }) }}
 
@@ -180,7 +180,7 @@
         value: {
           text: item.data.date_effective_from
         } 
-      } if not journeyTypes.isRegistration
+      } if journeyTypes.isPostTransition
     ]
   }) }}
 {% endif %}

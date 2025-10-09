@@ -62,7 +62,7 @@
         value: {
           text: item.data.date_effective_from
         }
-      } if not journeyTypes.isRegistration 
+      } if journeyTypes.isPostTransition 
     ]
   }) }}
 {% elif item.data.legal_entity_name %}
@@ -132,7 +132,7 @@
           value: {
             text: item.data.date_effective_from
           }
-        } if not journeyTypes.isRegistration 
+        } if journeyTypes.isPostTransition 
       ]
     }) }}
  {% endif %}

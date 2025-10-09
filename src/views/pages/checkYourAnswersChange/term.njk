@@ -16,7 +16,7 @@
             items: [
                     CREATE_CHANGE_LINK(
                     i18n.checkYourAnswersPage.change,
-                    (currentUrl | replace(props.pageType, "term")),
+                    (props.currentUrl | replace(props.pageType, "term")),
                     term,
                     "change-term-button"
                     )

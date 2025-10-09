@@ -11,6 +11,7 @@ import { PARTNERSHIP_NAME_CHANGE_CHECK_YOUR_ANSWERS_URL } from "../../../../../c
 import CompanyProfileBuilder from "../../../../builder/CompanyProfileBuilder";
 import PostTransitionPageType from "../../../../../controller/postTransition/pageType";
 import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBuilder";
+import { PARTNERSHIP_NAME_TEMPLATE, WHEN_DID_THE_PARTNERSHIP_NAME_CHANGE_TEMPLATE } from "../../../../../../presentation/controller/postTransition/template";
 
 describe("Partnership name check your answers page", () => {
   const URL = getUrl(PARTNERSHIP_NAME_CHANGE_CHECK_YOUR_ANSWERS_URL);
@@ -39,6 +40,10 @@ describe("Partnership name check your answers page", () => {
       expect(res.text).toContain(enTranslationText.print.buttonText);
       expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
       expect(res.text).not.toContain("WELSH -");
+
+      //  change links should retain the lang query parameter
+      expect(res.text).toContain(`${PARTNERSHIP_NAME_TEMPLATE}?lang=en`);
+      expect(res.text).toContain(`${WHEN_DID_THE_PARTNERSHIP_NAME_CHANGE_TEMPLATE}?lang=en`);
     });
 
     it("should load partnership name check your answers page with welsh text", async () => {
@@ -50,6 +55,10 @@ describe("Partnership name check your answers page", () => {
       expect(res.text).toContain(enTranslationText.print.buttonText);
       expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
       expect(res.text).toContain("WELSH -");
+
+      //  change links should retain the lang query parameter
+      expect(res.text).toContain(`${PARTNERSHIP_NAME_TEMPLATE}?lang=cy`);
+      expect(res.text).toContain(`${WHEN_DID_THE_PARTNERSHIP_NAME_CHANGE_TEMPLATE}?lang=cy`);
     });
   });
 

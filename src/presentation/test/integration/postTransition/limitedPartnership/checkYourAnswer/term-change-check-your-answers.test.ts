@@ -12,6 +12,7 @@ import { TERM_CHANGE_CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/po
 import { CONFIRMATION_POST_TRANSITION_URL } from "../../../../../controller/global/url";
 import PostTransitionPageType from "../../../../../controller/postTransition/pageType";
 import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBuilder";
+import { TERM_TEMPLATE, WHEN_DID_TERM_CHANGE_TEMPLATE } from "../../../../../../presentation/controller/postTransition/template";
 
 describe("Term change check your answers page", () => {
   const URL = getUrl(TERM_CHANGE_CHECK_YOUR_ANSWERS_URL);
@@ -38,6 +39,10 @@ describe("Term change check your answers page", () => {
       expect(res.text).toContain(enTranslationText.print.buttonText);
       expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
       expect(res.text).not.toContain("WELSH -");
+
+      //  change links should retain the lang query parameter
+      expect(res.text).toContain(`${TERM_TEMPLATE}?lang=en`);
+      expect(res.text).toContain(`${WHEN_DID_TERM_CHANGE_TEMPLATE}?lang=en`);
     });
 
     it("should load term change check your answers page with welsh text", async () => {
@@ -50,6 +55,10 @@ describe("Term change check your answers page", () => {
       expect(res.text).toContain(enTranslationText.print.buttonText);
       expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
       expect(res.text).toContain("WELSH -");
+
+      //  change links should retain the lang query parameter
+      expect(res.text).toContain(`${TERM_TEMPLATE}?lang=cy`);
+      expect(res.text).toContain(`${WHEN_DID_TERM_CHANGE_TEMPLATE}?lang=cy`);
     });
   });
 

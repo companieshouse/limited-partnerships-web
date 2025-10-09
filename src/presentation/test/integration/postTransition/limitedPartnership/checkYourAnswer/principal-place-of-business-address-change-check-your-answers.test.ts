@@ -10,7 +10,8 @@ import PostTransitionPageType from "../../../../../../presentation/controller/po
 import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import LimitedPartnershipBuilder from "../../../../../../presentation/test/builder/LimitedPartnershipBuilder";
-import { CONFIRMATION_POST_TRANSITION_URL } from "presentation/controller/global/url";
+import { CONFIRMATION_POST_TRANSITION_URL } from "../../../../../../presentation/controller/global/url";
+import { ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_TEMPLATE, WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_TEMPLATE } from "../../../../../../presentation/controller/postTransition/template";
 
 describe("Principal place of business address check your answers page", () => {
   const URL = getUrl(PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL);
@@ -35,6 +36,10 @@ describe("Principal place of business address check your answers page", () => {
       expect(res.text).toContain(enTranslationText.print.buttonText);
       expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
       expect(res.text).not.toContain("WELSH -");
+
+      //  change links should retain the lang query parameter
+      expect(res.text).toContain(`${ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_TEMPLATE}?lang=en`);
+      expect(res.text).toContain(`${WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_TEMPLATE}?lang=en`);
     });
 
     it("should load principal place of business address check your answers page with welsh text", async () => {
@@ -46,6 +51,10 @@ describe("Principal place of business address check your answers page", () => {
       expect(res.text).toContain(enTranslationText.print.buttonText);
       expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
       expect(res.text).toContain("WELSH -");
+
+      //  change links should retain the lang query parameter
+      expect(res.text).toContain(`${ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_TEMPLATE}?lang=cy`);
+      expect(res.text).toContain(`${WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_TEMPLATE}?lang=cy`);
     });
   });
 
