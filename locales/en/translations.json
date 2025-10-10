@@ -298,8 +298,8 @@
                 "publicRegisterInformationLine1": "We'll show the general partner's principal office address on the public register."
             },
             "generalPartnerUsualResidentialAddress": {
-                "title": "Where is the general partner’s usual residential address?",
-                "publicRegisterInformationLine1": "We will not show this address on the public register, unless it's also used as the general partner’s correspondence address."
+                "title": "Where is the general partner's usual residential address?",
+                "publicRegisterInformationLine1": "We will not show this address on the public register, unless it's also used as the general partner's correspondence address."
             },
             "generalPartnerCorrespondenceAddress": {
                 "title": "Where is the general partner's correspondence address?",
@@ -480,7 +480,7 @@
         "hint": "If you have saved filings, you can continue with one of these or start a new one",
         "yes": {
           "text": "Yes, continue with a saved filing",
-          "hint": "You’ll be able to choose which filing you want to continue with"          
+          "hint": "You'll be able to choose which filing you want to continue with"          
         },
         "no": {
           "text": "No, start a new filing",

@@ -3,7 +3,7 @@ import enTranslationText from "../../../../../../../locales/en/translations.json
 import cyTranslationText from "../../../../../../../locales/cy/translations.json";
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
+import { getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
 import {
   ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
@@ -28,7 +28,9 @@ describe("General Partner Usual Residential Address Territory Choice", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${cyTranslationText.address.territoryChoice.generalPartnerUsualResidentialAddress.title} - ${cyTranslationText.servicePostTransition} - GOV.UK`
+        toEscapedHtml(
+          `${cyTranslationText.address.territoryChoice.generalPartnerUsualResidentialAddress.title} - ${cyTranslationText.servicePostTransition} - GOV.UK`
+        )
       );
 
       testTranslations(res.text, cyTranslationText.address.territoryChoice.generalPartnerUsualResidentialAddress);
@@ -41,7 +43,9 @@ describe("General Partner Usual Residential Address Territory Choice", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${enTranslationText.address.territoryChoice.generalPartnerUsualResidentialAddress.title} - ${enTranslationText.servicePostTransition} - GOV.UK`
+        toEscapedHtml(
+          `${enTranslationText.address.territoryChoice.generalPartnerUsualResidentialAddress.title} - ${enTranslationText.servicePostTransition} - GOV.UK`
+        )
       );
 
       testTranslations(res.text, enTranslationText.address.territories);
