@@ -17,14 +17,7 @@ import { IncorporationKind, PartnerKind } from "@companieshouse/api-sdk-node/dis
 import PostTransitionPageType from "../postTransition/pageType";
 import postTransitionRouting from "../postTransition/routing";
 import { CONFIRMATION_POST_TRANSITION_URL } from "../global/url";
-import {
-  CEASE_DATE_TEMPLATE,
-  JOURNEY_TYPE_PARAM,
-  TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_LEGAL_ENTITY,
-  TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_PERSON,
-  TRANSACTION_DESCRIPTION_REMOVE_GENERAL_PARTNER_LEGAL_ENTITY,
-  TRANSACTION_DESCRIPTION_REMOVE_GENERAL_PARTNER_PERSON
-} from "../../../config/constants";
+import { CEASE_DATE_TEMPLATE, JOURNEY_TYPE_PARAM } from "../../../config/constants";
 import { getJourneyTypes } from "../../../utils/journey";
 
 class GeneralPartnerPostTransitionController extends GeneralPartnerController {
@@ -49,7 +42,17 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
     });
   }
 
-  createGeneralPartner() {
+  createGeneralPartner(data?: {
+    person: {
+      description: string;
+      kind: PartnerKind;
+    };
+    legalEntity: {
+      description: string;
+      kind: PartnerKind;
+    };
+    needAppointment?: boolean;
+  }) {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const { tokens, ids } = super.extract(request);
@@ -72,15 +75,36 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
             companyName: limitedPartnershipData?.partnership_name ?? "",
             companyNumber: limitedPartnershipData?.partnership_number ?? ""
           },
-          isLegalEntity
-            ? TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_LEGAL_ENTITY
-            : TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_PERSON
+          isLegalEntity ? data?.legalEntity.description : data?.person.description
         );
 
-        const result = await this.generalPartnerService.createGeneralPartner(tokens, resultTransaction.transactionId, {
-          ...request.body,
-          kind: isLegalEntity ? PartnerKind.ADD_GENERAL_PARTNER_LEGAL_ENTITY : PartnerKind.ADD_GENERAL_PARTNER_PERSON
-        });
+        let result: any = {};
+
+        if (data?.needAppointment) {
+          const resultAppointment = await this.companyService?.buildPartnerFromCompanyAppointment(
+            tokens,
+            ids.companyId,
+            ids.appointmentId
+          );
+
+          result = await this.generalPartnerService.createGeneralPartner(tokens, resultTransaction.transactionId, {
+            ...request.body,
+
+            forename: resultAppointment?.partner.data?.forename,
+            surname: resultAppointment?.partner.data?.surname,
+            legal_entity_name: resultAppointment?.partner.data?.legal_entity_name,
+            appointment_id: ids.appointmentId,
+
+            kind: isLegalEntity
+              ? PartnerKind.REMOVE_GENERAL_PARTNER_LEGAL_ENTITY
+              : PartnerKind.REMOVE_GENERAL_PARTNER_PERSON
+          });
+        } else {
+          result = await this.generalPartnerService.createGeneralPartner(tokens, resultTransaction.transactionId, {
+            ...request.body,
+            kind: isLegalEntity ? data?.legalEntity.kind : data?.person.kind
+          });
+        }
 
         if (result.errors) {
           super.resetFormerNamesIfPreviousNameIsFalse(request.body);
@@ -151,86 +175,6 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
         }
 
         response.render(CEASE_DATE_TEMPLATE, super.makeProps(pageRouting, { limitedPartnership, partner }, null));
-      } catch (error) {
-        next(error);
-      }
-    };
-  }
-
-  removeGeneralPartner() {
-    return async (request: Request, response: Response, next: NextFunction) => {
-      try {
-        const { tokens, ids } = super.extract(request);
-        const pageType = super.extractPageTypeOrThrowError(request, PostTransitionPageType);
-        const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
-
-        const limitedPartnershipResult = await this.companyService?.buildLimitedPartnershipFromCompanyProfile(
-          tokens,
-          ids.companyId
-        );
-
-        const isLegalEntity = pageType === PostTransitionPageType.addGeneralPartnerLegalEntity;
-
-        const limitedPartnershipData = limitedPartnershipResult?.limitedPartnership?.data;
-
-        const resultTransaction = await this.transactionService.createTransaction(
-          tokens,
-          IncorporationKind.POST_TRANSITION,
-          {
-            companyName: limitedPartnershipData?.partnership_name ?? "",
-            companyNumber: limitedPartnershipData?.partnership_number ?? ""
-          },
-          isLegalEntity
-            ? TRANSACTION_DESCRIPTION_REMOVE_GENERAL_PARTNER_LEGAL_ENTITY
-            : TRANSACTION_DESCRIPTION_REMOVE_GENERAL_PARTNER_PERSON
-        );
-
-        const resultAppointment = await this.companyService?.buildPartnerFromCompanyAppointment(
-          tokens,
-          ids.companyId,
-          ids.appointmentId
-        );
-
-        const result = await this.generalPartnerService.createGeneralPartner(tokens, resultTransaction.transactionId, {
-          ...request.body,
-
-          forename: resultAppointment?.partner.data?.forename,
-          surname: resultAppointment?.partner.data?.surname,
-          legal_entity_name: resultAppointment?.partner.data?.legal_entity_name,
-          appointment_id: ids.appointmentId,
-
-          kind: isLegalEntity
-            ? PartnerKind.REMOVE_GENERAL_PARTNER_LEGAL_ENTITY
-            : PartnerKind.REMOVE_GENERAL_PARTNER_PERSON
-        });
-
-        if (result.errors) {
-          super.resetFormerNamesIfPreviousNameIsFalse(request.body);
-
-          response.render(
-            super.templateName(pageRouting.currentUrl),
-            super.makeProps(
-              pageRouting,
-              {
-                limitedPartnership: limitedPartnershipResult?.limitedPartnership,
-                generalPartner: { data: request.body }
-              },
-              result.errors
-            )
-          );
-
-          return;
-        }
-
-        const newIds = {
-          ...ids,
-          transactionId: resultTransaction.transactionId,
-          generalPartnerId: result.generalPartnerId
-        };
-
-        const url = super.insertIdsInUrl(pageRouting.nextUrl, newIds);
-
-        response.redirect(url);
       } catch (error) {
         next(error);
       }

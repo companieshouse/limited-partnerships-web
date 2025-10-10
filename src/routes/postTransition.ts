@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { PartnershipKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
+import { PartnerKind, PartnershipKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 import { companyAuthentication } from "../middlewares";
 
@@ -39,17 +39,16 @@ import {
   PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL,
   WHEN_DID_THE_GENERAL_PARTNER_PERSON_CEASE_URL
 } from "../presentation/controller/postTransition/url";
+import {
+  TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_LEGAL_ENTITY,
+  TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_PERSON,
+  TRANSACTION_DESCRIPTION_REMOVE_GENERAL_PARTNER_LEGAL_ENTITY,
+  TRANSACTION_DESCRIPTION_REMOVE_GENERAL_PARTNER_PERSON
+} from "../config/constants";
 
 const postTransitionEndpoints = (router: Router, dependencies: IDependencies): void => {
-
-  router.get(
-    COMPANY_NUMBER_URL,
-    dependencies.limitedPartnershipPostTransitionController.getPageRouting()
-  );
-  router.post(
-    COMPANY_NUMBER_URL,
-    dependencies.limitedPartnershipPostTransitionController.checkCompanyNumber()
-  );
+  router.get(COMPANY_NUMBER_URL, dependencies.limitedPartnershipPostTransitionController.getPageRouting());
+  router.post(COMPANY_NUMBER_URL, dependencies.limitedPartnershipPostTransitionController.checkCompanyNumber());
 
   router.get(
     CONFIRM_LIMITED_PARTNERSHIP_URL,
@@ -62,10 +61,7 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
     dependencies.limitedPartnershipPostTransitionController.limitedPartnershipConfirm()
   );
 
-  router.get(
-    LANDING_PAGE_URL,
-    dependencies.limitedPartnershipPostTransitionController.getCompanyPage()
-  );
+  router.get(LANDING_PAGE_URL, dependencies.limitedPartnershipPostTransitionController.getCompanyPage());
 
   router.get(
     GENERAL_PARTNER_CHOICE_URL,
@@ -86,7 +82,16 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
   router.post(
     ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
     companyAuthentication,
-    dependencies.generalPartnerPostTransitionController.createGeneralPartner()
+    dependencies.generalPartnerPostTransitionController.createGeneralPartner({
+      person: {
+        description: TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_PERSON,
+        kind: PartnerKind.ADD_GENERAL_PARTNER_PERSON
+      },
+      legalEntity: {
+        description: TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_LEGAL_ENTITY,
+        kind: PartnerKind.ADD_GENERAL_PARTNER_LEGAL_ENTITY
+      }
+    })
   );
 
   router.get(
@@ -108,7 +113,16 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
   router.post(
     ADD_GENERAL_PARTNER_PERSON_URL,
     companyAuthentication,
-    dependencies.generalPartnerPostTransitionController.createGeneralPartner()
+    dependencies.generalPartnerPostTransitionController.createGeneralPartner({
+      person: {
+        description: TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_PERSON,
+        kind: PartnerKind.ADD_GENERAL_PARTNER_PERSON
+      },
+      legalEntity: {
+        description: TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_LEGAL_ENTITY,
+        kind: PartnerKind.ADD_GENERAL_PARTNER_LEGAL_ENTITY
+      }
+    })
   );
 
   router.get(
@@ -293,11 +307,7 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
     dependencies.limitedPartnershipPostTransitionController.postCheckYourAnswers(true)
   );
 
-  router.get(
-    TERM_URL,
-    companyAuthentication,
-    dependencies.limitedPartnershipPostTransitionController.getTermRouting()
-  );
+  router.get(TERM_URL, companyAuthentication, dependencies.limitedPartnershipPostTransitionController.getTermRouting());
   router.post(
     TERM_URL,
     companyAuthentication,
@@ -393,7 +403,16 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
   router.post(
     WHEN_DID_THE_GENERAL_PARTNER_PERSON_CEASE_URL,
     companyAuthentication,
-    dependencies.generalPartnerPostTransitionController.removeGeneralPartner()
+    dependencies.generalPartnerPostTransitionController.createGeneralPartner({
+      person: {
+        description: TRANSACTION_DESCRIPTION_REMOVE_GENERAL_PARTNER_PERSON,
+        kind: PartnerKind.REMOVE_GENERAL_PARTNER_PERSON
+      },
+      legalEntity: {
+        description: TRANSACTION_DESCRIPTION_REMOVE_GENERAL_PARTNER_LEGAL_ENTITY,
+        kind: PartnerKind.REMOVE_GENERAL_PARTNER_LEGAL_ENTITY
+      }
+    })
   );
 };
 
