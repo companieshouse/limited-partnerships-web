@@ -43,22 +43,22 @@
 {% endblock %}
 
 {% block beforeContent %}
-  {% include "includes/phase_banner.njk" %}
-  <div id="user-banner" style="margin-bottom: 25px; border-bottom: 1px solid #b1b4b6; display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto auto; align-items: end;">
-    <div style="grid-column: 2; grid-row: 1; justify-self: end;">
-      {% include "ch-node-utils/templates/locales-banner.njk" %}
-    </div>
-
-    <div style="grid-column: 1; grid-row: 2; justify-self: start;">
-      {% block backLink %}
-        {% include "includes/back-link.njk" %}
-      {% endblock %}
-    </div>
-    
-    <div style="grid-column: 2; grid-row: 2; justify-self: end;">
-      {% block signOutBanner %}
-        {% include "includes/sign-out-user-banner.njk" %}
-      {% endblock %}
+  <div style="width: 66.66%;">
+    {% include "includes/phase_banner.njk" %}
+    <div id="user-banner" style="margin-bottom: 25px; border-bottom: 1px solid #b1b4b6; display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto auto; align-items: end;">
+      <div style="grid-column: 2; grid-row: 1; justify-self: end;">
+        {% include "ch-node-utils/templates/locales-banner.njk" %}
+      </div>
+      <div style="grid-column: 1; grid-row: 2; justify-self: start;">
+        {% block backLink %}
+          {% include "includes/back-link.njk" %}
+        {% endblock %}
+      </div>
+      <div style="grid-column: 2; grid-row: 2; justify-self: end;">
+        {% block signOutBanner %}
+          {% include "includes/sign-out-user-banner.njk" %}
+        {% endblock %}
+      </div>
     </div>
   </div>
 {% endblock %}
