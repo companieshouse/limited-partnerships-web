@@ -352,12 +352,14 @@
       "dateMonth" : "Month",
       "dateYear" : "Year",
       "publicInformationLine1": "We'll show the date on the public register.",
+      "removeConfirmationChecked": "I confirm that ",
 
       "removeGeneralPartner" : {
         "title": "Remove a general partner",
         "person": {
             "subTitle": "When did this person cease to be a general partner?"
-        }
+        },
+        "removeConfirmationCheckedGenralPartner": " is no longer a general partner"
       }
     },
 

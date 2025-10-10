@@ -9,12 +9,13 @@ import { getUrl, setLocalesEnabled } from "../../../utils";
 
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 import { WHEN_DID_THE_GENERAL_PARTNER_PERSON_CEASE_URL } from "../../../../controller/postTransition/url";
-import CompanyOfficerBuilder from "../../../builder/CompanyOfficerBuilder";
+import CompanyAppointmentBuilder from "../../../builder/CompanyAppointmentBuilder";
 
 describe("General Partner cease date page", () => {
   const URL = getUrl(WHEN_DID_THE_GENERAL_PARTNER_PERSON_CEASE_URL);
 
   let companyProfile;
+  let companyAppointment;
 
   beforeEach(() => {
     setLocalesEnabled(true);
@@ -25,10 +26,10 @@ describe("General Partner cease date page", () => {
     companyProfile = new CompanyProfileBuilder().build();
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
-    const generalPartner = new CompanyOfficerBuilder()
+    companyAppointment = new CompanyAppointmentBuilder()
       .withOfficerRole("general-partner-in-a-limited-partnership")
       .build();
-    appDevDependencies.companyGateway.feedCompanyOfficers([generalPartner]);
+    appDevDependencies.companyGateway.feedCompanyAppointments([companyAppointment]);
   });
 
   describe("GET general partner cease date page", () => {
@@ -40,6 +41,7 @@ describe("General Partner cease date page", () => {
       expect(res.text).not.toContain("WELSH -");
 
       expect(res.text).toContain(companyProfile.data.companyName.toUpperCase());
+      expect(res.text).toContain(companyAppointment.name?.split(",")[0] ?? "");
     });
 
     it("should load general partner cease date page with welsh text", async () => {

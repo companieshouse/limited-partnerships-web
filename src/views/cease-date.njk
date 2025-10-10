@@ -16,6 +16,13 @@
 {% set pageTitle = i18n.ceaseDate[props.data.titleKey].person.subTitle %}
 {% set publicRegisterInformationLine1 = i18n.ceaseDate.publicInformationLine1 %}
 
+{% set name = "" %}
+{% if props.data.partner.data.forename %}
+  {% set name = props.data.partner.data.forename + " " + props.data.partner.data.surname %}
+{% else %}
+  {% set name = props.data.partner.data.legal_entity_name %}
+{% endif %}
+
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -25,7 +32,8 @@
       {% include "includes/proposed-name.njk" %}
       <h1 class="govuk-heading-xl" >{{i18n.ceaseDate[props.data.titleKey].title}}</h1>
 
-      {{ props.data.partner.name }}
+      {{ name }}
+
       <h2 class="govuk-heading-l" >{{pageTitle}}</h2>
 
       <form class="form" action={{ props.currentUrl }} method="post">
@@ -68,6 +76,20 @@
               attributes: {
                 required: true,
                 pattern: "[0-9]*"
+              }
+            }
+          ]
+        }) }}
+
+        {{ govukCheckboxes({
+          id: "removeConfirmationChecked", 
+          name: "remove_confirmation_checked",            
+          items: [
+            {
+              value: "true",
+              text: i18n.ceaseDate.removeConfirmationChecked + name + i18n.ceaseDate[props.data.titleKey].removeConfirmationCheckedGenralPartner,
+              attributes: {
+                required: true
               }
             }
           ]

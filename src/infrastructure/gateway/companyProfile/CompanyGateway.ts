@@ -1,5 +1,5 @@
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
-import { CompanyOfficers } from "@companieshouse/api-sdk-node/dist/services/company-officers/types";
+import { CompanyOfficer, CompanyOfficers } from "@companieshouse/api-sdk-node/dist/services/company-officers/types";
 import { Resource } from "@companieshouse/api-sdk-node";
 
 import ICompanyGateway from "../../../domain/ICompanyGateway";
@@ -49,6 +49,33 @@ class CompanyGateway implements ICompanyGateway {
       uiErrors.formatValidationErrorToUiErrors({
         errors: {
           company_number: `Company officers cannot be found for company number ${company_number}`
+        }
+      });
+
+      throw uiErrors;
+    }
+
+    if (response.httpStatusCode !== 200) {
+      throw response;
+    }
+
+    return response?.resource;
+  }
+
+  async getCompanyAppointment(opt: Tokens, company_number: string, appointment_id: string): Promise<CompanyOfficer> {
+    const apiCall = {
+      service: "companyOfficers",
+      method: "getCompanyAppointment",
+      args: [company_number, appointment_id]
+    };
+
+    const response = await makeApiCallWithRetry<Resource<CompanyOfficer>>(opt, apiCall);
+
+    if (response.httpStatusCode === 404 || !response?.resource) {
+      const uiErrors = new UIErrors();
+      uiErrors.formatValidationErrorToUiErrors({
+        errors: {
+          appointment_id: `Company appointmentcannot be found for appointment ID ${appointment_id}`
         }
       });
 

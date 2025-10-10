@@ -127,6 +127,7 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
         const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
 
         let limitedPartnership = {};
+        let partner = {};
 
         if (this.companyService) {
           const { limitedPartnership: lp } = await this.companyService.buildLimitedPartnershipFromCompanyProfile(
@@ -135,11 +136,16 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
           );
 
           limitedPartnership = lp;
-        }
 
-        let partner = {};
-        if (request.url.includes("general-partner")) {
-          partner = (limitedPartnership as any).data.generalPartners[0];
+          if (ids.appointmentId) {
+            const { partner: pt } = await this.companyService.buildPartnerFromCompanyAppointment(
+              tokens,
+              ids.companyId,
+              ids.appointmentId
+            );
+
+            partner = pt;
+          }
         }
 
         response.render(CEASE_DATE_TEMPLATE, super.makeProps(pageRouting, { limitedPartnership, partner }, null));

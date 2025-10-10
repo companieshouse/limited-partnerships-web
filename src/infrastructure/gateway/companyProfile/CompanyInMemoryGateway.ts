@@ -7,7 +7,7 @@ import { Tokens } from "../../../domain/types";
 
 class CompanyInMemoryGateway implements ICompanyGateway {
   companyProfile: Partial<CompanyProfile>;
-  private companyOfficers: any[] = [];
+  private companyAppointments: any[] = [];
 
   private error = false;
 
@@ -19,8 +19,8 @@ class CompanyInMemoryGateway implements ICompanyGateway {
     this.companyProfile = companyProfile;
   }
 
-  feedCompanyOfficers(officers: any[]): void {
-    this.companyOfficers = officers;
+  feedCompanyAppointments(appointments: any[]): void {
+    this.companyAppointments = appointments;
   }
 
   async getCompanyProfile(opt: Tokens, company_number: string): Promise<Partial<CompanyProfile>> {
@@ -50,7 +50,27 @@ class CompanyInMemoryGateway implements ICompanyGateway {
       throw uiErrors;
     }
 
-    return { items: this.companyOfficers };
+    return { items: this.companyAppointments };
+  }
+
+  async getCompanyAppointment(opt: Tokens, company_number: string, appointment_id: string): Promise<any> {
+    const appointment = this.companyAppointments.find((appointment) => {
+      const appointmentId = appointment.links.self.split("/").pop() ?? "";
+      return appointmentId === appointment_id;
+    });
+
+    if (this.error || company_number !== this.companyProfile.companyNumber || !appointment) {
+      const uiErrors = new UIErrors();
+      uiErrors.formatValidationErrorToUiErrors({
+        errors: {
+          company_number: `Company appointment cannot be found for company number ${company_number}`
+        }
+      });
+
+      throw uiErrors;
+    }
+
+    return appointment;
   }
 }
 

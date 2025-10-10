@@ -1,7 +1,7 @@
 import { Address, CompanyOfficer } from "@companieshouse/api-sdk-node/dist/services/company-officers/types";
 
-class CompanyOfficerBuilder {
-  "Id" = "AP123456";
+class CompanyAppointmentBuilder {
+  id = "AP123456";
   address: Address = {
     premises: "4",
     addressLine1: "duncalf street",
@@ -26,7 +26,7 @@ class CompanyOfficerBuilder {
     self: "/company/LP123456/appointments/AP123456",
     officer: { appointments: "" }
   };
-  name = "Partner Appointment";
+  name = "Partner Appointment, Test";
   nationality = "British";
   occupation = "Solicitor";
   officerRole = "general-partner-in-a-limited-partnership";
@@ -69,4 +69,4 @@ class CompanyOfficerBuilder {
   }
 }
 
-export default CompanyOfficerBuilder;
+export default CompanyAppointmentBuilder;
