@@ -8,11 +8,17 @@ import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled } from "../../../utils";
 
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
-import { WHEN_DID_THE_GENERAL_PARTNER_PERSON_CEASE_URL } from "../../../../controller/postTransition/url";
+import {
+  REMOVE_GENERAL_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL,
+  WHEN_DID_THE_GENERAL_PARTNER_PERSON_CEASE_URL
+} from "../../../../controller/postTransition/url";
 import CompanyAppointmentBuilder from "../../../builder/CompanyAppointmentBuilder";
+import PostTransitionPageType from "../../../../controller/postTransition/pageType";
+import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 describe("General Partner cease date page", () => {
   const URL = getUrl(WHEN_DID_THE_GENERAL_PARTNER_PERSON_CEASE_URL);
+  const REDIRECT = getUrl(REMOVE_GENERAL_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL);
 
   let companyProfile;
   let companyAppointment;
@@ -50,6 +56,32 @@ describe("General Partner cease date page", () => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(`${cyTranslationText.ceaseDate.removeGeneralPartner.title}`);
       expect(res.text).toContain("WELSH -");
+    });
+  });
+
+  describe("Post general partner cease date page", () => {
+    it("should send the general partner person details", async () => {
+      const res = await request(app).post(URL).send({
+        pageType: PostTransitionPageType.whenDidTheGeneralPartnerPersonCease,
+
+        "cease_date-day": "01",
+        "cease_date-month": "01",
+        "cease_date-year": "2025",
+        remove_confirmation_checked: true
+      });
+
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT}`);
+
+      expect(appDevDependencies.transactionGateway.transactions).toHaveLength(1);
+      expect(appDevDependencies.transactionGateway.transactions[0].description).toBe(
+        "Remove a general partner (person)"
+      );
+
+      expect(appDevDependencies.generalPartnerGateway.generalPartners).toHaveLength(1);
+      expect(appDevDependencies.generalPartnerGateway.generalPartners[0].data?.kind).toEqual(
+        PartnerKind.REMOVE_GENERAL_PARTNER_PERSON
+      );
     });
   });
 });

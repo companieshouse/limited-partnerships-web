@@ -48,6 +48,8 @@ export const TRANSACTION_DESCRIPTION_ADD_LIMITED_PARTNER_LEGAL_ENTITY = "Add a l
 export const TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_PERSON = "Add a general partner (person)";
 export const TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_LEGAL_ENTITY = "Add a general partner (legal entity)";
 export const TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNERSHIP = "Update limited partnership details";
+export const TRANSACTION_DESCRIPTION_REMOVE_GENERAL_PARTNER_PERSON = "Remove a general partner (person)";
+export const TRANSACTION_DESCRIPTION_REMOVE_GENERAL_PARTNER_LEGAL_ENTITY = "Remove a general partner (legal entity)";
 
 // Templates
 export const ERROR_TEMPLATE = "error-page";

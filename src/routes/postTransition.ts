@@ -390,6 +390,11 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
     companyAuthentication,
     dependencies.generalPartnerPostTransitionController.getCeaseDate()
   );
+  router.post(
+    WHEN_DID_THE_GENERAL_PARTNER_PERSON_CEASE_URL,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.removeGeneralPartner()
+  );
 };
 
 export default postTransitionEndpoints;

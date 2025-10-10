@@ -87,6 +87,14 @@ class CompanyService {
       if (companyAppointment?.nationality) {
         const name = companyAppointment?.name?.split(", ") ?? [];
         const nationality = companyAppointment?.nationality?.split(",") ?? [];
+        let date_of_birth = "";
+
+        if (companyAppointment?.dateOfBirth?.day) {
+          const day = companyAppointment?.dateOfBirth?.day?.padStart(2, "0") ?? "01";
+          const month = companyAppointment?.dateOfBirth?.month?.padStart(2, "0") ?? "01";
+          const year = companyAppointment?.dateOfBirth?.year ?? "1900";
+          date_of_birth = `${year}-${month}-${day}`;
+        }
 
         partner = {
           data: {
@@ -94,7 +102,8 @@ class CompanyService {
             forename: name[1] ?? "",
             surname: name[0] ?? "",
             nationality1: nationality[0] ?? "",
-            nationality2: nationality[1] ?? undefined
+            nationality2: nationality[1] ?? undefined,
+            date_of_birth
           }
         };
       } else {
