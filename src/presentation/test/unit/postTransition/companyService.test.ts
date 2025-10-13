@@ -86,6 +86,15 @@ describe("CompanyService", () => {
       expect(result.partner.data?.surname).toEqual(appointment.name?.split(", ")[0]);
       expect(result.partner.data?.date_of_birth).toEqual("1980-01-01");
       expect(result.partner.data?.nationality1).toEqual("British");
+      expect((result.partner.data as any)?.service_address).toEqual({
+        address_line_1: appointment.address?.addressLine1,
+        address_line_2: appointment.address?.addressLine2,
+        premises: appointment.address?.premises,
+        locality: appointment.address?.locality,
+        region: appointment.address?.region,
+        country: appointment.address?.country,
+        postal_code: appointment.address?.postalCode
+      });
     });
   });
 });
