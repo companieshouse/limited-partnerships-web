@@ -13,14 +13,15 @@
   {% set cease_date_day = props.data.generalPartner.data["cease_date-day"] %}
 {% endif %}
 
-{% set pageTitle = i18n.ceaseDate[props.data.titleKey].person.subTitle %}
 {% set publicRegisterInformationLine1 = i18n.ceaseDate.publicInformationLine1 %}
 
 {% set name = "" %}
 {% if props.data.partner.data.forename %}
   {% set name = props.data.partner.data.forename + " " + props.data.partner.data.surname %}
+  {% set pageTitle = i18n.ceaseDate[props.data.titleKey].person.subTitle %}
 {% else %}
   {% set name = props.data.partner.data.legal_entity_name %}
+  {% set pageTitle = i18n.ceaseDate[props.data.titleKey].legalEntity.subTitle %}
 {% endif %}
 
 {% block content %}

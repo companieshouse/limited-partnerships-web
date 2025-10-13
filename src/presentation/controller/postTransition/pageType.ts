@@ -32,7 +32,9 @@ enum PostTransitionPageType {
   principalPlaceOfBusinessAddressChangeCheckYourAnswers = `principal-place-of-business-address-${CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX}`,
 
   whenDidTheGeneralPartnerPersonCease = `${DATE_OF_UPDATE_TYPE_PREFIX}-the-general-partner-person-cease`,
-  removeGeneralPartnerPersonCheckYourAnswers = `remove-general-partner-person-check-your-answers`
+  removeGeneralPartnerPersonCheckYourAnswers = `remove-general-partner-person-check-your-answers`,
+  whenDidTheGeneralPartnerLegalEntityCease = `${DATE_OF_UPDATE_TYPE_PREFIX}-the-general-partner-legal-entity-cease`,
+  removeGeneralPartnerLegalEntityCheckYourAnswers = `remove-general-partner-legal-entity-check-your-answers`
 }
 
 export default PostTransitionPageType;

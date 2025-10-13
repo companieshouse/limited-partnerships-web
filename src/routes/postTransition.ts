@@ -37,7 +37,8 @@ import {
   ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_WITH_IDS_URL,
   WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_URL,
   PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL,
-  WHEN_DID_THE_GENERAL_PARTNER_PERSON_CEASE_URL
+  WHEN_DID_THE_GENERAL_PARTNER_PERSON_CEASE_URL,
+  WHEN_DID_THE_GENERAL_PARTNER_LEGAL_ENTITY_CEASE_URL
 } from "../presentation/controller/postTransition/url";
 import {
   TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_LEGAL_ENTITY,
@@ -122,6 +123,27 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
         description: TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_LEGAL_ENTITY,
         kind: PartnerKind.ADD_GENERAL_PARTNER_LEGAL_ENTITY
       }
+    })
+  );
+
+  router.get(
+    WHEN_DID_THE_GENERAL_PARTNER_LEGAL_ENTITY_CEASE_URL,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.getCeaseDate()
+  );
+  router.post(
+    WHEN_DID_THE_GENERAL_PARTNER_LEGAL_ENTITY_CEASE_URL,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.createGeneralPartner({
+      person: {
+        description: TRANSACTION_DESCRIPTION_REMOVE_GENERAL_PARTNER_PERSON,
+        kind: PartnerKind.REMOVE_GENERAL_PARTNER_PERSON
+      },
+      legalEntity: {
+        description: TRANSACTION_DESCRIPTION_REMOVE_GENERAL_PARTNER_LEGAL_ENTITY,
+        kind: PartnerKind.REMOVE_GENERAL_PARTNER_LEGAL_ENTITY
+      },
+      needAppointment: true
     })
   );
 

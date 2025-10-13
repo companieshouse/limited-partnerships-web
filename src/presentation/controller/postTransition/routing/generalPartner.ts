@@ -52,13 +52,24 @@ const postTransitionRoutingRemoveGeneralPartnerPerson = {
   }
 };
 
+const postTransitionRoutingRemoveGeneralPartnerLegalEntity = {
+  previousUrl: url.LANDING_PAGE_URL,
+  currentUrl: url.WHEN_DID_THE_GENERAL_PARTNER_LEGAL_ENTITY_CEASE_URL,
+  nextUrl: url.REMOVE_GENERAL_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_URL,
+  pageType: PostTransitionPageType.whenDidTheGeneralPartnerLegalEntityCease,
+  data: {
+    titleKey: REMOVE_GENERAL_PARTNER_PERSON_KEY
+  }
+};
+
 const generalPartnerRouting = [
   postTransitionRoutingGeneralPartnerChoice,
   postTransitionRoutingAddGeneralPartnerLegalEntity,
   postTransitionRoutingAddGeneralPartnerPerson,
   postTransitionRoutingGeneralPartnerCheckYourAnswers,
 
-  postTransitionRoutingRemoveGeneralPartnerPerson
+  postTransitionRoutingRemoveGeneralPartnerPerson,
+  postTransitionRoutingRemoveGeneralPartnerLegalEntity
 ];
 
 export default generalPartnerRouting;
