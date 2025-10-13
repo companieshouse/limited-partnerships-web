@@ -54,12 +54,13 @@
             value: address.postal_code            
           }) }}
           
-          {% set countryFormId = "principal_place_of_business_country" %}
+          {% set countryFormId = "country" %}
           {% set countryText = i18n.address.enterAddress.country %}
           {% set countryFont = "govuk-input--width-10" %}
           {% set countryErrorMessage = props.errors.country if props.errors %}
+          {% set countryFormValue = address.country %}
                   
-          {{ macros.getSpecifiedCountryList(i18n, "", countryFormId, countryText, countryFont, countryErrorMessage) }}
+          {{ macros.getSpecifiedCountryList(i18n, "", countryFormId, countryText, countryFont, countryFormValue, countryErrorMessage) }}
         {% else %}
           {% include "pages/address/enter-address-common-fields.njk" %}
         {% endif %}
