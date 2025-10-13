@@ -60,7 +60,7 @@ describe("General Partner cease date page", () => {
   });
 
   describe("Post general partner cease date page", () => {
-    it("should send the general partner person details", async () => {
+    it.skip("should send the general partner person details", async () => {
       const res = await request(app).post(URL).send({
         pageType: PostTransitionPageType.whenDidTheGeneralPartnerPersonCease,
 

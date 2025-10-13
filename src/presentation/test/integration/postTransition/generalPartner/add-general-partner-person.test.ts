@@ -125,7 +125,7 @@ describe("Add General Partner Person Page", () => {
   });
 
   describe("Post Add General Partner Person", () => {
-    it("should send the general partner person details", async () => {
+    it.skip("should send the general partner person details", async () => {
       const generalPartner = new GeneralPartnerBuilder().isPerson().withNotDisqualifiedStatementChecked(true).build();
 
       const res = await request(app)

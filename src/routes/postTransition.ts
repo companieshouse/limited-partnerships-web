@@ -127,27 +127,6 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
   );
 
   router.get(
-    WHEN_DID_THE_GENERAL_PARTNER_LEGAL_ENTITY_CEASE_URL,
-    companyAuthentication,
-    dependencies.generalPartnerPostTransitionController.getCeaseDate()
-  );
-  router.post(
-    WHEN_DID_THE_GENERAL_PARTNER_LEGAL_ENTITY_CEASE_URL,
-    companyAuthentication,
-    dependencies.generalPartnerPostTransitionController.createGeneralPartner({
-      person: {
-        description: TRANSACTION_DESCRIPTION_REMOVE_GENERAL_PARTNER_PERSON,
-        kind: PartnerKind.REMOVE_GENERAL_PARTNER_PERSON
-      },
-      legalEntity: {
-        description: TRANSACTION_DESCRIPTION_REMOVE_GENERAL_PARTNER_LEGAL_ENTITY,
-        kind: PartnerKind.REMOVE_GENERAL_PARTNER_LEGAL_ENTITY
-      },
-      needAppointment: true
-    })
-  );
-
-  router.get(
     ADD_GENERAL_PARTNER_PERSON_WITH_IDS_URL,
     companyAuthentication,
     dependencies.generalPartnerPostTransitionController.getPageRouting()
@@ -424,6 +403,27 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
   );
   router.post(
     WHEN_DID_THE_GENERAL_PARTNER_PERSON_CEASE_URL,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.createGeneralPartner({
+      person: {
+        description: TRANSACTION_DESCRIPTION_REMOVE_GENERAL_PARTNER_PERSON,
+        kind: PartnerKind.REMOVE_GENERAL_PARTNER_PERSON
+      },
+      legalEntity: {
+        description: TRANSACTION_DESCRIPTION_REMOVE_GENERAL_PARTNER_LEGAL_ENTITY,
+        kind: PartnerKind.REMOVE_GENERAL_PARTNER_LEGAL_ENTITY
+      },
+      needAppointment: true
+    })
+  );
+
+  router.get(
+    WHEN_DID_THE_GENERAL_PARTNER_LEGAL_ENTITY_CEASE_URL,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.getCeaseDate()
+  );
+  router.post(
+    WHEN_DID_THE_GENERAL_PARTNER_LEGAL_ENTITY_CEASE_URL,
     companyAuthentication,
     dependencies.generalPartnerPostTransitionController.createGeneralPartner({
       person: {
