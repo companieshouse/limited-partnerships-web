@@ -16,7 +16,7 @@ class CompanyAppointmentBuilder {
   appointedOn = "2023-12-29";
   countryOfResidence = "England";
   dateOfBirth = {
-    dayy: "01",
+    day: "01",
     month: "01",
     year: "1980"
   };
