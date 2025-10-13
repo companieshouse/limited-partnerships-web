@@ -17,7 +17,7 @@ import { IncorporationKind, PartnerKind } from "@companieshouse/api-sdk-node/dis
 import PostTransitionPageType from "../postTransition/pageType";
 import postTransitionRouting from "../postTransition/routing";
 import { CONFIRMATION_POST_TRANSITION_URL } from "../global/url";
-import { JOURNEY_TYPE_PARAM, TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_LEGAL_ENTITY, TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_PERSON } from "../../../config/constants";
+import { CEASE_DATE_TEMPLATE, JOURNEY_TYPE_PARAM } from "../../../config/constants";
 import { getJourneyTypes } from "../../../utils/journey";
 
 class GeneralPartnerPostTransitionController extends GeneralPartnerController {
@@ -42,14 +42,27 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
     });
   }
 
-  createGeneralPartner() {
+  createGeneralPartner(data?: {
+    person: {
+      description: string;
+      kind: PartnerKind;
+    };
+    legalEntity: {
+      description: string;
+      kind: PartnerKind;
+    };
+    needAppointment?: boolean;
+  }) {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const { tokens, ids } = super.extract(request);
         const pageType = super.extractPageTypeOrThrowError(request, PostTransitionPageType);
         const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
 
-        const limitedPartnershipResult = await this.companyService?.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId);
+        const limitedPartnershipResult = await this.companyService?.buildLimitedPartnershipFromCompanyProfile(
+          tokens,
+          ids.companyId
+        );
 
         const isLegalEntity = pageType === PostTransitionPageType.addGeneralPartnerLegalEntity;
 
@@ -62,13 +75,36 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
             companyName: limitedPartnershipData?.partnership_name ?? "",
             companyNumber: limitedPartnershipData?.partnership_number ?? ""
           },
-          isLegalEntity ? TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_LEGAL_ENTITY : TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_PERSON
+          isLegalEntity ? data?.legalEntity.description : data?.person.description
         );
 
-        const result = await this.generalPartnerService.createGeneralPartner(tokens, resultTransaction.transactionId, {
-          ...request.body,
-          kind: isLegalEntity ? PartnerKind.ADD_GENERAL_PARTNER_LEGAL_ENTITY : PartnerKind.ADD_GENERAL_PARTNER_PERSON
-        });
+        let result: any = {};
+
+        if (data?.needAppointment) {
+          const resultAppointment = await this.companyService?.buildPartnerFromCompanyAppointment(
+            tokens,
+            ids.companyId,
+            ids.appointmentId
+          );
+
+          result = await this.generalPartnerService.createGeneralPartner(tokens, resultTransaction.transactionId, {
+            ...request.body,
+
+            forename: resultAppointment?.partner.data?.forename,
+            surname: resultAppointment?.partner.data?.surname,
+            legal_entity_name: resultAppointment?.partner.data?.legal_entity_name,
+            appointment_id: ids.appointmentId,
+
+            kind: isLegalEntity
+              ? PartnerKind.REMOVE_GENERAL_PARTNER_LEGAL_ENTITY
+              : PartnerKind.REMOVE_GENERAL_PARTNER_PERSON
+          });
+        } else {
+          result = await this.generalPartnerService.createGeneralPartner(tokens, resultTransaction.transactionId, {
+            ...request.body,
+            kind: isLegalEntity ? data?.legalEntity.kind : data?.person.kind
+          });
+        }
 
         if (result.errors) {
           super.resetFormerNamesIfPreviousNameIsFalse(request.body);
@@ -108,6 +144,41 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
       confirmGeneralPartnerUsualResidentialAddressUrl: CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
       confirmGeneralPartnerPrincipalOfficeAddressUrl: CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
     });
+  }
+
+  getCeaseDate() {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { ids, pageType, tokens } = super.extract(request);
+        const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
+
+        let limitedPartnership = {};
+        let partner = {};
+
+        if (this.companyService) {
+          const { limitedPartnership: lp } = await this.companyService.buildLimitedPartnershipFromCompanyProfile(
+            tokens,
+            ids.companyId
+          );
+
+          limitedPartnership = lp;
+
+          if (ids.appointmentId) {
+            const { partner: pt } = await this.companyService.buildPartnerFromCompanyAppointment(
+              tokens,
+              ids.companyId,
+              ids.appointmentId
+            );
+
+            partner = pt;
+          }
+        }
+
+        response.render(CEASE_DATE_TEMPLATE, super.makeProps(pageRouting, { limitedPartnership, partner }, null));
+      } catch (error) {
+        next(error);
+      }
+    };
   }
 
   postCheckYourAnswers() {

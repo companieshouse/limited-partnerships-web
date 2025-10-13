@@ -11,7 +11,8 @@ import {
   validateAndFormatPartnerPersonDateOfBirth,
   removeEmptyStringValues,
   validateAndFormatPartnerDateEffectiveFrom,
-  resetFormerNamesIfPreviousNameIsFalse
+  resetFormerNamesIfPreviousNameIsFalse,
+  validateAndFormatPartnerCeaseDate
 } from "../utils";
 
 class GeneralPartnerGateway implements IGeneralPartnerGateway {
@@ -23,6 +24,7 @@ class GeneralPartnerGateway implements IGeneralPartnerGateway {
     validateAndFormatPartnerPersonDateOfBirth(data);
     validateAndFormatPartnerDateEffectiveFrom(data);
     resetFormerNamesIfPreviousNameIsFalse(data);
+    validateAndFormatPartnerCeaseDate(data);
 
     const generalPartner: GeneralPartner = { data: removeEmptyStringValues(data) };
 
@@ -92,6 +94,7 @@ class GeneralPartnerGateway implements IGeneralPartnerGateway {
     validateAndFormatPartnerPersonDateOfBirth(data);
     validateAndFormatPartnerDateEffectiveFrom(data);
     resetFormerNamesIfPreviousNameIsFalse(data);
+    validateAndFormatPartnerCeaseDate(data);
 
     const apiCall = {
       service: SDK_LIMITED_PARTNERSHIP_SERVICE,

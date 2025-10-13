@@ -11,6 +11,7 @@ import GeneralPartnerBuilder from "../../builder/GeneralPartnerBuilder";
 import LimitedPartnerBuilder from "../../builder/LimitedPartnerBuilder";
 import { PaymentService } from "@companieshouse/api-sdk-node/dist/services/payment";
 import CompanyProfileBuilder from "../../builder/CompanyProfileBuilder";
+import CompanyAppointmentBuilder from "../../builder/CompanyAppointmentBuilder";
 
 // Transaction service
 export const postTransaction = jest.fn().mockImplementation(() => ({
@@ -132,6 +133,12 @@ export const getCompanyProfile = jest.fn().mockImplementation(() => ({
   resource: new CompanyProfileBuilder().build().data
 }));
 
+// Company Officers service
+export const getCompanyAppointment = jest.fn().mockImplementation(() => ({
+  httpStatusCode: 200,
+  resource: new CompanyAppointmentBuilder().build()
+}));
+
 export const getCompanyOfficers = jest.fn().mockImplementation(() => ({
   httpStatusCode: 200,
   resource: [new GeneralPartnerBuilder().isPerson().build(), new LimitedPartnerBuilder().isLegalEntity().build()]
@@ -209,7 +216,8 @@ const sdkMock = {
   },
   companyOfficers: {
     ...CompanyOfficersService.prototype,
-    getCompanyOfficers
+    getCompanyOfficers,
+    getCompanyAppointment
   },
   payment: {
     ...PaymentService.prototype,

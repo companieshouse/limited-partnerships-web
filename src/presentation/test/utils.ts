@@ -19,13 +19,15 @@ export const getUrl = (url: string) => {
   const limitedPartnerId = url.includes(config.LIMITED_PARTNER_ID)
     ? appDevDependencies.limitedPartnerGateway.limitedPartnerId
     : "";
+  const appointmentId = url.includes(config.APPOINTMENT_ID) ? "AP123456" : "";
 
   const ids = {
     companyId,
     transactionId: appDevDependencies.transactionGateway.transactionId,
     submissionId,
     generalPartnerId,
-    limitedPartnerId
+    limitedPartnerId,
+    appointmentId
   };
   return appDevDependencies.addressLookUpController.insertIdsInUrl(url, ids);
 };

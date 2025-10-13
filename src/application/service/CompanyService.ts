@@ -1,6 +1,8 @@
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 import {
+  GeneralPartner,
   Jurisdiction,
+  LimitedPartner,
   LimitedPartnership,
   PartnershipType,
   Term
@@ -11,6 +13,7 @@ import ICompanyGateway from "../../domain/ICompanyGateway";
 import UIErrors from "../../domain/entities/UIErrors";
 import { extractAPIErrors } from "./utils";
 import { CompanyOfficer } from "@companieshouse/api-sdk-node/dist/services/company-officers/types";
+import { Tokens } from "../../domain/types";
 
 type DataIncludingPartners = {
   data: LimitedPartnership["data"] & { partners?: CompanyOfficer[]; limitedPartners?: CompanyOfficer[] };
@@ -20,7 +23,7 @@ class CompanyService {
   constructor(private readonly companyGateway: ICompanyGateway) {}
 
   public async buildLimitedPartnershipFromCompanyProfile(
-    opt: { access_token: string; refresh_token: string },
+    opt: Tokens,
     company_number: string
   ): Promise<{
     limitedPartnership: Partial<LimitedPartnership & DataIncludingPartners>;
@@ -52,8 +55,87 @@ class CompanyService {
     return { limitedPartnership, errors };
   }
 
+  public async buildPartnerFromCompanyAppointment(
+    opt: Tokens,
+    company_number: string,
+    appointment_id: string
+  ): Promise<{ partner: GeneralPartner | LimitedPartner; errors?: UIErrors }> {
+    try {
+      const companyAppointment: Partial<CompanyOfficer> = await this.companyGateway.getCompanyAppointment(
+        opt,
+        company_number,
+        appointment_id
+      );
+
+      let partner: GeneralPartner | LimitedPartner = {};
+
+      partner = {
+        data: {
+          appointment_id: appointment_id,
+          service_address: {
+            address_line_1: companyAppointment?.address?.addressLine1,
+            address_line_2: companyAppointment?.address?.addressLine2,
+            premises: companyAppointment?.address?.premises,
+            locality: companyAppointment?.address?.locality,
+            region: companyAppointment?.address?.region,
+            country: companyAppointment?.address?.country,
+            postal_code: companyAppointment?.address?.postalCode
+          }
+        }
+      } as GeneralPartner;
+
+      if (companyAppointment?.nationality) {
+        const name = companyAppointment?.name?.split(", ") ?? [];
+        const nationality = companyAppointment?.nationality?.split(",") ?? [];
+        let date_of_birth = "";
+
+        if (companyAppointment?.dateOfBirth?.day) {
+          const day = companyAppointment?.dateOfBirth?.day?.padStart(2, "0") ?? "01";
+          const month = companyAppointment?.dateOfBirth?.month?.padStart(2, "0") ?? "01";
+          const year = companyAppointment?.dateOfBirth?.year ?? "1900";
+          date_of_birth = `${year}-${month}-${day}`;
+        }
+
+        partner = {
+          data: {
+            ...partner.data,
+            forename: name[1] ?? "",
+            surname: name[0] ?? "",
+            nationality1: nationality[0] ?? "",
+            nationality2: nationality[1] ?? undefined,
+            date_of_birth
+          }
+        };
+      } else {
+        const name = companyAppointment?.name?.split(", ") ?? [];
+
+        partner = {
+          data: {
+            ...partner.data,
+            legal_entity_name: name[0] ?? ""
+          }
+        };
+      }
+
+      return { partner };
+    } catch (errors: any) {
+      const { isValidationErrors } = extractAPIErrors(errors);
+
+      logger.error(`Error retrieving Company appointment: ${appointment_id} ${JSON.stringify(errors)}`);
+
+      if (!isValidationErrors) {
+        throw errors;
+      }
+
+      return {
+        partner: {},
+        errors
+      };
+    }
+  }
+
   private async getCompanyProfile(
-    opt: { access_token: string; refresh_token: string },
+    opt: Tokens,
     company_number: string
   ): Promise<{ companyProfile: Partial<CompanyProfile>; errors?: UIErrors }> {
     try {
@@ -76,11 +158,7 @@ class CompanyService {
   }
 
   // to be removed - temporary methods - start
-  private async getPartners(
-    errors: UIErrors | undefined,
-    opt: { access_token: string; refresh_token: string },
-    company_number: string
-  ) {
+  private async getPartners(errors: UIErrors | undefined, opt: Tokens, company_number: string) {
     const { companyOfficers, errors: officersErrors } = await this.getCompanyOfficers(opt, company_number);
     errors?.errors.errorList.push(...(officersErrors?.errors.errorList ?? []));
 
@@ -110,7 +188,7 @@ class CompanyService {
   }
 
   private async getCompanyOfficers(
-    opt: { access_token: string; refresh_token: string },
+    opt: Tokens,
     company_number: string
   ): Promise<{ companyOfficers: CompanyOfficer[]; errors?: UIErrors }> {
     try {
