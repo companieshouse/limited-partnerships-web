@@ -411,7 +411,8 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
       legalEntity: {
         description: TRANSACTION_DESCRIPTION_REMOVE_GENERAL_PARTNER_LEGAL_ENTITY,
         kind: PartnerKind.REMOVE_GENERAL_PARTNER_LEGAL_ENTITY
-      }
+      },
+      needAppointment: true
     })
   );
 };
