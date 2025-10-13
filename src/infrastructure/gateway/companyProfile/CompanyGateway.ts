@@ -75,7 +75,7 @@ class CompanyGateway implements ICompanyGateway {
       const uiErrors = new UIErrors();
       uiErrors.formatValidationErrorToUiErrors({
         errors: {
-          appointment_id: `Company appointmentcannot be found for appointment ID ${appointment_id}`
+          appointment_id: `Company appointment cannot be found for appointment ID ${appointment_id}`
         }
       });
 
