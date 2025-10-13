@@ -71,7 +71,7 @@ describe("CompanyService", () => {
   });
 
   describe("Company appointment", () => {
-    it("should map the company appointment to the partner", async () => {
+    it("should map the company appointment to General partner", async () => {
       const appointment = new CompanyAppointmentBuilder().build();
       appDevDependencies.companyGateway.feedCompanyAppointments([appointment]);
 
@@ -86,6 +86,31 @@ describe("CompanyService", () => {
       expect(result.partner.data?.surname).toEqual(appointment.name?.split(", ")[0]);
       expect(result.partner.data?.date_of_birth).toEqual("1980-01-01");
       expect(result.partner.data?.nationality1).toEqual("British");
+      expect((result.partner.data as any)?.service_address).toEqual({
+        address_line_1: appointment.address?.addressLine1,
+        address_line_2: appointment.address?.addressLine2,
+        premises: appointment.address?.premises,
+        locality: appointment.address?.locality,
+        region: appointment.address?.region,
+        country: appointment.address?.country,
+        postal_code: appointment.address?.postalCode
+      });
+    });
+
+    it("should map the company appointment to Limited partner", async () => {
+      const appointment = new CompanyAppointmentBuilder().build();
+      appointment.dateOfBirth = undefined;
+      appointment.nationality = undefined;
+      appDevDependencies.companyGateway.feedCompanyAppointments([appointment]);
+
+      const result = await appDevDependencies.companyService.buildPartnerFromCompanyAppointment(
+        { access_token: "token", refresh_token: "token" },
+        companyProfile.data.companyNumber,
+        "AP123456"
+      );
+
+      expect(result.partner.data?.appointment_id).toEqual("AP123456");
+      expect(result.partner.data?.legal_entity_name).toEqual(appointment.name?.split(", ")[0]);
       expect((result.partner.data as any)?.service_address).toEqual({
         address_line_1: appointment.address?.addressLine1,
         address_line_2: appointment.address?.addressLine2,

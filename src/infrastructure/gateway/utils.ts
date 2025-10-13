@@ -88,7 +88,7 @@ export const removeEmptyStringValues = (data: Record<string, any>, exclude: stri
 };
 
 export const validateAndFormatPartnerPersonDateOfBirth = (data: Record<string, any>) => {
-  if (data["forename"] && data["date_of_birth"]) {
+  if (data["forename"] && data["date_of_birth-day"]) {
     // Only do this if Limited Partner Person data is being sent to the API
     data["date_of_birth"] = convertValidDateToIsoDateString(
       {
