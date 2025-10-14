@@ -40,7 +40,7 @@ const postTransitionRoutingGeneralPartnerCheckYourAnswers = {
   }
 };
 
-const REMOVE_GENERAL_PARTNER_PERSON_KEY = "removeGeneralPartner";
+const REMOVE_GENERAL_PARTNER_KEY = "removeGeneralPartner";
 
 const postTransitionRoutingRemoveGeneralPartnerPerson = {
   previousUrl: url.LANDING_PAGE_URL,
@@ -48,7 +48,7 @@ const postTransitionRoutingRemoveGeneralPartnerPerson = {
   nextUrl: url.REMOVE_GENERAL_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL,
   pageType: PostTransitionPageType.whenDidTheGeneralPartnerPersonCease,
   data: {
-    titleKey: REMOVE_GENERAL_PARTNER_PERSON_KEY
+    titleKey: REMOVE_GENERAL_PARTNER_KEY
   }
 };
 
@@ -58,7 +58,17 @@ const postTransitionRoutingRemoveGeneralPartnerPersonCheckYourAnswers = {
   nextUrl: "/",
   pageType: PostTransitionPageType.removeGeneralPartnerPersonCheckYourAnswers,
   data: {
-    pageKey: REMOVE_GENERAL_PARTNER_PERSON_KEY
+    pageKey: REMOVE_GENERAL_PARTNER_KEY
+  }
+};
+
+const postTransitionRoutingRemoveGeneralPartnerLegalEntity = {
+  previousUrl: url.LANDING_PAGE_URL,
+  currentUrl: url.WHEN_DID_THE_GENERAL_PARTNER_LEGAL_ENTITY_CEASE_URL,
+  nextUrl: url.REMOVE_GENERAL_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_URL,
+  pageType: PostTransitionPageType.whenDidTheGeneralPartnerLegalEntityCease,
+  data: {
+    titleKey: REMOVE_GENERAL_PARTNER_KEY
   }
 };
 
@@ -69,7 +79,9 @@ const generalPartnerRouting = [
   postTransitionRoutingGeneralPartnerCheckYourAnswers,
 
   postTransitionRoutingRemoveGeneralPartnerPerson,
-  postTransitionRoutingRemoveGeneralPartnerPersonCheckYourAnswers
+  postTransitionRoutingRemoveGeneralPartnerPersonCheckYourAnswers,
+
+  postTransitionRoutingRemoveGeneralPartnerLegalEntity
 ];
 
 export default generalPartnerRouting;

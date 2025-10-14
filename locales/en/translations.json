@@ -359,6 +359,9 @@
         "person": {
             "subTitle": "When did this person cease to be a general partner?"
         },
+        "legalEntity": {
+            "subTitle": "When did this entity cease to be a general partner?"            
+        },
         "removeConfirmationCheckedGeneralPartner": " is no longer a general partner"
       }
     },

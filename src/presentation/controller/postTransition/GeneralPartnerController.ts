@@ -65,7 +65,9 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
           ids.companyId
         );
 
-        const isLegalEntity = pageType === PostTransitionPageType.addGeneralPartnerLegalEntity;
+        const isLegalEntity =
+          pageType === PostTransitionPageType.addGeneralPartnerLegalEntity ||
+          pageType === PostTransitionPageType.whenDidTheGeneralPartnerLegalEntityCease;
 
         const limitedPartnershipData = limitedPartnershipResult?.limitedPartnership?.data;
 
