@@ -110,9 +110,9 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
 
         if (result.errors) {
           super.resetFormerNamesIfPreviousNameIsFalse(request.body);
-
+          const url = pageRouting.currentUrl.endsWith("cease") ? CEASE_DATE_TEMPLATE : pageRouting.currentUrl;
           response.render(
-            super.templateName(pageRouting.currentUrl),
+            super.templateName(url),
             super.makeProps(
               pageRouting,
               {

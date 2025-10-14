@@ -83,5 +83,20 @@ describe("General Partner cease date page", () => {
         PartnerKind.REMOVE_GENERAL_PARTNER_LEGAL_ENTITY
       );
     });
+
+    it("should replay entered data when invalid cease date is entered and a validation error occurs", async () => {
+      const errorMessage = "The date is not valid";
+
+      const res = await request(app).post(URL).send({
+        pageType: PostTransitionPageType.whenDidTheGeneralPartnerLegalEntityCease,
+        "cease_date-day": "41",
+        "cease_date-month": "01",
+        "cease_date-year": "2025",
+        remove_confirmation_checked: true
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(errorMessage);
+    });
   });
 });
