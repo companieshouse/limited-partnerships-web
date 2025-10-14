@@ -396,7 +396,8 @@
             "generalPartners" : {
                 "title": "WELSH - General partners",
                 "dateEffectiveFrom": "WELSH - Date they became a general partner",
-                "changeRemoveOrAdd": "WELSH - Change, remove or add general partners"
+                "changeRemoveOrAdd": "WELSH - Change, remove or add general partners",
+                "ceaseDate": "WELSH - Date they ceased to be a general partner"
             },
             "limitedPartners" : {
                 "title": "WELSH - Limited partners",

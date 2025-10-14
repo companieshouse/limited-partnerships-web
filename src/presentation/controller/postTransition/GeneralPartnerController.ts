@@ -17,8 +17,9 @@ import { IncorporationKind, PartnerKind } from "@companieshouse/api-sdk-node/dis
 import PostTransitionPageType from "../postTransition/pageType";
 import postTransitionRouting from "../postTransition/routing";
 import { CONFIRMATION_POST_TRANSITION_URL } from "../global/url";
-import { CEASE_DATE_TEMPLATE, JOURNEY_TYPE_PARAM } from "../../../config/constants";
+import { CEASE_DATE_TEMPLATE, JOURNEY_TYPE_PARAM, REMOVE_CHECK_YOUR_ANSWERS_TEMPLATE } from "../../../config/constants";
 import { getJourneyTypes } from "../../../utils/journey";
+import { formatDate } from "../../../utils/date-format";
 
 class GeneralPartnerPostTransitionController extends GeneralPartnerController {
   constructor(
@@ -174,7 +175,34 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
           }
         }
 
+        if (ids.generalPartnerId) {
+          partner = await this.generalPartnerService.getGeneralPartner(tokens, ids.transactionId, ids.generalPartnerId);
+        }
+
         response.render(CEASE_DATE_TEMPLATE, super.makeProps(pageRouting, { limitedPartnership, partner }, null));
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  getCheckYourAnswersPageRouting() {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { tokens, pageType, ids } = super.extract(request);
+        const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
+
+        const partner = await this.generalPartnerService.getGeneralPartner(
+          tokens,
+          ids.transactionId,
+          ids.generalPartnerId
+        );
+
+        if (partner?.data?.cease_date) {
+          partner.data.cease_date = formatDate(partner.data.cease_date, response.locals.i18n);
+        }
+
+        response.render(REMOVE_CHECK_YOUR_ANSWERS_TEMPLATE, super.makeProps(pageRouting, { partner }, null));
       } catch (error) {
         next(error);
       }

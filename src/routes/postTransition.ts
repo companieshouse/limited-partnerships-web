@@ -37,7 +37,9 @@ import {
   ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_WITH_IDS_URL,
   WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_URL,
   PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL,
-  WHEN_DID_THE_GENERAL_PARTNER_PERSON_CEASE_URL
+  WHEN_DID_THE_GENERAL_PARTNER_PERSON_CEASE_URL,
+  REMOVE_GENERAL_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL,
+  WHEN_DID_THE_GENERAL_PARTNER_PERSON_CEASE_WITH_IDS_URL
 } from "../presentation/controller/postTransition/url";
 import {
   TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_LEGAL_ENTITY,
@@ -414,6 +416,27 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
       },
       needAppointment: true
     })
+  );
+  router.get(
+    WHEN_DID_THE_GENERAL_PARTNER_PERSON_CEASE_WITH_IDS_URL,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.getCeaseDate()
+  );
+  router.post(
+    WHEN_DID_THE_GENERAL_PARTNER_PERSON_CEASE_WITH_IDS_URL,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.sendPageData
+  );
+
+  router.get(
+    REMOVE_GENERAL_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.getCheckYourAnswersPageRouting()
+  );
+  router.post(
+    REMOVE_GENERAL_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.postCheckYourAnswers()
   );
 };
 

@@ -94,7 +94,7 @@ describe("Check Your Answers Page", () => {
 
       expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.partners.limitedPartners.capitalContribution);
 
-      testTranslations(res.text, enTranslationText.checkYourAnswersPage.partners, ["capitalContribution", "title", "changeRemoveOrAdd", "limitedPartners", "person"]);
+      testTranslations(res.text, enTranslationText.checkYourAnswersPage.partners, ["capitalContribution", "title", "changeRemoveOrAdd", "limitedPartners", "person", "ceaseDate"]);
 
       checkIfValuesInText(res, generalPartnerLegalEntity, enTranslationText);
     });
@@ -106,7 +106,7 @@ describe("Check Your Answers Page", () => {
 
       expect(res.text).not.toContain(cyTranslationText.checkYourAnswersPage.partners.limitedPartners.capitalContribution);
 
-      testTranslations(res.text, cyTranslationText.checkYourAnswersPage.partners, ["capitalContribution", "title", "changeRemoveOrAdd", "limitedPartners", "person"]);
+      testTranslations(res.text, cyTranslationText.checkYourAnswersPage.partners, ["capitalContribution", "title", "changeRemoveOrAdd", "limitedPartners", "person", "ceaseDate"]);
 
       checkIfValuesInText(res, generalPartnerLegalEntity, cyTranslationText);
     });
