@@ -428,7 +428,7 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
   router.post(
     WHEN_DID_THE_GENERAL_PARTNER_PERSON_CEASE_WITH_IDS_URL,
     companyAuthentication,
-    dependencies.generalPartnerPostTransitionController.sendPageData
+    dependencies.generalPartnerPostTransitionController.sendPageData()
   );
 
   router.get(
@@ -471,7 +471,7 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
   router.post(
     WHEN_DID_THE_GENERAL_PARTNER_LEGAL_ENTITY_CEASE_WITH_IDS_URL,
     companyAuthentication,
-    dependencies.generalPartnerPostTransitionController.sendPageData
+    dependencies.generalPartnerPostTransitionController.sendPageData()
   );
 
   router.get(
