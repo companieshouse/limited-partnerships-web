@@ -1,9 +1,3 @@
-{% set dateChangeUrl = "when-did-the-general-partner-person-cease"  %}
-
-{% if props.data.partner.data.legal_entity_name %}
-    {% set dateChangeUrl = "when-did-the-general-partner-legal-entity-cease" %}
-{% endif %}
-
 {{ govukSummaryList({
     classes: "govuk-!-margin-bottom-7",
     rows: [
