@@ -480,7 +480,8 @@
             "term": "WELSH - We've received your filing to update the term of the partnership for",
             "principalPlaceOfBusinessAddress": "WELSH - We've received your filing to update the principal place of business address for",
             "partner":{
-              "partnerName": "WELSH - We've received your filing to add",
+              "addPartner": "WELSH - We've received your filing to add",
+              "removePartner": "WELSH - We've received your filing to remove",
               "generalPartnerType": "WELSH - as a general partner of",
               "limitedPartnerType": "WELSH - as a limited partner of",
               "updateWontShow": "WELSH - This update will not show on the public register until we accept the filing.",

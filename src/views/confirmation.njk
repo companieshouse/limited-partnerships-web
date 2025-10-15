@@ -62,7 +62,7 @@
       <p class="govuk-body">{{ i18n.confirmationPage.willSendEmailTo }} <strong>{{ props.data.limitedPartnership.data.email }}</strong> {{ i18n.confirmationPage.updatePublicRegister }}</p>
 
     {% elif journeyTypes.isPostTransition %}
-      {% include "includes/update-confirmation-message.njk" %}  
+      {% include "pages/confirmation/update-confirmation-message.njk" %}  
 
       <p class="govuk-body">{{ i18n.confirmationPage.sentEmailTo }} <strong>{{ props.data.userEmail }}</strong>.</p>
 

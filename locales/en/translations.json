@@ -481,7 +481,8 @@
             "term": "We've received your filing to update the term of the partnership for",
             "principalPlaceOfBusinessAddress": "We've received your filing to update the principal place of business address for",
             "partner": {
-              "partnerName": "We've received your filing to add",
+              "addPartner": "We've received your filing to add",
+              "removePartner": "We've received your filing to remove",
               "generalPartnerType": "as a general partner of",
               "limitedPartnerType": "as a limited partner of",
               "updateWontShow": "This update will not show on the public register until we accept the filing.",

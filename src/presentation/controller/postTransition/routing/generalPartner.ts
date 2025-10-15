@@ -53,7 +53,7 @@ const postTransitionRoutingRemoveGeneralPartnerPerson = {
 };
 
 const postTransitionRoutingRemoveGeneralPartnerPersonCheckYourAnswers = {
-  previousUrl: url.WHEN_DID_THE_GENERAL_PARTNER_PERSON_CEASE_URL,
+  previousUrl: url.WHEN_DID_THE_GENERAL_PARTNER_PERSON_CEASE_WITH_IDS_URL,
   currentUrl: url.REMOVE_GENERAL_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL,
   nextUrl: "/",
   pageType: PostTransitionPageType.removeGeneralPartnerPersonCheckYourAnswers,

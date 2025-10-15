@@ -23,12 +23,10 @@ import GeneralPartnerService from "../../../application/service/GeneralPartnerSe
 import CompanyService from "../../../application/service/CompanyService";
 import { GeneralPartner, LimitedPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
-import PostTransitionPageType from "../postTransition/pageType";
 import { Transaction } from "@companieshouse/api-sdk-node/dist/services/transaction/types";
 import { RESUME_REGISTRATION_OR_TRANSITION_URL_MAP } from "./resumeUrlMapping";
 
 class GlobalController extends AbstractController {
-
   constructor(
     private readonly limitedPartnershipService: LimitedPartnershipService,
     private readonly paymentService: PaymentService,
@@ -155,9 +153,8 @@ class GlobalController extends AbstractController {
       try {
         const { tokens, pageType, ids } = super.extract(request);
         const pageRouting = super.getRouting(globalsRouting, pageType, request);
-        const previousUrl = request.get("Referrer");
 
-        const { generalPartner, limitedPartner } = await this.getPartnerDetails(tokens, ids.transactionId, previousUrl);
+        const { generalPartner, limitedPartner } = await this.getPartnerDetails(tokens, ids.transactionId);
 
         const limitedPartnership = await this.getLimitedPartnershipDetails(tokens, ids.companyId);
         const userEmail = getLoggedInUserEmail(request.session);
@@ -168,7 +165,11 @@ class GlobalController extends AbstractController {
 
         response.render(
           super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { limitedPartnership, generalPartner, limitedPartner, userEmail, ids, subtype }, null)
+          super.makeProps(
+            pageRouting,
+            { limitedPartnership, generalPartner, limitedPartner, userEmail, ids, subtype },
+            null
+          )
         );
       } catch (error) {
         next(error);
@@ -176,19 +177,16 @@ class GlobalController extends AbstractController {
     };
   }
 
-  private async getPartnerDetails(tokens: Tokens, transactionId: string, referrer: string | undefined): Promise<{generalPartner: GeneralPartner | undefined, limitedPartner: LimitedPartner | undefined}> {
-    let generalPartner;
-    let limitedPartner;
+  private async getPartnerDetails(
+    tokens: Tokens,
+    transactionId: string
+  ): Promise<{ generalPartner: GeneralPartner | undefined; limitedPartner: LimitedPartner | undefined }> {
+    const resultGeneralPartner = await this.generalPartnerService.getGeneralPartners(tokens, transactionId, false);
+    const generalPartner = resultGeneralPartner?.generalPartners?.[0];
 
-    const isGeneralPartnerReferrer = referrer?.includes(PostTransitionPageType.generalPartnerCheckYourAnswers);
+    const resultLimitedPartner = await this.limitedPartnerService.getLimitedPartners(tokens, transactionId);
+    const limitedPartner = resultLimitedPartner?.limitedPartners?.[0];
 
-    if (isGeneralPartnerReferrer) {
-      const result = await this.generalPartnerService.getGeneralPartners(tokens, transactionId);
-      generalPartner = result.generalPartners[0];
-    } else {
-      const result = await this.limitedPartnerService.getLimitedPartners(tokens, transactionId);
-      limitedPartner = result.limitedPartners[0];
-    };
     return { generalPartner, limitedPartner };
   }
 
@@ -237,7 +235,9 @@ class GlobalController extends AbstractController {
 
         const resumeData = resumeUrlMap[resource.kind];
         if (!resumeData) {
-          throw new Error(`Unknown transaction resource kind '${resource.kind}' found when resuming post transition journey`);
+          throw new Error(
+            `Unknown transaction resource kind '${resource.kind}' found when resuming post transition journey`
+          );
         }
         return resumeData;
       });
