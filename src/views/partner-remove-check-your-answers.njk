@@ -6,22 +6,6 @@
   {% include "includes/styles/print.njk" %}
 {% endblock %}
 
-{% set dateChangeUrl = "when-did-the-general-partner-person-cease"  %}
-
-{% if props.data.partner.data.legal_entity_name %}
-    {% set dateChangeUrl = "when-did-the-general-partner-legal-entity-cease" %}
-{% endif %}
-
-{% block backLink %}
-    {{ govukBackLink({
-    text: i18n.links.back,
-    attributes: {
-        "data-event-id": "back-link"
-    },
-    href: dateChangeUrl
-    }) }}
-{% endblock %}
-
 {% set pageTitle = i18n.checkYourAnswersPage.update.title %}
 
 {% set name = "" %}

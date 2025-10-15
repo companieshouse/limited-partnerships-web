@@ -152,7 +152,6 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
   getCeaseDate() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
-        console.log("\n\n\n\n\n>>>>>>>>> " + JSON.stringify(request.params) + " <<<<<<<<<\n\n\n\n\n");
         const { ids, pageType, tokens } = super.extract(request);
         const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
 
