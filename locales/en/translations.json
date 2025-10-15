@@ -400,7 +400,8 @@
             "generalPartners" : {
                 "title": "General partners",
                 "dateEffectiveFrom": "Date they became a general partner",
-                "changeRemoveOrAdd": "Change, remove or add general partners"
+                "changeRemoveOrAdd": "Change, remove or add general partners",
+                "ceaseDate": "Date they ceased to be a general partner"
             },
             "limitedPartners" : {
                 "title": "Limited partners",

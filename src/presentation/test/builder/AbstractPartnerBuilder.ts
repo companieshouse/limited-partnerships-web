@@ -39,6 +39,8 @@ abstract class AbstractPartnerBuilder {
       country: "England"
     },
 
+    cease_date: "",
+
     etag: "",
     kind: ""
   };
@@ -70,6 +72,11 @@ abstract class AbstractPartnerBuilder {
 
   withUsualResidentialAddress(usualResidentialAddress: Record<string, any> | null) {
     this.data.usual_residential_address = usualResidentialAddress;
+    return this;
+  }
+
+  withCeaseDate(ceaseDate: string) {
+    this.data.cease_date = ceaseDate;
     return this;
   }
 }

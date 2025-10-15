@@ -1,0 +1,52 @@
+{% extends "layout.njk" %}
+{% import 'includes/macros.njk' as macros %}
+
+{% block head %}
+  {{ super() }}
+  {% include "includes/styles/print.njk" %}
+{% endblock %}
+
+{% set pageTitle = i18n.checkYourAnswersPage.update.title %}
+
+{% set name = "" %}
+{% if props.data.partner.data.forename %}
+  {% set name = props.data.partner.data.forename + " " + props.data.partner.data.surname %}
+{% elif props.data.partner.data.legal_entity_name %}
+  {% set name = props.data.partner.data.legal_entity_name %}
+{% endif %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds-from-desktop">
+
+      <span class="govuk-caption-l"> {{ name }} </span>
+      <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
+
+      <form class="form" action={{ props.currentUrl }} method="post">
+       {% include "includes/csrf_token.njk" %}
+
+       {% include "pages/checkYourAnswersChange/" + props.data.pageKey + ".njk" %}
+
+        {{ govukWarningText({
+          text: i18n.checkYourAnswersPage.update.printWarning,
+          iconFallbackText: "Warning"
+        }) }} 
+
+        <p class="govuk-body">{{ i18n.checkYourAnswersPage.update.information }}</p>
+
+        <div class="govuk-button-group">
+          {{ govukButton({
+            text: i18n.buttons.submit,
+            attributes: {
+              "id": "submit",
+              "data-event-id": props.pageType + "-submit-button"
+            }
+          }) }} 
+
+          {% include "includes/print-button.njk" %}
+        </div>
+      </form>    
+    </div>
+  </div>    
+
+{% endblock %}

@@ -52,6 +52,16 @@ const postTransitionRoutingRemoveGeneralPartnerPerson = {
   }
 };
 
+const postTransitionRoutingRemoveGeneralPartnerPersonCheckYourAnswers = {
+  previousUrl: url.WHEN_DID_THE_GENERAL_PARTNER_PERSON_CEASE_URL,
+  currentUrl: url.REMOVE_GENERAL_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL,
+  nextUrl: "/",
+  pageType: PostTransitionPageType.removeGeneralPartnerPersonCheckYourAnswers,
+  data: {
+    pageKey: REMOVE_GENERAL_PARTNER_KEY
+  }
+};
+
 const postTransitionRoutingRemoveGeneralPartnerLegalEntity = {
   previousUrl: url.LANDING_PAGE_URL,
   currentUrl: url.WHEN_DID_THE_GENERAL_PARTNER_LEGAL_ENTITY_CEASE_URL,
@@ -69,6 +79,8 @@ const generalPartnerRouting = [
   postTransitionRoutingGeneralPartnerCheckYourAnswers,
 
   postTransitionRoutingRemoveGeneralPartnerPerson,
+  postTransitionRoutingRemoveGeneralPartnerPersonCheckYourAnswers,
+
   postTransitionRoutingRemoveGeneralPartnerLegalEntity
 ];
 
