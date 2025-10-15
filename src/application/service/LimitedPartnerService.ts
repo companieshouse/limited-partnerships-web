@@ -54,12 +54,16 @@ class LimitedPartnerService {
 
   async getLimitedPartners(
     opt: Tokens,
-    transactionId: string
+    transactionId: string,
+    checkCompletedField = true
   ): Promise<{ limitedPartners: LimitedPartner[]; errors?: UIErrors }> {
     try {
       const limitedPartners = await this.limitedPartnerGateway.getLimitedPartners(opt, transactionId);
 
-      const errorList = incompletePartnerErrorList(limitedPartners, this.i18n);
+      let errorList = {};
+      if (checkCompletedField) {
+        errorList = incompletePartnerErrorList(limitedPartners, this.i18n);
+      }
 
       const uiErrors = new UIErrors();
       uiErrors.formatValidationErrorToUiErrors({ errors: errorList });

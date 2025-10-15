@@ -54,12 +54,16 @@ class GeneralPartnerService {
 
   async getGeneralPartners(
     opt: Tokens,
-    transactionId: string
+    transactionId: string,
+    checkCompletedField = true
   ): Promise<{ generalPartners: GeneralPartner[]; errors?: UIErrors }> {
     try {
       const generalPartners = await this.generalPartnerGateway.getGeneralPartners(opt, transactionId);
 
-      const errorList = incompletePartnerErrorList(generalPartners, this.i18n);
+      let errorList = {};
+      if (checkCompletedField) {
+        errorList = incompletePartnerErrorList(generalPartners, this.i18n);
+      }
 
       const uiErrors = new UIErrors();
       uiErrors.formatValidationErrorToUiErrors({ errors: errorList });
