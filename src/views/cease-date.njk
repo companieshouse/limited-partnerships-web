@@ -33,7 +33,7 @@
       {% include "includes/proposed-name.njk" %}
       <h1 class="govuk-heading-xl" >{{i18n.ceaseDate[props.data.titleKey].title}}</h1>
 
-      {{ name }}
+      <span class="govuk-caption-l">{{ name }} </span>
 
       <h2 class="govuk-heading-l" >{{pageTitle}}</h2>
 
@@ -98,9 +98,6 @@
 
         {% include "includes/save-and-continue-button.njk" %}
       </form>
-      <div>
-        {% include "includes/public-register-information.njk" %}
-      </div>
     </div>
   </div>
 
