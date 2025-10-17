@@ -21,6 +21,7 @@ import postTransitionRouting from "../postTransition/routing";
 import CompanyService from "../../../application/service/CompanyService";
 
 import { formatDate } from "../../../utils/date-format";
+import { CEASE_DATE_TEMPLATE } from "../../../config";
 
 abstract class GeneralPartnerController extends AbstractController {
   constructor(
@@ -260,8 +261,9 @@ abstract class GeneralPartnerController extends AbstractController {
 
           await this.conditionalPreviousUrl(ids, pageRouting, request, tokens);
 
+          const url = pageRouting.currentUrl.endsWith("cease") ? CEASE_DATE_TEMPLATE : pageRouting.currentUrl;
           response.render(
-            super.templateName(pageRouting.currentUrl),
+            super.templateName(url),
             super.makeProps(
               pageRouting,
               {
