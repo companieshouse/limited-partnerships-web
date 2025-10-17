@@ -1,5 +1,5 @@
 {% from "govuk/components/select/macro.njk" import govukSelect %}
-{% macro getSpecifiedCountryList(i18n, subsetType, id, text, font, value, errorMessage)  %}
+{% macro getSpecifiedCountryList(i18n, subsetType, id, text, font, countryField, errorMessage)  %}
 
   {% set COUNTRIES = [
     { value: '', text: i18n.countries.selectOne },
@@ -276,7 +276,6 @@
   {{ govukSelect({
     id: id,
     name: id,
-    value: value,
     label: {
       text: text,
       classes: font,
