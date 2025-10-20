@@ -11,7 +11,10 @@ import { JOURNEY_TYPE_PARAM } from "../../../../config";
 import { Journey } from "../../../../domain/entities/journey";
 import CompanyProfileBuilder from "../../builder/CompanyProfileBuilder";
 import GeneralPartnerBuilder from "../../builder/GeneralPartnerBuilder";
-import { GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL, LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL, REGISTERED_OFFICE_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL, PARTNERSHIP_NAME_CHANGE_CHECK_YOUR_ANSWERS_URL, TERM_CHANGE_CHECK_YOUR_ANSWERS_URL, PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL } from "../../../controller/postTransition/url";
+import {
+  GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL,
+  LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL
+} from "../../../controller/postTransition/url";
 import LimitedPartnerBuilder from "../../builder/LimitedPartnerBuilder";
 import TransactionBuilder from "presentation/test/builder/TransactionBuilder";
 import LimitedPartnershipBuilder from "presentation/test/builder/LimitedPartnershipBuilder";
@@ -25,8 +28,7 @@ describe("Confirmation Page", () => {
     setLocalesEnabled(true);
 
     companyProfile = new CompanyProfileBuilder().build();
-    const transaction = new TransactionBuilder()
-      .build();
+    const transaction = new TransactionBuilder().build();
 
     appDevDependencies.transactionGateway.feedTransactions([transaction]);
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
@@ -53,7 +55,10 @@ describe("Confirmation Page", () => {
           expect(res.text).toContain("Doe - GP");
           expect(res.text).toContain(enTranslationText.confirmationPage.postTransition.title);
           expect(res.text).not.toContain(enTranslationText.confirmationPage.title);
-          testTranslations(res.text, enTranslationText.confirmationPage.postTransition.partner, ["limitedPartnerType"]);
+          testTranslations(res.text, enTranslationText.confirmationPage.postTransition.partner, [
+            "limitedPartnerType",
+            "removePartner"
+          ]);
           expect(res.text).toContain(appDevDependencies.transactionGateway.transactionId);
           expect(res.text).toContain(companyProfile.data?.companyName?.toUpperCase());
           expect(res.text).toContain(companyProfile.data?.companyNumber?.toUpperCase());
@@ -73,7 +78,10 @@ describe("Confirmation Page", () => {
           expect(res.text).toContain("My Company ltd - GP");
           expect(res.text).toContain(enTranslationText.confirmationPage.postTransition.title);
           expect(res.text).not.toContain(enTranslationText.confirmationPage.title);
-          testTranslations(res.text, enTranslationText.confirmationPage.postTransition.partner, ["limitedPartnerType"]);
+          testTranslations(res.text, enTranslationText.confirmationPage.postTransition.partner, [
+            "limitedPartnerType",
+            "removePartner"
+          ]);
           expect(res.text).toContain(appDevDependencies.transactionGateway.transactionId);
           expect(res.text).toContain(companyProfile.data?.companyName?.toUpperCase());
           expect(res.text).toContain(companyProfile.data?.companyNumber?.toUpperCase());
@@ -89,7 +97,9 @@ describe("Confirmation Page", () => {
           .build();
         appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
 
-        const res = await request(app).get(URL + "?lang=cy").set("Referrer", GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL);
+        const res = await request(app)
+          .get(URL + "?lang=cy")
+          .set("Referrer", GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL);
 
         expect(res.status).toBe(200);
         expect(res.text).toContain("test@email.com");
@@ -97,7 +107,10 @@ describe("Confirmation Page", () => {
         expect(res.text).toContain("Doe - GP");
         expect(res.text).toContain(cyTranslationText.confirmationPage.postTransition.title);
         expect(res.text).not.toContain(cyTranslationText.confirmationPage.title);
-        testTranslations(res.text, cyTranslationText.confirmationPage.postTransition.partner, ["limitedPartnerType"]);
+        testTranslations(res.text, cyTranslationText.confirmationPage.postTransition.partner, [
+          "limitedPartnerType",
+          "removePartner"
+        ]);
         expect(res.text).toContain(appDevDependencies.transactionGateway.transactionId);
         expect(res.text).toContain(companyProfile.data?.companyName?.toUpperCase());
         expect(res.text).toContain(companyProfile.data?.companyNumber?.toUpperCase());
@@ -110,14 +123,19 @@ describe("Confirmation Page", () => {
           .build();
         appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
 
-        const res = await request(app).get(URL + "?lang=cy").set("Referrer", GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL);
+        const res = await request(app)
+          .get(URL + "?lang=cy")
+          .set("Referrer", GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL);
 
         expect(res.status).toBe(200);
         expect(res.text).toContain("test@email.com");
         expect(res.text).toContain("My Company ltd - GP");
         expect(res.text).toContain(cyTranslationText.confirmationPage.postTransition.title);
         expect(res.text).not.toContain(cyTranslationText.confirmationPage.title);
-        testTranslations(res.text, cyTranslationText.confirmationPage.postTransition.partner, ["limitedPartnerType"]);
+        testTranslations(res.text, cyTranslationText.confirmationPage.postTransition.partner, [
+          "limitedPartnerType",
+          "removePartner"
+        ]);
         expect(res.text).toContain(appDevDependencies.transactionGateway.transactionId);
         expect(res.text).toContain(companyProfile.data?.companyName?.toUpperCase());
         expect(res.text).toContain(companyProfile.data?.companyNumber?.toUpperCase());
@@ -141,7 +159,10 @@ describe("Confirmation Page", () => {
           expect(res.text).toContain("Doe - LP");
           expect(res.text).toContain(enTranslationText.confirmationPage.postTransition.title);
           expect(res.text).not.toContain(enTranslationText.confirmationPage.title);
-          testTranslations(res.text, enTranslationText.confirmationPage.postTransition.partner, ["generalPartnerType"]);
+          testTranslations(res.text, enTranslationText.confirmationPage.postTransition.partner, [
+            "generalPartnerType",
+            "removePartner"
+          ]);
           expect(res.text).toContain(appDevDependencies.transactionGateway.transactionId);
           expect(res.text).toContain(companyProfile.data?.companyName?.toUpperCase());
           expect(res.text).toContain(companyProfile.data?.companyNumber?.toUpperCase());
@@ -161,7 +182,10 @@ describe("Confirmation Page", () => {
           expect(res.text).toContain("My Company ltd - LP");
           expect(res.text).toContain(enTranslationText.confirmationPage.postTransition.title);
           expect(res.text).not.toContain(enTranslationText.confirmationPage.title);
-          testTranslations(res.text, enTranslationText.confirmationPage.postTransition.partner, ["generalPartnerType"]);
+          testTranslations(res.text, enTranslationText.confirmationPage.postTransition.partner, [
+            "generalPartnerType",
+            "removePartner"
+          ]);
           expect(res.text).toContain(appDevDependencies.transactionGateway.transactionId);
           expect(res.text).toContain(companyProfile.data?.companyName?.toUpperCase());
           expect(res.text).toContain(companyProfile.data?.companyNumber?.toUpperCase());
@@ -177,7 +201,9 @@ describe("Confirmation Page", () => {
           .build();
         appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
 
-        const res = await request(app).get(URL + "?lang=cy").set("Referrer", LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL);
+        const res = await request(app)
+          .get(URL + "?lang=cy")
+          .set("Referrer", LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL);
 
         expect(res.status).toBe(200);
         expect(res.text).toContain("test@email.com");
@@ -185,7 +211,10 @@ describe("Confirmation Page", () => {
         expect(res.text).toContain("Doe - LP");
         expect(res.text).toContain(cyTranslationText.confirmationPage.postTransition.title);
         expect(res.text).not.toContain(cyTranslationText.confirmationPage.title);
-        testTranslations(res.text, cyTranslationText.confirmationPage.postTransition.partner, ["generalPartnerType"]);
+        testTranslations(res.text, cyTranslationText.confirmationPage.postTransition.partner, [
+          "generalPartnerType",
+          "removePartner"
+        ]);
         expect(res.text).toContain(appDevDependencies.transactionGateway.transactionId);
         expect(res.text).toContain(companyProfile.data?.companyName?.toUpperCase());
         expect(res.text).toContain(companyProfile.data?.companyNumber?.toUpperCase());
@@ -198,14 +227,19 @@ describe("Confirmation Page", () => {
           .build();
         appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
 
-        const res = await request(app).get(URL + "?lang=cy").set("Referrer", LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL);
+        const res = await request(app)
+          .get(URL + "?lang=cy")
+          .set("Referrer", LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL);
 
         expect(res.status).toBe(200);
         expect(res.text).toContain("test@email.com");
         expect(res.text).toContain("My Company ltd - LP");
         expect(res.text).toContain(cyTranslationText.confirmationPage.postTransition.title);
         expect(res.text).not.toContain(cyTranslationText.confirmationPage.title);
-        testTranslations(res.text, cyTranslationText.confirmationPage.postTransition.partner, ["generalPartnerType"]);
+        testTranslations(res.text, cyTranslationText.confirmationPage.postTransition.partner, [
+          "generalPartnerType",
+          "removePartner"
+        ]);
         expect(res.text).toContain(appDevDependencies.transactionGateway.transactionId);
         expect(res.text).toContain(companyProfile.data?.companyName?.toUpperCase());
         expect(res.text).toContain(companyProfile.data?.companyNumber?.toUpperCase());
@@ -213,56 +247,67 @@ describe("Confirmation Page", () => {
     });
 
     describe("Limited Partnership", () => {
+      it.each([
+        [
+          "limited-partnership#update-partnership-registered-office-address",
+          enTranslationText.confirmationPage.postTransition.registeredOfficeAddress
+        ],
+        ["limited-partnership#update-partnership-name", enTranslationText.confirmationPage.postTransition.name],
+        ["limited-partnership#update-partnership-term", enTranslationText.confirmationPage.postTransition.term],
+        [
+          "limited-partnership#update-partnership-principal-place-of-business-address",
+          enTranslationText.confirmationPage.postTransition.principalPlaceOfBusinessAddress
+        ]
+      ])(
+        "should load confirmation page - for limited partnership with english message text for the specific journey",
+        async (kind: string, message: string) => {
+          const transaction = new TransactionBuilder().withKind(kind).build();
+
+          appDevDependencies.transactionGateway.feedTransactions([transaction]);
+
+          const limitedPartnership = new LimitedPartnershipBuilder().build();
+
+          appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+          const res = await request(app).get(URL + "?lang=en");
+
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(toEscapedHtml(message));
+          expect(res.text).toContain(companyProfile.data?.companyName?.toUpperCase());
+          expect(res.text).toContain(companyProfile.data?.companyNumber?.toUpperCase());
+        }
+      );
 
       it.each([
-        [ "limited-partnership#update-partnership-registered-office-address", REGISTERED_OFFICE_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL, enTranslationText.confirmationPage.postTransition.registeredOfficeAddress ],
-        [ "limited-partnership#update-partnership-name", PARTNERSHIP_NAME_CHANGE_CHECK_YOUR_ANSWERS_URL, enTranslationText.confirmationPage.postTransition.name ],
-        [ "limited-partnership#update-partnership-term", TERM_CHANGE_CHECK_YOUR_ANSWERS_URL, enTranslationText.confirmationPage.postTransition.term ],
-        [ "limited-partnership#update-partnership-principal-place-of-business-address", PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL, enTranslationText.confirmationPage.postTransition.principalPlaceOfBusinessAddress ]
-      ])("should load confirmation page - for limited partnership with english message text for the specific journey", async (kind: string, referrer: string, message: string) => {
-        const transaction = new TransactionBuilder()
-          .withKind(kind)
-          .build();
+        [
+          "limited-partnership#update-partnership-registered-office-address",
+          cyTranslationText.confirmationPage.postTransition.registeredOfficeAddress
+        ],
+        ["limited-partnership#update-partnership-name", cyTranslationText.confirmationPage.postTransition.name],
+        ["limited-partnership#update-partnership-term", cyTranslationText.confirmationPage.postTransition.term],
+        [
+          "limited-partnership#update-partnership-principal-place-of-business-address",
+          cyTranslationText.confirmationPage.postTransition.principalPlaceOfBusinessAddress
+        ]
+      ])(
+        "should load confirmation page - for limited partnership with welsh message text for the specific journey",
+        async (kind: string, message: string) => {
+          const transaction = new TransactionBuilder().withKind(kind).build();
 
-        appDevDependencies.transactionGateway.feedTransactions([transaction]);
+          appDevDependencies.transactionGateway.feedTransactions([transaction]);
 
-        const limitedPartnership = new LimitedPartnershipBuilder()
-          .build();
+          const limitedPartnership = new LimitedPartnershipBuilder().build();
 
-        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+          appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-        const res = await request(app).get(URL + "?lang=en").set("Referrer", referrer);
+          const res = await request(app).get(URL + "?lang=cy");
 
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(toEscapedHtml(message));
-        expect(res.text).toContain(companyProfile.data?.companyName?.toUpperCase());
-        expect(res.text).toContain(companyProfile.data?.companyNumber?.toUpperCase());
-      });
-
-      it.each([
-        [ "limited-partnership#update-partnership-registered-office-address", REGISTERED_OFFICE_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL, cyTranslationText.confirmationPage.postTransition.registeredOfficeAddress ],
-        [ "limited-partnership#update-partnership-name", PARTNERSHIP_NAME_CHANGE_CHECK_YOUR_ANSWERS_URL, cyTranslationText.confirmationPage.postTransition.name ],
-        [ "limited-partnership#update-partnership-term", TERM_CHANGE_CHECK_YOUR_ANSWERS_URL, cyTranslationText.confirmationPage.postTransition.term ],
-        [ "limited-partnership#update-partnership-principal-place-of-business-address", PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL, cyTranslationText.confirmationPage.postTransition.principalPlaceOfBusinessAddress ]
-      ])("should load confirmation page - for limited partnership with welsh message text for the specific journey", async (kind: string, referrer: string, message: string) => {
-        const transaction = new TransactionBuilder()
-          .withKind(kind)
-          .build();
-
-        appDevDependencies.transactionGateway.feedTransactions([transaction]);
-
-        const limitedPartnership = new LimitedPartnershipBuilder()
-          .build();
-
-        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
-        const res = await request(app).get(URL + "?lang=cy").set("Referrer", referrer);
-
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(toEscapedHtml(message));
-        expect(res.text).toContain(companyProfile.data?.companyName?.toUpperCase());
-        expect(res.text).toContain(companyProfile.data?.companyNumber?.toUpperCase());
-      });
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(toEscapedHtml(message));
+          expect(res.text).toContain(companyProfile.data?.companyName?.toUpperCase());
+          expect(res.text).toContain(companyProfile.data?.companyNumber?.toUpperCase());
+        }
+      );
     });
   });
 });

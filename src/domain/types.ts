@@ -4,6 +4,7 @@ export type Ids = {
   companyId: string;
   generalPartnerId: string;
   limitedPartnerId: string;
+  appointmentId: string;
 };
 
 export type Tokens = {

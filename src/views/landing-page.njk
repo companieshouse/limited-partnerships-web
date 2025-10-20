@@ -105,7 +105,7 @@
                                         ),
                                         CREATE_CHANGE_LINK(
                                             generalPartnersAdded.removeLink,
-                                            props.currentUrl | replace(props.pageType, generalPartnerKind + "/" + item.appointment_id + "/remove-" + generalPartnerKind + "-person"),
+                                            props.currentUrl | replace(props.pageType, "appointment/" + item.appointment_id + "/when-did-the-" + generalPartnerKind + "-person-cease"),
                                             null,
                                             "delete-" + partnerType + "-person"
                                         )
@@ -132,7 +132,7 @@
                                         ),
                                         CREATE_CHANGE_LINK(
                                             generalPartnersAdded.removeLink,
-                                            props.currentUrl | replace(props.pageType, generalPartnerKind + "/" + item.appointment_id + "/remove-" + generalPartnerKind + "-legal-entity"),
+                                            props.currentUrl | replace(props.pageType, "appointment/" + item.appointment_id + "/when-did-the-" + generalPartnerKind + "-legal-entity-cease"),
                                             null,
                                             "delete-" + partnerType + "-legal-entity"
                                         )
@@ -190,7 +190,7 @@
                                         ),
                                         CREATE_CHANGE_LINK(
                                             limitedPartnersAdded.removeLink,
-                                            props.currentUrl | replace(props.pageType, limitedPartnerKind + "/" + item.appointment_id + "/remove-" + limitedPartnerKind + "-person"),
+                                            props.currentUrl | replace(props.pageType, "appointment/" + item.appointment_id + "/when-did-the-" + limitedPartnerKind + "-person-cease"),
                                             null,
                                             "delete-" + partnerType + "-person"
                                         )
@@ -217,7 +217,7 @@
                                         ),
                                         CREATE_CHANGE_LINK(
                                             limitedPartnersAdded.removeLink,
-                                            props.currentUrl | replace(props.pageType, limitedPartnerKind + "/" + item.appointment_id + "/remove-" + limitedPartnerKind + "-legal-entity"),
+                                            props.currentUrl | replace(props.pageType, "appointment/" + item.appointment_id + "/when-did-the-" + limitedPartnerKind + "-legal-entity-cease"),
                                             null,
                                             "delete-" + partnerType + "-legal-entity"
                                         )

@@ -1,0 +1,104 @@
+{% extends "layout.njk" %}
+
+{% if props.data.partner.data.cease_date  %}
+  {# This is for when saved data is pre-populated on the page #}
+  {% set cease_date = props.data.partner.data.cease_date %}
+  {% set cease_date_year = cease_date[0] + cease_date[1] + cease_date[2] + cease_date[3] %}
+  {% set cease_date_month = cease_date[5] + cease_date[6] %}
+  {% set cease_date_day = cease_date[8] + cease_date[9] %}
+{% elif props.data.partner.data["cease_date-year"] %}
+  {# And this covers the scenario when date validation fails and the page reloads #}
+  {% set cease_date_year = props.data.partner.data["cease_date-year"] %}
+  {% set cease_date_month = props.data.partner.data["cease_date-month"] %}
+  {% set cease_date_day = props.data.partner.data["cease_date-day"] %}
+{% endif %}
+
+{% set publicRegisterInformationLine1 = i18n.ceaseDate.publicInformationLine1 %}
+
+{% set name = "" %}
+{% if props.data.partner.data.forename %}
+  {% set name = props.data.partner.data.forename + " " + props.data.partner.data.surname %}
+  {% set pageTitle = i18n.ceaseDate[props.data.titleKey].person.subTitle %}
+{% else %}
+  {% set name = props.data.partner.data.legal_entity_name %}
+  {% set pageTitle = i18n.ceaseDate[props.data.titleKey].legalEntity.subTitle %}
+{% endif %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      {% include "includes/errors.njk" %}
+
+      {% include "includes/proposed-name.njk" %}
+      <h1 class="govuk-heading-xl" >{{i18n.ceaseDate[props.data.titleKey].title}}</h1>
+
+      <span class="govuk-caption-l">{{ name }} </span>
+
+      <h2 class="govuk-heading-l" >{{pageTitle}}</h2>
+
+      <form class="form" method="post">
+        <input type="hidden" name="pageType" value={{ props.pageType }}> 
+        {% include "includes/csrf_token.njk" %}
+
+        {{ govukDateInput({
+          id: "cease_date",
+          namePrefix: "cease_date",
+          errorMessage: props.errors.cease_date if props.errors,
+          hint: {
+            text: i18n.ceaseDate.dateHint
+          },
+          items: [
+            {
+              classes: "govuk-input--width-2",
+              label: i18n.ceaseDate.dateDay,
+              name: "day",
+              value: cease_date_day,
+              attributes: {
+                required: true,
+                pattern: "[0-9]*"
+              }
+            },
+            {
+              classes: "govuk-input--width-2",
+              label: i18n.ceaseDate.dateMonth,
+              name: "month",
+              value: cease_date_month,
+              attributes: {
+                required: true,
+                pattern: "[0-9]*"
+              }
+            },
+            {
+              classes: "govuk-input--width-4",
+              label: i18n.ceaseDate.dateYear,
+              name: "year",
+              value: cease_date_year,
+              attributes: {
+                required: true,
+                pattern: "[0-9]*"
+              }
+            }
+          ]
+        }) }}
+
+        {{ govukCheckboxes({
+          id: "removeConfirmationChecked", 
+          name: "remove_confirmation_checked",            
+          items: [
+            {
+              value: "true",
+              text: i18n.ceaseDate.removeConfirmationChecked + name + i18n.ceaseDate[props.data.titleKey].removeConfirmationCheckedGeneralPartner,
+              attributes: {
+                required: true
+              }
+            }
+          ]
+        }) }}
+
+        {% include "includes/save-and-continue-button.njk" %}
+      </form>
+    </div>
+  </div>
+
+{% endblock %}

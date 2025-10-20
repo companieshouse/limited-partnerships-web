@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { Session } from "@companieshouse/node-session-handler";
 
 import {
+  APPOINTMENT_ID,
   COMPANY_ID,
   GENERAL_PARTNER_ID,
   LIMITED_PARTNER_ID,
@@ -14,9 +15,7 @@ import {
 } from "../../config/constants";
 import { PageRouting, pageRoutingDefault, PagesRouting } from "./PageRouting";
 import PageType from "./PageType";
-import {
-  WHICH_TYPE_URL
-} from "./registration/url";
+import { WHICH_TYPE_URL } from "./registration/url";
 import UIErrors from "../../domain/entities/UIErrors";
 import { Ids, Tokens } from "../../domain/types";
 
@@ -33,7 +32,8 @@ abstract class AbstractController {
       transactionId: request.params[TRANSACTION_ID],
       submissionId: request.params[SUBMISSION_ID],
       generalPartnerId: request.params[GENERAL_PARTNER_ID],
-      limitedPartnerId: request.params[LIMITED_PARTNER_ID]
+      limitedPartnerId: request.params[LIMITED_PARTNER_ID],
+      appointmentId: request.params[APPOINTMENT_ID]
     } as Ids;
 
     pageRouting = this.insertIdsInAllUrl(pageRouting, ids);
@@ -70,7 +70,8 @@ abstract class AbstractController {
     const session = request.session as Session;
     const tokens = this.extractTokens(request);
     const pageType = this.pageType(request.path);
-    const { companyId, transactionId, submissionId, generalPartnerId, limitedPartnerId } = this.extractIds(request);
+    const { companyId, transactionId, submissionId, generalPartnerId, limitedPartnerId, appointmentId } =
+      this.extractIds(request);
 
     return {
       session,
@@ -81,7 +82,8 @@ abstract class AbstractController {
         transactionId,
         submissionId,
         generalPartnerId,
-        limitedPartnerId
+        limitedPartnerId,
+        appointmentId
       }
     };
   }
@@ -106,6 +108,7 @@ abstract class AbstractController {
     url = this.insertSubmissionId(url, ids.submissionId);
     url = this.insertGeneralPartnerId(url, ids.generalPartnerId);
     url = this.insertLimitedPartnerId(url, ids.limitedPartnerId);
+    url = this.insertAppointmentId(url, ids.appointmentId);
     return url;
   }
 
@@ -127,6 +130,10 @@ abstract class AbstractController {
 
   protected insertLimitedPartnerId(url: string, limitedPartnerId?: string): string {
     return limitedPartnerId ? url.replace(`:${LIMITED_PARTNER_ID}`, limitedPartnerId) : url;
+  }
+
+  protected insertAppointmentId(url: string, appointmentId?: string): string {
+    return appointmentId ? url.replace(`:${APPOINTMENT_ID}`, appointmentId) : url;
   }
 
   protected insertIdsInAllUrl(pageRouting: PageRouting, ids: Ids): PageRouting {
@@ -178,8 +185,9 @@ abstract class AbstractController {
     const submissionId = request.params.submissionId;
     const generalPartnerId = request.params.generalPartnerId;
     const limitedPartnerId = request.params.limitedPartnerId;
+    const appointmentId = request.params.appointmentId;
 
-    return { transactionId, submissionId, companyId, generalPartnerId, limitedPartnerId };
+    return { transactionId, submissionId, companyId, generalPartnerId, limitedPartnerId, appointmentId };
   }
 
   protected getPreviousPageUrl(request: Request) {

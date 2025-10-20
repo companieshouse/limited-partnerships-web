@@ -40,11 +40,59 @@ const postTransitionRoutingGeneralPartnerCheckYourAnswers = {
   }
 };
 
+const REMOVE_GENERAL_PARTNER_KEY = "removeGeneralPartner";
+
+const postTransitionRoutingRemoveGeneralPartnerPerson = {
+  previousUrl: url.LANDING_PAGE_URL,
+  currentUrl: url.WHEN_DID_THE_GENERAL_PARTNER_PERSON_CEASE_URL,
+  nextUrl: url.REMOVE_GENERAL_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL,
+  pageType: PostTransitionPageType.whenDidTheGeneralPartnerPersonCease,
+  data: {
+    titleKey: REMOVE_GENERAL_PARTNER_KEY
+  }
+};
+
+const postTransitionRoutingRemoveGeneralPartnerPersonCheckYourAnswers = {
+  previousUrl: url.WHEN_DID_THE_GENERAL_PARTNER_PERSON_CEASE_WITH_IDS_URL,
+  currentUrl: url.REMOVE_GENERAL_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL,
+  nextUrl: "/",
+  pageType: PostTransitionPageType.removeGeneralPartnerPersonCheckYourAnswers,
+  data: {
+    pageKey: REMOVE_GENERAL_PARTNER_KEY
+  }
+};
+
+const postTransitionRoutingRemoveGeneralPartnerLegalEntity = {
+  previousUrl: url.LANDING_PAGE_URL,
+  currentUrl: url.WHEN_DID_THE_GENERAL_PARTNER_LEGAL_ENTITY_CEASE_URL,
+  nextUrl: url.REMOVE_GENERAL_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_URL,
+  pageType: PostTransitionPageType.whenDidTheGeneralPartnerLegalEntityCease,
+  data: {
+    titleKey: REMOVE_GENERAL_PARTNER_KEY
+  }
+};
+
+const postTransitionRoutingRemoveGeneralPartnerLegalEntityCheckYourAnswers = {
+  previousUrl: url.WHEN_DID_THE_GENERAL_PARTNER_LEGAL_ENTITY_CEASE_WITH_IDS_URL,
+  currentUrl: url.REMOVE_GENERAL_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_URL,
+  nextUrl: "/",
+  pageType: PostTransitionPageType.removeGeneralPartnerLegalEntityCheckYourAnswers,
+  data: {
+    pageKey: REMOVE_GENERAL_PARTNER_KEY
+  }
+};
+
 const generalPartnerRouting = [
   postTransitionRoutingGeneralPartnerChoice,
   postTransitionRoutingAddGeneralPartnerLegalEntity,
   postTransitionRoutingAddGeneralPartnerPerson,
-  postTransitionRoutingGeneralPartnerCheckYourAnswers
+  postTransitionRoutingGeneralPartnerCheckYourAnswers,
+
+  postTransitionRoutingRemoveGeneralPartnerPerson,
+  postTransitionRoutingRemoveGeneralPartnerPersonCheckYourAnswers,
+
+  postTransitionRoutingRemoveGeneralPartnerLegalEntity,
+  postTransitionRoutingRemoveGeneralPartnerLegalEntityCheckYourAnswers
 ];
 
 export default generalPartnerRouting;

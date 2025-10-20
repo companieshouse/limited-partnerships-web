@@ -6,6 +6,12 @@ import { GeneralPartner } from "@companieshouse/api-sdk-node/dist/services/limit
 import IGeneralPartnerGateway from "../../../domain/IGeneralPartnerGateway";
 import UIErrors, { ApiErrors } from "../../../domain/entities/UIErrors";
 import TransactionGeneralPartner from "../../../domain/entities/TransactionGeneralPartner";
+import {
+  resetFormerNamesIfPreviousNameIsFalse,
+  validateAndFormatPartnerCeaseDate,
+  validateAndFormatPartnerDateEffectiveFrom,
+  validateAndFormatPartnerPersonDateOfBirth
+} from "../utils";
 
 class GeneralPartnerInMemoryGateway implements IGeneralPartnerGateway {
   generalPartnerId = crypto.randomUUID().toString();
@@ -40,6 +46,11 @@ class GeneralPartnerInMemoryGateway implements IGeneralPartnerGateway {
     if (this.uiErrors?.hasErrors()) {
       throw this.uiErrors;
     }
+
+    validateAndFormatPartnerPersonDateOfBirth(data);
+    validateAndFormatPartnerDateEffectiveFrom(data);
+    resetFormerNamesIfPreviousNameIsFalse(data);
+    validateAndFormatPartnerCeaseDate(data);
 
     this.generalPartners.push({
       data
@@ -82,6 +93,11 @@ class GeneralPartnerInMemoryGateway implements IGeneralPartnerGateway {
     if (index === -1) {
       throw new Error(`Not found: ${generalPartnerId}`);
     }
+
+    validateAndFormatPartnerPersonDateOfBirth(data);
+    validateAndFormatPartnerDateEffectiveFrom(data);
+    resetFormerNamesIfPreviousNameIsFalse(data);
+    validateAndFormatPartnerCeaseDate(data);
 
     this.generalPartners[index].data = { ...this.generalPartners[index].data, ...data };
   }

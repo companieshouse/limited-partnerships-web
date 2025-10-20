@@ -63,7 +63,8 @@ describe("Check Your Answers Page", () => {
         "capitalContribution",
         "dateEffectiveFrom",
         "payment",
-        "update"
+        "update",
+        "ceaseDate"
       ]);
       expect(res.text).toContain(enTranslationText.print.buttonText);
       expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
@@ -88,7 +89,8 @@ describe("Check Your Answers Page", () => {
         "capitalContribution",
         "dateEffectiveFrom",
         "payment",
-        "update"
+        "update",
+        "ceaseDate"
       ]);
       expect(res.text).toContain(cyTranslationText.print.buttonText);
       expect(res.text).toContain(cyTranslationText.print.buttonTextNoJs);
@@ -148,7 +150,7 @@ describe("Check Your Answers Page", () => {
 
       expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.partners.limitedPartners.capitalContribution);
 
-      testTranslations(res.text, enTranslationText.checkYourAnswersPage.partners, ["capitalContribution", "dateEffectiveFrom"]);
+      testTranslations(res.text, enTranslationText.checkYourAnswersPage.partners, ["capitalContribution", "dateEffectiveFrom", "ceaseDate"]);
 
       checkIfValuesInText(res, generalPartnerPerson, enTranslationText);
 
@@ -166,7 +168,7 @@ describe("Check Your Answers Page", () => {
 
       expect(res.text).not.toContain(cyTranslationText.checkYourAnswersPage.partners.limitedPartners.capitalContribution);
 
-      testTranslations(res.text, cyTranslationText.checkYourAnswersPage.partners, ["capitalContribution", "dateEffectiveFrom"]);
+      testTranslations(res.text, cyTranslationText.checkYourAnswersPage.partners, ["capitalContribution", "dateEffectiveFrom", "ceaseDate"]);
 
       checkIfValuesInText(res, generalPartnerPerson, cyTranslationText);
 

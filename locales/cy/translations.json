@@ -345,6 +345,26 @@
         "servicesOrGoods" : "WELSH - Services or goods"
      },
 
+    "ceaseDate" : {
+      "dateHint": "WELSH - For example, 27 3 2025",
+      "dateDay" : "WELSH - Day",
+      "dateMonth" : "WELSH - Month",
+      "dateYear" : "WELSH - Year",
+      "publicInformationLine1": "WELSH - We'll show the date on the public register.",
+      "removeConfirmationChecked": "WELSH -I confirm that ",
+
+      "removeGeneralPartner" : {
+        "title": "WELSH - Remove a general partner",
+        "person": {
+            "subTitle": "WELSH - When did this person cease to be a general partner?"
+        },
+        "legalEntity": {
+            "subTitle": "WELSH - When did this entity cease to be a general partner?"            
+        },
+        "removeConfirmationCheckedGeneralPartner": " WELSH - is no longer a general partner"
+      }
+    },
+
     "checkYourAnswersPage" : {
         "title" : "WELSH - Check your answers before sending your application",
         "lpInfo" : "WELSH - Limited partnership information",
@@ -379,7 +399,8 @@
             "generalPartners" : {
                 "title": "WELSH - General partners",
                 "dateEffectiveFrom": "WELSH - Date they became a general partner",
-                "changeRemoveOrAdd": "WELSH - Change, remove or add general partners"
+                "changeRemoveOrAdd": "WELSH - Change, remove or add general partners",
+                "ceaseDate": "WELSH - Date they ceased to be a general partner"
             },
             "limitedPartners" : {
                 "title": "WELSH - Limited partners",
@@ -459,7 +480,8 @@
             "term": "WELSH - We've received your filing to update the term of the partnership for",
             "principalPlaceOfBusinessAddress": "WELSH - We've received your filing to update the principal place of business address for",
             "partner":{
-              "partnerName": "WELSH - We've received your filing to add",
+              "addPartner": "WELSH - We've received your filing to add",
+              "removePartner": "WELSH - We've received your filing to remove",
               "generalPartnerType": "WELSH - as a general partner of",
               "limitedPartnerType": "WELSH - as a limited partner of",
               "updateWontShow": "WELSH - This update will not show on the public register until we accept the filing.",

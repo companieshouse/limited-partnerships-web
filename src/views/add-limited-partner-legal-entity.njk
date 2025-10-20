@@ -102,13 +102,13 @@
             required: true
           }
         }) }}
-
-        {% set countryField = props.data.limitedPartner.data.legal_entity_registration_location %}
-        {% set countryText = i18n.addPartnerLegalEntityPage.countryRegistered %}
+        
         {% set countryFormId = "legal_entity_registration_location" %}
-        {% set countryErrorMessage = props.errors.legal_entity_registration_location if props.errors %}
+        {% set countryText = i18n.addPartnerLegalEntityPage.countryRegistered %}
         {% set countryFont = "govuk-label govuk-label--m"%}
-        {{ macros.getSpecifiedCountryList(i18n, "OVERSEAS", countryFormId, countryText, countryFont, "", countryErrorMessage) }}
+        {% set countryFormValue = props.data.limitedPartner.data.legal_entity_registration_location %}
+        {% set countryErrorMessage = props.errors.legal_entity_registration_location if props.errors %}
+        {{ macros.getSpecifiedCountryList(i18n, "OVERSEAS", countryFormId, countryText, countryFont, countryFormValue, countryErrorMessage) }}
 
         {{ govukInput({
           label: {

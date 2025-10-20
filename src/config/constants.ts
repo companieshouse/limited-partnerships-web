@@ -48,6 +48,8 @@ export const TRANSACTION_DESCRIPTION_ADD_LIMITED_PARTNER_LEGAL_ENTITY = "Add a l
 export const TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_PERSON = "Add a general partner (person)";
 export const TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_LEGAL_ENTITY = "Add a general partner (legal entity)";
 export const TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNERSHIP = "Update limited partnership details";
+export const TRANSACTION_DESCRIPTION_REMOVE_GENERAL_PARTNER_PERSON = "Remove a general partner (person)";
+export const TRANSACTION_DESCRIPTION_REMOVE_GENERAL_PARTNER_LEGAL_ENTITY = "Remove a general partner (legal entity)";
 
 // Templates
 export const ERROR_TEMPLATE = "error-page";
@@ -61,6 +63,7 @@ export const SUBMISSION_ID = "submissionId";
 export const GENERAL_PARTNER_ID = "generalPartnerId";
 export const LIMITED_PARTNER_ID = "limitedPartnerId";
 export const JOURNEY_TYPE_PARAM = ":journeyType";
+export const APPOINTMENT_ID = "appointmentId";
 
 export const YOUR_FILINGS_URL = "/user/transactions";
 
@@ -93,15 +96,20 @@ export const GENERAL_PARTNER_WITH_ID_URL = GENERAL_PARTNER_URL + `/:${GENERAL_PA
 export const LIMITED_PARTNER_URL = `/limited-partner`;
 export const LIMITED_PARTNER_WITH_ID_URL = LIMITED_PARTNER_URL + `/:${LIMITED_PARTNER_ID}`;
 
+export const APPOINTMENT_ID_URL = `/appointment/:${APPOINTMENT_ID}`;
+
 export const ACCOUNTS_SIGN_OUT_URL = `${ACCOUNT_URL}/signout`;
 
-// Date of update
+// Date of update - Cease date
 export const DATE_OF_UPDATE_TYPE_PREFIX = "when-did";
 export const DATE_OF_UPDATE_TEMPLATE = "date-of-update";
+export const CEASE_DATE_TEMPLATE = "cease-date";
 
 // Check your answer
 export const CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX = "change-check-your-answers";
 export const CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE = "limited-partnership-change-check-your-answers";
+export const REMOVE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX = "remove-check-your-answers";
+export const REMOVE_CHECK_YOUR_ANSWERS_TEMPLATE = "partner-remove-check-your-answers";
 
 // services
 export const SDK_LIMITED_PARTNERSHIP_SERVICE = "limitedPartnershipsService";

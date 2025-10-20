@@ -346,6 +346,26 @@
        "anyOtherAsset" : "Any other asset"   
     },
 
+    "ceaseDate" : {
+      "dateHint": "For example, 27 3 2025",
+      "dateDay" : "Day",
+      "dateMonth" : "Month",
+      "dateYear" : "Year",
+      "publicInformationLine1": "We'll show the date on the public register.",
+      "removeConfirmationChecked": "I confirm that ",
+
+      "removeGeneralPartner" : {
+        "title": "Remove a general partner",
+        "person": {
+            "subTitle": "When did this person cease to be a general partner?"
+        },
+        "legalEntity": {
+            "subTitle": "When did this entity cease to be a general partner?"            
+        },
+        "removeConfirmationCheckedGeneralPartner": " is no longer a general partner"
+      }
+    },
+
     "checkYourAnswersPage" : {
         "title" : "Check your answers before sending your application",
         "lpInfo" : "Limited partnership information",
@@ -380,7 +400,8 @@
             "generalPartners" : {
                 "title": "General partners",
                 "dateEffectiveFrom": "Date they became a general partner",
-                "changeRemoveOrAdd": "Change, remove or add general partners"
+                "changeRemoveOrAdd": "Change, remove or add general partners",
+                "ceaseDate": "Date they ceased to be a general partner"
             },
             "limitedPartners" : {
                 "title": "Limited partners",
@@ -460,7 +481,8 @@
             "term": "We've received your filing to update the term of the partnership for",
             "principalPlaceOfBusinessAddress": "We've received your filing to update the principal place of business address for",
             "partner": {
-              "partnerName": "We've received your filing to add",
+              "addPartner": "We've received your filing to add",
+              "removePartner": "We've received your filing to remove",
               "generalPartnerType": "as a general partner of",
               "limitedPartnerType": "as a limited partner of",
               "updateWontShow": "This update will not show on the public register until we accept the filing.",
