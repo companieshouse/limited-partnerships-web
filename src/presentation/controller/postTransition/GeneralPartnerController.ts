@@ -116,31 +116,28 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
           const isCeaseDate: boolean = pageRouting.currentUrl.endsWith("cease");
           const url = isCeaseDate ? CEASE_DATE_TEMPLATE : pageRouting.currentUrl;
 
+          let data;
           if (isCeaseDate) {
-            response.render(
-              super.templateName(url),
-              super.makeProps(
-                pageRouting,
-                {
-                  limitedPartnership: limitedPartnershipResult?.limitedPartnership,
-                  partner: resultAppointment.partner
-                },
-                result.errors
-              )
-            );
+            data = {
+              limitedPartnership: limitedPartnershipResult?.limitedPartnership,
+              partner: resultAppointment.partner
+            };
           } else {
-            response.render(
-              super.templateName(url),
-              super.makeProps(
-                pageRouting,
-                {
-                  limitedPartnership: limitedPartnershipResult?.limitedPartnership,
-                  generalPartner: { data: request.body }
-                },
-                result.errors
-              )
-            );
+            data = {
+              limitedPartnership: limitedPartnershipResult?.limitedPartnership,
+              generalPartner: { data: request.body }
+            };
           }
+
+          response.render(
+            super.templateName(url),
+            super.makeProps(
+              pageRouting,
+              data,
+              result.errors
+            )
+          );
+
           return;
         }
 

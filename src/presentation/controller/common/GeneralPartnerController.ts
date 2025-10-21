@@ -264,32 +264,29 @@ abstract class GeneralPartnerController extends AbstractController {
           const isCeaseDatePage: boolean = pageRouting.currentUrl.endsWith("cease");
           const url = isCeaseDatePage ? CEASE_DATE_TEMPLATE : pageRouting.currentUrl;
 
+          let data;
           if (isCeaseDatePage) {
             const generalPartner = await this.generalPartnerService.getGeneralPartner(tokens, ids.transactionId, ids.generalPartnerId);
-            response.render(
-              super.templateName(url),
-              super.makeProps(
-                pageRouting,
-                {
-                  limitedPartnership,
-                  partner: generalPartner
-                },
-                result.errors
-              )
-            );
+            data = {
+              limitedPartnership,
+              partner: generalPartner
+            };
           } else {
-            response.render(
-              super.templateName(url),
-              super.makeProps(
-                pageRouting,
-                {
-                  limitedPartnership,
-                  generalPartner: { data: request.body }
-                },
-                result.errors
-              )
-            );
+            data = {
+              limitedPartnership,
+              generalPartner: { data: request.body }
+            };
           }
+
+          response.render(
+            super.templateName(url),
+            super.makeProps(
+              pageRouting,
+              data,
+              result.errors
+            )
+          );
+
           return;
         }
 
