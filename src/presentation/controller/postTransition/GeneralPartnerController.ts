@@ -83,8 +83,9 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
 
         let result: any = {};
 
+        let resultAppointment;
         if (data?.needAppointment) {
-          const resultAppointment = await this.companyService?.buildPartnerFromCompanyAppointment(
+          resultAppointment = await this.companyService?.buildPartnerFromCompanyAppointment(
             tokens,
             ids.companyId,
             ids.appointmentId
@@ -112,19 +113,34 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
 
         if (result.errors) {
           super.resetFormerNamesIfPreviousNameIsFalse(request.body);
-          const url = pageRouting.currentUrl.endsWith("cease") ? CEASE_DATE_TEMPLATE : pageRouting.currentUrl;
-          response.render(
-            super.templateName(url),
-            super.makeProps(
-              pageRouting,
-              {
-                limitedPartnership: limitedPartnershipResult?.limitedPartnership,
-                generalPartner: { data: request.body }
-              },
-              result.errors
-            )
-          );
+          const isCeaseDate: boolean = pageRouting.currentUrl.endsWith("cease");
+          const url = isCeaseDate ? CEASE_DATE_TEMPLATE : pageRouting.currentUrl;
 
+          if (isCeaseDate) {
+            response.render(
+              super.templateName(url),
+              super.makeProps(
+                pageRouting,
+                {
+                  limitedPartnership: limitedPartnershipResult?.limitedPartnership,
+                  partner: resultAppointment.partner
+                },
+                result.errors
+              )
+            );
+          } else {
+            response.render(
+              super.templateName(url),
+              super.makeProps(
+                pageRouting,
+                {
+                  limitedPartnership: limitedPartnershipResult?.limitedPartnership,
+                  generalPartner: { data: request.body }
+                },
+                result.errors
+              )
+            );
+          }
           return;
         }
 
