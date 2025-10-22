@@ -83,8 +83,9 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
 
         let result: any = {};
 
+        let resultAppointment;
         if (data?.needAppointment) {
-          const resultAppointment = await this.companyService?.buildPartnerFromCompanyAppointment(
+          resultAppointment = await this.companyService?.buildPartnerFromCompanyAppointment(
             tokens,
             ids.companyId,
             ids.appointmentId
@@ -112,15 +113,29 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
 
         if (result.errors) {
           super.resetFormerNamesIfPreviousNameIsFalse(request.body);
-          const url = pageRouting.currentUrl.endsWith("cease") ? CEASE_DATE_TEMPLATE : pageRouting.currentUrl;
+          const isCeaseDatePage: boolean = pageRouting.currentUrl.endsWith("cease");
+
+          let data;
+          let url;
+          if (isCeaseDatePage) {
+            data = {
+              limitedPartnership: limitedPartnershipResult?.limitedPartnership,
+              partner: resultAppointment.partner
+            };
+            url = CEASE_DATE_TEMPLATE;
+          } else {
+            data = {
+              limitedPartnership: limitedPartnershipResult?.limitedPartnership,
+              generalPartner: { data: request.body }
+            };
+            url = pageRouting.currentUrl;
+          }
+
           response.render(
             super.templateName(url),
             super.makeProps(
               pageRouting,
-              {
-                limitedPartnership: limitedPartnershipResult?.limitedPartnership,
-                generalPartner: { data: request.body }
-              },
+              data,
               result.errors
             )
           );

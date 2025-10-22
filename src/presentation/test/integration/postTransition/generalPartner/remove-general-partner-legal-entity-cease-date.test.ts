@@ -96,6 +96,8 @@ describe("General Partner cease date page", () => {
       });
 
       expect(res.status).toBe(200);
+      expect(res.text).toContain("41");
+      expect(res.text).toContain("Test Partner Appointment");
       expect(res.text).toContain(errorMessage);
     });
   });
