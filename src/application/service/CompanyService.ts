@@ -166,10 +166,12 @@ class CompanyService {
       generalPartners:
         this.addAppointmentId(companyOfficers, company_number).filter(
           (officer) => officer.officerRole === "general-partner-in-a-limited-partnership"
+            || officer.officerRole === "corporate-general-partner-in-a-limited-partnership"
         ) || [],
       limitedPartners:
         this.addAppointmentId(companyOfficers, company_number).filter(
           (officer) => officer.officerRole === "limited-partner-in-a-limited-partnership"
+            || officer.officerRole === "corporate-limited-partner-in-a-limited-partnership"
         ) || []
     };
     return partners;
