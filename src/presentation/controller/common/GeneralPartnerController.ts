@@ -260,7 +260,9 @@ abstract class GeneralPartnerController extends AbstractController {
           }
 
           await this.conditionalPreviousUrl(ids, pageRouting, request, tokens);
-          const isCeaseDatePage: boolean = pageRouting.currentUrl.endsWith("cease");
+          const isCeaseDatePage: boolean =
+            pageType === PostTransitionPageType.whenDidTheGeneralPartnerPersonCease ||
+            pageType === PostTransitionPageType.whenDidTheGeneralPartnerLegalEntityCease;
 
           let data;
           let url;
@@ -268,7 +270,8 @@ abstract class GeneralPartnerController extends AbstractController {
             const generalPartner = await this.generalPartnerService.getGeneralPartner(tokens, ids.transactionId, ids.generalPartnerId);
             data = {
               limitedPartnership,
-              partner: generalPartner
+              partner: generalPartner,
+              ...request.body
             };
             url = CEASE_DATE_TEMPLATE;
           } else {
