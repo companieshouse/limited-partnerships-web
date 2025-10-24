@@ -113,14 +113,17 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
 
         if (result.errors) {
           super.resetFormerNamesIfPreviousNameIsFalse(request.body);
-          const isCeaseDatePage: boolean = pageRouting.currentUrl.endsWith("cease");
+          const isCeaseDatePage: boolean =
+            pageType === PostTransitionPageType.whenDidTheGeneralPartnerPersonCease ||
+            pageType === PostTransitionPageType.whenDidTheGeneralPartnerLegalEntityCease;
 
           let data;
           let url;
           if (isCeaseDatePage) {
             data = {
               limitedPartnership: limitedPartnershipResult?.limitedPartnership,
-              partner: resultAppointment.partner
+              partner: resultAppointment.partner,
+              ...request.body
             };
             url = CEASE_DATE_TEMPLATE;
           } else {
