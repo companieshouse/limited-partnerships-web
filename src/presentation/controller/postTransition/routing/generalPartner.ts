@@ -82,6 +82,18 @@ const postTransitionRoutingRemoveGeneralPartnerLegalEntityCheckYourAnswers = {
   }
 };
 
+const REMOVE_LIMITED_PARTNER_KEY = "removeLimitedPartner";
+
+const postTransitionRoutingRemoveLimitedPartnerLegalEntity = {
+  previousUrl: url.LANDING_PAGE_URL,
+  currentUrl: url.WHEN_DID_THE_LIMITED_PARTNER_LEGAL_ENTITY_CEASE_URL,
+  nextUrl: url.REMOVE_LIMITED_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_URL,
+  pageType: PostTransitionPageType.whenDidTheLimitedPartnerLegalEntityCease,
+  data: {
+    titleKey: REMOVE_LIMITED_PARTNER_KEY
+  }
+};
+
 const generalPartnerRouting = [
   postTransitionRoutingGeneralPartnerChoice,
   postTransitionRoutingAddGeneralPartnerLegalEntity,
@@ -92,7 +104,8 @@ const generalPartnerRouting = [
   postTransitionRoutingRemoveGeneralPartnerPersonCheckYourAnswers,
 
   postTransitionRoutingRemoveGeneralPartnerLegalEntity,
-  postTransitionRoutingRemoveGeneralPartnerLegalEntityCheckYourAnswers
+  postTransitionRoutingRemoveGeneralPartnerLegalEntityCheckYourAnswers,
+  postTransitionRoutingRemoveLimitedPartnerLegalEntity
 ];
 
 export default generalPartnerRouting;

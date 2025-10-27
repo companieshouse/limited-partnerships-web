@@ -16,7 +16,7 @@ import { IncorporationKind, PartnerKind } from "@companieshouse/api-sdk-node/dis
 import PostTransitionPageType from "../postTransition/pageType";
 import postTransitionRouting from "../postTransition/routing";
 import { CONFIRMATION_POST_TRANSITION_URL } from "../global/url";
-import { JOURNEY_TYPE_PARAM, TRANSACTION_DESCRIPTION_ADD_LIMITED_PARTNER_LEGAL_ENTITY, TRANSACTION_DESCRIPTION_ADD_LIMITED_PARTNER_PERSON } from "../../../config/constants";
+import { CEASE_DATE_TEMPLATE, JOURNEY_TYPE_PARAM } from "../../../config/constants";
 import { getJourneyTypes } from "../../../utils/journey";
 
 class LimitedPartnerPostTransitionController extends LimitedPartnerController {
@@ -40,7 +40,17 @@ class LimitedPartnerPostTransitionController extends LimitedPartnerController {
     });
   }
 
-  createLimitedPartner() {
+  createLimitedPartner(data?: {
+    person: {
+      description: string;
+      kind: PartnerKind;
+    };
+    legalEntity: {
+      description: string;
+      kind: PartnerKind;
+    };
+    needAppointment?: boolean;
+  }) {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const { tokens, ids } = super.extract(request);
@@ -49,7 +59,9 @@ class LimitedPartnerPostTransitionController extends LimitedPartnerController {
 
         const limitedPartnershipResult = await this.companyService?.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId);
 
-        const isLegalEntity = pageType === PostTransitionPageType.addLimitedPartnerLegalEntity;
+        const isLegalEntity =
+          pageType === PostTransitionPageType.addLimitedPartnerLegalEntity ||
+          pageType === PostTransitionPageType.whenDidTheLimitedPartnerLegalEntityCease;
 
         const limitedPartnershipData = limitedPartnershipResult?.limitedPartnership?.data;
 
@@ -60,25 +72,63 @@ class LimitedPartnerPostTransitionController extends LimitedPartnerController {
             companyName: limitedPartnershipData?.partnership_name ?? "",
             companyNumber: limitedPartnershipData?.partnership_number ?? ""
           },
-          isLegalEntity ? TRANSACTION_DESCRIPTION_ADD_LIMITED_PARTNER_LEGAL_ENTITY : TRANSACTION_DESCRIPTION_ADD_LIMITED_PARTNER_PERSON
+          isLegalEntity ? data?.legalEntity.description : data?.person.description
         );
 
-        const result = await this.limitedPartnerService.createLimitedPartner(tokens, resultTransaction.transactionId, {
-          ...request.body,
-          kind: isLegalEntity ? PartnerKind.ADD_LIMITED_PARTNER_LEGAL_ENTITY : PartnerKind.ADD_LIMITED_PARTNER_PERSON
-        });
+        let result: any = {};
+
+        let resultAppointment;
+        if (data?.needAppointment) {
+          resultAppointment = await this.companyService?.buildPartnerFromCompanyAppointment(
+            tokens,
+            ids.companyId,
+            ids.appointmentId
+          );
+
+          result = await this.limitedPartnerService.createLimitedPartner(tokens, resultTransaction.transactionId, {
+            ...request.body,
+
+            forename: resultAppointment?.partner.data?.forename,
+            surname: resultAppointment?.partner.data?.surname,
+            legal_entity_name: resultAppointment?.partner.data?.legal_entity_name,
+            date_of_birth: resultAppointment?.partner.data?.date_of_birth,
+            appointment_id: ids.appointmentId,
+            kind: isLegalEntity
+              ? PartnerKind.REMOVE_LIMITED_PARTNER_LEGAL_ENTITY
+              : PartnerKind.REMOVE_LIMITED_PARTNER_PERSON
+          });
+        } else {
+          result = await this.limitedPartnerService.createLimitedPartner(tokens, resultTransaction.transactionId, {
+            ...request.body,
+            kind: isLegalEntity ? data?.legalEntity.kind : data?.person.kind
+          });
+        }
 
         if (result.errors) {
           super.resetFormerNamesIfPreviousNameIsFalse(request.body);
+          const isCeaseDatePage: boolean = pageRouting.currentUrl.endsWith("cease");
+
+          let data;
+          let url;
+          if (isCeaseDatePage) {
+            data = {
+              limitedPartnership: limitedPartnershipResult?.limitedPartnership,
+              partner: resultAppointment.partner
+            };
+            url = CEASE_DATE_TEMPLATE;
+          } else {
+            data = {
+              limitedPartnership: limitedPartnershipResult?.limitedPartnership,
+              limitedPartner: { data: request.body }
+            };
+            url = pageRouting.currentUrl;
+          }
 
           response.render(
-            super.templateName(pageRouting.currentUrl),
+            super.templateName(url),
             super.makeProps(
               pageRouting,
-              {
-                limitedPartnership: limitedPartnershipResult?.limitedPartnership,
-                limitedPartner: { data: request.body }
-              },
+              data,
               result.errors
             )
           );
@@ -106,6 +156,45 @@ class LimitedPartnerPostTransitionController extends LimitedPartnerController {
       confirmLimitedPartnerUsualResidentialAddressUrl: CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
       confirmLimitedPartnerPrincipalOfficeAddressUrl: CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
     });
+  }
+
+  getCeaseDate() {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { ids, pageType, tokens } = super.extract(request);
+        const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
+
+        let limitedPartnership = {};
+        let partner = {};
+
+        if (this.companyService) {
+          const { limitedPartnership: lp } = await this.companyService.buildLimitedPartnershipFromCompanyProfile(
+            tokens,
+            ids.companyId
+          );
+
+          limitedPartnership = lp;
+
+          if (ids.appointmentId) {
+            const { partner: pt } = await this.companyService.buildPartnerFromCompanyAppointment(
+              tokens,
+              ids.companyId,
+              ids.appointmentId
+            );
+
+            partner = pt;
+          }
+        }
+
+        if (ids.limitedPartnerId) {
+          partner = await this.limitedPartnerService.getLimitedPartner(tokens, ids.transactionId, ids.limitedPartnerId);
+        }
+
+        response.render(CEASE_DATE_TEMPLATE, super.makeProps(pageRouting, { limitedPartnership, partner }, null));
+      } catch (error) {
+        next(error);
+      }
+    };
   }
 
   postCheckYourAnswers() {

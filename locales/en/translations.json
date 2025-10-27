@@ -363,6 +363,10 @@
             "subTitle": "When did this entity cease to be a general partner?"            
         },
         "removeConfirmationCheckedGeneralPartner": " is no longer a general partner"
+      },
+      
+      "removeLimitedPartner" : {
+        "title": "Remove a limited partner"
       }
     },
 
