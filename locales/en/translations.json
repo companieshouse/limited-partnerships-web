@@ -366,7 +366,11 @@
       },
       
       "removeLimitedPartner" : {
-        "title": "Remove a limited partner"
+        "title": "Remove a limited partner",
+        "legalEntity": {
+            "subTitle": "When did this entity cease to be a limited partner?"            
+        },
+        "removeConfirmationCheckedLimitedPartner": " is no longer a limited partner"
       }
     },
 

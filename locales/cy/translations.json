@@ -365,7 +365,11 @@
       },
 
       "removeLimitedPartner" : {
-        "title": "WELSH - Remove a limited partner"
+        "title": "WELSH - Remove a limited partner",
+         "legalEntity": {
+            "subTitle": "WELSH - When did this entity cease to be a limited partner?"            
+        },
+        "removeConfirmationCheckedLimitedPartner": "WELSH - is no longer a limited partner"
       }
     },
 

@@ -24,6 +24,13 @@
   {% set pageTitle = i18n.ceaseDate[props.data.titleKey].legalEntity.subTitle %}
 {% endif %}
 
+{% set checkboxText = "" %}
+{% if props.data.titleKey === "removeLimitedPartner" %}
+  {% set checkboxText = i18n.ceaseDate.removeConfirmationChecked + name + i18n.ceaseDate[props.data.titleKey].removeConfirmationCheckedLimitedPartner %}
+{% else %}
+  {% set checkboxText = i18n.ceaseDate.removeConfirmationChecked + name + i18n.ceaseDate[props.data.titleKey].removeConfirmationCheckedGeneralPartner %}
+{% endif %}
+
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -88,7 +95,7 @@
           items: [
             {
               value: "true",
-              text: i18n.ceaseDate.removeConfirmationChecked + name + i18n.ceaseDate[props.data.titleKey].removeConfirmationCheckedGeneralPartner,
+              text: checkboxText,
               attributes: {
                 required: true
               }
