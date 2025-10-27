@@ -49,6 +49,8 @@ import {
 import {
   TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_LEGAL_ENTITY,
   TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_PERSON,
+  TRANSACTION_DESCRIPTION_ADD_LIMITED_PARTNER_LEGAL_ENTITY,
+  TRANSACTION_DESCRIPTION_ADD_LIMITED_PARTNER_PERSON,
   TRANSACTION_DESCRIPTION_REMOVE_GENERAL_PARTNER_LEGAL_ENTITY,
   TRANSACTION_DESCRIPTION_REMOVE_GENERAL_PARTNER_PERSON,
   TRANSACTION_DESCRIPTION_REMOVE_LIMITED_PARTNER_LEGAL_ENTITY,
@@ -177,7 +179,16 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
   router.post(
     ADD_LIMITED_PARTNER_PERSON_URL,
     companyAuthentication,
-    dependencies.limitedPartnerPostTransitionController.createLimitedPartner()
+    dependencies.limitedPartnerPostTransitionController.createLimitedPartner({
+      person: {
+        description: TRANSACTION_DESCRIPTION_ADD_LIMITED_PARTNER_PERSON,
+        kind: PartnerKind.ADD_LIMITED_PARTNER_PERSON
+      },
+      legalEntity: {
+        description: TRANSACTION_DESCRIPTION_ADD_LIMITED_PARTNER_LEGAL_ENTITY,
+        kind: PartnerKind.ADD_LIMITED_PARTNER_LEGAL_ENTITY
+      }
+    })
   );
 
   router.get(
@@ -199,7 +210,16 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
   router.post(
     ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
     companyAuthentication,
-    dependencies.limitedPartnerPostTransitionController.createLimitedPartner()
+    dependencies.limitedPartnerPostTransitionController.createLimitedPartner({
+      person: {
+        description: TRANSACTION_DESCRIPTION_ADD_LIMITED_PARTNER_PERSON,
+        kind: PartnerKind.ADD_LIMITED_PARTNER_PERSON
+      },
+      legalEntity: {
+        description: TRANSACTION_DESCRIPTION_ADD_LIMITED_PARTNER_LEGAL_ENTITY,
+        kind: PartnerKind.ADD_LIMITED_PARTNER_LEGAL_ENTITY
+      }
+    })
   );
 
   router.get(
