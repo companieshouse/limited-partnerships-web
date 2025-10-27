@@ -361,7 +361,7 @@
         "legalEntity": {
             "subTitle": "WELSH - When did this entity cease to be a general partner?"            
         },
-        "removeConfirmationCheckedGeneralPartner": " WELSH - is no longer a general partner"
+        "removeConfirmationChecked": " WELSH - is no longer a general partner"
       },
 
       "removeLimitedPartner" : {
@@ -369,7 +369,7 @@
          "legalEntity": {
             "subTitle": "WELSH - When did this entity cease to be a limited partner?"            
         },
-        "removeConfirmationCheckedLimitedPartner": "WELSH - is no longer a limited partner"
+        "removeConfirmationChecked": "WELSH - is no longer a limited partner"
       }
     },
 

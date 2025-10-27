@@ -362,7 +362,7 @@
         "legalEntity": {
             "subTitle": "When did this entity cease to be a general partner?"            
         },
-        "removeConfirmationCheckedGeneralPartner": " is no longer a general partner"
+        "removeConfirmationChecked": " is no longer a general partner"
       },
       
       "removeLimitedPartner" : {
@@ -370,7 +370,7 @@
         "legalEntity": {
             "subTitle": "When did this entity cease to be a limited partner?"            
         },
-        "removeConfirmationCheckedLimitedPartner": " is no longer a limited partner"
+        "removeConfirmationChecked": " is no longer a limited partner"
       }
     },
 

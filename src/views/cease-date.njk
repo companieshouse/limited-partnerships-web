@@ -24,13 +24,6 @@
   {% set pageTitle = i18n.ceaseDate[props.data.titleKey].legalEntity.subTitle %}
 {% endif %}
 
-{% set checkboxText = "" %}
-{% if props.data.titleKey === "removeLimitedPartner" %}
-  {% set checkboxText = i18n.ceaseDate.removeConfirmationChecked + name + i18n.ceaseDate[props.data.titleKey].removeConfirmationCheckedLimitedPartner %}
-{% else %}
-  {% set checkboxText = i18n.ceaseDate.removeConfirmationChecked + name + i18n.ceaseDate[props.data.titleKey].removeConfirmationCheckedGeneralPartner %}
-{% endif %}
-
 {% if props.data.remove_confirmation_checked is defined %}
   {% set remove_confirmation_checked = props.data.remove_confirmation_checked == "true" or props.data.remove_confirmation_checked == true %}
 {% elif props.data.partner.data.remove_confirmation_checked is defined %}
@@ -101,7 +94,7 @@
           items: [
             {
               value: "true",
-              text: checkboxText,
+              text: i18n.ceaseDate.removeConfirmationChecked + name + i18n.ceaseDate[props.data.titleKey].removeConfirmationChecked,
               attributes: {
                 required: true
               },
