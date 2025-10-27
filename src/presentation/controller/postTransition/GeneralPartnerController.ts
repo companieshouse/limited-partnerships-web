@@ -113,33 +113,19 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
 
         if (result.errors) {
           super.resetFormerNamesIfPreviousNameIsFalse(request.body);
-          const isCeaseDatePage: boolean = pageRouting.currentUrl.endsWith("cease");
 
-          let data;
-          let url;
-          if (isCeaseDatePage) {
-            data = {
-              limitedPartnership: limitedPartnershipResult?.limitedPartnership,
-              partner: resultAppointment.partner
-            };
-            url = CEASE_DATE_TEMPLATE;
-          } else {
-            data = {
-              limitedPartnership: limitedPartnershipResult?.limitedPartnership,
-              generalPartner: { data: request.body }
-            };
-            url = pageRouting.currentUrl;
-          }
+          const { data: renderData, url } = this.buildGeneralPartnerErrorRenderData(
+            pageType,
+            pageRouting,
+            limitedPartnershipResult,
+            resultAppointment,
+            request.body
+          );
 
           response.render(
             super.templateName(url),
-            super.makeProps(
-              pageRouting,
-              data,
-              result.errors
-            )
+            super.makeProps(pageRouting, renderData, result.errors)
           );
-
           return;
         }
 
@@ -156,6 +142,37 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
         next(error);
       }
     };
+  }
+
+  private buildGeneralPartnerErrorRenderData(
+    pageType: string,
+    pageRouting: any,
+    limitedPartnershipResult: any,
+    resultAppointment: any,
+    requestBody: any
+  ) {
+    const isCeaseDatePage =
+      pageType === PostTransitionPageType.whenDidTheGeneralPartnerPersonCease ||
+      pageType === PostTransitionPageType.whenDidTheGeneralPartnerLegalEntityCease;
+
+    if (isCeaseDatePage) {
+      return {
+        data: {
+          limitedPartnership: limitedPartnershipResult?.limitedPartnership,
+          partner: resultAppointment?.partner,
+          ...requestBody
+        },
+        url: CEASE_DATE_TEMPLATE
+      };
+    } else {
+      return {
+        data: {
+          limitedPartnership: limitedPartnershipResult?.limitedPartnership,
+          generalPartner: { data: requestBody }
+        },
+        url: pageRouting.currentUrl
+      };
+    }
   }
 
   sendPageData() {

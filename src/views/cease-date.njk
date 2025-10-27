@@ -1,16 +1,16 @@
 {% extends "layout.njk" %}
 
-{% if props.data.partner.data.cease_date  %}
-  {# This is for when saved data is pre-populated on the page #}
+{% if props.data["cease_date-year"] %}
+  {# This covers the scenario when date validation fails and the page reloads #}
+  {% set cease_date_year = props.data["cease_date-year"] %}
+  {% set cease_date_month = props.data["cease_date-month"] %}
+  {% set cease_date_day = props.data["cease_date-day"] %}
+{% elif props.data.partner.data.cease_date  %}
+  {# And this is for when saved data is pre-populated on the page #}
   {% set cease_date = props.data.partner.data.cease_date %}
   {% set cease_date_year = cease_date[0] + cease_date[1] + cease_date[2] + cease_date[3] %}
   {% set cease_date_month = cease_date[5] + cease_date[6] %}
   {% set cease_date_day = cease_date[8] + cease_date[9] %}
-{% elif props.data.partner.data["cease_date-year"] %}
-  {# And this covers the scenario when date validation fails and the page reloads #}
-  {% set cease_date_year = props.data.partner.data["cease_date-year"] %}
-  {% set cease_date_month = props.data.partner.data["cease_date-month"] %}
-  {% set cease_date_day = props.data.partner.data["cease_date-day"] %}
 {% endif %}
 
 {% set publicRegisterInformationLine1 = i18n.ceaseDate.publicInformationLine1 %}
@@ -29,6 +29,12 @@
   {% set checkboxText = i18n.ceaseDate.removeConfirmationChecked + name + i18n.ceaseDate[props.data.titleKey].removeConfirmationCheckedLimitedPartner %}
 {% else %}
   {% set checkboxText = i18n.ceaseDate.removeConfirmationChecked + name + i18n.ceaseDate[props.data.titleKey].removeConfirmationCheckedGeneralPartner %}
+{% endif %}
+
+{% if props.data.remove_confirmation_checked is defined %}
+  {% set remove_confirmation_checked = props.data.remove_confirmation_checked == "true" or props.data.remove_confirmation_checked == true %}
+{% elif props.data.partner.data.remove_confirmation_checked is defined %}
+  {% set remove_confirmation_checked = props.data.partner.data.remove_confirmation_checked == "true" or props.data.partner.data.remove_confirmation_checked == true %}
 {% endif %}
 
 {% block content %}
@@ -98,7 +104,8 @@
               text: checkboxText,
               attributes: {
                 required: true
-              }
+              },
+              checked: true if remove_confirmation_checked
             }
           ]
         }) }}
