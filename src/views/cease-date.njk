@@ -6,11 +6,11 @@
   {% set cease_date_year = cease_date[0] + cease_date[1] + cease_date[2] + cease_date[3] %}
   {% set cease_date_month = cease_date[5] + cease_date[6] %}
   {% set cease_date_day = cease_date[8] + cease_date[9] %}
-{% elif props.data.partner.data["cease_date-year"] %}
+{% elif props.data["cease_date-year"] %}
   {# And this covers the scenario when date validation fails and the page reloads #}
-  {% set cease_date_year = props.data.partner.data["cease_date-year"] %}
-  {% set cease_date_month = props.data.partner.data["cease_date-month"] %}
-  {% set cease_date_day = props.data.partner.data["cease_date-day"] %}
+  {% set cease_date_year = props.data["cease_date-year"] %}
+  {% set cease_date_month = props.data["cease_date-month"] %}
+  {% set cease_date_day = props.data["cease_date-day"] %}
 {% endif %}
 
 {% set publicRegisterInformationLine1 = i18n.ceaseDate.publicInformationLine1 %}
@@ -38,6 +38,7 @@
       <h2 class="govuk-heading-l" >{{pageTitle}}</h2>
 
       <form class="form" method="post">
+        {{ props.data | dump}}
         <input type="hidden" name="pageType" value={{ props.pageType }}> 
         {% include "includes/csrf_token.njk" %}
 
@@ -88,10 +89,11 @@
           items: [
             {
               value: "true",
-              text: i18n.ceaseDate.removeConfirmationChecked + name + i18n.ceaseDate[props.data.titleKey].removeConfirmationCheckedGeneralPartner,
+              text: i18n.ceaseDate.removeConfirmationChecked + name + i18n.ceaseDate[props.data.titleKey].removeConfirmationChecked,
               attributes: {
                 required: true
-              }
+              },
+              checked: true if props.data.remove_confirmation_checked == "true"  or props.data.remove_confirmation_checked == true else false
             }
           ]
         }) }}
