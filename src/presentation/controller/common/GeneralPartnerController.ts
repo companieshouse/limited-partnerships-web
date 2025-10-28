@@ -260,6 +260,7 @@ abstract class GeneralPartnerController extends AbstractController {
           }
 
           await this.conditionalPreviousUrl(ids, pageRouting, request, tokens);
+
           const isCeaseDatePage: boolean =
             pageType === PostTransitionPageType.whenDidTheGeneralPartnerPersonCease ||
             pageType === PostTransitionPageType.whenDidTheGeneralPartnerLegalEntityCease;
