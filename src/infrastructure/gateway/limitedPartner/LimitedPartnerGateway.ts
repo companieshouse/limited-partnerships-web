@@ -11,7 +11,8 @@ import {
   validateAndFormatPartnerPersonDateOfBirth,
   removeEmptyStringValues,
   validateAndFormatPartnerDateEffectiveFrom,
-  resetFormerNamesIfPreviousNameIsFalse
+  resetFormerNamesIfPreviousNameIsFalse,
+  validateAndFormatPartnerCeaseDate
 } from "../utils";
 
 class LimitedPartnerGateway implements ILimitedPartnerGateway {
@@ -23,6 +24,7 @@ class LimitedPartnerGateway implements ILimitedPartnerGateway {
     validateAndFormatPartnerPersonDateOfBirth(data);
     validateAndFormatPartnerDateEffectiveFrom(data);
     resetFormerNamesIfPreviousNameIsFalse(data);
+    validateAndFormatPartnerCeaseDate(data);
 
     const limitedPartner: LimitedPartner = { data: removeEmptyStringValues(data) };
 
@@ -92,6 +94,7 @@ class LimitedPartnerGateway implements ILimitedPartnerGateway {
     validateAndFormatPartnerPersonDateOfBirth(data);
     validateAndFormatPartnerDateEffectiveFrom(data);
     resetFormerNamesIfPreviousNameIsFalse(data);
+    validateAndFormatPartnerCeaseDate(data);
 
     const apiCall = {
       service: SDK_LIMITED_PARTNERSHIP_SERVICE,

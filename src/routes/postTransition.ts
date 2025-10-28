@@ -51,7 +51,9 @@ import {
   TRANSACTION_DESCRIPTION_ADD_LIMITED_PARTNER_LEGAL_ENTITY,
   TRANSACTION_DESCRIPTION_ADD_LIMITED_PARTNER_PERSON,
   TRANSACTION_DESCRIPTION_REMOVE_GENERAL_PARTNER_LEGAL_ENTITY,
-  TRANSACTION_DESCRIPTION_REMOVE_GENERAL_PARTNER_PERSON
+  TRANSACTION_DESCRIPTION_REMOVE_GENERAL_PARTNER_PERSON,
+  TRANSACTION_DESCRIPTION_REMOVE_LIMITED_PARTNER_LEGAL_ENTITY,
+  TRANSACTION_DESCRIPTION_REMOVE_LIMITED_PARTNER_PERSON
 } from "../config/constants";
 
 const postTransitionEndpoints = (router: Router, dependencies: IDependencies): void => {
@@ -512,6 +514,21 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
     WHEN_DID_THE_LIMITED_PARTNER_PERSON_CEASE_URL,
     companyAuthentication,
     dependencies.limitedPartnerPostTransitionController.getCeaseDate()
+  );
+  router.post(
+    WHEN_DID_THE_LIMITED_PARTNER_PERSON_CEASE_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.createLimitedPartner({
+      person: {
+        description: TRANSACTION_DESCRIPTION_REMOVE_LIMITED_PARTNER_PERSON,
+        kind: PartnerKind.REMOVE_LIMITED_PARTNER_PERSON
+      },
+      legalEntity: {
+        description: TRANSACTION_DESCRIPTION_REMOVE_LIMITED_PARTNER_LEGAL_ENTITY,
+        kind: PartnerKind.REMOVE_LIMITED_PARTNER_LEGAL_ENTITY
+      },
+      needAppointment: true
+    })
   );
 };
 

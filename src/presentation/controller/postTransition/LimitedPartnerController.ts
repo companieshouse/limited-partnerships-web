@@ -59,7 +59,9 @@ class LimitedPartnerPostTransitionController extends LimitedPartnerController {
 
         const limitedPartnershipResult = await this.companyService?.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId);
 
-        const isLegalEntity = pageType === PostTransitionPageType.addLimitedPartnerLegalEntity;
+        const isLegalEntity =
+          pageType === PostTransitionPageType.addLimitedPartnerLegalEntity ||
+          pageType === PostTransitionPageType.whenDidTheLimitedPartnerLegalEntityCease;
 
         const limitedPartnershipData = limitedPartnershipResult?.limitedPartnership?.data;
 
@@ -101,21 +103,20 @@ class LimitedPartnerPostTransitionController extends LimitedPartnerController {
           });
         }
 
-        // todo finish the method - compare with general partner controller
-
         if (result.errors) {
           super.resetFormerNamesIfPreviousNameIsFalse(request.body);
 
+          const { data: renderData, url } = this.buildLimitedPartnerErrorRenderData(
+            pageType,
+            pageRouting,
+            limitedPartnershipResult,
+            resultAppointment,
+            request.body
+          );
+
           response.render(
-            super.templateName(pageRouting.currentUrl),
-            super.makeProps(
-              pageRouting,
-              {
-                limitedPartnership: limitedPartnershipResult?.limitedPartnership,
-                limitedPartner: { data: request.body }
-              },
-              result.errors
-            )
+            super.templateName(url),
+            super.makeProps(pageRouting, renderData, result.errors)
           );
 
           return;
@@ -134,6 +135,37 @@ class LimitedPartnerPostTransitionController extends LimitedPartnerController {
         next(error);
       }
     };
+  }
+
+  private buildLimitedPartnerErrorRenderData(
+    pageType: string,
+    pageRouting: any,
+    limitedPartnershipResult: any,
+    resultAppointment: any,
+    requestBody: any
+  ) {
+    const isCeaseDatePage =
+      pageType === PostTransitionPageType.whenDidTheLimitedPartnerPersonCease ||
+      pageType === PostTransitionPageType.whenDidTheLimitedPartnerLegalEntityCease;
+
+    if (isCeaseDatePage) {
+      return {
+        data: {
+          limitedPartnership: limitedPartnershipResult?.limitedPartnership,
+          partner: resultAppointment?.partner,
+          ...requestBody
+        },
+        url: CEASE_DATE_TEMPLATE
+      };
+    } else {
+      return {
+        data: {
+          limitedPartnership: limitedPartnershipResult?.limitedPartnership,
+          limitedPartner: { data: requestBody }
+        },
+        url: pageRouting.currentUrl
+      };
+    }
   }
 
   sendPageData() {
