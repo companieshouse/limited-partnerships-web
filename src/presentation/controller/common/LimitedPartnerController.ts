@@ -20,7 +20,6 @@ import postTransitionRouting from "../postTransition/routing";
 
 import CompanyService from "../../../application/service/CompanyService";
 import { formatDate } from "../../../utils/date-format";
-import { CEASE_DATE_TEMPLATE } from "config/constants";
 
 class LimitedPartnerController extends AbstractController {
   constructor(
@@ -264,35 +263,23 @@ class LimitedPartnerController extends AbstractController {
 
           await this.conditionalPreviousUrl(ids, pageRouting, request, tokens);
 
-          const isCeaseDatePage: boolean =
-            pageType === PostTransitionPageType.whenDidTheLimitedPartnerPersonCease ||
-            pageType === PostTransitionPageType.whenDidTheLimitedPartnerLegalEntityCease;
-
-          let data;
-          let url;
-          if (isCeaseDatePage) {
-            const limitedPartner = await this.limitedPartnerService.getLimitedPartner(tokens, ids.transactionId, ids.limitedPartnerId);
-            data = {
-              limitedPartnership,
-              partner: limitedPartner,
-              ...request.body
-            };
-            url = CEASE_DATE_TEMPLATE;
-          } else {
-            data = {
-              limitedPartnership,
-              limitedPartner: { data: request.body }
-            };
-            url = pageRouting.currentUrl;
+          let limitedPartner = {};
+          if (this.isCeaseDatePage(pageType)) {
+            limitedPartner = await this.limitedPartnerService.getLimitedPartner(tokens, ids.transactionId, ids.limitedPartnerId);
           }
+
+          const { data: renderData, url } = this.buildPartnerErrorRenderData(
+            pageType,
+            pageRouting,
+            limitedPartnership,
+            limitedPartner,
+            request.body,
+            "limitedPartner"
+          );
 
           response.render(
             super.templateName(url),
-            super.makeProps(
-              pageRouting,
-              data,
-              result.errors
-            )
+            super.makeProps(pageRouting, renderData, result.errors)
           );
           return;
         }

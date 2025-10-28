@@ -106,12 +106,13 @@ class LimitedPartnerPostTransitionController extends LimitedPartnerController {
         if (result.errors) {
           super.resetFormerNamesIfPreviousNameIsFalse(request.body);
 
-          const { data: renderData, url } = this.buildLimitedPartnerErrorRenderData(
+          const { data: renderData, url } = this.buildPartnerErrorRenderData(
             pageType,
             pageRouting,
-            limitedPartnershipResult,
-            resultAppointment,
-            request.body
+            limitedPartnershipResult?.limitedPartnership,
+            resultAppointment?.partner,
+            request.body,
+            "limitedPartner"
           );
 
           response.render(
@@ -135,37 +136,6 @@ class LimitedPartnerPostTransitionController extends LimitedPartnerController {
         next(error);
       }
     };
-  }
-
-  private buildLimitedPartnerErrorRenderData(
-    pageType: string,
-    pageRouting: any,
-    limitedPartnershipResult: any,
-    resultAppointment: any,
-    requestBody: any
-  ) {
-    const isCeaseDatePage =
-      pageType === PostTransitionPageType.whenDidTheLimitedPartnerPersonCease ||
-      pageType === PostTransitionPageType.whenDidTheLimitedPartnerLegalEntityCease;
-
-    if (isCeaseDatePage) {
-      return {
-        data: {
-          limitedPartnership: limitedPartnershipResult?.limitedPartnership,
-          partner: resultAppointment?.partner,
-          ...requestBody
-        },
-        url: CEASE_DATE_TEMPLATE
-      };
-    } else {
-      return {
-        data: {
-          limitedPartnership: limitedPartnershipResult?.limitedPartnership,
-          limitedPartner: { data: requestBody }
-        },
-        url: pageRouting.currentUrl
-      };
-    }
   }
 
   sendPageData() {

@@ -1,8 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 import { Session } from "@companieshouse/node-session-handler";
+import { GeneralPartner, LimitedPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import {
   APPOINTMENT_ID,
+  CEASE_DATE_TEMPLATE,
   COMPANY_ID,
   GENERAL_PARTNER_ID,
   LIMITED_PARTNER_ID,
@@ -18,6 +20,7 @@ import PageType from "./PageType";
 import { WHICH_TYPE_URL } from "./registration/url";
 import UIErrors from "../../domain/entities/UIErrors";
 import { Ids, Tokens } from "../../domain/types";
+import PostTransitionPageType from "./postTransition/pageType";
 
 abstract class AbstractController {
   protected getRouting(routing: PagesRouting, pageType: PageType, request: Request) {
@@ -226,6 +229,41 @@ abstract class AbstractController {
         next(error);
       }
     };
+  }
+
+  protected buildPartnerErrorRenderData(
+    pageType: string,
+    pageRouting: PageRouting,
+    limitedPartnership: any,
+    partner: LimitedPartner | GeneralPartner,
+    requestBody: any,
+    partnerFieldName: "limitedPartner" | "generalPartner"
+  ) {
+    if (this.isCeaseDatePage(pageType)) {
+      return {
+        data: {
+          limitedPartnership,
+          partner,
+          ...requestBody
+        },
+        url: CEASE_DATE_TEMPLATE
+      };
+    } else {
+      return {
+        data: {
+          limitedPartnership,
+          [partnerFieldName]: { data: requestBody }
+        },
+        url: pageRouting.currentUrl
+      };
+    }
+  }
+
+  protected isCeaseDatePage(pageType: string) {
+    return pageType === PostTransitionPageType.whenDidTheLimitedPartnerPersonCease ||
+      pageType === PostTransitionPageType.whenDidTheLimitedPartnerLegalEntityCease ||
+      pageType === PostTransitionPageType.whenDidTheGeneralPartnerPersonCease ||
+      pageType === PostTransitionPageType.whenDidTheGeneralPartnerLegalEntityCease;
   }
 }
 

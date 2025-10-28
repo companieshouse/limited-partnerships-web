@@ -21,7 +21,6 @@ import postTransitionRouting from "../postTransition/routing";
 import CompanyService from "../../../application/service/CompanyService";
 
 import { formatDate } from "../../../utils/date-format";
-import { CEASE_DATE_TEMPLATE } from "../../../config";
 
 abstract class GeneralPartnerController extends AbstractController {
   constructor(
@@ -261,35 +260,23 @@ abstract class GeneralPartnerController extends AbstractController {
 
           await this.conditionalPreviousUrl(ids, pageRouting, request, tokens);
 
-          const isCeaseDatePage: boolean =
-            pageType === PostTransitionPageType.whenDidTheGeneralPartnerPersonCease ||
-            pageType === PostTransitionPageType.whenDidTheGeneralPartnerLegalEntityCease;
-
-          let data;
-          let url;
-          if (isCeaseDatePage) {
-            const generalPartner = await this.generalPartnerService.getGeneralPartner(tokens, ids.transactionId, ids.generalPartnerId);
-            data = {
-              limitedPartnership,
-              partner: generalPartner,
-              ...request.body
-            };
-            url = CEASE_DATE_TEMPLATE;
-          } else {
-            data = {
-              limitedPartnership,
-              generalPartner: { data: request.body }
-            };
-            url = pageRouting.currentUrl;
+          let generalPartner = {};
+          if (this.isCeaseDatePage(pageType)) {
+            generalPartner = await this.generalPartnerService.getGeneralPartner(tokens, ids.transactionId, ids.generalPartnerId);
           }
+
+          const { data: renderData, url } = this.buildPartnerErrorRenderData(
+            pageType,
+            pageRouting,
+            limitedPartnership,
+            generalPartner,
+            request.body,
+            "generalPartner"
+          );
 
           response.render(
             super.templateName(url),
-            super.makeProps(
-              pageRouting,
-              data,
-              result.errors
-            )
+            super.makeProps(pageRouting, renderData, result.errors)
           );
 
           return;
