@@ -12,7 +12,7 @@ import UIErrors from "../../../domain/entities/UIErrors";
 import { getJourneyTypes } from "../../../utils/journey";
 import RegistrationPageType from "../registration/PageType";
 import TransitionPageType from "../transition/PageType";
-import PostTransitionPageType from "../postTransition/pageType";
+import PostTransitionPageType, { isCeaseDatePage } from "../postTransition/pageType";
 
 import registrationRouting from "../registration/Routing";
 import transitionRouting from "../transition/Routing";
@@ -261,7 +261,7 @@ abstract class GeneralPartnerController extends AbstractController {
           await this.conditionalPreviousUrl(ids, pageRouting, request, tokens);
 
           let generalPartner = {};
-          if (this.isCeaseDatePage(pageType)) {
+          if (isCeaseDatePage(pageType)) {
             generalPartner = await this.generalPartnerService.getGeneralPartner(tokens, ids.transactionId, ids.generalPartnerId);
           }
 

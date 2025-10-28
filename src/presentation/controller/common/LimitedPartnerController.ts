@@ -12,7 +12,7 @@ import { getJourneyTypes } from "../../../utils/journey";
 
 import RegistrationPageType from "../registration/PageType";
 import TransitionPageType from "../transition/PageType";
-import PostTransitionPageType from "../postTransition/pageType";
+import PostTransitionPageType, { isCeaseDatePage } from "../postTransition/pageType";
 
 import registrationRouting from "../registration/Routing";
 import transitionRouting from "../transition/Routing";
@@ -264,7 +264,7 @@ class LimitedPartnerController extends AbstractController {
           await this.conditionalPreviousUrl(ids, pageRouting, request, tokens);
 
           let limitedPartner = {};
-          if (this.isCeaseDatePage(pageType)) {
+          if (isCeaseDatePage(pageType)) {
             limitedPartner = await this.limitedPartnerService.getLimitedPartner(tokens, ids.transactionId, ids.limitedPartnerId);
           }
 

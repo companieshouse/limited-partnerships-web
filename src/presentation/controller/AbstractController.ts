@@ -20,7 +20,7 @@ import PageType from "./PageType";
 import { WHICH_TYPE_URL } from "./registration/url";
 import UIErrors from "../../domain/entities/UIErrors";
 import { Ids, Tokens } from "../../domain/types";
-import PostTransitionPageType from "./postTransition/pageType";
+import { isCeaseDatePage } from "./postTransition/pageType";
 
 abstract class AbstractController {
   protected getRouting(routing: PagesRouting, pageType: PageType, request: Request) {
@@ -239,7 +239,7 @@ abstract class AbstractController {
     requestBody: any,
     partnerFieldName: "limitedPartner" | "generalPartner"
   ) {
-    if (this.isCeaseDatePage(pageType)) {
+    if (isCeaseDatePage(pageType)) {
       return {
         data: {
           limitedPartnership,
@@ -257,13 +257,6 @@ abstract class AbstractController {
         url: pageRouting.currentUrl
       };
     }
-  }
-
-  protected isCeaseDatePage(pageType: string) {
-    return pageType === PostTransitionPageType.whenDidTheLimitedPartnerPersonCease ||
-      pageType === PostTransitionPageType.whenDidTheLimitedPartnerLegalEntityCease ||
-      pageType === PostTransitionPageType.whenDidTheGeneralPartnerPersonCease ||
-      pageType === PostTransitionPageType.whenDidTheGeneralPartnerLegalEntityCease;
   }
 }
 
