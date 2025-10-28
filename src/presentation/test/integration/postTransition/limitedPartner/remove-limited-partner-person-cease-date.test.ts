@@ -16,7 +16,7 @@ import {
 import CompanyAppointmentBuilder from "../../../builder/CompanyAppointmentBuilder";
 import PostTransitionPageType from "../../../../controller/postTransition/pageType";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
-import LimitedPartnerBuilder from "presentation/test/builder/LimitedPartnerBuilder";
+import LimitedPartnerBuilder from "../../../../../presentation/test/builder/LimitedPartnerBuilder";
 
 describe("Limited Partner Person cease date page", () => {
   const URL = getUrl(WHEN_DID_THE_LIMITED_PARTNER_PERSON_CEASE_URL);
