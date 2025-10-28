@@ -47,7 +47,7 @@ enum PostTransitionPageType {
   whenDidTheLimitedPartnerLegalEntityCease = `${DATE_OF_UPDATE_TYPE_PREFIX}-the-limited-partner-legal-entity-cease`
 }
 
-export const CeaseDatePageTypes: string[] = [
+const CeaseDatePageTypes: string[] = [
   PostTransitionPageType.whenDidTheGeneralPartnerPersonCease,
   PostTransitionPageType.whenDidTheGeneralPartnerLegalEntityCease,
   PostTransitionPageType.whenDidTheLimitedPartnerPersonCease,
