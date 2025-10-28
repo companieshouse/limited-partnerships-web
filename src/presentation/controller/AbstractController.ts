@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { Session } from "@companieshouse/node-session-handler";
-import { GeneralPartner, LimitedPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { GeneralPartner, LimitedPartner, LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import {
   APPOINTMENT_ID,
@@ -21,6 +21,7 @@ import { WHICH_TYPE_URL } from "./registration/url";
 import UIErrors from "../../domain/entities/UIErrors";
 import { Ids, Tokens } from "../../domain/types";
 import { isCeaseDatePage } from "./postTransition/pageType";
+import DataIncludingPartners from "../../application/service/CompanyService";
 
 abstract class AbstractController {
   protected getRouting(routing: PagesRouting, pageType: PageType, request: Request) {
@@ -234,7 +235,7 @@ abstract class AbstractController {
   protected buildPartnerErrorRenderData(
     pageType: string,
     pageRouting: PageRouting,
-    limitedPartnership: any,
+    limitedPartnership: Partial<LimitedPartnership & DataIncludingPartners> | undefined,
     partner: LimitedPartner | GeneralPartner,
     requestBody: any,
     partnerFieldName: "limitedPartner" | "generalPartner"
