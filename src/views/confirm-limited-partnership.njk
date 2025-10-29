@@ -9,7 +9,7 @@
     <div class="govuk-grid-column-two-thirds-from-desktop">
       {% include "includes/errors.njk" %}
 
-      <form class="form" action={{ props.currentUrl }} method="post">
+      <form class="form" method="post">
         <input type="hidden" name="pageType" value={{ props.pageType }}> 
         {% include "includes/csrf_token.njk" %}
 

@@ -13,7 +13,7 @@
   {% set addressItems = addressItems.concat([newItem]) %}
 {% endfor %}
 
-<form class="form" action={{ props.currentUrl }} method="post">
+<form class="form" method="post">
     <input type="hidden" name="pageType" value={{ props.pageType }}>
     {% include "includes/csrf_token.njk" %}
 
