@@ -5,7 +5,7 @@
 
 <p class="govuk-body">{{ i18n.whereIsTheJurisdiction.scotland.ifNotScotland }}</p>
       
-<form class="form" action={{ props.currentUrl }} method="post">
+<form class="form" method="post">
   <input type="hidden" name="pageType" value={{ props.pageType }}>  
   <input type="hidden" name="jurisdiction" value="scotland">
   {% include "includes/csrf_token.njk" %}

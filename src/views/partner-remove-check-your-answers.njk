@@ -22,7 +22,7 @@
       <span class="govuk-caption-l"> {{ name }} </span>
       <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
 
-      <form class="form" action={{ props.currentUrl }} method="post">
+      <form class="form" method="post">
        {% include "includes/csrf_token.njk" %}
 
        {% include "pages/checkYourAnswersChange/" + props.data.pageKey + ".njk" %}
