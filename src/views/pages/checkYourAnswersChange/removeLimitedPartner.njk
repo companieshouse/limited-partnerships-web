@@ -1,0 +1,29 @@
+{% set dateChangeUrl = "when-did-the-limited-partner-person-cease"  %}
+
+{% if props.data.partner.data.legal_entity_name %}
+    {% set dateChangeUrl = "when-did-the-limited-partner-legal-entity-cease" %}
+{% endif %}
+
+{{ govukSummaryList({
+    classes: "govuk-!-margin-bottom-7",
+    rows: [
+        {
+            key: {
+                text: i18n.checkYourAnswersPage.partners.limitedPartners.ceaseDate
+            },
+            value: {
+                text: props.data.partner.data.cease_date
+            },
+            actions: {
+            items: [
+                    CREATE_CHANGE_LINK(
+                    i18n.checkYourAnswersPage.change,
+                    (props.currentUrl | replace(props.pageType, dateChangeUrl)),
+                    cease_date,
+                    "remove-limited-partner-name-button"
+                    )
+                ]
+            }
+        }
+    ]
+}) }}

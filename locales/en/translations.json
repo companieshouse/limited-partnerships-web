@@ -418,7 +418,8 @@
                 "title": "Limited partners",
                 "dateEffectiveFrom": "Date they became a limited partner",
                 "changeRemoveOrAdd": "Change, remove or add limited partners",
-                "capitalContribution": "Total capital contribution"
+                "capitalContribution": "Total capital contribution",
+                "ceaseDate": "Date they ceased to be a limited partner"
             },
             "person": {
                 "name": "Name",

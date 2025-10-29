@@ -52,6 +52,16 @@ const postTransitionRoutingRemoveLimitedPartnerPerson = {
   }
 };
 
+const postTransitionRoutingRemoveLimitedPartnerPersonCheckYourAnswers = {
+  previousUrl: url.WHEN_DID_THE_LIMITED_PARTNER_PERSON_CEASE_WITH_IDS_URL,
+  currentUrl: url.REMOVE_LIMITED_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL,
+  nextUrl: "/",
+  pageType: PostTransitionPageType.removeLimitedPartnerPersonCheckYourAnswers,
+  data: {
+    pageKey: REMOVE_LIMITED_PARTNER_KEY
+  }
+};
+
 const limitedPartnerRouting = [
   postTransitionRoutingLimitedPartnerChoice,
   postTransitionRoutingAddLimitedPartnerPerson,
@@ -59,6 +69,7 @@ const limitedPartnerRouting = [
   postTransitionRoutingLimitedPartnerCheckYourAnswers,
 
   postTransitionRoutingRemoveLimitedPartnerPerson,
+  postTransitionRoutingRemoveLimitedPartnerPersonCheckYourAnswers
 ];
 
 export default limitedPartnerRouting;
