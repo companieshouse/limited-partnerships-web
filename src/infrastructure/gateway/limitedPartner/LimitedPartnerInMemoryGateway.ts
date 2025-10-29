@@ -6,6 +6,7 @@ import { LimitedPartner } from "@companieshouse/api-sdk-node/dist/services/limit
 import ILimitedPartnerGateway from "../../../domain/ILimitedPartnerGateway";
 import UIErrors, { ApiErrors } from "../../../domain/entities/UIErrors";
 import TransactionLimitedPartner from "../../../domain/entities/TransactionLimitedPartner";
+import { resetFormerNamesIfPreviousNameIsFalse, validateAndFormatPartnerCeaseDate, validateAndFormatPartnerDateEffectiveFrom, validateAndFormatPartnerPersonDateOfBirth } from "../utils";
 
 class LimitedPartnerInMemoryGateway implements ILimitedPartnerGateway {
   limitedPartnerId = crypto.randomUUID().toString();
@@ -40,6 +41,12 @@ class LimitedPartnerInMemoryGateway implements ILimitedPartnerGateway {
     if (this.uiErrors?.hasErrors()) {
       throw this.uiErrors;
     }
+
+    validateAndFormatPartnerPersonDateOfBirth(data);
+    validateAndFormatPartnerDateEffectiveFrom(data);
+    resetFormerNamesIfPreviousNameIsFalse(data);
+    validateAndFormatPartnerCeaseDate(data);
+    
 
     this.limitedPartners.push({
       data
@@ -82,6 +89,11 @@ class LimitedPartnerInMemoryGateway implements ILimitedPartnerGateway {
     if (index === -1) {
       throw new Error(`Not found: ${limitedPartnerId}`);
     }
+
+    validateAndFormatPartnerPersonDateOfBirth(data);
+    validateAndFormatPartnerDateEffectiveFrom(data);
+    resetFormerNamesIfPreviousNameIsFalse(data);
+    validateAndFormatPartnerCeaseDate(data);
 
     this.limitedPartners[index].data = { ...this.limitedPartners[index].data, ...data };
   }

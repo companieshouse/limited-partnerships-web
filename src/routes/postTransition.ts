@@ -42,13 +42,19 @@ import {
   REMOVE_GENERAL_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL,
   WHEN_DID_THE_GENERAL_PARTNER_LEGAL_ENTITY_CEASE_URL,
   REMOVE_GENERAL_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_URL,
-  WHEN_DID_THE_GENERAL_PARTNER_LEGAL_ENTITY_CEASE_WITH_IDS_URL
+  WHEN_DID_THE_GENERAL_PARTNER_LEGAL_ENTITY_CEASE_WITH_IDS_URL,
+  WHEN_DID_THE_LIMITED_PARTNER_PERSON_CEASE_URL,
+  WHEN_DID_THE_LIMITED_PARTNER_PERSON_CEASE_WITH_IDS_URL
 } from "../presentation/controller/postTransition/url";
 import {
   TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_LEGAL_ENTITY,
   TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_PERSON,
+  TRANSACTION_DESCRIPTION_ADD_LIMITED_PARTNER_LEGAL_ENTITY,
+  TRANSACTION_DESCRIPTION_ADD_LIMITED_PARTNER_PERSON,
   TRANSACTION_DESCRIPTION_REMOVE_GENERAL_PARTNER_LEGAL_ENTITY,
-  TRANSACTION_DESCRIPTION_REMOVE_GENERAL_PARTNER_PERSON
+  TRANSACTION_DESCRIPTION_REMOVE_GENERAL_PARTNER_PERSON,
+  TRANSACTION_DESCRIPTION_REMOVE_LIMITED_PARTNER_LEGAL_ENTITY,
+  TRANSACTION_DESCRIPTION_REMOVE_LIMITED_PARTNER_PERSON
 } from "../config/constants";
 
 const postTransitionEndpoints = (router: Router, dependencies: IDependencies): void => {
@@ -173,7 +179,16 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
   router.post(
     ADD_LIMITED_PARTNER_PERSON_URL,
     companyAuthentication,
-    dependencies.limitedPartnerPostTransitionController.createLimitedPartner()
+    dependencies.limitedPartnerPostTransitionController.createLimitedPartner({
+      person: {
+        description: TRANSACTION_DESCRIPTION_ADD_LIMITED_PARTNER_PERSON,
+        kind: PartnerKind.ADD_LIMITED_PARTNER_PERSON
+      },
+      legalEntity: {
+        description: TRANSACTION_DESCRIPTION_ADD_LIMITED_PARTNER_LEGAL_ENTITY,
+        kind: PartnerKind.ADD_LIMITED_PARTNER_LEGAL_ENTITY
+      }
+    })
   );
 
   router.get(
@@ -195,7 +210,16 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
   router.post(
     ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
     companyAuthentication,
-    dependencies.limitedPartnerPostTransitionController.createLimitedPartner()
+    dependencies.limitedPartnerPostTransitionController.createLimitedPartner({
+      person: {
+        description: TRANSACTION_DESCRIPTION_ADD_LIMITED_PARTNER_PERSON,
+        kind: PartnerKind.ADD_LIMITED_PARTNER_PERSON
+      },
+      legalEntity: {
+        description: TRANSACTION_DESCRIPTION_ADD_LIMITED_PARTNER_LEGAL_ENTITY,
+        kind: PartnerKind.ADD_LIMITED_PARTNER_LEGAL_ENTITY
+      }
+    })
   );
 
   router.get(
@@ -420,6 +444,7 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
       needAppointment: true
     })
   );
+
   router.get(
     WHEN_DID_THE_GENERAL_PARTNER_PERSON_CEASE_WITH_IDS_URL,
     companyAuthentication,
@@ -483,6 +508,39 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
     REMOVE_GENERAL_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_URL,
     companyAuthentication,
     dependencies.generalPartnerPostTransitionController.postCheckYourAnswers()
+  );
+
+  // Remove limited partner
+  router.get(
+    WHEN_DID_THE_LIMITED_PARTNER_PERSON_CEASE_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.getCeaseDate()
+  );
+  router.post(
+    WHEN_DID_THE_LIMITED_PARTNER_PERSON_CEASE_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.createLimitedPartner({
+      person: {
+        description: TRANSACTION_DESCRIPTION_REMOVE_LIMITED_PARTNER_PERSON,
+        kind: PartnerKind.REMOVE_LIMITED_PARTNER_PERSON
+      },
+      legalEntity: {
+        description: TRANSACTION_DESCRIPTION_REMOVE_LIMITED_PARTNER_LEGAL_ENTITY,
+        kind: PartnerKind.REMOVE_LIMITED_PARTNER_LEGAL_ENTITY
+      },
+      needAppointment: true
+    })
+  );
+
+  router.get(
+    WHEN_DID_THE_LIMITED_PARTNER_PERSON_CEASE_WITH_IDS_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.getCeaseDate()
+  );
+  router.post(
+    WHEN_DID_THE_LIMITED_PARTNER_PERSON_CEASE_WITH_IDS_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.sendPageData()
   );
 };
 

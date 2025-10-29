@@ -114,12 +114,13 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
         if (result.errors) {
           super.resetFormerNamesIfPreviousNameIsFalse(request.body);
 
-          const { data: renderData, url } = this.buildGeneralPartnerErrorRenderData(
+          const { data: renderData, url } = this.buildPartnerErrorRenderData(
             pageType,
             pageRouting,
-            limitedPartnershipResult,
-            resultAppointment,
-            request.body
+            limitedPartnershipResult?.limitedPartnership,
+            resultAppointment?.partner,
+            request.body,
+            "generalPartner"
           );
 
           response.render(
@@ -142,37 +143,6 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
         next(error);
       }
     };
-  }
-
-  private buildGeneralPartnerErrorRenderData(
-    pageType: string,
-    pageRouting: any,
-    limitedPartnershipResult: any,
-    resultAppointment: any,
-    requestBody: any
-  ) {
-    const isCeaseDatePage =
-      pageType === PostTransitionPageType.whenDidTheGeneralPartnerPersonCease ||
-      pageType === PostTransitionPageType.whenDidTheGeneralPartnerLegalEntityCease;
-
-    if (isCeaseDatePage) {
-      return {
-        data: {
-          limitedPartnership: limitedPartnershipResult?.limitedPartnership,
-          partner: resultAppointment?.partner,
-          ...requestBody
-        },
-        url: CEASE_DATE_TEMPLATE
-      };
-    } else {
-      return {
-        data: {
-          limitedPartnership: limitedPartnershipResult?.limitedPartnership,
-          generalPartner: { data: requestBody }
-        },
-        url: pageRouting.currentUrl
-      };
-    }
   }
 
   sendPageData() {
