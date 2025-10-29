@@ -32,7 +32,9 @@
         </legend>
 
         <p class="govuk-hint">{{ titleHint1 }}</p>
-        <p class="govuk-hint">{{ titleHint2 }}</p>
+        {% if not journeyTypes.isPostTransition %}
+          <p class="govuk-hint">{{ titleHint2 }}</p>
+        {% endif %}
       </fieldset>
 
       <form class="form" method="post">
