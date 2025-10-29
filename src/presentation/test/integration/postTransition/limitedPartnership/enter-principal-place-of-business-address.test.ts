@@ -46,7 +46,8 @@ describe("Enter Principal Place Of Business Address Page", () => {
         "principalOfficeAddress",
         "errorMessages",
         "titleHint3",
-        "newRequirement"
+        "newRequirement",
+        "titleHint2"
       ]);
       expect(res.text).not.toContain("WELSH -");
 
@@ -71,7 +72,8 @@ describe("Enter Principal Place Of Business Address Page", () => {
         "principalOfficeAddress",
         "errorMessages",
         "titleHint3",
-        "newRequirement"
+        "newRequirement",
+        "titleHint2"
       ]);
     });
   });
@@ -340,9 +342,7 @@ describe("Enter Principal Place Of Business Address Page", () => {
   });
 
   it("should not return a validation error when jurisdiction is overseas", async () => {
-    const limitedPartnership = new LimitedPartnershipBuilder()
-      .withJurisdiction(Jurisdiction.ENGLAND_AND_WALES)
-      .build();
+    const limitedPartnership = new LimitedPartnershipBuilder().withJurisdiction(Jurisdiction.ENGLAND_AND_WALES).build();
 
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 

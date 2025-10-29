@@ -45,7 +45,9 @@ import {
   WHEN_DID_THE_GENERAL_PARTNER_LEGAL_ENTITY_CEASE_WITH_IDS_URL,
   WHEN_DID_THE_LIMITED_PARTNER_PERSON_CEASE_URL,
   WHEN_DID_THE_LIMITED_PARTNER_PERSON_CEASE_WITH_IDS_URL,
-  REMOVE_LIMITED_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL
+  REMOVE_LIMITED_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL,
+  WHEN_DID_THE_LIMITED_PARTNER_LEGAL_ENTITY_CEASE_WITH_IDS_URL,
+  WHEN_DID_THE_LIMITED_PARTNER_LEGAL_ENTITY_CEASE_URL
 } from "../presentation/controller/postTransition/url";
 import {
   TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_LEGAL_ENTITY,
@@ -553,6 +555,38 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
     REMOVE_LIMITED_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL,
     companyAuthentication,
     dependencies.limitedPartnerPostTransitionController.postCheckYourAnswers()
+  );
+
+  router.get(
+    WHEN_DID_THE_LIMITED_PARTNER_LEGAL_ENTITY_CEASE_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.getCeaseDate()
+  );
+  router.post(
+    WHEN_DID_THE_LIMITED_PARTNER_LEGAL_ENTITY_CEASE_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.createLimitedPartner({
+      person: {
+        description: TRANSACTION_DESCRIPTION_REMOVE_LIMITED_PARTNER_PERSON,
+        kind: PartnerKind.REMOVE_LIMITED_PARTNER_PERSON
+      },
+      legalEntity: {
+        description: TRANSACTION_DESCRIPTION_REMOVE_LIMITED_PARTNER_LEGAL_ENTITY,
+        kind: PartnerKind.REMOVE_LIMITED_PARTNER_LEGAL_ENTITY
+      },
+      needAppointment: true
+    })
+  );
+
+  router.get(
+    WHEN_DID_THE_LIMITED_PARTNER_LEGAL_ENTITY_CEASE_WITH_IDS_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.getCeaseDate()
+  );
+  router.post(
+    WHEN_DID_THE_LIMITED_PARTNER_LEGAL_ENTITY_CEASE_WITH_IDS_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.sendPageData()
   );
 };
 
