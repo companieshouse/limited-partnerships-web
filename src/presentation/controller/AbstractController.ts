@@ -21,10 +21,7 @@ import { WHICH_TYPE_URL } from "./registration/url";
 import UIErrors from "../../domain/entities/UIErrors";
 import { Ids, Tokens } from "../../domain/types";
 import { isCeaseDatePage } from "./postTransition/pageType";
-import CompanyService, { DataIncludingPartners } from "../../application/service/CompanyService";
-import { postTransitionRouting } from "./postTransition/routing";
-import GeneralPartnerService from "../../application/service/GeneralPartnerService";
-import LimitedPartnerService from "../../application/service/LimitedPartnerService";
+import DataIncludingPartners from "../../application/service/CompanyService";
 
 abstract class AbstractController {
   protected getRouting(routing: PagesRouting, pageType: PageType, request: Request) {
@@ -261,51 +258,6 @@ abstract class AbstractController {
         url: pageRouting.currentUrl
       };
     }
-  }
-
-  protected getCeaseDate(
-    companyService: CompanyService | undefined,
-    partnerService: GeneralPartnerService | LimitedPartnerService
-  ) {
-    return async (request: Request, response: Response, next: NextFunction) => {
-      try {
-        const { ids, pageType, tokens } = this.extract(request);
-        const pageRouting = this.getRouting(postTransitionRouting, pageType, request);
-
-        let limitedPartnership = {};
-        let partner = {};
-
-        if (companyService) {
-          const { limitedPartnership: lp } = await companyService.buildLimitedPartnershipFromCompanyProfile(
-            tokens,
-            ids.companyId
-          );
-
-          limitedPartnership = lp;
-
-          if (ids.appointmentId) {
-            const { partner: pt } = await companyService.buildPartnerFromCompanyAppointment(
-              tokens,
-              ids.companyId,
-              ids.appointmentId
-            );
-
-            partner = pt;
-          }
-        }
-
-        if (ids.generalPartnerId) {
-          partner = await (partnerService as GeneralPartnerService).getGeneralPartner(tokens, ids.transactionId, ids.generalPartnerId);
-        }
-        if (ids.limitedPartnerId) {
-          partner = await (partnerService as LimitedPartnerService).getLimitedPartner(tokens, ids.transactionId, ids.limitedPartnerId);
-        }
-
-        response.render(CEASE_DATE_TEMPLATE, this.makeProps(pageRouting, { limitedPartnership, partner }, null));
-      } catch (error) {
-        next(error);
-      }
-    };
   }
 }
 

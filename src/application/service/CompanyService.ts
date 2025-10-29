@@ -15,7 +15,7 @@ import { extractAPIErrors } from "./utils";
 import { CompanyOfficer } from "@companieshouse/api-sdk-node/dist/services/company-officers/types";
 import { Tokens } from "../../domain/types";
 
-export type DataIncludingPartners = {
+type DataIncludingPartners = {
   data: LimitedPartnership["data"] & { partners?: CompanyOfficer[]; limitedPartners?: CompanyOfficer[] };
 };
 

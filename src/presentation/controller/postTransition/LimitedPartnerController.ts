@@ -16,7 +16,7 @@ import { IncorporationKind, PartnerKind } from "@companieshouse/api-sdk-node/dis
 import PostTransitionPageType from "../postTransition/pageType";
 import postTransitionRouting from "../postTransition/routing";
 import { CONFIRMATION_POST_TRANSITION_URL } from "../global/url";
-import { JOURNEY_TYPE_PARAM, REMOVE_CHECK_YOUR_ANSWERS_TEMPLATE } from "../../../config/constants";
+import { CEASE_DATE_TEMPLATE, JOURNEY_TYPE_PARAM, REMOVE_CHECK_YOUR_ANSWERS_TEMPLATE } from "../../../config/constants";
 import { getJourneyTypes } from "../../../utils/journey";
 import { formatDate } from "../../../utils/date-format";
 
@@ -147,10 +147,42 @@ class LimitedPartnerPostTransitionController extends LimitedPartnerController {
   }
 
   getCeaseDate() {
-    return super.getCeaseDate(
-      this.companyService,
-      this.limitedPartnerService
-    );
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { ids, pageType, tokens } = super.extract(request);
+        const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
+
+        let limitedPartnership = {};
+        let partner = {};
+
+        if (this.companyService) {
+          const { limitedPartnership: lp } = await this.companyService.buildLimitedPartnershipFromCompanyProfile(
+            tokens,
+            ids.companyId
+          );
+
+          limitedPartnership = lp;
+
+          if (ids.appointmentId) {
+            const { partner: pt } = await this.companyService.buildPartnerFromCompanyAppointment(
+              tokens,
+              ids.companyId,
+              ids.appointmentId
+            );
+
+            partner = pt;
+          }
+        }
+
+        if (ids.limitedPartnerId) {
+          partner = await this.limitedPartnerService.getLimitedPartner(tokens, ids.transactionId, ids.limitedPartnerId);
+        }
+
+        response.render(CEASE_DATE_TEMPLATE, super.makeProps(pageRouting, { limitedPartnership, partner }, null));
+      } catch (error) {
+        next(error);
+      }
+    };
   }
 
   getCheckYourAnswersPageRouting() {
