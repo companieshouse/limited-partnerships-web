@@ -36,6 +36,8 @@ describe("Remove limited partner person check your answers page", () => {
       expect(res.text).toContain(limitedPartner.data?.forename + " " + limitedPartner.data?.surname);
       expect(res.text).toContain(enTranslationText.checkYourAnswersPage.partners.limitedPartners.ceaseDate);
 
+      expect(res.text).toContain("1 January 2025");
+
       expect(res.text).toContain(enTranslationText.print.buttonText);
       expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
       expect(res.text).not.toContain("WELSH -");
@@ -49,6 +51,8 @@ describe("Remove limited partner person check your answers page", () => {
       expect(res.text).toContain(`${cyTranslationText.checkYourAnswersPage.update.title}`);
       expect(res.text).toContain(limitedPartner.data?.forename + " " + limitedPartner.data?.surname);
       expect(res.text).toContain(cyTranslationText.checkYourAnswersPage.partners.limitedPartners.ceaseDate);
+
+      expect(res.text).toContain("1 WELSH - January 2025");
 
       expect(res.text).toContain(cyTranslationText.print.buttonText);
       expect(res.text).toContain(cyTranslationText.print.buttonTextNoJs);
