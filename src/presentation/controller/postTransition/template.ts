@@ -53,3 +53,7 @@ export const WHEN_DID_THE_LIMITED_PARTNER_PERSON_CEASE_TEMPLATE =
   PostTransitionPageType.whenDidTheLimitedPartnerPersonCease;
 export const REMOVE_LIMITED_PARTNER_PERSON_CHECK_YOUR_ANSWERS_TEMPLATE =
   PostTransitionPageType.removeLimitedPartnerPersonCheckYourAnswers;
+export const WHEN_DID_THE_LIMITED_PARTNER_LEGAL_ENTITY_CEASE_TEMPLATE =
+  PostTransitionPageType.whenDidTheLimitedPartnerLegalEntityCease;
+export const REMOVE_LIMITED_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_TEMPLATE =
+  PostTransitionPageType.removeLimitedPartnerLegalEntityCheckYourAnswers;
