@@ -15,12 +15,12 @@
                 text: props.data.partner.data.cease_date
             },
             actions: {
-            items: [
+                items: [
                     CREATE_CHANGE_LINK(
-                    i18n.checkYourAnswersPage.change,
-                    (props.currentUrl | replace(props.pageType, dateChangeUrl)),
-                    cease_date,
-                    "remove-general-partner-name-button"
+                        i18n.checkYourAnswersPage.change,
+                        (props.currentUrl | replace(props.pageType, dateChangeUrl)),
+                        cease_date,
+                        "remove-general-partner-name-button"
                     )
                 ]
             }
