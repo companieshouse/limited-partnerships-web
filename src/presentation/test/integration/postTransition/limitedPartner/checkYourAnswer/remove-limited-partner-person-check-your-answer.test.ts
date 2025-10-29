@@ -9,7 +9,7 @@ import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled } from "../../../../utils";
 
 import { REMOVE_LIMITED_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/postTransition/url";
-import LimitedPartnerBuilder from "presentation/test/builder/LimitedPartnerBuilder";
+import LimitedPartnerBuilder from "../../../../../../presentation/test/builder/LimitedPartnerBuilder";
 
 describe("Remove limited partner person check your answers page", () => {
   const URL = getUrl(REMOVE_LIMITED_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL);
