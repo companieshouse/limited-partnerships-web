@@ -41,7 +41,7 @@ class GeneralPartnerRegistarationController extends PartnerController {
   }
 
   getReviewPage() {
-    return super.getReviewPage(PartnerType.generalPartner, { generalPartnersUrl: GENERAL_PARTNERS_URL });
+    return super.getReviewPage(PartnerType.generalPartner, { partnersUrl: GENERAL_PARTNERS_URL });
   }
 
   createGeneralPartner() {
@@ -56,16 +56,16 @@ class GeneralPartnerRegistarationController extends PartnerController {
   }
 
   postReviewPage() {
-    return super.postReviewPage({
-      addGeneralPartnerPersonUrl: ADD_GENERAL_PARTNER_PERSON_URL,
-      addGeneralPartnerLegalEntityUrl: ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
-      reviewLimitedPartnersUrl: REVIEW_LIMITED_PARTNERS_URL,
-      limitedPartnerUrl: LIMITED_PARTNERS_URL
+    return super.postReviewPage(PartnerType.generalPartner, {
+      addPartnerPersonUrl: ADD_GENERAL_PARTNER_PERSON_URL,
+      addPartnerLegalEntityUrl: ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
+      redirectUrl: LIMITED_PARTNERS_URL,
+      reviewLimitedPartnersUrl: REVIEW_LIMITED_PARTNERS_URL
     });
   }
 
   postRemovePage() {
-    return super.postRemovePage();
+    return super.postRemovePage(PartnerType.generalPartner);
   }
 }
 

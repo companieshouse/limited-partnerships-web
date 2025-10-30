@@ -84,7 +84,7 @@ const addressLookUpController: AddressLookUpController = new AddressLookUpContro
 const generalPartnerRegistrationController: GeneralPartnerRegistrationController =
   new GeneralPartnerRegistrationController(limitedPartnershipService, generalPartnerService, limitedPartnerService);
 const limitedPartnerRegistrationController: LimitedPartnerRegistrationController =
-  new LimitedPartnerRegistrationController(limitedPartnershipService, limitedPartnerService);
+  new LimitedPartnerRegistrationController(limitedPartnershipService, generalPartnerService, limitedPartnerService);
 
 const limitedPartnershipTransitionController: LimitedPartnershipTransitionController =
   new LimitedPartnershipTransitionController(

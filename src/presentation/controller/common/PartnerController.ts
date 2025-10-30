@@ -41,6 +41,7 @@ abstract class PartnerController extends AbstractController {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         this.generalPartnerService.setI18n(response.locals.i18n);
+        this.limitedPartnerService.setI18n(response.locals.i18n);
 
         const { ids, pageRouting, tokens } = this.extractRequestData(request);
 
@@ -138,6 +139,40 @@ abstract class PartnerController extends AbstractController {
     };
   }
 
+  getLimitedPartner(urls: { reviewLimitedPartnersUrl: string }) {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        this.limitedPartnerService.setI18n(response.locals.i18n);
+
+        const { ids, pageRouting, tokens } = this.extractRequestData(request);
+
+        const result = await this.limitedPartnerService.getLimitedPartners(tokens, ids.transactionId);
+
+        if (result.limitedPartners.length > 0) {
+          response.redirect(super.insertIdsInUrl(urls.reviewLimitedPartnersUrl, ids, request.url));
+          return;
+        }
+
+        let limitedPartnership = {};
+
+        if (ids.transactionId && ids.submissionId) {
+          limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+            tokens,
+            ids.transactionId,
+            ids.submissionId
+          );
+        }
+
+        response.render(
+          super.templateName(pageRouting.currentUrl),
+          super.makeProps(pageRouting, { limitedPartnership }, null)
+        );
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
   partnerChoice(urls: { addPersonUrl: string; addLegalEntityUrl: string }) {
     return (request: Request, response: Response, next: NextFunction) => {
       try {
@@ -154,15 +189,17 @@ abstract class PartnerController extends AbstractController {
     };
   }
 
-  getReviewPage(partner: PartnerType, urls: { generalPartnersUrl: string }) {
+  getReviewPage(partner: PartnerType, urls: { partnersUrl: string }) {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         this.generalPartnerService.setI18n(response.locals.i18n);
+        this.limitedPartnerService.setI18n(response.locals.i18n);
 
         const { ids, pageRouting, tokens } = this.extractRequestData(request);
 
         let limitedPartnership = {};
         let generalPartners: GeneralPartner[] = [];
+        let limitedPartners: LimitedPartner[] = [];
         let errors: UIErrors | null = null;
 
         if (ids.transactionId && ids.submissionId) {
@@ -176,13 +213,16 @@ abstract class PartnerController extends AbstractController {
           if (partner === PartnerType.generalPartner) {
             result = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
             generalPartners = result.generalPartners;
+          } else if (partner === PartnerType.limitedPartner) {
+            result = await this.limitedPartnerService.getLimitedPartners(tokens, ids.transactionId);
+            limitedPartners = result.limitedPartners;
           }
 
           errors = result?.errors ?? null;
         }
 
-        if (generalPartners.length === 0) {
-          const redirect = super.insertIdsInUrl(urls.generalPartnersUrl, ids, request.url);
+        if (generalPartners.length === 0 && limitedPartners.length === 0) {
+          const redirect = super.insertIdsInUrl(urls.partnersUrl, ids, request.url);
 
           response.redirect(redirect);
           return;
@@ -190,7 +230,7 @@ abstract class PartnerController extends AbstractController {
 
         response.render(
           super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { limitedPartnership, generalPartners }, errors)
+          super.makeProps(pageRouting, { limitedPartnership, generalPartners, limitedPartners }, errors)
         );
       } catch (error) {
         next(error);
@@ -228,6 +268,52 @@ abstract class PartnerController extends AbstractController {
         }
 
         const newIds = { ...ids, generalPartnerId: result.generalPartnerId };
+
+        const url = super.insertIdsInUrl(pageRouting.nextUrl, newIds);
+
+        response.redirect(url);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  createLimitedPartner() {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const routing = this.getJourneyPageRouting(request.url);
+        const journeyPageType = this.getJourneyPageTypes(request.url);
+
+        const { ids, tokens } = this.extractRequestData(request);
+        const pageType = super.extractPageTypeOrThrowError(request, journeyPageType);
+        const pageRouting = super.getRouting(routing, pageType, request);
+
+        const result = await this.limitedPartnerService.createLimitedPartner(tokens, ids.transactionId, request.body);
+
+        if (result.errors) {
+          this.resetFormerNamesIfPreviousNameIsFalse(request.body);
+
+          const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+            tokens,
+            ids.transactionId,
+            ids.submissionId
+          );
+
+          response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(
+              pageRouting,
+              {
+                limitedPartnership,
+                limitedPartner: { data: request.body }
+              },
+              result.errors
+            )
+          );
+          return;
+        }
+
+        const newIds = { ...ids, limitedPartnerId: result.limitedPartnerId };
 
         const url = super.insertIdsInUrl(pageRouting.nextUrl, newIds);
 
@@ -428,15 +514,19 @@ abstract class PartnerController extends AbstractController {
     }
   }
 
-  postReviewPage(urls: {
-    addGeneralPartnerPersonUrl: string;
-    addGeneralPartnerLegalEntityUrl: string;
-    reviewLimitedPartnersUrl: string;
-    limitedPartnerUrl: string;
-  }) {
+  postReviewPage(
+    partner: PartnerType,
+    urls: {
+      addPartnerPersonUrl: string;
+      addPartnerLegalEntityUrl: string;
+      redirectUrl: string;
+      reviewLimitedPartnersUrl?: string;
+    }
+  ) {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         this.generalPartnerService.setI18n(response.locals.i18n);
+        this.limitedPartnerService.setI18n(response.locals.i18n);
 
         const routing = this.getJourneyPageRouting(request.url);
         const journeyPageType = this.getJourneyPageTypes(request.url);
@@ -445,9 +535,16 @@ abstract class PartnerController extends AbstractController {
         const pageType = super.extractPageTypeOrThrowError(request, journeyPageType);
         const pageRouting = super.getRouting(routing, pageType, request);
 
-        const result = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
+        let result;
+        if (partner === PartnerType.generalPartner) {
+          result = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
+        } else if (partner === PartnerType.limitedPartner) {
+          result = await this.limitedPartnerService.getLimitedPartners(tokens, ids.transactionId);
+        }
 
-        if (result?.errors?.hasErrors()) {
+        const noPartners = !result?.limitedPartners?.length && !result?.generalPartners?.length;
+
+        if (noPartners || result?.errors?.hasErrors()) {
           const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
             tokens,
             ids.transactionId,
@@ -458,19 +555,25 @@ abstract class PartnerController extends AbstractController {
             super.templateName(pageRouting.currentUrl),
             super.makeProps(
               pageRouting,
-              { limitedPartnership, generalPartners: result.generalPartners },
-              result.errors ?? null
+              {
+                limitedPartnership,
+                generalPartners: result?.generalPartners ?? [],
+                limitedPartners: result?.limitedPartners ?? []
+              },
+              result?.errors ?? null
             )
           );
           return;
         }
 
-        const addAnotherGeneralPartner = request.body.addAnotherPartner;
+        const addAnotherPartner = request.body.addAnotherPartner;
 
-        if (addAnotherGeneralPartner === "no") {
-          await this.conditionalNextUrl(tokens, ids, pageRouting, {
-            reviewLimitedPartnersUrl: urls.reviewLimitedPartnersUrl
-          });
+        if (addAnotherPartner === "no") {
+          if (partner === PartnerType.generalPartner) {
+            await this.conditionalNextUrl(tokens, ids, pageRouting, {
+              reviewLimitedPartnersUrl: urls?.reviewLimitedPartnersUrl ?? ""
+            });
+          }
 
           const redirectUrl = super.insertIdsInUrl(pageRouting.nextUrl, ids, request.url);
 
@@ -478,24 +581,25 @@ abstract class PartnerController extends AbstractController {
           return;
         }
 
-        let url = urls.limitedPartnerUrl;
+        let url = urls.redirectUrl;
 
-        if (addAnotherGeneralPartner === "addPerson") {
-          url = urls.addGeneralPartnerPersonUrl;
-        } else if (addAnotherGeneralPartner === "addLegalEntity") {
-          url = urls.addGeneralPartnerLegalEntityUrl;
+        if (addAnotherPartner === "addPerson") {
+          url = urls.addPartnerPersonUrl;
+        } else if (addAnotherPartner === "addLegalEntity") {
+          url = urls.addPartnerLegalEntityUrl;
         }
 
         const redirectUrl = super.insertIdsInUrl(url, ids, request.url);
 
         response.redirect(redirectUrl);
       } catch (error) {
+        console.log(error);
         next(error);
       }
     };
   }
 
-  postRemovePage() {
+  postRemovePage(partner: PartnerType) {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const routing = this.getJourneyPageRouting(request.url);
@@ -508,7 +612,11 @@ abstract class PartnerController extends AbstractController {
         const remove = request.body.remove;
 
         if (remove === "yes") {
-          await this.generalPartnerService.deleteGeneralPartner(tokens, ids.transactionId, ids.generalPartnerId);
+          if (partner === PartnerType.generalPartner) {
+            await this.generalPartnerService.deleteGeneralPartner(tokens, ids.transactionId, ids.generalPartnerId);
+          } else if (partner === PartnerType.limitedPartner) {
+            await this.limitedPartnerService.deleteLimitedPartner(tokens, ids.transactionId, ids.limitedPartnerId);
+          }
         }
 
         response.redirect(pageRouting.nextUrl);
