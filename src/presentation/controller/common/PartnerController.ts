@@ -21,6 +21,7 @@ import postTransitionRouting from "../postTransition/routing";
 import CompanyService from "../../../application/service/CompanyService";
 
 import { formatDate } from "../../../utils/date-format";
+import { CEASE_DATE_TEMPLATE } from "../../../config/constants";
 
 export enum PartnerType {
   generalPartner = "generalPartner",
@@ -244,6 +245,45 @@ abstract class PartnerController extends AbstractController {
           super.templateName(pageRouting.currentUrl),
           super.makeProps(pageRouting, { limitedPartnership, generalPartners, limitedPartners }, errors)
         );
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  getCeaseDate() {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { ids, pageType, tokens } = super.extract(request);
+        const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
+
+        let limitedPartnership = {};
+        let partner = {};
+
+        if (this.companyService) {
+          const { limitedPartnership: lp } = await this.companyService.buildLimitedPartnershipFromCompanyProfile(
+            tokens,
+            ids.companyId
+          );
+
+          limitedPartnership = lp;
+
+          if (ids.appointmentId) {
+            const { partner: pt } = await this.companyService.buildPartnerFromCompanyAppointment(
+              tokens,
+              ids.companyId,
+              ids.appointmentId
+            );
+
+            partner = pt;
+          }
+        }
+
+        if (ids.generalPartnerId) {
+          partner = await this.generalPartnerService.getGeneralPartner(tokens, ids.transactionId, ids.generalPartnerId);
+        }
+
+        response.render(CEASE_DATE_TEMPLATE, super.makeProps(pageRouting, { limitedPartnership, partner }, null));
       } catch (error) {
         next(error);
       }
