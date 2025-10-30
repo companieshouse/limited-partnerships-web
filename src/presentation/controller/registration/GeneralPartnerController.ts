@@ -1,7 +1,7 @@
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
-import GeneralPartnerController, { PartnerType } from "../common/PartnerController";
+import PartnerController, { PartnerType } from "../common/PartnerController";
 
 import {
   ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
@@ -16,7 +16,7 @@ import {
   CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "../addressLookUp/url/registration";
 
-class GeneralPartnerRegistarationController extends GeneralPartnerController {
+class GeneralPartnerRegistarationController extends PartnerController {
   constructor(
     limitedPartnershipService: LimitedPartnershipService,
     generalPartnerService: GeneralPartnerService,
