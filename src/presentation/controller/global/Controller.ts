@@ -184,7 +184,7 @@ class GlobalController extends AbstractController {
     const resultGeneralPartner = await this.generalPartnerService.getGeneralPartners(tokens, transactionId, false);
     const generalPartner = resultGeneralPartner?.generalPartners?.[0];
 
-    const resultLimitedPartner = await this.limitedPartnerService.getLimitedPartners(tokens, transactionId);
+    const resultLimitedPartner = await this.limitedPartnerService.getLimitedPartners(tokens, transactionId, false);
     const limitedPartner = resultLimitedPartner?.limitedPartners?.[0];
 
     return { generalPartner, limitedPartner };

@@ -2,7 +2,10 @@
 {% if partnerName %}
   {% set message = i18n.confirmationPage.postTransition.partner.addPartner %}
 
-  {% if props.data.subtype === "limited-partnership#remove-general-partner-person" or props.data.subtype === "limited-partnership#remove-general-partner-legal-entity" %}
+  {% if props.data.subtype === "limited-partnership#remove-general-partner-person"
+      or props.data.subtype === "limited-partnership#remove-general-partner-legal-entity" 
+      or props.data.subtype === "limited-partnership#remove-limited-partner-person"
+      or props.data.subtype === "limited-partnership#remove-limited-partner-legal-entity" %}
     {% set message = i18n.confirmationPage.postTransition.partner.removePartner  %}
   {% endif %}
 
