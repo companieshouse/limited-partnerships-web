@@ -101,6 +101,7 @@ const generalPartnerTransitionController: GeneralPartnerTransitionController = n
 );
 const limitedPartnerTransitionController: LimitedPartnerTransitionController = new LimitedPartnerTransitionController(
   limitedPartnershipService,
+  generalPartnerService,
   limitedPartnerService
 );
 
