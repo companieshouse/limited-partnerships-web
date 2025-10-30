@@ -24,11 +24,9 @@
           {% include "pages/checkYourAnswers/limited-partner.njk" %}
 
           {% include "pages/checkYourAnswers/warning-message.njk" %}
-
-          <div class="govuk-button-group">
-            {% include "includes/print-button.njk" %}
-          </div>
           
+          <p class="govuk-body govuk-!-font-size-20 check-your-answers-javascript-disabled-text-style">{{ i18n.print.buttonTextNoJs }}</p>
+
           <div class="govuk-button-group">
             {{ govukButton({
               text: i18n.buttons.submit,
@@ -36,7 +34,9 @@
                 "id": "submit",
                 "data-event-id": "check-your-answers-update-limited-partner-submit-button"
               }
-            }) }} 
+            }) }}
+
+            {% include "includes/print-button.njk" %}
           </div>
 
         </form>
