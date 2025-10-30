@@ -1,4 +1,5 @@
 import { GeneralPartner, LimitedPartner, PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 
 import request from "supertest";
 
@@ -15,7 +16,6 @@ import CompanyProfileBuilder from "../../builder/CompanyProfileBuilder";
 import TransactionBuilder from "../../builder/TransactionBuilder";
 import LimitedPartnerBuilder from "../../builder/LimitedPartnerBuilder";
 import GeneralPartnerBuilder from "../../builder/GeneralPartnerBuilder";
-import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 
 describe("Remove partner confirmation page", () => {
   const URL = getUrl(CONFIRMATION_POST_TRANSITION_URL);
