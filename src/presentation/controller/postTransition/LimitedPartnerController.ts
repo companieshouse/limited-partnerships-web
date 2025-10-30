@@ -57,7 +57,10 @@ class LimitedPartnerPostTransitionController extends LimitedPartnerController {
         const pageType = super.extractPageTypeOrThrowError(request, PostTransitionPageType);
         const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
 
-        const limitedPartnershipResult = await this.companyService?.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId);
+        const limitedPartnershipResult = await this.companyService?.buildLimitedPartnershipFromCompanyProfile(
+          tokens,
+          ids.companyId
+        );
 
         const isLegalEntity =
           pageType === PostTransitionPageType.addLimitedPartnerLegalEntity ||
@@ -115,10 +118,7 @@ class LimitedPartnerPostTransitionController extends LimitedPartnerController {
             "limitedPartner"
           );
 
-          response.render(
-            super.templateName(url),
-            super.makeProps(pageRouting, renderData, result.errors)
-          );
+          response.render(super.templateName(url), super.makeProps(pageRouting, renderData, result.errors));
 
           return;
         }

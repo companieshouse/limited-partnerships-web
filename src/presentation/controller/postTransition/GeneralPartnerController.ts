@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from "express";
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
-import GeneralPartnerController from "../common/GeneralPartnerController";
+import GeneralPartnerController, { PartnerType } from "../common/PartnerController";
 
 import { ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL, ADD_GENERAL_PARTNER_PERSON_URL } from "./url";
 import {
@@ -33,7 +33,7 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
   }
 
   getPageRouting() {
-    return super.getPageRouting();
+    return super.getPageRouting(PartnerType.generalPartner);
   }
 
   generalPartnerChoice() {
@@ -123,10 +123,7 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
             "generalPartner"
           );
 
-          response.render(
-            super.templateName(url),
-            super.makeProps(pageRouting, renderData, result.errors)
-          );
+          response.render(super.templateName(url), super.makeProps(pageRouting, renderData, result.errors));
           return;
         }
 
@@ -146,7 +143,7 @@ class GeneralPartnerPostTransitionController extends GeneralPartnerController {
   }
 
   sendPageData() {
-    return super.sendPageData({
+    return super.sendPageData(PartnerType.generalPartner, {
       confirmGeneralPartnerUsualResidentialAddressUrl: CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
       confirmGeneralPartnerPrincipalOfficeAddressUrl: CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
     });

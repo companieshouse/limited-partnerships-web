@@ -22,7 +22,12 @@ import CompanyService from "../../../application/service/CompanyService";
 
 import { formatDate } from "../../../utils/date-format";
 
-abstract class GeneralPartnerController extends AbstractController {
+export enum PartnerType {
+  generalPartner = "generalPartner",
+  limitedPartner = "limitedPartner"
+}
+
+abstract class PartnerController extends AbstractController {
   constructor(
     protected readonly limitedPartnershipService: LimitedPartnershipService,
     protected readonly generalPartnerService: GeneralPartnerService,
@@ -32,15 +37,12 @@ abstract class GeneralPartnerController extends AbstractController {
     super();
   }
 
-  getPageRouting() {
+  getPageRouting(partner: PartnerType) {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         this.generalPartnerService.setI18n(response.locals.i18n);
 
-        const routing = this.getJourneyPageRouting(request.url);
-
-        const { tokens, pageType, ids } = super.extract(request);
-        const pageRouting = super.getRouting(routing, pageType, request);
+        const { ids, pageRouting, tokens } = this.extractRequestData(request);
 
         await this.conditionalPreviousUrl(ids, pageRouting, request, tokens);
 
@@ -56,10 +58,12 @@ abstract class GeneralPartnerController extends AbstractController {
         }
 
         if (this.companyService) {
-          limitedPartnership = (await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId))?.limitedPartnership;
+          limitedPartnership = (
+            await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId)
+          )?.limitedPartnership;
         }
 
-        if (ids.transactionId && ids.generalPartnerId) {
+        if (ids.transactionId && ids.generalPartnerId && partner === PartnerType.generalPartner) {
           generalPartner = await this.generalPartnerService.getGeneralPartner(
             tokens,
             ids.transactionId,
@@ -89,10 +93,7 @@ abstract class GeneralPartnerController extends AbstractController {
       try {
         this.generalPartnerService.setI18n(response.locals.i18n);
 
-        const routing = this.getJourneyPageRouting(request.url);
-
-        const { tokens, pageType, ids } = super.extract(request);
-        const pageRouting = super.getRouting(routing, pageType, request);
+        const { ids, pageRouting, tokens } = this.extractRequestData(request);
 
         const result = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
 
@@ -124,7 +125,7 @@ abstract class GeneralPartnerController extends AbstractController {
   generalPartnerChoice(urls: { addPersonUrl: string; addLegalEntityUrl: string }) {
     return (request: Request, response: Response, next: NextFunction) => {
       try {
-        const { ids } = super.extract(request);
+        const { ids } = this.extractRequestData(request);
 
         let url = request.body.parameter === "person" ? urls.addPersonUrl : urls.addLegalEntityUrl;
 
@@ -137,15 +138,12 @@ abstract class GeneralPartnerController extends AbstractController {
     };
   }
 
-  getReviewPage(urls: { generalPartnersUrl: string }) {
+  getReviewPage(partner: PartnerType, urls: { generalPartnersUrl: string }) {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         this.generalPartnerService.setI18n(response.locals.i18n);
 
-        const routing = this.getJourneyPageRouting(request.url);
-
-        const { tokens, pageType, ids } = super.extract(request);
-        const pageRouting = super.getRouting(routing, pageType, request);
+        const { ids, pageRouting, tokens } = this.extractRequestData(request);
 
         let limitedPartnership = {};
         let generalPartners: GeneralPartner[] = [];
@@ -158,10 +156,13 @@ abstract class GeneralPartnerController extends AbstractController {
             ids.submissionId
           );
 
-          const result = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
+          let result;
+          if (partner === PartnerType.generalPartner) {
+            result = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
+            generalPartners = result.generalPartners;
+          }
 
-          generalPartners = result.generalPartners;
-          errors = result.errors ?? null;
+          errors = result?.errors ?? null;
         }
 
         if (generalPartners.length === 0) {
@@ -187,7 +188,7 @@ abstract class GeneralPartnerController extends AbstractController {
         const routing = this.getJourneyPageRouting(request.url);
         const journeyPageType = this.getJourneyPageTypes(request.url);
 
-        const { tokens, ids } = super.extract(request);
+        const { ids, tokens } = this.extractRequestData(request);
         const pageType = super.extractPageTypeOrThrowError(request, journeyPageType);
         const pageRouting = super.getRouting(routing, pageType, request);
 
@@ -221,16 +222,19 @@ abstract class GeneralPartnerController extends AbstractController {
     };
   }
 
-  sendPageData(urls: {
-    confirmGeneralPartnerUsualResidentialAddressUrl: string;
-    confirmGeneralPartnerPrincipalOfficeAddressUrl: string;
-  }) {
+  sendPageData(
+    partner: PartnerType,
+    urls: {
+      confirmGeneralPartnerUsualResidentialAddressUrl: string;
+      confirmGeneralPartnerPrincipalOfficeAddressUrl: string;
+    }
+  ) {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const routing = this.getJourneyPageRouting(request.url);
         const journeyPageType = this.getJourneyPageTypes(request.url);
 
-        const { tokens, ids } = super.extract(request);
+        const { ids, tokens } = this.extractRequestData(request);
         const pageType = super.extractPageTypeOrThrowError(request, journeyPageType);
         const pageRouting = super.getRouting(routing, pageType, request);
 
@@ -255,29 +259,34 @@ abstract class GeneralPartnerController extends AbstractController {
           }
 
           if (this.companyService) {
-            limitedPartnership = (await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId))?.limitedPartnership;
+            limitedPartnership = (
+              await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId)
+            )?.limitedPartnership;
           }
 
           await this.conditionalPreviousUrl(ids, pageRouting, request, tokens);
 
-          let generalPartner = {};
+          let partnerEntity = {};
           if (isCeaseDatePage(pageType)) {
-            generalPartner = await this.generalPartnerService.getGeneralPartner(tokens, ids.transactionId, ids.generalPartnerId);
+            if (partner === PartnerType.generalPartner) {
+              partnerEntity = await this.generalPartnerService.getGeneralPartner(
+                tokens,
+                ids.transactionId,
+                ids.generalPartnerId
+              );
+            }
           }
 
           const { data: renderData, url } = this.buildPartnerErrorRenderData(
             pageType,
             pageRouting,
             limitedPartnership,
-            generalPartner,
+            partnerEntity,
             request.body,
-            "generalPartner"
+            partner
           );
 
-          response.render(
-            super.templateName(url),
-            super.makeProps(pageRouting, renderData, result.errors)
-          );
+          response.render(super.templateName(url), super.makeProps(pageRouting, renderData, result.errors));
 
           return;
         }
@@ -350,7 +359,7 @@ abstract class GeneralPartnerController extends AbstractController {
         const routing = this.getJourneyPageRouting(request.url);
         const journeyPageType = this.getJourneyPageTypes(request.url);
 
-        const { ids, tokens } = super.extract(request);
+        const { ids, tokens } = this.extractRequestData(request);
         const pageType = super.extractPageTypeOrThrowError(request, journeyPageType);
         const pageRouting = super.getRouting(routing, pageType, request);
 
@@ -410,7 +419,7 @@ abstract class GeneralPartnerController extends AbstractController {
         const routing = this.getJourneyPageRouting(request.url);
         const journeyPageType = this.getJourneyPageTypes(request.url);
 
-        const { ids, tokens } = super.extract(request);
+        const { ids, tokens } = this.extractRequestData(request);
         const pageType = super.extractPageTypeOrThrowError(request, journeyPageType);
         const pageRouting = super.getRouting(routing, pageType, request);
 
@@ -490,6 +499,14 @@ abstract class GeneralPartnerController extends AbstractController {
     return partner;
   }
 
+  private extractRequestData(request: Request) {
+    const routing = this.getJourneyPageRouting(request.url);
+    const { tokens, pageType, ids } = super.extract(request);
+    const pageRouting = super.getRouting(routing, pageType, request);
+
+    return { ids, pageRouting, pageType, tokens };
+  }
+
   private getJourneyPageTypes(url: string) {
     const journeyTypes = getJourneyTypes(url);
 
@@ -521,4 +538,4 @@ abstract class GeneralPartnerController extends AbstractController {
   }
 }
 
-export default GeneralPartnerController;
+export default PartnerController;

@@ -1,7 +1,7 @@
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
-import GeneralPartnerController from "../common/GeneralPartnerController";
+import GeneralPartnerController, { PartnerType } from "../common/PartnerController";
 
 import {
   ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
@@ -26,7 +26,7 @@ class GeneralPartnerTransitionController extends GeneralPartnerController {
   }
 
   getPageRouting() {
-    return super.getPageRouting();
+    return super.getPageRouting(PartnerType.generalPartner);
   }
 
   getGeneralPartner() {
@@ -41,7 +41,7 @@ class GeneralPartnerTransitionController extends GeneralPartnerController {
   }
 
   getReviewPage() {
-    return super.getReviewPage({ generalPartnersUrl: GENERAL_PARTNERS_URL });
+    return super.getReviewPage(PartnerType.generalPartner, { generalPartnersUrl: GENERAL_PARTNERS_URL });
   }
 
   createGeneralPartner() {
@@ -49,7 +49,7 @@ class GeneralPartnerTransitionController extends GeneralPartnerController {
   }
 
   sendPageData() {
-    return super.sendPageData({
+    return super.sendPageData(PartnerType.generalPartner, {
       confirmGeneralPartnerUsualResidentialAddressUrl: CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
       confirmGeneralPartnerPrincipalOfficeAddressUrl: CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
     });
