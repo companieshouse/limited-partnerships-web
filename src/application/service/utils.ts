@@ -17,9 +17,9 @@ export const incompletePartnerErrorList = (
   let errorList = {};
 
   partners
-    .filter((p) => p?.data?.completed === false)
-    .forEach((p) => {
-      const name = p.data?.forename ? `${p.data.forename} ${p.data.surname}` : p.data?.legal_entity_name ?? "";
+    .filter((gp) => gp?.data?.completed === false)
+    .forEach((gp) => {
+      const name = gp.data?.forename ? `${gp.data.forename} ${gp.data.surname}` : gp.data?.legal_entity_name ?? "";
 
       errorList = {
         ...errorList,
