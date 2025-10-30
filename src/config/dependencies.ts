@@ -124,6 +124,7 @@ const generalPartnerPostTransitionController: GeneralPartnerPostTransitionContro
 const limitedPartnerPostTransitionController: LimitedPartnerPostTransitionController =
   new LimitedPartnerPostTransitionController(
     limitedPartnershipService,
+    generalPartnerService,
     limitedPartnerService,
     companyService,
     transactionService

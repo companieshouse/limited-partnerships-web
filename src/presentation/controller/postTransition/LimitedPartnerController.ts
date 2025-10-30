@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
+import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
-import LimitedPartnerController from "../common/LimitedPartnerController";
+import PartnerController, { PartnerType } from "../common/PartnerController";
 
 import { ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL, ADD_LIMITED_PARTNER_PERSON_URL } from "./url";
 import {
@@ -19,22 +20,23 @@ import { CONFIRMATION_POST_TRANSITION_URL } from "../global/url";
 import { CEASE_DATE_TEMPLATE, JOURNEY_TYPE_PARAM } from "../../../config/constants";
 import { getJourneyTypes } from "../../../utils/journey";
 
-class LimitedPartnerPostTransitionController extends LimitedPartnerController {
+class LimitedPartnerPostTransitionController extends PartnerController {
   constructor(
     limitedPartnershipService: LimitedPartnershipService,
+    generalPartnerService: GeneralPartnerService,
     limitedPartnerService: LimitedPartnerService,
     companyService: CompanyService,
     private readonly transactionService: TransactionService
   ) {
-    super(limitedPartnershipService, limitedPartnerService, companyService);
+    super(limitedPartnershipService, generalPartnerService, limitedPartnerService, companyService);
   }
 
   getPageRouting() {
-    return super.getPageRouting();
+    return super.getPageRouting(PartnerType.limitedPartner);
   }
 
   limitedPartnerChoice() {
-    return super.limitedPartnerChoice({
+    return super.partnerChoice({
       addPersonUrl: ADD_LIMITED_PARTNER_PERSON_URL,
       addLegalEntityUrl: ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL
     });
@@ -139,9 +141,9 @@ class LimitedPartnerPostTransitionController extends LimitedPartnerController {
   }
 
   sendPageData() {
-    return super.sendPageData({
-      confirmLimitedPartnerUsualResidentialAddressUrl: CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-      confirmLimitedPartnerPrincipalOfficeAddressUrl: CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
+    return super.sendPageData(PartnerType.limitedPartner, {
+      confirmPartnerUsualResidentialAddressUrl: CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+      confirmPartnerPrincipalOfficeAddressUrl: CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
     });
   }
 

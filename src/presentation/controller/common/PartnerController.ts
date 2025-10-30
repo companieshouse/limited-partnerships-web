@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { GeneralPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
+import { GeneralPartner, LimitedPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 import AbstractController from "../AbstractController";
 import { Ids, Tokens } from "../../../domain/types";
@@ -48,6 +48,7 @@ abstract class PartnerController extends AbstractController {
 
         let limitedPartnership = {};
         let generalPartner = {};
+        let limitedPartner = {};
 
         if (ids.transactionId && ids.submissionId) {
           limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
@@ -70,8 +71,23 @@ abstract class PartnerController extends AbstractController {
             ids.generalPartnerId
           );
 
-          generalPartner = this.formatGeneralPartnerDatesAndSetPreviousUrl(
+          generalPartner = this.formatPartnerDatesAndSetPreviousUrl(
             generalPartner,
+            pageRouting,
+            request,
+            response.locals.i18n
+          );
+        }
+
+        if (ids.transactionId && ids.limitedPartnerId && partner === PartnerType.limitedPartner) {
+          limitedPartner = await this.limitedPartnerService.getLimitedPartner(
+            tokens,
+            ids.transactionId,
+            ids.limitedPartnerId
+          );
+
+          limitedPartner = this.formatPartnerDatesAndSetPreviousUrl(
+            limitedPartner,
             pageRouting,
             request,
             response.locals.i18n
@@ -80,7 +96,7 @@ abstract class PartnerController extends AbstractController {
 
         response.render(
           super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { limitedPartnership, generalPartner }, null)
+          super.makeProps(pageRouting, { limitedPartnership, generalPartner, limitedPartner }, null)
         );
       } catch (error) {
         next(error);
@@ -122,7 +138,7 @@ abstract class PartnerController extends AbstractController {
     };
   }
 
-  generalPartnerChoice(urls: { addPersonUrl: string; addLegalEntityUrl: string }) {
+  partnerChoice(urls: { addPersonUrl: string; addLegalEntityUrl: string }) {
     return (request: Request, response: Response, next: NextFunction) => {
       try {
         const { ids } = this.extractRequestData(request);
@@ -225,8 +241,8 @@ abstract class PartnerController extends AbstractController {
   sendPageData(
     partner: PartnerType,
     urls: {
-      confirmGeneralPartnerUsualResidentialAddressUrl: string;
-      confirmGeneralPartnerPrincipalOfficeAddressUrl: string;
+      confirmPartnerUsualResidentialAddressUrl: string;
+      confirmPartnerPrincipalOfficeAddressUrl: string;
     }
   ) {
     return async (request: Request, response: Response, next: NextFunction) => {
@@ -238,12 +254,22 @@ abstract class PartnerController extends AbstractController {
         const pageType = super.extractPageTypeOrThrowError(request, journeyPageType);
         const pageRouting = super.getRouting(routing, pageType, request);
 
-        const result = await this.generalPartnerService.sendPageData(
-          tokens,
-          ids.transactionId,
-          ids.generalPartnerId,
-          request.body
-        );
+        let result;
+        if (partner === PartnerType.generalPartner) {
+          result = await this.generalPartnerService.sendPageData(
+            tokens,
+            ids.transactionId,
+            ids.generalPartnerId,
+            request.body
+          );
+        } else if (partner === PartnerType.limitedPartner) {
+          result = await this.limitedPartnerService.sendPageData(
+            tokens,
+            ids.transactionId,
+            ids.limitedPartnerId,
+            request.body
+          );
+        }
 
         if (result?.errors) {
           this.resetFormerNamesIfPreviousNameIsFalse(request.body);
@@ -274,6 +300,12 @@ abstract class PartnerController extends AbstractController {
                 ids.transactionId,
                 ids.generalPartnerId
               );
+            } else if (partner === PartnerType.limitedPartner) {
+              partnerEntity = await this.limitedPartnerService.getLimitedPartner(
+                tokens,
+                ids.transactionId,
+                ids.limitedPartnerId
+              );
             }
           }
 
@@ -291,10 +323,17 @@ abstract class PartnerController extends AbstractController {
           return;
         }
 
-        await this.conditionalGeneralPartner(ids, pageRouting, request, tokens, {
-          confirmGeneralPartnerUsualResidentialAddressUrl: urls.confirmGeneralPartnerUsualResidentialAddressUrl,
-          confirmGeneralPartnerPrincipalOfficeAddressUrl: urls.confirmGeneralPartnerPrincipalOfficeAddressUrl
-        });
+        if (partner === PartnerType.generalPartner) {
+          await this.conditionalGeneralPartner(ids, pageRouting, request, tokens, {
+            confirmGeneralPartnerUsualResidentialAddressUrl: urls.confirmPartnerUsualResidentialAddressUrl,
+            confirmGeneralPartnerPrincipalOfficeAddressUrl: urls.confirmPartnerPrincipalOfficeAddressUrl
+          });
+        } else if (partner === PartnerType.limitedPartner) {
+          await this.conditionalLimitedPartner(ids, pageRouting, request, tokens, {
+            confirmLimitedPartnerUsualResidentialAddressUrl: urls.confirmPartnerUsualResidentialAddressUrl,
+            confirmLimitedPartnerPrincipalOfficeAddressUrl: urls.confirmPartnerPrincipalOfficeAddressUrl
+          });
+        }
 
         response.redirect(pageRouting.nextUrl);
       } catch (error) {
@@ -339,6 +378,49 @@ abstract class PartnerController extends AbstractController {
       if (generalPartner?.data?.principal_office_address?.address_line_1) {
         pageRouting.nextUrl = super.insertIdsInUrl(
           urls.confirmGeneralPartnerPrincipalOfficeAddressUrl,
+          ids,
+          request.url
+        );
+      }
+    }
+  }
+
+  private async conditionalLimitedPartner(
+    ids: Ids,
+    pageRouting: PageRouting,
+    request: Request,
+    tokens: Tokens,
+    urls: {
+      confirmLimitedPartnerUsualResidentialAddressUrl: string;
+      confirmLimitedPartnerPrincipalOfficeAddressUrl: string;
+    }
+  ) {
+    const journeyPageType = this.getJourneyPageTypes(request.url);
+
+    if (pageRouting.pageType === journeyPageType.addLimitedPartnerPerson) {
+      const limitedPartner = await this.limitedPartnerService.getLimitedPartner(
+        tokens,
+        ids.transactionId,
+        ids.limitedPartnerId
+      );
+
+      if (limitedPartner?.data?.usual_residential_address?.address_line_1) {
+        pageRouting.nextUrl = super.insertIdsInUrl(
+          urls.confirmLimitedPartnerUsualResidentialAddressUrl,
+          ids,
+          request.url
+        );
+      }
+    } else if (pageRouting.pageType === journeyPageType.addLimitedPartnerLegalEntity) {
+      const limitedPartner = await this.limitedPartnerService.getLimitedPartner(
+        tokens,
+        ids.transactionId,
+        ids.limitedPartnerId
+      );
+
+      if (limitedPartner?.data?.principal_office_address?.address_line_1) {
+        pageRouting.nextUrl = super.insertIdsInUrl(
+          urls.confirmLimitedPartnerPrincipalOfficeAddressUrl,
           ids,
           request.url
         );
@@ -450,6 +532,17 @@ abstract class PartnerController extends AbstractController {
           pageRouting.previousUrl = super.insertIdsInUrl(pageRouting.data?.customPreviousUrl, ids, request.url);
         }
       }
+
+      if (
+        (pageRouting.pageType === pageType.addLimitedPartnerLegalEntity ||
+          pageRouting.pageType === pageType.addLimitedPartnerPerson) &&
+        pageRouting.data?.customPreviousUrl
+      ) {
+        const result = await this.limitedPartnerService.getLimitedPartners(tokens, ids.transactionId);
+        if (result.limitedPartners.length > 0) {
+          pageRouting.previousUrl = super.insertIdsInUrl(pageRouting.data?.customPreviousUrl, ids, request.url);
+        }
+      }
     }
   }
 
@@ -468,8 +561,8 @@ abstract class PartnerController extends AbstractController {
     }
   }
 
-  private formatGeneralPartnerDatesAndSetPreviousUrl(
-    partner: GeneralPartner,
+  private formatPartnerDatesAndSetPreviousUrl(
+    partner: GeneralPartner | LimitedPartner,
     pageRouting: PageRouting,
     request: Request,
     i18n: any
@@ -478,7 +571,8 @@ abstract class PartnerController extends AbstractController {
 
     const isPostTransitionCheckYourAnswers =
       getJourneyTypes(pageRouting.currentUrl).isPostTransition &&
-      pageType === PostTransitionPageType.generalPartnerCheckYourAnswers;
+      (pageType === PostTransitionPageType.generalPartnerCheckYourAnswers ||
+        pageType === PostTransitionPageType.limitedPartnerCheckYourAnswers);
 
     if (isPostTransitionCheckYourAnswers) {
       const formattedPartner = {
@@ -491,9 +585,16 @@ abstract class PartnerController extends AbstractController {
             : undefined
         }
       };
+
+      const secondAddress =
+        pageType === PostTransitionPageType.generalPartnerCheckYourAnswers
+          ? pageRouting.data?.confirmCorrespondenceAddress
+          : pageRouting.data?.confirmUsualResidentialAddress;
+
       pageRouting.previousUrl = partner.data?.legal_entity_name
-        ? super.insertIdsInUrl(pageRouting.data?.confirmPrincipalOfficeAddres, ids, request.url)
-        : super.insertIdsInUrl(pageRouting.data?.confirmCorrespondenceAddress, ids, request.url);
+        ? super.insertIdsInUrl(pageRouting.data?.confirmPrincipalOfficeAddress, ids, request.url)
+        : super.insertIdsInUrl(secondAddress, ids, request.url);
+
       return formattedPartner;
     }
     return partner;

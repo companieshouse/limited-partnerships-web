@@ -34,7 +34,7 @@ class GeneralPartnerTransitionController extends GeneralPartnerController {
   }
 
   generalPartnerChoice() {
-    return super.generalPartnerChoice({
+    return super.partnerChoice({
       addPersonUrl: ADD_GENERAL_PARTNER_PERSON_URL,
       addLegalEntityUrl: ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL
     });
@@ -50,8 +50,8 @@ class GeneralPartnerTransitionController extends GeneralPartnerController {
 
   sendPageData() {
     return super.sendPageData(PartnerType.generalPartner, {
-      confirmGeneralPartnerUsualResidentialAddressUrl: CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-      confirmGeneralPartnerPrincipalOfficeAddressUrl: CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
+      confirmPartnerUsualResidentialAddressUrl: CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+      confirmPartnerPrincipalOfficeAddressUrl: CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
     });
   }
 
