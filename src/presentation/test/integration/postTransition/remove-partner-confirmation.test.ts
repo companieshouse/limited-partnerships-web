@@ -1,3 +1,5 @@
+import { GeneralPartner, LimitedPartner, PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+
 import request from "supertest";
 
 import enTranslationText from "../../../../../locales/en/translations.json";
@@ -11,14 +13,14 @@ import { CONFIRMATION_POST_TRANSITION_URL } from "../../../controller/global/url
 
 import CompanyProfileBuilder from "../../builder/CompanyProfileBuilder";
 import TransactionBuilder from "../../builder/TransactionBuilder";
-import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import LimitedPartnerBuilder from "../../builder/LimitedPartnerBuilder";
 import GeneralPartnerBuilder from "../../builder/GeneralPartnerBuilder";
+import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 
 describe("Remove partner confirmation page", () => {
   const URL = getUrl(CONFIRMATION_POST_TRANSITION_URL);
 
-  let companyProfile;
+  let companyProfile: { Id: string; data: Partial<CompanyProfile> };
 
   beforeEach(() => {
     companyProfile = new CompanyProfileBuilder().build();
@@ -58,7 +60,7 @@ describe("Remove partner confirmation page", () => {
       expect(res.text).toContain(companyProfile.data.companyName);
       expect(res.text).toContain(companyProfile.data.companyNumber);
 
-      expectPartnerData(isLimitedPartner, isPerson, res, limitedPartner, generalPartner);
+      expectPartnerData(isLimitedPartner, isPerson, res, limitedPartner ?? {}, generalPartner ?? {});
     });
 
     it.each([
@@ -89,13 +91,13 @@ describe("Remove partner confirmation page", () => {
       expect(res.text).toContain(companyProfile.data.companyName);
       expect(res.text).toContain(companyProfile.data.companyNumber);
 
-      expectPartnerData(isLimitedPartner, isPerson, res, limitedPartner, generalPartner);
+      expectPartnerData(isLimitedPartner, isPerson, res, limitedPartner ?? {}, generalPartner ?? {});
     });
   });
 });
 
 function setupPartners(isLimitedPartner: boolean, isPerson: boolean) {
-  let partner;
+  let partner: LimitedPartner | GeneralPartner;
   if (isLimitedPartner) {
     partner = isPerson
       ? new LimitedPartnerBuilder().isPerson().build()
@@ -111,13 +113,13 @@ function setupPartners(isLimitedPartner: boolean, isPerson: boolean) {
   }
 }
 
-function expectPartnerData(isLimitedPartner: boolean, isPerson: boolean, res: any, limitedPartner: any, generalPartner: any) {
+function expectPartnerData(isLimitedPartner: boolean, isPerson: boolean, res: request.Response, limitedPartner: LimitedPartner, generalPartner: GeneralPartner) {
   const partner = isLimitedPartner ? limitedPartner : generalPartner;
 
   if (isPerson) {
-    expect(res.text).toContain(partner.data.forename);
-    expect(res.text).toContain(partner.data.surname);
+    expect(res.text).toContain(partner.data?.forename);
+    expect(res.text).toContain(partner.data?.surname);
   } else {
-    expect(res.text).toContain(partner.data.legal_entity_name);
+    expect(res.text).toContain(partner.data?.legal_entity_name);
   }
 }
