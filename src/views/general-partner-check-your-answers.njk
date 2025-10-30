@@ -27,6 +27,8 @@
 
           {% include "pages/checkYourAnswers/warning-message.njk" %}
 
+          <p class="govuk-body govuk-!-font-size-20 check-your-answers-javascript-disabled-text-style">{{ i18n.print.buttonTextNoJs }}</p>
+
           <div class="govuk-button-group">
             {{ govukButton({
               text: i18n.buttons.submit,
