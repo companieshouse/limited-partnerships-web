@@ -29,7 +29,7 @@ class LimitedPartnerRegistrationController extends PartnerController {
   }
 
   getLimitedPartner() {
-    return super.getLimitedPartner({ reviewLimitedPartnersUrl: REVIEW_LIMITED_PARTNERS_URL });
+    return super.getPartner(PartnerType.limitedPartner, { reviewPartnersUrl: REVIEW_LIMITED_PARTNERS_URL });
   }
 
   limitedPartnerChoice() {
@@ -44,7 +44,7 @@ class LimitedPartnerRegistrationController extends PartnerController {
   }
 
   createLimitedPartner() {
-    return super.createLimitedPartner();
+    return super.createPartner(PartnerType.limitedPartner);
   }
 
   sendPageData() {

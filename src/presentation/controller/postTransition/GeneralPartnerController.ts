@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from "express";
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
-import GeneralPartnerController, { PartnerType } from "../common/PartnerController";
+import PartnerController, { PartnerType } from "../common/PartnerController";
 
 import { ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL, ADD_GENERAL_PARTNER_PERSON_URL } from "./url";
 import {
@@ -21,7 +21,7 @@ import { CEASE_DATE_TEMPLATE, JOURNEY_TYPE_PARAM, REMOVE_CHECK_YOUR_ANSWERS_TEMP
 import { getJourneyTypes } from "../../../utils/journey";
 import { formatDate } from "../../../utils/date-format";
 
-class GeneralPartnerPostTransitionController extends GeneralPartnerController {
+class GeneralPartnerPostTransitionController extends PartnerController {
   constructor(
     limitedPartnershipService: LimitedPartnershipService,
     generalPartnerService: GeneralPartnerService,

@@ -30,7 +30,7 @@ class GeneralPartnerTransitionController extends PartnerController {
   }
 
   getGeneralPartner() {
-    return super.getGeneralPartner({ reviewGeneralPartnersUrl: REVIEW_GENERAL_PARTNERS_URL });
+    return super.getPartner(PartnerType.generalPartner, { reviewPartnersUrl: REVIEW_GENERAL_PARTNERS_URL });
   }
 
   generalPartnerChoice() {
@@ -45,7 +45,7 @@ class GeneralPartnerTransitionController extends PartnerController {
   }
 
   createGeneralPartner() {
-    return super.createGeneralPartner();
+    return super.createPartner(PartnerType.generalPartner);
   }
 
   sendPageData() {
