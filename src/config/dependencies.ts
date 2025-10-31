@@ -27,6 +27,7 @@ import GeneralPartnerTransitionController from "../presentation/controller/trans
 import LimitedPartnerTransitionController from "../presentation/controller/transition/LimitedPartnerController";
 
 import LimitedPartnershipPostTransitionController from "../presentation/controller/postTransition/LimitedPartnershipController";
+import PostTransitionPartnerController from "../presentation/controller/postTransition/PostTransitionPartnerController";
 import GeneralPartnerPostTransitionController from "../presentation/controller/postTransition/GeneralPartnerController";
 import LimitedPartnerPostTransitionController from "../presentation/controller/postTransition/LimitedPartnerController";
 
@@ -84,7 +85,7 @@ const addressLookUpController: AddressLookUpController = new AddressLookUpContro
 const generalPartnerRegistrationController: GeneralPartnerRegistrationController =
   new GeneralPartnerRegistrationController(limitedPartnershipService, generalPartnerService, limitedPartnerService);
 const limitedPartnerRegistrationController: LimitedPartnerRegistrationController =
-  new LimitedPartnerRegistrationController(limitedPartnershipService, limitedPartnerService);
+  new LimitedPartnerRegistrationController(limitedPartnershipService, generalPartnerService, limitedPartnerService);
 
 const limitedPartnershipTransitionController: LimitedPartnershipTransitionController =
   new LimitedPartnershipTransitionController(
@@ -101,6 +102,7 @@ const generalPartnerTransitionController: GeneralPartnerTransitionController = n
 );
 const limitedPartnerTransitionController: LimitedPartnerTransitionController = new LimitedPartnerTransitionController(
   limitedPartnershipService,
+  generalPartnerService,
   limitedPartnerService
 );
 
@@ -113,20 +115,28 @@ const limitedPartnershipPostTransitionController: LimitedPartnershipPostTransiti
     transactionService,
     paymentService
   );
+const postTransitionPartnerController = new PostTransitionPartnerController(
+  limitedPartnershipService,
+  generalPartnerService,
+  limitedPartnerService,
+  companyService,
+  transactionService
+);
 const generalPartnerPostTransitionController: GeneralPartnerPostTransitionController =
   new GeneralPartnerPostTransitionController(
     limitedPartnershipService,
     generalPartnerService,
     limitedPartnerService,
     companyService,
-    transactionService
+    postTransitionPartnerController
   );
 const limitedPartnerPostTransitionController: LimitedPartnerPostTransitionController =
   new LimitedPartnerPostTransitionController(
     limitedPartnershipService,
+    generalPartnerService,
     limitedPartnerService,
     companyService,
-    transactionService
+    postTransitionPartnerController
   );
 
 export const appDependencies = {

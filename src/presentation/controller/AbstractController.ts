@@ -1,10 +1,8 @@
-import { NextFunction, Request, Response } from "express";
+import { Request } from "express";
 import { Session } from "@companieshouse/node-session-handler";
-import { GeneralPartner, LimitedPartner, LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import {
   APPOINTMENT_ID,
-  CEASE_DATE_TEMPLATE,
   COMPANY_ID,
   GENERAL_PARTNER_ID,
   LIMITED_PARTNER_ID,
@@ -12,17 +10,15 @@ import {
   REGISTRATION_BASE_URL,
   SUBMISSION_ID,
   TRANSACTION_ID,
-  TRANSITION_BASE_URL,
-  YOUR_FILINGS_URL
+  TRANSITION_BASE_URL
 } from "../../config/constants";
 import { PageRouting, pageRoutingDefault, PagesRouting } from "./PageRouting";
 import PageType from "./PageType";
 import { WHICH_TYPE_URL } from "./registration/url";
 import UIErrors from "../../domain/entities/UIErrors";
 import { Ids, Tokens } from "../../domain/types";
-import { isCeaseDatePage } from "./postTransition/pageType";
-import DataIncludingPartners from "../../application/service/CompanyService";
 
+// This class is global and must not contain anything specific to a journey or entity
 abstract class AbstractController {
   protected getRouting(routing: PagesRouting, pageType: PageType, request: Request) {
     let pageRouting = { ...routing.get(pageType) } as PageRouting;
@@ -213,51 +209,6 @@ abstract class AbstractController {
     }
 
     return WHICH_TYPE_URL;
-  }
-
-  continueSavedFiling(pageType, routing) {
-    return (request: Request, response: Response, next: NextFunction) => {
-      try {
-        if (request.body["continue_saved_filing"] === "YES") {
-          return response.redirect(YOUR_FILINGS_URL);
-        }
-
-        const type = this.extractPageTypeOrThrowError(request, pageType);
-        const pageRouting = this.getRouting(routing, type, request);
-
-        return response.redirect(pageRouting.nextUrl);
-      } catch (error) {
-        next(error);
-      }
-    };
-  }
-
-  protected buildPartnerErrorRenderData(
-    pageType: string,
-    pageRouting: PageRouting,
-    limitedPartnership: Partial<LimitedPartnership & DataIncludingPartners> | undefined,
-    partner: LimitedPartner | GeneralPartner,
-    requestBody: any,
-    partnerFieldName: "limitedPartner" | "generalPartner"
-  ) {
-    if (isCeaseDatePage(pageType)) {
-      return {
-        data: {
-          limitedPartnership,
-          partner,
-          ...requestBody
-        },
-        url: CEASE_DATE_TEMPLATE
-      };
-    } else {
-      return {
-        data: {
-          limitedPartnership,
-          [partnerFieldName]: { data: requestBody }
-        },
-        url: pageRouting.currentUrl
-      };
-    }
   }
 }
 

@@ -35,7 +35,7 @@ const postTransitionRoutingGeneralPartnerCheckYourAnswers = {
   nextUrl: "/",
   pageType: PostTransitionPageType.generalPartnerCheckYourAnswers,
   data: {
-    confirmPrincipalOfficeAddres: CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+    confirmPrincipalOfficeAddress: CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
     confirmCorrespondenceAddress: CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL
   }
 };
