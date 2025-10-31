@@ -11,6 +11,19 @@ import PartnerController, { PartnerType } from "../common/PartnerController";
 import PostTransitionPageType from "./pageType";
 import postTransitionRouting from "./routing";
 import { CEASE_DATE_TEMPLATE } from "../../../config/constants";
+import UIErrors from "../../../domain/entities/UIErrors";
+
+type PartnerData = {
+  person: {
+    description: string;
+    kind: PartnerKind;
+  };
+  legalEntity: {
+    description: string;
+    kind: PartnerKind;
+  };
+  needAppointment?: boolean;
+};
 
 class PostTransitionPartnerController extends PartnerController {
   constructor(
@@ -62,20 +75,7 @@ class PostTransitionPartnerController extends PartnerController {
     };
   }
 
-  createPartner(
-    partner: PartnerType,
-    data?: {
-      person: {
-        description: string;
-        kind: PartnerKind;
-      };
-      legalEntity: {
-        description: string;
-        kind: PartnerKind;
-      };
-      needAppointment?: boolean;
-    }
-  ) {
+  createPartner(partner: PartnerType, data?: PartnerData) {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const { tokens, ids } = super.extract(request);
@@ -115,31 +115,15 @@ class PostTransitionPartnerController extends PartnerController {
             ids.appointmentId
           );
 
-          const dataToSend = {
-            ...request.body,
-
-            forename: resultAppointment?.partner.data?.forename,
-            surname: resultAppointment?.partner.data?.surname,
-            legal_entity_name: resultAppointment?.partner.data?.legal_entity_name,
-            date_of_birth: resultAppointment?.partner.data?.date_of_birth,
-            appointment_id: ids.appointmentId,
-
-            kind: isLegalEntity ? data?.legalEntity.kind : data?.person.kind
-          };
-
-          if (partner === PartnerType.generalPartner) {
-            result = await this.generalPartnerService.createGeneralPartner(
-              tokens,
-              resultTransaction.transactionId,
-              dataToSend
-            );
-          } else if (partner === PartnerType.limitedPartner) {
-            result = await this.limitedPartnerService.createLimitedPartner(
-              tokens,
-              resultTransaction.transactionId,
-              dataToSend
-            );
-          }
+          result = await this.setResultFromAppointment(
+            request,
+            resultAppointment,
+            isLegalEntity,
+            data,
+            partner,
+            result,
+            resultTransaction
+          );
         } else {
           const dataToSend = {
             ...request.body,
@@ -191,6 +175,45 @@ class PostTransitionPartnerController extends PartnerController {
         next(error);
       }
     };
+  }
+
+  private async setResultFromAppointment(
+    request: Request,
+    resultAppointment: any,
+    isLegalEntity: boolean,
+    data: PartnerData,
+    partner: PartnerType,
+    result: any,
+    resultTransaction: { transactionId: string; errors?: UIErrors }
+  ) {
+    const { tokens, ids } = super.extract(request);
+
+    const dataToSend = {
+      ...request.body,
+
+      forename: resultAppointment?.partner.data?.forename,
+      surname: resultAppointment?.partner.data?.surname,
+      legal_entity_name: resultAppointment?.partner.data?.legal_entity_name,
+      date_of_birth: resultAppointment?.partner.data?.date_of_birth,
+      appointment_id: ids.appointmentId,
+
+      kind: isLegalEntity ? data?.legalEntity.kind : data?.person.kind
+    };
+
+    if (partner === PartnerType.generalPartner) {
+      result = await this.generalPartnerService.createGeneralPartner(
+        tokens,
+        resultTransaction.transactionId,
+        dataToSend
+      );
+    } else if (partner === PartnerType.limitedPartner) {
+      result = await this.limitedPartnerService.createLimitedPartner(
+        tokens,
+        resultTransaction.transactionId,
+        dataToSend
+      );
+    }
+    return result;
   }
 }
 
