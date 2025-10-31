@@ -1,11 +1,17 @@
 import { NextFunction, Request, Response } from "express";
-import { GeneralPartner, LimitedPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
+import {
+  GeneralPartner,
+  LimitedPartner,
+  LimitedPartnership
+} from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 import AbstractController from "../AbstractController";
-import { Ids, Tokens } from "../../../domain/types";
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
+import CompanyService, { DataIncludingPartners } from "../../../application/service/CompanyService";
+
+import { Ids, Tokens } from "../../../domain/types";
 import { PageRouting } from "../PageRouting";
 import UIErrors from "../../../domain/entities/UIErrors";
 
@@ -17,8 +23,6 @@ import PostTransitionPageType, { isCeaseDatePage } from "../postTransition/pageT
 import registrationRouting from "../registration/Routing";
 import transitionRouting from "../transition/Routing";
 import postTransitionRouting from "../postTransition/routing";
-
-import CompanyService from "../../../application/service/CompanyService";
 
 import { formatDate } from "../../../utils/date-format";
 import { CEASE_DATE_TEMPLATE } from "../../../config/constants";
@@ -245,45 +249,6 @@ abstract class PartnerController extends AbstractController {
           super.templateName(pageRouting.currentUrl),
           super.makeProps(pageRouting, { limitedPartnership, generalPartners, limitedPartners }, errors)
         );
-      } catch (error) {
-        next(error);
-      }
-    };
-  }
-
-  getCeaseDate() {
-    return async (request: Request, response: Response, next: NextFunction) => {
-      try {
-        const { ids, pageType, tokens } = super.extract(request);
-        const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
-
-        let limitedPartnership = {};
-        let partner = {};
-
-        if (this.companyService) {
-          const { limitedPartnership: lp } = await this.companyService.buildLimitedPartnershipFromCompanyProfile(
-            tokens,
-            ids.companyId
-          );
-
-          limitedPartnership = lp;
-
-          if (ids.appointmentId) {
-            const { partner: pt } = await this.companyService.buildPartnerFromCompanyAppointment(
-              tokens,
-              ids.companyId,
-              ids.appointmentId
-            );
-
-            partner = pt;
-          }
-        }
-
-        if (ids.generalPartnerId) {
-          partner = await this.generalPartnerService.getGeneralPartner(tokens, ids.transactionId, ids.generalPartnerId);
-        }
-
-        response.render(CEASE_DATE_TEMPLATE, super.makeProps(pageRouting, { limitedPartnership, partner }, null));
       } catch (error) {
         next(error);
       }
@@ -694,6 +659,34 @@ abstract class PartnerController extends AbstractController {
   protected resetFormerNamesIfPreviousNameIsFalse(data: Record<string, any>) {
     if (data?.former_names && data?.previousName === "false") {
       data.former_names = "";
+    }
+  }
+
+  protected buildPartnerErrorRenderData(
+    pageType: string,
+    pageRouting: PageRouting,
+    limitedPartnership: Partial<LimitedPartnership & DataIncludingPartners> | undefined,
+    partner: LimitedPartner | GeneralPartner,
+    requestBody: any,
+    partnerFieldName: "limitedPartner" | "generalPartner"
+  ) {
+    if (isCeaseDatePage(pageType)) {
+      return {
+        data: {
+          limitedPartnership,
+          partner,
+          ...requestBody
+        },
+        url: CEASE_DATE_TEMPLATE
+      };
+    } else {
+      return {
+        data: {
+          limitedPartnership,
+          [partnerFieldName]: { data: requestBody }
+        },
+        url: pageRouting.currentUrl
+      };
     }
   }
 }

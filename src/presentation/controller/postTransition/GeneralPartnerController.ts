@@ -1,8 +1,11 @@
 import { NextFunction, Request, Response } from "express";
+import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
+import CompanyService from "../../../application/service/CompanyService";
+import PostTransitionPartnerController from "./PostTransitionPartnerController";
 import PartnerController, { PartnerType } from "../common/PartnerController";
 
 import { ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL, ADD_GENERAL_PARTNER_PERSON_URL } from "./url";
@@ -10,11 +13,7 @@ import {
   CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "../addressLookUp/url/postTransition";
-import CompanyService from "../../../application/service/CompanyService";
-import TransactionService from "../../../application/service/TransactionService";
-import { IncorporationKind, PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-import PostTransitionPageType from "../postTransition/pageType";
 import postTransitionRouting from "../postTransition/routing";
 import { CONFIRMATION_POST_TRANSITION_URL } from "../global/url";
 import { JOURNEY_TYPE_PARAM, REMOVE_CHECK_YOUR_ANSWERS_TEMPLATE } from "../../../config/constants";
@@ -27,7 +26,7 @@ class GeneralPartnerPostTransitionController extends PartnerController {
     generalPartnerService: GeneralPartnerService,
     limitedPartnerService: LimitedPartnerService,
     companyService: CompanyService,
-    private readonly transactionService: TransactionService
+    private readonly postTransitionPartnerController: PostTransitionPartnerController
   ) {
     super(limitedPartnershipService, generalPartnerService, limitedPartnerService, companyService);
   }
@@ -54,92 +53,7 @@ class GeneralPartnerPostTransitionController extends PartnerController {
     };
     needAppointment?: boolean;
   }) {
-    return async (request: Request, response: Response, next: NextFunction) => {
-      try {
-        const { tokens, ids } = super.extract(request);
-        const pageType = super.extractPageTypeOrThrowError(request, PostTransitionPageType);
-        const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
-
-        const limitedPartnershipResult = await this.companyService?.buildLimitedPartnershipFromCompanyProfile(
-          tokens,
-          ids.companyId
-        );
-
-        const isLegalEntity =
-          pageType === PostTransitionPageType.addGeneralPartnerLegalEntity ||
-          pageType === PostTransitionPageType.whenDidTheGeneralPartnerLegalEntityCease;
-
-        const limitedPartnershipData = limitedPartnershipResult?.limitedPartnership?.data;
-
-        const resultTransaction = await this.transactionService.createTransaction(
-          tokens,
-          IncorporationKind.POST_TRANSITION,
-          {
-            companyName: limitedPartnershipData?.partnership_name ?? "",
-            companyNumber: limitedPartnershipData?.partnership_number ?? ""
-          },
-          isLegalEntity ? data?.legalEntity.description : data?.person.description
-        );
-
-        let result: any = {};
-        let resultAppointment;
-
-        if (data?.needAppointment) {
-          resultAppointment = await this.companyService?.buildPartnerFromCompanyAppointment(
-            tokens,
-            ids.companyId,
-            ids.appointmentId
-          );
-
-          result = await this.generalPartnerService.createGeneralPartner(tokens, resultTransaction.transactionId, {
-            ...request.body,
-
-            forename: resultAppointment?.partner.data?.forename,
-            surname: resultAppointment?.partner.data?.surname,
-            legal_entity_name: resultAppointment?.partner.data?.legal_entity_name,
-            date_of_birth: resultAppointment?.partner.data?.date_of_birth,
-            appointment_id: ids.appointmentId,
-
-            kind: isLegalEntity
-              ? PartnerKind.REMOVE_GENERAL_PARTNER_LEGAL_ENTITY
-              : PartnerKind.REMOVE_GENERAL_PARTNER_PERSON
-          });
-        } else {
-          result = await this.generalPartnerService.createGeneralPartner(tokens, resultTransaction.transactionId, {
-            ...request.body,
-            kind: isLegalEntity ? data?.legalEntity.kind : data?.person.kind
-          });
-        }
-
-        if (result.errors) {
-          super.resetFormerNamesIfPreviousNameIsFalse(request.body);
-
-          const { data: renderData, url } = this.buildPartnerErrorRenderData(
-            pageType,
-            pageRouting,
-            limitedPartnershipResult?.limitedPartnership,
-            resultAppointment?.partner,
-            request.body,
-            "generalPartner"
-          );
-
-          response.render(super.templateName(url), super.makeProps(pageRouting, renderData, result.errors));
-          return;
-        }
-
-        const newIds = {
-          ...ids,
-          transactionId: resultTransaction.transactionId,
-          generalPartnerId: result.generalPartnerId
-        };
-
-        const url = super.insertIdsInUrl(pageRouting.nextUrl, newIds);
-
-        response.redirect(url);
-      } catch (error) {
-        next(error);
-      }
-    };
+    return this.postTransitionPartnerController.createPartner(PartnerType.generalPartner, data);
   }
 
   sendPageData() {
@@ -150,7 +64,7 @@ class GeneralPartnerPostTransitionController extends PartnerController {
   }
 
   getCeaseDate() {
-    return super.getCeaseDate();
+    return this.postTransitionPartnerController.getCeaseDate();
   }
 
   getCheckYourAnswersPageRouting() {
