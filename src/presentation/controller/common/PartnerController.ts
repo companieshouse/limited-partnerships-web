@@ -51,7 +51,7 @@ abstract class PartnerController extends AbstractController {
 
         const { ids, pageRouting, tokens } = this.extractRequestData(request);
 
-        await this.conditionalPreviousUrl(ids, pageRouting, request, tokens);
+        await this.conditionalPreviousUrl(pageRouting, request);
 
         let limitedPartnership = {};
         let generalPartner = {};
@@ -71,35 +71,9 @@ abstract class PartnerController extends AbstractController {
           )?.limitedPartnership;
         }
 
-        if (ids.transactionId && ids.generalPartnerId && partner === PartnerType.generalPartner) {
-          generalPartner = await this.generalPartnerService.getGeneralPartner(
-            tokens,
-            ids.transactionId,
-            ids.generalPartnerId
-          );
+        generalPartner = await this.setGeneralPartner(partner, generalPartner, pageRouting, request, response);
 
-          generalPartner = this.formatPartnerDatesAndSetPreviousUrl(
-            generalPartner,
-            pageRouting,
-            request,
-            response.locals.i18n
-          );
-        }
-
-        if (ids.transactionId && ids.limitedPartnerId && partner === PartnerType.limitedPartner) {
-          limitedPartner = await this.limitedPartnerService.getLimitedPartner(
-            tokens,
-            ids.transactionId,
-            ids.limitedPartnerId
-          );
-
-          limitedPartner = this.formatPartnerDatesAndSetPreviousUrl(
-            limitedPartner,
-            pageRouting,
-            request,
-            response.locals.i18n
-          );
-        }
+        limitedPartner = await this.setLimitedPartner(partner, limitedPartner, pageRouting, request, response);
 
         response.render(
           super.templateName(pageRouting.currentUrl),
@@ -109,6 +83,58 @@ abstract class PartnerController extends AbstractController {
         next(error);
       }
     };
+  }
+
+  private async setGeneralPartner(
+    partner: PartnerType,
+    generalPartner: GeneralPartner,
+    pageRouting: PageRouting,
+    request: Request,
+    response: Response
+  ) {
+    const { ids, tokens } = this.extractRequestData(request);
+
+    if (ids.transactionId && ids.generalPartnerId && partner === PartnerType.generalPartner) {
+      generalPartner = await this.generalPartnerService.getGeneralPartner(
+        tokens,
+        ids.transactionId,
+        ids.generalPartnerId
+      );
+
+      generalPartner = this.formatPartnerDatesAndSetPreviousUrl(
+        generalPartner,
+        pageRouting,
+        request,
+        response.locals.i18n
+      );
+    }
+    return generalPartner;
+  }
+
+  private async setLimitedPartner(
+    partner: PartnerType,
+    limitedPartner: LimitedPartner,
+    pageRouting: PageRouting,
+    request: Request,
+    response: Response
+  ) {
+    const { ids, tokens } = this.extractRequestData(request);
+
+    if (ids.transactionId && ids.limitedPartnerId && partner === PartnerType.limitedPartner) {
+      limitedPartner = await this.limitedPartnerService.getLimitedPartner(
+        tokens,
+        ids.transactionId,
+        ids.limitedPartnerId
+      );
+
+      limitedPartner = this.formatPartnerDatesAndSetPreviousUrl(
+        limitedPartner,
+        pageRouting,
+        request,
+        response.locals.i18n
+      );
+    }
+    return limitedPartner;
   }
 
   private formatPartnerDatesAndSetPreviousUrl(
@@ -453,60 +479,16 @@ abstract class PartnerController extends AbstractController {
         const pageType = super.extractPageTypeOrThrowError(request, journeyPageType);
         const pageRouting = super.getRouting(routing, pageType, request);
 
-        let result;
-        if (partner === PartnerType.generalPartner) {
-          result = await this.generalPartnerService.sendPageData(
-            tokens,
-            ids.transactionId,
-            ids.generalPartnerId,
-            request.body
-          );
-        } else if (partner === PartnerType.limitedPartner) {
-          result = await this.limitedPartnerService.sendPageData(
-            tokens,
-            ids.transactionId,
-            ids.limitedPartnerId,
-            request.body
-          );
-        }
+        const result = await this.sendData(partner, tokens, ids, request);
 
         if (result?.errors) {
           this.resetFormerNamesIfPreviousNameIsFalse(request.body);
 
-          let limitedPartnership = {};
+          const limitedPartnership = await this.getLimitedPartnership(ids, tokens);
 
-          if (ids.transactionId && ids.submissionId) {
-            limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
-              tokens,
-              ids.transactionId,
-              ids.submissionId
-            );
-          }
+          await this.conditionalPreviousUrl(pageRouting, request);
 
-          if (this.companyService) {
-            limitedPartnership = (
-              await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId)
-            )?.limitedPartnership;
-          }
-
-          await this.conditionalPreviousUrl(ids, pageRouting, request, tokens);
-
-          let partnerEntity = {};
-          if (isCeaseDatePage(pageType)) {
-            if (partner === PartnerType.generalPartner) {
-              partnerEntity = await this.generalPartnerService.getGeneralPartner(
-                tokens,
-                ids.transactionId,
-                ids.generalPartnerId
-              );
-            } else if (partner === PartnerType.limitedPartner) {
-              partnerEntity = await this.limitedPartnerService.getLimitedPartner(
-                tokens,
-                ids.transactionId,
-                ids.limitedPartnerId
-              );
-            }
-          }
+          const partnerEntity = await this.getPartnerEntity(pageType, partner, tokens, ids);
 
           const { data: renderData, url } = this.buildPartnerErrorRenderData(
             pageType,
@@ -522,7 +504,7 @@ abstract class PartnerController extends AbstractController {
           return;
         }
 
-        await this.conditionalPatchPartner(ids, pageRouting, request, tokens, {
+        await this.conditionalPatchPartner(pageRouting, request, {
           confirmPartnerUsualResidentialAddressUrl: urls.confirmPartnerUsualResidentialAddressUrl,
           confirmPartnerPrincipalOfficeAddressUrl: urls.confirmPartnerPrincipalOfficeAddressUrl
         });
@@ -534,11 +516,71 @@ abstract class PartnerController extends AbstractController {
     };
   }
 
+  private async sendData(partner: PartnerType, tokens: Tokens, ids: Ids, request: Request) {
+    let result;
+
+    if (partner === PartnerType.generalPartner) {
+      result = await this.generalPartnerService.sendPageData(
+        tokens,
+        ids.transactionId,
+        ids.generalPartnerId,
+        request.body
+      );
+    } else if (partner === PartnerType.limitedPartner) {
+      result = await this.limitedPartnerService.sendPageData(
+        tokens,
+        ids.transactionId,
+        ids.limitedPartnerId,
+        request.body
+      );
+    }
+
+    return result;
+  }
+
+  private async getLimitedPartnership(ids: Ids, tokens: Tokens) {
+    let limitedPartnership = {};
+
+    if (ids.transactionId && ids.submissionId) {
+      limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+        tokens,
+        ids.transactionId,
+        ids.submissionId
+      );
+    }
+
+    if (this.companyService) {
+      limitedPartnership = (await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId))
+        ?.limitedPartnership;
+    }
+    return limitedPartnership;
+  }
+
+  private async getPartnerEntity(pageType: any, partner: PartnerType, tokens: Tokens, ids: Ids) {
+    let partnerEntity = {};
+
+    if (isCeaseDatePage(pageType)) {
+      if (partner === PartnerType.generalPartner) {
+        partnerEntity = await this.generalPartnerService.getGeneralPartner(
+          tokens,
+          ids.transactionId,
+          ids.generalPartnerId
+        );
+      } else if (partner === PartnerType.limitedPartner) {
+        partnerEntity = await this.limitedPartnerService.getLimitedPartner(
+          tokens,
+          ids.transactionId,
+          ids.limitedPartnerId
+        );
+      }
+    }
+
+    return partnerEntity;
+  }
+
   private async conditionalPatchPartner(
-    ids: Ids,
     pageRouting: PageRouting,
     request: Request,
-    tokens: Tokens,
     urls: {
       confirmPartnerUsualResidentialAddressUrl: string;
       confirmPartnerPrincipalOfficeAddressUrl: string;
@@ -546,59 +588,84 @@ abstract class PartnerController extends AbstractController {
   ) {
     const journeyPageType = this.getJourneyPageTypes(request.url);
 
-    if (
+    const isGeneralPartner =
       pageRouting.pageType === journeyPageType.addGeneralPartnerPerson ||
-      pageRouting.pageType === journeyPageType.addGeneralPartnerLegalEntity
-    ) {
-      const generalPartner = await this.generalPartnerService.getGeneralPartner(
-        tokens,
-        ids.transactionId,
-        ids.generalPartnerId
-      );
+      pageRouting.pageType === journeyPageType.addGeneralPartnerLegalEntity;
 
-      if (
-        pageRouting.pageType === journeyPageType.addGeneralPartnerPerson &&
-        generalPartner?.data?.usual_residential_address?.address_line_1
-      ) {
-        pageRouting.nextUrl = super.insertIdsInUrl(urls.confirmPartnerUsualResidentialAddressUrl, ids, request.url);
-      }
-
-      if (
-        pageRouting.pageType === journeyPageType.addGeneralPartnerLegalEntity &&
-        generalPartner?.data?.principal_office_address?.address_line_1
-      ) {
-        pageRouting.nextUrl = super.insertIdsInUrl(urls.confirmPartnerPrincipalOfficeAddressUrl, ids, request.url);
-      }
-    } else if (
+    const isLimitedPartner =
       pageRouting.pageType === journeyPageType.addLimitedPartnerPerson ||
-      pageRouting.pageType === journeyPageType.addLimitedPartnerLegalEntity
-    ) {
-      const limitedPartner = await this.limitedPartnerService.getLimitedPartner(
-        tokens,
-        ids.transactionId,
-        ids.limitedPartnerId
-      );
+      pageRouting.pageType === journeyPageType.addLimitedPartnerLegalEntity;
 
-      if (
-        pageRouting.pageType === journeyPageType.addLimitedPartnerPerson &&
-        limitedPartner?.data?.usual_residential_address?.address_line_1
-      ) {
-        pageRouting.nextUrl = super.insertIdsInUrl(urls.confirmPartnerUsualResidentialAddressUrl, ids, request.url);
-      }
-
-      if (
-        pageRouting.pageType === journeyPageType.addLimitedPartnerLegalEntity &&
-        limitedPartner?.data?.principal_office_address?.address_line_1
-      ) {
-        pageRouting.nextUrl = super.insertIdsInUrl(urls.confirmPartnerPrincipalOfficeAddressUrl, ids, request.url);
-      }
+    if (isGeneralPartner) {
+      await this.setGeneralPartnerNextUrl(pageRouting, urls, request);
+    } else if (isLimitedPartner) {
+      await this.setLimitedPartnerNextUrl(pageRouting, urls, request);
     }
   }
 
-  private async conditionalPreviousUrl(ids: Ids, pageRouting: PageRouting, request: Request, tokens: Tokens) {
-    if (ids.submissionId) {
-      const pageType = this.getJourneyPageTypes(request.url);
+  private async setGeneralPartnerNextUrl(
+    pageRouting: PageRouting,
+    urls: { confirmPartnerUsualResidentialAddressUrl: string; confirmPartnerPrincipalOfficeAddressUrl: string },
+    request: Request
+  ) {
+    const journeyPageType = this.getJourneyPageTypes(request.url);
+    const { ids, tokens } = this.extractRequestData(request);
 
+    const generalPartner = await this.generalPartnerService.getGeneralPartner(
+      tokens,
+      ids.transactionId,
+      ids.generalPartnerId
+    );
+
+    if (
+      pageRouting.pageType === journeyPageType.addGeneralPartnerPerson &&
+      generalPartner?.data?.usual_residential_address?.address_line_1
+    ) {
+      pageRouting.nextUrl = super.insertIdsInUrl(urls.confirmPartnerUsualResidentialAddressUrl, ids, request.url);
+    }
+
+    if (
+      pageRouting.pageType === journeyPageType.addGeneralPartnerLegalEntity &&
+      generalPartner?.data?.principal_office_address?.address_line_1
+    ) {
+      pageRouting.nextUrl = super.insertIdsInUrl(urls.confirmPartnerPrincipalOfficeAddressUrl, ids, request.url);
+    }
+  }
+
+  private async setLimitedPartnerNextUrl(
+    pageRouting: PageRouting,
+    urls: { confirmPartnerUsualResidentialAddressUrl: string; confirmPartnerPrincipalOfficeAddressUrl: string },
+    request: Request
+  ) {
+    const journeyPageType = this.getJourneyPageTypes(request.url);
+    const { ids, tokens } = this.extractRequestData(request);
+
+    const limitedPartner = await this.limitedPartnerService.getLimitedPartner(
+      tokens,
+      ids.transactionId,
+      ids.limitedPartnerId
+    );
+
+    if (
+      pageRouting.pageType === journeyPageType.addLimitedPartnerPerson &&
+      limitedPartner?.data?.usual_residential_address?.address_line_1
+    ) {
+      pageRouting.nextUrl = super.insertIdsInUrl(urls.confirmPartnerUsualResidentialAddressUrl, ids, request.url);
+    }
+
+    if (
+      pageRouting.pageType === journeyPageType.addLimitedPartnerLegalEntity &&
+      limitedPartner?.data?.principal_office_address?.address_line_1
+    ) {
+      pageRouting.nextUrl = super.insertIdsInUrl(urls.confirmPartnerPrincipalOfficeAddressUrl, ids, request.url);
+    }
+  }
+
+  private async conditionalPreviousUrl(pageRouting: PageRouting, request: Request) {
+    const pageType = this.getJourneyPageTypes(request.url);
+    const { ids, tokens } = this.extractRequestData(request);
+
+    if (ids.submissionId) {
       if (
         pageRouting.pageType === pageType.addGeneralPartnerLegalEntity ||
         pageRouting.pageType === pageType.addGeneralPartnerPerson
