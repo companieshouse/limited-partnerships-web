@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import AbstractController from "../AbstractController";
+import { GeneralPartner, LimitedPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+
 import { Ids, Tokens } from "../../../domain/types";
 import transitionRouting from "./Routing";
 import TransitionPageType from "./PageType";
@@ -8,15 +9,16 @@ import CacheService from "../../../application/service/CacheService";
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import { JOURNEY_TYPE_PARAM } from "../../../config/constants";
 import { getJourneyTypes } from "../../../utils/journey";
-import { GeneralPartner, LimitedPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { PageRouting } from "../PageRouting";
 import { CONFIRM_REGISTERED_OFFICE_ADDRESS_URL } from "../addressLookUp/url/transition";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
+import PartnershipController from "../common/PartnershipController";
+
 import { formatDate } from "../../../utils/date-format";
 import { CONFIRMATION_URL } from "../global/url";
 
-class LimitedPartnershipController extends AbstractController {
+class LimitedPartnershipController extends PartnershipController {
   constructor(
     private readonly companyService: CompanyService,
     private readonly cacheService: CacheService,
