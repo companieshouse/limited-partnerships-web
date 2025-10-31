@@ -221,7 +221,7 @@ class LimitedPartnershipController extends AbstractController {
         );
 
         if (addressKey) {
-          const errors = this.validateAddress(request, response, limitedPartnership);
+          const errors = this.validateAddress(request, response, limitedPartnership, partnershipKind);
           if (errors?.hasErrors()) {
             return response.render(
               super.templateName(pageRouting.currentUrl),
@@ -295,7 +295,7 @@ class LimitedPartnershipController extends AbstractController {
         );
 
         if (addressKey) {
-          const errors = this.validateAddress(request, response, limitedPartnership);
+          const errors = this.validateAddress(request, response, limitedPartnership, limitedPartnership.data?.kind ?? "");
           if (errors?.hasErrors()) {
             return response.render(
               super.templateName(pageRouting.currentUrl),
@@ -426,7 +426,8 @@ class LimitedPartnershipController extends AbstractController {
   private validateAddress(
     request: Request,
     response: Response,
-    limitedPartnership: LimitedPartnership
+    limitedPartnership: LimitedPartnership,
+    partnershipKind: string
   ): UIErrors | undefined {
     this.addressService.setI18n(response.locals.i18n);
 
@@ -447,11 +448,13 @@ class LimitedPartnershipController extends AbstractController {
 
     errors = this.addressService.isValidPostcode(postal_code ?? "", country, errors);
 
-    errors = this.addressService.isValidJurisdictionAndCountry(
-      limitedPartnership?.data?.jurisdiction ?? "",
-      country,
-      errors
-    );
+    if (partnershipKind !== PartnershipKind.UPDATE_PARTNERSHIP_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS) {
+      errors = this.addressService.isValidJurisdictionAndCountry(
+        limitedPartnership?.data?.jurisdiction ?? "",
+        country,
+        errors
+      );
+    }
 
     return errors;
   }
