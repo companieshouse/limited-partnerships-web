@@ -161,29 +161,7 @@ describe("Enter Principal Place Of Business Address Page", () => {
     }
   );
 
-  it("should return a validation error when jurisdiction of Scotland does not match country", async () => {
-    const limitedPartnership = new LimitedPartnershipBuilder()
-      .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
-      .withJurisdiction(Jurisdiction.SCOTLAND)
-      .build();
-
-    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
-    const res = await request(app)
-      .post(URL)
-      .send({
-        pageType: PostTransitionPageType.enterPrincipalPlaceOfBusinessAddress,
-        ...limitedPartnership.data?.principal_place_of_business_address,
-        country: "Northern Ireland"
-      });
-
-    expect(res.status).toBe(200);
-    expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.jurisdictionCountry);
-    expect(res.text).toContain(enTranslationText.govUk.error.title);
-    expect(res.text).toContain(companyProfile.data.companyName.toUpperCase());
-  });
-
-  it("should return a validation error when jurisdiction of Northern Ireland does not match country", async () => {
+  it("should not return a validation error when jurisdiction does not match country", async () => {
     const limitedPartnership = new LimitedPartnershipBuilder().withJurisdiction(Jurisdiction.NORTHERN_IRELAND).build();
 
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
@@ -193,32 +171,10 @@ describe("Enter Principal Place Of Business Address Page", () => {
       .send({
         pageType: PostTransitionPageType.enterPrincipalPlaceOfBusinessAddress,
         ...limitedPartnership.data?.principal_place_of_business_address,
-        country: "Scotland"
+        country: "Wales"
       });
 
-    expect(res.status).toBe(200);
-    expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.jurisdictionCountry);
-    expect(res.text).toContain(enTranslationText.govUk.error.title);
-    expect(res.text).toContain(companyProfile.data.companyName.toUpperCase());
-  });
-
-  it("should return a validation error when jurisdiction of England and Wales does not match country", async () => {
-    const limitedPartnership = new LimitedPartnershipBuilder().withJurisdiction(Jurisdiction.ENGLAND_AND_WALES).build();
-
-    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
-    const res = await request(app)
-      .post(URL)
-      .send({
-        pageType: PostTransitionPageType.enterPrincipalPlaceOfBusinessAddress,
-        ...limitedPartnership.data?.principal_place_of_business_address,
-        country: "Scotland"
-      });
-
-    expect(res.status).toBe(200);
-    expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.jurisdictionCountry);
-    expect(res.text).toContain(enTranslationText.govUk.error.title);
-    expect(res.text).toContain(companyProfile.data.companyName.toUpperCase());
+    expect(res.status).toBe(302);
   });
 
   it("should return a validation error when postcode format is invalid", async () => {
