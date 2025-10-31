@@ -175,6 +175,8 @@ describe("Enter Principal Place Of Business Address Page", () => {
       });
 
     expect(res.status).toBe(302);
+    expect(res.text).not.toContain(enTranslationText.address.enterAddress.errorMessages.jurisdictionCountry);
+    expect(res.text).not.toContain(enTranslationText.govUk.error.title);
   });
 
   it("should return a validation error when postcode format is invalid", async () => {
