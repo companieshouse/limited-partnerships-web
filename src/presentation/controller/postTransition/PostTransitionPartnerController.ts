@@ -68,6 +68,10 @@ class PostTransitionPartnerController extends PartnerController {
           partner = await this.generalPartnerService.getGeneralPartner(tokens, ids.transactionId, ids.generalPartnerId);
         }
 
+        if (ids.limitedPartnerId) {
+          partner = await this.limitedPartnerService.getLimitedPartner(tokens, ids.transactionId, ids.limitedPartnerId);
+        }
+
         response.render(CEASE_DATE_TEMPLATE, super.makeProps(pageRouting, { limitedPartnership, partner }, null));
       } catch (error) {
         next(error);
