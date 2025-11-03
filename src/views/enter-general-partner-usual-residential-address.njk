@@ -51,11 +51,11 @@
           {% include "includes/csrf_token.njk" %}
           
           {% if props.data.cache.ura_territory_choice == "overseas" or
-             not (address.country == "England" or 
-               address.country == "Northern Ireland" or
-               address.country == "Scotland" or 
-               address.country == "Wales"
-             )  %}
+            (address.country and not (address.country == "England" or 
+              address.country == "Northern Ireland" or
+              address.country == "Scotland" or 
+              address.country == "Wales")
+            )  %}
             {% include "pages/address/enter-address-fields.njk" %}
 
             {{ govukInput({
