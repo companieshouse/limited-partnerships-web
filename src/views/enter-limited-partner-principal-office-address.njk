@@ -53,7 +53,7 @@
         <input type="hidden" name="pageType" value={{ props.pageType }}>
           {% include "includes/csrf_token.njk" %}
           
-          {% if props.data.cache.ura_territory_choice == "overseas" or
+          {% if props.data.cache.poa_territory_choice == "overseas" or
              (address.country and not (address.country == "England" or 
               address.country == "Northern Ireland" or
               address.country == "Scotland" or 
