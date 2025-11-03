@@ -16,7 +16,7 @@ import {
   CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "../addressLookUp/url/registration";
 
-class GeneralPartnerRegistarationController extends PartnerController {
+class GeneralPartnerRegistrationController extends PartnerController {
   constructor(
     limitedPartnershipService: LimitedPartnershipService,
     generalPartnerService: GeneralPartnerService,
@@ -69,4 +69,4 @@ class GeneralPartnerRegistarationController extends PartnerController {
   }
 }
 
-export default GeneralPartnerRegistarationController;
+export default GeneralPartnerRegistrationController;
