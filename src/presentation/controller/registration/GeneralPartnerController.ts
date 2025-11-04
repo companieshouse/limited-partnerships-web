@@ -1,7 +1,7 @@
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
-import GeneralPartnerController from "../common/GeneralPartnerController";
+import PartnerController, { PartnerType } from "../common/PartnerController";
 
 import {
   ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
@@ -16,7 +16,7 @@ import {
   CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "../addressLookUp/url/registration";
 
-class GeneralPartnerRegistarationController extends GeneralPartnerController {
+class GeneralPartnerRegistrationController extends PartnerController {
   constructor(
     limitedPartnershipService: LimitedPartnershipService,
     generalPartnerService: GeneralPartnerService,
@@ -26,47 +26,47 @@ class GeneralPartnerRegistarationController extends GeneralPartnerController {
   }
 
   getPageRouting() {
-    return super.getPageRouting();
+    return super.getPageRouting(PartnerType.generalPartner);
   }
 
   getGeneralPartner() {
-    return super.getGeneralPartner({ reviewGeneralPartnersUrl: REVIEW_GENERAL_PARTNERS_URL });
+    return super.getPartner(PartnerType.generalPartner, { reviewPartnersUrl: REVIEW_GENERAL_PARTNERS_URL });
   }
 
   generalPartnerChoice() {
-    return super.generalPartnerChoice({
+    return super.partnerChoice({
       addPersonUrl: ADD_GENERAL_PARTNER_PERSON_URL,
       addLegalEntityUrl: ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL
     });
   }
 
   getReviewPage() {
-    return super.getReviewPage({ generalPartnersUrl: GENERAL_PARTNERS_URL });
+    return super.getReviewPage(PartnerType.generalPartner, { partnersUrl: GENERAL_PARTNERS_URL });
   }
 
   createGeneralPartner() {
-    return super.createGeneralPartner();
+    return super.createPartner(PartnerType.generalPartner);
   }
 
   sendPageData() {
-    return super.sendPageData({
-      confirmGeneralPartnerUsualResidentialAddressUrl: CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-      confirmGeneralPartnerPrincipalOfficeAddressUrl: CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
+    return super.sendPageData(PartnerType.generalPartner, {
+      confirmPartnerUsualResidentialAddressUrl: CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+      confirmPartnerPrincipalOfficeAddressUrl: CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
     });
   }
 
   postReviewPage() {
-    return super.postReviewPage({
-      addGeneralPartnerPersonUrl: ADD_GENERAL_PARTNER_PERSON_URL,
-      addGeneralPartnerLegalEntityUrl: ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
-      reviewLimitedPartnersUrl: REVIEW_LIMITED_PARTNERS_URL,
-      limitedPartnerUrl: LIMITED_PARTNERS_URL
+    return super.postReviewPage(PartnerType.generalPartner, {
+      addPartnerPersonUrl: ADD_GENERAL_PARTNER_PERSON_URL,
+      addPartnerLegalEntityUrl: ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
+      redirectUrl: LIMITED_PARTNERS_URL,
+      reviewLimitedPartnersUrl: REVIEW_LIMITED_PARTNERS_URL
     });
   }
 
   postRemovePage() {
-    return super.postRemovePage();
+    return super.postRemovePage(PartnerType.generalPartner);
   }
 }
 
-export default GeneralPartnerRegistarationController;
+export default GeneralPartnerRegistrationController;

@@ -1,5 +1,7 @@
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
+import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
+import PartnerController, { PartnerType } from "../common/PartnerController";
 
 import {
   ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
@@ -8,57 +10,60 @@ import {
   LIMITED_PARTNERS_URL,
   REVIEW_LIMITED_PARTNERS_URL
 } from "./url";
-import LimitedPartnerController from "../common/LimitedPartnerController";
 import {
   CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "../addressLookUp/url/transition";
 
-class LimitedPartnerTransitionController extends LimitedPartnerController {
-  constructor(limitedPartnershipService: LimitedPartnershipService, limitedPartnerService: LimitedPartnerService) {
-    super(limitedPartnershipService, limitedPartnerService);
+class LimitedPartnerTransitionController extends PartnerController {
+  constructor(
+    limitedPartnershipService: LimitedPartnershipService,
+    generalPartnerService: GeneralPartnerService,
+    limitedPartnerService: LimitedPartnerService
+  ) {
+    super(limitedPartnershipService, generalPartnerService, limitedPartnerService);
   }
 
   getPageRouting() {
-    return super.getPageRouting();
+    return super.getPageRouting(PartnerType.limitedPartner);
   }
 
   getLimitedPartner() {
-    return super.getLimitedPartner({ reviewLimitedPartnersUrl: REVIEW_LIMITED_PARTNERS_URL });
+    return super.getPartner(PartnerType.limitedPartner, { reviewPartnersUrl: REVIEW_LIMITED_PARTNERS_URL });
   }
 
   limitedPartnerChoice() {
-    return super.limitedPartnerChoice({
+    return super.partnerChoice({
       addPersonUrl: ADD_LIMITED_PARTNER_PERSON_URL,
       addLegalEntityUrl: ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL
     });
   }
 
   getReviewPage() {
-    return super.getReviewPage({ limitedPartnersUrl: LIMITED_PARTNERS_URL });
+    return super.getReviewPage(PartnerType.limitedPartner, { partnersUrl: LIMITED_PARTNERS_URL });
   }
 
   createLimitedPartner() {
-    return super.createLimitedPartner();
+    return super.createPartner(PartnerType.limitedPartner);
   }
 
   sendPageData() {
-    return super.sendPageData({
-      confirmLimitedPartnerUsualResidentialAddressUrl: CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-      confirmLimitedPartnerPrincipalOfficeAddressUrl: CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
+    return super.sendPageData(PartnerType.limitedPartner, {
+      confirmPartnerUsualResidentialAddressUrl: CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+      confirmPartnerPrincipalOfficeAddressUrl: CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
     });
   }
 
   postReviewPage() {
-    return super.postReviewPage({
-      addLimitedPartnerPersonUrl: ADD_LIMITED_PARTNER_PERSON_URL,
-      addLimitedPartnerLegalEntityUrl: ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
-      checkYourAnswersUrl: CHECK_YOUR_ANSWERS_URL
+    return super.postReviewPage(PartnerType.limitedPartner, {
+      addPartnerPersonUrl: ADD_LIMITED_PARTNER_PERSON_URL,
+      addPartnerLegalEntityUrl: ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
+      redirectUrl: CHECK_YOUR_ANSWERS_URL
     });
   }
 
   postRemovePage() {
-    return super.postRemovePage();
+    return super.postRemovePage(PartnerType.limitedPartner);
   }
 }
 

@@ -10,7 +10,6 @@ import {
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import PaymentService from "../../../application/service/PaymentService";
 import registrationsRouting from "./Routing";
-import AbstractController from "../AbstractController";
 import { Ids, Tokens } from "../../../domain/types";
 import RegistrationPageType from "./PageType";
 import {
@@ -32,11 +31,13 @@ import {
 } from "./url";
 import { CONFIRM_REGISTERED_OFFICE_ADDRESS_URL } from "../addressLookUp/url/registration";
 import { PAYMENT_RESPONSE_URL } from "../global/url";
-import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
-import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
 import { formatDate } from "../../../utils/date-format";
 
-class LimitedPartnershipController extends AbstractController {
+import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
+import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
+import PartnershipController from "../common/PartnershipController";
+
+class LimitedPartnershipController extends PartnershipController {
   constructor(
     private readonly limitedPartnershipService: LimitedPartnershipService,
     private readonly generalPartnerService: GeneralPartnerService,
