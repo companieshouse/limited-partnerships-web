@@ -25,7 +25,7 @@ class LimitedPartnerTransitionController extends PartnerController {
   }
 
   getPageRouting() {
-    return super.getPageRouting(PartnerType.limitedPartner);
+    return super.getPageRouting();
   }
 
   getLimitedPartner() {
