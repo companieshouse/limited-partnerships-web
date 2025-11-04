@@ -60,12 +60,7 @@
         <input type="hidden" name="pageType" value={{ props.pageType }}>
           {% include "includes/csrf_token.njk" %}
         
-          {% if isOverseas or
-            (address.country and not (address.country == "England" or 
-              address.country == "Northern Ireland" or
-              address.country == "Scotland" or 
-              address.country == "Wales")
-            )  %}
+          {% if isOverseas %}
             {% include "pages/address/enter-address-fields.njk" %}
 
             {{ govukInput({
