@@ -32,6 +32,12 @@
 {% set pageTitle = i18n.address.enterAddress.generalPartner.usualResidentialAddress.title %}
 {% set publicRegisterInformationLine1 = i18n.address.enterAddress.generalPartner.usualResidentialAddress.publicInformationLine1 %}
 
+{% if props.data.cache.ura_territory_choice %}
+  {% set isOverseas = props.data.cache.ura_territory_choice == "overseas" %}
+{% else %}
+  {% set isOverseas = address.overseas %}
+{% endif %}
+
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -50,7 +56,7 @@
         <input type="hidden" name="pageType" value={{ props.pageType }}>
           {% include "includes/csrf_token.njk" %}
           
-          {% if props.data.cache.ura_territory_choice == "overseas" %}
+          {% if isOverseas %}
             {% include "pages/address/enter-address-fields.njk" %}
 
             {{ govukInput({
