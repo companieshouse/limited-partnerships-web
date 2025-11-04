@@ -26,7 +26,7 @@ class GeneralPartnerTransitionController extends PartnerController {
   }
 
   getPageRouting() {
-    return super.getPageRouting(PartnerType.generalPartner);
+    return super.getPageRouting();
   }
 
   getGeneralPartner() {
