@@ -46,6 +46,8 @@ enum PostTransitionPageType {
 
   whenDidTheLimitedPartnerLegalEntityCease = `${DATE_OF_UPDATE_TYPE_PREFIX}-the-limited-partner-legal-entity-cease`,
   removeLimitedPartnerLegalEntityCheckYourAnswers = `limited-partner-legal-entity-${REMOVE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX}`,
+
+  redesignateToPflp = "redesignate-to-pflp",
 }
 
 const CeaseDatePageTypes: string[] = [

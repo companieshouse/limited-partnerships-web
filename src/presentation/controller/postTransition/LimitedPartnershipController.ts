@@ -97,7 +97,8 @@ class LimitedPartnershipController extends AbstractController {
               updateROA: super.insertIdsInUrl(pageRouting?.data?.updateROA, ids),
               updatePPOB: super.insertIdsInUrl(pageRouting?.data?.updatePPOB, ids),
               updateName: super.insertIdsInUrl(pageRouting?.data?.updateName, ids),
-              updateTerm: super.insertIdsInUrl(pageRouting?.data?.updateTerm, ids)
+              updateTerm: super.insertIdsInUrl(pageRouting?.data?.updateTerm, ids),
+              redesignateToPflp: super.insertIdsInUrl(pageRouting?.data?.redesignateToPflp, ids)
             },
             errors: undefined
           };

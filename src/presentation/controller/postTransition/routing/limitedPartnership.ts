@@ -26,7 +26,8 @@ const postTransitionRoutingLandingPage = {
     updateROA: url.ENTER_REGISTERED_OFFICE_ADDRESS_URL,
     updatePPOB: url.ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
     updateName: url.PARTNERSHIP_NAME_URL,
-    updateTerm: url.TERM_URL
+    updateTerm: url.TERM_URL,
+    redesignateToPflp: url.REDESIGNATE_TO_PFLP_URL
   }
 };
 
