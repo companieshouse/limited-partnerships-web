@@ -34,10 +34,9 @@
 {% set titleHint1 = i18n.address.enterAddress.generalPartner.principalOfficeAddress.hint %}
 {% set publicRegisterInformationLine1 = i18n.address.enterAddress.generalPartner.principalOfficeAddress.publicInformationLine1 %}
 
+{% set showOverseasList = "true" %}
 {% if props.data.cache.poa_territory_choice %}
-  {% set isOverseas = props.data.cache.poa_territory_choice == "overseas" %}
-{% else %}
-  {% set isOverseas = address.overseas %}
+  {% set showOverseasList = props.data.cache.poa_territory_choice == "overseas" %}
 {% endif %}
 
 {% block content %}
@@ -58,41 +57,41 @@
       
       <form class="form" method="post">
         <input type="hidden" name="pageType" value={{ props.pageType }}>
-          {% include "includes/csrf_token.njk" %}
-        
-          {% if isOverseas %}
-            {% include "pages/address/enter-address-fields.njk" %}
 
-            {{ govukInput({
-              label: {
-                text: i18n.address.enterAddress.generalPartner.principalOfficeAddress.postcodeOptional
-              },
-              errorMessage: props.errors.postal_code if props.errors,
-              classes: "govuk-input--width-10",
-              id: "postal_code",
-              name: "postal_code",
-              value: address.postal_code,
-              attributes: {
-                oninput: "validateLength(this, 15, '" + i18n.address.enterAddress.errorMessages.postcodeLength | escape + "');"
-              }
-            }) }}
+        {% include "includes/csrf_token.njk" %}
+      
+        {% if showOverseasList %}
+          {% include "pages/address/enter-address-fields.njk" %}
 
-            {% set countryFormId = "country" %}
-            {% set countryText = i18n.address.enterAddress.country %}
-            {% set countryFormValue = address.country %}
-            {% set countryField = address.country %}
-            {% set countryFont = "govuk-!-font-weight-regular"%}
-            {{ macros.getSpecifiedCountryList(i18n, "OVERSEAS", countryFormId, countryText, countryFont, countryFormValue, countryErrorMessage) }}
+          {{ govukInput({
+            label: {
+              text: i18n.address.enterAddress.generalPartner.principalOfficeAddress.postcodeOptional
+            },
+            errorMessage: props.errors.postal_code if props.errors,
+            classes: "govuk-input--width-10",
+            id: "postal_code",
+            name: "postal_code",
+            value: address.postal_code,
+            attributes: {
+              oninput: "validateLength(this, 15, '" + i18n.address.enterAddress.errorMessages.postcodeLength | escape + "');"
+            }
+          }) }}
 
-          {% else %}
-            {% include "pages/address/enter-address-common-fields.njk" %}
-          {% endif %}
-        
-          {% include "includes/public-register-information.njk" %}
+          {% set countryFormId = "country" %}
+          {% set countryText = i18n.address.enterAddress.country %}
+          {% set countryFormValue = address.country %}
+          {% set countryField = address.country %}
+          {% set countryFont = "govuk-!-font-weight-regular"%}
+          {{ macros.getSpecifiedCountryList(i18n, "OVERSEAS", countryFormId, countryText, countryFont, countryFormValue, countryErrorMessage) }}
 
-          {% include "includes/save-and-continue-button.njk" %}
-        </form>
+        {% else %}
+          {% include "pages/address/enter-address-common-fields.njk" %}
+        {% endif %}
+      
+        {% include "includes/public-register-information.njk" %}
 
+        {% include "includes/save-and-continue-button.njk" %}
+      </form>
     </div>
   </div> 
 {% endblock %}
