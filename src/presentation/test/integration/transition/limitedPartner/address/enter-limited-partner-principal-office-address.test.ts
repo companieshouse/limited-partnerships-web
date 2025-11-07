@@ -54,7 +54,12 @@ describe("Enter Limited Partner Principal Office Address Page", () => {
         "postcodeOptional",
         "generalPartner",
         "usualResidentialAddress",
-        "errorMessages"
+        "errorMessages",
+        // uk countries
+        "countryEngland",
+        "countryScotland",
+        "countryWales",
+        "countryNorthernIreland"
       ]);
       expect(res.text).not.toContain("WELSH -");
       expect(res.text).not.toContain(limitedPartnerPerson.forename?.toUpperCase());
@@ -89,7 +94,12 @@ describe("Enter Limited Partner Principal Office Address Page", () => {
         "postcode",
         "generalPartner",
         "usualResidentialAddress",
-        "errorMessages"
+        "errorMessages",
+        // uk countries
+        "countryEngland",
+        "countryScotland",
+        "countryWales",
+        "countryNorthernIreland"
       ]);
 
       expect(res.text).not.toContain(limitedPartnerPerson.forename?.toUpperCase());

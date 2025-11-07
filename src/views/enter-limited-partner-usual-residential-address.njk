@@ -74,12 +74,11 @@
           }) }}
 
           {% set countryFormId = "country" %}
-          {% set countryFormName = "country" %}
           {% set countryText = i18n.address.enterAddress.country %}
           {% set countryFormValue = address.country %}
-          {% set countryField = address.country %}
-          {% set countryFont = "govuk-!-font-weight-regular"%}
-          {{ macros.getSpecifiedCountryList(i18n, "OVERSEAS", countryFormId, countryText, countryFont, countryFormValue, countryErrorMessage) }}
+          {% set countryErrorMessage = props.errors.country if props.errors %}
+                            
+          {{ macros.getSpecifiedCountryList(i18n, props.data.cache.ura_territory_choice, countryFormId, countryText, countryFormValue, countryErrorMessage) }}
 
         {% else %}
           {% include "pages/address/enter-address-common-fields.njk" %}
