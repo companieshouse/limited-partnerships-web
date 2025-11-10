@@ -103,11 +103,11 @@
         }) }}
 
         {% set countryText = i18n.addPartnerLegalEntityPage.countryRegistered %}
-        {% set countryFont = "govuk-label govuk-label--m"%}
         {% set countryFormId = "legal_entity_registration_location" %}
         {% set countryErrorMessage = props.errors.legal_entity_registration_location if props.errors %}
         {% set countryFormValue = props.data.generalPartner.data.legal_entity_registration_location %}
-        {{ macros.getSpecifiedCountryList(i18n, "OVERSEAS", countryFormId, countryText, countryFont, countryFormValue, countryErrorMessage) }}
+
+        {{ macros.getSpecifiedCountryList(i18n, "overseas", countryFormId, countryText, countryFormValue, countryErrorMessage) }}
 
         {{ govukInput({
           label: {

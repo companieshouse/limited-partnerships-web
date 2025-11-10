@@ -1,5 +1,5 @@
 {% from "govuk/components/select/macro.njk" import govukSelect %}
-{% macro getSpecifiedCountryList(i18n, subsetType, id, text, font, countryField, errorMessage)  %}
+{% macro getSpecifiedCountryList(i18n, subsetType, id, text, countryField, errorMessage)  %}
 
   {% set COUNTRIES = [
     { value: '', text: i18n.countries.selectOne },
@@ -75,7 +75,6 @@
     { value: 'Ecuador', text: i18n.countries.ecuador, selected: countryField === 'Ecuador' },
     { value: 'Egypt', text: i18n.countries.egypt, selected: countryField === 'Egypt' },
     { value: 'El Salvador', text: i18n.countries.elSalvador, selected: countryField === 'El Salvador' },
-    { value: 'England', text: i18n.countries.england, selected: countryField === 'England' },
     { value: 'Equatorial Guinea', text: i18n.countries.equatorialGuinea, selected: countryField === 'Equatorial Guinea' },
     { value: 'Eritrea', text: i18n.countries.eritrea, selected: countryField === 'Eritrea' },
     { value: 'Estonia', text: i18n.countries.estonia, selected: countryField === 'Estonia' },
@@ -175,7 +174,6 @@
     { value: 'Niue', text: i18n.countries.niue, selected: countryField === 'Niue' },
     { value: 'Norfolk Island', text: i18n.countries.norfolkIsland, selected: countryField === 'Norfolk Island' },
     { value: 'North Korea', text: i18n.countries.northKorea, selected: countryField === 'North Korea' },
-    { value: 'Northern Ireland', text: i18n.countries.northernIreland, selected: countryField === 'Northern Ireland' },
     { value: 'Northern Mariana Islands', text: i18n.countries.northernMarianaIslands, selected: countryField === 'Northern Mariana Islands' },
     { value: 'Norway', text: i18n.countries.norway, selected: countryField === 'Norway' },
     { value: 'Oman', text: i18n.countries.oman, selected: countryField === 'Oman' },
@@ -208,7 +206,6 @@
     { value: 'Sao Tome and Principe', text: i18n.countries.saoTomeAndPrincipe, selected: countryField === 'Sao Tome and Principe' },
     { value: 'Sark', text: i18n.countries.sark, selected: countryField === 'Sark' },
     { value: 'Saudi Arabia', text: i18n.countries.saudiArabia, selected: countryField === 'Saudi Arabia' },
-    { value: 'Scotland', text: i18n.countries.scotland, selected: countryField === 'Scotland' },
     { value: 'Senegal', text: i18n.countries.senegal, selected: countryField === 'Senegal' },
     { value: 'Serbia', text: i18n.countries.serbia, selected: countryField === 'Serbia' },
     { value: 'Seychelles', text: i18n.countries.seychelles, selected: countryField === 'Seychelles' },
@@ -258,7 +255,6 @@
     { value: 'Vietnam', text: i18n.countries.vietnam, selected: countryField === 'Vietnam' },
     { value: 'Virgin Islands, British', text: i18n.countries.virginIslandsBritish, selected: countryField === 'Virgin Islands, British' },
     { value: 'Virgin Islands, U.S.', text: i18n.countries.virginIslandsUS, selected: countryField === 'Virgin Islands, U.S.' },
-    { value: 'Wales', text: i18n.countries.wales, selected: countryField === 'Wales' },
     { value: 'Wallis and Futuna', text: i18n.countries.wallisAndFutuna, selected: countryField === 'Wallis and Futuna' },
     { value: 'Western Sahara', text: i18n.countries.westernSahara, selected: countryField === 'Western Sahara' },
     { value: 'Yemen', text: i18n.countries.yemen, selected: countryField === 'Yemen' },
@@ -267,9 +263,9 @@
   ] %}
 
   {% set list = COUNTRIES %} 
-  {% if subsetType === "UK" %}
+  {% if subsetType === "unitedKingdom" %}
     {% set list = COUNTRIES.slice(0,5) %} 
-  {% elseif subsetType === "OVERSEAS" %}
+  {% elseif subsetType === "overseas" %}
     {% set list = COUNTRIES.slice(0,1).concat(COUNTRIES.slice(5)) %} 
   {% endif %}
 
@@ -278,7 +274,7 @@
     name: id,
     label: {
       text: text,
-      classes: font,
+      classes: "govuk-input--width-10",
       isPageHeading: false
     },
     errorMessage: errorMessage,
