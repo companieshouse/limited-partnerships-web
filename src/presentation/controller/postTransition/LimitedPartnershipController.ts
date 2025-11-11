@@ -160,7 +160,7 @@ class LimitedPartnershipController extends AbstractController {
     };
   }
 
-  getTermRouting() {
+  getFundamentalPartnershipChangeRouting() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const { tokens, pageType, ids } = super.extract(request);
@@ -417,6 +417,93 @@ class LimitedPartnershipController extends AbstractController {
           }
         }
 
+        response.redirect(redirectUrl);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  postRedesignateToPFLP() {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { tokens, ids } = super.extract(request);
+        const pageType = super.extractPageTypeOrThrowError(request, PostTransitionPageType);
+        const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
+        const { limitedPartnership } = await this.companyService.buildLimitedPartnershipFromCompanyProfile(
+          tokens,
+          ids.companyId
+        );
+
+        const errorData = this.makeErrorData(
+          limitedPartnership,
+          request.body
+        );
+
+        const resultTransaction = await this.createTransaction(limitedPartnership, tokens);
+        if (resultTransaction.errors) {
+          return response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(pageRouting, errorData, resultTransaction.errors)
+          );
+        }
+
+        const yesterdaysDate = new Date();
+        yesterdaysDate.setDate(new Date().getDate() - 1);
+        const resultLimitedPartnershipCreate = await this.createPartnership(
+          request,
+          limitedPartnership,
+          resultTransaction.transactionId,
+          PartnershipKind.UPDATE_PARTNERSHIP_REDESIGNATE_TO_PFLP,
+          {
+            ...request.body,
+            date_of_update: yesterdaysDate.toISOString().split('T')[0]
+          }
+        );
+        if (resultLimitedPartnershipCreate.errors) {
+          return response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(pageRouting, errorData, resultLimitedPartnershipCreate.errors)
+          );
+        }
+
+        const newIds = {
+          ...ids,
+          transactionId: resultTransaction.transactionId,
+          submissionId: resultLimitedPartnershipCreate.submissionId
+        };
+
+        let redirectUrl = super
+          .insertIdsInUrl(CONFIRMATION_POST_TRANSITION_URL, newIds, request.url)
+          .replace(JOURNEY_TYPE_PARAM, getJourneyTypes(request.url).journey);
+
+        const closeTransactionResponse = await this.limitedPartnershipService.closeTransaction(
+          tokens,
+          newIds.transactionId
+        );
+
+        const startPaymentSessionUrl: string = closeTransactionResponse.headers?.["x-payment-required"];
+        if (!startPaymentSessionUrl) {
+          throw new Error("No payment URL found in response header from closeTransaction");
+        }
+
+        const urlWithJourney = `${CHS_URL}${PAYMENT_RESPONSE_URL}`.replace(
+          JOURNEY_TYPE_PARAM,
+          getJourneyTypes(request.url).journey
+        );
+
+        const paymentReturnUri = super.insertIdsInUrl(urlWithJourney, newIds, request.url);
+
+        redirectUrl = await this.paymentService.startPaymentSession(
+          tokens,
+          startPaymentSessionUrl,
+          paymentReturnUri,
+          newIds.transactionId
+        );
+
+        if (!redirectUrl) {
+          throw new Error("No payment redirect URL returned from start payment session");
+        }
         response.redirect(redirectUrl);
       } catch (error) {
         next(error);

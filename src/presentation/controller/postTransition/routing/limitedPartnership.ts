@@ -147,6 +147,13 @@ const postTransitionRoutingPrincipalPlaceOfBusinessAddressChangeCheckYourAnswers
   }
 };
 
+const postTransitionRoutingRedesignateToPFLP = {
+  previousUrl: url.LANDING_PAGE_URL,
+  currentUrl: url.REDESIGNATE_TO_PFLP_URL,
+  nextUrl: "/",
+  pageType: PostTransitionPageType.redesignateToPflp
+};
+
 const limitedPartnershipRouting = [
   postTransitionRoutingCompanyNumber,
   postTransitionRoutingConfirmLimitedPartnership,
@@ -166,7 +173,8 @@ const limitedPartnershipRouting = [
 
   postTransitionRoutingPrincipalPlaceOfBusinessAddress,
   postTransitionRoutingPrincipalPlaceOfBusinessAddressChange,
-  postTransitionRoutingPrincipalPlaceOfBusinessAddressChangeCheckYourAnswers
+  postTransitionRoutingPrincipalPlaceOfBusinessAddressChangeCheckYourAnswers,
+  postTransitionRoutingRedesignateToPFLP
 ];
 
 export default limitedPartnershipRouting;
