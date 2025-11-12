@@ -67,15 +67,11 @@ describe("Redesignate to pflp page", () => {
     });
 
     it("should return a validation error if api validation error occurs creating LimitedPartnership", async () => {
-      const limitedPartnership = new LimitedPartnershipBuilder()
-        .withRedesignateToPflp(true, false)
-        .build();
+      const limitedPartnership = new LimitedPartnershipBuilder().build();
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
       const apiErrors: ApiErrors = {
         errors: { something: "Something is invalid" }
       };
-
       appDevDependencies.limitedPartnershipGateway.feedErrors(apiErrors);
 
       const res = await request(app)
