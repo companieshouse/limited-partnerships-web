@@ -160,7 +160,7 @@ class LimitedPartnershipController extends AbstractController {
     };
   }
 
-  getFundamentalPartnershipChangeRouting() {
+  getTermRouting() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const { tokens, pageType, ids } = super.extract(request);

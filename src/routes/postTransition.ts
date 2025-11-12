@@ -341,7 +341,7 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
     dependencies.limitedPartnershipPostTransitionController.postCheckYourAnswers(true)
   );
 
-  router.get(TERM_URL, companyAuthentication, dependencies.limitedPartnershipPostTransitionController.getFundamentalPartnershipChangeRouting());
+  router.get(TERM_URL, companyAuthentication, dependencies.limitedPartnershipPostTransitionController.getTermRouting());
   router.post(
     TERM_URL,
     companyAuthentication,
@@ -351,7 +351,7 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
   router.get(
     TERM_WITH_IDS_URL,
     companyAuthentication,
-    dependencies.limitedPartnershipPostTransitionController.getFundamentalPartnershipChangeRouting()
+    dependencies.limitedPartnershipPostTransitionController.getTermRouting()
   );
   router.post(
     TERM_WITH_IDS_URL,
@@ -431,7 +431,7 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
   router.get(
     REDESIGNATE_TO_PFLP_URL,
     companyAuthentication,
-    dependencies.limitedPartnershipPostTransitionController.getFundamentalPartnershipChangeRouting()
+    dependencies.limitedPartnershipPostTransitionController.getPageRouting()
   );
   router.post(
     REDESIGNATE_TO_PFLP_URL,
