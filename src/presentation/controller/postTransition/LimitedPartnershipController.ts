@@ -448,8 +448,6 @@ class LimitedPartnershipController extends AbstractController {
           );
         }
 
-        const yesterdaysDate = new Date();
-        yesterdaysDate.setDate(new Date().getDate() - 1);
         const resultLimitedPartnershipCreate = await this.createPartnership(
           request,
           limitedPartnership,
@@ -457,7 +455,7 @@ class LimitedPartnershipController extends AbstractController {
           PartnershipKind.UPDATE_PARTNERSHIP_REDESIGNATE_TO_PFLP,
           {
             ...request.body,
-            date_of_update: yesterdaysDate.toISOString().split('T')[0]
+            date_of_update: new Date().toISOString().split('T')[0]
           }
         );
         if (resultLimitedPartnershipCreate.errors) {
