@@ -36,7 +36,9 @@ class LimitedPartnershipBuilder {
     },
     term: Term.BY_AGREEMENT,
     sic_codes: ["12345", "67890"],
-    date_of_update: "2023-01-01"
+    date_of_update: "2023-01-01",
+    redesignate_to_pflp_apply: true,
+    redesignate_to_pflp_confirm: true
   };
 
   withId(id: string) {
@@ -91,6 +93,12 @@ class LimitedPartnershipBuilder {
 
   withDateOfUpdate(dateOfUpdate: string) {
     this.data.date_of_update = dateOfUpdate;
+    return this;
+  }
+
+  withRedesignateToPflp(apply, confirm) {
+    this.data.redesignate_to_pflp_apply = apply;
+    this.data.redesignate_to_pflp_confirm = confirm;
     return this;
   }
 
