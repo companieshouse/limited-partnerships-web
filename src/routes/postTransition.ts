@@ -48,7 +48,8 @@ import {
   REMOVE_LIMITED_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL,
   WHEN_DID_THE_LIMITED_PARTNER_LEGAL_ENTITY_CEASE_WITH_IDS_URL,
   WHEN_DID_THE_LIMITED_PARTNER_LEGAL_ENTITY_CEASE_URL,
-  REMOVE_LIMITED_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_URL
+  REMOVE_LIMITED_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_URL,
+  REDESIGNATE_TO_PFLP_URL
 } from "../presentation/controller/postTransition/url";
 import {
   TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_LEGAL_ENTITY,
@@ -425,6 +426,17 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
     PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL,
     companyAuthentication,
     dependencies.limitedPartnershipPostTransitionController.postCheckYourAnswers()
+  );
+
+  router.get(
+    REDESIGNATE_TO_PFLP_URL,
+    companyAuthentication,
+    dependencies.limitedPartnershipPostTransitionController.getPageRouting()
+  );
+  router.post(
+    REDESIGNATE_TO_PFLP_URL,
+    companyAuthentication,
+    dependencies.limitedPartnershipPostTransitionController.postRedesignateToPFLP()
   );
 
   // Remove General Partner

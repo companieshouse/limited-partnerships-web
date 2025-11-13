@@ -656,6 +656,26 @@
         "title": "WELSH - What information we'll show on the public register"
     },
 
+    "redesignateToPflpPage": {
+       "title": "WELSH - Apply for designation as a private fund limited partnership (PFLP)",
+       "introduction1": "WELSH - A limited partnership can be designated as a PFLP if it is constituted by an agreement in writing and is a collective investment scheme.",
+       "introduction2": "WELSH - Once the designation has been made, the type of partnership cannot be changed again.",
+       "pflpMeaningsIntro": "WELSH - Becoming a PFLP means that:",
+       "pflpMeanings": {
+           "capital": "WELSH - imited partners will no longer be required to contribute capital",
+           "appoint": "WELSH - Limited partners can appoint a person to wind up the partnership if there is no general partner available to do so",
+           "agreement": "WELSH - Partners can make an agreement about winding up the partnership",
+           "risk": "WELSH - Limited partners may take more actions without risking losing their limited liability status",
+           "admin": "WELSH - Some administrative requirements will be removed",
+           "scheme": "WELSH - The partnership will no longer qualify as a ‘partnership scheme’, and therefore cannot be an authorised contractual scheme under section 235A(6)(aa) of the Financial Services and Markets Act 2000"
+        },
+        "information": "WELSH - For more information in the",
+        "informationLink": "WELSH - Legislative Reform (Private Fund Limited Partnerships) Order 2017",
+        "cost": "WELSH - It costs £XX to apply.",
+        "applicationCheck": "WELSH - I/We apply for this firm to be designated as a private fund limited partnership. For that purpose, I confirm that the partnership is constituted by an agreement in writing and is a collective investment scheme within the meaning of section 8D(4) of the Limited Partnerships Act 1907",
+        "confirmationCheck": "WELSH - I confirm that all general partners have agreed for this application to be made"
+    },
+
     "removePartnerPage": {
         "title": "WELSH - Are you sure you want to remove"
     },

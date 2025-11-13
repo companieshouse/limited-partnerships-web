@@ -657,6 +657,26 @@
         "title": "What information we'll show on the public register"
     },
 
+    "redesignateToPflpPage": {
+       "title": "Apply for designation as a private fund limited partnership (PFLP)",
+       "introduction1": "A limited partnership can be designated as a PFLP if it is constituted by an agreement in writing and is a collective investment scheme.",
+       "introduction2": "Once the designation has been made, the type of partnership cannot be changed again.",
+       "pflpMeaningsIntro": "Becoming a PFLP means that:",
+       "pflpMeanings": {
+           "capital": "Limited partners will no longer be required to contribute capital",
+           "appoint": "Limited partners can appoint a person to wind up the partnership if there is no general partner available to do so",
+           "agreement": "Partners can make an agreement about winding up the partnership",
+           "risk": "Limited partners may take more actions without risking losing their limited liability status",
+           "admin": "Some administrative requirements will be removed",
+           "scheme": "The partnership will no longer qualify as a ‘partnership scheme’, and therefore cannot be an authorised contractual scheme under section 235A(6)(aa) of the Financial Services and Markets Act 2000"
+        },
+        "information": "For more information in the",
+        "informationLink": "Legislative Reform (Private Fund Limited Partnerships) Order 2017",
+        "cost": "It costs £XX to apply.",
+        "applicationCheck": "I/We apply for this firm to be designated as a private fund limited partnership. For that purpose, I confirm that the partnership is constituted by an agreement in writing and is a collective investment scheme within the meaning of section 8D(4) of the Limited Partnerships Act 1907",
+        "confirmationCheck": "I confirm that all general partners have agreed for this application to be made"
+    },
+
     "removePartnerPage": {
         "title": "Are you sure you want to remove"
     },
