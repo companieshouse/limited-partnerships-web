@@ -186,12 +186,16 @@ describe("Add General Partner Person Page", () => {
       expect(res.text).toContain('name="not_disqualified_statement_checked" type="checkbox" value="true" checked');
     });
 
-    it("should show error message if previous names is Yes but no previous name entered", async () => {
+    it.each([
+      "",
+      "   ",
+      undefined
+    ])("should show error message if previous names is Yes but no previous name entered", async (formerNames: string | undefined) => {
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.addGeneralPartnerPerson,
         forename: "forename",
         surname: "SURNAME",
-        former_names: "",
+        former_names: formerNames,
         previousName: "true",
         "date_of_birth-Day": "01",
         "date_of_birth-Month": "11",
