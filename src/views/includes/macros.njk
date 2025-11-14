@@ -51,6 +51,20 @@
   {{- capitalizedWords.join(' ') -}}
 {%- endmacro -%}
 
+{%- macro formatNationality(str) -%}
+  {%- set prepositions = ['Of', 'The', 'And'] -%}
+  {%- set capitalizedWords = capitalizeEachWord(str).split(' ') -%}
+  {%- set result = [] -%}
+  {%- for word in capitalizedWords -%}
+    {%- if loop.first or loop.last or prepositions.indexOf(word) === -1 -%}
+      {%- set result = result.concat(word) -%}
+    {%- else -%}
+      {%- set result = result.concat(word.toLowerCase()) -%}
+    {%- endif -%}
+  {%- endfor -%}
+  {{- result.join(' ') -}}
+{%- endmacro -%}
+
 {%- macro buildFormattedListFromArray(capitalContributionSubTypesMap, array) -%}
   {%- set returnValue = [] -%}  
     {%- for item in array -%}

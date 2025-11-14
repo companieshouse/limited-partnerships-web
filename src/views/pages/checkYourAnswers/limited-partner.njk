@@ -9,9 +9,9 @@
 
 {% if item.data.forename %}
 
-  {% set nationalities = item.data.nationality1 | capitalize %}
+  {% set nationalities = macros.formatNationality(item.data.nationality1) %}
   {% if item.data.nationality2 %}
-    {% set nationalities = item.data.nationality1 + ", " + item.data.nationality2 | capitalize %}
+    {% set nationalities = macros.formatNationality(item.data.nationality1) + ", " + macros.formatNationality(item.data.nationality2) %}
   {% endif %}
   
   {% if journeyTypes.isRegistration %}
