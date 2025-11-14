@@ -130,10 +130,15 @@ describe("Add General Partner Person Page", () => {
   });
 
   describe("Post Add General Partner", () => {
-    it("should send the general partner details", async () => {
+    it.each([
+      [ "true", "john" ],
+      [ "false", "" ]
+    ])("should send the general partner details", async (previousName, formerNames) => {
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.addGeneralPartnerPerson,
-        forename: "test"
+        forename: "test",
+        previousName: previousName,
+        former_names: formerNames
       });
 
       expect(res.status).toBe(302);

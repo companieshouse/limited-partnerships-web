@@ -137,13 +137,27 @@ describe("Add Limited Partner Person Page", () => {
   });
 
   describe("Post Add Limited Partner", () => {
-    it("should send the Limited partner details", async () => {
-      const limitedPartner = new LimitedPartnerBuilder().isPerson().withNotDisqualifiedStatementChecked(true).build();
+    it.each([
+      "true",
+      "false"
+    ])("should send the Limited partner details", async (previousName) => {
+      const limitedPartner = new LimitedPartnerBuilder()
+        .isPerson()
+        .withNotDisqualifiedStatementChecked(true)
+        .withFormerNames("john")
+        .build();
+
+      if (previousName === "true") {
+        if (limitedPartner.data) {
+          limitedPartner.data.former_names = "john";
+        }
+      }
 
       const res = await request(app)
         .post(URL)
         .send({
           pageType: PostTransitionPageType.addLimitedPartnerPerson,
+          previousName: previousName,
           ...limitedPartner.data
         });
 

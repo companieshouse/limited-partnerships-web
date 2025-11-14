@@ -154,10 +154,15 @@ describe("Add Limited Partner Person Page", () => {
   });
 
   describe("Post Add Limited Partner", () => {
-    it("should send the Limited partner details", async () => {
+    it.each([
+      [ "true", "john" ],
+      [ "false", "" ]
+    ])("should send the Limited partner details", async (previousName, formerNames) => {
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.addLimitedPartnerPerson,
-        forename: "test"
+        forename: "test",
+        previousName: previousName,
+        former_names: formerNames
       });
 
       expect(res.status).toBe(302);

@@ -125,13 +125,26 @@ describe("Add General Partner Person Page", () => {
   });
 
   describe("Post Add General Partner Person", () => {
-    it("should send the general partner person details", async () => {
-      const generalPartner = new GeneralPartnerBuilder().isPerson().withNotDisqualifiedStatementChecked(true).build();
+    it.each([
+      "true",
+      "false"
+    ])("should send the general partner person details", async (previousName) => {
+      const generalPartner = new GeneralPartnerBuilder()
+        .isPerson()
+        .withNotDisqualifiedStatementChecked(true)
+        .build();
+
+      if (previousName === "true") {
+        if (generalPartner.data) {
+          generalPartner.data.former_names = "john";
+        }
+      }
 
       const res = await request(app)
         .post(URL)
         .send({
           pageType: PostTransitionPageType.addGeneralPartnerPerson,
+          previousName: previousName,
           ...generalPartner.data
         });
 
