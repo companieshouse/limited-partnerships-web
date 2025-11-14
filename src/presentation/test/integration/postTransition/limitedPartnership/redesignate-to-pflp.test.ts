@@ -10,7 +10,7 @@ import { REDESIGNATE_TO_PFLP_URL } from "presentation/controller/postTransition/
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 import PostTransitionPageType from "presentation/controller/postTransition/pageType";
 import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-import { TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNERSHIP } from "config";
+import { TRANSACTION_DESCRIPTION_DESIGNATE_AS_PRIVATE_FUND_PARTNERSHIP } from "config";
 import LimitedPartnershipBuilder from "presentation/test/builder/LimitedPartnershipBuilder";
 import { ApiErrors } from "domain/entities/UIErrors";
 
@@ -52,7 +52,7 @@ describe("Redesignate to pflp page", () => {
   });
 
   describe("POST page", () => {
-    it("should create a transaction, send data and navigate to payment", async () => {
+    it("should create a transaction for designate to private funds, send data and navigate to payment", async () => {
       const res = await request(app).post(URL).send({
         pageType: PostTransitionPageType.redesignateToPflp,
         redesignate_to_pflp_apply: true,
@@ -63,7 +63,7 @@ describe("Redesignate to pflp page", () => {
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${PAYMENT_LINK_JOURNEY}`);
       expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships.length).toEqual(1);
-      expect(appDevDependencies.transactionGateway.transactions[0].description).toEqual(TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNERSHIP);
+      expect(appDevDependencies.transactionGateway.transactions[0].description).toEqual(TRANSACTION_DESCRIPTION_DESIGNATE_AS_PRIVATE_FUND_PARTNERSHIP);
     });
 
     it("should return a validation error if api validation error occurs creating LimitedPartnership", async () => {
