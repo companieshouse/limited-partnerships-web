@@ -20,7 +20,8 @@ import {
   CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX,
   CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE,
   TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNERSHIP,
-  CHS_URL
+  CHS_URL,
+  TRANSACTION_DESCRIPTION_DESIGNATE_AS_PRIVATE_FUND_PARTNERSHIP
 } from "../../../config/constants";
 import { formatDate } from "../../../utils/date-format";
 import { getJourneyTypes } from "../../../utils";
@@ -231,7 +232,8 @@ class LimitedPartnershipController extends AbstractController {
           }
         }
 
-        const resultTransaction = await this.createTransaction(limitedPartnership, tokens);
+        const resultTransaction = await this.createTransaction(
+          limitedPartnership, tokens, TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNERSHIP);
         if (resultTransaction.errors) {
           return response.render(
             super.templateName(pageRouting.currentUrl),
@@ -440,7 +442,8 @@ class LimitedPartnershipController extends AbstractController {
           request.body
         );
 
-        const resultTransaction = await this.createTransaction(limitedPartnership, tokens);
+        const resultTransaction = await this.createTransaction(
+          limitedPartnership, tokens, TRANSACTION_DESCRIPTION_DESIGNATE_AS_PRIVATE_FUND_PARTNERSHIP);
         if (resultTransaction.errors) {
           return response.render(
             super.templateName(pageRouting.currentUrl),
@@ -572,7 +575,7 @@ class LimitedPartnershipController extends AbstractController {
     }
   }
 
-  private async createTransaction(limitedPartnership: LimitedPartnership, tokens: Tokens) {
+  private async createTransaction(limitedPartnership: LimitedPartnership, tokens: Tokens, description: string) {
     const resultTransaction = await this.transactionService.createTransaction(
       tokens,
       IncorporationKind.POST_TRANSITION,
@@ -580,7 +583,7 @@ class LimitedPartnershipController extends AbstractController {
         companyName: limitedPartnership?.data?.partnership_name ?? "",
         companyNumber: limitedPartnership?.data?.partnership_number ?? ""
       },
-      TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNERSHIP
+      description
     );
 
     return resultTransaction;
