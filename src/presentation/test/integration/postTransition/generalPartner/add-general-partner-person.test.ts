@@ -125,13 +125,26 @@ describe("Add General Partner Person Page", () => {
   });
 
   describe("Post Add General Partner Person", () => {
-    it("should send the general partner person details", async () => {
-      const generalPartner = new GeneralPartnerBuilder().isPerson().withNotDisqualifiedStatementChecked(true).build();
+    it.each([
+      "true",
+      "false"
+    ])("should send the general partner person details", async (previousName) => {
+      const generalPartner = new GeneralPartnerBuilder()
+        .isPerson()
+        .withNotDisqualifiedStatementChecked(true)
+        .build();
+
+      if (previousName === "true") {
+        if (generalPartner.data) {
+          generalPartner.data.former_names = "john";
+        }
+      }
 
       const res = await request(app)
         .post(URL)
         .send({
           pageType: PostTransitionPageType.addGeneralPartnerPerson,
+          previousName: previousName,
           ...generalPartner.data
         });
 
@@ -214,6 +227,30 @@ describe("Add General Partner Person Page", () => {
       expect(res.text).toContain('<option value="Mongolian" selected>Mongolian</option>');
       expect(res.text).toContain('<option value="Uzbek" selected>Uzbek</option>');
       expect(res.text).toContain('name="not_disqualified_statement_checked" type="checkbox" value="true" checked');
+    });
+
+    it.each([
+      "",
+      "   ",
+      undefined
+    ])("should show error message if previous names is Yes but no previous name entered", async (formerNames: string | undefined) => {
+      const res = await request(app).post(URL).send({
+        pageType: PostTransitionPageType.addGeneralPartnerPerson,
+        forename: "forename",
+        surname: "SURNAME",
+        former_names: formerNames,
+        previousName: "true",
+        "date_of_birth-Day": "01",
+        "date_of_birth-Month": "11",
+        "date_of_birth-Year": "1987",
+        nationality1: "Mongolian",
+        nationality2: "Uzbek",
+        not_disqualified_statement_checked: "true"
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain('id="previousNameYes" name="previousName" type="radio" value="true" checked');
+      expect(res.text).toContain("Enter the previous name(s) of the general partner");
     });
   });
 });

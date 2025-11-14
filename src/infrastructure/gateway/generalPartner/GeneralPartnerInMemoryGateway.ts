@@ -10,10 +10,13 @@ import {
   resetFormerNamesIfPreviousNameIsFalse,
   validateAndFormatPartnerCeaseDate,
   validateAndFormatPartnerDateEffectiveFrom,
-  validateAndFormatPartnerPersonDateOfBirth
+  validateAndFormatPartnerPersonDateOfBirth,
+  validateFormerNamesNotEmptyIfPreviousNameIsTrue
 } from "../utils";
 
 class GeneralPartnerInMemoryGateway implements IGeneralPartnerGateway {
+  private readonly partnerType = "general";
+
   generalPartnerId = crypto.randomUUID().toString();
   error = false;
 
@@ -49,6 +52,7 @@ class GeneralPartnerInMemoryGateway implements IGeneralPartnerGateway {
 
     validateAndFormatPartnerPersonDateOfBirth(data);
     validateAndFormatPartnerDateEffectiveFrom(data);
+    validateFormerNamesNotEmptyIfPreviousNameIsTrue(data, this.partnerType);
     resetFormerNamesIfPreviousNameIsFalse(data);
     validateAndFormatPartnerCeaseDate(data);
 
@@ -96,6 +100,7 @@ class GeneralPartnerInMemoryGateway implements IGeneralPartnerGateway {
 
     validateAndFormatPartnerPersonDateOfBirth(data);
     validateAndFormatPartnerDateEffectiveFrom(data);
+    validateFormerNamesNotEmptyIfPreviousNameIsTrue(data, this.partnerType);
     resetFormerNamesIfPreviousNameIsFalse(data);
     validateAndFormatPartnerCeaseDate(data);
 

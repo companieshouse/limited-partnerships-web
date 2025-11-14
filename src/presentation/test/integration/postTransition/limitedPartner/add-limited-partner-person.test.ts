@@ -137,13 +137,27 @@ describe("Add Limited Partner Person Page", () => {
   });
 
   describe("Post Add Limited Partner", () => {
-    it("should send the Limited partner details", async () => {
-      const limitedPartner = new LimitedPartnerBuilder().isPerson().withNotDisqualifiedStatementChecked(true).build();
+    it.each([
+      "true",
+      "false"
+    ])("should send the Limited partner details", async (previousName) => {
+      const limitedPartner = new LimitedPartnerBuilder()
+        .isPerson()
+        .withNotDisqualifiedStatementChecked(true)
+        .withFormerNames("john")
+        .build();
+
+      if (previousName === "true") {
+        if (limitedPartner.data) {
+          limitedPartner.data.former_names = "john";
+        }
+      }
 
       const res = await request(app)
         .post(URL)
         .send({
           pageType: PostTransitionPageType.addLimitedPartnerPerson,
+          previousName: previousName,
           ...limitedPartner.data
         });
 
@@ -201,6 +215,30 @@ describe("Add Limited Partner Person Page", () => {
       expect(res.text).toContain('id="previousNameNo" name="previousName" type="radio" value="false" checked');
       expect(res.text).toContain('<option value="Mongolian" selected>Mongolian</option>');
       expect(res.text).toContain('<option value="Uzbek" selected>Uzbek</option>');
+    });
+
+    it.each([
+      "",
+      "   ",
+      undefined
+    ])("should show error message if previous names is Yes but no previous name entered", async (formerNames: string | undefined) => {
+      const res = await request(app).post(URL).send({
+        pageType: PostTransitionPageType.addLimitedPartnerPerson,
+        forename: "forename",
+        surname: "SURNAME",
+        former_names: formerNames,
+        previousName: "true",
+        "date_of_birth-Day": "01",
+        "date_of_birth-Month": "11",
+        "date_of_birth-Year": "1987",
+        nationality1: "Mongolian",
+        nationality2: "Uzbek",
+        not_disqualified_statement_checked: "true"
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain('id="previousNameYes" name="previousName" type="radio" value="true" checked');
+      expect(res.text).toContain("Enter the previous name(s) of the limited partner");
     });
   });
 

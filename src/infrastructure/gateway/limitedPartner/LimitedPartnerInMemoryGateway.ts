@@ -6,9 +6,11 @@ import { LimitedPartner } from "@companieshouse/api-sdk-node/dist/services/limit
 import ILimitedPartnerGateway from "../../../domain/ILimitedPartnerGateway";
 import UIErrors, { ApiErrors } from "../../../domain/entities/UIErrors";
 import TransactionLimitedPartner from "../../../domain/entities/TransactionLimitedPartner";
-import { resetFormerNamesIfPreviousNameIsFalse, validateAndFormatPartnerCeaseDate, validateAndFormatPartnerDateEffectiveFrom, validateAndFormatPartnerPersonDateOfBirth } from "../utils";
+import { resetFormerNamesIfPreviousNameIsFalse, validateAndFormatPartnerCeaseDate, validateAndFormatPartnerDateEffectiveFrom, validateAndFormatPartnerPersonDateOfBirth, validateFormerNamesNotEmptyIfPreviousNameIsTrue } from "../utils";
 
 class LimitedPartnerInMemoryGateway implements ILimitedPartnerGateway {
+ private readonly partnerType = "limited";
+
   limitedPartnerId = crypto.randomUUID().toString();
   error = false;
 
@@ -44,6 +46,7 @@ class LimitedPartnerInMemoryGateway implements ILimitedPartnerGateway {
 
     validateAndFormatPartnerPersonDateOfBirth(data);
     validateAndFormatPartnerDateEffectiveFrom(data);
+    validateFormerNamesNotEmptyIfPreviousNameIsTrue(data, this.partnerType);
     resetFormerNamesIfPreviousNameIsFalse(data);
     validateAndFormatPartnerCeaseDate(data);
     
@@ -92,6 +95,7 @@ class LimitedPartnerInMemoryGateway implements ILimitedPartnerGateway {
 
     validateAndFormatPartnerPersonDateOfBirth(data);
     validateAndFormatPartnerDateEffectiveFrom(data);
+    validateFormerNamesNotEmptyIfPreviousNameIsTrue(data, this.partnerType);
     resetFormerNamesIfPreviousNameIsFalse(data);
     validateAndFormatPartnerCeaseDate(data);
 

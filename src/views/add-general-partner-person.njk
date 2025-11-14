@@ -30,7 +30,10 @@
   {% set date_effective_from_day = props.data.generalPartner.data["date_effective_from-day"] %}
 {% endif %}
 
-{% if props.data.generalPartner.data.former_names %}
+{% if props.data.generalPartner.data.previousName is defined %}
+  {# If previousName is already set (e.g. after a validation error), use that value #}
+  {% set previousNames = props.data.generalPartner.data.previousName %}
+{% elif props.data.generalPartner.data.former_names %}
   {% set previousNames = "true" %}
 {% elif props.data.generalPartner.data.forename %}
   {# After the first check, if any other general partner person field is set, they cannot have a previous name #}
