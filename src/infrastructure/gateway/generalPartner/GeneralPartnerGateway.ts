@@ -12,10 +12,13 @@ import {
   removeEmptyStringValues,
   validateAndFormatPartnerDateEffectiveFrom,
   resetFormerNamesIfPreviousNameIsFalse,
-  validateAndFormatPartnerCeaseDate
+  validateAndFormatPartnerCeaseDate,
+  validateFormerNamesNotEmptyIfPreviousNameIsTrue
 } from "../utils";
 
 class GeneralPartnerGateway implements IGeneralPartnerGateway {
+  private readonly partnerType = "general";
+
   async createGeneralPartner(
     opt: { access_token: string; refresh_token: string },
     transactionId: string,
@@ -23,6 +26,7 @@ class GeneralPartnerGateway implements IGeneralPartnerGateway {
   ): Promise<string> {
     validateAndFormatPartnerPersonDateOfBirth(data);
     validateAndFormatPartnerDateEffectiveFrom(data);
+    validateFormerNamesNotEmptyIfPreviousNameIsTrue(data, this.partnerType);
     resetFormerNamesIfPreviousNameIsFalse(data);
     validateAndFormatPartnerCeaseDate(data);
 
@@ -93,6 +97,7 @@ class GeneralPartnerGateway implements IGeneralPartnerGateway {
   ): Promise<void> {
     validateAndFormatPartnerPersonDateOfBirth(data);
     validateAndFormatPartnerDateEffectiveFrom(data);
+    validateFormerNamesNotEmptyIfPreviousNameIsTrue(data, this.partnerType);
     resetFormerNamesIfPreviousNameIsFalse(data);
     validateAndFormatPartnerCeaseDate(data);
 
