@@ -129,7 +129,7 @@ class LimitedPartnershipController extends AbstractController {
         if (result.errors) {
           response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { companyNumber }, result.errors)
+            super.makeProps(pageRouting, { company_number: companyNumber }, result.errors)
           );
 
           return;
