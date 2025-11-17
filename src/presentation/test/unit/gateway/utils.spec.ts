@@ -58,7 +58,9 @@ describe("Gateway utils test suite", () => {
         ["space as year", { day: "11", month: "03", year: " " }],
         ["empty string as day", { day: "", month: "03", year: "1980" }],
         ["empty string as month", { day: "11", month: "", year: "1980" }],
-        ["empty string as year", { day: "11", month: "03", year: "" }]
+        ["empty string as year", { day: "11", month: "03", year: "" }],
+        ["day with 3 digits", { day: "001", month: "10", year: "2011" }],
+        ["month with 3 digits", { day: "01", month: "012", year: "2011" }]
       ])("should return false for invalid date - %s", (_desciption, date) => {
         let thrownError: UIErrors | null = null;
 
