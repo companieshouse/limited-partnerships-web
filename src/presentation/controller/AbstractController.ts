@@ -210,10 +210,6 @@ abstract class AbstractController {
 
     return WHICH_TYPE_URL;
   }
-
-  protected trimInput(input: string): string {
-    return input.trim();
-  }
 }
 
 export default AbstractController;

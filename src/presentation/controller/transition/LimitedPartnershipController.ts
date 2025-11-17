@@ -187,7 +187,7 @@ class LimitedPartnershipController extends PartnershipController {
         const pageType = super.extractPageTypeOrThrowError(request, TransitionPageType);
         const pageRouting = super.getRouting(transitionRouting, pageType, request);
         const { company_number } = request.body;
-        const companyNumber = super.trimInput(company_number);
+        const companyNumber = company_number.trim();
 
         const result = await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, companyNumber);
 
