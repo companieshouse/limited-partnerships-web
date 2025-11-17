@@ -187,20 +187,19 @@ class LimitedPartnershipController extends PartnershipController {
         const pageType = super.extractPageTypeOrThrowError(request, TransitionPageType);
         const pageRouting = super.getRouting(transitionRouting, pageType, request);
         const { company_number } = request.body;
-        const companyNumber = company_number.trim();
 
-        const result = await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, companyNumber);
+        const result = await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, company_number.trim());
 
         if (result.errors) {
           response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { company_number: companyNumber }, result.errors)
+            super.makeProps(pageRouting, { company_number: company_number.trim() }, result.errors)
           );
 
           return;
         }
 
-        const url = super.insertIdsInUrl(pageRouting.nextUrl, { ...ids, companyId: companyNumber }, request.url);
+        const url = super.insertIdsInUrl(pageRouting.nextUrl, { ...ids, companyId: company_number.trim() }, request.url);
 
         response.redirect(url);
       } catch (error) {
