@@ -79,6 +79,16 @@ abstract class AbstractPartnerBuilder {
     this.data.cease_date = ceaseDate;
     return this;
   }
+
+  withNationality1(nationality1: string) {
+    this.data.nationality1 = nationality1;
+    return this;
+  }
+
+  withNationality2(nationality2: string) {
+    this.data.nationality2 = nationality2;
+    return this;
+  }
 }
 
 export default AbstractPartnerBuilder;
