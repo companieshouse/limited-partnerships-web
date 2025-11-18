@@ -65,6 +65,18 @@ describe("Company number page", () => {
       expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
     });
 
+    it("should redirect to confirmation page if company_number has trailing spaces", async () => {
+      const res = await request(app).post(URL).send({
+        pageType: TransitionPageType.companyNumber,
+        company_number: "LP123456 "
+      });
+
+      const REDIRECT_URL = getUrl(CONFIRM_LIMITED_PARTNERSHIP_URL);
+
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+    });
+
     it("should return an error if company_number is not valid", async () => {
       appDevDependencies.companyGateway.setError(true);
 
