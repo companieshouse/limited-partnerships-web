@@ -2,11 +2,11 @@
     "addPartnerLegalEntityPage" : {
         "generalPartner": {
             "title" : "Add a general partner (legal entity)",
-            "dateEffectiveFrom" : "When did they become a general partner for this partnership?"
+            "dateEffectiveFrom" : "When did it become a general partner for this partnership?"
         },
         "limitedPartner": {
             "title": "Add a limited partner (legal entity)",
-            "dateEffectiveFrom" : "When did they become a limited partner for this partnership?"
+            "dateEffectiveFrom" : "When did it become a limited partner for this partnership?"
         },
 
         "dateHint" : "For example, 27 3 2000",
