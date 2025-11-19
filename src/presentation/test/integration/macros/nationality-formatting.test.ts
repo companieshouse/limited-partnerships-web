@@ -19,112 +19,34 @@ describe("Nationality Formatting Macro", () => {
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
   });
 
-  describe("Bracketed nationalities", () => {
-    it("should format Congolese (Congo) with capitalized word in brackets", async () => {
-      const partner = new GeneralPartnerBuilder()
-        .isPerson()
-        .withNationality1("CONGOLESE (CONGO)")
-        .build();
+  const nationalitySetters = [
+    ["nationality1 only", (builder: GeneralPartnerBuilder, nationality: string) => builder.withNationality1(nationality)],
+    ["nationality2 only", (builder: GeneralPartnerBuilder, nationality: string) => builder.withNationality2(nationality)],
+    ["both nationalities", (builder: GeneralPartnerBuilder, nationality: string) => builder.withNationality1(nationality).withNationality2(nationality)]
+  ] as [string, (builder: GeneralPartnerBuilder, nationality: string) => GeneralPartnerBuilder][];
+
+  const nationalityTestCases = [
+    ["CONGOLESE (CONGO)", "Congolese (Congo)", ["Congolese (congo)", "CONGOLESE (CONGO)"]],
+    ["CONGOLESE (DRC)", "Congolese (DRC)", ["Congolese (Drc)", "CONGOLESE (DRC)"]],
+    ["VATICAN CITIZEN", "Vatican citizen", ["Vatican Citizen"]],
+    ["CITIZEN OF ANTIGUA AND BARBUDA", "Citizen of Antigua and Barbuda", ["citizen of Antigua and Barbuda"]],
+    ["CITIZEN OF THE DOMINICAN REPUBLIC", "Citizen of the Dominican Republic", ["Citizen Of The Dominican Republic"]],
+    ["CITIZEN OF GUINEA-BISSAU", "Citizen of Guinea-Bissau", ["Citizen of Guinea-bissau"]],
+    ["BRITISH", "British", ["BRITISH", "british"]]
+  ] as const;
+
+  describe.each(nationalitySetters)("%s", (description, setNationality) => {
+    it.each(nationalityTestCases)(`should format %s as %s (${description})`, async (input, expected, notExpected) => {
+      const builder = new GeneralPartnerBuilder().isPerson();
+      setNationality(builder, input);
+      const partner = builder.build();
       appDevDependencies.generalPartnerGateway.feedGeneralPartners([partner]);
 
       const res = await request(app).get(URL);
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain("Congolese (Congo)");
-      expect(res.text).not.toContain("Congolese (congo)");
-      expect(res.text).not.toContain("CONGOLESE (CONGO)");
-    });
-
-    it("should format Congolese (DRC) with uppercase acronym in brackets", async () => {
-      const partner = new GeneralPartnerBuilder()
-        .isPerson()
-        .withNationality1("CONGOLESE (DRC)")
-        .build();
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([partner]);
-
-      const res = await request(app).get(URL);
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain("Congolese (DRC)");
-      expect(res.text).not.toContain("Congolese (Drc)");
-      expect(res.text).not.toContain("CONGOLESE (DRC)");
-    });
-  });
-
-  describe("Exception word handling", () => {
-    it("should format 'Vatican citizen' with lowercase 'citizen'", async () => {
-      const partner = new GeneralPartnerBuilder()
-        .isPerson()
-        .withNationality1("VATICAN CITIZEN")
-        .build();
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([partner]);
-
-      const res = await request(app).get(URL);
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain("Vatican citizen");
-      expect(res.text).not.toContain("Vatican Citizen");
-    });
-
-    it("should capitalize 'Citizen' when first and lowercase 'of' and 'and'", async () => {
-      const partner = new GeneralPartnerBuilder()
-        .isPerson()
-        .withNationality1("CITIZEN OF ANTIGUA AND BARBUDA")
-        .build();
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([partner]);
-
-      const res = await request(app).get(URL);
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain("Citizen of Antigua and Barbuda");
-      expect(res.text).not.toContain("citizen of Antigua and Barbuda");
-    });
-
-    it("should lowercase 'the' in middle positions", async () => {
-      const partner = new GeneralPartnerBuilder()
-        .isPerson()
-        .withNationality1("CITIZEN OF THE DOMINICAN REPUBLIC")
-        .build();
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([partner]);
-
-      const res = await request(app).get(URL);
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain("Citizen of the Dominican Republic");
-      expect(res.text).not.toContain("Citizen Of The Dominican Republic");
-    });
-  });
-
-  describe("Hyphenated words", () => {
-    it("should capitalize both parts of hyphenated words", async () => {
-      const partner = new GeneralPartnerBuilder()
-        .isPerson()
-        .withNationality1("CITIZEN OF GUINEA-BISSAU")
-        .build();
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([partner]);
-
-      const res = await request(app).get(URL);
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain("Citizen of Guinea-Bissau");
-      expect(res.text).not.toContain("Citizen of Guinea-bissau");
-    });
-  });
-
-  describe("Simple nationalities", () => {
-    it("should format simple nationality correctly", async () => {
-      const partner = new GeneralPartnerBuilder()
-        .isPerson()
-        .withNationality1("BRITISH")
-        .build();
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([partner]);
-
-      const res = await request(app).get(URL);
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain("British");
-      expect(res.text).not.toContain("BRITISH");
-      expect(res.text).not.toContain("british");
+      expect(res.text).toContain(expected);
+      notExpected.forEach((value: string) => expect(res.text).not.toContain(value));
     });
   });
 });
