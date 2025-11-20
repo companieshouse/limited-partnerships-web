@@ -16,7 +16,7 @@ class UIErrors {
   errors: UIValidationErrors = { errorList: [] } as any;
 
   formatValidationErrorToUiErrors(apiErrors: ApiErrors) {
-    this.apiErrors = apiErrors;
+    this.apiErrors = { ...this.apiErrors, ...apiErrors };
     const list = apiErrors?.errors ?? {};
 
     for (const property in list) {

@@ -1,0 +1,12 @@
+{
+    "errorMessages": {
+        "capitalContribution": {
+            "twoDecimalPlaces": "Value must be a number with 2 decimal places",
+            "moreThanZero": "Value must be 0.01 or more",
+            "noSymbols": "Value must not include currency symbols like £, $ and €",
+            "noComma": "Value must not include a comma",
+            "atLeastOneType": "Select at least one type of contribution",
+            "currencyRequired": "Select the currency of the capital contribution"
+        }
+    }
+}
