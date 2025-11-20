@@ -3,6 +3,7 @@ import request from "supertest";
 import enTranslationText from "../../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../../locales/cy/translations.json";
 import enErrorMessages from "../../../../../../../locales/en/errors.json";
+import cyErrorMessages from "../../../../../../../locales/cy/errors.json";
 
 import app from "../../../app";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
@@ -128,14 +129,18 @@ describe("Confirm General Partner Principal Office Address Page", () => {
       expect(res.text).toContain("You must provide an address");
     });
 
-    it("should show validation error message if validation error occurs when saving address", async () => {
-      const res = await request(app).post(URL).send({
+    it.each([
+      [ "en", enErrorMessages, ],
+      [ "cy", cyErrorMessages ]
+    ])("should show validation error message if validation error occurs when saving address with lang %s", async (lang: string, errorMessagesJson: any) => {
+      setLocalesEnabled(true);
+      const res = await request(app).post(`${URL}?lang=${lang}`).send({
         pageType: AddressPageType.confirmGeneralPartnerPrincipalOfficeAddress,
         address: `{"postal_code": "ST6 3LJ","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": ""}`
       });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(enErrorMessages.errorMessages.address.confirm.countryMissing);
+      expect(res.text).toContain(errorMessagesJson.errorMessages.address.confirm.countryMissing);
     });
   });
 });
