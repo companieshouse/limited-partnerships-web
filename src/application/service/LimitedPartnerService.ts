@@ -4,6 +4,7 @@ import { logger } from "../../utils";
 import UIErrors from "../../domain/entities/UIErrors";
 import { extractAPIErrors, incompletePartnerErrorList } from "./utils";
 import { Tokens } from "../../domain/types";
+import { capitalContributionValidation } from "./utils/capitalContributionValidation";
 
 class LimitedPartnerService {
   i18n: any;
@@ -23,6 +24,10 @@ class LimitedPartnerService {
     errors?: UIErrors;
   }> {
     try {
+      if (data.contribution_currency_type || data.contribution_currency_value || data.contribution_sub_types) {
+        capitalContributionValidation(data, this.i18n);
+      }
+
       const limitedPartnerId = await this.limitedPartnerGateway.createLimitedPartner(opt, transactionId, data);
 
       return { limitedPartnerId };
@@ -88,6 +93,10 @@ class LimitedPartnerService {
     errors?: UIErrors;
   }> {
     try {
+      if (data.contribution_currency_type || data.contribution_currency_value || data.contribution_sub_types) {
+        capitalContributionValidation(data, this.i18n);
+      }
+
       await this.limitedPartnerGateway.sendPageData(opt, transactionId, limitedPartnerId, data);
     } catch (errors: any) {
       const { apiErrors, isValidationErrors } = extractAPIErrors(errors);
