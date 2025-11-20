@@ -170,8 +170,7 @@ class AddressService {
   hasCountry(address: Address, uiErrors?: UIErrors | undefined): UIErrors | undefined {
     if (!address.country) {
       uiErrors ??= new UIErrors();
-
-      this.setFieldError(uiErrors, "change", this.i18n?.address.confirm.errorMessages.countryMissing);
+      uiErrors.setWebError("change", this.i18n?.errorMessages?.address?.confirm?.countryMissing);
     }
 
     return uiErrors;

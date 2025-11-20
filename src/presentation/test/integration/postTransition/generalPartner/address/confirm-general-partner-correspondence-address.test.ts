@@ -3,6 +3,7 @@ import request from "supertest";
 import app from "../../../app";
 import enTranslationText from "../../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../../locales/cy/translations.json";
+import enErrorMessages from "../../../../../../../locales/en/errors.json";
 
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import {
@@ -133,7 +134,7 @@ describe("Confirm General Partner Correspondence Address Page", () => {
       });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(enTranslationText.address.confirm.errorMessages.countryMissing);
+      expect(res.text).toContain(enErrorMessages.errorMessages.address.confirm.countryMissing);
     });
   });
 });

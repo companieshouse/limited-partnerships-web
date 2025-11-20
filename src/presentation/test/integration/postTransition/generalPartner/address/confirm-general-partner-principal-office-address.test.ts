@@ -2,6 +2,7 @@ import request from "supertest";
 
 import enTranslationText from "../../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../../locales/cy/translations.json";
+import enErrorMessages from "../../../../../../../locales/en/errors.json";
 
 import app from "../../../app";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
@@ -134,7 +135,7 @@ describe("Confirm General Partner Principal Office Address Page", () => {
       });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(enTranslationText.address.confirm.errorMessages.countryMissing);
+      expect(res.text).toContain(enErrorMessages.errorMessages.address.confirm.countryMissing);
     });
   });
 });

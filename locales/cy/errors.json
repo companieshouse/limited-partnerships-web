@@ -8,6 +8,12 @@
             "noComma": "WELSH - Value must not include a comma",
             "atLeastOneType": "WELSH - Select at least one type of contribution",
             "currencyRequired": "WELSH - Select the currency of the capital contribution"
+        },
+
+         "address": {
+            "confirm": {
+                "countryMissing": "WELSH - We cannot identify the country for this address. Select Change, then select the country."
+            }
         }
     }
 }
