@@ -751,7 +751,7 @@
         "title": "What is the term of the partnership?",
         "hint": "This is the length of time for which the partnership will be entered into.",
         "byAgreement": "Such term as decided by the partners within the partnership agreement",
-        "untilDissolution": "Until the general partner determines the partnership is dissolved",
+        "untilDissolution": "Until a general partner determines the partnership is dissolved",
         "noTerm": "No set term",
         "publicRegisterLine1": "We'll show the term of partnership on the public register."
     },
