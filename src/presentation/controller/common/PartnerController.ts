@@ -204,6 +204,9 @@ abstract class PartnerController extends AbstractController {
   createPartner(partner: PartnerType) {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
+        this.generalPartnerService.setI18n(response.locals.i18n);
+        this.limitedPartnerService.setI18n(response.locals.i18n);
+
         const routing = this.getJourneyPageRouting(request.url);
         const journeyPageType = this.getJourneyPageTypes(request.url);
 
@@ -383,6 +386,9 @@ abstract class PartnerController extends AbstractController {
   ) {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
+        this.generalPartnerService.setI18n(response.locals.i18n);
+        this.limitedPartnerService.setI18n(response.locals.i18n);
+
         const routing = this.getJourneyPageRouting(request.url);
         const journeyPageType = this.getJourneyPageTypes(request.url);
 

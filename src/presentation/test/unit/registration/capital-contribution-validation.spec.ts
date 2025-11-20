@@ -47,6 +47,12 @@ describe("Gateway capital contribition validation test suite", () => {
         "Value must not include a comma"
       ],
       [
+        "contribution_currency_value empty",
+        { ...data, contribution_currency_value: "" },
+        dataKeys[1],
+        "Contribution currency type is required"
+      ],
+      [
         "contribution_sub_types empty array",
         { ...data, contribution_sub_types: [] },
         dataKeys[2],

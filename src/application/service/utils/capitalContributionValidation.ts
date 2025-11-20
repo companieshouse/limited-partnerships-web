@@ -1,68 +1,37 @@
 import UIErrors from "../../../domain/entities/UIErrors";
 import { symbols } from "./currencies";
 
-const capitalContributionValidation = (
-  data: {
-    contribution_currency_type: string;
-    contribution_currency_value: string;
-    contribution_sub_types: string[];
-  },
-  i18n: any
-): void => {
+const capitalContributionValidation = (data: Record<string, string | string[]>, i18n: any): void => {
   const uiErrors = new UIErrors();
 
-  contributionCurrencyValueValidation(data, uiErrors, i18n);
-
-  if (!data.contribution_sub_types.length) {
-    uiErrors.formatValidationErrorToUiErrors({
-      errors: {
-        contribution_sub_types: i18n?.errorMessages?.capitalContribution?.atLeastOneType
-      }
-    });
-  }
-
   if (!data.contribution_currency_type) {
-    uiErrors.formatValidationErrorToUiErrors({
-      errors: {
-        contribution_currency_type: i18n?.errorMessages?.capitalContribution?.currencyRequired
-      }
-    });
+    uiErrors.setWebError("contribution_currency_type", i18n?.errorMessages?.capitalContribution?.currencyRequired);
   }
+
+  if (!data.contribution_sub_types?.length) {
+    uiErrors.setWebError("contribution_sub_types", i18n?.errorMessages?.capitalContribution?.atLeastOneType);
+  }
+
+  contributionCurrencyValueValidation(data, uiErrors, i18n);
 
   if (uiErrors.hasErrors()) {
     throw uiErrors;
   }
 };
 
-const contributionCurrencyValueValidation = (
-  data: { contribution_currency_type: string; contribution_currency_value: string; contribution_sub_types: string[] },
-  uiErrors: UIErrors,
-  i18n: any
-) => {
-  if (hasSymbol(data.contribution_currency_value, symbols)) {
-    uiErrors.formatValidationErrorToUiErrors({
-      errors: {
-        contribution_currency_value: i18n?.errorMessages?.capitalContribution?.noSymbols
-      }
-    });
+const contributionCurrencyValueValidation = (data: Record<string, any>, uiErrors: UIErrors, i18n: any) => {
+  const field = "contribution_currency_value";
+
+  if (!data.contribution_currency_value) {
+    uiErrors.setWebError(field, i18n?.errorMessages?.capitalContribution?.valueRequired);
+  } else if (hasSymbol(data.contribution_currency_value, symbols)) {
+    uiErrors.setWebError(field, i18n?.errorMessages?.capitalContribution?.noSymbols);
   } else if (hasComma(data.contribution_currency_value)) {
-    uiErrors.formatValidationErrorToUiErrors({
-      errors: {
-        contribution_currency_value: i18n?.errorMessages?.capitalContribution?.noComma
-      }
-    });
+    uiErrors.setWebError(field, i18n?.errorMessages?.capitalContribution?.noComma);
   } else if (!isNumber(data.contribution_currency_value) || !has2Decimal(data.contribution_currency_value)) {
-    uiErrors.formatValidationErrorToUiErrors({
-      errors: {
-        contribution_currency_value: i18n?.errorMessages?.capitalContribution?.twoDecimalPlaces
-      }
-    });
+    uiErrors.setWebError(field, i18n?.errorMessages?.capitalContribution?.twoDecimalPlaces);
   } else if (!isGreaterThanZero(data.contribution_currency_value)) {
-    uiErrors.formatValidationErrorToUiErrors({
-      errors: {
-        contribution_currency_value: i18n?.errorMessages?.capitalContribution?.moreThanZero
-      }
-    });
+    uiErrors.setWebError(field, i18n?.errorMessages?.capitalContribution?.moreThanZero);
   }
 };
 

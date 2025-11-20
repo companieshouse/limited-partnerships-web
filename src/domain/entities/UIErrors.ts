@@ -15,7 +15,7 @@ class UIErrors {
   apiErrors: ApiErrors;
   errors: UIValidationErrors = { errorList: [] } as any;
 
-  formatValidationErrorToUiErrors(apiErrors: ApiErrors) {
+  public formatValidationErrorToUiErrors(apiErrors: ApiErrors) {
     this.apiErrors = { ...this.apiErrors, ...apiErrors };
     const list = apiErrors?.errors ?? {};
 
@@ -31,6 +31,14 @@ class UIErrors {
         text: list[property]
       });
     }
+  }
+
+  public setWebError(field: string, message: string) {
+    this.formatValidationErrorToUiErrors({
+      errors: {
+        [field]: message
+      }
+    });
   }
 
   public hasErrors(): boolean {

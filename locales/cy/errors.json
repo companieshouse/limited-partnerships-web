@@ -1,6 +1,7 @@
 {
     "errorMessages": {
         "capitalContribution": {
+            "valueRequired": "WELSH - Contribution currency type is required",
             "twoDecimalPlaces": "WELSH - Value must be a number with 2 decimal places",
             "moreThanZero": "WELSH - Value must be 0.01 or more",
             "noSymbols": "WELSH - Value must not include currency symbols like £, $ and €",
