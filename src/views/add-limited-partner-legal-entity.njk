@@ -140,18 +140,18 @@
             errorMessage: props.errors.date_effective_from if props.errors,
             fieldset: {
               legend: {
-                text: i18n.addPartnerPersonPage.limitedPartner.dateEffectiveFrom,
+                text: i18n.addPartnerLegalEntityPage.limitedPartner.dateEffectiveFrom,
                 isPageHeading: false,
                 classes: "govuk-fieldset__legend--m"
               }
             },
             hint: {
-              text: i18n.addPartnerPersonPage.dateHint
+              text: i18n.addPartnerLegalEntityPage.dateHint
             },
             items: [
               {
                 classes: "govuk-input--width-2",
-                label: i18n.addPartnerPersonPage.dateDay,
+                label: i18n.addPartnerLegalEntityPage.dateDay,
                 name: "day",
                 value: date_effective_from_day,
                 attributes: {
@@ -161,7 +161,7 @@
               },
               {
                 classes: "govuk-input--width-2",
-                label: i18n.addPartnerPersonPage.dateMonth,
+                label: i18n.addPartnerLegalEntityPage.dateMonth,
                 name: "month",
                 value: date_effective_from_month,
                 attributes: {
@@ -171,7 +171,7 @@
               },
               {
                 classes: "govuk-input--width-4",
-                label: i18n.addPartnerPersonPage.dateYear,
+                label: i18n.addPartnerLegalEntityPage.dateYear,
                 name: "year",
                 value: date_effective_from_year,
                 attributes: {

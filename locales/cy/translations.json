@@ -2,11 +2,11 @@
     "addPartnerLegalEntityPage" : {
         "generalPartner": {
             "title" : "WELSH - Add a general partner (legal entity)",
-            "dateEffectiveFrom" : "WELSH - When did they become a general partner for this partnership?"
+            "dateEffectiveFrom" : "WELSH - When did it become a general partner for this partnership?"
         },
         "limitedPartner": {
             "title": "WELSH - Add a limited partner (legal entity)",
-            "dateEffectiveFrom" : "WELSH - When did they become a limited partner for this partnership?"
+            "dateEffectiveFrom" : "WELSH - When did it become a limited partner for this partnership?"
         },
 
         "dateHint" : "WELSH - For example, 27 3 2000",
