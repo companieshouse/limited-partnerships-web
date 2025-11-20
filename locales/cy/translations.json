@@ -2,11 +2,11 @@
     "addPartnerLegalEntityPage" : {
         "generalPartner": {
             "title" : "WELSH - Add a general partner (legal entity)",
-            "dateEffectiveFrom" : "WELSH - When did they become a general partner for this partnership?"
+            "dateEffectiveFrom" : "WELSH - When did it become a general partner for this partnership?"
         },
         "limitedPartner": {
             "title": "WELSH - Add a limited partner (legal entity)",
-            "dateEffectiveFrom" : "WELSH - When did they become a limited partner for this partnership?"
+            "dateEffectiveFrom" : "WELSH - When did it become a limited partner for this partnership?"
         },
 
         "dateHint" : "WELSH - For example, 27 3 2000",
@@ -605,8 +605,8 @@
     "namePage" : {
         "partnershipRulesHint" : {
             "rules" : "WELSH - The partnership name needs to meet set rules. For example, it cannot be the same as another registered partnership or company, or include certain words or phrases.",
-            "rulesLinkStart" : "WELSH - To find out the rules the limited partnership's name needs to meet,",
-            "rulesLinkEnd" : "WELSH - read the guidance on choosing a company name (opens in a new tab)."
+            "rulesLinkStart" : "WELSH - To find out more about the rules the limited partnership's name needs to meet,",
+            "rulesLinkEnd" : "WELSH - read the guidance on choosing a name (opens in new tab)."
         },
         "warning" : "WELSH - You must check the name meets the rules before you register the partnership. If it does not, we may reject your application, or you may need to change it later.",
         "warningFallback" : "WELSH - Warning",
@@ -752,7 +752,7 @@
         "title": "WELSH - What is the term of the partnership?",
         "hint": "WELSH - This is the length of time for which the partnership will be entered into.",
         "byAgreement": "WELSH - Such term as decided by the partners within the partnership agreement",
-        "untilDissolution": "WELSH - Until the general partner determines the partnership is dissolved",
+        "untilDissolution": "WELSH - Until a general partner determines the partnership is dissolved",
         "noTerm": "WELSH - No set term",
         "publicRegisterLine1": "WELSH - We'll show the term of partnership on the public register."
     },

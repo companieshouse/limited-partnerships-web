@@ -2,11 +2,11 @@
     "addPartnerLegalEntityPage" : {
         "generalPartner": {
             "title" : "Add a general partner (legal entity)",
-            "dateEffectiveFrom" : "When did they become a general partner for this partnership?"
+            "dateEffectiveFrom" : "When did it become a general partner for this partnership?"
         },
         "limitedPartner": {
             "title": "Add a limited partner (legal entity)",
-            "dateEffectiveFrom" : "When did they become a limited partner for this partnership?"
+            "dateEffectiveFrom" : "When did it become a limited partner for this partnership?"
         },
 
         "dateHint" : "For example, 27 3 2000",
@@ -607,8 +607,8 @@
     "namePage" : {
         "partnershipRulesHint" : {
             "rules" : "The partnership name needs to meet set rules. For example, it cannot be the same as another registered partnership or company, or include certain words or phrases.",
-            "rulesLinkStart" : "To find out the rules the limited partnership's name needs to meet,",          
-            "rulesLinkEnd" : "read the guidance on choosing a company name (opens in a new tab)."
+            "rulesLinkStart" : "To find out more about the rules the limited partnership's name needs to meet,",          
+            "rulesLinkEnd" : "read the guidance on choosing a name (opens in new tab)."
         },
         "warning" : "You must check the name meets the rules before you register the partnership. If it does not, we may reject your application, or you may need to change it later.",
         "warningFallback" : "Warning",
@@ -754,7 +754,7 @@
         "title": "What is the term of the partnership?",
         "hint": "This is the length of time for which the partnership will be entered into.",
         "byAgreement": "Such term as decided by the partners within the partnership agreement",
-        "untilDissolution": "Until the general partner determines the partnership is dissolved",
+        "untilDissolution": "Until a general partner determines the partnership is dissolved",
         "noTerm": "No set term",
         "publicRegisterLine1": "We'll show the term of partnership on the public register."
     },

@@ -51,13 +51,37 @@
   {{- capitalizedWords.join(' ') -}}
 {%- endmacro -%}
 
+{%- macro capitalizeWord(word) -%}
+  {# Capitalize a single word, handling hyphens like Guinea-Bissau #}
+  {%- set parts = word.split('-') -%}
+  {%- set capitalizedParts = [] -%}
+  {%- for part in parts -%}
+    {%- set capitalizedPart = part.charAt(0).toUpperCase() + part.slice(1) -%}
+    {%- set capitalizedParts = capitalizedParts.concat(capitalizedPart) -%}
+  {%- endfor -%}
+  {{- capitalizedParts.join('-') -}}
+{%- endmacro -%}
+
+{%- macro formatBracketed(word) -%}
+  {# Handle words in brackets like (Congo) or (DRC) #}
+  {%- set content = word.slice(1, -1) -%}
+  {# Short content (2-3 chars) = acronym, longer = regular word #}
+  {%- if content.length <= 3 -%}
+    {{- '(' + content.toUpperCase() + ')' -}}
+  {%- else -%}
+    {{- '(' + content.charAt(0).toUpperCase() + content.slice(1).toLowerCase() + ')' -}}
+  {%- endif -%}
+{%- endmacro -%}
+
 {%- macro formatNationality(str) -%}
-  {%- set prepositions = ['Of', 'The', 'And'] -%}
-  {%- set capitalizedWords = capitalizeEachWord(str).split(' ') -%}
+  {%- set exceptions = ['of', 'the', 'and', 'citizen'] -%}
+  {%- set words = str.split(' ') -%}
   {%- set result = [] -%}
-  {%- for word in capitalizedWords -%}
-    {%- if loop.first or loop.last or prepositions.indexOf(word) === -1 -%}
-      {%- set result = result.concat(word) -%}
+  {%- for word in words -%}
+    {%- if word.startsWith('(') and word.endsWith(')') -%}
+      {%- set result = result.concat(formatBracketed(word)) -%}
+    {%- elif loop.first or exceptions.indexOf(word.toLowerCase()) === -1 -%}
+      {%- set result = result.concat(capitalizeWord(word.toLowerCase())) -%}
     {%- else -%}
       {%- set result = result.concat(word.toLowerCase()) -%}
     {%- endif -%}

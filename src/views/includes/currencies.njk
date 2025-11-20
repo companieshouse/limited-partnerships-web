@@ -174,17 +174,13 @@
 ] %}
 
 {{ govukSelect({
-  id: contributionCurrencyTypeId,
-  name: contributionCurrencyTypeId,
-  value: contributionCurrencyValue,
+  id: "contribution_currency_type",
+  name: "contribution_currency_type",
   label: {
     text: i18n.capitalContribution.currencyTypeLabel,
     classes: "govuk-visually-hidden",
     isPageHeading: false
   },
-  errorMessage: currencyErrorMessage,
-  attributes : {
-    required: "true"
-  },
+  errorMessage: props.errors.contribution_currency_type if props.errors.contribution_currency_type,
   items: CURRENCIES
 }) }}

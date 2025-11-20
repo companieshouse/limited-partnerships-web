@@ -4,7 +4,6 @@
 
   <p class="govuk-hint">{{ i18n.capitalContribution.hint }}</p>
  
-  {% set contributionCurrencyTypeId = "contribution_currency_type" %}
   {% set currencyField = props.data.limitedPartner.data.contribution_currency_type %}
   {% include "includes/currencies.njk" %}
 
@@ -34,10 +33,7 @@
     id: "contribution_currency_value",
     name: "contribution_currency_value",
     value: props.data.limitedPartner.data.contribution_currency_value,
-    errorMessage: props.errors.contribution_currency_value if props.errors.contribution_currency_value,
-    attributes: {
-      required: true
-    }
+    errorMessage: props.errors.contribution_currency_value if props.errors.contribution_currency_value
   }) }}
 
   {{ govukCheckboxes({
