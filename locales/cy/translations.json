@@ -146,7 +146,9 @@
             "limitedPartnerPrincipalOfficeAddress": {
                 "title": "WELSH - Confirm the limited partner's principal office address",
                 "publicRegisterLine1": "WELSH - We'll show the limited partner's principal office address on the public register."
-            }
+            },
+            "countryMissing": "WELSH - We cannot identify the country for this address. Select Change, then select the country."
+
         },
         
         "enterAddress": {

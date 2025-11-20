@@ -6,7 +6,6 @@ import cyTranslationText from "../../../../../../../locales/cy/translations.json
 import app from "../../../app";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
-import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
 
 import {
   CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
@@ -129,28 +128,13 @@ describe("Confirm General Partner Principal Office Address Page", () => {
     });
 
     it("should show validation error message if validation error occurs when saving address", async () => {
-      const generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isPerson()
-        .build();
-
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
-
-      const apiErrors: ApiErrors = {
-        errors: {
-          "usualResidentialAddress.country": "must not be null"
-        }
-      };
-
-      appDevDependencies.generalPartnerGateway.feedErrors(apiErrors);
-
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.confirmGeneralPartnerPrincipalOfficeAddress,
         address: `{"postal_code": "ST6 3LJ","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": ""}`
       });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain("must not be null");
+      expect(res.text).toContain(enTranslationText.address.confirm.errorMessages.countryMissing);
     });
   });
 });

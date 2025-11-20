@@ -288,21 +288,26 @@ class AddressLookUpController extends AbstractController {
         const isGeneralPartnerAddress = AddressLookUpController.GENERAL_PARTNER_PAGES.has(pageType);
         const isLimitedPartnerAddress = AddressLookUpController.LIMITED_PARTNER_PAGES.has(pageType);
 
+        const uiErrors = this.addressService.hasCountry(address);
+
         // store in api
         let result;
-
-        if (isGeneralPartnerAddress) {
-          result = await this.generalPartnerService.sendPageData(tokens, ids.transactionId, ids.generalPartnerId, data);
-        } else if (isLimitedPartnerAddress) {
-          result = await this.limitedPartnerService.sendPageData(tokens, ids.transactionId, ids.limitedPartnerId, data);
+        if (uiErrors?.hasErrors()) {
+          result = { errors: uiErrors };
         } else {
-          result = await this.limitedPartnershipService.sendPageData(
-            tokens,
-            ids.transactionId,
-            ids.submissionId,
-            pageType,
-            data
-          );
+          if (isGeneralPartnerAddress) {
+            result = await this.generalPartnerService.sendPageData(tokens, ids.transactionId, ids.generalPartnerId, data);
+          } else if (isLimitedPartnerAddress) {
+            result = await this.limitedPartnerService.sendPageData(tokens, ids.transactionId, ids.limitedPartnerId, data);
+          } else {
+            result = await this.limitedPartnershipService.sendPageData(
+              tokens,
+              ids.transactionId,
+              ids.submissionId,
+              pageType,
+              data
+            );
+          }
         }
 
         if (result?.errors) {

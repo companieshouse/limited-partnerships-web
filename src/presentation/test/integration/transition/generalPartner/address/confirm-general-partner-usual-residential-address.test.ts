@@ -14,7 +14,6 @@ import {
 } from "../../../../../controller/addressLookUp/url/transition";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
-import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
 import GeneralPartnerBuilder from "../../../../builder/GeneralPartnerBuilder";
 
 describe("Confirm General Partner Usual Residential Address Page", () => {
@@ -136,28 +135,13 @@ describe("Confirm General Partner Usual Residential Address Page", () => {
     });
 
     it("should show validation error message if validation error occurs when saving address", async () => {
-      const generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isPerson()
-        .build();
-
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
-
-      const apiErrors: ApiErrors = {
-        errors: {
-          "usualResidentialAddress.country": "must not be null"
-        }
-      };
-
-      appDevDependencies.generalPartnerGateway.feedErrors(apiErrors);
-
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.confirmGeneralPartnerUsualResidentialAddress,
         address: `{"postal_code": "ST6 3LJ","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": ""}`
       });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain("must not be null");
+      expect(res.text).toContain(enTranslationText.address.confirm.errorMessages.countryMissing);
     });
 
     it("should redirect to the confirm correspondance address if already saved", async () => {
