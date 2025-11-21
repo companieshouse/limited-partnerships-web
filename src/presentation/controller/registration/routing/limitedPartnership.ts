@@ -23,7 +23,7 @@ const registrationRoutingName = {
   previousUrl: url.PARTNERSHIP_TYPE_URL,
   currentUrl: url.NAME_URL,
   nextUrl: url.EMAIL_URL,
-  pageType: RegistrationPageType.name
+  pageType: RegistrationPageType.partnershipName
 };
 
 const registrationRoutingEmail = {

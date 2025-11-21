@@ -18,7 +18,10 @@ class IncorporationGateway implements IIncorporationGateway {
     transactionId: string,
     kind: IncorporationKind
   ): Promise<string> {
-    if (pageType !== RegistrationPageType.name && pageType !== TransitionPageType.confirmLimitedPartnership) {
+    if (
+      pageType !== RegistrationPageType.partnershipName &&
+      pageType !== TransitionPageType.confirmLimitedPartnership
+    ) {
       throw new Error("Wrong page type to create a new incorporation");
     }
 

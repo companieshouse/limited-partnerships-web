@@ -216,7 +216,7 @@ describe("Name Page", () => {
       expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships.length).toEqual(0);
 
       const res = await request(app).post(NAME_URL).send({
-        pageType: RegistrationPageType.name,
+        pageType: RegistrationPageType.partnershipName,
         partnership_name: "Test Limited Partnership",
         name_ending: NameEndingType.LIMITED_PARTNERSHIP,
         partnership_type: PartnershipType.LP
@@ -246,7 +246,7 @@ describe("Name Page", () => {
       const URL = getUrl(NAME_WITH_IDS_URL);
 
       const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.name,
+        pageType: RegistrationPageType.partnershipName,
         partnership_name: "Test Limited Partnership",
         name_ending: NameEndingType.LIMITED_PARTNERSHIP,
         partnership_type: PartnershipType.LP
@@ -259,7 +259,7 @@ describe("Name Page", () => {
 
     it("should return validation errors", async () => {
       const res = await request(app).post(NAME_URL).send({
-        pageType: RegistrationPageType.name
+        pageType: RegistrationPageType.partnershipName
       });
 
       expect(res.status).toBe(200);

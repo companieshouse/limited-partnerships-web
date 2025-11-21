@@ -2,7 +2,7 @@ import RegistrationPageType from "./PageType";
 
 export const CONTINUE_SAVED_FILING_TEMPLATE = RegistrationPageType.continueSavedFiling;
 export const PARTNERSHIP_TYPE_TEMPLATE = RegistrationPageType.partnershipType;
-export const NAME_TEMPLATE = RegistrationPageType.name;
+export const NAME_TEMPLATE = RegistrationPageType.partnershipName;
 export const EMAIL_TEMPLATE = RegistrationPageType.email;
 export const WHERE_IS_THE_JURISDICTION_TEMPLATE = RegistrationPageType.whereIsTheJurisdiction;
 export const TERM_TEMPLATE = RegistrationPageType.term;

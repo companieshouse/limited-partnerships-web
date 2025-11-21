@@ -40,7 +40,7 @@ describe("Gateway Update - Refresh Token", () => {
   describe("Create transaction and the first submission", () => {
     it("should create a transaction and the first submission", async () => {
       const res = await request(appRealDependencies).post(NAME_URL).send({
-        pageType: RegistrationPageType.name,
+        pageType: RegistrationPageType.partnershipName,
         partnership_name: "Test Limited Partnership",
         name_ending: NameEndingType.LIMITED_PARTNERSHIP,
         partnership_type: "LP"
@@ -152,7 +152,7 @@ describe("Gateway Update - Refresh Token", () => {
         });
 
         const res = await request(appRealDependencies).post(NAME_URL).send({
-          pageType: RegistrationPageType.name
+          pageType: RegistrationPageType.partnershipName
         });
 
         expect(res.status).toBe(200);

@@ -126,7 +126,7 @@ class LimitedPartnershipController extends PartnershipController {
 
     if (previousPageType === RegistrationPageType.checkYourAnswers) {
       pageRouting.previousUrl = super.insertIdsInUrl(CHECK_YOUR_ANSWERS_URL, ids, request.url);
-    } else if (pageRouting.pageType === RegistrationPageType.name) {
+    } else if (pageRouting.pageType === RegistrationPageType.partnershipName) {
       // change back link if we have ids in url
       if (ids.transactionId && ids.submissionId) {
         pageRouting.previousUrl = super.insertIdsInUrl(PARTNERSHIP_TYPE_WITH_IDS_URL, ids, request.url);
