@@ -4,7 +4,7 @@ export const CONTINUE_SAVED_FILING_TEMPLATE = RegistrationPageType.continueSaved
 export const PARTNERSHIP_TYPE_TEMPLATE = RegistrationPageType.partnershipType;
 export const NAME_TEMPLATE = RegistrationPageType.partnershipName;
 export const EMAIL_TEMPLATE = RegistrationPageType.email;
-export const WHERE_IS_THE_JURISDICTION_TEMPLATE = RegistrationPageType.whereIsTheJurisdiction;
+export const WHERE_IS_THE_JURISDICTION_TEMPLATE = RegistrationPageType.jurisdiction;
 export const TERM_TEMPLATE = RegistrationPageType.term;
 export const SIC_TEMPLATE = RegistrationPageType.sic;
 

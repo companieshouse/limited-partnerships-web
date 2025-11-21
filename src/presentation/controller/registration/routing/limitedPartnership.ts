@@ -37,7 +37,7 @@ const registrationRoutingJurisdiction = {
   previousUrl: url.EMAIL_URL,
   currentUrl: url.WHERE_IS_THE_JURISDICTION_URL,
   nextUrl: POSTCODE_REGISTERED_OFFICE_ADDRESS_URL,
-  pageType: RegistrationPageType.whereIsTheJurisdiction
+  pageType: RegistrationPageType.jurisdiction
 };
 
 // registered office address

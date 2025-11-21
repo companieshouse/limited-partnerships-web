@@ -3,7 +3,7 @@ enum RegistrationPageType {
   partnershipType = "partnership-type",
   partnershipName = "partnership-name",
   email = "registered-email-address",
-  whereIsTheJurisdiction = "where-is-the-jurisdiction",
+  jurisdiction = "jurisdiction",
   term = "term",
   sic = "standard-industrial-classification-code",
 
