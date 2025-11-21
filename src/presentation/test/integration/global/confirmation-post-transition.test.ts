@@ -255,7 +255,7 @@ describe("Confirmation Page", () => {
         ["limited-partnership#update-partnership-name", enTranslationText.confirmationPage.postTransition.name],
         ["limited-partnership#update-partnership-term", enTranslationText.confirmationPage.postTransition.term],
         [
-          "limited-partnership#update-partnership-principal-place-of-business",
+          "limited-partnership#update-partnership-principal-place-of-business-address",
           enTranslationText.confirmationPage.postTransition.principalPlaceOfBusinessAddress
         ]
       ])(
@@ -286,7 +286,7 @@ describe("Confirmation Page", () => {
         ["limited-partnership#update-partnership-name", cyTranslationText.confirmationPage.postTransition.name],
         ["limited-partnership#update-partnership-term", cyTranslationText.confirmationPage.postTransition.term],
         [
-          "limited-partnership#update-partnership-principal-place-of-business",
+          "limited-partnership#update-partnership-principal-place-of-business-address",
           cyTranslationText.confirmationPage.postTransition.principalPlaceOfBusinessAddress
         ]
       ])(
