@@ -157,7 +157,7 @@ describe("Check Your Answers Page", () => {
       expect(res.text).toContain("Such term as decided by the partners within the partnership agreement");
       expect(res.text).toContain("12345,67890");
       expect(res.text).toContain("name#partnership_name");
-      expect(res.text).toContain("email#email");
+      expect(res.text).toContain("registered-email-address#email");
       expect(res.text).toContain("where-is-the-jurisdiction#jurisdiction");
       expect(res.text).toContain("term#term");
       expect(res.text).toContain("standard-industrial-classification-code#sic1");

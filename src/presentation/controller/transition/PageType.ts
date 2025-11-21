@@ -2,7 +2,7 @@ enum TransitionPageType {
   continueSavedFiling = "continue-saved-filing",
   companyNumber = "company-number",
   confirmLimitedPartnership = "confirm-limited-partnership",
-  email = "email",
+  email = "registered-email-address",
 
   generalPartners = "general-partners",
   generalPartnerChoice = "general-partner-choice",

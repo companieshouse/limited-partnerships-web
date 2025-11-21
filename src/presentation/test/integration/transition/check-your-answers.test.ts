@@ -1,7 +1,11 @@
 import request from "supertest";
 import app from "../app";
 
-import { GeneralPartner, LimitedPartner, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import {
+  GeneralPartner,
+  LimitedPartner,
+  PartnershipType
+} from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { CHECK_YOUR_ANSWERS_URL } from "../../../controller/transition/url";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
@@ -20,7 +24,7 @@ import { Journey } from "../../../../domain/entities/journey";
 
 describe("Check Your Answers Page", () => {
   const URL = getUrl(CHECK_YOUR_ANSWERS_URL);
-  const REDIRECT_URL = getUrl(CONFIRMATION_URL).replace(JOURNEY_TYPE_PARAM, Journey.transition);;
+  const REDIRECT_URL = getUrl(CONFIRMATION_URL).replace(JOURNEY_TYPE_PARAM, Journey.transition);
 
   let limitedPartnership;
   let generalPartnerPerson;
@@ -103,16 +107,13 @@ describe("Check Your Answers Page", () => {
       [URL + "?lang=en", "/limited-partnerships/sign-out?lang=en"],
       [URL + "?lang=cy", "/limited-partnerships/sign-out?lang=cy"],
       [URL, "/limited-partnerships/sign-out"]
-    ])(
-      "should set the signout link href correctly for url: %s",
-      async (testUrl: string, expectedHref: string) => {
-        setLocalesEnabled(true);
-        const res = await request(app).get(testUrl);
+    ])("should set the signout link href correctly for url: %s", async (testUrl: string, expectedHref: string) => {
+      setLocalesEnabled(true);
+      const res = await request(app).get(testUrl);
 
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(expectedHref);
-      }
-    );
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(expectedHref);
+    });
 
     it("should load the check your answers page with data from api and show change links", async () => {
       const res = await request(app).get(URL);
@@ -124,7 +125,7 @@ describe("Check Your Answers Page", () => {
       expect(res.text).toContain(limitedPartnership?.data?.email);
       expect(res.text).toContain("4 Line 1, Line 2, Stoke-On-Trent, Region, England, ST6 3LJ");
       expect(res.text).toContain("enter-registered-office-address#premises");
-      expect(res.text).toContain("email#email");
+      expect(res.text).toContain("registered-email-address#email");
     });
 
     it.each([
@@ -148,9 +149,15 @@ describe("Check Your Answers Page", () => {
 
       expect(res.status).toBe(200);
 
-      expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.partners.limitedPartners.capitalContribution);
+      expect(res.text).not.toContain(
+        enTranslationText.checkYourAnswersPage.partners.limitedPartners.capitalContribution
+      );
 
-      testTranslations(res.text, enTranslationText.checkYourAnswersPage.partners, ["capitalContribution", "dateEffectiveFrom", "ceaseDate"]);
+      testTranslations(res.text, enTranslationText.checkYourAnswersPage.partners, [
+        "capitalContribution",
+        "dateEffectiveFrom",
+        "ceaseDate"
+      ]);
 
       checkIfValuesInText(res, generalPartnerPerson, enTranslationText);
 
@@ -166,9 +173,15 @@ describe("Check Your Answers Page", () => {
 
       expect(res.status).toBe(200);
 
-      expect(res.text).not.toContain(cyTranslationText.checkYourAnswersPage.partners.limitedPartners.capitalContribution);
+      expect(res.text).not.toContain(
+        cyTranslationText.checkYourAnswersPage.partners.limitedPartners.capitalContribution
+      );
 
-      testTranslations(res.text, cyTranslationText.checkYourAnswersPage.partners, ["capitalContribution", "dateEffectiveFrom", "ceaseDate"]);
+      testTranslations(res.text, cyTranslationText.checkYourAnswersPage.partners, [
+        "capitalContribution",
+        "dateEffectiveFrom",
+        "ceaseDate"
+      ]);
 
       checkIfValuesInText(res, generalPartnerPerson, cyTranslationText);
 
@@ -192,7 +205,11 @@ describe("Check Your Answers Page", () => {
   });
 });
 
-const checkIfValuesInText = (res: request.Response, partner: GeneralPartner | LimitedPartner, translationText: Record<string, any>) => {
+const checkIfValuesInText = (
+  res: request.Response,
+  partner: GeneralPartner | LimitedPartner,
+  translationText: Record<string, any>
+) => {
   for (const key in partner.data) {
     if (typeof partner.data[key] === "string" || typeof partner.data[key] === "object") {
       if (key === "nationality1") {
