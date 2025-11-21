@@ -129,7 +129,7 @@
           }
         }) }}
         
-        {% if journeyTypes.isRegistration %}
+        {% if journeyTypes.isRegistration or journeyTypes.isPostTransition %}
           {% include "includes/capital-contribution.njk" %}
         {% endif %}
 

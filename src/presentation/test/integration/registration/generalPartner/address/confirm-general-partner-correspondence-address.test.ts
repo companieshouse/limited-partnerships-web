@@ -128,7 +128,7 @@ describe("Confirm General Partner Correspondence Address Page", () => {
     });
 
     it.each([
-      [ "en", enErrorMessages, ],
+      [ "en", enErrorMessages ],
       [ "cy", cyErrorMessages ]
     ])("should show validation error message if validation error occurs when saving address with lang %s", async (lang: string, errorMessagesJson: any) => {
       setLocalesEnabled(true);

@@ -208,7 +208,7 @@
         {% set nationalityFieldNameId = "nationality2" %}
         {% include "includes/nationalities.njk" %}
         
-        {% if journeyTypes.isRegistration %}
+        {% if journeyTypes.isRegistration or journeyTypes.isPostTransition %}
           {% include "includes/capital-contribution.njk" %}
         {% endif %} 
 

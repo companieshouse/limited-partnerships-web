@@ -1,4 +1,6 @@
-import request from "supertest";
+import { PartnerKind, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
+
+import request, { Response } from "supertest";
 
 import enTranslationText from "../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../locales/cy/translations.json";
@@ -17,7 +19,6 @@ import {
 
 import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
-import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 import { CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL, TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../../../controller/addressLookUp/url/postTransition";
 
 describe("Add Limited Partner Legal Entity Page", () => {
@@ -40,28 +41,46 @@ describe("Add Limited Partner Legal Entity Page", () => {
 
   describe("Get Add Limited Partner Legal Entity Page", () => {
 
-    it("should load the add limited partner legal entity page with Welsh text", async () => {
-      setLocalesEnabled(true);
-      const res = await request(app).get(URL + "?lang=cy");
+    const expectEnglishCapitalContributionText = (res: Response) => expect(res.text).toContain(enTranslationText.capitalContribution.title);
+    const expectNoEnglishCapitalContributionText = (res: Response) => expect(res.text).not.toContain(enTranslationText.capitalContribution.title);
+    const expectWelshCapitalContributionText = (res: Response) => expect(res.text).toContain(cyTranslationText.capitalContribution.title);
+    const expectNoWelshCapitalContributionText = (res: Response) => expect(res.text).not.toContain(cyTranslationText.capitalContribution.title);
 
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(
-        `${cyTranslationText.addPartnerLegalEntityPage.limitedPartner.title}`
-      );
-      testTranslations(res.text, cyTranslationText.addPartnerLegalEntityPage, ["errorMessages", "generalPartner"]);
-    });
+    it.each(
+      [
+        [PartnershipType.LP, "en", enTranslationText, expectEnglishCapitalContributionText],
+        [PartnershipType.SLP, "en", enTranslationText, expectEnglishCapitalContributionText],
+        [PartnershipType.PFLP, "en", enTranslationText, expectNoEnglishCapitalContributionText],
+        [PartnershipType.SPFLP, "en", enTranslationText, expectNoEnglishCapitalContributionText],
+        [PartnershipType.LP, "cy", cyTranslationText, expectWelshCapitalContributionText],
+        [PartnershipType.SLP, "cy", cyTranslationText, expectWelshCapitalContributionText],
+        [PartnershipType.PFLP, "cy", cyTranslationText, expectNoWelshCapitalContributionText],
+        [PartnershipType.SPFLP, "cy", cyTranslationText, expectNoWelshCapitalContributionText]
+      ]
+    )("should load the add limited partner legal entity page for partnership type %s and language %s",
+      async (
+        partnershipType: PartnershipType,
+        lang: string,
+        i18n: any,
+        capitalContributionAssertion: (res: Response) => void
+      ) => {
+        companyProfile.data.subtype = partnershipType;
 
-    it("should load the add limited partner legal entity page with English text", async () => {
-      setLocalesEnabled(true);
-      const res = await request(app).get(URL + "?lang=en");
+        setLocalesEnabled(true);
+        const res = await request(app).get(URL + `?lang=${lang}`);
 
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(
-        `${enTranslationText.addPartnerLegalEntityPage.limitedPartner.title}`
-      );
-      testTranslations(res.text, enTranslationText.addPartnerLegalEntityPage, ["errorMessages", "generalPartner"]);
-      expect(res.text).not.toContain("WELSH -");
-    });
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(
+          `${i18n.addPartnerLegalEntityPage.limitedPartner.title}`
+        );
+        testTranslations(res.text, i18n.addPartnerLegalEntityPage, ["errorMessages", "generalPartner"]);
+        capitalContributionAssertion(res);
+
+        if (lang !== "cy") {
+          expect(res.text).not.toContain("WELSH -");
+        }
+      }
+    );
 
     it("should contain a back link to the choice page when limited partners are not present", async () => {
       const res = await request(app).get(getUrl(ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_IDS_URL) + "?lang=en");
