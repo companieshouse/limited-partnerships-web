@@ -34,8 +34,6 @@ describe("Add Limited Partner Person Page", () => {
     companyProfile = new CompanyProfileBuilder().build();
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
-    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([]);
-
     appDevDependencies.limitedPartnerGateway.feedLimitedPartners([]);
     appDevDependencies.limitedPartnerGateway.feedErrors();
 
