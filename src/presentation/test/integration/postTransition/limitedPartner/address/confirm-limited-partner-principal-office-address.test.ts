@@ -130,7 +130,7 @@ describe("Confirm Limited Partner Principal Office Address Page", () => {
     });
 
     it.each([
-      [ "en", enErrorMessages, ],
+      [ "en", enErrorMessages ],
       [ "cy", cyErrorMessages ]
     ])("should show validation error message if validation error occurs when saving address with lang %s", async (lang: string, errorMessagesJson: any) => {
       setLocalesEnabled(true);
