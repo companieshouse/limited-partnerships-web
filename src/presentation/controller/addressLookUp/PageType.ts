@@ -8,10 +8,10 @@ enum AddressPageType {
   confirmRegisteredOfficeAddress = "confirm-registered-office-address",
 
   // principal place of business
-  postcodePrincipalPlaceOfBusinessAddress = "postcode-principal-place-of-business-address",
-  choosePrincipalPlaceOfBusinessAddress = "choose-principal-place-of-business-address",
-  enterPrincipalPlaceOfBusinessAddress = "enter-principal-place-of-business-address",
-  confirmPrincipalPlaceOfBusinessAddress = "confirm-principal-place-of-business-address",
+  postcodePrincipalPlaceOfBusinessAddress = "postcode-principal-place-of-business",
+  choosePrincipalPlaceOfBusinessAddress = "choose-principal-place-of-business",
+  enterPrincipalPlaceOfBusinessAddress = "enter-principal-place-of-business",
+  confirmPrincipalPlaceOfBusinessAddress = "confirm-principal-place-of-business",
 
   // GENERAL PARTNER
 

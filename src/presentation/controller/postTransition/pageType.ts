@@ -31,9 +31,9 @@ enum PostTransitionPageType {
   whenDidTheTermChange = `${DATE_OF_UPDATE_TYPE_PREFIX}-the-term-change`,
   termChangeCheckYourAnswers = `term-${CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX}`,
 
-  enterPrincipalPlaceOfBusinessAddress = "enter-principal-place-of-business-address",
-  whenDidThePrincipalPlaceOfBusinessAddressChange = `${DATE_OF_UPDATE_TYPE_PREFIX}-the-principal-place-of-business-address-change`,
-  principalPlaceOfBusinessAddressChangeCheckYourAnswers = `principal-place-of-business-address-${CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX}`,
+  enterPrincipalPlaceOfBusinessAddress = "enter-principal-place-of-business",
+  whenDidThePrincipalPlaceOfBusinessAddressChange = `${DATE_OF_UPDATE_TYPE_PREFIX}-the-principal-place-of-business-change`,
+  principalPlaceOfBusinessAddressChangeCheckYourAnswers = `principal-place-of-business-${CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX}`,
 
   whenDidTheGeneralPartnerPersonCease = `${DATE_OF_UPDATE_TYPE_PREFIX}-the-general-partner-person-cease`,
   removeGeneralPartnerPersonCheckYourAnswers = `general-partner-person-${REMOVE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX}`,
