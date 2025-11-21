@@ -3,7 +3,7 @@ import { CsrfError } from "@companieshouse/web-security-node";
 
 import { getLoggedInUserEmail, logger } from "../utils";
 import * as config from "../config/constants";
-import { WHICH_TYPE_URL } from "../presentation/controller/registration/url";
+import { PARTNERSHIP_TYPE_URL } from "../presentation/controller/registration/url";
 
 const pageNotFound = (req: Request, res: Response) => {
   const headerData = getHeaderData(req);
@@ -55,7 +55,7 @@ const errorHandler = [pageNotFound, csrfErrorHandler, globalErrorHandler];
 export { errorHandler };
 
 const getHeaderData = (req: Request) => {
-  const previous = req.get("Referrer") ?? WHICH_TYPE_URL;
+  const previous = req.get("Referrer") ?? PARTNERSHIP_TYPE_URL;
   const userEmail = getLoggedInUserEmail(req.session);
 
   return {

@@ -8,19 +8,19 @@ import {
 const registrationRoutingContinueSavedFiling = {
   previousUrl: "/",
   currentUrl: url.CONTINUE_SAVED_FILING_URL,
-  nextUrl: url.WHICH_TYPE_URL,
+  nextUrl: url.PARTNERSHIP_TYPE_URL,
   pageType: RegistrationPageType.continueSavedFiling
 };
 
 const registrationRoutingPartnershipType = {
   previousUrl: url.CONTINUE_SAVED_FILING_URL,
-  currentUrl: url.WHICH_TYPE_URL,
+  currentUrl: url.PARTNERSHIP_TYPE_URL,
   nextUrl: url.NAME_URL,
-  pageType: RegistrationPageType.whichType
+  pageType: RegistrationPageType.partnershipType
 };
 
 const registrationRoutingName = {
-  previousUrl: url.WHICH_TYPE_URL,
+  previousUrl: url.PARTNERSHIP_TYPE_URL,
   currentUrl: url.NAME_URL,
   nextUrl: url.EMAIL_URL,
   pageType: RegistrationPageType.name

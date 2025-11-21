@@ -4,11 +4,7 @@ import { NameEndingType } from "@companieshouse/api-sdk-node/dist/services/limit
 
 import appRealDependencies from "../../../../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import {
-  EMAIL_URL,
-  NAME_URL,
-  WHERE_IS_THE_JURISDICTION_URL
-} from "../../../../controller/registration/url";
+import { EMAIL_URL, NAME_URL, WHERE_IS_THE_JURISDICTION_URL } from "../../../../controller/registration/url";
 import RegistrationPageType from "../../../../controller/registration/PageType";
 import sdkMock, {
   postLimitedPartnership,
@@ -28,7 +24,7 @@ jest.mock("../../../../../infrastructure/repository/CacheRepository");
 const mockSession = CacheRepository as jest.Mock;
 mockSession.mockReturnValue({
   getData: jest.fn().mockImplementation(() => ({
-    limited_partnership: { "registration_which-type": "LP" }
+    limited_partnership: { "registration_partnership-type": "LP" }
   }))
 });
 

@@ -1,7 +1,7 @@
 import RegistrationPageType from "./PageType";
 
 export const CONTINUE_SAVED_FILING_TEMPLATE = RegistrationPageType.continueSavedFiling;
-export const WHICH_TYPE_TEMPLATE = RegistrationPageType.whichType;
+export const PARTNERSHIP_TYPE_TEMPLATE = RegistrationPageType.partnershipType;
 export const NAME_TEMPLATE = RegistrationPageType.name;
 export const EMAIL_TEMPLATE = RegistrationPageType.email;
 export const WHERE_IS_THE_JURISDICTION_TEMPLATE = RegistrationPageType.whereIsTheJurisdiction;

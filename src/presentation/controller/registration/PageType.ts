@@ -1,6 +1,6 @@
 enum RegistrationPageType {
   continueSavedFiling = "continue-saved-filing",
-  whichType = "which-type",
+  partnershipType = "partnership-type",
   name = "name",
   email = "email",
   whereIsTheJurisdiction = "where-is-the-jurisdiction",

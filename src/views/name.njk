@@ -2,8 +2,8 @@
 
 {% import 'includes/macros.njk' as macros %}
 
-{% if props.data.cache["registration_which-type"] %}
-  {% set partnershipType = props.data.cache["registration_which-type"] %}
+{% if props.data.cache["registration_partnership-type"] %}
+  {% set partnershipType = props.data.cache["registration_partnership-type"] %}
 {% elif props.data.limitedPartnership.data.partnership_type %}
   {% set partnershipType = props.data.limitedPartnership.data.partnership_type %}
 {% else %}

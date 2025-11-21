@@ -5,8 +5,8 @@ import app from "../app";
 import {
   NAME_URL,
   NAME_WITH_IDS_URL,
-  WHICH_TYPE_URL,
-  WHICH_TYPE_WITH_IDS_URL
+  PARTNERSHIP_TYPE_URL,
+  PARTNERSHIP_TYPE_WITH_IDS_URL
 } from "../../../controller/registration/url";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import enTranslationText from "../../../../../locales/en/translations.json";
@@ -29,25 +29,25 @@ describe("Which type Page", () => {
     appDevDependencies.cacheRepository.feedCache(null);
   });
 
-  it("should load the which-type page with English text", async () => {
+  it("should load the partnership-type page with English text", async () => {
     setLocalesEnabled(true);
 
-    const res = await request(app).get(WHICH_TYPE_URL + "?lang=en");
+    const res = await request(app).get(PARTNERSHIP_TYPE_URL + "?lang=en");
 
     expect(res.status).toBe(200);
-    testTranslations(res.text, enTranslationText.whichTypePage);
+    testTranslations(res.text, enTranslationText.partnershipTypePage);
     testTranslations(res.text, enTranslationText.types);
     expect(res.text).toContain(enTranslationText.buttons.continue);
     expect(res.text).toContain(SERVICE_NAME_REGISTRATION);
   });
 
-  it("should load the which-type page with Welsh text", async () => {
+  it("should load the partnership-type page with Welsh text", async () => {
     setLocalesEnabled(true);
 
-    const res = await request(app).get(WHICH_TYPE_URL + "?lang=cy");
+    const res = await request(app).get(PARTNERSHIP_TYPE_URL + "?lang=cy");
 
     expect(res.status).toBe(200);
-    testTranslations(res.text, cyTranslationText.whichTypePage);
+    testTranslations(res.text, cyTranslationText.partnershipTypePage);
     expect(res.text).toContain(cyTranslationText.buttons.continue);
     expect(res.text).toContain(SERVICE_NAME_REGISTRATION);
   });
@@ -55,8 +55,8 @@ describe("Which type Page", () => {
   it("should redirect to name page and cache contains the type selected", async () => {
     const selectedType = PartnershipType.LP;
 
-    const res = await request(app).post(WHICH_TYPE_URL).send({
-      pageType: RegistrationPageType.whichType,
+    const res = await request(app).post(PARTNERSHIP_TYPE_URL).send({
+      pageType: RegistrationPageType.partnershipType,
       parameter: selectedType
     });
 
@@ -65,20 +65,20 @@ describe("Which type Page", () => {
 
     expect(appDevDependencies.cacheRepository.cache).toEqual({
       [APPLICATION_CACHE_KEY]: {
-        [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]: selectedType
+        [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.partnershipType}`]: selectedType
       }
     });
   });
 
   it("should redirect to name page and update type in cache", async () => {
     appDevDependencies.cacheRepository.feedCache({
-      [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]: PartnershipType.LP
+      [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.partnershipType}`]: PartnershipType.LP
     });
 
     const selectedType = PartnershipType.PFLP;
 
-    const res = await request(app).post(WHICH_TYPE_URL).send({
-      pageType: RegistrationPageType.whichType,
+    const res = await request(app).post(PARTNERSHIP_TYPE_URL).send({
+      pageType: RegistrationPageType.partnershipType,
       parameter: selectedType
     });
 
@@ -87,7 +87,7 @@ describe("Which type Page", () => {
 
     expect(appDevDependencies.cacheRepository.cache).toEqual({
       [APPLICATION_CACHE_KEY]: {
-        [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]: selectedType
+        [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.partnershipType}`]: selectedType
       }
     });
   });
@@ -100,8 +100,8 @@ describe("Which type Page", () => {
 
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-    const res = await request(app).post(getUrl(WHICH_TYPE_WITH_IDS_URL)).send({
-      pageType: RegistrationPageType.whichType,
+    const res = await request(app).post(getUrl(PARTNERSHIP_TYPE_WITH_IDS_URL)).send({
+      pageType: RegistrationPageType.partnershipType,
       parameter: PartnershipType.PFLP
     });
 
@@ -117,8 +117,8 @@ describe("Which type Page", () => {
 
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-    const res = await request(app).post(getUrl(WHICH_TYPE_WITH_IDS_URL)).send({
-      pageType: RegistrationPageType.whichType,
+    const res = await request(app).post(getUrl(PARTNERSHIP_TYPE_WITH_IDS_URL)).send({
+      pageType: RegistrationPageType.partnershipType,
       parameter: PartnershipType.LP
     });
 

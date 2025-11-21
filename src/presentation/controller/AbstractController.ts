@@ -14,7 +14,7 @@ import {
 } from "../../config/constants";
 import { PageRouting, pageRoutingDefault, PagesRouting } from "./PageRouting";
 import PageType from "./PageType";
-import { WHICH_TYPE_URL } from "./registration/url";
+import { PARTNERSHIP_TYPE_URL } from "./registration/url";
 import UIErrors from "../../domain/entities/UIErrors";
 import { Ids, Tokens } from "../../domain/types";
 
@@ -208,7 +208,7 @@ abstract class AbstractController {
       return previousPageUrlPostTransition.substring(startingIndexOfRelativePath);
     }
 
-    return WHICH_TYPE_URL;
+    return PARTNERSHIP_TYPE_URL;
   }
 }
 

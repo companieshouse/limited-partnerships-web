@@ -23,7 +23,7 @@ jest.mock("../../../../../infrastructure/repository/CacheRepository");
 const mockSession = CacheRepository as jest.Mock;
 mockSession.mockReturnValue({
   getData: jest.fn().mockImplementation(() => ({
-    limited_partnership: { "registration_which-type": "LP" }
+    limited_partnership: { "registration_partnership-type": "LP" }
   }))
 });
 

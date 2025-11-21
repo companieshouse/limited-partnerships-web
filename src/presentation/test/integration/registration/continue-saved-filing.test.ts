@@ -1,17 +1,11 @@
 import request from "supertest";
 
 import app from "../app";
-import {
-  CONTINUE_SAVED_FILING_URL,
-  WHICH_TYPE_URL
-} from "../../../controller/registration/url";
+import { CONTINUE_SAVED_FILING_URL, PARTNERSHIP_TYPE_URL } from "../../../controller/registration/url";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 import RegistrationPageType from "../../../controller/registration/PageType";
-import {
-  SERVICE_NAME_REGISTRATION,
-  YOUR_FILINGS_URL
-} from "../../../../config/constants";
+import { SERVICE_NAME_REGISTRATION, YOUR_FILINGS_URL } from "../../../../config/constants";
 import { setLocalesEnabled, testTranslations } from "../../utils";
 
 describe("Continue Saved Filing Page", () => {
@@ -41,14 +35,14 @@ describe("Continue Saved Filing Page", () => {
     expect(res.text).toContain(SERVICE_NAME_REGISTRATION);
   });
 
-  it("should redirect to which-type page", async () => {
+  it("should redirect to partnership-type page", async () => {
     const res = await request(app).post(CONTINUE_SAVED_FILING_URL).send({
       pageType: RegistrationPageType.continueSavedFiling,
       continue_saved_filing: "NO"
     });
 
     expect(res.status).toBe(302);
-    expect(res.text).toContain(`Redirecting to ${WHICH_TYPE_URL}`);
+    expect(res.text).toContain(`Redirecting to ${PARTNERSHIP_TYPE_URL}`);
   });
 
   it("should redirect to CHS 'your filings' page", async () => {
