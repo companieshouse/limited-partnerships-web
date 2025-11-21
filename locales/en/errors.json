@@ -8,6 +8,12 @@
             "noComma": "Value must not include a comma",
             "atLeastOneType": "Select at least one type of contribution",
             "currencyRequired": "Select the currency of the capital contribution"
+        },
+
+        "address": {
+            "confirm": {
+                "countryMissing": "We cannot identify the country for this address. Select Change, then select the country."
+            }
         }
     }
 }

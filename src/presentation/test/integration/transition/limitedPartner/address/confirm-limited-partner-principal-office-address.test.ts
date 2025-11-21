@@ -3,6 +3,8 @@ import request from "supertest";
 import app from "../../../app";
 import enTranslationText from "../../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../../locales/cy/translations.json";
+import enErrorMessages from "../../../../../../../locales/en/errors.json";
+import cyErrorMessages from "../../../../../../../locales/cy/errors.json";
 
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import {
@@ -13,7 +15,6 @@ import {
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import LimitedPartnerBuilder from "../../../../builder/LimitedPartnerBuilder";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
-import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
 import { REVIEW_LIMITED_PARTNERS_URL } from "../../../../../controller/transition/url";
 
 describe("Confirm Limited Partner Principal Office Address Page", () => {
@@ -126,29 +127,18 @@ describe("Confirm Limited Partner Principal Office Address Page", () => {
       expect(res.text).toContain("You must provide an address");
     });
 
-    it("should show validation error message if validation error occurs when saving address", async () => {
-      const limitedPartner = new LimitedPartnerBuilder()
-        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isLegalEntity()
-        .build();
-
-      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
-
-      const apiErrors: ApiErrors = {
-        errors: {
-          "usualResidentialAddress.country": "must not be null"
-        }
-      };
-
-      appDevDependencies.limitedPartnerGateway.feedErrors(apiErrors);
-
-      const res = await request(app).post(URL).send({
+    it.each([
+      [ "en", enErrorMessages, ],
+      [ "cy", cyErrorMessages ]
+    ])("should show validation error message if validation error occurs when saving address with lang %s", async (lang: string, errorMessagesJson: any) => {
+      setLocalesEnabled(true);
+      const res = await request(app).post(`${URL}?lang=${lang}`).send({
         pageType: AddressPageType.confirmLimitedPartnerPrincipalOfficeAddress,
         address: `{"postal_code": "ST6 3LJ","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": ""}`
       });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain("must not be null");
+      expect(res.text).toContain(errorMessagesJson.errorMessages.address.confirm.countryMissing);
     });
   });
 });

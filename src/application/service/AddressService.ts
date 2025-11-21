@@ -167,6 +167,15 @@ class AddressService {
     }
   }
 
+  hasCountry(address: Address, uiErrors?: UIErrors | undefined): UIErrors | undefined {
+    if (!address.country) {
+      uiErrors ??= new UIErrors();
+      uiErrors.setWebError("change", this.i18n?.errorMessages?.address?.confirm?.countryMissing);
+    }
+
+    return uiErrors;
+  }
+
   private checkAddressFieldForCharacterLimit(fieldName: string, fieldValue: string): Record<string, string> {
     const fieldNamesWithMaxLength = {
       address_line_1: "addressLine1Length",
