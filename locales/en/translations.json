@@ -724,7 +724,7 @@
     },
 
     "serviceRegistration" : "Register a limited partnership",
-    "serviceTransition" : "Provide information about a limited partnership",
+    "serviceTransition" : "Provide new required information about a limited partnership",
     "servicePostTransition" : "File for a limited partnership",
 
     "sicCodePage" : {
