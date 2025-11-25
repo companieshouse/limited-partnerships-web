@@ -17,7 +17,7 @@ const registrationRoutingGeneralPartnerChoice = {
   previousUrl: url.GENERAL_PARTNERS_URL,
   currentUrl: url.GENERAL_PARTNER_CHOICE_URL,
   nextUrl: "",
-  pageType: RegistrationPageType.generalPartnerChoice
+  pageType: RegistrationPageType.generalPartnerType
 };
 
 const registrationRoutingAddGeneralPartnerPerson = {

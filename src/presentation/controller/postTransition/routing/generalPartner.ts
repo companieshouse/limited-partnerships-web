@@ -12,7 +12,7 @@ const postTransitionRoutingGeneralPartnerChoice = {
   previousUrl: url.LANDING_PAGE_URL,
   currentUrl: url.GENERAL_PARTNER_CHOICE_URL,
   nextUrl: "/",
-  pageType: PostTransitionPageType.generalPartnerChoice
+  pageType: PostTransitionPageType.generalPartnerType
 };
 
 const postTransitionRoutingAddGeneralPartnerLegalEntity = {

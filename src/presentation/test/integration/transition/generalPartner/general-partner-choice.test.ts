@@ -50,7 +50,7 @@ describe("General Partner Choice Page", () => {
 
   it("should redirect to General Partner Person page when person is selected", async () => {
     const res = await request(app).post(URL).send({
-      pageType: TransitionPageType.generalPartnerChoice,
+      pageType: TransitionPageType.generalPartnerType,
       parameter: "person"
     });
 
@@ -60,7 +60,7 @@ describe("General Partner Choice Page", () => {
 
   it("should redirect to General Partner Legal Entity page when legal entity is selected", async () => {
     const res = await request(app).post(URL).send({
-      pageType: TransitionPageType.generalPartnerChoice,
+      pageType: TransitionPageType.generalPartnerType,
       parameter: "legalEntity"
     });
 

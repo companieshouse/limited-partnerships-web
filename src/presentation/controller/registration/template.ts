@@ -9,7 +9,7 @@ export const TERM_TEMPLATE = RegistrationPageType.term;
 export const SIC_TEMPLATE = RegistrationPageType.sic;
 
 export const GENERAL_PARTNERS_TEMPLATE = RegistrationPageType.generalPartners;
-export const GENERAL_PARTNER_CHOICE_TEMPLATE = RegistrationPageType.generalPartnerChoice;
+export const GENERAL_PARTNER_CHOICE_TEMPLATE = RegistrationPageType.generalPartnerType;
 export const ADD_GENERAL_PARTNER_PERSON_TEMPLATE = RegistrationPageType.addGeneralPartnerPerson;
 export const ADD_GENERAL_PARTNER_LEGAL_ENTITY_TEMPLATE = RegistrationPageType.addGeneralPartnerLegalEntity;
 export const REVIEW_GENERAL_PARTNERS_TEMPLATE = RegistrationPageType.reviewGeneralPartners;

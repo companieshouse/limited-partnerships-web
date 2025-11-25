@@ -119,7 +119,7 @@ describe("Add General Partner Legal Entity Page", () => {
 
       expect(res.status).toBe(200);
 
-      const BACK_LINK = `${getUrl(TRANSITION_WITH_IDS_URL)}/${TransitionPageType.generalPartnerChoice}`;
+      const BACK_LINK = `${getUrl(TRANSITION_WITH_IDS_URL)}/${TransitionPageType.generalPartnerType}`;
 
       const regex = new RegExp(BACK_LINK);
       expect(res.text).toMatch(regex);

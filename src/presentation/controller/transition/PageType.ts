@@ -5,7 +5,7 @@ enum TransitionPageType {
   email = "registered-email-address",
 
   generalPartners = "general-partners",
-  generalPartnerChoice = "general-partner-choice",
+  generalPartnerType = "general-partner-type",
   addGeneralPartnerPerson = "add-general-partner-person",
   addGeneralPartnerLegalEntity = "add-general-partner-legal-entity",
   reviewGeneralPartners = "review-general-partners",
