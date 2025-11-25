@@ -324,6 +324,7 @@ class LimitedPartnershipController extends AbstractController {
         }
 
         if (patchResult?.errors) {
+          this.specifyErrorMessagesForDateOfUpdate(patchResult.errors, response, pageRouting);
           return response.render(template, super.makeProps(pageRouting, errorData, patchResult.errors));
         }
 
@@ -333,6 +334,13 @@ class LimitedPartnershipController extends AbstractController {
         next(error);
       }
     };
+  }
+
+  private specifyErrorMessagesForDateOfUpdate(errors: UIErrors, response: Response<any, Record<string, any>>, pageRouting: PageRouting) {
+    if (errors.errors.errorList[0].href === "#date_of_update") {
+      errors.errors.errorList[0].text = response.locals.i18n.errorMessages.dateOfUpdate[pageRouting?.data?.titleKey];
+      errors.errors.date_of_update.text = response.locals.i18n.errorMessages.dateOfUpdate[pageRouting?.data?.titleKey];
+    }
   }
 
   getDateOfUpdate() {

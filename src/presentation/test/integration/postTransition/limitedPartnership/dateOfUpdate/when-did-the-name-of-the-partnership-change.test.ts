@@ -3,10 +3,11 @@ import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/l
 
 import enTranslationText from "../../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../../locales/cy/translations.json";
+import enErrorMessages from "../../../../../../../locales/en/errors.json";
 
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled } from "../../../../utils";
+import { getUrl, setLocalesEnabled, toEscapedHtml } from "../../../../utils";
 import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
 
 import {
@@ -74,14 +75,15 @@ describe("Partnership name change date page", () => {
     });
   });
 
-  it("should replay entered data when invalid date of update is entered and a validation error occurs", async () => {
+  it("should display the specifc error message rather than the original when the date is before the incorporation date", async () => {
     const limitedPartnership = new LimitedPartnershipBuilder().withDateOfUpdate("2024-10-10").build();
 
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-    const errorMessage = "The date is invalid";
+    const originalErrorMessage = "Default";
+    const expectedErrorMessage = toEscapedHtml(enErrorMessages.errorMessages.dateOfUpdate.partnershipName);
     const apiErrors: ApiErrors = {
-      errors: { date_of_update: errorMessage }
+      errors: { date_of_update: originalErrorMessage }
     };
     appDevDependencies.limitedPartnershipGateway.feedErrors(apiErrors);
 
@@ -90,6 +92,7 @@ describe("Partnership name change date page", () => {
     });
 
     expect(res.status).toBe(200);
-    expect(res.text).toContain(errorMessage);
+    expect(res.text).not.toContain(originalErrorMessage);
+    expect(res.text).toContain(expectedErrorMessage);
   });
 });

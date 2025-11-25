@@ -31,7 +31,7 @@
         {{ govukDateInput({
           id: "date_of_update",
           namePrefix: "date_of_update",
-          errorMessage: props.errors.date_of_update if props.errors,
+          errorMessage: props.errors.date_of_update if props.errors.date_of_update,
           fieldset: {
             legend: {
               text: pageTitle,
