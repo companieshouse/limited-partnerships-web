@@ -17,7 +17,10 @@ import {
   ADD_LIMITED_PARTNER_PERSON_URL,
   ADD_LIMITED_PARTNER_PERSON_WITH_IDS_URL
 } from "../../../../controller/postTransition/url";
-import { CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL, TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../controller/addressLookUp/url/postTransition";
+import {
+  CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
+} from "../../../../controller/addressLookUp/url/postTransition";
 import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 import { POST_TRANSITION_WITH_ID_URL } from "../../../../../config/constants";
@@ -94,7 +97,7 @@ describe("Add Limited Partner Person Page", () => {
     it("should contain a back link to the choice page when limited partners are not present", async () => {
       const res = await request(app).get(getUrl(ADD_LIMITED_PARTNER_PERSON_WITH_IDS_URL) + "?lang=en");
 
-      const BACK_LINK = `${getUrl(POST_TRANSITION_WITH_ID_URL)}/${PostTransitionPageType.limitedPartnerChoice}`;
+      const BACK_LINK = `${getUrl(POST_TRANSITION_WITH_ID_URL)}/${PostTransitionPageType.limitedPartnerType}`;
 
       expect(res.status).toBe(200);
       const regex = new RegExp(BACK_LINK);
@@ -138,10 +141,7 @@ describe("Add Limited Partner Person Page", () => {
   });
 
   describe("Post Add Limited Partner", () => {
-    it.each([
-      "true",
-      "false"
-    ])("should send the Limited partner details", async (previousName) => {
+    it.each(["true", "false"])("should send the Limited partner details", async (previousName) => {
       const limitedPartner = new LimitedPartnerBuilder()
         .isPerson()
         .withNotDisqualifiedStatementChecked(true)
@@ -218,29 +218,28 @@ describe("Add Limited Partner Person Page", () => {
       expect(res.text).toContain('<option value="Uzbek" selected>Uzbek</option>');
     });
 
-    it.each([
-      "",
-      "   ",
-      undefined
-    ])("should show error message if previous names is Yes but no previous name entered", async (formerNames: string | undefined) => {
-      const res = await request(app).post(URL).send({
-        pageType: PostTransitionPageType.addLimitedPartnerPerson,
-        forename: "forename",
-        surname: "SURNAME",
-        former_names: formerNames,
-        previousName: "true",
-        "date_of_birth-Day": "01",
-        "date_of_birth-Month": "11",
-        "date_of_birth-Year": "1987",
-        nationality1: "Mongolian",
-        nationality2: "Uzbek",
-        not_disqualified_statement_checked: "true"
-      });
+    it.each(["", "   ", undefined])(
+      "should show error message if previous names is Yes but no previous name entered",
+      async (formerNames: string | undefined) => {
+        const res = await request(app).post(URL).send({
+          pageType: PostTransitionPageType.addLimitedPartnerPerson,
+          forename: "forename",
+          surname: "SURNAME",
+          former_names: formerNames,
+          previousName: "true",
+          "date_of_birth-Day": "01",
+          "date_of_birth-Month": "11",
+          "date_of_birth-Year": "1987",
+          nationality1: "Mongolian",
+          nationality2: "Uzbek",
+          not_disqualified_statement_checked: "true"
+        });
 
-      expect(res.status).toBe(200);
-      expect(res.text).toContain('id="previousNameYes" name="previousName" type="radio" value="true" checked');
-      expect(res.text).toContain("Enter the previous name(s) of the limited partner");
-    });
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('id="previousNameYes" name="previousName" type="radio" value="true" checked');
+        expect(res.text).toContain("Enter the previous name(s) of the limited partner");
+      }
+    );
   });
 
   describe("Patch from Add Limited Partner", () => {

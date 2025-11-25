@@ -50,7 +50,7 @@ describe("Limited Partner Choice Page", () => {
 
   it("should redirect to Limited Partner Person page when person is selected", async () => {
     const res = await request(app).post(URL).send({
-      pageType: TransitionPageType.limitedPartnerChoice,
+      pageType: TransitionPageType.limitedPartnerType,
       parameter: "person"
     });
     expect(res.status).toBe(302);
@@ -59,7 +59,7 @@ describe("Limited Partner Choice Page", () => {
 
   it("should redirect to Limited Partner Legal Entity page when legal entity is selected", async () => {
     const res = await request(app).post(URL).send({
-      pageType: TransitionPageType.limitedPartnerChoice,
+      pageType: TransitionPageType.limitedPartnerType,
       parameter: "legalEntity"
     });
     expect(res.status).toBe(302);

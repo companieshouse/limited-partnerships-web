@@ -76,8 +76,8 @@ describe("Review General Partners Page", () => {
     it.each([
       [PartnershipType.LP, "standard-industrial-classification-code"],
       [PartnershipType.SLP, "standard-industrial-classification-code"],
-      [PartnershipType.PFLP, "confirm-principal-place-of-business-address"],
-      [PartnershipType.SPFLP, "confirm-principal-place-of-business-address"]
+      [PartnershipType.PFLP, "confirm-principal-place-of-business"],
+      [PartnershipType.SPFLP, "confirm-principal-place-of-business"]
     ])(
       "should contain the correct back link based on partnership type",
       async (partnershipType: PartnershipType, backLink: string) => {

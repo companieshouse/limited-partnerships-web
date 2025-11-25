@@ -7,7 +7,7 @@ import {
   WHERE_IS_THE_JURISDICTION_URL,
   NAME_URL,
   CONTINUE_SAVED_FILING_URL,
-  WHICH_TYPE_URL,
+  PARTNERSHIP_TYPE_URL,
   LIMITED_PARTNERS_URL,
   GENERAL_PARTNERS_URL,
   GENERAL_PARTNER_CHOICE_URL,
@@ -21,7 +21,7 @@ import {
   ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
   ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL,
   ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_ID_URL,
-  WHICH_TYPE_WITH_IDS_URL,
+  PARTNERSHIP_TYPE_WITH_IDS_URL,
   SIC_URL,
   REVIEW_GENERAL_PARTNERS_URL,
   REMOVE_GENERAL_PARTNER_URL,
@@ -55,21 +55,21 @@ export const registrationEndpoints = (
   );
 
   router.get(
-    WHICH_TYPE_URL,
+    PARTNERSHIP_TYPE_URL,
     dependencies.limitedPartnershipRegistrationController.getPageRouting()
   );
   router.post(
-    WHICH_TYPE_URL,
+    PARTNERSHIP_TYPE_URL,
     dependencies.limitedPartnershipRegistrationController.redirectAndCacheSelection()
   );
 
   router.get(
-    WHICH_TYPE_WITH_IDS_URL,
+    PARTNERSHIP_TYPE_WITH_IDS_URL,
     dependencies.limitedPartnershipRegistrationController.getPageRouting()
   );
   router.post(
-    WHICH_TYPE_WITH_IDS_URL,
-    dependencies.limitedPartnershipRegistrationController.redirectWhichTypeWithIds()
+    PARTNERSHIP_TYPE_WITH_IDS_URL,
+    dependencies.limitedPartnershipRegistrationController.redirectPartnershipTypeWithIds()
   );
 
   router.get(

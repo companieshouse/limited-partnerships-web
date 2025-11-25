@@ -9,12 +9,12 @@ enum PostTransitionPageType {
   confirmLimitedPartnership = "confirm-limited-partnership",
   landingPage = "landing-page",
 
-  generalPartnerChoice = "general-partner-choice",
+  generalPartnerType = "general-partner-type",
   addGeneralPartnerPerson = "add-general-partner-person",
   addGeneralPartnerLegalEntity = "add-general-partner-legal-entity",
   generalPartnerCheckYourAnswers = "general-partner-check-your-answers",
 
-  limitedPartnerChoice = "limited-partner-choice",
+  limitedPartnerType = "limited-partner-type",
   addLimitedPartnerPerson = "add-limited-partner-person",
   addLimitedPartnerLegalEntity = "add-limited-partner-legal-entity",
   limitedPartnerCheckYourAnswers = "limited-partner-check-your-answers",
@@ -23,17 +23,17 @@ enum PostTransitionPageType {
   whenDidTheRegisteredOfficeAddressChange = `${DATE_OF_UPDATE_TYPE_PREFIX}-the-registered-office-address-change`,
   registeredOfficeAddressChangeCheckYourAnswers = `registered-office-address-${CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX}`,
 
-  partnershipName = "name",
+  partnershipName = "partnership-name",
   whenDidThePartnershipNameChange = `${DATE_OF_UPDATE_TYPE_PREFIX}-the-partnership-name-change`,
   partnershipNameChangeCheckYourAnswers = `partnership-name-${CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX}`,
 
-  term = "term",
+  term = "partnership-term",
   whenDidTheTermChange = `${DATE_OF_UPDATE_TYPE_PREFIX}-the-term-change`,
   termChangeCheckYourAnswers = `term-${CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX}`,
 
-  enterPrincipalPlaceOfBusinessAddress = "enter-principal-place-of-business-address",
-  whenDidThePrincipalPlaceOfBusinessAddressChange = `${DATE_OF_UPDATE_TYPE_PREFIX}-the-principal-place-of-business-address-change`,
-  principalPlaceOfBusinessAddressChangeCheckYourAnswers = `principal-place-of-business-address-${CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX}`,
+  enterPrincipalPlaceOfBusinessAddress = "enter-principal-place-of-business",
+  whenDidThePrincipalPlaceOfBusinessAddressChange = `${DATE_OF_UPDATE_TYPE_PREFIX}-the-principal-place-of-business-change`,
+  principalPlaceOfBusinessAddressChangeCheckYourAnswers = `principal-place-of-business-${CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX}`,
 
   whenDidTheGeneralPartnerPersonCease = `${DATE_OF_UPDATE_TYPE_PREFIX}-the-general-partner-person-cease`,
   removeGeneralPartnerPersonCheckYourAnswers = `general-partner-person-${REMOVE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX}`,
@@ -47,7 +47,7 @@ enum PostTransitionPageType {
   whenDidTheLimitedPartnerLegalEntityCease = `${DATE_OF_UPDATE_TYPE_PREFIX}-the-limited-partner-legal-entity-cease`,
   removeLimitedPartnerLegalEntityCheckYourAnswers = `limited-partner-legal-entity-${REMOVE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX}`,
 
-  redesignateToPflp = "redesignate-to-pflp",
+  redesignateToPflp = "redesignate-to-pflp"
 }
 
 const CeaseDatePageTypes: string[] = [

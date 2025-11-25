@@ -17,8 +17,17 @@ import RegistrationPageType from "../../../controller/registration/PageType";
 import GeneralPartnerBuilder from "../../builder/GeneralPartnerBuilder";
 import LimitedPartnerBuilder from "../../builder/LimitedPartnerBuilder";
 import { formatDate } from "../../../../utils/date-format";
-import { EMAIL_TEMPLATE, NAME_TEMPLATE, TERM_TEMPLATE, WHERE_IS_THE_JURISDICTION_TEMPLATE, WHICH_TYPE_TEMPLATE } from "../../../../presentation/controller/registration/template";
-import { ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_TEMPLATE, ENTER_REGISTERED_OFFICE_ADDRESS_TEMPLATE } from "../../../../presentation/controller/addressLookUp/template";
+import {
+  EMAIL_TEMPLATE,
+  NAME_TEMPLATE,
+  TERM_TEMPLATE,
+  WHERE_IS_THE_JURISDICTION_TEMPLATE,
+  PARTNERSHIP_TYPE_TEMPLATE
+} from "../../../../presentation/controller/registration/template";
+import {
+  ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_TEMPLATE,
+  ENTER_REGISTERED_OFFICE_ADDRESS_TEMPLATE
+} from "../../../../presentation/controller/addressLookUp/template";
 
 describe("Check Your Answers Page", () => {
   const URL = getUrl(CHECK_YOUR_ANSWERS_URL);
@@ -82,7 +91,7 @@ describe("Check Your Answers Page", () => {
 
       //  change links should retain the lang query parameter
       expect(res.text).toContain(`${NAME_TEMPLATE}${langEn}`);
-      expect(res.text).toContain(`${WHICH_TYPE_TEMPLATE}${langEn}`);
+      expect(res.text).toContain(`${PARTNERSHIP_TYPE_TEMPLATE}${langEn}`);
       expect(res.text).toContain(`${EMAIL_TEMPLATE}${langEn}`);
       expect(res.text).toContain(`${WHERE_IS_THE_JURISDICTION_TEMPLATE}${langEn}`);
       expect(res.text).toContain(`${ENTER_REGISTERED_OFFICE_ADDRESS_TEMPLATE}${langEn}`);
@@ -114,7 +123,7 @@ describe("Check Your Answers Page", () => {
 
       //  change links should retain the lang query parameter
       expect(res.text).toContain(`${NAME_TEMPLATE}${langCy}`);
-      expect(res.text).toContain(`${WHICH_TYPE_TEMPLATE}${langCy}`);
+      expect(res.text).toContain(`${PARTNERSHIP_TYPE_TEMPLATE}${langCy}`);
       expect(res.text).toContain(`${EMAIL_TEMPLATE}${langCy}`);
       expect(res.text).toContain(`${WHERE_IS_THE_JURISDICTION_TEMPLATE}${langCy}`);
       expect(res.text).toContain(`${ENTER_REGISTERED_OFFICE_ADDRESS_TEMPLATE}${langCy}`);
@@ -144,12 +153,12 @@ describe("Check Your Answers Page", () => {
       expect(res.text).toContain("4 Line 1, Line 2, Stoke-On-Trent, Region, England, ST6 3LJ");
       expect(res.text).toContain("enter-registered-office-address#premises");
       expect(res.text).toContain("2 Line 3, Line 4, Burton-On-Trent, Regionpp, England, DE6 3LJ");
-      expect(res.text).toContain("enter-principal-place-of-business-address#premises");
+      expect(res.text).toContain("enter-principal-place-of-business#premises");
       expect(res.text).toContain("Such term as decided by the partners within the partnership agreement");
       expect(res.text).toContain("12345,67890");
       expect(res.text).toContain("name#partnership_name");
-      expect(res.text).toContain("email#email");
-      expect(res.text).toContain("where-is-the-jurisdiction#jurisdiction");
+      expect(res.text).toContain("registered-email-address#email");
+      expect(res.text).toContain("jurisdiction#jurisdiction");
       expect(res.text).toContain("term#term");
       expect(res.text).toContain("standard-industrial-classification-code#sic1");
     });
@@ -169,9 +178,9 @@ describe("Check Your Answers Page", () => {
         expect(res.status).toBe(200);
 
         if (changeLinkExpected) {
-          expect(res.text).toContain("where-is-the-jurisdiction#jurisdiction");
+          expect(res.text).toContain("jurisdiction#jurisdiction");
         } else {
-          expect(res.text).not.toContain("where-is-the-jurisdiction#jurisdiction");
+          expect(res.text).not.toContain("jurisdiction#jurisdiction");
         }
       }
     );
@@ -279,7 +288,7 @@ describe("Check Your Answers Page", () => {
 
     expect(res.status).toBe(200);
 
-    expect(res.text).toContain("which-type");
+    expect(res.text).toContain("partnership-type");
     expect(res.text).toContain(text);
   });
 

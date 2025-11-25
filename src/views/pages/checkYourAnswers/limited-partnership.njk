@@ -25,7 +25,7 @@
         items: [
           CREATE_CHANGE_LINK(
             i18n.checkYourAnswersPage.change,
-            (props.currentUrl | replace(checkYourAnswers, "name") ~ "#partnership_name"),
+            (props.currentUrl | replace(checkYourAnswers, "partnership-name") ~ "#partnership_name"),
             partnershipNameChangeText,
             "change-partnership-name-button"
           )
@@ -43,7 +43,7 @@
         items: [
           CREATE_CHANGE_LINK(
             i18n.checkYourAnswersPage.change,
-            props.currentUrl | replace(checkYourAnswers, "which-type"),
+            props.currentUrl | replace(checkYourAnswers, "partnership-type"),
             partnershipNameChangeText,
             "change-partnership-type-button"
           )
@@ -61,7 +61,7 @@
         items: [
           CREATE_CHANGE_LINK(
             i18n.checkYourAnswersPage.change,
-            (props.currentUrl | replace(checkYourAnswers, "email") ~ "#email"),
+            (props.currentUrl | replace(checkYourAnswers, "registered-email-address") ~ "#email"),
             partnershipNameChangeText,
             "change-email-button"
           )
@@ -79,7 +79,7 @@
         items: [
           CREATE_CHANGE_LINK(
             i18n.checkYourAnswersPage.change,
-            (props.currentUrl | replace(checkYourAnswers, "where-is-the-jurisdiction") ~ "#jurisdiction"),
+            (props.currentUrl | replace(checkYourAnswers, "jurisdiction") ~ "#jurisdiction"),
             partnershipNameChangeText,
             "change-jurisdiction-button"
           )
@@ -116,9 +116,9 @@
         items: [
           CREATE_CHANGE_LINK(
             i18n.checkYourAnswersPage.change,
-            (props.currentUrl | replace(checkYourAnswers, "enter-principal-place-of-business-address") ~ "#premises"),
+            (props.currentUrl | replace(checkYourAnswers, "enter-principal-place-of-business") ~ "#premises"),
             partnershipPrincipalPlaceOfBusinessAddressText,
-            "change-principal-place-of-business-address-button"
+            "change-principal-place-of-business-button"
           )
         ]
       }
@@ -134,7 +134,7 @@
         items: [
           CREATE_CHANGE_LINK(
             i18n.checkYourAnswersPage.change,
-            (props.currentUrl | replace(checkYourAnswers, "term") ~ "#term"),
+            (props.currentUrl | replace(checkYourAnswers, "partnership-term") ~ "#term"),
             partnershipNameChangeText,
             "change-term-button"
           )

@@ -27,7 +27,7 @@ import {
   GENERAL_PARTNERS_URL,
   NAME_WITH_IDS_URL,
   REVIEW_GENERAL_PARTNERS_URL,
-  WHICH_TYPE_WITH_IDS_URL
+  PARTNERSHIP_TYPE_WITH_IDS_URL
 } from "./url";
 import { CONFIRM_REGISTERED_OFFICE_ADDRESS_URL } from "../addressLookUp/url/registration";
 import { PAYMENT_RESPONSE_URL } from "../global/url";
@@ -126,10 +126,10 @@ class LimitedPartnershipController extends PartnershipController {
 
     if (previousPageType === RegistrationPageType.checkYourAnswers) {
       pageRouting.previousUrl = super.insertIdsInUrl(CHECK_YOUR_ANSWERS_URL, ids, request.url);
-    } else if (pageRouting.pageType === RegistrationPageType.name) {
+    } else if (pageRouting.pageType === RegistrationPageType.partnershipName) {
       // change back link if we have ids in url
       if (ids.transactionId && ids.submissionId) {
-        pageRouting.previousUrl = super.insertIdsInUrl(WHICH_TYPE_WITH_IDS_URL, ids, request.url);
+        pageRouting.previousUrl = super.insertIdsInUrl(PARTNERSHIP_TYPE_WITH_IDS_URL, ids, request.url);
       }
     }
   }
@@ -164,7 +164,7 @@ class LimitedPartnershipController extends PartnershipController {
 
         const cacheUpdated = this.cacheService.removeDataFromCache(
           request.signedCookies,
-          `${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`
+          `${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.partnershipType}`
         );
         response.cookie(APPLICATION_CACHE_KEY, cacheUpdated, cookieOptions);
 
@@ -224,7 +224,7 @@ class LimitedPartnershipController extends PartnershipController {
     };
   }
 
-  redirectWhichTypeWithIds() {
+  redirectPartnershipTypeWithIds() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const { tokens, ids } = super.extract(request);

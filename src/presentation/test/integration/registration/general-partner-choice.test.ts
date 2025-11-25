@@ -43,12 +43,11 @@ describe("General Partner Choice Page", () => {
       `${enTranslationText.generalPartnerChoicePage.title} - ${enTranslationText.serviceRegistration} - GOV.UK`
     );
     testTranslations(res.text, enTranslationText.generalPartnerChoicePage);
-
   });
 
   it("should redirect to General Partner Person page when person is selected", async () => {
     const res = await request(app).post(URL).send({
-      pageType: RegistrationPageType.generalPartnerChoice,
+      pageType: RegistrationPageType.generalPartnerType,
       parameter: "person"
     });
 
@@ -58,7 +57,7 @@ describe("General Partner Choice Page", () => {
 
   it("should redirect to General Partner Legal Entity page when legal entity is selected", async () => {
     const res = await request(app).post(URL).send({
-      pageType: RegistrationPageType.generalPartnerChoice,
+      pageType: RegistrationPageType.generalPartnerType,
       parameter: "legalEntity"
     });
 
@@ -69,9 +68,7 @@ describe("General Partner Choice Page", () => {
   it("should contain the proposed name - data from api", async () => {
     const limitedPartnership = new LimitedPartnershipBuilder().build();
 
-    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
-      limitedPartnership
-    ]);
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
     const res = await request(app).get(URL);
 

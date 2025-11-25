@@ -16,7 +16,7 @@ const registrationRoutingLimitedPartnerChoice = {
   previousUrl: url.LIMITED_PARTNERS_URL,
   currentUrl: url.LIMITED_PARTNER_CHOICE_URL,
   nextUrl: "",
-  pageType: RegistrationPageType.limitedPartnerChoice
+  pageType: RegistrationPageType.limitedPartnerType
 };
 
 const registrationRoutingAddLimitedPartnerPerson = {

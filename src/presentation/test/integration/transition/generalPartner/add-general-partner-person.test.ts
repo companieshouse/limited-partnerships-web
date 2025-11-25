@@ -118,7 +118,7 @@ describe("Add General Partner Person Page", () => {
 
       expect(res.status).toBe(200);
 
-      const BACK_LINK = `${getUrl(TRANSITION_WITH_IDS_URL)}/${TransitionPageType.generalPartnerChoice}`;
+      const BACK_LINK = `${getUrl(TRANSITION_WITH_IDS_URL)}/${TransitionPageType.generalPartnerType}`;
 
       const regex = new RegExp(BACK_LINK);
       expect(res.text).toMatch(regex);
@@ -127,8 +127,8 @@ describe("Add General Partner Person Page", () => {
 
   describe("Post Add General Partner", () => {
     it.each([
-      [ "true", "john" ],
-      [ "false", "" ]
+      ["true", "john"],
+      ["false", ""]
     ])("should send the general partner details", async (previousName, formerNames) => {
       const res = await request(app).post(URL).send({
         pageType: TransitionPageType.addGeneralPartnerPerson,
@@ -193,29 +193,28 @@ describe("Add General Partner Person Page", () => {
       expect(res.text).toContain('<option value="Uzbek" selected>Uzbek</option>');
     });
 
-    it.each([
-      "",
-      "   ",
-      undefined
-    ])("should show error message if previous names is Yes but no previous name entered", async (formerNames: string | undefined) => {
-      const res = await request(app).post(URL).send({
-        pageType: TransitionPageType.addGeneralPartnerPerson,
-        forename: "forename",
-        surname: "SURNAME",
-        former_names: formerNames,
-        previousName: "true",
-        "date_of_birth-Day": "01",
-        "date_of_birth-Month": "11",
-        "date_of_birth-Year": "1987",
-        nationality1: "Mongolian",
-        nationality2: "Uzbek",
-        not_disqualified_statement_checked: "true"
-      });
+    it.each(["", "   ", undefined])(
+      "should show error message if previous names is Yes but no previous name entered",
+      async (formerNames: string | undefined) => {
+        const res = await request(app).post(URL).send({
+          pageType: TransitionPageType.addGeneralPartnerPerson,
+          forename: "forename",
+          surname: "SURNAME",
+          former_names: formerNames,
+          previousName: "true",
+          "date_of_birth-Day": "01",
+          "date_of_birth-Month": "11",
+          "date_of_birth-Year": "1987",
+          nationality1: "Mongolian",
+          nationality2: "Uzbek",
+          not_disqualified_statement_checked: "true"
+        });
 
-      expect(res.status).toBe(200);
-      expect(res.text).toContain('id="previousNameYes" name="previousName" type="radio" value="true" checked');
-      expect(res.text).toContain("Enter the previous name(s) of the general partner");
-    });
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('id="previousNameYes" name="previousName" type="radio" value="true" checked');
+        expect(res.text).toContain("Enter the previous name(s) of the general partner");
+      }
+    );
   });
 
   describe("Patch from Add General Partner", () => {

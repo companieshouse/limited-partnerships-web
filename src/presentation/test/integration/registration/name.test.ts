@@ -33,13 +33,15 @@ describe("Name Page", () => {
       setLocalesEnabled(true);
 
       appDevDependencies.cacheRepository.feedCache({
-        [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]: PartnershipType.LP
+        [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.partnershipType}`]: PartnershipType.LP
       });
 
       const res = await request(app).get(NAME_URL + "?lang=cy");
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(`${cyTranslationText.namePage.title} - ${cyTranslationText.serviceRegistration} - GOV.UK`);
+      expect(res.text).toContain(
+        `${cyTranslationText.namePage.title} - ${cyTranslationText.serviceRegistration} - GOV.UK`
+      );
       testTranslations(res.text, cyTranslationText.namePage, ["privateFund", "scottish"]);
       expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
     });
@@ -48,13 +50,15 @@ describe("Name Page", () => {
       setLocalesEnabled(true);
 
       appDevDependencies.cacheRepository.feedCache({
-        [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]: PartnershipType.LP
+        [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.partnershipType}`]: PartnershipType.LP
       });
 
       const res = await request(app).get(NAME_URL + "?lang=en");
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(`${enTranslationText.namePage.title} - ${enTranslationText.serviceRegistration} - GOV.UK`);
+      expect(res.text).toContain(
+        `${enTranslationText.namePage.title} - ${enTranslationText.serviceRegistration} - GOV.UK`
+      );
       testTranslations(res.text, enTranslationText.namePage, ["privateFund", "scottish"]);
       expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
       expect(res.text).not.toContain("WELSH -");
@@ -81,7 +85,7 @@ describe("Name Page", () => {
       setLocalesEnabled(true);
 
       appDevDependencies.cacheRepository.feedCache({
-        [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]: PartnershipType.PFLP
+        [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.partnershipType}`]: PartnershipType.PFLP
       });
 
       const res = await request(app).get(NAME_URL + "?lang=cy");
@@ -98,7 +102,7 @@ describe("Name Page", () => {
       setLocalesEnabled(true);
 
       appDevDependencies.cacheRepository.feedCache({
-        [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]: PartnershipType.PFLP
+        [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.partnershipType}`]: PartnershipType.PFLP
       });
 
       const res = await request(app).get(NAME_URL + "?lang=en");
@@ -116,7 +120,7 @@ describe("Name Page", () => {
       setLocalesEnabled(true);
 
       appDevDependencies.cacheRepository.feedCache({
-        [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]: PartnershipType.SLP
+        [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.partnershipType}`]: PartnershipType.SLP
       });
 
       const res = await request(app).get(NAME_URL + "?lang=cy");
@@ -133,7 +137,7 @@ describe("Name Page", () => {
       setLocalesEnabled(true);
 
       appDevDependencies.cacheRepository.feedCache({
-        [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]: PartnershipType.SLP
+        [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.partnershipType}`]: PartnershipType.SLP
       });
 
       const res = await request(app).get(NAME_URL + "?lang=en");
@@ -151,7 +155,7 @@ describe("Name Page", () => {
       setLocalesEnabled(true);
 
       appDevDependencies.cacheRepository.feedCache({
-        [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]: PartnershipType.SPFLP
+        [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.partnershipType}`]: PartnershipType.SPFLP
       });
 
       const res = await request(app).get(NAME_URL + "?lang=cy");
@@ -166,7 +170,7 @@ describe("Name Page", () => {
       setLocalesEnabled(true);
 
       appDevDependencies.cacheRepository.feedCache({
-        [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]: PartnershipType.SPFLP
+        [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.partnershipType}`]: PartnershipType.SPFLP
       });
 
       const res = await request(app).get(NAME_URL + "?lang=en");
@@ -187,13 +191,13 @@ describe("Name Page", () => {
       const res = await request(app).get(URL);
 
       expect(res.status).toBe(200);
-      const regex = new RegExp(`${REGISTRATION_BASE_URL}/transaction/.*?/submission/.*?/which-type`);
+      const regex = new RegExp(`${REGISTRATION_BASE_URL}/transaction/.*?/submission/.*?/partnership-type`);
       expect(res.text).toMatch(regex);
     });
 
     it("should load the name page with status 200", async () => {
       appDevDependencies.cacheRepository.feedCache({
-        [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]: PartnershipType.LP
+        [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.partnershipType}`]: PartnershipType.LP
       });
 
       const res = await request(app).get(NAME_URL);
@@ -204,16 +208,15 @@ describe("Name Page", () => {
   });
 
   describe("Post Name Page", () => {
-
     it("should create a transaction and the first submission", async () => {
       appDevDependencies.cacheRepository.feedCache({
-        [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.whichType}`]: PartnershipType.LP
+        [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${RegistrationPageType.partnershipType}`]: PartnershipType.LP
       });
 
       expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships.length).toEqual(0);
 
       const res = await request(app).post(NAME_URL).send({
-        pageType: RegistrationPageType.name,
+        pageType: RegistrationPageType.partnershipName,
         partnership_name: "Test Limited Partnership",
         name_ending: NameEndingType.LIMITED_PARTNERSHIP,
         partnership_type: PartnershipType.LP
@@ -243,7 +246,7 @@ describe("Name Page", () => {
       const URL = getUrl(NAME_WITH_IDS_URL);
 
       const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.name,
+        pageType: RegistrationPageType.partnershipName,
         partnership_name: "Test Limited Partnership",
         name_ending: NameEndingType.LIMITED_PARTNERSHIP,
         partnership_type: PartnershipType.LP
@@ -256,7 +259,7 @@ describe("Name Page", () => {
 
     it("should return validation errors", async () => {
       const res = await request(app).post(NAME_URL).send({
-        pageType: RegistrationPageType.name
+        pageType: RegistrationPageType.partnershipName
       });
 
       expect(res.status).toBe(200);

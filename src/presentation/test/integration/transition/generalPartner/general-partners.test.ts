@@ -11,6 +11,7 @@ import { TRANSITION_WITH_IDS_URL } from "../../../../../config/constants";
 import { GENERAL_PARTNERS_URL, REVIEW_GENERAL_PARTNERS_URL } from "../../../../controller/transition/url";
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
 import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
+import TransitionPageType from "../../../../controller/transition/PageType";
 
 describe("General Partners Page", () => {
   const URL = getUrl(GENERAL_PARTNERS_URL);
@@ -73,7 +74,7 @@ describe("General Partners Page", () => {
 
     expect(res.status).toBe(200);
 
-    const BACK_LINK = `${getUrl(TRANSITION_WITH_IDS_URL)}/general-partner-choice`;
+    const BACK_LINK = `${getUrl(TRANSITION_WITH_IDS_URL)}/${TransitionPageType.generalPartnerType}`;
 
     const regex = new RegExp(`${BACK_LINK}`);
     expect(res.text).toMatch(regex);

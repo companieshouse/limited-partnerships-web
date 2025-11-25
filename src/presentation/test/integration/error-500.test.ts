@@ -9,7 +9,7 @@ jest.spyOn(LimitedPartnershipController.prototype, "getPageRouting").mockImpleme
 
 import request from "supertest";
 import app from "./app";
-import { WHICH_TYPE_URL } from "presentation/controller/registration/url";
+import { PARTNERSHIP_TYPE_URL } from "presentation/controller/registration/url";
 import enTranslationText from "../../../../locales/en/translations.json";
 
 describe("Error 500", () => {
@@ -18,7 +18,7 @@ describe("Error 500", () => {
   });
 
   it("should render the 'error-page' page", async () => {
-    const response = await request(app).get(WHICH_TYPE_URL);
+    const response = await request(app).get(PARTNERSHIP_TYPE_URL);
 
     expect(response.status).toEqual(500);
     expect(response.text).toContain(enTranslationText.errorPage.sorryMessage);

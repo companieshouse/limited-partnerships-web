@@ -1,7 +1,7 @@
 import request from "supertest";
 
 import app from "./app";
-import { WHICH_TYPE_URL } from "presentation/controller/registration/url";
+import { PARTNERSHIP_TYPE_URL } from "presentation/controller/registration/url";
 import enTranslationText from "../../../../locales/en/translations.json";
 
 describe("Error pages", () => {
@@ -10,7 +10,7 @@ describe("Error pages", () => {
   });
 
   it("should render the 'page-not-found' page", async () => {
-    const response = await request(app).get(WHICH_TYPE_URL + "wrong-url");
+    const response = await request(app).get(PARTNERSHIP_TYPE_URL + "wrong-url");
 
     expect(response.status).toEqual(404);
     expect(response.text).toContain(enTranslationText.pageNotFound.title);

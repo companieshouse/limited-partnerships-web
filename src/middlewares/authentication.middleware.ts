@@ -2,14 +2,14 @@ import { Request, Response, NextFunction } from "express";
 
 import { logger, checkUserSignedIn, getLoggedInUserEmail } from "../utils";
 import { SIGN_OUT_URL } from "../presentation/controller/global/url";
-import { WHICH_TYPE_URL } from "../presentation/controller/registration/url";
+import { PARTNERSHIP_TYPE_URL } from "../presentation/controller/registration/url";
 
 export const authentication = (req: Request, res: Response, next: NextFunction): void => {
   try {
     if (!checkUserSignedIn(req.session)) {
       logger.infoRequest(req, "User not authenticated, redirecting to sign in page, status_code=302");
 
-      const returnToUrl = req.originalUrl === SIGN_OUT_URL ? WHICH_TYPE_URL : req.originalUrl;
+      const returnToUrl = req.originalUrl === SIGN_OUT_URL ? PARTNERSHIP_TYPE_URL : req.originalUrl;
 
       return res.redirect(`/signin?return_to=${returnToUrl}`);
     }

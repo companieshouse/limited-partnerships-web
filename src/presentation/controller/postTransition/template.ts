@@ -5,13 +5,13 @@ export const CONFIRM_LIMITED_PARTNERSHIP_TEMPLATE = PostTransitionPageType.confi
 export const LANDING_PAGE_TEMPLATE = PostTransitionPageType.landingPage;
 
 // general partner
-export const GENERAL_PARTNER_CHOICE_TEMPLATE = PostTransitionPageType.generalPartnerChoice;
+export const GENERAL_PARTNER_CHOICE_TEMPLATE = PostTransitionPageType.generalPartnerType;
 export const ADD_GENERAL_PARTNER_PERSON_TEMPLATE = PostTransitionPageType.addGeneralPartnerPerson;
 export const ADD_GENERAL_PARTNER_LEGAL_ENTITY_TEMPLATE = PostTransitionPageType.addGeneralPartnerLegalEntity;
 export const GENERAL_PARTNER_CHECK_YOUR_ANSWERS_TEMPLATE = PostTransitionPageType.generalPartnerCheckYourAnswers;
 
 // limited partner
-export const LIMITED_PARTNER_CHOICE_TEMPLATE = PostTransitionPageType.limitedPartnerChoice;
+export const LIMITED_PARTNER_CHOICE_TEMPLATE = PostTransitionPageType.limitedPartnerType;
 export const ADD_LIMITED_PARTNER_PERSON_TEMPLATE = PostTransitionPageType.addLimitedPartnerPerson;
 export const ADD_LIMITED_PARTNER_LEGAL_ENTITY_TEMPLATE = PostTransitionPageType.addLimitedPartnerLegalEntity;
 export const LIMITED_PARTNER_CHECK_YOUR_ANSWERS_TEMPLATE = PostTransitionPageType.limitedPartnerCheckYourAnswers;
@@ -45,9 +45,9 @@ export const REMOVE_GENERAL_PARTNER_PERSON_CHECK_YOUR_ANSWERS_TEMPLATE =
   PostTransitionPageType.removeGeneralPartnerPersonCheckYourAnswers;
 
 export const WHEN_DID_THE_GENERAL_PARTNER_LEGAL_ENTITY_CEASE_TEMPLATE =
-PostTransitionPageType.whenDidTheGeneralPartnerLegalEntityCease;
+  PostTransitionPageType.whenDidTheGeneralPartnerLegalEntityCease;
 export const REMOVE_GENERAL_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_TEMPLATE =
-PostTransitionPageType.removeGeneralPartnerLegalEntityCheckYourAnswers;
+  PostTransitionPageType.removeGeneralPartnerLegalEntityCheckYourAnswers;
 
 export const WHEN_DID_THE_LIMITED_PARTNER_PERSON_CEASE_TEMPLATE =
   PostTransitionPageType.whenDidTheLimitedPartnerPersonCease;

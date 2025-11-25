@@ -1,7 +1,7 @@
 import { expect, jest, test } from "@jest/globals";
 import request from "supertest";
 import app from "./app";
-import { WHICH_TYPE_URL } from "../../controller/registration/url";
+import { PARTNERSHIP_TYPE_URL } from "../../controller/registration/url";
 import * as configConstants from "../../../config/constants";
 import enTranslationText from "../../../../locales/en/translations.json";
 import { HEALTHCHECK_URL } from "../../controller/global/url";
@@ -20,7 +20,7 @@ describe("Service Availability tests", () => {
   test("shows the servce unavailable page when service unavailable flag is true", async () => {
     setServiceUnavailable(true);
 
-    const resp = await request(app).get(WHICH_TYPE_URL);
+    const resp = await request(app).get(PARTNERSHIP_TYPE_URL);
 
     expect(resp.text).toContain(SERVICE_UNAVAILABLE_TEXT);
   });
@@ -28,9 +28,9 @@ describe("Service Availability tests", () => {
   test("does not show the servce unavailable page when service unavailable flag is false", async () => {
     setServiceUnavailable(false);
 
-    const resp = await request(app).get(WHICH_TYPE_URL);
+    const resp = await request(app).get(PARTNERSHIP_TYPE_URL);
 
-    expect(resp.text).toContain(enTranslationText.whichTypePage.title);
+    expect(resp.text).toContain(enTranslationText.partnershipTypePage.title);
   });
 
   test("allows the healthcheck to run when service unavailable flag is true", async () => {

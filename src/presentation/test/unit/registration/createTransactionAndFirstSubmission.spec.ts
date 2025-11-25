@@ -27,7 +27,7 @@ describe("Create transaction and the first submission", () => {
 
       const result = await appDevDependencies.limitedPartnershipService.createTransactionAndFirstSubmission(
         { access_token: "access_token", refresh_token: "refresh_token" },
-        RegistrationPageType.name,
+        RegistrationPageType.partnershipName,
         journeyTypes,
         {
           partnership_name: limitedPartnership.data?.partnership_name,
@@ -55,7 +55,7 @@ describe("Create transaction and the first submission", () => {
 
       const result = await appDevDependencies.limitedPartnershipService.createTransactionAndFirstSubmission(
         { access_token: "access_token", refresh_token: "refresh_token" },
-        RegistrationPageType.name,
+        RegistrationPageType.partnershipName,
         journeyTypes,
         {
           partnership_name: "Test Limited Partnership",

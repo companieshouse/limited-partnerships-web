@@ -141,7 +141,7 @@ abstract class PartnerController extends AbstractController {
     };
   }
 
-  partnerChoice(urls: { addPersonUrl: string; addLegalEntityUrl: string }) {
+  partnerType(urls: { addPersonUrl: string; addLegalEntityUrl: string }) {
     return (request: Request, response: Response, next: NextFunction) => {
       try {
         const { ids } = this.extractRequestData(request);

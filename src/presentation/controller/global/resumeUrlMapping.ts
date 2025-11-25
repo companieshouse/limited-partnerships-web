@@ -1,6 +1,6 @@
 import { TransactionKind } from "../../../domain/entities/TransactionTypes";
 import { Journey } from "../../../domain/entities/journey";
-import { WHICH_TYPE_WITH_IDS_URL } from "../registration/url";
+import { PARTNERSHIP_TYPE_WITH_IDS_URL } from "../registration/url";
 import { EMAIL_URL } from "../transition/url";
 import { PartnerKind, PartnershipKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 import {
@@ -17,7 +17,7 @@ import {
 export const RESUME_REGISTRATION_OR_TRANSITION_URL_MAP: Record<string, { journey: string; resumeUrl: string }> = {
   [TransactionKind.registration]: {
     journey: Journey.registration,
-    resumeUrl: WHICH_TYPE_WITH_IDS_URL
+    resumeUrl: PARTNERSHIP_TYPE_WITH_IDS_URL
   },
   [TransactionKind.transition]: {
     journey: Journey.transition,

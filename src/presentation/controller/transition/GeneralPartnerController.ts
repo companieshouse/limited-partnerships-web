@@ -34,7 +34,7 @@ class GeneralPartnerTransitionController extends PartnerController {
   }
 
   generalPartnerChoice() {
-    return super.partnerChoice({
+    return super.partnerType({
       addPersonUrl: ADD_GENERAL_PARTNER_PERSON_URL,
       addLegalEntityUrl: ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL
     });
