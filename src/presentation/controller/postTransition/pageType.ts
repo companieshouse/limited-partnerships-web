@@ -14,7 +14,7 @@ enum PostTransitionPageType {
   addGeneralPartnerLegalEntity = "add-general-partner-legal-entity",
   generalPartnerCheckYourAnswers = "general-partner-check-your-answers",
 
-  limitedPartnerChoice = "limited-partner-choice",
+  limitedPartnerType = "limited-partner-type",
   addLimitedPartnerPerson = "add-limited-partner-person",
   addLimitedPartnerLegalEntity = "add-limited-partner-legal-entity",
   limitedPartnerCheckYourAnswers = "limited-partner-check-your-answers",

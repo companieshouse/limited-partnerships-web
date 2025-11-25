@@ -16,7 +16,7 @@ export const REVIEW_GENERAL_PARTNERS_TEMPLATE = RegistrationPageType.reviewGener
 export const REMOVE_GENERAL_PARTNER_TEMPLATE = RegistrationPageType.removeGeneralPartner;
 
 export const LIMITED_PARTNERS_TEMPLATE = RegistrationPageType.limitedPartners;
-export const LIMITED_PARTNER_CHOICE_TEMPLATE = RegistrationPageType.limitedPartnerChoice;
+export const LIMITED_PARTNER_CHOICE_TEMPLATE = RegistrationPageType.limitedPartnerType;
 export const ADD_LIMITED_PARTNER_PERSON_TEMPLATE = RegistrationPageType.addLimitedPartnerPerson;
 export const ADD_LIMITED_PARTNER_LEGAL_ENTITY_TEMPLATE = RegistrationPageType.addLimitedPartnerLegalEntity;
 export const REVIEW_LIMITED_PARTNERS_TEMPLATE = RegistrationPageType.reviewLimitedPartners;

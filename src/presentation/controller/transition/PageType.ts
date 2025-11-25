@@ -12,7 +12,7 @@ enum TransitionPageType {
   removeGeneralPartner = "remove-general-partner",
 
   limitedPartners = "limited-partners",
-  limitedPartnerChoice = "limited-partner-choice",
+  limitedPartnerType = "limited-partner-type",
   addLimitedPartnerPerson = "add-limited-partner-person",
   addLimitedPartnerLegalEntity = "add-limited-partner-legal-entity",
   reviewLimitedPartners = "review-limited-partners",

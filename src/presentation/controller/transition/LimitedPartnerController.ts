@@ -33,7 +33,7 @@ class LimitedPartnerTransitionController extends PartnerController {
   }
 
   limitedPartnerChoice() {
-    return super.partnerChoice({
+    return super.partnerType({
       addPersonUrl: ADD_LIMITED_PARTNER_PERSON_URL,
       addLegalEntityUrl: ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL
     });

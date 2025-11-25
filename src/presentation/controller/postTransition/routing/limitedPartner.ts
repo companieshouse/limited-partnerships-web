@@ -12,7 +12,7 @@ const postTransitionRoutingLimitedPartnerChoice = {
   previousUrl: url.LANDING_PAGE_URL,
   currentUrl: url.LIMITED_PARTNER_CHOICE_URL,
   nextUrl: "/",
-  pageType: PostTransitionPageType.limitedPartnerChoice
+  pageType: PostTransitionPageType.limitedPartnerType
 };
 
 const postTransitionRoutingAddLimitedPartnerPerson = {

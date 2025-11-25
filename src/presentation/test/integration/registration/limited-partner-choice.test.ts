@@ -47,7 +47,7 @@ describe("Limited Partner Choice Page", () => {
 
   it("should redirect to Limited Partner Person page when person is selected", async () => {
     const res = await request(app).post(URL).send({
-      pageType: RegistrationPageType.limitedPartnerChoice,
+      pageType: RegistrationPageType.limitedPartnerType,
       parameter: "person"
     });
     expect(res.status).toBe(302);
@@ -56,7 +56,7 @@ describe("Limited Partner Choice Page", () => {
 
   it("should redirect to Limited Partner Legal Entity page when legal entity is selected", async () => {
     const res = await request(app).post(URL).send({
-      pageType: RegistrationPageType.limitedPartnerChoice,
+      pageType: RegistrationPageType.limitedPartnerType,
       parameter: "legalEntity"
     });
     expect(res.status).toBe(302);
@@ -66,9 +66,7 @@ describe("Limited Partner Choice Page", () => {
   it("should contain the proposed name - data from api", async () => {
     const limitedPartnership = new LimitedPartnershipBuilder().build();
 
-    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([
-      limitedPartnership
-    ]);
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
     const res = await request(app).get(URL);
 

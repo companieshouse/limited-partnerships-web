@@ -11,7 +11,7 @@ export const ADD_GENERAL_PARTNER_LEGAL_ENTITY_TEMPLATE = PostTransitionPageType.
 export const GENERAL_PARTNER_CHECK_YOUR_ANSWERS_TEMPLATE = PostTransitionPageType.generalPartnerCheckYourAnswers;
 
 // limited partner
-export const LIMITED_PARTNER_CHOICE_TEMPLATE = PostTransitionPageType.limitedPartnerChoice;
+export const LIMITED_PARTNER_CHOICE_TEMPLATE = PostTransitionPageType.limitedPartnerType;
 export const ADD_LIMITED_PARTNER_PERSON_TEMPLATE = PostTransitionPageType.addLimitedPartnerPerson;
 export const ADD_LIMITED_PARTNER_LEGAL_ENTITY_TEMPLATE = PostTransitionPageType.addLimitedPartnerLegalEntity;
 export const LIMITED_PARTNER_CHECK_YOUR_ANSWERS_TEMPLATE = PostTransitionPageType.limitedPartnerCheckYourAnswers;

@@ -15,7 +15,7 @@ export const REMOVE_GENERAL_PARTNER_TEMPLATE = TransitionPageType.removeGeneralP
 
 // limited partner
 export const LIMITED_PARTNERS_TEMPLATE = TransitionPageType.limitedPartners;
-export const LIMITED_PARTNER_CHOICE_TEMPLATE = TransitionPageType.limitedPartnerChoice;
+export const LIMITED_PARTNER_CHOICE_TEMPLATE = TransitionPageType.limitedPartnerType;
 export const ADD_LIMITED_PARTNER_PERSON_TEMPLATE = TransitionPageType.addLimitedPartnerPerson;
 export const ADD_LIMITED_PARTNER_LEGAL_ENTITY_TEMPLATE = TransitionPageType.addLimitedPartnerLegalEntity;
 export const REVIEW_LIMITED_PARTNERS_TEMPLATE = TransitionPageType.reviewLimitedPartners;

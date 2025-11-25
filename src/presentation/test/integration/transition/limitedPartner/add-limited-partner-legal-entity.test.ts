@@ -122,7 +122,7 @@ describe("Add Limited Partner Legal Entity Page", () => {
 
       expect(res.status).toBe(200);
 
-      const BACK_LINK = `${getUrl(TRANSITION_WITH_IDS_URL)}/${TransitionPageType.limitedPartnerChoice}`;
+      const BACK_LINK = `${getUrl(TRANSITION_WITH_IDS_URL)}/${TransitionPageType.limitedPartnerType}`;
       const regex = new RegExp(BACK_LINK);
       expect(res.text).toMatch(regex);
     });
