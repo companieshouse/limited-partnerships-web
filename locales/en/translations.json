@@ -224,7 +224,6 @@
                 "localityLength": "Town or city must be 50 characters or less",
                 "regionLength": "County, state, province or region must be 50 characters or less",
                 "postcodeMissing": "Enter a postcode",
-                "postcodeLength": "Postcode must be 15 characters or less",
                 "postcodeFormat": "Invalid postcode format",
                 "countryMissing": "Select a country",
                 "jurisdictionCountry": "You must enter a country that matches your jurisdiction",
