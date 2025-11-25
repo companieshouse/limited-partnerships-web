@@ -65,7 +65,7 @@ describe("Partnership term change date page", () => {
     });
   });
 
-  it("should display the specifc message rather than the original when the date is before the incorporation date", async () => {
+  it("should display the specifc error message rather than the original when the date is before the incorporation date", async () => {
     const limitedPartnership = new LimitedPartnershipBuilder().withDateOfUpdate("2024-10-10").build();
 
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
