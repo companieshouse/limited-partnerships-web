@@ -1,7 +1,7 @@
 import { PartnerKind, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 
-import request, { Response } from "supertest";
+import request from "supertest";
 
 import enTranslationText from "../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../locales/cy/translations.json";
@@ -42,28 +42,23 @@ describe("Add Limited Partner Legal Entity Page", () => {
 
   describe("Get Add Limited Partner Legal Entity Page", () => {
 
-    const expectEnglishCapitalContributionText = (res: Response) => expect(res.text).toContain(enTranslationText.capitalContribution.title);
-    const expectNoEnglishCapitalContributionText = (res: Response) => expect(res.text).not.toContain(enTranslationText.capitalContribution.title);
-    const expectWelshCapitalContributionText = (res: Response) => expect(res.text).toContain(cyTranslationText.capitalContribution.title);
-    const expectNoWelshCapitalContributionText = (res: Response) => expect(res.text).not.toContain(cyTranslationText.capitalContribution.title);
-
     it.each(
       [
-        [PartnershipType.LP, "en", enTranslationText, expectEnglishCapitalContributionText],
-        [PartnershipType.SLP, "en", enTranslationText, expectEnglishCapitalContributionText],
-        [PartnershipType.PFLP, "en", enTranslationText, expectNoEnglishCapitalContributionText],
-        [PartnershipType.SPFLP, "en", enTranslationText, expectNoEnglishCapitalContributionText],
-        [PartnershipType.LP, "cy", cyTranslationText, expectWelshCapitalContributionText],
-        [PartnershipType.SLP, "cy", cyTranslationText, expectWelshCapitalContributionText],
-        [PartnershipType.PFLP, "cy", cyTranslationText, expectNoWelshCapitalContributionText],
-        [PartnershipType.SPFLP, "cy", cyTranslationText, expectNoWelshCapitalContributionText]
+        [PartnershipType.LP, "en", enTranslationText, true],
+        [PartnershipType.SLP, "en", enTranslationText, true],
+        [PartnershipType.PFLP, "en", enTranslationText, false],
+        [PartnershipType.SPFLP, "en", enTranslationText, false],
+        [PartnershipType.LP, "cy", cyTranslationText, true],
+        [PartnershipType.SLP, "cy", cyTranslationText, true],
+        [PartnershipType.PFLP, "cy", cyTranslationText, false],
+        [PartnershipType.SPFLP, "cy", cyTranslationText, false]
       ]
     )("should load the add limited partner legal entity page for partnership type %s and language %s",
       async (
         partnershipType: PartnershipType,
         lang: string,
         i18n: any,
-        capitalContributionAssertion: (res: Response) => void
+        expectCapitalContributionText: boolean
       ) => {
         companyProfile.data.subtype = partnershipType;
 
@@ -75,7 +70,12 @@ describe("Add Limited Partner Legal Entity Page", () => {
           `${i18n.addPartnerLegalEntityPage.limitedPartner.title}`
         );
         testTranslations(res.text, i18n.addPartnerLegalEntityPage, ["errorMessages", "generalPartner"]);
-        capitalContributionAssertion(res);
+
+        if (expectCapitalContributionText) {
+          expect(res.text).toContain(i18n.capitalContribution.title);
+        } else {
+          expect(res.text).not.toContain(i18n.capitalContribution.title);
+        }
 
         if (lang !== "cy") {
           expect(res.text).not.toContain("WELSH -");
