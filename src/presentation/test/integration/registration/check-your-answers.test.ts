@@ -305,6 +305,9 @@ describe("Check Your Answers Page", () => {
     checkIfValuesInText(res, limitedPartnerPerson, enTranslationText);
 
     checkIfValuesInText(res, limitedPartnerLegalEntity, enTranslationText);
+
+    expect(res.text).toContain(enTranslationText.nationalities.british);
+    expect(res.text).toContain(enTranslationText.countries.unitedStates);
   });
 
   it("should load the check your answers page with partners - CY", async () => {
@@ -330,6 +333,9 @@ describe("Check Your Answers Page", () => {
     checkIfValuesInText(res, limitedPartnerPerson, cyTranslationText);
 
     checkIfValuesInText(res, limitedPartnerLegalEntity, cyTranslationText);
+
+    expect(res.text).toContain(cyTranslationText.nationalities.british);
+    expect(res.text).toContain(cyTranslationText.countries.unitedStates);
   });
 
   it("should load the check your answers page with capital contribution data for limited partner person", async () => {

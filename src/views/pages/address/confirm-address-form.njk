@@ -18,6 +18,7 @@
     <h1 class="govuk-heading-xl">{{ pageTitle }}</h1>
 
     {% if address %}
+        {% set country = i18n.countries[macros.makeCamelCase(address.country)] %}
         <p class="govuk-body-m">
         {{ macros.capitalizeEachWord(addressFirstLineForDisplay) }}
         <br>
@@ -35,7 +36,7 @@
             {{ address.postal_code | upper }}
             <br>
         {% endif %}
-        {{ address.country }}
+        {{ country }}
             <br>
         </p>
         <p class="govuk-body-m">

@@ -1,4 +1,4 @@
-{% macro formatAddress(address, isIncludingCountry) %}
+{% macro formatAddress(address, isIncludingCountry, i18n) %}
   {% set premises = '' %}
   {% set address_line_1 = '' %}
   {% set address_line_2 = '' %}
@@ -27,7 +27,7 @@
   {% endif %}
 
   {% if address.country and isIncludingCountry %} 
-    {% set country = capitalizeEachWord(address.country) %}
+    {% set country = i18n.countries[makeCamelCase(address.country)] %}
   {% endif %}
 
   {# Format the address by combining the available fields, can't use string concatenation as it escapes chars eg. apostrophe #}
@@ -73,10 +73,26 @@
   {%- endif -%}
 {%- endmacro -%}
 
-{%- macro formatNationality(str) -%}
+{%- macro formatNationality(str, i18n) -%}
+  {%- set localeStr = i18n.nationalities[makeCamelCase(str)] -%}
   {%- set exceptions = ['of', 'the', 'and', 'citizen'] -%}
-  {%- set words = str.split(' ') -%}
+  {%- set words = localeStr.split(' ') -%}
   {%- set result = [] -%}
+
+  {%- if words[0] === "WELSH" -%}
+    {%- set result = result.concat(words[0]) -%}
+    {%- set result = result.concat(words[1]) -%}
+    {%- set  subset = [] -%}
+    {%- set index = 0 %}
+    {%- for word in words -%}
+      {%- if index > 1 -%}
+        {% set subset = (subset.push(word), subset) %}
+      {%- endif -%}
+      {%- set index = index + 1 %}
+    {%- endfor -%}
+    {%- set words = subset %}
+  {%- endif -%}
+  
   {%- for word in words -%}
     {%- if word.startsWith('(') and word.endsWith(')') -%}
       {%- set result = result.concat(formatBracketed(word)) -%}
@@ -108,3 +124,20 @@
 
   {{ term }}
 {% endmacro %}
+
+{%- macro makeCamelCase(str) -%}
+  {%- set str = str.replace("-", " ") -%}    
+  {%- set words = str.split(' ') -%}
+  {%- set result = [] -%}
+  {%- for word in words -%}
+    {%- if word.startsWith('(') and word.endsWith(')') -%}
+      {%- set word = word.slice(1, -1) -%}
+    {%- endif -%}
+    {%- if loop.first -%}
+      {%- set result = result.concat(word.toLowerCase()) -%}
+    {%- else -%}
+      {%- set result = result.concat(capitalizeWord(word.toLowerCase())) -%} 
+    {%- endif -%}
+  {%- endfor -%}
+  {{- result.join('') -}}
+{%- endmacro -%}

@@ -89,6 +89,11 @@ abstract class AbstractPartnerBuilder {
     this.data.nationality2 = nationality2;
     return this;
   }
+
+  withLegalEntityRegistrationLocation(country: string) {
+    this.data.legal_entity_registration_location = country
+    return this;
+  }
 }
 
 export default AbstractPartnerBuilder;

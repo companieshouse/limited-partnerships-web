@@ -159,6 +159,9 @@ describe("Check Your Answers Page", () => {
       checkIfValuesInText(res, limitedPartnerPerson, enTranslationText);
 
       checkIfValuesInText(res, limitedPartnerLegalEntity, enTranslationText);
+
+      expect(res.text).toContain(enTranslationText.nationalities.british);
+      expect(res.text).toContain(enTranslationText.countries.unitedStates);
     });
 
     it("should load the check your answers page with partners - CY", async () => {
@@ -177,6 +180,9 @@ describe("Check Your Answers Page", () => {
       checkIfValuesInText(res, limitedPartnerPerson, cyTranslationText);
 
       checkIfValuesInText(res, limitedPartnerLegalEntity, cyTranslationText);
+
+      expect(res.text).toContain(cyTranslationText.nationalities.british);
+      expect(res.text).toContain(cyTranslationText.countries.unitedStates);
     });
   });
 
@@ -197,7 +203,6 @@ const checkIfValuesInText = (res: request.Response, partner: GeneralPartner | Li
     if (typeof partner.data[key] === "string" || typeof partner.data[key] === "object") {
       if (key === "nationality1") {
         const capitalized = partner.data[key].charAt(0).toUpperCase() + partner.data[key].slice(1).toLowerCase();
-
         expect(res.text).toContain(capitalized);
       } else if (key.includes("date_of_birth") && partner.data[key]) {
         expect(res.text).toContain(formatDate(partner.data[key], translationText));

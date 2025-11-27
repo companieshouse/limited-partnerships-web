@@ -25,7 +25,11 @@ describe("Limited Partner Check Your Answers Page", () => {
     const companyProfile = new CompanyProfileBuilder().build();
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
-    limitedPartnerLegalEntity = new LimitedPartnerBuilder().isLegalEntity().withDateEffectiveFrom("2024-10-10").build();
+    limitedPartnerLegalEntity = new LimitedPartnerBuilder()
+    .isLegalEntity()
+    .withDateEffectiveFrom("2024-10-10")
+    .withLegalEntityRegistrationLocation("Wales")
+    .build();
     appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerLegalEntity]);
   });
 
@@ -38,6 +42,7 @@ describe("Limited Partner Check Your Answers Page", () => {
     expect(res.text).toContain(enTranslationText.checkYourAnswersPage.update.title);
     expect(res.text).toContain(enTranslationText.print.buttonText);
     expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
+    expect(res.text).toContain(enTranslationText.countries.wales);
     expect(res.text).not.toContain("WELSH -");
   });
 
@@ -50,6 +55,7 @@ describe("Limited Partner Check Your Answers Page", () => {
     expect(res.text).toContain(cyTranslationText.checkYourAnswersPage.update.title);
     expect(res.text).toContain(cyTranslationText.print.buttonText);
     expect(res.text).toContain(cyTranslationText.print.buttonTextNoJs);
+    expect(res.text).toContain(cyTranslationText.countries.wales);
     expect(res.text).toContain("WELSH -");
   });
 
