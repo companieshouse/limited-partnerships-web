@@ -26,11 +26,12 @@ describe("Limited Partner Check Your Answers Page for Person", () => {
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
     limitedPartnerPerson = new LimitedPartnerBuilder()
-    .isPerson()
-    .withFormerNames("Joe Dee")
-    .withDateEffectiveFrom("2024-10-10")
-    .withNationality1("Welsh")
-    .build();
+      .isPerson()
+      .withFormerNames("Joe Dee")
+      .withDateEffectiveFrom("2024-10-10")
+      .withNationality1("Welsh")
+      .build();
+
     appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerPerson]);
   });
 
@@ -57,7 +58,7 @@ describe("Limited Partner Check Your Answers Page for Person", () => {
     expect(res.text).toContain(cyTranslationText.checkYourAnswersPage.update.title);
     expect(res.text).toContain(cyTranslationText.print.buttonText);
     expect(res.text).toContain(cyTranslationText.print.buttonTextNoJs);
-     expect(res.text).toContain(cyTranslationText.nationalities.welsh);
+    expect(res.text).toContain(cyTranslationText.nationalities.welsh);
     testTranslations(res.text, cyTranslationText.checkYourAnswersPage.warningMessage);
     expect(res.text).toContain("WELSH -");
   });

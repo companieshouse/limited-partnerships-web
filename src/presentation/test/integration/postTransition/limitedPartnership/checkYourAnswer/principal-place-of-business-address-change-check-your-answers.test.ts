@@ -40,7 +40,7 @@ describe("Principal place of business address check your answers page", () => {
       //  change links should retain the lang query parameter
       expect(res.text).toContain(`${ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_TEMPLATE}?lang=en`);
       expect(res.text).toContain(`${WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_TEMPLATE}?lang=en`);
-    
+
       expect(res.text).toContain(enTranslationText.countries.england);
     });
 
@@ -57,7 +57,7 @@ describe("Principal place of business address check your answers page", () => {
       //  change links should retain the lang query parameter
       expect(res.text).toContain(`${ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_TEMPLATE}?lang=cy`);
       expect(res.text).toContain(`${WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_TEMPLATE}?lang=cy`);
-    
+
       expect(res.text).toContain(cyTranslationText.countries.england);
     });
   });

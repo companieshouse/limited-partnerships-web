@@ -26,10 +26,10 @@ describe("Check Your Answers Page", () => {
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
     generalPartnerLegalEntity = new GeneralPartnerBuilder()
-    .isLegalEntity()
-    .withDateEffectiveFrom("2024-10-10")
-    .withLegalEntityRegistrationLocation("Wales")
-    .build();
+      .isLegalEntity()
+      .withDateEffectiveFrom("2024-10-10")
+      .withLegalEntityRegistrationLocation("Wales")
+      .build();
     appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartnerLegalEntity]);
   });
 

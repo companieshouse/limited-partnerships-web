@@ -26,10 +26,11 @@ describe("Limited Partner Check Your Answers Page", () => {
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
     limitedPartnerLegalEntity = new LimitedPartnerBuilder()
-    .isLegalEntity()
-    .withDateEffectiveFrom("2024-10-10")
-    .withLegalEntityRegistrationLocation("Wales")
-    .build();
+      .isLegalEntity()
+      .withDateEffectiveFrom("2024-10-10")
+      .withLegalEntityRegistrationLocation("Wales")
+      .build();
+
     appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerLegalEntity]);
   });
 

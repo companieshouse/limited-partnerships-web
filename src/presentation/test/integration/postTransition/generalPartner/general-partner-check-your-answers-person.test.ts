@@ -26,11 +26,11 @@ describe("General Partner Check Your Answers Page", () => {
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
     generalPartnerPerson = new GeneralPartnerBuilder()
-    .isPerson()
-    .withFormerNames("Joe Dee")
-    .withDateEffectiveFrom("2024-10-10")
-    .withNationality1("Welsh")
-    .build();
+      .isPerson()
+      .withFormerNames("Joe Dee")
+      .withDateEffectiveFrom("2024-10-10")
+      .withNationality1("Welsh")
+      .build();
     appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartnerPerson]);
   });
 
@@ -47,7 +47,7 @@ describe("General Partner Check Your Answers Page", () => {
     expect(res.text).not.toContain("WELSH -");
   });
 
-  it("should GET Check Your Answers Page Welsh text for person", async () => {
+  it("should GET Check Your Answers Page Welsh text", async () => {
     setLocalesEnabled(true);
     const res = await request(app).get(URL + "?lang=cy");
 
