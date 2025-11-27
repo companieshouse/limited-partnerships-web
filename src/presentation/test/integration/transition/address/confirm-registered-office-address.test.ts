@@ -51,7 +51,7 @@ describe("Confirm Registered Office Address Page", () => {
       expect(res.text).toContain("Line 2");
       expect(res.text).toContain("Stoke-On-Trent");
       expect(res.text).toContain("Region");
-      expect(res.text).toContain("England");
+      expect(res.text).toContain(enTranslationText.countries.england);
       expect(res.text).toContain("ST6 3LJ");
     });
 
@@ -124,6 +124,7 @@ describe("Confirm Registered Office Address Page", () => {
 
       expect(res.status).toBe(200);
       testTranslations(res.text, cyTranslationText.address.confirm.registeredOfficeAddress);
+      expect(res.text).toContain(cyTranslationText.countries.england);
     });
   });
 

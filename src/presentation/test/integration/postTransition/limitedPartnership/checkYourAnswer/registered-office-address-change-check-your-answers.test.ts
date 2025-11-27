@@ -47,6 +47,8 @@ describe("Registered office address check your answers page", () => {
       //  change links should retain the lang query parameter
       expect(res.text).toContain(`${ENTER_REGISTERED_OFFICE_ADDRESSS_TEMPLATE}?lang=en`);
       expect(res.text).toContain(`${WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_TEMPLATE}?lang=en`);
+
+      expect(res.text).toContain(enTranslationText.countries.england);
     });
 
     it("should load registered office address check your answers page with welsh text", async () => {
@@ -62,6 +64,8 @@ describe("Registered office address check your answers page", () => {
       //  change links should retain the lang query parameter
       expect(res.text).toContain(`${ENTER_REGISTERED_OFFICE_ADDRESSS_TEMPLATE}?lang=cy`);
       expect(res.text).toContain(`${WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_TEMPLATE}?lang=cy`);
+
+      expect(res.text).toContain(cyTranslationText.countries.england);
     });
   });
 

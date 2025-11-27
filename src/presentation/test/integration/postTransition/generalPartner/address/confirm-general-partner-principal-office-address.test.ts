@@ -60,7 +60,7 @@ describe("Confirm General Partner Principal Office Address Page", () => {
       expect(res.text).toContain("Line 2");
       expect(res.text).toContain("Stoke-On-Trent");
       expect(res.text).toContain("Region");
-      expect(res.text).toContain("England");
+      expect(res.text).toContain(enTranslationText.countries.england);
       expect(res.text).toContain("ST6 3LJ");
     });
 
@@ -76,7 +76,7 @@ describe("Confirm General Partner Principal Office Address Page", () => {
       expect(res.text).toContain("Line 2");
       expect(res.text).toContain("Stoke-On-Trent");
       expect(res.text).toContain("Region");
-      expect(res.text).toContain("England");
+      expect(res.text).toContain(cyTranslationText.countries.england);
       expect(res.text).toContain("ST6 3LJ");
     });
 

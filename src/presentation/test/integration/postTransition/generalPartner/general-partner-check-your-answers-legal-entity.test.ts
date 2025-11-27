@@ -25,7 +25,11 @@ describe("Check Your Answers Page", () => {
     companyProfile = new CompanyProfileBuilder().build();
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
-    generalPartnerLegalEntity = new GeneralPartnerBuilder().isLegalEntity().withDateEffectiveFrom("2024-10-10").build();
+    generalPartnerLegalEntity = new GeneralPartnerBuilder()
+      .isLegalEntity()
+      .withDateEffectiveFrom("2024-10-10")
+      .withLegalEntityRegistrationLocation("Wales")
+      .build();
     appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartnerLegalEntity]);
   });
 
@@ -39,6 +43,7 @@ describe("Check Your Answers Page", () => {
       testTranslations(res.text, enTranslationText.checkYourAnswersPage.warningMessage);
       expect(res.text).toContain(enTranslationText.print.buttonText);
       expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
+      expect(res.text).toContain(enTranslationText.countries.wales);
       expect(res.text).not.toContain("WELSH -");
     });
 
@@ -51,6 +56,7 @@ describe("Check Your Answers Page", () => {
       testTranslations(res.text, cyTranslationText.checkYourAnswersPage.warningMessage);
       expect(res.text).toContain(cyTranslationText.print.buttonText);
       expect(res.text).toContain(cyTranslationText.print.buttonTextNoJs);
+      expect(res.text).toContain(cyTranslationText.countries.wales);
       expect(res.text).toContain("WELSH -");
     });
 

@@ -25,7 +25,13 @@ describe("Limited Partner Check Your Answers Page for Person", () => {
     const companyProfile = new CompanyProfileBuilder().build();
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
-    limitedPartnerPerson = new LimitedPartnerBuilder().isPerson().withFormerNames("Joe Dee").withDateEffectiveFrom("2024-10-10").build();
+    limitedPartnerPerson = new LimitedPartnerBuilder()
+      .isPerson()
+      .withFormerNames("Joe Dee")
+      .withDateEffectiveFrom("2024-10-10")
+      .withNationality1("Welsh")
+      .build();
+
     appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerPerson]);
   });
 
@@ -38,6 +44,7 @@ describe("Limited Partner Check Your Answers Page for Person", () => {
     expect(res.text).toContain(enTranslationText.checkYourAnswersPage.update.title);
     expect(res.text).toContain(enTranslationText.print.buttonText);
     expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
+    expect(res.text).toContain(enTranslationText.nationalities.welsh);
     testTranslations(res.text, enTranslationText.checkYourAnswersPage.warningMessage);
     expect(res.text).not.toContain("WELSH -");
   });
@@ -51,6 +58,7 @@ describe("Limited Partner Check Your Answers Page for Person", () => {
     expect(res.text).toContain(cyTranslationText.checkYourAnswersPage.update.title);
     expect(res.text).toContain(cyTranslationText.print.buttonText);
     expect(res.text).toContain(cyTranslationText.print.buttonTextNoJs);
+    expect(res.text).toContain(cyTranslationText.nationalities.welsh);
     testTranslations(res.text, cyTranslationText.checkYourAnswersPage.warningMessage);
     expect(res.text).toContain("WELSH -");
   });

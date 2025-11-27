@@ -1,7 +1,7 @@
 {% if item.data.forename %}
-  {% set nationalities = macros.formatNationality(item.data.nationality1) %}
+  {% set nationalities = macros.formatNationality(item.data.nationality1, i18n) %}
   {% if item.data.nationality2 %}
-    {% set nationalities = macros.formatNationality(item.data.nationality1) + ", " + macros.formatNationality(item.data.nationality2) %}
+    {% set nationalities = macros.formatNationality(item.data.nationality1, i18n) + ", " + macros.formatNationality(item.data.nationality2, i18n) %}
   {% endif %}
 
   {{ govukSummaryList({
@@ -44,7 +44,7 @@
           text: i18n.checkYourAnswersPage.partners.person.usualResidentialAddress
         },
         value: {
-          text: macros.formatAddress(item.data.usual_residential_address, true)
+          text: macros.formatAddress(item.data.usual_residential_address, true, i18n)
         }
       },
       {
@@ -52,7 +52,7 @@
           text: i18n.checkYourAnswersPage.partners.person.correspondenceAddress
         },
         value: {
-          text: macros.formatAddress(item.data.service_address, true)
+          text: macros.formatAddress(item.data.service_address, true, i18n)
         }
       },
       {
@@ -66,6 +66,7 @@
     ]
   }) }}
 {% elif item.data.legal_entity_name %}
+  {% set country = i18n.countries[macros.makeCamelCase(item.data.legal_entity_registration_location)] %}
   {{ govukSummaryList({
     classes: "govuk-!-margin-bottom-7",
       rows: [
@@ -106,7 +107,7 @@
             text: i18n.checkYourAnswersPage.partners.legalEntity.countryRegisteredIn
           },
           value: {
-            text: item.data.legal_entity_registration_location
+            text: country
           }
         },
         {
@@ -122,7 +123,7 @@
             text: i18n.checkYourAnswersPage.partners.legalEntity.principalOfficeAddress
           },
           value: {
-            text: macros.formatAddress(item.data.principal_office_address, true)
+            text: macros.formatAddress(item.data.principal_office_address, true, i18n)
           }
         },
         {
