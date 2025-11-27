@@ -80,14 +80,14 @@
   {%- set result = [] -%}
 
   {# Temporary while waiting for welsh translations - need to handle 'WELSH -' keyword #}
-  {%- if words[0] === "WELSH" -%}
-    {%- set result = result.concat(words[0]) -%}
-    {%- set result = result.concat(words[1]) -%}
+  {%- if words[0] === "WELSH" -%}    
     {%- set  subset = [] -%}
     {%- set index = 0 %}
     {%- for word in words -%}
       {%- if index > 1 -%}
         {% set subset = (subset.push(word), subset) %}
+      {%- else -%}
+        {%- set result = result.concat(word) -%}   
       {%- endif -%}
       {%- set index = index + 1 %}
     {%- endfor -%}
