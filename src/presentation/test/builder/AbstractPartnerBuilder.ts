@@ -90,8 +90,8 @@ abstract class AbstractPartnerBuilder {
     return this;
   }
 
-  withLegalEntityRegistrationLocation(country: string) {
-    this.data.legal_entity_registration_location = country;
+  withLegalEntityRegistrationLocation(legalEntityRegistrationLocation: string) {
+    this.data.legal_entity_registration_location = legalEntityRegistrationLocation;
     return this;
   }
 }
