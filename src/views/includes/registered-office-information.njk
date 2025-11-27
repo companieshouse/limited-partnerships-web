@@ -1,0 +1,23 @@
+{% if journeyTypes.isTransition %}
+    <p class="govuk-body-m">{{ i18n.address.registeredOffice.newRequirement }}</p>
+{% endif %}
+
+<p class="govuk-body-m">{{ i18n.address.registeredOffice.officialCommunication }}</p>
+
+{{ govukWarningText({
+    text: i18n.address.registeredOffice.appropriateAddressWarning
+}) }}
+
+{{ govukDetails({
+  summaryText: i18n.address.registeredOffice.appropriateAddressDetailsSummary,
+  html: '<p>' + i18n.address.registeredOffice.appropriateAddressDetailsLine1 + '</p>'
+        + '<ul>'
+            + '<li>' + i18n.address.registeredOffice.appropriateAddressDetailsPoint1 | escape + '</li>'
+            + '<li>' + i18n.address.registeredOffice.appropriateAddressDetailsPoint2 | escape + '</li>'
+            + '<li>' + i18n.address.registeredOffice.appropriateAddressDetailsPoint3 | escape + '</li>'
+        + '</ul>'
+}) }}
+
+{% if journeyTypes.isRegistration %}
+    <p class="govuk-body-m">{{ i18n.address.registeredOffice.provideNext }}</p>
+{% endif %}

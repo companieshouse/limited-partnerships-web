@@ -48,9 +48,9 @@ describe("Postcode Registered Office Address Page", () => {
         "usualResidentialAddress",
         "principalOfficeAddress",
         "correspondenceAddress",
-        "errorMessages",
-        "provideNext"
+        "errorMessages"
       ]);
+      testTranslations(res.text, enTranslationText.address.registeredOffice, ["provideNext"]);
       expect(res.text).not.toContain("WELSH -");
     });
 
@@ -68,9 +68,9 @@ describe("Postcode Registered Office Address Page", () => {
         "usualResidentialAddress",
         "principalOfficeAddress",
         "correspondenceAddress",
-        "errorMessages",
-        "provideNext"
+        "errorMessages"
       ]);
+      testTranslations(res.text, cyTranslationText.address.registeredOffice, ["provideNext"]);
     });
   });
 
