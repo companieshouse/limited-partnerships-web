@@ -181,7 +181,8 @@ class AddressService {
       address_line_1: "addressLine1Length",
       address_line_2: "addressLine2Length",
       locality: "localityLength",
-      region: "regionLength"
+      region: "regionLength",
+      postal_code: "postalCodeLength"
     };
 
     if (fieldName === "premises") {
@@ -281,7 +282,7 @@ class AddressService {
     country: string,
     uiErrors: UIErrors | undefined
   ): UIErrors | undefined {
-    if (AddressService.UK_COUNTRIES.has(country) ) {
+    if (AddressService.UK_COUNTRIES.has(country)) {
       const isValid =
         (jurisdiction === Jurisdiction.SCOTLAND && country === "Scotland") ||
         (jurisdiction === Jurisdiction.NORTHERN_IRELAND && country === "Northern Ireland") ||
