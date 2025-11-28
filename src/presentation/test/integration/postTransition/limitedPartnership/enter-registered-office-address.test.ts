@@ -45,6 +45,7 @@ describe("Enter Registered Office Address Page", () => {
         "principalOfficeAddress",
         "errorMessages"
       ]);
+
       testTranslations(res.text, enTranslationText.address.registeredOffice, ["newRequirement", "provideNext"]);
       expect(res.text).not.toContain("WELSH -");
     });
