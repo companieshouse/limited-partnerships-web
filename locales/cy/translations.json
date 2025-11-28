@@ -152,10 +152,6 @@
         "enterAddress": {
             "registeredOfficeAddress" : {
                 "title": "WELSH - What is the registered office address of the partnership?",
-                "newRequirement": "WELSH - This is a new requirement. We do not hold a registered office address for the limited partnership yet. It may be different from the principal place of business address that we already hold.",
-                "titleHint1": "WELSH - We'll use this address to send official communications.",
-                "titleHint2": "WELSH - It must be a physical address in the jurisdiction where the partnership was formed. You cannot use a PO Box address.",
-                "titleHint3": "WELSH - You'll need to provide the principal place of business next.",
                 "publicInformationLine1": "WELSH - We'll show the registered office address on the public register."
             },
             "principalPlaceOfBusinessAddress" : {
@@ -234,10 +230,6 @@
         "findPostcode": {
             "registeredOfficeAddress": {
                 "whatIsOfficeAddress": "WELSH - What is the registered office address of the partnership?",
-                "newRequirement": "WELSH - This is a new requirement. We do not hold a registered office address for the limited partnership yet. It may be different from the principal place of business address that we already hold.",
-                "officialCommunication": "WELSH - We'll use this address to send official communications.",
-                "physicalAddress": "WELSH - It must be a physical address in the jurisdiction where the partnership was formed. You cannot use a PO Box address.",
-                "provideNext": "WELSH - You'll need to provide the principal place of business next.",
                 "publicRegisterLine1": "WELSH - We'll show the registered office address on the public register."
             },
 
@@ -288,6 +280,18 @@
                 "jurisdictionScotland": "WELSH - You must enter a postcode which is in Scotland",
                 "notMainland": "WELSH - Enter a UK mainland postcode"
             }
+        },
+
+         "registeredOffice": {
+            "appropriateAddressDetailsLine1": "WELSH - This means that:",
+            "appropriateAddressDetailsPoint1": "WELSH - it is in the jurisdiction where the limited partnership is registered (England and Wales, Northern Ireland, or Scotland)",
+            "appropriateAddressDetailsPoint2": "WELSH - someone acting on behalf of the limited partnership will be made aware of any post addressed and delivered to the limited partnership",
+            "appropriateAddressDetailsPoint3": "WELSH - when the limited partnership receives post at this address, it's possible for the sender to get confirmation of delivery",
+            "appropriateAddressDetailsSummary": "WELSH - What does 'appropriate' address mean?",
+            "appropriateAddressWarning": "WELSH - The address must meet the requirements of an 'appropriate' address. If it does not, the partnership could be struck off the Companies House register.",
+            "newRequirement": "WELSH - This is a new requirement. We do not hold a registered office address for the partnership yet. It may be different from the principal place of business address that we already hold.",
+            "officialCommunication": "WELSH - We'll use this address to send official communications. It must be a physical address in the UK. You cannot use a PO Box address.",            
+            "provideNext": "WELSH - You'll need to provide the principal place of business next."
         },
 
         "territoryChoice": {

@@ -35,9 +35,9 @@ describe("Enter Registered Office Address Page", () => {
         "correspondenceAddress",
         "principalPlaceOfBusinessAddress",
         "principalOfficeAddress",
-        "errorMessages",
-        "newRequirement"
+        "errorMessages"
       ]);
+      testTranslations(res.text, enTranslationText.address.registeredOffice, ["newRequirement"]);
       expect(res.text).not.toContain("WELSH -");
     });
 
@@ -53,9 +53,9 @@ describe("Enter Registered Office Address Page", () => {
         "correspondenceAddress",
         "principalPlaceOfBusinessAddress",
         "principalOfficeAddress",
-        "errorMessages",
-        "newRequirement"
+        "errorMessages"
       ]);
+      testTranslations(res.text, cyTranslationText.address.registeredOffice, ["newRequirement"]);
     });
   });
 

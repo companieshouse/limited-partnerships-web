@@ -154,10 +154,6 @@
         "enterAddress": {
             "registeredOfficeAddress" : {
                 "title": "What is the registered office address of the partnership?",
-                "newRequirement": "This is a new requirement. We do not hold a registered office address for the limited partnership yet. It may be different from the principal place of business address that we already hold.",
-                "titleHint1": "We'll use this address to send official communications.",
-                "titleHint2": "It must be a physical address in the jurisdiction where the partnership was formed. You cannot use a PO Box address.",
-                "titleHint3": "You'll need to provide the principal place of business next.",
                 "publicInformationLine1": "We'll show the registered office address on the public register."
             },
             "principalPlaceOfBusinessAddress" : {
@@ -235,10 +231,6 @@
         "findPostcode": {
             "registeredOfficeAddress": {
                 "whatIsOfficeAddress": "What is the registered office address of the partnership?",
-                "newRequirement": "This is a new requirement. We do not hold a registered office address for the limited partnership yet. It may be different from the principal place of business address that we already hold.",
-                "officialCommunication": "We'll use this address to send official communications.",
-                "physicalAddress": "It must be a physical address in the jurisdiction where the partnership was formed. You cannot use a PO Box address.",
-                "provideNext": "You'll need to provide the principal place of business next.",
                 "publicRegisterLine1": "We'll show the registered office address on the public register."
             },
 
@@ -289,6 +281,18 @@
                 "jurisdictionScotland": "You must enter a postcode which is in Scotland",
                 "notMainland": "Enter a UK mainland postcode"
             }
+        },
+
+        "registeredOffice": {
+            "appropriateAddressDetailsLine1": "This means that:",
+            "appropriateAddressDetailsPoint1": "it is in the jurisdiction where the limited partnership is registered (England and Wales, Northern Ireland, or Scotland)",
+            "appropriateAddressDetailsPoint2": "someone acting on behalf of the limited partnership will be made aware of any post addressed and delivered to the limited partnership",
+            "appropriateAddressDetailsPoint3": "when the limited partnership receives post at this address, it's possible for the sender to get confirmation of delivery",
+            "appropriateAddressDetailsSummary": "What does 'appropriate' address mean?",
+            "appropriateAddressWarning": "The address must meet the requirements of an 'appropriate' address. If it does not, the partnership could be struck off the Companies House register.",
+            "newRequirement": "This is a new requirement. We do not hold a registered office address for the partnership yet. It may be different from the principal place of business address that we already hold.",
+            "officialCommunication": "We'll use this address to send official communications. It must be a physical address in the UK. You cannot use a PO Box address.",            
+            "provideNext": "You'll need to provide the principal place of business next."
         },
 
         "territoryChoice": {
