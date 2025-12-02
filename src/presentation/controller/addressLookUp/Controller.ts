@@ -294,20 +294,18 @@ class AddressLookUpController extends AbstractController {
         let result;
         if (uiErrors?.hasErrors()) {
           result = { errors: uiErrors };
+        } else if (isGeneralPartnerAddress) {
+          result = await this.generalPartnerService.sendPageData(tokens, ids.transactionId, ids.generalPartnerId, data);
+        } else if (isLimitedPartnerAddress) {
+          result = await this.limitedPartnerService.sendPageData(tokens, ids.transactionId, ids.limitedPartnerId, data);
         } else {
-          if (isGeneralPartnerAddress) {
-            result = await this.generalPartnerService.sendPageData(tokens, ids.transactionId, ids.generalPartnerId, data);
-          } else if (isLimitedPartnerAddress) {
-            result = await this.limitedPartnerService.sendPageData(tokens, ids.transactionId, ids.limitedPartnerId, data);
-          } else {
-            result = await this.limitedPartnershipService.sendPageData(
-              tokens,
-              ids.transactionId,
-              ids.submissionId,
-              pageType,
-              data
-            );
-          }
+          result = await this.limitedPartnershipService.sendPageData(
+            tokens,
+            ids.transactionId,
+            ids.submissionId,
+            pageType,
+            data
+          );
         }
 
         if (result?.errors) {

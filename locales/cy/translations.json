@@ -251,9 +251,9 @@
                     "publicRegisterLine1": "WELSH - We'll show the general partner's principal office address on the public register."
                 },
                 "correspondenceAddress": {
-                "whatIsCorrespondenceAddress": "WELSH - What is the general partner's correspondence address?",
-                "titleHint": "WELSH - This is also known as the service address.",
-                "publicRegisterLine1": "WELSH - We'll show the general partner's correspondence address on the public register."
+                    "whatIsCorrespondenceAddress": "WELSH - What is the general partner's correspondence address?",
+                    "titleHint": "WELSH - This is also known as the service address.",
+                    "publicRegisterLine1": "WELSH - We'll show the general partner's correspondence address on the public register."
                 }
             },
 
