@@ -1,6 +1,11 @@
 import request from "supertest";
 import app from "../app";
-import { CONFIRMATION_POST_TRANSITION_URL, CONFIRMATION_URL, PAYMENT_FAILED_URL, PAYMENT_RESPONSE_URL } from "../../../controller/global/url";
+import {
+  CONFIRMATION_POST_TRANSITION_URL,
+  CONFIRMATION_URL,
+  PAYMENT_FAILED_URL,
+  PAYMENT_RESPONSE_URL
+} from "../../../controller/global/url";
 import { getUrl } from "../../utils";
 import { JOURNEY_TYPE_PARAM } from "../../../../config";
 import { appDevDependencies } from "config/dev-dependencies";
@@ -19,11 +24,11 @@ describe("Payment decision routing", () => {
 
       appDevDependencies.transactionGateway.feedTransactions([transaction]);
 
-      const res = await request(app).get(TRANSITION_URL + "?status=paid");
+      const res = await request(app).get(TRANSITION_URL + "?lang=cy&status=paid");
       expect(res.status).toEqual(302);
 
       const nextPage = getUrl(CONFIRMATION_URL).replace(JOURNEY_TYPE_PARAM, Journey.transition);
-      expect(res.header.location).toEqual(nextPage);
+      expect(res.header.location).toEqual(`${nextPage}?lang=cy`);
     });
 
     it("should redirect to the confirmation page when post-transition payment is successful", async () => {
