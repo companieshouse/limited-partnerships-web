@@ -114,13 +114,29 @@ class GlobalController extends AbstractController {
             ids.companyId = transaction.companyNumber;
           }
         }
-        const nextPageUrlWithJourneyAndIds = super.insertIdsInUrl(nextPageUrlWithJourney, ids);
+        const nextPageUrlWithJourneyAndIds = this.appendLangParamIfExists(
+          request,
+          super.insertIdsInUrl(nextPageUrlWithJourney, ids)
+        );
 
         return response.redirect(nextPageUrlWithJourneyAndIds);
       } catch (error) {
         next(error);
       }
     };
+  }
+
+  private appendLangParamIfExists(request: Request, nextPageUrlWithJourneyAndIds: string) {
+    const currentUrlParams = new URLSearchParams(new URL(`http://${request.url}`)?.search);
+
+    if (currentUrlParams.has("lang")) {
+      // extra step to remove duplicate query param with ? - http://url?lang=cy?lang=cy&status=paid - to be removed when payments-api is fixed
+      const langParam = currentUrlParams.get("lang")?.split("?")[0];
+
+      nextPageUrlWithJourneyAndIds = nextPageUrlWithJourneyAndIds + `?lang=${langParam}`;
+    }
+
+    return nextPageUrlWithJourneyAndIds;
   }
 
   getConfirmationPage() {
