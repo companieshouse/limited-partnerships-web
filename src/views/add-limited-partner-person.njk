@@ -56,37 +56,8 @@
     
         <h1 class="govuk-heading-xl">{{ i18n.addPartnerPersonPage.limitedPartner.title }}</h1>
 
-        {{ govukInput({
-          label: {
-            text: i18n.addPartnerPersonPage.firstName,
-            classes: "govuk-label govuk-label--m",
-            isPageHeading: false
-          },
-          id: "forename",
-          name: "forename",
-          value: props.data.limitedPartner.data.forename,
-          classes: "govuk-!-width-full",
-          errorMessage: props.errors.forename if props.errors,
-          attributes : {
-            required: true
-          }
-        }) }}
-
-        {{ govukInput({
-          label: {
-            text: i18n.addPartnerPersonPage.lastName,
-            classes: "govuk-label govuk-label--m",
-            isPageHeading: false
-          },
-          id: "surname",
-          name: "surname",
-          value: props.data.limitedPartner.data.surname,
-          classes: "govuk-!-width-full",
-          errorMessage: props.errors.surname if props.errors,
-          attributes : {
-            required : true
-          }
-        }) }}
+        {% set partner = "limitedPartner" %}
+        {% include "pages/partner/full-name.njk" %}
 
         {% set previousHtmlPerson %}
           {{ govukInput({
