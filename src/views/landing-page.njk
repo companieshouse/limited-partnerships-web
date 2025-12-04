@@ -106,7 +106,7 @@
                                     items: [
                                         CREATE_CHANGE_LINK(
                                             generalPartnersAdded.changeLink,
-                                            props.currentUrl | replace(props.pageType, generalPartnerKind + "/" + item.appointment_id + "/add-" + generalPartnerKind + "-person"),
+                                            props.currentUrl | replace(props.pageType, "appointment/" + item.appointment_id + "/update-" + generalPartnerKind + "-person"),
                                             null,
                                             "change-" + partnerType + "-person"
                                         ),
@@ -133,7 +133,7 @@
                                     items: [
                                         CREATE_CHANGE_LINK(
                                             generalPartnersAdded.changeLink,
-                                            props.currentUrl | replace(props.pageType, generalPartnerKind + "/" + item.appointment_id + "/add-" + generalPartnerKind + "-legal-entity"),
+                                            props.currentUrl | replace(props.pageType, "appointment/" + item.appointment_id + "/update-" + generalPartnerKind + "-legal-entity"),
                                             null,
                                             "change-" + partnerType + "-legal-entity"
                                         ),
@@ -191,7 +191,7 @@
                                     items: [
                                         CREATE_CHANGE_LINK(
                                             limitedPartnersAdded.changeLink,
-                                            props.currentUrl | replace(props.pageType, limitedPartnerKind + "/" + item.appointment_id + "/add-" + limitedPartnerKind + "-person"),
+                                            props.currentUrl | replace(props.pageType, "appointment/" + item.appointment_id + "/update-" + limitedPartnerKind + "-person"),
                                             null,
                                             "change-" + partnerType + "-person"
                                         ),
@@ -218,7 +218,7 @@
                                     items: [
                                         CREATE_CHANGE_LINK(
                                             limitedPartnersAdded.changeLink,
-                                            props.currentUrl | replace(props.pageType, limitedPartnerKind + "/" + item.appointment_id + "/add-" + limitedPartnerKind + "-legal-entity"),
+                                            props.currentUrl | replace(props.pageType, "appointment/" + item.appointment_id + "/update-" + limitedPartnerKind + "-legal-entity"),
                                             null,
                                             "change-" + partnerType + "-legal-entity"
                                         ),
