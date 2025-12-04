@@ -49,7 +49,8 @@ import {
   WHEN_DID_THE_LIMITED_PARTNER_LEGAL_ENTITY_CEASE_WITH_IDS_URL,
   WHEN_DID_THE_LIMITED_PARTNER_LEGAL_ENTITY_CEASE_URL,
   REMOVE_LIMITED_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_URL,
-  REDESIGNATE_TO_PFLP_URL
+  REDESIGNATE_TO_PFLP_URL,
+  UPDATE_GENERAL_PARTNER_PERSON_URL
 } from "../presentation/controller/postTransition/url";
 import {
   TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_LEGAL_ENTITY,
@@ -612,6 +613,14 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
     companyAuthentication,
     dependencies.limitedPartnerPostTransitionController.postCheckYourAnswers()
   );
+
+  // Update General Partner
+  router.get(
+    UPDATE_GENERAL_PARTNER_PERSON_URL,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.getCeaseDate() // TODO
+  );
 };
+
 
 export default postTransitionEndpoints;
