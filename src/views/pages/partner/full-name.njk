@@ -1,0 +1,31 @@
+{{ govukInput({
+    label: {
+        text: i18n.addPartnerPersonPage.firstName,
+        classes: "govuk-label govuk-label--m",
+        isPageHeading: false
+    },
+    id: "forename",
+    name: "forename",
+    value: props.data[partner].data.forename,
+    classes: "govuk-!-width-full",
+    errorMessage: props.errors.forename if props.errors,
+    attributes : {
+        required: true
+    }
+}) }}
+
+{{ govukInput({
+    label: {
+        text: i18n.addPartnerPersonPage.lastName,
+        classes: "govuk-label govuk-label--m",
+        isPageHeading: false
+    },
+    id: "surname",
+    name: "surname",
+    value: props.data[partner].data.surname,
+    classes: "govuk-!-width-full",
+    errorMessage: props.errors.surname if props.errors,
+    attributes : {
+        required : true
+    }
+}) }}
