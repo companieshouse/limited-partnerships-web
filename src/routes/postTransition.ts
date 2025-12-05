@@ -618,9 +618,8 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
   router.get(
     UPDATE_GENERAL_PARTNER_PERSON_URL,
     companyAuthentication,
-    dependencies.generalPartnerPostTransitionController.getCeaseDate() // TODO
+    dependencies.generalPartnerPostTransitionController.getUpdatePageRouting()
   );
 };
-
 
 export default postTransitionEndpoints;
