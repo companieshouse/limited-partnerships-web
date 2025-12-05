@@ -66,6 +66,16 @@ class GeneralPartnerBuilder extends AbstractPartnerBuilder {
     return this;
   }
 
+  withNationality1(nationality1: string): this {
+    this.data.nationality1 = nationality1;
+    return this;
+  }
+
+  withNationality2(nationality2: string): this {
+    this.data.nationality2 = nationality2;
+    return this;
+  }
+
   isLegalEntity() {
     this.data = {
       ...this.data,

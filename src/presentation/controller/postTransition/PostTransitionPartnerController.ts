@@ -48,12 +48,12 @@ class PostTransitionPartnerController extends PartnerController {
     };
   }
 
-  getUpdatePartner() {
+  getUpdatePartner(partnerType: PartnerType) {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const { pageRouting, limitedPartnership, partner } = await this.getPartnerData(request);
 
-        response.render(super.templateName(pageRouting.currentUrl), super.makeProps(pageRouting, { limitedPartnership, partner }, null));
+        response.render(super.templateName(pageRouting.currentUrl), super.makeProps(pageRouting, { limitedPartnership, [partnerType]: partner }, null));
       } catch (error) {
         next(error);
       }

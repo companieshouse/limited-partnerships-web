@@ -49,6 +49,16 @@ class CompanyAppointmentBuilder {
     return this;
   }
 
+  withName(name: string) {
+    this.name = name;
+    return this;
+  }
+
+  withNationality(nationality: string) {
+    this.nationality = nationality;
+    return this;
+  }
+
   build(): Partial<CompanyOfficer> {
     return {
       address: this.address,

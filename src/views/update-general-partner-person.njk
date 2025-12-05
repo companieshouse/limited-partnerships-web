@@ -26,6 +26,16 @@
         {% set nationalityFieldNameId = "nationality1" %}
         {% include "includes/nationalities.njk" %}
 
+        {% set nationalityField = props.data.generalPartner.data.nationality2 %}
+        {% set nationalityFieldSelectPrompt = i18n.updatePartnerPersonPage.secondNationalitySelectPrompt %}
+        {% set nationalityFieldRequired = "false" %}
+        {% set nationalityFieldText = i18n.updatePartnerPersonPage.secondNationality %}
+        {% set nationalityFieldHintText = i18n.updatePartnerPersonPage.secondNationalityHint  %}
+        {% set nationalityFieldNameId = "nationality2" %}
+        {% include "includes/nationalities.njk" %}
+
+        <br/>
+        <br/>
         <div>
           {% include "includes/public-register-information.njk" %}
         </div>
