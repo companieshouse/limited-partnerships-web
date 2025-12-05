@@ -765,6 +765,16 @@
         "SLP": "WELSH - Scottish limited partnership",
         "SPFLP": "WELSH - Scottish private fund limited partnership"
     },
+
+    "updatePartnerPersonPage" : {
+        "generalPartner": {
+            "title" : "WELSH - Update a general partner (person)"                
+        },
+        "nationality" : "WELSH - What is their nationality?",
+        "nationalitySelectPrompt": "WELSH - Select a nationality",
+        "publicRegisterLine1" : "WELSH - We'll show the month and year of the partner's date of birth, but not the exact date.",
+        "publicRegisterLine2" : "WELSH - We'll show all the other information you provide on this screen on the public register."    
+    },
     
     "whereIsTheJurisdiction" : {
         "title" : "WELSH - Where is the jurisdiction?",

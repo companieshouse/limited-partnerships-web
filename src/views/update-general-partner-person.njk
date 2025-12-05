@@ -1,1 +1,37 @@
-Hello World!!!
+{% extends "layout.njk" %}
+
+{% set publicRegisterInformationLine1 = i18n.updatePartnerPersonPage.publicRegisterLine1 %}
+{% set publicRegisterInformationLine2 = i18n.updatePartnerPersonPage.publicRegisterLine2 %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form class="form" method="post">
+        <input type="hidden" name="pageType" value={{ props.pageType }}>      
+        {% include "includes/csrf_token.njk" %}
+        {% include "includes/errors.njk" %}
+
+        {% include "includes/proposed-name.njk" %}  
+    
+        <h1 class="govuk-heading-xl">{{ i18n.updatePartnerPersonPage.generalPartner.title }}</h1>
+
+        {% set partner = "generalPartner" %}
+        {% include "pages/partner/full-name.njk" %}
+
+        {% set nationalityField = props.data.generalPartner.data.nationality1 %}
+        {% set nationalityFieldSelectPrompt = i18n.updatePartnerPersonPage.nationalitySelectPrompt %}
+        {% set nationalityFieldRequired = "true" %}
+        {% set nationalityFieldText = i18n.updatePartnerPersonPage.nationality %}
+        {% set nationalityFieldHintText = "" %}
+        {% set nationalityFieldNameId = "nationality1" %}
+        {% include "includes/nationalities.njk" %}
+
+        <div>
+          {% include "includes/public-register-information.njk" %}
+        </div>
+
+        {% include "includes/save-and-continue-button.njk" %}
+      </form>
+    </div>
+  </div>
+{% endblock %}  
