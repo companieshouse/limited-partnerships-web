@@ -32,7 +32,7 @@ describe("Update General Partner Legal Entity Page", () => {
     appDevDependencies.companyGateway.feedCompanyAppointments([]);
   });
 
-  describe("Get Update update general partner person page with English text", () => {
+  describe("Get update general partner person page", () => {
     it("should load the update general partner legal entity page with English text", async () => {
       setLocalesEnabled(true);
 
