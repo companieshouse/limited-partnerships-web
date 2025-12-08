@@ -67,6 +67,8 @@ class CompanyService {
         appointment_id
       );
 
+      console.log("COMPANY APPOINTMENT", companyAppointment);
+
       let partner: GeneralPartner | LimitedPartner = {};
 
       partner = {

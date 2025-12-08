@@ -61,7 +61,9 @@ import {
   TRANSACTION_DESCRIPTION_REMOVE_GENERAL_PARTNER_LEGAL_ENTITY,
   TRANSACTION_DESCRIPTION_REMOVE_GENERAL_PARTNER_PERSON,
   TRANSACTION_DESCRIPTION_REMOVE_LIMITED_PARTNER_LEGAL_ENTITY,
-  TRANSACTION_DESCRIPTION_REMOVE_LIMITED_PARTNER_PERSON
+  TRANSACTION_DESCRIPTION_REMOVE_LIMITED_PARTNER_PERSON,
+  TRANSACTION_DESCRIPTION_UPDATE_GENERAL_PARTNER_LEGAL_ENTITY,
+  TRANSACTION_DESCRIPTION_UPDATE_GENERAL_PARTNER_PERSON
 } from "../config/constants";
 
 const postTransitionEndpoints = (router: Router, dependencies: IDependencies): void => {
@@ -620,6 +622,21 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
     UPDATE_GENERAL_PARTNER_PERSON_URL,
     companyAuthentication,
     dependencies.generalPartnerPostTransitionController.getUpdatePageRouting()
+  );
+  router.post(
+    UPDATE_GENERAL_PARTNER_PERSON_URL,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.createGeneralPartner({
+      person: {
+        description: TRANSACTION_DESCRIPTION_UPDATE_GENERAL_PARTNER_PERSON,
+        kind: PartnerKind.UPDATE_GENERAL_PARTNER_PERSON
+      },
+      legalEntity: {
+        description: TRANSACTION_DESCRIPTION_UPDATE_GENERAL_PARTNER_LEGAL_ENTITY,
+        kind: PartnerKind.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY
+      },
+      needAppointment: true
+    })
   );
 
   router.get(

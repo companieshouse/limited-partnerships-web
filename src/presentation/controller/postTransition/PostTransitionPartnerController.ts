@@ -210,16 +210,18 @@ class PostTransitionPartnerController extends PartnerController {
     const { tokens, ids } = super.extract(request);
 
     const dataToSend = {
-      ...request.body,
-
       forename: resultAppointment?.partner.data?.forename,
       surname: resultAppointment?.partner.data?.surname,
       legal_entity_name: resultAppointment?.partner.data?.legal_entity_name,
       date_of_birth: resultAppointment?.partner.data?.date_of_birth,
-      appointment_id: ids.appointmentId,
 
+      ...request.body,
+
+      appointment_id: ids.appointmentId,
       kind: isLegalEntity ? data?.legalEntity.kind : data?.person.kind
     };
+
+    console.log("CHECK DATA TO SEND", resultAppointment, dataToSend);
 
     if (partner === PartnerType.generalPartner) {
       result = await this.generalPartnerService.createGeneralPartner(
