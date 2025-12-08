@@ -35,6 +35,10 @@ class GeneralPartnerPostTransitionController extends PartnerController {
     return super.getPageRouting();
   }
 
+  getUpdatePageRouting() {
+    return this.postTransitionPartnerController.getUpdatePartner(PartnerType.generalPartner);
+  }
+
   generalPartnerChoice() {
     return super.partnerType({
       addPersonUrl: ADD_GENERAL_PARTNER_PERSON_URL,

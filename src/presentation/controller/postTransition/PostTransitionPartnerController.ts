@@ -39,44 +39,61 @@ class PostTransitionPartnerController extends PartnerController {
   getCeaseDate() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
-        const { ids, pageType, tokens } = super.extract(request);
-        const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
-
-        let limitedPartnership = {};
-        let partner = {};
-
-        if (this.companyService) {
-          const { limitedPartnership: lp } = await this.companyService.buildLimitedPartnershipFromCompanyProfile(
-            tokens,
-            ids.companyId
-          );
-
-          limitedPartnership = lp;
-
-          if (ids.appointmentId) {
-            const { partner: pt } = await this.companyService.buildPartnerFromCompanyAppointment(
-              tokens,
-              ids.companyId,
-              ids.appointmentId
-            );
-
-            partner = pt;
-          }
-        }
-
-        if (ids.generalPartnerId) {
-          partner = await this.generalPartnerService.getGeneralPartner(tokens, ids.transactionId, ids.generalPartnerId);
-        }
-
-        if (ids.limitedPartnerId) {
-          partner = await this.limitedPartnerService.getLimitedPartner(tokens, ids.transactionId, ids.limitedPartnerId);
-        }
+        const { pageRouting, limitedPartnership, partner } = await this.getPartnerData(request);
 
         response.render(CEASE_DATE_TEMPLATE, super.makeProps(pageRouting, { limitedPartnership, partner }, null));
       } catch (error) {
         next(error);
       }
     };
+  }
+
+  getUpdatePartner(partnerType: PartnerType) {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { pageRouting, limitedPartnership, partner } = await this.getPartnerData(request);
+
+        response.render(super.templateName(pageRouting.currentUrl), super.makeProps(pageRouting, { limitedPartnership, [partnerType]: partner }, null));
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  async getPartnerData(request: Request) {
+    const { ids, pageType, tokens } = super.extract(request);
+    const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
+
+    let limitedPartnership = {};
+    let partner = {};
+
+    if (this.companyService) {
+      const { limitedPartnership: lp } = await this.companyService.buildLimitedPartnershipFromCompanyProfile(
+        tokens,
+        ids.companyId
+      );
+
+      limitedPartnership = lp;
+
+      if (ids.appointmentId) {
+        const { partner: pt } = await this.companyService.buildPartnerFromCompanyAppointment(
+          tokens,
+          ids.companyId,
+          ids.appointmentId
+        );
+
+        partner = pt;
+      }
+    }
+
+    if (ids.generalPartnerId) {
+      partner = await this.generalPartnerService.getGeneralPartner(tokens, ids.transactionId, ids.generalPartnerId);
+    }
+
+    if (ids.limitedPartnerId) {
+      partner = await this.limitedPartnerService.getLimitedPartner(tokens, ids.transactionId, ids.limitedPartnerId);
+    }
+    return { pageRouting, limitedPartnership, partner };
   }
 
   createPartner(partner: PartnerType, data?: PartnerData) {
