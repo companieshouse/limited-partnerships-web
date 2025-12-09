@@ -85,7 +85,7 @@ const postTransitionRoutingRemoveGeneralPartnerLegalEntityCheckYourAnswers = {
 const postTransitionRoutingUpdateGeneralPartnerPerson = {
   previousUrl: url.LANDING_PAGE_URL,
   currentUrl: url.UPDATE_GENERAL_PARTNER_PERSON_URL,
-  nextUrl: "/hello", // not defined yet
+  nextUrl: url.UPDATE_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
   pageType: PostTransitionPageType.updateGeneralPartnerPerson
 };
 

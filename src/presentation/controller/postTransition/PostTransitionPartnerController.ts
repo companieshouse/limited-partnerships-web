@@ -112,7 +112,8 @@ class PostTransitionPartnerController extends PartnerController {
           pageType === PostTransitionPageType.addGeneralPartnerLegalEntity ||
           pageType === PostTransitionPageType.whenDidTheGeneralPartnerLegalEntityCease ||
           pageType === PostTransitionPageType.addLimitedPartnerLegalEntity ||
-          pageType === PostTransitionPageType.whenDidTheLimitedPartnerLegalEntityCease;
+          pageType === PostTransitionPageType.whenDidTheLimitedPartnerLegalEntityCease ||
+          pageType === PostTransitionPageType.updateGeneralPartnerLegalEntity;
 
         const limitedPartnershipData = limitedPartnershipResult?.limitedPartnership?.data;
 
@@ -220,8 +221,6 @@ class PostTransitionPartnerController extends PartnerController {
       appointment_id: ids.appointmentId,
       kind: isLegalEntity ? data?.legalEntity.kind : data?.person.kind
     };
-
-    console.log("CHECK DATA TO SEND", resultAppointment, dataToSend);
 
     if (partner === PartnerType.generalPartner) {
       result = await this.generalPartnerService.createGeneralPartner(
