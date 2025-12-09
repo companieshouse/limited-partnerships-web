@@ -1,3 +1,5 @@
+import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+
 import request from "supertest";
 import enTranslationText from "../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../locales/cy/translations.json";
@@ -13,8 +15,7 @@ import CompanyAppointmentBuilder from "../../../builder/CompanyAppointmentBuilde
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import GeneralPartnerBuilder from "../../../../../presentation/test/builder/GeneralPartnerBuilder";
 import PostTransitionPageType from "../../../../../presentation/controller/postTransition/pageType";
-import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-import { ApiErrors } from "domain/entities/UIErrors";
+import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 
 describe("Update General Partner Legal Entity Page", () => {
   const URL = getUrl(UPDATE_GENERAL_PARTNER_PERSON_URL);
