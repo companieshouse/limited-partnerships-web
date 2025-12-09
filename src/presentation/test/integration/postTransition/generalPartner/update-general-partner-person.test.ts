@@ -14,6 +14,7 @@ import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import GeneralPartnerBuilder from "../../../../../presentation/test/builder/GeneralPartnerBuilder";
 import PostTransitionPageType from "../../../../../presentation/controller/postTransition/pageType";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { ApiErrors } from "domain/entities/UIErrors";
 
 describe("Update General Partner Legal Entity Page", () => {
   const URL = getUrl(UPDATE_GENERAL_PARTNER_PERSON_URL);
@@ -137,6 +138,28 @@ describe("Update General Partner Legal Entity Page", () => {
         expect(appDevDependencies.generalPartnerGateway.generalPartners[0].data?.surname).toEqual("Doe");
         expect(appDevDependencies.generalPartnerGateway.generalPartners[0].data?.nationality1).toEqual("British");
         expect(appDevDependencies.generalPartnerGateway.generalPartners[0].data?.nationality2).toEqual("Irish");
+      });
+
+      it("should replay entered data when a validation error occurs", async () => {
+        const apiErrors: ApiErrors = {
+          errors: { forename: "forename is invalid" }
+        };
+        appDevDependencies.generalPartnerGateway.feedErrors(apiErrors);
+
+        const res = await request(app).post(URL).send({
+          pageType: PostTransitionPageType.updateGeneralPartnerPerson,
+          "forename": "INVALID-FORENAME",
+          "surname": "Doe",
+          "nationality1": "British",
+          "nationality2": "Irish"
+        });
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain("forename is invalid");
+        expect(res.text).toContain("INVALID-FORENAME");
+        expect(res.text).toContain("Doe");
+        expect(res.text).toContain('<option value="British" selected>British</option>');
+        expect(res.text).toContain('<option value="Irish" selected>Irish</option>');
       });
     });
 
