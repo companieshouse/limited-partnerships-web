@@ -94,6 +94,12 @@ abstract class AbstractPartnerBuilder {
     this.data.legal_entity_registration_location = legalEntityRegistrationLocation;
     return this;
   }
+
+  withKind(kind: string) {
+    this.data.kind = kind;
+    return this;
+  }
+
 }
 
 export default AbstractPartnerBuilder;
