@@ -116,11 +116,28 @@ describe("Update General Partner Legal Entity Page", () => {
     });
 
     describe("POST general partner cease date page", () => {
-
-      it("should send the general partner person details to API", async () => {
+      it.each([
+        ["with appointment id", URL],
+        ["with general partner id", URL_WITH_IDS],
+      ])("should send the general partner person details to API %s", async (_description: string, url: string) => {
         expect(appDevDependencies.generalPartnerGateway.generalPartners).toHaveLength(0);
 
-        const res = await request(app).post(URL).send({
+        if (url.includes("/general-partner/")) {
+          const generalPartner = new GeneralPartnerBuilder()
+            .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+            .isPerson()
+            .withNotDisqualifiedStatementChecked(true)
+            .withNationality1("British")
+            .withNationality2("Irish")
+            .withKind(PartnerKind.UPDATE_GENERAL_PARTNER_PERSON)
+            .build();
+
+          appDevDependencies.generalPartnerGateway.feedGeneralPartners([
+            generalPartner,
+          ]);
+        }
+
+        const res = await request(app).post(url).send({
           pageType: PostTransitionPageType.updateGeneralPartnerPerson,
           "forename": "John",
           "surname": "Doe",
