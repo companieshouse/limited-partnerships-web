@@ -2,7 +2,7 @@ import {
   ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
   ADD_GENERAL_PARTNER_PERSON_WITH_IDS_URL,
   GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL,
-  UPDATE_GENERAL_PARTNER_PERSON_URL
+  UPDATE_GENERAL_PARTNER_PERSON_WITH_IDS_URL
 } from "../../../postTransition/url";
 import AddressPageType from "../../PageType";
 import * as url from "../../url/postTransition";
@@ -20,7 +20,7 @@ const usualResidentialAddressCacheKeys = {
 };
 
 const postTransitionAddressRoutingUpdateUsualResidentialAddressYesNo = {
-  previousUrl: UPDATE_GENERAL_PARTNER_PERSON_URL,
+  previousUrl: UPDATE_GENERAL_PARTNER_PERSON_WITH_IDS_URL,
   currentUrl: url.UPDATE_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
   nextUrl: "/test",
   pageType: AddressPageType.updateUsualResidentialAddressYesNo

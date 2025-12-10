@@ -40,12 +40,12 @@ describe("Update General Partner Legal Entity Page", () => {
 
   describe("Update general partner person page", () => {
 
-    describe("GET general partner cease date page", () => {
+    describe("GET update general partner person page", () => {
 
       it.each([
         ["English", "en", enTranslationText],
         ["Welsh", "cy", cyTranslationText]
-      ])("should load the update general partner legal entity page with %s text", async (_description: string, lang: string, translationText: any) => {
+      ])("should load the update general partner person page with %s text", async (_description: string, lang: string, translationText: any) => {
         setLocalesEnabled(true);
 
         const res = await request(app).get(`${URL}?lang=${lang}`);
@@ -56,25 +56,13 @@ describe("Update General Partner Legal Entity Page", () => {
           `${companyProfile.data.companyName?.toUpperCase()} (${companyProfile.data.companyNumber?.toUpperCase()})`
         );
 
-        testTranslations(res.text, translationText.updatePartnerPersonPage, [
-          "limitedPartner",
-          "errorMessages",
-        ]);
+        testTranslations(res.text, translationText.updatePartnerPersonPage);
 
         if (lang === "cy") {
           expect(res.text).toContain("WELSH - ");
         } else {
           expect(res.text).not.toContain("WELSH -");
         }
-      });
-
-      it("should contain the partnership name", async () => {
-        const res = await request(app).get(URL);
-
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(
-          `${companyProfile.data.companyName.toUpperCase()} (${companyProfile.data.companyNumber.toUpperCase()})`
-        );
       });
 
       it.each([
@@ -94,7 +82,6 @@ describe("Update General Partner Legal Entity Page", () => {
           const generalPartner = new GeneralPartnerBuilder()
             .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
             .isPerson()
-            .withNotDisqualifiedStatementChecked(true)
             .withNationality1("British")
             .withNationality2("Irish")
             .build();
