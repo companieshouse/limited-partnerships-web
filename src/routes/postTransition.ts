@@ -644,6 +644,12 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
     companyAuthentication,
     dependencies.generalPartnerPostTransitionController.getUpdatePageRouting()
   );
+
+  router.post(
+    UPDATE_GENERAL_PARTNER_PERSON_WITH_IDS_URL,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.sendUpdatePageData()
+  );
 };
 
 export default postTransitionEndpoints;

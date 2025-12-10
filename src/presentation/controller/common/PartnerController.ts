@@ -379,7 +379,7 @@ abstract class PartnerController extends AbstractController {
   // PATCH *******************************************************
   sendPageData(
     partner: PartnerType,
-    urls: {
+    urls?: {
       confirmPartnerUsualResidentialAddressUrl: string;
       confirmPartnerPrincipalOfficeAddressUrl: string;
     }
@@ -421,10 +421,12 @@ abstract class PartnerController extends AbstractController {
           return;
         }
 
-        await this.conditionalPatchPartner(pageRouting, request, {
-          confirmPartnerUsualResidentialAddressUrl: urls.confirmPartnerUsualResidentialAddressUrl,
-          confirmPartnerPrincipalOfficeAddressUrl: urls.confirmPartnerPrincipalOfficeAddressUrl
-        });
+        if (urls){
+          await this.conditionalPatchPartner(pageRouting, request, {
+            confirmPartnerUsualResidentialAddressUrl: urls.confirmPartnerUsualResidentialAddressUrl,
+            confirmPartnerPrincipalOfficeAddressUrl: urls.confirmPartnerPrincipalOfficeAddressUrl
+          });
+        }
 
         response.redirect(pageRouting.nextUrl);
       } catch (error) {
