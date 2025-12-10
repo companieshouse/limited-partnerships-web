@@ -433,6 +433,41 @@ abstract class PartnerController extends AbstractController {
     };
   }
 
+  sendPageUpdateData(partner: PartnerType) {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        this.generalPartnerService.setI18n(response.locals.i18n);
+        this.limitedPartnerService.setI18n(response.locals.i18n);
+
+        const routing = this.getJourneyPageRouting(request.url);
+        const journeyPageType = this.getJourneyPageTypes(request.url);
+        const pageType = super.extractPageTypeOrThrowError(request, journeyPageType);
+        const pageRouting = super.getRouting(routing, pageType, request);
+
+        const { ids, tokens } = this.extractRequestData(request);
+        const result = await this.sendData(partner, tokens, ids, request);
+
+        if (result?.errors) {
+          const { limitedPartnership } = await this.getEntities(tokens, ids);
+          const partnerEntity = await this.getPartnerEntity(pageType, partner, tokens, ids);
+          const { data: renderData, url } = this.buildPartnerErrorRenderData(
+            pageType,
+            pageRouting,
+            limitedPartnership,
+            partnerEntity,
+            request.body,
+            partner
+          );
+
+          return response.render(super.templateName(url), super.makeProps(pageRouting, renderData, result.errors));
+        }
+        return response.redirect(pageRouting.nextUrl);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
   private async sendData(partner: PartnerType, tokens: Tokens, ids: Ids, request: Request) {
     let result;
 
