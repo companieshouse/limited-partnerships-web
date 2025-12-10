@@ -1,0 +1,60 @@
+{% extends "layout.njk" %}
+
+{% set pageTitle = i18n.address.update.usualResidentialAddress.title %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" method="post">
+        <input type="hidden" name="pageType" value={{ props.pageType }}>
+      
+        {% include "includes/csrf_token.njk" %}
+        
+        {% include "includes/general-partner-name.njk" %}
+
+        {{ govukRadios({
+          classes: "govuk-radios--inline",
+          name: "update_usual_residential_address_yes_no",
+          fieldset: {
+            legend: {
+              text: pageTitle,
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--xl"
+            }
+          },
+          hint: {
+            text: i18n.address.update.usualResidentialAddress.hint
+          },
+          items: [
+            {
+              value: "YES",
+              text: i18n.yesAndNo.yes,
+              attributes: {
+                "required": true
+              }
+            },
+            {
+              value: "NO",
+              text: i18n.yesAndNo.no,
+              attributes: {
+                "required": true
+              }
+            }
+          ]
+        }) }}
+
+        {{ govukButton({
+          text: i18n.buttons.continue,
+          attributes: {
+              "id": "submit",
+              "onclick": "_paq.push(['trackEvent', 'Limited Partnerships', 'update-usual-residential-address-yes-no', document.querySelector('input[name=update_usual_residential_address_yes_no]:checked').nextElementSibling.innerHTML])"
+          }
+        }) }}
+
+      </form>
+    </div>
+  </div>
+
+{% endblock %}

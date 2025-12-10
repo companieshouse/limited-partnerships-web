@@ -1,7 +1,8 @@
 import {
   ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
   ADD_GENERAL_PARTNER_PERSON_WITH_IDS_URL,
-  GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL
+  GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL,
+  UPDATE_GENERAL_PARTNER_PERSON_URL
 } from "../../../postTransition/url";
 import AddressPageType from "../../PageType";
 import * as url from "../../url/postTransition";
@@ -16,6 +17,13 @@ enum AddressCacheKeys {
 const usualResidentialAddressCacheKeys = {
   [AddressCacheKeys.addressCacheKey]: "usual_residential_address",
   [AddressCacheKeys.territoryCacheKey]: "ura_territory_choice"
+};
+
+const postTransitionAddressRoutingUpdateUsualResidentialAddressYesNo = {
+  previousUrl: UPDATE_GENERAL_PARTNER_PERSON_URL,
+  currentUrl: url.UPDATE_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
+  nextUrl: "/test",
+  pageType: AddressPageType.updateUsualResidentialAddressYesNo
 };
 
 const postTransitionAddressRoutingTerritoryChoiceGeneralPartnerUsualResidentialAddress = {
@@ -76,6 +84,7 @@ const postTransitionAddressRoutingConfirmGeneralPartnerUsualResidentialAddress =
 };
 
 const usualResidentialAddress = [
+  postTransitionAddressRoutingUpdateUsualResidentialAddressYesNo,
   postTransitionAddressRoutingTerritoryChoiceGeneralPartnerUsualResidentialAddress,
   postTransitionAddressRoutingPostcodeGeneralPartnerUsualResidentialAddress,
   postTransitionAddressRoutingEnterGeneralPartnerUsualResidentialAddress,

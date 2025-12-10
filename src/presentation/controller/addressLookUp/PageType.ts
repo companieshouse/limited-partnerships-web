@@ -16,6 +16,7 @@ enum AddressPageType {
   // GENERAL PARTNER
 
   // usual residential address - Person
+  updateUsualResidentialAddressYesNo = "update-usual-residential-address-yes-no",
   territoryChoiceGeneralPartnerUsualResidentialAddress = "uk-or-overseas-general-partner-usual-residential-address",
   postcodeGeneralPartnerUsualResidentialAddress = "postcode-general-partner-usual-residential-address",
   chooseGeneralPartnerUsualResidentialAddress = "choose-general-partner-usual-residential-address",

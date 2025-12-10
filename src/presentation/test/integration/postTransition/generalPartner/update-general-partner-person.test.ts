@@ -7,7 +7,6 @@ import app from "../../app";
 import {
   UPDATE_GENERAL_PARTNER_PERSON_URL,
   UPDATE_GENERAL_PARTNER_PERSON_WITH_IDS_URL,
-  UPDATE_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
 } from "../../../../controller/postTransition/url";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
@@ -16,6 +15,7 @@ import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import GeneralPartnerBuilder from "../../../../../presentation/test/builder/GeneralPartnerBuilder";
 import PostTransitionPageType from "../../../../../presentation/controller/postTransition/pageType";
 import { ApiErrors } from "../../../../../domain/entities/UIErrors";
+import { UPDATE_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL } from "../../../../../presentation/controller/addressLookUp/url/postTransition";
 
 describe("Update General Partner Legal Entity Page", () => {
   const URL = getUrl(UPDATE_GENERAL_PARTNER_PERSON_URL);
