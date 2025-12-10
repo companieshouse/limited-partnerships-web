@@ -49,7 +49,10 @@ enum PostTransitionPageType {
 
   redesignateToPflp = "redesignate-to-pflp",
 
-  updateGeneralPartnerPerson = "update-general-partner-person"
+  updateGeneralPartnerPerson = "update-general-partner-person",
+  updateGeneralPartnerLegalEntity = "update-general-partner-legal-entity",
+
+  updateUsualResidentialAddressYesNo = "update-usual-residential-address-yes-no"
 }
 
 const CeaseDatePageTypes: string[] = [

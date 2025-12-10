@@ -52,6 +52,8 @@ export const TRANSACTION_DESCRIPTION_REMOVE_GENERAL_PARTNER_PERSON = "Remove a g
 export const TRANSACTION_DESCRIPTION_REMOVE_GENERAL_PARTNER_LEGAL_ENTITY = "Remove a general partner (legal entity)";
 export const TRANSACTION_DESCRIPTION_REMOVE_LIMITED_PARTNER_PERSON = "Remove a limited partner (person)";
 export const TRANSACTION_DESCRIPTION_REMOVE_LIMITED_PARTNER_LEGAL_ENTITY = "Remove a limited partner (legal entity)";
+export const TRANSACTION_DESCRIPTION_UPDATE_GENERAL_PARTNER_PERSON = "Update a general partner's details (person)";
+export const TRANSACTION_DESCRIPTION_UPDATE_GENERAL_PARTNER_LEGAL_ENTITY = "Update a general partner's details (legal entity)";
 export const TRANSACTION_DESCRIPTION_DESIGNATE_AS_PRIVATE_FUND_PARTNERSHIP = "Designate as a private fund limited partnership";
 
 // Templates

@@ -60,3 +60,4 @@ export const REMOVE_LIMITED_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_TEMPLATE =
 export const REDESIGNATE_TO_PFLP_TEMPLATE = PostTransitionPageType.redesignateToPflp;
 
 export const UPDATE_GENERAL_PARTNER_PERSON_TEMPLATE = PostTransitionPageType.updateGeneralPartnerPerson;
+export const UPDATE_USUAL_RESIDENTIAL_ADDRESS_YES_NO_TEMPLATE = PostTransitionPageType.updateUsualResidentialAddressYesNo;

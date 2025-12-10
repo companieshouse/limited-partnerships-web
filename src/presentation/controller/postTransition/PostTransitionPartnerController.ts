@@ -112,7 +112,8 @@ class PostTransitionPartnerController extends PartnerController {
           pageType === PostTransitionPageType.addGeneralPartnerLegalEntity ||
           pageType === PostTransitionPageType.whenDidTheGeneralPartnerLegalEntityCease ||
           pageType === PostTransitionPageType.addLimitedPartnerLegalEntity ||
-          pageType === PostTransitionPageType.whenDidTheLimitedPartnerLegalEntityCease;
+          pageType === PostTransitionPageType.whenDidTheLimitedPartnerLegalEntityCease ||
+          pageType === PostTransitionPageType.updateGeneralPartnerLegalEntity;
 
         const limitedPartnershipData = limitedPartnershipResult?.limitedPartnership?.data;
 
@@ -210,14 +211,14 @@ class PostTransitionPartnerController extends PartnerController {
     const { tokens, ids } = super.extract(request);
 
     const dataToSend = {
-      ...request.body,
-
       forename: resultAppointment?.partner.data?.forename,
       surname: resultAppointment?.partner.data?.surname,
       legal_entity_name: resultAppointment?.partner.data?.legal_entity_name,
       date_of_birth: resultAppointment?.partner.data?.date_of_birth,
-      appointment_id: ids.appointmentId,
 
+      ...request.body,
+
+      appointment_id: ids.appointmentId,
       kind: isLegalEntity ? data?.legalEntity.kind : data?.person.kind
     };
 
