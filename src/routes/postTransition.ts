@@ -654,7 +654,7 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
   router.get(
     UPDATE_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
     companyAuthentication,
-    dependencies.addressLookUpController.getPageRouting()
+    dependencies.generalPartnerPostTransitionController.getPageRouting()
   );
   router.post(
     UPDATE_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,

@@ -7,6 +7,7 @@ import cyTranslationText from "../../../../../../../locales/cy/translations.json
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import GeneralPartnerBuilder from "../../../../../../presentation/test/builder/GeneralPartnerBuilder";
 import { UPDATE_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL } from "../../../../../../presentation/controller/postTransition/url";
+import CompanyProfileBuilder from "../../../../../../presentation/test/builder/CompanyProfileBuilder";
 
 describe("Update Usual Residential Address Yes No Page", () => {
   const URL = getUrl(UPDATE_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL);
@@ -14,8 +15,12 @@ describe("Update Usual Residential Address Yes No Page", () => {
   beforeEach(() => {
     setLocalesEnabled(false);
 
+    const companyProfile = new CompanyProfileBuilder().build();
+
     appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
     appDevDependencies.generalPartnerGateway.feedErrors();
+
+    appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
   });
 
   describe("GET Update Usual Residential Address Yes No Page", () => {
