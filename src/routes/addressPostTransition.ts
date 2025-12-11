@@ -11,16 +11,6 @@ export const addressLookUpEndpoints = (router: Router, dependencies: IDependenci
   // GENERAL PARTNER
 
   // usual residential address
-  router.get(
-    url.UPDATE_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
-    companyAuthentication,
-    dependencies.addressLookUpController.getPageRouting()
-  );
-  router.post(
-    url.UPDATE_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
-    companyAuthentication,
-    dependencies.addressLookUpController.handleTerritoryChoice()
-  );
 
   router.get(
     url.TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,

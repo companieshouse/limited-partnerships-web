@@ -2,7 +2,6 @@ import * as url from "../url";
 import PostTransitionPageType from "../pageType";
 
 import {
-  UPDATE_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
   CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
@@ -86,8 +85,15 @@ const postTransitionRoutingRemoveGeneralPartnerLegalEntityCheckYourAnswers = {
 const postTransitionRoutingUpdateGeneralPartnerPerson = {
   previousUrl: url.LANDING_PAGE_URL,
   currentUrl: url.UPDATE_GENERAL_PARTNER_PERSON_URL,
-  nextUrl: UPDATE_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
+  nextUrl: url.UPDATE_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
   pageType: PostTransitionPageType.updateGeneralPartnerPerson
+};
+
+const postTransitionRoutingUpdateUsualResidentialAddressYesNo = {
+  previousUrl: url.UPDATE_GENERAL_PARTNER_PERSON_WITH_IDS_URL,
+  currentUrl: url.UPDATE_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
+  nextUrl: "/test",
+  pageType: PostTransitionPageType.updateUsualResidentialAddressYesNo
 };
 
 const generalPartnerRouting = [
@@ -102,7 +108,8 @@ const generalPartnerRouting = [
   postTransitionRoutingRemoveGeneralPartnerLegalEntity,
   postTransitionRoutingRemoveGeneralPartnerLegalEntityCheckYourAnswers,
 
-  postTransitionRoutingUpdateGeneralPartnerPerson
+  postTransitionRoutingUpdateGeneralPartnerPerson,
+  postTransitionRoutingUpdateUsualResidentialAddressYesNo
 ];
 
 export default generalPartnerRouting;

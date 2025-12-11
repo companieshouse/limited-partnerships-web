@@ -2,11 +2,11 @@ import request from "supertest";
 import app from "../../../app";
 
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../../../../presentation/test/utils";
-import { UPDATE_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL } from "../../../../../../presentation/controller/addressLookUp/url/postTransition";
 import enTranslationText from "../../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../../locales/cy/translations.json";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import GeneralPartnerBuilder from "../../../../../../presentation/test/builder/GeneralPartnerBuilder";
+import { UPDATE_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL } from "../../../../../../presentation/controller/postTransition/url";
 
 describe("Update Usual Residential Address Yes No Page", () => {
   const URL = getUrl(UPDATE_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL);
