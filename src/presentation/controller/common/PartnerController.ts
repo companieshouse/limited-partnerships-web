@@ -428,6 +428,14 @@ abstract class PartnerController extends AbstractController {
           });
         }
 
+        if (pageType === PostTransitionPageType.updateUsualResidentialAddressYesNo) {
+          let nextUrl = pageRouting.data?.nextYesUrl;
+          if (request.body.is_update_usual_residential_address_required === "false") {
+            nextUrl = pageRouting.data?.nextNoUrl;
+          }
+          pageRouting.nextUrl = this.insertIdsInUrl(nextUrl, ids, request.url);
+        }
+
         response.redirect(pageRouting.nextUrl);
       } catch (error) {
         next(error);
@@ -506,7 +514,12 @@ abstract class PartnerController extends AbstractController {
 
   private async setGeneralPartnerNextUrl(
     pageRouting: PageRouting,
-    urls: { confirmPartnerUsualResidentialAddressUrl: string; confirmPartnerPrincipalOfficeAddressUrl: string },
+    urls: {
+      confirmPartnerUsualResidentialAddressUrl?: string;
+      confirmPartnerPrincipalOfficeAddressUrl?: string;
+      nextYesUrl?: string;
+      nextNoUrl?: string;
+    },
     request: Request
   ) {
     const journeyPageType = this.getJourneyPageTypes(request.url);
@@ -516,14 +529,16 @@ abstract class PartnerController extends AbstractController {
 
     if (
       pageRouting.pageType === journeyPageType.addGeneralPartnerPerson &&
-      generalPartner?.data?.usual_residential_address?.address_line_1
+      generalPartner?.data?.usual_residential_address?.address_line_1 &&
+      urls.confirmPartnerUsualResidentialAddressUrl
     ) {
       pageRouting.nextUrl = super.insertIdsInUrl(urls.confirmPartnerUsualResidentialAddressUrl, ids, request.url);
     }
 
     if (
       pageRouting.pageType === journeyPageType.addGeneralPartnerLegalEntity &&
-      generalPartner?.data?.principal_office_address?.address_line_1
+      generalPartner?.data?.principal_office_address?.address_line_1 &&
+      urls.confirmPartnerPrincipalOfficeAddressUrl
     ) {
       pageRouting.nextUrl = super.insertIdsInUrl(urls.confirmPartnerPrincipalOfficeAddressUrl, ids, request.url);
     }
@@ -531,7 +546,12 @@ abstract class PartnerController extends AbstractController {
 
   private async setLimitedPartnerNextUrl(
     pageRouting: PageRouting,
-    urls: { confirmPartnerUsualResidentialAddressUrl: string; confirmPartnerPrincipalOfficeAddressUrl: string },
+    urls: {
+      confirmPartnerUsualResidentialAddressUrl?: string;
+      confirmPartnerPrincipalOfficeAddressUrl?: string;
+      nextYesUrl?: string;
+      nextNoUrl?: string;
+    },
     request: Request
   ) {
     const journeyPageType = this.getJourneyPageTypes(request.url);
@@ -541,14 +561,16 @@ abstract class PartnerController extends AbstractController {
 
     if (
       pageRouting.pageType === journeyPageType.addLimitedPartnerPerson &&
-      limitedPartner?.data?.usual_residential_address?.address_line_1
+      limitedPartner?.data?.usual_residential_address?.address_line_1 &&
+      urls.confirmPartnerUsualResidentialAddressUrl
     ) {
       pageRouting.nextUrl = super.insertIdsInUrl(urls.confirmPartnerUsualResidentialAddressUrl, ids, request.url);
     }
 
     if (
       pageRouting.pageType === journeyPageType.addLimitedPartnerLegalEntity &&
-      limitedPartner?.data?.principal_office_address?.address_line_1
+      limitedPartner?.data?.principal_office_address?.address_line_1 &&
+      urls.confirmPartnerPrincipalOfficeAddressUrl
     ) {
       pageRouting.nextUrl = super.insertIdsInUrl(urls.confirmPartnerPrincipalOfficeAddressUrl, ids, request.url);
     }

@@ -85,15 +85,19 @@ const postTransitionRoutingRemoveGeneralPartnerLegalEntityCheckYourAnswers = {
 const postTransitionRoutingUpdateGeneralPartnerPerson = {
   previousUrl: url.LANDING_PAGE_URL,
   currentUrl: url.UPDATE_GENERAL_PARTNER_PERSON_URL,
-  nextUrl: url.UPDATE_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
+  nextUrl: url.UPDATE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
   pageType: PostTransitionPageType.updateGeneralPartnerPerson
 };
 
 const postTransitionRoutingUpdateUsualResidentialAddressYesNo = {
   previousUrl: url.UPDATE_GENERAL_PARTNER_PERSON_WITH_IDS_URL,
-  currentUrl: url.UPDATE_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
-  nextUrl: "/test",
-  pageType: PostTransitionPageType.updateUsualResidentialAddressYesNo
+  currentUrl: url.UPDATE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
+  nextUrl: "/",
+  pageType: PostTransitionPageType.updateUsualResidentialAddressYesNo,
+  data: {
+    nextYesUrl: TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+    nextNoUrl: url.UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL
+  }
 };
 
 const generalPartnerRouting = [

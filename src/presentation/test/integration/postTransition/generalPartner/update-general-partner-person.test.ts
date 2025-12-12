@@ -7,7 +7,7 @@ import app from "../../app";
 import {
   UPDATE_GENERAL_PARTNER_PERSON_URL,
   UPDATE_GENERAL_PARTNER_PERSON_WITH_IDS_URL,
-  UPDATE_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
+  UPDATE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
 } from "../../../../controller/postTransition/url";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
@@ -20,7 +20,7 @@ import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 describe("Update General Partner Legal Entity Page", () => {
   const URL = getUrl(UPDATE_GENERAL_PARTNER_PERSON_URL);
   const URL_WITH_IDS = getUrl(UPDATE_GENERAL_PARTNER_PERSON_WITH_IDS_URL);
-  const REDIRECT = getUrl(UPDATE_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL);
+  const REDIRECT = getUrl(UPDATE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL);
 
   let companyProfile;
   let companyAppointment;

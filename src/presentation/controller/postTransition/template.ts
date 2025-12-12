@@ -61,3 +61,5 @@ export const REDESIGNATE_TO_PFLP_TEMPLATE = PostTransitionPageType.redesignateTo
 
 export const UPDATE_GENERAL_PARTNER_PERSON_TEMPLATE = PostTransitionPageType.updateGeneralPartnerPerson;
 export const UPDATE_USUAL_RESIDENTIAL_ADDRESS_YES_NO_TEMPLATE = PostTransitionPageType.updateUsualResidentialAddressYesNo;
+export const UPDATE_CORRESPONDENCE_ADDRESS_YES_NO_TEMPLATE = PostTransitionPageType.updateCorrespondenceAddressYesNo;
+
