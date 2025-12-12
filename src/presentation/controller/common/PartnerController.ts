@@ -421,20 +421,7 @@ abstract class PartnerController extends AbstractController {
           return;
         }
 
-        if (urls){
-          await this.conditionalPatchPartner(pageRouting, request, {
-            confirmPartnerUsualResidentialAddressUrl: urls.confirmPartnerUsualResidentialAddressUrl,
-            confirmPartnerPrincipalOfficeAddressUrl: urls.confirmPartnerPrincipalOfficeAddressUrl
-          });
-        }
-
-        if (pageType === PostTransitionPageType.updateUsualResidentialAddressYesNo) {
-          let nextUrl = pageRouting.data?.nextYesUrl;
-          if (request.body.is_update_usual_residential_address_required === "false") {
-            nextUrl = pageRouting.data?.nextNoUrl;
-          }
-          pageRouting.nextUrl = this.insertIdsInUrl(nextUrl, ids, request.url);
-        }
+        await this.conditionalPatchPartner(pageRouting, request, urls);
 
         response.redirect(pageRouting.nextUrl);
       } catch (error) {
@@ -490,35 +477,45 @@ abstract class PartnerController extends AbstractController {
   private async conditionalPatchPartner(
     pageRouting: PageRouting,
     request: Request,
-    urls: {
+    urls?: {
       confirmPartnerUsualResidentialAddressUrl: string;
       confirmPartnerPrincipalOfficeAddressUrl: string;
     }
   ) {
-    const journeyPageType = this.getJourneyPageTypes(request.url);
+    if (urls) {
+      const journeyPageType = this.getJourneyPageTypes(request.url);
 
-    const isGeneralPartner =
-      pageRouting.pageType === journeyPageType.addGeneralPartnerPerson ||
-      pageRouting.pageType === journeyPageType.addGeneralPartnerLegalEntity;
+      const isGeneralPartner =
+        pageRouting.pageType === journeyPageType.addGeneralPartnerPerson ||
+        pageRouting.pageType === journeyPageType.addGeneralPartnerLegalEntity;
 
-    const isLimitedPartner =
-      pageRouting.pageType === journeyPageType.addLimitedPartnerPerson ||
-      pageRouting.pageType === journeyPageType.addLimitedPartnerLegalEntity;
+      const isLimitedPartner =
+        pageRouting.pageType === journeyPageType.addLimitedPartnerPerson ||
+        pageRouting.pageType === journeyPageType.addLimitedPartnerLegalEntity;
 
-    if (isGeneralPartner) {
-      await this.setGeneralPartnerNextUrl(pageRouting, urls, request);
-    } else if (isLimitedPartner) {
-      await this.setLimitedPartnerNextUrl(pageRouting, urls, request);
+      if (isGeneralPartner) {
+        await this.setGeneralPartnerNextUrl(pageRouting, urls, request);
+      } else if (isLimitedPartner) {
+        await this.setLimitedPartnerNextUrl(pageRouting, urls, request);
+      }
+    } else {
+      // handle post-transition update usual residential address yes/no page
+      const { ids, pageType } = super.extract(request);
+      if (pageType === PostTransitionPageType.updateUsualResidentialAddressYesNo) {
+        let nextUrl = pageRouting.data?.nextYesUrl;
+        if (request.body.is_update_usual_residential_address_required === "false") {
+          nextUrl = pageRouting.data?.nextNoUrl;
+        }
+        pageRouting.nextUrl = this.insertIdsInUrl(nextUrl, ids, request.url);
+      }
     }
   }
 
   private async setGeneralPartnerNextUrl(
     pageRouting: PageRouting,
     urls: {
-      confirmPartnerUsualResidentialAddressUrl?: string;
-      confirmPartnerPrincipalOfficeAddressUrl?: string;
-      nextYesUrl?: string;
-      nextNoUrl?: string;
+      confirmPartnerUsualResidentialAddressUrl: string;
+      confirmPartnerPrincipalOfficeAddressUrl: string;
     },
     request: Request
   ) {
@@ -529,16 +526,14 @@ abstract class PartnerController extends AbstractController {
 
     if (
       pageRouting.pageType === journeyPageType.addGeneralPartnerPerson &&
-      generalPartner?.data?.usual_residential_address?.address_line_1 &&
-      urls.confirmPartnerUsualResidentialAddressUrl
+      generalPartner?.data?.usual_residential_address?.address_line_1
     ) {
       pageRouting.nextUrl = super.insertIdsInUrl(urls.confirmPartnerUsualResidentialAddressUrl, ids, request.url);
     }
 
     if (
       pageRouting.pageType === journeyPageType.addGeneralPartnerLegalEntity &&
-      generalPartner?.data?.principal_office_address?.address_line_1 &&
-      urls.confirmPartnerPrincipalOfficeAddressUrl
+      generalPartner?.data?.principal_office_address?.address_line_1
     ) {
       pageRouting.nextUrl = super.insertIdsInUrl(urls.confirmPartnerPrincipalOfficeAddressUrl, ids, request.url);
     }
@@ -547,10 +542,8 @@ abstract class PartnerController extends AbstractController {
   private async setLimitedPartnerNextUrl(
     pageRouting: PageRouting,
     urls: {
-      confirmPartnerUsualResidentialAddressUrl?: string;
-      confirmPartnerPrincipalOfficeAddressUrl?: string;
-      nextYesUrl?: string;
-      nextNoUrl?: string;
+      confirmPartnerUsualResidentialAddressUrl: string;
+      confirmPartnerPrincipalOfficeAddressUrl: string;
     },
     request: Request
   ) {
@@ -561,16 +554,14 @@ abstract class PartnerController extends AbstractController {
 
     if (
       pageRouting.pageType === journeyPageType.addLimitedPartnerPerson &&
-      limitedPartner?.data?.usual_residential_address?.address_line_1 &&
-      urls.confirmPartnerUsualResidentialAddressUrl
+      limitedPartner?.data?.usual_residential_address?.address_line_1
     ) {
       pageRouting.nextUrl = super.insertIdsInUrl(urls.confirmPartnerUsualResidentialAddressUrl, ids, request.url);
     }
 
     if (
       pageRouting.pageType === journeyPageType.addLimitedPartnerLegalEntity &&
-      limitedPartner?.data?.principal_office_address?.address_line_1 &&
-      urls.confirmPartnerPrincipalOfficeAddressUrl
+      limitedPartner?.data?.principal_office_address?.address_line_1
     ) {
       pageRouting.nextUrl = super.insertIdsInUrl(urls.confirmPartnerPrincipalOfficeAddressUrl, ids, request.url);
     }
