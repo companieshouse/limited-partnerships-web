@@ -6,7 +6,6 @@
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-
       <form class="form" method="post">
         <input type="hidden" name="pageType" value={{ props.pageType }}>
       
@@ -16,7 +15,7 @@
 
         {{ govukRadios({
           classes: "govuk-radios--inline",
-          name: "is_update_usual_residential_address_required",
+          name: "update_usual_residential_address_required",
           fieldset: {
             legend: {
               text: pageTitle,
@@ -31,7 +30,7 @@
             {
               value: "true",
               text: i18n.yesAndNo.yes,
-              checked: props.data.generalPartner.data.is_update_usual_residential_address_required,
+              checked: props.data.generalPartner.data.update_usual_residential_address_required === true,
               attributes: {
                 "required": true
               }
@@ -39,7 +38,7 @@
             {
               value: "false",
               text: i18n.yesAndNo.no,
-              checked: not props.data.generalPartner.data.is_update_usual_residential_address_required,
+              checked: props.data.generalPartner.data.update_usual_residential_address_required === false,
               attributes: {
                 "required": true
               }
@@ -51,7 +50,7 @@
           text: i18n.buttons.continue,
           attributes: {
               "id": "submit",
-              "onclick": "_paq.push(['trackEvent', 'Limited Partnerships', 'update-usual-residential-address-yes-no', document.querySelector('input[name=update_usual_residential_address_yes_no]:checked').nextElementSibling.innerHTML])"
+              "onclick": "_paq.push(['trackEvent', 'Limited Partnerships', 'update-usual-residential-address-yes-no', document.querySelector('input[name=update_usual_residential_address_required]:checked').nextElementSibling.innerHTML])"
           }
         }) }}
 

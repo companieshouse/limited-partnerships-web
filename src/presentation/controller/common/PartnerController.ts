@@ -505,7 +505,7 @@ abstract class PartnerController extends AbstractController {
     const { ids, pageType } = super.extract(request);
     if (pageType === PostTransitionPageType.updateUsualResidentialAddressYesNo) {
       let nextUrl = pageRouting.data?.nextYesUrl;
-      if (request.body.is_update_usual_residential_address_required === "false") {
+      if (request.body.update_usual_residential_address_required === "false") {
         nextUrl = pageRouting.data?.nextNoUrl;
       }
       pageRouting.nextUrl = this.insertIdsInUrl(nextUrl, ids, request.url);

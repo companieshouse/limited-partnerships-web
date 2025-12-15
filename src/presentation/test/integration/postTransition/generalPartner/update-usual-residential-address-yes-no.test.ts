@@ -64,24 +64,17 @@ describe("Update Usual Residential Address Yes No Page", () => {
 
   describe("POST Update Usual Residential Address Yes No Page", () => {
 
-    it('should redirect to URA territory choice page when "yes" is selected', async () => {
+    it.each([
+      ['URA territory choice page when "yes"', "true", REDIRECT_YES],
+      ['the update correspondence address yes no page when "no"', "false", REDIRECT_NO]
+    ])('should redirect to %s is selected', async (_description: string, pageValue: string, redirectUrl: string) => {
       const res = await request(app).post(`${URL}`).send({
         pageType: PostTransitionPageType.updateUsualResidentialAddressYesNo,
-        is_update_usual_residential_address_required: "true"
+        update_usual_residential_address_required: pageValue
       });
 
       expect(res.status).toBe(302);
-      expect(res.text).toContain(`Redirecting to ${REDIRECT_YES}`);
-    });
-
-    it('should redirect to the update correspondence address yes no page when "no" is selected', async () => {
-      const res = await request(app).post(`${URL}`).send({
-        pageType: PostTransitionPageType.updateUsualResidentialAddressYesNo,
-        is_update_usual_residential_address_required: "false"
-      });
-
-      expect(res.status).toBe(302);
-      expect(res.text).toContain(`Redirecting to ${REDIRECT_NO}`);
+      expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
     });
 
   });
