@@ -116,7 +116,6 @@ class AddressLookUpController extends AbstractController {
   }
 
   private conditionalBackLink(pageRouting: PageRouting, generalPartner: GeneralPartner, limitedPartner: LimitedPartner, ids: Ids) {
-    // prefer generalPartner when present, otherwise limitedPartner
     const partner = generalPartner?.data ? generalPartner : limitedPartner;
 
     if (partner?.data?.kind === PartnerKind.UPDATE_GENERAL_PARTNER_PERSON) {

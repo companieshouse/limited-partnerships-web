@@ -498,16 +498,17 @@ abstract class PartnerController extends AbstractController {
       } else if (isLimitedPartner) {
         await this.setLimitedPartnerNextUrl(pageRouting, urls, request);
       }
-    } else {
-      // handle post-transition update usual residential address yes/no page
-      const { ids, pageType } = super.extract(request);
-      if (pageType === PostTransitionPageType.updateUsualResidentialAddressYesNo) {
-        let nextUrl = pageRouting.data?.nextYesUrl;
-        if (request.body.is_update_usual_residential_address_required === "false") {
-          nextUrl = pageRouting.data?.nextNoUrl;
-        }
-        pageRouting.nextUrl = this.insertIdsInUrl(nextUrl, ids, request.url);
+      return;
+    }
+
+    // handle post-transition update usual residential address yes/no page
+    const { ids, pageType } = super.extract(request);
+    if (pageType === PostTransitionPageType.updateUsualResidentialAddressYesNo) {
+      let nextUrl = pageRouting.data?.nextYesUrl;
+      if (request.body.is_update_usual_residential_address_required === "false") {
+        nextUrl = pageRouting.data?.nextNoUrl;
       }
+      pageRouting.nextUrl = this.insertIdsInUrl(nextUrl, ids, request.url);
     }
   }
 
