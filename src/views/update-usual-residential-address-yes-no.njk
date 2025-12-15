@@ -16,7 +16,7 @@
 
         {{ govukRadios({
           classes: "govuk-radios--inline",
-          name: "is_update_usual_residential_address_required",
+          name: "is_update_usual_residential_address_required",          
           fieldset: {
             legend: {
               text: pageTitle,
@@ -31,6 +31,7 @@
             {
               value: "true",
               text: i18n.yesAndNo.yes,
+              checked: props.data.generalPartner.data.is_update_usual_residential_address_required,
               attributes: {
                 "required": true
               }
@@ -38,6 +39,7 @@
             {
               value: "false",
               text: i18n.yesAndNo.no,
+              checked: not props.data.generalPartner.data.is_update_usual_residential_address_required,
               attributes: {
                 "required": true
               }
