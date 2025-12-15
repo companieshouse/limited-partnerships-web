@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import escape from "escape-html";
-import { Address, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { Address, GeneralPartner, LimitedPartner, PartnerKind, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import AbstractController from "../AbstractController";
 import AddressService from "../../../application/service/AddressService";
@@ -99,6 +99,8 @@ class AddressLookUpController extends AbstractController {
 
         const addressList = await this.getAddressList(pageRouting, cacheById, tokens);
 
+        this.conditionalBackLink(pageRouting, generalPartner, limitedPartner, ids);
+
         response.render(
           super.templateName(pageRouting.currentUrl),
           super.makeProps(
@@ -111,6 +113,14 @@ class AddressLookUpController extends AbstractController {
         next(error);
       }
     };
+  }
+
+  private conditionalBackLink(pageRouting: PageRouting, generalPartner: GeneralPartner, limitedPartner: LimitedPartner, ids: Ids) {
+    const partner = generalPartner?.data ? generalPartner : limitedPartner;
+
+    if (partner?.data?.kind === PartnerKind.UPDATE_GENERAL_PARTNER_PERSON) {
+      pageRouting.previousUrl = this.insertIdsInUrl(pageRouting.data?.previousUrlUpdateGeneralPartnerPerson, ids);
+    }
   }
 
   postcodeValidation() {

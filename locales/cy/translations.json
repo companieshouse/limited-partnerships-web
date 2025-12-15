@@ -323,6 +323,13 @@
         "territories": {
             "overseas": "WELSH - Overseas",
             "unitedKingdom": "WELSH - In the United Kingdom"
+        },
+
+        "update": {
+            "usualResidentialAddress": {
+                "title": "WELSH - Do you need to update this partner's usual residential address?",
+                "hint": "WELSH - We cannot show you the usual residential address we currently hold"
+            }
         }
     },
 
