@@ -101,11 +101,6 @@ abstract class AbstractPartnerBuilder {
     return this;
   }
 
-  withUpdateUsualResidentialAddressRequired(updateUsualResidentialAddressRequired: boolean) {
-    this.data.update_usual_residential_address_required = updateUsualResidentialAddressRequired;
-    return this;
-  }
-
 }
 
 export default AbstractPartnerBuilder;
