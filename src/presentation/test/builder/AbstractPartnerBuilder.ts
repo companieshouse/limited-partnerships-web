@@ -42,7 +42,8 @@ abstract class AbstractPartnerBuilder {
     cease_date: "",
 
     etag: "",
-    kind: ""
+    kind: "",
+    update_usual_residential_address_required: undefined
   };
 
   withId(id: string) {
@@ -97,6 +98,11 @@ abstract class AbstractPartnerBuilder {
 
   withKind(kind: string) {
     this.data.kind = kind;
+    return this;
+  }
+
+  withUpdateUsualResidentialAddressRequired(updateUsualResidentialAddressRequired: boolean) {
+    this.data.update_usual_residential_address_required = updateUsualResidentialAddressRequired;
     return this;
   }
 

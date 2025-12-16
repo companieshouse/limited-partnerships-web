@@ -60,6 +60,21 @@ describe("Update Usual Residential Address Yes No Page", () => {
         expect(res.text).not.toContain("WELSH -");
       }
     });
+
+    it.each([
+      true,
+      false
+    ])("should load the update usual residential address yes no page with %s radio button checked", async (radioValue: boolean) => {
+      setLocalesEnabled(true);
+
+      generalPartner.data.update_usual_residential_address_required = radioValue;
+
+      const res = await request(app).get(`${URL}`);
+
+      expect(res.status).toBe(200);
+
+      expect(res.text).toContain(`value="${radioValue}" checked`);
+    });
   });
 
   describe("POST Update Usual Residential Address Yes No Page", () => {
