@@ -42,7 +42,8 @@ abstract class AbstractPartnerBuilder {
     cease_date: "",
 
     etag: "",
-    kind: ""
+    kind: "",
+    update_usual_residential_address_required: undefined
   };
 
   withId(id: string) {
