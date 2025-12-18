@@ -1,6 +1,12 @@
 import { NextFunction, Request, Response } from "express";
 import escape from "escape-html";
-import { Address, GeneralPartner, LimitedPartner, PartnerKind, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import {
+  Address,
+  GeneralPartner,
+  LimitedPartner,
+  PartnerKind,
+  PartnershipType
+} from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import AbstractController from "../AbstractController";
 import AddressService from "../../../application/service/AddressService";
@@ -10,18 +16,22 @@ import transitionAddressRouting from "./routing/transition/routing";
 import postTransitionAddressRouting from "./routing/postTransition/routing";
 
 import { Ids, Tokens } from "../../../domain/types";
-import AddressLookUpPageType from "./PageType";
-import CacheService from "../../../application/service/CacheService";
+import { getJourneyTypes } from "../../../utils";
 import { APPLICATION_CACHE_KEY, cookieOptions } from "../../../config/constants";
-import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import UIErrors from "../../../domain/entities/UIErrors";
+
+import AddressLookUpPageType from "./PageType";
 import { PageDefault, PageRouting, pageRoutingDefault } from "../PageRouting";
+import PageType from "../PageType";
+
+import CacheService from "../../../application/service/CacheService";
+import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
-import PageType from "../PageType";
+
 import { CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL } from "./url/registration";
 import { REVIEW_GENERAL_PARTNERS_URL } from "../registration/url";
-import { getJourneyTypes } from "../../../utils";
+import { UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL } from "../postTransition/url";
 
 class AddressLookUpController extends AbstractController {
   private static readonly LIMITED_PARTNERSHIP_POSTCODE_PAGES: Set<PageType | PageDefault> = new Set([
@@ -115,10 +125,18 @@ class AddressLookUpController extends AbstractController {
     };
   }
 
-  private conditionalBackLink(pageRouting: PageRouting, generalPartner: GeneralPartner, limitedPartner: LimitedPartner, ids: Ids) {
+  private conditionalBackLink(
+    pageRouting: PageRouting,
+    generalPartner: GeneralPartner,
+    limitedPartner: LimitedPartner,
+    ids: Ids
+  ) {
     const partner = generalPartner?.data ? generalPartner : limitedPartner;
 
-    if (partner?.data?.kind === PartnerKind.UPDATE_GENERAL_PARTNER_PERSON) {
+    if (
+      partner?.data?.kind === PartnerKind.UPDATE_GENERAL_PARTNER_PERSON &&
+      pageRouting.pageType === AddressLookUpPageType.territoryChoiceGeneralPartnerUsualResidentialAddress
+    ) {
       pageRouting.previousUrl = this.insertIdsInUrl(pageRouting.data?.previousUrlUpdateGeneralPartnerPerson, ids);
     }
   }
@@ -523,6 +541,12 @@ class AddressLookUpController extends AbstractController {
 
       if (generalPartner?.data?.service_address?.address_line_1) {
         pageRouting.nextUrl = super.insertIdsInUrl(pageRouting.data?.confirmAddressUrl, ids, request.url);
+      } else if (generalPartner?.data?.kind === PartnerKind.UPDATE_GENERAL_PARTNER_PERSON) {
+        pageRouting.nextUrl = super.insertIdsInUrl(
+          UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL,
+          ids,
+          request.url
+        );
       }
     }
   }

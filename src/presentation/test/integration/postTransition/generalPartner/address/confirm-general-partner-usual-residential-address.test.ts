@@ -1,4 +1,5 @@
 import request from "supertest";
+import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import app from "../../../app";
 import enTranslationText from "../../../../../../../locales/en/translations.json";
@@ -14,6 +15,8 @@ import {
   POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   TERRITORY_CHOICE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL
 } from "../../../../../controller/addressLookUp/url/postTransition";
+import { UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL } from "../../../../../controller/postTransition/url";
+
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import GeneralPartnerBuilder from "../../../../builder/GeneralPartnerBuilder";
@@ -174,6 +177,35 @@ describe("Confirm General Partner Usual Residential Address Page", () => {
         });
 
       const redirectUrl = getUrl(CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL);
+
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+    });
+
+    it(`should redirect to the ${UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL} url if kind is ${PartnerKind.UPDATE_GENERAL_PARTNER_PERSON}`, async () => {
+      const generalPartner = new GeneralPartnerBuilder()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .isPerson()
+        .withKind(PartnerKind.UPDATE_GENERAL_PARTNER_PERSON)
+        .build();
+
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: AddressPageType.confirmGeneralPartnerUsualResidentialAddress,
+          address: `{
+            "postal_code": "ST6 3LJ",
+            "premises": "4",
+            "address_line_1": "DUNCALF STREET",
+            "address_line_2": "",
+            "locality": "STOKE-ON-TRENT",
+            "country": "England"
+          }`
+        });
+
+      const redirectUrl = getUrl(UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL);
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
