@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { companyAuthentication } from "../middlewares";
+import { companyAuthentication, acspAuthentication } from "../middlewares";
 
 import { IDependencies } from "../config/IDependencies";
 
@@ -54,110 +54,130 @@ const transitionEndpoints = (router: Router, dependencies: IDependencies): void 
   );
   router.post(
     COMPANY_NUMBER_URL,
+    acspAuthentication,
     dependencies.limitedPartnershipTransitionController.checkCompanyNumber()
   );
 
   router.get(
     CONFIRM_LIMITED_PARTNERSHIP_URL,
+    acspAuthentication,
     companyAuthentication,
     dependencies.limitedPartnershipTransitionController.getConfirmPage()
   );
   router.post(
     CONFIRM_LIMITED_PARTNERSHIP_URL,
+    acspAuthentication,
     companyAuthentication,
     dependencies.limitedPartnershipTransitionController.limitedPartnershipConfirm()
   );
 
   router.get(
     EMAIL_URL,
+    acspAuthentication,
     companyAuthentication,
     dependencies.limitedPartnershipTransitionController.getPageRouting()
   );
   router.post(
     EMAIL_URL,
+    acspAuthentication,
     companyAuthentication,
     dependencies.limitedPartnershipTransitionController.sendPageData()
   );
 
   router.get(
     GENERAL_PARTNERS_URL,
+    acspAuthentication,
     companyAuthentication,
     dependencies.generalPartnerTransitionController.getGeneralPartner()
   );
 
   router.get(
     GENERAL_PARTNER_CHOICE_URL,
+    acspAuthentication,
     companyAuthentication,
     dependencies.generalPartnerTransitionController.getPageRouting()
   );
   router.post(
     GENERAL_PARTNER_CHOICE_URL,
+    acspAuthentication,
     companyAuthentication,
     dependencies.generalPartnerTransitionController.generalPartnerChoice()
   );
 
   router.get(
     ADD_GENERAL_PARTNER_PERSON_URL,
+    acspAuthentication,
     companyAuthentication,
     dependencies.generalPartnerTransitionController.getPageRouting()
   );
   router.post(
     ADD_GENERAL_PARTNER_PERSON_URL,
+    acspAuthentication,
     companyAuthentication,
     dependencies.generalPartnerTransitionController.createGeneralPartner()
   );
 
   router.get(
     ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL,
+    acspAuthentication,
     companyAuthentication,
     dependencies.generalPartnerTransitionController.getPageRouting()
   );
   router.post(
     ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL,
+    acspAuthentication,
     companyAuthentication,
     dependencies.generalPartnerTransitionController.sendPageData()
   );
 
   router.get(
     ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
+    acspAuthentication,
     companyAuthentication,
     dependencies.generalPartnerTransitionController.getPageRouting()
   );
   router.post(
     ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
+    acspAuthentication,
     companyAuthentication,
     dependencies.generalPartnerTransitionController.createGeneralPartner()
   );
 
   router.get(
     ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_ID_URL,
+    acspAuthentication,
     companyAuthentication,
     dependencies.generalPartnerTransitionController.getPageRouting()
   );
   router.post(
     ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_ID_URL,
+    acspAuthentication,
     companyAuthentication,
     dependencies.generalPartnerTransitionController.sendPageData()
   );
 
   router.get(
     REVIEW_GENERAL_PARTNERS_URL,
+    acspAuthentication,
     companyAuthentication,
     dependencies.generalPartnerTransitionController.getReviewPage()
   );
   router.post(
     REVIEW_GENERAL_PARTNERS_URL,
+    acspAuthentication,
     companyAuthentication,
     dependencies.generalPartnerTransitionController.postReviewPage()
   );
 
   router.get(
     REMOVE_GENERAL_PARTNER_URL,
+    acspAuthentication,
     companyAuthentication,
     dependencies.generalPartnerTransitionController.getPageRouting()
   );
   router.post(
     REMOVE_GENERAL_PARTNER_URL,
+    acspAuthentication,
     companyAuthentication,
     dependencies.generalPartnerTransitionController.postRemovePage()
   );
@@ -252,7 +272,7 @@ const transitionEndpoints = (router: Router, dependencies: IDependencies): void 
   );
   router.post(
     CHECK_YOUR_ANSWERS_URL,
-    companyAuthentication,
+    companyAuthentication, acspAuthentication,
     dependencies.limitedPartnershipTransitionController.postCheckYourAnswers()
   );
 };
