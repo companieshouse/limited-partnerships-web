@@ -1,0 +1,51 @@
+{#
+  Reusable yes/no radio button component.
+
+  Expected props.data fields:
+  - fieldName: The form field name (e.g., "update_usual_residential_address_required")
+  - generalPartner or limitedPartner: Partner data containing the field value for replay
+
+  Expected template variables:
+  - pageTitle: The page title (set by parent template)
+  - titleHint: The hint text (set by parent template)
+#}
+
+{# Determine current value from partner data using dynamic field name #}
+{% if props.data.generalPartner %}
+  {% set currentValue = props.data.generalPartner.data[props.data.fieldName] %}
+{% elif props.data.limitedPartner %}
+  {% set currentValue = props.data.limitedPartner.data[props.data.fieldName] %}
+{% endif %}
+
+{{ govukRadios({
+  classes: "govuk-radios--inline",
+  name: props.data.fieldName,
+  fieldset: {
+    legend: {
+      text: pageTitle,
+      isPageHeading: true,
+      classes: "govuk-fieldset__legend--xl"
+    }
+  },
+  hint: {
+    text: titleHint
+  },
+  items: [
+    {
+      value: "true",
+      text: i18n.yesAndNo.yes,
+      checked: currentValue === true,
+      attributes: {
+        "required": true
+      }
+    },
+    {
+      value: "false",
+      text: i18n.yesAndNo.no,
+      checked: currentValue === false,
+      attributes: {
+        "required": true
+      }
+    }
+  ]
+}) }}

@@ -1,11 +1,14 @@
 {% extends "layout.njk" %}
 
 {#
-  Update address yes/no template - now uses reusable include.
-  Props injected via routing config:
-  - props.data.titleKey: i18n key for title/hint lookup
-  - props.data.fieldName: Form field name
-  - props.data.trackingLabel: Piwik tracking label
+  Generic yes/no template for address update questions.
+
+  Expected props.data fields:
+  - titleKey: Key to lookup in i18n.address.update (e.g., "usualResidentialAddress", "correspondenceAddress")
+  - fieldName: The form field name
+  - currentValue: Boolean for replay
+  - trackingLabel: Piwik tracking label
+  - partnerType: "generalPartner" or "limitedPartner" (defaults to generalPartner)
 #}
 
 {% set addressType = i18n.address.update[props.data.titleKey] %}
@@ -21,7 +24,11 @@
 
         {% include "includes/csrf_token.njk" %}
 
-        {% include "includes/general-partner-name.njk" %}
+        {% if props.data.partnerType === "limitedPartner" %}
+          {% include "includes/limited-partner-name.njk" %}
+        {% else %}
+          {% include "includes/general-partner-name.njk" %}
+        {% endif %}
 
         {% include "includes/yes-no-radios.njk" %}
 

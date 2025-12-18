@@ -501,13 +501,13 @@ abstract class PartnerController extends AbstractController {
       return;
     }
 
-    // handle post-transition update usual residential address yes/no page
-    const { ids, pageType } = super.extract(request);
-    if (pageType === PostTransitionPageType.updateUsualResidentialAddressYesNo) {
-      let nextUrl = pageRouting.data?.nextYesUrl;
-      if (request.body.update_usual_residential_address_required === "false") {
-        nextUrl = pageRouting.data?.nextNoUrl;
-      }
+    // handle post-transition yes/no pages (URA, correspondence address, etc.)
+    const { ids } = super.extract(request);
+    const { nextYesUrl, nextNoUrl, fieldName } = pageRouting.data ?? {};
+    const isYesNoPage = nextYesUrl && nextNoUrl && fieldName;
+
+    if (isYesNoPage) {
+      const nextUrl = request.body[fieldName] === "false" ? nextNoUrl : nextYesUrl;
       pageRouting.nextUrl = this.insertIdsInUrl(nextUrl, ids, request.url);
     }
   }
