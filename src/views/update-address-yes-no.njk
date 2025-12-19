@@ -1,0 +1,47 @@
+{% extends "layout.njk" %}
+
+{#
+  Generic yes/no template for address update questions.
+
+  Expected props.data fields:
+  - titleKey: Key to lookup in i18n.address.update (e.g., "usualResidentialAddress", "correspondenceAddress")
+  - fieldName: The form field name
+  - currentValue: Boolean for replay
+  - trackingLabel: Piwik tracking label
+  - partnerType: "generalPartner" or "limitedPartner" (defaults to generalPartner)
+#}
+
+{% set addressType = i18n.address.update[props.data.titleKey] %}
+{% set pageTitle = addressType.title %}
+{% set titleHint = addressType.hint %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form class="form" method="post">
+        <input type="hidden" name="pageType" value={{ props.pageType }}>
+
+        {% include "includes/csrf_token.njk" %}
+
+        {% if props.data.partnerType === "limitedPartner" %}
+          {% include "includes/limited-partner-name.njk" %}
+        {% else %}
+          {% include "includes/general-partner-name.njk" %}
+        {% endif %}
+
+        {% include "includes/yes-no-radios.njk" %}
+
+        {{ govukButton({
+          text: i18n.buttons.continue,
+          attributes: {
+              "id": "submit",
+              "onclick": "_paq.push(['trackEvent', 'Limited Partnerships', '" + props.data.trackingLabel + "', document.querySelector('input[name=" + props.data.fieldName + "]:checked').nextElementSibling.innerHTML])"
+          }
+        }) }}
+
+      </form>
+    </div>
+  </div>
+
+{% endblock %}

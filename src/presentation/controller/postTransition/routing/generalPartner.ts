@@ -96,7 +96,10 @@ const postTransitionRoutingUpdateUsualResidentialAddressYesNo = {
   pageType: PostTransitionPageType.updateUsualResidentialAddressYesNo,
   data: {
     nextYesUrl: TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-    nextNoUrl: url.UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL
+    nextNoUrl: url.UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL,
+    titleKey: "usualResidentialAddress",
+    fieldName: "update_usual_residential_address_required",
+    trackingLabel: "update-usual-residential-address-yes-no"
   }
 };
 

@@ -25,7 +25,11 @@ import transitionRouting from "../transition/Routing";
 import postTransitionRouting from "../postTransition/routing";
 
 import { formatDate } from "../../../utils/date-format";
-import { CEASE_DATE_TEMPLATE } from "../../../config/constants";
+import {
+  CEASE_DATE_TEMPLATE,
+  UPDATE_ADDRESS_YES_NO_TEMPLATE,
+  UPDATE_ADDRESS_YES_NO_TYPE_SUFFIX
+} from "../../../config/constants";
 
 export enum PartnerType {
   generalPartner = "generalPartner",
@@ -59,8 +63,13 @@ abstract class PartnerController extends AbstractController {
 
         const limitedPartner = this.formatPartnerDatesAndSetPreviousUrl(lp, pageRouting, request, response.locals.i18n);
 
+        let template = super.templateName(pageRouting.currentUrl);
+        if (pageRouting.currentUrl.includes(UPDATE_ADDRESS_YES_NO_TYPE_SUFFIX)) {
+          template = UPDATE_ADDRESS_YES_NO_TEMPLATE;
+        }
+
         response.render(
-          super.templateName(pageRouting.currentUrl),
+          template,
           super.makeProps(pageRouting, { limitedPartnership, generalPartner, limitedPartner }, null)
         );
       } catch (error) {
@@ -501,13 +510,13 @@ abstract class PartnerController extends AbstractController {
       return;
     }
 
-    // handle post-transition update usual residential address yes/no page
-    const { ids, pageType } = super.extract(request);
-    if (pageType === PostTransitionPageType.updateUsualResidentialAddressYesNo) {
-      let nextUrl = pageRouting.data?.nextYesUrl;
-      if (request.body.update_usual_residential_address_required === "false") {
-        nextUrl = pageRouting.data?.nextNoUrl;
-      }
+    // handle post-transition yes/no pages (URA, correspondence address, etc.)
+    const { ids } = super.extract(request);
+    const { nextYesUrl, nextNoUrl, fieldName } = pageRouting.data ?? {};
+    const isYesNoPage = nextYesUrl && nextNoUrl && fieldName;
+
+    if (isYesNoPage) {
+      const nextUrl = request.body[fieldName] === "false" ? nextNoUrl : nextYesUrl;
       pageRouting.nextUrl = this.insertIdsInUrl(nextUrl, ids, request.url);
     }
   }
