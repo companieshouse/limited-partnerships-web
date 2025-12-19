@@ -25,7 +25,11 @@ import transitionRouting from "../transition/Routing";
 import postTransitionRouting from "../postTransition/routing";
 
 import { formatDate } from "../../../utils/date-format";
-import { CEASE_DATE_TEMPLATE } from "../../../config/constants";
+import {
+  CEASE_DATE_TEMPLATE,
+  UPDATE_ADDRESS_YES_NO_TEMPLATE,
+  UPDATE_ADDRESS_YES_NO_TYPE_SUFFIX
+} from "../../../config/constants";
 
 export enum PartnerType {
   generalPartner = "generalPartner",
@@ -59,8 +63,13 @@ abstract class PartnerController extends AbstractController {
 
         const limitedPartner = this.formatPartnerDatesAndSetPreviousUrl(lp, pageRouting, request, response.locals.i18n);
 
+        let template = super.templateName(pageRouting.currentUrl);
+        if (pageRouting.currentUrl.includes(UPDATE_ADDRESS_YES_NO_TYPE_SUFFIX)) {
+          template = UPDATE_ADDRESS_YES_NO_TEMPLATE;
+        }
+
         response.render(
-          super.templateName(pageRouting.currentUrl),
+          template,
           super.makeProps(pageRouting, { limitedPartnership, generalPartner, limitedPartner }, null)
         );
       } catch (error) {

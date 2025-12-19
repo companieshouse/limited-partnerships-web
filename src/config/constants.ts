@@ -110,6 +110,10 @@ export const DATE_OF_UPDATE_TYPE_PREFIX = "when-did";
 export const DATE_OF_UPDATE_TEMPLATE = "date-of-update";
 export const CEASE_DATE_TEMPLATE = "cease-date";
 
+// Update address yes-no
+export const UPDATE_ADDRESS_YES_NO_TYPE_SUFFIX = "address-yes-no";
+export const UPDATE_ADDRESS_YES_NO_TEMPLATE = "update-address-yes-no";
+
 // Check your answer
 export const CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX = "change-check-your-answers";
 export const CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE = "limited-partnership-change-check-your-answers";
