@@ -139,6 +139,13 @@ class AddressLookUpController extends AbstractController {
     ) {
       pageRouting.previousUrl = this.insertIdsInUrl(pageRouting.data?.previousUrlUpdateGeneralPartnerPerson, ids);
     }
+
+    if (
+      partner?.data?.kind === PartnerKind.UPDATE_GENERAL_PARTNER_PERSON &&
+      pageRouting.pageType === AddressLookUpPageType.territoryChoiceGeneralPartnerCorrespondenceAddress
+    ) {
+      pageRouting.previousUrl = this.insertIdsInUrl(pageRouting.data?.previousUrlUpdateGeneralPartnerPerson, ids);
+    }
   }
 
   postcodeValidation() {

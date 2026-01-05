@@ -38,12 +38,22 @@ abstract class AbstractPartnerBuilder {
       region: "region",
       country: "England"
     },
+    correspondence_address: {
+      postal_code: "ST6 3LJ",
+      premises: "4",
+      address_line_1: "correspondence address line 1",
+      address_line_2: "line 2",
+      locality: "stoke-on-trent",
+      region: "region",
+      country: "England"
+    },
 
     cease_date: "",
 
     etag: "",
     kind: "",
-    update_usual_residential_address_required: undefined
+    update_usual_residential_address_required: undefined,
+    update_correspondence_address_required: undefined
   };
 
   withId(id: string) {
@@ -73,6 +83,11 @@ abstract class AbstractPartnerBuilder {
 
   withUsualResidentialAddress(usualResidentialAddress: Record<string, any> | null) {
     this.data.usual_residential_address = usualResidentialAddress;
+    return this;
+  }
+
+  withCorrespondenceAddress(correspondenceAddress: Record<string, any> | null) {
+    this.data.correspondence_address = correspondenceAddress;
     return this;
   }
 
