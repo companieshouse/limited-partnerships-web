@@ -5,7 +5,8 @@ import {
   CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
-  TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
+  TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL
 } from "../../addressLookUp/url/postTransition";
 
 const postTransitionRoutingGeneralPartnerChoice = {
@@ -103,6 +104,20 @@ const postTransitionRoutingUpdateUsualResidentialAddressYesNo = {
   }
 };
 
+const postTransitionRoutingUpdateCorrespondenceAddressYesNo = {
+  previousUrl: url.UPDATE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
+  currentUrl: url.UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL,
+  nextUrl: "/",
+  pageType: PostTransitionPageType.updateCorrespondenceAddressYesNo,
+  data: {
+    nextYesUrl: ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
+    nextNoUrl: "/",
+    titleKey: "correspondenceAddress",
+    fieldName: "update_correspondence_address_required",
+    trackingLabel: "update-correspondence-address-yes-no"
+  }
+};
+
 const generalPartnerRouting = [
   postTransitionRoutingGeneralPartnerChoice,
   postTransitionRoutingAddGeneralPartnerLegalEntity,
@@ -116,7 +131,8 @@ const generalPartnerRouting = [
   postTransitionRoutingRemoveGeneralPartnerLegalEntityCheckYourAnswers,
 
   postTransitionRoutingUpdateGeneralPartnerPerson,
-  postTransitionRoutingUpdateUsualResidentialAddressYesNo
+  postTransitionRoutingUpdateUsualResidentialAddressYesNo,
+  postTransitionRoutingUpdateCorrespondenceAddressYesNo
 ];
 
 export default generalPartnerRouting;
