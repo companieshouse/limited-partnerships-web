@@ -38,15 +38,7 @@ abstract class AbstractPartnerBuilder {
       region: "region",
       country: "England"
     },
-    correspondence_address: {
-      postal_code: "ST6 3LJ",
-      premises: "4",
-      address_line_1: "correspondence address line 1",
-      address_line_2: "line 2",
-      locality: "stoke-on-trent",
-      region: "region",
-      country: "England"
-    },
+    correspondence_address: undefined,
 
     cease_date: "",
 
