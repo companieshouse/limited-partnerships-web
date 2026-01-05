@@ -330,6 +330,10 @@
             "usualResidentialAddress": {
                 "title": "Do you need to update this partner's usual residential address?",
                 "hint": "We cannot show you the usual residential address we currently hold"
+            },
+            "correspondenceAddress": {
+                "title": "Do you need to update this partner's correspondence address?",
+                "hint": "We cannot show you the correspondence address we currently hold"
             }
         }
     },

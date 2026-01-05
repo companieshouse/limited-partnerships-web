@@ -52,7 +52,8 @@ import {
   REDESIGNATE_TO_PFLP_URL,
   UPDATE_GENERAL_PARTNER_PERSON_URL,
   UPDATE_GENERAL_PARTNER_PERSON_WITH_IDS_URL,
-  UPDATE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL
+  UPDATE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
+  UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL
 } from "../presentation/controller/postTransition/url";
 import {
   TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_LEGAL_ENTITY,
@@ -658,6 +659,17 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
   );
   router.post(
     UPDATE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.sendUpdatePageData()
+  );
+
+  router.get(
+    UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.getPageRouting()
+  );
+  router.post(
+    UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL,
     companyAuthentication,
     dependencies.generalPartnerPostTransitionController.sendUpdatePageData()
   );

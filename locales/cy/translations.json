@@ -329,6 +329,10 @@
             "usualResidentialAddress": {
                 "title": "WELSH - Do you need to update this partner's usual residential address?",
                 "hint": "WELSH - We cannot show you the usual residential address we currently hold"
+            },
+             "correspondenceAddress": {
+                "title": "WELSH - Do you need to update this partner's correspondence address?",
+                "hint": "WELSH - We cannot show you the correspondence address we currently hold"
             }
         }
     },
