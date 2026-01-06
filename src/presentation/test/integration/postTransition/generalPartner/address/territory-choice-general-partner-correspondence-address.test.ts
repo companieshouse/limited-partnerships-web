@@ -14,7 +14,6 @@ import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import GeneralPartnerBuilder, { generalPartnerLegalEntity, generalPartnerPerson } from "../../../../builder/GeneralPartnerBuilder";
 import { GeneralPartner, PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
-import { UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL } from "../../../../../controller/postTransition/url";
 
 describe("General Partner Correspondence Address Territory Choice", () => {
   const URL = getUrl(TERRITORY_CHOICE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL);
@@ -85,14 +84,11 @@ describe("General Partner Correspondence Address Territory Choice", () => {
       );
     });
 
-    it.each([
-      ["update", PartnerKind.UPDATE_GENERAL_PARTNER_PERSON, UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL],
-      ["add", PartnerKind.ADD_GENERAL_PARTNER_PERSON, CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL]
-    ])("should contain the correct back link when on %s general partner person journey", async (_description: string, partnerKind: PartnerKind, backUrl: string) => {
+    it("should contain the correct back link when on add general partner person journey", async () => {
       const generalPartner = new GeneralPartnerBuilder()
         .isPerson()
         .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .withKind(partnerKind)
+        .withKind(PartnerKind.ADD_GENERAL_PARTNER_PERSON)
         .build();
 
       appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
@@ -101,7 +97,7 @@ describe("General Partner Correspondence Address Territory Choice", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        getUrl(backUrl)
+        getUrl(CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL)
       );
     });
   });

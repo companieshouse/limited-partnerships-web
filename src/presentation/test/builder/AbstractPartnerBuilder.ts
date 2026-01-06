@@ -38,7 +38,7 @@ abstract class AbstractPartnerBuilder {
       region: "region",
       country: "England"
     },
-    correspondence_address: undefined,
+    service_address: undefined,
 
     cease_date: "",
 
@@ -78,8 +78,8 @@ abstract class AbstractPartnerBuilder {
     return this;
   }
 
-  withCorrespondenceAddress(correspondenceAddress: Record<string, any> | null) {
-    this.data.correspondence_address = correspondenceAddress;
+  withServiceAddress(serviceAddress: Record<string, any> | null) {
+    this.data.service_address = serviceAddress;
     return this;
   }
 

@@ -142,7 +142,8 @@ class AddressLookUpController extends AbstractController {
 
     if (
       partner?.data?.kind === PartnerKind.UPDATE_GENERAL_PARTNER_PERSON &&
-      pageRouting.pageType === AddressLookUpPageType.territoryChoiceGeneralPartnerCorrespondenceAddress
+      (pageRouting.pageType === AddressLookUpPageType.enterGeneralPartnerCorrespondenceAddress ||
+        pageRouting.pageType === AddressLookUpPageType.confirmGeneralPartnerCorrespondenceAddress)
     ) {
       pageRouting.previousUrl = this.insertIdsInUrl(pageRouting.data?.previousUrlUpdateGeneralPartnerPerson, ids);
     }
