@@ -133,19 +133,16 @@ class AddressLookUpController extends AbstractController {
   ) {
     const partner = generalPartner?.data ? generalPartner : limitedPartner;
 
-    if (
-      partner?.data?.kind === PartnerKind.UPDATE_GENERAL_PARTNER_PERSON &&
-      pageRouting.pageType === AddressLookUpPageType.territoryChoiceGeneralPartnerUsualResidentialAddress
-    ) {
-      pageRouting.previousUrl = this.insertIdsInUrl(pageRouting.data?.previousUrlUpdateGeneralPartnerPerson, ids);
-    }
-
-    if (
-      partner?.data?.kind === PartnerKind.UPDATE_GENERAL_PARTNER_PERSON &&
-      (pageRouting.pageType === AddressLookUpPageType.enterGeneralPartnerCorrespondenceAddress ||
-        pageRouting.pageType === AddressLookUpPageType.confirmGeneralPartnerCorrespondenceAddress)
-    ) {
-      pageRouting.previousUrl = this.insertIdsInUrl(pageRouting.data?.previousUrlUpdateGeneralPartnerPerson, ids);
+    if (partner?.data?.kind === PartnerKind.UPDATE_GENERAL_PARTNER_PERSON) {
+      if (pageRouting.pageType === AddressLookUpPageType.territoryChoiceGeneralPartnerUsualResidentialAddress) {
+        pageRouting.previousUrl = this.insertIdsInUrl(pageRouting.data?.previousUrlUpdateGeneralPartnerPerson, ids);
+      }
+      if (pageRouting.pageType === AddressLookUpPageType.enterGeneralPartnerCorrespondenceAddress) {
+        pageRouting.previousUrl = this.insertIdsInUrl(pageRouting.data?.previousUrlUpdateGeneralPartnerPerson, ids);
+      }
+      if (pageRouting.pageType === AddressLookUpPageType.confirmGeneralPartnerCorrespondenceAddress) {
+        pageRouting.previousUrl = this.insertIdsInUrl(pageRouting.data?.previousUrlUpdateGeneralPartnerPerson, ids);
+      }
     }
   }
 
