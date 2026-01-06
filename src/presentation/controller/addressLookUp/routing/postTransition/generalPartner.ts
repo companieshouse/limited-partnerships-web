@@ -148,7 +148,7 @@ const postTransitionAddressRoutingConfirmGeneralPartnerCorrespondenceAddress = {
   data: {
     ...correspondenceAddressCacheKeys,
     enterManualAddressPageType: AddressPageType.enterGeneralPartnerCorrespondenceAddress,
-    previousUrlUpdateGeneralPartnerPerson: url.ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL
+    previousUrlUpdateGeneralPartnerPerson: UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL
   }
 };
 
