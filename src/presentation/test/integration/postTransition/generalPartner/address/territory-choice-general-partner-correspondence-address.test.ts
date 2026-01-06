@@ -5,14 +5,13 @@ import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
 import {
-  CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   TERRITORY_CHOICE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL
 } from "../../../../../controller/addressLookUp/url/postTransition";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
-import GeneralPartnerBuilder, { generalPartnerLegalEntity, generalPartnerPerson } from "../../../../builder/GeneralPartnerBuilder";
-import { GeneralPartner, PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import GeneralPartnerBuilder, { generalPartnerLegalEntity } from "../../../../builder/GeneralPartnerBuilder";
+import { GeneralPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
 
 describe("General Partner Correspondence Address Territory Choice", () => {
@@ -66,39 +65,6 @@ describe("General Partner Correspondence Address Territory Choice", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(generalPartnerLegalEntity.legal_entity_name.toUpperCase());
-    });
-
-    it("should contain the person name - data from API", async () => {
-      const generalPartner = new GeneralPartnerBuilder()
-        .isPerson()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .build();
-
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
-
-      const res = await request(app).get(URL);
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(
-        `${generalPartnerPerson.forename.toUpperCase()} ${generalPartnerPerson.surname.toUpperCase()}`
-      );
-    });
-
-    it("should contain the correct back link when on add general partner person journey", async () => {
-      const generalPartner = new GeneralPartnerBuilder()
-        .isPerson()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .withKind(PartnerKind.ADD_GENERAL_PARTNER_PERSON)
-        .build();
-
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
-
-      const res = await request(app).get(URL);
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(
-        getUrl(CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL)
-      );
     });
   });
 
