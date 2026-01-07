@@ -111,10 +111,22 @@ const postTransitionRoutingUpdateCorrespondenceAddressYesNo = {
   pageType: PostTransitionPageType.updateCorrespondenceAddressYesNo,
   data: {
     nextYesUrl: ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
-    nextNoUrl: "/",
+    nextNoUrl: url.WHEN_DID_GENERAL_PARTNER_DETAILS_CHANGE_URL,
     titleKey: "correspondenceAddress",
     fieldName: "update_correspondence_address_required",
     trackingLabel: "update-correspondence-address-yes-no"
+  }
+};
+
+const GENERAL_PARTNER = "generalPartner";
+
+const postTransitionRoutingGeneralPartnerChange = {
+  previousUrl: url.UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL,
+  currentUrl: url.WHEN_DID_GENERAL_PARTNER_DETAILS_CHANGE_URL,
+  nextUrl: url.GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL,
+  pageType: PostTransitionPageType.whenDidGeneralPartnerDetailsChange,
+  data: {
+    titleKey: GENERAL_PARTNER
   }
 };
 
@@ -132,7 +144,8 @@ const generalPartnerRouting = [
 
   postTransitionRoutingUpdateGeneralPartnerPerson,
   postTransitionRoutingUpdateUsualResidentialAddressYesNo,
-  postTransitionRoutingUpdateCorrespondenceAddressYesNo
+  postTransitionRoutingUpdateCorrespondenceAddressYesNo,
+  postTransitionRoutingGeneralPartnerChange
 ];
 
 export default generalPartnerRouting;

@@ -53,7 +53,9 @@ enum PostTransitionPageType {
   updateGeneralPartnerPerson = "update-general-partner-person",
   updateGeneralPartnerLegalEntity = "update-general-partner-legal-entity",
   updateUsualResidentialAddressYesNo = `update-usual-residential-${UPDATE_ADDRESS_YES_NO_TYPE_SUFFIX}`,
-  updateCorrespondenceAddressYesNo = `update-correspondence-${UPDATE_ADDRESS_YES_NO_TYPE_SUFFIX}`
+  updateCorrespondenceAddressYesNo = `update-correspondence-${UPDATE_ADDRESS_YES_NO_TYPE_SUFFIX}`,
+
+  whenDidGeneralPartnerDetailsChange = `${DATE_OF_UPDATE_TYPE_PREFIX}-general-partner-details-change`
 }
 
 const CeaseDatePageTypes: string[] = [

@@ -554,6 +554,9 @@
       },
       "term" : {
           "title": "When did the term change?"
+      },
+      "generalPartner" : {
+          "title": "When did these details change?"
       }
     },
 
