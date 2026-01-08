@@ -553,6 +553,9 @@
       },
       "term" : {
           "title": "WELSH - When did the term change?"
+      },
+      "generalPartner" : {
+          "title": "WELSH - When did these details change?"
       }
     },
 

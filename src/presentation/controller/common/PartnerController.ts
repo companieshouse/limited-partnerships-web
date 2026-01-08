@@ -27,6 +27,7 @@ import postTransitionRouting from "../postTransition/routing";
 import { formatDate } from "../../../utils/date-format";
 import {
   CEASE_DATE_TEMPLATE,
+  DATE_OF_UPDATE_TEMPLATE,
   UPDATE_ADDRESS_YES_NO_TEMPLATE,
   UPDATE_ADDRESS_YES_NO_TYPE_SUFFIX
 } from "../../../config/constants";
@@ -424,6 +425,13 @@ abstract class PartnerController extends AbstractController {
             request.body,
             partner
           );
+
+          if (result.errors.errors.errorList[0].href === "#date_of_update") {
+            const errorMessage = response.locals.i18n.errorMessages.dateOfUpdate[pageRouting?.data?.titleKey];
+            result.errors.errors.errorList[0].text = errorMessage;
+            result.errors.errors.date_of_update.text = errorMessage;
+            return response.render(DATE_OF_UPDATE_TEMPLATE, super.makeProps(pageRouting, renderData, result.errors));
+          }
 
           response.render(super.templateName(url), super.makeProps(pageRouting, renderData, result.errors));
 
