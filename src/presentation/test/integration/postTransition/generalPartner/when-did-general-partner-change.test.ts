@@ -2,15 +2,17 @@ import request from "supertest";
 
 import enTranslationText from "../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../locales/cy/translations.json";
+import enErrorMessages from "../../../../../../locales/en/errors.json";
 
 import app from "../../app";
 
 import GeneralPartnerBuilder from "../../../../../presentation/test/builder/GeneralPartnerBuilder";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled } from "../../../utils";
+import { getUrl, setLocalesEnabled, toEscapedHtml } from "../../../utils";
 import CompanyProfileBuilder from "../../../../../presentation/test/builder/CompanyProfileBuilder";
 import { WHEN_DID_GENERAL_PARTNER_DETAILS_CHANGE_URL, GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL } from "presentation/controller/postTransition/url";
 import PostTransitionPageType from "../../../../controller/postTransition/pageType";
+import { ApiErrors } from "domain/entities/UIErrors";
 
 describe("General partner change date page", () => {
   const URL = getUrl(WHEN_DID_GENERAL_PARTNER_DETAILS_CHANGE_URL);
@@ -70,6 +72,31 @@ describe("General partner change date page", () => {
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+    });
+
+    it("should display the specifc error message rather than the original when the date is before the incorporation date", async () => {
+      const generalPartner = new GeneralPartnerBuilder()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .isPerson()
+        .withDateOfUpdate("2024-10-10")
+        .build();
+
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+
+      const originalErrorMessage = "Default";
+      const expectedErrorMessage = toEscapedHtml(enErrorMessages.errorMessages.dateOfUpdate.term);
+      const apiErrors: ApiErrors = {
+        errors: { date_of_update: originalErrorMessage }
+      };
+      appDevDependencies.generalPartnerGateway.feedErrors(apiErrors);
+
+      const res = await request(app).post(URL).send({
+        pageType: PostTransitionPageType.whenDidTheTermChange
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).not.toContain(originalErrorMessage);
+      expect(res.text).toContain(expectedErrorMessage);
     });
   });
 });
