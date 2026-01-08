@@ -427,8 +427,9 @@ abstract class PartnerController extends AbstractController {
           );
 
           if (result.errors.errors.errorList[0].href === "#date_of_update") {
-            result.errors.errors.errorList[0].text = response.locals.i18n.errorMessages.dateOfUpdate[pageRouting?.data?.titleKey];
-            result.errors.errors.date_of_update.text = response.locals.i18n.errorMessages.dateOfUpdate[pageRouting?.data?.titleKey];
+            const errorMessage = response.locals.i18n.errorMessages.dateOfUpdate[pageRouting?.data?.titleKey];
+            result.errors.errors.errorList[0].text = errorMessage;
+            result.errors.errors.date_of_update.text = errorMessage;
             return response.render(DATE_OF_UPDATE_TEMPLATE, super.makeProps(pageRouting, renderData, result.errors));
           }
 
