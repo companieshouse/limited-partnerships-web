@@ -20,7 +20,8 @@
             "registeredOfficeAddress": "WELSH - Date the registered office address changed must be the same as or after limited partnership’s registration date",
             "principalPlaceOfBusinessAddress": "WELSH - Date the principal place of business changed must be the same as or after limited partnership’s registration date’",
             "partnershipName": "WELSH - Date the partnership name changed must be the same as or after limited partnership’s registration date",
-            "term": "WELSH - Date the term changed must be the same as or after limited partnership’s registration date"
+            "term": "WELSH - Date the term changed must be the same as or after limited partnership’s registration date",
+            "generalPartner": "WELSH - Date the general partner changed must be the same as or after limited partnership's registration date"
         }
     }
 }
