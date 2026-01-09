@@ -20,6 +20,8 @@ import GeneralPartnerBuilder, {
   generalPartnerPerson
 } from "../../../../builder/GeneralPartnerBuilder";
 import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
+import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL } from "../../../../../controller/postTransition/url";
 
 describe("Enter Correspondence Address Page", () => {
   const URL = getUrl(ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL);
@@ -130,6 +132,22 @@ describe("Enter Correspondence Address Page", () => {
       const res = await request(app).get(URL);
       expect(res.status).toBe(200);
 
+      expect(res.text).toContain(backLinkUrl);
+    });
+
+    it("should have back link to yes/no page when partner kind is UPDATE_GENERAL_PARTNER_PERSON", async () => {
+      const updateGeneralPartner = new GeneralPartnerBuilder()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .isPerson()
+        .withKind(PartnerKind.UPDATE_GENERAL_PARTNER_PERSON)
+        .build();
+
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([updateGeneralPartner]);
+
+      const backLinkUrl = getUrl(UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL);
+      const res = await request(app).get(URL);
+
+      expect(res.status).toBe(200);
       expect(res.text).toContain(backLinkUrl);
     });
   });

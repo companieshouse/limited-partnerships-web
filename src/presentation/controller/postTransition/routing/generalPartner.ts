@@ -113,7 +113,7 @@ const postTransitionRoutingUpdateCorrespondenceAddressYesNo = {
     nextYesUrl: ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
     nextNoUrl: url.WHEN_DID_GENERAL_PARTNER_DETAILS_CHANGE_URL,
     titleKey: "correspondenceAddress",
-    fieldName: "update_correspondence_address_required",
+    fieldName: "update_service_address_required",
     trackingLabel: "update-correspondence-address-yes-no"
   }
 };

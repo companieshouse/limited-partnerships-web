@@ -38,12 +38,14 @@ abstract class AbstractPartnerBuilder {
       region: "region",
       country: "England"
     },
+    service_address: undefined,
 
     cease_date: "",
 
     etag: "",
     kind: "",
-    update_usual_residential_address_required: undefined
+    update_usual_residential_address_required: undefined,
+    update_service_address_required: undefined
   };
 
   withId(id: string) {
@@ -73,6 +75,11 @@ abstract class AbstractPartnerBuilder {
 
   withUsualResidentialAddress(usualResidentialAddress: Record<string, any> | null) {
     this.data.usual_residential_address = usualResidentialAddress;
+    return this;
+  }
+
+  withServiceAddress(serviceAddress: Record<string, any> | null) {
+    this.data.service_address = serviceAddress;
     return this;
   }
 
