@@ -15,7 +15,7 @@ import {
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import GeneralPartnerBuilder from "../../../../builder/GeneralPartnerBuilder";
-import { GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/postTransition/url";
+import { GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL, WHEN_DID_GENERAL_PARTNER_DETAILS_CHANGE_URL } from "../../../../../controller/postTransition/url";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 describe("Confirm General Partner Correspondence Address Page", () => {
@@ -128,6 +128,35 @@ describe("Confirm General Partner Correspondence Address Page", () => {
         });
 
       const redirectUrl = getUrl(GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL);
+
+      expect(res.status).toBe(302);
+
+      expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+    });
+
+    it("should redirect to the next page for the update journey", async () => {
+      const generalPartnerUpdate = new GeneralPartnerBuilder()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .isPerson()
+        .withKind(PartnerKind.UPDATE_GENERAL_PARTNER_PERSON)
+        .build();
+
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartnerUpdate]);
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: AddressPageType.confirmGeneralPartnerCorrespondenceAddress,
+          address: `{
+            "postal_code": "ST6 3LJ",
+            "premises": "4",
+            "address_line_1": "DUNCALF STREET",
+            "address_line_2": "",
+            "locality": "STOKE-ON-TRENT",
+            "country": "England"
+          }`
+        });
+
+      const redirectUrl = getUrl(WHEN_DID_GENERAL_PARTNER_DETAILS_CHANGE_URL);
 
       expect(res.status).toBe(302);
 
