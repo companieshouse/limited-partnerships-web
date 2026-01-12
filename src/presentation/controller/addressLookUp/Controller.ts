@@ -31,7 +31,7 @@ import LimitedPartnerService from "../../../application/service/LimitedPartnerSe
 
 import { CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL } from "./url/registration";
 import { REVIEW_GENERAL_PARTNERS_URL } from "../registration/url";
-import { UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL } from "../postTransition/url";
+import { UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL, WHEN_DID_GENERAL_PARTNER_DETAILS_CHANGE_URL } from "../postTransition/url";
 
 class AddressLookUpController extends AbstractController {
   private static readonly LIMITED_PARTNERSHIP_POSTCODE_PAGES: Set<PageType | PageDefault> = new Set([
@@ -535,18 +535,33 @@ class AddressLookUpController extends AbstractController {
       ) {
         pageRouting.nextUrl = super.insertIdsInUrl(REVIEW_GENERAL_PARTNERS_URL, ids, request.url);
       }
-    } else if (pageRouting.pageType === AddressLookUpPageType.confirmGeneralPartnerUsualResidentialAddress) {
-      const generalPartner = await this.generalPartnerService.getGeneralPartner(
-        tokens,
-        ids.transactionId,
-        ids.generalPartnerId
-      );
+    }
+    await this.handleConditionalNextUrlForGeneralPartners(tokens, ids, pageRouting, request);
+  }
 
+  private async handleConditionalNextUrlForGeneralPartners(tokens: Tokens, ids: Ids, pageRouting: PageRouting, request: Request) {
+    const generalPartner = await this.generalPartnerService.getGeneralPartner(
+      tokens,
+      ids.transactionId,
+      ids.generalPartnerId
+    );
+
+    if (pageRouting.pageType === AddressLookUpPageType.confirmGeneralPartnerUsualResidentialAddress) {
       if (generalPartner?.data?.service_address?.address_line_1) {
         pageRouting.nextUrl = super.insertIdsInUrl(pageRouting.data?.confirmAddressUrl, ids, request.url);
       } else if (generalPartner?.data?.kind === PartnerKind.UPDATE_GENERAL_PARTNER_PERSON) {
         pageRouting.nextUrl = super.insertIdsInUrl(
           UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL,
+          ids,
+          request.url
+        );
+      }
+    }
+
+    if (pageRouting.pageType === AddressLookUpPageType.confirmGeneralPartnerCorrespondenceAddress) {
+      if (generalPartner.data?.kind === PartnerKind.UPDATE_GENERAL_PARTNER_PERSON) {
+        pageRouting.nextUrl = super.insertIdsInUrl(
+          WHEN_DID_GENERAL_PARTNER_DETAILS_CHANGE_URL,
           ids,
           request.url
         );
