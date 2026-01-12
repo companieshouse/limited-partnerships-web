@@ -11,7 +11,7 @@ import { getGOVUKFrontendVersion } from "@companieshouse/ch-node-utils";
 import { createSummaryListLink } from "../utils/change-link";
 import setDateOfUpdateSection from "../utils/date-of-update";
 import * as config from "./constants";
-import { authentication, localisationMiddleware } from "../middlewares";
+import { authentication, localisationMiddleware, trailingSlashMiddleware } from "../middlewares";
 import { serviceAvailabilityMiddleware } from "../middlewares/service-availability.middleware";
 import { journeyDetectionMiddleware } from "../middlewares/journey.detection.middleware";
 import { TRANSITION_START_URL } from "../presentation/controller/transition/url";
@@ -68,6 +68,7 @@ export const appConfig = (app: express.Application) => {
   app.set("view engine", "njk");
 
   // middlewares
+  app.use(trailingSlashMiddleware);
   app.use(serviceAvailabilityMiddleware);
   app.use(config.allPathsExceptHealthcheck, journeyDetectionMiddleware);
   app.use(config.allPathsExceptHealthcheck, localisationMiddleware);
