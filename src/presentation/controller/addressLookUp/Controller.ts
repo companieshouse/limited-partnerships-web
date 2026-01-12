@@ -536,7 +536,10 @@ class AddressLookUpController extends AbstractController {
         pageRouting.nextUrl = super.insertIdsInUrl(REVIEW_GENERAL_PARTNERS_URL, ids, request.url);
       }
     }
+    await this.handleConditionalNextUrlForGeneralPartners(tokens, ids, pageRouting, request);
+  }
 
+  private async handleConditionalNextUrlForGeneralPartners(tokens: Tokens, ids: Ids, pageRouting: PageRouting, request: Request) {
     if (pageRouting.pageType === AddressLookUpPageType.confirmGeneralPartnerUsualResidentialAddress) {
       const generalPartner = await this.generalPartnerService.getGeneralPartner(
         tokens,
