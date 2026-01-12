@@ -535,7 +535,9 @@ class AddressLookUpController extends AbstractController {
       ) {
         pageRouting.nextUrl = super.insertIdsInUrl(REVIEW_GENERAL_PARTNERS_URL, ids, request.url);
       }
-    } else if (pageRouting.pageType === AddressLookUpPageType.confirmGeneralPartnerUsualResidentialAddress) {
+    }
+
+    if (pageRouting.pageType === AddressLookUpPageType.confirmGeneralPartnerUsualResidentialAddress) {
       const generalPartner = await this.generalPartnerService.getGeneralPartner(
         tokens,
         ids.transactionId,
@@ -551,7 +553,9 @@ class AddressLookUpController extends AbstractController {
           request.url
         );
       }
-    } else if (pageRouting.pageType === AddressLookUpPageType.confirmGeneralPartnerCorrespondenceAddress) {
+    }
+
+    if (pageRouting.pageType === AddressLookUpPageType.confirmGeneralPartnerCorrespondenceAddress) {
       const generalPartner = await this.generalPartnerService.getGeneralPartner(
         tokens,
         ids.transactionId,
