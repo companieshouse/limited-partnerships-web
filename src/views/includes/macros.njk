@@ -128,7 +128,8 @@
 
 {# Required as keys for looking up the locale #}
 {%- macro makeCamelCase(str) -%}
-  {%- set str = str.replace("-", " ") -%}    
+  {%- set str = str.replace("-", " ") -%}   
+  {%- set str = str.replace(",", " ") -%}   
   {%- set words = str.split(' ') -%}
   {%- set result = [] -%}
   {%- for word in words -%}
