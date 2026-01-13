@@ -128,6 +128,10 @@
           }
         }) }}
 
+        {% if not journeyTypes.isTransition %}        
+          {% include "includes/disqualification-statement.njk" %}  
+        {% endif %}
+
         {% if journeyTypes.isPostTransition %}
           {{ govukDateInput({
             id: "date_effective_from",
@@ -176,8 +180,6 @@
               }
             ]
           }) }}
-        {% else %}          
-          {% include "includes/disqualification-statement.njk" %}  
         {% endif %}
 
         {% include "includes/public-register-information.njk" %}
