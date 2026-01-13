@@ -540,13 +540,13 @@ class AddressLookUpController extends AbstractController {
   }
 
   private async handleConditionalNextUrlForGeneralPartners(tokens: Tokens, ids: Ids, pageRouting: PageRouting, request: Request) {
-    const generalPartner = await this.generalPartnerService.getGeneralPartner(
-      tokens,
-      ids.transactionId,
-      ids.generalPartnerId
-    );
 
     if (pageRouting.pageType === AddressLookUpPageType.confirmGeneralPartnerUsualResidentialAddress) {
+      const generalPartner = await this.generalPartnerService.getGeneralPartner(
+        tokens,
+        ids.transactionId,
+        ids.generalPartnerId
+      );
       if (generalPartner?.data?.service_address?.address_line_1) {
         pageRouting.nextUrl = super.insertIdsInUrl(pageRouting.data?.confirmAddressUrl, ids, request.url);
       } else if (generalPartner?.data?.kind === PartnerKind.UPDATE_GENERAL_PARTNER_PERSON) {
@@ -559,6 +559,11 @@ class AddressLookUpController extends AbstractController {
     }
 
     if (pageRouting.pageType === AddressLookUpPageType.confirmGeneralPartnerCorrespondenceAddress) {
+      const generalPartner = await this.generalPartnerService.getGeneralPartner(
+        tokens,
+        ids.transactionId,
+        ids.generalPartnerId
+      );
       if (generalPartner.data?.kind === PartnerKind.UPDATE_GENERAL_PARTNER_PERSON) {
         pageRouting.nextUrl = super.insertIdsInUrl(
           WHEN_DID_GENERAL_PARTNER_DETAILS_CHANGE_URL,
