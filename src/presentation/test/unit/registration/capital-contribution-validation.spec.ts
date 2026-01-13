@@ -50,7 +50,7 @@ describe("Gateway capital contribition validation test suite", () => {
         "contribution_currency_value empty",
         { ...data, contribution_currency_value: "" },
         dataKeys[1],
-        "Contribution currency type is required"
+        "Enter the total value of all monetary and non-monetary contributions"
       ],
       [
         "contribution_sub_types empty array",

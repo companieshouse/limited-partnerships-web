@@ -1,7 +1,7 @@
 {
     "errorMessages": {
         "capitalContribution": {
-            "valueRequired": "Contribution currency type is required",
+            "valueRequired": "Enter the total value of all monetary and non-monetary contributions",
             "twoDecimalPlaces": "Value must be a number with 2 decimal places",
             "moreThanZero": "Value must be 0.01 or more",
             "noSymbols": "Value must not include currency symbols like £, $ and €",
