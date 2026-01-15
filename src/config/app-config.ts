@@ -62,7 +62,7 @@ export const appConfig = (app: express.Application) => {
   nunjucksEnv.addGlobal("SET_DATE_OF_UPDATE_SECTION", setDateOfUpdateSection);
 
   app.use(express.json());
-  app.use(express.urlencoded({ extended: false }));
+  app.use(express.urlencoded({ extended: true }));
   app.use(cookieParser(config.COOKIE_SECRET));
 
   app.set("view engine", "njk");
