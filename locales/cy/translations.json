@@ -782,7 +782,7 @@
 
     "updatePartnerPersonPage" : {
         "generalPartner": {
-            "title" : "WELSH - Update a general partner's details (person)"
+            "title" : "WELSH - Update general partner details"
         },
         "nationality" : "WELSH - What is their nationality?",
         "nationalitySelectPrompt": "WELSH - Select a nationality",

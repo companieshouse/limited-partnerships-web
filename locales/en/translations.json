@@ -783,7 +783,7 @@
 
     "updatePartnerPersonPage" : {
         "generalPartner": {
-            "title" : "Update a general partner's details (person)"
+            "title" : "Update general partner details"
         },
         "nationality" : "What is their nationality?",
         "nationalitySelectPrompt": "Select a nationality",
