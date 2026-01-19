@@ -145,7 +145,7 @@ class AddressLookUpController extends AbstractController {
       return;
     }
 
-    if (generalPartner?.data?.service_address || cache.service_address) {
+    if (generalPartner?.data?.service_address || cache?.service_address) {
       return;
     }
 

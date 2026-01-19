@@ -22,8 +22,8 @@ import GeneralPartnerBuilder, {
 import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL } from "../../../../../controller/postTransition/url";
-import CompanyAppointmentBuilder from "presentation/test/builder/CompanyAppointmentBuilder";
-import CompanyProfileBuilder from "presentation/test/builder/CompanyProfileBuilder";
+import CompanyAppointmentBuilder from "../../../../../../presentation/test/builder/CompanyAppointmentBuilder";
+import CompanyProfileBuilder from "../../../../../../presentation/test/builder/CompanyProfileBuilder";
 
 describe("Enter Correspondence Address Page", () => {
   const URL = getUrl(ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL);
