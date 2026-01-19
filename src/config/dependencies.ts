@@ -80,7 +80,8 @@ const addressLookUpController: AddressLookUpController = new AddressLookUpContro
   limitedPartnershipService,
   generalPartnerService,
   limitedPartnerService,
-  cacheService
+  cacheService,
+  companyService
 );
 const generalPartnerRegistrationController: GeneralPartnerRegistrationController =
   new GeneralPartnerRegistrationController(limitedPartnershipService, generalPartnerService, limitedPartnerService);
