@@ -333,7 +333,7 @@
             },
             "correspondenceAddress": {
                 "title": "Do you need to update this partner's correspondence address?",
-                "hint": "We cannot show you the correspondence address we currently hold"
+                "hint": "This is also known as the service address. This address is shown on the public register."
             }
         }
     },
