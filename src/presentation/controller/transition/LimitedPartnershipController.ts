@@ -85,12 +85,12 @@ class LimitedPartnershipController extends PartnershipController {
         ...partner,
         data: {
           ...partner.data,
-          date_of_birth:
-            partner.data?.date_of_birth ? formatDate(partner.data?.date_of_birth, response.locals.i18n) : undefined,
-          date_effective_from:
-            partner.data?.date_effective_from ?
-              formatDate(partner.data?.date_effective_from, response.locals.i18n)
-              : undefined
+          date_of_birth: partner.data?.date_of_birth
+            ? formatDate(partner.data?.date_of_birth, response.locals.i18n)
+            : undefined,
+          date_effective_from: partner.data?.date_effective_from
+            ? formatDate(partner.data?.date_effective_from, response.locals.i18n)
+            : undefined
         }
       }));
 
@@ -99,12 +99,12 @@ class LimitedPartnershipController extends PartnershipController {
         ...partner,
         data: {
           ...partner.data,
-          date_of_birth:
-            partner.data?.date_of_birth ? formatDate(partner.data?.date_of_birth, response.locals.i18n) : undefined,
-          date_effective_from:
-            partner.data?.date_effective_from ?
-              formatDate(partner.data?.date_effective_from, response.locals.i18n)
-              : undefined
+          date_of_birth: partner.data?.date_of_birth
+            ? formatDate(partner.data?.date_of_birth, response.locals.i18n)
+            : undefined,
+          date_effective_from: partner.data?.date_effective_from
+            ? formatDate(partner.data?.date_effective_from, response.locals.i18n)
+            : undefined
         }
       }));
       return { generalPartners, limitedPartners };
@@ -197,10 +197,7 @@ class LimitedPartnershipController extends PartnershipController {
         const pageRouting = super.getRouting(transitionRouting, pageType, request);
         const { company_number } = request.body;
 
-        const result = await this.companyService.buildLimitedPartnershipFromCompanyProfile(
-          tokens,
-          company_number.trim()
-        );
+        const result = await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, company_number.trim());
 
         if (result.errors) {
           response.render(
@@ -211,11 +208,7 @@ class LimitedPartnershipController extends PartnershipController {
           return;
         }
 
-        const url = super.insertIdsInUrl(
-          pageRouting.nextUrl,
-          { ...ids, companyId: company_number.trim() },
-          request.url
-        );
+        const url = super.insertIdsInUrl(pageRouting.nextUrl, { ...ids, companyId: company_number.trim() }, request.url);
 
         response.redirect(url);
       } catch (error) {
