@@ -10,11 +10,7 @@ import { appDevDependencies } from "../../../../config/dev-dependencies";
 import { SERVICE_NAME_TRANSITION } from "../../../../config";
 
 import CompanyProfileBuilder from "../../builder/CompanyProfileBuilder";
-import {
-  CONFIRM_LIMITED_PARTNERSHIP_URL,
-  EMAIL_URL,
-  TRANSITION_ALREADY_FILED_URL
-} from "../../../controller/transition/url";
+import { CONFIRM_LIMITED_PARTNERSHIP_URL, EMAIL_URL } from "../../../controller/transition/url";
 
 describe("Confirm correct limited partnership page", () => {
   const URL = getUrl(CONFIRM_LIMITED_PARTNERSHIP_URL);
@@ -69,16 +65,6 @@ describe("Confirm correct limited partnership page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain("The partnership cannot be found");
-    });
-
-    it("should redirect to transition-already-filed url", async () => {
-      // temporary query params to simulate existing filing check - will be replace by a call to filing service
-      const res = await request(app).get(URL + "?formExists=true");
-
-      const REDIRECT_URL = getUrl(TRANSITION_ALREADY_FILED_URL);
-
-      expect(res.status).toBe(302);
-      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
     });
   });
 
