@@ -25,6 +25,8 @@
   {% set address = props.data.cache[correspondenceAddressKey] %}
 {% elif props.data.generalPartner.data.service_address %}
   {% set address = props.data.generalPartner.data.service_address %}
+{% elif props.data.chsCorrespondenceAddress %}
+  {% set address = props.data.chsCorrespondenceAddress %}
 {% else %}
   {% set address = {} %}
 {% endif %}

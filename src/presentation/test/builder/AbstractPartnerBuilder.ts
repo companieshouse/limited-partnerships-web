@@ -53,6 +53,11 @@ abstract class AbstractPartnerBuilder {
     return this;
   }
 
+  withAppointmentId(appointmentId: string) {
+    this.data.appointment_id = appointmentId;
+    return this;
+  }
+
   withForename(forename: string) {
     this.data.forename = forename;
     return this;

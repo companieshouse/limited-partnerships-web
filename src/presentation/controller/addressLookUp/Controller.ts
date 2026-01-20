@@ -25,6 +25,7 @@ import { PageDefault, PageRouting, pageRoutingDefault } from "../PageRouting";
 import PageType from "../PageType";
 
 import CacheService from "../../../application/service/CacheService";
+import CompanyService from "../../../application/service/CompanyService";
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
@@ -89,7 +90,8 @@ class AddressLookUpController extends AbstractController {
     private readonly limitedPartnershipService: LimitedPartnershipService,
     private readonly generalPartnerService: GeneralPartnerService,
     private readonly limitedPartnerService: LimitedPartnerService,
-    private readonly cacheService: CacheService
+    private readonly cacheService: CacheService,
+    private readonly companyService: CompanyService
   ) {
     super();
   }
@@ -109,13 +111,15 @@ class AddressLookUpController extends AbstractController {
 
         const addressList = await this.getAddressList(pageRouting, cacheById, tokens);
 
+        const chsCorrespondenceAddress = await this.getChsCorrespondenceAddressIfApplicable(tokens, pageRouting, generalPartner, cacheById, ids);
+
         this.conditionalBackLink(pageRouting, generalPartner, limitedPartner, ids);
 
         response.render(
           super.templateName(pageRouting.currentUrl),
           super.makeProps(
             pageRouting,
-            { limitedPartnership, generalPartner, limitedPartner, addressList, cache: { ...cacheById } },
+            { limitedPartnership, generalPartner, limitedPartner, addressList, cache: { ...cacheById }, chsCorrespondenceAddress },
             null
           )
         );
@@ -123,6 +127,38 @@ class AddressLookUpController extends AbstractController {
         next(error);
       }
     };
+  }
+
+  private async getChsCorrespondenceAddressIfApplicable(
+    tokens: Tokens,
+    pageRouting: PageRouting,
+    generalPartner: GeneralPartner,
+    cache: Record<string, any>,
+    ids: Ids
+  ): Promise<Address | undefined> {
+
+    if (generalPartner?.data?.kind !== PartnerKind.UPDATE_GENERAL_PARTNER_PERSON) {
+      return;
+    }
+
+    if (pageRouting.pageType !== AddressLookUpPageType.enterGeneralPartnerCorrespondenceAddress) {
+      return;
+    }
+
+    if (generalPartner?.data?.service_address || cache?.service_address) {
+      return;
+    }
+
+    let chsPartner;
+    if (ids.companyId && generalPartner?.data?.appointment_id) {
+      // get CHS correspondence / service address
+      chsPartner = await this.companyService.buildPartnerFromCompanyAppointment(
+        tokens,
+        ids.companyId,
+        generalPartner.data.appointment_id
+      );
+    }
+    return chsPartner?.partner?.data?.service_address;
   }
 
   private conditionalBackLink(
