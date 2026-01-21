@@ -332,7 +332,7 @@
             },
              "correspondenceAddress": {
                 "title": "WELSH - Do you need to update this partner's correspondence address?",
-                "hint": "WELSH - We cannot show you the correspondence address we currently hold"
+                "hint": "WELSH -  This is also known as the service address. This address is shown on the public register."
             }
         }
     },
@@ -772,6 +772,13 @@
         "untilDissolution": "WELSH - Until a general partner determines the partnership is dissolved",
         "noTerm": "WELSH - No set term",
         "publicRegisterLine1": "WELSH - We'll show the term of partnership on the public register."
+    },
+
+    "transactionFiled": {
+        "title": "WELSH - Information has already been provided for the limited partnership",
+        "alreadyReceived": "WELSH - We've already received a filing with the required information for",
+        "acceptedInformation": "WELSH - Once we've accepted this information, it will appear on the public register. You can then make any changes needed using our",
+        "acceptedInformationLink": "WELSH - Find and update company information service"
     },
 
     "types": {

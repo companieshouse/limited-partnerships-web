@@ -112,7 +112,7 @@ abstract class AbstractController {
     return url;
   }
 
-  protected insertCompanyId(url: string, companyId: string): string {
+  public insertCompanyId(url: string, companyId: string): string {
     return companyId ? url.replace(`:${COMPANY_ID}`, companyId) : url;
   }
 
@@ -172,7 +172,7 @@ abstract class AbstractController {
     return pageType;
   }
 
-  protected extractTokens(request: Request): Tokens {
+  public extractTokens(request: Request): Tokens {
     return {
       access_token: request?.session?.data?.signin_info?.access_token?.access_token ?? "",
       refresh_token: request?.session?.data?.signin_info?.access_token?.refresh_token ?? ""

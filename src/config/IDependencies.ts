@@ -1,3 +1,5 @@
+import FilingHistoryService from "../application/service/FilingHistoryService";
+
 import AddressLookUpController from "../presentation/controller/addressLookUp/Controller";
 import GlobalController from "../presentation/controller/global/Controller";
 
@@ -14,6 +16,8 @@ import GeneralPartnerPostTransitionController from "../presentation/controller/p
 import LimitedPartnerPostTransitionController from "../presentation/controller/postTransition/LimitedPartnerController";
 
 export type IDependencies = {
+  filingHistoryService: FilingHistoryService;
+
   globalController: GlobalController;
   addressLookUpController: AddressLookUpController;
 

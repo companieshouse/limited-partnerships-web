@@ -54,8 +54,8 @@ abstract class AbstractPartnerBuilder {
     return this;
   }
 
-  withAppointmentId(appointment_id: string) {
-    this.data.appointment_id = appointment_id;
+  withAppointmentId(appointmentId: string) {
+    this.data.appointment_id = appointmentId;
     return this;
   }
 

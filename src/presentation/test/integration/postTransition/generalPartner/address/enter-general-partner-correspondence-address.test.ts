@@ -22,6 +22,8 @@ import GeneralPartnerBuilder, {
 import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL } from "../../../../../controller/postTransition/url";
+import CompanyAppointmentBuilder from "../../../../../../presentation/test/builder/CompanyAppointmentBuilder";
+import CompanyProfileBuilder from "../../../../../../presentation/test/builder/CompanyProfileBuilder";
 
 describe("Enter Correspondence Address Page", () => {
   const URL = getUrl(ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL);
@@ -149,6 +151,88 @@ describe("Enter Correspondence Address Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(backLinkUrl);
+    });
+
+    it("should pre-populate the enter general partners correspondence address manual entry page when partner kind is UPDATE_GENERAL_PARTNER_PERSON", async () => {
+      const updateGeneralPartner = new GeneralPartnerBuilder()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .isPerson()
+        .withKind(PartnerKind.UPDATE_GENERAL_PARTNER_PERSON)
+        .withAppointmentId("AP123456")
+        .build();
+
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([updateGeneralPartner]);
+
+      const companyAppointment = new CompanyAppointmentBuilder()
+        .withOfficerRole("general-partner-in-a-limited-partnership")
+        .build();
+      appDevDependencies.companyGateway.feedCompanyAppointments([companyAppointment]);
+
+      const companyProfile = new CompanyProfileBuilder().build();
+      appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
+
+      const res = await request(app).get(URL);
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(companyAppointment.address?.addressLine1);
+      expect(res.text).toContain(companyAppointment.address?.addressLine2);
+      expect(res.text).toContain(companyAppointment.address?.locality);
+      expect(res.text).toContain(companyAppointment.address?.postalCode);
+      expect(res.text).toContain(companyAppointment.address?.premises);
+      expect(res.text).toContain(companyAppointment.address?.region);
+      expect(res.text).toContain(companyAppointment.address?.country);
+    });
+
+    it("should pre-populate the enter general partners correspondence address manual entry page with address from cache", async () => {
+      const cacheAddress = {
+        address_line_1: "cached address line 1",
+        address_line_2: "cached address line 2",
+        country: "England",
+        locality: "cached locality",
+        postal_code: "CF1 1AA",
+        premises: "22",
+        region: "cached region"
+      };
+
+      appDevDependencies.cacheRepository.feedCache({
+        [appDevDependencies.transactionGateway.transactionId]: {
+          service_address: cacheAddress
+        }
+      });
+
+      const res = await request(app).get(URL);
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(cacheAddress.address_line_1);
+      expect(res.text).toContain(cacheAddress.address_line_2);
+      expect(res.text).toContain(cacheAddress.locality);
+      expect(res.text).toContain(cacheAddress.postal_code);
+      expect(res.text).toContain(cacheAddress.premises);
+      expect(res.text).toContain(cacheAddress.region);
+      expect(res.text).toContain(cacheAddress.country);
+    });
+
+    it("should pre-populate the enter general partners correspondence address manual entry page with address from limited-partnerships-api", async () => {
+      const updateGeneralPartner = new GeneralPartnerBuilder()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .isPerson()
+        .withKind(PartnerKind.UPDATE_GENERAL_PARTNER_PERSON)
+        .withAppointmentId("AP123456")
+        .withServiceAddress()
+        .build();
+
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([updateGeneralPartner]);
+
+      const res = await request(app).get(URL);
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(updateGeneralPartner?.data?.service_address?.address_line_1);
+      expect(res.text).toContain(updateGeneralPartner?.data?.service_address?.address_line_2);
+      expect(res.text).toContain(updateGeneralPartner?.data?.service_address?.locality);
+      expect(res.text).toContain(updateGeneralPartner?.data?.service_address?.postal_code);
+      expect(res.text).toContain(updateGeneralPartner?.data?.service_address?.premises);
+      expect(res.text).toContain(updateGeneralPartner?.data?.service_address?.region);
+      expect(res.text).toContain(updateGeneralPartner?.data?.service_address?.country);
     });
   });
 

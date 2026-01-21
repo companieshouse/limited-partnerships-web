@@ -333,7 +333,7 @@
             },
             "correspondenceAddress": {
                 "title": "Do you need to update this partner's correspondence address?",
-                "hint": "We cannot show you the correspondence address we currently hold"
+                "hint": "This is also known as the service address. This address is shown on the public register."
             }
         }
     },
@@ -773,6 +773,13 @@
         "untilDissolution": "Until a general partner determines the partnership is dissolved",
         "noTerm": "No set term",
         "publicRegisterLine1": "We'll show the term of partnership on the public register."
+    },
+
+    "transactionFiled": {
+        "title": "Information has already been provided for the limited partnership",
+        "alreadyReceived": "We've already received a filing with the required information for",
+        "acceptedInformation": "Once we've accepted this information, it will appear on the public register. You can then make any changes needed using our",
+        "acceptedInformationLink": "Find and update company information service"
     },
 
     "types": {
