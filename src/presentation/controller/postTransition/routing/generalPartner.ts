@@ -119,14 +119,25 @@ const postTransitionRoutingUpdateCorrespondenceAddressYesNo = {
 };
 
 const GENERAL_PARTNER = "generalPartner";
+const UPDATE_GENERAL_PARTNER_KEY = "updateGeneralPartner";
 
 const postTransitionRoutingGeneralPartnerChange = {
   previousUrl: url.UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL,
   currentUrl: url.WHEN_DID_GENERAL_PARTNER_DETAILS_CHANGE_URL,
-  nextUrl: url.GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL,
+  nextUrl: url.UPDATE_GENERAL_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL,
   pageType: PostTransitionPageType.whenDidGeneralPartnerDetailsChange,
   data: {
     titleKey: GENERAL_PARTNER
+  }
+};
+
+const postTransitionRoutingChangeGeneralPartnerCheckYourAnswers = {
+  previousUrl: url.WHEN_DID_GENERAL_PARTNER_DETAILS_CHANGE_URL,
+  currentUrl: url.UPDATE_GENERAL_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL,
+  nextUrl: "/",
+  pageType: PostTransitionPageType.updateGeneralPartnerPersonCheckYourAnswers,
+  data: {
+    pageKey: UPDATE_GENERAL_PARTNER_KEY
   }
 };
 
@@ -145,7 +156,8 @@ const generalPartnerRouting = [
   postTransitionRoutingUpdateGeneralPartnerPerson,
   postTransitionRoutingUpdateUsualResidentialAddressYesNo,
   postTransitionRoutingUpdateCorrespondenceAddressYesNo,
-  postTransitionRoutingGeneralPartnerChange
+  postTransitionRoutingGeneralPartnerChange,
+  postTransitionRoutingChangeGeneralPartnerCheckYourAnswers
 ];
 
 export default generalPartnerRouting;

@@ -5,7 +5,8 @@ const setDateOfUpdateSection = (props: Record<string, any>, i18n: Record<string,
     text: i18n.checkYourAnswersPage.update.dateOfChange
   },
   value: {
-    text: props.data.limitedPartnership.data.date_of_update
+    text: props.data.limitedPartnership?.data?.date_of_update ||
+      props.data.partner?.data?.date_of_update
   },
   actions: {
     items: [

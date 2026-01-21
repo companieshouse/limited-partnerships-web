@@ -1,6 +1,5 @@
 import request from "supertest";
-import { GeneralPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { GeneralPartner, PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import enTranslationText from "../../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../../locales/cy/translations.json";
@@ -28,13 +27,14 @@ describe("Update general partner check your answers page", () => {
       .isPerson()
       .withNationality1("Irish")
       .withUsualResidentialAddress({
-        "address_line_1":"DUNCALF STREET",
-        "address_line_2":"",
-        "country":"England",
-        "locality":"STOKE-ON-TRENT",
-        "postal_code":"ST6 3LJ",
-        "premises":"6",
-        "region":""})
+        "address_line_1": "DUNCALF STREET",
+        "address_line_2": "",
+        "country": "England",
+        "locality": "STOKE-ON-TRENT",
+        "postal_code": "ST6 3LJ",
+        "premises": "6",
+        "region": ""
+      })
       .withUsualResidentialAddressUpdateRequired(true)
       .withServiceAddress()
       .withServiceAddressUpdateRequired(true)
@@ -65,7 +65,7 @@ describe("Update general partner check your answers page", () => {
       expect(res.text).toContain(generalPartner.data?.forename + " " + generalPartner.data?.surname);
       expect(res.text).toContain(generalPartner.data?.nationality1);
       expect(res.text).toContain("6 Duncalf Street, Stoke-On-Trent, England, ST6 3LJ");
-      expect(res.text).toContain("4 Service Address Line 1, Line 2, Stoke-On-Trent, Region, England, ST6 3LJ")
+      expect(res.text).toContain("4 Service Address Line 1, Line 2, Stoke-On-Trent, Region, England, ST6 3LJ");
       expect(res.text).toContain(enTranslationText.checkYourAnswersPage.update.dateOfChange);
       expect(res.text).toContain(enTranslationText.print.buttonText);
       expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
@@ -109,8 +109,8 @@ describe("Update general partner check your answers page", () => {
 
       expect(res.text).toContain(enTranslationText.checkYourAnswersPage.update.notUpdated);
       expect(res.text).not.toContain(generalPartner.data?.nationality1);
-      expect(res.text).not.toContain("4 Service Address Line 1, Line 2, Stoke-On-Trent, Region, England, ST6 3LJ")
+      expect(res.text).not.toContain("4 Service Address Line 1, Line 2, Stoke-On-Trent, Region, England, ST6 3LJ");
       expect(res.text).toContain(enTranslationText.checkYourAnswersPage.update.dateOfChange);
-    })
+    });
   });
 });

@@ -16,7 +16,7 @@ import {
 
 import postTransitionRouting from "../postTransition/routing";
 import { CONFIRMATION_POST_TRANSITION_URL } from "../global/url";
-import { JOURNEY_TYPE_PARAM, REMOVE_CHECK_YOUR_ANSWERS_TEMPLATE } from "../../../config/constants";
+import { JOURNEY_TYPE_PARAM, PARTNER_CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE } from "../../../config/constants";
 import { getJourneyTypes } from "../../../utils/journey";
 import { formatDate } from "../../../utils/date-format";
 
@@ -91,7 +91,12 @@ class GeneralPartnerPostTransitionController extends PartnerController {
           partner.data.cease_date = formatDate(partner.data.cease_date, response.locals.i18n);
         }
 
-        response.render(REMOVE_CHECK_YOUR_ANSWERS_TEMPLATE, super.makeProps(pageRouting, { partner }, null));
+        let partnerUpdateMap: Record<string, boolean> = {};
+        if (partner.data?.kind === PartnerKind.UPDATE_GENERAL_PARTNER_PERSON) {
+          partnerUpdateMap = await super.comparePartnerDetails(partner, request);
+        }
+
+        response.render(PARTNER_CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE, super.makeProps(pageRouting, { partner, partnerUpdateMap }, null));
       } catch (error) {
         next(error);
       }
