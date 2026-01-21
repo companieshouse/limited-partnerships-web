@@ -54,6 +54,15 @@ class LimitedPartnershipController extends PartnershipController {
 
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
 
+        if (pageRouting.pageType === TransitionPageType.transitionAlreadyFiled) {
+          const companyProfile = await this.companyService.buildLimitedPartnershipFromCompanyProfile(
+            tokens,
+            ids.companyId
+          );
+
+          limitedPartnership = companyProfile?.limitedPartnership;
+        }
+
         response.render(
           super.templateName(pageRouting.currentUrl),
           super.makeProps(pageRouting, { limitedPartnership, generalPartners, limitedPartners, cache, ids }, null)
