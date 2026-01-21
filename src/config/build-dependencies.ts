@@ -16,6 +16,8 @@ import CompanyGateway from "../infrastructure/gateway/companyProfile/CompanyGate
 import CompanyInMemoryGateway from "../infrastructure/gateway/companyProfile/CompanyInMemoryGateway";
 import PaymentGateway from "../infrastructure/gateway/payment/PaymentGateway";
 import PaymentInMemoryGateway from "../infrastructure/gateway/payment/PaymentInMemoryGateway";
+import FilingHistoryGateway from "../infrastructure/gateway/filingHistory/FilingHistoryGateway";
+import FilingHistoryInMemoryGateway from "../infrastructure/gateway/filingHistory/FilingHistoryInMemoryGateway";
 
 import CacheService from "../application/service/CacheService";
 import AddressLookUpService from "../application/service/AddressService";
@@ -25,6 +27,7 @@ import LimitedPartnerService from "../application/service/LimitedPartnerService"
 import CompanyService from "../application/service/CompanyService";
 import PaymentService from "../application/service/PaymentService";
 import TransactionService from "../application/service/TransactionService";
+import FilingHistoryService from "../application/service/FilingHistoryService";
 
 import GlobalController from "../presentation/controller/global/Controller";
 import AddressLookUpController from "../presentation/controller/addressLookUp/Controller";
@@ -51,6 +54,7 @@ export type BuiltDependencies = {
   companyGateway: any;
   paymentGateway: any;
   cacheRepository: any;
+  filingHistoryGateway: any;
 
   // Services
   addressLookUpService: AddressLookUpService;
@@ -60,6 +64,7 @@ export type BuiltDependencies = {
   companyService: CompanyService;
   paymentService: PaymentService;
   transactionService: TransactionService;
+  filingHistoryService: FilingHistoryService;
 
   // Controllers (subset)
   globalController: GlobalController;
@@ -77,9 +82,7 @@ export type BuiltDependencies = {
 
 export function buildDependencies(useInMemory = false): BuiltDependencies {
   // Gateways
-  const limitedPartnershipGateway = useInMemory
-    ? new RegistrationInMemoryGateway()
-    : new LimitedPartnershipGateway();
+  const limitedPartnershipGateway = useInMemory ? new RegistrationInMemoryGateway() : new LimitedPartnershipGateway();
   const transactionGateway = useInMemory ? new TransactionInMemoryGateway() : new TransactionGateway();
   const addressLookUpGateway = useInMemory ? new AddressLookUpInMemoryGateway() : new AddressLookUpGateway();
   const incorporationGateway = useInMemory ? new IncorporationInMemoryGateway() : new IncorporationGateway();
@@ -87,6 +90,7 @@ export function buildDependencies(useInMemory = false): BuiltDependencies {
   const limitedPartnerGateway = useInMemory ? new LimitedPartnerInMemoryGateway() : new LimitedPartnerGateway();
   const companyGateway = useInMemory ? new CompanyInMemoryGateway() : new CompanyGateway();
   const paymentGateway = useInMemory ? new PaymentInMemoryGateway() : new PaymentGateway();
+  const filingHistoryGateway = useInMemory ? new FilingHistoryInMemoryGateway() : new FilingHistoryGateway();
 
   // Repositories
   const cacheRepository = useInMemory ? new CacheInMemoryRepository() : new CacheRepository();
@@ -104,6 +108,7 @@ export function buildDependencies(useInMemory = false): BuiltDependencies {
   const companyService = new CompanyService(companyGateway);
   const paymentService = new PaymentService(paymentGateway);
   const transactionService: TransactionService = new TransactionService(transactionGateway);
+  const filingHistoryService: FilingHistoryService = new FilingHistoryService(filingHistoryGateway);
 
   // Controllers
   const globalController: GlobalController = new GlobalController(
@@ -205,6 +210,7 @@ export function buildDependencies(useInMemory = false): BuiltDependencies {
     addressLookUpGateway,
     paymentGateway,
     companyGateway,
+    filingHistoryGateway,
     cacheRepository,
 
     addressLookUpService,
@@ -214,6 +220,7 @@ export function buildDependencies(useInMemory = false): BuiltDependencies {
     companyService,
     paymentService,
     transactionService,
+    filingHistoryService,
 
     globalController,
     addressLookUpController,

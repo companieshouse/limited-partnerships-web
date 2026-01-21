@@ -11,8 +11,9 @@ import { NAME_URL } from "../../../controller/registration/url";
 
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import CompanyProfileBuilder from "../../builder/CompanyProfileBuilder";
+import FilingHistoryBuilder from "../../builder/FilingHistoryBuilder";
 
-describe("Test Transition already filed url is setup correctly", () => {
+describe("Transition already filed", () => {
   const URL = getUrl(TRANSITION_ALREADY_FILED_URL);
   let companyProfile;
 
@@ -43,16 +44,35 @@ describe("Test Transition already filed url is setup correctly", () => {
     testTranslations(res.text, cyTranslationText.transactionFiled);
   });
 
-  it("should redirect to transition-already-filed url", async () => {
+  it.each([{ form: "LPTS01" }, { form: "LP5D" }, { form: "LP7D" }])(
+    `should redirect to transition-already-filed url - form $form`,
+    async (data: { form: string }) => {
+      const URL = getUrl(CONFIRM_LIMITED_PARTNERSHIP_URL);
+
+      const filingHistory = new FilingHistoryBuilder().withType(data.form).build();
+
+      appDevDependencies.filingHistoryGateway.feedFilingHistoryItems([filingHistory]);
+
+      const res = await request(app).get(URL);
+
+      const REDIRECT_URL = getUrl(TRANSITION_ALREADY_FILED_URL);
+
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+    }
+  );
+
+  it("should not redirect to transition-already-filed url if the form is LP6D", async () => {
     const URL = getUrl(CONFIRM_LIMITED_PARTNERSHIP_URL);
 
-    // temporary query params to simulate existing filing check - will be replace by a call to filing service
-    const res = await request(app).get(URL + "?formExists=true");
+    const filingHistory = new FilingHistoryBuilder().withType("LP6D").build();
 
-    const REDIRECT_URL = getUrl(TRANSITION_ALREADY_FILED_URL);
+    appDevDependencies.filingHistoryGateway.feedFilingHistoryItems([filingHistory]);
 
-    expect(res.status).toBe(302);
-    expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+    const res = await request(app).get(URL);
+
+    expect(res.status).toBe(200);
+    expect(res.text).toContain(enTranslationText.confirmLimitedPartnership.title);
   });
 
   it("should not redirect to transition-already-filed url if it is not transiton journey", async () => {
