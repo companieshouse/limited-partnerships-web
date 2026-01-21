@@ -1,5 +1,6 @@
 import PostTransitionPageType from "../pageType";
 import * as url from "../url";
+import { SERVICE_NAME_UPDATE_LIMITED_PARTNERSHIP_NAME } from "../../../../config/constants";
 
 const postTransitionRoutingCompanyNumber = {
   previousUrl: "/",
@@ -66,7 +67,10 @@ const postTransitionRoutingPartnershipName = {
   previousUrl: url.LANDING_PAGE_URL,
   currentUrl: url.PARTNERSHIP_NAME_URL,
   nextUrl: url.WHEN_DID_THE_PARTNERSHIP_NAME_CHANGE_URL,
-  pageType: PostTransitionPageType.partnershipName
+  pageType: PostTransitionPageType.partnershipName,
+  data: {
+    serviceName: SERVICE_NAME_UPDATE_LIMITED_PARTNERSHIP_NAME
+  }
 };
 
 const postTransitionRoutingPartnershipNameChange = {

@@ -20,7 +20,7 @@ import { Ids, Tokens } from "../../domain/types";
 
 // This class is global and must not contain anything specific to a journey or entity
 abstract class AbstractController {
-  protected getRouting(routing: PagesRouting, pageType: PageType, request: Request) {
+  public getRouting(routing: PagesRouting, pageType: PageType, request: Request) {
     let pageRouting = { ...routing.get(pageType) } as PageRouting;
 
     if (!pageRouting) {
@@ -66,7 +66,7 @@ abstract class AbstractController {
     };
   }
 
-  protected extract(request: Request) {
+  public extract(request: Request) {
     const session = request.session as Session;
     const tokens = this.extractTokens(request);
     const pageType = this.pageType(request.path);

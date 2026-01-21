@@ -13,6 +13,8 @@ import LimitedPartnershipPostTransitionController from "../presentation/controll
 import GeneralPartnerPostTransitionController from "../presentation/controller/postTransition/GeneralPartnerController";
 import LimitedPartnerPostTransitionController from "../presentation/controller/postTransition/LimitedPartnerController";
 
+import LimitedPartnershipService from "../application/service/LimitedPartnershipService";
+
 export type IDependencies = {
   globalController: GlobalController;
   addressLookUpController: AddressLookUpController;
@@ -28,4 +30,6 @@ export type IDependencies = {
   limitedPartnershipPostTransitionController: LimitedPartnershipPostTransitionController;
   generalPartnerPostTransitionController: GeneralPartnerPostTransitionController;
   limitedPartnerPostTransitionController: LimitedPartnerPostTransitionController;
+
+  limitedPartnershipService: LimitedPartnershipService;
 };

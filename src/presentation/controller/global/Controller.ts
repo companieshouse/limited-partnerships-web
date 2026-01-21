@@ -193,7 +193,7 @@ class GlobalController extends AbstractController {
     };
   }
 
-  private async getPartnerDetails(
+  public async getPartnerDetails(
     tokens: Tokens,
     transactionId: string
   ): Promise<{ generalPartner: GeneralPartner | undefined; limitedPartner: LimitedPartner | undefined }> {

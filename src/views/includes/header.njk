@@ -1,12 +1,12 @@
 {# journeyTypes is set on res.locals in journey.detection.middleware #}
 {% if journeyTypes.isRegistration %}
-  {% set serviceName = SERVICE_NAME_REGISTRATION %}
+  {% set headerServiceName = SERVICE_NAME_REGISTRATION %}
   {% set serviceUrl = SERVICE_START_URL_REGISTRATION %}
 {% elif journeyTypes.isTransition %}
-  {% set serviceName = SERVICE_NAME_TRANSITION %}
+  {% set headerServiceName = SERVICE_NAME_TRANSITION %}
   {% set serviceUrl = SERVICE_START_URL_TRANSITION %}
 {% elif journeyTypes.isPostTransition %}
-  {% set serviceName = SERVICE_NAME_POST_TRANSITION %}
+  {% set headerServiceName = serviceName %}
   {% set serviceUrl = "/" %}
 {% endif %}
 
@@ -16,6 +16,6 @@
   useTudorCrown: true
 }) }}
 {{ govukServiceNavigation({
-  serviceName: serviceName,
+  serviceName: headerServiceName,
   serviceUrl: serviceUrl
 }) }}
