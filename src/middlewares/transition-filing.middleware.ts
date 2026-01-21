@@ -14,19 +14,23 @@ export const transitionFiling =
       const tokens = extractTokens(req);
       const companyId = req.params.companyId;
 
-      const filingHistoryItems = await filingHistoryService.getFilingHistoryList(tokens, companyId);
+      try {
+        const filingHistoryItems = await filingHistoryService.getFilingHistoryList(tokens, companyId);
 
-      const formTypes = ["LPTS01", "LP5D", "LP7D"];
-      const types = filingHistoryItems.map((item) => item.type);
+        const formTypes = ["LPTS01", "LP5D", "LP7D"];
+        const types = filingHistoryItems.map((item) => item.type);
 
-      const hasFiledForm = formTypes.some((formType) => types.includes(formType));
+        const hasFiledForm = formTypes.some((formType) => types.includes(formType));
 
-      if (hasFiledForm) {
-        logger.infoRequest(req, "Filing already exists, redirecting to already filed page");
+        if (hasFiledForm) {
+          logger.infoRequest(req, "Filing already exists, redirecting to already filed page");
 
-        const redirectUrl = insertCompanyId(TRANSITION_ALREADY_FILED_URL, companyId);
+          const redirectUrl = insertCompanyId(TRANSITION_ALREADY_FILED_URL, companyId);
 
-        return res.redirect(redirectUrl);
+          return res.redirect(redirectUrl);
+        }
+      } catch (error) {
+        return next(error);
       }
     }
 

@@ -8,32 +8,32 @@ class FilingHistoryBuilder {
   private category = "incorporation";
   private description = "transition-of-limited-partnership";
 
-  withTransactionId(transactionId: string): FilingHistoryBuilder {
+  withTransactionId(transactionId: string): this {
     this.transactionId = transactionId;
     return this;
   }
 
-  withBarcode(barcode: string): FilingHistoryBuilder {
+  withBarcode(barcode: string): this {
     this.barcode = barcode;
     return this;
   }
 
-  withType(type: string): FilingHistoryBuilder {
+  withType(type: string): this {
     this.type = type;
     return this;
   }
 
-  withDate(date: string): FilingHistoryBuilder {
+  withDate(date: string): this {
     this.date = date;
     return this;
   }
 
-  withCategory(category: string): FilingHistoryBuilder {
+  withCategory(category: string): this {
     this.category = category;
     return this;
   }
 
-  withDescription(description: string): FilingHistoryBuilder {
+  withDescription(description: string): this {
     this.description = description;
     return this;
   }

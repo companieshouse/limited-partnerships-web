@@ -23,7 +23,7 @@ class FilingHistoryGateway implements IFilingHistory {
       const uiErrors = new UIErrors();
       uiErrors.formatValidationErrorToUiErrors({
         errors: {
-          company_number: "The partnership cannot be found"
+          company_number: "The filing history of the company cannot be found"
         }
       });
 

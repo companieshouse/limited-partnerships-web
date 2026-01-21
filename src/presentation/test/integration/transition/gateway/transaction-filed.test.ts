@@ -19,12 +19,11 @@ const mockCreateApiClient = createApiClient as jest.Mock;
 mockCreateApiClient.mockReturnValue(sdkMock);
 
 describe("Transition already filed - real gateway", () => {
+  const URL = getUrl(CONFIRM_LIMITED_PARTNERSHIP_URL);
+  const REDIRECT_URL = getUrl(TRANSITION_ALREADY_FILED_URL);
+
   it(`should redirect to transition-already-filed url - form LPTS01`, async () => {
-    const URL = getUrl(CONFIRM_LIMITED_PARTNERSHIP_URL);
-
     const res = await request(appRealDependencies).get(URL);
-
-    const REDIRECT_URL = getUrl(TRANSITION_ALREADY_FILED_URL);
 
     expect(res.status).toBe(302);
     expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
@@ -48,8 +47,6 @@ describe("Transition already filed - real gateway", () => {
       }
     });
 
-    const URL = getUrl(CONFIRM_LIMITED_PARTNERSHIP_URL);
-
     const res = await request(appRealDependencies).get(URL);
 
     expect(res.status).toBe(200);
@@ -61,5 +58,23 @@ describe("Transition already filed - real gateway", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(enTranslationText.namePage.nameEnding);
+  });
+
+  it("should load error page when error thrown from getFilingHistoryList", async () => {
+    mockCreateApiClient.mockReturnValue({
+      ...sdkMock,
+      companyFilingHistory: {
+        ...sdkMock.companyFilingHistory,
+        getCompanyFilingHistory: () => ({
+          httpStatusCode: 404,
+          resource: null
+        })
+      }
+    });
+
+    const res = await request(appRealDependencies).get(URL);
+
+    expect(res.status).toBe(500);
+    expect(res.text).toContain(enTranslationText.errorPage.title);
   });
 });
