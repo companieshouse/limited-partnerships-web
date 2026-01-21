@@ -10,11 +10,11 @@ import { makeApiCallWithRetry } from "../api";
 import UIErrors from "../../../domain/entities/UIErrors";
 
 class FilingHistoryGateway implements IFilingHistory {
-  async getFilingHistoryList(opt: Tokens, company_number: string): Promise<FilingHistoryItem[]> {
+  async getFilingHistoryList(opt: Tokens, companyNumber: string): Promise<FilingHistoryItem[]> {
     const apiCall = {
       service: "companyFilingHistory",
       method: "getCompanyFilingHistory",
-      args: [company_number]
+      args: [companyNumber]
     };
 
     const response = await makeApiCallWithRetry<Resource<CompanyFilingHistory>>(opt, apiCall);

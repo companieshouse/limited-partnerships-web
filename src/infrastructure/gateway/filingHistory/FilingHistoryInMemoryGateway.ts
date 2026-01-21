@@ -21,7 +21,7 @@ class FilingHistoryInMemoryGateway implements IFilingHistory {
     this.filingHistoryList.items = items;
   }
 
-  getFilingHistoryList(_tokens: Tokens, _company_number: string): Promise<FilingHistoryItem[]> {
+  getFilingHistoryList(_tokens: Tokens, _companyNumber: string): Promise<FilingHistoryItem[]> {
     return Promise.resolve(this.filingHistoryList.items);
   }
 }
