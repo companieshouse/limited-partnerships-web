@@ -10,7 +10,7 @@ import GeneralPartnerBuilder from "../../../../../presentation/test/builder/Gene
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, toEscapedHtml } from "../../../utils";
 import CompanyProfileBuilder from "../../../../../presentation/test/builder/CompanyProfileBuilder";
-import { WHEN_DID_GENERAL_PARTNER_DETAILS_CHANGE_URL, GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL } from "presentation/controller/postTransition/url";
+import { WHEN_DID_GENERAL_PARTNER_DETAILS_CHANGE_URL, UPDATE_GENERAL_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL } from "presentation/controller/postTransition/url";
 import PostTransitionPageType from "../../../../controller/postTransition/pageType";
 import { ApiErrors } from "domain/entities/UIErrors";
 
@@ -68,7 +68,7 @@ describe("General partner change date page", () => {
         pageType: PostTransitionPageType.whenDidGeneralPartnerDetailsChange
       });
 
-      const REDIRECT_URL = getUrl(GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL);
+      const REDIRECT_URL = getUrl(UPDATE_GENERAL_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL);
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
