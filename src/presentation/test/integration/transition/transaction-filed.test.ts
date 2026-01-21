@@ -13,7 +13,7 @@ import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import CompanyProfileBuilder from "../../builder/CompanyProfileBuilder";
 import FilingHistoryBuilder from "../../builder/FilingHistoryBuilder";
 
-describe("Test Transition already filed url is setup correctly", () => {
+describe("Transition already filed", () => {
   const URL = getUrl(TRANSITION_ALREADY_FILED_URL);
   let companyProfile;
 
