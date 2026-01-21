@@ -707,7 +707,7 @@ abstract class PartnerController extends AbstractController {
     const { tokens, ids } = super.extract(request);
     const appointmentId = partner.data?.appointment_id;
 
-    const partnerUpdateMap: Record<string, boolean> = {
+    const partnerUpdatedFieldsMap: Record<string, boolean> = {
       forename: false,
       surname: false,
       nationality1: false,
@@ -721,16 +721,13 @@ abstract class PartnerController extends AbstractController {
         appointmentId
       );
 
-      for (const detail in partnerUpdateMap) {
-        if (partner?.data?.[detail] === null) {
-          partnerUpdateMap[detail] = false;
-        } else if (appointment?.partner?.data?.[detail] !== partner.data?.[detail]){
-          partnerUpdateMap[detail] = true;
+      for (const field in partnerUpdatedFieldsMap) {
+        if (appointment?.partner?.data?.[field] !== partner.data?.[field]){
+          partnerUpdatedFieldsMap[field] = true;
         }
       }
-      return partnerUpdateMap;
     }
-    return partnerUpdateMap;
+    return partnerUpdatedFieldsMap;
   }
 
   protected resetFormerNamesIfPreviousNameIsFalse(data: Record<string, any>) {

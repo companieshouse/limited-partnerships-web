@@ -91,12 +91,12 @@ class GeneralPartnerPostTransitionController extends PartnerController {
           partner.data.cease_date = formatDate(partner.data.cease_date, response.locals.i18n);
         }
 
-        let partnerUpdateMap: Record<string, boolean> = {};
+        let partnerUpdatedFieldsMap: Record<string, boolean> = {};
         if (partner.data?.kind === PartnerKind.UPDATE_GENERAL_PARTNER_PERSON) {
-          partnerUpdateMap = await super.comparePartnerDetails(partner, request);
+          partnerUpdatedFieldsMap = await super.comparePartnerDetails(partner, request);
         }
 
-        response.render(PARTNER_CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE, super.makeProps(pageRouting, { partner, partnerUpdateMap }, null));
+        response.render(PARTNER_CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE, super.makeProps(pageRouting, { partner, partnerUpdatedFieldsMap }, null));
       } catch (error) {
         next(error);
       }

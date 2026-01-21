@@ -1,17 +1,17 @@
 {% set notUpdated = i18n.checkYourAnswersPage.update.notUpdated %}
 {% set dateChangeUrl = "when-did-general-partner-details-change"  %}
 {% set item = props.data.partner %}
-{% set updateMap = props.data.partnerUpdateMap %}
+{% set updateFieldsMap = props.data.partnerUpdatedFieldsMap %}
 
-{% if updateMap.forename or updateMap.surname %}
+{% if updateFieldsMap.forename or updateFieldsMap.surname %}
   {% set name = item.data.forename + " " + item.data.surname  %}
 {% else %}
   {% set name = notUpdated %}
 {% endif %}
 
-{% set nationalities = macros.formatNationality(item.data.nationality1, i18n) if updateMap.nationality1 else notUpdated %}
+{% set nationalities = macros.formatNationality(item.data.nationality1, i18n) if updateFieldsMap.nationality1 else notUpdated %}
   {% if item.data.nationality2 %}
-    {% set nationalities = macros.formatNationality(item.data.nationality1, i18n) + ", " + macros.formatNationality(item.data.nationality2, i18n) if updateMap.nationality2 or updateMap.nationality1 else notUpdated %}
+    {% set nationalities = macros.formatNationality(item.data.nationality1, i18n) + ", " + macros.formatNationality(item.data.nationality2, i18n) if updateFieldsMap.nationality2 or updateFieldsMap.nationality1 else notUpdated %}
   {% endif %}
 
 
