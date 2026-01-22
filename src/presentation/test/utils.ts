@@ -80,8 +80,7 @@ export const setupPartners = (isLimitedPartner: boolean, isPerson: boolean) => {
   }
 };
 
-export const expectPartnerData = (isLimitedPartner: boolean, isPerson: boolean, res: request.Response, limitedPartner: LimitedPartner, generalPartner: GeneralPartner) => {
-  const partner = isLimitedPartner ? limitedPartner : generalPartner;
+export const expectPartnerData = (res: request.Response, partner: LimitedPartner | GeneralPartner, isPerson: boolean) => {
 
   if (isPerson) {
     expect(res.text).toContain(partner.data?.forename);

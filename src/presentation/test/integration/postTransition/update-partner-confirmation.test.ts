@@ -34,7 +34,7 @@ describe("Update partner confirmation page", () => {
       const transaction = new TransactionBuilder().withKind(partnerKind).build();
       appDevDependencies.transactionGateway.feedTransactions([transaction]);
 
-      const { limitedPartner, generalPartner } = setupPartners(isLimitedPartner, isPerson);
+      const { generalPartner } = setupPartners(isLimitedPartner, isPerson);
 
       setLocalesEnabled(true);
 
@@ -53,7 +53,7 @@ describe("Update partner confirmation page", () => {
       expect(res.text).toContain(companyProfile.data.companyName);
       expect(res.text).toContain(companyProfile.data.companyNumber);
 
-      expectPartnerData(isLimitedPartner, isPerson, res, limitedPartner ?? {}, generalPartner ?? {});
+      expectPartnerData(res, generalPartner ?? {}, true);
     });
 
     it.each([
@@ -62,7 +62,7 @@ describe("Update partner confirmation page", () => {
       const transaction = new TransactionBuilder().withKind(partnerKind).build();
       appDevDependencies.transactionGateway.feedTransactions([transaction]);
 
-      const { limitedPartner, generalPartner } = setupPartners(isLimitedPartner, isPerson);
+      const { generalPartner } = setupPartners(isLimitedPartner, isPerson);
 
       setLocalesEnabled(true);
 
@@ -81,7 +81,7 @@ describe("Update partner confirmation page", () => {
       expect(res.text).toContain(companyProfile.data.companyName);
       expect(res.text).toContain(companyProfile.data.companyNumber);
 
-      expectPartnerData(isLimitedPartner, isPerson, res, limitedPartner ?? {}, generalPartner ?? {});
+      expectPartnerData(res, generalPartner ?? {}, true);
     });
   });
 });

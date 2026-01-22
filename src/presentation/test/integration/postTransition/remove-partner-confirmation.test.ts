@@ -58,7 +58,7 @@ describe("Remove partner confirmation page", () => {
       expect(res.text).toContain(companyProfile.data.companyName);
       expect(res.text).toContain(companyProfile.data.companyNumber);
 
-      expectPartnerData(isLimitedPartner, isPerson, res, limitedPartner ?? {}, generalPartner ?? {});
+      expectPartnerData(res, limitedPartner ?? generalPartner ?? {}, isPerson);
     });
 
     it.each([
@@ -89,7 +89,7 @@ describe("Remove partner confirmation page", () => {
       expect(res.text).toContain(companyProfile.data.companyName);
       expect(res.text).toContain(companyProfile.data.companyNumber);
 
-      expectPartnerData(isLimitedPartner, isPerson, res, limitedPartner ?? {}, generalPartner ?? {});
+      expectPartnerData(res, limitedPartner ?? generalPartner ?? {}, isPerson);
     });
   });
 });
