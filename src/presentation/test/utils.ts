@@ -1,7 +1,11 @@
 import { LocalesService } from "@companieshouse/ch-node-utils";
+import { LimitedPartner, GeneralPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 import * as config from "../../config/constants";
 import { appDevDependencies } from "../../config/dev-dependencies";
+import GeneralPartnerBuilder from "./builder/GeneralPartnerBuilder";
+import LimitedPartnerBuilder from "./builder/LimitedPartnerBuilder";
+import request from "supertest";
 
 export const setLocalesEnabled = (bool: boolean) => {
   jest.spyOn(config, "isLocalesEnabled").mockReturnValue(bool);
@@ -55,5 +59,34 @@ export const testTranslations = (text: string, translations: Record<string, any>
     const str = toEscapedHtml(translations[key]);
 
     expect(text).toContain(str);
+  }
+};
+
+export const setupPartners = (isLimitedPartner: boolean, isPerson: boolean) => {
+  let partner: LimitedPartner | GeneralPartner;
+
+  if (isLimitedPartner) {
+    partner = isPerson
+      ? new LimitedPartnerBuilder().isPerson().build()
+      : new LimitedPartnerBuilder().isLegalEntity().build();
+    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([partner]);
+    return { limitedPartner: partner, generalPartner: undefined };
+  } else {
+    partner = isPerson
+      ? new GeneralPartnerBuilder().isPerson().build()
+      : new GeneralPartnerBuilder().isLegalEntity().build();
+    appDevDependencies.generalPartnerGateway.feedGeneralPartners([partner]);
+    return { limitedPartner: undefined, generalPartner: partner };
+  }
+};
+
+export const expectPartnerData = (isLimitedPartner: boolean, isPerson: boolean, res: request.Response, limitedPartner: LimitedPartner, generalPartner: GeneralPartner) => {
+  const partner = isLimitedPartner ? limitedPartner : generalPartner;
+
+  if (isPerson) {
+    expect(res.text).toContain(partner.data?.forename);
+    expect(res.text).toContain(partner.data?.surname);
+  } else {
+    expect(res.text).toContain(partner.data?.legal_entity_name);
   }
 };
