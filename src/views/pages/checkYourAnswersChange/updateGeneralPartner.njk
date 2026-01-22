@@ -14,8 +14,6 @@
     {% set nationalities = macros.formatNationality(item.data.nationality1, i18n) + ", " + macros.formatNationality(item.data.nationality2, i18n) if updateFieldsMap.nationality2 or updateFieldsMap.nationality1 else notUpdated %}
   {% endif %}
 
-
-
 {{ govukSummaryList({
   classes: "govuk-!-margin-bottom-7",
   rows: [

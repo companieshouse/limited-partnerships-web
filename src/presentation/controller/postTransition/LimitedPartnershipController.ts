@@ -23,7 +23,6 @@ import {
   CHS_URL,
   TRANSACTION_DESCRIPTION_DESIGNATE_AS_PRIVATE_FUND_PARTNERSHIP
 } from "../../../config/constants";
-import { formatDate } from "../../../utils/date-format";
 import { getJourneyTypes } from "../../../utils";
 
 import CompanyService from "../../../application/service/CompanyService";
@@ -369,13 +368,6 @@ class LimitedPartnershipController extends AbstractController {
         const limitedPartnership = await this.getLimitedPartnership(ids, tokens);
 
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
-
-        if (limitedPartnership?.data?.date_of_update) {
-          limitedPartnership.data.date_of_update = formatDate(
-            limitedPartnership.data.date_of_update,
-            response.locals.i18n
-          );
-        }
 
         response.render(
           CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE,
