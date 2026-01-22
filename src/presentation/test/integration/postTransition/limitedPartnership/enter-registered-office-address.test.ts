@@ -48,6 +48,8 @@ describe("Enter Registered Office Address Page", () => {
 
       testTranslations(res.text, enTranslationText.address.registeredOffice, ["newRequirement", "provideNext"]);
       expect(res.text).not.toContain("WELSH -");
+      const occurrences = res.text.split(enTranslationText.serviceName.updateLimitedPartnershipRegisteredOfficeAddress).length - 1;
+      expect(occurrences).toBe(2);
     });
 
     it("should load the enter registered office address page with Welsh text", async () => {
@@ -65,6 +67,8 @@ describe("Enter Registered Office Address Page", () => {
         "errorMessages"
       ]);
       testTranslations(res.text, cyTranslationText.address.registeredOffice, ["newRequirement", "provideNext"]);
+      const occurrences = res.text.split(cyTranslationText.serviceName.updateLimitedPartnershipRegisteredOfficeAddress).length - 1;
+      expect(occurrences).toBe(2);
     });
   });
 

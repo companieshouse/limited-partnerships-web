@@ -10,6 +10,8 @@ import CompanyProfileBuilder from "../../../../builder/CompanyProfileBuilder";
 import PostTransitionPageType from "../../../../../controller/postTransition/pageType";
 import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBuilder";
 import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
+import TransactionBuilder from "../../../../builder/TransactionBuilder";
+import { PartnershipKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 describe("Registered office address change date page", () => {
   const URL = getUrl(WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL);
@@ -20,6 +22,9 @@ describe("Registered office address change date page", () => {
 
     const companyProfile = new CompanyProfileBuilder().build();
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
+
+    const transaction = new TransactionBuilder().withKind(PartnershipKind.UPDATE_PARTNERSHIP_REGISTERED_OFFICE_ADDRESS).build();
+    appDevDependencies.transactionGateway.feedTransactions([transaction]);
   });
 
   describe("GET registered office address change date page", () => {
@@ -30,6 +35,8 @@ describe("Registered office address change date page", () => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(`${enTranslationText.dateOfUpdate.registeredOfficeAddress.title}`);
       expect(res.text).not.toContain("WELSH -");
+      const occurrences = res.text.split(enTranslationText.serviceName.updateLimitedPartnershipRegisteredOfficeAddress).length - 1;
+      expect(occurrences).toBe(2);
     });
 
     it("should load registered office address change date page with welsh text", async () => {
@@ -39,6 +46,8 @@ describe("Registered office address change date page", () => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(`${cyTranslationText.dateOfUpdate.registeredOfficeAddress.title}`);
       expect(res.text).toContain("WELSH -");
+      const occurrences = res.text.split(cyTranslationText.serviceName.updateLimitedPartnershipRegisteredOfficeAddress).length - 1;
+      expect(occurrences).toBe(2);
     });
   });
 

@@ -48,7 +48,9 @@ describe("Name Page", () => {
       const res = await request(app).get(URL + "?lang=cy");
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(`${expected.title} - ${cyTranslationText.servicePostTransition} - GOV.UK`);
+      const occurrences = res.text.split(cyTranslationText.serviceName.updateLimitedPartnershipName).length - 1;
+      expect(occurrences).toBe(2);
+      expect(res.text).toContain(`${expected.title} - ${cyTranslationText.serviceName.updateLimitedPartnershipName} - GOV.UK`);
       testTranslations(res.text, expected, exclude);
       expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
       expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
@@ -75,7 +77,9 @@ describe("Name Page", () => {
       const res = await request(app).get(URL + "?lang=en");
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(`${expected.title} - ${enTranslationText.servicePostTransition} - GOV.UK`);
+      const occurrences = res.text.split(enTranslationText.serviceName.updateLimitedPartnershipName).length - 1;
+      expect(occurrences).toBe(2);
+      expect(res.text).toContain(`${expected.title} - ${enTranslationText.serviceName.updateLimitedPartnershipName} - GOV.UK`);
       testTranslations(res.text, expected, exclude);
       expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
       expect(res.text).not.toContain("WELSH -");

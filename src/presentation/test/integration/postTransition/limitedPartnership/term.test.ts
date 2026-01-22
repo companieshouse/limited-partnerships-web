@@ -40,8 +40,10 @@ describe("Email Page", () => {
 
         expect(res.status).toBe(200);
         testTranslations(res.text, enTranslationText.termPage);
+        const occurrences = res.text.split(enTranslationText.serviceName.updateLimitedPartnershipTerm).length - 1;
+        expect(occurrences).toBe(2);
         expect(res.text).toContain(
-          `${enTranslationText.termPage.title} - ${enTranslationText.servicePostTransition} - GOV.UK`
+          `${enTranslationText.termPage.title} - ${enTranslationText.serviceName.updateLimitedPartnershipTerm} - GOV.UK`
         );
         expect(res.text).not.toContain("WELSH -");
       });
@@ -50,8 +52,10 @@ describe("Email Page", () => {
         const res = await request(app).get(URL + "?lang=cy");
 
         expect(res.status).toBe(200);
+        const occurrences = res.text.split(cyTranslationText.serviceName.updateLimitedPartnershipTerm).length - 1;
+        expect(occurrences).toBe(2);
         expect(res.text).toContain(
-          `${cyTranslationText.termPage.title} - ${cyTranslationText.servicePostTransition} - GOV.UK`
+          `${cyTranslationText.termPage.title} - ${cyTranslationText.serviceName.updateLimitedPartnershipTerm} - GOV.UK`
         );
         testTranslations(res.text, cyTranslationText.termPage);
         expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);

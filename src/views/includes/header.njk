@@ -1,12 +1,14 @@
 {# journeyTypes is set on res.locals in journey.detection.middleware #}
+{# serviceName is set on res.locals in service-name.middleware #}
+
 {% if journeyTypes.isRegistration %}
-  {% set headerServiceName = SERVICE_NAME_REGISTRATION %}
+  {% set headerServiceName = i18n.serviceRegistration %}
   {% set serviceUrl = SERVICE_START_URL_REGISTRATION %}
 {% elif journeyTypes.isTransition %}
-  {% set headerServiceName = SERVICE_NAME_TRANSITION %}
+  {% set headerServiceName = i18n.serviceTransition %}
   {% set serviceUrl = SERVICE_START_URL_TRANSITION %}
 {% elif journeyTypes.isPostTransition %}
-  {% set headerServiceName = serviceName %}
+  {% set headerServiceName = serviceName or i18n.servicePostTransition %}
   {% set serviceUrl = "/" %}
 {% endif %}
 

@@ -12,9 +12,16 @@ import {
   WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_URL
 } from "../../../../../../presentation/controller/postTransition/url";
 import { ApiErrors } from "domain/entities/UIErrors";
+import TransactionBuilder from "../../../../builder/TransactionBuilder";
+import { PartnershipKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 describe("Partnership principal place of business address change date page", () => {
   const URL = getUrl(WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_URL);
+
+  beforeEach(() => {
+    const transaction = new TransactionBuilder().withKind(PartnershipKind.UPDATE_PARTNERSHIP_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS).build();
+    appDevDependencies.transactionGateway.feedTransactions([transaction]);
+  });
 
   describe("GET principal place of business address change date page", () => {
     it("should load principal place of business address change date page with english text", async () => {
@@ -24,6 +31,8 @@ describe("Partnership principal place of business address change date page", () 
       expect(res.status).toBe(200);
       expect(res.text).toContain(`${enTranslationText.dateOfUpdate.principalPlaceOfBusinessAddress.title}`);
       expect(res.text).not.toContain("WELSH -");
+      const occurrences = res.text.split(enTranslationText.serviceName.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress).length - 1;
+      expect(occurrences).toBe(2);
     });
 
     it("should load principal place of business address change date page with welsh text", async () => {
@@ -33,6 +42,8 @@ describe("Partnership principal place of business address change date page", () 
       expect(res.status).toBe(200);
       expect(res.text).toContain(`${cyTranslationText.dateOfUpdate.principalPlaceOfBusinessAddress.title}`);
       expect(res.text).toContain("WELSH -");
+      const occurrences = res.text.split(cyTranslationText.serviceName.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress).length - 1;
+      expect(occurrences).toBe(2);
     });
   });
 

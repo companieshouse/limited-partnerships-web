@@ -38,7 +38,6 @@ export const REFRESH_TOKEN_GRANT_TYPE = "refresh_token";
 export const SERVICE_NAME_REGISTRATION = "Register a limited partnership";
 export const SERVICE_NAME_TRANSITION = "Provide new required information about a limited partnership";
 export const SERVICE_NAME_POST_TRANSITION = "File for a limited partnership";
-export const SERVICE_NAME_UPDATE_LIMITED_PARTNERSHIP_NAME = "Update the name of a limited partnership";
 
 // Application Cache
 export const APPLICATION_CACHE_KEY = "limited_partnership";

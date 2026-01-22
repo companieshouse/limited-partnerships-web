@@ -16,6 +16,8 @@ import {
 import PostTransitionPageType from "../../../../../controller/postTransition/pageType";
 import CompanyProfileBuilder from "../../../../builder/CompanyProfileBuilder";
 import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBuilder";
+import TransactionBuilder from "../../../../builder/TransactionBuilder";
+import { PartnershipKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 describe("Partnership term change date page", () => {
   const URL = getUrl(WHEN_DID_THE_TERM_CHANGE_URL);
@@ -26,6 +28,9 @@ describe("Partnership term change date page", () => {
 
     const companyProfile = new CompanyProfileBuilder().build();
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
+
+    const transaction = new TransactionBuilder().withKind(PartnershipKind.UPDATE_PARTNERSHIP_TERM).build();
+    appDevDependencies.transactionGateway.feedTransactions([transaction]);
   });
 
   describe("GET partnership term change date page", () => {
@@ -36,6 +41,8 @@ describe("Partnership term change date page", () => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(`${enTranslationText.dateOfUpdate.term.title}`);
       expect(res.text).not.toContain("WELSH -");
+      const occurrences = res.text.split(enTranslationText.serviceName.updateLimitedPartnershipTerm).length - 1;
+      expect(occurrences).toBe(2);
     });
 
     it("should load partnership term change date page with welsh text", async () => {
@@ -45,6 +52,8 @@ describe("Partnership term change date page", () => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(`${cyTranslationText.dateOfUpdate.term.title}`);
       expect(res.text).toContain("WELSH -");
+      const occurrences = res.text.split(cyTranslationText.serviceName.updateLimitedPartnershipTerm).length - 1;
+      expect(occurrences).toBe(2);
     });
   });
 

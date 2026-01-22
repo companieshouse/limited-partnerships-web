@@ -56,6 +56,8 @@ describe("Enter Principal Place Of Business Address Page", () => {
       expect(res.text).toContain(companyProfile.data.serviceAddress.postalCode);
       expect(res.text).toContain(companyProfile.data.serviceAddress.locality);
       expect(res.text).toContain(companyProfile.data.serviceAddress.country);
+      const occurrences = res.text.split(enTranslationText.serviceName.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress).length - 1;
+      expect(occurrences).toBe(2);
     });
 
     it("should load the enter principal place of business address page with Welsh text", async () => {
@@ -75,6 +77,8 @@ describe("Enter Principal Place Of Business Address Page", () => {
         "newRequirement",
         "titleHint2"
       ]);
+      const occurrences = res.text.split(cyTranslationText.serviceName.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress).length - 1;
+      expect(occurrences).toBe(2);
     });
   });
 

@@ -12,6 +12,8 @@ import CompanyProfileBuilder from "../../../../builder/CompanyProfileBuilder";
 import PostTransitionPageType from "../../../../../controller/postTransition/pageType";
 import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBuilder";
 import { PARTNERSHIP_NAME_TEMPLATE, WHEN_DID_THE_PARTNERSHIP_NAME_CHANGE_TEMPLATE } from "../../../../../../presentation/controller/postTransition/template";
+import TransactionBuilder from "../../../../builder/TransactionBuilder";
+import { PartnershipKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 describe("Partnership name check your answers page", () => {
   const URL = getUrl(PARTNERSHIP_NAME_CHANGE_CHECK_YOUR_ANSWERS_URL);
@@ -28,6 +30,9 @@ describe("Partnership name check your answers page", () => {
       .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
       .build();
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+    const transaction = new TransactionBuilder().withKind(PartnershipKind.UPDATE_PARTNERSHIP_NAME).build();
+    appDevDependencies.transactionGateway.feedTransactions([transaction]);
   });
 
   describe("GET partnership name check your answers page", () => {
@@ -40,6 +45,8 @@ describe("Partnership name check your answers page", () => {
       expect(res.text).toContain(enTranslationText.print.buttonText);
       expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
       expect(res.text).not.toContain("WELSH -");
+      const occurrences = res.text.split(enTranslationText.serviceName.updateLimitedPartnershipName).length - 1;
+      expect(occurrences).toBe(2);
 
       //  change links should retain the lang query parameter
       expect(res.text).toContain(`${PARTNERSHIP_NAME_TEMPLATE}?lang=en`);
@@ -55,6 +62,8 @@ describe("Partnership name check your answers page", () => {
       expect(res.text).toContain(enTranslationText.print.buttonText);
       expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
       expect(res.text).toContain("WELSH -");
+      const occurrences = res.text.split(cyTranslationText.serviceName.updateLimitedPartnershipName).length - 1;
+      expect(occurrences).toBe(2);
 
       //  change links should retain the lang query parameter
       expect(res.text).toContain(`${PARTNERSHIP_NAME_TEMPLATE}?lang=cy`);

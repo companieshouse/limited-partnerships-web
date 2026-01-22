@@ -1,5 +1,5 @@
 import request from "supertest";
-import { Term } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { PartnershipKind, Term } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import enTranslationText from "../../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../../locales/cy/translations.json";
@@ -13,6 +13,7 @@ import { CONFIRMATION_POST_TRANSITION_URL } from "../../../../../controller/glob
 import PostTransitionPageType from "../../../../../controller/postTransition/pageType";
 import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBuilder";
 import { TERM_TEMPLATE, WHEN_DID_TERM_CHANGE_TEMPLATE } from "../../../../../../presentation/controller/postTransition/template";
+import TransactionBuilder from "../../../../builder/TransactionBuilder";
 
 describe("Term change check your answers page", () => {
   const URL = getUrl(TERM_CHANGE_CHECK_YOUR_ANSWERS_URL);
@@ -26,6 +27,9 @@ describe("Term change check your answers page", () => {
       .withTerm(Term.BY_AGREEMENT)
       .build();
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+    const transaction = new TransactionBuilder().withKind(PartnershipKind.UPDATE_PARTNERSHIP_TERM).build();
+    appDevDependencies.transactionGateway.feedTransactions([transaction]);
   });
 
   describe("GET term change check your answers page", () => {
@@ -39,6 +43,8 @@ describe("Term change check your answers page", () => {
       expect(res.text).toContain(enTranslationText.print.buttonText);
       expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
       expect(res.text).not.toContain("WELSH -");
+      const occurrences = res.text.split(enTranslationText.serviceName.updateLimitedPartnershipTerm).length - 1;
+      expect(occurrences).toBe(2);
 
       //  change links should retain the lang query parameter
       expect(res.text).toContain(`${TERM_TEMPLATE}?lang=en`);
@@ -55,6 +61,8 @@ describe("Term change check your answers page", () => {
       expect(res.text).toContain(enTranslationText.print.buttonText);
       expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
       expect(res.text).toContain("WELSH -");
+      const occurrences = res.text.split(cyTranslationText.serviceName.updateLimitedPartnershipTerm).length - 1;
+      expect(occurrences).toBe(2);
 
       //  change links should retain the lang query parameter
       expect(res.text).toContain(`${TERM_TEMPLATE}?lang=cy`);
