@@ -118,7 +118,7 @@ export const UPDATE_ADDRESS_YES_NO_TEMPLATE = "update-address-yes-no";
 export const CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX = "change-check-your-answers";
 export const CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE = "limited-partnership-change-check-your-answers";
 export const REMOVE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX = "remove-check-your-answers";
-export const REMOVE_CHECK_YOUR_ANSWERS_TEMPLATE = "partner-remove-check-your-answers";
+export const PARTNER_CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE = "partner-change-check-your-answers";
 
 // services
 export const SDK_LIMITED_PARTNERSHIP_SERVICE = "limitedPartnershipsService";

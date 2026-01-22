@@ -1,0 +1,76 @@
+{% set notUpdated = i18n.checkYourAnswersPage.update.notUpdated %}
+{% set dateChangeUrl = "when-did-general-partner-details-change"  %}
+{% set item = props.data.partner %}
+{% set updateFieldsMap = props.data.partnerUpdatedFieldsMap %}
+
+{% if updateFieldsMap.forename or updateFieldsMap.surname %}
+  {% set name = item.data.forename + " " + item.data.surname  %}
+{% else %}
+  {% set name = notUpdated %}
+{% endif %}
+
+{% set nationalities = macros.formatNationality(item.data.nationality1, i18n) if updateFieldsMap.nationality1 else notUpdated %}
+  {% if item.data.nationality2 %}
+    {% set nationalities = macros.formatNationality(item.data.nationality1, i18n) + ", " + macros.formatNationality(item.data.nationality2, i18n) if updateFieldsMap.nationality2 or updateFieldsMap.nationality1 else notUpdated %}
+  {% endif %}
+
+
+
+{{ govukSummaryList({
+  classes: "govuk-!-margin-bottom-7",
+  rows: [
+    {
+      key: {
+        text: i18n.checkYourAnswersPage.partners.person.name
+      },
+      value: {
+        text: name
+      },
+      actions: {
+            items: [
+                    CREATE_CHANGE_LINK(
+                    i18n.checkYourAnswersPage.change,
+                    (props.currentUrl | replace(props.pageType, "update-general-partner-person")),
+                    term,
+                    "change-name-button"
+                    )
+                ]
+            }
+    },
+    {
+      key: {
+        text: i18n.checkYourAnswersPage.partners.person.nationality
+      },
+      value: {
+        text: nationalities
+      },
+      actions: {
+            items: [
+                    CREATE_CHANGE_LINK(
+                    i18n.checkYourAnswersPage.change,
+                    (props.currentUrl | replace(props.pageType, "update-general-partner-person")),
+                    term,
+                    "change-name-button"
+                    )
+                ]
+            }
+    },
+    {
+      key: {
+        text: i18n.checkYourAnswersPage.partners.person.usualResidentialAddress
+      },
+      value: {
+        text: macros.formatAddress(item.data.usual_residential_address, true, i18n) if item.data.update_usual_residential_address_required else notUpdated
+      }
+    },
+    {
+      key: {
+        text: i18n.checkYourAnswersPage.partners.person.correspondenceAddress
+      },
+      value: {
+        text: macros.formatAddress(item.data.service_address, true, i18n) if item.data.update_service_address_required else notUpdated
+      }
+    },
+    SET_DATE_OF_UPDATE_SECTION(props, i18n, dateChangeUrl)
+  ]
+}) }}

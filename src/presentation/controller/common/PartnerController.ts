@@ -700,6 +700,36 @@ abstract class PartnerController extends AbstractController {
     }
   }
 
+  protected async comparePartnerDetails(
+    partner: GeneralPartner | LimitedPartner,
+    request: Request
+  ) {
+    const { tokens, ids } = super.extract(request);
+    const appointmentId = partner.data?.appointment_id;
+
+    const partnerUpdatedFieldsMap: Record<string, boolean> = {
+      forename: false,
+      surname: false,
+      nationality1: false,
+      nationality2: false
+    };
+
+    if (appointmentId) {
+      const appointment = await this.companyService?.buildPartnerFromCompanyAppointment(
+        tokens,
+        ids.companyId,
+        appointmentId
+      );
+
+      for (const field in partnerUpdatedFieldsMap) {
+        if (appointment?.partner?.data?.[field] !== partner.data?.[field]){
+          partnerUpdatedFieldsMap[field] = true;
+        }
+      }
+    }
+    return partnerUpdatedFieldsMap;
+  }
+
   protected resetFormerNamesIfPreviousNameIsFalse(data: Record<string, any>) {
     if (data?.former_names && data?.previousName === "false") {
       data.former_names = "";
