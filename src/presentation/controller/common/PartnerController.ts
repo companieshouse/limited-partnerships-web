@@ -427,9 +427,13 @@ abstract class PartnerController extends AbstractController {
           );
 
           if (result.errors.errors.errorList[0].href === "#date_of_update") {
-            const errorMessage = response.locals.i18n.errorMessages.dateOfUpdate[pageRouting?.data?.titleKey];
-            result.errors.errors.errorList[0].text = errorMessage;
-            result.errors.errors.date_of_update.text = errorMessage;
+            const errors = result.errors.errors;
+            if (errors.errorList[0].href === "#date_of_update") {
+              const errorMessage = response.locals.i18n.errorMessages.dateOfUpdate[pageRouting?.data?.titleKey];
+              errors.errorList[0].text = errorMessage;
+              errors.date_of_update.text = errorMessage;
+            }
+
             return response.render(DATE_OF_UPDATE_TEMPLATE, super.makeProps(pageRouting, renderData, result.errors));
           }
 

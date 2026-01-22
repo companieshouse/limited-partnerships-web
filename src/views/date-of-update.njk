@@ -1,16 +1,26 @@
 {% extends "layout.njk" %}
 
+{% set dateData = null %}
+{% if props.data.limitedPartnership.data["date_of_update-year"] %}
+  {% set dateData = props.data.limitedPartnership.data %}
+{% elif props.data.generalPartner.data["date_of_update-year"] %}
+  {% set dateData = props.data.generalPartner.data %}
+{% elif props.data.limitedPartner.data["date_of_update-year"] %}
+  {% set dateData = props.data.limitedPartner.data %}
+{% endif %}
+
+
 {% if props.data.limitedPartnership.data.date_of_update  %}
   {# This is for when saved data is pre-populated on the page #}
   {% set date_of_update = props.data.limitedPartnership.data.date_of_update %}
   {% set date_of_update_year = date_of_update[0] + date_of_update[1] + date_of_update[2] + date_of_update[3] %}
   {% set date_of_update_month = date_of_update[5] + date_of_update[6] %}
   {% set date_of_update_day = date_of_update[8] + date_of_update[9] %}
-{% elif props.data.limitedPartnership.data["date_of_update-year"] %}
+{% elif dateData %}
   {# And this covers the scenario when date validation fails and the page reloads #}
-  {% set date_of_update_year = props.data.limitedPartnership.data["date_of_update-year"] %}
-  {% set date_of_update_month = props.data.limitedPartnership.data["date_of_update-month"] %}
-  {% set date_of_update_day = props.data.limitedPartnership.data["date_of_update-day"] %}
+  {% set date_of_update_year = dateData["date_of_update-year"] %}
+  {% set date_of_update_month = dateData["date_of_update-month"] %}
+  {% set date_of_update_day = dateData["date_of_update-day"] %}
 {% endif %}
 
 {% set pageTitle = i18n.dateOfUpdate[props.data.titleKey].title %}

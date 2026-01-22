@@ -88,11 +88,17 @@ describe("Partnership name change date page", () => {
     appDevDependencies.limitedPartnershipGateway.feedErrors(apiErrors);
 
     const res = await request(app).post(URL).send({
-      pageType: PostTransitionPageType.whenDidThePartnershipNameChange
+      pageType: PostTransitionPageType.whenDidThePartnershipNameChange,
+      "date_of_update-day": "10",
+      "date_of_update-month": "01",
+      "date_of_update-year": "2000"
     });
 
     expect(res.status).toBe(200);
     expect(res.text).not.toContain(originalErrorMessage);
     expect(res.text).toContain(expectedErrorMessage);
+    expect(res.text).toContain("10");
+    expect(res.text).toContain("01");
+    expect(res.text).toContain("2000");
   });
 });
