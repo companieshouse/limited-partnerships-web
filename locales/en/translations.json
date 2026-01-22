@@ -511,8 +511,10 @@
             "partner": {
               "addPartner": "We've received your filing to add",
               "removePartner": "We've received your filing to remove",
+              "updatePartner": "We've received the updated details for",
               "generalPartnerType": "as a general partner of",
               "limitedPartnerType": "as a limited partner of",
+              "updateGeneralPartnerType": "who is a general partner of",
               "updateWontShow": "This update will not show on the public register until we accept the filing.",
               "processFiling": "We'll process this filing withing 5 working days, and email",
               "processFilingConfirmation": "to let you know if it's been accepted or rejected.",

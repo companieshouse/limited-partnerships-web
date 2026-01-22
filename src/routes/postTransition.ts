@@ -692,6 +692,11 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
     companyAuthentication,
     dependencies.generalPartnerPostTransitionController.getCheckYourAnswersPageRouting()
   );
+  router.post(
+    UPDATE_GENERAL_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.postCheckYourAnswers()
+  );
 };
 
 export default postTransitionEndpoints;

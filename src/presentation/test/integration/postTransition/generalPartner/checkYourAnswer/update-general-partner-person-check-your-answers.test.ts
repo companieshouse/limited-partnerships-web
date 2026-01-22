@@ -12,6 +12,8 @@ import { UPDATE_GENERAL_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL } from "../../../.
 import GeneralPartnerBuilder from "../../../../builder/GeneralPartnerBuilder";
 import CompanyAppointmentBuilder from "../../../../builder/CompanyAppointmentBuilder";
 import CompanyProfileBuilder from "../../../../builder/CompanyProfileBuilder";
+import PostTransitionPageType from "../../../../../controller/postTransition/pageType";
+import { CONFIRMATION_POST_TRANSITION_URL } from "../../../../../controller/global/url";
 
 describe("Update general partner check your answers page", () => {
   const URL = getUrl(UPDATE_GENERAL_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL);
@@ -111,6 +113,19 @@ describe("Update general partner check your answers page", () => {
       expect(res.text).not.toContain(generalPartner.data?.nationality1);
       expect(res.text).not.toContain("4 Service Address Line 1, Line 2, Stoke-On-Trent, Region, England, ST6 3LJ");
       expect(res.text).toContain(enTranslationText.checkYourAnswersPage.update.dateOfChange);
+    });
+  });
+
+  describe("POST update general partner check your answers page", () => {
+    it("should post update general partner check your answers page and redirect to confirmation page", async () => {
+      const res = await request(app).post(URL).send({
+        pageType: PostTransitionPageType.updateGeneralPartnerPersonCheckYourAnswers
+      });
+
+      const REDIRECT_URL = getUrl(CONFIRMATION_POST_TRANSITION_URL);
+
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
     });
   });
 });
