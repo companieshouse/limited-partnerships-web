@@ -54,6 +54,7 @@ enum PostTransitionPageType {
   updateGeneralPartnerLegalEntity = "update-general-partner-legal-entity",
   updateUsualResidentialAddressYesNo = `update-usual-residential-${UPDATE_ADDRESS_YES_NO_TYPE_SUFFIX}`,
   updateCorrespondenceAddressYesNo = `update-correspondence-${UPDATE_ADDRESS_YES_NO_TYPE_SUFFIX}`,
+  updateGeneralPartnerPersonCheckYourAnswers = `general-partner-person-${CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX}`,
 
   whenDidGeneralPartnerDetailsChange = `${DATE_OF_UPDATE_TYPE_PREFIX}-general-partner-details-change`
 }

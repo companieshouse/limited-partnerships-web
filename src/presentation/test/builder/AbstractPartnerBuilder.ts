@@ -2,6 +2,7 @@ abstract class AbstractPartnerBuilder {
   _id = "123456";
   data: Record<string, any> = {
     completed: true,
+    appointment_id: "",
 
     forename: "",
     surname: "",
@@ -83,8 +84,18 @@ abstract class AbstractPartnerBuilder {
     return this;
   }
 
+  withUsualResidentialAddressUpdateRequired(updateRequired: boolean) {
+    this.data.update_usual_residential_address_required = updateRequired;
+    return this;
+  }
+
   withServiceAddress(serviceAddress: Record<string, any> | null) {
     this.data.service_address = serviceAddress;
+    return this;
+  }
+
+  withServiceAddressUpdateRequired(updateRequired: boolean) {
+    this.data.update_service_address_required = updateRequired;
     return this;
   }
 

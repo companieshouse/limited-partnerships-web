@@ -1,14 +1,16 @@
-
 {% if partnerName %}
   {% set message = i18n.confirmationPage.postTransition.partner.addPartner %}
-
   {% if props.data.subtype === "limited-partnership#remove-general-partner-person"
       or props.data.subtype === "limited-partnership#remove-general-partner-legal-entity" 
       or props.data.subtype === "limited-partnership#remove-limited-partner-person"
       or props.data.subtype === "limited-partnership#remove-limited-partner-legal-entity" %}
     {% set message = i18n.confirmationPage.postTransition.partner.removePartner  %}
+  {% elif props.data.subtype === "limited-partnership#update-general-partner-person" %}
+    {% set message = i18n.confirmationPage.postTransition.partner.updatePartner %}
+    {% set partnerType = i18n.confirmationPage.postTransition.partner.updateGeneralPartnerType %}
+    {% set partnerName = partnerName + "," %}
   {% endif %}
-
+  
   <p class="govuk-body">{{ message }} {{ partnerName }} {{ partnerType }} {{ props.data.limitedPartnership.data.partnership_name | upper }} ({{ props.data.limitedPartnership.data.partnership_number }}).</p>
 {% else %}
   {% set message = i18n.confirmationPage.postTransition.registeredOfficeAddress %}

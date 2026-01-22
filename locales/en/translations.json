@@ -458,7 +458,8 @@
             "title" : "Check your answers before submitting this update",
             "dateOfChange" : "Date of change",
             "printWarning": "Print or save this page before you submit the filing, for your own records.",
-            "information": "We will not send you or the partnership a copy of this information."
+            "information": "We will not send you or the partnership a copy of this information.",
+            "notUpdated": "Not updated"
         }       
     },
 
@@ -510,8 +511,10 @@
             "partner": {
               "addPartner": "We've received your filing to add",
               "removePartner": "We've received your filing to remove",
+              "updatePartner": "We've received the updated details for",
               "generalPartnerType": "as a general partner of",
               "limitedPartnerType": "as a limited partner of",
+              "updateGeneralPartnerType": "who is a general partner of",
               "updateWontShow": "This update will not show on the public register until we accept the filing.",
               "processFiling": "We'll process this filing withing 5 working days, and email",
               "processFilingConfirmation": "to let you know if it's been accepted or rejected.",
@@ -778,6 +781,13 @@
         "untilDissolution": "Until a general partner determines the partnership is dissolved",
         "noTerm": "No set term",
         "publicRegisterLine1": "We'll show the term of partnership on the public register."
+    },
+
+    "transactionFiled": {
+        "title": "Information has already been provided for the limited partnership",
+        "alreadyReceived": "We've already received a filing with the required information for",
+        "acceptedInformation": "Once we've accepted this information, it will appear on the public register. You can then make any changes needed using our",
+        "acceptedInformationLink": "Find and update company information service"
     },
 
     "types": {

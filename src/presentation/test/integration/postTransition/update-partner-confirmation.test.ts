@@ -15,7 +15,7 @@ import { CONFIRMATION_POST_TRANSITION_URL } from "../../../controller/global/url
 import CompanyProfileBuilder from "../../builder/CompanyProfileBuilder";
 import TransactionBuilder from "../../builder/TransactionBuilder";
 
-describe("Remove partner confirmation page", () => {
+describe("Update partner confirmation page", () => {
   const URL = getUrl(CONFIRMATION_POST_TRANSITION_URL);
 
   let companyProfile: { Id: string; data: Partial<CompanyProfile> };
@@ -24,22 +24,17 @@ describe("Remove partner confirmation page", () => {
     companyProfile = new CompanyProfileBuilder().build();
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
-    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([]);
     appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
   });
 
-  describe("Get remove partner confirmation page", () => {
-
+  describe("Get update partner confirmation page", () => {
     it.each([
-      [ PartnerKind.REMOVE_LIMITED_PARTNER_PERSON, true, true ],
-      [ PartnerKind.REMOVE_LIMITED_PARTNER_LEGAL_ENTITY, true, false ],
-      [ PartnerKind.REMOVE_GENERAL_PARTNER_PERSON, false, true ],
-      [ PartnerKind.REMOVE_GENERAL_PARTNER_LEGAL_ENTITY, false, false ]
-    ])("should load remove partner confirmation page with english text", async (partnerKind, isLimitedPartner, isPerson) => {
+      [ PartnerKind.UPDATE_GENERAL_PARTNER_PERSON, false, true ],
+    ])("should load update partner confirmation page with english text", async (partnerKind, isLimitedPartner, isPerson) => {
       const transaction = new TransactionBuilder().withKind(partnerKind).build();
       appDevDependencies.transactionGateway.feedTransactions([transaction]);
 
-      const { limitedPartner, generalPartner } = setupPartners(isLimitedPartner, isPerson);
+      const { generalPartner } = setupPartners(isLimitedPartner, isPerson);
 
       setLocalesEnabled(true);
 
@@ -52,25 +47,22 @@ describe("Remove partner confirmation page", () => {
       expect(res.text).not.toContain("WELSH -");
 
       expect(res.text).toContain(
-        toEscapedHtml(enTranslationText.confirmationPage.postTransition.partner.removePartner)
+        toEscapedHtml(enTranslationText.confirmationPage.postTransition.partner.updatePartner)
       );
 
       expect(res.text).toContain(companyProfile.data.companyName);
       expect(res.text).toContain(companyProfile.data.companyNumber);
 
-      expectPartnerData(res, limitedPartner ?? generalPartner ?? {}, isPerson);
+      expectPartnerData(res, generalPartner ?? {}, true);
     });
 
     it.each([
-      [ PartnerKind.REMOVE_LIMITED_PARTNER_PERSON, true, true ],
-      [ PartnerKind.REMOVE_LIMITED_PARTNER_LEGAL_ENTITY, true, false ],
-      [ PartnerKind.REMOVE_GENERAL_PARTNER_PERSON, false, true ],
-      [ PartnerKind.REMOVE_GENERAL_PARTNER_LEGAL_ENTITY, false, false ]
-    ])("should load remove partner confirmation page with welsh text", async (partnerKind, isLimitedPartner, isPerson) => {
+      [ PartnerKind.UPDATE_GENERAL_PARTNER_PERSON, false, true ]
+    ])("should load update partner confirmation page with welsh text", async (partnerKind, isLimitedPartner, isPerson) => {
       const transaction = new TransactionBuilder().withKind(partnerKind).build();
       appDevDependencies.transactionGateway.feedTransactions([transaction]);
 
-      const { limitedPartner, generalPartner } = setupPartners(isLimitedPartner, isPerson);
+      const { generalPartner } = setupPartners(isLimitedPartner, isPerson);
 
       setLocalesEnabled(true);
 
@@ -83,13 +75,13 @@ describe("Remove partner confirmation page", () => {
       expect(res.text).toContain("WELSH -");
 
       expect(res.text).toContain(
-        toEscapedHtml(cyTranslationText.confirmationPage.postTransition.partner.removePartner)
+        toEscapedHtml(cyTranslationText.confirmationPage.postTransition.partner.updatePartner)
       );
 
       expect(res.text).toContain(companyProfile.data.companyName);
       expect(res.text).toContain(companyProfile.data.companyNumber);
 
-      expectPartnerData(res, limitedPartner ?? generalPartner ?? {}, isPerson);
+      expectPartnerData(res, generalPartner ?? {}, true);
     });
   });
 });

@@ -457,7 +457,8 @@
             "title" : "WELSH - Check your answers before submitting this update",
             "dateOfChange" : "WELSH - Date of change",
             "printWarning": "WELSH - Print or save this page before you submit the filing, for your own records.",
-            "information": "WELSH - We will not send you or the partnership a copy of this information."
+            "information": "WELSH - We will not send you or the partnership a copy of this information.",
+            "notUpdated": "WELSH - Not updated"
         }
     },
 
@@ -509,8 +510,10 @@
             "partner":{
               "addPartner": "WELSH - We've received your filing to add",
               "removePartner": "WELSH - We've received your filing to remove",
+              "updatePartner": "WELSH - We've received the updated details for",
               "generalPartnerType": "WELSH - as a general partner of",
               "limitedPartnerType": "WELSH - as a limited partner of",
+              "updateGeneralPartnerType": "WELSH - who is a general partner of",
               "updateWontShow": "WELSH - This update will not show on the public register until we accept the filing.",
               "processFiling": "WELSH - We'll process this filing withing 5 working days, and email",
               "processFilingConfirmation": "WELSH - to let you know if it's been accepted or rejected.",
@@ -777,6 +780,13 @@
         "untilDissolution": "WELSH - Until a general partner determines the partnership is dissolved",
         "noTerm": "WELSH - No set term",
         "publicRegisterLine1": "WELSH - We'll show the term of partnership on the public register."
+    },
+
+    "transactionFiled": {
+        "title": "WELSH - Information has already been provided for the limited partnership",
+        "alreadyReceived": "WELSH - We've already received a filing with the required information for",
+        "acceptedInformation": "WELSH - Once we've accepted this information, it will appear on the public register. You can then make any changes needed using our",
+        "acceptedInformationLink": "WELSH - Find and update company information service"
     },
 
     "types": {

@@ -1,3 +1,7 @@
+import FilingHistoryService from "../application/service/FilingHistoryService";
+import LimitedPartnershipService from "../application/service/LimitedPartnershipService";
+import TransactionService from "application/service/TransactionService";
+
 import AddressLookUpController from "../presentation/controller/addressLookUp/Controller";
 import GlobalController from "../presentation/controller/global/Controller";
 
@@ -13,10 +17,8 @@ import LimitedPartnershipPostTransitionController from "../presentation/controll
 import GeneralPartnerPostTransitionController from "../presentation/controller/postTransition/GeneralPartnerController";
 import LimitedPartnerPostTransitionController from "../presentation/controller/postTransition/LimitedPartnerController";
 
-import LimitedPartnershipService from "../application/service/LimitedPartnershipService";
-import TransactionService from "application/service/TransactionService";
-
 export type IDependencies = {
+  filingHistoryService: FilingHistoryService;
   limitedPartnershipService: LimitedPartnershipService;
   transactionService: TransactionService;
 

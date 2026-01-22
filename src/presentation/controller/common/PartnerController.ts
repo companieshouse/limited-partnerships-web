@@ -427,9 +427,13 @@ abstract class PartnerController extends AbstractController {
           );
 
           if (result.errors.errors.errorList[0].href === "#date_of_update") {
-            const errorMessage = response.locals.i18n.errorMessages.dateOfUpdate[pageRouting?.data?.titleKey];
-            result.errors.errors.errorList[0].text = errorMessage;
-            result.errors.errors.date_of_update.text = errorMessage;
+            const errors = result.errors.errors;
+            if (errors.errorList[0].href === "#date_of_update") {
+              const errorMessage = response.locals.i18n.errorMessages.dateOfUpdate[pageRouting?.data?.titleKey];
+              errors.errorList[0].text = errorMessage;
+              errors.date_of_update.text = errorMessage;
+            }
+
             return response.render(DATE_OF_UPDATE_TEMPLATE, super.makeProps(pageRouting, renderData, result.errors));
           }
 
@@ -698,6 +702,36 @@ abstract class PartnerController extends AbstractController {
     } else {
       return postTransitionRouting;
     }
+  }
+
+  protected async comparePartnerDetails(
+    partner: GeneralPartner | LimitedPartner,
+    request: Request
+  ) {
+    const { tokens, ids } = super.extract(request);
+    const appointmentId = partner.data?.appointment_id;
+
+    const partnerUpdatedFieldsMap: Record<string, boolean> = {
+      forename: false,
+      surname: false,
+      nationality1: false,
+      nationality2: false
+    };
+
+    if (appointmentId) {
+      const appointment = await this.companyService?.buildPartnerFromCompanyAppointment(
+        tokens,
+        ids.companyId,
+        appointmentId
+      );
+
+      for (const field in partnerUpdatedFieldsMap) {
+        if (appointment?.partner?.data?.[field] !== partner.data?.[field]){
+          partnerUpdatedFieldsMap[field] = true;
+        }
+      }
+    }
+    return partnerUpdatedFieldsMap;
   }
 
   protected resetFormerNamesIfPreviousNameIsFalse(data: Record<string, any>) {
