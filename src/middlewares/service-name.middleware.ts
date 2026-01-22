@@ -26,7 +26,7 @@ export const setServiceName = (dependencies: IDependencies) =>
         return next();
       }
 
-      // Post-transition journey (set service name based on partnership kind or routing)
+      // Post-transition journey (set service name based on transaction resource kind or routing)
       const defaultServiceName = response.locals.i18n.servicePostTransition;
       const { tokens, ids, pageType } = dependencies.globalController.extract(request);
 
