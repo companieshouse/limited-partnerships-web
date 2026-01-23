@@ -3,7 +3,7 @@ import app from "../../app";
 import enTranslationText from "../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../locales/cy/translations.json";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import { PARTNERSHIP_NAME_URL, WHEN_DID_THE_PARTNERSHIP_NAME_CHANGE_URL } from "../../../../../presentation/controller/postTransition/url";
 import CompanyProfileBuilder from "../../../../../presentation/test/builder/CompanyProfileBuilder";
 import { Jurisdiction, NameEndingType, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
@@ -48,7 +48,8 @@ describe("Name Page", () => {
       const res = await request(app).get(URL + "?lang=cy");
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(`${expected.title} - ${cyTranslationText.servicePostTransition} - GOV.UK`);
+      expect(countOccurrences(res.text, cyTranslationText.serviceName.updateLimitedPartnershipName)).toBe(2);
+      expect(res.text).toContain(`${expected.title} - ${cyTranslationText.serviceName.updateLimitedPartnershipName} - GOV.UK`);
       testTranslations(res.text, expected, exclude);
       expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
       expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
@@ -75,7 +76,8 @@ describe("Name Page", () => {
       const res = await request(app).get(URL + "?lang=en");
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(`${expected.title} - ${enTranslationText.servicePostTransition} - GOV.UK`);
+      expect(countOccurrences(res.text, enTranslationText.serviceName.updateLimitedPartnershipName)).toBe(2);
+      expect(res.text).toContain(`${expected.title} - ${enTranslationText.serviceName.updateLimitedPartnershipName} - GOV.UK`);
       testTranslations(res.text, expected, exclude);
       expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
       expect(res.text).not.toContain("WELSH -");

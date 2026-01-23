@@ -5,7 +5,7 @@ import cyTranslationText from "../../../../../../../locales/cy/translations.json
 
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled } from "../../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled } from "../../../../utils";
 
 import { REGISTERED_OFFICE_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/postTransition/url";
 import { CONFIRMATION_POST_TRANSITION_URL } from "../../../../../controller/global/url";
@@ -16,6 +16,8 @@ import {
   ENTER_REGISTERED_OFFICE_ADDRESSS_TEMPLATE,
   WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_TEMPLATE
 } from "../../../../../../presentation/controller/postTransition/template";
+import TransactionBuilder from "../../../../builder/TransactionBuilder";
+import { PartnershipKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 describe("Registered office address check your answers page", () => {
   const URL = getUrl(REGISTERED_OFFICE_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL);
@@ -31,6 +33,9 @@ describe("Registered office address check your answers page", () => {
       .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
       .build();
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+    const transaction = new TransactionBuilder().withKind(PartnershipKind.UPDATE_PARTNERSHIP_REGISTERED_OFFICE_ADDRESS).build();
+    appDevDependencies.transactionGateway.feedTransactions([transaction]);
   });
 
   describe("GET registered office address check your answers page", () => {
@@ -49,6 +54,7 @@ describe("Registered office address check your answers page", () => {
       expect(res.text).toContain(`${WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_TEMPLATE}?lang=en`);
 
       expect(res.text).toContain(enTranslationText.countries.england);
+      expect(countOccurrences(res.text, enTranslationText.serviceName.updateLimitedPartnershipRegisteredOfficeAddress)).toBe(2);
     });
 
     it("should load registered office address check your answers page with welsh text", async () => {
@@ -57,8 +63,8 @@ describe("Registered office address check your answers page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(`${cyTranslationText.checkYourAnswersPage.update.title}`);
-      expect(res.text).toContain(enTranslationText.print.buttonText);
-      expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
+      expect(res.text).toContain(cyTranslationText.print.buttonText);
+      expect(res.text).toContain(cyTranslationText.print.buttonTextNoJs);
       expect(res.text).toContain("WELSH -");
 
       //  change links should retain the lang query parameter
@@ -66,6 +72,7 @@ describe("Registered office address check your answers page", () => {
       expect(res.text).toContain(`${WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_TEMPLATE}?lang=cy`);
 
       expect(res.text).toContain(cyTranslationText.countries.england);
+      expect(countOccurrences(res.text, cyTranslationText.serviceName.updateLimitedPartnershipRegisteredOfficeAddress)).toBe(2);
     });
   });
 

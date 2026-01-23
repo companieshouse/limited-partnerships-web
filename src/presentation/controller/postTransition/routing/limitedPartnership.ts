@@ -35,7 +35,10 @@ const postTransitionRoutingEnterRegisteredOfficeAddress = {
   previousUrl: url.LANDING_PAGE_URL,
   currentUrl: url.ENTER_REGISTERED_OFFICE_ADDRESS_URL,
   nextUrl: url.WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL,
-  pageType: PostTransitionPageType.enterRegisteredOfficeAddress
+  pageType: PostTransitionPageType.enterRegisteredOfficeAddress,
+  data: {
+    serviceName: "updateLimitedPartnershipRegisteredOfficeAddress"
+  }
 };
 
 const REGISTERED_OFFICE_ADDRESS_KEY = "registeredOfficeAddress";
@@ -66,7 +69,10 @@ const postTransitionRoutingPartnershipName = {
   previousUrl: url.LANDING_PAGE_URL,
   currentUrl: url.PARTNERSHIP_NAME_URL,
   nextUrl: url.WHEN_DID_THE_PARTNERSHIP_NAME_CHANGE_URL,
-  pageType: PostTransitionPageType.partnershipName
+  pageType: PostTransitionPageType.partnershipName,
+  data: {
+    serviceName: "updateLimitedPartnershipName"
+  }
 };
 
 const postTransitionRoutingPartnershipNameChange = {
@@ -93,7 +99,10 @@ const postTransitionRoutingTerm = {
   previousUrl: url.LANDING_PAGE_URL,
   currentUrl: url.TERM_URL,
   nextUrl: url.WHEN_DID_THE_TERM_CHANGE_URL,
-  pageType: PostTransitionPageType.term
+  pageType: PostTransitionPageType.term,
+  data: {
+    serviceName: "updateLimitedPartnershipTerm"
+  }
 };
 
 const TERM_KEY = "term";
@@ -122,7 +131,10 @@ const postTransitionRoutingPrincipalPlaceOfBusinessAddress = {
   previousUrl: url.LANDING_PAGE_URL,
   currentUrl: url.ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   nextUrl: url.WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_URL,
-  pageType: PostTransitionPageType.enterPrincipalPlaceOfBusinessAddress
+  pageType: PostTransitionPageType.enterPrincipalPlaceOfBusinessAddress,
+  data: {
+    serviceName: "updateLimitedPartnershipPrincipalPlaceOfBusinessAddress"
+  }
 };
 
 const PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_KEY = "principalPlaceOfBusinessAddress";

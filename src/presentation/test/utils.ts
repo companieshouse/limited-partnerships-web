@@ -89,3 +89,7 @@ export const expectPartnerData = (res: request.Response, partner: LimitedPartner
     expect(res.text).toContain(partner.data?.legal_entity_name);
   }
 };
+
+export const countOccurrences = (text: string, target: string): number => {
+  return Array.from(text.matchAll(new RegExp(target, "g"))).length;
+};

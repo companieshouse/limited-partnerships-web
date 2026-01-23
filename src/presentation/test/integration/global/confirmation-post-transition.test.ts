@@ -5,7 +5,7 @@ import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 
 import { CONFIRMATION_POST_TRANSITION_URL } from "../../../controller/global/url";
-import { getUrl, toEscapedHtml, setLocalesEnabled, testTranslations } from "../../utils";
+import { getUrl, toEscapedHtml, setLocalesEnabled, testTranslations, countOccurrences } from "../../utils";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import { JOURNEY_TYPE_PARAM } from "../../../../config";
 import { Journey } from "../../../../domain/entities/journey";
@@ -16,8 +16,8 @@ import {
   LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL
 } from "../../../controller/postTransition/url";
 import LimitedPartnerBuilder from "../../builder/LimitedPartnerBuilder";
-import TransactionBuilder from "presentation/test/builder/TransactionBuilder";
-import LimitedPartnershipBuilder from "presentation/test/builder/LimitedPartnershipBuilder";
+import TransactionBuilder from "../../../../presentation/test/builder/TransactionBuilder";
+import LimitedPartnershipBuilder from "../../../../presentation/test/builder/LimitedPartnershipBuilder";
 
 describe("Confirmation Page", () => {
   const URL = getUrl(CONFIRMATION_POST_TRANSITION_URL).replace(JOURNEY_TYPE_PARAM, Journey.postTransition);
@@ -266,17 +266,27 @@ describe("Confirmation Page", () => {
       it.each([
         [
           "limited-partnership#update-partnership-registered-office-address",
-          enTranslationText.confirmationPage.postTransition.registeredOfficeAddress
+          enTranslationText.confirmationPage.postTransition.registeredOfficeAddress,
+          enTranslationText.serviceName.updateLimitedPartnershipRegisteredOfficeAddress
         ],
-        ["limited-partnership#update-partnership-name", enTranslationText.confirmationPage.postTransition.name],
-        ["limited-partnership#update-partnership-term", enTranslationText.confirmationPage.postTransition.term],
+        [
+          "limited-partnership#update-partnership-name",
+          enTranslationText.confirmationPage.postTransition.name,
+          enTranslationText.serviceName.updateLimitedPartnershipName
+        ],
+        [
+          "limited-partnership#update-partnership-term",
+          enTranslationText.confirmationPage.postTransition.term,
+          enTranslationText.serviceName.updateLimitedPartnershipTerm
+        ],
         [
           "limited-partnership#update-partnership-principal-place-of-business-address",
-          enTranslationText.confirmationPage.postTransition.principalPlaceOfBusinessAddress
+          enTranslationText.confirmationPage.postTransition.principalPlaceOfBusinessAddress,
+          enTranslationText.serviceName.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress
         ]
       ])(
         "should load confirmation page - for limited partnership with english message text for the specific journey",
-        async (kind: string, message: string) => {
+        async (kind: string, message: string, serviceName: string) => {
           const transaction = new TransactionBuilder().withKind(kind).build();
 
           appDevDependencies.transactionGateway.feedTransactions([transaction]);
@@ -286,28 +296,38 @@ describe("Confirmation Page", () => {
           appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
           const res = await request(app).get(URL + "?lang=en");
-
           expect(res.status).toBe(200);
           expect(res.text).toContain(toEscapedHtml(message));
           expect(res.text).toContain(companyProfile.data?.companyName?.toUpperCase());
           expect(res.text).toContain(companyProfile.data?.companyNumber?.toUpperCase());
+          expect(countOccurrences(res.text, serviceName)).toBe(2);
         }
       );
 
       it.each([
         [
           "limited-partnership#update-partnership-registered-office-address",
-          cyTranslationText.confirmationPage.postTransition.registeredOfficeAddress
+          cyTranslationText.confirmationPage.postTransition.registeredOfficeAddress,
+          cyTranslationText.serviceName.updateLimitedPartnershipRegisteredOfficeAddress
         ],
-        ["limited-partnership#update-partnership-name", cyTranslationText.confirmationPage.postTransition.name],
-        ["limited-partnership#update-partnership-term", cyTranslationText.confirmationPage.postTransition.term],
+        [
+          "limited-partnership#update-partnership-name",
+          cyTranslationText.confirmationPage.postTransition.name,
+          cyTranslationText.serviceName.updateLimitedPartnershipName
+        ],
+        [
+          "limited-partnership#update-partnership-term",
+          cyTranslationText.confirmationPage.postTransition.term,
+          cyTranslationText.serviceName.updateLimitedPartnershipTerm
+        ],
         [
           "limited-partnership#update-partnership-principal-place-of-business-address",
-          cyTranslationText.confirmationPage.postTransition.principalPlaceOfBusinessAddress
+          cyTranslationText.confirmationPage.postTransition.principalPlaceOfBusinessAddress,
+          cyTranslationText.serviceName.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress
         ]
       ])(
         "should load confirmation page - for limited partnership with welsh message text for the specific journey",
-        async (kind: string, message: string) => {
+        async (kind: string, message: string, serviceName: string) => {
           const transaction = new TransactionBuilder().withKind(kind).build();
 
           appDevDependencies.transactionGateway.feedTransactions([transaction]);
@@ -322,6 +342,7 @@ describe("Confirmation Page", () => {
           expect(res.text).toContain(toEscapedHtml(message));
           expect(res.text).toContain(companyProfile.data?.companyName?.toUpperCase());
           expect(res.text).toContain(companyProfile.data?.companyNumber?.toUpperCase());
+          expect(countOccurrences(res.text, serviceName)).toBe(2);
         }
       );
     });

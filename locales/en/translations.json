@@ -747,6 +747,12 @@
     "serviceRegistration" : "Register a limited partnership",
     "serviceTransition" : "Provide new required information about a limited partnership",
     "servicePostTransition" : "File for a limited partnership",
+    "serviceName" : {
+        "updateLimitedPartnershipName": "Update the name of a limited partnership",
+        "updateLimitedPartnershipTerm": "Update the term of a limited partnership",
+        "updateLimitedPartnershipRegisteredOfficeAddress": "Update the registered office address for a limited partnership",
+        "updateLimitedPartnershipPrincipalPlaceOfBusinessAddress": "Update the principal place of business for a limited partnership"
+    },
 
     "sicCodePage" : {
         "title" : "What is the Standard Industrial Classification (SIC) code?",

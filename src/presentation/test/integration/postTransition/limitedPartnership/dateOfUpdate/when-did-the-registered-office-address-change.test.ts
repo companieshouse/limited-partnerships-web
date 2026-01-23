@@ -4,12 +4,14 @@ import cyTranslationText from "../../../../../../../locales/cy/translations.json
 import enErrorMessages from "../../../../../../../locales/en/errors.json";
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, toEscapedHtml } from "../../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, toEscapedHtml } from "../../../../utils";
 import { REGISTERED_OFFICE_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL, WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL } from "../../../../../controller/postTransition/url";
 import CompanyProfileBuilder from "../../../../builder/CompanyProfileBuilder";
 import PostTransitionPageType from "../../../../../controller/postTransition/pageType";
 import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBuilder";
 import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
+import TransactionBuilder from "../../../../builder/TransactionBuilder";
+import { PartnershipKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 describe("Registered office address change date page", () => {
   const URL = getUrl(WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL);
@@ -20,6 +22,9 @@ describe("Registered office address change date page", () => {
 
     const companyProfile = new CompanyProfileBuilder().build();
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
+
+    const transaction = new TransactionBuilder().withKind(PartnershipKind.UPDATE_PARTNERSHIP_REGISTERED_OFFICE_ADDRESS).build();
+    appDevDependencies.transactionGateway.feedTransactions([transaction]);
   });
 
   describe("GET registered office address change date page", () => {
@@ -30,6 +35,7 @@ describe("Registered office address change date page", () => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(`${enTranslationText.dateOfUpdate.registeredOfficeAddress.title}`);
       expect(res.text).not.toContain("WELSH -");
+      expect(countOccurrences(res.text, enTranslationText.serviceName.updateLimitedPartnershipRegisteredOfficeAddress)).toBe(2);
     });
 
     it("should load registered office address change date page with welsh text", async () => {
@@ -39,6 +45,7 @@ describe("Registered office address change date page", () => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(`${cyTranslationText.dateOfUpdate.registeredOfficeAddress.title}`);
       expect(res.text).toContain("WELSH -");
+      expect(countOccurrences(res.text, cyTranslationText.serviceName.updateLimitedPartnershipRegisteredOfficeAddress)).toBe(2);
     });
   });
 
