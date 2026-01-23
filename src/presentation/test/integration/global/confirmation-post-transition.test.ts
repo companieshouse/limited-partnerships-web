@@ -5,7 +5,7 @@ import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 
 import { CONFIRMATION_POST_TRANSITION_URL } from "../../../controller/global/url";
-import { getUrl, toEscapedHtml, setLocalesEnabled, testTranslations } from "../../utils";
+import { getUrl, toEscapedHtml, setLocalesEnabled, testTranslations, countOccurrences } from "../../utils";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import { JOURNEY_TYPE_PARAM } from "../../../../config";
 import { Journey } from "../../../../domain/entities/journey";
@@ -300,8 +300,7 @@ describe("Confirmation Page", () => {
           expect(res.text).toContain(toEscapedHtml(message));
           expect(res.text).toContain(companyProfile.data?.companyName?.toUpperCase());
           expect(res.text).toContain(companyProfile.data?.companyNumber?.toUpperCase());
-          const occurrences = res.text.split(serviceName).length - 1;
-          expect(occurrences).toBe(2);
+          expect(countOccurrences(res.text, serviceName)).toBe(2);
         }
       );
 
@@ -343,8 +342,7 @@ describe("Confirmation Page", () => {
           expect(res.text).toContain(toEscapedHtml(message));
           expect(res.text).toContain(companyProfile.data?.companyName?.toUpperCase());
           expect(res.text).toContain(companyProfile.data?.companyNumber?.toUpperCase());
-          const occurrences = res.text.split(serviceName).length - 1;
-          expect(occurrences).toBe(2);
+          expect(countOccurrences(res.text, serviceName)).toBe(2);
         }
       );
     });

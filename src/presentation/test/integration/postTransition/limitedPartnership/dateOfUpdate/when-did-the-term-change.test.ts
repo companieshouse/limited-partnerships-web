@@ -6,7 +6,7 @@ import enErrorMessages from "../../../../../../../locales/en/errors.json";
 
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, toEscapedHtml } from "../../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, toEscapedHtml } from "../../../../utils";
 import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
 
 import {
@@ -41,8 +41,7 @@ describe("Partnership term change date page", () => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(`${enTranslationText.dateOfUpdate.term.title}`);
       expect(res.text).not.toContain("WELSH -");
-      const occurrences = res.text.split(enTranslationText.serviceName.updateLimitedPartnershipTerm).length - 1;
-      expect(occurrences).toBe(2);
+      expect(countOccurrences(res.text, enTranslationText.serviceName.updateLimitedPartnershipTerm)).toBe(2);
     });
 
     it("should load partnership term change date page with welsh text", async () => {
@@ -52,8 +51,7 @@ describe("Partnership term change date page", () => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(`${cyTranslationText.dateOfUpdate.term.title}`);
       expect(res.text).toContain("WELSH -");
-      const occurrences = res.text.split(cyTranslationText.serviceName.updateLimitedPartnershipTerm).length - 1;
-      expect(occurrences).toBe(2);
+      expect(countOccurrences(res.text, cyTranslationText.serviceName.updateLimitedPartnershipTerm)).toBe(2);
     });
   });
 

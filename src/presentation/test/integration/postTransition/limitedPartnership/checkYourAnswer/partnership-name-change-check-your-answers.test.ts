@@ -5,7 +5,7 @@ import cyTranslationText from "../../../../../../../locales/cy/translations.json
 
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled } from "../../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled } from "../../../../utils";
 
 import { PARTNERSHIP_NAME_CHANGE_CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/postTransition/url";
 import CompanyProfileBuilder from "../../../../builder/CompanyProfileBuilder";
@@ -45,8 +45,7 @@ describe("Partnership name check your answers page", () => {
       expect(res.text).toContain(enTranslationText.print.buttonText);
       expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
       expect(res.text).not.toContain("WELSH -");
-      const occurrences = res.text.split(enTranslationText.serviceName.updateLimitedPartnershipName).length - 1;
-      expect(occurrences).toBe(2);
+      expect(countOccurrences(res.text, enTranslationText.serviceName.updateLimitedPartnershipName)).toBe(2);
 
       //  change links should retain the lang query parameter
       expect(res.text).toContain(`${PARTNERSHIP_NAME_TEMPLATE}?lang=en`);
@@ -59,11 +58,10 @@ describe("Partnership name check your answers page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(`${cyTranslationText.checkYourAnswersPage.update.title}`);
-      expect(res.text).toContain(enTranslationText.print.buttonText);
-      expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
+      expect(res.text).toContain(cyTranslationText.print.buttonText);
+      expect(res.text).toContain(cyTranslationText.print.buttonTextNoJs);
       expect(res.text).toContain("WELSH -");
-      const occurrences = res.text.split(cyTranslationText.serviceName.updateLimitedPartnershipName).length - 1;
-      expect(occurrences).toBe(2);
+      expect(countOccurrences(res.text, cyTranslationText.serviceName.updateLimitedPartnershipName)).toBe(2);
 
       //  change links should retain the lang query parameter
       expect(res.text).toContain(`${PARTNERSHIP_NAME_TEMPLATE}?lang=cy`);

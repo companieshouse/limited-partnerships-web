@@ -7,7 +7,7 @@ import {
   ENTER_REGISTERED_OFFICE_ADDRESS_WITH_IDS_URL,
   WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL
 } from "../../../../controller/postTransition/url";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import LimitedPartnershipBuilder from "../../../../../presentation/test/builder/LimitedPartnershipBuilder";
 import { Jurisdiction } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
@@ -48,8 +48,7 @@ describe("Enter Registered Office Address Page", () => {
 
       testTranslations(res.text, enTranslationText.address.registeredOffice, ["newRequirement", "provideNext"]);
       expect(res.text).not.toContain("WELSH -");
-      const occurrences = res.text.split(enTranslationText.serviceName.updateLimitedPartnershipRegisteredOfficeAddress).length - 1;
-      expect(occurrences).toBe(2);
+      expect(countOccurrences(res.text, enTranslationText.serviceName.updateLimitedPartnershipRegisteredOfficeAddress)).toBe(2);
     });
 
     it("should load the enter registered office address page with Welsh text", async () => {
@@ -67,8 +66,7 @@ describe("Enter Registered Office Address Page", () => {
         "errorMessages"
       ]);
       testTranslations(res.text, cyTranslationText.address.registeredOffice, ["newRequirement", "provideNext"]);
-      const occurrences = res.text.split(cyTranslationText.serviceName.updateLimitedPartnershipRegisteredOfficeAddress).length - 1;
-      expect(occurrences).toBe(2);
+      expect(countOccurrences(res.text, cyTranslationText.serviceName.updateLimitedPartnershipRegisteredOfficeAddress)).toBe(2);
     });
   });
 

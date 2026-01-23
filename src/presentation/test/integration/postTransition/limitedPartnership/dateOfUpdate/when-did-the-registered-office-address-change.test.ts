@@ -4,7 +4,7 @@ import cyTranslationText from "../../../../../../../locales/cy/translations.json
 import enErrorMessages from "../../../../../../../locales/en/errors.json";
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, toEscapedHtml } from "../../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, toEscapedHtml } from "../../../../utils";
 import { REGISTERED_OFFICE_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL, WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL } from "../../../../../controller/postTransition/url";
 import CompanyProfileBuilder from "../../../../builder/CompanyProfileBuilder";
 import PostTransitionPageType from "../../../../../controller/postTransition/pageType";
@@ -35,8 +35,7 @@ describe("Registered office address change date page", () => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(`${enTranslationText.dateOfUpdate.registeredOfficeAddress.title}`);
       expect(res.text).not.toContain("WELSH -");
-      const occurrences = res.text.split(enTranslationText.serviceName.updateLimitedPartnershipRegisteredOfficeAddress).length - 1;
-      expect(occurrences).toBe(2);
+      expect(countOccurrences(res.text, enTranslationText.serviceName.updateLimitedPartnershipRegisteredOfficeAddress)).toBe(2);
     });
 
     it("should load registered office address change date page with welsh text", async () => {
@@ -46,8 +45,7 @@ describe("Registered office address change date page", () => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(`${cyTranslationText.dateOfUpdate.registeredOfficeAddress.title}`);
       expect(res.text).toContain("WELSH -");
-      const occurrences = res.text.split(cyTranslationText.serviceName.updateLimitedPartnershipRegisteredOfficeAddress).length - 1;
-      expect(occurrences).toBe(2);
+      expect(countOccurrences(res.text, cyTranslationText.serviceName.updateLimitedPartnershipRegisteredOfficeAddress)).toBe(2);
     });
   });
 

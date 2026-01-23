@@ -3,7 +3,7 @@ import enTranslationText from "../../../../../../../locales/en/translations.json
 import cyTranslationText from "../../../../../../../locales/cy/translations.json";
 import enErrorMessages from "../../../../../../../locales/en/errors.json";
 import app from "../../../app";
-import { getUrl, setLocalesEnabled, toEscapedHtml } from "../../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, toEscapedHtml } from "../../../../utils";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBuilder";
 import PostTransitionPageType from "../../../../../controller/postTransition/pageType";
@@ -31,8 +31,7 @@ describe("Partnership principal place of business address change date page", () 
       expect(res.status).toBe(200);
       expect(res.text).toContain(`${enTranslationText.dateOfUpdate.principalPlaceOfBusinessAddress.title}`);
       expect(res.text).not.toContain("WELSH -");
-      const occurrences = res.text.split(enTranslationText.serviceName.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress).length - 1;
-      expect(occurrences).toBe(2);
+      expect(countOccurrences(res.text, enTranslationText.serviceName.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress)).toBe(2);
     });
 
     it("should load principal place of business address change date page with welsh text", async () => {
@@ -42,8 +41,7 @@ describe("Partnership principal place of business address change date page", () 
       expect(res.status).toBe(200);
       expect(res.text).toContain(`${cyTranslationText.dateOfUpdate.principalPlaceOfBusinessAddress.title}`);
       expect(res.text).toContain("WELSH -");
-      const occurrences = res.text.split(cyTranslationText.serviceName.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress).length - 1;
-      expect(occurrences).toBe(2);
+      expect(countOccurrences(res.text, cyTranslationText.serviceName.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress)).toBe(2);
     });
   });
 

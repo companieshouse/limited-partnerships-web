@@ -6,7 +6,7 @@ import cyTranslationText from "../../../../../../locales/cy/translations.json";
 
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 
 import {
@@ -40,8 +40,7 @@ describe("Email Page", () => {
 
         expect(res.status).toBe(200);
         testTranslations(res.text, enTranslationText.termPage);
-        const occurrences = res.text.split(enTranslationText.serviceName.updateLimitedPartnershipTerm).length - 1;
-        expect(occurrences).toBe(2);
+        expect(countOccurrences(res.text, enTranslationText.serviceName.updateLimitedPartnershipTerm)).toBe(2);
         expect(res.text).toContain(
           `${enTranslationText.termPage.title} - ${enTranslationText.serviceName.updateLimitedPartnershipTerm} - GOV.UK`
         );
@@ -52,8 +51,7 @@ describe("Email Page", () => {
         const res = await request(app).get(URL + "?lang=cy");
 
         expect(res.status).toBe(200);
-        const occurrences = res.text.split(cyTranslationText.serviceName.updateLimitedPartnershipTerm).length - 1;
-        expect(occurrences).toBe(2);
+        expect(countOccurrences(res.text, cyTranslationText.serviceName.updateLimitedPartnershipTerm)).toBe(2);
         expect(res.text).toContain(
           `${cyTranslationText.termPage.title} - ${cyTranslationText.serviceName.updateLimitedPartnershipTerm} - GOV.UK`
         );

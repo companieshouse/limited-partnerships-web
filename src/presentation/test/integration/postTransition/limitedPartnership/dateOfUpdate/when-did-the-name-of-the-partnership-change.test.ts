@@ -7,7 +7,7 @@ import enErrorMessages from "../../../../../../../locales/en/errors.json";
 
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, toEscapedHtml } from "../../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, toEscapedHtml } from "../../../../utils";
 import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
 
 import {
@@ -46,8 +46,7 @@ describe("Partnership name change date page", () => {
       expect(res.text).toContain(
         `${partnership.data?.partnership_name?.toUpperCase()} ${partnership.data?.name_ending?.toUpperCase()} (${partnership.data?.partnership_number?.toUpperCase()})`
       );
-      const occurrences = res.text.split(enTranslationText.serviceName.updateLimitedPartnershipName).length - 1;
-      expect(occurrences).toBe(2);
+      expect(countOccurrences(res.text, enTranslationText.serviceName.updateLimitedPartnershipName)).toBe(2);
     });
 
     it("should load partnership name change date page with welsh text", async () => {
@@ -61,8 +60,7 @@ describe("Partnership name change date page", () => {
       expect(res.text).toContain(
         `${partnership.data?.partnership_name?.toUpperCase()} ${partnership.data?.name_ending?.toUpperCase()} (${partnership.data?.partnership_number?.toUpperCase()})`
       );
-      const occurrences = res.text.split(cyTranslationText.serviceName.updateLimitedPartnershipName).length - 1;
-      expect(occurrences).toBe(2);
+      expect(countOccurrences(res.text, cyTranslationText.serviceName.updateLimitedPartnershipName)).toBe(2);
     });
   });
 
