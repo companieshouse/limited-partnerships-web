@@ -105,9 +105,10 @@ class LimitedPartnerPostTransitionController extends PartnerController {
           .insertIdsInUrl(CONFIRMATION_POST_TRANSITION_URL, ids, request.url)
           .replace(JOURNEY_TYPE_PARAM, getJourneyTypes(request.url).journey);
 
-        if (response.locals?.serviceName) {
-          const servicename = response.locals?.serviceName.toLowerCase().replace(/\s+/g, '-');
-          url = this.addOrAppendQueryParam(url, JOURNEY_QUERY_PARAM, servicename);
+        const serviceName = response.locals?.serviceName;
+        if (serviceName) {
+          const serviceNameQuery = serviceName.toLowerCase().replace(/\s+/g, '-');
+          url = this.addOrAppendQueryParam(url, JOURNEY_QUERY_PARAM, serviceNameQuery);
         }
 
         response.redirect(url);
