@@ -13,21 +13,30 @@ const postTransitionRoutingGeneralPartnerChoice = {
   previousUrl: url.LANDING_PAGE_URL,
   currentUrl: url.GENERAL_PARTNER_CHOICE_URL,
   nextUrl: "/",
-  pageType: PostTransitionPageType.generalPartnerType
+  pageType: PostTransitionPageType.generalPartnerType,
+  data: {
+    serviceName: "addGeneralPartner"
+  }
 };
 
 const postTransitionRoutingAddGeneralPartnerLegalEntity = {
   previousUrl: url.GENERAL_PARTNER_CHOICE_URL,
   currentUrl: url.ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
   nextUrl: TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
-  pageType: PostTransitionPageType.addGeneralPartnerLegalEntity
+  pageType: PostTransitionPageType.addGeneralPartnerLegalEntity,
+  data: {
+    serviceName: "addGeneralPartner"
+  }
 };
 
 const postTransitionRoutingAddGeneralPartnerPerson = {
   previousUrl: url.GENERAL_PARTNER_CHOICE_URL,
   currentUrl: url.ADD_GENERAL_PARTNER_PERSON_URL,
   nextUrl: TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-  pageType: PostTransitionPageType.addGeneralPartnerPerson
+  pageType: PostTransitionPageType.addGeneralPartnerPerson,
+  data: {
+    serviceName: "addGeneralPartner"
+  }
 };
 
 const postTransitionRoutingGeneralPartnerCheckYourAnswers = {
@@ -49,7 +58,8 @@ const postTransitionRoutingRemoveGeneralPartnerPerson = {
   nextUrl: url.REMOVE_GENERAL_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL,
   pageType: PostTransitionPageType.whenDidTheGeneralPartnerPersonCease,
   data: {
-    titleKey: REMOVE_GENERAL_PARTNER_KEY
+    titleKey: REMOVE_GENERAL_PARTNER_KEY,
+    serviceName: "removeGeneralPartnerPerson"
   }
 };
 
@@ -69,7 +79,8 @@ const postTransitionRoutingRemoveGeneralPartnerLegalEntity = {
   nextUrl: url.REMOVE_GENERAL_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_URL,
   pageType: PostTransitionPageType.whenDidTheGeneralPartnerLegalEntityCease,
   data: {
-    titleKey: REMOVE_GENERAL_PARTNER_KEY
+    titleKey: REMOVE_GENERAL_PARTNER_KEY,
+    serviceName: "removeGeneralPartnerEntity"
   }
 };
 
@@ -87,7 +98,10 @@ const postTransitionRoutingUpdateGeneralPartnerPerson = {
   previousUrl: url.LANDING_PAGE_URL,
   currentUrl: url.UPDATE_GENERAL_PARTNER_PERSON_URL,
   nextUrl: url.UPDATE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
-  pageType: PostTransitionPageType.updateGeneralPartnerPerson
+  pageType: PostTransitionPageType.updateGeneralPartnerPerson,
+  data: {
+    serviceName: "updateGeneralPartnerPerson"
+  }
 };
 
 const postTransitionRoutingUpdateUsualResidentialAddressYesNo = {

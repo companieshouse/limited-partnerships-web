@@ -91,5 +91,8 @@ export const expectPartnerData = (res: request.Response, partner: LimitedPartner
 };
 
 export const countOccurrences = (text: string, target: string): number => {
-  return Array.from(text.matchAll(new RegExp(target, "g"))).length;
+  if (!target) {
+    return 0;
+  }
+  return text.split(target).length - 1;
 };

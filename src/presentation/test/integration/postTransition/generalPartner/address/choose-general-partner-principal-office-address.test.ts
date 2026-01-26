@@ -4,7 +4,7 @@ import enTranslationText from "../../../../../../../locales/en/translations.json
 import cyTranslationText from "../../../../../../../locales/cy/translations.json";
 
 import app from "../../../app";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import { appDevDependencies } from "config/dev-dependencies";
 
 import {
@@ -13,6 +13,8 @@ import {
 } from "presentation/controller/addressLookUp/url/postTransition";
 import AddressPageType from "presentation/controller/addressLookUp/PageType";
 import { APPLICATION_CACHE_KEY, APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION } from "../../../../../../config/constants";
+import TransactionBuilder from "../../../../builder/TransactionBuilder";
+import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 describe("Choose principal office address of the general partner page", () => {
   const URL = getUrl(CHOOSE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
@@ -33,6 +35,9 @@ describe("Choose principal office address of the general partner page", () => {
         }
       }
     });
+
+    const transaction = new TransactionBuilder().withKind(PartnerKind.ADD_GENERAL_PARTNER_LEGAL_ENTITY).build();
+    appDevDependencies.transactionGateway.feedTransactions([transaction]);
   });
 
   describe("GET choose principal office address of the general partner page", () => {
@@ -43,6 +48,7 @@ describe("Choose principal office address of the general partner page", () => {
 
       expect(res.status).toBe(200);
       testTranslations(res.text, cyTranslationText.address.chooseAddress.generalPartnerPrincipalOfficeAddress);
+      expect(countOccurrences(res.text, cyTranslationText.serviceName.addGeneralPartner)).toBe(2);
     });
 
     it("should load the choose principal office address of the general partner page with English text", async () => {
@@ -52,6 +58,7 @@ describe("Choose principal office address of the general partner page", () => {
 
       expect(res.status).toBe(200);
       testTranslations(res.text, enTranslationText.address.chooseAddress.generalPartnerPrincipalOfficeAddress);
+      expect(countOccurrences(res.text, enTranslationText.serviceName.addGeneralPartner)).toBe(2);
     });
 
     it("should populate the address list", async () => {

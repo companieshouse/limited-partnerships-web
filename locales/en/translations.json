@@ -751,7 +751,16 @@
         "updateLimitedPartnershipName": "Update the name of a limited partnership",
         "updateLimitedPartnershipTerm": "Update the term of a limited partnership",
         "updateLimitedPartnershipRegisteredOfficeAddress": "Update the registered office address for a limited partnership",
-        "updateLimitedPartnershipPrincipalPlaceOfBusinessAddress": "Update the principal place of business for a limited partnership"
+        "updateLimitedPartnershipPrincipalPlaceOfBusinessAddress": "Update the principal place of business for a limited partnership",
+        "updateLimitedPartnershipRedesignateToPFLP": "Designate a limited partnership as a private fund limited partnership",
+        "addGeneralPartner": "Add a general partner",
+        "addLimitedPartner": "Add a limited partner",
+        "removeGeneralPartnerEntity": "Remove a general partner (entity)",
+        "removeGeneralPartnerPerson": "Remove a general partner (person)",
+        "removeLimitedPartnerEntity": "Remove a limited partner (entity)",
+        "removeLimitedPartnerPerson": "Remove a limited partner (person)",
+        "updateGeneralPartnerPerson": "Update a general partner's details (person)"
+
     },
 
     "sicCodePage" : {

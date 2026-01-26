@@ -6,10 +6,12 @@ import {
   CHOOSE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "../../../../../controller/addressLookUp/url/postTransition";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import * as config from "../../../../../../config";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
+import TransactionBuilder from "../../../../builder/TransactionBuilder";
+import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 describe("Choose usual residential address of the limited partner page", () => {
   beforeEach(() => {
@@ -27,6 +29,9 @@ describe("Choose usual residential address of the limited partner page", () => {
         }
       }
     });
+
+    const transaction = new TransactionBuilder().withKind(PartnerKind.ADD_LIMITED_PARTNER_PERSON).build();
+    appDevDependencies.transactionGateway.feedTransactions([transaction]);
   });
 
   const URL = getUrl(CHOOSE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
@@ -40,6 +45,7 @@ describe("Choose usual residential address of the limited partner page", () => {
 
       expect(res.status).toBe(200);
       testTranslations(res.text, cyTranslationText.address.chooseAddress.limitedPartnerUsualResidentialAddress);
+      expect(countOccurrences(res.text, cyTranslationText.serviceName.addLimitedPartner)).toBe(2);
     });
 
     it("should load the choose usual residential address of the limited partner page with English text", async () => {
@@ -49,6 +55,7 @@ describe("Choose usual residential address of the limited partner page", () => {
 
       expect(res.status).toBe(200);
       testTranslations(res.text, enTranslationText.address.chooseAddress.limitedPartnerUsualResidentialAddress);
+      expect(countOccurrences(res.text, enTranslationText.serviceName.addLimitedPartner)).toBe(2);
     });
 
     it("should populate the address list", async () => {

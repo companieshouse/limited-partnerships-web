@@ -9,7 +9,7 @@ import {
   UPDATE_GENERAL_PARTNER_PERSON_WITH_IDS_URL,
   UPDATE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
 } from "../../../../controller/postTransition/url";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../utils";
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 import CompanyAppointmentBuilder from "../../../builder/CompanyAppointmentBuilder";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
@@ -57,6 +57,7 @@ describe("Update General Partner Legal Entity Page", () => {
         );
 
         testTranslations(res.text, translationText.updatePartnerPersonPage);
+        expect(countOccurrences(res.text, toEscapedHtml(translationText.serviceName.updateGeneralPartnerPerson))).toBe(2);
 
         if (lang === "cy") {
           expect(res.text).toContain("WELSH - ");

@@ -6,7 +6,7 @@ import cyTranslationText from "../../../../../../../locales/cy/translations.json
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import app from "../../../app";
 
-import { getUrl, setLocalesEnabled, toEscapedHtml, testTranslations } from "../../../../utils";
+import { getUrl, setLocalesEnabled, toEscapedHtml, testTranslations, countOccurrences } from "../../../../utils";
 import LimitedPartnerBuilder, {
   limitedPartnerLegalEntity,
   limitedPartnerPerson
@@ -18,6 +18,8 @@ import {
   POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "../../../../../controller/addressLookUp/url/postTransition";
 import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
+import TransactionBuilder from "../../../../builder/TransactionBuilder";
+import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 describe("Postcode Usual Residential Address Page", () => {
   const URL = getUrl(POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
@@ -34,6 +36,9 @@ describe("Postcode Usual Residential Address Page", () => {
       .build();
 
     appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
+
+    const transaction = new TransactionBuilder().withKind(PartnerKind.ADD_LIMITED_PARTNER_PERSON).build();
+    appDevDependencies.transactionGateway.feedTransactions([transaction]);
   });
 
   describe("Get Postcode Usual Residential Address Page", () => {
@@ -53,7 +58,7 @@ describe("Postcode Usual Residential Address Page", () => {
       expect(res.text).toContain(
         toEscapedHtml(
           enTranslationText.address.findPostcode.limitedPartner.usualResidentialAddress.whatIsUsualResidentialAddress
-        ) + ` - ${enTranslationText.servicePostTransition} - GOV.UK`
+        ) + ` - ${enTranslationText.serviceName.addLimitedPartner} - GOV.UK`
       );
       testTranslations(res.text, enTranslationText.address.findPostcode, [
         "registeredOfficeAddress",
@@ -67,6 +72,7 @@ describe("Postcode Usual Residential Address Page", () => {
       expect(res.text).toContain(limitedPartner.data?.forename?.toUpperCase());
       expect(res.text).toContain(limitedPartner.data?.surname?.toUpperCase());
       expect(res.text).not.toContain(limitedPartnerLegalEntity.legal_entity_name?.toUpperCase());
+      expect(countOccurrences(res.text, enTranslationText.serviceName.addLimitedPartner)).toBe(2);
     });
 
     it("should load the usual residential address page with Welsh text", async () => {
@@ -86,7 +92,7 @@ describe("Postcode Usual Residential Address Page", () => {
       expect(res.text).toContain(
         toEscapedHtml(
           cyTranslationText.address.findPostcode.limitedPartner.usualResidentialAddress.whatIsUsualResidentialAddress
-        ) + ` - ${cyTranslationText.servicePostTransition} - GOV.UK`
+        ) + ` - ${cyTranslationText.serviceName.addLimitedPartner} - GOV.UK`
       );
       testTranslations(res.text, cyTranslationText.address.findPostcode, [
         "registeredOfficeAddress",
@@ -98,6 +104,7 @@ describe("Postcode Usual Residential Address Page", () => {
       ]);
       expect(res.text).toContain(limitedPartner.data?.legal_entity_name?.toUpperCase());
       expect(res.text).not.toContain(limitedPartnerPerson.forename?.toUpperCase());
+      expect(countOccurrences(res.text, cyTranslationText.serviceName.addLimitedPartner)).toBe(2);
     });
   });
 

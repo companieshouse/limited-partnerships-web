@@ -1,7 +1,7 @@
 import request from "supertest";
 import app from "../../app";
 
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../utils";
 import enTranslationText from "../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../locales/cy/translations.json";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
@@ -10,6 +10,8 @@ import { UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL } from "../../
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 import { ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL } from "../../../../controller/addressLookUp/url/postTransition";
 import PostTransitionPageType from "../../../../controller/postTransition/pageType";
+import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import TransactionBuilder from "../../../builder/TransactionBuilder";
 
 describe("Update Correspondence Address Yes No Page", () => {
   const URL = getUrl(UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL);
@@ -34,6 +36,9 @@ describe("Update Correspondence Address Yes No Page", () => {
     appDevDependencies.generalPartnerGateway.feedErrors();
 
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
+
+    const transaction = new TransactionBuilder().withKind(PartnerKind.UPDATE_GENERAL_PARTNER_PERSON).build();
+    appDevDependencies.transactionGateway.feedTransactions([transaction]);
   });
 
   describe("GET Update Correspondence Address Yes No Page", () => {
@@ -53,6 +58,7 @@ describe("Update Correspondence Address Yes No Page", () => {
       );
 
       testTranslations(res.text, translationText.address.update.correspondenceAddress);
+      expect(countOccurrences(res.text, toEscapedHtml(translationText.serviceName.updateGeneralPartnerPerson))).toBe(2);
 
       if (lang === "cy") {
         expect(res.text).toContain("WELSH - ");

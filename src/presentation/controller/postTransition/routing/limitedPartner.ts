@@ -12,21 +12,30 @@ const postTransitionRoutingLimitedPartnerChoice = {
   previousUrl: url.LANDING_PAGE_URL,
   currentUrl: url.LIMITED_PARTNER_CHOICE_URL,
   nextUrl: "/",
-  pageType: PostTransitionPageType.limitedPartnerType
+  pageType: PostTransitionPageType.limitedPartnerType,
+  data: {
+    serviceName: "addLimitedPartner"
+  }
 };
 
 const postTransitionRoutingAddLimitedPartnerPerson = {
   previousUrl: url.LIMITED_PARTNER_CHOICE_URL,
   currentUrl: url.ADD_LIMITED_PARTNER_PERSON_URL,
   nextUrl: TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-  pageType: PostTransitionPageType.addLimitedPartnerPerson
+  pageType: PostTransitionPageType.addLimitedPartnerPerson,
+  data: {
+    serviceName: "addLimitedPartner"
+  }
 };
 
 const postTransitionRoutingAddLimitedPartnerLegalEntity = {
   previousUrl: url.LIMITED_PARTNER_CHOICE_URL,
   currentUrl: url.ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
   nextUrl: TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
-  pageType: PostTransitionPageType.addLimitedPartnerLegalEntity
+  pageType: PostTransitionPageType.addLimitedPartnerLegalEntity,
+  data: {
+    serviceName: "addLimitedPartner"
+  }
 };
 
 const postTransitionRoutingLimitedPartnerCheckYourAnswers = {
@@ -48,7 +57,8 @@ const postTransitionRoutingRemoveLimitedPartnerPerson = {
   nextUrl: url.REMOVE_LIMITED_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL,
   pageType: PostTransitionPageType.whenDidTheLimitedPartnerPersonCease,
   data: {
-    titleKey: REMOVE_LIMITED_PARTNER_KEY
+    titleKey: REMOVE_LIMITED_PARTNER_KEY,
+    serviceName: "removeLimitedPartnerPerson"
   }
 };
 
@@ -68,7 +78,8 @@ const postTransitionRoutingRemoveLimitedPartnerLegalEntity = {
   nextUrl: url.REMOVE_LIMITED_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_URL,
   pageType: PostTransitionPageType.whenDidTheLimitedPartnerLegalEntityCease,
   data: {
-    titleKey: REMOVE_LIMITED_PARTNER_KEY
+    titleKey: REMOVE_LIMITED_PARTNER_KEY,
+    serviceName: "removeLimitedPartnerEntity"
   }
 };
 

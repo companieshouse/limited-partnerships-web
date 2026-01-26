@@ -1,12 +1,12 @@
 import request from "supertest";
-import { LimitedPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { LimitedPartner, PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import enTranslationText from "../../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../../locales/cy/translations.json";
 
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
 
 import {
   ENTER_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
@@ -16,6 +16,7 @@ import {
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import LimitedPartnerBuilder, { limitedPartnerLegalEntity } from "../../../../builder/LimitedPartnerBuilder";
 import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
+import TransactionBuilder from "../../../../builder/TransactionBuilder";
 
 describe("Limited Partner Principal Office Address Territory Choice", () => {
   const URL = getUrl(TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
@@ -23,6 +24,9 @@ describe("Limited Partner Principal Office Address Territory Choice", () => {
   beforeEach(() => {
     setLocalesEnabled(false);
     appDevDependencies.limitedPartnerGateway.feedLimitedPartners([]);
+
+    const transaction = new TransactionBuilder().withKind(PartnerKind.ADD_LIMITED_PARTNER_LEGAL_ENTITY).build();
+    appDevDependencies.transactionGateway.feedTransactions([transaction]);
   });
 
   describe("Get limited partner principal office address territory choice page", () => {
@@ -33,12 +37,13 @@ describe("Limited Partner Principal Office Address Territory Choice", () => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(
         toEscapedHtml(
-          `${cyTranslationText.address.territoryChoice.limitedPartnerPrincipalOfficeAddress.title} - ${cyTranslationText.servicePostTransition} - GOV.UK`
+          `${cyTranslationText.address.territoryChoice.limitedPartnerPrincipalOfficeAddress.title} - ${cyTranslationText.serviceName.addLimitedPartner} - GOV.UK`
         )
       );
 
       testTranslations(res.text, cyTranslationText.address.territoryChoice.limitedPartnerPrincipalOfficeAddress);
       testTranslations(res.text, cyTranslationText.address.territories);
+      expect(countOccurrences(res.text, cyTranslationText.serviceName.addLimitedPartner)).toBe(2);
     });
 
     it("should load the limited partner principal office address territory choice page with English text", async () => {
@@ -48,12 +53,13 @@ describe("Limited Partner Principal Office Address Territory Choice", () => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(
         toEscapedHtml(
-          `${enTranslationText.address.territoryChoice.limitedPartnerPrincipalOfficeAddress.title} - ${enTranslationText.servicePostTransition} - GOV.UK`
+          `${enTranslationText.address.territoryChoice.limitedPartnerPrincipalOfficeAddress.title} - ${enTranslationText.serviceName.addLimitedPartner} - GOV.UK`
         )
       );
 
       testTranslations(res.text, enTranslationText.address.territoryChoice.limitedPartnerPrincipalOfficeAddress);
       testTranslations(res.text, enTranslationText.address.territories);
+      expect(countOccurrences(res.text, enTranslationText.serviceName.addLimitedPartner)).toBe(2);
     });
 
     it("should contain the legal entity name ", async () => {

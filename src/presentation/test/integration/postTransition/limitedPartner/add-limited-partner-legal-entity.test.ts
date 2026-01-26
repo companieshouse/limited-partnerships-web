@@ -8,7 +8,7 @@ import cyTranslationText from "../../../../../../locales/cy/translations.json";
 
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 
 import PostTransitionPageType from "../../../../controller/postTransition/pageType";
@@ -80,6 +80,8 @@ describe("Add Limited Partner Legal Entity Page", () => {
         if (lang !== "cy") {
           expect(res.text).not.toContain("WELSH -");
         }
+
+        expect(countOccurrences(res.text, i18n.serviceName.addLimitedPartner)).toBe(4);
       }
     );
 

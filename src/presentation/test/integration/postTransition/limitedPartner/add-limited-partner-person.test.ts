@@ -9,7 +9,7 @@ import cyTranslationText from "../../../../../../locales/cy/translations.json";
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { ApiErrors } from "../../../../../domain/entities/UIErrors";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
 import PostTransitionPageType from "../../../../controller/postTransition/pageType";
@@ -91,6 +91,8 @@ describe("Add Limited Partner Person Page", () => {
         if (lang !== "cy") {
           expect(res.text).not.toContain("WELSH -");
         }
+
+        expect(countOccurrences(res.text, i18n.serviceName.addLimitedPartner)).toBe(4);
       }
     );
 

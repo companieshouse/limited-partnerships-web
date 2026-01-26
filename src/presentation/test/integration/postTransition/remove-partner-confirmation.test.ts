@@ -7,7 +7,7 @@ import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 
 import app from "../app";
-import { expectPartnerData, getUrl, setLocalesEnabled, setupPartners, toEscapedHtml } from "../../utils";
+import { countOccurrences, expectPartnerData, getUrl, setLocalesEnabled, setupPartners, toEscapedHtml } from "../../utils";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 
 import { CONFIRMATION_POST_TRANSITION_URL } from "../../../controller/global/url";
@@ -31,11 +31,11 @@ describe("Remove partner confirmation page", () => {
   describe("Get remove partner confirmation page", () => {
 
     it.each([
-      [ PartnerKind.REMOVE_LIMITED_PARTNER_PERSON, true, true ],
-      [ PartnerKind.REMOVE_LIMITED_PARTNER_LEGAL_ENTITY, true, false ],
-      [ PartnerKind.REMOVE_GENERAL_PARTNER_PERSON, false, true ],
-      [ PartnerKind.REMOVE_GENERAL_PARTNER_LEGAL_ENTITY, false, false ]
-    ])("should load remove partner confirmation page with english text", async (partnerKind, isLimitedPartner, isPerson) => {
+      [ PartnerKind.REMOVE_LIMITED_PARTNER_PERSON, true, true, enTranslationText.serviceName.removeLimitedPartnerPerson ],
+      [ PartnerKind.REMOVE_LIMITED_PARTNER_LEGAL_ENTITY, true, false, enTranslationText.serviceName.removeLimitedPartnerEntity ],
+      [ PartnerKind.REMOVE_GENERAL_PARTNER_PERSON, false, true, enTranslationText.serviceName.removeGeneralPartnerPerson ],
+      [ PartnerKind.REMOVE_GENERAL_PARTNER_LEGAL_ENTITY, false, false, enTranslationText.serviceName.removeGeneralPartnerEntity ]
+    ])("should load remove partner confirmation page with english text", async (partnerKind, isLimitedPartner, isPerson, serviceName) => {
       const transaction = new TransactionBuilder().withKind(partnerKind).build();
       appDevDependencies.transactionGateway.feedTransactions([transaction]);
 
@@ -47,7 +47,7 @@ describe("Remove partner confirmation page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${enTranslationText.confirmationPage.postTransition.title} - ${enTranslationText.servicePostTransition} - GOV.UK`
+        `${enTranslationText.confirmationPage.postTransition.title} - ${toEscapedHtml(serviceName)} - GOV.UK`
       );
       expect(res.text).not.toContain("WELSH -");
 
@@ -59,14 +59,15 @@ describe("Remove partner confirmation page", () => {
       expect(res.text).toContain(companyProfile.data.companyNumber);
 
       expectPartnerData(res, limitedPartner ?? generalPartner ?? {}, isPerson);
+      expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
     });
 
     it.each([
-      [ PartnerKind.REMOVE_LIMITED_PARTNER_PERSON, true, true ],
-      [ PartnerKind.REMOVE_LIMITED_PARTNER_LEGAL_ENTITY, true, false ],
-      [ PartnerKind.REMOVE_GENERAL_PARTNER_PERSON, false, true ],
-      [ PartnerKind.REMOVE_GENERAL_PARTNER_LEGAL_ENTITY, false, false ]
-    ])("should load remove partner confirmation page with welsh text", async (partnerKind, isLimitedPartner, isPerson) => {
+      [ PartnerKind.REMOVE_LIMITED_PARTNER_PERSON, true, true, cyTranslationText.serviceName.removeLimitedPartnerPerson ],
+      [ PartnerKind.REMOVE_LIMITED_PARTNER_LEGAL_ENTITY, true, false, cyTranslationText.serviceName.removeLimitedPartnerEntity ],
+      [ PartnerKind.REMOVE_GENERAL_PARTNER_PERSON, false, true, cyTranslationText.serviceName.removeGeneralPartnerPerson ],
+      [ PartnerKind.REMOVE_GENERAL_PARTNER_LEGAL_ENTITY, false, false, cyTranslationText.serviceName.removeGeneralPartnerEntity ]
+    ])("should load remove partner confirmation page with welsh text", async (partnerKind, isLimitedPartner, isPerson, serviceName) => {
       const transaction = new TransactionBuilder().withKind(partnerKind).build();
       appDevDependencies.transactionGateway.feedTransactions([transaction]);
 
@@ -78,7 +79,7 @@ describe("Remove partner confirmation page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${cyTranslationText.confirmationPage.postTransition.title} - ${cyTranslationText.servicePostTransition} - GOV.UK`
+        `${cyTranslationText.confirmationPage.postTransition.title} - ${toEscapedHtml(serviceName)} - GOV.UK`
       );
       expect(res.text).toContain("WELSH -");
 
@@ -90,6 +91,7 @@ describe("Remove partner confirmation page", () => {
       expect(res.text).toContain(companyProfile.data.companyNumber);
 
       expectPartnerData(res, limitedPartner ?? generalPartner ?? {}, isPerson);
+      expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
     });
   });
 });

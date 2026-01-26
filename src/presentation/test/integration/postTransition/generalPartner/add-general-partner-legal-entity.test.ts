@@ -5,7 +5,7 @@ import cyTranslationText from "../../../../../../locales/cy/translations.json";
 
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 
 import PostTransitionPageType from "../../../../controller/postTransition/pageType";
@@ -58,6 +58,7 @@ describe("Add General Partner Legal Entity Page", () => {
         "disqualificationStatementLegend"
       ]);
       expect(res.text).not.toContain("WELSH -");
+      expect(countOccurrences(res.text, enTranslationText.serviceName.addGeneralPartner)).toBe(4);
     });
 
     it("should load the add general partner legal entity page with Welsh text", async () => {
@@ -78,6 +79,7 @@ describe("Add General Partner Legal Entity Page", () => {
         "disqualificationStatement",
         "disqualificationStatementLegend"
       ]);
+      expect(countOccurrences(res.text, cyTranslationText.serviceName.addGeneralPartner)).toBe(4);
     });
 
     it("should contain a back link to the choice page when general partners are not present", async () => {

@@ -163,7 +163,10 @@ const postTransitionRoutingRedesignateToPFLP = {
   previousUrl: url.LANDING_PAGE_URL,
   currentUrl: url.REDESIGNATE_TO_PFLP_URL,
   nextUrl: "/",
-  pageType: PostTransitionPageType.redesignateToPflp
+  pageType: PostTransitionPageType.redesignateToPflp,
+  data: {
+    serviceName: "updateLimitedPartnershipRedesignateToPFLP"
+  }
 };
 
 const limitedPartnershipRouting = [

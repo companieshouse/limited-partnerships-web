@@ -1,15 +1,16 @@
 import request from "supertest";
-import { LimitedPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { LimitedPartner, PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import enTranslationText from "../../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../../locales/cy/translations.json";
 
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled } from "../../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled } from "../../../../utils";
 
 import { REMOVE_LIMITED_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/postTransition/url";
 import LimitedPartnerBuilder from "../../../../../../presentation/test/builder/LimitedPartnerBuilder";
+import TransactionBuilder from "../../../../builder/TransactionBuilder";
 
 describe("Remove limited partner legal entity check your answers page", () => {
   const URL = getUrl(REMOVE_LIMITED_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_URL);
@@ -24,6 +25,9 @@ describe("Remove limited partner legal entity check your answers page", () => {
       .withCeaseDate("2025-01-01")
       .build();
     appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
+
+    const transaction = new TransactionBuilder().withKind(PartnerKind.REMOVE_LIMITED_PARTNER_LEGAL_ENTITY).build();
+    appDevDependencies.transactionGateway.feedTransactions([transaction]);
   });
 
   describe("GET remove limited partner legal entity check your answers page", () => {
@@ -41,6 +45,7 @@ describe("Remove limited partner legal entity check your answers page", () => {
       expect(res.text).toContain(enTranslationText.print.buttonText);
       expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
       expect(res.text).not.toContain("WELSH -");
+      expect(countOccurrences(res.text, enTranslationText.serviceName.removeLimitedPartnerEntity)).toBe(2);
     });
 
     it("should load remove limited partner legal entity check your answers page with welsh text", async () => {
@@ -57,6 +62,7 @@ describe("Remove limited partner legal entity check your answers page", () => {
       expect(res.text).toContain(cyTranslationText.print.buttonText);
       expect(res.text).toContain(cyTranslationText.print.buttonTextNoJs);
       expect(res.text).toContain("WELSH -");
+      expect(countOccurrences(res.text, cyTranslationText.serviceName.removeLimitedPartnerEntity)).toBe(2);
     });
   });
 });

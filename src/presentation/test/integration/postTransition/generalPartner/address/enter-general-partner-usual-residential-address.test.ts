@@ -12,7 +12,7 @@ import {
   POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "../../../../../controller/addressLookUp/url/postTransition";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import GeneralPartnerBuilder, {
@@ -20,6 +20,8 @@ import GeneralPartnerBuilder, {
   generalPartnerPerson
 } from "../../../../builder/GeneralPartnerBuilder";
 import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
+import TransactionBuilder from "../../../../builder/TransactionBuilder";
+import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 describe("Enter Usual Residential Address Page", () => {
   const URL = getUrl(ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
@@ -33,8 +35,18 @@ describe("Enter Usual Residential Address Page", () => {
   });
 
   describe("GET Enter general partners usual residential address", () => {
-    it("should load enter general partners usual residential address page with english text", async () => {
+
+    it.each(
+      [
+        [PartnerKind.ADD_GENERAL_PARTNER_PERSON, enTranslationText.serviceName.addGeneralPartner],
+        [PartnerKind.UPDATE_GENERAL_PARTNER_PERSON, enTranslationText.serviceName.updateGeneralPartnerPerson]
+      ]
+    )("should load enter general partners usual residential address page with english text", async (partnerKind, serviceName) => {
       setLocalesEnabled(true);
+
+      const transaction = new TransactionBuilder().withKind(partnerKind).build();
+      appDevDependencies.transactionGateway.feedTransactions([transaction]);
+
       const generalPartner = new GeneralPartnerBuilder()
         .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
         .isPerson()
@@ -65,10 +77,19 @@ describe("Enter Usual Residential Address Page", () => {
       expect(res.text).toContain(generalPartnerPerson.forename?.toUpperCase());
       expect(res.text).toContain(generalPartnerPerson.surname?.toUpperCase());
       expect(res.text).not.toContain(generalPartnerLegalEntity.legal_entity_name?.toUpperCase());
+      expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
     });
 
-    it("should load enter general partners usual residential address manual entry page with welsh text", async () => {
+    it.each(
+      [
+        [PartnerKind.ADD_GENERAL_PARTNER_PERSON, cyTranslationText.serviceName.addGeneralPartner],
+        [PartnerKind.UPDATE_GENERAL_PARTNER_PERSON, cyTranslationText.serviceName.updateGeneralPartnerPerson]
+      ]
+    )("should load enter general partners usual residential address manual entry page with welsh text", async (partnerKind, serviceName) => {
       setLocalesEnabled(true);
+
+      const transaction = new TransactionBuilder().withKind(partnerKind).build();
+      appDevDependencies.transactionGateway.feedTransactions([transaction]);
 
       const generalPartner = new GeneralPartnerBuilder()
         .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
@@ -105,6 +126,7 @@ describe("Enter Usual Residential Address Page", () => {
       expect(res.text).toContain(generalPartnerPerson.forename?.toUpperCase());
       expect(res.text).toContain(generalPartnerPerson.surname?.toUpperCase());
       expect(res.text).not.toContain(generalPartnerLegalEntity.legal_entity_name?.toUpperCase());
+      expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
     });
 
     it("should load enter general partners usual residential address manual entry page with overseas back link", async () => {
