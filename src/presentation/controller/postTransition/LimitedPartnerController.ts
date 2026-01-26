@@ -106,8 +106,8 @@ class LimitedPartnerPostTransitionController extends PartnerController {
           .replace(JOURNEY_TYPE_PARAM, getJourneyTypes(request.url).journey);
 
         if (response.locals?.serviceName) {
-          const serviceName = response.locals?.serviceName.toLowerCase().replace(/\s+/g, '-');
-          url = this.addOrAppendQueryParam(url, JOURNEY_QUERY_PARAM, serviceName);
+          const servicename = response.locals?.serviceName.toLowerCase().replace(/\s+/g, '-');
+          url = this.addOrAppendQueryParam(url, JOURNEY_QUERY_PARAM, servicename);
         }
 
         response.redirect(url);
