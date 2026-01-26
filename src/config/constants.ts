@@ -134,6 +134,9 @@ export const PAYMENTS_API_URL = getEnvironmentValue("PAYMENTS_API_URL");
 export const PAYMENT = "payment";
 export const REFERENCE = "LimitedPartnershipsReference";
 
+// query parameters keys
+export const JOURNEY_QUERY_PARAM = "journey";
+
 // cookies
 export const cookieOptions = {
   httpOnly: true,

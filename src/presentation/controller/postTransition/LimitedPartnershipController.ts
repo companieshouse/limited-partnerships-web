@@ -21,7 +21,8 @@ import {
   CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE,
   TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNERSHIP,
   CHS_URL,
-  TRANSACTION_DESCRIPTION_DESIGNATE_AS_PRIVATE_FUND_PARTNERSHIP
+  TRANSACTION_DESCRIPTION_DESIGNATE_AS_PRIVATE_FUND_PARTNERSHIP,
+  JOURNEY_QUERY_PARAM
 } from "../../../config/constants";
 import { getJourneyTypes } from "../../../utils";
 
@@ -388,6 +389,11 @@ class LimitedPartnershipController extends AbstractController {
           .insertIdsInUrl(CONFIRMATION_POST_TRANSITION_URL, ids, request.url)
           .replace(JOURNEY_TYPE_PARAM, getJourneyTypes(request.url).journey);
 
+        if (response.locals?.serviceName) {
+          const serviceName = response.locals?.serviceName.toLowerCase().replace(/\s+/g, '-');
+          redirectUrl = this.addOrAppendQueryParam(redirectUrl, JOURNEY_QUERY_PARAM, serviceName);
+        }
+
         const closeTransactionResponse = await this.limitedPartnershipService.closeTransaction(
           tokens,
           ids.transactionId
@@ -477,6 +483,11 @@ class LimitedPartnershipController extends AbstractController {
         let redirectUrl = super
           .insertIdsInUrl(CONFIRMATION_POST_TRANSITION_URL, newIds, request.url)
           .replace(JOURNEY_TYPE_PARAM, getJourneyTypes(request.url).journey);
+
+        if (response.locals?.serviceName) {
+          const serviceName = response.locals?.serviceName.toLowerCase().replace(/\s+/g, '-');
+          redirectUrl = this.addOrAppendQueryParam(redirectUrl, JOURNEY_QUERY_PARAM, serviceName);
+        }
 
         const closeTransactionResponse = await this.limitedPartnershipService.closeTransaction(
           tokens,
