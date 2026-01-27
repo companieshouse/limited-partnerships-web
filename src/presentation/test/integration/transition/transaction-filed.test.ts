@@ -9,7 +9,7 @@ import { appDevDependencies } from "../../../../config/dev-dependencies";
 import { CONFIRM_LIMITED_PARTNERSHIP_URL, TRANSITION_ALREADY_FILED_URL } from "../../../controller/transition/url";
 import { NAME_URL } from "../../../controller/registration/url";
 
-import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import CompanyProfileBuilder from "../../builder/CompanyProfileBuilder";
 import FilingHistoryBuilder from "../../builder/FilingHistoryBuilder";
 
@@ -73,6 +73,7 @@ describe("Transition already filed", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(enTranslationText.confirmLimitedPartnership.title);
+    expect(countOccurrences(res.text, enTranslationText.confirmLimitedPartnership.title)).toBe(2);
   });
 
   it("should not redirect to transition-already-filed url if it is not transiton journey", async () => {
