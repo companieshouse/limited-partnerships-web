@@ -53,12 +53,12 @@ describe("Transition already filed", () => {
 
       appDevDependencies.filingHistoryGateway.feedFilingHistoryItems([filingHistory]);
 
-      const res = await request(app).get(URL);
+      const res = await request(app).get(URL + "?lang=cy");
 
       const REDIRECT_URL = getUrl(TRANSITION_ALREADY_FILED_URL);
 
       expect(res.status).toBe(302);
-      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}?lang=cy`);
     }
   );
 
