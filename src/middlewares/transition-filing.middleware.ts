@@ -23,7 +23,12 @@ export const transitionFiling =
         if (hasFiledForm) {
           logger.infoRequest(req, "Filing already exists, redirecting to already filed page");
 
-          const redirectUrl = dependencies.globalController.insertCompanyId(TRANSITION_ALREADY_FILED_URL, companyId);
+          let redirectUrl = dependencies.globalController.insertCompanyId(TRANSITION_ALREADY_FILED_URL, companyId);
+
+          const currentUrlParams = new URLSearchParams(new URL(`http://${req.url}`)?.search);
+          if (currentUrlParams.size > 0) {
+            redirectUrl += `?${currentUrlParams.toString()}`;
+          }
 
           return res.redirect(redirectUrl);
         }
