@@ -128,19 +128,22 @@
 
 {# Required as keys for looking up the locale #}
 {%- macro makeCamelCase(str) -%}
-  {%- set str = str.replace("-", " ") -%}   
-  {%- set str = str.replace(",", " ") -%}   
+  {%- set str = str.replaceAll("-", " ") -%}   
+  {%- set str = str.replaceAll(",", " ") -%}   
+  {%- set str = str.replaceAll("(", " ") -%}   
+  {%- set str = str.replaceAll(")", " ") -%}   
+  {%- set str = str.replaceAll(".", " ") -%}   
+
   {%- set words = str.split(' ') -%}
   {%- set result = [] -%}
+
   {%- for word in words -%}
-    {%- if word.startsWith('(') and word.endsWith(')') -%}
-      {%- set word = word.slice(1, -1) -%}
-    {%- endif -%}
     {%- if loop.first -%}
       {%- set result = result.concat(word.toLowerCase()) -%}
     {%- else -%}
       {%- set result = result.concat(capitalizeWord(word.toLowerCase())) -%} 
     {%- endif -%}
   {%- endfor -%}
+
   {{- result.join('') -}}
 {%- endmacro -%}
