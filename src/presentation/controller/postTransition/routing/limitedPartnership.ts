@@ -1,3 +1,4 @@
+import { COST_LP8D_REDESIGNATE_TO_PFLP } from "../../../../config";
 import PostTransitionPageType from "../pageType";
 import * as url from "../url";
 
@@ -165,7 +166,8 @@ const postTransitionRoutingRedesignateToPFLP = {
   nextUrl: "/",
   pageType: PostTransitionPageType.redesignateToPflp,
   data: {
-    serviceName: "updateLimitedPartnershipRedesignateToPFLP"
+    serviceName: "updateLimitedPartnershipRedesignateToPFLP",
+    costRedesignateToPflp: COST_LP8D_REDESIGNATE_TO_PFLP
   }
 };
 
