@@ -1,4 +1,6 @@
 import request from "supertest";
+import { PartnershipKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+
 import app from "../app";
 import {
   CONFIRMATION_POST_TRANSITION_URL,
@@ -16,6 +18,11 @@ import CompanyProfileBuilder from "presentation/test/builder/CompanyProfileBuild
 describe("Payment decision routing", () => {
   const TRANSITION_URL = getUrl(PAYMENT_RESPONSE_URL).replace(JOURNEY_TYPE_PARAM, Journey.transition);
   const POST_TRANSITION_URL = getUrl(PAYMENT_RESPONSE_URL).replace(JOURNEY_TYPE_PARAM, Journey.postTransition);
+
+  beforeEach(() => {
+    appDevDependencies.transactionGateway.feedTransactions([]);
+    appDevDependencies.companyGateway.feedCompanyProfile(null);
+  });
 
   describe("GET payment decision page", () => {
     it("should redirect to the confirmation page when transition payment is successful", async () => {
@@ -35,8 +42,10 @@ describe("Payment decision routing", () => {
 
       const companyProfile = new CompanyProfileBuilder().build();
       appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
+
       const transaction = new TransactionBuilder()
         .withCompanyNumber(companyProfile.Id)
+        .withKind(PartnershipKind.UPDATE_PARTNERSHIP_NAME)
         .build();
 
       appDevDependencies.transactionGateway.feedTransactions([transaction]);
@@ -46,7 +55,7 @@ describe("Payment decision routing", () => {
 
       const nextPage = getUrl(CONFIRMATION_POST_TRANSITION_URL).replace(JOURNEY_TYPE_PARAM, Journey.postTransition);
 
-      expect(res.header.location).toEqual(nextPage);
+      expect(res.header.location).toEqual(nextPage + "?journey=update-the-name-of-a-limited-partnership");
     });
 
     it("should redirect to the payment failed page when transition payment is not successful", async () => {

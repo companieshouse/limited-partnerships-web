@@ -16,7 +16,11 @@ import {
 
 import postTransitionRouting from "../postTransition/routing";
 import { CONFIRMATION_POST_TRANSITION_URL } from "../global/url";
-import { JOURNEY_TYPE_PARAM, PARTNER_CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE } from "../../../config/constants";
+import {
+  JOURNEY_QUERY_PARAM,
+  JOURNEY_TYPE_PARAM,
+  PARTNER_CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE
+} from "../../../config/constants";
 import { getJourneyTypes } from "../../../utils/journey";
 import { formatDate } from "../../../utils/date-format";
 
@@ -97,9 +101,15 @@ class LimitedPartnerPostTransitionController extends PartnerController {
 
         await this.limitedPartnershipService.closeTransaction(tokens, ids.transactionId);
 
-        const url = super
+        let url = super
           .insertIdsInUrl(CONFIRMATION_POST_TRANSITION_URL, ids, request.url)
           .replace(JOURNEY_TYPE_PARAM, getJourneyTypes(request.url).journey);
+
+        const serviceName = response.locals?.serviceName;
+        if (serviceName) {
+          const serviceNameQuery = serviceName.toLowerCase().replace(/\s+/g, '-');
+          url = this.addOrAppendQueryParam(url, JOURNEY_QUERY_PARAM, serviceNameQuery);
+        }
 
         response.redirect(url);
       } catch (error) {

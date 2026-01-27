@@ -7,7 +7,7 @@ import postTransitionAddressRouting from "../presentation/controller/addressLook
 import globalsRouting from "../presentation/controller/global/Routing";
 import { RESUME } from "../presentation/controller/global/url";
 
-const serviceNameKindMap = {
+export const serviceNameKindMap = {
   [PartnershipKind.UPDATE_PARTNERSHIP_NAME]: "updateLimitedPartnershipName",
   [PartnershipKind.UPDATE_PARTNERSHIP_TERM]: "updateLimitedPartnershipTerm",
   [PartnershipKind.UPDATE_PARTNERSHIP_REGISTERED_OFFICE_ADDRESS]: "updateLimitedPartnershipRegisteredOfficeAddress",

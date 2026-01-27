@@ -210,6 +210,17 @@ abstract class AbstractController {
 
     return PARTNERSHIP_TYPE_URL;
   }
+
+  protected addOrAppendQueryParam(url: string, key: string, value: string): string {
+    const [base, query] = url.split("?");
+    const params = new URLSearchParams(query || "");
+
+    params.set(key, value);
+
+    const paramString = params.toString();
+
+    return paramString ? `${base}?${paramString}` : base;
+  }
 }
 
 export default AbstractController;
