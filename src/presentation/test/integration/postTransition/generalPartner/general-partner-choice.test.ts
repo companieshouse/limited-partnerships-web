@@ -9,7 +9,7 @@ import {
 } from "../../../../controller/postTransition/url";
 import PostTransitionPageType from "../../../../controller/postTransition/pageType";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 
 describe("General Partner Choice Page", () => {
@@ -30,9 +30,10 @@ describe("General Partner Choice Page", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
-      `${cyTranslationText.generalPartnerChoicePage.title} - ${cyTranslationText.servicePostTransition} - GOV.UK`
+      `${cyTranslationText.generalPartnerChoicePage.title} - ${cyTranslationText.serviceName.addGeneralPartner} - GOV.UK`
     );
     testTranslations(res.text, cyTranslationText.generalPartnerChoicePage, ["hint"]);
+    expect(countOccurrences(res.text, cyTranslationText.serviceName.addGeneralPartner)).toBe(2);
   });
 
   it("should load the general partner choice page with English text", async () => {
@@ -41,9 +42,10 @@ describe("General Partner Choice Page", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
-      `${enTranslationText.generalPartnerChoicePage.title} - ${enTranslationText.servicePostTransition} - GOV.UK`
+      `${enTranslationText.generalPartnerChoicePage.title} - ${enTranslationText.serviceName.addGeneralPartner} - GOV.UK`
     );
     testTranslations(res.text, enTranslationText.generalPartnerChoicePage, ["hint"]);
+    expect(countOccurrences(res.text, enTranslationText.serviceName.addGeneralPartner)).toBe(2);
   });
 
   it("should redirect to General Partner Person page when person is selected", async () => {

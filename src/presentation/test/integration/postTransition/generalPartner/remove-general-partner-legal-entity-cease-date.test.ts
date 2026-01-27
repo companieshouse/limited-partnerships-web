@@ -5,7 +5,7 @@ import cyTranslationText from "../../../../../../locales/cy/translations.json";
 
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled } from "../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled } from "../../../utils";
 
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 import {
@@ -53,6 +53,7 @@ describe("General Partner cease date page", () => {
 
       expect(res.text).toContain(companyProfile.data.companyName.toUpperCase());
       expect(res.text).toContain(companyAppointment.name?.split(",")[0] ?? "");
+      expect(countOccurrences(res.text, enTranslationText.serviceName.removeGeneralPartnerEntity)).toBe(2);
     });
 
     it("should load general partner cease date page with welsh text", async () => {
@@ -61,6 +62,7 @@ describe("General Partner cease date page", () => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(`${cyTranslationText.ceaseDate.removeGeneralPartner.title}`);
       expect(res.text).toContain("WELSH -");
+      expect(countOccurrences(res.text, cyTranslationText.serviceName.removeGeneralPartnerEntity)).toBe(2);
     });
   });
 

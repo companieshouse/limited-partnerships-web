@@ -7,7 +7,7 @@ import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 
 import app from "../app";
-import { expectPartnerData, getUrl, setLocalesEnabled, setupPartners, toEscapedHtml } from "../../utils";
+import { countOccurrences, expectPartnerData, getUrl, setLocalesEnabled, setupPartners, toEscapedHtml } from "../../utils";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 
 import { CONFIRMATION_POST_TRANSITION_URL } from "../../../controller/global/url";
@@ -25,11 +25,15 @@ describe("Update partner confirmation page", () => {
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
     appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
+
+    const transaction = new TransactionBuilder().withKind(PartnerKind.UPDATE_GENERAL_PARTNER_PERSON).build();
+    appDevDependencies.transactionGateway.feedTransactions([transaction]);
+
   });
 
   describe("Get update partner confirmation page", () => {
     it.each([
-      [ PartnerKind.UPDATE_GENERAL_PARTNER_PERSON, false, true ],
+      [ PartnerKind.UPDATE_GENERAL_PARTNER_PERSON, false, true ]
     ])("should load update partner confirmation page with english text", async (partnerKind, isLimitedPartner, isPerson) => {
       const transaction = new TransactionBuilder().withKind(partnerKind).build();
       appDevDependencies.transactionGateway.feedTransactions([transaction]);
@@ -42,7 +46,7 @@ describe("Update partner confirmation page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${enTranslationText.confirmationPage.postTransition.title} - ${enTranslationText.servicePostTransition} - GOV.UK`
+        `${enTranslationText.confirmationPage.postTransition.title} - ${toEscapedHtml(enTranslationText.serviceName.updateGeneralPartnerPerson)} - GOV.UK`
       );
       expect(res.text).not.toContain("WELSH -");
 
@@ -54,6 +58,7 @@ describe("Update partner confirmation page", () => {
       expect(res.text).toContain(companyProfile.data.companyNumber);
 
       expectPartnerData(res, generalPartner ?? {}, true);
+      expect(countOccurrences(res.text, toEscapedHtml(enTranslationText.serviceName.updateGeneralPartnerPerson))).toBe(2);
     });
 
     it.each([
@@ -70,7 +75,7 @@ describe("Update partner confirmation page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${cyTranslationText.confirmationPage.postTransition.title} - ${cyTranslationText.servicePostTransition} - GOV.UK`
+        `${cyTranslationText.confirmationPage.postTransition.title} - ${toEscapedHtml(cyTranslationText.serviceName.updateGeneralPartnerPerson)} - GOV.UK`
       );
       expect(res.text).toContain("WELSH -");
 
@@ -82,6 +87,7 @@ describe("Update partner confirmation page", () => {
       expect(res.text).toContain(companyProfile.data.companyNumber);
 
       expectPartnerData(res, generalPartner ?? {}, true);
+      expect(countOccurrences(res.text, toEscapedHtml(cyTranslationText.serviceName.updateGeneralPartnerPerson))).toBe(2);
     });
   });
 });

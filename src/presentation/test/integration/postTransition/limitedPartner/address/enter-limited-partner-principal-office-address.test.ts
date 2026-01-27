@@ -4,7 +4,7 @@ import enTranslationText from "../../../../../../../locales/en/translations.json
 import cyTranslationText from "../../../../../../../locales/cy/translations.json";
 
 import app from "../../../app";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 
 import {
@@ -16,6 +16,8 @@ import LimitedPartnerBuilder, {
   limitedPartnerPerson
 } from "../../../../builder/LimitedPartnerBuilder";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
+import TransactionBuilder from "../../../../builder/TransactionBuilder";
+import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 describe("Enter limited partner's principal office manual address page", () => {
   const URL = getUrl(ENTER_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
@@ -24,6 +26,9 @@ describe("Enter limited partner's principal office manual address page", () => {
     setLocalesEnabled(false);
     appDevDependencies.cacheRepository.feedCache(null);
     appDevDependencies.limitedPartnerGateway.feedLimitedPartners([]);
+
+    const transaction = new TransactionBuilder().withKind(PartnerKind.ADD_LIMITED_PARTNER_LEGAL_ENTITY).build();
+    appDevDependencies.transactionGateway.feedTransactions([transaction]);
   });
 
   describe("Get enter limited partner's principal office address page", () => {
@@ -53,6 +58,7 @@ describe("Enter limited partner's principal office manual address page", () => {
       expect(res.text).not.toContain(limitedPartnerPerson.forename?.toUpperCase());
       expect(res.text).not.toContain(limitedPartnerPerson.surname?.toUpperCase());
       expect(res.text).toContain(limitedPartnerLegalEntity.legal_entity_name?.toUpperCase());
+      expect(countOccurrences(res.text, enTranslationText.serviceName.addLimitedPartner)).toBe(2);
     });
 
     it("should load enter limited partners principal office address page with Welsh text", async () => {
@@ -81,6 +87,7 @@ describe("Enter limited partner's principal office manual address page", () => {
       expect(res.text).not.toContain(limitedPartnerPerson.forename?.toUpperCase());
       expect(res.text).not.toContain(limitedPartnerPerson.surname?.toUpperCase());
       expect(res.text).toContain(limitedPartnerLegalEntity.legal_entity_name?.toUpperCase());
+      expect(countOccurrences(res.text, enTranslationText.serviceName.addLimitedPartner)).toBe(2);
     });
   });
 

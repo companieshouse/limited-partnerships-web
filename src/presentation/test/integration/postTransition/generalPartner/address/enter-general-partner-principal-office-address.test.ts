@@ -4,7 +4,7 @@ import enTranslationText from "../../../../../../../locales/en/translations.json
 import cyTranslationText from "../../../../../../../locales/cy/translations.json";
 
 import app from "../../../app";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 
 import {
@@ -16,6 +16,8 @@ import GeneralPartnerBuilder, {
   generalPartnerPerson
 } from "../../../../builder/GeneralPartnerBuilder";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
+import TransactionBuilder from "../../../../builder/TransactionBuilder";
+import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 describe("Enter general partner's principal office manual address page", () => {
   const URL = getUrl(ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
@@ -24,6 +26,9 @@ describe("Enter general partner's principal office manual address page", () => {
     setLocalesEnabled(false);
     appDevDependencies.cacheRepository.feedCache(null);
     appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
+
+    const transaction = new TransactionBuilder().withKind(PartnerKind.ADD_GENERAL_PARTNER_LEGAL_ENTITY).build();
+    appDevDependencies.transactionGateway.feedTransactions([transaction]);
   });
 
   describe("Get enter general partner's principal office address page", () => {
@@ -53,6 +58,7 @@ describe("Enter general partner's principal office manual address page", () => {
       expect(res.text).not.toContain(generalPartnerPerson.forename?.toUpperCase());
       expect(res.text).not.toContain(generalPartnerPerson.surname?.toUpperCase());
       expect(res.text).toContain(generalPartnerLegalEntity.legal_entity_name?.toUpperCase());
+      expect(countOccurrences(res.text, enTranslationText.serviceName.addGeneralPartner)).toBe(2);
     });
 
     it("should load enter general partners principal office address page with Welsh text", async () => {
@@ -81,6 +87,7 @@ describe("Enter general partner's principal office manual address page", () => {
       expect(res.text).not.toContain(generalPartnerPerson.forename?.toUpperCase());
       expect(res.text).not.toContain(generalPartnerPerson.surname?.toUpperCase());
       expect(res.text).toContain(generalPartnerLegalEntity.legal_entity_name?.toUpperCase());
+      expect(countOccurrences(res.text, cyTranslationText.serviceName.addGeneralPartner)).toBe(2);
     });
   });
 

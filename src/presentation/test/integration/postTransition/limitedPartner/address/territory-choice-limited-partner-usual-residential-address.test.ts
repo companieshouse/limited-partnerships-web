@@ -3,7 +3,7 @@ import enTranslationText from "../../../../../../../locales/en/translations.json
 import cyTranslationText from "../../../../../../../locales/cy/translations.json";
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
 import {
   ENTER_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
@@ -12,6 +12,8 @@ import {
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import LimitedPartnerBuilder, { limitedPartnerPerson } from "../../../../builder/LimitedPartnerBuilder";
 import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
+import TransactionBuilder from "../../../../builder/TransactionBuilder";
+import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 describe("Limited Partner Usual Residential Address Territory Choice", () => {
   const URL = getUrl(TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
@@ -19,6 +21,9 @@ describe("Limited Partner Usual Residential Address Territory Choice", () => {
   beforeEach(() => {
     setLocalesEnabled(false);
     appDevDependencies.limitedPartnerGateway.feedLimitedPartners([]);
+
+    const transaction = new TransactionBuilder().withKind(PartnerKind.ADD_LIMITED_PARTNER_PERSON).build();
+    appDevDependencies.transactionGateway.feedTransactions([transaction]);
   });
 
   describe("GET /limited-partner-usual-residential-address-choose-territory", () => {
@@ -29,12 +34,13 @@ describe("Limited Partner Usual Residential Address Territory Choice", () => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(
         toEscapedHtml(
-          `${cyTranslationText.address.territoryChoice.limitedPartnerUsualResidentialAddress.title} - ${cyTranslationText.servicePostTransition} - GOV.UK`
+          `${cyTranslationText.address.territoryChoice.limitedPartnerUsualResidentialAddress.title} - ${cyTranslationText.serviceName.addLimitedPartner} - GOV.UK`
         )
       );
 
       testTranslations(res.text, cyTranslationText.address.territoryChoice.limitedPartnerUsualResidentialAddress);
       testTranslations(res.text, cyTranslationText.address.territories);
+      expect(countOccurrences(res.text, cyTranslationText.serviceName.addLimitedPartner)).toBe(2);
     });
 
     it("should load the limited partner usual residential address territory choice page with English text", async () => {
@@ -44,11 +50,12 @@ describe("Limited Partner Usual Residential Address Territory Choice", () => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(
         toEscapedHtml(
-          `${enTranslationText.address.territoryChoice.limitedPartnerUsualResidentialAddress.title} - ${enTranslationText.servicePostTransition} - GOV.UK`
+          `${enTranslationText.address.territoryChoice.limitedPartnerUsualResidentialAddress.title} - ${enTranslationText.serviceName.addLimitedPartner} - GOV.UK`
         )
       );
 
       testTranslations(res.text, enTranslationText.address.territories);
+      expect(countOccurrences(res.text, enTranslationText.serviceName.addLimitedPartner)).toBe(2);
     });
 
     it("should contain the limited partner name - data from API", async () => {

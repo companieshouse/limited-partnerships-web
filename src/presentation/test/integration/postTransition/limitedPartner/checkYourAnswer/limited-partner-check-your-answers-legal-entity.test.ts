@@ -1,19 +1,20 @@
 import request from "supertest";
-import app from "../../app";
+import app from "../../../app";
 
-import enTranslationText from "../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../locales/cy/translations.json";
+import enTranslationText from "../../../../../../../locales/en/translations.json";
+import cyTranslationText from "../../../../../../../locales/cy/translations.json";
 
-import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
-import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
-import { LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL } from "../../../../controller/postTransition/url";
-import { getUrl, setLocalesEnabled } from "../../../utils";
-import { formatDate } from "../../../../../utils/date-format";
-import { LimitedPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-import { CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL, CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../../../controller/addressLookUp/url/postTransition";
-import PostTransitionPageType from "../../../../controller/postTransition/pageType";
-import { CONFIRMATION_POST_TRANSITION_URL } from "../../../../controller/global/url";
+import { appDevDependencies } from "../../../../../../config/dev-dependencies";
+import LimitedPartnerBuilder from "../../../../builder/LimitedPartnerBuilder";
+import CompanyProfileBuilder from "../../../../builder/CompanyProfileBuilder";
+import { LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/postTransition/url";
+import { countOccurrences, getUrl, setLocalesEnabled } from "../../../../utils";
+import { formatDate } from "../../../../../../utils/date-format";
+import { LimitedPartner, PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL, CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../../../../controller/addressLookUp/url/postTransition";
+import PostTransitionPageType from "../../../../../controller/postTransition/pageType";
+import { CONFIRMATION_POST_TRANSITION_URL } from "../../../../../controller/global/url";
+import TransactionBuilder from "../../../../builder/TransactionBuilder";
 
 describe("Limited Partner Check Your Answers Page", () => {
   const URL = getUrl(LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL);
@@ -32,6 +33,9 @@ describe("Limited Partner Check Your Answers Page", () => {
       .build();
 
     appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerLegalEntity]);
+
+    const transaction = new TransactionBuilder().withKind(PartnerKind.ADD_LIMITED_PARTNER_LEGAL_ENTITY).build();
+    appDevDependencies.transactionGateway.feedTransactions([transaction]);
   });
 
   it("should GET Check Your Answers Page English text", async () => {
@@ -45,6 +49,7 @@ describe("Limited Partner Check Your Answers Page", () => {
     expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
     expect(res.text).toContain(enTranslationText.countries.wales);
     expect(res.text).not.toContain("WELSH -");
+    expect(countOccurrences(res.text, enTranslationText.serviceName.addLimitedPartner)).toBe(2);
   });
 
   it("should GET Check Your Answers Page Welsh text", async () => {
@@ -58,6 +63,7 @@ describe("Limited Partner Check Your Answers Page", () => {
     expect(res.text).toContain(cyTranslationText.print.buttonTextNoJs);
     expect(res.text).toContain(cyTranslationText.countries.wales);
     expect(res.text).toContain("WELSH -");
+    expect(countOccurrences(res.text, cyTranslationText.serviceName.addLimitedPartner)).toBe(2);
   });
 
   it.each([

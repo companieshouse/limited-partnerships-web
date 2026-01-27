@@ -12,7 +12,7 @@ import {
   POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "../../../../../controller/addressLookUp/url/postTransition";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import LimitedPartnerBuilder, {
@@ -20,6 +20,8 @@ import LimitedPartnerBuilder, {
   limitedPartnerPerson
 } from "../../../../builder/LimitedPartnerBuilder";
 import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
+import TransactionBuilder from "../../../../builder/TransactionBuilder";
+import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 describe("Enter Usual Residential Address Page", () => {
   const URL = getUrl(ENTER_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
@@ -30,6 +32,9 @@ describe("Enter Usual Residential Address Page", () => {
 
     appDevDependencies.cacheRepository.feedCache(null);
     appDevDependencies.limitedPartnerGateway.feedLimitedPartners([]);
+
+    const transaction = new TransactionBuilder().withKind(PartnerKind.ADD_LIMITED_PARTNER_PERSON).build();
+    appDevDependencies.transactionGateway.feedTransactions([transaction]);
   });
 
   describe("GET Enter limited partners usual residential address", () => {
@@ -65,6 +70,7 @@ describe("Enter Usual Residential Address Page", () => {
       expect(res.text).toContain(limitedPartnerPerson.forename?.toUpperCase());
       expect(res.text).toContain(limitedPartnerPerson.surname?.toUpperCase());
       expect(res.text).not.toContain(limitedPartnerLegalEntity.legal_entity_name?.toUpperCase());
+      expect(countOccurrences(res.text, enTranslationText.serviceName.addLimitedPartner)).toBe(2);
     });
 
     it("should load enter limited partners usual residential address manual entry page with welsh text", async () => {
@@ -105,6 +111,7 @@ describe("Enter Usual Residential Address Page", () => {
       expect(res.text).toContain(limitedPartnerPerson.forename?.toUpperCase());
       expect(res.text).toContain(limitedPartnerPerson.surname?.toUpperCase());
       expect(res.text).not.toContain(limitedPartnerLegalEntity.legal_entity_name?.toUpperCase());
+      expect(countOccurrences(res.text, cyTranslationText.serviceName.addLimitedPartner)).toBe(2);
     });
 
     it("should load enter limited partners usual residential address manual entry page with overseas back link", async () => {

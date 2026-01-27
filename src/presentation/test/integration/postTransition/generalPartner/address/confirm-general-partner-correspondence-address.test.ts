@@ -6,7 +6,7 @@ import cyTranslationText from "../../../../../../../locales/cy/translations.json
 import enErrorMessages from "../../../../../../../locales/en/errors.json";
 import cyErrorMessages from "../../../../../../../locales/cy/errors.json";
 
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
 import {
   CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
@@ -17,6 +17,7 @@ import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import GeneralPartnerBuilder from "../../../../builder/GeneralPartnerBuilder";
 import { GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL, WHEN_DID_GENERAL_PARTNER_DETAILS_CHANGE_URL } from "../../../../../controller/postTransition/url";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import TransactionBuilder from "../../../../builder/TransactionBuilder";
 
 describe("Confirm General Partner Correspondence Address Page", () => {
   const URL = getUrl(CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL);
@@ -46,8 +47,16 @@ describe("Confirm General Partner Correspondence Address Page", () => {
   });
 
   describe("GET Confirm Correspondence Address Page", () => {
-    it("should load the confirm correspondence address page with English text", async () => {
+    it.each(
+      [
+        [PartnerKind.ADD_GENERAL_PARTNER_PERSON, enTranslationText.serviceName.addGeneralPartner],
+        [PartnerKind.UPDATE_GENERAL_PARTNER_PERSON, enTranslationText.serviceName.updateGeneralPartnerPerson]
+      ]
+    )("should load the confirm correspondence address page with English text", async (partnerKind, serviceName) => {
       setLocalesEnabled(true);
+
+      const transaction = new TransactionBuilder().withKind(partnerKind).build();
+      appDevDependencies.transactionGateway.feedTransactions([transaction]);
 
       const res = await request(app).get(URL + "?lang=en");
 
@@ -61,10 +70,19 @@ describe("Confirm General Partner Correspondence Address Page", () => {
       expect(res.text).toContain("Region");
       expect(res.text).toContain(enTranslationText.countries.england);
       expect(res.text).toContain("ST6 3LJ");
+      expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
     });
 
-    it("should load the confirm correspondence address page with Welsh text", async () => {
+    it.each(
+      [
+        [PartnerKind.ADD_GENERAL_PARTNER_PERSON, cyTranslationText.serviceName.addGeneralPartner],
+        [PartnerKind.UPDATE_GENERAL_PARTNER_PERSON, cyTranslationText.serviceName.updateGeneralPartnerPerson]
+      ]
+    )("should load the confirm correspondence address page with Welsh text", async (partnerKind, serviceName) => {
       setLocalesEnabled(true);
+
+      const transaction = new TransactionBuilder().withKind(partnerKind).build();
+      appDevDependencies.transactionGateway.feedTransactions([transaction]);
 
       const res = await request(app).get(URL + "?lang=cy");
 
@@ -77,6 +95,7 @@ describe("Confirm General Partner Correspondence Address Page", () => {
       expect(res.text).toContain("Region");
       expect(res.text).toContain(cyTranslationText.countries.england);
       expect(res.text).toContain("ST6 3LJ");
+      expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
     });
 
     it.each([

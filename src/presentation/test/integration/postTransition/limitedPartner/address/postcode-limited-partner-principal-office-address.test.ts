@@ -1,12 +1,12 @@
 import request from "supertest";
-import { Jurisdiction } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
+import { Jurisdiction, PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 import enTranslationText from "../../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../../locales/cy/translations.json";
 
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, toEscapedHtml, testTranslations } from "../../../../utils";
+import { getUrl, setLocalesEnabled, toEscapedHtml, testTranslations, countOccurrences } from "../../../../utils";
 
 import {
   POSTCODE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
@@ -19,6 +19,7 @@ import LimitedPartnerBuilder, {
   limitedPartnerLegalEntity
 } from "../../../../builder/LimitedPartnerBuilder";
 import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBuilder";
+import TransactionBuilder from "../../../../builder/TransactionBuilder";
 
 describe("Postcode limited partner's principal office address page", () => {
   const URL = getUrl(POSTCODE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
@@ -28,6 +29,9 @@ describe("Postcode limited partner's principal office address page", () => {
     setLocalesEnabled(false);
     appDevDependencies.cacheRepository.feedCache(null);
     appDevDependencies.limitedPartnerGateway.feedLimitedPartners([]);
+
+    const transaction = new TransactionBuilder().withKind(PartnerKind.ADD_LIMITED_PARTNER_LEGAL_ENTITY).build();
+    appDevDependencies.transactionGateway.feedTransactions([transaction]);
   });
 
   describe("Get postcode limited partner's principal office address page", () => {
@@ -47,7 +51,7 @@ describe("Postcode limited partner's principal office address page", () => {
       expect(res.text).toContain(
         toEscapedHtml(
           enTranslationText.address.findPostcode.limitedPartner.principalOfficeAddress.whatIsPrincipalOfficeAddress
-        ) + ` - ${enTranslationText.servicePostTransition} - GOV.UK`
+        ) + ` - ${enTranslationText.serviceName.addLimitedPartner} - GOV.UK`
       );
       testTranslations(res.text, enTranslationText.address.findPostcode, [
         "registeredOfficeAddress",
@@ -61,6 +65,7 @@ describe("Postcode limited partner's principal office address page", () => {
       expect(res.text).not.toContain(limitedPartnerPerson.forename.toUpperCase());
       expect(res.text).not.toContain(limitedPartnerPerson.surname.toUpperCase());
       expect(res.text).toContain(limitedPartnerLegalEntity.legal_entity_name?.toUpperCase());
+      expect(countOccurrences(res.text, enTranslationText.serviceName.addLimitedPartner)).toBe(2);
     });
 
     it("should load the principal office address page with Welsh text", async () => {
@@ -79,7 +84,7 @@ describe("Postcode limited partner's principal office address page", () => {
       expect(res.text).toContain(
         toEscapedHtml(
           cyTranslationText.address.findPostcode.limitedPartner.principalOfficeAddress.whatIsPrincipalOfficeAddress
-        ) + ` - ${cyTranslationText.servicePostTransition} - GOV.UK`
+        ) + ` - ${cyTranslationText.serviceName.addLimitedPartner} - GOV.UK`
       );
       testTranslations(res.text, cyTranslationText.address.findPostcode, [
         "registeredOfficeAddress",
@@ -93,6 +98,7 @@ describe("Postcode limited partner's principal office address page", () => {
       expect(res.text).not.toContain(limitedPartnerPerson.forename.toUpperCase());
       expect(res.text).not.toContain(limitedPartnerPerson.forename.toUpperCase());
       expect(res.text).toContain(limitedPartnerLegalEntity.legal_entity_name?.toUpperCase());
+      expect(countOccurrences(res.text, cyTranslationText.serviceName.addLimitedPartner)).toBe(2);
     });
   });
 

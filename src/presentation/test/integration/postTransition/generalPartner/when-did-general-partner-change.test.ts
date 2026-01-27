@@ -8,11 +8,13 @@ import app from "../../app";
 
 import GeneralPartnerBuilder from "../../../../../presentation/test/builder/GeneralPartnerBuilder";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, toEscapedHtml } from "../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, toEscapedHtml } from "../../../utils";
 import CompanyProfileBuilder from "../../../../../presentation/test/builder/CompanyProfileBuilder";
 import { WHEN_DID_GENERAL_PARTNER_DETAILS_CHANGE_URL, UPDATE_GENERAL_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL } from "presentation/controller/postTransition/url";
 import PostTransitionPageType from "../../../../controller/postTransition/pageType";
 import { ApiErrors } from "domain/entities/UIErrors";
+import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import TransactionBuilder from "../../../builder/TransactionBuilder";
 
 describe("General partner change date page", () => {
   const URL = getUrl(WHEN_DID_GENERAL_PARTNER_DETAILS_CHANGE_URL);
@@ -32,6 +34,9 @@ describe("General partner change date page", () => {
 
     const companyProfile = new CompanyProfileBuilder().build();
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
+
+    const transaction = new TransactionBuilder().withKind(PartnerKind.UPDATE_GENERAL_PARTNER_PERSON).build();
+    appDevDependencies.transactionGateway.feedTransactions([transaction]);
   });
 
   describe("GET general partner change date page", () => {
@@ -47,9 +52,11 @@ describe("General partner change date page", () => {
       if (lang === "cy") {
         expect(res.text).toContain("WELSH - ");
         expect(res.text).toContain(`${cyTranslationText.dateOfUpdate.generalPartner.title}`);
+        expect(countOccurrences(res.text, toEscapedHtml(cyTranslationText.serviceName.updateGeneralPartnerPerson))).toBe(2);
       } else {
         expect(res.text).not.toContain("WELSH -");
         expect(res.text).toContain(`${enTranslationText.dateOfUpdate.generalPartner.title}`);
+        expect(countOccurrences(res.text, toEscapedHtml(enTranslationText.serviceName.updateGeneralPartnerPerson))).toBe(2);
       }
     });
   });

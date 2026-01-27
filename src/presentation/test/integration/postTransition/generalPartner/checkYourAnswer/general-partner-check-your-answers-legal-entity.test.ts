@@ -1,18 +1,19 @@
 import request from "supertest";
-import app from "../../app";
+import app from "../../../app";
 
-import enTranslationText from "../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../locales/cy/translations.json";
-import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
-import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
-import { GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL } from "../../../../controller/postTransition/url";
-import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
-import { CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL, CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL } from "../../../../controller/addressLookUp/url/postTransition";
-import { GeneralPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
-import { formatDate } from "../../../../../utils/date-format";
-import PostTransitionPageType from "../../../../controller/postTransition/pageType";
-import { CONFIRMATION_POST_TRANSITION_URL } from "../../../../controller/global/url";
+import enTranslationText from "../../../../../../../locales/en/translations.json";
+import cyTranslationText from "../../../../../../../locales/cy/translations.json";
+import { appDevDependencies } from "../../../../../../config/dev-dependencies";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
+import GeneralPartnerBuilder from "../../../../builder/GeneralPartnerBuilder";
+import { GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/postTransition/url";
+import CompanyProfileBuilder from "../../../../builder/CompanyProfileBuilder";
+import { CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL, CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL } from "../../../../../controller/addressLookUp/url/postTransition";
+import { GeneralPartner, PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
+import { formatDate } from "../../../../../../utils/date-format";
+import PostTransitionPageType from "../../../../../controller/postTransition/pageType";
+import { CONFIRMATION_POST_TRANSITION_URL } from "../../../../../controller/global/url";
+import TransactionBuilder from "../../../../builder/TransactionBuilder";
 
 describe("Check Your Answers Page", () => {
   const URL = getUrl(GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL);
@@ -31,6 +32,9 @@ describe("Check Your Answers Page", () => {
       .withLegalEntityRegistrationLocation("Wales")
       .build();
     appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartnerLegalEntity]);
+
+    const transaction = new TransactionBuilder().withKind(PartnerKind.ADD_GENERAL_PARTNER_LEGAL_ENTITY).build();
+    appDevDependencies.transactionGateway.feedTransactions([transaction]);
   });
 
   describe("GET Check Your Answers Page", () => {
@@ -45,6 +49,7 @@ describe("Check Your Answers Page", () => {
       expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
       expect(res.text).toContain(enTranslationText.countries.wales);
       expect(res.text).not.toContain("WELSH -");
+      expect(countOccurrences(res.text, enTranslationText.serviceName.addGeneralPartner)).toBe(2);
     });
 
     it("should GET Check Your Answers Page Welsh text", async () => {
@@ -58,6 +63,7 @@ describe("Check Your Answers Page", () => {
       expect(res.text).toContain(cyTranslationText.print.buttonTextNoJs);
       expect(res.text).toContain(cyTranslationText.countries.wales);
       expect(res.text).toContain("WELSH -");
+      expect(countOccurrences(res.text, cyTranslationText.serviceName.addGeneralPartner)).toBe(2);
     });
 
     it.each([
