@@ -32,6 +32,7 @@ export const PORT = getEnvironmentValue("PORT");
 export const POSTCODE_ADDRESSES_LOOKUP_URL = getEnvironmentValue("POSTCODE_ADDRESSES_LOOKUP_URL");
 export const isLocalesEnabled = () => getEnvironmentValueAsBoolean("LOCALES_ENABLED");
 export const SHOW_SERVICE_UNAVAILABLE_PAGE = getEnvironmentValueAsBoolean("SHOW_SERVICE_UNAVAILABLE_PAGE");
+export const COST_LP8D_REDESIGNATE_TO_PFLP = getEnvironmentValue("COST_LP8D_REDESIGNATE_TO_PFLP");
 export const REFRESH_TOKEN_GRANT_TYPE = "refresh_token";
 
 // Service Names

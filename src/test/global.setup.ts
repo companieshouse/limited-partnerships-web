@@ -25,4 +25,5 @@ export default () => {
   process.env.PORT = "3000";
   process.env.POSTCODE_ADDRESSES_LOOKUP_URL = "https://example.co.uk";
   process.env.SHOW_SERVICE_UNAVAILABLE_PAGE = "false";
+  process.env.COST_LP8D_REDESIGNATE_TO_PFLP = "30";
 };

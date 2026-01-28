@@ -692,7 +692,7 @@
         },
         "information": "WELSH - Find more information in the",
         "informationLink": "WELSH - Legislative Reform (Private Fund Limited Partnerships) Order 2017",
-        "cost": "WELSH - It costs £XX to apply.",
+        "cost": "WELSH - It costs £{{ cost }} to apply.",
         "applicationCheck": "WELSH - I/We apply for this firm to be designated as a private fund limited partnership. For that purpose, I confirm that the partnership is constituted by an agreement in writing and is a collective investment scheme within the meaning of section 8D(4) of the Limited Partnerships Act 1907",
         "confirmationCheck": "WELSH - I confirm that all general partners have agreed for this application to be made"
     },
