@@ -60,7 +60,11 @@ describe("Gateway utils test suite", () => {
         ["empty string as month", { day: "11", month: "", year: "1980" }],
         ["empty string as year", { day: "11", month: "03", year: "" }],
         ["day with 3 digits", { day: "001", month: "10", year: "2011" }],
-        ["month with 3 digits", { day: "01", month: "012", year: "2011" }]
+        ["month with 3 digits", { day: "01", month: "012", year: "2011" }],
+        ["all zeros", { day: "0", month: "0", year: "0000" }],
+        ["day is zero", { day: "0", month: "10", year: "2011" }],
+        ["month is zero", { day: "01", month: "0", year: "2011" }],
+        ["year is zero", { day: "01", month: "10", year: "0000" }]
       ])("should return false for invalid date - %s", (_desciption, date) => {
         let thrownError: UIErrors | null = null;
 
