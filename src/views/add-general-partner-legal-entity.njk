@@ -176,7 +176,9 @@
               }
             ]
           }) }}
-        {% else %}          
+        {% endif %}
+
+        {% if not journeyTypes.isTransition %}
           {% include "includes/disqualification-statement.njk" %}  
         {% endif %}
 
