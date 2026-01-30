@@ -103,14 +103,12 @@ describe("Limited Partner Check Your Answers Page", () => {
   });
 
   it.each([
-    { lang: "EN", testUrl: URL, translationText: enTranslationText, enableLocales: false },
-    { lang: "CY", testUrl: URL + "?lang=cy", translationText: cyTranslationText, enableLocales: true }
+    { lang: "EN", testUrl: URL, translationText: enTranslationText },
+    { lang: "CY", testUrl: URL + "?lang=cy", translationText: cyTranslationText }
   ])(
     "should display capital contribution on check your answers page - $lang",
-    async ({ testUrl, translationText, enableLocales }) => {
-      if (enableLocales) {
-        setLocalesEnabled(true);
-      }
+    async ({ testUrl, translationText }) => {
+      setLocalesEnabled(true);
 
       limitedPartnerLegalEntity = new LimitedPartnerBuilder()
         .isLegalEntity()
