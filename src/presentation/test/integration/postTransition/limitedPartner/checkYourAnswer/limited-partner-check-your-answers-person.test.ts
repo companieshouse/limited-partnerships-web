@@ -124,6 +124,39 @@ describe("Limited Partner Check Your Answers Page for Person", () => {
     checkIfValuesInText(res, limitedPartnerPerson, enTranslationText);
   });
 
+  it.each([
+    { lang: "EN", testUrl: URL, translationText: enTranslationText, enableLocales: false },
+    { lang: "CY", testUrl: URL + "?lang=cy", translationText: cyTranslationText, enableLocales: true }
+  ])(
+    "should display capital contribution on check your answers page - $lang",
+    async ({ testUrl, translationText, enableLocales }) => {
+      if (enableLocales) {
+        setLocalesEnabled(true);
+      }
+
+      limitedPartnerPerson = new LimitedPartnerBuilder()
+        .isPerson()
+        .withFormerNames("Joe Dee")
+        .withDateOfBirth("1984-11-03")
+        .withDateEffectiveFrom("2024-10-10")
+        .withContributionCurrencyType("GBP")
+        .withContributionCurrencyValue("5000.00")
+        .withContributionSubtypes(["MONEY", "SHARES"])
+        .build();
+
+      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerPerson]);
+
+      const res = await request(app).get(testUrl);
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(translationText.checkYourAnswersPage.partners.limitedPartners.capitalContribution);
+      expect(res.text).toContain("5000.00");
+      expect(res.text).toContain(translationText.currencies.GBP);
+      expect(res.text).toContain(translationText.capitalContribution.money);
+      expect(res.text).toContain(translationText.capitalContribution.shares);
+    }
+  );
+
   describe("POST Check Your Answers Page", () => {
     it("should navigate to next page", async () => {
       limitedPartnerPerson = new LimitedPartnerBuilder()

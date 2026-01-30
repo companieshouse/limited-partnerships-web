@@ -14,12 +14,12 @@
     {% set nationalities = macros.formatNationality(item.data.nationality1, i18n) + ", " + macros.formatNationality(item.data.nationality2, i18n) %}
   {% endif %}
   
-  {% if journeyTypes.isRegistration %}
+  {% if journeyTypes.isRegistration or journeyTypes.isPostTransition %}
     {% set capitalContributionHtml -%}
       <p class="govuk-body">
         {{ item.data.contribution_currency_value }} {{ i18n.currencies[item.data.contribution_currency_type] }}
       </p>
-      <p class="govuk-body"> 
+      <p class="govuk-body">
         {{ macros.buildFormattedListFromArray(capitalContributionSubTypesMap, item.data.contribution_sub_types) }}
       </p>
     {%- endset %}
@@ -78,7 +78,7 @@
       } if (props.data.limitedPartnership.data.partnership_type === "LP"
             or props.data.limitedPartnership.data.partnership_type === "SLP")
             and item.data.contribution_currency_value
-            and journeyTypes.isRegistration,
+            and (journeyTypes.isRegistration or journeyTypes.isPostTransition),
       {
         key: {
           text: i18n.checkYourAnswersPage.partners.limitedPartners.dateEffectiveFrom
@@ -92,12 +92,12 @@
 
 {% elif item.data.legal_entity_name %}
   {% set country = i18n.countries[macros.makeCamelCase(item.data.legal_entity_registration_location)] %}
-  {% if journeyTypes.isRegistration %}
+  {% if journeyTypes.isRegistration or journeyTypes.isPostTransition %}
     {% set capitalContributionHtml -%}
       <p class="govuk-body">
         {{ item.data.contribution_currency_value }} {{ i18n.currencies[item.data.contribution_currency_type] }}
       </p>
-      <p class="govuk-body"> 
+      <p class="govuk-body">
         {{ macros.buildFormattedListFromArray(capitalContributionSubTypesMap, item.data.contribution_sub_types) }}
       </p>
     {%- endset %}
@@ -172,7 +172,7 @@
       } if (props.data.limitedPartnership.data.partnership_type === "LP"
             or props.data.limitedPartnership.data.partnership_type === "SLP")
             and item.data.contribution_currency_value
-            and journeyTypes.isRegistration,
+            and (journeyTypes.isRegistration or journeyTypes.isPostTransition),
       {
         key: {
           text: i18n.checkYourAnswersPage.partners.limitedPartners.dateEffectiveFrom
