@@ -67,6 +67,7 @@ describe("Update general partner check your answers page", () => {
 
       expect(res.status).toBe(200);
 
+      expect(res.text).toContain(companyProfile.data.companyName + " (" + companyProfile.data.companyNumber + ")");
       expect(res.text).toContain(`${enTranslationText.checkYourAnswersPage.update.title}`);
       expect(res.text).toContain(generalPartner.data?.forename + " " + generalPartner.data?.surname);
       expect(res.text).toContain(generalPartner.data?.nationality1);
