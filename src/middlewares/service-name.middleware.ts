@@ -22,6 +22,7 @@ export const serviceNameKindMap = {
   [PartnerKind.REMOVE_LIMITED_PARTNER_LEGAL_ENTITY]: "removeLimitedPartnerEntity",
   [PartnerKind.REMOVE_LIMITED_PARTNER_PERSON]: "removeLimitedPartnerPerson",
   [PartnerKind.UPDATE_GENERAL_PARTNER_PERSON]: "updateGeneralPartnerPerson",
+  [PartnerKind.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY]: "updateGeneralPartnerLegalEntity"
   // Add other mappings as needed
 };
 
