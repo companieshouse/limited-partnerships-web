@@ -706,11 +706,31 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
     companyAuthentication,
     dependencies.generalPartnerPostTransitionController.getUpdatePageRouting()
   );
+  router.post(
+    UPDATE_GENERAL_PARTNER_LEGAL_ENTITY_URL,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.createGeneralPartner({
+      person: {
+        description: TRANSACTION_DESCRIPTION_UPDATE_GENERAL_PARTNER_PERSON,
+        kind: PartnerKind.UPDATE_GENERAL_PARTNER_PERSON
+      },
+      legalEntity: {
+        description: TRANSACTION_DESCRIPTION_UPDATE_GENERAL_PARTNER_LEGAL_ENTITY,
+        kind: PartnerKind.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY
+      },
+      needAppointment: true
+    })
+  );
 
   router.get(
     UPDATE_GENERAL_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
     companyAuthentication,
     dependencies.generalPartnerPostTransitionController.getUpdatePageRouting()
+  );
+  router.post(
+    UPDATE_GENERAL_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.sendUpdatePageData()
   );
 };
 

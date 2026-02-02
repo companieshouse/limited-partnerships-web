@@ -1,7 +1,8 @@
 {
-    "addPartnerLegalEntityPage" : {
+    "addOrUpdatePartnerLegalEntityPage" : {
         "generalPartner": {
             "title" : "WELSH - Add a general partner (legal entity)",
+            "updateTitle" : "WELSH - Update general partner details (legal entity)",
             "dateEffectiveFrom" : "WELSH - When did it become a general partner for this partnership?"
         },
         "limitedPartner": {

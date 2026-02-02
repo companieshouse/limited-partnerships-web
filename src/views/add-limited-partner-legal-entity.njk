@@ -1,8 +1,8 @@
 {% extends "layout.njk" %}
 {% import 'includes/countries.njk' as macros %}
 
-{% set pageTitle = i18n.addPartnerLegalEntityPage.limitedPartner.title %}
-{% set publicRegisterInformationLine1 = i18n.addPartnerLegalEntityPage.publicRegisterLine1 %}
+{% set pageTitle = i18n.addOrUpdatePartnerLegalEntityPage.limitedPartner.title %}
+{% set publicRegisterInformationLine1 = i18n.addOrUpdatePartnerLegalEntityPage.publicRegisterLine1 %}
 {% set partnershipType = props.data.limitedPartnership.data.partnership_type %}
 
 {% if props.data.limitedPartner.data.date_effective_from  %}
@@ -31,15 +31,15 @@
         
         {% include "includes/proposed-name.njk" %}  
 
-        <h1 class="govuk-heading-xl">{{ i18n.addPartnerLegalEntityPage.limitedPartner.title }}</h1>
+        <h1 class="govuk-heading-xl">{{ i18n.addOrUpdatePartnerLegalEntityPage.limitedPartner.title }}</h1>
 
         {{ govukWarningText({
-          text: i18n.addPartnerLegalEntityPage.legalPersonalityWarning
+          text: i18n.addOrUpdatePartnerLegalEntityPage.legalPersonalityWarning
         }) }}
 
         {{ govukInput({
           label: {
-            text: i18n.addPartnerLegalEntityPage.legalEntityName,
+            text: i18n.addOrUpdatePartnerLegalEntityPage.legalEntityName,
             classes: "govuk-label govuk-label--m",
             isPageHeading: true
           },
@@ -54,11 +54,11 @@
 
         {{ govukInput({
           label: {
-            text: i18n.addPartnerLegalEntityPage.legalFormOrCorporateIdentity,
+            text: i18n.addOrUpdatePartnerLegalEntityPage.legalFormOrCorporateIdentity,
             classes: "govuk-label govuk-label--m"
           },
           hint: {
-            text: i18n.addPartnerLegalEntityPage.legalFormOrCorporateIdentityHint
+            text: i18n.addOrUpdatePartnerLegalEntityPage.legalFormOrCorporateIdentityHint
           },
           id: "legal_form",
           name: "legal_form",
@@ -71,11 +71,11 @@
 
         {{ govukInput({
           label: {
-            text: i18n.addPartnerLegalEntityPage.governingLaw,
+            text: i18n.addOrUpdatePartnerLegalEntityPage.governingLaw,
             classes: "govuk-label govuk-label--m"
           },
           hint: {
-            text: i18n.addPartnerLegalEntityPage.governingLawHint
+            text: i18n.addOrUpdatePartnerLegalEntityPage.governingLawHint
           },
           id: "governing_law",
           name: "governing_law",
@@ -88,11 +88,11 @@
 
         {{ govukInput({
           label: {
-            text: i18n.addPartnerLegalEntityPage.whichRegister,
+            text: i18n.addOrUpdatePartnerLegalEntityPage.whichRegister,
             classes: "govuk-label govuk-label--m"
           },
           hint: {
-            text: i18n.addPartnerLegalEntityPage.whichRegisterHint
+            text: i18n.addOrUpdatePartnerLegalEntityPage.whichRegisterHint
           },
           id: "legal_entity_register_name",
           name: "legal_entity_register_name",
@@ -104,7 +104,7 @@
         }) }}
         
         {% set countryFormId = "legal_entity_registration_location" %}
-        {% set countryText = i18n.addPartnerLegalEntityPage.countryRegistered %}
+        {% set countryText = i18n.addOrUpdatePartnerLegalEntityPage.countryRegistered %}
         {% set countryFormValue = props.data.limitedPartner.data.legal_entity_registration_location %}
         {% set countryErrorMessage = props.errors.legal_entity_registration_location if props.errors %}
 
@@ -112,11 +112,11 @@
 
         {{ govukInput({
           label: {
-            text: i18n.addPartnerLegalEntityPage.registrationNumber,
+            text: i18n.addOrUpdatePartnerLegalEntityPage.registrationNumber,
             classes: "govuk-label govuk-label--m"
           },
           hint: {
-            text: i18n.addPartnerLegalEntityPage.registrationNumberHint
+            text: i18n.addOrUpdatePartnerLegalEntityPage.registrationNumberHint
           },
           id: "registered_company_number",
           name: "registered_company_number",
@@ -140,18 +140,18 @@
             errorMessage: props.errors.date_effective_from if props.errors,
             fieldset: {
               legend: {
-                text: i18n.addPartnerLegalEntityPage.limitedPartner.dateEffectiveFrom,
+                text: i18n.addOrUpdatePartnerLegalEntityPage.limitedPartner.dateEffectiveFrom,
                 isPageHeading: false,
                 classes: "govuk-fieldset__legend--m"
               }
             },
             hint: {
-              text: i18n.addPartnerLegalEntityPage.dateHint
+              text: i18n.addOrUpdatePartnerLegalEntityPage.dateHint
             },
             items: [
               {
                 classes: "govuk-input--width-2",
-                label: i18n.addPartnerLegalEntityPage.dateDay,
+                label: i18n.addOrUpdatePartnerLegalEntityPage.dateDay,
                 name: "day",
                 value: date_effective_from_day,
                 attributes: {
@@ -161,7 +161,7 @@
               },
               {
                 classes: "govuk-input--width-2",
-                label: i18n.addPartnerLegalEntityPage.dateMonth,
+                label: i18n.addOrUpdatePartnerLegalEntityPage.dateMonth,
                 name: "month",
                 value: date_effective_from_month,
                 attributes: {
@@ -171,7 +171,7 @@
               },
               {
                 classes: "govuk-input--width-4",
-                label: i18n.addPartnerLegalEntityPage.dateYear,
+                label: i18n.addOrUpdatePartnerLegalEntityPage.dateYear,
                 name: "year",
                 value: date_effective_from_year,
                 attributes: {

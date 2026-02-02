@@ -39,9 +39,10 @@ describe("Add General Partner Legal Entity Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${cyTranslationText.addPartnerLegalEntityPage.generalPartner.title} - ${cyTranslationText.serviceTransition} - GOV.UK`
+        `${cyTranslationText.addOrUpdatePartnerLegalEntityPage.generalPartner.title} - ${cyTranslationText.serviceTransition} - GOV.UK`
       );
-      testTranslations(res.text, cyTranslationText.addPartnerLegalEntityPage, [
+      testTranslations(res.text, cyTranslationText.addOrUpdatePartnerLegalEntityPage, [
+        "updateTitle",
         "limitedPartner",
         "errorMessages",
         "dateEffectiveFrom",
@@ -64,9 +65,10 @@ describe("Add General Partner Legal Entity Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${enTranslationText.addPartnerLegalEntityPage.generalPartner.title} - ${enTranslationText.serviceTransition} - GOV.UK`
+        `${enTranslationText.addOrUpdatePartnerLegalEntityPage.generalPartner.title} - ${enTranslationText.serviceTransition} - GOV.UK`
       );
-      testTranslations(res.text, enTranslationText.addPartnerLegalEntityPage, [
+      testTranslations(res.text, enTranslationText.addOrUpdatePartnerLegalEntityPage, [
+        "updateTitle",
         "limitedPartner",
         "errorMessages",
         "dateEffectiveFrom",

@@ -158,7 +158,7 @@ const postTransitionRoutingChangeGeneralPartnerCheckYourAnswers = {
 const postTransitionRoutingUpdateGeneralPartnerLegalEntity = {
   previousUrl: url.LANDING_PAGE_URL,
   currentUrl: url.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY_URL,
-  nextUrl: "TBC",
+  nextUrl: url.UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL,
   pageType: PostTransitionPageType.updateGeneralPartnerLegalEntity,
   data: {
     serviceName: "updateGeneralPartnerLegalEntity"

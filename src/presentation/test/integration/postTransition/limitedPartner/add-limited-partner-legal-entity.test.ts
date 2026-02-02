@@ -67,9 +67,9 @@ describe("Add Limited Partner Legal Entity Page", () => {
 
         expect(res.status).toBe(200);
         expect(res.text).toContain(
-          `${i18n.addPartnerLegalEntityPage.limitedPartner.title}`
+          `${i18n.addOrUpdatePartnerLegalEntityPage.limitedPartner.title}`
         );
-        testTranslations(res.text, i18n.addPartnerLegalEntityPage, ["errorMessages", "generalPartner"]);
+        testTranslations(res.text, i18n.addOrUpdatePartnerLegalEntityPage, ["errorMessages", "generalPartner"]);
 
         if (expectCapitalContributionText) {
           expect(res.text).toContain(i18n.capitalContribution.title);

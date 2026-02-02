@@ -1,7 +1,8 @@
 {
-    "addPartnerLegalEntityPage" : {
+    "addOrUpdatePartnerLegalEntityPage" : {
         "generalPartner": {
             "title" : "Add a general partner (legal entity)",
+            "updateTitle" : "Update general partner details (legal entity)",
             "dateEffectiveFrom" : "When did it become a general partner for this partnership?"
         },
         "limitedPartner": {
