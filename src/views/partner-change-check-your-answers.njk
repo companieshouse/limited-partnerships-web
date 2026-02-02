@@ -19,7 +19,11 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
 
-      <span class="govuk-caption-l"> {{ name }} </span>
+      {% if props.data.pageKey == "updateGeneralPartner"%}
+        {% include "includes/proposed-name.njk" %}
+      {% else %}
+        <span class="govuk-caption-l"> {{ name }} </span>
+      {% endif %}
       <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
 
       <form class="form" method="post">

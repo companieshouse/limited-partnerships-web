@@ -85,6 +85,8 @@ class GeneralPartnerPostTransitionController extends PartnerController {
         const { tokens, pageType, ids } = super.extract(request);
         const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
 
+        const { limitedPartnership } = await this.postTransitionPartnerController.getPartnerData(request);
+
         const partner = await this.generalPartnerService.getGeneralPartner(
           tokens,
           ids.transactionId,
@@ -100,7 +102,7 @@ class GeneralPartnerPostTransitionController extends PartnerController {
           partnerUpdatedFieldsMap = await super.comparePartnerDetails(partner, request);
         }
 
-        response.render(PARTNER_CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE, super.makeProps(pageRouting, { partner, partnerUpdatedFieldsMap }, null));
+        response.render(PARTNER_CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE, super.makeProps(pageRouting, { limitedPartnership, partner, partnerUpdatedFieldsMap }, null));
       } catch (error) {
         next(error);
       }
