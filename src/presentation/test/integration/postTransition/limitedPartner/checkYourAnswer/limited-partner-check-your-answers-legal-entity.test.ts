@@ -102,6 +102,36 @@ describe("Limited Partner Check Your Answers Page", () => {
     checkIfValuesInText(res, limitedPartnerLegalEntity, enTranslationText);
   });
 
+  it.each([
+    { lang: "EN", testUrl: URL, translationText: enTranslationText },
+    { lang: "CY", testUrl: URL + "?lang=cy", translationText: cyTranslationText }
+  ])(
+    "should display capital contribution on check your answers page - $lang",
+    async ({ testUrl, translationText }) => {
+      setLocalesEnabled(true);
+
+      limitedPartnerLegalEntity = new LimitedPartnerBuilder()
+        .isLegalEntity()
+        .withDateEffectiveFrom("2024-10-10")
+        .withLegalEntityRegistrationLocation("Wales")
+        .withContributionCurrencyType("GBP")
+        .withContributionCurrencyValue("10000.00")
+        .withContributionSubtypes(["MONEY", "LAND_OR_PROPERTY"])
+        .build();
+
+      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerLegalEntity]);
+
+      const res = await request(app).get(testUrl);
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(translationText.checkYourAnswersPage.partners.limitedPartners.capitalContribution);
+      expect(res.text).toContain("10000.00");
+      expect(res.text).toContain(translationText.currencies.GBP);
+      expect(res.text).toContain(translationText.capitalContribution.money);
+      expect(res.text).toContain(translationText.capitalContribution.landOrProperty);
+    }
+  );
+
   describe("POST Check Your Answers Page", () => {
     it("should navigate to next page", async () => {
       limitedPartnerLegalEntity = new LimitedPartnerBuilder()
