@@ -1,7 +1,8 @@
 {
-    "addPartnerLegalEntityPage" : {
+    "addOrUpdatePartnerLegalEntityPage" : {
         "generalPartner": {
             "title" : "Add a general partner (legal entity)",
+            "updateTitle" : "Update general partner details (legal entity)",
             "dateEffectiveFrom" : "When did it become a general partner for this partnership?"
         },
         "limitedPartner": {
@@ -759,8 +760,8 @@
         "removeGeneralPartnerPerson": "Remove a general partner (person)",
         "removeLimitedPartnerEntity": "Remove a limited partner (entity)",
         "removeLimitedPartnerPerson": "Remove a limited partner (person)",
-        "updateGeneralPartnerPerson": "Update a general partner's details (person)"
-
+        "updateGeneralPartnerPerson": "Update a general partner's details (person)",
+        "updateGeneralPartnerLegalEntity": "Update a general partner's details (legal entity)"
     },
 
     "sicCodePage" : {

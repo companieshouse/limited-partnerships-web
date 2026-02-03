@@ -1,7 +1,8 @@
 {
-    "addPartnerLegalEntityPage" : {
+    "addOrUpdatePartnerLegalEntityPage" : {
         "generalPartner": {
             "title" : "WELSH - Add a general partner (legal entity)",
+            "updateTitle" : "WELSH - Update general partner details (legal entity)",
             "dateEffectiveFrom" : "WELSH - When did it become a general partner for this partnership?"
         },
         "limitedPartner": {
@@ -758,7 +759,8 @@
         "removeGeneralPartnerPerson": "WELSH - Remove a general partner (person)",
         "removeLimitedPartnerEntity": "WELSH - Remove a limited partner (entity)",
         "removeLimitedPartnerPerson": "WELSH - Remove a limited partner (person)",
-        "updateGeneralPartnerPerson": "WELSH - Update a general partner's details (person)"
+        "updateGeneralPartnerPerson": "WELSH - Update a general partner's details (person)",
+        "updateGeneralPartnerLegalEntity": "WELSH - Update a general partner's details (legal entity)"
     },
 
     "sicCodePage" : {

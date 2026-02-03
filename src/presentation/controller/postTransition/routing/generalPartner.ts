@@ -94,6 +94,9 @@ const postTransitionRoutingRemoveGeneralPartnerLegalEntityCheckYourAnswers = {
   }
 };
 
+const GENERAL_PARTNER = "generalPartner";
+const UPDATE_GENERAL_PARTNER_KEY = "updateGeneralPartner";
+
 const postTransitionRoutingUpdateGeneralPartnerPerson = {
   previousUrl: url.LANDING_PAGE_URL,
   currentUrl: url.UPDATE_GENERAL_PARTNER_PERSON_URL,
@@ -132,9 +135,6 @@ const postTransitionRoutingUpdateCorrespondenceAddressYesNo = {
   }
 };
 
-const GENERAL_PARTNER = "generalPartner";
-const UPDATE_GENERAL_PARTNER_KEY = "updateGeneralPartner";
-
 const postTransitionRoutingGeneralPartnerChange = {
   previousUrl: url.UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL,
   currentUrl: url.WHEN_DID_GENERAL_PARTNER_DETAILS_CHANGE_URL,
@@ -155,6 +155,16 @@ const postTransitionRoutingChangeGeneralPartnerCheckYourAnswers = {
   }
 };
 
+const postTransitionRoutingUpdateGeneralPartnerLegalEntity = {
+  previousUrl: url.LANDING_PAGE_URL,
+  currentUrl: url.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY_URL,
+  nextUrl: url.UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL,
+  pageType: PostTransitionPageType.updateGeneralPartnerLegalEntity,
+  data: {
+    serviceName: "updateGeneralPartnerLegalEntity"
+  }
+};
+
 const generalPartnerRouting = [
   postTransitionRoutingGeneralPartnerChoice,
   postTransitionRoutingAddGeneralPartnerLegalEntity,
@@ -168,6 +178,7 @@ const generalPartnerRouting = [
   postTransitionRoutingRemoveGeneralPartnerLegalEntityCheckYourAnswers,
 
   postTransitionRoutingUpdateGeneralPartnerPerson,
+  postTransitionRoutingUpdateGeneralPartnerLegalEntity,
   postTransitionRoutingUpdateUsualResidentialAddressYesNo,
   postTransitionRoutingUpdateCorrespondenceAddressYesNo,
   postTransitionRoutingGeneralPartnerChange,

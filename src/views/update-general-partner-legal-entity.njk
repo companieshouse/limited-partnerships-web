@@ -1,0 +1,30 @@
+{% extends "layout.njk" %}
+{% import 'includes/countries.njk' as macros %}
+
+{% set publicRegisterInformationLine1 = i18n.addOrUpdatePartnerLegalEntityPage.publicRegisterLine1 %}
+
+{% set pageTitle = i18n.addOrUpdatePartnerLegalEntityPage.generalPartner.updateTitle %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form class="form" method="post">
+        <input type="hidden" name="pageType" value={{ props.pageType }}>      
+        {% include "includes/csrf_token.njk" %}
+        {% include "includes/errors.njk" %}
+
+        {% include "includes/proposed-name.njk" %}  
+    
+        <h1 class="govuk-heading-xl">{{ pageTitle }}</h1>
+
+        {% include "pages/partner/add-or-update-general-partner-legal-entity-common-fields.njk" %}    
+
+        <div>
+          {% include "includes/public-register-information.njk" %}
+        </div>
+
+        {% include "includes/save-and-continue-button.njk" %}
+      </form>
+    </div>
+  </div>
+{% endblock %}  
