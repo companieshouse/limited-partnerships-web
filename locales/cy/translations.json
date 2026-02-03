@@ -763,6 +763,11 @@
         "updateGeneralPartnerLegalEntity": "WELSH - Update a general partner's details (legal entity)"
     },
 
+    "transactionDescription": {
+        "updateLimitedPartnershipRegisteredOfficeAddress": "WELSH - Update registered office address for a limited partnership",
+        "updateLimitedPartnershipPrincipalPlaceOfBusinessAddress": "WELSH - Update principal place of business for a limited partnership"
+    },
+
     "sicCodePage" : {
         "title" : "WELSH - What is the Standard Industrial Classification (SIC) code?",
         "hint" : "WELSH - You should use the SIC code that best describes the partnership's nature of business.",

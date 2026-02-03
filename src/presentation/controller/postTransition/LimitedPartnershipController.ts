@@ -25,6 +25,7 @@ import {
   JOURNEY_QUERY_PARAM
 } from "../../../config/constants";
 import { getJourneyTypes } from "../../../utils";
+import { serviceNameKindMap } from "../../../middlewares/service-name.middleware";
 
 import CompanyService from "../../../application/service/CompanyService";
 import CacheService from "../../../application/service/CacheService";
@@ -232,8 +233,13 @@ class LimitedPartnershipController extends AbstractController {
           }
         }
 
+        const serviceNameKey = serviceNameKindMap[partnershipKind];
+        // Transaction API has 60 char limit - use shorter transactionDescription if available
+        const transactionDescription = response.locals.i18n?.transactionDescription?.[serviceNameKey]
+          ?? response.locals.i18n?.serviceName?.[serviceNameKey]
+          ?? TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNERSHIP;
         const resultTransaction = await this.createTransaction(
-          limitedPartnership, tokens, TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNERSHIP);
+          limitedPartnership, tokens, transactionDescription);
         if (resultTransaction.errors) {
           return response.render(
             super.templateName(pageRouting.currentUrl),

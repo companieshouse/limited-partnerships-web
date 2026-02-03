@@ -155,6 +155,7 @@ describe("Email Page", () => {
 
         expect(res.status).toBe(302);
         expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+        expect(appDevDependencies.transactionGateway.transactions[0].description).toEqual(enTranslationText.serviceName.updateLimitedPartnershipTerm);
 
         expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships?.[0]?.data?.partnership_type).toEqual(
           partnershipType
