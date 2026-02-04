@@ -750,8 +750,8 @@
     "serviceName" : {
         "updateLimitedPartnershipName": "WELSH - Update the name of a limited partnership",
         "updateLimitedPartnershipTerm": "WELSH - Update the term of a limited partnership",
-        "updateLimitedPartnershipRegisteredOfficeAddress": "WELSH - Update the registered office address for a limited partnership",
-        "updateLimitedPartnershipPrincipalPlaceOfBusinessAddress": "WELSH - Update the principal place of business for a limited partnership",
+        "updateLimitedPartnershipRegisteredOfficeAddress": "WELSH - Update a limited partnership\u2019s registered office address",
+        "updateLimitedPartnershipPrincipalPlaceOfBusinessAddress": "WELSH - Update a limited partnership\u2019s principal office address",
         "updateLimitedPartnershipRedesignateToPFLP": "WELSH - Designate a limited partnership as a private fund limited partnership",
         "addGeneralPartner": "WELSH - Add a general partner",
         "addLimitedPartner": "WELSH - Add a limited partner",
@@ -761,11 +761,6 @@
         "removeLimitedPartnerPerson": "WELSH - Remove a limited partner (person)",
         "updateGeneralPartnerPerson": "WELSH - Update a general partner's details (person)",
         "updateGeneralPartnerLegalEntity": "WELSH - Update a general partner's details (legal entity)"
-    },
-
-    "transactionDescription": {
-        "updateLimitedPartnershipRegisteredOfficeAddress": "WELSH - Update registered office address for a limited partnership",
-        "updateLimitedPartnershipPrincipalPlaceOfBusinessAddress": "WELSH - Update principal place of business for a limited partnership"
     },
 
     "sicCodePage" : {

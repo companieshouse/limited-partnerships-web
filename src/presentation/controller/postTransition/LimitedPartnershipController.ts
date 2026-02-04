@@ -234,9 +234,7 @@ class LimitedPartnershipController extends AbstractController {
         }
 
         const serviceNameKey = serviceNameKindMap[partnershipKind];
-        // Transaction API has 60 char limit - use shorter transactionDescription if available
-        const transactionDescription = response.locals.i18n?.transactionDescription?.[serviceNameKey]
-          ?? response.locals.i18n?.serviceName?.[serviceNameKey]
+        const transactionDescription = response.locals.i18n?.serviceName?.[serviceNameKey]
           ?? TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNERSHIP;
         const resultTransaction = await this.createTransaction(
           limitedPartnership, tokens, transactionDescription);

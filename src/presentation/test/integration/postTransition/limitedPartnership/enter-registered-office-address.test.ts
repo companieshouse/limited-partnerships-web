@@ -88,7 +88,7 @@ describe("Enter Registered Office Address Page", () => {
       const redirectUrl = getUrl(WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL);
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
-      expect(appDevDependencies.transactionGateway.transactions[0].description).toEqual(enTranslationText.transactionDescription.updateLimitedPartnershipRegisteredOfficeAddress);
+      expect(appDevDependencies.transactionGateway.transactions[0].description).toEqual(enTranslationText.serviceName.updateLimitedPartnershipRegisteredOfficeAddress);
     });
 
     it("should redirect to the When did the ROA change page when using ids in url", async () => {

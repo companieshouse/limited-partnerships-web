@@ -98,7 +98,7 @@ describe("Enter Principal Place Of Business Address Page", () => {
       const redirectUrl = getUrl(WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_URL);
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
-      expect(appDevDependencies.transactionGateway.transactions[0].description).toEqual(enTranslationText.transactionDescription.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress);
+      expect(appDevDependencies.transactionGateway.transactions[0].description).toEqual(enTranslationText.serviceName.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress);
     });
   });
 
