@@ -10,7 +10,7 @@ import TransactionService from "../../../application/service/TransactionService"
 import PartnerController, { PartnerType } from "../common/PartnerController";
 import PostTransitionPageType from "./pageType";
 import postTransitionRouting from "./routing";
-import { CEASE_DATE_TEMPLATE } from "../../../config/constants";
+import { CEASE_DATE_TEMPLATE, DATE_OF_UPDATE_TEMPLATE } from "../../../config/constants";
 import UIErrors from "../../../domain/entities/UIErrors";
 
 type PartnerData = {
@@ -42,6 +42,21 @@ class PostTransitionPartnerController extends PartnerController {
         const { pageRouting, limitedPartnership, partner } = await this.getPartnerData(request);
 
         response.render(CEASE_DATE_TEMPLATE, super.makeProps(pageRouting, { limitedPartnership, partner }, null));
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  getDateOfUpdate() {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { pageType } = super.extract(request);
+        const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
+
+        const { limitedPartnership, partner } = await this.getPartnerData(request);
+
+        response.render(DATE_OF_UPDATE_TEMPLATE, super.makeProps(pageRouting, { limitedPartnership, partner }, null));
       } catch (error) {
         next(error);
       }

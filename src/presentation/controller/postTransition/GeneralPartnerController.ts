@@ -80,6 +80,10 @@ class GeneralPartnerPostTransitionController extends PartnerController {
     return this.postTransitionPartnerController.getCeaseDate();
   }
 
+  getDateOfUpdate(){
+    return this.postTransitionPartnerController.getDateOfUpdate();
+  }
+
   getCheckYourAnswersPageRouting() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
