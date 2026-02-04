@@ -25,7 +25,7 @@ import {
   JOURNEY_QUERY_PARAM
 } from "../../../config/constants";
 import { getJourneyTypes } from "../../../utils";
-import { serviceNameKindMap } from "../../../middlewares/service-name.middleware";
+import { serviceNameKindMap } from "../../../config/service-name-kind-map";
 
 import CompanyService from "../../../application/service/CompanyService";
 import CacheService from "../../../application/service/CacheService";

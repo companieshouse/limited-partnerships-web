@@ -26,7 +26,7 @@ import { GeneralPartner, LimitedPartner } from "@companieshouse/api-sdk-node/dis
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
 import { Transaction } from "@companieshouse/api-sdk-node/dist/services/transaction/types";
 import { RESUME_REGISTRATION_OR_TRANSITION_URL_MAP } from "./resumeUrlMapping";
-import { serviceNameKindMap } from "../../../middlewares/service-name.middleware";
+import { serviceNameKindMap } from "../../../config/service-name-kind-map";
 
 class GlobalController extends AbstractController {
   constructor(
