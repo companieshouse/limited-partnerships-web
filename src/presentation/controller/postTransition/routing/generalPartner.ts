@@ -6,7 +6,8 @@ import {
   CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-  ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL
+  ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
+  ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
 } from "../../addressLookUp/url/postTransition";
 
 const postTransitionRoutingGeneralPartnerChoice = {
@@ -165,6 +166,20 @@ const postTransitionRoutingUpdateGeneralPartnerLegalEntity = {
   }
 };
 
+const postTransitionRoutingUpdatePrincipalOfficeAddressYesNo = {
+  previousUrl: url.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
+  currentUrl: url.UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL,
+  nextUrl: "/",
+  pageType: PostTransitionPageType.updatePrincipalOfficeAddressYesNo,
+  data: {
+    nextYesUrl: ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+    nextNoUrl: url.WHEN_DID_GENERAL_PARTNER_DETAILS_CHANGE_URL,
+    titleKey: "principalOfficeAddress",
+    fieldName: "update_principal_office_address_required",
+    trackingLabel: "update-principal-office-address-yes-no"
+  }
+};
+
 const generalPartnerRouting = [
   postTransitionRoutingGeneralPartnerChoice,
   postTransitionRoutingAddGeneralPartnerLegalEntity,
@@ -181,6 +196,7 @@ const generalPartnerRouting = [
   postTransitionRoutingUpdateGeneralPartnerLegalEntity,
   postTransitionRoutingUpdateUsualResidentialAddressYesNo,
   postTransitionRoutingUpdateCorrespondenceAddressYesNo,
+  postTransitionRoutingUpdatePrincipalOfficeAddressYesNo,
   postTransitionRoutingGeneralPartnerChange,
   postTransitionRoutingChangeGeneralPartnerCheckYourAnswers
 ];
