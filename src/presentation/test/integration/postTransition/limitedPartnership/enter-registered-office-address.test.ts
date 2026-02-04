@@ -7,7 +7,7 @@ import {
   ENTER_REGISTERED_OFFICE_ADDRESS_WITH_IDS_URL,
   WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL
 } from "../../../../controller/postTransition/url";
-import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../utils";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import LimitedPartnershipBuilder from "../../../../../presentation/test/builder/LimitedPartnershipBuilder";
 import { Jurisdiction } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
@@ -48,7 +48,7 @@ describe("Enter Registered Office Address Page", () => {
 
       testTranslations(res.text, enTranslationText.address.registeredOffice, ["newRequirement", "provideNext"]);
       expect(res.text).not.toContain("WELSH -");
-      expect(countOccurrences(res.text, enTranslationText.serviceName.updateLimitedPartnershipRegisteredOfficeAddress)).toBe(2);
+      expect(countOccurrences(res.text, toEscapedHtml(enTranslationText.serviceName.updateLimitedPartnershipRegisteredOfficeAddress))).toBe(2);
     });
 
     it("should load the enter registered office address page with Welsh text", async () => {
@@ -66,7 +66,7 @@ describe("Enter Registered Office Address Page", () => {
         "errorMessages"
       ]);
       testTranslations(res.text, cyTranslationText.address.registeredOffice, ["newRequirement", "provideNext"]);
-      expect(countOccurrences(res.text, cyTranslationText.serviceName.updateLimitedPartnershipRegisteredOfficeAddress)).toBe(2);
+      expect(countOccurrences(res.text, toEscapedHtml(cyTranslationText.serviceName.updateLimitedPartnershipRegisteredOfficeAddress))).toBe(2);
     });
   });
 
@@ -88,6 +88,7 @@ describe("Enter Registered Office Address Page", () => {
       const redirectUrl = getUrl(WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL);
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+      expect(appDevDependencies.transactionGateway.transactions[0].description).toEqual(enTranslationText.serviceName.updateLimitedPartnershipRegisteredOfficeAddress);
     });
 
     it("should redirect to the When did the ROA change page when using ids in url", async () => {

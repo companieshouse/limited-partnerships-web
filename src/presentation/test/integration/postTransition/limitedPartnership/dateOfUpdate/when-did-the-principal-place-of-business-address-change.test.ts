@@ -31,7 +31,7 @@ describe("Partnership principal place of business address change date page", () 
       expect(res.status).toBe(200);
       expect(res.text).toContain(`${enTranslationText.dateOfUpdate.principalPlaceOfBusinessAddress.title}`);
       expect(res.text).not.toContain("WELSH -");
-      expect(countOccurrences(res.text, enTranslationText.serviceName.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress)).toBe(2);
+      expect(countOccurrences(res.text, toEscapedHtml(enTranslationText.serviceName.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress))).toBe(2);
     });
 
     it("should load principal place of business address change date page with welsh text", async () => {
@@ -41,7 +41,7 @@ describe("Partnership principal place of business address change date page", () 
       expect(res.status).toBe(200);
       expect(res.text).toContain(`${cyTranslationText.dateOfUpdate.principalPlaceOfBusinessAddress.title}`);
       expect(res.text).toContain("WELSH -");
-      expect(countOccurrences(res.text, cyTranslationText.serviceName.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress)).toBe(2);
+      expect(countOccurrences(res.text, toEscapedHtml(cyTranslationText.serviceName.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress))).toBe(2);
     });
   });
 

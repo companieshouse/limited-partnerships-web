@@ -395,7 +395,7 @@ describe("Confirmation Page", () => {
           expect(res.text).toContain(toEscapedHtml(message));
           expect(res.text).toContain(companyProfile.data?.companyName?.toUpperCase());
           expect(res.text).toContain(companyProfile.data?.companyNumber?.toUpperCase());
-          expect(countOccurrences(res.text, serviceName)).toBe(2);
+          expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
         }
       );
 
@@ -442,7 +442,7 @@ describe("Confirmation Page", () => {
           expect(res.text).toContain(toEscapedHtml(message));
           expect(res.text).toContain(companyProfile.data?.companyName?.toUpperCase());
           expect(res.text).toContain(companyProfile.data?.companyNumber?.toUpperCase());
-          expect(countOccurrences(res.text, serviceName)).toBe(2);
+          expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
         }
       );
     });

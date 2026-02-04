@@ -9,7 +9,6 @@ import CompanyProfileBuilder from "../../../../../presentation/test/builder/Comp
 import { Jurisdiction, NameEndingType, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import LimitedPartnershipBuilder from "../../../../../presentation/test/builder/LimitedPartnershipBuilder";
 import PostTransitionPageType from "../../../../../presentation/controller/postTransition/pageType";
-import { TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNERSHIP } from "../../../../../config";
 
 describe("Name Page", () => {
   const URL = getUrl(PARTNERSHIP_NAME_URL);
@@ -112,7 +111,7 @@ describe("Name Page", () => {
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
       expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships.length).toEqual(1);
-      expect(appDevDependencies.transactionGateway.transactions[0].description).toEqual(TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNERSHIP);
+      expect(appDevDependencies.transactionGateway.transactions[0].description).toEqual(enTranslationText.serviceName.updateLimitedPartnershipName);
     });
 
     it("should return validation errors", async () => {

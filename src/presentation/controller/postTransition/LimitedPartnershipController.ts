@@ -25,7 +25,6 @@ import {
   JOURNEY_QUERY_PARAM
 } from "../../../config/constants";
 import { getJourneyTypes } from "../../../utils";
-
 import CompanyService from "../../../application/service/CompanyService";
 import CacheService from "../../../application/service/CacheService";
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
@@ -232,8 +231,9 @@ class LimitedPartnershipController extends AbstractController {
           }
         }
 
+        const transactionDescription = response.locals.serviceName ?? TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNERSHIP;
         const resultTransaction = await this.createTransaction(
-          limitedPartnership, tokens, TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNERSHIP);
+          limitedPartnership, tokens, transactionDescription);
         if (resultTransaction.errors) {
           return response.render(
             super.templateName(pageRouting.currentUrl),

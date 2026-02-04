@@ -35,7 +35,7 @@ describe("Registered office address change date page", () => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(`${enTranslationText.dateOfUpdate.registeredOfficeAddress.title}`);
       expect(res.text).not.toContain("WELSH -");
-      expect(countOccurrences(res.text, enTranslationText.serviceName.updateLimitedPartnershipRegisteredOfficeAddress)).toBe(2);
+      expect(countOccurrences(res.text, toEscapedHtml(enTranslationText.serviceName.updateLimitedPartnershipRegisteredOfficeAddress))).toBe(2);
     });
 
     it("should load registered office address change date page with welsh text", async () => {
@@ -45,7 +45,7 @@ describe("Registered office address change date page", () => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(`${cyTranslationText.dateOfUpdate.registeredOfficeAddress.title}`);
       expect(res.text).toContain("WELSH -");
-      expect(countOccurrences(res.text, cyTranslationText.serviceName.updateLimitedPartnershipRegisteredOfficeAddress)).toBe(2);
+      expect(countOccurrences(res.text, toEscapedHtml(cyTranslationText.serviceName.updateLimitedPartnershipRegisteredOfficeAddress))).toBe(2);
     });
   });
 
