@@ -2,7 +2,7 @@ import request from "supertest";
 import enTranslationText from "../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../locales/cy/translations.json";
 import app from "../../app";
-import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../../../presentation/test/utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../../presentation/test/utils";
 import {
   ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_WITH_IDS_URL,
@@ -56,7 +56,7 @@ describe("Enter Principal Place Of Business Address Page", () => {
       expect(res.text).toContain(companyProfile.data.serviceAddress.postalCode);
       expect(res.text).toContain(companyProfile.data.serviceAddress.locality);
       expect(res.text).toContain(companyProfile.data.serviceAddress.country);
-      expect(countOccurrences(res.text, enTranslationText.serviceName.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress)).toBe(2);
+      expect(countOccurrences(res.text, toEscapedHtml(enTranslationText.serviceName.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress))).toBe(2);
     });
 
     it("should load the enter principal place of business address page with Welsh text", async () => {
@@ -76,7 +76,7 @@ describe("Enter Principal Place Of Business Address Page", () => {
         "newRequirement",
         "titleHint2"
       ]);
-      expect(countOccurrences(res.text, cyTranslationText.serviceName.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress)).toBe(2);
+      expect(countOccurrences(res.text, toEscapedHtml(cyTranslationText.serviceName.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress))).toBe(2);
     });
   });
 

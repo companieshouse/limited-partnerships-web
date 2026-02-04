@@ -5,7 +5,7 @@ import cyTranslationText from "../../../../../../../locales/cy/translations.json
 
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
-import { countOccurrences, getUrl, setLocalesEnabled } from "../../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, toEscapedHtml } from "../../../../utils";
 
 import { REGISTERED_OFFICE_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/postTransition/url";
 import { CONFIRMATION_POST_TRANSITION_URL } from "../../../../../controller/global/url";
@@ -54,7 +54,7 @@ describe("Registered office address check your answers page", () => {
       expect(res.text).toContain(`${WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_TEMPLATE}?lang=en`);
 
       expect(res.text).toContain(enTranslationText.countries.england);
-      expect(countOccurrences(res.text, enTranslationText.serviceName.updateLimitedPartnershipRegisteredOfficeAddress)).toBe(2);
+      expect(countOccurrences(res.text, toEscapedHtml(enTranslationText.serviceName.updateLimitedPartnershipRegisteredOfficeAddress))).toBe(2);
     });
 
     it("should load registered office address check your answers page with welsh text", async () => {
@@ -72,7 +72,7 @@ describe("Registered office address check your answers page", () => {
       expect(res.text).toContain(`${WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_TEMPLATE}?lang=cy`);
 
       expect(res.text).toContain(cyTranslationText.countries.england);
-      expect(countOccurrences(res.text, cyTranslationText.serviceName.updateLimitedPartnershipRegisteredOfficeAddress)).toBe(2);
+      expect(countOccurrences(res.text, toEscapedHtml(cyTranslationText.serviceName.updateLimitedPartnershipRegisteredOfficeAddress))).toBe(2);
     });
   });
 

@@ -751,8 +751,8 @@
     "serviceName" : {
         "updateLimitedPartnershipName": "Update the name of a limited partnership",
         "updateLimitedPartnershipTerm": "Update the term of a limited partnership",
-        "updateLimitedPartnershipRegisteredOfficeAddress": "Update a limited partnership\u2019s registered office address",
-        "updateLimitedPartnershipPrincipalPlaceOfBusinessAddress": "Update a limited partnership\u2019s principal office address",
+        "updateLimitedPartnershipRegisteredOfficeAddress": "Update a limited partnership's registered office address",
+        "updateLimitedPartnershipPrincipalPlaceOfBusinessAddress": "Update a limited partnership's principal office address",
         "updateLimitedPartnershipRedesignateToPFLP": "Designate a limited partnership as a private fund limited partnership",
         "addGeneralPartner": "Add a general partner",
         "addLimitedPartner": "Add a limited partner",

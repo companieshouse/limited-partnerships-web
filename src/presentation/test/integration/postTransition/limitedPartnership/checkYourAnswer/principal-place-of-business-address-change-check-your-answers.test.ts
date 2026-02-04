@@ -4,7 +4,7 @@ import enTranslationText from "../../../../../../../locales/en/translations.json
 import cyTranslationText from "../../../../../../../locales/cy/translations.json";
 
 import app from "../../../app";
-import { countOccurrences, getUrl, setLocalesEnabled } from "../../../../../../presentation/test/utils";
+import { countOccurrences, getUrl, setLocalesEnabled, toEscapedHtml } from "../../../../../../presentation/test/utils";
 import { PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL } from "../../../../../../presentation/controller/postTransition/url";
 import PostTransitionPageType from "../../../../../../presentation/controller/postTransition/pageType";
 import { LimitedPartnership, PartnershipKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
@@ -46,7 +46,7 @@ describe("Principal place of business address check your answers page", () => {
       expect(res.text).toContain(`${WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_TEMPLATE}?lang=en`);
 
       expect(res.text).toContain(enTranslationText.countries.england);
-      expect(countOccurrences(res.text, enTranslationText.serviceName.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress)).toBe(2);
+      expect(countOccurrences(res.text, toEscapedHtml(enTranslationText.serviceName.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress))).toBe(2);
     });
 
     it("should load principal place of business address check your answers page with welsh text", async () => {
@@ -64,7 +64,7 @@ describe("Principal place of business address check your answers page", () => {
       expect(res.text).toContain(`${WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_TEMPLATE}?lang=cy`);
 
       expect(res.text).toContain(cyTranslationText.countries.england);
-      expect(countOccurrences(res.text, cyTranslationText.serviceName.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress)).toBe(2);
+      expect(countOccurrences(res.text, toEscapedHtml(cyTranslationText.serviceName.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress))).toBe(2);
     });
   });
 
