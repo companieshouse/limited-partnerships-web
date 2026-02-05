@@ -3,7 +3,8 @@ import {
   ADD_GENERAL_PARTNER_PERSON_WITH_IDS_URL,
   GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL,
   UPDATE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
-  UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL
+  UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL,
+  UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL
 } from "../../../postTransition/url";
 import AddressPageType from "../../PageType";
 import * as url from "../../url/postTransition";
@@ -208,7 +209,8 @@ const postTransitionAddressRoutingEnterGeneralPartnerPrincipalOfficeAddress = {
   pageType: AddressPageType.enterGeneralPartnerPrincipalOfficeAddress,
   data: {
     ...principalOfficeAddressCacheKeys,
-    territoryPageType: AddressPageType.territoryChoiceGeneralPartnerPrincipalOfficeAddress
+    territoryPageType: AddressPageType.territoryChoiceGeneralPartnerPrincipalOfficeAddress,
+    previousUrlUpdateGeneralPartnerLegalEntity: UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL
   }
 };
 
