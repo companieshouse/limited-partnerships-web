@@ -43,6 +43,19 @@ describe("Partnership principal place of business address change date page", () 
       expect(res.text).toContain("WELSH -");
       expect(countOccurrences(res.text, cyTranslationText.serviceName.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress)).toBe(2);
     });
+
+    it("should populate the date fields with the existing date of update if it exists", async () => {
+      const limitedPartnership = new LimitedPartnershipBuilder().withDateOfUpdate("2024-10-10").build();
+
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+      const res = await request(app).get(URL);
+
+      expect(res.status).toBe(200);
+      expect(res.text).toMatch(/<input[^>]*name="date_of_update-year"[^>]*value="2024"[^>]*>/);
+      expect(res.text).toMatch(/<input[^>]*name="date_of_update-month"[^>]*value="10"[^>]*>/);
+      expect(res.text).toMatch(/<input[^>]*name="date_of_update-day"[^>]*value="10"[^>]*>/);
+    });
   });
 
   describe("POST principal place of business address change date page", () => {

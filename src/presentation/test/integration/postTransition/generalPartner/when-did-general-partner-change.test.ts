@@ -59,6 +59,23 @@ describe("General partner change date page", () => {
         expect(countOccurrences(res.text, toEscapedHtml(enTranslationText.serviceName.updateGeneralPartnerPerson))).toBe(2);
       }
     });
+
+    it("should populate the date fields with the existing date of update if it exists", async () => {
+      const generalPartner = new GeneralPartnerBuilder()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .isPerson()
+        .withDateOfUpdate("2024-10-10")
+        .build();
+
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+
+      const res = await request(app).get(URL);
+
+      expect(res.status).toBe(200);
+      expect(res.text).toMatch(/<input[^>]*name="date_of_update-year"[^>]*value="2024"[^>]*>/);
+      expect(res.text).toMatch(/<input[^>]*name="date_of_update-month"[^>]*value="10"[^>]*>/);
+      expect(res.text).toMatch(/<input[^>]*name="date_of_update-day"[^>]*value="10"[^>]*>/);
+    });
   });
 
   describe("POST general partner change date page", () => {

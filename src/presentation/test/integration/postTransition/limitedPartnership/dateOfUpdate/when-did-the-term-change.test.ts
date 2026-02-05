@@ -10,7 +10,7 @@ import { countOccurrences, getUrl, setLocalesEnabled, toEscapedHtml } from "../.
 import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
 
 import {
-  // TERM_CHANGE_CHECK_YOUR_ANSWERS_URL,
+  TERM_CHANGE_CHECK_YOUR_ANSWERS_URL,
   WHEN_DID_THE_TERM_CHANGE_URL
 } from "../../../../../controller/postTransition/url";
 import PostTransitionPageType from "../../../../../controller/postTransition/pageType";
@@ -65,10 +65,10 @@ describe("Partnership term change date page", () => {
         pageType: PostTransitionPageType.whenDidTheTermChange
       });
 
-      // const REDIRECT_URL = getUrl(TERM_CHANGE_CHECK_YOUR_ANSWERS_URL);
+      const REDIRECT_URL = getUrl(TERM_CHANGE_CHECK_YOUR_ANSWERS_URL);
 
       expect(res.status).toBe(302);
-      // expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`); TODO - the check your answers page
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
     });
   });
 
