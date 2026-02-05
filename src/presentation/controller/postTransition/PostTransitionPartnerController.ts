@@ -43,7 +43,7 @@ class PostTransitionPartnerController extends PartnerController {
         const { tokens, ids, pageType } = super.extract(request);
         const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
 
-        const { limitedPartnership, partner } = await this.getPartnerData(tokens, ids);
+        const { limitedPartnership, partner } = await this.getPartnershipAndPartnerData(tokens, ids);
 
         response.render(CEASE_DATE_TEMPLATE, super.makeProps(pageRouting, { limitedPartnership, partner }, null));
       } catch (error) {
@@ -58,7 +58,7 @@ class PostTransitionPartnerController extends PartnerController {
         const { tokens, ids, pageType } = super.extract(request);
         const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
 
-        const { limitedPartnership, partner } = await this.getPartnerData(tokens, ids);
+        const { limitedPartnership, partner } = await this.getPartnershipAndPartnerData(tokens, ids);
 
         response.render(DATE_OF_UPDATE_TEMPLATE, super.makeProps(pageRouting, { limitedPartnership, partner }, null));
       } catch (error) {
@@ -73,7 +73,7 @@ class PostTransitionPartnerController extends PartnerController {
         const { tokens, ids, pageType } = super.extract(request);
         const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
 
-        const { limitedPartnership, partner } = await this.getPartnerData(tokens, ids);
+        const { limitedPartnership, partner } = await this.getPartnershipAndPartnerData(tokens, ids);
 
         response.render(super.templateName(pageRouting.currentUrl), super.makeProps(pageRouting, { limitedPartnership, [partnerType]: partner }, null));
       } catch (error) {
@@ -82,7 +82,7 @@ class PostTransitionPartnerController extends PartnerController {
     };
   }
 
-  async getPartnerData(tokens: Tokens, ids: Ids) {
+  async getPartnershipAndPartnerData(tokens: Tokens, ids: Ids) {
     let limitedPartnership = {};
     let partner = {};
 

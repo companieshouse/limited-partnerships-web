@@ -92,7 +92,7 @@ class GeneralPartnerPostTransitionController extends PartnerController {
 
         let limitedPartnership = {};
         if (pageRouting.currentUrl.includes(CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX)){
-          limitedPartnership = (await this.postTransitionPartnerController.getPartnerData(tokens, ids)).limitedPartnership;
+          limitedPartnership = (await this.postTransitionPartnerController.getPartnershipAndPartnerData(tokens, ids)).limitedPartnership;
         }
 
         const partner = await this.generalPartnerService.getGeneralPartner(
