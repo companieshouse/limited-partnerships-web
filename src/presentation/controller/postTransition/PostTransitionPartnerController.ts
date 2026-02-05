@@ -10,8 +10,9 @@ import TransactionService from "../../../application/service/TransactionService"
 import PartnerController, { PartnerType } from "../common/PartnerController";
 import PostTransitionPageType from "./pageType";
 import postTransitionRouting from "./routing";
-import { CEASE_DATE_TEMPLATE } from "../../../config/constants";
+import { CEASE_DATE_TEMPLATE, DATE_OF_UPDATE_TEMPLATE } from "../../../config/constants";
 import UIErrors from "../../../domain/entities/UIErrors";
+import { Ids, Tokens } from "../../../domain/types";
 
 type PartnerData = {
   person: {
@@ -39,9 +40,27 @@ class PostTransitionPartnerController extends PartnerController {
   getCeaseDate() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
-        const { pageRouting, limitedPartnership, partner } = await this.getPartnerData(request);
+        const { tokens, ids, pageType } = super.extract(request);
+        const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
+
+        const { limitedPartnership, partner } = await this.getPartnershipAndPartnerData(tokens, ids);
 
         response.render(CEASE_DATE_TEMPLATE, super.makeProps(pageRouting, { limitedPartnership, partner }, null));
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  getDateOfUpdate() {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { tokens, ids, pageType } = super.extract(request);
+        const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
+
+        const { limitedPartnership, partner } = await this.getPartnershipAndPartnerData(tokens, ids);
+
+        response.render(DATE_OF_UPDATE_TEMPLATE, super.makeProps(pageRouting, { limitedPartnership, partner }, null));
       } catch (error) {
         next(error);
       }
@@ -51,7 +70,10 @@ class PostTransitionPartnerController extends PartnerController {
   getUpdatePartner(partnerType: PartnerType) {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
-        const { pageRouting, limitedPartnership, partner } = await this.getPartnerData(request);
+        const { tokens, ids, pageType } = super.extract(request);
+        const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
+
+        const { limitedPartnership, partner } = await this.getPartnershipAndPartnerData(tokens, ids);
 
         response.render(super.templateName(pageRouting.currentUrl), super.makeProps(pageRouting, { limitedPartnership, [partnerType]: partner }, null));
       } catch (error) {
@@ -60,10 +82,7 @@ class PostTransitionPartnerController extends PartnerController {
     };
   }
 
-  async getPartnerData(request: Request) {
-    const { ids, pageType, tokens } = super.extract(request);
-    const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
-
+  async getPartnershipAndPartnerData(tokens: Tokens, ids: Ids) {
     let limitedPartnership = {};
     let partner = {};
 
@@ -93,7 +112,7 @@ class PostTransitionPartnerController extends PartnerController {
     if (ids.limitedPartnerId) {
       partner = await this.limitedPartnerService.getLimitedPartner(tokens, ids.transactionId, ids.limitedPartnerId);
     }
-    return { pageRouting, limitedPartnership, partner };
+    return { limitedPartnership, partner };
   }
 
   createPartner(partner: PartnerType, data?: PartnerData) {
