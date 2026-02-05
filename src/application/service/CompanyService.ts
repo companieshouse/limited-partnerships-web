@@ -85,46 +85,9 @@ class CompanyService {
       } as GeneralPartner;
 
       if (companyAppointment?.nationality) {
-        const name = companyAppointment?.name?.split(", ") ?? [];
-        const nationality = companyAppointment?.nationality?.split(",") ?? [];
-        let date_of_birth = "";
-
-        if (companyAppointment?.dateOfBirth?.day) {
-          const day = companyAppointment?.dateOfBirth?.day?.padStart(2, "0") ?? "01";
-          const month = companyAppointment?.dateOfBirth?.month?.padStart(2, "0") ?? "01";
-          const year = companyAppointment?.dateOfBirth?.year ?? "1900";
-          date_of_birth = `${year}-${month}-${day}`;
-        }
-
-        partner = {
-          data: {
-            ...partner.data,
-            forename: name[1] ?? "",
-            surname: name[0] ?? "",
-            nationality1: nationality[0] ?? "",
-            nationality2: nationality[1] ?? undefined,
-            date_of_birth
-          }
-        };
+        partner = this.buildPersonPartner(partner, companyAppointment);
       } else {
-        const name = companyAppointment?.name?.split(", ") ?? [];
-        const legalForm = companyAppointment?.identification?.legalForm ?? "";
-        const governingLaw = companyAppointment?.identification?.legalAuthority ?? "";
-        const legalEntityRegistrationName = companyAppointment?.identification?.placeRegistered ?? "";
-        const legalEntityRegistrationLocation = this.toTitleCase(companyAppointment?.identification?.registerLocation ?? "");
-        const registeredCompanyNumber = companyAppointment?.identification?.registrationNumber ?? "";
-
-        partner = {
-          data: {
-            ...partner.data,
-            legal_entity_name: name[0] ?? "",
-            legal_form: legalForm ?? "",
-            governing_law: governingLaw ?? "",
-            legal_entity_register_name: legalEntityRegistrationName ?? "",
-            legal_entity_registration_location: legalEntityRegistrationLocation ?? "",
-            registered_company_number: registeredCompanyNumber ?? ""
-          }
-        };
+        partner = this.buildLegalEntityPartner(partner, companyAppointment);
       }
 
       return { partner };
@@ -142,6 +105,57 @@ class CompanyService {
         errors
       };
     }
+  }
+
+  private buildPersonPartner(
+    partner: GeneralPartner | LimitedPartner,
+    companyAppointment: Partial<CompanyOfficer>
+  ): GeneralPartner {
+    const name = companyAppointment?.name?.split(", ") ?? [];
+    const nationality = companyAppointment?.nationality?.split(",") ?? [];
+    let date_of_birth = "";
+
+    if (companyAppointment?.dateOfBirth?.day) {
+      const day = companyAppointment?.dateOfBirth?.day?.padStart(2, "0") ?? "01";
+      const month = companyAppointment?.dateOfBirth?.month?.padStart(2, "0") ?? "01";
+      const year = companyAppointment?.dateOfBirth?.year ?? "1900";
+      date_of_birth = `${year}-${month}-${day}`;
+    }
+
+    return {
+      data: {
+        ...partner.data,
+        forename: name[1] ?? "",
+        surname: name[0] ?? "",
+        nationality1: nationality[0] ?? "",
+        nationality2: nationality[1] ?? undefined,
+        date_of_birth
+      }
+    };
+  }
+
+  private buildLegalEntityPartner(
+    partner: GeneralPartner | LimitedPartner,
+    companyAppointment: Partial<CompanyOfficer>
+  ): LimitedPartner {
+    const name = companyAppointment?.name?.split(", ") ?? [];
+    const legalForm = companyAppointment?.identification?.legalForm ?? "";
+    const governingLaw = companyAppointment?.identification?.legalAuthority ?? "";
+    const legalEntityRegistrationName = companyAppointment?.identification?.placeRegistered ?? "";
+    const legalEntityRegistrationLocation = this.toTitleCase(companyAppointment?.identification?.registerLocation ?? "");
+    const registeredCompanyNumber = companyAppointment?.identification?.registrationNumber ?? "";
+
+    return {
+      data: {
+        ...partner.data,
+        legal_entity_name: name[0] ?? "",
+        legal_form: legalForm ?? "",
+        governing_law: governingLaw ?? "",
+        legal_entity_register_name: legalEntityRegistrationName ?? "",
+        legal_entity_registration_location: legalEntityRegistrationLocation ?? "",
+        registered_company_number: registeredCompanyNumber ?? ""
+      }
+    };
   }
 
   private async getCompanyProfile(
