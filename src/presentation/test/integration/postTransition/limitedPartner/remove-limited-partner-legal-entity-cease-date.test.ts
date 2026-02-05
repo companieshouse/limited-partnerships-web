@@ -37,6 +37,7 @@ describe("Limited Partner LegalEntity cease date page", () => {
 
     companyAppointment = new CompanyAppointmentBuilder()
       .withOfficerRole("limited-partner-in-a-limited-partnership")
+      .isLegalEntity()
       .build();
     appDevDependencies.companyGateway.feedCompanyAppointments([companyAppointment]);
 
@@ -94,11 +95,12 @@ describe("Limited Partner LegalEntity cease date page", () => {
     it.each([
       ["without ids", false, URL ],
       ["with ids", true, URL_WITH_IDS ]
-    ])("should replay entered data when invalid cease date is entered and a validation error occurs %s", async (description: string, isWithIds: boolean, url: string) => {
+    ])("should replay entered data when invalid cease date is entered and a validation error occurs %s", async (_description: string, isWithIds: boolean, url: string) => {
       const errorMessage = "The date is not valid";
 
+      let limitedPartner;
       if (isWithIds) {
-        const limitedPartner = new LimitedPartnerBuilder()
+        limitedPartner = new LimitedPartnerBuilder()
           .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
           .isLegalEntity()
           .build();
@@ -119,9 +121,9 @@ describe("Limited Partner LegalEntity cease date page", () => {
       expect(res.text).toContain("MONTH_01");
       expect(res.text).toContain("YEAR_2025");
       if (isWithIds) {
-        expect(res.text.match(/My Company ltd - LP/g)).toHaveLength(2);
+        expect(res.text).toContain(limitedPartner.data?.legal_entity_name);
       } else {
-        expect(res.text).toContain("Test Partner Appointment");
+        expect(res.text).toContain(companyAppointment.name);
       }
       expect(res.text).toContain(errorMessage);
 

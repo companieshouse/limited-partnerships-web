@@ -71,8 +71,8 @@ describe("CompanyService", () => {
   });
 
   describe("Company appointment", () => {
-    it("should map the company appointment to General partner", async () => {
-      const appointment = new CompanyAppointmentBuilder().build();
+    it("should map the company appointment to General partner Person", async () => {
+      const appointment = new CompanyAppointmentBuilder().isPerson().build();
       appDevDependencies.companyGateway.feedCompanyAppointments([appointment]);
 
       const result = await appDevDependencies.companyService.buildPartnerFromCompanyAppointment(
@@ -97,8 +97,8 @@ describe("CompanyService", () => {
       });
     });
 
-    it("should map the company appointment to Limited partner", async () => {
-      const appointment = new CompanyAppointmentBuilder().build();
+    it("should map the company appointment to Limited partner Legal Entity", async () => {
+      const appointment = new CompanyAppointmentBuilder().isLegalEntity().build();
       appointment.dateOfBirth = undefined;
       appointment.nationality = undefined;
       appDevDependencies.companyGateway.feedCompanyAppointments([appointment]);
@@ -111,6 +111,11 @@ describe("CompanyService", () => {
 
       expect(result.partner.data?.appointment_id).toEqual("AP123456");
       expect(result.partner.data?.legal_entity_name).toEqual(appointment.name?.split(", ")[0]);
+      expect(result.partner.data?.legal_form).toEqual(appointment.identification?.legalForm);
+      expect(result.partner.data?.governing_law).toEqual(appointment.identification?.legalAuthority);
+      expect(result.partner.data?.legal_entity_register_name).toEqual(appointment.identification?.placeRegistered);
+      expect(result.partner.data?.legal_entity_registration_location).toEqual(appointment.identification?.registerLocation);
+      expect(result.partner.data?.registered_company_number).toEqual(appointment.identification?.registrationNumber);
       expect((result.partner.data as any)?.service_address).toEqual({
         address_line_1: appointment.address?.addressLine1,
         address_line_2: appointment.address?.addressLine2,

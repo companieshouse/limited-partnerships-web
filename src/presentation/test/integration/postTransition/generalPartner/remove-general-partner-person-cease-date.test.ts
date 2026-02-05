@@ -37,6 +37,7 @@ describe("General Partner cease date page", () => {
 
     companyAppointment = new CompanyAppointmentBuilder()
       .withOfficerRole("general-partner-in-a-limited-partnership")
+      .isPerson()
       .build();
     appDevDependencies.companyGateway.feedCompanyAppointments([companyAppointment]);
 
@@ -94,11 +95,12 @@ describe("General Partner cease date page", () => {
     it.each([
       ["without ids", false, URL ],
       ["with ids", true, URL_WITH_IDS ]
-    ])("should replay entered data when invalid cease date is entered and a validation error occurs %s", async (description: string, isWithIds: boolean, url: string) => {
+    ])("should replay entered data when invalid cease date is entered and a validation error occurs %s", async (_description: string, isWithIds: boolean, url: string) => {
       const errorMessage = "The date is not valid";
 
+      let generalPartner;
       if (isWithIds) {
-        const generalPartner = new GeneralPartnerBuilder()
+        generalPartner = new GeneralPartnerBuilder()
           .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
           .isPerson()
           .build();
@@ -121,9 +123,9 @@ describe("General Partner cease date page", () => {
       expect(res.text).toContain("MONTH_01");
       expect(res.text).toContain("YEAR_2025");
       if (isWithIds) {
-        expect(res.text.match(/Joe - GP Doe - GP/g)).toHaveLength(2);
+        expect(res.text).toContain(generalPartner.data?.forename + " " + generalPartner.data?.surname);
       } else {
-        expect(res.text).toContain("Test Partner Appointment");
+        expect(res.text).toContain(companyAppointment.name.split(",")[0]);
       }
       expect(res.text).toContain(errorMessage);
 
