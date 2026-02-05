@@ -80,7 +80,7 @@ class GeneralPartnerPostTransitionController extends PartnerController {
     return this.postTransitionPartnerController.getCeaseDate();
   }
 
-  getDateOfUpdate(){
+  getDateOfUpdate() {
     return this.postTransitionPartnerController.getDateOfUpdate();
   }
 
