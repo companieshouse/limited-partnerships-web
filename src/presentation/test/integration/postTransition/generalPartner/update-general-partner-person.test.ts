@@ -75,7 +75,7 @@ describe("Update General Partner Person Page", () => {
           .withNationality("British,Irish")
           .build();
         appDevDependencies.companyGateway.feedCompanyAppointments([
-          companyAppointment,
+          companyAppointment
         ]);
       } else {
         const generalPartner = new GeneralPartnerBuilder()

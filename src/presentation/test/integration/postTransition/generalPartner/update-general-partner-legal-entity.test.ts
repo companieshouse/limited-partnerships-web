@@ -15,6 +15,7 @@ import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import GeneralPartnerBuilder from "../../../../../presentation/test/builder/GeneralPartnerBuilder";
 import PostTransitionPageType from "../../../../../presentation/controller/postTransition/pageType";
 import { ApiErrors } from "../../../../../domain/entities/UIErrors";
+import CompanyAppointmentBuilder from "../../../builder/CompanyAppointmentBuilder";
 
 describe("Update General Partner Legal Entity Page", () => {
   const URL = getUrl(UPDATE_GENERAL_PARTNER_LEGAL_ENTITY_URL);
@@ -22,6 +23,7 @@ describe("Update General Partner Legal Entity Page", () => {
   const REDIRECT = getUrl(UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL);
 
   let companyProfile;
+  let companyAppointment;
 
   beforeEach(() => {
     setLocalesEnabled(false);
@@ -37,7 +39,6 @@ describe("Update General Partner Legal Entity Page", () => {
   });
 
   describe("GET update general partner legal entity page", () => {
-
     it.each([
       ["English", "en", enTranslationText],
       ["Welsh", "cy", cyTranslationText]
@@ -72,6 +73,39 @@ describe("Update General Partner Legal Entity Page", () => {
       }
     });
 
+    it.each([
+      ["with appointment id", URL],
+      ["with general partner id", URL_WITH_IDS]
+    ])("should load the update general partner legal entity page and replay saved data %s", async (_description: string, url: string) => {
+      if (url.includes("/appointment/")) {
+        companyAppointment = new CompanyAppointmentBuilder()
+          .withOfficerRole("general-partner-in-a-limited-partnership")
+          .isLegalEntity()
+          .withName("My Company ltd - GP")
+          .build();
+        appDevDependencies.companyGateway.feedCompanyAppointments([companyAppointment]);
+      } else {
+        const generalPartner = new GeneralPartnerBuilder()
+          .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+          .isLegalEntity()
+          .build();
+
+        appDevDependencies.generalPartnerGateway.feedGeneralPartners([
+          generalPartner,
+        ]);
+      }
+
+      setLocalesEnabled(true);
+      const res = await request(app).get(url);
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain("My Company ltd - GP");
+      expect(res.text).toContain("Limited Company");
+      expect(res.text).toContain("Act of law");
+      expect(res.text).toContain("US Register");
+      expect(res.text).toContain("12345678");
+      expect(res.text).toContain('<option value="United States" selected>United States</option>');
+    });
   });
 
   describe("POST update general partner legal entity page", () => {
