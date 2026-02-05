@@ -335,6 +335,10 @@
             "correspondenceAddress": {
                 "title": "Do you need to update this partner's correspondence address?",
                 "hint": "This is also known as the service address. This address is shown on the public register."
+            },
+            "principalOfficeAddress": {
+                "title": "Do you need to update this partner's principal office address?",
+                "hint": "This is the address for the entity's main office."
             }
         }
     },

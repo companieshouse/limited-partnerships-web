@@ -177,6 +177,15 @@ class AddressLookUpController extends AbstractController {
       ) {
         pageRouting.previousUrl = this.insertIdsInUrl(pageRouting.data?.previousUrlUpdateGeneralPartnerPerson, ids);
       }
+      return;
+    }
+
+    if (partner?.data?.kind === PartnerKind.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY) {
+      if (
+        pageRouting.pageType === AddressLookUpPageType.enterGeneralPartnerPrincipalOfficeAddress
+      ) {
+        pageRouting.previousUrl = this.insertIdsInUrl(pageRouting.data?.previousUrlUpdateGeneralPartnerLegalEntity, ids);
+      }
     }
   }
 
