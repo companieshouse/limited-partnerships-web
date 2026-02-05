@@ -108,11 +108,21 @@ class CompanyService {
         };
       } else {
         const name = companyAppointment?.name?.split(", ") ?? [];
+        const legalForm = companyAppointment?.identification?.legalForm ?? "";
+        const governingLaw = companyAppointment?.identification?.legalAuthority ?? "";
+        const legalEntityRegistrationName = companyAppointment?.identification?.placeRegistered ?? "";
+        const legalEntityRegistrationLocation = this.toTitleCase(companyAppointment?.identification?.registerLocation ?? "");
+        const registeredCompanyNumber = companyAppointment?.identification?.registrationNumber ?? "";
 
         partner = {
           data: {
             ...partner.data,
-            legal_entity_name: name[0] ?? ""
+            legal_entity_name: name[0] ?? "",
+            legal_form: legalForm ?? "",
+            governing_law: governingLaw ?? "",
+            legal_entity_register_name: legalEntityRegistrationName ?? "",
+            legal_entity_registration_location: legalEntityRegistrationLocation ?? "",
+            registered_company_number: registeredCompanyNumber ?? ""
           }
         };
       }
@@ -265,6 +275,12 @@ class CompanyService {
       country: address?.country ?? "",
       postal_code: address?.postalCode ?? ""
     };
+  }
+
+  private toTitleCase(str: any) {
+    return str.toLowerCase().split(' ').map((word: any) => {
+      return (word.charAt(0).toUpperCase() + word.slice(1));
+    }).join(' ');
   }
 }
 
