@@ -40,11 +40,10 @@ describe("Update General Partner Person Page", () => {
   });
 
   describe("GET update general partner person page", () => {
-
     it.each([
       ["English", "en", enTranslationText],
       ["Welsh", "cy", cyTranslationText]
-    ])("should load the update general partner person page with %s text", async (_description: string, lang: string, translationText: any) => {
+    ])("should load the update general partner person page with %s text", async (description: string, lang: string, translationText: any) => {
       setLocalesEnabled(true);
 
       const res = await request(app).get(`${URL}?lang=${lang}`);
@@ -68,7 +67,7 @@ describe("Update General Partner Person Page", () => {
     it.each([
       ["with appointment id", URL],
       ["with general partner id", URL_WITH_IDS]
-    ])("should load the update general partner person page and replay saved data %s", async (_description: string, url: string) => {
+    ])("should load the update general partner person page and replay saved data %s", async (description: string, url: string) => {
       if (url.includes("/appointment/")) {
         companyAppointment = new CompanyAppointmentBuilder()
           .withOfficerRole(OFFICER_ROLE_GENERAL_PARTNER_PERSON)
