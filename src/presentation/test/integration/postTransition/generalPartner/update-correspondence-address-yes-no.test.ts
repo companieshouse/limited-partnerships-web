@@ -46,7 +46,7 @@ describe("Update Correspondence Address Yes No Page", () => {
     it.each([
       ["English", "en", enTranslationText],
       ["Welsh", "cy", cyTranslationText]
-    ])("should load the update correspondence address yes no page with %s text", async (_description: string, lang: string, translationText: any) => {
+    ])("should load the update correspondence address yes no page with %s text", async (description: string, lang: string, translationText: any) => {
       setLocalesEnabled(true);
 
       const res = await request(app).get(`${URL}?lang=${lang}`);
@@ -88,7 +88,7 @@ describe("Update Correspondence Address Yes No Page", () => {
     it.each([
       ['enter correspondence address page when "yes"', "true", REDIRECT_YES],
       ['the next page when "no"', "false", REDIRECT_NO]
-    ])('should redirect to %s is selected', async (_description: string, pageValue: string, redirectUrl: string) => {
+    ])('should redirect to %s is selected', async (description: string, pageValue: string, redirectUrl: string) => {
       const res = await request(app).post(`${URL}`).send({
         pageType: PostTransitionPageType.updateCorrespondenceAddressYesNo,
         update_service_address_required: pageValue

@@ -46,7 +46,7 @@ describe("Update Principal Office Address Yes No Page", () => {
     it.each([
       ["English", "en", enTranslationText],
       ["Welsh", "cy", cyTranslationText]
-    ])("should load the update principal office address yes no page with %s text", async (_description: string, lang: string, translationText: any) => {
+    ])("should load the update principal office address yes no page with %s text", async (description: string, lang: string, translationText: any) => {
       setLocalesEnabled(true);
 
       const res = await request(app).get(`${URL}?lang=${lang}`);
@@ -87,7 +87,7 @@ describe("Update Principal Office Address Yes No Page", () => {
     it.each([
       ['Enter principal office address page when "yes"', "true", REDIRECT_YES],
       ['the When did general partner details change page when "no"', "false", REDIRECT_NO]
-    ])('should redirect to %s is selected', async (_description: string, pageValue: string, redirectUrl: string) => {
+    ])('should redirect to %s is selected', async (description: string, pageValue: string, redirectUrl: string) => {
       const res = await request(app).post(`${URL}`).send({
         pageType: PostTransitionPageType.updatePrincipalOfficeAddressYesNo,
         update_principal_office_address_required: pageValue

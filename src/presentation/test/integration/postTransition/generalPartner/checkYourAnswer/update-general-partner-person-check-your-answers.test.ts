@@ -15,6 +15,7 @@ import CompanyProfileBuilder from "../../../../builder/CompanyProfileBuilder";
 import PostTransitionPageType from "../../../../../controller/postTransition/pageType";
 import { CONFIRMATION_POST_TRANSITION_URL } from "../../../../../controller/global/url";
 import TransactionBuilder from "../../../../builder/TransactionBuilder";
+import { OFFICER_ROLE_GENERAL_PARTNER_PERSON } from "../../../../../../config";
 
 describe("Update general partner check your answers page", () => {
   const URL = getUrl(UPDATE_GENERAL_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL);
@@ -52,7 +53,7 @@ describe("Update general partner check your answers page", () => {
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
     companyAppointment = new CompanyAppointmentBuilder()
-      .withOfficerRole("general-partner-in-a-limited-partnership")
+      .withOfficerRole(OFFICER_ROLE_GENERAL_PARTNER_PERSON)
       .withNationality("British")
       .build();
     appDevDependencies.companyGateway.feedCompanyAppointments([companyAppointment]);

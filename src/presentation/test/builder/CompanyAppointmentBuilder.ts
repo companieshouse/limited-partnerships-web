@@ -1,82 +1,124 @@
-import { Address, CompanyOfficer } from "@companieshouse/api-sdk-node/dist/services/company-officers/types";
+import { CompanyOfficer, Identification } from "@companieshouse/api-sdk-node/dist/services/company-officers/types";
 
-class CompanyAppointmentBuilder {
-  id = "AP123456";
-  address: Address = {
-    premises: "4",
-    addressLine1: "duncalf street",
-    addressLine2: "",
-    postalCode: "ST6 3LJ",
-    country: "England",
-    locality: "stroke-on-trent",
-    poBox: "",
-    careOf: "",
-    region: ""
-  };
-  appointedOn = "2023-12-29";
-  countryOfResidence = "England";
-  dateOfBirth = {
+export const companyAppointmentPerson = {
+  nationality: "British",
+  name: "John, Doe",
+  dateOfBirth: {
     day: "01",
     month: "01",
     year: "1980"
+  },
+  formerNames: []
+};
+
+export const companyAppointmentLegalEntity = {
+  name: "Partner Appointment",
+  identification: {
+    legalForm: "Limited Company",
+    legalAuthority: "Act of law",
+    placeRegistered: "US Register",
+    registerLocation: "United States",
+    registrationNumber: "12345678",
+  }
+};
+
+class CompanyAppointmentBuilder {
+  constructor() {
+    this.init();
   };
-  formerNames = [];
-  identification = {};
-  links = {
-    self: "/company/LP123456/appointments/AP123456",
-    officer: { appointments: "" }
+
+  init() {
+    this.data = {
+      ...this.data
+    };
   };
-  name = "Partner Appointment, Test";
-  nationality = "British";
-  occupation = "Solicitor";
-  officerRole = "general-partner-in-a-limited-partnership";
-  contactDetails = { contactName: "Contact Name" };
-  responsibilities = "Some responsibilities";
-  resignedOn = "";
+
+  id = "AP123456";
+  data: Record<string, any> = {
+    address: {
+      premises: "4",
+      addressLine1: "duncalf street",
+      addressLine2: "",
+      postalCode: "ST6 3LJ",
+      country: "England",
+      locality: "stroke-on-trent",
+      poBox: "",
+      careOf: "",
+      region: ""
+    },
+    appointedOn: "2023-12-29",
+    countryOfResidence: "England",
+    dateOfBirth: {
+      day: "",
+      month: "",
+      year: ""
+    },
+    formerNames: [],
+    identification: {},
+    links: {
+      self: "/company/LP123456/appointments/AP123456",
+      officer: { appointments: "" }
+    },
+    name: "",
+    nationality: "",
+    occupation: "Solicitor",
+    officerRole: "general-partner-in-a-limited-partnership",
+    contactDetails: { contactName: "Contact Name" },
+    responsibilities: "Some responsibilities",
+    resignedOn: "",
+  };
+
+  isPerson() {
+    this.data = {
+      ...this.data,
+      ...companyAppointmentPerson
+    };
+    return this;
+  };
+
+  isLegalEntity() {
+    this.data = {
+      ...this.data,
+      ...companyAppointmentLegalEntity
+    };
+    return this;
+  };
 
   withAppointmentId(id: string) {
     this["Id"] = id;
     return this;
-  }
+  };
 
   withCompanyNumber(companyNumber: string) {
-    this.links = { ...this.links, self: `/company/${companyNumber}/appointments/${this["Id"]}` };
+    this.data.links = { ...this.data.links, self: `/company/${companyNumber}/appointments/${this["Id"]}` };
     return this;
-  }
+  };
 
   withOfficerRole(officerRole: string) {
-    this.officerRole = officerRole;
+    this.data.officerRole = officerRole;
     return this;
-  }
+  };
 
   withName(name: string) {
-    this.name = name;
+    this.data.name = name;
     return this;
-  }
+  };
 
   withNationality(nationality: string) {
-    this.nationality = nationality;
+    this.data.nationality = nationality;
     return this;
-  }
+  };
+
+  withIdentificationDetails(identification: Identification) {
+    this.data.identification = identification;
+    return this;
+  };
 
   build(): Partial<CompanyOfficer> {
     return {
-      address: this.address,
-      appointedOn: this.appointedOn,
-      countryOfResidence: this.countryOfResidence,
-      dateOfBirth: this.dateOfBirth,
-      formerNames: this.formerNames,
-      identification: this.identification,
-      links: this.links,
-      name: this.name,
-      nationality: this.nationality,
-      occupation: this.occupation,
-      officerRole: this.officerRole,
-      contactDetails: this.contactDetails,
-      responsibilities: this.responsibilities,
-      resignedOn: this.resignedOn
+      ...this.data
     };
-  }
-}
+  };
+};
 
 export default CompanyAppointmentBuilder;

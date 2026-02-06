@@ -17,6 +17,7 @@ import CompanyAppointmentBuilder from "../../../builder/CompanyAppointmentBuilde
 import PostTransitionPageType from "../../../../controller/postTransition/pageType";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 import GeneralPartnerBuilder from "../../../../../presentation/test/builder/GeneralPartnerBuilder";
+import { OFFICER_ROLE_GENERAL_PARTNER_LEGAL_ENTITY } from "../../../../../config";
 
 describe("General Partner cease date page", () => {
   const URL = getUrl(WHEN_DID_THE_GENERAL_PARTNER_LEGAL_ENTITY_CEASE_URL);
@@ -36,7 +37,8 @@ describe("General Partner cease date page", () => {
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
     companyAppointment = new CompanyAppointmentBuilder()
-      .withOfficerRole("general-partner-in-a-limited-partnership")
+      .withOfficerRole(OFFICER_ROLE_GENERAL_PARTNER_LEGAL_ENTITY)
+      .isLegalEntity()
       .build();
     appDevDependencies.companyGateway.feedCompanyAppointments([companyAppointment]);
 
@@ -97,8 +99,10 @@ describe("General Partner cease date page", () => {
     ])("should replay entered data when invalid cease date is entered and a validation error occurs %s", async (description: string, isWithIds: boolean, url: string) => {
       const errorMessage = "The date is not valid";
 
+      let generalPartner;
+
       if (isWithIds) {
-        const generalPartner = new GeneralPartnerBuilder()
+        generalPartner = new GeneralPartnerBuilder()
           .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
           .isLegalEntity()
           .build();
@@ -121,9 +125,9 @@ describe("General Partner cease date page", () => {
       expect(res.text).toContain("MONTH_01");
       expect(res.text).toContain("YEAR_2025");
       if (isWithIds) {
-        expect(res.text.match(/My Company ltd - GP/g)).toHaveLength(2);
+        expect(res.text).toContain(generalPartner.data?.legal_entity_name);
       } else {
-        expect(res.text).toContain("Test Partner Appointment");
+        expect(res.text).toContain(companyAppointment.name);
       }
       expect(res.text).toContain(errorMessage);
 

@@ -39,7 +39,7 @@ describe("Add Limited Partner Person Page", () => {
       ["for type SPFLP", PartnershipType.SPFLP, false]
     ])(
       "should load the add limited partner page with Welsh text for %s",
-      async (_description, partnershipType, isCapitalContributionPresent) => {
+      async (description, partnershipType, isCapitalContributionPresent) => {
         const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
 
         appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
