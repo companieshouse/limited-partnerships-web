@@ -113,7 +113,7 @@ describe("Update General Partner Legal Entity Page", () => {
     it.each([
       ["with appointment id", URL],
       ["with general partner id", URL_WITH_IDS],
-    ])("should send the general partner legal entity details to API %s", async (_description: string, url: string) => {
+    ])("should send the general partner legal entity details to API %s", async (description: string, url: string) => {
       expect(appDevDependencies.generalPartnerGateway.generalPartners).toHaveLength(0);
 
       if (url.includes("/general-partner/")) {

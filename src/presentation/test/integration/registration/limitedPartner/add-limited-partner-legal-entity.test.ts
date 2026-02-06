@@ -43,7 +43,7 @@ describe("Add Limited Partner Legal Entity Page", () => {
       ["for type SPFLP", PartnershipType.SPFLP, false]
     ])(
       "should load the add limited partner legal entity page %s with Welsh text",
-      async (_description, partnershipType, isCapitalContributionPresent) => {
+      async (description, partnershipType, isCapitalContributionPresent) => {
         setLocalesEnabled(true);
 
         const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
