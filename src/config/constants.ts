@@ -60,6 +60,12 @@ export const TRANSACTION_DESCRIPTION_UPDATE_GENERAL_PARTNER_PERSON = "Update a g
 export const TRANSACTION_DESCRIPTION_UPDATE_GENERAL_PARTNER_LEGAL_ENTITY = "Update a general partner's details (legal entity)";
 export const TRANSACTION_DESCRIPTION_DESIGNATE_AS_PRIVATE_FUND_PARTNERSHIP = "Designate as a private fund limited partnership";
 
+// Officer roles
+export const OFFICER_ROLE_GENERAL_PARTNER_PERSON = "general-partner-in-a-limited-partnership";
+export const OFFICER_ROLE_GENERAL_PARTNER_LEGAL_ENTITY = "corporate-general-partner-in-a-limited-partnership";
+export const OFFICER_ROLE_LIMITED_PARTNER_PERSON = "limited-partner-in-a-limited-partnership";
+export const OFFICER_ROLE_LIMITED_PARTNER_LEGAL_ENTITY = "corporate-limited-partner-in-a-limited-partnership";
+
 // Templates
 export const ERROR_TEMPLATE = "error-page";
 export const NOT_FOUND_TEMPLATE = "page-not-found";

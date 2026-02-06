@@ -17,6 +17,7 @@ import CompanyAppointmentBuilder from "../../../builder/CompanyAppointmentBuilde
 import PostTransitionPageType from "../../../../controller/postTransition/pageType";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 import LimitedPartnerBuilder from "../../../../../presentation/test/builder/LimitedPartnerBuilder";
+import { OFFICER_ROLE_LIMITED_PARTNER_LEGAL_ENTITY } from "../../../../../config";
 
 describe("Limited Partner LegalEntity cease date page", () => {
   const URL = getUrl(WHEN_DID_THE_LIMITED_PARTNER_LEGAL_ENTITY_CEASE_URL);
@@ -36,7 +37,7 @@ describe("Limited Partner LegalEntity cease date page", () => {
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
     companyAppointment = new CompanyAppointmentBuilder()
-      .withOfficerRole("limited-partner-in-a-limited-partnership")
+      .withOfficerRole(OFFICER_ROLE_LIMITED_PARTNER_LEGAL_ENTITY)
       .isLegalEntity()
       .build();
     appDevDependencies.companyGateway.feedCompanyAppointments([companyAppointment]);
@@ -95,7 +96,7 @@ describe("Limited Partner LegalEntity cease date page", () => {
     it.each([
       ["without ids", false, URL ],
       ["with ids", true, URL_WITH_IDS ]
-    ])("should replay entered data when invalid cease date is entered and a validation error occurs %s", async (_description: string, isWithIds: boolean, url: string) => {
+    ])("should replay entered data when invalid cease date is entered and a validation error occurs %s", async (description: string, isWithIds: boolean, url: string) => {
       const errorMessage = "The date is not valid";
 
       let limitedPartner;

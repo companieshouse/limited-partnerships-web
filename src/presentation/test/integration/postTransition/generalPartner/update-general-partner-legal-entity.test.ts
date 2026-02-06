@@ -16,6 +16,7 @@ import GeneralPartnerBuilder from "../../../../../presentation/test/builder/Gene
 import PostTransitionPageType from "../../../../../presentation/controller/postTransition/pageType";
 import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 import CompanyAppointmentBuilder from "../../../builder/CompanyAppointmentBuilder";
+import { OFFICER_ROLE_GENERAL_PARTNER_LEGAL_ENTITY } from "../../../../../config";
 
 describe("Update General Partner Legal Entity Page", () => {
   const URL = getUrl(UPDATE_GENERAL_PARTNER_LEGAL_ENTITY_URL);
@@ -79,7 +80,7 @@ describe("Update General Partner Legal Entity Page", () => {
     ])("should load the update general partner legal entity page and replay saved data %s", async (_description: string, url: string) => {
       if (url.includes("/appointment/")) {
         companyAppointment = new CompanyAppointmentBuilder()
-          .withOfficerRole("general-partner-in-a-limited-partnership")
+          .withOfficerRole(OFFICER_ROLE_GENERAL_PARTNER_LEGAL_ENTITY)
           .isLegalEntity()
           .withName("My Company ltd - GP")
           .build();

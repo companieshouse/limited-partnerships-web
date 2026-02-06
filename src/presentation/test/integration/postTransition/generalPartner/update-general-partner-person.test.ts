@@ -16,6 +16,7 @@ import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import GeneralPartnerBuilder from "../../../../../presentation/test/builder/GeneralPartnerBuilder";
 import PostTransitionPageType from "../../../../../presentation/controller/postTransition/pageType";
 import { ApiErrors } from "../../../../../domain/entities/UIErrors";
+import { OFFICER_ROLE_GENERAL_PARTNER_PERSON } from "../../../../../config";
 
 describe("Update General Partner Person Page", () => {
   const URL = getUrl(UPDATE_GENERAL_PARTNER_PERSON_URL);
@@ -70,7 +71,7 @@ describe("Update General Partner Person Page", () => {
     ])("should load the update general partner person page and replay saved data %s", async (_description: string, url: string) => {
       if (url.includes("/appointment/")) {
         companyAppointment = new CompanyAppointmentBuilder()
-          .withOfficerRole("general-partner-in-a-limited-partnership")
+          .withOfficerRole(OFFICER_ROLE_GENERAL_PARTNER_PERSON)
           .withName("Doe - GP, Joe - GP")
           .withNationality("British,Irish")
           .build();

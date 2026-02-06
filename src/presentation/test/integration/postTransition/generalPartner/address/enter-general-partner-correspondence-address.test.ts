@@ -25,6 +25,7 @@ import { UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL } from "../../
 import CompanyAppointmentBuilder from "../../../../../../presentation/test/builder/CompanyAppointmentBuilder";
 import CompanyProfileBuilder from "../../../../../../presentation/test/builder/CompanyProfileBuilder";
 import TransactionBuilder from "../../../../builder/TransactionBuilder";
+import { OFFICER_ROLE_GENERAL_PARTNER_PERSON } from "config";
 
 describe("Enter Correspondence Address Page", () => {
   const URL = getUrl(ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL);
@@ -183,7 +184,7 @@ describe("Enter Correspondence Address Page", () => {
       appDevDependencies.generalPartnerGateway.feedGeneralPartners([updateGeneralPartner]);
 
       const companyAppointment = new CompanyAppointmentBuilder()
-        .withOfficerRole("general-partner-in-a-limited-partnership")
+        .withOfficerRole(OFFICER_ROLE_GENERAL_PARTNER_PERSON)
         .build();
       appDevDependencies.companyGateway.feedCompanyAppointments([companyAppointment]);
 
