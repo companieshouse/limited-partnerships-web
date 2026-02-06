@@ -20,7 +20,7 @@ import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import {
   GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL,
   UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL,
-  WHEN_DID_GENERAL_PARTNER_DETAILS_CHANGE_URL
+  WHEN_DID_GENERAL_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL
 } from "../../../../../controller/postTransition/url";
 import TransactionBuilder from "../../../../builder/TransactionBuilder";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
@@ -121,6 +121,15 @@ describe("Confirm General Partner Principal Office Address Page", () => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(backLinkUrl);
     });
+
+    it("should have change link to manual entry page", async () => {
+      const res = await request(app).get(URL);
+
+      const changeLinkUrl = getUrl(ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(`href="${changeLinkUrl}"`);
+    });
   });
 
   describe("POST confirm Principal Office Address Page", () => {
@@ -167,7 +176,7 @@ describe("Confirm General Partner Principal Office Address Page", () => {
           }`
         });
 
-      const redirectUrl = getUrl(WHEN_DID_GENERAL_PARTNER_DETAILS_CHANGE_URL);
+      const redirectUrl = getUrl(WHEN_DID_GENERAL_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL);
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
