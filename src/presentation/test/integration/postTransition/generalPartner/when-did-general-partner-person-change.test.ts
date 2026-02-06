@@ -54,6 +54,8 @@ describe("General partner person change date page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(BACK_LINK_URL);
+      expect(res.text).toContain(`${generalPartner.data?.forename?.toUpperCase()} ${generalPartner.data?.surname?.toUpperCase()}`);
+
       if (lang === "cy") {
         expect(res.text).toContain("WELSH - ");
         expect(res.text).toContain(`${cyTranslationText.dateOfUpdate.generalPartner.title}`);
@@ -133,6 +135,7 @@ describe("General partner person change date page", () => {
       expect(res.text).toContain("01");
       expect(res.text).toContain("2000");
       expect(res.text).toContain(BACK_LINK_URL);
+      expect(res.text).toContain(`${generalPartner.data?.forename?.toUpperCase()} ${generalPartner.data?.surname?.toUpperCase()}`);
     });
   });
 });

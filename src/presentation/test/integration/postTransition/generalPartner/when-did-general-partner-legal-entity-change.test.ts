@@ -54,6 +54,7 @@ describe("General partner legal entity change date page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(BACK_LINK_URL);
+      expect(res.text).toContain(`${generalPartner.data?.legal_entity_name?.toUpperCase()}`);
 
       if (lang === "cy") {
         expect(res.text).toContain("WELSH - ");
@@ -134,6 +135,7 @@ describe("General partner legal entity change date page", () => {
       expect(res.text).toContain("01");
       expect(res.text).toContain("2000");
       expect(res.text).toContain(BACK_LINK_URL);
+      expect(res.text).toContain(`${generalPartner.data?.legal_entity_name?.toUpperCase()}`);
     });
   });
 });
