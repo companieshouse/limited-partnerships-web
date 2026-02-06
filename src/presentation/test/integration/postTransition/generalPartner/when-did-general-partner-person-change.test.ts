@@ -10,7 +10,11 @@ import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { countOccurrences, getUrl, setLocalesEnabled, toEscapedHtml } from "../../../utils";
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
-import { WHEN_DID_GENERAL_PARTNER_PERSON_DETAILS_CHANGE_URL, UPDATE_GENERAL_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL } from "presentation/controller/postTransition/url";
+import {
+  WHEN_DID_GENERAL_PARTNER_PERSON_DETAILS_CHANGE_URL,
+  UPDATE_GENERAL_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL,
+  UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL
+} from "../../../../../presentation/controller/postTransition/url";
 import PostTransitionPageType from "../../../../controller/postTransition/pageType";
 import { ApiErrors } from "domain/entities/UIErrors";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
@@ -18,6 +22,7 @@ import TransactionBuilder from "../../../builder/TransactionBuilder";
 
 describe("General partner person change date page", () => {
   const URL = getUrl(WHEN_DID_GENERAL_PARTNER_PERSON_DETAILS_CHANGE_URL);
+  const BACK_LINK_URL = getUrl(UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL);
 
   let generalPartner;
 
@@ -48,7 +53,7 @@ describe("General partner person change date page", () => {
       const res = await request(app).get(`${URL}?lang=${lang}`);
 
       expect(res.status).toBe(200);
-
+      expect(res.text).toContain(BACK_LINK_URL);
       if (lang === "cy") {
         expect(res.text).toContain("WELSH - ");
         expect(res.text).toContain(`${cyTranslationText.dateOfUpdate.generalPartner.title}`);
@@ -127,6 +132,7 @@ describe("General partner person change date page", () => {
       expect(res.text).toContain("10");
       expect(res.text).toContain("01");
       expect(res.text).toContain("2000");
+      expect(res.text).toContain(BACK_LINK_URL);
     });
   });
 });
