@@ -8,14 +8,14 @@ import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
 import { UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL, WHEN_DID_GENERAL_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL } from "../../../../controller/postTransition/url";
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
-import { ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../../../controller/addressLookUp/url/postTransition";
+import { TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../../../controller/addressLookUp/url/postTransition";
 import PostTransitionPageType from "../../../../controller/postTransition/pageType";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import TransactionBuilder from "../../../builder/TransactionBuilder";
 
 describe("Update Principal Office Address Yes No Page", () => {
   const URL = getUrl(UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL);
-  const REDIRECT_YES = getUrl(ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
+  const REDIRECT_YES = getUrl(TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
   const REDIRECT_NO = getUrl(WHEN_DID_GENERAL_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL);
 
   let generalPartner;
@@ -85,7 +85,7 @@ describe("Update Principal Office Address Yes No Page", () => {
   describe("POST Update Principal Office Address Yes No Page", () => {
 
     it.each([
-      ['Enter principal office address page when "yes"', "true", REDIRECT_YES],
+      ['UK or overseas principal office address page when "yes"', "true", REDIRECT_YES],
       ['the When did general partner details change page when "no"', "false", REDIRECT_NO]
     ])('should redirect to %s is selected', async (description: string, pageValue: string, redirectUrl: string) => {
       const res = await request(app).post(`${URL}`).send({
