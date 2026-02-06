@@ -57,7 +57,8 @@ import {
   WHEN_DID_GENERAL_PARTNER_DETAILS_CHANGE_URL,
   UPDATE_GENERAL_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL,
   UPDATE_GENERAL_PARTNER_LEGAL_ENTITY_URL,
-  UPDATE_GENERAL_PARTNER_LEGAL_ENTITY_WITH_IDS_URL
+  UPDATE_GENERAL_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
+  UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL
 } from "../presentation/controller/postTransition/url";
 import {
   TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_LEGAL_ENTITY,
@@ -729,6 +730,17 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
   );
   router.post(
     UPDATE_GENERAL_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.sendUpdatePageData()
+  );
+
+  router.get(
+    UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.getPageRouting()
+  );
+  router.post(
+    UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL,
     companyAuthentication,
     dependencies.generalPartnerPostTransitionController.sendUpdatePageData()
   );

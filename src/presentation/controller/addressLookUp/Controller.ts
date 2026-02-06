@@ -178,6 +178,15 @@ class AddressLookUpController extends AbstractController {
         pageRouting.previousUrl = this.insertIdsInUrl(pageRouting.data?.previousUrlUpdateGeneralPartnerPerson, ids);
       }
     }
+
+    if (partner?.data?.kind === PartnerKind.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY) {
+      if (
+        pageRouting.pageType === AddressLookUpPageType.territoryChoiceGeneralPartnerPrincipalOfficeAddress ||
+        pageRouting.pageType === AddressLookUpPageType.confirmGeneralPartnerPrincipalOfficeAddress
+      ) {
+        pageRouting.previousUrl = this.insertIdsInUrl(pageRouting.data?.previousUrlUpdateGeneralPartnerPerson, ids);
+      }
+    }
   }
 
   postcodeValidation() {
@@ -601,6 +610,21 @@ class AddressLookUpController extends AbstractController {
         ids.generalPartnerId
       );
       if (generalPartner.data?.kind === PartnerKind.UPDATE_GENERAL_PARTNER_PERSON) {
+        pageRouting.nextUrl = super.insertIdsInUrl(
+          WHEN_DID_GENERAL_PARTNER_DETAILS_CHANGE_URL,
+          ids,
+          request.url
+        );
+      }
+    }
+
+    if (pageRouting.pageType === AddressLookUpPageType.confirmGeneralPartnerPrincipalOfficeAddress) {
+      const generalPartner = await this.generalPartnerService.getGeneralPartner(
+        tokens,
+        ids.transactionId,
+        ids.generalPartnerId
+      );
+      if (generalPartner.data?.kind === PartnerKind.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY) {
         pageRouting.nextUrl = super.insertIdsInUrl(
           WHEN_DID_GENERAL_PARTNER_DETAILS_CHANGE_URL,
           ids,
