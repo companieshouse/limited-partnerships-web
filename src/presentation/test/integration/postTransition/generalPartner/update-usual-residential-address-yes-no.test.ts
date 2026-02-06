@@ -46,7 +46,7 @@ describe("Update Usual Residential Address Yes No Page", () => {
     it.each([
       ["English", "en", enTranslationText],
       ["Welsh", "cy", cyTranslationText]
-    ])("should load the update usual residential address yes no page with %s text", async (_description: string, lang: string, translationText: any) => {
+    ])("should load the update usual residential address yes no page with %s text", async (description: string, lang: string, translationText: any) => {
       setLocalesEnabled(true);
 
       const res = await request(app).get(`${URL}?lang=${lang}`);
@@ -88,7 +88,7 @@ describe("Update Usual Residential Address Yes No Page", () => {
     it.each([
       ['URA territory choice page when "yes"', "true", REDIRECT_YES],
       ['the update correspondence address yes no page when "no"', "false", REDIRECT_NO]
-    ])('should redirect to %s is selected', async (_description: string, pageValue: string, redirectUrl: string) => {
+    ])('should redirect to %s is selected', async (description: string, pageValue: string, redirectUrl: string) => {
       const res = await request(app).post(`${URL}`).send({
         pageType: PostTransitionPageType.updateUsualResidentialAddressYesNo,
         update_usual_residential_address_required: pageValue

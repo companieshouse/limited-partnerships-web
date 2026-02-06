@@ -80,6 +80,10 @@ class GeneralPartnerPostTransitionController extends PartnerController {
     return this.postTransitionPartnerController.getCeaseDate();
   }
 
+  getDateOfUpdate() {
+    return this.postTransitionPartnerController.getDateOfUpdate(PartnerType.generalPartner);
+  }
+
   getCheckYourAnswersPageRouting() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
@@ -88,7 +92,7 @@ class GeneralPartnerPostTransitionController extends PartnerController {
 
         let limitedPartnership = {};
         if (pageRouting.currentUrl.includes(CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX)){
-          limitedPartnership = (await this.postTransitionPartnerController.getPartnerData(request)).limitedPartnership;
+          limitedPartnership = (await this.postTransitionPartnerController.getPartnershipAndPartnerData(tokens, ids)).limitedPartnership;
         }
 
         const partner = await this.generalPartnerService.getGeneralPartner(

@@ -1,8 +1,16 @@
 {% extends "layout.njk" %}
 
+{% if props.data.generalPartner %}
+  {% set propsData = props.data.generalPartner %}
+{% elseif props.data.limitedPartner %}
+  {% set propsData = props.data.limitedPartner %}
+{% else %}
+  {% set propsData = props.data.limitedPartnership %}
+{% endif %}
+
 {% set dateData = null %}
-{% if props.data.limitedPartnership.data["date_of_update-year"] %}
-  {% set dateData = props.data.limitedPartnership.data %}
+{% if propsData.data["date_of_update-year"] %}
+  {% set dateData = propsData.data %}
 {% elif props.data.generalPartner.data["date_of_update-year"] %}
   {% set dateData = props.data.generalPartner.data %}
 {% elif props.data.limitedPartner.data["date_of_update-year"] %}
@@ -10,9 +18,9 @@
 {% endif %}
 
 
-{% if props.data.limitedPartnership.data.date_of_update  %}
+{% if propsData.data.date_of_update  %}
   {# This is for when saved data is pre-populated on the page #}
-  {% set date_of_update = props.data.limitedPartnership.data.date_of_update %}
+  {% set date_of_update = propsData.data.date_of_update %}
   {% set date_of_update_year = date_of_update[0] + date_of_update[1] + date_of_update[2] + date_of_update[3] %}
   {% set date_of_update_month = date_of_update[5] + date_of_update[6] %}
   {% set date_of_update_day = date_of_update[8] + date_of_update[9] %}
@@ -32,8 +40,14 @@
 
       {% include "includes/errors.njk" %}
 
-      {% include "includes/proposed-name.njk" %}
-
+      {% if props.data.limitedPartner %}
+          {% include "includes/limited-partner-name.njk" %}
+      {% elseif props.data.generalPartner %}
+          {% include "includes/general-partner-name.njk" %}
+      {% else %}
+          {% include "includes/proposed-name.njk" %}
+      {% endif %}
+      
       <form class="form" method="post">
         <input type="hidden" name="pageType" value={{ props.pageType }}> 
         {% include "includes/csrf_token.njk" %}

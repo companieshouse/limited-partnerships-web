@@ -210,7 +210,8 @@ const postTransitionAddressRoutingEnterGeneralPartnerPrincipalOfficeAddress = {
   pageType: AddressPageType.enterGeneralPartnerPrincipalOfficeAddress,
   data: {
     ...principalOfficeAddressCacheKeys,
-    territoryPageType: AddressPageType.territoryChoiceGeneralPartnerPrincipalOfficeAddress
+    territoryPageType: AddressPageType.territoryChoiceGeneralPartnerPrincipalOfficeAddress,
+    previousUrlUpdateGeneralPartnerLegalEntity: UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL
   }
 };
 

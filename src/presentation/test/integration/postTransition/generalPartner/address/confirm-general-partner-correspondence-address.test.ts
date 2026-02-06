@@ -15,7 +15,7 @@ import {
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import GeneralPartnerBuilder from "../../../../builder/GeneralPartnerBuilder";
-import { GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL, WHEN_DID_GENERAL_PARTNER_DETAILS_CHANGE_URL } from "../../../../../controller/postTransition/url";
+import { GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL, WHEN_DID_GENERAL_PARTNER_PERSON_DETAILS_CHANGE_URL } from "../../../../../controller/postTransition/url";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import TransactionBuilder from "../../../../builder/TransactionBuilder";
 
@@ -175,7 +175,7 @@ describe("Confirm General Partner Correspondence Address Page", () => {
           }`
         });
 
-      const redirectUrl = getUrl(WHEN_DID_GENERAL_PARTNER_DETAILS_CHANGE_URL);
+      const redirectUrl = getUrl(WHEN_DID_GENERAL_PARTNER_PERSON_DETAILS_CHANGE_URL);
 
       expect(res.status).toBe(302);
 

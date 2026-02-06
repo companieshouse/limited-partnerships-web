@@ -64,7 +64,7 @@ describe("Gateway capital contribition validation test suite", () => {
         dataKeys[0],
         "Select the currency of the capital contribution"
       ]
-    ])("should throw an error for invalid capital contribution - %s", (_description, data, field, errorMessage) => {
+    ])("should throw an error for invalid capital contribution - %s", (description, data, field, errorMessage) => {
       let thrownError: UIErrors | null = null;
 
       try {

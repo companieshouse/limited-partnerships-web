@@ -6,17 +6,17 @@ import enTranslationText from "../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../locales/cy/translations.json";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
-import { UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL } from "../../../../controller/postTransition/url";
+import { UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL, WHEN_DID_GENERAL_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL } from "../../../../controller/postTransition/url";
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
-import { ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL } from "../../../../controller/addressLookUp/url/postTransition";
+import { ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../../../controller/addressLookUp/url/postTransition";
 import PostTransitionPageType from "../../../../controller/postTransition/pageType";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import TransactionBuilder from "../../../builder/TransactionBuilder";
 
-describe("Update Correspondence Address Yes No Page", () => {
-  const URL = getUrl(UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL);
-  const REDIRECT_YES = getUrl(ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL);
-  const REDIRECT_NO = "/";
+describe("Update Principal Office Address Yes No Page", () => {
+  const URL = getUrl(UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL);
+  const REDIRECT_YES = getUrl(ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
+  const REDIRECT_NO = getUrl(WHEN_DID_GENERAL_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL);
 
   let generalPartner;
 
@@ -27,7 +27,7 @@ describe("Update Correspondence Address Yes No Page", () => {
 
     generalPartner = new GeneralPartnerBuilder()
       .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-      .isPerson()
+      .isLegalEntity()
       .build();
 
     appDevDependencies.generalPartnerGateway.feedGeneralPartners([
@@ -37,16 +37,16 @@ describe("Update Correspondence Address Yes No Page", () => {
 
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
-    const transaction = new TransactionBuilder().withKind(PartnerKind.UPDATE_GENERAL_PARTNER_PERSON).build();
+    const transaction = new TransactionBuilder().withKind(PartnerKind.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY).build();
     appDevDependencies.transactionGateway.feedTransactions([transaction]);
   });
 
-  describe("GET Update Correspondence Address Yes No Page", () => {
+  describe("GET Update Principal Office Address Yes No Page", () => {
 
     it.each([
       ["English", "en", enTranslationText],
       ["Welsh", "cy", cyTranslationText]
-    ])("should load the update correspondence address yes no page with %s text", async (description: string, lang: string, translationText: any) => {
+    ])("should load the update principal office address yes no page with %s text", async (description: string, lang: string, translationText: any) => {
       setLocalesEnabled(true);
 
       const res = await request(app).get(`${URL}?lang=${lang}`);
@@ -54,12 +54,11 @@ describe("Update Correspondence Address Yes No Page", () => {
       expect(res.status).toBe(200);
 
       expect(res.text).toContain(
-        `${generalPartner.data?.forename?.toUpperCase()} ${generalPartner.data?.surname?.toUpperCase()}`
+        `${generalPartner.data?.legal_entity_name?.toUpperCase()}`
       );
 
-      testTranslations(res.text, translationText.address.update.correspondenceAddress);
-      expect(countOccurrences(res.text, toEscapedHtml(translationText.serviceName.updateGeneralPartnerPerson))).toBe(2);
-
+      testTranslations(res.text, translationText.address.update.principalOfficeAddress);
+      expect(countOccurrences(res.text, toEscapedHtml(translationText.serviceName.updateGeneralPartnerLegalEntity))).toBe(2);
       if (lang === "cy") {
         expect(res.text).toContain("WELSH - ");
       } else {
@@ -70,10 +69,10 @@ describe("Update Correspondence Address Yes No Page", () => {
     it.each([
       true,
       false
-    ])("should load the update correspondence address yes no page with %s radio button checked", async (radioValue: boolean) => {
+    ])("should load the update principal office address yes no page with %s radio button checked", async (radioValue: boolean) => {
       setLocalesEnabled(true);
 
-      generalPartner.data.update_service_address_required = radioValue;
+      generalPartner.data.update_principal_office_address_required = radioValue;
 
       const res = await request(app).get(`${URL}`);
 
@@ -83,15 +82,15 @@ describe("Update Correspondence Address Yes No Page", () => {
     });
   });
 
-  describe("POST Update Correspondence Address Yes No Page", () => {
+  describe("POST Update Principal Office Address Yes No Page", () => {
 
     it.each([
-      ['enter correspondence address page when "yes"', "true", REDIRECT_YES],
-      ['the next page when "no"', "false", REDIRECT_NO]
+      ['Enter principal office address page when "yes"', "true", REDIRECT_YES],
+      ['the When did general partner details change page when "no"', "false", REDIRECT_NO]
     ])('should redirect to %s is selected', async (description: string, pageValue: string, redirectUrl: string) => {
       const res = await request(app).post(`${URL}`).send({
-        pageType: PostTransitionPageType.updateCorrespondenceAddressYesNo,
-        update_service_address_required: pageValue
+        pageType: PostTransitionPageType.updatePrincipalOfficeAddressYesNo,
+        update_principal_office_address_required: pageValue
       });
 
       expect(res.status).toBe(302);
@@ -101,3 +100,4 @@ describe("Update Correspondence Address Yes No Page", () => {
   });
 
 });
+

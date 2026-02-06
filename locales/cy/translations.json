@@ -337,7 +337,7 @@
             },
             "principalOfficeAddress": {
                 "title": "WELSH - Do you need to update this partner's principal office address?",
-                "hint": "WELSH - This address is shown on the public register."
+                "hint": "WELSH - This is the address for the entity's main office."
             }
         }
     },
