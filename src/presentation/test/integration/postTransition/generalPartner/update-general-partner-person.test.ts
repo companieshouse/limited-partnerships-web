@@ -16,6 +16,7 @@ import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import GeneralPartnerBuilder from "../../../../../presentation/test/builder/GeneralPartnerBuilder";
 import PostTransitionPageType from "../../../../../presentation/controller/postTransition/pageType";
 import { ApiErrors } from "../../../../../domain/entities/UIErrors";
+import { OFFICER_ROLE_GENERAL_PARTNER_PERSON } from "../../../../../config";
 
 describe("Update General Partner Person Page", () => {
   const URL = getUrl(UPDATE_GENERAL_PARTNER_PERSON_URL);
@@ -39,11 +40,10 @@ describe("Update General Partner Person Page", () => {
   });
 
   describe("GET update general partner person page", () => {
-
     it.each([
       ["English", "en", enTranslationText],
       ["Welsh", "cy", cyTranslationText]
-    ])("should load the update general partner person page with %s text", async (_description: string, lang: string, translationText: any) => {
+    ])("should load the update general partner person page with %s text", async (description: string, lang: string, translationText: any) => {
       setLocalesEnabled(true);
 
       const res = await request(app).get(`${URL}?lang=${lang}`);
@@ -67,15 +67,15 @@ describe("Update General Partner Person Page", () => {
     it.each([
       ["with appointment id", URL],
       ["with general partner id", URL_WITH_IDS]
-    ])("should load the update general partner person page and replay saved data %s", async (_description: string, url: string) => {
+    ])("should load the update general partner person page and replay saved data %s", async (description: string, url: string) => {
       if (url.includes("/appointment/")) {
         companyAppointment = new CompanyAppointmentBuilder()
-          .withOfficerRole("general-partner-in-a-limited-partnership")
+          .withOfficerRole(OFFICER_ROLE_GENERAL_PARTNER_PERSON)
           .withName("Doe - GP, Joe - GP")
           .withNationality("British,Irish")
           .build();
         appDevDependencies.companyGateway.feedCompanyAppointments([
-          companyAppointment,
+          companyAppointment
         ]);
       } else {
         const generalPartner = new GeneralPartnerBuilder()
@@ -105,7 +105,7 @@ describe("Update General Partner Person Page", () => {
     it.each([
       ["with appointment id", URL],
       ["with general partner id", URL_WITH_IDS],
-    ])("should send the general partner person details to API %s", async (_description: string, url: string) => {
+    ])("should send the general partner person details to API %s", async (description: string, url: string) => {
       expect(appDevDependencies.generalPartnerGateway.generalPartners).toHaveLength(0);
 
       if (url.includes("/general-partner/")) {

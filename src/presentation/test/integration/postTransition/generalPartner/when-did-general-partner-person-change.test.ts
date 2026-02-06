@@ -48,7 +48,7 @@ describe("General partner person change date page", () => {
     it.each([
       ["English", "en"],
       ["Welsh", "cy"]
-    ])("should load general partner change date page with %s text", async (_description: string, lang: string) => {
+    ])("should load general partner change date page with %s text", async (description: string, lang: string) => {
       setLocalesEnabled(true);
       const res = await request(app).get(`${URL}?lang=${lang}`);
 

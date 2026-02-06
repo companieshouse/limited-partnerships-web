@@ -94,7 +94,7 @@ describe("General Partner Usual Residential Address Territory Choice", () => {
     it.each([
       ["update", PartnerKind.UPDATE_GENERAL_PARTNER_PERSON, UPDATE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL],
       ["add", PartnerKind.ADD_GENERAL_PARTNER_PERSON, ADD_GENERAL_PARTNER_PERSON_WITH_IDS_URL]
-    ])("should contain the correct back link when on %s general partner person journey", async (_description: string, partnerKind: PartnerKind, backUrl: string) => {
+    ])("should contain the correct back link when on %s general partner person journey", async (description: string, partnerKind: PartnerKind, backUrl: string) => {
       const generalPartner = new GeneralPartnerBuilder()
         .isPerson()
         .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
