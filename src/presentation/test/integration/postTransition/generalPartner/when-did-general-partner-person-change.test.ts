@@ -6,18 +6,18 @@ import enErrorMessages from "../../../../../../locales/en/errors.json";
 
 import app from "../../app";
 
-import GeneralPartnerBuilder from "../../../../../presentation/test/builder/GeneralPartnerBuilder";
+import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { countOccurrences, getUrl, setLocalesEnabled, toEscapedHtml } from "../../../utils";
-import CompanyProfileBuilder from "../../../../../presentation/test/builder/CompanyProfileBuilder";
-import { WHEN_DID_GENERAL_PARTNER_DETAILS_CHANGE_URL, UPDATE_GENERAL_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL } from "presentation/controller/postTransition/url";
+import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
+import { WHEN_DID_GENERAL_PARTNER_PERSON_DETAILS_CHANGE_URL, UPDATE_GENERAL_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL } from "presentation/controller/postTransition/url";
 import PostTransitionPageType from "../../../../controller/postTransition/pageType";
 import { ApiErrors } from "domain/entities/UIErrors";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import TransactionBuilder from "../../../builder/TransactionBuilder";
 
-describe("General partner change date page", () => {
-  const URL = getUrl(WHEN_DID_GENERAL_PARTNER_DETAILS_CHANGE_URL);
+describe("General partner person change date page", () => {
+  const URL = getUrl(WHEN_DID_GENERAL_PARTNER_PERSON_DETAILS_CHANGE_URL);
 
   let generalPartner;
 
@@ -89,7 +89,7 @@ describe("General partner change date page", () => {
       appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
 
       const res = await request(app).post(URL).send({
-        pageType: PostTransitionPageType.whenDidGeneralPartnerDetailsChange
+        pageType: PostTransitionPageType.whenDidGeneralPartnerPersonDetailsChange
       });
 
       const REDIRECT_URL = getUrl(UPDATE_GENERAL_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL);
@@ -108,14 +108,14 @@ describe("General partner change date page", () => {
       appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
 
       const originalErrorMessage = "Default";
-      const expectedErrorMessage = toEscapedHtml(enErrorMessages.errorMessages.dateOfUpdate.term);
+      const expectedErrorMessage = toEscapedHtml(enErrorMessages.errorMessages.dateOfUpdate.generalPartner);
       const apiErrors: ApiErrors = {
         errors: { date_of_update: originalErrorMessage }
       };
       appDevDependencies.generalPartnerGateway.feedErrors(apiErrors);
 
       const res = await request(app).post(URL).send({
-        pageType: PostTransitionPageType.whenDidTheTermChange,
+        pageType: PostTransitionPageType.whenDidGeneralPartnerPersonDetailsChange,
         "date_of_update-day": "10",
         "date_of_update-month": "01",
         "date_of_update-year": "2000"

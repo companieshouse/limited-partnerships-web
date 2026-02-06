@@ -129,25 +129,25 @@ const postTransitionRoutingUpdateCorrespondenceAddressYesNo = {
   pageType: PostTransitionPageType.updateCorrespondenceAddressYesNo,
   data: {
     nextYesUrl: ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
-    nextNoUrl: url.WHEN_DID_GENERAL_PARTNER_DETAILS_CHANGE_URL,
+    nextNoUrl: url.WHEN_DID_GENERAL_PARTNER_PERSON_DETAILS_CHANGE_URL,
     titleKey: "correspondenceAddress",
     fieldName: "update_service_address_required",
     trackingLabel: "update-correspondence-address-yes-no"
   }
 };
 
-const postTransitionRoutingGeneralPartnerChange = {
+const postTransitionRoutingWhenDidGeneralPartnerPersonChange = {
   previousUrl: url.UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL,
-  currentUrl: url.WHEN_DID_GENERAL_PARTNER_DETAILS_CHANGE_URL,
+  currentUrl: url.WHEN_DID_GENERAL_PARTNER_PERSON_DETAILS_CHANGE_URL,
   nextUrl: url.UPDATE_GENERAL_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL,
-  pageType: PostTransitionPageType.whenDidGeneralPartnerDetailsChange,
+  pageType: PostTransitionPageType.whenDidGeneralPartnerPersonDetailsChange,
   data: {
     titleKey: GENERAL_PARTNER
   }
 };
 
-const postTransitionRoutingChangeGeneralPartnerCheckYourAnswers = {
-  previousUrl: url.WHEN_DID_GENERAL_PARTNER_DETAILS_CHANGE_URL,
+const postTransitionRoutingChangeGeneralPartnerPersonCheckYourAnswers = {
+  previousUrl: url.WHEN_DID_GENERAL_PARTNER_PERSON_DETAILS_CHANGE_URL,
   currentUrl: url.UPDATE_GENERAL_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL,
   nextUrl: "/",
   pageType: PostTransitionPageType.updateGeneralPartnerPersonCheckYourAnswers,
@@ -173,10 +173,30 @@ const postTransitionRoutingUpdatePrincipalOfficeAddressYesNo = {
   pageType: PostTransitionPageType.updatePrincipalOfficeAddressYesNo,
   data: {
     nextYesUrl: ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
-    nextNoUrl: url.WHEN_DID_GENERAL_PARTNER_DETAILS_CHANGE_URL,
+    nextNoUrl: url.WHEN_DID_GENERAL_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL,
     titleKey: "principalOfficeAddress",
     fieldName: "update_principal_office_address_required",
     trackingLabel: "update-principal-office-address-yes-no"
+  }
+};
+
+const postTransitionRoutingWhenDidGeneralPartnerLegalEntityChange = {
+  previousUrl: url.UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL,
+  currentUrl: url.WHEN_DID_GENERAL_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL,
+  nextUrl: url.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_URL,
+  pageType: PostTransitionPageType.whenDidGeneralPartnerLegalEntityDetailsChange,
+  data: {
+    titleKey: GENERAL_PARTNER
+  }
+};
+
+const postTransitionRoutingChangeGeneralPartnerLegalEntityCheckYourAnswers = {
+  previousUrl: url.WHEN_DID_GENERAL_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL,
+  currentUrl: url.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_URL,
+  nextUrl: "/",
+  pageType: PostTransitionPageType.updateGeneralPartnerLegalEntityCheckYourAnswers,
+  data: {
+    pageKey: UPDATE_GENERAL_PARTNER_KEY
   }
 };
 
@@ -197,8 +217,10 @@ const generalPartnerRouting = [
   postTransitionRoutingUpdateUsualResidentialAddressYesNo,
   postTransitionRoutingUpdateCorrespondenceAddressYesNo,
   postTransitionRoutingUpdatePrincipalOfficeAddressYesNo,
-  postTransitionRoutingGeneralPartnerChange,
-  postTransitionRoutingChangeGeneralPartnerCheckYourAnswers
+  postTransitionRoutingWhenDidGeneralPartnerPersonChange,
+  postTransitionRoutingWhenDidGeneralPartnerLegalEntityChange,
+  postTransitionRoutingChangeGeneralPartnerPersonCheckYourAnswers,
+  postTransitionRoutingChangeGeneralPartnerLegalEntityCheckYourAnswers
 ];
 
 export default generalPartnerRouting;

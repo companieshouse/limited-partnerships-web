@@ -1,6 +1,12 @@
 {% extends "layout.njk" %}
 
-{% set propsData = props.data.partner if props.data.partner else props.data.limitedPartnership %}
+{% if props.data.generalPartner %}
+  {% set propsData = props.data.generalPartner %}
+{% elseif props.data.limitedPartner %}
+  {% set propsData = props.data.limitedPartner %}
+{% else %}
+  {% set propsData = props.data.limitedPartnership %}
+{% endif %}
 
 {% set dateData = null %}
 {% if propsData.data["date_of_update-year"] %}
@@ -34,8 +40,14 @@
 
       {% include "includes/errors.njk" %}
 
-      {% include "includes/proposed-name.njk" %}
-
+      {% if props.data.limitedPartner %}
+          {% include "includes/limited-partner-name.njk" %}
+      {% elseif props.data.generalPartner %}
+          {% include "includes/general-partner-name.njk" %}
+      {% else %}
+          {% include "includes/proposed-name.njk" %}
+      {% endif %}
+      
       <form class="form" method="post">
         <input type="hidden" name="pageType" value={{ props.pageType }}> 
         {% include "includes/csrf_token.njk" %}

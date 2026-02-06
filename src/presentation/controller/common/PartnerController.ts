@@ -18,7 +18,7 @@ import UIErrors from "../../../domain/entities/UIErrors";
 import { getJourneyTypes } from "../../../utils/journey";
 import RegistrationPageType from "../registration/PageType";
 import TransitionPageType from "../transition/PageType";
-import PostTransitionPageType, { isCeaseDatePage } from "../postTransition/pageType";
+import PostTransitionPageType, { isCeaseDatePage, isWhenDidChangeUpdatePage } from "../postTransition/pageType";
 
 import registrationRouting from "../registration/Routing";
 import transitionRouting from "../transition/Routing";
@@ -28,8 +28,6 @@ import { formatDate } from "../../../utils/date-format";
 import {
   CEASE_DATE_TEMPLATE,
   DATE_OF_UPDATE_TEMPLATE,
-  UPDATE_ADDRESS_YES_NO_TEMPLATE,
-  UPDATE_ADDRESS_YES_NO_TYPE_SUFFIX
 } from "../../../config/constants";
 
 export enum PartnerType {
@@ -64,13 +62,8 @@ abstract class PartnerController extends AbstractController {
 
         const limitedPartner = this.formatPartnerDatesAndSetPreviousUrl(lp, pageRouting, request, response.locals.i18n);
 
-        let template = super.templateName(pageRouting.currentUrl);
-        if (pageRouting.currentUrl.includes(UPDATE_ADDRESS_YES_NO_TYPE_SUFFIX)) {
-          template = UPDATE_ADDRESS_YES_NO_TEMPLATE;
-        }
-
         response.render(
-          template,
+          super.templateName(pageRouting.currentUrl),
           super.makeProps(pageRouting, { limitedPartnership, generalPartner, limitedPartner }, null)
         );
       } catch (error) {
@@ -476,7 +469,7 @@ abstract class PartnerController extends AbstractController {
   private async getPartnerEntity(pageType: any, partner: PartnerType, tokens: Tokens, ids: Ids) {
     let partnerEntity = {};
 
-    if (isCeaseDatePage(pageType)) {
+    if (isCeaseDatePage(pageType) || isWhenDidChangeUpdatePage(pageType)) {
       if (partner === PartnerType.generalPartner) {
         partnerEntity = await this.generalPartnerService.getGeneralPartner(
           tokens,
@@ -761,7 +754,7 @@ abstract class PartnerController extends AbstractController {
       return {
         data: {
           limitedPartnership,
-          [partnerFieldName]: { data: requestBody }
+          [partnerFieldName]: { data: { ...partner?.data, ...requestBody } }
         },
         url: pageRouting.currentUrl
       };
