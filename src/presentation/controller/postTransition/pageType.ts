@@ -56,8 +56,10 @@ enum PostTransitionPageType {
   updateCorrespondenceAddressYesNo = `update-correspondence-${UPDATE_ADDRESS_YES_NO_TYPE_SUFFIX}`,
   updatePrincipalOfficeAddressYesNo = `update-principal-office-${UPDATE_ADDRESS_YES_NO_TYPE_SUFFIX}`,
   updateGeneralPartnerPersonCheckYourAnswers = `general-partner-person-${CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX}`,
+  updateGeneralPartnerLegalEntityCheckYourAnswers = `general-partner-legal-entity-${CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX}`,
 
-  whenDidGeneralPartnerDetailsChange = `${DATE_OF_UPDATE_TYPE_PREFIX}-general-partner-details-change`
+  whenDidGeneralPartnerPersonDetailsChange = `${DATE_OF_UPDATE_TYPE_PREFIX}-general-partner-person-details-change`,
+  whenDidGeneralPartnerLegalEntityDetailsChange = `${DATE_OF_UPDATE_TYPE_PREFIX}-general-partner-legal-entity-details-change`
 }
 
 const CeaseDatePageTypes: string[] = [
@@ -69,6 +71,15 @@ const CeaseDatePageTypes: string[] = [
 
 export function isCeaseDatePage(pageType: string): boolean {
   return CeaseDatePageTypes.includes(pageType);
+}
+
+const whenDidChangeUpdatePageTypes: string[] = [
+  PostTransitionPageType.whenDidGeneralPartnerPersonDetailsChange,
+  PostTransitionPageType.whenDidGeneralPartnerLegalEntityDetailsChange
+];
+
+export function isWhenDidChangeUpdatePage(pageType: string): boolean {
+  return whenDidChangeUpdatePageTypes.includes(pageType);
 }
 
 export default PostTransitionPageType;

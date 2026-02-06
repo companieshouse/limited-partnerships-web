@@ -32,7 +32,7 @@ import LimitedPartnerService from "../../../application/service/LimitedPartnerSe
 
 import { CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL } from "./url/registration";
 import { REVIEW_GENERAL_PARTNERS_URL } from "../registration/url";
-import { UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL, WHEN_DID_GENERAL_PARTNER_DETAILS_CHANGE_URL } from "../postTransition/url";
+import { UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL, WHEN_DID_GENERAL_PARTNER_PERSON_DETAILS_CHANGE_URL } from "../postTransition/url";
 
 class AddressLookUpController extends AbstractController {
   private static readonly LIMITED_PARTNERSHIP_POSTCODE_PAGES: Set<PageType | PageDefault> = new Set([
@@ -585,7 +585,6 @@ class AddressLookUpController extends AbstractController {
   }
 
   private async handleConditionalNextUrlForGeneralPartners(tokens: Tokens, ids: Ids, pageRouting: PageRouting, request: Request) {
-
     if (pageRouting.pageType === AddressLookUpPageType.confirmGeneralPartnerUsualResidentialAddress) {
       const generalPartner = await this.generalPartnerService.getGeneralPartner(
         tokens,
@@ -611,7 +610,7 @@ class AddressLookUpController extends AbstractController {
       );
       if (generalPartner.data?.kind === PartnerKind.UPDATE_GENERAL_PARTNER_PERSON) {
         pageRouting.nextUrl = super.insertIdsInUrl(
-          WHEN_DID_GENERAL_PARTNER_DETAILS_CHANGE_URL,
+          WHEN_DID_GENERAL_PARTNER_PERSON_DETAILS_CHANGE_URL,
           ids,
           request.url
         );
