@@ -175,8 +175,7 @@ const postTransitionAddressRoutingTerritoryChoiceGeneralPartnerPrincipalOfficeAd
   pageType: AddressPageType.territoryChoiceGeneralPartnerPrincipalOfficeAddress,
   data: {
     ...principalOfficeAddressCacheKeys,
-    nextUrlOverseas: url.ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
-    previousUrlUpdateGeneralPartnerPerson: UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL
+    nextUrlOverseas: url.ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
   }
 };
 
@@ -223,7 +222,7 @@ const postTransitionAddressRoutingConfirmGeneralPartnerPrincipalOfficeAddress = 
   data: {
     ...principalOfficeAddressCacheKeys,
     enterManualAddressPageType: AddressPageType.enterGeneralPartnerPrincipalOfficeAddress,
-    previousUrlUpdateGeneralPartnerPerson: UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL
+    previousUrlUpdateGeneralPartnerLegalEntity: UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL
   }
 };
 

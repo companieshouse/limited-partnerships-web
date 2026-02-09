@@ -142,7 +142,7 @@ class CompanyService {
     const legalForm = companyAppointment?.identification?.legalForm ?? "";
     const governingLaw = companyAppointment?.identification?.legalAuthority ?? "";
     const legalEntityRegistrationName = companyAppointment?.identification?.placeRegistered ?? "";
-    const legalEntityRegistrationLocation = this.toTitleCase((companyAppointment?.identification as any)?.registerLocation ?? "");
+    const legalEntityRegistrationLocation = this.toTitleCase(companyAppointment?.identification?.registerLocation ?? "");
     const registeredCompanyNumber = companyAppointment?.identification?.registrationNumber ?? "";
 
     return {
