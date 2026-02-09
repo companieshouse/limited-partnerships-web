@@ -144,6 +144,18 @@ class CompanyService {
     const legalEntityRegistrationName = companyAppointment?.identification?.placeRegistered ?? "";
     const legalEntityRegistrationLocation = this.toTitleCase(companyAppointment?.identification?.registerLocation ?? "");
     const registeredCompanyNumber = companyAppointment?.identification?.registrationNumber ?? "";
+    let principalOfficeAddress;
+    if (companyAppointment?.principalOfficeAddress) {
+      principalOfficeAddress = {
+        address_line_1: companyAppointment?.principalOfficeAddress?.addressLine1,
+        address_line_2: companyAppointment?.principalOfficeAddress?.addressLine2,
+        premises: companyAppointment?.principalOfficeAddress?.premises,
+        locality: companyAppointment?.principalOfficeAddress?.locality,
+        region: companyAppointment?.principalOfficeAddress?.region,
+        country: companyAppointment?.principalOfficeAddress?.country,
+        postal_code: companyAppointment?.principalOfficeAddress?.postalCode
+      };
+    }
 
     return {
       data: {
@@ -153,7 +165,8 @@ class CompanyService {
         governing_law: governingLaw ?? "",
         legal_entity_register_name: legalEntityRegistrationName ?? "",
         legal_entity_registration_location: legalEntityRegistrationLocation ?? "",
-        registered_company_number: registeredCompanyNumber ?? ""
+        registered_company_number: registeredCompanyNumber ?? "",
+        principal_office_address: principalOfficeAddress ?? undefined
       }
     };
   }
