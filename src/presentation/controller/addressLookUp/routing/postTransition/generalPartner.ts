@@ -221,7 +221,8 @@ const postTransitionAddressRoutingConfirmGeneralPartnerPrincipalOfficeAddress = 
   pageType: AddressPageType.confirmGeneralPartnerPrincipalOfficeAddress,
   data: {
     ...principalOfficeAddressCacheKeys,
-    enterManualAddressPageType: AddressPageType.enterGeneralPartnerPrincipalOfficeAddress
+    enterManualAddressPageType: AddressPageType.enterGeneralPartnerPrincipalOfficeAddress,
+    previousUrlUpdateGeneralPartnerLegalEntity: UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL
   }
 };
 
