@@ -85,7 +85,7 @@ describe("Update Principal Office Address Yes No Page", () => {
   describe("POST Update Principal Office Address Yes No Page", () => {
 
     it.each([
-      ['Enter principal office address page when "yes"', "true", REDIRECT_YES],
+      ['enter general partner principal office address page when "yes"', "true", REDIRECT_YES],
       ['the When did general partner details change page when "no"', "false", REDIRECT_NO]
     ])('should redirect to %s is selected', async (description: string, pageValue: string, redirectUrl: string) => {
       const res = await request(app).post(`${URL}`).send({

@@ -145,8 +145,7 @@ class GlobalController extends AbstractController {
     const currentUrlParams = new URLSearchParams(new URL(`http://${request.url}`)?.search);
 
     if (currentUrlParams.has("lang")) {
-      // extra step to remove duplicate query param with ? - http://url?lang=cy?lang=cy&status=paid - to be removed when payments-api is fixed
-      const langParam = currentUrlParams.get("lang")?.split("?")[0];
+      const langParam = currentUrlParams.get("lang");
 
       nextPageUrlWithJourneyAndIds = nextPageUrlWithJourneyAndIds + `?lang=${langParam}`;
     }
