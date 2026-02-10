@@ -19,6 +19,9 @@ import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import TransactionBuilder from "../../../../builder/TransactionBuilder";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL } from "../../../../../controller/postTransition/url";
+import CompanyAppointmentBuilder, { principalOfficeAddress } from "../../../../builder/CompanyAppointmentBuilder";
+import { OFFICER_ROLE_GENERAL_PARTNER_LEGAL_ENTITY } from "../../../../../../config";
+import CompanyProfileBuilder from "../../../../builder/CompanyProfileBuilder";
 
 describe("Enter general partner's principal office manual address page", () => {
   const URL = getUrl(ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
@@ -106,6 +109,39 @@ describe("Enter general partner's principal office manual address page", () => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(backLinkUrl);
     });
+
+    it("should pre-populate the enter general partners principal office address from CHS when partner kind is UPDATE_GENERAL_PARTNER_LEGAL_ENTITY", async () => {
+      const updateGeneralPartner = new GeneralPartnerBuilder()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .isLegalEntity()
+        .withKind(PartnerKind.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY)
+        .withAppointmentId("AP123456")
+        .withPrincipalOfficeAddress(null)
+        .build();
+
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([updateGeneralPartner]);
+
+      const companyAppointment = new CompanyAppointmentBuilder()
+        .withOfficerRole(OFFICER_ROLE_GENERAL_PARTNER_LEGAL_ENTITY)
+        .withPrincipalOfficeAddress(principalOfficeAddress)
+        .build();
+      appDevDependencies.companyGateway.feedCompanyAppointments([companyAppointment]);
+
+      const companyProfile = new CompanyProfileBuilder().build();
+      appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
+
+      const res = await request(app).get(URL);
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(companyAppointment.principalOfficeAddress?.addressLine1);
+      expect(res.text).toContain(companyAppointment.principalOfficeAddress?.addressLine2);
+      expect(res.text).toContain(companyAppointment.principalOfficeAddress?.locality);
+      expect(res.text).toContain(companyAppointment.principalOfficeAddress?.postalCode);
+      expect(res.text).toContain(companyAppointment.principalOfficeAddress?.premises);
+      expect(res.text).toContain(companyAppointment.principalOfficeAddress?.region);
+      expect(res.text).toContain(companyAppointment.principalOfficeAddress?.country);
+    });
+
   });
 
   describe("Post enter general partner's principal office address page", () => {
