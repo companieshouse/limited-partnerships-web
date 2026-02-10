@@ -110,7 +110,7 @@ describe("CompanyService", () => {
       );
 
       expect(result.partner.data?.appointment_id).toEqual("AP123456");
-      expect(result.partner.data?.legal_entity_name).toEqual(appointment.name?.split(", ")[0]);
+      expect(result.partner.data?.legal_entity_name).toEqual(appointment.name);
       expect(result.partner.data?.legal_form).toEqual(appointment.identification?.legalForm);
       expect(result.partner.data?.governing_law).toEqual(appointment.identification?.legalAuthority);
       expect(result.partner.data?.legal_entity_register_name).toEqual(appointment.identification?.placeRegistered);
