@@ -111,7 +111,7 @@ class AddressLookUpController extends AbstractController {
 
         const addressList = await this.getAddressList(pageRouting, cacheById, tokens);
 
-        const chsCorrespondenceAddress = await this.getChsCorrespondenceAddressIfApplicable(tokens, pageRouting, generalPartner, cacheById, ids);
+        const { chsCorrespondenceAddress, chsPrincipalOfficeAddress } = await this.getChsAddressesIfApplicable(tokens, pageRouting, generalPartner, limitedPartner, cacheById, ids);
 
         this.conditionalBackLink(pageRouting, generalPartner, limitedPartner, ids);
 
@@ -119,7 +119,7 @@ class AddressLookUpController extends AbstractController {
           super.templateName(pageRouting.currentUrl),
           super.makeProps(
             pageRouting,
-            { limitedPartnership, generalPartner, limitedPartner, addressList, cache: { ...cacheById }, chsCorrespondenceAddress },
+            { limitedPartnership, generalPartner, limitedPartner, addressList, cache: { ...cacheById }, chsCorrespondenceAddress, chsPrincipalOfficeAddress },
             null
           )
         );
@@ -129,36 +129,50 @@ class AddressLookUpController extends AbstractController {
     };
   }
 
-  private async getChsCorrespondenceAddressIfApplicable(
+  private async getChsAddressesIfApplicable(
     tokens: Tokens,
     pageRouting: PageRouting,
     generalPartner: GeneralPartner,
+    limitedPartner: LimitedPartner,
     cache: Record<string, any>,
-    ids: Ids
-  ): Promise<Address | undefined> {
-
-    if (generalPartner?.data?.kind !== PartnerKind.UPDATE_GENERAL_PARTNER_PERSON) {
-      return;
-    }
-
-    if (pageRouting.pageType !== AddressLookUpPageType.enterGeneralPartnerCorrespondenceAddress) {
-      return;
-    }
-
-    if (generalPartner?.data?.service_address || cache?.service_address) {
-      return;
-    }
-
+    ids: Ids,
+  ): Promise<{ chsCorrespondenceAddress?: Address; chsPrincipalOfficeAddress?: Address }> {
+    const partner = generalPartner?.data ? generalPartner : limitedPartner;
+    const partnerKind = partner?.data?.kind as PartnerKind;
     let chsPartner;
-    if (ids.companyId && generalPartner?.data?.appointment_id) {
-      // get CHS correspondence / service address
-      chsPartner = await this.companyService.buildPartnerFromCompanyAppointment(
-        tokens,
-        ids.companyId,
-        generalPartner.data.appointment_id
-      );
+
+    if (this.isChsAddressRequired(partnerKind, pageRouting, generalPartner, cache)) {
+      if (ids.companyId && partner?.data?.appointment_id) {
+        chsPartner = await this.companyService.buildPartnerFromCompanyAppointment(
+          tokens,
+          ids.companyId,
+          partner.data.appointment_id
+        );
+      }
     }
-    return chsPartner?.partner?.data?.service_address;
+    return {
+      chsCorrespondenceAddress: chsPartner?.partner?.data?.service_address,
+      chsPrincipalOfficeAddress: chsPartner?.partner?.data?.principal_office_address
+    };
+  }
+
+  private isChsAddressRequired(partnerKind: PartnerKind, pageRouting: PageRouting, generalPartner: GeneralPartner, cache: Record<string, any>) {
+    if (partnerKind === PartnerKind.UPDATE_GENERAL_PARTNER_PERSON) {
+      if (pageRouting.pageType === AddressLookUpPageType.enterGeneralPartnerCorrespondenceAddress) {
+        if (!generalPartner?.data?.service_address && !cache?.service_address) {
+          return true;
+        }
+      }
+    }
+
+    if (partnerKind === PartnerKind.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY) {
+      if (pageRouting.pageType === AddressLookUpPageType.enterGeneralPartnerPrincipalOfficeAddress) {
+        if (!generalPartner?.data?.principal_office_address && !cache?.principal_office_address) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   private conditionalBackLink(

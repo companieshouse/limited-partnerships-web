@@ -22,6 +22,16 @@ export const companyAppointmentLegalEntity = {
   }
 };
 
+export const principalOfficeAddress = {
+  addressLine1: "10 Test Street",
+  addressLine2: "Test Address Line 2",
+  locality: "Test Locality",
+  postalCode: "TE1 1ST",
+  premises: "10",
+  region: "Test Region",
+  country: "England"
+};
+
 class CompanyAppointmentBuilder {
   constructor() {
     this.init();
@@ -111,6 +121,11 @@ class CompanyAppointmentBuilder {
 
   withIdentificationDetails(identification: Identification) {
     this.data.identification = identification;
+    return this;
+  };
+
+  withPrincipalOfficeAddress(address: Record<string, any>) {
+    this.data.principalOfficeAddress = address;
     return this;
   };
 
