@@ -138,29 +138,10 @@ class AddressLookUpController extends AbstractController {
     ids: Ids,
   ): Promise<{ chsCorrespondenceAddress?: Address; chsPrincipalOfficeAddress?: Address }> {
     const partner = generalPartner?.data ? generalPartner : limitedPartner;
-
-    let isChsAddressRequired = false;
-
     const partnerKind = partner?.data?.kind as PartnerKind;
-
-    if (partnerKind === PartnerKind.UPDATE_GENERAL_PARTNER_PERSON) {
-      if (pageRouting.pageType === AddressLookUpPageType.enterGeneralPartnerCorrespondenceAddress) {
-        if (!generalPartner?.data?.service_address && !cache?.service_address) {
-          isChsAddressRequired = true;
-        }
-      }
-    }
-
-    if (partnerKind === PartnerKind.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY) {
-      if (pageRouting.pageType === AddressLookUpPageType.enterGeneralPartnerPrincipalOfficeAddress) {
-        if (!generalPartner?.data?.principal_office_address && !cache?.principal_office_address) {
-          isChsAddressRequired = true;
-        }
-      }
-    }
-
     let chsPartner;
-    if (isChsAddressRequired) {
+
+    if (this.isChsAddressRequired(partnerKind, pageRouting, generalPartner, cache)) {
       if (ids.companyId && partner?.data?.appointment_id) {
         chsPartner = await this.companyService.buildPartnerFromCompanyAppointment(
           tokens,
@@ -173,6 +154,25 @@ class AddressLookUpController extends AbstractController {
       chsCorrespondenceAddress: chsPartner?.partner?.data?.service_address,
       chsPrincipalOfficeAddress: chsPartner?.partner?.data?.principal_office_address
     };
+  }
+
+  private isChsAddressRequired(partnerKind: PartnerKind, pageRouting: PageRouting, generalPartner: GeneralPartner, cache: Record<string, any>) {
+    if (partnerKind === PartnerKind.UPDATE_GENERAL_PARTNER_PERSON) {
+      if (pageRouting.pageType === AddressLookUpPageType.enterGeneralPartnerCorrespondenceAddress) {
+        if (!generalPartner?.data?.service_address && !cache?.service_address) {
+          return true;
+        }
+      }
+    }
+
+    if (partnerKind === PartnerKind.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY) {
+      if (pageRouting.pageType === AddressLookUpPageType.enterGeneralPartnerPrincipalOfficeAddress) {
+        if (!generalPartner?.data?.principal_office_address && !cache?.principal_office_address) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   private conditionalBackLink(
