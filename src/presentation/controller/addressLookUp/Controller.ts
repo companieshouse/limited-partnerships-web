@@ -582,19 +582,17 @@ class AddressLookUpController extends AbstractController {
         pageRouting.nextUrl = super.insertIdsInUrl(REVIEW_GENERAL_PARTNERS_URL, ids, request.url);
       }
     }
-    await this.handleConditionalNextUrlForGeneralPartners(tokens, ids, pageRouting, request);
+    if (ids.generalPartnerId) {
+      await this.handleConditionalNextUrlForGeneralPartners(tokens, ids, pageRouting, request);
+    }
   }
 
   private async handleConditionalNextUrlForGeneralPartners(tokens: Tokens, ids: Ids, pageRouting: PageRouting, request: Request) {
-    let generalPartner;
-
-    if (ids.generalPartnerId) {
-      generalPartner = await this.generalPartnerService.getGeneralPartner(
-        tokens,
-        ids.transactionId,
-        ids.generalPartnerId
-      );
-    }
+    const generalPartner = await this.generalPartnerService.getGeneralPartner(
+      tokens,
+      ids.transactionId,
+      ids.generalPartnerId
+    );
 
     if (pageRouting.pageType === AddressLookUpPageType.confirmGeneralPartnerUsualResidentialAddress) {
       if (generalPartner?.data?.service_address?.address_line_1) {
