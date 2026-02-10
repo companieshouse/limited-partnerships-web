@@ -166,7 +166,7 @@ class CompanyService {
         legal_entity_register_name: legalEntityRegistrationName ?? "",
         legal_entity_registration_location: legalEntityRegistrationLocation ?? "",
         registered_company_number: registeredCompanyNumber ?? "",
-        principal_office_address: principalOfficeAddress ?? undefined
+        principal_office_address: principalOfficeAddress
       }
     };
   }

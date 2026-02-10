@@ -110,7 +110,7 @@ describe("Enter general partner's principal office manual address page", () => {
       expect(res.text).toContain(backLinkUrl);
     });
 
-    it("should pre-populate the enter general partners principal office address from CHS when partner kind is UPDATE_GENERAL_PARTNER_LEGAL_ENTITY", async () => {
+    it("should pre-populate the enter general partners principal office address from company appointment when partner kind is UPDATE_GENERAL_PARTNER_LEGAL_ENTITY", async () => {
       const updateGeneralPartner = new GeneralPartnerBuilder()
         .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
         .isLegalEntity()
