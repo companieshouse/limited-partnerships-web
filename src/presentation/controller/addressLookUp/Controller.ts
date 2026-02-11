@@ -20,7 +20,7 @@ import { getJourneyTypes } from "../../../utils";
 import { APPLICATION_CACHE_KEY, cookieOptions } from "../../../config/constants";
 import UIErrors from "../../../domain/entities/UIErrors";
 
-import AddressLookUpPageType from "./PageType";
+import AddressLookUpPageType, { isConfirmGeneralPartnerAddressPageType } from "./PageType";
 import { PageDefault, PageRouting, pageRoutingDefault } from "../PageRouting";
 import PageType from "../PageType";
 
@@ -588,13 +588,7 @@ class AddressLookUpController extends AbstractController {
   }
 
   private async handleConditionalNextUrlForGeneralPartners(tokens: Tokens, ids: Ids, pageRouting: PageRouting, request: Request) {
-    const confirmAddressPageTypes: Array<PageType | PageDefault> = [
-      AddressLookUpPageType.confirmGeneralPartnerUsualResidentialAddress,
-      AddressLookUpPageType.confirmGeneralPartnerCorrespondenceAddress,
-      AddressLookUpPageType.confirmGeneralPartnerPrincipalOfficeAddress
-    ];
-
-    if (!confirmAddressPageTypes.includes(pageRouting.pageType)) {
+    if (!isConfirmGeneralPartnerAddressPageType(pageRouting.pageType)) {
       return;
     }
 
