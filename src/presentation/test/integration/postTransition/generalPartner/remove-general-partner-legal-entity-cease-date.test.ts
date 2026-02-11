@@ -54,7 +54,7 @@ describe("General Partner cease date page", () => {
       expect(res.text).not.toContain("WELSH -");
 
       expect(res.text).toContain(companyProfile.data.companyName.toUpperCase());
-      expect(res.text).toContain(companyAppointment.name?.split(",")[0] ?? "");
+      expect(res.text).toContain(companyAppointment.name ?? "");
       expect(countOccurrences(res.text, enTranslationText.serviceName.removeGeneralPartnerEntity)).toBe(2);
     });
 

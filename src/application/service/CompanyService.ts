@@ -110,7 +110,7 @@ class CompanyService {
   private buildPersonPartner(
     partner: GeneralPartner | LimitedPartner,
     companyAppointment: Partial<CompanyOfficer>
-  ): GeneralPartner {
+  ): GeneralPartner | LimitedPartner {
     const name = companyAppointment?.name?.split(", ") ?? [];
     const nationality = companyAppointment?.nationality?.split(",") ?? [];
     let date_of_birth = "";
@@ -137,8 +137,8 @@ class CompanyService {
   private buildLegalEntityPartner(
     partner: GeneralPartner | LimitedPartner,
     companyAppointment: Partial<CompanyOfficer>
-  ): LimitedPartner {
-    const name = companyAppointment?.name?.split(", ") ?? [];
+  ): GeneralPartner | LimitedPartner {
+    const name = companyAppointment?.name ?? "";
     const legalForm = companyAppointment?.identification?.legalForm ?? "";
     const governingLaw = companyAppointment?.identification?.legalAuthority ?? "";
     const legalEntityRegistrationName = companyAppointment?.identification?.placeRegistered ?? "";
@@ -160,7 +160,7 @@ class CompanyService {
     return {
       data: {
         ...partner.data,
-        legal_entity_name: name[0] ?? "",
+        legal_entity_name: name,
         legal_form: legalForm ?? "",
         governing_law: governingLaw ?? "",
         legal_entity_register_name: legalEntityRegistrationName ?? "",
