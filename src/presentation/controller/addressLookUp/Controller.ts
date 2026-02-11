@@ -588,6 +588,16 @@ class AddressLookUpController extends AbstractController {
   }
 
   private async handleConditionalNextUrlForGeneralPartners(tokens: Tokens, ids: Ids, pageRouting: PageRouting, request: Request) {
+    const confirmAddressPageTypes: Array<PageType | PageDefault> = [
+      AddressLookUpPageType.confirmGeneralPartnerUsualResidentialAddress,
+      AddressLookUpPageType.confirmGeneralPartnerCorrespondenceAddress,
+      AddressLookUpPageType.confirmGeneralPartnerPrincipalOfficeAddress
+    ];
+
+    if (!confirmAddressPageTypes.includes(pageRouting.pageType)) {
+      return;
+    }
+
     const generalPartner = await this.generalPartnerService.getGeneralPartner(
       tokens,
       ids.transactionId,
