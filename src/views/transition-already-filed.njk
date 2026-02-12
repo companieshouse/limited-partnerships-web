@@ -10,7 +10,7 @@
 
             <p class="govuk-body">{{ i18n.transactionFiled.alreadyReceived }} {{ props.data.limitedPartnership.data.partnership_name }} ({{ props.data.limitedPartnership.data.partnership_number }}). </p>
 
-            <p class="govuk-body">{{ i18n.transactionFiled.acceptedInformation }} <a href="https://find-and-update.company-information.service.gov.uk/" class="govuk-link">{{ i18n.transactionFiled.acceptedInformationLink }}</a>.</p>
+            <p class="govuk-body">{{ i18n.transactionFiled.acceptedInformation | safe }}</p>
   
         </div>
     </div>
