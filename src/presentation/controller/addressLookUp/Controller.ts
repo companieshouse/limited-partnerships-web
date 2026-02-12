@@ -20,7 +20,7 @@ import { getJourneyTypes } from "../../../utils";
 import { APPLICATION_CACHE_KEY, cookieOptions } from "../../../config/constants";
 import UIErrors from "../../../domain/entities/UIErrors";
 
-import AddressLookUpPageType from "./PageType";
+import AddressLookUpPageType, { isConfirmGeneralPartnerAddressPageType } from "./PageType";
 import { PageDefault, PageRouting, pageRoutingDefault } from "../PageRouting";
 import PageType from "../PageType";
 
@@ -596,16 +596,23 @@ class AddressLookUpController extends AbstractController {
         pageRouting.nextUrl = super.insertIdsInUrl(REVIEW_GENERAL_PARTNERS_URL, ids, request.url);
       }
     }
-    await this.handleConditionalNextUrlForGeneralPartners(tokens, ids, pageRouting, request);
+    if (ids.generalPartnerId) {
+      await this.handleConditionalNextUrlForGeneralPartners(tokens, ids, pageRouting, request);
+    }
   }
 
   private async handleConditionalNextUrlForGeneralPartners(tokens: Tokens, ids: Ids, pageRouting: PageRouting, request: Request) {
+    if (!isConfirmGeneralPartnerAddressPageType(pageRouting.pageType)) {
+      return;
+    }
+
+    const generalPartner = await this.generalPartnerService.getGeneralPartner(
+      tokens,
+      ids.transactionId,
+      ids.generalPartnerId
+    );
+
     if (pageRouting.pageType === AddressLookUpPageType.confirmGeneralPartnerUsualResidentialAddress) {
-      const generalPartner = await this.generalPartnerService.getGeneralPartner(
-        tokens,
-        ids.transactionId,
-        ids.generalPartnerId
-      );
       if (generalPartner?.data?.service_address?.address_line_1) {
         pageRouting.nextUrl = super.insertIdsInUrl(pageRouting.data?.confirmAddressUrl, ids, request.url);
       } else if (generalPartner?.data?.kind === PartnerKind.UPDATE_GENERAL_PARTNER_PERSON) {
@@ -618,11 +625,6 @@ class AddressLookUpController extends AbstractController {
     }
 
     if (pageRouting.pageType === AddressLookUpPageType.confirmGeneralPartnerCorrespondenceAddress) {
-      const generalPartner = await this.generalPartnerService.getGeneralPartner(
-        tokens,
-        ids.transactionId,
-        ids.generalPartnerId
-      );
       if (generalPartner.data?.kind === PartnerKind.UPDATE_GENERAL_PARTNER_PERSON) {
         pageRouting.nextUrl = super.insertIdsInUrl(
           WHEN_DID_GENERAL_PARTNER_PERSON_DETAILS_CHANGE_URL,
@@ -633,11 +635,6 @@ class AddressLookUpController extends AbstractController {
     }
 
     if (pageRouting.pageType === AddressLookUpPageType.confirmGeneralPartnerPrincipalOfficeAddress) {
-      const generalPartner = await this.generalPartnerService.getGeneralPartner(
-        tokens,
-        ids.transactionId,
-        ids.generalPartnerId
-      );
       if (generalPartner.data?.kind === PartnerKind.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY) {
         pageRouting.nextUrl = super.insertIdsInUrl(
           WHEN_DID_GENERAL_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL,

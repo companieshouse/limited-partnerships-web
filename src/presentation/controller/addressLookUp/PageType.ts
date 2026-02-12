@@ -53,4 +53,12 @@ enum AddressPageType {
   confirmLimitedPartnerPrincipalOfficeAddress = "confirm-limited-partner-principal-office-address"
 }
 
+export function isConfirmGeneralPartnerAddressPageType(pageType: string): boolean {
+  return [
+    AddressPageType.confirmGeneralPartnerUsualResidentialAddress,
+    AddressPageType.confirmGeneralPartnerCorrespondenceAddress,
+    AddressPageType.confirmGeneralPartnerPrincipalOfficeAddress
+  ].includes(pageType as AddressPageType);
+}
+
 export default AddressPageType;
