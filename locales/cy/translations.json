@@ -799,8 +799,9 @@
     "transactionFiled": {
         "title": "WELSH - Information has already been provided for the limited partnership",
         "alreadyReceived": "WELSH - We've already received a filing with the required information for",
-        "acceptedInformation": "WELSH - Once we've accepted this information, it will appear on the public register. You can then make any changes needed using our",
-        "acceptedInformationLink": "WELSH - Find and update company information service"
+        "acceptedInformationLine1": "WELSH - After we've accepted the filing, you can search for the limited partnership on the",
+        "acceptedInformationLine2": "WELSH - to view or update its information.",
+        "acceptedInformationLink": "WELSH - Companies House register"
     },
 
     "types": {

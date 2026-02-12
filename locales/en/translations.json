@@ -800,8 +800,9 @@
     "transactionFiled": {
         "title": "Information has already been provided for the limited partnership",
         "alreadyReceived": "We've already received a filing with the required information for",
-        "acceptedInformation": "Once we've accepted this information, it will appear on the public register. You can then make any changes needed using our",
-        "acceptedInformationLink": "Find and update company information service"
+        "acceptedInformationLine1": "After we've accepted the filing, you can search for the limited partnership on the",
+        "acceptedInformationLine2": "to view or update its information.",
+        "acceptedInformationLink": "Companies House register"
     },
 
     "types": {
