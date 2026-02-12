@@ -800,7 +800,9 @@
     "transactionFiled": {
         "title": "Information has already been provided for the limited partnership",
         "alreadyReceived": "We've already received a filing with the required information for",
-        "acceptedInformation": "After we've accepted the filing, you can search for the limited partnership on the <a class='govuk-link' href='https://find-and-update.company-information.service.gov.uk/'>Companies House register</a> to view or update its information."
+        "acceptedInformationLine1": "After we've accepted the filing, you can search for the limited partnership on the",
+        "acceptedInformationLine2": "to view or update its information.",
+        "acceptedInformationLink": "Companies House register"
     },
 
     "types": {

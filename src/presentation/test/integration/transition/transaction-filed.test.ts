@@ -31,9 +31,7 @@ describe("Transition already filed", () => {
 
     expect(res.status).toBe(200);
 
-    expect(res.text).toContain(enTranslationText.transactionFiled.acceptedInformation);
-
-    testTranslations(res.text, enTranslationText.transactionFiled, ['acceptedInformation']);
+    testTranslations(res.text, enTranslationText.transactionFiled);
   });
 
   it("should render TRANSITION_ALREADY_FILED_URL with Welsh text", async () => {
@@ -43,9 +41,7 @@ describe("Transition already filed", () => {
 
     expect(res.status).toBe(200);
 
-    expect(res.text).toContain(cyTranslationText.transactionFiled.acceptedInformation);
-
-    testTranslations(res.text, cyTranslationText.transactionFiled, ['acceptedInformation']);
+    testTranslations(res.text, cyTranslationText.transactionFiled);
   });
 
   it.each([{ form: "LPTS01" }, { form: "LP5D" }, { form: "LP7D" }])(
