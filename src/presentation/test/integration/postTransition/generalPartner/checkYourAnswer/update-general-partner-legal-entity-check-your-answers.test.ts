@@ -72,7 +72,7 @@ describe("Update general partner check your answers page", () => {
 
       expect(res.text).toContain(companyProfile.data.companyName + " (" + companyProfile.data.companyNumber + ")");
       expect(res.text).toContain(`${enTranslationText.checkYourAnswersPage.update.title}`);
-      expect(testTranslations(res.text, enTranslationText.checkYourAnswersPage.partners.legalEntity));
+      testTranslations(res.text, enTranslationText.checkYourAnswersPage.partners.legalEntity);
       expect(res.text).toContain(generalPartner.data?.legal_entity_name);
       expect(res.text).toContain(generalPartner.data?.legal_form);
       expect(res.text).toContain(generalPartner.data?.governing_law);
@@ -95,7 +95,7 @@ describe("Update general partner check your answers page", () => {
       expect(res.status).toBe(200);
 
       expect(res.text).toContain(`${cyTranslationText.checkYourAnswersPage.update.title}`);
-      expect(testTranslations(res.text, cyTranslationText.checkYourAnswersPage.partners.legalEntity));
+      testTranslations(res.text, cyTranslationText.checkYourAnswersPage.partners.legalEntity);
       expect(res.text).toContain(generalPartner.data?.legal_entity_name);
       expect(res.text).toContain(cyTranslationText.checkYourAnswersPage.update.dateOfChange);
 
@@ -110,7 +110,7 @@ describe("Update general partner check your answers page", () => {
       generalPartner = new GeneralPartnerBuilder()
         .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
         .isLegalEntity()
-        .withLegalEntityName("Partner Apppointment")
+        .withLegalEntityName("Partner Appointment")
         .withPrincipalOfficeAddressUpdateRequired(false)
         .withAppointmentId("AP123456")
         .withDateOfUpdate("2025-01-01")
