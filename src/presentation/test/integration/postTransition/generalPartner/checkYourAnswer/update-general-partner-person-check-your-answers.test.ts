@@ -54,6 +54,7 @@ describe("Update general partner check your answers page", () => {
 
     companyAppointment = new CompanyAppointmentBuilder()
       .withOfficerRole(OFFICER_ROLE_GENERAL_PARTNER_PERSON)
+      .withName("Doe, John")
       .withNationality("British")
       .build();
     appDevDependencies.companyGateway.feedCompanyAppointments([companyAppointment]);
@@ -70,7 +71,8 @@ describe("Update general partner check your answers page", () => {
 
       expect(res.text).toContain(companyProfile.data.companyName + " (" + companyProfile.data.companyNumber + ")");
       expect(res.text).toContain(`${enTranslationText.checkYourAnswersPage.update.title}`);
-      expect(res.text).toContain(generalPartner.data?.forename + " " + generalPartner.data?.surname);
+      expect(res.text).toContain(generalPartner.data?.forename);
+      expect(res.text).toContain(generalPartner.data?.surname);
       expect(res.text).toContain(generalPartner.data?.nationality1);
       expect(res.text).toContain("6 Duncalf Street, Stoke-On-Trent, England, ST6 3LJ");
       expect(res.text).toContain("4 Service Address Line 1, Line 2, Stoke-On-Trent, Region, England, ST6 3LJ");
@@ -104,6 +106,8 @@ describe("Update general partner check your answers page", () => {
         .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
         .isPerson()
         .withNationality1("British")
+        .withForename("John")
+        .withSurname("Doe")
         .withUsualResidentialAddressUpdateRequired(false)
         .withServiceAddressUpdateRequired(false)
         .withServiceAddress()
@@ -119,6 +123,8 @@ describe("Update general partner check your answers page", () => {
       expect(res.status).toBe(200);
 
       expect(res.text).toContain(enTranslationText.checkYourAnswersPage.update.notUpdated);
+      expect(res.text).not.toContain(generalPartner.data?.forename);
+      expect(res.text).not.toContain(generalPartner.data?.surname);
       expect(res.text).not.toContain(generalPartner.data?.nationality1);
       expect(res.text).not.toContain("4 Service Address Line 1, Line 2, Stoke-On-Trent, Region, England, ST6 3LJ");
       expect(res.text).toContain(enTranslationText.checkYourAnswersPage.update.dateOfChange);

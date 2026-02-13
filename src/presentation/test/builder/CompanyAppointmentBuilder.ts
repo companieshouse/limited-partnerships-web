@@ -2,7 +2,7 @@ import { CompanyOfficer, Identification } from "@companieshouse/api-sdk-node/dis
 
 export const companyAppointmentPerson = {
   nationality: "British",
-  name: "John, Doe",
+  name: "Doe, John",
   dateOfBirth: {
     day: "01",
     month: "01",

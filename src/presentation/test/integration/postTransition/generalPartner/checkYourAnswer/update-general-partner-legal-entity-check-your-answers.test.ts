@@ -105,8 +105,13 @@ describe("Update general partner check your answers page", () => {
       generalPartner = new GeneralPartnerBuilder()
         .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
         .isLegalEntity()
-        .withLegalEntityName("Partner Appointment")
         .withPrincipalOfficeAddressUpdateRequired(false)
+        .withLegalEntityName("Partner Appointment")
+        .withLegalForm("CA Limited Company")
+        .withGoverningLaw("CA Act of law")
+        .withLegalEntityRegisterName("CA US Register")
+        .withLegalEntityRegistrationLocation("United Kingdom")
+        .withRegistrationNumber("CA 12345678")
         .withAppointmentId("AP123456")
         .withDateOfUpdate("2025-01-01")
         .withKind(PartnerKind.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY)
@@ -120,6 +125,12 @@ describe("Update general partner check your answers page", () => {
 
       expect(res.text).toContain(enTranslationText.checkYourAnswersPage.update.notUpdated);
       expect(res.text).not.toContain("6 Duncalf Street, Stoke-On-Trent, England, ST6 3LJ");
+      expect(res.text).not.toContain(generalPartner.data?.legal_entity_name);
+      expect(res.text).not.toContain(generalPartner.data?.legal_form);
+      expect(res.text).not.toContain(generalPartner.data?.governing_law);
+      expect(res.text).not.toContain(generalPartner.data?.legal_entity_register_name);
+      expect(res.text).not.toContain(generalPartner.data?.legal_entity_registration_location);
+      expect(res.text).not.toContain(generalPartner.data?.registered_company_number);
       expect(res.text).toContain(enTranslationText.checkYourAnswersPage.update.dateOfChange);
     });
   });
