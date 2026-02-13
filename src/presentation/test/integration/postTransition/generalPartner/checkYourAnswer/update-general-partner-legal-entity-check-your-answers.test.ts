@@ -38,11 +38,6 @@ describe("Update general partner check your answers page", () => {
         "premises": "6",
         "region": ""
       })
-      .withLegalForm("New Legal Form")
-      .withGoverningLaw("New Governing Law")
-      .withLegalEntityRegisterName("New Legal Entity Register Name")
-      .withLegalEntityRegistrationLocation("United Kingdom")
-      .withRegistrationNumber("87654321")
       .withPrincipalOfficeAddressUpdateRequired(true)
       .withAppointmentId("AP123456")
       .withKind(PartnerKind.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY)
