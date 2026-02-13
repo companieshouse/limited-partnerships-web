@@ -125,7 +125,7 @@ class CompanyService {
     return {
       data: {
         ...partner.data,
-        forename: forenames.join(" ") ?? "",
+        forename: forenames?.join(" ") ?? "",
         surname: surname ?? "",
         nationality1: nationality[0] ?? "",
         nationality2: nationality[1] ?? undefined,
