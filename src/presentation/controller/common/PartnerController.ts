@@ -733,7 +733,7 @@ abstract class PartnerController extends AbstractController {
       );
 
       for (const field in partnerUpdatedFieldsMap) {
-        if (appointment?.partner?.data?.[field] !== partner.data?.[field]){
+        if (appointment?.partner?.data?.[field]?.toLowerCase() !== partner.data?.[field]?.toLowerCase()){
           partnerUpdatedFieldsMap[field] = true;
         }
       }
