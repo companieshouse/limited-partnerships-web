@@ -2,7 +2,7 @@
 {% set item = props.data.partner %}
 {% set updateFieldsMap = props.data.partnerUpdatedFieldsMap %}
 
-{% if item.data.forename %}
+{% if item.data.kind == "limited-partnership#update-general-partner-person" %}
   {% set dateChangeUrl = "when-did-general-partner-details-change"  %}
   {% if updateFieldsMap.forename or updateFieldsMap.surname %}
     {% set name = item.data.forename + " " + item.data.surname  %}
@@ -73,7 +73,7 @@
       SET_DATE_OF_UPDATE_SECTION(props, i18n, dateChangeUrl)
     ]
   }) }}
-{% elif item.data.legal_entity_name %}
+{% elif item.data.kind == "limited-partnership#update-general-partner-legal-entity" %}
   {% set dateChangeUrl = "when-did-general-partner-legal-entity-details-change" %}
   {% set country = i18n.countries[macros.makeCamelCase(item.data.legal_entity_registration_location)] if updateFieldsMap.legal_entity_registration_location else notUpdated %}
   {{ govukSummaryList({
