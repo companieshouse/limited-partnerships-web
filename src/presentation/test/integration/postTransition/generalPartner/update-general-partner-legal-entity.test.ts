@@ -24,6 +24,7 @@ describe("Update General Partner Legal Entity Page", () => {
   const REDIRECT = getUrl(UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL);
 
   let companyProfile;
+  let companyAppointment;
 
   beforeEach(() => {
     setLocalesEnabled(false);
@@ -73,48 +74,49 @@ describe("Update General Partner Legal Entity Page", () => {
       }
     });
 
-    it("should load the update general partner legal entity page with pre populated data from companyAppointment", async () => {
-      const companyAppointment = new CompanyAppointmentBuilder()
-        .withOfficerRole(OFFICER_ROLE_GENERAL_PARTNER_LEGAL_ENTITY)
-        .isLegalEntity()
-        .withName("My Company ltd - GP")
-        .build();
+    it.each([
+      ["with appointment id", URL],
+      ["with general partner id", URL_WITH_IDS]
+    ])("should load the update general partner legal entity page and replay saved data %s", async (description: string, url: string) => {
+      if (url.includes("/appointment/")) {
+        companyAppointment = new CompanyAppointmentBuilder()
+          .withOfficerRole(OFFICER_ROLE_GENERAL_PARTNER_LEGAL_ENTITY)
+          .isLegalEntity()
+          .build();
+        appDevDependencies.companyGateway.feedCompanyAppointments([companyAppointment]);
+      } else {
+        const generalPartner = new GeneralPartnerBuilder()
+          .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+          .isLegalEntity()
+          .build();
 
-      appDevDependencies.companyGateway.feedCompanyAppointments([companyAppointment]);
+        appDevDependencies.generalPartnerGateway.feedGeneralPartners([
+          generalPartner,
+        ]);
+      }
 
       setLocalesEnabled(true);
-      const res = await request(app).get(URL);
+      const res = await request(app).get(url);
 
       expect(res.status).toBe(200);
 
-      expect(res.text).toContain(companyAppointment?.name);
-      expect(res.text).toContain(companyAppointment?.identification?.legalForm);
-      expect(res.text).toContain(companyAppointment?.identification?.legalAuthority);
-      expect(res.text).toContain(companyAppointment?.identification?.placeRegistered);
-      expect(res.text).toContain(companyAppointment?.identification?.registerLocation);
-      expect(res.text).toContain(companyAppointment?.identification?.registrationNumber);
-    });
-
-    it("should load the update general partner legal entity page with pre populated data from general partner", async () => {
-      const generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isLegalEntity()
-        .build();
-
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([
-        generalPartner,
-      ]);
-
-      setLocalesEnabled(true);
-      const res = await request(app).get(URL_WITH_IDS);
-
-      expect(res.status).toBe(200);
-
-      expect(res.text).toContain(generalPartner?.data?.legal_form);
-      expect(res.text).toContain(generalPartner?.data?.governing_law);
-      expect(res.text).toContain(generalPartner?.data?.legal_entity_register_name);
-      expect(res.text).toContain(generalPartner?.data?.registered_company_number);
-      expect(res.text).toContain(`<option value="${generalPartner?.data?.legal_entity_registration_location}" selected>${generalPartner?.data?.legal_entity_registration_location}</option>`);
+      if (url.includes("/appointment/")) {
+        expect(res.text).toContain("Partner Appointment");
+        expect(res.text).toContain("CA Limited Company");
+        expect(res.text).toContain("CA Act of law");
+        expect(res.text).toContain("CA US Register");
+        expect(res.text).toContain("United Kingdom");
+        expect(res.text).toContain("CA 12345678");
+        expect(res.text).toContain('<option value="United Kingdom" selected>United Kingdom</option>');
+      } else {
+        expect(res.text).toContain("My Company ltd - GP");
+        expect(res.text).toContain("Limited Company");
+        expect(res.text).toContain("Act of law");
+        expect(res.text).toContain("US Register");
+        expect(res.text).toContain("United States");
+        expect(res.text).toContain("12345678");
+        expect(res.text).toContain('<option value="United States" selected>United States</option>');
+      }
     });
   });
 
