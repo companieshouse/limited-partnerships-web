@@ -2,7 +2,8 @@ import { NextFunction, Request, Response } from "express";
 import {
   GeneralPartner,
   LimitedPartner,
-  LimitedPartnership
+  LimitedPartnership,
+  PartnerKind
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 import AbstractController from "../AbstractController";
@@ -704,12 +705,25 @@ abstract class PartnerController extends AbstractController {
     const { tokens, ids } = super.extract(request);
     const appointmentId = partner.data?.appointment_id;
 
-    const partnerUpdatedFieldsMap: Record<string, boolean> = {
-      forename: false,
-      surname: false,
-      nationality1: false,
-      nationality2: false
-    };
+    let partnerUpdatedFieldsMap: Record<string, boolean>;
+
+    if (partner.data?.kind === PartnerKind.UPDATE_GENERAL_PARTNER_PERSON){
+      partnerUpdatedFieldsMap = {
+        forename: false,
+        surname: false,
+        nationality1: false,
+        nationality2: false
+      };
+    } else {
+      partnerUpdatedFieldsMap = {
+        legal_entity_name: false,
+        legal_form: false,
+        governing_law: false,
+        legal_entity_register_name: false,
+        legal_entity_registration_location: false,
+        registered_company_number: false,
+      };
+    }
 
     if (appointmentId) {
       const appointment = await this.companyService?.buildPartnerFromCompanyAppointment(
@@ -719,7 +733,7 @@ abstract class PartnerController extends AbstractController {
       );
 
       for (const field in partnerUpdatedFieldsMap) {
-        if (appointment?.partner?.data?.[field] !== partner.data?.[field]){
+        if (appointment?.partner?.data?.[field]?.toLowerCase() !== partner.data?.[field]?.toLowerCase()){
           partnerUpdatedFieldsMap[field] = true;
         }
       }

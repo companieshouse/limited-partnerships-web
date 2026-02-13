@@ -82,7 +82,6 @@ describe("Update General Partner Legal Entity Page", () => {
         companyAppointment = new CompanyAppointmentBuilder()
           .withOfficerRole(OFFICER_ROLE_GENERAL_PARTNER_LEGAL_ENTITY)
           .isLegalEntity()
-          .withName("My Company ltd - GP")
           .build();
         appDevDependencies.companyGateway.feedCompanyAppointments([companyAppointment]);
       } else {
@@ -100,12 +99,24 @@ describe("Update General Partner Legal Entity Page", () => {
       const res = await request(app).get(url);
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain("My Company ltd - GP");
-      expect(res.text).toContain("Limited Company");
-      expect(res.text).toContain("Act of law");
-      expect(res.text).toContain("US Register");
-      expect(res.text).toContain("12345678");
-      expect(res.text).toContain('<option value="United States" selected>United States</option>');
+
+      if (url.includes("/appointment/")) {
+        expect(res.text).toContain("Partner Appointment");
+        expect(res.text).toContain("CA Limited Company");
+        expect(res.text).toContain("CA Act of law");
+        expect(res.text).toContain("CA US Register");
+        expect(res.text).toContain("United Kingdom");
+        expect(res.text).toContain("CA 12345678");
+        expect(res.text).toContain('<option value="United Kingdom" selected>United Kingdom</option>');
+      } else {
+        expect(res.text).toContain("My Company ltd - GP");
+        expect(res.text).toContain("Limited Company");
+        expect(res.text).toContain("Act of law");
+        expect(res.text).toContain("US Register");
+        expect(res.text).toContain("United States");
+        expect(res.text).toContain("12345678");
+        expect(res.text).toContain('<option value="United States" selected>United States</option>');
+      }
     });
   });
 

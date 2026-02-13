@@ -11,8 +11,10 @@
 {% set name = "" %}
 {% if props.data.partner.data.forename %}
   {% set name = props.data.partner.data.forename + " " + props.data.partner.data.surname %}
+  {% set warningText = i18n.checkYourAnswersPage.partners.person.warningMessageUpdate %}
 {% elif props.data.partner.data.legal_entity_name %}
   {% set name = props.data.partner.data.legal_entity_name %}
+  {% set warningText = i18n.checkYourAnswersPage.warningMessage.warning %}
 {% endif %}
 
 {% block content %}
@@ -34,11 +36,16 @@
         {{ govukWarningText({
           text: i18n.checkYourAnswersPage.update.printWarning,
           iconFallbackText: "Warning"
-        }) }} 
+        }) }}
 
         <p class="govuk-body">{{ i18n.checkYourAnswersPage.update.information }}</p>
 
         <p class="govuk-body govuk-!-font-size-20 check-your-answers-javascript-disabled-text-style">{{ i18n.print.buttonTextNoJs }}</p>
+        
+        {{ govukWarningText({
+          text: warningText,
+          iconFallbackText: "Warning"
+        }) }}
 
         <div class="govuk-button-group">
           {{ govukButton({
