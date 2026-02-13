@@ -82,7 +82,8 @@ describe("Check Your Answers Page", () => {
         "headingNumber",
         "submitFiling",
         "update",
-        "ceaseDate"
+        "ceaseDate",
+        "warningMessageUpdate"
       ]);
       expect(res.text).toContain(enTranslationText.termPage.byAgreement);
       expect(res.text).toContain(enTranslationText.print.buttonText);
@@ -114,7 +115,8 @@ describe("Check Your Answers Page", () => {
         "headingNumber",
         "submitFiling",
         "update",
-        "ceaseDate"
+        "ceaseDate",
+        "warningMessageUpdate"
       ]);
       expect(res.text).toContain(cyTranslationText.termPage.byAgreement);
       expect(res.text).toContain(cyTranslationText.print.buttonText);
@@ -304,7 +306,8 @@ describe("Check Your Answers Page", () => {
       "headingNumber",
       "submitFiling",
       "update",
-      "ceaseDate"
+      "ceaseDate",
+      "warningMessageUpdate"
     ]);
 
     checkIfValuesInText(res, generalPartnerPerson, enTranslationText);
@@ -332,7 +335,8 @@ describe("Check Your Answers Page", () => {
       "headingNumber",
       "submitFiling",
       "update",
-      "ceaseDate"
+      "ceaseDate",
+      "warningMessageUpdate"
     ]);
 
     checkIfValuesInText(res, generalPartnerPerson, cyTranslationText);
