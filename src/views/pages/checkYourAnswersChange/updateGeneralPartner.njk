@@ -85,16 +85,6 @@
           },
           value: {
             text: item.data.legal_entity_name if updateFieldsMap.legal_entity_name else notUpdated
-          },
-          actions: {
-            items: [
-              CREATE_CHANGE_LINK(
-              i18n.checkYourAnswersPage.change,
-              (props.currentUrl | replace(props.pageType, "update-general-partner-legal-entity")),
-              term,
-              "change-name-button"
-              )
-            ]
           }
         },
         {
@@ -103,16 +93,6 @@
           },
           value: {
             text: item.data.legal_form if updateFieldsMap.legal_form else notUpdated
-          },
-          actions: {
-            items: [
-              CREATE_CHANGE_LINK(
-              i18n.checkYourAnswersPage.change,
-              (props.currentUrl | replace(props.pageType, "update-general-partner-legal-entity")),
-              term,
-              "change-legal-form-button"
-              )
-            ]
           }
         },
         {
@@ -121,16 +101,6 @@
           },
           value: {
             text: item.data.governing_law if updateFieldsMap.governing_law else notUpdated
-          },
-          actions: {
-            items: [
-              CREATE_CHANGE_LINK(
-              i18n.checkYourAnswersPage.change,
-              (props.currentUrl | replace(props.pageType, "update-general-partner-legal-entity")),
-              term,
-              "change-governing-law-button"
-              )
-            ]
           }
         },
         {
@@ -139,16 +109,6 @@
           },
           value: {
             text: item.data.legal_entity_register_name if updateFieldsMap.legal_entity_register_name else notUpdated
-          },
-          actions: {
-            items: [
-              CREATE_CHANGE_LINK(
-              i18n.checkYourAnswersPage.change,
-              (props.currentUrl | replace(props.pageType, "update-general-partner-legal-entity")),
-              term,
-              "change-legal-entity-register-name-button"
-              )
-            ]
           }
         },
         {
@@ -157,16 +117,6 @@
           },
           value: {
             text: country
-          },
-          actions: {
-            items: [
-              CREATE_CHANGE_LINK(
-              i18n.checkYourAnswersPage.change,
-              (props.currentUrl | replace(props.pageType, "update-general-partner-legal-entity")),
-              term,
-              "change-country-registered-in-button"
-              )
-            ]
           }
         },
         {
@@ -175,16 +125,6 @@
           },
           value: {
             text: item.data.registered_company_number if updateFieldsMap.registered_company_number else notUpdated
-          },
-          actions: {
-            items: [
-              CREATE_CHANGE_LINK(
-              i18n.checkYourAnswersPage.change,
-              (props.currentUrl | replace(props.pageType, "update-general-partner-legal-entity")),
-              term,
-              "change-registration-number-button"
-              )
-            ]
           }
         },
         {
