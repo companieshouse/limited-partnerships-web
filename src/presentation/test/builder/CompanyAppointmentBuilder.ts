@@ -2,7 +2,7 @@ import { CompanyOfficer, Identification } from "@companieshouse/api-sdk-node/dis
 
 export const companyAppointmentPerson = {
   nationality: "British",
-  name: "John, Doe",
+  name: "Doe, John",
   dateOfBirth: {
     day: "01",
     month: "01",
@@ -14,11 +14,11 @@ export const companyAppointmentPerson = {
 export const companyAppointmentLegalEntity = {
   name: "Partner Appointment",
   identification: {
-    legalForm: "Limited Company",
-    legalAuthority: "Act of law",
-    placeRegistered: "US Register",
-    registerLocation: "United States",
-    registrationNumber: "12345678",
+    legalForm: "CA Limited Company",
+    legalAuthority: "CA Act of law",
+    placeRegistered: "CA US Register",
+    registerLocation: "United Kingdom",
+    registrationNumber: "CA 12345678",
   }
 };
 

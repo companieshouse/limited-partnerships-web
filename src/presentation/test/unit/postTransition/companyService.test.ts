@@ -1,6 +1,7 @@
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import CompanyAppointmentBuilder from "../../builder/CompanyAppointmentBuilder";
 import CompanyProfileBuilder from "../../builder/CompanyProfileBuilder";
+import { OFFICER_ROLE_GENERAL_PARTNER_LEGAL_ENTITY } from "../../../../config";
 
 describe("CompanyService", () => {
   let companyProfile;
@@ -97,8 +98,12 @@ describe("CompanyService", () => {
       });
     });
 
-    it("should map the company appointment to Limited partner Legal Entity", async () => {
-      const appointment = new CompanyAppointmentBuilder().isLegalEntity().build();
+    it("should map the company appointment to general partner Legal Entity", async () => {
+      const appointment = new CompanyAppointmentBuilder()
+        .isLegalEntity()
+        .withOfficerRole(OFFICER_ROLE_GENERAL_PARTNER_LEGAL_ENTITY)
+        .withName("Partner Appointment, Legal Entity, ,")
+        .build();
       appointment.dateOfBirth = undefined;
       appointment.nationality = undefined;
       appDevDependencies.companyGateway.feedCompanyAppointments([appointment]);
@@ -110,7 +115,7 @@ describe("CompanyService", () => {
       );
 
       expect(result.partner.data?.appointment_id).toEqual("AP123456");
-      expect(result.partner.data?.legal_entity_name).toEqual(appointment.name);
+      expect(result.partner.data?.legal_entity_name).toEqual("Partner Appointment, Legal Entity");
       expect(result.partner.data?.legal_form).toEqual(appointment.identification?.legalForm);
       expect(result.partner.data?.governing_law).toEqual(appointment.identification?.legalAuthority);
       expect(result.partner.data?.legal_entity_register_name).toEqual(appointment.identification?.placeRegistered);
