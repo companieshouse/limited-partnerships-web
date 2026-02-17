@@ -79,6 +79,11 @@ abstract class AbstractPartnerBuilder {
     return this;
   }
 
+  withPrincipalOfficeAddressUpdateRequired(updateRequired: boolean) {
+    this.data.update_principal_office_address_required = updateRequired;
+    return this;
+  }
+
   withUsualResidentialAddress(usualResidentialAddress: Record<string, any> | null) {
     this.data.usual_residential_address = usualResidentialAddress;
     return this;

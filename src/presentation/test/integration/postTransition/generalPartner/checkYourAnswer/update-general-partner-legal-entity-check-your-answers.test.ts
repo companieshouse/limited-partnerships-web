@@ -6,19 +6,19 @@ import cyTranslationText from "../../../../../../../locales/cy/translations.json
 
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
-import { countOccurrences, getUrl, setLocalesEnabled, toEscapedHtml } from "../../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
 
-import { UPDATE_GENERAL_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/postTransition/url";
+import { UPDATE_GENERAL_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/postTransition/url";
 import GeneralPartnerBuilder from "../../../../builder/GeneralPartnerBuilder";
 import CompanyAppointmentBuilder from "../../../../builder/CompanyAppointmentBuilder";
 import CompanyProfileBuilder from "../../../../builder/CompanyProfileBuilder";
 import PostTransitionPageType from "../../../../../controller/postTransition/pageType";
 import { CONFIRMATION_POST_TRANSITION_URL } from "../../../../../controller/global/url";
 import TransactionBuilder from "../../../../builder/TransactionBuilder";
-import { OFFICER_ROLE_GENERAL_PARTNER_PERSON } from "../../../../../../config";
+import { OFFICER_ROLE_GENERAL_PARTNER_LEGAL_ENTITY } from "../../../../../../config";
 
 describe("Update general partner check your answers page", () => {
-  const URL = getUrl(UPDATE_GENERAL_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL);
+  const URL = getUrl(UPDATE_GENERAL_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_URL);
   let generalPartner: GeneralPartner;
   let companyAppointment;
   let companyProfile;
@@ -28,9 +28,8 @@ describe("Update general partner check your answers page", () => {
 
     generalPartner = new GeneralPartnerBuilder()
       .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-      .isPerson()
-      .withNationality1("Irish")
-      .withUsualResidentialAddress({
+      .isLegalEntity()
+      .withPrincipalOfficeAddress({
         "address_line_1": "DUNCALF STREET",
         "address_line_2": "",
         "country": "England",
@@ -39,11 +38,9 @@ describe("Update general partner check your answers page", () => {
         "premises": "6",
         "region": ""
       })
-      .withUsualResidentialAddressUpdateRequired(true)
-      .withServiceAddress()
-      .withServiceAddressUpdateRequired(true)
+      .withPrincipalOfficeAddressUpdateRequired(true)
       .withAppointmentId("AP123456")
-      .withKind(PartnerKind.UPDATE_GENERAL_PARTNER_PERSON)
+      .withKind(PartnerKind.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY)
       .withDateOfUpdate("2025-01-01")
       .build();
 
@@ -53,13 +50,12 @@ describe("Update general partner check your answers page", () => {
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
     companyAppointment = new CompanyAppointmentBuilder()
-      .withOfficerRole(OFFICER_ROLE_GENERAL_PARTNER_PERSON)
-      .withName("Doe, John")
-      .withNationality("British")
+      .withOfficerRole(OFFICER_ROLE_GENERAL_PARTNER_LEGAL_ENTITY)
+      .isLegalEntity()
       .build();
     appDevDependencies.companyGateway.feedCompanyAppointments([companyAppointment]);
 
-    const transaction = new TransactionBuilder().withKind(PartnerKind.UPDATE_GENERAL_PARTNER_PERSON).build();
+    const transaction = new TransactionBuilder().withKind(PartnerKind.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY).build();
     appDevDependencies.transactionGateway.feedTransactions([transaction]);
   });
 
@@ -71,18 +67,21 @@ describe("Update general partner check your answers page", () => {
 
       expect(res.text).toContain(companyProfile.data.companyName + " (" + companyProfile.data.companyNumber + ")");
       expect(res.text).toContain(`${enTranslationText.checkYourAnswersPage.update.title}`);
-      expect(res.text).toContain(generalPartner.data?.forename);
-      expect(res.text).toContain(generalPartner.data?.surname);
-      expect(res.text).toContain(generalPartner.data?.nationality1);
+      testTranslations(res.text, enTranslationText.checkYourAnswersPage.partners.legalEntity);
+      expect(res.text).toContain(generalPartner.data?.legal_entity_name);
+      expect(res.text).toContain(generalPartner.data?.legal_form);
+      expect(res.text).toContain(generalPartner.data?.governing_law);
+      expect(res.text).toContain(generalPartner.data?.legal_entity_register_name);
+      expect(res.text).toContain(generalPartner.data?.legal_entity_registration_location);
+      expect(res.text).toContain(generalPartner.data?.registered_company_number);
       expect(res.text).toContain("6 Duncalf Street, Stoke-On-Trent, England, ST6 3LJ");
-      expect(res.text).toContain("4 Service Address Line 1, Line 2, Stoke-On-Trent, Region, England, ST6 3LJ");
       expect(res.text).toContain(enTranslationText.checkYourAnswersPage.update.dateOfChange);
+      expect(res.text).toContain("1 January 2025");
       expect(res.text).toContain(enTranslationText.print.buttonText);
       expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
-      expect(res.text).toContain("1 January 2025");
       expect(res.text).not.toContain("WELSH -");
       expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.update.notUpdated);
-      expect(countOccurrences(res.text, toEscapedHtml(enTranslationText.serviceName.updateGeneralPartnerPerson))).toBe(2);
+      expect(countOccurrences(res.text, toEscapedHtml(enTranslationText.serviceName.updateGeneralPartnerLegalEntity))).toBe(2);
     });
 
     it("should load update general partner check your answers page with welsh text", async () => {
@@ -91,29 +90,31 @@ describe("Update general partner check your answers page", () => {
       expect(res.status).toBe(200);
 
       expect(res.text).toContain(`${cyTranslationText.checkYourAnswersPage.update.title}`);
-      expect(res.text).toContain(generalPartner.data?.forename + " " + generalPartner.data?.surname);
+      testTranslations(res.text, cyTranslationText.checkYourAnswersPage.partners.legalEntity);
+      expect(res.text).toContain(generalPartner.data?.legal_entity_name);
       expect(res.text).toContain(cyTranslationText.checkYourAnswersPage.update.dateOfChange);
 
       expect(res.text).toContain(cyTranslationText.print.buttonText);
       expect(res.text).toContain(cyTranslationText.print.buttonTextNoJs);
       expect(res.text).toContain("WELSH -");
       expect(res.text).not.toContain(cyTranslationText.checkYourAnswersPage.update.notUpdated);
-      expect(countOccurrences(res.text, toEscapedHtml(cyTranslationText.serviceName.updateGeneralPartnerPerson))).toBe(2);
+      expect(countOccurrences(res.text, toEscapedHtml(cyTranslationText.serviceName.updateGeneralPartnerLegalEntity))).toBe(2);
     });
 
     it("should load update general partner check your answers page and display 'Not updated' for non-updated fields", async () => {
       generalPartner = new GeneralPartnerBuilder()
         .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isPerson()
-        .withNationality1("British")
-        .withForename("John")
-        .withSurname("Doe")
-        .withUsualResidentialAddressUpdateRequired(false)
-        .withServiceAddressUpdateRequired(false)
-        .withServiceAddress()
-        .withAppointmentId("AP123456")
+        .isLegalEntity()
+        .withPrincipalOfficeAddressUpdateRequired(false)
+        .withLegalEntityName(companyAppointment.name)
+        .withLegalForm(companyAppointment.identification?.legalForm)
+        .withGoverningLaw(companyAppointment.identification?.legalAuthority)
+        .withLegalEntityRegisterName(companyAppointment.identification?.placeRegistered)
+        .withLegalEntityRegistrationLocation(companyAppointment.identification?.registerLocation)
+        .withRegistrationNumber(companyAppointment.identification?.registrationNumber)
+        .withAppointmentId(companyAppointment.identification?.appointmentId)
         .withDateOfUpdate("2025-01-01")
-        .withKind(PartnerKind.UPDATE_GENERAL_PARTNER_PERSON)
+        .withKind(PartnerKind.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY)
         .build();
 
       appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
@@ -123,10 +124,13 @@ describe("Update general partner check your answers page", () => {
       expect(res.status).toBe(200);
 
       expect(res.text).toContain(enTranslationText.checkYourAnswersPage.update.notUpdated);
-      expect(res.text).not.toContain(generalPartner.data?.forename);
-      expect(res.text).not.toContain(generalPartner.data?.surname);
-      expect(res.text).not.toContain(generalPartner.data?.nationality1);
-      expect(res.text).not.toContain("4 Service Address Line 1, Line 2, Stoke-On-Trent, Region, England, ST6 3LJ");
+      expect(res.text).not.toContain("6 Duncalf Street, Stoke-On-Trent, England, ST6 3LJ");
+      expect(res.text).not.toContain(generalPartner.data?.legal_entity_name);
+      expect(res.text).not.toContain(generalPartner.data?.legal_form);
+      expect(res.text).not.toContain(generalPartner.data?.governing_law);
+      expect(res.text).not.toContain(generalPartner.data?.legal_entity_register_name);
+      expect(res.text).not.toContain(generalPartner.data?.legal_entity_registration_location);
+      expect(res.text).not.toContain(generalPartner.data?.registered_company_number);
       expect(res.text).toContain(enTranslationText.checkYourAnswersPage.update.dateOfChange);
     });
   });
@@ -134,7 +138,7 @@ describe("Update general partner check your answers page", () => {
   describe("POST update general partner check your answers page", () => {
     it("should post update general partner check your answers page and redirect to confirmation page", async () => {
       const res = await request(app).post(URL).send({
-        pageType: PostTransitionPageType.updateGeneralPartnerPersonCheckYourAnswers
+        pageType: PostTransitionPageType.updateGeneralPartnerLegalEntityCheckYourAnswers
       });
 
       const REDIRECT_URL = getUrl(CONFIRMATION_POST_TRANSITION_URL);

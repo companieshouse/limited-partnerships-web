@@ -74,38 +74,45 @@ describe("Update General Partner Legal Entity Page", () => {
       }
     });
 
-    it.each([
-      ["with appointment id", URL],
-      ["with general partner id", URL_WITH_IDS]
-    ])("should load the update general partner legal entity page and replay saved data %s", async (description: string, url: string) => {
-      if (url.includes("/appointment/")) {
-        companyAppointment = new CompanyAppointmentBuilder()
-          .withOfficerRole(OFFICER_ROLE_GENERAL_PARTNER_LEGAL_ENTITY)
-          .isLegalEntity()
-          .withName("My Company ltd - GP")
-          .build();
-        appDevDependencies.companyGateway.feedCompanyAppointments([companyAppointment]);
-      } else {
-        const generalPartner = new GeneralPartnerBuilder()
-          .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-          .isLegalEntity()
-          .build();
-
-        appDevDependencies.generalPartnerGateway.feedGeneralPartners([
-          generalPartner,
-        ]);
-      }
+    it("should load the update general partner legal entity page and replay company appointment data", async () => {
+      companyAppointment = new CompanyAppointmentBuilder()
+        .withOfficerRole(OFFICER_ROLE_GENERAL_PARTNER_LEGAL_ENTITY)
+        .isLegalEntity()
+        .build();
+      appDevDependencies.companyGateway.feedCompanyAppointments([companyAppointment]);
 
       setLocalesEnabled(true);
-      const res = await request(app).get(url);
+      const res = await request(app).get(URL);
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain("My Company ltd - GP");
-      expect(res.text).toContain("Limited Company");
-      expect(res.text).toContain("Act of law");
-      expect(res.text).toContain("US Register");
-      expect(res.text).toContain("12345678");
-      expect(res.text).toContain('<option value="United States" selected>United States</option>');
+
+      expect(res.text).toContain(companyAppointment.name);
+      expect(res.text).toContain(companyAppointment.identification?.legalForm);
+      expect(res.text).toContain(companyAppointment.identification?.legalAuthority);
+      expect(res.text).toContain(companyAppointment.identification?.placeRegistered);
+      expect(res.text).toContain(companyAppointment.identification?.registrationNumber);
+      expect(res.text).toContain(`<option value="${companyAppointment.identification?.registerLocation}" selected>${companyAppointment.identification?.registerLocation}</option>`);
+    });
+
+    it("should load the update general partner legal entity page and replay general partner data", async () => {
+      const generalPartner = new GeneralPartnerBuilder()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .isLegalEntity()
+        .build();
+
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+
+      setLocalesEnabled(true);
+      const res = await request(app).get(URL_WITH_IDS);
+
+      expect(res.status).toBe(200);
+
+      expect(res.text).toContain(generalPartner.data?.legal_entity_name);
+      expect(res.text).toContain(generalPartner.data?.legal_form);
+      expect(res.text).toContain(generalPartner.data?.governing_law);
+      expect(res.text).toContain(generalPartner.data?.legal_entity_register_name);
+      expect(res.text).toContain(generalPartner.data?.registered_company_number);
+      expect(res.text).toContain(`<option value="${generalPartner.data?.legal_entity_registration_location}" selected>${generalPartner.data?.legal_entity_registration_location}</option>`);
     });
   });
 
@@ -179,5 +186,4 @@ describe("Update General Partner Legal Entity Page", () => {
       expect(res.text).toContain('<option value="Iceland" selected>Iceland</option>');
     });
   });
-
 });
