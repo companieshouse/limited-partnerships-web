@@ -67,6 +67,14 @@ class LimitedPartnerPostTransitionController extends PartnerController {
     });
   }
 
+  getUpdatePageRouting() {
+    return this.postTransitionPartnerController.getUpdatePartner(PartnerType.limitedPartner);
+  }
+
+  sendUpdatePageData() {
+    return super.sendPageData(PartnerType.limitedPartner);
+  }
+
   getCeaseDate() {
     return this.postTransitionPartnerController.getCeaseDate();
   }

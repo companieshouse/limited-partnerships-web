@@ -5,23 +5,22 @@ import enTranslationText from "../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../locales/cy/translations.json";
 import app from "../../app";
 import {
-  UPDATE_GENERAL_PARTNER_PERSON_URL,
-  UPDATE_GENERAL_PARTNER_PERSON_WITH_IDS_URL,
-  UPDATE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
+  UPDATE_LIMITED_PARTNER_PERSON_URL,
+  UPDATE_LIMITED_PARTNER_PERSON_WITH_IDS_URL,
 } from "../../../../controller/postTransition/url";
 import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../utils";
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 import CompanyAppointmentBuilder from "../../../builder/CompanyAppointmentBuilder";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import GeneralPartnerBuilder from "../../../../../presentation/test/builder/GeneralPartnerBuilder";
+import LimitedPartnerBuilder from "../../../../../presentation/test/builder/LimitedPartnerBuilder";
 import PostTransitionPageType from "../../../../../presentation/controller/postTransition/pageType";
 import { ApiErrors } from "../../../../../domain/entities/UIErrors";
-import { OFFICER_ROLE_GENERAL_PARTNER_PERSON } from "../../../../../config";
+import { OFFICER_ROLE_LIMITED_PARTNER_PERSON } from "../../../../../config";
 
-describe("Update General Partner Person Page", () => {
-  const URL = getUrl(UPDATE_GENERAL_PARTNER_PERSON_URL);
-  const URL_WITH_IDS = getUrl(UPDATE_GENERAL_PARTNER_PERSON_WITH_IDS_URL);
-  const REDIRECT = getUrl(UPDATE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL);
+describe("Update Limited Partner Person Page", () => {
+  const URL = getUrl(UPDATE_LIMITED_PARTNER_PERSON_URL);
+  const URL_WITH_IDS = getUrl(UPDATE_LIMITED_PARTNER_PERSON_WITH_IDS_URL);
+  const REDIRECT = "/";
 
   let companyProfile;
   let companyAppointment;
@@ -32,18 +31,18 @@ describe("Update General Partner Person Page", () => {
     companyProfile = new CompanyProfileBuilder().build();
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
-    appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
-    appDevDependencies.generalPartnerGateway.feedErrors();
+    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([]);
+    appDevDependencies.limitedPartnerGateway.feedErrors();
 
     appDevDependencies.transactionGateway.feedTransactions([]);
     appDevDependencies.companyGateway.feedCompanyAppointments([]);
   });
 
-  describe("GET update general partner person page", () => {
+  describe("GET update limited partner person page", () => {
     it.each([
       ["English", "en", enTranslationText],
       ["Welsh", "cy", cyTranslationText]
-    ])("should load the update general partner person page with %s text", async (description: string, lang: string, translationText: any) => {
+    ])("should load the update limited partner person page with %s text", async (description: string, lang: string, translationText: any) => {
       setLocalesEnabled(true);
 
       const res = await request(app).get(`${URL}?lang=${lang}`);
@@ -54,8 +53,8 @@ describe("Update General Partner Person Page", () => {
         `${companyProfile.data.companyName?.toUpperCase()} (${companyProfile.data.companyNumber?.toUpperCase()})`
       );
 
-      testTranslations(res.text, translationText.updatePartnerPersonPage, ["limitedPartner"]);
-      expect(countOccurrences(res.text, toEscapedHtml(translationText.serviceName.updateGeneralPartnerPerson))).toBe(2);
+      testTranslations(res.text, translationText.updatePartnerPersonPage, ["generalPartner"]);
+      expect(countOccurrences(res.text, toEscapedHtml(translationText.serviceName.updateLimitedPartnerPerson))).toBe(2);
 
       if (lang === "cy") {
         expect(res.text).toContain("WELSH - ");
@@ -66,27 +65,27 @@ describe("Update General Partner Person Page", () => {
 
     it.each([
       ["with appointment id", URL],
-      ["with general partner id", URL_WITH_IDS]
-    ])("should load the update general partner person page and replay saved data %s", async (description: string, url: string) => {
+      ["with limited partner id", URL_WITH_IDS]
+    ])("should load the update limited partner person page and replay saved data %s", async (description: string, url: string) => {
       if (url.includes("/appointment/")) {
         companyAppointment = new CompanyAppointmentBuilder()
-          .withOfficerRole(OFFICER_ROLE_GENERAL_PARTNER_PERSON)
-          .withName("Doe - GP, Joe - GP")
+          .withOfficerRole(OFFICER_ROLE_LIMITED_PARTNER_PERSON)
+          .withName("Doe - LP, Joe - LP")
           .withNationality("British,Irish")
           .build();
         appDevDependencies.companyGateway.feedCompanyAppointments([
           companyAppointment
         ]);
       } else {
-        const generalPartner = new GeneralPartnerBuilder()
-          .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        const limitedPartner = new LimitedPartnerBuilder()
+          .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
           .isPerson()
           .withNationality1("British")
           .withNationality2("Irish")
           .build();
 
-        appDevDependencies.generalPartnerGateway.feedGeneralPartners([
-          generalPartner,
+        appDevDependencies.limitedPartnerGateway.feedLimitedPartners([
+          limitedPartner,
         ]);
       }
 
@@ -94,37 +93,37 @@ describe("Update General Partner Person Page", () => {
       const res = await request(app).get(url);
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain("Joe - GP");
-      expect(res.text).toContain("Doe - GP");
+      expect(res.text).toContain("Joe - LP");
+      expect(res.text).toContain("Doe - LP");
       expect(res.text).toContain('<option value="British" selected>British</option>');
       expect(res.text).toContain('<option value="Irish" selected>Irish</option>');
     });
   });
 
-  describe("POST update general partner person page", () => {
+  describe("POST update limited partner person page", () => {
     it.each([
       ["with appointment id", URL],
-      ["with general partner id", URL_WITH_IDS],
-    ])("should send the general partner person details to API %s", async (description: string, url: string) => {
-      expect(appDevDependencies.generalPartnerGateway.generalPartners).toHaveLength(0);
+      ["with limited partner id", URL_WITH_IDS],
+    ])("should send the limited partner person details to API %s", async (description: string, url: string) => {
+      expect(appDevDependencies.limitedPartnerGateway.limitedPartners).toHaveLength(0);
 
-      if (url.includes("/general-partner/")) {
-        const generalPartner = new GeneralPartnerBuilder()
-          .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+      if (url.includes("/limited-partner/")) {
+        const limitedPartner = new LimitedPartnerBuilder()
+          .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
           .isPerson()
           .withNotDisqualifiedStatementChecked(true)
           .withNationality1("British")
           .withNationality2("Irish")
-          .withKind(PartnerKind.UPDATE_GENERAL_PARTNER_PERSON)
+          .withKind(PartnerKind.UPDATE_LIMITED_PARTNER_PERSON)
           .build();
 
-        appDevDependencies.generalPartnerGateway.feedGeneralPartners([
-          generalPartner,
+        appDevDependencies.limitedPartnerGateway.feedLimitedPartners([
+          limitedPartner,
         ]);
       }
 
       const res = await request(app).post(url).send({
-        pageType: PostTransitionPageType.updateGeneralPartnerPerson,
+        pageType: PostTransitionPageType.updateLimitedPartnerPerson,
         "forename": "John",
         "surname": "Doe",
         "nationality1": "British",
@@ -134,24 +133,24 @@ describe("Update General Partner Person Page", () => {
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${REDIRECT}`);
 
-      expect(appDevDependencies.generalPartnerGateway.generalPartners).toHaveLength(1);
-      expect(appDevDependencies.generalPartnerGateway.generalPartners[0].data?.kind).toEqual(
-        PartnerKind.UPDATE_GENERAL_PARTNER_PERSON
+      expect(appDevDependencies.limitedPartnerGateway.limitedPartners).toHaveLength(1);
+      expect(appDevDependencies.limitedPartnerGateway.limitedPartners[0].data?.kind).toEqual(
+        PartnerKind.UPDATE_LIMITED_PARTNER_PERSON
       );
-      expect(appDevDependencies.generalPartnerGateway.generalPartners[0].data?.forename).toEqual("John");
-      expect(appDevDependencies.generalPartnerGateway.generalPartners[0].data?.surname).toEqual("Doe");
-      expect(appDevDependencies.generalPartnerGateway.generalPartners[0].data?.nationality1).toEqual("British");
-      expect(appDevDependencies.generalPartnerGateway.generalPartners[0].data?.nationality2).toEqual("Irish");
+      expect(appDevDependencies.limitedPartnerGateway.limitedPartners[0].data?.forename).toEqual("John");
+      expect(appDevDependencies.limitedPartnerGateway.limitedPartners[0].data?.surname).toEqual("Doe");
+      expect(appDevDependencies.limitedPartnerGateway.limitedPartners[0].data?.nationality1).toEqual("British");
+      expect(appDevDependencies.limitedPartnerGateway.limitedPartners[0].data?.nationality2).toEqual("Irish");
     });
 
     it("should replay entered data when a validation error occurs", async () => {
       const apiErrors: ApiErrors = {
         errors: { forename: "forename is invalid" }
       };
-      appDevDependencies.generalPartnerGateway.feedErrors(apiErrors);
+      appDevDependencies.limitedPartnerGateway.feedErrors(apiErrors);
 
       const res = await request(app).post(URL).send({
-        pageType: PostTransitionPageType.updateGeneralPartnerPerson,
+        pageType: PostTransitionPageType.updateLimitedPartnerPerson,
         "forename": "INVALID-FORENAME",
         "surname": "Doe",
         "nationality1": "British",
