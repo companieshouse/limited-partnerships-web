@@ -111,7 +111,7 @@ class CompanyService {
     partner: GeneralPartner | LimitedPartner,
     companyAppointment: Partial<CompanyOfficer>
   ): GeneralPartner | LimitedPartner {
-    const [surname, ...forenames] = companyAppointment?.name?.split(", ") ?? [];
+    const [surname, forename] = companyAppointment?.name?.split(", ") ?? [];
     const nationality = companyAppointment?.nationality?.split(",") ?? [];
     let date_of_birth = "";
 
@@ -125,7 +125,7 @@ class CompanyService {
     return {
       data: {
         ...partner.data,
-        forename: forenames?.join(" ") ?? "",
+        forename: forename ?? "",
         surname: surname ?? "",
         nationality1: nationality[0] ?? "",
         nationality2: nationality[1] ?? undefined,
@@ -138,8 +138,7 @@ class CompanyService {
     partner: GeneralPartner | LimitedPartner,
     companyAppointment: Partial<CompanyOfficer>
   ): GeneralPartner | LimitedPartner {
-    let name = companyAppointment?.name ?? "";
-    name = name.replace(/(,(\s*))+$/, "");
+    const name = companyAppointment?.name ?? "";
     const legalForm = companyAppointment?.identification?.legalForm ?? "";
     const governingLaw = companyAppointment?.identification?.legalAuthority ?? "";
     const legalEntityRegistrationName = companyAppointment?.identification?.placeRegistered ?? "";
