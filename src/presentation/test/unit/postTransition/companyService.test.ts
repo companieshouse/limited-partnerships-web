@@ -102,7 +102,7 @@ describe("CompanyService", () => {
       const appointment = new CompanyAppointmentBuilder()
         .isLegalEntity()
         .withOfficerRole(OFFICER_ROLE_GENERAL_PARTNER_LEGAL_ENTITY)
-        .withName("Partner Appointment, Legal Entity, ,")
+        .withName("Partner Appointment, Legal Entity")
         .build();
       appointment.dateOfBirth = undefined;
       appointment.nationality = undefined;
