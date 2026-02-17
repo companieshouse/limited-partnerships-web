@@ -60,7 +60,9 @@ import {
   UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL,
   WHEN_DID_GENERAL_PARTNER_PERSON_DETAILS_CHANGE_URL,
   WHEN_DID_GENERAL_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL,
-  UPDATE_GENERAL_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_URL
+  UPDATE_GENERAL_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_URL,
+  UPDATE_LIMITED_PARTNER_PERSON_URL,
+  UPDATE_LIMITED_PARTNER_PERSON_WITH_IDS_URL
 } from "../presentation/controller/postTransition/url";
 import {
   TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_LEGAL_ENTITY,
@@ -72,7 +74,9 @@ import {
   TRANSACTION_DESCRIPTION_REMOVE_LIMITED_PARTNER_LEGAL_ENTITY,
   TRANSACTION_DESCRIPTION_REMOVE_LIMITED_PARTNER_PERSON,
   TRANSACTION_DESCRIPTION_UPDATE_GENERAL_PARTNER_LEGAL_ENTITY,
-  TRANSACTION_DESCRIPTION_UPDATE_GENERAL_PARTNER_PERSON
+  TRANSACTION_DESCRIPTION_UPDATE_GENERAL_PARTNER_PERSON,
+  TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNER_LEGAL_ENTITY,
+  TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNER_PERSON
 } from "../config/constants";
 
 const postTransitionEndpoints = (router: Router, dependencies: IDependencies): void => {
@@ -767,6 +771,39 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
     UPDATE_GENERAL_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_URL,
     companyAuthentication,
     dependencies.generalPartnerPostTransitionController.postCheckYourAnswers()
+  );
+
+  // Update Limited Partner Person
+  router.get(
+    UPDATE_LIMITED_PARTNER_PERSON_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.getUpdatePageRouting()
+  );
+  router.post(
+    UPDATE_LIMITED_PARTNER_PERSON_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.createLimitedPartner({
+      person: {
+        description: TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNER_PERSON,
+        kind: PartnerKind.UPDATE_LIMITED_PARTNER_PERSON
+      },
+      legalEntity: {
+        description: TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNER_LEGAL_ENTITY,
+        kind: PartnerKind.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY
+      },
+      needAppointment: true
+    })
+  );
+
+  router.get(
+    UPDATE_LIMITED_PARTNER_PERSON_WITH_IDS_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.getUpdatePageRouting()
+  );
+  router.post(
+    UPDATE_LIMITED_PARTNER_PERSON_WITH_IDS_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.sendUpdatePageData()
   );
 };
 

@@ -766,7 +766,8 @@
         "removeLimitedPartnerEntity": "Remove a limited partner (entity)",
         "removeLimitedPartnerPerson": "Remove a limited partner (person)",
         "updateGeneralPartnerPerson": "Update a general partner's details (person)",
-        "updateGeneralPartnerLegalEntity": "Update a general partner's details (legal entity)"
+        "updateGeneralPartnerLegalEntity": "Update a general partner's details (legal entity)",
+        "updateLimitedPartnerPerson": "Update a limited partner's details (person)"
     },
 
     "sicCodePage" : {
@@ -816,6 +817,9 @@
     "updatePartnerPersonPage" : {
         "generalPartner": {
             "title" : "Update general partner details"
+        },
+        "limitedPartner": {
+            "title" : "Update limited partner details"
         },
         "nationality" : "What is their nationality?",
         "nationalitySelectPrompt": "Select a nationality",

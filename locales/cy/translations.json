@@ -765,7 +765,8 @@
         "removeLimitedPartnerEntity": "WELSH - Remove a limited partner (entity)",
         "removeLimitedPartnerPerson": "WELSH - Remove a limited partner (person)",
         "updateGeneralPartnerPerson": "WELSH - Update a general partner's details (person)",
-        "updateGeneralPartnerLegalEntity": "WELSH - Update a general partner's details (legal entity)"
+        "updateGeneralPartnerLegalEntity": "WELSH - Update a general partner's details (legal entity)",
+        "updateLimitedPartnerPerson": "WELSH - Update a limited partner's details (person)"
     },
 
     "sicCodePage" : {
@@ -815,6 +816,9 @@
     "updatePartnerPersonPage" : {
         "generalPartner": {
             "title" : "WELSH - Update general partner details"
+        },
+        "limitedPartner": {
+            "title" : "WELSH - Update limited partner details"
         },
         "nationality" : "WELSH - What is their nationality?",
         "nationalitySelectPrompt": "WELSH - Select a nationality",

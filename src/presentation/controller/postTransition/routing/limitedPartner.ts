@@ -93,6 +93,16 @@ const postTransitionRoutingRemoveLimitedPartnerLegalEntityCheckYourAnswers = {
   }
 };
 
+const postTransitionRoutingUpdateLimitedPartnerPerson = {
+  previousUrl: url.LANDING_PAGE_URL,
+  currentUrl: url.UPDATE_LIMITED_PARTNER_PERSON_URL,
+  nextUrl: "/",
+  pageType: PostTransitionPageType.updateLimitedPartnerPerson,
+  data: {
+    serviceName: "updateLimitedPartnerPerson"
+  }
+};
+
 const limitedPartnerRouting = [
   postTransitionRoutingLimitedPartnerChoice,
   postTransitionRoutingAddLimitedPartnerPerson,
@@ -101,7 +111,9 @@ const limitedPartnerRouting = [
   postTransitionRoutingRemoveLimitedPartnerPerson,
   postTransitionRoutingRemoveLimitedPartnerPersonCheckYourAnswers,
   postTransitionRoutingRemoveLimitedPartnerLegalEntity,
-  postTransitionRoutingRemoveLimitedPartnerLegalEntityCheckYourAnswers
+  postTransitionRoutingRemoveLimitedPartnerLegalEntityCheckYourAnswers,
+
+  postTransitionRoutingUpdateLimitedPartnerPerson
 ];
 
 export default limitedPartnerRouting;
