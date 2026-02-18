@@ -117,6 +117,18 @@ const postTransitionRoutingUpdateUsualResidentialAddressYesNo = {
   }
 };
 
+const LIMITED_PARTNER = "limitedPartner";
+
+const postTransitionRoutingWhenDidLimitedPartnerPersonChange = {
+  previousUrl: url.UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
+  currentUrl: url.WHEN_DID_LIMITED_PARTNER_PERSON_DETAILS_CHANGE_URL,
+  nextUrl: "/",
+  pageType: PostTransitionPageType.whenDidLimitedPartnerPersonDetailsChange,
+  data: {
+    titleKey: LIMITED_PARTNER
+  }
+};
+
 const limitedPartnerRouting = [
   postTransitionRoutingLimitedPartnerChoice,
   postTransitionRoutingAddLimitedPartnerPerson,
@@ -128,7 +140,9 @@ const limitedPartnerRouting = [
   postTransitionRoutingRemoveLimitedPartnerLegalEntityCheckYourAnswers,
 
   postTransitionRoutingUpdateLimitedPartnerPerson,
-  postTransitionRoutingUpdateUsualResidentialAddressYesNo
+  postTransitionRoutingUpdateUsualResidentialAddressYesNo,
+
+  postTransitionRoutingWhenDidLimitedPartnerPersonChange
 ];
 
 export default limitedPartnerRouting;
