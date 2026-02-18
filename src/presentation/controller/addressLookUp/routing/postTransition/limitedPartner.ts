@@ -1,4 +1,4 @@
-import { ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_IDS_URL, ADD_LIMITED_PARTNER_PERSON_WITH_IDS_URL, LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL } from "../../../postTransition/url";
+import { ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_IDS_URL, ADD_LIMITED_PARTNER_PERSON_WITH_IDS_URL, LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL, UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL } from "../../../postTransition/url";
 import AddressPageType from "../../PageType";
 import * as url from "../../url/postTransition";
 
@@ -21,7 +21,8 @@ const postTransitionAddressRoutingTerritoryChoiceLimitedPartnerUsualResidentialA
   pageType: AddressPageType.territoryChoiceLimitedPartnerUsualResidentialAddress,
   data: {
     ...usualResidentialAddressCacheKeys,
-    nextUrlOverseas: url.ENTER_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
+    nextUrlOverseas: url.ENTER_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+    previousUrlUpdateLimitedPartnerPerson: UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL
   }
 };
 
