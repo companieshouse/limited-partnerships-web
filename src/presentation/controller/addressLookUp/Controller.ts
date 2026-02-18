@@ -183,28 +183,24 @@ class AddressLookUpController extends AbstractController {
   ) {
     const partner = generalPartner?.data ? generalPartner : limitedPartner;
 
-    if (partner?.data?.kind === PartnerKind.UPDATE_GENERAL_PARTNER_PERSON) {
+    if (this.isUpdateKind(partner)) {
       if (
         pageRouting.pageType === AddressLookUpPageType.territoryChoiceGeneralPartnerUsualResidentialAddress ||
         pageRouting.pageType === AddressLookUpPageType.enterGeneralPartnerCorrespondenceAddress ||
         pageRouting.pageType === AddressLookUpPageType.confirmGeneralPartnerCorrespondenceAddress
       ) {
         pageRouting.previousUrl = this.insertIdsInUrl(pageRouting.data?.previousUrlUpdateGeneralPartnerPerson, ids);
+        return;
       }
-      return;
-    }
 
-    if (partner?.data?.kind === PartnerKind.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY) {
       if (
         pageRouting.pageType === AddressLookUpPageType.enterGeneralPartnerPrincipalOfficeAddress ||
         pageRouting.pageType === AddressLookUpPageType.confirmGeneralPartnerPrincipalOfficeAddress
       ) {
         pageRouting.previousUrl = this.insertIdsInUrl(pageRouting.data?.previousUrlUpdateGeneralPartnerLegalEntity, ids);
+        return;
       }
-      return;
-    }
 
-    if (partner?.data?.kind === PartnerKind.UPDATE_LIMITED_PARTNER_PERSON) {
       if (
         pageRouting.pageType === AddressLookUpPageType.territoryChoiceLimitedPartnerUsualResidentialAddress
       ) {
@@ -730,6 +726,13 @@ class AddressLookUpController extends AbstractController {
     }
 
     return { generalPartner, limitedPartner };
+  }
+
+  private isUpdateKind(partner: GeneralPartner | LimitedPartner) {
+    return partner?.data?.kind === PartnerKind.UPDATE_GENERAL_PARTNER_PERSON ||
+      partner?.data?.kind === PartnerKind.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY ||
+      partner?.data?.kind === PartnerKind.UPDATE_LIMITED_PARTNER_PERSON ||
+      partner?.data?.kind === PartnerKind.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY;
   }
 }
 
