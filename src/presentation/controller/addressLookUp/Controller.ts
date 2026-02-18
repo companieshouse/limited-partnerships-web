@@ -210,7 +210,6 @@ class AddressLookUpController extends AbstractController {
       ) {
         pageRouting.previousUrl = this.insertIdsInUrl(pageRouting.data?.previousUrlUpdateLimitedPartnerPerson, ids);
       }
-      return;
     }
   }
 
