@@ -15,7 +15,7 @@ import {
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import LimitedPartnerBuilder from "../../../../builder/LimitedPartnerBuilder";
-import { LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/postTransition/url";
+import { LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL, UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL } from "../../../../../controller/postTransition/url";
 import TransactionBuilder from "../../../../builder/TransactionBuilder";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
@@ -87,9 +87,18 @@ describe("Confirm Limited Partner Usual Residential Address Page", () => {
     });
 
     it.each([
-      ["overseas", getUrl(ENTER_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL)],
-      ["unitedKingdom", getUrl(POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL)]
-    ])("should have the correct back link", async (territory, backLink) => {
+      ["update", "overseas", PartnerKind.UPDATE_LIMITED_PARTNER_PERSON, UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL],
+      ["update", "unitedKingdom", PartnerKind.UPDATE_LIMITED_PARTNER_PERSON, UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL],
+      ["add", "overseas", PartnerKind.ADD_LIMITED_PARTNER_PERSON, ENTER_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL],
+      ["add", "unitedKingdom", PartnerKind.ADD_LIMITED_PARTNER_PERSON, POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL]
+    ])("should contain the correct back link when on %s limited partner person journey", async (_description: string, territory: string, partnerKind: PartnerKind, backUrl: string) => {
+      const limitedPartner = new LimitedPartnerBuilder()
+        .isPerson()
+        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+        .withKind(partnerKind)
+        .build();
+      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
+
       appDevDependencies.cacheRepository.feedCache({
         [appDevDependencies.transactionGateway.transactionId]: {
           ura_territory_choice: territory
@@ -98,7 +107,10 @@ describe("Confirm Limited Partner Usual Residential Address Page", () => {
 
       const res = await request(app).get(URL);
 
-      expect(res.text).toContain(backLink);
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(
+        getUrl(backUrl)
+      );
     });
   });
 
