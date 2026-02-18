@@ -3,7 +3,7 @@
 {% set updateFieldsMap = props.data.partnerUpdatedFieldsMap %}
 
 {% if item.data.kind == "limited-partnership#update-general-partner-person" %}
-  {% set dateChangeUrl = "when-did-general-partner-details-change"  %}
+  {% set dateChangeUrl = "when-did-general-partner-person-details-change"  %}
   {% if updateFieldsMap.forename or updateFieldsMap.surname %}
     {% set name = item.data.forename + " " + item.data.surname  %}
   {% else %}
