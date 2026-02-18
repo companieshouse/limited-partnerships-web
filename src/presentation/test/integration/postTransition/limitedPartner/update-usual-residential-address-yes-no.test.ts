@@ -5,39 +5,39 @@ import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscape
 import enTranslationText from "../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../locales/cy/translations.json";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import GeneralPartnerBuilder from "../../../../../presentation/test/builder/GeneralPartnerBuilder";
-import { UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL, UPDATE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL } from "../../../../../presentation/controller/postTransition/url";
 import CompanyProfileBuilder from "../../../../../presentation/test/builder/CompanyProfileBuilder";
-import { TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../../presentation/controller/addressLookUp/url/postTransition";
 import PostTransitionPageType from "../../../../../presentation/controller/postTransition/pageType";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import TransactionBuilder from "../../../builder/TransactionBuilder";
+import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
+import { UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL, WHEN_DID_LIMITED_PARTNER_PERSON_DETAILS_CHANGE_URL } from "../../../../controller/postTransition/url";
+import { TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../../presentation/controller/addressLookUp/url/postTransition";
 
 describe("Update Usual Residential Address Yes No Page", () => {
-  const URL = getUrl(UPDATE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL);
-  const REDIRECT_YES = getUrl(TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
-  const REDIRECT_NO = getUrl(UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL);
+  const URL = getUrl(UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL);
+  const REDIRECT_YES = getUrl(TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
+  const REDIRECT_NO = getUrl(WHEN_DID_LIMITED_PARTNER_PERSON_DETAILS_CHANGE_URL);
 
-  let generalPartner;
+  let limitedPartner;
 
   beforeEach(() => {
     setLocalesEnabled(false);
 
     const companyProfile = new CompanyProfileBuilder().build();
 
-    generalPartner = new GeneralPartnerBuilder()
-      .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+    limitedPartner = new LimitedPartnerBuilder()
+      .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
       .isPerson()
       .build();
 
-    appDevDependencies.generalPartnerGateway.feedGeneralPartners([
-      generalPartner,
+    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([
+      limitedPartner,
     ]);
-    appDevDependencies.generalPartnerGateway.feedErrors();
+    appDevDependencies.limitedPartnerGateway.feedErrors();
 
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
-    const transaction = new TransactionBuilder().withKind(PartnerKind.UPDATE_GENERAL_PARTNER_PERSON).build();
+    const transaction = new TransactionBuilder().withKind(PartnerKind.UPDATE_LIMITED_PARTNER_PERSON).build();
     appDevDependencies.transactionGateway.feedTransactions([transaction]);
   });
 
@@ -54,11 +54,11 @@ describe("Update Usual Residential Address Yes No Page", () => {
       expect(res.status).toBe(200);
 
       expect(res.text).toContain(
-        `${generalPartner.data?.forename?.toUpperCase()} ${generalPartner.data?.surname?.toUpperCase()}`
+        `${limitedPartner.data?.forename?.toUpperCase()} ${limitedPartner.data?.surname?.toUpperCase()}`
       );
 
-      testTranslations(res.text, translationText.address.update.usualResidentialAddress);
-      expect(countOccurrences(res.text, toEscapedHtml(translationText.serviceName.updateGeneralPartnerPerson))).toBe(2);
+      testTranslations(res.text, translationText.address.update.limitedPartnerUsualResidentialAddress);
+      expect(countOccurrences(res.text, toEscapedHtml(translationText.serviceName.updateLimitedPartnerPerson))).toBe(2);
 
       if (lang === "cy") {
         expect(res.text).toContain("WELSH - ");
@@ -73,7 +73,7 @@ describe("Update Usual Residential Address Yes No Page", () => {
     ])("should load the update usual residential address yes no page with %s radio button checked", async (radioValue: boolean) => {
       setLocalesEnabled(true);
 
-      generalPartner.data.update_usual_residential_address_required = radioValue;
+      limitedPartner.data.update_usual_residential_address_required = radioValue;
 
       const res = await request(app).get(`${URL}`);
 
@@ -87,10 +87,10 @@ describe("Update Usual Residential Address Yes No Page", () => {
 
     it.each([
       ['URA territory choice page when "yes"', "true", REDIRECT_YES],
-      ['the update correspondence address yes no page when "no"', "false", REDIRECT_NO]
+      ['the when did the limited partner person details change page when "no"', "false", REDIRECT_NO]
     ])('should redirect to %s is selected', async (description: string, pageValue: string, redirectUrl: string) => {
       const res = await request(app).post(`${URL}`).send({
-        pageType: PostTransitionPageType.updateGeneralPartnerUsualResidentialAddressYesNo,
+        pageType: PostTransitionPageType.updateLimitedPartnerUsualResidentialAddressYesNo,
         update_usual_residential_address_required: pageValue
       });
 

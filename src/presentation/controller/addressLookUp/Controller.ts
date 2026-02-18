@@ -201,6 +201,16 @@ class AddressLookUpController extends AbstractController {
       ) {
         pageRouting.previousUrl = this.insertIdsInUrl(pageRouting.data?.previousUrlUpdateGeneralPartnerLegalEntity, ids);
       }
+      return;
+    }
+
+    if (partner?.data?.kind === PartnerKind.UPDATE_LIMITED_PARTNER_PERSON) {
+      if (
+        pageRouting.pageType === AddressLookUpPageType.territoryChoiceLimitedPartnerUsualResidentialAddress
+      ) {
+        pageRouting.previousUrl = this.insertIdsInUrl(pageRouting.data?.previousUrlUpdateLimitedPartnerPerson, ids);
+      }
+      return;
     }
   }
 

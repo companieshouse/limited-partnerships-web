@@ -96,10 +96,24 @@ const postTransitionRoutingRemoveLimitedPartnerLegalEntityCheckYourAnswers = {
 const postTransitionRoutingUpdateLimitedPartnerPerson = {
   previousUrl: url.LANDING_PAGE_URL,
   currentUrl: url.UPDATE_LIMITED_PARTNER_PERSON_URL,
-  nextUrl: "/",
+  nextUrl: url.UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
   pageType: PostTransitionPageType.updateLimitedPartnerPerson,
   data: {
     serviceName: "updateLimitedPartnerPerson"
+  }
+};
+
+const postTransitionRoutingUpdateUsualResidentialAddressYesNo = {
+  previousUrl: url.UPDATE_LIMITED_PARTNER_PERSON_WITH_IDS_URL,
+  currentUrl: url.UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
+  nextUrl: "/",
+  pageType: PostTransitionPageType.updateLimitedPartnerUsualResidentialAddressYesNo,
+  data: {
+    nextYesUrl: TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+    nextNoUrl: url.WHEN_DID_LIMITED_PARTNER_PERSON_DETAILS_CHANGE_URL,
+    titleKey: "limitedPartnerUsualResidentialAddress",
+    fieldName: "update_usual_residential_address_required",
+    trackingLabel: "update-usual-residential-address-yes-no"
   }
 };
 
@@ -113,7 +127,8 @@ const limitedPartnerRouting = [
   postTransitionRoutingRemoveLimitedPartnerLegalEntity,
   postTransitionRoutingRemoveLimitedPartnerLegalEntityCheckYourAnswers,
 
-  postTransitionRoutingUpdateLimitedPartnerPerson
+  postTransitionRoutingUpdateLimitedPartnerPerson,
+  postTransitionRoutingUpdateUsualResidentialAddressYesNo
 ];
 
 export default limitedPartnerRouting;

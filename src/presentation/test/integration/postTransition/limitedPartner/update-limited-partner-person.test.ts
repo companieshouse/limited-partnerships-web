@@ -7,6 +7,7 @@ import app from "../../app";
 import {
   UPDATE_LIMITED_PARTNER_PERSON_URL,
   UPDATE_LIMITED_PARTNER_PERSON_WITH_IDS_URL,
+  UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
 } from "../../../../controller/postTransition/url";
 import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../utils";
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
@@ -20,7 +21,7 @@ import { OFFICER_ROLE_LIMITED_PARTNER_PERSON } from "../../../../../config";
 describe("Update Limited Partner Person Page", () => {
   const URL = getUrl(UPDATE_LIMITED_PARTNER_PERSON_URL);
   const URL_WITH_IDS = getUrl(UPDATE_LIMITED_PARTNER_PERSON_WITH_IDS_URL);
-  const REDIRECT = "/";
+  const REDIRECT = getUrl(UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL);
 
   let companyProfile;
   let companyAppointment;
