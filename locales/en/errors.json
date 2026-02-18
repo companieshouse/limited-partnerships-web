@@ -21,7 +21,8 @@
             "principalPlaceOfBusinessAddress": "Date the principal place of business changed must be the same as or after limited partnership's registration date",
             "partnershipName": "Date the partnership name changed must be the same as or after limited partnership's registration date",
             "term": "Date the term changed must be the same as or after limited partnership's registration date",
-            "generalPartner": "Date the general partner changed must be the same as or after limited partnership's registration date"
+            "generalPartner": "Date the general partner changed must be the same as or after limited partnership's registration date",
+            "limitedPartner": "Date the limited partner changed must be the same as or after limited partnership's registration date"
         }
     }
 }

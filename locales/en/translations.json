@@ -569,6 +569,9 @@
       },
       "generalPartner" : {
           "title": "When did these details change?"
+      },
+      "limitedPartner" : {
+          "title": "When did these details change?"
       }
     },
 

@@ -63,6 +63,7 @@ enum PostTransitionPageType {
 
   updateLimitedPartnerPerson = "update-limited-partner-person",
   updateLimitedPartnerUsualResidentialAddressYesNo = `update-limited-partner-usual-residential-${UPDATE_ADDRESS_YES_NO_TYPE_SUFFIX}`,
+
   whenDidLimitedPartnerPersonDetailsChange = `${DATE_OF_UPDATE_TYPE_PREFIX}-limited-partner-person-details-change`
 }
 
@@ -79,7 +80,8 @@ export function isCeaseDatePage(pageType: string): boolean {
 
 const whenDidChangeUpdatePageTypes: string[] = [
   PostTransitionPageType.whenDidGeneralPartnerPersonDetailsChange,
-  PostTransitionPageType.whenDidGeneralPartnerLegalEntityDetailsChange
+  PostTransitionPageType.whenDidGeneralPartnerLegalEntityDetailsChange,
+  PostTransitionPageType.whenDidLimitedPartnerPersonDetailsChange
 ];
 
 export function isWhenDidChangeUpdatePage(pageType: string): boolean {

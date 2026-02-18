@@ -72,4 +72,6 @@ export const WHEN_DID_GENERAL_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_TEMPLATE = Pos
 
 export const UPDATE_LIMITED_PARTNER_PERSON_TEMPLATE = PostTransitionPageType.updateLimitedPartnerPerson;
 export const UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_TEMPLATE = PostTransitionPageType.updateLimitedPartnerUsualResidentialAddressYesNo;
+
 export const WHEN_DID_LIMITED_PARTNER_PERSON_DETAILS_CHANGE_TEMPLATE = PostTransitionPageType.whenDidLimitedPartnerPersonDetailsChange;
+
