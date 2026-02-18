@@ -15,7 +15,7 @@ import {
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import LimitedPartnerBuilder from "../../../../builder/LimitedPartnerBuilder";
-import { LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL, UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL } from "../../../../../controller/postTransition/url";
+import { LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL, UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL, WHEN_DID_LIMITED_PARTNER_PERSON_DETAILS_CHANGE_URL } from "../../../../../controller/postTransition/url";
 import TransactionBuilder from "../../../../builder/TransactionBuilder";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
@@ -91,7 +91,7 @@ describe("Confirm Limited Partner Usual Residential Address Page", () => {
       ["update", "unitedKingdom", PartnerKind.UPDATE_LIMITED_PARTNER_PERSON, UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL],
       ["add", "overseas", PartnerKind.ADD_LIMITED_PARTNER_PERSON, ENTER_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL],
       ["add", "unitedKingdom", PartnerKind.ADD_LIMITED_PARTNER_PERSON, POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL]
-    ])("should contain the correct back link when on %s limited partner person journey", async (_description: string, territory: string, partnerKind: PartnerKind, backUrl: string) => {
+    ])("should contain the correct back link when on %s limited partner person journey", async (description: string, territory: string, partnerKind: PartnerKind, backUrl: string) => {
       const limitedPartner = new LimitedPartnerBuilder()
         .isPerson()
         .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
@@ -115,10 +115,14 @@ describe("Confirm Limited Partner Usual Residential Address Page", () => {
   });
 
   describe("POST Confirm Usual Residential Address Page", () => {
-    it("should redirect to the next page", async () => {
+    it.each([
+      ["update", PartnerKind.UPDATE_LIMITED_PARTNER_PERSON, WHEN_DID_LIMITED_PARTNER_PERSON_DETAILS_CHANGE_URL],
+      ["add", PartnerKind.ADD_LIMITED_PARTNER_PERSON, LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL]
+    ])("should redirect to the correct next page when on %s limited partner person journey", async (description: string, partnerKind: PartnerKind, nextUrl: string) => {
       const limitedPartner = new LimitedPartnerBuilder()
         .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
         .isPerson()
+        .withKind(partnerKind)
         .build();
 
       appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
@@ -137,10 +141,8 @@ describe("Confirm Limited Partner Usual Residential Address Page", () => {
           }`
         });
 
-      const redirectUrl = getUrl(LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL);
-
       expect(res.status).toBe(302);
-      expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+      expect(res.text).toContain(`Redirecting to ${getUrl(nextUrl)}`);
     });
 
     it("should show error message if address is not provided", async () => {
