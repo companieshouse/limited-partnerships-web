@@ -13,7 +13,8 @@ import {
   validateAndFormatPartnerDateEffectiveFrom,
   resetFormerNamesIfPreviousNameIsFalse,
   validateAndFormatPartnerCeaseDate,
-  validateFormerNamesNotEmptyIfPreviousNameIsTrue
+  validateFormerNamesNotEmptyIfPreviousNameIsTrue,
+  validateAndFormatPartnerDateOfUpdate
 } from "../utils";
 
 class LimitedPartnerGateway implements ILimitedPartnerGateway {
@@ -100,6 +101,7 @@ class LimitedPartnerGateway implements ILimitedPartnerGateway {
     validateFormerNamesNotEmptyIfPreviousNameIsTrue(data, this.partnerType);
     resetFormerNamesIfPreviousNameIsFalse(data);
     validateAndFormatPartnerCeaseDate(data);
+    validateAndFormatPartnerDateOfUpdate(data);
 
     const apiCall = {
       service: SDK_LIMITED_PARTNERSHIP_SERVICE,

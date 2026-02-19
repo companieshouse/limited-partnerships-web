@@ -10,6 +10,7 @@ import {
   resetFormerNamesIfPreviousNameIsFalse,
   validateAndFormatPartnerCeaseDate,
   validateAndFormatPartnerDateEffectiveFrom,
+  validateAndFormatPartnerDateOfUpdate,
   validateAndFormatPartnerPersonDateOfBirth,
   validateFormerNamesNotEmptyIfPreviousNameIsTrue
 } from "../utils";
@@ -103,6 +104,7 @@ class GeneralPartnerInMemoryGateway implements IGeneralPartnerGateway {
     validateFormerNamesNotEmptyIfPreviousNameIsTrue(data, this.partnerType);
     resetFormerNamesIfPreviousNameIsFalse(data);
     validateAndFormatPartnerCeaseDate(data);
+    validateAndFormatPartnerDateOfUpdate(data);
 
     this.generalPartners[index].data = { ...this.generalPartners[index].data, ...data };
   }
