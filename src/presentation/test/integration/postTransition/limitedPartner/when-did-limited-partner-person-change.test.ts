@@ -89,18 +89,23 @@ describe("Limited partner person change date page", () => {
       const limitedPartner = new LimitedPartnerBuilder()
         .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
         .isPerson()
-        .withDateOfUpdate("2024-10-10")
         .build();
 
       appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
 
+      expect(limitedPartner.data?.date_of_update).toBeUndefined();
+
       const res = await request(app).post(URL).send({
-        pageType: PostTransitionPageType.whenDidLimitedPartnerPersonDetailsChange
+        pageType: PostTransitionPageType.whenDidLimitedPartnerPersonDetailsChange,
+        "date_of_update-day": "10",
+        "date_of_update-month": "10",
+        "date_of_update-year": "2024"
       });
 
       const REDIRECT_URL = "/";
 
       expect(res.status).toBe(302);
+      expect(limitedPartner.data?.date_of_update).toBe("2024-10-10");
       expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
     });
 
