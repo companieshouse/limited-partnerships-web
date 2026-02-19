@@ -17,6 +17,7 @@ import {
 import postTransitionRouting from "../postTransition/routing";
 import { CONFIRMATION_POST_TRANSITION_URL } from "../global/url";
 import {
+  CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX,
   JOURNEY_QUERY_PARAM,
   JOURNEY_TYPE_PARAM,
   PARTNER_CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE
@@ -89,6 +90,14 @@ class LimitedPartnerPostTransitionController extends PartnerController {
         const { tokens, pageType, ids } = super.extract(request);
         const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
 
+        let limitedPartnership = {};
+        if (pageRouting.currentUrl.includes(CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX)) {
+          limitedPartnership = (await this.postTransitionPartnerController.getPartnershipAndPartnerData(
+            tokens,
+            ids
+          )).limitedPartnership;
+        }
+
         const partner = await this.limitedPartnerService.getLimitedPartner(
           tokens,
           ids.transactionId,
@@ -99,7 +108,12 @@ class LimitedPartnerPostTransitionController extends PartnerController {
           partner.data.cease_date = formatDate(partner.data.cease_date, response.locals.i18n);
         }
 
-        response.render(PARTNER_CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE, super.makeProps(pageRouting, { partner }, null));
+        let partnerUpdatedFieldsMap: Record<string, boolean> = {};
+        if (partner.data?.kind === PartnerKind.UPDATE_LIMITED_PARTNER_PERSON || partner.data?.kind === PartnerKind.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY) {
+          partnerUpdatedFieldsMap = await super.comparePartnerDetails(partner, request);
+        }
+
+        response.render(PARTNER_CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE, super.makeProps(pageRouting, { limitedPartnership, partner, partnerUpdatedFieldsMap }, null));
       } catch (error) {
         next(error);
       }

@@ -11,7 +11,11 @@
 {% set name = "" %}
 {% if props.data.partner.data.forename %}
   {% set name = props.data.partner.data.forename + " " + props.data.partner.data.surname %}
-  {% set warningText = i18n.checkYourAnswersPage.partners.person.warningMessageUpdate %}
+  {% if props.data.partner.data.kind.indexOf("general-partner") !== -1 %}
+    {% set warningText = i18n.checkYourAnswersPage.partners.person.generalPartner.warningMessageUpdate %}
+  {% else %}
+    {% set warningText = i18n.checkYourAnswersPage.partners.person.limitedPartner.warningMessageUpdate %}
+  {% endif %}
 {% elif props.data.partner.data.legal_entity_name %}
   {% set name = props.data.partner.data.legal_entity_name %}
   {% set warningText = i18n.checkYourAnswersPage.warningMessage.warning %}
@@ -21,7 +25,7 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
 
-      {% if props.data.pageKey == "updateGeneralPartner"%}
+      {% if props.data.pageKey == "updatePartner"%}
         {% include "includes/proposed-name.njk" %}
       {% else %}
         <span class="govuk-caption-l"> {{ name }} </span>

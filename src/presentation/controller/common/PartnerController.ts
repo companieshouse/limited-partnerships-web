@@ -463,7 +463,6 @@ abstract class PartnerController extends AbstractController {
         request.body
       );
     }
-
     return result;
   }
 
@@ -707,7 +706,7 @@ abstract class PartnerController extends AbstractController {
 
     let partnerUpdatedFieldsMap: Record<string, boolean>;
 
-    if (partner.data?.kind === PartnerKind.UPDATE_GENERAL_PARTNER_PERSON){
+    if (partner.data?.kind === PartnerKind.UPDATE_GENERAL_PARTNER_PERSON || partner.data?.kind === PartnerKind.UPDATE_LIMITED_PARTNER_PERSON) {
       partnerUpdatedFieldsMap = {
         forename: false,
         surname: false,
