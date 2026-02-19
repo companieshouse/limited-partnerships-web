@@ -14,6 +14,7 @@ import UIErrors from "../../domain/entities/UIErrors";
 import { extractAPIErrors } from "./utils";
 import { CompanyOfficer } from "@companieshouse/api-sdk-node/dist/services/company-officers/types";
 import { Tokens } from "../../domain/types";
+import { normaliseNationality } from "./utils/normaliseNationality";
 
 export type DataIncludingPartners = {
   data: LimitedPartnership["data"] & { partners?: CompanyOfficer[]; limitedPartners?: CompanyOfficer[] };
@@ -127,8 +128,8 @@ class CompanyService {
         ...partner.data,
         forename: forename ?? "",
         surname: surname ?? "",
-        nationality1: nationality[0] ?? "",
-        nationality2: nationality[1] ?? undefined,
+        nationality1: normaliseNationality(nationality[0] ?? ""),
+        nationality2: nationality[1] ? normaliseNationality(nationality[1]) : undefined,
         date_of_birth
       }
     };
