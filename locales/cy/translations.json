@@ -327,6 +327,9 @@
         },
 
         "update": {
+            "limitedPartnerUsualResidentialAddress": {
+                "title": "WELSH - Do you need to update the limited partner's usual residential address?"
+            },
             "usualResidentialAddress": {
                 "title": "WELSH - Do you need to update this partner's usual residential address?",
                 "hint": "WELSH - We cannot show you the usual residential address we currently hold"
@@ -564,6 +567,9 @@
           "title": "WELSH - When did the term change?"
       },
       "generalPartner" : {
+          "title": "WELSH - When did these details change?"
+      },
+      "limitedPartner" : {
           "title": "WELSH - When did these details change?"
       }
     },

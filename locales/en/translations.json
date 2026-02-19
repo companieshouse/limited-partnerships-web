@@ -328,6 +328,9 @@
         },
 
         "update": {
+            "limitedPartnerUsualResidentialAddress": {
+                "title": "Do you need to update the limited partner's usual residential address?"
+            },
             "usualResidentialAddress": {
                 "title": "Do you need to update this partner's usual residential address?",
                 "hint": "We cannot show you the usual residential address we currently hold"
@@ -565,6 +568,9 @@
           "title": "When did the term change?"
       },
       "generalPartner" : {
+          "title": "When did these details change?"
+      },
+      "limitedPartner" : {
           "title": "When did these details change?"
       }
     },

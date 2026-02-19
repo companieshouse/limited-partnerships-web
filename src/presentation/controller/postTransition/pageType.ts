@@ -52,7 +52,7 @@ enum PostTransitionPageType {
 
   updateGeneralPartnerPerson = "update-general-partner-person",
   updateGeneralPartnerLegalEntity = "update-general-partner-legal-entity",
-  updateUsualResidentialAddressYesNo = `update-usual-residential-${UPDATE_ADDRESS_YES_NO_TYPE_SUFFIX}`,
+  updateGeneralPartnerUsualResidentialAddressYesNo = `update-general-partner-usual-residential-${UPDATE_ADDRESS_YES_NO_TYPE_SUFFIX}`,
   updateCorrespondenceAddressYesNo = `update-correspondence-${UPDATE_ADDRESS_YES_NO_TYPE_SUFFIX}`,
   updatePrincipalOfficeAddressYesNo = `update-principal-office-${UPDATE_ADDRESS_YES_NO_TYPE_SUFFIX}`,
   updateGeneralPartnerPersonCheckYourAnswers = `general-partner-person-${CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX}`,
@@ -61,7 +61,10 @@ enum PostTransitionPageType {
   whenDidGeneralPartnerPersonDetailsChange = `${DATE_OF_UPDATE_TYPE_PREFIX}-general-partner-person-details-change`,
   whenDidGeneralPartnerLegalEntityDetailsChange = `${DATE_OF_UPDATE_TYPE_PREFIX}-general-partner-legal-entity-details-change`,
 
-  updateLimitedPartnerPerson = "update-limited-partner-person"
+  updateLimitedPartnerPerson = "update-limited-partner-person",
+  updateLimitedPartnerUsualResidentialAddressYesNo = `update-limited-partner-usual-residential-${UPDATE_ADDRESS_YES_NO_TYPE_SUFFIX}`,
+
+  whenDidLimitedPartnerPersonDetailsChange = `${DATE_OF_UPDATE_TYPE_PREFIX}-limited-partner-person-details-change`
 }
 
 const CeaseDatePageTypes: string[] = [
@@ -77,7 +80,8 @@ export function isCeaseDatePage(pageType: string): boolean {
 
 const whenDidChangeUpdatePageTypes: string[] = [
   PostTransitionPageType.whenDidGeneralPartnerPersonDetailsChange,
-  PostTransitionPageType.whenDidGeneralPartnerLegalEntityDetailsChange
+  PostTransitionPageType.whenDidGeneralPartnerLegalEntityDetailsChange,
+  PostTransitionPageType.whenDidLimitedPartnerPersonDetailsChange
 ];
 
 export function isWhenDidChangeUpdatePage(pageType: string): boolean {

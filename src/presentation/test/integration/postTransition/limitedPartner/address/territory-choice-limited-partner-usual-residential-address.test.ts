@@ -14,6 +14,7 @@ import LimitedPartnerBuilder, { limitedPartnerPerson } from "../../../../builder
 import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
 import TransactionBuilder from "../../../../builder/TransactionBuilder";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { ADD_LIMITED_PARTNER_PERSON_WITH_IDS_URL, UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL } from "../../../../../controller/postTransition/url";
 
 describe("Limited Partner Usual Residential Address Territory Choice", () => {
   const URL = getUrl(TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
@@ -71,6 +72,26 @@ describe("Limited Partner Usual Residential Address Territory Choice", () => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(
         `${limitedPartnerPerson.forename.toUpperCase()} ${limitedPartnerPerson.surname.toUpperCase()}`
+      );
+    });
+
+    it.each([
+      ["update", PartnerKind.UPDATE_LIMITED_PARTNER_PERSON, UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL],
+      ["add", PartnerKind.ADD_LIMITED_PARTNER_PERSON, ADD_LIMITED_PARTNER_PERSON_WITH_IDS_URL]
+    ])("should contain the correct back link when on %s limited partner person journey", async (_description: string, partnerKind: PartnerKind, backUrl: string) => {
+      const limitedPartner = new LimitedPartnerBuilder()
+        .isPerson()
+        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+        .withKind(partnerKind)
+        .build();
+
+      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
+
+      const res = await request(app).get(URL);
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(
+        getUrl(backUrl)
       );
     });
   });

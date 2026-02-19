@@ -79,6 +79,10 @@ class LimitedPartnerPostTransitionController extends PartnerController {
     return this.postTransitionPartnerController.getCeaseDate();
   }
 
+  getDateOfUpdate() {
+    return this.postTransitionPartnerController.getDateOfUpdate(PartnerType.limitedPartner);
+  }
+
   getCheckYourAnswersPageRouting() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
