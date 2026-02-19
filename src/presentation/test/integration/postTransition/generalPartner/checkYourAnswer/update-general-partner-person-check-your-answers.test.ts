@@ -6,9 +6,9 @@ import cyTranslationText from "../../../../../../../locales/cy/translations.json
 
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
-import { countOccurrences, getUrl, setLocalesEnabled, toEscapedHtml } from "../../../../utils";
+import { countOccurrences, expectChangeLinks, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
 
-import { UPDATE_GENERAL_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/postTransition/url";
+import { UPDATE_GENERAL_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL, UPDATE_GENERAL_PARTNER_PERSON_WITH_IDS_URL, WHEN_DID_GENERAL_PARTNER_PERSON_DETAILS_CHANGE_URL } from "../../../../../controller/postTransition/url";
 import GeneralPartnerBuilder from "../../../../builder/GeneralPartnerBuilder";
 import CompanyAppointmentBuilder from "../../../../builder/CompanyAppointmentBuilder";
 import CompanyProfileBuilder from "../../../../builder/CompanyProfileBuilder";
@@ -69,6 +69,14 @@ describe("Update general partner check your answers page", () => {
 
       expect(res.status).toBe(200);
 
+      testTranslations(res.text, enTranslationText.checkYourAnswersPage.partners, [
+        "generalPartners",
+        "limitedPartners",
+        "limitedPartner",
+        "legalEntity",
+        "formerNames",
+        "dateOfBirth"
+      ]);
       expect(res.text).toContain(companyProfile.data.companyName + " (" + companyProfile.data.companyNumber + ")");
       expect(res.text).toContain(`${enTranslationText.checkYourAnswersPage.update.title}`);
       expect(res.text).toContain(generalPartner.data?.forename);
@@ -79,6 +87,7 @@ describe("Update general partner check your answers page", () => {
       expect(res.text).toContain(enTranslationText.checkYourAnswersPage.update.dateOfChange);
       expect(res.text).toContain(enTranslationText.print.buttonText);
       expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
+      expectChangeLinks(res.text, [WHEN_DID_GENERAL_PARTNER_PERSON_DETAILS_CHANGE_URL, UPDATE_GENERAL_PARTNER_PERSON_WITH_IDS_URL]);
       expect(res.text).toContain("1 January 2025");
       expect(res.text).not.toContain("WELSH -");
       expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.update.notUpdated);
