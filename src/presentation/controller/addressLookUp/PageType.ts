@@ -61,4 +61,11 @@ export function isConfirmGeneralPartnerAddressPageType(pageType: string): boolea
   ].includes(pageType as AddressPageType);
 }
 
+export function isConfirmLimitedPartnerAddressPageType(pageType: string): boolean {
+  return [
+    AddressPageType.confirmLimitedPartnerUsualResidentialAddress,
+    AddressPageType.confirmLimitedPartnerPrincipalOfficeAddress
+  ].includes(pageType as AddressPageType);
+}
+
 export default AddressPageType;
