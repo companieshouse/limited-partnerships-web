@@ -118,14 +118,29 @@ const postTransitionRoutingUpdateUsualResidentialAddressYesNo = {
 };
 
 const LIMITED_PARTNER = "limitedPartner";
+const UPDATE_PARTNER_KEY = "updatePartner";
+const DATE_CHANGE_LINK = PostTransitionPageType.whenDidLimitedPartnerPersonDetailsChange;
+const PERSON_CHANGE_LINK = PostTransitionPageType.updateLimitedPartnerPerson;
 
 const postTransitionRoutingWhenDidLimitedPartnerPersonChange = {
   previousUrl: url.UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
   currentUrl: url.WHEN_DID_LIMITED_PARTNER_PERSON_DETAILS_CHANGE_URL,
-  nextUrl: "/",
+  nextUrl: url.UPDATE_LIMITED_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL,
   pageType: PostTransitionPageType.whenDidLimitedPartnerPersonDetailsChange,
   data: {
     titleKey: LIMITED_PARTNER
+  }
+};
+
+const postTransitionRoutingUpdateLimitedPartnerPersonCheckYourAnswers = {
+  previousUrl: url.WHEN_DID_LIMITED_PARTNER_PERSON_DETAILS_CHANGE_URL,
+  currentUrl: url.UPDATE_LIMITED_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL,
+  nextUrl: "/",
+  pageType: PostTransitionPageType.updateLimitedPartnerPersonCheckYourAnswers,
+  data: {
+    pageKey: UPDATE_PARTNER_KEY,
+    dateChangeLink: DATE_CHANGE_LINK,
+    personChangeLink: PERSON_CHANGE_LINK
   }
 };
 
@@ -142,7 +157,8 @@ const limitedPartnerRouting = [
   postTransitionRoutingUpdateLimitedPartnerPerson,
   postTransitionRoutingUpdateUsualResidentialAddressYesNo,
 
-  postTransitionRoutingWhenDidLimitedPartnerPersonChange
+  postTransitionRoutingWhenDidLimitedPartnerPersonChange,
+  postTransitionRoutingUpdateLimitedPartnerPersonCheckYourAnswers
 ];
 
 export default limitedPartnerRouting;
