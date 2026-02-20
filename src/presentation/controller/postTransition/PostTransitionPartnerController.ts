@@ -127,7 +127,7 @@ class PostTransitionPartnerController extends PartnerController {
           partnerUpdatedFieldsMap = await this.comparePartnerDetails(partner, request);
         }
 
-        response.render(PARTNER_CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE, super.makeProps(pageRouting, { limitedPartnership, partner, partnerUpdatedFieldsMap }, null));
+        response.render(PARTNER_CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE, super.makeProps(pageRouting, { limitedPartnership, partner, partnerUpdatedFieldsMap, partnerType }, null));
       } catch (error) {
         next(error);
       }

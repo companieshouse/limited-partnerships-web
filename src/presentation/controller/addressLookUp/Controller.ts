@@ -116,7 +116,7 @@ class AddressLookUpController extends AbstractController {
 
         if (ids.generalPartnerId) {
           this.conditionalBackLink(pageRouting, generalPartner, ids);
-        } else {
+        } else if (ids.limitedPartnerId){
           this.conditionalBackLink(pageRouting, limitedPartner, ids);
         }
 

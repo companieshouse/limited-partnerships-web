@@ -11,7 +11,7 @@
 {% set name = "" %}
 {% if props.data.partner.data.forename %}
   {% set name = props.data.partner.data.forename + " " + props.data.partner.data.surname %}
-  {% if props.data.partner.data.kind.indexOf("general-partner") !== -1 %}
+  {% if props.data.partnerType == "generalPartner" %}
     {% set warningText = i18n.checkYourAnswersPage.partners.person.generalPartner.warningMessageUpdate %}
   {% else %}
     {% set warningText = i18n.checkYourAnswersPage.partners.person.limitedPartner.warningMessageUpdate %}

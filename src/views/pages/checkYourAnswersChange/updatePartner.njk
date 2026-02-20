@@ -1,7 +1,6 @@
 {% set notUpdated = i18n.checkYourAnswersPage.update.notUpdated %}
 {% set item = props.data.partner %}
 {% set updateFieldsMap = props.data.partnerUpdatedFieldsMap %}
-{% set partnerType = "general-partner" if item.data.kind == "limited-partnership#update-general-partner-person" or item.data.kind == "limited-partnership#update-general-partner-legal-entity" else "limited-partner" %}
 
 {% if item.data.kind == "limited-partnership#update-general-partner-person" or item.data.kind == "limited-partnership#update-limited-partner-person" %}
   {% if updateFieldsMap.forename or updateFieldsMap.surname %}
