@@ -10,9 +10,9 @@ export const pageRoutingDefault = {
   currentUrl: "",
   nextUrl: "",
   pageType: PageDefault.default,
-  data: null,
-  errors: null,
-} as const;
+  data: undefined as unknown as Record<string, any> | undefined,
+  errors: undefined as unknown as UIValidationErrors | undefined,
+};
 
 export type PageRouting =
   | {
