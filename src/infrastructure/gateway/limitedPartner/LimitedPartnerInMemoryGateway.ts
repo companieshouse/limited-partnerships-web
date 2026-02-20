@@ -6,7 +6,7 @@ import { LimitedPartner } from "@companieshouse/api-sdk-node/dist/services/limit
 import ILimitedPartnerGateway from "../../../domain/ILimitedPartnerGateway";
 import UIErrors, { ApiErrors } from "../../../domain/entities/UIErrors";
 import TransactionLimitedPartner from "../../../domain/entities/TransactionLimitedPartner";
-import { resetFormerNamesIfPreviousNameIsFalse, validateAndFormatPartnerCeaseDate, validateAndFormatPartnerDateEffectiveFrom, validateAndFormatPartnerPersonDateOfBirth, validateFormerNamesNotEmptyIfPreviousNameIsTrue } from "../utils";
+import { resetFormerNamesIfPreviousNameIsFalse, validateAndFormatPartnerCeaseDate, validateAndFormatPartnerDateEffectiveFrom, validateAndFormatPartnerDateOfUpdate, validateAndFormatPartnerPersonDateOfBirth, validateFormerNamesNotEmptyIfPreviousNameIsTrue } from "../utils";
 
 class LimitedPartnerInMemoryGateway implements ILimitedPartnerGateway {
  private readonly partnerType = "limited";
@@ -98,6 +98,7 @@ class LimitedPartnerInMemoryGateway implements ILimitedPartnerGateway {
     validateFormerNamesNotEmptyIfPreviousNameIsTrue(data, this.partnerType);
     resetFormerNamesIfPreviousNameIsFalse(data);
     validateAndFormatPartnerCeaseDate(data);
+    validateAndFormatPartnerDateOfUpdate(data);
 
     this.limitedPartners[index].data = { ...this.limitedPartners[index].data, ...data };
   }

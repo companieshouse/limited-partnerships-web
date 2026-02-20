@@ -93,3 +93,9 @@ export const expectPartnerData = (res: request.Response, partner: LimitedPartner
 export const countOccurrences = (text: string, target: string): number => {
   return text.split(target).length - 1;
 };
+
+export const expectChangeLinks = (text: string, changeLink: string[]) => {
+  changeLink.forEach(link => {
+    expect(text).toContain(getUrl(link));
+  });
+};

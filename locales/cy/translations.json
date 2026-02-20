@@ -450,7 +450,12 @@
                 "nationality": "WELSH - Nationality",
                 "usualResidentialAddress": "WELSH - Usual residential address",
                 "correspondenceAddress": "WELSH - Correspondence address",
-                "warningMessageUpdate": "WELSH - If you've updated the general partner's usual residential address, this is the only time we'll show it to you. It's sensitive information, so we will not show it anywhere in our services."
+                "generalPartner": {
+                    "warningMessageUpdate": "WELSH - If you've updated the general partner's usual residential address, this is the only time we'll show it to you. It's sensitive information, so we will not show it anywhere in our services."
+                },
+                "limitedPartner": {
+                    "warningMessageUpdate": "WELSH - If you've updated the limited partner's usual residential address, this is the only time we'll show it to you. It's sensitive information, so we will not show it anywhere in our services."
+                }
             },
             "legalEntity": {
                 "name": "WELSH - Name",
