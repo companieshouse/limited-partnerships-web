@@ -180,12 +180,12 @@ abstract class AbstractController {
   }
 
   protected extractIds(request: Request): Ids {
-    const companyId = request.params.companyId;
-    const transactionId = request.params.transactionId;
-    const submissionId = request.params.submissionId;
-    const generalPartnerId = request.params.generalPartnerId;
-    const limitedPartnerId = request.params.limitedPartnerId;
-    const appointmentId = request.params.appointmentId;
+    const companyId = request.params.companyId as string;
+    const transactionId = request.params.transactionId as string;
+    const submissionId = request.params.submissionId as string;
+    const generalPartnerId = request.params.generalPartnerId as string;
+    const limitedPartnerId = request.params.limitedPartnerId as string;
+    const appointmentId = request.params.appointmentId as string;
 
     return { transactionId, submissionId, companyId, generalPartnerId, limitedPartnerId, appointmentId };
   }

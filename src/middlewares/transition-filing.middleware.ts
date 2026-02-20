@@ -10,7 +10,7 @@ export const transitionFiling =
 
     if (journeyTypes.isTransition) {
       const tokens = dependencies.globalController.extractTokens(req);
-      const companyId = req.params.companyId;
+      const companyId = req.params.companyId as string;
 
       try {
         const filingHistoryItems = await dependencies.filingHistoryService.getFilingHistoryList(tokens, companyId);
