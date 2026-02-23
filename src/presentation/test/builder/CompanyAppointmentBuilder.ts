@@ -11,17 +11,6 @@ export const companyAppointmentPerson = {
   formerNames: []
 };
 
-export const companyAppointmentLegalEntity = {
-  name: "Partner Appointment",
-  identification: {
-    legalForm: "CA Limited Company",
-    legalAuthority: "CA Act of law",
-    placeRegistered: "CA US Register",
-    registerLocation: "United Kingdom",
-    registrationNumber: "CA 12345678",
-  }
-};
-
 export const principalOfficeAddress = {
   addressLine1: "10 Test Street",
   addressLine2: "Test Address Line 2",
@@ -30,6 +19,18 @@ export const principalOfficeAddress = {
   premises: "10",
   region: "Test Region",
   country: "England"
+};
+
+export const companyAppointmentLegalEntity = {
+  name: "Partner Appointment",
+  principalOfficeAddress: principalOfficeAddress,
+  identification: {
+    legalForm: "CA Limited Company",
+    legalAuthority: "CA Act of law",
+    placeRegistered: "CA US Register",
+    registerLocation: "United Kingdom",
+    registrationNumber: "CA 12345678",
+  }
 };
 
 class CompanyAppointmentBuilder {

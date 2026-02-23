@@ -73,16 +73,16 @@ class CompanyService {
         data: {
           appointment_id: appointment_id,
           service_address: {
-            address_line_1: companyAppointment?.address?.addressLine1,
+            address_line_1: companyAppointment?.address?.addressLine1 ?? "",
             address_line_2: companyAppointment?.address?.addressLine2,
-            premises: companyAppointment?.address?.premises,
-            locality: companyAppointment?.address?.locality,
+            premises: companyAppointment?.address?.premises ?? "",
+            locality: companyAppointment?.address?.locality ?? "",
             region: companyAppointment?.address?.region,
-            country: companyAppointment?.address?.country,
-            postal_code: companyAppointment?.address?.postalCode
+            country: companyAppointment?.address?.country ?? "",
+            postal_code: companyAppointment?.address?.postalCode ?? ""
           }
         }
-      } as GeneralPartner;
+      };
 
       if (companyAppointment?.nationality) {
         partner = this.buildPersonPartner(partner, companyAppointment);
@@ -108,7 +108,7 @@ class CompanyService {
   }
 
   private buildPersonPartner(
-    partner: GeneralPartner | LimitedPartner,
+    partner: Partial<GeneralPartner> | Partial<LimitedPartner>,
     companyAppointment: Partial<CompanyOfficer>
   ): GeneralPartner | LimitedPartner {
     const [surname, forename] = companyAppointment?.name?.split(", ") ?? [];
@@ -120,6 +120,22 @@ class CompanyService {
       const month = companyAppointment?.dateOfBirth?.month?.padStart(2, "0") ?? "01";
       const year = companyAppointment?.dateOfBirth?.year ?? "1900";
       date_of_birth = `${year}-${month}-${day}`;
+    }
+
+    if (companyAppointment?.address) {
+      partner = {
+        data: {
+          service_address: {
+            address_line_1: companyAppointment?.address?.addressLine1,
+            address_line_2: companyAppointment?.address?.addressLine2,
+            premises: companyAppointment?.address?.premises ?? "",
+            locality: companyAppointment?.address?.locality,
+            region: companyAppointment?.address?.region,
+            country: companyAppointment?.address?.country,
+            postal_code: companyAppointment?.address?.postalCode ?? ""
+          }
+        }
+      };
     }
 
     return {
@@ -135,7 +151,7 @@ class CompanyService {
   }
 
   private buildLegalEntityPartner(
-    partner: GeneralPartner | LimitedPartner,
+    partner: Partial<GeneralPartner> | Partial<LimitedPartner>,
     companyAppointment: Partial<CompanyOfficer>
   ): GeneralPartner | LimitedPartner {
     const name = companyAppointment?.name ?? "";
