@@ -122,22 +122,6 @@ class CompanyService {
       date_of_birth = `${year}-${month}-${day}`;
     }
 
-    if (companyAppointment?.address) {
-      partner = {
-        data: {
-          service_address: {
-            address_line_1: companyAppointment?.address?.addressLine1,
-            address_line_2: companyAppointment?.address?.addressLine2,
-            premises: companyAppointment?.address?.premises ?? "",
-            locality: companyAppointment?.address?.locality,
-            region: companyAppointment?.address?.region,
-            country: companyAppointment?.address?.country,
-            postal_code: companyAppointment?.address?.postalCode ?? ""
-          }
-        }
-      };
-    }
-
     return {
       data: {
         ...partner.data,
