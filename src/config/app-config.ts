@@ -10,6 +10,7 @@ import { getGOVUKFrontendVersion } from "@companieshouse/ch-node-utils";
 
 import { createSummaryListLink } from "../utils/change-link";
 import setDateOfUpdateSection from "../utils/date-of-update";
+import { setCountriesDropdown } from "../utils/countries";
 import * as config from "./constants";
 import { authentication, localisationMiddleware, trailingSlashMiddleware } from "../middlewares";
 import { serviceAvailabilityMiddleware } from "../middlewares/service-availability.middleware";
@@ -60,6 +61,7 @@ export const appConfig = (app: express.Application) => {
   nunjucksEnv.addGlobal("SERVICE_START_URL_TRANSITION", TRANSITION_START_URL);
   nunjucksEnv.addGlobal("CREATE_CHANGE_LINK", createSummaryListLink);
   nunjucksEnv.addGlobal("SET_DATE_OF_UPDATE_SECTION", setDateOfUpdateSection);
+  nunjucksEnv.addGlobal("SET_COUNTRIES_DROPDOWN", setCountriesDropdown);
 
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
