@@ -1,6 +1,6 @@
-import { normaliseNationality } from "./normaliseNationality";
+import { normaliseNationality } from "../../../../application/service/utils/normaliseNationality";
 
-describe("normaliseNationality", () => { 
+describe("normaliseNationality", () => {
   it.each([
     ["BRITISH", "British"],
     ["CITIZEN OF GUINEA-BISSAU", "Citizen of Guinea-Bissau"],

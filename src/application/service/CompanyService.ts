@@ -128,7 +128,7 @@ class CompanyService {
         ...partner.data,
         forename: forename ?? "",
         surname: surname ?? "",
-        nationality1: normaliseNationality(nationality[0] ?? ""),
+        nationality1: normaliseNationality(nationality[0]),
         nationality2: nationality[1] ? normaliseNationality(nationality[1]) : undefined,
         date_of_birth
       }
