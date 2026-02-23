@@ -338,6 +338,8 @@ class AddressLookUpController extends AbstractController {
 
           const cacheById = this.cacheService.getDataFromCacheById(request.signedCookies, ids.transactionId);
 
+          this.conditionalBackLink(pageRouting, generalPartner, limitedPartner, ids);
+
           response.render(
             super.templateName(pageRouting.currentUrl),
             super.makeProps(

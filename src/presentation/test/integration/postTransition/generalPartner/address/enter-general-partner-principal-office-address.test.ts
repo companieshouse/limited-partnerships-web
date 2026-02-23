@@ -301,5 +301,29 @@ describe("Enter general partner's principal office manual address page", () => {
       expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.localityLength);
       expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.regionLength);
     });
+
+    it("should contain correct backlink for update journey when validation error occurs", async () => {
+      const generalPartner = new GeneralPartnerBuilder()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .isLegalEntity()
+        .withKind(PartnerKind.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY)
+        .build();
+
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: AddressPageType.enterGeneralPartnerPrincipalOfficeAddress,
+          ...generalPartner.data?.principal_office_address,
+          premises: "toomanycharacters".repeat(13),
+          address_line_1: "±",
+          postal_code: "here"
+        });
+
+      expect(res.status).toBe(200);
+      const backLinkUrl = getUrl(UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL);
+      expect(res.text).toContain(backLinkUrl);
+    });
   });
 });
