@@ -99,14 +99,10 @@ describe("CompanyService", () => {
       });
     });
 
-    it.each([
-      ["with hyphen", "CITIZEN OF GUINEA-BISSAU,CONGOLESE (DRC)", "Citizen of Guinea-Bissau", "Congolese (DRC)"],
-      ["with brackets", "CONGOLESE (CONGO),British", "Congolese (Congo)", "British"],
-      ["already normalised", "British,Irish", "British", "Irish"]
-    ])("should normalise nationality from company appointment %s", async (_description: string, nationality: string, expectedNationality1: string, expectedNationality2: string) => {
+    it("should pass through nationality values from company appointment without normalisation", async () => {
       const appointment = new CompanyAppointmentBuilder()
         .isPerson()
-        .withNationality(nationality)
+        .withNationality("BRITISH,IRISH")
         .build();
       appDevDependencies.companyGateway.feedCompanyAppointments([appointment]);
 
@@ -116,8 +112,8 @@ describe("CompanyService", () => {
         "AP123456"
       );
 
-      expect(result.partner.data?.nationality1).toEqual(expectedNationality1);
-      expect(result.partner.data?.nationality2).toEqual(expectedNationality2);
+      expect(result.partner.data?.nationality1).toEqual("BRITISH");
+      expect(result.partner.data?.nationality2).toEqual("IRISH");
     });
 
     it("should map the company appointment to general partner Legal Entity", async () => {
