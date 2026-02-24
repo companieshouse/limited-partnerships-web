@@ -148,6 +148,15 @@ describe("CompanyService", () => {
         country: appointment.address?.country,
         postal_code: appointment.address?.postalCode
       });
+      expect((result.partner.data as any)?.principal_office_address).toEqual({
+        address_line_1: appointment.principalOfficeAddress?.addressLine1,
+        address_line_2: appointment.principalOfficeAddress?.addressLine2,
+        premises: appointment.principalOfficeAddress?.premises,
+        locality: appointment.principalOfficeAddress?.locality,
+        region: appointment.principalOfficeAddress?.region,
+        country: appointment.principalOfficeAddress?.country,
+        postal_code: appointment.principalOfficeAddress?.postalCode
+      });
     });
   });
 });
