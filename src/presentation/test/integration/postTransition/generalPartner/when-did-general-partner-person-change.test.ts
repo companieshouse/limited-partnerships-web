@@ -90,14 +90,20 @@ describe("General partner person change date page", () => {
       const generalPartner = new GeneralPartnerBuilder()
         .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
         .isPerson()
-        .withDateOfUpdate("2024-10-10")
         .build();
 
       appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
 
+      expect(generalPartner.data?.date_of_update).toBeUndefined();
+
       const res = await request(app).post(URL).send({
-        pageType: PostTransitionPageType.whenDidGeneralPartnerPersonDetailsChange
+        pageType: PostTransitionPageType.whenDidGeneralPartnerPersonDetailsChange,
+        "date_of_update-day": "10",
+        "date_of_update-month": "10",
+        "date_of_update-year": "2024"
       });
+
+      expect(generalPartner.data?.date_of_update).toBe("2024-10-10");
 
       const REDIRECT_URL = getUrl(UPDATE_GENERAL_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL);
 

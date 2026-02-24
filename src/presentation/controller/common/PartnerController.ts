@@ -2,8 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import {
   GeneralPartner,
   LimitedPartner,
-  LimitedPartnership,
-  PartnerKind
+  LimitedPartnership
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 import AbstractController from "../AbstractController";
@@ -463,7 +462,6 @@ abstract class PartnerController extends AbstractController {
         request.body
       );
     }
-
     return result;
   }
 
@@ -696,49 +694,6 @@ abstract class PartnerController extends AbstractController {
     } else {
       return postTransitionRouting;
     }
-  }
-
-  protected async comparePartnerDetails(
-    partner: GeneralPartner | LimitedPartner,
-    request: Request
-  ) {
-    const { tokens, ids } = super.extract(request);
-    const appointmentId = partner.data?.appointment_id;
-
-    let partnerUpdatedFieldsMap: Record<string, boolean>;
-
-    if (partner.data?.kind === PartnerKind.UPDATE_GENERAL_PARTNER_PERSON){
-      partnerUpdatedFieldsMap = {
-        forename: false,
-        surname: false,
-        nationality1: false,
-        nationality2: false
-      };
-    } else {
-      partnerUpdatedFieldsMap = {
-        legal_entity_name: false,
-        legal_form: false,
-        governing_law: false,
-        legal_entity_register_name: false,
-        legal_entity_registration_location: false,
-        registered_company_number: false,
-      };
-    }
-
-    if (appointmentId) {
-      const appointment = await this.companyService?.buildPartnerFromCompanyAppointment(
-        tokens,
-        ids.companyId,
-        appointmentId
-      );
-
-      for (const field in partnerUpdatedFieldsMap) {
-        if (appointment?.partner?.data?.[field]?.toLowerCase() !== partner.data?.[field]?.toLowerCase()){
-          partnerUpdatedFieldsMap[field] = true;
-        }
-      }
-    }
-    return partnerUpdatedFieldsMap;
   }
 
   protected resetFormerNamesIfPreviousNameIsFalse(data: Record<string, any>) {

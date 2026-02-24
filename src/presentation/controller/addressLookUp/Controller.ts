@@ -114,7 +114,11 @@ class AddressLookUpController extends AbstractController {
 
         const { chsCorrespondenceAddress, chsPrincipalOfficeAddress } = await this.getChsAddressesIfApplicable(tokens, pageRouting, generalPartner, limitedPartner, cacheById, ids);
 
-        this.conditionalBackLink(pageRouting, generalPartner, limitedPartner, ids);
+        if (ids.generalPartnerId) {
+          this.conditionalBackLink(pageRouting, generalPartner, ids);
+        } else if (ids.limitedPartnerId){
+          this.conditionalBackLink(pageRouting, limitedPartner, ids);
+        }
 
         response.render(
           super.templateName(pageRouting.currentUrl),
@@ -178,13 +182,10 @@ class AddressLookUpController extends AbstractController {
 
   private conditionalBackLink(
     pageRouting: PageRouting,
-    generalPartner: GeneralPartner,
-    limitedPartner: LimitedPartner,
+    partner: GeneralPartner | LimitedPartner,
     ids: Ids
   ) {
-    const partner = generalPartner?.data ? generalPartner : limitedPartner;
-
-    if (isUpdateKind(partner)) {
+    if (isUpdateKind(partner?.data?.kind)) {
       if (
         pageRouting.pageType === AddressLookUpPageType.territoryChoiceGeneralPartnerUsualResidentialAddress ||
         pageRouting.pageType === AddressLookUpPageType.enterGeneralPartnerCorrespondenceAddress ||
@@ -337,6 +338,8 @@ class AddressLookUpController extends AbstractController {
           const { generalPartner, limitedPartner } = await this.getPartnerGPandLP(pageType, tokens, ids);
 
           const cacheById = this.cacheService.getDataFromCacheById(request.signedCookies, ids.transactionId);
+
+          this.conditionalBackLink(pageRouting, ids?.generalPartnerId ? generalPartner : limitedPartner, ids);
 
           response.render(
             super.templateName(pageRouting.currentUrl),
