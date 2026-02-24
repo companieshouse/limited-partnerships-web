@@ -10,7 +10,7 @@ import { getGOVUKFrontendVersion } from "@companieshouse/ch-node-utils";
 
 import { createSummaryListLink } from "../utils/change-link";
 import setDateOfUpdateSection from "../utils/date-of-update";
-import setNationalitiesDropdown from "../utils/nationalities";
+import { setNationalitiesDropdown } from "../utils/nationalities";
 import * as config from "./constants";
 import { authentication, localisationMiddleware, trailingSlashMiddleware } from "../middlewares";
 import { serviceAvailabilityMiddleware } from "../middlewares/service-availability.middleware";

@@ -1,41 +1,18 @@
-type DropdownItem = {
-  value: string;
-  text: string;
-  selected?: boolean;
+export const setNationalitiesDropdown = (i18n: Record<string, any>, nationalityField: string | undefined, selectPrompt: string) => {
+  const nationalities: { value: string; text: string; selected: boolean }[] = [];
+  const ukNationalities: { value: string; text: string; selected: boolean }[] = [];
+
+  const ukNationalitiesKeys = ["british", "english", "northernIrish", "scottish", "welsh"];
+
+  for (const nationality in i18n.nationalities) {
+    if (ukNationalitiesKeys.includes(nationality)) {
+      ukNationalities.push({ value: i18n.nationalities[nationality], text: i18n.nationalities[nationality], selected: nationalityField?.toLowerCase() === i18n.nationalities[nationality]?.toLowerCase() });
+    } else {
+      nationalities.push({ value: i18n.nationalities[nationality], text: i18n.nationalities[nationality], selected: nationalityField?.toLowerCase() === i18n.nationalities[nationality]?.toLowerCase() });
+    }
+  }
+
+  const sortedNationalities = [{ value: "", text: selectPrompt, selected: false }, ...ukNationalities, ...nationalities];
+
+  return sortedNationalities;
 };
-
-const UK_NATIONALITY_KEYS = ["british", "english", "northernIrish", "scottish", "welsh"];
-
-const setNationalitiesDropdown = (
-  i18n: Record<string, any>,
-  nationalityField: string | undefined,
-  selectPrompt: string
-): DropdownItem[] => {
-  const nationalities = i18n.nationalities ?? {};
-  const fieldLower = nationalityField?.toLowerCase();
-
-  const buildItem = (key: string): DropdownItem => {
-    const text = nationalities[key];
-    return {
-      value: text,
-      text,
-      selected: fieldLower === text?.toLowerCase()
-    };
-  };
-
-  const ukItems = UK_NATIONALITY_KEYS
-    .filter((key) => nationalities[key])
-    .map(buildItem);
-
-  const remainingItems = Object.keys(nationalities)
-    .filter((key) => !UK_NATIONALITY_KEYS.includes(key))
-    .map(buildItem);
-
-  return [
-    { value: "", text: selectPrompt },
-    ...ukItems,
-    ...remainingItems
-  ];
-};
-
-export default setNationalitiesDropdown;

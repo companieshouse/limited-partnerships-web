@@ -1,4 +1,4 @@
-import setNationalitiesDropdown from "../../../../utils/nationalities";
+import { setNationalitiesDropdown } from "../../../../utils/nationalities";
 
 const mockI18n = {
   nationalities: {
@@ -17,7 +17,7 @@ describe("setNationalitiesDropdown", () => {
   it("should include prompt text as first item", () => {
     const result = setNationalitiesDropdown(mockI18n, undefined, "Select a nationality");
 
-    expect(result[0]).toEqual({ value: "", text: "Select a nationality" });
+    expect(result[0]).toEqual({ value: "", text: "Select a nationality", selected: false });
   });
 
   it("should place UK nationalities first", () => {
