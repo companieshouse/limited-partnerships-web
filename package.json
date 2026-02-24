@@ -18,7 +18,7 @@
     "test:unit:watch": "jest --testRegex=.spec.ts --watch",
     "test:integration": "jest --testRegex=.test.ts",
     "test:integration:watch": "jest --testRegex=.test.ts --watch",
-    "coverage": "jest --coverage --forceExit --passWithNoTests --coverageProvider=v8",
+    "coverage": "NODE_OPTIONS=\"--require ./scripts/preload-minimatch-shim.js\" jest --coverage --forceExit --passWithNoTests",
     "chs-dev": "nodemon --legacy-watch"
   },
   "repository": {
