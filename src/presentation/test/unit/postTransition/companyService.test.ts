@@ -87,6 +87,7 @@ describe("CompanyService", () => {
       expect(result.partner.data?.surname).toEqual(appointment.name?.split(", ")[0]);
       expect(result.partner.data?.date_of_birth).toEqual("1980-01-01");
       expect(result.partner.data?.nationality1).toEqual("British");
+      expect(result.partner.data?.nationality2).toBeUndefined();
       expect((result.partner.data as any)?.service_address).toEqual({
         address_line_1: appointment.address?.addressLine1,
         address_line_2: appointment.address?.addressLine2,
@@ -96,6 +97,23 @@ describe("CompanyService", () => {
         country: appointment.address?.country,
         postal_code: appointment.address?.postalCode
       });
+    });
+
+    it("should pass through nationality values from company appointment without normalisation", async () => {
+      const appointment = new CompanyAppointmentBuilder()
+        .isPerson()
+        .withNationality("BRITISH,IRISH")
+        .build();
+      appDevDependencies.companyGateway.feedCompanyAppointments([appointment]);
+
+      const result = await appDevDependencies.companyService.buildPartnerFromCompanyAppointment(
+        { access_token: "token", refresh_token: "token" },
+        companyProfile.data.companyNumber,
+        "AP123456"
+      );
+
+      expect(result.partner.data?.nationality1).toEqual("BRITISH");
+      expect(result.partner.data?.nationality2).toEqual("IRISH");
     });
 
     it("should map the company appointment to general partner Legal Entity", async () => {
