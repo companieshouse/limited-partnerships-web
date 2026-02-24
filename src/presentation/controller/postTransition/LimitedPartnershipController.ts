@@ -560,7 +560,7 @@ class LimitedPartnershipController extends AbstractController {
   }
 
   private async getLimitedPartnership(ids: Ids, tokens: Tokens): Promise<LimitedPartnership> {
-    let limitedPartnership = {};
+    let limitedPartnership: LimitedPartnership;
 
     if (ids.transactionId && ids.submissionId) {
       limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(

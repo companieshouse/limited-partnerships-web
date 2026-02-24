@@ -18,7 +18,7 @@
     "test:unit:watch": "jest --testRegex=.spec.ts --watch",
     "test:integration": "jest --testRegex=.test.ts",
     "test:integration:watch": "jest --testRegex=.test.ts --watch",
-    "coverage": "jest --coverage --forceExit --passWithNoTests",
+    "coverage": "jest --coverage --forceExit --passWithNoTests --coverageProvider=v8",
     "chs-dev": "nodemon --legacy-watch"
   },
   "repository": {
@@ -47,22 +47,24 @@
     "typescript": "^5.9.3"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.3.3",
-    "@eslint/js": "^9.39.1",
-    "@stylistic/eslint-plugin-ts": "^4.4.1",
+    "@eslint/js": "^10.0.1",
+    "@stylistic/eslint-plugin": "^5.9.0",
     "@types/express": "^5.0.6",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.10.1",
     "@types/nunjucks": "^3.2.6",
     "@types/supertest": "^6.0.3",
-    "@typescript-eslint/eslint-plugin": "^8.48.1",
-    "eslint": "^9.39.1",
-    "globals": "^16.5.0",
+    "@typescript-eslint/eslint-plugin": "^8.56.0",
+    "eslint": "^10.0.1",
+    "globals": "^17.3.0",
     "husky": "^9.1.7",
     "jest": "^30.2.0",
-    "nodemon": "^3.1.11",
+    "nodemon": "^3.1.13",
     "sonarqube-scanner": "^3.5.0",
     "supertest": "^7.1.4",
     "ts-jest": "^29.4.6"
+  },
+  "overrides": {
+    "minimatch": "10.2.1"
   }
 }
