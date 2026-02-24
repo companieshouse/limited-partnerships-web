@@ -14,16 +14,12 @@ import {
   CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "../addressLookUp/url/postTransition";
 
-import postTransitionRouting from "../postTransition/routing";
 import { CONFIRMATION_POST_TRANSITION_URL } from "../global/url";
 import {
-  CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX,
   JOURNEY_QUERY_PARAM,
-  JOURNEY_TYPE_PARAM,
-  PARTNER_CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE
+  JOURNEY_TYPE_PARAM
 } from "../../../config/constants";
 import { getJourneyTypes } from "../../../utils/journey";
-import { formatDate } from "../../../utils/date-format";
 
 class GeneralPartnerPostTransitionController extends PartnerController {
   constructor(
@@ -85,36 +81,7 @@ class GeneralPartnerPostTransitionController extends PartnerController {
   }
 
   getCheckYourAnswersPageRouting() {
-    return async (request: Request, response: Response, next: NextFunction) => {
-      try {
-        const { tokens, pageType, ids } = super.extract(request);
-        const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
-
-        let limitedPartnership = {};
-        if (pageRouting.currentUrl.includes(CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX)){
-          limitedPartnership = (await this.postTransitionPartnerController.getPartnershipAndPartnerData(tokens, ids)).limitedPartnership;
-        }
-
-        const partner = await this.generalPartnerService.getGeneralPartner(
-          tokens,
-          ids.transactionId,
-          ids.generalPartnerId
-        );
-
-        if (partner?.data?.cease_date) {
-          partner.data.cease_date = formatDate(partner.data.cease_date, response.locals.i18n);
-        }
-
-        let partnerUpdatedFieldsMap: Record<string, boolean> = {};
-        if (partner.data?.kind === PartnerKind.UPDATE_GENERAL_PARTNER_PERSON || partner.data?.kind === PartnerKind.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY) {
-          partnerUpdatedFieldsMap = await super.comparePartnerDetails(partner, request);
-        }
-
-        response.render(PARTNER_CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE, super.makeProps(pageRouting, { limitedPartnership, partner, partnerUpdatedFieldsMap }, null));
-      } catch (error) {
-        next(error);
-      }
-    };
+    return this.postTransitionPartnerController.getCheckYourAnswersPageRouting(PartnerType.generalPartner);
   }
 
   postCheckYourAnswers() {

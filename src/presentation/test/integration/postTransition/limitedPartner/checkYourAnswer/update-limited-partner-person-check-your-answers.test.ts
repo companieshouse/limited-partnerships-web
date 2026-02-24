@@ -1,5 +1,5 @@
 import request from "supertest";
-import { GeneralPartner, PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { LimitedPartner, PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import enTranslationText from "../../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../../locales/cy/translations.json";
@@ -8,26 +8,26 @@ import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import { countOccurrences, expectChangeLinks, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
 
-import { UPDATE_GENERAL_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL, UPDATE_GENERAL_PARTNER_PERSON_WITH_IDS_URL, WHEN_DID_GENERAL_PARTNER_PERSON_DETAILS_CHANGE_URL } from "../../../../../controller/postTransition/url";
-import GeneralPartnerBuilder from "../../../../builder/GeneralPartnerBuilder";
 import CompanyAppointmentBuilder from "../../../../builder/CompanyAppointmentBuilder";
 import CompanyProfileBuilder from "../../../../builder/CompanyProfileBuilder";
 import PostTransitionPageType from "../../../../../controller/postTransition/pageType";
 import { CONFIRMATION_POST_TRANSITION_URL } from "../../../../../controller/global/url";
 import TransactionBuilder from "../../../../builder/TransactionBuilder";
-import { OFFICER_ROLE_GENERAL_PARTNER_PERSON } from "../../../../../../config";
+import LimitedPartnerBuilder from "../../../../builder/LimitedPartnerBuilder";
+import { OFFICER_ROLE_LIMITED_PARTNER_PERSON } from "../../../../../../config/constants";
+import { UPDATE_LIMITED_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL, UPDATE_LIMITED_PARTNER_PERSON_WITH_IDS_URL, WHEN_DID_LIMITED_PARTNER_PERSON_DETAILS_CHANGE_URL } from "../../../../../controller/postTransition/url";
 
-describe("Update general partner check your answers page", () => {
-  const URL = getUrl(UPDATE_GENERAL_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL);
-  let generalPartner: GeneralPartner;
+describe("Update limited partner check your answers page", () => {
+  const URL = getUrl(UPDATE_LIMITED_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL);
+  let limitedPartner: LimitedPartner;
   let companyAppointment;
   let companyProfile;
 
   beforeEach(() => {
     setLocalesEnabled(true);
 
-    generalPartner = new GeneralPartnerBuilder()
-      .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+    limitedPartner = new LimitedPartnerBuilder()
+      .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
       .isPerson()
       .withNationality1("Irish")
       .withUsualResidentialAddress({
@@ -40,31 +40,29 @@ describe("Update general partner check your answers page", () => {
         "region": ""
       })
       .withUsualResidentialAddressUpdateRequired(true)
-      .withServiceAddress()
-      .withServiceAddressUpdateRequired(true)
       .withAppointmentId("AP123456")
-      .withKind(PartnerKind.UPDATE_GENERAL_PARTNER_PERSON)
+      .withKind(PartnerKind.UPDATE_LIMITED_PARTNER_PERSON)
       .withDateOfUpdate("2025-01-01")
       .build();
 
-    appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
 
     companyProfile = new CompanyProfileBuilder().build();
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
     companyAppointment = new CompanyAppointmentBuilder()
-      .withOfficerRole(OFFICER_ROLE_GENERAL_PARTNER_PERSON)
+      .withOfficerRole(OFFICER_ROLE_LIMITED_PARTNER_PERSON)
       .withName("Doe, John")
       .withNationality("British")
       .build();
     appDevDependencies.companyGateway.feedCompanyAppointments([companyAppointment]);
 
-    const transaction = new TransactionBuilder().withKind(PartnerKind.UPDATE_GENERAL_PARTNER_PERSON).build();
+    const transaction = new TransactionBuilder().withKind(PartnerKind.UPDATE_LIMITED_PARTNER_PERSON).build();
     appDevDependencies.transactionGateway.feedTransactions([transaction]);
   });
 
-  describe("GET update general partner check your answers page", () => {
-    it("should load update general partner check your answers page with english text", async () => {
+  describe("GET update limited partner check your answers page", () => {
+    it("should load update limited partner check your answers page with english text", async () => {
       const res = await request(app).get(URL + "?lang=en");
 
       expect(res.status).toBe(200);
@@ -72,78 +70,78 @@ describe("Update general partner check your answers page", () => {
       testTranslations(res.text, enTranslationText.checkYourAnswersPage.partners, [
         "generalPartners",
         "limitedPartners",
-        "limitedPartner",
+        "generalPartner",
         "legalEntity",
         "formerNames",
-        "dateOfBirth"
+        "dateOfBirth",
+        "correspondenceAddress",
+        "title",
+        "notUpdated"
       ]);
       expect(res.text).toContain(companyProfile.data.companyName + " (" + companyProfile.data.companyNumber + ")");
       expect(res.text).toContain(`${enTranslationText.checkYourAnswersPage.update.title}`);
-      expect(res.text).toContain(generalPartner.data?.forename);
-      expect(res.text).toContain(generalPartner.data?.surname);
-      expect(res.text).toContain(generalPartner.data?.nationality1);
+      expect(res.text).toContain(limitedPartner.data?.forename);
+      expect(res.text).toContain(limitedPartner.data?.surname);
+      expect(res.text).toContain(limitedPartner.data?.nationality1);
       expect(res.text).toContain("6 Duncalf Street, Stoke-On-Trent, England, ST6 3LJ");
-      expect(res.text).toContain("4 Service Address Line 1, Line 2, Stoke-On-Trent, Region, England, ST6 3LJ");
       expect(res.text).toContain(enTranslationText.checkYourAnswersPage.update.dateOfChange);
       expect(res.text).toContain(enTranslationText.print.buttonText);
       expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
-      expectChangeLinks(res.text, [WHEN_DID_GENERAL_PARTNER_PERSON_DETAILS_CHANGE_URL, UPDATE_GENERAL_PARTNER_PERSON_WITH_IDS_URL]);
       expect(res.text).toContain("1 January 2025");
+      expectChangeLinks(res.text, [WHEN_DID_LIMITED_PARTNER_PERSON_DETAILS_CHANGE_URL, UPDATE_LIMITED_PARTNER_PERSON_WITH_IDS_URL]);
       expect(res.text).not.toContain("WELSH -");
       expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.update.notUpdated);
-      expect(countOccurrences(res.text, toEscapedHtml(enTranslationText.serviceName.updateGeneralPartnerPerson))).toBe(2);
+      expect(countOccurrences(res.text, toEscapedHtml(enTranslationText.serviceName.updateLimitedPartnerPerson))).toBe(2);
     });
 
-    it("should load update general partner check your answers page with welsh text", async () => {
+    it("should load update limited partner check your answers page with welsh text", async () => {
       const res = await request(app).get(URL + "?lang=cy");
 
       expect(res.status).toBe(200);
 
       expect(res.text).toContain(`${cyTranslationText.checkYourAnswersPage.update.title}`);
-      expect(res.text).toContain(generalPartner.data?.forename + " " + generalPartner.data?.surname);
+      expect(res.text).toContain(limitedPartner.data?.forename + " " + limitedPartner.data?.surname);
       expect(res.text).toContain(cyTranslationText.checkYourAnswersPage.update.dateOfChange);
 
       expect(res.text).toContain(cyTranslationText.print.buttonText);
       expect(res.text).toContain(cyTranslationText.print.buttonTextNoJs);
       expect(res.text).toContain("WELSH -");
       expect(res.text).not.toContain(cyTranslationText.checkYourAnswersPage.update.notUpdated);
-      expect(countOccurrences(res.text, toEscapedHtml(cyTranslationText.serviceName.updateGeneralPartnerPerson))).toBe(2);
+      expect(countOccurrences(res.text, toEscapedHtml(cyTranslationText.serviceName.updateLimitedPartnerPerson))).toBe(2);
     });
 
-    it("should load update general partner check your answers page and display 'Not updated' for non-updated fields", async () => {
-      generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+    it("should load update limited partner check your answers page and display 'Not updated' for non-updated fields", async () => {
+      limitedPartner = new LimitedPartnerBuilder()
+        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
         .isPerson()
         .withNationality1("British")
         .withForename("John")
         .withSurname("Doe")
         .withUsualResidentialAddressUpdateRequired(false)
-        .withServiceAddressUpdateRequired(false)
-        .withServiceAddress()
         .withAppointmentId("AP123456")
         .withDateOfUpdate("2025-01-01")
-        .withKind(PartnerKind.UPDATE_GENERAL_PARTNER_PERSON)
+        .withKind(PartnerKind.UPDATE_LIMITED_PARTNER_PERSON)
         .build();
 
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
 
       const res = await request(app).get(URL);
 
       expect(res.status).toBe(200);
 
       expect(res.text).toContain(enTranslationText.checkYourAnswersPage.update.notUpdated);
-      expect(res.text).not.toContain(generalPartner.data?.forename);
-      expect(res.text).not.toContain(generalPartner.data?.surname);
-      expect(res.text).not.toContain(generalPartner.data?.nationality1);
+      expect(res.text).not.toContain(limitedPartner.data?.forename);
+      expect(res.text).not.toContain(limitedPartner.data?.surname);
+      expect(res.text).not.toContain(limitedPartner.data?.nationality1);
       expect(res.text).not.toContain("4 Service Address Line 1, Line 2, Stoke-On-Trent, Region, England, ST6 3LJ");
       expect(res.text).toContain(enTranslationText.checkYourAnswersPage.update.dateOfChange);
     });
   });
 
-  describe("POST update general partner check your answers page", () => {
-    it("should post update general partner check your answers page and redirect to confirmation page", async () => {
+  describe("POST update limited partner check your answers page", () => {
+    it("should post update limited partner check your answers page and redirect to confirmation page", async () => {
       const res = await request(app).post(URL).send({
-        pageType: PostTransitionPageType.updateGeneralPartnerPersonCheckYourAnswers
+        pageType: PostTransitionPageType.updateLimitedPartnerPersonCheckYourAnswers
       });
 
       const REDIRECT_URL = getUrl(CONFIRMATION_POST_TRANSITION_URL);

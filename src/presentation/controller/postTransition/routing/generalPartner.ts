@@ -96,7 +96,11 @@ const postTransitionRoutingRemoveGeneralPartnerLegalEntityCheckYourAnswers = {
 };
 
 const GENERAL_PARTNER = "generalPartner";
-const UPDATE_GENERAL_PARTNER_KEY = "updateGeneralPartner";
+const UPDATE_PARTNER_KEY = "updatePartner";
+const DATE_CHANGE_LINK_PERSON = PostTransitionPageType.whenDidGeneralPartnerPersonDetailsChange;
+const DATE_CHANGE_LINK_LEGAL_ENTITY = PostTransitionPageType.whenDidGeneralPartnerLegalEntityDetailsChange;
+const PERSON_CHANGE_LINK = PostTransitionPageType.updateGeneralPartnerPerson;
+const LEGAL_ENTITY_CHANGE_LINK = PostTransitionPageType.updateGeneralPartnerLegalEntity;
 
 const postTransitionRoutingUpdateGeneralPartnerPerson = {
   previousUrl: url.LANDING_PAGE_URL,
@@ -152,7 +156,9 @@ const postTransitionRoutingChangeGeneralPartnerPersonCheckYourAnswers = {
   nextUrl: "/",
   pageType: PostTransitionPageType.updateGeneralPartnerPersonCheckYourAnswers,
   data: {
-    pageKey: UPDATE_GENERAL_PARTNER_KEY
+    pageKey: UPDATE_PARTNER_KEY,
+    dateChangeLink: DATE_CHANGE_LINK_PERSON,
+    personChangeLink: PERSON_CHANGE_LINK
   }
 };
 
@@ -196,7 +202,9 @@ const postTransitionRoutingChangeGeneralPartnerLegalEntityCheckYourAnswers = {
   nextUrl: "/",
   pageType: PostTransitionPageType.updateGeneralPartnerLegalEntityCheckYourAnswers,
   data: {
-    pageKey: UPDATE_GENERAL_PARTNER_KEY
+    pageKey: UPDATE_PARTNER_KEY,
+    dateChangeLink: DATE_CHANGE_LINK_LEGAL_ENTITY,
+    legalEntityChangeLink: LEGAL_ENTITY_CHANGE_LINK
   }
 };
 
