@@ -1,3 +1,5 @@
+import enTranslation from "../../locales/en/translations.json";
+
 export const setNationalitiesDropdown = (i18n: Record<string, any>, nationalityField: string | undefined, selectPrompt: string) => {
   const nationalities: { value: string; text: string; selected: boolean }[] = [];
   const ukNationalities: { value: string; text: string; selected: boolean }[] = [];
@@ -6,9 +8,9 @@ export const setNationalitiesDropdown = (i18n: Record<string, any>, nationalityF
 
   for (const nationality in i18n.nationalities) {
     if (ukNationalitiesKeys.includes(nationality)) {
-      ukNationalities.push({ value: i18n.nationalities[nationality], text: i18n.nationalities[nationality], selected: nationalityField?.toLowerCase() === i18n.nationalities[nationality]?.toLowerCase() });
+      ukNationalities.push({ value: enTranslation.nationalities[nationality], text: i18n.nationalities[nationality], selected: nationalityField?.toLowerCase() === enTranslation.nationalities[nationality]?.toLowerCase() });
     } else {
-      nationalities.push({ value: i18n.nationalities[nationality], text: i18n.nationalities[nationality], selected: nationalityField?.toLowerCase() === i18n.nationalities[nationality]?.toLowerCase() });
+      nationalities.push({ value: enTranslation.nationalities[nationality], text: i18n.nationalities[nationality], selected: nationalityField?.toLowerCase() === enTranslation.nationalities[nationality]?.toLowerCase() });
     }
   }
 
