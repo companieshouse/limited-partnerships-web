@@ -224,7 +224,8 @@
                 "postalCodeLength": "WELSH - Postal code must be 50 characters or less",
                 "countryMissing": "WELSH - Select a country",
                 "jurisdictionCountry": "WELSH - You must enter a country that matches your jurisdiction",
-                "invalidCharacters": "WELSH - must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes"
+                "invalidCharacters": "WELSH - must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "newKey" : "WELSH - new value"
             }
         },
 
