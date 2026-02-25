@@ -1,4 +1,4 @@
-import enTranslation from "../../locales/en/translations.json";
+import { enTranslation } from "../config/localesTranslations";
 
 export const setNationalitiesDropdown = (i18n: Record<string, any>, nationalityField: string | undefined, selectPrompt: string) => {
   const nationalities: { value: string; text: string; selected: boolean }[] = [];
