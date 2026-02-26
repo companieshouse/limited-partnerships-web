@@ -343,6 +343,9 @@
             "principalOfficeAddress": {
                 "title": "Do you need to update this partner's principal office address?",
                 "hint": "This is the address for the entity's main office."
+            },
+            "limitedPartnerPrincipalOfficeAddress": {
+                "title": "Do you need to update the principal office address?"
             }
         }
     },

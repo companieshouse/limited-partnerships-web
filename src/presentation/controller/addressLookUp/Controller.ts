@@ -208,6 +208,14 @@ class AddressLookUpController extends AbstractController {
         pageRouting.pageType === AddressLookUpPageType.confirmLimitedPartnerUsualResidentialAddress
       ) {
         pageRouting.previousUrl = this.insertIdsInUrl(pageRouting.data?.previousUrlUpdateLimitedPartnerPerson, ids);
+        return;
+      }
+
+      if (
+        pageRouting.pageType === AddressLookUpPageType.enterLimitedPartnerPrincipalOfficeAddress ||
+        pageRouting.pageType === AddressLookUpPageType.confirmLimitedPartnerPrincipalOfficeAddress
+      ) {
+        pageRouting.previousUrl = this.insertIdsInUrl(pageRouting.data?.previousUrlUpdateLimitedPartnerLegalEntity, ids);
       }
     }
   }

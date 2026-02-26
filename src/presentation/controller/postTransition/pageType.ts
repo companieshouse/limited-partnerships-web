@@ -66,7 +66,9 @@ enum PostTransitionPageType {
   whenDidLimitedPartnerPersonDetailsChange = `${DATE_OF_UPDATE_TYPE_PREFIX}-limited-partner-person-details-change`,
   updateLimitedPartnerPersonCheckYourAnswers = `limited-partner-person-${CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX}`,
 
-  updateLimitedPartnerLegalEntity = "update-limited-partner-legal-entity"
+  updateLimitedPartnerLegalEntity = "update-limited-partner-legal-entity",
+  updateLimitedPartnerPrincipalOfficeAddressYesNo = `update-limited-partner-principal-office-${UPDATE_ADDRESS_YES_NO_TYPE_SUFFIX}`,
+  whenDidLimitedPartnerLegalEntityDetailsChange = `${DATE_OF_UPDATE_TYPE_PREFIX}-limited-partner-legal-entity-details-change`
 }
 
 const CeaseDatePageTypes: string[] = [
