@@ -10,7 +10,7 @@ import PostTransitionPageType from "../../../../../presentation/controller/postT
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import TransactionBuilder from "../../../builder/TransactionBuilder";
 import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
-import { UPDATE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL, WHEN_DID_LIMITED_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL} from "../../../../controller/postTransition/url";
+import { UPDATE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL, WHEN_DID_LIMITED_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL } from "../../../../controller/postTransition/url";
 import { ENTER_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../../../controller/addressLookUp/url/postTransition";
 
 describe("Update Principal Office Address Yes No Page", () => {
