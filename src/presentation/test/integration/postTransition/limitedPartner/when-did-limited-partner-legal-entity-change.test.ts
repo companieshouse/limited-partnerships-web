@@ -11,18 +11,18 @@ import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { countOccurrences, getUrl, setLocalesEnabled, toEscapedHtml } from "../../../utils";
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 import {
-  WHEN_DID_LIMITED_PARTNER_PERSON_DETAILS_CHANGE_URL,
-  UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
-  UPDATE_LIMITED_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL
-} from "../../../../../presentation/controller/postTransition/url";
+  UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_URL,
+  UPDATE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL,
+  WHEN_DID_LIMITED_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL
+} from "../../../../controller/postTransition/url";
 import PostTransitionPageType from "../../../../controller/postTransition/pageType";
 import { ApiErrors } from "domain/entities/UIErrors";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import TransactionBuilder from "../../../builder/TransactionBuilder";
 
-describe("Limited partner person change date page", () => {
-  const URL = getUrl(WHEN_DID_LIMITED_PARTNER_PERSON_DETAILS_CHANGE_URL);
-  const BACK_LINK_URL = getUrl(UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL);
+describe("Limited partner legal entity change date page", () => {
+  const URL = getUrl(WHEN_DID_LIMITED_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL);
+  const BACK_LINK_URL = getUrl(UPDATE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL);
 
   let limitedPartner;
 
@@ -30,7 +30,7 @@ describe("Limited partner person change date page", () => {
     setLocalesEnabled(false);
     limitedPartner = new LimitedPartnerBuilder()
       .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-      .isPerson()
+      .isLegalEntity()
       .build();
 
     appDevDependencies.limitedPartnerGateway.feedLimitedPartners([
@@ -40,15 +40,15 @@ describe("Limited partner person change date page", () => {
     const companyProfile = new CompanyProfileBuilder().build();
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
-    const transaction = new TransactionBuilder().withKind(PartnerKind.UPDATE_LIMITED_PARTNER_PERSON).build();
+    const transaction = new TransactionBuilder().withKind(PartnerKind.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY).build();
     appDevDependencies.transactionGateway.feedTransactions([transaction]);
   });
 
-  describe("GET limited partner change date page", () => {
+  describe("GET limited partner legal entity change date page", () => {
     it.each([
       ["English", "en"],
       ["Welsh", "cy"]
-    ])("should load limited partner change date page with %s text", async (description: string, lang: string) => {
+    ])("should load limited partner legal entity change date page with %s text", async (_description: string, lang: string) => {
       setLocalesEnabled(true);
       const res = await request(app).get(`${URL}?lang=${lang}`);
 
@@ -59,18 +59,18 @@ describe("Limited partner person change date page", () => {
       if (lang === "cy") {
         expect(res.text).toContain("WELSH - ");
         expect(res.text).toContain(`${cyTranslationText.dateOfUpdate.limitedPartner.title}`);
-        expect(countOccurrences(res.text, toEscapedHtml(cyTranslationText.serviceName.updateLimitedPartnerPerson))).toBe(2);
+        expect(countOccurrences(res.text, toEscapedHtml(cyTranslationText.serviceName.updateLimitedPartnerLegalEntity))).toBe(2);
       } else {
         expect(res.text).not.toContain("WELSH -");
         expect(res.text).toContain(`${enTranslationText.dateOfUpdate.limitedPartner.title}`);
-        expect(countOccurrences(res.text, toEscapedHtml(enTranslationText.serviceName.updateLimitedPartnerPerson))).toBe(2);
+        expect(countOccurrences(res.text, toEscapedHtml(enTranslationText.serviceName.updateLimitedPartnerLegalEntity))).toBe(2);
       }
     });
 
     it("should populate the date fields with the existing date of update if it exists", async () => {
       const limitedPartner = new LimitedPartnerBuilder()
         .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isPerson()
+        .isLegalEntity()
         .withDateOfUpdate("2024-10-10")
         .build();
 
@@ -85,11 +85,11 @@ describe("Limited partner person change date page", () => {
     });
   });
 
-  describe("POST limited partner change date page", () => {
+  describe("POST limited partner legal entity change date page", () => {
     it("should navigate to next page with date of update", async () => {
       const limitedPartner = new LimitedPartnerBuilder()
         .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isPerson()
+        .isLegalEntity()
         .build();
 
       appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
@@ -97,13 +97,13 @@ describe("Limited partner person change date page", () => {
       expect(limitedPartner.data?.date_of_update).toBeUndefined();
 
       const res = await request(app).post(URL).send({
-        pageType: PostTransitionPageType.whenDidLimitedPartnerPersonDetailsChange,
+        pageType: PostTransitionPageType.whenDidLimitedPartnerLegalEntityDetailsChange,
         "date_of_update-day": "10",
         "date_of_update-month": "10",
         "date_of_update-year": "2024"
       });
 
-      const REDIRECT_URL = getUrl(UPDATE_LIMITED_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL);
+      const REDIRECT_URL = getUrl(UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_URL);
 
       expect(res.status).toBe(302);
       expect(limitedPartner.data?.date_of_update).toBe("2024-10-10");
@@ -113,7 +113,7 @@ describe("Limited partner person change date page", () => {
     it("should display the specifc error message rather than the original when the date is before the incorporation date", async () => {
       const limitedPartner = new LimitedPartnerBuilder()
         .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isPerson()
+        .isLegalEntity()
         .withDateOfUpdate("2024-10-10")
         .build();
 
@@ -127,7 +127,7 @@ describe("Limited partner person change date page", () => {
       appDevDependencies.limitedPartnerGateway.feedErrors(apiErrors);
 
       const res = await request(app).post(URL).send({
-        pageType: PostTransitionPageType.whenDidLimitedPartnerPersonDetailsChange,
+        pageType: PostTransitionPageType.whenDidLimitedPartnerLegalEntityDetailsChange,
         "date_of_update-day": "10",
         "date_of_update-month": "01",
         "date_of_update-year": "2000"
