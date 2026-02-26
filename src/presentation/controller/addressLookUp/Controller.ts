@@ -212,8 +212,7 @@ class AddressLookUpController extends AbstractController {
       }
 
       if (
-        pageRouting.pageType === AddressLookUpPageType.enterLimitedPartnerPrincipalOfficeAddress ||
-        pageRouting.pageType === AddressLookUpPageType.confirmLimitedPartnerPrincipalOfficeAddress
+        pageRouting.pageType === AddressLookUpPageType.enterLimitedPartnerPrincipalOfficeAddress
       ) {
         pageRouting.previousUrl = this.insertIdsInUrl(pageRouting.data?.previousUrlUpdateLimitedPartnerLegalEntity, ids);
       }
