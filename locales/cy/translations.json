@@ -7,6 +7,7 @@
         },
         "limitedPartner": {
             "title": "WELSH - Add a limited partner (legal entity)",
+            "updateTitle": "WELSH - Update limited partner details (legal entity)",
             "dateEffectiveFrom" : "WELSH - When did it become a limited partner for this partnership?"
         },
 
@@ -777,7 +778,8 @@
         "removeLimitedPartnerPerson": "WELSH - Remove a limited partner (person)",
         "updateGeneralPartnerPerson": "WELSH - Update a general partner's details (person)",
         "updateGeneralPartnerLegalEntity": "WELSH - Update a general partner's details (legal entity)",
-        "updateLimitedPartnerPerson": "WELSH - Update a limited partner's details (person)"
+        "updateLimitedPartnerPerson": "WELSH - Update a limited partner's details (person)",
+        "updateLimitedPartnerLegalEntity": "WELSH - Update a limited partner's details (legal entity)"
     },
 
     "sicCodePage" : {

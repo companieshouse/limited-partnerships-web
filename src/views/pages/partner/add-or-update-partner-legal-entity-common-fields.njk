@@ -10,7 +10,7 @@
   },
   id: "legal_entity_name",
   name: "legal_entity_name",
-  value: props.data.generalPartner.data.legal_entity_name,
+  value: props.data[partnerKind].data.legal_entity_name,
   errorMessage: props.errors.legal_entity_name if props.errors,
   attributes : {
     required: true
@@ -27,7 +27,7 @@
   },
   id: "legal_form",
   name: "legal_form",
-  value: props.data.generalPartner.data.legal_form,
+  value: props.data[partnerKind].data.legal_form,
   errorMessage: props.errors.legal_form if props.errors,
   attributes : {
     required: true
@@ -44,7 +44,7 @@
   },
   id: "governing_law",
   name: "governing_law",
-  value: props.data.generalPartner.data.governing_law,
+  value: props.data[partnerKind].data.governing_law,
   errorMessage: props.errors.governing_law if props.errors,
   attributes : {
     required: true
@@ -61,7 +61,7 @@
   },
   id: "legal_entity_register_name",
   name: "legal_entity_register_name",
-  value: props.data.generalPartner.data.legal_entity_register_name,
+  value: props.data[partnerKind].data.legal_entity_register_name,
   errorMessage: props.errors.legal_entity_register_name if props.errors,
   attributes : {
     required: true
@@ -71,7 +71,7 @@
 {% set countryText = i18n.addOrUpdatePartnerLegalEntityPage.countryRegistered %}
 {% set countryFormId = "legal_entity_registration_location" %}
 {% set countryErrorMessage = props.errors.legal_entity_registration_location if props.errors %}
-{% set countryFormValue = props.data.generalPartner.data.legal_entity_registration_location %}
+{% set countryFormValue = props.data[partnerKind].data.legal_entity_registration_location %}
 
 {{ macros.getSpecifiedCountryList(i18n, "overseas", countryFormId, countryText, countryFormValue, countryErrorMessage) }}
 
@@ -87,7 +87,7 @@
   name: "registered_company_number",
   classes: "govuk-!-width-one-half",
   inputmode: "numeric",
-  value: props.data.generalPartner.data.registered_company_number,
+  value: props.data[partnerKind].data.registered_company_number,
   errorMessage: props.errors.registered_company_number if props.errors,
   attributes : {
     required: true

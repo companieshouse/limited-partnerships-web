@@ -7,6 +7,7 @@
         },
         "limitedPartner": {
             "title": "Add a limited partner (legal entity)",
+            "updateTitle": "Update limited partner details (legal entity)",
             "dateEffectiveFrom" : "When did it become a limited partner for this partnership?"
         },
 
@@ -778,7 +779,8 @@
         "removeLimitedPartnerPerson": "Remove a limited partner (person)",
         "updateGeneralPartnerPerson": "Update a general partner's details (person)",
         "updateGeneralPartnerLegalEntity": "Update a general partner's details (legal entity)",
-        "updateLimitedPartnerPerson": "Update a limited partner's details (person)"
+        "updateLimitedPartnerPerson": "Update a limited partner's details (person)",
+        "updateLimitedPartnerLegalEntity": "Update a limited partner's details (legal entity)"
     },
 
     "sicCodePage" : {
