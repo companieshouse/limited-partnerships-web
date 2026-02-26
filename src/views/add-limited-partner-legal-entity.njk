@@ -18,6 +18,8 @@
   {% set date_effective_from_day = props.data.limitedPartner.data["date_effective_from-day"] %}
 {% endif %}
 
+{% set partnerKind = "limitedPartner" %}
+
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -33,101 +35,7 @@
 
         <h1 class="govuk-heading-xl">{{ i18n.addOrUpdatePartnerLegalEntityPage.limitedPartner.title }}</h1>
 
-        {{ govukWarningText({
-          text: i18n.addOrUpdatePartnerLegalEntityPage.legalPersonalityWarning
-        }) }}
-
-        {{ govukInput({
-          label: {
-            text: i18n.addOrUpdatePartnerLegalEntityPage.legalEntityName,
-            classes: "govuk-label govuk-label--m",
-            isPageHeading: true
-          },
-          id: "legal_entity_name",
-          name: "legal_entity_name",
-          value: props.data.limitedPartner.data.legal_entity_name,
-          errorMessage: props.errors.legal_entity_name if props.errors,
-          attributes : {
-            required: true
-          }
-        }) }}
-
-        {{ govukInput({
-          label: {
-            text: i18n.addOrUpdatePartnerLegalEntityPage.legalFormOrCorporateIdentity,
-            classes: "govuk-label govuk-label--m"
-          },
-          hint: {
-            text: i18n.addOrUpdatePartnerLegalEntityPage.legalFormOrCorporateIdentityHint
-          },
-          id: "legal_form",
-          name: "legal_form",
-          value: props.data.limitedPartner.data.legal_form,
-          errorMessage: props.errors.legal_form if props.errors,
-          attributes : {
-            required: true
-          }
-        }) }}
-
-        {{ govukInput({
-          label: {
-            text: i18n.addOrUpdatePartnerLegalEntityPage.governingLaw,
-            classes: "govuk-label govuk-label--m"
-          },
-          hint: {
-            text: i18n.addOrUpdatePartnerLegalEntityPage.governingLawHint
-          },
-          id: "governing_law",
-          name: "governing_law",
-          value: props.data.limitedPartner.data.governing_law,
-          errorMessage: props.errors.governing_law if props.errors,
-          attributes : {
-            required: true
-          }
-        }) }}
-
-        {{ govukInput({
-          label: {
-            text: i18n.addOrUpdatePartnerLegalEntityPage.whichRegister,
-            classes: "govuk-label govuk-label--m"
-          },
-          hint: {
-            text: i18n.addOrUpdatePartnerLegalEntityPage.whichRegisterHint
-          },
-          id: "legal_entity_register_name",
-          name: "legal_entity_register_name",
-          value: props.data.limitedPartner.data.legal_entity_register_name,
-          errorMessage: props.errors.legal_entity_register_name if props.errors,
-          attributes : {
-            required: true
-          }
-        }) }}
-        
-        {% set countryFormId = "legal_entity_registration_location" %}
-        {% set countryText = i18n.addOrUpdatePartnerLegalEntityPage.countryRegistered %}
-        {% set countryFormValue = props.data.limitedPartner.data.legal_entity_registration_location %}
-        {% set countryErrorMessage = props.errors.legal_entity_registration_location if props.errors %}
-
-        {{ macros.getSpecifiedCountryList(i18n, "overseas", countryFormId, countryText, countryFormValue, countryErrorMessage) }}
-
-        {{ govukInput({
-          label: {
-            text: i18n.addOrUpdatePartnerLegalEntityPage.registrationNumber,
-            classes: "govuk-label govuk-label--m"
-          },
-          hint: {
-            text: i18n.addOrUpdatePartnerLegalEntityPage.registrationNumberHint
-          },
-          id: "registered_company_number",
-          name: "registered_company_number",
-          classes: "govuk-!-width-one-half",
-          inputmode: "numeric",
-          value: props.data.limitedPartner.data.registered_company_number,
-          errorMessage: props.errors.registered_company_number if props.errors,
-          attributes : {
-            required: true
-          }
-        }) }}
+        {% include "pages/partner/add-or-update-partner-legal-entity-common-fields.njk" %}
         
         {% if journeyTypes.isRegistration or journeyTypes.isPostTransition %}
           {% include "includes/capital-contribution.njk" %}

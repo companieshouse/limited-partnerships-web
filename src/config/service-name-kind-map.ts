@@ -17,4 +17,5 @@ export const serviceNameKindMap: Record<string, string> = {
   [PartnerKind.UPDATE_GENERAL_PARTNER_PERSON]: "updateGeneralPartnerPerson",
   [PartnerKind.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY]: "updateGeneralPartnerLegalEntity",
   [PartnerKind.UPDATE_LIMITED_PARTNER_PERSON]: "updateLimitedPartnerPerson",
+  [PartnerKind.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY]: "updateLimitedPartnerLegalEntity"
 };

@@ -17,6 +17,8 @@
   {% set date_effective_from_day = props.data.generalPartner.data["date_effective_from-day"] %}
 {% endif %}
 
+{% set partnerKind = "generalPartner" %}
+
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -32,7 +34,7 @@
 
         <h1 class="govuk-heading-xl">{{ i18n.addOrUpdatePartnerLegalEntityPage.generalPartner.title }}</h1>
 
-       {% include "pages/partner/add-or-update-general-partner-legal-entity-common-fields.njk" %}
+       {% include "pages/partner/add-or-update-partner-legal-entity-common-fields.njk" %}
 
         {% if journeyTypes.isPostTransition %}
           {{ govukDateInput({

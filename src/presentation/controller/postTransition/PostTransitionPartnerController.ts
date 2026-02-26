@@ -8,7 +8,7 @@ import CompanyService from "../../../application/service/CompanyService";
 import TransactionService from "../../../application/service/TransactionService";
 
 import PartnerController, { PartnerType } from "../common/PartnerController";
-import PostTransitionPageType from "./pageType";
+import PostTransitionPageType, { isLegalEntity } from "./pageType";
 import postTransitionRouting from "./routing";
 import { CEASE_DATE_TEMPLATE, CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX, DATE_OF_UPDATE_TEMPLATE, PARTNER_CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE, UPDATE_ADDRESS_YES_NO_TEMPLATE, UPDATE_ADDRESS_YES_NO_TYPE_SUFFIX } from "../../../config/constants";
 import UIErrors from "../../../domain/entities/UIErrors";
@@ -179,13 +179,6 @@ class PostTransitionPartnerController extends PartnerController {
           ids.companyId
         );
 
-        const isLegalEntity =
-          pageType === PostTransitionPageType.addGeneralPartnerLegalEntity ||
-          pageType === PostTransitionPageType.whenDidTheGeneralPartnerLegalEntityCease ||
-          pageType === PostTransitionPageType.addLimitedPartnerLegalEntity ||
-          pageType === PostTransitionPageType.whenDidTheLimitedPartnerLegalEntityCease ||
-          pageType === PostTransitionPageType.updateGeneralPartnerLegalEntity;
-
         const limitedPartnershipData = limitedPartnershipResult?.limitedPartnership?.data;
 
         const resultTransaction = await this.transactionService.createTransaction(
@@ -195,7 +188,7 @@ class PostTransitionPartnerController extends PartnerController {
             companyName: limitedPartnershipData?.partnership_name ?? "",
             companyNumber: limitedPartnershipData?.partnership_number ?? ""
           },
-          isLegalEntity ? data?.legalEntity.description : data?.person.description
+          isLegalEntity(pageType) ? data?.legalEntity.description : data?.person.description
         );
 
         let result: any = {};
@@ -211,7 +204,7 @@ class PostTransitionPartnerController extends PartnerController {
           result = await this.setResultFromAppointment(
             request,
             resultAppointment,
-            isLegalEntity,
+            isLegalEntity(pageType),
             data,
             partner,
             result,
@@ -220,7 +213,7 @@ class PostTransitionPartnerController extends PartnerController {
         } else {
           const dataToSend = {
             ...request.body,
-            kind: isLegalEntity ? data?.legalEntity.kind : data?.person.kind
+            kind: isLegalEntity(pageType) ? data?.legalEntity.kind : data?.person.kind
           };
 
           if (partner === PartnerType.generalPartner) {

@@ -46,7 +46,8 @@ describe("Add Limited Partner Legal Entity Page", () => {
         "dateHint",
         "dateDay",
         "dateMonth",
-        "dateYear"
+        "dateYear",
+        "updateTitle"
       ]);
     });
 
@@ -65,7 +66,8 @@ describe("Add Limited Partner Legal Entity Page", () => {
         "dateHint",
         "dateDay",
         "dateMonth",
-        "dateYear"
+        "dateYear",
+        "updateTitle"
       ]);
       expect(res.text).not.toContain("WELSH -");
     });
