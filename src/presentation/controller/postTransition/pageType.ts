@@ -85,7 +85,8 @@ export const isCeaseDatePage = (pageType: string): boolean => {
 const whenDidChangeUpdatePageTypes: string[] = [
   PostTransitionPageType.whenDidGeneralPartnerPersonDetailsChange,
   PostTransitionPageType.whenDidGeneralPartnerLegalEntityDetailsChange,
-  PostTransitionPageType.whenDidLimitedPartnerPersonDetailsChange
+  PostTransitionPageType.whenDidLimitedPartnerPersonDetailsChange,
+  PostTransitionPageType.whenDidLimitedPartnerLegalEntityDetailsChange
 ];
 
 export const isWhenDidChangeUpdatePage = (pageType: string): boolean => {
@@ -98,7 +99,8 @@ const legalEntityPageTypes: string[] = [
   PostTransitionPageType.addLimitedPartnerLegalEntity,
   PostTransitionPageType.whenDidTheLimitedPartnerLegalEntityCease,
   PostTransitionPageType.updateGeneralPartnerLegalEntity,
-  PostTransitionPageType.updateLimitedPartnerLegalEntity
+  PostTransitionPageType.updateLimitedPartnerLegalEntity,
+  PostTransitionPageType.whenDidLimitedPartnerLegalEntityDetailsChange
 ];
 
 export const isLegalEntity = (pageType: string): boolean => {

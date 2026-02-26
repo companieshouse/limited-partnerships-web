@@ -54,8 +54,7 @@ describe("Limited partner legal entity change date page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(BACK_LINK_URL);
-      expect(res.text).toContain(`${limitedPartner.data?.forename?.toUpperCase()} ${limitedPartner.data?.surname?.toUpperCase()}`);
-
+      expect(res.text).toContain(`${limitedPartner.data?.legal_entity_name?.toUpperCase()}`);
       if (lang === "cy") {
         expect(res.text).toContain("WELSH - ");
         expect(res.text).toContain(`${cyTranslationText.dateOfUpdate.limitedPartner.title}`);
@@ -140,7 +139,7 @@ describe("Limited partner legal entity change date page", () => {
       expect(res.text).toContain("01");
       expect(res.text).toContain("2000");
       expect(res.text).toContain(BACK_LINK_URL);
-      expect(res.text).toContain(`${limitedPartner.data?.forename?.toUpperCase()} ${limitedPartner.data?.surname?.toUpperCase()}`);
+      expect(res.text).toContain(`${limitedPartner.data?.legal_entity_name?.toUpperCase()}`);
     });
   });
 });
