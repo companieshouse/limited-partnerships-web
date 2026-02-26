@@ -169,6 +169,16 @@ const postTransitionRoutingUpdatePrincipalOfficeAddressYesNo = {
   }
 };
 
+const postTransitionRoutingWhenDidLimitedPartnerLegalEntityChange = {
+  previousUrl: url.UPDATE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL,
+  currentUrl: url.WHEN_DID_LIMITED_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL,
+  nextUrl: url.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_URL,
+  pageType: PostTransitionPageType.whenDidLimitedPartnerLegalEntityDetailsChange,
+  data: {
+    titleKey: LIMITED_PARTNER
+  }
+};
+
 const limitedPartnerRouting = [
   postTransitionRoutingLimitedPartnerChoice,
   postTransitionRoutingAddLimitedPartnerPerson,
@@ -186,7 +196,8 @@ const limitedPartnerRouting = [
   postTransitionRoutingUpdateLimitedPartnerPersonCheckYourAnswers,
 
   postTransitionRoutingUpdateLimitedPartnerLegalEntity,
-  postTransitionRoutingUpdatePrincipalOfficeAddressYesNo
+  postTransitionRoutingUpdatePrincipalOfficeAddressYesNo,
+  postTransitionRoutingWhenDidLimitedPartnerLegalEntityChange
 ];
 
 export default limitedPartnerRouting;

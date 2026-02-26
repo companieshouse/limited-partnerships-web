@@ -68,7 +68,8 @@ enum PostTransitionPageType {
 
   updateLimitedPartnerLegalEntity = "update-limited-partner-legal-entity",
   updateLimitedPartnerPrincipalOfficeAddressYesNo = `update-limited-partner-principal-office-${UPDATE_ADDRESS_YES_NO_TYPE_SUFFIX}`,
-  whenDidLimitedPartnerLegalEntityDetailsChange = `${DATE_OF_UPDATE_TYPE_PREFIX}-limited-partner-legal-entity-details-change`
+  whenDidLimitedPartnerLegalEntityDetailsChange = `${DATE_OF_UPDATE_TYPE_PREFIX}-limited-partner-legal-entity-details-change`,
+  updateLimitedPartnerLegalEntityCheckYourAnswers = `limited-partner-legal-entity-${CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX}`,
 }
 
 const CeaseDatePageTypes: string[] = [
@@ -85,7 +86,8 @@ export const isCeaseDatePage = (pageType: string): boolean => {
 const whenDidChangeUpdatePageTypes: string[] = [
   PostTransitionPageType.whenDidGeneralPartnerPersonDetailsChange,
   PostTransitionPageType.whenDidGeneralPartnerLegalEntityDetailsChange,
-  PostTransitionPageType.whenDidLimitedPartnerPersonDetailsChange
+  PostTransitionPageType.whenDidLimitedPartnerPersonDetailsChange,
+  PostTransitionPageType.whenDidLimitedPartnerLegalEntityDetailsChange
 ];
 
 export const isWhenDidChangeUpdatePage = (pageType: string): boolean => {
@@ -98,7 +100,8 @@ const legalEntityPageTypes: string[] = [
   PostTransitionPageType.addLimitedPartnerLegalEntity,
   PostTransitionPageType.whenDidTheLimitedPartnerLegalEntityCease,
   PostTransitionPageType.updateGeneralPartnerLegalEntity,
-  PostTransitionPageType.updateLimitedPartnerLegalEntity
+  PostTransitionPageType.updateLimitedPartnerLegalEntity,
+  PostTransitionPageType.whenDidLimitedPartnerLegalEntityDetailsChange
 ];
 
 export const isLegalEntity = (pageType: string): boolean => {
