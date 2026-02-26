@@ -850,11 +850,31 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
     companyAuthentication,
     dependencies.limitedPartnerPostTransitionController.getUpdatePageRouting()
   );
+  router.post(
+    UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.createLimitedPartner({
+      person: {
+        description: TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNER_PERSON,
+        kind: PartnerKind.UPDATE_LIMITED_PARTNER_PERSON
+      },
+      legalEntity: {
+        description: TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNER_LEGAL_ENTITY,
+        kind: PartnerKind.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY
+      },
+      needAppointment: true
+    })
+  );
 
   router.get(
     UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
     companyAuthentication,
     dependencies.limitedPartnerPostTransitionController.getUpdatePageRouting()
+  );
+  router.post(
+    UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.sendUpdatePageData()
   );
 };
 

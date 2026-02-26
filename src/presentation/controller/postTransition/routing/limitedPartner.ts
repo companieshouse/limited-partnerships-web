@@ -147,7 +147,7 @@ const postTransitionRoutingUpdateLimitedPartnerPersonCheckYourAnswers = {
 const postTransitionRoutingUpdateLimitedPartnerLegalEntity = {
   previousUrl: url.LANDING_PAGE_URL,
   currentUrl: url.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_URL,
-  nextUrl: url.UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
+  nextUrl: url.UPDATE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL,
   pageType: PostTransitionPageType.updateLimitedPartnerLegalEntity,
   data: {
     serviceName: "updateLimitedPartnerLegalEntity"
