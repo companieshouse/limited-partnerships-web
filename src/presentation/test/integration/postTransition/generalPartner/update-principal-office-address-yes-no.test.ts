@@ -89,7 +89,7 @@ describe("Update Principal Office Address Yes No Page", () => {
       ['the When did general partner details change page when "no"', "false", REDIRECT_NO]
     ])('should redirect to %s is selected', async (description: string, pageValue: string, redirectUrl: string) => {
       const res = await request(app).post(`${URL}`).send({
-        pageType: PostTransitionPageType.updatePrincipalOfficeAddressYesNo,
+        pageType: PostTransitionPageType.updateGeneralPartnerPrincipalOfficeAddressYesNo,
         update_principal_office_address_required: pageValue
       });
 
