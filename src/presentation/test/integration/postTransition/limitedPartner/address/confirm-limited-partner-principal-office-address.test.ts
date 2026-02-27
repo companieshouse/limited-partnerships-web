@@ -6,7 +6,7 @@ import enErrorMessages from "../../../../../../../locales/en/errors.json";
 import cyErrorMessages from "../../../../../../../locales/cy/errors.json";
 
 import app from "../../../app";
-import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 
 import {
@@ -17,12 +17,16 @@ import {
 
 import LimitedPartnerBuilder from "../../../../builder/LimitedPartnerBuilder";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
-import { LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/postTransition/url";
+import { LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL, UPDATE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL, WHEN_DID_LIMITED_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL } from "../../../../../controller/postTransition/url";
 import TransactionBuilder from "../../../../builder/TransactionBuilder";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-describe("Confirm Limited Partner Principal Office Address Page", () => {
+describe.each([
+  ["Add", PartnerKind.ADD_LIMITED_PARTNER_LEGAL_ENTITY],
+  ["Update", PartnerKind.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY]
+])("%s Confirm Limited Partner Principal Office Address Page", (description: string, partnerKind: PartnerKind) => {
   const URL = getUrl(CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
+  const redirectUrl = partnerKind === PartnerKind.ADD_LIMITED_PARTNER_LEGAL_ENTITY ? getUrl(LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL) : getUrl(WHEN_DID_LIMITED_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL);
 
   beforeEach(() => {
     setLocalesEnabled(false);
@@ -40,19 +44,19 @@ describe("Confirm Limited Partner Principal Office Address Page", () => {
       }
     });
 
+    const transaction = new TransactionBuilder().withKind(partnerKind).build();
+    appDevDependencies.transactionGateway.feedTransactions([transaction]);
+
     const limitedPartner = new LimitedPartnerBuilder()
       .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-      .isPerson()
+      .isLegalEntity()
+      .withKind(partnerKind)
       .build();
-
     appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
-
-    const transaction = new TransactionBuilder().withKind(PartnerKind.ADD_LIMITED_PARTNER_LEGAL_ENTITY).build();
-    appDevDependencies.transactionGateway.feedTransactions([transaction]);
   });
 
   describe("GET Confirm Principal Office Address Page", () => {
-    it("should load the confirm principal office address page with English text", async () => {
+    it("should load the %s confirm principal office address page with English text", async () => {
       setLocalesEnabled(true);
 
       const res = await request(app).get(URL + "?lang=en");
@@ -67,10 +71,14 @@ describe("Confirm Limited Partner Principal Office Address Page", () => {
       expect(res.text).toContain("Region");
       expect(res.text).toContain(enTranslationText.countries.england);
       expect(res.text).toContain("ST6 3LJ");
-      expect(countOccurrences(res.text, enTranslationText.serviceName.addLimitedPartner)).toBe(2);
+
+      const expectedServiceName = partnerKind === PartnerKind.ADD_LIMITED_PARTNER_LEGAL_ENTITY ?
+        enTranslationText.serviceName.addLimitedPartner :
+        enTranslationText.serviceName.updateLimitedPartnerLegalEntity;
+      expect(countOccurrences(res.text, toEscapedHtml(expectedServiceName))).toBe(2);
     });
 
-    it("should load the confirm principal office address page with Welsh text", async () => {
+    it("should load the %s confirm principal office address page with Welsh text", async () => {
       setLocalesEnabled(true);
 
       const res = await request(app).get(URL + "?lang=cy");
@@ -84,18 +92,28 @@ describe("Confirm Limited Partner Principal Office Address Page", () => {
       expect(res.text).toContain("Region");
       expect(res.text).toContain(cyTranslationText.countries.england);
       expect(res.text).toContain("ST6 3LJ");
-      expect(countOccurrences(res.text, cyTranslationText.serviceName.addLimitedPartner)).toBe(2);
+
+      const expectedServiceName = partnerKind === PartnerKind.ADD_LIMITED_PARTNER_LEGAL_ENTITY ?
+        enTranslationText.serviceName.addLimitedPartner :
+        enTranslationText.serviceName.updateLimitedPartnerLegalEntity;
+      expect(countOccurrences(res.text, toEscapedHtml(expectedServiceName))).toBe(2);
     });
 
     it.each([
-      ["overseas", getUrl(ENTER_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL)],
-      ["unitedKingdom", getUrl(POSTCODE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL)]
-    ])("should have the correct back link", async (territory, backLink) => {
-      appDevDependencies.cacheRepository.feedCache({
-        [appDevDependencies.transactionGateway.transactionId]: {
-          poa_territory_choice: territory
-        }
-      });
+      ["overseas"],
+      ["unitedKingdom"]
+    ])("should have the correct back link", async (territory: string) => {
+      let backLink: string;
+      if (partnerKind === PartnerKind.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY) {
+        backLink = getUrl(UPDATE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL);
+      } else {
+        appDevDependencies.cacheRepository.feedCache({
+          [appDevDependencies.transactionGateway.transactionId]: {
+            poa_territory_choice: territory
+          }
+        });
+        backLink = territory === "overseas" ? getUrl(ENTER_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL) : getUrl(POSTCODE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
+      }
 
       const res = await request(app).get(URL);
 
@@ -118,8 +136,6 @@ describe("Confirm Limited Partner Principal Office Address Page", () => {
             "country": "England"
           }`
         });
-
-      const redirectUrl = getUrl(LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL);
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);

@@ -140,7 +140,8 @@ const postTransitionAddressRoutingConfirmLimitedPartnerPrincipalOfficeAddress = 
   pageType: AddressPageType.confirmLimitedPartnerPrincipalOfficeAddress,
   data: {
     ...principalOfficeAddressCacheKeys,
-    enterManualAddressPageType: AddressPageType.enterLimitedPartnerPrincipalOfficeAddress
+    enterManualAddressPageType: AddressPageType.enterLimitedPartnerPrincipalOfficeAddress,
+    previousUrlUpdateLimitedPartnerLegalEntity: UPDATE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL
   }
 };
 
