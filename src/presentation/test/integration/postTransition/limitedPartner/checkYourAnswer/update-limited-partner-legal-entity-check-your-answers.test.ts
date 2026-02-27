@@ -17,7 +17,7 @@ import TransactionBuilder from "../../../../builder/TransactionBuilder";
 import { OFFICER_ROLE_GENERAL_PARTNER_LEGAL_ENTITY } from "../../../../../../config";
 import LimitedPartnerBuilder from "../../../../builder/LimitedPartnerBuilder";
 
-describe("Update limited partner check your answers page", () => {
+describe("Update limited partner legal entity check your answers page", () => {
   const URL = getUrl(UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_URL);
   let limitedPartner: LimitedPartner;
   let companyAppointment;
