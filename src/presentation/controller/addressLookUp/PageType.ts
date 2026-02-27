@@ -1,3 +1,6 @@
+import { PageDefault } from "../PageRouting";
+import PageType from "../PageType";
+
 enum AddressPageType {
   // LIMITED PARTNERSHIP
 
@@ -53,19 +56,69 @@ enum AddressPageType {
   confirmLimitedPartnerPrincipalOfficeAddress = "confirm-limited-partner-principal-office-address"
 }
 
-export function isConfirmGeneralPartnerAddressPageType(pageType: string): boolean {
+export const LIMITED_PARTNERSHIP_POSTCODE_PAGES: Set<PageType | PageDefault> = new Set([
+  AddressPageType.postcodeRegisteredOfficeAddress,
+  AddressPageType.postcodePrincipalPlaceOfBusinessAddress
+]);
+
+export const LIMITED_PARTNERSHIP_MANUAL_PAGES: Set<PageType | PageDefault> = new Set([
+  AddressPageType.enterRegisteredOfficeAddress,
+  AddressPageType.enterPrincipalPlaceOfBusinessAddress
+]);
+
+export const MANUAL_PAGES: Set<PageType | PageDefault> = new Set([
+  ...LIMITED_PARTNERSHIP_MANUAL_PAGES,
+  AddressPageType.enterGeneralPartnerUsualResidentialAddress,
+  AddressPageType.enterGeneralPartnerPrincipalOfficeAddress,
+  AddressPageType.enterGeneralPartnerCorrespondenceAddress,
+  AddressPageType.enterLimitedPartnerUsualResidentialAddress,
+  AddressPageType.enterLimitedPartnerPrincipalOfficeAddress
+]);
+
+export const CHOOSE_PAGES: Set<PageType | PageDefault> = new Set([
+  AddressPageType.chooseRegisteredOfficeAddress,
+  AddressPageType.choosePrincipalPlaceOfBusinessAddress,
+  AddressPageType.chooseGeneralPartnerUsualResidentialAddress,
+  AddressPageType.chooseGeneralPartnerPrincipalOfficeAddress,
+  AddressPageType.chooseGeneralPartnerCorrespondenceAddress,
+  AddressPageType.chooseLimitedPartnerUsualResidentialAddress,
+  AddressPageType.chooseLimitedPartnerPrincipalOfficeAddress
+]);
+
+export const GENERAL_PARTNER_PAGES: Set<PageType | PageDefault> = new Set([
+  AddressPageType.postcodeGeneralPartnerUsualResidentialAddress,
+  AddressPageType.postcodeGeneralPartnerCorrespondenceAddress,
+  AddressPageType.postcodeGeneralPartnerPrincipalOfficeAddress,
+  AddressPageType.enterGeneralPartnerUsualResidentialAddress,
+  AddressPageType.enterGeneralPartnerCorrespondenceAddress,
+  AddressPageType.enterGeneralPartnerPrincipalOfficeAddress,
+  AddressPageType.confirmGeneralPartnerUsualResidentialAddress,
+  AddressPageType.confirmGeneralPartnerPrincipalOfficeAddress,
+  AddressPageType.confirmGeneralPartnerCorrespondenceAddress
+]);
+
+export const LIMITED_PARTNER_PAGES: Set<PageType | PageDefault> = new Set([
+  AddressPageType.postcodeLimitedPartnerUsualResidentialAddress,
+  AddressPageType.postcodeLimitedPartnerPrincipalOfficeAddress,
+  AddressPageType.enterLimitedPartnerUsualResidentialAddress,
+  AddressPageType.enterLimitedPartnerPrincipalOfficeAddress,
+  AddressPageType.confirmLimitedPartnerUsualResidentialAddress,
+  AddressPageType.confirmLimitedPartnerPrincipalOfficeAddress
+]);
+
+export const isConfirmGeneralPartnerAddressPageType = (pageType: string): boolean => {
   return [
     AddressPageType.confirmGeneralPartnerUsualResidentialAddress,
     AddressPageType.confirmGeneralPartnerCorrespondenceAddress,
     AddressPageType.confirmGeneralPartnerPrincipalOfficeAddress
   ].includes(pageType as AddressPageType);
-}
+};
 
-export function isConfirmLimitedPartnerAddressPageType(pageType: string): boolean {
+export const isConfirmLimitedPartnerAddressPageType = (pageType: string): boolean => {
   return [
     AddressPageType.confirmLimitedPartnerUsualResidentialAddress,
     AddressPageType.confirmLimitedPartnerPrincipalOfficeAddress
   ].includes(pageType as AddressPageType);
-}
+};
 
 export default AddressPageType;

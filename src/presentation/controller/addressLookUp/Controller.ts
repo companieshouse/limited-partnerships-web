@@ -20,7 +20,16 @@ import { getJourneyTypes } from "../../../utils";
 import { APPLICATION_CACHE_KEY, cookieOptions } from "../../../config/constants";
 import UIErrors from "../../../domain/entities/UIErrors";
 
-import AddressLookUpPageType, { isConfirmGeneralPartnerAddressPageType, isConfirmLimitedPartnerAddressPageType } from "./PageType";
+import AddressLookUpPageType, {
+  GENERAL_PARTNER_PAGES,
+  isConfirmGeneralPartnerAddressPageType,
+  isConfirmLimitedPartnerAddressPageType,
+  LIMITED_PARTNER_PAGES,
+  LIMITED_PARTNERSHIP_MANUAL_PAGES,
+  LIMITED_PARTNERSHIP_POSTCODE_PAGES,
+  CHOOSE_PAGES,
+  MANUAL_PAGES
+} from "./PageType";
 import { PageDefault, PageRouting, pageRoutingDefault } from "../PageRouting";
 import PageType from "../PageType";
 
@@ -32,60 +41,15 @@ import LimitedPartnerService from "../../../application/service/LimitedPartnerSe
 
 import { CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL } from "./url/registration";
 import { REVIEW_GENERAL_PARTNERS_URL } from "../registration/url";
-import { UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL, WHEN_DID_GENERAL_PARTNER_PERSON_DETAILS_CHANGE_URL, WHEN_DID_GENERAL_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL, WHEN_DID_LIMITED_PARTNER_PERSON_DETAILS_CHANGE_URL } from "../postTransition/url";
+import {
+  UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL,
+  WHEN_DID_GENERAL_PARTNER_PERSON_DETAILS_CHANGE_URL,
+  WHEN_DID_GENERAL_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL,
+  WHEN_DID_LIMITED_PARTNER_PERSON_DETAILS_CHANGE_URL
+} from "../postTransition/url";
 import { isUpdateKind } from "../../../utils/kind";
 
 class AddressLookUpController extends AbstractController {
-  private static readonly LIMITED_PARTNERSHIP_POSTCODE_PAGES: Set<PageType | PageDefault> = new Set([
-    AddressLookUpPageType.postcodeRegisteredOfficeAddress,
-    AddressLookUpPageType.postcodePrincipalPlaceOfBusinessAddress
-  ]);
-
-  private static readonly LIMITED_PARTNERSHIP_MANUAL_PAGES: Set<PageType | PageDefault> = new Set([
-    AddressLookUpPageType.enterRegisteredOfficeAddress,
-    AddressLookUpPageType.enterPrincipalPlaceOfBusinessAddress
-  ]);
-
-  private static readonly MANUAL_PAGES: Set<PageType | PageDefault> = new Set([
-    ...AddressLookUpController.LIMITED_PARTNERSHIP_MANUAL_PAGES,
-    AddressLookUpPageType.enterGeneralPartnerUsualResidentialAddress,
-    AddressLookUpPageType.enterGeneralPartnerPrincipalOfficeAddress,
-    AddressLookUpPageType.enterGeneralPartnerCorrespondenceAddress,
-    AddressLookUpPageType.enterLimitedPartnerUsualResidentialAddress,
-    AddressLookUpPageType.enterLimitedPartnerPrincipalOfficeAddress
-  ]);
-
-  private static readonly LIST_PAGES: Set<PageType | PageDefault> = new Set([
-    AddressLookUpPageType.chooseRegisteredOfficeAddress,
-    AddressLookUpPageType.choosePrincipalPlaceOfBusinessAddress,
-    AddressLookUpPageType.chooseGeneralPartnerUsualResidentialAddress,
-    AddressLookUpPageType.chooseGeneralPartnerPrincipalOfficeAddress,
-    AddressLookUpPageType.chooseGeneralPartnerCorrespondenceAddress,
-    AddressLookUpPageType.chooseLimitedPartnerUsualResidentialAddress,
-    AddressLookUpPageType.chooseLimitedPartnerPrincipalOfficeAddress
-  ]);
-
-  private static readonly GENERAL_PARTNER_PAGES: Set<PageType | PageDefault> = new Set([
-    AddressLookUpPageType.postcodeGeneralPartnerUsualResidentialAddress,
-    AddressLookUpPageType.postcodeGeneralPartnerCorrespondenceAddress,
-    AddressLookUpPageType.postcodeGeneralPartnerPrincipalOfficeAddress,
-    AddressLookUpPageType.enterGeneralPartnerUsualResidentialAddress,
-    AddressLookUpPageType.enterGeneralPartnerCorrespondenceAddress,
-    AddressLookUpPageType.enterGeneralPartnerPrincipalOfficeAddress,
-    AddressLookUpPageType.confirmGeneralPartnerUsualResidentialAddress,
-    AddressLookUpPageType.confirmGeneralPartnerPrincipalOfficeAddress,
-    AddressLookUpPageType.confirmGeneralPartnerCorrespondenceAddress
-  ]);
-
-  private static readonly LIMITED_PARTNER_PAGES: Set<PageType | PageDefault> = new Set([
-    AddressLookUpPageType.postcodeLimitedPartnerUsualResidentialAddress,
-    AddressLookUpPageType.postcodeLimitedPartnerPrincipalOfficeAddress,
-    AddressLookUpPageType.enterLimitedPartnerUsualResidentialAddress,
-    AddressLookUpPageType.enterLimitedPartnerPrincipalOfficeAddress,
-    AddressLookUpPageType.confirmLimitedPartnerUsualResidentialAddress,
-    AddressLookUpPageType.confirmLimitedPartnerPrincipalOfficeAddress
-  ]);
-
   constructor(
     private readonly addressService: AddressService,
     private readonly limitedPartnershipService: LimitedPartnershipService,
@@ -112,11 +76,18 @@ class AddressLookUpController extends AbstractController {
 
         const addressList = await this.getAddressList(pageRouting, cacheById, tokens);
 
-        const { chsCorrespondenceAddress, chsPrincipalOfficeAddress } = await this.getChsAddressesIfApplicable(tokens, pageRouting, generalPartner, limitedPartner, cacheById, ids);
+        const { chsCorrespondenceAddress, chsPrincipalOfficeAddress } = await this.getChsAddressesIfApplicable(
+          tokens,
+          pageRouting,
+          generalPartner,
+          limitedPartner,
+          cacheById,
+          ids
+        );
 
         if (ids.generalPartnerId) {
           this.conditionalBackLink(pageRouting, generalPartner, ids);
-        } else if (ids.limitedPartnerId){
+        } else if (ids.limitedPartnerId) {
           this.conditionalBackLink(pageRouting, limitedPartner, ids);
         }
 
@@ -124,7 +95,15 @@ class AddressLookUpController extends AbstractController {
           super.templateName(pageRouting.currentUrl),
           super.makeProps(
             pageRouting,
-            { limitedPartnership, generalPartner, limitedPartner, addressList, cache: { ...cacheById }, chsCorrespondenceAddress, chsPrincipalOfficeAddress },
+            {
+              limitedPartnership,
+              generalPartner,
+              limitedPartner,
+              addressList,
+              cache: { ...cacheById },
+              chsCorrespondenceAddress,
+              chsPrincipalOfficeAddress
+            },
             null
           )
         );
@@ -140,7 +119,7 @@ class AddressLookUpController extends AbstractController {
     generalPartner: GeneralPartner,
     limitedPartner: LimitedPartner,
     cache: Record<string, any>,
-    ids: Ids,
+    ids: Ids
   ): Promise<{ chsCorrespondenceAddress?: Address; chsPrincipalOfficeAddress?: Address }> {
     const partner = generalPartner?.data ? generalPartner : limitedPartner;
     const partnerKind = partner?.data?.kind as PartnerKind;
@@ -161,7 +140,12 @@ class AddressLookUpController extends AbstractController {
     };
   }
 
-  private isChsAddressRequired(partnerKind: PartnerKind, pageRouting: PageRouting, generalPartner: GeneralPartner, cache: Record<string, any>) {
+  private isChsAddressRequired(
+    partnerKind: PartnerKind,
+    pageRouting: PageRouting,
+    generalPartner: GeneralPartner,
+    cache: Record<string, any>
+  ) {
     if (partnerKind === PartnerKind.UPDATE_GENERAL_PARTNER_PERSON) {
       if (pageRouting.pageType === AddressLookUpPageType.enterGeneralPartnerCorrespondenceAddress) {
         if (!generalPartner?.data?.service_address && !cache?.service_address) {
@@ -180,11 +164,7 @@ class AddressLookUpController extends AbstractController {
     return false;
   }
 
-  private conditionalBackLink(
-    pageRouting: PageRouting,
-    partner: GeneralPartner | LimitedPartner,
-    ids: Ids
-  ) {
+  private conditionalBackLink(pageRouting: PageRouting, partner: GeneralPartner | LimitedPartner, ids: Ids) {
     if (isUpdateKind(partner?.data?.kind)) {
       if (
         pageRouting.pageType === AddressLookUpPageType.territoryChoiceGeneralPartnerUsualResidentialAddress ||
@@ -199,7 +179,10 @@ class AddressLookUpController extends AbstractController {
         pageRouting.pageType === AddressLookUpPageType.enterGeneralPartnerPrincipalOfficeAddress ||
         pageRouting.pageType === AddressLookUpPageType.confirmGeneralPartnerPrincipalOfficeAddress
       ) {
-        pageRouting.previousUrl = this.insertIdsInUrl(pageRouting.data?.previousUrlUpdateGeneralPartnerLegalEntity, ids);
+        pageRouting.previousUrl = this.insertIdsInUrl(
+          pageRouting.data?.previousUrlUpdateGeneralPartnerLegalEntity,
+          ids
+        );
         return;
       }
 
@@ -212,9 +195,11 @@ class AddressLookUpController extends AbstractController {
       }
 
       if (
-        pageRouting.pageType === AddressLookUpPageType.enterLimitedPartnerPrincipalOfficeAddress
+        pageRouting.pageType === AddressLookUpPageType.enterLimitedPartnerPrincipalOfficeAddress ||
+        pageRouting.pageType === AddressLookUpPageType.confirmLimitedPartnerPrincipalOfficeAddress
       ) {
         pageRouting.previousUrl = this.insertIdsInUrl(pageRouting.data?.previousUrlUpdateLimitedPartnerLegalEntity, ids);
+        return;
       }
     }
   }
@@ -239,9 +224,8 @@ class AddressLookUpController extends AbstractController {
           );
         }
 
-        const jurisdiction = AddressLookUpController.LIMITED_PARTNERSHIP_POSTCODE_PAGES.has(pageType)
-          ? limitedPartnership?.data?.jurisdiction
-          : undefined;
+        const jurisdiction =
+          LIMITED_PARTNERSHIP_POSTCODE_PAGES.has(pageType) ? limitedPartnership?.data?.jurisdiction : undefined;
 
         const { address, errors } = await this.addressService.isValidUKPostcodeAndHasAnAddress(
           tokens,
@@ -327,13 +311,13 @@ class AddressLookUpController extends AbstractController {
         const pageRouting = super.getRouting(addressRouting, pageType, request);
 
         let errors: UIErrors | undefined;
-        if (AddressLookUpController.MANUAL_PAGES.has(pageType)) {
+        if (MANUAL_PAGES.has(pageType)) {
           errors = this.addressService.validateAddressCharactersAndLength(address, errors);
 
           errors = this.addressService.isValidPostcode(postal_code ?? "", country, errors);
         }
 
-        if (AddressLookUpController.LIMITED_PARTNERSHIP_MANUAL_PAGES.has(pageType)) {
+        if (LIMITED_PARTNERSHIP_MANUAL_PAGES.has(pageType)) {
           errors = this.addressService.isValidJurisdictionAndCountry(
             limitedPartnership?.data?.jurisdiction ?? "",
             country,
@@ -393,8 +377,8 @@ class AddressLookUpController extends AbstractController {
           [pageRouting.data?.[AddressCacheKeys.addressCacheKey]]: address
         };
 
-        const isGeneralPartnerAddress = AddressLookUpController.GENERAL_PARTNER_PAGES.has(pageType);
-        const isLimitedPartnerAddress = AddressLookUpController.LIMITED_PARTNER_PAGES.has(pageType);
+        const isGeneralPartnerAddress = GENERAL_PARTNER_PAGES.has(pageType);
+        const isLimitedPartnerAddress = LIMITED_PARTNER_PAGES.has(pageType);
 
         const uiErrors = this.addressService.hasCountry(address);
 
@@ -552,7 +536,7 @@ class AddressLookUpController extends AbstractController {
   ): Promise<Address[]> {
     let addressList: Address[] = [];
 
-    if (AddressLookUpController.LIST_PAGES.has(pageRouting.pageType)) {
+    if (CHOOSE_PAGES.has(pageRouting.pageType)) {
       const cacheKey = pageRouting.data?.[AddressCacheKeys.addressCacheKey];
       const postcode = cache[cacheKey]?.postal_code;
 
@@ -621,7 +605,12 @@ class AddressLookUpController extends AbstractController {
     }
   }
 
-  private async handleConditionalNextUrlForGeneralPartners(tokens: Tokens, ids: Ids, pageRouting: PageRouting, request: Request) {
+  private async handleConditionalNextUrlForGeneralPartners(
+    tokens: Tokens,
+    ids: Ids,
+    pageRouting: PageRouting,
+    request: Request
+  ) {
     if (!isConfirmGeneralPartnerAddressPageType(pageRouting.pageType)) {
       return;
     }
@@ -665,7 +654,12 @@ class AddressLookUpController extends AbstractController {
     }
   }
 
-  private async handleConditionalNextUrlForLimitedPartners(tokens: Tokens, ids: Ids, pageRouting: PageRouting, request: Request) {
+  private async handleConditionalNextUrlForLimitedPartners(
+    tokens: Tokens,
+    ids: Ids,
+    pageRouting: PageRouting,
+    request: Request
+  ) {
     if (!isConfirmLimitedPartnerAddressPageType(pageRouting.pageType)) {
       return;
     }
@@ -746,7 +740,7 @@ class AddressLookUpController extends AbstractController {
     let generalPartner = {};
     let limitedPartner = {};
 
-    if (AddressLookUpController.GENERAL_PARTNER_PAGES.has(pageType)) {
+    if (GENERAL_PARTNER_PAGES.has(pageType)) {
       generalPartner = await this.generalPartnerService.getGeneralPartner(
         tokens,
         ids.transactionId,
@@ -754,7 +748,7 @@ class AddressLookUpController extends AbstractController {
       );
     }
 
-    if (AddressLookUpController.LIMITED_PARTNER_PAGES.has(pageType)) {
+    if (LIMITED_PARTNER_PAGES.has(pageType)) {
       limitedPartner = await this.limitedPartnerService.getLimitedPartner(
         tokens,
         ids.transactionId,
