@@ -18,6 +18,7 @@ import LimitedPartnerBuilder, {
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import TransactionBuilder from "../../../../builder/TransactionBuilder";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { UPDATE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL } from "../../../../../controller/postTransition/url";
 
 describe("Enter limited partner's principal office manual address page", () => {
   const URL = getUrl(ENTER_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
@@ -88,6 +89,22 @@ describe("Enter limited partner's principal office manual address page", () => {
       expect(res.text).not.toContain(limitedPartnerPerson.surname?.toUpperCase());
       expect(res.text).toContain(limitedPartnerLegalEntity.legal_entity_name?.toUpperCase());
       expect(countOccurrences(res.text, enTranslationText.serviceName.addLimitedPartner)).toBe(2);
+    });
+
+    it("should have back link to yes/no page when partner kind is UPDATE_LIMITED_PARTNER_LEGAL_ENTITY", async () => {
+      const updateLimitedPartner = new LimitedPartnerBuilder()
+        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+        .isLegalEntity()
+        .withKind(PartnerKind.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY)
+        .build();
+
+      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([updateLimitedPartner]);
+
+      const backLinkUrl = getUrl(UPDATE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL);
+      const res = await request(app).get(URL);
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(backLinkUrl);
     });
   });
 

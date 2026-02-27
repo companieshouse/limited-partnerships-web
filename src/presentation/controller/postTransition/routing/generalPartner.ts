@@ -176,7 +176,7 @@ const postTransitionRoutingUpdatePrincipalOfficeAddressYesNo = {
   previousUrl: url.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
   currentUrl: url.UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL,
   nextUrl: "/",
-  pageType: PostTransitionPageType.updatePrincipalOfficeAddressYesNo,
+  pageType: PostTransitionPageType.updateGeneralPartnerPrincipalOfficeAddressYesNo,
   data: {
     nextYesUrl: ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
     nextNoUrl: url.WHEN_DID_GENERAL_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL,
