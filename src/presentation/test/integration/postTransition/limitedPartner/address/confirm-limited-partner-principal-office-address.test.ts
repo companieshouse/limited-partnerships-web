@@ -22,11 +22,11 @@ import TransactionBuilder from "../../../../builder/TransactionBuilder";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 describe.each([
-  ["Add", PartnerKind.ADD_LIMITED_PARTNER_LEGAL_ENTITY],
-  ["Update", PartnerKind.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY]
-])("%s Confirm Limited Partner Principal Office Address Page", (description: string, partnerKind: PartnerKind) => {
+  ["Add", PartnerKind.ADD_LIMITED_PARTNER_LEGAL_ENTITY, LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL],
+  ["Update", PartnerKind.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY, WHEN_DID_LIMITED_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL]
+])("%s Confirm Limited Partner Principal Office Address Page", (description: string, partnerKind: PartnerKind, redirectUrl: string) => {
   const URL = getUrl(CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
-  const redirectUrl = partnerKind === PartnerKind.ADD_LIMITED_PARTNER_LEGAL_ENTITY ? getUrl(LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL) : getUrl(WHEN_DID_LIMITED_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL);
+  const REDIRECT_URL = getUrl(redirectUrl);
 
   beforeEach(() => {
     setLocalesEnabled(false);
@@ -56,7 +56,7 @@ describe.each([
   });
 
   describe("GET Confirm Principal Office Address Page", () => {
-    it("should load the %s confirm principal office address page with English text", async () => {
+    it("should load the confirm principal office address page with English text", async () => {
       setLocalesEnabled(true);
 
       const res = await request(app).get(URL + "?lang=en");
@@ -78,7 +78,7 @@ describe.each([
       expect(countOccurrences(res.text, toEscapedHtml(expectedServiceName))).toBe(2);
     });
 
-    it("should load the %s confirm principal office address page with Welsh text", async () => {
+    it("should load the confirm principal office address page with Welsh text", async () => {
       setLocalesEnabled(true);
 
       const res = await request(app).get(URL + "?lang=cy");
@@ -138,7 +138,7 @@ describe.each([
         });
 
       expect(res.status).toBe(302);
-      expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
     });
 
     it("should show error message if address is not provided", async () => {
