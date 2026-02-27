@@ -4,6 +4,7 @@ import PostTransitionPageType from "../pageType";
 import {
   CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  ENTER_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "../../addressLookUp/url/postTransition";
@@ -154,6 +155,20 @@ const postTransitionRoutingUpdateLimitedPartnerLegalEntity = {
   }
 };
 
+const postTransitionRoutingUpdatePrincipalOfficeAddressYesNo = {
+  previousUrl: url.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
+  currentUrl: url.UPDATE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL,
+  nextUrl: "/",
+  pageType: PostTransitionPageType.updateLimitedPartnerPrincipalOfficeAddressYesNo,
+  data: {
+    nextYesUrl: ENTER_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+    nextNoUrl: url.WHEN_DID_LIMITED_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL,
+    titleKey: "limitedPartnerPrincipalOfficeAddress",
+    fieldName: "update_principal_office_address_required",
+    trackingLabel: "update-principal-office-address-yes-no"
+  }
+};
+
 const postTransitionRoutingWhenDidLimitedPartnerLegalEntityChange = {
   previousUrl: url.UPDATE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL,
   currentUrl: url.WHEN_DID_LIMITED_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL,
@@ -181,6 +196,7 @@ const limitedPartnerRouting = [
   postTransitionRoutingUpdateLimitedPartnerPersonCheckYourAnswers,
 
   postTransitionRoutingUpdateLimitedPartnerLegalEntity,
+  postTransitionRoutingUpdatePrincipalOfficeAddressYesNo,
   postTransitionRoutingWhenDidLimitedPartnerLegalEntityChange
 ];
 

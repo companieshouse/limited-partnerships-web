@@ -1,43 +1,43 @@
 import request from "supertest";
 import app from "../../app";
 
-import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../../presentation/test/utils";
 import enTranslationText from "../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../locales/cy/translations.json";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
-import { UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL, WHEN_DID_GENERAL_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL } from "../../../../controller/postTransition/url";
-import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
-import { ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../../../controller/addressLookUp/url/postTransition";
-import PostTransitionPageType from "../../../../controller/postTransition/pageType";
+import CompanyProfileBuilder from "../../../../../presentation/test/builder/CompanyProfileBuilder";
+import PostTransitionPageType from "../../../../../presentation/controller/postTransition/pageType";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import TransactionBuilder from "../../../builder/TransactionBuilder";
+import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
+import { UPDATE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL, WHEN_DID_LIMITED_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL } from "../../../../controller/postTransition/url";
+import { ENTER_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../../../controller/addressLookUp/url/postTransition";
 
 describe("Update Principal Office Address Yes No Page", () => {
-  const URL = getUrl(UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL);
-  const REDIRECT_YES = getUrl(ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
-  const REDIRECT_NO = getUrl(WHEN_DID_GENERAL_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL);
+  const URL = getUrl(UPDATE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL);
+  const REDIRECT_YES = getUrl(ENTER_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
+  const REDIRECT_NO = getUrl(WHEN_DID_LIMITED_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL);
 
-  let generalPartner;
+  let limitedPartner;
 
   beforeEach(() => {
     setLocalesEnabled(false);
 
     const companyProfile = new CompanyProfileBuilder().build();
 
-    generalPartner = new GeneralPartnerBuilder()
-      .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+    limitedPartner = new LimitedPartnerBuilder()
+      .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
       .isLegalEntity()
       .build();
 
-    appDevDependencies.generalPartnerGateway.feedGeneralPartners([
-      generalPartner,
+    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([
+      limitedPartner,
     ]);
-    appDevDependencies.generalPartnerGateway.feedErrors();
+    appDevDependencies.limitedPartnerGateway.feedErrors();
 
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
-    const transaction = new TransactionBuilder().withKind(PartnerKind.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY).build();
+    const transaction = new TransactionBuilder().withKind(PartnerKind.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY).build();
     appDevDependencies.transactionGateway.feedTransactions([transaction]);
   });
 
@@ -54,11 +54,12 @@ describe("Update Principal Office Address Yes No Page", () => {
       expect(res.status).toBe(200);
 
       expect(res.text).toContain(
-        `${generalPartner.data?.legal_entity_name?.toUpperCase()}`
+        `${limitedPartner.data?.forename?.toUpperCase()} ${limitedPartner.data?.surname?.toUpperCase()}`
       );
 
-      testTranslations(res.text, translationText.address.update.principalOfficeAddress);
-      expect(countOccurrences(res.text, toEscapedHtml(translationText.serviceName.updateGeneralPartnerLegalEntity))).toBe(2);
+      testTranslations(res.text, translationText.address.update.limitedPartnerPrincipalOfficeAddress);
+      expect(countOccurrences(res.text, toEscapedHtml(translationText.serviceName.updateLimitedPartnerLegalEntity))).toBe(2);
+
       if (lang === "cy") {
         expect(res.text).toContain("WELSH - ");
       } else {
@@ -72,7 +73,7 @@ describe("Update Principal Office Address Yes No Page", () => {
     ])("should load the update principal office address yes no page with %s radio button checked", async (radioValue: boolean) => {
       setLocalesEnabled(true);
 
-      generalPartner.data.update_principal_office_address_required = radioValue;
+      limitedPartner.data.update_principal_office_address_required = radioValue;
 
       const res = await request(app).get(`${URL}`);
 
@@ -85,11 +86,11 @@ describe("Update Principal Office Address Yes No Page", () => {
   describe("POST Update Principal Office Address Yes No Page", () => {
 
     it.each([
-      ['enter general partner principal office address page when "yes"', "true", REDIRECT_YES],
-      ['the When did general partner details change page when "no"', "false", REDIRECT_NO]
+      ['URA territory choice page when "yes"', "true", REDIRECT_YES],
+      ['the when did the limited partner legal entity details change page when "no"', "false", REDIRECT_NO]
     ])('should redirect to %s is selected', async (description: string, pageValue: string, redirectUrl: string) => {
       const res = await request(app).post(`${URL}`).send({
-        pageType: PostTransitionPageType.updateGeneralPartnerPrincipalOfficeAddressYesNo,
+        pageType: PostTransitionPageType.updateLimitedPartnerPrincipalOfficeAddressYesNo,
         update_principal_office_address_required: pageValue
       });
 

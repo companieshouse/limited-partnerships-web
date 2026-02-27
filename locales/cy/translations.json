@@ -342,6 +342,9 @@
             "principalOfficeAddress": {
                 "title": "WELSH - Do you need to update this partner's principal office address?",
                 "hint": "WELSH - This is the address for the entity's main office."
+            },
+            "limitedPartnerPrincipalOfficeAddress": {
+                "title": "WELSH - Do you need to update the principal office address?"
             }
         }
     },
