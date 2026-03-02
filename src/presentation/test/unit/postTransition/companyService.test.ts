@@ -69,6 +69,15 @@ describe("CompanyService", () => {
         postal_code: ""
       });
     });
+
+    it("should return empty object if no company number is provided", async () => {
+      const result = await appDevDependencies.companyService.buildLimitedPartnershipFromCompanyProfile(
+        { access_token: "token", refresh_token: "token" },
+        undefined as unknown as string
+      );
+
+      expect(result.limitedPartnership).toStrictEqual({});
+    });
   });
 
   describe("Company appointment", () => {

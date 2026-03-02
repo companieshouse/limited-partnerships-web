@@ -29,8 +29,13 @@ class CompanyService {
     limitedPartnership: Partial<LimitedPartnership & DataIncludingPartners>;
     errors?: UIErrors;
   }> {
-    const { companyProfile, errors } = await this.getCompanyProfile(opt, company_number);
     let limitedPartnership: Partial<LimitedPartnership & DataIncludingPartners> = {};
+
+    if (!company_number) {
+      return { limitedPartnership };
+    }
+
+    const { companyProfile, errors } = await this.getCompanyProfile(opt, company_number);
 
     if (companyProfile.companyName) {
       const partners = await this.getPartners(errors, opt, company_number);
