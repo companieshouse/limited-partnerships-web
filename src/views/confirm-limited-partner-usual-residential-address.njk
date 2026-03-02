@@ -8,7 +8,7 @@
 {% block backLink %}
   {% set hrefValue = props.previousUrl %}
 
-  {% if props.data.cache.ura_territory_choice == "overseas" and not props.data.limitedPartner.data.kind == "limited-partnership#update-limited-partner-person" %}
+  {% if props.data.cache.ura_territory_choice == "overseas" %}
     {% set hrefValue = props.currentUrl | replace(props.pageType, props.data.enterManualAddressPageType) %}
   {% endif %}
 
