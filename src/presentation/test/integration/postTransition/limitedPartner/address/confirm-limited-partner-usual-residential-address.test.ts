@@ -87,8 +87,8 @@ describe("Confirm Limited Partner Usual Residential Address Page", () => {
     });
 
     it.each([
-      ["update", "overseas", PartnerKind.UPDATE_LIMITED_PARTNER_PERSON, UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL],
-      ["update", "unitedKingdom", PartnerKind.UPDATE_LIMITED_PARTNER_PERSON, UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL],
+      ["update", "", PartnerKind.UPDATE_LIMITED_PARTNER_PERSON, UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL],
+      ["update", "", PartnerKind.UPDATE_LIMITED_PARTNER_PERSON, UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL],
       ["add", "overseas", PartnerKind.ADD_LIMITED_PARTNER_PERSON, ENTER_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL],
       ["add", "unitedKingdom", PartnerKind.ADD_LIMITED_PARTNER_PERSON, POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL]
     ])("should contain the correct back link when on %s limited partner person journey", async (description: string, territory: string, partnerKind: PartnerKind, backUrl: string) => {

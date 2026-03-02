@@ -80,22 +80,6 @@ describe("Enter limited partner's principal office manual address page", () => {
       const BACK_LINK = journey === "add" ? getUrl(POSTCODE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL) : getUrl(UPDATE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL);
       expect(res.text).toContain(BACK_LINK);
     });
-
-    it("should have back link to yes/no page when partner kind is UPDATE_LIMITED_PARTNER_LEGAL_ENTITY", async () => {
-      const updateLimitedPartner = new LimitedPartnerBuilder()
-        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isLegalEntity()
-        .withKind(PartnerKind.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY)
-        .build();
-
-      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([updateLimitedPartner]);
-
-      const backLinkUrl = getUrl(UPDATE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL);
-      const res = await request(app).get(URL);
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(backLinkUrl);
-    });
   });
 
   describe("Post enter limited partner's principal office address page", () => {

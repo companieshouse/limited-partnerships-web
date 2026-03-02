@@ -45,7 +45,8 @@ import {
   UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL,
   WHEN_DID_GENERAL_PARTNER_PERSON_DETAILS_CHANGE_URL,
   WHEN_DID_GENERAL_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL,
-  WHEN_DID_LIMITED_PARTNER_PERSON_DETAILS_CHANGE_URL
+  WHEN_DID_LIMITED_PARTNER_PERSON_DETAILS_CHANGE_URL,
+  WHEN_DID_LIMITED_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL
 } from "../postTransition/url";
 import { isUpdateKind } from "../../../utils/kind";
 
@@ -674,6 +675,15 @@ class AddressLookUpController extends AbstractController {
       if (limitedPartner?.data?.kind === PartnerKind.UPDATE_LIMITED_PARTNER_PERSON) {
         pageRouting.nextUrl = super.insertIdsInUrl(
           WHEN_DID_LIMITED_PARTNER_PERSON_DETAILS_CHANGE_URL,
+          ids,
+          request.url
+        );
+      }
+    }
+    if (pageRouting.pageType === AddressLookUpPageType.confirmLimitedPartnerPrincipalOfficeAddress) {
+      if (limitedPartner?.data?.kind === PartnerKind.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY) {
+        pageRouting.nextUrl = super.insertIdsInUrl(
+          WHEN_DID_LIMITED_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL,
           ids,
           request.url
         );
