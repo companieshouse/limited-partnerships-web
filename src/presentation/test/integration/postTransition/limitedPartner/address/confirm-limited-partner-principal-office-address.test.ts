@@ -54,17 +54,7 @@ describe("Confirm Limited Partner Principal Office Address Page", () => {
     ])("should load the confirm principal office address page with %s limited partner person journey and %s language", async (journey: string, lang: string) => {
       const translationtext = lang === "en" ? enTranslationText : cyTranslationText;
       const transactionKind = journey === "add" ? PartnerKind.ADD_LIMITED_PARTNER_LEGAL_ENTITY : PartnerKind.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY;
-
-      const transaction = new TransactionBuilder().withKind(transactionKind).build();
-      appDevDependencies.transactionGateway.feedTransactions([transaction]);
-
-      const limitedPartner = new LimitedPartnerBuilder()
-        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isLegalEntity()
-        .withKind(transactionKind)
-        .build();
-
-      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
+      setupTransactionAndLimitedPartner(transactionKind);
 
       const res = await request(app).get(`${URL}?lang=${lang}`);
 
@@ -90,16 +80,7 @@ describe("Confirm Limited Partner Principal Office Address Page", () => {
       ["update", "", getUrl(UPDATE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL)]
     ])("should have the correct back link for journey %s and territory %s", async (journey, territory, backLink) => {
       const transactionKind = journey === "add" ? PartnerKind.ADD_LIMITED_PARTNER_LEGAL_ENTITY : PartnerKind.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY;
-      const transaction = new TransactionBuilder().withKind(transactionKind).build();
-      appDevDependencies.transactionGateway.feedTransactions([transaction]);
-
-      const limitedPartner = new LimitedPartnerBuilder()
-        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isLegalEntity()
-        .withKind(transactionKind)
-        .build();
-
-      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
+      setupTransactionAndLimitedPartner(transactionKind);
 
       appDevDependencies.cacheRepository.feedCache({
         [appDevDependencies.transactionGateway.transactionId]: {
@@ -119,16 +100,7 @@ describe("Confirm Limited Partner Principal Office Address Page", () => {
       ["update"]
     ])("should redirect to the next page", async (journey: string) => {
       const transactionKind = journey === "add" ? PartnerKind.ADD_LIMITED_PARTNER_LEGAL_ENTITY : PartnerKind.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY;
-      const transaction = new TransactionBuilder().withKind(transactionKind).build();
-      appDevDependencies.transactionGateway.feedTransactions([transaction]);
-
-      const limitedPartner = new LimitedPartnerBuilder()
-        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isLegalEntity()
-        .withKind(transactionKind)
-        .build();
-
-      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
+      setupTransactionAndLimitedPartner(transactionKind);
 
       const res = await request(app)
         .post(URL)
@@ -176,3 +148,16 @@ describe("Confirm Limited Partner Principal Office Address Page", () => {
     });
   });
 });
+
+const setupTransactionAndLimitedPartner = (transactionKind: PartnerKind) => {
+  const transaction = new TransactionBuilder().withKind(transactionKind).build();
+  appDevDependencies.transactionGateway.feedTransactions([transaction]);
+
+  const limitedPartner = new LimitedPartnerBuilder()
+    .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+    .isLegalEntity()
+    .withKind(transactionKind)
+    .build();
+
+  appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
+};
