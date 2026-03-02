@@ -129,6 +129,31 @@ abstract class AbstractPartnerBuilder {
     return this;
   }
 
+  withLegalEntityName(legalEntityName: string): this {
+    this.data.legal_entity_name = legalEntityName;
+    return this;
+  }
+
+  withLegalForm(legalForm: string): this {
+    this.data.legal_form = legalForm;
+    return this;
+  }
+
+  withGoverningLaw(governingLaw: string): this {
+    this.data.governing_law = governingLaw;
+    return this;
+  }
+
+  withLegalEntityRegisterName(legalEntityRegisterName: string): this {
+    this.data.legal_entity_register_name = legalEntityRegisterName;
+    return this;
+  }
+
+  withRegistrationNumber(registeredCompanyNumber: string): this {
+    this.data.registered_company_number = registeredCompanyNumber;
+    return this;
+  }
+
 }
 
 export default AbstractPartnerBuilder;

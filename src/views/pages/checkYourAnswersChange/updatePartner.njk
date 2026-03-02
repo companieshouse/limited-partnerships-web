@@ -72,7 +72,7 @@
       SET_DATE_OF_UPDATE_SECTION(props, i18n, props.data.dateChangeLink)
     ]
   }) }}
-{% elif item.data.kind == "limited-partnership#update-general-partner-legal-entity" %}
+{% elif item.data.kind == "limited-partnership#update-general-partner-legal-entity" or item.data.kind == "limited-partnership#update-limited-partner-legal-entity" %}
   {% set country = i18n.countries[macros.makeCamelCase(item.data.legal_entity_registration_location)] if updateFieldsMap.legal_entity_registration_location else notUpdated %}
   {{ govukSummaryList({
     classes: "govuk-!-margin-bottom-7",
