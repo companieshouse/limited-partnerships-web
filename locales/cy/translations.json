@@ -532,10 +532,12 @@
               "generalPartnerType": "WELSH - as a general partner of",
               "limitedPartnerType": "WELSH - as a limited partner of",
               "updateGeneralPartnerType": "WELSH - who is a general partner of",
+              "updateLimitedPartnerType": "WELSH - who is a limited partner of",
               "updateWontShow": "WELSH - This update will not show on the public register until we accept the filing.",
               "processFiling": "WELSH - We'll process this filing withing 5 working days, and email",
               "processFilingConfirmation": "WELSH - to let you know if it's been accepted or rejected.",
               "filingAccepted": "WELSH - If it's accepted, we'll update this information on the public register.",
+              "updateFilingAccepted": "WELSH - If it's accepted, we'll publish the new information on the public register.",
               "filingRejected": "WELSH - If it's rejected, we'll explain why and tell you what to do next.",
               "confirmationStatementTitle": "WELSH - If you need to file a confirmation statement",
               "confirmationStatementBody": "WELSH - As long as all required updates have been submitted, you can file a confirmation statement. You do not need to wait for the updates to be accepted."

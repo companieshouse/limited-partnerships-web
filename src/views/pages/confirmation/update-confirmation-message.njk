@@ -10,8 +10,12 @@
     {% set message = i18n.confirmationPage.postTransition.partner.updatePartner %}
     {% set partnerType = i18n.confirmationPage.postTransition.partner.updateGeneralPartnerType %}
     {% set partnerName = partnerName + "," %}
-  {% endif %}
-  
+  {% elif props.data.subtype === "limited-partnership#update-limited-partner-legal-entity" 
+      or props.data.subtype === "limited-partnership#update-limited-partner-person" %}
+    {% set message = i18n.confirmationPage.postTransition.partner.updatePartner %}
+    {% set partnerType = i18n.confirmationPage.postTransition.partner.updateLimitedPartnerType %}
+    {% set partnerName = partnerName + ","%}
+  {% endif %} 
   <p class="govuk-body">{{ message }} {{ partnerName }} {{ partnerType }} {{ props.data.limitedPartnership.data.partnership_name | upper }} ({{ props.data.limitedPartnership.data.partnership_number }}).</p>
 {% else %}
   {% set message = i18n.confirmationPage.postTransition.registeredOfficeAddress %}
