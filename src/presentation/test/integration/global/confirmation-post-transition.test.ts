@@ -107,14 +107,14 @@ describe("Confirmation Page", () => {
 
             expect(res.text).toContain(toEscapedHtml(partnerText));
 
-            let excludedTranslations = ["limitedPartnerType", "updateGeneralPartnerType"];
+            let excludedTranslations = ["limitedPartnerType", "updateLimitedPartnerType"];
 
             if (partnerKind === PartnerKind.ADD_GENERAL_PARTNER_PERSON) {
-              excludedTranslations = [...excludedTranslations, "removePartner", "updatePartner"];
+              excludedTranslations = [...excludedTranslations, "removePartner", "updatePartner", "updateFilingAccepted", "updateGeneralPartnerType"];
             } else if (partnerKind === PartnerKind.REMOVE_GENERAL_PARTNER_PERSON) {
-              excludedTranslations = [...excludedTranslations, "addPartner", "updatePartner"];
+              excludedTranslations = [...excludedTranslations, "addPartner", "updatePartner", "updateFilingAccepted", "updateGeneralPartnerType"];
             } else if (partnerKind === PartnerKind.UPDATE_GENERAL_PARTNER_PERSON) {
-              excludedTranslations = [...excludedTranslations, "addPartner", "removePartner", "generalPartnerType"];
+              excludedTranslations = [...excludedTranslations, "addPartner", "removePartner", "generalPartnerType", "filingAccepted"];
             }
 
             testTranslations(res.text, translation.postTransition.partner, excludedTranslations);
@@ -195,14 +195,14 @@ describe("Confirmation Page", () => {
 
             expect(res.text).toContain(toEscapedHtml(partnerText));
 
-            let excludedTranslations = ["limitedPartnerType", "updateGeneralPartnerType"];
+            let excludedTranslations = ["limitedPartnerType", "updateLimitedPartnerType"];
 
             if (partnerKind === PartnerKind.ADD_GENERAL_PARTNER_LEGAL_ENTITY) {
-              excludedTranslations = [...excludedTranslations, "removePartner", "updatePartner"];
+              excludedTranslations = [...excludedTranslations, "removePartner", "updatePartner", "updateFilingAccepted", "updateGeneralPartnerType"];
             } else if (partnerKind === PartnerKind.REMOVE_GENERAL_PARTNER_LEGAL_ENTITY) {
-              excludedTranslations = [...excludedTranslations, "addPartner", "updatePartner"];
+              excludedTranslations = [...excludedTranslations, "addPartner", "updatePartner", "updateFilingAccepted", "updateGeneralPartnerType"];
             } else if (partnerKind === PartnerKind.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY) {
-              excludedTranslations = [...excludedTranslations, "addPartner", "removePartner", "generalPartnerType"];
+              excludedTranslations = [...excludedTranslations, "addPartner", "removePartner", "generalPartnerType", "filingAccepted"];
             }
 
             testTranslations(res.text, translation.postTransition.partner, excludedTranslations);
@@ -245,6 +245,18 @@ describe("Confirmation Page", () => {
           PartnerKind.REMOVE_LIMITED_PARTNER_PERSON,
           cyTranslationText.confirmationPage.postTransition.partner.removePartner,
           "cy"
+        ],
+        [
+          enTranslationText.serviceName.updateLimitedPartnerPerson,
+          PartnerKind.UPDATE_LIMITED_PARTNER_PERSON,
+          enTranslationText.confirmationPage.postTransition.partner.updatePartner,
+          "en"
+        ],
+        [
+          cyTranslationText.serviceName.updateLimitedPartnerPerson,
+          PartnerKind.UPDATE_LIMITED_PARTNER_PERSON,
+          cyTranslationText.confirmationPage.postTransition.partner.updatePartner,
+          "cy"
         ]
       ])(
         "should load confirmation page - limited partner (person) - %s",
@@ -278,11 +290,11 @@ describe("Confirmation Page", () => {
           let excludedTranslations = ["generalPartnerType", "updateGeneralPartnerType"];
 
           if (partnerKind === PartnerKind.ADD_LIMITED_PARTNER_PERSON) {
-            excludedTranslations = [...excludedTranslations, "removePartner", "updatePartner"];
+            excludedTranslations = [...excludedTranslations, "removePartner", "updatePartner", "updateFilingAccepted", "updateLimitedPartnerType"];
           } else if (partnerKind === PartnerKind.REMOVE_LIMITED_PARTNER_PERSON) {
-            excludedTranslations = [...excludedTranslations, "addPartner", "updatePartner"];
+            excludedTranslations = [...excludedTranslations, "addPartner", "updatePartner", "updateFilingAccepted", "updateLimitedPartnerType"];
           } else if (partnerKind === PartnerKind.UPDATE_LIMITED_PARTNER_PERSON) {
-            excludedTranslations = [...excludedTranslations, "addPartner", "removePartner", "generalPartnerType"];
+            excludedTranslations = [...excludedTranslations, "addPartner", "removePartner", "filingAccepted", "limitedPartnerType"];
           }
 
           testTranslations(res.text, translation.postTransition.partner, excludedTranslations);
@@ -292,7 +304,7 @@ describe("Confirmation Page", () => {
           expect(res.text).toContain(companyProfile.data?.companyName?.toUpperCase());
           expect(res.text).toContain(companyProfile.data?.companyNumber?.toUpperCase());
 
-          expect(countOccurrences(res.text, serviceName)).toBe(2);
+          expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
         }
       );
     });
@@ -321,6 +333,18 @@ describe("Confirmation Page", () => {
           cyTranslationText.serviceName.removeLimitedPartnerEntity,
           PartnerKind.REMOVE_LIMITED_PARTNER_LEGAL_ENTITY,
           cyTranslationText.confirmationPage.postTransition.partner.removePartner,
+          "cy"
+        ],
+        [
+          enTranslationText.serviceName.updateLimitedPartnerLegalEntity,
+          PartnerKind.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY,
+          enTranslationText.confirmationPage.postTransition.partner.updatePartner,
+          "en"
+        ],
+        [
+          cyTranslationText.serviceName.updateLimitedPartnerLegalEntity,
+          PartnerKind.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY,
+          cyTranslationText.confirmationPage.postTransition.partner.updatePartner,
           "cy"
         ]
       ])(
@@ -354,11 +378,11 @@ describe("Confirmation Page", () => {
           let excludedTranslations = ["generalPartnerType", "updateGeneralPartnerType"];
 
           if (partnerKind === PartnerKind.ADD_LIMITED_PARTNER_LEGAL_ENTITY) {
-            excludedTranslations = [...excludedTranslations, "removePartner", "updatePartner"];
+            excludedTranslations = [...excludedTranslations, "removePartner", "updatePartner", "updateFilingAccepted", "updateLimitedPartnerType"];
           } else if (partnerKind === PartnerKind.REMOVE_LIMITED_PARTNER_LEGAL_ENTITY) {
-            excludedTranslations = [...excludedTranslations, "addPartner", "updatePartner"];
+            excludedTranslations = [...excludedTranslations, "addPartner", "updatePartner", "updateFilingAccepted", "updateLimitedPartnerType"];
           } else if (partnerKind === PartnerKind.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY) {
-            excludedTranslations = [...excludedTranslations, "addPartner", "removePartner", "generalPartnerType"];
+            excludedTranslations = [...excludedTranslations, "addPartner", "removePartner", "generalPartnerType", "filingAccepted", "limitedPartnerType"];
           }
 
           testTranslations(res.text, translation.postTransition.partner, excludedTranslations);
@@ -367,7 +391,7 @@ describe("Confirmation Page", () => {
           expect(res.text).toContain(companyProfile.data?.companyName?.toUpperCase());
           expect(res.text).toContain(companyProfile.data?.companyNumber?.toUpperCase());
 
-          expect(countOccurrences(res.text, serviceName)).toBe(2);
+          expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
         }
       );
     });
