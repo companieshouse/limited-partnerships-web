@@ -90,10 +90,7 @@ abstract class PartnerController extends AbstractController {
         ...partner,
         data: {
           ...partner.data,
-          date_of_birth: partner.data?.date_of_birth ? formatDate(partner.data.date_of_birth, i18n) : undefined,
-          date_effective_from: partner.data?.date_effective_from
-            ? formatDate(partner.data.date_effective_from, i18n)
-            : undefined
+          date_of_birth: partner.data?.date_of_birth ? formatDate(partner.data.date_of_birth, i18n) : undefined
         }
       };
 

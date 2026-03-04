@@ -79,14 +79,8 @@
             or props.data.limitedPartnership.data.partnership_type === "SLP")
             and item.data.contribution_currency_value
             and (journeyTypes.isRegistration or journeyTypes.isPostTransition),
-      {
-        key: {
-          text: i18n.checkYourAnswersPage.partners.limitedPartners.dateEffectiveFrom
-        },
-        value: {
-          text: item.data.date_effective_from
-        } 
-      } if journeyTypes.isPostTransition    
+
+      SET_DATE_EFFECTIVE_FROM_SECTION(item, "limitedPartner", journeyTypes, i18n)   
     ]
   }) }}
 
@@ -173,14 +167,8 @@
             or props.data.limitedPartnership.data.partnership_type === "SLP")
             and item.data.contribution_currency_value
             and (journeyTypes.isRegistration or journeyTypes.isPostTransition),
-      {
-        key: {
-          text: i18n.checkYourAnswersPage.partners.limitedPartners.dateEffectiveFrom
-        },
-        value: {
-          text: item.data.date_effective_from
-        } 
-      } if journeyTypes.isPostTransition
+      
+      SET_DATE_EFFECTIVE_FROM_SECTION(item, "limitedPartner", journeyTypes, i18n)
     ]
   }) }}
 {% endif %}

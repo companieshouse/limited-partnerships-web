@@ -55,14 +55,8 @@
           text: macros.formatAddress(item.data.service_address, true, i18n)
         }
       },
-      {
-        key: {
-          text: i18n.checkYourAnswersPage.partners.generalPartners.dateEffectiveFrom
-        },
-        value: {
-          text: item.data.date_effective_from
-        }
-      } if journeyTypes.isPostTransition 
+
+      SET_DATE_EFFECTIVE_FROM_SECTION(item, "generalPartner", journeyTypes, i18n)
     ]
   }) }}
 {% elif item.data.legal_entity_name %}
@@ -126,14 +120,8 @@
             text: macros.formatAddress(item.data.principal_office_address, true, i18n)
           }
         },
-        {
-          key: {
-            text: i18n.checkYourAnswersPage.partners.generalPartners.dateEffectiveFrom
-          },
-          value: {
-            text: item.data.date_effective_from
-          }
-        } if journeyTypes.isPostTransition 
+
+        SET_DATE_EFFECTIVE_FROM_SECTION(item, "generalPartner", journeyTypes, i18n)
       ]
     }) }}
  {% endif %}

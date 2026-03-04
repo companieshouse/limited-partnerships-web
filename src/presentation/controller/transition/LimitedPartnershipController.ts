@@ -87,9 +87,6 @@ class LimitedPartnershipController extends PartnershipController {
           ...partner.data,
           date_of_birth: partner.data?.date_of_birth
             ? formatDate(partner.data?.date_of_birth, response.locals.i18n)
-            : undefined,
-          date_effective_from: partner.data?.date_effective_from
-            ? formatDate(partner.data?.date_effective_from, response.locals.i18n)
             : undefined
         }
       }));
@@ -101,9 +98,6 @@ class LimitedPartnershipController extends PartnershipController {
           ...partner.data,
           date_of_birth: partner.data?.date_of_birth
             ? formatDate(partner.data?.date_of_birth, response.locals.i18n)
-            : undefined,
-          date_effective_from: partner.data?.date_effective_from
-            ? formatDate(partner.data?.date_effective_from, response.locals.i18n)
             : undefined
         }
       }));
