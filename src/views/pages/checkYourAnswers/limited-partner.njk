@@ -44,14 +44,9 @@
           text: item.data.former_names
         }
       } if item.data.former_names,
-      {
-        key: {
-          text: i18n.checkYourAnswersPage.partners.person.dateOfBirth
-        },
-        value: {
-          text: item.data.date_of_birth
-        }
-      },
+      
+      SET_DATE_OF_BIRTH_SECTION(item, i18n),
+      
       {
         key: {
           text: i18n.checkYourAnswersPage.partners.person.nationality

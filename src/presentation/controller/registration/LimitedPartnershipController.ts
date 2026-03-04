@@ -31,7 +31,6 @@ import {
 } from "./url";
 import { CONFIRM_REGISTERED_OFFICE_ADDRESS_URL } from "../addressLookUp/url/registration";
 import { PAYMENT_RESPONSE_URL } from "../global/url";
-import { formatDate } from "../../../utils/date-format";
 
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
@@ -72,8 +71,7 @@ class LimitedPartnershipController extends PartnershipController {
         const { generalPartners, limitedPartners } = await this.getPartners(
           pageRouting,
           tokens,
-          ids.transactionId,
-          response
+          ids.transactionId
         );
 
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
@@ -91,31 +89,12 @@ class LimitedPartnershipController extends PartnershipController {
   private async getPartners(
     pageRouting: PageRouting,
     tokens: Tokens,
-    transactionId: string,
-    response: Response
+    transactionId: string
   ): Promise<{ generalPartners: GeneralPartner[]; limitedPartners: LimitedPartner[] }> {
     if (pageRouting.pageType === RegistrationPageType.checkYourAnswers) {
-      const gpResult = await this.generalPartnerService.getGeneralPartners(tokens, transactionId);
-      const generalPartners = gpResult.generalPartners.map((partner) => ({
-        ...partner,
-        data: {
-          ...partner.data,
-          date_of_birth: partner.data?.date_of_birth
-            ? formatDate(partner.data?.date_of_birth, response.locals.i18n)
-            : undefined
-        }
-      }));
+      const { generalPartners } = await this.generalPartnerService.getGeneralPartners(tokens, transactionId);
+      const { limitedPartners } = await this.limitedPartnerService.getLimitedPartners(tokens, transactionId);
 
-      const lpResult = await this.limitedPartnerService.getLimitedPartners(tokens, transactionId);
-      const limitedPartners = lpResult.limitedPartners.map((partner) => ({
-        ...partner,
-        data: {
-          ...partner.data,
-          date_of_birth: partner.data?.date_of_birth
-            ? formatDate(partner.data?.date_of_birth, response.locals.i18n)
-            : undefined
-        }
-      }));
       return { generalPartners, limitedPartners };
     }
     return { generalPartners: [], limitedPartners: [] };

@@ -11,6 +11,7 @@ import { getGOVUKFrontendVersion } from "@companieshouse/ch-node-utils";
 import { createSummaryListLink } from "../utils/change-link";
 import setDateOfUpdateSection from "../utils/date-of-update";
 import setDateEffectiveFromSection from "../utils/date-effective-from";
+import setDateOfBirthSection from "../utils/date-of-birth";
 import { setCountriesDropdown } from "../utils/countries";
 import { setNationalitiesDropdown } from "../utils/nationalities";
 import * as config from "./constants";
@@ -64,6 +65,7 @@ export const appConfig = (app: express.Application) => {
   nunjucksEnv.addGlobal("CREATE_CHANGE_LINK", createSummaryListLink);
   nunjucksEnv.addGlobal("SET_DATE_OF_UPDATE_SECTION", setDateOfUpdateSection);
   nunjucksEnv.addGlobal("SET_DATE_EFFECTIVE_FROM_SECTION", setDateEffectiveFromSection);
+  nunjucksEnv.addGlobal("SET_DATE_OF_BIRTH_SECTION", setDateOfBirthSection);
   nunjucksEnv.addGlobal("SET_COUNTRIES_DROPDOWN", setCountriesDropdown);
   nunjucksEnv.addGlobal("SET_NATIONALITIES_DROPDOWN", setNationalitiesDropdown);
 
