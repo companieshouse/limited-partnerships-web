@@ -43,7 +43,7 @@ export const setDateOfUpdateSection = (props: Record<string, any>, i18n: Record<
       items: [
         createSummaryListLink(
           i18n.checkYourAnswersPage.change,
-          props.currentUrl.replace(props.pageType, dateChangeUrl),
+          props.currentUrl.replace(props.pageType, dateChangeUrl) + "#day",
           "",
           "change-partnership-date-of-update-button"
         )

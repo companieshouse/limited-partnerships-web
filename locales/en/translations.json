@@ -353,7 +353,8 @@
     "buttons" : {
         "continue" : "Continue",
         "saveAndContinue" : "Save and continue",
-        "submit": "Submit"
+        "submit": "Submit",
+        "submitUpdate": "Submit update"
     },
 
     "capitalContribution" : {
@@ -476,6 +477,7 @@
             "title" : "Check your answers before submitting this update",
             "dateOfChange" : "Date of change",
             "printWarning": "Print or save this page before you submit the filing, for your own records.",
+            "printMessage": "Print or save this page for your records.",
             "information": "We will not send you or the partnership a copy of this information.",
             "notUpdated": "Not updated"
         }       
