@@ -13,7 +13,6 @@ import postTransitionRouting from "./routing";
 import { CEASE_DATE_TEMPLATE, CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX, DATE_OF_UPDATE_TEMPLATE, PARTNER_CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE, UPDATE_ADDRESS_YES_NO_TEMPLATE, UPDATE_ADDRESS_YES_NO_TYPE_SUFFIX } from "../../../config/constants";
 import UIErrors from "../../../domain/entities/UIErrors";
 import { Ids, Tokens } from "../../../domain/types";
-import { formatDate } from "../../../utils/date-format";
 import { isUpdateKind } from "../../../utils/kind";
 
 type PartnerData = {
@@ -116,10 +115,6 @@ class PostTransitionPartnerController extends PartnerController {
             ids.transactionId,
             ids.limitedPartnerId
           );
-        }
-
-        if (partner?.data?.cease_date) {
-          partner.data.cease_date = formatDate(partner.data.cease_date, response.locals.i18n);
         }
 
         let partnerUpdatedFieldsMap: Record<string, boolean> = {};

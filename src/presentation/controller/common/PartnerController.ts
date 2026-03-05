@@ -24,7 +24,6 @@ import registrationRouting from "../registration/Routing";
 import transitionRouting from "../transition/Routing";
 import postTransitionRouting from "../postTransition/routing";
 
-import { formatDate } from "../../../utils/date-format";
 import {
   CEASE_DATE_TEMPLATE,
   DATE_OF_UPDATE_TEMPLATE,
@@ -58,9 +57,9 @@ abstract class PartnerController extends AbstractController {
 
         const { limitedPartnership, generalPartner: gp, limitedPartner: lp } = await this.getEntities(tokens, ids);
 
-        const generalPartner = this.formatPartnerDatesAndSetPreviousUrl(gp, pageRouting, request, response.locals.i18n);
+        const generalPartner = this.setPreviousUrl(gp, pageRouting, request);
 
-        const limitedPartner = this.formatPartnerDatesAndSetPreviousUrl(lp, pageRouting, request, response.locals.i18n);
+        const limitedPartner = this.setPreviousUrl(lp, pageRouting, request);
 
         response.render(
           super.templateName(pageRouting.currentUrl),
@@ -72,11 +71,10 @@ abstract class PartnerController extends AbstractController {
     };
   }
 
-  private formatPartnerDatesAndSetPreviousUrl(
+  private setPreviousUrl(
     partner: GeneralPartner | LimitedPartner,
     pageRouting: PageRouting,
-    request: Request,
-    i18n: any
+    request: Request
   ): GeneralPartner {
     const { pageType, ids } = super.extract(request);
 
@@ -86,17 +84,6 @@ abstract class PartnerController extends AbstractController {
         pageType === PostTransitionPageType.limitedPartnerCheckYourAnswers);
 
     if (isPostTransitionCheckYourAnswers && partner?.data) {
-      const formattedPartner = {
-        ...partner,
-        data: {
-          ...partner.data,
-          date_of_birth: partner.data?.date_of_birth ? formatDate(partner.data.date_of_birth, i18n) : undefined,
-          date_effective_from: partner.data?.date_effective_from
-            ? formatDate(partner.data.date_effective_from, i18n)
-            : undefined
-        }
-      };
-
       const secondAddress =
         pageType === PostTransitionPageType.generalPartnerCheckYourAnswers
           ? pageRouting.data?.confirmCorrespondenceAddress
@@ -105,8 +92,6 @@ abstract class PartnerController extends AbstractController {
       pageRouting.previousUrl = partner.data?.legal_entity_name
         ? super.insertIdsInUrl(pageRouting.data?.confirmPrincipalOfficeAddress, ids, request.url)
         : super.insertIdsInUrl(secondAddress, ids, request.url);
-
-      return formattedPartner;
     }
 
     return partner;
