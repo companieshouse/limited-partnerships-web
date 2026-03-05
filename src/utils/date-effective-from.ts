@@ -7,12 +7,12 @@ const setDateEffectiveFrom = (partner: Record<string, any>, type: string, journe
       i18n.checkYourAnswersPage.partners.generalPartners.dateEffectiveFrom
       : i18n.checkYourAnswersPage.partners.limitedPartners.dateEffectiveFrom;
 
-  return journeyTypes.isPostTransition && partner?.data?.date_effective_from ? {
+  return journeyTypes.isPostTransition ? {
     key: {
       text
     },
     value: {
-      text: formatDate(partner.data.date_effective_from, i18n)
+      text: partner?.data?.date_effective_from ? formatDate(partner.data.date_effective_from, i18n) : ""
     }
   } : null;
 };

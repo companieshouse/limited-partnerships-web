@@ -6,7 +6,7 @@ const setDateOfBirth = (partner: Record<string, any>, i18n: Record<string, any>)
       text: i18n.checkYourAnswersPage.partners.person.dateOfBirth
     },
     value: {
-      text: partner?.data?.date_of_birth ? formatDate(partner.data.date_of_birth, i18n) : null
+      text: partner?.data?.date_of_birth ? formatDate(partner.data.date_of_birth, i18n) : ""
     }
   };
 };
