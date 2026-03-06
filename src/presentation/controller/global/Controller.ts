@@ -126,7 +126,7 @@ class GlobalController extends AbstractController {
         response.locals.serviceName = response.locals.i18n.serviceName[serviceNameKindMap[kind ?? ""]] ?? "";
 
         if (response.locals?.serviceName) {
-          const serviceName = response.locals?.serviceName.toLowerCase().replace(/\s+/g, '-');
+          const serviceName = response.locals?.serviceName.toLowerCase().replace(/\s+/g, "-");
           nextPageUrlWithJourneyAndIds = this.addOrAppendQueryParam(
             nextPageUrlWithJourneyAndIds,
             JOURNEY_QUERY_PARAM,
@@ -168,9 +168,11 @@ class GlobalController extends AbstractController {
           );
         }
 
+        const userEmail = getLoggedInUserEmail(request.session);
+
         response.render(
           super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { limitedPartnership, ids }, null)
+          super.makeProps(pageRouting, { limitedPartnership, ids, userEmail }, null)
         );
       } catch (error) {
         next(error);
