@@ -5,11 +5,15 @@ import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 
 import { CONFIRMATION_URL } from "../../../controller/global/url";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { JOURNEY_TYPE_PARAM } from "../../../../config";
 import { Journey } from "../../../../domain/entities/journey";
+
+jest.mock("../../../../utils/session", () => ({
+  getLoggedInUserEmail: (_session) => "test@example.com"
+}));
 
 describe("Confirmation Page", () => {
   const REGISTRATION_URL = getUrl(CONFIRMATION_URL).replace(JOURNEY_TYPE_PARAM, Journey.registration);
@@ -25,100 +29,55 @@ describe("Confirmation Page", () => {
   });
 
   describe("GET /confirmation", () => {
-    describe("English", () => {
-      it("should load confirmation page - registration", async () => {
-        const res = await request(app).get(REGISTRATION_URL);
+    it.each([
+      [REGISTRATION_URL, "en"],
+      [REGISTRATION_URL, "cy"],
+      [TRANSITION_URL, "en"],
+      [TRANSITION_URL, "cy"]
+    ])("should load confirmation page - registration - %s", async (url: string, lang: string) => {
+      const translationText = lang === "en" ? enTranslationText : cyTranslationText;
 
-        expect(res.status).toBe(200);
+      const res = await request(app).get(`${url}?lang=${lang}`);
 
-        testTranslations(res.text, enTranslationText.confirmationPage, [
-          "provideMoreInformation",
-          "tellUsAboutPSCs",
-          "download",
-          "filing",
-          "processUpdate",
-          "willSendEmailTo",
-          "updatePublicRegister",
-          "postTransition"
-        ]);
+      expect(res.status).toBe(200);
 
-        expect(res.text).toContain(limitedPartnership.data?.email);
-        expect(res.text).toContain(enTranslationText.print.buttonText);
-        expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
-        expect(res.text).toContain(appDevDependencies.transactionGateway.transactionId);
-        expect(res.text).not.toContain(enTranslationText.confirmationPage.postTransition.title);
-      });
+      testTranslations(
+        res.text,
+        translationText.confirmationPage,
+        url === REGISTRATION_URL ? excludedKeysRegistartion : excludedKeysTransition
+      );
 
-      it("should load confirmation page - transition", async () => {
-        const res = await request(app).get(TRANSITION_URL);
-
-        expect(res.status).toBe(200);
-
-        testTranslations(res.text, enTranslationText.confirmationPage, [
-          "sentEmailTo",
-          "applicationProcess",
-          "willEmail",
-          "applicationAcceptedOrRejected",
-          "accepted",
-          "rejected",
-          "postTransition"
-        ]);
-
-        expect(res.text).toContain(limitedPartnership.data?.email);
-        expect(res.text).toContain(enTranslationText.print.buttonText);
-        expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
-        expect(res.text).toContain(appDevDependencies.transactionGateway.transactionId);
-        expect(res.text).not.toContain(enTranslationText.confirmationPage.postTransition.title);
+      if (url === TRANSITION_URL) {
         expect(res.text).toContain(limitedPartnership.data?.partnership_name?.toUpperCase());
-      });
-    });
-  });
+      }
 
-  describe("Welsh", () => {
-    it("should load confirmation page - registration", async () => {
-      const res = await request(app).get(REGISTRATION_URL + "?lang=cy");
-
-      expect(res.status).toBe(200);
-
-      testTranslations(res.text, cyTranslationText.confirmationPage, [
-        "provideMoreInformation",
-        "tellUsAboutPSCs",
-        "download",
-        "filing",
-        "processUpdate",
-        "willSendEmailTo",
-        "updatePublicRegister",
-        "postTransition"
-      ]);
-
-      expect(res.text).toContain(cyTranslationText.print.buttonText);
-      expect(res.text).toContain(cyTranslationText.print.buttonTextNoJs);
-      expect(res.text).toContain(limitedPartnership.data?.email);
-      expect(res.text).not.toContain(cyTranslationText.confirmationPage.postTransition.title);
-
-    });
-
-    it("should load confirmation page - transition", async () => {
-      const res = await request(app).get(TRANSITION_URL + "?lang=cy");
-
-      expect(res.status).toBe(200);
-
-      testTranslations(res.text, cyTranslationText.confirmationPage, [
-        "sentEmailTo",
-        "applicationProcess",
-        "willEmail",
-        "applicationAcceptedOrRejected",
-        "accepted",
-        "rejected",
-        "postTransition"
-      ]);
-
-      expect(res.text).toContain(limitedPartnership.data?.email);
-      expect(res.text).toContain(cyTranslationText.print.buttonText);
-      expect(res.text).toContain(cyTranslationText.print.buttonTextNoJs);
+      expect(countOccurrences(res.text, "test@example.com")).toBe(3);
       expect(res.text).toContain(appDevDependencies.transactionGateway.transactionId);
-      expect(res.text).not.toContain(cyTranslationText.confirmationPage.postTransition.title);
-      expect(res.text).toContain(limitedPartnership.data?.partnership_name?.toUpperCase());
+
+      expect(res.text).toContain(translationText.print.buttonText);
+      expect(res.text).toContain(translationText.print.buttonTextNoJs);
+      expect(res.text).not.toContain(translationText.confirmationPage.postTransition.title);
     });
   });
 });
+
+const excludedKeysRegistartion = [
+  "provideMoreInformation",
+  "tellUsAboutPSCs",
+  "download",
+  "filing",
+  "processUpdate",
+  "willSendEmailTo",
+  "updatePublicRegister",
+  "postTransition"
+];
+
+const excludedKeysTransition = [
+  "sentEmailTo",
+  "applicationProcess",
+  "willEmail",
+  "applicationAcceptedOrRejected",
+  "accepted",
+  "rejected",
+  "postTransition"
+];

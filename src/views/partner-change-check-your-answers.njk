@@ -21,6 +21,10 @@
   {% set warningText = i18n.checkYourAnswersPage.warningMessage.warning %}
 {% endif %}
 
+{% if props.pageType and props.pageType.includes("remove") %}
+  {% set warningText = "" %}
+{% endif %}
+
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
@@ -43,10 +47,12 @@
 
         <p class="govuk-body govuk-!-font-size-20 check-your-answers-javascript-disabled-text-style">{{ i18n.print.buttonTextNoJs }}</p>
         
-        {{ govukWarningText({
-          text: warningText,
-          iconFallbackText: "Warning"
-        }) }}
+        {% if warningText %}
+          {{ govukWarningText({
+            text: warningText,
+            iconFallbackText: "Warning"
+          }) }}
+        {% endif %}
 
         <div class="govuk-button-group">
           {{ govukButton({
