@@ -44,6 +44,7 @@ describe("Remove general partner check your answers page", () => {
       expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
       expect(res.text).not.toContain("WELSH -");
       expect(res.text).toContain(enTranslationText.serviceName.removeGeneralPartnerPerson);
+      expect(res.text).not.toContain(enTranslationText.buttons.submitUpdate);
     });
 
     it("should load remove general partner check your answers page with welsh text", async () => {
@@ -59,6 +60,7 @@ describe("Remove general partner check your answers page", () => {
       expect(res.text).toContain(cyTranslationText.print.buttonTextNoJs);
       expect(res.text).toContain("WELSH -");
       expect(res.text).toContain(cyTranslationText.serviceName.removeGeneralPartnerPerson);
+      expect(res.text).not.toContain(cyTranslationText.buttons.submitUpdate);
     });
   });
 });

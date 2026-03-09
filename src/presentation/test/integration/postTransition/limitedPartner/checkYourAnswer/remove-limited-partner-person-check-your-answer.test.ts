@@ -46,6 +46,7 @@ describe("Remove limited partner person check your answers page", () => {
       expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
       expect(res.text).not.toContain("WELSH -");
       expect(countOccurrences(res.text, enTranslationText.serviceName.removeLimitedPartnerPerson)).toBe(2);
+      expect(res.text).not.toContain(enTranslationText.buttons.submitUpdate);
     });
 
     it("should load remove limited partner personcheck your answers page with welsh text", async () => {
@@ -63,6 +64,7 @@ describe("Remove limited partner person check your answers page", () => {
       expect(res.text).toContain(cyTranslationText.print.buttonTextNoJs);
       expect(res.text).toContain("WELSH -");
       expect(countOccurrences(res.text, cyTranslationText.serviceName.removeLimitedPartnerPerson)).toBe(2);
+      expect(res.text).not.toContain(cyTranslationText.buttons.submitUpdate);
     });
   });
 });

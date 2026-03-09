@@ -89,6 +89,7 @@ describe("Update general partner check your answers page", () => {
       expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.update.notUpdated);
       expect(countOccurrences(res.text, toEscapedHtml(enTranslationText.serviceName.updateGeneralPartnerLegalEntity))).toBe(2);
       expect(res.text).not.toContain(toEscapedHtml(enTranslationText.checkYourAnswersPage.warningMessage.warning));
+      expect(res.text).toContain(enTranslationText.buttons.submitUpdate);
     });
 
     it("should load update general partner check your answers page with welsh text", async () => {
@@ -107,6 +108,7 @@ describe("Update general partner check your answers page", () => {
       expect(res.text).not.toContain(cyTranslationText.checkYourAnswersPage.update.notUpdated);
       expect(countOccurrences(res.text, toEscapedHtml(cyTranslationText.serviceName.updateGeneralPartnerLegalEntity))).toBe(2);
       expect(res.text).not.toContain(toEscapedHtml(cyTranslationText.checkYourAnswersPage.warningMessage.warning));
+      expect(res.text).toContain(cyTranslationText.buttons.submitUpdate);
     });
 
     it("should load update general partner check your answers page and display 'Not updated' for non-updated fields", async () => {

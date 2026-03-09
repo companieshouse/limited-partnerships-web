@@ -7,6 +7,7 @@
 {% endblock %}
 
 {% set pageTitle = i18n.checkYourAnswersPage.update.title %}
+{% set submitButtonText = i18n.buttons.submitUpdate %}
 
 {% set name = "" %}
 {% if props.data.partner.data.forename %}
@@ -23,6 +24,7 @@
 
 {% if props.pageType and props.pageType.includes("remove") %}
   {% set warningText = "" %}
+  {% set submitButtonText = i18n.buttons.submit %}
 {% endif %}
 
 {% block content %}
@@ -56,7 +58,7 @@
 
         <div class="govuk-button-group govuk-!-padding-top-5">
           {{ govukButton({
-            text: i18n.buttons.submitUpdate,
+            text: submitButtonText,
             attributes: {
               "id": "submit",
               "data-event-id": props.pageType + "-submit-button"
