@@ -92,6 +92,7 @@ describe("Update limited partner check your answers page", () => {
       expect(res.text).not.toContain("WELSH -");
       expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.update.notUpdated);
       expect(countOccurrences(res.text, toEscapedHtml(enTranslationText.serviceName.updateLimitedPartnerPerson))).toBe(2);
+      expect(res.text).toContain(toEscapedHtml(enTranslationText.checkYourAnswersPage.partners.person.limitedPartner.warningMessageUpdate));
     });
 
     it("should load update limited partner check your answers page with welsh text", async () => {
@@ -108,6 +109,7 @@ describe("Update limited partner check your answers page", () => {
       expect(res.text).toContain("WELSH -");
       expect(res.text).not.toContain(cyTranslationText.checkYourAnswersPage.update.notUpdated);
       expect(countOccurrences(res.text, toEscapedHtml(cyTranslationText.serviceName.updateLimitedPartnerPerson))).toBe(2);
+      expect(res.text).toContain(toEscapedHtml(cyTranslationText.checkYourAnswersPage.partners.person.limitedPartner.warningMessageUpdate));
     });
 
     it("should load update limited partner check your answers page and display 'Not updated' for non-updated fields", async () => {
