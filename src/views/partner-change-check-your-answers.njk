@@ -18,7 +18,7 @@
   {% endif %}
 {% elif props.data.partner.data.legal_entity_name %}
   {% set name = props.data.partner.data.legal_entity_name %}
-  {% set warningText = i18n.checkYourAnswersPage.warningMessage.warning %}
+  {% set warningText = "" %}
 {% endif %}
 
 {% if props.pageType and props.pageType.includes("remove") %}
@@ -54,7 +54,7 @@
           }) }}
         {% endif %}
 
-        <div class="govuk-button-group">
+        <div class="govuk-button-group govuk-!-padding-top-5">
           {{ govukButton({
             text: i18n.buttons.submitUpdate,
             attributes: {
