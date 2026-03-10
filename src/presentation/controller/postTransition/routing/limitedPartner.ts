@@ -141,7 +141,8 @@ const postTransitionRoutingUpdateLimitedPartnerPersonCheckYourAnswers = {
   data: {
     pageKey: UPDATE_PARTNER_KEY,
     dateChangeLink: DATE_CHANGE_LINK,
-    personChangeLink: PERSON_CHANGE_LINK
+    personChangeLink: PERSON_CHANGE_LINK,
+    uraChangeLink: PostTransitionPageType.updateLimitedPartnerUsualResidentialAddressYesNo
   }
 };
 
@@ -187,6 +188,8 @@ const postTransitionRoutingUpdateLimitedPartnerLegalEntityCheckYourAnswers = {
   data: {
     pageKey: UPDATE_PARTNER_KEY,
     dateChangeLink: PostTransitionPageType.whenDidLimitedPartnerLegalEntityDetailsChange,
+    legalEntityChangeLink: PostTransitionPageType.updateLimitedPartnerLegalEntity,
+    principalOfficeAddressChangeLink: PostTransitionPageType.updateLimitedPartnerPrincipalOfficeAddressYesNo
   }
 };
 

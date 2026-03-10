@@ -27,10 +27,10 @@
         actions: {
           items: [
             CREATE_CHANGE_LINK(
-            i18n.checkYourAnswersPage.change,
-            (props.currentUrl | replace(props.pageType, props.data.personChangeLink)),
-            term,
-            "change-name-button"
+              i18n.checkYourAnswersPage.change,
+              ((props.currentUrl + "#forename") | replace(props.pageType, props.data.personChangeLink)),
+              term,
+              "change-name-button"
             )
           ]
         }
@@ -45,10 +45,10 @@
         actions: {
           items: [
             CREATE_CHANGE_LINK(
-            i18n.checkYourAnswersPage.change,
-            (props.currentUrl | replace(props.pageType, props.data.personChangeLink)),
-            term,
-            "change-name-button"
+              i18n.checkYourAnswersPage.change,
+              ((props.currentUrl + "#nationality1") | replace(props.pageType, props.data.personChangeLink)),
+              term,
+              "change-nationality-button"
             )
           ]
         }
@@ -59,6 +59,16 @@
         },
         value: {
           text: macros.formatAddress(item.data.usual_residential_address, true, i18n) if item.data.update_usual_residential_address_required else notUpdated
+        },
+        actions: {
+          items: [
+            CREATE_CHANGE_LINK(
+              i18n.checkYourAnswersPage.change,
+              (props.currentUrl | replace(props.pageType, props.data.uraChangeLink)),
+              term,
+              "change-usual-residential-address-button"
+            )
+          ]
         }
       },
       {
@@ -67,6 +77,16 @@
         },
         value: {
           text: macros.formatAddress(item.data.service_address, true, i18n) if item.data.update_service_address_required else notUpdated
+        },
+        actions: {
+          items: [
+            CREATE_CHANGE_LINK(
+              i18n.checkYourAnswersPage.change,
+              (props.currentUrl | replace(props.pageType, props.data.correspondenceAddressChangeLink)),
+              term,
+              "change-correspondence-address-button"
+            )
+          ]
         }
       } if item.data.kind == "limited-partnership#update-general-partner-person",
       SET_DATE_OF_UPDATE_SECTION(props, i18n, props.data.dateChangeLink)
@@ -83,6 +103,16 @@
           },
           value: {
             text: item.data.legal_entity_name if updateFieldsMap.legal_entity_name else notUpdated
+          },
+          actions: {
+            items: [
+              CREATE_CHANGE_LINK(
+                i18n.checkYourAnswersPage.change,
+                ((props.currentUrl + "#legal_entity_name") | replace(props.pageType, props.data.legalEntityChangeLink)),
+                term,
+                "change-name-button"
+              )
+            ]
           }
         },
         {
@@ -91,6 +121,16 @@
           },
           value: {
             text: item.data.legal_form if updateFieldsMap.legal_form else notUpdated
+          },
+          actions: {
+            items: [
+              CREATE_CHANGE_LINK(
+                i18n.checkYourAnswersPage.change,
+                ((props.currentUrl + "#legal_form") | replace(props.pageType, props.data.legalEntityChangeLink)),
+                term,
+                "change-legal-form-button"
+              )
+            ]
           }
         },
         {
@@ -99,6 +139,16 @@
           },
           value: {
             text: item.data.governing_law if updateFieldsMap.governing_law else notUpdated
+          },
+          actions: {
+            items: [
+              CREATE_CHANGE_LINK(
+                i18n.checkYourAnswersPage.change,
+                ((props.currentUrl + "#governing_law") | replace(props.pageType, props.data.legalEntityChangeLink)),
+                term,
+                "change-governing-law-button"
+              )
+            ]
           }
         },
         {
@@ -107,6 +157,16 @@
           },
           value: {
             text: item.data.legal_entity_register_name if updateFieldsMap.legal_entity_register_name else notUpdated
+          },
+          actions: {
+            items: [
+              CREATE_CHANGE_LINK(
+                i18n.checkYourAnswersPage.change,
+                ((props.currentUrl + "#legal_entity_register_name") | replace(props.pageType, props.data.legalEntityChangeLink)),
+                term,
+                "change-legal-entity-register-name-button"
+              )
+            ]
           }
         },
         {
@@ -115,6 +175,16 @@
           },
           value: {
             text: country
+          },
+          actions: {
+            items: [
+              CREATE_CHANGE_LINK(
+                i18n.checkYourAnswersPage.change,
+                ((props.currentUrl + "#legal_entity_registration_location") | replace(props.pageType, props.data.legalEntityChangeLink)),
+                term,
+                "change-legal-entity-registration-location-button"
+              )
+            ]
           }
         },
         {
@@ -123,6 +193,16 @@
           },
           value: {
             text: item.data.registered_company_number if updateFieldsMap.registered_company_number else notUpdated
+          },
+          actions: {
+            items: [
+              CREATE_CHANGE_LINK(
+                i18n.checkYourAnswersPage.change,
+                ((props.currentUrl + "#registered_company_number") | replace(props.pageType, props.data.legalEntityChangeLink)),
+                term,
+                "change-registered-company-number-button"
+              )
+            ]
           }
         },
         {
@@ -131,6 +211,16 @@
           },
           value: {
             text: macros.formatAddress(item.data.principal_office_address, true, i18n) if item.data.update_principal_office_address_required else notUpdated
+          },
+          actions: {
+            items: [
+              CREATE_CHANGE_LINK(
+                i18n.checkYourAnswersPage.change,
+                (props.currentUrl | replace(props.pageType, props.data.principalOfficeAddressChangeLink)),
+                term,
+                "change-principal-office-address-button"
+              )
+            ]
           }
         },
         SET_DATE_OF_UPDATE_SECTION(props, i18n, props.data.dateChangeLink)

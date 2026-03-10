@@ -88,6 +88,8 @@ describe("Update limited partner legal entity check your answers page", () => {
       expect(res.text).not.toContain("WELSH -");
       expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.update.notUpdated);
       expect(countOccurrences(res.text, toEscapedHtml(enTranslationText.serviceName.updateLimitedPartnerLegalEntity))).toBe(2);
+      expect(res.text).not.toContain(toEscapedHtml(enTranslationText.checkYourAnswersPage.warningMessage.warning));
+      expect(res.text).toContain(enTranslationText.buttons.submitUpdate);
     });
 
     it("should load update limited partner check your answers page with welsh text", async () => {
@@ -105,6 +107,8 @@ describe("Update limited partner legal entity check your answers page", () => {
       expect(res.text).toContain("WELSH -");
       expect(res.text).not.toContain(cyTranslationText.checkYourAnswersPage.update.notUpdated);
       expect(countOccurrences(res.text, toEscapedHtml(cyTranslationText.serviceName.updateLimitedPartnerLegalEntity))).toBe(2);
+      expect(res.text).not.toContain(toEscapedHtml(cyTranslationText.checkYourAnswersPage.warningMessage.warning));
+      expect(res.text).toContain(cyTranslationText.buttons.submitUpdate);
     });
 
     it("should load update limited partner check your answers page and display 'Not updated' for non-updated fields", async () => {
