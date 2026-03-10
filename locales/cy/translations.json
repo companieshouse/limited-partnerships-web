@@ -2,12 +2,12 @@
     "addOrUpdatePartnerLegalEntityPage" : {
         "generalPartner": {
             "title" : "WELSH - Add a general partner (legal entity)",
-            "updateTitle" : "WELSH - Update general partner details (legal entity)",
+            "updateTitle" : "WELSH - Update a general partner's details (legal entity)",
             "dateEffectiveFrom" : "WELSH - When did it become a general partner for this partnership?"
         },
         "limitedPartner": {
             "title": "WELSH - Add a limited partner (legal entity)",
-            "updateTitle": "WELSH - Update limited partner details (legal entity)",
+            "updateTitle": "WELSH - Update a limited partner's details (legal entity)",
             "dateEffectiveFrom" : "WELSH - When did it become a limited partner for this partnership?"
         },
 
@@ -835,10 +835,10 @@
 
     "updatePartnerPersonPage" : {
         "generalPartner": {
-            "title" : "WELSH - Update general partner details (person)"
+            "title" : "WELSH - Update a general partner's details (person)"
         },
         "limitedPartner": {
-            "title" : "WELSH - Update limited partner details (person)"
+            "title" : "WELSH - Update a limited partner's details (person)"
         },
         "nationality" : "WELSH - What is their nationality?",
         "nationalitySelectPrompt": "WELSH - Select a nationality",

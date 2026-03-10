@@ -60,7 +60,7 @@ describe("Update Limited Partner Legal Entity Page", () => {
           `${companyProfile.data.companyName?.toUpperCase()} (${companyProfile.data.companyNumber?.toUpperCase()})`
         );
 
-        expect(res.text).toContain(translationText.addOrUpdatePartnerLegalEntityPage.limitedPartner.updateTitle);
+        expect(res.text).toContain(toEscapedHtml(translationText.addOrUpdatePartnerLegalEntityPage.limitedPartner.updateTitle));
 
         testTranslations(res.text, translationText.addOrUpdatePartnerLegalEntityPage, [
           "title",
@@ -75,7 +75,7 @@ describe("Update Limited Partner Legal Entity Page", () => {
 
         expect(
           countOccurrences(res.text, toEscapedHtml(translationText.serviceName.updateLimitedPartnerLegalEntity))
-        ).toBe(2);
+        ).toBe(4);
 
         if (lang === "cy") {
           expect(res.text).toContain("WELSH - ");

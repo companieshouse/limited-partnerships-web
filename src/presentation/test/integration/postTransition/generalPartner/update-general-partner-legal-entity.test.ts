@@ -65,7 +65,7 @@ describe("Update General Partner Legal Entity Page", () => {
         "dateYear"
       ]);
 
-      expect(countOccurrences(res.text, toEscapedHtml(translationText.serviceName.updateGeneralPartnerLegalEntity))).toBe(2);
+      expect(countOccurrences(res.text, toEscapedHtml(translationText.serviceName.updateGeneralPartnerLegalEntity))).toBe(4);
 
       if (lang === "cy") {
         expect(res.text).toContain("WELSH - ");

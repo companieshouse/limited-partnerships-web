@@ -2,12 +2,12 @@
     "addOrUpdatePartnerLegalEntityPage" : {
         "generalPartner": {
             "title" : "Add a general partner (legal entity)",
-            "updateTitle" : "Update general partner details (legal entity)",
+            "updateTitle" : "Update a general partner's details (legal entity)",
             "dateEffectiveFrom" : "When did it become a general partner for this partnership?"
         },
         "limitedPartner": {
             "title": "Add a limited partner (legal entity)",
-            "updateTitle": "Update limited partner details (legal entity)",
+            "updateTitle": "Update a limited partner's details (legal entity)",
             "dateEffectiveFrom" : "When did it become a limited partner for this partnership?"
         },
 
@@ -836,10 +836,10 @@
 
     "updatePartnerPersonPage" : {
         "generalPartner": {
-            "title" : "Update general partner details (person)"
+            "title" : "Update a general partner's details (person)"
         },
         "limitedPartner": {
-            "title" : "Update limited partner details (person)"
+            "title" : "Update a limited partner's details (person)"
         },
         "nationality" : "What is their nationality?",
         "nationalitySelectPrompt": "Select a nationality",
