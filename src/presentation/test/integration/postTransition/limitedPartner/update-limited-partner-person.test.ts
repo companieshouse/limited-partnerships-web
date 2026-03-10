@@ -55,7 +55,7 @@ describe("Update Limited Partner Person Page", () => {
       );
 
       testTranslations(res.text, translationText.updatePartnerPersonPage, ["generalPartner"]);
-      expect(countOccurrences(res.text, toEscapedHtml(translationText.serviceName.updateLimitedPartnerPerson))).toBe(2);
+      expect(countOccurrences(res.text, toEscapedHtml(translationText.serviceName.updateLimitedPartnerPerson))).toBe(4);
 
       if (lang === "cy") {
         expect(res.text).toContain("WELSH - ");
