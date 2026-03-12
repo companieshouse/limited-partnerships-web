@@ -1,11 +1,13 @@
 import { LocalesService } from "@companieshouse/ch-node-utils";
-import { LimitedPartner, GeneralPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
+import { LimitedPartner, GeneralPartner, PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 import * as config from "../../config/constants";
 import { appDevDependencies } from "../../config/dev-dependencies";
 import GeneralPartnerBuilder from "./builder/GeneralPartnerBuilder";
 import LimitedPartnerBuilder from "./builder/LimitedPartnerBuilder";
 import request from "supertest";
+import TransactionBuilder from "./builder/TransactionBuilder";
+import { isGeneralPartnerKind, isPersonKind } from "../../utils/kind";
 
 export const setLocalesEnabled = (bool: boolean) => {
   jest.spyOn(config, "isLocalesEnabled").mockReturnValue(bool);
@@ -77,6 +79,41 @@ export const setupPartners = (isLimitedPartner: boolean, isPerson: boolean) => {
       : new GeneralPartnerBuilder().isLegalEntity().build();
     appDevDependencies.generalPartnerGateway.feedGeneralPartners([partner]);
     return { limitedPartner: undefined, generalPartner: partner };
+  }
+};
+
+export const feedTransactionAndPartner = (partnerKind: PartnerKind) => {
+  const transaction = new TransactionBuilder().withKind(partnerKind).build();
+  appDevDependencies.transactionGateway.feedTransactions([transaction]);
+
+  if (isGeneralPartnerKind(partnerKind)) {
+    const generalPartner = isPersonKind(partnerKind)
+      ? new GeneralPartnerBuilder()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .isPerson()
+        .withKind(partnerKind)
+        .build()
+      : new GeneralPartnerBuilder()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .isLegalEntity()
+        .withKind(partnerKind)
+        .build();
+
+    appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+  } else {
+    const limitedPartner = isPersonKind(partnerKind)
+      ? new LimitedPartnerBuilder()
+        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+        .isPerson()
+        .withKind(partnerKind)
+        .build()
+      : new LimitedPartnerBuilder()
+        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+        .isLegalEntity()
+        .withKind(partnerKind)
+        .build();
+
+    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
   }
 };
 
