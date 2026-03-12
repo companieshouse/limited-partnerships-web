@@ -50,21 +50,22 @@ describe("General partner legal entity change date page", () => {
       ["Welsh", "cy"]
     ])("should load general partner legal entity change date page with %s text", async (_description: string, lang: string) => {
       setLocalesEnabled(true);
+      const translationText = lang === "en" ? enTranslationText : cyTranslationText;
+
       const res = await request(app).get(`${URL}?lang=${lang}`);
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(BACK_LINK_URL);
       expect(res.text).toContain(`${generalPartner.data?.legal_entity_name?.toUpperCase()}`);
 
-      if (lang === "cy") {
-        expect(res.text).toContain("WELSH - ");
-        expect(res.text).toContain(`${cyTranslationText.dateOfUpdate.generalPartner.title}`);
-        expect(countOccurrences(res.text, toEscapedHtml(cyTranslationText.serviceName.updateGeneralPartnerLegalEntity))).toBe(2);
-      } else {
+      expect(res.text).toContain(`${translationText.dateOfUpdate.generalPartner.title}`);
+      if (lang === "en") {
         expect(res.text).not.toContain("WELSH -");
-        expect(res.text).toContain(`${enTranslationText.dateOfUpdate.generalPartner.title}`);
-        expect(countOccurrences(res.text, toEscapedHtml(enTranslationText.serviceName.updateGeneralPartnerLegalEntity))).toBe(2);
+      } else {
+        expect(res.text).toContain("WELSH -");
       }
+
+      expect(countOccurrences(res.text, toEscapedHtml(translationText.serviceName.updateGeneralPartnerLegalEntity))).toBe(2);
     });
 
     it("should populate the date fields with the existing date of update if it exists", async () => {

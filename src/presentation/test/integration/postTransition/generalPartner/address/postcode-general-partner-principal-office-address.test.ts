@@ -6,11 +6,12 @@ import cyTranslationText from "../../../../../../../locales/cy/translations.json
 
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, toEscapedHtml, testTranslations, countOccurrences } from "../../../../utils";
+import { getUrl, setLocalesEnabled, toEscapedHtml, testTranslations, countOccurrences, feedTransactionAndPartner } from "../../../../utils";
 
 import {
   POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
-  CHOOSE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
+  CHOOSE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
 } from "presentation/controller/addressLookUp/url/postTransition";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
@@ -35,25 +36,25 @@ describe("Postcode general partner's principal office address page", () => {
   });
 
   describe("Get postcode general partner's principal office address page", () => {
-    it("should load the principal office address page with English text", async () => {
+    it.each(
+      [
+        ["en"],
+        ["cy"]
+      ]
+    )("should load the principal office address page with %s text", async (lang: string) => {
       setLocalesEnabled(true);
+      const translationText = lang === "en" ? enTranslationText : cyTranslationText;
+      feedTransactionAndPartner(PartnerKind.ADD_GENERAL_PARTNER_LEGAL_ENTITY);
 
-      const generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isLegalEntity()
-        .build();
-
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
-
-      const res = await request(app).get(URL + "?lang=en");
+      const res = await request(app).get(URL + `?lang=${lang}`);
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
         toEscapedHtml(
-          enTranslationText.address.findPostcode.generalPartner.principalOfficeAddress.whatIsPrincipalOfficeAddress
-        ) + ` - ${enTranslationText.serviceName.addGeneralPartner} - GOV.UK`
+          translationText.address.findPostcode.generalPartner.principalOfficeAddress.whatIsPrincipalOfficeAddress
+        ) + ` - ${toEscapedHtml(translationText.serviceName.addGeneralPartner)} - GOV.UK`
       );
-      testTranslations(res.text, enTranslationText.address.findPostcode, [
+      testTranslations(res.text, translationText.address.findPostcode, [
         "registeredOfficeAddress",
         "principalPlaceOfBusiness",
         "usualResidentialAddress",
@@ -61,50 +62,19 @@ describe("Postcode general partner's principal office address page", () => {
         "errorMessages",
         "limitedPartner"
       ]);
-      expect(res.text).not.toContain("WELSH -");
-      expect(res.text).not.toContain(generalPartnerPerson.forename.toUpperCase());
-      expect(res.text).not.toContain(generalPartnerPerson.surname.toUpperCase());
+      if (lang === "en") {
+        expect(res.text).not.toContain("WELSH -");
+      } else {
+        expect(res.text).toContain("WELSH -");
+      }
       expect(res.text).toContain(generalPartnerLegalEntity.legal_entity_name?.toUpperCase());
-      expect(countOccurrences(res.text, enTranslationText.serviceName.addGeneralPartner)).toBe(2);
-    });
-
-    it("should load the principal office address page with Welsh text", async () => {
-      setLocalesEnabled(true);
-
-      const generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isLegalEntity()
-        .build();
-
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
-
-      const res = await request(app).get(URL + "?lang=cy");
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(
-        toEscapedHtml(
-          cyTranslationText.address.findPostcode.generalPartner.principalOfficeAddress.whatIsPrincipalOfficeAddress
-        ) + ` - ${cyTranslationText.serviceName.addGeneralPartner} - GOV.UK`
-      );
-      testTranslations(res.text, cyTranslationText.address.findPostcode, [
-        "registeredOfficeAddress",
-        "principalPlaceOfBusiness",
-        "usualResidentialAddress",
-        "correspondenceAddress",
-        "errorMessages",
-        "limitedPartner"
-      ]);
-      expect(res.text).toContain("WELSH -");
-      expect(res.text).not.toContain(generalPartnerPerson.forename.toUpperCase());
-      expect(res.text).not.toContain(generalPartnerPerson.forename.toUpperCase());
-      expect(res.text).toContain(generalPartnerLegalEntity.legal_entity_name?.toUpperCase());
-      expect(countOccurrences(res.text, cyTranslationText.serviceName.addGeneralPartner)).toBe(2);
+      expect(res.text).not.toContain(generalPartnerPerson.forename?.toUpperCase());
+      expect(res.text).not.toContain(generalPartnerPerson.surname?.toUpperCase());
+      expect(countOccurrences(res.text, toEscapedHtml(translationText.serviceName.addGeneralPartner))).toBe(2);
     });
   });
 
   describe("Post postcode general partner's principal office address page", () => {
-    // LP-640 Test ACs 1-3 redirect to choose and confirm once those pages are added.
-
     it("should validate the post code then redirect to the next page", async () => {
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.postcodeGeneralPartnerPrincipalOfficeAddress,
@@ -125,6 +95,34 @@ describe("Postcode general partner's principal office address page", () => {
               locality: "",
               country: "",
               premises: ""
+            }
+          }
+        }
+      });
+    });
+
+    it("should validate the post code and find a matching address then redirect to the next page", async () => {
+      const res = await request(app).post(URL).send({
+        pageType: AddressPageType.postcodeGeneralPartnerPrincipalOfficeAddress,
+        premises: appDevDependencies.addressLookUpGateway.englandAddresses[0].premise,
+        postal_code: appDevDependencies.addressLookUpGateway.englandAddresses[0].postcode
+      });
+
+      const REDIRECT_URL = getUrl(CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
+
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+
+      expect(appDevDependencies.cacheRepository.cache).toEqual({
+        [APPLICATION_CACHE_KEY]: {
+          [appDevDependencies.transactionGateway.transactionId]: {
+            ["principal_office_address"]: {
+              postal_code: "ST6 3LJ",
+              premises: "2",
+              address_line_1: "DUNCALF STREET",
+              address_line_2: "",
+              locality: "STOKE-ON-TRENT",
+              country: "England"
             }
           }
         }
