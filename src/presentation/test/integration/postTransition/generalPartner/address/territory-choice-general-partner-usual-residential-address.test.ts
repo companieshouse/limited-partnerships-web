@@ -3,18 +3,17 @@ import enTranslationText from "../../../../../../../locales/en/translations.json
 import cyTranslationText from "../../../../../../../locales/cy/translations.json";
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
-import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
+import { countOccurrences, feedTransactionAndPartner, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
 import {
   ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "../../../../../controller/addressLookUp/url/postTransition";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
-import GeneralPartnerBuilder, { generalPartnerPerson } from "../../../../builder/GeneralPartnerBuilder";
+import GeneralPartnerBuilder, { generalPartnerLegalEntity, generalPartnerPerson } from "../../../../builder/GeneralPartnerBuilder";
 import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { ADD_GENERAL_PARTNER_PERSON_WITH_IDS_URL, UPDATE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL } from "../../../../../../presentation/controller/postTransition/url";
-import TransactionBuilder from "../../../../builder/TransactionBuilder";
 
 describe("General Partner Usual Residential Address Territory Choice", () => {
   const URL = getUrl(TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
@@ -22,73 +21,45 @@ describe("General Partner Usual Residential Address Territory Choice", () => {
   beforeEach(() => {
     setLocalesEnabled(false);
     appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
+    appDevDependencies.transactionGateway.feedTransactions([]);
   });
 
   describe("GET /general-partner-usual-residential-address-choose-territory", () => {
-
     it.each(
       [
-        [PartnerKind.ADD_GENERAL_PARTNER_PERSON, cyTranslationText.serviceName.addGeneralPartner],
-        [PartnerKind.UPDATE_GENERAL_PARTNER_PERSON, cyTranslationText.serviceName.updateGeneralPartnerPerson]
+        ["add", "en"],
+        ["add", "cy"],
+        ["update", "en"],
+        ["update", "cy"]
       ]
-    )("should load the general partner usual residential address territory choice page with Welsh text", async (partnerKind, serviceName) => {
+    )("should load the %s general partner usual residential address territory choice page with %s text", async (journey: string, lang: string) => {
       setLocalesEnabled(true);
+      const translationText = lang === "en" ? enTranslationText : cyTranslationText;
+      const expectedServiceName = journey === "add" ? translationText.serviceName.addGeneralPartner : translationText.serviceName.updateGeneralPartnerPerson;
+      const partnerKind = journey === "add" ? PartnerKind.ADD_GENERAL_PARTNER_PERSON : PartnerKind.UPDATE_GENERAL_PARTNER_PERSON;
 
-      const transaction = new TransactionBuilder().withKind(partnerKind).build();
-      appDevDependencies.transactionGateway.feedTransactions([transaction]);
+      feedTransactionAndPartner(partnerKind);
 
-      const res = await request(app).get(URL + "?lang=cy");
+      const res = await request(app).get(URL + `?lang=${lang}`);
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
         toEscapedHtml(
-          `${cyTranslationText.address.territoryChoice.generalPartnerUsualResidentialAddress.title} - ${serviceName} - GOV.UK`
+          `${translationText.address.territoryChoice.generalPartnerUsualResidentialAddress.title} - ${expectedServiceName} - GOV.UK`
         )
       );
 
-      testTranslations(res.text, cyTranslationText.address.territoryChoice.generalPartnerUsualResidentialAddress);
-      testTranslations(res.text, cyTranslationText.address.territories);
-      expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
-    });
-
-    it.each(
-      [
-        [PartnerKind.ADD_GENERAL_PARTNER_PERSON, enTranslationText.serviceName.addGeneralPartner],
-        [PartnerKind.UPDATE_GENERAL_PARTNER_PERSON, enTranslationText.serviceName.updateGeneralPartnerPerson]
-      ]
-    )("should load the general partner usual residential address territory choice page with English text", async (partnerKind, serviceName) => {
-      setLocalesEnabled(true);
-
-      const transaction = new TransactionBuilder().withKind(partnerKind).build();
-      appDevDependencies.transactionGateway.feedTransactions([transaction]);
-
-      const res = await request(app).get(URL + "?lang=en");
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(
-        toEscapedHtml(
-          `${enTranslationText.address.territoryChoice.generalPartnerUsualResidentialAddress.title} - ${serviceName} - GOV.UK`
-        )
-      );
-
-      testTranslations(res.text, enTranslationText.address.territories);
-      expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
-    });
-
-    it("should contain the general partner name - data from API", async () => {
-      const generalPartner = new GeneralPartnerBuilder()
-        .isPerson()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .build();
-
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
-
-      const res = await request(app).get(URL);
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(
-        `${generalPartnerPerson.forename.toUpperCase()} ${generalPartnerPerson.surname.toUpperCase()}`
-      );
+      testTranslations(res.text, translationText.address.territoryChoice.generalPartnerUsualResidentialAddress);
+      testTranslations(res.text, translationText.address.territories);
+      if (lang === "en") {
+        expect(res.text).not.toContain("WELSH -");
+      } else {
+        expect(res.text).toContain("WELSH -");
+      }
+      expect(res.text).toContain(generalPartnerPerson.forename?.toUpperCase());
+      expect(res.text).toContain(generalPartnerPerson.surname?.toUpperCase());
+      expect(res.text).not.toContain(generalPartnerLegalEntity.legal_entity_name?.toUpperCase());
+      expect(countOccurrences(res.text, toEscapedHtml(expectedServiceName))).toBe(2);
     });
 
     it.each([

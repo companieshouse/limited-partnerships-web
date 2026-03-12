@@ -9,9 +9,7 @@ export const setCountriesDropdown = (i18n: Record<string, any>, countryField: st
   for (const country in i18n.countries) {
     if (country === "selectOne") {
       countries.push({ value: "", text: i18n.countries[country], selected: countryField === "" });
-      continue;
-    }
-    if (ukCountriesKeys.includes(country)) {
+    } else if (ukCountriesKeys.includes(country)) {
       ukCountries.push({ value: enTranslation.countries[country], text: i18n.countries[country], selected: countryField?.toLowerCase() === enTranslation.countries[country]?.toLowerCase() });
     } else {
       countries.push({ value: enTranslation.countries[country], text: i18n.countries[country], selected: countryField?.toLowerCase() === enTranslation.countries[country]?.toLowerCase() });

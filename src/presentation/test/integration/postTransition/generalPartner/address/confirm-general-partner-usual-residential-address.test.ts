@@ -7,7 +7,7 @@ import cyTranslationText from "../../../../../../../locales/cy/translations.json
 import enErrorMessages from "../../../../../../../locales/en/errors.json";
 import cyErrorMessages from "../../../../../../../locales/cy/errors.json";
 
-import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
+import { countOccurrences, feedTransactionAndPartner, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
 import {
   CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
@@ -19,14 +19,14 @@ import { UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL } from "../../
 
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
-import GeneralPartnerBuilder from "../../../../builder/GeneralPartnerBuilder";
+import GeneralPartnerBuilder, { generalPartnerPerson } from "../../../../builder/GeneralPartnerBuilder";
 import TransactionBuilder from "../../../../builder/TransactionBuilder";
 
 describe("Confirm General Partner Usual Residential Address Page", () => {
   const URL = getUrl(CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
 
   beforeEach(() => {
-    setLocalesEnabled(false);
+    setLocalesEnabled(true);
     appDevDependencies.cacheRepository.feedCache({
       [appDevDependencies.transactionGateway.transactionId]: {
         ["usual_residential_address"]: {
@@ -41,72 +41,53 @@ describe("Confirm General Partner Usual Residential Address Page", () => {
       }
     });
 
-    const generalPartner = new GeneralPartnerBuilder()
-      .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-      .isPerson()
-      .build();
-
-    appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+    appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
+    appDevDependencies.transactionGateway.feedTransactions([]);
     appDevDependencies.generalPartnerGateway.feedErrors();
   });
 
   describe("GET Confirm Usual Residential Address Page", () => {
+    it.each([
+      ["add", "en"],
+      ["add", "cy"],
+      ["update", "en"],
+      ["update", "cy"]
+    ])("should load the confirm usual residential address page with English text", async (journey: string, lang: string) => {
+      const translationText = lang === "en" ? enTranslationText : cyTranslationText;
+      const partnerKind = journey === "add" ? PartnerKind.ADD_GENERAL_PARTNER_PERSON : PartnerKind.UPDATE_GENERAL_PARTNER_PERSON;
+      feedTransactionAndPartner(partnerKind);
 
-    it.each(
-      [
-        [PartnerKind.ADD_GENERAL_PARTNER_PERSON, enTranslationText.serviceName.addGeneralPartner],
-        [PartnerKind.UPDATE_GENERAL_PARTNER_PERSON, enTranslationText.serviceName.updateGeneralPartnerPerson]
-      ]
-    )("should load the confirm usual residential address page with English text", async (partnerKind, serviceName) => {
-      setLocalesEnabled(true);
-
-      const transaction = new TransactionBuilder().withKind(partnerKind).build();
-      appDevDependencies.transactionGateway.feedTransactions([transaction]);
-
-      const res = await request(app).get(URL + "?lang=en");
+      const res = await request(app).get(URL + `?lang=${lang}`);
 
       expect(res.status).toBe(200);
-      testTranslations(res.text, enTranslationText.address.confirm.usualResidentialAddress);
-      expect(res.text).not.toContain("WELSH -");
+      testTranslations(res.text, translationText.address.confirm.usualResidentialAddress);
+      if (lang === "en") {
+        expect(res.text).not.toContain("WELSH -");
+      } else {
+        expect(res.text).toContain("WELSH -");
+      }
 
       expect(res.text).toContain("4 Line 1");
       expect(res.text).toContain("Line 2");
       expect(res.text).toContain("Stoke-On-Trent");
       expect(res.text).toContain("Region");
-      expect(res.text).toContain(enTranslationText.countries.england);
+      expect(res.text).toContain(lang === "en" ? enTranslationText.countries.england : cyTranslationText.countries.england);
       expect(res.text).toContain("ST6 3LJ");
-      expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
-    });
+      expect(res.text).toContain(generalPartnerPerson.forename?.toUpperCase() + " " + generalPartnerPerson.surname?.toUpperCase());
 
-    it.each(
-      [
-        [PartnerKind.ADD_GENERAL_PARTNER_PERSON, cyTranslationText.serviceName.addGeneralPartner],
-        [PartnerKind.UPDATE_GENERAL_PARTNER_PERSON, cyTranslationText.serviceName.updateGeneralPartnerPerson]
-      ]
-    )("should load the confirm usual residential address page with Welsh text", async (partnerKind, serviceName) => {
-      setLocalesEnabled(true);
-
-      const transaction = new TransactionBuilder().withKind(partnerKind).build();
-      appDevDependencies.transactionGateway.feedTransactions([transaction]);
-
-      const res = await request(app).get(URL + "?lang=cy");
-
-      expect(res.status).toBe(200);
-      testTranslations(res.text, cyTranslationText.address.confirm.usualResidentialAddress);
-
-      expect(res.text).toContain("4 Line 1");
-      expect(res.text).toContain("Line 2");
-      expect(res.text).toContain("Stoke-On-Trent");
-      expect(res.text).toContain("Region");
-      expect(res.text).toContain(cyTranslationText.countries.england);
-      expect(res.text).toContain("ST6 3LJ");
-      expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
+      const expectedServiceName = journey === "add" ? translationText.serviceName.addGeneralPartner : translationText.serviceName.updateGeneralPartnerPerson;
+      expect(countOccurrences(res.text, toEscapedHtml(expectedServiceName))).toBe(2);
     });
 
     it.each([
-      ["overseas", getUrl(ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL)],
-      ["unitedKingdom", getUrl(POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL)]
-    ])("should have the correct back link", async (territory, backLink) => {
+      ["add", "overseas", getUrl(ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL)],
+      ["add", "unitedKingdom", getUrl(POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL)],
+      ["update", "overseas", getUrl(ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL)],
+      ["update", "unitedKingdom", getUrl(POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL)]
+    ])("should have the correct back link", async (journey: string, territory: string, backLink: string) => {
+      const partnerKind = journey === "add" ? PartnerKind.ADD_GENERAL_PARTNER_PERSON : PartnerKind.UPDATE_GENERAL_PARTNER_PERSON;
+      feedTransactionAndPartner(partnerKind);
+
       appDevDependencies.cacheRepository.feedCache({
         [appDevDependencies.transactionGateway.transactionId]: {
           ura_territory_choice: territory
@@ -120,13 +101,12 @@ describe("Confirm General Partner Usual Residential Address Page", () => {
   });
 
   describe("POST Confirm Usual Residential Address Page", () => {
-    it("should redirect to the next page", async () => {
-      const generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isPerson()
-        .build();
-
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+    it.each([
+      ["add"],
+      ["update"]
+    ])("should redirect to the next page", async (journey: string) => {
+      const partnerKind = journey === "add" ? PartnerKind.ADD_GENERAL_PARTNER_PERSON : PartnerKind.UPDATE_GENERAL_PARTNER_PERSON;
+      feedTransactionAndPartner(partnerKind);
 
       const res = await request(app)
         .post(URL)
@@ -142,10 +122,12 @@ describe("Confirm General Partner Usual Residential Address Page", () => {
           }`
         });
 
-      const redirectUrl = getUrl(TERRITORY_CHOICE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL);
+      const REDIRECT_URL = journey === "add" ?
+        getUrl(TERRITORY_CHOICE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL) :
+        getUrl(UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL);
 
       expect(res.status).toBe(302);
-      expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
     });
 
     it("should show error message if address is not provided", async () => {
@@ -182,6 +164,9 @@ describe("Confirm General Partner Usual Residential Address Page", () => {
 
       appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
 
+      const transaction = new TransactionBuilder().withKind(PartnerKind.ADD_GENERAL_PARTNER_PERSON).build();
+      appDevDependencies.transactionGateway.feedTransactions([transaction]);
+
       const res = await request(app)
         .post(URL)
         .send({
@@ -197,35 +182,6 @@ describe("Confirm General Partner Usual Residential Address Page", () => {
         });
 
       const redirectUrl = getUrl(CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL);
-
-      expect(res.status).toBe(302);
-      expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
-    });
-
-    it(`should redirect to the ${UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL} url if kind is ${PartnerKind.UPDATE_GENERAL_PARTNER_PERSON}`, async () => {
-      const generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isPerson()
-        .withKind(PartnerKind.UPDATE_GENERAL_PARTNER_PERSON)
-        .build();
-
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
-
-      const res = await request(app)
-        .post(URL)
-        .send({
-          pageType: AddressPageType.confirmGeneralPartnerUsualResidentialAddress,
-          address: `{
-            "postal_code": "ST6 3LJ",
-            "premises": "4",
-            "address_line_1": "DUNCALF STREET",
-            "address_line_2": "",
-            "locality": "STOKE-ON-TRENT",
-            "country": "England"
-          }`
-        });
-
-      const redirectUrl = getUrl(UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL);
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);

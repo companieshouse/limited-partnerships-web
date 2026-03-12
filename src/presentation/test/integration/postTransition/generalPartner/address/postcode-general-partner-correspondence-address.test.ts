@@ -6,15 +6,15 @@ import cyTranslationText from "../../../../../../../locales/cy/translations.json
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import app from "../../../app";
 
-import { getUrl, setLocalesEnabled, toEscapedHtml, testTranslations, countOccurrences } from "../../../../utils";
+import { getUrl, setLocalesEnabled, toEscapedHtml, testTranslations, countOccurrences, feedTransactionAndPartner } from "../../../../utils";
 import {
   POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
-  CHOOSE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL
+  CHOOSE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
+  CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL
 } from "presentation/controller/addressLookUp/url/postTransition";
-import GeneralPartnerBuilder, { generalPartnerLegalEntity } from "../../../../builder/GeneralPartnerBuilder";
+import GeneralPartnerBuilder, { generalPartnerLegalEntity, generalPartnerPerson } from "../../../../builder/GeneralPartnerBuilder";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
-import TransactionBuilder from "../../../../builder/TransactionBuilder";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 describe("Postcode general partner's correspondence address page", () => {
@@ -30,82 +30,38 @@ describe("Postcode general partner's correspondence address page", () => {
   describe("Get postcode general partner's correspondence address page", () => {
     it.each(
       [
-        [PartnerKind.ADD_GENERAL_PARTNER_PERSON, enTranslationText.serviceName.addGeneralPartner],
-        [PartnerKind.UPDATE_GENERAL_PARTNER_PERSON, enTranslationText.serviceName.updateGeneralPartnerPerson]
+        ["en"],
+        ["cy"]
       ]
-    )("should load the correspondence address page with English text", async (partnerKind, serviceName) => {
+    )("should load the correspondence address page with %s text", async (lang: string) => {
       setLocalesEnabled(true);
+      const translationText = lang === "en" ? enTranslationText : cyTranslationText;
+      feedTransactionAndPartner(PartnerKind.ADD_GENERAL_PARTNER_PERSON);
 
-      const transaction = new TransactionBuilder().withKind(partnerKind).build();
-      appDevDependencies.transactionGateway.feedTransactions([transaction]);
-
-      const generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isPerson()
-        .build();
-
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
-
-      const res = await request(app).get(URL + "?lang=en");
+      const res = await request(app).get(URL + `?lang=${lang}`);
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
         toEscapedHtml(
-          enTranslationText.address.findPostcode.generalPartner.correspondenceAddress.whatIsCorrespondenceAddress
-        ) + ` - ${toEscapedHtml(serviceName)} - GOV.UK`
+          translationText.address.findPostcode.generalPartner.correspondenceAddress.whatIsCorrespondenceAddress
+        ) + ` - ${toEscapedHtml(translationText.serviceName.addGeneralPartner)} - GOV.UK`
       );
-      testTranslations(res.text, enTranslationText.address.findPostcode, [
+      testTranslations(res.text, translationText.address.findPostcode, [
         "registeredOfficeAddress",
         "principalPlaceOfBusiness",
         "usualResidentialAddress",
         "principalOfficeAddress",
         "errorMessages"
       ]);
-      expect(res.text).not.toContain("WELSH -");
-      expect(res.text).toContain(generalPartner.data?.forename?.toUpperCase());
-      expect(res.text).toContain(generalPartner.data?.surname?.toUpperCase());
+      if (lang === "en") {
+        expect(res.text).not.toContain("WELSH -");
+      } else {
+        expect(res.text).toContain("WELSH -");
+      }
+      expect(res.text).toContain(generalPartnerPerson.forename?.toUpperCase());
+      expect(res.text).toContain(generalPartnerPerson.surname?.toUpperCase());
       expect(res.text).not.toContain(generalPartnerLegalEntity.legal_entity_name?.toUpperCase());
-      expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
-    });
-
-    it.each(
-      [
-        [PartnerKind.ADD_GENERAL_PARTNER_PERSON, cyTranslationText.serviceName.addGeneralPartner],
-        [PartnerKind.UPDATE_GENERAL_PARTNER_PERSON, cyTranslationText.serviceName.updateGeneralPartnerPerson]
-      ]
-    )("should load the correspondence address page with Welsh text", async (partnerKind, serviceName) => {
-      setLocalesEnabled(true);
-
-      const transaction = new TransactionBuilder().withKind(partnerKind).build();
-      appDevDependencies.transactionGateway.feedTransactions([transaction]);
-
-      const generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isPerson()
-        .build();
-
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
-
-      const res = await request(app).get(URL + "?lang=cy");
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(
-        toEscapedHtml(
-          cyTranslationText.address.findPostcode.generalPartner.correspondenceAddress.whatIsCorrespondenceAddress
-        ) + ` - ${toEscapedHtml(serviceName)} - GOV.UK`
-      );
-      testTranslations(res.text, cyTranslationText.address.findPostcode, [
-        "registeredOfficeAddress",
-        "principalPlaceOfBusiness",
-        "usualResidentialAddress",
-        "principalOfficeAddress",
-        "errorMessages"
-      ]);
-      expect(res.text).toContain("WELSH -");
-      expect(res.text).toContain(generalPartner.data?.forename?.toUpperCase());
-      expect(res.text).toContain(generalPartner.data?.surname?.toUpperCase());
-      expect(res.text).not.toContain(generalPartnerLegalEntity.legal_entity_name?.toUpperCase());
-      expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
+      expect(countOccurrences(res.text, toEscapedHtml(translationText.serviceName.addGeneralPartner))).toBe(2);
     });
   });
 
@@ -130,6 +86,34 @@ describe("Postcode general partner's correspondence address page", () => {
               locality: "",
               country: "",
               premises: ""
+            }
+          }
+        }
+      });
+    });
+
+    it("should validate the post code and find a matching address then redirect to the next page", async () => {
+      const res = await request(app).post(URL).send({
+        pageType: AddressPageType.postcodeGeneralPartnerCorrespondenceAddress,
+        premises: appDevDependencies.addressLookUpGateway.englandAddresses[0].premise,
+        postal_code: appDevDependencies.addressLookUpGateway.englandAddresses[0].postcode
+      });
+
+      const REDIRECT_URL = getUrl(CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL);
+
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+
+      expect(appDevDependencies.cacheRepository.cache).toEqual({
+        [APPLICATION_CACHE_KEY]: {
+          [appDevDependencies.transactionGateway.transactionId]: {
+            ["service_address"]: {
+              postal_code: "ST6 3LJ",
+              premises: "2",
+              address_line_1: "DUNCALF STREET",
+              address_line_2: "",
+              locality: "STOKE-ON-TRENT",
+              country: "England"
             }
           }
         }

@@ -6,7 +6,7 @@ import {
   CHOOSE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "../../../../../controller/addressLookUp/url/postTransition";
-import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import * as config from "../../../../../../config";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
@@ -38,24 +38,33 @@ describe("Choose usual residential address of the limited partner page", () => {
   const REDIRECT_URL = getUrl(CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
 
   describe("GET choose usual residential address of the limited partner page", () => {
-    it("should load the choose usual residential address of the limited partner page with Welsh text", async () => {
+    it.each(
+      [
+        ["add", "en"],
+        ["add", "cy"],
+        ["update", "en"],
+        ["update", "cy"]
+      ]
+    )("should load the %s limited partner choose usual residential address page with %s text", async (journey: string, lang: string) => {
       setLocalesEnabled(true);
+      const translationText = lang === "en" ? enTranslationText : cyTranslationText;
+      const partnerKind = journey === "add" ? PartnerKind.ADD_LIMITED_PARTNER_PERSON : PartnerKind.UPDATE_LIMITED_PARTNER_PERSON;
 
-      const res = await request(app).get(URL + "?lang=cy");
+      const transaction = new TransactionBuilder().withKind(partnerKind).build();
+      appDevDependencies.transactionGateway.feedTransactions([transaction]);
+
+      const res = await request(app).get(URL + `?lang=${lang}`);
 
       expect(res.status).toBe(200);
-      testTranslations(res.text, cyTranslationText.address.chooseAddress.limitedPartnerUsualResidentialAddress);
-      expect(countOccurrences(res.text, cyTranslationText.serviceName.addLimitedPartner)).toBe(2);
-    });
+      testTranslations(res.text, translationText.address.chooseAddress.limitedPartnerUsualResidentialAddress);
+      if (lang === "en") {
+        expect(res.text).not.toContain("WELSH -");
+      } else {
+        expect(res.text).toContain("WELSH -");
+      }
 
-    it("should load the choose usual residential address of the limited partner page with English text", async () => {
-      setLocalesEnabled(true);
-
-      const res = await request(app).get(URL + "?lang=en");
-
-      expect(res.status).toBe(200);
-      testTranslations(res.text, enTranslationText.address.chooseAddress.limitedPartnerUsualResidentialAddress);
-      expect(countOccurrences(res.text, enTranslationText.serviceName.addLimitedPartner)).toBe(2);
+      const expectedServiceName = journey === "add" ? translationText.serviceName.addLimitedPartner : translationText.serviceName.updateLimitedPartnerPerson;
+      expect(countOccurrences(res.text, toEscapedHtml(expectedServiceName))).toBe(2);
     });
 
     it("should populate the address list", async () => {

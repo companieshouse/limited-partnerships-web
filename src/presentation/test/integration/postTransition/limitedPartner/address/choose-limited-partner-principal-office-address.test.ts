@@ -4,7 +4,7 @@ import enTranslationText from "../../../../../../../locales/en/translations.json
 import cyTranslationText from "../../../../../../../locales/cy/translations.json";
 
 import app from "../../../app";
-import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
 import { appDevDependencies } from "config/dev-dependencies";
 
 import {
@@ -41,24 +41,28 @@ describe("Choose principal office address of the limited partner page", () => {
   });
 
   describe("GET choose principal office address of the limited partner page", () => {
-    it("should load the choose principal office address of the limited partner page with Welsh text", async () => {
+    it.each(
+      [
+        ["en"],
+        ["cy"]
+      ]
+    )("should load the limited partner choose principal office address page with %s text", async (lang: string) => {
       setLocalesEnabled(true);
+      const translationText = lang === "en" ? enTranslationText : cyTranslationText;
 
-      const res = await request(app).get(URL + "?lang=cy");
+      const transaction = new TransactionBuilder().withKind(PartnerKind.ADD_LIMITED_PARTNER_LEGAL_ENTITY).build();
+      appDevDependencies.transactionGateway.feedTransactions([transaction]);
+
+      const res = await request(app).get(URL + `?lang=${lang}`);
 
       expect(res.status).toBe(200);
-      testTranslations(res.text, cyTranslationText.address.chooseAddress.limitedPartnerPrincipalOfficeAddress);
-      expect(countOccurrences(res.text, cyTranslationText.serviceName.addLimitedPartner)).toBe(2);
-    });
-
-    it("should load the choose principal office address of the limited partner page with English text", async () => {
-      setLocalesEnabled(true);
-
-      const res = await request(app).get(URL + "?lang=en");
-
-      expect(res.status).toBe(200);
-      testTranslations(res.text, enTranslationText.address.chooseAddress.limitedPartnerPrincipalOfficeAddress);
-      expect(countOccurrences(res.text, enTranslationText.serviceName.addLimitedPartner)).toBe(2);
+      testTranslations(res.text, translationText.address.chooseAddress.limitedPartnerPrincipalOfficeAddress);
+      if (lang === "en") {
+        expect(res.text).not.toContain("WELSH -");
+      } else {
+        expect(res.text).toContain("WELSH -");
+      }
+      expect(countOccurrences(res.text, toEscapedHtml(translationText.serviceName.addLimitedPartner))).toBe(2);
     });
 
     it("should populate the address list", async () => {

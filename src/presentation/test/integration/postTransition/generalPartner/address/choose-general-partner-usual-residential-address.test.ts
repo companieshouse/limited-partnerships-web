@@ -35,41 +35,33 @@ describe("Choose usual residential address of the general partner page", () => {
   const REDIRECT_URL = getUrl(CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
 
   describe("GET choose usual residential address of the general partner page", () => {
-
     it.each(
       [
-        [PartnerKind.ADD_GENERAL_PARTNER_PERSON, cyTranslationText.serviceName.addGeneralPartner],
-        [PartnerKind.UPDATE_GENERAL_PARTNER_PERSON, cyTranslationText.serviceName.updateGeneralPartnerPerson]
+        ["add", "en"],
+        ["add", "cy"],
+        ["update", "en"],
+        ["update", "cy"]
       ]
-    )("should load the choose usual residential address of the general partner page with Welsh text", async (partnerKind, serviceName) => {
+    )("should load the %s general partner choose usual residential address page with %s text", async (journey: string, lang: string) => {
       setLocalesEnabled(true);
+      const translationText = lang === "en" ? enTranslationText : cyTranslationText;
+      const partnerKind = journey === "add" ? PartnerKind.ADD_GENERAL_PARTNER_PERSON : PartnerKind.UPDATE_GENERAL_PARTNER_PERSON;
 
       const transaction = new TransactionBuilder().withKind(partnerKind).build();
       appDevDependencies.transactionGateway.feedTransactions([transaction]);
 
-      const res = await request(app).get(URL + "?lang=cy");
+      const res = await request(app).get(URL + `?lang=${lang}`);
 
       expect(res.status).toBe(200);
-      testTranslations(res.text, cyTranslationText.address.chooseAddress.generalPartnerUsualResidentialAddress);
-      expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
-    });
+      testTranslations(res.text, translationText.address.chooseAddress.generalPartnerUsualResidentialAddress);
+      if (lang === "en") {
+        expect(res.text).not.toContain("WELSH -");
+      } else {
+        expect(res.text).toContain("WELSH -");
+      }
 
-    it.each(
-      [
-        [PartnerKind.ADD_GENERAL_PARTNER_PERSON, enTranslationText.serviceName.addGeneralPartner],
-        [PartnerKind.UPDATE_GENERAL_PARTNER_PERSON, enTranslationText.serviceName.updateGeneralPartnerPerson]
-      ]
-    )("should load the choose usual residential address of the general partner page with English text", async (partnerKind, serviceName) => {
-      setLocalesEnabled(true);
-
-      const transaction = new TransactionBuilder().withKind(partnerKind).build();
-      appDevDependencies.transactionGateway.feedTransactions([transaction]);
-
-      const res = await request(app).get(URL + "?lang=en");
-
-      expect(res.status).toBe(200);
-      testTranslations(res.text, enTranslationText.address.chooseAddress.generalPartnerUsualResidentialAddress);
-      expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
+      const expectedServiceName = journey === "add" ? translationText.serviceName.addGeneralPartner : translationText.serviceName.updateGeneralPartnerPerson;
+      expect(countOccurrences(res.text, toEscapedHtml(expectedServiceName))).toBe(2);
     });
 
     it("should populate the address list", async () => {

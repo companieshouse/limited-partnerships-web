@@ -6,7 +6,7 @@ import enErrorMessages from "../../../../../../../locales/en/errors.json";
 import cyErrorMessages from "../../../../../../../locales/cy/errors.json";
 
 import app from "../../../app";
-import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
+import { countOccurrences, feedTransactionAndPartner, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 
 import {
@@ -15,21 +15,20 @@ import {
   POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
 } from "../../../../../controller/addressLookUp/url/postTransition";
 
-import GeneralPartnerBuilder from "../../../../builder/GeneralPartnerBuilder";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import {
   GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL,
   UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL,
   WHEN_DID_GENERAL_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL
 } from "../../../../../controller/postTransition/url";
-import TransactionBuilder from "../../../../builder/TransactionBuilder";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 describe("Confirm General Partner Principal Office Address Page", () => {
   const URL = getUrl(CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
+  const CHANGE_LINK_URL = getUrl(ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
 
   beforeEach(() => {
-    setLocalesEnabled(false);
+    setLocalesEnabled(true);
     appDevDependencies.cacheRepository.feedCache({
       [appDevDependencies.transactionGateway.transactionId]: {
         ["principal_office_address"]: {
@@ -44,57 +43,44 @@ describe("Confirm General Partner Principal Office Address Page", () => {
       }
     });
 
-    const generalPartner = new GeneralPartnerBuilder()
-      .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-      .isPerson()
-      .build();
-
-    appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
-
-    const transaction = new TransactionBuilder().withKind(PartnerKind.ADD_GENERAL_PARTNER_LEGAL_ENTITY).build();
-    appDevDependencies.transactionGateway.feedTransactions([transaction]);
+    appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
+    appDevDependencies.transactionGateway.feedTransactions([]);
   });
 
   describe("GET Confirm Principal Office Address Page", () => {
-    it("should load the confirm principal office address page with English text", async () => {
-      setLocalesEnabled(true);
+    it.each([
+      ["add", "en"],
+      ["add", "cy"],
+      ["update", "en"],
+      ["update", "cy"]
+    ])("should load the confirm principal office address page with %s journey and %s language", async (journey: string, lang: string) => {
+      const translationtext = lang === "en" ? enTranslationText : cyTranslationText;
+      const partnerKind = journey === "add" ? PartnerKind.ADD_GENERAL_PARTNER_LEGAL_ENTITY : PartnerKind.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY;
+      feedTransactionAndPartner(partnerKind);
 
-      const res = await request(app).get(URL + "?lang=en");
+      const res = await request(app).get(`${URL}?lang=${lang}`);
 
       expect(res.status).toBe(200);
-      testTranslations(res.text, enTranslationText.address.confirm.principalOfficeAddress);
-      expect(res.text).not.toContain("WELSH -");
+      testTranslations(res.text, translationtext.address.confirm.principalOfficeAddress);
 
       expect(res.text).toContain("4 Line 1");
       expect(res.text).toContain("Line 2");
       expect(res.text).toContain("Stoke-On-Trent");
       expect(res.text).toContain("Region");
-      expect(res.text).toContain(enTranslationText.countries.england);
+      expect(res.text).toContain(translationtext.countries.england);
       expect(res.text).toContain("ST6 3LJ");
-      expect(countOccurrences(res.text, enTranslationText.serviceName.addGeneralPartner)).toBe(2);
-    });
-
-    it("should load the confirm principal office address page with Welsh text", async () => {
-      setLocalesEnabled(true);
-
-      const res = await request(app).get(URL + "?lang=cy");
-
-      expect(res.status).toBe(200);
-      testTranslations(res.text, cyTranslationText.address.confirm.principalOfficeAddress);
-
-      expect(res.text).toContain("4 Line 1");
-      expect(res.text).toContain("Line 2");
-      expect(res.text).toContain("Stoke-On-Trent");
-      expect(res.text).toContain("Region");
-      expect(res.text).toContain(cyTranslationText.countries.england);
-      expect(res.text).toContain("ST6 3LJ");
-      expect(countOccurrences(res.text, cyTranslationText.serviceName.addGeneralPartner)).toBe(2);
+      const expectedServiceName = journey === "add" ? translationtext.serviceName.addGeneralPartner : translationtext.serviceName.updateGeneralPartnerLegalEntity;
+      expect(countOccurrences(res.text, toEscapedHtml(expectedServiceName))).toBe(2);
     });
 
     it.each([
-      ["overseas", getUrl(ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL)],
-      ["unitedKingdom", getUrl(POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL)]
-    ])("should have the correct back link", async (territory, backLink) => {
+      ["add", "overseas", getUrl(ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL)],
+      ["add", "unitedKingdom", getUrl(POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL)],
+      ["update", "", getUrl(UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL)]
+    ])("should have the correct back link and change link for %s journey and %s territory choice", async (journey: string, territory: string, backLink: string) => {
+      const partnerKind = journey === "add" ? PartnerKind.ADD_GENERAL_PARTNER_LEGAL_ENTITY : PartnerKind.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY;
+      feedTransactionAndPartner(partnerKind);
+
       appDevDependencies.cacheRepository.feedCache({
         [appDevDependencies.transactionGateway.transactionId]: {
           poa_territory_choice: territory
@@ -103,37 +89,24 @@ describe("Confirm General Partner Principal Office Address Page", () => {
 
       const res = await request(app).get(URL);
 
+      if (territory === "overseas") {
+        expect(countOccurrences(res.text, CHANGE_LINK_URL)).toBe(2);
+      } else {
+        expect(countOccurrences(res.text, CHANGE_LINK_URL)).toBe(1);
+      }
+
       expect(res.text).toContain(backLink);
-    });
-
-    it("should have back link to yes/no page when partner kind is UPDATE_GENERAL_PARTNER_LEGAL_ENTITY", async () => {
-      const updateGeneralPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isLegalEntity()
-        .withKind(PartnerKind.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY)
-        .build();
-
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([updateGeneralPartner]);
-
-      const backLinkUrl = getUrl(UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL);
-      const res = await request(app).get(URL);
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(backLinkUrl);
-    });
-
-    it("should have change link to manual entry page", async () => {
-      const res = await request(app).get(URL);
-
-      const changeLinkUrl = getUrl(ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(`href="${changeLinkUrl}"`);
     });
   });
 
   describe("POST confirm Principal Office Address Page", () => {
-    it("should redirect to the next page", async () => {
+    it.each([
+      ["add"],
+      ["update"]
+    ])("should redirect to the next page", async (journey: string) => {
+      const partnerKind = journey === "add" ? PartnerKind.ADD_GENERAL_PARTNER_LEGAL_ENTITY : PartnerKind.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY;
+      feedTransactionAndPartner(partnerKind);
+
       const res = await request(app)
         .post(URL)
         .send({
@@ -148,38 +121,10 @@ describe("Confirm General Partner Principal Office Address Page", () => {
           }`
         });
 
-      const redirectUrl = getUrl(GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL);
+      const REDIRECT_URL = journey === "add" ? getUrl(GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL) : getUrl(WHEN_DID_GENERAL_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL);
 
       expect(res.status).toBe(302);
-      expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
-    });
-
-    it("should redirect to the when did details change page for the update journey", async () => {
-      const generalPartnerUpdate = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isLegalEntity()
-        .withKind(PartnerKind.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY)
-        .build();
-
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartnerUpdate]);
-      const res = await request(app)
-        .post(URL)
-        .send({
-          pageType: AddressPageType.confirmGeneralPartnerPrincipalOfficeAddress,
-          address: `{
-            "postal_code": "ST6 3LJ",
-            "premises": "4",
-            "address_line_1": "DUNCALF STREET",
-            "address_line_2": "",
-            "locality": "STOKE-ON-TRENT",
-            "country": "England"
-          }`
-        });
-
-      const redirectUrl = getUrl(WHEN_DID_GENERAL_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL);
-
-      expect(res.status).toBe(302);
-      expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
     });
 
     it("should show error message if address is not provided", async () => {

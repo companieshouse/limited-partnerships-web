@@ -6,7 +6,7 @@ import enErrorMessages from "../../../../../../../locales/en/errors.json";
 import cyErrorMessages from "../../../../../../../locales/cy/errors.json";
 
 import app from "../../../app";
-import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, feedTransactionAndPartner, testTranslations, toEscapedHtml } from "../../../../utils";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 
 import {
@@ -15,33 +15,34 @@ import {
   POSTCODE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
 } from "../../../../../controller/addressLookUp/url/postTransition";
 
-import LimitedPartnerBuilder, { limitedPartnerLegalEntity } from "../../../../builder/LimitedPartnerBuilder";
+import { limitedPartnerLegalEntity } from "../../../../builder/LimitedPartnerBuilder";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import { LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL, UPDATE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL, WHEN_DID_LIMITED_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL } from "../../../../../controller/postTransition/url";
-import TransactionBuilder from "../../../../builder/TransactionBuilder";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 describe("Confirm Limited Partner Principal Office Address Page", () => {
   const URL = getUrl(CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
+  const CHANGE_LINK_URL = getUrl(ENTER_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
+  const cacheData = {
+    ["principal_office_address"]: {
+      postal_code: "ST6 3LJ",
+      premises: "4",
+      address_line_1: "line 1",
+      address_line_2: "line 2",
+      locality: "stoke-on-trent",
+      region: "region",
+      country: "England"
+    },
+    poa_territory_choice: ""
+  };
 
   beforeEach(() => {
     setLocalesEnabled(true);
     appDevDependencies.cacheRepository.feedCache({
-      [appDevDependencies.transactionGateway.transactionId]: {
-        ["principal_office_address"]: {
-          postal_code: "ST6 3LJ",
-          premises: "4",
-          address_line_1: "line 1",
-          address_line_2: "line 2",
-          locality: "stoke-on-trent",
-          region: "region",
-          country: "England"
-        }
-      }
+      [appDevDependencies.transactionGateway.transactionId]: cacheData
     });
 
     appDevDependencies.limitedPartnerGateway.feedLimitedPartners([]);
-
     appDevDependencies.transactionGateway.feedTransactions([]);
   });
 
@@ -54,13 +55,17 @@ describe("Confirm Limited Partner Principal Office Address Page", () => {
     ])("should load the confirm principal office address page with %s limited partner person journey and %s language", async (journey: string, lang: string) => {
       const translationtext = lang === "en" ? enTranslationText : cyTranslationText;
       const transactionKind = journey === "add" ? PartnerKind.ADD_LIMITED_PARTNER_LEGAL_ENTITY : PartnerKind.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY;
-      setupTransactionAndLimitedPartner(transactionKind);
+      feedTransactionAndPartner(transactionKind);
 
       const res = await request(app).get(`${URL}?lang=${lang}`);
 
       expect(res.status).toBe(200);
       testTranslations(res.text, translationtext.address.confirm.limitedPartnerPrincipalOfficeAddress);
-      expect(res.text).not.toContain(lang === "en" ? "WELSH -" : "SAESNEG -");
+      if (lang === "en") {
+        expect(res.text).not.toContain("WELSH -");
+      } else {
+        expect(res.text).toContain("WELSH -");
+      }
 
       expect(res.text).toContain("4 Line 1");
       expect(res.text).toContain("Line 2");
@@ -79,16 +84,23 @@ describe("Confirm Limited Partner Principal Office Address Page", () => {
       ["add", "unitedKingdom", getUrl(POSTCODE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL)],
       ["update", "", getUrl(UPDATE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL)]
     ])("should have the correct back link for journey %s and territory %s", async (journey, territory, backLink) => {
-      const transactionKind = journey === "add" ? PartnerKind.ADD_LIMITED_PARTNER_LEGAL_ENTITY : PartnerKind.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY;
-      setupTransactionAndLimitedPartner(transactionKind);
+      const partnerKind = journey === "add" ? PartnerKind.ADD_LIMITED_PARTNER_LEGAL_ENTITY : PartnerKind.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY;
+      feedTransactionAndPartner(partnerKind);
 
       appDevDependencies.cacheRepository.feedCache({
         [appDevDependencies.transactionGateway.transactionId]: {
+          ...cacheData,
           poa_territory_choice: territory
         }
       });
 
       const res = await request(app).get(URL);
+
+      if (territory === "overseas") {
+        expect(countOccurrences(res.text, CHANGE_LINK_URL)).toBe(2);
+      } else {
+        expect(countOccurrences(res.text, CHANGE_LINK_URL)).toBe(1);
+      }
 
       expect(res.text).toContain(backLink);
     });
@@ -100,7 +112,7 @@ describe("Confirm Limited Partner Principal Office Address Page", () => {
       ["update"]
     ])("should redirect to the next page", async (journey: string) => {
       const transactionKind = journey === "add" ? PartnerKind.ADD_LIMITED_PARTNER_LEGAL_ENTITY : PartnerKind.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY;
-      setupTransactionAndLimitedPartner(transactionKind);
+      feedTransactionAndPartner(transactionKind);
 
       const res = await request(app)
         .post(URL)
@@ -134,8 +146,8 @@ describe("Confirm Limited Partner Principal Office Address Page", () => {
     });
 
     it.each([
-      [ "en", enErrorMessages ],
-      [ "cy", cyErrorMessages ]
+      ["en", enErrorMessages],
+      ["cy", cyErrorMessages]
     ])("should show validation error message if validation error occurs when saving address with lang %s", async (lang: string, errorMessagesJson: any) => {
       setLocalesEnabled(true);
       const res = await request(app).post(`${URL}?lang=${lang}`).send({
@@ -148,16 +160,3 @@ describe("Confirm Limited Partner Principal Office Address Page", () => {
     });
   });
 });
-
-const setupTransactionAndLimitedPartner = (transactionKind: PartnerKind) => {
-  const transaction = new TransactionBuilder().withKind(transactionKind).build();
-  appDevDependencies.transactionGateway.feedTransactions([transaction]);
-
-  const limitedPartner = new LimitedPartnerBuilder()
-    .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-    .isLegalEntity()
-    .withKind(transactionKind)
-    .build();
-
-  appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
-};
