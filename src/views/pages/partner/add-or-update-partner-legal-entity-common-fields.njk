@@ -72,8 +72,9 @@
 {% set countryFormId = "legal_entity_registration_location" %}
 {% set countryErrorMessage = props.errors.legal_entity_registration_location if props.errors %}
 {% set countryFormValue = props.data[partnerKind].data.legal_entity_registration_location %}
+{% set labelFormatting = "govuk-label govuk-label--m" %}
 
-{{ macros.getSpecifiedCountryList(i18n, "overseas", countryFormId, countryText, countryFormValue, countryErrorMessage) }}
+{{ macros.getSpecifiedCountryList(i18n, "overseas", countryFormId, countryText, countryFormValue, countryErrorMessage, labelFormatting) }}
 
 {{ govukInput({
   label: {
