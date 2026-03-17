@@ -1,5 +1,5 @@
 {% from "govuk/components/select/macro.njk" import govukSelect %}
-{% macro getSpecifiedCountryList(i18n, subsetType, id, text, countryField, errorMessage)  %}
+{% macro getSpecifiedCountryList(i18n, subsetType, id, text, countryField, errorMessage, labelFormatting)  %}
 
   {% set COUNTRIES = SET_COUNTRIES_DROPDOWN(i18n, countryField) %}
 
@@ -15,7 +15,7 @@
     name: id,
     label: {
       text: text,
-      classes: "govuk-label govuk-input--width-10",
+      classes: labelFormatting,
       isPageHeading: false
     },
     errorMessage: errorMessage,

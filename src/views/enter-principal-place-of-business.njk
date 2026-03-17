@@ -59,8 +59,9 @@
           {% set countryText = i18n.address.enterAddress.country %}
           {% set countryFormValue = address.country %}
           {% set countryErrorMessage = props.errors.country if props.errors %}
+          {% set labelFormatting = "govuk-label govuk-input--width-10" %}
                             
-          {{ macros.getSpecifiedCountryList(i18n, "", countryFormId, countryText, countryFormValue, countryErrorMessage) }}
+          {{ macros.getSpecifiedCountryList(i18n, "", countryFormId, countryText, countryFormValue, countryErrorMessage, labelFormatting) }}
         {% else %}
           {% include "pages/address/enter-address-common-fields.njk" %}
         {% endif %}
