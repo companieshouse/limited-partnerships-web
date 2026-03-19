@@ -10,11 +10,14 @@ import {
   ADD_LIMITED_PARTNER_PERSON_URL,
   CHECK_YOUR_ANSWERS_URL,
   LIMITED_PARTNERS_URL,
+  PSC_URL,
   REVIEW_LIMITED_PARTNERS_URL
 } from "../../../../controller/registration/url";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
 import RegistrationPageType from "../../../../controller/registration/PageType";
+import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
+import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
 
 describe("Review Limited Partners Page", () => {
   const URL = getUrl(REVIEW_LIMITED_PARTNERS_URL);
@@ -105,14 +108,22 @@ describe("Review Limited Partners Page", () => {
       expect(res.headers.location).toContain(getUrl(ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL));
     });
 
-    it("should redirect to the limited partners page", async () => {
+    it.each([
+      [PartnershipType.LP, getUrl(CHECK_YOUR_ANSWERS_URL)],
+      [PartnershipType.PFLP, getUrl(CHECK_YOUR_ANSWERS_URL)],
+      [PartnershipType.SLP, getUrl(PSC_URL)],
+      [PartnershipType.SPFLP, getUrl(PSC_URL)]
+    ])("should redirect to the appropriate page based on partnership type", async (partnershipType: PartnershipType, REDIRECT_URL: string) => {
+      const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.reviewLimitedPartners,
         addAnotherPartner: "no"
       });
 
       expect(res.status).toBe(302);
-      expect(res.headers.location).toContain(getUrl(CHECK_YOUR_ANSWERS_URL));
+      expect(res.headers.location).toContain(REDIRECT_URL);
     });
 
     it("should reload the page if no limited partner", async () => {
