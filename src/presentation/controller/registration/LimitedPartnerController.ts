@@ -8,7 +8,8 @@ import {
   ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
   CHECK_YOUR_ANSWERS_URL,
   LIMITED_PARTNERS_URL,
-  REVIEW_LIMITED_PARTNERS_URL
+  REVIEW_LIMITED_PARTNERS_URL,
+  PSC_URL
 } from "./url";
 import {
   CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
@@ -58,7 +59,8 @@ class LimitedPartnerRegistrationController extends PartnerController {
     return super.postReviewPage(PartnerType.limitedPartner, {
       addPartnerPersonUrl: ADD_LIMITED_PARTNER_PERSON_URL,
       addPartnerLegalEntityUrl: ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
-      redirectUrl: CHECK_YOUR_ANSWERS_URL
+      redirectUrl: CHECK_YOUR_ANSWERS_URL,
+      pscRedirectUrl: PSC_URL
     });
   }
 

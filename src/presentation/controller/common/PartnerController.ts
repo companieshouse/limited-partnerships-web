@@ -2,7 +2,8 @@ import { NextFunction, Request, Response } from "express";
 import {
   GeneralPartner,
   LimitedPartner,
-  LimitedPartnership
+  LimitedPartnership,
+  PartnershipType
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 import AbstractController from "../AbstractController";
@@ -249,6 +250,7 @@ abstract class PartnerController extends AbstractController {
       addPartnerLegalEntityUrl: string;
       redirectUrl: string;
       reviewLimitedPartnersUrl?: string;
+      pscRedirectUrl?: string;
     }
   ) {
     return async (request: Request, response: Response, next: NextFunction) => {
@@ -294,8 +296,12 @@ abstract class PartnerController extends AbstractController {
 
         if (addAnotherPartner === "no") {
           if (partner === PartnerType.generalPartner) {
-            await this.conditionalNextUrl(tokens, ids, pageRouting, {
+            await this.conditionalNextUrlGeneralPartnerReviewPage(tokens, ids, pageRouting, {
               reviewLimitedPartnersUrl: urls?.reviewLimitedPartnersUrl ?? ""
+            });
+          } else {
+            await this.conditionalNextUrlLimitedPartnerReviewPage(tokens, ids, pageRouting, {
+              pscRedirectUrl: urls?.pscRedirectUrl ?? ""
             });
           }
 
@@ -322,7 +328,7 @@ abstract class PartnerController extends AbstractController {
     };
   }
 
-  private async conditionalNextUrl(
+  private async conditionalNextUrlGeneralPartnerReviewPage(
     tokens: Tokens,
     ids: Ids,
     pageRouting: PageRouting,
@@ -334,6 +340,21 @@ abstract class PartnerController extends AbstractController {
 
     if (result.limitedPartners.length > 0) {
       pageRouting.nextUrl = super.insertIdsInUrl(urls.reviewLimitedPartnersUrl, ids);
+    }
+  }
+
+  private async conditionalNextUrlLimitedPartnerReviewPage(
+    tokens: Tokens,
+    ids: Ids,
+    pageRouting: PageRouting,
+    urls: {
+      pscRedirectUrl: string;
+    }
+  ) {
+    const { limitedPartnership } = await this.getEntities(tokens, ids);
+
+    if (limitedPartnership.data?.partnership_type === PartnershipType.SLP || limitedPartnership.data?.partnership_type === PartnershipType.SPFLP) {
+      pageRouting.nextUrl = super.insertIdsInUrl(urls.pscRedirectUrl, ids);
     }
   }
 
