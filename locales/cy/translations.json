@@ -641,6 +641,13 @@
         "pageInformation": "WELSH - If the partnership has more than one limited partner, you'll add them one at a time."
     },
 
+    "pscPage": {
+        "title": "WELSH - Tell us about people with significant control (PSCs)",
+        "pageInformation": "WELSH - We'll ask you wheter the partnership will have any PSCs. If it will, you'll need to tell us about them.",
+        "moreThanOne": "WELSH - If the partnership has more than one PSC, you'll add them one at a time.",
+        "futureChanges": "WELSH - You'll need to file any future changes to PSCs on paper."
+    },
+
     "links" : {
       "back": "WELSH - Back",
       "signOut": "WELSH - Sign out"

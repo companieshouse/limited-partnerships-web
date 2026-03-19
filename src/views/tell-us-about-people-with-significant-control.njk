@@ -1,0 +1,23 @@
+{% extends "layout.njk" %}
+
+{% set pageTitle = i18n.pscPage.title %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        {% include "includes/proposed-name.njk" %}        
+ 
+        <h1 class="govuk-heading-xl">{{ i18n.pscPage.title }}</h1>
+
+        <p class="govuk-body">{{ i18n.pscPage.pageInformation }}</p>
+
+        <p class="govuk-body">{{ i18n.pscPage.moreThanOne }}</p>
+
+        <p class="govuk-body">{{ i18n.pscPage.futureChanges }}</p>
+      
+        <button class="govuk-button" data-event-id="continue" onClick="location.href='{{ props.nextUrl }}'">{{ i18n.buttons.continue }}</button>
+
+    </div>
+  </div>
+{% endblock %}
