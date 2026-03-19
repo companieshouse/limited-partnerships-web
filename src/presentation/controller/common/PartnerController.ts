@@ -291,41 +291,57 @@ abstract class PartnerController extends AbstractController {
           );
           return;
         }
-
-        const addAnotherPartner = request.body.addAnotherPartner;
-
-        if (addAnotherPartner === "no") {
-          if (partner === PartnerType.generalPartner) {
-            await this.conditionalNextUrlGeneralPartnerReviewPage(tokens, ids, pageRouting, {
-              reviewLimitedPartnersUrl: urls?.reviewLimitedPartnersUrl ?? ""
-            });
-          } else {
-            await this.conditionalNextUrlLimitedPartnerReviewPage(tokens, ids, pageRouting, {
-              pscRedirectUrl: urls?.pscRedirectUrl ?? ""
-            });
-          }
-
-          const redirectUrl = super.insertIdsInUrl(pageRouting.nextUrl, ids, request.url);
-
-          response.redirect(redirectUrl);
-          return;
-        }
-
-        let url = urls.redirectUrl;
-
-        if (addAnotherPartner === "addPerson") {
-          url = urls.addPartnerPersonUrl;
-        } else if (addAnotherPartner === "addLegalEntity") {
-          url = urls.addPartnerLegalEntityUrl;
-        }
-
-        const redirectUrl = super.insertIdsInUrl(url, ids, request.url);
+        const redirectUrl = await this.handleReviewPageRedirection(request, partner, tokens, ids, pageRouting, urls);
 
         response.redirect(redirectUrl);
       } catch (error) {
         next(error);
       }
     };
+  }
+
+  private async handleReviewPageRedirection(
+    request: Request,
+    partner: PartnerType,
+    tokens: Tokens, ids: Ids,
+    pageRouting: PageRouting,
+    urls: {
+      reviewLimitedPartnersUrl?: string;
+      addPartnerPersonUrl: string;
+      addPartnerLegalEntityUrl: string;
+      pscRedirectUrl?: string;
+      redirectUrl: string;
+    }
+  ) {
+    const addAnotherPartner = request.body.addAnotherPartner;
+
+    if (addAnotherPartner === "no") {
+      if (partner === PartnerType.generalPartner) {
+        await this.conditionalNextUrlGeneralPartnerReviewPage(tokens, ids, pageRouting, {
+          reviewLimitedPartnersUrl: urls?.reviewLimitedPartnersUrl ?? ""
+        });
+      } else {
+        await this.conditionalNextUrlLimitedPartnerReviewPage(tokens, ids, pageRouting, {
+          pscRedirectUrl: urls?.pscRedirectUrl ?? ""
+        });
+      }
+
+      const redirectUrl = super.insertIdsInUrl(pageRouting.nextUrl, ids, request.url);
+
+      return redirectUrl;
+    }
+
+    let url = urls.redirectUrl;
+
+    if (addAnotherPartner === "addPerson") {
+      url = urls.addPartnerPersonUrl;
+    } else if (addAnotherPartner === "addLegalEntity") {
+      url = urls.addPartnerLegalEntityUrl;
+    }
+
+    const redirectUrl = super.insertIdsInUrl(url, ids, request.url);
+
+    return redirectUrl;
   }
 
   private async conditionalNextUrlGeneralPartnerReviewPage(
