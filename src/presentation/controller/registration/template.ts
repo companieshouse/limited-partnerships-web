@@ -22,7 +22,7 @@ export const ADD_LIMITED_PARTNER_LEGAL_ENTITY_TEMPLATE = RegistrationPageType.ad
 export const REVIEW_LIMITED_PARTNERS_TEMPLATE = RegistrationPageType.reviewLimitedPartners;
 export const REMOVE_LIMITED_PARTNER_TEMPLATE = RegistrationPageType.removeLimitedPartner;
 
-export const PSC_TEMPLATE = RegistrationPageType.psc;
+export const TELL_US_ABOUT_PSC_TEMPLATE = RegistrationPageType.tellUsAboutPscPage;
 export const WILL_LIMITED_PARTNERSHIP_HAVE_PSC_TEMPLATE = RegistrationPageType.willLimitedPartnershipHavePsc;
 
 export const CHECK_YOUR_ANSWERS_TEMPLATE = RegistrationPageType.checkYourAnswers;

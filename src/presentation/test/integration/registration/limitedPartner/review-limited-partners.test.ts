@@ -10,8 +10,8 @@ import {
   ADD_LIMITED_PARTNER_PERSON_URL,
   CHECK_YOUR_ANSWERS_URL,
   LIMITED_PARTNERS_URL,
-  PSC_URL,
-  REVIEW_LIMITED_PARTNERS_URL
+  REVIEW_LIMITED_PARTNERS_URL,
+  TELL_US_ABOUT_PSC_URL
 } from "../../../../controller/registration/url";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
@@ -111,8 +111,8 @@ describe("Review Limited Partners Page", () => {
     it.each([
       [PartnershipType.LP, getUrl(CHECK_YOUR_ANSWERS_URL)],
       [PartnershipType.PFLP, getUrl(CHECK_YOUR_ANSWERS_URL)],
-      [PartnershipType.SLP, getUrl(PSC_URL)],
-      [PartnershipType.SPFLP, getUrl(PSC_URL)]
+      [PartnershipType.SLP, getUrl(TELL_US_ABOUT_PSC_URL)],
+      [PartnershipType.SPFLP, getUrl(TELL_US_ABOUT_PSC_URL)]
     ])("should redirect to the appropriate page based on partnership type", async (partnershipType: PartnershipType, REDIRECT_URL: string) => {
       const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);

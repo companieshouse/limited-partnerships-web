@@ -642,9 +642,9 @@
         "pageInformation": "If the partnership has more than one limited partner, you'll add them one at a time."
     },
 
-    "pscPage": {
+    "tellUsAboutPscPage": {
         "title": "Tell us about people with significant control (PSCs)",
-        "pageInformation": "We'll ask you wheter the partnership will have any PSCs. If it will, you'll need to tell us about them.",
+        "pageInformation": "We'll ask you whether the partnership will have any PSCs. If it will, you'll need to tell us about them.",
         "moreThanOne": "If the partnership has more than one PSC, you'll add them one at a time.",
         "futureChanges": "You'll need to file any future changes to PSCs on paper."
     },
