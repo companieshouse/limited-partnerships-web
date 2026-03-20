@@ -2,7 +2,8 @@ import { NextFunction, Request, Response } from "express";
 import {
   GeneralPartner,
   LimitedPartner,
-  LimitedPartnership
+  LimitedPartnership,
+  PartnershipType
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 import AbstractController from "../AbstractController";
@@ -249,6 +250,7 @@ abstract class PartnerController extends AbstractController {
       addPartnerLegalEntityUrl: string;
       redirectUrl: string;
       reviewLimitedPartnersUrl?: string;
+      pscRedirectUrl?: string;
     }
   ) {
     return async (request: Request, response: Response, next: NextFunction) => {
@@ -289,31 +291,7 @@ abstract class PartnerController extends AbstractController {
           );
           return;
         }
-
-        const addAnotherPartner = request.body.addAnotherPartner;
-
-        if (addAnotherPartner === "no") {
-          if (partner === PartnerType.generalPartner) {
-            await this.conditionalNextUrl(tokens, ids, pageRouting, {
-              reviewLimitedPartnersUrl: urls?.reviewLimitedPartnersUrl ?? ""
-            });
-          }
-
-          const redirectUrl = super.insertIdsInUrl(pageRouting.nextUrl, ids, request.url);
-
-          response.redirect(redirectUrl);
-          return;
-        }
-
-        let url = urls.redirectUrl;
-
-        if (addAnotherPartner === "addPerson") {
-          url = urls.addPartnerPersonUrl;
-        } else if (addAnotherPartner === "addLegalEntity") {
-          url = urls.addPartnerLegalEntityUrl;
-        }
-
-        const redirectUrl = super.insertIdsInUrl(url, ids, request.url);
+        const redirectUrl = await this.handleReviewPageRedirection(request, partner, tokens, ids, pageRouting, urls);
 
         response.redirect(redirectUrl);
       } catch (error) {
@@ -322,7 +300,51 @@ abstract class PartnerController extends AbstractController {
     };
   }
 
-  private async conditionalNextUrl(
+  private async handleReviewPageRedirection(
+    request: Request,
+    partner: PartnerType,
+    tokens: Tokens, ids: Ids,
+    pageRouting: PageRouting,
+    urls: {
+      reviewLimitedPartnersUrl?: string;
+      addPartnerPersonUrl: string;
+      addPartnerLegalEntityUrl: string;
+      pscRedirectUrl?: string;
+      redirectUrl: string;
+    }
+  ) {
+    const addAnotherPartner = request.body.addAnotherPartner;
+
+    if (addAnotherPartner === "no") {
+      if (partner === PartnerType.generalPartner) {
+        await this.conditionalNextUrlGeneralPartnerReviewPage(tokens, ids, pageRouting, {
+          reviewLimitedPartnersUrl: urls?.reviewLimitedPartnersUrl ?? ""
+        });
+      } else {
+        await this.conditionalNextUrlLimitedPartnerReviewPage(tokens, ids, pageRouting, {
+          pscRedirectUrl: urls?.pscRedirectUrl ?? ""
+        });
+      }
+
+      const redirectUrl = super.insertIdsInUrl(pageRouting.nextUrl, ids, request.url);
+
+      return redirectUrl;
+    }
+
+    let url = urls.redirectUrl;
+
+    if (addAnotherPartner === "addPerson") {
+      url = urls.addPartnerPersonUrl;
+    } else if (addAnotherPartner === "addLegalEntity") {
+      url = urls.addPartnerLegalEntityUrl;
+    }
+
+    const redirectUrl = super.insertIdsInUrl(url, ids, request.url);
+
+    return redirectUrl;
+  }
+
+  private async conditionalNextUrlGeneralPartnerReviewPage(
     tokens: Tokens,
     ids: Ids,
     pageRouting: PageRouting,
@@ -334,6 +356,21 @@ abstract class PartnerController extends AbstractController {
 
     if (result.limitedPartners.length > 0) {
       pageRouting.nextUrl = super.insertIdsInUrl(urls.reviewLimitedPartnersUrl, ids);
+    }
+  }
+
+  private async conditionalNextUrlLimitedPartnerReviewPage(
+    tokens: Tokens,
+    ids: Ids,
+    pageRouting: PageRouting,
+    urls: {
+      pscRedirectUrl: string;
+    }
+  ) {
+    const { limitedPartnership } = await this.getEntities(tokens, ids);
+
+    if (limitedPartnership.data?.partnership_type === PartnershipType.SLP || limitedPartnership.data?.partnership_type === PartnershipType.SPFLP) {
+      pageRouting.nextUrl = super.insertIdsInUrl(urls.pscRedirectUrl, ids);
     }
   }
 

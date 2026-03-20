@@ -8,6 +8,7 @@ import GlobalController from "../presentation/controller/global/Controller";
 import LimitedPartnershipRegistrationController from "../presentation/controller/registration/LimitedPartnershipController";
 import GeneralPartnerRegistrationController from "../presentation/controller/registration/GeneralPartnerController";
 import LimitedPartnerRegistrationController from "../presentation/controller/registration/LimitedPartnerController";
+import PscRegistrationController from "../presentation/controller/registration/PscController";
 
 import LimitedPartnershipTransitionController from "../presentation/controller/transition/LimitedPartnershipController";
 import GeneralPartnerTransitionController from "../presentation/controller/transition/GeneralPartnerController";
@@ -28,6 +29,7 @@ export type IDependencies = {
   limitedPartnershipRegistrationController: LimitedPartnershipRegistrationController;
   generalPartnerRegistrationController: GeneralPartnerRegistrationController;
   limitedPartnerRegistrationController: LimitedPartnerRegistrationController;
+  pscRegistrationController: PscRegistrationController;
 
   limitedPartnershipTransitionController: LimitedPartnershipTransitionController;
   generalPartnerTransitionController: GeneralPartnerTransitionController;
