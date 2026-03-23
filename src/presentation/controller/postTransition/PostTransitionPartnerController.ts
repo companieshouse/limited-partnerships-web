@@ -332,7 +332,7 @@ class PostTransitionPartnerController extends PartnerController {
       );
 
       for (const field in partnerUpdatedFieldsMap) {
-        if (appointment?.partner?.data?.[field]?.toLowerCase() !== partner.data?.[field]?.toLowerCase()){
+        if (appointment?.partner?.data?.[field]?.trim().toLowerCase() !== partner.data?.[field]?.trim().toLowerCase()){
           partnerUpdatedFieldsMap[field] = true;
         }
       }
