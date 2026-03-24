@@ -8,7 +8,6 @@ import GlobalController from "../presentation/controller/global/Controller";
 import LimitedPartnershipRegistrationController from "../presentation/controller/registration/LimitedPartnershipController";
 import GeneralPartnerRegistrationController from "../presentation/controller/registration/GeneralPartnerController";
 import LimitedPartnerRegistrationController from "../presentation/controller/registration/LimitedPartnerController";
-import PscRegistrationController from "../presentation/controller/registration/PscController";
 
 import LimitedPartnershipTransitionController from "../presentation/controller/transition/LimitedPartnershipController";
 import GeneralPartnerTransitionController from "../presentation/controller/transition/GeneralPartnerController";
@@ -17,6 +16,7 @@ import LimitedPartnerTransitionController from "../presentation/controller/trans
 import LimitedPartnershipPostTransitionController from "../presentation/controller/postTransition/LimitedPartnershipController";
 import GeneralPartnerPostTransitionController from "../presentation/controller/postTransition/GeneralPartnerController";
 import LimitedPartnerPostTransitionController from "../presentation/controller/postTransition/LimitedPartnerController";
+import PersonWithSignificantControlRegistrationController from "../presentation/controller/registration/PersonWithSignificantControlController";
 
 export type IDependencies = {
   filingHistoryService: FilingHistoryService;
@@ -29,7 +29,7 @@ export type IDependencies = {
   limitedPartnershipRegistrationController: LimitedPartnershipRegistrationController;
   generalPartnerRegistrationController: GeneralPartnerRegistrationController;
   limitedPartnerRegistrationController: LimitedPartnerRegistrationController;
-  pscRegistrationController: PscRegistrationController;
+  personWithSignificantControlRegistrationController: PersonWithSignificantControlRegistrationController;
 
   limitedPartnershipTransitionController: LimitedPartnershipTransitionController;
   generalPartnerTransitionController: GeneralPartnerTransitionController;

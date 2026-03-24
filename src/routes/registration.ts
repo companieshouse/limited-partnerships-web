@@ -265,7 +265,7 @@ export const registrationEndpoints = (
 
   router.get(
     TELL_US_ABOUT_PSC_URL,
-    dependencies.pscRegistrationController.getPageRouting()
+    dependencies.personWithSignificantControlRegistrationController.getPageRouting()
   );
 
   router.get(

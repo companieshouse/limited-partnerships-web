@@ -4,11 +4,11 @@ import PageType from "../PageType";
 import limitedPartnershipRouting from "./routing/limitedPartnership";
 import generalPartnerRouting from "./routing/generalPartner";
 import limitedPartnerRouting from "./routing/limitedPartner";
-import pscRouting from "./routing/psc";
+import personWithSignificantControlRouting from "./routing/personWithSignificantControl";
 
 const registrationsRouting: PagesRouting = new Map<PageType, PageRouting>();
 
-[...limitedPartnershipRouting, ...generalPartnerRouting, ...limitedPartnerRouting, ...pscRouting].forEach((routing) => {
+[...limitedPartnershipRouting, ...generalPartnerRouting, ...limitedPartnerRouting, ...personWithSignificantControlRouting].forEach((routing) => {
   registrationsRouting.set(routing.pageType, routing);
 });
 

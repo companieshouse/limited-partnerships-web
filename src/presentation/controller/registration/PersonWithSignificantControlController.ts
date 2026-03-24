@@ -3,12 +3,12 @@ import { NextFunction, Request, Response } from "express";
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import AbstractController from "../AbstractController";
 import registrationsRouting from "./Routing";
-import PscService from "../../../application/service/PscService";
+import PersonWithSignificantControlService from "../../../application/service/PersonWithSignificantControlService";
 
-class PscRegistrationController extends AbstractController {
+class PersonWithSignificantControlRegistrationController extends AbstractController {
   constructor(
     protected readonly limitedPartnershipService: LimitedPartnershipService,
-    protected readonly pscService: PscService
+    protected readonly personWithSignificantControlService: PersonWithSignificantControlService
   ) {
     super();
   }
@@ -16,7 +16,7 @@ class PscRegistrationController extends AbstractController {
   getPageRouting() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
-        this.pscService.setI18n(response.locals.i18n);
+        this.personWithSignificantControlService.setI18n(response.locals.i18n);
 
         const { tokens, pageType, ids } = super.extract(request);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
@@ -38,4 +38,4 @@ class PscRegistrationController extends AbstractController {
   }
 }
 
-export default PscRegistrationController;
+export default PersonWithSignificantControlRegistrationController;
