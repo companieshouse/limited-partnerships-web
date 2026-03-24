@@ -196,12 +196,7 @@ abstract class PartnerController extends AbstractController {
         this.generalPartnerService.setI18n(response.locals.i18n);
         this.limitedPartnerService.setI18n(response.locals.i18n);
 
-        const routing = this.getJourneyPageRouting(request.url);
-        const journeyPageType = this.getJourneyPageTypes(request.url);
-
-        const { ids, tokens } = this.extractRequestData(request);
-        const pageType = super.extractPageTypeOrThrowError(request, journeyPageType);
-        const pageRouting = super.getRouting(routing, pageType, request);
+        const { ids, pageRouting, tokens } = this.extractJourneyRequestData(request);
 
         let result;
         if (partner === PartnerType.generalPartner) {
@@ -258,12 +253,7 @@ abstract class PartnerController extends AbstractController {
         this.generalPartnerService.setI18n(response.locals.i18n);
         this.limitedPartnerService.setI18n(response.locals.i18n);
 
-        const routing = this.getJourneyPageRouting(request.url);
-        const journeyPageType = this.getJourneyPageTypes(request.url);
-
-        const { ids, tokens } = this.extractRequestData(request);
-        const pageType = super.extractPageTypeOrThrowError(request, journeyPageType);
-        const pageRouting = super.getRouting(routing, pageType, request);
+        const { ids, pageRouting, tokens } = this.extractJourneyRequestData(request);
 
         let result;
         if (partner === PartnerType.generalPartner) {
@@ -291,7 +281,7 @@ abstract class PartnerController extends AbstractController {
           );
           return;
         }
-        const redirectUrl = await this.handleReviewPageRedirection(request, partner, tokens, ids, pageRouting, urls);
+        const redirectUrl = await this.handleReviewPageRedirection(request, partner, urls);
 
         response.redirect(redirectUrl);
       } catch (error) {
@@ -303,8 +293,6 @@ abstract class PartnerController extends AbstractController {
   private async handleReviewPageRedirection(
     request: Request,
     partner: PartnerType,
-    tokens: Tokens, ids: Ids,
-    pageRouting: PageRouting,
     urls: {
       reviewLimitedPartnersUrl?: string;
       addPartnerPersonUrl: string;
@@ -313,6 +301,8 @@ abstract class PartnerController extends AbstractController {
       redirectUrl: string;
     }
   ) {
+    const { ids, pageRouting, tokens } = this.extractJourneyRequestData(request);
+    const journeyTypes = getJourneyTypes(pageRouting.currentUrl);
     const addAnotherPartner = request.body.addAnotherPartner;
 
     if (addAnotherPartner === "no") {
@@ -320,7 +310,9 @@ abstract class PartnerController extends AbstractController {
         await this.conditionalNextUrlGeneralPartnerReviewPage(tokens, ids, pageRouting, {
           reviewLimitedPartnersUrl: urls?.reviewLimitedPartnersUrl ?? ""
         });
-      } else {
+      }
+
+      if (partner === PartnerType.limitedPartner && journeyTypes.isRegistration) {
         await this.conditionalNextUrlLimitedPartnerReviewPage(tokens, ids, pageRouting, {
           pscRedirectUrl: urls?.pscRedirectUrl ?? ""
         });
@@ -639,6 +631,17 @@ abstract class PartnerController extends AbstractController {
     const pageRouting = super.getRouting(routing, pageType, request);
 
     return { ids, pageRouting, pageType, tokens };
+  }
+
+  private extractJourneyRequestData(request: Request) {
+    const routing = this.getJourneyPageRouting(request.url);
+    const journeyPageType = this.getJourneyPageTypes(request.url);
+
+    const { ids, tokens } = this.extractRequestData(request);
+    const pageType = super.extractPageTypeOrThrowError(request, journeyPageType);
+    const pageRouting = super.getRouting(routing, pageType, request);
+
+    return { ids, pageRouting, tokens };
   }
 
   private async getEntities(
