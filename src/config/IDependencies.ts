@@ -16,6 +16,7 @@ import LimitedPartnerTransitionController from "../presentation/controller/trans
 import LimitedPartnershipPostTransitionController from "../presentation/controller/postTransition/LimitedPartnershipController";
 import GeneralPartnerPostTransitionController from "../presentation/controller/postTransition/GeneralPartnerController";
 import LimitedPartnerPostTransitionController from "../presentation/controller/postTransition/LimitedPartnerController";
+import PersonWithSignificantControlRegistrationController from "../presentation/controller/registration/PersonWithSignificantControlController";
 
 export type IDependencies = {
   filingHistoryService: FilingHistoryService;
@@ -28,6 +29,7 @@ export type IDependencies = {
   limitedPartnershipRegistrationController: LimitedPartnershipRegistrationController;
   generalPartnerRegistrationController: GeneralPartnerRegistrationController;
   limitedPartnerRegistrationController: LimitedPartnerRegistrationController;
+  personWithSignificantControlRegistrationController: PersonWithSignificantControlRegistrationController;
 
   limitedPartnershipTransitionController: LimitedPartnershipTransitionController;
   generalPartnerTransitionController: GeneralPartnerTransitionController;

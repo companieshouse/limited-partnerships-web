@@ -21,6 +21,9 @@ enum RegistrationPageType {
   reviewLimitedPartners = "review-limited-partners",
   removeLimitedPartner = "remove-limited-partner",
 
+  tellUsAboutPscPage = "tell-us-about-people-with-significant-control",
+  willLimitedPartnershipHavePsc = "will-the-partnership-have-any-people-with-significant-control",
+
   checkYourAnswers = "check-your-answers",
   next = "next"
 }

@@ -24,6 +24,7 @@ import AddressLookUpService from "../application/service/AddressService";
 import LimitedPartnershipService from "../application/service/LimitedPartnershipService";
 import GeneralPartnerService from "../application/service/GeneralPartnerService";
 import LimitedPartnerService from "../application/service/LimitedPartnerService";
+import PersonWithSignificantControlService from "../application/service/PersonWithSignificantControlService";
 import CompanyService from "../application/service/CompanyService";
 import PaymentService from "../application/service/PaymentService";
 import TransactionService from "../application/service/TransactionService";
@@ -34,6 +35,7 @@ import AddressLookUpController from "../presentation/controller/addressLookUp/Co
 import LimitedPartnershipRegistrationController from "../presentation/controller/registration/LimitedPartnershipController";
 import GeneralPartnerRegistrationController from "../presentation/controller/registration/GeneralPartnerController";
 import LimitedPartnerRegistrationController from "../presentation/controller/registration/LimitedPartnerController";
+import PersonWithSignificantControlRegistrationController from "../presentation/controller/registration/PersonWithSignificantControlController";
 import LimitedPartnershipTransitionController from "../presentation/controller/transition/LimitedPartnershipController";
 import GeneralPartnerTransitionController from "../presentation/controller/transition/GeneralPartnerController";
 import LimitedPartnerTransitionController from "../presentation/controller/transition/LimitedPartnerController";
@@ -61,6 +63,7 @@ export type BuiltDependencies = {
   limitedPartnershipService: LimitedPartnershipService;
   generalPartnerService: GeneralPartnerService;
   limitedPartnerService: LimitedPartnerService;
+  personWithSignificantControlService: PersonWithSignificantControlService;
   companyService: CompanyService;
   paymentService: PaymentService;
   transactionService: TransactionService;
@@ -72,6 +75,7 @@ export type BuiltDependencies = {
   limitedPartnershipRegistrationController: LimitedPartnershipRegistrationController;
   generalPartnerRegistrationController: GeneralPartnerRegistrationController;
   limitedPartnerRegistrationController: LimitedPartnerRegistrationController;
+  personWithSignificantControlRegistrationController: PersonWithSignificantControlRegistrationController;
   limitedPartnershipTransitionController: LimitedPartnershipTransitionController;
   generalPartnerTransitionController: GeneralPartnerTransitionController;
   limitedPartnerTransitionController: LimitedPartnerTransitionController;
@@ -105,6 +109,7 @@ export function buildDependencies(useInMemory = false): BuiltDependencies {
   const cacheService = new CacheService(cacheRepository);
   const generalPartnerService: GeneralPartnerService = new GeneralPartnerService(generalPartnerGateway);
   const limitedPartnerService: LimitedPartnerService = new LimitedPartnerService(limitedPartnerGateway);
+  const personWithSignificantControlService: PersonWithSignificantControlService = new PersonWithSignificantControlService();
   const companyService = new CompanyService(companyGateway);
   const paymentService = new PaymentService(paymentGateway);
   const transactionService: TransactionService = new TransactionService(transactionGateway);
@@ -143,6 +148,8 @@ export function buildDependencies(useInMemory = false): BuiltDependencies {
 
   const limitedPartnerRegistrationController: LimitedPartnerRegistrationController =
     new LimitedPartnerRegistrationController(limitedPartnershipService, generalPartnerService, limitedPartnerService);
+
+  const personWithSignificantControlRegistrationController: PersonWithSignificantControlRegistrationController = new PersonWithSignificantControlRegistrationController(limitedPartnershipService, personWithSignificantControlService);
 
   const limitedPartnershipTransitionController: LimitedPartnershipTransitionController =
     new LimitedPartnershipTransitionController(
@@ -217,6 +224,7 @@ export function buildDependencies(useInMemory = false): BuiltDependencies {
     limitedPartnershipService,
     generalPartnerService,
     limitedPartnerService,
+    personWithSignificantControlService,
     companyService,
     paymentService,
     transactionService,
@@ -228,6 +236,7 @@ export function buildDependencies(useInMemory = false): BuiltDependencies {
     limitedPartnershipRegistrationController,
     generalPartnerRegistrationController,
     limitedPartnerRegistrationController,
+    personWithSignificantControlRegistrationController,
 
     limitedPartnershipTransitionController,
     generalPartnerTransitionController,
