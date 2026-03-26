@@ -642,13 +642,6 @@
         "pageInformation": "If the partnership has more than one limited partner, you'll add them one at a time."
     },
 
-    "tellUsAboutPscPage": {
-        "title": "Tell us about people with significant control (PSCs)",
-        "pageInformation": "We'll ask you whether the partnership will have any PSCs. If it will, you'll need to tell us about them.",
-        "moreThanOne": "If the partnership has more than one PSC, you'll add them one at a time.",
-        "futureChanges": "You'll need to file any future changes to PSCs on paper."
-    },
-
     "links" : {
       "back": "Back",
       "signOut": "Sign out"
@@ -699,6 +692,19 @@
       "expired" : "your payment expired",
       "error" : "there was an error (for example, a technical error)",
       "retry" : "Your application has been saved in Your Filings. To submit the application, you will need to <a class='govuk-link' href='/user/transactions'>find the application in Your Filings</a> and complete payment."
+    },
+
+    "personWithSignificantControl": {
+        "tellUsAboutPscPage": {
+            "title": "Tell us about people with significant control (PSCs)",
+            "pageInformation": "We'll ask you whether the partnership will have any PSCs. If it will, you'll need to tell us about them.",
+            "moreThanOne": "If the partnership has more than one PSC, you'll add them one at a time.",
+            "futureChanges": "You'll need to file any future changes to PSCs on paper."
+        },
+        "addRelevantLegalEntity": {
+            "title": "Add a relevant legal entity",
+            "pageInformation": "Tell us about the relevant legal entity."
+        }
     },
 
     "print" : {

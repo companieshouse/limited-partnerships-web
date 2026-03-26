@@ -30,7 +30,8 @@ import {
   REVIEW_LIMITED_PARTNERS_URL,
   REMOVE_LIMITED_PARTNER_URL,
   REGISTRATION_START_URL,
-  TELL_US_ABOUT_PSC_URL
+  TELL_US_ABOUT_PSC_URL,
+  ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL
 } from "../presentation/controller/registration/url";
 import RegistrationPageType from "../presentation/controller/registration/PageType";
 import registrationsRouting from "../presentation/controller/registration/Routing";
@@ -265,6 +266,11 @@ export const registrationEndpoints = (
 
   router.get(
     TELL_US_ABOUT_PSC_URL,
+    dependencies.personWithSignificantControlRegistrationController.getPageRouting()
+  );
+
+  router.get(
+    ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL,
     dependencies.personWithSignificantControlRegistrationController.getPageRouting()
   );
 

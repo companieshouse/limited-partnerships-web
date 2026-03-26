@@ -18,6 +18,8 @@ import PaymentGateway from "../infrastructure/gateway/payment/PaymentGateway";
 import PaymentInMemoryGateway from "../infrastructure/gateway/payment/PaymentInMemoryGateway";
 import FilingHistoryGateway from "../infrastructure/gateway/filingHistory/FilingHistoryGateway";
 import FilingHistoryInMemoryGateway from "../infrastructure/gateway/filingHistory/FilingHistoryInMemoryGateway";
+import PersonWithSignificantControlGateway from "../infrastructure/gateway/personWithSignificantControl/PersonWithSignificantControlGateway";
+import PersonWithSignificantControlInMemoryGateway from "../infrastructure/gateway/personWithSignificantControl/PersonWithSignificantControlInMemoryGateway";
 
 import CacheService from "../application/service/CacheService";
 import AddressLookUpService from "../application/service/AddressService";
@@ -53,6 +55,7 @@ export type BuiltDependencies = {
   incorporationGateway: any;
   generalPartnerGateway: any;
   limitedPartnerGateway: any;
+  personWithSignificantControlGateway: any;
   companyGateway: any;
   paymentGateway: any;
   cacheRepository: any;
@@ -92,6 +95,8 @@ export function buildDependencies(useInMemory = false): BuiltDependencies {
   const incorporationGateway = useInMemory ? new IncorporationInMemoryGateway() : new IncorporationGateway();
   const generalPartnerGateway = useInMemory ? new GeneralPartnerInMemoryGateway() : new GeneralPartnerGateway();
   const limitedPartnerGateway = useInMemory ? new LimitedPartnerInMemoryGateway() : new LimitedPartnerGateway();
+  const personWithSignificantControlGateway =
+    useInMemory ? new PersonWithSignificantControlInMemoryGateway() : new PersonWithSignificantControlGateway();
   const companyGateway = useInMemory ? new CompanyInMemoryGateway() : new CompanyGateway();
   const paymentGateway = useInMemory ? new PaymentInMemoryGateway() : new PaymentGateway();
   const filingHistoryGateway = useInMemory ? new FilingHistoryInMemoryGateway() : new FilingHistoryGateway();
@@ -109,7 +114,8 @@ export function buildDependencies(useInMemory = false): BuiltDependencies {
   const cacheService = new CacheService(cacheRepository);
   const generalPartnerService: GeneralPartnerService = new GeneralPartnerService(generalPartnerGateway);
   const limitedPartnerService: LimitedPartnerService = new LimitedPartnerService(limitedPartnerGateway);
-  const personWithSignificantControlService: PersonWithSignificantControlService = new PersonWithSignificantControlService();
+  const personWithSignificantControlService: PersonWithSignificantControlService =
+    new PersonWithSignificantControlService(personWithSignificantControlGateway);
   const companyService = new CompanyService(companyGateway);
   const paymentService = new PaymentService(paymentGateway);
   const transactionService: TransactionService = new TransactionService(transactionGateway);
@@ -149,7 +155,11 @@ export function buildDependencies(useInMemory = false): BuiltDependencies {
   const limitedPartnerRegistrationController: LimitedPartnerRegistrationController =
     new LimitedPartnerRegistrationController(limitedPartnershipService, generalPartnerService, limitedPartnerService);
 
-  const personWithSignificantControlRegistrationController: PersonWithSignificantControlRegistrationController = new PersonWithSignificantControlRegistrationController(limitedPartnershipService, personWithSignificantControlService);
+  const personWithSignificantControlRegistrationController: PersonWithSignificantControlRegistrationController =
+    new PersonWithSignificantControlRegistrationController(
+      limitedPartnershipService,
+      personWithSignificantControlService
+    );
 
   const limitedPartnershipTransitionController: LimitedPartnershipTransitionController =
     new LimitedPartnershipTransitionController(
@@ -212,6 +222,7 @@ export function buildDependencies(useInMemory = false): BuiltDependencies {
     limitedPartnershipGateway,
     generalPartnerGateway,
     limitedPartnerGateway,
+    personWithSignificantControlGateway,
     transactionGateway,
     incorporationGateway,
     addressLookUpGateway,

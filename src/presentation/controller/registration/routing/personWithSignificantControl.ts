@@ -8,8 +8,16 @@ const registrationRoutingPersonWithSignificantControl = {
   pageType: RegistrationPageType.tellUsAboutPscPage
 };
 
+const registrationRoutingAddRelevantLegalEntity = {
+  previousUrl: url.TELL_US_ABOUT_PSC_URL,
+  currentUrl: url.ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL,
+  nextUrl: url.WILL_LIMITED_PARTNERSHIP_HAVE_PSC_URL,
+  pageType: RegistrationPageType.addPersonWithSignificantControlRelevantLegalEntity
+};
+
 const personWithSignificantControlRouting = [
-  registrationRoutingPersonWithSignificantControl
+  registrationRoutingPersonWithSignificantControl,
+  registrationRoutingAddRelevantLegalEntity
 ];
 
 export default personWithSignificantControlRouting;

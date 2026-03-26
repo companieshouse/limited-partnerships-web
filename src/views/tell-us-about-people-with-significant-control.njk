@@ -1,6 +1,6 @@
 {% extends "layout.njk" %}
 
-{% set pageTitle = i18n.tellUsAboutPscPage.title %}
+{% set pageTitle = i18n.personWithSignificantControl.tellUsAboutPscPage.title %}
 
 {% block content %}
   <div class="govuk-grid-row">
@@ -8,13 +8,13 @@
 
         {% include "includes/proposed-name.njk" %}        
  
-        <h1 class="govuk-heading-xl">{{ i18n.tellUsAboutPscPage.title }}</h1>
+        <h1 class="govuk-heading-xl">{{ i18n.personWithSignificantControl.tellUsAboutPscPage.title }}</h1>
 
-        <p class="govuk-body">{{ i18n.tellUsAboutPscPage.pageInformation }}</p>
+        <p class="govuk-body">{{ i18n.personWithSignificantControl.tellUsAboutPscPage.pageInformation }}</p>
 
-        <p class="govuk-body">{{ i18n.tellUsAboutPscPage.moreThanOne }}</p>
+        <p class="govuk-body">{{ i18n.personWithSignificantControl.tellUsAboutPscPage.moreThanOne }}</p>
 
-        <p class="govuk-body">{{ i18n.tellUsAboutPscPage.futureChanges }}</p>
+        <p class="govuk-body">{{ i18n.personWithSignificantControl.tellUsAboutPscPage.futureChanges }}</p>
       
         <button class="govuk-button" data-event-id="continue" onClick="location.href='{{ props.nextUrl }}'">{{ i18n.buttons.continue }}</button>
 

@@ -25,4 +25,6 @@ export const REMOVE_LIMITED_PARTNER_TEMPLATE = RegistrationPageType.removeLimite
 export const TELL_US_ABOUT_PSC_TEMPLATE = RegistrationPageType.tellUsAboutPscPage;
 export const WILL_LIMITED_PARTNERSHIP_HAVE_PSC_TEMPLATE = RegistrationPageType.willLimitedPartnershipHavePsc;
 
+export const ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_TEMPLATE = RegistrationPageType.addPersonWithSignificantControlRelevantLegalEntity;
+
 export const CHECK_YOUR_ANSWERS_TEMPLATE = RegistrationPageType.checkYourAnswers;
