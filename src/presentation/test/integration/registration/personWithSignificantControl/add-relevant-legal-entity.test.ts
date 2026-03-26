@@ -7,7 +7,11 @@ import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 
-import { ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL } from "../../../../controller/registration/url";
+import {
+  ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL,
+  ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_WITH_IDS_URL,
+  PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL
+} from "../../../../controller/registration/url";
 
 describe("Add Relevant Legal Entity Page", () => {
   const URL = getUrl(ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL);
@@ -37,5 +41,17 @@ describe("Add Relevant Legal Entity Page", () => {
         testTranslations(res.text, translationText.personWithSignificantControl.addRelevantLegalEntity);
       }
     );
+
+    it("should contain a back link to the choice page", async () => {
+      const res = await request(app).get(
+        getUrl(ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_WITH_IDS_URL)
+      );
+
+      const BACK_LINK = getUrl(PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL);
+
+      expect(res.status).toBe(200);
+
+      expect(res.text).toContain(BACK_LINK);
+    });
   });
 });
