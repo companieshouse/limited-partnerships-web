@@ -27,9 +27,18 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
           ids.submissionId
         );
 
+        let personWithSignificantControl;
+        if (ids.personWithSignificantControlId) {
+          personWithSignificantControl = await this.personWithSignificantControlService.getPersonWithSignificantControl(
+            tokens,
+            ids.transactionId,
+            ids.personWithSignificantControlId
+          );
+        }
+
         response.render(
           super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { limitedPartnership }, null)
+          super.makeProps(pageRouting, { limitedPartnership, personWithSignificantControl }, null)
         );
       } catch (error) {
         next(error);

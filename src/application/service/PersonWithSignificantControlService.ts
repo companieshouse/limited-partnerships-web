@@ -1,4 +1,6 @@
+import { PersonWithSignificantControl } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 import IPersonWithSignificantControlGateway from "../../domain/IPersonWithSignificantControlGateway";
+import { Tokens } from "../../domain/types";
 import { logger } from "../../utils";
 import { extractAPIErrors } from "./utils";
 
@@ -37,6 +39,24 @@ class PersonWithSignificantControlService {
         personWithSignificantControlId: "",
         errors
       };
+    }
+  }
+
+  async getPersonWithSignificantControl(
+    opt: Tokens,
+    transactionId: string,
+    generalPartnerId: string
+  ): Promise<PersonWithSignificantControl> {
+    try {
+      return await this.personWithSignificantControlGateway.getPersonWithSignificantControl(
+        opt,
+        transactionId,
+        generalPartnerId
+      );
+    } catch (error: any) {
+      logger.error(`Error getting PersonWithSignificantControl ${JSON.stringify(error)}`);
+
+      throw error;
     }
   }
 }
