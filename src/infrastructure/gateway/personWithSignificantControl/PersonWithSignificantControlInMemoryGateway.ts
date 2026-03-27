@@ -1,7 +1,5 @@
 /* eslint-disable */
 
-import { PersonWithSignificantControl } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
-
 import IPersonWithSignificantControlGateway from "../../../domain/IPersonWithSignificantControlGateway";
 import { Tokens } from "../../../domain/types";
 import UIErrors, { ApiErrors } from "../../../domain/entities/UIErrors";
@@ -45,7 +43,7 @@ export default class PersonWithSignificantControlInMemoryGateway implements IPer
     _transactionId: string,
     personWithSignificantControlId: string
   ): Promise<any> {
-    return this.personsWithSignificantControl.find((p) => p.id === personWithSignificantControlId);
+    return this.personsWithSignificantControl.find((psc) => psc._id === personWithSignificantControlId);
   }
 
   public async sendPageData(

@@ -41,56 +41,6 @@ class PersonWithSignificantControlBuilder {
     return this;
   }
 
-  withAppointmentId(appointmentId: string) {
-    this.data.appointment_id = appointmentId;
-    return this;
-  }
-
-  withCompleted(completed: boolean) {
-    this.data.completed = completed;
-    return this;
-  }
-
-  withPrincipalOfficeAddress(principalOfficeAddress: Record<string, any> | null) {
-    this.data.principal_office_address = principalOfficeAddress;
-    return this;
-  }
-
-  withLegalEntityRegistrationLocation(legalEntityRegistrationLocation: string) {
-    this.data.legal_entity_registration_location = legalEntityRegistrationLocation;
-    return this;
-  }
-
-  withKind(kind: string) {
-    this.data.kind = kind;
-    return this;
-  }
-
-  withLegalEntityName(legalEntityName: string): this {
-    this.data.legal_entity_name = legalEntityName;
-    return this;
-  }
-
-  withLegalForm(legalForm: string): this {
-    this.data.legal_form = legalForm;
-    return this;
-  }
-
-  withGoverningLaw(governingLaw: string): this {
-    this.data.governing_law = governingLaw;
-    return this;
-  }
-
-  withLegalEntityRegisterName(legalEntityRegisterName: string): this {
-    this.data.legal_entity_register_name = legalEntityRegisterName;
-    return this;
-  }
-
-  withRegistrationNumber(registeredCompanyNumber: string): this {
-    this.data.registered_company_number = registeredCompanyNumber;
-    return this;
-  }
-
   isRelevantLegalEntity() {
     this.data = {
       ...this.data,

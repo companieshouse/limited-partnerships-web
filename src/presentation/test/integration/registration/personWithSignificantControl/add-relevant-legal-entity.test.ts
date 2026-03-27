@@ -5,7 +5,7 @@ import cyTranslationText from "../../../../../../locales/cy/translations.json";
 
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
+import { getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../utils";
 import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 
 import {
@@ -66,6 +66,23 @@ describe("Add Person With Significant Control Relevant Legal Entity Page", () =>
       expect(res.status).toBe(200);
 
       expect(res.text).toContain(BACK_LINK);
+    });
+
+    it("should load data from api", async () => {
+      const URL = getUrl(ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_WITH_IDS_URL);
+
+      const personWithSignificantControl = new PersonWithSignificantControlBuilder()
+        .isRelevantLegalEntity()
+        .withId(appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId)
+        .build();
+      appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([
+        personWithSignificantControl
+      ]);
+
+      const res = await request(app).get(URL);
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(toEscapedHtml(personWithSignificantControl?.data?.legal_entity_name ?? ""));
     });
   });
 
