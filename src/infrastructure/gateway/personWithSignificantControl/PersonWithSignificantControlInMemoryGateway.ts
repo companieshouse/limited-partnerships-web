@@ -4,14 +4,25 @@ import { PersonWithSignificantControl } from "@companieshouse/api-sdk-node/dist/
 
 import IPersonWithSignificantControlGateway from "../../../domain/IPersonWithSignificantControlGateway";
 import { Tokens } from "../../../domain/types";
+import UIErrors, { ApiErrors } from "../../../domain/entities/UIErrors";
 
 export default class PersonWithSignificantControlInMemoryGateway implements IPersonWithSignificantControlGateway {
-  private personWithSignificantControlId = crypto.randomUUID().toString();
-
-  private personsWithSignificantControl: PersonWithSignificantControl[] = [];
+  personWithSignificantControlId = crypto.randomUUID().toString();
+  personsWithSignificantControl: PersonWithSignificantControl[] = [];
+  uiErrors: UIErrors = new UIErrors();
 
   public feedPersonsWithSignificantControl(data: PersonWithSignificantControl[]) {
     this.personsWithSignificantControl = data || [];
+  }
+
+  public feedErrors(errors?: ApiErrors) {
+    this.uiErrors.errors.errorList = [];
+
+    if (!errors) {
+      return;
+    }
+
+    this.uiErrors.formatValidationErrorToUiErrors(errors);
   }
 
   public async createPersonWithSignificantControl(
@@ -19,6 +30,10 @@ export default class PersonWithSignificantControlInMemoryGateway implements IPer
     _transactionId: string,
     data: Record<string, any>
   ): Promise<string> {
+    if (this.uiErrors?.hasErrors()) {
+      throw this.uiErrors;
+    }
+
     this.personsWithSignificantControl.push({ data });
 
     return this.personWithSignificantControlId;

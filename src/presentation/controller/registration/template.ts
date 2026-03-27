@@ -27,5 +27,6 @@ export const WILL_LIMITED_PARTNERSHIP_HAVE_PSC_TEMPLATE = RegistrationPageType.w
 export const PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_TEMPLATE = RegistrationPageType.personWithSignificantControlChoice;
 
 export const ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_TEMPLATE = RegistrationPageType.addPersonWithSignificantControlRelevantLegalEntity;
+export const WHICH_TYPE_OF_NATURE_OF_CONTROL_TEMPLATE = RegistrationPageType.whichTypeOfNatureOfControl;
 
 export const CHECK_YOUR_ANSWERS_TEMPLATE = RegistrationPageType.checkYourAnswers;
