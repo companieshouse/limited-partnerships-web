@@ -480,7 +480,12 @@
             "printMessage": "Print or save this page for your records.",
             "information": "We will not send you or the partnership a copy of this information.",
             "notUpdated": "Not updated"
-        }       
+        },
+        "psc": {
+            "title": "People with significant control (PSCs)",
+            "headingPscStatement": "PSC statement",
+            "noPscStatement": "A PSC statement has not been provided because the partnership does not have any registrable PSCs, or relevant legal entities, or relevant officers."
+        }
     },
 
     "companyNumber" : {

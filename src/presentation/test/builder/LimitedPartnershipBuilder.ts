@@ -94,6 +94,11 @@ class LimitedPartnershipBuilder {
     return this;
   }
 
+  withHasPersonWithSignificantControl(hasPersonWithSignificantControl: boolean) {
+    (this.data as any).has_person_with_significant_control = hasPersonWithSignificantControl;
+    return this;
+  }
+
   build(): TransactionLimitedPartnership {
     return {
       _id: this["_id"],

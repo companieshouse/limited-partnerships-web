@@ -479,6 +479,11 @@
             "printMessage": "WELSH - Print or save this page for your records.",
             "information": "WELSH - We will not send you or the partnership a copy of this information.",
             "notUpdated": "WELSH - Not updated"
+        },
+        "psc": {
+            "title": "WELSH - People with significant control (PSCs)",
+            "headingPscStatement": "WELSH - PSC statement",
+            "noPscStatement": "WELSH - A PSC statement has not been provided because the partnership does not have any registrable PSCs, or relevant legal entities, or relevant officers."
         }
     },
 
