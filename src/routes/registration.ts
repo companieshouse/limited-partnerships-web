@@ -289,6 +289,11 @@ export const registrationEndpoints = (
     dependencies.personWithSignificantControlRegistrationController.getPageRouting()
   );
 
+  router.post(
+    ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_WITH_IDS_URL,
+    dependencies.personWithSignificantControlRegistrationController.sendPageData()
+  );
+
   // check your answers
   router.get(
     CHECK_YOUR_ANSWERS_URL,

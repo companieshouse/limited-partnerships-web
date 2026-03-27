@@ -5,13 +5,14 @@ import { PersonWithSignificantControl } from "@companieshouse/api-sdk-node/dist/
 import IPersonWithSignificantControlGateway from "../../../domain/IPersonWithSignificantControlGateway";
 import { Tokens } from "../../../domain/types";
 import UIErrors, { ApiErrors } from "../../../domain/entities/UIErrors";
+import TransactionPersonWithSignificantControl from "../../../domain/entities/TransactionPersonWithSignificantControl";
 
 export default class PersonWithSignificantControlInMemoryGateway implements IPersonWithSignificantControlGateway {
   personWithSignificantControlId = crypto.randomUUID().toString();
-  personsWithSignificantControl: PersonWithSignificantControl[] = [];
+  personsWithSignificantControl: TransactionPersonWithSignificantControl[] = [];
   uiErrors: UIErrors = new UIErrors();
 
-  public feedPersonsWithSignificantControl(data: PersonWithSignificantControl[]) {
+  public feedPersonsWithSignificantControl(data: TransactionPersonWithSignificantControl[]) {
     this.personsWithSignificantControl = data || [];
   }
 
@@ -53,10 +54,16 @@ export default class PersonWithSignificantControlInMemoryGateway implements IPer
     personWithSignificantControlId: string,
     data: Record<string, any>
   ): Promise<void> {
-    const idx = this.personsWithSignificantControl.findIndex((p) => p.id === personWithSignificantControlId);
-
-    if (idx !== -1) {
-      this.personsWithSignificantControl[idx].data = { ...this.personsWithSignificantControl[idx].data, ...data };
+    if (this.uiErrors?.hasErrors()) {
+      throw this.uiErrors;
     }
+
+    const index = this.personsWithSignificantControl.findIndex((psc) => psc._id === personWithSignificantControlId);
+
+    if (index === -1) {
+      throw new Error(`Not found: ${personWithSignificantControlId}`);
+    }
+
+    this.personsWithSignificantControl[index].data = { ...this.personsWithSignificantControl[index].data, ...data };
   }
 }

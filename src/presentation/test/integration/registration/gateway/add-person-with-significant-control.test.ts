@@ -10,7 +10,10 @@ import { getUrl, setLocalesEnabled } from "../../../utils";
 import sdkMock from "../../mock/sdkMock";
 
 import RegistrationPageType from "../../../../controller/registration/PageType";
-import { ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL } from "../../../../controller/registration/url";
+import {
+  ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL,
+  ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_WITH_IDS_URL
+} from "../../../../controller/registration/url";
 
 jest.mock("@companieshouse/api-sdk-node");
 
@@ -29,6 +32,22 @@ describe("Add Person With Significant Person Legal Entity Page", () => {
 
   describe("200", () => {
     it("should add a person with significant control relavent legal entity", async () => {
+      const res = await request(appRealDependencies).post(URL).send({
+        pageType: RegistrationPageType.addPersonWithSignificantControlRelevantLegalEntity
+      });
+
+      expect(res.status).toBe(302);
+    });
+
+    it("should get a person with significant control relavent legal entity", async () => {
+      const res = await request(appRealDependencies).get(URL);
+
+      expect(res.status).toBe(200);
+    });
+
+    it("should patch a person with significant control relavent legal entity", async () => {
+      const URL = getUrl(ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_WITH_IDS_URL);
+
       const res = await request(appRealDependencies).post(URL).send({
         pageType: RegistrationPageType.addPersonWithSignificantControlRelevantLegalEntity
       });

@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import {
   LimitedPartnershipResourceCreated,
   PersonWithSignificantControl
@@ -62,11 +60,26 @@ export default class PersonWithSignificantControlGateway implements IPersonWithS
   }
 
   public async sendPageData(
-    _opt: Tokens,
-    _transactionId: string,
-    _personWithSignificantControlId: string,
-    _data: Partial<PersonWithSignificantControl>
+    opt: Tokens,
+    transactionId: string,
+    personWithSignificantControlId: string,
+    data: Partial<PersonWithSignificantControl>
   ): Promise<void> {
-    return;
+    const apiCall = {
+      service: SDK_LIMITED_PARTNERSHIP_SERVICE,
+      method: "patchPsc",
+      args: [transactionId, personWithSignificantControlId, data]
+    };
+
+    const response = await makeApiCallWithRetry<Resource<void>>(opt, apiCall);
+
+    const uiErrors = checkForBadRequest<void>(response);
+    if (uiErrors) {
+      throw uiErrors;
+    }
+
+    if (response.httpStatusCode !== 200) {
+      throw response;
+    }
   }
 }

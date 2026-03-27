@@ -1,8 +1,10 @@
 import { PersonWithSignificantControl } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
-import IPersonWithSignificantControlGateway from "../../domain/IPersonWithSignificantControlGateway";
+
 import { Tokens } from "../../domain/types";
 import { logger } from "../../utils";
 import { extractAPIErrors } from "./utils";
+import UIErrors from "../../domain/entities/UIErrors";
+import IPersonWithSignificantControlGateway from "../../domain/IPersonWithSignificantControlGateway";
 
 class PersonWithSignificantControlService {
   i18n: any;
@@ -57,6 +59,31 @@ class PersonWithSignificantControlService {
       logger.error(`Error getting PersonWithSignificantControl ${JSON.stringify(error)}`);
 
       throw error;
+    }
+  }
+
+  async sendPageData(
+    opt: Tokens,
+    transactionId: string,
+    generalPartnerId: string,
+    data: Record<string, any>
+  ): Promise<void | {
+    errors?: UIErrors;
+  }> {
+    try {
+      await this.personWithSignificantControlGateway.sendPageData(opt, transactionId, generalPartnerId, data);
+    } catch (errors: any) {
+      const { apiErrors, isValidationErrors } = extractAPIErrors(errors);
+
+      logger.error(`Error sending data: ${JSON.stringify(apiErrors)}`);
+
+      if (!isValidationErrors) {
+        throw errors;
+      }
+
+      return {
+        errors
+      };
     }
   }
 }

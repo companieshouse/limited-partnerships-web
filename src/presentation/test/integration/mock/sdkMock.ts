@@ -124,6 +124,10 @@ export const getPsc = jest.fn().mockImplementation(() => ({
     .withId(appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId)
     .build()
 }));
+export const patchPsc = jest.fn().mockImplementation(() => ({
+  httpStatusCode: 200,
+  resource: {}
+}));
 
 // Refresh Token service
 export const refresh = jest.fn().mockImplementation(() => ({
@@ -235,7 +239,8 @@ const sdkMock = {
     deleteLimitedPartner,
     // person with significant control
     postPsc,
-    getPsc
+    getPsc,
+    patchPsc
   },
   refreshToken: {
     ...RefreshTokenService.prototype,
