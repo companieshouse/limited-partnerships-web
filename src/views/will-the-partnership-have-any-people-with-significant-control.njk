@@ -1,0 +1,53 @@
+{% extends "layout.njk" %}
+
+{% set pageTitle = i18n.personWithSignificantControl.willThePartnershipHaveAnyPscPage.title %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form class="form" method="post">
+        <input type="hidden" name="pageType" value={{ props.pageType }}>
+          {% include "includes/csrf_token.njk" %}
+
+          {% include "includes/errors.njk" %}
+
+          {% include "includes/proposed-name.njk" %}        
+
+          {{ govukRadios({
+            classes: "govuk-radios",
+            name: "has_person_with_significant_control",
+            id: "has_person_with_significant_control",
+            value: props.data.limitedPartnership.data.has_person_with_significant_control,
+            fieldset: {
+              legend: {
+                text: i18n.personWithSignificantControl.willThePartnershipHaveAnyPscPage.title,
+                isPageHeading: true,
+                classes: "govuk-fieldset__legend--xl"
+              }
+            },
+            items: [
+              {
+                value: "true",
+                text: i18n.personWithSignificantControl.willThePartnershipHaveAnyPscPage.optionYes
+              },
+              {
+                value: "false",
+                text: i18n.personWithSignificantControl.willThePartnershipHaveAnyPscPage.optionNo
+              }
+            ],
+            errorMessage: {
+              text: i18n.personWithSignificantControl.willThePartnershipHaveAnyPscPage.errorMessage
+            } if props.errors
+          }) }}
+        
+          {{ govukButton({
+            text: i18n.buttons.saveAndContinue,
+            attributes: {
+              "id": "submit",
+              "data-event-id": "will-the-partnership-have-any-people-with-significant-control-submit"
+            }
+          }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}
