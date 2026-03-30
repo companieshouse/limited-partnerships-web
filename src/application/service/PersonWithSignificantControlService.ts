@@ -31,7 +31,7 @@ class PersonWithSignificantControlService {
     } catch (errors: any) {
       const { apiErrors, isValidationErrors } = extractAPIErrors(errors);
 
-      logger.error(`Error creating general partner: ${JSON.stringify(apiErrors)}`);
+      logger.error(`Error creating person with significant control: ${JSON.stringify(apiErrors)}`);
 
       if (!isValidationErrors) {
         throw errors;
@@ -47,16 +47,16 @@ class PersonWithSignificantControlService {
   async getPersonWithSignificantControl(
     opt: Tokens,
     transactionId: string,
-    generalPartnerId: string
+    personWithSignificantControlId: string
   ): Promise<PersonWithSignificantControl> {
     try {
       return await this.personWithSignificantControlGateway.getPersonWithSignificantControl(
         opt,
         transactionId,
-        generalPartnerId
+        personWithSignificantControlId
       );
     } catch (error: any) {
-      logger.error(`Error getting PersonWithSignificantControl ${JSON.stringify(error)}`);
+      logger.error(`Error getting person with significant control ${JSON.stringify(error)}`);
 
       throw error;
     }
@@ -65,17 +65,22 @@ class PersonWithSignificantControlService {
   async sendPageData(
     opt: Tokens,
     transactionId: string,
-    generalPartnerId: string,
+    personWithSignificantControlId: string,
     data: Record<string, any>
   ): Promise<void | {
     errors?: UIErrors;
   }> {
     try {
-      await this.personWithSignificantControlGateway.sendPageData(opt, transactionId, generalPartnerId, data);
+      await this.personWithSignificantControlGateway.sendPageData(
+        opt,
+        transactionId,
+        personWithSignificantControlId,
+        data
+      );
     } catch (errors: any) {
       const { apiErrors, isValidationErrors } = extractAPIErrors(errors);
 
-      logger.error(`Error sending data: ${JSON.stringify(apiErrors)}`);
+      logger.error(`Error sending person with significant control data: ${JSON.stringify(apiErrors)}`);
 
       if (!isValidationErrors) {
         throw errors;

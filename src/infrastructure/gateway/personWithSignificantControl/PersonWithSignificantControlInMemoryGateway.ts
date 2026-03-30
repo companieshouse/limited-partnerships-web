@@ -59,7 +59,7 @@ export default class PersonWithSignificantControlInMemoryGateway implements IPer
     const index = this.personsWithSignificantControl.findIndex((psc) => psc._id === personWithSignificantControlId);
 
     if (index === -1) {
-      throw new Error(`Not found: ${personWithSignificantControlId}`);
+      throw new Error(`Person with significant control not found: ${personWithSignificantControlId}`);
     }
 
     this.personsWithSignificantControl[index].data = { ...this.personsWithSignificantControl[index].data, ...data };

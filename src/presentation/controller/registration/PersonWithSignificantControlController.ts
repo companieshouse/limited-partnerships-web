@@ -64,7 +64,7 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
           const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
             tokens,
             ids.transactionId,
-            ids.generalPartnerId
+            ids.submissionId
           );
 
           return response.render(
@@ -108,7 +108,7 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
           const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
             tokens,
             ids.transactionId,
-            ids.generalPartnerId
+            ids.submissionId
           );
 
           return response.render(

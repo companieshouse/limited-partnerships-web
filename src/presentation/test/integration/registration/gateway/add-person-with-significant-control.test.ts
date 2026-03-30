@@ -26,7 +26,7 @@ describe("Add Person With Significant Person Legal Entity Page", () => {
   beforeEach(() => {
     setLocalesEnabled(false);
 
-    appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
+    appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([]);
     mockCreateApiClient.mockReturnValue(sdkMock);
   });
 

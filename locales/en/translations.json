@@ -704,10 +704,10 @@
         "addRelevantLegalEntity": {
             "title": "Add a relevant legal entity",
 
-            "legalEntityName" : "What is the legal entity (RLE)'s name?",
+            "legalEntityName" : "What is the relevant legal entity (RLE)'s name?",
             "legalFormOrCorporateIdentity" : "What is its legal form or corporate identity?",
             "legalFormOrCorporateIdentityHint" : "This is the corporate body type. For example, private limited company.",
-            "governingLaw" : "What governing law it operate under?",
+            "governingLaw" : "What governing law does it operate under?",
             "governingLawHint" : "For example, the Companies Act 2006.",
             "whichRegister" : "Which register is it entered in? (if applicable)",
             "whichRegisterHint" : "For example, the Register of Companies UK.",
