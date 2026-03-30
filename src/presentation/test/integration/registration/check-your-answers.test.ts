@@ -83,7 +83,8 @@ describe("Check Your Answers Page", () => {
         "submitFiling",
         "update",
         "ceaseDate",
-        "warningMessageUpdate"
+        "warningMessageUpdate",
+        "psc"
       ]);
       expect(res.text).toContain(enTranslationText.termPage.byAgreement);
       expect(res.text).toContain(enTranslationText.print.buttonText);
@@ -116,7 +117,8 @@ describe("Check Your Answers Page", () => {
         "submitFiling",
         "update",
         "ceaseDate",
-        "warningMessageUpdate"
+        "warningMessageUpdate",
+        "psc"
       ]);
       expect(res.text).toContain(cyTranslationText.termPage.byAgreement);
       expect(res.text).toContain(cyTranslationText.print.buttonText);
@@ -307,7 +309,8 @@ describe("Check Your Answers Page", () => {
       "submitFiling",
       "update",
       "ceaseDate",
-      "warningMessageUpdate"
+      "warningMessageUpdate",
+      "psc"
     ]);
 
     checkIfValuesInText(res, generalPartnerPerson, enTranslationText);
@@ -336,7 +339,8 @@ describe("Check Your Answers Page", () => {
       "submitFiling",
       "update",
       "ceaseDate",
-      "warningMessageUpdate"
+      "warningMessageUpdate",
+      "psc"
     ]);
 
     checkIfValuesInText(res, generalPartnerPerson, cyTranslationText);
@@ -402,6 +406,79 @@ describe("Check Your Answers Page", () => {
     expect(res.status).toBe(200);
     expect(res.text).toContain("5.00 WELSH - Pound Sterling (GBP)");
     expect(res.text).toContain("WELSH - Shares / WELSH - Any other asset");
+  });
+
+  describe("PSC statement on CYA page", () => {
+    it.each([
+      ["English", "en", enTranslationText],
+      ["Welsh", "cy", cyTranslationText]
+    ])(
+      "should display No PSC statement with change link in %s when has_person_with_significant_control is false",
+      async (_description: string, lang: string, translationText: Record<string, any>) => {
+        setLocalesEnabled(true);
+
+        const limitedPartnership = new LimitedPartnershipBuilder()
+          .withHasPersonWithSignificantControl(false)
+          .build();
+
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+        const res = await request(app).get(URL + `?lang=${lang}`);
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(translationText.checkYourAnswersPage.psc.title);
+        expect(res.text).toContain(translationText.checkYourAnswersPage.psc.headingPscStatement);
+        expect(res.text).toContain(translationText.checkYourAnswersPage.psc.noPscStatement);
+        expect(res.text).toContain("will-the-partnership-have-any-people-with-significant-control");
+        expect(res.text).toContain("change-psc-statement-button");
+      }
+    );
+
+    it.each([
+      ["true", true],
+      ["not set", undefined]
+    ])(
+      "should not display PSC statement section when has_person_with_significant_control is %s",
+      async (_description: string, hasPsc: boolean | undefined) => {
+        const builder = new LimitedPartnershipBuilder();
+
+        if (hasPsc !== undefined) {
+          builder.withHasPersonWithSignificantControl(hasPsc);
+        }
+
+        const limitedPartnership = builder.build();
+
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+        const res = await request(app).get(URL);
+
+        expect(res.status).toBe(200);
+        expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.psc.title);
+        expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.psc.noPscStatement);
+      }
+    );
+
+    it.each([
+      [PartnershipType.SLP, "will-the-partnership-have-any-people-with-significant-control"],
+      [PartnershipType.SPFLP, "will-the-partnership-have-any-people-with-significant-control"],
+      [PartnershipType.LP, "review-limited-partners"],
+      [PartnershipType.PFLP, "review-limited-partners"]
+    ])(
+      "should set the back link correctly for partnership type %s",
+      async (partnershipType: PartnershipType, expectedBackLinkPageType: string) => {
+        const limitedPartnership = new LimitedPartnershipBuilder()
+          .withPartnershipType(partnershipType)
+          .withHasPersonWithSignificantControl(false)
+          .build();
+
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+        const res = await request(app).get(URL);
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(expectedBackLinkPageType);
+      }
+    );
   });
 
   describe("POST Check Your Answers Page", () => {

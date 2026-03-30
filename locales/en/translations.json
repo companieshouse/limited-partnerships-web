@@ -480,7 +480,12 @@
             "printMessage": "Print or save this page for your records.",
             "information": "We will not send you or the partnership a copy of this information.",
             "notUpdated": "Not updated"
-        }       
+        },
+        "psc": {
+            "title": "People with significant control (PSCs)",
+            "headingPscStatement": "PSC statement",
+            "noPscStatement": "There is no person identified as a person with significant control (either a registrable person or RLE) in relation to the limited partnership."
+        }
     },
 
     "companyNumber" : {

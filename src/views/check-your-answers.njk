@@ -54,6 +54,12 @@
         {% endfor %}
       {% endif %}
 
+      {% if journeyTypes.isRegistration and props.data.limitedPartnership.data.has_person_with_significant_control === false %}
+        <h2 class="govuk-heading-m">{{ i18n.checkYourAnswersPage.psc.title }}</h2>
+
+        {% include "pages/checkYourAnswers/psc-statement.njk" %}
+      {% endif %}
+
       <br>
       <div>
         <form class="form" method="post">

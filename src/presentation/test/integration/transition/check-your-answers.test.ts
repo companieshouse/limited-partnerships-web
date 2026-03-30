@@ -69,7 +69,8 @@ describe("Check Your Answers Page", () => {
         "payment",
         "update",
         "ceaseDate",
-        "warningMessageUpdate"
+        "warningMessageUpdate",
+        "psc"
       ]);
       expect(res.text).toContain(enTranslationText.print.buttonText);
       expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
@@ -96,7 +97,8 @@ describe("Check Your Answers Page", () => {
         "payment",
         "update",
         "ceaseDate",
-        "warningMessageUpdate"
+        "warningMessageUpdate",
+        "psc"
       ]);
       expect(res.text).toContain(cyTranslationText.print.buttonText);
       expect(res.text).toContain(cyTranslationText.print.buttonTextNoJs);

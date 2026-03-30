@@ -1,4 +1,5 @@
 import {
+  LimitedPartnership,
   NameEndingType,
   PartnershipType,
   Jurisdiction,
@@ -9,7 +10,7 @@ import TransactionLimitedPartnership from "../../../domain/entities/TransactionL
 
 class LimitedPartnershipBuilder {
   _id = "123456";
-  data = {
+  data: Required<LimitedPartnership>["data"] = {
     partnership_name: "partnership_name test",
     name_ending: NameEndingType.LIMITED_PARTNERSHIP,
     partnership_number: "LP123456",
@@ -91,6 +92,11 @@ class LimitedPartnershipBuilder {
 
   withDateOfUpdate(dateOfUpdate: string) {
     this.data.date_of_update = dateOfUpdate;
+    return this;
+  }
+
+  withHasPersonWithSignificantControl(hasPersonWithSignificantControl: boolean) {
+    this.data.has_person_with_significant_control = hasPersonWithSignificantControl;
     return this;
   }
 

@@ -27,7 +27,8 @@ import {
   GENERAL_PARTNERS_URL,
   NAME_WITH_IDS_URL,
   REVIEW_GENERAL_PARTNERS_URL,
-  PARTNERSHIP_TYPE_WITH_IDS_URL
+  PARTNERSHIP_TYPE_WITH_IDS_URL,
+  WILL_LIMITED_PARTNERSHIP_HAVE_PSC_URL
 } from "./url";
 import { CONFIRM_REGISTERED_OFFICE_ADDRESS_URL } from "../addressLookUp/url/registration";
 import { PAYMENT_RESPONSE_URL } from "../global/url";
@@ -56,9 +57,7 @@ class LimitedPartnershipController extends PartnershipController {
         const { tokens, pageType, ids } = super.extract(request);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
-        this.conditionalPreviousUrl(ids, pageRouting, request);
-
-        let limitedPartnership = {};
+        let limitedPartnership: LimitedPartnership = {};
 
         if (ids.transactionId && ids.submissionId) {
           limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
@@ -67,6 +66,8 @@ class LimitedPartnershipController extends PartnershipController {
             ids.submissionId
           );
         }
+
+        this.conditionalPreviousUrl(ids, pageRouting, request, limitedPartnership);
 
         const { generalPartners, limitedPartners } = await this.getPartners(
           pageRouting,
@@ -100,7 +101,7 @@ class LimitedPartnershipController extends PartnershipController {
     return { generalPartners: [], limitedPartners: [] };
   }
 
-  private conditionalPreviousUrl(ids: Ids, pageRouting: PageRouting, request: Request) {
+  private conditionalPreviousUrl(ids: Ids, pageRouting: PageRouting, request: Request, limitedPartnership?: LimitedPartnership) {
     const previousPageType = super.pageType(request.get("Referrer") ?? "");
 
     if (previousPageType === RegistrationPageType.checkYourAnswers) {
@@ -109,6 +110,15 @@ class LimitedPartnershipController extends PartnershipController {
       // change back link if we have ids in url
       if (ids.transactionId && ids.submissionId) {
         pageRouting.previousUrl = super.insertIdsInUrl(PARTNERSHIP_TYPE_WITH_IDS_URL, ids, request.url);
+      }
+    }
+
+    // Separate check: set the CYA page's own back link based on partnership type
+    if (pageRouting.pageType === RegistrationPageType.checkYourAnswers && limitedPartnership) {
+      const partnershipType = limitedPartnership.data?.partnership_type;
+
+      if (partnershipType === PartnershipType.SLP || partnershipType === PartnershipType.SPFLP) {
+        pageRouting.previousUrl = super.insertIdsInUrl(WILL_LIMITED_PARTNERSHIP_HAVE_PSC_URL, ids, request.url);
       }
     }
   }
