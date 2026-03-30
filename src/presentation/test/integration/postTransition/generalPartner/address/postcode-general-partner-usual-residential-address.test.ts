@@ -6,7 +6,7 @@ import cyTranslationText from "../../../../../../../locales/cy/translations.json
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import app from "../../../app";
 
-import { getUrl, setLocalesEnabled, toEscapedHtml, testTranslations, countOccurrences } from "../../../../utils";
+import { getUrl, setLocalesEnabled, toEscapedHtml, testTranslations, countOccurrences, feedTransactionAndPartner } from "../../../../utils";
 import GeneralPartnerBuilder, {
   generalPartnerLegalEntity,
   generalPartnerPerson
@@ -18,7 +18,6 @@ import {
   POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "../../../../../controller/addressLookUp/url/postTransition";
 import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
-import TransactionBuilder from "../../../../builder/TransactionBuilder";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 describe("Postcode Usual Residential Address Page", () => {
@@ -39,34 +38,30 @@ describe("Postcode Usual Residential Address Page", () => {
   });
 
   describe("Get Postcode Usual Residential Address Page", () => {
-
     it.each(
       [
-        [PartnerKind.ADD_GENERAL_PARTNER_PERSON, enTranslationText.serviceName.addGeneralPartner],
-        [PartnerKind.UPDATE_GENERAL_PARTNER_PERSON, enTranslationText.serviceName.updateGeneralPartnerPerson]
+        ["add", "en"],
+        ["add", "cy"],
+        ["update", "en"],
+        ["update", "cy"]
       ]
-    )("should load the usual residential address page with English text", async (partnerKind, serviceName) => {
+    )("should load the %s usual residential address page with %s text", async (journey: string, lang: string) => {
       setLocalesEnabled(true);
+      const translationText = lang === "en" ? enTranslationText : cyTranslationText;
+      const expectedServiceName = journey === "add" ? translationText.serviceName.addGeneralPartner : translationText.serviceName.updateGeneralPartnerPerson;
+      const partnerKind = journey === "add" ? PartnerKind.ADD_GENERAL_PARTNER_PERSON : PartnerKind.UPDATE_GENERAL_PARTNER_PERSON;
 
-      const transaction = new TransactionBuilder().withKind(partnerKind).build();
-      appDevDependencies.transactionGateway.feedTransactions([transaction]);
+      feedTransactionAndPartner(partnerKind);
 
-      const generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isPerson()
-        .build();
-
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
-
-      const res = await request(app).get(URL + "?lang=en");
+      const res = await request(app).get(URL + `?lang=${lang}`);
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
         toEscapedHtml(
-          enTranslationText.address.findPostcode.generalPartner.usualResidentialAddress.whatIsUsualResidentialAddress
-        ) + ` - ${toEscapedHtml(serviceName)} - GOV.UK`
+          translationText.address.findPostcode.generalPartner.usualResidentialAddress.whatIsUsualResidentialAddress
+        ) + ` - ${toEscapedHtml(expectedServiceName)} - GOV.UK`
       );
-      testTranslations(res.text, enTranslationText.address.findPostcode, [
+      testTranslations(res.text, translationText.address.findPostcode, [
         "registeredOfficeAddress",
         "principalPlaceOfBusiness",
         "principalOfficeAddress",
@@ -74,51 +69,15 @@ describe("Postcode Usual Residential Address Page", () => {
         "limitedPartner",
         "errorMessages"
       ]);
-      expect(res.text).not.toContain("WELSH -");
-      expect(res.text).toContain(generalPartner.data?.forename?.toUpperCase());
-      expect(res.text).toContain(generalPartner.data?.surname?.toUpperCase());
+      if (lang === "en") {
+        expect(res.text).not.toContain("WELSH -");
+      } else {
+        expect(res.text).toContain("WELSH -");
+      }
+      expect(res.text).toContain(generalPartnerPerson.forename?.toUpperCase());
+      expect(res.text).toContain(generalPartnerPerson.surname?.toUpperCase());
       expect(res.text).not.toContain(generalPartnerLegalEntity.legal_entity_name?.toUpperCase());
-      expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
-    });
-
-    it.each(
-      [
-        [PartnerKind.ADD_GENERAL_PARTNER_PERSON, cyTranslationText.serviceName.addGeneralPartner],
-        [PartnerKind.UPDATE_GENERAL_PARTNER_PERSON, cyTranslationText.serviceName.updateGeneralPartnerPerson]
-      ]
-    )("should load the usual residential address page with Welsh text", async (partnerKind, serviceName) => {
-      setLocalesEnabled(true);
-
-      const transaction = new TransactionBuilder().withKind(partnerKind).build();
-      appDevDependencies.transactionGateway.feedTransactions([transaction]);
-
-      const generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isLegalEntity()
-        .build();
-
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
-
-      const res = await request(app).get(URL + "?lang=cy");
-
-      expect(res.status).toBe(200);
-
-      expect(res.text).toContain(
-        toEscapedHtml(
-          cyTranslationText.address.findPostcode.generalPartner.usualResidentialAddress.whatIsUsualResidentialAddress
-        ) + ` - ${toEscapedHtml(serviceName)} - GOV.UK`
-      );
-      testTranslations(res.text, cyTranslationText.address.findPostcode, [
-        "registeredOfficeAddress",
-        "principalPlaceOfBusiness",
-        "principalOfficeAddress",
-        "correspondenceAddress",
-        "limitedPartner",
-        "errorMessages"
-      ]);
-      expect(res.text).toContain(generalPartner.data?.legal_entity_name?.toUpperCase());
-      expect(res.text).not.toContain(generalPartnerPerson.forename?.toUpperCase());
-      expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
+      expect(countOccurrences(res.text, toEscapedHtml(expectedServiceName))).toBe(2);
     });
   });
 

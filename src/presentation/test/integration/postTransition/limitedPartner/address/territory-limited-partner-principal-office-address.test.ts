@@ -1,12 +1,12 @@
 import request from "supertest";
-import { LimitedPartner, PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import enTranslationText from "../../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../../locales/cy/translations.json";
 
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
-import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
+import { countOccurrences, feedTransactionAndPartner, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
 
 import {
   ENTER_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
@@ -14,7 +14,7 @@ import {
   TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
 } from "../../../../../controller/addressLookUp/url/postTransition";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
-import LimitedPartnerBuilder, { limitedPartnerLegalEntity } from "../../../../builder/LimitedPartnerBuilder";
+import { limitedPartnerLegalEntity, limitedPartnerPerson } from "../../../../builder/LimitedPartnerBuilder";
 import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
 import TransactionBuilder from "../../../../builder/TransactionBuilder";
 
@@ -30,50 +30,34 @@ describe("Limited Partner Principal Office Address Territory Choice", () => {
   });
 
   describe("Get limited partner principal office address territory choice page", () => {
-    it("should load the limited partner principal office address territory choice page with Welsh text", async () => {
+    it.each([
+      "en",
+      "cy"
+    ])("should load the limited partner principal office address territory choice page with %s text", async (lang: string) => {
       setLocalesEnabled(true);
-      const res = await request(app).get(URL + "?lang=cy");
+      const translationText = lang === "en" ? enTranslationText : cyTranslationText;
+      feedTransactionAndPartner(PartnerKind.ADD_LIMITED_PARTNER_LEGAL_ENTITY);
+
+      const res = await request(app).get(URL + `?lang=${lang}`);
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
         toEscapedHtml(
-          `${cyTranslationText.address.territoryChoice.limitedPartnerPrincipalOfficeAddress.title} - ${cyTranslationText.serviceName.addLimitedPartner} - GOV.UK`
+          `${translationText.address.territoryChoice.limitedPartnerPrincipalOfficeAddress.title} - ${translationText.serviceName.addLimitedPartner} - GOV.UK`
         )
       );
 
-      testTranslations(res.text, cyTranslationText.address.territoryChoice.limitedPartnerPrincipalOfficeAddress);
-      testTranslations(res.text, cyTranslationText.address.territories);
-      expect(countOccurrences(res.text, cyTranslationText.serviceName.addLimitedPartner)).toBe(2);
-    });
-
-    it("should load the limited partner principal office address territory choice page with English text", async () => {
-      setLocalesEnabled(true);
-      const res = await request(app).get(URL + "?lang=en");
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(
-        toEscapedHtml(
-          `${enTranslationText.address.territoryChoice.limitedPartnerPrincipalOfficeAddress.title} - ${enTranslationText.serviceName.addLimitedPartner} - GOV.UK`
-        )
-      );
-
-      testTranslations(res.text, enTranslationText.address.territoryChoice.limitedPartnerPrincipalOfficeAddress);
-      testTranslations(res.text, enTranslationText.address.territories);
-      expect(countOccurrences(res.text, enTranslationText.serviceName.addLimitedPartner)).toBe(2);
-    });
-
-    it("should contain the legal entity name ", async () => {
-      const limitedPartner: LimitedPartner = new LimitedPartnerBuilder()
-        .isLegalEntity()
-        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .build();
-
-      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
-
-      const res = await request(app).get(URL);
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(limitedPartnerLegalEntity.legal_entity_name.toUpperCase());
+      testTranslations(res.text, translationText.address.territoryChoice.limitedPartnerPrincipalOfficeAddress);
+      testTranslations(res.text, translationText.address.territories);
+      expect(res.text).toContain(limitedPartnerLegalEntity.legal_entity_name?.toUpperCase());
+      expect(res.text).not.toContain(limitedPartnerPerson.forename?.toUpperCase());
+      expect(res.text).not.toContain(limitedPartnerPerson.surname?.toUpperCase());
+      if (lang === "en") {
+        expect(res.text).not.toContain("WELSH -");
+      } else {
+        expect(res.text).toContain("WELSH -");
+      }
+      expect(countOccurrences(res.text, translationText.serviceName.addLimitedPartner)).toBe(2);
     });
   });
 

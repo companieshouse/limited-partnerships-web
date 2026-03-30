@@ -5,17 +5,15 @@ import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
 
 import { CONFIRMATION_POST_TRANSITION_URL } from "../../../controller/global/url";
-import { getUrl, toEscapedHtml, setLocalesEnabled, testTranslations, countOccurrences } from "../../utils";
+import { getUrl, toEscapedHtml, setLocalesEnabled, testTranslations, countOccurrences, feedTransactionAndPartner } from "../../utils";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import { JOURNEY_TYPE_PARAM } from "../../../../config";
 import { Journey } from "../../../../domain/entities/journey";
 import CompanyProfileBuilder from "../../builder/CompanyProfileBuilder";
-import GeneralPartnerBuilder from "../../builder/GeneralPartnerBuilder";
 import {
   GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL,
   LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL
 } from "../../../controller/postTransition/url";
-import LimitedPartnerBuilder from "../../builder/LimitedPartnerBuilder";
 import TransactionBuilder from "../../../../presentation/test/builder/TransactionBuilder";
 import LimitedPartnershipBuilder from "../../../../presentation/test/builder/LimitedPartnershipBuilder";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
@@ -83,14 +81,7 @@ describe("Confirmation Page", () => {
           async (serviceName, partnerKind, partnerText, lang) => {
             const translation = lang === "en" ? enTranslationText.confirmationPage : cyTranslationText.confirmationPage;
 
-            const generalPartner = new GeneralPartnerBuilder()
-              .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-              .isPerson()
-              .build();
-            appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
-
-            const transaction = new TransactionBuilder().withKind(partnerKind).build();
-            appDevDependencies.transactionGateway.feedTransactions([transaction]);
+            feedTransactionAndPartner(partnerKind);
 
             const res = await request(app)
               .get(`${URL}?lang=${lang}`)
@@ -172,14 +163,7 @@ describe("Confirmation Page", () => {
           async (serviceName, partnerKind, partnerText, lang) => {
             const translation = lang === "en" ? enTranslationText.confirmationPage : cyTranslationText.confirmationPage;
 
-            const generalPartner = new GeneralPartnerBuilder()
-              .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-              .isLegalEntity()
-              .build();
-            appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
-
-            const transaction = new TransactionBuilder().withKind(partnerKind).build();
-            appDevDependencies.transactionGateway.feedTransactions([transaction]);
+            feedTransactionAndPartner(partnerKind);
 
             const res = await request(app)
               .get(`${URL}?lang=${lang}`)
@@ -263,14 +247,7 @@ describe("Confirmation Page", () => {
         async (serviceName, partnerKind, partnerText, lang) => {
           const translation = lang === "en" ? enTranslationText.confirmationPage : cyTranslationText.confirmationPage;
 
-          const limitedPartner = new LimitedPartnerBuilder()
-            .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-            .isPerson()
-            .build();
-          appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
-
-          const transaction = new TransactionBuilder().withKind(partnerKind).build();
-          appDevDependencies.transactionGateway.feedTransactions([transaction]);
+          feedTransactionAndPartner(partnerKind);
 
           const res = await request(app)
             .get(`${URL}?lang=${lang}`)
@@ -352,14 +329,7 @@ describe("Confirmation Page", () => {
         async (serviceName, partnerKind, partnerText, lang) => {
           const translation = lang === "en" ? enTranslationText.confirmationPage : cyTranslationText.confirmationPage;
 
-          const limitedPartner = new LimitedPartnerBuilder()
-            .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-            .isLegalEntity()
-            .build();
-          appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
-
-          const transaction = new TransactionBuilder().withKind(partnerKind).build();
-          appDevDependencies.transactionGateway.feedTransactions([transaction]);
+          feedTransactionAndPartner(partnerKind);
 
           const res = await request(app)
             .get(`${URL}?lang=${lang}`)

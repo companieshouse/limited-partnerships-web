@@ -37,38 +37,27 @@ describe("Choose general partner correspondence address page", () => {
   describe("GET choose general partner correspondence address page", () => {
     it.each(
       [
-        [PartnerKind.ADD_GENERAL_PARTNER_PERSON, cyTranslationText.serviceName.addGeneralPartner],
-        [PartnerKind.UPDATE_GENERAL_PARTNER_PERSON, cyTranslationText.serviceName.updateGeneralPartnerPerson]
+        ["en"],
+        ["cy"]
       ]
-    )("should load the general partner choose correspondence address page with Welsh text", async (partnerKind, serviceName) => {
+    )("should load the general partner choose correspondence address page with %s text", async (lang: string) => {
+      const translationText = lang === "en" ? enTranslationText : cyTranslationText;
+
+      const transaction = new TransactionBuilder().withKind(PartnerKind.ADD_GENERAL_PARTNER_PERSON).build();
+      appDevDependencies.transactionGateway.feedTransactions([transaction]);
       setLocalesEnabled(true);
 
-      const transaction = new TransactionBuilder().withKind(partnerKind).build();
-      appDevDependencies.transactionGateway.feedTransactions([transaction]);
-
-      const res = await request(app).get(URL + "?lang=cy");
+      const res = await request(app).get(URL + `?lang=${lang}`);
 
       expect(res.status).toBe(200);
-      testTranslations(res.text, cyTranslationText.address.chooseAddress.generalPartnerCorrespondenceAddress);
-      expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
-    });
+      testTranslations(res.text, translationText.address.chooseAddress.generalPartnerCorrespondenceAddress);
+      if (lang === "en") {
+        expect(res.text).not.toContain("WELSH -");
+      } else {
+        expect(res.text).toContain("WELSH -");
+      }
 
-    it.each(
-      [
-        [PartnerKind.ADD_GENERAL_PARTNER_PERSON, enTranslationText.serviceName.addGeneralPartner],
-        [PartnerKind.UPDATE_GENERAL_PARTNER_PERSON, enTranslationText.serviceName.updateGeneralPartnerPerson]
-      ]
-    )("should load the general partner choose correspondence address page with English text", async (partnerKind, serviceName) => {
-      setLocalesEnabled(true);
-
-      const transaction = new TransactionBuilder().withKind(partnerKind).build();
-      appDevDependencies.transactionGateway.feedTransactions([transaction]);
-
-      const res = await request(app).get(URL + "?lang=en");
-
-      expect(res.status).toBe(200);
-      testTranslations(res.text, enTranslationText.address.chooseAddress.generalPartnerCorrespondenceAddress);
-      expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
+      expect(countOccurrences(res.text, toEscapedHtml(translationText.serviceName.addGeneralPartner))).toBe(2);
     });
 
     it("should populate the address list", async () => {

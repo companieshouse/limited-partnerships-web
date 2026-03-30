@@ -35,8 +35,12 @@ describe("Postcode limited partner's principal office address page", () => {
   });
 
   describe("Get postcode limited partner's principal office address page", () => {
-    it("should load the principal office address page with English text", async () => {
+    it.each([
+      "en",
+      "cy"
+    ])("should load the principal office address page with %s text", async (lang: string) => {
       setLocalesEnabled(true);
+      const translationText = lang === "en" ? enTranslationText : cyTranslationText;
 
       const limitedPartner = new LimitedPartnerBuilder()
         .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
@@ -45,15 +49,15 @@ describe("Postcode limited partner's principal office address page", () => {
 
       appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
 
-      const res = await request(app).get(URL + "?lang=en");
+      const res = await request(app).get(URL + `?lang=${lang}`);
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
         toEscapedHtml(
-          enTranslationText.address.findPostcode.limitedPartner.principalOfficeAddress.whatIsPrincipalOfficeAddress
-        ) + ` - ${enTranslationText.serviceName.addLimitedPartner} - GOV.UK`
+          translationText.address.findPostcode.limitedPartner.principalOfficeAddress.whatIsPrincipalOfficeAddress
+        ) + ` - ${translationText.serviceName.addLimitedPartner} - GOV.UK`
       );
-      testTranslations(res.text, enTranslationText.address.findPostcode, [
+      testTranslations(res.text, translationText.address.findPostcode, [
         "registeredOfficeAddress",
         "principalPlaceOfBusiness",
         "usualResidentialAddress",
@@ -61,50 +65,19 @@ describe("Postcode limited partner's principal office address page", () => {
         "errorMessages",
         "generalPartner"
       ]);
-      expect(res.text).not.toContain("WELSH -");
+      if (lang === "en") {
+        expect(res.text).not.toContain("WELSH -");
+      } else {
+        expect(res.text).toContain("WELSH -");
+      }
       expect(res.text).not.toContain(limitedPartnerPerson.forename.toUpperCase());
       expect(res.text).not.toContain(limitedPartnerPerson.surname.toUpperCase());
       expect(res.text).toContain(limitedPartnerLegalEntity.legal_entity_name?.toUpperCase());
-      expect(countOccurrences(res.text, enTranslationText.serviceName.addLimitedPartner)).toBe(2);
-    });
-
-    it("should load the principal office address page with Welsh text", async () => {
-      setLocalesEnabled(true);
-
-      const limitedPartner = new LimitedPartnerBuilder()
-        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isLegalEntity()
-        .build();
-
-      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
-
-      const res = await request(app).get(URL + "?lang=cy");
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(
-        toEscapedHtml(
-          cyTranslationText.address.findPostcode.limitedPartner.principalOfficeAddress.whatIsPrincipalOfficeAddress
-        ) + ` - ${cyTranslationText.serviceName.addLimitedPartner} - GOV.UK`
-      );
-      testTranslations(res.text, cyTranslationText.address.findPostcode, [
-        "registeredOfficeAddress",
-        "principalPlaceOfBusiness",
-        "usualResidentialAddress",
-        "correspondenceAddress",
-        "errorMessages",
-        "generalPartner"
-      ]);
-      expect(res.text).toContain("WELSH -");
-      expect(res.text).not.toContain(limitedPartnerPerson.forename.toUpperCase());
-      expect(res.text).not.toContain(limitedPartnerPerson.forename.toUpperCase());
-      expect(res.text).toContain(limitedPartnerLegalEntity.legal_entity_name?.toUpperCase());
-      expect(countOccurrences(res.text, cyTranslationText.serviceName.addLimitedPartner)).toBe(2);
+      expect(countOccurrences(res.text, translationText.serviceName.addLimitedPartner)).toBe(2);
     });
   });
 
   describe("Post postcode limited partner's principal office address page", () => {
-    // LP-640 Test ACs 1-3 redirect to choose and confirm once those pages are added.
-
     it("should validate the post code then redirect to the next page", async () => {
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.postcodeLimitedPartnerPrincipalOfficeAddress,
