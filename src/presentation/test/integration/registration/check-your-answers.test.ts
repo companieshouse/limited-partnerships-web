@@ -434,17 +434,29 @@ describe("Check Your Answers Page", () => {
       }
     );
 
-    it("should not display PSC statement section when has_person_with_significant_control is not false", async () => {
-      const limitedPartnership = new LimitedPartnershipBuilder().build();
+    it.each([
+      ["true", true],
+      ["not set", undefined]
+    ])(
+      "should not display PSC statement section when has_person_with_significant_control is %s",
+      async (_description: string, hasPsc: boolean | undefined) => {
+        const builder = new LimitedPartnershipBuilder();
 
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+        if (hasPsc !== undefined) {
+          builder.withHasPersonWithSignificantControl(hasPsc);
+        }
 
-      const res = await request(app).get(URL);
+        const limitedPartnership = builder.build();
 
-      expect(res.status).toBe(200);
-      expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.psc.title);
-      expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.psc.noPscStatement);
-    });
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+        const res = await request(app).get(URL);
+
+        expect(res.status).toBe(200);
+        expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.psc.title);
+        expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.psc.noPscStatement);
+      }
+    );
 
     it.each([
       [PartnershipType.SLP, "will-the-partnership-have-any-people-with-significant-control"],

@@ -113,6 +113,7 @@ class LimitedPartnershipController extends PartnershipController {
       }
     }
 
+    // Separate check: set the CYA page's own back link based on partnership type
     if (pageRouting.pageType === RegistrationPageType.checkYourAnswers && limitedPartnership) {
       const partnershipType = limitedPartnership.data?.partnership_type;
 
