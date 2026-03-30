@@ -41,7 +41,7 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
     };
   }
 
-  sendHasPersonWithSignificantControlPageData() {
+  sendHasPersonWithSignificantControl() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const { tokens, ids } = super.extract(request);

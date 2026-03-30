@@ -275,7 +275,7 @@ export const registrationEndpoints = (
   );
   router.post(
     WILL_LIMITED_PARTNERSHIP_HAVE_PSC_URL,
-    dependencies.personWithSignificantControlRegistrationController.sendHasPersonWithSignificantControlPageData()
+    dependencies.personWithSignificantControlRegistrationController.sendHasPersonWithSignificantControl()
   );
 
   router.get(
