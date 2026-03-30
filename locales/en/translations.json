@@ -702,7 +702,7 @@
             "futureChanges": "You'll need to file any future changes to PSCs on paper."
         },
         "addRelevantLegalEntity": {
-            "title": "Add a relevant legal entity",
+            "title": "Add a relevant legal entity PSC",
 
             "legalEntityName" : "What is the relevant legal entity (RLE)'s name?",
             "legalFormOrCorporateIdentity" : "What is its legal form or corporate identity?",
