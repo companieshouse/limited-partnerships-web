@@ -57,10 +57,13 @@ export const TRANSACTION_DESCRIPTION_REMOVE_GENERAL_PARTNER_LEGAL_ENTITY = "Remo
 export const TRANSACTION_DESCRIPTION_REMOVE_LIMITED_PARTNER_PERSON = "Remove a limited partner (person)";
 export const TRANSACTION_DESCRIPTION_REMOVE_LIMITED_PARTNER_LEGAL_ENTITY = "Remove a limited partner (legal entity)";
 export const TRANSACTION_DESCRIPTION_UPDATE_GENERAL_PARTNER_PERSON = "Update a general partner's details (person)";
-export const TRANSACTION_DESCRIPTION_UPDATE_GENERAL_PARTNER_LEGAL_ENTITY = "Update a general partner's details (legal entity)";
+export const TRANSACTION_DESCRIPTION_UPDATE_GENERAL_PARTNER_LEGAL_ENTITY =
+  "Update a general partner's details (legal entity)";
 export const TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNER_PERSON = "Update a limited partner's details (person)";
-export const TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNER_LEGAL_ENTITY = "Update a limited partner's details (legal entity)";
-export const TRANSACTION_DESCRIPTION_DESIGNATE_AS_PRIVATE_FUND_PARTNERSHIP = "Designate as a private fund limited partnership";
+export const TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNER_LEGAL_ENTITY =
+  "Update a limited partner's details (legal entity)";
+export const TRANSACTION_DESCRIPTION_DESIGNATE_AS_PRIVATE_FUND_PARTNERSHIP =
+  "Designate as a private fund limited partnership";
 
 // Officer roles
 export const OFFICER_ROLE_GENERAL_PARTNER_PERSON = "general-partner-in-a-limited-partnership";
@@ -79,6 +82,7 @@ export const TRANSACTION_ID = "transactionId";
 export const SUBMISSION_ID = "submissionId";
 export const GENERAL_PARTNER_ID = "generalPartnerId";
 export const LIMITED_PARTNER_ID = "limitedPartnerId";
+export const PERSON_WITH_SIGNIFICANT_CONTROL_ID = "personWithSignificantControlId";
 export const JOURNEY_TYPE_PARAM = ":journeyType";
 export const APPOINTMENT_ID = "appointmentId";
 
@@ -112,6 +116,10 @@ export const GENERAL_PARTNER_WITH_ID_URL = GENERAL_PARTNER_URL + `/:${GENERAL_PA
 
 export const LIMITED_PARTNER_URL = `/limited-partner`;
 export const LIMITED_PARTNER_WITH_ID_URL = LIMITED_PARTNER_URL + `/:${LIMITED_PARTNER_ID}`;
+
+export const PERSON_WITH_SIGNIFICANT_CONTROL_URL = `/person-with-significant-control`;
+export const PERSON_WITH_SIGNIFICANT_CONTROL_WITH_ID_URL =
+  PERSON_WITH_SIGNIFICANT_CONTROL_URL + `/:${PERSON_WITH_SIGNIFICANT_CONTROL_ID}`;
 
 export const APPOINTMENT_ID_URL = `/appointment/:${APPOINTMENT_ID}`;
 

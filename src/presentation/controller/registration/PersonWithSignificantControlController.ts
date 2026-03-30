@@ -27,10 +27,101 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
           ids.submissionId
         );
 
+        let personWithSignificantControl;
+        if (ids.personWithSignificantControlId) {
+          personWithSignificantControl = await this.personWithSignificantControlService.getPersonWithSignificantControl(
+            tokens,
+            ids.transactionId,
+            ids.personWithSignificantControlId
+          );
+        }
+
         response.render(
           super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { limitedPartnership }, null)
+          super.makeProps(pageRouting, { limitedPartnership, personWithSignificantControl }, null)
         );
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  createPersonWithSignificantControl() {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        this.personWithSignificantControlService.setI18n(response.locals.i18n);
+
+        const { ids, pageType, tokens } = super.extract(request);
+        const pageRouting = super.getRouting(registrationsRouting, pageType, request);
+
+        const result = await this.personWithSignificantControlService.createPersonWithSignificantControl(
+          tokens,
+          ids.transactionId,
+          request.body
+        );
+
+        if (result.errors) {
+          const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+            tokens,
+            ids.transactionId,
+            ids.submissionId
+          );
+
+          return response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(
+              pageRouting,
+              { limitedPartnership, personWithSignificantControl: { data: request.body } },
+              result.errors
+            )
+          );
+        }
+
+        const newIds = {
+          ...ids,
+          personWithSignificantControlId: result.personWithSignificantControlId
+        };
+
+        const url = super.insertIdsInUrl(pageRouting.nextUrl, newIds);
+
+        response.redirect(url);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  sendPageData() {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { ids, pageType, tokens } = super.extract(request);
+        const pageRouting = super.getRouting(registrationsRouting, pageType, request);
+
+        const result = await this.personWithSignificantControlService.sendPageData(
+          tokens,
+          ids.transactionId,
+          ids.personWithSignificantControlId,
+          request.body
+        );
+
+        if (result?.errors) {
+          const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+            tokens,
+            ids.transactionId,
+            ids.submissionId
+          );
+
+          return response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(
+              pageRouting,
+              { limitedPartnership, personWithSignificantControl: { data: request.body } },
+              result.errors
+            )
+          );
+        }
+
+        response.redirect(pageRouting.nextUrl);
       } catch (error) {
         next(error);
       }

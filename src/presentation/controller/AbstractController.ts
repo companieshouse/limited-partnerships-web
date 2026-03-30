@@ -6,6 +6,7 @@ import {
   COMPANY_ID,
   GENERAL_PARTNER_ID,
   LIMITED_PARTNER_ID,
+  PERSON_WITH_SIGNIFICANT_CONTROL_ID,
   POST_TRANSITION_BASE_URL,
   REGISTRATION_BASE_URL,
   SUBMISSION_ID,
@@ -33,6 +34,7 @@ abstract class AbstractController {
       submissionId: request.params[SUBMISSION_ID],
       generalPartnerId: request.params[GENERAL_PARTNER_ID],
       limitedPartnerId: request.params[LIMITED_PARTNER_ID],
+      personWithSignificantControlId: request.params[PERSON_WITH_SIGNIFICANT_CONTROL_ID],
       appointmentId: request.params[APPOINTMENT_ID]
     } as Ids;
 
@@ -70,7 +72,7 @@ abstract class AbstractController {
     const session = request.session as Session;
     const tokens = this.extractTokens(request);
     const pageType = this.pageType(request.path);
-    const { companyId, transactionId, submissionId, generalPartnerId, limitedPartnerId, appointmentId } =
+    const { companyId, transactionId, submissionId, generalPartnerId, limitedPartnerId, personWithSignificantControlId, appointmentId } =
       this.extractIds(request);
 
     return {
@@ -83,6 +85,7 @@ abstract class AbstractController {
         submissionId,
         generalPartnerId,
         limitedPartnerId,
+        personWithSignificantControlId,
         appointmentId
       }
     };
@@ -108,6 +111,7 @@ abstract class AbstractController {
     url = this.insertSubmissionId(url, ids.submissionId);
     url = this.insertGeneralPartnerId(url, ids.generalPartnerId);
     url = this.insertLimitedPartnerId(url, ids.limitedPartnerId);
+    url = this.insertPersonWithSignificantControlId(url, ids.personWithSignificantControlId);
     url = this.insertAppointmentId(url, ids.appointmentId);
     return url;
   }
@@ -130,6 +134,12 @@ abstract class AbstractController {
 
   protected insertLimitedPartnerId(url: string, limitedPartnerId?: string): string {
     return limitedPartnerId ? url.replace(`:${LIMITED_PARTNER_ID}`, limitedPartnerId) : url;
+  }
+
+  protected insertPersonWithSignificantControlId(url: string, personWithSignificantControlId?: string): string {
+    return personWithSignificantControlId
+      ? url.replace(`:${PERSON_WITH_SIGNIFICANT_CONTROL_ID}`, personWithSignificantControlId)
+      : url;
   }
 
   protected insertAppointmentId(url: string, appointmentId?: string): string {
@@ -185,9 +195,10 @@ abstract class AbstractController {
     const submissionId = request.params.submissionId as string;
     const generalPartnerId = request.params.generalPartnerId as string;
     const limitedPartnerId = request.params.limitedPartnerId as string;
+    const personWithSignificantControlId = request.params.personWithSignificantControlId as string;
     const appointmentId = request.params.appointmentId as string;
 
-    return { transactionId, submissionId, companyId, generalPartnerId, limitedPartnerId, appointmentId };
+    return { transactionId, submissionId, companyId, generalPartnerId, limitedPartnerId, personWithSignificantControlId, appointmentId };
   }
 
   protected getPreviousPageUrl(request: Request) {

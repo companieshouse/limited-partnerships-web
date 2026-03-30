@@ -19,22 +19,19 @@ describe("Tell Us About PSC Page", () => {
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
   });
 
-  it.each([
-    "en",
-    "cy"
-  ])("should load the Tell Us About PSC page with %s text", async (lang: string) => {
+  it.each(["en", "cy"])("should load the Tell Us About PSC page with %s text", async (lang: string) => {
     const translationText = lang === "en" ? enTranslationText : cyTranslationText;
 
     const res = await request(app).get(URL + `?lang=${lang}`);
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
-      `${translationText.tellUsAboutPscPage.title} - ${translationText.serviceRegistration} - GOV.UK`
+      `${translationText.personWithSignificantControl.tellUsAboutPscPage.title} - ${translationText.serviceRegistration} - GOV.UK`
     );
     expect(res.text).toContain(
       `${limitedPartnership?.data?.partnership_name?.toUpperCase()} ${limitedPartnership?.data?.name_ending?.toUpperCase()}`
     );
     expect(res.text).toContain(REDIRECT_URL);
-    testTranslations(res.text, translationText.tellUsAboutPscPage);
+    testTranslations(res.text, translationText.personWithSignificantControl.tellUsAboutPscPage);
   });
 });
