@@ -15,9 +15,17 @@ const registrationRoutingWillLimitedPartnershipHavePsc = {
   pageType: RegistrationPageType.willLimitedPartnershipHavePsc
 };
 
+const registrationRoutingAddRelevantLegalEntity = {
+  previousUrl: url.PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL,
+  currentUrl: url.ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL,
+  nextUrl: url.WHICH_TYPE_OF_NATURE_OF_CONTROL_URL,
+  pageType: RegistrationPageType.addPersonWithSignificantControlRelevantLegalEntity
+};
+
 const personWithSignificantControlRouting = [
   registrationRoutingPersonWithSignificantControl,
-  registrationRoutingWillLimitedPartnershipHavePsc
+  registrationRoutingWillLimitedPartnershipHavePsc,
+  registrationRoutingAddRelevantLegalEntity
 ];
 
 export default personWithSignificantControlRouting;

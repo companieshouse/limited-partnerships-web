@@ -4,7 +4,7 @@ import enTranslationText from "../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../locales/cy/translations.json";
 
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { CHECK_YOUR_ANSWERS_URL, WILL_LIMITED_PARTNERSHIP_HAVE_PSC_URL, WHICH_TYPE_OF_PSC_URL } from "../../../../controller/registration/url";
+import { CHECK_YOUR_ANSWERS_URL, PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL, WILL_LIMITED_PARTNERSHIP_HAVE_PSC_URL } from "../../../../controller/registration/url";
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import RegistrationPageType from "../../../../controller/registration/PageType";
@@ -49,7 +49,7 @@ describe("Will Limited Partnership Have PSC Page", () => {
       ["Which type of person with significant control (PSC) do you need to add page", "true"],
       ["check your answers page", "false"]
     ])("should redirect to %s page when the limited partnership has PSC selection %s", async (redirectPage: string, hasPscSelection: string) => {
-      const REDIRECT_URL = hasPscSelection === "true" ? getUrl(WHICH_TYPE_OF_PSC_URL) : getUrl(CHECK_YOUR_ANSWERS_URL);
+      const REDIRECT_URL = hasPscSelection === "true" ? getUrl(PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL) : getUrl(CHECK_YOUR_ANSWERS_URL);
 
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.willLimitedPartnershipHavePsc,

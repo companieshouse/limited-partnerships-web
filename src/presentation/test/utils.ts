@@ -14,15 +14,14 @@ export const setLocalesEnabled = (bool: boolean) => {
 
 export const getUrl = (url: string) => {
   const companyId = url.includes(config.COMPANY_ID) ? "LP123456" : "";
-  const submissionId = url.includes(config.SUBMISSION_ID)
-    ? appDevDependencies.limitedPartnershipGateway.submissionId
-    : "";
-  const generalPartnerId = url.includes(config.GENERAL_PARTNER_ID)
-    ? appDevDependencies.generalPartnerGateway.generalPartnerId
-    : "";
-  const limitedPartnerId = url.includes(config.LIMITED_PARTNER_ID)
-    ? appDevDependencies.limitedPartnerGateway.limitedPartnerId
-    : "";
+  const submissionId =
+    url.includes(config.SUBMISSION_ID) ? appDevDependencies.limitedPartnershipGateway.submissionId : "";
+  const generalPartnerId =
+    url.includes(config.GENERAL_PARTNER_ID) ? appDevDependencies.generalPartnerGateway.generalPartnerId : "";
+  const limitedPartnerId =
+    url.includes(config.LIMITED_PARTNER_ID) ? appDevDependencies.limitedPartnerGateway.limitedPartnerId : "";
+  const personWithSignificantControlId =
+    url.includes(config.PERSON_WITH_SIGNIFICANT_CONTROL_ID) ? appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId : "";
   const appointmentId = url.includes(config.APPOINTMENT_ID) ? "AP123456" : "";
 
   const ids = {
@@ -31,6 +30,7 @@ export const getUrl = (url: string) => {
     submissionId,
     generalPartnerId,
     limitedPartnerId,
+    personWithSignificantControlId,
     appointmentId
   };
   return appDevDependencies.addressLookUpController.insertIdsInUrl(url, ids);
