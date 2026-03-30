@@ -111,7 +111,9 @@ class LimitedPartnershipController extends PartnershipController {
       if (ids.transactionId && ids.submissionId) {
         pageRouting.previousUrl = super.insertIdsInUrl(PARTNERSHIP_TYPE_WITH_IDS_URL, ids, request.url);
       }
-    } else if (pageRouting.pageType === RegistrationPageType.checkYourAnswers && limitedPartnership) {
+    }
+
+    if (pageRouting.pageType === RegistrationPageType.checkYourAnswers && limitedPartnership) {
       const partnershipType = limitedPartnership.data?.partnership_type;
 
       if (partnershipType === PartnershipType.SLP || partnershipType === PartnershipType.SPFLP) {
