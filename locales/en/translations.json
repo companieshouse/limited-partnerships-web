@@ -484,7 +484,7 @@
         "psc": {
             "title": "People with significant control (PSCs)",
             "headingPscStatement": "PSC statement",
-            "noPscStatement": "A PSC statement has not been provided because the partnership does not have any registrable PSCs, or relevant legal entities, or relevant officers."
+            "noPscStatement": "There is no person identified as a person with significant control (either a registrable person or RLE) in relation to the limited partnership."
         }
     },
 
