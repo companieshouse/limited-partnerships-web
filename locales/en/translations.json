@@ -701,6 +701,12 @@
             "moreThanOne": "If the partnership has more than one PSC, you'll add them one at a time.",
             "futureChanges": "You'll need to file any future changes to PSCs on paper."
         },
+         "willThePartnershipHaveAnyPscPage": {
+            "title": "Will the partnership have any people with significant control (PSCs) on registration?",
+            "optionYes": "Yes, at least one person will count as a PSC in relation to the partnership. This may be an individual, a relevant legal entity (RLE) or an other registrable person (ORP)",
+            "optionNo": "No, there is no person identified as a PSC in relation to the limited partnership",
+            "errorMessage": "You must select whether the partnership will have any people with significant control (PSCs) on registration."
+        },
         "addRelevantLegalEntity": {
             "title": "Add a relevant legal entity PSC",
 
