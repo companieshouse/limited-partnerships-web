@@ -289,12 +289,15 @@ export const registrationEndpoints = (
     PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL,
     dependencies.personWithSignificantControlRegistrationController.getPageRouting()
   );
+  router.post(
+    PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL,
+    dependencies.personWithSignificantControlRegistrationController.personWithSignificantControlChoice()
+  );
 
   router.get(
     ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL,
     dependencies.personWithSignificantControlRegistrationController.getPageRouting()
   );
-
   router.post(
     ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL,
     dependencies.personWithSignificantControlRegistrationController.createPersonWithSignificantControl()
@@ -304,7 +307,6 @@ export const registrationEndpoints = (
     ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_WITH_IDS_URL,
     dependencies.personWithSignificantControlRegistrationController.getPageRouting()
   );
-
   router.post(
     ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_WITH_IDS_URL,
     dependencies.personWithSignificantControlRegistrationController.sendPageData()

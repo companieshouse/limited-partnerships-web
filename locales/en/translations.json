@@ -717,7 +717,9 @@
             "hint": "You can add more later.",
             "addIndividualPerson": "Add an individual person",
             "addRelevantLegalEntity": "Add a relevant legal entity (RLE)",
-            "AddOtherRegistrablePerson": "Add an other registrable person (ORP)"
+            "AddOtherRegistrablePerson": "Add an other registrable person (ORP)",
+            "errorMessage": "You must select which type of person with significant control (PSC) you need to add."
+
         },
         "addRelevantLegalEntity": {
             "title": "Add a relevant legal entity PSC",

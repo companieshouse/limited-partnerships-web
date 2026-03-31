@@ -1,13 +1,19 @@
 import { NextFunction, Request, Response } from "express";
+import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
+
+import AbstractController from "../AbstractController";
+import UIErrors from "../../../domain/entities/UIErrors";
+import registrationsRouting from "./Routing";
+import RegistrationPageType from "./PageType";
 
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
-import AbstractController from "../AbstractController";
-import registrationsRouting from "./Routing";
 import PersonWithSignificantControlService from "../../../application/service/PersonWithSignificantControlService";
-import RegistrationPageType from "./PageType";
-import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
-import { CHECK_YOUR_ANSWERS_URL, PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL } from "./url";
-import UIErrors from "../../../domain/entities/UIErrors";
+
+import {
+  ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL,
+  CHECK_YOUR_ANSWERS_URL,
+  PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL
+} from "./url";
 
 class PersonWithSignificantControlRegistrationController extends AbstractController {
   constructor(
@@ -76,6 +82,45 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
         pageRouting.nextUrl = this.handlePersonWithSignficantControlRequiredConditionalNextUrl(request);
 
         response.redirect(pageRouting.nextUrl);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  personWithSignificantControlChoice() {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { tokens, pageType, ids } = super.extract(request);
+        const pageRouting = super.getRouting(registrationsRouting, pageType, request);
+
+        if (!request.body.parameter) {
+          const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+            tokens,
+            ids.transactionId,
+            ids.submissionId
+          );
+
+          const uiErrors = new UIErrors();
+          uiErrors.formatValidationErrorToUiErrors({
+            errors: {
+              parameter: response.locals.i18n.personWithSignificantControl.whichTypePage.errorMessage
+            }
+          });
+
+          return response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(pageRouting, limitedPartnership, uiErrors)
+          );
+        }
+
+        const url = super.insertIdsInUrl(
+          ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL,
+          ids,
+          request.url
+        );
+
+        response.redirect(url);
       } catch (error) {
         next(error);
       }
@@ -199,7 +244,7 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
       return super.insertIdsInUrl(PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL, ids, request.url);
     } else {
       return super.insertIdsInUrl(CHECK_YOUR_ANSWERS_URL, ids, request.url);
-    };
+    }
   }
 
   private async handleHasPersonWithSignificantControlMissing(request: Request, response: Response) {
@@ -209,7 +254,8 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
     const uiErrors = new UIErrors();
     uiErrors.formatValidationErrorToUiErrors({
       errors: {
-        has_person_with_significant_control: response.locals.i18n.personWithSignificantControl.willThePartnershipHaveAnyPscPage.errorMessage
+        has_person_with_significant_control:
+          response.locals.i18n.personWithSignificantControl.willThePartnershipHaveAnyPscPage.errorMessage
       }
     });
 

@@ -5,16 +5,18 @@
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
+      {% include "includes/errors.njk" %}
 
       <form class="form" method="post">
         <input type="hidden" name="pageType" value={{ props.pageType }}>
         {% include "includes/csrf_token.njk" %}
 
         {% include "includes/proposed-name.njk" %}
-        
+
         {{ govukRadios({
           name: "parameter",
           value: props.data.limitedPartnership.personWithSignificantControl,
+          errorMessage: props.errors.parameter if props.errors.parameter,
           fieldset: {
             legend: {
               text: i18n.personWithSignificantControl.whichTypePage.title,
@@ -28,24 +30,15 @@
           items: [
             {
               value: "individual_person",
-              text: i18n.personWithSignificantControl.whichTypePage.addIndividualPerson,
-              attributes : {
-                required : true
-              }
+              text: i18n.personWithSignificantControl.whichTypePage.addIndividualPerson
             },
             {
               value: "relevant_legal_entity",
-              text: i18n.personWithSignificantControl.whichTypePage.addRelevantLegalEntity,
-              attributes : {
-                required : true
-              }
+              text: i18n.personWithSignificantControl.whichTypePage.addRelevantLegalEntity
             },
             {
               value: "other_registrable_person",
-              text: i18n.personWithSignificantControl.whichTypePage.AddOtherRegistrablePerson,
-              attributes : {
-                required : true
-              }
+              text: i18n.personWithSignificantControl.whichTypePage.AddOtherRegistrablePerson
             }
           ]
         }) }}

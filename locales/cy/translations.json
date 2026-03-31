@@ -716,7 +716,8 @@
             "hint": "WELSH - You can add more later.",
             "addIndividualPerson": "WELSH - Add an individual person",
             "addRelevantLegalEntity": "WELSH - Add a relevant legal entity (RLE)",
-            "AddOtherRegistrablePerson": "WELSH - Add an other registrable person (ORP)"
+            "AddOtherRegistrablePerson": "WELSH - Add an other registrable person (ORP)",
+            "errorMessage": "WELSH - You must select which type of person with significant control (PSC) you need to add."
         },
         "addRelevantLegalEntity": {
             "title": "WELSH - Add a relevant legal entity PSC",
