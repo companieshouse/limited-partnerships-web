@@ -715,9 +715,9 @@
         "whichTypePage": {
             "title": "Which type of person with significant control (PSC) do you need to add?",
             "hint": "You can add more later.",
-            "addIndividualPerson": "Add an individual person",
-            "addRelevantLegalEntity": "Add a relevant legal entity (RLE)",
-            "AddOtherRegistrablePerson": "Add an other registrable person (ORP)",
+            "addIndividualPerson": "An individual person",
+            "addRelevantLegalEntity": "A relevant legal entity (RLE)",
+            "AddOtherRegistrablePerson": "An other registrable person (ORP)",
             "errorMessage": "Select which type of PSC you need to add",
             "otherRegistrablePersonInformation": {
                 "title": "What is an other registrable person?",

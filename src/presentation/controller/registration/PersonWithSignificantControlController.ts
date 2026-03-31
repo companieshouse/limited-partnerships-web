@@ -117,7 +117,7 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
           );
         }
 
-        const redirectUrl = this.getRedirectUrl(request, ids);
+        const redirectUrl = this.getAddPersonWithSignificantControlRedirectUrl(request, ids);
 
         response.redirect(redirectUrl);
       } catch (error) {
@@ -126,7 +126,7 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
     };
   }
 
-  private getRedirectUrl(request, ids: Ids) {
+  private getAddPersonWithSignificantControlRedirectUrl(request, ids: Ids) {
     let url = ADD_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_URL;
 
     if (request.body.parameter === "relevant_legal_entity") {
