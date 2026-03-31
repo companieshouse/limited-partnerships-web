@@ -712,6 +712,13 @@
             "optionNo": "No, there is no person identified as a PSC in relation to the limited partnership",
             "errorMessage": "You must select whether the partnership will have any people with significant control (PSCs) on registration."
         },
+        "whichTypePage": {
+            "title": "Which type of person with significant control (PSC) do you need to add?",
+            "hint": "You can add more later.",
+            "addIndividualPerson": "Add an individual person",
+            "addRelevantLegalEntity": "Add a relevant legal entity (RLE)",
+            "AddOtherRegistrablePerson": "Add an other registrable person (ORP)"
+        },
         "addRelevantLegalEntity": {
             "title": "Add a relevant legal entity PSC",
 

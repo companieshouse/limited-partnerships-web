@@ -711,6 +711,13 @@
             "optionNo": "WELSH - No, there is no person identified as a PSC in relation to the limited partnership",
             "errorMessage": "WELSH - You must select whether the partnership will have any people with significant control (PSCs) on registration."
         },
+        "whichTypePage": {
+            "title": "WELSH - Which type of person with significant control (PSC) do you need to add?",
+            "hint": "WELSH - You can add more later.",
+            "addIndividualPerson": "WELSH - Add an individual person",
+            "addRelevantLegalEntity": "WELSH - Add a relevant legal entity (RLE)",
+            "AddOtherRegistrablePerson": "WELSH - Add an other registrable person (ORP)"
+        },
         "addRelevantLegalEntity": {
             "title": "WELSH - Add a relevant legal entity PSC",
 

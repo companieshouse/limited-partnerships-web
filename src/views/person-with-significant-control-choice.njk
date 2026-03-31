@@ -1,0 +1,62 @@
+{% extends "layout.njk" %}
+
+{% set pageTitle =  i18n.personWithSignificantControl.whichTypePage.title %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" method="post">
+        <input type="hidden" name="pageType" value={{ props.pageType }}>
+        {% include "includes/csrf_token.njk" %}
+
+        {% include "includes/proposed-name.njk" %}
+        
+        {{ govukRadios({
+          name: "parameter",
+          value: props.data.limitedPartnership.personWithSignificantControl,
+          fieldset: {
+            legend: {
+              text: i18n.personWithSignificantControl.whichTypePage.title,
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--xl"
+            }
+          },
+          hint: {
+            text: i18n.personWithSignificantControl.whichTypePage.hint
+          } if not journeyTypes.isPostTransition,
+          items: [
+            {
+              value: "individual_person",
+              text: i18n.personWithSignificantControl.whichTypePage.addIndividualPerson,
+              attributes : {
+                required : true
+              }
+            },
+            {
+              value: "relevant_legal_entity",
+              text: i18n.personWithSignificantControl.whichTypePage.addRelevantLegalEntity,
+              attributes : {
+                required : true
+              }
+            },
+            {
+              value: "other_registrable_person",
+              text: i18n.personWithSignificantControl.whichTypePage.AddOtherRegistrablePerson,
+              attributes : {
+                required : true
+              }
+            }
+          ]
+        }) }}
+              
+        {{ govukButton({
+          text: i18n.buttons.continue,
+          attributes: {
+            "id": "submit"
+          }
+        }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}
