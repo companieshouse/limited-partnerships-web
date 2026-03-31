@@ -33,7 +33,8 @@ import {
   TELL_US_ABOUT_PSC_URL,
   WILL_LIMITED_PARTNERSHIP_HAVE_PSC_URL,
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL,
-  ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_WITH_IDS_URL
+  ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_WITH_IDS_URL,
+  WHICH_TYPE_OF_NATURE_OF_CONTROL_URL
 } from "../presentation/controller/registration/url";
 import RegistrationPageType from "../presentation/controller/registration/PageType";
 import registrationsRouting from "../presentation/controller/registration/Routing";
@@ -301,6 +302,15 @@ export const registrationEndpoints = (
 
   router.post(
     ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_WITH_IDS_URL,
+    dependencies.personWithSignificantControlRegistrationController.sendPageData()
+  );
+
+  router.get(
+    WHICH_TYPE_OF_NATURE_OF_CONTROL_URL,
+    dependencies.personWithSignificantControlRegistrationController.getPageRouting()
+  );
+  router.post(
+    WHICH_TYPE_OF_NATURE_OF_CONTROL_URL,
     dependencies.personWithSignificantControlRegistrationController.sendPageData()
   );
 
