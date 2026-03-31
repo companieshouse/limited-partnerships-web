@@ -54,12 +54,7 @@
                     + '</ul>'
         }) }}
               
-        {{ govukButton({
-          text: i18n.buttons.continue,
-          attributes: {
-            "id": "submit"
-          }
-        }) }}
+        {% include "includes/continue-button.njk" %}
       </form>
     </div>
   </div>
