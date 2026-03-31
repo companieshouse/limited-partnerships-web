@@ -717,7 +717,15 @@
             "addIndividualPerson": "WELSH - Add an individual person",
             "addRelevantLegalEntity": "WELSH - Add a relevant legal entity (RLE)",
             "AddOtherRegistrablePerson": "WELSH - Add an other registrable person (ORP)",
-            "errorMessage": "WELSH - You must select which type of person with significant control (PSC) you need to add."
+            "errorMessage": "WELSH - Select which type of PSC you need to add",
+            "otherRegistrablePersonInformation": {
+                "title": "WELSH - What is an other registrable person?",
+                "line1": "WELSH - An other registrable person (ORP) is a non-corporate entity or office that can legally act as a PSC. This can be:",
+                "bullet1": "WELSH - a corporation sole - a single incorporated office occupied by one person, such as Lord Mayor of London",
+                "bullet2": "WELSH - a government or government department of a country, a territory, or a part of a country or territory",
+                "bullet3": "WELSH - an international organisation whose members include two or more countries or territories (or their governments)",
+                "bullet4": "WELSH - a local authority or local government body in the UK or elsewhere"
+            }
         },
         "addRelevantLegalEntity": {
             "title": "WELSH - Add a relevant legal entity PSC",

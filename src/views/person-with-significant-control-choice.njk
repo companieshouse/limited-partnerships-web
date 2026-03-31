@@ -42,6 +42,17 @@
             }
           ]
         }) }}
+
+        {{ govukDetails({
+            summaryText: i18n.personWithSignificantControl.whichTypePage.otherRegistrablePersonInformation.title,
+            html: '<p>' + i18n.personWithSignificantControl.whichTypePage.otherRegistrablePersonInformation.line1 + '</p>'
+                    + '<ul>'
+                        + '<li>' + i18n.personWithSignificantControl.whichTypePage.otherRegistrablePersonInformation.bullet1 | escape + '</li>'
+                        + '<li>' + i18n.personWithSignificantControl.whichTypePage.otherRegistrablePersonInformation.bullet2 | escape + '</li>'
+                        + '<li>' + i18n.personWithSignificantControl.whichTypePage.otherRegistrablePersonInformation.bullet3 | escape + '</li>'
+                        + '<li>' + i18n.personWithSignificantControl.whichTypePage.otherRegistrablePersonInformation.bullet4 | escape + '</li>'
+                    + '</ul>'
+        }) }}
               
         {{ govukButton({
           text: i18n.buttons.continue,
