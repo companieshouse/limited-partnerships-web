@@ -53,7 +53,13 @@ enum AddressPageType {
   postcodeLimitedPartnerPrincipalOfficeAddress = "postcode-limited-partner-principal-office-address",
   chooseLimitedPartnerPrincipalOfficeAddress = "choose-limited-partner-principal-office-address",
   enterLimitedPartnerPrincipalOfficeAddress = "enter-limited-partner-principal-office-address",
-  confirmLimitedPartnerPrincipalOfficeAddress = "confirm-limited-partner-principal-office-address"
+  confirmLimitedPartnerPrincipalOfficeAddress = "confirm-limited-partner-principal-office-address",
+
+  // PERSON WITH SIGNIFICANT CONTROL
+
+  // principal office address - Relevant Legal entity
+  territoryChoicePersonWithSignificantControlPrincipalOfficeAddress =
+  "uk-or-overseas-person-with-significant-control-principal-office-address"
 }
 
 export const LIMITED_PARTNERSHIP_POSTCODE_PAGES: Set<PageType | PageDefault> = new Set([
