@@ -80,3 +80,9 @@ export const ENTER_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_TEMPLATE =
   AddressPageType.enterLimitedPartnerPrincipalOfficeAddress;
 export const CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_TEMPLATE =
   AddressPageType.confirmLimitedPartnerPrincipalOfficeAddress;
+
+// PERSON WITH SIGNIFICANT CONTROL
+
+// principal office address - Relevant Legal entity
+export const TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_PRINCIPAL_OFFICE_ADDRESS_TEMPLATE =
+  AddressPageType.territoryChoicePersonWithSignificantControlPrincipalOfficeAddress;

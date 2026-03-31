@@ -1,5 +1,6 @@
 import RegistrationPageType from "../PageType";
 import * as url from "../url";
+import { TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../addressLookUp/url/registration";
 
 const registrationRoutingPersonWithSignificantControl = {
   previousUrl: url.REVIEW_LIMITED_PARTNERS_URL,
@@ -15,13 +16,6 @@ const registrationRoutingWillLimitedPartnershipHavePsc = {
   pageType: RegistrationPageType.willLimitedPartnershipHavePsc
 };
 
-const registrationRoutingAddRelevantLegalEntity = {
-  previousUrl: url.PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL,
-  currentUrl: url.ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL,
-  nextUrl: url.WHICH_TYPE_OF_NATURE_OF_CONTROL_URL,
-  pageType: RegistrationPageType.addPersonWithSignificantControlRelevantLegalEntity
-};
-
 const registrationRoutingPersonWithSignificantControlChoice = {
   previousUrl: url.WILL_LIMITED_PARTNERSHIP_HAVE_PSC_URL,
   currentUrl: url.PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL,
@@ -29,10 +23,26 @@ const registrationRoutingPersonWithSignificantControlChoice = {
   pageType: RegistrationPageType.personWithSignificantControlChoice
 };
 
+const registrationRoutingAddRelevantLegalEntity = {
+  previousUrl: url.PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL,
+  currentUrl: url.ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL,
+  nextUrl: url.WHICH_TYPE_OF_NATURE_OF_CONTROL_URL,
+  pageType: RegistrationPageType.addPersonWithSignificantControlRelevantLegalEntity
+};
+
+const registrationRoutingWhichTypeOfNatureOfControl = {
+  previousUrl: url.ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_WITH_IDS_URL,
+  currentUrl: url.WHICH_TYPE_OF_NATURE_OF_CONTROL_URL,
+  nextUrl: TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_PRINCIPAL_OFFICE_ADDRESS_URL,
+  pageType: RegistrationPageType.whichTypeOfNatureOfControl
+};
+
 const personWithSignificantControlRouting = [
   registrationRoutingPersonWithSignificantControl,
   registrationRoutingWillLimitedPartnershipHavePsc,
   registrationRoutingPersonWithSignificantControlChoice,
+  registrationRoutingAddRelevantLegalEntity,
+  registrationRoutingWhichTypeOfNatureOfControl,
   registrationRoutingAddRelevantLegalEntity
 ];
 

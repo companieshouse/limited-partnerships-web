@@ -20,7 +20,7 @@
             value: props.data.limitedPartnership.data.has_person_with_significant_control,
             fieldset: {
               legend: {
-                text: i18n.personWithSignificantControl.willThePartnershipHaveAnyPscPage.title,
+                text: pageTitle,
                 isPageHeading: true,
                 classes: "govuk-fieldset__legend--xl"
               }
@@ -40,13 +40,7 @@
             } if props.errors
           }) }}
         
-          {{ govukButton({
-            text: i18n.buttons.saveAndContinue,
-            attributes: {
-              "id": "submit",
-              "data-event-id": "will-the-partnership-have-any-people-with-significant-control-submit"
-            }
-          }) }}
+          {% include "includes/save-and-continue-button.njk" %}
       </form>
     </div>
   </div>
