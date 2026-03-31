@@ -5,11 +5,14 @@ import AbstractController from "../AbstractController";
 import UIErrors from "../../../domain/entities/UIErrors";
 import registrationsRouting from "./Routing";
 import RegistrationPageType from "./PageType";
+import { Ids } from "../../../domain/types";
 
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import PersonWithSignificantControlService from "../../../application/service/PersonWithSignificantControlService";
 
 import {
+  ADD_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_URL,
+  ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_URL,
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL,
   CHECK_YOUR_ANSWERS_URL,
   PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL
@@ -114,17 +117,25 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
           );
         }
 
-        const url = super.insertIdsInUrl(
-          ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL,
-          ids,
-          request.url
-        );
+        const redirectUrl = this.getRedirectUrl(request, ids);
 
-        response.redirect(url);
+        response.redirect(redirectUrl);
       } catch (error) {
         next(error);
       }
     };
+  }
+
+  private getRedirectUrl(request, ids: Ids) {
+    let url = ADD_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_URL;
+
+    if (request.body.parameter === "relevant_legal_entity") {
+      url = ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL;
+    } else if (request.body.parameter === "other_registrable_person") {
+      url = ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_URL;
+    }
+
+    return super.insertIdsInUrl(url, ids, request.url);
   }
 
   createPersonWithSignificantControl() {

@@ -11,6 +11,8 @@ import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilde
 import RegistrationPageType from "../../../../controller/registration/PageType";
 
 import {
+  ADD_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_URL,
+  ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_URL,
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL,
   PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL,
   WILL_LIMITED_PARTNERSHIP_HAVE_PSC_URL
@@ -40,7 +42,7 @@ describe("Which type Page", () => {
 
       expect(res.status).toBe(200);
 
-      testTranslations(res.text, translationText.personWithSignificantControl.whichTypePage);
+      testTranslations(res.text, translationText.personWithSignificantControl.whichTypePage, ["errorMessage"]);
 
       expect(res.text).toContain(translationText.buttons.continue);
 
@@ -50,10 +52,16 @@ describe("Which type Page", () => {
   );
 
   it.each([
+    ["add individual person", "individual_person", ADD_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_URL],
     [
       "add relevant legal entity",
       "relevant_legal_entity",
       ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL
+    ],
+    [
+      "add other registrable person",
+      "other_registrable_person",
+      ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_URL
     ]
   ])(
     "should redirect to the add relevant legal entity page when %s option is selected",
