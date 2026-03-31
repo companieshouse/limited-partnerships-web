@@ -1,0 +1,20 @@
+{% extends "layout.njk" %}
+
+{% set pageTitle = i18n.personWithSignificantControl.whichTypeOfNatureOfControlPage.title %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form class="form" method="post">
+        <input type="hidden" name="pageType" value={{ props.pageType }}>
+          {% include "includes/csrf_token.njk" %}
+
+          {% include "includes/proposed-name.njk" %}
+
+          <h1 class="govuk-heading-xl">{{ i18n.personWithSignificantControl.whichTypeOfNatureOfControlPage.title }}</h1>
+
+          {% include "includes/save-and-continue-button.njk" %}
+      </form>
+    </div>
+  </div>
+{% endblock %}
