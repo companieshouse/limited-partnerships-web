@@ -1,0 +1,61 @@
+{% extends "layout.njk" %}
+
+{% set pageTitle =  i18n.personWithSignificantControl.whichTypePage.title %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {% include "includes/errors.njk" %}
+
+      <form class="form" method="post">
+        <input type="hidden" name="pageType" value={{ props.pageType }}>
+        {% include "includes/csrf_token.njk" %}
+
+        {% include "includes/proposed-name.njk" %}
+
+        {{ govukRadios({
+          name: "parameter",
+          value: props.data.limitedPartnership.personWithSignificantControl,
+          errorMessage: props.errors.parameter if props.errors.parameter,
+          fieldset: {
+            legend: {
+              text: i18n.personWithSignificantControl.whichTypePage.title,
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--xl"
+            }
+          },
+          hint: {
+            text: i18n.personWithSignificantControl.whichTypePage.hint
+          } if not journeyTypes.isPostTransition,
+          items: [
+            {
+              value: "individual_person",
+              text: i18n.personWithSignificantControl.whichTypePage.addIndividualPerson
+            },
+            {
+              value: "relevant_legal_entity",
+              text: i18n.personWithSignificantControl.whichTypePage.addRelevantLegalEntity
+            },
+            {
+              value: "other_registrable_person",
+              text: i18n.personWithSignificantControl.whichTypePage.AddOtherRegistrablePerson
+            }
+          ]
+        }) }}
+
+        {{ govukDetails({
+            summaryText: i18n.personWithSignificantControl.whichTypePage.otherRegistrablePersonInformation.title,
+            html: '<p>' + i18n.personWithSignificantControl.whichTypePage.otherRegistrablePersonInformation.line1 + '</p>'
+                    + '<ul>'
+                        + '<li>' + i18n.personWithSignificantControl.whichTypePage.otherRegistrablePersonInformation.bullet1 | escape + '</li>'
+                        + '<li>' + i18n.personWithSignificantControl.whichTypePage.otherRegistrablePersonInformation.bullet2 | escape + '</li>'
+                        + '<li>' + i18n.personWithSignificantControl.whichTypePage.otherRegistrablePersonInformation.bullet3 | escape + '</li>'
+                        + '<li>' + i18n.personWithSignificantControl.whichTypePage.otherRegistrablePersonInformation.bullet4 | escape + '</li>'
+                    + '</ul>'
+        }) }}
+              
+        {% include "includes/continue-button.njk" %}
+      </form>
+    </div>
+  </div>
+{% endblock %}

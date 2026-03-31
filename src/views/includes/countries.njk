@@ -1,5 +1,9 @@
 {% from "govuk/components/select/macro.njk" import govukSelect %}
-{% macro getSpecifiedCountryList(i18n, subsetType, id, text, countryField, errorMessage, labelFormatting)  %}
+{% macro getSpecifiedCountryList(i18n, subsetType, id, text, countryField, errorMessage, labelFormatting, required)  %}
+  {% set isRequired = "true" %}
+  {% if required is defined %}
+    {% set isRequired = required %}
+  {% endif %}
 
   {% set COUNTRIES = SET_COUNTRIES_DROPDOWN(i18n, countryField) %}
 
@@ -21,7 +25,7 @@
     errorMessage: errorMessage,
     attributes : {
       required: "true"
-    },
+    } if isRequired,
     items: list
   }) }}
 {% endmacro %}

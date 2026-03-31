@@ -22,9 +22,17 @@ const registrationRoutingAddRelevantLegalEntity = {
   pageType: RegistrationPageType.addPersonWithSignificantControlRelevantLegalEntity
 };
 
+const registrationRoutingPersonWithSignificantControlChoice = {
+  previousUrl: url.WILL_LIMITED_PARTNERSHIP_HAVE_PSC_URL,
+  currentUrl: url.PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL,
+  nextUrl: "",
+  pageType: RegistrationPageType.personWithSignificantControlChoice
+};
+
 const personWithSignificantControlRouting = [
   registrationRoutingPersonWithSignificantControl,
   registrationRoutingWillLimitedPartnershipHavePsc,
+  registrationRoutingPersonWithSignificantControlChoice,
   registrationRoutingAddRelevantLegalEntity
 ];
 
