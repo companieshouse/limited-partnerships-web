@@ -42,6 +42,22 @@ describe("Will Limited Partnership Have PSC Page", () => {
       testTranslations(res.text, translationText.personWithSignificantControl.willThePartnershipHaveAnyPscPage, ["errorMessage"]);
 
     });
+
+    it.each([
+      true,
+      false
+    ])("should preselect the has_person_with_significant_control value if it exists in the limited partnership data", async (hasPscSelection: boolean) => {
+      const limitedPartnership = new LimitedPartnershipBuilder()
+        .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+        .withHasPersonWithSignificantControl(hasPscSelection)
+        .build();
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+      const res = await request(app).get(URL);
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(`value="${hasPscSelection}" checked`);
+    });
   });
 
   describe("Post Will Limited Partnership Have PSC Page", () => {
