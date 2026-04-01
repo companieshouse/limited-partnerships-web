@@ -4,7 +4,7 @@ import enTranslationText from "../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../locales/cy/translations.json";
 
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { WHICH_TYPE_OF_NATURE_OF_CONTROL_URL } from "../../../../controller/registration/url";
+import { WHICH_TYPE_OF_NATURE_OF_CONTROL_RELEVANT_LEGAL_ENTITY_URL } from "../../../../controller/registration/url";
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import { TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../../../controller/addressLookUp/url/registration";
@@ -12,7 +12,7 @@ import RegistrationPageType from "../../../../controller/registration/PageType";
 import PersonWithSignificantControlBuilder from "../../../builder/PersonWithSignificantControl";
 
 describe("Which Type of Nature of Control Page", () => {
-  const URL = getUrl(WHICH_TYPE_OF_NATURE_OF_CONTROL_URL);
+  const URL = getUrl(WHICH_TYPE_OF_NATURE_OF_CONTROL_RELEVANT_LEGAL_ENTITY_URL);
   const REDIRECT_URL = getUrl(TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_PRINCIPAL_OFFICE_ADDRESS_URL);
 
   beforeEach(() => {
@@ -37,12 +37,12 @@ describe("Which Type of Nature of Control Page", () => {
       expect(res.status).toBe(200);
 
       expect(res.text).toContain(
-        `${translationText.personWithSignificantControl.whichTypeOfNatureOfControlPage.title} - ${translationText.serviceRegistration} - GOV.UK`
+        `${translationText.personWithSignificantControl.whichTypeOfNatureOfControlPage.relevantLegalEntity.title} - ${translationText.serviceRegistration} - GOV.UK`
       );
       expect(res.text).toContain(
         `${limitedPartnership?.data?.partnership_name?.toUpperCase()} ${limitedPartnership?.data?.name_ending?.toUpperCase()}`
       );
-      testTranslations(res.text, translationText.personWithSignificantControl.whichTypeOfNatureOfControlPage);
+      testTranslations(res.text, translationText.personWithSignificantControl.whichTypeOfNatureOfControlPage.relevantLegalEntity);
 
     });
   });
@@ -58,7 +58,7 @@ describe("Which Type of Nature of Control Page", () => {
 
       const res = await request(app).post(URL)
         .send({
-          pageType: RegistrationPageType.whichTypeOfNatureOfControl
+          pageType: RegistrationPageType.whichTypeOfNatureOfControlRelevantLegalEntity
         });
 
       expect(res.status).toBe(302);

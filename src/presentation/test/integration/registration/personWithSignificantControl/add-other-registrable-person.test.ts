@@ -12,7 +12,7 @@ import {
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_URL,
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_WITH_IDS_URL,
   PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL,
-  WHICH_TYPE_OF_NATURE_OF_CONTROL_URL
+  WHICH_TYPE_OF_NATURE_OF_CONTROL_OTHER_REGISTRABLE_PERSON_URL
 } from "../../../../controller/registration/url";
 
 import RegistrationPageType from "../../../../controller/registration/PageType";
@@ -22,7 +22,7 @@ import PersonWithSignificantControlBuilder from "../../../builder/PersonWithSign
 
 describe("Add Person With Significant Control Other registrable person Page", () => {
   const URL = getUrl(ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_URL);
-  const REDIRECT_URL = getUrl(WHICH_TYPE_OF_NATURE_OF_CONTROL_URL);
+  const REDIRECT_URL = getUrl(WHICH_TYPE_OF_NATURE_OF_CONTROL_OTHER_REGISTRABLE_PERSON_URL);
 
   beforeEach(() => {
     setLocalesEnabled(false);
