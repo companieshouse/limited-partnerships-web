@@ -1,12 +1,18 @@
 import TransactionPersonWithSignificantControl from "../../../domain/entities/TransactionPersonWithSignificantControl";
 
-export const personWithSignificantControlRelevantLegalEntity = {
-  legal_entity_name: "My Company ltd - GP",
+const personWithSignificantControlRelevantLegalEntity = {
+  legal_entity_name: "My Company ltd - RLE",
   legal_form: "Limited Company",
   governing_law: "Act of law",
   legal_entity_register_name: "US Register",
   legal_entity_registration_location: "United States",
   registered_company_number: "12345678"
+};
+
+const personWithSignificantControlOtherRegistrablePerson = {
+  legal_entity_name: "My Company ltd - ORP",
+  legal_form: "Limited Company",
+  governing_law: "Act of law",
 };
 
 class PersonWithSignificantControlBuilder {
@@ -45,6 +51,14 @@ class PersonWithSignificantControlBuilder {
     this.data = {
       ...this.data,
       ...personWithSignificantControlRelevantLegalEntity
+    };
+    return this;
+  }
+
+  isOtherRegistrablePerson() {
+    this.data = {
+      ...this.data,
+      ...personWithSignificantControlOtherRegistrablePerson
     };
     return this;
   }
