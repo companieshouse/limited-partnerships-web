@@ -755,7 +755,12 @@
             "publicRegisterLine1" : "WELSH - We'll show all of this information on the public register."
         },
         "whichTypeOfNatureOfControlPage": {
-            "title": "WELSH - Which type of nature of control does the relevant legal entity (RLE) have?"
+            "relevantLegalEntity": {
+                "title": "WELSH - Which type of nature of control does the relevant legal entity (RLE) have?"
+            },
+            "otherRegistrablePerson": {
+                "title": "WELSH - Which type of nature of control does the other registrable person (ORP) have?"
+            }
         }
     },
 
