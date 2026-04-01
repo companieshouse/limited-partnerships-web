@@ -30,6 +30,13 @@ const registrationRoutingAddRelevantLegalEntity = {
   pageType: RegistrationPageType.addPersonWithSignificantControlRelevantLegalEntity
 };
 
+const registrationRoutingAddOtherRegistrablePerson = {
+  previousUrl: url.PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL,
+  currentUrl: url.ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_URL,
+  nextUrl: url.WHICH_TYPE_OF_NATURE_OF_CONTROL_URL,
+  pageType: RegistrationPageType.addPersonWithSignificantControlOtherRegistrablePerson
+};
+
 const registrationRoutingWhichTypeOfNatureOfControl = {
   previousUrl: url.ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_WITH_IDS_URL,
   currentUrl: url.WHICH_TYPE_OF_NATURE_OF_CONTROL_URL,
@@ -42,6 +49,7 @@ const personWithSignificantControlRouting = [
   registrationRoutingWillLimitedPartnershipHavePsc,
   registrationRoutingPersonWithSignificantControlChoice,
   registrationRoutingAddRelevantLegalEntity,
+  registrationRoutingAddOtherRegistrablePerson,
   registrationRoutingWhichTypeOfNatureOfControl,
   registrationRoutingAddRelevantLegalEntity
 ];
