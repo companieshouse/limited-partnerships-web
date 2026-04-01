@@ -746,7 +746,7 @@
         "addOtherRegistrablePerson": {
             "title": "WELSH - Add an other registrable person PSC",
 
-            "legalEntityName" : "WELSH - What is the relevant legal entity (ORP)'s name?",
+            "legalEntityName" : "WELSH - What is the other registrable person (ORP)'s name?",
             "legalFormOrCorporateIdentity" : "WELSH - What is its legal form or corporate identity?",
             "legalFormOrCorporateIdentityHint" : "WELSH - This is the corporate body type. For example, private limited company.",
             "governingLaw" : "WELSH - What governing law does it operate under?",
