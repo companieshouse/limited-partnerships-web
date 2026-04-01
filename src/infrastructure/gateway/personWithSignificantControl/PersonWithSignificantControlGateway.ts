@@ -21,7 +21,7 @@ export default class PersonWithSignificantControlGateway implements IPersonWithS
 
     const apiCall = {
       service: SDK_LIMITED_PARTNERSHIP_SERVICE,
-      method: "postPsc",
+      method: "postPersonWithSignificantControl",
       args: [transactionId, personWithSignificantControl]
     };
 
@@ -46,7 +46,7 @@ export default class PersonWithSignificantControlGateway implements IPersonWithS
   ): Promise<any> {
     const apiCall = {
       service: SDK_LIMITED_PARTNERSHIP_SERVICE,
-      method: "getPsc",
+      method: "getPersonWithSignificantControl",
       args: [transactionId, personWithSignificantControlId]
     };
 
@@ -67,7 +67,7 @@ export default class PersonWithSignificantControlGateway implements IPersonWithS
   ): Promise<void> {
     const apiCall = {
       service: SDK_LIMITED_PARTNERSHIP_SERVICE,
-      method: "patchPsc",
+      method: "patchPersonWithSignificantControl",
       args: [transactionId, personWithSignificantControlId, data]
     };
 
