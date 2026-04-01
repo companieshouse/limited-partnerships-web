@@ -233,7 +233,7 @@ class AddressLookUpController extends AbstractController {
         );
 
         if (errors?.hasErrors()) {
-          const { generalPartner, limitedPartner } = await this.getPartnerGPandLP(pageType, tokens, ids);
+          const { generalPartner, limitedPartner } = await this.getResourcesData(pageType, tokens, ids);
 
           response.render(
             super.templateName(pageRouting.currentUrl),
@@ -324,7 +324,7 @@ class AddressLookUpController extends AbstractController {
         }
 
         if (errors?.hasErrors()) {
-          const { generalPartner, limitedPartner } = await this.getPartnerGPandLP(pageType, tokens, ids);
+          const { generalPartner, limitedPartner } = await this.getResourcesData(pageType, tokens, ids);
 
           const cacheById = this.cacheService.getDataFromCacheById(request.signedCookies, ids.transactionId);
 
@@ -402,7 +402,7 @@ class AddressLookUpController extends AbstractController {
         }
 
         if (result?.errors) {
-          const { generalPartner, limitedPartner, personWithSignificantControl } = await this.getPartnerGPandLP(pageType, tokens, ids);
+          const { generalPartner, limitedPartner, personWithSignificantControl } = await this.getResourcesData(pageType, tokens, ids);
 
           let limitedPartnership;
 
@@ -755,7 +755,7 @@ class AddressLookUpController extends AbstractController {
     response.redirect(pageRouting.nextUrl);
   }
 
-  private async getPartnerGPandLP(pageType: any, tokens: Tokens, ids: Ids) {
+  private async getResourcesData(pageType: any, tokens: Tokens, ids: Ids) {
     let generalPartner = {};
     let limitedPartner = {};
     let personWithSignificantControl = {};

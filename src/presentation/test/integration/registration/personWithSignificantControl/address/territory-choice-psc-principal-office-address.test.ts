@@ -5,16 +5,16 @@ import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
 import {
-  TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_PRINCIPAL_OFFICE_ADDRESS_URL,
-  POSTCODE_PERSON_WITH_SIGNIFICANT_CONTROL_PRINCIPAL_OFFICE_ADDRESS_URL,
-  ENTER_PERSON_WITH_SIGNIFICANT_CONTROL_PRINCIPAL_OFFICE_ADDRESS_URL
+  TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL,
+  POSTCODE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL,
+  ENTER_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL
 } from "../../../../../controller/addressLookUp/url/registration";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
 import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBuilder";
 
 describe("PSC Principal Office Address Territory Choice", () => {
-  const URL = getUrl(TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_PRINCIPAL_OFFICE_ADDRESS_URL);
+  const URL = getUrl(TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL);
 
   beforeEach(() => {
     setLocalesEnabled(false);
@@ -49,10 +49,10 @@ describe("PSC Principal Office Address Territory Choice", () => {
 
   describe("POST PSC territory choice", () => {
     it("should redirect to postcode lookup page when United Kingdom is selected", async () => {
-      const POSTCODE_URL = getUrl(POSTCODE_PERSON_WITH_SIGNIFICANT_CONTROL_PRINCIPAL_OFFICE_ADDRESS_URL);
+      const POSTCODE_URL = getUrl(POSTCODE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL);
 
       const res = await request(app).post(URL).send({
-        pageType: AddressPageType.territoryChoicePersonWithSignificantControlPrincipalOfficeAddress,
+        pageType: AddressPageType.territoryChoicePersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
         parameter: "unitedKingdom"
       });
 
@@ -69,10 +69,10 @@ describe("PSC Principal Office Address Territory Choice", () => {
     });
 
     it("should redirect to manual entry page when overseas is selected", async () => {
-      const MANUAL_ENTRY_URL = getUrl(ENTER_PERSON_WITH_SIGNIFICANT_CONTROL_PRINCIPAL_OFFICE_ADDRESS_URL);
+      const MANUAL_ENTRY_URL = getUrl(ENTER_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL);
 
       const res = await request(app).post(URL).send({
-        pageType: AddressPageType.territoryChoicePersonWithSignificantControlPrincipalOfficeAddress,
+        pageType: AddressPageType.territoryChoicePersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
         parameter: "overseas"
       });
 
