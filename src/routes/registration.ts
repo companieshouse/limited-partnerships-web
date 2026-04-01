@@ -35,6 +35,8 @@ import {
   PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL,
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL,
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_WITH_IDS_URL,
+  ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_URL,
+  ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_WITH_IDS_URL,
   WHICH_TYPE_OF_NATURE_OF_CONTROL_URL
 } from "../presentation/controller/registration/url";
 import RegistrationPageType from "../presentation/controller/registration/PageType";
@@ -310,6 +312,24 @@ export const registrationEndpoints = (
   );
   router.post(
     ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_WITH_IDS_URL,
+    dependencies.personWithSignificantControlRegistrationController.sendPageData()
+  );
+
+  router.get(
+    ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_URL,
+    dependencies.personWithSignificantControlRegistrationController.getPageRouting()
+  );
+  router.post(
+    ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_URL,
+    dependencies.personWithSignificantControlRegistrationController.createPersonWithSignificantControl()
+  );
+
+  router.get(
+    ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_WITH_IDS_URL,
+    dependencies.personWithSignificantControlRegistrationController.getPageRouting()
+  );
+  router.post(
+    ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_WITH_IDS_URL,
     dependencies.personWithSignificantControlRegistrationController.sendPageData()
   );
 

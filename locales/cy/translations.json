@@ -45,19 +45,19 @@
         "generalPartner": {
             "title" : "WELSH - Add a general partner (person)",
             "dateEffectiveFrom" : "WELSH - When did they become a general partner for this partnership?",
-            "previousName" : { 
+            "previousName" : {
                 "title" : "WELSH - Does the general partner have a previous name?",
                 "hint" : "WELSH - For example, if they've changed their name as a result of marriage or divorce.",
                 "yes" : "WELSH - Yes",
                 "yesHintTitle" : "WELSH - What is the general partner's previous name?",
                 "yesHint" : "WELSH - If the partner has more than one previous name, separate each name with a comma.",
                 "no" : "WELSH - No"
-            }            
+            }
         },
         "limitedPartner": {
             "title": "WELSH - Add a limited partner (person)",
             "dateEffectiveFrom" : "WELSH - When did they become a limited partner for this partnership?",
-            "previousName" : { 
+            "previousName" : {
                 "title" : "WELSH - Does the limited partner have a previous name?",
                 "hint" : "WELSH - For example, if they've changed their name as a result of marriage or divorce.",
                 "yes" : "WELSH - Yes",
@@ -90,13 +90,13 @@
     },
 
     "address": {
-        "chooseAddress": { 
+        "chooseAddress": {
             "addressLink": "WELSH - The address is not on the list",
             "principalPlaceOfBusiness" : {
-               "title": "WELSH - Choose the principal place of business"            
+               "title": "WELSH - Choose the principal place of business"
             },
             "registeredOfficeAddress" : {
-                "title": "WELSH - Choose the registered office address"                
+                "title": "WELSH - Choose the registered office address"
             },
             "generalPartnerUsualResidentialAddress" : {
                 "title" : "WELSH - Choose the usual residential address of the general partner"
@@ -126,7 +126,7 @@
                 "publicRegisterLine1": "WELSH - We'll show the registered office address on the public register."
             },
             "principalPlaceOfBusinessAddress" : {
-                "title" : "WELSH - Confirm the principal place of business address",              
+                "title" : "WELSH - Confirm the principal place of business address",
                 "publicRegisterLine1": "WELSH - We'll show the principal place of business address on the public register."
             },
             "usualResidentialAddress": {
@@ -150,7 +150,7 @@
                 "publicRegisterLine1": "WELSH - We'll show the limited partner's principal office address on the public register."
             }
         },
-        
+
         "enterAddress": {
             "registeredOfficeAddress" : {
                 "title": "WELSH - What is the registered office address of the partnership?",
@@ -275,7 +275,7 @@
             "postcode": "WELSH - Postcode",
             "enterAddressManually": "WELSH - Enter address manually",
             "findAddress": "WELSH - Find address",
-            
+
             "errorMessages": {
                 "jurisdictionEnglandAndWales": "WELSH - You must enter a postcode which is in England or Wales",
                 "jurisdictionNorthernIreland": "WELSH - You must enter a postcode which is in Northern Ireland",
@@ -292,7 +292,7 @@
             "appropriateAddressDetailsSummary": "WELSH - What does 'appropriate' address mean?",
             "appropriateAddressWarning": "WELSH - The address must meet the requirements of an 'appropriate' address. If it does not, the partnership could be struck off the Companies House register.",
             "newRequirement": "WELSH - This is a new requirement. We do not hold a registered office address for the partnership yet. It may be different from the principal place of business address that we already hold.",
-            "officialCommunication": "WELSH - We'll use this address to send official communications. It must be a physical address in the UK. You cannot use a PO Box address.",            
+            "officialCommunication": "WELSH - We'll use this address to send official communications. It must be a physical address in the UK. You cannot use a PO Box address.",
             "provideNext": "WELSH - You'll need to provide the principal place of business next."
         },
 
@@ -355,14 +355,14 @@
         "submit": "WELSH - Submit",
         "submitUpdate": "WELSH - Submit update"
     },
-    
+
     "capitalContribution" : {
         "title" : "WELSH - What is their total capital contribution?",
         "currencyTypeLabel": "WELSH - Contribution currency type",
         "valueLabel": "WELSH - Contribution currency value",
         "hint" : "WELSH - This is the total value of all monetary and non-monetary contributions",
         "amountHint": "WELSH - Enter the value, for example:",
-        "amountMinHint": "WELSH - if they contributed £0.01 enter 0.01", 
+        "amountMinHint": "WELSH - if they contributed £0.01 enter 0.01",
         "amountMaxHint": "WELSH - if they contributed $25,000 enter 25000.00",
         "compositionTitle" : "WELSH - What is this total value made up of?",
         "compositionHint" : "WELSH - Select all that apply",
@@ -387,11 +387,11 @@
             "subTitle": "WELSH - When did this person cease to be a general partner?"
         },
         "legalEntity": {
-            "subTitle": "WELSH - When did this entity cease to be a general partner?"            
+            "subTitle": "WELSH - When did this entity cease to be a general partner?"
         },
         "removeConfirmationChecked": " WELSH - is no longer a general partner"
       },
-      
+
       "removeLimitedPartner" : {
         "title": "WELSH - Remove a limited partner",
         "person": {
@@ -430,7 +430,7 @@
             "dob": "WELSH - full dates of birth of any partners who are people",
             "ura": "WELSH - usual residential addresses of any partners who are people"
         },
-        
+
         "payment" : "WELSH - Continue to payment",
         "submitFiling" : "WELSH - Submit filing",
 
@@ -489,7 +489,7 @@
 
     "companyNumber" : {
         "whatIsPartnershipNumber": "WELSH - What is the limited partnership number?",
-        "hint": "WELSH - This is 2 letters followed by 6 numbers." 
+        "hint": "WELSH - This is 2 letters followed by 6 numbers."
     },
 
     "confirmLimitedPartnership": {
@@ -548,7 +548,7 @@
               "filingRejected": "WELSH - If it's rejected, we'll explain why and tell you what to do next.",
               "confirmationStatementTitle": "WELSH - If you need to file a confirmation statement",
               "confirmationStatementBody": "WELSH - As long as all required updates have been submitted, you can file a confirmation statement. You do not need to wait for the updates to be accepted."
-            } 
+            }
         }
     },
 
@@ -557,15 +557,15 @@
         "hint": "WELSH - If you have saved filings, you can continue with one of these or start a new one",
         "yes": {
           "text": "WELSH - Yes, continue with a saved filing",
-          "hint": "WELSH - You'll be able to choose which filing you want to continue with"          
+          "hint": "WELSH - You'll be able to choose which filing you want to continue with"
         },
         "no": {
           "text": "WELSH - No, start a new filing",
-          "hint": "WELSH - This will not delete any saved filings"          
+          "hint": "WELSH - This will not delete any saved filings"
         }
     },
 
-    "dateOfUpdate" : { 
+    "dateOfUpdate" : {
       "dateHint": "WELSH - For example, 27 3 2025",
       "dateDay" : "WELSH - Day",
       "dateMonth" : "WELSH - Month",
@@ -665,14 +665,14 @@
         "nameEnding" : "WELSH - Which name ending would you prefer to go on the public record?",
         "nameEndingHint" : "WELSH - There's no difference between the name endings Limited Partnership, LP and L.P. except how they look.",
         "nameEndingWelshHint" : "WELSH - There's no difference between the name endings Limited Partnership, LP and L.P. except how they look. Partneriaeth Cyfyngedig, PC and P.C. can only be used if the partnership's principal place of business is in Wales.",
-       
+
         "privateFund" : {
-            "title" : "WELSH - Private fund limited partnership name",           
+            "title" : "WELSH - Private fund limited partnership name",
             "nameEnding" : "WELSH - Which private fund limited partnership name ending would you prefer to go on the public record?",
-    
+
             "scottish" : {
-                "title" : "WELSH - Scottish private fund limited partnership name"                     
-            }    
+                "title" : "WELSH - Scottish private fund limited partnership name"
+            }
         },
 
         "scottish" : {
@@ -740,6 +740,17 @@
             "countryRegistered" : "WELSH - Which country is it registered in? (if applicable)",
             "registrationNumber" : "WELSH - What is the registration number? (if applicable)",
             "registrationNumberHint" : "WELSH - For example, the company number.",
+
+            "publicRegisterLine1" : "WELSH - We'll show all of this information on the public register."
+        },
+        "addOtherRegistrablePerson": {
+            "title": "WELSH - Add an other registrable person PSC",
+
+            "legalEntityName" : "WELSH - What is the relevant legal entity (ORP)'s name?",
+            "legalFormOrCorporateIdentity" : "WELSH - What is its legal form or corporate identity?",
+            "legalFormOrCorporateIdentityHint" : "WELSH - This is the corporate body type. For example, private limited company.",
+            "governingLaw" : "WELSH - What governing law does it operate under?",
+            "governingLawHint" : "WELSH - For example, the Companies Act 2006.",
 
             "publicRegisterLine1" : "WELSH - We'll show all of this information on the public register."
         },
@@ -902,7 +913,7 @@
         "secondNationalityHint" : "WELSH - Dual citizenship (also known as dual nationality) is allowed in some countries. This means you can be a citizen of your own country and another country.",
         "publicRegisterLine1" : "WELSH - We'll show all of this information on the public register."
     },
-    
+
     "whereIsTheJurisdiction" : {
         "title" : "WELSH - Where is the jurisdiction?",
         "whereIsJurisdiction" : "WELSH - Where is the jurisdiction?",
@@ -910,7 +921,7 @@
             "EnglandWales" : "WELSH - England and Wales",
             "NorthernIreland" : "WELSH - Northern Ireland"
         },
-        "hint" : "WELSH - This is where the partnership was formed. The registered office address and principal place of business will need to be in the same jurisdiction.", 
+        "hint" : "WELSH - This is where the partnership was formed. The registered office address and principal place of business will need to be in the same jurisdiction.",
         "scotland": {
             "title" : "WELSH - The partnership will be registered in Scotland",
             "information" : "WELSH - The partnership's registered office address must be in Scotland. The principal place of business must be in Scotland at registration.",

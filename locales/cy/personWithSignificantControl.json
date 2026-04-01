@@ -1,0 +1,62 @@
+{
+  "personWithSignificantControl": {
+    "tellUsAboutPscPage": {
+      "title": "WELSH - Tell us about people with significant control (PSCs)",
+      "pageInformation": "WELSH - We'll ask you whether the partnership will have any PSCs. If it will, you'll need to tell us about them.",
+      "moreThanOne": "WELSH - If the partnership has more than one PSC, you'll add them one at a time.",
+      "futureChanges": "WELSH - You'll need to file any future changes to PSCs on paper."
+    },
+    "willThePartnershipHaveAnyPscPage": {
+      "title": "WELSH - Will the partnership have any people with significant control (PSCs) on registration?",
+      "optionYes": "WELSH - Yes, at least one person will count as a PSC in relation to the partnership. This may be an individual, a relevant legal entity (RLE) or an other registrable person (ORP)",
+      "optionNo": "WELSH - No, there is no person identified as a PSC in relation to the limited partnership",
+      "errorMessage": "WELSH - You must select whether the partnership will have any people with significant control (PSCs) on registration."
+    },
+    "whichTypePage": {
+      "title": "WELSH - Which type of person with significant control (PSC) do you need to add?",
+      "hint": "WELSH - You can add more later.",
+      "addIndividualPerson": "WELSH - An individual person",
+      "addRelevantLegalEntity": "WELSH - A relevant legal entity (RLE)",
+      "AddOtherRegistrablePerson": "An other registrable person (ORP)",
+      "errorMessage": "WELSH - Select which type of PSC you need to add",
+      "otherRegistrablePersonInformation": {
+        "title": "WELSH - What is an other registrable person?",
+        "line1": "WELSH - An other registrable person (ORP) is a non-corporate entity or office that can legally act as a PSC. This can be:",
+        "bullet1": "WELSH - a corporation sole - a single incorporated office occupied by one person, such as Lord Mayor of London",
+        "bullet2": "WELSH - a government or government department of a country, a territory, or a part of a country or territory",
+        "bullet3": "WELSH - an international organisation whose members include two or more countries or territories (or their governments)",
+        "bullet4": "WELSH - a local authority or local government body in the UK or elsewhere"
+      }
+    },
+    "addRelevantLegalEntity": {
+      "title": "WELSH - Add a relevant legal entity PSC",
+
+      "legalEntityName" : "WELSH - What is the relevant legal entity (RLE)'s name?",
+      "legalFormOrCorporateIdentity" : "WELSH - What is its legal form or corporate identity?",
+      "legalFormOrCorporateIdentityHint" : "WELSH - This is the corporate body type. For example, private limited company.",
+      "governingLaw" : "WELSH - What governing law does it operate under?",
+      "governingLawHint" : "WELSH - For example, the Companies Act 2006.",
+      "whichRegister" : "WELSH - Which register is it entered in? (if applicable)",
+      "whichRegisterHint" : "WELSH - For example, the Register of Companies UK.",
+      "countryRegistered" : "WELSH - Which country is it registered in? (if applicable)",
+      "registrationNumber" : "WELSH - What is the registration number? (if applicable)",
+      "registrationNumberHint" : "WELSH - For example, the company number.",
+
+      "publicRegisterLine1" : "WELSH - We'll show all of this information on the public register."
+    },
+    "addOtherRegistrablePerson": {
+      "title": "Add an other registrable person PSC",
+
+      "legalEntityName" : "What is the relevant legal entity (ORP)'s name?",
+      "legalFormOrCorporateIdentity" : "What is its legal form or corporate identity?",
+      "legalFormOrCorporateIdentityHint" : "This is the corporate body type. For example, private limited company.",
+      "governingLaw" : "What governing law does it operate under?",
+      "governingLawHint" : "For example, the Companies Act 2006.",
+
+      "publicRegisterLine1" : "We'll show all of this information on the public register."
+    },
+    "whichTypeOfNatureOfControlPage": {
+      "title": "Which type of nature of control does the relevant legal entity (RLE) have?"
+    }
+  }
+}

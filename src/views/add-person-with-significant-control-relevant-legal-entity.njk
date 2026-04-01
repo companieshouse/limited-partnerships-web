@@ -8,13 +8,13 @@
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
             {% include "includes/errors.njk" %}
-      
-            {% include "includes/proposed-name.njk" %}  
+
+            {% include "includes/proposed-name.njk" %}
 
             <h1 class="govuk-heading-xl">{{ i18n.personWithSignificantControl.addRelevantLegalEntity.title }}</h1>
 
             <form class="form" method="post">
-                <input type="hidden" name="pageType" value={{ props.pageType }}>      
+                <input type="hidden" name="pageType" value={{ props.pageType }}>
                 {% include "includes/csrf_token.njk" %}
 
                 {{ govukInput({
@@ -103,7 +103,7 @@
                     value: props.data.personWithSignificantControl.data.registered_company_number,
                     errorMessage: props.errors.registered_company_number if props.errors
                 }) }}
-            
+
                 {% include "includes/public-register-information.njk" %}
 
                 {% include "includes/save-and-continue-button.njk" %}
