@@ -45,7 +45,8 @@ describe("Will Limited Partnership Have PSC Page", () => {
 
     it.each([
       true,
-      false
+      false,
+      null
     ])("should preselect the has_person_with_significant_control value if it exists in the limited partnership data", async (hasPscSelection: boolean) => {
       const limitedPartnership = new LimitedPartnershipBuilder()
         .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
@@ -56,7 +57,12 @@ describe("Will Limited Partnership Have PSC Page", () => {
       const res = await request(app).get(URL);
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(`value="${hasPscSelection}" checked`);
+      if (hasPscSelection !== null) {
+        expect(res.text).toContain(`value="${hasPscSelection}" checked`);
+      } else {
+        expect(res.text).not.toContain(`value="false" checked`);
+        expect(res.text).not.toContain(`value="true" checked`);
+      }
     });
   });
 
