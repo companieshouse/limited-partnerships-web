@@ -10,7 +10,6 @@ import {
   ENTER_PERSON_WITH_SIGNIFICANT_CONTROL_PRINCIPAL_OFFICE_ADDRESS_URL
 } from "../../../../../controller/addressLookUp/url/registration";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
-import PersonWithSignificantControlBuilder from "../../../../builder/PersonWithSignificantControl";
 import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
 import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBuilder";
 

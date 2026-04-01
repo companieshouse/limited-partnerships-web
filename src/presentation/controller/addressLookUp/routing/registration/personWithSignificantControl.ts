@@ -1,6 +1,7 @@
 import AddressPageType from "../../PageType";
 import {
-  ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_WITH_IDS_URL
+  ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_WITH_IDS_URL,
+  PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL
 } from "../../../registration/url";
 import * as url from "../../url/registration";
 
@@ -64,7 +65,8 @@ const registrationAddressRoutingEnterPersonWithSignificantControlPrincipalOffice
 const registrationAddressRoutingConfirmPersonWithSignificantControlPrincipalOfficeAddress = {
   previousUrl: url.POSTCODE_PERSON_WITH_SIGNIFICANT_CONTROL_PRINCIPAL_OFFICE_ADDRESS_URL,
   currentUrl: url.CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_PRINCIPAL_OFFICE_ADDRESS_URL,
-  nextUrl: "",
+  // LP-1778: Replace with PSC summary page URL when implemented
+  nextUrl: PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL,
   pageType: AddressPageType.confirmPersonWithSignificantControlPrincipalOfficeAddress,
   data: {
     ...personWithSignificantControlPrincipalOfficeAddressCacheKeys,

@@ -15,6 +15,7 @@ import {
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import PersonWithSignificantControlBuilder from "../../../../builder/PersonWithSignificantControl";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
+import { PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL } from "../../../../../controller/registration/url";
 
 describe("Confirm PSC Principal Office Address Page", () => {
   const URL = getUrl(CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_PRINCIPAL_OFFICE_ADDRESS_URL);
@@ -97,7 +98,11 @@ describe("Confirm PSC Principal Office Address Page", () => {
           }`
         });
 
+      // LP-1778: Update redirect URL when PSC summary page is implemented
+      const redirectUrl = getUrl(PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL);
+
       expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
     });
 
     it("should show error message if address is not provided", async () => {
