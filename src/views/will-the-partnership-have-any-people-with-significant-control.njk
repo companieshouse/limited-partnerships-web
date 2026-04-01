@@ -2,6 +2,8 @@
 
 {% set pageTitle = i18n.personWithSignificantControl.willThePartnershipHaveAnyPscPage.title %}
 
+{% set currentValue = props.data.limitedPartnership.data.has_person_with_significant_control %}
+
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -28,11 +30,13 @@
             items: [
               {
                 value: "true",
-                text: i18n.personWithSignificantControl.willThePartnershipHaveAnyPscPage.optionYes
+                text: i18n.personWithSignificantControl.willThePartnershipHaveAnyPscPage.optionYes,
+                checked: currentValue === true
               },
               {
                 value: "false",
-                text: i18n.personWithSignificantControl.willThePartnershipHaveAnyPscPage.optionNo
+                text: i18n.personWithSignificantControl.willThePartnershipHaveAnyPscPage.optionNo,
+                checked: currentValue === false
               }
             ],
             errorMessage: {
