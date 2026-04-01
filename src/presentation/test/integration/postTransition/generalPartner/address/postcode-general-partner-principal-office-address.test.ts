@@ -59,7 +59,8 @@ describe("Postcode general partner's principal office address page", () => {
         "usualResidentialAddress",
         "correspondenceAddress",
         "errorMessages",
-        "limitedPartner"
+        "limitedPartner",
+        "personWithSignificantControl"
       ]);
       expect(res.text).not.toContain("WELSH -");
       expect(res.text).not.toContain(generalPartnerPerson.forename.toUpperCase());
@@ -92,7 +93,8 @@ describe("Postcode general partner's principal office address page", () => {
         "usualResidentialAddress",
         "correspondenceAddress",
         "errorMessages",
-        "limitedPartner"
+        "limitedPartner",
+        "personWithSignificantControl"
       ]);
       expect(res.text).toContain("WELSH -");
       expect(res.text).not.toContain(generalPartnerPerson.forename.toUpperCase());

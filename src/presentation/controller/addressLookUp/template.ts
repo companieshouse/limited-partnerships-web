@@ -83,6 +83,14 @@ export const CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_TEMPLATE =
 
 // PERSON WITH SIGNIFICANT CONTROL
 
-// principal office address - Relevant Legal entity
+// principal office address - Relevant Legal Entity
 export const TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_PRINCIPAL_OFFICE_ADDRESS_TEMPLATE =
   AddressPageType.territoryChoicePersonWithSignificantControlPrincipalOfficeAddress;
+export const POSTCODE_PERSON_WITH_SIGNIFICANT_CONTROL_PRINCIPAL_OFFICE_ADDRESS_TEMPLATE =
+  AddressPageType.postcodePersonWithSignificantControlPrincipalOfficeAddress;
+export const CHOOSE_PERSON_WITH_SIGNIFICANT_CONTROL_PRINCIPAL_OFFICE_ADDRESS_TEMPLATE =
+  AddressPageType.choosePersonWithSignificantControlPrincipalOfficeAddress;
+export const ENTER_PERSON_WITH_SIGNIFICANT_CONTROL_PRINCIPAL_OFFICE_ADDRESS_TEMPLATE =
+  AddressPageType.enterPersonWithSignificantControlPrincipalOfficeAddress;
+export const CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_PRINCIPAL_OFFICE_ADDRESS_TEMPLATE =
+  AddressPageType.confirmPersonWithSignificantControlPrincipalOfficeAddress;
