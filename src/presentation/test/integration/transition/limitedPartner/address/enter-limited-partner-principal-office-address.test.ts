@@ -58,7 +58,8 @@ describe("Enter Limited Partner Principal Office Address Page", () => {
         "countryEngland",
         "countryScotland",
         "countryWales",
-        "countryNorthernIreland"
+        "countryNorthernIreland",
+        "personWithSignificantControl"
       ]);
       expect(res.text).not.toContain("WELSH -");
       expect(res.text).not.toContain(limitedPartnerPerson.forename?.toUpperCase());
@@ -97,7 +98,8 @@ describe("Enter Limited Partner Principal Office Address Page", () => {
         "countryEngland",
         "countryScotland",
         "countryWales",
-        "countryNorthernIreland"
+        "countryNorthernIreland",
+        "personWithSignificantControl"
       ]);
 
       expect(res.text).not.toContain(limitedPartnerPerson.forename?.toUpperCase());

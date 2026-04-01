@@ -116,6 +116,10 @@
             "limitedPartnerPrincipalOfficeAddress": {
                 "title": "WELSH - Choose the limited partner's principal office address",
                 "publicRegisterInformationLine1": "WELSH - We'll show the limited partner's principal office address on the public register."
+            },
+            "personWithSignificantControlPrincipalOfficeAddress": {
+                "title": "WELSH - Choose the PSC's principal office address",
+                "publicRegisterInformationLine1": "WELSH - We'll show the PSC's principal office address on the public register."
             }
         },
 
@@ -148,6 +152,10 @@
             "limitedPartnerPrincipalOfficeAddress": {
                 "title": "WELSH - Confirm the limited partner's principal office address",
                 "publicRegisterLine1": "WELSH - We'll show the limited partner's principal office address on the public register."
+            },
+            "personWithSignificantControlPrincipalOfficeAddress": {
+                "title": "WELSH - Confirm the PSC's principal office address",
+                "publicRegisterLine1": "WELSH - We'll show the PSC's principal office address on the public register."
             }
         },
 
@@ -192,6 +200,14 @@
                     "title": "WELSH - What is the limited partner's principal office address?",
                     "hint": "WELSH - This is the address for the entity's main office.",
                     "publicInformationLine1": "WELSH - We'll show the limited partner's principal office address on the public register.",
+                    "postcodeOptional": "WELSH - Postcode (optional)"
+                }
+            },
+            "personWithSignificantControl":{
+                "principalOfficeAddress":{
+                    "title": "WELSH - What is the PSC's principal office address?",
+                    "hint": "WELSH - This is the address for the entity's main office.",
+                    "publicInformationLine1": "WELSH - We'll show the PSC's principal office address on the public register.",
                     "postcodeOptional": "WELSH - Postcode (optional)"
                 }
             },
@@ -271,6 +287,14 @@
                 }
             },
 
+            "personWithSignificantControl": {
+                "principalOfficeAddress": {
+                    "whatIsPrincipalOfficeAddress": "WELSH - Where is the PSC's principal office address?",
+                    "hint": "WELSH - This is the address for the entity's main office.",
+                    "publicRegisterLine1": "WELSH - We'll show the PSC's principal office address on the public register."
+                }
+            },
+
             "nameOrNumber": "WELSH - Property name or number (optional)",
             "postcode": "WELSH - Postcode",
             "enterAddressManually": "WELSH - Enter address manually",
@@ -319,6 +343,11 @@
                 "title": "WELSH - Where is the limited partner's principal office address?",
                 "titleHint": "WELSH - This is the address for the entity's main office.",
                 "publicRegisterInformationLine1": "WELSH - We'll show the limited partner's principal office address on the public register."
+            },
+            "personWithSignificantControlPrincipalOfficeAddress": {
+                "title": "WELSH - Where is the PSC's principal office address?",
+                "titleHint": "WELSH - This is the address for the entity's main office.",
+                "publicRegisterInformationLine1": "WELSH - We'll show the PSC's principal office address on the public register."
             }
         },
 

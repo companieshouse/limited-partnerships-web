@@ -1,6 +1,6 @@
 import RegistrationPageType from "../PageType";
 import * as url from "../url";
-import { TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../addressLookUp/url/registration";
+import { TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../addressLookUp/url/registration";
 
 const registrationRoutingPersonWithSignificantControl = {
   previousUrl: url.REVIEW_LIMITED_PARTNERS_URL,
@@ -40,7 +40,7 @@ const registrationRoutingAddOtherRegistrablePerson = {
 const registrationRoutingWhichTypeOfNatureOfControl = {
   previousUrl: url.ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_WITH_IDS_URL,
   currentUrl: url.WHICH_TYPE_OF_NATURE_OF_CONTROL_URL,
-  nextUrl: TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_PRINCIPAL_OFFICE_ADDRESS_URL,
+  nextUrl: TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL,
   pageType: RegistrationPageType.whichTypeOfNatureOfControl
 };
 

@@ -3,6 +3,7 @@ import PageType from "../../../PageType";
 import limitedPartnershipRegistrationRouting from "./limitedPartnership";
 import generalPartnerRegistrationRouting from "./generalPartner";
 import limitedPartnerRegistrationRouting from "./limitedPartner";
+import personWithSignificantControlRegistrationRouting from "./personWithSignificantControl";
 
 export enum AddressCacheKeys {
   addressCacheKey = "addressCacheKey",
@@ -14,7 +15,8 @@ const registrationAddressRouting: PagesRouting = new Map<PageType, PageRouting>(
 [
   ...limitedPartnershipRegistrationRouting,
   ...generalPartnerRegistrationRouting,
-  ...limitedPartnerRegistrationRouting
+  ...limitedPartnerRegistrationRouting,
+  ...personWithSignificantControlRegistrationRouting
 ].forEach((routing) => {
   registrationAddressRouting.set(routing.pageType, routing);
 });
