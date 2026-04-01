@@ -39,34 +39,27 @@ describe("Limited Partner Check Your Answers Page for Person", () => {
     appDevDependencies.transactionGateway.feedTransactions([transaction]);
   });
 
-  it("should GET Check Your Answers Page English text with no Date of birth", async () => {
+  it.each([
+    ["en", enTranslationText],
+    ["cy", cyTranslationText]
+  ])("should GET Check Your Answers Page %s text", async (lang, translationText) => {
     setLocalesEnabled(true);
-    const res = await request(app).get(URL + "?lang=en");
+    const res = await request(app).get(URL + `?lang=${lang}`);
 
     expect(res.status).toBe(200);
 
-    expect(res.text).toContain(enTranslationText.checkYourAnswersPage.update.title);
-    expect(res.text).toContain(enTranslationText.print.buttonText);
-    expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
-    expect(res.text).toContain(enTranslationText.nationalities.welsh);
-    testTranslations(res.text, enTranslationText.checkYourAnswersPage.warningMessage);
-    expect(res.text).not.toContain("WELSH -");
-    expect(countOccurrences(res.text, enTranslationText.serviceName.addLimitedPartner)).toBe(2);
-  });
-
-  it("should GET Check Your Answers Page Welsh text", async () => {
-    setLocalesEnabled(true);
-    const res = await request(app).get(URL + "?lang=cy");
-
-    expect(res.status).toBe(200);
-
-    expect(res.text).toContain(cyTranslationText.checkYourAnswersPage.update.title);
-    expect(res.text).toContain(cyTranslationText.print.buttonText);
-    expect(res.text).toContain(cyTranslationText.print.buttonTextNoJs);
-    expect(res.text).toContain(cyTranslationText.nationalities.welsh);
-    testTranslations(res.text, cyTranslationText.checkYourAnswersPage.warningMessage);
-    expect(res.text).toContain("WELSH -");
-    expect(countOccurrences(res.text, cyTranslationText.serviceName.addLimitedPartner)).toBe(2);
+    expect(res.text).toContain(translationText.checkYourAnswersPage.update.title);
+    expect(res.text).toContain(translationText.print.buttonText);
+    expect(res.text).toContain(translationText.print.buttonTextNoJs);
+    expect(res.text).toContain(translationText.nationalities.welsh);
+    testTranslations(res.text, translationText.checkYourAnswersPage.warningMessage);
+    if (lang === "cy") {
+      expect(res.text).toContain("WELSH -");
+    } else {
+      expect(res.text).not.toContain("WELSH -");
+    }
+    expect(countOccurrences(res.text, translationText.serviceName.addLimitedPartner)).toBe(2);
+    expect(res.text).toContain(`data-event-id="check-your-answers-add-limited-partner-submit-button"`);
   });
 
   it.each([
