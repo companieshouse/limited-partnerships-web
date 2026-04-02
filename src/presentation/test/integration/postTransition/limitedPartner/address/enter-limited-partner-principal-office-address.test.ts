@@ -67,7 +67,8 @@ describe("Enter limited partner's principal office manual address page", () => {
         "usualResidentialAddress",
         "correspondenceAddress",
         "errorMessages",
-        "generalPartner"
+        "generalPartner",
+        "personWithSignificantControl"
       ]);
 
       expect(res.text).not.toContain(limitedPartnerPerson.forename?.toUpperCase());

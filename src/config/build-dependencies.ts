@@ -146,7 +146,8 @@ export function buildDependencies(useInMemory = false): BuiltDependencies {
     generalPartnerService,
     limitedPartnerService,
     cacheService,
-    companyService
+    companyService,
+    personWithSignificantControlService
   );
 
   const generalPartnerRegistrationController: GeneralPartnerRegistrationController =

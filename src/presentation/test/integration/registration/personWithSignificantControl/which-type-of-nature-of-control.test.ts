@@ -10,7 +10,7 @@ import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 
 import { WHICH_TYPE_OF_NATURE_OF_CONTROL_URL } from "../../../../controller/registration/url";
-import { TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../../../controller/addressLookUp/url/registration";
+import { TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../../../controller/addressLookUp/url/registration";
 
 import RegistrationPageType from "../../../../controller/registration/PageType";
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
@@ -20,7 +20,9 @@ describe("Which Type of Nature of Control Page", () => {
   const enTranslationText = { ...enGeneralTranslationText, ...enPersonWithSignificantControlTranslationText };
   const cyTranslationText = { ...cyGeneralTranslationText, ...cyPersonWithSignificantControlTranslationText };
   const URL = getUrl(WHICH_TYPE_OF_NATURE_OF_CONTROL_URL);
-  const REDIRECT_URL = getUrl(TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_PRINCIPAL_OFFICE_ADDRESS_URL);
+  const REDIRECT_URL = getUrl(
+    TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL
+  );
 
   beforeEach(() => {
     setLocalesEnabled(true);

@@ -313,6 +313,55 @@ export const addressLookUpEndpoints = (router: Router, dependencies: IDependenci
     url.CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
     dependencies.addressLookUpController.confirmAddress()
   );
+
+  // PERSON WITH SIGNIFICANT CONTROL
+
+  // principal office address
+
+  router.get(
+    url.TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL,
+    dependencies.addressLookUpController.getPageRouting()
+  );
+  router.post(
+    url.TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL,
+    dependencies.addressLookUpController.handleTerritoryChoice()
+  );
+
+  router.get(
+    url.POSTCODE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL,
+    dependencies.addressLookUpController.getPageRouting()
+  );
+  router.post(
+    url.POSTCODE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL,
+    dependencies.addressLookUpController.postcodeValidation()
+  );
+
+  router.get(
+    url.CHOOSE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL,
+    dependencies.addressLookUpController.getPageRouting()
+  );
+  router.post(
+    url.CHOOSE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL,
+    dependencies.addressLookUpController.selectAddress()
+  );
+
+  router.get(
+    url.ENTER_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL,
+    dependencies.addressLookUpController.getPageRouting()
+  );
+  router.post(
+    url.ENTER_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL,
+    dependencies.addressLookUpController.sendManualAddress()
+  );
+
+  router.get(
+    url.CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL,
+    dependencies.addressLookUpController.getPageRouting()
+  );
+  router.post(
+    url.CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL,
+    dependencies.addressLookUpController.confirmAddress()
+  );
 };
 
 export default addressLookUpEndpoints;
