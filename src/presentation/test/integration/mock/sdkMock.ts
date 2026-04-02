@@ -111,20 +111,20 @@ export const deleteLimitedPartner = jest.fn().mockImplementation(() => ({
 }));
 
 // Person with Significant Control
-export const postPsc = jest.fn().mockImplementation(() => ({
+export const postPersonWithSignificantControl = jest.fn().mockImplementation(() => ({
   httpStatusCode: 201,
   resource: {
     id: appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId
   }
 }));
-export const getPsc = jest.fn().mockImplementation(() => ({
+export const getPersonWithSignificantControl = jest.fn().mockImplementation(() => ({
   httpStatusCode: 200,
   resource: new PersonWithSignificantControlBuilder()
     .isRelevantLegalEntity()
     .withId(appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId)
     .build()
 }));
-export const patchPsc = jest.fn().mockImplementation(() => ({
+export const patchPersonWithSignificantControl = jest.fn().mockImplementation(() => ({
   httpStatusCode: 200,
   resource: {}
 }));
@@ -238,9 +238,9 @@ const sdkMock = {
     patchLimitedPartner,
     deleteLimitedPartner,
     // person with significant control
-    postPsc,
-    getPsc,
-    patchPsc
+    postPersonWithSignificantControl,
+    getPersonWithSignificantControl,
+    patchPersonWithSignificantControl
   },
   refreshToken: {
     ...RefreshTokenService.prototype,

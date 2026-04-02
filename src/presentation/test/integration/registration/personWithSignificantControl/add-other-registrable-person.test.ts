@@ -1,7 +1,9 @@
 import request from "supertest";
 
-import enTranslationText from "../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../locales/cy/translations.json";
+import enGeneralTranslationText from "../../../../../../locales/en/translations.json";
+import cyGeneralTranslationText from "../../../../../../locales/cy/translations.json";
+import enPersonWithSignificantControlTranslationText from "../../../../../../locales/en/personWithSignificantControl.json";
+import cyPersonWithSignificantControlTranslationText from "../../../../../../locales/cy/personWithSignificantControl.json";
 
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
@@ -21,6 +23,8 @@ import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilde
 import PersonWithSignificantControlBuilder from "../../../builder/PersonWithSignificantControl";
 
 describe("Add Person With Significant Control Other registrable person Page", () => {
+  const enTranslationText = { ...enGeneralTranslationText, ...enPersonWithSignificantControlTranslationText };
+  const cyTranslationText = { ...cyGeneralTranslationText, ...cyPersonWithSignificantControlTranslationText };
   const URL = getUrl(ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_URL);
   const REDIRECT_URL = getUrl(WHICH_TYPE_OF_NATURE_OF_CONTROL_OTHER_REGISTRABLE_PERSON_URL);
 
@@ -50,10 +54,10 @@ describe("Add Person With Significant Control Other registrable person Page", ()
         expect(res.status).toBe(200);
 
         expect(res.text).toContain(
-          `${translationText.personWithSignificantControl.addOtherRegistrablePerson.title} - ${translationText.serviceRegistration} - GOV.UK`
+          `${translationText.personWithSignificantControl.addPersonWithSignificantControl.addOtherRegistrablePerson.title} - ${translationText.serviceRegistration} - GOV.UK`
         );
 
-        testTranslations(res.text, translationText.personWithSignificantControl.addOtherRegistrablePerson);
+        testTranslations(res.text, translationText.personWithSignificantControl.addPersonWithSignificantControl, ["addRelevantLegalEntity"]);
       }
     );
 
@@ -179,4 +183,3 @@ describe("Add Person With Significant Control Other registrable person Page", ()
     });
   });
 });
-

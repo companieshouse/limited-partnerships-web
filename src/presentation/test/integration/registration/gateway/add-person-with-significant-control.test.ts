@@ -62,7 +62,7 @@ describe("Add Person With Significant Person Legal Entity Page", () => {
         ...sdkMock,
         limitedPartnershipsService: {
           ...sdkMock.limitedPartnershipsService,
-          postPsc: () => ({
+          postPersonWithSignificantControl: () => ({
             httpStatusCode: 400,
             resource: {
               errors: {
@@ -88,7 +88,7 @@ describe("Add Person With Significant Person Legal Entity Page", () => {
         ...sdkMock,
         limitedPartnershipsService: {
           ...sdkMock.limitedPartnershipsService,
-          postPsc: () => ({
+          postPersonWithSignificantControl: () => ({
             httpStatusCode: 500,
             resource: {}
           })

@@ -1,7 +1,7 @@
 {% extends "layout.njk" %}
 
-{% set pageTitle = i18n.personWithSignificantControl.addOtherRegistrablePerson.title %}
-{% set publicRegisterInformationLine1 = i18n.personWithSignificantControl.addOtherRegistrablePerson.publicRegisterLine1 %}
+{% set pageTitle = i18n.personWithSignificantControl.addPersonWithSignificantControl.addOtherRegistrablePerson.title %}
+{% set publicRegisterInformationLine1 = i18n.personWithSignificantControl.addPersonWithSignificantControl.commonEntityFields.publicRegisterLine1 %}
 
 
 {% block content %}
@@ -11,13 +11,14 @@
 
             {% include "includes/proposed-name.njk" %}
 
-            <h1 class="govuk-heading-xl">{{ i18n.personWithSignificantControl.addOtherRegistrablePerson.title }}</h1>
+            <h1 class="govuk-heading-xl">{{ pageTitle }}</h1>
 
             <form class="form" method="post">
                 <input type="hidden" name="pageType" value={{ props.pageType }}>
                 {% include "includes/csrf_token.njk" %}
 
-                {% set translation = i18n.personWithSignificantControl.addOtherRegistrablePerson %}
+                {% set translation = i18n.personWithSignificantControl.addPersonWithSignificantControl.commonEntityFields %}
+                {% set legalEntityName = i18n.personWithSignificantControl.addPersonWithSignificantControl.addOtherRegistrablePerson.legalEntityName %}
                 {% include "pages/personWithSignificantControl/add-person-with-significant-control.njk" %}
 
                 {% include "includes/public-register-information.njk" %}
