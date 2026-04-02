@@ -1,5 +1,13 @@
 {
     "personWithSignificantControl": {
+        "otherRegistrablePersonInformation": {
+            "title": "What is an other registrable person?",
+            "line1": "An other registrable person (ORP) is a non-corporate entity or office that can legally act as a PSC. This can be:",
+            "bullet1": "a corporation sole - a single incorporated office occupied by one person, such as Lord Mayor of London",
+            "bullet2": "a government or government department of a country, a territory, or a part of a country or territory",
+            "bullet3": "an international organisation whose members include two or more countries or territories (or their governments)",
+            "bullet4": "a local authority or local government body in the UK or elsewhere"
+        },
         "tellUsAboutPscPage": {
             "title": "Tell us about people with significant control (PSCs)",
             "pageInformation": "We'll ask you whether the partnership will have any PSCs. If it will, you'll need to tell us about them.",
@@ -10,23 +18,16 @@
             "title": "Will the partnership have any people with significant control (PSCs) on registration?",
             "optionYes": "Yes, at least one person will count as a PSC in relation to the partnership. This may be an individual, a relevant legal entity (RLE) or an other registrable person (ORP)",
             "optionNo": "No, there is no person identified as a PSC in relation to the limited partnership",
-            "errorMessage": "You must select whether the partnership will have any people with significant control (PSCs) on registration."
+            "errorMessage": "Select if the partnership will have any PSCs on registration",
+            "publicRegisterLine1": "We'll show this information on the public register."
         },
         "whichTypePage": {
             "title": "Which type of person with significant control (PSC) do you need to add?",
             "hint": "You can add more later.",
             "addIndividualPerson": "An individual person",
             "addRelevantLegalEntity": "A relevant legal entity (RLE)",
-            "AddOtherRegistrablePerson": "An other registrable person (ORP)",
-            "errorMessage": "Select which type of PSC you need to add",
-            "otherRegistrablePersonInformation": {
-                "title": "What is an other registrable person?",
-                "line1": "An other registrable person (ORP) is a non-corporate entity or office that can legally act as a PSC. This can be:",
-                "bullet1": "a corporation sole - a single incorporated office occupied by one person, such as Lord Mayor of London",
-                "bullet2": "a government or government department of a country, a territory, or a part of a country or territory",
-                "bullet3": "an international organisation whose members include two or more countries or territories (or their governments)",
-                "bullet4": "a local authority or local government body in the UK or elsewhere"
-            }
+            "addOtherRegistrablePerson": "An other registrable person (ORP)",
+            "errorMessage": "Select which type of PSC you need to add"
         },
         "addPersonWithSignificantControl":{
             "commonEntityFields": {

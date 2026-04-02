@@ -2,16 +2,18 @@
 
 {% set pageTitle = i18n.personWithSignificantControl.willThePartnershipHaveAnyPscPage.title %}
 
+{% set publicRegisterInformationLine1 = i18n.personWithSignificantControl.willThePartnershipHaveAnyPscPage.publicRegisterLine1 %}
+
 {% set currentValue = props.data.limitedPartnership.data.has_person_with_significant_control %}
 
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
+      {% include "includes/errors.njk" %}
+
       <form class="form" method="post">
         <input type="hidden" name="pageType" value={{ props.pageType }}>
           {% include "includes/csrf_token.njk" %}
-
-          {% include "includes/errors.njk" %}
 
           {% include "includes/proposed-name.njk" %}        
 
@@ -43,6 +45,10 @@
               text: i18n.personWithSignificantControl.willThePartnershipHaveAnyPscPage.errorMessage
             } if props.errors
           }) }}
+
+          {% include "includes/what-is-other-registrable-person.njk" %}
+
+          {% include "includes/public-register-information.njk" %}
         
           {% include "includes/save-and-continue-button.njk" %}
       </form>
