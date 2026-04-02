@@ -334,7 +334,11 @@ class AddressLookUpController extends AbstractController {
         }
 
         if (errors?.hasErrors()) {
-          const { generalPartner, limitedPartner } = await this.getResourcesData(pageType, tokens, ids);
+          const { generalPartner, limitedPartner, personWithSignificantControl } = await this.getResourcesData(
+            pageType,
+            tokens,
+            ids
+          );
 
           const cacheById = this.cacheService.getDataFromCacheById(request.signedCookies, ids.transactionId);
 
@@ -344,7 +348,14 @@ class AddressLookUpController extends AbstractController {
             super.templateName(pageRouting.currentUrl),
             super.makeProps(
               pageRouting,
-              { address, limitedPartnership, generalPartner, limitedPartner, cache: { ...cacheById } },
+              {
+                address,
+                limitedPartnership,
+                generalPartner,
+                limitedPartner,
+                personWithSignificantControl,
+                cache: { ...cacheById }
+              },
               errors
             )
           );

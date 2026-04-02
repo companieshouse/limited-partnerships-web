@@ -89,7 +89,8 @@ export const MANUAL_PAGES: Set<PageType | PageDefault> = new Set([
   AddressPageType.enterGeneralPartnerCorrespondenceAddress,
   AddressPageType.enterLimitedPartnerUsualResidentialAddress,
   AddressPageType.enterLimitedPartnerPrincipalOfficeAddress,
-  AddressPageType.enterPersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress
+  AddressPageType.enterPersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
+  AddressPageType.enterPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress
 ]);
 
 export const CHOOSE_PAGES: Set<PageType | PageDefault> = new Set([
@@ -100,7 +101,8 @@ export const CHOOSE_PAGES: Set<PageType | PageDefault> = new Set([
   AddressPageType.chooseGeneralPartnerCorrespondenceAddress,
   AddressPageType.chooseLimitedPartnerUsualResidentialAddress,
   AddressPageType.chooseLimitedPartnerPrincipalOfficeAddress,
-  AddressPageType.choosePersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress
+  AddressPageType.choosePersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
+  AddressPageType.choosePersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress
 ]);
 
 export const GENERAL_PARTNER_PAGES: Set<PageType | PageDefault> = new Set([

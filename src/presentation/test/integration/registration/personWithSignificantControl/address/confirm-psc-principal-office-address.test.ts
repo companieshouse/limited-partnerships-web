@@ -1,12 +1,14 @@
 import request from "supertest";
 
-import app from "../../../app";
 import enTranslationText from "../../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../../locales/cy/translations.json";
 import enErrorMessages from "../../../../../../../locales/en/errors.json";
 import cyErrorMessages from "../../../../../../../locales/cy/errors.json";
 
+import app from "../../../app";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
+import { appDevDependencies } from "../../../../../../config/dev-dependencies";
+
 import {
   CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL,
   CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL,
@@ -15,10 +17,10 @@ import {
   POSTCODE_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL,
   POSTCODE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL
 } from "../../../../../controller/addressLookUp/url/registration";
-import { appDevDependencies } from "../../../../../../config/dev-dependencies";
-import PersonWithSignificantControlBuilder from "../../../../builder/PersonWithSignificantControl";
-import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import { REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL } from "../../../../../controller/registration/url";
+
+import AddressPageType from "../../../../../controller/addressLookUp/PageType";
+import PersonWithSignificantControlBuilder from "../../../../builder/PersonWithSignificantControl";
 
 describe("Confirm PSC Principal Office Address Page", () => {
   const URL_RELEVANT_LEGAL_ENTITY = getUrl(

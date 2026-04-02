@@ -1,9 +1,13 @@
 import request from "supertest";
+
 import enTranslationText from "../../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../../locales/cy/translations.json";
+
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
+import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
+
 import {
   TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL,
   POSTCODE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL,
@@ -12,8 +16,8 @@ import {
   POSTCODE_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL,
   ENTER_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL
 } from "../../../../../controller/addressLookUp/url/registration";
+
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
-import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
 import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBuilder";
 
 describe("PSC Principal Office Address Territory Choice", () => {
