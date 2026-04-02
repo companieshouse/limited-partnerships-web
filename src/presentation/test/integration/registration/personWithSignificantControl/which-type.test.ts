@@ -1,7 +1,9 @@
 import request from "supertest";
 
-import enTranslationText from "../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../locales/cy/translations.json";
+import enGeneralTranslationText from "../../../../../../locales/en/translations.json";
+import cyGeneralTranslationText from "../../../../../../locales/cy/translations.json";
+import enPersonWithSignificantControlTranslationText from "../../../../../../locales/en/personWithSignificantControl.json";
+import cyPersonWithSignificantControlTranslationText from "../../../../../../locales/cy/personWithSignificantControl.json";
 
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
@@ -19,6 +21,8 @@ import {
 } from "../../../../controller/registration/url";
 
 describe("Which type Page", () => {
+  const enTranslationText = { ...enGeneralTranslationText, ...enPersonWithSignificantControlTranslationText };
+  const cyTranslationText = { ...cyGeneralTranslationText, ...cyPersonWithSignificantControlTranslationText };
   const URL = getUrl(PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL);
 
   beforeEach(() => {
