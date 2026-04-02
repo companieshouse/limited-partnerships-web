@@ -28,35 +28,37 @@
                 "bullet4": "a local authority or local government body in the UK or elsewhere"
             }
         },
-        "addRelevantLegalEntity": {
-            "title": "Add a relevant legal entity PSC",
+        "addPersonWithSignificantControl":{
+            "commonEntityFields": {
+                "governingLaw" : "What governing law does it operate under?",
+                "governingLawHint" : "For example, the Companies Act 2006.",
+                "legalFormOrCorporateIdentity" : "What is its legal form or corporate identity?",
+                "legalFormOrCorporateIdentityHint" : "This is the corporate body type. For example, private limited company.",
+                "publicRegisterLine1" : "We'll show all of this information on the public register."
+            },
+            "addRelevantLegalEntity": {
+                "title": "Add a relevant legal entity PSC",
 
-            "legalEntityName" : "What is the relevant legal entity (RLE)'s name?",
-            "legalFormOrCorporateIdentity" : "What is its legal form or corporate identity?",
-            "legalFormOrCorporateIdentityHint" : "This is the corporate body type. For example, private limited company.",
-            "governingLaw" : "What governing law does it operate under?",
-            "governingLawHint" : "For example, the Companies Act 2006.",
-            "whichRegister" : "Which register is it entered in? (if applicable)",
-            "whichRegisterHint" : "For example, the Register of Companies UK.",
-            "countryRegistered" : "Which country is it registered in? (if applicable)",
-            "registrationNumber" : "What is the registration number? (if applicable)",
-            "registrationNumberHint" : "For example, the company number.",
+                "legalEntityName" : "What is the relevant legal entity (RLE)'s name?",
+                "whichRegister" : "Which register is it entered in? (if applicable)",
+                "whichRegisterHint" : "For example, the Register of Companies UK.",
+                "countryRegistered" : "Which country is it registered in? (if applicable)",
+                "registrationNumber" : "What is the registration number? (if applicable)",
+                "registrationNumberHint" : "For example, the company number."
+            },
+            "addOtherRegistrablePerson": {
+                "title": "Add an other registrable person PSC",
 
-            "publicRegisterLine1" : "We'll show all of this information on the public register."
-        },
-        "addOtherRegistrablePerson": {
-            "title": "Add an other registrable person PSC",
-
-            "legalEntityName" : "What is the other registrable person (ORP)'s name?",
-            "legalFormOrCorporateIdentity" : "What is its legal form or corporate identity?",
-            "legalFormOrCorporateIdentityHint" : "This is the corporate body type. For example, private limited company.",
-            "governingLaw" : "What governing law does it operate under?",
-            "governingLawHint" : "For example, the Companies Act 2006.",
-
-            "publicRegisterLine1" : "We'll show all of this information on the public register."
+                "legalEntityName" : "What is the other registrable person (ORP)'s name?"
+            }
         },
         "whichTypeOfNatureOfControlPage": {
-            "title": "Which type of nature of control does the relevant legal entity (RLE) have?"
+            "relevantLegalEntity": {
+                "title": "Which type of nature of control does the relevant legal entity (RLE) have?"
+            },
+            "otherRegistrablePerson": {
+                "title": "Which type of nature of control does the other registrable person (ORP) have?"
+             }
         }
     }
 }

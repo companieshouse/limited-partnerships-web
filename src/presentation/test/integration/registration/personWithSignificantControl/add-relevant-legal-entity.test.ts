@@ -14,7 +14,7 @@ import {
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL,
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_WITH_IDS_URL,
   PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL,
-  WHICH_TYPE_OF_NATURE_OF_CONTROL_URL
+  WHICH_TYPE_OF_NATURE_OF_CONTROL_RELEVANT_LEGAL_ENTITY_URL
 } from "../../../../controller/registration/url";
 import RegistrationPageType from "../../../../controller/registration/PageType";
 import PersonWithSignificantControlBuilder from "../../../builder/PersonWithSignificantControl";
@@ -25,7 +25,7 @@ describe("Add Person With Significant Control Relevant Legal Entity Page", () =>
   const enTranslationText = { ...enGeneralTranslationText, ...enPersonWithSignificantControlTranslationText };
   const cyTranslationText = { ...cyGeneralTranslationText, ...cyPersonWithSignificantControlTranslationText };
   const URL = getUrl(ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL);
-  const REDIRECT_URL = getUrl(WHICH_TYPE_OF_NATURE_OF_CONTROL_URL);
+  const REDIRECT_URL = getUrl(WHICH_TYPE_OF_NATURE_OF_CONTROL_RELEVANT_LEGAL_ENTITY_URL);
 
   beforeEach(() => {
     setLocalesEnabled(false);
@@ -53,10 +53,10 @@ describe("Add Person With Significant Control Relevant Legal Entity Page", () =>
         expect(res.status).toBe(200);
 
         expect(res.text).toContain(
-          `${translationText.personWithSignificantControl.addRelevantLegalEntity.title} - ${translationText.serviceRegistration} - GOV.UK`
+          `${translationText.personWithSignificantControl.addPersonWithSignificantControl.addRelevantLegalEntity.title} - ${translationText.serviceRegistration} - GOV.UK`
         );
 
-        testTranslations(res.text, translationText.personWithSignificantControl.addRelevantLegalEntity);
+        testTranslations(res.text, translationText.personWithSignificantControl.addPersonWithSignificantControl, ["addOtherRegistrablePerson"]);
       }
     );
 

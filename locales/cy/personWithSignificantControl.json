@@ -28,35 +28,37 @@
                 "bullet4": "WELSH - a local authority or local government body in the UK or elsewhere"
             }
         },
-        "addRelevantLegalEntity": {
-            "title": "WELSH - Add a relevant legal entity PSC",
+        "addPersonWithSignificantControl":{
+            "commonEntityFields": {
+                "governingLaw" : "WELSH - What governing law does it operate under?",
+                "governingLawHint" : "WELSH - For example, the Companies Act 2006.",
+                "legalFormOrCorporateIdentity" : "WELSH - What is its legal form or corporate identity?",
+                "legalFormOrCorporateIdentityHint" : "WELSH - This is the corporate body type. For example, private limited company.",
+                "publicRegisterLine1" : "WELSH - We'll show all of this information on the public register."
+            },
+            "addRelevantLegalEntity": {
+                "title": "WELSH - Add a relevant legal entity PSC",
 
-            "legalEntityName" : "What is the relevant legal entity (RLE)'s name?",
-            "legalFormOrCorporateIdentity" : "What is its legal form or corporate identity?",
-            "legalFormOrCorporateIdentityHint" : "This is the corporate body type. For example, private limited company.",
-            "governingLaw" : "What governing law does it operate under?",
-            "governingLawHint" : "For example, the Companies Act 2006.",
-            "whichRegister" : "Which register is it entered in? (if applicable)",
-            "whichRegisterHint" : "For example, the Register of Companies UK.",
-            "countryRegistered" : "Which country is it registered in? (if applicable)",
-            "registrationNumber" : "What is the registration number? (if applicable)",
-            "registrationNumberHint" : "For example, the company number.",
+                "legalEntityName" : "WELSH - What is the relevant legal entity (RLE)'s name?",
+                "whichRegister" : "WELSH - Which register is it entered in? (if applicable)",
+                "whichRegisterHint" : "WELSH - For example, the Register of Companies UK.",
+                "countryRegistered" : "WELSH - Which country is it registered in? (if applicable)",
+                "registrationNumber" : "WELSH - What is the registration number? (if applicable)",
+                "registrationNumberHint" : "WELSH - For example, the company number."
+            },
+            "addOtherRegistrablePerson": {
+                "title": "WELSH - Add an other registrable person PSC",
 
-            "publicRegisterLine1" : "We'll show all of this information on the public register."
-        },
-        "addOtherRegistrablePerson": {
-            "title": "WELSH - Add an other registrable person PSC",
-
-            "legalEntityName" : "What is the other registrable person (ORP)'s name?",
-            "legalFormOrCorporateIdentity" : "What is its legal form or corporate identity?",
-            "legalFormOrCorporateIdentityHint" : "This is the corporate body type. For example, private limited company.",
-            "governingLaw" : "What governing law does it operate under?",
-            "governingLawHint" : "For example, the Companies Act 2006.",
-
-            "publicRegisterLine1" : "We'll show all of this information on the public register."
+                "legalEntityName" : "WELSH - What is the other registrable person (ORP)'s name?"
+            }
         },
         "whichTypeOfNatureOfControlPage": {
-            "title": "WELSH - Which type of nature of control does the relevant legal entity (RLE) have?"
+            "relevantLegalEntity": {
+                "title": "WELSH - Which type of nature of control does the relevant legal entity (RLE) have?"
+            },
+            "otherRegistrablePerson": {
+                "title": "WELSH - Which type of nature of control does the other registrable person (ORP) have?"
+             }
         }
     }
 }
