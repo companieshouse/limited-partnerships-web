@@ -6,7 +6,13 @@ import cyTranslationText from "../../../../../../../locales/cy/translations.json
 
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import app from "../../../app";
-import { getUrl, setLocalesEnabled, toEscapedHtml, testTranslations } from "../../../../utils";
+import {
+  getUrl,
+  setLocalesEnabled,
+  toEscapedHtml,
+  testTranslations,
+  createPersonWithSignificantControl
+} from "../../../../utils";
 
 import {
   POSTCODE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL,
@@ -19,7 +25,6 @@ import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
 
 import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBuilder";
-import PersonWithSignificantControlBuilder from "../../../../builder/PersonWithSignificantControl";
 
 describe("Postcode person with significant control's principal office address page", () => {
   const URL_RELEVANT_LEGAL_ENTITY = getUrl(
@@ -48,7 +53,7 @@ describe("Postcode person with significant control's principal office address pa
     ])(
       "should load the principal office address page with English text",
       async (_description: string, URL: string, lang: string, translationText: Record<string, any>) => {
-        const personWithSignificantControl = createPersonWithSignificantControl(URL);
+        const personWithSignificantControl = createPersonWithSignificantControl(URL, URL_RELEVANT_LEGAL_ENTITY);
 
         const res = await request(app).get(URL + `?lang=${lang}`);
 
@@ -160,7 +165,7 @@ describe("Postcode person with significant control's principal office address pa
     ])(
       "should return an error if the postcode is not valid for %s",
       async (_description: string, URL: string, pageType: string) => {
-        const personWithSignificantControl = createPersonWithSignificantControl(URL);
+        const personWithSignificantControl = createPersonWithSignificantControl(URL, URL_RELEVANT_LEGAL_ENTITY);
 
         const res = await request(app).post(URL).send({
           pageType,
@@ -175,21 +180,4 @@ describe("Postcode person with significant control's principal office address pa
       }
     );
   });
-
-  const createPersonWithSignificantControl = (URL: string) => {
-    const personWithSignificantControl = new PersonWithSignificantControlBuilder().withId(
-      appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId
-    );
-
-    if (URL === URL_RELEVANT_LEGAL_ENTITY) {
-      personWithSignificantControl.isRelevantLegalEntity();
-    } else {
-      personWithSignificantControl.isOtherRegistrablePerson();
-    }
-
-    appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([
-      personWithSignificantControl.build()
-    ]);
-    return personWithSignificantControl;
-  };
 });

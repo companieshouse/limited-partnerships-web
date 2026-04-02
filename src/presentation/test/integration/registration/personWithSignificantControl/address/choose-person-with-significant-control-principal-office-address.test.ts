@@ -5,7 +5,7 @@ import cyTranslationText from "../../../../../../../locales/cy/translations.json
 
 import app from "../../../app";
 import { appDevDependencies } from "config/dev-dependencies";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
+import { createPersonWithSignificantControl, getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import * as config from "../../../../../../config";
 
 import {
@@ -14,7 +14,6 @@ import {
 } from "presentation/controller/addressLookUp/url/registration";
 
 import AddressPageType from "presentation/controller/addressLookUp/PageType";
-import PersonWithSignificantControlBuilder from "../../../../builder/PersonWithSignificantControl";
 
 describe("Choose principal office address of the person with significant control page", () => {
   const URL_RELEVANT_LEGAL_ENTITY = getUrl(
@@ -52,7 +51,7 @@ describe("Choose principal office address of the person with significant control
       "should load the choose principal office address of the person with significant control page with Welsh text for %s",
       async (_description: string, URL: string, lang: string, translationText: Record<string, any>) => {
         setLocalesEnabled(true);
-        const personWithSignificantControl = createPersonWithSignificantControl(URL);
+        const personWithSignificantControl = createPersonWithSignificantControl(URL, URL_RELEVANT_LEGAL_ENTITY);
 
         const res = await request(app).get(URL + `?lang=${lang}`);
 
@@ -151,21 +150,4 @@ describe("Choose principal office address of the person with significant control
       }
     );
   });
-
-  const createPersonWithSignificantControl = (URL: string) => {
-    const personWithSignificantControl = new PersonWithSignificantControlBuilder().withId(
-      appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId
-    );
-
-    if (URL === URL_RELEVANT_LEGAL_ENTITY) {
-      personWithSignificantControl.isRelevantLegalEntity();
-    } else {
-      personWithSignificantControl.isOtherRegistrablePerson();
-    }
-
-    appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([
-      personWithSignificantControl.build()
-    ]);
-    return personWithSignificantControl;
-  };
 });

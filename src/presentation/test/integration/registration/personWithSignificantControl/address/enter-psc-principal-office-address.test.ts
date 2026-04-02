@@ -5,7 +5,7 @@ import enTranslationText from "../../../../../../../locales/en/translations.json
 import cyTranslationText from "../../../../../../../locales/cy/translations.json";
 
 import app from "../../../app";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
+import { createPersonWithSignificantControl, getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 
 import {
@@ -16,7 +16,6 @@ import {
 } from "presentation/controller/addressLookUp/url/registration";
 
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
-import PersonWithSignificantControlBuilder from "../../../../builder/PersonWithSignificantControl";
 import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBuilder";
 
 describe("Enter person with significant control's principal office manual address page", () => {
@@ -48,7 +47,7 @@ describe("Enter person with significant control's principal office manual addres
     ])(
       "should load enter person with significant controls principal office address page with English text",
       async (_description: string, URL: string, lang: string, translationText: Record<string, any>) => {
-        const personWithSignificantControl = createPersonWithSignificantControl(URL);
+        const personWithSignificantControl = createPersonWithSignificantControl(URL, URL_RELEVANT_LEGAL_ENTITY);
 
         const res = await request(app).get(URL + `?lang=${lang}`);
 
@@ -87,7 +86,7 @@ describe("Enter person with significant control's principal office manual addres
     ])(
       "should not return a validation error when an overseas address and postcode does not conform to UK format for %s",
       async (_description: string, URL: string, pageType: string, REDIRECT_URL) => {
-        const personWithSignificantControl = createPersonWithSignificantControl(URL);
+        const personWithSignificantControl = createPersonWithSignificantControl(URL, URL_RELEVANT_LEGAL_ENTITY);
 
         const res = await request(app)
           .post(URL)
@@ -118,7 +117,7 @@ describe("Enter person with significant control's principal office manual addres
     ])(
       "should return a validation error when a UK address and postcode format is invalid for %s",
       async (_description: string, URL: string, pageType: string) => {
-        const personWithSignificantControl = createPersonWithSignificantControl(URL);
+        const personWithSignificantControl = createPersonWithSignificantControl(URL, URL_RELEVANT_LEGAL_ENTITY);
 
         const res = await request(app)
           .post(URL)
@@ -153,7 +152,7 @@ describe("Enter person with significant control's principal office manual addres
     ])(
       "should not return validation errors when address fields contain valid but non alpha-numeric characters for %s",
       async (_description: string, URL: string, pageType: string, REDIRECT_URL) => {
-        const personWithSignificantControl = createPersonWithSignificantControl(URL);
+        const personWithSignificantControl = createPersonWithSignificantControl(URL, URL_RELEVANT_LEGAL_ENTITY);
 
         const res = await request(app)
           .post(URL)
@@ -187,7 +186,7 @@ describe("Enter person with significant control's principal office manual addres
     ])(
       "should return validation errors when address fields contain invalid characters for %s",
       async (_description: string, URL: string, pageType: string) => {
-        const personWithSignificantControl = createPersonWithSignificantControl(URL);
+        const personWithSignificantControl = createPersonWithSignificantControl(URL, URL_RELEVANT_LEGAL_ENTITY);
 
         const res = await request(app)
           .post(URL)
@@ -244,7 +243,7 @@ describe("Enter person with significant control's principal office manual addres
     ])(
       "should return validation errors when address fields exceed character limit",
       async (_description: string, URL: string, pageType: string) => {
-        const personWithSignificantControl = createPersonWithSignificantControl(URL);
+        const personWithSignificantControl = createPersonWithSignificantControl(URL, URL_RELEVANT_LEGAL_ENTITY);
 
         const res = await request(app)
           .post(URL)
@@ -268,21 +267,4 @@ describe("Enter person with significant control's principal office manual addres
       }
     );
   });
-
-  const createPersonWithSignificantControl = (URL: string) => {
-    const personWithSignificantControl = new PersonWithSignificantControlBuilder().withId(
-      appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId
-    );
-
-    if (URL === URL_RELEVANT_LEGAL_ENTITY) {
-      personWithSignificantControl.isRelevantLegalEntity();
-    } else {
-      personWithSignificantControl.isOtherRegistrablePerson();
-    }
-
-    appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([
-      personWithSignificantControl.build()
-    ]);
-    return personWithSignificantControl;
-  };
 });

@@ -6,7 +6,7 @@ import enErrorMessages from "../../../../../../../locales/en/errors.json";
 import cyErrorMessages from "../../../../../../../locales/cy/errors.json";
 
 import app from "../../../app";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
+import { createPersonWithSignificantControl, getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 
 import {
@@ -20,7 +20,6 @@ import {
 import { REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL } from "../../../../../controller/registration/url";
 
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
-import PersonWithSignificantControlBuilder from "../../../../builder/PersonWithSignificantControl";
 
 describe("Confirm PSC Principal Office Address Page", () => {
   const URL_RELEVANT_LEGAL_ENTITY = getUrl(
@@ -31,7 +30,8 @@ describe("Confirm PSC Principal Office Address Page", () => {
   );
 
   beforeEach(() => {
-    setLocalesEnabled(false);
+    setLocalesEnabled(true);
+
     appDevDependencies.cacheRepository.feedCache({
       [appDevDependencies.transactionGateway.transactionId]: {
         principal_office_address: {
@@ -45,15 +45,6 @@ describe("Confirm PSC Principal Office Address Page", () => {
         }
       }
     });
-
-    const personWithSignificantControl = new PersonWithSignificantControlBuilder()
-      .isRelevantLegalEntity()
-      .withId(appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId)
-      .build();
-
-    appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([
-      personWithSignificantControl
-    ]);
   });
 
   describe("GET Confirm PSC Principal Office Address Page", () => {
@@ -65,7 +56,7 @@ describe("Confirm PSC Principal Office Address Page", () => {
     ])(
       "should load the confirm PSC principal office address page with %s text",
       async (_description: string, URL: string, lang: string, translationText: Record<string, any>) => {
-        setLocalesEnabled(true);
+        const personWithSignificantControl = createPersonWithSignificantControl(URL, URL_RELEVANT_LEGAL_ENTITY);
 
         const res = await request(app).get(URL + `?lang=${lang}`);
 
@@ -77,6 +68,8 @@ describe("Confirm PSC Principal Office Address Page", () => {
         expect(res.text).toContain("Stoke-On-Trent");
         expect(res.text).toContain("Region");
         expect(res.text).toContain("ST6 3LJ");
+
+        expect(res.text).toContain(personWithSignificantControl.data.legal_entity_name?.toUpperCase());
       }
     );
 
