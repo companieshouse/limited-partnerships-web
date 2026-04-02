@@ -8,17 +8,25 @@ import cyErrorMessages from "../../../../../../../locales/cy/errors.json";
 
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import {
+  CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL,
   CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL,
+  ENTER_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL,
   ENTER_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL,
+  POSTCODE_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL,
   POSTCODE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL
 } from "../../../../../controller/addressLookUp/url/registration";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import PersonWithSignificantControlBuilder from "../../../../builder/PersonWithSignificantControl";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
-import { PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL } from "../../../../../controller/registration/url";
+import { REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL } from "../../../../../controller/registration/url";
 
 describe("Confirm PSC Principal Office Address Page", () => {
-  const URL = getUrl(CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL);
+  const URL_RELEVANT_LEGAL_ENTITY = getUrl(
+    CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL
+  );
+  const URL_OTHER_REGISTARBLE_PERSON = getUrl(
+    CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL
+  );
 
   beforeEach(() => {
     setLocalesEnabled(false);
@@ -41,16 +49,20 @@ describe("Confirm PSC Principal Office Address Page", () => {
       .withId(appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId)
       .build();
 
-    appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([personWithSignificantControl]);
+    appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([
+      personWithSignificantControl
+    ]);
   });
 
   describe("GET Confirm PSC Principal Office Address Page", () => {
     it.each([
-      ["English", "en", enTranslationText],
-      ["Welsh", "cy", cyTranslationText]
+      ["RLE English", URL_RELEVANT_LEGAL_ENTITY, "en", enTranslationText],
+      ["RLE Welsh", URL_RELEVANT_LEGAL_ENTITY, "cy", cyTranslationText],
+      ["ORP English", URL_OTHER_REGISTARBLE_PERSON, "en", enTranslationText],
+      ["ORP Welsh", URL_OTHER_REGISTARBLE_PERSON, "cy", cyTranslationText]
     ])(
       "should load the confirm PSC principal office address page with %s text",
-      async (_description: string, lang: string, translationText: Record<string, any>) => {
+      async (_description: string, URL: string, lang: string, translationText: Record<string, any>) => {
         setLocalesEnabled(true);
 
         const res = await request(app).get(URL + `?lang=${lang}`);
@@ -67,27 +79,59 @@ describe("Confirm PSC Principal Office Address Page", () => {
     );
 
     it.each([
-      ["overseas", getUrl(ENTER_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL)],
-      ["unitedKingdom", getUrl(POSTCODE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL)]
-    ])("should have the correct back link for territory %s", async (territory, backLink) => {
-      appDevDependencies.cacheRepository.feedCache({
-        [appDevDependencies.transactionGateway.transactionId]: {
-          poa_territory_choice: territory
-        }
-      });
+      [
+        "RLE, overseas",
+        URL_RELEVANT_LEGAL_ENTITY,
+        getUrl(ENTER_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL)
+      ],
+      [
+        "RLE unitedKingdom",
+        URL_RELEVANT_LEGAL_ENTITY,
+        getUrl(POSTCODE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL)
+      ],
+      [
+        "ORP, overseas",
+        URL_OTHER_REGISTARBLE_PERSON,
+        getUrl(ENTER_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL)
+      ],
+      [
+        "ORP unitedKingdom",
+        URL_OTHER_REGISTARBLE_PERSON,
+        getUrl(POSTCODE_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL)
+      ]
+    ])(
+      "should have the correct back link for territory for %s",
+      async (territory: string, URL: string, backLink: string) => {
+        appDevDependencies.cacheRepository.feedCache({
+          [appDevDependencies.transactionGateway.transactionId]: {
+            poa_territory_choice: territory
+          }
+        });
 
-      const res = await request(app).get(URL);
+        const res = await request(app).get(URL);
 
-      expect(res.text).toContain(backLink);
-    });
+        expect(res.text).toContain(backLink);
+      }
+    );
   });
 
   describe("POST Confirm PSC Principal Office Address Page", () => {
-    it("should redirect to the next page", async () => {
+    it.each([
+      [
+        "RLE",
+        URL_RELEVANT_LEGAL_ENTITY,
+        AddressPageType.confirmPersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress
+      ],
+      [
+        "ORP",
+        URL_OTHER_REGISTARBLE_PERSON,
+        AddressPageType.confirmPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress
+      ]
+    ])("should redirect to the next page for %s", async (_description: string, URL: string, pageType: string) => {
       const res = await request(app)
         .post(URL)
         .send({
-          pageType: AddressPageType.confirmPersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
+          pageType,
           address: `{
             "postal_code": "ST6 3LJ",
             "premises": "4",
@@ -98,36 +142,78 @@ describe("Confirm PSC Principal Office Address Page", () => {
           }`
         });
 
-      // LP-1778: Update redirect URL when PSC summary page is implemented
-      const redirectUrl = getUrl(PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL);
+      const redirectUrl = getUrl(REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL);
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
     });
 
-    it("should show error message if address is not provided", async () => {
-      appDevDependencies.cacheRepository.feedCache({});
+    it.each([
+      [
+        "RLE",
+        URL_RELEVANT_LEGAL_ENTITY,
+        AddressPageType.confirmPersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress
+      ],
+      [
+        "ORP",
+        URL_OTHER_REGISTARBLE_PERSON,
+        AddressPageType.confirmPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress
+      ]
+    ])(
+      "should show error message if address is not provided for %s",
+      async (_description: string, URL: string, pageType: string) => {
+        appDevDependencies.cacheRepository.feedCache({});
 
-      const res = await request(app).post(URL).send({
-        pageType: AddressPageType.confirmPersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress
-      });
+        const res = await request(app).post(URL).send({
+          pageType
+        });
 
-      expect(res.status).toBe(200);
-      expect(res.text).toContain("You must provide an address");
-    });
+        expect(res.status).toBe(200);
+        expect(res.text).toContain("You must provide an address");
+      }
+    );
 
     it.each([
-      ["en", enErrorMessages],
-      ["cy", cyErrorMessages]
-    ])("should show validation error message if country is missing with lang %s", async (lang: string, errorMessagesJson: any) => {
-      setLocalesEnabled(true);
-      const res = await request(app).post(`${URL}?lang=${lang}`).send({
-        pageType: AddressPageType.confirmPersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
-        address: `{"postal_code": "ST6 3LJ","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": ""}`
-      });
+      [
+        "RLE en",
+        "en",
+        URL_RELEVANT_LEGAL_ENTITY,
+        AddressPageType.confirmPersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
+        enErrorMessages
+      ],
+      [
+        "RLE cy",
+        "cy",
+        URL_RELEVANT_LEGAL_ENTITY,
+        AddressPageType.confirmPersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
+        cyErrorMessages
+      ],
+      [
+        "ORP en",
+        "en",
+        URL_OTHER_REGISTARBLE_PERSON,
+        AddressPageType.confirmPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress,
+        enErrorMessages
+      ],
+      [
+        "ORP cy",
+        "cy",
+        URL_OTHER_REGISTARBLE_PERSON,
+        AddressPageType.confirmPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress,
+        cyErrorMessages
+      ]
+    ])(
+      "should show validation error message if country is missing with lang %s",
+      async (_description: string, lang: string, URL: string, pageType: string, errorMessagesJson: any) => {
+        setLocalesEnabled(true);
+        const res = await request(app).post(`${URL}?lang=${lang}`).send({
+          pageType,
+          address: `{"postal_code": "ST6 3LJ","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": ""}`
+        });
 
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(errorMessagesJson.errorMessages.address.confirm.countryMissing);
-    });
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(errorMessagesJson.errorMessages.address.confirm.countryMissing);
+      }
+    );
   });
 });

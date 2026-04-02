@@ -62,7 +62,14 @@ enum AddressPageType {
   postcodePersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress = "postcode-person-with-significant-control-relevant-legal-entity-principal-office-address",
   choosePersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress = "choose-person-with-significant-control-relevant-legal-entity-principal-office-address",
   enterPersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress = "enter-person-with-significant-control-relevant-legal-entity-principal-office-address",
-  confirmPersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress = "confirm-person-with-significant-control-relevant-legal-entity-principal-office-address"
+  confirmPersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress = "confirm-person-with-significant-control-relevant-legal-entity-principal-office-address",
+
+  // principal office address - Other Registrable Person
+  territoryChoicePersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress = "uk-or-overseas-person-with-significant-control-other-registrable-person-principal-office-address",
+  postcodePersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress = "postcode-person-with-significant-control-other-registrable-person-principal-office-address",
+  choosePersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress = "choose-person-with-significant-control-other-registrable-person-principal-office-address",
+  enterPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress = "enter-person-with-significant-control-other-registrable-person-principal-office-address",
+  confirmPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress = "confirm-person-with-significant-control-other-registrable-person-principal-office-address"
 }
 
 export const LIMITED_PARTNERSHIP_POSTCODE_PAGES: Set<PageType | PageDefault> = new Set([
@@ -120,7 +127,11 @@ export const LIMITED_PARTNER_PAGES: Set<PageType | PageDefault> = new Set([
 export const PERSON_WITH_SIGNIFICANT_CONTROL_PAGES: Set<PageType | PageDefault> = new Set([
   AddressPageType.postcodePersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
   AddressPageType.enterPersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
-  AddressPageType.confirmPersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress
+  AddressPageType.confirmPersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
+
+  AddressPageType.postcodePersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress,
+  AddressPageType.enterPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress,
+  AddressPageType.confirmPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress
 ]);
 
 export const isConfirmGeneralPartnerAddressPageType = (pageType: string): boolean => {

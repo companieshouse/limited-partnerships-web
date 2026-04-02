@@ -1,7 +1,8 @@
 import AddressPageType from "../../PageType";
 import {
+  ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_WITH_IDS_URL,
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_WITH_IDS_URL,
-  PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL
+  REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL
 } from "../../../registration/url";
 import * as url from "../../url/registration";
 
@@ -35,7 +36,8 @@ const registrationAddressRoutingPostcodePersonWithSignificantControlRelevantLega
   pageType: AddressPageType.postcodePersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
   data: {
     ...personWithSignificantControlPrincipalOfficeAddressCacheKeys,
-    enterManualAddressPageType: AddressPageType.enterPersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
+    enterManualAddressPageType:
+      AddressPageType.enterPersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
     confirmAddressUrl: url.CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL
   }
 };
@@ -47,7 +49,8 @@ const registrationAddressRoutingChoosePersonWithSignificantControlRelevantLegalE
   pageType: AddressPageType.choosePersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
   data: {
     ...personWithSignificantControlPrincipalOfficeAddressCacheKeys,
-    enterManualAddressPageType: AddressPageType.enterPersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress
+    enterManualAddressPageType:
+      AddressPageType.enterPersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress
   }
 };
 
@@ -58,19 +61,84 @@ const registrationAddressRoutingEnterPersonWithSignificantControlRelevantLegalEn
   pageType: AddressPageType.enterPersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
   data: {
     ...personWithSignificantControlPrincipalOfficeAddressCacheKeys,
-    territoryPageType: AddressPageType.territoryChoicePersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress
+    territoryPageType:
+      AddressPageType.territoryChoicePersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress
   }
 };
 
 const registrationAddressRoutingConfirmPersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress = {
   previousUrl: url.POSTCODE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL,
   currentUrl: url.CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL,
-  // LP-1778: Replace with PSC summary page URL when implemented
-  nextUrl: PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL,
+  nextUrl: REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL,
   pageType: AddressPageType.confirmPersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
   data: {
     ...personWithSignificantControlPrincipalOfficeAddressCacheKeys,
-    enterManualAddressPageType: AddressPageType.enterPersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress
+    enterManualAddressPageType:
+      AddressPageType.enterPersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress
+  }
+};
+
+// Other registrable person principal office address
+
+const registrationAddressRoutingTerritoryChoicePersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress =
+  {
+    previousUrl: ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_WITH_IDS_URL,
+    currentUrl:
+      url.TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL,
+    nextUrl: url.POSTCODE_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL,
+    pageType: AddressPageType.territoryChoicePersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress,
+    data: {
+      ...personWithSignificantControlPrincipalOfficeAddressCacheKeys,
+      nextUrlOverseas: url.ENTER_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL
+    }
+  };
+
+const registrationAddressRoutingPostcodePersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress = {
+  previousUrl:
+    url.TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL,
+  currentUrl: url.POSTCODE_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL,
+  nextUrl: url.CHOOSE_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL,
+  pageType: AddressPageType.postcodePersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress,
+  data: {
+    ...personWithSignificantControlPrincipalOfficeAddressCacheKeys,
+    enterManualAddressPageType:
+      AddressPageType.enterPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress
+  }
+};
+
+const registrationAddressRoutingChoosePersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress = {
+  previousUrl: url.POSTCODE_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL,
+  currentUrl: url.CHOOSE_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL,
+  nextUrl: url.CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL,
+  pageType: AddressPageType.choosePersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress,
+  data: {
+    ...personWithSignificantControlPrincipalOfficeAddressCacheKeys,
+    enterManualAddressPageType:
+      AddressPageType.enterPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress
+  }
+};
+
+const registrationAddressRoutingEnterPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress = {
+  previousUrl: url.POSTCODE_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL,
+  currentUrl: url.ENTER_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL,
+  nextUrl: url.CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL,
+  pageType: AddressPageType.enterPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress,
+  data: {
+    ...personWithSignificantControlPrincipalOfficeAddressCacheKeys,
+    territoryPageType:
+      AddressPageType.territoryChoicePersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress
+  }
+};
+
+const registrationAddressRoutingConfirmPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress = {
+  previousUrl: url.POSTCODE_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL,
+  currentUrl: url.CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL,
+  nextUrl: REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL,
+  pageType: AddressPageType.confirmPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress,
+  data: {
+    ...personWithSignificantControlPrincipalOfficeAddressCacheKeys,
+    enterManualAddressPageType:
+      AddressPageType.enterPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress
   }
 };
 
@@ -79,7 +147,13 @@ const personWithSignificantControlRouting = [
   registrationAddressRoutingPostcodePersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
   registrationAddressRoutingChoosePersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
   registrationAddressRoutingEnterPersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
-  registrationAddressRoutingConfirmPersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress
+  registrationAddressRoutingConfirmPersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
+
+  registrationAddressRoutingTerritoryChoicePersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress,
+  registrationAddressRoutingPostcodePersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress,
+  registrationAddressRoutingChoosePersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress,
+  registrationAddressRoutingEnterPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress,
+  registrationAddressRoutingConfirmPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress
 ];
 
 export default personWithSignificantControlRouting;

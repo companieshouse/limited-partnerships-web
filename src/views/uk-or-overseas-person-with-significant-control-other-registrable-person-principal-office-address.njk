@@ -1,0 +1,23 @@
+{% extends "layout.njk" %}
+
+{# Back Link #}
+{% if props.data.personWithSignificantControl.data.legal_entity_name %}
+  {% set hrefValue = props.currentUrl | replace(props.pageType, "add-person-with-significant-control-other-registrable-person") %}
+{% else %}
+  {% set hrefValue = props.previousUrl %}
+{% endif %}
+
+{% set pageTitle = i18n.address.territoryChoice.personWithSignificantControlPrincipalOfficeAddress.title %}
+{% set titleHint = i18n.address.territoryChoice.personWithSignificantControlPrincipalOfficeAddress.titleHint %}
+{% set publicRegisterInformationLine1 = i18n.address.territoryChoice.personWithSignificantControlPrincipalOfficeAddress.publicRegisterInformationLine1 %}
+{% set addressEvent = "person with significant control principal office address" %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {% include "pages/personWithSignificantControl/person-with-significant-control-name.njk" %}
+
+      {% include "pages/address/territory-address-form.njk" %}
+    </div>
+  </div>
+{% endblock %}
