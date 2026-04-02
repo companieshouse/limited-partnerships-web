@@ -61,8 +61,6 @@ describe("Choose principal office address of the person with significant control
           translationText.address.chooseAddress.personWithSignificantControlPrincipalOfficeAddress
         );
 
-        console.log(personWithSignificantControl);
-
         expect(res.text).toContain(personWithSignificantControl.data.legal_entity_name?.toUpperCase());
       }
     );
