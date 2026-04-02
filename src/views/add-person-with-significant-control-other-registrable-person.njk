@@ -17,7 +17,6 @@
                 <input type="hidden" name="pageType" value={{ props.pageType }}>
                 {% include "includes/csrf_token.njk" %}
 
-                {% set translation = i18n.personWithSignificantControl.addPersonWithSignificantControl.commonEntityFields %}
                 {% set legalEntityName = i18n.personWithSignificantControl.addPersonWithSignificantControl.addOtherRegistrablePerson.legalEntityName %}
                 {% include "pages/personWithSignificantControl/add-person-with-significant-control.njk" %}
 
