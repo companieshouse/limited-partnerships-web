@@ -1,0 +1,7 @@
+<span class="govuk-caption-l">
+  {% if props.data.personWithSignificantControl.data.forename and props.data.personWithSignificantControl.data.surname %}
+    {{ props.data.personWithSignificantControl.data.forename | upper }} {{ props.data.personWithSignificantControl.data.surname | upper }}
+  {% elif props.data.personWithSignificantControl.data.legal_entity_name %}
+    {{ props.data.personWithSignificantControl.data.legal_entity_name | upper }}
+  {% endif %}
+</span>
