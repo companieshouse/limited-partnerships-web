@@ -14,7 +14,7 @@ import {
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_URL,
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_WITH_IDS_URL,
   PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL,
-  WHICH_TYPE_OF_NATURE_OF_CONTROL_URL
+  WHICH_TYPE_OF_NATURE_OF_CONTROL_OTHER_REGISTRABLE_PERSON_URL
 } from "../../../../controller/registration/url";
 
 import RegistrationPageType from "../../../../controller/registration/PageType";
@@ -26,7 +26,7 @@ describe("Add Person With Significant Control Other registrable person Page", ()
   const enTranslationText = { ...enGeneralTranslationText, ...enPersonWithSignificantControlTranslationText };
   const cyTranslationText = { ...cyGeneralTranslationText, ...cyPersonWithSignificantControlTranslationText };
   const URL = getUrl(ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_URL);
-  const REDIRECT_URL = getUrl(WHICH_TYPE_OF_NATURE_OF_CONTROL_URL);
+  const REDIRECT_URL = getUrl(WHICH_TYPE_OF_NATURE_OF_CONTROL_OTHER_REGISTRABLE_PERSON_URL);
 
   beforeEach(() => {
     setLocalesEnabled(false);
@@ -54,10 +54,10 @@ describe("Add Person With Significant Control Other registrable person Page", ()
         expect(res.status).toBe(200);
 
         expect(res.text).toContain(
-          `${translationText.personWithSignificantControl.addOtherRegistrablePerson.title} - ${translationText.serviceRegistration} - GOV.UK`
+          `${translationText.personWithSignificantControl.addPersonWithSignificantControl.addOtherRegistrablePerson.title} - ${translationText.serviceRegistration} - GOV.UK`
         );
 
-        testTranslations(res.text, translationText.personWithSignificantControl.addOtherRegistrablePerson);
+        testTranslations(res.text, translationText.personWithSignificantControl.addPersonWithSignificantControl, ["addRelevantLegalEntity"]);
       }
     );
 

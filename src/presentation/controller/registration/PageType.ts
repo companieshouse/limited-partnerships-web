@@ -27,7 +27,8 @@ enum RegistrationPageType {
   addPersonWithSignificantControlIndividualPerson = "add-person-with-significant-control-individual-person",
   addPersonWithSignificantControlRelevantLegalEntity = "add-person-with-significant-control-relevant-legal-entity",
   addPersonWithSignificantControlOtherRegistrablePerson = "add-person-with-significant-control-other-registrable-person",
-  whichTypeOfNatureOfControl = "which-type-of-nature-of-control",
+  whichTypeOfNatureOfControlRelevantLegalEntity = "which-type-of-nature-of-control-relevant-legal-entity",
+  whichTypeOfNatureOfControlOtherRegistrablePerson = "which-type-of-nature-of-control-other-registrable-person",
   reviewPersonsWithSignificantControl = "review-persons-with-significant-control",
 
   checkYourAnswers = "check-your-answers",

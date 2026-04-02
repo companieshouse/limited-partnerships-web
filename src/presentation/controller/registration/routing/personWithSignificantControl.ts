@@ -1,6 +1,6 @@
 import RegistrationPageType from "../PageType";
 import * as url from "../url";
-import { TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../addressLookUp/url/registration";
+import { TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL, TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../addressLookUp/url/registration";
 
 const registrationRoutingPersonWithSignificantControl = {
   previousUrl: url.REVIEW_LIMITED_PARTNERS_URL,
@@ -23,25 +23,36 @@ const registrationRoutingPersonWithSignificantControlChoice = {
   pageType: RegistrationPageType.personWithSignificantControlChoice
 };
 
+// RELEVANT LEGAL ENTITY
+
 const registrationRoutingAddRelevantLegalEntity = {
   previousUrl: url.PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL,
   currentUrl: url.ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL,
-  nextUrl: url.WHICH_TYPE_OF_NATURE_OF_CONTROL_URL,
+  nextUrl: url.WHICH_TYPE_OF_NATURE_OF_CONTROL_RELEVANT_LEGAL_ENTITY_URL,
   pageType: RegistrationPageType.addPersonWithSignificantControlRelevantLegalEntity
 };
+
+const registrationRoutingRelevantLegalEntityWhichTypeOfNatureOfControl = {
+  previousUrl: url.ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_WITH_IDS_URL,
+  currentUrl: url.WHICH_TYPE_OF_NATURE_OF_CONTROL_RELEVANT_LEGAL_ENTITY_URL,
+  nextUrl: TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL,
+  pageType: RegistrationPageType.whichTypeOfNatureOfControlRelevantLegalEntity
+};
+
+// OTHER REGISTRABLE PERSON
 
 const registrationRoutingAddOtherRegistrablePerson = {
   previousUrl: url.PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL,
   currentUrl: url.ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_URL,
-  nextUrl: url.WHICH_TYPE_OF_NATURE_OF_CONTROL_URL,
+  nextUrl: url.WHICH_TYPE_OF_NATURE_OF_CONTROL_OTHER_REGISTRABLE_PERSON_URL,
   pageType: RegistrationPageType.addPersonWithSignificantControlOtherRegistrablePerson
 };
 
-const registrationRoutingWhichTypeOfNatureOfControl = {
-  previousUrl: url.ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_WITH_IDS_URL,
-  currentUrl: url.WHICH_TYPE_OF_NATURE_OF_CONTROL_URL,
-  nextUrl: TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL,
-  pageType: RegistrationPageType.whichTypeOfNatureOfControl
+const registrationRoutingOtherRegistrablePersonWhichTypeOfNatureOfControl = {
+  previousUrl: url.ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_WITH_IDS_URL,
+  currentUrl: url.WHICH_TYPE_OF_NATURE_OF_CONTROL_OTHER_REGISTRABLE_PERSON_URL,
+  nextUrl: TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL,
+  pageType: RegistrationPageType.whichTypeOfNatureOfControlOtherRegistrablePerson
 };
 
 const personWithSignificantControlRouting = [
@@ -50,8 +61,8 @@ const personWithSignificantControlRouting = [
   registrationRoutingPersonWithSignificantControlChoice,
   registrationRoutingAddRelevantLegalEntity,
   registrationRoutingAddOtherRegistrablePerson,
-  registrationRoutingWhichTypeOfNatureOfControl,
-  registrationRoutingAddRelevantLegalEntity
+  registrationRoutingRelevantLegalEntityWhichTypeOfNatureOfControl,
+  registrationRoutingOtherRegistrablePersonWhichTypeOfNatureOfControl
 ];
 
 export default personWithSignificantControlRouting;
