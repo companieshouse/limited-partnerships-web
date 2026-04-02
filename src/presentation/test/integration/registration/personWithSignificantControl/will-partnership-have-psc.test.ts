@@ -52,6 +52,7 @@ describe("Will Limited Partnership Have PSC Page", () => {
         testTranslations(res.text, translationText.personWithSignificantControl.willThePartnershipHaveAnyPscPage, [
           "errorMessage"
         ]);
+        testTranslations(res.text, translationText.personWithSignificantControl.otherRegistrablePersonInformation);
       }
     );
 

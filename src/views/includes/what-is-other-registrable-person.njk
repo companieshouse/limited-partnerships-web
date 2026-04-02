@@ -1,0 +1,11 @@
+{{ govukDetails({
+  summaryText: i18n.personWithSignificantControl.otherRegistrablePersonInformation.title,
+  html: 
+    '<p>' + i18n.personWithSignificantControl.otherRegistrablePersonInformation.line1 + '</p>' 
+      + '<ul>'
+          + '<li>' + i18n.personWithSignificantControl.otherRegistrablePersonInformation.bullet1 | escape + '</li>'
+          + '<li>' + i18n.personWithSignificantControl.otherRegistrablePersonInformation.bullet2 | escape + '</li>'
+          + '<li>' + i18n.personWithSignificantControl.otherRegistrablePersonInformation.bullet3 | escape + '</li>'
+          + '<li>' + i18n.personWithSignificantControl.otherRegistrablePersonInformation.bullet4 | escape + '</li>'
+      + '</ul>'
+}) }}

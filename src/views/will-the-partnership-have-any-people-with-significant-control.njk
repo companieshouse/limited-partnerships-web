@@ -2,6 +2,8 @@
 
 {% set pageTitle = i18n.personWithSignificantControl.willThePartnershipHaveAnyPscPage.title %}
 
+{% set publicRegisterInformationLine1 = i18n.personWithSignificantControl.willThePartnershipHaveAnyPscPage.publicRegisterLine1 %}
+
 {% set currentValue = props.data.limitedPartnership.data.has_person_with_significant_control %}
 
 {% block content %}
@@ -30,11 +32,13 @@
             items: [
               {
                 value: "true",
+                name: "has_person_with_significant_control_yes",
                 text: i18n.personWithSignificantControl.willThePartnershipHaveAnyPscPage.optionYes,
                 checked: currentValue === true
               },
               {
                 value: "false",
+                name: "has_person_with_significant_control_no",
                 text: i18n.personWithSignificantControl.willThePartnershipHaveAnyPscPage.optionNo,
                 checked: currentValue === false
               }
@@ -43,6 +47,10 @@
               text: i18n.personWithSignificantControl.willThePartnershipHaveAnyPscPage.errorMessage
             } if props.errors
           }) }}
+
+          {% include "includes/what-is-other-registrable-person.njk" %}
+
+          {% include "includes/public-register-information.njk" %}
         
           {% include "includes/save-and-continue-button.njk" %}
       </form>
