@@ -22,7 +22,6 @@ describe("Which Type of Nature of Control Page", () => {
   const enTranslationText = { ...enGeneralTranslationText, ...enPersonWithSignificantControlTranslationText };
   const cyTranslationText = { ...cyGeneralTranslationText, ...cyPersonWithSignificantControlTranslationText };
 
-
   beforeEach(() => {
     setLocalesEnabled(true);
 
