@@ -102,7 +102,8 @@ const registrationAddressRoutingPostcodePersonWithSignificantControlOtherRegistr
   data: {
     ...personWithSignificantControlPrincipalOfficeAddressCacheKeys,
     enterManualAddressPageType:
-      AddressPageType.enterPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress
+      AddressPageType.enterPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress,
+    confirmAddressUrl: url.CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL
   }
 };
 
