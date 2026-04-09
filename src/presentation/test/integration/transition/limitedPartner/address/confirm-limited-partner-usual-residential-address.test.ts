@@ -1,15 +1,16 @@
 import request from "supertest";
 
-import app from "../../../app";
-import enTranslationText from "../../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../../locales/cy/translations.json";
+import enGeneralTranslationText from "../../../../../../../locales/en/translations.json";
+import cyGeneralTranslationText from "../../../../../../../locales/cy/translations.json";
+import enAddressTranslationText from "../../../../../../../locales/en/address.json";
+import cyAddressTranslationText from "../../../../../../../locales/cy/address.json";
 import enErrorMessages from "../../../../../../../locales/en/errors.json";
 import cyErrorMessages from "../../../../../../../locales/cy/errors.json";
 
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
+import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
-import AddressPageType from "../../../../../controller/addressLookUp/PageType";
-import LimitedPartnerBuilder from "../../../../builder/LimitedPartnerBuilder";
+import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
+
 import {
   CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   ENTER_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
@@ -17,7 +18,12 @@ import {
 } from "../../../../../controller/addressLookUp/url/transition";
 import { REVIEW_LIMITED_PARTNERS_URL } from "../../../../../controller/transition/url";
 
+import AddressPageType from "../../../../../controller/addressLookUp/PageType";
+import LimitedPartnerBuilder from "../../../../builder/LimitedPartnerBuilder";
+
 describe("Confirm Limited Partner Usual Residential Address Page", () => {
+  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
+  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText };
   const URL = getUrl(CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
 
   beforeEach(() => {
@@ -128,17 +134,20 @@ describe("Confirm Limited Partner Usual Residential Address Page", () => {
     });
 
     it.each([
-      [ "en", enErrorMessages ],
-      [ "cy", cyErrorMessages ]
-    ])("should show validation error message if validation error occurs when saving address with lang %s", async (lang: string, errorMessagesJson: any) => {
-      setLocalesEnabled(true);
-      const res = await request(app).post(`${URL}?lang=${lang}`).send({
-        pageType: AddressPageType.confirmLimitedPartnerUsualResidentialAddress,
-        address: `{"postal_code": "ST6 3LJ","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": ""}`
-      });
+      ["en", enErrorMessages],
+      ["cy", cyErrorMessages]
+    ])(
+      "should show validation error message if validation error occurs when saving address with lang %s",
+      async (lang: string, errorMessagesJson: any) => {
+        setLocalesEnabled(true);
+        const res = await request(app).post(`${URL}?lang=${lang}`).send({
+          pageType: AddressPageType.confirmLimitedPartnerUsualResidentialAddress,
+          address: `{"postal_code": "ST6 3LJ","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": ""}`
+        });
 
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(errorMessagesJson.errorMessages.address.confirm.countryMissing);
-    });
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(errorMessagesJson.errorMessages.address.confirm.countryMissing);
+      }
+    );
   });
 });

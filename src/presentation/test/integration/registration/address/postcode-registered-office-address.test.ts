@@ -1,23 +1,27 @@
 import request from "supertest";
 
-import * as config from "../../../../../config/constants";
+import enGeneralTranslationText from "../../../../../../locales/en/translations.json";
+import cyGeneralTranslationText from "../../../../../../locales/cy/translations.json";
+import enAddressTranslationText from "../../../../../../locales/en/address.json";
+import cyAddressTranslationText from "../../../../../../locales/cy/address.json";
 
-import enTranslationText from "../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../locales/cy/translations.json";
-
-import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import app from "../../app";
+import { appDevDependencies } from "../../../../../config/dev-dependencies";
+import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
+import * as config from "../../../../../config/constants";
 
 import {
   CHOOSE_REGISTERED_OFFICE_ADDRESS_URL,
   CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
   POSTCODE_REGISTERED_OFFICE_ADDRESS_URL
 } from "../../../../controller/addressLookUp/url/registration";
+
 import AddressPageType from "../../../../controller/addressLookUp/PageType";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
 
 describe("Postcode Registered Office Address Page", () => {
+  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
+  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText };
   const URL = getUrl(POSTCODE_REGISTERED_OFFICE_ADDRESS_URL);
   const REDIRECT_URL = getUrl(CHOOSE_REGISTERED_OFFICE_ADDRESS_URL);
 
@@ -71,7 +75,6 @@ describe("Postcode Registered Office Address Page", () => {
         "errorMessages"
       ]);
       testTranslations(res.text, cyTranslationText.address.registeredOffice, ["newRequirement"]);
-
     });
   });
 

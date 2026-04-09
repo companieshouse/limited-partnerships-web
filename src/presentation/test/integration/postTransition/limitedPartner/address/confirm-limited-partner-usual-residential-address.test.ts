@@ -1,25 +1,35 @@
 import request from "supertest";
+import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-import app from "../../../app";
-import enTranslationText from "../../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../../locales/cy/translations.json";
+import enGeneralTranslationText from "../../../../../../../locales/en/translations.json";
+import cyGeneralTranslationText from "../../../../../../../locales/cy/translations.json";
+import enAddressTranslationText from "../../../../../../../locales/en/address.json";
+import cyAddressTranslationText from "../../../../../../../locales/cy/address.json";
 import enErrorMessages from "../../../../../../../locales/en/errors.json";
 import cyErrorMessages from "../../../../../../../locales/cy/errors.json";
 
+import app from "../../../app";
+import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
+
 import {
   CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   ENTER_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "../../../../../controller/addressLookUp/url/postTransition";
-import { appDevDependencies } from "../../../../../../config/dev-dependencies";
+import {
+  LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL,
+  UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
+  WHEN_DID_LIMITED_PARTNER_PERSON_DETAILS_CHANGE_URL
+} from "../../../../../controller/postTransition/url";
+
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import LimitedPartnerBuilder from "../../../../builder/LimitedPartnerBuilder";
-import { LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL, UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL, WHEN_DID_LIMITED_PARTNER_PERSON_DETAILS_CHANGE_URL } from "../../../../../controller/postTransition/url";
 import TransactionBuilder from "../../../../builder/TransactionBuilder";
-import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 describe("Confirm Limited Partner Usual Residential Address Page", () => {
+  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
+  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText };
   const URL = getUrl(CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
 
   beforeEach(() => {
@@ -87,51 +97,69 @@ describe("Confirm Limited Partner Usual Residential Address Page", () => {
     });
 
     it.each([
-      ["update", "", PartnerKind.UPDATE_LIMITED_PARTNER_PERSON, UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL],
-      ["update", "", PartnerKind.UPDATE_LIMITED_PARTNER_PERSON, UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL],
+      [
+        "update",
+        "",
+        PartnerKind.UPDATE_LIMITED_PARTNER_PERSON,
+        UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL
+      ],
+      [
+        "update",
+        "",
+        PartnerKind.UPDATE_LIMITED_PARTNER_PERSON,
+        UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL
+      ],
       ["add", "overseas", PartnerKind.ADD_LIMITED_PARTNER_PERSON, ENTER_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL],
-      ["add", "unitedKingdom", PartnerKind.ADD_LIMITED_PARTNER_PERSON, POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL]
-    ])("should contain the correct back link when on %s limited partner person journey", async (description: string, territory: string, partnerKind: PartnerKind, backUrl: string) => {
-      const limitedPartner = new LimitedPartnerBuilder()
-        .isPerson()
-        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .withKind(partnerKind)
-        .build();
-      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
+      [
+        "add",
+        "unitedKingdom",
+        PartnerKind.ADD_LIMITED_PARTNER_PERSON,
+        POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
+      ]
+    ])(
+      "should contain the correct back link when on %s limited partner person journey",
+      async (description: string, territory: string, partnerKind: PartnerKind, backUrl: string) => {
+        const limitedPartner = new LimitedPartnerBuilder()
+          .isPerson()
+          .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+          .withKind(partnerKind)
+          .build();
+        appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
 
-      appDevDependencies.cacheRepository.feedCache({
-        [appDevDependencies.transactionGateway.transactionId]: {
-          ura_territory_choice: territory
-        }
-      });
+        appDevDependencies.cacheRepository.feedCache({
+          [appDevDependencies.transactionGateway.transactionId]: {
+            ura_territory_choice: territory
+          }
+        });
 
-      const res = await request(app).get(URL);
+        const res = await request(app).get(URL);
 
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(
-        getUrl(backUrl)
-      );
-    });
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(getUrl(backUrl));
+      }
+    );
   });
 
   describe("POST Confirm Usual Residential Address Page", () => {
     it.each([
       ["update", PartnerKind.UPDATE_LIMITED_PARTNER_PERSON, WHEN_DID_LIMITED_PARTNER_PERSON_DETAILS_CHANGE_URL],
       ["add", PartnerKind.ADD_LIMITED_PARTNER_PERSON, LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL]
-    ])("should redirect to the correct next page when on %s limited partner person journey", async (description: string, partnerKind: PartnerKind, nextUrl: string) => {
-      const limitedPartner = new LimitedPartnerBuilder()
-        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isPerson()
-        .withKind(partnerKind)
-        .build();
+    ])(
+      "should redirect to the correct next page when on %s limited partner person journey",
+      async (description: string, partnerKind: PartnerKind, nextUrl: string) => {
+        const limitedPartner = new LimitedPartnerBuilder()
+          .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+          .isPerson()
+          .withKind(partnerKind)
+          .build();
 
-      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
+        appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
 
-      const res = await request(app)
-        .post(URL)
-        .send({
-          pageType: AddressPageType.confirmLimitedPartnerUsualResidentialAddress,
-          address: `{
+        const res = await request(app)
+          .post(URL)
+          .send({
+            pageType: AddressPageType.confirmLimitedPartnerUsualResidentialAddress,
+            address: `{
             "postal_code": "ST6 3LJ",
             "premises": "4",
             "address_line_1": "DUNCALF STREET",
@@ -139,11 +167,12 @@ describe("Confirm Limited Partner Usual Residential Address Page", () => {
             "locality": "STOKE-ON-TRENT",
             "country": "England"
           }`
-        });
+          });
 
-      expect(res.status).toBe(302);
-      expect(res.text).toContain(`Redirecting to ${getUrl(nextUrl)}`);
-    });
+        expect(res.status).toBe(302);
+        expect(res.text).toContain(`Redirecting to ${getUrl(nextUrl)}`);
+      }
+    );
 
     it("should show error message if address is not provided", async () => {
       appDevDependencies.cacheRepository.feedCache({});
@@ -157,17 +186,20 @@ describe("Confirm Limited Partner Usual Residential Address Page", () => {
     });
 
     it.each([
-      [ "en", enErrorMessages ],
-      [ "cy", cyErrorMessages ]
-    ])("should show validation error message if validation error occurs when saving address with lang %s", async (lang: string, errorMessagesJson: any) => {
-      setLocalesEnabled(true);
-      const res = await request(app).post(`${URL}?lang=${lang}`).send({
-        pageType: AddressPageType.confirmLimitedPartnerUsualResidentialAddress,
-        address: `{"postal_code": "ST6 3LJ","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": ""}`
-      });
+      ["en", enErrorMessages],
+      ["cy", cyErrorMessages]
+    ])(
+      "should show validation error message if validation error occurs when saving address with lang %s",
+      async (lang: string, errorMessagesJson: any) => {
+        setLocalesEnabled(true);
+        const res = await request(app).post(`${URL}?lang=${lang}`).send({
+          pageType: AddressPageType.confirmLimitedPartnerUsualResidentialAddress,
+          address: `{"postal_code": "ST6 3LJ","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": ""}`
+        });
 
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(errorMessagesJson.errorMessages.address.confirm.countryMissing);
-    });
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(errorMessagesJson.errorMessages.address.confirm.countryMissing);
+      }
+    );
   });
 });

@@ -1,18 +1,26 @@
 import request from "supertest";
-import enTranslationText from "../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../locales/cy/translations.json";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../../../presentation/test/utils";
-import { CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL } from "../../../../controller/addressLookUp/url/registration";
-import { REVIEW_GENERAL_PARTNERS_URL, TERM_URL } from "../../../../../presentation/controller/registration/url";
+import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+
+import enGeneralTranslationText from "../../../../../../locales/en/translations.json";
+import cyGeneralTranslationText from "../../../../../../locales/cy/translations.json";
+import enAddressTranslationText from "../../../../../../locales/en/address.json";
+import cyAddressTranslationText from "../../../../../../locales/cy/address.json";
+
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
+import { ApiErrors } from "../../../../../domain/entities/UIErrors";
+import { getUrl, setLocalesEnabled, testTranslations } from "../../../../../presentation/test/utils";
+
+import { CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL } from "../../../../controller/addressLookUp/url/registration";
+import { REVIEW_GENERAL_PARTNERS_URL, TERM_URL } from "../../../../../presentation/controller/registration/url";
+
 import AddressPageType from "../../../../../presentation/controller/addressLookUp/PageType";
 import LimitedPartnershipBuilder from "../../../../../presentation/test/builder/LimitedPartnershipBuilder";
-import { ApiErrors } from "../../../../../domain/entities/UIErrors";
-import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
 
 describe("Confirm Principal Place Of Business Address Page", () => {
+  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
+  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText };
   const URL = getUrl(CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL);
   const body = {
     pageType: AddressPageType.confirmPrincipalPlaceOfBusinessAddress,

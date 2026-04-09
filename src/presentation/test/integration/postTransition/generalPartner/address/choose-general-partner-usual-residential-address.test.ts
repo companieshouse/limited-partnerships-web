@@ -1,19 +1,30 @@
 import request from "supertest";
-import enTranslationText from "../../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../../locales/cy/translations.json";
+import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+
+import enGeneralTranslationText from "../../../../../../../locales/en/translations.json";
+import cyGeneralTranslationText from "../../../../../../../locales/cy/translations.json";
+import enAddressTranslationText from "../../../../../../../locales/en/address.json";
+import cyAddressTranslationText from "../../../../../../../locales/cy/address.json";
+
 import app from "../../../app";
+import { appDevDependencies } from "../../../../../../config/dev-dependencies";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
+import * as config from "../../../../../../config";
+
 import {
   CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "../../../../../controller/addressLookUp/url/postTransition";
-import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
-import { appDevDependencies } from "../../../../../../config/dev-dependencies";
-import * as config from "../../../../../../config";
+
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import TransactionBuilder from "../../../../builder/TransactionBuilder";
-import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 describe("Choose usual residential address of the general partner page", () => {
+  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
+  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText };
+  const URL = getUrl(CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
+  const REDIRECT_URL = getUrl(CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
+
   beforeEach(() => {
     setLocalesEnabled(false);
     appDevDependencies.addressLookUpGateway.setError(false);
@@ -31,46 +42,44 @@ describe("Choose usual residential address of the general partner page", () => {
     });
   });
 
-  const URL = getUrl(CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
-  const REDIRECT_URL = getUrl(CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
-
   describe("GET choose usual residential address of the general partner page", () => {
+    it.each([
+      [PartnerKind.ADD_GENERAL_PARTNER_PERSON, cyTranslationText.serviceName.addGeneralPartner],
+      [PartnerKind.UPDATE_GENERAL_PARTNER_PERSON, cyTranslationText.serviceName.updateGeneralPartnerPerson]
+    ])(
+      "should load the choose usual residential address of the general partner page with Welsh text",
+      async (partnerKind, serviceName) => {
+        setLocalesEnabled(true);
 
-    it.each(
-      [
-        [PartnerKind.ADD_GENERAL_PARTNER_PERSON, cyTranslationText.serviceName.addGeneralPartner],
-        [PartnerKind.UPDATE_GENERAL_PARTNER_PERSON, cyTranslationText.serviceName.updateGeneralPartnerPerson]
-      ]
-    )("should load the choose usual residential address of the general partner page with Welsh text", async (partnerKind, serviceName) => {
-      setLocalesEnabled(true);
+        const transaction = new TransactionBuilder().withKind(partnerKind).build();
+        appDevDependencies.transactionGateway.feedTransactions([transaction]);
 
-      const transaction = new TransactionBuilder().withKind(partnerKind).build();
-      appDevDependencies.transactionGateway.feedTransactions([transaction]);
+        const res = await request(app).get(URL + "?lang=cy");
 
-      const res = await request(app).get(URL + "?lang=cy");
+        expect(res.status).toBe(200);
+        testTranslations(res.text, cyTranslationText.address.chooseAddress.generalPartnerUsualResidentialAddress);
+        expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
+      }
+    );
 
-      expect(res.status).toBe(200);
-      testTranslations(res.text, cyTranslationText.address.chooseAddress.generalPartnerUsualResidentialAddress);
-      expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
-    });
+    it.each([
+      [PartnerKind.ADD_GENERAL_PARTNER_PERSON, enTranslationText.serviceName.addGeneralPartner],
+      [PartnerKind.UPDATE_GENERAL_PARTNER_PERSON, enTranslationText.serviceName.updateGeneralPartnerPerson]
+    ])(
+      "should load the choose usual residential address of the general partner page with English text",
+      async (partnerKind, serviceName) => {
+        setLocalesEnabled(true);
 
-    it.each(
-      [
-        [PartnerKind.ADD_GENERAL_PARTNER_PERSON, enTranslationText.serviceName.addGeneralPartner],
-        [PartnerKind.UPDATE_GENERAL_PARTNER_PERSON, enTranslationText.serviceName.updateGeneralPartnerPerson]
-      ]
-    )("should load the choose usual residential address of the general partner page with English text", async (partnerKind, serviceName) => {
-      setLocalesEnabled(true);
+        const transaction = new TransactionBuilder().withKind(partnerKind).build();
+        appDevDependencies.transactionGateway.feedTransactions([transaction]);
 
-      const transaction = new TransactionBuilder().withKind(partnerKind).build();
-      appDevDependencies.transactionGateway.feedTransactions([transaction]);
+        const res = await request(app).get(URL + "?lang=en");
 
-      const res = await request(app).get(URL + "?lang=en");
-
-      expect(res.status).toBe(200);
-      testTranslations(res.text, enTranslationText.address.chooseAddress.generalPartnerUsualResidentialAddress);
-      expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
-    });
+        expect(res.status).toBe(200);
+        testTranslations(res.text, enTranslationText.address.chooseAddress.generalPartnerUsualResidentialAddress);
+        expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
+      }
+    );
 
     it("should populate the address list", async () => {
       const res = await request(app).get(URL);

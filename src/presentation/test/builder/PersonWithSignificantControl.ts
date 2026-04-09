@@ -12,7 +12,7 @@ const personWithSignificantControlRelevantLegalEntity = {
 const personWithSignificantControlOtherRegistrablePerson = {
   legal_entity_name: "My Company ltd - ORP",
   legal_form: "Limited Company",
-  governing_law: "Act of law",
+  governing_law: "Act of law"
 };
 
 class PersonWithSignificantControlBuilder {

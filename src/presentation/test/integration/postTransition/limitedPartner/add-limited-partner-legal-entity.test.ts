@@ -1,7 +1,6 @@
+import request from "supertest";
 import { PartnerKind, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
-
-import request from "supertest";
 
 import enTranslationText from "../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../locales/cy/translations.json";
@@ -20,13 +19,16 @@ import {
 
 import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
-import { CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL, TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../../../controller/addressLookUp/url/postTransition";
+import {
+  CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
+} from "../../../../controller/addressLookUp/url/postTransition";
 
 describe("Add Limited Partner Legal Entity Page", () => {
   const URL = getUrl(ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL);
   const REDIRECT_URL = getUrl(TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
 
-  let companyProfile: { Id: string; data: Partial<CompanyProfile> };
+  let companyProfile: { _id: string; data: Partial<CompanyProfile> };
 
   beforeEach(() => {
     setLocalesEnabled(false);
@@ -41,35 +43,32 @@ describe("Add Limited Partner Legal Entity Page", () => {
   });
 
   describe("Get Add Limited Partner Legal Entity Page", () => {
-
-    it.each(
-      [
-        [PartnershipType.LP, "en", enTranslationText, true],
-        [PartnershipType.SLP, "en", enTranslationText, true],
-        [PartnershipType.PFLP, "en", enTranslationText, false],
-        [PartnershipType.SPFLP, "en", enTranslationText, false],
-        [PartnershipType.LP, "cy", cyTranslationText, true],
-        [PartnershipType.SLP, "cy", cyTranslationText, true],
-        [PartnershipType.PFLP, "cy", cyTranslationText, false],
-        [PartnershipType.SPFLP, "cy", cyTranslationText, false]
-      ]
-    )("should load the add limited partner legal entity page for partnership type %s and language %s",
-      async (
-        partnershipType: PartnershipType,
-        lang: string,
-        i18n: any,
-        expectCapitalContributionText: boolean
-      ) => {
+    it.each([
+      [PartnershipType.LP, "en", enTranslationText, true],
+      [PartnershipType.SLP, "en", enTranslationText, true],
+      [PartnershipType.PFLP, "en", enTranslationText, false],
+      [PartnershipType.SPFLP, "en", enTranslationText, false],
+      [PartnershipType.LP, "cy", cyTranslationText, true],
+      [PartnershipType.SLP, "cy", cyTranslationText, true],
+      [PartnershipType.PFLP, "cy", cyTranslationText, false],
+      [PartnershipType.SPFLP, "cy", cyTranslationText, false]
+    ])(
+      "should load the add limited partner legal entity page for partnership type %s and language %s",
+      async (partnershipType: PartnershipType, lang: string, i18n: any, expectCapitalContributionText: boolean) => {
         companyProfile.data.subtype = partnershipType;
 
         setLocalesEnabled(true);
         const res = await request(app).get(URL + `?lang=${lang}`);
 
         expect(res.status).toBe(200);
-        expect(res.text).toContain(
-          `${i18n.addOrUpdatePartnerLegalEntityPage.limitedPartner.title}`
-        );
-        testTranslations(res.text, i18n.addOrUpdatePartnerLegalEntityPage, ["errorMessages", "generalPartner", "updateTitle", "dateEffectiveFrom", "capitalContribution"]);
+        expect(res.text).toContain(`${i18n.addOrUpdatePartnerLegalEntityPage.limitedPartner.title}`);
+        testTranslations(res.text, i18n.addOrUpdatePartnerLegalEntityPage, [
+          "errorMessages",
+          "generalPartner",
+          "updateTitle",
+          "dateEffectiveFrom",
+          "capitalContribution"
+        ]);
 
         if (expectCapitalContributionText) {
           expect(res.text).toContain(i18n.capitalContribution.title);
