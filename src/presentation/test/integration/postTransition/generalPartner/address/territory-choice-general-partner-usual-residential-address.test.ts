@@ -1,22 +1,33 @@
 import request from "supertest";
-import enTranslationText from "../../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../../locales/cy/translations.json";
+import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+
+import enGeneralTranslationText from "../../../../../../../locales/en/translations.json";
+import cyGeneralTranslationText from "../../../../../../../locales/cy/translations.json";
+import enAddressTranslationText from "../../../../../../../locales/en/address.json";
+import cyAddressTranslationText from "../../../../../../../locales/cy/address.json";
+
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
+import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
+
 import {
   ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "../../../../../controller/addressLookUp/url/postTransition";
+import {
+  ADD_GENERAL_PARTNER_PERSON_WITH_IDS_URL,
+  UPDATE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL
+} from "../../../../../../presentation/controller/postTransition/url";
+
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import GeneralPartnerBuilder, { generalPartnerPerson } from "../../../../builder/GeneralPartnerBuilder";
-import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
-import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-import { ADD_GENERAL_PARTNER_PERSON_WITH_IDS_URL, UPDATE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL } from "../../../../../../presentation/controller/postTransition/url";
 import TransactionBuilder from "../../../../builder/TransactionBuilder";
 
 describe("General Partner Usual Residential Address Territory Choice", () => {
+  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
+  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText };
   const URL = getUrl(TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
 
   beforeEach(() => {
@@ -25,55 +36,56 @@ describe("General Partner Usual Residential Address Territory Choice", () => {
   });
 
   describe("GET /general-partner-usual-residential-address-choose-territory", () => {
+    it.each([
+      [PartnerKind.ADD_GENERAL_PARTNER_PERSON, cyTranslationText.serviceName.addGeneralPartner],
+      [PartnerKind.UPDATE_GENERAL_PARTNER_PERSON, cyTranslationText.serviceName.updateGeneralPartnerPerson]
+    ])(
+      "should load the general partner usual residential address territory choice page with Welsh text",
+      async (partnerKind, serviceName) => {
+        setLocalesEnabled(true);
 
-    it.each(
-      [
-        [PartnerKind.ADD_GENERAL_PARTNER_PERSON, cyTranslationText.serviceName.addGeneralPartner],
-        [PartnerKind.UPDATE_GENERAL_PARTNER_PERSON, cyTranslationText.serviceName.updateGeneralPartnerPerson]
-      ]
-    )("should load the general partner usual residential address territory choice page with Welsh text", async (partnerKind, serviceName) => {
-      setLocalesEnabled(true);
+        const transaction = new TransactionBuilder().withKind(partnerKind).build();
+        appDevDependencies.transactionGateway.feedTransactions([transaction]);
 
-      const transaction = new TransactionBuilder().withKind(partnerKind).build();
-      appDevDependencies.transactionGateway.feedTransactions([transaction]);
+        const res = await request(app).get(URL + "?lang=cy");
 
-      const res = await request(app).get(URL + "?lang=cy");
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(
+          toEscapedHtml(
+            `${cyTranslationText.address.territoryChoice.generalPartnerUsualResidentialAddress.title} - ${serviceName} - GOV.UK`
+          )
+        );
 
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(
-        toEscapedHtml(
-          `${cyTranslationText.address.territoryChoice.generalPartnerUsualResidentialAddress.title} - ${serviceName} - GOV.UK`
-        )
-      );
+        testTranslations(res.text, cyTranslationText.address.territoryChoice.generalPartnerUsualResidentialAddress);
+        testTranslations(res.text, cyTranslationText.address.territories);
+        expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
+      }
+    );
 
-      testTranslations(res.text, cyTranslationText.address.territoryChoice.generalPartnerUsualResidentialAddress);
-      testTranslations(res.text, cyTranslationText.address.territories);
-      expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
-    });
+    it.each([
+      [PartnerKind.ADD_GENERAL_PARTNER_PERSON, enTranslationText.serviceName.addGeneralPartner],
+      [PartnerKind.UPDATE_GENERAL_PARTNER_PERSON, enTranslationText.serviceName.updateGeneralPartnerPerson]
+    ])(
+      "should load the general partner usual residential address territory choice page with English text",
+      async (partnerKind, serviceName) => {
+        setLocalesEnabled(true);
 
-    it.each(
-      [
-        [PartnerKind.ADD_GENERAL_PARTNER_PERSON, enTranslationText.serviceName.addGeneralPartner],
-        [PartnerKind.UPDATE_GENERAL_PARTNER_PERSON, enTranslationText.serviceName.updateGeneralPartnerPerson]
-      ]
-    )("should load the general partner usual residential address territory choice page with English text", async (partnerKind, serviceName) => {
-      setLocalesEnabled(true);
+        const transaction = new TransactionBuilder().withKind(partnerKind).build();
+        appDevDependencies.transactionGateway.feedTransactions([transaction]);
 
-      const transaction = new TransactionBuilder().withKind(partnerKind).build();
-      appDevDependencies.transactionGateway.feedTransactions([transaction]);
+        const res = await request(app).get(URL + "?lang=en");
 
-      const res = await request(app).get(URL + "?lang=en");
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(
+          toEscapedHtml(
+            `${enTranslationText.address.territoryChoice.generalPartnerUsualResidentialAddress.title} - ${serviceName} - GOV.UK`
+          )
+        );
 
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(
-        toEscapedHtml(
-          `${enTranslationText.address.territoryChoice.generalPartnerUsualResidentialAddress.title} - ${serviceName} - GOV.UK`
-        )
-      );
-
-      testTranslations(res.text, enTranslationText.address.territories);
-      expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
-    });
+        testTranslations(res.text, enTranslationText.address.territories);
+        expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
+      }
+    );
 
     it("should contain the general partner name - data from API", async () => {
       const generalPartner = new GeneralPartnerBuilder()
@@ -92,24 +104,29 @@ describe("General Partner Usual Residential Address Territory Choice", () => {
     });
 
     it.each([
-      ["update", PartnerKind.UPDATE_GENERAL_PARTNER_PERSON, UPDATE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL],
+      [
+        "update",
+        PartnerKind.UPDATE_GENERAL_PARTNER_PERSON,
+        UPDATE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL
+      ],
       ["add", PartnerKind.ADD_GENERAL_PARTNER_PERSON, ADD_GENERAL_PARTNER_PERSON_WITH_IDS_URL]
-    ])("should contain the correct back link when on %s general partner person journey", async (description: string, partnerKind: PartnerKind, backUrl: string) => {
-      const generalPartner = new GeneralPartnerBuilder()
-        .isPerson()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .withKind(partnerKind)
-        .build();
+    ])(
+      "should contain the correct back link when on %s general partner person journey",
+      async (description: string, partnerKind: PartnerKind, backUrl: string) => {
+        const generalPartner = new GeneralPartnerBuilder()
+          .isPerson()
+          .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+          .withKind(partnerKind)
+          .build();
 
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+        appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
 
-      const res = await request(app).get(URL);
+        const res = await request(app).get(URL);
 
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(
-        getUrl(backUrl)
-      );
-    });
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(getUrl(backUrl));
+      }
+    );
   });
 
   describe("POST /general-partner-territory-choice", () => {

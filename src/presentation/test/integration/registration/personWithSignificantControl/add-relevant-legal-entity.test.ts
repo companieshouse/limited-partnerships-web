@@ -16,10 +16,12 @@ import {
   PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL,
   WHICH_TYPE_OF_NATURE_OF_CONTROL_RELEVANT_LEGAL_ENTITY_URL
 } from "../../../../controller/registration/url";
+
 import RegistrationPageType from "../../../../controller/registration/PageType";
 import PersonWithSignificantControlBuilder from "../../../builder/PersonWithSignificantControl";
 import TransactionBuilder from "../../../builder/TransactionBuilder";
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
+import TransactionPersonWithSignificantControl from "../../../../../domain/entities/TransactionPersonWithSignificantControl";
 
 describe("Add Person With Significant Control Relevant Legal Entity Page", () => {
   const enTranslationText = { ...enGeneralTranslationText, ...enPersonWithSignificantControlTranslationText };
@@ -56,7 +58,9 @@ describe("Add Person With Significant Control Relevant Legal Entity Page", () =>
           `${translationText.personWithSignificantControl.addPersonWithSignificantControl.addRelevantLegalEntity.title} - ${translationText.serviceRegistration} - GOV.UK`
         );
 
-        testTranslations(res.text, translationText.personWithSignificantControl.addPersonWithSignificantControl, ["addOtherRegistrablePerson"]);
+        testTranslations(res.text, translationText.personWithSignificantControl.addPersonWithSignificantControl, [
+          "addOtherRegistrablePerson"
+        ]);
       }
     );
 
@@ -133,7 +137,7 @@ describe("Add Person With Significant Control Relevant Legal Entity Page", () =>
 
   describe("Patch Add Relevant Legal Entity Page", () => {
     const URL = getUrl(ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_WITH_IDS_URL);
-    let personWithSignificantControl;
+    let personWithSignificantControl: TransactionPersonWithSignificantControl;
 
     beforeEach(() => {
       personWithSignificantControl = new PersonWithSignificantControlBuilder()

@@ -1,25 +1,30 @@
 import request from "supertest";
 
-import enTranslationText from "../../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../../locales/cy/translations.json";
+import enGeneralTranslationText from "../../../../../../../locales/en/translations.json";
+import cyGeneralTranslationText from "../../../../../../../locales/cy/translations.json";
+import enAddressTranslationText from "../../../../../../../locales/en/address.json";
+import cyAddressTranslationText from "../../../../../../../locales/cy/address.json";
 
-import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import app from "../../../app";
-
+import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, toEscapedHtml, testTranslations } from "../../../../utils";
-import LimitedPartnerBuilder, {
-  limitedPartnerLegalEntity,
-  limitedPartnerPerson
-} from "../../../../builder/LimitedPartnerBuilder";
-import AddressPageType from "../../../../../controller/addressLookUp/PageType";
+import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
+
 import {
   CHOOSE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "../../../../../controller/addressLookUp/url/transition";
-import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
+
+import LimitedPartnerBuilder, {
+  limitedPartnerLegalEntity,
+  limitedPartnerPerson
+} from "../../../../builder/LimitedPartnerBuilder";
+import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 
 describe("Postcode Usual Residential Address Page", () => {
+  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
+  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText };
   const URL = getUrl(POSTCODE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
   const REDIRECT_URL = getUrl(CHOOSE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
 

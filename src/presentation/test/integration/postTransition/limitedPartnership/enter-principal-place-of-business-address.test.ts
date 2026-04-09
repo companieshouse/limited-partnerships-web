@@ -1,26 +1,41 @@
 import request from "supertest";
-import enTranslationText from "../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../locales/cy/translations.json";
+import { Jurisdiction } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
+
+import enGeneralTranslationText from "../../../../../../locales/en/translations.json";
+import cyGeneralTranslationText from "../../../../../../locales/cy/translations.json";
+import enAddressTranslationText from "../../../../../../locales/en/address.json";
+import cyAddressTranslationText from "../../../../../../locales/cy/address.json";
+
 import app from "../../app";
-import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../../presentation/test/utils";
+import { appDevDependencies } from "../../../../../config/dev-dependencies";
+import {
+  countOccurrences,
+  getUrl,
+  setLocalesEnabled,
+  testTranslations,
+  toEscapedHtml
+} from "../../../../../presentation/test/utils";
+import { ApiErrors } from "../../../../../domain/entities/UIErrors";
+
 import {
   ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_WITH_IDS_URL,
   WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_URL
 } from "../../../../../presentation/controller/postTransition/url";
+
 import CompanyProfileBuilder from "../../../../../presentation/test/builder/CompanyProfileBuilder";
-import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import PostTransitionPageType from "../../../../../presentation/controller/postTransition/pageType";
-import { Jurisdiction } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import LimitedPartnershipBuilder from "../../../../../presentation/test/builder/LimitedPartnershipBuilder";
-import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 
 describe("Enter Principal Place Of Business Address Page", () => {
+  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
+  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText };
   const URL = getUrl(ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL);
   const URL_WITH_IDS = getUrl(ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_WITH_IDS_URL);
   const REDIRECT_URL = getUrl(WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_URL);
 
-  let companyProfile;
+  let companyProfile: { _id: string; data: Partial<CompanyProfile> };
 
   beforeEach(() => {
     setLocalesEnabled(false);
@@ -51,12 +66,17 @@ describe("Enter Principal Place Of Business Address Page", () => {
       ]);
       expect(res.text).not.toContain("WELSH -");
 
-      expect(res.text).toContain(companyProfile.data.serviceAddress.premises);
-      expect(res.text).toContain(companyProfile.data.serviceAddress.addressLineOne);
-      expect(res.text).toContain(companyProfile.data.serviceAddress.postalCode);
-      expect(res.text).toContain(companyProfile.data.serviceAddress.locality);
-      expect(res.text).toContain(companyProfile.data.serviceAddress.country);
-      expect(countOccurrences(res.text, toEscapedHtml(enTranslationText.serviceName.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress))).toBe(2);
+      expect(res.text).toContain(companyProfile.data.serviceAddress?.premises);
+      expect(res.text).toContain(companyProfile.data.serviceAddress?.addressLineOne);
+      expect(res.text).toContain(companyProfile.data.serviceAddress?.postalCode);
+      expect(res.text).toContain(companyProfile.data.serviceAddress?.locality);
+      expect(res.text).toContain(companyProfile.data.serviceAddress?.country);
+      expect(
+        countOccurrences(
+          res.text,
+          toEscapedHtml(enTranslationText.serviceName.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress)
+        )
+      ).toBe(2);
     });
 
     it("should load the enter principal place of business address page with Welsh text", async () => {
@@ -76,7 +96,12 @@ describe("Enter Principal Place Of Business Address Page", () => {
         "newRequirement",
         "titleHint2"
       ]);
-      expect(countOccurrences(res.text, toEscapedHtml(cyTranslationText.serviceName.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress))).toBe(2);
+      expect(
+        countOccurrences(
+          res.text,
+          toEscapedHtml(cyTranslationText.serviceName.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress)
+        )
+      ).toBe(2);
     });
   });
 
@@ -98,7 +123,9 @@ describe("Enter Principal Place Of Business Address Page", () => {
       const redirectUrl = getUrl(WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_URL);
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
-      expect(appDevDependencies.transactionGateway.transactions[0].description).toEqual(enTranslationText.serviceName.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress);
+      expect(appDevDependencies.transactionGateway.transactions[0].description).toEqual(
+        enTranslationText.serviceName.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress
+      );
     });
   });
 
@@ -140,7 +167,7 @@ describe("Enter Principal Place Of Business Address Page", () => {
     async (url) => {
       const limitedPartnership = new LimitedPartnershipBuilder()
         .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
-        .withPartnershipName(companyProfile.data.companyName)
+        .withPartnershipName(companyProfile.data.companyName ?? "")
         .build();
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
@@ -159,7 +186,7 @@ describe("Enter Principal Place Of Business Address Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(enTranslationText.govUk.error.title);
-      expect(res.text).toContain(companyProfile.data.companyName.toUpperCase());
+      expect(res.text).toContain(companyProfile.data.companyName?.toUpperCase());
       expect(res.text).toContain("Something is invalid");
     }
   );
@@ -198,7 +225,7 @@ describe("Enter Principal Place Of Business Address Page", () => {
     expect(res.status).toBe(200);
     expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.postcodeFormat);
     expect(res.text).toContain(enTranslationText.govUk.error.title);
-    expect(res.text).toContain(companyProfile.data.companyName.toUpperCase());
+    expect(res.text).toContain(companyProfile.data.companyName?.toUpperCase());
   });
 
   it("should not return validation errors when address fields contain valid but non alpha-numeric characters", async () => {
@@ -274,7 +301,7 @@ describe("Enter Principal Place Of Business Address Page", () => {
     );
 
     expect(res.text).toContain(enTranslationText.govUk.error.title);
-    expect(res.text).toContain(companyProfile.data.companyName.toUpperCase());
+    expect(res.text).toContain(companyProfile.data.companyName?.toUpperCase());
   });
 
   it("should return validation errors when address fields exceed character limit", async () => {

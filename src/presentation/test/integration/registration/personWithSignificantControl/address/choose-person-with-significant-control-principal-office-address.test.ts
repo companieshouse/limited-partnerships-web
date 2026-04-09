@@ -1,7 +1,9 @@
 import request from "supertest";
 
-import enTranslationText from "../../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../../locales/cy/translations.json";
+import enGeneralTranslationText from "../../../../../../../locales/en/translations.json";
+import cyGeneralTranslationText from "../../../../../../../locales/cy/translations.json";
+import enAddressTranslationText from "../../../../../../../locales/en/address.json";
+import cyAddressTranslationText from "../../../../../../../locales/cy/address.json";
 
 import app from "../../../app";
 import { appDevDependencies } from "config/dev-dependencies";
@@ -16,6 +18,8 @@ import {
 import AddressPageType from "presentation/controller/addressLookUp/PageType";
 
 describe("Choose principal office address of the person with significant control page", () => {
+  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
+  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText };
   const URL_RELEVANT_LEGAL_ENTITY = getUrl(
     CHOOSE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL
   );

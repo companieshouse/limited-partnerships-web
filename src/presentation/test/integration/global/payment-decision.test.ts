@@ -26,8 +26,7 @@ describe("Payment decision routing", () => {
 
   describe("GET payment decision page", () => {
     it("should redirect to the confirmation page when transition payment is successful", async () => {
-      const transaction = new TransactionBuilder()
-        .build();
+      const transaction = new TransactionBuilder().build();
 
       appDevDependencies.transactionGateway.feedTransactions([transaction]);
 
@@ -39,12 +38,11 @@ describe("Payment decision routing", () => {
     });
 
     it("should redirect to the confirmation page when post-transition payment is successful", async () => {
-
       const companyProfile = new CompanyProfileBuilder().build();
       appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
       const transaction = new TransactionBuilder()
-        .withCompanyNumber(companyProfile.Id)
+        .withCompanyNumber(companyProfile["_id"])
         .withKind(PartnershipKind.UPDATE_PARTNERSHIP_NAME)
         .build();
 

@@ -1,27 +1,32 @@
 import request from "supertest";
+import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-import enTranslationText from "../../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../../locales/cy/translations.json";
+import enGeneralTranslationText from "../../../../../../../locales/en/translations.json";
+import cyGeneralTranslationText from "../../../../../../../locales/cy/translations.json";
+import enAddressTranslationText from "../../../../../../../locales/en/address.json";
+import cyAddressTranslationText from "../../../../../../../locales/cy/address.json";
 
-import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import app from "../../../app";
-
+import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, toEscapedHtml, testTranslations, countOccurrences } from "../../../../utils";
-import GeneralPartnerBuilder, {
-  generalPartnerLegalEntity,
-  generalPartnerPerson
-} from "../../../../builder/GeneralPartnerBuilder";
-import AddressPageType from "../../../../../controller/addressLookUp/PageType";
+import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
+
 import {
   CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "../../../../../controller/addressLookUp/url/postTransition";
-import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
+
+import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import TransactionBuilder from "../../../../builder/TransactionBuilder";
-import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import GeneralPartnerBuilder, {
+  generalPartnerLegalEntity,
+  generalPartnerPerson
+} from "../../../../builder/GeneralPartnerBuilder";
 
 describe("Postcode Usual Residential Address Page", () => {
+  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
+  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText };
   const URL = getUrl(POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
   const REDIRECT_URL = getUrl(CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
 
@@ -39,13 +44,10 @@ describe("Postcode Usual Residential Address Page", () => {
   });
 
   describe("Get Postcode Usual Residential Address Page", () => {
-
-    it.each(
-      [
-        [PartnerKind.ADD_GENERAL_PARTNER_PERSON, enTranslationText.serviceName.addGeneralPartner],
-        [PartnerKind.UPDATE_GENERAL_PARTNER_PERSON, enTranslationText.serviceName.updateGeneralPartnerPerson]
-      ]
-    )("should load the usual residential address page with English text", async (partnerKind, serviceName) => {
+    it.each([
+      [PartnerKind.ADD_GENERAL_PARTNER_PERSON, enTranslationText.serviceName.addGeneralPartner],
+      [PartnerKind.UPDATE_GENERAL_PARTNER_PERSON, enTranslationText.serviceName.updateGeneralPartnerPerson]
+    ])("should load the usual residential address page with English text", async (partnerKind, serviceName) => {
       setLocalesEnabled(true);
 
       const transaction = new TransactionBuilder().withKind(partnerKind).build();
@@ -81,12 +83,10 @@ describe("Postcode Usual Residential Address Page", () => {
       expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
     });
 
-    it.each(
-      [
-        [PartnerKind.ADD_GENERAL_PARTNER_PERSON, cyTranslationText.serviceName.addGeneralPartner],
-        [PartnerKind.UPDATE_GENERAL_PARTNER_PERSON, cyTranslationText.serviceName.updateGeneralPartnerPerson]
-      ]
-    )("should load the usual residential address page with Welsh text", async (partnerKind, serviceName) => {
+    it.each([
+      [PartnerKind.ADD_GENERAL_PARTNER_PERSON, cyTranslationText.serviceName.addGeneralPartner],
+      [PartnerKind.UPDATE_GENERAL_PARTNER_PERSON, cyTranslationText.serviceName.updateGeneralPartnerPerson]
+    ])("should load the usual residential address page with Welsh text", async (partnerKind, serviceName) => {
       setLocalesEnabled(true);
 
       const transaction = new TransactionBuilder().withKind(partnerKind).build();
