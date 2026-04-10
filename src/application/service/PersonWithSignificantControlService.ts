@@ -24,7 +24,6 @@ class PersonWithSignificantControlService {
     errors?: any;
   }> {
     try {
-      console.log(data);
       const personWithSignificantControlId =
         await this.personWithSignificantControlGateway.createPersonWithSignificantControl(opt, transactionId, data);
 
