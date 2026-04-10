@@ -22,6 +22,7 @@ import PersonWithSignificantControlBuilder from "../../../builder/PersonWithSign
 import TransactionBuilder from "../../../builder/TransactionBuilder";
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
 import TransactionPersonWithSignificantControl from "../../../../../domain/entities/TransactionPersonWithSignificantControl";
+import { PersonWithSignificantControlType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 describe("Add Person With Significant Control Relevant Legal Entity Page", () => {
   const enTranslationText = { ...enGeneralTranslationText, ...enPersonWithSignificantControlTranslationText };
@@ -104,6 +105,7 @@ describe("Add Person With Significant Control Relevant Legal Entity Page", () =>
         .post(URL)
         .send({
           pageType: RegistrationPageType.addPersonWithSignificantControlRelevantLegalEntity,
+          type: PersonWithSignificantControlType.RELEVANT_LEGAL_ENTITY,
           ...personWithSignificantControl.data
         });
 
@@ -111,6 +113,9 @@ describe("Add Person With Significant Control Relevant Legal Entity Page", () =>
       expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
 
       expect(appDevDependencies.personWithSignificantControlGateway.personsWithSignificantControl).toHaveLength(1);
+      expect(appDevDependencies.personWithSignificantControlGateway.personsWithSignificantControl[0].data.type).toEqual(
+        PersonWithSignificantControlType.RELEVANT_LEGAL_ENTITY
+      );
     });
 
     it("should return a validation error when invalid data is entered", async () => {
@@ -126,6 +131,7 @@ describe("Add Person With Significant Control Relevant Legal Entity Page", () =>
         .post(URL)
         .send({
           pageType: RegistrationPageType.addPersonWithSignificantControlRelevantLegalEntity,
+          type: PersonWithSignificantControlType.RELEVANT_LEGAL_ENTITY,
           ...personWithSignificantControl.data,
           legal_entity_name: "INVALID-CHARACTERS"
         });
@@ -154,6 +160,7 @@ describe("Add Person With Significant Control Relevant Legal Entity Page", () =>
         .post(URL)
         .send({
           pageType: RegistrationPageType.addPersonWithSignificantControlRelevantLegalEntity,
+          type: PersonWithSignificantControlType.RELEVANT_LEGAL_ENTITY,
           ...personWithSignificantControl.data,
           legal_entity_name: "legal entity name updated"
         });
@@ -177,6 +184,7 @@ describe("Add Person With Significant Control Relevant Legal Entity Page", () =>
         .post(URL)
         .send({
           pageType: RegistrationPageType.addPersonWithSignificantControlRelevantLegalEntity,
+          type: PersonWithSignificantControlType.RELEVANT_LEGAL_ENTITY,
           ...personWithSignificantControl.data,
           legal_entity_name: "INVALID-CHARACTERS"
         });

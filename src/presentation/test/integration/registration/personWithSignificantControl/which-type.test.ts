@@ -19,6 +19,7 @@ import {
   PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL,
   WILL_LIMITED_PARTNERSHIP_HAVE_PSC_URL
 } from "../../../../controller/registration/url";
+import { PersonWithSignificantControlType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 describe("Which type Page", () => {
   const enTranslationText = { ...enGeneralTranslationText, ...enPersonWithSignificantControlTranslationText };
@@ -60,12 +61,12 @@ describe("Which type Page", () => {
     ["add individual person", "individual_person", ADD_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_URL],
     [
       "add relevant legal entity",
-      "relevant_legal_entity",
+      PersonWithSignificantControlType.RELEVANT_LEGAL_ENTITY,
       ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL
     ],
     [
       "add other registrable person",
-      "other_registrable_person",
+      PersonWithSignificantControlType.OTHER_REGISTRABLE_PERSON,
       ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_URL
     ]
   ])(

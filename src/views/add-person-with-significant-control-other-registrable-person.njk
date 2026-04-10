@@ -17,6 +17,8 @@
                 <input type="hidden" name="pageType" value={{ props.pageType }}>
                 {% include "includes/csrf_token.njk" %}
 
+                <input type="hidden" name="type" value="OTHER_REGISTRABLE_PERSON">
+
                 {% set legalEntityName = i18n.personWithSignificantControl.addPersonWithSignificantControl.addOtherRegistrablePerson.legalEntityName %}
                 {% include "pages/personWithSignificantControl/add-person-with-significant-control.njk" %}
 

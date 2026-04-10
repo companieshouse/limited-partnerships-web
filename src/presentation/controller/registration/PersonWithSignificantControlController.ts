@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
+import { LimitedPartnership, PersonWithSignificantControlType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 import AbstractController from "../AbstractController";
 import UIErrors from "../../../domain/entities/UIErrors";
@@ -129,9 +129,9 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
   private getAddPersonWithSignificantControlRedirectUrl(request, ids: Ids) {
     let url = ADD_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_URL;
 
-    if (request.body.parameter === "relevant_legal_entity") {
+    if (request.body.parameter === PersonWithSignificantControlType.RELEVANT_LEGAL_ENTITY) {
       url = ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL;
-    } else if (request.body.parameter === "other_registrable_person") {
+    } else if (request.body.parameter === PersonWithSignificantControlType.OTHER_REGISTRABLE_PERSON) {
       url = ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_URL;
     }
 
