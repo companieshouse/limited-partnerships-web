@@ -5,7 +5,7 @@ import AbstractController from "../AbstractController";
 import UIErrors from "../../../domain/entities/UIErrors";
 import registrationsRouting from "./Routing";
 import RegistrationPageType from "./PageType";
-import { Ids } from "../../../domain/types";
+import { Ids, Tokens } from "../../../domain/types";
 
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import PersonWithSignificantControlService from "../../../application/service/PersonWithSignificantControlService";
@@ -34,20 +34,8 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
         const { tokens, pageType, ids } = super.extract(request);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
-        const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
-          tokens,
-          ids.transactionId,
-          ids.submissionId
-        );
-
-        let personWithSignificantControl;
-        if (ids.personWithSignificantControlId) {
-          personWithSignificantControl = await this.personWithSignificantControlService.getPersonWithSignificantControl(
-            tokens,
-            ids.transactionId,
-            ids.personWithSignificantControlId
-          );
-        }
+        const { limitedPartnership, personWithSignificantControl } =
+          await this.getLimitedPartnershipAndPsc(tokens, ids);
 
         response.render(
           super.templateName(pageRouting.currentUrl),
@@ -218,6 +206,68 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
         next(error);
       }
     };
+  }
+
+  postRemovePage() {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        this.personWithSignificantControlService.setI18n(response.locals.i18n);
+
+        const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
+        const pageRouting = super.getRouting(registrationsRouting, pageType, request);
+        const { tokens, ids } = super.extract(request);
+
+        const remove = request.body.remove;
+
+        if (!remove) {
+          const { limitedPartnership, personWithSignificantControl } =
+            await this.getLimitedPartnershipAndPsc(tokens, ids);
+
+          const uiErrors = new UIErrors();
+          uiErrors.formatValidationErrorToUiErrors({
+            errors: {
+              remove: response.locals.i18n.removePscPage.errorMessage
+            }
+          });
+
+          return response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(pageRouting, { limitedPartnership, personWithSignificantControl }, uiErrors)
+          );
+        }
+
+        if (remove === "yes") {
+          await this.personWithSignificantControlService.deletePersonWithSignificantControl(
+            tokens,
+            ids.transactionId,
+            ids.personWithSignificantControlId
+          );
+        }
+
+        response.redirect(pageRouting.nextUrl);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  private async getLimitedPartnershipAndPsc(tokens: Tokens, ids: Ids) {
+    const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+      tokens,
+      ids.transactionId,
+      ids.submissionId
+    );
+
+    let personWithSignificantControl;
+    if (ids.personWithSignificantControlId) {
+      personWithSignificantControl = await this.personWithSignificantControlService.getPersonWithSignificantControl(
+        tokens,
+        ids.transactionId,
+        ids.personWithSignificantControlId
+      );
+    }
+
+    return { limitedPartnership, personWithSignificantControl };
   }
 
   private async renderWithPartnershipAndErrors(request: Request, response: Response, resultErrors: UIErrors) {

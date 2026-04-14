@@ -91,6 +91,34 @@ class PersonWithSignificantControlService {
       };
     }
   }
+
+  async deletePersonWithSignificantControl(
+    opt: Tokens,
+    transactionId: string,
+    personWithSignificantControlId: string
+  ) {
+    try {
+      await this.personWithSignificantControlGateway.deletePersonWithSignificantControl(
+        opt,
+        transactionId,
+        personWithSignificantControlId
+      );
+    } catch (errors: any) {
+      const { apiErrors, isValidationErrors } = extractAPIErrors(errors);
+
+      logger.error(
+        `Error removing person with significant control ${personWithSignificantControlId}: ${JSON.stringify(apiErrors)}`
+      );
+
+      if (!isValidationErrors) {
+        throw errors;
+      }
+
+      return {
+        errors
+      };
+    }
+  }
 }
 
 export default PersonWithSignificantControlService;

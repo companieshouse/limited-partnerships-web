@@ -1,0 +1,16 @@
+{% extends "layout.njk" %}
+
+{% set pageTitle = i18n.removePscPage.title %}
+
+{% set name = "" %}
+{% if props.data.personWithSignificantControl.data.forename %}
+  {% set name = props.data.personWithSignificantControl.data.forename + " " + props.data.personWithSignificantControl.data.surname %}
+{% elif props.data.personWithSignificantControl.data.legal_entity_name %}
+  {% set name = props.data.personWithSignificantControl.data.legal_entity_name %}
+{% endif %}
+
+{% block content %}
+
+  {% include "pages/remove-psc.njk" %}
+
+{% endblock %}

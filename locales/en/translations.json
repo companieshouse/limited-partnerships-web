@@ -471,6 +471,11 @@
         "title": "Are you sure you want to remove"
     },
 
+    "removePscPage": {
+        "title": "Are you sure you want to remove",
+        "errorMessage": "Select yes if you need to remove a PSC"
+    },
+
     "reviewGeneralPartnersPage": {
         "title": "General partners",
         "generalPartnersAdded": {

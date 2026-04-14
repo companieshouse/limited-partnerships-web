@@ -64,4 +64,24 @@ export default class PersonWithSignificantControlInMemoryGateway implements IPer
 
     this.personsWithSignificantControl[index].data = { ...this.personsWithSignificantControl[index].data, ...data };
   }
+
+  public async deletePersonWithSignificantControl(
+    _opt: Tokens,
+    _transactionId: string,
+    personWithSignificantControlId: string
+  ): Promise<void> {
+    if (this.uiErrors?.hasErrors()) {
+      throw this.uiErrors;
+    }
+
+    const index = this.personsWithSignificantControl.findIndex((psc) => psc._id === personWithSignificantControlId);
+
+    if (index === -1) {
+      throw new Error(`Not found: ${personWithSignificantControlId}`);
+    }
+
+    this.personsWithSignificantControl = this.personsWithSignificantControl.filter(
+      (psc) => psc._id !== personWithSignificantControlId
+    );
+  }
 }

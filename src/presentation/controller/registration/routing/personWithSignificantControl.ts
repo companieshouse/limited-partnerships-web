@@ -55,6 +55,15 @@ const registrationRoutingOtherRegistrablePersonWhichTypeOfNatureOfControl = {
   pageType: RegistrationPageType.whichTypeOfNatureOfControlOtherRegistrablePerson
 };
 
+// REMOVE
+
+const registrationRoutingRemovePersonWithSignificantControl = {
+  previousUrl: url.REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL,
+  currentUrl: url.REMOVE_PERSON_WITH_SIGNIFICANT_CONTROL_URL,
+  nextUrl: url.REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL,
+  pageType: RegistrationPageType.removePersonWithSignificantControl
+};
+
 const personWithSignificantControlRouting = [
   registrationRoutingPersonWithSignificantControl,
   registrationRoutingWillLimitedPartnershipHavePsc,
@@ -62,7 +71,8 @@ const personWithSignificantControlRouting = [
   registrationRoutingAddRelevantLegalEntity,
   registrationRoutingAddOtherRegistrablePerson,
   registrationRoutingRelevantLegalEntityWhichTypeOfNatureOfControl,
-  registrationRoutingOtherRegistrablePersonWhichTypeOfNatureOfControl
+  registrationRoutingOtherRegistrablePersonWhichTypeOfNatureOfControl,
+  registrationRoutingRemovePersonWithSignificantControl
 ];
 
 export default personWithSignificantControlRouting;
