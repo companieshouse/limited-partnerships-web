@@ -65,11 +65,10 @@ export default class PersonWithSignificantControlGateway implements IPersonWithS
     personWithSignificantControlId: string,
     data: Partial<PersonWithSignificantControl>
   ): Promise<void> {
-    data = removeEmptyStringValues(data, ["legal_entity_register_name", "registered_company_number"]);
     const apiCall = {
       service: SDK_LIMITED_PARTNERSHIP_SERVICE,
       method: "patchPersonWithSignificantControl",
-      args: [transactionId, personWithSignificantControlId, data]
+      args: [transactionId, personWithSignificantControlId, removeEmptyStringValues(data, ["legal_entity_register_name", "registered_company_number"])]
     };
 
     const response = await makeApiCallWithRetry<Resource<void>>(opt, apiCall);
