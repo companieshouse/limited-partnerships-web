@@ -1,7 +1,9 @@
 import request from "supertest";
 
-import enTranslationText from "../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../locales/cy/translations.json";
+import enGeneralTranslationText from "../../../../../../locales/en/translations.json";
+import cyGeneralTranslationText from "../../../../../../locales/cy/translations.json";
+import enPersonWithSignificantControlTranslationText from "../../../../../../locales/en/personWithSignificantControl.json";
+import cyPersonWithSignificantControlTranslationText from "../../../../../../locales/cy/personWithSignificantControl.json";
 
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
@@ -15,7 +17,19 @@ import {
 import RegistrationPageType from "../../../../controller/registration/PageType";
 
 describe("Remove Person With Significant Control Page", () => {
+  const enTranslationText = { ...enGeneralTranslationText, ...enPersonWithSignificantControlTranslationText };
+  const cyTranslationText = { ...cyGeneralTranslationText, ...cyPersonWithSignificantControlTranslationText };
   const URL = getUrl(REMOVE_PERSON_WITH_SIGNIFICANT_CONTROL_URL);
+
+  const pscRle = new PersonWithSignificantControlBuilder()
+    .isRelevantLegalEntity()
+    .withId(appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId)
+    .build();
+
+  const pscOrp = new PersonWithSignificantControlBuilder()
+    .isOtherRegistrablePerson()
+    .withId(appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId)
+    .build();
 
   beforeEach(() => {
     setLocalesEnabled(false);
@@ -32,11 +46,6 @@ describe("Remove Person With Significant Control Page", () => {
       async (_description: string, lang: string, translationText: any) => {
         setLocalesEnabled(true);
 
-        const pscRle = new PersonWithSignificantControlBuilder()
-          .isRelevantLegalEntity()
-          .withId(appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId)
-          .build();
-
         appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([pscRle]);
 
         const res = await request(app).get(`${URL}?lang=${lang}`);
@@ -44,36 +53,28 @@ describe("Remove Person With Significant Control Page", () => {
         expect(res.status).toBe(200);
 
         expect(res.text).toContain(
-          `${translationText.removePscPage.title} - ${translationText.serviceRegistration} - GOV.UK`
+          `${translationText.personWithSignificantControl.removePscPage.title} - ${translationText.serviceRegistration} - GOV.UK`
         );
 
-        testTranslations(res.text, translationText.removePscPage, ["errorMessage"]);
+        testTranslations(res.text, translationText.personWithSignificantControl.removePscPage, ["errorMessage"]);
 
         expect(res.text).toContain(`${pscRle?.data?.legal_entity_name}`);
       }
     );
 
     it.each([
-      ["RLE", "isRelevantLegalEntity"],
-      ["ORP", "isOtherRegistrablePerson"]
-    ])(
-      "should display the %s name in the page title",
-      async (_description: string, builderMethod: string) => {
-        setLocalesEnabled(true);
+      ["RLE", pscRle],
+      ["ORP", pscOrp]
+    ])("should display the %s name in the page title", async (_description: string, psc) => {
+      setLocalesEnabled(true);
 
-        const builder = new PersonWithSignificantControlBuilder()
-          .withId(appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId);
+      appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([psc]);
 
-        const psc = (builder as any)[builderMethod]().build();
+      const res = await request(app).get(`${URL}?lang=en`);
 
-        appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([psc]);
-
-        const res = await request(app).get(`${URL}?lang=en`);
-
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(`${psc?.data?.legal_entity_name}`);
-      }
-    );
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(`${psc?.data?.legal_entity_name}`);
+    });
   });
 
   describe("Post Remove Person With Significant Control Page", () => {
@@ -84,11 +85,6 @@ describe("Remove Person With Significant Control Page", () => {
       "should redirect to the review PSC page when remove is '%s' - %s",
       async (removeValue: string, expectedLength: number) => {
         setLocalesEnabled(true);
-
-        const pscRle = new PersonWithSignificantControlBuilder()
-          .isRelevantLegalEntity()
-          .withId(appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId)
-          .build();
 
         appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([pscRle]);
 
@@ -109,11 +105,6 @@ describe("Remove Person With Significant Control Page", () => {
     it("should display validation error when no option selected", async () => {
       setLocalesEnabled(true);
 
-      const pscRle = new PersonWithSignificantControlBuilder()
-        .isRelevantLegalEntity()
-        .withId(appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId)
-        .build();
-
       appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([pscRle]);
 
       const res = await request(app).post(URL).send({
@@ -121,7 +112,9 @@ describe("Remove Person With Significant Control Page", () => {
       });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(enTranslationText.removePscPage.errorMessage);
+      expect(res.text).toContain(
+        enTranslationText.personWithSignificantControl.removePscPage.errorMessage
+      );
       expect(res.text).toContain(`${pscRle?.data?.legal_entity_name}`);
     });
   });

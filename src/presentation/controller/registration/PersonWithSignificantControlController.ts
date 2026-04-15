@@ -226,7 +226,7 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
           const uiErrors = new UIErrors();
           uiErrors.formatValidationErrorToUiErrors({
             errors: {
-              remove: response.locals.i18n.removePscPage.errorMessage
+              remove: response.locals.i18n.personWithSignificantControl.removePscPage.errorMessage
             }
           });
 
