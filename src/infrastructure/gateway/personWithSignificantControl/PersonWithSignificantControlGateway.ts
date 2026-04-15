@@ -65,6 +65,7 @@ export default class PersonWithSignificantControlGateway implements IPersonWithS
     personWithSignificantControlId: string,
     data: Partial<PersonWithSignificantControl>
   ): Promise<void> {
+    data = removeEmptyStringValues(data);
     const apiCall = {
       service: SDK_LIMITED_PARTNERSHIP_SERVICE,
       method: "patchPersonWithSignificantControl",
