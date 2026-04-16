@@ -71,7 +71,7 @@ describe("Add Limited Partner Legal Entity Page", () => {
         ]);
 
         if (expectCapitalContributionText) {
-          expect(res.text).toContain(toEscapedHtml(i18n.capitalContribution.title));
+          testTranslations(res.text, i18n.capitalContribution);
         } else {
           expect(res.text).not.toContain(toEscapedHtml(i18n.capitalContribution.title));
         }
