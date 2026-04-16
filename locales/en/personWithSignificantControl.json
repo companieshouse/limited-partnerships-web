@@ -60,6 +60,10 @@
             "otherRegistrablePerson": {
                 "title": "Which type of nature of control does the other registrable person (ORP) have?"
              }
+        },
+        "removePscPage": {
+            "title": "Are you sure you want to remove",
+            "errorMessage": "Select yes if you need to remove a PSC"
         }
     }
 }

@@ -128,6 +128,10 @@ export const patchPersonWithSignificantControl = jest.fn().mockImplementation(()
   httpStatusCode: 200,
   resource: {}
 }));
+export const deletePersonWithSignificantControl = jest.fn().mockImplementation(() => ({
+  httpStatusCode: 204,
+  resource: {}
+}));
 
 // Refresh Token service
 export const refresh = jest.fn().mockImplementation(() => ({
@@ -240,7 +244,8 @@ const sdkMock = {
     // person with significant control
     postPersonWithSignificantControl,
     getPersonWithSignificantControl,
-    patchPersonWithSignificantControl
+    patchPersonWithSignificantControl,
+    deletePersonWithSignificantControl
   },
   refreshToken: {
     ...RefreshTokenService.prototype,

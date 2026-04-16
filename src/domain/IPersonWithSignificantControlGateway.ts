@@ -21,6 +21,12 @@ interface IPersonWithSignificantControlGateway {
     personWithSignificantControlId: string,
     data: Partial<PersonWithSignificantControl>
   ): Promise<void>;
+
+  deletePersonWithSignificantControl(
+    opt: Tokens,
+    transactionId: string,
+    personWithSignificantControlId: string
+  ): Promise<void>;
 }
 
 export default IPersonWithSignificantControlGateway;
