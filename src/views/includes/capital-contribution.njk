@@ -1,9 +1,11 @@
 {% if (partnershipType == "LP") or (partnershipType == "SLP") %}
-    
-  <h2 class="govuk-heading-m">{{ i18n.capitalContribution.title}}</h2>
+
+  <hr class="govuk-section-break govuk-section-break--visible govuk-section-break--m">
+
+  <h2 class="govuk-heading-s">{{ i18n.capitalContribution.title}}</h2>
 
   <p class="govuk-hint">{{ i18n.capitalContribution.hint }}</p>
- 
+
   {% set currencyField = props.data.limitedPartner.data.contribution_currency_type %}
   {% include "includes/currencies.njk" %}
 
@@ -12,23 +14,15 @@
     {% set contribution_sub_types = props.data.limitedPartner.data.contribution_sub_types %}
   {% endif %}
 
-  {% set hintHtml -%}
-    <p class="govuk-body">{{ i18n.capitalContribution.amountHint }}</p>
-    <ul class="govuk-list govuk-list--bullet">
-      <li class="govuk-body">{{ i18n.capitalContribution.amountMinHint }}</li>
-      <li class="govuk-body">{{ i18n.capitalContribution.amountMaxHint }}</li>       
-    </ul>
-  {%- endset %}
-
-  {{ govukInput({ 
+  {{ govukInput({
     label: {
       text: i18n.capitalContribution.valueLabel,
-      classes: "govuk-visually-hidden",
+      classes: "govuk-label--m",
       isPageHeading: false
      },
     hint: {
-      html: hintHtml
-    },  
+      text: i18n.capitalContribution.amountHint
+    },
     classes: "govuk-input--width-10",
     id: "contribution_currency_value",
     name: "contribution_currency_value",
@@ -84,13 +78,15 @@
         } 
       },
       {
-        value: "ANY_OTHER_ASSET",        
+        value: "ANY_OTHER_ASSET",
         text: i18n.capitalContribution.anyOtherAsset,
         checked: true if "ANY_OTHER_ASSET" in contribution_sub_types else false,
         attributes: {
           "data-event-id": "capital_contribution_anyOtherAsset"
-        } 
+        }
       }
     ]
   }) }}
+
+  <hr class="govuk-section-break govuk-section-break--visible govuk-section-break--m">
 {% endif %}

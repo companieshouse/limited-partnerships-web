@@ -97,18 +97,16 @@
     },
 
     "capitalContribution" : {
-       "title" : "What is their total capital contribution?",
-       "currencyTypeLabel": "Contribution currency type",
-       "valueLabel": "Contribution currency value",
+       "title" : "What is this partner's total capital contribution?",
+       "currencyTypeLabel": "Select the currency",
+       "valueLabel": "Enter the total value",
        "hint" : "This is the total value of all monetary and non-monetary contributions",
-       "amountHint": "Enter the value, for example:",
-       "amountMinHint": "if they contributed £0.01 enter 0.01",
-       "amountMaxHint": "if they contributed $25,000 enter 25000.00",
+       "amountHint": "For example, if it was £25 enter 25.00",
        "compositionTitle" : "What is this total value made up of?",
        "compositionHint" : "Select all that apply",
        "money" : "Money",
        "landOrProperty" : "Land or property",
-       "shares" : "Shares",
+       "shares" : "Shares or interests in other partnerships",
        "servicesOrGoods" : "Services or goods",
        "anyOtherAsset" : "Any other asset"
     },

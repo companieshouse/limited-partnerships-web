@@ -97,18 +97,16 @@
     },
 
     "capitalContribution" : {
-        "title" : "WELSH - What is their total capital contribution?",
-        "currencyTypeLabel": "WELSH - Contribution currency type",
-        "valueLabel": "WELSH - Contribution currency value",
+        "title" : "WELSH - What is this partner's total capital contribution?",
+        "currencyTypeLabel": "WELSH - Select the currency",
+        "valueLabel": "WELSH - Enter the total value",
         "hint" : "WELSH - This is the total value of all monetary and non-monetary contributions",
-        "amountHint": "WELSH - Enter the value, for example:",
-        "amountMinHint": "WELSH - if they contributed £0.01 enter 0.01",
-        "amountMaxHint": "WELSH - if they contributed $25,000 enter 25000.00",
+        "amountHint": "WELSH - For example, if it was £25 enter 25.00",
         "compositionTitle" : "WELSH - What is this total value made up of?",
         "compositionHint" : "WELSH - Select all that apply",
         "money" : "WELSH - Money",
         "landOrProperty" : "WELSH - Land or property",
-        "shares" : "WELSH - Shares",
+        "shares" : "WELSH - Shares or interests in other partnerships",
         "anyOtherAsset" : "WELSH - Any other asset",
         "servicesOrGoods" : "WELSH - Services or goods"
      },
