@@ -387,7 +387,7 @@ describe("Check Your Answers Page", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain("5.00 Pound Sterling (GBP)");
-    expect(res.text).toContain("Shares / Any other asset");
+    expect(res.text).toContain("Shares or interests in other partnerships / Any other asset");
   });
 
   it("should load the check your answers page with capital contribution data in Welsh", async () => {
@@ -405,7 +405,7 @@ describe("Check Your Answers Page", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain("5.00 WELSH - Pound Sterling (GBP)");
-    expect(res.text).toContain("WELSH - Shares / WELSH - Any other asset");
+    expect(res.text).toContain("WELSH - Shares or interests in other partnerships / WELSH - Any other asset");
   });
 
   describe("PSC statement on CYA page", () => {

@@ -7,7 +7,7 @@ import cyTranslationText from "../../../../../../locales/cy/translations.json";
 
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../utils";
 import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 
 import PostTransitionPageType from "../../../../controller/postTransition/pageType";
@@ -71,9 +71,9 @@ describe("Add Limited Partner Legal Entity Page", () => {
         ]);
 
         if (expectCapitalContributionText) {
-          expect(res.text).toContain(i18n.capitalContribution.title);
+          testTranslations(res.text, i18n.capitalContribution);
         } else {
-          expect(res.text).not.toContain(i18n.capitalContribution.title);
+          expect(res.text).not.toContain(toEscapedHtml(i18n.capitalContribution.title));
         }
 
         if (lang !== "cy") {
