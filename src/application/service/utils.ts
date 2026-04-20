@@ -1,4 +1,4 @@
-import { GeneralPartner, LimitedPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { GeneralPartner, LimitedPartner, PersonWithSignificantControl } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import UIErrors from "../../domain/entities/UIErrors";
 
@@ -17,9 +17,9 @@ export const incompletePartnerErrorList = (
   let errorList = {};
 
   partners
-    .filter((gp) => gp?.data?.completed === false)
-    .forEach((gp) => {
-      const name = gp.data?.forename ? `${gp.data.forename} ${gp.data.surname}` : gp.data?.legal_entity_name ?? "";
+    .filter((partner) => partner?.data?.completed === false)
+    .forEach((partner) => {
+      const name = partner.data?.forename ? `${partner.data.forename} ${partner.data.surname}` : partner.data?.legal_entity_name ?? "";
 
       errorList = {
         ...errorList,
@@ -27,5 +27,24 @@ export const incompletePartnerErrorList = (
       };
     });
 
+  return errorList;
+};
+
+// Person with Significant Control
+export const incompletePersonWithSignificantControlErrorList = (
+  personsWithSignificantControl: Array<PersonWithSignificantControl>,
+  i18n: Record<string, any>
+): Record<string, string> => {
+  let errorList = {};
+
+  personsWithSignificantControl
+    .filter((psc) => psc?.data?.completed === false)
+    .forEach((psc) => {
+      const name = psc.data?.forename ? `${psc.data.forename} ${psc.data.surname}` : psc.data?.legal_entity_name ?? "";
+      errorList = {
+        ...errorList,
+        [name.toLowerCase()]: `${i18n.personWithSignificantControl.reviewPersonsWithSignificantControlPage.errorMessage.beforeName} ${name} ${i18n.personWithSignificantControl.reviewPersonsWithSignificantControlPage.errorMessage.afterName}`
+      };
+    });
   return errorList;
 };

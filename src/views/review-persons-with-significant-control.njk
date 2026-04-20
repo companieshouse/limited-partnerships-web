@@ -1,0 +1,176 @@
+{% extends "layout.njk" %}
+{% from "govuk/components/error-message/macro.njk" import govukErrorMessage %}
+
+
+{% set pageTitle = i18n.personWithSignificantControl.reviewPersonsWithSignificantControlPage.title  %}
+
+{% set list = props.data.personsWithSignificantControl %}
+
+{% block content %}
+  <div>
+      <div class="govuk-grid-row">
+          <div class="govuk-grid-column-two-thirds">
+              {% include "includes/errors.njk" %}
+
+              {% include "includes/proposed-name.njk" %}
+              
+              <h1 class="govuk-heading-xl">{{ pageTitle }}</h1>
+        </div>
+    </div>
+  
+  <div class="govuk-grid-row govuk-!-margin-bottom-5">
+      <div class="govuk-grid-column-full">
+
+      <h2 class="govuk-heading-m govuk-!-margin-bottom-5">{{ i18n.personWithSignificantControl.reviewPersonsWithSignificantControlPage.personsAdded }}</h2>
+
+      {% if list.length  %}
+        {% set rows = [] %}
+        {% for personWithSignificantControl in list %}
+          {% if personWithSignificantControl.data.type == "INDIVIDUAL_PERSON" %}
+            {% set rows = rows.concat({
+                key: {
+                  text: i18n.personWithSignificantControl.reviewPersonsWithSignificantControlPage.individualPerson,
+                  classes: "govuk-form-group govuk-form-group--error" if props.errors[(personWithSignificantControl.data.forename | lower + " " + personWithSignificantControl.data.surname | lower)]
+                },
+                value: {
+                  text: personWithSignificantControl.data.forename + " " + personWithSignificantControl.data.surname
+                },
+                actions: {
+                  items: [
+                    CREATE_CHANGE_LINK(
+                      i18n.personWithSignificantControl.reviewPersonsWithSignificantControlPage.change,
+                      props.currentUrl | replace(props.pageType, "person-with-significant-control" + "/" + personWithSignificantControl.id + "/" + props.data.pageTypeIndividualPerson),
+                      null,
+                      "change-individual-person"
+                    ),
+                    CREATE_CHANGE_LINK(
+                      i18n.personWithSignificantControl.reviewPersonsWithSignificantControlPage.remove,
+                      props.currentUrl | replace(props.pageType, "person-with-significant-control" + "/" + personWithSignificantControl.id + "/" + props.data.pageTypeRemove),
+                      null,
+                      "delete-individual-person"
+                    )
+                  ]
+                }
+              })
+            %}
+          {% elif personWithSignificantControl.data.type == "RELEVANT_LEGAL_ENTITY" %}
+              {% set rows = rows.concat({
+                key: {
+                  text: i18n.personWithSignificantControl.reviewPersonsWithSignificantControlPage.relevantLegalEntity,
+                  classes: "govuk-form-group govuk-form-group--error" if props.errors[(personWithSignificantControl.data.legal_entity_name | lower)]
+                },
+                value: {
+                  text: personWithSignificantControl.data.legal_entity_name
+                },
+                actions: {
+                  items: [
+                    CREATE_CHANGE_LINK(
+                      i18n.personWithSignificantControl.reviewPersonsWithSignificantControlPage.change,
+                      props.currentUrl | replace(props.pageType, "person-with-significant-control" + "/" + personWithSignificantControl.id + "/" + props.data.pageTypeRelevantLegalEntity),
+                      null,
+                      "change-relevant-legal-entity"
+                    ),
+                    CREATE_CHANGE_LINK(
+                      i18n.personWithSignificantControl.reviewPersonsWithSignificantControlPage.remove,
+                      props.currentUrl | replace(props.pageType, "person-with-significant-control" + "/" + personWithSignificantControl.id + "/" + props.data.pageTypeRemove),
+                      null,
+                      "delete-relevant-legal-entity"
+                    )
+                  ]
+                }
+              })
+            %}
+            {% elif personWithSignificantControl.data.type == "OTHER_REGISTRABLE_PERSON" %}
+              {% set rows = rows.concat({
+                key: {
+                  text: i18n.personWithSignificantControl.reviewPersonsWithSignificantControlPage.otherRegistrablePerson,
+                  classes: "govuk-form-group govuk-form-group--error" if props.errors[(personWithSignificantControl.data.legal_entity_name | lower)]
+                },
+                value: {
+                  text: personWithSignificantControl.data.legal_entity_name
+                },
+                actions: {
+                  items: [
+                    CREATE_CHANGE_LINK(
+                      i18n.personWithSignificantControl.reviewPersonsWithSignificantControlPage.change,
+                      props.currentUrl | replace(props.pageType, "person-with-significant-control" + "/" + personWithSignificantControl.id + "/" + props.data.pageTypeOtherRegistrablePerson),
+                      null,
+                      "change-other-registrable-person"
+                    ),
+                    CREATE_CHANGE_LINK(
+                      i18n.personWithSignificantControl.reviewPersonsWithSignificantControlPage.remove,
+                      props.currentUrl | replace(props.pageType, "person-with-significant-control" + "/" + personWithSignificantControl.id + "/" + props.data.pageTypeRemove),
+                      null,
+                      "delete-other-registrable-person"
+                    )
+                  ]
+                }
+              })
+            %}
+          {% endif %}
+        {% endfor %}
+
+        {{ govukSummaryList({
+          classes: "govuk-!-margin-bottom-0",
+          rows: rows
+        }) }}
+      {% endif %}
+
+      </div>
+  </div>
+
+  </br>
+
+  <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+          <form class="form" method="post">
+              <input type="hidden" name="pageType" value={{ props.pageType }}>
+              
+              {% include "includes/csrf_token.njk" %}
+      
+              {{ govukRadios({
+                name: "addAnotherPersonWithSignificantControl",
+                fieldset: {
+                  legend: {
+                    text: i18n.personWithSignificantControl.reviewPersonsWithSignificantControlPage.addAnotherPersonWithSignificantControl.title,
+                    isPageHeading: false,
+                    classes: "govuk-fieldset__legend--m"
+                  }
+                },
+                items: [
+                  {
+                    value: "addIndividualPerson",
+                    text: i18n.personWithSignificantControl.reviewPersonsWithSignificantControlPage.addAnotherPersonWithSignificantControl.addIndividualPerson
+                  },
+                  {
+                    value: "addRelevantLegalEntity",
+                    text: i18n.personWithSignificantControl.reviewPersonsWithSignificantControlPage.addAnotherPersonWithSignificantControl.addRelevantLegalEntity
+                  },
+                  {
+                    value: "addOtherRegistrablePerson",
+                    text: i18n.personWithSignificantControl.reviewPersonsWithSignificantControlPage.addAnotherPersonWithSignificantControl.addOtherRegistrablePerson
+                  },
+                  {
+                    value: "no",
+                    text: i18n.yesAndNo.no
+                  }
+                ],
+                errorMessage: {
+                  text: i18n.personWithSignificantControl.reviewPersonsWithSignificantControlPage.errorMessage.noOptionSelected
+                } if props.errors.add_another_person_with_significant_control
+              }) }}
+
+          {{ govukButton({
+            text: i18n.buttons.saveAndContinue,
+            attributes: {
+              "id": "submit",
+              "onclick": "_paq.push(['trackEvent', 'Limited Partnerships', 'Do you want to add another person with significant control?', document.querySelector('input[name=addAnotherPersonWithSignificantControl]:checked').nextElementSibling.innerHTML])"                  
+              }
+          }) }}
+
+        </form>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

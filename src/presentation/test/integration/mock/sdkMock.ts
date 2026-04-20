@@ -15,7 +15,7 @@ import LimitedPartnerBuilder from "../../builder/LimitedPartnerBuilder";
 import CompanyProfileBuilder from "../../builder/CompanyProfileBuilder";
 import CompanyAppointmentBuilder from "../../builder/CompanyAppointmentBuilder";
 import FilingHistoryBuilder from "../../builder/FilingHistoryBuilder";
-import PersonWithSignificantControlBuilder from "../../builder/PersonWithSignificantControl";
+import PersonWithSignificantControlBuilder from "../../builder/PersonWithSignificantControlBuilder";
 
 // Transaction service
 export const postTransaction = jest.fn().mockImplementation(() => ({
@@ -124,8 +124,18 @@ export const getPersonWithSignificantControl = jest.fn().mockImplementation(() =
     .withId(appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId)
     .build()
 }));
+export const getPersonsWithSignificantControl = jest.fn().mockImplementation(() => ({
+  httpStatusCode: 200,
+  resource: [
+    new PersonWithSignificantControlBuilder().isRelevantLegalEntity().withId(appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId).build()
+  ]
+}));
 export const patchPersonWithSignificantControl = jest.fn().mockImplementation(() => ({
   httpStatusCode: 200,
+  resource: {}
+}));
+export const deletePersonWithSignificantControl = jest.fn().mockImplementation(() => ({
+  httpStatusCode: 204,
   resource: {}
 }));
 
@@ -240,7 +250,8 @@ const sdkMock = {
     // person with significant control
     postPersonWithSignificantControl,
     getPersonWithSignificantControl,
-    patchPersonWithSignificantControl
+    patchPersonWithSignificantControl,
+    deletePersonWithSignificantControl
   },
   refreshToken: {
     ...RefreshTokenService.prototype,

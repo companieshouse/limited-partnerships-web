@@ -55,6 +55,30 @@ const registrationRoutingOtherRegistrablePersonWhichTypeOfNatureOfControl = {
   pageType: RegistrationPageType.whichTypeOfNatureOfControlOtherRegistrablePerson
 };
 
+// SUMMARY
+
+const registrationRoutingReviewPersonsWithSignificantControl = {
+  previousUrl: url.PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL,
+  currentUrl: url.REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL,
+  nextUrl: url.CHECK_YOUR_ANSWERS_URL,
+  pageType: RegistrationPageType.reviewPersonsWithSignificantControl,
+  data: {
+    pageTypeIndividualPerson: RegistrationPageType.addPersonWithSignificantControlIndividualPerson,
+    pageTypeRelevantLegalEntity: RegistrationPageType.addPersonWithSignificantControlRelevantLegalEntity,
+    pageTypeOtherRegistrablePerson: RegistrationPageType.addPersonWithSignificantControlOtherRegistrablePerson,
+    pageTypeRemove: RegistrationPageType.removePersonWithSignificantControl
+  }
+};
+
+// REMOVE
+
+const registrationRoutingRemovePersonWithSignificantControl = {
+  previousUrl: url.REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL,
+  currentUrl: url.REMOVE_PERSON_WITH_SIGNIFICANT_CONTROL_URL,
+  nextUrl: url.REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL,
+  pageType: RegistrationPageType.removePersonWithSignificantControl
+};
+
 const personWithSignificantControlRouting = [
   registrationRoutingPersonWithSignificantControl,
   registrationRoutingWillLimitedPartnershipHavePsc,
@@ -62,7 +86,9 @@ const personWithSignificantControlRouting = [
   registrationRoutingAddRelevantLegalEntity,
   registrationRoutingAddOtherRegistrablePerson,
   registrationRoutingRelevantLegalEntityWhichTypeOfNatureOfControl,
-  registrationRoutingOtherRegistrablePersonWhichTypeOfNatureOfControl
+  registrationRoutingOtherRegistrablePersonWhichTypeOfNatureOfControl,
+  registrationRoutingReviewPersonsWithSignificantControl,
+  registrationRoutingRemovePersonWithSignificantControl
 ];
 
 export default personWithSignificantControlRouting;

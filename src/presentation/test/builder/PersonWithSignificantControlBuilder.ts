@@ -1,22 +1,25 @@
 import TransactionPersonWithSignificantControl from "../../../domain/entities/TransactionPersonWithSignificantControl";
 
-const personWithSignificantControlRelevantLegalEntity = {
+export const personWithSignificantControlRelevantLegalEntity = {
   legal_entity_name: "My Company ltd - RLE",
   legal_form: "Limited Company",
   governing_law: "Act of law",
   legal_entity_register_name: "US Register",
   legal_entity_registration_location: "United States",
-  registered_company_number: "12345678"
+  registered_company_number: "12345678",
+  type: "RELEVANT_LEGAL_ENTITY"
 };
 
-const personWithSignificantControlOtherRegistrablePerson = {
+export const personWithSignificantControlOtherRegistrablePerson = {
   legal_entity_name: "My Company ltd - ORP",
   legal_form: "Limited Company",
-  governing_law: "Act of law"
+  governing_law: "Act of law",
+  type: "OTHER_REGISTRABLE_PERSON"
 };
 
 class PersonWithSignificantControlBuilder {
   _id = "123456";
+  id = "123456";
   data: Record<string, any> = {
     completed: true,
     appointment_id: "",
@@ -44,6 +47,12 @@ class PersonWithSignificantControlBuilder {
 
   withId(id: string) {
     this["_id"] = id;
+    this.id = id;
+    return this;
+  }
+
+  withCompleted(completed: boolean) {
+    this.data.completed = completed;
     return this;
   }
 
@@ -66,6 +75,7 @@ class PersonWithSignificantControlBuilder {
   build(): TransactionPersonWithSignificantControl {
     return {
       _id: this["_id"],
+      id: this.id,
       data: this.data
     };
   }

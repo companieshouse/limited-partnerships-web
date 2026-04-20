@@ -14,7 +14,7 @@ import { TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_
 
 import RegistrationPageType from "../../../../controller/registration/PageType";
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
-import PersonWithSignificantControlBuilder from "../../../builder/PersonWithSignificantControl";
+import PersonWithSignificantControlBuilder from "../../../builder/PersonWithSignificantControlBuilder";
 
 describe("Which Type of Nature of Control Page", () => {
   const URL = getUrl(WHICH_TYPE_OF_NATURE_OF_CONTROL_RELEVANT_LEGAL_ENTITY_URL);

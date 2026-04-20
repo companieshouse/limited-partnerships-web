@@ -11,7 +11,7 @@ import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilde
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import { TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../../../controller/addressLookUp/url/registration";
 import RegistrationPageType from "../../../../controller/registration/PageType";
-import PersonWithSignificantControlBuilder from "../../../builder/PersonWithSignificantControl";
+import PersonWithSignificantControlBuilder from "../../../builder/PersonWithSignificantControlBuilder";
 
 describe("Which Type of Nature of Control Page", () => {
   const URL = getUrl(WHICH_TYPE_OF_NATURE_OF_CONTROL_OTHER_REGISTRABLE_PERSON_URL);

@@ -20,7 +20,7 @@ import {
 import RegistrationPageType from "../../../../controller/registration/PageType";
 import TransactionBuilder from "../../../builder/TransactionBuilder";
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
-import PersonWithSignificantControlBuilder from "../../../builder/PersonWithSignificantControl";
+import PersonWithSignificantControlBuilder from "../../../builder/PersonWithSignificantControlBuilder";
 import TransactionPersonWithSignificantControl from "../../../../../domain/entities/TransactionPersonWithSignificantControl";
 import { PersonWithSignificantControlType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
