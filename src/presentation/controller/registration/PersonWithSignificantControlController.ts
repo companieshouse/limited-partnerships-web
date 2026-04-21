@@ -120,7 +120,7 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
           );
           return;
         }
-        const redirectUrl = await this.handleReviewPageRedirection(request);
+        const redirectUrl = this.handleReviewPageRedirection(request);
 
         response.redirect(redirectUrl);
       } catch (error) {
