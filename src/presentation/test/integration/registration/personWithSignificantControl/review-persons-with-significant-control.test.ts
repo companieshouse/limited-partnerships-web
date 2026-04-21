@@ -58,15 +58,15 @@ describe("Review Persons With Significant Control Page", () => {
       expect(res.status).toBe(200);
 
       expect(res.text).toContain(
-        `${translationText.personWithSignificantControl.reviewPersonsWithSignificantControlPage.title} - ${translationText.serviceRegistration} - GOV.UK`
+        `${translationText.personWithSignificantControl.reviewPage.title} - ${translationText.serviceRegistration} - GOV.UK`
       );
 
-      testTranslations(res.text, translationText.personWithSignificantControl.reviewPersonsWithSignificantControlPage, ["individualPerson", "noOptionSelected"]);
+      testTranslations(res.text, translationText.personWithSignificantControl.reviewPage, ["individualPerson", "noOptionSelected"]);
 
       expect(res.text).toContain(`${personWithSignificantControlRelevantLegalEntity.legal_entity_name}`);
       expect(res.text).toContain(`${personWithSignificantControlOtherRegistrablePerson.legal_entity_name}`);
       expect(res.text).toContain(
-        `${translationText.personWithSignificantControl.reviewPersonsWithSignificantControlPage.errorMessage.beforeName} ${personWithSignificantControlOtherRegistrablePerson.legal_entity_name} ${translationText.personWithSignificantControl.reviewPersonsWithSignificantControlPage.errorMessage.afterName}`
+        `${translationText.personWithSignificantControl.reviewPage.errorMessage.beforeName} ${personWithSignificantControlOtherRegistrablePerson.legal_entity_name} ${translationText.personWithSignificantControl.reviewPage.errorMessage.afterName}`
       );
     });
 
@@ -154,7 +154,7 @@ describe("Review Persons With Significant Control Page", () => {
       expect(res.status).toBe(200);
 
       expect(res.text).toContain(
-        `${enTranslationText.personWithSignificantControl.reviewPersonsWithSignificantControlPage.title} - ${enTranslationText.serviceRegistration} - GOV.UK`
+        `${enTranslationText.personWithSignificantControl.reviewPage.title} - ${enTranslationText.serviceRegistration} - GOV.UK`
       );
     });
 
@@ -198,7 +198,7 @@ describe("Review Persons With Significant Control Page", () => {
       });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(enTranslationText.personWithSignificantControl.reviewPersonsWithSignificantControlPage.errorMessage.noOptionSelected);
+      expect(res.text).toContain(enTranslationText.personWithSignificantControl.reviewPage.errorMessage.noOptionSelected);
       expect(res.text).toContain(`${personWithSignificantControlRelevantLegalEntity.legal_entity_name}`);
     });
 

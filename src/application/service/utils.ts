@@ -43,7 +43,7 @@ export const incompletePersonWithSignificantControlErrorList = (
       const name = psc.data?.forename ? `${psc.data.forename} ${psc.data.surname}` : psc.data?.legal_entity_name ?? "";
       errorList = {
         ...errorList,
-        [name.toLowerCase()]: `${i18n.personWithSignificantControl.reviewPersonsWithSignificantControlPage.errorMessage.beforeName} ${name} ${i18n.personWithSignificantControl.reviewPersonsWithSignificantControlPage.errorMessage.afterName}`
+        [name.toLowerCase()]: `${i18n.personWithSignificantControl.reviewPage.errorMessage.beforeName} ${name} ${i18n.personWithSignificantControl.reviewPage.errorMessage.afterName}`
       };
     });
   return errorList;

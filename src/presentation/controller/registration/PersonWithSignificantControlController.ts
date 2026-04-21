@@ -393,7 +393,7 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
 
     const uiErrors = this.createUIError(
       "addAnotherPersonWithSignificantControl",
-      response.locals.i18n.personWithSignificantControl.reviewPersonsWithSignificantControlPage.errorMessage.noOptionSelected
+      response.locals.i18n.personWithSignificantControl.reviewPage.errorMessage.noOptionSelected
     );
 
     let limitedPartnership;

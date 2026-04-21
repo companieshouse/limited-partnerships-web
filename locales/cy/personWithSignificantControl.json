@@ -65,7 +65,7 @@
             "title": "WELSH - Are you sure you want to remove",
             "errorMessage": "WELSH - Select yes if you need to remove a PSC"
         },
-        "reviewPersonsWithSignificantControlPage": {
+        "reviewPage": {
             "title": "WELSH - Review the people with significant control (PSCs) for this partnership",
             "personsAdded": "WELSH - PSC's you have added so far:",
             "individualPerson": "WELSH - Individual person",

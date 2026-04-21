@@ -65,7 +65,7 @@
             "title": "Are you sure you want to remove",
             "errorMessage": "Select yes if you need to remove a PSC"
         },
-        "reviewPersonsWithSignificantControlPage": {
+        "reviewPage": {
             "title": "Review the people with significant control (PSCs) for this partnership",
             "personsAdded": "PSC's you have added so far:",
             "individualPerson": "Individual person",
