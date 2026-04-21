@@ -59,7 +59,8 @@ class PersonWithSignificantControlBuilder {
   isRelevantLegalEntity() {
     this.data = {
       ...this.data,
-      ...personWithSignificantControlRelevantLegalEntity
+      ...personWithSignificantControlRelevantLegalEntity,
+      type: "RELEVANT_LEGAL_ENTITY"
     };
     return this;
   }
@@ -67,7 +68,8 @@ class PersonWithSignificantControlBuilder {
   isOtherRegistrablePerson() {
     this.data = {
       ...this.data,
-      ...personWithSignificantControlOtherRegistrablePerson
+      ...personWithSignificantControlOtherRegistrablePerson,
+      type: "OTHER_REGISTRABLE_PERSON"
     };
     return this;
   }

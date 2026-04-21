@@ -136,6 +136,7 @@ export function buildDependencies(useInMemory = false): BuiltDependencies {
       limitedPartnershipService,
       generalPartnerService,
       limitedPartnerService,
+      personWithSignificantControlService,
       cacheService,
       paymentService
     );

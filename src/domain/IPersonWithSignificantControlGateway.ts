@@ -16,9 +16,9 @@ interface IPersonWithSignificantControlGateway {
   ): Promise<PersonWithSignificantControl>;
 
   getPersonsWithSignificantControl(
-      opt: { access_token: string; refresh_token: string },
-      transactionId: string
-    ): Promise<PersonWithSignificantControl[]>;
+    opt: Tokens,
+    transactionId: string
+  ): Promise<PersonWithSignificantControl[]>;
 
   sendPageData(
     opt: Tokens,
