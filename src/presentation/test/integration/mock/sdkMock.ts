@@ -250,6 +250,7 @@ const sdkMock = {
     // person with significant control
     postPersonWithSignificantControl,
     getPersonWithSignificantControl,
+    getPersonsWithSignificantControl,
     patchPersonWithSignificantControl,
     deletePersonWithSignificantControl
   },
