@@ -19,6 +19,8 @@ import {
   REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL,
   TELL_US_ABOUT_PSC_URL
 } from "./url";
+import { CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL, CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL } from "../addressLookUp/url/registration";
+import { PageRouting } from "../PageRouting";
 
 class PersonWithSignificantControlRegistrationController extends AbstractController {
   constructor(
@@ -282,6 +284,8 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
           );
         }
 
+        await this.handleNatureOfControlRedirection(request, pageRouting);
+
         response.redirect(pageRouting.nextUrl);
       } catch (error) {
         next(error);
@@ -481,6 +485,28 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
     const redirectUrl = reviewPageUrlMap.get(addAnotherPersonWithSignificantControl) ?? "";
 
     return super.insertIdsInUrl(redirectUrl, ids, request.url);
+  }
+
+  private async handleNatureOfControlRedirection(request: Request, pageRouting: PageRouting) {
+    const { ids, tokens, pageType } = super.extract(request);
+
+    const result = await this.personWithSignificantControlService.getPersonWithSignificantControl(
+      tokens,
+      ids.transactionId,
+      ids.personWithSignificantControlId
+    );
+
+    if (pageType === RegistrationPageType.whichTypeOfNatureOfControlRelevantLegalEntity &&
+      result?.data?.principal_office_address?.address_line_1) {
+
+      pageRouting.nextUrl = super.insertIdsInUrl(CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL, ids, request.url);
+    }
+
+    if (pageType === RegistrationPageType.whichTypeOfNatureOfControlOtherRegistrablePerson &&
+      result?.data?.principal_office_address?.address_line_1) {
+
+      pageRouting.nextUrl = super.insertIdsInUrl(CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL, ids, request.url);
+    }
   }
 }
 
