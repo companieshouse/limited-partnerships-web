@@ -16,8 +16,11 @@ import {
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL,
   CHECK_YOUR_ANSWERS_URL,
   PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL,
+  REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL,
   TELL_US_ABOUT_PSC_URL
 } from "./url";
+import { CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL, CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL } from "../addressLookUp/url/registration";
+import { PageRouting } from "../PageRouting";
 
 class PersonWithSignificantControlRegistrationController extends AbstractController {
   constructor(
@@ -152,7 +155,7 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
           return await this.renderWithPartnershipAndErrors(request, response, result.errors);
         }
 
-        pageRouting.nextUrl = this.handlePersonWithSignficantControlRequiredConditionalNextUrl(request);
+        pageRouting.nextUrl = await this.handlePersonWithSignficantControlRequiredConditionalNextUrl(request);
 
         response.redirect(pageRouting.nextUrl);
       } catch (error) {
@@ -281,6 +284,8 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
           );
         }
 
+        await this.handleNatureOfControlRedirection(request, pageRouting);
+
         response.redirect(pageRouting.nextUrl);
       } catch (error) {
         next(error);
@@ -377,10 +382,18 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
     );
   }
 
-  private handlePersonWithSignficantControlRequiredConditionalNextUrl(request: Request) {
+  private async handlePersonWithSignficantControlRequiredConditionalNextUrl(request: Request) {
     const ids = super.extractIds(request);
+    const { tokens } = super.extract(request);
+
     if (request.body.has_person_with_significant_control === "true") {
-      return super.insertIdsInUrl(PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL, ids, request.url);
+      const result = await this.personWithSignificantControlService.getPersonsWithSignificantControl(tokens, ids.transactionId);
+
+      if (result.personsWithSignificantControl.length > 0) {
+        return super.insertIdsInUrl(REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL, ids, request.url);
+      } else {
+        return super.insertIdsInUrl(PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL, ids, request.url);
+      }
     } else {
       return super.insertIdsInUrl(CHECK_YOUR_ANSWERS_URL, ids, request.url);
     }
@@ -473,6 +486,28 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
     const redirectUrl = reviewPageUrlMap.get(addAnotherPersonWithSignificantControl) ?? "";
 
     return super.insertIdsInUrl(redirectUrl, ids, request.url);
+  }
+
+  private async handleNatureOfControlRedirection(request: Request, pageRouting: PageRouting) {
+    const { ids, tokens, pageType } = super.extract(request);
+
+    const result = await this.personWithSignificantControlService.getPersonWithSignificantControl(
+      tokens,
+      ids.transactionId,
+      ids.personWithSignificantControlId
+    );
+
+    if (pageType === RegistrationPageType.whichTypeOfNatureOfControlRelevantLegalEntity &&
+      result?.data?.principal_office_address?.address_line_1) {
+
+      pageRouting.nextUrl = super.insertIdsInUrl(CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL, ids, request.url);
+    }
+
+    if (pageType === RegistrationPageType.whichTypeOfNatureOfControlOtherRegistrablePerson &&
+      result?.data?.principal_office_address?.address_line_1) {
+
+      pageRouting.nextUrl = super.insertIdsInUrl(CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL, ids, request.url);
+    }
   }
 }
 
