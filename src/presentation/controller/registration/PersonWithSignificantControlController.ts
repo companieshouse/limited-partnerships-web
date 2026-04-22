@@ -385,9 +385,10 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
   private async handlePersonWithSignficantControlRequiredConditionalNextUrl(request: Request) {
     const ids = super.extractIds(request);
     const { tokens } = super.extract(request);
-    const result = await this.personWithSignificantControlService.getPersonsWithSignificantControl(tokens, ids.transactionId);
 
     if (request.body.has_person_with_significant_control === "true") {
+      const result = await this.personWithSignificantControlService.getPersonsWithSignificantControl(tokens, ids.transactionId);
+
       if (result.personsWithSignificantControl.length > 0) {
         return super.insertIdsInUrl(REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL, ids, request.url);
       } else {
