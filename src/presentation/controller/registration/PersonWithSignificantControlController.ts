@@ -463,14 +463,14 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
 
     const addAnotherPersonWithSignificantControl = request.body.addAnotherPersonWithSignificantControl;
 
-    const reviewPageUrlMap: Record<string, string> = {
-      addIndividualPerson: ADD_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_URL,
-      addRelevantLegalEntity: ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL,
-      addOtherRegistrablePerson: ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_URL,
-      no: CHECK_YOUR_ANSWERS_URL
-    };
+    const reviewPageUrlMap: Map<string, string> = new Map([
+      ["addIndividualPerson", ADD_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_URL],
+      ["addRelevantLegalEntity", ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL],
+      ["addOtherRegistrablePerson", ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_URL],
+      ["no", CHECK_YOUR_ANSWERS_URL]
+    ]);
 
-    const redirectUrl = reviewPageUrlMap[addAnotherPersonWithSignificantControl];
+    const redirectUrl = reviewPageUrlMap.get(addAnotherPersonWithSignificantControl) || "";
 
     return super.insertIdsInUrl(redirectUrl, ids, request.url);
   }
