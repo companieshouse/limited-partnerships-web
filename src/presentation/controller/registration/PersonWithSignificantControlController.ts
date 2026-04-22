@@ -470,7 +470,7 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
       ["no", CHECK_YOUR_ANSWERS_URL]
     ]);
 
-    const redirectUrl = reviewPageUrlMap.get(addAnotherPersonWithSignificantControl) || "";
+    const redirectUrl = reviewPageUrlMap.get(addAnotherPersonWithSignificantControl) ?? "";
 
     return super.insertIdsInUrl(redirectUrl, ids, request.url);
   }
