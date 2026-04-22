@@ -16,6 +16,7 @@ import {
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL,
   CHECK_YOUR_ANSWERS_URL,
   PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL,
+  REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL,
   TELL_US_ABOUT_PSC_URL
 } from "./url";
 
@@ -152,7 +153,7 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
           return await this.renderWithPartnershipAndErrors(request, response, result.errors);
         }
 
-        pageRouting.nextUrl = this.handlePersonWithSignficantControlRequiredConditionalNextUrl(request);
+        pageRouting.nextUrl = await this.handlePersonWithSignficantControlRequiredConditionalNextUrl(request);
 
         response.redirect(pageRouting.nextUrl);
       } catch (error) {
@@ -377,10 +378,17 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
     );
   }
 
-  private handlePersonWithSignficantControlRequiredConditionalNextUrl(request: Request) {
+  private async handlePersonWithSignficantControlRequiredConditionalNextUrl(request: Request) {
     const ids = super.extractIds(request);
+    const { tokens } = super.extract(request);
+    const result = await this.personWithSignificantControlService.getPersonsWithSignificantControl(tokens, ids.transactionId);
+
     if (request.body.has_person_with_significant_control === "true") {
-      return super.insertIdsInUrl(PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL, ids, request.url);
+      if (result.personsWithSignificantControl.length > 0) {
+        return super.insertIdsInUrl(REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL, ids, request.url);
+      } else {
+        return super.insertIdsInUrl(PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL, ids, request.url);
+      }
     } else {
       return super.insertIdsInUrl(CHECK_YOUR_ANSWERS_URL, ids, request.url);
     }

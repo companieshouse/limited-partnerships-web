@@ -10,13 +10,14 @@ import { TELL_US_ABOUT_PSC_URL, WILL_LIMITED_PARTNERSHIP_HAVE_PSC_URL } from "..
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
+import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 describe("Tell Us About PSC Page", () => {
   const enTranslationText = { ...enGeneralTranslationText, ...enPersonWithSignificantControlTranslationText };
   const cyTranslationText = { ...cyGeneralTranslationText, ...cyPersonWithSignificantControlTranslationText };
   const URL = getUrl(TELL_US_ABOUT_PSC_URL);
   const REDIRECT_URL = getUrl(WILL_LIMITED_PARTNERSHIP_HAVE_PSC_URL);
-  let limitedPartnership;
+  let limitedPartnership: LimitedPartnership;
 
   beforeEach(() => {
     setLocalesEnabled(true);

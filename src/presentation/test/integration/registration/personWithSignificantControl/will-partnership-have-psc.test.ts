@@ -12,11 +12,13 @@ import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import {
   CHECK_YOUR_ANSWERS_URL,
   PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL,
+  REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL,
   WILL_LIMITED_PARTNERSHIP_HAVE_PSC_URL
 } from "../../../../controller/registration/url";
 
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
 import RegistrationPageType from "../../../../controller/registration/PageType";
+import PersonWithSignificantControlBuilder from "../../../builder/PersonWithSignificantControlBuilder";
 
 describe("Will Limited Partnership Have PSC Page", () => {
   const enTranslationText = { ...enGeneralTranslationText, ...enPersonWithSignificantControlTranslationText };
@@ -26,6 +28,7 @@ describe("Will Limited Partnership Have PSC Page", () => {
   beforeEach(() => {
     setLocalesEnabled(true);
 
+    appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([]);
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([]);
     appDevDependencies.limitedPartnerGateway.feedErrors();
   });
@@ -58,12 +61,20 @@ describe("Will Limited Partnership Have PSC Page", () => {
 
     it.each([true, false, null])(
       "should preselect the has_person_with_significant_control value if it exists in the limited partnership data",
-      async (hasPscSelection: boolean) => {
-        const limitedPartnership = new LimitedPartnershipBuilder()
-          .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
-          .withHasPersonWithSignificantControl(hasPscSelection)
-          .build();
-        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+      async (hasPscSelection: boolean | null) => {
+        if (hasPscSelection === null) {
+          const limitedPartnership = new LimitedPartnershipBuilder()
+            .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+            .build();
+          appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+        } else {
+          const limitedPartnership = new LimitedPartnershipBuilder()
+            .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+            .withHasPersonWithSignificantControl(hasPscSelection)
+            .build();
+          appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+        }
 
         const res = await request(app).get(URL);
 
@@ -99,6 +110,24 @@ describe("Will Limited Partnership Have PSC Page", () => {
         expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
       }
     );
+
+    it("should redirect to the summary page if has PSC selection is true and the user has already added a PSC", async () => {
+      const REDIRECT_URL = getUrl(REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL);
+      const personWithSignificantControl = new PersonWithSignificantControlBuilder()
+        .withId(appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId)
+        .isRelevantLegalEntity()
+        .build();
+
+      appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([personWithSignificantControl]);
+
+      const res = await request(app).post(URL).send({
+        pageType: RegistrationPageType.willLimitedPartnershipHavePsc,
+        has_person_with_significant_control: "true"
+      });
+
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+    });
 
     it("should show an error when no selection is made", async () => {
       const limitedPartnership = new LimitedPartnershipBuilder()
