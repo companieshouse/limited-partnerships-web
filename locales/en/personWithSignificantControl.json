@@ -64,6 +64,26 @@
         "removePscPage": {
             "title": "Are you sure you want to remove",
             "errorMessage": "Select yes if you need to remove a PSC"
-        }
+        },
+        "reviewPage": {
+            "title": "Review the people with significant control (PSCs) for this partnership",
+            "personsAdded": "PSC's you have added so far:",
+            "individualPerson": "Individual person",
+            "relevantLegalEntity": "Relevant legal entity (RLE)",
+            "otherRegistrablePerson": "Other registrable person (ORP)",
+            "addAnotherPersonWithSignificantControl": {
+                "title": "Do you need to add another PSC?",
+                "addIndividualPerson": "Yes, an individual person",
+                "addRelevantLegalEntity": "Yes, a relevant legal entity (RLE)",
+                "addOtherRegistrablePerson": "Yes, an other registrable person (ORP)"
+            },
+            "change": "Change",
+            "remove": "Remove",
+            "errorMessage": {
+                "beforeName": "You must provide all information for",
+                "afterName": "before continuing. Select Change to provide more information",
+                "noOptionSelected": "Select if you need to add another PSC"
+            }
+         }
     }
 }

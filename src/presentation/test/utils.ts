@@ -6,7 +6,7 @@ import { appDevDependencies } from "../../config/dev-dependencies";
 import GeneralPartnerBuilder from "./builder/GeneralPartnerBuilder";
 import LimitedPartnerBuilder from "./builder/LimitedPartnerBuilder";
 import request from "supertest";
-import PersonWithSignificantControlBuilder from "./builder/PersonWithSignificantControl";
+import PersonWithSignificantControlBuilder from "./builder/PersonWithSignificantControlBuilder";
 
 export const setLocalesEnabled = (bool: boolean) => {
   jest.spyOn(config, "isLocalesEnabled").mockReturnValue(bool);

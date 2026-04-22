@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { LimitedPartnership, PersonWithSignificantControlType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
+import { LimitedPartnership, PersonWithSignificantControl, PersonWithSignificantControlType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 import AbstractController from "../AbstractController";
 import UIErrors from "../../../domain/entities/UIErrors";
@@ -15,7 +15,8 @@ import {
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_URL,
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL,
   CHECK_YOUR_ANSWERS_URL,
-  PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL
+  PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL,
+  TELL_US_ABOUT_PSC_URL
 } from "./url";
 
 class PersonWithSignificantControlRegistrationController extends AbstractController {
@@ -41,6 +42,87 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
           super.templateName(pageRouting.currentUrl),
           super.makeProps(pageRouting, { limitedPartnership, personWithSignificantControl }, null)
         );
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  getReviewPage() {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        this.personWithSignificantControlService.setI18n(response.locals.i18n);
+
+        const { ids, pageType, tokens } = super.extract(request);
+
+        const pageRouting = super.getRouting(registrationsRouting, pageType, request);
+
+        const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(tokens, ids.transactionId, ids.submissionId);
+
+        let personsWithSignificantControl: PersonWithSignificantControl[] = [];
+        let errors: UIErrors | null = null;
+
+        if (ids.transactionId && ids.submissionId) {
+          const result = await this.personWithSignificantControlService.getPersonsWithSignificantControl(tokens, ids.transactionId);
+          personsWithSignificantControl = result?.personsWithSignificantControl;
+
+          errors = result?.errors ?? null;
+        }
+
+        if (personsWithSignificantControl.length === 0) {
+          const redirect = super.insertIdsInUrl(TELL_US_ABOUT_PSC_URL, ids, request.url);
+
+          response.redirect(redirect);
+          return;
+        }
+
+        response.render(
+          super.templateName(pageRouting.currentUrl),
+          super.makeProps(pageRouting, { limitedPartnership, personsWithSignificantControl }, errors)
+        );
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  postReviewPage() {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        this.personWithSignificantControlService.setI18n(response.locals.i18n);
+
+        const { ids, pageType, tokens } = super.extract(request);
+
+        const pageRouting = super.getRouting(registrationsRouting, pageType, request);
+
+        if (!request.body.addAnotherPersonWithSignificantControl) {
+          return await this.handleReviewPageSelectionMissing(request, response);
+        }
+
+        const result = await this.personWithSignificantControlService.getPersonsWithSignificantControl(tokens, ids.transactionId);
+        const personsWithSignificantControl = result?.personsWithSignificantControl;
+
+        const noPersonsWithSignificantControl = !result?.personsWithSignificantControl?.length;
+
+        if (noPersonsWithSignificantControl || result?.errors?.hasErrors()) {
+          const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(tokens, ids.transactionId, ids.submissionId);
+
+          response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(
+              pageRouting,
+              {
+                limitedPartnership,
+                personsWithSignificantControl
+              },
+              result?.errors ?? null
+            )
+          );
+          return;
+        }
+        const redirectUrl = this.handleReviewPageRedirection(request);
+
+        response.redirect(redirectUrl);
       } catch (error) {
         next(error);
       }
@@ -92,12 +174,10 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
             ids.submissionId
           );
 
-          const uiErrors = new UIErrors();
-          uiErrors.formatValidationErrorToUiErrors({
-            errors: {
-              parameter: response.locals.i18n.personWithSignificantControl.whichTypePage.errorMessage
-            }
-          });
+          const uiErrors = this.createUIError(
+            "parameter",
+            response.locals.i18n.personWithSignificantControl.whichTypePage.errorMessage
+          );
 
           return response.render(
             super.templateName(pageRouting.currentUrl),
@@ -114,7 +194,7 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
     };
   }
 
-  private getAddPersonWithSignificantControlRedirectUrl(request, ids: Ids) {
+  private getAddPersonWithSignificantControlRedirectUrl(request: Request, ids: Ids) {
     let url = ADD_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_URL;
 
     if (request.body.parameter === PersonWithSignificantControlType.RELEVANT_LEGAL_ENTITY) {
@@ -223,12 +303,10 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
           const { limitedPartnership, personWithSignificantControl } =
             await this.getLimitedPartnershipAndPsc(tokens, ids);
 
-          const uiErrors = new UIErrors();
-          uiErrors.formatValidationErrorToUiErrors({
-            errors: {
-              remove: response.locals.i18n.personWithSignificantControl.removePscPage.errorMessage
-            }
-          });
+          const uiErrors = this.createUIError(
+            "remove",
+            response.locals.i18n.personWithSignificantControl.removePscPage.errorMessage
+          );
 
           return response.render(
             super.templateName(pageRouting.currentUrl),
@@ -308,17 +386,48 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
     }
   }
 
+  private async handleReviewPageSelectionMissing(request: Request, response: Response) {
+    const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
+    const pageRouting = super.getRouting(registrationsRouting, pageType, request);
+    const { tokens, ids } = super.extract(request);
+
+    const uiErrors = this.createUIError(
+      "addAnotherPersonWithSignificantControl",
+      response.locals.i18n.personWithSignificantControl.reviewPage.errorMessage.noOptionSelected
+    );
+
+    let limitedPartnership;
+    let personsWithSignificantControl;
+
+    if (ids.transactionId && ids.submissionId) {
+      limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+        tokens,
+        ids.transactionId,
+        ids.submissionId
+      );
+
+      const result = await this.personWithSignificantControlService.getPersonsWithSignificantControl(
+        tokens,
+        ids.transactionId,
+        true
+      );
+      personsWithSignificantControl = result?.personsWithSignificantControl;
+    }
+
+    return response.render(
+      super.templateName(pageRouting.currentUrl),
+      super.makeProps(pageRouting, { limitedPartnership, personsWithSignificantControl }, uiErrors)
+    );
+  }
+
   private async handleHasPersonWithSignificantControlMissing(request: Request, response: Response) {
     const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
     const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
-    const uiErrors = new UIErrors();
-    uiErrors.formatValidationErrorToUiErrors({
-      errors: {
-        has_person_with_significant_control:
-          response.locals.i18n.personWithSignificantControl.willThePartnershipHaveAnyPscPage.errorMessage
-      }
-    });
+    const uiErrors = this.createUIError(
+      "has_person_with_significant_control",
+      response.locals.i18n.personWithSignificantControl.willThePartnershipHaveAnyPscPage.errorMessage
+    );
 
     const ids = super.extractIds(request);
 
@@ -336,6 +445,34 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
       super.templateName(pageRouting.currentUrl),
       super.makeProps(pageRouting, { limitedPartnership }, uiErrors)
     );
+  }
+
+  private createUIError(parameter: string, message: string) {
+    const uiErrors = new UIErrors();
+    uiErrors.formatValidationErrorToUiErrors({
+      errors: {
+        [parameter]: message
+      }
+    });
+
+    return uiErrors;
+  }
+
+  private handleReviewPageRedirection(request: Request) {
+    const { ids } = super.extract(request);
+
+    const addAnotherPersonWithSignificantControl = request.body.addAnotherPersonWithSignificantControl;
+
+    const reviewPageUrlMap: Map<string, string> = new Map([
+      ["addIndividualPerson", ADD_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_URL],
+      ["addRelevantLegalEntity", ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL],
+      ["addOtherRegistrablePerson", ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_URL],
+      ["no", CHECK_YOUR_ANSWERS_URL]
+    ]);
+
+    const redirectUrl = reviewPageUrlMap.get(addAnotherPersonWithSignificantControl) ?? "";
+
+    return super.insertIdsInUrl(redirectUrl, ids, request.url);
   }
 }
 

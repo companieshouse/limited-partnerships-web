@@ -4,6 +4,7 @@ import IPersonWithSignificantControlGateway from "../../../domain/IPersonWithSig
 import { Tokens } from "../../../domain/types";
 import UIErrors, { ApiErrors } from "../../../domain/entities/UIErrors";
 import TransactionPersonWithSignificantControl from "../../../domain/entities/TransactionPersonWithSignificantControl";
+import { PersonWithSignificantControl } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 export default class PersonWithSignificantControlInMemoryGateway implements IPersonWithSignificantControlGateway {
   personWithSignificantControlId = crypto.randomUUID().toString();
@@ -44,6 +45,13 @@ export default class PersonWithSignificantControlInMemoryGateway implements IPer
     personWithSignificantControlId: string
   ): Promise<any> {
     return this.personsWithSignificantControl.find((psc) => psc._id === personWithSignificantControlId);
+  }
+
+  public async getPersonsWithSignificantControl(
+    _opt: Tokens,
+    _transactionId: string
+  ): Promise<PersonWithSignificantControl[]> {
+    return this.personsWithSignificantControl;
   }
 
   public async sendPageData(

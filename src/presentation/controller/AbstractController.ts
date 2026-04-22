@@ -98,6 +98,10 @@ abstract class AbstractController {
   }
 
   insertIdsInUrl(url: string, ids: Ids, requestUrl?: string): string {
+    if (!url) {
+      return url;
+    }
+
     if (requestUrl) {
       const requestUrlParam = requestUrl.split("?")[1];
       const urlParam = url.split("?")[1];

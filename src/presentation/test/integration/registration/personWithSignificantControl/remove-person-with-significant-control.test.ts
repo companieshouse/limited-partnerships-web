@@ -8,7 +8,7 @@ import cyPersonWithSignificantControlTranslationText from "../../../../../../loc
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 
-import PersonWithSignificantControlBuilder from "../../../builder/PersonWithSignificantControl";
+import PersonWithSignificantControlBuilder from "../../../builder/PersonWithSignificantControlBuilder";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import {
   REMOVE_PERSON_WITH_SIGNIFICANT_CONTROL_URL,

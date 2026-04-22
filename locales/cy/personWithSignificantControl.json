@@ -64,6 +64,26 @@
         "removePscPage": {
             "title": "WELSH - Are you sure you want to remove",
             "errorMessage": "WELSH - Select yes if you need to remove a PSC"
+        },
+        "reviewPage": {
+            "title": "WELSH - Review the people with significant control (PSCs) for this partnership",
+            "personsAdded": "WELSH - PSC's you have added so far:",
+            "individualPerson": "WELSH - Individual person",
+            "relevantLegalEntity": "WELSH - Relevant legal entity (RLE)",
+            "otherRegistrablePerson": "WELSH - Other registrable person (ORP)",
+            "addAnotherPersonWithSignificantControl": {
+                "title": "WELSH - Do you need to add another PSC?",
+                "addIndividualPerson": "WELSH - Yes, an individual person",
+                "addRelevantLegalEntity": "WELSH - Yes, a relevant legal entity (RLE)",
+                "addOtherRegistrablePerson": "WELSH - Yes, an other registrable person (ORP)"
+            },
+            "change": "WELSH - Change",
+            "remove": "WELSH - Remove",
+            "errorMessage": {
+                "beforeName": "WELSH - You must provide all information for",
+                "afterName": "WELSH - before continuing. Select Change to provide more information",
+                "noOptionSelected": "WELSH - Select if you need to add another PSC"
+            }
         }
     }
 }

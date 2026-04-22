@@ -18,7 +18,7 @@ import {
 } from "../../../../controller/registration/url";
 
 import RegistrationPageType from "../../../../controller/registration/PageType";
-import PersonWithSignificantControlBuilder from "../../../builder/PersonWithSignificantControl";
+import PersonWithSignificantControlBuilder from "../../../builder/PersonWithSignificantControlBuilder";
 import TransactionBuilder from "../../../builder/TransactionBuilder";
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
 import TransactionPersonWithSignificantControl from "../../../../../domain/entities/TransactionPersonWithSignificantControl";

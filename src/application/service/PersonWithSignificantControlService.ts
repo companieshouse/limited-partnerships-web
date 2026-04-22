@@ -2,7 +2,7 @@ import { PersonWithSignificantControl } from "@companieshouse/api-sdk-node/dist/
 
 import { Tokens } from "../../domain/types";
 import { logger } from "../../utils";
-import { extractAPIErrors } from "./utils";
+import { extractAPIErrors, incompletePersonWithSignificantControlErrorList } from "./utils";
 import UIErrors from "../../domain/entities/UIErrors";
 import IPersonWithSignificantControlGateway from "../../domain/IPersonWithSignificantControlGateway";
 
@@ -57,6 +57,33 @@ class PersonWithSignificantControlService {
       );
     } catch (error: any) {
       logger.error(`Error getting person with significant control ${JSON.stringify(error)}`);
+
+      throw error;
+    }
+  }
+
+  async getPersonsWithSignificantControl(
+    opt: Tokens,
+    transactionId: string,
+    checkCompletedField = true
+  ): Promise<{ personsWithSignificantControl: PersonWithSignificantControl[]; errors?: UIErrors }> {
+    try {
+      const personsWithSignificantControl = await this.personWithSignificantControlGateway.getPersonsWithSignificantControl(opt, transactionId);
+
+      let errorList = {};
+      if (checkCompletedField) {
+        errorList = incompletePersonWithSignificantControlErrorList(personsWithSignificantControl, this.i18n);
+      }
+
+      const uiErrors = new UIErrors();
+      uiErrors.formatValidationErrorToUiErrors({ errors: errorList });
+
+      return {
+        personsWithSignificantControl,
+        errors: uiErrors
+      };
+    } catch (error: any) {
+      logger.error(`Error getting Persons With Significant Control ${JSON.stringify(error)}`);
 
       throw error;
     }

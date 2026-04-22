@@ -106,14 +106,18 @@ abstract class PartnerController extends AbstractController {
 
         const { ids, pageRouting, tokens } = this.extractRequestData(request);
 
-        let result;
+        let generalPartner: GeneralPartner[] = [];
+        let limitedPartner: LimitedPartner[] = [];
+
         if (partner === PartnerType.generalPartner) {
-          result = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
+          const result = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
+          generalPartner = result?.generalPartners;
         } else if (partner === PartnerType.limitedPartner) {
-          result = await this.limitedPartnerService.getLimitedPartners(tokens, ids.transactionId);
+          const result = await this.limitedPartnerService.getLimitedPartners(tokens, ids.transactionId);
+          limitedPartner = result?.limitedPartners;
         }
 
-        if (result?.generalPartners?.length || result?.limitedPartners?.length) {
+        if (generalPartner?.length || limitedPartner?.length) {
           response.redirect(super.insertIdsInUrl(urls.reviewPartnersUrl, ids, request.url));
           return;
         }
@@ -198,14 +202,14 @@ abstract class PartnerController extends AbstractController {
 
         const { ids, pageRouting, tokens } = this.extractJourneyRequestData(request);
 
-        let result;
+        let result: { generalPartnerId?: string, limitedPartnerId?: string, errors?: UIErrors } = {};
         if (partner === PartnerType.generalPartner) {
           result = await this.generalPartnerService.createGeneralPartner(tokens, ids.transactionId, request.body);
         } else if (partner === PartnerType.limitedPartner) {
           result = await this.limitedPartnerService.createLimitedPartner(tokens, ids.transactionId, request.body);
         }
 
-        if (result.errors) {
+        if (result?.errors) {
           this.resetFormerNamesIfPreviousNameIsFalse(request.body);
 
           const { limitedPartnership } = await this.getEntities(tokens, ids);
@@ -223,11 +227,19 @@ abstract class PartnerController extends AbstractController {
           return;
         }
 
-        const newIds = {
-          ...ids,
-          generalPartnerId: result?.generalPartnerId,
-          limitedPartnerId: result?.limitedPartnerId
-        };
+        let newIds: Ids = { ...ids };
+
+        if (result?.generalPartnerId) {
+          newIds = {
+            ...ids,
+            generalPartnerId: result?.generalPartnerId
+          };
+        } else if (result?.limitedPartnerId) {
+          newIds = {
+            ...ids,
+            limitedPartnerId: result?.limitedPartnerId
+          };
+        }
 
         const url = super.insertIdsInUrl(pageRouting.nextUrl, newIds);
 
@@ -256,13 +268,18 @@ abstract class PartnerController extends AbstractController {
         const { ids, pageRouting, tokens } = this.extractJourneyRequestData(request);
 
         let result;
+        let generalPartners: GeneralPartner[] = [];
+        let limitedPartners: LimitedPartner[] = [];
+
         if (partner === PartnerType.generalPartner) {
           result = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
+          generalPartners = result?.generalPartners;
         } else if (partner === PartnerType.limitedPartner) {
           result = await this.limitedPartnerService.getLimitedPartners(tokens, ids.transactionId);
+          limitedPartners = result?.limitedPartners;
         }
 
-        const noPartners = !result?.limitedPartners?.length && !result?.generalPartners?.length;
+        const noPartners = !limitedPartners.length && !generalPartners.length;
 
         if (noPartners || result?.errors?.hasErrors()) {
           const { limitedPartnership } = await this.getEntities(tokens, ids);
@@ -273,8 +290,8 @@ abstract class PartnerController extends AbstractController {
               pageRouting,
               {
                 limitedPartnership,
-                generalPartners: result?.generalPartners ?? [],
-                limitedPartners: result?.limitedPartners ?? []
+                generalPartners: generalPartners ?? [],
+                limitedPartners: limitedPartners ?? []
               },
               result?.errors ?? null
             )

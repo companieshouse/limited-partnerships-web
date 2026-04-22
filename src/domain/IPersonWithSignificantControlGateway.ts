@@ -15,6 +15,11 @@ interface IPersonWithSignificantControlGateway {
     personWithSignificantControlId: string
   ): Promise<PersonWithSignificantControl>;
 
+  getPersonsWithSignificantControl(
+      opt: { access_token: string; refresh_token: string },
+      transactionId: string
+    ): Promise<PersonWithSignificantControl[]>;
+
   sendPageData(
     opt: Tokens,
     transactionId: string,

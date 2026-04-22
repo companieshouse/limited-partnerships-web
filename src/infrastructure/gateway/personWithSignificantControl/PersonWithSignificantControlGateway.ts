@@ -43,7 +43,7 @@ export default class PersonWithSignificantControlGateway implements IPersonWithS
     opt: Tokens,
     transactionId: string,
     personWithSignificantControlId: string
-  ): Promise<any> {
+  ): Promise<PersonWithSignificantControl> {
     const apiCall = {
       service: SDK_LIMITED_PARTNERSHIP_SERVICE,
       method: "getPersonWithSignificantControl",
@@ -57,6 +57,25 @@ export default class PersonWithSignificantControlGateway implements IPersonWithS
     }
 
     return response?.resource ?? {};
+  }
+
+  public async getPersonsWithSignificantControl(
+    opt: Tokens,
+    transactionId: string
+  ): Promise<PersonWithSignificantControl[]> {
+    const apiCall = {
+      service: SDK_LIMITED_PARTNERSHIP_SERVICE,
+      method: "getPersonsWithSignificantControl",
+      args: [transactionId]
+    };
+
+    const response = await makeApiCallWithRetry<Resource<PersonWithSignificantControl[]>>(opt, apiCall);
+
+    if (response.httpStatusCode !== 200) {
+      throw response;
+    }
+
+    return response?.resource ?? [];
   }
 
   public async sendPageData(
