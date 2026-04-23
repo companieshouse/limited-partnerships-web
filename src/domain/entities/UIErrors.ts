@@ -45,6 +45,10 @@ class UIErrors {
     return this.errors.errorList.length > 0;
   }
 
+  public getErrors(): UIValidationErrors {
+    return this.errors;
+  }
+
   private formatHrefValue(property: string): string {
     if (property === "data") {
       return "";
