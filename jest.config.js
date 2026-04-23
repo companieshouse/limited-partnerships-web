@@ -4,8 +4,11 @@ module.exports = {
   testPathIgnorePatterns: ['/node_modules/', '/dist/'],
   moduleFileExtensions: ['ts', 'js', 'json'],
   transform: {
-    '^.+\\.ts$': 'ts-jest',
+    '^.+\\.(ts|js)$': 'ts-jest',
   },
+  transformIgnorePatterns: [
+    '/node_modules/(?!uuid/)',
+  ],
   moduleDirectories: ['node_modules', 'src'],
   globalSetup: "./src/test/global.setup.ts",
   setupFilesAfterEnv: ['./src/test/setup-jest.ts'],
