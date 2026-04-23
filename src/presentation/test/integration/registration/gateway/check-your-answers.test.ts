@@ -30,7 +30,8 @@ describe("Transaction Gateway Update tests for the 'Check Your Answers' page", (
 
   it("should update the transaction in order to close it", async () => {
     const res = await request(appRealDependencies).post(URL).send({
-      pageType: RegistrationPageType.checkYourAnswers
+      pageType: RegistrationPageType.checkYourAnswers,
+      lawful_purpose_statement_checked: "true"
     });
 
     expect(putTransaction).toHaveBeenCalled();
@@ -52,7 +53,8 @@ describe("Transaction Gateway Update tests for the 'Check Your Answers' page", (
     });
 
     const res = await request(appRealDependencies).post(URL).send({
-      pageType: RegistrationPageType.checkYourAnswers
+      pageType: RegistrationPageType.checkYourAnswers,
+      lawful_purpose_statement_checked: "true"
     });
 
     expect(res.status).toBe(500);
@@ -72,7 +74,8 @@ describe("Transaction Gateway Update tests for the 'Check Your Answers' page", (
     });
 
     const res = await request(appRealDependencies).post(URL).send({
-      pageType: RegistrationPageType.checkYourAnswers
+      pageType: RegistrationPageType.checkYourAnswers,
+      lawful_purpose_statement_checked: "true"
     });
 
     expect(res.status).toBe(500);
@@ -95,7 +98,8 @@ describe("Transaction Gateway Update tests for the 'Check Your Answers' page", (
     });
 
     const res = await request(appRealDependencies).post(URL).send({
-      pageType: RegistrationPageType.checkYourAnswers
+      pageType: RegistrationPageType.checkYourAnswers,
+      lawful_purpose_statement_checked: "true"
     });
 
     expect(res.status).toBe(500);

@@ -16,6 +16,10 @@
             }
         },
 
+        "checkYourAnswers": {
+            "lawfulPurposeRequired": "Confirm that the intended future activities are lawful"
+        },
+
         "dateOfUpdate": {
             "registeredOfficeAddress": "Date the registered office address changed must be the same as or after limited partnership's registration date",
             "principalPlaceOfBusinessAddress": "Date the principal place of business changed must be the same as or after limited partnership's registration date",
