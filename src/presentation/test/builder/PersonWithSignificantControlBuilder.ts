@@ -1,3 +1,5 @@
+import { PersonWithSignificantControlType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
+
 import TransactionPersonWithSignificantControl from "../../../domain/entities/TransactionPersonWithSignificantControl";
 
 export const personWithSignificantControlRelevantLegalEntity = {
@@ -7,14 +9,14 @@ export const personWithSignificantControlRelevantLegalEntity = {
   legal_entity_register_name: "US Register",
   legal_entity_registration_location: "United States",
   registered_company_number: "12345678",
-  type: "RELEVANT_LEGAL_ENTITY"
+  type: PersonWithSignificantControlType.RELEVANT_LEGAL_ENTITY
 };
 
 export const personWithSignificantControlOtherRegistrablePerson = {
   legal_entity_name: "My Company ltd - ORP",
   legal_form: "Limited Company",
   governing_law: "Act of law",
-  type: "OTHER_REGISTRABLE_PERSON"
+  type: PersonWithSignificantControlType.OTHER_REGISTRABLE_PERSON
 };
 
 class PersonWithSignificantControlBuilder {
@@ -59,8 +61,7 @@ class PersonWithSignificantControlBuilder {
   isRelevantLegalEntity() {
     this.data = {
       ...this.data,
-      ...personWithSignificantControlRelevantLegalEntity,
-      type: "RELEVANT_LEGAL_ENTITY"
+      ...personWithSignificantControlRelevantLegalEntity
     };
     return this;
   }
@@ -68,8 +69,7 @@ class PersonWithSignificantControlBuilder {
   isOtherRegistrablePerson() {
     this.data = {
       ...this.data,
-      ...personWithSignificantControlOtherRegistrablePerson,
-      type: "OTHER_REGISTRABLE_PERSON"
+      ...personWithSignificantControlOtherRegistrablePerson
     };
     return this;
   }

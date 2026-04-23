@@ -115,7 +115,7 @@ class LimitedPartnershipController extends PartnershipController {
       const { generalPartners } = await this.generalPartnerService.getGeneralPartners(tokens, transactionId);
       const { limitedPartners } = await this.limitedPartnerService.getLimitedPartners(tokens, transactionId);
       const { personsWithSignificantControl } =
-        await this.personWithSignificantControlService.getPersonsWithSignificantControl(tokens, transactionId, false);
+        await this.personWithSignificantControlService.getPersonsWithSignificantControl(tokens, transactionId);
 
       return { generalPartners, limitedPartners, personsWithSignificantControl };
     }
