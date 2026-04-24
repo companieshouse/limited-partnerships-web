@@ -1,4 +1,5 @@
 import { Address, Jurisdiction } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+
 import UIErrors from "../../domain/entities/UIErrors";
 import IAddressLookUpGateway from "../../domain/IAddressLookUpGateway";
 
