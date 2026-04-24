@@ -165,7 +165,7 @@ export const validateFormerNamesNotEmptyIfPreviousNameIsTrue = (data: Record<str
 };
 
 export const snakeToNormalCase = (str: string): string => {
-  if (!str) {return str;}
+  if (!str) { return str; }
 
   return str.replace(/_+/g, " ").trim().toLowerCase();
 };
