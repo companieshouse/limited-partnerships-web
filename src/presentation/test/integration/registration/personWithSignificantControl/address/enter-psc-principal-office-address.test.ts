@@ -5,6 +5,8 @@ import enGeneralTranslationText from "../../../../../../../locales/en/translatio
 import cyGeneralTranslationText from "../../../../../../../locales/cy/translations.json";
 import enAddressTranslationText from "../../../../../../../locales/en/address.json";
 import cyAddressTranslationText from "../../../../../../../locales/cy/address.json";
+import enErrorsTranslationText from "../../../../../../../locales/en/errors.json";
+import cyErrorsTranslationText from "../../../../../../../locales/cy/errors.json";
 
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
@@ -21,8 +23,8 @@ import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBuilder";
 
 describe("Enter person with significant control's principal office manual address page", () => {
-  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
-  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText };
+  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText, ...enErrorsTranslationText };
+  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText, ...cyErrorsTranslationText };
   const URL_RELEVANT_LEGAL_ENTITY = getUrl(
     ENTER_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL
   );
@@ -133,7 +135,7 @@ describe("Enter person with significant control's principal office manual addres
 
         expect(res.status).toBe(200);
 
-        expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.postcodeFormat);
+        expect(res.text).toContain(enTranslationText.errorMessages.address.postcodeFormat);
         expect(res.text).toContain(enTranslationText.govUk.error.title);
 
         expect(res.text).toContain(personWithSignificantControl?.data?.legal_entity_name?.toUpperCase());
@@ -204,31 +206,11 @@ describe("Enter person with significant control's principal office manual addres
             region: "±"
           });
         expect(res.status).toBe(200);
-        expect(res.text).toContain(
-          enTranslationText.address.enterAddress.premises +
-            " " +
-            enTranslationText.address.enterAddress.errorMessages.invalidCharacters
-        );
-        expect(res.text).toContain(
-          enTranslationText.address.enterAddress.addressLine1 +
-            " " +
-            enTranslationText.address.enterAddress.errorMessages.invalidCharacters
-        );
-        expect(res.text).toContain(
-          enTranslationText.address.enterAddress.addressLine2Title +
-            " " +
-            enTranslationText.address.enterAddress.errorMessages.invalidCharacters
-        );
-        expect(res.text).toContain(
-          enTranslationText.address.enterAddress.locality +
-            " " +
-            enTranslationText.address.enterAddress.errorMessages.invalidCharacters
-        );
-        expect(res.text).toContain(
-          enTranslationText.address.enterAddress.regionTitle +
-            " " +
-            enTranslationText.address.enterAddress.errorMessages.invalidCharacters
-        );
+        expect(res.text).toContain(enTranslationText.errorMessages.address.premisesInvalid);
+        expect(res.text).toContain(enTranslationText.errorMessages.address.addressLine1Invalid);
+        expect(res.text).toContain(enTranslationText.errorMessages.address.addressLine2Invalid);
+        expect(res.text).toContain(enTranslationText.errorMessages.address.localityInvalid);
+        expect(res.text).toContain(enTranslationText.errorMessages.address.regionInvalid);
         expect(res.text).toContain(enTranslationText.govUk.error.title);
       }
     );
@@ -263,11 +245,11 @@ describe("Enter person with significant control's principal office manual addres
 
         expect(res.status).toBe(200);
 
-        expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.premisesLength);
-        expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.addressLine1Length);
-        expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.addressLine2Length);
-        expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.localityLength);
-        expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.regionLength);
+        expect(res.text).toContain(enTranslationText.errorMessages.address.premisesLength);
+        expect(res.text).toContain(enTranslationText.errorMessages.address.addressLine1Length);
+        expect(res.text).toContain(enTranslationText.errorMessages.address.addressLine2Length);
+        expect(res.text).toContain(enTranslationText.errorMessages.address.localityLength);
+        expect(res.text).toContain(enTranslationText.errorMessages.address.regionLength);
       }
     );
   });

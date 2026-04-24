@@ -3,6 +3,7 @@ import UIErrors from "../../domain/entities/UIErrors";
 import IAddressLookUpGateway from "../../domain/IAddressLookUpGateway";
 
 import { logger } from "../../utils";
+import AddressValidator from "../../domain/entities/Address";
 
 class AddressService {
   private static readonly UK_COUNTRIES: Set<string> = new Set(["Scotland", "Northern Ireland", "England", "Wales"]);
@@ -16,10 +17,17 @@ class AddressService {
 
   i18n: any;
 
-  constructor(private readonly addressGateway: IAddressLookUpGateway) {}
+  constructor(
+    private readonly addressGateway: IAddressLookUpGateway,
+    private addressValidator: AddressValidator
+  ) {}
 
   setI18n(i18n: any) {
     this.i18n = i18n;
+  }
+
+  runValidation(address: Address): UIErrors | undefined {
+    return this.addressValidator.set(address, this.i18n).runValidation();
   }
 
   async isValidUKPostcodeAndHasAnAddress(
@@ -291,11 +299,11 @@ class AddressService {
       if (!isValid) {
         uiErrors ??= new UIErrors();
 
-        this.setFieldError(uiErrors, "country", this.i18n?.address?.enterAddress?.errorMessages?.jurisdictionCountry);
+        this.setFieldError(uiErrors, "country", this.i18n?.errorMessages?.address?.jurisdictionCountry);
       }
-
-      return uiErrors;
     }
+
+    return uiErrors;
   }
 }
 

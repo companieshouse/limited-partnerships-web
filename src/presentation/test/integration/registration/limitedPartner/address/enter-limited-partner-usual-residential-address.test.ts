@@ -4,12 +4,13 @@ import enGeneralTranslationText from "../../../../../../../locales/en/translatio
 import cyGeneralTranslationText from "../../../../../../../locales/cy/translations.json";
 import enAddressTranslationText from "../../../../../../../locales/en/address.json";
 import cyAddressTranslationText from "../../../../../../../locales/cy/address.json";
+import enErrorsTranslationText from "../../../../../../../locales/en/errors.json";
+import cyErrorsTranslationText from "../../../../../../../locales/cy/errors.json";
 
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import * as config from "../../../../../../config";
-import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
 
 import {
   CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
@@ -25,8 +26,8 @@ import LimitedPartnerBuilder, {
 } from "../../../../builder/LimitedPartnerBuilder";
 
 describe("Enter Limited Partner Usual Residential Address Page", () => {
-  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
-  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText };
+  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText, ...enErrorsTranslationText };
+  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText, ...cyErrorsTranslationText };
   const URL = getUrl(ENTER_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
   const redirectUrl = getUrl(CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
 
@@ -227,21 +228,17 @@ describe("Enter Limited Partner Usual Residential Address Page", () => {
 
       appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
 
-      const apiErrors: ApiErrors = {
-        errors: {
-          "usualResidentialAddress.postalCode": "must not be null"
-        }
-      };
-
-      appDevDependencies.limitedPartnerGateway.feedErrors(apiErrors);
-
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.confirmRegisteredOfficeAddress,
-        address: `{"postal_code": "","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": "England"}`
+        postal_code: "",
+        premises: "4",
+        address_line_1: "DUNCALF STREET",
+        address_line_2: "",
+        locality: "STOKE-ON-TRENT",
+        country: "France"
       });
 
       expect(res.status).toBe(302);
-      expect(res.text).not.toContain("must not be null");
     });
 
     it("should not return a validation error when an overseas address and postcode does not conform to UK format", async () => {
@@ -281,7 +278,7 @@ describe("Enter Limited Partner Usual Residential Address Page", () => {
         });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.postcodeFormat);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.postcodeFormat);
       expect(res.text).toContain(enTranslationText.govUk.error.title);
       expect(res.text).toContain(limitedPartner.data?.legal_entity_name?.toUpperCase());
     });
@@ -328,31 +325,11 @@ describe("Enter Limited Partner Usual Residential Address Page", () => {
         });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(
-        enTranslationText.address.enterAddress.premises +
-          " " +
-          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
-      );
-      expect(res.text).toContain(
-        enTranslationText.address.enterAddress.addressLine1 +
-          " " +
-          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
-      );
-      expect(res.text).toContain(
-        enTranslationText.address.enterAddress.addressLine2Title +
-          " " +
-          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
-      );
-      expect(res.text).toContain(
-        enTranslationText.address.enterAddress.locality +
-          " " +
-          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
-      );
-      expect(res.text).toContain(
-        enTranslationText.address.enterAddress.regionTitle +
-          " " +
-          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
-      );
+      expect(res.text).toContain(enTranslationText.errorMessages.address.premisesInvalid);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.addressLine1Invalid);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.addressLine2Invalid);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.localityInvalid);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.regionInvalid);
       expect(res.text).toContain(enTranslationText.govUk.error.title);
     });
 
@@ -375,11 +352,11 @@ describe("Enter Limited Partner Usual Residential Address Page", () => {
         });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.premisesLength);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.addressLine1Length);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.addressLine2Length);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.localityLength);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.regionLength);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.premisesLength);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.addressLine1Length);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.addressLine2Length);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.localityLength);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.regionLength);
     });
   });
 });

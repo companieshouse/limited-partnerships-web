@@ -305,6 +305,7 @@ class AddressLookUpController extends AbstractController {
         };
 
         const { tokens, pageType, ids } = super.extract(request);
+        super.extractPageTypeOrThrowError(request, AddressLookUpPageType);
 
         let limitedPartnership;
         if (ids.transactionId && ids.submissionId) {
@@ -318,12 +319,7 @@ class AddressLookUpController extends AbstractController {
         const addressRouting = this.getAddressRouting(request.url);
         const pageRouting = super.getRouting(addressRouting, pageType, request);
 
-        let errors: UIErrors | undefined;
-        if (MANUAL_PAGES.has(pageType)) {
-          errors = this.addressService.validateAddressCharactersAndLength(address, errors);
-
-          errors = this.addressService.isValidPostcode(postal_code ?? "", country, errors);
-        }
+        let errors: UIErrors | undefined = this.addressService.runValidation(address);
 
         if (LIMITED_PARTNERSHIP_MANUAL_PAGES.has(pageType)) {
           errors = this.addressService.isValidJurisdictionAndCountry(

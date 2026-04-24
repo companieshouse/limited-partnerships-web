@@ -31,7 +31,7 @@ describe("Address validation", () => {
       }
     ]
   ])("should return no errors for valid %s", (_description: string, address: Record<string, string>) => {
-    const addressValidator = new AddressValidator(address, enTranslationText);
+    const addressValidator = new AddressValidator().set(address, enTranslationText);
     const errors = addressValidator.runValidation();
 
     expect(errors.hasErrors()).toBe(false);
@@ -46,7 +46,7 @@ describe("Address validation", () => {
       "Enter a UK mainland postcode"
     ]
   ])("should return errors for %s", (_description: string, address: Record<string, string>, errorMessage: string) => {
-    const addressValidator = new AddressValidator(address, enTranslationText);
+    const addressValidator = new AddressValidator().set(address, enTranslationText);
     const errors = addressValidator.runValidation();
 
     expect(errors.hasErrors()).toBe(true);
@@ -64,7 +64,7 @@ describe("Address validation", () => {
   });
 
   it("should return errors for empty fields", () => {
-    const addressValidator = new AddressValidator({}, enTranslationText);
+    const addressValidator = new AddressValidator().set({}, enTranslationText);
     const errors = addressValidator.runValidation();
 
     expect(errors.hasErrors()).toBe(true);
@@ -113,7 +113,7 @@ describe("Address validation", () => {
   });
 
   it("should return errors for invalids characters", () => {
-    const addressValidator = new AddressValidator(
+    const addressValidator = new AddressValidator().set(
       {
         premises: "~",
         address_line_1: "~",
@@ -134,16 +134,16 @@ describe("Address validation", () => {
           text: "Property name or number must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes"
         },
         address_line_1: {
-          text: "Address line 1 must only include letters a to z, and common special characters such as hyphens, spaces and apostrophes"
+          text: "Address line 1 must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes"
         },
         address_line_2: {
-          text: "Address line 2 must only include letters a to z, and common special characters such as hyphens, spaces and apostrophes"
+          text: "Address line 2 must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes"
         },
         region: {
-          text: "County must only include letters a to z, and common special characters such as hyphens, spaces and apostrophes"
+          text: "County must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes"
         },
         locality: {
-          text: "Town or city must only include letters a to z, and common special characters such as hyphens, spaces and apostrophes"
+          text: "Town or city must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes"
         },
         postal_code: {
           text: "Postcode must only include letters a to z, numbers and spaces"
@@ -156,19 +156,19 @@ describe("Address validation", () => {
           },
           {
             href: "#address_line_1",
-            text: "Address line 1 must only include letters a to z, and common special characters such as hyphens, spaces and apostrophes"
+            text: "Address line 1 must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes"
           },
           {
             href: "#address_line_2",
-            text: "Address line 2 must only include letters a to z, and common special characters such as hyphens, spaces and apostrophes"
+            text: "Address line 2 must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes"
           },
           {
             href: "#region",
-            text: "County must only include letters a to z, and common special characters such as hyphens, spaces and apostrophes"
+            text: "County must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes"
           },
           {
             href: "#locality",
-            text: "Town or city must only include letters a to z, and common special characters such as hyphens, spaces and apostrophes"
+            text: "Town or city must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes"
           },
           {
             href: "#postal_code",
@@ -180,7 +180,7 @@ describe("Address validation", () => {
   });
 
   it("should return errors when fileds exceed character limit", () => {
-    const addressValidator = new AddressValidator(
+    const addressValidator = new AddressValidator().set(
       {
         premises: "a".repeat(201),
         address_line_1: "a".repeat(51),
@@ -188,7 +188,7 @@ describe("Address validation", () => {
         region: "a".repeat(51),
         locality: "a".repeat(51),
         postal_code: "a".repeat(21),
-        country: "UK"
+        country: "France"
       },
       enTranslationText
     );

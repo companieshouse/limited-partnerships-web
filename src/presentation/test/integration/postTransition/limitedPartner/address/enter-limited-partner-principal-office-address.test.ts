@@ -5,6 +5,8 @@ import enGeneralTranslationText from "../../../../../../../locales/en/translatio
 import cyGeneralTranslationText from "../../../../../../../locales/cy/translations.json";
 import enAddressTranslationText from "../../../../../../../locales/en/address.json";
 import cyAddressTranslationText from "../../../../../../../locales/cy/address.json";
+import enErrorsTranslationText from "../../../../../../../locales/en/errors.json";
+import cyErrorsTranslationText from "../../../../../../../locales/cy/errors.json";
 
 import app from "../../../app";
 import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
@@ -25,8 +27,8 @@ import {
 import { UPDATE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL } from "../../../../../controller/postTransition/url";
 
 describe("Enter limited partner's principal office manual address page", () => {
-  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
-  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText };
+  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText, ...enErrorsTranslationText };
+  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText, ...cyErrorsTranslationText };
   const URL = getUrl(ENTER_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
 
   beforeEach(() => {
@@ -42,49 +44,58 @@ describe("Enter limited partner's principal office manual address page", () => {
       ["update", "en"],
       ["add", "cy"],
       ["update", "cy"]
-    ])("should load enter limited partners principal office address page - %s", async (
-      journey: string,
-      lang: string
-    ) => {
-      const translationText = lang === "en" ? enTranslationText : cyTranslationText;
-      const transactionKind = journey === "add" ? PartnerKind.ADD_LIMITED_PARTNER_LEGAL_ENTITY : PartnerKind.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY;
+    ])(
+      "should load enter limited partners principal office address page - %s",
+      async (journey: string, lang: string) => {
+        const translationText = lang === "en" ? enTranslationText : cyTranslationText;
+        const transactionKind =
+          journey === "add" ?
+            PartnerKind.ADD_LIMITED_PARTNER_LEGAL_ENTITY
+            : PartnerKind.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY;
 
-      const transaction = new TransactionBuilder().withKind(transactionKind).build();
-      appDevDependencies.transactionGateway.feedTransactions([transaction]);
+        const transaction = new TransactionBuilder().withKind(transactionKind).build();
+        appDevDependencies.transactionGateway.feedTransactions([transaction]);
 
-      const limitedPartner = new LimitedPartnerBuilder()
-        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .withKind(transactionKind)
-        .isLegalEntity()
-        .build();
+        const limitedPartner = new LimitedPartnerBuilder()
+          .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+          .withKind(transactionKind)
+          .isLegalEntity()
+          .build();
 
-      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
+        appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
 
-      const res = await request(app).get(URL + `?lang=${lang}`);
+        const res = await request(app).get(URL + `?lang=${lang}`);
 
-      expect(res.status).toBe(200);
-      testTranslations(res.text, translationText.address.enterAddress, [
-        "registeredOfficeAddress",
-        "principalPlaceOfBusinessAddress",
-        "jurisdictionCountry",
-        "postcodeMissing",
-        "usualResidentialAddress",
-        "correspondenceAddress",
-        "errorMessages",
-        "generalPartner",
-        "personWithSignificantControl"
-      ]);
+        expect(res.status).toBe(200);
+        testTranslations(res.text, translationText.address.enterAddress, [
+          "registeredOfficeAddress",
+          "principalPlaceOfBusinessAddress",
+          "jurisdictionCountry",
+          "postcodeMissing",
+          "usualResidentialAddress",
+          "correspondenceAddress",
+          "errorMessages",
+          "generalPartner",
+          "personWithSignificantControl"
+        ]);
 
-      expect(res.text).not.toContain(limitedPartnerPerson.forename?.toUpperCase());
-      expect(res.text).not.toContain(limitedPartnerPerson.surname?.toUpperCase());
-      expect(res.text).toContain(limitedPartnerLegalEntity.legal_entity_name?.toUpperCase());
+        expect(res.text).not.toContain(limitedPartnerPerson.forename?.toUpperCase());
+        expect(res.text).not.toContain(limitedPartnerPerson.surname?.toUpperCase());
+        expect(res.text).toContain(limitedPartnerLegalEntity.legal_entity_name?.toUpperCase());
 
-      const expectedServiceName = journey === "add" ? translationText.serviceName.addLimitedPartner : translationText.serviceName.updateLimitedPartnerLegalEntity;
-      expect(countOccurrences(res.text, toEscapedHtml(expectedServiceName))).toBe(2);
+        const expectedServiceName =
+          journey === "add" ?
+            translationText.serviceName.addLimitedPartner
+            : translationText.serviceName.updateLimitedPartnerLegalEntity;
+        expect(countOccurrences(res.text, toEscapedHtml(expectedServiceName))).toBe(2);
 
-      const BACK_LINK = journey === "add" ? getUrl(POSTCODE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL) : getUrl(UPDATE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL);
-      expect(res.text).toContain(BACK_LINK);
-    });
+        const BACK_LINK =
+          journey === "add" ?
+            getUrl(POSTCODE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL)
+            : getUrl(UPDATE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL);
+        expect(res.text).toContain(BACK_LINK);
+      }
+    );
   });
 
   describe("Post enter limited partner's principal office address page", () => {
@@ -142,7 +153,7 @@ describe("Enter limited partner's principal office manual address page", () => {
         });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.postcodeFormat);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.postcodeFormat);
       expect(res.text).toContain(enTranslationText.govUk.error.title);
       expect(res.text).toContain(
         `${limitedPartner.data?.forename?.toUpperCase()} ${limitedPartner.data?.surname?.toUpperCase()}`
@@ -191,31 +202,11 @@ describe("Enter limited partner's principal office manual address page", () => {
         });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(
-        enTranslationText.address.enterAddress.premises +
-          " " +
-          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
-      );
-      expect(res.text).toContain(
-        enTranslationText.address.enterAddress.addressLine1 +
-          " " +
-          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
-      );
-      expect(res.text).toContain(
-        enTranslationText.address.enterAddress.addressLine2Title +
-          " " +
-          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
-      );
-      expect(res.text).toContain(
-        enTranslationText.address.enterAddress.locality +
-          " " +
-          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
-      );
-      expect(res.text).toContain(
-        enTranslationText.address.enterAddress.regionTitle +
-          " " +
-          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
-      );
+      expect(res.text).toContain(enTranslationText.errorMessages.address.premisesInvalid);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.addressLine1Invalid);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.addressLine2Invalid);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.localityInvalid);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.regionInvalid);
       expect(res.text).toContain(enTranslationText.govUk.error.title);
     });
 
@@ -238,11 +229,11 @@ describe("Enter limited partner's principal office manual address page", () => {
         });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.premisesLength);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.addressLine1Length);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.addressLine2Length);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.localityLength);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.regionLength);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.premisesLength);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.addressLine1Length);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.addressLine2Length);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.localityLength);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.regionLength);
     });
   });
 });
