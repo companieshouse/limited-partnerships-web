@@ -146,7 +146,7 @@ describe("Confirm Limited Partner Usual Residential Address Page", () => {
         });
 
         expect(res.status).toBe(200);
-        expect(res.text).toContain(errorMessagesJson.errorMessages.address.countryMissing);
+        expect(res.text).toContain(errorMessagesJson.errorMessages.address.confirm.countryMissing);
       }
     );
   });

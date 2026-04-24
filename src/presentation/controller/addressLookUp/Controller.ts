@@ -396,7 +396,7 @@ class AddressLookUpController extends AbstractController {
         const isLimitedPartnerAddress = LIMITED_PARTNER_PAGES.has(pageType);
         const isPersonWithSignificantControlAddress = PERSON_WITH_SIGNIFICANT_CONTROL_PAGES.has(pageType);
 
-        const uiErrors = this.addressService.runValidation(address);
+        const uiErrors = this.addressService.hasCountry(address);
 
         // store in api
         let result;
@@ -631,7 +631,7 @@ class AddressLookUpController extends AbstractController {
     }
 
     if (pageRouting.pageType === AddressLookUpPageType.confirmRegisteredOfficeAddress) {
-      if (limitedPartnership.data?.principal_place_of_business_address) {
+      if (limitedPartnership?.data?.principal_place_of_business_address) {
         pageRouting.nextUrl = super.insertIdsInUrl(CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL, ids, request.url);
       }
     } else if (pageRouting.pageType === AddressLookUpPageType.confirmPrincipalPlaceOfBusinessAddress) {

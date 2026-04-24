@@ -172,6 +172,16 @@ class AddressService {
       throw error;
     }
   }
+
+  public hasCountry(address: Address): UIErrors {
+    const uiErrors = new UIErrors();
+
+    if (!address.country) {
+      uiErrors.setWebError("change", this.i18n?.errorMessages?.address?.confirm?.countryMissing);
+    }
+
+    return uiErrors;
+  }
 }
 
 export default AddressService;

@@ -44,20 +44,20 @@ class AddressValidator {
   }
 
   private isEmpty(uiErrors: UIErrors): UIErrors {
-    if (!this.premises) {
+    if (!this.premises?.trim()) {
       uiErrors.setWebError(this.premisesFieldName, this.errorMessages?.premisesMissing);
     }
-    if (!this.address_line_1) {
+    if (!this.address_line_1?.trim()) {
       uiErrors.setWebError("address_line_1", this.errorMessages?.addressLine1Missing);
     }
-    if (!this.locality) {
+    if (!this.locality?.trim()) {
       uiErrors.setWebError(this.localityFieldName, this.errorMessages?.localityMissing);
     }
-    const noCountryOrUkCountry = !this.country || (this.country && this.ukCountries.has(this.country));
-    if (noCountryOrUkCountry && !this.postal_code) {
+    const noCountryOrUkCountry = !this.country || (this.country?.trim() && this.ukCountries.has(this.country));
+    if (noCountryOrUkCountry && !this.postal_code?.trim()) {
       uiErrors.setWebError(this.postcodeFieldName, this.errorMessages?.postcodeMissing);
     }
-    if (!this.country) {
+    if (!this.country?.trim()) {
       uiErrors.setWebError("country", this.errorMessages?.countryMissing);
     }
 
