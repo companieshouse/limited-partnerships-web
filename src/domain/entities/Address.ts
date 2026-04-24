@@ -3,19 +3,23 @@ import { Address } from "@companieshouse/api-sdk-node/dist/services/limited-part
 import UIErrors from "./UIErrors";
 
 class AddressValidator {
-  premises?: string;
-  address_line_1?: string;
-  address_line_2?: string;
-  region?: string;
-  locality?: string;
-  postal_code?: string;
-  country?: string;
+  private premises?: string;
+  private address_line_1?: string;
+  private address_line_2?: string;
+  private region?: string;
+  private locality?: string;
+  private postal_code?: string;
+  private country?: string;
 
-  errorMessages: Record<string, string> = {};
+  private errorMessages: Record<string, string> = {};
 
-  ukCountries: Set<string> = new Set(["Scotland", "Northern Ireland", "England", "Wales"]);
+  private readonly ukCountries: Set<string> = new Set(["Scotland", "Northern Ireland", "England", "Wales"]);
 
-  set(address: Partial<Address>, i18n: any): AddressValidator {
+  private readonly premisesFieldName = "premises";
+  private readonly localityFieldName = "locality";
+  private readonly postcodeFieldName = "postal_code";
+
+  set(address: Partial<Address>, i18n: any): this {
     this.premises = address.premises;
     this.address_line_1 = address.address_line_1;
     this.address_line_2 = address.address_line_2;
@@ -41,17 +45,17 @@ class AddressValidator {
 
   private isEmpty(uiErrors: UIErrors): UIErrors {
     if (!this.premises) {
-      uiErrors.setWebError("premises", this.errorMessages?.premisesMissing);
+      uiErrors.setWebError(this.premisesFieldName, this.errorMessages?.premisesMissing);
     }
     if (!this.address_line_1) {
       uiErrors.setWebError("address_line_1", this.errorMessages?.addressLine1Missing);
     }
     if (!this.locality) {
-      uiErrors.setWebError("locality", this.errorMessages?.localityMissing);
+      uiErrors.setWebError(this.localityFieldName, this.errorMessages?.localityMissing);
     }
     const noCountryOrUkCountry = !this.country || (this.country && this.ukCountries.has(this.country));
     if (noCountryOrUkCountry && !this.postal_code) {
-      uiErrors.setWebError("postal_code", this.errorMessages?.postcodeMissing);
+      uiErrors.setWebError(this.postcodeFieldName, this.errorMessages?.postcodeMissing);
     }
     if (!this.country) {
       uiErrors.setWebError("country", this.errorMessages?.countryMissing);
@@ -63,7 +67,6 @@ class AddressValidator {
   private isValidCharacters(uiErrors: UIErrors): UIErrors {
     const validCharactersRegex =
       /^[-,.:; 0-9A-Z&@$£¥€'"«»?!/\\()[\]{}<>*=#%+ÀÁÂÃÄÅĀĂĄÆǼÇĆĈĊČÞĎÐÈÉÊËĒĔĖĘĚĜĞĠĢĤĦÌÍÎÏĨĪĬĮİĴĶĹĻĽĿŁÑŃŅŇŊÒÓÔÕÖØŌŎŐǾŒŔŖŘŚŜŞŠŢŤŦÙÚÛÜŨŪŬŮŰŲŴẀẂẄỲÝŶŸŹŻŽa-zſƒǺàáâãäåāăąæǽçćĉċčþďðèéêëēĕėęěĝģğġĥħìíîïĩīĭįĵķĺļľŀłñńņňŋòóôõöøōŏőǿœŕŗřśŝşšţťŧùúûüũūŭůűųŵẁẃẅỳýŷÿźżž]*$/;
-    const validUkPostalCodeCharactersRegex = /^[A-Za-z]{1,2}\d[A-Za-z\d]? ?\d[A-Za-z]{2}$/;
 
     const conditionNotMet = (value: string) => !validCharactersRegex.test(value);
     this.fieldsValidation("Invalid", conditionNotMet, uiErrors);
@@ -71,16 +74,22 @@ class AddressValidator {
     const ukPostcodeLettersNotMailand: Set<string> = new Set(["JE", "GY", "IM"]);
 
     if (this.country && this.ukCountries.has(this.country)) {
-      if (this.postal_code && ukPostcodeLettersNotMailand.has(this.postal_code.slice(0, 2))) {
-        uiErrors.setWebError("postal_code", this.errorMessages?.notMainland);
-      } else if (this.postal_code && !validUkPostalCodeCharactersRegex.test(this.postal_code)) {
-        uiErrors.setWebError("postal_code", this.errorMessages?.postcodeFormat);
-      }
+      this.isValidPostcode(ukPostcodeLettersNotMailand, uiErrors);
     } else if (this.postal_code && !validCharactersRegex.test(this.postal_code)) {
-      uiErrors.setWebError("postal_code", this.errorMessages?.postcodeInvalid);
+      uiErrors.setWebError(this.postcodeFieldName, this.errorMessages?.postcodeInvalid);
     }
 
     return uiErrors;
+  }
+
+  private isValidPostcode(ukPostcodeLettersNotMailand: Set<string>, uiErrors: UIErrors) {
+    const validUkPostalCodeCharactersRegex = /^[A-Za-z]{1,2}\d[A-Za-z\d]? ?\d[A-Za-z]{2}$/;
+
+    if (this.postal_code && ukPostcodeLettersNotMailand.has(this.postal_code.slice(0, 2))) {
+      uiErrors.setWebError(this.postcodeFieldName, this.errorMessages?.notMainland);
+    } else if (this.postal_code && !validUkPostalCodeCharactersRegex.test(this.postal_code)) {
+      uiErrors.setWebError(this.postcodeFieldName, this.errorMessages?.postcodeFormat);
+    }
   }
 
   private checkAddressFieldForCharacterLimit(uiErrors: UIErrors): UIErrors {
@@ -89,11 +98,11 @@ class AddressValidator {
     const postcodeMaxLength = 20;
 
     if (this.postal_code && this.postal_code?.length > postcodeMaxLength) {
-      uiErrors.setWebError("postal_code", this.errorMessages?.postalCodeLength);
+      uiErrors.setWebError(this.postcodeFieldName, this.errorMessages?.postalCodeLength);
     }
 
     const conditionNotMet = (value: string, fieldName?: string) => {
-      if (fieldName === "premises") {
+      if (fieldName === this.premisesFieldName) {
         return value.length > premisesMaxLength;
       } else {
         return value.length > maxLength;
@@ -110,11 +119,11 @@ class AddressValidator {
     uiErrors: UIErrors
   ) {
     const fieldNames: Record<string, string> = {
-      premises: "premises" + suffix,
+      premises: this.premisesFieldName + suffix,
       address_line_1: "addressLine1" + suffix,
       address_line_2: "addressLine2" + suffix,
       region: "region" + suffix,
-      locality: "locality" + suffix
+      locality: this.localityFieldName + suffix
     };
 
     for (const fieldName of Object.keys(fieldNames) as Array<keyof AddressValidator>) {

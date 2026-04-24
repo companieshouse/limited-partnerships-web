@@ -211,7 +211,7 @@ describe("Confirm PSC Principal Office Address Page", () => {
         });
 
         expect(res.status).toBe(200);
-        expect(res.text).toContain(errorMessagesJson.errorMessages.address.confirm.countryMissing);
+        expect(res.text).toContain(errorMessagesJson.errorMessages.address.countryMissing);
       }
     );
   });

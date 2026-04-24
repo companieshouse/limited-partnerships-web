@@ -192,14 +192,7 @@
             "nameOrNumber": "WELSH - Property name or number (optional)",
             "postcode": "WELSH - Postcode",
             "enterAddressManually": "WELSH - Enter address manually",
-            "findAddress": "WELSH - Find address",
-
-            "errorMessages": {
-                "jurisdictionEnglandAndWales": "WELSH - You must enter a postcode which is in England or Wales",
-                "jurisdictionNorthernIreland": "WELSH - You must enter a postcode which is in Northern Ireland",
-                "jurisdictionScotland": "WELSH - You must enter a postcode which is in Scotland",
-                "notMainland": "WELSH - Enter a UK mainland postcode"
-            }
+            "findAddress": "WELSH - Find address"
         },
 
          "registeredOffice": {

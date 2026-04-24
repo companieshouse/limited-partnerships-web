@@ -396,7 +396,7 @@ class AddressLookUpController extends AbstractController {
         const isLimitedPartnerAddress = LIMITED_PARTNER_PAGES.has(pageType);
         const isPersonWithSignificantControlAddress = PERSON_WITH_SIGNIFICANT_CONTROL_PAGES.has(pageType);
 
-        const uiErrors = this.addressService.hasCountry(address);
+        const uiErrors = this.addressService.runValidation(address);
 
         // store in api
         let result;

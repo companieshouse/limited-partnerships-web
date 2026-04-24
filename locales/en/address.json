@@ -193,14 +193,7 @@
             "nameOrNumber": "Property name or number (optional)",
             "postcode": "Postcode",
             "enterAddressManually": "Enter address manually",
-            "findAddress": "Find address",
-
-            "errorMessages": {
-                "jurisdictionEnglandAndWales": "You must enter a postcode which is in England or Wales",
-                "jurisdictionNorthernIreland": "You must enter a postcode which is in Northern Ireland",
-                "jurisdictionScotland": "You must enter a postcode which is in Scotland",
-                "notMainland": "Enter a UK mainland postcode"
-            }
+            "findAddress": "Find address"
         },
 
         "registeredOffice": {
