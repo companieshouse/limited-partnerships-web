@@ -839,9 +839,9 @@ class AddressLookUpController extends AbstractController {
   private async renderTerritoryChoicePageWithError(request: Request, pageRouting: PageRouting, response: Response) {
     const { tokens, ids, pageType } = super.extract(request);
 
-    const errorMessage = response.locals.i18n?.address?.territoryChoice.errorMessages.noOptionSelectedStart
+    const errorMessage = response.locals.i18n?.errorMessages?.address?.territoryChoice?.noOptionSelectedStart
       + snakeToNormalCase(pageRouting.data?.[AddressCacheKeys.addressCacheKey])
-      + response.locals.i18n?.address?.territoryChoice.errorMessages.noOptionSelectedEnd;
+      + response.locals.i18n?.errorMessages?.address?.territoryChoice?.noOptionSelectedEnd;
 
     const uiErrors = new UIErrors().setWebError(
       "parameter",

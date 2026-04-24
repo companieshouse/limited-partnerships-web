@@ -4,6 +4,8 @@ import enGeneralTranslationText from "../../../../../../../locales/en/translatio
 import cyGeneralTranslationText from "../../../../../../../locales/cy/translations.json";
 import enAddressTranslationText from "../../../../../../../locales/en/address.json";
 import cyAddressTranslationText from "../../../../../../../locales/cy/address.json";
+import enErrorTranslationText from "../../../../../../../locales/en/errors.json";
+import cyErrorTranslationText from "../../../../../../../locales/cy/errors.json";
 
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
@@ -20,8 +22,8 @@ import {
 import GeneralPartnerBuilder, { generalPartnerPerson } from "../../../../builder/GeneralPartnerBuilder";
 
 describe("General Partner Usual Residential Address Territory Choice", () => {
-  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
-  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText };
+  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText, ...enErrorTranslationText };
+  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText, ...cyErrorTranslationText };
   const URL = getUrl(TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
 
   beforeEach(() => {
@@ -86,7 +88,7 @@ describe("General Partner Usual Residential Address Territory Choice", () => {
         pageType: AddressPageType.territoryChoiceGeneralPartnerUsualResidentialAddress
       });
 
-      const errorMessages = enTranslationText.address.territoryChoice.errorMessages;
+      const errorMessages = enTranslationText.errorMessages.address.territoryChoice;
       const errorMessage = `${errorMessages.noOptionSelectedStart}usual residential address${errorMessages.noOptionSelectedEnd}`;
 
       expect(res.status).toBe(200);

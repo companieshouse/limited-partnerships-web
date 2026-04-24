@@ -5,6 +5,8 @@ import enGeneralTranslationText from "../../../../../../../locales/en/translatio
 import cyGeneralTranslationText from "../../../../../../../locales/cy/translations.json";
 import enAddressTranslationText from "../../../../../../../locales/en/address.json";
 import cyAddressTranslationText from "../../../../../../../locales/cy/address.json";
+import enErrorTranslationText from "../../../../../../../locales/en/errors.json";
+import cyErrorTranslationText from "../../../../../../../locales/cy/errors.json";
 
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
@@ -22,8 +24,8 @@ import GeneralPartnerBuilder, { generalPartnerPerson } from "../../../../builder
 import TransactionBuilder from "../../../../builder/TransactionBuilder";
 
 describe("General Partner Correspondence Address Territory Choice", () => {
-  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
-  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText };
+  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText, ...enErrorTranslationText };
+  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText, ...cyErrorTranslationText };
   const URL = getUrl(TERRITORY_CHOICE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL);
 
   beforeEach(() => {
@@ -122,10 +124,11 @@ describe("General Partner Correspondence Address Territory Choice", () => {
         pageType: AddressPageType.territoryChoiceGeneralPartnerCorrespondenceAddress
       });
 
-      const errorMessages = enTranslationText.address.territoryChoice.errorMessages;
+      const errorMessages = enTranslationText.errorMessages.address.territoryChoice;
       const errorMessage = `${errorMessages.noOptionSelectedStart}service address${errorMessages.noOptionSelectedEnd}`;
 
       expect(res.status).toBe(200);
+
       expect(countOccurrences(res.text, errorMessage)).toBe(2);
       expect(res.text).toContain(
         `${generalPartnerPerson.forename.toUpperCase()} ${generalPartnerPerson.surname.toUpperCase()}`

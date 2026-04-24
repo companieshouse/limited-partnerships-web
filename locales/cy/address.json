@@ -258,10 +258,6 @@
                 "title": "WELSH - Where is the PSC's principal office address?",
                 "titleHint": "WELSH - This is the address for the entity's main office.",
                 "publicRegisterInformationLine1": "WELSH - We'll show the PSC's principal office address on the public register."
-            },
-            "errorMessages": {
-                "noOptionSelectedStart": "WELSH - Select if the ",
-                "noOptionSelectedEnd": " WELSH - is in the UK or overseas"
             }
         },
 

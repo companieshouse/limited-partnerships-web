@@ -259,11 +259,7 @@
                 "title": "Where is the PSC's principal office address?",
                 "titleHint": "This is the address for the entity's main office.",
                 "publicRegisterInformationLine1": "We'll show the PSC's principal office address on the public register."
-            },
-            "errorMessages": {
-                "noOptionSelectedStart": "Select if the ",
-                "noOptionSelectedEnd": " is in the UK or overseas"
-                }
+            }
         },
 
         "territories": {
