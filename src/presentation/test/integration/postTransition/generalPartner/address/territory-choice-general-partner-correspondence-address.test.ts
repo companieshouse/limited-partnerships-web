@@ -47,7 +47,7 @@ describe("General Partner Correspondence Address Territory Choice", () => {
       ["cy", PartnerKind.ADD_GENERAL_PARTNER_PERSON, cyTranslationText],
       ["cy", PartnerKind.UPDATE_GENERAL_PARTNER_PERSON, cyTranslationText]
     ])(
-      "should load the general partner usual residential address territory choice page with Welsh text",
+      "should load the general partner usual residential address territory choice page with %s text",
       async (langParam: string, partnerKind: PartnerKind, translationText: Record<string, any>) => {
         setLocalesEnabled(true);
 
