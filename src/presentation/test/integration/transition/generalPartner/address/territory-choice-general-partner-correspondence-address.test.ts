@@ -8,7 +8,7 @@ import cyAddressTranslationText from "../../../../../../../locales/cy/address.js
 
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
 import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
 
 import {
@@ -85,8 +85,11 @@ describe("General Partner Correspondence Address Territory Choice", () => {
         pageType: AddressPageType.territoryChoiceGeneralPartnerCorrespondenceAddress
       });
 
+      const errorMessages = enTranslationText.address.territoryChoice.errorMessages;
+      const errorMessage = `${errorMessages.noOptionSelectedStart}service address${errorMessages.noOptionSelectedEnd}`;
+
       expect(res.status).toBe(200);
-      expect(res.text).toContain("Select if the service address is in the UK or overseas");
+      expect(countOccurrences(res.text, errorMessage)).toBe(2);
       expect(res.text).toContain(generalPartnerLegalEntity.legal_entity_name?.toUpperCase());
     });
   });

@@ -122,8 +122,11 @@ describe("Limited Partner Usual Residential Address Territory Choice", () => {
         pageType: AddressPageType.territoryChoiceLimitedPartnerUsualResidentialAddress
       });
 
+      const errorMessages = enTranslationText.address.territoryChoice.errorMessages;
+      const errorMessage = `${errorMessages.noOptionSelectedStart}usual residential address${errorMessages.noOptionSelectedEnd}`;
+
       expect(res.status).toBe(200);
-      expect(res.text).toContain("Select if the usual residential address is in the UK or overseas");
+      expect(countOccurrences(res.text, errorMessage)).toBe(2);
       expect(res.text).toContain(
         `${limitedPartnerPerson.forename.toUpperCase()} ${limitedPartnerPerson.surname.toUpperCase()}`
       );

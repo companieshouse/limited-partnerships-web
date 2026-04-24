@@ -7,7 +7,7 @@ import cyAddressTranslationText from "../../../../../../../locales/cy/address.js
 
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
 import {
   ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
@@ -84,8 +84,11 @@ describe("General Partner Usual Residential Address Territory Choice", () => {
         pageType: AddressPageType.territoryChoiceGeneralPartnerUsualResidentialAddress
       });
 
+      const errorMessages = enTranslationText.address.territoryChoice.errorMessages;
+      const errorMessage = `${errorMessages.noOptionSelectedStart}usual residential address${errorMessages.noOptionSelectedEnd}`;
+
       expect(res.status).toBe(200);
-      expect(res.text).toContain("Select if the usual residential address is in the UK or overseas");
+      expect(countOccurrences(res.text, errorMessage)).toBe(2);
       expect(res.text).toContain(
         `${generalPartnerPerson.forename.toUpperCase()} ${generalPartnerPerson.surname.toUpperCase()}`
       );

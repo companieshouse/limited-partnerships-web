@@ -97,8 +97,11 @@ describe("General Partner Principal Office Address Territory Choice", () => {
         pageType: AddressPageType.territoryChoiceGeneralPartnerPrincipalOfficeAddress
       });
 
+      const errorMessages = enTranslationText.address.territoryChoice.errorMessages;
+      const errorMessage = `${errorMessages.noOptionSelectedStart}principal office address${errorMessages.noOptionSelectedEnd}`;
+
       expect(res.status).toBe(200);
-      expect(res.text).toContain("Select if the principal office address is in the UK or overseas");
+      expect(countOccurrences(res.text, errorMessage)).toBe(2);
       expect(res.text).toContain(
         `${generalPartnerLegalEntity.legal_entity_name.toUpperCase()}`
       );
