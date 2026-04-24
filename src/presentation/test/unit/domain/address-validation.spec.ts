@@ -1,4 +1,4 @@
-import AddressValidator from "../../../../domain/entities/Address";
+import AddressValidator from "../../../../domain/validator/Address";
 
 import enTranslationText from "../../../../../locales/en/errors.json";
 

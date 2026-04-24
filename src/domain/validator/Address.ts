@@ -1,6 +1,6 @@
 import { Address } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
-import UIErrors from "./UIErrors";
+import UIErrors from "../entities/UIErrors";
 
 class AddressValidator {
   private premises?: string;

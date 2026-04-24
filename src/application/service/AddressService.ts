@@ -4,7 +4,7 @@ import UIErrors from "../../domain/entities/UIErrors";
 import IAddressLookUpGateway from "../../domain/IAddressLookUpGateway";
 
 import { logger } from "../../utils";
-import AddressValidator from "../../domain/entities/Address";
+import AddressValidator from "../../domain/validator/Address";
 
 class AddressService {
   private static readonly UK_COUNTRIES: Set<string> = new Set(["Scotland", "Northern Ireland", "England", "Wales"]);

@@ -21,7 +21,7 @@ import FilingHistoryInMemoryGateway from "../infrastructure/gateway/filingHistor
 import PersonWithSignificantControlGateway from "../infrastructure/gateway/personWithSignificantControl/PersonWithSignificantControlGateway";
 import PersonWithSignificantControlInMemoryGateway from "../infrastructure/gateway/personWithSignificantControl/PersonWithSignificantControlInMemoryGateway";
 
-import AddressValidator from "../domain/entities/Address";
+import AddressValidator from "../domain/validator/Address";
 
 import CacheService from "../application/service/CacheService";
 import AddressLookUpService from "../application/service/AddressService";
