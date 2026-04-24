@@ -21,6 +21,7 @@ import {
 
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBuilder";
+import PersonWithSignificantControlBuilder from "../../../../builder/PersonWithSignificantControlBuilder";
 
 describe("PSC Principal Office Address Territory Choice", () => {
   const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
@@ -50,6 +51,9 @@ describe("PSC Principal Office Address Territory Choice", () => {
     ])(
       "should load the PSC principal office address territory choice page with %s text",
       async (_description: string, URL: string, lang: string, translationText: Record<string, any>) => {
+        const personWithSignificantControl = buildPSC(_description);
+        appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([personWithSignificantControl]);
+
         const res = await request(app).get(`${URL}?lang=${lang}`);
 
         expect(res.status).toBe(200);
@@ -64,6 +68,8 @@ describe("PSC Principal Office Address Territory Choice", () => {
           translationText.address.territoryChoice.personWithSignificantControlPrincipalOfficeAddress
         );
         testTranslations(res.text, translationText.address.territories);
+
+        expect(res.text).toContain(personWithSignificantControl.data?.legal_entity_name?.toUpperCase());
       }
     );
   });
@@ -134,5 +140,39 @@ describe("PSC Principal Office Address Territory Choice", () => {
         });
       }
     );
+
+    it.each([
+      ["RLE", URL_RELEVANT_LEGAL_ENTITY],
+      ["ORP", URL_OTHER_REGISTARBLE_PERSON]
+    ])("should show an error message when no selection is made for territory choice", async (_description: string, URL: string) => {
+      const personWithSignificantControl = buildPSC(_description);
+      appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([personWithSignificantControl]);
+
+      const res = await request(app).post(URL).send({
+        pageType:
+          AddressPageType.territoryChoicePersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain("Select if the principal office address is in the UK or overseas");
+      expect(res.text).toContain(personWithSignificantControl.data?.legal_entity_name?.toUpperCase());
+    });
   });
 });
+
+const buildPSC = (description: string) => {
+  let personWithSignificantControl;
+  if (description.includes("RLE")) {
+    personWithSignificantControl = new PersonWithSignificantControlBuilder()
+      .isRelevantLegalEntity()
+      .withId(appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId)
+      .build();
+  } else {
+    personWithSignificantControl = new PersonWithSignificantControlBuilder()
+      .isOtherRegistrablePerson()
+      .withId(appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId)
+      .build();
+  }
+  return personWithSignificantControl;
+};
+

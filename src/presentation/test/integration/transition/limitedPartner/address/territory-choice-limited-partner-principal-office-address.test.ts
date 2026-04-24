@@ -26,95 +26,67 @@ describe("Limited Partner Principal Office Address Territory Choice", () => {
 
   beforeEach(() => {
     setLocalesEnabled(false);
-    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([]);
+
+    const limitedPartner = new LimitedPartnerBuilder()
+      .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+      .isLegalEntity()
+      .build();
+
+    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
   });
 
   describe("GET limited-partner-principal-office-address-choose-territory", () => {
-    it("should load the limited partner principal office address territory choice page with Welsh text", async () => {
+    it.each([
+      ["English", "en", enTranslationText],
+      ["Welsh", "cy", cyTranslationText]
+    ])("should load the limited partner principal office address territory choice page with %s text", async (language: string, lang: string, translationText: Record<string, any>) => {
       setLocalesEnabled(true);
-      const res = await request(app).get(URL + "?lang=cy");
+      const res = await request(app).get(URL + `?lang=${lang}`);
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
         toEscapedHtml(
-          `${cyTranslationText.address.territoryChoice.limitedPartnerPrincipalOfficeAddress.title} - ${cyTranslationText.serviceTransition} - GOV.UK`
+          `${translationText.address.territoryChoice.limitedPartnerPrincipalOfficeAddress.title} - ${translationText.serviceTransition} - GOV.UK`
         )
       );
 
-      testTranslations(res.text, cyTranslationText.address.territoryChoice.limitedPartnerPrincipalOfficeAddress);
-      testTranslations(res.text, cyTranslationText.address.territories);
-    });
+      testTranslations(res.text, translationText.address.territoryChoice.limitedPartnerPrincipalOfficeAddress);
+      testTranslations(res.text, translationText.address.territories);
 
-    it("should load the limited partner principal office address territory choice page with English text", async () => {
-      setLocalesEnabled(true);
-      const res = await request(app).get(URL + "?lang=en");
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(
-        toEscapedHtml(
-          `${enTranslationText.address.territoryChoice.limitedPartnerPrincipalOfficeAddress.title} - ${enTranslationText.serviceTransition} - GOV.UK`
-        )
-      );
-
-      testTranslations(res.text, enTranslationText.address.territories);
-    });
-
-    it("should contain the limited partner name - data from API", async () => {
-      const limitedPartner = new LimitedPartnerBuilder()
-        .isLegalEntity()
-        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .build();
-
-      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
-
-      const res = await request(app).get(URL);
-
-      expect(res.status).toBe(200);
       expect(res.text).toContain(`${limitedPartnerLegalEntity.legal_entity_name.toUpperCase()}`);
     });
   });
 
   describe("POST limited-partner-territory-choice", () => {
-    it("should redirect to What is the limited partners POA? post code look up page when united kingdom is selected", async () => {
-      const UNITED_KINGDOM_PARAMETER = "unitedKingdom";
-      const POSTCODE_URL = getUrl(POSTCODE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
-
+    it.each([
+      ["United Kingdom", "unitedKingdom", POSTCODE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL],
+      ["Overseas", "overseas", ENTER_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL]
+    ])("should redirect to the correct page when %s is selected", async (option: string, parameter: string, expectedUrl: string) => {
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.territoryChoiceLimitedPartnerPrincipalOfficeAddress,
-        parameter: UNITED_KINGDOM_PARAMETER
+        parameter: parameter
       });
 
       expect(res.status).toBe(302);
-      expect(res.text).toContain(POSTCODE_URL);
+      expect(res.text).toContain(getUrl(expectedUrl));
 
       expect(appDevDependencies.cacheRepository.cache).toEqual({
         [APPLICATION_CACHE_KEY]: {
           [appDevDependencies.transactionGateway.transactionId]: {
-            ["poa_territory_choice"]: "unitedKingdom"
+            poa_territory_choice: parameter
           }
         }
       });
     });
 
-    it("should redirect to What is the limited partners POA? manual entry page when overseas is selected", async () => {
-      const OVERSEAS_PARAMETER = "overseas";
-      const MANUAL_ENTRY_URL = getUrl(ENTER_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
-
+    it("should show an error message when no selection is made for territory choice", async () => {
       const res = await request(app).post(URL).send({
-        pageType: AddressPageType.territoryChoiceLimitedPartnerPrincipalOfficeAddress,
-        parameter: OVERSEAS_PARAMETER
+        pageType: AddressPageType.territoryChoiceLimitedPartnerPrincipalOfficeAddress
       });
 
-      expect(res.status).toBe(302);
-      expect(res.text).toContain(MANUAL_ENTRY_URL);
-
-      expect(appDevDependencies.cacheRepository.cache).toEqual({
-        [APPLICATION_CACHE_KEY]: {
-          [appDevDependencies.transactionGateway.transactionId]: {
-            ["poa_territory_choice"]: "overseas"
-          }
-        }
-      });
+      expect(res.status).toBe(200);
+      expect(res.text).toContain("Select if the principal office address is in the UK or overseas");
+      expect(res.text).toContain(limitedPartnerLegalEntity.legal_entity_name?.toUpperCase());
     });
   });
 });
