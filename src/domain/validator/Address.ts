@@ -71,10 +71,10 @@ class AddressValidator {
     const conditionNotMet = (value: string) => !validCharactersRegex.test(value);
     this.fieldsValidation("Invalid", conditionNotMet, uiErrors);
 
-    const ukPostcodeLettersNotMailand: Set<string> = new Set(["JE", "GY", "IM"]);
+    const ukPostcodeLettersNotMainland: Set<string> = new Set(["JE", "GY", "IM"]);
 
     if (this.country && this.ukCountries.has(this.country)) {
-      this.isValidPostcode(ukPostcodeLettersNotMailand, uiErrors);
+      this.isValidPostcode(ukPostcodeLettersNotMainland, uiErrors);
     } else if (this.postal_code && !validCharactersRegex.test(this.postal_code)) {
       uiErrors.setWebError(this.postcodeFieldName, this.errorMessages?.postcodeInvalid);
     }
@@ -82,10 +82,10 @@ class AddressValidator {
     return uiErrors;
   }
 
-  private isValidPostcode(ukPostcodeLettersNotMailand: Set<string>, uiErrors: UIErrors) {
+  private isValidPostcode(ukPostcodeLettersNotMainland: Set<string>, uiErrors: UIErrors) {
     const validUkPostalCodeCharactersRegex = /^[A-Za-z]{1,2}\d[A-Za-z\d]? ?\d[A-Za-z]{2}$/;
 
-    if (this.postal_code && ukPostcodeLettersNotMailand.has(this.postal_code.slice(0, 2))) {
+    if (this.postal_code && ukPostcodeLettersNotMainland.has(this.postal_code.slice(0, 2))) {
       uiErrors.setWebError(this.postcodeFieldName, this.errorMessages?.notMainland);
     } else if (this.postal_code && !validUkPostalCodeCharactersRegex.test(this.postal_code)) {
       uiErrors.setWebError(this.postcodeFieldName, this.errorMessages?.postcodeFormat);
