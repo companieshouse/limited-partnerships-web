@@ -16,19 +16,16 @@
       value: "unitedKingdom",
       text: i18n.address.territories.unitedKingdom,
       id: "unitedKingdom",
-      name: "unitedKingdom",
-      attributes: {
-        required: true
-      }
+      name: "unitedKingdom"
     },
     {
       value: "overseas",
       text: i18n.address.territories.overseas,
       id: "overseas",
-      name: "overseas",
-      attributes: {
-        required: true
-      }
+      name: "overseas"
     }
-  ]
+  ],
+  errorMessage: {
+    text: props.errors.parameter.text
+  } if props.errors
 }) }}
