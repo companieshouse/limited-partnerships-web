@@ -4,8 +4,8 @@ import enGeneralTranslationText from "../../../../../../../locales/en/translatio
 import cyGeneralTranslationText from "../../../../../../../locales/cy/translations.json";
 import enAddressTranslationText from "../../../../../../../locales/en/address.json";
 import cyAddressTranslationText from "../../../../../../../locales/cy/address.json";
-import enErrorTranslationText from "../../../../../../../locales/en/errors.json";
-import cyErrorTranslationText from "../../../../../../../locales/cy/errors.json";
+import enErrorsTranslationText from "../../../../../../../locales/en/errors.json";
+import cyErrorsTranslationText from "../../../../../../../locales/cy/errors.json";
 
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
@@ -26,8 +26,8 @@ import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBui
 import PersonWithSignificantControlBuilder from "../../../../builder/PersonWithSignificantControlBuilder";
 
 describe("PSC Principal Office Address Territory Choice", () => {
-  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText, ...enErrorTranslationText };
-  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText, ...cyErrorTranslationText };
+  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText, ...enErrorsTranslationText };
+  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText, ...cyErrorsTranslationText };
   const URL_RELEVANT_LEGAL_ENTITY = getUrl(
     TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL
   );

@@ -4,8 +4,8 @@ import enGeneralTranslationText from "../../../../../../../locales/en/translatio
 import cyGeneralTranslationText from "../../../../../../../locales/cy/translations.json";
 import enAddressTranslationText from "../../../../../../../locales/en/address.json";
 import cyAddressTranslationText from "../../../../../../../locales/cy/address.json";
-import enErrorTranslationText from "../../../../../../../locales/en/errors.json";
-import cyErrorTranslationText from "../../../../../../../locales/cy/errors.json";
+import enErrorsTranslationText from "../../../../../../../locales/en/errors.json";
+import cyErrorsTranslationText from "../../../../../../../locales/cy/errors.json";
 
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
@@ -22,8 +22,8 @@ import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import LimitedPartnerBuilder, { limitedPartnerLegalEntity } from "../../../../builder/LimitedPartnerBuilder";
 
 describe("Limited Partner Principal Office Address Territory Choice", () => {
-  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText, ...enErrorTranslationText };
-  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText, ...cyErrorTranslationText };
+  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText, ...enErrorsTranslationText };
+  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText, ...cyErrorsTranslationText };
   const URL = getUrl(TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
 
   beforeEach(() => {
