@@ -28,7 +28,7 @@ class AddressValidator {
     this.postal_code = address.postal_code;
     this.country = address.country;
 
-    this.errorMessages = i18n?.errorMessages?.address;
+    this.errorMessages = i18n?.errorMessages?.address?.enterAddress || {};
 
     return this;
   }

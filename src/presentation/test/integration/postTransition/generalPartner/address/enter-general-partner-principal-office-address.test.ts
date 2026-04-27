@@ -205,7 +205,7 @@ describe("Enter general partner's principal office manual address page", () => {
         });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(enTranslationText.errorMessages.address.postcodeFormat);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.postcodeFormat);
       expect(res.text).toContain(enTranslationText.govUk.error.title);
       expect(res.text).toContain(
         `${generalPartner.data?.forename?.toUpperCase()} ${generalPartner.data?.surname?.toUpperCase()}`
@@ -254,11 +254,11 @@ describe("Enter general partner's principal office manual address page", () => {
         });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(enTranslationText.errorMessages.address.premisesInvalid);
-      expect(res.text).toContain(enTranslationText.errorMessages.address.addressLine1Invalid);
-      expect(res.text).toContain(enTranslationText.errorMessages.address.addressLine2Invalid);
-      expect(res.text).toContain(enTranslationText.errorMessages.address.localityInvalid);
-      expect(res.text).toContain(enTranslationText.errorMessages.address.regionInvalid);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.premisesInvalid);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.addressLine1Invalid);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.addressLine2Invalid);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.localityInvalid);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.regionInvalid);
       expect(res.text).toContain(enTranslationText.govUk.error.title);
     });
 
@@ -281,11 +281,11 @@ describe("Enter general partner's principal office manual address page", () => {
         });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(enTranslationText.errorMessages.address.premisesLength);
-      expect(res.text).toContain(enTranslationText.errorMessages.address.addressLine1Length);
-      expect(res.text).toContain(enTranslationText.errorMessages.address.addressLine2Length);
-      expect(res.text).toContain(enTranslationText.errorMessages.address.localityLength);
-      expect(res.text).toContain(enTranslationText.errorMessages.address.regionLength);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.premisesLength);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.addressLine1Length);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.addressLine2Length);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.localityLength);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.regionLength);
     });
 
     it("should contain correct backlink for update journey when validation error occurs", async () => {

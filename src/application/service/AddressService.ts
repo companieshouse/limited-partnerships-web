@@ -110,19 +110,19 @@ class AddressService {
     if (IS_NOT_MAINLAND) {
       isCorrectCountry = false;
 
-      uiErrors.setWebError(this.postcodeFieldName, this.i18n?.errorMessages?.address?.notMainland);
+      uiErrors.setWebError(this.postcodeFieldName, this.i18n?.errorMessages?.address?.enterAddress?.notMainland);
     } else if (jurisdiction === Jurisdiction.ENGLAND_AND_WALES && !IS_IN_ENGLAND && !IS_IN_WALES) {
       isCorrectCountry = false;
 
-      uiErrors.setWebError(this.postcodeFieldName, this.i18n?.errorMessages?.address?.jurisdictionEnglandAndWales);
+      uiErrors.setWebError(this.postcodeFieldName, this.i18n?.errorMessages?.address?.enterAddress?.jurisdictionEnglandAndWales);
     } else if (jurisdiction === Jurisdiction.SCOTLAND && !IS_IN_SCOTLAND) {
       isCorrectCountry = false;
 
-      uiErrors.setWebError(this.postcodeFieldName, this.i18n?.errorMessages?.address?.jurisdictionScotland);
+      uiErrors.setWebError(this.postcodeFieldName, this.i18n?.errorMessages?.address?.enterAddress?.jurisdictionScotland);
     } else if (jurisdiction === Jurisdiction.NORTHERN_IRELAND && !IS_IN_NORTHERN_IRELAND) {
       isCorrectCountry = false;
 
-      uiErrors.setWebError(this.postcodeFieldName, this.i18n?.errorMessages?.address?.jurisdictionNorthernIreland);
+      uiErrors.setWebError(this.postcodeFieldName, this.i18n?.errorMessages?.address?.enterAddress?.jurisdictionNorthernIreland);
     }
 
     return isCorrectCountry;
@@ -151,7 +151,7 @@ class AddressService {
       if (!isValid) {
         uiErrors ??= new UIErrors();
 
-        uiErrors.setWebError("country", this.i18n?.errorMessages?.address?.jurisdictionCountry);
+        uiErrors.setWebError("country", this.i18n?.errorMessages?.address?.enterAddress?.jurisdictionCountry);
       }
     }
 
