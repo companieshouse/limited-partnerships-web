@@ -51,26 +51,20 @@ class AddressService {
 
       // empty postcode
       if (!postalCode) {
-        uiErrors.setWebError(
-          this.postcodeFieldName,
-          this.i18n?.errorMessages?.address?.postcodeLookup?.postcodeMissing
-        );
+        uiErrors.setWebError(this.postcodeFieldName, this.i18n.errorMessages.address.postcodeLookup.postcodeMissing);
 
         return { address, errors: uiErrors };
       }
 
       // invalid characters
       if (!this.validCharactersRegex.test(postalCode)) {
-        uiErrors.setWebError(
-          this.postcodeFieldName,
-          this.i18n?.errorMessages?.address?.postcodeLookup?.postcodeInvalid
-        );
+        uiErrors.setWebError(this.postcodeFieldName, this.i18n.errorMessages.address.postcodeLookup.postcodeInvalid);
 
         return { address, errors: uiErrors };
       }
 
       if (premises && !this.validCharactersRegex.test(premises)) {
-        uiErrors.setWebError("premises", this.i18n?.errorMessages?.address?.postcodeLookup?.premisesInvalid);
+        uiErrors.setWebError("premises", this.i18n.errorMessages.address.postcodeLookup.premisesInvalid);
 
         return { address, errors: uiErrors };
       }
@@ -79,10 +73,7 @@ class AddressService {
       const isValid = await this.addressGateway.isValidUKPostcode(opt, postalCode);
 
       if (!isValid) {
-        uiErrors.setWebError(
-          this.postcodeFieldName,
-          this.i18n?.errorMessages?.address?.postcodeLookup?.postcodeNotFound
-        );
+        uiErrors.setWebError(this.postcodeFieldName, this.i18n.errorMessages.address.postcodeLookup.postcodeNotFound);
 
         return { address, errors: uiErrors };
       }
@@ -91,10 +82,7 @@ class AddressService {
       const ukAddresses: Address[] = await this.getAddressListForPostcode(opt, postalCode);
 
       if (ukAddresses.length === 0) {
-        uiErrors.setWebError(
-          this.postcodeFieldName,
-          this.i18n?.errorMessages?.address?.postcodeLookup?.postcodeNotFound
-        );
+        uiErrors.setWebError(this.postcodeFieldName, this.i18n.errorMessages.address.postcodeLookup.postcodeNotFound);
         return { address, errors: uiErrors };
       }
 
@@ -144,27 +132,24 @@ class AddressService {
     if (IS_NOT_MAINLAND) {
       isCorrectCountry = false;
 
-      uiErrors.setWebError(this.postcodeFieldName, this.i18n?.errorMessages?.address?.enterAddress?.notMainland);
+      uiErrors.setWebError(this.postcodeFieldName, this.i18n.errorMessages.address.enterAddress.notMainland);
     } else if (jurisdiction === Jurisdiction.ENGLAND_AND_WALES && !IS_IN_ENGLAND && !IS_IN_WALES) {
       isCorrectCountry = false;
 
       uiErrors.setWebError(
         this.postcodeFieldName,
-        this.i18n?.errorMessages?.address?.enterAddress?.jurisdictionEnglandAndWales
+        this.i18n.errorMessages.address.enterAddress.jurisdictionEnglandAndWales
       );
     } else if (jurisdiction === Jurisdiction.SCOTLAND && !IS_IN_SCOTLAND) {
       isCorrectCountry = false;
 
-      uiErrors.setWebError(
-        this.postcodeFieldName,
-        this.i18n?.errorMessages?.address?.enterAddress?.jurisdictionScotland
-      );
+      uiErrors.setWebError(this.postcodeFieldName, this.i18n.errorMessages.address.enterAddress.jurisdictionScotland);
     } else if (jurisdiction === Jurisdiction.NORTHERN_IRELAND && !IS_IN_NORTHERN_IRELAND) {
       isCorrectCountry = false;
 
       uiErrors.setWebError(
         this.postcodeFieldName,
-        this.i18n?.errorMessages?.address?.enterAddress?.jurisdictionNorthernIreland
+        this.i18n.errorMessages.address.enterAddress.jurisdictionNorthernIreland
       );
     }
 
@@ -194,7 +179,7 @@ class AddressService {
       if (!isValid) {
         uiErrors ??= new UIErrors();
 
-        uiErrors.setWebError("country", this.i18n?.errorMessages?.address?.enterAddress?.jurisdictionCountry);
+        uiErrors.setWebError("country", this.i18n.errorMessages.address.enterAddress.jurisdictionCountry);
       }
     }
 
@@ -221,7 +206,7 @@ class AddressService {
     const uiErrors = new UIErrors();
 
     if (!address.country) {
-      uiErrors.setWebError("change", this.i18n?.errorMessages?.address?.confirm?.countryMissing);
+      uiErrors.setWebError("change", this.i18n.errorMessages.address.confirm.countryMissing);
     }
 
     return uiErrors;
