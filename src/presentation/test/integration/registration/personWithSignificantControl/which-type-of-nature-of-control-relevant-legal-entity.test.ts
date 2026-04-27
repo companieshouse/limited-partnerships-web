@@ -31,7 +31,17 @@ describe("Which Type of Nature of Control Page", () => {
   });
 
   describe("Get Which Type of Nature of Control Page", () => {
-    it.each([["en", enTranslationText], ["cy", cyTranslationText]])("should load the which type of nature of control page with %s text", async (lang: string, translationText: any) => {
+    it.each([
+      ["en", enTranslationText],
+      ["cy", cyTranslationText]
+    ])("should load the which type of nature of control page with %s text", async (lang: string, translationText: any) => {
+      const personWithSignificantControl = new PersonWithSignificantControlBuilder()
+        .isRelevantLegalEntity()
+        .withId(appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId)
+        .build();
+
+      appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([personWithSignificantControl]);
+
       const limitedPartnership = new LimitedPartnershipBuilder().build();
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
@@ -42,10 +52,10 @@ describe("Which Type of Nature of Control Page", () => {
       expect(res.text).toContain(
         `${translationText.personWithSignificantControl.whichTypeOfNatureOfControlPage.relevantLegalEntity.title} - ${translationText.serviceRegistration} - GOV.UK`
       );
-      expect(res.text).toContain(
-        `${limitedPartnership?.data?.partnership_name?.toUpperCase()} ${limitedPartnership?.data?.name_ending?.toUpperCase()}`
-      );
+
       testTranslations(res.text, translationText.personWithSignificantControl.whichTypeOfNatureOfControlPage.relevantLegalEntity);
+
+      expect(res.text).toContain(personWithSignificantControl.data?.legal_entity_name?.toUpperCase());
     });
   });
 
