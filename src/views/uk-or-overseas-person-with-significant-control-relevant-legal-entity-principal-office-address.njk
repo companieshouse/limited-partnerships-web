@@ -15,7 +15,9 @@
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      {% include "includes/proposed-name.njk" %}
+      {% include "includes/errors.njk" %}
+
+      {% include "pages/personWithSignificantControl/person-with-significant-control-name.njk" %}
 
       {% include "pages/address/territory-address-form.njk" %}
     </div>

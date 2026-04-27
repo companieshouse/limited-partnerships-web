@@ -106,6 +106,9 @@ export const CHOOSE_PAGES: Set<PageType | PageDefault> = new Set([
 ]);
 
 export const GENERAL_PARTNER_PAGES: Set<PageType | PageDefault> = new Set([
+  AddressPageType.territoryChoiceGeneralPartnerCorrespondenceAddress,
+  AddressPageType.territoryChoiceGeneralPartnerPrincipalOfficeAddress,
+  AddressPageType.territoryChoiceGeneralPartnerUsualResidentialAddress,
   AddressPageType.postcodeGeneralPartnerUsualResidentialAddress,
   AddressPageType.postcodeGeneralPartnerCorrespondenceAddress,
   AddressPageType.postcodeGeneralPartnerPrincipalOfficeAddress,
@@ -118,6 +121,8 @@ export const GENERAL_PARTNER_PAGES: Set<PageType | PageDefault> = new Set([
 ]);
 
 export const LIMITED_PARTNER_PAGES: Set<PageType | PageDefault> = new Set([
+  AddressPageType.territoryChoiceLimitedPartnerUsualResidentialAddress,
+  AddressPageType.territoryChoiceLimitedPartnerPrincipalOfficeAddress,
   AddressPageType.postcodeLimitedPartnerUsualResidentialAddress,
   AddressPageType.postcodeLimitedPartnerPrincipalOfficeAddress,
   AddressPageType.enterLimitedPartnerUsualResidentialAddress,
@@ -127,10 +132,12 @@ export const LIMITED_PARTNER_PAGES: Set<PageType | PageDefault> = new Set([
 ]);
 
 export const PERSON_WITH_SIGNIFICANT_CONTROL_PAGES: Set<PageType | PageDefault> = new Set([
+  AddressPageType.territoryChoicePersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
   AddressPageType.postcodePersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
   AddressPageType.enterPersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
   AddressPageType.confirmPersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
 
+  AddressPageType.territoryChoicePersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress,
   AddressPageType.postcodePersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress,
   AddressPageType.enterPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress,
   AddressPageType.confirmPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress

@@ -177,7 +177,7 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
             ids.submissionId
           );
 
-          const uiErrors = this.createUIError(
+          const uiErrors = new UIErrors().setWebError(
             "parameter",
             response.locals.i18n.personWithSignificantControl.whichTypePage.errorMessage
           );
@@ -308,7 +308,7 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
           const { limitedPartnership, personWithSignificantControl } =
             await this.getLimitedPartnershipAndPsc(tokens, ids);
 
-          const uiErrors = this.createUIError(
+          const uiErrors = new UIErrors().setWebError(
             "remove",
             response.locals.i18n.personWithSignificantControl.removePscPage.errorMessage
           );
@@ -404,7 +404,7 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
     const pageRouting = super.getRouting(registrationsRouting, pageType, request);
     const { tokens, ids } = super.extract(request);
 
-    const uiErrors = this.createUIError(
+    const uiErrors = new UIErrors().setWebError(
       "addAnotherPersonWithSignificantControl",
       response.locals.i18n.personWithSignificantControl.reviewPage.errorMessage.noOptionSelected
     );
@@ -437,7 +437,7 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
     const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
     const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
-    const uiErrors = this.createUIError(
+    const uiErrors = new UIErrors().setWebError(
       "has_person_with_significant_control",
       response.locals.i18n.personWithSignificantControl.willThePartnershipHaveAnyPscPage.errorMessage
     );
@@ -458,17 +458,6 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
       super.templateName(pageRouting.currentUrl),
       super.makeProps(pageRouting, { limitedPartnership }, uiErrors)
     );
-  }
-
-  private createUIError(parameter: string, message: string) {
-    const uiErrors = new UIErrors();
-    uiErrors.formatValidationErrorToUiErrors({
-      errors: {
-        [parameter]: message
-      }
-    });
-
-    return uiErrors;
   }
 
   private handleReviewPageRedirection(request: Request) {

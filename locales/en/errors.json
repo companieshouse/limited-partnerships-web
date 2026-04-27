@@ -13,7 +13,11 @@
         "address": {
             "confirm": {
                 "countryMissing": "We cannot identify the country for this address. Select Change, then select the country."
-            }
+            },
+            "territoryChoice": {
+                "noOptionSelectedStart": "Select if the ",
+                "noOptionSelectedEnd": " is in the UK or overseas"
+             }
         },
 
         "checkYourAnswers": {

@@ -13,6 +13,10 @@
          "address": {
             "confirm": {
                 "countryMissing": "WELSH - We cannot identify the country for this address. Select Change, then select the country."
+            },
+            "territoryChoice": {
+                "noOptionSelectedStart": "WELSH - Select if the ",
+                "noOptionSelectedEnd": " WELSH - is in the UK or overseas"
             }
         },
 
