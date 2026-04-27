@@ -49,6 +49,14 @@
                 "jurisdictionScotland": "You must enter a postcode which is in Scotland"
             },
 
+            "postcodeLookup": {
+                "premisesInvalid": "Property name or number must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+
+                "postcodeNotFound": "Enter a full UK postcode",
+                "postcodeMissing": "Enter a postcode",
+                "postcodeInvalid": "Postcode must only include letters a to z, numbers and spaces"
+            },
+
             "territoryChoice": {
                 "noOptionSelectedStart": "Select if the ",
                 "noOptionSelectedEnd": " is in the UK or overseas"

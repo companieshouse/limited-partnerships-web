@@ -49,6 +49,14 @@
                 "jurisdictionScotland": "WELSH - You must enter a postcode which is in Scotland"
             },
 
+            "postcodeLookup": {
+                "premisesInvalid": "WELSH - Property name or number must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+
+                "postcodeNotFound": "WELSH - Enter a full UK postcode",
+                "postcodeMissing": "WELSH - Enter a postcode",
+                "postcodeInvalid": "WELSH - Postcode must only include letters a to z, numbers and spaces"
+            },
+
             "territoryChoice": {
                 "noOptionSelectedStart": "WELSH - Select if the ",
                 "noOptionSelectedEnd": " WELSH - is in the UK or overseas"

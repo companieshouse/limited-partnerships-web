@@ -5,6 +5,8 @@ import enGeneralTranslationText from "../../../../../../locales/en/translations.
 import cyGeneralTranslationText from "../../../../../../locales/cy/translations.json";
 import enAddressTranslationText from "../../../../../../locales/en/address.json";
 import cyAddressTranslationText from "../../../../../../locales/cy/address.json";
+import enErrorsTranslationText from "../../../../../../locales/en/errors.json";
+import cyErrorsTranslationText from "../../../../../../locales/cy/errors.json";
 
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
@@ -21,8 +23,8 @@ import AddressPageType from "../../../../controller/addressLookUp/PageType";
 import { APPLICATION_CACHE_KEY } from "../../../../../config/constants";
 
 describe("Postcode Principal Place Of Business Address Page", () => {
-  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
-  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText };
+  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText, ...enErrorsTranslationText };
+  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText, ...cyErrorsTranslationText };
   const URL = getUrl(POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL);
   const REDIRECT_URL = getUrl(CHOOSE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL);
   const addresses: UKAddress[] = appDevDependencies.addressLookUpGateway.englandAddresses;
@@ -131,17 +133,58 @@ describe("Postcode Principal Place Of Business Address Page", () => {
       });
     });
 
-    it("should return an error if the postcode is not valid", async () => {
-      const res = await request(app).post(URL).send({
-        pageType: AddressPageType.postcodePrincipalPlaceOfBusinessAddress,
-        premises: null,
-        postal_code: "AA1 1AA"
+    describe("Error messages", () => {
+      it("should return an error if the postcode is not valid", async () => {
+        const res = await request(app).post(URL).send({
+          pageType: AddressPageType.postcodePrincipalPlaceOfBusinessAddress,
+          premises: null,
+          postal_code: "AA1 1AA"
+        });
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(enTranslationText.errorMessages.address.postcodeLookup.postcodeNotFound);
+
+        expect(appDevDependencies.cacheRepository.cache).toEqual(null);
       });
 
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(`The postcode AA1 1AA cannot be found`);
+      it("should return an error if the postcode is missing", async () => {
+        const res = await request(app).post(URL).send({
+          pageType: AddressPageType.postcodePrincipalPlaceOfBusinessAddress,
+          premises: null,
+          postal_code: ""
+        });
 
-      expect(appDevDependencies.cacheRepository.cache).toEqual(null);
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(enTranslationText.errorMessages.address.postcodeLookup.postcodeMissing);
+
+        expect(appDevDependencies.cacheRepository.cache).toEqual(null);
+      });
+
+      it("should return an error if the postcode is invalid", async () => {
+        const res = await request(app).post(URL).send({
+          pageType: AddressPageType.postcodePrincipalPlaceOfBusinessAddress,
+          premises: null,
+          postal_code: "_____"
+        });
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(enTranslationText.errorMessages.address.postcodeLookup.postcodeInvalid);
+
+        expect(appDevDependencies.cacheRepository.cache).toEqual(null);
+      });
+
+      it("should return an error if the postcode is invalid", async () => {
+        const res = await request(app).post(URL).send({
+          pageType: AddressPageType.postcodePrincipalPlaceOfBusinessAddress,
+          premises: "_____",
+          postal_code: "AA1 1AA"
+        });
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(enTranslationText.errorMessages.address.postcodeLookup.premisesInvalid);
+
+        expect(appDevDependencies.cacheRepository.cache).toEqual(null);
+      });
     });
 
     describe("UK mainland postcode", () => {

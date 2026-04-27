@@ -5,6 +5,8 @@ import enGeneralTranslationText from "../../../../../../../locales/en/translatio
 import cyGeneralTranslationText from "../../../../../../../locales/cy/translations.json";
 import enAddressTranslationText from "../../../../../../../locales/en/address.json";
 import cyAddressTranslationText from "../../../../../../../locales/cy/address.json";
+import enErrorsTranslationText from "../../../../../../../locales/en/errors.json";
+import cyErrorsTranslationText from "../../../../../../../locales/cy/errors.json";
 
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
@@ -29,8 +31,8 @@ import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
 import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBuilder";
 
 describe("Postcode person with significant control's principal office address page", () => {
-  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
-  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText };
+  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText, ...enErrorsTranslationText };
+  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText, ...cyErrorsTranslationText };
   const URL_RELEVANT_LEGAL_ENTITY = getUrl(
     POSTCODE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL
   );
@@ -179,7 +181,7 @@ describe("Postcode person with significant control's principal office address pa
 
         expect(res.status).toBe(200);
 
-        expect(res.text).toContain(`The postcode AA1 1AA cannot be found`);
+        expect(res.text).toContain(enTranslationText.errorMessages.address.postcodeLookup.postcodeNotFound);
         expect(res.text).toContain(personWithSignificantControl?.data?.legal_entity_name?.toUpperCase());
       }
     );
