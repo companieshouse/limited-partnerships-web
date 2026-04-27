@@ -20,7 +20,10 @@
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
+      {% include "includes/errors.njk" %}
+      
       {% include "includes/proposed-name.njk" %}
+
 
       <h1 class="govuk-heading-l">{{ i18n.checkYourAnswersPage.title }}</h1>
 
@@ -54,10 +57,25 @@
         {% endfor %}
       {% endif %}
 
-      {% if journeyTypes.isRegistration and props.data.limitedPartnership.data.has_person_with_significant_control === false %}
-        <h2 class="govuk-heading-m">{{ i18n.checkYourAnswersPage.psc.title }}</h2>
+      {% if journeyTypes.isRegistration %}
+        {% set hasPsc = props.data.limitedPartnership.data.has_person_with_significant_control %}
+        {% set pscCount = props.data.personsWithSignificantControl.length or 0 %}
 
-        {% include "pages/checkYourAnswers/psc-statement.njk" %}
+        {% if hasPsc !== undefined %}
+          <h2 class="govuk-heading-m">{{ i18n.checkYourAnswersPage.psc.title }}</h2>
+
+          {% if hasPsc === true and pscCount > 0 %}
+            <p class="govuk-body-m govuk-!-margin-bottom-6">
+              <a href="{{ props.currentUrl | replace(props.pageType, props.data.reviewPersonsWithSignificantControlType) }}" class="govuk-body-m govuk-link" data-event-id="change-link">{{ i18n.checkYourAnswersPage.psc.changeRemoveOrAdd }}</a>
+            </p>
+
+            {% for item in props.data.personsWithSignificantControl %}
+              {% include "pages/checkYourAnswers/person-with-significant-control.njk" %}
+            {% endfor %}
+          {% else %}
+            {% include "pages/checkYourAnswers/psc-statement.njk" %}
+          {% endif %}
+        {% endif %}
       {% endif %}
 
       <br>

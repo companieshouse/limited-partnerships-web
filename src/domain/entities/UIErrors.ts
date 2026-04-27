@@ -33,12 +33,13 @@ class UIErrors {
     }
   }
 
-  public setWebError(field: string, message: string) {
+  public setWebError(field: string, message: string): this {
     this.formatValidationErrorToUiErrors({
       errors: {
         [field]: message
       }
     });
+    return this;
   }
 
   public hasErrors(): boolean {

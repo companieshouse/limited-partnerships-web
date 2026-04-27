@@ -4,10 +4,12 @@ import enGeneralTranslationText from "../../../../../../../locales/en/translatio
 import cyGeneralTranslationText from "../../../../../../../locales/cy/translations.json";
 import enAddressTranslationText from "../../../../../../../locales/en/address.json";
 import cyAddressTranslationText from "../../../../../../../locales/cy/address.json";
+import enErrorsTranslationText from "../../../../../../../locales/en/errors.json";
+import cyErrorsTranslationText from "../../../../../../../locales/cy/errors.json";
 
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
 import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
 
 import {
@@ -21,10 +23,11 @@ import {
 
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBuilder";
+import PersonWithSignificantControlBuilder from "../../../../builder/PersonWithSignificantControlBuilder";
 
 describe("PSC Principal Office Address Territory Choice", () => {
-  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
-  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText };
+  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText, ...enErrorsTranslationText };
+  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText, ...cyErrorsTranslationText };
   const URL_RELEVANT_LEGAL_ENTITY = getUrl(
     TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL
   );
@@ -50,6 +53,9 @@ describe("PSC Principal Office Address Territory Choice", () => {
     ])(
       "should load the PSC principal office address territory choice page with %s text",
       async (_description: string, URL: string, lang: string, translationText: Record<string, any>) => {
+        const personWithSignificantControl = buildPSC(_description);
+        appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([personWithSignificantControl]);
+
         const res = await request(app).get(`${URL}?lang=${lang}`);
 
         expect(res.status).toBe(200);
@@ -64,6 +70,8 @@ describe("PSC Principal Office Address Territory Choice", () => {
           translationText.address.territoryChoice.personWithSignificantControlPrincipalOfficeAddress
         );
         testTranslations(res.text, translationText.address.territories);
+
+        expect(res.text).toContain(personWithSignificantControl.data?.legal_entity_name?.toUpperCase());
       }
     );
   });
@@ -134,5 +142,42 @@ describe("PSC Principal Office Address Territory Choice", () => {
         });
       }
     );
+
+    it.each([
+      ["RLE", URL_RELEVANT_LEGAL_ENTITY],
+      ["ORP", URL_OTHER_REGISTARBLE_PERSON]
+    ])("should show an error message when no selection is made for territory choice", async (_description: string, URL: string) => {
+      const personWithSignificantControl = buildPSC(_description);
+      appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([personWithSignificantControl]);
+
+      const res = await request(app).post(URL).send({
+        pageType:
+          AddressPageType.territoryChoicePersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress
+      });
+
+      const errorMessages = enTranslationText.errorMessages.address.territoryChoice;
+      const errorMessage = `${errorMessages.noOptionSelectedStart}principal office address${errorMessages.noOptionSelectedEnd}`;
+
+      expect(res.status).toBe(200);
+      expect(countOccurrences(res.text, errorMessage)).toBe(2);
+      expect(res.text).toContain(personWithSignificantControl.data?.legal_entity_name?.toUpperCase());
+    });
   });
 });
+
+const buildPSC = (description: string) => {
+  let personWithSignificantControl;
+  if (description.includes("RLE")) {
+    personWithSignificantControl = new PersonWithSignificantControlBuilder()
+      .isRelevantLegalEntity()
+      .withId(appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId)
+      .build();
+  } else {
+    personWithSignificantControl = new PersonWithSignificantControlBuilder()
+      .isOtherRegistrablePerson()
+      .withId(appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId)
+      .build();
+  }
+  return personWithSignificantControl;
+};
+

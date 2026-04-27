@@ -5,7 +5,8 @@ import {
   GeneralPartner,
   LimitedPartner,
   PartnerKind,
-  PartnershipType
+  PartnershipType,
+  PersonWithSignificantControl
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import AbstractController from "../AbstractController";
@@ -51,6 +52,7 @@ import {
   WHEN_DID_LIMITED_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL
 } from "../postTransition/url";
 import { isUpdateKind } from "../../../utils/kind";
+import { snakeToNormalCase } from "../../../infrastructure/gateway/utils";
 
 class AddressLookUpController extends AbstractController {
   constructor(
@@ -143,7 +145,7 @@ class AddressLookUpController extends AbstractController {
     }
 
     return {
-      chsCorrespondenceAddress: chsPartner?.partner?.data?.service_address,
+      chsCorrespondenceAddress: (chsPartner?.partner as GeneralPartner)?.data?.service_address,
       chsPrincipalOfficeAddress: chsPartner?.partner?.data?.principal_office_address
     };
   }
@@ -491,12 +493,17 @@ class AddressLookUpController extends AbstractController {
   }
 
   handleTerritoryChoice() {
-    return (request: Request, response: Response, next: NextFunction) => {
+    return async (request: Request, response: Response, next: NextFunction) => {
       try {
+        this.addressService.setI18n(response.locals.i18n);
         const { ids, pageType } = super.extract(request);
         const parameter = request.body.parameter;
         const addressRouting = this.getAddressRouting(request.url);
         const pageRouting = super.getRouting(addressRouting, pageType, request);
+
+        if (!parameter){
+          return await this.renderTerritoryChoicePageWithError(request, pageRouting, response);
+        }
 
         const isUnitedKingdom = parameter === "unitedKingdom";
 
@@ -794,9 +801,9 @@ class AddressLookUpController extends AbstractController {
   }
 
   private async getResourcesData(pageType: any, tokens: Tokens, ids: Ids) {
-    let generalPartner = {};
-    let limitedPartner = {};
-    let personWithSignificantControl = {};
+    let generalPartner: GeneralPartner = {};
+    let limitedPartner: LimitedPartner = {};
+    let personWithSignificantControl: PersonWithSignificantControl = {};
 
     if (GENERAL_PARTNER_PAGES.has(pageType)) {
       generalPartner = await this.generalPartnerService.getGeneralPartner(
@@ -823,6 +830,30 @@ class AddressLookUpController extends AbstractController {
     }
 
     return { generalPartner, limitedPartner, personWithSignificantControl };
+  }
+
+  private async renderTerritoryChoicePageWithError(request: Request, pageRouting: PageRouting, response: Response) {
+    const { tokens, ids, pageType } = super.extract(request);
+
+    const errorMessage = response.locals.i18n?.errorMessages?.address?.territoryChoice?.noOptionSelectedStart
+      + snakeToNormalCase(pageRouting.data?.[AddressCacheKeys.addressCacheKey])
+      + response.locals.i18n?.errorMessages?.address?.territoryChoice?.noOptionSelectedEnd;
+
+    const uiErrors = new UIErrors().setWebError(
+      "parameter",
+      errorMessage
+    );
+
+    const { generalPartner, limitedPartner, personWithSignificantControl } = await this.getResourcesData(
+      pageType,
+      tokens,
+      ids
+    );
+
+    return response.render(
+      super.templateName(pageRouting.currentUrl),
+      super.makeProps(pageRouting, { generalPartner, limitedPartner, personWithSignificantControl }, uiErrors)
+    );
   }
 }
 

@@ -1,6 +1,6 @@
 {{ govukCheckboxes({
-  id: "lawfulPurposeStatementChecked", 
-  name: "lawful_purpose_statement_checked",            
+  name: "lawful_purpose_statement_checked",
+  errorMessage: props.errors.lawful_purpose_statement_checked if props.errors,
   fieldset: {
     legend: {
       text: i18n.checkYourAnswersPage.confirm,
@@ -11,10 +11,7 @@
   items: [
     {
       value: "true",
-      text: i18n.checkYourAnswersPage.futureLawful,
-      attributes: {
-        required: true
-      }
+      text: i18n.checkYourAnswersPage.futureLawful
     }
   ]
 }) }}

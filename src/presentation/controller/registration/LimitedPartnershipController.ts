@@ -4,7 +4,8 @@ import {
   GeneralPartner,
   LimitedPartner,
   LimitedPartnership,
-  PartnershipType
+  PartnershipType,
+  PersonWithSignificantControl
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
@@ -20,6 +21,7 @@ import {
   JOURNEY_TYPE_PARAM
 } from "../../../config/constants";
 import CacheService from "../../../application/service/CacheService";
+import UIErrors from "../../../domain/entities/UIErrors";
 import { PageRouting } from "../PageRouting";
 import { getJourneyTypes } from "../../../utils";
 import {
@@ -35,6 +37,7 @@ import { PAYMENT_RESPONSE_URL } from "../global/url";
 
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
+import PersonWithSignificantControlService from "../../../application/service/PersonWithSignificantControlService";
 import PartnershipController from "../common/PartnershipController";
 
 class LimitedPartnershipController extends PartnershipController {
@@ -42,6 +45,7 @@ class LimitedPartnershipController extends PartnershipController {
     private readonly limitedPartnershipService: LimitedPartnershipService,
     private readonly generalPartnerService: GeneralPartnerService,
     private readonly limitedPartnerService: LimitedPartnerService,
+    private readonly personWithSignificantControlService: PersonWithSignificantControlService,
     private readonly cacheService: CacheService,
     private readonly paymentService: PaymentService
   ) {
@@ -69,7 +73,7 @@ class LimitedPartnershipController extends PartnershipController {
 
         this.conditionalPreviousUrl(ids, pageRouting, request, limitedPartnership);
 
-        const { generalPartners, limitedPartners } = await this.getPartners(
+        const { generalPartners, limitedPartners, personsWithSignificantControl } = await this.getCheckYourAnswersResources(
           pageRouting,
           tokens,
           ids.transactionId
@@ -79,7 +83,18 @@ class LimitedPartnershipController extends PartnershipController {
 
         response.render(
           super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { limitedPartnership, generalPartners, limitedPartners, cache, ids }, null)
+          super.makeProps(
+            pageRouting,
+            {
+              limitedPartnership,
+              generalPartners,
+              limitedPartners,
+              personsWithSignificantControl,
+              cache,
+              ids
+            },
+            null
+          )
         );
       } catch (error) {
         next(error);
@@ -87,18 +102,58 @@ class LimitedPartnershipController extends PartnershipController {
     };
   }
 
-  private async getPartners(
+  private async getCheckYourAnswersResources(
     pageRouting: PageRouting,
     tokens: Tokens,
     transactionId: string
-  ): Promise<{ generalPartners: GeneralPartner[]; limitedPartners: LimitedPartner[] }> {
+  ): Promise<{
+    generalPartners: GeneralPartner[];
+    limitedPartners: LimitedPartner[];
+    personsWithSignificantControl: PersonWithSignificantControl[];
+  }> {
     if (pageRouting.pageType === RegistrationPageType.checkYourAnswers) {
       const { generalPartners } = await this.generalPartnerService.getGeneralPartners(tokens, transactionId);
       const { limitedPartners } = await this.limitedPartnerService.getLimitedPartners(tokens, transactionId);
+      const { personsWithSignificantControl } =
+        await this.personWithSignificantControlService.getPersonsWithSignificantControl(tokens, transactionId);
 
-      return { generalPartners, limitedPartners };
+      return { generalPartners, limitedPartners, personsWithSignificantControl };
     }
-    return { generalPartners: [], limitedPartners: [] };
+    return { generalPartners: [], limitedPartners: [], personsWithSignificantControl: [] };
+  }
+
+  private async renderCheckYourAnswersWithLawfulPurposeError(request: Request, response: Response) {
+    const { tokens, ids } = super.extract(request);
+    const pageRouting = super.getRouting(registrationsRouting, RegistrationPageType.checkYourAnswers, request);
+
+    const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+      tokens,
+      ids.transactionId,
+      ids.submissionId
+    );
+
+    this.conditionalPreviousUrl(ids, pageRouting, request, limitedPartnership);
+
+    const { generalPartners, limitedPartners, personsWithSignificantControl } = await this.getCheckYourAnswersResources(
+      pageRouting,
+      tokens,
+      ids.transactionId
+    );
+
+    const uiErrors = new UIErrors();
+    uiErrors.setWebError(
+      "lawful_purpose_statement_checked",
+      response.locals.i18n.errorMessages.checkYourAnswers.lawfulPurposeRequired
+    );
+
+    response.render(
+      super.templateName(pageRouting.currentUrl),
+      super.makeProps(
+        pageRouting,
+        { limitedPartnership, generalPartners, limitedPartners, personsWithSignificantControl, ids },
+        uiErrors
+      )
+    );
   }
 
   private conditionalPreviousUrl(ids: Ids, pageRouting: PageRouting, request: Request, limitedPartnership?: LimitedPartnership) {
@@ -169,6 +224,10 @@ class LimitedPartnershipController extends PartnershipController {
       try {
         const { tokens, ids } = super.extract(request);
         const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
+
+        if (request.body.lawful_purpose_statement_checked !== "true") {
+          return await this.renderCheckYourAnswersWithLawfulPurposeError(request, response);
+        }
 
         await this.limitedPartnershipService.sendPageData(
           tokens,

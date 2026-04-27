@@ -65,7 +65,8 @@ const registrationRoutingCheckYourAnswers = {
   pageType: RegistrationPageType.checkYourAnswers,
   data: {
     reviewGeneralPartnersType: RegistrationPageType.reviewGeneralPartners,
-    reviewLimitedPartnersType: RegistrationPageType.reviewLimitedPartners
+    reviewLimitedPartnersType: RegistrationPageType.reviewLimitedPartners,
+    reviewPersonsWithSignificantControlType: RegistrationPageType.reviewPersonsWithSignificantControl
   }
 };
 
