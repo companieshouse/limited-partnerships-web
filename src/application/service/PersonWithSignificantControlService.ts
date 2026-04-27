@@ -5,14 +5,22 @@ import { logger } from "../../utils";
 import { extractAPIErrors, incompletePersonWithSignificantControlErrorList } from "./utils";
 import UIErrors from "../../domain/entities/UIErrors";
 import IPersonWithSignificantControlGateway from "../../domain/IPersonWithSignificantControlGateway";
+import PersonWithSignificantControlValidator from "../../domain/validator/PersonWithSignificantControl";
 
 class PersonWithSignificantControlService {
   i18n: any;
 
-  constructor(private readonly personWithSignificantControlGateway: IPersonWithSignificantControlGateway) {}
+  constructor(
+    private readonly personWithSignificantControlGateway: IPersonWithSignificantControlGateway,
+    private readonly personWithSignificantControlValidator: PersonWithSignificantControlValidator
+  ) {}
 
   setI18n(i18n: any) {
     this.i18n = i18n;
+  }
+
+  runValidation(data: Record<string, any>): UIErrors {
+    return this.personWithSignificantControlValidator.set(data, this.i18n).runValidation();
   }
 
   async createPersonWithSignificantControl(
@@ -23,6 +31,11 @@ class PersonWithSignificantControlService {
     personWithSignificantControlId: string;
     errors?: any;
   }> {
+    const validationErrors = this.runValidation(data);
+    if (validationErrors.hasErrors()) {
+      return { personWithSignificantControlId: "", errors: validationErrors };
+    }
+
     try {
       const personWithSignificantControlId =
         await this.personWithSignificantControlGateway.createPersonWithSignificantControl(opt, transactionId, data);
@@ -97,6 +110,11 @@ class PersonWithSignificantControlService {
   ): Promise<void | {
     errors?: UIErrors;
   }> {
+    const validationErrors = this.runValidation(data);
+    if (validationErrors.hasErrors()) {
+      return { errors: validationErrors };
+    }
+
     try {
       await this.personWithSignificantControlGateway.sendPageData(
         opt,

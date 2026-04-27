@@ -4,10 +4,12 @@ import enGeneralTranslationText from "../../../../../../locales/en/translations.
 import cyGeneralTranslationText from "../../../../../../locales/cy/translations.json";
 import enPersonWithSignificantControlTranslationText from "../../../../../../locales/en/personWithSignificantControl.json";
 import cyPersonWithSignificantControlTranslationText from "../../../../../../locales/cy/personWithSignificantControl.json";
+import enErrorsTranslationText from "../../../../../../locales/en/errors.json";
+import cyErrorsTranslationText from "../../../../../../locales/cy/errors.json";
 
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../utils";
 import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 
 import {
@@ -25,8 +27,16 @@ import TransactionPersonWithSignificantControl from "../../../../../domain/entit
 import { PersonWithSignificantControlType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 describe("Add Person With Significant Control Other registrable person Page", () => {
-  const enTranslationText = { ...enGeneralTranslationText, ...enPersonWithSignificantControlTranslationText };
-  const cyTranslationText = { ...cyGeneralTranslationText, ...cyPersonWithSignificantControlTranslationText };
+  const enTranslationText = {
+    ...enGeneralTranslationText,
+    ...enPersonWithSignificantControlTranslationText,
+    ...enErrorsTranslationText
+  };
+  const cyTranslationText = {
+    ...cyGeneralTranslationText,
+    ...cyPersonWithSignificantControlTranslationText,
+    ...cyErrorsTranslationText
+  };
   const URL = getUrl(ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_URL);
   const REDIRECT_URL = getUrl(WHICH_TYPE_OF_NATURE_OF_CONTROL_OTHER_REGISTRABLE_PERSON_URL);
 
@@ -139,6 +149,88 @@ describe("Add Person With Significant Control Other registrable person Page", ()
       expect(res.status).toBe(200);
       expect(res.text).toContain("Legal entity name is invalid");
     });
+
+    it.each([
+      ["legal_entity_name", "legalEntityNameMissing"],
+      ["legal_form", "legalFormMissing"],
+      ["governing_law", "governingLawMissing"]
+    ])(
+      "should show a missing-field error when %s is empty",
+      async (field: string, errorKey: string) => {
+        const personWithSignificantControl = new PersonWithSignificantControlBuilder()
+          .isOtherRegistrablePerson()
+          .build();
+
+        const res = await request(app)
+          .post(URL)
+          .send({
+            pageType: RegistrationPageType.addPersonWithSignificantControlOtherRegistrablePerson,
+            type: PersonWithSignificantControlType.OTHER_REGISTRABLE_PERSON,
+            ...personWithSignificantControl.data,
+            [field]: ""
+          });
+
+        const errorMessage = (
+          enTranslationText.errorMessages.personWithSignificantControl.addOtherRegistrablePerson as Record<string, string>
+        )[errorKey];
+
+        expect(res.status).toBe(200);
+        expect(countOccurrences(res.text, toEscapedHtml(errorMessage))).toBe(2);
+        expect(appDevDependencies.personWithSignificantControlGateway.personsWithSignificantControl).toHaveLength(0);
+      }
+    );
+
+    it.each([
+      ["legal_entity_name", "legalEntityNameInvalid"],
+      ["legal_form", "legalFormInvalid"]
+    ])(
+      "should show an invalid-characters error when %s contains disallowed characters",
+      async (field: string, errorKey: string) => {
+        const personWithSignificantControl = new PersonWithSignificantControlBuilder()
+          .isOtherRegistrablePerson()
+          .build();
+
+        const res = await request(app)
+          .post(URL)
+          .send({
+            pageType: RegistrationPageType.addPersonWithSignificantControlOtherRegistrablePerson,
+            type: PersonWithSignificantControlType.OTHER_REGISTRABLE_PERSON,
+            ...personWithSignificantControl.data,
+            [field]: "Invalid ™ characters"
+          });
+
+        const errorMessage = (
+          enTranslationText.errorMessages.personWithSignificantControl.addOtherRegistrablePerson as Record<string, string>
+        )[errorKey];
+
+        expect(res.status).toBe(200);
+        expect(countOccurrences(res.text, toEscapedHtml(errorMessage))).toBe(2);
+        expect(appDevDependencies.personWithSignificantControlGateway.personsWithSignificantControl).toHaveLength(0);
+      }
+    );
+
+    it("should not call the gateway when validation fails", async () => {
+      const personWithSignificantControl = new PersonWithSignificantControlBuilder().isOtherRegistrablePerson().build();
+
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: RegistrationPageType.addPersonWithSignificantControlOtherRegistrablePerson,
+          type: PersonWithSignificantControlType.OTHER_REGISTRABLE_PERSON,
+          ...personWithSignificantControl.data,
+          legal_entity_name: "",
+          legal_form: "",
+          governing_law: ""
+        });
+
+      const expected = enTranslationText.errorMessages.personWithSignificantControl.addOtherRegistrablePerson;
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(toEscapedHtml(expected.legalEntityNameMissing));
+      expect(res.text).toContain(toEscapedHtml(expected.legalFormMissing));
+      expect(res.text).toContain(toEscapedHtml(expected.governingLawMissing));
+      expect(appDevDependencies.personWithSignificantControlGateway.personsWithSignificantControl).toHaveLength(0);
+    });
   });
 
   describe("Patch Add Other registrable person Page", () => {
@@ -191,6 +283,26 @@ describe("Add Person With Significant Control Other registrable person Page", ()
 
       expect(res.status).toBe(200);
       expect(res.text).toContain("Legal entity name is invalid");
+    });
+
+    it("should run client-side validation on edit and not call the gateway when fields are missing", async () => {
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: RegistrationPageType.addPersonWithSignificantControlOtherRegistrablePerson,
+          type: PersonWithSignificantControlType.OTHER_REGISTRABLE_PERSON,
+          ...personWithSignificantControl.data,
+          legal_entity_name: "",
+          legal_form: "",
+          governing_law: ""
+        });
+
+      const expected = enTranslationText.errorMessages.personWithSignificantControl.addOtherRegistrablePerson;
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(toEscapedHtml(expected.legalEntityNameMissing));
+      expect(res.text).toContain(toEscapedHtml(expected.legalFormMissing));
+      expect(res.text).toContain(toEscapedHtml(expected.governingLawMissing));
     });
   });
 });

@@ -7,10 +7,7 @@
     id: "legal_entity_name",
     name: "legal_entity_name",
     value: props.data.personWithSignificantControl.data.legal_entity_name,
-    errorMessage: props.errors.legal_entity_name if props.errors,
-    attributes : {
-        required: true
-    }
+    errorMessage: props.errors.legal_entity_name if props.errors
 }) }}
 
 {{ govukInput({
@@ -24,10 +21,7 @@
     id: "legal_form",
     name: "legal_form",
     value: props.data.personWithSignificantControl.data.legal_form,
-    errorMessage: props.errors.legal_form if props.errors,
-    attributes : {
-        required: true
-    }
+    errorMessage: props.errors.legal_form if props.errors
 }) }}
 
 {{ govukInput({
@@ -41,8 +35,5 @@
     id: "governing_law",
     name: "governing_law",
     value: props.data.personWithSignificantControl.data.governing_law,
-    errorMessage: props.errors.governing_law if props.errors,
-    attributes : {
-        required: true
-    }
+    errorMessage: props.errors.governing_law if props.errors
 }) }}
