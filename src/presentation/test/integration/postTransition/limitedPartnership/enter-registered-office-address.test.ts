@@ -6,6 +6,8 @@ import enGeneralTranslationText from "../../../../../../locales/en/translations.
 import cyGeneralTranslationText from "../../../../../../locales/cy/translations.json";
 import enAddressTranslationText from "../../../../../../locales/en/address.json";
 import cyAddressTranslationText from "../../../../../../locales/cy/address.json";
+import enErrorsTranslationText from "../../../../../../locales/en/errors.json";
+import cyErrorsTranslationText from "../../../../../../locales/cy/errors.json";
 
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
@@ -23,8 +25,8 @@ import CompanyProfileBuilder from "../../../../../presentation/test/builder/Comp
 import PostTransitionPageType from "../../../../../presentation/controller/postTransition/pageType";
 
 describe("Enter Registered Office Address Page", () => {
-  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
-  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText };
+  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText, ...enErrorsTranslationText };
+  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText, ...cyErrorsTranslationText };
   const URL = getUrl(ENTER_REGISTERED_OFFICE_ADDRESS_URL);
   const URL_WITH_IDS = getUrl(ENTER_REGISTERED_OFFICE_ADDRESS_WITH_IDS_URL);
 
@@ -194,7 +196,7 @@ describe("Enter Registered Office Address Page", () => {
         });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.jurisdictionCountry);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.jurisdictionCountry);
       expect(res.text).toContain(enTranslationText.govUk.error.title);
       expect(res.text).toContain(companyProfile.data.companyName?.toUpperCase());
     });
@@ -215,7 +217,7 @@ describe("Enter Registered Office Address Page", () => {
         });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.jurisdictionCountry);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.jurisdictionCountry);
       expect(res.text).toContain(enTranslationText.govUk.error.title);
       expect(res.text).toContain(companyProfile.data.companyName?.toUpperCase());
     });
@@ -236,7 +238,7 @@ describe("Enter Registered Office Address Page", () => {
         });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.jurisdictionCountry);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.jurisdictionCountry);
       expect(res.text).toContain(enTranslationText.govUk.error.title);
       expect(res.text).toContain(companyProfile.data.companyName?.toUpperCase());
     });
@@ -257,7 +259,7 @@ describe("Enter Registered Office Address Page", () => {
         });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.postcodeFormat);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.postcodeFormat);
       expect(res.text).toContain(enTranslationText.govUk.error.title);
       expect(res.text).toContain(companyProfile.data.companyName?.toUpperCase());
     });
@@ -303,40 +305,17 @@ describe("Enter Registered Office Address Page", () => {
           address_line_2: "±",
           locality: "±",
           region: "±",
-          postal_code: "±"
+          postal_code: "±",
+          country: "±"
         });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(
-        enTranslationText.address.enterAddress.premises +
-          " " +
-          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
-      );
-      expect(res.text).toContain(
-        enTranslationText.address.enterAddress.addressLine1 +
-          " " +
-          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
-      );
-      expect(res.text).toContain(
-        enTranslationText.address.enterAddress.addressLine2Title +
-          " " +
-          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
-      );
-      expect(res.text).toContain(
-        enTranslationText.address.enterAddress.locality +
-          " " +
-          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
-      );
-      expect(res.text).toContain(
-        enTranslationText.address.enterAddress.regionTitle +
-          " " +
-          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
-      );
-      expect(res.text).toContain(
-        enTranslationText.address.enterAddress.postcode +
-          " " +
-          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
-      );
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.premisesInvalid);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.addressLine1Invalid);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.addressLine2Invalid);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.localityInvalid);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.regionInvalid);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.postcodeInvalid);
 
       expect(res.text).toContain(enTranslationText.govUk.error.title);
       expect(res.text).toContain(companyProfile.data.companyName?.toUpperCase());
@@ -362,11 +341,11 @@ describe("Enter Registered Office Address Page", () => {
         });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.premisesLength);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.addressLine1Length);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.addressLine2Length);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.localityLength);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.regionLength);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.premisesLength);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.addressLine1Length);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.addressLine2Length);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.localityLength);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.regionLength);
     });
   });
 });

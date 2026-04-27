@@ -1,28 +1,32 @@
 import { Address, Jurisdiction } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+
 import UIErrors from "../../domain/entities/UIErrors";
 import IAddressLookUpGateway from "../../domain/IAddressLookUpGateway";
 
 import { logger } from "../../utils";
+import AddressValidator from "../../domain/validator/Address";
 
 class AddressService {
   private static readonly UK_COUNTRIES: Set<string> = new Set(["Scotland", "Northern Ireland", "England", "Wales"]);
-  private static readonly UK_POSTCODE_LETTERS_NOT_MAINLAND: Set<string> = new Set(["JE", "GY", "IM"]);
-
-  private static readonly VALID_UK_POSTCODE_FORMAT = /^[A-Za-z]{1,2}\d[A-Za-z\d]? ?\d[A-Za-z]{2}$/;
-  private static readonly VALID_CHARACTERS =
-    /^[-,.:; 0-9A-Z&@$£¥€'"«»?!/\\()[\]{}<>*=#%+ÀÁÂÃÄÅĀĂĄÆǼÇĆĈĊČÞĎÐÈÉÊËĒĔĖĘĚĜĞĠĢĤĦÌÍÎÏĨĪĬĮİĴĶĹĻĽĿŁÑŃŅŇŊÒÓÔÕÖØŌŎŐǾŒŔŖŘŚŜŞŠŢŤŦÙÚÛÜŨŪŬŮŰŲŴẀẂẄỲÝŶŸŹŻŽa-zſƒǺàáâãäåāăąæǽçćĉċčþďðèéêëēĕėęěĝģğġĥħìíîïĩīĭįĵķĺļľŀłñńņňŋòóôõöøōŏőǿœŕŗřśŝşšţťŧùúûüũūŭůűųŵẁẃẅỳýŷÿźżž]*$/;
-  private static readonly PREMISES_MAX_LENGTH = 200;
-  private static readonly MAX_LENGTH = 50;
+  postcodeFieldName = "postal_code";
 
   i18n: any;
 
-  constructor(private readonly addressGateway: IAddressLookUpGateway) {}
+  constructor(
+    private readonly addressGateway: IAddressLookUpGateway,
+    private readonly addressValidator: AddressValidator
+  ) {}
 
   setI18n(i18n: any) {
     this.i18n = i18n;
   }
 
-  async isValidUKPostcodeAndHasAnAddress(
+  runValidation(address: Address): UIErrors | undefined {
+    return this.addressValidator.set(address, this.i18n).runValidation();
+  }
+
+  // POSTCODE VALIDATION
+  public async isValidUKPostcodeAndHasAnAddress(
     opt: { access_token: string; refresh_token: string },
     postalCode: string,
     premises?: string,
@@ -43,25 +47,29 @@ class AddressService {
         premises: ""
       };
 
+      // is valid uk postcode
       const isValid = await this.addressGateway.isValidUKPostcode(opt, postalCode);
 
       if (!isValid) {
-        this.setFieldError(uiErrors, "postal_code", `The postcode ${postalCode} cannot be found`);
+        uiErrors.setWebError(this.postcodeFieldName, `The postcode ${postalCode} cannot be found`);
 
         return { address, errors: uiErrors };
       }
 
+      // has an address
       const ukAddresses: Address[] = await this.getAddressListForPostcode(opt, postalCode);
 
       if (ukAddresses.length === 0) {
-        this.setFieldError(uiErrors, "postal_code", `The postcode ${postalCode} cannot be found`);
+        uiErrors.setWebError(this.postcodeFieldName, `The postcode ${postalCode} cannot be found`);
         return { address, errors: uiErrors };
       }
 
+      // is from correct country and jurisdiction
       if (!this.isFromCorrectCountry(uiErrors, ukAddresses, jurisdiction)) {
         return { address, errors: uiErrors };
       }
 
+      // if premises provided, check it matches the postcode
       if (premises) {
         if (ukAddresses.length === 0) {
           return { address };
@@ -80,143 +88,6 @@ class AddressService {
 
       throw error;
     }
-  }
-
-  private getMatchingAddress(ukAddresses: Address[], postalCode: string, premises: string) {
-    return ukAddresses.find(
-      (ukAddress) =>
-        ukAddress.postal_code.replace(/\s+/g, "").toLowerCase() === postalCode.replace(/\s+/g, "").toLowerCase() &&
-        ukAddress.premises.toLowerCase() === premises.toLowerCase()
-    );
-  }
-
-  public validateAddressCharactersAndLength(address: Address, uiErrors: UIErrors | undefined): UIErrors | undefined {
-    let fieldErrors = {};
-    const ignoredFields = ["country"];
-
-    for (const key in address) {
-      if (ignoredFields.includes(key)) {
-        continue;
-      }
-
-      let i18nFieldTitleKey = this.snakeCaseToCamelCase(key);
-      if (key === "address_line_2" || key === "region" || key === "postal_code") {
-        i18nFieldTitleKey += "Title";
-      }
-
-      const addressValue = address[key] ?? "";
-
-      fieldErrors = {
-        ...fieldErrors,
-        ...this.checkAddressFieldForInvalidCharacters(
-          key,
-          addressValue,
-          this.i18n?.address?.enterAddress?.[i18nFieldTitleKey]
-        ),
-        ...this.checkAddressFieldForCharacterLimit(key, addressValue)
-      };
-    }
-
-    if (Object.keys(fieldErrors).length !== 0) {
-      uiErrors ??= new UIErrors();
-      uiErrors.formatValidationErrorToUiErrors({ errors: fieldErrors });
-    }
-
-    return uiErrors;
-  }
-
-  isValidPostcode(postalCode: string, country: string, uiErrors: UIErrors | undefined): UIErrors | undefined {
-    if (AddressService.UK_COUNTRIES.has(country) && !AddressService.VALID_UK_POSTCODE_FORMAT.exec(postalCode)) {
-      uiErrors ??= new UIErrors();
-
-      this.setFieldError(uiErrors, "postal_code", this.i18n?.address?.enterAddress?.errorMessages?.postcodeFormat);
-    }
-
-    if (
-      AddressService.UK_COUNTRIES.has(country) &&
-      AddressService.UK_POSTCODE_LETTERS_NOT_MAINLAND.has(postalCode.slice(0, 2))
-    ) {
-      uiErrors ??= new UIErrors();
-
-      this.setFieldError(uiErrors, "postal_code", this.i18n?.address?.findPostcode?.errorMessages?.notMainland);
-    }
-
-    return uiErrors;
-  }
-
-  isValidJurisdictionAndCountry(
-    jurisdiction: string,
-    country: string,
-    uiErrors: UIErrors | undefined
-  ): UIErrors | undefined {
-    return this.checkJurisdictionAndCountryCombinationAllowed(jurisdiction, country, uiErrors);
-  }
-
-  async getAddressListForPostcode(
-    opt: { access_token: string; refresh_token: string },
-    postalCode: string
-  ): Promise<Address[]> {
-    try {
-      const addressList: Address[] = await this.addressGateway.getListOfValidPostcodeAddresses(opt, postalCode);
-
-      return addressList.sort((a, b) => a.premises.localeCompare(b.premises));
-    } catch (error: any) {
-      logger.error(`Error retrieving address list for postcode ${postalCode} ${JSON.stringify(error)}`);
-
-      throw error;
-    }
-  }
-
-  hasCountry(address: Address, uiErrors?: UIErrors | undefined): UIErrors | undefined {
-    if (!address.country) {
-      uiErrors ??= new UIErrors();
-      uiErrors.setWebError("change", this.i18n?.errorMessages?.address?.confirm?.countryMissing);
-    }
-
-    return uiErrors;
-  }
-
-  private checkAddressFieldForCharacterLimit(fieldName: string, fieldValue: string): Record<string, string> {
-    const fieldNamesWithMaxLength = {
-      address_line_1: "addressLine1Length",
-      address_line_2: "addressLine2Length",
-      locality: "localityLength",
-      region: "regionLength",
-      postal_code: "postalCodeLength"
-    };
-
-    if (fieldName === "premises") {
-      if (fieldValue.length > AddressService.PREMISES_MAX_LENGTH) {
-        return {
-          [fieldName]: " " + this.i18n?.address?.enterAddress?.errorMessages?.premisesLength
-        };
-      }
-    } else if (fieldNamesWithMaxLength[fieldName] && fieldValue.length > AddressService.MAX_LENGTH) {
-      const errorKey = fieldNamesWithMaxLength[fieldName];
-      return {
-        [fieldName]: " " + this.i18n?.address?.enterAddress?.errorMessages?.[errorKey]
-      };
-    }
-
-    return {};
-  }
-
-  private checkAddressFieldForInvalidCharacters(
-    fieldName: string,
-    fieldValue: string,
-    fieldTitle: string
-  ): Record<string, string> {
-    if (!AddressService.VALID_CHARACTERS.exec(fieldValue)) {
-      return {
-        [fieldName]: fieldTitle + " " + this.i18n?.address?.enterAddress?.errorMessages?.invalidCharacters
-      };
-    }
-
-    return {};
-  }
-
-  private snakeCaseToCamelCase(str: string): string {
-    return str.replace(/_([a-zA-Z0-9])/g, (_, char) => char.toUpperCase());
   }
 
   private isFromCorrectCountry(uiErrors: UIErrors, ukAddresses: Address[], jurisdiction?: string): boolean {
@@ -239,45 +110,34 @@ class AddressService {
     if (IS_NOT_MAINLAND) {
       isCorrectCountry = false;
 
-      this.setFieldError(uiErrors, "postal_code", this.i18n?.address?.findPostcode?.errorMessages?.notMainland);
+      uiErrors.setWebError(this.postcodeFieldName, this.i18n?.errorMessages?.address?.enterAddress?.notMainland);
     } else if (jurisdiction === Jurisdiction.ENGLAND_AND_WALES && !IS_IN_ENGLAND && !IS_IN_WALES) {
       isCorrectCountry = false;
 
-      this.setFieldError(
-        uiErrors,
-        "postal_code",
-        this.i18n?.address?.findPostcode?.errorMessages?.jurisdictionEnglandAndWales
-      );
+      uiErrors.setWebError(this.postcodeFieldName, this.i18n?.errorMessages?.address?.enterAddress?.jurisdictionEnglandAndWales);
     } else if (jurisdiction === Jurisdiction.SCOTLAND && !IS_IN_SCOTLAND) {
       isCorrectCountry = false;
 
-      this.setFieldError(
-        uiErrors,
-        "postal_code",
-        this.i18n?.address?.findPostcode?.errorMessages?.jurisdictionScotland
-      );
+      uiErrors.setWebError(this.postcodeFieldName, this.i18n?.errorMessages?.address?.enterAddress?.jurisdictionScotland);
     } else if (jurisdiction === Jurisdiction.NORTHERN_IRELAND && !IS_IN_NORTHERN_IRELAND) {
       isCorrectCountry = false;
 
-      this.setFieldError(
-        uiErrors,
-        "postal_code",
-        this.i18n?.address?.findPostcode?.errorMessages?.jurisdictionNorthernIreland
-      );
+      uiErrors.setWebError(this.postcodeFieldName, this.i18n?.errorMessages?.address?.enterAddress?.jurisdictionNorthernIreland);
     }
 
     return isCorrectCountry;
   }
 
-  private setFieldError(uiErrors: UIErrors, fieldName: string, message: string): void {
-    uiErrors.formatValidationErrorToUiErrors({
-      errors: {
-        [fieldName]: message
-      }
-    });
+  private getMatchingAddress(ukAddresses: Address[], postalCode: string, premises: string) {
+    return ukAddresses.find(
+      (ukAddress) =>
+        ukAddress.postal_code.replace(/\s+/g, "").toLowerCase() === postalCode.replace(/\s+/g, "").toLowerCase() &&
+        ukAddress.premises.toLowerCase() === premises.toLowerCase()
+    );
   }
 
-  private checkJurisdictionAndCountryCombinationAllowed(
+  // JURISDICTION AND COUNTRY VALIDATION
+  public isValidJurisdictionAndCountry(
     jurisdiction: string,
     country: string,
     uiErrors: UIErrors | undefined
@@ -291,11 +151,37 @@ class AddressService {
       if (!isValid) {
         uiErrors ??= new UIErrors();
 
-        this.setFieldError(uiErrors, "country", this.i18n?.address?.enterAddress?.errorMessages?.jurisdictionCountry);
+        uiErrors.setWebError("country", this.i18n?.errorMessages?.address?.enterAddress?.jurisdictionCountry);
       }
-
-      return uiErrors;
     }
+
+    return uiErrors;
+  }
+
+  // ADDRESS LOOKUP
+  public async getAddressListForPostcode(
+    opt: { access_token: string; refresh_token: string },
+    postalCode: string
+  ): Promise<Address[]> {
+    try {
+      const addressList: Address[] = await this.addressGateway.getListOfValidPostcodeAddresses(opt, postalCode);
+
+      return addressList.sort((a, b) => a.premises.localeCompare(b.premises));
+    } catch (error: any) {
+      logger.error(`Error retrieving address list for postcode ${postalCode} ${JSON.stringify(error)}`);
+
+      throw error;
+    }
+  }
+
+  public hasCountry(address: Address): UIErrors {
+    const uiErrors = new UIErrors();
+
+    if (!address.country) {
+      uiErrors.setWebError("change", this.i18n?.errorMessages?.address?.confirm?.countryMissing);
+    }
+
+    return uiErrors;
   }
 }
 

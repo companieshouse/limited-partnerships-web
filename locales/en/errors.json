@@ -14,6 +14,41 @@
             "confirm": {
                 "countryMissing": "We cannot identify the country for this address. Select Change, then select the country."
             },
+
+            "enterAddress": {
+                "premisesMissing": "Enter a property name or number",
+                "premisesLength": "Property name or number must be 200 characters or less",
+                "premisesInvalid": "Property name or number must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+    
+                "addressLine1Missing": "Enter address line 1, typically the building and street",
+                "addressLine1Invalid": "Address line 1 must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "addressLine1Length": "Address line 1 must be 50 characters or less",
+    
+                "addressLine2Invalid": "Address line 2 must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "addressLine2Length": "Address line 2 must be 50 characters or less",
+    
+                "localityMissing": "Enter a town or city",
+                "localityInvalid": "Town or city must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "localityLength": "Town or city must be 50 characters or less",
+    
+                "regionInvalid": "County must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "regionLength": "County must be 50 characters or less",
+    
+                "postcodeMissing": "Enter a postcode",
+                "postcodeInvalid": "Postcode must only include letters a to z, numbers and spaces",
+                "postcodeFormat": "Invalid postcode format",
+                "postalCodeLength": "Postcode must be 20 characters or less",
+    
+                "notMainland": "Enter a UK mainland postcode",
+    
+                "countryMissing": "Select a country",
+    
+                "jurisdictionCountry": "You must enter a country that matches your jurisdiction",
+                "jurisdictionEnglandAndWales": "You must enter a postcode which is in England or Wales",
+                "jurisdictionNorthernIreland": "You must enter a postcode which is in Northern Ireland",
+                "jurisdictionScotland": "You must enter a postcode which is in Scotland"
+            },
+
             "territoryChoice": {
                 "noOptionSelectedStart": "Select if the ",
                 "noOptionSelectedEnd": " is in the UK or overseas"

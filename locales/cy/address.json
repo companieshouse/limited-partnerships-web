@@ -136,23 +136,7 @@
             "countryEngland": "WELSH - England",
             "countryScotland": "WELSH - Scotland",
             "countryWales": "WELSH - Wales",
-            "countryNorthernIreland": "WELSH - Northern Ireland",
-            "errorMessages": {
-                "premisesMissing": "WELSH - Enter a property name or number",
-                "premisesLength": "WELSH - Property name or number must be 200 characters or less",
-                "addressLine1Missing": "WELSH - Enter an address",
-                "addressLine1Length": "WELSH - Address line 1 must be 50 characters or less",
-                "addressLine2Length": "WELSH - Address line 2 must be 50 characters or less",
-                "localityMissing": "WELSH - Enter a town or city",
-                "localityLength": "WELSH - Town or city must be 50 characters or less",
-                "regionLength": "WELSH - County, state, province or region must be 50 characters or less",
-                "postcodeMissing": "WELSH - Enter a postcode",
-                "postcodeFormat": "WELSH - Invalid postcode format",
-                "postalCodeLength": "WELSH - Postal code must be 50 characters or less",
-                "countryMissing": "WELSH - Select a country",
-                "jurisdictionCountry": "WELSH - You must enter a country that matches your jurisdiction",
-                "invalidCharacters": "WELSH - must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes"
-            }
+            "countryNorthernIreland": "WELSH - Northern Ireland"
         },
 
         "findPostcode": {
@@ -208,14 +192,7 @@
             "nameOrNumber": "WELSH - Property name or number (optional)",
             "postcode": "WELSH - Postcode",
             "enterAddressManually": "WELSH - Enter address manually",
-            "findAddress": "WELSH - Find address",
-
-            "errorMessages": {
-                "jurisdictionEnglandAndWales": "WELSH - You must enter a postcode which is in England or Wales",
-                "jurisdictionNorthernIreland": "WELSH - You must enter a postcode which is in Northern Ireland",
-                "jurisdictionScotland": "WELSH - You must enter a postcode which is in Scotland",
-                "notMainland": "WELSH - Enter a UK mainland postcode"
-            }
+            "findAddress": "WELSH - Find address"
         },
 
          "registeredOffice": {

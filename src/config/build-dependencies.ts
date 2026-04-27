@@ -21,6 +21,8 @@ import FilingHistoryInMemoryGateway from "../infrastructure/gateway/filingHistor
 import PersonWithSignificantControlGateway from "../infrastructure/gateway/personWithSignificantControl/PersonWithSignificantControlGateway";
 import PersonWithSignificantControlInMemoryGateway from "../infrastructure/gateway/personWithSignificantControl/PersonWithSignificantControlInMemoryGateway";
 
+import AddressValidator from "../domain/validator/Address";
+
 import CacheService from "../application/service/CacheService";
 import AddressLookUpService from "../application/service/AddressService";
 import LimitedPartnershipService from "../application/service/LimitedPartnershipService";
@@ -104,13 +106,16 @@ export function buildDependencies(useInMemory = false): BuiltDependencies {
   // Repositories
   const cacheRepository = useInMemory ? new CacheInMemoryRepository() : new CacheRepository();
 
+  // Dommain
+  const addressValidator = new AddressValidator();
+
   // Services
   const limitedPartnershipService: LimitedPartnershipService = new LimitedPartnershipService(
     limitedPartnershipGateway,
     transactionGateway,
     incorporationGateway
   );
-  const addressLookUpService: AddressLookUpService = new AddressLookUpService(addressLookUpGateway);
+  const addressLookUpService: AddressLookUpService = new AddressLookUpService(addressLookUpGateway, addressValidator);
   const cacheService = new CacheService(cacheRepository);
   const generalPartnerService: GeneralPartnerService = new GeneralPartnerService(generalPartnerGateway);
   const limitedPartnerService: LimitedPartnerService = new LimitedPartnerService(limitedPartnerGateway);

@@ -390,7 +390,7 @@ class LimitedPartnershipController extends AbstractController {
           .replace(JOURNEY_TYPE_PARAM, getJourneyTypes(request.url).journey);
 
         if (response.locals?.serviceName) {
-          const serviceName = response.locals?.serviceName.toLowerCase().replace(/\s+/g, '-');
+          const serviceName = response.locals?.serviceName.toLowerCase().replace(/\s+/g, "-");
           redirectUrl = this.addOrAppendQueryParam(redirectUrl, JOURNEY_QUERY_PARAM, serviceName);
         }
 
@@ -464,7 +464,7 @@ class LimitedPartnershipController extends AbstractController {
           PartnershipKind.UPDATE_PARTNERSHIP_REDESIGNATE_TO_PFLP,
           {
             ...request.body,
-            date_of_update: new Date().toISOString().split('T')[0]
+            date_of_update: new Date().toISOString().split("T")[0]
           }
         );
         if (resultLimitedPartnershipCreate.errors) {
@@ -485,7 +485,7 @@ class LimitedPartnershipController extends AbstractController {
           .replace(JOURNEY_TYPE_PARAM, getJourneyTypes(request.url).journey);
 
         if (response.locals?.serviceName) {
-          const serviceName = response.locals?.serviceName.toLowerCase().replace(/\s+/g, '-');
+          const serviceName = response.locals?.serviceName.toLowerCase().replace(/\s+/g, "-");
           redirectUrl = this.addOrAppendQueryParam(redirectUrl, JOURNEY_QUERY_PARAM, serviceName);
         }
 
@@ -544,9 +544,7 @@ class LimitedPartnershipController extends AbstractController {
       region
     };
 
-    errors = this.addressService.validateAddressCharactersAndLength(address, errors);
-
-    errors = this.addressService.isValidPostcode(postal_code ?? "", country, errors);
+    errors = this.addressService.runValidation(address);
 
     if (partnershipKind !== PartnershipKind.UPDATE_PARTNERSHIP_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS) {
       errors = this.addressService.isValidJurisdictionAndCountry(
