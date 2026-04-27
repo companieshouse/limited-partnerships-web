@@ -1,5 +1,6 @@
 import request from "supertest";
 import { UKAddress } from "@companieshouse/api-sdk-node/dist/services/postcode-lookup";
+import { Jurisdiction } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 import enGeneralTranslationText from "../../../../../../locales/en/translations.json";
 import cyGeneralTranslationText from "../../../../../../locales/cy/translations.json";
@@ -182,6 +183,42 @@ describe("Postcode Principal Place Of Business Address Page", () => {
 
         expect(res.status).toBe(200);
         expect(res.text).toContain(enTranslationText.errorMessages.address.postcodeLookup.premisesInvalid);
+
+        expect(appDevDependencies.cacheRepository.cache).toEqual(null);
+      });
+
+      it.each([
+        [
+          enTranslationText.errorMessages.address.enterAddress.jurisdictionEnglandAndWales,
+          Jurisdiction.ENGLAND_AND_WALES,
+          appDevDependencies.addressLookUpGateway.scotlandAddresses[0].postcode
+        ],
+        [
+          enTranslationText.errorMessages.address.enterAddress.jurisdictionScotland,
+          Jurisdiction.SCOTLAND,
+          appDevDependencies.addressLookUpGateway.walesAddresses[0].postcode
+        ],
+        [
+          enTranslationText.errorMessages.address.enterAddress.jurisdictionNorthernIreland,
+          Jurisdiction.NORTHERN_IRELAND,
+          appDevDependencies.addressLookUpGateway.walesAddresses[0].postcode
+        ]
+      ])("%s", async (errorMessage: string, jurisdiction: string, postcode: string) => {
+        const limitedPartnership = new LimitedPartnershipBuilder()
+          .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+          .withJurisdiction(jurisdiction as Jurisdiction)
+          .build();
+
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+        const res = await request(app).post(URL).send({
+          pageType: AddressPageType.postcodeRegisteredOfficeAddress,
+          premises: null,
+          postal_code: postcode
+        });
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(errorMessage);
 
         expect(appDevDependencies.cacheRepository.cache).toEqual(null);
       });
