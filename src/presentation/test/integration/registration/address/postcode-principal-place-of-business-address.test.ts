@@ -11,7 +11,7 @@ import cyErrorsTranslationText from "../../../../../../locales/cy/errors.json";
 
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
+import { getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../utils";
 
 import {
   POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
@@ -135,54 +135,74 @@ describe("Postcode Principal Place Of Business Address Page", () => {
     });
 
     describe("Error messages", () => {
-      it("should return an error if the postcode is not valid", async () => {
-        const res = await request(app).post(URL).send({
+      it.each([
+        ["en", enTranslationText],
+        ["cy", cyTranslationText]
+      ])("should return an error if the postcode is not valid - %s", async (lang: string, translation) => {
+        setLocalesEnabled(true);
+
+        const res = await request(app).post(`${URL}?lang=${lang}`).send({
           pageType: AddressPageType.postcodePrincipalPlaceOfBusinessAddress,
           premises: null,
           postal_code: "AA1 1AA"
         });
 
         expect(res.status).toBe(200);
-        expect(res.text).toContain(enTranslationText.errorMessages.address.postcodeLookup.postcodeNotFound);
+        expect(res.text).toContain(toEscapedHtml(translation.errorMessages.address.postcodeLookup.postcodeNotFound));
 
         expect(appDevDependencies.cacheRepository.cache).toEqual(null);
       });
 
-      it("should return an error if the postcode is missing", async () => {
-        const res = await request(app).post(URL).send({
+      it.each([
+        ["en", enTranslationText],
+        ["cy", cyTranslationText]
+      ])("should return an error if the postcode is missing - %s", async (lang: string, translation) => {
+        setLocalesEnabled(true);
+
+        const res = await request(app).post(`${URL}?lang=${lang}`).send({
           pageType: AddressPageType.postcodePrincipalPlaceOfBusinessAddress,
           premises: null,
           postal_code: ""
         });
 
         expect(res.status).toBe(200);
-        expect(res.text).toContain(enTranslationText.errorMessages.address.postcodeLookup.postcodeMissing);
+        expect(res.text).toContain(translation.errorMessages.address.postcodeLookup.postcodeMissing);
 
         expect(appDevDependencies.cacheRepository.cache).toEqual(null);
       });
 
-      it("should return an error if the postcode is invalid", async () => {
-        const res = await request(app).post(URL).send({
+      it.each([
+        ["en", enTranslationText],
+        ["cy", cyTranslationText]
+      ])("should return an error if the postcode is invalid - %s", async (lang: string, translation) => {
+        setLocalesEnabled(true);
+
+        const res = await request(app).post(`${URL}?lang=${lang}`).send({
           pageType: AddressPageType.postcodePrincipalPlaceOfBusinessAddress,
           premises: null,
           postal_code: "_____"
         });
 
         expect(res.status).toBe(200);
-        expect(res.text).toContain(enTranslationText.errorMessages.address.postcodeLookup.postcodeInvalid);
+        expect(res.text).toContain(translation.errorMessages.address.postcodeLookup.postcodeInvalid);
 
         expect(appDevDependencies.cacheRepository.cache).toEqual(null);
       });
 
-      it("should return an error if the postcode is invalid", async () => {
-        const res = await request(app).post(URL).send({
+      it.each([
+        ["en", enTranslationText],
+        ["cy", cyTranslationText]
+      ])("should return an error if the postcode is invalid - %s", async (lang: string, translation) => {
+        setLocalesEnabled(true);
+
+        const res = await request(app).post(`${URL}?lang=${lang}`).send({
           pageType: AddressPageType.postcodePrincipalPlaceOfBusinessAddress,
           premises: "_____",
           postal_code: "AA1 1AA"
         });
 
         expect(res.status).toBe(200);
-        expect(res.text).toContain(enTranslationText.errorMessages.address.postcodeLookup.premisesInvalid);
+        expect(res.text).toContain(translation.errorMessages.address.postcodeLookup.premisesInvalid);
 
         expect(appDevDependencies.cacheRepository.cache).toEqual(null);
       });
@@ -204,6 +224,8 @@ describe("Postcode Principal Place Of Business Address Page", () => {
           appDevDependencies.addressLookUpGateway.walesAddresses[0].postcode
         ]
       ])("%s", async (errorMessage: string, jurisdiction: string, postcode: string) => {
+        setLocalesEnabled(true);
+
         const limitedPartnership = new LimitedPartnershipBuilder()
           .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
           .withJurisdiction(jurisdiction as Jurisdiction)
