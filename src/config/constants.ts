@@ -164,3 +164,12 @@ export const cookieOptions = {
 
 // middleware
 export const allPathsExceptHealthcheck = /\/limited-partnerships\/((?!healthcheck).)*/;
+
+// Validation
+export const VALID_CHARACTERS_REGEX =
+  /^[-,.:; 0-9A-Z&@$£¥€'"«»?!/\\()[\]{}<>*=#%+ÀÁÂÃÄÅĀĂĄÆǼÇĆĈĊČÞĎÐÈÉÊËĒĔĖĘĚĜĞĠĢĤĦÌÍÎÏĨĪĬĮİĴĶĹĻĽĿŁÑŃŅŇŊÒÓÔÕÖØŌŎŐǾŒŔŖŘŚŜŞŠŢŤŦÙÚÛÜŨŪŬŮŰŲŴẀẂẄỲÝŶŸŹŻŽa-zſƒǺàáâãäåāăąæǽçćĉċčþďðèéêëēĕėęěĝģğġĥħìíîïĩīĭįĵķĺļľŀłñńņňŋòóôõöøōŏőǿœŕŗřśŝşšţťŧùúûüũūŭůűųŵẁẃẅỳýŷÿźżž]*$/;
+
+// Form field names
+export const LEGAL_ENTITY_NAME_FIELD = "legal_entity_name";
+export const LEGAL_FORM_FIELD = "legal_form";
+export const GOVERNING_LAW_FIELD = "governing_law";
