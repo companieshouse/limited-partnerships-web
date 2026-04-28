@@ -25,6 +25,8 @@ import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBuilder";
 import PersonWithSignificantControlBuilder from "../../../../builder/PersonWithSignificantControlBuilder";
 
+import { WHICH_TYPE_OF_NATURE_OF_CONTROL_OTHER_REGISTRABLE_PERSON_URL, WHICH_TYPE_OF_NATURE_OF_CONTROL_RELEVANT_LEGAL_ENTITY_URL } from "presentation/controller/registration/url";
+
 describe("PSC Principal Office Address Territory Choice", () => {
   const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText, ...enErrorsTranslationText };
   const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText, ...cyErrorsTranslationText };
@@ -72,6 +74,22 @@ describe("PSC Principal Office Address Territory Choice", () => {
         testTranslations(res.text, translationText.address.territories);
 
         expect(res.text).toContain(personWithSignificantControl.data?.legal_entity_name?.toUpperCase());
+      }
+    );
+
+    it.each([
+      ["RLE", URL_RELEVANT_LEGAL_ENTITY, getUrl(WHICH_TYPE_OF_NATURE_OF_CONTROL_RELEVANT_LEGAL_ENTITY_URL)],
+      ["ORP", URL_OTHER_REGISTARBLE_PERSON, getUrl(WHICH_TYPE_OF_NATURE_OF_CONTROL_OTHER_REGISTRABLE_PERSON_URL)]
+    ])(
+      "should contain the correct back link for PSC type",
+      async (_description: string, URL: string, expectedBackLink: string) => {
+        const personWithSignificantControl = buildPSC(_description);
+        appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([personWithSignificantControl]);
+
+        const res = await request(app).get(URL);
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(`href="${expectedBackLink}"`);
       }
     );
   });

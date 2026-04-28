@@ -1,8 +1,8 @@
 import AddressPageType from "../../PageType";
 import {
-  ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_WITH_IDS_URL,
-  ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_WITH_IDS_URL,
-  REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL
+  REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL,
+  WHICH_TYPE_OF_NATURE_OF_CONTROL_OTHER_REGISTRABLE_PERSON_URL,
+  WHICH_TYPE_OF_NATURE_OF_CONTROL_RELEVANT_LEGAL_ENTITY_URL
 } from "../../../registration/url";
 import * as url from "../../url/registration";
 
@@ -19,7 +19,7 @@ const personWithSignificantControlPrincipalOfficeAddressCacheKeys = {
 };
 
 const registrationAddressRoutingTerritoryChoicePersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress = {
-  previousUrl: ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_WITH_IDS_URL,
+  previousUrl: WHICH_TYPE_OF_NATURE_OF_CONTROL_RELEVANT_LEGAL_ENTITY_URL,
   currentUrl: url.TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL,
   nextUrl: url.POSTCODE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL,
   pageType: AddressPageType.territoryChoicePersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
@@ -82,7 +82,7 @@ const registrationAddressRoutingConfirmPersonWithSignificantControlRelevantLegal
 
 const registrationAddressRoutingTerritoryChoicePersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress =
   {
-    previousUrl: ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_WITH_IDS_URL,
+    previousUrl: WHICH_TYPE_OF_NATURE_OF_CONTROL_OTHER_REGISTRABLE_PERSON_URL,
     currentUrl:
       url.TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL,
     nextUrl: url.POSTCODE_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL,

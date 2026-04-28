@@ -1,12 +1,5 @@
 {% extends "layout.njk" %}
 
-{# Back Link #}
-{% if props.data.personWithSignificantControl.data.legal_entity_name %}
-  {% set hrefValue = props.currentUrl | replace(props.pageType, "add-person-with-significant-control-relevant-legal-entity") %}
-{% else %}
-  {% set hrefValue = props.previousUrl %}
-{% endif %}
-
 {% set pageTitle = i18n.address.territoryChoice.personWithSignificantControlPrincipalOfficeAddress.title %}
 {% set titleHint = i18n.address.territoryChoice.personWithSignificantControlPrincipalOfficeAddress.titleHint %}
 {% set publicRegisterInformationLine1 = i18n.address.territoryChoice.personWithSignificantControlPrincipalOfficeAddress.publicRegisterInformationLine1 %}
