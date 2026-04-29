@@ -19,9 +19,10 @@ describe("Continue Saved Filing Page", () => {
     const res = await request(app).get(CONTINUE_SAVED_FILING_URL + "?lang=en");
 
     expect(res.status).toBe(200);
-    testTranslations(res.text, enTranslationText.continueSavedFilingPage);
+    testTranslations(res.text, enTranslationText.continueSavedFilingPage, ["errorMessage"]);
     expect(res.text).toContain(enTranslationText.buttons.continue);
     expect(res.text).toContain(SERVICE_NAME_REGISTRATION);
+    expect(res.text).not.toContain(enTranslationText.continueSavedFilingPage.errorMessage);
   });
 
   it("should load the page with Welsh text", async () => {
@@ -30,9 +31,10 @@ describe("Continue Saved Filing Page", () => {
     const res = await request(app).get(CONTINUE_SAVED_FILING_URL + "?lang=cy");
 
     expect(res.status).toBe(200);
-    testTranslations(res.text, cyTranslationText.continueSavedFilingPage);
+    testTranslations(res.text, cyTranslationText.continueSavedFilingPage, ["errorMessage"]);
     expect(res.text).toContain(cyTranslationText.buttons.continue);
     expect(res.text).toContain(SERVICE_NAME_REGISTRATION);
+    expect(res.text).not.toContain(cyTranslationText.continueSavedFilingPage.errorMessage);
   });
 
   it("should redirect to partnership-type page", async () => {
@@ -54,4 +56,25 @@ describe("Continue Saved Filing Page", () => {
     expect(res.status).toBe(302);
     expect(res.text).toContain(`Redirecting to ${YOUR_FILINGS_URL}`);
   });
+
+  it.each([
+    ["English", "en", enTranslationText],
+    ["Welsh", "cy", cyTranslationText]
+  ])(
+    "should re-render the page with an error summary in %s when no option is selected",
+    async (_description: string, lang: string, translationText: Record<string, any>) => {
+      setLocalesEnabled(true);
+
+      const res = await request(app)
+        .post(CONTINUE_SAVED_FILING_URL + `?lang=${lang}`)
+        .send({
+          pageType: RegistrationPageType.continueSavedFiling
+        });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(translationText.continueSavedFilingPage.errorMessage);
+      expect(res.text).toContain('href="#continue_saved_filing"');
+      expect(res.text).toContain(translationText.govUk.error.title);
+    }
+  );
 });

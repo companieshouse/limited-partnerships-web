@@ -6,10 +6,11 @@
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
+      {% include "includes/errors.njk" %}
 
       <form class="form" method="post">
         <input type="hidden" name="pageType" value={{ props.pageType }}>
-      
+
         {% include "includes/csrf_token.njk" %}
 
         {{ govukRadios({
@@ -31,9 +32,6 @@
               text: i18n.continueSavedFilingPage.yes.text,
               hint: {
                 text: i18n.continueSavedFilingPage.yes.hint
-              },
-              attributes: {
-                "required": true
               }
             },
             {
@@ -41,12 +39,12 @@
               text: i18n.continueSavedFilingPage.no.text,
               hint: {
                 text: i18n.continueSavedFilingPage.no.hint
-              },
-              attributes: {
-                "required": true
               }
             }
-          ]
+          ],
+          errorMessage: {
+            text: i18n.continueSavedFilingPage.errorMessage
+          } if props.errors
         }) }}
 
         {{ govukButton({

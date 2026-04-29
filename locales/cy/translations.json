@@ -301,7 +301,8 @@
         "no": {
           "text": "WELSH - No, start a new filing",
           "hint": "WELSH - This will not delete any saved filings"
-        }
+        },
+        "errorMessage": "WELSH - Select whether to continue with a saved filing"
     },
 
     "dateOfUpdate" : {

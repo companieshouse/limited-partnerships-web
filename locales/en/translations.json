@@ -301,7 +301,8 @@
         "no": {
           "text": "No, start a new filing",
           "hint": "This will not delete any saved filings"
-        }
+        },
+        "errorMessage": "Select whether to continue with a saved filing"
     },
 
     "dateOfUpdate" : {

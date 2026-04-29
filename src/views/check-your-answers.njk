@@ -58,10 +58,12 @@
       {% endif %}
 
       {% if journeyTypes.isRegistration %}
+        {% set partnershipType = props.data.limitedPartnership.data.partnership_type %}
+        {% set isScottishPartnership = partnershipType === "SLP" or partnershipType === "SPFLP" %}
         {% set hasPsc = props.data.limitedPartnership.data.has_person_with_significant_control %}
         {% set pscCount = props.data.personsWithSignificantControl.length or 0 %}
 
-        {% if hasPsc !== undefined %}
+        {% if isScottishPartnership and hasPsc !== undefined %}
           <h2 class="govuk-heading-m">{{ i18n.checkYourAnswersPage.psc.title }}</h2>
 
           {% if hasPsc === true and pscCount > 0 %}

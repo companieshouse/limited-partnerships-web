@@ -424,6 +424,7 @@ describe("Check Your Answers Page", () => {
         setLocalesEnabled(true);
 
         const limitedPartnership = new LimitedPartnershipBuilder()
+          .withPartnershipType(PartnershipType.SLP)
           .withHasPersonWithSignificantControl(false)
           .build();
 
@@ -441,7 +442,7 @@ describe("Check Your Answers Page", () => {
     );
 
     it("should not display PSC section when has_person_with_significant_control is not set", async () => {
-      const limitedPartnership = new LimitedPartnershipBuilder().build();
+      const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(PartnershipType.SLP).build();
 
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
@@ -451,6 +452,28 @@ describe("Check Your Answers Page", () => {
       expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.psc.title);
       expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.psc.noPscStatement);
     });
+
+    it.each([
+      [PartnershipType.LP],
+      [PartnershipType.PFLP]
+    ])(
+      "should not display PSC section for non-Scottish partnership type %s even when has_person_with_significant_control is set",
+      async (partnershipType: PartnershipType) => {
+        const limitedPartnership = new LimitedPartnershipBuilder()
+          .withPartnershipType(partnershipType)
+          .withHasPersonWithSignificantControl(false)
+          .build();
+
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+        const res = await request(app).get(URL);
+
+        expect(res.status).toBe(200);
+        expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.psc.title);
+        expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.psc.noPscStatement);
+        expect(res.text).not.toContain("change-psc-statement-button");
+      }
+    );
 
     it.each([
       [PartnershipType.SLP, "will-the-partnership-have-any-people-with-significant-control"],
@@ -477,7 +500,10 @@ describe("Check Your Answers Page", () => {
 
   describe("PSC details on CYA page", () => {
     beforeEach(() => {
-      const limitedPartnership = new LimitedPartnershipBuilder().withHasPersonWithSignificantControl(true).build();
+      const limitedPartnership = new LimitedPartnershipBuilder()
+        .withPartnershipType(PartnershipType.SLP)
+        .withHasPersonWithSignificantControl(true)
+        .build();
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
       appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
       appDevDependencies.limitedPartnerGateway.feedLimitedPartners([]);
