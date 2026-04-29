@@ -60,7 +60,7 @@
           ]
         }) }}
 
-        <button class="govuk-button" data-module="govuk-button" id="submit" onclick="var selected = document.querySelector('input[name=parameter]:checked'); if (selected) { _paq.push(['trackGoal', selected.getAttribute('data-goal-id')]); }">
+        <button class="govuk-button" data-module="govuk-button" id="submit" onclick="const selected = document.querySelector('input[name=parameter]:checked'); if (selected) { _paq.push(['trackGoal', selected.getAttribute('data-goal-id')]); }">
           {{ i18n.buttons.continue }}
         </button>
 
