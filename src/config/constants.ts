@@ -129,6 +129,7 @@ export const ACCOUNTS_SIGN_OUT_URL = `${ACCOUNT_URL}/signout`;
 export const DATE_OF_UPDATE_TYPE_PREFIX = "when-did";
 export const DATE_OF_UPDATE_TEMPLATE = "date-of-update";
 export const CEASE_DATE_TEMPLATE = "cease-date";
+export const STOP_SCREEN_NO_CHANGE_TEMPLATE = "stop-screen-no-change";
 
 // Update address yes-no
 export const UPDATE_ADDRESS_YES_NO_TYPE_SUFFIX = "address-yes-no";

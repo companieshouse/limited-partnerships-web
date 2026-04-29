@@ -6,10 +6,17 @@ import { LimitedPartner } from "@companieshouse/api-sdk-node/dist/services/limit
 import ILimitedPartnerGateway from "../../../domain/ILimitedPartnerGateway";
 import UIErrors, { ApiErrors } from "../../../domain/entities/UIErrors";
 import TransactionLimitedPartner from "../../../domain/entities/TransactionLimitedPartner";
-import { resetFormerNamesIfPreviousNameIsFalse, validateAndFormatPartnerCeaseDate, validateAndFormatPartnerDateEffectiveFrom, validateAndFormatPartnerDateOfUpdate, validateAndFormatPartnerPersonDateOfBirth, validateFormerNamesNotEmptyIfPreviousNameIsTrue } from "../utils";
+import {
+  resetFormerNamesIfPreviousNameIsFalse,
+  validateAndFormatPartnerCeaseDate,
+  validateAndFormatPartnerDateEffectiveFrom,
+  validateAndFormatPartnerDateOfUpdate,
+  validateAndFormatPartnerPersonDateOfBirth,
+  validateFormerNamesNotEmptyIfPreviousNameIsTrue
+} from "../utils";
 
 class LimitedPartnerInMemoryGateway implements ILimitedPartnerGateway {
- private readonly partnerType = "limited";
+  private readonly partnerType = "limited";
 
   limitedPartnerId = crypto.randomUUID().toString();
   error = false;
@@ -49,7 +56,6 @@ class LimitedPartnerInMemoryGateway implements ILimitedPartnerGateway {
     validateFormerNamesNotEmptyIfPreviousNameIsTrue(data, this.partnerType);
     resetFormerNamesIfPreviousNameIsFalse(data);
     validateAndFormatPartnerCeaseDate(data);
-    
 
     this.limitedPartners.push({
       data
@@ -67,7 +73,13 @@ class LimitedPartnerInMemoryGateway implements ILimitedPartnerGateway {
       throw new Error(`Not found: ${limitedPartnerId}`);
     }
 
-    return this.limitedPartners[0];
+    const partner = this.limitedPartners.find((lp) => lp._id === limitedPartnerId);
+
+    if (!partner) {
+      throw new Error(`Not found: ${limitedPartnerId}`);
+    }
+
+    return partner ?? this.limitedPartners[0];
   }
 
   async getLimitedPartners(

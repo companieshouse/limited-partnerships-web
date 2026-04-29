@@ -80,6 +80,10 @@ class GeneralPartnerPostTransitionController extends PartnerController {
     return this.postTransitionPartnerController.getDateOfUpdate(PartnerType.generalPartner);
   }
 
+  getStopScreen() {
+    return this.postTransitionPartnerController.getStopScreen();
+  }
+
   getCheckYourAnswersPageRouting() {
     return this.postTransitionPartnerController.getCheckYourAnswersPageRouting(PartnerType.generalPartner);
   }

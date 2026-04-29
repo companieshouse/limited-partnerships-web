@@ -553,6 +553,13 @@
          "filingsInfo": "Sign in to your Companies House account and select Your filings to access your saved applications."
     },
 
+    "stopPage": {
+        "title": "You have not made any updates",
+        "needTo": "You need to make an update to this partner's details before you can submit this filing.",
+        "buttonUpdate": "Update partner details",
+        "buttonBackRegister": "Go back to the register"
+    },
+
     "termPage": {
         "title": "What is the term of the partnership?",
         "hint": "This is the length of time for which the partnership will be entered into.",

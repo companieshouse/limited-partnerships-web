@@ -80,6 +80,10 @@ class LimitedPartnerPostTransitionController extends PartnerController {
     return this.postTransitionPartnerController.getDateOfUpdate(PartnerType.limitedPartner);
   }
 
+  getStopScreen() {
+    return this.postTransitionPartnerController.getStopScreen();
+  }
+
   getCheckYourAnswersPageRouting() {
     return this.postTransitionPartnerController.getCheckYourAnswersPageRouting(PartnerType.limitedPartner);
   }

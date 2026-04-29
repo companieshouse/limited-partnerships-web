@@ -211,6 +211,17 @@ const postTransitionRoutingChangeGeneralPartnerLegalEntityCheckYourAnswers = {
   }
 };
 
+const postTransitionRoutingGeneralPartnerStopScreenNoChange = {
+  previousUrl: url.UPDATE_GENERAL_PARTNER_PERSON_WITH_IDS_URL,
+  currentUrl: url.UPDATE_GENERAL_PARTNER_STOP_SCREEN_NO_CHANGE_URL,
+  nextUrl: "/",
+  pageType: PostTransitionPageType.updateGeneralPartnerStopScreenNoChange,
+  data: {
+    updatePartnerDetailsLink: url.UPDATE_GENERAL_PARTNER_PERSON_WITH_IDS_URL,
+    goBackRegisterLink: url.LANDING_PAGE_URL
+  }
+};
+
 const generalPartnerRouting = [
   postTransitionRoutingGeneralPartnerChoice,
   postTransitionRoutingAddGeneralPartnerLegalEntity,
@@ -231,7 +242,9 @@ const generalPartnerRouting = [
   postTransitionRoutingWhenDidGeneralPartnerPersonChange,
   postTransitionRoutingWhenDidGeneralPartnerLegalEntityChange,
   postTransitionRoutingChangeGeneralPartnerPersonCheckYourAnswers,
-  postTransitionRoutingChangeGeneralPartnerLegalEntityCheckYourAnswers
+  postTransitionRoutingChangeGeneralPartnerLegalEntityCheckYourAnswers,
+
+  postTransitionRoutingGeneralPartnerStopScreenNoChange
 ];
 
 export default generalPartnerRouting;
