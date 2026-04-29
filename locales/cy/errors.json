@@ -68,6 +68,18 @@
             "lawfulPurposeRequired": "WELSH - Confirm that the intended future activities are lawful"
         },
 
+        "personWithSignificantControl": {
+            "addOtherRegistrablePerson": {
+                "legalEntityNameMissing": "WELSH - Enter the other registrable person's name",
+                "legalEntityNameInvalid": "WELSH - Other registrable person's name must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+
+                "legalFormMissing": "WELSH - Enter the legal form or corporate identity",
+                "legalFormInvalid": "WELSH - Legal form or corporate identity must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+
+                "governingLawMissing": "WELSH - Enter the governing law"
+            }
+        },
+
         "dateOfUpdate": {
             "registeredOfficeAddress": "WELSH - Date the registered office address changed must be the same as or after limited partnership’s registration date",
             "principalPlaceOfBusinessAddress": "WELSH - Date the principal place of business changed must be the same as or after limited partnership’s registration date’",

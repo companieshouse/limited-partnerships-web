@@ -67,6 +67,18 @@
             "lawfulPurposeRequired": "Confirm that the intended future activities are lawful"
         },
 
+        "personWithSignificantControl": {
+            "addOtherRegistrablePerson": {
+                "legalEntityNameMissing": "Enter the other registrable person's name",
+                "legalEntityNameInvalid": "Other registrable person's name must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+
+                "legalFormMissing": "Enter the legal form or corporate identity",
+                "legalFormInvalid": "Legal form or corporate identity must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+
+                "governingLawMissing": "Enter the governing law"
+            }
+        },
+
         "dateOfUpdate": {
             "registeredOfficeAddress": "Date the registered office address changed must be the same as or after limited partnership's registration date",
             "principalPlaceOfBusinessAddress": "Date the principal place of business changed must be the same as or after limited partnership's registration date",

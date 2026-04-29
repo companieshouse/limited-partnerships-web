@@ -257,6 +257,8 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
   sendPageData() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
+        this.personWithSignificantControlService.setI18n(response.locals.i18n);
+
         const { ids, pageType, tokens } = super.extract(request);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 

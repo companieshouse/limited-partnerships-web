@@ -22,6 +22,7 @@ import PersonWithSignificantControlGateway from "../infrastructure/gateway/perso
 import PersonWithSignificantControlInMemoryGateway from "../infrastructure/gateway/personWithSignificantControl/PersonWithSignificantControlInMemoryGateway";
 
 import AddressValidator from "../domain/validator/Address";
+import PersonWithSignificantControlValidator from "../domain/validator/PersonWithSignificantControl";
 
 import CacheService from "../application/service/CacheService";
 import AddressLookUpService from "../application/service/AddressService";
@@ -108,6 +109,7 @@ export function buildDependencies(useInMemory = false): BuiltDependencies {
 
   // Dommain
   const addressValidator = new AddressValidator();
+  const personWithSignificantControlValidator = new PersonWithSignificantControlValidator();
 
   // Services
   const limitedPartnershipService: LimitedPartnershipService = new LimitedPartnershipService(
@@ -120,7 +122,7 @@ export function buildDependencies(useInMemory = false): BuiltDependencies {
   const generalPartnerService: GeneralPartnerService = new GeneralPartnerService(generalPartnerGateway);
   const limitedPartnerService: LimitedPartnerService = new LimitedPartnerService(limitedPartnerGateway);
   const personWithSignificantControlService: PersonWithSignificantControlService =
-    new PersonWithSignificantControlService(personWithSignificantControlGateway);
+    new PersonWithSignificantControlService(personWithSignificantControlGateway, personWithSignificantControlValidator);
   const companyService = new CompanyService(companyGateway);
   const paymentService = new PaymentService(paymentGateway);
   const transactionService: TransactionService = new TransactionService(transactionGateway);
