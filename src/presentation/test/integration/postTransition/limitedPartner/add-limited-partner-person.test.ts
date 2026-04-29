@@ -24,6 +24,7 @@ import {
 import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 import { POST_TRANSITION_WITH_ID_URL } from "../../../../../config/constants";
+import TransactionLimitedPartner from "../../../../../domain/entities/TransactionLimitedPartner";
 
 describe("Add Limited Partner Person Page", () => {
   const URL = getUrl(ADD_LIMITED_PARTNER_PERSON_URL);
@@ -31,13 +32,21 @@ describe("Add Limited Partner Person Page", () => {
 
   let companyProfile: { _id: string; data: Partial<CompanyProfile> };
 
+  let limitedPartner: TransactionLimitedPartner;
+
   beforeEach(() => {
     setLocalesEnabled(false);
 
     companyProfile = new CompanyProfileBuilder().build();
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
-    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([]);
+    limitedPartner = new LimitedPartnerBuilder()
+      .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+      .isPerson()
+      .build();
+
+    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
+
     appDevDependencies.limitedPartnerGateway.feedErrors();
 
     appDevDependencies.transactionGateway.feedTransactions([]);
@@ -163,8 +172,8 @@ describe("Add Limited Partner Person Page", () => {
       expect(appDevDependencies.transactionGateway.transactions).toHaveLength(1);
       expect(appDevDependencies.transactionGateway.transactions[0].description).toBe("Add a limited partner (person)");
 
-      expect(appDevDependencies.limitedPartnerGateway.limitedPartners).toHaveLength(1);
-      expect(appDevDependencies.limitedPartnerGateway.limitedPartners[0].data?.kind).toEqual(
+      expect(appDevDependencies.limitedPartnerGateway.limitedPartners).toHaveLength(2);
+      expect(appDevDependencies.limitedPartnerGateway.limitedPartners[1].data?.kind).toEqual(
         PartnerKind.ADD_LIMITED_PARTNER_PERSON
       );
     });
@@ -241,13 +250,6 @@ describe("Add Limited Partner Person Page", () => {
     it("should send the limited partner details", async () => {
       const URL = getUrl(ADD_LIMITED_PARTNER_PERSON_WITH_IDS_URL);
 
-      const limitedPartner = new LimitedPartnerBuilder()
-        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isPerson()
-        .build();
-
-      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
-
       const res = await request(app)
         .post(URL)
         .send({
@@ -260,13 +262,6 @@ describe("Add Limited Partner Person Page", () => {
 
     it("should return a validation error when invalid data is entered", async () => {
       const URL = getUrl(ADD_LIMITED_PARTNER_PERSON_WITH_IDS_URL);
-
-      const limitedPartner = new LimitedPartnerBuilder()
-        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isPerson()
-        .build();
-
-      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
 
       const apiErrors: ApiErrors = {
         errors: { forename: "limited partner name is invalid" }
@@ -283,13 +278,6 @@ describe("Add Limited Partner Person Page", () => {
     });
 
     it("should send the limited partner details and go to confirm ura address page if already saved", async () => {
-      const limitedPartner = new LimitedPartnerBuilder()
-        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isPerson()
-        .build();
-
-      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
-
       const URL = getUrl(ADD_LIMITED_PARTNER_PERSON_WITH_IDS_URL);
 
       const res = await request(app)
@@ -307,13 +295,6 @@ describe("Add Limited Partner Person Page", () => {
 
     it("should replay entered data when invalid data is entered and a validation error occurs", async () => {
       const URL = getUrl(ADD_LIMITED_PARTNER_PERSON_WITH_IDS_URL);
-
-      const limitedPartner = new LimitedPartnerBuilder()
-        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isPerson()
-        .build();
-
-      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
 
       const apiErrors: ApiErrors = {
         errors: { forename: "limited partner name is invalid" }

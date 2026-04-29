@@ -34,6 +34,7 @@ describe("Confirm Limited Partner Usual Residential Address Page", () => {
 
   beforeEach(() => {
     setLocalesEnabled(false);
+
     appDevDependencies.cacheRepository.feedCache({
       [appDevDependencies.transactionGateway.transactionId]: {
         ["usual_residential_address"]: {

@@ -27,6 +27,7 @@ describe("Limited Partner Check Your Answers Page for Person", () => {
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
     limitedPartnerPerson = new LimitedPartnerBuilder()
+      .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
       .isPerson()
       .withFormerNames("Joe Dee")
       .withDateEffectiveFrom("2024-10-10")
@@ -87,6 +88,7 @@ describe("Limited Partner Check Your Answers Page for Person", () => {
 
   it("should load the check your answers page with partners with no dates - EN", async () => {
     limitedPartnerPerson = new LimitedPartnerBuilder()
+      .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
       .isPerson()
       .withFormerNames("Joe Dee")
       .withDateOfBirth(undefined)
@@ -103,6 +105,7 @@ describe("Limited Partner Check Your Answers Page for Person", () => {
 
   it("should load the check your answers page with partners with dates- EN", async () => {
     limitedPartnerPerson = new LimitedPartnerBuilder()
+      .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
       .isPerson()
       .withFormerNames("Joe Dee")
       .withDateOfBirth("1984-11-03")
@@ -126,6 +129,7 @@ describe("Limited Partner Check Your Answers Page for Person", () => {
       setLocalesEnabled(true);
 
       limitedPartnerPerson = new LimitedPartnerBuilder()
+        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
         .isPerson()
         .withFormerNames("Joe Dee")
         .withDateOfBirth("1984-11-03")

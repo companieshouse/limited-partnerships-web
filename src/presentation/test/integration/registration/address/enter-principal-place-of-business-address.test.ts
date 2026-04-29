@@ -20,6 +20,7 @@ import {
 import AddressPageType from "../../../../controller/addressLookUp/PageType";
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
 import TransactionLimitedPartnership from "../../../../../domain/entities/TransactionLimitedPartnership";
+import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
 
 describe("Enter Principal Place Of Business Manual Address Page", () => {
   const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText, ...enErrorsTranslationText };
@@ -29,7 +30,13 @@ describe("Enter Principal Place Of Business Manual Address Page", () => {
   beforeEach(() => {
     setLocalesEnabled(false);
 
-    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([]);
+    const limitedPartner = new LimitedPartnerBuilder()
+      .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+      .isPerson()
+      .build();
+
+    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
+
     appDevDependencies.limitedPartnershipGateway.feedErrors();
   });
 

@@ -21,6 +21,9 @@ describe("Partnership principal place of business address change date page", () 
   beforeEach(() => {
     const transaction = new TransactionBuilder().withKind(PartnershipKind.UPDATE_PARTNERSHIP_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS).build();
     appDevDependencies.transactionGateway.feedTransactions([transaction]);
+
+    const limitedPartnership = new LimitedPartnershipBuilder().withDateOfUpdate("2024-10-10").build();
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
   });
 
   describe("GET principal place of business address change date page", () => {
@@ -45,9 +48,6 @@ describe("Partnership principal place of business address change date page", () 
     });
 
     it("should populate the date fields with the existing date of update if it exists", async () => {
-      const limitedPartnership = new LimitedPartnershipBuilder().withDateOfUpdate("2024-10-10").build();
-
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
       const res = await request(app).get(URL);
 
@@ -60,10 +60,6 @@ describe("Partnership principal place of business address change date page", () 
 
   describe("POST principal place of business address change date page", () => {
     it("should navigate to next page with date of update", async () => {
-      const limitedPartnership = new LimitedPartnershipBuilder().withDateOfUpdate("2024-10-10").build();
-
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
       const res = await request(app).post(URL).send({
         pageType: PostTransitionPageType.whenDidThePrincipalPlaceOfBusinessAddressChange
       });
@@ -74,10 +70,6 @@ describe("Partnership principal place of business address change date page", () 
     });
 
     it("should display the specifc error message rather than the original when the date is before the incorporation date", async () => {
-      const limitedPartnership = new LimitedPartnershipBuilder().withDateOfUpdate("2024-10-10").build();
-
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
       const originalErrorMessage = "Default";
       const expectedErrorMessage = toEscapedHtml(enErrorMessages.errorMessages.dateOfUpdate.principalPlaceOfBusinessAddress);
 

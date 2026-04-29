@@ -27,16 +27,26 @@ import GeneralPartnerBuilder, {
 import TransactionBuilder from "../../../../builder/TransactionBuilder";
 import CompanyAppointmentBuilder, { principalOfficeAddress } from "../../../../builder/CompanyAppointmentBuilder";
 import CompanyProfileBuilder from "../../../../builder/CompanyProfileBuilder";
+import TransactionGeneralPartner from "../../../../../../domain/entities/TransactionGeneralPartner";
 
 describe("Enter general partner's principal office manual address page", () => {
   const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText, ...enErrorsTranslationText };
   const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText, ...cyErrorsTranslationText };
   const URL = getUrl(ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
 
+  let generalPartner: TransactionGeneralPartner;
+
   beforeEach(() => {
     setLocalesEnabled(false);
     appDevDependencies.cacheRepository.feedCache(null);
-    appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
+
+    generalPartner = new GeneralPartnerBuilder()
+      .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+      .isLegalEntity()
+      .withKind(PartnerKind.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY)
+      .build();
+
+    appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
 
     const transaction = new TransactionBuilder().withKind(PartnerKind.ADD_GENERAL_PARTNER_LEGAL_ENTITY).build();
     appDevDependencies.transactionGateway.feedTransactions([transaction]);
@@ -45,12 +55,6 @@ describe("Enter general partner's principal office manual address page", () => {
   describe("Get enter general partner's principal office address page", () => {
     it("should load enter general partners principal office address page with English text", async () => {
       setLocalesEnabled(true);
-      const generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isLegalEntity()
-        .build();
-
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
 
       const res = await request(app).get(URL + "?lang=en");
 
@@ -74,12 +78,6 @@ describe("Enter general partner's principal office manual address page", () => {
 
     it("should load enter general partners principal office address page with Welsh text", async () => {
       setLocalesEnabled(true);
-      const generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isLegalEntity()
-        .build();
-
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
 
       const res = await request(app).get(URL + "?lang=cy");
 
@@ -102,14 +100,6 @@ describe("Enter general partner's principal office manual address page", () => {
     });
 
     it("should have back link to yes/no page when partner kind is UPDATE_GENERAL_PARTNER_LEGAL_ENTITY", async () => {
-      const updateGeneralPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isLegalEntity()
-        .withKind(PartnerKind.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY)
-        .build();
-
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([updateGeneralPartner]);
-
       const backLinkUrl = getUrl(UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL);
       const res = await request(app).get(URL);
 
@@ -152,13 +142,6 @@ describe("Enter general partner's principal office manual address page", () => {
 
   describe("Post enter general partner's principal office address page", () => {
     it("should redirect to the error page when error occurs during Post", async () => {
-      const generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isLegalEntity()
-        .build();
-
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
-
       const res = await request(app).post(URL).send({
         pageType: "Invalid page type",
         country: ""
@@ -169,11 +152,6 @@ describe("Enter general partner's principal office manual address page", () => {
     });
 
     it("should not return a validation error when an overseas address and postcode does not conform to UK format", async () => {
-      const generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isPerson()
-        .build();
-
       const res = await request(app)
         .post(URL)
         .send({
@@ -189,13 +167,6 @@ describe("Enter general partner's principal office manual address page", () => {
     });
 
     it("should return a validation error when a UK address and postcode format is invalid", async () => {
-      const generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isPerson()
-        .build();
-
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
-
       const res = await request(app)
         .post(URL)
         .send({
@@ -213,11 +184,6 @@ describe("Enter general partner's principal office manual address page", () => {
     });
 
     it("should not return validation errors when address fields contain valid but non alpha-numeric characters", async () => {
-      const generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isPerson()
-        .build();
-
       const res = await request(app)
         .post(URL)
         .send({
@@ -236,11 +202,6 @@ describe("Enter general partner's principal office manual address page", () => {
     });
 
     it("should return validation errors when address fields contain invalid characters", async () => {
-      const generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isPerson()
-        .build();
-
       const res = await request(app)
         .post(URL)
         .send({
@@ -263,11 +224,6 @@ describe("Enter general partner's principal office manual address page", () => {
     });
 
     it("should return validation errors when address fields exceed character limit", async () => {
-      const generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isPerson()
-        .build();
-
       const res = await request(app)
         .post(URL)
         .send({
@@ -289,14 +245,6 @@ describe("Enter general partner's principal office manual address page", () => {
     });
 
     it("should contain correct backlink for update journey when validation error occurs", async () => {
-      const generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isLegalEntity()
-        .withKind(PartnerKind.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY)
-        .build();
-
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
-
       const res = await request(app)
         .post(URL)
         .send({

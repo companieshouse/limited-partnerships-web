@@ -11,22 +11,27 @@ import { LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL } from "../../../../../controlle
 import { countOccurrences, getUrl, setLocalesEnabled } from "../../../../utils";
 import { formatDate } from "../../../../../../utils/date-format";
 import { LimitedPartner, PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-import { CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL, CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../../../../controller/addressLookUp/url/postTransition";
+import {
+  CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+  CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
+} from "../../../../../controller/addressLookUp/url/postTransition";
 import PostTransitionPageType from "../../../../../controller/postTransition/pageType";
 import { CONFIRMATION_POST_TRANSITION_URL } from "../../../../../controller/global/url";
 import TransactionBuilder from "../../../../builder/TransactionBuilder";
+import TransactionLimitedPartner from "../../../../../../domain/entities/TransactionLimitedPartner";
 
 describe("Limited Partner Check Your Answers Page", () => {
   const URL = getUrl(LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL);
   const REDIRECT_URL = getUrl(CONFIRMATION_POST_TRANSITION_URL);
 
-  let limitedPartnerLegalEntity;
+  let limitedPartnerLegalEntity: TransactionLimitedPartner;
 
   beforeEach(() => {
     const companyProfile = new CompanyProfileBuilder().build();
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
     limitedPartnerLegalEntity = new LimitedPartnerBuilder()
+      .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
       .isLegalEntity()
       .withDateEffectiveFrom("2024-10-10")
       .withLegalEntityRegistrationLocation("Wales")
@@ -64,24 +69,15 @@ describe("Limited Partner Check Your Answers Page", () => {
     [URL + "?lang=en", "/limited-partnerships/sign-out?lang=en"],
     [URL + "?lang=cy", "/limited-partnerships/sign-out?lang=cy"],
     [URL, "/limited-partnerships/sign-out"]
-  ])(
-    "should set the signout link href correctly for url: %s",
-    async (testUrl: string, expectedHref: string) => {
-      setLocalesEnabled(true);
-      const res = await request(app).get(testUrl);
+  ])("should set the signout link href correctly for url: %s", async (testUrl: string, expectedHref: string) => {
+    setLocalesEnabled(true);
+    const res = await request(app).get(testUrl);
 
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(expectedHref);
-    }
-  );
+    expect(res.status).toBe(200);
+    expect(res.text).toContain(expectedHref);
+  });
 
   it("Should contain a back link to the confirm principal office address page", async () => {
-    const limitedPartnerLegalEntity = new LimitedPartnerBuilder()
-      .isLegalEntity()
-      .build();
-
-    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerLegalEntity]);
-
     const res = await request(app).get(URL);
 
     expect(res.status).toBe(200);
@@ -99,32 +95,30 @@ describe("Limited Partner Check Your Answers Page", () => {
   it.each([
     { lang: "EN", testUrl: URL, translationText: enTranslationText },
     { lang: "CY", testUrl: URL + "?lang=cy", translationText: cyTranslationText }
-  ])(
-    "should display capital contribution on check your answers page - $lang",
-    async ({ testUrl, translationText }) => {
-      setLocalesEnabled(true);
+  ])("should display capital contribution on check your answers page - $lang", async ({ testUrl, translationText }) => {
+    setLocalesEnabled(true);
 
-      limitedPartnerLegalEntity = new LimitedPartnerBuilder()
-        .isLegalEntity()
-        .withDateEffectiveFrom("2024-10-10")
-        .withLegalEntityRegistrationLocation("Wales")
-        .withContributionCurrencyType("GBP")
-        .withContributionCurrencyValue("10000.00")
-        .withContributionSubtypes(["MONEY", "LAND_OR_PROPERTY"])
-        .build();
+    limitedPartnerLegalEntity = new LimitedPartnerBuilder()
+      .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+      .isLegalEntity()
+      .withDateEffectiveFrom("2024-10-10")
+      .withLegalEntityRegistrationLocation("Wales")
+      .withContributionCurrencyType("GBP")
+      .withContributionCurrencyValue("10000.00")
+      .withContributionSubtypes(["MONEY", "LAND_OR_PROPERTY"])
+      .build();
 
-      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerLegalEntity]);
+    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerLegalEntity]);
 
-      const res = await request(app).get(testUrl);
+    const res = await request(app).get(testUrl);
 
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(translationText.checkYourAnswersPage.partners.limitedPartners.capitalContribution);
-      expect(res.text).toContain("10000.00");
-      expect(res.text).toContain(translationText.currencies.GBP);
-      expect(res.text).toContain(translationText.capitalContribution.money);
-      expect(res.text).toContain(translationText.capitalContribution.landOrProperty);
-    }
-  );
+    expect(res.status).toBe(200);
+    expect(res.text).toContain(translationText.checkYourAnswersPage.partners.limitedPartners.capitalContribution);
+    expect(res.text).toContain("10000.00");
+    expect(res.text).toContain(translationText.currencies.GBP);
+    expect(res.text).toContain(translationText.capitalContribution.money);
+    expect(res.text).toContain(translationText.capitalContribution.landOrProperty);
+  });
 
   describe("POST Check Your Answers Page", () => {
     it("should navigate to next page", async () => {

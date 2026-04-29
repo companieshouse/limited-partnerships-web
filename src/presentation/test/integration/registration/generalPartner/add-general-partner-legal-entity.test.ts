@@ -29,7 +29,12 @@ describe("Add General Partner Legal Entity Page", () => {
   beforeEach(() => {
     setLocalesEnabled(false);
 
-    appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
+    const generalPartner = new GeneralPartnerBuilder()
+      .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+      .isLegalEntity()
+      .build();
+
+    appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
   });
 
   describe("Get Add General Partner Legal Entity Page", () => {
@@ -90,12 +95,6 @@ describe("Add General Partner Legal Entity Page", () => {
     });
 
     it("should contain a back link to the review page when general partners are present", async () => {
-      const generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isPerson()
-        .build();
-
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
       const res = await request(app).get(getUrl(ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_ID_URL) + "?lang=en");
 
       expect(res.status).toBe(200);
@@ -106,7 +105,9 @@ describe("Add General Partner Legal Entity Page", () => {
     });
 
     it("should contain a back link to the choice page when general partners are not present", async () => {
-      const res = await request(app).get(getUrl(ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_ID_URL) + "?lang=en");
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
+
+      const res = await request(app).get(getUrl(ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL) + "?lang=en");
 
       expect(res.status).toBe(200);
       const regex = new RegExp(

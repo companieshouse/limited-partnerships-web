@@ -32,8 +32,14 @@ describe("Postcode general partner's principal office address page", () => {
 
   beforeEach(() => {
     setLocalesEnabled(false);
+
+    const generalPartner = new GeneralPartnerBuilder()
+      .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+      .isPerson()
+      .build();
+    appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+
     appDevDependencies.cacheRepository.feedCache(null);
-    appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
 
     const transaction = new TransactionBuilder().withKind(PartnerKind.ADD_GENERAL_PARTNER_LEGAL_ENTITY).build();
     appDevDependencies.transactionGateway.feedTransactions([transaction]);

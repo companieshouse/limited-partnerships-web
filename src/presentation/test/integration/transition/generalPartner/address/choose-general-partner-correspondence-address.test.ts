@@ -16,6 +16,7 @@ import {
 } from "../../../../../controller/addressLookUp/url/transition";
 
 import AddressPageType from "../../../../../../presentation/controller/addressLookUp/PageType";
+import GeneralPartnerBuilder from "../../../../builder/GeneralPartnerBuilder";
 
 describe("Choose general partner correspondence address page", () => {
   const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
@@ -25,6 +26,13 @@ describe("Choose general partner correspondence address page", () => {
 
   beforeEach(() => {
     setLocalesEnabled(false);
+
+    const generalPartner = new GeneralPartnerBuilder()
+      .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+      .isPerson()
+      .build();
+    appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+
     appDevDependencies.addressLookUpGateway.setError(false);
     appDevDependencies.cacheRepository.feedCache({
       [appDevDependencies.transactionGateway.transactionId]: {

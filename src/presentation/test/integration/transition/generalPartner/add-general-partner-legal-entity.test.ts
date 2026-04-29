@@ -20,13 +20,20 @@ import {
 import { TRANSITION_WITH_IDS_URL } from "../../../../../config/constants";
 
 import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
+import TransactionLimitedPartnership from "../../../../../domain/entities/TransactionLimitedPartnership";
 
 describe("Add General Partner Legal Entity Page", () => {
   const URL = getUrl(ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL);
   const REDIRECT_URL = getUrl(TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
 
+  let limitedPartnership: TransactionLimitedPartnership;
+
   beforeEach(() => {
     setLocalesEnabled(false);
+
+    limitedPartnership = new LimitedPartnershipBuilder().build();
+
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
     appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
     appDevDependencies.generalPartnerGateway.feedErrors();
@@ -87,10 +94,6 @@ describe("Add General Partner Legal Entity Page", () => {
     });
 
     it("should contain the proposed name - data from api", async () => {
-      const limitedPartnership = new LimitedPartnershipBuilder().build();
-
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
       const res = await request(app).get(URL);
 
       expect(res.status).toBe(200);
@@ -104,8 +107,8 @@ describe("Add General Partner Legal Entity Page", () => {
         .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
         .isPerson()
         .build();
-
       appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+
       const res = await request(app).get(getUrl(ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_ID_URL) + "?lang=en");
 
       expect(res.status).toBe(200);
@@ -117,7 +120,7 @@ describe("Add General Partner Legal Entity Page", () => {
     });
 
     it("should contain a back link to the choice page when general partners are not present", async () => {
-      const res = await request(app).get(getUrl(ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_ID_URL) + "?lang=en");
+      const res = await request(app).get(getUrl(ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL) + "?lang=en");
 
       expect(res.status).toBe(200);
 

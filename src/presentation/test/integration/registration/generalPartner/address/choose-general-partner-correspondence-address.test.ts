@@ -16,6 +16,7 @@ import {
 } from "../../../../../controller/addressLookUp/url/registration";
 
 import AddressPageType from "../../../../../../presentation/controller/addressLookUp/PageType";
+import GeneralPartnerBuilder from "../../../../builder/GeneralPartnerBuilder";
 
 describe("Choose general partner correspondence address page", () => {
   const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
@@ -38,6 +39,13 @@ describe("Choose general partner correspondence address page", () => {
         }
       }
     });
+
+    const generalPartner = new GeneralPartnerBuilder()
+      .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+      .isPerson()
+      .build();
+
+    appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
   });
 
   describe("GET choose general partner correspondence address page", () => {

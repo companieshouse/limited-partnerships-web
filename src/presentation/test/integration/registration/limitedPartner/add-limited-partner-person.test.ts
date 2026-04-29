@@ -143,7 +143,8 @@ describe("Add Limited Partner Person Page", () => {
 
     it("should contain a back link to the choice page when limited partners are not present", async () => {
       appDevDependencies.limitedPartnerGateway.feedLimitedPartners([]);
-      const res = await request(app).get(getUrl(ADD_LIMITED_PARTNER_PERSON_WITH_ID_URL) + "?lang=en");
+
+      const res = await request(app).get(getUrl(ADD_LIMITED_PARTNER_PERSON_URL) + "?lang=en");
 
       expect(res.status).toBe(200);
       const regex = new RegExp(
@@ -155,8 +156,8 @@ describe("Add Limited Partner Person Page", () => {
 
   describe("Post Add Limited Partner", () => {
     it.each([
-      [ "true", "john" ],
-      [ "false", "" ]
+      ["true", "john"],
+      ["false", ""]
     ])("should send the Limited partner details", async (previousName, formerNames) => {
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.addLimitedPartnerPerson,
@@ -220,28 +221,27 @@ describe("Add Limited Partner Person Page", () => {
       expect(res.text).toContain("Uzbek");
     });
 
-    it.each([
-      "",
-      "   ",
-      undefined
-    ])("should show error message if previous names is Yes but no previous name entered", async (formerNames: string | undefined) => {
-      const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.addLimitedPartnerPerson,
-        forename: "forename",
-        surname: "SURNAME",
-        former_names: formerNames,
-        previousName: "true",
-        "date_of_birth-Day": "01",
-        "date_of_birth-Month": "11",
-        "date_of_birth-Year": "1987",
-        nationality1: "Mongolian",
-        nationality2: "Uzbek",
-      });
+    it.each(["", "   ", undefined])(
+      "should show error message if previous names is Yes but no previous name entered",
+      async (formerNames: string | undefined) => {
+        const res = await request(app).post(URL).send({
+          pageType: RegistrationPageType.addLimitedPartnerPerson,
+          forename: "forename",
+          surname: "SURNAME",
+          former_names: formerNames,
+          previousName: "true",
+          "date_of_birth-Day": "01",
+          "date_of_birth-Month": "11",
+          "date_of_birth-Year": "1987",
+          nationality1: "Mongolian",
+          nationality2: "Uzbek"
+        });
 
-      expect(res.status).toBe(200);
-      expect(res.text).toContain('id="previousNameYes" name="previousName" type="radio" value="true" checked');
-      expect(res.text).toContain("Enter the previous name(s) of the limited partner");
-    });
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('id="previousNameYes" name="previousName" type="radio" value="true" checked');
+        expect(res.text).toContain("Enter the previous name(s) of the limited partner");
+      }
+    );
   });
 
   describe("Patch from Add Limited Partner", () => {

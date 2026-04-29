@@ -114,7 +114,7 @@ describe("Add General Partner Person Page", () => {
     });
 
     it("should contain a back link to the choice page when general partners are not present", async () => {
-      const res = await request(app).get(getUrl(ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL) + "?lang=en");
+      const res = await request(app).get(getUrl(ADD_GENERAL_PARTNER_PERSON_URL) + "?lang=en");
 
       expect(res.status).toBe(200);
 

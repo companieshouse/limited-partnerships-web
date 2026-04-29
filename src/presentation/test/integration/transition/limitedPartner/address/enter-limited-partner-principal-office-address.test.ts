@@ -24,6 +24,7 @@ import LimitedPartnerBuilder, {
   limitedPartnerLegalEntity,
   limitedPartnerPerson
 } from "../../../../builder/LimitedPartnerBuilder";
+import TransactionLimitedPartner from "../../../../../../domain/entities/TransactionLimitedPartner";
 
 describe("Enter Limited Partner Principal Office Address Page", () => {
   const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText, ...enErrorsTranslationText };
@@ -31,22 +32,24 @@ describe("Enter Limited Partner Principal Office Address Page", () => {
   const URL = getUrl(ENTER_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
   const redirectUrl = getUrl(CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
 
+  let limitedPartner: TransactionLimitedPartner;
+
   beforeEach(() => {
     setLocalesEnabled(false);
 
     appDevDependencies.cacheRepository.feedCache(null);
-    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([]);
+
+    limitedPartner = new LimitedPartnerBuilder()
+      .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+      .isLegalEntity()
+      .build();
+
+    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
   });
 
   describe("GET Enter limited partners principal office address", () => {
     it("should load enter limited partner's principal office address page with english text", async () => {
       setLocalesEnabled(true);
-      const limitedPartner = new LimitedPartnerBuilder()
-        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isLegalEntity()
-        .build();
-
-      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
 
       const res = await request(app).get(URL + "?lang=en");
 
@@ -76,12 +79,6 @@ describe("Enter Limited Partner Principal Office Address Page", () => {
     it("should load enter limited partner's principal office address manual entry page with welsh text", async () => {
       setLocalesEnabled(true);
 
-      const limitedPartner = new LimitedPartnerBuilder()
-        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isLegalEntity()
-        .build();
-
-      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
       appDevDependencies.cacheRepository.feedCache({
         [appDevDependencies.transactionGateway.transactionId]: {
           poa_territory_choice: "overseas"
@@ -188,13 +185,6 @@ describe("Enter Limited Partner Principal Office Address Page", () => {
     });
 
     it("should redirect to the confirm limited partner's principal office address page", async () => {
-      const limitedPartner = new LimitedPartnerBuilder()
-        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isLegalEntity()
-        .build();
-
-      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
-
       const res = await request(app)
         .post(URL)
         .send({
@@ -207,13 +197,6 @@ describe("Enter Limited Partner Principal Office Address Page", () => {
     });
 
     it("should redirect to the error page when error occurs during Post", async () => {
-      const limitedPartner = new LimitedPartnerBuilder()
-        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isLegalEntity()
-        .build();
-
-      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
-
       const res = await request(app).post(URL).send({
         pageType: "Invalid page type",
         country: ""
@@ -224,12 +207,6 @@ describe("Enter Limited Partner Principal Office Address Page", () => {
     });
 
     it("should redirect if postcode is null", async () => {
-      const limitedPartner = new LimitedPartnerBuilder()
-        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .build();
-
-      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
-
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.confirmLimitedPartnerPrincipalOfficeAddress,
         postal_code: "",
@@ -244,11 +221,6 @@ describe("Enter Limited Partner Principal Office Address Page", () => {
     });
 
     it("should not return a validation error when an overseas address and postcode does not conform to UK format", async () => {
-      const limitedPartner = new LimitedPartnerBuilder()
-        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isLegalEntity()
-        .build();
-
       const res = await request(app)
         .post(URL)
         .send({
@@ -264,13 +236,6 @@ describe("Enter Limited Partner Principal Office Address Page", () => {
     });
 
     it("should return a validation error when a UK address and postcode format is invalid", async () => {
-      const limitedPartner = new LimitedPartnerBuilder()
-        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isLegalEntity()
-        .build();
-
-      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
-
       const res = await request(app)
         .post(URL)
         .send({
@@ -286,11 +251,6 @@ describe("Enter Limited Partner Principal Office Address Page", () => {
     });
 
     it("should not return validation errors when address fields contain valid but non alpha-numeric characters", async () => {
-      const limitedPartner = new LimitedPartnerBuilder()
-        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isLegalEntity()
-        .build();
-
       const res = await request(app)
         .post(URL)
         .send({
@@ -309,11 +269,6 @@ describe("Enter Limited Partner Principal Office Address Page", () => {
     });
 
     it("should return validation errors when address fields contain invalid characters", async () => {
-      const limitedPartner = new LimitedPartnerBuilder()
-        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isLegalEntity()
-        .build();
-
       const res = await request(app)
         .post(URL)
         .send({
@@ -336,11 +291,6 @@ describe("Enter Limited Partner Principal Office Address Page", () => {
     });
 
     it("should return validation errors when address fields exceed character limit", async () => {
-      const limitedPartner = new LimitedPartnerBuilder()
-        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isLegalEntity()
-        .build();
-
       const res = await request(app)
         .post(URL)
         .send({

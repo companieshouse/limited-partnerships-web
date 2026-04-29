@@ -61,8 +61,8 @@ describe("General Partner Usual Residential Address Territory Choice", () => {
 
   describe("POST /general-partner-territory-choice", () => {
     it.each([
-      ["United Kingdom", "unitedKingdom", POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL],
-      ["Overseas", "overseas", ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL]
+      ["United Kingdom", "unitedKingdom", getUrl(POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL)],
+      ["Overseas", "overseas", getUrl(ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL)]
     ])("should redirect to the correct page based on the territory choice", async (option: string, parameter: string, expectedRedirectUrl: string) => {
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.territoryChoiceGeneralPartnerUsualResidentialAddress,

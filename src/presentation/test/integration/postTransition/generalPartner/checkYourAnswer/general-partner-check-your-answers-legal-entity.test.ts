@@ -8,25 +8,30 @@ import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from ".
 import GeneralPartnerBuilder from "../../../../builder/GeneralPartnerBuilder";
 import { GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/postTransition/url";
 import CompanyProfileBuilder from "../../../../builder/CompanyProfileBuilder";
-import { CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL, CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL } from "../../../../../controller/addressLookUp/url/postTransition";
+import {
+  CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL
+} from "../../../../../controller/addressLookUp/url/postTransition";
 import { GeneralPartner, PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 import { formatDate } from "../../../../../../utils/date-format";
 import PostTransitionPageType from "../../../../../controller/postTransition/pageType";
 import { CONFIRMATION_POST_TRANSITION_URL } from "../../../../../controller/global/url";
 import TransactionBuilder from "../../../../builder/TransactionBuilder";
+import TransactionGeneralPartner from "../../../../../../domain/entities/TransactionGeneralPartner";
 
 describe("Check Your Answers Page", () => {
   const URL = getUrl(GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL);
   const REDIRECT_URL = getUrl(CONFIRMATION_POST_TRANSITION_URL);
 
   let companyProfile;
-  let generalPartnerLegalEntity;
+  let generalPartnerLegalEntity: TransactionGeneralPartner;
 
   beforeEach(() => {
     companyProfile = new CompanyProfileBuilder().build();
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
     generalPartnerLegalEntity = new GeneralPartnerBuilder()
+      .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
       .isLegalEntity()
       .withDateEffectiveFrom("2024-10-10")
       .withLegalEntityRegistrationLocation("Wales")
@@ -38,7 +43,6 @@ describe("Check Your Answers Page", () => {
   });
 
   describe("GET Check Your Answers Page", () => {
-
     it.each([
       ["en", enTranslationText],
       ["cy", cyTranslationText]
@@ -65,16 +69,13 @@ describe("Check Your Answers Page", () => {
       [URL + "?lang=en", "/limited-partnerships/sign-out?lang=en"],
       [URL + "?lang=cy", "/limited-partnerships/sign-out?lang=cy"],
       [URL, "/limited-partnerships/sign-out"]
-    ])(
-      "should set the signout link href correctly for url: %s",
-      async (testUrl: string, expectedHref: string) => {
-        setLocalesEnabled(true);
-        const res = await request(app).get(testUrl);
+    ])("should set the signout link href correctly for url: %s", async (testUrl: string, expectedHref: string) => {
+      setLocalesEnabled(true);
+      const res = await request(app).get(testUrl);
 
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(expectedHref);
-      }
-    );
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(expectedHref);
+    });
 
     it("Should contain a back link to the confirm principal office address page", async () => {
       const res = await request(app).get(URL);
@@ -85,9 +86,14 @@ describe("Check Your Answers Page", () => {
     });
 
     it("Should not contain back link to confirm principal office adddress page if not legal entity", async () => {
-      const generalPartnerPerson = new GeneralPartnerBuilder().isPerson().withDateEffectiveFrom("2024-10-10").build();
+      const generalPartnerPerson = new GeneralPartnerBuilder()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .isPerson()
+        .withDateEffectiveFrom("2024-10-10")
+        .build();
 
       appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartnerPerson]);
+
       const res = await request(app).get(URL);
 
       expect(res.status).toBe(200);
@@ -99,9 +105,18 @@ describe("Check Your Answers Page", () => {
 
       expect(res.status).toBe(200);
 
-      expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.partners.limitedPartners.capitalContribution);
+      expect(res.text).not.toContain(
+        enTranslationText.checkYourAnswersPage.partners.limitedPartners.capitalContribution
+      );
 
-      testTranslations(res.text, enTranslationText.checkYourAnswersPage.partners, ["capitalContribution", "title", "changeRemoveOrAdd", "limitedPartners", "person", "ceaseDate"]);
+      testTranslations(res.text, enTranslationText.checkYourAnswersPage.partners, [
+        "capitalContribution",
+        "title",
+        "changeRemoveOrAdd",
+        "limitedPartners",
+        "person",
+        "ceaseDate"
+      ]);
 
       checkIfValuesInText(res, generalPartnerLegalEntity, enTranslationText);
     });
@@ -111,9 +126,18 @@ describe("Check Your Answers Page", () => {
 
       expect(res.status).toBe(200);
 
-      expect(res.text).not.toContain(cyTranslationText.checkYourAnswersPage.partners.limitedPartners.capitalContribution);
+      expect(res.text).not.toContain(
+        cyTranslationText.checkYourAnswersPage.partners.limitedPartners.capitalContribution
+      );
 
-      testTranslations(res.text, cyTranslationText.checkYourAnswersPage.partners, ["capitalContribution", "title", "changeRemoveOrAdd", "limitedPartners", "person", "ceaseDate"]);
+      testTranslations(res.text, cyTranslationText.checkYourAnswersPage.partners, [
+        "capitalContribution",
+        "title",
+        "changeRemoveOrAdd",
+        "limitedPartners",
+        "person",
+        "ceaseDate"
+      ]);
 
       checkIfValuesInText(res, generalPartnerLegalEntity, cyTranslationText);
     });
@@ -155,4 +179,3 @@ const checkIfValuesInText = (res: request.Response, partner: GeneralPartner, tra
     }
   }
 };
-

@@ -26,6 +26,7 @@ import GeneralPartnerBuilder, {
   generalPartnerPerson
 } from "../../../../builder/GeneralPartnerBuilder";
 import TransactionBuilder from "../../../../builder/TransactionBuilder";
+import TransactionGeneralPartner from "../../../../../../domain/entities/TransactionGeneralPartner";
 
 describe("Enter Usual Residential Address Page", () => {
   const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText, ...enErrorsTranslationText };
@@ -33,11 +34,19 @@ describe("Enter Usual Residential Address Page", () => {
   const URL = getUrl(ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
   const redirectUrl = getUrl(CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
 
+  let generalPartner: TransactionGeneralPartner;
+
   beforeEach(() => {
     setLocalesEnabled(false);
 
     appDevDependencies.cacheRepository.feedCache(null);
-    appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
+
+    generalPartner = new GeneralPartnerBuilder()
+      .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+      .isPerson()
+      .build();
+
+    appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
   });
 
   describe("GET Enter general partners usual residential address", () => {
@@ -51,13 +60,6 @@ describe("Enter Usual Residential Address Page", () => {
 
         const transaction = new TransactionBuilder().withKind(partnerKind).build();
         appDevDependencies.transactionGateway.feedTransactions([transaction]);
-
-        const generalPartner = new GeneralPartnerBuilder()
-          .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-          .isPerson()
-          .build();
-
-        appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
 
         const res = await request(app).get(URL + "?lang=en");
 
@@ -97,12 +99,6 @@ describe("Enter Usual Residential Address Page", () => {
         const transaction = new TransactionBuilder().withKind(partnerKind).build();
         appDevDependencies.transactionGateway.feedTransactions([transaction]);
 
-        const generalPartner = new GeneralPartnerBuilder()
-          .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-          .isPerson()
-          .build();
-
-        appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
         appDevDependencies.cacheRepository.feedCache({
           [appDevDependencies.transactionGateway.transactionId]: {
             ura_territory_choice: "overseas"
@@ -157,8 +153,11 @@ describe("Enter Usual Residential Address Page", () => {
           ura_territory_choice: "unitedKingdom"
         }
       });
+
       const redirectUrl = getUrl(POSTCODE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
+
       const res = await request(app).get(URL);
+
       expect(res.status).toBe(200);
 
       expect(res.text).toContain(redirectUrl);
@@ -211,13 +210,6 @@ describe("Enter Usual Residential Address Page", () => {
     });
 
     it("should redirect to the confirm general partners usual residential address page", async () => {
-      const generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isPerson()
-        .build();
-
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
-
       const res = await request(app)
         .post(URL)
         .send({
@@ -230,13 +222,6 @@ describe("Enter Usual Residential Address Page", () => {
     });
 
     it("should redirect to the error page when error occurs during Post", async () => {
-      const generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isPerson()
-        .build();
-
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
-
       const res = await request(app).post(URL).send({
         pageType: "Invalid page type",
         country: ""
@@ -247,12 +232,6 @@ describe("Enter Usual Residential Address Page", () => {
     });
 
     it("should redirect if postcode is null", async () => {
-      const generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .build();
-
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
-
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.enterGeneralPartnerUsualResidentialAddress,
         postal_code: "",
@@ -267,11 +246,6 @@ describe("Enter Usual Residential Address Page", () => {
     });
 
     it("should not return a validation error when an overseas address and postcode does not conform to UK format", async () => {
-      const generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isPerson()
-        .build();
-
       const res = await request(app)
         .post(URL)
         .send({
@@ -287,13 +261,6 @@ describe("Enter Usual Residential Address Page", () => {
     });
 
     it("should return a validation error when a UK address and postcode format is invalid", async () => {
-      const generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isPerson()
-        .build();
-
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
-
       const res = await request(app)
         .post(URL)
         .send({
@@ -311,11 +278,6 @@ describe("Enter Usual Residential Address Page", () => {
     });
 
     it("should not return validation errors when address fields contain valid but non alpha-numeric characters", async () => {
-      const generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isPerson()
-        .build();
-
       const res = await request(app)
         .post(URL)
         .send({
@@ -334,11 +296,6 @@ describe("Enter Usual Residential Address Page", () => {
     });
 
     it("should return validation errors when address fields contain invalid characters", async () => {
-      const generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isPerson()
-        .build();
-
       const res = await request(app)
         .post(URL)
         .send({
@@ -361,11 +318,6 @@ describe("Enter Usual Residential Address Page", () => {
     });
 
     it("should return validation errors when address fields exceed character limit", async () => {
-      const generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isPerson()
-        .build();
-
       const res = await request(app)
         .post(URL)
         .send({

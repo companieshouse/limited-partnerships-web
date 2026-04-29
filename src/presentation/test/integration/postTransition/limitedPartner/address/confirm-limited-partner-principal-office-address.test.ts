@@ -30,6 +30,14 @@ describe("Confirm Limited Partner Principal Office Address Page", () => {
 
   beforeEach(() => {
     setLocalesEnabled(true);
+
+    const limitedPartner = new LimitedPartnerBuilder()
+      .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+      .isPerson()
+      .build();
+
+    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
+
     appDevDependencies.cacheRepository.feedCache({
       [appDevDependencies.transactionGateway.transactionId]: {
         ["principal_office_address"]: {
@@ -43,8 +51,6 @@ describe("Confirm Limited Partner Principal Office Address Page", () => {
         }
       }
     });
-
-    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([]);
 
     appDevDependencies.transactionGateway.feedTransactions([]);
   });
