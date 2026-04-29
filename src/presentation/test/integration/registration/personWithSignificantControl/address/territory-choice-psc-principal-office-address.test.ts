@@ -81,7 +81,7 @@ describe("PSC Principal Office Address Territory Choice", () => {
       ["RLE", URL_RELEVANT_LEGAL_ENTITY, getUrl(WHICH_TYPE_OF_NATURE_OF_CONTROL_RELEVANT_LEGAL_ENTITY_URL)],
       ["ORP", URL_OTHER_REGISTRABLE_PERSON, getUrl(WHICH_TYPE_OF_NATURE_OF_CONTROL_OTHER_REGISTRABLE_PERSON_URL)]
     ])(
-      "should contain the correct back link for PSC type",
+      "should have a back link to the correct natures of control page for %s",
       async (_description: string, URL: string, expectedBackLink: string) => {
         const personWithSignificantControl = buildPSC(_description);
         appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([personWithSignificantControl]);
