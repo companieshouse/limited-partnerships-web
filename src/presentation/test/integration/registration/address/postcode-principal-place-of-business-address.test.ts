@@ -1,14 +1,17 @@
 import request from "supertest";
 import { UKAddress } from "@companieshouse/api-sdk-node/dist/services/postcode-lookup";
+import { Jurisdiction } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 import enGeneralTranslationText from "../../../../../../locales/en/translations.json";
 import cyGeneralTranslationText from "../../../../../../locales/cy/translations.json";
 import enAddressTranslationText from "../../../../../../locales/en/address.json";
 import cyAddressTranslationText from "../../../../../../locales/cy/address.json";
+import enErrorsTranslationText from "../../../../../../locales/en/errors.json";
+import cyErrorsTranslationText from "../../../../../../locales/cy/errors.json";
 
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
+import { getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../utils";
 
 import {
   POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
@@ -21,8 +24,8 @@ import AddressPageType from "../../../../controller/addressLookUp/PageType";
 import { APPLICATION_CACHE_KEY } from "../../../../../config/constants";
 
 describe("Postcode Principal Place Of Business Address Page", () => {
-  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
-  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText };
+  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText, ...enErrorsTranslationText };
+  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText, ...cyErrorsTranslationText };
   const URL = getUrl(POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL);
   const REDIRECT_URL = getUrl(CHOOSE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL);
   const addresses: UKAddress[] = appDevDependencies.addressLookUpGateway.englandAddresses;
@@ -131,17 +134,116 @@ describe("Postcode Principal Place Of Business Address Page", () => {
       });
     });
 
-    it("should return an error if the postcode is not valid", async () => {
-      const res = await request(app).post(URL).send({
-        pageType: AddressPageType.postcodePrincipalPlaceOfBusinessAddress,
-        premises: null,
-        postal_code: "AA1 1AA"
+    describe("Error messages", () => {
+      it.each([
+        ["en", enTranslationText],
+        ["cy", cyTranslationText]
+      ])("should return an error if the postcode is not valid - %s", async (lang: string, translation) => {
+        setLocalesEnabled(true);
+
+        const res = await request(app).post(`${URL}?lang=${lang}`).send({
+          pageType: AddressPageType.postcodePrincipalPlaceOfBusinessAddress,
+          premises: null,
+          postal_code: "AA1 1AA"
+        });
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(toEscapedHtml(translation.errorMessages.address.postcodeLookup.postcodeNotFound));
+
+        expect(appDevDependencies.cacheRepository.cache).toEqual(null);
       });
 
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(`The postcode AA1 1AA cannot be found`);
+      it.each([
+        ["en", enTranslationText],
+        ["cy", cyTranslationText]
+      ])("should return an error if the postcode is missing - %s", async (lang: string, translation) => {
+        setLocalesEnabled(true);
 
-      expect(appDevDependencies.cacheRepository.cache).toEqual(null);
+        const res = await request(app).post(`${URL}?lang=${lang}`).send({
+          pageType: AddressPageType.postcodePrincipalPlaceOfBusinessAddress,
+          premises: null,
+          postal_code: ""
+        });
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(translation.errorMessages.address.postcodeLookup.postcodeMissing);
+
+        expect(appDevDependencies.cacheRepository.cache).toEqual(null);
+      });
+
+      it.each([
+        ["en", enTranslationText],
+        ["cy", cyTranslationText]
+      ])("should return an error if the postcode is invalid - %s", async (lang: string, translation) => {
+        setLocalesEnabled(true);
+
+        const res = await request(app).post(`${URL}?lang=${lang}`).send({
+          pageType: AddressPageType.postcodePrincipalPlaceOfBusinessAddress,
+          premises: null,
+          postal_code: "_____"
+        });
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(translation.errorMessages.address.postcodeLookup.postcodeInvalid);
+
+        expect(appDevDependencies.cacheRepository.cache).toEqual(null);
+      });
+
+      it.each([
+        ["en", enTranslationText],
+        ["cy", cyTranslationText]
+      ])("should return an error if the postcode is invalid - %s", async (lang: string, translation) => {
+        setLocalesEnabled(true);
+
+        const res = await request(app).post(`${URL}?lang=${lang}`).send({
+          pageType: AddressPageType.postcodePrincipalPlaceOfBusinessAddress,
+          premises: "_____",
+          postal_code: "AA1 1AA"
+        });
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(translation.errorMessages.address.postcodeLookup.premisesInvalid);
+
+        expect(appDevDependencies.cacheRepository.cache).toEqual(null);
+      });
+
+      it.each([
+        [
+          enTranslationText.errorMessages.address.enterAddress.jurisdictionEnglandAndWales,
+          Jurisdiction.ENGLAND_AND_WALES,
+          appDevDependencies.addressLookUpGateway.scotlandAddresses[0].postcode
+        ],
+        [
+          enTranslationText.errorMessages.address.enterAddress.jurisdictionScotland,
+          Jurisdiction.SCOTLAND,
+          appDevDependencies.addressLookUpGateway.walesAddresses[0].postcode
+        ],
+        [
+          enTranslationText.errorMessages.address.enterAddress.jurisdictionNorthernIreland,
+          Jurisdiction.NORTHERN_IRELAND,
+          appDevDependencies.addressLookUpGateway.walesAddresses[0].postcode
+        ]
+      ])("%s", async (errorMessage: string, jurisdiction: string, postcode: string) => {
+        setLocalesEnabled(true);
+
+        const limitedPartnership = new LimitedPartnershipBuilder()
+          .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+          .withJurisdiction(jurisdiction as Jurisdiction)
+          .build();
+
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+        const res = await request(app).post(URL).send({
+          pageType: AddressPageType.postcodeRegisteredOfficeAddress,
+          premises: null,
+          postal_code: postcode
+        });
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(errorMessage);
+
+        expect(appDevDependencies.cacheRepository.cache).toEqual(null);
+      });
     });
 
     describe("UK mainland postcode", () => {

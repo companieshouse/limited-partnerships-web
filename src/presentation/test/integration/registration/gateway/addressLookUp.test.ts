@@ -1,6 +1,9 @@
 import request from "supertest";
 import { createApiClient } from "@companieshouse/api-sdk-node";
 
+import enTranslationText from "../../../../../../locales/en/translations.json";
+import enErrorsTranslation from "../../../../../../locales/en/errors.json";
+
 import appRealDependencies from "../../../../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import sdkMock, { getListOfValidPostcodeAddresses, isValidUKPostcode } from "../../mock/sdkMock";
@@ -11,7 +14,6 @@ import {
   POSTCODE_REGISTERED_OFFICE_ADDRESS_URL
 } from "../../../../controller/addressLookUp/url/registration";
 import AddressPageType from "../../../../controller/addressLookUp/PageType";
-import enTranslationText from "../../../../../../locales/en/translations.json";
 import { getUrl } from "../../../utils";
 import CacheRepository from "../../../../../infrastructure/repository/CacheRepository";
 
@@ -108,7 +110,7 @@ describe("Gateway Address Look Up", () => {
       });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(`The postcode CF14 3UZ cannot be found`);
+      expect(res.text).toContain(enErrorsTranslation.errorMessages.address.postcodeLookup.postcodeNotFound);
 
       expect(appDevDependencies.cacheRepository.cache).toEqual(null);
     });
