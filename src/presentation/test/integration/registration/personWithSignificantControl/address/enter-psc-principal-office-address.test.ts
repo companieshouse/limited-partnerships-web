@@ -28,7 +28,7 @@ describe("Enter person with significant control's principal office manual addres
   const URL_RELEVANT_LEGAL_ENTITY = getUrl(
     ENTER_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL
   );
-  const URL_OTHER_REGISTARBLE_PERSON = getUrl(
+  const URL_OTHER_REGISTRABLE_PERSON = getUrl(
     ENTER_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL
   );
 
@@ -48,8 +48,8 @@ describe("Enter person with significant control's principal office manual addres
     it.each([
       ["RLE English", URL_RELEVANT_LEGAL_ENTITY, "en", enTranslationText],
       ["RLE Welsh", URL_RELEVANT_LEGAL_ENTITY, "cy", cyTranslationText],
-      ["ORP English", URL_OTHER_REGISTARBLE_PERSON, "en", enTranslationText],
-      ["ORP Welsh", URL_OTHER_REGISTARBLE_PERSON, "cy", cyTranslationText]
+      ["ORP English", URL_OTHER_REGISTRABLE_PERSON, "en", enTranslationText],
+      ["ORP Welsh", URL_OTHER_REGISTRABLE_PERSON, "cy", cyTranslationText]
     ])(
       "should load enter person with significant controls principal office address page with English text",
       async (_description: string, URL: string, lang: string, translationText: Record<string, any>) => {
@@ -85,7 +85,7 @@ describe("Enter person with significant control's principal office manual addres
       ],
       [
         "ORP",
-        URL_OTHER_REGISTARBLE_PERSON,
+        URL_OTHER_REGISTRABLE_PERSON,
         AddressPageType.enterPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress,
         getUrl(CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL)
       ]
@@ -117,7 +117,7 @@ describe("Enter person with significant control's principal office manual addres
       ],
       [
         "ORP",
-        URL_OTHER_REGISTARBLE_PERSON,
+        URL_OTHER_REGISTRABLE_PERSON,
         AddressPageType.enterPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress
       ]
     ])(
@@ -151,7 +151,7 @@ describe("Enter person with significant control's principal office manual addres
       ],
       [
         "ORP",
-        URL_OTHER_REGISTARBLE_PERSON,
+        URL_OTHER_REGISTRABLE_PERSON,
         AddressPageType.enterPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress,
         getUrl(CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL)
       ]
@@ -186,7 +186,7 @@ describe("Enter person with significant control's principal office manual addres
       ],
       [
         "ORP",
-        URL_OTHER_REGISTARBLE_PERSON,
+        URL_OTHER_REGISTRABLE_PERSON,
         AddressPageType.enterPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress
       ]
     ])(
@@ -223,7 +223,7 @@ describe("Enter person with significant control's principal office manual addres
       ],
       [
         "ORP",
-        URL_OTHER_REGISTARBLE_PERSON,
+        URL_OTHER_REGISTRABLE_PERSON,
         AddressPageType.enterPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress
       ]
     ])(

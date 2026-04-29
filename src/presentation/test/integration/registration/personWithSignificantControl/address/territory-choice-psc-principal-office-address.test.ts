@@ -25,13 +25,15 @@ import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBuilder";
 import PersonWithSignificantControlBuilder from "../../../../builder/PersonWithSignificantControlBuilder";
 
+import { WHICH_TYPE_OF_NATURE_OF_CONTROL_OTHER_REGISTRABLE_PERSON_URL, WHICH_TYPE_OF_NATURE_OF_CONTROL_RELEVANT_LEGAL_ENTITY_URL } from "presentation/controller/registration/url";
+
 describe("PSC Principal Office Address Territory Choice", () => {
   const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText, ...enErrorsTranslationText };
   const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText, ...cyErrorsTranslationText };
   const URL_RELEVANT_LEGAL_ENTITY = getUrl(
     TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL
   );
-  const URL_OTHER_REGISTARBLE_PERSON = getUrl(
+  const URL_OTHER_REGISTRABLE_PERSON = getUrl(
     TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL
   );
 
@@ -48,8 +50,8 @@ describe("PSC Principal Office Address Territory Choice", () => {
     it.each([
       ["RLE English", URL_RELEVANT_LEGAL_ENTITY, "en", enTranslationText],
       ["RLE Welsh", URL_RELEVANT_LEGAL_ENTITY, "cy", cyTranslationText],
-      ["ORP English", URL_OTHER_REGISTARBLE_PERSON, "en", enTranslationText],
-      ["ORP Welsh", URL_OTHER_REGISTARBLE_PERSON, "cy", cyTranslationText]
+      ["ORP English", URL_OTHER_REGISTRABLE_PERSON, "en", enTranslationText],
+      ["ORP Welsh", URL_OTHER_REGISTRABLE_PERSON, "cy", cyTranslationText]
     ])(
       "should load the PSC principal office address territory choice page with %s text",
       async (_description: string, URL: string, lang: string, translationText: Record<string, any>) => {
@@ -74,6 +76,22 @@ describe("PSC Principal Office Address Territory Choice", () => {
         expect(res.text).toContain(personWithSignificantControl.data?.legal_entity_name?.toUpperCase());
       }
     );
+
+    it.each([
+      ["RLE", URL_RELEVANT_LEGAL_ENTITY, getUrl(WHICH_TYPE_OF_NATURE_OF_CONTROL_RELEVANT_LEGAL_ENTITY_URL)],
+      ["ORP", URL_OTHER_REGISTRABLE_PERSON, getUrl(WHICH_TYPE_OF_NATURE_OF_CONTROL_OTHER_REGISTRABLE_PERSON_URL)]
+    ])(
+      "should have a back link to the correct natures of control page for %s",
+      async (_description: string, URL: string, expectedBackLink: string) => {
+        const personWithSignificantControl = buildPSC(_description);
+        appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([personWithSignificantControl]);
+
+        const res = await request(app).get(URL);
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(`href="${expectedBackLink}"`);
+      }
+    );
   });
 
   describe("POST PSC territory choice", () => {
@@ -85,7 +103,7 @@ describe("PSC Principal Office Address Territory Choice", () => {
       ],
       [
         "ORP",
-        URL_OTHER_REGISTARBLE_PERSON,
+        URL_OTHER_REGISTRABLE_PERSON,
         getUrl(POSTCODE_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL)
       ]
     ])(
@@ -118,7 +136,7 @@ describe("PSC Principal Office Address Territory Choice", () => {
       ],
       [
         "ORP",
-        URL_OTHER_REGISTARBLE_PERSON,
+        URL_OTHER_REGISTRABLE_PERSON,
         getUrl(ENTER_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL)
       ]
     ])(
@@ -145,7 +163,7 @@ describe("PSC Principal Office Address Territory Choice", () => {
 
     it.each([
       ["RLE", URL_RELEVANT_LEGAL_ENTITY],
-      ["ORP", URL_OTHER_REGISTARBLE_PERSON]
+      ["ORP", URL_OTHER_REGISTRABLE_PERSON]
     ])("should show an error message when no selection is made for territory choice", async (_description: string, URL: string) => {
       const personWithSignificantControl = buildPSC(_description);
       appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([personWithSignificantControl]);
