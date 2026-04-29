@@ -306,6 +306,18 @@ class LimitedPartnershipController extends PartnershipController {
         const pageType = escape(request.body.pageType);
         const parameter = escape(request.body.parameter);
 
+        if (type === RegistrationPageType.partnershipType && !this.isValidPartnershipType(parameter)) {
+          const uiErrors = new UIErrors().setWebError(
+            "parameter",
+            response.locals.i18n.partnershipTypePage.errorMessage
+          );
+
+          return response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(pageRouting, { limitedPartnership: { data: {} } }, uiErrors)
+          );
+        }
+
         const cache = this.cacheService.addDataToCache(request.signedCookies, {
           [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${pageType}`]: parameter
         });
@@ -316,6 +328,10 @@ class LimitedPartnershipController extends PartnershipController {
         next(error);
       }
     };
+  }
+
+  private isValidPartnershipType(value: string): boolean {
+    return Object.values(PartnershipType).includes(value as PartnershipType);
   }
 
   sendPageData() {

@@ -6,15 +6,17 @@
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
+      {% include "includes/errors.njk" %}
 
       <form class="form" method="post">
         <input type="hidden" name="pageType" value={{ props.pageType }}>
-      
+
         {% include "includes/csrf_token.njk" %}
 
         {{ govukRadios({
           classes: "govuk-radios",
           name: "parameter",
+          errorMessage: props.errors.parameter if props.errors.parameter,
           fieldset: {
             legend: {
               text: i18n.partnershipTypePage.title,
@@ -28,7 +30,6 @@
               text: i18n.types.LP,
               checked: props.data.limitedPartnership.data.partnership_type === "LP",
               attributes: {
-                "required": true,
                 "data-goal-id": PIWIK_REGISTRATION_LP_GOAL_ID
               }
             },
@@ -37,7 +38,6 @@
               text: i18n.types.PFLP,
               checked: props.data.limitedPartnership.data.partnership_type === "PFLP",
               attributes: {
-                "required": true,
                 "data-goal-id": PIWIK_REGISTRATION_PRIVATE_FUND_LP_GOAL_ID
               }
             },
@@ -46,7 +46,6 @@
               text: i18n.types.SLP,
               checked: props.data.limitedPartnership.data.partnership_type === "SLP",
               attributes: {
-                "required": true,
                 "data-goal-id": PIWIK_REGISTRATION_SCOTTISH_LP_GOAL_ID
               }
             },
@@ -55,14 +54,13 @@
               text: i18n.types.SPFLP,
               checked: props.data.limitedPartnership.data.partnership_type === "SPFLP",
               attributes: {
-                "required": true,
                 "data-goal-id": PIWIK_REGISTRATION_SCOTTISH_PRIVATE_FUND_LP_GOAL_ID
               }
             }
           ]
         }) }}
 
-        <button class="govuk-button" data-module="govuk-button" id="submit" onclick="_paq.push(['trackGoal', document.querySelector('input[name=parameter]:checked').getAttribute('data-goal-id')])">
+        <button class="govuk-button" data-module="govuk-button" id="submit" onclick="var selected = document.querySelector('input[name=parameter]:checked'); if (selected) { _paq.push(['trackGoal', selected.getAttribute('data-goal-id')]); }">
           {{ i18n.buttons.continue }}
         </button>
 

@@ -609,7 +609,8 @@
     },
 
     "partnershipTypePage": {
-        "title": "WELSH - Which type of partnership do you want to register?"
+        "title": "WELSH - Which type of partnership do you want to register?",
+        "errorMessage": "WELSH - Select the type of partnership you are registering"
     },
 
     "countries" : {
