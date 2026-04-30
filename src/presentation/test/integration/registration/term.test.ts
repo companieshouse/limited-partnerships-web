@@ -4,6 +4,8 @@ import { PartnershipType, Term } from "@companieshouse/api-sdk-node/dist/service
 import app from "../app";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
+import enErrorMessages from "../../../../../locales/en/errors.json";
+import cyErrorMessages from "../../../../../locales/cy/errors.json";
 
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import { GENERAL_PARTNERS_URL, SIC_URL, TERM_URL } from "../../../controller/registration/url";
@@ -129,6 +131,55 @@ describe("Email Page", () => {
 
         expect(res.status).toBe(200);
         expect(res.text).toContain("Term must be valid");
+      });
+
+      it.each([
+        ["English", "en", enTranslationText, enErrorMessages],
+        ["Welsh", "cy", cyTranslationText, cyErrorMessages]
+      ])(
+        "should re-render the page with an error summary in %s when no term is selected",
+        async (
+          _description: string,
+          lang: string,
+          translationText: Record<string, any>,
+          errorMessages: Record<string, any>
+        ) => {
+          const limitedPartnership = new LimitedPartnershipBuilder()
+            .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+            .withPartnershipType(PartnershipType.LP)
+            .build();
+
+          appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+          const res = await request(app)
+            .post(URL + `?lang=${lang}`)
+            .send({
+              pageType: RegistrationPageType.term
+            });
+
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(errorMessages.errorMessages.term.termRequired);
+          expect(res.text).toContain('href="#term"');
+          expect(res.text).toContain(translationText.govUk.error.title);
+        }
+      );
+
+      it("should re-render the page with an error summary when an invalid term is submitted", async () => {
+        const limitedPartnership = new LimitedPartnershipBuilder()
+          .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+          .withPartnershipType(PartnershipType.LP)
+          .build();
+
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+        const res = await request(app).post(URL).send({
+          pageType: RegistrationPageType.term,
+          term: "INVALID"
+        });
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(enErrorMessages.errorMessages.term.termRequired);
+        expect(res.text).toContain('href="#term"');
       });
     });
   });

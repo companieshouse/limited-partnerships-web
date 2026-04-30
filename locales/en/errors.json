@@ -67,6 +67,10 @@
             "lawfulPurposeRequired": "Confirm that the intended future activities are lawful"
         },
 
+        "term": {
+            "termRequired": "Select the term of the partnership"
+        },
+
         "partnershipType": {
             "typeRequired": "Select the type of partnership you are registering"
         },

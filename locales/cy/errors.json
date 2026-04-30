@@ -68,6 +68,11 @@
             "lawfulPurposeRequired": "WELSH - Confirm that the intended future activities are lawful"
         },
 
+        "term": {
+            "termRequired": "WELSH - Select the term of the partnership"
+        },
+
+
         "partnershipType": {
             "typeRequired": "WELSH - Select the type of partnership you are registering"
         },
