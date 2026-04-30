@@ -609,8 +609,7 @@
     },
 
     "partnershipTypePage": {
-        "title": "Which type of partnership do you want to register?",
-        "errorMessage": "Select the type of partnership you are registering"
+        "title": "Which type of partnership do you want to register?"
     },
 
     "countries" : {

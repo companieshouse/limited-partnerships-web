@@ -11,6 +11,8 @@ import {
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
+import enErrorMessages from "../../../../../locales/en/errors.json";
+import cyErrorMessages from "../../../../../locales/cy/errors.json";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import {
   APPLICATION_CACHE_KEY,
@@ -35,11 +37,11 @@ describe("Which type Page", () => {
     const res = await request(app).get(PARTNERSHIP_TYPE_URL + "?lang=en");
 
     expect(res.status).toBe(200);
-    testTranslations(res.text, enTranslationText.partnershipTypePage, ["errorMessage"]);
+    testTranslations(res.text, enTranslationText.partnershipTypePage);
     testTranslations(res.text, enTranslationText.types);
     expect(res.text).toContain(enTranslationText.buttons.continue);
     expect(res.text).toContain(SERVICE_NAME_REGISTRATION);
-    expect(res.text).not.toContain(enTranslationText.partnershipTypePage.errorMessage);
+    expect(res.text).not.toContain(enErrorMessages.errorMessages.partnershipType.typeRequired);
   });
 
   it("should load the partnership-type page with Welsh text", async () => {
@@ -48,10 +50,10 @@ describe("Which type Page", () => {
     const res = await request(app).get(PARTNERSHIP_TYPE_URL + "?lang=cy");
 
     expect(res.status).toBe(200);
-    testTranslations(res.text, cyTranslationText.partnershipTypePage, ["errorMessage"]);
+    testTranslations(res.text, cyTranslationText.partnershipTypePage);
     expect(res.text).toContain(cyTranslationText.buttons.continue);
     expect(res.text).toContain(SERVICE_NAME_REGISTRATION);
-    expect(res.text).not.toContain(cyTranslationText.partnershipTypePage.errorMessage);
+    expect(res.text).not.toContain(cyErrorMessages.errorMessages.partnershipType.typeRequired);
   });
 
   it("should redirect to name page and cache contains the type selected", async () => {
@@ -129,11 +131,16 @@ describe("Which type Page", () => {
   });
 
   it.each([
-    ["English", "en", enTranslationText],
-    ["Welsh", "cy", cyTranslationText]
+    ["English", "en", enTranslationText, enErrorMessages],
+    ["Welsh", "cy", cyTranslationText, cyErrorMessages]
   ])(
     "should re-render the page with an error summary in %s when no partnership type is selected",
-    async (_description: string, lang: string, translationText: Record<string, any>) => {
+    async (
+      _description: string,
+      lang: string,
+      translationText: Record<string, any>,
+      errorMessages: Record<string, any>
+    ) => {
       setLocalesEnabled(true);
 
       const res = await request(app)
@@ -143,7 +150,7 @@ describe("Which type Page", () => {
         });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(translationText.partnershipTypePage.errorMessage);
+      expect(res.text).toContain(errorMessages.errorMessages.partnershipType.typeRequired);
       expect(res.text).toContain('href="#parameter"');
       expect(res.text).toContain(translationText.govUk.error.title);
       expect(appDevDependencies.cacheRepository.cache).toBeNull();
@@ -161,7 +168,7 @@ describe("Which type Page", () => {
       });
 
     expect(res.status).toBe(200);
-    expect(res.text).toContain(enTranslationText.partnershipTypePage.errorMessage);
+    expect(res.text).toContain(enErrorMessages.errorMessages.partnershipType.typeRequired);
     expect(res.text).toContain('href="#parameter"');
     expect(appDevDependencies.cacheRepository.cache).toBeNull();
   });

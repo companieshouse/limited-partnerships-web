@@ -67,6 +67,10 @@
             "lawfulPurposeRequired": "Confirm that the intended future activities are lawful"
         },
 
+        "partnershipType": {
+            "typeRequired": "Select the type of partnership you are registering"
+        },
+
         "personWithSignificantControl": {
             "addOtherRegistrablePerson": {
                 "legalEntityNameMissing": "Enter the other registrable person's name",

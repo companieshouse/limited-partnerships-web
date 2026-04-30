@@ -309,7 +309,7 @@ class LimitedPartnershipController extends PartnershipController {
         if (type === RegistrationPageType.partnershipType && !this.isValidPartnershipType(parameter)) {
           const uiErrors = new UIErrors().setWebError(
             "parameter",
-            response.locals.i18n.partnershipTypePage.errorMessage
+            response.locals.i18n.errorMessages.partnershipType.typeRequired
           );
 
           return response.render(
