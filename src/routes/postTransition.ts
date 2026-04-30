@@ -70,7 +70,9 @@ import {
   UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
   UPDATE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL,
   WHEN_DID_LIMITED_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL,
-  UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_URL
+  UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_URL,
+  UPDATE_GENERAL_PARTNER_STOP_SCREEN_NO_CHANGE_URL,
+  UPDATE_LIMITED_PARTNER_STOP_SCREEN_NO_CHANGE_URL
 } from "../presentation/controller/postTransition/url";
 import {
   TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_LEGAL_ENTITY,
@@ -913,6 +915,16 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
     dependencies.limitedPartnerPostTransitionController.postCheckYourAnswers()
   );
 
+  router.get(
+    UPDATE_GENERAL_PARTNER_STOP_SCREEN_NO_CHANGE_URL,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.getStopScreen()
+  );
+  router.get(
+    UPDATE_LIMITED_PARTNER_STOP_SCREEN_NO_CHANGE_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.getStopScreen()
+  );
 };
 
 export default postTransitionEndpoints;

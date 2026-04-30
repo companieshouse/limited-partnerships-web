@@ -73,7 +73,13 @@ class GeneralPartnerInMemoryGateway implements IGeneralPartnerGateway {
       throw new Error(`Not found: ${generalPartnerId}`);
     }
 
-    return this.generalPartners[0];
+    const partner = this.generalPartners.find((gp) => gp._id === generalPartnerId);
+
+    if (!partner) {
+      throw new Error(`Not found: ${generalPartnerId}`);
+    }
+
+    return partner;
   }
 
   async getGeneralPartners(

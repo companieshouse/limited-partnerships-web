@@ -16,6 +16,7 @@ import {
 } from "../../../../../controller/addressLookUp/url/transition";
 
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
+import LimitedPartnerBuilder from "../../../../builder/LimitedPartnerBuilder";
 
 describe("Choose principal office address of the limited partner page", () => {
   const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
@@ -26,6 +27,14 @@ describe("Choose principal office address of the limited partner page", () => {
   beforeEach(() => {
     setLocalesEnabled(false);
     appDevDependencies.addressLookUpGateway.setError(false);
+
+    const limitedPartner = new LimitedPartnerBuilder()
+      .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+      .isPerson()
+      .build();
+
+    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
+
     appDevDependencies.cacheRepository.feedCache({
       [appDevDependencies.transactionGateway.transactionId]: {
         principal_office_address: {

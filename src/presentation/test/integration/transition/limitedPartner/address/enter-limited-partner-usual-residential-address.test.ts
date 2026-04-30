@@ -34,8 +34,14 @@ describe("Enter Limited Partner Usual Residential Address Page", () => {
   beforeEach(() => {
     setLocalesEnabled(false);
 
+    const limitedPartner = new LimitedPartnerBuilder()
+      .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+      .isPerson()
+      .build();
+
+    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
+
     appDevDependencies.cacheRepository.feedCache(null);
-    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([]);
   });
 
   describe("GET Enter limited partners usual residential address", () => {

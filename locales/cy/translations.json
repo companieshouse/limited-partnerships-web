@@ -554,6 +554,13 @@
          "filingsInfo": "WELSH - Sign in to your Companies House account and select Your filings to access your saved applications."
    },
 
+    "stopPage": {
+        "title": "WELSH - You have not made any updates",
+        "needTo": "WELSH - You need to make an update to this partner's details before you can submit this filing.",
+        "buttonUpdate": "WELSH - Update partner details",
+        "buttonBackRegister": "WELSH - Go back to the register"
+    },
+
     "termPage": {
         "title": "WELSH - What is the term of the partnership?",
         "hint": "WELSH - This is the length of time for which the partnership will be entered into.",

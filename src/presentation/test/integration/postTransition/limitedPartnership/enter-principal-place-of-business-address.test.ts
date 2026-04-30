@@ -29,6 +29,7 @@ import {
 import CompanyProfileBuilder from "../../../../../presentation/test/builder/CompanyProfileBuilder";
 import PostTransitionPageType from "../../../../../presentation/controller/postTransition/pageType";
 import LimitedPartnershipBuilder from "../../../../../presentation/test/builder/LimitedPartnershipBuilder";
+import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
 
 describe("Enter Principal Place Of Business Address Page", () => {
   const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText, ...enErrorsTranslationText };
@@ -43,9 +44,15 @@ describe("Enter Principal Place Of Business Address Page", () => {
     setLocalesEnabled(false);
     companyProfile = new CompanyProfileBuilder().build();
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
-    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([]);
     appDevDependencies.limitedPartnershipGateway.feedErrors();
     appDevDependencies.limitedPartnershipGateway.setError(false);
+
+    const limitedPartner = new LimitedPartnerBuilder()
+      .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+      .isPerson()
+      .build();
+
+    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
   });
 
   describe("GET Enter Principal Place Of Business Address Page", () => {

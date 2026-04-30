@@ -16,6 +16,7 @@ import {
 } from "../../../../../../presentation/controller/addressLookUp/url/registration";
 
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
+import LimitedPartnerBuilder from "../../../../builder/LimitedPartnerBuilder";
 
 describe("Choose usual residential address of the limited partner page", () => {
   const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
@@ -38,6 +39,13 @@ describe("Choose usual residential address of the limited partner page", () => {
         }
       }
     });
+
+    const limitedPartner = new LimitedPartnerBuilder()
+      .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+      .isPerson()
+      .build();
+
+    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
   });
 
   describe("GET choose usual residential address of the limited partner page", () => {

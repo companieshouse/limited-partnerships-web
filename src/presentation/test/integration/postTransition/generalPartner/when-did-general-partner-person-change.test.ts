@@ -19,26 +19,42 @@ import PostTransitionPageType from "../../../../controller/postTransition/pageTy
 import { ApiErrors } from "domain/entities/UIErrors";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import TransactionBuilder from "../../../builder/TransactionBuilder";
+import CompanyAppointmentBuilder from "../../../builder/CompanyAppointmentBuilder";
+import { OFFICER_ROLE_GENERAL_PARTNER_PERSON } from "../../../../../config/constants";
+import TransactionGeneralPartner from "../../../../../domain/entities/TransactionGeneralPartner";
 
 describe("General partner person change date page", () => {
   const URL = getUrl(WHEN_DID_GENERAL_PARTNER_PERSON_DETAILS_CHANGE_URL);
   const BACK_LINK_URL = getUrl(UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL);
 
-  let generalPartner;
+  let generalPartner: TransactionGeneralPartner;
 
   beforeEach(() => {
     setLocalesEnabled(false);
-    generalPartner = new GeneralPartnerBuilder()
-      .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-      .isPerson()
-      .build();
-
-    appDevDependencies.generalPartnerGateway.feedGeneralPartners([
-      generalPartner,
-    ]);
 
     const companyProfile = new CompanyProfileBuilder().build();
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
+
+    const companyAppointmentPerson = new CompanyAppointmentBuilder()
+      .withOfficerRole(OFFICER_ROLE_GENERAL_PARTNER_PERSON)
+      .withAppointmentId("AP123456P")
+      .withCompanyNumber(companyProfile?.data?.companyNumber ?? "")
+      .isPerson()
+      .build();
+
+    const [surname, forename] = companyAppointmentPerson?.name?.split(", ") ?? [];
+
+    generalPartner = new GeneralPartnerBuilder()
+      .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+      .isPerson()
+      .withKind(PartnerKind.UPDATE_GENERAL_PARTNER_PERSON)
+      .withAppointmentId("AP123456P")
+      .withForename(forename)
+      .withSurname(surname)
+      .withDateOfUpdate("2024-10-10")
+      .build();
+
+    appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
 
     const transaction = new TransactionBuilder().withKind(PartnerKind.UPDATE_GENERAL_PARTNER_PERSON).build();
     appDevDependencies.transactionGateway.feedTransactions([transaction]);
@@ -54,28 +70,26 @@ describe("General partner person change date page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(BACK_LINK_URL);
-      expect(res.text).toContain(`${generalPartner.data?.forename?.toUpperCase()} ${generalPartner.data?.surname?.toUpperCase()}`);
+      expect(res.text).toContain(
+        `${generalPartner.data?.forename?.toUpperCase()} ${generalPartner.data?.surname?.toUpperCase()}`
+      );
 
       if (lang === "cy") {
         expect(res.text).toContain("WELSH - ");
         expect(res.text).toContain(`${cyTranslationText.dateOfUpdate.generalPartner.title}`);
-        expect(countOccurrences(res.text, toEscapedHtml(cyTranslationText.serviceName.updateGeneralPartnerPerson))).toBe(2);
+        expect(
+          countOccurrences(res.text, toEscapedHtml(cyTranslationText.serviceName.updateGeneralPartnerPerson))
+        ).toBe(2);
       } else {
         expect(res.text).not.toContain("WELSH -");
         expect(res.text).toContain(`${enTranslationText.dateOfUpdate.generalPartner.title}`);
-        expect(countOccurrences(res.text, toEscapedHtml(enTranslationText.serviceName.updateGeneralPartnerPerson))).toBe(2);
+        expect(
+          countOccurrences(res.text, toEscapedHtml(enTranslationText.serviceName.updateGeneralPartnerPerson))
+        ).toBe(2);
       }
     });
 
     it("should populate the date fields with the existing date of update if it exists", async () => {
-      const generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isPerson()
-        .withDateOfUpdate("2024-10-10")
-        .build();
-
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
-
       const res = await request(app).get(URL);
 
       expect(res.status).toBe(200);
@@ -141,7 +155,9 @@ describe("General partner person change date page", () => {
       expect(res.text).toContain("01");
       expect(res.text).toContain("2000");
       expect(res.text).toContain(BACK_LINK_URL);
-      expect(res.text).toContain(`${generalPartner.data?.forename?.toUpperCase()} ${generalPartner.data?.surname?.toUpperCase()}`);
+      expect(res.text).toContain(
+        `${generalPartner.data?.forename?.toUpperCase()} ${generalPartner.data?.surname?.toUpperCase()}`
+      );
     });
   });
 });

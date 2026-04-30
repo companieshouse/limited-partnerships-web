@@ -85,6 +85,13 @@ describe("Add Limited Partner Legal Entity Page", () => {
     );
 
     it("should contain a back link to the choice page when limited partners are not present", async () => {
+      const limitedPartner = new LimitedPartnerBuilder()
+        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+        .isPerson()
+        .build();
+
+      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
+
       const res = await request(app).get(getUrl(ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_IDS_URL) + "?lang=en");
 
       const BACK_LINK = getUrl(LIMITED_PARTNER_CHOICE_URL);
