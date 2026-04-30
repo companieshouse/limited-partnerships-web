@@ -5,7 +5,8 @@ import {
   LimitedPartner,
   LimitedPartnership,
   PartnershipType,
-  PersonWithSignificantControl
+  PersonWithSignificantControl,
+  Term
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
@@ -341,6 +342,24 @@ class LimitedPartnershipController extends PartnershipController {
         const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
+        if (pageType === RegistrationPageType.term && !this.isValidTerm(request.body.term)) {
+          const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+            tokens,
+            ids.transactionId,
+            ids.submissionId
+          );
+
+          const uiErrors = new UIErrors().setWebError(
+            "term",
+            response.locals.i18n.errorMessages.term.termRequired
+          );
+
+          return response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(pageRouting, { limitedPartnership }, uiErrors)
+          );
+        }
+
         const result = await this.limitedPartnershipService.sendPageData(
           tokens,
           ids.transactionId,
@@ -382,6 +401,10 @@ class LimitedPartnershipController extends PartnershipController {
         next(error);
       }
     };
+  }
+
+  private isValidTerm(value: string): boolean {
+    return Object.values(Term).includes(value as Term);
   }
 
   private async conditionalNextUrl(tokens: Tokens, ids: Ids, pageRouting: PageRouting, request: Request) {
