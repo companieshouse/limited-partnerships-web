@@ -112,6 +112,41 @@ describe("Confirm PSC Principal Office Address Page", () => {
         expect(res.text).toContain(backLink);
       }
     );
+
+    it.each([
+      [
+        "RLE",
+        URL_RELEVANT_LEGAL_ENTITY,
+        getUrl(ENTER_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL)
+      ],
+      [
+        "ORP",
+        URL_OTHER_REGISTRABLE_PERSON,
+        getUrl(ENTER_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL)
+      ]
+    ])(
+      "should redirect to manual address page if address is incomplete - %s",
+      async (type: string, URL: string, redirectUrl: string) => {
+        appDevDependencies.cacheRepository.feedCache({
+          [appDevDependencies.transactionGateway.transactionId]: {
+            principal_office_address: {
+              postal_code: "ST6 3LJ",
+              premises: "4",
+              address_line_1: "line 1",
+              address_line_2: "line 2",
+              locality: "stoke-on-trent",
+              region: "region",
+              country: null
+            }
+          }
+        });
+
+        const res = await request(app).get(URL);
+
+        expect(res.status).toBe(302);
+        expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+      }
+    );
   });
 
   describe("POST Confirm PSC Principal Office Address Page", () => {

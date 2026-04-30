@@ -30,7 +30,8 @@ import AddressLookUpPageType, {
   LIMITED_PARTNERSHIP_POSTCODE_PAGES,
   PERSON_WITH_SIGNIFICANT_CONTROL_PAGES,
   CHOOSE_PAGES,
-  MANUAL_PAGES
+  MANUAL_PAGES,
+  isConfirmAddressPageType
 } from "./PageType";
 import { PageDefault, PageRouting, pageRoutingDefault } from "../PageRouting";
 import PageType from "../PageType";
@@ -83,6 +84,12 @@ class AddressLookUpController extends AbstractController {
 
         const cacheById = this.cacheService.getDataFromCacheById(request.signedCookies, ids.transactionId);
 
+        const { errors, redirectUrl } = this.validateAddress(cacheById, pageRouting);
+        if (errors?.hasErrors()) {
+          response.redirect(redirectUrl);
+          return;
+        }
+
         const addressList = await this.getAddressList(pageRouting, cacheById, tokens);
 
         const { chsCorrespondenceAddress, chsPrincipalOfficeAddress } = await this.getChsAddressesIfApplicable(
@@ -121,6 +128,22 @@ class AddressLookUpController extends AbstractController {
         next(error);
       }
     };
+  }
+
+  private validateAddress(cacheById: Record<string, any>, pageRouting: PageRouting) {
+    const addressCacheKey = pageRouting.data?.[AddressCacheKeys.addressCacheKey];
+    let errors: UIErrors | undefined;
+    let redirectUrl: string = "";
+
+    if (addressCacheKey && cacheById?.[addressCacheKey] && isConfirmAddressPageType(pageRouting.pageType)) {
+      const address = cacheById[addressCacheKey];
+
+      errors = this.addressService.runValidation(address);
+
+      redirectUrl = pageRouting.currentUrl.replace("confirm", "enter");
+    }
+
+    return { errors, redirectUrl };
   }
 
   private async getChsAddressesIfApplicable(

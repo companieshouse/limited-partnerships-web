@@ -158,4 +158,19 @@ export const isConfirmLimitedPartnerAddressPageType = (pageType: string): boolea
   ].includes(pageType as AddressPageType);
 };
 
+export const isConfirmPersonWithSignificantControlAddressPageType = (pageType: string): boolean => {
+  return [
+    AddressPageType.confirmPersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
+    AddressPageType.confirmPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress
+  ].includes(pageType as AddressPageType);
+};
+
+export const isConfirmAddressPageType = (pageType: string): boolean => {
+  return (
+    isConfirmGeneralPartnerAddressPageType(pageType) ||
+    isConfirmLimitedPartnerAddressPageType(pageType) ||
+    isConfirmPersonWithSignificantControlAddressPageType(pageType)
+  );
+};
+
 export default AddressPageType;
