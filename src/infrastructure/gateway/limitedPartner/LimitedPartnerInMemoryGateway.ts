@@ -79,7 +79,7 @@ class LimitedPartnerInMemoryGateway implements ILimitedPartnerGateway {
       throw new Error(`Not found: ${limitedPartnerId}`);
     }
 
-    return partner ?? this.limitedPartners[0];
+    return partner;
   }
 
   async getLimitedPartners(
