@@ -31,7 +31,8 @@ import AddressLookUpPageType, {
   PERSON_WITH_SIGNIFICANT_CONTROL_PAGES,
   CHOOSE_PAGES,
   MANUAL_PAGES,
-  isConfirmAddressPageType
+  isConfirmAddressPageType,
+  isManualAddressPageType
 } from "./PageType";
 import { PageDefault, PageRouting, pageRoutingDefault } from "../PageRouting";
 import PageType from "../PageType";
@@ -85,7 +86,7 @@ class AddressLookUpController extends AbstractController {
         const cacheById = this.cacheService.getDataFromCacheById(request.signedCookies, ids.transactionId);
 
         const { errors, redirectUrl } = this.validateAddress(cacheById, pageRouting);
-        if (errors?.hasErrors()) {
+        if (errors?.hasErrors() && redirectUrl) {
           response.redirect(redirectUrl);
           return;
         }
@@ -121,7 +122,7 @@ class AddressLookUpController extends AbstractController {
               chsCorrespondenceAddress,
               chsPrincipalOfficeAddress
             },
-            null
+            errors
           )
         );
       } catch (error) {
@@ -132,18 +133,24 @@ class AddressLookUpController extends AbstractController {
 
   private validateAddress(cacheById: Record<string, any>, pageRouting: PageRouting) {
     const addressCacheKey = pageRouting.data?.[AddressCacheKeys.addressCacheKey];
+    const hasAddressInCache = addressCacheKey && cacheById?.[addressCacheKey];
+
     let errors: UIErrors | undefined;
     let redirectUrl: string = "";
 
-    if (addressCacheKey && cacheById?.[addressCacheKey] && isConfirmAddressPageType(pageRouting.pageType)) {
+    if (
+      hasAddressInCache &&
+      (isConfirmAddressPageType(pageRouting.pageType) || isManualAddressPageType(pageRouting.pageType))
+    ) {
       const address = cacheById[addressCacheKey];
-
       errors = this.addressService.runValidation(address);
 
-      redirectUrl = pageRouting.currentUrl.replace("confirm", "enter");
+      if (isConfirmAddressPageType(pageRouting.pageType) && errors?.hasErrors()) {
+        redirectUrl = pageRouting.currentUrl.replace("confirm", "enter");
+      }
     }
 
-    return { errors, redirectUrl };
+    return { errors: errors ?? new UIErrors(), redirectUrl };
   }
 
   private async getChsAddressesIfApplicable(

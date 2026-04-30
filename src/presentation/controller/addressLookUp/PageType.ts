@@ -93,6 +93,10 @@ export const MANUAL_PAGES: Set<PageType | PageDefault> = new Set([
   AddressPageType.enterPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress
 ]);
 
+export const isManualAddressPageType = (pageType: string): boolean => {
+  return MANUAL_PAGES.has(pageType as AddressPageType);
+};
+
 export const CHOOSE_PAGES: Set<PageType | PageDefault> = new Set([
   AddressPageType.chooseRegisteredOfficeAddress,
   AddressPageType.choosePrincipalPlaceOfBusinessAddress,
