@@ -1,21 +1,27 @@
 import request from "supertest";
 
-import enTranslationText from "../../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../../locales/cy/translations.json";
+import enGeneralTranslationText from "../../../../../../../locales/en/translations.json";
+import cyGeneralTranslationText from "../../../../../../../locales/cy/translations.json";
+import enAddressTranslationText from "../../../../../../../locales/en/address.json";
+import cyAddressTranslationText from "../../../../../../../locales/cy/address.json";
+import enErrorsTranslationText from "../../../../../../../locales/en/errors.json";
+import cyErrorsTranslationText from "../../../../../../../locales/cy/errors.json";
 
-import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import app from "../../../app";
-
+import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, toEscapedHtml, testTranslations } from "../../../../utils";
+import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
 import {
   POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   CHOOSE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL
 } from "presentation/controller/addressLookUp/url/registration";
-import GeneralPartnerBuilder, { generalPartnerLegalEntity } from "../../../../builder/GeneralPartnerBuilder";
+
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
-import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
+import GeneralPartnerBuilder, { generalPartnerLegalEntity } from "../../../../builder/GeneralPartnerBuilder";
 
 describe("Postcode general partner's correspondence address page", () => {
+  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText, ...enErrorsTranslationText };
+  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText, ...cyErrorsTranslationText };
   const URL = getUrl(POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL);
   const REDIRECT_URL = getUrl(CHOOSE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL);
 
@@ -132,7 +138,7 @@ describe("Postcode general partner's correspondence address page", () => {
       });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(`The postcode AA1 1AA cannot be found`);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.postcodeLookup.postcodeNotFound);
       expect(res.text).toContain(
         `${generalPartner.data?.forename?.toUpperCase()} ${generalPartner.data?.surname?.toUpperCase()}`
       );

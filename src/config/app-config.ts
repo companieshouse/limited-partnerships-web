@@ -9,9 +9,11 @@ import { CsrfProtectionMiddleware } from "@companieshouse/web-security-node";
 import { getGOVUKFrontendVersion } from "@companieshouse/ch-node-utils";
 
 import { createSummaryListLink } from "../utils/change-link";
-import setDateOfUpdateSection from "../utils/date-of-update";
+import { setCeaseDateSection, setDateEffectiveFromSection, setDateOfBirthSection, setDateOfUpdateSection } from "../utils/date-format-section";
+import { setCountriesDropdown } from "../utils/countries";
+import { setNationalitiesDropdown } from "../utils/nationalities";
 import * as config from "./constants";
-import { authentication, localisationMiddleware } from "../middlewares";
+import { authentication, localisationMiddleware, trailingSlashMiddleware } from "../middlewares";
 import { serviceAvailabilityMiddleware } from "../middlewares/service-availability.middleware";
 import { journeyDetectionMiddleware } from "../middlewares/journey.detection.middleware";
 import { TRANSITION_START_URL } from "../presentation/controller/transition/url";
@@ -59,15 +61,21 @@ export const appConfig = (app: express.Application) => {
   nunjucksEnv.addGlobal("SERVICE_START_URL_REGISTRATION", REGISTRATION_START_URL);
   nunjucksEnv.addGlobal("SERVICE_START_URL_TRANSITION", TRANSITION_START_URL);
   nunjucksEnv.addGlobal("CREATE_CHANGE_LINK", createSummaryListLink);
+  nunjucksEnv.addGlobal("SET_DATE_OF_BIRTH_SECTION", setDateOfBirthSection);
+  nunjucksEnv.addGlobal("SET_DATE_EFFECTIVE_FROM_SECTION", setDateEffectiveFromSection);
   nunjucksEnv.addGlobal("SET_DATE_OF_UPDATE_SECTION", setDateOfUpdateSection);
+  nunjucksEnv.addGlobal("SET_CEASE_DATE_SECTION", setCeaseDateSection);
+  nunjucksEnv.addGlobal("SET_COUNTRIES_DROPDOWN", setCountriesDropdown);
+  nunjucksEnv.addGlobal("SET_NATIONALITIES_DROPDOWN", setNationalitiesDropdown);
 
   app.use(express.json());
-  app.use(express.urlencoded({ extended: false }));
+  app.use(express.urlencoded({ extended: true }));
   app.use(cookieParser(config.COOKIE_SECRET));
 
   app.set("view engine", "njk");
 
   // middlewares
+  app.use(trailingSlashMiddleware);
   app.use(serviceAvailabilityMiddleware);
   app.use(config.allPathsExceptHealthcheck, journeyDetectionMiddleware);
   app.use(config.allPathsExceptHealthcheck, localisationMiddleware);

@@ -1,19 +1,20 @@
 import request from "supertest";
-import app from "../../app";
+import app from "../../../app";
 
-import enTranslationText from "../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../locales/cy/translations.json";
+import enTranslationText from "../../../../../../../locales/en/translations.json";
+import cyTranslationText from "../../../../../../../locales/cy/translations.json";
 
-import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
-import { LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL } from "../../../../controller/postTransition/url";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
-import { formatDate } from "../../../../../utils/date-format";
-import { LimitedPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-import { CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL, CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../controller/addressLookUp/url/postTransition";
-import LimitedPartnerBuilder from "../../../../../presentation/test/builder/LimitedPartnerBuilder";
-import PostTransitionPageType from "../../../../controller/postTransition/pageType";
-import { CONFIRMATION_POST_TRANSITION_URL } from "../../../../controller/global/url";
+import { appDevDependencies } from "../../../../../../config/dev-dependencies";
+import CompanyProfileBuilder from "../../../../builder/CompanyProfileBuilder";
+import { LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/postTransition/url";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
+import { formatDate } from "../../../../../../utils/date-format";
+import { LimitedPartner, PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL, CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../../controller/addressLookUp/url/postTransition";
+import LimitedPartnerBuilder from "../../../../../../presentation/test/builder/LimitedPartnerBuilder";
+import PostTransitionPageType from "../../../../../controller/postTransition/pageType";
+import { CONFIRMATION_POST_TRANSITION_URL } from "../../../../../controller/global/url";
+import TransactionBuilder from "../../../../builder/TransactionBuilder";
 
 describe("Limited Partner Check Your Answers Page for Person", () => {
   const URL = getUrl(LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL);
@@ -26,6 +27,7 @@ describe("Limited Partner Check Your Answers Page for Person", () => {
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
     limitedPartnerPerson = new LimitedPartnerBuilder()
+      .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
       .isPerson()
       .withFormerNames("Joe Dee")
       .withDateEffectiveFrom("2024-10-10")
@@ -33,34 +35,32 @@ describe("Limited Partner Check Your Answers Page for Person", () => {
       .build();
 
     appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerPerson]);
+
+    const transaction = new TransactionBuilder().withKind(PartnerKind.ADD_LIMITED_PARTNER_PERSON).build();
+    appDevDependencies.transactionGateway.feedTransactions([transaction]);
   });
 
-  it("should GET Check Your Answers Page English text with no Date of birth", async () => {
+  it.each([
+    ["en", enTranslationText],
+    ["cy", cyTranslationText]
+  ])("should GET Check Your Answers Page %s text", async (lang, translationText) => {
     setLocalesEnabled(true);
-    const res = await request(app).get(URL + "?lang=en");
+    const res = await request(app).get(URL + `?lang=${lang}`);
 
     expect(res.status).toBe(200);
 
-    expect(res.text).toContain(enTranslationText.checkYourAnswersPage.update.title);
-    expect(res.text).toContain(enTranslationText.print.buttonText);
-    expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
-    expect(res.text).toContain(enTranslationText.nationalities.welsh);
-    testTranslations(res.text, enTranslationText.checkYourAnswersPage.warningMessage);
-    expect(res.text).not.toContain("WELSH -");
-  });
-
-  it("should GET Check Your Answers Page Welsh text", async () => {
-    setLocalesEnabled(true);
-    const res = await request(app).get(URL + "?lang=cy");
-
-    expect(res.status).toBe(200);
-
-    expect(res.text).toContain(cyTranslationText.checkYourAnswersPage.update.title);
-    expect(res.text).toContain(cyTranslationText.print.buttonText);
-    expect(res.text).toContain(cyTranslationText.print.buttonTextNoJs);
-    expect(res.text).toContain(cyTranslationText.nationalities.welsh);
-    testTranslations(res.text, cyTranslationText.checkYourAnswersPage.warningMessage);
-    expect(res.text).toContain("WELSH -");
+    expect(res.text).toContain(translationText.checkYourAnswersPage.update.title);
+    expect(res.text).toContain(translationText.print.buttonText);
+    expect(res.text).toContain(translationText.print.buttonTextNoJs);
+    expect(res.text).toContain(translationText.nationalities.welsh);
+    testTranslations(res.text, translationText.checkYourAnswersPage.warningMessage);
+    if (lang === "cy") {
+      expect(res.text).toContain("WELSH -");
+    } else {
+      expect(res.text).not.toContain("WELSH -");
+    }
+    expect(countOccurrences(res.text, translationText.serviceName.addLimitedPartner)).toBe(2);
+    expect(res.text).toContain(`data-event-id="check-your-answers-add-limited-partner-submit-button"`);
   });
 
   it.each([
@@ -88,6 +88,7 @@ describe("Limited Partner Check Your Answers Page for Person", () => {
 
   it("should load the check your answers page with partners with no dates - EN", async () => {
     limitedPartnerPerson = new LimitedPartnerBuilder()
+      .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
       .isPerson()
       .withFormerNames("Joe Dee")
       .withDateOfBirth(undefined)
@@ -104,6 +105,7 @@ describe("Limited Partner Check Your Answers Page for Person", () => {
 
   it("should load the check your answers page with partners with dates- EN", async () => {
     limitedPartnerPerson = new LimitedPartnerBuilder()
+      .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
       .isPerson()
       .withFormerNames("Joe Dee")
       .withDateOfBirth("1984-11-03")
@@ -117,6 +119,38 @@ describe("Limited Partner Check Your Answers Page for Person", () => {
     expect(res.status).toBe(200);
     checkIfValuesInText(res, limitedPartnerPerson, enTranslationText);
   });
+
+  it.each([
+    { lang: "EN", testUrl: URL, translationText: enTranslationText },
+    { lang: "CY", testUrl: URL + "?lang=cy", translationText: cyTranslationText }
+  ])(
+    "should display capital contribution on check your answers page - $lang",
+    async ({ testUrl, translationText }) => {
+      setLocalesEnabled(true);
+
+      limitedPartnerPerson = new LimitedPartnerBuilder()
+        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+        .isPerson()
+        .withFormerNames("Joe Dee")
+        .withDateOfBirth("1984-11-03")
+        .withDateEffectiveFrom("2024-10-10")
+        .withContributionCurrencyType("GBP")
+        .withContributionCurrencyValue("5000.00")
+        .withContributionSubtypes(["MONEY", "SHARES"])
+        .build();
+
+      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerPerson]);
+
+      const res = await request(app).get(testUrl);
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(translationText.checkYourAnswersPage.partners.limitedPartners.capitalContribution);
+      expect(res.text).toContain("5000.00");
+      expect(res.text).toContain(translationText.currencies.GBP);
+      expect(res.text).toContain(translationText.capitalContribution.money);
+      expect(res.text).toContain(translationText.capitalContribution.shares);
+    }
+  );
 
   describe("POST Check Your Answers Page", () => {
     it("should navigate to next page", async () => {

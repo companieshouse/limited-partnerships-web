@@ -1,5 +1,5 @@
 import request from "supertest";
-import { LimitedPartnership } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
+import { LimitedPartnership, PartnershipKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 import enTranslationText from "../../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../../locales/cy/translations.json";
@@ -7,7 +7,7 @@ import enErrorMessages from "../../../../../../../locales/en/errors.json";
 
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, toEscapedHtml } from "../../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, toEscapedHtml } from "../../../../utils";
 import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
 
 import {
@@ -16,6 +16,7 @@ import {
 } from "../../../../../controller/postTransition/url";
 import PostTransitionPageType from "../../../../../controller/postTransition/pageType";
 import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBuilder";
+import TransactionBuilder from "../../../../builder/TransactionBuilder";
 
 describe("Partnership name change date page", () => {
   const URL = getUrl(WHEN_DID_THE_PARTNERSHIP_NAME_CHANGE_URL);
@@ -28,6 +29,9 @@ describe("Partnership name change date page", () => {
 
     partnership = new LimitedPartnershipBuilder().build();
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([partnership]);
+
+    const transaction = new TransactionBuilder().withKind(PartnershipKind.UPDATE_PARTNERSHIP_NAME).build();
+    appDevDependencies.transactionGateway.feedTransactions([transaction]);
   });
 
   describe("GET partnership name change date page", () => {
@@ -42,6 +46,7 @@ describe("Partnership name change date page", () => {
       expect(res.text).toContain(
         `${partnership.data?.partnership_name?.toUpperCase()} ${partnership.data?.name_ending?.toUpperCase()} (${partnership.data?.partnership_number?.toUpperCase()})`
       );
+      expect(countOccurrences(res.text, enTranslationText.serviceName.updateLimitedPartnershipName)).toBe(2);
     });
 
     it("should load partnership name change date page with welsh text", async () => {
@@ -55,6 +60,20 @@ describe("Partnership name change date page", () => {
       expect(res.text).toContain(
         `${partnership.data?.partnership_name?.toUpperCase()} ${partnership.data?.name_ending?.toUpperCase()} (${partnership.data?.partnership_number?.toUpperCase()})`
       );
+      expect(countOccurrences(res.text, cyTranslationText.serviceName.updateLimitedPartnershipName)).toBe(2);
+    });
+
+    it("should populate the date fields with the existing date of update if it exists", async () => {
+      const limitedPartnership = new LimitedPartnershipBuilder().withDateOfUpdate("2024-10-10").build();
+
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+      const res = await request(app).get(URL);
+
+      expect(res.status).toBe(200);
+      expect(res.text).toMatch(/<input[^>]*name="date_of_update-year"[^>]*value="2024"[^>]*>/);
+      expect(res.text).toMatch(/<input[^>]*name="date_of_update-month"[^>]*value="10"[^>]*>/);
+      expect(res.text).toMatch(/<input[^>]*name="date_of_update-day"[^>]*value="10"[^>]*>/);
     });
   });
 
@@ -88,11 +107,17 @@ describe("Partnership name change date page", () => {
     appDevDependencies.limitedPartnershipGateway.feedErrors(apiErrors);
 
     const res = await request(app).post(URL).send({
-      pageType: PostTransitionPageType.whenDidThePartnershipNameChange
+      pageType: PostTransitionPageType.whenDidThePartnershipNameChange,
+      "date_of_update-day": "10",
+      "date_of_update-month": "01",
+      "date_of_update-year": "2000"
     });
 
     expect(res.status).toBe(200);
     expect(res.text).not.toContain(originalErrorMessage);
     expect(res.text).toContain(expectedErrorMessage);
+    expect(res.text).toContain("10");
+    expect(res.text).toContain("01");
+    expect(res.text).toContain("2000");
   });
 });

@@ -1,19 +1,24 @@
 import request from "supertest";
 import { Jurisdiction } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
-import enTranslationText from "../../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../../locales/cy/translations.json";
+import enGeneralTranslationText from "../../../../../../../locales/en/translations.json";
+import cyGeneralTranslationText from "../../../../../../../locales/cy/translations.json";
+import enAddressTranslationText from "../../../../../../../locales/en/address.json";
+import cyAddressTranslationText from "../../../../../../../locales/cy/address.json";
+import enErrorsTranslationText from "../../../../../../../locales/en/errors.json";
+import cyErrorsTranslationText from "../../../../../../../locales/cy/errors.json";
 
-import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import app from "../../../app";
-
+import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, toEscapedHtml, testTranslations } from "../../../../utils";
+import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
+
 import {
   POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   CHOOSE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
 } from "presentation/controller/addressLookUp/url/registration";
+
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
-import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
 import GeneralPartnerBuilder, {
   generalPartnerPerson,
   generalPartnerLegalEntity
@@ -21,6 +26,8 @@ import GeneralPartnerBuilder, {
 import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBuilder";
 
 describe("Postcode general partner's principal office address page", () => {
+  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText, ...enErrorsTranslationText };
+  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText, ...cyErrorsTranslationText };
   const URL = getUrl(POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
   const REDIRECT_URL = getUrl(CHOOSE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
 
@@ -55,7 +62,8 @@ describe("Postcode general partner's principal office address page", () => {
         "usualResidentialAddress",
         "correspondenceAddress",
         "errorMessages",
-        "limitedPartner"
+        "limitedPartner",
+        "personWithSignificantControl"
       ]);
       expect(res.text).not.toContain("WELSH -");
       expect(res.text).not.toContain(generalPartnerPerson.forename.toUpperCase());
@@ -87,7 +95,8 @@ describe("Postcode general partner's principal office address page", () => {
         "usualResidentialAddress",
         "correspondenceAddress",
         "errorMessages",
-        "limitedPartner"
+        "limitedPartner",
+        "personWithSignificantControl"
       ]);
       expect(res.text).toContain("WELSH -");
       expect(res.text).not.toContain(generalPartnerPerson.forename.toUpperCase());
@@ -158,7 +167,7 @@ describe("Postcode general partner's principal office address page", () => {
       });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(`The postcode AA1 1AA cannot be found`);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.postcodeLookup.postcodeNotFound);
       expect(res.text).toContain(generalPartner.data?.legal_entity_name?.toUpperCase());
 
       expect(appDevDependencies.cacheRepository.cache).toEqual(null);

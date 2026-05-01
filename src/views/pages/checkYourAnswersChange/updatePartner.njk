@@ -1,0 +1,229 @@
+{% set notUpdated = i18n.checkYourAnswersPage.update.notUpdated %}
+{% set item = props.data.partner %}
+{% set updateFieldsMap = props.data.partnerUpdatedFieldsMap %}
+
+{% if item.data.kind == "limited-partnership#update-general-partner-person" or item.data.kind == "limited-partnership#update-limited-partner-person" %}
+  {% if updateFieldsMap.forename or updateFieldsMap.surname %}
+    {% set name = item.data.forename + " " + item.data.surname  %}
+  {% else %}
+    {% set name = notUpdated %}
+  {% endif %}
+
+  {% set nationalities = macros.formatNationality(item.data.nationality1, i18n) if updateFieldsMap.nationality1 else notUpdated %}
+    {% if item.data.nationality2 %}
+      {% set nationalities = macros.formatNationality(item.data.nationality1, i18n) + ", " + macros.formatNationality(item.data.nationality2, i18n) if updateFieldsMap.nationality2 or updateFieldsMap.nationality1 else notUpdated %}
+    {% endif %}
+
+  {{ govukSummaryList({
+    classes: "govuk-!-margin-bottom-7",
+    rows: [
+      {
+        key: {
+          text: i18n.checkYourAnswersPage.partners.person.name
+        },
+        value: {
+          text: name
+        },
+        actions: {
+          items: [
+            CREATE_CHANGE_LINK(
+              i18n.checkYourAnswersPage.change,
+              ((props.currentUrl + "#forename") | replace(props.pageType, props.data.personChangeLink)),
+              term,
+              "change-name-button"
+            )
+          ]
+        }
+      },
+      {
+        key: {
+          text: i18n.checkYourAnswersPage.partners.person.nationality
+        },
+        value: {
+          text: nationalities
+        },
+        actions: {
+          items: [
+            CREATE_CHANGE_LINK(
+              i18n.checkYourAnswersPage.change,
+              ((props.currentUrl + "#nationality1") | replace(props.pageType, props.data.personChangeLink)),
+              term,
+              "change-nationality-button"
+            )
+          ]
+        }
+      },
+      {
+        key: {
+          text: i18n.checkYourAnswersPage.partners.person.usualResidentialAddress
+        },
+        value: {
+          text: macros.formatAddress(item.data.usual_residential_address, true, i18n) if item.data.update_usual_residential_address_required else notUpdated
+        },
+        actions: {
+          items: [
+            CREATE_CHANGE_LINK(
+              i18n.checkYourAnswersPage.change,
+              (props.currentUrl | replace(props.pageType, props.data.uraChangeLink)),
+              term,
+              "change-usual-residential-address-button"
+            )
+          ]
+        }
+      },
+      {
+        key: {
+          text: i18n.checkYourAnswersPage.partners.person.correspondenceAddress
+        },
+        value: {
+          text: macros.formatAddress(item.data.service_address, true, i18n) if item.data.update_service_address_required else notUpdated
+        },
+        actions: {
+          items: [
+            CREATE_CHANGE_LINK(
+              i18n.checkYourAnswersPage.change,
+              (props.currentUrl | replace(props.pageType, props.data.correspondenceAddressChangeLink)),
+              term,
+              "change-correspondence-address-button"
+            )
+          ]
+        }
+      } if item.data.kind == "limited-partnership#update-general-partner-person",
+      SET_DATE_OF_UPDATE_SECTION(props, i18n, props.data.dateChangeLink)
+    ]
+  }) }}
+{% elif item.data.kind == "limited-partnership#update-general-partner-legal-entity" or item.data.kind == "limited-partnership#update-limited-partner-legal-entity" %}
+  {% set country = i18n.countries[macros.makeCamelCase(item.data.legal_entity_registration_location)] if updateFieldsMap.legal_entity_registration_location else notUpdated %}
+  {{ govukSummaryList({
+    classes: "govuk-!-margin-bottom-7",
+      rows: [
+        {
+          key: {
+            text: i18n.checkYourAnswersPage.partners.legalEntity.name
+          },
+          value: {
+            text: item.data.legal_entity_name if updateFieldsMap.legal_entity_name else notUpdated
+          },
+          actions: {
+            items: [
+              CREATE_CHANGE_LINK(
+                i18n.checkYourAnswersPage.change,
+                ((props.currentUrl + "#legal_entity_name") | replace(props.pageType, props.data.legalEntityChangeLink)),
+                term,
+                "change-name-button"
+              )
+            ]
+          }
+        },
+        {
+          key: {
+            text: i18n.checkYourAnswersPage.partners.legalEntity.legalForm
+          },
+          value: {
+            text: item.data.legal_form if updateFieldsMap.legal_form else notUpdated
+          },
+          actions: {
+            items: [
+              CREATE_CHANGE_LINK(
+                i18n.checkYourAnswersPage.change,
+                ((props.currentUrl + "#legal_form") | replace(props.pageType, props.data.legalEntityChangeLink)),
+                term,
+                "change-legal-form-button"
+              )
+            ]
+          }
+        },
+        {
+          key: {
+            text: i18n.checkYourAnswersPage.partners.legalEntity.governingLaw
+          },
+          value: {
+            text: item.data.governing_law if updateFieldsMap.governing_law else notUpdated
+          },
+          actions: {
+            items: [
+              CREATE_CHANGE_LINK(
+                i18n.checkYourAnswersPage.change,
+                ((props.currentUrl + "#governing_law") | replace(props.pageType, props.data.legalEntityChangeLink)),
+                term,
+                "change-governing-law-button"
+              )
+            ]
+          }
+        },
+        {
+          key: {
+            text: i18n.checkYourAnswersPage.partners.legalEntity.register
+          },
+          value: {
+            text: item.data.legal_entity_register_name if updateFieldsMap.legal_entity_register_name else notUpdated
+          },
+          actions: {
+            items: [
+              CREATE_CHANGE_LINK(
+                i18n.checkYourAnswersPage.change,
+                ((props.currentUrl + "#legal_entity_register_name") | replace(props.pageType, props.data.legalEntityChangeLink)),
+                term,
+                "change-legal-entity-register-name-button"
+              )
+            ]
+          }
+        },
+        {
+          key: {
+            text: i18n.checkYourAnswersPage.partners.legalEntity.countryRegisteredIn
+          },
+          value: {
+            text: country
+          },
+          actions: {
+            items: [
+              CREATE_CHANGE_LINK(
+                i18n.checkYourAnswersPage.change,
+                ((props.currentUrl + "#legal_entity_registration_location") | replace(props.pageType, props.data.legalEntityChangeLink)),
+                term,
+                "change-legal-entity-registration-location-button"
+              )
+            ]
+          }
+        },
+        {
+          key: {
+            text: i18n.checkYourAnswersPage.partners.legalEntity.registrationNumber
+          },
+          value: {
+            text: item.data.registered_company_number if updateFieldsMap.registered_company_number else notUpdated
+          },
+          actions: {
+            items: [
+              CREATE_CHANGE_LINK(
+                i18n.checkYourAnswersPage.change,
+                ((props.currentUrl + "#registered_company_number") | replace(props.pageType, props.data.legalEntityChangeLink)),
+                term,
+                "change-registered-company-number-button"
+              )
+            ]
+          }
+        },
+        {
+          key: {
+            text: i18n.checkYourAnswersPage.partners.legalEntity.principalOfficeAddress
+          },
+          value: {
+            text: macros.formatAddress(item.data.principal_office_address, true, i18n) if item.data.update_principal_office_address_required else notUpdated
+          },
+          actions: {
+            items: [
+              CREATE_CHANGE_LINK(
+                i18n.checkYourAnswersPage.change,
+                (props.currentUrl | replace(props.pageType, props.data.principalOfficeAddressChangeLink)),
+                term,
+                "change-principal-office-address-button"
+              )
+            ]
+          }
+        },
+        SET_DATE_OF_UPDATE_SECTION(props, i18n, props.data.dateChangeLink)
+      ]
+    }) }}
+ {% endif %}

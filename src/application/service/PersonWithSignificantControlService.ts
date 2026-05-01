@@ -1,0 +1,169 @@
+import { PersonWithSignificantControl } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
+
+import { Tokens } from "../../domain/types";
+import { logger } from "../../utils";
+import { extractAPIErrors, incompletePersonWithSignificantControlErrorList } from "./utils";
+import UIErrors from "../../domain/entities/UIErrors";
+import IPersonWithSignificantControlGateway from "../../domain/IPersonWithSignificantControlGateway";
+import PersonWithSignificantControlValidator from "../../domain/validator/PersonWithSignificantControl";
+
+class PersonWithSignificantControlService {
+  i18n: any;
+
+  constructor(
+    private readonly personWithSignificantControlGateway: IPersonWithSignificantControlGateway,
+    private readonly personWithSignificantControlValidator: PersonWithSignificantControlValidator
+  ) {}
+
+  setI18n(i18n: any) {
+    this.i18n = i18n;
+  }
+
+  runValidation(data: Record<string, any>): UIErrors {
+    return this.personWithSignificantControlValidator.set(data, this.i18n).runValidation();
+  }
+
+  async createPersonWithSignificantControl(
+    opt: { access_token: string; refresh_token: string },
+    transactionId: string,
+    data: Record<string, any>
+  ): Promise<{
+    personWithSignificantControlId: string;
+    errors?: any;
+  }> {
+    const validationErrors = this.runValidation(data);
+    if (validationErrors.hasErrors()) {
+      return { personWithSignificantControlId: "", errors: validationErrors };
+    }
+
+    try {
+      const personWithSignificantControlId =
+        await this.personWithSignificantControlGateway.createPersonWithSignificantControl(opt, transactionId, data);
+
+      return { personWithSignificantControlId };
+    } catch (errors: any) {
+      const { apiErrors, isValidationErrors } = extractAPIErrors(errors);
+
+      logger.error(`Error creating person with significant control: ${JSON.stringify(apiErrors)}`);
+
+      if (!isValidationErrors) {
+        throw errors;
+      }
+
+      return {
+        personWithSignificantControlId: "",
+        errors
+      };
+    }
+  }
+
+  async getPersonWithSignificantControl(
+    opt: Tokens,
+    transactionId: string,
+    personWithSignificantControlId: string
+  ): Promise<PersonWithSignificantControl> {
+    try {
+      return await this.personWithSignificantControlGateway.getPersonWithSignificantControl(
+        opt,
+        transactionId,
+        personWithSignificantControlId
+      );
+    } catch (error: any) {
+      logger.error(`Error getting person with significant control ${JSON.stringify(error)}`);
+
+      throw error;
+    }
+  }
+
+  async getPersonsWithSignificantControl(
+    opt: Tokens,
+    transactionId: string,
+    checkCompletedField = true
+  ): Promise<{ personsWithSignificantControl: PersonWithSignificantControl[]; errors?: UIErrors }> {
+    try {
+      const personsWithSignificantControl = await this.personWithSignificantControlGateway.getPersonsWithSignificantControl(opt, transactionId);
+
+      let errorList = {};
+      if (checkCompletedField) {
+        errorList = incompletePersonWithSignificantControlErrorList(personsWithSignificantControl, this.i18n);
+      }
+
+      const uiErrors = new UIErrors();
+      uiErrors.formatValidationErrorToUiErrors({ errors: errorList });
+
+      return {
+        personsWithSignificantControl,
+        errors: uiErrors
+      };
+    } catch (error: any) {
+      logger.error(`Error getting Persons With Significant Control ${JSON.stringify(error)}`);
+
+      throw error;
+    }
+  }
+
+  async sendPageData(
+    opt: Tokens,
+    transactionId: string,
+    personWithSignificantControlId: string,
+    data: Record<string, any>
+  ): Promise<void | {
+    errors?: UIErrors;
+  }> {
+    const validationErrors = this.runValidation(data);
+    if (validationErrors.hasErrors()) {
+      return { errors: validationErrors };
+    }
+
+    try {
+      await this.personWithSignificantControlGateway.sendPageData(
+        opt,
+        transactionId,
+        personWithSignificantControlId,
+        data
+      );
+    } catch (errors: any) {
+      const { apiErrors, isValidationErrors } = extractAPIErrors(errors);
+
+      logger.error(`Error sending person with significant control data: ${JSON.stringify(apiErrors)}`);
+
+      if (!isValidationErrors) {
+        throw errors;
+      }
+
+      return {
+        errors
+      };
+    }
+  }
+
+  async deletePersonWithSignificantControl(
+    opt: Tokens,
+    transactionId: string,
+    personWithSignificantControlId: string
+  ) {
+    try {
+      await this.personWithSignificantControlGateway.deletePersonWithSignificantControl(
+        opt,
+        transactionId,
+        personWithSignificantControlId
+      );
+    } catch (errors: any) {
+      const { apiErrors, isValidationErrors } = extractAPIErrors(errors);
+
+      logger.error(
+        `Error removing person with significant control ${personWithSignificantControlId}: ${JSON.stringify(apiErrors)}`
+      );
+
+      if (!isValidationErrors) {
+        throw errors;
+      }
+
+      return {
+        errors
+      };
+    }
+  }
+}
+
+export default PersonWithSignificantControlService;

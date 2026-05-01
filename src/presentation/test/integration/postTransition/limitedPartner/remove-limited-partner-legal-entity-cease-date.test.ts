@@ -5,7 +5,7 @@ import cyTranslationText from "../../../../../../locales/cy/translations.json";
 
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled } from "../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled } from "../../../utils";
 
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 import {
@@ -17,6 +17,7 @@ import CompanyAppointmentBuilder from "../../../builder/CompanyAppointmentBuilde
 import PostTransitionPageType from "../../../../controller/postTransition/pageType";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 import LimitedPartnerBuilder from "../../../../../presentation/test/builder/LimitedPartnerBuilder";
+import { OFFICER_ROLE_LIMITED_PARTNER_LEGAL_ENTITY } from "../../../../../config";
 
 describe("Limited Partner LegalEntity cease date page", () => {
   const URL = getUrl(WHEN_DID_THE_LIMITED_PARTNER_LEGAL_ENTITY_CEASE_URL);
@@ -36,7 +37,8 @@ describe("Limited Partner LegalEntity cease date page", () => {
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
     companyAppointment = new CompanyAppointmentBuilder()
-      .withOfficerRole("limited-partner-in-a-limited-partnership")
+      .withOfficerRole(OFFICER_ROLE_LIMITED_PARTNER_LEGAL_ENTITY)
+      .isLegalEntity()
       .build();
     appDevDependencies.companyGateway.feedCompanyAppointments([companyAppointment]);
 
@@ -52,7 +54,8 @@ describe("Limited Partner LegalEntity cease date page", () => {
       expect(res.text).not.toContain("WELSH -");
 
       expect(res.text).toContain(companyProfile.data.companyName.toUpperCase());
-      expect(res.text).toContain(companyAppointment.name?.split(",")[0] ?? "");
+      expect(res.text).toContain(companyAppointment.name ?? "");
+      expect(countOccurrences(res.text, enTranslationText.serviceName.removeLimitedPartnerEntity)).toBe(2);
     });
 
     it("should load limited partner legal entity cease date page with welsh text", async () => {
@@ -61,6 +64,7 @@ describe("Limited Partner LegalEntity cease date page", () => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(`${cyTranslationText.ceaseDate.removeLimitedPartner.title}`);
       expect(res.text).toContain("WELSH -");
+      expect(countOccurrences(res.text, cyTranslationText.serviceName.removeLimitedPartnerEntity)).toBe(2);
     });
   });
 
@@ -95,8 +99,9 @@ describe("Limited Partner LegalEntity cease date page", () => {
     ])("should replay entered data when invalid cease date is entered and a validation error occurs %s", async (description: string, isWithIds: boolean, url: string) => {
       const errorMessage = "The date is not valid";
 
+      let limitedPartner;
       if (isWithIds) {
-        const limitedPartner = new LimitedPartnerBuilder()
+        limitedPartner = new LimitedPartnerBuilder()
           .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
           .isLegalEntity()
           .build();
@@ -117,9 +122,9 @@ describe("Limited Partner LegalEntity cease date page", () => {
       expect(res.text).toContain("MONTH_01");
       expect(res.text).toContain("YEAR_2025");
       if (isWithIds) {
-        expect(res.text.match(/My Company ltd - LP/g)).toHaveLength(2);
+        expect(res.text).toContain(limitedPartner.data?.legal_entity_name);
       } else {
-        expect(res.text).toContain("Test Partner Appointment");
+        expect(res.text).toContain(companyAppointment.name);
       }
       expect(res.text).toContain(errorMessage);
 

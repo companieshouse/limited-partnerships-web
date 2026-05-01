@@ -1,23 +1,40 @@
 import request from "supertest";
-import enTranslationText from "../../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../../locales/cy/translations.json";
+
+import enGeneralTranslationText from "../../../../../../../locales/en/translations.json";
+import cyGeneralTranslationText from "../../../../../../../locales/cy/translations.json";
+import enAddressTranslationText from "../../../../../../../locales/en/address.json";
+import cyAddressTranslationText from "../../../../../../../locales/cy/address.json";
+
 import app from "../../../app";
+import { appDevDependencies } from "../../../../../../config/dev-dependencies";
+import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
+import * as config from "config";
+
 import {
   CHOOSE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
 } from "../../../../../controller/addressLookUp/url/transition";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
-import { appDevDependencies } from "../../../../../../config/dev-dependencies";
-import * as config from "config";
+
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
+import LimitedPartnerBuilder from "../../../../builder/LimitedPartnerBuilder";
 
 describe("Choose principal office address of the limited partner page", () => {
+  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
+  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText };
   const URL = getUrl(CHOOSE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
   const REDIRECT_URL = getUrl(CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
 
   beforeEach(() => {
     setLocalesEnabled(false);
     appDevDependencies.addressLookUpGateway.setError(false);
+
+    const limitedPartner = new LimitedPartnerBuilder()
+      .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+      .isPerson()
+      .build();
+
+    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
+
     appDevDependencies.cacheRepository.feedCache({
       [appDevDependencies.transactionGateway.transactionId]: {
         principal_office_address: {

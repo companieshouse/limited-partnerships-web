@@ -68,7 +68,9 @@ describe("Check Your Answers Page", () => {
         "dateEffectiveFrom",
         "payment",
         "update",
-        "ceaseDate"
+        "ceaseDate",
+        "warningMessageUpdate",
+        "psc"
       ]);
       expect(res.text).toContain(enTranslationText.print.buttonText);
       expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
@@ -94,7 +96,9 @@ describe("Check Your Answers Page", () => {
         "dateEffectiveFrom",
         "payment",
         "update",
-        "ceaseDate"
+        "ceaseDate",
+        "warningMessageUpdate",
+        "psc"
       ]);
       expect(res.text).toContain(cyTranslationText.print.buttonText);
       expect(res.text).toContain(cyTranslationText.print.buttonTextNoJs);
@@ -156,7 +160,8 @@ describe("Check Your Answers Page", () => {
       testTranslations(res.text, enTranslationText.checkYourAnswersPage.partners, [
         "capitalContribution",
         "dateEffectiveFrom",
-        "ceaseDate"
+        "ceaseDate",
+        "warningMessageUpdate"
       ]);
 
       checkIfValuesInText(res, generalPartnerPerson, enTranslationText);
@@ -183,7 +188,8 @@ describe("Check Your Answers Page", () => {
       testTranslations(res.text, cyTranslationText.checkYourAnswersPage.partners, [
         "capitalContribution",
         "dateEffectiveFrom",
-        "ceaseDate"
+        "ceaseDate",
+        "warningMessageUpdate"
       ]);
 
       checkIfValuesInText(res, generalPartnerPerson, cyTranslationText);

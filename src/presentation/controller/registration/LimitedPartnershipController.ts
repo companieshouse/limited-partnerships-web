@@ -4,7 +4,9 @@ import {
   GeneralPartner,
   LimitedPartner,
   LimitedPartnership,
-  PartnershipType
+  PartnershipType,
+  PersonWithSignificantControl,
+  Term
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
@@ -20,6 +22,7 @@ import {
   JOURNEY_TYPE_PARAM
 } from "../../../config/constants";
 import CacheService from "../../../application/service/CacheService";
+import UIErrors from "../../../domain/entities/UIErrors";
 import { PageRouting } from "../PageRouting";
 import { getJourneyTypes } from "../../../utils";
 import {
@@ -27,14 +30,15 @@ import {
   GENERAL_PARTNERS_URL,
   NAME_WITH_IDS_URL,
   REVIEW_GENERAL_PARTNERS_URL,
-  PARTNERSHIP_TYPE_WITH_IDS_URL
+  PARTNERSHIP_TYPE_WITH_IDS_URL,
+  WILL_LIMITED_PARTNERSHIP_HAVE_PSC_URL
 } from "./url";
 import { CONFIRM_REGISTERED_OFFICE_ADDRESS_URL } from "../addressLookUp/url/registration";
 import { PAYMENT_RESPONSE_URL } from "../global/url";
-import { formatDate } from "../../../utils/date-format";
 
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
+import PersonWithSignificantControlService from "../../../application/service/PersonWithSignificantControlService";
 import PartnershipController from "../common/PartnershipController";
 
 class LimitedPartnershipController extends PartnershipController {
@@ -42,6 +46,7 @@ class LimitedPartnershipController extends PartnershipController {
     private readonly limitedPartnershipService: LimitedPartnershipService,
     private readonly generalPartnerService: GeneralPartnerService,
     private readonly limitedPartnerService: LimitedPartnerService,
+    private readonly personWithSignificantControlService: PersonWithSignificantControlService,
     private readonly cacheService: CacheService,
     private readonly paymentService: PaymentService
   ) {
@@ -57,9 +62,7 @@ class LimitedPartnershipController extends PartnershipController {
         const { tokens, pageType, ids } = super.extract(request);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
-        this.conditionalPreviousUrl(ids, pageRouting, request);
-
-        let limitedPartnership = {};
+        let limitedPartnership: LimitedPartnership = {};
 
         if (ids.transactionId && ids.submissionId) {
           limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
@@ -69,18 +72,30 @@ class LimitedPartnershipController extends PartnershipController {
           );
         }
 
-        const { generalPartners, limitedPartners } = await this.getPartners(
+        this.conditionalPreviousUrl(ids, pageRouting, request, limitedPartnership);
+
+        const { generalPartners, limitedPartners, personsWithSignificantControl } = await this.getCheckYourAnswersResources(
           pageRouting,
           tokens,
-          ids.transactionId,
-          response
+          ids.transactionId
         );
 
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
 
         response.render(
           super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { limitedPartnership, generalPartners, limitedPartners, cache, ids }, null)
+          super.makeProps(
+            pageRouting,
+            {
+              limitedPartnership,
+              generalPartners,
+              limitedPartners,
+              personsWithSignificantControl,
+              cache,
+              ids
+            },
+            null
+          )
         );
       } catch (error) {
         next(error);
@@ -88,40 +103,61 @@ class LimitedPartnershipController extends PartnershipController {
     };
   }
 
-  private async getPartners(
+  private async getCheckYourAnswersResources(
     pageRouting: PageRouting,
     tokens: Tokens,
-    transactionId: string,
-    response: Response
-  ): Promise<{ generalPartners: GeneralPartner[]; limitedPartners: LimitedPartner[] }> {
+    transactionId: string
+  ): Promise<{
+    generalPartners: GeneralPartner[];
+    limitedPartners: LimitedPartner[];
+    personsWithSignificantControl: PersonWithSignificantControl[];
+  }> {
     if (pageRouting.pageType === RegistrationPageType.checkYourAnswers) {
-      const gpResult = await this.generalPartnerService.getGeneralPartners(tokens, transactionId);
-      const generalPartners = gpResult.generalPartners.map((partner) => ({
-        ...partner,
-        data: {
-          ...partner.data,
-          date_of_birth: partner.data?.date_of_birth
-            ? formatDate(partner.data?.date_of_birth, response.locals.i18n)
-            : undefined
-        }
-      }));
+      const { generalPartners } = await this.generalPartnerService.getGeneralPartners(tokens, transactionId);
+      const { limitedPartners } = await this.limitedPartnerService.getLimitedPartners(tokens, transactionId);
+      const { personsWithSignificantControl } =
+        await this.personWithSignificantControlService.getPersonsWithSignificantControl(tokens, transactionId);
 
-      const lpResult = await this.limitedPartnerService.getLimitedPartners(tokens, transactionId);
-      const limitedPartners = lpResult.limitedPartners.map((partner) => ({
-        ...partner,
-        data: {
-          ...partner.data,
-          date_of_birth: partner.data?.date_of_birth
-            ? formatDate(partner.data?.date_of_birth, response.locals.i18n)
-            : undefined
-        }
-      }));
-      return { generalPartners, limitedPartners };
+      return { generalPartners, limitedPartners, personsWithSignificantControl };
     }
-    return { generalPartners: [], limitedPartners: [] };
+    return { generalPartners: [], limitedPartners: [], personsWithSignificantControl: [] };
   }
 
-  private conditionalPreviousUrl(ids: Ids, pageRouting: PageRouting, request: Request) {
+  private async renderCheckYourAnswersWithLawfulPurposeError(request: Request, response: Response) {
+    const { tokens, ids } = super.extract(request);
+    const pageRouting = super.getRouting(registrationsRouting, RegistrationPageType.checkYourAnswers, request);
+
+    const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+      tokens,
+      ids.transactionId,
+      ids.submissionId
+    );
+
+    this.conditionalPreviousUrl(ids, pageRouting, request, limitedPartnership);
+
+    const { generalPartners, limitedPartners, personsWithSignificantControl } = await this.getCheckYourAnswersResources(
+      pageRouting,
+      tokens,
+      ids.transactionId
+    );
+
+    const uiErrors = new UIErrors();
+    uiErrors.setWebError(
+      "lawful_purpose_statement_checked",
+      response.locals.i18n.errorMessages.checkYourAnswers.lawfulPurposeRequired
+    );
+
+    response.render(
+      super.templateName(pageRouting.currentUrl),
+      super.makeProps(
+        pageRouting,
+        { limitedPartnership, generalPartners, limitedPartners, personsWithSignificantControl, ids },
+        uiErrors
+      )
+    );
+  }
+
+  private conditionalPreviousUrl(ids: Ids, pageRouting: PageRouting, request: Request, limitedPartnership?: LimitedPartnership) {
     const previousPageType = super.pageType(request.get("Referrer") ?? "");
 
     if (previousPageType === RegistrationPageType.checkYourAnswers) {
@@ -130,6 +166,15 @@ class LimitedPartnershipController extends PartnershipController {
       // change back link if we have ids in url
       if (ids.transactionId && ids.submissionId) {
         pageRouting.previousUrl = super.insertIdsInUrl(PARTNERSHIP_TYPE_WITH_IDS_URL, ids, request.url);
+      }
+    }
+
+    // Separate check: set the CYA page's own back link based on partnership type
+    if (pageRouting.pageType === RegistrationPageType.checkYourAnswers && limitedPartnership) {
+      const partnershipType = limitedPartnership.data?.partnership_type;
+
+      if (partnershipType === PartnershipType.SLP || partnershipType === PartnershipType.SPFLP) {
+        pageRouting.previousUrl = super.insertIdsInUrl(WILL_LIMITED_PARTNERSHIP_HAVE_PSC_URL, ids, request.url);
       }
     }
   }
@@ -180,6 +225,10 @@ class LimitedPartnershipController extends PartnershipController {
       try {
         const { tokens, ids } = super.extract(request);
         const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
+
+        if (request.body.lawful_purpose_statement_checked !== "true") {
+          return await this.renderCheckYourAnswersWithLawfulPurposeError(request, response);
+        }
 
         await this.limitedPartnershipService.sendPageData(
           tokens,
@@ -258,6 +307,18 @@ class LimitedPartnershipController extends PartnershipController {
         const pageType = escape(request.body.pageType);
         const parameter = escape(request.body.parameter);
 
+        if (type === RegistrationPageType.partnershipType && !this.isValidPartnershipType(parameter)) {
+          const uiErrors = new UIErrors().setWebError(
+            "parameter",
+            response.locals.i18n.errorMessages.partnershipType.typeRequired
+          );
+
+          return response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(pageRouting, {}, uiErrors)
+          );
+        }
+
         const cache = this.cacheService.addDataToCache(request.signedCookies, {
           [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${pageType}`]: parameter
         });
@@ -270,12 +331,34 @@ class LimitedPartnershipController extends PartnershipController {
     };
   }
 
+  private isValidPartnershipType(value: string): boolean {
+    return Object.values(PartnershipType).includes(value as PartnershipType);
+  }
+
   sendPageData() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         const { tokens, ids } = super.extract(request);
         const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
+
+        if (pageType === RegistrationPageType.term && !this.isValidTerm(request.body.term)) {
+          const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+            tokens,
+            ids.transactionId,
+            ids.submissionId
+          );
+
+          const uiErrors = new UIErrors().setWebError(
+            "term",
+            response.locals.i18n.errorMessages.term.termRequired
+          );
+
+          return response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(pageRouting, { limitedPartnership }, uiErrors)
+          );
+        }
 
         const result = await this.limitedPartnershipService.sendPageData(
           tokens,
@@ -318,6 +401,10 @@ class LimitedPartnershipController extends PartnershipController {
         next(error);
       }
     };
+  }
+
+  private isValidTerm(value: string): boolean {
+    return Object.values(Term).includes(value as Term);
   }
 
   private async conditionalNextUrl(tokens: Tokens, ids: Ids, pageRouting: PageRouting, request: Request) {

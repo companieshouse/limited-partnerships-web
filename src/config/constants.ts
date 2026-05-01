@@ -31,12 +31,16 @@ export const PIWIK_URL = getEnvironmentValue("PIWIK_URL");
 export const PORT = getEnvironmentValue("PORT");
 export const POSTCODE_ADDRESSES_LOOKUP_URL = getEnvironmentValue("POSTCODE_ADDRESSES_LOOKUP_URL");
 export const isLocalesEnabled = () => getEnvironmentValueAsBoolean("LOCALES_ENABLED");
+export const SHOW_SERVICE_UNAVAILABLE_PAGE = getEnvironmentValueAsBoolean("SHOW_SERVICE_UNAVAILABLE_PAGE");
+export const COST_LP8D_REDESIGNATE_TO_PFLP = getEnvironmentValue("COST_LP8D_REDESIGNATE_TO_PFLP");
 export const REFRESH_TOKEN_GRANT_TYPE = "refresh_token";
 
+// Service Names
 export const SERVICE_NAME_REGISTRATION = "Register a limited partnership";
 export const SERVICE_NAME_TRANSITION = "Provide new required information about a limited partnership";
 export const SERVICE_NAME_POST_TRANSITION = "File for a limited partnership";
-export const SHOW_SERVICE_UNAVAILABLE_PAGE = getEnvironmentValueAsBoolean("SHOW_SERVICE_UNAVAILABLE_PAGE");
+
+// Application Cache
 export const APPLICATION_CACHE_KEY = "limited_partnership";
 export const APPLICATION_CACHE_KEY_PREFIX_REGISTRATION = "registration_";
 export const APPLICATION_CACHE_KEY_PREFIX_TRANSITION = "transition_";
@@ -52,7 +56,20 @@ export const TRANSACTION_DESCRIPTION_REMOVE_GENERAL_PARTNER_PERSON = "Remove a g
 export const TRANSACTION_DESCRIPTION_REMOVE_GENERAL_PARTNER_LEGAL_ENTITY = "Remove a general partner (legal entity)";
 export const TRANSACTION_DESCRIPTION_REMOVE_LIMITED_PARTNER_PERSON = "Remove a limited partner (person)";
 export const TRANSACTION_DESCRIPTION_REMOVE_LIMITED_PARTNER_LEGAL_ENTITY = "Remove a limited partner (legal entity)";
-export const TRANSACTION_DESCRIPTION_DESIGNATE_AS_PRIVATE_FUND_PARTNERSHIP = "Designate as a private fund limited partnership";
+export const TRANSACTION_DESCRIPTION_UPDATE_GENERAL_PARTNER_PERSON = "Update a general partner's details (person)";
+export const TRANSACTION_DESCRIPTION_UPDATE_GENERAL_PARTNER_LEGAL_ENTITY =
+  "Update a general partner's details (legal entity)";
+export const TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNER_PERSON = "Update a limited partner's details (person)";
+export const TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNER_LEGAL_ENTITY =
+  "Update a limited partner's details (legal entity)";
+export const TRANSACTION_DESCRIPTION_DESIGNATE_AS_PRIVATE_FUND_PARTNERSHIP =
+  "Designate as a private fund limited partnership";
+
+// Officer roles
+export const OFFICER_ROLE_GENERAL_PARTNER_PERSON = "general-partner-in-a-limited-partnership";
+export const OFFICER_ROLE_GENERAL_PARTNER_LEGAL_ENTITY = "corporate-general-partner-in-a-limited-partnership";
+export const OFFICER_ROLE_LIMITED_PARTNER_PERSON = "limited-partner-in-a-limited-partnership";
+export const OFFICER_ROLE_LIMITED_PARTNER_LEGAL_ENTITY = "corporate-limited-partner-in-a-limited-partnership";
 
 // Templates
 export const ERROR_TEMPLATE = "error-page";
@@ -65,6 +82,7 @@ export const TRANSACTION_ID = "transactionId";
 export const SUBMISSION_ID = "submissionId";
 export const GENERAL_PARTNER_ID = "generalPartnerId";
 export const LIMITED_PARTNER_ID = "limitedPartnerId";
+export const PERSON_WITH_SIGNIFICANT_CONTROL_ID = "personWithSignificantControlId";
 export const JOURNEY_TYPE_PARAM = ":journeyType";
 export const APPOINTMENT_ID = "appointmentId";
 
@@ -99,6 +117,10 @@ export const GENERAL_PARTNER_WITH_ID_URL = GENERAL_PARTNER_URL + `/:${GENERAL_PA
 export const LIMITED_PARTNER_URL = `/limited-partner`;
 export const LIMITED_PARTNER_WITH_ID_URL = LIMITED_PARTNER_URL + `/:${LIMITED_PARTNER_ID}`;
 
+export const PERSON_WITH_SIGNIFICANT_CONTROL_URL = `/person-with-significant-control`;
+export const PERSON_WITH_SIGNIFICANT_CONTROL_WITH_ID_URL =
+  PERSON_WITH_SIGNIFICANT_CONTROL_URL + `/:${PERSON_WITH_SIGNIFICANT_CONTROL_ID}`;
+
 export const APPOINTMENT_ID_URL = `/appointment/:${APPOINTMENT_ID}`;
 
 export const ACCOUNTS_SIGN_OUT_URL = `${ACCOUNT_URL}/signout`;
@@ -107,12 +129,17 @@ export const ACCOUNTS_SIGN_OUT_URL = `${ACCOUNT_URL}/signout`;
 export const DATE_OF_UPDATE_TYPE_PREFIX = "when-did";
 export const DATE_OF_UPDATE_TEMPLATE = "date-of-update";
 export const CEASE_DATE_TEMPLATE = "cease-date";
+export const STOP_SCREEN_NO_CHANGE_TEMPLATE = "stop-screen-no-change";
+
+// Update address yes-no
+export const UPDATE_ADDRESS_YES_NO_TYPE_SUFFIX = "address-yes-no";
+export const UPDATE_ADDRESS_YES_NO_TEMPLATE = "update-address-yes-no";
 
 // Check your answer
 export const CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX = "change-check-your-answers";
 export const CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE = "limited-partnership-change-check-your-answers";
 export const REMOVE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX = "remove-check-your-answers";
-export const REMOVE_CHECK_YOUR_ANSWERS_TEMPLATE = "partner-remove-check-your-answers";
+export const PARTNER_CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE = "partner-change-check-your-answers";
 
 // services
 export const SDK_LIMITED_PARTNERSHIP_SERVICE = "limitedPartnershipsService";
@@ -125,6 +152,9 @@ export const PAYMENTS_API_URL = getEnvironmentValue("PAYMENTS_API_URL");
 export const PAYMENT = "payment";
 export const REFERENCE = "LimitedPartnershipsReference";
 
+// query parameters keys
+export const JOURNEY_QUERY_PARAM = "journey";
+
 // cookies
 export const cookieOptions = {
   httpOnly: true,
@@ -135,3 +165,12 @@ export const cookieOptions = {
 
 // middleware
 export const allPathsExceptHealthcheck = /\/limited-partnerships\/((?!healthcheck).)*/;
+
+// Validation
+export const VALID_CHARACTERS_REGEX =
+  /^[-,.:; 0-9A-Z&@$£¥€'"«»?!/\\()[\]{}<>*=#%+ÀÁÂÃÄÅĀĂĄÆǼÇĆĈĊČÞĎÐÈÉÊËĒĔĖĘĚĜĞĠĢĤĦÌÍÎÏĨĪĬĮİĴĶĹĻĽĿŁÑŃŅŇŊÒÓÔÕÖØŌŎŐǾŒŔŖŘŚŜŞŠŢŤŦÙÚÛÜŨŪŬŮŰŲŴẀẂẄỲÝŶŸŹŻŽa-zſƒǺàáâãäåāăąæǽçćĉċčþďðèéêëēĕėęěĝģğġĥħìíîïĩīĭįĵķĺļľŀłñńņňŋòóôõöøōŏőǿœŕŗřśŝşšţťŧùúûüũūŭůűųŵẁẃẅỳýŷÿźżž]*$/;
+
+// Form field names
+export const LEGAL_ENTITY_NAME_FIELD = "legal_entity_name";
+export const LEGAL_FORM_FIELD = "legal_form";
+export const GOVERNING_LAW_FIELD = "governing_law";

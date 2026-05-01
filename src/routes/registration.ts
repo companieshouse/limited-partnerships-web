@@ -29,7 +29,18 @@ import {
   ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_ID_URL,
   REVIEW_LIMITED_PARTNERS_URL,
   REMOVE_LIMITED_PARTNER_URL,
-  REGISTRATION_START_URL
+  REGISTRATION_START_URL,
+  TELL_US_ABOUT_PSC_URL,
+  WILL_LIMITED_PARTNERSHIP_HAVE_PSC_URL,
+  PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL,
+  ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL,
+  ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_WITH_IDS_URL,
+  ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_URL,
+  ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_WITH_IDS_URL,
+  WHICH_TYPE_OF_NATURE_OF_CONTROL_RELEVANT_LEGAL_ENTITY_URL,
+  WHICH_TYPE_OF_NATURE_OF_CONTROL_OTHER_REGISTRABLE_PERSON_URL,
+  REMOVE_PERSON_WITH_SIGNIFICANT_CONTROL_URL,
+  REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL
 } from "../presentation/controller/registration/url";
 import RegistrationPageType from "../presentation/controller/registration/PageType";
 import registrationsRouting from "../presentation/controller/registration/Routing";
@@ -54,6 +65,7 @@ export const registrationEndpoints = (
     dependencies.limitedPartnershipRegistrationController.continueSavedFiling(RegistrationPageType, registrationsRouting)
   );
 
+  // partnership
   router.get(
     PARTNERSHIP_TYPE_URL,
     dependencies.limitedPartnershipRegistrationController.getPageRouting()
@@ -126,6 +138,7 @@ export const registrationEndpoints = (
     dependencies.limitedPartnershipRegistrationController.sendSicCodesPageData()
   );
 
+  // general partner
   router.get(
     GENERAL_PARTNERS_URL,
     dependencies.generalPartnerRegistrationController.getGeneralPartner()
@@ -194,6 +207,7 @@ export const registrationEndpoints = (
     dependencies.generalPartnerRegistrationController.postRemovePage()
   );
 
+  // limited partner
   router.get(
     LIMITED_PARTNERS_URL,
     dependencies.limitedPartnerRegistrationController.getLimitedPartner()
@@ -262,11 +276,107 @@ export const registrationEndpoints = (
     dependencies.limitedPartnerRegistrationController.postRemovePage()
   );
 
+  // person with significant control
+  router.get(
+    TELL_US_ABOUT_PSC_URL,
+    dependencies.personWithSignificantControlRegistrationController.getPageRouting()
+  );
+
+  router.get(
+    WILL_LIMITED_PARTNERSHIP_HAVE_PSC_URL,
+    dependencies.personWithSignificantControlRegistrationController.getPageRouting()
+  );
+  router.post(
+    WILL_LIMITED_PARTNERSHIP_HAVE_PSC_URL,
+    dependencies.personWithSignificantControlRegistrationController.sendHasPersonWithSignificantControl()
+  );
+
+  router.get(
+    PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL,
+    dependencies.personWithSignificantControlRegistrationController.getPageRouting()
+  );
+  router.post(
+    PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL,
+    dependencies.personWithSignificantControlRegistrationController.personWithSignificantControlChoice()
+  );
+
+  router.get(
+    ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL,
+    dependencies.personWithSignificantControlRegistrationController.getPageRouting()
+  );
+  router.post(
+    ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL,
+    dependencies.personWithSignificantControlRegistrationController.createPersonWithSignificantControl()
+  );
+
+  router.get(
+    ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_WITH_IDS_URL,
+    dependencies.personWithSignificantControlRegistrationController.getPageRouting()
+  );
+  router.post(
+    ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_WITH_IDS_URL,
+    dependencies.personWithSignificantControlRegistrationController.sendPageData()
+  );
+
+  router.get(
+    ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_URL,
+    dependencies.personWithSignificantControlRegistrationController.getPageRouting()
+  );
+  router.post(
+    ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_URL,
+    dependencies.personWithSignificantControlRegistrationController.createPersonWithSignificantControl()
+  );
+
+  router.get(
+    ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_WITH_IDS_URL,
+    dependencies.personWithSignificantControlRegistrationController.getPageRouting()
+  );
+  router.post(
+    ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_WITH_IDS_URL,
+    dependencies.personWithSignificantControlRegistrationController.sendPageData()
+  );
+
+  router.get(
+    WHICH_TYPE_OF_NATURE_OF_CONTROL_RELEVANT_LEGAL_ENTITY_URL,
+    dependencies.personWithSignificantControlRegistrationController.getPageRouting()
+  );
+  router.post(
+    WHICH_TYPE_OF_NATURE_OF_CONTROL_RELEVANT_LEGAL_ENTITY_URL,
+    dependencies.personWithSignificantControlRegistrationController.sendPageData()
+  );
+
+  router.get(
+    WHICH_TYPE_OF_NATURE_OF_CONTROL_OTHER_REGISTRABLE_PERSON_URL,
+    dependencies.personWithSignificantControlRegistrationController.getPageRouting()
+  );
+  router.post(
+    WHICH_TYPE_OF_NATURE_OF_CONTROL_OTHER_REGISTRABLE_PERSON_URL,
+    dependencies.personWithSignificantControlRegistrationController.sendPageData()
+  );
+
+  router.get(
+    REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL,
+    dependencies.personWithSignificantControlRegistrationController.getReviewPage()
+  );
+  router.post(
+    REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL,
+    dependencies.personWithSignificantControlRegistrationController.postReviewPage()
+  );
+
+  router.get(
+    REMOVE_PERSON_WITH_SIGNIFICANT_CONTROL_URL,
+    dependencies.personWithSignificantControlRegistrationController.getPageRouting()
+  );
+  router.post(
+    REMOVE_PERSON_WITH_SIGNIFICANT_CONTROL_URL,
+    dependencies.personWithSignificantControlRegistrationController.postRemovePage()
+  );
+
+  // check your answers
   router.get(
     CHECK_YOUR_ANSWERS_URL,
     dependencies.limitedPartnershipRegistrationController.getPageRouting()
   );
-
   router.post(
     CHECK_YOUR_ANSWERS_URL,
     dependencies.limitedPartnershipRegistrationController.postCheckYourAnswers()

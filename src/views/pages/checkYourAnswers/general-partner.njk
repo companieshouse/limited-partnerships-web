@@ -23,14 +23,9 @@
           text: item.data.former_names
         }
       } if item.data.former_names,
-      {
-        key: {
-          text: i18n.checkYourAnswersPage.partners.person.dateOfBirth
-        },
-        value: {
-          text: item.data.date_of_birth
-        }
-        },
+      
+      SET_DATE_OF_BIRTH_SECTION(item, i18n), 
+      
       {
         key: {
           text: i18n.checkYourAnswersPage.partners.person.nationality
@@ -55,14 +50,8 @@
           text: macros.formatAddress(item.data.service_address, true, i18n)
         }
       },
-      {
-        key: {
-          text: i18n.checkYourAnswersPage.partners.generalPartners.dateEffectiveFrom
-        },
-        value: {
-          text: item.data.date_effective_from
-        }
-      } if journeyTypes.isPostTransition 
+
+      SET_DATE_EFFECTIVE_FROM_SECTION(item, "generalPartner", journeyTypes, i18n)
     ]
   }) }}
 {% elif item.data.legal_entity_name %}
@@ -126,14 +115,8 @@
             text: macros.formatAddress(item.data.principal_office_address, true, i18n)
           }
         },
-        {
-          key: {
-            text: i18n.checkYourAnswersPage.partners.generalPartners.dateEffectiveFrom
-          },
-          value: {
-            text: item.data.date_effective_from
-          }
-        } if journeyTypes.isPostTransition 
+
+        SET_DATE_EFFECTIVE_FROM_SECTION(item, "generalPartner", journeyTypes, i18n)
       ]
     }) }}
  {% endif %}

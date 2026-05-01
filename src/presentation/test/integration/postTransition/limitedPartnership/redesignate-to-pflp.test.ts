@@ -5,7 +5,7 @@ import cyTranslationText from "../../../../../../locales/cy/translations.json";
 
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import { REDESIGNATE_TO_PFLP_URL } from "presentation/controller/postTransition/url";
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 import PostTransitionPageType from "presentation/controller/postTransition/pageType";
@@ -33,11 +33,13 @@ describe("Redesignate to pflp page", () => {
       const res = await request(app).get(URL + "?lang=en");
 
       expect(res.status).toBe(200);
-      testTranslations(res.text, enTranslationText.redesignateToPflpPage);
+      testTranslations(res.text, enTranslationText.redesignateToPflpPage, ["cost"]);
       expect(res.text).toContain(
-        `${enTranslationText.redesignateToPflpPage.title} - ${enTranslationText.servicePostTransition} - GOV.UK`
+        `${enTranslationText.redesignateToPflpPage.title} - ${enTranslationText.serviceName.updateLimitedPartnershipRedesignateToPFLP} - GOV.UK`
       );
       expect(res.text).not.toContain("WELSH -");
+      expect(countOccurrences(res.text, enTranslationText.serviceName.updateLimitedPartnershipRedesignateToPFLP)).toBe(2);
+      expect(res.text).toContain(enTranslationText.redesignateToPflpPage.cost.replace("{{ cost }}", process.env.COST_LP8D_REDESIGNATE_TO_PFLP as string));
     });
 
     it("should load the page with Welsh text", async () => {
@@ -45,9 +47,11 @@ describe("Redesignate to pflp page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${cyTranslationText.redesignateToPflpPage.title} - ${cyTranslationText.servicePostTransition} - GOV.UK`
+        `${cyTranslationText.redesignateToPflpPage.title} - ${cyTranslationText.serviceName.updateLimitedPartnershipRedesignateToPFLP} - GOV.UK`
       );
-      testTranslations(res.text, cyTranslationText.redesignateToPflpPage);
+      testTranslations(res.text, cyTranslationText.redesignateToPflpPage, ["cost"]);
+      expect(countOccurrences(res.text, cyTranslationText.serviceName.updateLimitedPartnershipRedesignateToPFLP)).toBe(2);
+      expect(res.text).toContain(cyTranslationText.redesignateToPflpPage.cost.replace("{{ cost }}", process.env.COST_LP8D_REDESIGNATE_TO_PFLP as string));
     });
   });
 

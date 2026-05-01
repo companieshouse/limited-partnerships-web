@@ -18,6 +18,7 @@
           classes: "govuk-radios",
           name: "term",
           value: props.data.limitedPartnership.data.term,
+          errorMessage: props.errors.term if props.errors.term,
           fieldset: {
             legend: {
               text: i18n.termPage.title,
@@ -32,24 +33,15 @@
           items: [
             {
               value: "BY_AGREEMENT",
-              text: i18n.termPage.byAgreement,
-              attributes: {
-                required: true
-              }
+              text: i18n.termPage.byAgreement
             },
             {
               value: "UNTIL_DISSOLUTION",
-              text: i18n.termPage.untilDissolution,
-              attributes: {
-                required: true
-              }
+              text: i18n.termPage.untilDissolution
             },
             {
               value: "NONE",
-              text: i18n.termPage.noTerm,
-              attributes: {
-                required: true
-              }
+              text: i18n.termPage.noTerm
             }
           ]
         }) }}
@@ -62,7 +54,7 @@
           text: i18n.buttons.saveAndContinue,
           attributes: {
             "id": "submit",
-            "onclick": "_paq.push(['trackEvent', 'Limited Partnerships Term', 'selection', document.querySelector('input[name=term]:checked').nextElementSibling.innerHTML])"
+            "onclick": "const selected = document.querySelector('input[name=term]:checked'); if (selected) { _paq.push(['trackEvent', 'Limited Partnerships Term', 'selection', selected.nextElementSibling.innerHTML]); }"
           }
         }) }}
       </form>

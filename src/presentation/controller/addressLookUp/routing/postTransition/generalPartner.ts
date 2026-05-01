@@ -1,7 +1,10 @@
 import {
   ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
   ADD_GENERAL_PARTNER_PERSON_WITH_IDS_URL,
-  GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL
+  GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL,
+  UPDATE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
+  UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL,
+  UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL
 } from "../../../postTransition/url";
 import AddressPageType from "../../PageType";
 import * as url from "../../url/postTransition";
@@ -25,7 +28,8 @@ const postTransitionAddressRoutingTerritoryChoiceGeneralPartnerUsualResidentialA
   pageType: AddressPageType.territoryChoiceGeneralPartnerUsualResidentialAddress,
   data: {
     ...usualResidentialAddressCacheKeys,
-    nextUrlOverseas: url.ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
+    nextUrlOverseas: url.ENTER_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+    previousUrlUpdateGeneralPartnerPerson: UPDATE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL
   }
 };
 
@@ -97,7 +101,8 @@ const postTransitionAddressRoutingTerritoryChoiceGeneralPartnerCorrespondanceAdd
   pageType: AddressPageType.territoryChoiceGeneralPartnerCorrespondenceAddress,
   data: {
     ...correspondenceAddressCacheKeys,
-    nextUrlOverseas: url.ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL
+    nextUrlOverseas: url.ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
+    previousUrlUpdateGeneralPartnerPerson: UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL
   }
 };
 
@@ -131,7 +136,8 @@ const postTransitionAddressRoutingEnterGeneralPartnerCorrespondenceAddress = {
   pageType: AddressPageType.enterGeneralPartnerCorrespondenceAddress,
   data: {
     ...correspondenceAddressCacheKeys,
-    territoryPageType: AddressPageType.territoryChoiceGeneralPartnerCorrespondenceAddress
+    territoryPageType: AddressPageType.territoryChoiceGeneralPartnerCorrespondenceAddress,
+    previousUrlUpdateGeneralPartnerPerson: UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL
   }
 };
 
@@ -142,7 +148,8 @@ const postTransitionAddressRoutingConfirmGeneralPartnerCorrespondenceAddress = {
   pageType: AddressPageType.confirmGeneralPartnerCorrespondenceAddress,
   data: {
     ...correspondenceAddressCacheKeys,
-    enterManualAddressPageType: AddressPageType.enterGeneralPartnerCorrespondenceAddress
+    enterManualAddressPageType: AddressPageType.enterGeneralPartnerCorrespondenceAddress,
+    previousUrlUpdateGeneralPartnerPerson: UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL
   }
 };
 
@@ -202,7 +209,8 @@ const postTransitionAddressRoutingEnterGeneralPartnerPrincipalOfficeAddress = {
   pageType: AddressPageType.enterGeneralPartnerPrincipalOfficeAddress,
   data: {
     ...principalOfficeAddressCacheKeys,
-    territoryPageType: AddressPageType.territoryChoiceGeneralPartnerPrincipalOfficeAddress
+    territoryPageType: AddressPageType.territoryChoiceGeneralPartnerPrincipalOfficeAddress,
+    previousUrlUpdateGeneralPartnerLegalEntity: UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL
   }
 };
 
@@ -213,7 +221,8 @@ const postTransitionAddressRoutingConfirmGeneralPartnerPrincipalOfficeAddress = 
   pageType: AddressPageType.confirmGeneralPartnerPrincipalOfficeAddress,
   data: {
     ...principalOfficeAddressCacheKeys,
-    enterManualAddressPageType: AddressPageType.enterGeneralPartnerPrincipalOfficeAddress
+    enterManualAddressPageType: AddressPageType.enterGeneralPartnerPrincipalOfficeAddress,
+    previousUrlUpdateGeneralPartnerLegalEntity: UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL
   }
 };
 

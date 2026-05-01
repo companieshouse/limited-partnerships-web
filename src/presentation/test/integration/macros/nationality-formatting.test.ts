@@ -37,7 +37,9 @@ describe("Nationality Formatting Macro", () => {
 
   describe.each(nationalitySetters)("%s", (description, setNationality) => {
     it.each(nationalityTestCases)(`should format %s as %s (${description})`, async (input, expected, notExpected) => {
-      const builder = new GeneralPartnerBuilder().isPerson();
+      const builder = new GeneralPartnerBuilder()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .isPerson();
       setNationality(builder, input);
       const partner = builder.build();
       appDevDependencies.generalPartnerGateway.feedGeneralPartners([partner]);

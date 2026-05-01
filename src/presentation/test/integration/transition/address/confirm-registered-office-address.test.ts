@@ -1,16 +1,23 @@
 import request from "supertest";
-import enTranslationText from "../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../locales/cy/translations.json";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../../../presentation/test/utils";
-import { CONFIRM_REGISTERED_OFFICE_ADDRESS_URL } from "../../../../controller/addressLookUp/url/transition";
+
+import enGeneralTranslationText from "../../../../../../locales/en/translations.json";
+import cyGeneralTranslationText from "../../../../../../locales/cy/translations.json";
+import enAddressTranslationText from "../../../../../../locales/en/address.json";
+import cyAddressTranslationText from "../../../../../../locales/cy/address.json";
+
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
+import { getUrl, setLocalesEnabled, testTranslations } from "../../../../../presentation/test/utils";
+import { ApiErrors } from "../../../../../domain/entities/UIErrors";
+
+import { CONFIRM_REGISTERED_OFFICE_ADDRESS_URL } from "../../../../controller/addressLookUp/url/transition";
+import { GENERAL_PARTNERS_URL } from "../../../../controller/transition/url";
 import AddressPageType from "../../../../../presentation/controller/addressLookUp/PageType";
 import LimitedPartnershipBuilder from "../../../../../presentation/test/builder/LimitedPartnershipBuilder";
-import { ApiErrors } from "../../../../../domain/entities/UIErrors";
-import { GENERAL_PARTNERS_URL } from "../../../../controller/transition/url";
 
 describe("Confirm Registered Office Address Page", () => {
+  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
+  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText };
   const URL = getUrl(CONFIRM_REGISTERED_OFFICE_ADDRESS_URL);
 
   beforeEach(() => {

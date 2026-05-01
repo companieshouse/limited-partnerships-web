@@ -1,12 +1,14 @@
 import request from "supertest";
 
-import enTranslationText from "../../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../../locales/cy/translations.json";
+import enGeneralTranslationText from "../../../../../../../locales/en/translations.json";
+import cyGeneralTranslationText from "../../../../../../../locales/cy/translations.json";
+import enAddressTranslationText from "../../../../../../../locales/en/address.json";
+import cyAddressTranslationText from "../../../../../../../locales/cy/address.json";
 import enErrorMessages from "../../../../../../../locales/en/errors.json";
 import cyErrorMessages from "../../../../../../../locales/cy/errors.json";
 
 import app from "../../../app";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 
 import {
@@ -17,9 +19,17 @@ import {
 
 import GeneralPartnerBuilder from "../../../../builder/GeneralPartnerBuilder";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
-import { GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/postTransition/url";
+import {
+  GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL,
+  UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL,
+  WHEN_DID_GENERAL_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL
+} from "../../../../../controller/postTransition/url";
+import TransactionBuilder from "../../../../builder/TransactionBuilder";
+import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 describe("Confirm General Partner Principal Office Address Page", () => {
+  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
+  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText };
   const URL = getUrl(CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
 
   beforeEach(() => {
@@ -44,6 +54,9 @@ describe("Confirm General Partner Principal Office Address Page", () => {
       .build();
 
     appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+
+    const transaction = new TransactionBuilder().withKind(PartnerKind.ADD_GENERAL_PARTNER_LEGAL_ENTITY).build();
+    appDevDependencies.transactionGateway.feedTransactions([transaction]);
   });
 
   describe("GET Confirm Principal Office Address Page", () => {
@@ -62,6 +75,7 @@ describe("Confirm General Partner Principal Office Address Page", () => {
       expect(res.text).toContain("Region");
       expect(res.text).toContain(enTranslationText.countries.england);
       expect(res.text).toContain("ST6 3LJ");
+      expect(countOccurrences(res.text, enTranslationText.serviceName.addGeneralPartner)).toBe(2);
     });
 
     it("should load the confirm principal office address page with Welsh text", async () => {
@@ -78,6 +92,7 @@ describe("Confirm General Partner Principal Office Address Page", () => {
       expect(res.text).toContain("Region");
       expect(res.text).toContain(cyTranslationText.countries.england);
       expect(res.text).toContain("ST6 3LJ");
+      expect(countOccurrences(res.text, cyTranslationText.serviceName.addGeneralPartner)).toBe(2);
     });
 
     it.each([
@@ -93,6 +108,31 @@ describe("Confirm General Partner Principal Office Address Page", () => {
       const res = await request(app).get(URL);
 
       expect(res.text).toContain(backLink);
+    });
+
+    it("should have back link to yes/no page when partner kind is UPDATE_GENERAL_PARTNER_LEGAL_ENTITY", async () => {
+      const updateGeneralPartner = new GeneralPartnerBuilder()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .isLegalEntity()
+        .withKind(PartnerKind.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY)
+        .build();
+
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([updateGeneralPartner]);
+
+      const backLinkUrl = getUrl(UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL);
+      const res = await request(app).get(URL);
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(backLinkUrl);
+    });
+
+    it("should have change link to manual entry page", async () => {
+      const res = await request(app).get(URL);
+
+      const changeLinkUrl = getUrl(ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(`href="${changeLinkUrl}"`);
     });
   });
 
@@ -118,6 +158,34 @@ describe("Confirm General Partner Principal Office Address Page", () => {
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
     });
 
+    it("should redirect to the when did details change page for the update journey", async () => {
+      const generalPartnerUpdate = new GeneralPartnerBuilder()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .isLegalEntity()
+        .withKind(PartnerKind.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY)
+        .build();
+
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartnerUpdate]);
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: AddressPageType.confirmGeneralPartnerPrincipalOfficeAddress,
+          address: `{
+            "postal_code": "ST6 3LJ",
+            "premises": "4",
+            "address_line_1": "DUNCALF STREET",
+            "address_line_2": "",
+            "locality": "STOKE-ON-TRENT",
+            "country": "England"
+          }`
+        });
+
+      const redirectUrl = getUrl(WHEN_DID_GENERAL_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL);
+
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+    });
+
     it("should show error message if address is not provided", async () => {
       appDevDependencies.cacheRepository.feedCache({});
 
@@ -130,17 +198,20 @@ describe("Confirm General Partner Principal Office Address Page", () => {
     });
 
     it.each([
-      [ "en", enErrorMessages ],
-      [ "cy", cyErrorMessages ]
-    ])("should show validation error message if validation error occurs when saving address with lang %s", async (lang: string, errorMessagesJson: any) => {
-      setLocalesEnabled(true);
-      const res = await request(app).post(`${URL}?lang=${lang}`).send({
-        pageType: AddressPageType.confirmGeneralPartnerPrincipalOfficeAddress,
-        address: `{"postal_code": "ST6 3LJ","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": ""}`
-      });
+      ["en", enErrorMessages],
+      ["cy", cyErrorMessages]
+    ])(
+      "should show validation error message if validation error occurs when saving address with lang %s",
+      async (lang: string, errorMessagesJson: any) => {
+        setLocalesEnabled(true);
+        const res = await request(app).post(`${URL}?lang=${lang}`).send({
+          pageType: AddressPageType.confirmGeneralPartnerPrincipalOfficeAddress,
+          address: `{"postal_code": "ST6 3LJ","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": ""}`
+        });
 
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(errorMessagesJson.errorMessages.address.confirm.countryMissing);
-    });
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(errorMessagesJson.errorMessages.address.confirm.countryMissing);
+      }
+    );
   });
 });

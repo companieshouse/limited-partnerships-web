@@ -10,6 +10,7 @@ import {
   resetFormerNamesIfPreviousNameIsFalse,
   validateAndFormatPartnerCeaseDate,
   validateAndFormatPartnerDateEffectiveFrom,
+  validateAndFormatPartnerDateOfUpdate,
   validateAndFormatPartnerPersonDateOfBirth,
   validateFormerNamesNotEmptyIfPreviousNameIsTrue
 } from "../utils";
@@ -72,7 +73,13 @@ class GeneralPartnerInMemoryGateway implements IGeneralPartnerGateway {
       throw new Error(`Not found: ${generalPartnerId}`);
     }
 
-    return this.generalPartners[0];
+    const partner = this.generalPartners.find((gp) => gp._id === generalPartnerId);
+
+    if (!partner) {
+      throw new Error(`Not found: ${generalPartnerId}`);
+    }
+
+    return partner;
   }
 
   async getGeneralPartners(
@@ -103,6 +110,7 @@ class GeneralPartnerInMemoryGateway implements IGeneralPartnerGateway {
     validateFormerNamesNotEmptyIfPreviousNameIsTrue(data, this.partnerType);
     resetFormerNamesIfPreviousNameIsFalse(data);
     validateAndFormatPartnerCeaseDate(data);
+    validateAndFormatPartnerDateOfUpdate(data);
 
     this.generalPartners[index].data = { ...this.generalPartners[index].data, ...data };
   }

@@ -76,6 +76,11 @@ class GeneralPartnerBuilder extends AbstractPartnerBuilder {
     return this;
   }
 
+  withDateOfUpdate(date: string): this {
+    this.data.date_of_update = date;
+    return this;
+  }
+
   isLegalEntity() {
     this.data = {
       ...this.data,

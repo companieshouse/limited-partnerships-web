@@ -16,6 +16,13 @@ const transitionRoutingCompanyNumber = {
   pageType: TransitionPageType.companyNumber
 };
 
+const transitionRoutingAlreadyFiled = {
+  previousUrl: url.COMPANY_NUMBER_URL,
+  currentUrl: url.TRANSITION_ALREADY_FILED_URL,
+  nextUrl: "/",
+  pageType: TransitionPageType.transitionAlreadyFiled
+};
+
 const transitionRoutingConfirmLimitedPartnership = {
   previousUrl: url.COMPANY_NUMBER_URL,
   currentUrl: url.CONFIRM_LIMITED_PARTNERSHIP_URL,
@@ -44,6 +51,7 @@ const transitionRoutingCheckYourAnswers = {
 const limitedPartnershipRouting = [
   transitionRoutingContinueSavedFiling,
   transitionRoutingCompanyNumber,
+  transitionRoutingAlreadyFiled,
   transitionRoutingConfirmLimitedPartnership,
   transitionRoutingEmail,
   transitionRoutingCheckYourAnswers

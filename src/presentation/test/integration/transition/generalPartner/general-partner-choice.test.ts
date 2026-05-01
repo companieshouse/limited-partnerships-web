@@ -14,12 +14,19 @@ import {
 } from "../../../../controller/transition/url";
 import TransitionPageType from "../../../../../presentation/controller/transition/PageType";
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
+import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
 
 describe("General Partner Choice Page", () => {
   const URL = getUrl(GENERAL_PARTNER_CHOICE_URL);
 
   beforeEach(() => {
     setLocalesEnabled(false);
+
+    const generalPartner = new GeneralPartnerBuilder()
+      .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+      .isPerson()
+      .build();
+    appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
 
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([]);
     appDevDependencies.limitedPartnershipGateway.feedErrors();

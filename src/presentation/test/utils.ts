@@ -1,7 +1,12 @@
 import { LocalesService } from "@companieshouse/ch-node-utils";
+import { LimitedPartner, GeneralPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 import * as config from "../../config/constants";
 import { appDevDependencies } from "../../config/dev-dependencies";
+import GeneralPartnerBuilder from "./builder/GeneralPartnerBuilder";
+import LimitedPartnerBuilder from "./builder/LimitedPartnerBuilder";
+import request from "supertest";
+import PersonWithSignificantControlBuilder from "./builder/PersonWithSignificantControlBuilder";
 
 export const setLocalesEnabled = (bool: boolean) => {
   jest.spyOn(config, "isLocalesEnabled").mockReturnValue(bool);
@@ -10,15 +15,16 @@ export const setLocalesEnabled = (bool: boolean) => {
 
 export const getUrl = (url: string) => {
   const companyId = url.includes(config.COMPANY_ID) ? "LP123456" : "";
-  const submissionId = url.includes(config.SUBMISSION_ID)
-    ? appDevDependencies.limitedPartnershipGateway.submissionId
-    : "";
-  const generalPartnerId = url.includes(config.GENERAL_PARTNER_ID)
-    ? appDevDependencies.generalPartnerGateway.generalPartnerId
-    : "";
-  const limitedPartnerId = url.includes(config.LIMITED_PARTNER_ID)
-    ? appDevDependencies.limitedPartnerGateway.limitedPartnerId
-    : "";
+  const submissionId =
+    url.includes(config.SUBMISSION_ID) ? appDevDependencies.limitedPartnershipGateway.submissionId : "";
+  const generalPartnerId =
+    url.includes(config.GENERAL_PARTNER_ID) ? appDevDependencies.generalPartnerGateway.generalPartnerId : "";
+  const limitedPartnerId =
+    url.includes(config.LIMITED_PARTNER_ID) ? appDevDependencies.limitedPartnerGateway.limitedPartnerId : "";
+  const personWithSignificantControlId =
+    url.includes(config.PERSON_WITH_SIGNIFICANT_CONTROL_ID) ?
+      appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId
+      : "";
   const appointmentId = url.includes(config.APPOINTMENT_ID) ? "AP123456" : "";
 
   const ids = {
@@ -27,6 +33,7 @@ export const getUrl = (url: string) => {
     submissionId,
     generalPartnerId,
     limitedPartnerId,
+    personWithSignificantControlId,
     appointmentId
   };
   return appDevDependencies.addressLookUpController.insertIdsInUrl(url, ids);
@@ -56,4 +63,60 @@ export const testTranslations = (text: string, translations: Record<string, any>
 
     expect(text).toContain(str);
   }
+};
+
+export const setupPartners = (isLimitedPartner: boolean, isPerson: boolean) => {
+  let partner: LimitedPartner | GeneralPartner;
+
+  if (isLimitedPartner) {
+    partner =
+      isPerson ? new LimitedPartnerBuilder().isPerson().build() : new LimitedPartnerBuilder().isLegalEntity().build();
+    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([partner]);
+    return { limitedPartner: partner, generalPartner: undefined };
+  } else {
+    partner =
+      isPerson ? new GeneralPartnerBuilder().isPerson().build() : new GeneralPartnerBuilder().isLegalEntity().build();
+    appDevDependencies.generalPartnerGateway.feedGeneralPartners([partner]);
+    return { limitedPartner: undefined, generalPartner: partner };
+  }
+};
+
+export const expectPartnerData = (
+  res: request.Response,
+  partner: LimitedPartner | GeneralPartner,
+  isPerson: boolean
+) => {
+  if (isPerson) {
+    expect(res.text).toContain(partner.data?.forename);
+    expect(res.text).toContain(partner.data?.surname);
+  } else {
+    expect(res.text).toContain(partner.data?.legal_entity_name);
+  }
+};
+
+export const countOccurrences = (text: string, target: string): number => {
+  return text.split(target).length - 1;
+};
+
+export const expectChangeLinks = (text: string, changeLink: string[]) => {
+  changeLink.forEach((link) => {
+    expect(text).toContain(getUrl(link));
+  });
+};
+
+export const createPersonWithSignificantControl = (url: string, urlToCompare: string) => {
+  const personWithSignificantControl = new PersonWithSignificantControlBuilder().withId(
+    appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId
+  );
+
+  if (url === urlToCompare) {
+    personWithSignificantControl.isRelevantLegalEntity();
+  } else {
+    personWithSignificantControl.isOtherRegistrablePerson();
+  }
+
+  appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([
+    personWithSignificantControl.build()
+  ]);
+  return personWithSignificantControl;
 };

@@ -33,16 +33,21 @@ class UIErrors {
     }
   }
 
-  public setWebError(field: string, message: string) {
+  public setWebError(field: string, message: string): this {
     this.formatValidationErrorToUiErrors({
       errors: {
         [field]: message
       }
     });
+    return this;
   }
 
   public hasErrors(): boolean {
     return this.errors.errorList.length > 0;
+  }
+
+  public getErrors(): UIValidationErrors {
+    return this.errors;
   }
 
   private formatHrefValue(property: string): string {

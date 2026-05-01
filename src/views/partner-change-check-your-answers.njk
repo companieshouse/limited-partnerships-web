@@ -7,19 +7,35 @@
 {% endblock %}
 
 {% set pageTitle = i18n.checkYourAnswersPage.update.title %}
+{% set submitButtonText = i18n.buttons.submitUpdate %}
 
 {% set name = "" %}
 {% if props.data.partner.data.forename %}
   {% set name = props.data.partner.data.forename + " " + props.data.partner.data.surname %}
+  {% if props.data.partnerType == "generalPartner" %}
+    {% set warningText = i18n.checkYourAnswersPage.partners.person.generalPartner.warningMessageUpdate %}
+  {% else %}
+    {% set warningText = i18n.checkYourAnswersPage.partners.person.limitedPartner.warningMessageUpdate %}
+  {% endif %}
 {% elif props.data.partner.data.legal_entity_name %}
   {% set name = props.data.partner.data.legal_entity_name %}
+  {% set warningText = "" %}
+{% endif %}
+
+{% if props.pageType and props.pageType.includes("remove") %}
+  {% set warningText = "" %}
+  {% set submitButtonText = i18n.buttons.submit %}
 {% endif %}
 
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
 
-      <span class="govuk-caption-l"> {{ name }} </span>
+      {% if props.data.pageKey == "updatePartner"%}
+        {% include "includes/proposed-name.njk" %}
+      {% else %}
+        <span class="govuk-caption-l"> {{ name }} </span>
+      {% endif %}
       <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
 
       <form class="form" method="post">
@@ -27,18 +43,22 @@
 
        {% include "pages/checkYourAnswersChange/" + props.data.pageKey + ".njk" %}
 
-        {{ govukWarningText({
-          text: i18n.checkYourAnswersPage.update.printWarning,
-          iconFallbackText: "Warning"
-        }) }} 
+        <h2 class="govuk-heading-m govuk-!-padding-top-5">{{ i18n.checkYourAnswersPage.update.printMessage }}</h2>
 
         <p class="govuk-body">{{ i18n.checkYourAnswersPage.update.information }}</p>
 
         <p class="govuk-body govuk-!-font-size-20 check-your-answers-javascript-disabled-text-style">{{ i18n.print.buttonTextNoJs }}</p>
+        
+        {% if warningText %}
+          {{ govukWarningText({
+            text: warningText,
+            iconFallbackText: "Warning"
+          }) }}
+        {% endif %}
 
-        <div class="govuk-button-group">
+        <div class="govuk-button-group govuk-!-padding-top-5">
           {{ govukButton({
-            text: i18n.buttons.submit,
+            text: submitButtonText,
             attributes: {
               "id": "submit",
               "data-event-id": props.pageType + "-submit-button"

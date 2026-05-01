@@ -9,10 +9,7 @@
   classes: "govuk-input--width-10",
   id: "postal_code",
   name: "postal_code",
-  value: address.postal_code,
-  attributes : {
-  required : true
-  }
+  value: address.postal_code
 }) }}
 
 {% set countryFormId = "country" %}
@@ -20,5 +17,6 @@
 {% set countryFormValue = address.country %}
 {% set countryField = address.country %}
 {% set countryErrorMessage = props.errors.country if props.error %}
+{% set labelFormatting = "govuk-label govuk-input--width-10" %}
 
-{{ macros.getSpecifiedCountryList(i18n, "unitedKingdom", countryFormId, countryText, countryFormValue, countryErrorMessage) }}
+{{ macros.getSpecifiedCountryList(i18n, "unitedKingdom", countryFormId, countryText, countryFormValue, countryErrorMessage, labelFormatting) }}

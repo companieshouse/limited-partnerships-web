@@ -11,7 +11,8 @@ import {
   TRANSITION_BASE_URL,
   PAYMENTS_API_URL,
   CHS_URL,
-  JOURNEY_TYPE_PARAM
+  JOURNEY_TYPE_PARAM,
+  JOURNEY_QUERY_PARAM
 } from "../../../config/constants";
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import { getJourneyTypes, getLoggedInUserEmail, logger } from "../../../utils";
@@ -25,6 +26,7 @@ import { GeneralPartner, LimitedPartner } from "@companieshouse/api-sdk-node/dis
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
 import { Transaction } from "@companieshouse/api-sdk-node/dist/services/transaction/types";
 import { RESUME_REGISTRATION_OR_TRANSITION_URL_MAP } from "./resumeUrlMapping";
+import { serviceNameKindMap } from "../../../config/service-name-kind-map";
 
 class GlobalController extends AbstractController {
   constructor(
@@ -108,16 +110,29 @@ class GlobalController extends AbstractController {
 
         const nextPageUrlWithJourney = nextPageUrl.replace(JOURNEY_TYPE_PARAM, journeyTypes.journey);
 
+        const transaction = await this.transactionService.getTransaction(tokens, ids.transactionId);
         if (status === "paid" && !ids.companyId) {
-          const transaction = await this.transactionService.getTransaction(tokens, ids.transactionId);
           if (transaction.companyNumber) {
             ids.companyId = transaction.companyNumber;
           }
         }
-        const nextPageUrlWithJourneyAndIds = this.appendLangParamIfExists(
+
+        let nextPageUrlWithJourneyAndIds = this.appendLangParamIfExists(
           request,
           super.insertIdsInUrl(nextPageUrlWithJourney, ids)
         );
+
+        const kind = Object.values(transaction?.resources ?? {})[0]?.kind;
+        response.locals.serviceName = response.locals.i18n.serviceName[serviceNameKindMap[kind ?? ""]] ?? "";
+
+        if (response.locals?.serviceName) {
+          const serviceName = response.locals?.serviceName.toLowerCase().replace(/\s+/g, "-");
+          nextPageUrlWithJourneyAndIds = this.addOrAppendQueryParam(
+            nextPageUrlWithJourneyAndIds,
+            JOURNEY_QUERY_PARAM,
+            serviceName
+          );
+        }
 
         return response.redirect(nextPageUrlWithJourneyAndIds);
       } catch (error) {
@@ -130,8 +145,7 @@ class GlobalController extends AbstractController {
     const currentUrlParams = new URLSearchParams(new URL(`http://${request.url}`)?.search);
 
     if (currentUrlParams.has("lang")) {
-      // extra step to remove duplicate query param with ? - http://url?lang=cy?lang=cy&status=paid - to be removed when payments-api is fixed
-      const langParam = currentUrlParams.get("lang")?.split("?")[0];
+      const langParam = currentUrlParams.get("lang");
 
       nextPageUrlWithJourneyAndIds = nextPageUrlWithJourneyAndIds + `?lang=${langParam}`;
     }
@@ -154,9 +168,11 @@ class GlobalController extends AbstractController {
           );
         }
 
+        const userEmail = getLoggedInUserEmail(request.session);
+
         response.render(
           super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { limitedPartnership, ids }, null)
+          super.makeProps(pageRouting, { limitedPartnership, ids, userEmail }, null)
         );
       } catch (error) {
         next(error);

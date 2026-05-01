@@ -1,0 +1,268 @@
+{
+    "address": {
+        "chooseAddress": {
+            "addressLink": "The address is not on the list",
+            "principalPlaceOfBusiness" : {
+                "title": "Choose the principal place of business"
+            },
+            "registeredOfficeAddress" : {
+                "title": "Choose the registered office address"
+            },
+            "generalPartnerUsualResidentialAddress" : {
+                "title" : "Choose the usual residential address of the general partner"
+            },
+            "generalPartnerPrincipalOfficeAddress": {
+                "title": "Choose the general partner's principal office address",
+                "publicRegisterInformationLine1": "We'll show the general partner's principal office address on the public register."
+
+            },
+            "generalPartnerCorrespondenceAddress" : {
+                "title": "Choose the general partner's correspondence address",
+                "titleHint": "This is also known as the service address.",
+                "publicRegisterInformationLine1": "We'll show the general partner's correspondence address on the public register."
+            },
+            "limitedPartnerUsualResidentialAddress" : {
+                "title" : "Choose the usual residential address of the limited partner"
+            },
+            "limitedPartnerPrincipalOfficeAddress": {
+                "title": "Choose the limited partner's principal office address",
+                "publicRegisterInformationLine1": "We'll show the limited partner's principal office address on the public register."
+
+            },
+            "personWithSignificantControlPrincipalOfficeAddress": {
+                "title": "Choose the PSC's principal office address",
+                "publicRegisterInformationLine1": "We'll show the PSC's principal office address on the public register."
+            }
+        },
+
+        "confirm": {
+            "addressLink" : "Change",
+            "registeredOfficeAddress" : {
+                "title" : "Confirm the registered office address",
+                "publicRegisterLine1": "We'll show the registered office address on the public register."
+            },
+            "principalPlaceOfBusinessAddress" : {
+                "title" : "Confirm the principal place of business address",
+                "publicRegisterLine1": "We'll show the principal place of business address on the public register."
+            },
+            "usualResidentialAddress": {
+                "title": "Confirm the general partner's usual residential address",
+                "publicRegisterLine1": "We will not show the general partner's usual residential address."
+            },
+            "principalOfficeAddress": {
+                "title": "Confirm the general partner's principal office address",
+                "publicRegisterLine1": "We'll show the general partner's principal office address on the public register."
+            },
+            "correspondenceAddress": {
+                "title": "Confirm the general partner's correspondence address",
+                "publicRegisterLine1": "We'll show the general partner's correspondence address on the public register."
+            },
+            "limitedPartnerUsualResidentialAddress": {
+                "title": "Confirm the limited partner's usual residential address",
+                "publicRegisterLine1": "We will not show the limited partner's usual residential address."
+            },
+            "limitedPartnerPrincipalOfficeAddress": {
+                "title": "Confirm the limited partner's principal office address",
+                "publicRegisterLine1": "We'll show the limited partner's principal office address on the public register."
+            },
+            "personWithSignificantControlPrincipalOfficeAddress": {
+                "title": "Confirm the PSC's principal office address",
+                "publicRegisterLine1": "We'll show the PSC's principal office address on the public register."
+            }
+        },
+
+        "enterAddress": {
+            "registeredOfficeAddress" : {
+                "title": "What is the registered office address of the partnership?",
+                "publicInformationLine1": "We'll show the registered office address on the public register."
+            },
+            "principalPlaceOfBusinessAddress" : {
+                "title": "What is the principal place of business?",
+                "titleHint1": "This is the address where the day to day running of the business takes place. It could be the same as the registered office address, or a different address.",
+                "titleHint2": "It must be in the jurisdiction where the partnership was formed. It can be changed to an address outside of the jurisdiction after you've registered the partnership.",
+                "publicInformationLine1": "We'll show the principal place of business on the public register."
+            },
+            "generalPartner":{
+                "usualResidentialAddress":{
+                    "title": "What is the general partner's usual residential address?",
+                    "publicInformationLine1": "We will not show the general partner's usual residential address.",
+                    "postcodeOptional": "Postcode (optional)"
+                },
+                "correspondenceAddress":{
+                    "title": "What is the general partner's correspondence address?",
+                    "titleHint1": "This is also known as the service address.",
+                    "publicInformationLine1": "We'll show the general partner's correspondence address on the public register.",
+                    "postcodeOptional": "Postcode (optional)"
+                },
+                "principalOfficeAddress": {
+                    "title": "What is the general partner's principal office address?",
+                    "hint": "This is the address for the entity's main office.",
+                    "publicInformationLine1": "We'll show the general partner's principal office address on the public register.",
+                    "postcodeOptional": "Postcode (optional)"
+                }
+            },
+            "limitedPartner":{
+                "usualResidentialAddress":{
+                    "title": "What is the limited partner's usual residential address?",
+                    "publicInformationLine1": "We will not show the limited partner's usual residential address on the public register.",
+                    "postcodeOptional": "Postcode (optional)"
+                },
+                "principalOfficeAddress":{
+                    "title": "What is the limited partner's principal office address?",
+                    "hint": "This is the address for the entity's main office.",
+                    "publicInformationLine1": "We'll show the limited partner's principal office address on the public register.",
+                    "postcodeOptional": "Postcode (optional)"
+                }
+            },
+            "personWithSignificantControl":{
+                "principalOfficeAddress":{
+                    "title": "What is the PSC's principal office address?",
+                    "hint": "This is the address for the entity's main office.",
+                    "publicInformationLine1": "We'll show the PSC's principal office address on the public register.",
+                    "postcodeOptional": "Postcode (optional)"
+                }
+            },
+            "premises": "Property name or number",
+            "premisesHint": "For example, 'The Mill', '116' or 'Flat 37a'",
+            "addressLine1": "Address line 1",
+            "addressLine2": "Address line 2 (optional)",
+            "addressLine2Title": "Address line 2",
+            "locality": "Town or city",
+            "region": "County (optional)",
+            "regionTitle": "County",
+            "postcode": "Postcode",
+            "postalCodeTitle": "Postcode",
+            "country": "Country",
+            "countrySelect": "Select a country",
+            "countryEngland": "England",
+            "countryScotland": "Scotland",
+            "countryWales": "Wales",
+            "countryNorthernIreland": "Northern Ireland"
+        },
+
+        "findPostcode": {
+            "registeredOfficeAddress": {
+                "whatIsOfficeAddress": "What is the registered office address of the partnership?",
+                "publicRegisterLine1": "We'll show the registered office address on the public register."
+            },
+
+            "principalPlaceOfBusiness": {
+                "whatIsPrincipalPlaceOfBusiness": "What is the principal place of business?",
+                "runningOfBusiness": "This is the address where the day to day running of the business takes place. It could be the same as the registered office address, or a different address.",
+                "jurisdiction": "It must be in the jurisdiction where the partnership was formed. It can be changed to an address outside of the jurisdiction after you've registered the partnership.",
+                "publicRegisterLine1": "We'll show the principal place of business on the public register."
+            },
+
+            "generalPartner":{
+                "usualResidentialAddress": {
+                    "whatIsUsualResidentialAddress": "What is the general partner's usual residential address?",
+                    "publicRegisterLine1": "We will not show the general partner's usual residential address."
+                },
+                "principalOfficeAddress": {
+                    "whatIsPrincipalOfficeAddress": "What is the general partner's principal office address?",
+                    "hint": "This is the address for the entity's main office.",
+                    "publicRegisterLine1": "We'll show the general partner's principal office address on the public register."
+                },
+                "correspondenceAddress": {
+                    "whatIsCorrespondenceAddress": "What is the general partner's correspondence address?",
+                    "titleHint": "This is also known as the service address.",
+                    "publicRegisterLine1": "We'll show the general partner's correspondence address on the public register."
+                }
+            },
+
+            "limitedPartner": {
+                "usualResidentialAddress": {
+                    "whatIsUsualResidentialAddress": "What is the limited partner's usual residential address?",
+                    "publicRegisterLine1": "We will not show the limited partner's usual residential address on the public register."
+                },
+                "principalOfficeAddress": {
+                    "whatIsPrincipalOfficeAddress": "What is the limited partner's principal office address?",
+                    "hint": "This is the address for the entity's main office.",
+                    "publicRegisterLine1": "We'll show the limited partner's principal office address on the public register."
+                }
+            },
+
+            "personWithSignificantControl": {
+                "principalOfficeAddress": {
+                    "whatIsPrincipalOfficeAddress": "Where is the PSC's principal office address?",
+                    "hint": "This is the address for the entity's main office.",
+                    "publicRegisterLine1": "We'll show the PSC's principal office address on the public register."
+                }
+            },
+
+            "nameOrNumber": "Property name or number (optional)",
+            "postcode": "Postcode",
+            "enterAddressManually": "Enter address manually",
+            "findAddress": "Find address"
+        },
+
+        "registeredOffice": {
+            "appropriateAddressDetailsLine1": "This means that:",
+            "appropriateAddressDetailsPoint1": "it is in the jurisdiction where the limited partnership is registered (England and Wales, Northern Ireland, or Scotland)",
+            "appropriateAddressDetailsPoint2": "someone acting on behalf of the limited partnership will be made aware of any post addressed and delivered to the limited partnership",
+            "appropriateAddressDetailsPoint3": "when the limited partnership receives post at this address, it's possible for the sender to get confirmation of delivery",
+            "appropriateAddressDetailsSummary": "What does 'appropriate' address mean?",
+            "appropriateAddressWarning": "The address must meet the requirements of an 'appropriate' address. If it does not, the partnership could be struck off the Companies House register.",
+            "newRequirement": "This is a new requirement. We do not hold a registered office address for the partnership yet. It may be different from the principal place of business address that we already hold.",
+            "officialCommunication": "We'll use this address to send official communications. It must be a physical address in the UK. You cannot use a PO Box address.",
+            "provideNext": "You'll need to provide the principal place of business next."
+        },
+
+        "territoryChoice": {
+            "generalPartnerPrincipalOfficeAddress": {
+                "title": "Where is the general partner's principal office address?",
+                "titleHint": "This is the address for the entity's main office.",
+                "publicRegisterInformationLine1": "We'll show the general partner's principal office address on the public register."
+            },
+            "generalPartnerUsualResidentialAddress": {
+                "title": "Where is the general partner's usual residential address?",
+                "publicRegisterInformationLine1": "We will not show this address on the public register, unless it's also used as the general partner's correspondence address."
+            },
+            "generalPartnerCorrespondenceAddress": {
+                "title": "Where is the general partner's correspondence address?",
+                "titleHint": "This is also known as the service address.",
+                "publicRegisterInformationLine1": "We'll show the general partner's correspondence address on the public register."
+            },
+            "limitedPartnerUsualResidentialAddress": {
+                "title": "Where is the limited partner's usual residential address?",
+                "publicRegisterInformationLine1": "We will not show the limited partner's usual residential address on the public register."
+            },
+            "limitedPartnerPrincipalOfficeAddress": {
+                "title": "Where is the limited partner's principal office address?",
+                "titleHint": "This is the address for the entity's main office.",
+                "publicRegisterInformationLine1": "We'll show the limited partner's principal office address on the public register."
+            },
+            "personWithSignificantControlPrincipalOfficeAddress": {
+                "title": "Where is the PSC's principal office address?",
+                "titleHint": "This is the address for the entity's main office.",
+                "publicRegisterInformationLine1": "We'll show the PSC's principal office address on the public register."
+            }
+        },
+
+        "territories": {
+            "overseas": "Overseas",
+            "unitedKingdom": "In the United Kingdom"
+        },
+
+        "update": {
+            "limitedPartnerUsualResidentialAddress": {
+                "title": "Do you need to update the limited partner's usual residential address?"
+            },
+            "usualResidentialAddress": {
+                "title": "Do you need to update this partner's usual residential address?",
+                "hint": "We cannot show you the usual residential address we currently hold"
+            },
+            "correspondenceAddress": {
+                "title": "Do you need to update this partner's correspondence address?",
+                "hint": "This is also known as the service address. This address is shown on the public register."
+            },
+            "principalOfficeAddress": {
+                "title": "Do you need to update this partner's principal office address?",
+                "hint": "This is the address for the entity's main office."
+            },
+            "limitedPartnerPrincipalOfficeAddress": {
+                "title": "Do you need to update the principal office address?"
+            }
+        }
+    }
+}

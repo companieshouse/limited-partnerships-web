@@ -1,3 +1,7 @@
+import FilingHistoryService from "../application/service/FilingHistoryService";
+import LimitedPartnershipService from "../application/service/LimitedPartnershipService";
+import TransactionService from "application/service/TransactionService";
+
 import AddressLookUpController from "../presentation/controller/addressLookUp/Controller";
 import GlobalController from "../presentation/controller/global/Controller";
 
@@ -12,14 +16,20 @@ import LimitedPartnerTransitionController from "../presentation/controller/trans
 import LimitedPartnershipPostTransitionController from "../presentation/controller/postTransition/LimitedPartnershipController";
 import GeneralPartnerPostTransitionController from "../presentation/controller/postTransition/GeneralPartnerController";
 import LimitedPartnerPostTransitionController from "../presentation/controller/postTransition/LimitedPartnerController";
+import PersonWithSignificantControlRegistrationController from "../presentation/controller/registration/PersonWithSignificantControlController";
 
 export type IDependencies = {
+  filingHistoryService: FilingHistoryService;
+  limitedPartnershipService: LimitedPartnershipService;
+  transactionService: TransactionService;
+
   globalController: GlobalController;
   addressLookUpController: AddressLookUpController;
 
   limitedPartnershipRegistrationController: LimitedPartnershipRegistrationController;
   generalPartnerRegistrationController: GeneralPartnerRegistrationController;
   limitedPartnerRegistrationController: LimitedPartnerRegistrationController;
+  personWithSignificantControlRegistrationController: PersonWithSignificantControlRegistrationController;
 
   limitedPartnershipTransitionController: LimitedPartnershipTransitionController;
   generalPartnerTransitionController: GeneralPartnerTransitionController;

@@ -1,7 +1,7 @@
 {
     "errorMessages": {
         "capitalContribution": {
-            "valueRequired": "WELSH - Contribution currency type is required",
+            "valueRequired": "WELSH - Enter the total value of all monetary and non-monetary contributions",
             "twoDecimalPlaces": "WELSH - Value must be a number with 2 decimal places",
             "moreThanZero": "WELSH - Value must be 0.01 or more",
             "noSymbols": "WELSH - Value must not include currency symbols like £, $ and €",
@@ -10,9 +10,81 @@
             "currencyRequired": "WELSH - Select the currency of the capital contribution"
         },
 
-         "address": {
+        "address": {
             "confirm": {
                 "countryMissing": "WELSH - We cannot identify the country for this address. Select Change, then select the country."
+            },
+
+            "enterAddress": {
+                "premisesMissing": "WELSH - Enter a property name or number",
+                "premisesLength": "WELSH - Property name or number must be 200 characters or less",
+                "premisesInvalid": "WELSH - Property name or number must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+    
+                "addressLine1Missing": "WELSH - Enter address line 1, typically the building and street",
+                "addressLine1Invalid": "WELSH - Address line 1 must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "addressLine1Length": "WELSH - Address line 1 must be 50 characters or less",
+    
+                "addressLine2Invalid": "WELSH - Address line 2 must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "addressLine2Length": "WELSH - Address line 2 must be 50 characters or less",
+    
+                "localityMissing": "WELSH - Enter a town or city",
+                "localityInvalid": "WELSH - Town or city must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "localityLength": "WELSH - Town or city must be 50 characters or less",
+    
+                "regionInvalid": "WELSH - County must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "regionLength": "WELSH - County must be 50 characters or less",
+    
+                "postcodeMissing": "WELSH - Enter a postcode",
+                "postcodeInvalid": "WELSH - Postcode must only include letters a to z, numbers and spaces",
+                "postcodeFormat": "WELSH - Invalid postcode format",
+                "postalCodeLength": "WELSH - Postcode must be 20 characters or less",
+    
+                "notMainland": "WELSH - Enter a UK mainland postcode",
+    
+                "countryMissing": "WELSH - Select a country",
+    
+                "jurisdictionCountry": "WELSH - You must enter a country that matches your jurisdiction",
+                "jurisdictionEnglandAndWales": "WELSH - You must enter a postcode which is in England or Wales",
+                "jurisdictionNorthernIreland": "WELSH - You must enter a postcode which is in Northern Ireland",
+                "jurisdictionScotland": "WELSH - You must enter a postcode which is in Scotland"
+            },
+
+            "postcodeLookup": {
+                "premisesInvalid": "WELSH - Property name or number must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+
+                "postcodeNotFound": "WELSH - Enter a full UK postcode",
+                "postcodeMissing": "WELSH - Enter a postcode",
+                "postcodeInvalid": "WELSH - Postcode must only include letters a to z, numbers and spaces"
+            },
+
+            "territoryChoice": {
+                "noOptionSelectedStart": "WELSH - Select if the ",
+                "noOptionSelectedEnd": " WELSH - is in the UK or overseas"
+            }
+
+        },
+
+        "checkYourAnswers": {
+            "lawfulPurposeRequired": "WELSH - Confirm that the intended future activities are lawful"
+        },
+
+        "term": {
+            "termRequired": "WELSH - Select the term of the partnership"
+        },
+
+        "partnershipType": {
+            "typeRequired": "WELSH - Select the type of partnership you are registering"
+        },
+
+        "personWithSignificantControl": {
+            "addOtherRegistrablePerson": {
+                "legalEntityNameMissing": "WELSH - Enter the other registrable person's name",
+                "legalEntityNameInvalid": "WELSH - Other registrable person's name must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+
+                "legalFormMissing": "WELSH - Enter the legal form or corporate identity",
+                "legalFormInvalid": "WELSH - Legal form or corporate identity must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+
+                "governingLawMissing": "WELSH - Enter the governing law"
             }
         },
 
@@ -20,7 +92,9 @@
             "registeredOfficeAddress": "WELSH - Date the registered office address changed must be the same as or after limited partnership’s registration date",
             "principalPlaceOfBusinessAddress": "WELSH - Date the principal place of business changed must be the same as or after limited partnership’s registration date’",
             "partnershipName": "WELSH - Date the partnership name changed must be the same as or after limited partnership’s registration date",
-            "term": "WELSH - Date the term changed must be the same as or after limited partnership’s registration date"
+            "term": "WELSH - Date the term changed must be the same as or after limited partnership’s registration date",
+            "generalPartner": "WELSH - Date the general partner changed must be the same as or after limited partnership's registration date",
+            "limitedPartner": "WELSH - Date the limited partner changed must be the same as or after limited partnership's registration date"
         }
     }
 }

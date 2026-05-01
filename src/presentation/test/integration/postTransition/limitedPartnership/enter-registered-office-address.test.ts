@@ -1,25 +1,36 @@
 import request from "supertest";
-import enTranslationText from "../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../locales/cy/translations.json";
+import { Jurisdiction } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
+
+import enGeneralTranslationText from "../../../../../../locales/en/translations.json";
+import cyGeneralTranslationText from "../../../../../../locales/cy/translations.json";
+import enAddressTranslationText from "../../../../../../locales/en/address.json";
+import cyAddressTranslationText from "../../../../../../locales/cy/address.json";
+import enErrorsTranslationText from "../../../../../../locales/en/errors.json";
+import cyErrorsTranslationText from "../../../../../../locales/cy/errors.json";
+
 import app from "../../app";
+import { appDevDependencies } from "../../../../../config/dev-dependencies";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../utils";
+import { ApiErrors } from "../../../../../domain/entities/UIErrors";
+
 import {
   ENTER_REGISTERED_OFFICE_ADDRESS_URL,
   ENTER_REGISTERED_OFFICE_ADDRESS_WITH_IDS_URL,
   WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL
 } from "../../../../controller/postTransition/url";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
-import { appDevDependencies } from "../../../../../config/dev-dependencies";
+
 import LimitedPartnershipBuilder from "../../../../../presentation/test/builder/LimitedPartnershipBuilder";
-import { Jurisdiction } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import CompanyProfileBuilder from "../../../../../presentation/test/builder/CompanyProfileBuilder";
 import PostTransitionPageType from "../../../../../presentation/controller/postTransition/pageType";
-import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 
 describe("Enter Registered Office Address Page", () => {
+  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText, ...enErrorsTranslationText };
+  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText, ...cyErrorsTranslationText };
   const URL = getUrl(ENTER_REGISTERED_OFFICE_ADDRESS_URL);
   const URL_WITH_IDS = getUrl(ENTER_REGISTERED_OFFICE_ADDRESS_WITH_IDS_URL);
 
-  let companyProfile;
+  let companyProfile: { _id: string; data: Partial<CompanyProfile> };
 
   beforeEach(() => {
     setLocalesEnabled(false);
@@ -48,6 +59,12 @@ describe("Enter Registered Office Address Page", () => {
 
       testTranslations(res.text, enTranslationText.address.registeredOffice, ["newRequirement", "provideNext"]);
       expect(res.text).not.toContain("WELSH -");
+      expect(
+        countOccurrences(
+          res.text,
+          toEscapedHtml(enTranslationText.serviceName.updateLimitedPartnershipRegisteredOfficeAddress)
+        )
+      ).toBe(2);
     });
 
     it("should load the enter registered office address page with Welsh text", async () => {
@@ -65,6 +82,12 @@ describe("Enter Registered Office Address Page", () => {
         "errorMessages"
       ]);
       testTranslations(res.text, cyTranslationText.address.registeredOffice, ["newRequirement", "provideNext"]);
+      expect(
+        countOccurrences(
+          res.text,
+          toEscapedHtml(cyTranslationText.serviceName.updateLimitedPartnershipRegisteredOfficeAddress)
+        )
+      ).toBe(2);
     });
   });
 
@@ -86,6 +109,9 @@ describe("Enter Registered Office Address Page", () => {
       const redirectUrl = getUrl(WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL);
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+      expect(appDevDependencies.transactionGateway.transactions[0].description).toEqual(
+        enTranslationText.serviceName.updateLimitedPartnershipRegisteredOfficeAddress
+      );
     });
 
     it("should redirect to the When did the ROA change page when using ids in url", async () => {
@@ -129,7 +155,7 @@ describe("Enter Registered Office Address Page", () => {
       async (url) => {
         const limitedPartnership = new LimitedPartnershipBuilder()
           .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
-          .withPartnershipName(companyProfile.data.companyName)
+          .withPartnershipName(companyProfile.data?.companyName ?? "")
           .build();
         appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
@@ -148,7 +174,7 @@ describe("Enter Registered Office Address Page", () => {
 
         expect(res.status).toBe(200);
         expect(res.text).toContain(enTranslationText.govUk.error.title);
-        expect(res.text).toContain(companyProfile.data.companyName.toUpperCase());
+        expect(res.text).toContain(companyProfile.data.companyName?.toUpperCase());
         expect(res.text).toContain("Something is invalid");
       }
     );
@@ -170,9 +196,9 @@ describe("Enter Registered Office Address Page", () => {
         });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.jurisdictionCountry);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.jurisdictionCountry);
       expect(res.text).toContain(enTranslationText.govUk.error.title);
-      expect(res.text).toContain(companyProfile.data.companyName.toUpperCase());
+      expect(res.text).toContain(companyProfile.data.companyName?.toUpperCase());
     });
 
     it("should return a validation error when jurisdiction of Northern Ireland does not match country", async () => {
@@ -191,9 +217,9 @@ describe("Enter Registered Office Address Page", () => {
         });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.jurisdictionCountry);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.jurisdictionCountry);
       expect(res.text).toContain(enTranslationText.govUk.error.title);
-      expect(res.text).toContain(companyProfile.data.companyName.toUpperCase());
+      expect(res.text).toContain(companyProfile.data.companyName?.toUpperCase());
     });
 
     it("should return a validation error when jurisdiction of England and Wales does not match country", async () => {
@@ -212,9 +238,9 @@ describe("Enter Registered Office Address Page", () => {
         });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.jurisdictionCountry);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.jurisdictionCountry);
       expect(res.text).toContain(enTranslationText.govUk.error.title);
-      expect(res.text).toContain(companyProfile.data.companyName.toUpperCase());
+      expect(res.text).toContain(companyProfile.data.companyName?.toUpperCase());
     });
 
     it("should return a validation error when postcode format is invalid", async () => {
@@ -233,9 +259,9 @@ describe("Enter Registered Office Address Page", () => {
         });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.postcodeFormat);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.postcodeFormat);
       expect(res.text).toContain(enTranslationText.govUk.error.title);
-      expect(res.text).toContain(companyProfile.data.companyName.toUpperCase());
+      expect(res.text).toContain(companyProfile.data.companyName?.toUpperCase());
     });
 
     it("should not return validation errors when address fields contain valid but non alpha-numeric characters", async () => {
@@ -279,43 +305,20 @@ describe("Enter Registered Office Address Page", () => {
           address_line_2: "±",
           locality: "±",
           region: "±",
-          postal_code: "±"
+          postal_code: "±",
+          country: "±"
         });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(
-        enTranslationText.address.enterAddress.premises +
-          " " +
-          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
-      );
-      expect(res.text).toContain(
-        enTranslationText.address.enterAddress.addressLine1 +
-          " " +
-          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
-      );
-      expect(res.text).toContain(
-        enTranslationText.address.enterAddress.addressLine2Title +
-          " " +
-          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
-      );
-      expect(res.text).toContain(
-        enTranslationText.address.enterAddress.locality +
-          " " +
-          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
-      );
-      expect(res.text).toContain(
-        enTranslationText.address.enterAddress.regionTitle +
-          " " +
-          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
-      );
-      expect(res.text).toContain(
-        enTranslationText.address.enterAddress.postcode +
-          " " +
-          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
-      );
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.premisesInvalid);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.addressLine1Invalid);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.addressLine2Invalid);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.localityInvalid);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.regionInvalid);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.postcodeInvalid);
 
       expect(res.text).toContain(enTranslationText.govUk.error.title);
-      expect(res.text).toContain(companyProfile.data.companyName.toUpperCase());
+      expect(res.text).toContain(companyProfile.data.companyName?.toUpperCase());
     });
 
     it("should return validation errors when address fields exceed character limit", async () => {
@@ -338,11 +341,11 @@ describe("Enter Registered Office Address Page", () => {
         });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.premisesLength);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.addressLine1Length);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.addressLine2Length);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.localityLength);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.regionLength);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.premisesLength);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.addressLine1Length);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.addressLine2Length);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.localityLength);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.regionLength);
     });
   });
 });

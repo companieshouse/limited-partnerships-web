@@ -31,11 +31,8 @@ describe("Add Limited Partner Person Page", () => {
 
   describe("Get Add Limited Partner Page", () => {
     it("should load the add limited partner page with Welsh text", async () => {
-      const limitedPartnership = new LimitedPartnershipBuilder().build();
-
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
       setLocalesEnabled(true);
+
       const res = await request(app).get(URL + "?lang=cy");
 
       expect(res.status).toBe(200);
@@ -56,11 +53,8 @@ describe("Add Limited Partner Person Page", () => {
     });
 
     it("should load the add limited partner page with English text", async () => {
-      const limitedPartnership = new LimitedPartnershipBuilder().build();
-
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
       setLocalesEnabled(true);
+
       const res = await request(app).get(URL + "?lang=en");
 
       expect(res.status).toBe(200);
@@ -118,6 +112,7 @@ describe("Add Limited Partner Person Page", () => {
         .build();
 
       appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
+
       const res = await request(app).get(getUrl(ADD_LIMITED_PARTNER_PERSON_WITH_ID_URL) + "?lang=en");
 
       expect(res.status).toBe(200);
@@ -130,7 +125,8 @@ describe("Add Limited Partner Person Page", () => {
 
     it("should contain a back link to the choice page when limited partners are not present", async () => {
       appDevDependencies.limitedPartnerGateway.feedLimitedPartners([]);
-      const res = await request(app).get(getUrl(ADD_LIMITED_PARTNER_PERSON_WITH_ID_URL) + "?lang=en");
+
+      const res = await request(app).get(getUrl(ADD_LIMITED_PARTNER_PERSON_URL) + "?lang=en");
 
       expect(res.status).toBe(200);
 
@@ -174,13 +170,6 @@ describe("Add Limited Partner Person Page", () => {
     });
 
     it("should replay entered data when invalid data is entered and a validation error occurs", async () => {
-      const limitedPartner = new LimitedPartnerBuilder()
-        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isPerson()
-        .build();
-
-      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
-
       const apiErrors: ApiErrors = {
         errors: { forename: "limited partner name is invalid" }
       };

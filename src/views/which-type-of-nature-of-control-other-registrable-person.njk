@@ -1,0 +1,15 @@
+{% extends "layout.njk" %}
+{% set pageTitle = i18n.personWithSignificantControl.whichTypeOfNatureOfControlPage.otherRegistrablePerson.title %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form class="form" method="post">
+        <input type="hidden" name="pageType" value={{ props.pageType }}>
+          {% include "includes/csrf_token.njk" %}
+
+          {% include "pages/natureOfControl/which-type-of-nature-of-control.njk" %}
+      </form>
+    </div>
+  </div>
+{% endblock %}

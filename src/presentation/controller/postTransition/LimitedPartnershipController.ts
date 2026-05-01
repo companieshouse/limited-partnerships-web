@@ -21,11 +21,10 @@ import {
   CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE,
   TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNERSHIP,
   CHS_URL,
-  TRANSACTION_DESCRIPTION_DESIGNATE_AS_PRIVATE_FUND_PARTNERSHIP
+  TRANSACTION_DESCRIPTION_DESIGNATE_AS_PRIVATE_FUND_PARTNERSHIP,
+  JOURNEY_QUERY_PARAM
 } from "../../../config/constants";
-import { formatDate } from "../../../utils/date-format";
 import { getJourneyTypes } from "../../../utils";
-
 import CompanyService from "../../../application/service/CompanyService";
 import CacheService from "../../../application/service/CacheService";
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
@@ -232,8 +231,9 @@ class LimitedPartnershipController extends AbstractController {
           }
         }
 
+        const transactionDescription = response.locals.serviceName ?? TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNERSHIP;
         const resultTransaction = await this.createTransaction(
-          limitedPartnership, tokens, TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNERSHIP);
+          limitedPartnership, tokens, transactionDescription);
         if (resultTransaction.errors) {
           return response.render(
             super.templateName(pageRouting.currentUrl),
@@ -370,13 +370,6 @@ class LimitedPartnershipController extends AbstractController {
 
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
 
-        if (limitedPartnership?.data?.date_of_update) {
-          limitedPartnership.data.date_of_update = formatDate(
-            limitedPartnership.data.date_of_update,
-            response.locals.i18n
-          );
-        }
-
         response.render(
           CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE,
           super.makeProps(pageRouting, { limitedPartnership, cache }, null)
@@ -395,6 +388,11 @@ class LimitedPartnershipController extends AbstractController {
         let redirectUrl = super
           .insertIdsInUrl(CONFIRMATION_POST_TRANSITION_URL, ids, request.url)
           .replace(JOURNEY_TYPE_PARAM, getJourneyTypes(request.url).journey);
+
+        if (response.locals?.serviceName) {
+          const serviceName = response.locals?.serviceName.toLowerCase().replace(/\s+/g, "-");
+          redirectUrl = this.addOrAppendQueryParam(redirectUrl, JOURNEY_QUERY_PARAM, serviceName);
+        }
 
         const closeTransactionResponse = await this.limitedPartnershipService.closeTransaction(
           tokens,
@@ -466,7 +464,7 @@ class LimitedPartnershipController extends AbstractController {
           PartnershipKind.UPDATE_PARTNERSHIP_REDESIGNATE_TO_PFLP,
           {
             ...request.body,
-            date_of_update: new Date().toISOString().split('T')[0]
+            date_of_update: new Date().toISOString().split("T")[0]
           }
         );
         if (resultLimitedPartnershipCreate.errors) {
@@ -485,6 +483,11 @@ class LimitedPartnershipController extends AbstractController {
         let redirectUrl = super
           .insertIdsInUrl(CONFIRMATION_POST_TRANSITION_URL, newIds, request.url)
           .replace(JOURNEY_TYPE_PARAM, getJourneyTypes(request.url).journey);
+
+        if (response.locals?.serviceName) {
+          const serviceName = response.locals?.serviceName.toLowerCase().replace(/\s+/g, "-");
+          redirectUrl = this.addOrAppendQueryParam(redirectUrl, JOURNEY_QUERY_PARAM, serviceName);
+        }
 
         const closeTransactionResponse = await this.limitedPartnershipService.closeTransaction(
           tokens,
@@ -541,9 +544,7 @@ class LimitedPartnershipController extends AbstractController {
       region
     };
 
-    errors = this.addressService.validateAddressCharactersAndLength(address, errors);
-
-    errors = this.addressService.isValidPostcode(postal_code ?? "", country, errors);
+    errors = this.addressService.runValidation(address);
 
     if (partnershipKind !== PartnershipKind.UPDATE_PARTNERSHIP_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS) {
       errors = this.addressService.isValidJurisdictionAndCountry(
@@ -557,7 +558,7 @@ class LimitedPartnershipController extends AbstractController {
   }
 
   private async getLimitedPartnership(ids: Ids, tokens: Tokens): Promise<LimitedPartnership> {
-    let limitedPartnership = {};
+    let limitedPartnership: LimitedPartnership;
 
     if (ids.transactionId && ids.submissionId) {
       limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(

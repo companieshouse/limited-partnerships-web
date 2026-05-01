@@ -6,6 +6,7 @@ import {
   COMPANY_ID,
   GENERAL_PARTNER_ID,
   LIMITED_PARTNER_ID,
+  PERSON_WITH_SIGNIFICANT_CONTROL_ID,
   POST_TRANSITION_BASE_URL,
   REGISTRATION_BASE_URL,
   SUBMISSION_ID,
@@ -20,7 +21,7 @@ import { Ids, Tokens } from "../../domain/types";
 
 // This class is global and must not contain anything specific to a journey or entity
 abstract class AbstractController {
-  protected getRouting(routing: PagesRouting, pageType: PageType, request: Request) {
+  public getRouting(routing: PagesRouting, pageType: PageType, request: Request) {
     let pageRouting = { ...routing.get(pageType) } as PageRouting;
 
     if (!pageRouting) {
@@ -33,6 +34,7 @@ abstract class AbstractController {
       submissionId: request.params[SUBMISSION_ID],
       generalPartnerId: request.params[GENERAL_PARTNER_ID],
       limitedPartnerId: request.params[LIMITED_PARTNER_ID],
+      personWithSignificantControlId: request.params[PERSON_WITH_SIGNIFICANT_CONTROL_ID],
       appointmentId: request.params[APPOINTMENT_ID]
     } as Ids;
 
@@ -66,11 +68,11 @@ abstract class AbstractController {
     };
   }
 
-  protected extract(request: Request) {
+  public extract(request: Request) {
     const session = request.session as Session;
     const tokens = this.extractTokens(request);
     const pageType = this.pageType(request.path);
-    const { companyId, transactionId, submissionId, generalPartnerId, limitedPartnerId, appointmentId } =
+    const { companyId, transactionId, submissionId, generalPartnerId, limitedPartnerId, personWithSignificantControlId, appointmentId } =
       this.extractIds(request);
 
     return {
@@ -83,6 +85,7 @@ abstract class AbstractController {
         submissionId,
         generalPartnerId,
         limitedPartnerId,
+        personWithSignificantControlId,
         appointmentId
       }
     };
@@ -95,6 +98,10 @@ abstract class AbstractController {
   }
 
   insertIdsInUrl(url: string, ids: Ids, requestUrl?: string): string {
+    if (!url) {
+      return url;
+    }
+
     if (requestUrl) {
       const requestUrlParam = requestUrl.split("?")[1];
       const urlParam = url.split("?")[1];
@@ -108,11 +115,12 @@ abstract class AbstractController {
     url = this.insertSubmissionId(url, ids.submissionId);
     url = this.insertGeneralPartnerId(url, ids.generalPartnerId);
     url = this.insertLimitedPartnerId(url, ids.limitedPartnerId);
+    url = this.insertPersonWithSignificantControlId(url, ids.personWithSignificantControlId);
     url = this.insertAppointmentId(url, ids.appointmentId);
     return url;
   }
 
-  protected insertCompanyId(url: string, companyId: string): string {
+  public insertCompanyId(url: string, companyId: string): string {
     return companyId ? url.replace(`:${COMPANY_ID}`, companyId) : url;
   }
 
@@ -130,6 +138,12 @@ abstract class AbstractController {
 
   protected insertLimitedPartnerId(url: string, limitedPartnerId?: string): string {
     return limitedPartnerId ? url.replace(`:${LIMITED_PARTNER_ID}`, limitedPartnerId) : url;
+  }
+
+  protected insertPersonWithSignificantControlId(url: string, personWithSignificantControlId?: string): string {
+    return personWithSignificantControlId
+      ? url.replace(`:${PERSON_WITH_SIGNIFICANT_CONTROL_ID}`, personWithSignificantControlId)
+      : url;
   }
 
   protected insertAppointmentId(url: string, appointmentId?: string): string {
@@ -172,7 +186,7 @@ abstract class AbstractController {
     return pageType;
   }
 
-  protected extractTokens(request: Request): Tokens {
+  public extractTokens(request: Request): Tokens {
     return {
       access_token: request?.session?.data?.signin_info?.access_token?.access_token ?? "",
       refresh_token: request?.session?.data?.signin_info?.access_token?.refresh_token ?? ""
@@ -180,14 +194,15 @@ abstract class AbstractController {
   }
 
   protected extractIds(request: Request): Ids {
-    const companyId = request.params.companyId;
-    const transactionId = request.params.transactionId;
-    const submissionId = request.params.submissionId;
-    const generalPartnerId = request.params.generalPartnerId;
-    const limitedPartnerId = request.params.limitedPartnerId;
-    const appointmentId = request.params.appointmentId;
+    const companyId = request.params.companyId as string;
+    const transactionId = request.params.transactionId as string;
+    const submissionId = request.params.submissionId as string;
+    const generalPartnerId = request.params.generalPartnerId as string;
+    const limitedPartnerId = request.params.limitedPartnerId as string;
+    const personWithSignificantControlId = request.params.personWithSignificantControlId as string;
+    const appointmentId = request.params.appointmentId as string;
 
-    return { transactionId, submissionId, companyId, generalPartnerId, limitedPartnerId, appointmentId };
+    return { transactionId, submissionId, companyId, generalPartnerId, limitedPartnerId, personWithSignificantControlId, appointmentId };
   }
 
   protected getPreviousPageUrl(request: Request) {
@@ -209,6 +224,17 @@ abstract class AbstractController {
     }
 
     return PARTNERSHIP_TYPE_URL;
+  }
+
+  protected addOrAppendQueryParam(url: string, key: string, value: string): string {
+    const [base, query] = url.split("?");
+    const params = new URLSearchParams(query || "");
+
+    params.set(key, value);
+
+    const paramString = params.toString();
+
+    return paramString ? `${base}?${paramString}` : base;
   }
 }
 

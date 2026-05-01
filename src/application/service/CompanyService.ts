@@ -29,8 +29,13 @@ class CompanyService {
     limitedPartnership: Partial<LimitedPartnership & DataIncludingPartners>;
     errors?: UIErrors;
   }> {
-    const { companyProfile, errors } = await this.getCompanyProfile(opt, company_number);
     let limitedPartnership: Partial<LimitedPartnership & DataIncludingPartners> = {};
+
+    if (!company_number) {
+      return { limitedPartnership };
+    }
+
+    const { companyProfile, errors } = await this.getCompanyProfile(opt, company_number);
 
     if (companyProfile.companyName) {
       const partners = await this.getPartners(errors, opt, company_number);
@@ -73,48 +78,21 @@ class CompanyService {
         data: {
           appointment_id: appointment_id,
           service_address: {
-            address_line_1: companyAppointment?.address?.addressLine1,
+            address_line_1: companyAppointment?.address?.addressLine1 ?? "",
             address_line_2: companyAppointment?.address?.addressLine2,
-            premises: companyAppointment?.address?.premises,
-            locality: companyAppointment?.address?.locality,
+            premises: companyAppointment?.address?.premises ?? "",
+            locality: companyAppointment?.address?.locality ?? "",
             region: companyAppointment?.address?.region,
-            country: companyAppointment?.address?.country,
-            postal_code: companyAppointment?.address?.postalCode
+            country: companyAppointment?.address?.country ?? "",
+            postal_code: companyAppointment?.address?.postalCode ?? ""
           }
         }
-      } as GeneralPartner;
+      };
 
       if (companyAppointment?.nationality) {
-        const name = companyAppointment?.name?.split(", ") ?? [];
-        const nationality = companyAppointment?.nationality?.split(",") ?? [];
-        let date_of_birth = "";
-
-        if (companyAppointment?.dateOfBirth?.day) {
-          const day = companyAppointment?.dateOfBirth?.day?.padStart(2, "0") ?? "01";
-          const month = companyAppointment?.dateOfBirth?.month?.padStart(2, "0") ?? "01";
-          const year = companyAppointment?.dateOfBirth?.year ?? "1900";
-          date_of_birth = `${year}-${month}-${day}`;
-        }
-
-        partner = {
-          data: {
-            ...partner.data,
-            forename: name[1] ?? "",
-            surname: name[0] ?? "",
-            nationality1: nationality[0] ?? "",
-            nationality2: nationality[1] ?? undefined,
-            date_of_birth
-          }
-        };
+        partner = this.buildPersonPartner(partner, companyAppointment);
       } else {
-        const name = companyAppointment?.name?.split(", ") ?? [];
-
-        partner = {
-          data: {
-            ...partner.data,
-            legal_entity_name: name[0] ?? ""
-          }
-        };
+        partner = this.buildLegalEntityPartner(partner, companyAppointment);
       }
 
       return { partner };
@@ -132,6 +110,70 @@ class CompanyService {
         errors
       };
     }
+  }
+
+  private buildPersonPartner(
+    partner: Partial<GeneralPartner> | Partial<LimitedPartner>,
+    companyAppointment: Partial<CompanyOfficer>
+  ): GeneralPartner | LimitedPartner {
+    const [surname, forename] = companyAppointment?.name?.split(", ") ?? [];
+    const nationality = companyAppointment?.nationality?.split(",") ?? [];
+    let date_of_birth = "";
+
+    if (companyAppointment?.dateOfBirth?.day) {
+      const day = companyAppointment?.dateOfBirth?.day?.padStart(2, "0") ?? "01";
+      const month = companyAppointment?.dateOfBirth?.month?.padStart(2, "0") ?? "01";
+      const year = companyAppointment?.dateOfBirth?.year ?? "1900";
+      date_of_birth = `${year}-${month}-${day}`;
+    }
+
+    return {
+      data: {
+        ...partner.data,
+        forename: forename ?? "",
+        surname: surname ?? "",
+        nationality1: nationality[0],
+        nationality2: nationality[1] ? nationality[1] : undefined,
+        date_of_birth
+      }
+    };
+  }
+
+  private buildLegalEntityPartner(
+    partner: Partial<GeneralPartner> | Partial<LimitedPartner>,
+    companyAppointment: Partial<CompanyOfficer>
+  ): GeneralPartner | LimitedPartner {
+    const name = companyAppointment?.name ?? "";
+    const legalForm = companyAppointment?.identification?.legalForm ?? "";
+    const governingLaw = companyAppointment?.identification?.legalAuthority ?? "";
+    const legalEntityRegistrationName = companyAppointment?.identification?.placeRegistered ?? "";
+    const legalEntityRegistrationLocation = this.toTitleCase(companyAppointment?.identification?.registerLocation ?? "");
+    const registeredCompanyNumber = companyAppointment?.identification?.registrationNumber ?? "";
+    let principalOfficeAddress;
+    if (companyAppointment?.principalOfficeAddress) {
+      principalOfficeAddress = {
+        address_line_1: companyAppointment?.principalOfficeAddress?.addressLine1,
+        address_line_2: companyAppointment?.principalOfficeAddress?.addressLine2,
+        premises: companyAppointment?.principalOfficeAddress?.premises,
+        locality: companyAppointment?.principalOfficeAddress?.locality,
+        region: companyAppointment?.principalOfficeAddress?.region,
+        country: companyAppointment?.principalOfficeAddress?.country,
+        postal_code: companyAppointment?.principalOfficeAddress?.postalCode
+      };
+    }
+
+    return {
+      data: {
+        ...partner.data,
+        legal_entity_name: name,
+        legal_form: legalForm ?? "",
+        governing_law: governingLaw ?? "",
+        legal_entity_register_name: legalEntityRegistrationName ?? "",
+        legal_entity_registration_location: legalEntityRegistrationLocation ?? "",
+        registered_company_number: registeredCompanyNumber ?? "",
+        principal_office_address: principalOfficeAddress
+      }
+    };
   }
 
   private async getCompanyProfile(
@@ -265,6 +307,12 @@ class CompanyService {
       country: address?.country ?? "",
       postal_code: address?.postalCode ?? ""
     };
+  }
+
+  private toTitleCase(str: any) {
+    return str.toLowerCase().split(' ').map((word: any) => {
+      return (word.charAt(0).toUpperCase() + word.slice(1));
+    }).join(' ');
   }
 }
 

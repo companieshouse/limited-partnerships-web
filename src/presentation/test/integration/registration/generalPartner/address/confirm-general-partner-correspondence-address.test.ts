@@ -1,23 +1,29 @@
 import request from "supertest";
 
-import app from "../../../app";
-import enTranslationText from "../../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../../locales/cy/translations.json";
+import enGeneralTranslationText from "../../../../../../../locales/en/translations.json";
+import cyGeneralTranslationText from "../../../../../../../locales/cy/translations.json";
+import enAddressTranslationText from "../../../../../../../locales/en/address.json";
+import cyAddressTranslationText from "../../../../../../../locales/cy/address.json";
 import enErrorMessages from "../../../../../../../locales/en/errors.json";
 import cyErrorMessages from "../../../../../../../locales/cy/errors.json";
 
+import app from "../../../app";
+import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
+
 import {
   CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL
 } from "../../../../../controller/addressLookUp/url/registration";
 import { REVIEW_GENERAL_PARTNERS_URL } from "../../../../../controller/registration/url";
-import { appDevDependencies } from "../../../../../../config/dev-dependencies";
+
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import GeneralPartnerBuilder from "../../../../builder/GeneralPartnerBuilder";
 
 describe("Confirm General Partner Correspondence Address Page", () => {
+  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
+  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText };
   const URL = getUrl(CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL);
 
   beforeEach(() => {
@@ -128,17 +134,20 @@ describe("Confirm General Partner Correspondence Address Page", () => {
     });
 
     it.each([
-      [ "en", enErrorMessages ],
-      [ "cy", cyErrorMessages ]
-    ])("should show validation error message if validation error occurs when saving address with lang %s", async (lang: string, errorMessagesJson: any) => {
-      setLocalesEnabled(true);
-      const res = await request(app).post(`${URL}?lang=${lang}`).send({
-        pageType: AddressPageType.confirmGeneralPartnerCorrespondenceAddress,
-        address: `{"postal_code": "ST6 3LJ","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": ""}`
-      });
+      ["en", enErrorMessages],
+      ["cy", cyErrorMessages]
+    ])(
+      "should show validation error message if validation error occurs when saving address with lang %s",
+      async (lang: string, errorMessagesJson: any) => {
+        setLocalesEnabled(true);
+        const res = await request(app).post(`${URL}?lang=${lang}`).send({
+          pageType: AddressPageType.confirmGeneralPartnerCorrespondenceAddress,
+          address: `{"postal_code": "ST6 3LJ","premises": "4","address_line_1": "DUNCALF STREET","address_line_2": "","locality": "STOKE-ON-TRENT","country": ""}`
+        });
 
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(errorMessagesJson.errorMessages.address.confirm.countryMissing);
-    });
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(errorMessagesJson.errorMessages.address.confirm.countryMissing);
+      }
+    );
   });
 });

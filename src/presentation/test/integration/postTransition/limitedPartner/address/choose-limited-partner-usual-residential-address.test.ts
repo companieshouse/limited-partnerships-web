@@ -1,19 +1,41 @@
 import request from "supertest";
-import enTranslationText from "../../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../../locales/cy/translations.json";
+import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+
+import enGeneralTranslationText from "../../../../../../../locales/en/translations.json";
+import cyGeneralTranslationText from "../../../../../../../locales/cy/translations.json";
+import enAddressTranslationText from "../../../../../../../locales/en/address.json";
+import cyAddressTranslationText from "../../../../../../../locales/cy/address.json";
+
 import app from "../../../app";
+import { appDevDependencies } from "../../../../../../config/dev-dependencies";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
+import * as config from "../../../../../../config";
+
 import {
   CHOOSE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "../../../../../controller/addressLookUp/url/postTransition";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
-import { appDevDependencies } from "../../../../../../config/dev-dependencies";
-import * as config from "../../../../../../config";
+
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
+import TransactionBuilder from "../../../../builder/TransactionBuilder";
+import LimitedPartnerBuilder from "../../../../builder/LimitedPartnerBuilder";
 
 describe("Choose usual residential address of the limited partner page", () => {
+  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
+  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText };
+  const URL = getUrl(CHOOSE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
+  const REDIRECT_URL = getUrl(CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
+
   beforeEach(() => {
     setLocalesEnabled(false);
+
+    const limitedPartner = new LimitedPartnerBuilder()
+      .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+      .isPerson()
+      .build();
+
+    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
+
     appDevDependencies.addressLookUpGateway.setError(false);
     appDevDependencies.cacheRepository.feedCache({
       [appDevDependencies.transactionGateway.transactionId]: {
@@ -27,10 +49,10 @@ describe("Choose usual residential address of the limited partner page", () => {
         }
       }
     });
-  });
 
-  const URL = getUrl(CHOOSE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
-  const REDIRECT_URL = getUrl(CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
+    const transaction = new TransactionBuilder().withKind(PartnerKind.ADD_LIMITED_PARTNER_PERSON).build();
+    appDevDependencies.transactionGateway.feedTransactions([transaction]);
+  });
 
   describe("GET choose usual residential address of the limited partner page", () => {
     it("should load the choose usual residential address of the limited partner page with Welsh text", async () => {
@@ -40,6 +62,7 @@ describe("Choose usual residential address of the limited partner page", () => {
 
       expect(res.status).toBe(200);
       testTranslations(res.text, cyTranslationText.address.chooseAddress.limitedPartnerUsualResidentialAddress);
+      expect(countOccurrences(res.text, cyTranslationText.serviceName.addLimitedPartner)).toBe(2);
     });
 
     it("should load the choose usual residential address of the limited partner page with English text", async () => {
@@ -49,6 +72,7 @@ describe("Choose usual residential address of the limited partner page", () => {
 
       expect(res.status).toBe(200);
       testTranslations(res.text, enTranslationText.address.chooseAddress.limitedPartnerUsualResidentialAddress);
+      expect(countOccurrences(res.text, enTranslationText.serviceName.addLimitedPartner)).toBe(2);
     });
 
     it("should populate the address list", async () => {

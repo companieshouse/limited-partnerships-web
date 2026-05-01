@@ -11,6 +11,8 @@ import {
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
+import enErrorMessages from "../../../../../locales/en/errors.json";
+import cyErrorMessages from "../../../../../locales/cy/errors.json";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import {
   APPLICATION_CACHE_KEY,
@@ -39,6 +41,7 @@ describe("Which type Page", () => {
     testTranslations(res.text, enTranslationText.types);
     expect(res.text).toContain(enTranslationText.buttons.continue);
     expect(res.text).toContain(SERVICE_NAME_REGISTRATION);
+    expect(res.text).not.toContain(enErrorMessages.errorMessages.partnershipType.typeRequired);
   });
 
   it("should load the partnership-type page with Welsh text", async () => {
@@ -50,6 +53,7 @@ describe("Which type Page", () => {
     testTranslations(res.text, cyTranslationText.partnershipTypePage);
     expect(res.text).toContain(cyTranslationText.buttons.continue);
     expect(res.text).toContain(SERVICE_NAME_REGISTRATION);
+    expect(res.text).not.toContain(cyErrorMessages.errorMessages.partnershipType.typeRequired);
   });
 
   it("should redirect to name page and cache contains the type selected", async () => {
@@ -124,5 +128,48 @@ describe("Which type Page", () => {
 
     expect(res.status).toBe(302);
     expect(res.text).toContain(`Redirecting to ${NAME_URL}`);
+  });
+
+  it.each([
+    ["English", "en", enTranslationText, enErrorMessages],
+    ["Welsh", "cy", cyTranslationText, cyErrorMessages]
+  ])(
+    "should re-render the page with an error summary in %s when no partnership type is selected",
+    async (
+      _description: string,
+      lang: string,
+      translationText: Record<string, any>,
+      errorMessages: Record<string, any>
+    ) => {
+      setLocalesEnabled(true);
+
+      const res = await request(app)
+        .post(PARTNERSHIP_TYPE_URL + `?lang=${lang}`)
+        .send({
+          pageType: RegistrationPageType.partnershipType
+        });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(errorMessages.errorMessages.partnershipType.typeRequired);
+      expect(res.text).toContain('href="#parameter"');
+      expect(res.text).toContain(translationText.govUk.error.title);
+      expect(appDevDependencies.cacheRepository.cache).toBeNull();
+    }
+  );
+
+  it("should re-render the page with an error summary when an invalid partnership type is submitted", async () => {
+    setLocalesEnabled(true);
+
+    const res = await request(app)
+      .post(PARTNERSHIP_TYPE_URL + "?lang=en")
+      .send({
+        pageType: RegistrationPageType.partnershipType,
+        parameter: "INVALID"
+      });
+
+    expect(res.status).toBe(200);
+    expect(res.text).toContain(enErrorMessages.errorMessages.partnershipType.typeRequired);
+    expect(res.text).toContain('href="#parameter"');
+    expect(appDevDependencies.cacheRepository.cache).toBeNull();
   });
 });

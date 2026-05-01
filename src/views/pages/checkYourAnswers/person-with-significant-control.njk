@@ -1,0 +1,66 @@
+{% set isRle = item.data.type === "RELEVANT_LEGAL_ENTITY" %}
+{% if isRle and item.data.legal_entity_registration_location %}
+  {% set country = i18n.countries[macros.makeCamelCase(item.data.legal_entity_registration_location)] %}
+{% endif %}
+
+{{ govukSummaryList({
+  classes: "govuk-!-margin-bottom-7",
+  rows: [
+    {
+      key: {
+        text: i18n.checkYourAnswersPage.partners.legalEntity.name
+      },
+      value: {
+        text: item.data.legal_entity_name
+      }
+    },
+    {
+      key: {
+        text: i18n.checkYourAnswersPage.partners.legalEntity.legalForm
+      },
+      value: {
+        text: item.data.legal_form
+      }
+    },
+    {
+      key: {
+        text: i18n.checkYourAnswersPage.partners.legalEntity.governingLaw
+      },
+      value: {
+        text: item.data.governing_law
+      }
+    },
+    {
+      key: {
+        text: i18n.checkYourAnswersPage.partners.legalEntity.register
+      },
+      value: {
+        text: item.data.legal_entity_register_name
+      }
+    } if isRle,
+    {
+      key: {
+        text: i18n.checkYourAnswersPage.partners.legalEntity.countryRegisteredIn
+      },
+      value: {
+        text: country
+      }
+    } if isRle,
+    {
+      key: {
+        text: i18n.checkYourAnswersPage.partners.legalEntity.registrationNumber
+      },
+      value: {
+        text: item.data.registered_company_number
+      }
+    } if isRle,
+    {
+      key: {
+        text: i18n.checkYourAnswersPage.partners.legalEntity.principalOfficeAddress
+      },
+      value: {
+        text: macros.formatAddress(item.data.principal_office_address, true, i18n)
+      }
+    }
+  ]
+}) }}

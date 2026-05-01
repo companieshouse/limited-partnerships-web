@@ -1,7 +1,8 @@
 import {
   CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX,
   DATE_OF_UPDATE_TYPE_PREFIX,
-  REMOVE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX
+  REMOVE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX,
+  UPDATE_ADDRESS_YES_NO_TYPE_SUFFIX
 } from "../../../config/constants";
 
 enum PostTransitionPageType {
@@ -49,7 +50,30 @@ enum PostTransitionPageType {
 
   redesignateToPflp = "redesignate-to-pflp",
 
-  updateGeneralPartnerPerson = "update-general-partner-person"
+  updateGeneralPartnerPerson = "update-general-partner-person",
+  updateGeneralPartnerUsualResidentialAddressYesNo = `update-general-partner-usual-residential-${UPDATE_ADDRESS_YES_NO_TYPE_SUFFIX}`,
+  updateCorrespondenceAddressYesNo = `update-correspondence-${UPDATE_ADDRESS_YES_NO_TYPE_SUFFIX}`,
+  whenDidGeneralPartnerPersonDetailsChange = `${DATE_OF_UPDATE_TYPE_PREFIX}-general-partner-person-details-change`,
+  updateGeneralPartnerPersonCheckYourAnswers = `general-partner-person-${CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX}`,
+
+  updateGeneralPartnerLegalEntity = "update-general-partner-legal-entity",
+  updateGeneralPartnerPrincipalOfficeAddressYesNo = `update-general-partner-principal-office-${UPDATE_ADDRESS_YES_NO_TYPE_SUFFIX}`,
+  whenDidGeneralPartnerLegalEntityDetailsChange = `${DATE_OF_UPDATE_TYPE_PREFIX}-general-partner-legal-entity-details-change`,
+  updateGeneralPartnerLegalEntityCheckYourAnswers = `general-partner-legal-entity-${CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX}`,
+
+  updateGeneralPartnerStopScreenNoChange = "update-general-partner-stop-screen-no-change",
+
+  updateLimitedPartnerPerson = "update-limited-partner-person",
+  updateLimitedPartnerUsualResidentialAddressYesNo = `update-limited-partner-usual-residential-${UPDATE_ADDRESS_YES_NO_TYPE_SUFFIX}`,
+  whenDidLimitedPartnerPersonDetailsChange = `${DATE_OF_UPDATE_TYPE_PREFIX}-limited-partner-person-details-change`,
+  updateLimitedPartnerPersonCheckYourAnswers = `limited-partner-person-${CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX}`,
+
+  updateLimitedPartnerLegalEntity = "update-limited-partner-legal-entity",
+  updateLimitedPartnerPrincipalOfficeAddressYesNo = `update-limited-partner-principal-office-${UPDATE_ADDRESS_YES_NO_TYPE_SUFFIX}`,
+  whenDidLimitedPartnerLegalEntityDetailsChange = `${DATE_OF_UPDATE_TYPE_PREFIX}-limited-partner-legal-entity-details-change`,
+  updateLimitedPartnerLegalEntityCheckYourAnswers = `limited-partner-legal-entity-${CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX}`,
+
+  updateLimitedPartnerStopScreenNoChange = "update-limited-partner-stop-screen-no-change"
 }
 
 const CeaseDatePageTypes: string[] = [
@@ -59,8 +83,33 @@ const CeaseDatePageTypes: string[] = [
   PostTransitionPageType.whenDidTheLimitedPartnerLegalEntityCease
 ];
 
-export function isCeaseDatePage(pageType: string): boolean {
+export const isCeaseDatePage = (pageType: string): boolean => {
   return CeaseDatePageTypes.includes(pageType);
-}
+};
+
+const whenDidChangeUpdatePageTypes: string[] = [
+  PostTransitionPageType.whenDidGeneralPartnerPersonDetailsChange,
+  PostTransitionPageType.whenDidGeneralPartnerLegalEntityDetailsChange,
+  PostTransitionPageType.whenDidLimitedPartnerPersonDetailsChange,
+  PostTransitionPageType.whenDidLimitedPartnerLegalEntityDetailsChange
+];
+
+export const isWhenDidChangeUpdatePage = (pageType: string): boolean => {
+  return whenDidChangeUpdatePageTypes.includes(pageType);
+};
+
+const legalEntityPageTypes: string[] = [
+  PostTransitionPageType.addGeneralPartnerLegalEntity,
+  PostTransitionPageType.whenDidTheGeneralPartnerLegalEntityCease,
+  PostTransitionPageType.addLimitedPartnerLegalEntity,
+  PostTransitionPageType.whenDidTheLimitedPartnerLegalEntityCease,
+  PostTransitionPageType.updateGeneralPartnerLegalEntity,
+  PostTransitionPageType.updateLimitedPartnerLegalEntity,
+  PostTransitionPageType.whenDidLimitedPartnerLegalEntityDetailsChange
+];
+
+export const isLegalEntity = (pageType: string): boolean => {
+  return legalEntityPageTypes.includes(pageType);
+};
 
 export default PostTransitionPageType;

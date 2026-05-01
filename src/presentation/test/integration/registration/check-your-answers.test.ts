@@ -10,12 +10,16 @@ import {
 import { CHECK_YOUR_ANSWERS_URL } from "../../../controller/registration/url";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
+import enErrorMessages from "../../../../../locales/en/errors.json";
+import cyErrorMessages from "../../../../../locales/cy/errors.json";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import GeneralPartnerBuilder from "../../builder/GeneralPartnerBuilder";
 import LimitedPartnerBuilder from "../../builder/LimitedPartnerBuilder";
+import PersonWithSignificantControlBuilder from "../../builder/PersonWithSignificantControlBuilder";
+import TransactionPersonWithSignificantControl from "../../../../domain/entities/TransactionPersonWithSignificantControl";
 import { formatDate } from "../../../../utils/date-format";
 import {
   EMAIL_TEMPLATE,
@@ -64,6 +68,8 @@ describe("Check Your Answers Page", () => {
       .withContributionSubtypes(["SHARES", "ANY_OTHER_ASSET"])
       .build();
     appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerPerson, limitedPartnerLegalEntity]);
+
+    appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([]);
   });
 
   describe("GET Check Your Answers Page", () => {
@@ -82,7 +88,9 @@ describe("Check Your Answers Page", () => {
         "headingNumber",
         "submitFiling",
         "update",
-        "ceaseDate"
+        "ceaseDate",
+        "warningMessageUpdate",
+        "psc"
       ]);
       expect(res.text).toContain(enTranslationText.termPage.byAgreement);
       expect(res.text).toContain(enTranslationText.print.buttonText);
@@ -114,7 +122,9 @@ describe("Check Your Answers Page", () => {
         "headingNumber",
         "submitFiling",
         "update",
-        "ceaseDate"
+        "ceaseDate",
+        "warningMessageUpdate",
+        "psc"
       ]);
       expect(res.text).toContain(cyTranslationText.termPage.byAgreement);
       expect(res.text).toContain(cyTranslationText.print.buttonText);
@@ -304,7 +314,9 @@ describe("Check Your Answers Page", () => {
       "headingNumber",
       "submitFiling",
       "update",
-      "ceaseDate"
+      "ceaseDate",
+      "warningMessageUpdate",
+      "psc"
     ]);
 
     checkIfValuesInText(res, generalPartnerPerson, enTranslationText);
@@ -332,7 +344,9 @@ describe("Check Your Answers Page", () => {
       "headingNumber",
       "submitFiling",
       "update",
-      "ceaseDate"
+      "ceaseDate",
+      "warningMessageUpdate",
+      "psc"
     ]);
 
     checkIfValuesInText(res, generalPartnerPerson, cyTranslationText);
@@ -379,7 +393,7 @@ describe("Check Your Answers Page", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain("5.00 Pound Sterling (GBP)");
-    expect(res.text).toContain("Shares / Any other asset");
+    expect(res.text).toContain("Shares or interests in other partnerships / Any other asset");
   });
 
   it("should load the check your answers page with capital contribution data in Welsh", async () => {
@@ -397,7 +411,195 @@ describe("Check Your Answers Page", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain("5.00 WELSH - Pound Sterling (GBP)");
-    expect(res.text).toContain("WELSH - Shares / WELSH - Any other asset");
+    expect(res.text).toContain("WELSH - Shares or interests in other partnerships / WELSH - Any other asset");
+  });
+
+  describe("PSC statement on CYA page", () => {
+    it.each([
+      ["English", "en", enTranslationText],
+      ["Welsh", "cy", cyTranslationText]
+    ])(
+      "should display No PSC statement with change link in %s when has_person_with_significant_control is false",
+      async (_description: string, lang: string, translationText: Record<string, any>) => {
+        setLocalesEnabled(true);
+
+        const limitedPartnership = new LimitedPartnershipBuilder()
+          .withPartnershipType(PartnershipType.SLP)
+          .withHasPersonWithSignificantControl(false)
+          .build();
+
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+        const res = await request(app).get(URL + `?lang=${lang}`);
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(translationText.checkYourAnswersPage.psc.title);
+        expect(res.text).toContain(translationText.checkYourAnswersPage.psc.headingPscStatement);
+        expect(res.text).toContain(translationText.checkYourAnswersPage.psc.noPscStatement);
+        expect(res.text).toContain("will-the-partnership-have-any-people-with-significant-control");
+        expect(res.text).toContain("change-psc-statement-button");
+      }
+    );
+
+    it("should not display PSC section when has_person_with_significant_control is not set", async () => {
+      const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(PartnershipType.SLP).build();
+
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+      const res = await request(app).get(URL);
+
+      expect(res.status).toBe(200);
+      expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.psc.title);
+      expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.psc.noPscStatement);
+    });
+
+    it.each([
+      [PartnershipType.LP],
+      [PartnershipType.PFLP]
+    ])(
+      "should not display PSC section for non-Scottish partnership type %s even when has_person_with_significant_control is set",
+      async (partnershipType: PartnershipType) => {
+        const limitedPartnership = new LimitedPartnershipBuilder()
+          .withPartnershipType(partnershipType)
+          .withHasPersonWithSignificantControl(false)
+          .build();
+
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+        const res = await request(app).get(URL);
+
+        expect(res.status).toBe(200);
+        expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.psc.title);
+        expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.psc.noPscStatement);
+        expect(res.text).not.toContain("change-psc-statement-button");
+      }
+    );
+
+    it.each([
+      [PartnershipType.SLP, "will-the-partnership-have-any-people-with-significant-control"],
+      [PartnershipType.SPFLP, "will-the-partnership-have-any-people-with-significant-control"],
+      [PartnershipType.LP, "review-limited-partners"],
+      [PartnershipType.PFLP, "review-limited-partners"]
+    ])(
+      "should set the back link correctly for partnership type %s",
+      async (partnershipType: PartnershipType, expectedBackLinkPageType: string) => {
+        const limitedPartnership = new LimitedPartnershipBuilder()
+          .withPartnershipType(partnershipType)
+          .withHasPersonWithSignificantControl(false)
+          .build();
+
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+        const res = await request(app).get(URL);
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(expectedBackLinkPageType);
+      }
+    );
+  });
+
+  describe("PSC details on CYA page", () => {
+    beforeEach(() => {
+      const limitedPartnership = new LimitedPartnershipBuilder()
+        .withPartnershipType(PartnershipType.SLP)
+        .withHasPersonWithSignificantControl(true)
+        .build();
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
+      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([]);
+    });
+
+    it.each([
+      ["English", "en", enTranslationText],
+      ["Welsh", "cy", cyTranslationText]
+    ])(
+      "should render the PSC section heading and change link in %s",
+      async (_description: string, lang: string, translationText: Record<string, any>) => {
+        setLocalesEnabled(true);
+
+        const rle = new PersonWithSignificantControlBuilder().isRelevantLegalEntity().build();
+        appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([rle]);
+
+        const res = await request(app).get(URL + `?lang=${lang}`);
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(translationText.checkYourAnswersPage.psc.title);
+        expect(res.text).toContain(translationText.checkYourAnswersPage.psc.changeRemoveOrAdd);
+        expect(res.text).toContain("review-persons-with-significant-control");
+      }
+    );
+
+    const rleOnlyValues = () => {
+      const rleData = new PersonWithSignificantControlBuilder().isRelevantLegalEntity().build().data!;
+      return [rleData.legal_entity_register_name, rleData.registered_company_number];
+    };
+
+    it.each([
+      ["RELEVANT_LEGAL_ENTITY", () => new PersonWithSignificantControlBuilder().isRelevantLegalEntity().build(), true],
+      [
+        "OTHER_REGISTRABLE_PERSON",
+        () => new PersonWithSignificantControlBuilder().isOtherRegistrablePerson().build(),
+        false
+      ]
+    ])(
+      "should render the correct detail rows for %s",
+      async (
+        _type: string,
+        buildPsc: () => TransactionPersonWithSignificantControl,
+        expectRleOnlyRows: boolean
+      ) => {
+        const psc = buildPsc();
+        appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([psc]);
+
+        const res = await request(app).get(URL);
+        const { legal_entity_name, legal_form, governing_law } = psc.data!;
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(legal_entity_name);
+        expect(res.text).toContain(legal_form);
+        expect(res.text).toContain(governing_law);
+
+        rleOnlyValues().forEach((value) => {
+          if (expectRleOnlyRows) {
+            expect(res.text).toContain(value);
+          } else {
+            expect(res.text).not.toContain(value);
+          }
+        });
+      }
+    );
+
+    it("should render both an RLE and an ORP when both are present", async () => {
+      const rle = new PersonWithSignificantControlBuilder().withId("rle-id").isRelevantLegalEntity().build();
+      const orp = new PersonWithSignificantControlBuilder().withId("orp-id").isOtherRegistrablePerson().build();
+      appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([rle, orp]);
+
+      const res = await request(app).get(URL);
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(rle.data!.legal_entity_name);
+      expect(res.text).toContain(orp.data!.legal_entity_name);
+    });
+
+    it("should render an ORP when legal_entity_registration_location is absent", async () => {
+      const orp = new PersonWithSignificantControlBuilder().withId("orp-id").isOtherRegistrablePerson().build();
+      delete orp.data!.legal_entity_registration_location;
+      appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([orp]);
+
+      const res = await request(app).get(URL);
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(orp.data!.legal_entity_name);
+    });
+
+    it("should show the no PSC statement when user answered yes but no PSCs have been added", async () => {
+      const res = await request(app).get(URL);
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(enTranslationText.checkYourAnswersPage.psc.title);
+      expect(res.text).toContain(enTranslationText.checkYourAnswersPage.psc.noPscStatement);
+      expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.psc.changeRemoveOrAdd);
+    });
   });
 
   describe("POST Check Your Answers Page", () => {
@@ -420,7 +622,8 @@ describe("Check Your Answers Page", () => {
 
     it("should navigate to next page", async () => {
       const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.checkYourAnswers
+        pageType: RegistrationPageType.checkYourAnswers,
+        lawful_purpose_statement_checked: "true"
       });
 
       expect(res.status).toBe(302);
@@ -431,11 +634,48 @@ describe("Check Your Answers Page", () => {
       // call transaction gateway and ovverride so there is no payment header
       appDevDependencies.paymentGateway.feedPaymentWithEmptyJourney();
       const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.checkYourAnswers
+        pageType: RegistrationPageType.checkYourAnswers,
+        lawful_purpose_statement_checked: "true"
       });
 
       expect(res.status).toBe(500);
       expect(res.text).not.toContain(`Redirecting to ${PAYMENT_LINK_JOURNEY}`);
+    });
+
+    it.each([
+      ["English", "en", enTranslationText, enErrorMessages],
+      ["Welsh", "cy", cyTranslationText, cyErrorMessages]
+    ])(
+      "should re-render the CYA page with an error summary in %s when lawful purpose statement is not ticked",
+      async (
+        _description: string,
+        lang: string,
+        translationText: Record<string, any>,
+        errorMessages: Record<string, any>
+      ) => {
+        setLocalesEnabled(true);
+
+        const res = await request(app)
+          .post(URL + `?lang=${lang}`)
+          .send({
+            pageType: RegistrationPageType.checkYourAnswers
+          });
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(errorMessages.errorMessages.checkYourAnswers.lawfulPurposeRequired);
+        expect(res.text).toContain('href="#lawful_purpose_statement_checked"');
+        expect(res.text).toContain(translationText.govUk.error.title);
+      }
+    );
+
+    it("should not send data when lawful purpose statement is not ticked", async () => {
+      await request(app).post(URL).send({
+        pageType: RegistrationPageType.checkYourAnswers
+      });
+
+      expect(
+        appDevDependencies.limitedPartnershipGateway.limitedPartnerships[0]?.data?.lawful_purpose_statement_checked
+      ).toBeUndefined();
     });
   });
 });

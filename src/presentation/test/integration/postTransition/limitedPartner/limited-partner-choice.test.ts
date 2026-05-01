@@ -9,7 +9,7 @@ import {
 } from "../../../../controller/postTransition/url";
 import PostTransitionPageType from "../../../../controller/postTransition/pageType";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 
 describe("Limited Partner Choice Page", () => {
@@ -30,10 +30,11 @@ describe("Limited Partner Choice Page", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
-      `${cyTranslationText.limitedPartnerChoicePage.isPersonOrLegalEntity} - ${cyTranslationText.servicePostTransition} - GOV.UK`
+      `${cyTranslationText.limitedPartnerChoicePage.isPersonOrLegalEntity} - ${cyTranslationText.serviceName.addLimitedPartner} - GOV.UK`
     );
     testTranslations(res.text, cyTranslationText.limitedPartnerChoicePage, ["isPersonOrLegalEntityHint"]);
     expect(res.text).not.toContain(cyTranslationText.limitedPartnerChoicePage.isPersonOrLegalEntityHint);
+    expect(countOccurrences(res.text, cyTranslationText.serviceName.addLimitedPartner)).toBe(2);
   });
 
   it("should load the limited partner choice page with English text", async () => {
@@ -42,10 +43,11 @@ describe("Limited Partner Choice Page", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
-      `${enTranslationText.limitedPartnerChoicePage.isPersonOrLegalEntity} - ${enTranslationText.servicePostTransition} - GOV.UK`
+      `${enTranslationText.limitedPartnerChoicePage.isPersonOrLegalEntity} - ${enTranslationText.serviceName.addLimitedPartner} - GOV.UK`
     );
     testTranslations(res.text, enTranslationText.limitedPartnerChoicePage, ["isPersonOrLegalEntityHint"]);
     expect(res.text).not.toContain(enTranslationText.limitedPartnerChoicePage.isPersonOrLegalEntityHint);
+    expect(countOccurrences(res.text, enTranslationText.serviceName.addLimitedPartner)).toBe(2);
   });
 
   it("should redirect to limitedPartner Person page when person is selected", async () => {

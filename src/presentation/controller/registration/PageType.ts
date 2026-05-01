@@ -21,6 +21,17 @@ enum RegistrationPageType {
   reviewLimitedPartners = "review-limited-partners",
   removeLimitedPartner = "remove-limited-partner",
 
+  tellUsAboutPscPage = "tell-us-about-people-with-significant-control",
+  willLimitedPartnershipHavePsc = "will-the-partnership-have-any-people-with-significant-control",
+  personWithSignificantControlChoice = "person-with-significant-control-choice",
+  addPersonWithSignificantControlIndividualPerson = "add-person-with-significant-control-individual-person",
+  addPersonWithSignificantControlRelevantLegalEntity = "add-person-with-significant-control-relevant-legal-entity",
+  addPersonWithSignificantControlOtherRegistrablePerson = "add-person-with-significant-control-other-registrable-person",
+  whichTypeOfNatureOfControlRelevantLegalEntity = "which-type-of-nature-of-control-relevant-legal-entity",
+  whichTypeOfNatureOfControlOtherRegistrablePerson = "which-type-of-nature-of-control-other-registrable-person",
+  reviewPersonsWithSignificantControl = "review-persons-with-significant-control",
+  removePersonWithSignificantControl = "remove-person-with-significant-control",
+
   checkYourAnswers = "check-your-answers",
   next = "next"
 }

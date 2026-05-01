@@ -1,40 +1,60 @@
 import request from "supertest";
+import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-import enTranslationText from "../../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../../locales/cy/translations.json";
+import enGeneralTranslationText from "../../../../../../../locales/en/translations.json";
+import cyGeneralTranslationText from "../../../../../../../locales/cy/translations.json";
+import enAddressTranslationText from "../../../../../../../locales/en/address.json";
+import cyAddressTranslationText from "../../../../../../../locales/cy/address.json";
+import enErrorsTranslationText from "../../../../../../../locales/en/errors.json";
+import cyErrorsTranslationText from "../../../../../../../locales/cy/errors.json";
 
 import app from "../../../app";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
+import { OFFICER_ROLE_GENERAL_PARTNER_LEGAL_ENTITY } from "../../../../../../config";
 
 import {
   ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
 } from "presentation/controller/addressLookUp/url/postTransition";
+import { UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL } from "../../../../../controller/postTransition/url";
+
+import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import GeneralPartnerBuilder, {
   generalPartnerLegalEntity,
   generalPartnerPerson
 } from "../../../../builder/GeneralPartnerBuilder";
-import AddressPageType from "../../../../../controller/addressLookUp/PageType";
+import TransactionBuilder from "../../../../builder/TransactionBuilder";
+import CompanyAppointmentBuilder, { principalOfficeAddress } from "../../../../builder/CompanyAppointmentBuilder";
+import CompanyProfileBuilder from "../../../../builder/CompanyProfileBuilder";
+import TransactionGeneralPartner from "../../../../../../domain/entities/TransactionGeneralPartner";
 
 describe("Enter general partner's principal office manual address page", () => {
+  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText, ...enErrorsTranslationText };
+  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText, ...cyErrorsTranslationText };
   const URL = getUrl(ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
+
+  let generalPartner: TransactionGeneralPartner;
 
   beforeEach(() => {
     setLocalesEnabled(false);
     appDevDependencies.cacheRepository.feedCache(null);
-    appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
+
+    generalPartner = new GeneralPartnerBuilder()
+      .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+      .isLegalEntity()
+      .withKind(PartnerKind.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY)
+      .build();
+
+    appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+
+    const transaction = new TransactionBuilder().withKind(PartnerKind.ADD_GENERAL_PARTNER_LEGAL_ENTITY).build();
+    appDevDependencies.transactionGateway.feedTransactions([transaction]);
   });
 
   describe("Get enter general partner's principal office address page", () => {
     it("should load enter general partners principal office address page with English text", async () => {
       setLocalesEnabled(true);
-      const generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isLegalEntity()
-        .build();
-
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
 
       const res = await request(app).get(URL + "?lang=en");
 
@@ -53,16 +73,11 @@ describe("Enter general partner's principal office manual address page", () => {
       expect(res.text).not.toContain(generalPartnerPerson.forename?.toUpperCase());
       expect(res.text).not.toContain(generalPartnerPerson.surname?.toUpperCase());
       expect(res.text).toContain(generalPartnerLegalEntity.legal_entity_name?.toUpperCase());
+      expect(countOccurrences(res.text, enTranslationText.serviceName.addGeneralPartner)).toBe(2);
     });
 
     it("should load enter general partners principal office address page with Welsh text", async () => {
       setLocalesEnabled(true);
-      const generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isLegalEntity()
-        .build();
-
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
 
       const res = await request(app).get(URL + "?lang=cy");
 
@@ -81,18 +96,52 @@ describe("Enter general partner's principal office manual address page", () => {
       expect(res.text).not.toContain(generalPartnerPerson.forename?.toUpperCase());
       expect(res.text).not.toContain(generalPartnerPerson.surname?.toUpperCase());
       expect(res.text).toContain(generalPartnerLegalEntity.legal_entity_name?.toUpperCase());
+      expect(countOccurrences(res.text, cyTranslationText.serviceName.addGeneralPartner)).toBe(2);
+    });
+
+    it("should have back link to yes/no page when partner kind is UPDATE_GENERAL_PARTNER_LEGAL_ENTITY", async () => {
+      const backLinkUrl = getUrl(UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL);
+      const res = await request(app).get(URL);
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(backLinkUrl);
+    });
+
+    it("should pre-populate the enter general partners principal office address from company appointment when partner kind is UPDATE_GENERAL_PARTNER_LEGAL_ENTITY", async () => {
+      const updateGeneralPartner = new GeneralPartnerBuilder()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .isLegalEntity()
+        .withKind(PartnerKind.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY)
+        .withAppointmentId("AP123456")
+        .withPrincipalOfficeAddress(null)
+        .build();
+
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([updateGeneralPartner]);
+
+      const companyAppointment = new CompanyAppointmentBuilder()
+        .withOfficerRole(OFFICER_ROLE_GENERAL_PARTNER_LEGAL_ENTITY)
+        .withPrincipalOfficeAddress(principalOfficeAddress)
+        .build();
+      appDevDependencies.companyGateway.feedCompanyAppointments([companyAppointment]);
+
+      const companyProfile = new CompanyProfileBuilder().build();
+      appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
+
+      const res = await request(app).get(URL);
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(companyAppointment.principalOfficeAddress?.addressLine1);
+      expect(res.text).toContain(companyAppointment.principalOfficeAddress?.addressLine2);
+      expect(res.text).toContain(companyAppointment.principalOfficeAddress?.locality);
+      expect(res.text).toContain(companyAppointment.principalOfficeAddress?.postalCode);
+      expect(res.text).toContain(companyAppointment.principalOfficeAddress?.premises);
+      expect(res.text).toContain(companyAppointment.principalOfficeAddress?.region);
+      expect(res.text).toContain(companyAppointment.principalOfficeAddress?.country);
     });
   });
 
   describe("Post enter general partner's principal office address page", () => {
     it("should redirect to the error page when error occurs during Post", async () => {
-      const generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isLegalEntity()
-        .build();
-
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
-
       const res = await request(app).post(URL).send({
         pageType: "Invalid page type",
         country: ""
@@ -103,11 +152,6 @@ describe("Enter general partner's principal office manual address page", () => {
     });
 
     it("should not return a validation error when an overseas address and postcode does not conform to UK format", async () => {
-      const generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isPerson()
-        .build();
-
       const res = await request(app)
         .post(URL)
         .send({
@@ -123,13 +167,6 @@ describe("Enter general partner's principal office manual address page", () => {
     });
 
     it("should return a validation error when a UK address and postcode format is invalid", async () => {
-      const generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isPerson()
-        .build();
-
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
-
       const res = await request(app)
         .post(URL)
         .send({
@@ -139,7 +176,7 @@ describe("Enter general partner's principal office manual address page", () => {
         });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.postcodeFormat);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.postcodeFormat);
       expect(res.text).toContain(enTranslationText.govUk.error.title);
       expect(res.text).toContain(
         `${generalPartner.data?.forename?.toUpperCase()} ${generalPartner.data?.surname?.toUpperCase()}`
@@ -147,11 +184,6 @@ describe("Enter general partner's principal office manual address page", () => {
     });
 
     it("should not return validation errors when address fields contain valid but non alpha-numeric characters", async () => {
-      const generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isPerson()
-        .build();
-
       const res = await request(app)
         .post(URL)
         .send({
@@ -170,11 +202,6 @@ describe("Enter general partner's principal office manual address page", () => {
     });
 
     it("should return validation errors when address fields contain invalid characters", async () => {
-      const generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isPerson()
-        .build();
-
       const res = await request(app)
         .post(URL)
         .send({
@@ -188,40 +215,15 @@ describe("Enter general partner's principal office manual address page", () => {
         });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(
-        enTranslationText.address.enterAddress.premises +
-          " " +
-          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
-      );
-      expect(res.text).toContain(
-        enTranslationText.address.enterAddress.addressLine1 +
-          " " +
-          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
-      );
-      expect(res.text).toContain(
-        enTranslationText.address.enterAddress.addressLine2Title +
-          " " +
-          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
-      );
-      expect(res.text).toContain(
-        enTranslationText.address.enterAddress.locality +
-          " " +
-          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
-      );
-      expect(res.text).toContain(
-        enTranslationText.address.enterAddress.regionTitle +
-          " " +
-          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
-      );
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.premisesInvalid);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.addressLine1Invalid);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.addressLine2Invalid);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.localityInvalid);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.regionInvalid);
       expect(res.text).toContain(enTranslationText.govUk.error.title);
     });
 
     it("should return validation errors when address fields exceed character limit", async () => {
-      const generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isPerson()
-        .build();
-
       const res = await request(app)
         .post(URL)
         .send({
@@ -235,11 +237,27 @@ describe("Enter general partner's principal office manual address page", () => {
         });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.premisesLength);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.addressLine1Length);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.addressLine2Length);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.localityLength);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.regionLength);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.premisesLength);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.addressLine1Length);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.addressLine2Length);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.localityLength);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.regionLength);
+    });
+
+    it("should contain correct backlink for update journey when validation error occurs", async () => {
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: AddressPageType.enterGeneralPartnerPrincipalOfficeAddress,
+          ...generalPartner.data?.principal_office_address,
+          premises: "toomanycharacters".repeat(13),
+          address_line_1: "±",
+          postal_code: "here"
+        });
+
+      expect(res.status).toBe(200);
+      const backLinkUrl = getUrl(UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL);
+      expect(res.text).toContain(backLinkUrl);
     });
   });
 });

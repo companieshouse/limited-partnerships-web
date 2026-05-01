@@ -25,6 +25,8 @@
   {% set address = props.data.cache[correspondenceAddressKey] %}
 {% elif props.data.generalPartner.data.service_address %}
   {% set address = props.data.generalPartner.data.service_address %}
+{% elif props.data.chsCorrespondenceAddress %}
+  {% set address = props.data.chsCorrespondenceAddress %}
 {% else %}
   {% set address = {} %}
 {% endif %}
@@ -77,8 +79,9 @@
           {% set countryText = i18n.address.enterAddress.country %}
           {% set countryFormValue = address.country %}
           {% set countryErrorMessage = props.errors.country if props.errors %}
-                            
-          {{ macros.getSpecifiedCountryList(i18n, props.data.cache.sa_territory_choice, countryFormId, countryText, countryFormValue, countryErrorMessage) }}
+          {% set labelFormatting = "govuk-label govuk-input--width-10" %}
+
+          {{ macros.getSpecifiedCountryList(i18n, props.data.cache.sa_territory_choice, countryFormId, countryText, countryFormValue, countryErrorMessage, labelFormatting) }}
 
         {% else %}
           {% include "pages/address/enter-address-common-fields.njk" %}

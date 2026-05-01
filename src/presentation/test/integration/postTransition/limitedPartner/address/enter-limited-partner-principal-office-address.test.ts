@@ -1,87 +1,110 @@
 import request from "supertest";
+import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-import enTranslationText from "../../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../../locales/cy/translations.json";
+import enGeneralTranslationText from "../../../../../../../locales/en/translations.json";
+import cyGeneralTranslationText from "../../../../../../../locales/cy/translations.json";
+import enAddressTranslationText from "../../../../../../../locales/en/address.json";
+import cyAddressTranslationText from "../../../../../../../locales/cy/address.json";
+import enErrorsTranslationText from "../../../../../../../locales/en/errors.json";
+import cyErrorsTranslationText from "../../../../../../../locales/cy/errors.json";
 
 import app from "../../../app";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 
-import {
-  ENTER_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
-  CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
-} from "../../../../../../presentation/controller/addressLookUp/url/postTransition";
+import AddressPageType from "../../../../../controller/addressLookUp/PageType";
+import TransactionBuilder from "../../../../builder/TransactionBuilder";
 import LimitedPartnerBuilder, {
   limitedPartnerLegalEntity,
   limitedPartnerPerson
 } from "../../../../builder/LimitedPartnerBuilder";
-import AddressPageType from "../../../../../controller/addressLookUp/PageType";
+
+import {
+  ENTER_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  POSTCODE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
+} from "../../../../../../presentation/controller/addressLookUp/url/postTransition";
+import { UPDATE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL } from "../../../../../controller/postTransition/url";
+import TransactionLimitedPartner from "../../../../../../domain/entities/TransactionLimitedPartner";
 
 describe("Enter limited partner's principal office manual address page", () => {
+  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText, ...enErrorsTranslationText };
+  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText, ...cyErrorsTranslationText };
   const URL = getUrl(ENTER_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
 
+  let limitedPartner: TransactionLimitedPartner;
+
   beforeEach(() => {
-    setLocalesEnabled(false);
+    setLocalesEnabled(true);
+
+    limitedPartner = new LimitedPartnerBuilder()
+      .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+      .isPerson()
+      .build();
+    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
+
     appDevDependencies.cacheRepository.feedCache(null);
-    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([]);
+    appDevDependencies.transactionGateway.feedTransactions([]);
   });
 
   describe("Get enter limited partner's principal office address page", () => {
-    it("should load enter limited partners principal office address page with English text", async () => {
-      setLocalesEnabled(true);
-      const limitedPartner = new LimitedPartnerBuilder()
-        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isLegalEntity()
-        .build();
+    it.each([
+      ["add", "en"],
+      ["update", "en"],
+      ["add", "cy"],
+      ["update", "cy"]
+    ])(
+      "should load enter limited partners principal office address page - %s",
+      async (journey: string, lang: string) => {
+        const translationText = lang === "en" ? enTranslationText : cyTranslationText;
+        const transactionKind =
+          journey === "add" ?
+            PartnerKind.ADD_LIMITED_PARTNER_LEGAL_ENTITY
+            : PartnerKind.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY;
 
-      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
+        const transaction = new TransactionBuilder().withKind(transactionKind).build();
+        appDevDependencies.transactionGateway.feedTransactions([transaction]);
 
-      const res = await request(app).get(URL + "?lang=en");
+        const limitedPartner = new LimitedPartnerBuilder()
+          .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+          .withKind(transactionKind)
+          .isLegalEntity()
+          .build();
 
-      expect(res.status).toBe(200);
-      testTranslations(res.text, enTranslationText.address.enterAddress, [
-        "registeredOfficeAddress",
-        "principalPlaceOfBusinessAddress",
-        "jurisdictionCountry",
-        "postcodeMissing",
-        "usualResidentialAddress",
-        "correspondenceAddress",
-        "principalOfficeAddress",
-        "errorMessages"
-      ]);
-      expect(res.text).not.toContain("WELSH -");
-      expect(res.text).not.toContain(limitedPartnerPerson.forename?.toUpperCase());
-      expect(res.text).not.toContain(limitedPartnerPerson.surname?.toUpperCase());
-      expect(res.text).toContain(limitedPartnerLegalEntity.legal_entity_name?.toUpperCase());
-    });
+        appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
 
-    it("should load enter limited partners principal office address page with Welsh text", async () => {
-      setLocalesEnabled(true);
-      const limitedPartner = new LimitedPartnerBuilder()
-        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isLegalEntity()
-        .build();
+        const res = await request(app).get(URL + `?lang=${lang}`);
 
-      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
+        expect(res.status).toBe(200);
+        testTranslations(res.text, translationText.address.enterAddress, [
+          "registeredOfficeAddress",
+          "principalPlaceOfBusinessAddress",
+          "jurisdictionCountry",
+          "postcodeMissing",
+          "usualResidentialAddress",
+          "correspondenceAddress",
+          "errorMessages",
+          "generalPartner",
+          "personWithSignificantControl"
+        ]);
 
-      const res = await request(app).get(URL + "?lang=cy");
+        expect(res.text).not.toContain(limitedPartnerPerson.forename?.toUpperCase());
+        expect(res.text).not.toContain(limitedPartnerPerson.surname?.toUpperCase());
+        expect(res.text).toContain(limitedPartnerLegalEntity.legal_entity_name?.toUpperCase());
 
-      expect(res.status).toBe(200);
-      testTranslations(res.text, cyTranslationText.address.enterAddress, [
-        "registeredOfficeAddress",
-        "principalPlaceOfBusinessAddress",
-        "jurisdictionCountry",
-        "postcodeMissing",
-        "usualResidentialAddress",
-        "correspondenceAddress",
-        "principalOfficeAddress",
-        "errorMessages"
-      ]);
-      expect(res.text).toContain("WELSH -");
-      expect(res.text).not.toContain(limitedPartnerPerson.forename?.toUpperCase());
-      expect(res.text).not.toContain(limitedPartnerPerson.surname?.toUpperCase());
-      expect(res.text).toContain(limitedPartnerLegalEntity.legal_entity_name?.toUpperCase());
-    });
+        const expectedServiceName =
+          journey === "add" ?
+            translationText.serviceName.addLimitedPartner
+            : translationText.serviceName.updateLimitedPartnerLegalEntity;
+        expect(countOccurrences(res.text, toEscapedHtml(expectedServiceName))).toBe(2);
+
+        const BACK_LINK =
+          journey === "add" ?
+            getUrl(POSTCODE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL)
+            : getUrl(UPDATE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL);
+        expect(res.text).toContain(BACK_LINK);
+      }
+    );
   });
 
   describe("Post enter limited partner's principal office address page", () => {
@@ -103,11 +126,6 @@ describe("Enter limited partner's principal office manual address page", () => {
     });
 
     it("should not return a validation error when an overseas address and postcode does not conform to UK format", async () => {
-      const limitedPartner = new LimitedPartnerBuilder()
-        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isPerson()
-        .build();
-
       const res = await request(app)
         .post(URL)
         .send({
@@ -123,13 +141,6 @@ describe("Enter limited partner's principal office manual address page", () => {
     });
 
     it("should return a validation error when a UK address and postcode format is invalid", async () => {
-      const limitedPartner = new LimitedPartnerBuilder()
-        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isPerson()
-        .build();
-
-      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
-
       const res = await request(app)
         .post(URL)
         .send({
@@ -139,7 +150,7 @@ describe("Enter limited partner's principal office manual address page", () => {
         });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.postcodeFormat);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.postcodeFormat);
       expect(res.text).toContain(enTranslationText.govUk.error.title);
       expect(res.text).toContain(
         `${limitedPartner.data?.forename?.toUpperCase()} ${limitedPartner.data?.surname?.toUpperCase()}`
@@ -147,11 +158,6 @@ describe("Enter limited partner's principal office manual address page", () => {
     });
 
     it("should not return validation errors when address fields contain valid but non alpha-numeric characters", async () => {
-      const limitedPartner = new LimitedPartnerBuilder()
-        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isPerson()
-        .build();
-
       const res = await request(app)
         .post(URL)
         .send({
@@ -170,11 +176,6 @@ describe("Enter limited partner's principal office manual address page", () => {
     });
 
     it("should return validation errors when address fields contain invalid characters", async () => {
-      const limitedPartner = new LimitedPartnerBuilder()
-        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isPerson()
-        .build();
-
       const res = await request(app)
         .post(URL)
         .send({
@@ -188,40 +189,15 @@ describe("Enter limited partner's principal office manual address page", () => {
         });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(
-        enTranslationText.address.enterAddress.premises +
-          " " +
-          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
-      );
-      expect(res.text).toContain(
-        enTranslationText.address.enterAddress.addressLine1 +
-          " " +
-          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
-      );
-      expect(res.text).toContain(
-        enTranslationText.address.enterAddress.addressLine2Title +
-          " " +
-          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
-      );
-      expect(res.text).toContain(
-        enTranslationText.address.enterAddress.locality +
-          " " +
-          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
-      );
-      expect(res.text).toContain(
-        enTranslationText.address.enterAddress.regionTitle +
-          " " +
-          enTranslationText.address.enterAddress.errorMessages.invalidCharacters
-      );
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.premisesInvalid);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.addressLine1Invalid);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.addressLine2Invalid);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.localityInvalid);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.regionInvalid);
       expect(res.text).toContain(enTranslationText.govUk.error.title);
     });
 
     it("should return validation errors when address fields exceed character limit", async () => {
-      const limitedPartner = new LimitedPartnerBuilder()
-        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isPerson()
-        .build();
-
       const res = await request(app)
         .post(URL)
         .send({
@@ -235,11 +211,11 @@ describe("Enter limited partner's principal office manual address page", () => {
         });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.premisesLength);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.addressLine1Length);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.addressLine2Length);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.localityLength);
-      expect(res.text).toContain(enTranslationText.address.enterAddress.errorMessages.regionLength);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.premisesLength);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.addressLine1Length);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.addressLine2Length);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.localityLength);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.regionLength);
     });
   });
 });

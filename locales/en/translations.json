@@ -1,11 +1,13 @@
 {
-    "addPartnerLegalEntityPage" : {
+    "addOrUpdatePartnerLegalEntityPage" : {
         "generalPartner": {
             "title" : "Add a general partner (legal entity)",
+            "updateTitle" : "Update a general partner's details (legal entity)",
             "dateEffectiveFrom" : "When did it become a general partner for this partnership?"
         },
         "limitedPartner": {
             "title": "Add a limited partner (legal entity)",
+            "updateTitle": "Update a limited partner's details (legal entity)",
             "dateEffectiveFrom" : "When did it become a limited partner for this partnership?"
         },
 
@@ -43,19 +45,19 @@
         "generalPartner": {
             "title" : "Add a general partner (person)",
             "dateEffectiveFrom" : "When did they become a general partner for this partnership?",
-            "previousName" : { 
+            "previousName" : {
                 "title" : "Does the general partner have a previous name?",
                 "hint" : "For example, if they've changed their name as a result of marriage or divorce.",
                 "yes" : "Yes",
                 "yesHintTitle" : "What is the general partner's previous name?",
                 "yesHint" : "If the partner has more than one previous name, separate each name with a comma.",
                 "no" : "No"
-            }            
+            }
         },
         "limitedPartner": {
             "title": "Add a limited partner (person)",
             "dateEffectiveFrom" : "When did they become a limited partner for this partnership?",
-            "previousName" : { 
+            "previousName" : {
                 "title" : "Does the limited partner have a previous name?",
                 "hint" : "For example, if they've changed their name as a result of marriage or divorce.",
                 "yes" : "Yes",
@@ -87,267 +89,26 @@
         }
     },
 
-    "address": {
-        "chooseAddress": { 
-            "addressLink": "The address is not on the list",
-            "principalPlaceOfBusiness" : {
-               "title": "Choose the principal place of business"            
-            },
-            "registeredOfficeAddress" : {
-                "title": "Choose the registered office address"                
-            },
-            "generalPartnerUsualResidentialAddress" : {
-                "title" : "Choose the usual residential address of the general partner"
-            },
-            "generalPartnerPrincipalOfficeAddress": {
-                "title": "Choose the general partner's principal office address",
-                "publicRegisterInformationLine1": "We'll show the general partner's principal office address on the public register."
-
-            },
-            "generalPartnerCorrespondenceAddress" : {
-                "title": "Choose the general partner's correspondence address",
-                "titleHint": "This is also known as the service address.",
-                "publicRegisterInformationLine1": "We'll show the general partner's correspondence address on the public register."
-            },
-            "limitedPartnerUsualResidentialAddress" : {
-                "title" : "Choose the usual residential address of the limited partner"
-            },
-            "limitedPartnerPrincipalOfficeAddress": {
-                "title": "Choose the limited partner's principal office address",                
-                "publicRegisterInformationLine1": "We'll show the limited partner's principal office address on the public register."
-
-            }
-        },
-
-        "confirm": {
-            "addressLink" : "Change",
-            "registeredOfficeAddress" : {
-                "title" : "Confirm the registered office address",
-                "publicRegisterLine1": "We'll show the registered office address on the public register."
-            },
-            "principalPlaceOfBusinessAddress" : {
-                "title" : "Confirm the principal place of business address",              
-                "publicRegisterLine1": "We'll show the principal place of business address on the public register."
-            },
-            "usualResidentialAddress": {
-                "title": "Confirm the general partner's usual residential address",
-                "publicRegisterLine1": "We will not show the general partner's usual residential address."
-            },
-            "principalOfficeAddress": {
-                "title": "Confirm the general partner's principal office address",
-                "publicRegisterLine1": "We'll show the general partner's principal office address on the public register."
-            },
-            "correspondenceAddress": {
-                "title": "Confirm the general partner's correspondence address",
-                "publicRegisterLine1": "We'll show the general partner's correspondence address on the public register."
-            },
-            "limitedPartnerUsualResidentialAddress": {
-                "title": "Confirm the limited partner's usual residential address",
-                "publicRegisterLine1": "We will not show the limited partner's usual residential address."
-            },
-            "limitedPartnerPrincipalOfficeAddress": {
-                "title": "Confirm the limited partner's principal office address",
-                "publicRegisterLine1": "We'll show the limited partner's principal office address on the public register."
-            }
-        },
-        
-        "enterAddress": {
-            "registeredOfficeAddress" : {
-                "title": "What is the registered office address of the partnership?",
-                "publicInformationLine1": "We'll show the registered office address on the public register."
-            },
-            "principalPlaceOfBusinessAddress" : {
-                "title": "What is the principal place of business?",
-                "titleHint1": "This is the address where the day to day running of the business takes place. It could be the same as the registered office address, or a different address.",
-                "titleHint2": "It must be in the jurisdiction where the partnership was formed. It can be changed to an address outside of the jurisdiction after you've registered the partnership.",
-                "publicInformationLine1": "We'll show the principal place of business on the public register."
-            },
-            "generalPartner":{
-                "usualResidentialAddress":{
-                    "title": "What is the general partner's usual residential address?",
-                    "publicInformationLine1": "We will not show the general partner's usual residential address.",
-                    "postcodeOptional": "Postcode (optional)"
-                },
-                "correspondenceAddress":{
-                    "title": "What is the general partner's correspondence address?",
-                    "titleHint1": "This is also known as the service address.",
-                    "publicInformationLine1": "We'll show the general partner's correspondence address on the public register.",
-                    "postcodeOptional": "Postcode (optional)"
-                },
-                "principalOfficeAddress": {
-                    "title": "What is the general partner's principal office address?",
-                    "hint": "This is the address for the entity's main office.",
-                    "publicInformationLine1": "We'll show the general partner's principal office address on the public register.",
-                    "postcodeOptional": "Postcode (optional)"
-                }
-            },
-            "limitedPartner":{
-                "usualResidentialAddress":{
-                    "title": "What is the limited partner's usual residential address?",
-                    "publicInformationLine1": "We will not show the limited partner's usual residential address on the public register.",
-                    "postcodeOptional": "Postcode (optional)"
-                },
-                "principalOfficeAddress":{
-                    "title": "What is the limited partner's principal office address?",
-                    "hint": "This is the address for the entity's main office.",
-                    "publicInformationLine1": "We'll show the limited partner's principal office address on the public register.",
-                    "postcodeOptional": "Postcode (optional)"
-                }
-          },
-            "premises": "Property name or number",
-            "premisesHint": "For example, 'The Mill', '116' or 'Flat 37a'",
-            "addressLine1": "Address line 1",
-            "addressLine2": "Address line 2 (optional)",
-            "addressLine2Title": "Address line 2",
-            "locality": "Town or city",
-            "region": "County (optional)",
-            "regionTitle": "County",
-            "postcode": "Postcode",
-            "postalCodeTitle": "Postcode",
-            "country": "Country",
-            "countrySelect": "Select a country",
-            "countryEngland": "England",
-            "countryScotland": "Scotland",
-            "countryWales": "Wales",
-            "countryNorthernIreland": "Northern Ireland",
-            "errorMessages": {
-                "premisesMissing": "Enter a property name or number",
-                "premisesLength": "Property name or number must be 200 characters or less",
-                "addressLine1Missing": "Enter an address",
-                "addressLine1Length": "Address line 1 must be 50 characters or less",
-                "addressLine2Length": "Address line 2 must be 50 characters or less",
-                "localityMissing": "Enter a town or city",
-                "localityLength": "Town or city must be 50 characters or less",
-                "regionLength": "County, state, province or region must be 50 characters or less",
-                "postcodeMissing": "Enter a postcode",
-                "postcodeFormat": "Invalid postcode format",
-                "postalCodeLength": "Postal code must be 50 characters or less",
-                "countryMissing": "Select a country",
-                "jurisdictionCountry": "You must enter a country that matches your jurisdiction",
-                "invalidCharacters": "must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes"
-            }
-        },
-
-        "findPostcode": {
-            "registeredOfficeAddress": {
-                "whatIsOfficeAddress": "What is the registered office address of the partnership?",
-                "publicRegisterLine1": "We'll show the registered office address on the public register."
-            },
-
-            "principalPlaceOfBusiness": {
-                "whatIsPrincipalPlaceOfBusiness": "What is the principal place of business?",
-                "runningOfBusiness": "This is the address where the day to day running of the business takes place. It could be the same as the registered office address, or a different address.",
-                "jurisdiction": "It must be in the jurisdiction where the partnership was formed. It can be changed to an address outside of the jurisdiction after you've registered the partnership.",
-                "publicRegisterLine1": "We'll show the principal place of business on the public register."
-            },
-
-            "generalPartner":{
-                "usualResidentialAddress": {
-                    "whatIsUsualResidentialAddress": "What is the general partner's usual residential address?",
-                    "publicRegisterLine1": "We will not show the general partner's usual residential address."
-                },
-                "principalOfficeAddress": {
-                    "whatIsPrincipalOfficeAddress": "What is the general partner's principal office address?",
-                    "hint": "This is the address for the entity's main office.",
-                    "publicRegisterLine1": "We'll show the general partner's principal office address on the public register."
-                },
-                "correspondenceAddress": {
-                    "whatIsCorrespondenceAddress": "What is the general partner's correspondence address?",
-                    "titleHint": "This is also known as the service address.",
-                    "publicRegisterLine1": "We'll show the general partner's correspondence address on the public register."
-                }
-            },
-
-            "limitedPartner": {
-                "usualResidentialAddress": {
-                    "whatIsUsualResidentialAddress": "What is the limited partner's usual residential address?",
-                    "publicRegisterLine1": "We will not show the limited partner's usual residential address on the public register."
-                },
-                "principalOfficeAddress": {
-                    "whatIsPrincipalOfficeAddress": "What is the limited partner's principal office address?",
-                    "hint": "This is the address for the entity's main office.",
-                    "publicRegisterLine1": "We'll show the limited partner's principal office address on the public register."
-                }
-            },
-
-            "nameOrNumber": "Property name or number (optional)",
-            "postcode": "Postcode",
-            "enterAddressManually": "Enter address manually",
-            "findAddress": "Find address",
-
-            "errorMessages": {
-                "jurisdictionEnglandAndWales": "You must enter a postcode which is in England or Wales",
-                "jurisdictionNorthernIreland": "You must enter a postcode which is in Northern Ireland",
-                "jurisdictionScotland": "You must enter a postcode which is in Scotland",
-                "notMainland": "Enter a UK mainland postcode"
-            }
-        },
-
-        "registeredOffice": {
-            "appropriateAddressDetailsLine1": "This means that:",
-            "appropriateAddressDetailsPoint1": "it is in the jurisdiction where the limited partnership is registered (England and Wales, Northern Ireland, or Scotland)",
-            "appropriateAddressDetailsPoint2": "someone acting on behalf of the limited partnership will be made aware of any post addressed and delivered to the limited partnership",
-            "appropriateAddressDetailsPoint3": "when the limited partnership receives post at this address, it's possible for the sender to get confirmation of delivery",
-            "appropriateAddressDetailsSummary": "What does 'appropriate' address mean?",
-            "appropriateAddressWarning": "The address must meet the requirements of an 'appropriate' address. If it does not, the partnership could be struck off the Companies House register.",
-            "newRequirement": "This is a new requirement. We do not hold a registered office address for the partnership yet. It may be different from the principal place of business address that we already hold.",
-            "officialCommunication": "We'll use this address to send official communications. It must be a physical address in the UK. You cannot use a PO Box address.",            
-            "provideNext": "You'll need to provide the principal place of business next."
-        },
-
-        "territoryChoice": {
-            "generalPartnerPrincipalOfficeAddress": {
-                "title": "Where is the general partner's principal office address?",
-                "titleHint": "This is the address for the entity's main office.",
-                "publicRegisterInformationLine1": "We'll show the general partner's principal office address on the public register."
-            },
-            "generalPartnerUsualResidentialAddress": {
-                "title": "Where is the general partner's usual residential address?",
-                "publicRegisterInformationLine1": "We will not show this address on the public register, unless it's also used as the general partner's correspondence address."
-            },
-            "generalPartnerCorrespondenceAddress": {
-                "title": "Where is the general partner's correspondence address?",
-                "titleHint": "This is also known as the service address.",
-                "publicRegisterInformationLine1": "We'll show the general partner's correspondence address on the public register."
-            },
-            "limitedPartnerUsualResidentialAddress": {
-                "title": "Where is the limited partner's usual residential address?",
-                "publicRegisterInformationLine1": "We will not show the limited partner's usual residential address on the public register."
-            },
-            "limitedPartnerPrincipalOfficeAddress": {
-                "title": "Where is the limited partner's principal office address?",
-                "titleHint": "This is the address for the entity's main office.",
-                "publicRegisterInformationLine1": "We'll show the limited partner's principal office address on the public register."
-            }
-        },
-
-        "territories": {
-            "overseas": "Overseas",
-            "unitedKingdom": "In the United Kingdom"
-        }
-    },
-
     "buttons" : {
         "continue" : "Continue",
         "saveAndContinue" : "Save and continue",
-        "submit": "Submit"
+        "submit": "Submit",
+        "submitUpdate": "Submit update"
     },
 
     "capitalContribution" : {
-       "title" : "What is their total capital contribution?",
-       "currencyTypeLabel": "Contribution currency type",
-       "valueLabel": "Contribution currency value",
-       "hint" : "Enter the total value of all monetary and non-monetary contributions",
-       "amountHint": "Enter the value, for example:",
-       "amountMinHint": "if they contributed £0.01 enter 0.01", 
-       "amountMaxHint": "if they contributed £25,000 enter 25000.00",
+       "title" : "What is this partner's total capital contribution?",
+       "currencyTypeLabel": "Select the currency",
+       "valueLabel": "Enter the total value",
+       "hint" : "This is the total value of all monetary and non-monetary contributions.",
+       "amountHint": "For example, if it was £25 enter 25.00",
        "compositionTitle" : "What is this total value made up of?",
-       "compositionHint" : "Select all that apply",
+       "compositionHint" : "Select all that apply.",
        "money" : "Money",
        "landOrProperty" : "Land or property",
-       "shares" : "Shares",
+       "shares" : "Shares or interests in other partnerships",
        "servicesOrGoods" : "Services or goods",
-       "anyOtherAsset" : "Any other asset"   
+       "anyOtherAsset" : "Any other asset"
     },
 
     "ceaseDate" : {
@@ -364,7 +125,7 @@
             "subTitle": "When did this person cease to be a general partner?"
         },
         "legalEntity": {
-            "subTitle": "When did this entity cease to be a general partner?"            
+            "subTitle": "When did this entity cease to be a general partner?"
         },
         "removeConfirmationChecked": " is no longer a general partner"
       },
@@ -375,7 +136,7 @@
             "subTitle": "When did this person cease to be a limited partner?"
         },
         "legalEntity": {
-            "subTitle": "When did this entity cease to be a limited partner?"            
+            "subTitle": "When did this entity cease to be a limited partner?"
         },
         "removeConfirmationChecked": " is no longer a limited partner"
       }
@@ -407,7 +168,7 @@
             "dob": "full dates of birth of any partners who are people",
             "ura": "usual residential addresses of any partners who are people"
         },
-        
+
         "payment" : "Continue to payment",
         "submitFiling": "Submit filing",
 
@@ -431,7 +192,13 @@
                 "dateOfBirth": "Date of birth",
                 "nationality": "Nationality",
                 "usualResidentialAddress": "Usual residential address",
-                "correspondenceAddress": "Correspondence address"
+                "correspondenceAddress": "Correspondence address",
+                "generalPartner": {
+                    "warningMessageUpdate": "If you've updated the general partner's usual residential address, this is the only time we'll show it to you. It's sensitive information, so we will not show it anywhere in our services."
+                },
+                "limitedPartner": {
+                    "warningMessageUpdate": "If you've updated the limited partner's usual residential address, this is the only time we'll show it to you. It's sensitive information, so we will not show it anywhere in our services."
+                }
             },
             "legalEntity": {
                 "name": "Name",
@@ -447,13 +214,21 @@
             "title" : "Check your answers before submitting this update",
             "dateOfChange" : "Date of change",
             "printWarning": "Print or save this page before you submit the filing, for your own records.",
-            "information": "We will not send you or the partnership a copy of this information."
-        }       
+            "printMessage": "Print or save this page for your records.",
+            "information": "We will not send you or the partnership a copy of this information.",
+            "notUpdated": "Not updated"
+        },
+        "psc": {
+            "title": "People with significant control (PSCs)",
+            "headingPscStatement": "PSC statement",
+            "noPscStatement": "There is no person identified as a person with significant control (either a registrable person or RLE) in relation to the limited partnership.",
+            "changeRemoveOrAdd": "Change, remove or add people with significant control (PSCs)"
+        }
     },
 
     "companyNumber" : {
         "whatIsPartnershipNumber": "What is the limited partnership number?",
-        "hint": "This is 2 letters followed by 6 numbers." 
+        "hint": "This is 2 letters followed by 6 numbers."
     },
 
     "confirmLimitedPartnership": {
@@ -499,16 +274,20 @@
             "partner": {
               "addPartner": "We've received your filing to add",
               "removePartner": "We've received your filing to remove",
+              "updatePartner": "We've received the updated details for",
               "generalPartnerType": "as a general partner of",
               "limitedPartnerType": "as a limited partner of",
+              "updateGeneralPartnerType": "who is a general partner of",
+              "updateLimitedPartnerType": "who is a limited partner of",
               "updateWontShow": "This update will not show on the public register until we accept the filing.",
               "processFiling": "We'll process this filing withing 5 working days, and email",
               "processFilingConfirmation": "to let you know if it's been accepted or rejected.",
               "filingAccepted": "If it's accepted, we'll update this information on the public register.",
+              "updateFilingAccepted": "If it's accepted, we'll publish the new information on the public register.",
               "filingRejected": "If it's rejected, we'll explain why and tell you what to do next.",
               "confirmationStatementTitle": "If you need to file a confirmation statement",
               "confirmationStatementBody": "As long as all required updates have been submitted, you can file a confirmation statement. You do not need to wait for the updates to be accepted."
-            } 
+            }
         }
     },
 
@@ -517,12 +296,13 @@
         "hint": "If you have saved filings, you can continue with one of these or start a new one",
         "yes": {
           "text": "Yes, continue with a saved filing",
-          "hint": "You'll be able to choose which filing you want to continue with"          
+          "hint": "You'll be able to choose which filing you want to continue with"
         },
         "no": {
           "text": "No, start a new filing",
-          "hint": "This will not delete any saved filings"          
-        }
+          "hint": "This will not delete any saved filings"
+        },
+        "errorMessage": "Select whether to continue with a saved filing"
     },
 
     "dateOfUpdate" : {
@@ -543,6 +323,12 @@
       },
       "term" : {
           "title": "When did the term change?"
+      },
+      "generalPartner" : {
+          "title": "When did these details change?"
+      },
+      "limitedPartner" : {
+          "title": "When did these details change?"
       }
     },
 
@@ -564,7 +350,7 @@
     },
 
     "generalPartnerChoicePage": {
-        "title": "Is the general partner a person or a legal entity?", 
+        "title": "Is the general partner a person or a legal entity?",
         "hint": "You can add more later.",
         "person": "A person",
         "legalEntity": "A legal entity"
@@ -587,7 +373,7 @@
           "title" : "There is a problem"
         }
     },
-    
+
     "limitedPartnerChoicePage" : {
         "isPersonOrLegalEntity" : "Is the limited partner a person or a legal entity?",
         "isPersonOrLegalEntityHint" : "You can add more later.",
@@ -608,7 +394,7 @@
     "namePage" : {
         "partnershipRulesHint" : {
             "rules" : "The partnership name needs to meet set rules. For example, it cannot be the same as another registered partnership or company, or include certain words or phrases.",
-            "rulesLinkStart" : "To find out more about the rules the limited partnership's name needs to meet,",          
+            "rulesLinkStart" : "To find out more about the rules the limited partnership's name needs to meet,",
             "rulesLinkEnd" : "read the guidance on choosing a name (opens in new tab)."
         },
         "warning" : "You must check the name meets the rules before you register the partnership. If it does not, we may reject your application, or you may need to change it later.",
@@ -621,12 +407,12 @@
         "nameEndingWelshHint" : "There's no difference between the name endings Limited Partnership, LP and L.P. except how they look. Partneriaeth Cyfyngedig, PC and P.C. can only be used if the partnership's principal place of business is in Wales.",
 
         "privateFund" : {
-            "title" : "Private fund limited partnership name",           
+            "title" : "Private fund limited partnership name",
             "nameEnding" : "Which private fund limited partnership name ending would you prefer to go on the public record?",
-    
+
             "scottish" : {
-                "title" : "Scottish private fund limited partnership name"                     
-            }    
+                "title" : "Scottish private fund limited partnership name"
+            }
         },
 
         "scottish" : {
@@ -676,7 +462,7 @@
         },
         "information": "Find more information in the",
         "informationLink": "Legislative Reform (Private Fund Limited Partnerships) Order 2017",
-        "cost": "It costs £XX to apply.",
+        "cost": "It costs £{{ cost }} to apply.",
         "applicationCheck": "I/We apply for this firm to be designated as a private fund limited partnership. For that purpose, I confirm that the partnership is constituted by an agreement in writing and is a collective investment scheme within the meaning of section 8D(4) of the Limited Partnerships Act 1907",
         "confirmationCheck": "I confirm that all general partners have agreed for this application to be made"
     },
@@ -730,6 +516,23 @@
     "serviceRegistration" : "Register a limited partnership",
     "serviceTransition" : "Provide new required information about a limited partnership",
     "servicePostTransition" : "File for a limited partnership",
+    "serviceName" : {
+        "updateLimitedPartnershipName": "Update the name of a limited partnership",
+        "updateLimitedPartnershipTerm": "Update the term of a limited partnership",
+        "updateLimitedPartnershipRegisteredOfficeAddress": "Update a limited partnership's registered office address",
+        "updateLimitedPartnershipPrincipalPlaceOfBusinessAddress": "Update a limited partnership's principal office address",
+        "updateLimitedPartnershipRedesignateToPFLP": "Designate a limited partnership as a private fund limited partnership",
+        "addGeneralPartner": "Add a general partner",
+        "addLimitedPartner": "Add a limited partner",
+        "removeGeneralPartnerEntity": "Remove a general partner (entity)",
+        "removeGeneralPartnerPerson": "Remove a general partner (person)",
+        "removeLimitedPartnerEntity": "Remove a limited partner (entity)",
+        "removeLimitedPartnerPerson": "Remove a limited partner (person)",
+        "updateGeneralPartnerPerson": "Update a general partner's details (person)",
+        "updateGeneralPartnerLegalEntity": "Update a general partner's details (legal entity)",
+        "updateLimitedPartnerPerson": "Update a limited partner's details (person)",
+        "updateLimitedPartnerLegalEntity": "Update a limited partner's details (legal entity)"
+    },
 
     "sicCodePage" : {
         "title" : "What is the Standard Industrial Classification (SIC) code?",
@@ -751,6 +554,13 @@
          "filingsInfo": "Sign in to your Companies House account and select Your filings to access your saved applications."
     },
 
+    "stopPage": {
+        "title": "You have not made any updates",
+        "needTo": "You need to make an update to this partner's details before you can submit this filing.",
+        "buttonUpdate": "Update partner details",
+        "buttonBackRegister": "Go back to the register"
+    },
+
     "termPage": {
         "title": "What is the term of the partnership?",
         "hint": "This is the length of time for which the partnership will be entered into.",
@@ -758,6 +568,14 @@
         "untilDissolution": "Until a general partner determines the partnership is dissolved",
         "noTerm": "No set term",
         "publicRegisterLine1": "We'll show the term of partnership on the public register."
+    },
+
+    "transactionFiled": {
+        "title": "Information has already been provided for the limited partnership",
+        "alreadyReceived": "We've already received a filing with the required information for",
+        "acceptedInformationLine1": "After we've accepted the filing, you can search for the limited partnership on the",
+        "acceptedInformationLine2": "to view or update its information.",
+        "acceptedInformationLink": "Companies House register"
     },
 
     "types": {
@@ -769,15 +587,17 @@
 
     "updatePartnerPersonPage" : {
         "generalPartner": {
-            "title" : "Update a general partner (person)"
+            "title" : "Update a general partner's details (person)"
+        },
+        "limitedPartner": {
+            "title" : "Update a limited partner's details (person)"
         },
         "nationality" : "What is their nationality?",
         "nationalitySelectPrompt": "Select a nationality",
         "secondNationality" : "What is their second nationality (if relevant)?",
         "secondNationalitySelectPrompt": "Select a second nationality",
         "secondNationalityHint" : "Dual citizenship (also known as dual nationality) is allowed in some countries. This means you can be a citizen of your own country and another country.",
-        "publicRegisterLine1" : "We'll show the month and year of the partner's date of birth, but not the exact date.",
-        "publicRegisterLine2" : "We'll show all the other information you provide on this screen on the public register."
+        "publicRegisterLine1" : "We'll show all of this information on the public register."
     },
 
     "whereIsTheJurisdiction" : {
@@ -787,11 +607,11 @@
             "EnglandWales" : "England and Wales",
             "NorthernIreland" : "Northern Ireland"
         },
-        "hint" : "This is where the partnership was formed. The registered office address and principal place of business will need to be in the same jurisdiction.", 
+        "hint" : "This is where the partnership was formed. The registered office address and principal place of business will need to be in the same jurisdiction.",
         "scotland": {
-            "title" : "This partnership will be registered in Scotland",
-            "information" : "This means the partnership's registered office address and principal place of business will need to be in Scotland. Select to continue, if this is correct.",
-            "ifNotScotland" : "If these addresses are in England, Wales or Northern Ireland, you will need to go back to change the type of partnership you are registering."
+            "title" : "The partnership will be registered in Scotland",
+            "information" : "The partnership's registered office address must be in Scotland. The principal place of business must be in Scotland at registration.",
+            "ifNotScotland" : "If the partnership's addresses are in England, Wales or Northern Ireland, you'll need to go back to change the type of partnership you are registering."
         }
     },
 
@@ -900,7 +720,7 @@
         "guineaBissau" : "Guinea-Bissau",
         "guyana" : "Guyana",
         "haiti" : "Haiti",
-        "heardIslandAndMcDonaldIslands" : "Heard Island and McDonald Islands",
+        "heardIslandAndMcdonaldIslands" : "Heard Island and McDonald Islands",
         "herm" : "Herm",
         "honduras" : "Honduras",
         "hongKong" : "Hong Kong",
@@ -1287,7 +1107,7 @@
       "zambian" : "Zambian",
       "zimbabwean" : "Zimbabwean"
     },
-    
+
     "currencies": {
       "selectOne" : "Select currency",
       "AFN" : "Afghani (AFN)",
@@ -1446,7 +1266,7 @@
       "TND" : "Tunisian Dinar (TND)",
       "AED" : "UAE Dirham (AED)",
       "UGX" : "Uganda Shilling (UGX)",
-      "UKH" : "UKRAINE HRYVNIA (UKH)",
+      "UKH" : "Ukraine Hryvnia (UKH)",
       "COU" : "Unidad de Valor Real (COU)",
       "CLF" : "Unidades de formento (CLF)",
       "USD" : "US Dollar (USD)",

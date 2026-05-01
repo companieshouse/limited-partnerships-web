@@ -2,6 +2,7 @@ abstract class AbstractPartnerBuilder {
   _id = "123456";
   data: Record<string, any> = {
     completed: true,
+    appointment_id: "",
 
     forename: "",
     surname: "",
@@ -38,15 +39,23 @@ abstract class AbstractPartnerBuilder {
       region: "region",
       country: "England"
     },
+    service_address: undefined,
 
     cease_date: "",
 
     etag: "",
-    kind: ""
+    kind: "",
+    update_usual_residential_address_required: undefined,
+    update_service_address_required: undefined
   };
 
   withId(id: string) {
     this["_id"] = id;
+    return this;
+  }
+
+  withAppointmentId(appointmentId: string) {
+    this.data.appointment_id = appointmentId;
     return this;
   }
 
@@ -70,8 +79,28 @@ abstract class AbstractPartnerBuilder {
     return this;
   }
 
+  withPrincipalOfficeAddressUpdateRequired(updateRequired: boolean) {
+    this.data.update_principal_office_address_required = updateRequired;
+    return this;
+  }
+
   withUsualResidentialAddress(usualResidentialAddress: Record<string, any> | null) {
     this.data.usual_residential_address = usualResidentialAddress;
+    return this;
+  }
+
+  withUsualResidentialAddressUpdateRequired(updateRequired: boolean) {
+    this.data.update_usual_residential_address_required = updateRequired;
+    return this;
+  }
+
+  withServiceAddress(serviceAddress: Record<string, any> | null) {
+    this.data.service_address = serviceAddress;
+    return this;
+  }
+
+  withServiceAddressUpdateRequired(updateRequired: boolean) {
+    this.data.update_service_address_required = updateRequired;
     return this;
   }
 
@@ -94,6 +123,37 @@ abstract class AbstractPartnerBuilder {
     this.data.legal_entity_registration_location = legalEntityRegistrationLocation;
     return this;
   }
+
+  withKind(kind: string) {
+    this.data.kind = kind;
+    return this;
+  }
+
+  withLegalEntityName(legalEntityName: string): this {
+    this.data.legal_entity_name = legalEntityName;
+    return this;
+  }
+
+  withLegalForm(legalForm: string): this {
+    this.data.legal_form = legalForm;
+    return this;
+  }
+
+  withGoverningLaw(governingLaw: string): this {
+    this.data.governing_law = governingLaw;
+    return this;
+  }
+
+  withLegalEntityRegisterName(legalEntityRegisterName: string): this {
+    this.data.legal_entity_register_name = legalEntityRegisterName;
+    return this;
+  }
+
+  withRegistrationNumber(registeredCompanyNumber: string): this {
+    this.data.registered_company_number = registeredCompanyNumber;
+    return this;
+  }
+
 }
 
 export default AbstractPartnerBuilder;

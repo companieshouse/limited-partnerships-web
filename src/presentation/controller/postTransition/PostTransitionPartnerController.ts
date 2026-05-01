@@ -1,5 +1,10 @@
 import { NextFunction, Request, Response } from "express";
-import { IncorporationKind, PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
+import {
+  GeneralPartner,
+  IncorporationKind,
+  LimitedPartner,
+  PartnerKind
+} from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
@@ -8,10 +13,29 @@ import CompanyService from "../../../application/service/CompanyService";
 import TransactionService from "../../../application/service/TransactionService";
 
 import PartnerController, { PartnerType } from "../common/PartnerController";
-import PostTransitionPageType from "./pageType";
+import PostTransitionPageType, { isLegalEntity } from "./pageType";
 import postTransitionRouting from "./routing";
-import { CEASE_DATE_TEMPLATE } from "../../../config/constants";
+import {
+  CEASE_DATE_TEMPLATE,
+  CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX,
+  DATE_OF_UPDATE_TEMPLATE,
+  PARTNER_CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE,
+  STOP_SCREEN_NO_CHANGE_TEMPLATE,
+  UPDATE_ADDRESS_YES_NO_TEMPLATE,
+  UPDATE_ADDRESS_YES_NO_TYPE_SUFFIX
+} from "../../../config/constants";
 import UIErrors from "../../../domain/entities/UIErrors";
+import { Ids, Tokens } from "../../../domain/types";
+import { isUpdateKind } from "../../../utils/kind";
+import {
+  UPDATE_GENERAL_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
+  UPDATE_GENERAL_PARTNER_STOP_SCREEN_NO_CHANGE_URL,
+  UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
+  UPDATE_LIMITED_PARTNER_STOP_SCREEN_NO_CHANGE_URL
+} from "./url";
+import { ParamsDictionary } from "express-serve-static-core";
+import { ParsedQs } from "qs";
+import { PageRouting } from "../PageRouting";
 
 type PartnerData = {
   person: {
@@ -39,7 +63,10 @@ class PostTransitionPartnerController extends PartnerController {
   getCeaseDate() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
-        const { pageRouting, limitedPartnership, partner } = await this.getPartnerData(request);
+        const { tokens, ids, pageType } = super.extract(request);
+        const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
+
+        const { limitedPartnership, partner } = await this.getPartnershipAndPartnerData(tokens, ids);
 
         response.render(CEASE_DATE_TEMPLATE, super.makeProps(pageRouting, { limitedPartnership, partner }, null));
       } catch (error) {
@@ -48,22 +75,148 @@ class PostTransitionPartnerController extends PartnerController {
     };
   }
 
-  getUpdatePartner(partnerType: PartnerType) {
+  getDateOfUpdate(partnerType: PartnerType) {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
-        const { pageRouting, limitedPartnership, partner } = await this.getPartnerData(request);
+        const { tokens, ids, pageType } = super.extract(request);
+        const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
 
-        response.render(super.templateName(pageRouting.currentUrl), super.makeProps(pageRouting, { limitedPartnership, [partnerType]: partner }, null));
+        const { limitedPartnership, partner } = await this.getPartnershipAndPartnerData(tokens, ids);
+
+        const { noUpdate, redirectUrl } = await this.hasNoUpdates(partner, partnerType, request);
+        if (noUpdate) {
+          return response.redirect(redirectUrl);
+        }
+
+        response.render(
+          DATE_OF_UPDATE_TEMPLATE,
+          super.makeProps(pageRouting, { limitedPartnership, partnerType, [partnerType]: partner }, null)
+        );
       } catch (error) {
         next(error);
       }
     };
   }
 
-  async getPartnerData(request: Request) {
-    const { ids, pageType, tokens } = super.extract(request);
-    const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
+  private async hasNoUpdates(
+    partner: GeneralPartner | LimitedPartner,
+    partnerType: PartnerType,
+    request: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>
+  ) {
+    const { ids } = super.extract(request);
 
+    const partnerUpdatedFieldsMap: Record<string, boolean> = await this.comparePartnerDetails(partner, request);
+
+    const noUpdate = Object.values(partnerUpdatedFieldsMap).every((value) => value === false);
+
+    const redirectUrl =
+      partnerType === PartnerType.generalPartner ?
+        this.insertIdsInUrl(UPDATE_GENERAL_PARTNER_STOP_SCREEN_NO_CHANGE_URL, ids)
+        : this.insertIdsInUrl(UPDATE_LIMITED_PARTNER_STOP_SCREEN_NO_CHANGE_URL, ids);
+
+    return { noUpdate, redirectUrl };
+  }
+
+  getStopScreen() {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { tokens, ids, pageType } = super.extract(request);
+        const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
+
+        const partner = await this.getPartnerAndUpdateLink(ids, tokens, pageRouting);
+
+        response.render(STOP_SCREEN_NO_CHANGE_TEMPLATE, super.makeProps(pageRouting, { partner }, null));
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  private async getPartnerAndUpdateLink(ids: Ids, tokens: Tokens, pageRouting: PageRouting) {
+    let partner;
+    if (ids.generalPartnerId) {
+      partner = await this.generalPartnerService.getGeneralPartner(tokens, ids.transactionId, ids.generalPartnerId);
+      if (partner?.data?.legal_entity_name) {
+        if (pageRouting.data) {
+          pageRouting.data.updatePartnerDetailsLink = super.insertIdsInUrl(
+            UPDATE_GENERAL_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
+            ids
+          );
+        }
+      }
+    }
+
+    if (ids.limitedPartnerId) {
+      partner = await this.limitedPartnerService.getLimitedPartner(tokens, ids.transactionId, ids.limitedPartnerId);
+      if (partner?.data?.legal_entity_name) {
+        if (pageRouting.data) {
+          pageRouting.data.updatePartnerDetailsLink = super.insertIdsInUrl(
+            UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
+            ids
+          );
+        }
+      }
+    }
+    return partner;
+  }
+
+  getUpdatePartner(partnerType: PartnerType) {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { tokens, ids, pageType } = super.extract(request);
+        const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
+
+        const { limitedPartnership, partner } = await this.getPartnershipAndPartnerData(tokens, ids);
+
+        let template = super.templateName(pageRouting.currentUrl);
+        if (pageRouting.currentUrl.includes(UPDATE_ADDRESS_YES_NO_TYPE_SUFFIX)) {
+          template = UPDATE_ADDRESS_YES_NO_TEMPLATE;
+        }
+
+        response.render(
+          template,
+          super.makeProps(pageRouting, { limitedPartnership, partnerType, [partnerType]: partner }, null)
+        );
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  getCheckYourAnswersPageRouting(partnerType: PartnerType) {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { tokens, pageType, ids } = super.extract(request);
+        const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
+
+        let limitedPartnership = {};
+        if (pageRouting.currentUrl.includes(CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX)) {
+          limitedPartnership = (await this.getPartnershipAndPartnerData(tokens, ids)).limitedPartnership;
+        }
+
+        let partner;
+        if (partnerType === PartnerType.generalPartner) {
+          partner = await this.generalPartnerService.getGeneralPartner(tokens, ids.transactionId, ids.generalPartnerId);
+        } else {
+          partner = await this.limitedPartnerService.getLimitedPartner(tokens, ids.transactionId, ids.limitedPartnerId);
+        }
+
+        let partnerUpdatedFieldsMap: Record<string, boolean> = {};
+        if (isUpdateKind(partner?.data?.kind)) {
+          partnerUpdatedFieldsMap = await this.comparePartnerDetails(partner, request);
+        }
+
+        response.render(
+          PARTNER_CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE,
+          super.makeProps(pageRouting, { limitedPartnership, partner, partnerUpdatedFieldsMap, partnerType }, null)
+        );
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  async getPartnershipAndPartnerData(tokens: Tokens, ids: Ids) {
     let limitedPartnership = {};
     let partner = {};
 
@@ -93,7 +246,7 @@ class PostTransitionPartnerController extends PartnerController {
     if (ids.limitedPartnerId) {
       partner = await this.limitedPartnerService.getLimitedPartner(tokens, ids.transactionId, ids.limitedPartnerId);
     }
-    return { pageRouting, limitedPartnership, partner };
+    return { limitedPartnership, partner };
   }
 
   createPartner(partner: PartnerType, data?: PartnerData) {
@@ -108,12 +261,6 @@ class PostTransitionPartnerController extends PartnerController {
           ids.companyId
         );
 
-        const isLegalEntity =
-          pageType === PostTransitionPageType.addGeneralPartnerLegalEntity ||
-          pageType === PostTransitionPageType.whenDidTheGeneralPartnerLegalEntityCease ||
-          pageType === PostTransitionPageType.addLimitedPartnerLegalEntity ||
-          pageType === PostTransitionPageType.whenDidTheLimitedPartnerLegalEntityCease;
-
         const limitedPartnershipData = limitedPartnershipResult?.limitedPartnership?.data;
 
         const resultTransaction = await this.transactionService.createTransaction(
@@ -123,7 +270,7 @@ class PostTransitionPartnerController extends PartnerController {
             companyName: limitedPartnershipData?.partnership_name ?? "",
             companyNumber: limitedPartnershipData?.partnership_number ?? ""
           },
-          isLegalEntity ? data?.legalEntity.description : data?.person.description
+          isLegalEntity(pageType) ? data?.legalEntity.description : data?.person.description
         );
 
         let result: any = {};
@@ -139,7 +286,7 @@ class PostTransitionPartnerController extends PartnerController {
           result = await this.setResultFromAppointment(
             request,
             resultAppointment,
-            isLegalEntity,
+            isLegalEntity(pageType),
             data,
             partner,
             result,
@@ -148,7 +295,7 @@ class PostTransitionPartnerController extends PartnerController {
         } else {
           const dataToSend = {
             ...request.body,
-            kind: isLegalEntity ? data?.legalEntity.kind : data?.person.kind
+            kind: isLegalEntity(pageType) ? data?.legalEntity.kind : data?.person.kind
           };
 
           if (partner === PartnerType.generalPartner) {
@@ -210,14 +357,14 @@ class PostTransitionPartnerController extends PartnerController {
     const { tokens, ids } = super.extract(request);
 
     const dataToSend = {
-      ...request.body,
-
       forename: resultAppointment?.partner.data?.forename,
       surname: resultAppointment?.partner.data?.surname,
       legal_entity_name: resultAppointment?.partner.data?.legal_entity_name,
       date_of_birth: resultAppointment?.partner.data?.date_of_birth,
-      appointment_id: ids.appointmentId,
 
+      ...request.body,
+
+      appointment_id: ids.appointmentId,
       kind: isLegalEntity ? data?.legalEntity.kind : data?.person.kind
     };
 
@@ -235,6 +382,49 @@ class PostTransitionPartnerController extends PartnerController {
       );
     }
     return result;
+  }
+
+  private async comparePartnerDetails(partner: GeneralPartner | LimitedPartner, request: Request) {
+    const { tokens, ids } = super.extract(request);
+    const appointmentId = partner.data?.appointment_id;
+
+    let partnerUpdatedFieldsMap: Record<string, boolean>;
+
+    if (
+      partner.data?.kind === PartnerKind.UPDATE_GENERAL_PARTNER_PERSON ||
+      partner.data?.kind === PartnerKind.UPDATE_LIMITED_PARTNER_PERSON
+    ) {
+      partnerUpdatedFieldsMap = {
+        forename: false,
+        surname: false,
+        nationality1: false,
+        nationality2: false
+      };
+    } else {
+      partnerUpdatedFieldsMap = {
+        legal_entity_name: false,
+        legal_form: false,
+        governing_law: false,
+        legal_entity_register_name: false,
+        legal_entity_registration_location: false,
+        registered_company_number: false
+      };
+    }
+
+    if (appointmentId) {
+      const appointment = await this.companyService?.buildPartnerFromCompanyAppointment(
+        tokens,
+        ids.companyId,
+        appointmentId
+      );
+
+      for (const field in partnerUpdatedFieldsMap) {
+        if (appointment?.partner?.data?.[field]?.trim().toLowerCase() !== partner.data?.[field]?.trim().toLowerCase()) {
+          partnerUpdatedFieldsMap[field] = true;
+        }
+      }
+    }
+    return partnerUpdatedFieldsMap;
   }
 }
 

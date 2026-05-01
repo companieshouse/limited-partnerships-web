@@ -7,23 +7,6 @@
 {{ govukSummaryList({
     classes: "govuk-!-margin-bottom-7",
     rows: [
-        {
-            key: {
-                text: i18n.checkYourAnswersPage.partners.limitedPartners.ceaseDate
-            },
-            value: {
-                text: props.data.partner.data.cease_date
-            },
-            actions: {
-                items: [
-                    CREATE_CHANGE_LINK(
-                        i18n.checkYourAnswersPage.change,
-                        (props.currentUrl | replace(props.pageType, dateChangeUrl)),
-                        cease_date,
-                        "remove-limited-partner-name-button"
-                    )
-                ]
-            }
-        }
+        SET_CEASE_DATE_SECTION(props, "limitedPartner", i18n, dateChangeUrl)
     ]
 }) }}

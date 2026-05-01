@@ -1,3 +1,6 @@
+import { PageDefault } from "../PageRouting";
+import PageType from "../PageType";
+
 enum AddressPageType {
   // LIMITED PARTNERSHIP
 
@@ -50,7 +53,109 @@ enum AddressPageType {
   postcodeLimitedPartnerPrincipalOfficeAddress = "postcode-limited-partner-principal-office-address",
   chooseLimitedPartnerPrincipalOfficeAddress = "choose-limited-partner-principal-office-address",
   enterLimitedPartnerPrincipalOfficeAddress = "enter-limited-partner-principal-office-address",
-  confirmLimitedPartnerPrincipalOfficeAddress = "confirm-limited-partner-principal-office-address"
+  confirmLimitedPartnerPrincipalOfficeAddress = "confirm-limited-partner-principal-office-address",
+
+  // PERSON WITH SIGNIFICANT CONTROL
+
+  // principal office address - Relevant Legal Entity
+  territoryChoicePersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress = "uk-or-overseas-person-with-significant-control-relevant-legal-entity-principal-office-address",
+  postcodePersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress = "postcode-person-with-significant-control-relevant-legal-entity-principal-office-address",
+  choosePersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress = "choose-person-with-significant-control-relevant-legal-entity-principal-office-address",
+  enterPersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress = "enter-person-with-significant-control-relevant-legal-entity-principal-office-address",
+  confirmPersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress = "confirm-person-with-significant-control-relevant-legal-entity-principal-office-address",
+
+  // principal office address - Other Registrable Person
+  territoryChoicePersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress = "uk-or-overseas-person-with-significant-control-other-registrable-person-principal-office-address",
+  postcodePersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress = "postcode-person-with-significant-control-other-registrable-person-principal-office-address",
+  choosePersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress = "choose-person-with-significant-control-other-registrable-person-principal-office-address",
+  enterPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress = "enter-person-with-significant-control-other-registrable-person-principal-office-address",
+  confirmPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress = "confirm-person-with-significant-control-other-registrable-person-principal-office-address"
 }
+
+export const LIMITED_PARTNERSHIP_POSTCODE_PAGES: Set<PageType | PageDefault> = new Set([
+  AddressPageType.postcodeRegisteredOfficeAddress,
+  AddressPageType.postcodePrincipalPlaceOfBusinessAddress
+]);
+
+export const LIMITED_PARTNERSHIP_MANUAL_PAGES: Set<PageType | PageDefault> = new Set([
+  AddressPageType.enterRegisteredOfficeAddress,
+  AddressPageType.enterPrincipalPlaceOfBusinessAddress
+]);
+
+export const MANUAL_PAGES: Set<PageType | PageDefault> = new Set([
+  ...LIMITED_PARTNERSHIP_MANUAL_PAGES,
+  AddressPageType.enterGeneralPartnerUsualResidentialAddress,
+  AddressPageType.enterGeneralPartnerPrincipalOfficeAddress,
+  AddressPageType.enterGeneralPartnerCorrespondenceAddress,
+  AddressPageType.enterLimitedPartnerUsualResidentialAddress,
+  AddressPageType.enterLimitedPartnerPrincipalOfficeAddress,
+  AddressPageType.enterPersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
+  AddressPageType.enterPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress
+]);
+
+export const CHOOSE_PAGES: Set<PageType | PageDefault> = new Set([
+  AddressPageType.chooseRegisteredOfficeAddress,
+  AddressPageType.choosePrincipalPlaceOfBusinessAddress,
+  AddressPageType.chooseGeneralPartnerUsualResidentialAddress,
+  AddressPageType.chooseGeneralPartnerPrincipalOfficeAddress,
+  AddressPageType.chooseGeneralPartnerCorrespondenceAddress,
+  AddressPageType.chooseLimitedPartnerUsualResidentialAddress,
+  AddressPageType.chooseLimitedPartnerPrincipalOfficeAddress,
+  AddressPageType.choosePersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
+  AddressPageType.choosePersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress
+]);
+
+export const GENERAL_PARTNER_PAGES: Set<PageType | PageDefault> = new Set([
+  AddressPageType.territoryChoiceGeneralPartnerCorrespondenceAddress,
+  AddressPageType.territoryChoiceGeneralPartnerPrincipalOfficeAddress,
+  AddressPageType.territoryChoiceGeneralPartnerUsualResidentialAddress,
+  AddressPageType.postcodeGeneralPartnerUsualResidentialAddress,
+  AddressPageType.postcodeGeneralPartnerCorrespondenceAddress,
+  AddressPageType.postcodeGeneralPartnerPrincipalOfficeAddress,
+  AddressPageType.enterGeneralPartnerUsualResidentialAddress,
+  AddressPageType.enterGeneralPartnerCorrespondenceAddress,
+  AddressPageType.enterGeneralPartnerPrincipalOfficeAddress,
+  AddressPageType.confirmGeneralPartnerUsualResidentialAddress,
+  AddressPageType.confirmGeneralPartnerPrincipalOfficeAddress,
+  AddressPageType.confirmGeneralPartnerCorrespondenceAddress
+]);
+
+export const LIMITED_PARTNER_PAGES: Set<PageType | PageDefault> = new Set([
+  AddressPageType.territoryChoiceLimitedPartnerUsualResidentialAddress,
+  AddressPageType.territoryChoiceLimitedPartnerPrincipalOfficeAddress,
+  AddressPageType.postcodeLimitedPartnerUsualResidentialAddress,
+  AddressPageType.postcodeLimitedPartnerPrincipalOfficeAddress,
+  AddressPageType.enterLimitedPartnerUsualResidentialAddress,
+  AddressPageType.enterLimitedPartnerPrincipalOfficeAddress,
+  AddressPageType.confirmLimitedPartnerUsualResidentialAddress,
+  AddressPageType.confirmLimitedPartnerPrincipalOfficeAddress
+]);
+
+export const PERSON_WITH_SIGNIFICANT_CONTROL_PAGES: Set<PageType | PageDefault> = new Set([
+  AddressPageType.territoryChoicePersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
+  AddressPageType.postcodePersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
+  AddressPageType.enterPersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
+  AddressPageType.confirmPersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
+
+  AddressPageType.territoryChoicePersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress,
+  AddressPageType.postcodePersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress,
+  AddressPageType.enterPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress,
+  AddressPageType.confirmPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress
+]);
+
+export const isConfirmGeneralPartnerAddressPageType = (pageType: string): boolean => {
+  return [
+    AddressPageType.confirmGeneralPartnerUsualResidentialAddress,
+    AddressPageType.confirmGeneralPartnerCorrespondenceAddress,
+    AddressPageType.confirmGeneralPartnerPrincipalOfficeAddress
+  ].includes(pageType as AddressPageType);
+};
+
+export const isConfirmLimitedPartnerAddressPageType = (pageType: string): boolean => {
+  return [
+    AddressPageType.confirmLimitedPartnerUsualResidentialAddress,
+    AddressPageType.confirmLimitedPartnerPrincipalOfficeAddress
+  ].includes(pageType as AddressPageType);
+};
 
 export default AddressPageType;

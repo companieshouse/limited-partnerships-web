@@ -50,7 +50,7 @@ describe("Gateway capital contribition validation test suite", () => {
         "contribution_currency_value empty",
         { ...data, contribution_currency_value: "" },
         dataKeys[1],
-        "Contribution currency type is required"
+        "Enter the total value of all monetary and non-monetary contributions"
       ],
       [
         "contribution_sub_types empty array",
@@ -64,7 +64,7 @@ describe("Gateway capital contribition validation test suite", () => {
         dataKeys[0],
         "Select the currency of the capital contribution"
       ]
-    ])("should throw an error for invalid capital contribution - %s", (_description, data, field, errorMessage) => {
+    ])("should throw an error for invalid capital contribution - %s", (description, data, field, errorMessage) => {
       let thrownError: UIErrors | null = null;
 
       try {

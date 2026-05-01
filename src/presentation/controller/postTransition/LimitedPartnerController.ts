@@ -14,11 +14,12 @@ import {
   CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "../addressLookUp/url/postTransition";
 
-import postTransitionRouting from "../postTransition/routing";
 import { CONFIRMATION_POST_TRANSITION_URL } from "../global/url";
-import { JOURNEY_TYPE_PARAM, REMOVE_CHECK_YOUR_ANSWERS_TEMPLATE } from "../../../config/constants";
+import {
+  JOURNEY_QUERY_PARAM,
+  JOURNEY_TYPE_PARAM
+} from "../../../config/constants";
 import { getJourneyTypes } from "../../../utils/journey";
-import { formatDate } from "../../../utils/date-format";
 
 class LimitedPartnerPostTransitionController extends PartnerController {
   constructor(
@@ -63,31 +64,28 @@ class LimitedPartnerPostTransitionController extends PartnerController {
     });
   }
 
+  getUpdatePageRouting() {
+    return this.postTransitionPartnerController.getUpdatePartner(PartnerType.limitedPartner);
+  }
+
+  sendUpdatePageData() {
+    return super.sendPageData(PartnerType.limitedPartner);
+  }
+
   getCeaseDate() {
     return this.postTransitionPartnerController.getCeaseDate();
   }
 
+  getDateOfUpdate() {
+    return this.postTransitionPartnerController.getDateOfUpdate(PartnerType.limitedPartner);
+  }
+
+  getStopScreen() {
+    return this.postTransitionPartnerController.getStopScreen();
+  }
+
   getCheckYourAnswersPageRouting() {
-    return async (request: Request, response: Response, next: NextFunction) => {
-      try {
-        const { tokens, pageType, ids } = super.extract(request);
-        const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
-
-        const partner = await this.limitedPartnerService.getLimitedPartner(
-          tokens,
-          ids.transactionId,
-          ids.limitedPartnerId
-        );
-
-        if (partner?.data?.cease_date) {
-          partner.data.cease_date = formatDate(partner.data.cease_date, response.locals.i18n);
-        }
-
-        response.render(REMOVE_CHECK_YOUR_ANSWERS_TEMPLATE, super.makeProps(pageRouting, { partner }, null));
-      } catch (error) {
-        next(error);
-      }
-    };
+    return this.postTransitionPartnerController.getCheckYourAnswersPageRouting(PartnerType.limitedPartner);
   }
 
   postCheckYourAnswers() {
@@ -97,9 +95,15 @@ class LimitedPartnerPostTransitionController extends PartnerController {
 
         await this.limitedPartnershipService.closeTransaction(tokens, ids.transactionId);
 
-        const url = super
+        let url = super
           .insertIdsInUrl(CONFIRMATION_POST_TRANSITION_URL, ids, request.url)
           .replace(JOURNEY_TYPE_PARAM, getJourneyTypes(request.url).journey);
+
+        const serviceName = response.locals?.serviceName;
+        if (serviceName) {
+          const serviceNameQuery = serviceName.toLowerCase().replace(/\s+/g, '-');
+          url = this.addOrAppendQueryParam(url, JOURNEY_QUERY_PARAM, serviceNameQuery);
+        }
 
         response.redirect(url);
       } catch (error) {

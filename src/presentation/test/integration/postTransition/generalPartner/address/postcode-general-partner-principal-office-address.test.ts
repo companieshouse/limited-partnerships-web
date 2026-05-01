@@ -1,33 +1,50 @@
 import request from "supertest";
-import { Jurisdiction } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
+import { Jurisdiction, PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
-import enTranslationText from "../../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../../locales/cy/translations.json";
+import enGeneralTranslationText from "../../../../../../../locales/en/translations.json";
+import cyGeneralTranslationText from "../../../../../../../locales/cy/translations.json";
+import enAddressTranslationText from "../../../../../../../locales/en/address.json";
+import cyAddressTranslationText from "../../../../../../../locales/cy/address.json";
+import enErrorsTranslationText from "../../../../../../../locales/en/errors.json";
+import cyErrorsTranslationText from "../../../../../../../locales/cy/errors.json";
 
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, toEscapedHtml, testTranslations } from "../../../../utils";
+import { getUrl, setLocalesEnabled, toEscapedHtml, testTranslations, countOccurrences } from "../../../../utils";
+import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
 
 import {
   POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   CHOOSE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
 } from "presentation/controller/addressLookUp/url/postTransition";
+
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
-import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
 import GeneralPartnerBuilder, {
   generalPartnerPerson,
   generalPartnerLegalEntity
 } from "../../../../builder/GeneralPartnerBuilder";
 import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBuilder";
+import TransactionBuilder from "../../../../builder/TransactionBuilder";
 
 describe("Postcode general partner's principal office address page", () => {
+  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText, ...enErrorsTranslationText };
+  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText, ...cyErrorsTranslationText };
   const URL = getUrl(POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
   const REDIRECT_URL = getUrl(CHOOSE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
 
   beforeEach(() => {
     setLocalesEnabled(false);
+
+    const generalPartner = new GeneralPartnerBuilder()
+      .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+      .isPerson()
+      .build();
+    appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+
     appDevDependencies.cacheRepository.feedCache(null);
-    appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
+
+    const transaction = new TransactionBuilder().withKind(PartnerKind.ADD_GENERAL_PARTNER_LEGAL_ENTITY).build();
+    appDevDependencies.transactionGateway.feedTransactions([transaction]);
   });
 
   describe("Get postcode general partner's principal office address page", () => {
@@ -47,7 +64,7 @@ describe("Postcode general partner's principal office address page", () => {
       expect(res.text).toContain(
         toEscapedHtml(
           enTranslationText.address.findPostcode.generalPartner.principalOfficeAddress.whatIsPrincipalOfficeAddress
-        ) + ` - ${enTranslationText.servicePostTransition} - GOV.UK`
+        ) + ` - ${enTranslationText.serviceName.addGeneralPartner} - GOV.UK`
       );
       testTranslations(res.text, enTranslationText.address.findPostcode, [
         "registeredOfficeAddress",
@@ -55,12 +72,14 @@ describe("Postcode general partner's principal office address page", () => {
         "usualResidentialAddress",
         "correspondenceAddress",
         "errorMessages",
-        "limitedPartner"
+        "limitedPartner",
+        "personWithSignificantControl"
       ]);
       expect(res.text).not.toContain("WELSH -");
       expect(res.text).not.toContain(generalPartnerPerson.forename.toUpperCase());
       expect(res.text).not.toContain(generalPartnerPerson.surname.toUpperCase());
       expect(res.text).toContain(generalPartnerLegalEntity.legal_entity_name?.toUpperCase());
+      expect(countOccurrences(res.text, enTranslationText.serviceName.addGeneralPartner)).toBe(2);
     });
 
     it("should load the principal office address page with Welsh text", async () => {
@@ -79,7 +98,7 @@ describe("Postcode general partner's principal office address page", () => {
       expect(res.text).toContain(
         toEscapedHtml(
           cyTranslationText.address.findPostcode.generalPartner.principalOfficeAddress.whatIsPrincipalOfficeAddress
-        ) + ` - ${cyTranslationText.servicePostTransition} - GOV.UK`
+        ) + ` - ${cyTranslationText.serviceName.addGeneralPartner} - GOV.UK`
       );
       testTranslations(res.text, cyTranslationText.address.findPostcode, [
         "registeredOfficeAddress",
@@ -87,12 +106,14 @@ describe("Postcode general partner's principal office address page", () => {
         "usualResidentialAddress",
         "correspondenceAddress",
         "errorMessages",
-        "limitedPartner"
+        "limitedPartner",
+        "personWithSignificantControl"
       ]);
       expect(res.text).toContain("WELSH -");
       expect(res.text).not.toContain(generalPartnerPerson.forename.toUpperCase());
       expect(res.text).not.toContain(generalPartnerPerson.forename.toUpperCase());
       expect(res.text).toContain(generalPartnerLegalEntity.legal_entity_name?.toUpperCase());
+      expect(countOccurrences(res.text, cyTranslationText.serviceName.addGeneralPartner)).toBe(2);
     });
   });
 
@@ -158,7 +179,7 @@ describe("Postcode general partner's principal office address page", () => {
       });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(`The postcode AA1 1AA cannot be found`);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.postcodeLookup.postcodeNotFound);
       expect(res.text).toContain(generalPartner.data?.legal_entity_name?.toUpperCase());
 
       expect(appDevDependencies.cacheRepository.cache).toEqual(null);

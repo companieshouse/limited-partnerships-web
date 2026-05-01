@@ -43,7 +43,7 @@ describe("Add Limited Partner Legal Entity Page", () => {
       ["for type SPFLP", PartnershipType.SPFLP, false]
     ])(
       "should load the add limited partner legal entity page %s with Welsh text",
-      async (_description, partnershipType, isCapitalContributionPresent) => {
+      async (description, partnershipType, isCapitalContributionPresent) => {
         setLocalesEnabled(true);
 
         const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
@@ -53,16 +53,17 @@ describe("Add Limited Partner Legal Entity Page", () => {
 
         expect(res.status).toBe(200);
         expect(res.text).toContain(
-          `${cyTranslationText.addPartnerLegalEntityPage.limitedPartner.title} - ${cyTranslationText.serviceRegistration} - GOV.UK`
+          `${cyTranslationText.addOrUpdatePartnerLegalEntityPage.limitedPartner.title} - ${cyTranslationText.serviceRegistration} - GOV.UK`
         );
-        testTranslations(res.text, cyTranslationText.addPartnerLegalEntityPage, [
+        testTranslations(res.text, cyTranslationText.addOrUpdatePartnerLegalEntityPage, [
           "errorMessages",
           "generalPartner",
           "dateEffectiveFrom",
           "dateHint",
           "dateDay",
           "dateMonth",
-          "dateYear"
+          "dateYear",
+          "updateTitle"
         ]);
 
         if (!isCapitalContributionPresent) {
@@ -88,16 +89,17 @@ describe("Add Limited Partner Legal Entity Page", () => {
 
         expect(res.status).toBe(200);
         expect(res.text).toContain(
-          `${enTranslationText.addPartnerLegalEntityPage.limitedPartner.title} - ${enTranslationText.serviceRegistration} - GOV.UK`
+          `${enTranslationText.addOrUpdatePartnerLegalEntityPage.limitedPartner.title} - ${enTranslationText.serviceRegistration} - GOV.UK`
         );
-        testTranslations(res.text, enTranslationText.addPartnerLegalEntityPage, [
+        testTranslations(res.text, enTranslationText.addOrUpdatePartnerLegalEntityPage, [
           "errorMessages",
           "generalPartner",
           "dateEffectiveFrom",
           "dateHint",
           "dateDay",
           "dateMonth",
-          "dateYear"
+          "dateYear",
+          "updateTitle"
         ]);
         expect(res.text).not.toContain("WELSH -");
 
@@ -152,7 +154,8 @@ describe("Add Limited Partner Legal Entity Page", () => {
 
     it("should contain a back link to the choice page when limited partners are not present", async () => {
       appDevDependencies.limitedPartnerGateway.feedLimitedPartners([]);
-      const res = await request(app).get(getUrl(ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_ID_URL) + "?lang=en");
+
+      const res = await request(app).get(getUrl(ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL) + "?lang=en");
 
       expect(res.status).toBe(200);
       const regex = new RegExp(

@@ -14,11 +14,12 @@ import {
   CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "../addressLookUp/url/postTransition";
 
-import postTransitionRouting from "../postTransition/routing";
 import { CONFIRMATION_POST_TRANSITION_URL } from "../global/url";
-import { JOURNEY_TYPE_PARAM, REMOVE_CHECK_YOUR_ANSWERS_TEMPLATE } from "../../../config/constants";
+import {
+  JOURNEY_QUERY_PARAM,
+  JOURNEY_TYPE_PARAM
+} from "../../../config/constants";
 import { getJourneyTypes } from "../../../utils/journey";
-import { formatDate } from "../../../utils/date-format";
 
 class GeneralPartnerPostTransitionController extends PartnerController {
   constructor(
@@ -67,31 +68,24 @@ class GeneralPartnerPostTransitionController extends PartnerController {
     });
   }
 
+  sendUpdatePageData() {
+    return super.sendPageData(PartnerType.generalPartner);
+  }
+
   getCeaseDate() {
     return this.postTransitionPartnerController.getCeaseDate();
   }
 
+  getDateOfUpdate() {
+    return this.postTransitionPartnerController.getDateOfUpdate(PartnerType.generalPartner);
+  }
+
+  getStopScreen() {
+    return this.postTransitionPartnerController.getStopScreen();
+  }
+
   getCheckYourAnswersPageRouting() {
-    return async (request: Request, response: Response, next: NextFunction) => {
-      try {
-        const { tokens, pageType, ids } = super.extract(request);
-        const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
-
-        const partner = await this.generalPartnerService.getGeneralPartner(
-          tokens,
-          ids.transactionId,
-          ids.generalPartnerId
-        );
-
-        if (partner?.data?.cease_date) {
-          partner.data.cease_date = formatDate(partner.data.cease_date, response.locals.i18n);
-        }
-
-        response.render(REMOVE_CHECK_YOUR_ANSWERS_TEMPLATE, super.makeProps(pageRouting, { partner }, null));
-      } catch (error) {
-        next(error);
-      }
-    };
+    return this.postTransitionPartnerController.getCheckYourAnswersPageRouting(PartnerType.generalPartner);
   }
 
   postCheckYourAnswers() {
@@ -101,9 +95,14 @@ class GeneralPartnerPostTransitionController extends PartnerController {
 
         await this.limitedPartnershipService.closeTransaction(tokens, ids.transactionId);
 
-        const url = super
+        let url = super
           .insertIdsInUrl(CONFIRMATION_POST_TRANSITION_URL, ids, request.url)
           .replace(JOURNEY_TYPE_PARAM, getJourneyTypes(request.url).journey);
+
+        if (response.locals?.serviceName) {
+          const serviceName = response.locals?.serviceName.toLowerCase().replace(/\s+/g, '-');
+          url = this.addOrAppendQueryParam(url, JOURNEY_QUERY_PARAM, serviceName);
+        }
 
         response.redirect(url);
       } catch (error) {

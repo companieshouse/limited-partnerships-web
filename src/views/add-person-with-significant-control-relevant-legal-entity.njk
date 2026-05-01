@@ -1,0 +1,70 @@
+{% extends "layout.njk" %}
+{% import 'includes/countries.njk' as macros %}
+
+{% set pageTitle = i18n.personWithSignificantControl.addPersonWithSignificantControl.addRelevantLegalEntity.title %}
+{% set publicRegisterInformationLine1 = i18n.personWithSignificantControl.addPersonWithSignificantControl.commonEntityFields.publicRegisterLine1 %}
+
+{% block content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            {% include "includes/errors.njk" %}
+
+            {% include "includes/proposed-name.njk" %}
+
+            <h1 class="govuk-heading-xl">{{ pageTitle }}</h1>
+
+            <form class="form" method="post">
+                <input type="hidden" name="pageType" value={{ props.pageType }}>
+                {% include "includes/csrf_token.njk" %}
+
+                <input type="hidden" name="type" value="RELEVANT_LEGAL_ENTITY">
+
+                {% set legalEntityName = i18n.personWithSignificantControl.addPersonWithSignificantControl.addRelevantLegalEntity.legalEntityName %}
+                {% include "pages/personWithSignificantControl/add-person-with-significant-control.njk" %}
+
+                {{ govukInput({
+                    label: {
+                        text: i18n.personWithSignificantControl.addPersonWithSignificantControl.addRelevantLegalEntity.whichRegister,
+                        classes: "govuk-label govuk-label--m"
+                    },
+                    hint: {
+                        text: i18n.personWithSignificantControl.addPersonWithSignificantControl.addRelevantLegalEntity.whichRegisterHint
+                    },
+                    id: "legal_entity_register_name",
+                    name: "legal_entity_register_name",
+                    value: props.data.personWithSignificantControl.data.legal_entity_register_name,
+                    errorMessage: props.errors.legal_entity_register_name if props.errors
+                }) }}
+
+                {% set countryText = i18n.personWithSignificantControl.addPersonWithSignificantControl.addRelevantLegalEntity.countryRegistered %}
+                {% set countryFormId = "legal_entity_registration_location" %}
+                {% set countryErrorMessage = props.errors.legal_entity_registration_location if props.errors %}
+                {% set countryFormValue = props.data.personWithSignificantControl.data.legal_entity_registration_location %}
+                {% set labelFormatting = "govuk-label govuk-label--m" %}
+
+                {{ macros.getSpecifiedCountryList(i18n, "", countryFormId, countryText, countryFormValue, countryErrorMessage, labelFormatting, false) }}
+
+                {{ govukInput({
+                    label: {
+                        text: i18n.personWithSignificantControl.addPersonWithSignificantControl.addRelevantLegalEntity.registrationNumber,
+                        classes: "govuk-label govuk-label--m"
+                    },
+                    hint: {
+                        text: i18n.personWithSignificantControl.addPersonWithSignificantControl.addRelevantLegalEntity.registrationNumberHint
+                    },
+                    id: "registered_company_number",
+                    name: "registered_company_number",
+                    classes: "govuk-!-width-one-half",
+                    inputmode: "numeric",
+                    value: props.data.personWithSignificantControl.data.registered_company_number,
+                    errorMessage: props.errors.registered_company_number if props.errors
+                }) }}
+
+                {% include "includes/public-register-information.njk" %}
+
+                {% include "includes/save-and-continue-button.njk" %}
+            </form>
+        </div>
+    </div>
+{% endblock %}
+

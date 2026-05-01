@@ -2,7 +2,7 @@ import { Jurisdiction, Address } from "@companieshouse/api-sdk-node/dist/service
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 
 class CompanyProfileBuilder {
-  "Id" = "LP123456";
+  "_id" = "LP123456";
   hasMortgages = true;
   data = {
     subtype: "",
@@ -97,8 +97,8 @@ class CompanyProfileBuilder {
     }
   };
 
-  withId(id: string) {
-    this["Id"] = id;
+  with_id(id: string) {
+    this["_id"] = id;
     return this;
   }
 
@@ -117,9 +117,9 @@ class CompanyProfileBuilder {
     return this;
   }
 
-  build(): { Id: string; data: Partial<CompanyProfile> } {
+  build(): { _id: string; data: Partial<CompanyProfile> } {
     return {
-      Id: this["Id"],
+      _id: this["_id"],
       data: this.data
     };
   }

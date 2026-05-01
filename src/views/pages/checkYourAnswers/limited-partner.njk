@@ -14,12 +14,12 @@
     {% set nationalities = macros.formatNationality(item.data.nationality1, i18n) + ", " + macros.formatNationality(item.data.nationality2, i18n) %}
   {% endif %}
   
-  {% if journeyTypes.isRegistration %}
+  {% if journeyTypes.isRegistration or journeyTypes.isPostTransition %}
     {% set capitalContributionHtml -%}
       <p class="govuk-body">
         {{ item.data.contribution_currency_value }} {{ i18n.currencies[item.data.contribution_currency_type] }}
       </p>
-      <p class="govuk-body"> 
+      <p class="govuk-body">
         {{ macros.buildFormattedListFromArray(capitalContributionSubTypesMap, item.data.contribution_sub_types) }}
       </p>
     {%- endset %}
@@ -44,14 +44,9 @@
           text: item.data.former_names
         }
       } if item.data.former_names,
-      {
-        key: {
-          text: i18n.checkYourAnswersPage.partners.person.dateOfBirth
-        },
-        value: {
-          text: item.data.date_of_birth
-        }
-      },
+      
+      SET_DATE_OF_BIRTH_SECTION(item, i18n),
+      
       {
         key: {
           text: i18n.checkYourAnswersPage.partners.person.nationality
@@ -78,26 +73,20 @@
       } if (props.data.limitedPartnership.data.partnership_type === "LP"
             or props.data.limitedPartnership.data.partnership_type === "SLP")
             and item.data.contribution_currency_value
-            and journeyTypes.isRegistration,
-      {
-        key: {
-          text: i18n.checkYourAnswersPage.partners.limitedPartners.dateEffectiveFrom
-        },
-        value: {
-          text: item.data.date_effective_from
-        } 
-      } if journeyTypes.isPostTransition    
+            and (journeyTypes.isRegistration or journeyTypes.isPostTransition),
+
+      SET_DATE_EFFECTIVE_FROM_SECTION(item, "limitedPartner", journeyTypes, i18n)   
     ]
   }) }}
 
 {% elif item.data.legal_entity_name %}
   {% set country = i18n.countries[macros.makeCamelCase(item.data.legal_entity_registration_location)] %}
-  {% if journeyTypes.isRegistration %}
+  {% if journeyTypes.isRegistration or journeyTypes.isPostTransition %}
     {% set capitalContributionHtml -%}
       <p class="govuk-body">
         {{ item.data.contribution_currency_value }} {{ i18n.currencies[item.data.contribution_currency_type] }}
       </p>
-      <p class="govuk-body"> 
+      <p class="govuk-body">
         {{ macros.buildFormattedListFromArray(capitalContributionSubTypesMap, item.data.contribution_sub_types) }}
       </p>
     {%- endset %}
@@ -172,15 +161,9 @@
       } if (props.data.limitedPartnership.data.partnership_type === "LP"
             or props.data.limitedPartnership.data.partnership_type === "SLP")
             and item.data.contribution_currency_value
-            and journeyTypes.isRegistration,
-      {
-        key: {
-          text: i18n.checkYourAnswersPage.partners.limitedPartners.dateEffectiveFrom
-        },
-        value: {
-          text: item.data.date_effective_from
-        } 
-      } if journeyTypes.isPostTransition
+            and (journeyTypes.isRegistration or journeyTypes.isPostTransition),
+      
+      SET_DATE_EFFECTIVE_FROM_SECTION(item, "limitedPartner", journeyTypes, i18n)
     ]
   }) }}
 {% endif %}

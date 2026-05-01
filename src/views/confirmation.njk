@@ -37,13 +37,13 @@
 
     {% if journeyTypes.isRegistration %}
 
-      <p class="govuk-body">{{ i18n.confirmationPage.sentEmailTo }} <strong>{{ props.data.limitedPartnership.data.email }}</strong>.</p>
+      <p class="govuk-body">{{ i18n.confirmationPage.sentEmailTo }} <strong>{{ props.data.userEmail }}</strong>.</p>
 
       <h2 class="govuk-heading-m">{{ i18n.confirmationPage.happensNext }}</h2>
     
       <p class="govuk-body">{{ i18n.confirmationPage.applicationProcess }}</p>
       <p class="govuk-body">
-        {{ i18n.confirmationPage.willEmail }} <strong>{{ props.data.limitedPartnership.data.email or "agent@example.com" }}</strong> {{ i18n.confirmationPage.applicationAcceptedOrRejected }}  
+        {{ i18n.confirmationPage.willEmail }} <strong>{{ props.data.userEmail or "agent@example.com" }}</strong> {{ i18n.confirmationPage.applicationAcceptedOrRejected }}  
       </p>
     
       <h2 class="govuk-heading-m">{{ i18n.confirmationPage.accepted.title }}</h2>
@@ -54,12 +54,12 @@
            
     {% elif journeyTypes.isTransition %}
 
-      <p class="govuk-body">{{ i18n.confirmationPage.filing.partnershipName }} {{ props.data.limitedPartnership.data.partnership_name | upper }} ({{ props.data.limitedPartnership.data.partnership_number }}). {{ i18n.confirmationPage.filing.sentEmail }} <strong>{{ props.data.limitedPartnership.data.email }}</strong> {{ i18n.confirmationPage.filing.confirm }}</p>
+      <p class="govuk-body">{{ i18n.confirmationPage.filing.partnershipName }} {{ props.data.limitedPartnership.data.partnership_name | upper }} ({{ props.data.limitedPartnership.data.partnership_number }}). {{ i18n.confirmationPage.filing.sentEmail }} <strong>{{ props.data.userEmail }}</strong> {{ i18n.confirmationPage.filing.confirm }}</p>
 
       <h2 class="govuk-heading-m">{{ i18n.confirmationPage.happensNext }}</h2>
 
       <p class="govuk-body">{{ i18n.confirmationPage.processUpdate }}</p>
-      <p class="govuk-body">{{ i18n.confirmationPage.willSendEmailTo }} <strong>{{ props.data.limitedPartnership.data.email }}</strong> {{ i18n.confirmationPage.updatePublicRegister }}</p>
+      <p class="govuk-body">{{ i18n.confirmationPage.willSendEmailTo }} <strong>{{ props.data.userEmail }}</strong> {{ i18n.confirmationPage.updatePublicRegister }}</p>
 
     {% elif journeyTypes.isPostTransition %}
       {% include "pages/confirmation/update-confirmation-message.njk" %}  
@@ -74,7 +74,11 @@
 
       <p class="govuk-body">{{ i18n.confirmationPage.postTransition.partner.processFiling }} <strong>{{ props.data.userEmail }}</strong> {{ i18n.confirmationPage.postTransition.partner.processFilingConfirmation }}</p>
 
-      <p class="govuk-body">{{ i18n.confirmationPage.postTransition.partner.filingAccepted }}</p>
+      {% if props.data.subtype.includes('update') and (props.data.subtype.includes('partner-person') or props.data.subtype.includes('partner-legal-entity')) %}
+        <p class="govuk-body">{{ i18n.confirmationPage.postTransition.partner.updateFilingAccepted }}</p>
+      {% else %}
+        <p class="govuk-body">{{ i18n.confirmationPage.postTransition.partner.filingAccepted }}</p>
+      {% endif %}
 
       <p class="govuk-body">{{ i18n.confirmationPage.postTransition.partner.filingRejected }}</p>
 

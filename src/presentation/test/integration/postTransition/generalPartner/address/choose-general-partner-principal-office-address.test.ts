@@ -1,25 +1,43 @@
 import request from "supertest";
+import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-import enTranslationText from "../../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../../locales/cy/translations.json";
+import enGeneralTranslationText from "../../../../../../../locales/en/translations.json";
+import cyGeneralTranslationText from "../../../../../../../locales/cy/translations.json";
+import enAddressTranslationText from "../../../../../../../locales/en/address.json";
+import cyAddressTranslationText from "../../../../../../../locales/cy/address.json";
 
 import app from "../../../app";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import { appDevDependencies } from "config/dev-dependencies";
 
 import {
   CHOOSE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
 } from "presentation/controller/addressLookUp/url/postTransition";
+
+import {
+  APPLICATION_CACHE_KEY,
+  APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION
+} from "../../../../../../config/constants";
 import AddressPageType from "presentation/controller/addressLookUp/PageType";
-import { APPLICATION_CACHE_KEY, APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION } from "../../../../../../config/constants";
+import TransactionBuilder from "../../../../builder/TransactionBuilder";
+import GeneralPartnerBuilder from "../../../../builder/GeneralPartnerBuilder";
 
 describe("Choose principal office address of the general partner page", () => {
+  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
+  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText };
   const URL = getUrl(CHOOSE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
   const REDIRECT_URL = getUrl(CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
 
   beforeEach(() => {
     setLocalesEnabled(false);
+
+    const generalPartner = new GeneralPartnerBuilder()
+      .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+      .isPerson()
+      .build();
+    appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+
     appDevDependencies.addressLookUpGateway.setError(false);
     appDevDependencies.cacheRepository.feedCache({
       [appDevDependencies.transactionGateway.transactionId]: {
@@ -33,6 +51,9 @@ describe("Choose principal office address of the general partner page", () => {
         }
       }
     });
+
+    const transaction = new TransactionBuilder().withKind(PartnerKind.ADD_GENERAL_PARTNER_LEGAL_ENTITY).build();
+    appDevDependencies.transactionGateway.feedTransactions([transaction]);
   });
 
   describe("GET choose principal office address of the general partner page", () => {
@@ -43,6 +64,7 @@ describe("Choose principal office address of the general partner page", () => {
 
       expect(res.status).toBe(200);
       testTranslations(res.text, cyTranslationText.address.chooseAddress.generalPartnerPrincipalOfficeAddress);
+      expect(countOccurrences(res.text, cyTranslationText.serviceName.addGeneralPartner)).toBe(2);
     });
 
     it("should load the choose principal office address of the general partner page with English text", async () => {
@@ -52,6 +74,7 @@ describe("Choose principal office address of the general partner page", () => {
 
       expect(res.status).toBe(200);
       testTranslations(res.text, enTranslationText.address.chooseAddress.generalPartnerPrincipalOfficeAddress);
+      expect(countOccurrences(res.text, enTranslationText.serviceName.addGeneralPartner)).toBe(2);
     });
 
     it("should populate the address list", async () => {

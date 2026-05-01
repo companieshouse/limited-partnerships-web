@@ -4,14 +4,18 @@ import { RefreshTokenService } from "@companieshouse/api-sdk-node/dist/services/
 import { PostcodeLookupService } from "@companieshouse/api-sdk-node/dist/services/postcode-lookup";
 import CompanyProfileService from "@companieshouse/api-sdk-node/dist/services/company-profile/service";
 import CompanyOfficersService from "@companieshouse/api-sdk-node/dist/services/company-officers/service";
+import { PaymentService } from "@companieshouse/api-sdk-node/dist/services/payment";
+import CompanyFilingHistoryService from "@companieshouse/api-sdk-node/dist/services/company-filing-history/service";
+
+import { appDevDependencies } from "../../../../config/dev-dependencies";
 
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
-import { appDevDependencies } from "../../../../config/dev-dependencies";
 import GeneralPartnerBuilder from "../../builder/GeneralPartnerBuilder";
 import LimitedPartnerBuilder from "../../builder/LimitedPartnerBuilder";
-import { PaymentService } from "@companieshouse/api-sdk-node/dist/services/payment";
 import CompanyProfileBuilder from "../../builder/CompanyProfileBuilder";
 import CompanyAppointmentBuilder from "../../builder/CompanyAppointmentBuilder";
+import FilingHistoryBuilder from "../../builder/FilingHistoryBuilder";
+import PersonWithSignificantControlBuilder from "../../builder/PersonWithSignificantControlBuilder";
 
 // Transaction service
 export const postTransaction = jest.fn().mockImplementation(() => ({
@@ -106,6 +110,35 @@ export const deleteLimitedPartner = jest.fn().mockImplementation(() => ({
   resource: {}
 }));
 
+// Person with Significant Control
+export const postPersonWithSignificantControl = jest.fn().mockImplementation(() => ({
+  httpStatusCode: 201,
+  resource: {
+    id: appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId
+  }
+}));
+export const getPersonWithSignificantControl = jest.fn().mockImplementation(() => ({
+  httpStatusCode: 200,
+  resource: new PersonWithSignificantControlBuilder()
+    .isRelevantLegalEntity()
+    .withId(appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId)
+    .build()
+}));
+export const getPersonsWithSignificantControl = jest.fn().mockImplementation(() => ({
+  httpStatusCode: 200,
+  resource: [
+    new PersonWithSignificantControlBuilder().isRelevantLegalEntity().withId(appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId).build()
+  ]
+}));
+export const patchPersonWithSignificantControl = jest.fn().mockImplementation(() => ({
+  httpStatusCode: 200,
+  resource: {}
+}));
+export const deletePersonWithSignificantControl = jest.fn().mockImplementation(() => ({
+  httpStatusCode: 204,
+  resource: {}
+}));
+
 // Refresh Token service
 export const refresh = jest.fn().mockImplementation(() => ({
   httpStatusCode: 201,
@@ -178,6 +211,17 @@ export const createPaymentWithFullUrl = jest.fn().mockImplementation(() => ({
   }
 }));
 
+export const getCompanyFilingHistory = jest.fn().mockImplementation(() => ({
+  httpStatusCode: 200,
+  resource: {
+    filing_history_status: "filing-history-available-limited-partnership-from-2014",
+    items: [new FilingHistoryBuilder().build()],
+    items_per_page: 25,
+    start_index: 0,
+    total_count: 1
+  }
+}));
+
 const sdkMock = {
   transaction: {
     ...TransactionService.prototype,
@@ -186,20 +230,29 @@ const sdkMock = {
   },
   limitedPartnershipsService: {
     ...LimitedPartnershipsService.prototype,
+    // limited partnership
     postLimitedPartnership,
     patchLimitedPartnership,
     getLimitedPartnership,
     postLimitedPartnershipIncorporation,
+    // general partner
     postGeneralPartner,
     getGeneralPartner,
     getGeneralPartners,
     patchGeneralPartner,
     deleteGeneralPartner,
+    // limited partner
     postLimitedPartner,
     getLimitedPartner,
     getLimitedPartners,
     patchLimitedPartner,
-    deleteLimitedPartner
+    deleteLimitedPartner,
+    // person with significant control
+    postPersonWithSignificantControl,
+    getPersonWithSignificantControl,
+    getPersonsWithSignificantControl,
+    patchPersonWithSignificantControl,
+    deletePersonWithSignificantControl
   },
   refreshToken: {
     ...RefreshTokenService.prototype,
@@ -222,6 +275,10 @@ const sdkMock = {
   payment: {
     ...PaymentService.prototype,
     createPaymentWithFullUrl
+  },
+  companyFilingHistory: {
+    ...CompanyFilingHistoryService.prototype,
+    getCompanyFilingHistory
   }
 };
 

@@ -1,63 +1,65 @@
 import request from "supertest";
-import app from "../../app";
+import app from "../../../app";
 
-import enTranslationText from "../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../locales/cy/translations.json";
+import enTranslationText from "../../../../../../../locales/en/translations.json";
+import cyTranslationText from "../../../../../../../locales/cy/translations.json";
 
-import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
-import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
-import { GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL } from "../../../../controller/postTransition/url";
-import { getUrl, setLocalesEnabled } from "../../../utils";
-import { formatDate } from "../../../../../utils/date-format";
-import { GeneralPartner } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-import { CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL, CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../../../controller/addressLookUp/url/postTransition";
-import PostTransitionPageType from "../../../../controller/postTransition/pageType";
-import { CONFIRMATION_POST_TRANSITION_URL } from "../../../../controller/global/url";
+import { appDevDependencies } from "../../../../../../config/dev-dependencies";
+import GeneralPartnerBuilder from "../../../../builder/GeneralPartnerBuilder";
+import CompanyProfileBuilder from "../../../../builder/CompanyProfileBuilder";
+import { GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/postTransition/url";
+import { countOccurrences, getUrl, setLocalesEnabled } from "../../../../utils";
+import { formatDate } from "../../../../../../utils/date-format";
+import { GeneralPartner, PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL, CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../../../../controller/addressLookUp/url/postTransition";
+import PostTransitionPageType from "../../../../../controller/postTransition/pageType";
+import { CONFIRMATION_POST_TRANSITION_URL } from "../../../../../controller/global/url";
+import TransactionBuilder from "../../../../builder/TransactionBuilder";
+import TransactionGeneralPartner from "../../../../../../domain/entities/TransactionGeneralPartner";
 
 describe("General Partner Check Your Answers Page", () => {
   const URL = getUrl(GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL);
   const REDIRECT_URL = getUrl(CONFIRMATION_POST_TRANSITION_URL);
 
-  let generalPartnerPerson;
+  let generalPartnerPerson: TransactionGeneralPartner;
 
   beforeEach(() => {
     const companyProfile = new CompanyProfileBuilder().build();
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
     generalPartnerPerson = new GeneralPartnerBuilder()
+      .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
       .isPerson()
       .withFormerNames("Joe Dee")
       .withDateEffectiveFrom("2024-10-10")
       .withNationality1("Welsh")
       .build();
     appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartnerPerson]);
+
+    const transaction = new TransactionBuilder().withKind(PartnerKind.ADD_GENERAL_PARTNER_PERSON).build();
+    appDevDependencies.transactionGateway.feedTransactions([transaction]);
   });
 
-  it("should GET Check Your Answers Page English text", async () => {
+  it.each([
+    ["en", enTranslationText],
+    ["cy", cyTranslationText]
+  ])("should GET Check Your Answers Page %s text", async (lang, translationText) => {
     setLocalesEnabled(true);
-    const res = await request(app).get(URL + "?lang=en");
+    const res = await request(app).get(URL + `?lang=${lang}`);
 
     expect(res.status).toBe(200);
 
-    expect(res.text).toContain(enTranslationText.checkYourAnswersPage.update.title);
-    expect(res.text).toContain(enTranslationText.print.buttonText);
-    expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
-    expect(res.text).toContain(enTranslationText.nationalities.welsh);
-    expect(res.text).not.toContain("WELSH -");
-  });
-
-  it("should GET Check Your Answers Page Welsh text", async () => {
-    setLocalesEnabled(true);
-    const res = await request(app).get(URL + "?lang=cy");
-
-    expect(res.status).toBe(200);
-
-    expect(res.text).toContain(cyTranslationText.checkYourAnswersPage.update.title);
-    expect(res.text).toContain(cyTranslationText.print.buttonText);
-    expect(res.text).toContain(cyTranslationText.print.buttonTextNoJs);
-    expect(res.text).toContain(cyTranslationText.nationalities.welsh);
-    expect(res.text).toContain("WELSH -");
+    expect(res.text).toContain(translationText.checkYourAnswersPage.update.title);
+    expect(res.text).toContain(translationText.print.buttonText);
+    expect(res.text).toContain(translationText.print.buttonTextNoJs);
+    expect(res.text).toContain(translationText.nationalities.welsh);
+    if (lang === "cy") {
+      expect(res.text).toContain("WELSH -");
+    } else {
+      expect(res.text).not.toContain("WELSH -");
+    }
+    expect(countOccurrences(res.text, translationText.serviceName.addGeneralPartner)).toBe(2);
+    expect(res.text).toContain(`data-event-id="check-your-answers-add-general-partner-submit-button"`);
   });
 
   it.each([

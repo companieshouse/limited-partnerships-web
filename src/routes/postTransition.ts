@@ -51,7 +51,28 @@ import {
   REMOVE_LIMITED_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_URL,
   REDESIGNATE_TO_PFLP_URL,
   UPDATE_GENERAL_PARTNER_PERSON_URL,
-  UPDATE_GENERAL_PARTNER_PERSON_WITH_IDS_URL
+  UPDATE_GENERAL_PARTNER_PERSON_WITH_IDS_URL,
+  UPDATE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
+  UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL,
+  UPDATE_GENERAL_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL,
+  UPDATE_GENERAL_PARTNER_LEGAL_ENTITY_URL,
+  UPDATE_GENERAL_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
+  UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL,
+  WHEN_DID_GENERAL_PARTNER_PERSON_DETAILS_CHANGE_URL,
+  WHEN_DID_GENERAL_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL,
+  UPDATE_GENERAL_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_URL,
+  UPDATE_LIMITED_PARTNER_PERSON_URL,
+  UPDATE_LIMITED_PARTNER_PERSON_WITH_IDS_URL,
+  UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
+  WHEN_DID_LIMITED_PARTNER_PERSON_DETAILS_CHANGE_URL,
+  UPDATE_LIMITED_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL,
+  UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_URL,
+  UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
+  UPDATE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL,
+  WHEN_DID_LIMITED_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL,
+  UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_URL,
+  UPDATE_GENERAL_PARTNER_STOP_SCREEN_NO_CHANGE_URL,
+  UPDATE_LIMITED_PARTNER_STOP_SCREEN_NO_CHANGE_URL
 } from "../presentation/controller/postTransition/url";
 import {
   TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_LEGAL_ENTITY,
@@ -61,7 +82,11 @@ import {
   TRANSACTION_DESCRIPTION_REMOVE_GENERAL_PARTNER_LEGAL_ENTITY,
   TRANSACTION_DESCRIPTION_REMOVE_GENERAL_PARTNER_PERSON,
   TRANSACTION_DESCRIPTION_REMOVE_LIMITED_PARTNER_LEGAL_ENTITY,
-  TRANSACTION_DESCRIPTION_REMOVE_LIMITED_PARTNER_PERSON
+  TRANSACTION_DESCRIPTION_REMOVE_LIMITED_PARTNER_PERSON,
+  TRANSACTION_DESCRIPTION_UPDATE_GENERAL_PARTNER_LEGAL_ENTITY,
+  TRANSACTION_DESCRIPTION_UPDATE_GENERAL_PARTNER_PERSON,
+  TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNER_LEGAL_ENTITY,
+  TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNER_PERSON
 } from "../config/constants";
 
 const postTransitionEndpoints = (router: Router, dependencies: IDependencies): void => {
@@ -621,11 +646,284 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
     companyAuthentication,
     dependencies.generalPartnerPostTransitionController.getUpdatePageRouting()
   );
+  router.post(
+    UPDATE_GENERAL_PARTNER_PERSON_URL,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.createGeneralPartner({
+      person: {
+        description: TRANSACTION_DESCRIPTION_UPDATE_GENERAL_PARTNER_PERSON,
+        kind: PartnerKind.UPDATE_GENERAL_PARTNER_PERSON
+      },
+      legalEntity: {
+        description: TRANSACTION_DESCRIPTION_UPDATE_GENERAL_PARTNER_LEGAL_ENTITY,
+        kind: PartnerKind.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY
+      },
+      needAppointment: true
+    })
+  );
 
   router.get(
     UPDATE_GENERAL_PARTNER_PERSON_WITH_IDS_URL,
     companyAuthentication,
     dependencies.generalPartnerPostTransitionController.getUpdatePageRouting()
+  );
+  router.post(
+    UPDATE_GENERAL_PARTNER_PERSON_WITH_IDS_URL,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.sendUpdatePageData()
+  );
+
+  router.get(
+    UPDATE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.getUpdatePageRouting()
+  );
+  router.post(
+    UPDATE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.sendUpdatePageData()
+  );
+
+  router.get(
+    UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.getUpdatePageRouting()
+  );
+  router.post(
+    UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.sendUpdatePageData()
+  );
+
+  router.get(
+    WHEN_DID_GENERAL_PARTNER_PERSON_DETAILS_CHANGE_URL,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.getDateOfUpdate()
+  );
+  router.post(
+    WHEN_DID_GENERAL_PARTNER_PERSON_DETAILS_CHANGE_URL,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.sendUpdatePageData()
+  );
+
+  router.get(
+    UPDATE_GENERAL_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.getCheckYourAnswersPageRouting()
+  );
+  router.post(
+    UPDATE_GENERAL_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.postCheckYourAnswers()
+  );
+
+  // Update General Partner Legal Entity
+  router.get(
+    UPDATE_GENERAL_PARTNER_LEGAL_ENTITY_URL,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.getUpdatePageRouting()
+  );
+  router.post(
+    UPDATE_GENERAL_PARTNER_LEGAL_ENTITY_URL,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.createGeneralPartner({
+      person: {
+        description: TRANSACTION_DESCRIPTION_UPDATE_GENERAL_PARTNER_PERSON,
+        kind: PartnerKind.UPDATE_GENERAL_PARTNER_PERSON
+      },
+      legalEntity: {
+        description: TRANSACTION_DESCRIPTION_UPDATE_GENERAL_PARTNER_LEGAL_ENTITY,
+        kind: PartnerKind.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY
+      },
+      needAppointment: true
+    })
+  );
+
+  router.get(
+    UPDATE_GENERAL_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.getUpdatePageRouting()
+  );
+  router.post(
+    UPDATE_GENERAL_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.sendUpdatePageData()
+  );
+
+  router.get(
+    UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.getUpdatePageRouting()
+  );
+  router.post(
+    UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.sendUpdatePageData()
+  );
+
+  router.get(
+    WHEN_DID_GENERAL_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.getDateOfUpdate()
+  );
+  router.post(
+    WHEN_DID_GENERAL_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.sendUpdatePageData()
+  );
+
+  router.get(
+    UPDATE_GENERAL_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_URL,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.getCheckYourAnswersPageRouting()
+  );
+  router.post(
+    UPDATE_GENERAL_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_URL,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.postCheckYourAnswers()
+  );
+
+  // Update Limited Partner Person
+  router.get(
+    UPDATE_LIMITED_PARTNER_PERSON_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.getUpdatePageRouting()
+  );
+  router.post(
+    UPDATE_LIMITED_PARTNER_PERSON_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.createLimitedPartner({
+      person: {
+        description: TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNER_PERSON,
+        kind: PartnerKind.UPDATE_LIMITED_PARTNER_PERSON
+      },
+      legalEntity: {
+        description: TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNER_LEGAL_ENTITY,
+        kind: PartnerKind.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY
+      },
+      needAppointment: true
+    })
+  );
+
+  router.get(
+    UPDATE_LIMITED_PARTNER_PERSON_WITH_IDS_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.getUpdatePageRouting()
+  );
+  router.post(
+    UPDATE_LIMITED_PARTNER_PERSON_WITH_IDS_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.sendUpdatePageData()
+  );
+
+  router.get(
+    UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.getUpdatePageRouting()
+  );
+  router.post(
+    UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.sendUpdatePageData()
+  );
+
+  router.get(
+    WHEN_DID_LIMITED_PARTNER_PERSON_DETAILS_CHANGE_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.getDateOfUpdate()
+  );
+  router.post(
+    WHEN_DID_LIMITED_PARTNER_PERSON_DETAILS_CHANGE_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.sendUpdatePageData()
+  );
+
+  router.get(
+    UPDATE_LIMITED_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.getCheckYourAnswersPageRouting()
+  );
+  router.post(
+    UPDATE_LIMITED_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.postCheckYourAnswers()
+  );
+
+  // Update Limited Partner Legal Entity
+  router.get(
+    UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.getUpdatePageRouting()
+  );
+  router.post(
+    UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.createLimitedPartner({
+      person: {
+        description: TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNER_PERSON,
+        kind: PartnerKind.UPDATE_LIMITED_PARTNER_PERSON
+      },
+      legalEntity: {
+        description: TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNER_LEGAL_ENTITY,
+        kind: PartnerKind.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY
+      },
+      needAppointment: true
+    })
+  );
+
+  router.get(
+    UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.getUpdatePageRouting()
+  );
+  router.post(
+    UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.sendUpdatePageData()
+  );
+
+  router.get(
+    UPDATE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.getUpdatePageRouting()
+  );
+  router.post(
+    UPDATE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.sendUpdatePageData()
+  );
+
+  router.get(
+    WHEN_DID_LIMITED_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.getDateOfUpdate()
+  );
+  router.post(
+    WHEN_DID_LIMITED_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.sendUpdatePageData()
+  );
+
+  router.get(
+    UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.getCheckYourAnswersPageRouting()
+  );
+  router.post(
+    UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.postCheckYourAnswers()
+  );
+
+  router.get(
+    UPDATE_GENERAL_PARTNER_STOP_SCREEN_NO_CHANGE_URL,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.getStopScreen()
+  );
+  router.get(
+    UPDATE_LIMITED_PARTNER_STOP_SCREEN_NO_CHANGE_URL,
+    companyAuthentication,
+    dependencies.limitedPartnerPostTransitionController.getStopScreen()
   );
 };
 
