@@ -12,10 +12,13 @@ import * as config from "../../../../../../config";
 
 import {
   CHOOSE_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL,
-  CHOOSE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL
+  CHOOSE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL,
+  CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL,
+  CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL
 } from "presentation/controller/addressLookUp/url/registration";
 
 import AddressPageType from "presentation/controller/addressLookUp/PageType";
+import { englandAddressList } from "../../../../../../infrastructure/gateway/addressLookUp/AddressLookUpInMemoryGateway";
 
 describe("Choose principal office address of the person with significant control page", () => {
   const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
@@ -43,6 +46,8 @@ describe("Choose principal office address of the person with significant control
         }
       }
     });
+
+    appDevDependencies.addressLookUpGateway.feedEnglandAddresses(englandAddressList);
   });
 
   describe("GET choose principal office address of the person with significant control page", () => {
@@ -83,6 +88,30 @@ describe("Choose principal office address of the person with significant control
       expect(res.text).toContain("4 Duncalf Street, Stoke-On-Trent, ST6 3LJ");
       expect(res.text).toContain("6 Duncalf Street, Stoke-On-Trent, ST6 3LJ");
     });
+
+    it.each([
+      [
+        "RLE",
+        URL_RELEVANT_LEGAL_ENTITY,
+        getUrl(CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL)
+      ],
+      [
+        "ORP",
+        URL_OTHER_REGISTRABLE_PERSON,
+        getUrl(CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL)
+      ]
+    ])(
+      "should redirect to the confirm page if the list contains only one element - %s",
+      async (_description: string, URL: string, redirectUrl: string) => {
+        // set the gateway to return only one address for the postcode
+        appDevDependencies.addressLookUpGateway.feedEnglandAddresses([englandAddressList[0]]);
+
+        const res = await request(app).get(URL);
+
+        expect(res.status).toBe(302);
+        expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+      }
+    );
 
     it.each([
       ["RLE English", URL_RELEVANT_LEGAL_ENTITY, "en", enTranslationText],

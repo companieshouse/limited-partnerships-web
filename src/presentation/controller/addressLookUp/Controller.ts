@@ -91,7 +91,11 @@ class AddressLookUpController extends AbstractController {
           return;
         }
 
-        const addressList = await this.getAddressList(pageRouting, cacheById, tokens);
+        const { addressList, redirectToConfirm } = await this.getAddressList(pageRouting, cacheById, tokens);
+        if (redirectToConfirm) {
+          response.redirect(redirectToConfirm);
+          return;
+        }
 
         const { chsCorrespondenceAddress, chsPrincipalOfficeAddress } = await this.getChsAddressesIfApplicable(
           tokens,
@@ -131,7 +135,10 @@ class AddressLookUpController extends AbstractController {
     };
   }
 
-  private validateAddress(cacheById: Record<string, any>, pageRouting: PageRouting) {
+  private validateAddress(
+    cacheById: Record<string, any>,
+    pageRouting: PageRouting
+  ): { errors: UIErrors; redirectUrl: string } {
     const addressCacheKey = pageRouting.data?.[AddressCacheKeys.addressCacheKey];
     const hasAddressInCache = addressCacheKey && cacheById?.[addressCacheKey];
 
@@ -531,7 +538,7 @@ class AddressLookUpController extends AbstractController {
         const addressRouting = this.getAddressRouting(request.url);
         const pageRouting = super.getRouting(addressRouting, pageType, request);
 
-        if (!parameter){
+        if (!parameter) {
           return await this.renderTerritoryChoicePageWithError(request, pageRouting, response);
         }
 
@@ -618,17 +625,22 @@ class AddressLookUpController extends AbstractController {
     pageRouting: PageRouting,
     cache: Record<string, any>,
     tokens: Tokens
-  ): Promise<Address[]> {
+  ): Promise<{ addressList: Address[]; redirectToConfirm: string }> {
     let addressList: Address[] = [];
+    let redirectToConfirm = "";
 
     if (CHOOSE_PAGES.has(pageRouting.pageType)) {
       const cacheKey = pageRouting.data?.[AddressCacheKeys.addressCacheKey];
       const postcode = cache[cacheKey]?.postal_code;
 
       addressList = await this.addressService.getAddressListForPostcode(tokens, postcode);
+
+      if (addressList.length === 1) {
+        redirectToConfirm = pageRouting.currentUrl.replace("choose", "confirm");
+      }
     }
 
-    return addressList;
+    return { addressList, redirectToConfirm };
   }
 
   private addAddressToCache(
