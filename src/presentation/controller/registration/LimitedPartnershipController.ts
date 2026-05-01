@@ -30,7 +30,9 @@ import {
   NAME_WITH_IDS_URL,
   REVIEW_GENERAL_PARTNERS_URL,
   PARTNERSHIP_TYPE_WITH_IDS_URL,
-  WILL_LIMITED_PARTNERSHIP_HAVE_PSC_URL
+  WILL_LIMITED_PARTNERSHIP_HAVE_PSC_URL,
+  REVIEW_LIMITED_PARTNERS_URL,
+  REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL
 } from "./url";
 import { CONFIRM_REGISTERED_OFFICE_ADDRESS_URL } from "../addressLookUp/url/registration";
 import { PAYMENT_RESPONSE_URL } from "../global/url";
@@ -170,10 +172,18 @@ class LimitedPartnershipController extends PartnershipController {
 
     // Separate check: set the CYA page's own back link based on partnership type
     if (pageRouting.pageType === RegistrationPageType.checkYourAnswers && limitedPartnership) {
-      const partnershipType = limitedPartnership.data?.partnership_type;
+      const isScottishPartnership =
+        limitedPartnership.data?.partnership_type === PartnershipType.SLP ||
+        limitedPartnership.data?.partnership_type === PartnershipType.SPFLP;
 
-      if (partnershipType === PartnershipType.SLP || partnershipType === PartnershipType.SPFLP) {
+      const hasPersonWithSignificantControl = limitedPartnership.data?.has_person_with_significant_control;
+
+      if (isScottishPartnership && hasPersonWithSignificantControl) {
+        pageRouting.previousUrl = super.insertIdsInUrl(REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL, ids, request.url);
+      } else if (isScottishPartnership && !hasPersonWithSignificantControl) {
         pageRouting.previousUrl = super.insertIdsInUrl(WILL_LIMITED_PARTNERSHIP_HAVE_PSC_URL, ids, request.url);
+      } else {
+        pageRouting.previousUrl = super.insertIdsInUrl(REVIEW_LIMITED_PARTNERS_URL, ids, request.url);
       }
     }
   }
