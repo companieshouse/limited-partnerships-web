@@ -7,9 +7,11 @@ import {
   Jurisdiction,
   PartnershipType
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-import { CHECK_YOUR_ANSWERS_URL } from "../../../controller/registration/url";
-import enTranslationText from "../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../locales/cy/translations.json";
+import { CHECK_YOUR_ANSWERS_URL, REVIEW_LIMITED_PARTNERS_URL, REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL, WILL_LIMITED_PARTNERSHIP_HAVE_PSC_URL } from "../../../controller/registration/url";
+import enGeneralTranslationText from "../../../../../locales/en/translations.json";
+import cyGeneralTranslationText from "../../../../../locales/cy/translations.json";
+import enAddressTranslationText from "../../../../../locales/en/address.json";
+import cyAddressTranslationText from "../../../../../locales/cy/address.json";
 import enErrorMessages from "../../../../../locales/en/errors.json";
 import cyErrorMessages from "../../../../../locales/cy/errors.json";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
@@ -32,16 +34,22 @@ import {
   ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_TEMPLATE,
   ENTER_REGISTERED_OFFICE_ADDRESS_TEMPLATE
 } from "../../../../presentation/controller/addressLookUp/template";
+import TransactionLimitedPartner from "../../../../domain/entities/TransactionLimitedPartner";
+import TransactionGeneralPartner from "../../../../domain/entities/TransactionGeneralPartner";
+import TransactionLimitedPartnership from "../../../../domain/entities/TransactionLimitedPartnership";
 
 describe("Check Your Answers Page", () => {
+  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText, ...enErrorMessages };
+  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText, ...cyErrorMessages };
+
   const URL = getUrl(CHECK_YOUR_ANSWERS_URL);
   const PAYMENT_LINK_JOURNEY = "https://api-test-payments.chs.local:4001";
 
-  let limitedPartnership;
-  let generalPartnerPerson;
-  let generalPartnerLegalEntity;
-  let limitedPartnerPerson;
-  let limitedPartnerLegalEntity;
+  let limitedPartnership: TransactionLimitedPartnership;
+  let generalPartnerPerson: TransactionGeneralPartner;
+  let generalPartnerLegalEntity: TransactionGeneralPartner;
+  let limitedPartnerPerson: TransactionLimitedPartner;
+  let limitedPartnerLegalEntity: TransactionLimitedPartner;
 
   beforeEach(() => {
     limitedPartnership = new LimitedPartnershipBuilder().build();
@@ -73,13 +81,17 @@ describe("Check Your Answers Page", () => {
   });
 
   describe("GET Check Your Answers Page", () => {
-    it("should GET Check Your Answers Page English text", async () => {
+    it.each([
+      ["English", "en", enTranslationText],
+      ["Welsh", "cy", cyTranslationText]
+    ])("should load the check your answers page with %s text", async (_description: string, lang: string, translationText: Record<string, any>) => {
+      const langParam = lang === "en" ? "?lang=en" : "?lang=cy";
+
       setLocalesEnabled(true);
-      const langEn = "?lang=en";
-      const res = await request(app).get(URL + langEn);
+      const res = await request(app).get(URL + `?lang=${lang}`);
 
       expect(res.status).toBe(200);
-      testTranslations(res.text, enTranslationText.checkYourAnswersPage, [
+      testTranslations(res.text, translationText.checkYourAnswersPage, [
         "headingTerm",
         "jurisdictions",
         "headingSic",
@@ -92,53 +104,18 @@ describe("Check Your Answers Page", () => {
         "warningMessageUpdate",
         "psc"
       ]);
-      expect(res.text).toContain(enTranslationText.termPage.byAgreement);
-      expect(res.text).toContain(enTranslationText.print.buttonText);
-      expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
-      expect(res.text).not.toContain("WELSH -");
+      expect(res.text).toContain(translationText.termPage.byAgreement);
+      expect(res.text).toContain(translationText.print.buttonText);
+      expect(res.text).toContain(translationText.print.buttonTextNoJs);
 
       //  change links should retain the lang query parameter
-      expect(res.text).toContain(`${NAME_TEMPLATE}${langEn}`);
-      expect(res.text).toContain(`${PARTNERSHIP_TYPE_TEMPLATE}${langEn}`);
-      expect(res.text).toContain(`${EMAIL_TEMPLATE}${langEn}`);
-      expect(res.text).toContain(`${WHERE_IS_THE_JURISDICTION_TEMPLATE}${langEn}`);
-      expect(res.text).toContain(`${ENTER_REGISTERED_OFFICE_ADDRESS_TEMPLATE}${langEn}`);
-      expect(res.text).toContain(`${ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_TEMPLATE}${langEn}`);
-      expect(res.text).toContain(`${TERM_TEMPLATE}${langEn}`);
-    });
-
-    it("should GET Check Your Answers Page Welsh text", async () => {
-      setLocalesEnabled(true);
-      const langCy = "?lang=cy";
-      const res = await request(app).get(URL + langCy);
-
-      expect(res.status).toBe(200);
-      testTranslations(res.text, cyTranslationText.checkYourAnswersPage, [
-        "headingTerm",
-        "jurisdictions",
-        "headingSic",
-        "dateEffectiveFrom",
-        "warningMessage",
-        "headingNumber",
-        "submitFiling",
-        "update",
-        "ceaseDate",
-        "warningMessageUpdate",
-        "psc"
-      ]);
-      expect(res.text).toContain(cyTranslationText.termPage.byAgreement);
-      expect(res.text).toContain(cyTranslationText.print.buttonText);
-      expect(res.text).toContain(cyTranslationText.print.buttonTextNoJs);
-      expect(res.text).toContain("WELSH -");
-
-      //  change links should retain the lang query parameter
-      expect(res.text).toContain(`${NAME_TEMPLATE}${langCy}`);
-      expect(res.text).toContain(`${PARTNERSHIP_TYPE_TEMPLATE}${langCy}`);
-      expect(res.text).toContain(`${EMAIL_TEMPLATE}${langCy}`);
-      expect(res.text).toContain(`${WHERE_IS_THE_JURISDICTION_TEMPLATE}${langCy}`);
-      expect(res.text).toContain(`${ENTER_REGISTERED_OFFICE_ADDRESS_TEMPLATE}${langCy}`);
-      expect(res.text).toContain(`${ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_TEMPLATE}${langCy}`);
-      expect(res.text).toContain(`${TERM_TEMPLATE}${langCy}`);
+      expect(res.text).toContain(`${NAME_TEMPLATE}${langParam}`);
+      expect(res.text).toContain(`${PARTNERSHIP_TYPE_TEMPLATE}${langParam}`);
+      expect(res.text).toContain(`${EMAIL_TEMPLATE}${langParam}`);
+      expect(res.text).toContain(`${WHERE_IS_THE_JURISDICTION_TEMPLATE}${langParam}`);
+      expect(res.text).toContain(`${ENTER_REGISTERED_OFFICE_ADDRESS_TEMPLATE}${langParam}`);
+      expect(res.text).toContain(`${ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_TEMPLATE}${langParam}`);
+      expect(res.text).toContain(`${TERM_TEMPLATE}${langParam}`);
     });
 
     it.each([
@@ -302,41 +279,17 @@ describe("Check Your Answers Page", () => {
     expect(res.text).toContain(text);
   });
 
-  it("should load the check your answers page with partners - EN", async () => {
-    const res = await request(app).get(URL);
+  it.each([
+    ["en", enTranslationText],
+    ["cy", cyTranslationText]
+  ])("should load the %s check your answers page with partners", async (lang: string, translationText: Record<string, any>) => {
+    setLocalesEnabled(true);
+
+    const res = await request(app).get(URL + `?lang=${lang}`);
 
     expect(res.status).toBe(200);
 
-    testTranslations(res.text, enTranslationText.checkYourAnswersPage, [
-      "scotland",
-      "dateEffectiveFrom",
-      "warningMessage",
-      "headingNumber",
-      "submitFiling",
-      "update",
-      "ceaseDate",
-      "warningMessageUpdate",
-      "psc"
-    ]);
-
-    checkIfValuesInText(res, generalPartnerPerson, enTranslationText);
-
-    checkIfValuesInText(res, generalPartnerLegalEntity, enTranslationText);
-
-    checkIfValuesInText(res, limitedPartnerPerson, enTranslationText);
-
-    checkIfValuesInText(res, limitedPartnerLegalEntity, enTranslationText);
-
-    expect(res.text).toContain(enTranslationText.nationalities.british);
-    expect(res.text).toContain(enTranslationText.countries.unitedStates);
-  });
-
-  it("should load the check your answers page with partners - CY", async () => {
-    const res = await request(app).get(URL + "?lang=cy");
-
-    expect(res.status).toBe(200);
-
-    testTranslations(res.text, cyTranslationText.checkYourAnswersPage, [
+    testTranslations(res.text, translationText.checkYourAnswersPage, [
       "scotland",
       "northernIreland",
       "dateEffectiveFrom",
@@ -349,16 +302,16 @@ describe("Check Your Answers Page", () => {
       "psc"
     ]);
 
-    checkIfValuesInText(res, generalPartnerPerson, cyTranslationText);
+    checkIfValuesInText(res, generalPartnerPerson, translationText);
 
-    checkIfValuesInText(res, generalPartnerLegalEntity, cyTranslationText);
+    checkIfValuesInText(res, generalPartnerLegalEntity, translationText);
 
-    checkIfValuesInText(res, limitedPartnerPerson, cyTranslationText);
+    checkIfValuesInText(res, limitedPartnerPerson, translationText);
 
-    checkIfValuesInText(res, limitedPartnerLegalEntity, cyTranslationText);
+    checkIfValuesInText(res, limitedPartnerLegalEntity, translationText);
 
-    expect(res.text).toContain(cyTranslationText.nationalities.british);
-    expect(res.text).toContain(cyTranslationText.countries.unitedStates);
+    expect(res.text).toContain(translationText.nationalities.british);
+    expect(res.text).toContain(translationText.countries.unitedStates);
   });
 
   it("should load the check your answers page with capital contribution data for limited partner person", async () => {
@@ -476,16 +429,22 @@ describe("Check Your Answers Page", () => {
     );
 
     it.each([
-      [PartnershipType.SLP, "will-the-partnership-have-any-people-with-significant-control"],
-      [PartnershipType.SPFLP, "will-the-partnership-have-any-people-with-significant-control"],
-      [PartnershipType.LP, "review-limited-partners"],
-      [PartnershipType.PFLP, "review-limited-partners"]
+      [PartnershipType.SLP, true, getUrl(REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL)],
+      [PartnershipType.SPFLP, true, getUrl(REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL)],
+      [PartnershipType.SLP, false, getUrl(WILL_LIMITED_PARTNERSHIP_HAVE_PSC_URL)],
+      [PartnershipType.SPFLP, false, getUrl(WILL_LIMITED_PARTNERSHIP_HAVE_PSC_URL)],
+      [PartnershipType.LP, false, getUrl(REVIEW_LIMITED_PARTNERS_URL)],
+      [PartnershipType.PFLP, false, getUrl(REVIEW_LIMITED_PARTNERS_URL)]
     ])(
-      "should set the back link correctly for partnership type %s",
-      async (partnershipType: PartnershipType, expectedBackLinkPageType: string) => {
+      "should set the back link correctly for partnership type %s when has_person_with_significant_control is %s",
+      async (partnershipType: PartnershipType, hasPersonWithSignificantControl: boolean, expectedBackLinkPageType: string) => {
+        if (hasPersonWithSignificantControl) {
+          const personWithSignificantControl = new PersonWithSignificantControlBuilder().isRelevantLegalEntity().build();
+          appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([personWithSignificantControl]);
+        }
         const limitedPartnership = new LimitedPartnershipBuilder()
           .withPartnershipType(partnershipType)
-          .withHasPersonWithSignificantControl(false)
+          .withHasPersonWithSignificantControl(hasPersonWithSignificantControl)
           .build();
 
         appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
@@ -493,7 +452,7 @@ describe("Check Your Answers Page", () => {
         const res = await request(app).get(URL);
 
         expect(res.status).toBe(200);
-        expect(res.text).toContain(expectedBackLinkPageType);
+        expect(res.text).toContain(`href="${expectedBackLinkPageType}" class="govuk-back-link"`);
       }
     );
   });
