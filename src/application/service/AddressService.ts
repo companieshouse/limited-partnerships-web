@@ -46,7 +46,7 @@ class AddressService {
         address_line_2: "",
         locality: "",
         country: "",
-        premises: premises || ""
+        premises: premises && premises !== "null" ? premises : ""
       };
 
       // invalid characters premises
@@ -70,17 +70,17 @@ class AddressService {
         return { address, errors: uiErrors };
       }
 
-      if (premises && !this.validCharactersRegex.test(premises)) {
-        uiErrors.setWebError("premises", this.i18n.errorMessages.address.postcodeLookup.premisesInvalid);
-
-        return { address, errors: uiErrors };
-      }
-
       // is valid uk postcode
       const isValid = await this.addressGateway.isValidUKPostcode(opt, postalCode);
 
       if (!isValid) {
         uiErrors.setWebError(this.postcodeFieldName, this.i18n.errorMessages.address.postcodeLookup.postcodeNotFound);
+
+        return { address, errors: uiErrors };
+      }
+
+      if (postalCode && ["JE", "GY", "IM"].includes(postalCode.slice(0, 2))) {
+        uiErrors.setWebError(this.postcodeFieldName, this.i18n.errorMessages.address.enterAddress.notMainland);
 
         return { address, errors: uiErrors };
       }
@@ -93,14 +93,14 @@ class AddressService {
         return { address, errors: uiErrors };
       }
 
-      // only one address, return it
-      if (ukAddresses.length === 1) {
-        return { address: ukAddresses[0] };
-      }
-
       // is from correct country and jurisdiction
       if (!this.isFromCorrectCountry(uiErrors, ukAddresses, jurisdiction)) {
         return { address, errors: uiErrors };
+      }
+
+      // only one address, return it
+      if (ukAddresses.length === 1) {
+        return { address: ukAddresses[0] };
       }
 
       // if premises provided, check it matches the postcode
