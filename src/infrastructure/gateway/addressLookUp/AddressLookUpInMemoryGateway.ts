@@ -7,19 +7,23 @@ import postcodeLookUpAddressToAddress from "./addressMapper";
 import { Address } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 class AddressLookUpInMemoryGateway implements IAddressLookUpGateway {
-  englandAddresses: UKAddress[] = englandAddresses;
-  walesAddresses: UKAddress[] = walesAddresses;
-  scotlandAddresses: UKAddress[] = scotlandAddresses;
-  borderAddresses: UKAddress[] = borderAddresses;
-  northernIrelandAddresses: UKAddress[] = northernIrelandAddresses;
-  jerseyAddresses: UKAddress[] = jerseyAddresses;
-  guernseyAddresses: UKAddress[] = guernseyAddresses;
-  isleOfManAddresses: UKAddress[] = isleOfManAddresses;
+  englandAddresses: UKAddress[] = englandAddressList;
+  walesAddresses: UKAddress[] = walesAddressList;
+  scotlandAddresses: UKAddress[] = scotlandAddressList;
+  borderAddresses: UKAddress[] = borderAddressList;
+  northernIrelandAddresses: UKAddress[] = northernIrelandAddressList;
+  jerseyAddresses: UKAddress[] = jerseyAddressList;
+  guernseyAddresses: UKAddress[] = guernseyAddressList;
+  isleOfManAddresses: UKAddress[] = isleOfManAddressList;
 
   error = false;
 
   setError(value: boolean) {
     this.error = value;
+  }
+
+  feedEnglandAddresses(addresses: UKAddress[]) {
+    this.englandAddresses = addresses;
   }
 
   async isValidUKPostcode(opt: { access_token: string; refresh_token: string }, postcode: string): Promise<boolean> {
@@ -85,7 +89,7 @@ class AddressLookUpInMemoryGateway implements IAddressLookUpGateway {
 
 export default AddressLookUpInMemoryGateway;
 
-const englandAddresses: UKAddress[] = [
+export const englandAddressList: UKAddress[] = [
   {
     postcode: "ST6 3LJ",
     premise: "2",
@@ -120,7 +124,7 @@ const englandAddresses: UKAddress[] = [
   }
 ];
 
-const walesAddresses: UKAddress[] = [
+const walesAddressList: UKAddress[] = [
   {
     postcode: "CF3 0AD",
     premise: "261",
@@ -131,7 +135,7 @@ const walesAddresses: UKAddress[] = [
   }
 ];
 
-const scotlandAddresses: UKAddress[] = [
+const scotlandAddressList: UKAddress[] = [
   {
     postcode: "IV18 0JT",
     premise: "1",
@@ -142,7 +146,7 @@ const scotlandAddresses: UKAddress[] = [
   }
 ];
 
-const borderAddresses: UKAddress[] = [
+const borderAddressList: UKAddress[] = [
   {
     postcode: "SY1 1EB",
     premise: "10",
@@ -153,7 +157,7 @@ const borderAddresses: UKAddress[] = [
   }
 ];
 
-const northernIrelandAddresses: UKAddress[] = [
+const northernIrelandAddressList: UKAddress[] = [
   {
     postcode: "BT12 6QH",
     premise: "11E",
@@ -164,7 +168,7 @@ const northernIrelandAddresses: UKAddress[] = [
   }
 ];
 
-const jerseyAddresses: UKAddress[] = [
+const jerseyAddressList: UKAddress[] = [
   {
     postcode: "JE2 3AA",
     premise: "9 HELIER LES VANNIERS",
@@ -175,7 +179,7 @@ const jerseyAddresses: UKAddress[] = [
   }
 ];
 
-const guernseyAddresses: UKAddress[] = [
+const guernseyAddressList: UKAddress[] = [
   {
     postcode: "GY1 2AL",
     premise: "1",
@@ -186,7 +190,7 @@ const guernseyAddresses: UKAddress[] = [
   }
 ];
 
-const isleOfManAddresses: UKAddress[] = [
+const isleOfManAddressList: UKAddress[] = [
   {
     postcode: "IM2 4NN",
     premise: "1",

@@ -93,6 +93,10 @@ export const MANUAL_PAGES: Set<PageType | PageDefault> = new Set([
   AddressPageType.enterPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress
 ]);
 
+export const isManualAddressPageType = (pageType: string): boolean => {
+  return MANUAL_PAGES.has(pageType as AddressPageType);
+};
+
 export const CHOOSE_PAGES: Set<PageType | PageDefault> = new Set([
   AddressPageType.chooseRegisteredOfficeAddress,
   AddressPageType.choosePrincipalPlaceOfBusinessAddress,
@@ -156,6 +160,21 @@ export const isConfirmLimitedPartnerAddressPageType = (pageType: string): boolea
     AddressPageType.confirmLimitedPartnerUsualResidentialAddress,
     AddressPageType.confirmLimitedPartnerPrincipalOfficeAddress
   ].includes(pageType as AddressPageType);
+};
+
+export const isConfirmPersonWithSignificantControlAddressPageType = (pageType: string): boolean => {
+  return [
+    AddressPageType.confirmPersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
+    AddressPageType.confirmPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress
+  ].includes(pageType as AddressPageType);
+};
+
+export const isConfirmAddressPageType = (pageType: string): boolean => {
+  return (
+    isConfirmGeneralPartnerAddressPageType(pageType) ||
+    isConfirmLimitedPartnerAddressPageType(pageType) ||
+    isConfirmPersonWithSignificantControlAddressPageType(pageType)
+  );
 };
 
 export default AddressPageType;

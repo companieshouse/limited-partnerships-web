@@ -10,7 +10,13 @@ import cyErrorsTranslationText from "../../../../../../../locales/cy/errors.json
 
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
-import { createPersonWithSignificantControl, getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
+import {
+  countOccurrences,
+  createPersonWithSignificantControl,
+  getUrl,
+  setLocalesEnabled,
+  testTranslations
+} from "../../../../utils";
 
 import {
   ENTER_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL,
@@ -51,7 +57,7 @@ describe("Enter person with significant control's principal office manual addres
       ["ORP English", URL_OTHER_REGISTRABLE_PERSON, "en", enTranslationText],
       ["ORP Welsh", URL_OTHER_REGISTRABLE_PERSON, "cy", cyTranslationText]
     ])(
-      "should load enter person with significant controls principal office address page with English text",
+      "should load enter person with significant controls principal office address page with %s",
       async (_description: string, URL: string, lang: string, translationText: Record<string, any>) => {
         const personWithSignificantControl = createPersonWithSignificantControl(URL, URL_RELEVANT_LEGAL_ENTITY);
 
@@ -69,6 +75,45 @@ describe("Enter person with significant control's principal office manual addres
           "principalOfficeAddress",
           "errorMessages"
         ]);
+
+        expect(res.text).toContain(personWithSignificantControl?.data?.legal_entity_name?.toUpperCase());
+      }
+    );
+
+    it.each([
+      ["RLE English", URL_RELEVANT_LEGAL_ENTITY, "en", enTranslationText],
+      ["RLE Welsh", URL_RELEVANT_LEGAL_ENTITY, "cy", cyTranslationText],
+      ["ORP English", URL_OTHER_REGISTRABLE_PERSON, "en", enTranslationText],
+      ["ORP Welsh", URL_OTHER_REGISTRABLE_PERSON, "cy", cyTranslationText]
+    ])(
+      "should load enter person with significant controls principal office address page with %s errors",
+      async (_description: string, URL: string, lang: string, translationText: Record<string, any>) => {
+        const personWithSignificantControl = createPersonWithSignificantControl(URL, URL_RELEVANT_LEGAL_ENTITY);
+        const errorMessages = translationText.errorMessages.address.enterAddress;
+
+        appDevDependencies.cacheRepository.feedCache({
+          [appDevDependencies.transactionGateway.transactionId]: {
+            principal_office_address: {
+              postal_code: "ST6 3LJ",
+              premises: "4",
+              address_line_1: null,
+              address_line_2: "line 2",
+              locality: "stoke-on-trent",
+              region: "region",
+              country: null
+            }
+          }
+        });
+
+        const res = await request(app).get(URL + `?lang=${lang}`);
+
+        expect(res.status).toBe(200);
+
+        expect(res.text).toContain(errorMessages.addressLine1Missing);
+        expect(countOccurrences(res.text, errorMessages.addressLine1Missing)).toBe(2);
+
+        expect(res.text).toContain(errorMessages.countryMissing);
+        expect(countOccurrences(res.text, errorMessages.countryMissing)).toBe(3);
 
         expect(res.text).toContain(personWithSignificantControl?.data?.legal_entity_name?.toUpperCase());
       }

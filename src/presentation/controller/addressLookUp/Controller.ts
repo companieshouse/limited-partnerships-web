@@ -30,7 +30,9 @@ import AddressLookUpPageType, {
   LIMITED_PARTNERSHIP_POSTCODE_PAGES,
   PERSON_WITH_SIGNIFICANT_CONTROL_PAGES,
   CHOOSE_PAGES,
-  MANUAL_PAGES
+  MANUAL_PAGES,
+  isConfirmAddressPageType,
+  isManualAddressPageType
 } from "./PageType";
 import { PageDefault, PageRouting, pageRoutingDefault } from "../PageRouting";
 import PageType from "../PageType";
@@ -83,7 +85,17 @@ class AddressLookUpController extends AbstractController {
 
         const cacheById = this.cacheService.getDataFromCacheById(request.signedCookies, ids.transactionId);
 
-        const addressList = await this.getAddressList(pageRouting, cacheById, tokens);
+        const { errors, redirectUrl } = this.validateAddress(cacheById, pageRouting);
+        if (errors?.hasErrors() && redirectUrl) {
+          response.redirect(redirectUrl);
+          return;
+        }
+
+        const { addressList, redirectToConfirm } = await this.getAddressList(pageRouting, cacheById, tokens);
+        if (redirectToConfirm) {
+          response.redirect(redirectToConfirm);
+          return;
+        }
 
         const { chsCorrespondenceAddress, chsPrincipalOfficeAddress } = await this.getChsAddressesIfApplicable(
           tokens,
@@ -114,13 +126,38 @@ class AddressLookUpController extends AbstractController {
               chsCorrespondenceAddress,
               chsPrincipalOfficeAddress
             },
-            null
+            errors
           )
         );
       } catch (error) {
         next(error);
       }
     };
+  }
+
+  private validateAddress(
+    cacheById: Record<string, any>,
+    pageRouting: PageRouting
+  ): { errors: UIErrors; redirectUrl: string } {
+    const addressCacheKey = pageRouting.data?.[AddressCacheKeys.addressCacheKey];
+    const hasAddressInCache = addressCacheKey && cacheById?.[addressCacheKey];
+
+    let errors: UIErrors | undefined;
+    let redirectUrl: string = "";
+
+    if (
+      hasAddressInCache &&
+      (isConfirmAddressPageType(pageRouting.pageType) || isManualAddressPageType(pageRouting.pageType))
+    ) {
+      const address = cacheById[addressCacheKey];
+      errors = this.addressService.runValidation(address);
+
+      if (isConfirmAddressPageType(pageRouting.pageType) && errors?.hasErrors()) {
+        redirectUrl = pageRouting.currentUrl.replace("confirm", "enter");
+      }
+    }
+
+    return { errors: errors ?? new UIErrors(), redirectUrl };
   }
 
   private async getChsAddressesIfApplicable(
@@ -501,7 +538,7 @@ class AddressLookUpController extends AbstractController {
         const addressRouting = this.getAddressRouting(request.url);
         const pageRouting = super.getRouting(addressRouting, pageType, request);
 
-        if (!parameter){
+        if (!parameter) {
           return await this.renderTerritoryChoicePageWithError(request, pageRouting, response);
         }
 
@@ -588,17 +625,22 @@ class AddressLookUpController extends AbstractController {
     pageRouting: PageRouting,
     cache: Record<string, any>,
     tokens: Tokens
-  ): Promise<Address[]> {
+  ): Promise<{ addressList: Address[]; redirectToConfirm: string }> {
     let addressList: Address[] = [];
+    let redirectToConfirm = "";
 
     if (CHOOSE_PAGES.has(pageRouting.pageType)) {
       const cacheKey = pageRouting.data?.[AddressCacheKeys.addressCacheKey];
       const postcode = cache[cacheKey]?.postal_code;
 
       addressList = await this.addressService.getAddressListForPostcode(tokens, postcode);
+
+      if (addressList.length === 1) {
+        redirectToConfirm = pageRouting.currentUrl.replace("choose", "confirm");
+      }
     }
 
-    return addressList;
+    return { addressList, redirectToConfirm };
   }
 
   private addAddressToCache(
