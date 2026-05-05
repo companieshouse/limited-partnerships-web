@@ -132,6 +132,14 @@ const walesAddressList: UKAddress[] = [
     addressLine2: "",
     postTown: "CARDIFF",
     country: "GB-WLS"
+  },
+  {
+    postcode: "CF3 0AD",
+    premise: "262",
+    addressLine1: "OAKLANDS CLOSE",
+    addressLine2: "",
+    postTown: "CARDIFF",
+    country: "GB-WLS"
   }
 ];
 
@@ -139,6 +147,14 @@ const scotlandAddressList: UKAddress[] = [
   {
     postcode: "IV18 0JT",
     premise: "1",
+    addressLine1: "MAIN AVENUE",
+    addressLine2: "",
+    postTown: "INVERGORDON",
+    country: "GB-SCT"
+  },
+  {
+    postcode: "IV18 0JT",
+    premise: "2",
     addressLine1: "MAIN AVENUE",
     addressLine2: "",
     postTown: "INVERGORDON",
@@ -154,6 +170,14 @@ const borderAddressList: UKAddress[] = [
     addressLine2: "",
     postTown: "SHREWSBURY",
     country: ""
+  },
+  {
+    postcode: "SY1 1EB",
+    premise: "11",
+    addressLine1: "ST MARYS STREET",
+    addressLine2: "",
+    postTown: "SHREWSBURY",
+    country: ""
   }
 ];
 
@@ -161,6 +185,14 @@ const northernIrelandAddressList: UKAddress[] = [
   {
     postcode: "BT12 6QH",
     premise: "11E",
+    addressLine1: "GLENMACHAN CLOSE",
+    addressLine2: "",
+    postTown: "BELFAST",
+    country: "GB-NIR"
+  },
+  {
+    postcode: "BT12 6QH",
+    premise: "12E",
     addressLine1: "GLENMACHAN CLOSE",
     addressLine2: "",
     postTown: "BELFAST",
@@ -176,6 +208,14 @@ const jerseyAddressList: UKAddress[] = [
     addressLine2: "",
     postTown: "JERSEY",
     country: "Channel Island"
+  },
+  {
+    postcode: "JE2 3AA",
+    premise: "10 HELIER LES VANNIERS",
+    addressLine1: "LA ROUTE DE ST. AUBIN",
+    addressLine2: "",
+    postTown: "JERSEY",
+    country: "Channel Island"
   }
 ];
 
@@ -187,6 +227,14 @@ const guernseyAddressList: UKAddress[] = [
     addressLine2: "",
     postTown: "GUERNSEY",
     country: "Channel Island"
+  },
+  {
+    postcode: "GY1 2AL",
+    premise: "2",
+    addressLine1: "LA ROUTE DE ST. AUBIN",
+    addressLine2: "",
+    postTown: "GUERNSEY",
+    country: "Channel Island"
   }
 ];
 
@@ -194,6 +242,14 @@ const isleOfManAddressList: UKAddress[] = [
   {
     postcode: "IM2 4NN",
     premise: "1",
+    addressLine1: "LANSDOWNE",
+    addressLine2: "",
+    postTown: "ISLE OF MAN",
+    country: "Isle of Man"
+  },
+  {
+    postcode: "IM2 4NN",
+    premise: "2",
     addressLine1: "LANSDOWNE",
     addressLine2: "",
     postTown: "ISLE OF MAN",

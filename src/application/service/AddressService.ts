@@ -46,8 +46,15 @@ class AddressService {
         address_line_2: "",
         locality: "",
         country: "",
-        premises: ""
+        premises: premises && premises !== "null" ? premises : ""
       };
+
+      // invalid characters premises
+      if (premises && !this.validCharactersRegex.test(premises)) {
+        uiErrors.setWebError("premises", this.i18n.errorMessages.address.postcodeLookup.premisesInvalid);
+
+        return { address, errors: uiErrors };
+      }
 
       // empty postcode
       if (!postalCode) {
@@ -56,15 +63,9 @@ class AddressService {
         return { address, errors: uiErrors };
       }
 
-      // invalid characters
+      // invalid characters postcode
       if (!this.validCharactersRegex.test(postalCode)) {
         uiErrors.setWebError(this.postcodeFieldName, this.i18n.errorMessages.address.postcodeLookup.postcodeInvalid);
-
-        return { address, errors: uiErrors };
-      }
-
-      if (premises && !this.validCharactersRegex.test(premises)) {
-        uiErrors.setWebError("premises", this.i18n.errorMessages.address.postcodeLookup.premisesInvalid);
 
         return { address, errors: uiErrors };
       }
@@ -74,6 +75,12 @@ class AddressService {
 
       if (!isValid) {
         uiErrors.setWebError(this.postcodeFieldName, this.i18n.errorMessages.address.postcodeLookup.postcodeNotFound);
+
+        return { address, errors: uiErrors };
+      }
+
+      if (postalCode && ["JE", "GY", "IM"].includes(postalCode.slice(0, 2))) {
+        uiErrors.setWebError(this.postcodeFieldName, this.i18n.errorMessages.address.enterAddress.notMainland);
 
         return { address, errors: uiErrors };
       }
@@ -91,12 +98,13 @@ class AddressService {
         return { address, errors: uiErrors };
       }
 
+      // only one address, return it
+      if (ukAddresses.length === 1) {
+        return { address: ukAddresses[0] };
+      }
+
       // if premises provided, check it matches the postcode
       if (premises) {
-        if (ukAddresses.length === 0) {
-          return { address };
-        }
-
         const matchingAddress = this.getMatchingAddress(ukAddresses, postalCode, premises);
 
         if (matchingAddress) {

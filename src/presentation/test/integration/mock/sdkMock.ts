@@ -156,6 +156,14 @@ export const getListOfValidPostcodeAddresses = jest.fn().mockImplementation(() =
       addressLine2: "",
       postTown: "STOKE-ON-TRENT",
       country: "GB-ENG"
+    },
+    {
+      postcode: "ST6 3LJ",
+      premise: "4",
+      addressLine1: "DUNCALF STREET",
+      addressLine2: "",
+      postTown: "STOKE-ON-TRENT",
+      country: "GB-ENG"
     }
   ]
 }));
