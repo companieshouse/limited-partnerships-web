@@ -19,4 +19,4 @@
 {% set countryErrorMessage = props.errors.country if props.error %}
 {% set labelFormatting = "govuk-label govuk-input--width-10" %}
 
-{{ macros.getSpecifiedCountryList(i18n, "unitedKingdom", countryFormId, countryText, countryFormValue, countryErrorMessage, labelFormatting) }}
+{{ macros.getSpecifiedCountryList(i18n, "unitedKingdom", countryFormId, countryText, countryFormValue, countryErrorMessage, labelFormatting, false) }}
