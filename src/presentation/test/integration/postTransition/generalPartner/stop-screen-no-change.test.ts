@@ -100,6 +100,10 @@ describe("Stop screen - no change", () => {
       .withDateOfUpdate("2024-10-10")
       .build();
 
+    (generalPartnerPerson as any).data.update_usual_residential_address_required = false;
+    (generalPartnerPerson as any).data.update_service_address_required = false;
+    (generalPartnerPerson as any).data.update_principal_office_address_required = false;
+
     generalPartnerLegalEntity = new GeneralPartnerBuilder()
       .withId("generalPartnerLegalEntityId")
       .isLegalEntity()
@@ -207,6 +211,35 @@ describe("Stop screen - no change", () => {
       if (limitedPartnerLegalEntity.data) {
         limitedPartnerLegalEntity.data.legal_entity_name = "NewLegalEntityName";
       }
+
+      const res = await request(app).get(whenDidUrl);
+
+      expect(res.status).toBe(200);
+
+      expect(res.text).toContain("when-did-");
+    }
+  );
+
+  it.each([
+    [
+      "GP person - update_usual_residential_address_required",
+      getUrl(WHEN_DID_GENERAL_PARTNER_PERSON_DETAILS_CHANGE_URL),
+      "update_usual_residential_address_required"
+    ],
+    [
+      "GP person - update_service_address_required",
+      getUrl(WHEN_DID_GENERAL_PARTNER_PERSON_DETAILS_CHANGE_URL),
+      "update_service_address_required"
+    ],
+    [
+      "GP legal entity - update_principal_office_address_required",
+      getUrl(WHEN_DID_GENERAL_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL),
+      "update_principal_office_address_required"
+    ]
+  ])(
+    "should render the when did page if there is at least one address update - %s",
+    async (_partner: string, whenDidUrl: string, addressChange: string) => {
+      (generalPartnerPerson as any).data[addressChange] = true;
 
       const res = await request(app).get(whenDidUrl);
 

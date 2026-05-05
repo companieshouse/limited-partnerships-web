@@ -22,15 +22,18 @@ import {
   PARTNER_CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE,
   STOP_SCREEN_NO_CHANGE_TEMPLATE,
   UPDATE_ADDRESS_YES_NO_TEMPLATE,
-  UPDATE_ADDRESS_YES_NO_TYPE_SUFFIX
+  UPDATE_ADDRESS_YES_NO_TYPE_SUFFIX,
+  YOUR_COMPANY_URL
 } from "../../../config/constants";
 import UIErrors from "../../../domain/entities/UIErrors";
 import { Ids, Tokens } from "../../../domain/types";
 import { isUpdateKind } from "../../../utils/kind";
 import {
   UPDATE_GENERAL_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
+  UPDATE_GENERAL_PARTNER_PERSON_WITH_IDS_URL,
   UPDATE_GENERAL_PARTNER_STOP_SCREEN_NO_CHANGE_URL,
   UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
+  UPDATE_LIMITED_PARTNER_PERSON_WITH_IDS_URL,
   UPDATE_LIMITED_PARTNER_STOP_SCREEN_NO_CHANGE_URL
 } from "./url";
 import { ParamsDictionary } from "express-serve-static-core";
@@ -134,29 +137,41 @@ class PostTransitionPartnerController extends PartnerController {
 
   private async getPartnerAndUpdateLink(ids: Ids, tokens: Tokens, pageRouting: PageRouting) {
     let partner;
-    if (ids.generalPartnerId) {
-      partner = await this.generalPartnerService.getGeneralPartner(tokens, ids.transactionId, ids.generalPartnerId);
-      if (partner?.data?.legal_entity_name) {
-        if (pageRouting.data) {
+
+    if (pageRouting.data) {
+      if (ids.generalPartnerId) {
+        partner = await this.generalPartnerService.getGeneralPartner(tokens, ids.transactionId, ids.generalPartnerId);
+        if (partner?.data?.forename) {
+          pageRouting.data.updatePartnerDetailsLink = super.insertIdsInUrl(
+            UPDATE_GENERAL_PARTNER_PERSON_WITH_IDS_URL,
+            ids
+          );
+        } else {
           pageRouting.data.updatePartnerDetailsLink = super.insertIdsInUrl(
             UPDATE_GENERAL_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
             ids
           );
         }
       }
-    }
 
-    if (ids.limitedPartnerId) {
-      partner = await this.limitedPartnerService.getLimitedPartner(tokens, ids.transactionId, ids.limitedPartnerId);
-      if (partner?.data?.legal_entity_name) {
-        if (pageRouting.data) {
+      if (ids.limitedPartnerId) {
+        partner = await this.limitedPartnerService.getLimitedPartner(tokens, ids.transactionId, ids.limitedPartnerId);
+        if (partner?.data?.forename) {
+          pageRouting.data.updatePartnerDetailsLink = super.insertIdsInUrl(
+            UPDATE_LIMITED_PARTNER_PERSON_WITH_IDS_URL,
+            ids
+          );
+        } else {
           pageRouting.data.updatePartnerDetailsLink = super.insertIdsInUrl(
             UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
             ids
           );
         }
       }
+
+      pageRouting.data.goBackRegisterLink = YOUR_COMPANY_URL.replace(":companyId", ids.companyId);
     }
+
     return partner;
   }
 
@@ -424,6 +439,15 @@ class PostTransitionPartnerController extends PartnerController {
         }
       }
     }
+
+    if (partner.data?.update_usual_residential_address_required) {
+      partnerUpdatedFieldsMap.update_usual_residential_address_required = true;
+    } else if (partner.data?.update_service_address_required) {
+      partnerUpdatedFieldsMap.update_service_address_required = true;
+    } else if ((partner.data as any)?.update_principal_office_address_required) {
+      partnerUpdatedFieldsMap.update_principal_office_address_required = true;
+    }
+
     return partnerUpdatedFieldsMap;
   }
 }

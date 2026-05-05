@@ -87,6 +87,7 @@ export const JOURNEY_TYPE_PARAM = ":journeyType";
 export const APPOINTMENT_ID = "appointmentId";
 
 export const YOUR_FILINGS_URL = "/user/transactions";
+export const YOUR_COMPANY_URL = "/company/:companyId";
 
 export const BASE_URL = "/limited-partnerships";
 
