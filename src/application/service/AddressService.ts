@@ -86,6 +86,11 @@ class AddressService {
         return { address, errors: uiErrors };
       }
 
+      // only one address, return it
+      if (ukAddresses.length === 1) {
+        return { address: ukAddresses[0] };
+      }
+
       // is from correct country and jurisdiction
       if (!this.isFromCorrectCountry(uiErrors, ukAddresses, jurisdiction)) {
         return { address, errors: uiErrors };
@@ -93,10 +98,6 @@ class AddressService {
 
       // if premises provided, check it matches the postcode
       if (premises) {
-        if (ukAddresses.length === 0) {
-          return { address };
-        }
-
         const matchingAddress = this.getMatchingAddress(ukAddresses, postalCode, premises);
 
         if (matchingAddress) {
