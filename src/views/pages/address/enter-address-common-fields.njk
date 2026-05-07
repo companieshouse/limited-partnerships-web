@@ -16,7 +16,7 @@
 {% set countryText = i18n.address.enterAddress.country %}
 {% set countryFormValue = address.country %}
 {% set countryField = address.country %}
-{% set countryErrorMessage = props.errors.country if props.error %}
+{% set countryErrorMessage = props.errors.country if props.errors %}
 {% set labelFormatting = "govuk-label govuk-input--width-10" %}
 
 {{ macros.getSpecifiedCountryList(i18n, "unitedKingdom", countryFormId, countryText, countryFormValue, countryErrorMessage, labelFormatting, false) }}
