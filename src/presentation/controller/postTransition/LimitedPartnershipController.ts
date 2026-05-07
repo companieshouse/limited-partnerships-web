@@ -22,7 +22,8 @@ import {
   TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNERSHIP,
   CHS_URL,
   TRANSACTION_DESCRIPTION_DESIGNATE_AS_PRIVATE_FUND_PARTNERSHIP,
-  JOURNEY_QUERY_PARAM
+  JOURNEY_QUERY_PARAM,
+  UK_COUNTRIES
 } from "../../../config/constants";
 import { getJourneyTypes } from "../../../utils";
 import CompanyService from "../../../application/service/CompanyService";
@@ -544,7 +545,9 @@ class LimitedPartnershipController extends AbstractController {
       region
     };
 
-    errors = this.addressService.runValidation(address);
+    const isOverseas = !UK_COUNTRIES.has(country.trim());
+
+    errors = this.addressService.runValidation(address, isOverseas);
 
     if (partnershipKind !== PartnershipKind.UPDATE_PARTNERSHIP_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS) {
       errors = this.addressService.isValidJurisdictionAndCountry(
