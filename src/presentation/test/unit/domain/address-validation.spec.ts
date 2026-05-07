@@ -12,14 +12,15 @@ const defaultAddress = {
 
 describe("Address validation", () => {
   it.each([
-    ["UK address", defaultAddress],
+    ["UK address", defaultAddress, false],
     [
       "overseas address",
       {
         ...defaultAddress,
         postal_code: "31100",
         country: "France"
-      }
+      },
+      false
     ],
     [
       "overseas address without postcode",
@@ -28,10 +29,11 @@ describe("Address validation", () => {
         address_line_1: "Main Street",
         locality: "town",
         country: "France"
-      }
+      },
+      true
     ]
-  ])("should return no errors for valid %s", (_description: string, address: Record<string, string>) => {
-    const addressValidator = new AddressValidator().set(address, enTranslationText);
+  ])("should return no errors for valid %s", (_description: string, address: Record<string, string>, isOverseas: boolean) => {
+    const addressValidator = new AddressValidator().set(address, enTranslationText, isOverseas);
     const errors = addressValidator.runValidation();
 
     expect(errors.hasErrors()).toBe(false);

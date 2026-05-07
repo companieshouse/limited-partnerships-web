@@ -228,11 +228,11 @@ describe("Enter Limited Partner Usual Residential Address Page", () => {
     });
 
     it("should redirect if postcode is null", async () => {
-      const limitedPartner = new LimitedPartnerBuilder()
-        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .build();
-
-      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
+      appDevDependencies.cacheRepository.feedCache({
+        [appDevDependencies.transactionGateway.transactionId]: {
+          ura_territory_choice: "overseas"
+        }
+      });
 
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.confirmRegisteredOfficeAddress,

@@ -23,8 +23,8 @@ class AddressService {
     this.i18n = i18n;
   }
 
-  runValidation(address: Address): UIErrors | undefined {
-    return this.addressValidator.set(address, this.i18n).runValidation();
+  runValidation(address: Address, overseas?: boolean): UIErrors | undefined {
+    return this.addressValidator.set(address, this.i18n, overseas).runValidation();
   }
 
   // POSTCODE VALIDATION

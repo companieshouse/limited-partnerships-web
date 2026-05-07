@@ -1,7 +1,7 @@
 import { Address } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 import UIErrors from "../entities/UIErrors";
-import { VALID_CHARACTERS_REGEX } from "../../config/constants";
+import { UK_COUNTRIES, VALID_CHARACTERS_REGEX } from "../../config/constants";
 
 class AddressValidator {
   private premises?: string;
@@ -11,16 +11,15 @@ class AddressValidator {
   private locality?: string;
   private postal_code?: string;
   private country?: string;
+  private isOverseas?: boolean;
 
   private errorMessages: Record<string, string> = {};
-
-  private readonly ukCountries: Set<string> = new Set(["Scotland", "Northern Ireland", "England", "Wales"]);
 
   private readonly premisesFieldName = "premises";
   private readonly localityFieldName = "locality";
   private readonly postcodeFieldName = "postal_code";
 
-  set(address: Partial<Address>, i18n: any): this {
+  set(address: Partial<Address>, i18n: any, overseas?: boolean): this {
     this.premises = address.premises;
     this.address_line_1 = address.address_line_1;
     this.address_line_2 = address.address_line_2;
@@ -28,6 +27,7 @@ class AddressValidator {
     this.locality = address.locality;
     this.postal_code = address.postal_code;
     this.country = address.country;
+    this.isOverseas = overseas;
 
     this.errorMessages = i18n?.errorMessages?.address?.enterAddress || {};
 
@@ -54,8 +54,7 @@ class AddressValidator {
     if (!this.locality?.trim()) {
       uiErrors.setWebError(this.localityFieldName, this.errorMessages?.localityMissing);
     }
-    const noCountryOrUkCountry = !this.country || (this.country?.trim() && this.ukCountries.has(this.country));
-    if (noCountryOrUkCountry && !this.postal_code?.trim()) {
+    if (!this.isOverseas && !this.postal_code?.trim()) {
       uiErrors.setWebError(this.postcodeFieldName, this.errorMessages?.postcodeMissing);
     }
     if (!this.country?.trim()) {
@@ -71,7 +70,7 @@ class AddressValidator {
 
     const ukPostcodeLettersNotMainland: Set<string> = new Set(["JE", "GY", "IM"]);
 
-    if (this.country && this.ukCountries.has(this.country)) {
+    if (this.country && UK_COUNTRIES.has(this.country)) {
       this.isValidPostcode(ukPostcodeLettersNotMainland, uiErrors);
     } else if (this.postal_code && !VALID_CHARACTERS_REGEX.test(this.postal_code)) {
       uiErrors.setWebError(this.postcodeFieldName, this.errorMessages?.postcodeInvalid);

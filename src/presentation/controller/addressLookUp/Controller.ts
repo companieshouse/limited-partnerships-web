@@ -55,6 +55,7 @@ import {
 } from "../postTransition/url";
 import { isUpdateKind } from "../../../utils/kind";
 import { snakeToNormalCase } from "../../../infrastructure/gateway/utils";
+import PostTransitionPageType from "../postTransition/pageType";
 
 class AddressLookUpController extends AbstractController {
   constructor(
@@ -342,8 +343,14 @@ class AddressLookUpController extends AbstractController {
           postal_code,
           region
         };
-
         const { tokens, pageType, ids } = super.extract(request);
+        const addressRouting = this.getAddressRouting(request.url);
+        const pageRouting = super.getRouting(addressRouting, pageType, request);
+
+        const cache = this.cacheService.getDataFromCacheById(request.signedCookies, ids.transactionId);
+        const addressCacheKey = pageRouting.data?.[AddressCacheKeys.territoryCacheKey];
+        let isOverseas = cache[addressCacheKey] === "overseas";
+
         super.extractPageTypeOrThrowError(request, AddressLookUpPageType);
 
         let limitedPartnership;
@@ -354,11 +361,11 @@ class AddressLookUpController extends AbstractController {
             ids.submissionId
           );
         }
-
-        const addressRouting = this.getAddressRouting(request.url);
-        const pageRouting = super.getRouting(addressRouting, pageType, request);
-
-        let errors: UIErrors | undefined = this.addressService.runValidation(address);
+        console.log("****" + pageType);
+        if (pageType === PostTransitionPageType.enterPrincipalPlaceOfBusinessAddress) {
+          isOverseas = true;
+        }
+        let errors: UIErrors | undefined = this.addressService.runValidation(address, isOverseas);
 
         if (LIMITED_PARTNERSHIP_MANUAL_PAGES.has(pageType)) {
           errors = this.addressService.isValidJurisdictionAndCountry(

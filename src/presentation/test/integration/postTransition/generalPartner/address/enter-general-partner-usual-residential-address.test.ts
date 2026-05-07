@@ -232,6 +232,12 @@ describe("Enter Usual Residential Address Page", () => {
     });
 
     it("should redirect if postcode is null", async () => {
+      appDevDependencies.cacheRepository.feedCache({
+        [appDevDependencies.transactionGateway.transactionId]: {
+          ura_territory_choice: "overseas"
+        }
+      });
+
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.enterGeneralPartnerUsualResidentialAddress,
         postal_code: "",
