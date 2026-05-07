@@ -361,7 +361,6 @@ class AddressLookUpController extends AbstractController {
             ids.submissionId
           );
         }
-        console.log("****" + pageType);
         if (pageType === PostTransitionPageType.enterPrincipalPlaceOfBusinessAddress) {
           isOverseas = true;
         }
