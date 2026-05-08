@@ -1,7 +1,7 @@
 import { Address } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 import UIErrors from "../entities/UIErrors";
-import { UK_COUNTRIES, VALID_CHARACTERS_REGEX } from "../../config/constants";
+import { VALID_CHARACTERS_REGEX } from "../../config/constants";
 
 class AddressValidator {
   private premises?: string;
@@ -13,6 +13,8 @@ class AddressValidator {
   private country?: string;
 
   private errorMessages: Record<string, string> = {};
+
+  private readonly ukCountries: Set<string> = new Set(["Scotland", "Northern Ireland", "England", "Wales"]);
 
   private readonly premisesFieldName = "premises";
   private readonly localityFieldName = "locality";
@@ -43,7 +45,7 @@ class AddressValidator {
   }
 
   private isEmpty(uiErrors: UIErrors): UIErrors {
-    const isOverseas = this.country && !UK_COUNTRIES.has(this.country.trim());
+    const isOverseas = this.country && !this.ukCountries.has(this.country.trim());
 
     if (!this.premises?.trim()) {
       uiErrors.setWebError(this.premisesFieldName, this.errorMessages?.premisesMissing);
@@ -70,7 +72,7 @@ class AddressValidator {
 
     const ukPostcodeLettersNotMainland: Set<string> = new Set(["JE", "GY", "IM"]);
 
-    if (this.country && UK_COUNTRIES.has(this.country)) {
+    if (this.country && this.ukCountries.has(this.country)) {
       this.isValidPostcode(ukPostcodeLettersNotMainland, uiErrors);
     } else if (this.postal_code && !VALID_CHARACTERS_REGEX.test(this.postal_code)) {
       uiErrors.setWebError(this.postcodeFieldName, this.errorMessages?.postcodeInvalid);

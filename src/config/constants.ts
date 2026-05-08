@@ -175,6 +175,3 @@ export const VALID_CHARACTERS_REGEX =
 export const LEGAL_ENTITY_NAME_FIELD = "legal_entity_name";
 export const LEGAL_FORM_FIELD = "legal_form";
 export const GOVERNING_LAW_FIELD = "governing_law";
-
-// Address countries
-export const UK_COUNTRIES: Set<string> = new Set(["Scotland", "Northern Ireland", "England", "Wales"]);
