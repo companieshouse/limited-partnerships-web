@@ -11,7 +11,6 @@ class AddressValidator {
   private locality?: string;
   private postal_code?: string;
   private country?: string;
-  private isOverseas?: boolean;
 
   private errorMessages: Record<string, string> = {};
 
@@ -19,7 +18,7 @@ class AddressValidator {
   private readonly localityFieldName = "locality";
   private readonly postcodeFieldName = "postal_code";
 
-  set(address: Partial<Address>, i18n: any, overseas?: boolean): this {
+  set(address: Partial<Address>, i18n: any): this {
     this.premises = address.premises;
     this.address_line_1 = address.address_line_1;
     this.address_line_2 = address.address_line_2;
@@ -27,7 +26,6 @@ class AddressValidator {
     this.locality = address.locality;
     this.postal_code = address.postal_code;
     this.country = address.country;
-    this.isOverseas = overseas;
 
     this.errorMessages = i18n?.errorMessages?.address?.enterAddress || {};
 
@@ -45,6 +43,8 @@ class AddressValidator {
   }
 
   private isEmpty(uiErrors: UIErrors): UIErrors {
+    const isOverseas = this.country && !UK_COUNTRIES.has(this.country.trim());
+
     if (!this.premises?.trim()) {
       uiErrors.setWebError(this.premisesFieldName, this.errorMessages?.premisesMissing);
     }
@@ -54,7 +54,7 @@ class AddressValidator {
     if (!this.locality?.trim()) {
       uiErrors.setWebError(this.localityFieldName, this.errorMessages?.localityMissing);
     }
-    if (!this.isOverseas && !this.postal_code?.trim()) {
+    if (!isOverseas && !this.postal_code?.trim()) {
       uiErrors.setWebError(this.postcodeFieldName, this.errorMessages?.postcodeMissing);
     }
     if (!this.country?.trim()) {

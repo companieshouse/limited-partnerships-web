@@ -209,12 +209,6 @@ describe("Enter Limited Partner Principal Office Address Page", () => {
     });
 
     it("should redirect if postcode is null", async () => {
-      appDevDependencies.cacheRepository.feedCache({
-        [appDevDependencies.transactionGateway.transactionId]: {
-          poa_territory_choice: "overseas"
-        }
-      });
-
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.confirmLimitedPartnerPrincipalOfficeAddress,
         postal_code: "",

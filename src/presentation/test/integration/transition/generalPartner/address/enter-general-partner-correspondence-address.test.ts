@@ -209,12 +209,6 @@ describe("Enter Correspondence Address Page", () => {
     });
 
     it("should redirect if postcode is null", async () => {
-      appDevDependencies.cacheRepository.feedCache({
-        [appDevDependencies.transactionGateway.transactionId]: {
-          sa_territory_choice: "overseas"
-        }
-      });
-
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.confirmGeneralPartnerCorrespondenceAddress,
         postal_code: "",

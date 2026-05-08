@@ -357,11 +357,7 @@ class AddressLookUpController extends AbstractController {
           );
         }
 
-        const cache = this.cacheService.getDataFromCacheById(request.signedCookies, ids.transactionId);
-        const addressCacheKey = pageRouting.data?.[AddressCacheKeys.territoryCacheKey];
-        const isOverseas = cache[addressCacheKey] === "overseas";
-
-        let errors: UIErrors | undefined = this.addressService.runValidation(address, isOverseas);
+        let errors: UIErrors | undefined = this.addressService.runValidation(address);
 
         if (LIMITED_PARTNERSHIP_MANUAL_PAGES.has(pageType)) {
           errors = this.addressService.isValidJurisdictionAndCountry(
