@@ -22,7 +22,7 @@ import {
   TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNERSHIP,
   CHS_URL,
   TRANSACTION_DESCRIPTION_DESIGNATE_AS_PRIVATE_FUND_PARTNERSHIP,
-  JOURNEY_QUERY_PARAM,
+  JOURNEY_QUERY_PARAM
 } from "../../../config/constants";
 import { getJourneyTypes } from "../../../utils";
 import CompanyService from "../../../application/service/CompanyService";
