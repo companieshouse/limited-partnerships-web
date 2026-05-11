@@ -11,7 +11,7 @@ import {
   validateAndFormatPartnerCeaseDate,
   validateAndFormatPartnerDateEffectiveFrom,
   validateAndFormatPartnerDateOfUpdate,
-  validateAndFormatPartnerPersonDateOfBirth,
+  validateAndFormatPersonDateOfBirth,
   validateFormerNamesNotEmptyIfPreviousNameIsTrue
 } from "../utils";
 
@@ -51,7 +51,7 @@ class GeneralPartnerInMemoryGateway implements IGeneralPartnerGateway {
       throw this.uiErrors;
     }
 
-    validateAndFormatPartnerPersonDateOfBirth(data);
+    validateAndFormatPersonDateOfBirth(data);
     validateAndFormatPartnerDateEffectiveFrom(data);
     validateFormerNamesNotEmptyIfPreviousNameIsTrue(data, this.partnerType);
     resetFormerNamesIfPreviousNameIsFalse(data);
@@ -105,7 +105,7 @@ class GeneralPartnerInMemoryGateway implements IGeneralPartnerGateway {
       throw new Error(`Not found: ${generalPartnerId}`);
     }
 
-    validateAndFormatPartnerPersonDateOfBirth(data);
+    validateAndFormatPersonDateOfBirth(data);
     validateAndFormatPartnerDateEffectiveFrom(data);
     validateFormerNamesNotEmptyIfPreviousNameIsTrue(data, this.partnerType);
     resetFormerNamesIfPreviousNameIsFalse(data);

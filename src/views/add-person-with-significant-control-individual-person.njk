@@ -1,0 +1,164 @@
+{% extends "layout.njk" %}
+
+{% set pageTitle = i18n.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.title %}
+
+
+{% if props.data.personWithSignificantControl.data["date_of_birth-year"] %}
+  {# This covers the scenario when date validation fails and the page reloads #}
+  {% set date_of_birth_year = props.data.personWithSignificantControl.data["date_of_birth-year"] %}
+  {% set date_of_birth_month = props.data.personWithSignificantControl.data["date_of_birth-month"] %}
+  {% set date_of_birth_day = props.data.personWithSignificantControl.data["date_of_birth-day"] %}
+{% elif props.data.personWithSignificantControl.data.date_of_birth  %}
+  {# And this is for when saved data is pre-populated on the page #}
+  {% set date_of_birth = props.data.personWithSignificantControl.data.date_of_birth %}
+  {% set date_of_birth_year = date_of_birth[0] + date_of_birth[1] + date_of_birth[2] + date_of_birth[3] %}
+  {% set date_of_birth_month = date_of_birth[5] + date_of_birth[6] %}
+  {% set date_of_birth_day = date_of_birth[8] + date_of_birth[9] %}
+{% endif %}
+
+{% block content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            {% include "includes/errors.njk" %}
+
+            {% include "includes/proposed-name.njk" %}
+
+            <h1 class="govuk-heading-xl">{{ pageTitle }}</h1>
+
+            <form class="form" method="post">
+                <input type="hidden" name="pageType" value={{ props.pageType }}>
+                {% include "includes/csrf_token.njk" %}
+
+                <input type="hidden" name="type" value="INDIVIDUAL_PERSON">
+
+                {{ govukCheckboxes({
+                    id: "consent_checked",
+                    name: "consent_checked",
+                    errorMessage: props.errors.consent_checked if props.errors,
+                    fieldset: {
+                        legend: {
+                            text: i18n.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.consent,
+                            isPageHeading: false,
+                            classes: "govuk-visually-hidden"
+                        }
+                    },
+                    items: [
+                        {
+                            value: "true",
+                            text: i18n.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.consent,
+                            checked: props.data.personWithSignificantControl.data.consent_checked === true
+                        }
+                    ]
+                }) }}
+
+                {{ govukInput({
+                    label: {
+                        text: i18n.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.personTitle,
+                        classes: "govuk-label govuk-label--m"
+                    },
+                    hint: {
+                        text: i18n.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.personTitleHint
+                    },
+                    id: "title",
+                    name: "title",
+                    value: props.data.personWithSignificantControl.data.title,
+                    errorMessage: props.errors.title if props.errors
+                }) }}
+
+                {{ govukInput({
+                    label: {
+                        text: i18n.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.firstName,
+                        classes: "govuk-label govuk-label--m"
+                    },
+                    id: "forename",
+                    name: "forename",
+                    value: props.data.personWithSignificantControl.data.forename,
+                    errorMessage: props.errors.forename if props.errors
+                }) }}
+               
+               {{ govukInput({
+                    label: {
+                        text: i18n.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.middleNames,
+                        classes: "govuk-label govuk-label--m"
+                    },
+                    id: "middle_names",
+                    name: "middle_names",
+                    value: props.data.personWithSignificantControl.data.middle_names,
+                    errorMessage: props.errors.middle_names if props.errors
+                }) }}
+
+                {{ govukInput({
+                    label: {
+                        text: i18n.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.lastName,
+                        classes: "govuk-label govuk-label--m"
+                    },
+                    id: "surname",
+                    name: "surname",
+                    value: props.data.personWithSignificantControl.data.surname,
+                    errorMessage: props.errors.surname if props.errors
+                }) }}
+
+                {{ govukDateInput({
+                    id: "date_of_birth",
+                    namePrefix: "date_of_birth",
+                    errorMessage: props.errors.date_of_birth if props.errors,
+                    fieldset: {
+                        legend: {
+                            text: i18n.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.dateOfBirth,
+                            isPageHeading: false,
+                            classes: "govuk-fieldset__legend--m"
+                        }
+                    },
+                    hint: {
+                        text: i18n.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.dateOfBirthHint
+                    },
+                    items: [
+                        {
+                            classes: "govuk-input--width-2",
+                            label: i18n.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.dateDay,
+                            name: "day",
+                            value: date_of_birth_day
+                        },
+                        {
+                            classes: "govuk-input--width-2",
+                            label: i18n.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.dateMonth,
+                            name: "month",
+                            value: date_of_birth_month
+                        },
+                        {
+                            classes: "govuk-input--width-4",
+                            label: i18n.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.dateYear,
+                            name: "year",
+                            value: date_of_birth_year
+                        }
+                    ]
+                }) }}
+
+                {% set nationalityField = props.data.personWithSignificantControl.data.nationality1 %}
+                {% set nationalityFieldSelectPrompt = i18n.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.nationalitySelectPrompt %}
+               
+                {% set nationalityFieldText = i18n.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.nationality %}
+                {% set nationalityFieldHintText = "" %}
+                {% set nationalityFieldNameId = "nationality1" %}
+                {% include "includes/nationalities.njk" %}
+
+                {% set nationalityField = props.data.personWithSignificantControl.data.nationality2 %}
+                {% set nationalityFieldSelectPrompt = i18n.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.secondNationalitySelectPrompt %}
+               
+                {% set nationalityFieldText = i18n.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.secondNationality %}
+                {% set nationalityFieldHintText = i18n.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.secondNationalityHint  %}
+                {% set nationalityFieldNameId = "nationality2" %}
+                {% include "includes/nationalities.njk" %}
+
+                <div>
+                    {% set publicRegisterInformationLine1 = i18n.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.publicRegisterLine1 %}
+                    {% set publicRegisterInformationLine2 = i18n.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.publicRegisterLine2 %}
+                    {% include "includes/public-register-information.njk" %}
+                </div>
+
+                {% include "includes/save-and-continue-button.njk" %}
+            </form>
+        </div>
+    </div>
+{% endblock %}
+

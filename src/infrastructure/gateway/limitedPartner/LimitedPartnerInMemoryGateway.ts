@@ -11,7 +11,7 @@ import {
   validateAndFormatPartnerCeaseDate,
   validateAndFormatPartnerDateEffectiveFrom,
   validateAndFormatPartnerDateOfUpdate,
-  validateAndFormatPartnerPersonDateOfBirth,
+  validateAndFormatPersonDateOfBirth,
   validateFormerNamesNotEmptyIfPreviousNameIsTrue
 } from "../utils";
 
@@ -51,7 +51,7 @@ class LimitedPartnerInMemoryGateway implements ILimitedPartnerGateway {
       throw this.uiErrors;
     }
 
-    validateAndFormatPartnerPersonDateOfBirth(data);
+    validateAndFormatPersonDateOfBirth(data);
     validateAndFormatPartnerDateEffectiveFrom(data);
     validateFormerNamesNotEmptyIfPreviousNameIsTrue(data, this.partnerType);
     resetFormerNamesIfPreviousNameIsFalse(data);
@@ -105,7 +105,7 @@ class LimitedPartnerInMemoryGateway implements ILimitedPartnerGateway {
       throw new Error(`Not found: ${limitedPartnerId}`);
     }
 
-    validateAndFormatPartnerPersonDateOfBirth(data);
+    validateAndFormatPersonDateOfBirth(data);
     validateAndFormatPartnerDateEffectiveFrom(data);
     validateFormerNamesNotEmptyIfPreviousNameIsTrue(data, this.partnerType);
     resetFormerNamesIfPreviousNameIsFalse(data);

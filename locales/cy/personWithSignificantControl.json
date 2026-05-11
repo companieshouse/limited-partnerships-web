@@ -51,6 +51,26 @@
                 "title": "WELSH - Add an other registrable person PSC",
 
                 "legalEntityName" : "WELSH - What is the other registrable person (ORP)'s name?"
+            },
+            "addIndividualPerson": {
+                "title": "WELSH - Add a PSC (individual person)",
+                "consent": "WELSH - This person knows their details are being supplied as part of this application",
+                "personTitle": "WELSH - Professional or honorary title (if relevant)",
+                "personTitleHint": "WELSH - For example, Dr or Professor",
+                "firstName": "WELSH - First name",
+                "middleNames": "WELSH - Middle names",
+                "lastName": "WELSH - Last name",
+                "dateOfBirth": "WELSH - Date of birth",
+                "dateOfBirthHint": "WELSH - For example, 27 3 1990",
+                "dateDay": "WELSH - Day",
+                "dateMonth": "WELSH - Month",
+                "dateYear": "WELSH - Year",
+                "nationality": "WELSH - What is their nationality?",
+                "nationalitySelectPrompt": "WELSH - Select a nationality",
+                "secondNationality": "WELSH - What is their second nationality (if relevant)?",
+                "secondNationalitySelectPrompt": "WELSH - Select a second nationality",
+                "publicRegisterLine1": "WELSH - We'll show the month and year of the PSC's date of birth, but not the exact date.",
+                "publicRegisterLine2": "WELSH - We'll show all the other information you provide on this screen on the public register."
             }
         },
         "whichTypeOfNatureOfControlPage": {
