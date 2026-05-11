@@ -68,6 +68,7 @@
                 "nationality": "WELSH - What is their nationality?",
                 "nationalitySelectPrompt": "WELSH - Select a nationality",
                 "secondNationality": "WELSH - What is their second nationality (if relevant)?",
+                "secondNationalityHint": "WELSH - Dual citizenship (also known as dual nationality) is allowed in some countries. This means you can be a citizen of your own country and another country.",
                 "secondNationalitySelectPrompt": "WELSH - Select a second nationality",
                 "publicRegisterLine1": "WELSH - We'll show the month and year of the PSC's date of birth, but not the exact date.",
                 "publicRegisterLine2": "WELSH - We'll show all the other information you provide on this screen on the public register."
