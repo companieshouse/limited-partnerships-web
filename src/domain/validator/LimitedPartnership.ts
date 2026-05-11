@@ -32,7 +32,6 @@ class LimitedPartnershipValidator {
   }
 
   private partnershipTypeEmpty(uiErrors: UIErrors): UIErrors {
-    console.log(this.partnership_type);
     if (!this.partnership_type) {
       uiErrors.setWebError("partnership_type", this.errorMessages?.partnershipType?.typeRequired);
     }
