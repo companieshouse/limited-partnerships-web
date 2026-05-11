@@ -40,7 +40,7 @@ class LimitedPartnershipValidator {
   }
 
   private isValidPartnershipType(uiErrors: UIErrors): UIErrors {
-    if (this.partnership_type && !Object.values(PartnershipType).includes(this.partnership_type as PartnershipType)) {
+    if (this.partnership_type && !Object.values(PartnershipType).includes(this.partnership_type)) {
       uiErrors.setWebError("partnership_type", this.errorMessages?.partnershipType?.typeRequired);
     }
     return uiErrors;
@@ -77,7 +77,7 @@ class LimitedPartnershipValidator {
 
   private checkPartnershipNameLength(uiErrors: UIErrors): UIErrors {
     const partnershipNameMaxLength = 160;
-    const partnershipName = this.partnership_name?.trim() || "";
+    const partnershipName = this.partnership_name?.trim() ?? "";
     const partnershipNameWithEnding = `${partnershipName} ${this.name_ending}`;
 
     if (partnershipName && partnershipNameWithEnding.length > partnershipNameMaxLength) {
@@ -97,7 +97,7 @@ class LimitedPartnershipValidator {
   }
 
   private isValidTerm(uiErrors: UIErrors): UIErrors {
-    if (this.term && !Object.values(Term).includes(this.term as Term)) {
+    if (this.term && !Object.values(Term).includes(this.term)) {
       uiErrors.setWebError("term", this.errorMessages?.term?.termRequired);
     }
     return uiErrors;
