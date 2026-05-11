@@ -50,8 +50,11 @@ describe("Limited Partnership Validation", () => {
   });
 
   describe("Name validation", () => {
-    it("should not return an error if name is valid", () => {
-      const limitedPartnership = new LimitedPartnership().set({ partnership_name: "Valid Name", name_ending: NameEndingType.LP }, enTranslationText);
+    it.each([
+      ["Valid Name", NameEndingType.LP],
+      ["A".repeat(157) + " ", NameEndingType.LP]
+    ])("should not return an error if name is valid", (name, nameEnding) => {
+      const limitedPartnership = new LimitedPartnership().set({ partnership_name: name, name_ending: nameEnding }, enTranslationText);
       const errors = limitedPartnership.runNameValidation();
 
       expect(errors.hasErrors()).toBe(false);
@@ -102,8 +105,7 @@ describe("Limited Partnership Validation", () => {
     });
 
     it("should return an error if name with ending is too long", () => {
-      const longName = "A".repeat(158);
-      const limitedPartnership = new LimitedPartnership().set({ partnership_name: longName, name_ending: NameEndingType.LP }, enTranslationText);
+      const limitedPartnership = new LimitedPartnership().set({ partnership_name: "A".repeat(158), name_ending: NameEndingType.LP }, enTranslationText);
       const errors = limitedPartnership.runNameValidation();
 
       expect(errors.hasErrors()).toBe(true);
