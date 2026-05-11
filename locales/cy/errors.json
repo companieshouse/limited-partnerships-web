@@ -68,12 +68,19 @@
             "lawfulPurposeRequired": "WELSH - Confirm that the intended future activities are lawful"
         },
 
-        "term": {
-            "termRequired": "WELSH - Select the term of the partnership"
-        },
-
-        "partnershipType": {
-            "typeRequired": "WELSH - Select the type of partnership you are registering"
+        "limitedPartnership": {
+            "partnershipType": {
+                "typeRequired": "WELSH - Select the type of partnership you are registering"
+            },
+            "name": {
+                "nameInvalid": "WELSH - Limited partnership name must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "nameLength": "WELSH - Partnership name (including name ending) must be 160 characters or less",
+                "nameRequired": "WELSH - Enter the partnership name",
+                "nameEndingRequired": "WELSH - Select the name ending to go on the public record"
+            },
+            "term": {
+                "termRequired": "WELSH - Select the term of the partnership"
+            }
         },
 
         "personWithSignificantControl": {

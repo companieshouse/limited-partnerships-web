@@ -67,12 +67,19 @@
             "lawfulPurposeRequired": "Confirm that the intended future activities are lawful"
         },
 
-        "term": {
-            "termRequired": "Select the term of the partnership"
-        },
-
-        "partnershipType": {
-            "typeRequired": "Select the type of partnership you are registering"
+        "limitedPartnership": {
+            "partnershipType": {
+                "typeRequired": "Select the type of partnership you are registering"
+            },
+            "name": {
+                "nameInvalid": "Limited partnership name must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "nameLength": "Partnership name (including name ending) must be 160 characters or less",
+                "nameRequired": "Enter the partnership name",
+                "nameEndingRequired": "Select the name ending to go on the public record"
+            },
+            "term": {
+                "termRequired": "Select the term of the partnership"
+            }
         },
 
         "personWithSignificantControl": {

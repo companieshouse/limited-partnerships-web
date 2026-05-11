@@ -11,13 +11,33 @@ import { ApiResponse } from "@companieshouse/api-sdk-node/dist/services/resource
 import { Transaction } from "@companieshouse/api-sdk-node/dist/services/transaction/types";
 import { JourneyTypes } from "../../domain/entities/journey";
 import PageType from "../../presentation/controller/PageType";
+import LimitedPartnershipValidator from "../../domain/validator/LimitedPartnership";
 
 class LimitedPartnershipService {
+  i18n: any;
+
   constructor(
     private readonly limitedPartnershipGateway: ILimitedPartnershipGateway,
     private readonly transactionGateway: ITransactionGateway,
-    private readonly incorporationGateway: IIncorporationGateway
+    private readonly incorporationGateway: IIncorporationGateway,
+    private readonly limitedPartnershipValidator: LimitedPartnershipValidator
   ) {}
+
+  setI18n(i18n: any) {
+    this.i18n = i18n;
+  }
+
+  runNameValidation(data: Record<string, any>): UIErrors {
+    return this.limitedPartnershipValidator.set(data, this.i18n).runNameValidation();
+  }
+
+  runTermValidation(data: Record<string, any>): UIErrors {
+    return this.limitedPartnershipValidator.set(data, this.i18n).runTermValidation();
+  }
+
+  runPartnershipTypeValidation(data: Record<string, any>): UIErrors {
+    return this.limitedPartnershipValidator.set(data, this.i18n).runPartnershipTypeValidation();
+  }
 
   async createLimitedPartnership(
     opt: { access_token: string; refresh_token: string },

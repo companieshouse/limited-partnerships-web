@@ -41,7 +41,7 @@ describe("Which type Page", () => {
     testTranslations(res.text, enTranslationText.types);
     expect(res.text).toContain(enTranslationText.buttons.continue);
     expect(res.text).toContain(SERVICE_NAME_REGISTRATION);
-    expect(res.text).not.toContain(enErrorMessages.errorMessages.partnershipType.typeRequired);
+    expect(res.text).not.toContain(enErrorMessages.errorMessages.limitedPartnership.partnershipType.typeRequired);
   });
 
   it("should load the partnership-type page with Welsh text", async () => {
@@ -53,7 +53,7 @@ describe("Which type Page", () => {
     testTranslations(res.text, cyTranslationText.partnershipTypePage);
     expect(res.text).toContain(cyTranslationText.buttons.continue);
     expect(res.text).toContain(SERVICE_NAME_REGISTRATION);
-    expect(res.text).not.toContain(cyErrorMessages.errorMessages.partnershipType.typeRequired);
+    expect(res.text).not.toContain(cyErrorMessages.errorMessages.limitedPartnership.partnershipType.typeRequired);
   });
 
   it("should redirect to name page and cache contains the type selected", async () => {
@@ -61,7 +61,7 @@ describe("Which type Page", () => {
 
     const res = await request(app).post(PARTNERSHIP_TYPE_URL).send({
       pageType: RegistrationPageType.partnershipType,
-      parameter: selectedType
+      partnership_type: selectedType
     });
 
     expect(res.status).toBe(302);
@@ -83,7 +83,7 @@ describe("Which type Page", () => {
 
     const res = await request(app).post(PARTNERSHIP_TYPE_URL).send({
       pageType: RegistrationPageType.partnershipType,
-      parameter: selectedType
+      partnership_type: selectedType
     });
 
     expect(res.status).toBe(302);
@@ -106,7 +106,7 @@ describe("Which type Page", () => {
 
     const res = await request(app).post(getUrl(PARTNERSHIP_TYPE_WITH_IDS_URL)).send({
       pageType: RegistrationPageType.partnershipType,
-      parameter: PartnershipType.PFLP
+      partnership_type: PartnershipType.PFLP
     });
 
     expect(res.status).toBe(302);
@@ -123,7 +123,7 @@ describe("Which type Page", () => {
 
     const res = await request(app).post(getUrl(PARTNERSHIP_TYPE_WITH_IDS_URL)).send({
       pageType: RegistrationPageType.partnershipType,
-      parameter: PartnershipType.LP
+      partnership_type: PartnershipType.LP
     });
 
     expect(res.status).toBe(302);
@@ -150,8 +150,8 @@ describe("Which type Page", () => {
         });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(errorMessages.errorMessages.partnershipType.typeRequired);
-      expect(res.text).toContain('href="#parameter"');
+      expect(res.text).toContain(errorMessages.errorMessages.limitedPartnership.partnershipType.typeRequired);
+      expect(res.text).toContain('href="#partnership_type"');
       expect(res.text).toContain(translationText.govUk.error.title);
       expect(appDevDependencies.cacheRepository.cache).toBeNull();
     }
@@ -164,12 +164,12 @@ describe("Which type Page", () => {
       .post(PARTNERSHIP_TYPE_URL + "?lang=en")
       .send({
         pageType: RegistrationPageType.partnershipType,
-        parameter: "INVALID"
+        partnership_type: "INVALID"
       });
 
     expect(res.status).toBe(200);
-    expect(res.text).toContain(enErrorMessages.errorMessages.partnershipType.typeRequired);
-    expect(res.text).toContain('href="#parameter"');
+    expect(res.text).toContain(enErrorMessages.errorMessages.limitedPartnership.partnershipType.typeRequired);
+    expect(res.text).toContain('href="#partnership_type"');
     expect(appDevDependencies.cacheRepository.cache).toBeNull();
   });
 });
