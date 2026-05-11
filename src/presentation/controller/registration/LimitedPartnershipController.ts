@@ -301,6 +301,7 @@ class LimitedPartnershipController extends PartnershipController {
   redirectPartnershipTypeWithIds() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
+        this.limitedPartnerService.setI18n(response.locals.i18n);
         const { tokens, ids } = super.extract(request);
 
         const selectedPartnershipType = escape(request.body.partnership_type);
