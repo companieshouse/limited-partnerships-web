@@ -89,7 +89,9 @@ describe("Gateway Transaction - Incorporation - Partnership", () => {
         });
 
         const res = await request(appRealDependencies).post(NAME_URL).send({
-          pageType: RegistrationPageType.partnershipName
+          pageType: RegistrationPageType.partnershipName,
+          partnership_name: "partnership name",
+          name_ending: NameEndingType.LIMITED_PARTNERSHIP
         });
 
         expect(res.status).toBe(200);
@@ -112,7 +114,9 @@ describe("Gateway Transaction - Incorporation - Partnership", () => {
       });
 
       const res = await request(appRealDependencies).post(NAME_URL).send({
-        pageType: RegistrationPageType.partnershipName
+        pageType: RegistrationPageType.partnershipName,
+        partnership_name: "partnership name",
+        name_ending: NameEndingType.LIMITED_PARTNERSHIP
       });
 
       expect(res.status).toBe(500);
