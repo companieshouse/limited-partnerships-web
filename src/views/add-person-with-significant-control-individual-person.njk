@@ -46,7 +46,7 @@
                         {
                             value: "true",
                             text: i18n.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.consent,
-                            checked: props.data.personWithSignificantControl.data.consent_checked === true
+                            checked: props.data.personWithSignificantControl.data.consent_checked in [true, "true"]
                         }
                     ]
                 }) }}
