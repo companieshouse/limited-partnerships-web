@@ -198,7 +198,7 @@ class LimitedPartnershipController extends PartnershipController {
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
         const journeyTypes = getJourneyTypes(pageRouting.currentUrl);
 
-        const errors: UIErrors = this.handleValidation(request);
+        const errors: UIErrors = this.handleValidation(request, pageType);
         if (errors.hasErrors()) {
           const cache = this.cacheService.getDataFromCache(request.signedCookies);
 
@@ -329,7 +329,7 @@ class LimitedPartnershipController extends PartnershipController {
 
         const partnershipType = escape(request.body.partnership_type);
 
-        const uiErrors = this.handleValidation(request);
+        const uiErrors = this.handleValidation(request, pageType);
 
         if (uiErrors.hasErrors()) {
           return response.render(
@@ -358,7 +358,7 @@ class LimitedPartnershipController extends PartnershipController {
         const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
-        const errors: UIErrors = this.handleValidation(request);
+        const errors: UIErrors = this.handleValidation(request, pageType);
 
         if (errors.hasErrors()) {
           return this.handlePageRerenderWithPartnershipAndError(request, response, errors);
@@ -407,9 +407,7 @@ class LimitedPartnershipController extends PartnershipController {
     };
   }
 
-  private handleValidation(request: Request): UIErrors {
-    const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
-
+  private handleValidation(request: Request, pageType: RegistrationPageType): UIErrors {
     const pageTypeValidatorMap = new Map<RegistrationPageType, () => UIErrors>([
       [RegistrationPageType.partnershipType, () => this.limitedPartnershipService.runPartnershipTypeValidation(request.body)],
       [RegistrationPageType.partnershipName, () => this.limitedPartnershipService.runNameValidation(request.body)],
