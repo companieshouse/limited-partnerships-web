@@ -42,17 +42,22 @@ describe("Where is the jurisdiction page", () => {
       const res = await request(app).get(URL + `?lang=${lang}`);
 
       expect(res.status).toBe(200);
+
       if (jurisdiction === "Scotland") {
         expect(res.text).toContain(
           `${translationText.whereIsTheJurisdiction.scotland.title} - ${translationText.serviceRegistration} - GOV.UK`
         );
+
         testTranslations(res.text, translationText.whereIsTheJurisdiction.scotland, []);
       } else {
         expect(res.text).toContain(
           `${translationText.whereIsTheJurisdiction.title} - ${translationText.serviceRegistration} - GOV.UK`
         );
+
         testTranslations(res.text, translationText.whereIsTheJurisdiction, ["scotland"]);
       }
+
+      expect(res.text).toContain(limitedPartnership.data?.partnership_name?.toUpperCase());
       expect(res.text).toContain(translationText.buttons.saveAndContinue);
     });
   });
