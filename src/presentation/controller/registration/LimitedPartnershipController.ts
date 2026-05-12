@@ -364,12 +364,10 @@ class LimitedPartnershipController extends PartnershipController {
         const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
-        if (pageType === RegistrationPageType.term) {
-          const errors: UIErrors = this.limitedPartnershipService.runTermValidation(request.body);
+        const errors: UIErrors = this.handleValidation(request);
 
-          if (errors.hasErrors()) {
-            return this.handleTermMissingOrInvalid(request, response, errors);
-          }
+        if (errors.hasErrors()) {
+          return this.handlePageRerenderWithError(request, response, errors);
         }
 
         const result = await this.limitedPartnershipService.sendPageData(
@@ -415,9 +413,23 @@ class LimitedPartnershipController extends PartnershipController {
     };
   }
 
-  private async handleTermMissingOrInvalid(request: Request, response: Response, uiErrors: UIErrors) {
-    const { tokens, ids } = super.extract(request);
-    const pageRouting = super.getRouting(registrationsRouting, RegistrationPageType.term, request);
+  private handleValidation(request: Request): UIErrors {
+    const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
+
+    if (pageType === RegistrationPageType.term) {
+      return this.limitedPartnershipService.runTermValidation(request.body);
+    }
+
+    if (pageType === RegistrationPageType.jurisdiction) {
+      return this.limitedPartnershipService.runJurisdictionValidation(request.body);
+    }
+
+    return new UIErrors();
+  }
+
+  private async handlePageRerenderWithError(request: Request, response: Response, uiErrors: UIErrors) {
+    const { tokens, pageType, ids } = super.extract(request);
+    const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
     const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
       tokens,

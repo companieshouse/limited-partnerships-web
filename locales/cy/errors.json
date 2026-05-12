@@ -78,6 +78,9 @@
                 "nameRequired": "WELSH - Enter the partnership name",
                 "nameEndingRequired": "WELSH - Select the name ending to go on the public record"
             },
+            "jurisdiction": {
+                "required": "WELSH - Select the jurisdiction"
+            },
             "term": {
                 "termRequired": "WELSH - Select the term of the partnership"
             }

@@ -11,6 +11,7 @@
     classes: "govuk-radios",
     name: "jurisdiction",
     value: props.data.limitedPartnership.data.jurisdiction,
+    errorMessage: props.errors.jurisdiction if props.errors.jurisdiction,
     fieldset: {
       legend: {
         text: i18n.whereIsTheJurisdiction.title,
@@ -26,19 +27,13 @@
         id: "jurisdiction-england-wales",
         name: "jurisdiction",
         value: "england-wales",
-        text: i18n.whereIsTheJurisdiction.options.EnglandWales,
-        attributes: {
-          "required": true
-        }
+        text: i18n.whereIsTheJurisdiction.options.EnglandWales
       },
       {
         id: "jurisdiction-northern-ireland",
         name: "jurisdiction",
         value: "northern-ireland",
-        text: i18n.whereIsTheJurisdiction.options.NorthernIreland,
-        attributes: {
-          "required": true
-        }
+        text: i18n.whereIsTheJurisdiction.options.NorthernIreland
       }
     ]
   }) }}

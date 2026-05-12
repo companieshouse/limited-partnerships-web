@@ -1,4 +1,4 @@
-import { NameEndingType, PartnershipType, Term } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
+import { Jurisdiction, NameEndingType, PartnershipType, Term } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 import { VALID_CHARACTERS_REGEX } from "../../config/constants";
 import UIErrors from "../entities/UIErrors";
 
@@ -6,6 +6,7 @@ class LimitedPartnershipValidator {
   private partnership_type?: PartnershipType;
   private partnership_name?: string;
   private name_ending?: NameEndingType;
+  private jurisdiction?: Jurisdiction;
   private term?: Term;
 
   private errorMessages: Record<string, any> = {};
@@ -14,6 +15,7 @@ class LimitedPartnershipValidator {
     this.partnership_type = data.partnership_type;
     this.partnership_name = data.partnership_name;
     this.name_ending = data.name_ending;
+    this.jurisdiction = data.jurisdiction;
     this.term = data.term;
 
     this.errorMessages = i18n?.errorMessages?.limitedPartnership || {};
@@ -81,6 +83,30 @@ class LimitedPartnershipValidator {
 
     if (partnershipName && partnershipNameWithEnding.length > partnershipNameMaxLength) {
       uiErrors.setWebError("partnership_name", this.errorMessages?.name?.nameLength);
+    }
+    return uiErrors;
+  }
+
+  // Jurisdiction
+  public runJurisdictionValidation(): UIErrors {
+    const uiErrors = new UIErrors();
+
+    this.jurisdictionEmpty(uiErrors);
+    this.isValidJurisdiction(uiErrors);
+
+    return uiErrors;
+  }
+
+  private jurisdictionEmpty(uiErrors: UIErrors): UIErrors {
+    if (!this.jurisdiction) {
+      uiErrors.setWebError("jurisdiction", this.errorMessages?.jurisdiction?.required);
+    }
+    return uiErrors;
+  }
+
+  private isValidJurisdiction(uiErrors: UIErrors): UIErrors {
+    if (this.jurisdiction && !Object.values(Jurisdiction).includes(this.jurisdiction)) {
+      uiErrors.setWebError("jurisdiction", this.errorMessages?.jurisdiction?.required);
     }
     return uiErrors;
   }

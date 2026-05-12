@@ -27,16 +27,20 @@ class LimitedPartnershipService {
     this.i18n = i18n;
   }
 
+  runPartnershipTypeValidation(data: Record<string, any>): UIErrors {
+    return this.limitedPartnershipValidator.set(data, this.i18n).runPartnershipTypeValidation();
+  }
+
   runNameValidation(data: Record<string, any>): UIErrors {
     return this.limitedPartnershipValidator.set(data, this.i18n).runNameValidation();
   }
 
-  runTermValidation(data: Record<string, any>): UIErrors {
-    return this.limitedPartnershipValidator.set(data, this.i18n).runTermValidation();
+  runJurisdictionValidation(data: Record<string, any>): UIErrors {
+    return this.limitedPartnershipValidator.set(data, this.i18n).runJurisdictionValidation();
   }
 
-  runPartnershipTypeValidation(data: Record<string, any>): UIErrors {
-    return this.limitedPartnershipValidator.set(data, this.i18n).runPartnershipTypeValidation();
+  runTermValidation(data: Record<string, any>): UIErrors {
+    return this.limitedPartnershipValidator.set(data, this.i18n).runTermValidation();
   }
 
   async createLimitedPartnership(

@@ -77,6 +77,9 @@
                 "nameRequired": "Enter the partnership name",
                 "nameEndingRequired": "Select the name ending to go on the public record"
             },
+            "jurisdiction": {
+                "required": "Select the jurisdiction"
+            },
             "term": {
                 "termRequired": "Select the term of the partnership"
             }
