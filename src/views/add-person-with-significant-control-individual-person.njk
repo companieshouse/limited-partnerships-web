@@ -11,9 +11,9 @@
 {% elif props.data.personWithSignificantControl.data.date_of_birth  %}
   {# And this is for when saved data is pre-populated on the page #}
   {% set date_of_birth = props.data.personWithSignificantControl.data.date_of_birth %}
-  {% set date_of_birth_year = date_of_birth[0] + date_of_birth[1] + date_of_birth[2] + date_of_birth[3] %}
-  {% set date_of_birth_month = date_of_birth[5] + date_of_birth[6] %}
-  {% set date_of_birth_day = date_of_birth[8] + date_of_birth[9] %}
+  {% set date_of_birth_year = date_of_birth.slice(0,4) %}
+  {% set date_of_birth_month = date_of_birth.slice(5,7) %}
+  {% set date_of_birth_day = date_of_birth.slice(8,10) %}
 {% endif %}
 
 {% block content %}

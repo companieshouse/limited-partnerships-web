@@ -4,11 +4,14 @@ import TransactionPersonWithSignificantControl from "../../../domain/entities/Tr
 
 export const personWithSignificantControlIndividualPerson = {
   consent_checked: true,
+  title: "Mr",
   forename: "John",
   middle_names: "Michael",
   surname: "Smith",
   date_of_birth: "1980-01-01",
-  nationality: "British",
+  nationality1: "British",
+  nationality2: "American",
+  type: PersonWithSignificantControlType.INDIVIDUAL_PERSON
 };
 
 export const personWithSignificantControlRelevantLegalEntity = {

@@ -94,6 +94,9 @@ describe("Add Person With Significant Control Individual Person Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(toEscapedHtml(personWithSignificantControl?.data?.forename ?? ""));
+      expect(res.text).toContain("name=\"date_of_birth-day\" type=\"text\" value=\"01\"");
+      expect(res.text).toContain("name=\"date_of_birth-month\" type=\"text\" value=\"01\"");
+      expect(res.text).toContain("name=\"date_of_birth-year\" type=\"text\" value=\"1980\"");
     });
   });
 
