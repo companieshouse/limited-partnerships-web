@@ -411,14 +411,14 @@ class LimitedPartnershipController extends PartnershipController {
   private handleValidation(request: Request): UIErrors {
     const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
 
-    const validtorMap = new Map<RegistrationPageType, () => UIErrors>([
+    const pageTypeValidatorMap = new Map<RegistrationPageType, () => UIErrors>([
       [RegistrationPageType.partnershipType, () => this.limitedPartnershipService.runPartnershipTypeValidation(request.body)],
       [RegistrationPageType.partnershipName, () => this.limitedPartnershipService.runNameValidation(request.body)],
       [RegistrationPageType.jurisdiction, () => this.limitedPartnershipService.runJurisdictionValidation(request.body)],
       [RegistrationPageType.term, () => this.limitedPartnershipService.runTermValidation(request.body)]
     ]);
 
-    const validator = validtorMap.get(pageType);
+    const validator = pageTypeValidatorMap.get(pageType);
 
     if (validator) {
       return validator();
