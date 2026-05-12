@@ -198,18 +198,15 @@ class LimitedPartnershipController extends PartnershipController {
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
         const journeyTypes = getJourneyTypes(pageRouting.currentUrl);
 
-        if (RegistrationPageType.partnershipName === pageType) {
-          const errors: UIErrors | undefined = this.limitedPartnershipService.runNameValidation(request.body);
+        const errors: UIErrors = this.handleValidation(request);
+        if (errors.hasErrors()) {
+          const cache = this.cacheService.getDataFromCache(request.signedCookies);
 
-          if (errors.hasErrors()) {
-            const cache = this.cacheService.getDataFromCache(request.signedCookies);
-
-            response.render(
-              super.templateName(pageRouting.currentUrl),
-              super.makeProps(pageRouting, { limitedPartnership: { data: request.body }, cache }, errors)
-            );
-            return;
-          }
+          response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(pageRouting, { limitedPartnership: { data: request.body }, cache }, errors)
+          );
+          return;
         }
 
         const result = await this.limitedPartnershipService.createTransactionAndFirstSubmission(
@@ -333,15 +330,13 @@ class LimitedPartnershipController extends PartnershipController {
         const pageType = escape(request.body.pageType);
         const partnershipType = escape(request.body.partnership_type);
 
-        if (type === RegistrationPageType.partnershipType) {
-          const uiErrors = this.limitedPartnershipService.runPartnershipTypeValidation(request.body);
+        const uiErrors = this.handleValidation(request);
 
-          if (uiErrors.hasErrors()) {
-            return response.render(
-              super.templateName(pageRouting.currentUrl),
-              super.makeProps(pageRouting, {}, uiErrors)
-            );
-          }
+        if (uiErrors.hasErrors()) {
+          return response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(pageRouting, {}, uiErrors)
+          );
         }
 
         const cache = this.cacheService.addDataToCache(request.signedCookies, {
@@ -367,7 +362,7 @@ class LimitedPartnershipController extends PartnershipController {
         const errors: UIErrors = this.handleValidation(request);
 
         if (errors.hasErrors()) {
-          return this.handlePageRerenderWithError(request, response, errors);
+          return this.handlePageRerenderWithPartnershipAndError(request, response, errors);
         }
 
         const result = await this.limitedPartnershipService.sendPageData(
@@ -416,18 +411,23 @@ class LimitedPartnershipController extends PartnershipController {
   private handleValidation(request: Request): UIErrors {
     const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
 
-    if (pageType === RegistrationPageType.term) {
-      return this.limitedPartnershipService.runTermValidation(request.body);
-    }
+    const validtorMap = new Map<RegistrationPageType, () => UIErrors>([
+      [RegistrationPageType.partnershipType, () => this.limitedPartnershipService.runPartnershipTypeValidation(request.body)],
+      [RegistrationPageType.partnershipName, () => this.limitedPartnershipService.runNameValidation(request.body)],
+      [RegistrationPageType.jurisdiction, () => this.limitedPartnershipService.runJurisdictionValidation(request.body)],
+      [RegistrationPageType.term, () => this.limitedPartnershipService.runTermValidation(request.body)]
+    ]);
 
-    if (pageType === RegistrationPageType.jurisdiction) {
-      return this.limitedPartnershipService.runJurisdictionValidation(request.body);
+    const validator = validtorMap.get(pageType);
+
+    if (validator) {
+      return validator();
     }
 
     return new UIErrors();
   }
 
-  private async handlePageRerenderWithError(request: Request, response: Response, uiErrors: UIErrors) {
+  private async handlePageRerenderWithPartnershipAndError(request: Request, response: Response, uiErrors: UIErrors) {
     const { tokens, pageType, ids } = super.extract(request);
     const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
