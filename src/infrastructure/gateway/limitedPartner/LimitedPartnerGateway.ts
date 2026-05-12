@@ -8,7 +8,7 @@ import {
   LimitedPartnershipResourceCreated
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import {
-  validateAndFormatPartnerPersonDateOfBirth,
+  validateAndFormatPersonDateOfBirth,
   removeEmptyStringValues,
   validateAndFormatPartnerDateEffectiveFrom,
   resetFormerNamesIfPreviousNameIsFalse,
@@ -25,7 +25,7 @@ class LimitedPartnerGateway implements ILimitedPartnerGateway {
     transactionId: string,
     data: Record<string, any>
   ): Promise<string> {
-    validateAndFormatPartnerPersonDateOfBirth(data);
+    validateAndFormatPersonDateOfBirth(data);
     validateAndFormatPartnerDateEffectiveFrom(data);
     validateFormerNamesNotEmptyIfPreviousNameIsTrue(data, this.partnerType);
     resetFormerNamesIfPreviousNameIsFalse(data);
@@ -96,7 +96,7 @@ class LimitedPartnerGateway implements ILimitedPartnerGateway {
     limitedPartnerId: string,
     data: Record<string, any>
   ): Promise<void> {
-    validateAndFormatPartnerPersonDateOfBirth(data);
+    validateAndFormatPersonDateOfBirth(data);
     validateAndFormatPartnerDateEffectiveFrom(data);
     validateFormerNamesNotEmptyIfPreviousNameIsTrue(data, this.partnerType);
     resetFormerNamesIfPreviousNameIsFalse(data);
