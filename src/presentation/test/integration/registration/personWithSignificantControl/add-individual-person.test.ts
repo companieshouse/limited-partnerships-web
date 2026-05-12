@@ -7,7 +7,7 @@ import cyPersonWithSignificantControlTranslationText from "../../../../../../loc
 
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../utils";
+import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 
 import {
@@ -93,10 +93,20 @@ describe("Add Person With Significant Control Individual Person Page", () => {
       const res = await request(app).get(URL);
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(toEscapedHtml(personWithSignificantControl?.data?.forename ?? ""));
-      expect(res.text).toContain("name=\"date_of_birth-day\" type=\"text\" value=\"01\"");
-      expect(res.text).toContain("name=\"date_of_birth-month\" type=\"text\" value=\"01\"");
-      expect(res.text).toContain("name=\"date_of_birth-year\" type=\"text\" value=\"1980\"");
+      expect(res.text).toContain(`name="title" type="text" value="${personWithSignificantControl?.data?.title}"`);
+      expect(res.text).toContain(`name="forename" type="text" value="${personWithSignificantControl?.data?.forename}"`);
+      expect(res.text).toContain(`name="middle_names" type="text" value="${personWithSignificantControl?.data?.middle_names}"`);
+      expect(res.text).toContain(`name="surname" type="text" value="${personWithSignificantControl?.data?.surname}"`);
+
+      const dob = personWithSignificantControl?.data?.date_of_birth || "";
+      const [year, month, day] = dob.split("-");
+
+      expect(res.text).toContain(`name="date_of_birth-day" type="text" value="${day}"`);
+      expect(res.text).toContain(`name="date_of_birth-month" type="text" value="${month}"`);
+      expect(res.text).toContain(`name="date_of_birth-year" type="text" value="${year}"`);
+
+      expect(res.text).toContain(`<option value="${personWithSignificantControl?.data?.nationality1}" selected>${personWithSignificantControl?.data?.nationality1}</option>`);
+      expect(res.text).toContain(`<option value="${personWithSignificantControl?.data?.nationality2}" selected>${personWithSignificantControl?.data?.nationality2}</option>`);
     });
   });
 
