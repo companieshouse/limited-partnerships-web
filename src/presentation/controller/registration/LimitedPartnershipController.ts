@@ -324,10 +324,9 @@ class LimitedPartnershipController extends PartnershipController {
   redirectAndCacheSelection() {
     return (request: Request, response: Response, next: NextFunction) => {
       try {
-        const type = super.extractPageTypeOrThrowError(request, RegistrationPageType);
-        const pageRouting = super.getRouting(registrationsRouting, type, request);
+        const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
+        const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
-        const pageType = escape(request.body.pageType);
         const partnershipType = escape(request.body.partnership_type);
 
         const uiErrors = this.handleValidation(request);
