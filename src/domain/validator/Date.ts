@@ -60,35 +60,42 @@ export const validateDateFieldLengths = (day: string, month: string, year: strin
 };
 
 export const isValidDate = (day: string, month: string, year: string): boolean => {
-  const dateStr = convertDateToIsoDateString(day, month, year);
-
-  const [paddedYear, paddedMonth, paddedDay] = dateStr.split('-').map(Number);
-  // months are 0-indexed in JavaScript Date, so we need to subtract 1 from the month
-  const parsedDate = new Date(paddedYear, paddedMonth - 1, paddedDay);
-
   // only validate if we have all 3 components of the date, otherwise we will have false negatives when day or month is missing
   if (!day?.trim() || !month?.trim() || !year?.trim()) {
     return true;
   }
 
+  const dateStr = convertDateToIsoDateString(day, month, year);
+
+  const [yearNum, monthNum, dayNum] = dateStr.split('-').map(Number);
+  // months are 0-indexed in JavaScript Date, so we need to subtract 1 from the month
+  const parsedDate = new Date(yearNum, monthNum - 1, dayNum);
+
   return (
-    parsedDate.getFullYear() === paddedYear &&
-    parsedDate.getMonth() === paddedMonth - 1 &&
-    parsedDate.getDate() === paddedDay
+    parsedDate.getFullYear() === yearNum &&
+    parsedDate.getMonth() === monthNum - 1 &&
+    parsedDate.getDate() === dayNum
   );
 };
 
 export const isDateInFuture = (day: string, month: string, year: string): boolean => {
-  const isoDateString = convertDateToIsoDateString(day, month, year);
-  const targetTimestamp = Date.parse(isoDateString);
-
-  // Return false early if the string is invalid
-  if (Number.isNaN(targetTimestamp)) {
+  // only validate if we have all 3 components of the date, otherwise we will have false negatives when day or month is missing
+  if (!day?.trim() || !month?.trim() || !year?.trim()) {
     return false;
   }
 
-  // Compare directly against the exact current millisecond
-  return targetTimestamp > Date.now();
+  const y = Number(year);
+  const m = Number(month) - 1;
+  const d = Number(day);
+  if ([y, m, d].some(Number.isNaN)) {
+    return false;
+  }
+
+  const targetUtcMidnight = Date.UTC(y, m, d);
+  const now = new Date();
+  const todayUtcMidnightForLocal = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+
+  return targetUtcMidnight > todayUtcMidnightForLocal;
 };
 
 export const dateContainsInvalidChars = (day: string, month: string, year: string): boolean => {
