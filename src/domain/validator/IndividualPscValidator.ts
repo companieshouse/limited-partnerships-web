@@ -1,6 +1,6 @@
 import UIErrors from "../entities/UIErrors";
-import { containsInvalidCharacters, isFieldValueMissing } from "./FieldValidators";
-import { dateContainsInvalidChars, DateErrorMessages, isDateInFuture, isValidDate, validateDateFieldLengths, validateMisingDateFields } from "./Date";
+import { containsInvalidCharacters, isFieldValueMissing, isFieldValueTooLong } from "./FieldValidators";
+import { dateContainsInvalidChars, DateErrorMessages, hasInvalidDateFieldLengths, hasMisingDateFields, isDateInFuture, isValidDate } from "./Date";
 import { CONSENT_CHECKED_FIELD, FORENAME_FIELD, MIDDLE_NAMES_FIELD, NATIONALITY2_FIELD, NATIONALITY1_FIELD, SURNAME_FIELD, DATE_OF_BIRTH_FIELD, TITLE_FIELD } from "../../config";
 
 type PscFormData = {
@@ -81,8 +81,8 @@ export default class IndividualPscValidator {
       return;
     }
 
-    if ((this.forename || "").length > 50) {
-      uiErrors.setWebError(FORENAME_FIELD, this.errorMessages?.firstNameTooLong);
+    if (isFieldValueTooLong(this.forename, 50, FORENAME_FIELD, uiErrors, this.errorMessages?.firstNameTooLong)) {
+      return;
     }
   }
 
@@ -91,8 +91,8 @@ export default class IndividualPscValidator {
       return;
     }
 
-    if ((this.middle_names || "").length > 50) {
-      uiErrors.setWebError(MIDDLE_NAMES_FIELD, this.errorMessages?.middleNamesTooLong);
+    if (isFieldValueTooLong(this.middle_names, 50, MIDDLE_NAMES_FIELD, uiErrors, this.errorMessages?.middleNamesTooLong)) {
+      return;
     }
   }
 
@@ -105,8 +105,8 @@ export default class IndividualPscValidator {
       return;
     }
 
-    if ((this.surname || "").length > 160) {
-      uiErrors.setWebError(SURNAME_FIELD, this.errorMessages?.lastNameTooLong);
+    if (isFieldValueTooLong(this.surname, 160, SURNAME_FIELD, uiErrors, this.errorMessages?.lastNameTooLong)) {
+      return;
     }
   }
 
@@ -139,8 +139,13 @@ export default class IndividualPscValidator {
     const safeDobYear = this.date_of_birth_year || "";
     const dateOfBirthField = DATE_OF_BIRTH_FIELD;
 
-    validateMisingDateFields(safeDobDay, safeDobMonth, safeDobYear, dateOfBirthField, uiErrors, dateErrorMessages);
-    validateDateFieldLengths(safeDobDay, safeDobMonth, safeDobYear, dateOfBirthField, uiErrors, dateErrorMessages);
+    if (hasMisingDateFields(safeDobDay, safeDobMonth, safeDobYear, dateOfBirthField, uiErrors, dateErrorMessages)) {
+      return;
+    };
+
+    if (hasInvalidDateFieldLengths(safeDobDay, safeDobMonth, safeDobYear, dateOfBirthField, uiErrors, dateErrorMessages)) {
+      return;
+    }
 
     if (dateContainsInvalidChars(safeDobDay, safeDobMonth, safeDobYear)) {
       uiErrors.setWebError(dateOfBirthField, this.errorMessages?.dateOfBirthInvalidChars);

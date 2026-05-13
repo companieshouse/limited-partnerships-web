@@ -1,5 +1,4 @@
 // TODO move this imported function?
-import { convertDateToIsoDateString } from "../../infrastructure/gateway/utils";
 import UIErrors from "../entities/UIErrors";
 
 export type DateErrorMessages = {
@@ -15,48 +14,61 @@ export type DateErrorMessages = {
   yearInvalidLength: string;
 }
 
-export const validateMisingDateFields = (day: string, month: string, year: string, fieldId: string, uiErrors: UIErrors, errorMessages: DateErrorMessages) => {
+export const hasMisingDateFields = (day: string, month: string, year: string, fieldId: string, uiErrors: UIErrors, errorMessages: DateErrorMessages): boolean => {
   if (!day?.trim() && !month?.trim() && !year?.trim()) {
     uiErrors.setWebError(fieldId, errorMessages?.dateMissing);
+    return true;
   }
 
   if (!day?.trim() && month?.trim() && year?.trim()) {
     uiErrors.setWebError(fieldId, errorMessages?.dayMissing);
+    return true;
   }
 
   if (day?.trim() && !month?.trim() && year?.trim()) {
     uiErrors.setWebError(fieldId, errorMessages?.monthMissing);
+    return true;
   }
 
   if (day?.trim() && month?.trim() && !year?.trim()) {
     uiErrors.setWebError(fieldId, errorMessages?.yearMissing);
+    return true;
   }
 
   if (!day?.trim() && !month?.trim() && year?.trim()) {
     uiErrors.setWebError(fieldId, errorMessages?.dayAndMonthMissing);
+    return true;
   }
 
   if (day?.trim() && !month?.trim() && !year?.trim()) {
     uiErrors.setWebError(fieldId, errorMessages?.monthAndYearMissing);
+    return true;
   }
 
   if (!day?.trim() && month?.trim() && !year?.trim()) {
     uiErrors.setWebError(fieldId, errorMessages?.dayAndYearMissing);
+    return true;
   }
+
+  return false;
 };
 
-export const validateDateFieldLengths = (day: string, month: string, year: string, fieldId: string, uiErrors: UIErrors, errorMessages: DateErrorMessages) => {
+export const hasInvalidDateFieldLengths = (day: string, month: string, year: string, fieldId: string, uiErrors: UIErrors, errorMessages: DateErrorMessages): boolean => {
   if ((day?.trim().length || 0) > 2) {
     uiErrors.setWebError(fieldId, errorMessages?.dayInvalidLength);
+    return true;
   }
 
   if ((month?.trim().length || 0) > 2) {
     uiErrors.setWebError(fieldId, errorMessages?.monthInvalidLength);
+    return true;
   }
 
   if ((year?.trim().length || 0) !== 4) {
     uiErrors.setWebError(fieldId, errorMessages?.yearInvalidLength);
+    return true;
   }
+  return false;
 };
 
 export const isValidDate = (day: string, month: string, year: string): boolean => {
@@ -65,16 +77,17 @@ export const isValidDate = (day: string, month: string, year: string): boolean =
     return true;
   }
 
-  const dateStr = convertDateToIsoDateString(day, month, year);
-
-  const [yearNum, monthNum, dayNum] = dateStr.split('-').map(Number);
   // months are 0-indexed in JavaScript Date, so we need to subtract 1 from the month
-  const parsedDate = new Date(yearNum, monthNum - 1, dayNum);
+  const y = Number(year);
+  const m = Number(month) - 1;
+  const d = Number(day);
+
+  const parsedDate = new Date(y, m, d);
 
   return (
-    parsedDate.getFullYear() === yearNum &&
-    parsedDate.getMonth() === monthNum - 1 &&
-    parsedDate.getDate() === dayNum
+    parsedDate.getFullYear() === y &&
+    parsedDate.getMonth() === m &&
+    parsedDate.getDate() === d
   );
 };
 
@@ -84,6 +97,7 @@ export const isDateInFuture = (day: string, month: string, year: string): boolea
     return false;
   }
 
+  // months are 0-indexed in JavaScript Date, so we need to subtract 1 from the month
   const y = Number(year);
   const m = Number(month) - 1;
   const d = Number(day);
