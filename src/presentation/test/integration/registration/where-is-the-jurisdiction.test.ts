@@ -89,7 +89,7 @@ describe("Where is the jurisdiction page", () => {
       ["cy", PartnershipType.PFLP],
     ])("should return validation error when no jurisdiction is selected", async (lang: string, partnershipType: PartnershipType) => {
       const translationText = lang === "en" ? enErrorMessages : cyErrorMessages;
-      const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipName(partnershipType).build();
+      const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
 
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
