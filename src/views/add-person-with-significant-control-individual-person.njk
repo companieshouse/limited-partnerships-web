@@ -3,7 +3,9 @@
 {% set pageTitle = i18n.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.title %}
 
 
-{% if props.data.personWithSignificantControl.data["date_of_birth-year"] %}
+{% if props.data.personWithSignificantControl.data["date_of_birth-year"] 
+    or  props.data.personWithSignificantControl.data["date_of_birth-month"]
+    or  props.data.personWithSignificantControl.data["date_of_birth-day"] %}
   {# This covers the scenario when date validation fails and the page reloads #}
   {% set date_of_birth_year = props.data.personWithSignificantControl.data["date_of_birth-year"] %}
   {% set date_of_birth_month = props.data.personWithSignificantControl.data["date_of_birth-month"] %}
