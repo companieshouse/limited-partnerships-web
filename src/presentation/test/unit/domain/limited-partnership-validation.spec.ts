@@ -1,4 +1,4 @@
-import { NameEndingType, PartnershipType, Term } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
+import { Jurisdiction, NameEndingType, PartnershipType, Term } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 import LimitedPartnership from "../../../../domain/validator/LimitedPartnership";
 import enTranslationText from "../../../../../locales/en/errors.json";
 
@@ -117,6 +117,52 @@ describe("Limited Partnership Validation", () => {
           {
             href: "#partnership_name",
             text: enTranslationText.errorMessages.limitedPartnership.name.nameLength
+          }
+        ]
+      });
+    });
+  });
+
+  describe("Jurisdiction validation", () => {
+    it("should not return an error if jurisdiction is valid", () => {
+      const limitedPartnership = new LimitedPartnership().set({ jurisdiction: Jurisdiction.ENGLAND_AND_WALES }, enTranslationText);
+      const errors = limitedPartnership.runJurisdictionValidation();
+
+      expect(errors.hasErrors()).toBe(false);
+      expect(errors.getErrors()).toEqual({ errorList: [] });
+    });
+
+    it("should return an error if jurisdiction is empty", () => {
+      const limitedPartnership = new LimitedPartnership().set({}, enTranslationText);
+      const errors = limitedPartnership.runJurisdictionValidation();
+
+      expect(errors.hasErrors()).toBe(true);
+      expect(errors.getErrors()).toEqual({
+        jurisdiction: {
+          text: enTranslationText.errorMessages.limitedPartnership.jurisdiction.required
+        },
+        errorList: [
+          {
+            href: "#jurisdiction",
+            text: enTranslationText.errorMessages.limitedPartnership.jurisdiction.required
+          }
+        ]
+      });
+    });
+
+    it("should return an error if jurisdiction is invalid", () => {
+      const limitedPartnership = new LimitedPartnership().set({ jurisdiction: "invalid" }, enTranslationText);
+      const errors = limitedPartnership.runJurisdictionValidation();
+
+      expect(errors.hasErrors()).toBe(true);
+      expect(errors.getErrors()).toEqual({
+        jurisdiction: {
+          text: enTranslationText.errorMessages.limitedPartnership.jurisdiction.required
+        },
+        errorList: [
+          {
+            href: "#jurisdiction",
+            text: enTranslationText.errorMessages.limitedPartnership.jurisdiction.required
           }
         ]
       });
