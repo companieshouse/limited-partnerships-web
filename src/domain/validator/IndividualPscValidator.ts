@@ -134,9 +134,9 @@ export default class IndividualPscValidator {
       yearInvalidLength: this.errorMessages?.dateOfBirthYearInvalidLength
     };
 
-    const safeDobDay = this.date_of_birth_day || "";
-    const safeDobMonth = this.date_of_birth_month || "";
-    const safeDobYear = this.date_of_birth_year || "";
+    const safeDobDay = this.date_of_birth_day ?? "";
+    const safeDobMonth = this.date_of_birth_month ?? "";
+    const safeDobYear = this.date_of_birth_year ?? "";
     const dateOfBirthField = DATE_OF_BIRTH_FIELD;
 
     if (hasMisingDateFields(safeDobDay, safeDobMonth, safeDobYear, dateOfBirthField, uiErrors, dateErrorMessages)) {

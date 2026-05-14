@@ -1,4 +1,3 @@
-// TODO move this imported function?
 import UIErrors from "../entities/UIErrors";
 
 export type DateErrorMessages = {

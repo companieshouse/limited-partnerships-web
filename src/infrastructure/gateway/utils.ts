@@ -21,7 +21,7 @@ export const convertValidDateToIsoDateString = (
   return dateStr;
 };
 
-export const convertDateToIsoDateString = (day: string, month: string, year: string): string => {
+const convertDateToIsoDateString = (day: string, month: string, year: string): string => {
   return `${year}-${zeroPadNumber(month)}-${zeroPadNumber(day)}`;
 };
 
