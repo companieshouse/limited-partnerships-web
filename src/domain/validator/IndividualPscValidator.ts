@@ -65,10 +65,12 @@ export default class IndividualPscValidator {
   }
 
   private validateTitle(uiErrors: UIErrors) {
-    if (!containsInvalidCharacters(this.title, TITLE_FIELD, uiErrors, this.errorMessages?.titleInvalid)) {
-      if ((this.title || "").length > 50) {
-        uiErrors.setWebError(TITLE_FIELD, this.errorMessages?.titleTooLong);
-      }
+    if (containsInvalidCharacters(this.title, TITLE_FIELD, uiErrors, this.errorMessages?.titleInvalid)) {
+      return;
+    }
+
+    if (isFieldValueTooLong(this.title, 50, TITLE_FIELD, uiErrors, this.errorMessages?.titleTooLong)) {
+      return;
     }
   }
 
