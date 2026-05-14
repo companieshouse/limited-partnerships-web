@@ -228,28 +228,44 @@ describe("Add Person With Significant Control Individual Person Page", () => {
   });
 
   describe("Date of birth validations", () => {
-    const cases: Array<[string, string, string, string, string]> = [
-      ["missing all", "", "", "", enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.dateOfBirthMissing],
-      ["day missing", "", "3", "1976", enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.dateOfBirthDayMissing],
-      ["month missing", "1", "", "1976", enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.dateOfBirthMonthMissing],
-      ["year missing", "1", "3", "", enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.dateOfBirthYearMissing],
-      ["day & month missing", "", "", "1976", enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.dateOfBirthDayAndMonthMissing],
-      ["month & year missing", "1", "", "", enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.dateOfBirthMonthAndYearMissing],
-      ["day & year missing", "", "3", "", enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.dateOfBirthDayAndYearMissing],
-      ["invalid chars", "aa", "bb", "1976", enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.dateOfBirthInvalidChars],
-      ["invalid date (29 Feb non leap year)", "29", "2", "2019", enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.dateOfBirthInvalidDate],
-      ["in future", "1", "1", "2099", enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.dateOfBirthInFuture],
-      ["day too long", "123", "1", "1976", enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.dateOfBirthDayInvalidLength],
-      ["month too long", "1", "123", "1976", enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.dateOfBirthMonthInvalidLength],
-      ["year wrong length", "1", "1", "76", enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.dateOfBirthYearInvalidLength]
+    const cases: Array<[string, string, string, string, string, string]> = [
+      ["missing all", "", "", "", "en", enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.dateOfBirthMissing],
+      ["day missing", "", "3", "1976", "en", enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.dateOfBirthDayMissing],
+      ["month missing", "1", "", "1976", "en", enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.dateOfBirthMonthMissing],
+      ["year missing", "1", "3", "", "en", enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.dateOfBirthYearMissing],
+      ["day & month missing", "", "", "1976", "en", enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.dateOfBirthDayAndMonthMissing],
+      ["month & year missing", "1", "", "", "en", enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.dateOfBirthMonthAndYearMissing],
+      ["day & year missing", "", "3", "", "en", enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.dateOfBirthDayAndYearMissing],
+      ["invalid chars", "aa", "bb", "1976", "en", enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.dateOfBirthInvalidChars],
+      ["invalid date (29 Feb non leap year)", "29", "2", "2019", "en", enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.dateOfBirthInvalidDate],
+      ["in future", "1", "1", "2099", "en", enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.dateOfBirthInFuture],
+      ["day too long", "123", "1", "1976", "en", enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.dateOfBirthDayInvalidLength],
+      ["month too long", "1", "123", "1976", "en", enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.dateOfBirthMonthInvalidLength],
+      ["year wrong length", "1", "1", "76", "en", enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.dateOfBirthYearInvalidLength],
+
+      ["missing all", "", "", "", "cy", cyErrors.errorMessages.personWithSignificantControl.addIndividualPerson.dateOfBirthMissing],
+      ["day missing", "", "3", "1976", "cy", cyErrors.errorMessages.personWithSignificantControl.addIndividualPerson.dateOfBirthDayMissing],
+      ["month missing", "1", "", "1976", "cy", cyErrors.errorMessages.personWithSignificantControl.addIndividualPerson.dateOfBirthMonthMissing],
+      ["year missing", "1", "3", "", "cy", cyErrors.errorMessages.personWithSignificantControl.addIndividualPerson.dateOfBirthYearMissing],
+      ["day & month missing", "", "", "1976", "cy", cyErrors.errorMessages.personWithSignificantControl.addIndividualPerson.dateOfBirthDayAndMonthMissing],
+      ["month & year missing", "1", "", "", "cy", cyErrors.errorMessages.personWithSignificantControl.addIndividualPerson.dateOfBirthMonthAndYearMissing],
+      ["day & year missing", "", "3", "", "cy", cyErrors.errorMessages.personWithSignificantControl.addIndividualPerson.dateOfBirthDayAndYearMissing],
+      ["invalid chars", "aa", "bb", "1976", "cy", cyErrors.errorMessages.personWithSignificantControl.addIndividualPerson.dateOfBirthInvalidChars],
+      ["invalid date (29 Feb non leap year)", "29", "2", "2019", "cy", cyErrors.errorMessages.personWithSignificantControl.addIndividualPerson.dateOfBirthInvalidDate],
+      ["in future", "1", "1", "2099", "cy", cyErrors.errorMessages.personWithSignificantControl.addIndividualPerson.dateOfBirthInFuture],
+      ["day too long", "123", "1", "1976", "cy", cyErrors.errorMessages.personWithSignificantControl.addIndividualPerson.dateOfBirthDayInvalidLength],
+      ["month too long", "1", "123", "1976", "cy", cyErrors.errorMessages.personWithSignificantControl.addIndividualPerson.dateOfBirthMonthInvalidLength],
+      ["year wrong length", "1", "1", "76", "cy", cyErrors.errorMessages.personWithSignificantControl.addIndividualPerson.dateOfBirthYearInvalidLength]
     ];
 
     it.each(cases)(
       "shows %s validation",
-      async (_desc: string, day: string, month: string, year: string, expectedMsg: string) => {
+      async (_desc: string, day: string, month: string, year: string, lang: string, expectedMsg: string) => {
         const person = new PersonWithSignificantControlBuilder().isIndividualPerson().build();
+        setLocalesEnabled(true);
+
         const res = await request(app)
-          .post(URL)
+          .post(`${URL}?lang=${lang}`)
           .send({
             pageType: RegistrationPageType.addPersonWithSignificantControlIndividualPerson,
             type: PersonWithSignificantControlType.INDIVIDUAL_PERSON,
@@ -261,6 +277,8 @@ describe("Add Person With Significant Control Individual Person Page", () => {
 
         expect(res.status).toBe(200);
         expect(res.text).toContain(expectedMsg);
+
+        setLocalesEnabled(false);
       }
     );
 
