@@ -117,7 +117,7 @@
                 "dateOfBirthDayAndYearMissing": "Date of birth must include a day and a year",
                 "dateOfBirthInvalidChars": "Date of birth must only include numbers",
                 "dateOfBirthInvalidDate": "Date of birth must be a real date",
-                "dateOfBirthInFuture": "Date of birth must be in the past",
+                "dateOfBirthNotInPast": "Date of birth must be in the past",
                 "dateOfBirthDayInvalidLength": "Day must be 1 or 2 numbers",
                 "dateOfBirthMonthInvalidLength": "Month must be 1 or 2 numbers",
                 "dateOfBirthYearInvalidLength": "Year must be 4 numbers",

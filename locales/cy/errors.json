@@ -118,7 +118,7 @@
                 "dateOfBirthDayAndYearMissing": "WELSH - Date of birth must include a day and a year",
                 "dateOfBirthInvalidChars": "WELSH - Date of birth must only include numbers",
                 "dateOfBirthInvalidDate": "WELSH - Date of birth must be a real date",
-                "dateOfBirthInFuture": "WELSH - Date of birth must be in the past",
+                "dateOfBirthNotInPast": "WELSH - Date of birth must be in the past",
                 "dateOfBirthDayInvalidLength": "WELSH - Day must be 1 or 2 numbers",
                 "dateOfBirthMonthInvalidLength": "WELSH - Month must be 1 or 2 numbers",
                 "dateOfBirthYearInvalidLength": "WELSH - Year must be 4 numbers",

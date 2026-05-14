@@ -1,6 +1,6 @@
 import UIErrors from "../entities/UIErrors";
 import { containsInvalidCharacters, isFieldValueMissing, isFieldValueTooLong } from "./FieldValidators";
-import { dateContainsInvalidChars, DateErrorMessages, hasInvalidDateFieldLengths, hasMisingDateFields, isDateInFuture, isValidDate } from "./DateValidators";
+import { dateContainsInvalidChars, DateErrorMessages, hasInvalidDateFieldLengths, hasMissingDateFields, isDateInPast, isValidDate } from "./DateValidators";
 import { CONSENT_CHECKED_FIELD, FORENAME_FIELD, MIDDLE_NAMES_FIELD, NATIONALITY2_FIELD, NATIONALITY1_FIELD, SURNAME_FIELD, DATE_OF_BIRTH_FIELD, TITLE_FIELD } from "../../config";
 
 type PscFormData = {
@@ -141,7 +141,7 @@ export default class IndividualPscValidator {
     const safeDobYear = this.date_of_birth_year ?? "";
     const dateOfBirthField = DATE_OF_BIRTH_FIELD;
 
-    if (hasMisingDateFields(safeDobDay, safeDobMonth, safeDobYear, dateOfBirthField, uiErrors, dateErrorMessages)) {
+    if (hasMissingDateFields(safeDobDay, safeDobMonth, safeDobYear, dateOfBirthField, uiErrors, dateErrorMessages)) {
       return;
     };
 
@@ -159,8 +159,8 @@ export default class IndividualPscValidator {
       return;
     }
 
-    if (isDateInFuture(safeDobDay, safeDobMonth, safeDobYear)) {
-      uiErrors.setWebError(dateOfBirthField, this.errorMessages?.dateOfBirthInFuture);
+    if (!isDateInPast(safeDobDay, safeDobMonth, safeDobYear)) {
+      uiErrors.setWebError(dateOfBirthField, this.errorMessages?.dateOfBirthNotInPast);
     }
   }
 };
