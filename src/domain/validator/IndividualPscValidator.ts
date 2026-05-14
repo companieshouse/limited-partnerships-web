@@ -1,6 +1,6 @@
 import UIErrors from "../entities/UIErrors";
 import { containsInvalidCharacters, isFieldValueMissing, isFieldValueTooLong } from "./FieldValidators";
-import { dateContainsInvalidChars, DateErrorMessages, hasInvalidDateFieldLengths, hasMisingDateFields, isDateInFuture, isValidDate } from "./Date";
+import { dateContainsInvalidChars, DateErrorMessages, hasInvalidDateFieldLengths, hasMisingDateFields, isDateInFuture, isValidDate } from "./DateValidators";
 import { CONSENT_CHECKED_FIELD, FORENAME_FIELD, MIDDLE_NAMES_FIELD, NATIONALITY2_FIELD, NATIONALITY1_FIELD, SURNAME_FIELD, DATE_OF_BIRTH_FIELD, TITLE_FIELD } from "../../config";
 
 type PscFormData = {

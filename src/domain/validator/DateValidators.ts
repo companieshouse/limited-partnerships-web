@@ -72,16 +72,15 @@ export const hasInvalidDateFieldLengths = (day: string, month: string, year: str
 };
 
 export const isValidDate = (day: string, month: string, year: string): boolean => {
-  // only validate if we have all 3 components of the date, otherwise we will have false negatives when day or month is missing
-  if (!day?.trim() || !month?.trim() || !year?.trim()) {
-    return true;
-  }
-
   // months are 0-indexed in JavaScript Date, so we need to subtract 1 from the month
   const y = Number(year);
   const m = Number(month) - 1;
   const d = Number(day);
+  if ([y, m, d].some(Number.isNaN)) {
+    return false;
+  }
 
+  // handles leap years as well
   const parsedDate = new Date(y, m, d);
 
   return (
@@ -91,12 +90,26 @@ export const isValidDate = (day: string, month: string, year: string): boolean =
   );
 };
 
-export const isDateInFuture = (day: string, month: string, year: string): boolean => {
-  // only validate if we have all 3 components of the date, otherwise we will have false negatives when day or month is missing
-  if (!day?.trim() || !month?.trim() || !year?.trim()) {
+export const isValidDateString = (date: string): boolean => {
+  const [year, month, day] = date.split("-");
+  const isDayInvalid = day.length > 2;
+  const isMonthInvalid = month.length > 2;
+  const isYearInvalid = year.length !== 4;
+
+  if (isDayInvalid || isMonthInvalid || isYearInvalid) {
     return false;
   }
 
+  if (!isValidDate(day, month, year)) {
+    return false;
+  }
+  if (isDateInFuture(day, month, year)) {
+    return false;
+  }
+  return true;
+};
+
+export const isDateInFuture = (day: string, month: string, year: string): boolean => {
   // months are 0-indexed in JavaScript Date, so we need to subtract 1 from the month
   const y = Number(year);
   const m = Number(month) - 1;
@@ -105,6 +118,7 @@ export const isDateInFuture = (day: string, month: string, year: string): boolea
     return false;
   }
 
+  // use UTC to deal with daylight savings and timezones, we only care about the date component, not the time, so we can compare the two dates at UTC midnight
   const targetUtcMidnight = Date.UTC(y, m, d);
   const now = new Date();
   const todayUtcMidnightForLocal = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
