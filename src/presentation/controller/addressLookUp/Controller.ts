@@ -314,9 +314,16 @@ class AddressLookUpController extends AbstractController {
   }
 
   selectAddress() {
-    return (request: Request, response: Response, next: NextFunction) => {
+    return async (request: Request, response: Response, next: NextFunction) => {
       try {
         this.addressService.setI18n(response.locals.i18n);
+        const pageType = super.extractPageTypeOrThrowError(request, AddressLookUpPageType);
+        const addressRouting = this.getAddressRouting(request.url);
+        const pageRouting = super.getRouting(addressRouting, pageType, request);
+
+        if (!request.body.selected_address) {
+          return await this.renderChooseAddressPageWithError(request, pageRouting, response);
+        }
 
         const address: Address = JSON.parse(request.body.selected_address);
 
@@ -893,6 +900,37 @@ class AddressLookUpController extends AbstractController {
     return response.render(
       super.templateName(pageRouting.currentUrl),
       super.makeProps(pageRouting, { generalPartner, limitedPartner, personWithSignificantControl }, uiErrors)
+    );
+  }
+
+  private async renderChooseAddressPageWithError(request: Request, pageRouting: PageRouting, response: Response) {
+    const { tokens, ids, pageType } = super.extract(request);
+
+    const errorMessage = response.locals.i18n?.errorMessages?.address?.chooseAddress?.selectionRequired;
+
+    const uiErrors = new UIErrors().setWebError("selected_address", errorMessage);
+
+    let limitedPartnership;
+    if (ids.transactionId && ids.submissionId) {
+      limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+        tokens,
+        ids.transactionId,
+        ids.submissionId
+      );
+    }
+
+    const { generalPartner, limitedPartner, personWithSignificantControl } = await this.getResourcesData(
+      pageType,
+      tokens,
+      ids
+    );
+
+    const cacheById = this.cacheService.getDataFromCacheById(request.signedCookies, ids.transactionId);
+    const { addressList } = await this.getAddressList(pageRouting, cacheById, tokens);
+
+    return response.render(
+      super.templateName(pageRouting.currentUrl),
+      super.makeProps(pageRouting, { limitedPartnership, generalPartner, limitedPartner, personWithSignificantControl, addressList }, uiErrors)
     );
   }
 }

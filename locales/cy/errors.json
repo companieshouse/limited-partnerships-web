@@ -11,6 +11,10 @@
         },
 
         "address": {
+            "chooseAddress": {
+                "selectionRequired": "WELSH - Select an address from the list"
+            },
+            
             "confirm": {
                 "countryMissing": "WELSH - We cannot identify the country for this address. Select Change, then select the country."
             },
