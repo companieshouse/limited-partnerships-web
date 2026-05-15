@@ -377,9 +377,9 @@ describe("Add Person With Significant Control Individual Person Page", () => {
     });
 
     it.each([
-      ["en", enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.titleInvalid],
-      ["cy", cyErrors.errorMessages.personWithSignificantControl.addIndividualPerson.titleInvalid]
-    ])("shows title invalid validation for %s", async (lang, expectedMsg) => {
+      ["en", enErrors, enPersonWithSignificantControlTranslationText],
+      ["cy", cyErrors, cyPersonWithSignificantControlTranslationText]
+    ])("shows title invalid validation for %s", async (lang, errorTranslations, translationText) => {
       const person = new PersonWithSignificantControlBuilder().isIndividualPerson().build();
 
       setLocalesEnabled(true);
@@ -391,19 +391,21 @@ describe("Add Person With Significant Control Individual Person Page", () => {
           pageType: RegistrationPageType.addPersonWithSignificantControlIndividualPerson,
           type: PersonWithSignificantControlType.INDIVIDUAL_PERSON,
           ...person.data,
-          title: "±"
+          title: translationText.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.titles.other,
+          title_other: "±"
         });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(expectedMsg);
+      expect(res.text).toContain("id=\"title_other-error\"");
+      expect(res.text).toContain(errorTranslations.errorMessages.personWithSignificantControl.addIndividualPerson.titleInvalid);
 
       setLocalesEnabled(false);
     });
 
     it.each([
-      ["en", enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.titleTooLong],
-      ["cy", cyErrors.errorMessages.personWithSignificantControl.addIndividualPerson.titleTooLong]
-    ])("shows title too long validation for %s", async (lang, expectedMsg) => {
+      ["en", enErrors, enPersonWithSignificantControlTranslationText],
+      ["cy", cyErrors, cyPersonWithSignificantControlTranslationText]
+    ])("shows title too long validation for %s", async (lang, errorTranslations, translationText) => {
       const person = new PersonWithSignificantControlBuilder().isIndividualPerson().build();
       const longTitle = "A".repeat(51);
 
@@ -416,11 +418,13 @@ describe("Add Person With Significant Control Individual Person Page", () => {
           pageType: RegistrationPageType.addPersonWithSignificantControlIndividualPerson,
           type: PersonWithSignificantControlType.INDIVIDUAL_PERSON,
           ...person.data,
-          title: longTitle
+          title: translationText.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.titles.other,
+          title_other: longTitle
         });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(expectedMsg);
+      expect(res.text).toContain("id=\"title_other-error\"");
+      expect(res.text).toContain(errorTranslations.errorMessages.personWithSignificantControl.addIndividualPerson.titleTooLong);
 
       setLocalesEnabled(false);
     });
