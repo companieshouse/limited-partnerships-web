@@ -317,12 +317,9 @@ class AddressLookUpController extends AbstractController {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
         this.addressService.setI18n(response.locals.i18n);
-        const pageType = super.extractPageTypeOrThrowError(request, AddressLookUpPageType);
-        const addressRouting = this.getAddressRouting(request.url);
-        const pageRouting = super.getRouting(addressRouting, pageType, request);
 
         if (!request.body.selected_address) {
-          return await this.renderChooseAddressPageWithError(request, pageRouting, response);
+          return await this.renderChooseAddressPageWithError(request, response);
         }
 
         const address: Address = JSON.parse(request.body.selected_address);
@@ -903,8 +900,11 @@ class AddressLookUpController extends AbstractController {
     );
   }
 
-  private async renderChooseAddressPageWithError(request: Request, pageRouting: PageRouting, response: Response) {
+  private async renderChooseAddressPageWithError(request: Request, response: Response) {
     const { tokens, ids, pageType } = super.extract(request);
+
+    const addressRouting = this.getAddressRouting(request.url);
+    const pageRouting = super.getRouting(addressRouting, pageType, request);
 
     const errorMessage = response.locals.i18n?.errorMessages?.address?.chooseAddress?.selectionRequired;
 
