@@ -21,8 +21,6 @@ import {
 } from "./url";
 import { CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL, CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL } from "../addressLookUp/url/registration";
 import { PageRouting } from "../PageRouting";
-import { ParamsDictionary } from "express-serve-static-core";
-import { ParsedQs } from "qs";
 import PageType from "../PageType";
 
 class PersonWithSignificantControlRegistrationController extends AbstractController {
@@ -302,7 +300,7 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
     };
   }
 
-  private handleIndividualPersonTitle(pageType: PageType, request: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, response: Response<any, Record<string, any>>) {
+  private handleIndividualPersonTitle(pageType: PageType, request: Request, response: Response) {
     if (pageType === RegistrationPageType.addPersonWithSignificantControlIndividualPerson) {
       // If the user selected "OTHER" for title (or welsh Other) and provided an other value, use that as the title
       if (request.body.title === response.locals.i18n.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.titles.other) {
