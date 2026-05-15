@@ -1,4 +1,5 @@
 import UIErrors from "../../domain/entities/UIErrors";
+import { isValidDateStringAndInPast } from "../../domain/validator/DateValidators";
 
 export const convertValidDateToIsoDateString = (
   date: { day: string; month: string; year: string },
@@ -6,7 +7,7 @@ export const convertValidDateToIsoDateString = (
 ): string => {
   const dateStr = convertDateToIsoDateString(date.day.trim(), date.month.trim(), date.year.trim());
 
-  if (!isDateValid(dateStr)) {
+  if (!isValidDateStringAndInPast(dateStr)) {
     const uiErrors = new UIErrors();
     uiErrors.formatValidationErrorToUiErrors({
       errors: {
@@ -32,47 +33,6 @@ const zeroPadNumber = (input: string = ""): string => {
   return input;
 };
 
-const isDateValid = (date: string): boolean => {
-  const [year, month, day] = date.split("-");
-
-  const parsedDay = parseInt(day);
-  const parsedMonth = parseInt(month);
-  const parsedYear = parseInt(year);
-
-  const isDayInvalid = day.length > 2 || isNaN(parsedDay) || parsedDay === 0;
-  const isMonthInvalid = month.length > 2 || isNaN(parsedMonth) || parsedMonth === 0;
-  const isYearInvalid = year.length !== 4 || isNaN(parsedYear) || parsedYear === 0;
-
-  if (isDayInvalid || isMonthInvalid || isYearInvalid) {
-    return false;
-  }
-
-  const days = daysInMonth(parsedMonth);
-
-  if (parsedDay > days) {
-    return false;
-  }
-
-  const dateObj = new Date(date);
-  const now = new Date();
-  const dateInPast = dateObj < now;
-
-  return dateObj instanceof Date && !isNaN(dateObj.getTime()) && dateInPast;
-};
-
-const daysInMonth = (month: number) => {
-  const thirtyOneDayMonths = [1, 3, 5, 7, 8, 10, 12];
-  const thirtyDayMonths = [4, 6, 9, 11];
-
-  if (thirtyOneDayMonths.includes(month)) {
-    return 31;
-  } else if (thirtyDayMonths.includes(month)) {
-    return 30;
-  } else {
-    return 28;
-  }
-};
-
 export const removeEmptyStringValues = (data: Record<string, any>, exclude: string[] = []): Record<string, any> => {
   for (const key in data) {
     if (exclude.includes(key)) {
@@ -92,7 +52,7 @@ export const removeEmptyStringValues = (data: Record<string, any>, exclude: stri
   return data;
 };
 
-export const validateAndFormatPartnerPersonDateOfBirth = (data: Record<string, any>) => {
+export const validateAndFormatPersonDateOfBirth = (data: Record<string, any>) => {
   if (data["forename"] && data["date_of_birth-day"]) {
     // Only do this if Limited Partner Person data is being sent to the API
     data["date_of_birth"] = convertValidDateToIsoDateString(

@@ -70,7 +70,8 @@ describe("Add Person With Significant Control Other registrable person Page", ()
         );
 
         testTranslations(res.text, translationText.personWithSignificantControl.addPersonWithSignificantControl, [
-          "addRelevantLegalEntity"
+          "addRelevantLegalEntity",
+          "addIndividualPerson"
         ]);
       }
     );

@@ -2,8 +2,8 @@ import request from "supertest";
 import { PartnershipType, Term } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import app from "../app";
-import enTranslationText from "../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../locales/cy/translations.json";
+import enGeneralTranslationText from "../../../../../locales/en/translations.json";
+import cyGeneralTranslationText from "../../../../../locales/cy/translations.json";
 import enErrorMessages from "../../../../../locales/en/errors.json";
 import cyErrorMessages from "../../../../../locales/cy/errors.json";
 
@@ -15,6 +15,9 @@ import RegistrationPageType from "../../../controller/registration/PageType";
 import { ApiErrors } from "../../../../domain/entities/UIErrors";
 
 describe("Email Page", () => {
+  const enTranslationText = { ...enGeneralTranslationText, ...enErrorMessages };
+  const cyTranslationText = { ...cyGeneralTranslationText, ...cyErrorMessages };
+
   const URL = getUrl(TERM_URL);
   const REDIRECT_URL = getUrl(SIC_URL);
 
@@ -134,15 +137,14 @@ describe("Email Page", () => {
       });
 
       it.each([
-        ["English", "en", enTranslationText, enErrorMessages],
-        ["Welsh", "cy", cyTranslationText, cyErrorMessages]
+        ["English", "en", enTranslationText],
+        ["Welsh", "cy", cyTranslationText]
       ])(
         "should re-render the page with an error summary in %s when no term is selected",
         async (
           _description: string,
           lang: string,
-          translationText: Record<string, any>,
-          errorMessages: Record<string, any>
+          translationText
         ) => {
           const limitedPartnership = new LimitedPartnershipBuilder()
             .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
@@ -158,7 +160,7 @@ describe("Email Page", () => {
             });
 
           expect(res.status).toBe(200);
-          expect(res.text).toContain(errorMessages.errorMessages.term.termRequired);
+          expect(res.text).toContain(translationText.errorMessages.limitedPartnership.term.termRequired);
           expect(res.text).toContain('href="#term"');
           expect(res.text).toContain(translationText.govUk.error.title);
         }
@@ -178,7 +180,7 @@ describe("Email Page", () => {
         });
 
         expect(res.status).toBe(200);
-        expect(res.text).toContain(enErrorMessages.errorMessages.term.termRequired);
+        expect(res.text).toContain(enErrorMessages.errorMessages.limitedPartnership.term.termRequired);
         expect(res.text).toContain('href="#term"');
       });
     });

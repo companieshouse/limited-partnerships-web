@@ -23,6 +23,7 @@ import PersonWithSignificantControlInMemoryGateway from "../infrastructure/gatew
 
 import AddressValidator from "../domain/validator/Address";
 import PersonWithSignificantControlValidator from "../domain/validator/PersonWithSignificantControl";
+import LimitedPartnershipValidator from "../domain/validator/LimitedPartnership";
 
 import CacheService from "../application/service/CacheService";
 import AddressLookUpService from "../application/service/AddressService";
@@ -110,12 +111,14 @@ export function buildDependencies(useInMemory = false): BuiltDependencies {
   // Dommain
   const addressValidator = new AddressValidator();
   const personWithSignificantControlValidator = new PersonWithSignificantControlValidator();
+  const limitedPartnershipValidator = new LimitedPartnershipValidator();
 
   // Services
   const limitedPartnershipService: LimitedPartnershipService = new LimitedPartnershipService(
     limitedPartnershipGateway,
     transactionGateway,
-    incorporationGateway
+    incorporationGateway,
+    limitedPartnershipValidator
   );
   const addressLookUpService: AddressLookUpService = new AddressLookUpService(addressLookUpGateway, addressValidator);
   const cacheService = new CacheService(cacheRepository);

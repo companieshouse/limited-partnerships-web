@@ -73,7 +73,7 @@
             required : true,
             "aria-describedby": "partnership_name-hint",
             minLength: "1"
-          },
+          } if not journeyTypes.isRegistration,
           suffix: {
             text: "Limited Partnership"
           }

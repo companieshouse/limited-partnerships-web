@@ -51,6 +51,27 @@
                 "title": "Add an other registrable person PSC",
 
                 "legalEntityName" : "What is the other registrable person (ORP)'s name?"
+            },
+            "addIndividualPerson": {
+                "title": "Add a PSC (individual person)",
+                "consent": "This person knows their details are being supplied as part of this application",
+                "personTitle": "Professional or honorary title (if relevant)",
+                "personTitleHint": "For example, Dr or Professor",
+                "firstName": "First name",
+                "middleNames": "Middle names",
+                "lastName": "Last name",
+                "dateOfBirth": "Date of birth",
+                "dateOfBirthHint": "For example, 27 3 1990",
+                "dateDay": "Day",
+                "dateMonth": "Month",
+                "dateYear": "Year",
+                "nationality": "What is their nationality?",
+                "nationalitySelectPrompt": "Select a nationality",
+                "secondNationality": "What is their second nationality (if relevant)?",
+                "secondNationalityHint": "Dual citizenship (also known as dual nationality) is allowed in some countries. This means you can be a citizen of your own country and another country.",
+                "secondNationalitySelectPrompt": "Select a second nationality",
+                "publicRegisterLine1": "We'll show the month and year of the PSC's date of birth, but not the exact date.",
+                "publicRegisterLine2": "We'll show all the other information you provide on this screen on the public register."
             }
         },
         "whichTypeOfNatureOfControlPage": {

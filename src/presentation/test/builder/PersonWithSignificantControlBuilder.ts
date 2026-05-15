@@ -2,6 +2,21 @@ import { PersonWithSignificantControlType } from "@companieshouse/api-sdk-node/d
 
 import TransactionPersonWithSignificantControl from "../../../domain/entities/TransactionPersonWithSignificantControl";
 
+export const personWithSignificantControlIndividualPerson = {
+  consent_checked: true,
+  title: "Mr",
+  forename: "John",
+  middle_names: "Michael",
+  surname: "Smith",
+  'date_of_birth-day': "01",
+  'date_of_birth-month': "01",
+  'date_of_birth-year': "1980",
+  date_of_birth: "1980-01-01",
+  nationality1: "British",
+  nationality2: "American",
+  type: PersonWithSignificantControlType.INDIVIDUAL_PERSON
+};
+
 export const personWithSignificantControlRelevantLegalEntity = {
   legal_entity_name: "My Company ltd - RLE",
   legal_form: "Limited Company",
@@ -55,6 +70,14 @@ class PersonWithSignificantControlBuilder {
 
   withCompleted(completed: boolean) {
     this.data.completed = completed;
+    return this;
+  }
+
+  isIndividualPerson() {
+    this.data = {
+      ...this.data,
+      ...personWithSignificantControlIndividualPerson
+    };
     return this;
   }
 

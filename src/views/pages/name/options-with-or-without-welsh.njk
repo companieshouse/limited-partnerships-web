@@ -7,7 +7,7 @@
       name: "name_ending",
       attributes : {
         required : true
-      }
+      } if not journeyTypes.isRegistration
     },
     {
       value: "LP",
@@ -16,7 +16,7 @@
       name: "name_ending",
       attributes : {
         required : true
-      }
+      } if not journeyTypes.isRegistration
     },
     {
       value: "L.P.",
@@ -25,7 +25,7 @@
       name: "name_ending",
       attributes : {
         required : true
-      }
+      } if not journeyTypes.isRegistration
     }
   ]
 %}
@@ -41,7 +41,7 @@
       name: "name_ending",
       attributes : {
         required : true
-      }
+      } if not journeyTypes.isRegistration
     },
     {
       value: "PC",
@@ -50,7 +50,7 @@
       name: "name_ending",
       attributes : {
         required : true
-      }
+      } if not journeyTypes.isRegistration
     },
     {
       value: "P.C.",
@@ -59,7 +59,7 @@
       name: "name_ending",
       attributes : {
         required : true
-      }
+      } if not journeyTypes.isRegistration
     }
   ), nameEndingOptionsList) %}
 

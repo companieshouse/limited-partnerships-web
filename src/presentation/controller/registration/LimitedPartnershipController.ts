@@ -5,8 +5,7 @@ import {
   LimitedPartner,
   LimitedPartnership,
   PartnershipType,
-  PersonWithSignificantControl,
-  Term
+  PersonWithSignificantControl
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
@@ -60,6 +59,7 @@ class LimitedPartnershipController extends PartnershipController {
       try {
         this.generalPartnerService.setI18n(response.locals.i18n);
         this.limitedPartnerService.setI18n(response.locals.i18n);
+        this.limitedPartnershipService.setI18n(response.locals.i18n);
 
         const { tokens, pageType, ids } = super.extract(request);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
@@ -192,10 +192,22 @@ class LimitedPartnershipController extends PartnershipController {
   createTransactionAndFirstSubmission() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
+        this.limitedPartnershipService.setI18n(response.locals.i18n);
         const { tokens } = super.extract(request);
         const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
         const journeyTypes = getJourneyTypes(pageRouting.currentUrl);
+
+        const errors: UIErrors = this.handleValidation(request, pageType);
+        if (errors.hasErrors()) {
+          const cache = this.cacheService.getDataFromCache(request.signedCookies);
+
+          response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(pageRouting, { limitedPartnership: { data: request.body }, cache }, errors)
+          );
+          return;
+        }
 
         const result = await this.limitedPartnershipService.createTransactionAndFirstSubmission(
           tokens,
@@ -286,9 +298,10 @@ class LimitedPartnershipController extends PartnershipController {
   redirectPartnershipTypeWithIds() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
+        this.limitedPartnerService.setI18n(response.locals.i18n);
         const { tokens, ids } = super.extract(request);
 
-        const selectedPartnershipType = escape(request.body.parameter);
+        const selectedPartnershipType = escape(request.body.partnership_type);
 
         const limitedPartnership: LimitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
           tokens,
@@ -311,18 +324,14 @@ class LimitedPartnershipController extends PartnershipController {
   redirectAndCacheSelection() {
     return (request: Request, response: Response, next: NextFunction) => {
       try {
-        const type = super.extractPageTypeOrThrowError(request, RegistrationPageType);
-        const pageRouting = super.getRouting(registrationsRouting, type, request);
+        const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
+        const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
-        const pageType = escape(request.body.pageType);
-        const parameter = escape(request.body.parameter);
+        const partnershipType = escape(request.body.partnership_type);
 
-        if (type === RegistrationPageType.partnershipType && !this.isValidPartnershipType(parameter)) {
-          const uiErrors = new UIErrors().setWebError(
-            "parameter",
-            response.locals.i18n.errorMessages.partnershipType.typeRequired
-          );
+        const uiErrors = this.handleValidation(request, pageType);
 
+        if (uiErrors.hasErrors()) {
           return response.render(
             super.templateName(pageRouting.currentUrl),
             super.makeProps(pageRouting, {}, uiErrors)
@@ -330,7 +339,7 @@ class LimitedPartnershipController extends PartnershipController {
         }
 
         const cache = this.cacheService.addDataToCache(request.signedCookies, {
-          [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${pageType}`]: parameter
+          [`${APPLICATION_CACHE_KEY_PREFIX_REGISTRATION}${pageType}`]: partnershipType
         });
         response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
 
@@ -341,33 +350,18 @@ class LimitedPartnershipController extends PartnershipController {
     };
   }
 
-  private isValidPartnershipType(value: string): boolean {
-    return Object.values(PartnershipType).includes(value as PartnershipType);
-  }
-
   sendPageData() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
+        this.limitedPartnershipService.setI18n(response.locals.i18n);
         const { tokens, ids } = super.extract(request);
         const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
-        if (pageType === RegistrationPageType.term && !this.isValidTerm(request.body.term)) {
-          const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
-            tokens,
-            ids.transactionId,
-            ids.submissionId
-          );
+        const errors: UIErrors = this.handleValidation(request, pageType);
 
-          const uiErrors = new UIErrors().setWebError(
-            "term",
-            response.locals.i18n.errorMessages.term.termRequired
-          );
-
-          return response.render(
-            super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { limitedPartnership }, uiErrors)
-          );
+        if (errors.hasErrors()) {
+          return this.handlePageRerenderWithPartnershipAndError(request, response, errors);
         }
 
         const result = await this.limitedPartnershipService.sendPageData(
@@ -413,8 +407,37 @@ class LimitedPartnershipController extends PartnershipController {
     };
   }
 
-  private isValidTerm(value: string): boolean {
-    return Object.values(Term).includes(value as Term);
+  private handleValidation(request: Request, pageType: RegistrationPageType): UIErrors {
+    const pageTypeValidatorMap = new Map<RegistrationPageType, () => UIErrors>([
+      [RegistrationPageType.partnershipType, () => this.limitedPartnershipService.runPartnershipTypeValidation(request.body)],
+      [RegistrationPageType.partnershipName, () => this.limitedPartnershipService.runNameValidation(request.body)],
+      [RegistrationPageType.jurisdiction, () => this.limitedPartnershipService.runJurisdictionValidation(request.body)],
+      [RegistrationPageType.term, () => this.limitedPartnershipService.runTermValidation(request.body)]
+    ]);
+
+    const validator = pageTypeValidatorMap.get(pageType);
+
+    if (validator) {
+      return validator();
+    }
+
+    return new UIErrors();
+  }
+
+  private async handlePageRerenderWithPartnershipAndError(request: Request, response: Response, uiErrors: UIErrors) {
+    const { tokens, pageType, ids } = super.extract(request);
+    const pageRouting = super.getRouting(registrationsRouting, pageType, request);
+
+    const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+      tokens,
+      ids.transactionId,
+      ids.submissionId
+    );
+
+    return response.render(
+      super.templateName(pageRouting.currentUrl),
+      super.makeProps(pageRouting, { limitedPartnership }, uiErrors)
+    );
   }
 
   private async conditionalNextUrl(tokens: Tokens, ids: Ids, pageRouting: PageRouting, request: Request) {
@@ -434,6 +457,7 @@ class LimitedPartnershipController extends PartnershipController {
   getPageRoutingTermSic() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
+        this.limitedPartnershipService.setI18n(response.locals.i18n);
         const { tokens, pageType, ids } = super.extract(request);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
