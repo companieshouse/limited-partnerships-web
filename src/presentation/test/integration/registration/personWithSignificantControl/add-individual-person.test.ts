@@ -95,7 +95,7 @@ describe("Add Person With Significant Control Individual Person Page", () => {
       const res = await request(app).get(URL);
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(`name="title" type="text" value="${personWithSignificantControl?.data?.title}"`);
+      expect(res.text).toContain(`<option value="${personWithSignificantControl?.data?.title}" selected>${personWithSignificantControl?.data?.title}</option>`);
       expect(res.text).toContain(`name="forename" type="text" value="${personWithSignificantControl?.data?.forename}"`);
       expect(res.text).toContain(`name="middle_names" type="text" value="${personWithSignificantControl?.data?.middle_names}"`);
       expect(res.text).toContain(`name="surname" type="text" value="${personWithSignificantControl?.data?.surname}"`);
@@ -109,6 +109,25 @@ describe("Add Person With Significant Control Individual Person Page", () => {
 
       expect(res.text).toContain(`<option value="${personWithSignificantControl?.data?.nationality1}" selected>${personWithSignificantControl?.data?.nationality1}</option>`);
       expect(res.text).toContain(`<option value="${personWithSignificantControl?.data?.nationality2}" selected>${personWithSignificantControl?.data?.nationality2}</option>`);
+    });
+
+    it("should populate other title if not in title list", async () => {
+      const URL = getUrl(ADD_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_WITH_IDS_URL);
+
+      const personWithSignificantControl = new PersonWithSignificantControlBuilder()
+        .isIndividualPerson()
+        .withTitle("Something else")
+        .withId(appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId)
+        .build();
+      appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([
+        personWithSignificantControl
+      ]);
+
+      const res = await request(app).get(URL);
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(`<option value="OTHER" selected>OTHER</option>`);
+      expect(res.text).toContain(`name="title_other" type="text" value="${personWithSignificantControl?.data?.title}"`);
     });
   });
 

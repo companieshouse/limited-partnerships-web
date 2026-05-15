@@ -1,7 +1,7 @@
 import UIErrors from "../entities/UIErrors";
 import { containsInvalidCharacters, isFieldValueMissing, isFieldValueTooLong } from "./FieldValidators";
 import { dateContainsInvalidChars, DateErrorMessages, hasInvalidDateFieldLengths, hasMissingDateFields, isDateInPast, isValidDate } from "./DateValidators";
-import { CONSENT_CHECKED_FIELD, FORENAME_FIELD, MIDDLE_NAMES_FIELD, NATIONALITY2_FIELD, NATIONALITY1_FIELD, SURNAME_FIELD, DATE_OF_BIRTH_FIELD, TITLE_FIELD } from "../../config";
+import { CONSENT_CHECKED_FIELD, FORENAME_FIELD, MIDDLE_NAMES_FIELD, NATIONALITY2_FIELD, NATIONALITY1_FIELD, SURNAME_FIELD, DATE_OF_BIRTH_FIELD, TITLE_OTHER_FIELD } from "../../config";
 
 type PscFormData = {
   consent_checked?: boolean | string;
@@ -65,11 +65,14 @@ export default class IndividualPscValidator {
   }
 
   private validateTitle(uiErrors: UIErrors) {
-    if (containsInvalidCharacters(this.title, TITLE_FIELD, uiErrors, this.errorMessages?.titleInvalid)) {
+    // The form title field is populated with either the select box value or the 'other title' text field value depending on the user's selection.
+    // Therefore, the validation needs to check for invalid characters and length against the form title field value, but use the 'other title' template id for error reporting
+    // as we can assume any errors are in the user entered 'other title'.
+    if (containsInvalidCharacters(this.title, TITLE_OTHER_FIELD, uiErrors, this.errorMessages?.titleInvalid)) {
       return;
     }
 
-    if (isFieldValueTooLong(this.title, 50, TITLE_FIELD, uiErrors, this.errorMessages?.titleTooLong)) {
+    if (isFieldValueTooLong(this.title, 50, TITLE_OTHER_FIELD, uiErrors, this.errorMessages?.titleTooLong)) {
       return;
     }
   }
