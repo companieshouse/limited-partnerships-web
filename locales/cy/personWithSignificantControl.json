@@ -72,6 +72,7 @@
                 "secondNationalitySelectPrompt": "WELSH - Select a second nationality",
                 "publicRegisterLine1": "WELSH - We'll show the month and year of the PSC's date of birth, but not the exact date.",
                 "publicRegisterLine2": "WELSH - We'll show all the other information you provide on this screen on the public register.",
+                "selectTitleOption": "WELSH - Select a title",
                 "titles": {
                     "dr": "WELSH - DR",
                     "doctor": "WELSH - DOCTOR",

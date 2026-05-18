@@ -63,7 +63,7 @@
                 {% endfor %}
                 {% set isOtherTitle = titleValue and not found %}
 
-                {% set titleItems = [ { value: "", text: "Select a title", selected: (not titleValue) } ] %}
+                {% set titleItems = [ { value: "", text: i18n.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.selectTitleOption, selected: (not titleValue) } ] %}
                 {% for key,label in titles %}
                     {% if label != titles.other %}
                         {% set titleItems = (titleItems.push({ value: label, text: label, selected: (titleValue == label) }), titleItems) %}
