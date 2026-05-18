@@ -37,7 +37,6 @@ class PersonWithSignificantControlService {
 
     try {
       this.handleIndividualPersonTitle(data);
-      console.log("Data sent to gateway: ", data);
 
       const personWithSignificantControlId =
         await this.personWithSignificantControlGateway.createPersonWithSignificantControl(opt, transactionId, data);
