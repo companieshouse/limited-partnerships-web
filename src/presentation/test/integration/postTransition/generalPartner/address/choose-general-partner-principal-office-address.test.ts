@@ -5,6 +5,7 @@ import enGeneralTranslationText from "../../../../../../../locales/en/translatio
 import cyGeneralTranslationText from "../../../../../../../locales/cy/translations.json";
 import enAddressTranslationText from "../../../../../../../locales/en/address.json";
 import cyAddressTranslationText from "../../../../../../../locales/cy/address.json";
+import enErrorsTranslationText from "../../../../../../../locales/en/errors.json";
 
 import app from "../../../app";
 import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
@@ -144,6 +145,19 @@ describe("Choose principal office address of the general partner page", () => {
       expect(cache?.[`${APPLICATION_CACHE_KEY}`]).not.toHaveProperty(
         `${APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION}${AddressPageType.chooseGeneralPartnerPrincipalOfficeAddress}`
       );
+    });
+
+    it("should trigger GDS validation error when no address is selected", async () => {
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: AddressPageType.chooseGeneralPartnerPrincipalOfficeAddress
+        });
+
+      const errorMessage = enErrorsTranslationText.errorMessages.address.chooseAddress.selectionRequired;
+
+      expect(res.status).toBe(200);
+      expect(countOccurrences(res.text, errorMessage)).toBe(2);
     });
   });
 });
