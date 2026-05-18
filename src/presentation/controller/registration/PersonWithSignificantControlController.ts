@@ -21,8 +21,6 @@ import {
 } from "./url";
 import { CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL, CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL } from "../addressLookUp/url/registration";
 import { PageRouting } from "../PageRouting";
-import PageType from "../PageType";
-
 class PersonWithSignificantControlRegistrationController extends AbstractController {
   constructor(
     protected readonly limitedPartnershipService: LimitedPartnershipService,
@@ -218,8 +216,6 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
         const { ids, pageType, tokens } = super.extract(request);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
-        this.handleIndividualPersonTitle(pageType, request, response);
-
         const result = await this.personWithSignificantControlService.createPersonWithSignificantControl(
           tokens,
           ids.transactionId,
@@ -265,8 +261,6 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
         const { ids, pageType, tokens } = super.extract(request);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
-        this.handleIndividualPersonTitle(pageType, request, response);
-
         const result = await this.personWithSignificantControlService.sendPageData(
           tokens,
           ids.transactionId,
@@ -298,15 +292,6 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
         next(error);
       }
     };
-  }
-
-  private handleIndividualPersonTitle(pageType: PageType, request: Request, response: Response) {
-    if (pageType === RegistrationPageType.addPersonWithSignificantControlIndividualPerson) {
-      // If the user selected "OTHER" for title (or welsh Other) and provided an other value, use that as the title
-      if (request.body.title === response.locals.i18n.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.titles.other) {
-        request.body.title = (request.body.title_other || "").trim();
-      }
-    }
   }
 
   postRemovePage() {

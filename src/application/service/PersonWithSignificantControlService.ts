@@ -6,7 +6,6 @@ import { extractAPIErrors, incompletePersonWithSignificantControlErrorList } fro
 import UIErrors from "../../domain/entities/UIErrors";
 import IPersonWithSignificantControlGateway from "../../domain/IPersonWithSignificantControlGateway";
 import PersonWithSignificantControlValidator from "../../domain/validator/PersonWithSignificantControl";
-
 class PersonWithSignificantControlService {
   i18n: any;
 
@@ -37,6 +36,8 @@ class PersonWithSignificantControlService {
     }
 
     try {
+      this.handleIndividualPersonTitle(data);
+
       const personWithSignificantControlId =
         await this.personWithSignificantControlGateway.createPersonWithSignificantControl(opt, transactionId, data);
 
@@ -116,6 +117,8 @@ class PersonWithSignificantControlService {
     }
 
     try {
+      this.handleIndividualPersonTitle(data);
+
       await this.personWithSignificantControlGateway.sendPageData(
         opt,
         transactionId,
@@ -162,6 +165,13 @@ class PersonWithSignificantControlService {
       return {
         errors
       };
+    }
+  }
+
+  private handleIndividualPersonTitle(data: Record<string, any>) {
+    // If the user selected "OTHER" for title (or welsh Other) use other as the title
+    if (data.title && data.title === this.i18n.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.titles.other) {
+      data.title = (data.title_other || "").trim();
     }
   }
 }
