@@ -156,6 +156,13 @@ export const PERSON_WITH_SIGNIFICANT_CONTROL_PAGES: Set<PageType | PageDefault> 
   AddressPageType.confirmPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress
 ]);
 
+export const isConfirmLimitedPartnershipAddressPageType = (pageType: string): boolean => {
+  return [
+    AddressPageType.confirmRegisteredOfficeAddress,
+    AddressPageType.confirmPrincipalPlaceOfBusinessAddress
+  ].includes(pageType as AddressPageType);
+};
+
 export const isConfirmGeneralPartnerAddressPageType = (pageType: string): boolean => {
   return [
     AddressPageType.confirmGeneralPartnerUsualResidentialAddress,
@@ -180,6 +187,7 @@ export const isConfirmPersonWithSignificantControlAddressPageType = (pageType: s
 
 export const isConfirmAddressPageType = (pageType: string): boolean => {
   return (
+    isConfirmLimitedPartnershipAddressPageType(pageType) ||
     isConfirmGeneralPartnerAddressPageType(pageType) ||
     isConfirmLimitedPartnerAddressPageType(pageType) ||
     isConfirmPersonWithSignificantControlAddressPageType(pageType)
