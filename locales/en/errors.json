@@ -11,6 +11,10 @@
         },
 
         "address": {
+            "chooseAddress": {
+                "selectionRequired": "Select an address from the list"
+            },
+            
             "confirm": {
                 "countryMissing": "We cannot identify the country for this address. Select Change, then select the country."
             },
@@ -77,6 +81,9 @@
                 "nameRequired": "Enter the partnership name",
                 "nameEndingRequired": "Select the name ending to go on the public record"
             },
+            "jurisdiction": {
+                "required": "Select the jurisdiction"
+            },
             "term": {
                 "termRequired": "Select the term of the partnership"
             }
@@ -91,6 +98,39 @@
                 "legalFormInvalid": "Legal form or corporate identity must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
 
                 "governingLawMissing": "Enter the governing law"
+            },
+            "addIndividualPerson": {
+                "consentCheckedMissing": "Confirm that this person knows their details are being supplied as part of this application",
+                "titleInvalid": "Title must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "titleTooLong": "Title must be 50 characters or less",
+
+                "firstNameMissing": "Enter their first name",
+                "firstNameInvalid": "First name must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "firstNameTooLong": "First name must be 50 characters or less",
+
+                "middleNamesInvalid": "Middle names must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "middleNamesTooLong": "Middle names must be 50 characters or less",
+
+                "lastNameMissing": "Enter their last name",
+                "lastNameInvalid": "Last name must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "lastNameTooLong": "Last name must be 160 characters or less",
+
+                "dateOfBirthMissing": "Enter their date of birth",
+                "dateOfBirthDayMissing": "Date of birth must include a day",
+                "dateOfBirthMonthMissing": "Date of birth must include a month",
+                "dateOfBirthYearMissing": "Date of birth must include a year",
+                "dateOfBirthDayAndMonthMissing": "Date of birth must include a day and a month",
+                "dateOfBirthMonthAndYearMissing": "Date of birth must include a month and a year",
+                "dateOfBirthDayAndYearMissing": "Date of birth must include a day and a year",
+                "dateOfBirthInvalidChars": "Date of birth must only include numbers",
+                "dateOfBirthInvalidDate": "Date of birth must be a real date",
+                "dateOfBirthNotInPast": "Date of birth must be in the past",
+                "dateOfBirthDayInvalidLength": "Day must be 1 or 2 numbers",
+                "dateOfBirthMonthInvalidLength": "Month must be 1 or 2 numbers",
+                "dateOfBirthYearInvalidLength": "Year must be 4 numbers",
+                
+                "nationality1Missing": "Select their nationality",
+                "nationality2Same": "Second nationality must be different from the first"
             }
         },
 

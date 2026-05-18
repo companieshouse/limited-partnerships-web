@@ -126,6 +126,11 @@ export const GENERAL_PARTNER_PAGES: Set<PageType | PageDefault> = new Set([
   AddressPageType.enterGeneralPartnerUsualResidentialAddress,
   AddressPageType.enterGeneralPartnerCorrespondenceAddress,
   AddressPageType.enterGeneralPartnerPrincipalOfficeAddress,
+
+  AddressPageType.chooseGeneralPartnerUsualResidentialAddress,
+  AddressPageType.chooseGeneralPartnerPrincipalOfficeAddress,
+  AddressPageType.chooseGeneralPartnerCorrespondenceAddress,
+
   AddressPageType.confirmGeneralPartnerUsualResidentialAddress,
   AddressPageType.confirmGeneralPartnerPrincipalOfficeAddress,
   AddressPageType.confirmGeneralPartnerCorrespondenceAddress
@@ -138,6 +143,8 @@ export const LIMITED_PARTNER_PAGES: Set<PageType | PageDefault> = new Set([
   AddressPageType.postcodeLimitedPartnerPrincipalOfficeAddress,
   AddressPageType.enterLimitedPartnerUsualResidentialAddress,
   AddressPageType.enterLimitedPartnerPrincipalOfficeAddress,
+  AddressPageType.chooseLimitedPartnerUsualResidentialAddress,
+  AddressPageType.chooseLimitedPartnerPrincipalOfficeAddress,
   AddressPageType.confirmLimitedPartnerUsualResidentialAddress,
   AddressPageType.confirmLimitedPartnerPrincipalOfficeAddress
 ]);
@@ -146,16 +153,19 @@ export const PERSON_WITH_SIGNIFICANT_CONTROL_PAGES: Set<PageType | PageDefault> 
   AddressPageType.territoryChoicePersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
   AddressPageType.postcodePersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
   AddressPageType.enterPersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
+  AddressPageType.choosePersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
   AddressPageType.confirmPersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
 
   AddressPageType.territoryChoicePersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress,
   AddressPageType.postcodePersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress,
   AddressPageType.enterPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress,
+  AddressPageType.choosePersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress,
   AddressPageType.confirmPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress,
 
   AddressPageType.territoryChoicePersonWithSignificantControlIndividualPersonUsualResidentialAddress,
   AddressPageType.postcodePersonWithSignificantControlIndividualPersonUsualResidentialAddress,
   AddressPageType.enterPersonWithSignificantControlIndividualPersonUsualResidentialAddress,
+  AddressPageType.choosePersonWithSignificantControlIndividualPersonUsualResidentialAddress,
   AddressPageType.confirmPersonWithSignificantControlIndividualPersonUsualResidentialAddress
 ]);
 

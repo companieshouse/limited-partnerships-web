@@ -4,10 +4,11 @@ import enGeneralTranslationText from "../../../../../../../locales/en/translatio
 import cyGeneralTranslationText from "../../../../../../../locales/cy/translations.json";
 import enAddressTranslationText from "../../../../../../../locales/en/address.json";
 import cyAddressTranslationText from "../../../../../../../locales/cy/address.json";
+import enErrorsTranslationText from "../../../../../../../locales/en/errors.json";
 
 import app from "../../../app";
 import { appDevDependencies } from "config/dev-dependencies";
-import { createPersonWithSignificantControl, getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
+import { createPersonWithSignificantControl, getUrl, setLocalesEnabled, testTranslations, countOccurrences } from "../../../../utils";
 import * as config from "../../../../../../config";
 
 import {
@@ -178,6 +179,33 @@ describe("Choose principal office address of the person with significant control
             }
           }
         });
+      }
+    );
+    it.each([
+      [
+        "RLE",
+        URL_RELEVANT_LEGAL_ENTITY,
+        AddressPageType.choosePersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
+      ],
+      [
+        "ORP",
+        URL_OTHER_REGISTRABLE_PERSON,
+        AddressPageType.choosePersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress,
+      ]
+
+    ])(
+      "should trigger GDS validation error when no address is selected for %s",
+      async (_description: string, URL: string, addressPageType: string) => {
+        const res = await request(app)
+          .post(URL)
+          .send({
+            pageType: addressPageType
+          });
+
+        const errorMessage = enErrorsTranslationText.errorMessages.address.chooseAddress.selectionRequired;
+
+        expect(res.status).toBe(200);
+        expect(countOccurrences(res.text, errorMessage)).toBe(2);
       }
     );
   });

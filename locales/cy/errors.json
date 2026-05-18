@@ -11,6 +11,10 @@
         },
 
         "address": {
+            "chooseAddress": {
+                "selectionRequired": "WELSH - Select an address from the list"
+            },
+            
             "confirm": {
                 "countryMissing": "WELSH - We cannot identify the country for this address. Select Change, then select the country."
             },
@@ -78,6 +82,9 @@
                 "nameRequired": "WELSH - Enter the partnership name",
                 "nameEndingRequired": "WELSH - Select the name ending to go on the public record"
             },
+            "jurisdiction": {
+                "required": "WELSH - Select the jurisdiction"
+            },
             "term": {
                 "termRequired": "WELSH - Select the term of the partnership"
             }
@@ -92,6 +99,39 @@
                 "legalFormInvalid": "WELSH - Legal form or corporate identity must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
 
                 "governingLawMissing": "WELSH - Enter the governing law"
+            },
+            "addIndividualPerson": {
+                "consentCheckedMissing": "WELSH - Confirm that this person knows their details are being supplied as part of this application",
+                "titleInvalid": "WELSH - Title must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "titleTooLong": "WELSH - Title must be 50 characters or less",
+
+                "firstNameMissing": "WELSH - Enter their first name",
+                "firstNameInvalid": "WELSH - First name must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "firstNameTooLong": "WELSH - First name must be 50 characters or less",
+
+                "middleNamesInvalid": "WELSH - Middle names must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "middleNamesTooLong": "WELSH - Middle names must be 50 characters or less",
+
+                "lastNameMissing": "WELSH - Enter their last name",
+                "lastNameInvalid": "WELSH - Last name must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "lastNameTooLong": "WELSH - Last name must be 160 characters or less",
+
+                "dateOfBirthMissing": "WELSH - Enter their date of birth",
+                "dateOfBirthDayMissing": "WELSH - Date of birth must include a day",
+                "dateOfBirthMonthMissing": "WELSH - Date of birth must include a month",
+                "dateOfBirthYearMissing": "WELSH - Date of birth must include a year",
+                "dateOfBirthDayAndMonthMissing": "WELSH - Date of birth must include a day and a month",
+                "dateOfBirthMonthAndYearMissing": "WELSH - Date of birth must include a month and a year",
+                "dateOfBirthDayAndYearMissing": "WELSH - Date of birth must include a day and a year",
+                "dateOfBirthInvalidChars": "WELSH - Date of birth must only include numbers",
+                "dateOfBirthInvalidDate": "WELSH - Date of birth must be a real date",
+                "dateOfBirthNotInPast": "WELSH - Date of birth must be in the past",
+                "dateOfBirthDayInvalidLength": "WELSH - Day must be 1 or 2 numbers",
+                "dateOfBirthMonthInvalidLength": "WELSH - Month must be 1 or 2 numbers",
+                "dateOfBirthYearInvalidLength": "WELSH - Year must be 4 numbers",
+                
+                "nationality1Missing": "WELSH - Select their nationality",
+                "nationality2Same": "WELSH - Second nationality must be different from the first"
             }
         },
 

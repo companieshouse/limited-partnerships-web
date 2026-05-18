@@ -5,6 +5,7 @@ import enGeneralTranslationText from "../../../../../../../locales/en/translatio
 import cyGeneralTranslationText from "../../../../../../../locales/cy/translations.json";
 import enAddressTranslationText from "../../../../../../../locales/en/address.json";
 import cyAddressTranslationText from "../../../../../../../locales/cy/address.json";
+import enErrorsTranslationText from "../../../../../../../locales/en/errors.json";
 
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
@@ -156,6 +157,19 @@ describe("Choose usual residential address of the general partner page", () => {
       expect(cache?.[`${config.APPLICATION_CACHE_KEY}`]).not.toHaveProperty(
         `${config.APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION}${AddressPageType.chooseGeneralPartnerUsualResidentialAddress}`
       );
+    });
+
+    it("should trigger GDS validation error when no address is selected", async () => {
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: AddressPageType.chooseGeneralPartnerUsualResidentialAddress
+        });
+
+      const errorMessage = enErrorsTranslationText.errorMessages.address.chooseAddress.selectionRequired;
+
+      expect(res.status).toBe(200);
+      expect(countOccurrences(res.text, errorMessage)).toBe(2);
     });
   });
 });
