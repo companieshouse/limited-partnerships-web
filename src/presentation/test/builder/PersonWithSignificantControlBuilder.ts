@@ -5,6 +5,7 @@ import TransactionPersonWithSignificantControl from "../../../domain/entities/Tr
 export const personWithSignificantControlIndividualPerson = {
   consent_checked: true,
   title: "MR",
+  title_other: "",
   forename: "John",
   middle_names: "Michael",
   surname: "Smith",
@@ -75,6 +76,11 @@ class PersonWithSignificantControlBuilder {
 
   withTitle(title: string) {
     this.data.title = title;
+    return this;
+  }
+
+  withTitleOther(titleOther: string) {
+    this.data.title_other = titleOther;
     return this;
   }
 

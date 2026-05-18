@@ -191,6 +191,32 @@ describe("Add Person With Significant Control Individual Person Page", () => {
       expect(res.text).toContain("Primary nationality is required");
       expect(res.text).toContain("Secondary nationality must be different");
     });
+
+    it("should set title value to be value of the other title value", async () => {
+      const personWithSignificantControl = new PersonWithSignificantControlBuilder()
+        .isIndividualPerson()
+        .withTitle("OTHER")
+        .withTitleOther("Custom Title")
+        .build();
+
+      expect(appDevDependencies.personWithSignificantControlGateway.personsWithSignificantControl).toHaveLength(0);
+
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: RegistrationPageType.addPersonWithSignificantControlIndividualPerson,
+          type: PersonWithSignificantControlType.INDIVIDUAL_PERSON,
+          ...personWithSignificantControl.data
+        });
+
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+
+      expect(appDevDependencies.personWithSignificantControlGateway.personsWithSignificantControl).toHaveLength(1);
+      expect(appDevDependencies.personWithSignificantControlGateway.personsWithSignificantControl[0].data.title).toEqual(
+        "Custom Title"
+      );
+    });
   });
 
   describe("Patch Add Individual Person Page", () => {
