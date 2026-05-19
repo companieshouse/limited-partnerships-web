@@ -1,0 +1,35 @@
+{% extends "layout.njk" %}
+
+{% set pageTitle = i18n.address.confirm.personWithSignificantControlUsualResidentialAddress.title %}
+{% set publicRegisterInformationLine1 = i18n.address.confirm.personWithSignificantControlUsualResidentialAddress.publicRegisterLine1 %}
+{% set publicRegisterInformationLine2 = i18n.address.confirm.personWithSignificantControlUsualResidentialAddress.publicRegisterLine2 %}
+{% set cacheKey = props.data.addressCacheKey %}
+{% set data = props.data.personWithSignificantControl.data.usual_residential_address %}
+
+{% block backLink %}
+  {% set hrefValue = props.previousUrl %}
+
+  {% if props.data.cache.ura_territory_choice == "overseas" %}
+    {% set hrefValue = props.currentUrl | replace(props.pageType, props.data.enterManualAddressPageType) %}
+  {% endif %}
+
+  {{ govukBackLink({
+    text: i18n.links.back,
+    attributes: {
+      "data-event-id": "back-link"
+    },
+    href: hrefValue
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {% include "includes/errors.njk" %}
+      
+      {% include "pages/personWithSignificantControl/person-with-significant-control-name.njk" %}
+
+      {% include "pages/address/confirm-address-form.njk" %}
+    </div>
+  </div>
+{% endblock %}

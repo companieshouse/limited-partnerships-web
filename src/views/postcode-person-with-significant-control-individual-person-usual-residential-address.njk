@@ -1,0 +1,26 @@
+{% extends "layout.njk" %}
+
+{% set pageTitle = i18n.address.findPostcode.personWithSignificantControl.usualResidentialAddress.whatIsUsualResidentialAddress %}
+{% set publicRegisterInformationLine1 = i18n.address.findPostcode.personWithSignificantControl.usualResidentialAddress.publicRegisterLine1 %}
+{% set publicRegisterInformationLine2 = i18n.address.findPostcode.personWithSignificantControl.usualResidentialAddress.publicRegisterLine2 %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {% include "includes/errors.njk" %}
+
+      <div>
+        {% include "pages/personWithSignificantControl/person-with-significant-control-name.njk" %}
+
+        <h1 class="govuk-heading-xl govuk-!-margin-bottom-1">{{ i18n.address.findPostcode.personWithSignificantControl.usualResidentialAddress.whatIsUsualResidentialAddress }}</h1>
+        <p class="govuk-hint">{{ i18n.address.findPostcode.personWithSignificantControl.usualResidentialAddress.hint }}</p>
+      </div>
+
+      {% include "pages/address/postcode-form.njk" %}
+
+    <div>
+      {% include "includes/public-register-information.njk" %}
+    </div>
+  </div>
+
+{% endblock %}
