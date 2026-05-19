@@ -10,6 +10,11 @@
             "currencyRequired": "WELSH - Select the currency of the capital contribution"
         },
 
+        "choosePartnerType":{
+            "generalPartner": "WELSH - Select whether the general partner is a person or legal entity",
+            "limitedPartner": "WELSH - Select whether the limited partner is a person or legal entity"
+        },
+
         "address": {
             "chooseAddress": {
                 "selectionRequired": "WELSH - Select an address from the list"

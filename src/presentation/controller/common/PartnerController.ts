@@ -139,6 +139,10 @@ abstract class PartnerController extends AbstractController {
       try {
         const { ids } = this.extractRequestData(request);
 
+        if (!request.body.parameter) {
+          return this.renderPartnerChoicePageWithError(request, response);
+        }
+
         let url = request.body.parameter === "person" ? urls.addPersonUrl : urls.addLegalEntityUrl;
 
         url = super.insertIdsInUrl(url, ids, request.url);
@@ -770,6 +774,28 @@ abstract class PartnerController extends AbstractController {
         url: pageRouting.currentUrl
       };
     }
+  }
+  protected async renderPartnerChoicePageWithError(request: Request, response: Response) {
+
+    const { ids, pageRouting, tokens, pageType } = this.extractRequestData(request);
+    const { limitedPartnership, generalPartner, limitedPartner } = await this.getEntities(tokens, ids);
+
+    const journeyPageType = this.getJourneyPageTypes(request.url);
+
+    let errorMessage = "";
+    if (pageType === journeyPageType.generalPartnerType) {
+      errorMessage = response.locals.i18n.errorMessages.choosePartnerType.generalPartner;
+    } else if (pageType === journeyPageType.limitedPartnerType) {
+      errorMessage = response.locals.i18n.errorMessages.choosePartnerType.limitedPartner;
+    }
+
+    const uiErrors = new UIErrors().setWebError("parameter", errorMessage);
+
+    return response.render(
+      super.templateName(pageRouting.currentUrl),
+      super.makeProps(pageRouting, { limitedPartnership, generalPartner, limitedPartner }, uiErrors)
+    );
+
   }
 }
 
