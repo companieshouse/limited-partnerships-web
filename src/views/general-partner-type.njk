@@ -3,16 +3,18 @@
 {% set pageTitle = i18n.generalPartnerChoicePage.title  %}
 
 {% block content %}
+
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <form class="form" method="post">
         <input type="hidden" name="pageType" value={{ props.pageType }}>
         {% include "includes/csrf_token.njk" %}
+
+        {% include "includes/errors.njk" %}
         
         {% include "includes/proposed-name.njk" %}
-
+        
         {{ govukRadios({
-          classes: "govuk-radios",
           name: "parameter",
           value: data['generalPartner'],
           fieldset: {
@@ -26,24 +28,18 @@
             text: i18n.generalPartnerChoicePage.hint
           } if not journeyTypes.isPostTransition,
 
+          errorMessage:{
+            text: props.errors.parameter.text
+          } if props.errors.parameter,
+
           items: [
             {
               value: "person",
-              text: i18n.generalPartnerChoicePage.person,
-              id: "person",
-              name: "person",
-              attributes: {
-                required: true
-              }
+              text: i18n.generalPartnerChoicePage.person
             },
             {
               value: "legalEntity",
-              text: i18n.generalPartnerChoicePage.legalEntity,
-              id: "legal_entity",
-              name: "legal_entity",
-              attributes: {
-                required: true
-              }
+              text: i18n.generalPartnerChoicePage.legalEntity
             }
           ]
         }) }}

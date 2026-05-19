@@ -10,6 +10,11 @@
             "currencyRequired": "Select the currency of the capital contribution"
         },
 
+        "choosePartnerType":{
+            "generalPartner": "Select whether the general partner is a person or legal entity",
+            "limitedPartner": "Select whether the limited partner is a person or legal entity"
+        },
+
         "address": {
             "chooseAddress": {
                 "selectionRequired": "Select an address from the list"

@@ -1,6 +1,9 @@
 import request from "supertest";
 import enTranslationText from "../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../locales/cy/translations.json";
+import enErrorsTranslationText from "../../../../../../locales/en/errors.json";
+import cyErrorsTranslationText from "../../../../../../locales/cy/errors.json";
+
 import app from "../../app";
 import {
   ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
@@ -77,5 +80,20 @@ describe("Limited Partner Choice Page", () => {
     expect(res.text).toContain(
       `${companyProfile.data.companyName.toUpperCase()} (${companyProfile.data.companyNumber.toUpperCase()})`
     );
+  });
+
+  it.each([
+    ["en", enErrorsTranslationText],
+    ["cy", cyErrorsTranslationText]
+  ])("%s: should trigger GDS validation error when no option is selected", async (lang, errors) => {
+    setLocalesEnabled(true);
+    const res = await request(app).post(URL + `?lang=${lang}`).send({
+      pageType: PostTransitionPageType.limitedPartnerType
+    });
+
+    const errorMessage = errors.errorMessages.choosePartnerType.limitedPartner;
+
+    expect(res.status).toBe(200);
+    expect(countOccurrences(res.text, errorMessage)).toBe(2);
   });
 });
