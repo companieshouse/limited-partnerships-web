@@ -60,7 +60,7 @@ describe("General Partner Correspondence Address Territory Choice", () => {
     });
   });
 
-  describe("Post general partner correspondance address territory choice page", () => {
+  describe("Post general partner correspondence address territory choice page", () => {
     it.each([
       ["United Kingdom", "unitedKingdom", POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL],
       ["Overseas", "overseas", ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL]

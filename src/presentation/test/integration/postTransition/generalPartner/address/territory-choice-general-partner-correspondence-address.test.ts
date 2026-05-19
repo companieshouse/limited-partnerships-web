@@ -40,7 +40,7 @@ describe("General Partner Correspondence Address Territory Choice", () => {
     appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
   });
 
-  describe("Get general partner correspondance address territory choice page", () => {
+  describe("Get general partner correspondence address territory choice page", () => {
     it.each([
       ["en", PartnerKind.ADD_GENERAL_PARTNER_PERSON, enTranslationText],
       ["en", PartnerKind.UPDATE_GENERAL_PARTNER_PERSON, enTranslationText],
@@ -78,8 +78,8 @@ describe("General Partner Correspondence Address Territory Choice", () => {
     );
   });
 
-  describe("Post general partner correspondance address territory choice page", () => {
-    it("should redirect to What is the general partner's correspondance address? post code look up page when united kingdom is selected", async () => {
+  describe("Post general partner correspondence address territory choice page", () => {
+    it("should redirect to What is the general partner's correspondence address? post code look up page when united kingdom is selected", async () => {
       const UNITED_KINGDOM_PARAMETER = "unitedKingdom";
       const POSTCODE_URL = getUrl(POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL);
 
@@ -99,7 +99,7 @@ describe("General Partner Correspondence Address Territory Choice", () => {
       });
     });
 
-    it("should redirect to What is the general partner's correspondance address? manual entry page when overseas is selected", async () => {
+    it("should redirect to What is the general partner's correspondence address? manual entry page when overseas is selected", async () => {
       const OVERSEAS_PARAMETER = "overseas";
       const MANUAL_ENTRY_URL = getUrl(ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL);
 

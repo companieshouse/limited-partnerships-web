@@ -64,6 +64,7 @@ describe("Enter Limited Partner Usual Residential Address Page", () => {
         "postcodeMissing",
         "postcodeOptional",
         "generalPartner",
+        "personWithSignificantControl",
         "principalOfficeAddress",
         "errorMessages",
         // uk countries
@@ -103,6 +104,7 @@ describe("Enter Limited Partner Usual Residential Address Page", () => {
         "postcodeMissing",
         "postcode",
         "generalPartner",
+        "personWithSignificantControl",
         "principalOfficeAddress",
         "errorMessages",
         // uk countries
