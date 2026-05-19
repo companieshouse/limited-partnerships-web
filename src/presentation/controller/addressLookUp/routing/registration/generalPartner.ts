@@ -90,7 +90,7 @@ const correspondenceAddressCacheKeys = {
   [AddressCacheKeys.territoryCacheKey]: "sa_territory_choice"
 };
 
-const registrationAddressRoutingTerritoryChoiceGeneralPartnerCorrespondanceAddress = {
+const registrationAddressRoutingTerritoryChoiceGeneralPartnerCorrespondenceAddress = {
   previousUrl: url.CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   currentUrl: url.TERRITORY_CHOICE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   nextUrl: url.POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
@@ -147,7 +147,7 @@ const registrationAddressRoutingConfirmGeneralPartnerCorrespondenceAddress = {
 };
 
 const correspondenceAddress = [
-  registrationAddressRoutingTerritoryChoiceGeneralPartnerCorrespondanceAddress,
+  registrationAddressRoutingTerritoryChoiceGeneralPartnerCorrespondenceAddress,
   registrationAddressRoutingPostcodeGeneralPartnerCorrespondenceAddress,
   registrationAddressRoutingChooseGeneralPartnerCorrespondenceAddress,
   registrationAddressRoutingEnterGeneralPartnerCorrespondenceAddress,
