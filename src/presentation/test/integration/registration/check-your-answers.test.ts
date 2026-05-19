@@ -560,21 +560,29 @@ describe("Check Your Answers Page", () => {
       expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.psc.changeRemoveOrAdd);
     });
 
-    it("should render the Individual Person PSC correctly", async () => {
-      const psc = new PersonWithSignificantControlBuilder().isIndividualPerson().build();
-      appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([psc]);
+    it.each([
+      ["English", "en", enTranslationText],
+      ["Welsh", "cy", cyTranslationText]
+    ])(
+      "should render the Individual Person PSC correctly in %s",
+      async (_description: string, lang: string, translationText: Record<string, any>) => {
+        setLocalesEnabled(true);
 
-      const res = await request(app).get(URL);
+        const psc = new PersonWithSignificantControlBuilder().isIndividualPerson().build();
+        appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([psc]);
 
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(psc.data?.title);
-      expect(res.text).toContain(psc.data?.forename);
-      expect(res.text).toContain(psc.data?.middle_names);
-      expect(res.text).toContain(psc.data?.surname);
-      expect(res.text).toContain(formatDate(psc.data?.date_of_birth as string, enTranslationText));
-      expect(res.text).toContain(psc.data?.nationality1);
-      expect(res.text).toContain(psc.data?.nationality2);
-    });
+        const res = await request(app).get(URL + `?lang=${lang}`);
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(psc.data?.title);
+        expect(res.text).toContain(psc.data?.forename);
+        expect(res.text).toContain(psc.data?.middle_names);
+        expect(res.text).toContain(psc.data?.surname);
+        expect(res.text).toContain(formatDate(psc.data?.date_of_birth as string, translationText));
+        expect(res.text).toContain(psc.data?.nationality1);
+        expect(res.text).toContain(psc.data?.nationality2);
+      }
+    );
 
     it("should render the PSCs in the correct order", async () => {
       const rle = new PersonWithSignificantControlBuilder().withId("rle-id").isRelevantLegalEntity().build();
