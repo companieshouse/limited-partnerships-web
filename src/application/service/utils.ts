@@ -36,14 +36,16 @@ export const incompletePersonWithSignificantControlErrorList = (
   i18n: Record<string, any>
 ): Record<string, string> => {
   let errorList = {};
+  const beforeName = i18n?.personWithSignificantControl?.reviewPage?.errorMessage?.beforeName ?? "";
+  const afterName = i18n?.personWithSignificantControl?.reviewPage?.errorMessage?.afterName ?? "";
 
-  personsWithSignificantControl
+  (personsWithSignificantControl || [])
     .filter((psc) => psc?.data?.completed === false)
     .forEach((psc) => {
       const name = psc.data?.forename ? `${psc.data.forename} ${psc.data.surname}` : psc.data?.legal_entity_name ?? "";
       errorList = {
         ...errorList,
-        [name.toLowerCase()]: `${i18n.personWithSignificantControl.reviewPage.errorMessage.beforeName} ${name} ${i18n.personWithSignificantControl.reviewPage.errorMessage.afterName}`
+        [name.toLowerCase()]: `${beforeName} ${name} ${afterName}`.trim()
       };
     });
   return errorList;

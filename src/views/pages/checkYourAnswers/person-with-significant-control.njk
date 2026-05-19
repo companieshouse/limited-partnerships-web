@@ -1,6 +1,16 @@
 {% set isRle = item.data.type === "RELEVANT_LEGAL_ENTITY" %}
+{% set isOrp = item.data.type === "OTHER_REGISTRABLE_PERSON" %}
+{% set isIp = item.data.type === "INDIVIDUAL_PERSON" %}
+
 {% if isRle and item.data.legal_entity_registration_location %}
   {% set country = i18n.countries[macros.makeCamelCase(item.data.legal_entity_registration_location)] %}
+{% endif %}
+
+{% if isIp %}
+  {% set nationalities = macros.formatNationality(item.data.nationality1, i18n) %}
+  {% if item.data.nationality2 %}
+    {% set nationalities = macros.formatNationality(item.data.nationality1, i18n) + ", " + macros.formatNationality(item.data.nationality2, i18n) %}
+  {% endif %}
 {% endif %}
 
 {{ govukSummaryList({
@@ -8,12 +18,53 @@
   rows: [
     {
       key: {
+        text: i18n.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.personTitle
+      },
+      value: {
+        text: item.data.title
+      }
+    } if isIp and item.data.title,
+    {
+      key: {
+        text: i18n.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.firstName
+      },
+      value: {
+        text: item.data.forename
+      }
+    } if isIp,
+    {
+      key: {
+        text: i18n.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.middleNames
+      },
+      value: {
+        text: item.data.middle_names
+      }
+    } if isIp and item.data.middle_names,
+    {
+      key: {
+        text: i18n.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.lastName
+      },
+      value: {
+        text: item.data.surname
+      }
+    } if isIp,
+    SET_DATE_OF_BIRTH_SECTION(item, i18n) if isIp,
+     {
+      key: {
+        text: i18n.checkYourAnswersPage.partners.person.nationality
+      },
+      value: {
+        text: nationalities
+      }
+    } if isIp,
+    {
+      key: {
         text: i18n.checkYourAnswersPage.partners.legalEntity.name
       },
       value: {
         text: item.data.legal_entity_name
       }
-    },
+    } if isRle or isOrp,
     {
       key: {
         text: i18n.checkYourAnswersPage.partners.legalEntity.legalForm
@@ -21,7 +72,7 @@
       value: {
         text: item.data.legal_form
       }
-    },
+    } if isRle or isOrp,
     {
       key: {
         text: i18n.checkYourAnswersPage.partners.legalEntity.governingLaw
@@ -29,7 +80,7 @@
       value: {
         text: item.data.governing_law
       }
-    },
+    } if isRle or isOrp,
     {
       key: {
         text: i18n.checkYourAnswersPage.partners.legalEntity.register
@@ -56,11 +107,28 @@
     } if isRle,
     {
       key: {
+        text: i18n.checkYourAnswersPage.partners.person.usualResidentialAddress
+      },
+      value: {
+        text: macros.formatAddress(item.data.usual_residential_address, true, i18n)
+      }
+    } if isIp and item.data.usual_residential_address,
+    {
+      key: {
+        text: i18n.checkYourAnswersPage.partners.person.correspondenceAddress
+      },
+      value: {
+        text: macros.formatAddress(item.data.service_address, true, i18n)
+      }
+    } if isIp and item.data.service_address,
+    {
+      key: {
         text: i18n.checkYourAnswersPage.partners.legalEntity.principalOfficeAddress
       },
       value: {
         text: macros.formatAddress(item.data.principal_office_address, true, i18n)
       }
-    }
+    } if isRle or isOrp
+
   ]
 }) }}
