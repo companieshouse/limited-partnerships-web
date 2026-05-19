@@ -1,6 +1,8 @@
 import request from "supertest";
 import enTranslationText from "../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../locales/cy/translations.json";
+import enErrorsTranslationText from "../../../../../../locales/en/errors.json";
+
 import app from "../../app";
 import {
   ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
@@ -75,5 +77,16 @@ describe("General Partner Choice Page", () => {
     expect(res.text).toContain(
       `${companyProfile.data.companyName.toUpperCase()} (${companyProfile.data.companyNumber.toUpperCase()})`
     );
+  });
+
+  it("should trigger GDS validation error when no option is selected", async () => {
+    const res = await request(app).post(URL).send({
+      pageType: PostTransitionPageType.generalPartnerType
+    });
+
+    const errorMessage = enErrorsTranslationText.errorMessages.choosePartnerType.generalPartner;
+
+    expect(res.status).toBe(200);
+    expect(countOccurrences(res.text, errorMessage)).toBe(2);
   });
 });
