@@ -30,6 +30,11 @@
             "personWithSignificantControlPrincipalOfficeAddress": {
                 "title": "WELSH - Choose the PSC's principal office address",
                 "publicRegisterInformationLine1": "WELSH - We'll show the PSC's principal office address on the public register."
+            },
+            "personWithSignificantControlUsualResidentialAddress": {
+                "title": "WELSH - Choose the PSC's usual residential address",
+                "publicRegisterInformationLine1": "WELSH - We'll show the PSC's country/state of residence on the public register.",
+                "publicRegisterInformationLine2": "WELSH - We will not show the PSC's full usual residential address on the public register."
             }
         },
 
@@ -66,6 +71,11 @@
             "personWithSignificantControlPrincipalOfficeAddress": {
                 "title": "WELSH - Confirm the PSC's principal office address",
                 "publicRegisterLine1": "WELSH - We'll show the PSC's principal office address on the public register."
+            },
+            "personWithSignificantControlUsualResidentialAddress": {
+                "title": "WELSH - Confirm the PSC's usual residential address",
+                "publicRegisterLine1": "WELSH - We'll show the PSC's country/state of residence on the public register.",
+                "publicRegisterLine2": "WELSH - We will not show the PSC's full usual residential address on the public register."
             }
         },
 
@@ -118,6 +128,13 @@
                     "title": "WELSH - What is the PSC's principal office address?",
                     "hint": "WELSH - This is the address for the entity's main office.",
                     "publicInformationLine1": "WELSH - We'll show the PSC's principal office address on the public register.",
+                    "postcodeOptional": "WELSH - Postcode (optional)"
+                },
+                "usualResidentialAddress": {
+                    "title": "WELSH - What is the PSC's usual residential address?",
+                    "hint": "WELSH - This address cannot be a PO box, DX or LP (Legal Post in Scotland) number.",
+                    "publicRegisterLine1": "WELSH - We'll show the PSC's country/state of residence on the public register.",
+                    "publicRegisterLine2": "WELSH - We will not show the PSC's full usual residential address on the public register.",
                     "postcodeOptional": "WELSH - Postcode (optional)"
                 }
             },
@@ -186,6 +203,12 @@
                     "whatIsPrincipalOfficeAddress": "WELSH - Where is the PSC's principal office address?",
                     "hint": "WELSH - This is the address for the entity's main office.",
                     "publicRegisterLine1": "WELSH - We'll show the PSC's principal office address on the public register."
+                },
+                "usualResidentialAddress": {
+                    "whatIsUsualResidentialAddress": "WELSH - What is the PSC's usual residential address?",
+                    "hint": "WELSH - This address cannot be a PO box, DX or LP (Legal Post in Scotland) number.",
+                    "publicRegisterLine1": "WELSH - We'll show the PSC's country/state of residence on the public register.",
+                    "publicRegisterLine2": "WELSH - We will not show the PSC's full usual residential address on the public register."
                 }
             },
 
@@ -235,6 +258,12 @@
                 "title": "WELSH - Where is the PSC's principal office address?",
                 "titleHint": "WELSH - This is the address for the entity's main office.",
                 "publicRegisterInformationLine1": "WELSH - We'll show the PSC's principal office address on the public register."
+            },
+            "personWithSignificantControlUsualResidentialAddress": {
+                "title": "WELSH - Where is the PSC's usual residential address?",
+                "titleHint": "WELSH - This address cannot be a PO box, DX or LP (Legal Post in Scotland) number.",
+                "publicRegisterInformationLine1": "WELSH - We'll show the PSC's country/state of residence on the public register.",
+                "publicRegisterInformationLine2": "WELSH - We will not show the PSC's full usual residential address on the public register."
             }
         },
 

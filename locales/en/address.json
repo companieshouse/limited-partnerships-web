@@ -32,6 +32,11 @@
             "personWithSignificantControlPrincipalOfficeAddress": {
                 "title": "Choose the PSC's principal office address",
                 "publicRegisterInformationLine1": "We'll show the PSC's principal office address on the public register."
+            },
+            "personWithSignificantControlUsualResidentialAddress": {
+                "title": "Choose the PSC's usual residential address",
+                "publicRegisterInformationLine1": "We'll show the PSC's country/state of residence on the public register.",
+                "publicRegisterInformationLine2": "We will not show the PSC's full usual residential address on the public register."
             }
         },
 
@@ -68,6 +73,11 @@
             "personWithSignificantControlPrincipalOfficeAddress": {
                 "title": "Confirm the PSC's principal office address",
                 "publicRegisterLine1": "We'll show the PSC's principal office address on the public register."
+            },
+            "personWithSignificantControlUsualResidentialAddress": {
+                "title": "Confirm the PSC's usual residential address",
+                "publicRegisterLine1": "We'll show the PSC's country/state of residence on the public register.",
+                "publicRegisterLine2": "We will not show the PSC's full usual residential address on the public register."
             }
         },
 
@@ -119,6 +129,13 @@
                     "title": "What is the PSC's principal office address?",
                     "hint": "This is the address for the entity's main office.",
                     "publicInformationLine1": "We'll show the PSC's principal office address on the public register.",
+                    "postcodeOptional": "Postcode (optional)"
+                },
+                "usualResidentialAddress": {
+                    "title": "What is the PSC's usual residential address?",
+                    "hint": "This address cannot be a PO box, DX or LP (Legal Post in Scotland) number.",
+                    "publicRegisterLine1": "We'll show the PSC's country/state of residence on the public register.",
+                    "publicRegisterLine2": "We will not show the PSC's full usual residential address on the public register.",
                     "postcodeOptional": "Postcode (optional)"
                 }
             },
@@ -187,6 +204,12 @@
                     "whatIsPrincipalOfficeAddress": "Where is the PSC's principal office address?",
                     "hint": "This is the address for the entity's main office.",
                     "publicRegisterLine1": "We'll show the PSC's principal office address on the public register."
+                },
+                "usualResidentialAddress": {
+                    "whatIsUsualResidentialAddress": "What is the PSC's usual residential address?",
+                    "hint": "This address cannot be a PO box, DX or LP (Legal Post in Scotland) number.",
+                    "publicRegisterLine1": "We'll show the PSC's country/state of residence on the public register.",
+                    "publicRegisterLine2": "We will not show the PSC's full usual residential address on the public register."
                 }
             },
 
@@ -236,6 +259,12 @@
                 "title": "Where is the PSC's principal office address?",
                 "titleHint": "This is the address for the entity's main office.",
                 "publicRegisterInformationLine1": "We'll show the PSC's principal office address on the public register."
+            },
+            "personWithSignificantControlUsualResidentialAddress": {
+                "title": "Where is the PSC's usual residential address?",
+                "titleHint": "This address cannot be a PO box, DX or LP (Legal Post in Scotland) number.",
+                "publicRegisterInformationLine1": "We'll show the PSC's country/state of residence on the public register.",
+                "publicRegisterInformationLine2": "We will not show the PSC's full usual residential address on the public register."
             }
         },
 
