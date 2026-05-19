@@ -143,6 +143,73 @@ const registrationAddressRoutingConfirmPersonWithSignificantControlOtherRegistra
   }
 };
 
+// Individual person usual residential address
+
+const personWithSignificantControlUsualResidentialAddressCacheKeys = {
+  [AddressCacheKeys.addressCacheKey]: "usual_residential_address",
+  [AddressCacheKeys.territoryCacheKey]: "ura_territory_choice"
+};
+
+const registrationAddressRoutingTerritoryChoicePersonWithSignificantControlIndividualPersonUsualResidentialAddress = {
+  previousUrl: url.POSTCODE_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL,
+  currentUrl: url.TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL,
+  nextUrl: url.POSTCODE_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL,
+  pageType: AddressPageType.territoryChoicePersonWithSignificantControlIndividualPersonUsualResidentialAddress,
+  data: {
+    ...personWithSignificantControlUsualResidentialAddressCacheKeys,
+    nextUrlOverseas: url.ENTER_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL
+  }
+};
+
+const registrationAddressRoutingPostcodePersonWithSignificantControlIndividualPersonUsualResidentialAddress = {
+  previousUrl: url.TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL,
+  currentUrl: url.POSTCODE_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL,
+  nextUrl: url.CHOOSE_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL,
+  pageType: AddressPageType.postcodePersonWithSignificantControlIndividualPersonUsualResidentialAddress,
+  data: {
+    ...personWithSignificantControlUsualResidentialAddressCacheKeys,
+    enterManualAddressPageType:
+      AddressPageType.enterPersonWithSignificantControlIndividualPersonUsualResidentialAddress,
+    confirmAddressUrl: url.CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL
+  }
+};
+
+const registrationAddressRoutingChoosePersonWithSignificantControlIndividualPersonUsualResidentialAddress = {
+  previousUrl: url.POSTCODE_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL,
+  currentUrl: url.CHOOSE_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL,
+  nextUrl: url.CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL,
+  pageType: AddressPageType.choosePersonWithSignificantControlIndividualPersonUsualResidentialAddress,
+  data: {
+    ...personWithSignificantControlUsualResidentialAddressCacheKeys,
+    enterManualAddressPageType:
+      AddressPageType.enterPersonWithSignificantControlIndividualPersonUsualResidentialAddress
+  }
+};
+
+const registrationAddressRoutingEnterPersonWithSignificantControlIndividualPersonUsualResidentialAddress = {
+  previousUrl: url.POSTCODE_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL,
+  currentUrl: url.ENTER_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL,
+  nextUrl: url.CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL,
+  pageType: AddressPageType.enterPersonWithSignificantControlIndividualPersonUsualResidentialAddress,
+  data: {
+    ...personWithSignificantControlUsualResidentialAddressCacheKeys,
+    territoryPageType:
+      AddressPageType.territoryChoicePersonWithSignificantControlIndividualPersonUsualResidentialAddress
+  }
+};
+
+const registrationAddressRoutingConfirmPersonWithSignificantControlIndividualPersonUsualResidentialAddress = {
+  previousUrl: url.POSTCODE_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL,
+  currentUrl: url.CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL,
+  nextUrl: url.TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_CORRESPONDENCE_ADDRESS_URL,
+  pageType: AddressPageType.confirmPersonWithSignificantControlIndividualPersonUsualResidentialAddress,
+  data: {
+    ...personWithSignificantControlUsualResidentialAddressCacheKeys,
+    enterManualAddressPageType:
+      AddressPageType.enterPersonWithSignificantControlIndividualPersonUsualResidentialAddress
+  }
+};
+
 const personWithSignificantControlRouting = [
   registrationAddressRoutingTerritoryChoicePersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
   registrationAddressRoutingPostcodePersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
@@ -154,7 +221,13 @@ const personWithSignificantControlRouting = [
   registrationAddressRoutingPostcodePersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress,
   registrationAddressRoutingChoosePersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress,
   registrationAddressRoutingEnterPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress,
-  registrationAddressRoutingConfirmPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress
+  registrationAddressRoutingConfirmPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress,
+
+  registrationAddressRoutingTerritoryChoicePersonWithSignificantControlIndividualPersonUsualResidentialAddress,
+  registrationAddressRoutingPostcodePersonWithSignificantControlIndividualPersonUsualResidentialAddress,
+  registrationAddressRoutingChoosePersonWithSignificantControlIndividualPersonUsualResidentialAddress,
+  registrationAddressRoutingEnterPersonWithSignificantControlIndividualPersonUsualResidentialAddress,
+  registrationAddressRoutingConfirmPersonWithSignificantControlIndividualPersonUsualResidentialAddress
 ];
 
 export default personWithSignificantControlRouting;
