@@ -72,7 +72,8 @@ describe("Enter person with significant control's principal office manual addres
           "postcodeMissing",
           "usualResidentialAddress",
           "correspondenceAddress",
-          "principalOfficeAddress",
+          "generalPartner",
+          "limitedPartner",
           "errorMessages"
         ]);
 
