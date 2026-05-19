@@ -124,7 +124,10 @@ class LimitedPartnershipController extends PartnershipController {
     const { personsWithSignificantControl } =
         await this.personWithSignificantControlService.getPersonsWithSignificantControl(tokens, transactionId);
 
-    const sortedPersonsWithSignificantControl = this.sortPscByType(personsWithSignificantControl);
+    const sortedPersonsWithSignificantControl =
+      personsWithSignificantControl?.length
+        ? this.sortPscByType(personsWithSignificantControl)
+        : personsWithSignificantControl;
 
     return { generalPartners, limitedPartners, personsWithSignificantControl: sortedPersonsWithSignificantControl };
   }
