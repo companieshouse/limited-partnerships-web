@@ -69,7 +69,14 @@ enum AddressPageType {
   postcodePersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress = "postcode-person-with-significant-control-other-registrable-person-principal-office-address",
   choosePersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress = "choose-person-with-significant-control-other-registrable-person-principal-office-address",
   enterPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress = "enter-person-with-significant-control-other-registrable-person-principal-office-address",
-  confirmPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress = "confirm-person-with-significant-control-other-registrable-person-principal-office-address"
+  confirmPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress = "confirm-person-with-significant-control-other-registrable-person-principal-office-address",
+
+  // usual residential address - Individual Person
+  territoryChoicePersonWithSignificantControlIndividualPersonUsualResidentialAddress = "uk-or-overseas-person-with-significant-control-individual-person-usual-residential-address",
+  postcodePersonWithSignificantControlIndividualPersonUsualResidentialAddress = "postcode-person-with-significant-control-individual-person-usual-residential-address",
+  choosePersonWithSignificantControlIndividualPersonUsualResidentialAddress = "choose-person-with-significant-control-individual-person-usual-residential-address",
+  enterPersonWithSignificantControlIndividualPersonUsualResidentialAddress = "enter-person-with-significant-control-individual-person-usual-residential-address",
+  confirmPersonWithSignificantControlIndividualPersonUsualResidentialAddress = "confirm-person-with-significant-control-individual-person-usual-residential-address"
 }
 
 export const LIMITED_PARTNERSHIP_POSTCODE_PAGES: Set<PageType | PageDefault> = new Set([
@@ -153,7 +160,13 @@ export const PERSON_WITH_SIGNIFICANT_CONTROL_PAGES: Set<PageType | PageDefault> 
   AddressPageType.postcodePersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress,
   AddressPageType.enterPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress,
   AddressPageType.choosePersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress,
-  AddressPageType.confirmPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress
+  AddressPageType.confirmPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress,
+
+  AddressPageType.territoryChoicePersonWithSignificantControlIndividualPersonUsualResidentialAddress,
+  AddressPageType.postcodePersonWithSignificantControlIndividualPersonUsualResidentialAddress,
+  AddressPageType.enterPersonWithSignificantControlIndividualPersonUsualResidentialAddress,
+  AddressPageType.choosePersonWithSignificantControlIndividualPersonUsualResidentialAddress,
+  AddressPageType.confirmPersonWithSignificantControlIndividualPersonUsualResidentialAddress
 ]);
 
 export const isConfirmLimitedPartnershipAddressPageType = (pageType: string): boolean => {

@@ -80,7 +80,10 @@
             },
             "otherRegistrablePerson": {
                 "title": "WELSH - Which type of nature of control does the other registrable person (ORP) have?"
-             }
+            },
+            "individualPerson": {
+                "title": "WELSH - Which type of nature of control does this PSC have?"
+            }
         },
         "removePscPage": {
             "title": "WELSH - Are you sure you want to remove",

@@ -41,6 +41,15 @@ class PersonWithSignificantControlBuilder {
     completed: true,
     appointment_id: "",
 
+    consent_checked: undefined,
+    title: "",
+    forename: "",
+    middle_names: "",
+    surname: "",
+    date_of_birth: "",
+    nationality1: "",
+    nationality2: "",
+
     governing_law: "",
     legal_entity_name: "",
     legal_entity_register_name: "",
@@ -52,6 +61,16 @@ class PersonWithSignificantControlBuilder {
       postal_code: "ST6 3LJ",
       premises: "4",
       address_line_1: "principal office address line 1",
+      address_line_2: "line 2",
+      locality: "stoke-on-trent",
+      region: "region",
+      country: "England"
+    },
+
+    usual_residential_address: {
+      postal_code: "ST6 3LJ",
+      premises: "4",
+      address_line_1: "usual residential address line 1",
       address_line_2: "line 2",
       locality: "stoke-on-trent",
       region: "region",
