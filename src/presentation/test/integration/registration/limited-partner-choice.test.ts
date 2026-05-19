@@ -2,6 +2,9 @@ import request from "supertest";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
+import enErrorsTranslationText from "../../../../../locales/en/errors.json";
+import cyErrorsTranslationText from "../../../../../locales/cy/errors.json";
+
 import app from "../app";
 import {
   LIMITED_PARTNER_CHOICE_URL,
@@ -10,7 +13,7 @@ import {
 } from "../../../controller/registration/url";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
+import { getUrl, setLocalesEnabled, testTranslations, countOccurrences } from "../../utils";
 
 describe("Limited Partner Choice Page", () => {
   const URL = getUrl(LIMITED_PARTNER_CHOICE_URL);
@@ -74,5 +77,20 @@ describe("Limited Partner Choice Page", () => {
     expect(res.text).toContain(
       `${limitedPartnership?.data?.partnership_name?.toUpperCase()} ${limitedPartnership?.data?.name_ending?.toUpperCase()}`
     );
+  });
+
+  it.each([
+    ["en", enErrorsTranslationText],
+    ["cy", cyErrorsTranslationText]
+  ])("%s: should trigger GDS validation error when no option is selected", async (lang, errors) => {
+    setLocalesEnabled(true);
+    const res = await request(app).post(URL + `?lang=${lang}`).send({
+      pageType: RegistrationPageType.limitedPartnerType
+    });
+
+    const errorMessage = errors.errorMessages.choosePartnerType.limitedPartner;
+
+    expect(res.status).toBe(200);
+    expect(countOccurrences(res.text, errorMessage)).toBe(2);
   });
 });
