@@ -1,5 +1,5 @@
 import UIErrors from "../../domain/entities/UIErrors";
-import { isValidDateStringAndInPast } from "../../domain/validator/DateValidators";
+import { isValidDateStringAndNotInFuture } from "../../domain/validator/DateValidators";
 
 export const convertValidDateToIsoDateString = (
   date: { day: string; month: string; year: string },
@@ -7,7 +7,7 @@ export const convertValidDateToIsoDateString = (
 ): string => {
   const dateStr = convertDateToIsoDateString(date.day.trim(), date.month.trim(), date.year.trim());
 
-  if (!isValidDateStringAndInPast(dateStr)) {
+  if (!isValidDateStringAndNotInFuture(dateStr)) {
     const uiErrors = new UIErrors();
     uiErrors.formatValidationErrorToUiErrors({
       errors: {
