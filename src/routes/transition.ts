@@ -56,6 +56,7 @@ const transitionEndpoints = (router: Router, dependencies: IDependencies): void 
 
   router.get(
     COMPANY_NUMBER_URL,
+    acspAuthentication,
     dependencies.limitedPartnershipTransitionController.getPageRouting()
   );
   router.post(
@@ -209,6 +210,7 @@ const transitionEndpoints = (router: Router, dependencies: IDependencies): void 
 
   router.get(
     LIMITED_PARTNERS_URL,
+    acspAuthentication,
     transitionFiling(dependencies),
     companyAuthentication,
     dependencies.limitedPartnerTransitionController.getLimitedPartner()
@@ -216,6 +218,7 @@ const transitionEndpoints = (router: Router, dependencies: IDependencies): void 
 
   router.get(
     LIMITED_PARTNER_CHOICE_URL,
+    acspAuthentication,
     transitionFiling(dependencies),
     companyAuthentication,
     dependencies.limitedPartnerTransitionController.getPageRouting()
@@ -314,8 +317,8 @@ const transitionEndpoints = (router: Router, dependencies: IDependencies): void 
   router.post(
     CHECK_YOUR_ANSWERS_URL,
     transitionFiling(dependencies),
-    companyAuthentication,
     acspAuthentication,
+    companyAuthentication,
     dependencies.limitedPartnershipTransitionController.postCheckYourAnswers()
   );
 };

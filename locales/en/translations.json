@@ -346,7 +346,8 @@
         "title": "Service unavailable",
         "sorryMessage" : "Sorry, the service is unavailable",
         "tryLater" : "You will be able to use the service at a later date.",
-        "moreInfo" : "Email <a class='govuk-link' href='mailto: enquiries@companieshouse.gov.uk'>enquiries@companieshouse.gov.uk</a>, if you need more information."
+        "moreInfo" : "Email <a class='govuk-link' href='mailto: enquiries@companieshouse.gov.uk'>enquiries@companieshouse.gov.uk</a>, if you need more information.",
+        "invalidAcsp" : "You need to be registered as an ACSP to use this service."
     },
 
     "generalPartnerChoicePage": {

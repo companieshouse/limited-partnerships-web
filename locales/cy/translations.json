@@ -346,7 +346,8 @@
         "title": "WELSH - Service unavailable",
         "sorryMessage" : "WELSH - Sorry, the service is unavailable",
         "tryLater" : "WELSH - You will be able to use the service at a later date.",
-        "moreInfo" : "WELSH - Email <a class='govuk-link' href='mailto: enquiries@companieshouse.gov.uk'>enquiries@companieshouse.gov.uk</a>, if you need more information."
+        "moreInfo" : "WELSH - Email <a class='govuk-link' href='mailto: enquiries@companieshouse.gov.uk'>enquiries@companieshouse.gov.uk</a>, if you need more information.",
+        "invalidAcsp" : "WELSH - You need to be registered as an ACSP to use this service."
     },
 
     "generalPartnerChoicePage": {
