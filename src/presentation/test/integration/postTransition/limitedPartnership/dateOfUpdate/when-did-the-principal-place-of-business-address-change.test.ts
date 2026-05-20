@@ -24,6 +24,7 @@ describe("Partnership principal place of business address change date page", () 
 
     const limitedPartnership = new LimitedPartnershipBuilder().withDateOfUpdate("2024-10-10").build();
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+    appDevDependencies.limitedPartnershipGateway.feedErrors([]);
   });
 
   describe("GET principal place of business address change date page", () => {
@@ -85,6 +86,20 @@ describe("Partnership principal place of business address change date page", () 
       expect(res.status).toBe(200);
       expect(res.text).not.toContain(originalErrorMessage);
       expect(res.text).toContain(expectedErrorMessage);
+    });
+
+    it("should not show validation error when submitting todays date", async () => {
+      const today = new Date();
+      const res = await request(app).post(URL).send({
+        pageType: PostTransitionPageType.whenDidThePrincipalPlaceOfBusinessAddressChange,
+        "date_of_update-day": today.getDate().toString(),
+        "date_of_update-month": (today.getMonth() + 1).toString(),
+        "date_of_update-year": today.getFullYear().toString()
+      });
+
+      const redirectUrl = getUrl(PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL);
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
     });
   });
 });
