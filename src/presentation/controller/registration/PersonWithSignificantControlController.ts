@@ -21,7 +21,6 @@ import {
 } from "./url";
 import { CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL, CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL, CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL } from "../addressLookUp/url/registration";
 import { PageRouting } from "../PageRouting";
-
 class PersonWithSignificantControlRegistrationController extends AbstractController {
   constructor(
     protected readonly limitedPartnershipService: LimitedPartnershipService,

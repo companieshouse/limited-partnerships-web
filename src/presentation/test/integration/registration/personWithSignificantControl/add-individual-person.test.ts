@@ -9,7 +9,7 @@ import cyErrors from "../../../../../../locales/cy/errors.json";
 
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
+import { getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../utils";
 import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 
 import {
@@ -95,7 +95,7 @@ describe("Add Person With Significant Control Individual Person Page", () => {
       const res = await request(app).get(URL);
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(`name="title" type="text" value="${personWithSignificantControl?.data?.title}"`);
+      expect(res.text).toContain(`<option value="${personWithSignificantControl?.data?.title}" selected>${personWithSignificantControl?.data?.title}</option>`);
       expect(res.text).toContain(`name="forename" type="text" value="${personWithSignificantControl?.data?.forename}"`);
       expect(res.text).toContain(`name="middle_names" type="text" value="${personWithSignificantControl?.data?.middle_names}"`);
       expect(res.text).toContain(`name="surname" type="text" value="${personWithSignificantControl?.data?.surname}"`);
@@ -109,6 +109,25 @@ describe("Add Person With Significant Control Individual Person Page", () => {
 
       expect(res.text).toContain(`<option value="${personWithSignificantControl?.data?.nationality1}" selected>${personWithSignificantControl?.data?.nationality1}</option>`);
       expect(res.text).toContain(`<option value="${personWithSignificantControl?.data?.nationality2}" selected>${personWithSignificantControl?.data?.nationality2}</option>`);
+    });
+
+    it("should populate other title if not in title list", async () => {
+      const URL = getUrl(ADD_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_WITH_IDS_URL);
+
+      const personWithSignificantControl = new PersonWithSignificantControlBuilder()
+        .isIndividualPerson()
+        .withTitle("Something else")
+        .withId(appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId)
+        .build();
+      appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([
+        personWithSignificantControl
+      ]);
+
+      const res = await request(app).get(URL);
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(`<option value="OTHER" selected>OTHER</option>`);
+      expect(res.text).toContain(`name="title_other" type="text" value="${personWithSignificantControl?.data?.title}"`);
     });
   });
 
@@ -171,6 +190,92 @@ describe("Add Person With Significant Control Individual Person Page", () => {
       expect(res.text).toContain("Date of birth is invalid");
       expect(res.text).toContain("Primary nationality is required");
       expect(res.text).toContain("Secondary nationality must be different");
+    });
+
+    it("should set title value to be value of the other title value", async () => {
+      const personWithSignificantControl = new PersonWithSignificantControlBuilder()
+        .isIndividualPerson()
+        .withTitle("OTHER")
+        .withTitleOther("Custom Title")
+        .build();
+
+      expect(appDevDependencies.personWithSignificantControlGateway.personsWithSignificantControl).toHaveLength(0);
+
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: RegistrationPageType.addPersonWithSignificantControlIndividualPerson,
+          type: PersonWithSignificantControlType.INDIVIDUAL_PERSON,
+          ...personWithSignificantControl.data
+        });
+
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+
+      expect(appDevDependencies.personWithSignificantControlGateway.personsWithSignificantControl).toHaveLength(1);
+      expect(appDevDependencies.personWithSignificantControlGateway.personsWithSignificantControl[0].data.title).toEqual(
+        "Custom Title"
+      );
+    });
+
+    it.each([
+      ["en", enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.otherTitleShouldBeEmpty],
+      ["cy", cyErrors.errorMessages.personWithSignificantControl.addIndividualPerson.otherTitleShouldBeEmpty]
+    ])("should display an error if other title is provided when title is not OTHER for %s", async (lang, expectedMsg) => {
+      const personWithSignificantControl = new PersonWithSignificantControlBuilder()
+        .isIndividualPerson()
+        .withTitle("MR")
+        .withTitleOther("Custom Title")
+        .build();
+
+      setLocalesEnabled(true);
+
+      const res = await request(app)
+        .post(`${URL}?lang=${lang}`)
+        .send({
+          pageType: RegistrationPageType.addPersonWithSignificantControlIndividualPerson,
+          type: PersonWithSignificantControlType.INDIVIDUAL_PERSON,
+          ...personWithSignificantControl.data
+        });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(toEscapedHtml(expectedMsg));
+
+      setLocalesEnabled(false);
+    });
+
+    it.each([
+      [
+        "en",
+        enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.otherTitleMissing,
+        enPersonWithSignificantControlTranslationText.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.titles.other
+      ],
+      [
+        "cy",
+        cyErrors.errorMessages.personWithSignificantControl.addIndividualPerson.otherTitleMissing,
+        cyPersonWithSignificantControlTranslationText.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.titles.other
+      ]
+    ])("should display an error if other title is missing when title is OTHER for %s", async (lang, expectedMsg, otherTitleValue) => {
+      const personWithSignificantControl = new PersonWithSignificantControlBuilder()
+        .isIndividualPerson()
+        .withTitle(otherTitleValue)
+        .withTitleOther("")
+        .build();
+
+      setLocalesEnabled(true);
+
+      const res = await request(app)
+        .post(`${URL}?lang=${lang}`)
+        .send({
+          pageType: RegistrationPageType.addPersonWithSignificantControlIndividualPerson,
+          type: PersonWithSignificantControlType.INDIVIDUAL_PERSON,
+          ...personWithSignificantControl.data
+        });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(toEscapedHtml(expectedMsg));
+
+      setLocalesEnabled(false);
     });
   });
 
@@ -358,9 +463,9 @@ describe("Add Person With Significant Control Individual Person Page", () => {
     });
 
     it.each([
-      ["en", enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.titleInvalid],
-      ["cy", cyErrors.errorMessages.personWithSignificantControl.addIndividualPerson.titleInvalid]
-    ])("shows title invalid validation for %s", async (lang, expectedMsg) => {
+      ["en", enErrors],
+      ["cy", cyErrors]
+    ])("shows title invalid validation for %s", async (lang, errorTranslations) => {
       const person = new PersonWithSignificantControlBuilder().isIndividualPerson().build();
 
       setLocalesEnabled(true);
@@ -372,19 +477,20 @@ describe("Add Person With Significant Control Individual Person Page", () => {
           pageType: RegistrationPageType.addPersonWithSignificantControlIndividualPerson,
           type: PersonWithSignificantControlType.INDIVIDUAL_PERSON,
           ...person.data,
-          title: "±"
+          title: "±",
         });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(expectedMsg);
+      expect(res.text).toContain("id=\"title-error\"");
+      expect(res.text).toContain(errorTranslations.errorMessages.personWithSignificantControl.addIndividualPerson.titleInvalid);
 
       setLocalesEnabled(false);
     });
 
     it.each([
-      ["en", enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.titleTooLong],
-      ["cy", cyErrors.errorMessages.personWithSignificantControl.addIndividualPerson.titleTooLong]
-    ])("shows title too long validation for %s", async (lang, expectedMsg) => {
+      ["en", enErrors],
+      ["cy", cyErrors]
+    ])("shows title too long validation for %s", async (lang, errorTranslations) => {
       const person = new PersonWithSignificantControlBuilder().isIndividualPerson().build();
       const longTitle = "A".repeat(51);
 
@@ -397,11 +503,65 @@ describe("Add Person With Significant Control Individual Person Page", () => {
           pageType: RegistrationPageType.addPersonWithSignificantControlIndividualPerson,
           type: PersonWithSignificantControlType.INDIVIDUAL_PERSON,
           ...person.data,
-          title: longTitle
+          title: longTitle,
         });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(expectedMsg);
+      expect(res.text).toContain("id=\"title-error\"");
+      expect(res.text).toContain(errorTranslations.errorMessages.personWithSignificantControl.addIndividualPerson.titleTooLong);
+
+      setLocalesEnabled(false);
+    });
+
+    it.each([
+      ["en", enErrors, enPersonWithSignificantControlTranslationText],
+      ["cy", cyErrors, cyPersonWithSignificantControlTranslationText]
+    ])("shows other title invalid validation for %s", async (lang, errorTranslations, translationText) => {
+      const person = new PersonWithSignificantControlBuilder().isIndividualPerson().build();
+
+      setLocalesEnabled(true);
+      const url = `${URL}?lang=${lang}`;
+
+      const res = await request(app)
+        .post(url)
+        .send({
+          pageType: RegistrationPageType.addPersonWithSignificantControlIndividualPerson,
+          type: PersonWithSignificantControlType.INDIVIDUAL_PERSON,
+          ...person.data,
+          title: translationText.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.titles.other,
+          title_other: "±"
+        });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain("id=\"title_other-error\"");
+      expect(res.text).toContain(errorTranslations.errorMessages.personWithSignificantControl.addIndividualPerson.otherTitleInvalid);
+
+      setLocalesEnabled(false);
+    });
+
+    it.each([
+      ["en", enErrors, enPersonWithSignificantControlTranslationText],
+      ["cy", cyErrors, cyPersonWithSignificantControlTranslationText]
+    ])("shows other title too long validation for %s", async (lang, errorTranslations, translationText) => {
+      const person = new PersonWithSignificantControlBuilder().isIndividualPerson().build();
+      const longTitle = "A".repeat(51);
+
+      setLocalesEnabled(true);
+      const url = `${URL}?lang=${lang}`;
+
+      const res = await request(app)
+        .post(url)
+        .send({
+          pageType: RegistrationPageType.addPersonWithSignificantControlIndividualPerson,
+          type: PersonWithSignificantControlType.INDIVIDUAL_PERSON,
+          ...person.data,
+          title: translationText.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.titles.other,
+          title_other: longTitle
+        });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain("id=\"title_other-error\"");
+      expect(res.text).toContain(errorTranslations.errorMessages.personWithSignificantControl.addIndividualPerson.otherTitleTooLong);
 
       setLocalesEnabled(false);
     });

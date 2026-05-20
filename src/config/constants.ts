@@ -176,6 +176,7 @@ export const LEGAL_ENTITY_NAME_FIELD = "legal_entity_name";
 export const LEGAL_FORM_FIELD = "legal_form";
 export const GOVERNING_LAW_FIELD = "governing_law";
 export const TITLE_FIELD = "title";
+export const TITLE_OTHER_FIELD = "title_other";
 export const FORENAME_FIELD = "forename";
 export const MIDDLE_NAMES_FIELD = "middle_names";
 export const SURNAME_FIELD = "surname";

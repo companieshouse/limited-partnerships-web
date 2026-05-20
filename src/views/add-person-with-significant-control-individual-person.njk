@@ -53,19 +53,70 @@
                     ]
                 }) }}
 
-                {{ govukInput({
-                    label: {
-                        text: i18n.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.personTitle,
-                        classes: "govuk-label govuk-label--m"
-                    },
-                    hint: {
-                        text: i18n.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.personTitleHint
-                    },
+                {% set titleValue = props.data.personWithSignificantControl.data.title %}
+                {% set titles = i18n.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.titles %}
+                {% set found = false %}
+                {% for key,label in titles %}
+                    {% if label == titleValue %}
+                        {% set found = true %}
+                    {% endif %}
+                {% endfor %}
+                {% set isOtherTitle = titleValue and not found %}
+
+                {% set titleItems = [ { value: "", text: i18n.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.selectTitleOption, selected: (not titleValue) } ] %}
+                {% for key,label in titles %}
+                    {% if label != titles.other %}
+                        {% set titleItems = (titleItems.push({ value: label, text: label, selected: (titleValue == label) }), titleItems) %}
+                    {% endif %}
+                {% endfor %}
+                {% set titleItems = (titleItems.push({ value: titles.other, text: titles.other, selected: (titleValue == titles.other or isOtherTitle) }), titleItems) %}
+
+                {{ govukSelect({
                     id: "title",
                     name: "title",
-                    value: props.data.personWithSignificantControl.data.title,
-                    errorMessage: props.errors.title if props.errors
+                    label: { 
+                        text: i18n.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.personTitle,
+                        classes: "govuk-label govuk-label--m" 
+                    },
+                    errorMessage: props.errors.title if props.errors,
+                    items: titleItems
                 }) }}
+
+                {% set showTitleOther = (titleValue == titles.other or isOtherTitle or props.data.personWithSignificantControl.data.title_other) %}
+
+                <div id="title-other-wrapper">
+                    {{ govukInput({
+                        id: "title_other",
+                        name: "title_other",
+                        label: {
+                            text: i18n.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.personOtherTitle,
+                            classes: "govuk-label govuk-label--m"
+                        },
+                        value: (isOtherTitle and titleValue) or props.data.personWithSignificantControl.data.title_other,
+                        errorMessage: props.errors.title_other if props.errors
+                    }) }}
+                </div>
+
+                <script>
+                    (function($) {
+                        $(function() {
+                            var $title = $('#title');
+                            var $wrapper = $('#title-other-wrapper');
+
+                            function toggleTitleOther() {
+                                if ($title.val() === '{{ titles.other }}') {
+                                    $wrapper.show();
+                                } else {
+                                    $wrapper.hide();
+                                    $('#title_other').val('');
+                                }
+                            }
+
+                            $title.on('change', toggleTitleOther);
+                            toggleTitleOther();
+                        });
+                    })(jQuery);
+                </script>
 
                 {{ govukInput({
                     label: {

@@ -1,11 +1,12 @@
 import UIErrors from "../entities/UIErrors";
 import { containsInvalidCharacters, isFieldValueMissing, isFieldValueTooLong } from "./FieldValidators";
 import { dateContainsInvalidChars, DateErrorMessages, hasInvalidDateFieldLengths, hasMissingDateFields, isDateInPast, isValidDate } from "./DateValidators";
-import { CONSENT_CHECKED_FIELD, FORENAME_FIELD, MIDDLE_NAMES_FIELD, NATIONALITY2_FIELD, NATIONALITY1_FIELD, SURNAME_FIELD, DATE_OF_BIRTH_FIELD, TITLE_FIELD } from "../../config";
+import { CONSENT_CHECKED_FIELD, FORENAME_FIELD, MIDDLE_NAMES_FIELD, NATIONALITY2_FIELD, NATIONALITY1_FIELD, SURNAME_FIELD, DATE_OF_BIRTH_FIELD, TITLE_FIELD, TITLE_OTHER_FIELD } from "../../config";
 
 type PscFormData = {
   consent_checked?: boolean | string;
   title?: string;
+  title_other?: string;
   forename?: string;
   middle_names?: string;
   surname?: string;
@@ -19,6 +20,7 @@ type PscFormData = {
 
 export default class IndividualPscValidator {
   private title?: string;
+  private title_other?: string;
   private forename?: string;
   private middle_names?: string;
   private surname?: string;
@@ -29,9 +31,11 @@ export default class IndividualPscValidator {
   private nationality2?: string;
   private consent_checked?: boolean | string;
   private errorMessages: Record<string, string> = {};
+  private titleOtherValue?: string;
 
   set(data: PscFormData, i18n: any): this {
     this.title = data.title;
+    this.title_other = data.title_other;
     this.forename = data.forename;
     this.middle_names = data.middle_names;
     this.surname = data.surname;
@@ -43,6 +47,7 @@ export default class IndividualPscValidator {
     this.consent_checked = data.consent_checked;
 
     this.errorMessages = i18n?.errorMessages?.personWithSignificantControl?.addIndividualPerson || {};
+    this.titleOtherValue = i18n?.personWithSignificantControl?.addPersonWithSignificantControl?.addIndividualPerson?.titles?.other;
     return this;
   }
 
@@ -50,6 +55,7 @@ export default class IndividualPscValidator {
     const uiErrors = new UIErrors();
     this.validateConsentChecked(uiErrors);
     this.validateTitle(uiErrors);
+    this.validateTitleOther(uiErrors);
     this.validateForename(uiErrors);
     this.validateMiddleNames(uiErrors);
     this.validateSurname(uiErrors);
@@ -70,6 +76,25 @@ export default class IndividualPscValidator {
     }
 
     if (isFieldValueTooLong(this.title, 50, TITLE_FIELD, uiErrors, this.errorMessages?.titleTooLong)) {
+      return;
+    }
+  }
+
+  private validateTitleOther(uiErrors: UIErrors) {
+    if (this.title === this.titleOtherValue && isFieldValueMissing(this.title_other, TITLE_OTHER_FIELD, uiErrors, this.errorMessages?.otherTitleMissing)) {
+      return;
+    }
+
+    if (this.title !== this.titleOtherValue && this.title_other?.trim()) {
+      uiErrors.setWebError(TITLE_OTHER_FIELD, this.errorMessages?.otherTitleShouldBeEmpty);
+      return;
+    }
+
+    if (containsInvalidCharacters(this.title_other, TITLE_OTHER_FIELD, uiErrors, this.errorMessages?.otherTitleInvalid)) {
+      return;
+    }
+
+    if (isFieldValueTooLong(this.title_other, 50, TITLE_OTHER_FIELD, uiErrors, this.errorMessages?.otherTitleTooLong)) {
       return;
     }
   }
