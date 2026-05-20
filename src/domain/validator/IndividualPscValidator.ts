@@ -31,6 +31,7 @@ export default class IndividualPscValidator {
   private nationality2?: string;
   private consent_checked?: boolean | string;
   private errorMessages: Record<string, string> = {};
+  private titleOtherValue?: string;
 
   set(data: PscFormData, i18n: any): this {
     this.title = data.title;
@@ -46,6 +47,7 @@ export default class IndividualPscValidator {
     this.consent_checked = data.consent_checked;
 
     this.errorMessages = i18n?.errorMessages?.personWithSignificantControl?.addIndividualPerson || {};
+    this.titleOtherValue = i18n?.personWithSignificantControl?.addPersonWithSignificantControl?.addIndividualPerson?.titles?.other;
     return this;
   }
 
@@ -79,6 +81,15 @@ export default class IndividualPscValidator {
   }
 
   private validateTitleOther(uiErrors: UIErrors) {
+    if (this.title === this.titleOtherValue && isFieldValueMissing(this.title_other, TITLE_OTHER_FIELD, uiErrors, this.errorMessages?.otherTitleMissing)) {
+      return;
+    }
+
+    if (this.title !== this.titleOtherValue && this.title_other?.trim()) {
+      uiErrors.setWebError(TITLE_OTHER_FIELD, this.errorMessages?.otherTitleShouldBeEmpty);
+      return;
+    }
+
     if (containsInvalidCharacters(this.title_other, TITLE_OTHER_FIELD, uiErrors, this.errorMessages?.otherTitleInvalid)) {
       return;
     }

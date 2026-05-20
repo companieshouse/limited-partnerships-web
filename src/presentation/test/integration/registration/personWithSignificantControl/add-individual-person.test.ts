@@ -9,7 +9,7 @@ import cyErrors from "../../../../../../locales/cy/errors.json";
 
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
+import { getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../utils";
 import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 
 import {
@@ -216,6 +216,66 @@ describe("Add Person With Significant Control Individual Person Page", () => {
       expect(appDevDependencies.personWithSignificantControlGateway.personsWithSignificantControl[0].data.title).toEqual(
         "Custom Title"
       );
+    });
+
+    it.each([
+      ["en", enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.otherTitleShouldBeEmpty],
+      ["cy", cyErrors.errorMessages.personWithSignificantControl.addIndividualPerson.otherTitleShouldBeEmpty]
+    ])("should display an error if other title is provided when title is not OTHER for %s", async (lang, expectedMsg) => {
+      const personWithSignificantControl = new PersonWithSignificantControlBuilder()
+        .isIndividualPerson()
+        .withTitle("MR")
+        .withTitleOther("Custom Title")
+        .build();
+
+      setLocalesEnabled(true);
+
+      const res = await request(app)
+        .post(`${URL}?lang=${lang}`)
+        .send({
+          pageType: RegistrationPageType.addPersonWithSignificantControlIndividualPerson,
+          type: PersonWithSignificantControlType.INDIVIDUAL_PERSON,
+          ...personWithSignificantControl.data
+        });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(toEscapedHtml(expectedMsg));
+
+      setLocalesEnabled(false);
+    });
+
+    it.each([
+      [
+        "en",
+        enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.otherTitleMissing,
+        enPersonWithSignificantControlTranslationText.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.titles.other
+      ],
+      [
+        "cy",
+        cyErrors.errorMessages.personWithSignificantControl.addIndividualPerson.otherTitleMissing,
+        cyPersonWithSignificantControlTranslationText.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.titles.other
+      ]
+    ])("should display an error if other title is missing when title is OTHER for %s", async (lang, expectedMsg, otherTitleValue) => {
+      const personWithSignificantControl = new PersonWithSignificantControlBuilder()
+        .isIndividualPerson()
+        .withTitle(otherTitleValue)
+        .withTitleOther("")
+        .build();
+
+      setLocalesEnabled(true);
+
+      const res = await request(app)
+        .post(`${URL}?lang=${lang}`)
+        .send({
+          pageType: RegistrationPageType.addPersonWithSignificantControlIndividualPerson,
+          type: PersonWithSignificantControlType.INDIVIDUAL_PERSON,
+          ...personWithSignificantControl.data
+        });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(toEscapedHtml(expectedMsg));
+
+      setLocalesEnabled(false);
     });
   });
 

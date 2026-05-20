@@ -99,6 +99,9 @@
                 "consentCheckedMissing": "Confirm that this person knows their details are being supplied as part of this application",
                 "titleInvalid": "Title must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
                 "titleTooLong": "Title must be 50 characters or less",
+                
+                "otherTitleMissing": "Enter their title",
+                "otherTitleShouldBeEmpty": "Other title must only be provided when title is 'OTHER'",
                 "otherTitleInvalid": "Other title must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
                 "otherTitleTooLong": "Other title must be 50 characters or less",
 

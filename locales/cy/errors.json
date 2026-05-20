@@ -100,6 +100,9 @@
                 "consentCheckedMissing": "WELSH - Confirm that this person knows their details are being supplied as part of this application",
                 "titleInvalid": "WELSH - Title must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
                 "titleTooLong": "WELSH - Title must be 50 characters or less",
+                
+                "otherTitleMissing": "WELSH - Enter their title",
+                "otherTitleShouldBeEmpty": "WELSH - Other title must only be provided when title is 'OTHER'",
                 "otherTitleInvalid": "WELSH - Other title must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
                 "otherTitleTooLong": "WELSH - Other title must be 50 characters or less",
 
