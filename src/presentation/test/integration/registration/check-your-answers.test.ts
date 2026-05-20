@@ -559,6 +559,61 @@ describe("Check Your Answers Page", () => {
       expect(res.text).toContain(enTranslationText.checkYourAnswersPage.psc.noPscStatement);
       expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.psc.changeRemoveOrAdd);
     });
+
+    it.each([
+      ["English", "en", enTranslationText],
+      ["Welsh", "cy", cyTranslationText]
+    ])(
+      "should render the Individual Person PSC correctly in %s",
+      async (_description: string, lang: string, translationText: Record<string, any>) => {
+        setLocalesEnabled(true);
+
+        const psc = new PersonWithSignificantControlBuilder().isIndividualPerson().build();
+        appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([psc]);
+
+        const res = await request(app).get(URL + `?lang=${lang}`);
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(psc.data?.title);
+        expect(res.text).toContain(psc.data?.forename);
+        expect(res.text).toContain(psc.data?.middle_names);
+        expect(res.text).toContain(psc.data?.surname);
+        expect(res.text).toContain(formatDate(psc.data?.date_of_birth as string, translationText));
+        expect(res.text).toContain(psc.data?.nationality1);
+        expect(res.text).toContain(psc.data?.nationality2);
+      }
+    );
+
+    it("should render the PSCs in the correct order", async () => {
+      const rle = new PersonWithSignificantControlBuilder().withId("rle-id").isRelevantLegalEntity().build();
+      const orp = new PersonWithSignificantControlBuilder().withId("orp-id").isOtherRegistrablePerson().build();
+      const individual = new PersonWithSignificantControlBuilder().withId("individual-id").isIndividualPerson().build();
+
+      const rleName = "PSC_ORDER_RLE";
+      const orpName = "PSC_ORDER_ORP";
+      const individualForename = "PSC_ORDER_INDIVIDUAL_FORENAME";
+      rle.data!.legal_entity_name = rleName;
+      orp.data!.legal_entity_name = orpName;
+      individual.data!.forename = individualForename;
+
+      appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([rle, orp, individual]);
+
+      const res = await request(app).get(URL);
+
+      expect(res.status).toBe(200);
+
+      const rleIndex = res.text.indexOf(rleName);
+      const orpIndex = res.text.indexOf(orpName);
+      const individualIndex = res.text.indexOf(individualForename);
+
+      expect(rleIndex).toBeGreaterThan(-1);
+      expect(orpIndex).toBeGreaterThan(-1);
+      expect(individualIndex).toBeGreaterThan(-1);
+
+      expect(individualIndex).toBeLessThan(orpIndex);
+      expect(rleIndex).toBeLessThan(orpIndex);
+    });
+
   });
 
   describe("POST Check Your Answers Page", () => {

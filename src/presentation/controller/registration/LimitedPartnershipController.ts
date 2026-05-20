@@ -7,6 +7,7 @@ import {
   PartnershipType,
   PersonWithSignificantControl
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { PersonWithSignificantControlType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import PaymentService from "../../../application/service/PaymentService";
@@ -114,15 +115,30 @@ class LimitedPartnershipController extends PartnershipController {
     limitedPartners: LimitedPartner[];
     personsWithSignificantControl: PersonWithSignificantControl[];
   }> {
-    if (pageRouting.pageType === RegistrationPageType.checkYourAnswers) {
-      const { generalPartners } = await this.generalPartnerService.getGeneralPartners(tokens, transactionId);
-      const { limitedPartners } = await this.limitedPartnerService.getLimitedPartners(tokens, transactionId);
-      const { personsWithSignificantControl } =
+    if (pageRouting.pageType !== RegistrationPageType.checkYourAnswers) {
+      return { generalPartners: [], limitedPartners: [], personsWithSignificantControl: [] };
+    }
+
+    const { generalPartners } = await this.generalPartnerService.getGeneralPartners(tokens, transactionId);
+    const { limitedPartners } = await this.limitedPartnerService.getLimitedPartners(tokens, transactionId);
+    const { personsWithSignificantControl } =
         await this.personWithSignificantControlService.getPersonsWithSignificantControl(tokens, transactionId);
 
-      return { generalPartners, limitedPartners, personsWithSignificantControl };
-    }
-    return { generalPartners: [], limitedPartners: [], personsWithSignificantControl: [] };
+    const sortedPersonsWithSignificantControl =
+      personsWithSignificantControl?.length
+        ? this.sortPscByType(personsWithSignificantControl)
+        : personsWithSignificantControl;
+
+    return { generalPartners, limitedPartners, personsWithSignificantControl: sortedPersonsWithSignificantControl };
+  }
+
+  private sortPscByType(personsWithSignificantControl: PersonWithSignificantControl[]): PersonWithSignificantControl[] {
+    // Group into three arrays (preserves original order within each group)
+    const individuals = personsWithSignificantControl.filter(p => p?.data?.type === PersonWithSignificantControlType.INDIVIDUAL_PERSON);
+    const legalEntities = personsWithSignificantControl.filter(p => p?.data?.type === PersonWithSignificantControlType.RELEVANT_LEGAL_ENTITY);
+    const otherRegistrables = personsWithSignificantControl.filter(p => p?.data?.type === PersonWithSignificantControlType.OTHER_REGISTRABLE_PERSON);
+
+    return [...individuals, ...legalEntities, ...otherRegistrables];
   }
 
   private async renderCheckYourAnswersWithLawfulPurposeError(request: Request, response: Response) {
