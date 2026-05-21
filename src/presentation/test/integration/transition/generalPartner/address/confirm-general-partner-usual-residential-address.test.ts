@@ -157,7 +157,7 @@ describe("Confirm General Partner Usual Residential Address Page", () => {
       }
     );
 
-    it("should redirect to the confirm correspondance address if already saved", async () => {
+    it("should redirect to the confirm correspondence address if already saved", async () => {
       const generalPartner = new GeneralPartnerBuilder()
         .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
         .isPerson()

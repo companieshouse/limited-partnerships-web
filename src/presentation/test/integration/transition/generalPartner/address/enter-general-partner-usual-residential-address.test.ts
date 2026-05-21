@@ -63,6 +63,7 @@ describe("Enter Usual Residential Address Page", () => {
         "principalOfficeAddress",
         "postcodeOptional",
         "limitedPartner",
+        "personWithSignificantControl",
         "errorMessages",
         // uk countries
         "countryEngland",
@@ -97,6 +98,7 @@ describe("Enter Usual Residential Address Page", () => {
         "correspondenceAddress",
         "principalOfficeAddress",
         "limitedPartner",
+        "personWithSignificantControl",
         "errorMessages",
         // uk countries
         "countryEngland",

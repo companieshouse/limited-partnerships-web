@@ -76,6 +76,7 @@ describe("Postcode Usual Residential Address Page", () => {
         "principalOfficeAddress",
         "correspondenceAddress",
         "limitedPartner",
+        "personWithSignificantControl",
         "errorMessages"
       ]);
       expect(res.text).not.toContain("WELSH -");
@@ -116,6 +117,7 @@ describe("Postcode Usual Residential Address Page", () => {
         "principalOfficeAddress",
         "correspondenceAddress",
         "limitedPartner",
+        "personWithSignificantControl",
         "errorMessages"
       ]);
       expect(res.text).toContain(generalPartner.data?.legal_entity_name?.toUpperCase());

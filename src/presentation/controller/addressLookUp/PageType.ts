@@ -76,7 +76,14 @@ enum AddressPageType {
   postcodePersonWithSignificantControlIndividualPersonUsualResidentialAddress = "postcode-person-with-significant-control-individual-person-usual-residential-address",
   choosePersonWithSignificantControlIndividualPersonUsualResidentialAddress = "choose-person-with-significant-control-individual-person-usual-residential-address",
   enterPersonWithSignificantControlIndividualPersonUsualResidentialAddress = "enter-person-with-significant-control-individual-person-usual-residential-address",
-  confirmPersonWithSignificantControlIndividualPersonUsualResidentialAddress = "confirm-person-with-significant-control-individual-person-usual-residential-address"
+  confirmPersonWithSignificantControlIndividualPersonUsualResidentialAddress = "confirm-person-with-significant-control-individual-person-usual-residential-address",
+
+  // correspondence address - Individual Person
+  territoryChoicePersonWithSignificantControlIndividualPersonCorrespondenceAddress = "uk-or-overseas-person-with-significant-control-individual-person-correspondence-address",
+  postcodePersonWithSignificantControlIndividualPersonCorrespondenceAddress = "postcode-person-with-significant-control-individual-person-correspondence-address",
+  choosePersonWithSignificantControlIndividualPersonCorrespondenceAddress = "choose-person-with-significant-control-individual-person-correspondence-address",
+  enterPersonWithSignificantControlIndividualPersonCorrespondenceAddress = "enter-person-with-significant-control-individual-person-correspondence-address",
+  confirmPersonWithSignificantControlIndividualPersonCorrespondenceAddress = "confirm-person-with-significant-control-individual-person-correspondence-address"
 }
 
 export const LIMITED_PARTNERSHIP_POSTCODE_PAGES: Set<PageType | PageDefault> = new Set([
@@ -97,7 +104,8 @@ export const MANUAL_PAGES: Set<PageType | PageDefault> = new Set([
   AddressPageType.enterLimitedPartnerUsualResidentialAddress,
   AddressPageType.enterLimitedPartnerPrincipalOfficeAddress,
   AddressPageType.enterPersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
-  AddressPageType.enterPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress
+  AddressPageType.enterPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress,
+  AddressPageType.enterPersonWithSignificantControlIndividualPersonUsualResidentialAddress,
 ]);
 
 export const isManualAddressPageType = (pageType: string): boolean => {
@@ -113,7 +121,8 @@ export const CHOOSE_PAGES: Set<PageType | PageDefault> = new Set([
   AddressPageType.chooseLimitedPartnerUsualResidentialAddress,
   AddressPageType.chooseLimitedPartnerPrincipalOfficeAddress,
   AddressPageType.choosePersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
-  AddressPageType.choosePersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress
+  AddressPageType.choosePersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress,
+  AddressPageType.choosePersonWithSignificantControlIndividualPersonUsualResidentialAddress
 ]);
 
 export const GENERAL_PARTNER_PAGES: Set<PageType | PageDefault> = new Set([
@@ -194,7 +203,8 @@ export const isConfirmLimitedPartnerAddressPageType = (pageType: string): boolea
 export const isConfirmPersonWithSignificantControlAddressPageType = (pageType: string): boolean => {
   return [
     AddressPageType.confirmPersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
-    AddressPageType.confirmPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress
+    AddressPageType.confirmPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress,
+    AddressPageType.confirmPersonWithSignificantControlIndividualPersonUsualResidentialAddress
   ].includes(pageType as AddressPageType);
 };
 
