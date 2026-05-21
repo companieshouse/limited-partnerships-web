@@ -13,7 +13,7 @@ export type DateErrorMessages = {
   yearInvalidLength: string;
 }
 
-const parseDateParts = (day: string, month: string, year: string): { y: number; m: number; d: number } | null => {
+const parseDateParts = (day: string, month: string, year: string): { d: number; m: number; y: number } | null => {
   // months are 0-indexed in JavaScript Date, so we need to subtract 1 from the month
   const y = Number(year);
   const m = Number(month) - 1;
@@ -23,7 +23,7 @@ const parseDateParts = (day: string, month: string, year: string): { y: number; 
     return null;
   }
 
-  return { y, m, d };
+  return { d, m, y };
 };
 
 export const hasMissingDateFields = (day: string, month: string, year: string, fieldId: string, uiErrors: UIErrors, errorMessages: DateErrorMessages): boolean => {
@@ -90,7 +90,7 @@ export const isValidDate = (day: string, month: string, year: string): boolean =
     return false;
   }
 
-  const { y, m, d } = parsedDateParts;
+  const { d, m, y } = parsedDateParts;
 
   // handles leap years as well
   const parsedDate = new Date(y, m, d);
@@ -128,7 +128,7 @@ export const isDateInPast = (day: string, month: string, year: string): boolean 
     return false;
   }
 
-  const { y, m, d } = parsedDateParts;
+  const { d, m, y } = parsedDateParts;
 
   // use UTC to deal with daylight savings and timezones; compare date-only at UTC midnight
   const targetUtcMidnight = Date.UTC(y, m, d);
@@ -145,7 +145,7 @@ export const isDateToday = (day: string, month: string, year: string): boolean =
     return false;
   }
 
-  const { y, m, d } = parsedDateParts;
+  const { d, m, y } = parsedDateParts;
 
   // use UTC to deal with daylight savings and timezones; compare date-only at UTC midnight
   const targetUtcMidnight = Date.UTC(y, m, d);
