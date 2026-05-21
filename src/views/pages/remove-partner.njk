@@ -6,7 +6,9 @@
 
             {% include "includes/csrf_token.njk" %}
 
-            {{ govukRadios({          
+            {% include "includes/proposed-name.njk" %}
+
+            {{ govukRadios({
                 classes: "govuk-radios--inline",
                 idPrefix: "remove",
                 name: "remove",

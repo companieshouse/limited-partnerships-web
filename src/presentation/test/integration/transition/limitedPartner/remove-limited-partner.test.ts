@@ -7,6 +7,7 @@ import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 
 import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
+import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import { REMOVE_LIMITED_PARTNER_URL, REVIEW_LIMITED_PARTNERS_URL } from "../../../../controller/transition/url";
 import RegistrationPageType from "../../../../controller/transition/PageType";
@@ -42,6 +43,26 @@ describe("Remove Limited Partner Page", () => {
       testTranslations(res.text, enTranslationText.removePartnerPage);
 
       expect(res.text).toContain(`${limitedPartnerPerson?.data?.forename} ${limitedPartnerPerson?.data?.surname}`);
+    });
+
+    it("should contain the partnership name above the page title", async () => {
+      const limitedPartnership = new LimitedPartnershipBuilder().build();
+
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+      const limitedPartnerPerson = new LimitedPartnerBuilder()
+        .isPerson()
+        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+        .build();
+
+      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerPerson]);
+
+      const res = await request(app).get(URL);
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(
+        `${limitedPartnership?.data?.partnership_name?.toUpperCase()} (${limitedPartnership?.data?.partnership_number?.toUpperCase()})`
+      );
     });
 
     it("should load the remove limited partners page with Welsh text", async () => {
