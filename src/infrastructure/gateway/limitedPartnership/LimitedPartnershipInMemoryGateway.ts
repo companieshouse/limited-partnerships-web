@@ -9,6 +9,7 @@ import TransactionLimitedPartnership from "../../../domain/entities/TransactionL
 import LimitedPartnershipGatewayBuilder from "./LimitedPartnershipGatewayBuilder";
 import UIErrors, { ApiErrors } from "../../../domain/entities/UIErrors";
 import PageType from "../../../presentation/controller/PageType";
+import { validateAndFormatPartnerDateOfUpdate } from "../utils";
 
 class LimitedPartnershipInMemoryGateway implements ILimitedPartnershipGateway {
   submissionId = crypto.randomUUID().toString();
@@ -76,6 +77,8 @@ class LimitedPartnershipInMemoryGateway implements ILimitedPartnershipGateway {
     registrationPageType: RegistrationPageType,
     data: Record<string, any>
   ): Promise<void> {
+    validateAndFormatPartnerDateOfUpdate(data);
+    
     if (this.uiErrors?.hasErrors()) {
       throw this.uiErrors;
     }

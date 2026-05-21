@@ -13,6 +13,19 @@ export type DateErrorMessages = {
   yearInvalidLength: string;
 }
 
+const parseDateParts = (day: string, month: string, year: string): { d: number; m: number; y: number } | null => {
+  // months are 0-indexed in JavaScript Date, so we need to subtract 1 from the month
+  const y = Number(year);
+  const m = Number(month) - 1;
+  const d = Number(day);
+
+  if ([y, m, d].some(Number.isNaN)) {
+    return null;
+  }
+
+  return { d, m, y };
+};
+
 export const hasMissingDateFields = (day: string, month: string, year: string, fieldId: string, uiErrors: UIErrors, errorMessages: DateErrorMessages): boolean => {
   if (!day?.trim() && !month?.trim() && !year?.trim()) {
     uiErrors.setWebError(fieldId, errorMessages?.dateMissing);
@@ -71,13 +84,13 @@ export const hasInvalidDateFieldLengths = (day: string, month: string, year: str
 };
 
 export const isValidDate = (day: string, month: string, year: string): boolean => {
-  // months are 0-indexed in JavaScript Date, so we need to subtract 1 from the month
-  const y = Number(year);
-  const m = Number(month) - 1;
-  const d = Number(day);
-  if ([y, m, d].some(Number.isNaN)) {
+  const parsedDateParts = parseDateParts(day, month, year);
+
+  if (!parsedDateParts) {
     return false;
   }
+
+  const { d, m, y } = parsedDateParts;
 
   // handles leap years as well
   const parsedDate = new Date(y, m, d);
@@ -89,7 +102,7 @@ export const isValidDate = (day: string, month: string, year: string): boolean =
   );
 };
 
-export const isValidDateStringAndInPast = (date: string): boolean => {
+export const isValidDateStringAndNotInFuture = (date: string): boolean => {
   const [year, month, day] = date.split("-");
   const isDayInvalid = day.length > 2;
   const isMonthInvalid = month.length > 2;
@@ -102,20 +115,20 @@ export const isValidDateStringAndInPast = (date: string): boolean => {
   if (!isValidDate(day, month, year)) {
     return false;
   }
-  if (!isDateInPast(day, month, year)) {
+  if (!isDateInPast(day, month, year) && !isDateToday(day, month, year)) {
     return false;
   }
   return true;
 };
 
 export const isDateInPast = (day: string, month: string, year: string): boolean => {
-  // months are 0-indexed in JavaScript Date, so we need to subtract 1 from the month
-  const y = Number(year);
-  const m = Number(month) - 1;
-  const d = Number(day);
-  if ([y, m, d].some(Number.isNaN)) {
+  const parsedDateParts = parseDateParts(day, month, year);
+
+  if (!parsedDateParts) {
     return false;
   }
+
+  const { d, m, y } = parsedDateParts;
 
   // use UTC to deal with daylight savings and timezones; compare date-only at UTC midnight
   const targetUtcMidnight = Date.UTC(y, m, d);
@@ -123,6 +136,23 @@ export const isDateInPast = (day: string, month: string, year: string): boolean 
   const todayUtcMidnightForLocal = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
 
   return targetUtcMidnight < todayUtcMidnightForLocal;
+};
+
+export const isDateToday = (day: string, month: string, year: string): boolean => {
+  const parsedDateParts = parseDateParts(day, month, year);
+
+  if (!parsedDateParts) {
+    return false;
+  }
+
+  const { d, m, y } = parsedDateParts;
+
+  // use UTC to deal with daylight savings and timezones; compare date-only at UTC midnight
+  const targetUtcMidnight = Date.UTC(y, m, d);
+  const now = new Date();
+  const todayUtcMidnightForLocal = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+
+  return targetUtcMidnight === todayUtcMidnightForLocal;
 };
 
 export const dateContainsInvalidChars = (day: string, month: string, year: string): boolean => {
