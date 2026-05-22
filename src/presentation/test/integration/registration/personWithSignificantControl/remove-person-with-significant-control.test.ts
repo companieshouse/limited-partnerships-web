@@ -9,6 +9,7 @@ import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 
 import PersonWithSignificantControlBuilder from "../../../builder/PersonWithSignificantControlBuilder";
+import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import {
   REMOVE_PERSON_WITH_SIGNIFICANT_CONTROL_URL,
@@ -74,6 +75,20 @@ describe("Remove Person With Significant Control Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(`${psc?.data?.legal_entity_name}`);
+    });
+
+    it("should contain the partnership name above the page title", async () => {
+      const limitedPartnership = new LimitedPartnershipBuilder().build();
+
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+      appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([pscRle]);
+
+      const res = await request(app).get(URL);
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(
+        `${limitedPartnership?.data?.partnership_name?.toUpperCase()} ${limitedPartnership?.data?.name_ending?.toUpperCase()}`
+      );
     });
   });
 

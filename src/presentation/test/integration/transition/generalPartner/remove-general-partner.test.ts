@@ -7,6 +7,7 @@ import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 
 import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
+import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import { REMOVE_GENERAL_PARTNER_URL, REVIEW_GENERAL_PARTNERS_URL } from "../../../../controller/transition/url";
 import TransitionPageType from "../../../../controller/transition/PageType";
@@ -42,6 +43,26 @@ describe("Remove General Partner Page", () => {
       testTranslations(res.text, enTranslationText.removePartnerPage);
 
       expect(res.text).toContain(`${generalPartnerPerson?.data?.forename} ${generalPartnerPerson?.data?.surname}`);
+    });
+
+    it("should contain the partnership name above the page title", async () => {
+      const limitedPartnership = new LimitedPartnershipBuilder().build();
+
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+      const generalPartnerPerson = new GeneralPartnerBuilder()
+        .isPerson()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .build();
+
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartnerPerson]);
+
+      const res = await request(app).get(URL);
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(
+        `${limitedPartnership?.data?.partnership_name?.toUpperCase()} (${limitedPartnership?.data?.partnership_number?.toUpperCase()})`
+      );
     });
 
     it("should load the remove general partners page with Welsh text", async () => {
