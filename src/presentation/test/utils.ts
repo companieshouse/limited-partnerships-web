@@ -98,6 +98,16 @@ export const countOccurrences = (text: string, target: string): number => {
   return text.split(target).length - 1;
 };
 
+export const expectErrorSummaryAndInlineError = (
+  html: string,
+  field: string,
+  message: string
+) => {
+  expect(html).toContain(`<a href="#${field}">${message}</a>`);
+  expect(html).toContain(`id="${field}-error"`);
+  expect(countOccurrences(html, message)).toBeGreaterThanOrEqual(2);
+};
+
 export const expectChangeLinks = (text: string, changeLink: string[]) => {
   changeLink.forEach((link) => {
     expect(text).toContain(getUrl(link));
