@@ -91,7 +91,7 @@ describe("Review Limited Partners Page", () => {
     it("should redirect to the Add Limited Partner Person", async () => {
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.reviewLimitedPartners,
-        addAnotherPartner: "addPerson"
+        add_another_partner: "addPerson"
       });
 
       expect(res.status).toBe(302);
@@ -101,7 +101,7 @@ describe("Review Limited Partners Page", () => {
     it("should redirect to the Add Limited Partner Legal Entity", async () => {
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.reviewLimitedPartners,
-        addAnotherPartner: "addLegalEntity"
+        add_another_partner: "addLegalEntity"
       });
 
       expect(res.status).toBe(302);
@@ -119,7 +119,7 @@ describe("Review Limited Partners Page", () => {
 
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.reviewLimitedPartners,
-        addAnotherPartner: "no"
+        add_another_partner: "no"
       });
 
       expect(res.status).toBe(302);
@@ -131,7 +131,7 @@ describe("Review Limited Partners Page", () => {
 
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.reviewLimitedPartners,
-        addAnotherPartner: "no"
+        add_another_partner: "no"
       });
 
       expect(res.status).toBe(200);
@@ -149,7 +149,7 @@ describe("Review Limited Partners Page", () => {
 
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.reviewLimitedPartners,
-        addAnotherPartner: "no"
+        add_another_partner: "no"
       });
 
       expect(res.status).toBe(200);
@@ -167,7 +167,7 @@ describe("Review Limited Partners Page", () => {
 
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.reviewLimitedPartners,
-        addAnotherPartner: "addPerson"
+        add_another_partner: "addPerson"
       });
 
       expect(res.status).toBe(200);
@@ -185,7 +185,7 @@ describe("Review Limited Partners Page", () => {
 
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.reviewLimitedPartners,
-        addAnotherPartner: "addLegalEntity"
+        add_another_partner: "addLegalEntity"
       });
 
       expect(res.status).toBe(200);
