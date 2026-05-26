@@ -12,6 +12,7 @@ import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 
 import {
+  CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_CORRESPONDENCE_ADDRESS_URL,
   CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL,
   ENTER_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL,
   POSTCODE_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL,
@@ -149,6 +150,43 @@ describe("Confirm PSC usual residential Address Page", () => {
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+    });
+
+    it("should redirect to the confirm PSC correspondence address page if service address has already been stored in API data", async () => {
+      personWithSignificantControl = new PersonWithSignificantControlBuilder()
+        .isIndividualPerson()
+        .withId(appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId)
+        .withServiceAddress({
+          postal_code: "ST6 3LJ",
+          premises: "4",
+          address_line_1: "line 1",
+          address_line_2: "line 2",
+          locality: "stoke-on-trent",
+          region: "region",
+          country: "England"
+        })
+        .build();
+
+      appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([personWithSignificantControl]);
+
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType,
+          address: `{
+            "postal_code": "ST6 3LJ",
+            "premises": "4",
+            "address_line_1": "DUNCALF STREET",
+            "address_line_2": "",
+            "locality": "STOKE-ON-TRENT",
+            "country": "England"
+          }`
+        });
+
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(
+        getUrl(CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_CORRESPONDENCE_ADDRESS_URL)
+      );
     });
 
     it("should show error message if address is not provided", async () => {
