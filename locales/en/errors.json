@@ -15,6 +15,10 @@
             "limitedPartner": "Select whether the limited partner is a person or legal entity"
         },
 
+        "reviewPartners":{
+            "generalPartner": "Select if you need to add another general partner"
+        },
+
         "address": {
             "chooseAddress": {
                 "selectionRequired": "Select an address from the list"

@@ -110,7 +110,7 @@
                 {% include "includes/csrf_token.njk" %}
         
                 {{ govukRadios({
-                    name: "addAnotherPartner",
+                    name: "add_another_partner",
                     fieldset: {
                         legend: {
                             text: addPartner.title,
@@ -118,30 +118,35 @@
                             classes: "govuk-fieldset__legend--m"
                         }
                     },
+                    
+                    errorMessage: {
+                        text: props.errors.add_another_partner.text
+                    } if props.errors.add_another_partner,
 
                     items: [
                         {
                             value: "addPerson",
                             text: addPartner.optionPerson,
                             attributes: {
-                              required: true
-                            }
+                             required: true
+                            } if kind == "limited-partner"
                         },
                         {
                             value: "addLegalEntity",
                             text: addPartner.optionLegalEntity,
                             attributes: {
-                              required: true
-                            }
+                                required: true
+                            } if kind == "limited-partner"
                         },
                         {
                             value: "no",
                             text: i18n.yesAndNo.no,
                             attributes: {
-                              required: true
-                            }
+                                required: true
+                            } if kind == "limited-partner"
                         }
                     ]
+                    
                 }) }}
 
                 {{ govukButton({
