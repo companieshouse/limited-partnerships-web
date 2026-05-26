@@ -183,7 +183,8 @@ describe("Add Person With Significant Control Other registrable person Page", ()
 
     it.each([
       ["legal_entity_name", "legalEntityNameInvalid"],
-      ["legal_form", "legalFormInvalid"]
+      ["legal_form", "legalFormInvalid"],
+      ["governing_law", "governingLawInvalid"]
     ])(
       "should show an invalid-characters error when %s contains disallowed characters",
       async (field: string, errorKey: string) => {

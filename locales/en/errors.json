@@ -106,7 +106,8 @@
                 "legalFormMissing": "Enter the legal form or corporate identity",
                 "legalFormInvalid": "Legal form or corporate identity must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
 
-                "governingLawMissing": "Enter the governing law"
+                "governingLawMissing": "Enter the governing law",
+                "governingLawInvalid": "Governing law must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes"
             },
             "addIndividualPerson": {
                 "consentCheckedMissing": "Confirm that this person knows their details are being supplied as part of this application",

@@ -50,6 +50,8 @@ export default class OtherRegistrablePscValidator {
   private validateGoverningLaw(uiErrors: UIErrors): void {
     if (!this.governing_law?.trim()) {
       uiErrors.setWebError(GOVERNING_LAW_FIELD, this.errorMessages?.governingLawMissing);
+    } else {
+      containsInvalidCharacters(this.governing_law, GOVERNING_LAW_FIELD, uiErrors, this.errorMessages?.governingLawInvalid);
     }
   }
 };
