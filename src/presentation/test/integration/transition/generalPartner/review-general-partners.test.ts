@@ -2,6 +2,8 @@ import request from "supertest";
 
 import enTranslationText from "../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../locales/cy/translations.json";
+import enErrorsTranslationText from "../../../../../../locales/en/errors.json";
+import cyErrorsTranslationText from "../../../../../../locales/cy/errors.json";
 
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
@@ -13,7 +15,7 @@ import {
   REVIEW_GENERAL_PARTNERS_URL,
   REVIEW_LIMITED_PARTNERS_URL
 } from "../../../../controller/transition/url";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
+import { getUrl, setLocalesEnabled, testTranslations, countOccurrences } from "../../../utils";
 import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
 import TransitionPageType from "../../../../controller/transition/PageType";
 import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
@@ -114,7 +116,7 @@ describe("Review General Partners Page", () => {
     it("should redirect to the Add General Partner Person", async () => {
       const res = await request(app).post(URL).send({
         pageType: TransitionPageType.reviewGeneralPartners,
-        addAnotherPartner: "addPerson"
+        add_another_partner: "addPerson"
       });
 
       expect(res.status).toBe(302);
@@ -124,18 +126,34 @@ describe("Review General Partners Page", () => {
     it("should redirect to the Add General Partner Legal Entity", async () => {
       const res = await request(app).post(URL).send({
         pageType: TransitionPageType.reviewGeneralPartners,
-        addAnotherPartner: "addLegalEntity"
+        add_another_partner: "addLegalEntity"
       });
 
       expect(res.status).toBe(302);
       expect(res.headers.location).toContain(getUrl(ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL));
     });
 
+    it.each([
+      ["en", enErrorsTranslationText],
+      ["cy", cyErrorsTranslationText]
+    ])("%s: should trigger GDS validation error when no option is selected", async (lang, errors) => {
+      setLocalesEnabled(true);
+
+      const res = await request(app).post(URL + `?lang=${lang}`).send({
+        pageType: TransitionPageType.reviewGeneralPartners
+      });
+
+      const errorMessage = errors.errorMessages.reviewPartners.generalPartner;
+
+      expect (res.status).toBe(200);
+      expect(countOccurrences(res.text, errorMessage)).toBe(2);
+    });
+
     describe("Selecting no more general partners", () => {
       it("should redirect to the limited partners page - no LPs", async () => {
         const res = await request(app).post(URL).send({
           pageType: TransitionPageType.reviewGeneralPartners,
-          addAnotherPartner: "no"
+          add_another_partner: "no"
         });
 
         expect(res.status).toBe(302);
@@ -149,7 +167,7 @@ describe("Review General Partners Page", () => {
 
         const res = await request(app).post(URL).send({
           pageType: TransitionPageType.reviewGeneralPartners,
-          addAnotherPartner: "no"
+          add_another_partner: "no"
         });
 
         expect(res.status).toBe(302);
@@ -164,7 +182,7 @@ describe("Review General Partners Page", () => {
 
         const res = await request(app).post(URL).send({
           pageType: TransitionPageType.reviewGeneralPartners,
-          addAnotherPartner: "no"
+          add_another_partner: "no"
         });
 
         expect(res.status).toBe(200);
@@ -182,7 +200,7 @@ describe("Review General Partners Page", () => {
 
         const res = await request(app).post(URL).send({
           pageType: TransitionPageType.reviewGeneralPartners,
-          addAnotherPartner: "addPerson"
+          add_another_partner: "addPerson"
         });
 
         expect(res.status).toBe(200);
@@ -200,7 +218,7 @@ describe("Review General Partners Page", () => {
 
         const res = await request(app).post(URL).send({
           pageType: TransitionPageType.reviewGeneralPartners,
-          addAnotherPartner: "addLegalEntity"
+          add_another_partner: "addLegalEntity"
         });
 
         expect(res.status).toBe(200);

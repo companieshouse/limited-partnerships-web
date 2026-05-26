@@ -15,6 +15,10 @@
             "limitedPartner": "WELSH - Select whether the limited partner is a person or legal entity"
         },
 
+        "reviewPartners":{
+            "generalPartner": "WELSH - Select if you need to add another general partner"
+        },
+
         "address": {
             "chooseAddress": {
                 "selectionRequired": "WELSH - Select an address from the list"
