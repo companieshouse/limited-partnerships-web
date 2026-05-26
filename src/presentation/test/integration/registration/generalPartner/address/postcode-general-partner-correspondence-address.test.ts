@@ -55,6 +55,7 @@ describe("Postcode general partner's correspondence address page", () => {
         "principalPlaceOfBusiness",
         "usualResidentialAddress",
         "principalOfficeAddress",
+        "personWithSignificantControl",
         "errorMessages"
       ]);
       expect(res.text).not.toContain("WELSH -");
@@ -86,6 +87,7 @@ describe("Postcode general partner's correspondence address page", () => {
         "principalPlaceOfBusiness",
         "usualResidentialAddress",
         "principalOfficeAddress",
+        "personWithSignificantControl",
         "errorMessages"
       ]);
       expect(res.text).toContain("WELSH -");
