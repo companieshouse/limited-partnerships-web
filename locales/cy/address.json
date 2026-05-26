@@ -35,6 +35,11 @@
                 "title": "WELSH - Choose the PSC's usual residential address",
                 "publicRegisterInformationLine1": "WELSH - We'll show the PSC's country/state of residence on the public register.",
                 "publicRegisterInformationLine2": "WELSH - We will not show the PSC's full usual residential address on the public register."
+            },
+            "personWithSignificantControlCorrespondenceAddress": {
+                "title": "WELSH - Choose the PSC's correspondence address",
+                "titleHint": "WELSH - This is also known as the service address. It should not be a home address, unless the PSC has given permission for their home address to be made public.",
+                "publicRegisterInformationLine1": "WELSH - We'll show the PSC's correspondence address on the public register."
             }
         },
 
@@ -76,6 +81,10 @@
                 "title": "WELSH - Confirm the PSC's usual residential address",
                 "publicRegisterLine1": "WELSH - We'll show the PSC's country/state of residence on the public register.",
                 "publicRegisterLine2": "WELSH - We will not show the PSC's full usual residential address on the public register."
+            },
+            "personWithSignificantControlCorrespondenceAddress": {
+                "title": "WELSH - Confirm the PSC's correspondence address",
+                "publicRegisterLine1": "WELSH - We'll show the PSC's correspondence address on the public register."
             }
         },
 
@@ -135,6 +144,12 @@
                     "hint": "WELSH - This address cannot be a PO box, DX or LP (Legal Post in Scotland) number.",
                     "publicRegisterLine1": "WELSH - We'll show the PSC's country/state of residence on the public register.",
                     "publicRegisterLine2": "WELSH - We will not show the PSC's full usual residential address on the public register.",
+                    "postcodeOptional": "WELSH - Postcode (optional)"
+                },
+                "correspondenceAddress": {
+                    "title": "WELSH - What is the PSC's correspondence address?",
+                    "titleHint": "WELSH - This is also known as the service address. It should not be a home address, unless the PSC has given permission for their home address to be made public.",
+                    "publicInformationLine1": "WELSH - We'll show the PSC's correspondence address on the public register.",
                     "postcodeOptional": "WELSH - Postcode (optional)"
                 }
             },
@@ -209,6 +224,11 @@
                     "hint": "WELSH - This address cannot be a PO box, DX or LP (Legal Post in Scotland) number.",
                     "publicRegisterLine1": "WELSH - We'll show the PSC's country/state of residence on the public register.",
                     "publicRegisterLine2": "WELSH - We will not show the PSC's full usual residential address on the public register."
+                },
+                "correspondenceAddress": {
+                    "whatIsCorrespondenceAddress": "WELSH - What is the PSC's correspondence address?",
+                    "titleHint": "WELSH - This is also known as the service address. It should not be a home address, unless the PSC has given permission for their home address to be made public.",
+                    "publicRegisterLine1": "WELSH - We'll show the PSC's correspondence address on the public register."
                 }
             },
 
@@ -264,6 +284,11 @@
                 "titleHint": "WELSH - This address cannot be a PO box, DX or LP (Legal Post in Scotland) number.",
                 "publicRegisterInformationLine1": "WELSH - We'll show the PSC's country/state of residence on the public register.",
                 "publicRegisterInformationLine2": "WELSH - We will not show the PSC's full usual residential address on the public register."
+            },
+            "personWithSignificantControlCorrespondenceAddress": {
+                "title": "WELSH - Where is the PSC's correspondence address?",
+                "titleHint": "WELSH - This is also known as the service address. It should not be a home address, unless the PSC has given permission for their home address to be made public.",
+                "publicRegisterInformationLine1": "WELSH - We'll show the PSC's correspondence address on the public register."
             }
         },
 
