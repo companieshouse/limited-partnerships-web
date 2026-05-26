@@ -302,6 +302,11 @@ abstract class PartnerController extends AbstractController {
           );
           return;
         }
+
+        if (!request.body.add_another_partner) {
+          return await this.renderReviewPartnersPageWithError(request, response, generalPartners);
+        }
+
         const redirectUrl = await this.handleReviewPageRedirection(request, partner, urls);
 
         response.redirect(redirectUrl);
@@ -324,7 +329,7 @@ abstract class PartnerController extends AbstractController {
   ) {
     const { ids, pageRouting, tokens } = this.extractJourneyRequestData(request);
     const journeyTypes = getJourneyTypes(pageRouting.currentUrl);
-    const addAnotherPartner = request.body.addAnotherPartner;
+    const addAnotherPartner = request.body.add_another_partner;
 
     if (addAnotherPartner === "no") {
       if (partner === PartnerType.generalPartner) {
@@ -775,6 +780,7 @@ abstract class PartnerController extends AbstractController {
       };
     }
   }
+
   protected async renderPartnerChoicePageWithError(request: Request, response: Response) {
 
     const { ids, pageRouting, tokens, pageType } = this.extractRequestData(request);
@@ -796,6 +802,23 @@ abstract class PartnerController extends AbstractController {
       super.makeProps(pageRouting, { limitedPartnership, generalPartner, limitedPartner }, uiErrors)
     );
 
+  }
+
+  protected async renderReviewPartnersPageWithError(request: Request, response: Response, generalPartners: GeneralPartner[]) {
+    const { ids, pageRouting, tokens, pageType } = this.extractRequestData(request);
+    const { limitedPartnership } = await this.getEntities(tokens, ids);
+
+    let errorMessage = "";
+    if (pageType === RegistrationPageType.reviewGeneralPartners || pageType === TransitionPageType.reviewGeneralPartners) {
+      errorMessage = response.locals.i18n.errorMessages.reviewPartners.generalPartner;
+    }
+
+    const uiErrors = new UIErrors().setWebError("add_another_partner", errorMessage);
+
+    return response.render(
+      super.templateName(pageRouting.currentUrl),
+      super.makeProps(pageRouting, { limitedPartnership, generalPartners }, uiErrors)
+    );
   }
 }
 
