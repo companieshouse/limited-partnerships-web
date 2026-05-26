@@ -340,6 +340,7 @@ class LimitedPartnershipController extends PartnershipController {
   redirectAndCacheSelection() {
     return (request: Request, response: Response, next: NextFunction) => {
       try {
+        this.limitedPartnershipService.setI18n(response.locals.i18n);
         const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
@@ -350,7 +351,7 @@ class LimitedPartnershipController extends PartnershipController {
         if (uiErrors.hasErrors()) {
           return response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, {}, uiErrors)
+            super.makeProps(pageRouting, { limitedPartnership: { data: request.body } }, uiErrors)
           );
         }
 

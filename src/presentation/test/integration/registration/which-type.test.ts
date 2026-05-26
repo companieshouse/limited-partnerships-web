@@ -19,7 +19,7 @@ import {
   APPLICATION_CACHE_KEY_PREFIX_REGISTRATION,
   SERVICE_NAME_REGISTRATION
 } from "../../../../config/constants";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
+import { expectErrorSummaryAndInlineError, getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import LimitedPartnershipBuilder from "../../../../presentation/test/builder/LimitedPartnershipBuilder";
 
 describe("Which type Page", () => {
@@ -134,7 +134,7 @@ describe("Which type Page", () => {
     ["English", "en", enTranslationText, enErrorMessages],
     ["Welsh", "cy", cyTranslationText, cyErrorMessages]
   ])(
-    "should re-render the page with an error summary in %s when no partnership type is selected",
+    "should re-render the page with an error summary and inline error in %s when no partnership type is selected",
     async (
       _description: string,
       lang: string,
@@ -149,15 +149,16 @@ describe("Which type Page", () => {
           pageType: RegistrationPageType.partnershipType
         });
 
+      const message = errorMessages.errorMessages.limitedPartnership.partnershipType.typeRequired;
+
       expect(res.status).toBe(200);
-      expect(res.text).toContain(errorMessages.errorMessages.limitedPartnership.partnershipType.typeRequired);
-      expect(res.text).toContain('href="#partnership_type"');
       expect(res.text).toContain(translationText.govUk.error.title);
+      expectErrorSummaryAndInlineError(res.text, "partnership_type", message);
       expect(appDevDependencies.cacheRepository.cache).toBeNull();
     }
   );
 
-  it("should re-render the page with an error summary when an invalid partnership type is submitted", async () => {
+  it("should re-render the page with an error summary and inline error when an invalid partnership type is submitted", async () => {
     setLocalesEnabled(true);
 
     const res = await request(app)
@@ -167,9 +168,10 @@ describe("Which type Page", () => {
         partnership_type: "INVALID"
       });
 
+    const message = enErrorMessages.errorMessages.limitedPartnership.partnershipType.typeRequired;
+
     expect(res.status).toBe(200);
-    expect(res.text).toContain(enErrorMessages.errorMessages.limitedPartnership.partnershipType.typeRequired);
-    expect(res.text).toContain('href="#partnership_type"');
+    expectErrorSummaryAndInlineError(res.text, "partnership_type", message);
     expect(appDevDependencies.cacheRepository.cache).toBeNull();
   });
 });
