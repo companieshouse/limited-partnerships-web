@@ -103,7 +103,8 @@
                 "legalFormMissing": "WELSH - Enter the legal form or corporate identity",
                 "legalFormInvalid": "WELSH - Legal form or corporate identity must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
 
-                "governingLawMissing": "WELSH - Enter the governing law"
+                "governingLawMissing": "WELSH - Enter the governing law",
+                "governingLawInvalid": "WELSH - Governing law must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes"
             },
             "addIndividualPerson": {
                 "consentCheckedMissing": "WELSH - Confirm that this person knows their details are being supplied as part of this application",
