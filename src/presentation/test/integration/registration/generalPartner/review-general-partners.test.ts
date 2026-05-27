@@ -142,7 +142,7 @@ describe("Review General Partners Page", () => {
 
       const errorMessage = errors.errorMessages.reviewPartners.generalPartner;
 
-      expect (res.status).toBe(200);
+      expect(res.status).toBe(200);
       expect(countOccurrences(res.text, errorMessage)).toBe(2);
     });
 

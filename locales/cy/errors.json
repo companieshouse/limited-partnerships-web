@@ -16,7 +16,8 @@
         },
 
         "reviewPartners":{
-            "generalPartner": "WELSH - Select if you need to add another general partner"
+            "generalPartner": "WELSH - Select if you need to add another general partner",
+            "limitedPartner": "WELSH - Select if you need to add another limited partner"
         },
 
         "address": {

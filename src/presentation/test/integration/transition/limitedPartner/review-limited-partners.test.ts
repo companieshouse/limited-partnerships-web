@@ -2,6 +2,8 @@ import request from "supertest";
 
 import enTranslationText from "../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../locales/cy/translations.json";
+import enErrorsTranslationText from "../../../../../../locales/en/errors.json";
+import cyErrorsTranslationText from "../../../../../../locales/cy/errors.json";
 
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
@@ -12,7 +14,7 @@ import {
   LIMITED_PARTNERS_URL,
   REVIEW_LIMITED_PARTNERS_URL
 } from "../../../../controller/transition/url";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
+import { getUrl, setLocalesEnabled, testTranslations, countOccurrences } from "../../../utils";
 import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
 import RegistrationPageType from "../../../../controller/transition/PageType";
 
@@ -182,6 +184,22 @@ describe("Review Limited Partners Page", () => {
       expect(res.text).toContain(
         `You must provide all information for ${limitedPartnerLegalEntity?.data?.legal_entity_name} before continuing. Select Change to provide more information`
       );
+    });
+
+    it.each([
+      ["en", enErrorsTranslationText],
+      ["cy", cyErrorsTranslationText]
+    ])("%s: should trigger GDS validation error when no option is selected", async (lang, errors) => {
+      setLocalesEnabled(true);
+
+      const res = await request(app).post(URL + `?lang=${lang}`).send({
+        pageType: RegistrationPageType.reviewLimitedPartners
+      });
+
+      const errorMessage = errors.errorMessages.reviewPartners.limitedPartner;
+
+      expect(res.status).toBe(200);
+      expect(countOccurrences(res.text, errorMessage)).toBe(2);
     });
   });
 });
