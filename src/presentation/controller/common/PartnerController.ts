@@ -304,7 +304,7 @@ abstract class PartnerController extends AbstractController {
         }
 
         if (!request.body.add_another_partner) {
-          return await this.renderReviewPartnersPageWithError(request, response, generalPartners);
+          return await this.renderReviewPartnersPageWithError(request, response, generalPartners, limitedPartners);
         }
 
         const redirectUrl = await this.handleReviewPageRedirection(request, partner, urls);
@@ -804,20 +804,22 @@ abstract class PartnerController extends AbstractController {
 
   }
 
-  protected async renderReviewPartnersPageWithError(request: Request, response: Response, generalPartners: GeneralPartner[]) {
+  protected async renderReviewPartnersPageWithError(request: Request, response: Response, generalPartners: GeneralPartner[], limitedPartners: LimitedPartner[]) {
     const { ids, pageRouting, tokens, pageType } = this.extractRequestData(request);
     const { limitedPartnership } = await this.getEntities(tokens, ids);
 
     let errorMessage = "";
     if (pageType === RegistrationPageType.reviewGeneralPartners || pageType === TransitionPageType.reviewGeneralPartners) {
       errorMessage = response.locals.i18n.errorMessages.reviewPartners.generalPartner;
+    } else if (pageType === RegistrationPageType.reviewLimitedPartners || pageType === TransitionPageType.reviewLimitedPartners) {
+      errorMessage = response.locals.i18n.errorMessages.reviewPartners.limitedPartner;
     }
 
     const uiErrors = new UIErrors().setWebError("add_another_partner", errorMessage);
 
     return response.render(
       super.templateName(pageRouting.currentUrl),
-      super.makeProps(pageRouting, { limitedPartnership, generalPartners }, uiErrors)
+      super.makeProps(pageRouting, { limitedPartnership, generalPartners, limitedPartners }, uiErrors)
     );
   }
 }
