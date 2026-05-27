@@ -43,6 +43,10 @@ class LimitedPartnershipService {
     return this.limitedPartnershipValidator.set(data, this.i18n).runTermValidation();
   }
 
+  runEmailValidation(data: Record<string, any>): UIErrors {
+    return this.limitedPartnershipValidator.set(data, this.i18n).runEmailValidation();
+  }
+
   async createLimitedPartnership(
     opt: { access_token: string; refresh_token: string },
     transactionId: string,

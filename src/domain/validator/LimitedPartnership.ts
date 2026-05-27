@@ -1,5 +1,5 @@
 import { Jurisdiction, NameEndingType, PartnershipType, Term } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
-import { VALID_CHARACTERS_REGEX } from "../../config/constants";
+import { EMAIL_REGEX, VALID_CHARACTERS_REGEX } from "../../config/constants";
 import UIErrors from "../entities/UIErrors";
 
 class LimitedPartnershipValidator {
@@ -8,6 +8,7 @@ class LimitedPartnershipValidator {
   private name_ending?: NameEndingType;
   private jurisdiction?: Jurisdiction;
   private term?: Term;
+  private email?: string;
 
   private errorMessages: Record<string, any> = {};
 
@@ -17,6 +18,7 @@ class LimitedPartnershipValidator {
     this.name_ending = data.name_ending;
     this.jurisdiction = data.jurisdiction;
     this.term = data.term;
+    this.email = data.email;
 
     this.errorMessages = i18n?.errorMessages?.limitedPartnership || {};
 
@@ -132,6 +134,41 @@ class LimitedPartnershipValidator {
     if (!this.term) {
       uiErrors.setWebError("term", this.errorMessages?.term?.termRequired);
     }
+    return uiErrors;
+  }
+
+  // Email
+  public runEmailValidation(): UIErrors {
+    const uiErrors = new UIErrors();
+
+    this.emailEmpty(uiErrors);
+    this.isValidEmail(uiErrors);
+
+    return uiErrors;
+  }
+
+  private emailEmpty(uiErrors: UIErrors): UIErrors {
+    if (!this.email?.trim()) {
+      uiErrors.setWebError("email", this.errorMessages?.email?.emailRequired);
+    }
+    return uiErrors;
+  }
+
+  private isValidEmail(uiErrors: UIErrors): UIErrors {
+    const email = this.email?.trim() ?? "";
+
+    if (!email) {
+      return uiErrors;
+    }
+
+    // Reject the malformed/oversized addresses the API rejects: local part > 64, domain label > 63 (regex), total > 255.
+    const localPart = email.split("@")[0];
+    const isValid = email.length <= 255 && localPart.length <= 64 && EMAIL_REGEX.test(email);
+
+    if (!isValid) {
+      uiErrors.setWebError("email", this.errorMessages?.email?.emailInvalid);
+    }
+
     return uiErrors;
   }
 }

@@ -97,6 +97,10 @@
             },
             "term": {
                 "termRequired": "WELSH - Select the term of the partnership"
+            },
+            "email": {
+                "emailRequired": "WELSH - Enter the registered email address for the partnership",
+                "emailInvalid": "WELSH - Enter an email address in the correct format, like name@example.com"
             }
         },
 
