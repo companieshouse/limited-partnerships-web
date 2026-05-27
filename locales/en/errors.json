@@ -16,7 +16,8 @@
         },
 
         "reviewPartners":{
-            "generalPartner": "Select if you need to add another general partner"
+            "generalPartner": "Select if you need to add another general partner",
+            "limitedPartner": "Select if you need to add another limited partner"
         },
 
         "address": {

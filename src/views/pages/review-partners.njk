@@ -126,24 +126,15 @@
                     items: [
                         {
                             value: "addPerson",
-                            text: addPartner.optionPerson,
-                            attributes: {
-                             required: true
-                            } if kind == "limited-partner"
+                            text: addPartner.optionPerson
                         },
                         {
                             value: "addLegalEntity",
-                            text: addPartner.optionLegalEntity,
-                            attributes: {
-                                required: true
-                            } if kind == "limited-partner"
+                            text: addPartner.optionLegalEntity
                         },
                         {
                             value: "no",
-                            text: i18n.yesAndNo.no,
-                            attributes: {
-                                required: true
-                            } if kind == "limited-partner"
+                            text: i18n.yesAndNo.no
                         }
                     ]
                     
