@@ -95,6 +95,10 @@
             },
             "term": {
                 "termRequired": "Select the term of the partnership"
+            },
+            "email": {
+                "emailRequired": "Enter the registered email address for the partnership",
+                "emailInvalid": "Enter an email address in the correct format, like name@example.com"
             }
         },
 

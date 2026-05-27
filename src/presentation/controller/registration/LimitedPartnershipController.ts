@@ -429,7 +429,8 @@ class LimitedPartnershipController extends PartnershipController {
       [RegistrationPageType.partnershipType, () => this.limitedPartnershipService.runPartnershipTypeValidation(request.body)],
       [RegistrationPageType.partnershipName, () => this.limitedPartnershipService.runNameValidation(request.body)],
       [RegistrationPageType.jurisdiction, () => this.limitedPartnershipService.runJurisdictionValidation(request.body)],
-      [RegistrationPageType.term, () => this.limitedPartnershipService.runTermValidation(request.body)]
+      [RegistrationPageType.term, () => this.limitedPartnershipService.runTermValidation(request.body)],
+      [RegistrationPageType.email, () => this.limitedPartnershipService.runEmailValidation(request.body)]
     ]);
 
     const validator = pageTypeValidatorMap.get(pageType);
