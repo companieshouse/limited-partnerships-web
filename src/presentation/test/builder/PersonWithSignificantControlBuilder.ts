@@ -103,6 +103,11 @@ class PersonWithSignificantControlBuilder {
     return this;
   }
 
+  withServiceAddress(address: Record<string, any>) {
+    this.data.service_address = address;
+    return this;
+  }
+
   isIndividualPerson() {
     this.data = {
       ...this.data,

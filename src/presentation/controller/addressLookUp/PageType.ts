@@ -106,6 +106,7 @@ export const MANUAL_PAGES: Set<PageType | PageDefault> = new Set([
   AddressPageType.enterPersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
   AddressPageType.enterPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress,
   AddressPageType.enterPersonWithSignificantControlIndividualPersonUsualResidentialAddress,
+  AddressPageType.enterPersonWithSignificantControlIndividualPersonCorrespondenceAddress
 ]);
 
 export const isManualAddressPageType = (pageType: string): boolean => {
@@ -122,7 +123,8 @@ export const CHOOSE_PAGES: Set<PageType | PageDefault> = new Set([
   AddressPageType.chooseLimitedPartnerPrincipalOfficeAddress,
   AddressPageType.choosePersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
   AddressPageType.choosePersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress,
-  AddressPageType.choosePersonWithSignificantControlIndividualPersonUsualResidentialAddress
+  AddressPageType.choosePersonWithSignificantControlIndividualPersonUsualResidentialAddress,
+  AddressPageType.choosePersonWithSignificantControlIndividualPersonCorrespondenceAddress
 ]);
 
 export const GENERAL_PARTNER_PAGES: Set<PageType | PageDefault> = new Set([
@@ -175,7 +177,13 @@ export const PERSON_WITH_SIGNIFICANT_CONTROL_PAGES: Set<PageType | PageDefault> 
   AddressPageType.postcodePersonWithSignificantControlIndividualPersonUsualResidentialAddress,
   AddressPageType.enterPersonWithSignificantControlIndividualPersonUsualResidentialAddress,
   AddressPageType.choosePersonWithSignificantControlIndividualPersonUsualResidentialAddress,
-  AddressPageType.confirmPersonWithSignificantControlIndividualPersonUsualResidentialAddress
+  AddressPageType.confirmPersonWithSignificantControlIndividualPersonUsualResidentialAddress,
+
+  AddressPageType.territoryChoicePersonWithSignificantControlIndividualPersonCorrespondenceAddress,
+  AddressPageType.postcodePersonWithSignificantControlIndividualPersonCorrespondenceAddress,
+  AddressPageType.enterPersonWithSignificantControlIndividualPersonCorrespondenceAddress,
+  AddressPageType.choosePersonWithSignificantControlIndividualPersonCorrespondenceAddress,
+  AddressPageType.confirmPersonWithSignificantControlIndividualPersonCorrespondenceAddress
 ]);
 
 export const isConfirmLimitedPartnershipAddressPageType = (pageType: string): boolean => {
@@ -204,7 +212,8 @@ export const isConfirmPersonWithSignificantControlAddressPageType = (pageType: s
   return [
     AddressPageType.confirmPersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
     AddressPageType.confirmPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress,
-    AddressPageType.confirmPersonWithSignificantControlIndividualPersonUsualResidentialAddress
+    AddressPageType.confirmPersonWithSignificantControlIndividualPersonUsualResidentialAddress,
+    AddressPageType.confirmPersonWithSignificantControlIndividualPersonCorrespondenceAddress
   ].includes(pageType as AddressPageType);
 };
 

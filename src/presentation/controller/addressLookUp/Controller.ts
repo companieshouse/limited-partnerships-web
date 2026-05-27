@@ -44,7 +44,7 @@ import GeneralPartnerService from "../../../application/service/GeneralPartnerSe
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
 import PersonWithSignificantControlService from "../../../application/service/PersonWithSignificantControlService";
 
-import { CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL } from "./url/registration";
+import { CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_CORRESPONDENCE_ADDRESS_URL, CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL } from "./url/registration";
 import { REVIEW_GENERAL_PARTNERS_URL } from "../registration/url";
 import {
   UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL,
@@ -681,6 +681,18 @@ class AddressLookUpController extends AbstractController {
         ids.transactionId,
         ids.submissionId
       );
+    }
+
+    if (pageRouting.pageType === AddressLookUpPageType.confirmPersonWithSignificantControlIndividualPersonUsualResidentialAddress) {
+      const personWithSignificantControl = await this.personWithSignificantControlService.getPersonWithSignificantControl(
+        tokens,
+        ids.transactionId,
+        ids.personWithSignificantControlId
+      );
+      if (personWithSignificantControl?.data?.service_address) {
+        pageRouting.nextUrl = super.insertIdsInUrl(CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_CORRESPONDENCE_ADDRESS_URL, ids, request.url);
+        return;
+      }
     }
 
     if (pageRouting.pageType === AddressLookUpPageType.confirmRegisteredOfficeAddress) {
