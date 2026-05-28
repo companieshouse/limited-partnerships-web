@@ -1,3 +1,4 @@
+import { DATE_OF_BIRTH_FIELD } from "../../config";
 import UIErrors from "../entities/UIErrors";
 
 export type DateErrorMessages = {
@@ -11,7 +12,39 @@ export type DateErrorMessages = {
   dayInvalidLength: string;
   monthInvalidLength: string;
   yearInvalidLength: string;
+  dateInvalidChars: string;
+  dateInvalidDate: string;
+  dateOfBirthNotInPast: string;
 }
+
+export const validateDateOfBirth = (day: string | undefined, month: string | undefined, year: string | undefined, uiErrors: UIErrors, dateErrorMessages: DateErrorMessages) => {
+  const safeDobDay = day ?? "";
+  const safeDobMonth = month ?? "";
+  const safeDobYear = year ?? "";
+  const dateOfBirthField = DATE_OF_BIRTH_FIELD;
+
+  if (hasMissingDateFields(safeDobDay, safeDobMonth, safeDobYear, dateOfBirthField, uiErrors, dateErrorMessages)) {
+    return;
+  };
+
+  if (hasInvalidDateFieldLengths(safeDobDay, safeDobMonth, safeDobYear, dateOfBirthField, uiErrors, dateErrorMessages)) {
+    return;
+  }
+
+  if (dateContainsInvalidChars(safeDobDay, safeDobMonth, safeDobYear)) {
+    uiErrors.setWebError(dateOfBirthField, dateErrorMessages?.dateInvalidChars);
+    return;
+  }
+
+  if (!isValidDate(safeDobDay, safeDobMonth, safeDobYear)) {
+    uiErrors.setWebError(dateOfBirthField, dateErrorMessages?.dateInvalidDate);
+    return;
+  }
+
+  if (!isDateInPast(safeDobDay, safeDobMonth, safeDobYear)) {
+    uiErrors.setWebError(dateOfBirthField, dateErrorMessages?.dateOfBirthNotInPast);
+  }
+};
 
 const parseDateParts = (day: string, month: string, year: string): { d: number; m: number; y: number } | null => {
   // months are 0-indexed in JavaScript Date, so we need to subtract 1 from the month

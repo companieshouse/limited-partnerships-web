@@ -1,7 +1,7 @@
 import UIErrors from "../entities/UIErrors";
 import { containsInvalidCharacters, isFieldValueMissing, isFieldValueTooLong } from "./FieldValidators";
-import { dateContainsInvalidChars, DateErrorMessages, hasInvalidDateFieldLengths, hasMissingDateFields, isDateInPast, isValidDate } from "./DateValidators";
-import { CONSENT_CHECKED_FIELD, FORENAME_FIELD, MIDDLE_NAMES_FIELD, NATIONALITY2_FIELD, NATIONALITY1_FIELD, SURNAME_FIELD, DATE_OF_BIRTH_FIELD, TITLE_FIELD, TITLE_OTHER_FIELD } from "../../config";
+import { validateDateOfBirth, DateErrorMessages } from "./DateValidators";
+import { CONSENT_CHECKED_FIELD, FORENAME_FIELD, MIDDLE_NAMES_FIELD, NATIONALITY2_FIELD, NATIONALITY1_FIELD, SURNAME_FIELD, TITLE_FIELD, TITLE_OTHER_FIELD } from "../../config";
 
 type PscFormData = {
   consent_checked?: boolean | string;
@@ -30,8 +30,10 @@ export default class IndividualPscValidator {
   private nationality1?: string;
   private nationality2?: string;
   private consent_checked?: boolean | string;
-  private errorMessages: Record<string, string> = {};
   private titleOtherValue?: string;
+
+  private errorMessages: Record<string, string> = {};
+  private dateErrorMessages: DateErrorMessages = {} as DateErrorMessages;
 
   set(data: PscFormData, i18n: any): this {
     this.title = data.title;
@@ -48,6 +50,21 @@ export default class IndividualPscValidator {
 
     this.errorMessages = i18n?.errorMessages?.personWithSignificantControl?.addIndividualPerson || {};
     this.titleOtherValue = i18n?.personWithSignificantControl?.addPersonWithSignificantControl?.addIndividualPerson?.titles?.other;
+    this.dateErrorMessages = {
+      dateMissing: i18n?.errorMessages?.dateOfBirth?.dateOfBirthMissing,
+      dayMissing: i18n?.errorMessages?.dateOfBirth?.dateOfBirthDayMissing,
+      monthMissing: i18n?.errorMessages?.dateOfBirth?.dateOfBirthMonthMissing,
+      yearMissing: i18n?.errorMessages?.dateOfBirth?.dateOfBirthYearMissing,
+      dayAndMonthMissing: i18n?.errorMessages?.dateOfBirth?.dateOfBirthDayAndMonthMissing,
+      dayAndYearMissing: i18n?.errorMessages?.dateOfBirth?.dateOfBirthDayAndYearMissing,
+      monthAndYearMissing: i18n?.errorMessages?.dateOfBirth?.dateOfBirthMonthAndYearMissing,
+      dayInvalidLength: i18n?.errorMessages?.dateOfBirth?.dateOfBirthDayInvalidLength,
+      monthInvalidLength: i18n?.errorMessages?.dateOfBirth?.dateOfBirthMonthInvalidLength,
+      yearInvalidLength: i18n?.errorMessages?.dateOfBirth?.dateOfBirthYearInvalidLength,
+      dateInvalidChars: i18n?.errorMessages?.dateOfBirth?.dateOfBirthInvalidChars,
+      dateInvalidDate: i18n?.errorMessages?.dateOfBirth?.dateOfBirthInvalidDate,
+      dateOfBirthNotInPast: i18n?.errorMessages?.dateOfBirth?.dateOfBirthNotInPast
+    };
     return this;
   }
 
@@ -59,7 +76,7 @@ export default class IndividualPscValidator {
     this.validateForename(uiErrors);
     this.validateMiddleNames(uiErrors);
     this.validateSurname(uiErrors);
-    this.validateDateOfBirth(uiErrors);
+    validateDateOfBirth(this.date_of_birth_day, this.date_of_birth_month, this.date_of_birth_year, uiErrors, this.dateErrorMessages);
     this.validateNationalities(uiErrors);
     return uiErrors;
   }
@@ -147,45 +164,4 @@ export default class IndividualPscValidator {
     }
   }
 
-  private validateDateOfBirth(uiErrors: UIErrors) {
-    const dateErrorMessages: DateErrorMessages = {
-      dateMissing: this.errorMessages?.dateOfBirthMissing,
-      dayMissing: this.errorMessages?.dateOfBirthDayMissing,
-      monthMissing: this.errorMessages?.dateOfBirthMonthMissing,
-      yearMissing: this.errorMessages?.dateOfBirthYearMissing,
-      dayAndMonthMissing: this.errorMessages?.dateOfBirthDayAndMonthMissing,
-      dayAndYearMissing: this.errorMessages?.dateOfBirthDayAndYearMissing,
-      monthAndYearMissing: this.errorMessages?.dateOfBirthMonthAndYearMissing,
-      dayInvalidLength: this.errorMessages?.dateOfBirthDayInvalidLength,
-      monthInvalidLength: this.errorMessages?.dateOfBirthMonthInvalidLength,
-      yearInvalidLength: this.errorMessages?.dateOfBirthYearInvalidLength
-    };
-
-    const safeDobDay = this.date_of_birth_day ?? "";
-    const safeDobMonth = this.date_of_birth_month ?? "";
-    const safeDobYear = this.date_of_birth_year ?? "";
-    const dateOfBirthField = DATE_OF_BIRTH_FIELD;
-
-    if (hasMissingDateFields(safeDobDay, safeDobMonth, safeDobYear, dateOfBirthField, uiErrors, dateErrorMessages)) {
-      return;
-    };
-
-    if (hasInvalidDateFieldLengths(safeDobDay, safeDobMonth, safeDobYear, dateOfBirthField, uiErrors, dateErrorMessages)) {
-      return;
-    }
-
-    if (dateContainsInvalidChars(safeDobDay, safeDobMonth, safeDobYear)) {
-      uiErrors.setWebError(dateOfBirthField, this.errorMessages?.dateOfBirthInvalidChars);
-      return;
-    }
-
-    if (!isValidDate(safeDobDay, safeDobMonth, safeDobYear)) {
-      uiErrors.setWebError(dateOfBirthField, this.errorMessages?.dateOfBirthInvalidDate);
-      return;
-    }
-
-    if (!isDateInPast(safeDobDay, safeDobMonth, safeDobYear)) {
-      uiErrors.setWebError(dateOfBirthField, this.errorMessages?.dateOfBirthNotInPast);
-    }
-  }
 };

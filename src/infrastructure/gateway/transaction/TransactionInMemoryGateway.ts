@@ -6,10 +6,7 @@ import { ApiResponse } from "@companieshouse/api-sdk-node/dist/services/resource
 import { Transaction } from "@companieshouse/api-sdk-node/dist/services/transaction/types";
 import { IncorporationKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
-import RegistrationPageType from "../../../presentation/controller/registration/PageType";
-import PageType from "../../../presentation/controller/PageType";
 import ITransactionGateway from "../../../domain/ITransactionGateway";
-import TransitionPageType from "../../../presentation/controller/transition/PageType";
 import { SERVICE_NAME_REGISTRATION, SERVICE_NAME_TRANSITION } from "../../../config/constants";
 import TransactionBuilder from "../../../presentation/test/builder/TransactionBuilder";
 import { Tokens } from "../../../domain/types";

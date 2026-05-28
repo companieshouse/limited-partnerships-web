@@ -31,9 +31,9 @@
   {% set date_effective_from_day = props.data.limitedPartner.data["date_effective_from-day"] %}
 {% endif %}
 
-{% if props.data.limitedPartner.data.previousName is defined %}
+{% if props.data.limitedPartner.data.previous_name is defined %}
   {# If previousName is already set (e.g. after a validation error), use that value #}
-  {% set previousNames = props.data.limitedPartner.data.previousName %}
+  {% set previousNames = props.data.limitedPartner.data.previous_name %}
 {% elif props.data.limitedPartner.data.former_names %}
   {% set previousNames = "true" %}
 {% elseif props.data.limitedPartner.data.forename %}
@@ -76,7 +76,8 @@
 
         {{ govukRadios({
           classes: "govuk-radios",
-          name: "previousName",
+          name: "previous_name",
+          idPrefix: "previous_name",
           value: previousNames,
           fieldset: {
             legend: {
@@ -93,8 +94,6 @@
             {
               value: "true",
               text: i18n.addPartnerPersonPage.limitedPartner.previousName.yes,
-              id: "previousNameYes",
-              name: "previousNameYes",
               attributes: {
                 required: true,
                 "role": "radiogroup"
@@ -106,8 +105,6 @@
             {
               value: "false",
               text: i18n.addPartnerPersonPage.limitedPartner.previousName.no,
-              id: "previousNameNo",
-              name: "previousNameNo",
               attributes: {
                 required: true
               }

@@ -98,6 +98,44 @@
             }
         },
 
+        "dateOfBirth": {
+            "dateOfBirthMissing": "Enter their date of birth",
+            "dateOfBirthDayMissing": "Date of birth must include a day",
+            "dateOfBirthMonthMissing": "Date of birth must include a month",
+            "dateOfBirthYearMissing": "Date of birth must include a year",
+            "dateOfBirthDayAndMonthMissing": "Date of birth must include a day and a month",
+            "dateOfBirthMonthAndYearMissing": "Date of birth must include a month and a year",
+            "dateOfBirthDayAndYearMissing": "Date of birth must include a day and a year",
+            "dateOfBirthInvalidChars": "Date of birth must only include numbers",
+            "dateOfBirthInvalidDate": "Date of birth must be a real date",
+            "dateOfBirthNotInPast": "Date of birth must be in the past",
+            "dateOfBirthDayInvalidLength": "Day must be 1 or 2 numbers",
+            "dateOfBirthMonthInvalidLength": "Month must be 1 or 2 numbers",
+            "dateOfBirthYearInvalidLength": "Year must be 4 numbers"
+        },
+
+        "partners": {
+             "addPartner": {
+                "firstNameMissing": "Enter their first name",
+                "firstNameInvalid": "First name must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "firstNameTooLong": "First name must be 50 characters or less",
+
+                "lastNameMissing": "Enter their last name",
+                "lastNameInvalid": "Last name must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "lastNameTooLong": "Last name must be 160 characters or less",
+
+                "previousNameNotSelected": "Select yes if the partner has a previous name",
+
+                "formerNamesMissing": "Enter the partner's previous name",
+                "formerNamesInvalid": "Previous name must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "formerNamesTooLong": "Previous name must be 160 characters or less",
+
+                "nationality1Missing": "Select the partner's nationality",
+                "nationality2Same": "Second nationality must be different from the first",
+                "disqualificationStatementMissingGeneralPartner": "Confirm that the general partner is not disqualified"
+             }
+        },
+
         "personWithSignificantControl": {
             "addOtherRegistrablePerson": {
                 "legalEntityNameMissing": "Enter the other registrable person's name",
@@ -129,20 +167,6 @@
                 "lastNameMissing": "Enter their last name",
                 "lastNameInvalid": "Last name must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
                 "lastNameTooLong": "Last name must be 160 characters or less",
-
-                "dateOfBirthMissing": "Enter their date of birth",
-                "dateOfBirthDayMissing": "Date of birth must include a day",
-                "dateOfBirthMonthMissing": "Date of birth must include a month",
-                "dateOfBirthYearMissing": "Date of birth must include a year",
-                "dateOfBirthDayAndMonthMissing": "Date of birth must include a day and a month",
-                "dateOfBirthMonthAndYearMissing": "Date of birth must include a month and a year",
-                "dateOfBirthDayAndYearMissing": "Date of birth must include a day and a year",
-                "dateOfBirthInvalidChars": "Date of birth must only include numbers",
-                "dateOfBirthInvalidDate": "Date of birth must be a real date",
-                "dateOfBirthNotInPast": "Date of birth must be in the past",
-                "dateOfBirthDayInvalidLength": "Day must be 1 or 2 numbers",
-                "dateOfBirthMonthInvalidLength": "Month must be 1 or 2 numbers",
-                "dateOfBirthYearInvalidLength": "Year must be 4 numbers",
                 
                 "nationality1Missing": "Select their nationality",
                 "nationality2Same": "Second nationality must be different from the first"

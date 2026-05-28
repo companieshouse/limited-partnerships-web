@@ -18,7 +18,7 @@
         checked: props.data.generalPartner.data.not_disqualified_statement_checked,
         attributes: {
           required: true
-        }
+        } if not partnerType or not partnerType == "generalPartnerPerson" or not journeyTypes.isRegistration
       }
     ]
 }) }}

@@ -106,13 +106,13 @@ export const validateAndFormatPartnerCeaseDate = (data: Record<string, any>) => 
 };
 
 export const resetFormerNamesIfPreviousNameIsFalse = (data: Record<string, any>) => {
-  if (data?.former_names && data?.previousName === "false") {
+  if (data?.former_names && data?.previous_name === "false") {
     data.former_names = "";
   }
 };
 
 export const validateFormerNamesNotEmptyIfPreviousNameIsTrue = (data: Record<string, any>, partnerType: string) => {
-  if (data?.previousName === "true" && (!data?.former_names || data?.former_names.trim() === "")) {
+  if (data?.previous_name === "true" && (!data?.former_names || data?.former_names.trim() === "")) {
     const uiErrors = new UIErrors();
     uiErrors.formatValidationErrorToUiErrors({
       errors: {

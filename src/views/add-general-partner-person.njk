@@ -10,7 +10,7 @@
   {% set date_of_birth_year = date_of_birth[0] + date_of_birth[1] + date_of_birth[2] + date_of_birth[3] %}
   {% set date_of_birth_month = date_of_birth[5] + date_of_birth[6] %}
   {% set date_of_birth_day = date_of_birth[8] + date_of_birth[9] %}
-{% elif props.data.generalPartner.data["date_of_birth-year"] %}
+{% elif props.data.generalPartner.data["date_of_birth-year"]  or props.data.generalPartner.data["date_of_birth-month"]  or props.data.generalPartner.data["date_of_birth-day"] %}
   {# And this covers the scenario when date validation fails and the page reloads #}
   {% set date_of_birth_year = props.data.generalPartner.data["date_of_birth-year"] %}
   {% set date_of_birth_month = props.data.generalPartner.data["date_of_birth-month"] %}
@@ -23,22 +23,23 @@
   {% set date_effective_from_year = date_effective_from[0] + date_effective_from[1] + date_effective_from[2] + date_effective_from[3] %}
   {% set date_effective_from_month = date_effective_from[5] + date_effective_from[6] %}
   {% set date_effective_from_day = date_effective_from[8] + date_effective_from[9] %}
-{% elif props.data.generalPartner.data["date_effective_from-year"] %}
+{% elif props.data.generalPartner.data["date_effective_from-year"]  or props.data.generalPartner.data["date_effective_from-month"]  or props.data.generalPartner.data["date_effective_from-day"] %}
   {# And this covers the scenario when date validation fails and the page reloads #}
   {% set date_effective_from_year = props.data.generalPartner.data["date_effective_from-year"] %}
   {% set date_effective_from_month = props.data.generalPartner.data["date_effective_from-month"] %}
   {% set date_effective_from_day = props.data.generalPartner.data["date_effective_from-day"] %}
 {% endif %}
 
-{% if props.data.generalPartner.data.previousName is defined %}
+{% if props.data.generalPartner.data.previous_name is defined %}
   {# If previousName is already set (e.g. after a validation error), use that value #}
-  {% set previousNames = props.data.generalPartner.data.previousName %}
+  {% set previousNames = props.data.generalPartner.data.previous_name %}
 {% elif props.data.generalPartner.data.former_names %}
   {% set previousNames = "true" %}
 {% elif props.data.generalPartner.data.forename %}
   {# After the first check, if any other general partner person field is set, they cannot have a previous name #}
   {% set previousNames = "false" %}
 {% endif %}
+
 
 {% block content %}
   <div class="govuk-grid-row">
@@ -51,10 +52,11 @@
         {% include "includes/errors.njk" %}
         
         {% include "includes/proposed-name.njk" %}  
-    
+  
         <h1 class="govuk-heading-xl">{{ i18n.addPartnerPersonPage.generalPartner.title }}</h1>
 
         {% set partner = "generalPartner" %}
+        {% set partnerType = "generalPartnerPerson" %}
         {% include "pages/partner/full-name.njk" %}
 
         {% set previousHtmlPerson %}
@@ -74,7 +76,8 @@
 
         {{ govukRadios({
           classes: "govuk-radios",
-          name: "previousName",
+          name: "previous_name",
+          idPrefix: "previous_name",
           value: previousNames,
           fieldset: {
             legend: {
@@ -90,12 +93,10 @@
             {
               value: "true",
               text: i18n.addPartnerPersonPage.generalPartner.previousName.yes,
-              id: "previousNameYes",
-              name: "previousNameYes",
               attributes: {
-                required: true,
-                "role": "radiogroup"
-              },
+                "role": "radiogroup",
+                required: true
+              }  if not journeyTypes.isRegistration,
               conditional: {
                 html: previousHtmlPerson
               }
@@ -103,13 +104,12 @@
             {
               value: "false",
               text: i18n.addPartnerPersonPage.generalPartner.previousName.no,
-              id: "previousNameNo",
-              name: "previousNameNo",
               attributes: {
                 required: true
-              }
+              } if not journeyTypes.isRegistration
             }
-          ]
+          ],
+          errorMessage: props.errors.previous_name if props.errors
         }) }}
 
         {{ govukDateInput({
@@ -135,7 +135,7 @@
               attributes: {
                 required: true,
                 pattern: "[0-9]*"
-              }
+              } if not journeyTypes.isRegistration
             },
             {
               classes: "govuk-input--width-2",
@@ -145,24 +145,24 @@
               attributes: {
                 required: true,
                 pattern: "[0-9]*"
-              }
+              } if not journeyTypes.isRegistration
             },
             {
               classes: "govuk-input--width-4",
               label: i18n.addPartnerPersonPage.dateYear,
               name: "year",
               value: date_of_birth_year,
-              attributes: {
+               attributes: {
                 required: true,
                 pattern: "[0-9]*"
-              }
+              } if not journeyTypes.isRegistration
             }
           ]
         }) }}
 
         {% set nationalityField = props.data.generalPartner.data.nationality1 %}
         {% set nationalityFieldSelectPrompt = i18n.addPartnerPersonPage.nationalitySelectPrompt %}
-        {% set nationalityFieldRequired = "true" %}
+        {% set nationalityFieldRequired = "true" if not journeyTypes.isRegistration else "false" %}
         {% set nationalityFieldText = i18n.addPartnerPersonPage.nationality %}
         {% set nationalityFieldHintText = "" %}
         {% set nationalityFieldNameId = "nationality1" %}
@@ -239,7 +239,5 @@
 
     </div>
   </div>
-
-  {% include "includes/validators.njk" %}
 
 {% endblock %}

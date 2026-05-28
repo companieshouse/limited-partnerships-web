@@ -12,7 +12,7 @@ import GeneralPartnerService from "../../../application/service/GeneralPartnerSe
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
 import CompanyService, { DataIncludingPartners } from "../../../application/service/CompanyService";
 
-import { Ids, Tokens } from "../../../domain/types";
+import { Ids, PartnerType, Tokens } from "../../../domain/types";
 import { PageRouting } from "../PageRouting";
 import UIErrors from "../../../domain/entities/UIErrors";
 
@@ -30,10 +30,10 @@ import {
   DATE_OF_UPDATE_TEMPLATE,
 } from "../../../config/constants";
 
-export enum PartnerType {
-  generalPartner = "generalPartner",
-  limitedPartner = "limitedPartner"
-}
+// export enum PartnerType {
+//   generalPartner = "generalPartner",
+//   limitedPartner = "limitedPartner"
+// }
 
 abstract class PartnerController extends AbstractController {
   constructor(
@@ -206,11 +206,18 @@ abstract class PartnerController extends AbstractController {
 
         const { ids, pageRouting, tokens } = this.extractJourneyRequestData(request);
 
+        const serviceData = {
+          ...request.body,
+          journeyTypes: response.locals.journeyTypes,
+          partnerType: pageRouting?.data?.partnerType,
+          partnerEntityType: pageRouting?.data?.partnerEntityType
+        };
+
         let result: { generalPartnerId?: string, limitedPartnerId?: string, errors?: UIErrors } = {};
         if (partner === PartnerType.generalPartner) {
-          result = await this.generalPartnerService.createGeneralPartner(tokens, ids.transactionId, request.body);
+          result = await this.generalPartnerService.createGeneralPartner(tokens, ids.transactionId, serviceData);
         } else if (partner === PartnerType.limitedPartner) {
-          result = await this.limitedPartnerService.createLimitedPartner(tokens, ids.transactionId, request.body);
+          result = await this.limitedPartnerService.createLimitedPartner(tokens, ids.transactionId, serviceData);
         }
 
         if (result?.errors) {
@@ -439,7 +446,7 @@ abstract class PartnerController extends AbstractController {
         const pageType = super.extractPageTypeOrThrowError(request, journeyPageType);
         const pageRouting = super.getRouting(routing, pageType, request);
 
-        const result = await this.sendData(partner, tokens, ids, request);
+        const result = await this.sendData(partner, tokens, ids, request, response, pageRouting);
 
         if (result?.errors) {
           this.resetFormerNamesIfPreviousNameIsFalse(request.body);
@@ -484,22 +491,29 @@ abstract class PartnerController extends AbstractController {
     };
   }
 
-  private async sendData(partner: PartnerType, tokens: Tokens, ids: Ids, request: Request) {
+  private async sendData(partner: PartnerType, tokens: Tokens, ids: Ids, request: Request, response: Response, pageRouting: PageRouting) {
     let result;
+
+    const data = {
+      ...request.body,
+      partnerType: partner,
+      partnerEntityType: pageRouting?.data?.partnerEntityType,
+      journeyTypes: response.locals.journeyTypes
+    };
 
     if (partner === PartnerType.generalPartner) {
       result = await this.generalPartnerService.sendPageData(
         tokens,
         ids.transactionId,
         ids.generalPartnerId,
-        request.body
+        data
       );
     } else if (partner === PartnerType.limitedPartner) {
       result = await this.limitedPartnerService.sendPageData(
         tokens,
         ids.transactionId,
         ids.limitedPartnerId,
-        request.body
+        data
       );
     }
     return result;

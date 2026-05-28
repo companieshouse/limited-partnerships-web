@@ -99,6 +99,44 @@
             }
         },
 
+        "dateOfBirth": {
+            "dateOfBirthMissing": "WELSH - Enter their date of birth",
+            "dateOfBirthDayMissing": "WELSH - Date of birth must include a day",
+            "dateOfBirthMonthMissing": "WELSH - Date of birth must include a month",
+            "dateOfBirthYearMissing": "WELSH - Date of birth must include a year",
+            "dateOfBirthDayAndMonthMissing": "WELSH - Date of birth must include a day and a month",
+            "dateOfBirthMonthAndYearMissing": "WELSH - Date of birth must include a month and a year",
+            "dateOfBirthDayAndYearMissing": "WELSH - Date of birth must include a day and a year",
+            "dateOfBirthInvalidChars": "WELSH - Date of birth must only include numbers",
+            "dateOfBirthInvalidDate": "WELSH - Date of birth must be a real date",
+            "dateOfBirthNotInPast": "WELSH - Date of birth must be in the past",
+            "dateOfBirthDayInvalidLength": "WELSH - Day must be 1 or 2 numbers",
+            "dateOfBirthMonthInvalidLength": "WELSH - Month must be 1 or 2 numbers",
+            "dateOfBirthYearInvalidLength": "WELSH - Year must be 4 numbers"
+        },
+
+        "partners": {
+             "addPartner": {
+                "firstNameMissing": "WELSH - Enter their first name",
+                "firstNameInvalid": "WELSH - First name must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "firstNameTooLong": "WELSH - First name must be 50 characters or less",
+
+                "lastNameMissing": "WELSH - Enter their last name",
+                "lastNameInvalid": "WELSH - Last name must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "lastNameTooLong": "WELSH - Last name must be 160 characters or less",
+
+                "previousNameNotSelected": "WELSH - Select yes if the partner has a previous name",
+
+                "formerNamesMissing": "WELSH - Enter the partner's previous name",
+                "formerNamesInvalid": "WELSH - Previous name must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "formerNamesTooLong": "WELSH - Previous name must be 160 characters or less",
+
+                "nationality1Missing": "WELSH - Select the partner's nationality",
+                "nationality2Same": "WELSH - Second nationality must be different from the first",
+                "disqualificationStatementMissingGeneralPartner": "WELSH - Confirm that the general partner is not disqualified"
+             }
+        },
+
         "personWithSignificantControl": {
             "addOtherRegistrablePerson": {
                 "legalEntityNameMissing": "WELSH - Enter the other registrable person's name",
@@ -130,20 +168,6 @@
                 "lastNameMissing": "WELSH - Enter their last name",
                 "lastNameInvalid": "WELSH - Last name must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
                 "lastNameTooLong": "WELSH - Last name must be 160 characters or less",
-
-                "dateOfBirthMissing": "WELSH - Enter their date of birth",
-                "dateOfBirthDayMissing": "WELSH - Date of birth must include a day",
-                "dateOfBirthMonthMissing": "WELSH - Date of birth must include a month",
-                "dateOfBirthYearMissing": "WELSH - Date of birth must include a year",
-                "dateOfBirthDayAndMonthMissing": "WELSH - Date of birth must include a day and a month",
-                "dateOfBirthMonthAndYearMissing": "WELSH - Date of birth must include a month and a year",
-                "dateOfBirthDayAndYearMissing": "WELSH - Date of birth must include a day and a year",
-                "dateOfBirthInvalidChars": "WELSH - Date of birth must only include numbers",
-                "dateOfBirthInvalidDate": "WELSH - Date of birth must be a real date",
-                "dateOfBirthNotInPast": "WELSH - Date of birth must be in the past",
-                "dateOfBirthDayInvalidLength": "WELSH - Day must be 1 or 2 numbers",
-                "dateOfBirthMonthInvalidLength": "WELSH - Month must be 1 or 2 numbers",
-                "dateOfBirthYearInvalidLength": "WELSH - Year must be 4 numbers",
                 
                 "nationality1Missing": "WELSH - Select their nationality",
                 "nationality2Same": "WELSH - Second nationality must be different from the first"

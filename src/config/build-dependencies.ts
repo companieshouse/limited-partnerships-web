@@ -50,6 +50,7 @@ import LimitedPartnershipPostTransitionController from "../presentation/controll
 import PostTransitionPartnerController from "../presentation/controller/postTransition/PostTransitionPartnerController";
 import GeneralPartnerPostTransitionController from "../presentation/controller/postTransition/GeneralPartnerController";
 import LimitedPartnerPostTransitionController from "../presentation/controller/postTransition/LimitedPartnerController";
+import PartnerValidator from "../domain/validator/PartnerValidator";
 
 export type BuiltDependencies = {
   // Gateways / repositories
@@ -112,6 +113,7 @@ export function buildDependencies(useInMemory = false): BuiltDependencies {
   const addressValidator = new AddressValidator();
   const personWithSignificantControlValidator = new PersonWithSignificantControlValidator();
   const limitedPartnershipValidator = new LimitedPartnershipValidator();
+  const partnerValidator = new PartnerValidator();
 
   // Services
   const limitedPartnershipService: LimitedPartnershipService = new LimitedPartnershipService(
@@ -122,7 +124,7 @@ export function buildDependencies(useInMemory = false): BuiltDependencies {
   );
   const addressLookUpService: AddressLookUpService = new AddressLookUpService(addressLookUpGateway, addressValidator);
   const cacheService = new CacheService(cacheRepository);
-  const generalPartnerService: GeneralPartnerService = new GeneralPartnerService(generalPartnerGateway);
+  const generalPartnerService: GeneralPartnerService = new GeneralPartnerService(generalPartnerGateway, partnerValidator);
   const limitedPartnerService: LimitedPartnerService = new LimitedPartnerService(limitedPartnerGateway);
   const personWithSignificantControlService: PersonWithSignificantControlService =
     new PersonWithSignificantControlService(personWithSignificantControlGateway, personWithSignificantControlValidator);

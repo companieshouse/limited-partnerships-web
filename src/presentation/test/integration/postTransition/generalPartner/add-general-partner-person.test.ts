@@ -27,7 +27,7 @@ describe("Add General Partner Person Page", () => {
   const URL = getUrl(ADD_GENERAL_PARTNER_PERSON_URL);
   const REDIRECT = getUrl(TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
 
-  let companyProfile;
+  let companyProfile: any;
 
   beforeEach(() => {
     setLocalesEnabled(false);
@@ -119,7 +119,7 @@ describe("Add General Partner Person Page", () => {
       expect(res.status).toBe(200);
       expect(res.text).toContain("Joe - GP");
       expect(res.text).toContain("Doe - GP");
-      expect(res.text).toContain('id="previousNameYes" name="previousName" type="radio" value="true" checked');
+      expect(res.text).toContain('id="previous_name" name="previous_name" type="radio" value="true" checked');
       expect(res.text).toContain("FORMER-NAMES");
       expect(res.text).toContain('<option value="British" selected>British</option>');
       expect(res.text).toContain('name="not_disqualified_statement_checked" type="checkbox" value="true" checked');
@@ -219,7 +219,7 @@ describe("Add General Partner Person Page", () => {
       expect(res.status).toBe(200);
       expect(res.text).toContain("INVALID-CHARACTERS-FORENAME");
       expect(res.text).toContain("SURNAME");
-      expect(res.text).toContain('id="previousNameNo" name="previousName" type="radio" value="false" checked');
+      expect(res.text).toContain('id="previous_name-2" name="previous_name" type="radio" value="false" checked');
       expect(res.text).toContain('<option value="Mongolian" selected>Mongolian</option>');
       expect(res.text).toContain('<option value="Uzbek" selected>Uzbek</option>');
       expect(res.text).toContain('name="not_disqualified_statement_checked" type="checkbox" value="true" checked');
@@ -233,7 +233,7 @@ describe("Add General Partner Person Page", () => {
           forename: "forename",
           surname: "SURNAME",
           former_names: formerNames,
-          previousName: "true",
+          previous_name: "true",
           "date_of_birth-Day": "01",
           "date_of_birth-Month": "11",
           "date_of_birth-Year": "1987",
@@ -243,7 +243,7 @@ describe("Add General Partner Person Page", () => {
         });
 
         expect(res.status).toBe(200);
-        expect(res.text).toContain('id="previousNameYes" name="previousName" type="radio" value="true" checked');
+        expect(res.text).toContain('id="previous_name" name="previous_name" type="radio" value="true" checked');
         expect(res.text).toContain("Enter the previous name(s) of the general partner");
       }
     );

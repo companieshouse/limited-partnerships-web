@@ -4,14 +4,22 @@ import { logger } from "../../utils";
 import UIErrors from "../../domain/entities/UIErrors";
 import { extractAPIErrors, incompletePartnerErrorList } from "./utils";
 import { Tokens } from "../../domain/types";
+import PartnerValidator from "../../domain/validator/PartnerValidator";
 
 class GeneralPartnerService {
   i18n: any;
 
-  constructor(private readonly generalPartnerGateway: IGeneralPartnerGateway) {}
+  constructor(
+    private readonly generalPartnerGateway: IGeneralPartnerGateway,
+    private readonly partnerValidator: PartnerValidator
+  ) {}
 
   setI18n(i18n: any) {
     this.i18n = i18n;
+  }
+
+  runValidation(data: Record<string, any>): UIErrors {
+    return this.partnerValidator.set(data, this.i18n).runValidation();
   }
 
   async createGeneralPartner(
@@ -22,6 +30,11 @@ class GeneralPartnerService {
     generalPartnerId: string;
     errors?: UIErrors;
   }> {
+    const validationErrors = this.runValidation(data);
+    if (validationErrors.hasErrors()) {
+      return { generalPartnerId: "", errors: validationErrors };
+    }
+
     try {
       const generalPartnerId = await this.generalPartnerGateway.createGeneralPartner(opt, transactionId, data);
 
@@ -87,6 +100,11 @@ class GeneralPartnerService {
   ): Promise<void | {
     errors?: UIErrors;
   }> {
+    const validationErrors = this.runValidation(data);
+    if (validationErrors.hasErrors()) {
+      return { errors: validationErrors };
+    }
+
     try {
       await this.generalPartnerGateway.sendPageData(opt, transactionId, generalPartnerId, data);
     } catch (errors: any) {
