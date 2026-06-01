@@ -1,4 +1,202 @@
-import { dateContainsInvalidChars, isDateInPast, isDateToday, isValidDate, isValidDateStringAndNotInFuture } from '../../../../domain/validator/DateValidators';
+import { dateContainsInvalidChars, isDateInPast, isDateToday, isValidDate, isValidDateStringAndNotInFuture, validateDateOfBirth, DateErrorMessages, getDateErrorMessages } from '../../../../domain/validator/DateValidators';
+import { DATE_OF_BIRTH_FIELD } from '../../../../config';
+
+describe('getDateErrorMessages', () => {
+  it('returns a DateErrorMessages object with all required properties', () => {
+    const i18n = {
+      errorMessages: {
+        dateOfBirth: {
+          dateOfBirthMissing: 'Date of birth is missing',
+          dateOfBirthDayMissing: 'Day is missing',
+          dateOfBirthMonthMissing: 'Month is missing',
+          dateOfBirthYearMissing: 'Year is missing',
+          dateOfBirthDayAndMonthMissing: 'Day and month are missing',
+          dateOfBirthDayAndYearMissing: 'Day and year are missing',
+          dateOfBirthMonthAndYearMissing: 'Month and year are missing',
+          dateOfBirthDayInvalidLength: 'Day is invalid length',
+          dateOfBirthMonthInvalidLength: 'Month is invalid length',
+          dateOfBirthYearInvalidLength: 'Year is invalid length',
+          dateOfBirthInvalidChars: 'Date contains invalid characters',
+          dateOfBirthInvalidDate: 'Date is invalid',
+          dateOfBirthNotInPast: 'Date of birth is not in the past'
+        }
+      }
+    };
+
+    const result = getDateErrorMessages(i18n);
+
+    expect(result.dateMissing).toBe('Date of birth is missing');
+    expect(result.dayMissing).toBe('Day is missing');
+    expect(result.monthMissing).toBe('Month is missing');
+    expect(result.yearMissing).toBe('Year is missing');
+    expect(result.dayAndMonthMissing).toBe('Day and month are missing');
+    expect(result.dayAndYearMissing).toBe('Day and year are missing');
+    expect(result.monthAndYearMissing).toBe('Month and year are missing');
+    expect(result.dayInvalidLength).toBe('Day is invalid length');
+    expect(result.monthInvalidLength).toBe('Month is invalid length');
+    expect(result.yearInvalidLength).toBe('Year is invalid length');
+    expect(result.dateInvalidChars).toBe('Date contains invalid characters');
+    expect(result.dateInvalidDate).toBe('Date is invalid');
+    expect(result.dateOfBirthNotInPast).toBe('Date of birth is not in the past');
+  });
+
+  it('handles undefined i18n object gracefully', () => {
+    const result = getDateErrorMessages(undefined);
+
+    expect(result.dateMissing).toBeUndefined();
+    expect(result.dayMissing).toBeUndefined();
+    expect(result.monthMissing).toBeUndefined();
+    expect(result.yearMissing).toBeUndefined();
+    expect(result.dayAndMonthMissing).toBeUndefined();
+    expect(result.dayAndYearMissing).toBeUndefined();
+    expect(result.monthAndYearMissing).toBeUndefined();
+    expect(result.dayInvalidLength).toBeUndefined();
+    expect(result.monthInvalidLength).toBeUndefined();
+    expect(result.yearInvalidLength).toBeUndefined();
+    expect(result.dateInvalidChars).toBeUndefined();
+    expect(result.dateInvalidDate).toBeUndefined();
+    expect(result.dateOfBirthNotInPast).toBeUndefined();
+  });
+
+  it('handles missing errorMessages property', () => {
+    const i18n = {};
+
+    const result = getDateErrorMessages(i18n);
+
+    expect(result.dateMissing).toBeUndefined();
+    expect(result.dayMissing).toBeUndefined();
+    expect(result.monthMissing).toBeUndefined();
+  });
+
+  it('handles missing dateOfBirth property', () => {
+    const i18n = {
+      errorMessages: {}
+    };
+
+    const result = getDateErrorMessages(i18n);
+
+    expect(result.dateMissing).toBeUndefined();
+    expect(result.dayMissing).toBeUndefined();
+    expect(result.monthMissing).toBeUndefined();
+  });
+
+  it('handles partial errorMessages structure', () => {
+    const i18n = {
+      errorMessages: {
+        dateOfBirth: {
+          dateOfBirthMissing: 'Date is missing'
+          // other properties missing
+        }
+      }
+    };
+
+    const result = getDateErrorMessages(i18n);
+
+    expect(result.dateMissing).toBe('Date is missing');
+    expect(result.dayMissing).toBeUndefined();
+    expect(result.monthMissing).toBeUndefined();
+    expect(result.yearMissing).toBeUndefined();
+    expect(result.dayAndMonthMissing).toBeUndefined();
+  });
+
+  it('handles null i18n object', () => {
+    const result = getDateErrorMessages(null);
+
+    expect(result.dateMissing).toBeUndefined();
+    expect(result.dayMissing).toBeUndefined();
+    expect(result.monthMissing).toBeUndefined();
+  });
+
+  it('preserves exact error message values from i18n', () => {
+    const errorMsg1 = 'Custom error 1';
+    const errorMsg2 = 'Custom error 2';
+    const errorMsg3 = 'Custom error 3';
+
+    const i18n = {
+      errorMessages: {
+        dateOfBirth: {
+          dateOfBirthMissing: errorMsg1,
+          dateOfBirthDayMissing: errorMsg2,
+          dateOfBirthMonthMissing: errorMsg3,
+          dateOfBirthYearMissing: 'Year missing',
+          dateOfBirthDayAndMonthMissing: 'Day and month missing',
+          dateOfBirthDayAndYearMissing: 'Day and year missing',
+          dateOfBirthMonthAndYearMissing: 'Month and year missing',
+          dateOfBirthDayInvalidLength: 'Day length',
+          dateOfBirthMonthInvalidLength: 'Month length',
+          dateOfBirthYearInvalidLength: 'Year length',
+          dateOfBirthInvalidChars: 'Invalid chars',
+          dateOfBirthInvalidDate: 'Invalid date',
+          dateOfBirthNotInPast: 'Not in past'
+        }
+      }
+    };
+
+    const result = getDateErrorMessages(i18n);
+
+    expect(result.dateMissing).toBe(errorMsg1);
+    expect(result.dayMissing).toBe(errorMsg2);
+    expect(result.monthMissing).toBe(errorMsg3);
+  });
+
+  it('returns an object that matches DateErrorMessages type', () => {
+    const i18n = {
+      errorMessages: {
+        dateOfBirth: {
+          dateOfBirthMissing: 'Missing',
+          dateOfBirthDayMissing: 'Day missing',
+          dateOfBirthMonthMissing: 'Month missing',
+          dateOfBirthYearMissing: 'Year missing',
+          dateOfBirthDayAndMonthMissing: 'Day and month missing',
+          dateOfBirthDayAndYearMissing: 'Day and year missing',
+          dateOfBirthMonthAndYearMissing: 'Month and year missing',
+          dateOfBirthDayInvalidLength: 'Day length',
+          dateOfBirthMonthInvalidLength: 'Month length',
+          dateOfBirthYearInvalidLength: 'Year length',
+          dateOfBirthInvalidChars: 'Invalid chars',
+          dateOfBirthInvalidDate: 'Invalid date',
+          dateOfBirthNotInPast: 'Not in past'
+        }
+      }
+    };
+
+    const result: DateErrorMessages = getDateErrorMessages(i18n);
+
+    expect(result).toBeDefined();
+    expect(typeof result).toBe('object');
+    expect(Object.keys(result)).toHaveLength(13);
+  });
+
+  it('handles i18n with extra properties', () => {
+    const i18n = {
+      errorMessages: {
+        dateOfBirth: {
+          dateOfBirthMissing: 'Missing',
+          dateOfBirthDayMissing: 'Day missing',
+          dateOfBirthMonthMissing: 'Month missing',
+          dateOfBirthYearMissing: 'Year missing',
+          dateOfBirthDayAndMonthMissing: 'Day and month missing',
+          dateOfBirthDayAndYearMissing: 'Day and year missing',
+          dateOfBirthMonthAndYearMissing: 'Month and year missing',
+          dateOfBirthDayInvalidLength: 'Day length',
+          dateOfBirthMonthInvalidLength: 'Month length',
+          dateOfBirthYearInvalidLength: 'Year length',
+          dateOfBirthInvalidChars: 'Invalid chars',
+          dateOfBirthInvalidDate: 'Invalid date',
+          dateOfBirthNotInPast: 'Not in past',
+          extraProperty: 'This should be ignored'
+        }
+      }
+    };
+
+    const result = getDateErrorMessages(i18n);
+
+    expect(result).toBeDefined();
+    expect(result.dateMissing).toBe('Missing');
+    // Extra property should not be included in result
+    expect('extraProperty' in result).toBe(false);
+  });
+});
 
 describe('isValidDate', () => {
   it('returns true for a valid date', () => {
@@ -277,5 +475,266 @@ describe('isDateToday', () => {
     expect(isDateToday('01', '', '2020')).toBe(false);
     expect(isDateToday('', '01', '2020')).toBe(false);
     expect(isDateToday('01', '01', '')).toBe(false);
+  });
+});
+
+describe('validateDateOfBirth', () => {
+  let mockUIErrors: any;
+  const testErrorMessages: DateErrorMessages = {
+    dateMissing: 'Date of birth is missing',
+    dayMissing: 'Day is missing',
+    monthMissing: 'Month is missing',
+    yearMissing: 'Year is missing',
+    dayAndMonthMissing: 'Day and month are missing',
+    dayAndYearMissing: 'Day and year are missing',
+    monthAndYearMissing: 'Month and year are missing',
+    dayInvalidLength: 'Day is invalid length',
+    monthInvalidLength: 'Month is invalid length',
+    yearInvalidLength: 'Year is invalid length',
+    dateInvalidChars: 'Date contains invalid characters',
+    dateInvalidDate: 'Date is invalid',
+    dateOfBirthNotInPast: 'Date of birth is not in the past'
+  };
+
+  beforeEach(() => {
+    mockUIErrors = {
+      setWebError: jest.fn()
+    };
+  });
+
+  describe('missing date fields', () => {
+    it('sets error when all fields are missing', () => {
+      validateDateOfBirth(undefined, undefined, undefined, mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.dateMissing);
+    });
+
+    it('sets error when day is missing', () => {
+      validateDateOfBirth(undefined, '05', '2000', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.dayMissing);
+    });
+
+    it('sets error when month is missing', () => {
+      validateDateOfBirth('21', undefined, '2000', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.monthMissing);
+    });
+
+    it('sets error when year is missing', () => {
+      validateDateOfBirth('21', '05', undefined, mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.yearMissing);
+    });
+
+    it('sets error when day and month are missing', () => {
+      validateDateOfBirth(undefined, undefined, '2000', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.dayAndMonthMissing);
+    });
+
+    it('sets error when day and year are missing', () => {
+      validateDateOfBirth(undefined, '05', undefined, mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.dayAndYearMissing);
+    });
+
+    it('sets error when month and year are missing', () => {
+      validateDateOfBirth('21', undefined, undefined, mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.monthAndYearMissing);
+    });
+
+    it('treats empty strings as missing', () => {
+      validateDateOfBirth('', '', '', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.dateMissing);
+    });
+
+    it('treats whitespace-only strings as missing', () => {
+      validateDateOfBirth('   ', '   ', '   ', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.dateMissing);
+    });
+  });
+
+  describe('invalid field lengths', () => {
+    it('sets error when day is too long', () => {
+      validateDateOfBirth('021', '05', '2000', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.dayInvalidLength);
+    });
+
+    it('sets error when month is too long', () => {
+      validateDateOfBirth('21', '005', '2000', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.monthInvalidLength);
+    });
+
+    it('sets error when year is not exactly 4 digits', () => {
+      validateDateOfBirth('21', '05', '20', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.yearInvalidLength);
+    });
+
+    it('sets error when year has more than 4 digits', () => {
+      validateDateOfBirth('21', '05', '20000', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.yearInvalidLength);
+    });
+
+    it('allows year with exactly 4 digits', () => {
+      jest.useFakeTimers();
+      jest.setSystemTime(new Date(2026, 4, 21, 10, 0, 0));
+
+      validateDateOfBirth('20', '05', '2026', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).not.toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.yearInvalidLength);
+
+      jest.useRealTimers();
+    });
+  });
+
+  describe('invalid characters', () => {
+    it('sets error when day contains non-numeric characters', () => {
+      validateDateOfBirth('aa', '05', '2000', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.dateInvalidChars);
+    });
+
+    it('sets error when month contains non-numeric characters', () => {
+      validateDateOfBirth('21', 'bb', '2000', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.dateInvalidChars);
+    });
+
+    it('sets error when year contains non-numeric characters', () => {
+      validateDateOfBirth('21', '05', 'cccc', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.dateInvalidChars);
+    });
+  });
+
+  describe('invalid dates', () => {
+    it('sets error for leap day in a non-leap year', () => {
+      validateDateOfBirth('29', '02', '2023', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.dateInvalidDate);
+    });
+
+    it('sets error for impossible day-month combinations', () => {
+      validateDateOfBirth('31', '04', '2000', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.dateInvalidDate);
+    });
+
+    it('sets error for day 0', () => {
+      validateDateOfBirth('00', '01', '2000', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.dateInvalidDate);
+    });
+
+    it('sets error for month 0', () => {
+      validateDateOfBirth('21', '00', '2000', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.dateInvalidDate);
+    });
+
+    it('sets error for day 32', () => {
+      validateDateOfBirth('32', '01', '2000', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.dateInvalidDate);
+    });
+
+    it('sets error for month 13', () => {
+      validateDateOfBirth('21', '13', '2000', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.dateInvalidDate);
+    });
+  });
+
+  describe('date not in past', () => {
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
+    it('sets error for a future date', () => {
+      jest.useFakeTimers();
+      jest.setSystemTime(new Date(2026, 4, 21, 10, 0, 0));
+
+      validateDateOfBirth('22', '05', '2026', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.dateOfBirthNotInPast);
+    });
+
+    it('sets error for today', () => {
+      jest.useFakeTimers();
+      jest.setSystemTime(new Date(2026, 4, 21, 10, 0, 0));
+
+      validateDateOfBirth('21', '05', '2026', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.dateOfBirthNotInPast);
+    });
+  });
+
+  describe('valid past dates', () => {
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
+    it('does not set error for a valid date in the past', () => {
+      jest.useFakeTimers();
+      jest.setSystemTime(new Date(2026, 4, 21, 10, 0, 0));
+
+      validateDateOfBirth('20', '05', '2026', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).not.toHaveBeenCalled();
+    });
+
+    it('does not set error for a valid date many years in the past', () => {
+      jest.useFakeTimers();
+      jest.setSystemTime(new Date(2026, 4, 21, 10, 0, 0));
+
+      validateDateOfBirth('21', '05', '1990', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).not.toHaveBeenCalled();
+    });
+
+    it('does not set error for leap day in a leap year in the past', () => {
+      jest.useFakeTimers();
+      jest.setSystemTime(new Date(2026, 4, 21, 10, 0, 0));
+
+      validateDateOfBirth('29', '02', '2024', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).not.toHaveBeenCalled();
+    });
+
+    it('does not set error for the last valid day of each month', () => {
+      jest.useFakeTimers();
+      jest.setSystemTime(new Date(2026, 4, 21, 10, 0, 0));
+
+      // April has 30 days
+      validateDateOfBirth('30', '04', '2000', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('edge cases', () => {
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
+    it('handles null values by treating them as undefined', () => {
+      validateDateOfBirth(null as any, null as any, null as any, mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalled();
+    });
+
+    it('stops validation at the first error (missing fields check)', () => {
+      validateDateOfBirth('', '', '', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledTimes(1);
+    });
+
+    it('stops validation at the first error (length check)', () => {
+      validateDateOfBirth('321', '05', '2000', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledTimes(1);
+    });
+
+    it('stops validation at the first error (invalid chars check)', () => {
+      validateDateOfBirth('2a', '05', '2000', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledTimes(1);
+    });
+
+    it('stops validation at the first error (invalid date check)', () => {
+      validateDateOfBirth('31', '04', '2000', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledTimes(1);
+    });
+
+    it('accepts valid date with leading zeros', () => {
+      jest.useFakeTimers();
+      jest.setSystemTime(new Date(2026, 4, 21, 10, 0, 0));
+
+      validateDateOfBirth('01', '01', '2000', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).not.toHaveBeenCalled();
+    });
+
+    it('accepts valid date without leading zeros', () => {
+      jest.useFakeTimers();
+      jest.setSystemTime(new Date(2026, 4, 21, 10, 0, 0));
+
+      validateDateOfBirth('1', '1', '2000', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).not.toHaveBeenCalled();
+    });
   });
 });

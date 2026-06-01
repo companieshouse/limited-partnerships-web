@@ -3,6 +3,7 @@ import request from "supertest";
 import enTranslationText from "../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../locales/cy/translations.json";
 import enErrorMessages from "../../../../../../locales/en/errors.json";
+import cyErrorMessages from "../../../../../../locales/cy/errors.json";
 
 import app from "../../app";
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
@@ -150,80 +151,116 @@ describe("Add General Partner Person Page", () => {
       expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
     });
 
-    it("should return validation errors when all data is missing", async () => {
-      const res = await request(app).post(URL).send({
+    it.each([
+      ["en", enErrorMessages],
+      ["cy", cyErrorMessages]
+    ])("should return validation errors when all data is missing - %s", async (lang: string, errorMessages: any) => {
+      setLocalesEnabled(true);
+
+      const res = await request(app).post(URL + "?lang=" + lang).send({
         pageType: RegistrationPageType.addGeneralPartnerPerson
       });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(enErrorMessages.errorMessages.partners.addPartner.firstNameMissing);
-      expect(res.text).toContain(enErrorMessages.errorMessages.partners.addPartner.lastNameMissing);
-      expect(res.text).toContain(enErrorMessages.errorMessages.partners.addPartner.previousNameNotSelected);
-      expect(res.text).toContain(toEscapedHtml(enErrorMessages.errorMessages.partners.addPartner.nationality1Missing));
-      expect(res.text).toContain(enErrorMessages.errorMessages.partners.addPartner.disqualificationStatementMissingGeneralPartner);
+      expect(res.text).toContain(errorMessages.errorMessages.partners.addPartner.firstNameMissing);
+      expect(res.text).toContain(errorMessages.errorMessages.partners.addPartner.lastNameMissing);
+      expect(res.text).toContain(errorMessages.errorMessages.partners.addPartner.previousNameNotSelected);
+      expect(res.text).toContain(toEscapedHtml(errorMessages.errorMessages.partners.addPartner.nationality1Missing));
+      expect(res.text).toContain(errorMessages.errorMessages.partners.addPartner.disqualificationStatementMissingGeneralPartner);
+
+      setLocalesEnabled(false);
     });
 
-    it("should return validation errors when former names is missing", async () => {
-      const res = await request(app).post(URL).send({
+    it.each([
+      ["en", enErrorMessages],
+      ["cy", cyErrorMessages]
+    ])("should return validation errors when former names is missing - %s", async (lang: string, errorMessages: any) => {
+      setLocalesEnabled(true);
+
+      const res = await request(app).post(URL + "?lang=" + lang).send({
         pageType: RegistrationPageType.addGeneralPartnerPerson,
         previous_name: "true"
       });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(toEscapedHtml(enErrorMessages.errorMessages.partners.addPartner.formerNamesMissing));
+      expect(res.text).toContain(toEscapedHtml(errorMessages.errorMessages.partners.addPartner.formerNamesMissing));
+
+      setLocalesEnabled(false);
     });
 
     it.each([
-      ["§", enErrorMessages.errorMessages.partners.addPartner.firstNameInvalid],
-      ["a".repeat(51), enErrorMessages.errorMessages.partners.addPartner.firstNameTooLong]
-    ]
-    )("should return validation errors for forename errors", async (forename: string, errorMessage: string) => {
-      const res = await request(app).post(URL).send({
+      ["en", "§", enErrorMessages.errorMessages.partners.addPartner.firstNameInvalid],
+      ["en", "a".repeat(51), enErrorMessages.errorMessages.partners.addPartner.firstNameTooLong],
+      ["cy", "§", cyErrorMessages.errorMessages.partners.addPartner.firstNameInvalid],
+      ["cy", "a".repeat(51), cyErrorMessages.errorMessages.partners.addPartner.firstNameTooLong]
+    ])("should return validation errors for forename errors - %s", async (lang: string, forename: string, errorMessage: string) => {
+      setLocalesEnabled(true);
+
+      const res = await request(app).post(URL + "?lang=" + lang).send({
         pageType: RegistrationPageType.addGeneralPartnerPerson,
         forename: forename
       });
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(errorMessage);
+
+      setLocalesEnabled(false);
     });
 
     it.each([
-      ["§", enErrorMessages.errorMessages.partners.addPartner.lastNameInvalid],
-      ["a".repeat(161), enErrorMessages.errorMessages.partners.addPartner.lastNameTooLong]
-    ]
-    )("should return validation errors for surname errors", async (surname: string, errorMessage: string) => {
-      const res = await request(app).post(URL).send({
+      ["en", "§", enErrorMessages.errorMessages.partners.addPartner.lastNameInvalid],
+      ["en", "a".repeat(161), enErrorMessages.errorMessages.partners.addPartner.lastNameTooLong],
+      ["cy", "§", cyErrorMessages.errorMessages.partners.addPartner.lastNameInvalid],
+      ["cy", "a".repeat(161), cyErrorMessages.errorMessages.partners.addPartner.lastNameTooLong]
+    ])("should return validation errors for surname errors - %s", async (lang: string, surname: string, errorMessage: string) => {
+      setLocalesEnabled(true);
+
+      const res = await request(app).post(URL + "?lang=" + lang).send({
         pageType: RegistrationPageType.addGeneralPartnerPerson,
         surname: surname
       });
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(errorMessage);
+
+      setLocalesEnabled(false);
     });
 
     it.each([
-      ["§", enErrorMessages.errorMessages.partners.addPartner.formerNamesInvalid],
-      ["a".repeat(161), enErrorMessages.errorMessages.partners.addPartner.formerNamesTooLong]
-    ]
-    )("should return validation errors for former names errors", async (formerNames: string, errorMessage: string) => {
-      const res = await request(app).post(URL).send({
+      ["en", "§", enErrorMessages.errorMessages.partners.addPartner.formerNamesInvalid],
+      ["en", "a".repeat(161), enErrorMessages.errorMessages.partners.addPartner.formerNamesTooLong],
+      ["cy", "§", cyErrorMessages.errorMessages.partners.addPartner.formerNamesInvalid],
+      ["cy", "a".repeat(161), cyErrorMessages.errorMessages.partners.addPartner.formerNamesTooLong]
+    ])("should return validation errors for former names errors - %s", async (lang: string, formerNames: string, errorMessage: string) => {
+      setLocalesEnabled(true);
+
+      const res = await request(app).post(URL + "?lang=" + lang).send({
         pageType: RegistrationPageType.addGeneralPartnerPerson,
         former_names: formerNames
       });
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(errorMessage);
+
+      setLocalesEnabled(false);
     });
 
-    it("should return a validation error when nationality 1 and 2 are the same", async () => {
-      const res = await request(app).post(URL).send({
+    it.each([
+      ["en", enErrorMessages],
+      ["cy", cyErrorMessages]
+    ])("should return a validation error when nationality 1 and 2 are the same - %s", async (lang: string, errorMessages: any) => {
+      setLocalesEnabled(true);
+
+      const res = await request(app).post(URL + "?lang=" + lang).send({
         pageType: RegistrationPageType.addGeneralPartnerPerson,
         nationality1: "English",
         nationality2: "English"
       });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(toEscapedHtml(enErrorMessages.errorMessages.partners.addPartner.nationality2Same));
+      expect(res.text).toContain(toEscapedHtml(errorMessages.errorMessages.partners.addPartner.nationality2Same));
+
+      setLocalesEnabled(false);
     });
 
     it("should replay entered data when invalid data is entered and a validation error occurs", async () => {
