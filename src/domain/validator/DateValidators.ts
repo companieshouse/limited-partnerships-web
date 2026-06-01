@@ -17,6 +17,24 @@ export type DateErrorMessages = {
   dateOfBirthNotInPast: string;
 }
 
+export const getDateErrorMessages = (i18n: any): DateErrorMessages => {
+  return {
+    dateMissing: i18n?.errorMessages?.dateOfBirth?.dateOfBirthMissing,
+    dayMissing: i18n?.errorMessages?.dateOfBirth?.dateOfBirthDayMissing,
+    monthMissing: i18n?.errorMessages?.dateOfBirth?.dateOfBirthMonthMissing,
+    yearMissing: i18n?.errorMessages?.dateOfBirth?.dateOfBirthYearMissing,
+    dayAndMonthMissing: i18n?.errorMessages?.dateOfBirth?.dateOfBirthDayAndMonthMissing,
+    dayAndYearMissing: i18n?.errorMessages?.dateOfBirth?.dateOfBirthDayAndYearMissing,
+    monthAndYearMissing: i18n?.errorMessages?.dateOfBirth?.dateOfBirthMonthAndYearMissing,
+    dayInvalidLength: i18n?.errorMessages?.dateOfBirth?.dateOfBirthDayInvalidLength,
+    monthInvalidLength: i18n?.errorMessages?.dateOfBirth?.dateOfBirthMonthInvalidLength,
+    yearInvalidLength: i18n?.errorMessages?.dateOfBirth?.dateOfBirthYearInvalidLength,
+    dateInvalidChars: i18n?.errorMessages?.dateOfBirth?.dateOfBirthInvalidChars,
+    dateInvalidDate: i18n?.errorMessages?.dateOfBirth?.dateOfBirthInvalidDate,
+    dateOfBirthNotInPast: i18n?.errorMessages?.dateOfBirth?.dateOfBirthNotInPast
+  };
+};
+
 export const validateDateOfBirth = (day: string | undefined, month: string | undefined, year: string | undefined, uiErrors: UIErrors, dateErrorMessages: DateErrorMessages) => {
   const safeDobDay = day ?? "";
   const safeDobMonth = month ?? "";

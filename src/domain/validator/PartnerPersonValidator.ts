@@ -1,7 +1,7 @@
 import { FORENAME_FIELD, FORMER_NAMES_FIELD, NATIONALITY1_FIELD, NATIONALITY2_FIELD, NOT_DISQUALIFIED_STATEMENT_CHECKED_FIELD, PREVIOUS_NAME_FIELD, SURNAME_FIELD } from "../../config";
 import { JourneyTypes } from "../entities/journey";
 import UIErrors from "../entities/UIErrors";
-import { DateErrorMessages, validateDateOfBirth } from "./DateValidators";
+import { DateErrorMessages, getDateErrorMessages, validateDateOfBirth } from "./DateValidators";
 import { containsInvalidCharacters, isFieldValueMissing, isFieldValueTooLong } from "./FieldValidators";
 
 class PartnerPersonValidator {
@@ -43,21 +43,7 @@ class PartnerPersonValidator {
 
     this.errorMessages = i18n?.errorMessages?.partners?.addPartner || {};
 
-    this.dateErrorMessages = {
-      dateMissing: i18n?.errorMessages?.dateOfBirth?.dateOfBirthMissing,
-      dayMissing: i18n?.errorMessages?.dateOfBirth?.dateOfBirthDayMissing,
-      monthMissing: i18n?.errorMessages?.dateOfBirth?.dateOfBirthMonthMissing,
-      yearMissing: i18n?.errorMessages?.dateOfBirth?.dateOfBirthYearMissing,
-      dayAndMonthMissing: i18n?.errorMessages?.dateOfBirth?.dateOfBirthDayAndMonthMissing,
-      dayAndYearMissing: i18n?.errorMessages?.dateOfBirth?.dateOfBirthDayAndYearMissing,
-      monthAndYearMissing: i18n?.errorMessages?.dateOfBirth?.dateOfBirthMonthAndYearMissing,
-      dayInvalidLength: i18n?.errorMessages?.dateOfBirth?.dateOfBirthDayInvalidLength,
-      monthInvalidLength: i18n?.errorMessages?.dateOfBirth?.dateOfBirthMonthInvalidLength,
-      yearInvalidLength: i18n?.errorMessages?.dateOfBirth?.dateOfBirthYearInvalidLength,
-      dateInvalidChars: i18n?.errorMessages?.dateOfBirth?.dateOfBirthInvalidChars,
-      dateInvalidDate: i18n?.errorMessages?.dateOfBirth?.dateOfBirthInvalidDate,
-      dateOfBirthNotInPast: i18n?.errorMessages?.dateOfBirth?.dateOfBirthNotInPast
-    };
+    this.dateErrorMessages = getDateErrorMessages(i18n);
 
     return this;
   }

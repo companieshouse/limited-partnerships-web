@@ -30,11 +30,6 @@ import {
   DATE_OF_UPDATE_TEMPLATE,
 } from "../../../config/constants";
 
-// export enum PartnerType {
-//   generalPartner = "generalPartner",
-//   limitedPartner = "limitedPartner"
-// }
-
 abstract class PartnerController extends AbstractController {
   constructor(
     protected readonly limitedPartnershipService: LimitedPartnershipService,
