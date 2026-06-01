@@ -150,14 +150,80 @@ describe("Add General Partner Person Page", () => {
       expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
     });
 
-    it("should return a validation error when invalid data is entered", async () => {
+    it("should return validation errors when all data is missing", async () => {
       const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.addGeneralPartnerPerson,
-        forename: "§"
+        pageType: RegistrationPageType.addGeneralPartnerPerson
       });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(enErrorMessages.errorMessages.partners.addPartner.firstNameInvalid);
+      expect(res.text).toContain(enErrorMessages.errorMessages.partners.addPartner.firstNameMissing);
+      expect(res.text).toContain(enErrorMessages.errorMessages.partners.addPartner.lastNameMissing);
+      expect(res.text).toContain(enErrorMessages.errorMessages.partners.addPartner.previousNameNotSelected);
+      expect(res.text).toContain(toEscapedHtml(enErrorMessages.errorMessages.partners.addPartner.nationality1Missing));
+      expect(res.text).toContain(enErrorMessages.errorMessages.partners.addPartner.disqualificationStatementMissingGeneralPartner);
+    });
+
+    it("should return validation errors when former names is missing", async () => {
+      const res = await request(app).post(URL).send({
+        pageType: RegistrationPageType.addGeneralPartnerPerson,
+        previous_name: "true"
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(toEscapedHtml(enErrorMessages.errorMessages.partners.addPartner.formerNamesMissing));
+    });
+
+    it.each([
+      ["§", enErrorMessages.errorMessages.partners.addPartner.firstNameInvalid],
+      ["a".repeat(51), enErrorMessages.errorMessages.partners.addPartner.firstNameTooLong]
+    ]
+    )("should return validation errors for forename errors", async (forename: string, errorMessage: string) => {
+      const res = await request(app).post(URL).send({
+        pageType: RegistrationPageType.addGeneralPartnerPerson,
+        forename: forename
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(errorMessage);
+    });
+
+    it.each([
+      ["§", enErrorMessages.errorMessages.partners.addPartner.lastNameInvalid],
+      ["a".repeat(161), enErrorMessages.errorMessages.partners.addPartner.lastNameTooLong]
+    ]
+    )("should return validation errors for surname errors", async (surname: string, errorMessage: string) => {
+      const res = await request(app).post(URL).send({
+        pageType: RegistrationPageType.addGeneralPartnerPerson,
+        surname: surname
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(errorMessage);
+    });
+
+    it.each([
+      ["§", enErrorMessages.errorMessages.partners.addPartner.formerNamesInvalid],
+      ["a".repeat(161), enErrorMessages.errorMessages.partners.addPartner.formerNamesTooLong]
+    ]
+    )("should return validation errors for former names errors", async (formerNames: string, errorMessage: string) => {
+      const res = await request(app).post(URL).send({
+        pageType: RegistrationPageType.addGeneralPartnerPerson,
+        former_names: formerNames
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(errorMessage);
+    });
+
+    it("should return a validation error when nationality 1 and 2 are the same", async () => {
+      const res = await request(app).post(URL).send({
+        pageType: RegistrationPageType.addGeneralPartnerPerson,
+        nationality1: "English",
+        nationality2: "English"
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(toEscapedHtml(enErrorMessages.errorMessages.partners.addPartner.nationality2Same));
     });
 
     it("should replay entered data when invalid data is entered and a validation error occurs", async () => {
