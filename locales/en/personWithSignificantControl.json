@@ -55,7 +55,8 @@
             "addIndividualPerson": {
                 "title": "Add a PSC (individual person)",
                 "consent": "This person knows their details are being supplied as part of this application",
-                "personTitle": "Title",
+                "personTitle": "Professional or honorary title (if relevant)",
+                "personTitleHint": "For example, Dr or Professor",
                 "personOtherTitle": "Other title",
                 "firstName": "First name",
                 "middleNames": "Middle names",
