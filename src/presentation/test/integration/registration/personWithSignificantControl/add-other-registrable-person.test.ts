@@ -186,7 +186,7 @@ describe("Add Person With Significant Control Other registrable person Page", ()
       ["legal_form", "legalFormInvalid"],
       ["governing_law", "governingLawInvalid"]
     ])(
-      "should show an invalid-characters error when %s contains disallowed characters",
+      "should show an invalid-characters error when %s contains too many characters",
       async (field: string, errorKey: string) => {
         const personWithSignificantControl = new PersonWithSignificantControlBuilder()
           .isOtherRegistrablePerson()
