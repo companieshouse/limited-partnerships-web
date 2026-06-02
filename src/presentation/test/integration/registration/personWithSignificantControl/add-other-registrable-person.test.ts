@@ -211,6 +211,36 @@ describe("Add Person With Significant Control Other registrable person Page", ()
       }
     );
 
+    it.each([
+      ["legal_entity_name", "legalEntityNameTooLong"],
+      ["legal_form", "legalFormTooLong"],
+      ["governing_law", "governingLawTooLong"]
+    ])(
+      "should show a too long string error when %s contains disallowed characters",
+      async (field: string, errorKey: string) => {
+        const personWithSignificantControl = new PersonWithSignificantControlBuilder()
+          .isOtherRegistrablePerson()
+          .build();
+
+        const res = await request(app)
+          .post(URL)
+          .send({
+            pageType: RegistrationPageType.addPersonWithSignificantControlOtherRegistrablePerson,
+            type: PersonWithSignificantControlType.OTHER_REGISTRABLE_PERSON,
+            ...personWithSignificantControl.data,
+            [field]: "too long string".repeat(20)
+          });
+
+        const errorMessage = (
+          enTranslationText.errorMessages.personWithSignificantControl.addOtherRegistrablePerson as Record<string, string>
+        )[errorKey];
+
+        expect(res.status).toBe(200);
+        expect(countOccurrences(res.text, toEscapedHtml(errorMessage))).toBe(2);
+        expect(appDevDependencies.personWithSignificantControlGateway.personsWithSignificantControl).toHaveLength(0);
+      }
+    );
+
     it("should not call the gateway when validation fails", async () => {
       const personWithSignificantControl = new PersonWithSignificantControlBuilder().isOtherRegistrablePerson().build();
 
