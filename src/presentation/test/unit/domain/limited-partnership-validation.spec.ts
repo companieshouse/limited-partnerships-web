@@ -251,6 +251,8 @@ describe("Limited Partnership Validation", () => {
     it.each([
       ["plainaddress", "no @ symbol"],
       ["test@", "no domain"],
+      ["test@example", "domain with no top-level domain"],
+      ["a@b", "single-label domain with no top-level domain"],
       ["test@example.", "trailing dot in domain"],
       ["test space@example.com", "contains a space"],
       [`${"a".repeat(65)}@example.com`, "local part longer than 64 characters"],
