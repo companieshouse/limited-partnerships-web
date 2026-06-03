@@ -456,6 +456,53 @@ export const addressLookUpEndpoints = (router: Router, dependencies: IDependenci
     url.CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL,
     dependencies.addressLookUpController.confirmAddress()
   );
+
+  // correspondence address - Individual Person
+
+  router.get(
+    url.TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_CORRESPONDENCE_ADDRESS_URL,
+    dependencies.addressLookUpController.getPageRouting()
+  );
+  router.post(
+    url.TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_CORRESPONDENCE_ADDRESS_URL,
+    dependencies.addressLookUpController.handleTerritoryChoice()
+  );
+
+  router.get(
+    url.POSTCODE_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_CORRESPONDENCE_ADDRESS_URL,
+    dependencies.addressLookUpController.getPageRouting()
+  );
+  router.post(
+    url.POSTCODE_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_CORRESPONDENCE_ADDRESS_URL,
+    dependencies.addressLookUpController.postcodeValidation()
+  );
+
+  router.get(
+    url.CHOOSE_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_CORRESPONDENCE_ADDRESS_URL,
+    dependencies.addressLookUpController.getPageRouting()
+  );
+  router.post(
+    url.CHOOSE_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_CORRESPONDENCE_ADDRESS_URL,
+    dependencies.addressLookUpController.selectAddress()
+  );
+
+  router.get(
+    url.ENTER_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_CORRESPONDENCE_ADDRESS_URL,
+    dependencies.addressLookUpController.getPageRouting()
+  );
+  router.post(
+    url.ENTER_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_CORRESPONDENCE_ADDRESS_URL,
+    dependencies.addressLookUpController.sendManualAddress()
+  );
+
+  router.get(
+    url.CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_CORRESPONDENCE_ADDRESS_URL,
+    dependencies.addressLookUpController.getPageRouting()
+  );
+  router.post(
+    url.CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_CORRESPONDENCE_ADDRESS_URL,
+    dependencies.addressLookUpController.confirmAddress()
+  );
 };
 
 export default addressLookUpEndpoints;

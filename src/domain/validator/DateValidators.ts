@@ -64,11 +64,25 @@ export const validateDateOfBirth = (day: string | undefined, month: string | und
   }
 };
 
+const isDigitsOnly = (value: string): boolean => /^\d+$/.test(value);
+
 const parseDateParts = (day: string, month: string, year: string): { d: number; m: number; y: number } | null => {
+  const trimmedDay = (day || "").trim();
+  const trimmedMonth = (month || "").trim();
+  const trimmedYear = (year || "").trim();
+
+  if (!trimmedDay || !trimmedMonth || !trimmedYear) {
+    return null;
+  }
+
+  if (!isDigitsOnly(trimmedDay) || !isDigitsOnly(trimmedMonth) || !isDigitsOnly(trimmedYear)) {
+    return null;
+  }
+
   // months are 0-indexed in JavaScript Date, so we need to subtract 1 from the month
-  const y = Number(year);
-  const m = Number(month) - 1;
-  const d = Number(day);
+  const y = Number(trimmedYear);
+  const m = Number(trimmedMonth) - 1;
+  const d = Number(trimmedDay);
 
   if ([y, m, d].some(Number.isNaN)) {
     return null;
@@ -207,11 +221,13 @@ export const isDateToday = (day: string, month: string, year: string): boolean =
 };
 
 export const dateContainsInvalidChars = (day: string, month: string, year: string): boolean => {
-  const parsedDay = parseInt(day || "0", 10);
-  const parsedMonth = parseInt(month || "0", 10);
-  const parsedYear = parseInt(year || "0", 10);
+  const trimmedDay = (day || "").trim();
+  const trimmedMonth = (month || "").trim();
+  const trimmedYear = (year || "").trim();
 
-  if (isNaN(parsedDay) || isNaN(parsedMonth) || isNaN(parsedYear)) {
+  if ((trimmedDay && !isDigitsOnly(trimmedDay)) ||
+      (trimmedMonth && !isDigitsOnly(trimmedMonth)) ||
+      (trimmedYear && !isDigitsOnly(trimmedYear))) {
     return true;
   }
 

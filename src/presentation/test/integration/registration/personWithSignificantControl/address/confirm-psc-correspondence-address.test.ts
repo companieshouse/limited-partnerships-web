@@ -13,25 +13,24 @@ import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 
 import {
   CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_CORRESPONDENCE_ADDRESS_URL,
-  CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL,
-  ENTER_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL,
-  POSTCODE_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL,
-  TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_CORRESPONDENCE_ADDRESS_URL,
+  ENTER_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_CORRESPONDENCE_ADDRESS_URL,
+  POSTCODE_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_CORRESPONDENCE_ADDRESS_URL,
 } from "../../../../../controller/addressLookUp/url/registration";
 
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import TransactionPersonWithSignificantControl from "../../../../../../domain/entities/TransactionPersonWithSignificantControl";
 import PersonWithSignificantControlBuilder from "../../../../builder/PersonWithSignificantControlBuilder";
+import { REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL } from "../../../../../controller/registration/url";
 
-describe("Confirm PSC usual residential Address Page", () => {
+describe("Confirm PSC correspondence Address Page", () => {
   const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText, ...enErrorMessages };
   const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText, ...cyErrorMessages };
 
-  const URL = getUrl(CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL);
-  const REDIRECT_URL = getUrl(TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_CORRESPONDENCE_ADDRESS_URL);
-  const MANUAL_ENTRY_URL = getUrl(ENTER_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL);
+  const URL = getUrl(CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_CORRESPONDENCE_ADDRESS_URL);
+  const REDIRECT_URL = getUrl(REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL);
+  const MANUAL_ENTRY_URL = getUrl(ENTER_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_CORRESPONDENCE_ADDRESS_URL);
 
-  const pageType = AddressPageType.confirmPersonWithSignificantControlIndividualPersonUsualResidentialAddress;
+  const pageType = AddressPageType.confirmPersonWithSignificantControlIndividualPersonCorrespondenceAddress;
 
   let personWithSignificantControl: TransactionPersonWithSignificantControl;
   beforeEach(() => {
@@ -46,7 +45,7 @@ describe("Confirm PSC usual residential Address Page", () => {
 
     appDevDependencies.cacheRepository.feedCache({
       [appDevDependencies.transactionGateway.transactionId]: {
-        usual_residential_address: {
+        service_address: {
           postal_code: "ST6 3LJ",
           premises: "4",
           address_line_1: "line 1",
@@ -59,17 +58,17 @@ describe("Confirm PSC usual residential Address Page", () => {
     });
   });
 
-  describe("GET Confirm PSC usual residential Address Page", () => {
+  describe("GET Confirm PSC correspondence Address Page", () => {
     it.each([
       ["English", "en", enTranslationText],
       ["Welsh", "cy", cyTranslationText],
     ])(
-      "should load the confirm PSC usual residential address page with %s text",
+      "should load the confirm PSC correspondence address page with %s text",
       async (_description: string, lang: string, translationText: Record<string, any>) => {
         const res = await request(app).get(URL + `?lang=${lang}`);
 
         expect(res.status).toBe(200);
-        testTranslations(res.text, translationText.address.confirm.personWithSignificantControlUsualResidentialAddress);
+        testTranslations(res.text, translationText.address.confirm.personWithSignificantControlCorrespondenceAddress);
 
         expect(res.text).toContain("4 Line 1");
         expect(res.text).toContain("Line 2");
@@ -90,11 +89,11 @@ describe("Confirm PSC usual residential Address Page", () => {
     it.each([
       [
         "overseas",
-        getUrl(CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL)
+        getUrl(CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_CORRESPONDENCE_ADDRESS_URL)
       ],
       [
         "unitedKingdom",
-        getUrl(POSTCODE_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL)
+        getUrl(POSTCODE_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_CORRESPONDENCE_ADDRESS_URL)
       ]
     ])("should have the correct back link for territory for %s", async (territory: string, backLink: string) => {
       appDevDependencies.cacheRepository.feedCache({
@@ -112,7 +111,7 @@ describe("Confirm PSC usual residential Address Page", () => {
     it("should redirect to manual address page if address is incomplete", async () => {
       appDevDependencies.cacheRepository.feedCache({
         [appDevDependencies.transactionGateway.transactionId]: {
-          usual_residential_address: {
+          service_address: {
             postal_code: "ST6 3LJ",
             premises: "4",
             address_line_1: "line 1",
@@ -132,7 +131,7 @@ describe("Confirm PSC usual residential Address Page", () => {
     );
   });
 
-  describe("POST Confirm PSC usual residential Address Page", () => {
+  describe("POST Confirm PSC correspondence Address Page", () => {
     it("should redirect to the next page", async () => {
       const res = await request(app)
         .post(URL)
@@ -150,43 +149,6 @@ describe("Confirm PSC usual residential Address Page", () => {
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
-    });
-
-    it("should redirect to the confirm PSC correspondence address page if service address has already been stored in API data", async () => {
-      personWithSignificantControl = new PersonWithSignificantControlBuilder()
-        .isIndividualPerson()
-        .withId(appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId)
-        .withServiceAddress({
-          postal_code: "ST6 3LJ",
-          premises: "4",
-          address_line_1: "line 1",
-          address_line_2: "line 2",
-          locality: "stoke-on-trent",
-          region: "region",
-          country: "England"
-        })
-        .build();
-
-      appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([personWithSignificantControl]);
-
-      const res = await request(app)
-        .post(URL)
-        .send({
-          pageType,
-          address: `{
-            "postal_code": "ST6 3LJ",
-            "premises": "4",
-            "address_line_1": "DUNCALF STREET",
-            "address_line_2": "",
-            "locality": "STOKE-ON-TRENT",
-            "country": "England"
-          }`
-        });
-
-      expect(res.status).toBe(302);
-      expect(res.text).toContain(
-        getUrl(CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_CORRESPONDENCE_ADDRESS_URL)
-      );
     });
 
     it("should show error message if address is not provided", async () => {

@@ -18,7 +18,7 @@ export function isFieldValueMissing(fieldValue: string | undefined, fieldName: s
 }
 
 export function isFieldValueTooLong(fieldValue: string | undefined, maxLength: number, fieldName: string, uiErrors: UIErrors, errorMessage: string): boolean {
-  if ((fieldValue?.trim().length || 0) > maxLength) {
+  if (fieldValue?.trim().length && fieldValue?.trim().length > maxLength) {
     uiErrors.setWebError(fieldName, errorMessage);
     return true;
   }

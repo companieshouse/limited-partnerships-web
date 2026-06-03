@@ -1,6 +1,8 @@
 import request from "supertest";
-import enTranslationText from "../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../locales/cy/translations.json";
+import enGeneralTranslationText from "../../../../../locales/en/translations.json";
+import cyGeneralTranslationText from "../../../../../locales/cy/translations.json";
+import enErrorsTranslationText from "../../../../../locales/en/errors.json";
+import cyErrorsTranslationText from "../../../../../locales/cy/errors.json";
 import app from "../app";
 import { EMAIL_URL, WHERE_IS_THE_JURISDICTION_URL } from "../../../controller/registration/url";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
@@ -11,6 +13,9 @@ import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import { CONFIRM_REGISTERED_OFFICE_ADDRESS_URL } from "../../../controller/addressLookUp/url/registration";
 
 describe("Email Page", () => {
+  const enTranslationText = { ...enGeneralTranslationText, ...enErrorsTranslationText };
+  const cyTranslationText = { ...cyGeneralTranslationText, ...cyErrorsTranslationText };
+
   const URL = getUrl(EMAIL_URL);
   const REDIRECT_URL = getUrl(WHERE_IS_THE_JURISDICTION_URL);
 
@@ -18,6 +23,7 @@ describe("Email Page", () => {
     setLocalesEnabled(false);
 
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([]);
+    appDevDependencies.limitedPartnershipGateway.feedErrors();
   });
 
   describe("Get Email Page", () => {
@@ -94,7 +100,51 @@ describe("Email Page", () => {
       expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
     });
 
-    it("should return a validation error", async () => {
+    it.each([
+      ["English", "en", enTranslationText],
+      ["Welsh", "cy", cyTranslationText]
+    ])("should return a validation error if email is empty in %s", async (_description, lang, translationText) => {
+      setLocalesEnabled(true);
+
+      const limitedPartnership = new LimitedPartnershipBuilder()
+        .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+        .build();
+
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+      const res = await request(app).post(URL + `?lang=${lang}`).send({
+        pageType: RegistrationPageType.email,
+        email: ""
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(translationText.errorMessages.limitedPartnership.email.emailRequired);
+      expect(res.text).toContain('href="#email"');
+      expect(res.text).toContain(translationText.govUk.error.title);
+    });
+
+    it.each([
+      ["English", "en", enTranslationText],
+      ["Welsh", "cy", cyTranslationText]
+    ])("should return a validation error if email is not in the correct format in %s", async (_description, lang, translationText) => {
+      setLocalesEnabled(true);
+
+      const limitedPartnership = new LimitedPartnershipBuilder()
+        .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+        .build();
+
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+      const res = await request(app).post(URL + `?lang=${lang}`).send({
+        pageType: RegistrationPageType.email,
+        email: "test@example."
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(translationText.errorMessages.limitedPartnership.email.emailInvalid);
+    });
+
+    it("should render an api validation error when the format passes web validation", async () => {
       const limitedPartnership = new LimitedPartnershipBuilder()
         .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
         .build();
@@ -109,7 +159,7 @@ describe("Email Page", () => {
 
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.email,
-        email: "test@example."
+        email: "test@example.com"
       });
 
       expect(res.status).toBe(200);

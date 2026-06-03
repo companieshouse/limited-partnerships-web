@@ -345,6 +345,12 @@ describe('dateContainsInvalidChars', () => {
     expect(dateContainsInvalidChars('21', '05', 'cccc')).toBe(true);
   });
 
+  it('returns true when date contains full stop', () => {
+    expect(dateContainsInvalidChars('2.', '05', '2025')).toBe(true);
+    expect(dateContainsInvalidChars('21', '05.', '2025')).toBe(true);
+    expect(dateContainsInvalidChars('21', '05', '202.')).toBe(true);
+  });
+
   it('returns false when all values are numeric', () => {
     expect(dateContainsInvalidChars('21', '05', '2026')).toBe(false);
   });

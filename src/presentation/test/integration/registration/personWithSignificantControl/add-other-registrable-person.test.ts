@@ -186,7 +186,7 @@ describe("Add Person With Significant Control Other registrable person Page", ()
       ["legal_form", "legalFormInvalid"],
       ["governing_law", "governingLawInvalid"]
     ])(
-      "should show an invalid-characters error when %s contains disallowed characters",
+      "should show an invalid-characters error when %s contains too many characters",
       async (field: string, errorKey: string) => {
         const personWithSignificantControl = new PersonWithSignificantControlBuilder()
           .isOtherRegistrablePerson()
@@ -199,6 +199,36 @@ describe("Add Person With Significant Control Other registrable person Page", ()
             type: PersonWithSignificantControlType.OTHER_REGISTRABLE_PERSON,
             ...personWithSignificantControl.data,
             [field]: "Invalid ™ characters"
+          });
+
+        const errorMessage = (
+          enTranslationText.errorMessages.personWithSignificantControl.addOtherRegistrablePerson as Record<string, string>
+        )[errorKey];
+
+        expect(res.status).toBe(200);
+        expect(countOccurrences(res.text, toEscapedHtml(errorMessage))).toBe(2);
+        expect(appDevDependencies.personWithSignificantControlGateway.personsWithSignificantControl).toHaveLength(0);
+      }
+    );
+
+    it.each([
+      ["legal_entity_name", "legalEntityNameTooLong"],
+      ["legal_form", "legalFormTooLong"],
+      ["governing_law", "governingLawTooLong"]
+    ])(
+      "should show a too long string error when %s contains disallowed characters",
+      async (field: string, errorKey: string) => {
+        const personWithSignificantControl = new PersonWithSignificantControlBuilder()
+          .isOtherRegistrablePerson()
+          .build();
+
+        const res = await request(app)
+          .post(URL)
+          .send({
+            pageType: RegistrationPageType.addPersonWithSignificantControlOtherRegistrablePerson,
+            type: PersonWithSignificantControlType.OTHER_REGISTRABLE_PERSON,
+            ...personWithSignificantControl.data,
+            [field]: "too long string".repeat(20)
           });
 
         const errorMessage = (

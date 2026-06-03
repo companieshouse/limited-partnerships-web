@@ -1,6 +1,6 @@
 import UIErrors from "../entities/UIErrors";
 import { LEGAL_ENTITY_NAME_FIELD, LEGAL_FORM_FIELD, GOVERNING_LAW_FIELD } from "../../config/constants";
-import { containsInvalidCharacters } from "./FieldValidators";
+import { containsInvalidCharacters, isFieldValueTooLong } from "./FieldValidators";
 
 type PscFormData = {
   legal_entity_name?: string;
@@ -36,6 +36,7 @@ export default class OtherRegistrablePscValidator {
       uiErrors.setWebError(LEGAL_ENTITY_NAME_FIELD, this.errorMessages?.legalEntityNameMissing);
     } else {
       containsInvalidCharacters(this.legal_entity_name, LEGAL_ENTITY_NAME_FIELD, uiErrors, this.errorMessages?.legalEntityNameInvalid);
+      isFieldValueTooLong(this.legal_entity_name, 160, LEGAL_ENTITY_NAME_FIELD, uiErrors, this.errorMessages?.legalEntityNameTooLong);
     }
   }
 
@@ -44,6 +45,7 @@ export default class OtherRegistrablePscValidator {
       uiErrors.setWebError(LEGAL_FORM_FIELD, this.errorMessages?.legalFormMissing);
     } else {
       containsInvalidCharacters(this.legal_form, LEGAL_FORM_FIELD, uiErrors, this.errorMessages?.legalFormInvalid);
+      isFieldValueTooLong(this.legal_form, 160, LEGAL_FORM_FIELD, uiErrors, this.errorMessages?.legalFormTooLong);
     }
   }
 
@@ -52,6 +54,7 @@ export default class OtherRegistrablePscValidator {
       uiErrors.setWebError(GOVERNING_LAW_FIELD, this.errorMessages?.governingLawMissing);
     } else {
       containsInvalidCharacters(this.governing_law, GOVERNING_LAW_FIELD, uiErrors, this.errorMessages?.governingLawInvalid);
+      isFieldValueTooLong(this.governing_law, 160, GOVERNING_LAW_FIELD, uiErrors, this.errorMessages?.governingLawTooLong);
     }
   }
 };

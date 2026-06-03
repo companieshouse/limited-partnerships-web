@@ -16,7 +16,8 @@
         },
 
         "reviewPartners":{
-            "generalPartner": "WELSH - Select if you need to add another general partner"
+            "generalPartner": "WELSH - Select if you need to add another general partner",
+            "limitedPartner": "WELSH - Select if you need to add another limited partner"
         },
 
         "address": {
@@ -96,6 +97,10 @@
             },
             "term": {
                 "termRequired": "WELSH - Select the term of the partnership"
+            },
+            "email": {
+                "emailRequired": "WELSH - Enter the registered email address for the partnership",
+                "emailInvalid": "WELSH - Enter an email address in the correct format, like name@example.com"
             }
         },
 
@@ -141,12 +146,15 @@
             "addOtherRegistrablePerson": {
                 "legalEntityNameMissing": "WELSH - Enter the other registrable person's name",
                 "legalEntityNameInvalid": "WELSH - Other registrable person's name must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "legalEntityNameTooLong": "WELSH - Other registrable person's name must be 160 characters or less",
 
                 "legalFormMissing": "WELSH - Enter the legal form or corporate identity",
                 "legalFormInvalid": "WELSH - Legal form or corporate identity must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "legalFormTooLong": "WELSH - Legal form or corporate identity must be 160 characters or less",
 
                 "governingLawMissing": "WELSH - Enter the governing law",
-                "governingLawInvalid": "WELSH - Governing law must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes"
+                "governingLawInvalid": "WELSH - Governing law must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "governingLawTooLong": "WELSH - Governing law must be 160 characters or less"
             },
             "addIndividualPerson": {
                 "consentCheckedMissing": "WELSH - Confirm that this person knows their details are being supplied as part of this application",

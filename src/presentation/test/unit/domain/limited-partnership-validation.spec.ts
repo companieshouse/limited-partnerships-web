@@ -214,4 +214,66 @@ describe("Limited Partnership Validation", () => {
       });
     });
   });
+
+  describe("Email validation", () => {
+    it.each([
+      ["test@example.com"],
+      ["name@example.com"],
+      ["first.last@sub.example.co.uk"],
+      [`${"a".repeat(64)}@example.com`],
+      [`test@${"a".repeat(63)}.com`]
+    ])("should not return an error if email is valid: %s", (email) => {
+      const limitedPartnership = new LimitedPartnership().set({ email }, enTranslationText);
+      const errors = limitedPartnership.runEmailValidation();
+
+      expect(errors.hasErrors()).toBe(false);
+      expect(errors.getErrors()).toEqual({ errorList: [] });
+    });
+
+    it.each([["", "empty"], ["   ", "whitespace"]])("should return an error if email is %s", (email) => {
+      const limitedPartnership = new LimitedPartnership().set({ email }, enTranslationText);
+      const errors = limitedPartnership.runEmailValidation();
+
+      expect(errors.hasErrors()).toBe(true);
+      expect(errors.getErrors()).toEqual({
+        email: {
+          text: enTranslationText.errorMessages.limitedPartnership.email.emailRequired
+        },
+        errorList: [
+          {
+            href: "#email",
+            text: enTranslationText.errorMessages.limitedPartnership.email.emailRequired
+          }
+        ]
+      });
+    });
+
+    it.each([
+      ["plainaddress", "no @ symbol"],
+      ["test@", "no domain"],
+      ["test@example", "domain with no top-level domain"],
+      ["a@b", "single-label domain with no top-level domain"],
+      ["test@example.", "trailing dot in domain"],
+      ["test space@example.com", "contains a space"],
+      [`${"a".repeat(65)}@example.com`, "local part longer than 64 characters"],
+      [`test@${"a".repeat(64)}.com`, "domain label longer than 63 characters"],
+      [`${"a".repeat(250)}@${"b".repeat(60)}.com`, "longer than 255 characters"]
+    ])("should return an error if email is invalid: %s", (email) => {
+      const limitedPartnership = new LimitedPartnership().set({ email }, enTranslationText);
+      const errors = limitedPartnership.runEmailValidation();
+
+      expect(errors.hasErrors()).toBe(true);
+      expect(errors.getErrors()).toEqual({
+        email: {
+          text: enTranslationText.errorMessages.limitedPartnership.email.emailInvalid
+        },
+        errorList: [
+          {
+            href: "#email",
+            text: enTranslationText.errorMessages.limitedPartnership.email.emailInvalid
+          }
+        ]
+      });
+    });
+  });
 });

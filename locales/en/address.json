@@ -37,6 +37,11 @@
                 "title": "Choose the PSC's usual residential address",
                 "publicRegisterInformationLine1": "We'll show the PSC's country/state of residence on the public register.",
                 "publicRegisterInformationLine2": "We will not show the PSC's full usual residential address on the public register."
+            },
+            "personWithSignificantControlCorrespondenceAddress": {
+                "title": "Choose the PSC's correspondence address",
+                "titleHint": "This is also known as the service address. It should not be a home address, unless the PSC has given permission for their home address to be made public.",
+                "publicRegisterInformationLine1": "We'll show the PSC's correspondence address on the public register."
             }
         },
 
@@ -78,6 +83,10 @@
                 "title": "Confirm the PSC's usual residential address",
                 "publicRegisterLine1": "We'll show the PSC's country/state of residence on the public register.",
                 "publicRegisterLine2": "We will not show the PSC's full usual residential address on the public register."
+            },
+            "personWithSignificantControlCorrespondenceAddress": {
+                "title": "Confirm the PSC's correspondence address",
+                "publicRegisterLine1": "We'll show the PSC's correspondence address on the public register."
             }
         },
 
@@ -136,6 +145,12 @@
                     "hint": "This address cannot be a PO box, DX or LP (Legal Post in Scotland) number.",
                     "publicRegisterLine1": "We'll show the PSC's country/state of residence on the public register.",
                     "publicRegisterLine2": "We will not show the PSC's full usual residential address on the public register.",
+                    "postcodeOptional": "Postcode (optional)"
+                },
+                "correspondenceAddress": {
+                    "title": "What is the PSC's correspondence address?",
+                    "titleHint": "This is also known as the service address. It should not be a home address, unless the PSC has given permission for their home address to be made public.",
+                    "publicInformationLine1": "We'll show the PSC's correspondence address on the public register.",
                     "postcodeOptional": "Postcode (optional)"
                 }
             },
@@ -210,6 +225,11 @@
                     "hint": "This address cannot be a PO box, DX or LP (Legal Post in Scotland) number.",
                     "publicRegisterLine1": "We'll show the PSC's country/state of residence on the public register.",
                     "publicRegisterLine2": "We will not show the PSC's full usual residential address on the public register."
+                },
+                "correspondenceAddress": {
+                    "whatIsCorrespondenceAddress": "What is the PSC's correspondence address?",
+                    "titleHint": "This is also known as the service address. It should not be a home address, unless the PSC has given permission for their home address to be made public.",
+                    "publicRegisterLine1": "We'll show the PSC's correspondence address on the public register."
                 }
             },
 
@@ -265,6 +285,11 @@
                 "titleHint": "This address cannot be a PO box, DX or LP (Legal Post in Scotland) number.",
                 "publicRegisterInformationLine1": "We'll show the PSC's country/state of residence on the public register.",
                 "publicRegisterInformationLine2": "We will not show the PSC's full usual residential address on the public register."
+            },
+            "personWithSignificantControlCorrespondenceAddress": {
+                "title": "Where is the PSC's correspondence address?",
+                "titleHint": "This is also known as the service address. It should not be a home address, unless the PSC has given permission for their home address to be made public.",
+                "publicRegisterInformationLine1": "We'll show the PSC's correspondence address on the public register."
             }
         },
 

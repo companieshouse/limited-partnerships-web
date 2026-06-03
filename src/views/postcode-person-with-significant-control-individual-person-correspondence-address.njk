@@ -1,0 +1,26 @@
+{% extends "layout.njk" %}
+
+{% set pageTitle = i18n.address.findPostcode.personWithSignificantControl.correspondenceAddress.whatIsCorrespondenceAddress %}
+{% set titleHint = i18n.address.findPostcode.personWithSignificantControl.correspondenceAddress.titleHint %}
+{% set publicRegisterInformationLine1 = i18n.address.findPostcode.personWithSignificantControl.correspondenceAddress.publicRegisterLine1 %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {% include "includes/errors.njk" %}
+
+      <div>
+        {% include "pages/personWithSignificantControl/person-with-significant-control-name.njk" %}
+
+        <h1 class="govuk-heading-xl">{{ pageTitle }}</h1>
+        <p class="govuk-hint">{{ titleHint }}</p>
+      </div>
+
+      {% include "pages/address/postcode-form.njk" %}
+
+    <div>
+      {% include "includes/public-register-information.njk" %}
+    </div>
+   </div>
+
+{% endblock %}

@@ -12,6 +12,8 @@ import enGeneralTranslationText from "../../../../../locales/en/translations.jso
 import cyGeneralTranslationText from "../../../../../locales/cy/translations.json";
 import enAddressTranslationText from "../../../../../locales/en/address.json";
 import cyAddressTranslationText from "../../../../../locales/cy/address.json";
+import enPersonWithSignificantControlTranslationText from "../../../../../locales/en/personWithSignificantControl.json";
+import cyPersonWithSignificantControlTranslationText from "../../../../../locales/cy/personWithSignificantControl.json";
 import enErrorMessages from "../../../../../locales/en/errors.json";
 import cyErrorMessages from "../../../../../locales/cy/errors.json";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
@@ -39,8 +41,8 @@ import TransactionGeneralPartner from "../../../../domain/entities/TransactionGe
 import TransactionLimitedPartnership from "../../../../domain/entities/TransactionLimitedPartnership";
 
 describe("Check Your Answers Page", () => {
-  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText, ...enErrorMessages };
-  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText, ...cyErrorMessages };
+  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText, ...enErrorMessages, ...enPersonWithSignificantControlTranslationText };
+  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText, ...cyErrorMessages, ...cyPersonWithSignificantControlTranslationText };
 
   const URL = getUrl(CHECK_YOUR_ANSWERS_URL);
   const PAYMENT_LINK_JOURNEY = "https://api-test-payments.chs.local:4001";
@@ -574,6 +576,8 @@ describe("Check Your Answers Page", () => {
         const res = await request(app).get(URL + `?lang=${lang}`);
 
         expect(res.status).toBe(200);
+        expect(res.text).toContain(translationText.checkYourAnswersPage.psc.personTitle);
+        expect(res.text).not.toContain(translationText.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.personTitle);
         expect(res.text).toContain(psc.data?.title);
         expect(res.text).toContain(psc.data?.forename);
         expect(res.text).toContain(psc.data?.middle_names);

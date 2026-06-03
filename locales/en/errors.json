@@ -16,7 +16,8 @@
         },
 
         "reviewPartners":{
-            "generalPartner": "Select if you need to add another general partner"
+            "generalPartner": "Select if you need to add another general partner",
+            "limitedPartner": "Select if you need to add another limited partner"
         },
 
         "address": {
@@ -95,6 +96,10 @@
             },
             "term": {
                 "termRequired": "Select the term of the partnership"
+            },
+            "email": {
+                "emailRequired": "Enter the registered email address for the partnership",
+                "emailInvalid": "Enter an email address in the correct format, like name@example.com"
             }
         },
 
@@ -140,12 +145,15 @@
             "addOtherRegistrablePerson": {
                 "legalEntityNameMissing": "Enter the other registrable person's name",
                 "legalEntityNameInvalid": "Other registrable person's name must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "legalEntityNameTooLong": "Other registrable person's name must be 160 characters or less",
 
                 "legalFormMissing": "Enter the legal form or corporate identity",
                 "legalFormInvalid": "Legal form or corporate identity must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "legalFormTooLong": "Legal form or corporate identity must be 160 characters or less",
 
                 "governingLawMissing": "Enter the governing law",
-                "governingLawInvalid": "Governing law must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes"
+                "governingLawInvalid": "Governing law must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
+                "governingLawTooLong": "Governing law must be 160 characters or less"
             },
             "addIndividualPerson": {
                 "consentCheckedMissing": "Confirm that this person knows their details are being supplied as part of this application",

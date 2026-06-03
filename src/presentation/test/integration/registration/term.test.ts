@@ -128,8 +128,8 @@ describe("Email Page", () => {
         appDevDependencies.limitedPartnershipGateway.feedErrors(apiErrors);
 
         const res = await request(app).post(URL).send({
-          pageType: RegistrationPageType.email,
-          term: "wrong-term"
+          pageType: RegistrationPageType.term,
+          term: Term.BY_AGREEMENT
         });
 
         expect(res.status).toBe(200);
