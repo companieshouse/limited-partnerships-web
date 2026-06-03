@@ -1,7 +1,7 @@
 import { FORENAME_FIELD, FORMER_NAMES_FIELD, NATIONALITY1_FIELD, NATIONALITY2_FIELD, NOT_DISQUALIFIED_STATEMENT_CHECKED_FIELD, PREVIOUS_NAME_FIELD, SURNAME_FIELD } from "../../config";
 import { JourneyTypes } from "../entities/journey";
 import UIErrors from "../entities/UIErrors";
-import { DateErrorMessages, getDateErrorMessages, validateDateOfBirth } from "./DateValidators";
+import { DateErrorMessages, validateDateOfBirth } from "./DateValidators";
 import { containsInvalidCharacters, isFieldValueMissing, isFieldValueTooLong } from "./FieldValidators";
 
 class PartnerPersonValidator {
@@ -22,7 +22,7 @@ class PartnerPersonValidator {
 
   private errorMessages: Record<string, any> = {};
 
-  private dateErrorMessages: DateErrorMessages = {} as DateErrorMessages;
+  private dateOfBirthErrorMessages: DateErrorMessages = {} as DateErrorMessages;
 
   set(data: Record<string, any>, i18n: any): this {
     this.forename = data.forename;
@@ -43,7 +43,7 @@ class PartnerPersonValidator {
 
     this.errorMessages = i18n?.errorMessages?.partners?.addPartner || {};
 
-    this.dateErrorMessages = getDateErrorMessages(i18n);
+    this.dateOfBirthErrorMessages = i18n?.errorMessages?.dateOfBirth || {} as DateErrorMessages;
 
     return this;
   }
@@ -54,7 +54,7 @@ class PartnerPersonValidator {
     this.validateSurname(uiErrors);
     this.validatePreviousName(uiErrors);
     this.validateFormerNames(uiErrors);
-    validateDateOfBirth(this.dateOfBirthDay, this.dateOfBirthMonth, this.dateOfBirthYear, uiErrors, this.dateErrorMessages);
+    validateDateOfBirth(this.dateOfBirthDay, this.dateOfBirthMonth, this.dateOfBirthYear, uiErrors, this.dateOfBirthErrorMessages);
     this.validateNationalities(uiErrors);
 
     if (!this.journeyTypes?.isTransition) {

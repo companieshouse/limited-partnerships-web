@@ -104,19 +104,19 @@
         },
 
         "dateOfBirth": {
-            "dateOfBirthMissing": "Enter their date of birth",
-            "dateOfBirthDayMissing": "Date of birth must include a day",
-            "dateOfBirthMonthMissing": "Date of birth must include a month",
-            "dateOfBirthYearMissing": "Date of birth must include a year",
-            "dateOfBirthDayAndMonthMissing": "Date of birth must include a day and a month",
-            "dateOfBirthMonthAndYearMissing": "Date of birth must include a month and a year",
-            "dateOfBirthDayAndYearMissing": "Date of birth must include a day and a year",
-            "dateOfBirthInvalidChars": "Date of birth must only include numbers",
-            "dateOfBirthInvalidDate": "Date of birth must be a real date",
-            "dateOfBirthNotInPast": "Date of birth must be in the past",
-            "dateOfBirthDayInvalidLength": "Day must be 1 or 2 numbers",
-            "dateOfBirthMonthInvalidLength": "Month must be 1 or 2 numbers",
-            "dateOfBirthYearInvalidLength": "Year must be 4 numbers"
+            "dateMissing": "Enter their date of birth",
+            "dayMissing": "Date of birth must include a day",
+            "monthMissing": "Date of birth must include a month",
+            "yearMissing": "Date of birth must include a year",
+            "dayAndMonthMissing": "Date of birth must include a day and a month",
+            "monthAndYearMissing": "Date of birth must include a month and a year",
+            "dayAndYearMissing": "Date of birth must include a day and a year",
+            "dateInvalidChars": "Date of birth must only include numbers",
+            "dateInvalidDate": "Date of birth must be a real date",
+            "dateNotInPast": "Date of birth must be in the past",
+            "dayInvalidLength": "Day must be 1 or 2 numbers",
+            "monthInvalidLength": "Month must be 1 or 2 numbers",
+            "yearInvalidLength": "Year must be 4 numbers"
         },
 
         "partners": {

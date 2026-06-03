@@ -1,6 +1,6 @@
 import UIErrors from "../entities/UIErrors";
 import { containsInvalidCharacters, isFieldValueMissing, isFieldValueTooLong } from "./FieldValidators";
-import { validateDateOfBirth, DateErrorMessages, getDateErrorMessages } from "./DateValidators";
+import { validateDateOfBirth, DateErrorMessages } from "./DateValidators";
 import { CONSENT_CHECKED_FIELD, FORENAME_FIELD, MIDDLE_NAMES_FIELD, NATIONALITY2_FIELD, NATIONALITY1_FIELD, SURNAME_FIELD, TITLE_FIELD, TITLE_OTHER_FIELD } from "../../config";
 
 type PscFormData = {
@@ -33,7 +33,7 @@ export default class IndividualPscValidator {
   private titleOtherValue?: string;
 
   private errorMessages: Record<string, string> = {};
-  private dateErrorMessages: DateErrorMessages = {} as DateErrorMessages;
+  private dateOfBirthErrorMessages: DateErrorMessages = {} as DateErrorMessages;
 
   set(data: PscFormData, i18n: any): this {
     this.title = data.title;
@@ -50,7 +50,7 @@ export default class IndividualPscValidator {
 
     this.errorMessages = i18n?.errorMessages?.personWithSignificantControl?.addIndividualPerson || {};
     this.titleOtherValue = i18n?.personWithSignificantControl?.addPersonWithSignificantControl?.addIndividualPerson?.titles?.other;
-    this.dateErrorMessages = getDateErrorMessages(i18n);
+    this.dateOfBirthErrorMessages = i18n?.errorMessages?.dateOfBirth || {} as DateErrorMessages;
     return this;
   }
 
@@ -62,7 +62,7 @@ export default class IndividualPscValidator {
     this.validateForename(uiErrors);
     this.validateMiddleNames(uiErrors);
     this.validateSurname(uiErrors);
-    validateDateOfBirth(this.date_of_birth_day, this.date_of_birth_month, this.date_of_birth_year, uiErrors, this.dateErrorMessages);
+    validateDateOfBirth(this.date_of_birth_day, this.date_of_birth_month, this.date_of_birth_year, uiErrors, this.dateOfBirthErrorMessages);
     this.validateNationalities(uiErrors);
     return uiErrors;
   }

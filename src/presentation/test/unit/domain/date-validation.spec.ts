@@ -1,202 +1,5 @@
-import { dateContainsInvalidChars, isDateInPast, isDateToday, isValidDate, isValidDateStringAndNotInFuture, validateDateOfBirth, DateErrorMessages, getDateErrorMessages } from '../../../../domain/validator/DateValidators';
+import { dateContainsInvalidChars, isDateInPast, isDateToday, isValidDate, isValidDateStringAndNotInFuture, validateDateOfBirth, DateErrorMessages } from '../../../../domain/validator/DateValidators';
 import { DATE_OF_BIRTH_FIELD } from '../../../../config';
-
-describe('getDateErrorMessages', () => {
-  it('returns a DateErrorMessages object with all required properties', () => {
-    const i18n = {
-      errorMessages: {
-        dateOfBirth: {
-          dateOfBirthMissing: 'Date of birth is missing',
-          dateOfBirthDayMissing: 'Day is missing',
-          dateOfBirthMonthMissing: 'Month is missing',
-          dateOfBirthYearMissing: 'Year is missing',
-          dateOfBirthDayAndMonthMissing: 'Day and month are missing',
-          dateOfBirthDayAndYearMissing: 'Day and year are missing',
-          dateOfBirthMonthAndYearMissing: 'Month and year are missing',
-          dateOfBirthDayInvalidLength: 'Day is invalid length',
-          dateOfBirthMonthInvalidLength: 'Month is invalid length',
-          dateOfBirthYearInvalidLength: 'Year is invalid length',
-          dateOfBirthInvalidChars: 'Date contains invalid characters',
-          dateOfBirthInvalidDate: 'Date is invalid',
-          dateOfBirthNotInPast: 'Date of birth is not in the past'
-        }
-      }
-    };
-
-    const result = getDateErrorMessages(i18n);
-
-    expect(result.dateMissing).toBe('Date of birth is missing');
-    expect(result.dayMissing).toBe('Day is missing');
-    expect(result.monthMissing).toBe('Month is missing');
-    expect(result.yearMissing).toBe('Year is missing');
-    expect(result.dayAndMonthMissing).toBe('Day and month are missing');
-    expect(result.dayAndYearMissing).toBe('Day and year are missing');
-    expect(result.monthAndYearMissing).toBe('Month and year are missing');
-    expect(result.dayInvalidLength).toBe('Day is invalid length');
-    expect(result.monthInvalidLength).toBe('Month is invalid length');
-    expect(result.yearInvalidLength).toBe('Year is invalid length');
-    expect(result.dateInvalidChars).toBe('Date contains invalid characters');
-    expect(result.dateInvalidDate).toBe('Date is invalid');
-    expect(result.dateOfBirthNotInPast).toBe('Date of birth is not in the past');
-  });
-
-  it('handles undefined i18n object gracefully', () => {
-    const result = getDateErrorMessages(undefined);
-
-    expect(result.dateMissing).toBeUndefined();
-    expect(result.dayMissing).toBeUndefined();
-    expect(result.monthMissing).toBeUndefined();
-    expect(result.yearMissing).toBeUndefined();
-    expect(result.dayAndMonthMissing).toBeUndefined();
-    expect(result.dayAndYearMissing).toBeUndefined();
-    expect(result.monthAndYearMissing).toBeUndefined();
-    expect(result.dayInvalidLength).toBeUndefined();
-    expect(result.monthInvalidLength).toBeUndefined();
-    expect(result.yearInvalidLength).toBeUndefined();
-    expect(result.dateInvalidChars).toBeUndefined();
-    expect(result.dateInvalidDate).toBeUndefined();
-    expect(result.dateOfBirthNotInPast).toBeUndefined();
-  });
-
-  it('handles missing errorMessages property', () => {
-    const i18n = {};
-
-    const result = getDateErrorMessages(i18n);
-
-    expect(result.dateMissing).toBeUndefined();
-    expect(result.dayMissing).toBeUndefined();
-    expect(result.monthMissing).toBeUndefined();
-  });
-
-  it('handles missing dateOfBirth property', () => {
-    const i18n = {
-      errorMessages: {}
-    };
-
-    const result = getDateErrorMessages(i18n);
-
-    expect(result.dateMissing).toBeUndefined();
-    expect(result.dayMissing).toBeUndefined();
-    expect(result.monthMissing).toBeUndefined();
-  });
-
-  it('handles partial errorMessages structure', () => {
-    const i18n = {
-      errorMessages: {
-        dateOfBirth: {
-          dateOfBirthMissing: 'Date is missing'
-          // other properties missing
-        }
-      }
-    };
-
-    const result = getDateErrorMessages(i18n);
-
-    expect(result.dateMissing).toBe('Date is missing');
-    expect(result.dayMissing).toBeUndefined();
-    expect(result.monthMissing).toBeUndefined();
-    expect(result.yearMissing).toBeUndefined();
-    expect(result.dayAndMonthMissing).toBeUndefined();
-  });
-
-  it('handles null i18n object', () => {
-    const result = getDateErrorMessages(null);
-
-    expect(result.dateMissing).toBeUndefined();
-    expect(result.dayMissing).toBeUndefined();
-    expect(result.monthMissing).toBeUndefined();
-  });
-
-  it('preserves exact error message values from i18n', () => {
-    const errorMsg1 = 'Custom error 1';
-    const errorMsg2 = 'Custom error 2';
-    const errorMsg3 = 'Custom error 3';
-
-    const i18n = {
-      errorMessages: {
-        dateOfBirth: {
-          dateOfBirthMissing: errorMsg1,
-          dateOfBirthDayMissing: errorMsg2,
-          dateOfBirthMonthMissing: errorMsg3,
-          dateOfBirthYearMissing: 'Year missing',
-          dateOfBirthDayAndMonthMissing: 'Day and month missing',
-          dateOfBirthDayAndYearMissing: 'Day and year missing',
-          dateOfBirthMonthAndYearMissing: 'Month and year missing',
-          dateOfBirthDayInvalidLength: 'Day length',
-          dateOfBirthMonthInvalidLength: 'Month length',
-          dateOfBirthYearInvalidLength: 'Year length',
-          dateOfBirthInvalidChars: 'Invalid chars',
-          dateOfBirthInvalidDate: 'Invalid date',
-          dateOfBirthNotInPast: 'Not in past'
-        }
-      }
-    };
-
-    const result = getDateErrorMessages(i18n);
-
-    expect(result.dateMissing).toBe(errorMsg1);
-    expect(result.dayMissing).toBe(errorMsg2);
-    expect(result.monthMissing).toBe(errorMsg3);
-  });
-
-  it('returns an object that matches DateErrorMessages type', () => {
-    const i18n = {
-      errorMessages: {
-        dateOfBirth: {
-          dateOfBirthMissing: 'Missing',
-          dateOfBirthDayMissing: 'Day missing',
-          dateOfBirthMonthMissing: 'Month missing',
-          dateOfBirthYearMissing: 'Year missing',
-          dateOfBirthDayAndMonthMissing: 'Day and month missing',
-          dateOfBirthDayAndYearMissing: 'Day and year missing',
-          dateOfBirthMonthAndYearMissing: 'Month and year missing',
-          dateOfBirthDayInvalidLength: 'Day length',
-          dateOfBirthMonthInvalidLength: 'Month length',
-          dateOfBirthYearInvalidLength: 'Year length',
-          dateOfBirthInvalidChars: 'Invalid chars',
-          dateOfBirthInvalidDate: 'Invalid date',
-          dateOfBirthNotInPast: 'Not in past'
-        }
-      }
-    };
-
-    const result: DateErrorMessages = getDateErrorMessages(i18n);
-
-    expect(result).toBeDefined();
-    expect(typeof result).toBe('object');
-    expect(Object.keys(result)).toHaveLength(13);
-  });
-
-  it('handles i18n with extra properties', () => {
-    const i18n = {
-      errorMessages: {
-        dateOfBirth: {
-          dateOfBirthMissing: 'Missing',
-          dateOfBirthDayMissing: 'Day missing',
-          dateOfBirthMonthMissing: 'Month missing',
-          dateOfBirthYearMissing: 'Year missing',
-          dateOfBirthDayAndMonthMissing: 'Day and month missing',
-          dateOfBirthDayAndYearMissing: 'Day and year missing',
-          dateOfBirthMonthAndYearMissing: 'Month and year missing',
-          dateOfBirthDayInvalidLength: 'Day length',
-          dateOfBirthMonthInvalidLength: 'Month length',
-          dateOfBirthYearInvalidLength: 'Year length',
-          dateOfBirthInvalidChars: 'Invalid chars',
-          dateOfBirthInvalidDate: 'Invalid date',
-          dateOfBirthNotInPast: 'Not in past',
-          extraProperty: 'This should be ignored'
-        }
-      }
-    };
-
-    const result = getDateErrorMessages(i18n);
-
-    expect(result).toBeDefined();
-    expect(result.dateMissing).toBe('Missing');
-    // Extra property should not be included in result
-    expect('extraProperty' in result).toBe(false);
-  });
-});
 
 describe('isValidDate', () => {
   it('returns true for a valid date', () => {
@@ -499,7 +302,7 @@ describe('validateDateOfBirth', () => {
     yearInvalidLength: 'Year is invalid length',
     dateInvalidChars: 'Date contains invalid characters',
     dateInvalidDate: 'Date is invalid',
-    dateOfBirthNotInPast: 'Date of birth is not in the past'
+    dateNotInPast: 'Date of birth is not in the past'
   };
 
   beforeEach(() => {
@@ -646,7 +449,7 @@ describe('validateDateOfBirth', () => {
       jest.setSystemTime(new Date(2026, 4, 21, 10, 0, 0));
 
       validateDateOfBirth('22', '05', '2026', mockUIErrors, testErrorMessages);
-      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.dateOfBirthNotInPast);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.dateNotInPast);
     });
 
     it('sets error for today', () => {
@@ -654,7 +457,7 @@ describe('validateDateOfBirth', () => {
       jest.setSystemTime(new Date(2026, 4, 21, 10, 0, 0));
 
       validateDateOfBirth('21', '05', '2026', mockUIErrors, testErrorMessages);
-      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.dateOfBirthNotInPast);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.dateNotInPast);
     });
   });
 

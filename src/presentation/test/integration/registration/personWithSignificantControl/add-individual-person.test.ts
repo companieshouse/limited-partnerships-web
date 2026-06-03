@@ -334,33 +334,33 @@ describe("Add Person With Significant Control Individual Person Page", () => {
 
   describe("Date of birth validations", () => {
     const cases: Array<[string, string, string, string, string, string]> = [
-      ["missing all", "", "", "", "en", enErrors.errorMessages.dateOfBirth.dateOfBirthMissing],
-      ["day missing", "", "3", "1976", "en", enErrors.errorMessages.dateOfBirth.dateOfBirthDayMissing],
-      ["month missing", "1", "", "1976", "en", enErrors.errorMessages.dateOfBirth.dateOfBirthMonthMissing],
-      ["year missing", "1", "3", "", "en", enErrors.errorMessages.dateOfBirth.dateOfBirthYearMissing],
-      ["day & month missing", "", "", "1976", "en", enErrors.errorMessages.dateOfBirth.dateOfBirthDayAndMonthMissing],
-      ["month & year missing", "1", "", "", "en", enErrors.errorMessages.dateOfBirth.dateOfBirthMonthAndYearMissing],
-      ["day & year missing", "", "3", "", "en", enErrors.errorMessages.dateOfBirth.dateOfBirthDayAndYearMissing],
-      ["invalid chars", "aa", "bb", "1976", "en", enErrors.errorMessages.dateOfBirth.dateOfBirthInvalidChars],
-      ["invalid date (29 Feb non leap year)", "29", "2", "2019", "en", enErrors.errorMessages.dateOfBirth.dateOfBirthInvalidDate],
-      ["in future", "1", "1", "2099", "en", enErrors.errorMessages.dateOfBirth.dateOfBirthNotInPast],
-      ["day too long", "123", "1", "1976", "en", enErrors.errorMessages.dateOfBirth.dateOfBirthDayInvalidLength],
-      ["month too long", "1", "123", "1976", "en", enErrors.errorMessages.dateOfBirth.dateOfBirthMonthInvalidLength],
-      ["year wrong length", "1", "1", "76", "en", enErrors.errorMessages.dateOfBirth.dateOfBirthYearInvalidLength],
+      ["missing all", "", "", "", "en", enErrors.errorMessages.dateOfBirth.dateMissing],
+      ["day missing", "", "3", "1976", "en", enErrors.errorMessages.dateOfBirth.dayMissing],
+      ["month missing", "1", "", "1976", "en", enErrors.errorMessages.dateOfBirth.monthMissing],
+      ["year missing", "1", "3", "", "en", enErrors.errorMessages.dateOfBirth.yearMissing],
+      ["day & month missing", "", "", "1976", "en", enErrors.errorMessages.dateOfBirth.dayAndMonthMissing],
+      ["month & year missing", "1", "", "", "en", enErrors.errorMessages.dateOfBirth.monthAndYearMissing],
+      ["day & year missing", "", "3", "", "en", enErrors.errorMessages.dateOfBirth.dayAndYearMissing],
+      ["invalid chars", "aa", "bb", "1976", "en", enErrors.errorMessages.dateOfBirth.dateInvalidChars],
+      ["invalid date (29 Feb non leap year)", "29", "2", "2019", "en", enErrors.errorMessages.dateOfBirth.dateInvalidDate],
+      ["in future", "1", "1", "2099", "en", enErrors.errorMessages.dateOfBirth.dateNotInPast],
+      ["day too long", "123", "1", "1976", "en", enErrors.errorMessages.dateOfBirth.dayInvalidLength],
+      ["month too long", "1", "123", "1976", "en", enErrors.errorMessages.dateOfBirth.monthInvalidLength],
+      ["year wrong length", "1", "1", "76", "en", enErrors.errorMessages.dateOfBirth.yearInvalidLength],
 
-      ["missing all", "", "", "", "cy", cyErrors.errorMessages.dateOfBirth.dateOfBirthMissing],
-      ["day missing", "", "3", "1976", "cy", cyErrors.errorMessages.dateOfBirth.dateOfBirthDayMissing],
-      ["month missing", "1", "", "1976", "cy", cyErrors.errorMessages.dateOfBirth.dateOfBirthMonthMissing],
-      ["year missing", "1", "3", "", "cy", cyErrors.errorMessages.dateOfBirth.dateOfBirthYearMissing],
-      ["day & month missing", "", "", "1976", "cy", cyErrors.errorMessages.dateOfBirth.dateOfBirthDayAndMonthMissing],
-      ["month & year missing", "1", "", "", "cy", cyErrors.errorMessages.dateOfBirth.dateOfBirthMonthAndYearMissing],
-      ["day & year missing", "", "3", "", "cy", cyErrors.errorMessages.dateOfBirth.dateOfBirthDayAndYearMissing],
-      ["invalid chars", "aa", "bb", "1976", "cy", cyErrors.errorMessages.dateOfBirth.dateOfBirthInvalidChars],
-      ["invalid date (29 Feb non leap year)", "29", "2", "2019", "cy", cyErrors.errorMessages.dateOfBirth.dateOfBirthInvalidDate],
-      ["in future", "1", "1", "2099", "cy", cyErrors.errorMessages.dateOfBirth.dateOfBirthNotInPast],
-      ["day too long", "123", "1", "1976", "cy", cyErrors.errorMessages.dateOfBirth.dateOfBirthDayInvalidLength],
-      ["month too long", "1", "123", "1976", "cy", cyErrors.errorMessages.dateOfBirth.dateOfBirthMonthInvalidLength],
-      ["year wrong length", "1", "1", "76", "cy", cyErrors.errorMessages.dateOfBirth.dateOfBirthYearInvalidLength]
+      ["missing all", "", "", "", "cy", cyErrors.errorMessages.dateOfBirth.dateMissing],
+      ["day missing", "", "3", "1976", "cy", cyErrors.errorMessages.dateOfBirth.dayMissing],
+      ["month missing", "1", "", "1976", "cy", cyErrors.errorMessages.dateOfBirth.monthMissing],
+      ["year missing", "1", "3", "", "cy", cyErrors.errorMessages.dateOfBirth.yearMissing],
+      ["day & month missing", "", "", "1976", "cy", cyErrors.errorMessages.dateOfBirth.dayAndMonthMissing],
+      ["month & year missing", "1", "", "", "cy", cyErrors.errorMessages.dateOfBirth.monthAndYearMissing],
+      ["day & year missing", "", "3", "", "cy", cyErrors.errorMessages.dateOfBirth.dayAndYearMissing],
+      ["invalid chars", "aa", "bb", "1976", "cy", cyErrors.errorMessages.dateOfBirth.dateInvalidChars],
+      ["invalid date (29 Feb non leap year)", "29", "2", "2019", "cy", cyErrors.errorMessages.dateOfBirth.dateInvalidDate],
+      ["in future", "1", "1", "2099", "cy", cyErrors.errorMessages.dateOfBirth.dateNotInPast],
+      ["day too long", "123", "1", "1976", "cy", cyErrors.errorMessages.dateOfBirth.dayInvalidLength],
+      ["month too long", "1", "123", "1976", "cy", cyErrors.errorMessages.dateOfBirth.monthInvalidLength],
+      ["year wrong length", "1", "1", "76", "cy", cyErrors.errorMessages.dateOfBirth.yearInvalidLength]
     ];
 
     it.each(cases)(
@@ -379,7 +379,6 @@ describe("Add Person With Significant Control Individual Person Page", () => {
             "date_of_birth-month": month,
             "date_of_birth-year": year
           });
-
         expect(res.status).toBe(200);
         expect(res.text).toContain(expectedMsg);
 
@@ -431,7 +430,7 @@ describe("Add Person With Significant Control Individual Person Page", () => {
         });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(enErrors.errorMessages.dateOfBirth.dateOfBirthNotInPast);
+      expect(res.text).toContain(enErrors.errorMessages.dateOfBirth.dateNotInPast);
 
       expect(appDevDependencies.personWithSignificantControlGateway.personsWithSignificantControl).toHaveLength(0);
     });
