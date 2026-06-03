@@ -144,6 +144,22 @@ describe("Email Page", () => {
       expect(res.text).toContain(translationText.errorMessages.limitedPartnership.email.emailInvalid);
     });
 
+    it("should replay the invalid email the user submitted when validation fails", async () => {
+      const limitedPartnership = new LimitedPartnershipBuilder()
+        .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+        .build();
+
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+      const res = await request(app).post(URL).send({
+        pageType: RegistrationPageType.email,
+        email: "test@example."
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain('value="test@example."');
+    });
+
     it("should render an api validation error when the format passes web validation", async () => {
       const limitedPartnership = new LimitedPartnershipBuilder()
         .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
