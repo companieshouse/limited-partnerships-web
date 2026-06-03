@@ -454,7 +454,19 @@ class LimitedPartnershipController extends PartnershipController {
 
     return response.render(
       super.templateName(pageRouting.currentUrl),
-      super.makeProps(pageRouting, { limitedPartnership }, uiErrors)
+      super.makeProps(
+        pageRouting,
+        {
+          limitedPartnership: {
+            ...limitedPartnership,
+            data: {
+              ...limitedPartnership.data,
+              ...request.body
+            }
+          }
+        },
+        uiErrors
+      )
     );
   }
 
