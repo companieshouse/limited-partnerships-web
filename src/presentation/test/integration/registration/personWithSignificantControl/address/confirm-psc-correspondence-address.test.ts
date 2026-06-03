@@ -20,14 +20,14 @@ import {
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import TransactionPersonWithSignificantControl from "../../../../../../domain/entities/TransactionPersonWithSignificantControl";
 import PersonWithSignificantControlBuilder from "../../../../builder/PersonWithSignificantControlBuilder";
-import { CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/registration/url";
+import { REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL } from "../../../../../controller/registration/url";
 
 describe("Confirm PSC correspondence Address Page", () => {
   const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText, ...enErrorMessages };
   const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText, ...cyErrorMessages };
 
   const URL = getUrl(CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_CORRESPONDENCE_ADDRESS_URL);
-  const REDIRECT_URL = getUrl(CHECK_YOUR_ANSWERS_URL);
+  const REDIRECT_URL = getUrl(REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL);
   const MANUAL_ENTRY_URL = getUrl(ENTER_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_CORRESPONDENCE_ADDRESS_URL);
 
   const pageType = AddressPageType.confirmPersonWithSignificantControlIndividualPersonCorrespondenceAddress;
