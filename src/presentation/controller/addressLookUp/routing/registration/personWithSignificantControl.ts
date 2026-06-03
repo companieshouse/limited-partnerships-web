@@ -1,6 +1,5 @@
 import AddressPageType from "../../PageType";
 import {
-  CHECK_YOUR_ANSWERS_URL,
   REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL,
   WHICH_TYPE_OF_NATURE_OF_CONTROL_INDIVIDUAL_PERSON_URL,
   WHICH_TYPE_OF_NATURE_OF_CONTROL_OTHER_REGISTRABLE_PERSON_URL,
@@ -270,7 +269,7 @@ const registrationAddressRoutingEnterPersonWithSignificantControlIndividualPerso
 const registrationAddressRoutingConfirmPersonWithSignificantControlIndividualPersonCorrespondenceAddress = {
   previousUrl: url.POSTCODE_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_CORRESPONDENCE_ADDRESS_URL,
   currentUrl: url.CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_CORRESPONDENCE_ADDRESS_URL,
-  nextUrl: CHECK_YOUR_ANSWERS_URL,
+  nextUrl: REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL,
   pageType: AddressPageType.confirmPersonWithSignificantControlIndividualPersonCorrespondenceAddress,
   data: {
     ...personWithSignificantControlCorrespondenceAddressCacheKeys,
