@@ -162,7 +162,7 @@ describe("Add Limited Partner Person Page", () => {
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.addLimitedPartnerPerson,
         forename: "test",
-        previousName: previousName,
+        previous_name: previousName,
         former_names: formerNames
       });
 

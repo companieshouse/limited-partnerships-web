@@ -39,6 +39,7 @@ import {
 import { ParamsDictionary } from "express-serve-static-core";
 import { ParsedQs } from "qs";
 import { PageRouting } from "../PageRouting";
+import { resetFormerNamesIfPreviousNameIsFalse } from "../../../infrastructure/gateway/utils";
 
 type PartnerData = {
   person: {
@@ -330,7 +331,7 @@ class PostTransitionPartnerController extends PartnerController {
         }
 
         if (result.errors) {
-          super.resetFormerNamesIfPreviousNameIsFalse(request.body);
+          resetFormerNamesIfPreviousNameIsFalse(request.body);
 
           const { data: renderData, url } = super.buildPartnerErrorRenderData(
             pageType,

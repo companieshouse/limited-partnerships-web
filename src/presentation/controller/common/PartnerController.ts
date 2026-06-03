@@ -29,6 +29,7 @@ import {
   CEASE_DATE_TEMPLATE,
   DATE_OF_UPDATE_TEMPLATE,
 } from "../../../config/constants";
+import { resetFormerNamesIfPreviousNameIsFalse } from "../../../infrastructure/gateway/utils";
 
 abstract class PartnerController extends AbstractController {
   constructor(
@@ -216,7 +217,7 @@ abstract class PartnerController extends AbstractController {
         }
 
         if (result?.errors) {
-          this.resetFormerNamesIfPreviousNameIsFalse(request.body);
+          resetFormerNamesIfPreviousNameIsFalse(request.body);
 
           const { limitedPartnership } = await this.getEntities(tokens, ids);
 
@@ -444,7 +445,7 @@ abstract class PartnerController extends AbstractController {
         const result = await this.sendData(partner, tokens, ids, request, response, pageRouting);
 
         if (result?.errors) {
-          this.resetFormerNamesIfPreviousNameIsFalse(request.body);
+          resetFormerNamesIfPreviousNameIsFalse(request.body);
 
           const { limitedPartnership } = await this.getEntities(tokens, ids);
 
@@ -753,12 +754,6 @@ abstract class PartnerController extends AbstractController {
       return transitionRouting;
     } else {
       return postTransitionRouting;
-    }
-  }
-
-  protected resetFormerNamesIfPreviousNameIsFalse(data: Record<string, any>) {
-    if (data?.former_names && data?.previousName === "false") {
-      data.former_names = "";
     }
   }
 

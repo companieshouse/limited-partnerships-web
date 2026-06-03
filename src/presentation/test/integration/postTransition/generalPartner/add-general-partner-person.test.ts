@@ -140,7 +140,7 @@ describe("Add General Partner Person Page", () => {
         .post(URL)
         .send({
           pageType: PostTransitionPageType.addGeneralPartnerPerson,
-          previousName: previousName,
+          previous_name: previousName,
           ...generalPartner.data
         });
 
@@ -207,7 +207,7 @@ describe("Add General Partner Person Page", () => {
         forename: "INVALID-CHARACTERS-FORENAME",
         surname: "SURNAME",
         former_names: "",
-        previousName: "false",
+        previous_name: "false",
         "date_of_birth-Day": "01",
         "date_of_birth-Month": "11",
         "date_of_birth-Year": "1987",

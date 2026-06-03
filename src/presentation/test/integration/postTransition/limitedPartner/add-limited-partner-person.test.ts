@@ -162,7 +162,7 @@ describe("Add Limited Partner Person Page", () => {
         .post(URL)
         .send({
           pageType: PostTransitionPageType.addLimitedPartnerPerson,
-          previousName: previousName,
+          previous_name: previousName,
           ...limitedPartner.data
         });
 

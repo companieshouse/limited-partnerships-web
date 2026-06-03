@@ -47,7 +47,7 @@ describe("Add Limited Partner Person Page", () => {
         "date_of_birth-year": "2001",
         nationality1: "BRITISH",
         former_names: "previous name",
-        previousNames: "false"
+        previous_name: "false"
       });
       expect(res.status).toBe(302);
     });
