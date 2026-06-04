@@ -13,28 +13,17 @@ describe("Not Eligible Page", () => {
   });
 
   describe("GET /not-eligible", () => {
-    describe("English", () => {
-      it("should load not eligible page", async () => {
-        const res = await request(app).get(NOT_ELIGIBLE_URL);
+    it.each([
+      ["en", enTranslationText],
+      ["cy", cyTranslationText]
+    ])("should load not eligible page - %s", async (lang, translationText) => {
+      const res = await request(app).get(`${NOT_ELIGIBLE_URL}?lang=${lang}`);
 
-        expect(res.status).toBe(200);
+      expect(res.status).toBe(200);
 
-        testTranslations(res.text, enTranslationText.notEligiblePage);
+      testTranslations(res.text, translationText.notEligiblePage);
 
-        expect(res.text).not.toContain("Back");
-      });
-    });
-
-    describe("Welsh", () => {
-      it("should load not eligible page", async () => {
-        const res = await request(app).get(NOT_ELIGIBLE_URL + "?lang=cy");
-
-        expect(res.status).toBe(200);
-
-        testTranslations(res.text, cyTranslationText.notEligiblePage);
-
-        expect(res.text).not.toContain("Back");
-      });
+      expect(res.text).not.toContain("Back");
     });
   });
 });
