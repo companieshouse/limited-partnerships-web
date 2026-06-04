@@ -4,6 +4,7 @@ enum GlobalPageType {
   paymentResponse = "payment-response",
   paymentFailed = "payment-failed",
   confirmation = "confirmation",
+  notEligible = "not-eligible",
 }
 
 export default GlobalPageType;

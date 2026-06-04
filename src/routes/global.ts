@@ -8,6 +8,7 @@ import {
   PAYMENT_FAILED_URL,
   CONFIRMATION_URL,
   CONFIRMATION_POST_TRANSITION_URL,
+  NOT_ELIGIBLE_URL,
   RESUME_JOURNEY_POST_TRANSITION_GENERAL_PARTNER_URL,
   RESUME_JOURNEY_POST_TRANSITION_LIMITED_PARTNER_URL,
   RESUME_JOURNEY_POST_TRANSITION_PARTNERSHIP_URL,
@@ -72,6 +73,11 @@ export const globalEndpoints = (
 
   router.get(
     PAYMENT_FAILED_URL,
+    dependencies.globalController.getPageRouting()
+  );
+
+  router.get(
+    NOT_ELIGIBLE_URL,
     dependencies.globalController.getPageRouting()
   );
 };
