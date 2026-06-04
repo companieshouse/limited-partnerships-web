@@ -421,6 +421,10 @@
         }
     },
 
+    "notEligiblePage" : {
+        "title" : "WELSH - You must be an ACSP to use this service"
+    },
+
     "pageNotFound" : {
         "title" : "WELSH - Page Not Found",
         "spelling" : "WELSH - If you typed the web address, check it is spelled correctly.",

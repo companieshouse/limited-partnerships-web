@@ -30,7 +30,14 @@ const globalRoutingPaymentFailed = {
   pageType: GlobalPageType.paymentFailed
 };
 
-const list = [globalRoutingSignOut, globalRoutingConfirmation, globalRoutingConfirmationPostTransition, globalRoutingPaymentFailed];
+const globalRoutingNotEligible = {
+  previousUrl: "/",
+  currentUrl: url.NOT_ELIGIBLE_URL,
+  nextUrl: "/",
+  pageType: GlobalPageType.notEligible
+};
+
+const list = [globalRoutingSignOut, globalRoutingConfirmation, globalRoutingConfirmationPostTransition, globalRoutingPaymentFailed, globalRoutingNotEligible];
 
 export const globalsRouting: PagesRouting = new Map<GlobalPageType, PageRouting>();
 
