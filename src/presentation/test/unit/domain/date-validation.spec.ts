@@ -1,4 +1,5 @@
-import { dateContainsInvalidChars, isDateInPast, isDateToday, isValidDate, isValidDateStringAndNotInFuture } from '../../../../domain/validator/DateValidators';
+import { dateContainsInvalidChars, isDateInPast, isDateToday, isValidDate, isValidDateStringAndNotInFuture, validateDateOfBirth, DateErrorMessages } from '../../../../domain/validator/DateValidators';
+import { DATE_OF_BIRTH_FIELD } from '../../../../config';
 
 describe('isValidDate', () => {
   it('returns true for a valid date', () => {
@@ -283,5 +284,266 @@ describe('isDateToday', () => {
     expect(isDateToday('01', '', '2020')).toBe(false);
     expect(isDateToday('', '01', '2020')).toBe(false);
     expect(isDateToday('01', '01', '')).toBe(false);
+  });
+});
+
+describe('validateDateOfBirth', () => {
+  let mockUIErrors: any;
+  const testErrorMessages: DateErrorMessages = {
+    dateMissing: 'Date of birth is missing',
+    dayMissing: 'Day is missing',
+    monthMissing: 'Month is missing',
+    yearMissing: 'Year is missing',
+    dayAndMonthMissing: 'Day and month are missing',
+    dayAndYearMissing: 'Day and year are missing',
+    monthAndYearMissing: 'Month and year are missing',
+    dayInvalidLength: 'Day is invalid length',
+    monthInvalidLength: 'Month is invalid length',
+    yearInvalidLength: 'Year is invalid length',
+    dateInvalidChars: 'Date contains invalid characters',
+    dateInvalidDate: 'Date is invalid',
+    dateNotInPast: 'Date of birth is not in the past'
+  };
+
+  beforeEach(() => {
+    mockUIErrors = {
+      setWebError: jest.fn()
+    };
+  });
+
+  describe('missing date fields', () => {
+    it('sets error when all fields are missing', () => {
+      validateDateOfBirth(undefined, undefined, undefined, mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.dateMissing);
+    });
+
+    it('sets error when day is missing', () => {
+      validateDateOfBirth(undefined, '05', '2000', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.dayMissing);
+    });
+
+    it('sets error when month is missing', () => {
+      validateDateOfBirth('21', undefined, '2000', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.monthMissing);
+    });
+
+    it('sets error when year is missing', () => {
+      validateDateOfBirth('21', '05', undefined, mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.yearMissing);
+    });
+
+    it('sets error when day and month are missing', () => {
+      validateDateOfBirth(undefined, undefined, '2000', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.dayAndMonthMissing);
+    });
+
+    it('sets error when day and year are missing', () => {
+      validateDateOfBirth(undefined, '05', undefined, mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.dayAndYearMissing);
+    });
+
+    it('sets error when month and year are missing', () => {
+      validateDateOfBirth('21', undefined, undefined, mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.monthAndYearMissing);
+    });
+
+    it('treats empty strings as missing', () => {
+      validateDateOfBirth('', '', '', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.dateMissing);
+    });
+
+    it('treats whitespace-only strings as missing', () => {
+      validateDateOfBirth('   ', '   ', '   ', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.dateMissing);
+    });
+  });
+
+  describe('invalid field lengths', () => {
+    it('sets error when day is too long', () => {
+      validateDateOfBirth('021', '05', '2000', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.dayInvalidLength);
+    });
+
+    it('sets error when month is too long', () => {
+      validateDateOfBirth('21', '005', '2000', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.monthInvalidLength);
+    });
+
+    it('sets error when year is not exactly 4 digits', () => {
+      validateDateOfBirth('21', '05', '20', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.yearInvalidLength);
+    });
+
+    it('sets error when year has more than 4 digits', () => {
+      validateDateOfBirth('21', '05', '20000', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.yearInvalidLength);
+    });
+
+    it('allows year with exactly 4 digits', () => {
+      jest.useFakeTimers();
+      jest.setSystemTime(new Date(2026, 4, 21, 10, 0, 0));
+
+      validateDateOfBirth('20', '05', '2026', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).not.toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.yearInvalidLength);
+
+      jest.useRealTimers();
+    });
+  });
+
+  describe('invalid characters', () => {
+    it('sets error when day contains non-numeric characters', () => {
+      validateDateOfBirth('aa', '05', '2000', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.dateInvalidChars);
+    });
+
+    it('sets error when month contains non-numeric characters', () => {
+      validateDateOfBirth('21', 'bb', '2000', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.dateInvalidChars);
+    });
+
+    it('sets error when year contains non-numeric characters', () => {
+      validateDateOfBirth('21', '05', 'cccc', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.dateInvalidChars);
+    });
+  });
+
+  describe('invalid dates', () => {
+    it('sets error for leap day in a non-leap year', () => {
+      validateDateOfBirth('29', '02', '2023', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.dateInvalidDate);
+    });
+
+    it('sets error for impossible day-month combinations', () => {
+      validateDateOfBirth('31', '04', '2000', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.dateInvalidDate);
+    });
+
+    it('sets error for day 0', () => {
+      validateDateOfBirth('00', '01', '2000', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.dateInvalidDate);
+    });
+
+    it('sets error for month 0', () => {
+      validateDateOfBirth('21', '00', '2000', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.dateInvalidDate);
+    });
+
+    it('sets error for day 32', () => {
+      validateDateOfBirth('32', '01', '2000', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.dateInvalidDate);
+    });
+
+    it('sets error for month 13', () => {
+      validateDateOfBirth('21', '13', '2000', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.dateInvalidDate);
+    });
+  });
+
+  describe('date not in past', () => {
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
+    it('sets error for a future date', () => {
+      jest.useFakeTimers();
+      jest.setSystemTime(new Date(2026, 4, 21, 10, 0, 0));
+
+      validateDateOfBirth('22', '05', '2026', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.dateNotInPast);
+    });
+
+    it('sets error for today', () => {
+      jest.useFakeTimers();
+      jest.setSystemTime(new Date(2026, 4, 21, 10, 0, 0));
+
+      validateDateOfBirth('21', '05', '2026', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.dateNotInPast);
+    });
+  });
+
+  describe('valid past dates', () => {
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
+    it('does not set error for a valid date in the past', () => {
+      jest.useFakeTimers();
+      jest.setSystemTime(new Date(2026, 4, 21, 10, 0, 0));
+
+      validateDateOfBirth('20', '05', '2026', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).not.toHaveBeenCalled();
+    });
+
+    it('does not set error for a valid date many years in the past', () => {
+      jest.useFakeTimers();
+      jest.setSystemTime(new Date(2026, 4, 21, 10, 0, 0));
+
+      validateDateOfBirth('21', '05', '1990', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).not.toHaveBeenCalled();
+    });
+
+    it('does not set error for leap day in a leap year in the past', () => {
+      jest.useFakeTimers();
+      jest.setSystemTime(new Date(2026, 4, 21, 10, 0, 0));
+
+      validateDateOfBirth('29', '02', '2024', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).not.toHaveBeenCalled();
+    });
+
+    it('does not set error for the last valid day of each month', () => {
+      jest.useFakeTimers();
+      jest.setSystemTime(new Date(2026, 4, 21, 10, 0, 0));
+
+      // April has 30 days
+      validateDateOfBirth('30', '04', '2000', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('edge cases', () => {
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
+    it('handles null values by treating them as undefined', () => {
+      validateDateOfBirth(null as any, null as any, null as any, mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalled();
+    });
+
+    it('stops validation at the first error (missing fields check)', () => {
+      validateDateOfBirth('', '', '', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledTimes(1);
+    });
+
+    it('stops validation at the first error (length check)', () => {
+      validateDateOfBirth('321', '05', '2000', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledTimes(1);
+    });
+
+    it('stops validation at the first error (invalid chars check)', () => {
+      validateDateOfBirth('2a', '05', '2000', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledTimes(1);
+    });
+
+    it('stops validation at the first error (invalid date check)', () => {
+      validateDateOfBirth('31', '04', '2000', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledTimes(1);
+    });
+
+    it('accepts valid date with leading zeros', () => {
+      jest.useFakeTimers();
+      jest.setSystemTime(new Date(2026, 4, 21, 10, 0, 0));
+
+      validateDateOfBirth('01', '01', '2000', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).not.toHaveBeenCalled();
+    });
+
+    it('accepts valid date without leading zeros', () => {
+      jest.useFakeTimers();
+      jest.setSystemTime(new Date(2026, 4, 21, 10, 0, 0));
+
+      validateDateOfBirth('1', '1', '2000', mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).not.toHaveBeenCalled();
+    });
   });
 });

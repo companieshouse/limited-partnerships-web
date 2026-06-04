@@ -12,3 +12,13 @@ export type Tokens = {
   access_token: string;
   refresh_token: string;
 };
+
+export enum PartnerType {
+  generalPartner = "generalPartner",
+  limitedPartner = "limitedPartner"
+};
+
+export enum PartnerEntityType {
+  person = "person",
+  legalEntity = "legalEntity"
+};

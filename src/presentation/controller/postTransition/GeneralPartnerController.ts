@@ -6,7 +6,7 @@ import GeneralPartnerService from "../../../application/service/GeneralPartnerSe
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
 import CompanyService from "../../../application/service/CompanyService";
 import PostTransitionPartnerController from "./PostTransitionPartnerController";
-import PartnerController, { PartnerType } from "../common/PartnerController";
+import PartnerController from "../common/PartnerController";
 
 import { ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL, ADD_GENERAL_PARTNER_PERSON_URL } from "./url";
 import {
@@ -20,6 +20,7 @@ import {
   JOURNEY_TYPE_PARAM
 } from "../../../config/constants";
 import { getJourneyTypes } from "../../../utils/journey";
+import { PartnerType } from "../../../domain/types";
 
 class GeneralPartnerPostTransitionController extends PartnerController {
   constructor(

@@ -1,3 +1,4 @@
+import { DATE_OF_BIRTH_FIELD } from "../../config";
 import UIErrors from "../entities/UIErrors";
 
 export type DateErrorMessages = {
@@ -11,7 +12,39 @@ export type DateErrorMessages = {
   dayInvalidLength: string;
   monthInvalidLength: string;
   yearInvalidLength: string;
+  dateInvalidChars: string;
+  dateInvalidDate: string;
+  dateNotInPast: string;
 }
+
+export const validateDateOfBirth = (day: string | undefined, month: string | undefined, year: string | undefined, uiErrors: UIErrors, dateErrorMessages: DateErrorMessages) => {
+  const safeDobDay = day ?? "";
+  const safeDobMonth = month ?? "";
+  const safeDobYear = year ?? "";
+  const dateOfBirthField = DATE_OF_BIRTH_FIELD;
+
+  if (hasMissingDateFields(safeDobDay, safeDobMonth, safeDobYear, dateOfBirthField, uiErrors, dateErrorMessages)) {
+    return;
+  }
+
+  if (hasInvalidDateFieldLengths(safeDobDay, safeDobMonth, safeDobYear, dateOfBirthField, uiErrors, dateErrorMessages)) {
+    return;
+  }
+
+  if (dateContainsInvalidChars(safeDobDay, safeDobMonth, safeDobYear)) {
+    uiErrors.setWebError(dateOfBirthField, dateErrorMessages?.dateInvalidChars);
+    return;
+  }
+
+  if (!isValidDate(safeDobDay, safeDobMonth, safeDobYear)) {
+    uiErrors.setWebError(dateOfBirthField, dateErrorMessages?.dateInvalidDate);
+    return;
+  }
+
+  if (!isDateInPast(safeDobDay, safeDobMonth, safeDobYear)) {
+    uiErrors.setWebError(dateOfBirthField, dateErrorMessages?.dateNotInPast);
+  }
+};
 
 const isDigitsOnly = (value: string): boolean => /^\d+$/.test(value);
 
@@ -40,7 +73,7 @@ const parseDateParts = (day: string, month: string, year: string): { d: number; 
   return { d, m, y };
 };
 
-export const hasMissingDateFields = (day: string, month: string, year: string, fieldId: string, uiErrors: UIErrors, errorMessages: DateErrorMessages): boolean => {
+const hasMissingDateFields = (day: string, month: string, year: string, fieldId: string, uiErrors: UIErrors, errorMessages: DateErrorMessages): boolean => {
   if (!day?.trim() && !month?.trim() && !year?.trim()) {
     uiErrors.setWebError(fieldId, errorMessages?.dateMissing);
     return true;
@@ -79,7 +112,7 @@ export const hasMissingDateFields = (day: string, month: string, year: string, f
   return false;
 };
 
-export const hasInvalidDateFieldLengths = (day: string, month: string, year: string, fieldId: string, uiErrors: UIErrors, errorMessages: DateErrorMessages): boolean => {
+const hasInvalidDateFieldLengths = (day: string, month: string, year: string, fieldId: string, uiErrors: UIErrors, errorMessages: DateErrorMessages): boolean => {
   if ((day?.trim().length || 0) > 2) {
     uiErrors.setWebError(fieldId, errorMessages?.dayInvalidLength);
     return true;

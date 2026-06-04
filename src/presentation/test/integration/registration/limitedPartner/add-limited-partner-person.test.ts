@@ -162,7 +162,7 @@ describe("Add Limited Partner Person Page", () => {
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.addLimitedPartnerPerson,
         forename: "test",
-        previousName: previousName,
+        previous_name: previousName,
         former_names: formerNames
       });
 
@@ -205,7 +205,7 @@ describe("Add Limited Partner Person Page", () => {
         forename: "INVALID-CHARACTERS-FORENAME",
         surname: "SURNAME",
         former_names: "",
-        previousName: "false",
+        previous_name: "false",
         "date_of_birth-Day": "01",
         "date_of_birth-Month": "11",
         "date_of_birth-Year": "1987",
@@ -216,7 +216,7 @@ describe("Add Limited Partner Person Page", () => {
       expect(res.status).toBe(200);
       expect(res.text).toContain("INVALID-CHARACTERS-FORENAME");
       expect(res.text).toContain("SURNAME");
-      expect(res.text).toContain('id="previousNameNo" name="previousName" type="radio" value="false" checked');
+      expect(res.text).toContain('id="previous_name-2" name="previous_name" type="radio" value="false" checked');
       expect(res.text).toContain("Mongolian");
       expect(res.text).toContain("Uzbek");
     });
@@ -229,7 +229,7 @@ describe("Add Limited Partner Person Page", () => {
           forename: "forename",
           surname: "SURNAME",
           former_names: formerNames,
-          previousName: "true",
+          previous_name: "true",
           "date_of_birth-Day": "01",
           "date_of_birth-Month": "11",
           "date_of_birth-Year": "1987",
@@ -238,7 +238,7 @@ describe("Add Limited Partner Person Page", () => {
         });
 
         expect(res.status).toBe(200);
-        expect(res.text).toContain('id="previousNameYes" name="previousName" type="radio" value="true" checked');
+        expect(res.text).toContain('id="previous_name" name="previous_name" type="radio" value="true" checked');
         expect(res.text).toContain("Enter the previous name(s) of the limited partner");
       }
     );
@@ -308,7 +308,7 @@ describe("Add Limited Partner Person Page", () => {
         forename: "INVALID-CHARACTERS-FORENAME",
         surname: "SURNAME",
         former_names: "FORMER-NAMES",
-        previousName: "true",
+        previous_name: "true",
         "date_of_birth-Day": "01",
         "date_of_birth-Month": "11",
         "date_of_birth-Year": "1987",
@@ -319,7 +319,7 @@ describe("Add Limited Partner Person Page", () => {
       expect(res.status).toBe(200);
       expect(res.text).toContain("INVALID-CHARACTERS-FORENAME");
       expect(res.text).toContain("SURNAME");
-      expect(res.text).toContain('id="previousNameYes" name="previousName" type="radio" value="true" checked');
+      expect(res.text).toContain('id="previous_name" name="previous_name" type="radio" value="true" checked');
       expect(res.text).toContain("FORMER-NAMES");
       expect(res.text).toContain("Mongolian");
       expect(res.text).toContain("Uzbek");

@@ -5,6 +5,7 @@ import {
   TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "../../addressLookUp/url/registration";
+import { PartnerEntityType, PartnerType } from "../../../../domain/types";
 
 const registrationRoutingGeneralPartners = {
   previousUrl: CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
@@ -26,7 +27,9 @@ const registrationRoutingAddGeneralPartnerPerson = {
   nextUrl: TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   pageType: RegistrationPageType.addGeneralPartnerPerson,
   data: {
-    customPreviousUrl: url.REVIEW_GENERAL_PARTNERS_URL
+    customPreviousUrl: url.REVIEW_GENERAL_PARTNERS_URL,
+    partnerType: PartnerType.generalPartner,
+    partnerEntityType: PartnerEntityType.person
   }
 };
 

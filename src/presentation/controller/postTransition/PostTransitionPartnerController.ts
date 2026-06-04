@@ -12,7 +12,7 @@ import LimitedPartnerService from "../../../application/service/LimitedPartnerSe
 import CompanyService from "../../../application/service/CompanyService";
 import TransactionService from "../../../application/service/TransactionService";
 
-import PartnerController, { PartnerType } from "../common/PartnerController";
+import PartnerController from "../common/PartnerController";
 import PostTransitionPageType, { isLegalEntity } from "./pageType";
 import postTransitionRouting from "./routing";
 import {
@@ -26,7 +26,7 @@ import {
   YOUR_COMPANY_URL
 } from "../../../config/constants";
 import UIErrors from "../../../domain/entities/UIErrors";
-import { Ids, Tokens } from "../../../domain/types";
+import { Ids, PartnerType, Tokens } from "../../../domain/types";
 import { isUpdateKind } from "../../../utils/kind";
 import {
   UPDATE_GENERAL_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
@@ -39,6 +39,7 @@ import {
 import { ParamsDictionary } from "express-serve-static-core";
 import { ParsedQs } from "qs";
 import { PageRouting } from "../PageRouting";
+import { resetFormerNamesIfPreviousNameIsFalse } from "../../../infrastructure/gateway/utils";
 
 type PartnerData = {
   person: {
@@ -310,7 +311,8 @@ class PostTransitionPartnerController extends PartnerController {
         } else {
           const dataToSend = {
             ...request.body,
-            kind: isLegalEntity(pageType) ? data?.legalEntity.kind : data?.person.kind
+            kind: isLegalEntity(pageType) ? data?.legalEntity.kind : data?.person.kind,
+            journeyTypes: response.locals.journeyTypes
           };
 
           if (partner === PartnerType.generalPartner) {
@@ -329,7 +331,7 @@ class PostTransitionPartnerController extends PartnerController {
         }
 
         if (result.errors) {
-          super.resetFormerNamesIfPreviousNameIsFalse(request.body);
+          resetFormerNamesIfPreviousNameIsFalse(request.body);
 
           const { data: renderData, url } = super.buildPartnerErrorRenderData(
             pageType,

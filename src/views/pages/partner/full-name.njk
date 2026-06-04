@@ -11,7 +11,7 @@
     errorMessage: props.errors.forename if props.errors,
     attributes : {
         required: true
-    }
+    } if not partnerType or not partnerType == "generalPartnerPerson" or not journeyTypes.isRegistration
 }) }}
 
 {{ govukInput({
@@ -27,5 +27,5 @@
     errorMessage: props.errors.surname if props.errors,
     attributes : {
         required : true
-    }
+    } if not partnerType or not partnerType == "generalPartnerPerson" or not journeyTypes.isRegistration
 }) }}
