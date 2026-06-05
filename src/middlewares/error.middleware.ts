@@ -46,7 +46,7 @@ const invalidAcspNumberErrorHandler = (err: Error, req: Request, res: Response, 
     return next(err);
   }
 
-  logger.infoRequest(req, `Invalid ACSP error recieved - ${err.message}`);
+  logger.infoRequest(req, `Invalid ACSP error received - ${err.message}`);
 
   return res.status(403).render(NOT_ELIGIBLE_TEMPLATE);
 };

@@ -37,14 +37,14 @@ describe("invalidAcspNumberErrorHandler", () => {
     });
 
     it("should log the error with details", () => {
-      const error = new InvalidAcspNumberError("Invalid ACSP number");
-      const errorSpy = jest.spyOn(logger, "errorRequest");
+      const error = new InvalidAcspNumberError("Invalid ACSP number 123456");
+      const infoSpy = jest.spyOn(logger, "infoRequest");
 
       invalidAcspNumberErrorHandler(error, req as Request, res as Response, next as NextFunction);
 
-      expect(errorSpy).toHaveBeenCalledWith(
+      expect(infoSpy).toHaveBeenCalledWith(
         req,
-        expect.stringContaining("Invalid ACSP number error occurred")
+        expect.stringContaining("Invalid ACSP error received - Invalid ACSP number 123456")
       );
     });
 
