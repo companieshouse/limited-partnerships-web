@@ -237,6 +237,34 @@ describe("Stop screen - no change", () => {
 
       appDevDependencies.companyGateway.feedCompanyAppointments([companyAppointmentPerson]);
 
+      const [surname, forename] = companyAppointmentPerson?.name?.split(", ") ?? [];
+
+      generalPartnerPerson = new GeneralPartnerBuilder()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .isPerson()
+        .withKind(PartnerKind.UPDATE_GENERAL_PARTNER_PERSON)
+        .withAppointmentId("AP123456P")
+        .withForename(forename)
+        .withSurname(surname)
+        .withNationality1("British")
+        .withDateOfUpdate("2024-10-10")
+        .build();
+
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartnerPerson]);
+
+      limitedPartnerPerson = new LimitedPartnerBuilder()
+        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+        .isPerson()
+        .withKind(PartnerKind.UPDATE_LIMITED_PARTNER_PERSON)
+        .withAppointmentId("AP123456P")
+        .withForename(forename)
+        .withSurname(surname)
+        .withNationality1("British")
+        .withDateOfUpdate("2024-10-10")
+        .build();
+
+      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerPerson]);
+
       const res = await request(app).get(whenDidUrl);
 
       expect(res.status).toBe(200);
