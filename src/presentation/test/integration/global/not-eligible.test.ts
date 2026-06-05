@@ -1,3 +1,4 @@
+import { NextFunction, Request, Response } from "express";
 import request from "supertest";
 
 import app from "../app";
@@ -7,6 +8,20 @@ import cyTranslationText from "../../../../../locales/cy/translations.json";
 import { NOT_ELIGIBLE_URL, RESUME_JOURNEY_POST_TRANSITION_GENERAL_PARTNER_URL, RESUME_JOURNEY_POST_TRANSITION_LIMITED_PARTNER_URL, RESUME_JOURNEY_POST_TRANSITION_PARTNERSHIP_URL, RESUME_JOURNEY_REGISTRATION_OR_TRANSITION_URL } from "../../../controller/global/url";
 import { setLocalesEnabled, testTranslations } from "../../utils";
 import { CHECK_YOUR_ANSWERS_URL, GENERAL_PARTNERS_URL, LIMITED_PARTNERS_URL, NAME_URL, TELL_US_ABOUT_PSC_URL } from "../../../controller/registration/url";
+
+jest.mock("@companieshouse/web-security-node", () => {
+  const actual = jest.requireActual("@companieshouse/web-security-node");
+
+  return {
+    ...actual,
+    CsrfProtectionMiddleware: (_opts: any) => (req: Request, res: Response, next: NextFunction) => next(),
+    authMiddleware: () => jest.fn(() => (req: Request, res: Response, next: NextFunction) => next()),
+    acspManageUsersAuthMiddleware: jest.fn(() =>
+      (req: Request, res: Response, next: NextFunction) =>
+        next(new actual.InvalidAcspNumberError("Acsp Number invalid"))
+    )
+  };
+});
 
 jest.unmock("../../../../middlewares/acsp-authentication.middleware");
 
