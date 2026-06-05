@@ -4,6 +4,7 @@ import { CsrfError, InvalidAcspNumberError } from "@companieshouse/web-security-
 import { getLoggedInUserEmail, logger } from "../utils";
 import * as config from "../config/constants";
 import { PARTNERSHIP_TYPE_URL } from "../presentation/controller/registration/url";
+import { NOT_ELIGIBLE_TEMPLATE } from "../presentation/controller/global/template";
 
 const pageNotFound = (req: Request, res: Response) => {
   const headerData = getHeaderData(req);
@@ -44,13 +45,10 @@ const invalidAcspNumberErrorHandler = (err: Error, req: Request, res: Response, 
   if (!(err instanceof InvalidAcspNumberError)) {
     return next(err);
   }
-  const headerData = getHeaderData(req);
 
-  return res.status(403).render(ggg, {
-    templateName: config.ERROR_TEMPLATE,
-    acspErrors: true,
-    ...headerData
-  });
+  logger.infoRequest(req, `Invalid ACSP error recieved - ${err.message}`);
+
+  return res.status(403).render(NOT_ELIGIBLE_TEMPLATE);
 };
 
 /**
@@ -69,10 +67,6 @@ const globalErrorHandler = (err: Error, req: Request, res: Response, _next: Next
   });
 };
 
-const errorHandler = [pageNotFound, csrfErrorHandler, invalidAcspNumberErrorHandler, globalErrorHandler];
-
-export { errorHandler };
-
 const getHeaderData = (req: Request) => {
   const previous = req.get("Referrer") ?? PARTNERSHIP_TYPE_URL;
   const userEmail = getLoggedInUserEmail(req.session!);
@@ -84,3 +78,6 @@ const getHeaderData = (req: Request) => {
     userEmail
   };
 };
+
+const errorHandler = [pageNotFound, csrfErrorHandler, invalidAcspNumberErrorHandler, globalErrorHandler];
+export { errorHandler, invalidAcspNumberErrorHandler };

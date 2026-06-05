@@ -3,27 +3,21 @@ import { SignInInfoKeys } from '@companieshouse/node-session-handler/lib/session
 import { UserProfileKeys } from '@companieshouse/node-session-handler/lib/session/keys/UserProfileKeys';
 import { ISignInInfo } from '@companieshouse/node-session-handler/lib/session/model/SessionInterfaces';
 
-interface ISession {
-  data?: {
-    [SessionKey.SignInInfo]?: ISignInInfo;
-  };
-}
-
-const getSignInInfo = (session: ISession): ISignInInfo | undefined => {
+const getSignInInfo = (session): ISignInInfo => {
   return session?.data?.[SessionKey.SignInInfo];
 };
 
-export const getLoggedInUserEmail = (session: ISession): string => {
+export const getLoggedInUserEmail = (session): string => {
   const signInInfo = getSignInInfo(session);
   return signInInfo?.[SignInInfoKeys.UserProfile]?.[UserProfileKeys.Email] as string;
 };
 
-export const checkUserSignedIn = (session: ISession): boolean => {
+export const checkUserSignedIn = (session): boolean => {
   const signInInfo = getSignInInfo(session);
   return signInInfo?.[SignInInfoKeys.SignedIn] === 1;
 };
 
-export const getLoggedInAcspNumber = (session: ISession): string => {
+export const getLoggedInAcspNumber = (session): string => {
   const signInInfo = getSignInInfo(session);
   return signInInfo?.[SignInInfoKeys.AcspNumber] as string;
 };
