@@ -44,36 +44,30 @@ describe("Not Eligible Page", () => {
   });
 
   it.each([
-    ["en", enTranslationText],
-    ["cy", cyTranslationText]
-  ])("should block registration routes - %s", async (lang, translationText) => {
-    const registrationUrls = [
-      NAME_URL,
-      GENERAL_PARTNERS_URL,
-      LIMITED_PARTNERS_URL,
-      TELL_US_ABOUT_PSC_URL,
-      CHECK_YOUR_ANSWERS_URL
-    ];
-
-    for (const url of registrationUrls) {
-      const res = await request(app).get(`${url}?lang=${lang}`);
-      expect(res.status).toBe(403);
-      expect(res.text).toContain(translationText.notEligiblePage.title);
-    }
+    [NAME_URL, "en", enTranslationText],
+    [GENERAL_PARTNERS_URL, "en", enTranslationText],
+    [LIMITED_PARTNERS_URL, "en", enTranslationText],
+    [TELL_US_ABOUT_PSC_URL, "en", enTranslationText],
+    [CHECK_YOUR_ANSWERS_URL, "en", enTranslationText],
+    [NAME_URL, "cy", cyTranslationText],
+    [GENERAL_PARTNERS_URL, "cy", cyTranslationText],
+    [LIMITED_PARTNERS_URL, "cy", cyTranslationText],
+    [TELL_US_ABOUT_PSC_URL, "cy", cyTranslationText],
+    [CHECK_YOUR_ANSWERS_URL, "cy", cyTranslationText]
+  ])("should block registration route %s - %s", async (url, lang, translationText) => {
+    const res = await request(app).get(`${url}?lang=${lang}`);
+    expect(res.status).toBe(403);
+    expect(res.text).toContain(translationText.notEligiblePage.title);
   });
 
-  it("should block resume routes", async () => {
-    const resumeUrls = [
-      RESUME_JOURNEY_REGISTRATION_OR_TRANSITION_URL,
-      RESUME_JOURNEY_POST_TRANSITION_GENERAL_PARTNER_URL,
-      RESUME_JOURNEY_POST_TRANSITION_LIMITED_PARTNER_URL,
-      RESUME_JOURNEY_POST_TRANSITION_PARTNERSHIP_URL
-    ];
-
-    for (const url of resumeUrls) {
-      const res = await request(app).get(url);
-      expect(res.status).toBe(403);
-      expect(res.text).toContain(enTranslationText.notEligiblePage.title);
-    }
+  it.each([
+    RESUME_JOURNEY_REGISTRATION_OR_TRANSITION_URL,
+    RESUME_JOURNEY_POST_TRANSITION_GENERAL_PARTNER_URL,
+    RESUME_JOURNEY_POST_TRANSITION_LIMITED_PARTNER_URL,
+    RESUME_JOURNEY_POST_TRANSITION_PARTNERSHIP_URL
+  ])("should block resume route %s", async (url) => {
+    const res = await request(app).get(url);
+    expect(res.status).toBe(403);
+    expect(res.text).toContain(enTranslationText.notEligiblePage.title);
   });
 });
