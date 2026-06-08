@@ -45,6 +45,7 @@ describe("Not Eligible Page", () => {
 
   it.each([
     [NAME_URL, "en", enTranslationText],
+    ["/limited-partnerships/Registration/partner-name", "en", enTranslationText],
     [GENERAL_PARTNERS_URL, "en", enTranslationText],
     [LIMITED_PARTNERS_URL, "en", enTranslationText],
     [TELL_US_ABOUT_PSC_URL, "en", enTranslationText],
@@ -61,6 +62,7 @@ describe("Not Eligible Page", () => {
   });
 
   it.each([
+    "/limited-partnerships/transaction/123/submission/123/Resume",
     RESUME_JOURNEY_REGISTRATION_OR_TRANSITION_URL,
     RESUME_JOURNEY_POST_TRANSITION_GENERAL_PARTNER_URL,
     RESUME_JOURNEY_POST_TRANSITION_LIMITED_PARTNER_URL,
