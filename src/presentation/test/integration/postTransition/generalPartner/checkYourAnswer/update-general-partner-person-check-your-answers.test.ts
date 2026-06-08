@@ -142,6 +142,39 @@ describe("Update general partner check your answers page", () => {
       expect(res.text).not.toContain("4 Service Address Line 1, Line 2, Stoke-On-Trent, Region, England, ST6 3LJ");
       expect(res.text).toContain(enTranslationText.checkYourAnswersPage.update.dateOfChange);
     });
+
+    it("should display the nationality as changed when only the second nationality has been removed", async () => {
+      companyAppointment = new CompanyAppointmentBuilder()
+        .withOfficerRole(OFFICER_ROLE_GENERAL_PARTNER_PERSON)
+        .withName("Doe, John")
+        .withNationality("British,French")
+        .build();
+      appDevDependencies.companyGateway.feedCompanyAppointments([companyAppointment]);
+
+      generalPartner = new GeneralPartnerBuilder()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .isPerson()
+        .withForename("John")
+        .withSurname("Doe")
+        .withNationality1("British")
+        .withUsualResidentialAddressUpdateRequired(false)
+        .withServiceAddressUpdateRequired(false)
+        .withServiceAddress()
+        .withAppointmentId("AP123456")
+        .withDateOfUpdate("2025-01-01")
+        .withKind(PartnerKind.UPDATE_GENERAL_PARTNER_PERSON)
+        .build();
+
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+
+      const res = await request(app).get(URL);
+
+      expect(res.status).toBe(200);
+
+      expect(res.text).toContain(generalPartner.data?.nationality1);
+      expect(res.text).not.toContain("French");
+      expect(res.text).toContain(enTranslationText.checkYourAnswersPage.update.notUpdated);
+    });
   });
 
   describe("POST update general partner check your answers page", () => {

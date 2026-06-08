@@ -221,6 +221,59 @@ describe("Stop screen - no change", () => {
   );
 
   it.each([
+    ["GP person", getUrl(WHEN_DID_GENERAL_PARTNER_PERSON_DETAILS_CHANGE_URL)],
+    ["LP person", getUrl(WHEN_DID_LIMITED_PARTNER_PERSON_DETAILS_CHANGE_URL)]
+  ])(
+    "should render the when did page if the second nationality has been removed - %s",
+    async (_partner: string, whenDidUrl: string) => {
+      const companyProfile = new CompanyProfileBuilder().build();
+      const companyAppointmentPerson = new CompanyAppointmentBuilder()
+        .withOfficerRole(OFFICER_ROLE_GENERAL_PARTNER_PERSON)
+        .withAppointmentId("AP123456P")
+        .withCompanyNumber(companyProfile?.data?.companyNumber ?? "")
+        .isPerson()
+        .withNationality("British,French")
+        .build();
+
+      appDevDependencies.companyGateway.feedCompanyAppointments([companyAppointmentPerson]);
+
+      const [surname, forename] = companyAppointmentPerson?.name?.split(", ") ?? [];
+
+      generalPartnerPerson = new GeneralPartnerBuilder()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .isPerson()
+        .withKind(PartnerKind.UPDATE_GENERAL_PARTNER_PERSON)
+        .withAppointmentId("AP123456P")
+        .withForename(forename)
+        .withSurname(surname)
+        .withNationality1("British")
+        .withDateOfUpdate("2024-10-10")
+        .build();
+
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartnerPerson]);
+
+      limitedPartnerPerson = new LimitedPartnerBuilder()
+        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+        .isPerson()
+        .withKind(PartnerKind.UPDATE_LIMITED_PARTNER_PERSON)
+        .withAppointmentId("AP123456P")
+        .withForename(forename)
+        .withSurname(surname)
+        .withNationality1("British")
+        .withDateOfUpdate("2024-10-10")
+        .build();
+
+      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerPerson]);
+
+      const res = await request(app).get(whenDidUrl);
+
+      expect(res.status).toBe(200);
+
+      expect(res.text).toContain("when-did-");
+    }
+  );
+
+  it.each([
     [
       "GP person - update_usual_residential_address_required",
       getUrl(WHEN_DID_GENERAL_PARTNER_PERSON_DETAILS_CHANGE_URL),
