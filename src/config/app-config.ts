@@ -13,7 +13,7 @@ import { setCeaseDateSection, setDateEffectiveFromSection, setDateOfBirthSection
 import { setCountriesDropdown } from "../utils/countries";
 import { setNationalitiesDropdown } from "../utils/nationalities";
 import * as config from "./constants";
-import { authentication, localisationMiddleware, trailingSlashMiddleware } from "../middlewares";
+import { acspAuthentication, authentication, localisationMiddleware, trailingSlashMiddleware } from "../middlewares";
 import { serviceAvailabilityMiddleware } from "../middlewares/service-availability.middleware";
 import { journeyDetectionMiddleware } from "../middlewares/journey.detection.middleware";
 import { TRANSITION_START_URL } from "../presentation/controller/transition/url";
@@ -99,4 +99,9 @@ export const appConfig = (app: express.Application) => {
   app.use(config.allPathsExceptHealthcheck, csrfProtectionMiddleware);
 
   app.use(config.allPathsExceptHealthcheck, authentication);
+
+  // keep this after the authentication middleware so that the ACSP number is available in the session for the ACSP authentication middleware
+  // TODO change this to use config.allPathsExceptHealthcheck when we want to apply to all routes except healthcheck
+  app.use(acspAuthentication);
+
 };

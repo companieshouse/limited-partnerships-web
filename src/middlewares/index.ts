@@ -1,3 +1,4 @@
+export * from "./acsp-authentication.middleware";
 export * from "./authentication.middleware";
 export * from "./error.middleware";
 export * from "./localisation.middleware";

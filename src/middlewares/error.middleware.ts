@@ -1,9 +1,10 @@
 import { NextFunction, Request, Response } from "express";
-import { CsrfError } from "@companieshouse/web-security-node";
+import { CsrfError, InvalidAcspNumberError } from "@companieshouse/web-security-node";
 
 import { getLoggedInUserEmail, logger } from "../utils";
 import * as config from "../config/constants";
 import { PARTNERSHIP_TYPE_URL } from "../presentation/controller/registration/url";
+import { NOT_ELIGIBLE_TEMPLATE } from "../presentation/controller/global/template";
 
 const pageNotFound = (req: Request, res: Response) => {
   const headerData = getHeaderData(req);
@@ -35,6 +36,22 @@ const csrfErrorHandler = (err: CsrfError | Error, req: Request, res: Response, n
 };
 
 /**
+ * This handler catches any Invalid ACSP errors thrown within the application.
+ * If it is not a ACSP, the error is passed to the next error handler.
+ * If it is a ACSP error, it responds with a 403 forbidden status and renders the ACSP error.
+ */
+const invalidAcspNumberErrorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
+  // Handle non-ACSP Errors immediately
+  if (!(err instanceof InvalidAcspNumberError)) {
+    return next(err);
+  }
+
+  logger.infoRequest(req, `Invalid ACSP error received - ${err.message}`);
+
+  return res.status(403).render(NOT_ELIGIBLE_TEMPLATE);
+};
+
+/**
  * This handler catches any other error thrown within the application.
  * Use this error handler by calling next(e) from within a controller
  * Always keep this as the last handler in the chain for it to work.
@@ -50,13 +67,9 @@ const globalErrorHandler = (err: Error, req: Request, res: Response, _next: Next
   });
 };
 
-const errorHandler = [pageNotFound, csrfErrorHandler, globalErrorHandler];
-
-export { errorHandler };
-
 const getHeaderData = (req: Request) => {
   const previous = req.get("Referrer") ?? PARTNERSHIP_TYPE_URL;
-  const userEmail = getLoggedInUserEmail(req.session);
+  const userEmail = getLoggedInUserEmail(req.session!);
 
   return {
     props: {
@@ -65,3 +78,6 @@ const getHeaderData = (req: Request) => {
     userEmail
   };
 };
+
+const errorHandler = [pageNotFound, csrfErrorHandler, invalidAcspNumberErrorHandler, globalErrorHandler];
+export { errorHandler, invalidAcspNumberErrorHandler };
