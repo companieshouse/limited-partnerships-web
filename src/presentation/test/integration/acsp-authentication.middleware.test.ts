@@ -6,16 +6,9 @@ import { acspManageUsersAuthMiddleware } from "@companieshouse/web-security-node
 import { CHS_URL } from "../../../config/constants";
 import { acspAuthentication } from "../../../middlewares/acsp-authentication.middleware";
 
-const mockDelegatedMiddleware = jest.fn((_req: Request, _res: Response, next: NextFunction) => next());
-
-jest.mock("@companieshouse/web-security-node", () => ({
-  ...jest.requireActual("@companieshouse/web-security-node"),
-  acspManageUsersAuthMiddleware: jest.fn(() => mockDelegatedMiddleware)
-}));
-
 jest.unmock("../../../middlewares/acsp-authentication.middleware");
 
-const mockedAcspManageUsersAuthMiddleware = acspManageUsersAuthMiddleware as jest.MockedFunction<typeof acspManageUsersAuthMiddleware>;
+const mockedAcspManageUsersAuthMiddleware = jest.mocked(acspManageUsersAuthMiddleware);
 
 describe("ACSP authentication middleware", () => {
   let req: Partial<Request>;
@@ -37,7 +30,8 @@ describe("ACSP authentication middleware", () => {
     acspAuthentication(req as Request, res as Response, next as NextFunction);
 
     expect(mockedAcspManageUsersAuthMiddleware).toHaveBeenCalled();
-    expect(mockDelegatedMiddleware).toHaveBeenCalledWith(req, res, next);
+    const delegatedMiddleware = jest.mocked(mockedAcspManageUsersAuthMiddleware.mock.results[0].value);
+    expect(delegatedMiddleware).toHaveBeenCalledWith(req, res, next);
   });
 
   it("should pass correct config to acspManageUsersAuthMiddleware", () => {
@@ -53,21 +47,21 @@ describe("ACSP authentication middleware", () => {
   });
 
   it("should preserve URL with query parameters", () => {
-    req.originalUrl = "/limited-partnerships/registration?step=1&id=123";
+    req.originalUrl = "/limited-partnerships/registration/?step=1&id=123";
 
     acspAuthentication(req as Request, res as Response, next as NextFunction);
 
     const config = mockedAcspManageUsersAuthMiddleware.mock.calls[0][0];
-    expect(config.returnUrl).toBe("/limited-partnerships/registration?step=1&id=123");
+    expect(config.returnUrl).toBe("/limited-partnerships/registration/?step=1&id=123");
   });
 
   it("should preserve URL with hash fragment", () => {
-    req.originalUrl = "/limited-partnerships/registration#section";
+    req.originalUrl = "/limited-partnerships/registration/something#section";
 
     acspAuthentication(req as Request, res as Response, next as NextFunction);
 
     const config = mockedAcspManageUsersAuthMiddleware.mock.calls[0][0];
-    expect(config.returnUrl).toBe("/limited-partnerships/registration#section");
+    expect(config.returnUrl).toBe("/limited-partnerships/registration/something#section");
   });
 
   it("should handle root path", () => {

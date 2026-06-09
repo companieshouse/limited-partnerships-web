@@ -100,18 +100,8 @@ export const appConfig = (app: express.Application) => {
 
   app.use(config.allPathsExceptHealthcheck, authentication);
 
-  const acspRegistrationPathSegment = "/registration/";
-  const acspResumePathSuffix = "/resume";
-
   // keep this after the authentication middleware so that the ACSP number is available in the session for the ACSP authentication middleware
   // TODO change this to use config.allPathsExceptHealthcheck when we want to apply to all routes except healthcheck
-  app.use((request, response, next) => {
-    const path: string = request.path.toLowerCase();
-    if (path.includes(acspRegistrationPathSegment) || path.endsWith(acspResumePathSuffix)) {
-      return acspAuthentication(request, response, next);
-    }
-
-    return next();
-  });
+  app.use(acspAuthentication);
 
 };

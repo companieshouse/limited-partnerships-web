@@ -25,7 +25,8 @@ jest.mock("../middlewares/acsp-authentication.middleware", () => ({
 jest.mock("@companieshouse/web-security-node", () => ({
   ...jest.requireActual("@companieshouse/web-security-node"),
   CsrfProtectionMiddleware: (_opts) => (req: Request, res: Response, next: NextFunction) => next(),
-  authMiddleware: () => jest.fn(() => (req: Request, res: Response, next: NextFunction) => next())
+  authMiddleware: () => jest.fn(() => (req: Request, res: Response, next: NextFunction) => next()),
+  acspManageUsersAuthMiddleware: jest.fn(() => jest.fn((req: Request, res: Response, next: NextFunction) => next()))
 }));
 
 jest.mock("../utils/session", () => ({
