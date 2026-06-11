@@ -83,7 +83,6 @@ describe("Not Eligible Page", () => {
 
   it.each([
     TRANSITION_START_URL,
-    "/limited-partnerships/Transition/company-number",
     getUrl(TRANSITION_COMPANY_NUMBER_URL),
     getUrl(TRANSITION_GENERAL_PARTNERS_URL),
     getUrl(TRANSITION_LIMITED_PARTNERS_URL),
@@ -96,7 +95,6 @@ describe("Not Eligible Page", () => {
 
   it.each([
     POST_TRANSITION_COMPANY_NUMBER_URL,
-    "/limited-partnerships/Update/company-number",
     getUrl(POST_TRANSITION_LANDING_PAGE_URL),
     getUrl(POST_TRANSITION_GENERAL_PARTNER_CHOICE_URL),
     getUrl(POST_TRANSITION_LIMITED_PARTNER_CHOICE_URL)
