@@ -8,7 +8,7 @@ import * as webSecurityNode from "@companieshouse/web-security-node";
 
 import { NOT_ELIGIBLE_URL, RESUME_JOURNEY_POST_TRANSITION_GENERAL_PARTNER_URL, RESUME_JOURNEY_POST_TRANSITION_LIMITED_PARTNER_URL, RESUME_JOURNEY_POST_TRANSITION_PARTNERSHIP_URL, RESUME_JOURNEY_REGISTRATION_OR_TRANSITION_URL } from "../../../controller/global/url";
 import { setLocalesEnabled, testTranslations } from "../../utils";
-import { CHECK_YOUR_ANSWERS_URL, GENERAL_PARTNERS_URL, LIMITED_PARTNERS_URL, NAME_URL, TELL_US_ABOUT_PSC_URL } from "../../../controller/registration/url";
+import { CHECK_YOUR_ANSWERS_URL, GENERAL_PARTNERS_URL, LIMITED_PARTNERS_URL, NAME_URL, REGISTRATION_START_URL, TELL_US_ABOUT_PSC_URL } from "../../../controller/registration/url";
 
 jest.mocked(webSecurityNode.acspManageUsersAuthMiddleware).mockImplementation(() =>
   (req: Request, res: Response, next: NextFunction) =>
@@ -36,8 +36,8 @@ describe("Not Eligible Page", () => {
   });
 
   it.each([
+    [REGISTRATION_START_URL],
     [NAME_URL],
-    ["/limited-partnerships/Registration/partner-name"],
     [GENERAL_PARTNERS_URL],
     [LIMITED_PARTNERS_URL],
     [TELL_US_ABOUT_PSC_URL],
