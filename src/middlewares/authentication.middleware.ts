@@ -24,7 +24,7 @@ export const authentication = (req: Request, res: Response, next: NextFunction):
 
     next();
   } catch (err) {
-    logger.errorRequest(req, err);
+    logger.errorRequest(req, JSON.stringify(err));
     next(err);
   }
 };

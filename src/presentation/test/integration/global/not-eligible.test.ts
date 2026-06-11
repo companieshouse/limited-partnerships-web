@@ -8,7 +8,7 @@ import * as webSecurityNode from "@companieshouse/web-security-node";
 
 import { HEALTHCHECK_URL, NOT_ELIGIBLE_URL, SIGN_OUT_URL, RESUME_JOURNEY_POST_TRANSITION_GENERAL_PARTNER_URL, RESUME_JOURNEY_POST_TRANSITION_LIMITED_PARTNER_URL, RESUME_JOURNEY_POST_TRANSITION_PARTNERSHIP_URL, RESUME_JOURNEY_REGISTRATION_OR_TRANSITION_URL } from "../../../controller/global/url";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
-import { CHECK_YOUR_ANSWERS_URL, GENERAL_PARTNERS_URL, LIMITED_PARTNERS_URL, NAME_URL, TELL_US_ABOUT_PSC_URL } from "../../../controller/registration/url";
+import { CHECK_YOUR_ANSWERS_URL, GENERAL_PARTNERS_URL, LIMITED_PARTNERS_URL, NAME_URL, REGISTRATION_START_URL, TELL_US_ABOUT_PSC_URL } from "../../../controller/registration/url";
 import {
   COMPANY_NUMBER_URL as TRANSITION_COMPANY_NUMBER_URL,
   CONTINUE_SAVED_FILING_URL as TRANSITION_CONTINUE_SAVED_FILING_URL,
@@ -52,21 +52,16 @@ describe("Not Eligible Page", () => {
   });
 
   it.each([
-    [NAME_URL, "en", enTranslationText],
-    ["/limited-partnerships/Registration/partner-name", "en", enTranslationText],
-    [GENERAL_PARTNERS_URL, "en", enTranslationText],
-    [LIMITED_PARTNERS_URL, "en", enTranslationText],
-    [TELL_US_ABOUT_PSC_URL, "en", enTranslationText],
-    [CHECK_YOUR_ANSWERS_URL, "en", enTranslationText],
-    [NAME_URL, "cy", cyTranslationText],
-    [GENERAL_PARTNERS_URL, "cy", cyTranslationText],
-    [LIMITED_PARTNERS_URL, "cy", cyTranslationText],
-    [TELL_US_ABOUT_PSC_URL, "cy", cyTranslationText],
-    [CHECK_YOUR_ANSWERS_URL, "cy", cyTranslationText]
-  ])("should block registration route %s - %s", async (url, lang, translationText) => {
-    const res = await request(app).get(`${url}?lang=${lang}`);
-    expect(res.status).toBe(403);
-    expect(res.text).toContain(translationText.notEligiblePage.title);
+    [REGISTRATION_START_URL],
+    [NAME_URL],
+    [GENERAL_PARTNERS_URL],
+    [LIMITED_PARTNERS_URL],
+    [TELL_US_ABOUT_PSC_URL],
+    [CHECK_YOUR_ANSWERS_URL]
+  ])("should block registration route %s", async (url) => {
+    const res = await request(app).get(url);
+    expect(res.status).toBe(302);
+    expect(res.headers.location).toContain(NOT_ELIGIBLE_URL);
   });
 
   it.each([
@@ -77,8 +72,8 @@ describe("Not Eligible Page", () => {
     RESUME_JOURNEY_POST_TRANSITION_PARTNERSHIP_URL
   ])("should block resume route %s", async (url) => {
     const res = await request(app).get(url);
-    expect(res.status).toBe(403);
-    expect(res.text).toContain(enTranslationText.notEligiblePage.title);
+    expect(res.status).toBe(302);
+    expect(res.headers.location).toContain(NOT_ELIGIBLE_URL);
   });
 
   it.each([
@@ -89,8 +84,8 @@ describe("Not Eligible Page", () => {
     getUrl(TRANSITION_CHECK_YOUR_ANSWERS_URL)
   ])("should block transition route %s", async (url) => {
     const res = await request(app).get(url);
-    expect(res.status).toBe(403);
-    expect(res.text).toContain(enTranslationText.notEligiblePage.title);
+    expect(res.status).toBe(302);
+    expect(res.headers.location).toContain(NOT_ELIGIBLE_URL);
   });
 
   it.each([
@@ -100,14 +95,14 @@ describe("Not Eligible Page", () => {
     getUrl(POST_TRANSITION_LIMITED_PARTNER_CHOICE_URL)
   ])("should block post-transition route %s", async (url) => {
     const res = await request(app).get(url);
-    expect(res.status).toBe(403);
-    expect(res.text).toContain(enTranslationText.notEligiblePage.title);
+    expect(res.status).toBe(302);
+    expect(res.headers.location).toContain(NOT_ELIGIBLE_URL);
   });
 
   it("should block an unrecognised service route", async () => {
     const res = await request(app).get("/limited-partnerships/some-random-page");
-    expect(res.status).toBe(403);
-    expect(res.text).toContain(enTranslationText.notEligiblePage.title);
+    expect(res.status).toBe(302);
+    expect(res.headers.location).toContain(NOT_ELIGIBLE_URL);
   });
 
   it("should not block the healthcheck route", async () => {
@@ -146,7 +141,7 @@ describe("Valid ACSP User", () => {
   ])("should allow valid ACSP user to access registration route %s - %s", async (url, lang) => {
     const res = await request(app).get(`${url}?lang=${lang}`);
     expect(res.status).toBe(200);
-    expect(res.text).not.toContain(enTranslationText.notEligiblePage.title);
+    expect(res.headers.location).toBeUndefined();
   });
 });
 

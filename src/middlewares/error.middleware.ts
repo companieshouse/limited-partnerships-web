@@ -4,7 +4,7 @@ import { CsrfError, InvalidAcspNumberError } from "@companieshouse/web-security-
 import { getLoggedInUserEmail, logger } from "../utils";
 import * as config from "../config/constants";
 import { PARTNERSHIP_TYPE_URL } from "../presentation/controller/registration/url";
-import { NOT_ELIGIBLE_TEMPLATE } from "../presentation/controller/global/template";
+import { NOT_ELIGIBLE_URL } from "../presentation/controller/global/url";
 
 const pageNotFound = (req: Request, res: Response) => {
   const headerData = getHeaderData(req);
@@ -47,8 +47,12 @@ const invalidAcspNumberErrorHandler = (err: Error, req: Request, res: Response, 
   }
 
   logger.infoRequest(req, `Invalid ACSP error received - ${err.message}`);
+  let URL = NOT_ELIGIBLE_URL;
+  if (req.session?.data?.lang) {
+    URL = NOT_ELIGIBLE_URL + `?lang=${req.session.data.lang}`;
+  };
 
-  return res.status(403).render(NOT_ELIGIBLE_TEMPLATE);
+  return res.redirect(URL);
 };
 
 /**

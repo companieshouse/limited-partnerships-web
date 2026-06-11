@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from "express";
 import { InvalidAcspNumberError } from "@companieshouse/web-security-node";
 import { invalidAcspNumberErrorHandler } from "../../../middlewares/error.middleware";
 import { logger } from "../../../utils";
-import { NOT_ELIGIBLE_TEMPLATE } from "../../controller/global/template";
 
 jest.mock("../../../utils/logger");
 
@@ -19,7 +18,8 @@ describe("invalidAcspNumberErrorHandler", () => {
 
     res = {
       status: jest.fn().mockReturnThis(),
-      render: jest.fn()
+      render: jest.fn(),
+      redirect: jest.fn()
     } as any;
 
     next = jest.fn();
@@ -27,13 +27,12 @@ describe("invalidAcspNumberErrorHandler", () => {
   });
 
   describe("when an InvalidAcspNumberError is thrown", () => {
-    it("should render the NOT_ELIGIBLE_TEMPLATE with 403 status", () => {
+    it("should redirect to the not eligible page with 302 status", () => {
       const error = new InvalidAcspNumberError("Invalid ACSP number");
 
       invalidAcspNumberErrorHandler(error, req as Request, res as Response, next as NextFunction);
 
-      expect(res.status).toHaveBeenCalledWith(403);
-      expect(res.render).toHaveBeenCalledWith(NOT_ELIGIBLE_TEMPLATE);
+      expect(res.redirect).toHaveBeenCalledWith(expect.stringContaining("/not-eligible"));
     });
 
     it("should log the error with details", () => {
@@ -55,6 +54,26 @@ describe("invalidAcspNumberErrorHandler", () => {
 
       expect(next).not.toHaveBeenCalled();
     });
+
+    it.each([
+      ["en"],
+      ["cy"]
+    ])("should include lang=%s in the redirect URL when session lang is set", (lang) => {
+      (req as any).session.data.lang = lang;
+      const error = new InvalidAcspNumberError("Invalid ACSP number");
+
+      invalidAcspNumberErrorHandler(error, req as Request, res as Response, next as NextFunction);
+
+      expect(res.redirect).toHaveBeenCalledWith(expect.stringContaining(`lang=${lang}`));
+    });
+
+    it("should not include lang in the redirect URL when session lang is not set", () => {
+      const error = new InvalidAcspNumberError("Invalid ACSP number");
+
+      invalidAcspNumberErrorHandler(error, req as Request, res as Response, next as NextFunction);
+
+      expect(res.redirect).toHaveBeenCalledWith(expect.not.stringContaining("lang="));
+    });
   });
 
   describe("when a non-InvalidAcspNumberError is thrown", () => {
@@ -64,8 +83,7 @@ describe("invalidAcspNumberErrorHandler", () => {
       invalidAcspNumberErrorHandler(error, req as Request, res as Response, next as NextFunction);
 
       expect(next).toHaveBeenCalledWith(error);
-      expect(res.status).not.toHaveBeenCalled();
-      expect(res.render).not.toHaveBeenCalled();
+      expect(res.redirect).not.toHaveBeenCalled();
     });
 
     it("should pass a TypeError to next", () => {
