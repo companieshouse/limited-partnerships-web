@@ -17,6 +17,7 @@ import LimitedPartnerBuilder from "../../../../../presentation/test/builder/Limi
 import PostTransitionPageType from "../../../../../presentation/controller/postTransition/pageType";
 import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 import { OFFICER_ROLE_LIMITED_PARTNER_PERSON } from "../../../../../config";
+import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 
 describe("Update Limited Partner Person Page", () => {
   const URL = getUrl(UPDATE_LIMITED_PARTNER_PERSON_URL);
@@ -62,6 +63,7 @@ describe("Update Limited Partner Person Page", () => {
       } else {
         expect(res.text).not.toContain("WELSH -");
       }
+      expect(res.text).toContain(customerFeedbackUrlMap.updateLimitedPartnerPerson);
     });
 
     it.each([

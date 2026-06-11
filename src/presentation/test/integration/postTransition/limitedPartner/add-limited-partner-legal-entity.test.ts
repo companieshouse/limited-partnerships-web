@@ -23,6 +23,7 @@ import {
   CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
 } from "../../../../controller/addressLookUp/url/postTransition";
+import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 
 describe("Add Limited Partner Legal Entity Page", () => {
   const URL = getUrl(ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL);
@@ -81,6 +82,7 @@ describe("Add Limited Partner Legal Entity Page", () => {
         }
 
         expect(countOccurrences(res.text, i18n.serviceName.addLimitedPartner)).toBe(4);
+        expect(res.text).toContain(customerFeedbackUrlMap.addLimitedPartner);
       }
     );
 

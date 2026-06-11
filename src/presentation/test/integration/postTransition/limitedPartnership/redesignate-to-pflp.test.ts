@@ -13,6 +13,7 @@ import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limi
 import { TRANSACTION_DESCRIPTION_DESIGNATE_AS_PRIVATE_FUND_PARTNERSHIP } from "config";
 import LimitedPartnershipBuilder from "presentation/test/builder/LimitedPartnershipBuilder";
 import { ApiErrors } from "domain/entities/UIErrors";
+import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 
 describe("Redesignate to pflp page", () => {
   const URL = getUrl(REDESIGNATE_TO_PFLP_URL);
@@ -40,6 +41,7 @@ describe("Redesignate to pflp page", () => {
       expect(res.text).not.toContain("WELSH -");
       expect(countOccurrences(res.text, enTranslationText.serviceName.updateLimitedPartnershipRedesignateToPFLP)).toBe(2);
       expect(res.text).toContain(enTranslationText.redesignateToPflpPage.cost.replace("{{ cost }}", process.env.COST_LP8D_REDESIGNATE_TO_PFLP as string));
+      expect(res.text).toContain(customerFeedbackUrlMap.updateLimitedPartnershipRedesignateToPFLP);
     });
 
     it("should load the page with Welsh text", async () => {
@@ -52,6 +54,7 @@ describe("Redesignate to pflp page", () => {
       testTranslations(res.text, cyTranslationText.redesignateToPflpPage, ["cost"]);
       expect(countOccurrences(res.text, cyTranslationText.serviceName.updateLimitedPartnershipRedesignateToPFLP)).toBe(2);
       expect(res.text).toContain(cyTranslationText.redesignateToPflpPage.cost.replace("{{ cost }}", process.env.COST_LP8D_REDESIGNATE_TO_PFLP as string));
+      expect(res.text).toContain(customerFeedbackUrlMap.updateLimitedPartnershipRedesignateToPFLP);
     });
   });
 

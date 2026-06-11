@@ -14,6 +14,7 @@ import RegistrationPageType from "../../../../presentation/controller/registrati
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { getUrl, setLocalesEnabled, testTranslations, countOccurrences } from "../../utils";
+import { customerFeedbackUrlMap } from "../../../../middlewares/customer-feedback.middleware";
 
 describe("General Partner Choice Page", () => {
   const URL = getUrl(GENERAL_PARTNER_CHOICE_URL);
@@ -35,6 +36,7 @@ describe("General Partner Choice Page", () => {
       `${cyTranslationText.generalPartnerChoicePage.title} - ${cyTranslationText.serviceRegistration} - GOV.UK`
     );
     testTranslations(res.text, cyTranslationText.generalPartnerChoicePage);
+    expect(res.text).toContain(customerFeedbackUrlMap.registration);
   });
 
   it("should load the general partner choice page with English text", async () => {
@@ -46,6 +48,7 @@ describe("General Partner Choice Page", () => {
       `${enTranslationText.generalPartnerChoicePage.title} - ${enTranslationText.serviceRegistration} - GOV.UK`
     );
     testTranslations(res.text, enTranslationText.generalPartnerChoicePage);
+    expect(res.text).toContain(customerFeedbackUrlMap.registration);
   });
 
   it("should redirect to General Partner Person page when person is selected", async () => {

@@ -19,6 +19,7 @@ import {
   LIMITED_PARTNER_CHOICE_TEMPLATE,
   REVIEW_LIMITED_PARTNERS_TEMPLATE
 } from "../../../../../presentation/controller/registration/template";
+import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 
 describe("Add Limited Partner Person Page", () => {
   const URL = getUrl(ADD_LIMITED_PARTNER_PERSON_URL);
@@ -60,6 +61,7 @@ describe("Add Limited Partner Person Page", () => {
         if (!isCapitalContributionPresent) {
           expect(res.text).not.toContain(cyTranslationText.capitalContribution.title);
         }
+        expect(res.text).toContain(customerFeedbackUrlMap.registration);
       }
     );
 
@@ -92,6 +94,7 @@ describe("Add Limited Partner Person Page", () => {
         if (!isCapitalContributionPresent) {
           expect(res.text).not.toContain(enTranslationText.capitalContribution.title);
         }
+        expect(res.text).toContain(customerFeedbackUrlMap.registration);
       }
     );
 

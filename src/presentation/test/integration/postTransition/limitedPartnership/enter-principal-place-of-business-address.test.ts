@@ -30,6 +30,7 @@ import CompanyProfileBuilder from "../../../../../presentation/test/builder/Comp
 import PostTransitionPageType from "../../../../../presentation/controller/postTransition/pageType";
 import LimitedPartnershipBuilder from "../../../../../presentation/test/builder/LimitedPartnershipBuilder";
 import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
+import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 
 describe("Enter Principal Place Of Business Address Page", () => {
   const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText, ...enErrorsTranslationText };
@@ -86,6 +87,7 @@ describe("Enter Principal Place Of Business Address Page", () => {
           toEscapedHtml(enTranslationText.serviceName.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress)
         )
       ).toBe(2);
+      expect(res.text).toContain(customerFeedbackUrlMap.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress);
     });
 
     it("should load the enter principal place of business address page with Welsh text", async () => {
@@ -111,6 +113,7 @@ describe("Enter Principal Place Of Business Address Page", () => {
           toEscapedHtml(cyTranslationText.serviceName.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress)
         )
       ).toBe(2);
+      expect(res.text).toContain(customerFeedbackUrlMap.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress);
     });
   });
 

@@ -23,6 +23,7 @@ import {
 import LimitedPartnershipBuilder from "../../../../../presentation/test/builder/LimitedPartnershipBuilder";
 import CompanyProfileBuilder from "../../../../../presentation/test/builder/CompanyProfileBuilder";
 import PostTransitionPageType from "../../../../../presentation/controller/postTransition/pageType";
+import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 
 describe("Enter Registered Office Address Page", () => {
   const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText, ...enErrorsTranslationText };
@@ -65,6 +66,7 @@ describe("Enter Registered Office Address Page", () => {
           toEscapedHtml(enTranslationText.serviceName.updateLimitedPartnershipRegisteredOfficeAddress)
         )
       ).toBe(2);
+      expect(res.text).toContain(customerFeedbackUrlMap.updateLimitedPartnershipRegisteredOfficeAddress);
     });
 
     it("should load the enter registered office address page with Welsh text", async () => {
@@ -88,6 +90,7 @@ describe("Enter Registered Office Address Page", () => {
           toEscapedHtml(cyTranslationText.serviceName.updateLimitedPartnershipRegisteredOfficeAddress)
         )
       ).toBe(2);
+      expect(res.text).toContain(customerFeedbackUrlMap.updateLimitedPartnershipRegisteredOfficeAddress);
     });
   });
 

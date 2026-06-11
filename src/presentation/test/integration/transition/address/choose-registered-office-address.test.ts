@@ -17,6 +17,7 @@ import {
 } from "../../../../controller/addressLookUp/url/transition";
 
 import AddressPageType from "../../../../controller/addressLookUp/PageType";
+import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 
 describe("Choose Registered Office Address Page", () => {
   const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
@@ -49,6 +50,7 @@ describe("Choose Registered Office Address Page", () => {
       expect(res.status).toBe(200);
       testTranslations(res.text, enTranslationText.address.chooseAddress.registeredOfficeAddress);
       expect(res.text).not.toContain("WELSH -");
+      expect(res.text).toContain(customerFeedbackUrlMap.transition);
     });
 
     it("should load the choose registered office address page with Welsh text", async () => {
@@ -58,6 +60,7 @@ describe("Choose Registered Office Address Page", () => {
 
       expect(res.status).toBe(200);
       testTranslations(res.text, cyTranslationText.address.chooseAddress.registeredOfficeAddress);
+      expect(res.text).toContain(customerFeedbackUrlMap.transition);
     });
 
     it("should populate the address list", async () => {

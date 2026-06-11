@@ -21,6 +21,7 @@ import TransitionPageType from "../../../controller/transition/PageType";
 import { CONFIRMATION_URL } from "../../../controller/global/url";
 import { JOURNEY_TYPE_PARAM } from "../../../../config/constants";
 import { Journey } from "../../../../domain/entities/journey";
+import { customerFeedbackUrlMap } from "../../../../middlewares/customer-feedback.middleware";
 
 describe("Check Your Answers Page", () => {
   const URL = getUrl(CHECK_YOUR_ANSWERS_URL);
@@ -77,6 +78,7 @@ describe("Check Your Answers Page", () => {
       expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.partners.generalPartners.dateEffectiveFrom);
       expect(res.text).not.toContain(enTranslationText.checkYourAnswersPage.partners.limitedPartners.dateEffectiveFrom);
       expect(res.text).not.toContain("WELSH -");
+      expect(res.text).toContain(customerFeedbackUrlMap.transition);
     });
 
     it("should GET Check Your Answers Page Welsh text", async () => {
@@ -105,6 +107,7 @@ describe("Check Your Answers Page", () => {
       expect(res.text).not.toContain(cyTranslationText.checkYourAnswersPage.partners.generalPartners.dateEffectiveFrom);
       expect(res.text).not.toContain(cyTranslationText.checkYourAnswersPage.partners.limitedPartners.dateEffectiveFrom);
       expect(res.text).toContain("WELSH -");
+      expect(res.text).toContain(customerFeedbackUrlMap.transition);
     });
 
     it.each([

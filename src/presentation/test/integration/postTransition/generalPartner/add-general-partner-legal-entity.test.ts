@@ -19,6 +19,7 @@ import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 import { CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL, TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../../../controller/addressLookUp/url/postTransition";
+import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 
 describe("Add General Partner Legal Entity Page", () => {
   const URL = getUrl(ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL);
@@ -59,6 +60,7 @@ describe("Add General Partner Legal Entity Page", () => {
       ]);
       expect(res.text).not.toContain("WELSH -");
       expect(countOccurrences(res.text, enTranslationText.serviceName.addGeneralPartner)).toBe(4);
+      expect(res.text).toContain(customerFeedbackUrlMap.addGeneralPartner);
     });
 
     it("should load the add general partner legal entity page with Welsh text", async () => {
@@ -80,6 +82,7 @@ describe("Add General Partner Legal Entity Page", () => {
         "disqualificationStatementLegend"
       ]);
       expect(countOccurrences(res.text, cyTranslationText.serviceName.addGeneralPartner)).toBe(4);
+      expect(res.text).toContain(customerFeedbackUrlMap.addGeneralPartner);
     });
 
     it("should contain a back link to the choice page when general partners are not present", async () => {

@@ -21,6 +21,7 @@ import {
   UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
   UPDATE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL
 } from "../../../../controller/postTransition/url";
+import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 
 describe("Update Limited Partner Legal Entity Page", () => {
   const URL = getUrl(UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_URL);
@@ -82,6 +83,7 @@ describe("Update Limited Partner Legal Entity Page", () => {
         } else {
           expect(res.text).not.toContain("WELSH -");
         }
+        expect(res.text).toContain(customerFeedbackUrlMap.updateLimitedPartnerLegalEntity);
       }
     );
 

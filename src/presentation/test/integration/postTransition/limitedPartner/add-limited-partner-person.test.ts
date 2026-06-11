@@ -25,6 +25,7 @@ import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 import { POST_TRANSITION_WITH_ID_URL } from "../../../../../config/constants";
 import TransactionLimitedPartner from "../../../../../domain/entities/TransactionLimitedPartner";
+import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 
 describe("Add Limited Partner Person Page", () => {
   const URL = getUrl(ADD_LIMITED_PARTNER_PERSON_URL);
@@ -95,6 +96,7 @@ describe("Add Limited Partner Person Page", () => {
         }
 
         expect(countOccurrences(res.text, i18n.serviceName.addLimitedPartner)).toBe(4);
+        expect(res.text).toContain(customerFeedbackUrlMap.addLimitedPartner);
       }
     );
 
