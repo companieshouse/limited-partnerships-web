@@ -36,21 +36,16 @@ describe("Not Eligible Page", () => {
   });
 
   it.each([
-    [NAME_URL, "en", enTranslationText],
-    ["/limited-partnerships/Registration/partner-name", "en", enTranslationText],
-    [GENERAL_PARTNERS_URL, "en", enTranslationText],
-    [LIMITED_PARTNERS_URL, "en", enTranslationText],
-    [TELL_US_ABOUT_PSC_URL, "en", enTranslationText],
-    [CHECK_YOUR_ANSWERS_URL, "en", enTranslationText],
-    [NAME_URL, "cy", cyTranslationText],
-    [GENERAL_PARTNERS_URL, "cy", cyTranslationText],
-    [LIMITED_PARTNERS_URL, "cy", cyTranslationText],
-    [TELL_US_ABOUT_PSC_URL, "cy", cyTranslationText],
-    [CHECK_YOUR_ANSWERS_URL, "cy", cyTranslationText]
-  ])("should block registration route %s - %s", async (url, lang, translationText) => {
-    const res = await request(app).get(`${url}?lang=${lang}`);
-    expect(res.status).toBe(403);
-    expect(res.text).toContain(translationText.notEligiblePage.title);
+    [NAME_URL],
+    ["/limited-partnerships/Registration/partner-name"],
+    [GENERAL_PARTNERS_URL],
+    [LIMITED_PARTNERS_URL],
+    [TELL_US_ABOUT_PSC_URL],
+    [CHECK_YOUR_ANSWERS_URL]
+  ])("should block registration route %s", async (url) => {
+    const res = await request(app).get(url);
+    expect(res.status).toBe(302);
+    expect(res.headers.location).toContain(NOT_ELIGIBLE_URL);
   });
 
   it.each([
@@ -61,8 +56,8 @@ describe("Not Eligible Page", () => {
     RESUME_JOURNEY_POST_TRANSITION_PARTNERSHIP_URL
   ])("should block resume route %s", async (url) => {
     const res = await request(app).get(url);
-    expect(res.status).toBe(403);
-    expect(res.text).toContain(enTranslationText.notEligiblePage.title);
+    expect(res.status).toBe(302);
+    expect(res.headers.location).toContain(NOT_ELIGIBLE_URL);
   });
 });
 
@@ -88,6 +83,6 @@ describe("Valid ACSP User", () => {
   ])("should allow valid ACSP user to access registration route %s - %s", async (url, lang) => {
     const res = await request(app).get(`${url}?lang=${lang}`);
     expect(res.status).toBe(200);
-    expect(res.text).not.toContain(enTranslationText.notEligiblePage.title);
+    expect(res.headers.location).toBeUndefined();
   });
 });
