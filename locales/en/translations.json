@@ -422,7 +422,24 @@
     },
 
     "notEligiblePage" : {
-        "title" : "You must be an ACSP to use this service"
+        "title" : "You must be an Authorised Corporate Service Provider (ACSP) to use this service",
+        "notLinked": "You cannot use this service because the email you have signed in with is not linked to an ACSP account.",
+        "onlyAcsp": "Only ACSPs can file for limited partnerships.",
+        "whatIsAcsp": "An ACSP is an agent, such as an accountant or solicitor, that has registered with Companies House to file on behalf of clients. To register as an ACSP, the agent must be supervised for Anti-Money Laundering (AML) purposes.",
+        "businessRegistered": "If you work for a business that is registered as an ACSP",
+        "addAsAcsp": "You'll need to ask someone from your business to add you to its ACSP account. To find out more, read the section on how to use your account in our",
+        "acspGuidanceLink": "guidance on being an ACSP",
+        "register": "If you need to register as an ACSP",
+        "registerGuidance": "Read the guidance on registering as an ACSP",
+        "someoneElse": "If you're someone else involved with the limited partnership",
+        "needTo": "You need to",
+        "findAcsp": "find an ACSP",
+        "onBehalf": "to file on your behalf.",
+        "links": {
+            "guidance": "https://www.gov.uk/guidance/being-an-authorised-corporate-service-provider",
+            "registering": "https://www.gov.uk/guidance/applying-to-register-as-a-companies-house-authorised-agent",
+            "findAcsp": "https://www.gov.uk/government/publications/list-of-authorised-corporate-service-providers-acsps"
+        }
     },
 
     "pageNotFound" : {
