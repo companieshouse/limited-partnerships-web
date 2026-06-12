@@ -86,6 +86,22 @@ describe("Review Persons With Significant Control Page", () => {
       // TODO add assertions for individual person change links when individual person flow is implemented
     });
 
+    it("should load the review persons with significant control page with middle names of individual person", async () => {
+      const pscIndividualPerson = new PersonWithSignificantControlBuilder()
+        .isIndividualPerson()
+        .withId(appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId)
+        .build();
+
+      appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([pscIndividualPerson]);
+
+      const res = await request(app).get(URL);
+
+      const fullName = `${pscIndividualPerson.data?.forename} ${pscIndividualPerson.data?.middle_names} ${pscIndividualPerson.data?.surname}`;
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(fullName);
+    });
+
     describe("Empty list", () => {
       it("should redirect to person with significant control start page when list is empty", async () => {
         appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([]);

@@ -25,13 +25,21 @@
         {% set rows = [] %}
         {% for personWithSignificantControl in list %}
           {% if personWithSignificantControl.data.type == "INDIVIDUAL_PERSON" %}
+            {% if personWithSignificantControl.data.middle_names %}
+              {% set fullName = personWithSignificantControl.data.forename 
+                  + " " + personWithSignificantControl.data.middle_names 
+                  + " " + personWithSignificantControl.data.surname %}
+            {% else %}
+              {% set fullName = personWithSignificantControl.data.forename + " " + personWithSignificantControl.data.surname %}
+            {% endif %}
+
             {% set rows = rows.concat({
                 key: {
                   text: i18n.personWithSignificantControl.reviewPage.individualPerson,
-                  classes: "govuk-form-group govuk-form-group--error" if props.errors[(personWithSignificantControl.data.forename | lower + " " + personWithSignificantControl.data.surname | lower)]
+                  classes: "govuk-form-group govuk-form-group--error" if props.errors[( fullName | lower)]
                 },
                 value: {
-                  text: personWithSignificantControl.data.forename + " " + personWithSignificantControl.data.surname
+                  text: fullName
                 },
                 actions: {
                   items: [
