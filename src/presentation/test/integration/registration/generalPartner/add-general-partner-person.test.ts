@@ -22,6 +22,7 @@ import {
   GENERAL_PARTNER_CHOICE_TEMPLATE,
   REVIEW_GENERAL_PARTNERS_TEMPLATE
 } from "../../../../controller/registration/template";
+import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 
 describe("Add General Partner Person Page", () => {
   const URL = getUrl(ADD_GENERAL_PARTNER_PERSON_URL);
@@ -49,6 +50,7 @@ describe("Add General Partner Person Page", () => {
         "dateEffectiveFrom"
       ]);
       testTranslations(res.text, cyTranslationText.generalPartnersPage, ["title", "pageInformation"]);
+      expect(res.text).toContain(customerFeedbackUrlMap.registration);
     });
 
     it("should load the add general partner page with English text", async () => {
@@ -66,6 +68,7 @@ describe("Add General Partner Person Page", () => {
       ]);
       testTranslations(res.text, enTranslationText.generalPartnersPage, ["title", "pageInformation"]);
       expect(res.text).not.toContain("WELSH -");
+      expect(res.text).toContain(customerFeedbackUrlMap.registration);
     });
 
     it("should load the add general partner page and replay previously saved data", async () => {

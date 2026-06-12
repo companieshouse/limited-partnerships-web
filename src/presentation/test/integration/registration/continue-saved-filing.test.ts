@@ -7,6 +7,7 @@ import cyTranslationText from "../../../../../locales/cy/translations.json";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import { SERVICE_NAME_REGISTRATION, YOUR_FILINGS_URL } from "../../../../config/constants";
 import { setLocalesEnabled, testTranslations } from "../../utils";
+import { customerFeedbackUrlMap } from "../../../../middlewares/customer-feedback.middleware";
 
 describe("Continue Saved Filing Page", () => {
   beforeEach(() => {
@@ -22,6 +23,7 @@ describe("Continue Saved Filing Page", () => {
     testTranslations(res.text, enTranslationText.continueSavedFilingPage, ["errorMessage"]);
     expect(res.text).toContain(enTranslationText.buttons.continue);
     expect(res.text).toContain(SERVICE_NAME_REGISTRATION);
+    expect(res.text).toContain(customerFeedbackUrlMap.registration);
     expect(res.text).not.toContain(enTranslationText.continueSavedFilingPage.errorMessage);
   });
 
@@ -34,6 +36,7 @@ describe("Continue Saved Filing Page", () => {
     testTranslations(res.text, cyTranslationText.continueSavedFilingPage, ["errorMessage"]);
     expect(res.text).toContain(cyTranslationText.buttons.continue);
     expect(res.text).toContain(SERVICE_NAME_REGISTRATION);
+    expect(res.text).toContain(customerFeedbackUrlMap.registration);
     expect(res.text).not.toContain(cyTranslationText.continueSavedFilingPage.errorMessage);
   });
 

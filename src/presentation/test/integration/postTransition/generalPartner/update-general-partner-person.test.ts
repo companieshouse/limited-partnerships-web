@@ -17,6 +17,7 @@ import GeneralPartnerBuilder from "../../../../../presentation/test/builder/Gene
 import PostTransitionPageType from "../../../../../presentation/controller/postTransition/pageType";
 import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 import { OFFICER_ROLE_GENERAL_PARTNER_PERSON } from "../../../../../config";
+import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 
 describe("Update General Partner Person Page", () => {
   const URL = getUrl(UPDATE_GENERAL_PARTNER_PERSON_URL);
@@ -62,6 +63,7 @@ describe("Update General Partner Person Page", () => {
       } else {
         expect(res.text).not.toContain("WELSH -");
       }
+      expect(res.text).toContain(customerFeedbackUrlMap.updateGeneralPartnerPerson);
     });
 
     it.each([

@@ -21,6 +21,7 @@ import { CONFIRMATION_POST_TRANSITION_URL } from "../../../controller/global/url
 
 import CompanyProfileBuilder from "../../builder/CompanyProfileBuilder";
 import TransactionBuilder from "../../builder/TransactionBuilder";
+import { customerFeedbackUrlMap } from "../../../../middlewares/customer-feedback.middleware";
 
 describe("Remove partner confirmation page", () => {
   const URL = getUrl(CONFIRMATION_POST_TRANSITION_URL);
@@ -83,6 +84,19 @@ describe("Remove partner confirmation page", () => {
 
         expectPartnerData(res, limitedPartner ?? generalPartner ?? {}, isPerson);
         expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
+        if (isLimitedPartner) {
+          if (isPerson) {
+            expect(res.text).toContain(customerFeedbackUrlMap.removeLimitedPartnerPerson);
+          } else {
+            expect(res.text).toContain(customerFeedbackUrlMap.removeLimitedPartnerEntity);
+          }
+        } else {
+          if (isPerson) {
+            expect(res.text).toContain(customerFeedbackUrlMap.removeGeneralPartnerPerson);
+          } else {
+            expect(res.text).toContain(customerFeedbackUrlMap.removeGeneralPartnerEntity);
+          }
+        }
       }
     );
 
@@ -133,6 +147,19 @@ describe("Remove partner confirmation page", () => {
 
         expectPartnerData(res, limitedPartner ?? generalPartner ?? {}, isPerson);
         expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
+        if (isLimitedPartner) {
+          if (isPerson) {
+            expect(res.text).toContain(customerFeedbackUrlMap.removeLimitedPartnerPerson);
+          } else {
+            expect(res.text).toContain(customerFeedbackUrlMap.removeLimitedPartnerEntity);
+          }
+        } else {
+          if (isPerson) {
+            expect(res.text).toContain(customerFeedbackUrlMap.removeGeneralPartnerPerson);
+          } else {
+            expect(res.text).toContain(customerFeedbackUrlMap.removeGeneralPartnerEntity);
+          }
+        }
       }
     );
   });

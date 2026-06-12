@@ -1,12 +1,12 @@
-{% if journeyTypes.isRegistration %}
-  {% set bannerTitle = i18n.govUk.banner.titleRegistration %}
-{% else %}
-  {% set bannerTitle = i18n.govUk.banner.titleTransition %}
+{% set bannerHtml = i18n.govUk.banner.newService %}
+
+{% if customerFeedbackUrl %}
+  {% set bannerHtml = bannerHtml + " - " + i18n.govUk.banner.feedbackStart + " <a class='govuk-link' href='" + customerFeedbackUrl + "' target='_blank' onclick=\"javascript:_paq.push(['trackEvent', 'Beta', 'Feedback']);\">" + i18n.govUk.banner.feedbackLinkText + "</a> " + i18n.govUk.banner.feedbackEnd %}
 {% endif %}
 
 {{ govukPhaseBanner({
   tag: {
     text: i18n.govUk.banner.tag
   },
-  html: bannerTitle
+  html: bannerHtml
 }) }}

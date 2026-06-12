@@ -9,6 +9,7 @@ import CompanyProfileBuilder from "../../../../../presentation/test/builder/Comp
 import { Jurisdiction, NameEndingType, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import LimitedPartnershipBuilder from "../../../../../presentation/test/builder/LimitedPartnershipBuilder";
 import PostTransitionPageType from "../../../../../presentation/controller/postTransition/pageType";
+import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 
 describe("Name Page", () => {
   const URL = getUrl(PARTNERSHIP_NAME_URL);
@@ -52,6 +53,7 @@ describe("Name Page", () => {
       testTranslations(res.text, expected, exclude);
       expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
       expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
+      expect(res.text).toContain(customerFeedbackUrlMap.updateLimitedPartnershipName);
     });
 
     it.each([
@@ -79,7 +81,7 @@ describe("Name Page", () => {
       expect(res.text).toContain(`${expected.title} - ${enTranslationText.serviceName.updateLimitedPartnershipName} - GOV.UK`);
       testTranslations(res.text, expected, exclude);
       expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
-      expect(res.text).not.toContain("WELSH -");
+      expect(res.text).toContain(customerFeedbackUrlMap.updateLimitedPartnershipName);
     });
 
     it("should load the name page with data from api", async () => {

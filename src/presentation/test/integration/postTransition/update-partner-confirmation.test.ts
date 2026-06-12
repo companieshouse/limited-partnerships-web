@@ -21,6 +21,7 @@ import { CONFIRMATION_POST_TRANSITION_URL } from "../../../controller/global/url
 
 import CompanyProfileBuilder from "../../builder/CompanyProfileBuilder";
 import TransactionBuilder from "../../builder/TransactionBuilder";
+import { customerFeedbackUrlMap } from "../../../../middlewares/customer-feedback.middleware";
 
 describe("Update partner confirmation page", () => {
   const URL = getUrl(CONFIRMATION_POST_TRANSITION_URL);
@@ -67,6 +68,7 @@ describe("Update partner confirmation page", () => {
         expect(
           countOccurrences(res.text, toEscapedHtml(enTranslationText.serviceName.updateGeneralPartnerPerson))
         ).toBe(2);
+        expect(res.text).toContain(customerFeedbackUrlMap.updateGeneralPartnerPerson);
       }
     );
 
@@ -99,6 +101,7 @@ describe("Update partner confirmation page", () => {
         expect(
           countOccurrences(res.text, toEscapedHtml(cyTranslationText.serviceName.updateGeneralPartnerPerson))
         ).toBe(2);
+        expect(res.text).toContain(customerFeedbackUrlMap.updateGeneralPartnerPerson);
       }
     );
   });

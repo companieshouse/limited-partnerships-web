@@ -18,6 +18,7 @@ import PostTransitionPageType from "../../../../controller/postTransition/pageTy
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 import LimitedPartnerBuilder from "../../../../../presentation/test/builder/LimitedPartnerBuilder";
 import { OFFICER_ROLE_LIMITED_PARTNER_PERSON } from "../../../../../config";
+import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 
 describe("Limited Partner Person cease date page", () => {
   const URL = getUrl(WHEN_DID_THE_LIMITED_PARTNER_PERSON_CEASE_URL);
@@ -56,6 +57,7 @@ describe("Limited Partner Person cease date page", () => {
       expect(res.text).toContain(companyProfile.data.companyName.toUpperCase());
       expect(res.text).toContain(companyAppointment.name?.split(",")[0] ?? "");
       expect(countOccurrences(res.text, enTranslationText.serviceName.removeLimitedPartnerPerson)).toBe(2);
+      expect(res.text).toContain(customerFeedbackUrlMap.removeLimitedPartnerPerson);
     });
 
     it("should load limited partner person cease date page with welsh text", async () => {
@@ -65,6 +67,7 @@ describe("Limited Partner Person cease date page", () => {
       expect(res.text).toContain(`${cyTranslationText.ceaseDate.removeLimitedPartner.title}`);
       expect(res.text).toContain("WELSH -");
       expect(countOccurrences(res.text, cyTranslationText.serviceName.removeLimitedPartnerPerson)).toBe(2);
+      expect(res.text).toContain(customerFeedbackUrlMap.removeLimitedPartnerPerson);
     });
   });
 

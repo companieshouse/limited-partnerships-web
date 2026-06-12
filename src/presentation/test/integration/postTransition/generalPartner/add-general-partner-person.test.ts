@@ -22,6 +22,7 @@ import {
   TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "../../../../../presentation/controller/addressLookUp/url/postTransition";
+import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 
 describe("Add General Partner Person Page", () => {
   const URL = getUrl(ADD_GENERAL_PARTNER_PERSON_URL);
@@ -62,6 +63,7 @@ describe("Add General Partner Person Page", () => {
       ]);
       expect(res.text).not.toContain("WELSH -");
       expect(countOccurrences(res.text, enTranslationText.serviceName.addGeneralPartner)).toBe(4);
+      expect(res.text).toContain(customerFeedbackUrlMap.addGeneralPartner);
     });
 
     it("should load the add general partner person page with Welsh text", async () => {
@@ -83,6 +85,7 @@ describe("Add General Partner Person Page", () => {
         "disqualificationStatementLegend"
       ]);
       expect(countOccurrences(res.text, cyTranslationText.serviceName.addGeneralPartner)).toBe(4);
+      expect(res.text).toContain(customerFeedbackUrlMap.addGeneralPartner);
     });
 
     it("should contain a back link to the choice page when general partners are not present", async () => {

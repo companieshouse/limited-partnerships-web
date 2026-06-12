@@ -17,6 +17,7 @@ import {
 } from "../../../../controller/addressLookUp/url/registration";
 
 import AddressPageType from "../../../../controller/addressLookUp/PageType";
+import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 
 describe("Choose Principal Place Of Business Address Page", () => {
   const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
@@ -49,6 +50,7 @@ describe("Choose Principal Place Of Business Address Page", () => {
 
       expect(res.status).toBe(200);
       testTranslations(res.text, cyTranslationText.address.chooseAddress.principalPlaceOfBusiness);
+      expect(res.text).toContain(customerFeedbackUrlMap.registration);
     });
 
     it("should load the choose principal place of business address page with English text", async () => {
@@ -58,6 +60,7 @@ describe("Choose Principal Place Of Business Address Page", () => {
 
       expect(res.status).toBe(200);
       testTranslations(res.text, enTranslationText.address.chooseAddress.principalPlaceOfBusiness);
+      expect(res.text).toContain(customerFeedbackUrlMap.registration);
     });
 
     it("should populate the address list", async () => {

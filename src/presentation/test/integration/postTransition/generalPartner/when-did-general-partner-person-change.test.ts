@@ -22,6 +22,7 @@ import TransactionBuilder from "../../../builder/TransactionBuilder";
 import CompanyAppointmentBuilder from "../../../builder/CompanyAppointmentBuilder";
 import { OFFICER_ROLE_GENERAL_PARTNER_PERSON } from "../../../../../config/constants";
 import TransactionGeneralPartner from "../../../../../domain/entities/TransactionGeneralPartner";
+import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 
 describe("General partner person change date page", () => {
   const URL = getUrl(WHEN_DID_GENERAL_PARTNER_PERSON_DETAILS_CHANGE_URL);
@@ -87,6 +88,7 @@ describe("General partner person change date page", () => {
           countOccurrences(res.text, toEscapedHtml(enTranslationText.serviceName.updateGeneralPartnerPerson))
         ).toBe(2);
       }
+      expect(res.text).toContain(customerFeedbackUrlMap.updateGeneralPartnerPerson);
     });
 
     it("should populate the date fields with the existing date of update if it exists", async () => {

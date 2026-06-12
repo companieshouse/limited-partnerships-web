@@ -18,6 +18,7 @@ import {
 
 import AddressPageType from "../../../../../presentation/controller/addressLookUp/PageType";
 import LimitedPartnershipBuilder from "../../../../../presentation/test/builder/LimitedPartnershipBuilder";
+import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 
 describe("Confirm Registered Office Address Page", () => {
   const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
@@ -64,6 +65,7 @@ describe("Confirm Registered Office Address Page", () => {
       expect(res.text).toContain("Region");
       expect(res.text).toContain(enTranslationText.countries.england);
       expect(res.text).toContain("ST6 3LJ");
+      expect(res.text).toContain(customerFeedbackUrlMap.registration);
     });
 
     describe("Map Country Code", () => {
@@ -136,6 +138,7 @@ describe("Confirm Registered Office Address Page", () => {
       expect(res.status).toBe(200);
       testTranslations(res.text, cyTranslationText.address.confirm.registeredOfficeAddress, ["newRequirement"]);
       expect(res.text).toContain(cyTranslationText.countries.england);
+      expect(res.text).toContain(customerFeedbackUrlMap.registration);
     });
   });
 

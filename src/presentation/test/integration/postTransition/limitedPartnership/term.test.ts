@@ -1,5 +1,5 @@
 import request from "supertest";
-import { Jurisdiction, PartnershipType, Term } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { Jurisdiction, PartnershipKind, PartnershipType, Term } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import enTranslationText from "../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../locales/cy/translations.json";
@@ -18,6 +18,8 @@ import {
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
 import PostTransitionPageType from "../../../../controller/postTransition/pageType";
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
+import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
+import TransactionBuilder from "../../../builder/TransactionBuilder";
 
 describe("Email Page", () => {
   const URL = getUrl(TERM_URL);
@@ -31,6 +33,7 @@ describe("Email Page", () => {
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([]);
+    appDevDependencies.transactionGateway.feedTransactions([]);
   });
 
   describe("Get Term Page", () => {
@@ -45,6 +48,7 @@ describe("Email Page", () => {
           `${enTranslationText.termPage.title} - ${enTranslationText.serviceName.updateLimitedPartnershipTerm} - GOV.UK`
         );
         expect(res.text).not.toContain("WELSH -");
+        expect(res.text).toContain(customerFeedbackUrlMap.updateLimitedPartnershipTerm);
       });
 
       it("should load the page with Welsh text", async () => {
@@ -57,6 +61,7 @@ describe("Email Page", () => {
         );
         testTranslations(res.text, cyTranslationText.termPage);
         expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
+        expect(res.text).toContain(customerFeedbackUrlMap.updateLimitedPartnershipTerm);
       });
 
       it("should load the page with ids", async () => {
@@ -68,6 +73,9 @@ describe("Email Page", () => {
 
         appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
+        const transaction = new TransactionBuilder().withKind(PartnershipKind.UPDATE_PARTNERSHIP_TERM).build();
+        appDevDependencies.transactionGateway.feedTransactions([transaction]);
+
         const URL = getUrl(TERM_WITH_IDS_URL);
 
         const res = await request(app).get(URL + "?lang=en");
@@ -75,9 +83,10 @@ describe("Email Page", () => {
         expect(res.status).toBe(200);
         testTranslations(res.text, enTranslationText.termPage);
         expect(res.text).toContain(
-          `${enTranslationText.termPage.title} - ${enTranslationText.servicePostTransition} - GOV.UK`
+          `${enTranslationText.termPage.title} - ${enTranslationText.serviceName.updateLimitedPartnershipTerm} - GOV.UK`
         );
         expect(res.text).not.toContain("WELSH -");
+        expect(res.text).toContain(customerFeedbackUrlMap.updateLimitedPartnershipTerm);
       });
     });
 
