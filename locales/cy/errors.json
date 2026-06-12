@@ -122,11 +122,11 @@
 
         "partners": {
              "addPartner": {
-                "firstNameMissing": "WELSH - Enter their first name",
+                "firstNameMissing": "WELSH - Enter the partner's first name",
                 "firstNameInvalid": "WELSH - First name must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
                 "firstNameTooLong": "WELSH - First name must be 50 characters or less",
 
-                "lastNameMissing": "WELSH - Enter their last name",
+                "lastNameMissing": "WELSH - Enter the partner's last name",
                 "lastNameInvalid": "WELSH - Last name must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
                 "lastNameTooLong": "WELSH - Last name must be 160 characters or less",
 
@@ -138,7 +138,9 @@
 
                 "nationality1Missing": "WELSH - Select the partner's nationality",
                 "nationality2Same": "WELSH - Second nationality must be different from the first",
-                "disqualificationStatementMissingGeneralPartner": "WELSH - Confirm that the general partner is not disqualified"
+                "disqualificationStatementMissingGeneralPartner": "WELSH - Confirm that the general partner is not disqualified",
+
+                "dateOfBirthMissing": "WELSH - Enter the partner's date of birth"
              }
         },
 

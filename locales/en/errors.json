@@ -121,11 +121,11 @@
 
         "partners": {
              "addPartner": {
-                "firstNameMissing": "Enter their first name",
+                "firstNameMissing": "Enter the partner's first name",
                 "firstNameInvalid": "First name must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
                 "firstNameTooLong": "First name must be 50 characters or less",
 
-                "lastNameMissing": "Enter their last name",
+                "lastNameMissing": "Enter the partner's last name",
                 "lastNameInvalid": "Last name must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
                 "lastNameTooLong": "Last name must be 160 characters or less",
 
@@ -137,7 +137,9 @@
 
                 "nationality1Missing": "Select the partner's nationality",
                 "nationality2Same": "Second nationality must be different from the first",
-                "disqualificationStatementMissingGeneralPartner": "Confirm that the general partner is not disqualified"
+                "disqualificationStatementMissingGeneralPartner": "Confirm that the general partner is not disqualified",
+
+                "dateOfBirthMissing": "Enter the partner's date of birth"
              }
         },
 

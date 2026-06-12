@@ -43,7 +43,11 @@ class PartnerPersonValidator {
 
     this.errorMessages = i18n?.errorMessages?.partners?.addPartner || {};
 
-    this.dateOfBirthErrorMessages = i18n?.errorMessages?.dateOfBirth || {} as DateErrorMessages;
+    const dateOfBirthErrors = (i18n?.errorMessages?.dateOfBirth ?? {}) as Partial<DateErrorMessages>;
+    this.dateOfBirthErrorMessages = {
+      ...dateOfBirthErrors,
+      dateMissing: this.errorMessages?.dateOfBirthMissing
+    } as DateErrorMessages;
 
     return this;
   }

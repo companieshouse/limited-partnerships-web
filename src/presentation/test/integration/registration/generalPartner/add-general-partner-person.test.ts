@@ -165,9 +165,10 @@ describe("Add General Partner Person Page", () => {
       });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(errorMessages.errorMessages.partners.addPartner.firstNameMissing);
-      expect(res.text).toContain(errorMessages.errorMessages.partners.addPartner.lastNameMissing);
+      expect(res.text).toContain(toEscapedHtml(errorMessages.errorMessages.partners.addPartner.firstNameMissing));
+      expect(res.text).toContain(toEscapedHtml(errorMessages.errorMessages.partners.addPartner.lastNameMissing));
       expect(res.text).toContain(errorMessages.errorMessages.partners.addPartner.previousNameNotSelected);
+      expect(res.text).toContain(toEscapedHtml(errorMessages.errorMessages.partners.addPartner.dateOfBirthMissing));
       expect(res.text).toContain(toEscapedHtml(errorMessages.errorMessages.partners.addPartner.nationality1Missing));
       expect(res.text).toContain(errorMessages.errorMessages.partners.addPartner.disqualificationStatementMissingGeneralPartner);
 
