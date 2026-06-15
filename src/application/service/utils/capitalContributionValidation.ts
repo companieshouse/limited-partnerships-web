@@ -1,6 +1,10 @@
 import UIErrors from "../../../domain/entities/UIErrors";
 import { symbols } from "./currencies";
 
+// CHIPS enforces a maximum of 10 digits in total with up to 2 decimal places
+// (CheckMaxDecimalValueRule precision=10, scale=2), giving a maximum value of 99999999.99.
+const MAX_DIGITS = 10;
+
 const capitalContributionValidation = (data: Record<string, string | string[]>, i18n: any): void => {
   const uiErrors = new UIErrors();
 
@@ -32,6 +36,8 @@ const contributionCurrencyValueValidation = (data: Record<string, any>, uiErrors
     uiErrors.setWebError(field, i18n?.errorMessages?.capitalContribution?.twoDecimalPlaces);
   } else if (!isGreaterThanZero(data.contribution_currency_value)) {
     uiErrors.setWebError(field, i18n?.errorMessages?.capitalContribution?.moreThanZero);
+  } else if (!isWithinMaxDigits(data.contribution_currency_value)) {
+    uiErrors.setWebError(field, i18n?.errorMessages?.capitalContribution?.maxValue);
   }
 };
 
@@ -45,6 +51,14 @@ const has2Decimal = (value: string) => {
 
 const isGreaterThanZero = (value: string) => {
   return parseFloat(value) > 0;
+};
+
+// Precondition: only call once has2Decimal has confirmed exactly 2 decimal places.
+// Stripping the decimal point and leading zeros then gives the count of significant
+// digits, which mirrors CHIPS's BigDecimal precision (max 10 = 8 integer + 2 decimal).
+const isWithinMaxDigits = (value: string) => {
+  const significantDigits = value.replace(/\D/g, "").replace(/^0+/, "");
+  return significantDigits.length <= MAX_DIGITS;
 };
 
 const hasSymbol = (str: string, symbols: string[]): boolean => {
