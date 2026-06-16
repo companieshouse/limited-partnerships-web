@@ -318,7 +318,7 @@ describe("Enter Principal Place Of Business Address Page", () => {
     expect(res.text).toContain(enTranslationText.errorMessages.address.enterAddress.regionLength);
   });
 
-  it("should not return a validation error when jurisdiction is overseas", async () => {
+  it("should not return a validation error when country is overseas", async () => {
     const limitedPartnership = new LimitedPartnershipBuilder().withJurisdiction(Jurisdiction.ENGLAND_AND_WALES).build();
 
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
