@@ -4,13 +4,15 @@ import * as url from "../../url/registration";
 
 enum AddressCacheKeys {
   addressCacheKey = "addressCacheKey",
-  territoryCacheKey = "territoryCacheKey"
+  territoryCacheKey = "territoryCacheKey",
+  postcodeCacheKey = "postcodeCacheKey"
 }
 
 // Registered Office Address
 
 const registeredOfficeAddressCacheKeys = {
-  [AddressCacheKeys.addressCacheKey]: "registered_office_address"
+  [AddressCacheKeys.addressCacheKey]: "registered_office_address",
+  [AddressCacheKeys.postcodeCacheKey]: "roa_postcode"
 };
 
 const registrationAddressRoutingPostcodeRegisteredOfficeAddress = {
@@ -67,7 +69,8 @@ const registeredOfficeAddress = [
 // principal place of business
 
 const principalPlaceOfBusinessAddressCacheKeys = {
-  [AddressCacheKeys.addressCacheKey]: "principal_place_of_business_address"
+  [AddressCacheKeys.addressCacheKey]: "principal_place_of_business_address",
+  [AddressCacheKeys.postcodeCacheKey]: "ppob_postcode"
 };
 
 const registrationAddressRoutingPostcodePrincipalPlaceOfBusinessAddress = {

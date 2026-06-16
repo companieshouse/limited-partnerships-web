@@ -131,14 +131,7 @@ describe("Postcode Usual Residential Address Page", () => {
       expect(appDevDependencies.cacheRepository.cache).toEqual({
         [APPLICATION_CACHE_KEY]: {
           [appDevDependencies.transactionGateway.transactionId]: {
-            ["usual_residential_address"]: {
-              postal_code: "ST6 3LJ",
-              address_line_1: "",
-              address_line_2: "",
-              locality: "",
-              country: "",
-              premises: ""
-            }
+            ura_postcode: "ST6 3LJ"
           }
         }
       });
@@ -159,7 +152,8 @@ describe("Postcode Usual Residential Address Page", () => {
       expect(appDevDependencies.cacheRepository.cache).toEqual({
         [APPLICATION_CACHE_KEY]: {
           [appDevDependencies.transactionGateway.transactionId]: {
-            ["usual_residential_address"]: {
+            ura_postcode: "ST6 3LJ",
+            usual_residential_address: {
               postal_code: "ST6 3LJ",
               premises: "2",
               address_line_1: "DUNCALF STREET",

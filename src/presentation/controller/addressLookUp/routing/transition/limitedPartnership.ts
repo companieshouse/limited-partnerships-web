@@ -4,13 +4,15 @@ import * as url from "../../url/transition";
 
 enum AddressCacheKeys {
   addressCacheKey = "addressCacheKey",
-  territoryCacheKey = "territoryCacheKey"
+  territoryCacheKey = "territoryCacheKey",
+  postcodeCacheKey = "postcodeCacheKey"
 }
 
 // Registered Office Address
 
 const registeredOfficeAddressCacheKeys = {
-  [AddressCacheKeys.addressCacheKey]: "registered_office_address"
+  [AddressCacheKeys.addressCacheKey]: "registered_office_address",
+  [AddressCacheKeys.postcodeCacheKey]: "roa_postcode"
 };
 
 const transitionAddressRoutingPostcodeRegisteredOfficeAddress = {

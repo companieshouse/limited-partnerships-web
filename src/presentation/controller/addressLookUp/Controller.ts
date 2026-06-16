@@ -295,10 +295,11 @@ class AddressLookUpController extends AbstractController {
           return;
         }
 
-        this.addAddressToCache(request, response, pageType, ids.transactionId, address);
+        this.addToCache(request, response, ids.transactionId, pageRouting?.data?.[AddressCacheKeys.postcodeCacheKey], address?.postal_code);
 
         // if exact match - redirect to confirm page
         if (address?.postal_code && address?.premises && address?.address_line_1) {
+          this.addToCache(request, response, ids.transactionId, pageRouting?.data?.[AddressCacheKeys.addressCacheKey], address);
           const url = super.insertIdsInUrl(pageRouting?.data?.confirmAddressUrl, ids, request.url);
 
           response.redirect(url);
@@ -634,8 +635,8 @@ class AddressLookUpController extends AbstractController {
     let redirectToConfirm = "";
 
     if (CHOOSE_PAGES.has(pageRouting.pageType)) {
-      const cacheKey = pageRouting.data?.[AddressCacheKeys.addressCacheKey];
-      const postcode = cache[cacheKey]?.postal_code;
+      const cacheKey = pageRouting.data?.[AddressCacheKeys.postcodeCacheKey];
+      const postcode = cache[cacheKey];
 
       addressList = await this.addressService.getAddressListForPostcode(tokens, postcode);
 
@@ -647,21 +648,19 @@ class AddressLookUpController extends AbstractController {
     return { addressList, redirectToConfirm };
   }
 
-  private addAddressToCache(
+  private addToCache(
     request: Request,
     response: Response,
-    pageType: any,
     transactionId: string,
-    address: Address
+    key: string,
+    value: any
   ) {
     const cacheById = this.cacheService.getDataFromCacheById(request.signedCookies, transactionId);
-    const addressRouting = this.getAddressRouting(request.url);
-    const pageRouting = super.getRouting(addressRouting, pageType, request);
 
     const cache = this.cacheService.addDataToCache(request.signedCookies, {
       [transactionId]: {
         ...cacheById,
-        [pageRouting?.data?.[AddressCacheKeys.addressCacheKey]]: address
+        [key]: value
       }
     });
     response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);

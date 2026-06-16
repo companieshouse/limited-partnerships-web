@@ -37,14 +37,7 @@ describe("Choose principal office address of the general partner page", () => {
     appDevDependencies.addressLookUpGateway.setError(false);
     appDevDependencies.cacheRepository.feedCache({
       [appDevDependencies.transactionGateway.transactionId]: {
-        ["principal_office_address"]: {
-          postal_code: "ST6 3LJ",
-          premises: "",
-          address_line_1: "",
-          address_line_2: "",
-          locality: "",
-          country: ""
-        }
+        poa_postcode: "ST6 3LJ"
       }
     });
   });
@@ -110,6 +103,7 @@ describe("Choose principal office address of the general partner page", () => {
       const cache = appDevDependencies.cacheRepository.cache;
       expect(cache?.[`${config.APPLICATION_CACHE_KEY}`]).toEqual({
         [appDevDependencies.transactionGateway.transactionId]: {
+          poa_postcode: "ST6 3LJ",
           principal_office_address: {
             postal_code: "ST6 3LJ",
             premises: "4",

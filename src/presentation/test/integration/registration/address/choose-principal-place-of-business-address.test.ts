@@ -30,14 +30,7 @@ describe("Choose Principal Place Of Business Address Page", () => {
     appDevDependencies.addressLookUpGateway.setError(false);
     appDevDependencies.cacheRepository.feedCache({
       [appDevDependencies.transactionGateway.transactionId]: {
-        ["principal_place_of_business_address"]: {
-          postal_code: "ST6 3LJ",
-          premises: "",
-          address_line_1: "",
-          address_line_2: "",
-          locality: "",
-          country: ""
-        }
+        ppob_postcode: "ST6 3LJ"
       }
     });
   });
@@ -105,6 +98,7 @@ describe("Choose Principal Place Of Business Address Page", () => {
       const cache = appDevDependencies.cacheRepository.cache;
       expect(cache?.[`${config.APPLICATION_CACHE_KEY}`]).toEqual({
         [appDevDependencies.transactionGateway.transactionId]: {
+          ppob_postcode: "ST6 3LJ",
           principal_place_of_business_address: {
             postal_code: "ST6 3LJ",
             premises: "4",

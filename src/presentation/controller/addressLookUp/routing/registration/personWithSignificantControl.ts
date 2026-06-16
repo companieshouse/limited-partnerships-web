@@ -9,14 +9,16 @@ import * as url from "../../url/registration";
 
 enum AddressCacheKeys {
   addressCacheKey = "addressCacheKey",
-  territoryCacheKey = "territoryCacheKey"
+  territoryCacheKey = "territoryCacheKey",
+  postcodeCacheKey = "postcodeCacheKey"
 }
 
 // principal office address - Relevant Legal Entity
 
 const personWithSignificantControlPrincipalOfficeAddressCacheKeys = {
   [AddressCacheKeys.addressCacheKey]: "principal_office_address",
-  [AddressCacheKeys.territoryCacheKey]: "poa_territory_choice"
+  [AddressCacheKeys.territoryCacheKey]: "poa_territory_choice",
+  [AddressCacheKeys.postcodeCacheKey]: "poa_postcode"
 };
 
 const registrationAddressRoutingTerritoryChoicePersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress = {
@@ -148,7 +150,8 @@ const registrationAddressRoutingConfirmPersonWithSignificantControlOtherRegistra
 
 const personWithSignificantControlUsualResidentialAddressCacheKeys = {
   [AddressCacheKeys.addressCacheKey]: "usual_residential_address",
-  [AddressCacheKeys.territoryCacheKey]: "ura_territory_choice"
+  [AddressCacheKeys.territoryCacheKey]: "ura_territory_choice",
+  [AddressCacheKeys.postcodeCacheKey]: "ura_postcode"
 };
 
 const registrationAddressRoutingTerritoryChoicePersonWithSignificantControlIndividualPersonUsualResidentialAddress = {
@@ -215,7 +218,8 @@ const registrationAddressRoutingConfirmPersonWithSignificantControlIndividualPer
 
 const personWithSignificantControlCorrespondenceAddressCacheKeys = {
   [AddressCacheKeys.addressCacheKey]: "service_address",
-  [AddressCacheKeys.territoryCacheKey]: "sa_territory_choice"
+  [AddressCacheKeys.territoryCacheKey]: "sa_territory_choice",
+  [AddressCacheKeys.postcodeCacheKey]: "sa_postcode"
 };
 
 const registrationAddressRoutingTerritoryChoicePersonWithSignificantControlIndividualPersonCorrespondenceAddress = {

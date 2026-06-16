@@ -93,14 +93,7 @@ describe("Postcode Principal Place Of Business Address Page", () => {
       expect(appDevDependencies.cacheRepository.cache).toEqual({
         [APPLICATION_CACHE_KEY]: {
           [appDevDependencies.transactionGateway.transactionId]: {
-            ["principal_place_of_business_address"]: {
-              postal_code: "ST6 3LJ",
-              address_line_1: "",
-              address_line_2: "",
-              locality: "",
-              country: "",
-              premises: ""
-            }
+            ppob_postcode: "ST6 3LJ"
           }
         }
       });
@@ -121,7 +114,8 @@ describe("Postcode Principal Place Of Business Address Page", () => {
       expect(appDevDependencies.cacheRepository.cache).toEqual({
         [APPLICATION_CACHE_KEY]: {
           [appDevDependencies.transactionGateway.transactionId]: {
-            ["principal_place_of_business_address"]: {
+            ppob_postcode: "ST6 3LJ",
+            principal_place_of_business_address: {
               postal_code: "ST6 3LJ",
               premises: "2",
               address_line_1: "DUNCALF STREET",
