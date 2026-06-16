@@ -653,7 +653,7 @@ class AddressLookUpController extends AbstractController {
     response: Response,
     transactionId: string,
     key: string,
-    value: any
+    value: string | Address
   ) {
     const cacheById = this.cacheService.getDataFromCacheById(request.signedCookies, transactionId);
 
