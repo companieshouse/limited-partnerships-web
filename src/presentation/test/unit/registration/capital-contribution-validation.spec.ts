@@ -38,13 +38,13 @@ describe("Gateway capital contribition validation test suite", () => {
         "100000000.00",
         { ...data, contribution_currency_value: "100000000.00" },
         dataKeys[1],
-        "Value must be 99999999.99 or less"
+        "The capital contribution value cannot have more than 8 digits before the decimal"
       ],
       [
         "99999999999.99",
         { ...data, contribution_currency_value: "99999999999.99" },
         dataKeys[1],
-        "Value must be 99999999.99 or less"
+        "The capital contribution value cannot have more than 8 digits before the decimal"
       ],
       [
         "£100.00",
