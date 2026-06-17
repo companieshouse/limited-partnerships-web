@@ -122,14 +122,7 @@ describe("Postcode limited partner principal office address Page", () => {
       expect(appDevDependencies.cacheRepository.cache).toEqual({
         [APPLICATION_CACHE_KEY]: {
           [appDevDependencies.transactionGateway.transactionId]: {
-            ["principal_office_address"]: {
-              postal_code: "ST6 3LJ",
-              address_line_1: "",
-              address_line_2: "",
-              locality: "",
-              country: "",
-              premises: ""
-            }
+            poa_postcode: "ST6 3LJ"
           }
         }
       });
@@ -150,7 +143,8 @@ describe("Postcode limited partner principal office address Page", () => {
       expect(appDevDependencies.cacheRepository.cache).toEqual({
         [APPLICATION_CACHE_KEY]: {
           [appDevDependencies.transactionGateway.transactionId]: {
-            ["principal_office_address"]: {
+            poa_postcode: "ST6 3LJ",
+            principal_office_address: {
               postal_code: "ST6 3LJ",
               premises: "2",
               address_line_1: "DUNCALF STREET",

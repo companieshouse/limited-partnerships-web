@@ -7,7 +7,8 @@ import personWithSignificantControlRegistrationRouting from "./personWithSignifi
 
 export enum AddressCacheKeys {
   addressCacheKey = "addressCacheKey",
-  territoryCacheKey = "territoryCacheKey"
+  territoryCacheKey = "territoryCacheKey",
+  postcodeCacheKey = "postcodeCacheKey"
 }
 
 const registrationAddressRouting: PagesRouting = new Map<PageType, PageRouting>();

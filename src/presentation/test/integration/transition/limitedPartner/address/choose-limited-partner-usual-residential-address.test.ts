@@ -37,14 +37,7 @@ describe("Choose usual residential address of the limited partner page", () => {
     appDevDependencies.addressLookUpGateway.setError(false);
     appDevDependencies.cacheRepository.feedCache({
       [appDevDependencies.transactionGateway.transactionId]: {
-        ["usual_residential_address"]: {
-          postal_code: "ST6 3LJ",
-          premises: "",
-          address_line_1: "",
-          address_line_2: "",
-          locality: "",
-          country: ""
-        }
+        ura_postcode: "ST6 3LJ"
       }
     });
   });
@@ -110,6 +103,7 @@ describe("Choose usual residential address of the limited partner page", () => {
       const cache = appDevDependencies.cacheRepository.cache;
       expect(cache?.[`${config.APPLICATION_CACHE_KEY}`]).toEqual({
         [appDevDependencies.transactionGateway.transactionId]: {
+          ura_postcode: "ST6 3LJ",
           usual_residential_address: {
             postal_code: "ST6 3LJ",
             premises: "4",

@@ -11,14 +11,16 @@ import * as url from "../../url/postTransition";
 
 enum AddressCacheKeys {
   addressCacheKey = "addressCacheKey",
-  territoryCacheKey = "territoryCacheKey"
+  territoryCacheKey = "territoryCacheKey",
+  postcodeCacheKey = "postcodeCacheKey"
 }
 
 // usual residential address - Person
 
 const usualResidentialAddressCacheKeys = {
   [AddressCacheKeys.addressCacheKey]: "usual_residential_address",
-  [AddressCacheKeys.territoryCacheKey]: "ura_territory_choice"
+  [AddressCacheKeys.territoryCacheKey]: "ura_territory_choice",
+  [AddressCacheKeys.postcodeCacheKey]: "ura_postcode"
 };
 
 const postTransitionAddressRoutingTerritoryChoiceGeneralPartnerUsualResidentialAddress = {
@@ -91,7 +93,8 @@ const usualResidentialAddress = [
 
 const correspondenceAddressCacheKeys = {
   [AddressCacheKeys.addressCacheKey]: "service_address",
-  [AddressCacheKeys.territoryCacheKey]: "sa_territory_choice"
+  [AddressCacheKeys.territoryCacheKey]: "sa_territory_choice",
+  [AddressCacheKeys.postcodeCacheKey]: "sa_postcode"
 };
 
 const postTransitionAddressRoutingTerritoryChoiceGeneralPartnerCorrespondenceAddress = {
@@ -165,7 +168,8 @@ const correspondenceAddress = [
 
 const principalOfficeAddressCacheKeys = {
   [AddressCacheKeys.addressCacheKey]: "principal_office_address",
-  [AddressCacheKeys.territoryCacheKey]: "poa_territory_choice"
+  [AddressCacheKeys.territoryCacheKey]: "poa_territory_choice",
+  [AddressCacheKeys.postcodeCacheKey]: "poa_postcode"
 };
 
 const postTransitionAddressRoutingTerritoryChoiceGeneralPartnerPrincipalOfficeAddress = {

@@ -116,14 +116,7 @@ describe("Postcode person with significant control's principal office address pa
         expect(appDevDependencies.cacheRepository.cache).toEqual({
           [APPLICATION_CACHE_KEY]: {
             [appDevDependencies.transactionGateway.transactionId]: {
-              ["principal_office_address"]: {
-                postal_code: "ST6 3LJ",
-                address_line_1: "",
-                address_line_2: "",
-                locality: "",
-                country: "",
-                premises: ""
-              }
+              poa_postcode: "ST6 3LJ"
             }
           }
         });

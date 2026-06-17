@@ -8,14 +8,16 @@ import * as url from "../../url/registration";
 
 enum AddressCacheKeys {
   addressCacheKey = "addressCacheKey",
-  territoryCacheKey = "territoryCacheKey"
+  territoryCacheKey = "territoryCacheKey",
+  postcodeCacheKey = "postcodeCacheKey"
 }
 
 // usual residential address - Person
 
 const limitedPartnerUsualResidentialAddressCacheKeys = {
   [AddressCacheKeys.addressCacheKey]: "usual_residential_address",
-  [AddressCacheKeys.territoryCacheKey]: "ura_territory_choice"
+  [AddressCacheKeys.territoryCacheKey]: "ura_territory_choice",
+  [AddressCacheKeys.postcodeCacheKey]: "ura_postcode"
 };
 
 const registrationAddressRoutingTerritoryChoiceLimitedPartnerUsualResidentialAddress = {
@@ -86,7 +88,8 @@ const usualResidentialAddress = [
 
 const limitedPartnerPrincipalOfficeAddressCacheKeys = {
   [AddressCacheKeys.addressCacheKey]: "principal_office_address",
-  [AddressCacheKeys.territoryCacheKey]: "poa_territory_choice"
+  [AddressCacheKeys.territoryCacheKey]: "poa_territory_choice",
+  [AddressCacheKeys.postcodeCacheKey]: "poa_postcode"
 };
 
 const registrationAddressRoutingTerritoryChoiceLimitedPartnerPrincipalOfficeAddress = {

@@ -6,7 +6,8 @@ import limitedPartnerTransitionRouting from "./limitedPartner";
 
 export enum AddressCacheKeys {
   addressCacheKey = "addressCacheKey",
-  territoryCacheKey = "territoryCacheKey"
+  territoryCacheKey = "territoryCacheKey",
+  postcodeCacheKey = "postcodeCacheKey"
 }
 
 const transitionAddressRouting: PagesRouting = new Map<PageType, PageRouting>();

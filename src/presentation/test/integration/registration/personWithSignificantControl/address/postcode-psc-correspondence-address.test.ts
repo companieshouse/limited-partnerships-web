@@ -110,19 +110,11 @@ describe("Postcode individual person correspondence address page", () => {
       expect(appDevDependencies.cacheRepository.cache).toEqual({
         [APPLICATION_CACHE_KEY]: {
           [appDevDependencies.transactionGateway.transactionId]: {
-            ["service_address"]: {
-              postal_code: "ST6 3LJ",
-              address_line_1: "",
-              address_line_2: "",
-              locality: "",
-              country: "",
-              premises: ""
-            }
+            sa_postcode: "ST6 3LJ"
           }
         }
       });
-    }
-    );
+    });
 
     it("should validate the post code then redirect to the next page even if LP jurisdiction is not in the same locality", async () => {
       const res = await request(app).post(URL).send({
