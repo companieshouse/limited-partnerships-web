@@ -216,6 +216,8 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
         const { ids, pageType, tokens } = super.extract(request);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
+        this.convertNatureOfControlTypesToArray(request);
+
         const result = await this.personWithSignificantControlService.createPersonWithSignificantControl(
           tokens,
           ids.transactionId,
@@ -260,6 +262,8 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
 
         const { ids, pageType, tokens } = super.extract(request);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
+
+        this.convertNatureOfControlTypesToArray(request);
 
         const result = await this.personWithSignificantControlService.sendPageData(
           tokens,
@@ -476,6 +480,12 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
     const redirectUrl = reviewPageUrlMap.get(addAnotherPersonWithSignificantControl) ?? "";
 
     return super.insertIdsInUrl(redirectUrl, ids, request.url);
+  }
+
+  private convertNatureOfControlTypesToArray(request: Request) {
+    if (request.body.nature_of_control_types && typeof request.body.nature_of_control_types === "string") {
+      request.body.nature_of_control_types = [request.body.nature_of_control_types];
+    }
   }
 
   private async handleNatureOfControlRedirection(request: Request, pageRouting: PageRouting) {

@@ -1,5 +1,44 @@
-{% include "pages/personWithSignificantControl/person-with-significant-control-name.njk" %}
 
-<h1 class="govuk-heading-xl">{{ pageTitle }}</h1>
+{% set natureOfControlTypes = props.data.personWithSignificantControl.data.nature_of_control_types or [] %}
 
-{% include "includes/save-and-continue-button.njk" %}
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        {% include "includes/errors.njk" %}
+
+        {% include "pages/personWithSignificantControl/person-with-significant-control-name.njk" %}
+
+        <h1 class="govuk-heading-xl">{{ pageTitle }}</h1>
+
+        <form class="form" method="post">
+            <input type="hidden" name="pageType" value={{ props.pageType }}>
+            {% include "includes/csrf_token.njk" %}
+
+            {{ govukCheckboxes({
+                name: "nature_of_control_types",
+                classes: "govuk-!-margin-bottom-0",
+                items: [
+                {
+                    value: "INDIVIDUAL",
+                    text: individual.text,
+                    hint: { text: individual.hint },
+                    checked: true if "INDIVIDUAL" in natureOfControlTypes else false
+                },
+                {
+                    value: "FIRM",
+                    text: firm.text,
+                    hint: { text: firm.hint },
+                    checked: true if "FIRM" in natureOfControlTypes else false
+                },
+                {
+                    value: "TRUST",
+                    text: trust.text,
+                    hint: { text: trust.hint },
+                    checked: true if "TRUST" in natureOfControlTypes else false
+                }
+                ]
+            }) }}
+
+            {% include "includes/save-and-continue-button.njk" %}
+        </form>
+    </div>
+</div>

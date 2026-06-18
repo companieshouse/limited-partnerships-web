@@ -77,6 +77,7 @@ class PersonWithSignificantControlBuilder {
       region: "region",
       country: "England"
     },
+    nature_of_control_types: null,
 
     etag: "",
     kind: ""

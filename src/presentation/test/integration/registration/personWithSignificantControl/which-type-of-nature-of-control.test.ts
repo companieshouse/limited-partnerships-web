@@ -130,12 +130,16 @@ describe("Which Type of Nature of Control Page", () => {
       delete personWithSignificantControl.data?.[addressToDelete as keyof TransactionPersonWithSignificantControl["data"]];
       appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([personWithSignificantControl]);
 
+      expect(personWithSignificantControl.data?.nature_of_control_types).toBeNull();
+
       const res = await request(app).post(url).send({
-        pageType: pageType
+        pageType: pageType,
+        nature_of_control_types: ["INDIVIDUAL", "FIRM", "TRUST"]
       });
 
       expect(res.status).toBe(302);
       expect(res.headers.location).toBe(redirectUrl);
+      expect(personWithSignificantControl.data?.nature_of_control_types).toEqual(["INDIVIDUAL", "FIRM", "TRUST"]);
     });
 
     it.each([
@@ -143,12 +147,19 @@ describe("Which Type of Nature of Control Page", () => {
       ["rle principal office", rle.url, rle.redirectConfirmUrl, rlePageType],
       ["ip usual residential", ip.url, ip.redirectConfirmUrl, ipPageType]
     ])("should redirect to the confirm %s address page if the address is already saved", async (_description, url, redirectUrl, pageType) => {
+      const personWithSignificantControl = getPscByPageType(pageType);
+      appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([personWithSignificantControl]);
+
+      expect(personWithSignificantControl.data?.nature_of_control_types).toBeNull();
+
       const res = await request(app).post(url).send({
-        pageType: pageType
+        pageType: pageType,
+        nature_of_control_types: "INDIVIDUAL"
       });
 
       expect(res.status).toBe(302);
       expect(res.headers.location).toBe(redirectUrl);
+      expect(personWithSignificantControl.data?.nature_of_control_types).toEqual(["INDIVIDUAL"]);
     });
   });
 });

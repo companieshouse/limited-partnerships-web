@@ -111,13 +111,49 @@
         },
         "whichTypeOfNatureOfControlPage": {
             "relevantLegalEntity": {
-                "title": "WELSH - Which type of nature of control does the relevant legal entity (RLE) have?"
+                "title": "WELSH - How does this relevant legal entity hold control over the limited partnership?",
+                "individual" : {
+                    "text": "WELSH - As an relevant legal entity",
+                    "hint": "WELSH - The relevant legal entity meets one or more natures of control"
+                },
+                "firm" : {
+                    "text": "WELSH - Through a firm",
+                    "hint": "WELSH - The relevant legal entity has control over a firm that meets one or more natures of control"
+                },
+                "trust" : {
+                    "text": "WELSH - Through a trust",
+                    "hint": "WELSH - The relevant legal entity has control over a trust that meets one or more natures of control"
+                }
             },
             "otherRegistrablePerson": {
-                "title": "WELSH - Which type of nature of control does the other registrable person (ORP) have?"
+                "title": "WELSH - How does this other registrable person hold control over the limited partnership?",
+                "individual" : {
+                    "text": "WELSH - As an other registrable person",
+                    "hint": "WELSH - The other registrable person meets one or more natures of control"
+                },
+                "firm" : {
+                    "text": "WELSH - Through a firm",
+                    "hint": "WELSH - The other registrable person has control over a firm that meets one or more natures of control"
+                },
+                "trust" : {
+                    "text": "WELSH - Through a trust",
+                    "hint": "WELSH - The other registrable person has control over a trust that meets one or more natures of control"
+                }
             },
             "individualPerson": {
-                "title": "WELSH - Which type of nature of control does this PSC have?"
+                "title": "WELSH - How does this individual hold control over the limited partnership?",
+                "individual" : {
+                    "text": "WELSH - As an individual",
+                    "hint": "WELSH - The individual meets one or more natures of control"
+                },
+                "firm" : {
+                    "text": "WELSH - Through a firm",
+                    "hint": "WELSH - The individual has control over a firm that meets one or more natures of control"
+                },
+                "trust" : {
+                    "text": "WELSH - Through a trust",
+                    "hint": "WELSH - The individual has control over a trust that meets one or more natures of control"
+                }
             }
         },
         "removePscPage": {
