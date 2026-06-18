@@ -4,7 +4,7 @@ import { LimitedPartnership, PersonWithSignificantControl, PersonWithSignificant
 import AbstractController from "../AbstractController";
 import UIErrors from "../../../domain/entities/UIErrors";
 import registrationsRouting from "./Routing";
-import RegistrationPageType from "./PageType";
+import RegistrationPageType, { isWhichTypeOfNatureOfControlPage } from "./PageType";
 import { Ids, Tokens } from "../../../domain/types";
 
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
@@ -216,7 +216,14 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
         const { ids, pageType, tokens } = super.extract(request);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
-        this.convertNatureOfControlTypesToArray(request);
+        const uiErrors = this.convertNatureOfControlTypesToArrayOrReturnError(request, response);
+
+        if (uiErrors?.hasErrors()) {
+          return response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(pageRouting, { personWithSignificantControl: { data: request.body } }, uiErrors)
+          );
+        }
 
         const result = await this.personWithSignificantControlService.createPersonWithSignificantControl(
           tokens,
@@ -263,7 +270,14 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
         const { ids, pageType, tokens } = super.extract(request);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
-        this.convertNatureOfControlTypesToArray(request);
+        const uiErrors = this.convertNatureOfControlTypesToArrayOrReturnError(request, response);
+
+        if (uiErrors?.hasErrors()) {
+          return response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(pageRouting, { personWithSignificantControl: { data: request.body } }, uiErrors)
+          );
+        }
 
         const result = await this.personWithSignificantControlService.sendPageData(
           tokens,
@@ -482,9 +496,22 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
     return super.insertIdsInUrl(redirectUrl, ids, request.url);
   }
 
-  private convertNatureOfControlTypesToArray(request: Request) {
-    if (request.body.nature_of_control_types && typeof request.body.nature_of_control_types === "string") {
-      request.body.nature_of_control_types = [request.body.nature_of_control_types];
+  private convertNatureOfControlTypesToArrayOrReturnError(request: Request, response: Response) {
+    const { pageType } = super.extract(request);
+
+    if (isWhichTypeOfNatureOfControlPage(pageType)) {
+      if (!request.body?.nature_of_control_types?.length) {
+        const uiErrors = new UIErrors().setWebError(
+          "nature_of_control_types",
+          response.locals.i18n.errorMessages.personWithSignificantControl.whichTypeOfNatureOfControl.natureOfControlTypesMissing
+        );
+
+        return uiErrors;
+      }
+
+      if (request.body.nature_of_control_types && typeof request.body.nature_of_control_types === "string") {
+        request.body.nature_of_control_types = [request.body.nature_of_control_types];
+      }
     }
   }
 

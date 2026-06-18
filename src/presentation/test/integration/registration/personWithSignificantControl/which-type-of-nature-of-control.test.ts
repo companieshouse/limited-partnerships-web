@@ -4,6 +4,8 @@ import enGeneralTranslationText from "../../../../../../locales/en/translations.
 import cyGeneralTranslationText from "../../../../../../locales/cy/translations.json";
 import enPersonWithSignificantControlTranslationText from "../../../../../../locales/en/personWithSignificantControl.json";
 import cyPersonWithSignificantControlTranslationText from "../../../../../../locales/cy/personWithSignificantControl.json";
+import enErrorsTranslationText from "../../../../../../locales/en/errors.json";
+import cyErrorsTranslationText from "../../../../../../locales/cy/errors.json";
 
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
@@ -58,8 +60,8 @@ describe("Which Type of Nature of Control Page", () => {
     pscId: "individualPersonId"
   });
 
-  const enTranslationText = { ...enGeneralTranslationText, ...enPersonWithSignificantControlTranslationText };
-  const cyTranslationText = { ...cyGeneralTranslationText, ...cyPersonWithSignificantControlTranslationText };
+  const enTranslationText = { ...enGeneralTranslationText, ...enPersonWithSignificantControlTranslationText, ...enErrorsTranslationText };
+  const cyTranslationText = { ...cyGeneralTranslationText, ...cyPersonWithSignificantControlTranslationText, ...cyErrorsTranslationText };
 
   beforeEach(() => {
     setLocalesEnabled(true);
@@ -160,6 +162,25 @@ describe("Which Type of Nature of Control Page", () => {
       expect(res.status).toBe(302);
       expect(res.headers.location).toBe(redirectUrl);
       expect(personWithSignificantControl.data?.nature_of_control_types).toEqual(["INDIVIDUAL"]);
+    });
+
+    it.each([
+      ["orp", orp.url, orpPageType, "en", enTranslationText],
+      ["rle", rle.url, rlePageType, "en", enTranslationText],
+      ["ip", ip.url, ipPageType, "cy", cyTranslationText]
+    ])("should render the page with an error if no nature_of_control_types is sent - %s", async (_description, url, pageType, lang, translationText) => {
+      const personWithSignificantControl = getPscByPageType(pageType);
+      appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([personWithSignificantControl]);
+
+      expect(personWithSignificantControl.data?.nature_of_control_types).toBeNull();
+
+      const res = await request(app).post(`${url}?lang=${lang}`).send({
+        pageType: pageType,
+        nature_of_control_types: []
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(translationText.errorMessages.personWithSignificantControl.whichTypeOfNatureOfControl.natureOfControlTypesMissing);
     });
   });
 });

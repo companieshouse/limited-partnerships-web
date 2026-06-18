@@ -37,4 +37,12 @@ enum RegistrationPageType {
   next = "next"
 }
 
+export const isWhichTypeOfNatureOfControlPage = (pageType: string): boolean => {
+  return (
+    pageType === RegistrationPageType.whichTypeOfNatureOfControlRelevantLegalEntity ||
+    pageType === RegistrationPageType.whichTypeOfNatureOfControlOtherRegistrablePerson ||
+    pageType === RegistrationPageType.whichTypeOfNatureOfControlIndividualPerson
+  );
+};
+
 export default RegistrationPageType;

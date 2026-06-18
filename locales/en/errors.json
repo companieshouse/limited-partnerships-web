@@ -180,6 +180,9 @@
                 
                 "nationality1Missing": "Select their nationality",
                 "nationality2Same": "Second nationality must be different from the first"
+            },
+            "whichTypeOfNatureOfControl": {
+                "natureOfControlTypesMissing": "Select at least one type of nature of control"
             }
         },
 
