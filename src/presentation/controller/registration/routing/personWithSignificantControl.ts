@@ -76,6 +76,8 @@ const registrationRoutingIndividualPersonWhichTypeOfNatureOfControl = {
   pageType: RegistrationPageType.whichTypeOfNatureOfControlIndividualPerson
 };
 
+// NATURE OF CONTROL
+
 const registrationRoutingAddNatureOfControlIndividual = {
   previousUrl: url.WHICH_TYPE_OF_NATURE_OF_CONTROL_INDIVIDUAL_PERSON_URL,
   currentUrl: url.ADD_NATURE_OF_CONTROL_INDIVIDUAL_URL,

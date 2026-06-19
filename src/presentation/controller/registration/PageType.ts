@@ -48,4 +48,12 @@ export const isWhichTypeOfNatureOfControlPage = (pageType: string): boolean => {
   );
 };
 
+export const isAddNatureOfControlPage = (pageType: string): boolean => {
+  return (
+    pageType === RegistrationPageType.addNatureOfControlIndividual ||
+    pageType === RegistrationPageType.addNatureOfControlFirm ||
+    pageType === RegistrationPageType.addNatureOfControlTrust
+  );
+};
+
 export default RegistrationPageType;

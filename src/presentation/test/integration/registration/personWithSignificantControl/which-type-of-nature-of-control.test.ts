@@ -119,10 +119,7 @@ describe("Which Type of Nature of Control Page", () => {
           `${translationText.personWithSignificantControl.whichTypeOfNatureOfControlPage[translationKey].title} - ${translationText.serviceRegistration} - GOV.UK`
         );
 
-        testTranslations(
-          res.text,
-          translationText.personWithSignificantControl.whichTypeOfNatureOfControlPage[translationKey]
-        );
+        testTranslations(res.text, translationText.personWithSignificantControl.whichTypeOfNatureOfControlPage[translationKey]);
 
         expect(res.text).toContain(psc.data?.legal_entity_name?.toUpperCase());
         expect(res.text).toContain(backUrl);
@@ -147,57 +144,41 @@ describe("Which Type of Nature of Control Page", () => {
         rlePageType
       ],
       [`IP ${NatureOfControlType.TRUST}`, ip.url, [NatureOfControlType.TRUST], ip.nocTrustUrl, ipPageType]
-    ])(
-      "should redirect %s page - multiple selection",
-      async (_description, url, natureOfControlTypes, redirectUrl, pageType) => {
-        const personWithSignificantControl = getPscByPageType(pageType);
-        appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([
-          personWithSignificantControl
-        ]);
+    ])("should redirect %s page - multiple selection", async (_description, url, natureOfControlTypes, redirectUrl, pageType) => {
+      const personWithSignificantControl = getPscByPageType(pageType);
+      appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([personWithSignificantControl]);
 
-        expect(personWithSignificantControl.data?.nature_of_control_types).toBeNull();
+      expect(personWithSignificantControl.data?.nature_of_control_types).toBeNull();
 
-        const res = await request(app).post(url).send({
-          pageType: pageType,
-          nature_of_control_types: natureOfControlTypes
-        });
+      const res = await request(app).post(url).send({
+        pageType: pageType,
+        nature_of_control_types: natureOfControlTypes
+      });
 
-        expect(res.status).toBe(302);
-        expect(res.headers.location).toBe(redirectUrl);
-        expect(personWithSignificantControl.data?.nature_of_control_types).toEqual(natureOfControlTypes);
-      }
-    );
+      expect(res.status).toBe(302);
+      expect(res.headers.location).toBe(redirectUrl);
+      expect(personWithSignificantControl.data?.nature_of_control_types).toEqual(natureOfControlTypes);
+    });
 
     it.each([
-      [
-        `ORP ${NatureOfControlType.INDIVIDUAL}`,
-        orp.url,
-        NatureOfControlType.INDIVIDUAL,
-        orp.nocIndividualUrl,
-        orpPageType
-      ],
+      [`ORP ${NatureOfControlType.INDIVIDUAL}`, orp.url, NatureOfControlType.INDIVIDUAL, orp.nocIndividualUrl, orpPageType],
       [`RLE ${NatureOfControlType.FIRM}`, rle.url, NatureOfControlType.FIRM, rle.nocFirmUrl, rlePageType],
       [`IP ${NatureOfControlType.TRUST}`, ip.url, NatureOfControlType.TRUST, ip.nocTrustUrl, ipPageType]
-    ])(
-      "should redirect to %s page - single selection",
-      async (_description, url, natureOfControlType, redirectUrl, pageType) => {
-        const personWithSignificantControl = getPscByPageType(pageType);
-        appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([
-          personWithSignificantControl
-        ]);
+    ])("should redirect to %s page - single selection", async (_description, url, natureOfControlType, redirectUrl, pageType) => {
+      const personWithSignificantControl = getPscByPageType(pageType);
+      appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([personWithSignificantControl]);
 
-        expect(personWithSignificantControl.data?.nature_of_control_types).toBeNull();
+      expect(personWithSignificantControl.data?.nature_of_control_types).toBeNull();
 
-        const res = await request(app).post(url).send({
-          pageType: pageType,
-          nature_of_control_types: natureOfControlType
-        });
+      const res = await request(app).post(url).send({
+        pageType: pageType,
+        nature_of_control_types: natureOfControlType
+      });
 
-        expect(res.status).toBe(302);
-        expect(res.headers.location).toBe(redirectUrl);
-        expect(personWithSignificantControl.data?.nature_of_control_types).toEqual([natureOfControlType]);
-      }
-    );
+      expect(res.status).toBe(302);
+      expect(res.headers.location).toBe(redirectUrl);
+      expect(personWithSignificantControl.data?.nature_of_control_types).toEqual([natureOfControlType]);
+    });
 
     it.each([
       ["orp", orp.url, orpPageType, "en", enTranslationText],
@@ -207,9 +188,7 @@ describe("Which Type of Nature of Control Page", () => {
       "should render the page with an error if no nature_of_control_types is sent - %s",
       async (_description, url, pageType, lang, translationText) => {
         const personWithSignificantControl = getPscByPageType(pageType);
-        appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([
-          personWithSignificantControl
-        ]);
+        appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([personWithSignificantControl]);
 
         expect(personWithSignificantControl.data?.nature_of_control_types).toBeNull();
 
@@ -220,8 +199,7 @@ describe("Which Type of Nature of Control Page", () => {
 
         expect(res.status).toBe(200);
         expect(res.text).toContain(
-          translationText.errorMessages.personWithSignificantControl.whichTypeOfNatureOfControl
-            .natureOfControlTypesMissing
+          translationText.errorMessages.personWithSignificantControl.whichTypeOfNatureOfControl.natureOfControlTypesMissing
         );
       }
     );
