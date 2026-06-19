@@ -35,6 +35,18 @@ describe("Gateway capital contribition validation test suite", () => {
       ],
       ["000.00", { ...data, contribution_currency_value: "000.00" }, dataKeys[1], "Value must be 0.01 or more"],
       [
+        "100000000.00",
+        { ...data, contribution_currency_value: "100000000.00" },
+        dataKeys[1],
+        "The capital contribution value cannot have more than 8 digits before the decimal"
+      ],
+      [
+        "99999999999.99",
+        { ...data, contribution_currency_value: "99999999999.99" },
+        dataKeys[1],
+        "The capital contribution value cannot have more than 8 digits before the decimal"
+      ],
+      [
         "£100.00",
         { ...data, contribution_currency_value: "£100.00" },
         dataKeys[1],
@@ -81,6 +93,21 @@ describe("Gateway capital contribition validation test suite", () => {
         })
       );
     });
+
+    it.each(["0.01", "12345678.90", "99999999.98", "99999999.99", "099999999.99"])(
+      "should not throw an error for a valid capital contribution value - %s",
+      (contribution_currency_value) => {
+        let thrownError: UIErrors | null = null;
+
+        try {
+          capitalContributionValidation({ ...data, contribution_currency_value }, i18nErrorsEn);
+        } catch (error) {
+          thrownError = error;
+        }
+
+        expect(thrownError).toBeNull();
+      }
+    );
 
     it("should throw an error for invalid capital contribution - welsh", () => {
       let thrownError: UIErrors | null = null;

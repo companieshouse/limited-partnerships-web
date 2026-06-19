@@ -34,14 +34,14 @@
   "homepage": "https://github.com/companieshouse/limited-partnerships-web#readme",
   "dependencies": {
     "@companieshouse/api-sdk-node": "2.0.354",
-    "@companieshouse/ch-node-utils": "^2.1.11",
+    "@companieshouse/ch-node-utils": "^3.0.8",
     "@companieshouse/node-session-handler": "^5.2.15",
     "@companieshouse/structured-logging-node": "^2.0.14",
     "@companieshouse/web-security-node": "^4.4.21",
     "cookie-parser": "^1.4.7",
     "escape-html": "^1.0.3",
     "express": "^5.2.1",
-    "govuk-frontend": "5.11.0",
+    "govuk-frontend": "6.0.0",
     "nunjucks": "^3.2.4",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
