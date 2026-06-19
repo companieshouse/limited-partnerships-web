@@ -1,6 +1,11 @@
 import RegistrationPageType from "../PageType";
 import * as url from "../url";
-import { TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL, TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL, TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../addressLookUp/url/registration";
+import {
+  TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL,
+  TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL,
+  TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL
+} from "../../addressLookUp/url/registration";
+import { NatureOfControlType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 const registrationRoutingPersonWithSignificantControl = {
   previousUrl: url.REVIEW_LIMITED_PARTNERS_URL,
@@ -67,8 +72,38 @@ const registrationRoutingAddIndividualPerson = {
 const registrationRoutingIndividualPersonWhichTypeOfNatureOfControl = {
   previousUrl: url.ADD_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_WITH_IDS_URL,
   currentUrl: url.WHICH_TYPE_OF_NATURE_OF_CONTROL_INDIVIDUAL_PERSON_URL,
-  nextUrl: TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL,
+  nextUrl: url.ADD_NATURE_OF_CONTROL_INDIVIDUAL_URL,
   pageType: RegistrationPageType.whichTypeOfNatureOfControlIndividualPerson
+};
+
+const registrationRoutingAddNatureOfControlIndividual = {
+  previousUrl: url.WHICH_TYPE_OF_NATURE_OF_CONTROL_INDIVIDUAL_PERSON_URL,
+  currentUrl: url.ADD_NATURE_OF_CONTROL_INDIVIDUAL_URL,
+  nextUrl: TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL,
+  pageType: RegistrationPageType.addNatureOfControlIndividual,
+  data: {
+    natureOfControlType: NatureOfControlType.INDIVIDUAL
+  }
+};
+
+const registrationRoutingAddNatureOfControlFirm = {
+  previousUrl: url.WHICH_TYPE_OF_NATURE_OF_CONTROL_INDIVIDUAL_PERSON_URL,
+  currentUrl: url.ADD_NATURE_OF_CONTROL_FIRM_URL,
+  nextUrl: TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL,
+  pageType: RegistrationPageType.addNatureOfControlFirm,
+  data: {
+    natureOfControlType: NatureOfControlType.FIRM
+  }
+};
+
+const registrationRoutingAddNatureOfControlTrust = {
+  previousUrl: url.WHICH_TYPE_OF_NATURE_OF_CONTROL_INDIVIDUAL_PERSON_URL,
+  currentUrl: url.ADD_NATURE_OF_CONTROL_TRUST_URL,
+  nextUrl: TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL,
+  pageType: RegistrationPageType.addNatureOfControlTrust,
+  data: {
+    natureOfControlType: NatureOfControlType.TRUST
+  }
 };
 
 // SUMMARY
@@ -99,14 +134,21 @@ const personWithSignificantControlRouting = [
   registrationRoutingPersonWithSignificantControl,
   registrationRoutingWillLimitedPartnershipHavePsc,
   registrationRoutingPersonWithSignificantControlChoice,
+
   registrationRoutingAddRelevantLegalEntity,
   registrationRoutingAddOtherRegistrablePerson,
   registrationRoutingAddIndividualPerson,
+
   registrationRoutingRelevantLegalEntityWhichTypeOfNatureOfControl,
   registrationRoutingOtherRegistrablePersonWhichTypeOfNatureOfControl,
   registrationRoutingIndividualPersonWhichTypeOfNatureOfControl,
+
+  registrationRoutingAddNatureOfControlIndividual,
+  registrationRoutingAddNatureOfControlFirm,
+  registrationRoutingAddNatureOfControlTrust,
+
   registrationRoutingReviewPersonsWithSignificantControl,
-  registrationRoutingRemovePersonWithSignificantControl,
+  registrationRoutingRemovePersonWithSignificantControl
 ];
 
 export default personWithSignificantControlRouting;

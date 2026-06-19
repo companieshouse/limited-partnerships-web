@@ -7,7 +7,7 @@
     "build": "rm -rf dist && tsc && cp -r src/views dist/ && cp -r locales dist/",
     "lint": "eslint '{src,test}/**/*' *.mjs",
     "lint:fix": "eslint '{src,test}/**/*' *.mjs --fix",
-    "prepare": "husky && npm install --save https://github.com/companieshouse/api-sdk-node/tarball/feat/lp-2054-noc && cd node_modules/@companieshouse/api-sdk-node && npm run build",
+    "prepare": "husky",
     "sonarqube": "branch=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD); if [[ $branch == \"HEAD\" ]]; then echo $branch && npm run sonarqube-base-branch; else echo $branch && npm run sonarqube-pull-request; fi;",
     "sonarqube-base-branch": "sonar-scanner",
     "sonarqube-pull-request": "sonar-scanner -D sonar.pullrequest.base=main",
@@ -33,7 +33,7 @@
   "license": "MIT",
   "homepage": "https://github.com/companieshouse/limited-partnerships-web#readme",
   "dependencies": {
-    "@companieshouse/api-sdk-node": "https://github.com/companieshouse/api-sdk-node/tarball/feat/lp-2054-noc",
+    "@companieshouse/api-sdk-node": "2.0.354",
     "@companieshouse/ch-node-utils": "^2.1.11",
     "@companieshouse/node-session-handler": "^5.2.15",
     "@companieshouse/structured-logging-node": "^2.0.14",

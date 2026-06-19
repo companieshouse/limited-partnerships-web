@@ -43,7 +43,10 @@ import {
   REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL,
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_URL,
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_WITH_IDS_URL,
-  WHICH_TYPE_OF_NATURE_OF_CONTROL_INDIVIDUAL_PERSON_URL
+  WHICH_TYPE_OF_NATURE_OF_CONTROL_INDIVIDUAL_PERSON_URL,
+  ADD_NATURE_OF_CONTROL_INDIVIDUAL_URL,
+  ADD_NATURE_OF_CONTROL_FIRM_URL,
+  ADD_NATURE_OF_CONTROL_TRUST_URL
 } from "../presentation/controller/registration/url";
 import RegistrationPageType from "../presentation/controller/registration/PageType";
 import registrationsRouting from "../presentation/controller/registration/Routing";
@@ -381,6 +384,33 @@ export const registrationEndpoints = (
   );
   router.post(
     WHICH_TYPE_OF_NATURE_OF_CONTROL_INDIVIDUAL_PERSON_URL,
+    dependencies.personWithSignificantControlRegistrationController.sendPageData()
+  );
+
+  router.get(
+    ADD_NATURE_OF_CONTROL_INDIVIDUAL_URL,
+    dependencies.personWithSignificantControlRegistrationController.getPageRouting()
+  );
+  router.post(
+    ADD_NATURE_OF_CONTROL_INDIVIDUAL_URL,
+    dependencies.personWithSignificantControlRegistrationController.sendPageData()
+  );
+
+  router.get(
+    ADD_NATURE_OF_CONTROL_FIRM_URL,
+    dependencies.personWithSignificantControlRegistrationController.getPageRouting()
+  );
+  router.post(
+    ADD_NATURE_OF_CONTROL_FIRM_URL,
+    dependencies.personWithSignificantControlRegistrationController.sendPageData()
+  );
+
+  router.get(
+    ADD_NATURE_OF_CONTROL_TRUST_URL,
+    dependencies.personWithSignificantControlRegistrationController.getPageRouting()
+  );
+  router.post(
+    ADD_NATURE_OF_CONTROL_TRUST_URL,
     dependencies.personWithSignificantControlRegistrationController.sendPageData()
   );
 
