@@ -293,13 +293,14 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
 
         const { ids, pageType, tokens } = super.extract(request);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
+        const body = request.body;
 
         const uiErrors = this.convertNatureOfControlTypesToArrayOrReturnError(request, response);
 
         if (uiErrors?.hasErrors()) {
           return response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { personWithSignificantControl: { data: request.body } }, uiErrors)
+            super.makeProps(pageRouting, { personWithSignificantControl: { data: body } }, uiErrors)
           );
         }
 
@@ -307,7 +308,7 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
           tokens,
           ids.transactionId,
           ids.personWithSignificantControlId,
-          request.body
+          body
         );
 
         if (result?.errors) {
@@ -321,7 +322,7 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
             super.templateName(pageRouting.currentUrl),
             super.makeProps(
               pageRouting,
-              { limitedPartnership, personWithSignificantControl: { data: request.body } },
+              { limitedPartnership, personWithSignificantControl: { data: body } },
               result.errors
             )
           );
