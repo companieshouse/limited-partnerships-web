@@ -182,6 +182,9 @@
                 
                 "nationality1Missing": "WELSH - Select their nationality",
                 "nationality2Same": "WELSH - Second nationality must be different from the first"
+            },
+            "whichTypeOfNatureOfControl": {
+                "natureOfControlTypesMissing": "WELSH - Select at least one type of nature of control"
             }
         },
 

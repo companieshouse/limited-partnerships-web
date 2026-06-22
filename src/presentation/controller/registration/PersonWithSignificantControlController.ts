@@ -1,16 +1,19 @@
 import { NextFunction, Request, Response } from "express";
-import { LimitedPartnership, PersonWithSignificantControl, PersonWithSignificantControlType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
+import { LimitedPartnership, NatureOfControlType, PersonWithSignificantControl, PersonWithSignificantControlType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 import AbstractController from "../AbstractController";
 import UIErrors from "../../../domain/entities/UIErrors";
 import registrationsRouting from "./Routing";
-import RegistrationPageType from "./PageType";
+import RegistrationPageType, { isAddNatureOfControlPage, isWhichTypeOfNatureOfControlPage } from "./PageType";
 import { Ids, Tokens } from "../../../domain/types";
 
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
 import PersonWithSignificantControlService from "../../../application/service/PersonWithSignificantControlService";
 
 import {
+  ADD_NATURE_OF_CONTROL_FIRM_URL,
+  ADD_NATURE_OF_CONTROL_INDIVIDUAL_URL,
+  ADD_NATURE_OF_CONTROL_TRUST_URL,
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_URL,
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_URL,
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL,
@@ -19,8 +22,9 @@ import {
   REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL,
   TELL_US_ABOUT_PSC_URL
 } from "./url";
-import { CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL, CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL, CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL } from "../addressLookUp/url/registration";
 import { PageRouting } from "../PageRouting";
+import { addNocUrlMap } from "./routing/personWithSignificantControl";
+
 class PersonWithSignificantControlRegistrationController extends AbstractController {
   constructor(
     protected readonly limitedPartnershipService: LimitedPartnershipService,
@@ -37,8 +41,11 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
         const { tokens, pageType, ids } = super.extract(request);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
-        const { limitedPartnership, personWithSignificantControl } =
-          await this.getLimitedPartnershipAndPsc(tokens, ids);
+        const { limitedPartnership, personWithSignificantControl } = await this.getLimitedPartnershipAndPsc(tokens, ids);
+
+        if (personWithSignificantControl) {
+          this.setAddNatureOfControlUrls(personWithSignificantControl, pageRouting, request);
+        }
 
         response.render(
           super.templateName(pageRouting.currentUrl),
@@ -59,13 +66,20 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
 
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
-        const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(tokens, ids.transactionId, ids.submissionId);
+        const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+          tokens,
+          ids.transactionId,
+          ids.submissionId
+        );
 
         let personsWithSignificantControl: PersonWithSignificantControl[] = [];
         let errors: UIErrors | null = null;
 
         if (ids.transactionId && ids.submissionId) {
-          const result = await this.personWithSignificantControlService.getPersonsWithSignificantControl(tokens, ids.transactionId);
+          const result = await this.personWithSignificantControlService.getPersonsWithSignificantControl(
+            tokens,
+            ids.transactionId
+          );
           personsWithSignificantControl = result?.personsWithSignificantControl;
 
           errors = result?.errors ?? null;
@@ -216,6 +230,15 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
         const { ids, pageType, tokens } = super.extract(request);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
+        const uiErrors = this.convertNatureOfControlTypesToArrayOrReturnError(request, response);
+
+        if (uiErrors?.hasErrors()) {
+          return response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(pageRouting, { personWithSignificantControl: { data: request.body } }, uiErrors)
+          );
+        }
+
         const result = await this.personWithSignificantControlService.createPersonWithSignificantControl(
           tokens,
           ids.transactionId,
@@ -260,12 +283,22 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
 
         const { ids, pageType, tokens } = super.extract(request);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
+        const body = request.body;
+
+        const uiErrors = this.convertNatureOfControlTypesToArrayOrReturnError(request, response);
+
+        if (uiErrors?.hasErrors()) {
+          return response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(pageRouting, { personWithSignificantControl: { data: body } }, uiErrors)
+          );
+        }
 
         const result = await this.personWithSignificantControlService.sendPageData(
           tokens,
           ids.transactionId,
           ids.personWithSignificantControlId,
-          request.body
+          body
         );
 
         if (result?.errors) {
@@ -279,7 +312,7 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
             super.templateName(pageRouting.currentUrl),
             super.makeProps(
               pageRouting,
-              { limitedPartnership, personWithSignificantControl: { data: request.body } },
+              { limitedPartnership, personWithSignificantControl: { data: body } },
               result.errors
             )
           );
@@ -478,31 +511,99 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
     return super.insertIdsInUrl(redirectUrl, ids, request.url);
   }
 
+  private convertNatureOfControlTypesToArrayOrReturnError(request: Request, response: Response) {
+    const { pageType } = super.extract(request);
+
+    if (isWhichTypeOfNatureOfControlPage(pageType)) {
+      if (!request.body?.nature_of_control_types?.length) {
+        const uiErrors = new UIErrors().setWebError(
+          "nature_of_control_types",
+          response.locals.i18n.errorMessages.personWithSignificantControl.whichTypeOfNatureOfControl.natureOfControlTypesMissing
+        );
+
+        return uiErrors;
+      }
+
+      if (request.body.nature_of_control_types && typeof request.body.nature_of_control_types === "string") {
+        request.body.nature_of_control_types = [request.body.nature_of_control_types];
+      }
+    }
+  }
+
   private async handleNatureOfControlRedirection(request: Request, pageRouting: PageRouting) {
-    const { ids, tokens, pageType } = super.extract(request);
+    const { ids, pageType, tokens } = super.extract(request);
 
-    const result = await this.personWithSignificantControlService.getPersonWithSignificantControl(
-      tokens,
-      ids.transactionId,
-      ids.personWithSignificantControlId
-    );
+    if (isWhichTypeOfNatureOfControlPage(pageType) || isAddNatureOfControlPage(pageType)) {
+      const result = await this.personWithSignificantControlService.getPersonWithSignificantControl(
+        tokens,
+        ids.transactionId,
+        ids.personWithSignificantControlId
+      );
 
-    if (pageType === RegistrationPageType.whichTypeOfNatureOfControlRelevantLegalEntity &&
-      result?.data?.principal_office_address?.address_line_1) {
+      this.setWhichTypeOfNatureOfControlNextUrl(result, pageRouting, request);
 
-      pageRouting.nextUrl = super.insertIdsInUrl(CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL, ids, request.url);
+      this.setAddNatureOfControlUrls(result, pageRouting, request);
     }
+  }
 
-    if (pageType === RegistrationPageType.whichTypeOfNatureOfControlOtherRegistrablePerson &&
-      result?.data?.principal_office_address?.address_line_1) {
+  private setWhichTypeOfNatureOfControlNextUrl(
+    personWithSignificantControl: PersonWithSignificantControl,
+    pageRouting: PageRouting,
+    request: Request
+  ) {
+    const { ids, pageType } = super.extract(request);
 
-      pageRouting.nextUrl = super.insertIdsInUrl(CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL, ids, request.url);
+    if (isWhichTypeOfNatureOfControlPage(pageType)) {
+      if (personWithSignificantControl.data?.nature_of_control_types) {
+        const urlMap: Map<string, string> = new Map([
+          [NatureOfControlType.INDIVIDUAL, ADD_NATURE_OF_CONTROL_INDIVIDUAL_URL],
+          [NatureOfControlType.FIRM, ADD_NATURE_OF_CONTROL_FIRM_URL],
+          [NatureOfControlType.TRUST, ADD_NATURE_OF_CONTROL_TRUST_URL]
+        ]);
+
+        const nextNocUrl = urlMap.get(personWithSignificantControl.data?.nature_of_control_types[0]);
+
+        if (nextNocUrl) {
+          pageRouting.nextUrl = super.insertIdsInUrl(nextNocUrl, ids, request.url);
+        }
+      }
     }
+  }
 
-    if (pageType === RegistrationPageType.whichTypeOfNatureOfControlIndividualPerson &&
-      result?.data?.usual_residential_address?.address_line_1) {
+  private setAddNatureOfControlUrls(
+    personWithSignificantControl: PersonWithSignificantControl,
+    pageRouting: PageRouting,
+    request: Request
+  ) {
+    const { pageType } = super.extract(request);
 
-      pageRouting.nextUrl = super.insertIdsInUrl(CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL, ids, request.url);
+    if (isAddNatureOfControlPage(pageType)) {
+      // step 1 – check nature_of_control_types and redirect to the next nature of control page
+      // if the type is the last one on the list, proceed to step 2
+
+      // step 2 – redirect to the correct address page
+      this.setListAddNatureOfControlUrls(personWithSignificantControl, pageRouting, request);
+    }
+  }
+
+  private setListAddNatureOfControlUrls(
+    personWithSignificantControl: PersonWithSignificantControl,
+    pageRouting: PageRouting,
+    request: Request
+  ) {
+    const { ids } = super.extract(request);
+
+    const data = addNocUrlMap.get(personWithSignificantControl.data?.type?.toString() ?? "");
+
+    if (data) {
+      const { address, previousUrl, territoryUrl, confirmUrl } = data;
+
+      pageRouting.previousUrl = super.insertIdsInUrl(previousUrl, ids, request.url);
+
+      const hasAddress = (personWithSignificantControl?.data as Record<string, any>)?.[address]?.address_line_1;
+
+      pageRouting.nextUrl =
+        hasAddress ? super.insertIdsInUrl(confirmUrl, ids, request.url) : super.insertIdsInUrl(territoryUrl, ids, request.url);
     }
   }
 }

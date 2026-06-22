@@ -112,13 +112,49 @@
         },
         "whichTypeOfNatureOfControlPage": {
             "relevantLegalEntity": {
-                "title": "Which type of nature of control does the relevant legal entity (RLE) have?"
+                "title": "How does this relevant legal entity hold control over the limited partnership?",
+                "individual" : {
+                    "text": "As a relevant legal entity (RLE)",
+                    "hint": "The relevant legal entity meets one or more natures of control"
+                },
+                "firm" : {
+                    "text": "Through a firm",
+                    "hint": "The relevant legal entity has control over a firm that meets one or more natures of control"
+                },
+                "trust" : {
+                    "text": "Through a trust",
+                    "hint": "The relevant legal entity has control over a trust that meets one or more natures of control"
+                }
             },
             "otherRegistrablePerson": {
-                "title": "Which type of nature of control does the other registrable person (ORP) have?"
+                "title": "How does this other registrable person hold control over the limited partnership?",
+                "individual" : {
+                    "text": "As an other registrable person (ORP)",
+                    "hint": "The other registrable person meets one or more natures of control"
+                },
+                "firm" : {
+                    "text": "Through a firm",
+                    "hint": "The other registrable person has control over a firm that meets one or more natures of control"
+                },
+                "trust" : {
+                    "text": "Through a trust",
+                    "hint": "The other registrable person has control over a trust that meets one or more natures of control"
+                }
             },
             "individualPerson": {
-                "title": "Which type of nature of control does this PSC have?"
+                "title": "How does this individual hold control over the limited partnership?",
+                "individual" : {
+                    "text": "As an individual",
+                    "hint": "The individual meets one or more natures of control"
+                },
+                "firm" : {
+                    "text": "Through a firm",
+                    "hint": "The individual has control over a firm that meets one or more natures of control"
+                },
+                "trust" : {
+                    "text": "Through a trust",
+                    "hint": "The individual has control over a trust that meets one or more natures of control"
+                }
             }
         },
         "removePscPage": {

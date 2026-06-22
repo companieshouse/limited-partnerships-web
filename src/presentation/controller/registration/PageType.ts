@@ -30,11 +30,30 @@ enum RegistrationPageType {
   whichTypeOfNatureOfControlRelevantLegalEntity = "which-type-of-nature-of-control-relevant-legal-entity",
   whichTypeOfNatureOfControlOtherRegistrablePerson = "which-type-of-nature-of-control-other-registrable-person",
   whichTypeOfNatureOfControlIndividualPerson = "which-type-of-nature-of-control-individual-person",
+  addNatureOfControlIndividual = "add-nature-of-control-individual",
+  addNatureOfControlFirm = "add-nature-of-control-firm",
+  addNatureOfControlTrust = "add-nature-of-control-trust",
   reviewPersonsWithSignificantControl = "review-persons-with-significant-control",
   removePersonWithSignificantControl = "remove-person-with-significant-control",
 
   checkYourAnswers = "check-your-answers",
   next = "next"
 }
+
+export const isWhichTypeOfNatureOfControlPage = (pageType: string): boolean => {
+  return (
+    pageType === RegistrationPageType.whichTypeOfNatureOfControlRelevantLegalEntity ||
+    pageType === RegistrationPageType.whichTypeOfNatureOfControlOtherRegistrablePerson ||
+    pageType === RegistrationPageType.whichTypeOfNatureOfControlIndividualPerson
+  );
+};
+
+export const isAddNatureOfControlPage = (pageType: string): boolean => {
+  return (
+    pageType === RegistrationPageType.addNatureOfControlIndividual ||
+    pageType === RegistrationPageType.addNatureOfControlFirm ||
+    pageType === RegistrationPageType.addNatureOfControlTrust
+  );
+};
 
 export default RegistrationPageType;

@@ -1,0 +1,94 @@
+import request from "supertest";
+import { NatureOfControlType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
+
+import enGeneralTranslationText from "../../../../../../locales/en/translations.json";
+import cyGeneralTranslationText from "../../../../../../locales/cy/translations.json";
+import enPersonWithSignificantControlTranslationText from "../../../../../../locales/en/personWithSignificantControl.json";
+import cyPersonWithSignificantControlTranslationText from "../../../../../../locales/cy/personWithSignificantControl.json";
+import enErrorsTranslationText from "../../../../../../locales/en/errors.json";
+import cyErrorsTranslationText from "../../../../../../locales/cy/errors.json";
+
+import app from "../../app";
+import { appDevDependencies } from "../../../../../config/dev-dependencies";
+import { getUrl, setLocalesEnabled } from "../../../utils";
+
+import {
+  ADD_NATURE_OF_CONTROL_FIRM_URL,
+  ADD_NATURE_OF_CONTROL_INDIVIDUAL_URL,
+  ADD_NATURE_OF_CONTROL_TRUST_URL,
+  WHICH_TYPE_OF_NATURE_OF_CONTROL_INDIVIDUAL_PERSON_URL
+} from "../../../../controller/registration/url";
+import { CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../controller/addressLookUp/url/registration";
+
+import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
+import PersonWithSignificantControlBuilder from "../../../builder/PersonWithSignificantControlBuilder";
+import TransactionPersonWithSignificantControl from "../../../../../domain/entities/TransactionPersonWithSignificantControl";
+
+import RegistrationPageType from "../../../../controller/registration/PageType";
+
+describe("Which Type of Nature of Control Page", () => {
+  let individualPerson: TransactionPersonWithSignificantControl;
+
+  const enTranslationText = {
+    ...enGeneralTranslationText,
+    ...enPersonWithSignificantControlTranslationText,
+    ...enErrorsTranslationText
+  };
+  const cyTranslationText = {
+    ...cyGeneralTranslationText,
+    ...cyPersonWithSignificantControlTranslationText,
+    ...cyErrorsTranslationText
+  };
+
+  beforeEach(() => {
+    setLocalesEnabled(true);
+
+    const limitedPartnership = new LimitedPartnershipBuilder().build();
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+    individualPerson = new PersonWithSignificantControlBuilder()
+      .isIndividualPerson()
+      .withId(appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId)
+      .build();
+    appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([individualPerson]);
+  });
+
+  describe("Get Add Nature of Control Page", () => {
+    it.each([
+      [`en - ${NatureOfControlType.INDIVIDUAL}`, "en", getUrl(ADD_NATURE_OF_CONTROL_INDIVIDUAL_URL), enTranslationText],
+      [`cy - ${NatureOfControlType.INDIVIDUAL}`, "cy", getUrl(ADD_NATURE_OF_CONTROL_INDIVIDUAL_URL), cyTranslationText],
+      [`en - ${NatureOfControlType.FIRM}`, "en", getUrl(ADD_NATURE_OF_CONTROL_FIRM_URL), enTranslationText],
+      [`cy - ${NatureOfControlType.FIRM}`, "cy", getUrl(ADD_NATURE_OF_CONTROL_FIRM_URL), cyTranslationText],
+      [`en - ${NatureOfControlType.TRUST}`, "en", getUrl(ADD_NATURE_OF_CONTROL_TRUST_URL), enTranslationText],
+      [`cy - ${NatureOfControlType.TRUST}`, "cy", getUrl(ADD_NATURE_OF_CONTROL_TRUST_URL), cyTranslationText]
+    ])("should load the add nature of control page - %s", async (_description: string, lang: string, url: string) => {
+      const res = await request(app).get(`${url}?lang=${lang}`);
+
+      expect(res.status).toBe(200);
+
+      expect(res.text).toContain(individualPerson.data?.legal_entity_name?.toUpperCase());
+
+      const backUrl = getUrl(WHICH_TYPE_OF_NATURE_OF_CONTROL_INDIVIDUAL_PERSON_URL);
+      expect(res.text).toContain(backUrl);
+    });
+  });
+
+  describe("Post Add Nature of Control Page", () => {
+    it.each([
+      [
+        NatureOfControlType.INDIVIDUAL,
+        RegistrationPageType.addNatureOfControlIndividual,
+        getUrl(ADD_NATURE_OF_CONTROL_INDIVIDUAL_URL)
+      ],
+      [NatureOfControlType.FIRM, RegistrationPageType.addNatureOfControlFirm, getUrl(ADD_NATURE_OF_CONTROL_FIRM_URL)],
+      [NatureOfControlType.TRUST, RegistrationPageType.addNatureOfControlTrust, getUrl(ADD_NATURE_OF_CONTROL_TRUST_URL)]
+    ])("should redirect to confirm address page - %s", async (_description, pageType, url) => {
+      const res = await request(app).post(url).send({ pageType });
+
+      expect(res.status).toBe(302);
+
+      const redirectUrl = getUrl(CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL);
+      expect(res.headers.location).toBe(redirectUrl);
+    });
+  });
+});
