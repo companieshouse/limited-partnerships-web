@@ -7,8 +7,6 @@
 
         {% include "pages/personWithSignificantControl/person-with-significant-control-name.njk" %}
 
-        <h1 class="govuk-heading-xl">{{ pageTitle }}</h1>
-
         <form class="form" method="post">
             <input type="hidden" name="pageType" value={{ props.pageType }}>
             {% include "includes/csrf_token.njk" %}
@@ -17,6 +15,13 @@
                 errorMessage: props.errors.nature_of_control_types if props.errors.nature_of_control_types,
                 name: "nature_of_control_types",
                 classes: "govuk-!-margin-bottom-0",
+                fieldset: {
+                    legend: {
+                        text: pageTitle,
+                        isPageHeading: true,
+                        classes: "govuk-fieldset__legend--xl"
+                    }
+                },
                 items: [
                 {
                     value: "INDIVIDUAL",
