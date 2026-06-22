@@ -113,7 +113,7 @@
             "relevantLegalEntity": {
                 "title": "WELSH - How does this relevant legal entity hold control over the limited partnership?",
                 "individual" : {
-                    "text": "WELSH - As an relevant legal entity",
+                    "text": "WELSH - As a relevant legal entity (RLE)",
                     "hint": "WELSH - The relevant legal entity meets one or more natures of control"
                 },
                 "firm" : {
@@ -128,7 +128,7 @@
             "otherRegistrablePerson": {
                 "title": "WELSH - How does this other registrable person hold control over the limited partnership?",
                 "individual" : {
-                    "text": "WELSH - As an other registrable person",
+                    "text": "WELSH - As an other registrable person (ORP)",
                     "hint": "WELSH - The other registrable person meets one or more natures of control"
                 },
                 "firm" : {

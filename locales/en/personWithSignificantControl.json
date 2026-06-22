@@ -114,7 +114,7 @@
             "relevantLegalEntity": {
                 "title": "How does this relevant legal entity hold control over the limited partnership?",
                 "individual" : {
-                    "text": "As an relevant legal entity",
+                    "text": "As a relevant legal entity (RLE)",
                     "hint": "The relevant legal entity meets one or more natures of control"
                 },
                 "firm" : {
@@ -129,7 +129,7 @@
             "otherRegistrablePerson": {
                 "title": "How does this other registrable person hold control over the limited partnership?",
                 "individual" : {
-                    "text": "As an other registrable person",
+                    "text": "As an other registrable person (ORP)",
                     "hint": "The other registrable person meets one or more natures of control"
                 },
                 "firm" : {
