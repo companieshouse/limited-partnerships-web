@@ -14,6 +14,7 @@
             {% include "includes/csrf_token.njk" %}
 
             {{ govukCheckboxes({
+                errorMessage: props.errors.nature_of_control_types if props.errors.nature_of_control_types,
                 name: "nature_of_control_types",
                 classes: "govuk-!-margin-bottom-0",
                 items: [
