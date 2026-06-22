@@ -1,11 +1,17 @@
 import RegistrationPageType from "../PageType";
 import * as url from "../url";
 import {
+  CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL,
+  CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL,
+  CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL,
   TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL,
   TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL,
   TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL
 } from "../../addressLookUp/url/registration";
-import { NatureOfControlType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
+import {
+  NatureOfControlType,
+  PersonWithSignificantControlType
+} from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 const registrationRoutingPersonWithSignificantControl = {
   previousUrl: url.REVIEW_LIMITED_PARTNERS_URL,
@@ -154,3 +160,34 @@ const personWithSignificantControlRouting = [
 ];
 
 export default personWithSignificantControlRouting;
+
+export const addNocUrlMap: Map<string, { address: string; previousUrl: string; territoryUrl: string; confirmUrl: string }> =
+  new Map([
+    [
+      PersonWithSignificantControlType.INDIVIDUAL_PERSON,
+      {
+        address: "usual_residential_address",
+        previousUrl: url.WHICH_TYPE_OF_NATURE_OF_CONTROL_INDIVIDUAL_PERSON_URL,
+        territoryUrl: TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL,
+        confirmUrl: CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL
+      }
+    ],
+    [
+      PersonWithSignificantControlType.RELEVANT_LEGAL_ENTITY,
+      {
+        address: "principal_office_address",
+        previousUrl: url.WHICH_TYPE_OF_NATURE_OF_CONTROL_RELEVANT_LEGAL_ENTITY_URL,
+        territoryUrl: TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL,
+        confirmUrl: CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL
+      }
+    ],
+    [
+      PersonWithSignificantControlType.OTHER_REGISTRABLE_PERSON,
+      {
+        address: "principal_office_address",
+        previousUrl: url.WHICH_TYPE_OF_NATURE_OF_CONTROL_OTHER_REGISTRABLE_PERSON_URL,
+        territoryUrl: TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL,
+        confirmUrl: CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL
+      }
+    ]
+  ]);

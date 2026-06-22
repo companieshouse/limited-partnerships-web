@@ -20,20 +20,10 @@ import {
   CHECK_YOUR_ANSWERS_URL,
   PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL,
   REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL,
-  TELL_US_ABOUT_PSC_URL,
-  WHICH_TYPE_OF_NATURE_OF_CONTROL_INDIVIDUAL_PERSON_URL,
-  WHICH_TYPE_OF_NATURE_OF_CONTROL_OTHER_REGISTRABLE_PERSON_URL,
-  WHICH_TYPE_OF_NATURE_OF_CONTROL_RELEVANT_LEGAL_ENTITY_URL
+  TELL_US_ABOUT_PSC_URL
 } from "./url";
 import { PageRouting } from "../PageRouting";
-import {
-  CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL,
-  CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL,
-  CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL,
-  TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL,
-  TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL,
-  TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL
-} from "../addressLookUp/url/registration";
+import { addNocUrlMap } from "./routing/personWithSignificantControl";
 
 class PersonWithSignificantControlRegistrationController extends AbstractController {
   constructor(
@@ -592,48 +582,16 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
       // if the type is the last one on the list, proceed to step 2
 
       // step 2 – redirect to the correct address page
-      this.setLstAddNatureOfControlUrls(personWithSignificantControl, pageRouting, request);
+      this.setListAddNatureOfControlUrls(personWithSignificantControl, pageRouting, request);
     }
   }
 
-  private setLstAddNatureOfControlUrls(
+  private setListAddNatureOfControlUrls(
     personWithSignificantControl: PersonWithSignificantControl,
     pageRouting: PageRouting,
     request: Request
   ) {
     const { ids } = super.extract(request);
-
-    const addNocUrlMap: Map<string, { address: string; previousUrl: string; territoryUrl: string; confirmUrl: string }> = new Map(
-      [
-        [
-          PersonWithSignificantControlType.INDIVIDUAL_PERSON,
-          {
-            address: "usual_residential_address",
-            previousUrl: WHICH_TYPE_OF_NATURE_OF_CONTROL_INDIVIDUAL_PERSON_URL,
-            territoryUrl: TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL,
-            confirmUrl: CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL
-          }
-        ],
-        [
-          PersonWithSignificantControlType.RELEVANT_LEGAL_ENTITY,
-          {
-            address: "principal_office_address",
-            previousUrl: WHICH_TYPE_OF_NATURE_OF_CONTROL_RELEVANT_LEGAL_ENTITY_URL,
-            territoryUrl: TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL,
-            confirmUrl: CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL
-          }
-        ],
-        [
-          PersonWithSignificantControlType.OTHER_REGISTRABLE_PERSON,
-          {
-            address: "principal_office_address",
-            previousUrl: WHICH_TYPE_OF_NATURE_OF_CONTROL_OTHER_REGISTRABLE_PERSON_URL,
-            territoryUrl: TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL,
-            confirmUrl: CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL
-          }
-        ]
-      ]
-    );
 
     const data = addNocUrlMap.get(personWithSignificantControl.data?.type?.toString() ?? "");
 
