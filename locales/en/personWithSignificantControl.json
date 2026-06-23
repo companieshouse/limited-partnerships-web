@@ -1,8 +1,9 @@
 {
     "personWithSignificantControl": {
-        "otherRegistrablePersonInformation": {
-            "title": "What is an other registrable person?",
-            "line1": "An other registrable person (ORP) is a non-corporate entity or office that can legally act as a PSC. This can be:",
+        "relevantLegalEntityAndOtherRegistrablePersonInformation": {
+            "title": "What are RLEs and ORPs?",
+            "line1": "A relevant legal entity (RLE) is a corporate body or firm that can legally act as a PSC.",
+            "line2": "An other registrable person (ORP) is a non-corporate entity or office that can legally act as a PSC. This can be:",
             "bullet1": "a corporation sole - a single incorporated office occupied by one person, such as Lord Mayor of London",
             "bullet2": "a government or government department of a country, a territory, or a part of a country or territory",
             "bullet3": "an international organisation whose members include two or more countries or territories (or their governments)",
@@ -15,7 +16,7 @@
             "futureChanges": "You'll need to file any future changes to PSCs on paper."
         },
          "willThePartnershipHaveAnyPscPage": {
-            "title": "Will the partnership have any people with significant control (PSCs) on registration?",
+            "title": "Will the partnership have any PSCs on registration?",
             "optionYes": "Yes, at least one person will count as a PSC in relation to the partnership. This may be an individual, a relevant legal entity (RLE) or an other registrable person (ORP)",
             "optionNo": "No, there is no person identified as a PSC in relation to the limited partnership",
             "errorMessage": "Select if the partnership will have any PSCs on registration",
