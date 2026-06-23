@@ -10,9 +10,19 @@
         },
         "tellUsAboutPscPage": {
             "title": "Tell us about people with significant control (PSCs)",
-            "pageInformation": "We'll ask you whether the partnership will have any PSCs. If it will, you'll need to tell us about them.",
-            "moreThanOne": "If the partnership has more than one PSC, you'll add them one at a time.",
-            "futureChanges": "You'll need to file any future changes to PSCs on paper."
+            "whatWeAsk": "We'll ask you if the partnership will have any PSCs on registration. If it will, you need to tell us about them.",
+            "addingMoreAfter": "After the partnership is registered, you'll need to file a paper form if you need to add any more PSCs.",
+            "WhatIsPsc": "What is a PSC?",
+            "psc": "A person with significant control (PSC) is someone who owns or controls the partnership. They do this by meeting one or more conditions known as 'natures of control'.",
+            "includes": "These include:",
+            "shareOfAssets": "more than 25% share of assets",
+            "votingRights": "more than 25% ownership of voting rights",
+            "rights": "the right to appoint or remove management",
+            "influence": "significant influence or control over the partnership",
+            "firmOrTrust": "They can also be a PSC if they have significant control over a firm or trust that meets any of these natures of control.",
+            "pscType": "A PSC can be an individual person, a relevant legal entity (RLE) or an other registrable person (ORP).",
+            "moreInformation": "For more information, ",
+            "guidance": "read the guidance on PSCs of Scottish limited partnerships (opens in new tab)."
         },
          "willThePartnershipHaveAnyPscPage": {
             "title": "Will the partnership have any people with significant control (PSCs) on registration?",
