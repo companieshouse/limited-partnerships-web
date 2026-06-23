@@ -48,7 +48,7 @@ describe("Which type Page", () => {
       expect(res.status).toBe(200);
 
       testTranslations(res.text, translationText.personWithSignificantControl.whichTypePage, ["errorMessage"]);
-      testTranslations(res.text, translationText.personWithSignificantControl.otherRegistrablePersonInformation);
+      testTranslations(res.text, translationText.personWithSignificantControl.relevantLegalEntityAndOtherRegistrablePersonInformation);
 
       expect(res.text).toContain(translationText.buttons.continue);
 
