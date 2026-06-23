@@ -111,33 +111,33 @@
         },
         "whichTypeOfNatureOfControlPage": {
             "relevantLegalEntity": {
-                "title": "WELSH - How does this relevant legal entity hold control over the limited partnership?",
+                "title": "WELSH - How does this RLE hold control over the limited partnership?",
                 "individual" : {
                     "text": "WELSH - As a relevant legal entity (RLE)",
-                    "hint": "WELSH - The relevant legal entity meets one or more natures of control"
+                    "hint": "WELSH - The RLE meets one or more natures of control"
                 },
                 "firm" : {
                     "text": "WELSH - Through a firm",
-                    "hint": "WELSH - The relevant legal entity has control over a firm that meets one or more natures of control"
+                    "hint": "WELSH - The RLE has control over a firm that meets one or more natures of control"
                 },
                 "trust" : {
                     "text": "WELSH - Through a trust",
-                    "hint": "WELSH - The relevant legal entity has control over a trust that meets one or more natures of control"
+                    "hint": "WELSH - The RLE has control over a trust that meets one or more natures of control"
                 }
             },
             "otherRegistrablePerson": {
-                "title": "WELSH - How does this other registrable person hold control over the limited partnership?",
+                "title": "WELSH - How does this ORP hold control over the limited partnership?",
                 "individual" : {
                     "text": "WELSH - As an other registrable person (ORP)",
-                    "hint": "WELSH - The other registrable person meets one or more natures of control"
+                    "hint": "WELSH - The ORP meets one or more natures of control"
                 },
                 "firm" : {
                     "text": "WELSH - Through a firm",
-                    "hint": "WELSH - The other registrable person has control over a firm that meets one or more natures of control"
+                    "hint": "WELSH - The ORP has control over a firm that meets one or more natures of control"
                 },
                 "trust" : {
                     "text": "WELSH - Through a trust",
-                    "hint": "WELSH - The other registrable person has control over a trust that meets one or more natures of control"
+                    "hint": "WELSH - The ORP has control over a trust that meets one or more natures of control"
                 }
             },
             "individualPerson": {

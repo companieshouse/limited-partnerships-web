@@ -112,33 +112,33 @@
         },
         "whichTypeOfNatureOfControlPage": {
             "relevantLegalEntity": {
-                "title": "How does this relevant legal entity hold control over the limited partnership?",
+                "title": "How does this RLE hold control over the limited partnership?",
                 "individual" : {
                     "text": "As a relevant legal entity (RLE)",
-                    "hint": "The relevant legal entity meets one or more natures of control"
+                    "hint": "The RLE meets one or more natures of control"
                 },
                 "firm" : {
                     "text": "Through a firm",
-                    "hint": "The relevant legal entity has control over a firm that meets one or more natures of control"
+                    "hint": "The RLE has control over a firm that meets one or more natures of control"
                 },
                 "trust" : {
                     "text": "Through a trust",
-                    "hint": "The relevant legal entity has control over a trust that meets one or more natures of control"
+                    "hint": "The RLE has control over a trust that meets one or more natures of control"
                 }
             },
             "otherRegistrablePerson": {
-                "title": "How does this other registrable person hold control over the limited partnership?",
+                "title": "How does this ORP hold control over the limited partnership?",
                 "individual" : {
                     "text": "As an other registrable person (ORP)",
-                    "hint": "The other registrable person meets one or more natures of control"
+                    "hint": "The ORP meets one or more natures of control"
                 },
                 "firm" : {
                     "text": "Through a firm",
-                    "hint": "The other registrable person has control over a firm that meets one or more natures of control"
+                    "hint": "The ORP has control over a firm that meets one or more natures of control"
                 },
                 "trust" : {
                     "text": "Through a trust",
-                    "hint": "The other registrable person has control over a trust that meets one or more natures of control"
+                    "hint": "The ORP has control over a trust that meets one or more natures of control"
                 }
             },
             "individualPerson": {
