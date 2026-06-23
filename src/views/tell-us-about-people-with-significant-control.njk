@@ -10,11 +10,30 @@
  
         <h1 class="govuk-heading-xl">{{ pageTitle }}</h1>
 
-        <p class="govuk-body">{{ i18n.personWithSignificantControl.tellUsAboutPscPage.pageInformation }}</p>
+        <p class="govuk-body">{{ i18n.personWithSignificantControl.tellUsAboutPscPage.whatWeAsk }}</p>
+        <p class="govuk-body">{{ i18n.personWithSignificantControl.tellUsAboutPscPage.addingMoreAfter }}</p>
 
-        <p class="govuk-body">{{ i18n.personWithSignificantControl.tellUsAboutPscPage.moreThanOne }}</p>
+        {{ govukDetails({
+          summaryText: i18n.personWithSignificantControl.tellUsAboutPscPage.WhatIsPsc,
+          html: 
+            '<p>' + i18n.personWithSignificantControl.tellUsAboutPscPage.psc | escape + '</p>' 
+            + '<p>' + i18n.personWithSignificantControl.tellUsAboutPscPage.includes | escape + '</p>'
+              + '<ul>'
+                  + '<li>' + i18n.personWithSignificantControl.tellUsAboutPscPage.shareOfAssets | escape + '</li>'
+                  + '<li>' + i18n.personWithSignificantControl.tellUsAboutPscPage.votingRights | escape + '</li>'
+                  + '<li>' + i18n.personWithSignificantControl.tellUsAboutPscPage.rights | escape + '</li>'
+                  + '<li>' + i18n.personWithSignificantControl.tellUsAboutPscPage.influence | escape + '</li>'
+              + '</ul>'
+              + '<p>' + i18n.personWithSignificantControl.tellUsAboutPscPage.firmOrTrust | escape + '</p>'
+              + '<p>' + i18n.personWithSignificantControl.tellUsAboutPscPage.pscType | escape + '</p>'
+              + '<p>' + i18n.personWithSignificantControl.tellUsAboutPscPage.moreInformation | escape 
+                + '<a class="govuk-link govuk-link--no-visited-state govuk-body-m" rel="noreferrer noopener" target="_blank" href="' 
+                  + 'https://www.gov.uk/guidance/people-with-significant-control-pscs#registering-your-psc-information' + '">' 
+                  + i18n.personWithSignificantControl.tellUsAboutPscPage.guidance 
+                + '</a>' 
+              + '</p>'
+        }) }}
 
-        <p class="govuk-body">{{ i18n.personWithSignificantControl.tellUsAboutPscPage.futureChanges }}</p>
       
         <button class="govuk-button" data-event-id="continue" onClick="location.href='{{ props.nextUrl }}'">{{ i18n.buttons.continue }}</button>
 
