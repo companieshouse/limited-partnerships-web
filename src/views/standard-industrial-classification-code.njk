@@ -18,6 +18,7 @@
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
+    {% include "includes/errors.njk" %}
 
     {% include "includes/proposed-name.njk" %} 
 
@@ -92,4 +93,170 @@
       
     </div>
   </div>
+{# {% endblock %} #}
+
+</br>
+</br>
+</br>
+<div class="govuk-!-margin-12">SECOND SECTION</div>
+</br>
+</br>
+</br>
+
+
+{% set summaryDetail %}
+  <p class="govuk-body">{{ i18n.SICCSWhatIsDetailExpanderParagraph1 }}</p>
+  <p class="govuk-body">{{ i18n.SICCSWhatIsDetailExpanderParagraph2 }}</p>
+  <p class="govuk-body">
+    {{ i18n.SICCSWhatIsDetailExpanderParagraph3Start }}
+    <a class="govuk-link" href="https://resources.companieshouse.gov.uk/sic/" target="_blank" data-event-id="select-sic-codes-list-link">{{ i18n.SICCSWhatIsDetailExpanderParagraph3Link }}</a>
+    {{ i18n.SICCSWhatIsDetailExpanderParagraph3End }}
+  </p>
+{% endset %}
+
+
+  <style>
+    button.govuk-link {
+      background: none;
+      border: none;
+      padding: 0;
+      font: inherit;
+      color: #1d70b8;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    .autocomplete__menu {
+      z-index: 1000;
+      position: absolute;
+    }
+  </style>
+    <div class="govuk-grid-row">
+        <div class="govuk-width-container">
+            <div class="govuk-grid-column-two-thirds"> 
+
+                {% if sicCodes.length > 0 %}
+                  <div class="govuk-summary-list" role="list">
+                      {% for sic in sicCodes %}
+                          <div class="govuk-summary-list__row">
+                          <div class="govuk-summary-list__key">{{ sic.sicCode.code }}</div>
+                          <div class="govuk-summary-list__value">{{ sic.sicCode.description }}</div>
+                          <div class="govuk-summary-list__actions">
+                              <form action="{{ sic.removeUrl }}" method="POST">
+                                  <input type="hidden" name="pageType" value={{ props.pageType }}>
+                                  {% include "includes/csrf_token.njk" %}
+
+                                  <button type="submit" class="govuk-link" data-event-id="remove-link">{{ i18n.sicCodes.SICCSTableRemoveButton }}</button>
+                                  {% if unsavedCodeList.length > 0 %}
+                                    <input type="hidden" name="unsavedCodeList" id="unsavedCodeList" value="{{ unsavedCodeList | join(',') }}" />
+                                  {% endif %}
+                              </form>
+                          </div>
+                          </div>
+                      {% endfor %}
+                  </div>
+                {% elif displayRemovedAllSicCodes %}
+                  <div>
+                    <p class="govuk-body">
+                      <strong>{{ i18n.sicCodes.SICCSRemovedAllCodes }}</strong>
+                    </p>
+                  </div>
+                {% else %}  
+                  <div>
+                    <p class="govuk-body">
+                      <strong>{{ i18n.sicCodes.SICCSNoSICCodeParagraph1 }}</strong>
+                    </p>
+                    <p class="govuk-body">
+                      <strong>{{ i18n.sicCodes.SICCSNoSICCodeParagraph2 }}</strong>
+                    </p>
+                  </div>
+                {% endif %}
+          
+                {% if props.data.isShowingAddSection %}
+                  <form action="{{ addUrl }}" method="POST">
+                      <input type="hidden" name="pageType" value={{ props.pageType }}>
+                      {% include "includes/csrf_token.njk" %}
+     
+                    <div class="govuk-inset-text">
+                        <div class="govuk-form-group govuk-!-margin-bottom-6">
+                            <label class="govuk-label govuk-label--m" for="sic-code-input">
+                              {{ i18n.sicCodes.SICCSAddSICInsetTitle }}
+                            </label>
+                            <div id="sic-hint" class="govuk-hint">
+                              {{ i18n.sicCodes.SICCSAddSICInsetInstructions }}
+                            </div>
+                            <div class="govuk-form-group govuk-form-group--error">
+                              {% if errors %}
+                                <span class="govuk-error-message">
+                                  <span class="govuk-visually-hidden">Error:</span> {{ errors[0].text }}
+                                </span>
+                              </div>
+                              {% endif %}
+                            <div id="sic-code-autocomplete"></div>
+
+                            <input
+                              class="govuk-input govuk-!-width-full"
+                              id="sic-code-input"
+                              placeholder="Search by SIC code or description"
+                              name="code"
+                              type="text"
+                              list="sic-codes"
+                              aria-describedby="sic-hint"
+                            />
+
+                            <datalist id="sic-codes">
+                              {% for sic in searchSicCodes %}
+                                <option value="{{ sic.sic_code }}" label="{{ sic.sic_description }}"></option>
+                              {% endfor %}
+                            </datalist>
+
+                            {% if unsavedCodeList.length > 0 %}
+                              <input
+                                type="hidden"
+                                name="unsavedCodeList"
+                                id="unsavedCodeList"
+                                value="{{ unsavedCodeList | join(',') }}"
+                              />
+                            {% endif %}
+
+                        </div>    
+                        {{ govukButton({
+                          text: i18n.sicCodes.SICCSAddSICAddCodeButton,
+                          classes: "govuk-button--secondary", 
+                          attributes: {
+                            id: "add-sic-code-button",
+                            type: "submit",
+                            "data-event-id": "add-sic-code-button"
+                          }
+                        }) }}
+                    </div>
+                  </form>
+                {% endif %}
+
+                {{ govukDetails({
+                    summaryText: i18n.sicCodes.SICCSWhatIsDetailExpanderTitle,
+                    html: summaryDetail,
+                    attributes: {
+                      "data-event-id": "select-what-are-sic-codes-info"
+                    }
+                }) }}
+
+                <form action="{{ saveUrl }}" method="POST">
+                    <input type="hidden" name="pageType" value={{ props.pageType }}>
+                    {% include "includes/csrf_token.njk" %}
+     
+                    {{ govukButton({
+                        id: 'continue',
+                        text: i18n.sicCodes.SICCSSaveContinueButton,
+                        type: "submit",
+                        attributes: {
+                          "data-event-id": "continue-button"
+                        }
+                    }) }}
+                    {% if unsavedCodeList.length > 0 %}
+                      <input type="hidden" name="unsavedCodeList" id="unsavedCodeList" value={{ unsavedCodeList }} />
+                    {% endif %}
+                </form>    
+            </div>
+        </div>
+    </div>
 {% endblock %}

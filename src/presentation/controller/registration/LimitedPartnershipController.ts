@@ -519,7 +519,7 @@ class LimitedPartnershipController extends PartnershipController {
 
         response.render(
           super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { limitedPartnership, ids }, null)
+          super.makeProps(pageRouting, { limitedPartnership, ids, isShowingAddSection: true }, null)
         );
       } catch (error) {
         next(error);
@@ -545,18 +545,14 @@ class LimitedPartnershipController extends PartnershipController {
           }
         }
 
-        const result = await this.limitedPartnershipService.sendPageData(
-          tokens,
-          ids.transactionId,
-          ids.submissionId,
-          pageType,
-          { sic_codes }
-        );
+        const result = await this.limitedPartnershipService.sendPageData(tokens, ids.transactionId, ids.submissionId, pageType, {
+          sic_codes
+        });
 
         if (result?.errors) {
           response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, null, result.errors)
+            super.makeProps(pageRouting, { isShowingAddSection: true }, result.errors)
           );
           return;
         }

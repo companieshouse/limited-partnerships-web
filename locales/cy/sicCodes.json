@@ -1,0 +1,21 @@
+{
+    "sicCodes": {
+        "SICCSPageTitle" : "WELSH -  Check the partnership's nature of business",
+        "SICCSTableHeader" : "WELSH -  Update the nature of business if it has changed. You can do this by adding or removing SIC codes.",
+        "SICCSTableRemoveButton" : "WELSH -  Remove",
+        "SICCSAddSICInsetTitle" : "WELSH -  Add a new nature of business",
+        "SICCSAddSICInsetInstructions" : "WELSH -  Start typing a keyword to see a list of business activities. For example, 'finance'. Or, enter the SIC code if you know it.",
+        "SICCSAddSICAddCodeButton" : "WELSH -  Add SIC code",
+        "SICCSWhatIsDetailExpanderTitle" : "WELSH -  What are SIC codes?",
+        "SICCSWhatIsDetailExpanderParagraph1" : "WELSH -  The SIC (Standard Industrial Classification) codes indicate the partnership's nature of business. A partnership can have up to 4 codes.",
+        "SICCSWhatIsDetailExpanderParagraph2" : "WELSH -  Search for a business activity using keywords that best describe what the partnership does. If you can't find an exact match, search for other keywords that relate to the partnership's activities. ",
+        "SICCSWhatIsDetailExpanderParagraph3Start" : "WELSH -  The ",
+        "SICCSWhatIsDetailExpanderParagraph3Link" : "WELSH -  SIC codes list (opens in a new tab)",
+        "SICCSWhatIsDetailExpanderParagraph3End" : "WELSH -   may help you find a suitable business activity.",
+        "SICCSSaveContinueButton" : "WELSH -  Continue",
+        "SICCSErrorPageTitle" : "WELSH -  Error: ",
+        "SICCSNoSICCodeParagraph1" : "WELSH -  There are no SIC codes registered for this limited partnership.",
+        "SICCSNoSICCodeParagraph2" : "WELSH -  You only need to provide SIC codes if the nature of business has changed.",
+        "SICCSRemovedAllCodes" : "WELSH -  You have removed all the SIC codes for this limited partnership."
+    }
+}
