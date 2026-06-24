@@ -1,16 +1,23 @@
 import { createApiClient, Resource } from "@companieshouse/api-sdk-node";
 import ApiClient from "@companieshouse/api-sdk-node/dist/client";
 
-import { API_URL, OAUTH2_CLIENT_ID, OAUTH2_CLIENT_SECRET, REFRESH_TOKEN_GRANT_TYPE } from "../../config/constants";
+import { API_URL, INTERNAL_API_URL, OAUTH2_CLIENT_ID, OAUTH2_CLIENT_SECRET, REFRESH_TOKEN_GRANT_TYPE } from "../../config/constants";
 import { logger } from "../../utils";
 import UIErrors from "../../domain/entities/UIErrors";
 import { Tokens } from "../../domain/types";
 
 export const makeApiCallWithRetry = async <T>(
   tokens: Tokens,
-  info: { service: string; method: string; args: any[] }
+  info: { service: string; method: string; args: any[] },
+  apiKey?: string
 ): Promise<T> => {
   logger.info(`Making a ${info.method} call on ${info.service} service with token ${tokens.access_token}`);
+
+  if (apiKey) {
+    const internalClient = createInternalApi(apiKey);
+
+    return await internalClient[info.service][info.method](...info.args);
+  }
 
   const client = createApi(tokens.access_token);
 
@@ -33,6 +40,10 @@ export const makeApiCallWithRetry = async <T>(
 
 const createApi = (access_token: string) => {
   return createApiClient(undefined, access_token, API_URL);
+};
+
+const createInternalApi = (apiKey: string) => {
+  return createApiClient(apiKey, undefined, INTERNAL_API_URL);
 };
 
 const refreshToken = async (client: ApiClient, refresh_token: string): Promise<string> => {

@@ -12,6 +12,7 @@ export const COOKIE_DOMAIN = getEnvironmentValue("COOKIE_DOMAIN");
 export const COOKIE_NAME = getEnvironmentValue("COOKIE_NAME");
 export const COOKIE_SECRET = getEnvironmentValue("COOKIE_SECRET");
 export const DEFAULT_SESSION_EXPIRATION = getEnvironmentValue("DEFAULT_SESSION_EXPIRATION", "3600");
+export const CHS_API_KEY = getEnvironmentValue("CHS_API_KEY");
 export const INTERNAL_API_URL = getEnvironmentValue("INTERNAL_API_URL");
 export const LOG_LEVEL = getEnvironmentValue("LOG_LEVEL");
 export const NODE_ENV = process.env["NODE_ENV"];
@@ -145,6 +146,7 @@ export const PARTNER_CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE = "partner-change-check-
 // services
 export const SDK_LIMITED_PARTNERSHIP_SERVICE = "limitedPartnershipsService";
 export const SDK_POSTCODE_LOOKUP_SERVICE = "postCodeLookup";
+export const SDK_SIC_CODES_SERVICE = "sicCodeService";
 export const SDK_TRANSACTION_SERVICE = "transaction";
 export const SDK_PAYMENT_SERVICE = "payment";
 
