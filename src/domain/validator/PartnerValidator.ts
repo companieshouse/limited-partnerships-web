@@ -12,6 +12,8 @@ export default class PartnerValidator {
 
     // data.partnerType and data.partnerEntityType are set/defined on the pageRouting data
 
+    this.delegate = null;
+
     if (data.partnerEntityType === PartnerEntityType.person) {
       this.delegate = new PartnerPersonValidator().set(data, i18n);
     }
