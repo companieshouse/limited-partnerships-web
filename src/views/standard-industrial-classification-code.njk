@@ -204,7 +204,7 @@
                             />
 
                             <datalist id="sic-codes">
-                              {% for sic in searchSicCodes %}
+                              {% for sic in props.data.searchSicCodes %}
                                 <option value="{{ sic.sic_code }}" label="{{ sic.sic_description }}"></option>
                               {% endfor %}
                             </datalist>

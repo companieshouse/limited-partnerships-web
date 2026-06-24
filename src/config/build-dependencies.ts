@@ -20,6 +20,8 @@ import FilingHistoryGateway from "../infrastructure/gateway/filingHistory/Filing
 import FilingHistoryInMemoryGateway from "../infrastructure/gateway/filingHistory/FilingHistoryInMemoryGateway";
 import PersonWithSignificantControlGateway from "../infrastructure/gateway/personWithSignificantControl/PersonWithSignificantControlGateway";
 import PersonWithSignificantControlInMemoryGateway from "../infrastructure/gateway/personWithSignificantControl/PersonWithSignificantControlInMemoryGateway";
+import SicCodesGateway from "../infrastructure/gateway/sicCodes/SicCodesGateway";
+import SicCodesInMemoryGateway from "../infrastructure/gateway/sicCodes/SicCodesInMemoryGateway";
 
 import AddressValidator from "../domain/validator/Address";
 import PersonWithSignificantControlValidator from "../domain/validator/PersonWithSignificantControl";
@@ -35,6 +37,7 @@ import CompanyService from "../application/service/CompanyService";
 import PaymentService from "../application/service/PaymentService";
 import TransactionService from "../application/service/TransactionService";
 import FilingHistoryService from "../application/service/FilingHistoryService";
+import SicCodesService from "../application/service/SicCodesServices";
 
 import GlobalController from "../presentation/controller/global/Controller";
 import AddressLookUpController from "../presentation/controller/addressLookUp/Controller";
@@ -65,6 +68,7 @@ export type BuiltDependencies = {
   paymentGateway: any;
   cacheRepository: any;
   filingHistoryGateway: any;
+  sicCodesGateway: any;
 
   // Services
   addressLookUpService: AddressLookUpService;
@@ -76,6 +80,7 @@ export type BuiltDependencies = {
   paymentService: PaymentService;
   transactionService: TransactionService;
   filingHistoryService: FilingHistoryService;
+  sicCodesService: SicCodesService;
 
   // Controllers (subset)
   globalController: GlobalController;
@@ -105,6 +110,7 @@ export function buildDependencies(useInMemory = false): BuiltDependencies {
   const companyGateway = useInMemory ? new CompanyInMemoryGateway() : new CompanyGateway();
   const paymentGateway = useInMemory ? new PaymentInMemoryGateway() : new PaymentGateway();
   const filingHistoryGateway = useInMemory ? new FilingHistoryInMemoryGateway() : new FilingHistoryGateway();
+  const sicCodesGateway = useInMemory ? new SicCodesInMemoryGateway() : new SicCodesGateway();
 
   // Repositories
   const cacheRepository = useInMemory ? new CacheInMemoryRepository() : new CacheRepository();
@@ -132,6 +138,7 @@ export function buildDependencies(useInMemory = false): BuiltDependencies {
   const paymentService = new PaymentService(paymentGateway);
   const transactionService: TransactionService = new TransactionService(transactionGateway);
   const filingHistoryService: FilingHistoryService = new FilingHistoryService(filingHistoryGateway);
+  const sicCodesService: SicCodesService = new SicCodesService(sicCodesGateway);
 
   // Controllers
   const globalController: GlobalController = new GlobalController(
@@ -150,7 +157,8 @@ export function buildDependencies(useInMemory = false): BuiltDependencies {
       limitedPartnerService,
       personWithSignificantControlService,
       cacheService,
-      paymentService
+      paymentService,
+      sicCodesService
     );
 
   const addressLookUpController: AddressLookUpController = new AddressLookUpController(
@@ -243,6 +251,7 @@ export function buildDependencies(useInMemory = false): BuiltDependencies {
     paymentGateway,
     companyGateway,
     filingHistoryGateway,
+    sicCodesGateway,
     cacheRepository,
 
     addressLookUpService,
@@ -254,6 +263,7 @@ export function buildDependencies(useInMemory = false): BuiltDependencies {
     paymentService,
     transactionService,
     filingHistoryService,
+    sicCodesService,
 
     globalController,
     addressLookUpController,

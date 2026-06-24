@@ -41,8 +41,9 @@ import { PAYMENT_RESPONSE_URL } from "../global/url";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
 import PersonWithSignificantControlService from "../../../application/service/PersonWithSignificantControlService";
-import PartnershipController from "../common/PartnershipController";
+import SicCodesService from "../../../application/service/SicCodesServices";
 
+import PartnershipController from "../common/PartnershipController";
 class LimitedPartnershipController extends PartnershipController {
   constructor(
     private readonly limitedPartnershipService: LimitedPartnershipService,
@@ -50,7 +51,8 @@ class LimitedPartnershipController extends PartnershipController {
     private readonly limitedPartnerService: LimitedPartnerService,
     private readonly personWithSignificantControlService: PersonWithSignificantControlService,
     private readonly cacheService: CacheService,
-    private readonly paymentService: PaymentService
+    private readonly paymentService: PaymentService,
+    private readonly sicCodesService: SicCodesService
   ) {
     super();
   }
@@ -517,9 +519,13 @@ class LimitedPartnershipController extends PartnershipController {
           return;
         }
 
+        const searchSicCodes = await this.sicCodesService.getSicCodes();
+
+        const sicCodesData = { isShowingAddSection: true, searchSicCodes };
+
         response.render(
           super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { limitedPartnership, ids, isShowingAddSection: true }, null)
+          super.makeProps(pageRouting, { limitedPartnership, ids, ...sicCodesData }, null)
         );
       } catch (error) {
         next(error);
@@ -550,10 +556,9 @@ class LimitedPartnershipController extends PartnershipController {
         });
 
         if (result?.errors) {
-          response.render(
-            super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { isShowingAddSection: true }, result.errors)
-          );
+          const sicCodesData = { isShowingAddSection: true };
+
+          response.render(super.templateName(pageRouting.currentUrl), super.makeProps(pageRouting, { ... sicCodesData }, result.errors));
           return;
         }
 

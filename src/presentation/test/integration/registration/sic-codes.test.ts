@@ -20,6 +20,13 @@ describe("Sic Codes", () => {
   beforeEach(() => {
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([]);
     appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
+
+    appDevDependencies.sicCodesGateway.feedSicCodes([
+      { sic_code: "12345", sic_description: "SIC Code 12345" },
+      { sic_code: "56789", sic_description: "SIC Code 56789" },
+      { sic_code: "91011", sic_description: "SIC Code 91011" },
+      { sic_code: "12131", sic_description: "SIC Code 12131" }
+    ]);
   });
 
   describe("Get Sic Codes Page", () => {
@@ -38,6 +45,8 @@ describe("Sic Codes", () => {
         testTranslations(res.text, enTranslationText.sicCodePage);
         expect(res.text).toContain(`${enTranslationText.sicCodePage.title} - ${enTranslationText.serviceRegistration} - GOV.UK`);
         expect(res.text).not.toContain("WELSH -");
+
+        expect(res.text).toContain(appDevDependencies.sicCodesGateway.sicCodes[0].sic_code);
       });
 
       it("should load the page with Welsh text", async () => {
