@@ -1,6 +1,7 @@
 import request from "supertest";
 import enTranslationText from "../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../locales/cy/translations.json";
+import cyErrorsText from "../../../../../../locales/cy/errors.json";
 import app from "../../app";
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
@@ -222,6 +223,40 @@ describe("Add Limited Partner Person Page", () => {
       expect(res.text).toContain('id="previous_name-2" name="previous_name" type="radio" value="false" checked');
       expect(res.text).toContain("Mongolian");
       expect(res.text).toContain("Uzbek");
+    });
+
+    it("should show localised capital contribution errors when the section is left blank for an LP (LP-1473)", async () => {
+      const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(PartnershipType.LP).build();
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+      setLocalesEnabled(true);
+
+      const res = await request(app)
+        .post(URL + "?lang=cy")
+        .send({
+          pageType: RegistrationPageType.addLimitedPartnerPerson,
+          partnershipType: PartnershipType.LP,
+          forename: "test"
+        });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(cyErrorsText.errorMessages.capitalContribution.currencyRequired);
+      expect(res.text).toContain(cyErrorsText.errorMessages.capitalContribution.valueRequired);
+      expect(res.text).toContain(cyErrorsText.errorMessages.capitalContribution.atLeastOneType);
+    });
+
+    it("should not require capital contribution when the section is not shown (PFLP)", async () => {
+      const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(PartnershipType.PFLP).build();
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+      const res = await request(app).post(URL).send({
+        pageType: RegistrationPageType.addLimitedPartnerPerson,
+        partnershipType: PartnershipType.PFLP,
+        forename: "test"
+      });
+
+      expect(res.status).toBe(302);
+      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
     });
 
     it.each(["", "   ", undefined])(

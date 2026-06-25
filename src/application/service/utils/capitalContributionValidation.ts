@@ -1,9 +1,26 @@
+import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+
 import UIErrors from "../../../domain/entities/UIErrors";
 import { symbols } from "./currencies";
 
 // CHIPS enforces a maximum of 10 digits in total with up to 2 decimal places
 // (CheckMaxDecimalValueRule precision=10, scale=2), giving a maximum value of 99999999.99.
 const MAX_DIGITS = 10;
+
+// The capital contribution section is only shown for LP/SLP partnerships in the
+// registration and post-transition journeys (see capital-contribution.njk). It must
+// be validated whenever that section is shown - including when every field is left
+// blank - otherwise the "required" errors fall through to the backend, which returns
+// them unlocalised (English). See LP-1473.
+const CAPITAL_CONTRIBUTION_PARTNERSHIP_TYPES: string[] = [PartnershipType.LP, PartnershipType.SLP];
+
+const isCapitalContributionApplicable = (data: Record<string, any>): boolean => {
+  const journeyTypes = data?.journeyTypes ?? {};
+  const isCapitalContributionJourney = Boolean(journeyTypes.isRegistration || journeyTypes.isPostTransition);
+  const isCapitalContributionPartnershipType = CAPITAL_CONTRIBUTION_PARTNERSHIP_TYPES.includes(data?.partnershipType);
+
+  return isCapitalContributionJourney && isCapitalContributionPartnershipType;
+};
 
 const capitalContributionValidation = (data: Record<string, string | string[]>, i18n: any): void => {
   const uiErrors = new UIErrors();
@@ -69,4 +86,4 @@ const hasComma = (str: string): boolean => {
   return str.includes(",");
 };
 
-export { capitalContributionValidation };
+export { capitalContributionValidation, isCapitalContributionApplicable };

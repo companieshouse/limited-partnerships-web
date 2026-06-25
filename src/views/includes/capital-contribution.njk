@@ -1,5 +1,9 @@
 {% if (partnershipType == "LP") or (partnershipType == "SLP") %}
 
+  {# Lets the server know the capital contribution section was shown so it can validate
+     it even when every field is left blank (LP-1473). #}
+  <input type="hidden" name="partnershipType" value="{{ partnershipType }}">
+
   <hr class="govuk-section-break govuk-section-break--visible govuk-section-break--m">
 
   <h2 class="govuk-heading-m">{{ i18n.capitalContribution.title}}</h2>

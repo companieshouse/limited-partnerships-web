@@ -1,5 +1,8 @@
 import UIErrors from "../../../../domain/entities/UIErrors";
-import { capitalContributionValidation } from "../../../../application/service/utils/capitalContributionValidation";
+import {
+  capitalContributionValidation,
+  isCapitalContributionApplicable
+} from "../../../../application/service/utils/capitalContributionValidation";
 
 import i18nErrorsEn from "../../../../../locales/en/errors.json";
 import i18nErrorsCy from "../../../../../locales/cy/errors.json";
@@ -126,5 +129,22 @@ describe("Gateway capital contribition validation test suite", () => {
         })
       );
     });
+  });
+});
+
+describe("isCapitalContributionApplicable", () => {
+  it.each([
+    ["registration LP", { journeyTypes: { isRegistration: true }, partnershipType: "LP" }, true],
+    ["registration SLP", { journeyTypes: { isRegistration: true }, partnershipType: "SLP" }, true],
+    ["post-transition LP", { journeyTypes: { isPostTransition: true }, partnershipType: "LP" }, true],
+    ["post-transition SLP", { journeyTypes: { isPostTransition: true }, partnershipType: "SLP" }, true],
+    ["registration PFLP", { journeyTypes: { isRegistration: true }, partnershipType: "PFLP" }, false],
+    ["registration SPFLP", { journeyTypes: { isRegistration: true }, partnershipType: "SPFLP" }, false],
+    ["transition LP (section not shown)", { journeyTypes: { isTransition: true }, partnershipType: "LP" }, false],
+    ["missing partnership type", { journeyTypes: { isRegistration: true } }, false],
+    ["missing journey types", { partnershipType: "LP" }, false],
+    ["empty data", {}, false]
+  ])("returns %s -> %s", (_description, data, expected) => {
+    expect(isCapitalContributionApplicable(data)).toBe(expected);
   });
 });
