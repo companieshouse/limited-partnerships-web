@@ -41,7 +41,6 @@ import { PAYMENT_RESPONSE_URL } from "../global/url";
 import GeneralPartnerService from "../../../application/service/GeneralPartnerService";
 import LimitedPartnerService from "../../../application/service/LimitedPartnerService";
 import PersonWithSignificantControlService from "../../../application/service/PersonWithSignificantControlService";
-import SicCodesService from "../../../application/service/SicCodesServices";
 
 import PartnershipController from "../common/PartnershipController";
 class LimitedPartnershipController extends PartnershipController {
@@ -52,7 +51,6 @@ class LimitedPartnershipController extends PartnershipController {
     private readonly personWithSignificantControlService: PersonWithSignificantControlService,
     private readonly cacheService: CacheService,
     private readonly paymentService: PaymentService,
-    private readonly sicCodesService: SicCodesService
   ) {
     super();
   }
