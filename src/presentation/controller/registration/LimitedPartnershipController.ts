@@ -520,7 +520,25 @@ class LimitedPartnershipController extends PartnershipController {
         }
 
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
-        const unsavedSicCodes = cache?.[`unsavedSicCodes`] || [];
+
+        let unsavedSicCodes: {code: string; description: string}[] = [];
+
+        if (cache["unsavedSicCodes"]) {
+          unsavedSicCodes = cache?.["unsavedSicCodes"];
+        }
+
+        if (limitedPartnership?.data?.sic_codes) {
+          limitedPartnership.data.sic_codes.forEach((sicCode: string) => {
+            if (!unsavedSicCodes.some((sic: {code: string; description: string}) => sic.code === sicCode)) {
+              const sicDescription = response.locals.i18n.sicCodes.condensedSicCodes[sicCode]?.sicDescription ?? "";
+              unsavedSicCodes.push({ code: sicCode, description: sicDescription });
+            }
+          });
+        }
+
+        unsavedSicCodes = unsavedSicCodes.sort((a, b) => a.code.localeCompare(b.code));
+
+        this.cacheService.addDataToCache(request.signedCookies, { ...cache, unsavedSicCodes });
 
         const isShowingAddSection = unsavedSicCodes.length < 4;
 

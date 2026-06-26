@@ -16,7 +16,6 @@
 {% endif %}
 
 {% block content %}
-{{ props.data.unsavedSicCodesCacheKey | dump }}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
     {% include "includes/errors.njk" %}
@@ -28,7 +27,7 @@
     <p class="govuk-hint" id="sic-hint">{{ i18n.sicCodePage.hint }}</p>
     <p class="govuk-!-margin-bottom-6"><a href="{{ i18n.sicCodePage.findUrl }}" class="govuk-link govuk-link--no-visited-state govuk-body-m" rel="noreferrer noopener" target="_blank">{{ i18n.sicCodePage.find }}</a>.</p>
 
-    <form class="form" method="post">
+ {#    <form class="form" method="post">
         <input type="hidden" name="pageType" value={{ props.pageType }}>
         {% include "includes/csrf_token.njk" %}
 
@@ -93,7 +92,7 @@
     </form>
       
     </div>
-  </div>
+  </div> #}
 {# {% endblock %} #}
 
 </br>
@@ -116,7 +115,7 @@
 {% endset %}
 
 {% set sicCodesList = SET_SIC_CODES_LIST(i18n) %}
-  <style>
+{#    <style>
     button.govuk-link {
       background: none;
       border: none;
@@ -133,7 +132,7 @@
   </style>
     <div class="govuk-grid-row">
         <div class="govuk-width-container">
-            <div class="govuk-grid-column-two-thirds"> 
+            <div class="govuk-grid-column-two-thirds">  #}
 
                 {% if props.data.sicCodes.length > 0 %}
                   <div class="govuk-summary-list" role="list">
@@ -255,14 +254,8 @@
                     <input type="hidden" name="pageType" value={{ props.pageType }}>
                     {% include "includes/csrf_token.njk" %}
      
-                    {{ govukButton({
-                        id: 'continue',
-                        text: i18n.sicCodes.SICCSSaveContinueButton,
-                        type: "submit",
-                        attributes: {
-                          "data-event-id": "continue-button"
-                        }
-                    }) }}
+                    {% include "includes/save-and-continue-button.njk" %}
+                    
                     {% if unsavedCodeList.length > 0 %}
                       <input type="hidden" name="unsavedCodeList" id="unsavedCodeList" value={{ unsavedCodeList }} />
                     {% endif %}
