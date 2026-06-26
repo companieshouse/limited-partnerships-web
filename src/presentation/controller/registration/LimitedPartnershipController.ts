@@ -582,6 +582,24 @@ class LimitedPartnershipController extends PartnershipController {
             super.makeProps(pageRouting, { isShowingAddSection, sicCodes: unsavedSicCodes }, null)
           );
           return;
+        } else if (request.body.action_remove) {
+          const codeToRemove = escape(request.body.code);
+
+          const updatedSicCodes = unsavedSicCodes.filter((sic) => sic.code !== codeToRemove);
+
+          const cacheUpdated = this.cacheService.addDataToCache(request.signedCookies, {
+            ...cache,
+            [`unsavedSicCodes`]: updatedSicCodes
+          });
+          response.cookie(APPLICATION_CACHE_KEY, cacheUpdated, cookieOptions);
+
+          const isShowingAddSection = updatedSicCodes.length < 4;
+
+          response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(pageRouting, { isShowingAddSection, sicCodes: updatedSicCodes }, null)
+          );
+          return;
         }
         // End of new work currently in progress
 

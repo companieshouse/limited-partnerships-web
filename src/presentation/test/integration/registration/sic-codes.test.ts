@@ -1,24 +1,38 @@
 import request from "supertest";
 import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
+import enGeneralTranslationText from "../../../../../locales/en/translations.json";
+import cyGeneralTranslationText from "../../../../../locales/cy/translations.json";
+import enErrorsTranslationText from "../../../../../locales/en/errors.json";
+import cyErrorsTranslationText from "../../../../../locales/cy/errors.json";
+
 import app from "../app";
-import enTranslationText from "../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../locales/cy/translations.json";
+import { appDevDependencies } from "../../../../config/dev-dependencies";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../utils";
+import { ApiErrors } from "../../../../domain/entities/UIErrors";
+
+import { GENERAL_PARTNERS_URL, REVIEW_GENERAL_PARTNERS_URL, SIC_URL } from "../../../controller/registration/url";
+
+import RegistrationPageType from "../../../controller/registration/PageType";
 
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
-import { appDevDependencies } from "../../../../config/dev-dependencies";
-import { GENERAL_PARTNERS_URL, REVIEW_GENERAL_PARTNERS_URL, SIC_URL } from "../../../controller/registration/url";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
-import RegistrationPageType from "../../../controller/registration/PageType";
-import { ApiErrors } from "../../../../domain/entities/UIErrors";
 import GeneralPartnerBuilder from "../../builder/GeneralPartnerBuilder";
 
 describe("Sic Codes", () => {
   const URL = getUrl(SIC_URL);
   const REDIRECT_URL = getUrl(GENERAL_PARTNERS_URL);
 
+  const enTranslationText = { ...enGeneralTranslationText, ...enErrorsTranslationText };
+  const cyTranslationText = { ...cyGeneralTranslationText, ...cyErrorsTranslationText };
+
   beforeEach(() => {
-    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([]);
+    const limitedPartnership = new LimitedPartnershipBuilder()
+      .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+      .withPartnershipType(PartnershipType.LP)
+      .build();
+
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
     appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
 
     appDevDependencies.sicCodesGateway.feedSicCodes([
@@ -27,18 +41,13 @@ describe("Sic Codes", () => {
       { sic_code: "91011", sic_description: "SIC Code 91011" },
       { sic_code: "12131", sic_description: "SIC Code 12131" }
     ]);
+
+    appDevDependencies.cacheRepository.feedCache({});
   });
 
   describe("Get Sic Codes Page", () => {
     describe("should load page", () => {
       it("should load the page with English text", async () => {
-        const limitedPartnership = new LimitedPartnershipBuilder()
-          .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
-          .withPartnershipType(PartnershipType.LP)
-          .build();
-
-        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
         const res = await request(app).get(URL + "?lang=en");
 
         expect(res.status).toBe(200);
@@ -52,19 +61,29 @@ describe("Sic Codes", () => {
       it("should load the page with Welsh text", async () => {
         setLocalesEnabled(true);
 
-        const limitedPartnership = new LimitedPartnershipBuilder()
-          .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
-          .withPartnershipType(PartnershipType.SLP)
-          .build();
-
-        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
         const res = await request(app).get(URL + "?lang=cy");
 
         expect(res.status).toBe(200);
         expect(res.text).toContain(`${cyTranslationText.sicCodePage.title} - ${cyTranslationText.serviceRegistration} - GOV.UK`);
         testTranslations(res.text, cyTranslationText.sicCodePage);
         expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
+      });
+
+      it("should load the page with cache data", async () => {
+        const cacheData = {
+          unsavedSicCodes: [
+            { code: "12345", description: "SIC Code 12345" },
+            { code: "56789", description: "SIC Code 56789" }
+          ]
+        };
+
+        appDevDependencies.cacheRepository.feedCache(cacheData);
+
+        const res = await request(app).get(URL + "?lang=en");
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain("12345");
+        expect(res.text).toContain("56789");
       });
 
       it("should load the page with data", async () => {
@@ -117,7 +136,83 @@ describe("Sic Codes", () => {
     });
   });
 
-  describe("Post Sic Codes", () => {
+  describe("Post Add sic codes", () => {
+    it("should add a sic code to the list", async () => {
+      const res = await request(app).post(URL).send({
+        pageType: RegistrationPageType.sic,
+        code: "12345",
+        action_add: "true"
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain("12345");
+    });
+
+    it("should not add a duplicate sic code to the list", async () => {
+      const cacheData = {
+        unsavedSicCodes: [{ code: "12345", description: "SIC Code test" }]
+      };
+
+      appDevDependencies.cacheRepository.feedCache(cacheData);
+
+      const res = await request(app).post(URL).send({
+        pageType: RegistrationPageType.sic,
+        code: "12345",
+        action_add: "true"
+      });
+
+      expect(res.status).toBe(200);
+      expect(countOccurrences(res.text, "12345")).toBe(2);
+    });
+
+    it("should not add more than 4 sic codes to the list", async () => {
+      const cacheData = {
+        unsavedSicCodes: [
+          { code: "12345", description: "SIC Code 12345" },
+          { code: "56789", description: "SIC Code 56789" },
+          { code: "91011", description: "SIC Code 91011" },
+          { code: "12131", description: "SIC Code 12131" }
+        ]
+      };
+
+      appDevDependencies.cacheRepository.feedCache(cacheData);
+
+      const res = await request(app).post(URL).send({
+        pageType: RegistrationPageType.sic,
+        code: "14151",
+        action_add: "true"
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).not.toContain("14151");
+      expect(res.text).toContain(enTranslationText.errorMessages.sicCodes.maxSicCodes);
+    });
+  });
+
+  describe("Post Remove sic codes", () => {
+    it("should remove a sic code from the list", async () => {
+      const cacheData = {
+        unsavedSicCodes: [
+          { code: "12345", description: "SIC Code 12345" },
+          { code: "56789", description: "SIC Code 56789" }
+        ]
+      };
+
+      appDevDependencies.cacheRepository.feedCache(cacheData);
+
+      const res = await request(app).post(URL).send({
+        pageType: RegistrationPageType.sic,
+        code: "12345",
+        action_remove: "true"
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).not.toContain("12345");
+      expect(res.text).toContain("56789");
+    });
+  });
+
+  describe("Post Sic Codes - send data to API", () => {
     it("should send sic codes and go to the next page - no GP", async () => {
       const limitedPartnership = new LimitedPartnershipBuilder()
         .withId(appDevDependencies.limitedPartnershipGateway.submissionId)

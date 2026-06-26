@@ -142,14 +142,22 @@
                           <div class="govuk-summary-list__key">{{ sic.code }}</div>
                           <div class="govuk-summary-list__value">{{ sic.description }}</div>
                           <div class="govuk-summary-list__actions">
-                              <form action="{{ sic.removeUrl }}" method="POST">
+                              <form method="POST">
                                   <input type="hidden" name="pageType" value={{ props.pageType }}>
                                   {% include "includes/csrf_token.njk" %}
 
-                                  <button type="submit" class="govuk-link" data-event-id="remove-link">{{ i18n.sicCodes.SICCSTableRemoveButton }}</button>
-                                  {% if unsavedCodeList.length > 0 %}
-                                    <input type="hidden" name="unsavedCodeList" id="unsavedCodeList" value="{{ unsavedCodeList | join(',') }}" />
-                                  {% endif %}
+                                  {{ govukButton({
+                                    text: i18n.sicCodes.SICCSTableRemoveButton,
+                                    name: "action_remove",
+                                    value: "true",
+                                    classes: "govuk-button--secondary", 
+                                    attributes: {
+                                      id: "remove-sic-code-button",
+                                      type: "submit",
+                                      "data-event-id": "remove-sic-code-button"
+                                    }
+                                  }) }}
+                                  <input type="hidden" name="code" value={{ sic.code }} />
                               </form>
                           </div>
                           </div>
