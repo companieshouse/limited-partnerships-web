@@ -4,7 +4,7 @@ import { logger } from "../../utils";
 import UIErrors from "../../domain/entities/UIErrors";
 import { extractAPIErrors, incompletePartnerErrorList } from "./utils";
 import { Tokens } from "../../domain/types";
-import { capitalContributionValidation } from "./utils/capitalContributionValidation";
+import { capitalContributionValidation, isCapitalContributionApplicable } from "./utils/capitalContributionValidation";
 
 class LimitedPartnerService {
   i18n: any;
@@ -24,7 +24,7 @@ class LimitedPartnerService {
     errors?: UIErrors;
   }> {
     try {
-      if (data.contribution_currency_type || data.contribution_currency_value || data.contribution_sub_types) {
+      if (isCapitalContributionApplicable(data)) {
         capitalContributionValidation(data, this.i18n);
       }
 
@@ -93,7 +93,7 @@ class LimitedPartnerService {
     errors?: UIErrors;
   }> {
     try {
-      if (data.contribution_currency_type || data.contribution_currency_value || data.contribution_sub_types) {
+      if (isCapitalContributionApplicable(data)) {
         capitalContributionValidation(data, this.i18n);
       }
 
