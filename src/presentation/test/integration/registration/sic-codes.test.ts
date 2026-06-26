@@ -64,7 +64,7 @@ describe("Sic Codes", () => {
 
       it("should load the page with cache data", async () => {
         const cacheData = {
-          unsavedSicCodes: [
+          sicCodes: [
             { code: "12345", description: "SIC Code 12345" },
             { code: "56789", description: "SIC Code 56789" }
           ]
@@ -98,7 +98,7 @@ describe("Sic Codes", () => {
         expect(res.text).toContain("01140");
 
         expect(appDevDependencies.cacheRepository.getData()).toEqual({
-          unsavedSicCodes: [
+          sicCodes: [
             { code: "01110", description: "Growing of cereals (except rice), leguminous crops and oil seeds" },
             { code: "01120", description: "Growing of rice" },
             { code: "01130", description: "Growing of vegetables and melons, roots and tubers" },
@@ -117,7 +117,7 @@ describe("Sic Codes", () => {
         appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
         const cacheData = {
-          unsavedSicCodes: [
+          sicCodes: [
             { code: "12345", description: "SIC Code 12345" },
             { code: "56789", description: "SIC Code 56789" }
           ]
@@ -180,7 +180,7 @@ describe("Sic Codes", () => {
 
     it("should not add a duplicate sic code to the list", async () => {
       const cacheData = {
-        unsavedSicCodes: [{ code: "12345", description: "SIC Code test" }]
+        sicCodes: [{ code: "12345", description: "SIC Code test" }]
       };
 
       appDevDependencies.cacheRepository.feedCache(cacheData);
@@ -197,7 +197,7 @@ describe("Sic Codes", () => {
 
     it("should not add more than 4 sic codes to the list", async () => {
       const cacheData = {
-        unsavedSicCodes: [
+        sicCodes: [
           { code: "12345", description: "SIC Code 12345" },
           { code: "56789", description: "SIC Code 56789" },
           { code: "91011", description: "SIC Code 91011" },
@@ -220,7 +220,7 @@ describe("Sic Codes", () => {
 
     it("should sort sic code list when adding a new code to the list", async () => {
       const cacheData = {
-        unsavedSicCodes: [
+        sicCodes: [
           { code: "01110", description: "Growing of cereals (except rice), leguminous crops and oil seeds" },
           { code: "01130", description: "Growing of vegetables and melons, roots and tubers" },
           { code: "01140", description: "Growing of sugar cane" }
@@ -238,7 +238,7 @@ describe("Sic Codes", () => {
       expect(res.status).toBe(200);
 
       expect(appDevDependencies.cacheRepository.getData()).toEqual({
-        unsavedSicCodes: [
+        sicCodes: [
           { code: "01110", description: "Growing of cereals (except rice), leguminous crops and oil seeds" },
           { code: "01120", description: "Growing of rice" },
           { code: "01130", description: "Growing of vegetables and melons, roots and tubers" },
@@ -251,7 +251,7 @@ describe("Sic Codes", () => {
   describe("Post Remove sic codes", () => {
     it("should remove a sic code from the list", async () => {
       const cacheData = {
-        unsavedSicCodes: [
+        sicCodes: [
           { code: "12345", description: "SIC Code 12345" },
           { code: "56789", description: "SIC Code 56789" }
         ]
@@ -281,7 +281,7 @@ describe("Sic Codes", () => {
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
       const cacheData = {
-        unsavedSicCodes: [
+        sicCodes: [
           { code: "01110", description: "Growing of cereals (except rice), leguminous crops and oil seeds" },
           { code: "01120", description: "Growing of rice" },
           { code: "01130", description: "Growing of vegetables and melons, roots and tubers" },
@@ -319,7 +319,7 @@ describe("Sic Codes", () => {
       appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
 
       const cacheData = {
-        unsavedSicCodes: [
+        sicCodes: [
           { code: "01110", description: "Growing of cereals (except rice), leguminous crops and oil seeds" }
         ]
       };
@@ -350,7 +350,7 @@ describe("Sic Codes", () => {
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
       const cacheData = {
-        unsavedSicCodes: [
+        sicCodes: [
           { code: "01110", description: "Growing of cereals (except rice), leguminous crops and oil seeds" },
           { code: "01130", description: "Growing of vegetables and melons, roots and tubers" }
         ]

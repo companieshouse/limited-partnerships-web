@@ -43,6 +43,7 @@ import LimitedPartnerService from "../../../application/service/LimitedPartnerSe
 import PersonWithSignificantControlService from "../../../application/service/PersonWithSignificantControlService";
 
 import PartnershipController from "../common/PartnershipController";
+
 class LimitedPartnershipController extends PartnershipController {
   constructor(
     private readonly limitedPartnershipService: LimitedPartnershipService,
@@ -517,37 +518,46 @@ class LimitedPartnershipController extends PartnershipController {
           return;
         }
 
-        const cache = this.cacheService.getDataFromCache(request.signedCookies);
-
-        let unsavedSicCodes: {code: string; description: string}[] = [];
-
-        if (cache["unsavedSicCodes"]) {
-          unsavedSicCodes = cache?.["unsavedSicCodes"];
+        let sicCodes: { code: string; description: string }[] = [];
+        if (pageType === RegistrationPageType.sic) {
+          sicCodes = this.concatenateSicCodeList(request, limitedPartnership, response);
         }
 
-        if (limitedPartnership?.data?.sic_codes) {
-          limitedPartnership.data.sic_codes.forEach((sicCode: string) => {
-            if (!unsavedSicCodes.some((sic: {code: string; description: string}) => sic.code === sicCode)) {
-              const sicDescription = response.locals.i18n.sicCodes.condensedSicCodes[sicCode]?.sicDescription ?? "";
-              unsavedSicCodes.push({ code: sicCode, description: sicDescription });
-            }
-          });
-        }
-
-        unsavedSicCodes = unsavedSicCodes.sort((a, b) => a.code.localeCompare(b.code));
-
-        this.cacheService.addDataToCache(request.signedCookies, { ...cache, unsavedSicCodes });
-
-        const isShowingAddSection = unsavedSicCodes.length < 4;
+        const isShowingAddSection = this.isShowingAddSection(sicCodes);
 
         response.render(
           super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { limitedPartnership, ids, isShowingAddSection, sicCodes: unsavedSicCodes }, null)
+          super.makeProps(pageRouting, { limitedPartnership, ids, isShowingAddSection, sicCodes }, null)
         );
       } catch (error) {
         next(error);
       }
     };
+  }
+
+  private concatenateSicCodeList(request: Request, limitedPartnership: LimitedPartnership, response: Response) {
+    const cache = this.cacheService.getDataFromCache(request.signedCookies);
+
+    let sicCodes: { code: string; description: string; }[] = [];
+
+    if (cache["sicCodes"]) {
+      sicCodes = cache?.["sicCodes"];
+    }
+
+    if (limitedPartnership?.data?.sic_codes) {
+      limitedPartnership.data.sic_codes.forEach((sicCode: string) => {
+        if (!sicCodes.some((sic: { code: string; description: string; }) => sic.code === sicCode)) {
+          const sicDescription = response.locals.i18n.sicCodes.condensedSicCodes[sicCode]?.sicDescription ?? "";
+          sicCodes.push({ code: sicCode, description: sicDescription });
+        }
+      });
+    }
+
+    sicCodes = sicCodes.sort((a, b) => a.code.localeCompare(b.code));
+
+    this.cacheService.addDataToCache(request.signedCookies, { ...cache, sicCodes });
+
+    return sicCodes;
   }
 
   sendSicCodesPageData() {
@@ -562,69 +572,14 @@ class LimitedPartnershipController extends PartnershipController {
 
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
 
-        // New work currently in progress
-        let unsavedSicCodes: { code: string; description: string }[] = cache?.[`unsavedSicCodes`] || [];
-        const sicCode = escape(request.body.code);
-
-        if (request.body.action_add) {
-          if (!unsavedSicCodes.some((sic) => sic.code === sicCode)) {
-            if (unsavedSicCodes.length >= 4) {
-              const uiErrors = new UIErrors();
-              uiErrors.setWebError("sic_codes", response.locals.i18n.errorMessages.sicCodes.maxSicCodes);
-
-              response.render(
-                super.templateName(pageRouting.currentUrl),
-                super.makeProps(pageRouting, { isShowingAddSection: true, sicCodes: unsavedSicCodes }, uiErrors)
-              );
-              return;
-            }
-
-            const sicDescription = response.locals.i18n.sicCodes.condensedSicCodes[sicCode]?.sicDescription ?? "";
-            unsavedSicCodes.push({ code: sicCode, description: sicDescription });
-
-            unsavedSicCodes = unsavedSicCodes.sort((a, b) => a.code.localeCompare(b.code));
-
-            const cacheUpdated = this.cacheService.addDataToCache(request.signedCookies, {
-              ...cache,
-              [`unsavedSicCodes`]: unsavedSicCodes
-            });
-            response.cookie(APPLICATION_CACHE_KEY, cacheUpdated, cookieOptions);
-          }
-
-          const isShowingAddSection = unsavedSicCodes.length < 4;
-
-          response.render(
-            super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { isShowingAddSection, sicCodes: unsavedSicCodes }, null)
-          );
-          return;
-        } else if (request.body.action_remove) {
-          const codeToRemove = escape(request.body.code);
-
-          const updatedSicCodes = unsavedSicCodes.filter((sic) => sic.code !== codeToRemove);
-
-          const cacheUpdated = this.cacheService.addDataToCache(request.signedCookies, {
-            ...cache,
-            [`unsavedSicCodes`]: updatedSicCodes
-          });
-          response.cookie(APPLICATION_CACHE_KEY, cacheUpdated, cookieOptions);
-
-          const isShowingAddSection = updatedSicCodes.length < 4;
-
-          response.render(
-            super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { isShowingAddSection, sicCodes: updatedSicCodes }, null)
-          );
-          return;
-        }
-        // End of new work currently in progress
+        const sicCodes: { code: string; description: string }[] = cache?.[`sicCodes`] || [];
 
         const result = await this.limitedPartnershipService.sendPageData(tokens, ids.transactionId, ids.submissionId, pageType, {
-          sic_codes: unsavedSicCodes.map((sic) => sic.code)
+          sic_codes: sicCodes.map((sic) => sic.code)
         });
 
         if (result?.errors) {
-          const isShowingAddSection = unsavedSicCodes.length < 4;
+          const isShowingAddSection = sicCodes.length < 4;
           const sicCodesData = { isShowingAddSection };
 
           response.render(super.templateName(pageRouting.currentUrl), super.makeProps(pageRouting, { ...cache, ... sicCodesData }, result.errors));
@@ -640,12 +595,100 @@ class LimitedPartnershipController extends PartnershipController {
     };
   }
 
+  addSicCode() {
+    return (request: Request, response: Response) => {
+
+      const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
+      const pageRouting = super.getRouting(registrationsRouting, pageType, request);
+
+      const cache = this.cacheService.getDataFromCache(request.signedCookies);
+
+      let sicCodes: { code: string; description: string }[] = cache?.[`sicCodes`] || [];
+      const sicCode = escape(request.body.code);
+
+      if (!sicCodes.some((sic) => sic.code === sicCode)) {
+        if (sicCodes.length >= 4) {
+          const uiErrors = new UIErrors();
+          uiErrors.setWebError("sic_codes", response.locals.i18n.errorMessages.sicCodes.maxSicCodes);
+
+          response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(pageRouting, { isShowingAddSection: true, sicCodes: sicCodes }, uiErrors)
+          );
+          return;
+        }
+
+        sicCodes = this.addSicCodeToCache(response, sicCode, sicCodes, request, cache);
+      }
+
+      const isShowingAddSection = this.isShowingAddSection(sicCodes);
+
+      response.render(
+        super.templateName(pageRouting.currentUrl),
+        super.makeProps(pageRouting, { isShowingAddSection, sicCodes: sicCodes }, null)
+      );
+    };
+  }
+
+  private addSicCodeToCache(response: Response, sicCode: string, sicCodes: { code: string; description: string; }[], request: Request, cache: Record<string, any>) {
+    const sicDescription = response.locals.i18n.sicCodes.condensedSicCodes[sicCode]?.sicDescription ?? "";
+
+    sicCodes.push({ code: sicCode, description: sicDescription });
+
+    sicCodes = sicCodes.sort((a, b) => a.code.localeCompare(b.code));
+
+    const cacheUpdated = this.cacheService.addDataToCache(request.signedCookies, {
+      ...cache,
+      [`sicCodes`]: sicCodes
+    });
+    response.cookie(APPLICATION_CACHE_KEY, cacheUpdated, cookieOptions);
+
+    return sicCodes;
+  }
+
+  removeSicCode() {
+    return (request: Request, response: Response) => {
+      const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
+      const pageRouting = super.getRouting(registrationsRouting, pageType, request);
+
+      const cache = this.cacheService.getDataFromCache(request.signedCookies);
+
+      const sicCodes: { code: string; description: string }[] = cache?.[`sicCodes`] || [];
+
+      const updatedSicCodes = this.removeSicCodeFromCache(request, sicCodes, cache, response);
+
+      const isShowingAddSection = this.isShowingAddSection(updatedSicCodes);
+
+      response.render(
+        super.templateName(pageRouting.currentUrl),
+        super.makeProps(pageRouting, { isShowingAddSection, sicCodes: updatedSicCodes }, null)
+      );
+    };
+  }
+
+  private removeSicCodeFromCache(request: Request, sicCodes: { code: string; description: string; }[], cache: Record<string, any>, response: Response) {
+    const codeToRemove = escape(request.body.code);
+
+    const updatedSicCodes = sicCodes.filter((sic) => sic.code !== codeToRemove);
+
+    const cacheUpdated = this.cacheService.addDataToCache(request.signedCookies, {
+      ...cache,
+      [`sicCodes`]: updatedSicCodes
+    });
+    response.cookie(APPLICATION_CACHE_KEY, cacheUpdated, cookieOptions);
+    return updatedSicCodes;
+  }
+
   private async conditionalSicCodeNextUrl(tokens: Tokens, ids: Ids, pageRouting: PageRouting, request: Request) {
     const result = await this.generalPartnerService.getGeneralPartners(tokens, ids.transactionId);
 
     if (result.generalPartners.length > 0) {
       pageRouting.nextUrl = super.insertIdsInUrl(REVIEW_GENERAL_PARTNERS_URL, ids, request.url);
     }
+  }
+
+  private isShowingAddSection(updatedSicCodes: { code: string; description: string; }[]) {
+    return updatedSicCodes.length < 4;
   }
 }
 
