@@ -195,6 +195,10 @@
             "term": "WELSH - Date the term changed must be the same as or after limited partnership’s registration date",
             "generalPartner": "WELSH - Date the general partner changed must be the same as or after limited partnership's registration date",
             "limitedPartner": "WELSH - Date the limited partner changed must be the same as or after limited partnership's registration date"
+        },
+
+        "sicCodes": {
+            "maxSicCodes" : "WELSH - You can only add up to 4 SIC codes."
         }
     }
 }

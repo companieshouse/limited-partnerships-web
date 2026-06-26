@@ -104,7 +104,6 @@
 </br>
 </br>
 
-{% set sicCodes = props.data.unsavedSicCodesCacheKey %}
 
 {% set summaryDetail %}
   <p class="govuk-body">{{ i18n.SICCSWhatIsDetailExpanderParagraph1 }}</p>
@@ -136,9 +135,9 @@
         <div class="govuk-width-container">
             <div class="govuk-grid-column-two-thirds"> 
 
-                {% if sicCodes.length > 0 %}
+                {% if props.data.sicCodes.length > 0 %}
                   <div class="govuk-summary-list" role="list">
-                      {% for sic in sicCodes %}
+                      {% for sic in props.data.sicCodes %}
                           <div class="govuk-summary-list__row">
                           <div class="govuk-summary-list__key">{{ sic.code }}</div>
                           <div class="govuk-summary-list__value">{{ sic.description }}</div>

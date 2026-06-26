@@ -518,11 +518,15 @@ class LimitedPartnershipController extends PartnershipController {
 
           return;
         }
+
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
+        const unsavedSicCodes = cache?.[`unsavedSicCodes`] || [];
+
+        const isShowingAddSection = unsavedSicCodes.length < 4;
 
         response.render(
           super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { limitedPartnership, ids, isShowingAddSection: true, ...cache }, null)
+          super.makeProps(pageRouting, { limitedPartnership, ids, isShowingAddSection, sicCodes: unsavedSicCodes }, null)
         );
       } catch (error) {
         next(error);
@@ -545,17 +549,39 @@ class LimitedPartnershipController extends PartnershipController {
         const sic_codes: string[] = [];
 
         // New work currently in progress
-        const unsaved_sic_codes: { code: string; description: string }[] = cache?.[`unsavedSicCodesCacheKey`] || [];
+        const unsavedSicCodes: { code: string; description: string }[] = cache?.[`unsavedSicCodes`] || [];
         const sicCode = escape(request.body.code);
 
-        if (request.body.action_add && !unsaved_sic_codes.some(sic => sic.code === sicCode)) {
-          const sicDescription = response.locals.i18n.sicCodes.condensedSicCodes[sicCode]?.sicDescription ?? "";
-          unsaved_sic_codes.push({ code: sicCode, description: sicDescription });
+        if (request.body.action_add) {
+          if (!unsavedSicCodes.some((sic) => sic.code === sicCode)) {
+            if (unsavedSicCodes.length >= 4) {
+              const uiErrors = new UIErrors();
+              uiErrors.setWebError("sic_codes", response.locals.i18n.errorMessages.sicCodes.maxSicCodes);
 
-          const cache = this.cacheService.addDataToCache(request.signedCookies, {
-            [`unsavedSicCodesCacheKey`]: unsaved_sic_codes
-          });
-          response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
+              response.render(
+                super.templateName(pageRouting.currentUrl),
+                super.makeProps(pageRouting, { isShowingAddSection: true, sicCodes: unsavedSicCodes }, uiErrors)
+              );
+              return;
+            }
+
+            const sicDescription = response.locals.i18n.sicCodes.condensedSicCodes[sicCode]?.sicDescription ?? "";
+            unsavedSicCodes.push({ code: sicCode, description: sicDescription });
+
+            const cacheUpdated = this.cacheService.addDataToCache(request.signedCookies, {
+              ...cache,
+              [`unsavedSicCodes`]: unsavedSicCodes
+            });
+            response.cookie(APPLICATION_CACHE_KEY, cacheUpdated, cookieOptions);
+          }
+
+          const isShowingAddSection = unsavedSicCodes.length < 4;
+
+          response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(pageRouting, { isShowingAddSection, sicCodes: unsavedSicCodes }, null)
+          );
+          return;
         }
         // End of new work currently in progress
 
@@ -570,7 +596,8 @@ class LimitedPartnershipController extends PartnershipController {
         });
 
         if (result?.errors) {
-          const sicCodesData = { isShowingAddSection: true };
+          const isShowingAddSection = unsavedSicCodes.length < 4;
+          const sicCodesData = { isShowingAddSection };
 
           response.render(super.templateName(pageRouting.currentUrl), super.makeProps(pageRouting, { ...cache, ... sicCodesData }, result.errors));
           return;
