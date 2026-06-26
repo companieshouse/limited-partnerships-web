@@ -562,10 +562,8 @@ class LimitedPartnershipController extends PartnershipController {
 
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
 
-        const sic_codes: string[] = [];
-
         // New work currently in progress
-        const unsavedSicCodes: { code: string; description: string }[] = cache?.[`unsavedSicCodes`] || [];
+        let unsavedSicCodes: { code: string; description: string }[] = cache?.[`unsavedSicCodes`] || [];
         const sicCode = escape(request.body.code);
 
         if (request.body.action_add) {
@@ -583,6 +581,8 @@ class LimitedPartnershipController extends PartnershipController {
 
             const sicDescription = response.locals.i18n.sicCodes.condensedSicCodes[sicCode]?.sicDescription ?? "";
             unsavedSicCodes.push({ code: sicCode, description: sicDescription });
+
+            unsavedSicCodes = unsavedSicCodes.sort((a, b) => a.code.localeCompare(b.code));
 
             const cacheUpdated = this.cacheService.addDataToCache(request.signedCookies, {
               ...cache,
@@ -619,14 +619,8 @@ class LimitedPartnershipController extends PartnershipController {
         }
         // End of new work currently in progress
 
-        for (let i = 1; i <= 4; i++) {
-          if (request.body[`sic${i}`]) {
-            sic_codes.push(request.body[`sic${i}`]);
-          }
-        }
-
         const result = await this.limitedPartnershipService.sendPageData(tokens, ids.transactionId, ids.submissionId, pageType, {
-          sic_codes
+          sic_codes: unsavedSicCodes.map((sic) => sic.code)
         });
 
         if (result?.errors) {

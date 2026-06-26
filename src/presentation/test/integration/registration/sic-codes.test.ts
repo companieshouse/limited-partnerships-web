@@ -37,13 +37,6 @@ describe("Sic Codes", () => {
 
     appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
 
-    appDevDependencies.sicCodesGateway.feedSicCodes([
-      { sic_code: "12345", sic_description: "SIC Code 12345" },
-      { sic_code: "56789", sic_description: "SIC Code 56789" },
-      { sic_code: "91011", sic_description: "SIC Code 91011" },
-      { sic_code: "12131", sic_description: "SIC Code 12131" }
-    ]);
-
     appDevDependencies.cacheRepository.feedCache({});
   });
 
@@ -56,8 +49,6 @@ describe("Sic Codes", () => {
         // testTranslations(res.text, enTranslationText.sicCodes);
         expect(res.text).toContain(`${enTranslationText.sicCodePage.title} - ${enTranslationText.serviceRegistration} - GOV.UK`);
         expect(res.text).not.toContain("WELSH -");
-
-        expect(res.text).toContain(appDevDependencies.sicCodesGateway.sicCodes[0].sic_code);
       });
 
       it("should load the page with Welsh text", async () => {
@@ -92,7 +83,7 @@ describe("Sic Codes", () => {
         const limitedPartnership = new LimitedPartnershipBuilder()
           .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
           .withPartnershipType(PartnershipType.LP)
-          .withSicCodes(["01110", "01120", "01130", "01140"])
+          .withSicCodes(["01120", "01110", "01130", "01140"])
           .build();
 
         appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
@@ -100,6 +91,7 @@ describe("Sic Codes", () => {
         const res = await request(app).get(URL + "?lang=en");
 
         expect(res.status).toBe(200);
+
         expect(res.text).toContain("01110");
         expect(res.text).toContain("01120");
         expect(res.text).toContain("01130");
@@ -225,6 +217,35 @@ describe("Sic Codes", () => {
       expect(res.text).not.toContain("14151");
       expect(res.text).toContain(enTranslationText.errorMessages.sicCodes.maxSicCodes);
     });
+
+    it("should sort sic code list when adding a new code to the list", async () => {
+      const cacheData = {
+        unsavedSicCodes: [
+          { code: "01110", description: "Growing of cereals (except rice), leguminous crops and oil seeds" },
+          { code: "01130", description: "Growing of vegetables and melons, roots and tubers" },
+          { code: "01140", description: "Growing of sugar cane" }
+        ]
+      };
+
+      appDevDependencies.cacheRepository.feedCache(cacheData);
+
+      const res = await request(app).post(URL).send({
+        pageType: RegistrationPageType.sic,
+        code: "01120",
+        action_add: "true"
+      });
+
+      expect(res.status).toBe(200);
+
+      expect(appDevDependencies.cacheRepository.getData()).toEqual({
+        unsavedSicCodes: [
+          { code: "01110", description: "Growing of cereals (except rice), leguminous crops and oil seeds" },
+          { code: "01120", description: "Growing of rice" },
+          { code: "01130", description: "Growing of vegetables and melons, roots and tubers" },
+          { code: "01140", description: "Growing of sugar cane" }
+        ]
+      });
+    });
   });
 
   describe("Post Remove sic codes", () => {
@@ -259,19 +280,26 @@ describe("Sic Codes", () => {
 
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
+      const cacheData = {
+        unsavedSicCodes: [
+          { code: "01110", description: "Growing of cereals (except rice), leguminous crops and oil seeds" },
+          { code: "01120", description: "Growing of rice" },
+          { code: "01130", description: "Growing of vegetables and melons, roots and tubers" },
+          { code: "01140", description: "Growing of sugar cane" }
+        ]
+      };
+
+      appDevDependencies.cacheRepository.feedCache(cacheData);
+
       const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.sic,
-        sic1: "12345",
-        sic2: "56789",
-        sic3: "91011",
-        sic4: "12131"
+        pageType: RegistrationPageType.sic
       });
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
       expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships[0].data).toEqual(
         expect.objectContaining({
-          sic_codes: ["12345", "56789", "91011", "12131"]
+          sic_codes: ["01110", "01120", "01130", "01140"]
         })
       );
     });
@@ -290,12 +318,16 @@ describe("Sic Codes", () => {
 
       appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
 
+      const cacheData = {
+        unsavedSicCodes: [
+          { code: "01110", description: "Growing of cereals (except rice), leguminous crops and oil seeds" }
+        ]
+      };
+
+      appDevDependencies.cacheRepository.feedCache(cacheData);
+
       const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.sic,
-        sic1: "12345",
-        sic2: "56789",
-        sic3: "91011",
-        sic4: "12131"
+        pageType: RegistrationPageType.sic
       });
 
       const REDIRECT_URL = getUrl(REVIEW_GENERAL_PARTNERS_URL);
@@ -304,7 +336,7 @@ describe("Sic Codes", () => {
       expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
       expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships[0].data).toEqual(
         expect.objectContaining({
-          sic_codes: ["12345", "56789", "91011", "12131"]
+          sic_codes: ["01110"]
         })
       );
     });
@@ -317,17 +349,24 @@ describe("Sic Codes", () => {
 
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
+      const cacheData = {
+        unsavedSicCodes: [
+          { code: "01110", description: "Growing of cereals (except rice), leguminous crops and oil seeds" },
+          { code: "01130", description: "Growing of vegetables and melons, roots and tubers" }
+        ]
+      };
+
+      appDevDependencies.cacheRepository.feedCache(cacheData);
+
       const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.sic,
-        sic1: "12345",
-        sic4: "12131"
+        pageType: RegistrationPageType.sic
       });
 
       expect(res.status).toBe(302);
       expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
       expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships[0].data).toEqual(
         expect.objectContaining({
-          sic_codes: ["12345", "12131"]
+          sic_codes: ["01110", "01130"]
         })
       );
     });
