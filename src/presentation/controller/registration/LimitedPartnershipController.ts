@@ -51,7 +51,7 @@ class LimitedPartnershipController extends PartnershipController {
     private readonly limitedPartnerService: LimitedPartnerService,
     private readonly personWithSignificantControlService: PersonWithSignificantControlService,
     private readonly cacheService: CacheService,
-    private readonly paymentService: PaymentService,
+    private readonly paymentService: PaymentService
   ) {
     super();
   }
@@ -122,22 +122,28 @@ class LimitedPartnershipController extends PartnershipController {
 
     const { generalPartners } = await this.generalPartnerService.getGeneralPartners(tokens, transactionId);
     const { limitedPartners } = await this.limitedPartnerService.getLimitedPartners(tokens, transactionId);
-    const { personsWithSignificantControl } =
-        await this.personWithSignificantControlService.getPersonsWithSignificantControl(tokens, transactionId);
+    const { personsWithSignificantControl } = await this.personWithSignificantControlService.getPersonsWithSignificantControl(
+      tokens,
+      transactionId
+    );
 
     const sortedPersonsWithSignificantControl =
-      personsWithSignificantControl?.length
-        ? this.sortPscByType(personsWithSignificantControl)
-        : personsWithSignificantControl;
+      personsWithSignificantControl?.length ? this.sortPscByType(personsWithSignificantControl) : personsWithSignificantControl;
 
     return { generalPartners, limitedPartners, personsWithSignificantControl: sortedPersonsWithSignificantControl };
   }
 
   private sortPscByType(personsWithSignificantControl: PersonWithSignificantControl[]): PersonWithSignificantControl[] {
     // Group into three arrays (preserves original order within each group)
-    const individuals = personsWithSignificantControl.filter(p => p?.data?.type === PersonWithSignificantControlType.INDIVIDUAL_PERSON);
-    const legalEntities = personsWithSignificantControl.filter(p => p?.data?.type === PersonWithSignificantControlType.RELEVANT_LEGAL_ENTITY);
-    const otherRegistrables = personsWithSignificantControl.filter(p => p?.data?.type === PersonWithSignificantControlType.OTHER_REGISTRABLE_PERSON);
+    const individuals = personsWithSignificantControl.filter(
+      (p) => p?.data?.type === PersonWithSignificantControlType.INDIVIDUAL_PERSON
+    );
+    const legalEntities = personsWithSignificantControl.filter(
+      (p) => p?.data?.type === PersonWithSignificantControlType.RELEVANT_LEGAL_ENTITY
+    );
+    const otherRegistrables = personsWithSignificantControl.filter(
+      (p) => p?.data?.type === PersonWithSignificantControlType.OTHER_REGISTRABLE_PERSON
+    );
 
     return [...individuals, ...legalEntities, ...otherRegistrables];
   }
@@ -269,18 +275,9 @@ class LimitedPartnershipController extends PartnershipController {
           return await this.renderCheckYourAnswersWithLawfulPurposeError(request, response);
         }
 
-        await this.limitedPartnershipService.sendPageData(
-          tokens,
-          ids.transactionId,
-          ids.submissionId,
-          pageType,
-          request.body
-        );
+        await this.limitedPartnershipService.sendPageData(tokens, ids.transactionId, ids.submissionId, pageType, request.body);
 
-        const closeTransactionResponse = await this.limitedPartnershipService.closeTransaction(
-          tokens,
-          ids.transactionId
-        );
+        const closeTransactionResponse = await this.limitedPartnershipService.closeTransaction(tokens, ids.transactionId);
         const startPaymentSessionUrl: string = closeTransactionResponse.headers?.["x-payment-required"];
 
         if (!startPaymentSessionUrl) {
@@ -538,7 +535,7 @@ class LimitedPartnershipController extends PartnershipController {
   private concatenateSicCodeList(request: Request, limitedPartnership: LimitedPartnership, response: Response) {
     const cache = this.cacheService.getDataFromCache(request.signedCookies);
 
-    let sicCodes: { code: string; description: string; }[] = [];
+    let sicCodes: { code: string; description: string }[] = [];
 
     if (cache["sicCodes"]) {
       sicCodes = cache?.["sicCodes"];
@@ -546,7 +543,7 @@ class LimitedPartnershipController extends PartnershipController {
 
     if (limitedPartnership?.data?.sic_codes) {
       limitedPartnership.data.sic_codes.forEach((sicCode: string) => {
-        if (!sicCodes.some((sic: { code: string; description: string; }) => sic.code === sicCode)) {
+        if (!sicCodes.some((sic: { code: string; description: string }) => sic.code === sicCode)) {
           const sicDescription = response.locals.i18n.sicCodes.condensedSicCodes[sicCode]?.sicDescription ?? "";
           sicCodes.push({ code: sicCode, description: sicDescription });
         }
@@ -582,7 +579,10 @@ class LimitedPartnershipController extends PartnershipController {
           const isShowingAddSection = sicCodes.length < 4;
           const sicCodesData = { isShowingAddSection };
 
-          response.render(super.templateName(pageRouting.currentUrl), super.makeProps(pageRouting, { ...cache, ... sicCodesData }, result.errors));
+          response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(pageRouting, { ...cache, ...sicCodesData }, result.errors)
+          );
           return;
         }
 
@@ -597,7 +597,6 @@ class LimitedPartnershipController extends PartnershipController {
 
   addSicCode() {
     return (request: Request, response: Response) => {
-
       const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
       const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
@@ -606,22 +605,43 @@ class LimitedPartnershipController extends PartnershipController {
       let sicCodes: { code: string; description: string }[] = cache?.[`sicCodes`] || [];
       const sicCode = escape(request.body.code);
 
-      if (!sicCodes.some((sic) => sic.code === sicCode)) {
-        if (sicCodes.length >= 4) {
-          const uiErrors = new UIErrors();
-          uiErrors.setWebError("sic_codes", response.locals.i18n.errorMessages.sicCodes.maxSicCodes);
+      const isShowingAddSection = this.isShowingAddSection(sicCodes);
 
-          response.render(
-            super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { isShowingAddSection: true, sicCodes: sicCodes }, uiErrors)
-          );
-          return;
-        }
+      const uiErrors = new UIErrors();
+      const errorKey = "sic_codes";
+      let error = false;
 
-        sicCodes = this.addSicCodeToCache(response, sicCode, sicCodes, request, cache);
+      if (sicCodes.map((sic) => sic.code).includes(sicCode)) {
+        uiErrors.setWebError(errorKey, response.locals.i18n.errorMessages.sicCodes.sicCodeDuplicate);
+        error = true;
       }
 
-      const isShowingAddSection = this.isShowingAddSection(sicCodes);
+      if (sicCodes.length >= 4) {
+        uiErrors.setWebError(errorKey, response.locals.i18n.errorMessages.sicCodes.maxSicCodes);
+        error = true;
+      }
+
+      if (sicCodes.map((sic) => sic.code).includes(sicCode)) {
+        uiErrors.setWebError(errorKey, response.locals.i18n.errorMessages.sicCodes.sicCodeDuplicate);
+        error = true;
+      }
+
+      const sicDescription = response.locals.i18n.sicCodes.condensedSicCodes[sicCode]?.sicDescription ?? "";
+
+      if (!sicDescription) {
+        uiErrors.setWebError(errorKey, response.locals.i18n.errorMessages.sicCodes.sicCodeInvalid);
+        error = true;
+      }
+
+      if (error) {
+        response.render(
+          super.templateName(pageRouting.currentUrl),
+          super.makeProps(pageRouting, { isShowingAddSection, sicCodes: sicCodes }, uiErrors)
+        );
+        return;
+      }
+
+      sicCodes = this.addSicCodeToCache(request, response, sicCode, sicDescription, sicCodes, cache);
 
       response.render(
         super.templateName(pageRouting.currentUrl),
@@ -630,9 +650,14 @@ class LimitedPartnershipController extends PartnershipController {
     };
   }
 
-  private addSicCodeToCache(response: Response, sicCode: string, sicCodes: { code: string; description: string; }[], request: Request, cache: Record<string, any>) {
-    const sicDescription = response.locals.i18n.sicCodes.condensedSicCodes[sicCode]?.sicDescription ?? "";
-
+  private addSicCodeToCache(
+    request: Request,
+    response: Response,
+    sicCode: string,
+    sicDescription: string,
+    sicCodes: { code: string; description: string }[],
+    cache: Record<string, any>
+  ) {
     sicCodes.push({ code: sicCode, description: sicDescription });
 
     sicCodes = sicCodes.sort((a, b) => a.code.localeCompare(b.code));
@@ -666,7 +691,12 @@ class LimitedPartnershipController extends PartnershipController {
     };
   }
 
-  private removeSicCodeFromCache(request: Request, sicCodes: { code: string; description: string; }[], cache: Record<string, any>, response: Response) {
+  private removeSicCodeFromCache(
+    request: Request,
+    sicCodes: { code: string; description: string }[],
+    cache: Record<string, any>,
+    response: Response
+  ) {
     const codeToRemove = escape(request.body.code);
 
     const updatedSicCodes = sicCodes.filter((sic) => sic.code !== codeToRemove);
@@ -687,7 +717,7 @@ class LimitedPartnershipController extends PartnershipController {
     }
   }
 
-  private isShowingAddSection(updatedSicCodes: { code: string; description: string; }[]) {
+  private isShowingAddSection(updatedSicCodes: { code: string; description: string }[]) {
     return updatedSicCodes.length < 4;
   }
 }

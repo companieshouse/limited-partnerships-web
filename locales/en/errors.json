@@ -197,7 +197,10 @@
         },
 
         "sicCodes": {
-            "maxSicCodes" : "You can only add up to 4 SIC codes."
+            "maxSicCodes" : "You can only add up to 4 SIC codes.",
+            "sicCodeRequired" : "Add a SIC code. A limited partnership must have at least one SIC code.",
+            "sicCodeInvalid" : "This SIC code does not exist. Enter a correct SIC code.",
+            "sicCodeDuplicate" : "This SIC code already exists for the limited partnership. Enter a different SIC code."
         }
     }
 }

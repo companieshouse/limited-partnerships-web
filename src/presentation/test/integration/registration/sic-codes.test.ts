@@ -65,8 +65,8 @@ describe("Sic Codes", () => {
       it("should load the page with cache data", async () => {
         const cacheData = {
           sicCodes: [
-            { code: "12345", description: "SIC Code 12345" },
-            { code: "56789", description: "SIC Code 56789" }
+            { code: "01110", description: "Growing of cereals (except rice), leguminous crops and oil seeds" },
+            { code: "01120", description: "Growing of rice" }
           ]
         };
 
@@ -75,8 +75,8 @@ describe("Sic Codes", () => {
         const res = await request(app).get(URL + "?lang=en");
 
         expect(res.status).toBe(200);
-        expect(res.text).toContain("12345");
-        expect(res.text).toContain("56789");
+        expect(res.text).toContain("01110");
+        expect(res.text).toContain("01120");
       });
 
       it("should load the page with data", async () => {
@@ -111,15 +111,15 @@ describe("Sic Codes", () => {
         const limitedPartnership = new LimitedPartnershipBuilder()
           .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
           .withPartnershipType(PartnershipType.LP)
-          .withSicCodes(["91011", "12131"])
+          .withSicCodes(["01110", "01120"])
           .build();
 
         appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
         const cacheData = {
           sicCodes: [
-            { code: "12345", description: "SIC Code 12345" },
-            { code: "56789", description: "SIC Code 56789" }
+            { code: "01130", description: "Growing of vegetables and melons, roots and tubers" },
+            { code: "01140", description: "Growing of sugar cane" }
           ]
         };
 
@@ -128,10 +128,10 @@ describe("Sic Codes", () => {
         const res = await request(app).get(URL + "?lang=en");
 
         expect(res.status).toBe(200);
-        expect(res.text).toContain("12345");
-        expect(res.text).toContain("56789");
-        expect(res.text).toContain("91011");
-        expect(res.text).toContain("12131");
+        expect(res.text).toContain("01110");
+        expect(res.text).toContain("01120");
+        expect(res.text).toContain("01130");
+        expect(res.text).toContain("01140");
       });
     });
 
@@ -170,21 +170,36 @@ describe("Sic Codes", () => {
     it("should add a sic code to the list", async () => {
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.sic,
-        code: "12345",
+        code: "01110",
         action_add: "true"
       });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain("12345");
+
+      expect(countOccurrences(res.text, "01110")).toBe(3);
+
     });
 
     it("should not add a duplicate sic code to the list", async () => {
       const cacheData = {
-        sicCodes: [{ code: "12345", description: "SIC Code test" }]
+        sicCodes: [{ code: "01110", description: "Growing of cereals (except rice), leguminous crops and oil seeds" }]
       };
 
       appDevDependencies.cacheRepository.feedCache(cacheData);
 
+      const res = await request(app).post(URL).send({
+        pageType: RegistrationPageType.sic,
+        code: "01110",
+        action_add: "true"
+      });
+
+      expect(res.status).toBe(200);
+
+      expect(countOccurrences(res.text, "01110")).toBe(3);
+      expect(res.text).toContain(enTranslationText.errorMessages.sicCodes.sicCodeDuplicate);
+    });
+
+    it("should not add an invalid sic code to the list", async () => {
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.sic,
         code: "12345",
@@ -192,16 +207,18 @@ describe("Sic Codes", () => {
       });
 
       expect(res.status).toBe(200);
-      expect(countOccurrences(res.text, "12345")).toBe(2);
+
+      expect(countOccurrences(res.text, "12345")).toBe(0);
+      expect(res.text).toContain(enTranslationText.errorMessages.sicCodes.sicCodeInvalid);
     });
 
     it("should not add more than 4 sic codes to the list", async () => {
       const cacheData = {
         sicCodes: [
-          { code: "12345", description: "SIC Code 12345" },
-          { code: "56789", description: "SIC Code 56789" },
-          { code: "91011", description: "SIC Code 91011" },
-          { code: "12131", description: "SIC Code 12131" }
+          { code: "01110", description: "Growing of cereals (except rice), leguminous crops and oil seeds" },
+          { code: "01120", description: "Growing of rice" },
+          { code: "01130", description: "Growing of vegetables and melons, roots and tubers" },
+          { code: "01140", description: "Growing of sugar cane" }
         ]
       };
 
@@ -209,12 +226,12 @@ describe("Sic Codes", () => {
 
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.sic,
-        code: "14151",
+        code: "01150",
         action_add: "true"
       });
 
       expect(res.status).toBe(200);
-      expect(res.text).not.toContain("14151");
+      expect(res.text).not.toContain("01150");
       expect(res.text).toContain(enTranslationText.errorMessages.sicCodes.maxSicCodes);
     });
 
@@ -252,8 +269,8 @@ describe("Sic Codes", () => {
     it("should remove a sic code from the list", async () => {
       const cacheData = {
         sicCodes: [
-          { code: "12345", description: "SIC Code 12345" },
-          { code: "56789", description: "SIC Code 56789" }
+          { code: "01110", description: "Growing of cereals (except rice), leguminous crops and oil seeds" },
+          { code: "01120", description: "Growing of rice" }
         ]
       };
 
@@ -261,13 +278,14 @@ describe("Sic Codes", () => {
 
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.sic,
-        code: "12345",
+        code: "01110",
         action_remove: "true"
       });
 
       expect(res.status).toBe(200);
-      expect(res.text).not.toContain("12345");
-      expect(res.text).toContain("56789");
+
+      expect(countOccurrences(res.text, "01110")).toBe(1);
+      expect(res.text).toContain("01120");
     });
   });
 
