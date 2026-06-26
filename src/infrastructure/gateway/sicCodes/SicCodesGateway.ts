@@ -1,5 +1,5 @@
 import { CondensedSicCodeData } from "@companieshouse/api-sdk-node/dist/services/sic-code";
-import { CHS_API_KEY, SDK_SIC_CODES_SERVICE } from "../../../config";
+import { SDK_SIC_CODES_SERVICE } from "../../../config";
 import ISicCodesGateway from "../../../domain/ISicCodesGateway";
 import { makeApiCallWithRetry } from "../api";
 import { Resource } from "@companieshouse/api-sdk-node";
@@ -13,7 +13,7 @@ class SicCodesGateway implements ISicCodesGateway {
       args: []
     };
 
-    const response = await makeApiCallWithRetry<Resource<CondensedSicCodeData[]>>({ access_token: "", refresh_token: "" }, apiCall, CHS_API_KEY);
+    const response = await makeApiCallWithRetry<Resource<CondensedSicCodeData[]>>({ access_token: "", refresh_token: "" }, apiCall);
 
     if (response.httpStatusCode !== 200) {
       throw response;

@@ -518,14 +518,11 @@ class LimitedPartnershipController extends PartnershipController {
 
           return;
         }
-
-        const searchSicCodes = await this.sicCodesService.getSicCodes();
-
-        const sicCodesData = { isShowingAddSection: true, searchSicCodes };
+        const cache = this.cacheService.getDataFromCache(request.signedCookies);
 
         response.render(
           super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { limitedPartnership, ids, ...sicCodesData }, null)
+          super.makeProps(pageRouting, { limitedPartnership, ids, isShowingAddSection: true, ...cache }, null)
         );
       } catch (error) {
         next(error);
@@ -543,7 +540,24 @@ class LimitedPartnershipController extends PartnershipController {
         const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
 
+        const cache = this.cacheService.getDataFromCache(request.signedCookies);
+
         const sic_codes: string[] = [];
+
+        // New work currently in progress
+        const unsaved_sic_codes: { code: string; description: string }[] = cache?.[`unsavedSicCodesCacheKey`] || [];
+        const sicCode = escape(request.body.code);
+
+        if (request.body.action_add && !unsaved_sic_codes.some(sic => sic.code === sicCode)) {
+          const sicDescription = response.locals.i18n.sicCodes.condensedSicCodes[sicCode]?.sicDescription ?? "";
+          unsaved_sic_codes.push({ code: sicCode, description: sicDescription });
+
+          const cache = this.cacheService.addDataToCache(request.signedCookies, {
+            [`unsavedSicCodesCacheKey`]: unsaved_sic_codes
+          });
+          response.cookie(APPLICATION_CACHE_KEY, cache, cookieOptions);
+        }
+        // End of new work currently in progress
 
         for (let i = 1; i <= 4; i++) {
           if (request.body[`sic${i}`]) {
@@ -558,7 +572,7 @@ class LimitedPartnershipController extends PartnershipController {
         if (result?.errors) {
           const sicCodesData = { isShowingAddSection: true };
 
-          response.render(super.templateName(pageRouting.currentUrl), super.makeProps(pageRouting, { ... sicCodesData }, result.errors));
+          response.render(super.templateName(pageRouting.currentUrl), super.makeProps(pageRouting, { ...cache, ... sicCodesData }, result.errors));
           return;
         }
 
