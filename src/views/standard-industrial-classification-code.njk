@@ -1,7 +1,7 @@
 {% extends "layout.njk" %}
 
-{% set pageTitle = i18n.sicCodePage.title %}
-{% set publicRegisterInformationLine1 = i18n.sicCodePage.publicRegisterLine1 %}
+{% set pageTitle = i18n.sicCodes.title %}
+{% set publicRegisterInformationLine1 = i18n.sicCodes.publicRegisterLine1 %}
 
 {% block content %}
   <div class="govuk-grid-row">
@@ -10,21 +10,12 @@
 
       {% include "includes/proposed-name.njk" %} 
 
-      <h1 class="govuk-heading-xl">{{ i18n.sicCodePage.title }}</h1>
+      <h1 class="govuk-heading-xl">{{ i18n.sicCodes.title }}</h1>
 
-      <p class="govuk-hint" id="sic-hint">{{ i18n.sicCodePage.hint }}</p>
-      <p class="govuk-!-margin-bottom-6"><a href="{{ i18n.sicCodePage.findUrl }}" class="govuk-link govuk-link--no-visited-state govuk-body-m" rel="noreferrer noopener" target="_blank">{{ i18n.sicCodePage.find }}</a>.</p>
-
-
-      {% set summaryDetail %}
-        <p class="govuk-body">{{ i18n.SICCSWhatIsDetailExpanderParagraph1 }}</p>
-        <p class="govuk-body">{{ i18n.SICCSWhatIsDetailExpanderParagraph2 }}</p>
-        <p class="govuk-body">
-          {{ i18n.SICCSWhatIsDetailExpanderParagraph3Start }}
-          <a class="govuk-link" href="https://resources.companieshouse.gov.uk/sic/" target="_blank" data-event-id="select-sic-codes-list-link">{{ i18n.SICCSWhatIsDetailExpanderParagraph3Link }}</a>
-          {{ i18n.SICCSWhatIsDetailExpanderParagraph3End }}
-        </p>
-      {% endset %}
+      <p class="govuk-hint" id="sic-hint">{{ i18n.sicCodes.hint }}</p>
+      <p class="govuk-!-margin-bottom-6">
+        <a href="{{ i18n.sicCodes.findUrl }}" class="govuk-link govuk-link--no-visited-state govuk-body-m" rel="noreferrer noopener" target="_blank">{{ i18n.sicCodes.sicCodePage.find }}</a>
+      </p>
 
       {% set sicCodesList = SET_SIC_CODES_LIST(i18n) %}
 
@@ -40,7 +31,7 @@
                   <div class="govuk-summary-list__value">{{ sic.description }}</div>
                   <div class="govuk-summary-list__actions">
                     {{ govukButton({
-                      text: i18n.sicCodes.SICCSTableRemoveButton,
+                      text: i18n.sicCodes.removeButton,
                       name: "action_remove",
                       value: sic.code,
                       classes: "govuk-button--secondary", 
@@ -54,69 +45,52 @@
                 </div>
             {% endfor %}
           </div>
-        {% elif displayRemovedAllSicCodes %}
-          <div>
-            <p class="govuk-body">
-              <strong>{{ i18n.sicCodes.SICCSRemovedAllCodes }}</strong>
-            </p>
-          </div>
-        {% else %}  
-          <div>
-            <p class="govuk-body">
-              <strong>{{ i18n.sicCodes.SICCSNoSICCodeParagraph1 }}</strong>
-            </p>
-            <p class="govuk-body">
-              <strong>{{ i18n.sicCodes.SICCSNoSICCodeParagraph2 }}</strong>
-            </p>
-          </div>
         {% endif %}
             
         {% if props.data.isShowingAddSection %}
           <div class="govuk-inset-text">
             <div class="govuk-form-group govuk-!-margin-bottom-6">
               <label class="govuk-label govuk-label--m" for="sic-code-input">
-                {{ i18n.sicCodes.SICCSAddSICInsetTitle }}
+                {{ i18n.sicCodes.addTitle }}
               </label>
+
               <div id="sic-hint" class="govuk-hint">
-                {{ i18n.sicCodes.SICCSAddSICInsetInstructions }}
+                {{ i18n.sicCodes.addHint }}
               </div>
+
               <div class="govuk-form-group govuk-form-group--error">
-                {% if errors %}
+                {% if props.errors.sic_codes %}
                   <span class="govuk-error-message">
-                    <span class="govuk-visually-hidden">Error:</span> {{ errors[0].text }}
+                    {{ props.errors.sic_codes.text }}
                   </span>
                 {% endif %}
               </div>
-              <div id="sic-code-autocomplete"></div>
 
-              <input
-                class="govuk-input govuk-!-width-full"
-                id="sic-code-input"
-                placeholder="Search by SIC code or description"
-                name="codeToAdd"
-                type="text"
-                list="sic-codes"
-                aria-describedby="sic-hint"
-              />
+              {{ govukInput({
+                id: "sic-code-input",
+                name: "codeToAdd",
+                type: "text",
+                classes: "govuk-!-width-full",
+                describedBy: "sic-hint",
+                label: {
+                  text: i18n.sicCodes.addTitle,
+                  classes: "govuk-visually-hidden"
+                },
+                attributes: {
+                  placeholder: "Search by SIC code or description",
+                  list: "sic-codes"
+                }
+              }) }}
 
               <datalist id="sic-codes">
                 {% for sic in sicCodesList %}
                   <option value="{{ sic.value }}" label="{{ sic.text }}"></option>
                 {% endfor %}
               </datalist>
-
-              {% if unsavedCodeList.length > 0 %}
-                <input
-                  type="hidden"
-                  name="unsavedCodeList"
-                  id="unsavedCodeList"
-                  value="{{ unsavedCodeList | join(',') }}"
-                />
-              {% endif %}
             </div>
 
             {{ govukButton({
-              text: i18n.sicCodes.SICCSAddSICAddCodeButton,
+              text: i18n.sicCodes.addButton,
               name: "action_add",
               value: "true",
               classes: "govuk-button--secondary", 
@@ -130,8 +104,14 @@
         {% endif %}
 
         {{ govukDetails({
-            summaryText: i18n.sicCodes.SICCSWhatIsDetailExpanderTitle,
-            html: summaryDetail,
+            summaryText: i18n.sicCodes.expander.title,
+            html: 
+              '<p class="govuk-body">' + i18n.sicCodes.expander.paragraph1 | escape + '</p>' +
+              '<p class="govuk-body">' + i18n.sicCodes.expander.paragraph2 | escape + '</p>' +
+              '<p class="govuk-body">' + i18n.sicCodes.expander.paragraph3Start | escape +
+                '<a class="govuk-link" href="https://resources.companieshouse.gov.uk/sic/" target="_blank" data-event-id="select-sic-codes-list-link">' + i18n.sicCodes.expander.paragraph3Link | escape + '</a>' +
+                i18n.sicCodes.expander.paragraph3End | escape +
+              '</p>',
             attributes: {
               "data-event-id": "select-what-are-sic-codes-info"
             }

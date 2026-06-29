@@ -1,22 +1,18 @@
 {
     "sicCodes": {
-        "SICCSPageTitle" : "Check the partnership's nature of business",
-        "SICCSTableHeader" : "Update the nature of business if it has changed. You can do this by adding or removing SIC codes.",
-        "SICCSTableRemoveButton" : "Remove",
-        "SICCSAddSICInsetTitle" : "Add a new nature of business",
-        "SICCSAddSICInsetInstructions" : "Start typing a keyword to see a list of business activities. For example, 'finance'. Or, enter the SIC code if you know it.",
-        "SICCSAddSICAddCodeButton" : "Add SIC code",
-        "SICCSWhatIsDetailExpanderTitle" : "What are SIC codes?",
-        "SICCSWhatIsDetailExpanderParagraph1" : "The SIC (Standard Industrial Classification) codes indicate the partnership's nature of business. A partnership can have up to 4 codes.",
-        "SICCSWhatIsDetailExpanderParagraph2" : "Search for a business activity using keywords that best describe what the partnership does. If you can't find an exact match, search for other keywords that relate to the partnership's activities. ",
-        "SICCSWhatIsDetailExpanderParagraph3Start" : "The ",
-        "SICCSWhatIsDetailExpanderParagraph3Link" : "SIC codes list (opens in a new tab)",
-        "SICCSWhatIsDetailExpanderParagraph3End" : " may help you find a suitable business activity.",
-        "SICCSSaveContinueButton" : "Continue",
-        "SICCSErrorPageTitle" : "Error: ",
-        "SICCSNoSICCodeParagraph1" : "There are no SIC codes registered for this limited partnership.",
-        "SICCSNoSICCodeParagraph2" : "You only need to provide SIC codes if the nature of business has changed.",
-        "SICCSRemovedAllCodes" : "You have removed all the SIC codes for this limited partnership.",
+        "title": "What will the partnership be doing?",
+        "removeButton" : "Remove",
+        "addTitle" : "Tell us about the entended nature of business",
+        "addHint" : "Start typing a keyword to see a list of business activities. For example, 'finance'. Or, enter the SIC code if you know it. You can add up to 4 SIC codes.",
+        "addButton" : "Add SIC code",
+        "expander": {
+            "title" : "What are SIC codes?",
+            "paragraph1" : "The SIC (Standard Industrial Classification) codes indicate the partnership's nature of business. A partnership can have up to 4 codes.",
+            "paragraph2" : "Search for a business activity using keywords that best describe what the partnership does. If you can't find an exact match, search for other keywords that relate to the partnership's activities. ",
+            "paragraph3Start" : "The ",
+            "paragraph3Link" : "SIC codes list (opens in a new tab)",
+            "paragraph3End" : " may help you find a suitable business activity."
+        },
         "condensedSicCodes": {
             "01110": {
                 "sicCode": "01110",

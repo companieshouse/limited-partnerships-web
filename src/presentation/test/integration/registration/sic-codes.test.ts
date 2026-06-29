@@ -10,7 +10,7 @@ import cyErrorsTranslationText from "../../../../../locales/cy/errors.json";
 
 import app from "../app";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
-import { countOccurrences, getUrl, setLocalesEnabled } from "../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import { ApiErrors } from "../../../../domain/entities/UIErrors";
 
 import { GENERAL_PARTNERS_URL, REVIEW_GENERAL_PARTNERS_URL, SIC_URL } from "../../../controller/registration/url";
@@ -31,6 +31,7 @@ describe("Sic Codes", () => {
     const limitedPartnership = new LimitedPartnershipBuilder()
       .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
       .withPartnershipType(PartnershipType.LP)
+      .withSicCodes([])
       .build();
 
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
@@ -46,8 +47,8 @@ describe("Sic Codes", () => {
         const res = await request(app).get(URL + "?lang=en");
 
         expect(res.status).toBe(200);
-        // testTranslations(res.text, enTranslationText.sicCodes);
-        expect(res.text).toContain(`${enTranslationText.sicCodePage.title} - ${enTranslationText.serviceRegistration} - GOV.UK`);
+        testTranslations(res.text, enTranslationText.sicCodes, ["removeButton"]);
+        expect(res.text).toContain(`${enTranslationText.sicCodes.title} - ${enTranslationText.serviceRegistration} - GOV.UK`);
         expect(res.text).not.toContain("WELSH -");
       });
 
@@ -57,17 +58,19 @@ describe("Sic Codes", () => {
         const res = await request(app).get(URL + "?lang=cy");
 
         expect(res.status).toBe(200);
-        expect(res.text).toContain(`${cyTranslationText.sicCodePage.title} - ${cyTranslationText.serviceRegistration} - GOV.UK`);
-        // testTranslations(res.text, cyTranslationText.sicCodes);
+        testTranslations(res.text, cyTranslationText.sicCodes, ["removeButton"]);
+        expect(res.text).toContain(`${cyTranslationText.sicCodes.title} - ${cyTranslationText.serviceRegistration} - GOV.UK`);
         expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
       });
 
       it("should load the page with cache data", async () => {
         const cacheData = {
-          sicCodes: [
-            { code: "01110", description: "Growing of cereals (except rice), leguminous crops and oil seeds" },
-            { code: "01120", description: "Growing of rice" }
-          ]
+          [appDevDependencies.transactionGateway.transactionId]: {
+            sicCodes: [
+              { code: "01110", description: "Growing of cereals (except rice), leguminous crops and oil seeds" },
+              { code: "01120", description: "Growing of rice" }
+            ]
+          }
         };
 
         appDevDependencies.cacheRepository.feedCache(cacheData);
@@ -98,12 +101,14 @@ describe("Sic Codes", () => {
         expect(res.text).toContain("01140");
 
         expect(appDevDependencies.cacheRepository.getData()).toEqual({
-          sicCodes: [
-            { code: "01110", description: "Growing of cereals (except rice), leguminous crops and oil seeds" },
-            { code: "01120", description: "Growing of rice" },
-            { code: "01130", description: "Growing of vegetables and melons, roots and tubers" },
-            { code: "01140", description: "Growing of sugar cane" }
-          ]
+          [appDevDependencies.transactionGateway.transactionId]: {
+            sicCodes: [
+              { code: "01110", description: "Growing of cereals (except rice), leguminous crops and oil seeds" },
+              { code: "01120", description: "Growing of rice" },
+              { code: "01130", description: "Growing of vegetables and melons, roots and tubers" },
+              { code: "01140", description: "Growing of sugar cane" }
+            ]
+          }
         });
       });
 
@@ -117,10 +122,12 @@ describe("Sic Codes", () => {
         appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
         const cacheData = {
-          sicCodes: [
-            { code: "01130", description: "Growing of vegetables and melons, roots and tubers" },
-            { code: "01140", description: "Growing of sugar cane" }
-          ]
+          [appDevDependencies.transactionGateway.transactionId]: {
+            sicCodes: [
+              { code: "01130", description: "Growing of vegetables and melons, roots and tubers" },
+              { code: "01140", description: "Growing of sugar cane" }
+            ]
+          }
         };
 
         appDevDependencies.cacheRepository.feedCache(cacheData);
@@ -169,11 +176,13 @@ describe("Sic Codes", () => {
   describe("Post Add sic codes", () => {
     it("should add a sic code to the list", async () => {
       const cacheData = {
-        sicCodes: [
-          { code: "01110", description: "Growing of cereals (except rice), leguminous crops and oil seeds" },
-          { code: "01120", description: "Growing of rice" },
-          { code: "01130", description: "Growing of vegetables and melons, roots and tubers" }
-        ]
+        [appDevDependencies.transactionGateway.transactionId]: {
+          sicCodes: [
+            { code: "01110", description: "Growing of cereals (except rice), leguminous crops and oil seeds" },
+            { code: "01120", description: "Growing of rice" },
+            { code: "01130", description: "Growing of vegetables and melons, roots and tubers" }
+          ]
+        }
       };
 
       appDevDependencies.cacheRepository.feedCache(cacheData);
@@ -187,13 +196,15 @@ describe("Sic Codes", () => {
       expect(res.status).toBe(200);
 
       expect(countOccurrences(res.text, "01140")).toBe(2);
-      expect(res.text).not.toContain(enTranslationText.sicCodes.SICCSAddSICAddCodeButton);
+      expect(res.text).not.toContain(enTranslationText.sicCodes.addButton);
 
     });
 
     it("should not add a duplicate sic code to the list", async () => {
       const cacheData = {
-        sicCodes: [{ code: "01110", description: "Growing of cereals (except rice), leguminous crops and oil seeds" }]
+        [appDevDependencies.transactionGateway.transactionId]: {
+          sicCodes: [{ code: "01110", description: "Growing of cereals (except rice), leguminous crops and oil seeds" }]
+        }
       };
 
       appDevDependencies.cacheRepository.feedCache(cacheData);
@@ -225,12 +236,14 @@ describe("Sic Codes", () => {
 
     it("should not add more than 4 sic codes to the list", async () => {
       const cacheData = {
-        sicCodes: [
-          { code: "01110", description: "Growing of cereals (except rice), leguminous crops and oil seeds" },
-          { code: "01120", description: "Growing of rice" },
-          { code: "01130", description: "Growing of vegetables and melons, roots and tubers" },
-          { code: "01140", description: "Growing of sugar cane" }
-        ]
+        [appDevDependencies.transactionGateway.transactionId]: {
+          sicCodes: [
+            { code: "01110", description: "Growing of cereals (except rice), leguminous crops and oil seeds" },
+            { code: "01120", description: "Growing of rice" },
+            { code: "01130", description: "Growing of vegetables and melons, roots and tubers" },
+            { code: "01140", description: "Growing of sugar cane" }
+          ]
+        }
       };
 
       appDevDependencies.cacheRepository.feedCache(cacheData);
@@ -248,11 +261,13 @@ describe("Sic Codes", () => {
 
     it("should sort sic code list when adding a new code to the list", async () => {
       const cacheData = {
-        sicCodes: [
-          { code: "01110", description: "Growing of cereals (except rice), leguminous crops and oil seeds" },
-          { code: "01130", description: "Growing of vegetables and melons, roots and tubers" },
-          { code: "01140", description: "Growing of sugar cane" }
-        ]
+        [appDevDependencies.transactionGateway.transactionId]: {
+          sicCodes: [
+            { code: "01110", description: "Growing of cereals (except rice), leguminous crops and oil seeds" },
+            { code: "01130", description: "Growing of vegetables and melons, roots and tubers" },
+            { code: "01140", description: "Growing of sugar cane" }
+          ]
+        }
       };
 
       appDevDependencies.cacheRepository.feedCache(cacheData);
@@ -266,12 +281,14 @@ describe("Sic Codes", () => {
       expect(res.status).toBe(200);
 
       expect(appDevDependencies.cacheRepository.getData()).toEqual({
-        sicCodes: [
-          { code: "01110", description: "Growing of cereals (except rice), leguminous crops and oil seeds" },
-          { code: "01120", description: "Growing of rice" },
-          { code: "01130", description: "Growing of vegetables and melons, roots and tubers" },
-          { code: "01140", description: "Growing of sugar cane" }
-        ]
+        [appDevDependencies.transactionGateway.transactionId]: {
+          sicCodes: [
+            { code: "01110", description: "Growing of cereals (except rice), leguminous crops and oil seeds" },
+            { code: "01120", description: "Growing of rice" },
+            { code: "01130", description: "Growing of vegetables and melons, roots and tubers" },
+            { code: "01140", description: "Growing of sugar cane" }
+          ]
+        }
       });
     });
 
@@ -292,10 +309,12 @@ describe("Sic Codes", () => {
   describe("Post Remove sic codes", () => {
     it("should remove a sic code from the list", async () => {
       const cacheData = {
-        sicCodes: [
-          { code: "01110", description: "Growing of cereals (except rice), leguminous crops and oil seeds" },
-          { code: "01120", description: "Growing of rice" }
-        ]
+        [appDevDependencies.transactionGateway.transactionId]: {
+          sicCodes: [
+            { code: "01110", description: "Growing of cereals (except rice), leguminous crops and oil seeds" },
+            { code: "01120", description: "Growing of rice" }
+          ]
+        }
       };
 
       appDevDependencies.cacheRepository.feedCache(cacheData);
@@ -322,12 +341,14 @@ describe("Sic Codes", () => {
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
       const cacheData = {
-        sicCodes: [
-          { code: "01110", description: "Growing of cereals (except rice), leguminous crops and oil seeds" },
-          { code: "01120", description: "Growing of rice" },
-          { code: "01130", description: "Growing of vegetables and melons, roots and tubers" },
-          { code: "01140", description: "Growing of sugar cane" }
-        ]
+        [appDevDependencies.transactionGateway.transactionId]: {
+          sicCodes: [
+            { code: "01110", description: "Growing of cereals (except rice), leguminous crops and oil seeds" },
+            { code: "01120", description: "Growing of rice" },
+            { code: "01130", description: "Growing of vegetables and melons, roots and tubers" },
+            { code: "01140", description: "Growing of sugar cane" }
+          ]
+        }
       };
 
       appDevDependencies.cacheRepository.feedCache(cacheData);
@@ -360,9 +381,9 @@ describe("Sic Codes", () => {
       appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
 
       const cacheData = {
-        sicCodes: [
-          { code: "01110", description: "Growing of cereals (except rice), leguminous crops and oil seeds" }
-        ]
+        [appDevDependencies.transactionGateway.transactionId]: {
+          sicCodes: [{ code: "01110", description: "Growing of cereals (except rice), leguminous crops and oil seeds" }]
+        }
       };
 
       appDevDependencies.cacheRepository.feedCache(cacheData);
@@ -391,10 +412,12 @@ describe("Sic Codes", () => {
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
       const cacheData = {
-        sicCodes: [
-          { code: "01110", description: "Growing of cereals (except rice), leguminous crops and oil seeds" },
-          { code: "01130", description: "Growing of vegetables and melons, roots and tubers" }
-        ]
+        [appDevDependencies.transactionGateway.transactionId]: {
+          sicCodes: [
+            { code: "01110", description: "Growing of cereals (except rice), leguminous crops and oil seeds" },
+            { code: "01130", description: "Growing of vegetables and melons, roots and tubers" }
+          ]
+        }
       };
 
       appDevDependencies.cacheRepository.feedCache(cacheData);
@@ -420,7 +443,9 @@ describe("Sic Codes", () => {
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
       const cacheData = {
-        sicCodes: [{ code: "000", description: "Wrong sic code" }]
+        [appDevDependencies.transactionGateway.transactionId]: {
+          sicCodes: [{ code: "000", description: "Wrong sic code" }]
+        }
       };
 
       appDevDependencies.cacheRepository.feedCache(cacheData);
