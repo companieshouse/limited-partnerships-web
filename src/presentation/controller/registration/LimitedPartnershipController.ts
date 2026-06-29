@@ -540,6 +540,24 @@ class LimitedPartnershipController extends PartnershipController {
     let sicCodes: { code: string; description: string }[] = [];
 
     if (cache?.[SIC_CODES_CACHE_KEY]) {
+      const { code, description } = cache[SIC_CODES_CACHE_KEY][0];
+      const sicDescription = response.locals.i18n.sicCodes.condensedSicCodes[code]?.sicDescription ?? "";
+
+      if (sicDescription !== description) {
+        const translatedCache = cache[SIC_CODES_CACHE_KEY].map((sic: { code: string; description: string }) => {
+          sic.description = response.locals.i18n.sicCodes.condensedSicCodes[sic.code]?.sicDescription ?? "";
+          return sic;
+        });
+
+        const cacheUpdated = this.cacheService.addDataToCache(request.signedCookies, {
+          [ids.transactionId]: {
+            ...cache,
+            [SIC_CODES_CACHE_KEY]: translatedCache
+          }
+        });
+        response.cookie(APPLICATION_CACHE_KEY, cacheUpdated, cookieOptions);
+      }
+
       return cache?.[SIC_CODES_CACHE_KEY];
     }
 

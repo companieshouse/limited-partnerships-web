@@ -11,7 +11,8 @@
             "paragraph1" : "WELSH - The SIC (Standard Industrial Classification) codes indicate the partnership's nature of business. A partnership can have up to 4 codes.",
             "paragraph2" : "WELSH - Search for a business activity using keywords that best describe what the partnership does. If you can't find an exact match, search for other keywords that relate to the partnership's activities. ",
             "paragraph3Start" : "WELSH - The ",
-            "paragraph3Link" : "WELSH - SIC codes list (opens in a new tab)",
+            "paragraph3Link": "https://resources.companieshouse.gov.uk/welsh/sic/",
+            "paragraph3LinkText" : "WELSH - SIC codes list (opens in a new tab)",
             "paragraph3End" : "WELSH -  may help you find a suitable business activity."
         },
         "condensedSicCodes": {

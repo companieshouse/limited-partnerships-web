@@ -25,7 +25,7 @@
 </style>
 
   <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
+    <div class="govuk-grid-column-full">
       {% include "includes/errors.njk" %}
 
       {% include "includes/proposed-name.njk" %} 
@@ -123,7 +123,7 @@
               '<p class="govuk-body">' + i18n.sicCodes.expander.paragraph1 | escape + '</p>' +
               '<p class="govuk-body">' + i18n.sicCodes.expander.paragraph2 | escape + '</p>' +
               '<p class="govuk-body">' + i18n.sicCodes.expander.paragraph3Start | escape +
-                '<a class="govuk-link" href="https://resources.companieshouse.gov.uk/sic/" target="_blank" data-event-id="select-sic-codes-list-link">' + i18n.sicCodes.expander.paragraph3Link | escape + '</a>' +
+                '<a class="govuk-link" href="' + i18n.sicCodes.expander.paragraph3Link | escape + '" target="_blank" data-event-id="select-sic-codes-list-link">' + i18n.sicCodes.expander.paragraph3LinkText | escape + '</a>' +
                 i18n.sicCodes.expander.paragraph3End | escape +
               '</p>',
             attributes: {
