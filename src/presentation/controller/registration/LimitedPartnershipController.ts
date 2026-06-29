@@ -597,6 +597,8 @@ class LimitedPartnershipController extends PartnershipController {
           return;
         }
 
+        this.cacheService.removeDataFromCache(request.signedCookies, SIC_CODES_CACHE_KEY);
+
         await this.conditionalSicCodeNextUrl(tokens, ids, pageRouting, request);
 
         response.redirect(pageRouting.nextUrl);
@@ -614,7 +616,7 @@ class LimitedPartnershipController extends PartnershipController {
       const cache = this.cacheService.getDataFromCache(request.signedCookies);
 
       let sicCodes: { code: string; description: string }[] = cache?.[SIC_CODES_CACHE_KEY] || [];
-      const sicCode = escape(request.body.code);
+      const sicCode = escape(request.body.codeToAdd);
 
       let isShowingAddSection = this.isShowingAddSection(sicCodes);
 
@@ -686,7 +688,7 @@ class LimitedPartnershipController extends PartnershipController {
     cache: Record<string, any>,
     response: Response
   ) {
-    const codeToRemove = escape(request.body.code);
+    const codeToRemove = escape(request.body.action_remove);
 
     const updatedSicCodes = sicCodes.filter((sic) => sic.code !== codeToRemove);
 
@@ -695,6 +697,7 @@ class LimitedPartnershipController extends PartnershipController {
       [SIC_CODES_CACHE_KEY]: updatedSicCodes
     });
     response.cookie(APPLICATION_CACHE_KEY, cacheUpdated, cookieOptions);
+
     return updatedSicCodes;
   }
 

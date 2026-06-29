@@ -180,7 +180,7 @@ describe("Sic Codes", () => {
 
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.sic,
-        code: "01140",
+        codeToAdd: "01140",
         action_add: "true"
       });
 
@@ -200,7 +200,7 @@ describe("Sic Codes", () => {
 
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.sic,
-        code: "01110",
+        codeToAdd: "01110",
         action_add: "true"
       });
 
@@ -213,7 +213,7 @@ describe("Sic Codes", () => {
     it("should not add an invalid sic code to the list", async () => {
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.sic,
-        code: "12345",
+        codeToAdd: "12345",
         action_add: "true"
       });
 
@@ -237,7 +237,7 @@ describe("Sic Codes", () => {
 
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.sic,
-        code: "01150",
+        codeToAdd: "01150",
         action_add: "true"
       });
 
@@ -259,7 +259,7 @@ describe("Sic Codes", () => {
 
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.sic,
-        code: "01120",
+        codeToAdd: "01120",
         action_add: "true"
       });
 
@@ -302,8 +302,7 @@ describe("Sic Codes", () => {
 
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.sic,
-        code: "01110",
-        action_remove: "true"
+        action_remove: "01110"
       });
 
       expect(res.status).toBe(200);
