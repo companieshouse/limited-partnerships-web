@@ -14,10 +14,6 @@ class SicCodesValidator {
       uiErrors.setWebError(this.errorKey, i18n.errorMessages.sicCodes.maxSicCodes);
     }
 
-    if (sicCodes.map((sic) => sic.code).includes(sicCode)) {
-      uiErrors.setWebError(this.errorKey, i18n.errorMessages.sicCodes.sicCodeDuplicate);
-    }
-
     const sicDescription = i18n.sicCodes.condensedSicCodes[sicCode]?.sicDescription ?? "";
 
     if (!sicDescription) {

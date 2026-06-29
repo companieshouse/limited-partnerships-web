@@ -46,6 +46,7 @@ export const APPLICATION_CACHE_KEY = "limited_partnership";
 export const APPLICATION_CACHE_KEY_PREFIX_REGISTRATION = "registration_";
 export const APPLICATION_CACHE_KEY_PREFIX_TRANSITION = "transition_";
 export const APPLICATION_CACHE_KEY_PREFIX_POST_TRANSITION = "post-transition_";
+export const SIC_CODES_CACHE_KEY = "sicCodes";
 
 // Transaction descriptions
 export const TRANSACTION_DESCRIPTION_ADD_LIMITED_PARTNER_PERSON = "Add a limited partner (person)";

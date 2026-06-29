@@ -168,15 +168,26 @@ describe("Sic Codes", () => {
 
   describe("Post Add sic codes", () => {
     it("should add a sic code to the list", async () => {
+      const cacheData = {
+        sicCodes: [
+          { code: "01110", description: "Growing of cereals (except rice), leguminous crops and oil seeds" },
+          { code: "01120", description: "Growing of rice" },
+          { code: "01130", description: "Growing of vegetables and melons, roots and tubers" }
+        ]
+      };
+
+      appDevDependencies.cacheRepository.feedCache(cacheData);
+
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.sic,
-        code: "01110",
+        code: "01140",
         action_add: "true"
       });
 
       expect(res.status).toBe(200);
 
-      expect(countOccurrences(res.text, "01110")).toBe(3);
+      expect(countOccurrences(res.text, "01140")).toBe(2);
+      expect(res.text).not.toContain(enTranslationText.sicCodes.SICCSAddSICAddCodeButton);
 
     });
 

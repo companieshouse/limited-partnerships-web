@@ -19,7 +19,8 @@ import {
   APPLICATION_CACHE_KEY_PREFIX_REGISTRATION,
   CHS_URL,
   cookieOptions,
-  JOURNEY_TYPE_PARAM
+  JOURNEY_TYPE_PARAM,
+  SIC_CODES_CACHE_KEY
 } from "../../../config/constants";
 import CacheService from "../../../application/service/CacheService";
 import UIErrors from "../../../domain/entities/UIErrors";
@@ -569,7 +570,7 @@ class LimitedPartnershipController extends PartnershipController {
 
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
 
-        const sicCodes: { code: string; description: string }[] = cache?.[`sicCodes`] || [];
+        const sicCodes: { code: string; description: string }[] = cache?.[SIC_CODES_CACHE_KEY] || [];
         const isShowingAddSection = sicCodes.length < 4;
         const sicCodesData = { isShowingAddSection, sicCodes };
 
@@ -612,10 +613,10 @@ class LimitedPartnershipController extends PartnershipController {
 
       const cache = this.cacheService.getDataFromCache(request.signedCookies);
 
-      let sicCodes: { code: string; description: string }[] = cache?.[`sicCodes`] || [];
+      let sicCodes: { code: string; description: string }[] = cache?.[SIC_CODES_CACHE_KEY] || [];
       const sicCode = escape(request.body.code);
 
-      const isShowingAddSection = this.isShowingAddSection(sicCodes);
+      let isShowingAddSection = this.isShowingAddSection(sicCodes);
 
       const uiErrors = this.limitedPartnershipService.runAddSicCodeValidation(sicCodes, sicCode);
 
@@ -628,6 +629,7 @@ class LimitedPartnershipController extends PartnershipController {
       }
 
       sicCodes = this.addSicCodeToCache(request, response, sicCode, sicCodes, cache);
+      isShowingAddSection = this.isShowingAddSection(sicCodes);
 
       response.render(
         super.templateName(pageRouting.currentUrl),
@@ -651,7 +653,7 @@ class LimitedPartnershipController extends PartnershipController {
 
     const cacheUpdated = this.cacheService.addDataToCache(request.signedCookies, {
       ...cache,
-      [`sicCodes`]: sicCodes
+      [SIC_CODES_CACHE_KEY]: sicCodes
     });
     response.cookie(APPLICATION_CACHE_KEY, cacheUpdated, cookieOptions);
 
@@ -665,7 +667,7 @@ class LimitedPartnershipController extends PartnershipController {
 
       const cache = this.cacheService.getDataFromCache(request.signedCookies);
 
-      const sicCodes: { code: string; description: string }[] = cache?.[`sicCodes`] || [];
+      const sicCodes: { code: string; description: string }[] = cache?.[SIC_CODES_CACHE_KEY] || [];
 
       const updatedSicCodes = this.removeSicCodeFromCache(request, sicCodes, cache, response);
 
@@ -690,7 +692,7 @@ class LimitedPartnershipController extends PartnershipController {
 
     const cacheUpdated = this.cacheService.addDataToCache(request.signedCookies, {
       ...cache,
-      [`sicCodes`]: updatedSicCodes
+      [SIC_CODES_CACHE_KEY]: updatedSicCodes
     });
     response.cookie(APPLICATION_CACHE_KEY, cacheUpdated, cookieOptions);
     return updatedSicCodes;
