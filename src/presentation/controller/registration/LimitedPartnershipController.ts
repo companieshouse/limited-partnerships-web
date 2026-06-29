@@ -617,33 +617,9 @@ class LimitedPartnershipController extends PartnershipController {
 
       const isShowingAddSection = this.isShowingAddSection(sicCodes);
 
-      const uiErrors = new UIErrors();
-      const errorKey = "sic_codes";
-      let error = false;
+      const uiErrors = this.limitedPartnershipService.runAddSicCodeValidation(sicCodes, sicCode);
 
-      if (sicCodes.map((sic) => sic.code).includes(sicCode)) {
-        uiErrors.setWebError(errorKey, response.locals.i18n.errorMessages.sicCodes.sicCodeDuplicate);
-        error = true;
-      }
-
-      if (sicCodes.length >= 4) {
-        uiErrors.setWebError(errorKey, response.locals.i18n.errorMessages.sicCodes.maxSicCodes);
-        error = true;
-      }
-
-      if (sicCodes.map((sic) => sic.code).includes(sicCode)) {
-        uiErrors.setWebError(errorKey, response.locals.i18n.errorMessages.sicCodes.sicCodeDuplicate);
-        error = true;
-      }
-
-      const sicDescription = response.locals.i18n.sicCodes.condensedSicCodes[sicCode]?.sicDescription ?? "";
-
-      if (!sicDescription) {
-        uiErrors.setWebError(errorKey, response.locals.i18n.errorMessages.sicCodes.sicCodeInvalid);
-        error = true;
-      }
-
-      if (error) {
+      if (uiErrors.hasErrors()) {
         response.render(
           super.templateName(pageRouting.currentUrl),
           super.makeProps(pageRouting, { isShowingAddSection, sicCodes: sicCodes }, uiErrors)
@@ -651,7 +627,7 @@ class LimitedPartnershipController extends PartnershipController {
         return;
       }
 
-      sicCodes = this.addSicCodeToCache(request, response, sicCode, sicDescription, sicCodes, cache);
+      sicCodes = this.addSicCodeToCache(request, response, sicCode, sicCodes, cache);
 
       response.render(
         super.templateName(pageRouting.currentUrl),
@@ -664,11 +640,12 @@ class LimitedPartnershipController extends PartnershipController {
     request: Request,
     response: Response,
     sicCode: string,
-    sicDescription: string,
     sicCodes: { code: string; description: string }[],
     cache: Record<string, any>
   ) {
-    sicCodes.push({ code: sicCode, description: sicDescription });
+    const description = response.locals.i18n.sicCodes.condensedSicCodes[sicCode]?.sicDescription ?? "";
+
+    sicCodes.push({ code: sicCode, description });
 
     sicCodes = sicCodes.sort((a, b) => a.code.localeCompare(b.code));
 
