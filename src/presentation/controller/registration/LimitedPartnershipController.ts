@@ -570,15 +570,25 @@ class LimitedPartnershipController extends PartnershipController {
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
 
         const sicCodes: { code: string; description: string }[] = cache?.[`sicCodes`] || [];
+        const isShowingAddSection = sicCodes.length < 4;
+        const sicCodesData = { isShowingAddSection, sicCodes };
+
+        if (!sicCodes.length) {
+          const uiErrors = new UIErrors();
+          uiErrors.setWebError("sic_codes", response.locals.i18n.errorMessages.sicCodes.sicCodeRequired);
+
+          response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(pageRouting, { ...cache, ...sicCodesData }, uiErrors)
+          );
+          return;
+        }
 
         const result = await this.limitedPartnershipService.sendPageData(tokens, ids.transactionId, ids.submissionId, pageType, {
           sic_codes: sicCodes.map((sic) => sic.code)
         });
 
         if (result?.errors) {
-          const isShowingAddSection = sicCodes.length < 4;
-          const sicCodesData = { isShowingAddSection };
-
           response.render(
             super.templateName(pageRouting.currentUrl),
             super.makeProps(pageRouting, { ...cache, ...sicCodesData }, result.errors)

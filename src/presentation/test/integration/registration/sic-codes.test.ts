@@ -263,6 +263,19 @@ describe("Sic Codes", () => {
         ]
       });
     });
+
+    it("should return an error if the sic codes list is empty", async () => {
+      appDevDependencies.cacheRepository.feedCache({
+        sicCodes: []
+      });
+
+      const res = await request(app).post(URL).send({
+        pageType: RegistrationPageType.sic
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(enTranslationText.errorMessages.sicCodes.sicCodeRequired);
+    });
   });
 
   describe("Post Remove sic codes", () => {
@@ -396,15 +409,20 @@ describe("Sic Codes", () => {
 
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
+      const cacheData = {
+        sicCodes: [{ code: "000", description: "Wrong sic code" }]
+      };
+
+      appDevDependencies.cacheRepository.feedCache(cacheData);
+
       const apiErrors: ApiErrors = {
-        errors: { "data.sic": "Sic code must be 5 numeric characters" }
+        errors: { "data.sic_codes": "Sic code must be 5 numeric characters" }
       };
 
       appDevDependencies.limitedPartnershipGateway.feedErrors(apiErrors);
 
       const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.email,
-        sic: "wrong-sic"
+        pageType: RegistrationPageType.sic
       });
 
       expect(res.status).toBe(200);
