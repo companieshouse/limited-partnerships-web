@@ -2,6 +2,7 @@
     "sicCodes": {
         "title": "What will the partnership be doing?",
         "removeButton" : "Remove",
+        "searchPlaceholder" : "Search by SIC code or description",
         "addTitle" : "Tell us about the entended nature of business",
         "addHint" : "Start typing a keyword to see a list of business activities. For example, 'finance'. Or, enter the SIC code if you know it. You can add up to 4 SIC codes.",
         "addButton" : "Add SIC code",
