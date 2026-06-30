@@ -121,6 +121,8 @@
             }
         },
         "whichTypeOfNatureOfControlPage": {
+            "publicRegisterInformationLine1": "WELSH - We'll show this information on the public register.",
+
             "relevantLegalEntity": {
                 "title": "WELSH - How does this RLE hold control over the limited partnership?",
                 "individual" : {

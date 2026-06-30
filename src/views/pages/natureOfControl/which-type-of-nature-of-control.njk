@@ -1,6 +1,8 @@
 
 {% set natureOfControlTypes = props.data.personWithSignificantControl.data.nature_of_control_types or [] %}
 
+{% set publicRegisterInformationLine1 = i18n.personWithSignificantControl.whichTypeOfNatureOfControlPage.publicRegisterInformationLine1 %}
+
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         {% include "includes/errors.njk" %}
@@ -43,6 +45,8 @@
                 }
                 ]
             }) }}
+
+            {% include "includes/public-register-information.njk" %}
 
             {% include "includes/save-and-continue-button.njk" %}
         </form>
