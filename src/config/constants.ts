@@ -146,7 +146,6 @@ export const PARTNER_CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE = "partner-change-check-
 // services
 export const SDK_LIMITED_PARTNERSHIP_SERVICE = "limitedPartnershipsService";
 export const SDK_POSTCODE_LOOKUP_SERVICE = "postCodeLookup";
-export const SDK_SIC_CODES_SERVICE = "sicCodeService";
 export const SDK_TRANSACTION_SERVICE = "transaction";
 export const SDK_PAYMENT_SERVICE = "payment";
 
