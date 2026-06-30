@@ -9,7 +9,7 @@ import cyErrorsTranslationText from "../../../../../../locales/cy/errors.json";
 
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
+import { getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../utils";
 
 import {
   ADD_NATURE_OF_CONTROL_FIRM_URL,
@@ -120,6 +120,11 @@ describe("Which Type of Nature of Control Page", () => {
         );
 
         testTranslations(res.text, translationText.personWithSignificantControl.whichTypeOfNatureOfControlPage[translationKey]);
+        expect(res.text).toContain(
+          toEscapedHtml(
+            translationText.personWithSignificantControl.whichTypeOfNatureOfControlPage.publicRegisterInformationLine1
+          )
+        );
 
         expect(res.text).toContain(psc.data?.legal_entity_name?.toUpperCase());
         expect(res.text).toContain(backUrl);
