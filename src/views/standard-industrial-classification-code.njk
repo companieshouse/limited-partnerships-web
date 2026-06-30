@@ -98,7 +98,7 @@
 
               <datalist id="sic-codes">
                 {% for sic in sicCodesList %}
-                  <option value="{{ sic.value }}, {{sic.text}}" label="{{ sic.text }}"></option>
+                  <option value="{{ sic.code }}, {{sic.description}}" label="{{ sic.description }}"></option>
                 {% endfor %}
               </datalist>
             </div>

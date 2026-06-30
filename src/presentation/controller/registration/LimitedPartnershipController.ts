@@ -551,7 +551,7 @@ class LimitedPartnershipController extends PartnershipController {
     if (limitedPartnership?.data?.sic_codes) {
       limitedPartnership.data.sic_codes.forEach((sicCode: string) => {
         if (!sicCodes.some((sic: SicCode) => sic.code === sicCode)) {
-          const sicDescription = response.locals.i18n.sicCodes.condensedSicCodes[sicCode]?.sicDescription ?? "";
+          const sicDescription = response.locals.i18n.sicCodes.condensedSicCodes[sicCode] ?? "";
           sicCodes.push({ code: sicCode, description: sicDescription });
         }
       });
@@ -572,11 +572,11 @@ class LimitedPartnershipController extends PartnershipController {
   private translateSicCodesDescription(response: Response, request: Request, cache: Record<string, any>) {
     const { ids } = super.extract(request);
     const { code, description } = cache[SIC_CODES_CACHE_KEY][0];
-    const sicDescription = response.locals.i18n.sicCodes.condensedSicCodes[code]?.sicDescription ?? "";
+    const sicDescription = response.locals.i18n.sicCodes.condensedSicCodes[code] ?? "";
 
     if (sicDescription !== description) {
       const translatedCache = cache[SIC_CODES_CACHE_KEY].map((sic: SicCode) => {
-        sic.description = response.locals.i18n.sicCodes.condensedSicCodes[sic.code]?.sicDescription ?? "";
+        sic.description = response.locals.i18n.sicCodes.condensedSicCodes[sic.code] ?? "";
         return sic;
       });
 
@@ -654,7 +654,7 @@ class LimitedPartnershipController extends PartnershipController {
       let sicCodes: SicCode[] = cacheById?.[SIC_CODES_CACHE_KEY] ?? [];
 
       const [code, description] = request.body.codeToAdd.split(",");
-      const desc = description?.trim() ?? response.locals.i18n.sicCodes.condensedSicCodes[code]?.sicDescription;
+      const desc = description?.trim() ?? response.locals.i18n.sicCodes.condensedSicCodes[code];
       const sicCode: SicCode = {
         code: code.trim(),
         description: desc

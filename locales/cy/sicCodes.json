@@ -3,7 +3,7 @@
         "title": "WELSH - What will the partnership be doing?",
         "removeButton" : "WELSH - Remove",
         "searchPlaceholder" : "WELSH - Search by SIC code or description",
-        "addTitle" : "WELSH - Tell us about the entended nature of business",
+        "addTitle" : "WELSH - Tell us about the intended nature of business",
         "addHint" : "WELSH - Start typing a keyword to see a list of business activities. For example, 'finance'. Or, enter the SIC code if you know it. You can add up to 4 SIC codes.",
         "addButton" : "WELSH - Add SIC code",
         "expander": {
@@ -16,2930 +16,737 @@
             "paragraph3End" : "WELSH -  may help you find a suitable business activity."
         },
         "condensedSicCodes": {
-            "01110": {
-                "sicCode": "01110",
-                "sicDescription": "WELSH - Growing of cereals (except rice), leguminous crops and oil seeds"
-            },
-            "01120": {
-                "sicCode": "01120",
-                "sicDescription": "WELSH - Growing of rice"
-            },
-            "01130": {
-                "sicCode": "01130",
-                "sicDescription": "WELSH - Growing of vegetables and melons, roots and tubers"
-            },
-            "01140": {
-                "sicCode": "01140",
-                "sicDescription": "WELSH - Growing of sugar cane"
-            },
-            "01150": {
-                "sicCode": "01150",
-                "sicDescription": "WELSH - Growing of tobacco"
-            },
-            "01160": {
-                "sicCode": "01160",
-                "sicDescription": "WELSH - Growing of fibre crops"
-            },
-            "01190": {
-                "sicCode": "01190",
-                "sicDescription": "WELSH - Growing of other non-perennial crops"
-            },
-            "01210": {
-                "sicCode": "01210",
-                "sicDescription": "WELSH - Growing of grapes"
-            },
-            "01220": {
-                "sicCode": "01220",
-                "sicDescription": "WELSH - Growing of tropical and subtropical fruits"
-            },
-            "01230": {
-                "sicCode": "01230",
-                "sicDescription": "WELSH - Growing of citrus fruits"
-            },
-            "01240": {
-                "sicCode": "01240",
-                "sicDescription": "WELSH - Growing of pome fruits and stone fruits"
-            },
-            "01250": {
-                "sicCode": "01250",
-                "sicDescription": "WELSH - Growing of other tree and bush fruits and nuts"
-            },
-            "01260": {
-                "sicCode": "01260",
-                "sicDescription": "WELSH - Growing of oleaginous fruits"
-            },
-            "01270": {
-                "sicCode": "01270",
-                "sicDescription": "WELSH - Growing of beverage crops"
-            },
-            "01280": {
-                "sicCode": "01280",
-                "sicDescription": "WELSH - Growing of spices, aromatic, drug and pharmaceutical crops"
-            },
-            "01290": {
-                "sicCode": "01290",
-                "sicDescription": "WELSH - Growing of other perennial crops"
-            },
-            "01300": {
-                "sicCode": "01300",
-                "sicDescription": "WELSH - Plant propagation"
-            },
-            "01410": {
-                "sicCode": "01410",
-                "sicDescription": "WELSH - Raising of dairy cattle"
-            },
-            "01420": {
-                "sicCode": "01420",
-                "sicDescription": "WELSH - Raising of other cattle and buffaloes"
-            },
-            "01430": {
-                "sicCode": "01430",
-                "sicDescription": "WELSH - Raising of horses and other equines"
-            },
-            "01440": {
-                "sicCode": "01440",
-                "sicDescription": "WELSH - Raising of camels and camelids"
-            },
-            "01450": {
-                "sicCode": "01450",
-                "sicDescription": "WELSH - Raising of sheep and goats"
-            },
-            "01460": {
-                "sicCode": "01460",
-                "sicDescription": "WELSH - Raising of swine/pigs"
-            },
-            "01470": {
-                "sicCode": "01470",
-                "sicDescription": "WELSH - Raising of poultry"
-            },
-            "01490": {
-                "sicCode": "01490",
-                "sicDescription": "WELSH - Raising of other animals"
-            },
-            "01500": {
-                "sicCode": "01500",
-                "sicDescription": "WELSH - Mixed farming"
-            },
-            "01610": {
-                "sicCode": "01610",
-                "sicDescription": "WELSH - Support activities for crop production"
-            },
-            "01621": {
-                "sicCode": "01621",
-                "sicDescription": "WELSH - Farm animal boarding and care"
-            },
-            "01629": {
-                "sicCode": "01629",
-                "sicDescription": "WELSH - Support activities for animal production (other than farm animal boarding and care) n.e.c."
-            },
-            "01630": {
-                "sicCode": "01630",
-                "sicDescription": "WELSH - Post-harvest crop activities"
-            },
-            "01640": {
-                "sicCode": "01640",
-                "sicDescription": "WELSH - Seed processing for propagation"
-            },
-            "01700": {
-                "sicCode": "01700",
-                "sicDescription": "WELSH - Hunting, trapping and related service activities"
-            },
-            "02100": {
-                "sicCode": "02100",
-                "sicDescription": "WELSH - Silviculture and other forestry activities"
-            },
-            "02200": {
-                "sicCode": "02200",
-                "sicDescription": "WELSH - Logging"
-            },
-            "02300": {
-                "sicCode": "02300",
-                "sicDescription": "WELSH - Gathering of wild growing non-wood products"
-            },
-            "02400": {
-                "sicCode": "02400",
-                "sicDescription": "WELSH - Support services to forestry"
-            },
-            "03110": {
-                "sicCode": "03110",
-                "sicDescription": "WELSH - Marine fishing"
-            },
-            "03120": {
-                "sicCode": "03120",
-                "sicDescription": "WELSH - Freshwater fishing"
-            },
-            "03210": {
-                "sicCode": "03210",
-                "sicDescription": "WELSH - Marine aquaculture"
-            },
-            "03220": {
-                "sicCode": "03220",
-                "sicDescription": "WELSH - Freshwater aquaculture"
-            },
-            "05101": {
-                "sicCode": "05101",
-                "sicDescription": "WELSH - Deep coal mines"
-            },
-            "05102": {
-                "sicCode": "05102",
-                "sicDescription": "WELSH - Open cast coal working"
-            },
-            "05200": {
-                "sicCode": "05200",
-                "sicDescription": "WELSH - Mining of lignite"
-            },
-            "06100": {
-                "sicCode": "06100",
-                "sicDescription": "WELSH - Extraction of crude petroleum"
-            },
-            "06200": {
-                "sicCode": "06200",
-                "sicDescription": "WELSH - Extraction of natural gas"
-            },
-            "07100": {
-                "sicCode": "07100",
-                "sicDescription": "WELSH - Mining of iron ores"
-            },
-            "07210": {
-                "sicCode": "07210",
-                "sicDescription": "WELSH - Mining of uranium and thorium ores"
-            },
-            "07290": {
-                "sicCode": "07290",
-                "sicDescription": "WELSH - Mining of other non-ferrous metal ores"
-            },
-            "08110": {
-                "sicCode": "08110",
-                "sicDescription": "WELSH - Quarrying of ornamental and building stone, limestone, gypsum, chalk and slate"
-            },
-            "08120": {
-                "sicCode": "08120",
-                "sicDescription": "WELSH - Operation of gravel and sand pits; mining of clays and kaolin"
-            },
-            "08910": {
-                "sicCode": "08910",
-                "sicDescription": "WELSH - Mining of chemical and fertilizer minerals"
-            },
-            "08920": {
-                "sicCode": "08920",
-                "sicDescription": "WELSH - Extraction of peat"
-            },
-            "08930": {
-                "sicCode": "08930",
-                "sicDescription": "WELSH - Extraction of salt"
-            },
-            "08990": {
-                "sicCode": "08990",
-                "sicDescription": "WELSH - Other mining and quarrying n.e.c."
-            },
-            "09100": {
-                "sicCode": "09100",
-                "sicDescription": "WELSH - Support activities for petroleum and natural gas mining"
-            },
-            "09900": {
-                "sicCode": "09900",
-                "sicDescription": "WELSH - Support activities for other mining and quarrying"
-            },
-            "10110": {
-                "sicCode": "10110",
-                "sicDescription": "WELSH - Processing and preserving of meat"
-            },
-            "10120": {
-                "sicCode": "10120",
-                "sicDescription": "WELSH - Processing and preserving of poultry meat"
-            },
-            "10130": {
-                "sicCode": "10130",
-                "sicDescription": "WELSH - Production of meat and poultry meat products"
-            },
-            "10200": {
-                "sicCode": "10200",
-                "sicDescription": "WELSH - Processing and preserving of fish, crustaceans and molluscs"
-            },
-            "10310": {
-                "sicCode": "10310",
-                "sicDescription": "WELSH - Processing and preserving of potatoes"
-            },
-            "10320": {
-                "sicCode": "10320",
-                "sicDescription": "WELSH - Manufacture of fruit and vegetable juice"
-            },
-            "10390": {
-                "sicCode": "10390",
-                "sicDescription": "WELSH - Other processing and preserving of fruit and vegetables"
-            },
-            "10410": {
-                "sicCode": "10410",
-                "sicDescription": "WELSH - Manufacture of oils and fats"
-            },
-            "10420": {
-                "sicCode": "10420",
-                "sicDescription": "WELSH - Manufacture of margarine and similar edible fats"
-            },
-            "10511": {
-                "sicCode": "10511",
-                "sicDescription": "WELSH - Liquid milk and cream production"
-            },
-            "10512": {
-                "sicCode": "10512",
-                "sicDescription": "WELSH - Butter and cheese production"
-            },
-            "10519": {
-                "sicCode": "10519",
-                "sicDescription": "WELSH - Manufacture of other milk products"
-            },
-            "10520": {
-                "sicCode": "10520",
-                "sicDescription": "WELSH - Manufacture of ice cream"
-            },
-            "10611": {
-                "sicCode": "10611",
-                "sicDescription": "WELSH - Grain milling"
-            },
-            "10612": {
-                "sicCode": "10612",
-                "sicDescription": "WELSH - Manufacture of breakfast cereals and cereals-based food"
-            },
-            "10620": {
-                "sicCode": "10620",
-                "sicDescription": "WELSH - Manufacture of starches and starch products"
-            },
-            "10710": {
-                "sicCode": "10710",
-                "sicDescription": "WELSH - Manufacture of bread; manufacture of fresh pastry goods and cakes"
-            },
-            "10720": {
-                "sicCode": "10720",
-                "sicDescription": "WELSH - Manufacture of rusks and biscuits; manufacture of preserved pastry goods and cakes"
-            },
-            "10730": {
-                "sicCode": "10730",
-                "sicDescription": "WELSH - Manufacture of macaroni, noodles, couscous and similar farinaceous products"
-            },
-            "10810": {
-                "sicCode": "10810",
-                "sicDescription": "WELSH - Manufacture of sugar"
-            },
-            "10821": {
-                "sicCode": "10821",
-                "sicDescription": "WELSH - Manufacture of cocoa and chocolate confectionery"
-            },
-            "10822": {
-                "sicCode": "10822",
-                "sicDescription": "WELSH - Manufacture of sugar confectionery"
-            },
-            "10831": {
-                "sicCode": "10831",
-                "sicDescription": "WELSH - Tea processing"
-            },
-            "10832": {
-                "sicCode": "10832",
-                "sicDescription": "WELSH - Production of coffee and coffee substitutes"
-            },
-            "10840": {
-                "sicCode": "10840",
-                "sicDescription": "WELSH - Manufacture of condiments and seasonings"
-            },
-            "10850": {
-                "sicCode": "10850",
-                "sicDescription": "WELSH - Manufacture of prepared meals and dishes"
-            },
-            "10860": {
-                "sicCode": "10860",
-                "sicDescription": "WELSH - Manufacture of homogenized food preparations and dietetic food"
-            },
-            "10890": {
-                "sicCode": "10890",
-                "sicDescription": "WELSH - Manufacture of other food products n.e.c."
-            },
-            "10910": {
-                "sicCode": "10910",
-                "sicDescription": "WELSH - Manufacture of prepared feeds for farm animals"
-            },
-            "10920": {
-                "sicCode": "10920",
-                "sicDescription": "WELSH - Manufacture of prepared pet foods"
-            },
-            "11010": {
-                "sicCode": "11010",
-                "sicDescription": "WELSH - Distilling, rectifying and blending of spirits"
-            },
-            "11020": {
-                "sicCode": "11020",
-                "sicDescription": "WELSH - Manufacture of wine from grape"
-            },
-            "11030": {
-                "sicCode": "11030",
-                "sicDescription": "WELSH - Manufacture of cider and other fruit wines"
-            },
-            "11040": {
-                "sicCode": "11040",
-                "sicDescription": "WELSH - Manufacture of other non-distilled fermented beverages"
-            },
-            "11050": {
-                "sicCode": "11050",
-                "sicDescription": "WELSH - Manufacture of beer"
-            },
-            "11060": {
-                "sicCode": "11060",
-                "sicDescription": "WELSH - Manufacture of malt"
-            },
-            "11070": {
-                "sicCode": "11070",
-                "sicDescription": "WELSH - Manufacture of soft drinks; production of mineral waters and other bottled waters"
-            },
-            "12000": {
-                "sicCode": "12000",
-                "sicDescription": "WELSH - Manufacture of tobacco products"
-            },
-            "13100": {
-                "sicCode": "13100",
-                "sicDescription": "WELSH - Preparation and spinning of textile fibres"
-            },
-            "13200": {
-                "sicCode": "13200",
-                "sicDescription": "WELSH - Weaving of textiles"
-            },
-            "13300": {
-                "sicCode": "13300",
-                "sicDescription": "WELSH - Finishing of textiles"
-            },
-            "13910": {
-                "sicCode": "13910",
-                "sicDescription": "WELSH - Manufacture of knitted and crocheted fabrics"
-            },
-            "13921": {
-                "sicCode": "13921",
-                "sicDescription": "WELSH - Manufacture of soft furnishings"
-            },
-            "13922": {
-                "sicCode": "13922",
-                "sicDescription": "WELSH - Manufacture of canvas goods, sacks, etc."
-            },
-            "13923": {
-                "sicCode": "13923",
-                "sicDescription": "WELSH - Manufacture of household textiles"
-            },
-            "13931": {
-                "sicCode": "13931",
-                "sicDescription": "WELSH - Manufacture of woven or tufted carpets and rugs"
-            },
-            "13939": {
-                "sicCode": "13939",
-                "sicDescription": "WELSH - Manufacture of other carpets and rugs"
-            },
-            "13940": {
-                "sicCode": "13940",
-                "sicDescription": "WELSH - Manufacture of cordage, rope, twine and netting"
-            },
-            "13950": {
-                "sicCode": "13950",
-                "sicDescription": "WELSH - Manufacture of non-wovens and articles made from non-wovens, except apparel"
-            },
-            "13960": {
-                "sicCode": "13960",
-                "sicDescription": "WELSH - Manufacture of other technical and industrial textiles"
-            },
-            "13990": {
-                "sicCode": "13990",
-                "sicDescription": "WELSH - Manufacture of other textiles n.e.c."
-            },
-            "14110": {
-                "sicCode": "14110",
-                "sicDescription": "WELSH - Manufacture of leather clothes"
-            },
-            "14120": {
-                "sicCode": "14120",
-                "sicDescription": "WELSH - Manufacture of workwear"
-            },
-            "14131": {
-                "sicCode": "14131",
-                "sicDescription": "WELSH - Manufacture of other men's outerwear"
-            },
-            "14132": {
-                "sicCode": "14132",
-                "sicDescription": "WELSH - Manufacture of other women's outerwear"
-            },
-            "14141": {
-                "sicCode": "14141",
-                "sicDescription": "WELSH - Manufacture of men's underwear"
-            },
-            "14142": {
-                "sicCode": "14142",
-                "sicDescription": "WELSH - Manufacture of women's underwear"
-            },
-            "14190": {
-                "sicCode": "14190",
-                "sicDescription": "WELSH - Manufacture of other wearing apparel and accessories n.e.c."
-            },
-            "14200": {
-                "sicCode": "14200",
-                "sicDescription": "WELSH - Manufacture of articles of fur"
-            },
-            "14310": {
-                "sicCode": "14310",
-                "sicDescription": "WELSH - Manufacture of knitted and crocheted hosiery"
-            },
-            "14390": {
-                "sicCode": "14390",
-                "sicDescription": "WELSH - Manufacture of other knitted and crocheted apparel"
-            },
-            "15110": {
-                "sicCode": "15110",
-                "sicDescription": "WELSH - Tanning and dressing of leather; dressing and dyeing of fur"
-            },
-            "15120": {
-                "sicCode": "15120",
-                "sicDescription": "WELSH - Manufacture of luggage, handbags and the like, saddlery and harness"
-            },
-            "15200": {
-                "sicCode": "15200",
-                "sicDescription": "WELSH - Manufacture of footwear"
-            },
-            "16100": {
-                "sicCode": "16100",
-                "sicDescription": "WELSH - Sawmilling and planing of wood"
-            },
-            "16210": {
-                "sicCode": "16210",
-                "sicDescription": "WELSH - Manufacture of veneer sheets and wood-based panels"
-            },
-            "16220": {
-                "sicCode": "16220",
-                "sicDescription": "WELSH - Manufacture of assembled parquet floors"
-            },
-            "16230": {
-                "sicCode": "16230",
-                "sicDescription": "WELSH - Manufacture of other builders' carpentry and joinery"
-            },
-            "16240": {
-                "sicCode": "16240",
-                "sicDescription": "WELSH - Manufacture of wooden containers"
-            },
-            "16290": {
-                "sicCode": "16290",
-                "sicDescription": "WELSH - Manufacture of other products of wood; manufacture of articles of cork, straw and plaiting materials"
-            },
-            "17110": {
-                "sicCode": "17110",
-                "sicDescription": "WELSH - Manufacture of pulp"
-            },
-            "17120": {
-                "sicCode": "17120",
-                "sicDescription": "WELSH - Manufacture of paper and paperboard"
-            },
-            "17211": {
-                "sicCode": "17211",
-                "sicDescription": "WELSH - Manufacture of corrugated paper and paperboard, sacks and bags"
-            },
-            "17219": {
-                "sicCode": "17219",
-                "sicDescription": "WELSH - Manufacture of other paper and paperboard containers"
-            },
-            "17220": {
-                "sicCode": "17220",
-                "sicDescription": "WELSH - Manufacture of household and sanitary goods and of toilet requisites"
-            },
-            "17230": {
-                "sicCode": "17230",
-                "sicDescription": "WELSH - Manufacture of paper stationery"
-            },
-            "17240": {
-                "sicCode": "17240",
-                "sicDescription": "WELSH - Manufacture of wallpaper"
-            },
-            "17290": {
-                "sicCode": "17290",
-                "sicDescription": "WELSH - Manufacture of other articles of paper and paperboard n.e.c."
-            },
-            "18110": {
-                "sicCode": "18110",
-                "sicDescription": "WELSH - Printing of newspapers"
-            },
-            "18121": {
-                "sicCode": "18121",
-                "sicDescription": "WELSH - Manufacture of printed labels"
-            },
-            "18129": {
-                "sicCode": "18129",
-                "sicDescription": "WELSH - Printing n.e.c."
-            },
-            "18130": {
-                "sicCode": "18130",
-                "sicDescription": "WELSH - Pre-press and pre-media services"
-            },
-            "18140": {
-                "sicCode": "18140",
-                "sicDescription": "WELSH - Binding and related services"
-            },
-            "18201": {
-                "sicCode": "18201",
-                "sicDescription": "WELSH - Reproduction of sound recording"
-            },
-            "18202": {
-                "sicCode": "18202",
-                "sicDescription": "WELSH - Reproduction of video recording"
-            },
-            "18203": {
-                "sicCode": "18203",
-                "sicDescription": "WELSH - Reproduction of computer media"
-            },
-            "19100": {
-                "sicCode": "19100",
-                "sicDescription": "WELSH - Manufacture of coke oven products"
-            },
-            "19201": {
-                "sicCode": "19201",
-                "sicDescription": "WELSH - Mineral oil refining"
-            },
-            "19209": {
-                "sicCode": "19209",
-                "sicDescription": "WELSH - Other treatment of petroleum products (excluding petrochemicals manufacture)"
-            },
-            "20110": {
-                "sicCode": "20110",
-                "sicDescription": "WELSH - Manufacture of industrial gases"
-            },
-            "20120": {
-                "sicCode": "20120",
-                "sicDescription": "WELSH - Manufacture of dyes and pigments"
-            },
-            "20130": {
-                "sicCode": "20130",
-                "sicDescription": "WELSH - Manufacture of other inorganic basic chemicals"
-            },
-            "20140": {
-                "sicCode": "20140",
-                "sicDescription": "WELSH - Manufacture of other organic basic chemicals"
-            },
-            "20150": {
-                "sicCode": "20150",
-                "sicDescription": "WELSH - Manufacture of fertilizers and nitrogen compounds"
-            },
-            "20160": {
-                "sicCode": "20160",
-                "sicDescription": "WELSH - Manufacture of plastics in primary forms"
-            },
-            "20170": {
-                "sicCode": "20170",
-                "sicDescription": "WELSH - Manufacture of synthetic rubber in primary forms"
-            },
-            "20200": {
-                "sicCode": "20200",
-                "sicDescription": "WELSH - Manufacture of pesticides and other agrochemical products"
-            },
-            "20301": {
-                "sicCode": "20301",
-                "sicDescription": "WELSH - Manufacture of paints, varnishes and similar coatings, mastics and sealants"
-            },
-            "20302": {
-                "sicCode": "20302",
-                "sicDescription": "WELSH - Manufacture of printing ink"
-            },
-            "20411": {
-                "sicCode": "20411",
-                "sicDescription": "WELSH - Manufacture of soap and detergents"
-            },
-            "20412": {
-                "sicCode": "20412",
-                "sicDescription": "WELSH - Manufacture of cleaning and polishing preparations"
-            },
-            "20420": {
-                "sicCode": "20420",
-                "sicDescription": "WELSH - Manufacture of perfumes and toilet preparations"
-            },
-            "20510": {
-                "sicCode": "20510",
-                "sicDescription": "WELSH - Manufacture of explosives"
-            },
-            "20520": {
-                "sicCode": "20520",
-                "sicDescription": "WELSH - Manufacture of glues"
-            },
-            "20530": {
-                "sicCode": "20530",
-                "sicDescription": "WELSH - Manufacture of essential oils"
-            },
-            "20590": {
-                "sicCode": "20590",
-                "sicDescription": "WELSH - Manufacture of other chemical products n.e.c."
-            },
-            "20600": {
-                "sicCode": "20600",
-                "sicDescription": "WELSH - Manufacture of man-made fibres"
-            },
-            "21100": {
-                "sicCode": "21100",
-                "sicDescription": "WELSH - Manufacture of basic pharmaceutical products"
-            },
-            "21200": {
-                "sicCode": "21200",
-                "sicDescription": "WELSH - Manufacture of pharmaceutical preparations"
-            },
-            "22110": {
-                "sicCode": "22110",
-                "sicDescription": "WELSH - Manufacture of rubber tyres and tubes; retreading and rebuilding of rubber tyres"
-            },
-            "22190": {
-                "sicCode": "22190",
-                "sicDescription": "WELSH - Manufacture of other rubber products"
-            },
-            "22210": {
-                "sicCode": "22210",
-                "sicDescription": "WELSH - Manufacture of plastic plates, sheets, tubes and profiles"
-            },
-            "22220": {
-                "sicCode": "22220",
-                "sicDescription": "WELSH - Manufacture of plastic packing goods"
-            },
-            "22230": {
-                "sicCode": "22230",
-                "sicDescription": "WELSH - Manufacture of builders ware of plastic"
-            },
-            "22290": {
-                "sicCode": "22290",
-                "sicDescription": "WELSH - Manufacture of other plastic products"
-            },
-            "23110": {
-                "sicCode": "23110",
-                "sicDescription": "WELSH - Manufacture of flat glass"
-            },
-            "23120": {
-                "sicCode": "23120",
-                "sicDescription": "WELSH - Shaping and processing of flat glass"
-            },
-            "23130": {
-                "sicCode": "23130",
-                "sicDescription": "WELSH - Manufacture of hollow glass"
-            },
-            "23140": {
-                "sicCode": "23140",
-                "sicDescription": "WELSH - Manufacture of glass fibres"
-            },
-            "23190": {
-                "sicCode": "23190",
-                "sicDescription": "WELSH - Manufacture and processing of other glass, including technical glassware"
-            },
-            "23200": {
-                "sicCode": "23200",
-                "sicDescription": "WELSH - Manufacture of refractory products"
-            },
-            "23310": {
-                "sicCode": "23310",
-                "sicDescription": "WELSH - Manufacture of ceramic tiles and flags"
-            },
-            "23320": {
-                "sicCode": "23320",
-                "sicDescription": "WELSH - Manufacture of bricks, tiles and construction products, in baked clay"
-            },
-            "23410": {
-                "sicCode": "23410",
-                "sicDescription": "WELSH - Manufacture of ceramic household and ornamental articles"
-            },
-            "23420": {
-                "sicCode": "23420",
-                "sicDescription": "WELSH - Manufacture of ceramic sanitary fixtures"
-            },
-            "23430": {
-                "sicCode": "23430",
-                "sicDescription": "WELSH - Manufacture of ceramic insulators and insulating fittings"
-            },
-            "23440": {
-                "sicCode": "23440",
-                "sicDescription": "WELSH - Manufacture of other technical ceramic products"
-            },
-            "23490": {
-                "sicCode": "23490",
-                "sicDescription": "WELSH - Manufacture of other ceramic products n.e.c."
-            },
-            "23510": {
-                "sicCode": "23510",
-                "sicDescription": "WELSH - Manufacture of cement"
-            },
-            "23520": {
-                "sicCode": "23520",
-                "sicDescription": "WELSH - Manufacture of lime and plaster"
-            },
-            "23610": {
-                "sicCode": "23610",
-                "sicDescription": "WELSH - Manufacture of concrete products for construction purposes"
-            },
-            "23620": {
-                "sicCode": "23620",
-                "sicDescription": "WELSH - Manufacture of plaster products for construction purposes"
-            },
-            "23630": {
-                "sicCode": "23630",
-                "sicDescription": "WELSH - Manufacture of ready-mixed concrete"
-            },
-            "23640": {
-                "sicCode": "23640",
-                "sicDescription": "WELSH - Manufacture of mortars"
-            },
-            "23650": {
-                "sicCode": "23650",
-                "sicDescription": "WELSH - Manufacture of fibre cement"
-            },
-            "23690": {
-                "sicCode": "23690",
-                "sicDescription": "WELSH - Manufacture of other articles of concrete, plaster and cement"
-            },
-            "23700": {
-                "sicCode": "23700",
-                "sicDescription": "WELSH - Cutting, shaping and finishing of stone"
-            },
-            "23910": {
-                "sicCode": "23910",
-                "sicDescription": "WELSH - Production of abrasive products"
-            },
-            "23990": {
-                "sicCode": "23990",
-                "sicDescription": "WELSH - Manufacture of other non-metallic mineral products n.e.c."
-            },
-            "24100": {
-                "sicCode": "24100",
-                "sicDescription": "WELSH - Manufacture of basic iron and steel and of ferro-alloys"
-            },
-            "24200": {
-                "sicCode": "24200",
-                "sicDescription": "WELSH - Manufacture of tubes, pipes, hollow profiles and related fittings, of steel"
-            },
-            "24310": {
-                "sicCode": "24310",
-                "sicDescription": "WELSH - Cold drawing of bars"
-            },
-            "24320": {
-                "sicCode": "24320",
-                "sicDescription": "WELSH - Cold rolling of narrow strip"
-            },
-            "24330": {
-                "sicCode": "24330",
-                "sicDescription": "WELSH - Cold forming or folding"
-            },
-            "24340": {
-                "sicCode": "24340",
-                "sicDescription": "WELSH - Cold drawing of wire"
-            },
-            "24410": {
-                "sicCode": "24410",
-                "sicDescription": "WELSH - Precious metals production"
-            },
-            "24420": {
-                "sicCode": "24420",
-                "sicDescription": "WELSH - Aluminium production"
-            },
-            "24430": {
-                "sicCode": "24430",
-                "sicDescription": "WELSH - Lead, zinc and tin production"
-            },
-            "24440": {
-                "sicCode": "24440",
-                "sicDescription": "WELSH - Copper production"
-            },
-            "24450": {
-                "sicCode": "24450",
-                "sicDescription": "WELSH - Other non-ferrous metal production"
-            },
-            "24460": {
-                "sicCode": "24460",
-                "sicDescription": "WELSH - Processing of nuclear fuel"
-            },
-            "24510": {
-                "sicCode": "24510",
-                "sicDescription": "WELSH - Casting of iron"
-            },
-            "24520": {
-                "sicCode": "24520",
-                "sicDescription": "WELSH - Casting of steel"
-            },
-            "24530": {
-                "sicCode": "24530",
-                "sicDescription": "WELSH - Casting of light metals"
-            },
-            "24540": {
-                "sicCode": "24540",
-                "sicDescription": "WELSH - Casting of other non-ferrous metals"
-            },
-            "25110": {
-                "sicCode": "25110",
-                "sicDescription": "WELSH - Manufacture of metal structures and parts of structures"
-            },
-            "25120": {
-                "sicCode": "25120",
-                "sicDescription": "WELSH - Manufacture of doors and windows of metal"
-            },
-            "25210": {
-                "sicCode": "25210",
-                "sicDescription": "WELSH - Manufacture of central heating radiators and boilers"
-            },
-            "25290": {
-                "sicCode": "25290",
-                "sicDescription": "WELSH - Manufacture of other tanks, reservoirs and containers of metal"
-            },
-            "25300": {
-                "sicCode": "25300",
-                "sicDescription": "WELSH - Manufacture of steam generators, except central heating hot water boilers"
-            },
-            "25400": {
-                "sicCode": "25400",
-                "sicDescription": "WELSH - Manufacture of weapons and ammunition"
-            },
-            "25500": {
-                "sicCode": "25500",
-                "sicDescription": "WELSH - Forging, pressing, stamping and roll-forming of metal; powder metallurgy"
-            },
-            "25610": {
-                "sicCode": "25610",
-                "sicDescription": "WELSH - Treatment and coating of metals"
-            },
-            "25620": {
-                "sicCode": "25620",
-                "sicDescription": "WELSH - Machining"
-            },
-            "25710": {
-                "sicCode": "25710",
-                "sicDescription": "WELSH - Manufacture of cutlery"
-            },
-            "25720": {
-                "sicCode": "25720",
-                "sicDescription": "WELSH - Manufacture of locks and hinges"
-            },
-            "25730": {
-                "sicCode": "25730",
-                "sicDescription": "WELSH - Manufacture of tools"
-            },
-            "25910": {
-                "sicCode": "25910",
-                "sicDescription": "WELSH - Manufacture of steel drums and similar containers"
-            },
-            "25920": {
-                "sicCode": "25920",
-                "sicDescription": "WELSH - Manufacture of light metal packaging"
-            },
-            "25930": {
-                "sicCode": "25930",
-                "sicDescription": "WELSH - Manufacture of wire products, chain and springs"
-            },
-            "25940": {
-                "sicCode": "25940",
-                "sicDescription": "WELSH - Manufacture of fasteners and screw machine products"
-            },
-            "25990": {
-                "sicCode": "25990",
-                "sicDescription": "WELSH - Manufacture of other fabricated metal products n.e.c."
-            },
-            "26110": {
-                "sicCode": "26110",
-                "sicDescription": "WELSH - Manufacture of electronic components"
-            },
-            "26120": {
-                "sicCode": "26120",
-                "sicDescription": "WELSH - Manufacture of loaded electronic boards"
-            },
-            "26200": {
-                "sicCode": "26200",
-                "sicDescription": "WELSH - Manufacture of computers and peripheral equipment"
-            },
-            "26301": {
-                "sicCode": "26301",
-                "sicDescription": "WELSH - Manufacture of telegraph and telephone apparatus and equipment"
-            },
-            "26309": {
-                "sicCode": "26309",
-                "sicDescription": "WELSH - Manufacture of communication equipment other than telegraph, and telephone apparatus and equipment"
-            },
-            "26400": {
-                "sicCode": "26400",
-                "sicDescription": "WELSH - Manufacture of consumer electronics"
-            },
-            "26511": {
-                "sicCode": "26511",
-                "sicDescription": "WELSH - Manufacture of electronic measuring, testing etc. equipment, not for industrial process control"
-            },
-            "26512": {
-                "sicCode": "26512",
-                "sicDescription": "WELSH - Manufacture of electronic industrial process control equipment"
-            },
-            "26513": {
-                "sicCode": "26513",
-                "sicDescription": "WELSH - Manufacture of non-electronic measuring, testing etc. equipment, not for industrial process control"
-            },
-            "26514": {
-                "sicCode": "26514",
-                "sicDescription": "WELSH - Manufacture of non-electronic industrial process control equipment"
-            },
-            "26520": {
-                "sicCode": "26520",
-                "sicDescription": "WELSH - Manufacture of watches and clocks"
-            },
-            "26600": {
-                "sicCode": "26600",
-                "sicDescription": "WELSH - Manufacture of irradiation, electromedical and electrotherapeutic equipment"
-            },
-            "26701": {
-                "sicCode": "26701",
-                "sicDescription": "WELSH - Manufacture of optical precision instruments"
-            },
-            "26702": {
-                "sicCode": "26702",
-                "sicDescription": "WELSH - Manufacture of photographic and cinematographic equipment"
-            },
-            "26800": {
-                "sicCode": "26800",
-                "sicDescription": "WELSH - Manufacture of magnetic and optical media"
-            },
-            "27110": {
-                "sicCode": "27110",
-                "sicDescription": "WELSH - Manufacture of electric motors, generators and transformers"
-            },
-            "27120": {
-                "sicCode": "27120",
-                "sicDescription": "WELSH - Manufacture of electricity distribution and control apparatus"
-            },
-            "27200": {
-                "sicCode": "27200",
-                "sicDescription": "WELSH - Manufacture of batteries and accumulators"
-            },
-            "27310": {
-                "sicCode": "27310",
-                "sicDescription": "WELSH - Manufacture of fibre optic cables"
-            },
-            "27320": {
-                "sicCode": "27320",
-                "sicDescription": "WELSH - Manufacture of other electronic and electric wires and cables"
-            },
-            "27330": {
-                "sicCode": "27330",
-                "sicDescription": "WELSH - Manufacture of wiring devices"
-            },
-            "27400": {
-                "sicCode": "27400",
-                "sicDescription": "WELSH - Manufacture of electric lighting equipment"
-            },
-            "27510": {
-                "sicCode": "27510",
-                "sicDescription": "WELSH - Manufacture of electric domestic appliances"
-            },
-            "27520": {
-                "sicCode": "27520",
-                "sicDescription": "WELSH - Manufacture of non-electric domestic appliances"
-            },
-            "27900": {
-                "sicCode": "27900",
-                "sicDescription": "WELSH - Manufacture of other electrical equipment"
-            },
-            "28110": {
-                "sicCode": "28110",
-                "sicDescription": "WELSH - Manufacture of engines and turbines, except aircraft, vehicle and cycle engines"
-            },
-            "28120": {
-                "sicCode": "28120",
-                "sicDescription": "WELSH - Manufacture of fluid power equipment"
-            },
-            "28131": {
-                "sicCode": "28131",
-                "sicDescription": "WELSH - Manufacture of pumps"
-            },
-            "28132": {
-                "sicCode": "28132",
-                "sicDescription": "WELSH - Manufacture of compressors"
-            },
-            "28140": {
-                "sicCode": "28140",
-                "sicDescription": "WELSH - Manufacture of taps and valves"
-            },
-            "28150": {
-                "sicCode": "28150",
-                "sicDescription": "WELSH - Manufacture of bearings, gears, gearing and driving elements"
-            },
-            "28210": {
-                "sicCode": "28210",
-                "sicDescription": "WELSH - Manufacture of ovens, furnaces and furnace burners"
-            },
-            "28220": {
-                "sicCode": "28220",
-                "sicDescription": "WELSH - Manufacture of lifting and handling equipment"
-            },
-            "28230": {
-                "sicCode": "28230",
-                "sicDescription": "WELSH - Manufacture of office machinery and equipment (except computers and peripheral equipment)"
-            },
-            "28240": {
-                "sicCode": "28240",
-                "sicDescription": "WELSH - Manufacture of power-driven hand tools"
-            },
-            "28250": {
-                "sicCode": "28250",
-                "sicDescription": "WELSH - Manufacture of non-domestic cooling and ventilation equipment"
-            },
-            "28290": {
-                "sicCode": "28290",
-                "sicDescription": "WELSH - Manufacture of other general-purpose machinery n.e.c."
-            },
-            "28301": {
-                "sicCode": "28301",
-                "sicDescription": "WELSH - Manufacture of agricultural tractors"
-            },
-            "28302": {
-                "sicCode": "28302",
-                "sicDescription": "WELSH - Manufacture of agricultural and forestry machinery other than tractors"
-            },
-            "28410": {
-                "sicCode": "28410",
-                "sicDescription": "WELSH - Manufacture of metal forming machinery"
-            },
-            "28490": {
-                "sicCode": "28490",
-                "sicDescription": "WELSH - Manufacture of other machine tools"
-            },
-            "28910": {
-                "sicCode": "28910",
-                "sicDescription": "WELSH - Manufacture of machinery for metallurgy"
-            },
-            "28921": {
-                "sicCode": "28921",
-                "sicDescription": "WELSH - Manufacture of machinery for mining"
-            },
-            "28922": {
-                "sicCode": "28922",
-                "sicDescription": "WELSH - Manufacture of earthmoving equipment"
-            },
-            "28923": {
-                "sicCode": "28923",
-                "sicDescription": "WELSH - Manufacture of equipment for concrete crushing and screening and roadworks"
-            },
-            "28930": {
-                "sicCode": "28930",
-                "sicDescription": "WELSH - Manufacture of machinery for food, beverage and tobacco processing"
-            },
-            "28940": {
-                "sicCode": "28940",
-                "sicDescription": "WELSH - Manufacture of machinery for textile, apparel and leather production"
-            },
-            "28950": {
-                "sicCode": "28950",
-                "sicDescription": "WELSH - Manufacture of machinery for paper and paperboard production"
-            },
-            "28960": {
-                "sicCode": "28960",
-                "sicDescription": "WELSH - Manufacture of plastics and rubber machinery"
-            },
-            "28990": {
-                "sicCode": "28990",
-                "sicDescription": "WELSH - Manufacture of other special-purpose machinery n.e.c."
-            },
-            "29100": {
-                "sicCode": "29100",
-                "sicDescription": "WELSH - Manufacture of motor vehicles"
-            },
-            "29201": {
-                "sicCode": "29201",
-                "sicDescription": "WELSH - Manufacture of bodies (coachwork) for motor vehicles (except caravans)"
-            },
-            "29202": {
-                "sicCode": "29202",
-                "sicDescription": "WELSH - Manufacture of trailers and semi-trailers"
-            },
-            "29203": {
-                "sicCode": "29203",
-                "sicDescription": "WELSH - Manufacture of caravans"
-            },
-            "29310": {
-                "sicCode": "29310",
-                "sicDescription": "WELSH - Manufacture of electrical and electronic equipment for motor vehicles and their engines"
-            },
-            "29320": {
-                "sicCode": "29320",
-                "sicDescription": "WELSH - Manufacture of other parts and accessories for motor vehicles"
-            },
-            "30110": {
-                "sicCode": "30110",
-                "sicDescription": "WELSH - Building of ships and floating structures"
-            },
-            "30120": {
-                "sicCode": "30120",
-                "sicDescription": "WELSH - Building of pleasure and sporting boats"
-            },
-            "30200": {
-                "sicCode": "30200",
-                "sicDescription": "WELSH - Manufacture of railway locomotives and rolling stock"
-            },
-            "30300": {
-                "sicCode": "30300",
-                "sicDescription": "WELSH - Manufacture of air and spacecraft and related machinery"
-            },
-            "30400": {
-                "sicCode": "30400",
-                "sicDescription": "WELSH - Manufacture of military fighting vehicles"
-            },
-            "30910": {
-                "sicCode": "30910",
-                "sicDescription": "WELSH - Manufacture of motorcycles"
-            },
-            "30920": {
-                "sicCode": "30920",
-                "sicDescription": "WELSH - Manufacture of bicycles and invalid carriages"
-            },
-            "30990": {
-                "sicCode": "30990",
-                "sicDescription": "WELSH - Manufacture of other transport equipment n.e.c."
-            },
-            "31010": {
-                "sicCode": "31010",
-                "sicDescription": "WELSH - Manufacture of office and shop furniture"
-            },
-            "31020": {
-                "sicCode": "31020",
-                "sicDescription": "WELSH - Manufacture of kitchen furniture"
-            },
-            "31030": {
-                "sicCode": "31030",
-                "sicDescription": "WELSH - Manufacture of mattresses"
-            },
-            "31090": {
-                "sicCode": "31090",
-                "sicDescription": "WELSH - Manufacture of other furniture"
-            },
-            "32110": {
-                "sicCode": "32110",
-                "sicDescription": "WELSH - Striking of coins"
-            },
-            "32120": {
-                "sicCode": "32120",
-                "sicDescription": "WELSH - Manufacture of jewellery and related articles"
-            },
-            "32130": {
-                "sicCode": "32130",
-                "sicDescription": "WELSH - Manufacture of imitation jewellery and related articles"
-            },
-            "32200": {
-                "sicCode": "32200",
-                "sicDescription": "WELSH - Manufacture of musical instruments"
-            },
-            "32300": {
-                "sicCode": "32300",
-                "sicDescription": "WELSH - Manufacture of sports goods"
-            },
-            "32401": {
-                "sicCode": "32401",
-                "sicDescription": "WELSH - Manufacture of professional and arcade games and toys"
-            },
-            "32409": {
-                "sicCode": "32409",
-                "sicDescription": "WELSH - Manufacture of other games and toys, n.e.c."
-            },
-            "32500": {
-                "sicCode": "32500",
-                "sicDescription": "WELSH - Manufacture of medical and dental instruments and supplies"
-            },
-            "32910": {
-                "sicCode": "32910",
-                "sicDescription": "WELSH - Manufacture of brooms and brushes"
-            },
-            "32990": {
-                "sicCode": "32990",
-                "sicDescription": "WELSH - Other manufacturing n.e.c."
-            },
-            "33110": {
-                "sicCode": "33110",
-                "sicDescription": "WELSH - Repair of fabricated metal products"
-            },
-            "33120": {
-                "sicCode": "33120",
-                "sicDescription": "WELSH - Repair of machinery"
-            },
-            "33130": {
-                "sicCode": "33130",
-                "sicDescription": "WELSH - Repair of electronic and optical equipment"
-            },
-            "33140": {
-                "sicCode": "33140",
-                "sicDescription": "WELSH - Repair of electrical equipment"
-            },
-            "33150": {
-                "sicCode": "33150",
-                "sicDescription": "WELSH - Repair and maintenance of ships and boats"
-            },
-            "33160": {
-                "sicCode": "33160",
-                "sicDescription": "WELSH - Repair and maintenance of aircraft and spacecraft"
-            },
-            "33170": {
-                "sicCode": "33170",
-                "sicDescription": "WELSH - Repair and maintenance of other transport equipment n.e.c."
-            },
-            "33190": {
-                "sicCode": "33190",
-                "sicDescription": "WELSH - Repair of other equipment"
-            },
-            "33200": {
-                "sicCode": "33200",
-                "sicDescription": "WELSH - Installation of industrial machinery and equipment"
-            },
-            "35110": {
-                "sicCode": "35110",
-                "sicDescription": "WELSH - Production of electricity"
-            },
-            "35120": {
-                "sicCode": "35120",
-                "sicDescription": "WELSH - Transmission of electricity"
-            },
-            "35130": {
-                "sicCode": "35130",
-                "sicDescription": "WELSH - Distribution of electricity"
-            },
-            "35140": {
-                "sicCode": "35140",
-                "sicDescription": "WELSH - Trade of electricity"
-            },
-            "35210": {
-                "sicCode": "35210",
-                "sicDescription": "WELSH - Manufacture of gas"
-            },
-            "35220": {
-                "sicCode": "35220",
-                "sicDescription": "WELSH - Distribution of gaseous fuels through mains"
-            },
-            "35230": {
-                "sicCode": "35230",
-                "sicDescription": "WELSH - Trade of gas through mains"
-            },
-            "35300": {
-                "sicCode": "35300",
-                "sicDescription": "WELSH - Steam and air conditioning supply"
-            },
-            "36000": {
-                "sicCode": "36000",
-                "sicDescription": "WELSH - Water collection, treatment and supply"
-            },
-            "37000": {
-                "sicCode": "37000",
-                "sicDescription": "WELSH - Sewerage"
-            },
-            "38110": {
-                "sicCode": "38110",
-                "sicDescription": "WELSH - Collection of non-hazardous waste"
-            },
-            "38120": {
-                "sicCode": "38120",
-                "sicDescription": "WELSH - Collection of hazardous waste"
-            },
-            "38210": {
-                "sicCode": "38210",
-                "sicDescription": "WELSH - Treatment and disposal of non-hazardous waste"
-            },
-            "38220": {
-                "sicCode": "38220",
-                "sicDescription": "WELSH - Treatment and disposal of hazardous waste"
-            },
-            "38310": {
-                "sicCode": "38310",
-                "sicDescription": "WELSH - Dismantling of wrecks"
-            },
-            "38320": {
-                "sicCode": "38320",
-                "sicDescription": "WELSH - Recovery of sorted materials"
-            },
-            "39000": {
-                "sicCode": "39000",
-                "sicDescription": "WELSH - Remediation activities and other waste management services"
-            },
-            "41100": {
-                "sicCode": "41100",
-                "sicDescription": "WELSH - Development of building projects"
-            },
-            "41201": {
-                "sicCode": "41201",
-                "sicDescription": "WELSH - Construction of commercial buildings"
-            },
-            "41202": {
-                "sicCode": "41202",
-                "sicDescription": "WELSH - Construction of domestic buildings"
-            },
-            "42110": {
-                "sicCode": "42110",
-                "sicDescription": "WELSH - Construction of roads and motorways"
-            },
-            "42120": {
-                "sicCode": "42120",
-                "sicDescription": "WELSH - Construction of railways and underground railways"
-            },
-            "42130": {
-                "sicCode": "42130",
-                "sicDescription": "WELSH - Construction of bridges and tunnels"
-            },
-            "42210": {
-                "sicCode": "42210",
-                "sicDescription": "WELSH - Construction of utility projects for fluids"
-            },
-            "42220": {
-                "sicCode": "42220",
-                "sicDescription": "WELSH - Construction of utility projects for electricity and telecommunications"
-            },
-            "42910": {
-                "sicCode": "42910",
-                "sicDescription": "WELSH - Construction of water projects"
-            },
-            "42990": {
-                "sicCode": "42990",
-                "sicDescription": "WELSH - Construction of other civil engineering projects n.e.c."
-            },
-            "43110": {
-                "sicCode": "43110",
-                "sicDescription": "WELSH - Demolition"
-            },
-            "43120": {
-                "sicCode": "43120",
-                "sicDescription": "WELSH - Site preparation"
-            },
-            "43130": {
-                "sicCode": "43130",
-                "sicDescription": "WELSH - Test drilling and boring"
-            },
-            "43210": {
-                "sicCode": "43210",
-                "sicDescription": "WELSH - Electrical installation"
-            },
-            "43220": {
-                "sicCode": "43220",
-                "sicDescription": "WELSH - Plumbing, heat and air-conditioning installation"
-            },
-            "43290": {
-                "sicCode": "43290",
-                "sicDescription": "WELSH - Other construction installation"
-            },
-            "43310": {
-                "sicCode": "43310",
-                "sicDescription": "WELSH - Plastering"
-            },
-            "43320": {
-                "sicCode": "43320",
-                "sicDescription": "WELSH - Joinery installation"
-            },
-            "43330": {
-                "sicCode": "43330",
-                "sicDescription": "WELSH - Floor and wall covering"
-            },
-            "43341": {
-                "sicCode": "43341",
-                "sicDescription": "WELSH - Painting"
-            },
-            "43342": {
-                "sicCode": "43342",
-                "sicDescription": "WELSH - Glazing"
-            },
-            "43390": {
-                "sicCode": "43390",
-                "sicDescription": "WELSH - Other building completion and finishing"
-            },
-            "43910": {
-                "sicCode": "43910",
-                "sicDescription": "WELSH - Roofing activities"
-            },
-            "43991": {
-                "sicCode": "43991",
-                "sicDescription": "WELSH - Scaffold erection"
-            },
-            "43999": {
-                "sicCode": "43999",
-                "sicDescription": "WELSH - Other specialised construction activities n.e.c."
-            },
-            "45111": {
-                "sicCode": "45111",
-                "sicDescription": "WELSH - Sale of new cars and light motor vehicles"
-            },
-            "45112": {
-                "sicCode": "45112",
-                "sicDescription": "WELSH - Sale of used cars and light motor vehicles"
-            },
-            "45190": {
-                "sicCode": "45190",
-                "sicDescription": "WELSH - Sale of other motor vehicles"
-            },
-            "45200": {
-                "sicCode": "45200",
-                "sicDescription": "WELSH - Maintenance and repair of motor vehicles"
-            },
-            "45310": {
-                "sicCode": "45310",
-                "sicDescription": "WELSH - Wholesale trade of motor vehicle parts and accessories"
-            },
-            "45320": {
-                "sicCode": "45320",
-                "sicDescription": "WELSH - Retail trade of motor vehicle parts and accessories"
-            },
-            "45400": {
-                "sicCode": "45400",
-                "sicDescription": "WELSH - Sale, maintenance and repair of motorcycles and related parts and accessories"
-            },
-            "46110": {
-                "sicCode": "46110",
-                "sicDescription": "WELSH - Agents selling agricultural raw materials, livestock, textile raw materials and semi-finished goods"
-            },
-            "46120": {
-                "sicCode": "46120",
-                "sicDescription": "WELSH - Agents involved in the sale of fuels, ores, metals and industrial chemicals"
-            },
-            "46130": {
-                "sicCode": "46130",
-                "sicDescription": "WELSH - Agents involved in the sale of timber and building materials"
-            },
-            "46140": {
-                "sicCode": "46140",
-                "sicDescription": "WELSH - Agents involved in the sale of machinery, industrial equipment, ships and aircraft"
-            },
-            "46150": {
-                "sicCode": "46150",
-                "sicDescription": "WELSH - Agents involved in the sale of furniture, household goods, hardware and ironmongery"
-            },
-            "46160": {
-                "sicCode": "46160",
-                "sicDescription": "WELSH - Agents involved in the sale of textiles, clothing, fur, footwear and leather goods"
-            },
-            "46170": {
-                "sicCode": "46170",
-                "sicDescription": "WELSH - Agents involved in the sale of food, beverages and tobacco"
-            },
-            "46180": {
-                "sicCode": "46180",
-                "sicDescription": "WELSH - Agents specialised in the sale of other particular products"
-            },
-            "46190": {
-                "sicCode": "46190",
-                "sicDescription": "WELSH - Agents involved in the sale of a variety of goods"
-            },
-            "46210": {
-                "sicCode": "46210",
-                "sicDescription": "WELSH - Wholesale of grain, unmanufactured tobacco, seeds and animal feeds"
-            },
-            "46220": {
-                "sicCode": "46220",
-                "sicDescription": "WELSH - Wholesale of flowers and plants"
-            },
-            "46230": {
-                "sicCode": "46230",
-                "sicDescription": "WELSH - Wholesale of live animals"
-            },
-            "46240": {
-                "sicCode": "46240",
-                "sicDescription": "WELSH - Wholesale of hides, skins and leather"
-            },
-            "46310": {
-                "sicCode": "46310",
-                "sicDescription": "WELSH - Wholesale of fruit and vegetables"
-            },
-            "46320": {
-                "sicCode": "46320",
-                "sicDescription": "WELSH - Wholesale of meat and meat products"
-            },
-            "46330": {
-                "sicCode": "46330",
-                "sicDescription": "WELSH - Wholesale of dairy products, eggs and edible oils and fats"
-            },
-            "46341": {
-                "sicCode": "46341",
-                "sicDescription": "WELSH - Wholesale of fruit and vegetable juices, mineral water and soft drinks"
-            },
-            "46342": {
-                "sicCode": "46342",
-                "sicDescription": "WELSH - Wholesale of wine, beer, spirits and other alcoholic beverages"
-            },
-            "46350": {
-                "sicCode": "46350",
-                "sicDescription": "WELSH - Wholesale of tobacco products"
-            },
-            "46360": {
-                "sicCode": "46360",
-                "sicDescription": "WELSH - Wholesale of sugar and chocolate and sugar confectionery"
-            },
-            "46370": {
-                "sicCode": "46370",
-                "sicDescription": "WELSH - Wholesale of coffee, tea, cocoa and spices"
-            },
-            "46380": {
-                "sicCode": "46380",
-                "sicDescription": "WELSH - Wholesale of other food, including fish, crustaceans and molluscs"
-            },
-            "46390": {
-                "sicCode": "46390",
-                "sicDescription": "WELSH - Non-specialised wholesale of food, beverages and tobacco"
-            },
-            "46410": {
-                "sicCode": "46410",
-                "sicDescription": "WELSH - Wholesale of textiles"
-            },
-            "46420": {
-                "sicCode": "46420",
-                "sicDescription": "WELSH - Wholesale of clothing and footwear"
-            },
-            "46431": {
-                "sicCode": "46431",
-                "sicDescription": "WELSH - Wholesale of audio tapes, records, CDs and video tapes and the equipment on which these are played"
-            },
-            "46439": {
-                "sicCode": "46439",
-                "sicDescription": "WELSH - Wholesale of radio, television goods & electrical household appliances (other than records, tapes, CD's & video tapes and the equipment used for playing them)"
-            },
-            "46440": {
-                "sicCode": "46440",
-                "sicDescription": "WELSH - Wholesale of china and glassware and cleaning materials"
-            },
-            "46450": {
-                "sicCode": "46450",
-                "sicDescription": "WELSH - Wholesale of perfume and cosmetics"
-            },
-            "46460": {
-                "sicCode": "46460",
-                "sicDescription": "WELSH - Wholesale of pharmaceutical goods"
-            },
-            "46470": {
-                "sicCode": "46470",
-                "sicDescription": "WELSH - Wholesale of furniture, carpets and lighting equipment"
-            },
-            "46480": {
-                "sicCode": "46480",
-                "sicDescription": "WELSH - Wholesale of watches and jewellery"
-            },
-            "46491": {
-                "sicCode": "46491",
-                "sicDescription": "WELSH - Wholesale of musical instruments"
-            },
-            "46499": {
-                "sicCode": "46499",
-                "sicDescription": "WELSH - Wholesale of household goods (other than musical instruments) n.e.c"
-            },
-            "46510": {
-                "sicCode": "46510",
-                "sicDescription": "WELSH - Wholesale of computers, computer peripheral equipment and software"
-            },
-            "46520": {
-                "sicCode": "46520",
-                "sicDescription": "WELSH - Wholesale of electronic and telecommunications equipment and parts"
-            },
-            "46610": {
-                "sicCode": "46610",
-                "sicDescription": "WELSH - Wholesale of agricultural machinery, equipment and supplies"
-            },
-            "46620": {
-                "sicCode": "46620",
-                "sicDescription": "WELSH - Wholesale of machine tools"
-            },
-            "46630": {
-                "sicCode": "46630",
-                "sicDescription": "WELSH - Wholesale of mining, construction and civil engineering machinery"
-            },
-            "46640": {
-                "sicCode": "46640",
-                "sicDescription": "WELSH - Wholesale of machinery for the textile industry and of sewing and knitting machines"
-            },
-            "46650": {
-                "sicCode": "46650",
-                "sicDescription": "WELSH - Wholesale of office furniture"
-            },
-            "46660": {
-                "sicCode": "46660",
-                "sicDescription": "WELSH - Wholesale of other office machinery and equipment"
-            },
-            "46690": {
-                "sicCode": "46690",
-                "sicDescription": "WELSH - Wholesale of other machinery and equipment"
-            },
-            "46711": {
-                "sicCode": "46711",
-                "sicDescription": "WELSH - Wholesale of petroleum and petroleum products"
-            },
-            "46719": {
-                "sicCode": "46719",
-                "sicDescription": "WELSH - Wholesale of other fuels and related products"
-            },
-            "46720": {
-                "sicCode": "46720",
-                "sicDescription": "WELSH - Wholesale of metals and metal ores"
-            },
-            "46730": {
-                "sicCode": "46730",
-                "sicDescription": "WELSH - Wholesale of wood, construction materials and sanitary equipment"
-            },
-            "46740": {
-                "sicCode": "46740",
-                "sicDescription": "WELSH - Wholesale of hardware, plumbing and heating equipment and supplies"
-            },
-            "46750": {
-                "sicCode": "46750",
-                "sicDescription": "WELSH - Wholesale of chemical products"
-            },
-            "46760": {
-                "sicCode": "46760",
-                "sicDescription": "WELSH - Wholesale of other intermediate products"
-            },
-            "46770": {
-                "sicCode": "46770",
-                "sicDescription": "WELSH - Wholesale of waste and scrap"
-            },
-            "46900": {
-                "sicCode": "46900",
-                "sicDescription": "WELSH - Non-specialised wholesale trade"
-            },
-            "47110": {
-                "sicCode": "47110",
-                "sicDescription": "WELSH - Retail sale in non-specialised stores with food, beverages or tobacco predominating"
-            },
-            "47190": {
-                "sicCode": "47190",
-                "sicDescription": "WELSH - Other retail sale in non-specialised stores"
-            },
-            "47210": {
-                "sicCode": "47210",
-                "sicDescription": "WELSH - Retail sale of fruit and vegetables in specialised stores"
-            },
-            "47220": {
-                "sicCode": "47220",
-                "sicDescription": "WELSH - Retail sale of meat and meat products in specialised stores"
-            },
-            "47230": {
-                "sicCode": "47230",
-                "sicDescription": "WELSH - Retail sale of fish, crustaceans and molluscs in specialised stores"
-            },
-            "47240": {
-                "sicCode": "47240",
-                "sicDescription": "WELSH - Retail sale of bread, cakes, flour confectionery and sugar confectionery in specialised stores"
-            },
-            "47250": {
-                "sicCode": "47250",
-                "sicDescription": "WELSH - Retail sale of beverages in specialised stores"
-            },
-            "47260": {
-                "sicCode": "47260",
-                "sicDescription": "WELSH - Retail sale of tobacco products in specialised stores"
-            },
-            "47290": {
-                "sicCode": "47290",
-                "sicDescription": "WELSH - Other retail sale of food in specialised stores"
-            },
-            "47300": {
-                "sicCode": "47300",
-                "sicDescription": "WELSH - Retail sale of automotive fuel in specialised stores"
-            },
-            "47410": {
-                "sicCode": "47410",
-                "sicDescription": "WELSH - Retail sale of computers, peripheral units and software in specialised stores"
-            },
-            "47421": {
-                "sicCode": "47421",
-                "sicDescription": "WELSH - Retail sale of mobile telephones"
-            },
-            "47429": {
-                "sicCode": "47429",
-                "sicDescription": "WELSH - Retail sale of telecommunications equipment other than mobile telephones"
-            },
-            "47430": {
-                "sicCode": "47430",
-                "sicDescription": "WELSH - Retail sale of audio and video equipment in specialised stores"
-            },
-            "47510": {
-                "sicCode": "47510",
-                "sicDescription": "WELSH - Retail sale of textiles in specialised stores"
-            },
-            "47520": {
-                "sicCode": "47520",
-                "sicDescription": "WELSH - Retail sale of hardware, paints and glass in specialised stores"
-            },
-            "47530": {
-                "sicCode": "47530",
-                "sicDescription": "WELSH - Retail sale of carpets, rugs, wall and floor coverings in specialised stores"
-            },
-            "47540": {
-                "sicCode": "47540",
-                "sicDescription": "WELSH - Retail sale of electrical household appliances in specialised stores"
-            },
-            "47591": {
-                "sicCode": "47591",
-                "sicDescription": "WELSH - Retail sale of musical instruments and scores"
-            },
-            "47599": {
-                "sicCode": "47599",
-                "sicDescription": "WELSH - Retail of furniture, lighting, and similar (not musical instruments or scores) in specialised store"
-            },
-            "47610": {
-                "sicCode": "47610",
-                "sicDescription": "WELSH - Retail sale of books in specialised stores"
-            },
-            "47620": {
-                "sicCode": "47620",
-                "sicDescription": "WELSH - Retail sale of newspapers and stationery in specialised stores"
-            },
-            "47630": {
-                "sicCode": "47630",
-                "sicDescription": "WELSH - Retail sale of music and video recordings in specialised stores"
-            },
-            "47640": {
-                "sicCode": "47640",
-                "sicDescription": "WELSH - Retail sale of sports goods, fishing gear, camping goods, boats and bicycles"
-            },
-            "47650": {
-                "sicCode": "47650",
-                "sicDescription": "WELSH - Retail sale of games and toys in specialised stores"
-            },
-            "47710": {
-                "sicCode": "47710",
-                "sicDescription": "WELSH - Retail sale of clothing in specialised stores"
-            },
-            "47721": {
-                "sicCode": "47721",
-                "sicDescription": "WELSH - Retail sale of footwear in specialised stores"
-            },
-            "47722": {
-                "sicCode": "47722",
-                "sicDescription": "WELSH - Retail sale of leather goods in specialised stores"
-            },
-            "47730": {
-                "sicCode": "47730",
-                "sicDescription": "WELSH - Dispensing chemist in specialised stores"
-            },
-            "47741": {
-                "sicCode": "47741",
-                "sicDescription": "WELSH - Retail sale of hearing aids"
-            },
-            "47749": {
-                "sicCode": "47749",
-                "sicDescription": "WELSH - Retail sale of medical and orthopaedic goods in specialised stores (not incl. hearing aids) n.e.c."
-            },
-            "47750": {
-                "sicCode": "47750",
-                "sicDescription": "WELSH - Retail sale of cosmetic and toilet articles in specialised stores"
-            },
-            "47760": {
-                "sicCode": "47760",
-                "sicDescription": "WELSH - Retail sale of flowers, plants, seeds, fertilizers, pet animals and pet food in specialised stores"
-            },
-            "47770": {
-                "sicCode": "47770",
-                "sicDescription": "WELSH - Retail sale of watches and jewellery in specialised stores"
-            },
-            "47781": {
-                "sicCode": "47781",
-                "sicDescription": "WELSH - Retail sale in commercial art galleries"
-            },
-            "47782": {
-                "sicCode": "47782",
-                "sicDescription": "WELSH - Retail sale by opticians"
-            },
-            "47789": {
-                "sicCode": "47789",
-                "sicDescription": "WELSH - Other retail sale of new goods in specialised stores (not commercial art galleries and opticians)"
-            },
-            "47791": {
-                "sicCode": "47791",
-                "sicDescription": "WELSH - Retail sale of antiques including antique books in stores"
-            },
-            "47799": {
-                "sicCode": "47799",
-                "sicDescription": "WELSH - Retail sale of other second-hand goods in stores (not incl. antiques)"
-            },
-            "47810": {
-                "sicCode": "47810",
-                "sicDescription": "WELSH - Retail sale via stalls and markets of food, beverages and tobacco products"
-            },
-            "47820": {
-                "sicCode": "47820",
-                "sicDescription": "WELSH - Retail sale via stalls and markets of textiles, clothing and footwear"
-            },
-            "47890": {
-                "sicCode": "47890",
-                "sicDescription": "WELSH - Retail sale via stalls and markets of other goods"
-            },
-            "47910": {
-                "sicCode": "47910",
-                "sicDescription": "WELSH - Retail sale via mail order houses or via Internet"
-            },
-            "47990": {
-                "sicCode": "47990",
-                "sicDescription": "WELSH - Other retail sale not in stores, stalls or markets"
-            },
-            "49100": {
-                "sicCode": "49100",
-                "sicDescription": "WELSH - Passenger rail transport, interurban"
-            },
-            "49200": {
-                "sicCode": "49200",
-                "sicDescription": "WELSH - Freight rail transport"
-            },
-            "49311": {
-                "sicCode": "49311",
-                "sicDescription": "WELSH - Urban and suburban passenger railway transportation by underground, metro and similar systems"
-            },
-            "49319": {
-                "sicCode": "49319",
-                "sicDescription": "WELSH - Other urban, suburban or metropolitan passenger land transport (not underground, metro or similar)"
-            },
-            "49320": {
-                "sicCode": "49320",
-                "sicDescription": "WELSH - Taxi operation"
-            },
-            "49390": {
-                "sicCode": "49390",
-                "sicDescription": "WELSH - Other passenger land transport"
-            },
-            "49410": {
-                "sicCode": "49410",
-                "sicDescription": "WELSH - Freight transport by road"
-            },
-            "49420": {
-                "sicCode": "49420",
-                "sicDescription": "WELSH - Removal services"
-            },
-            "49500": {
-                "sicCode": "49500",
-                "sicDescription": "WELSH - Transport via pipeline"
-            },
-            "50100": {
-                "sicCode": "50100",
-                "sicDescription": "WELSH - Sea and coastal passenger water transport"
-            },
-            "50200": {
-                "sicCode": "50200",
-                "sicDescription": "WELSH - Sea and coastal freight water transport"
-            },
-            "50300": {
-                "sicCode": "50300",
-                "sicDescription": "WELSH - Inland passenger water transport"
-            },
-            "50400": {
-                "sicCode": "50400",
-                "sicDescription": "WELSH - Inland freight water transport"
-            },
-            "51101": {
-                "sicCode": "51101",
-                "sicDescription": "WELSH - Scheduled passenger air transport"
-            },
-            "51102": {
-                "sicCode": "51102",
-                "sicDescription": "WELSH - Non-scheduled passenger air transport"
-            },
-            "51210": {
-                "sicCode": "51210",
-                "sicDescription": "WELSH - Freight air transport"
-            },
-            "51220": {
-                "sicCode": "51220",
-                "sicDescription": "WELSH - Space transport"
-            },
-            "52101": {
-                "sicCode": "52101",
-                "sicDescription": "WELSH - Operation of warehousing and storage facilities for water transport activities"
-            },
-            "52102": {
-                "sicCode": "52102",
-                "sicDescription": "WELSH - Operation of warehousing and storage facilities for air transport activities"
-            },
-            "52103": {
-                "sicCode": "52103",
-                "sicDescription": "WELSH - Operation of warehousing and storage facilities for land transport activities"
-            },
-            "52211": {
-                "sicCode": "52211",
-                "sicDescription": "WELSH - Operation of rail freight terminals"
-            },
-            "52212": {
-                "sicCode": "52212",
-                "sicDescription": "WELSH - Operation of rail passenger facilities at railway stations"
-            },
-            "52213": {
-                "sicCode": "52213",
-                "sicDescription": "WELSH - Operation of bus and coach passenger facilities at bus and coach stations"
-            },
-            "52219": {
-                "sicCode": "52219",
-                "sicDescription": "WELSH - Other service activities incidental to land transportation, n.e.c."
-            },
-            "52220": {
-                "sicCode": "52220",
-                "sicDescription": "WELSH - Service activities incidental to water transportation"
-            },
-            "52230": {
-                "sicCode": "52230",
-                "sicDescription": "WELSH - Service activities incidental to air transportation"
-            },
-            "52241": {
-                "sicCode": "52241",
-                "sicDescription": "WELSH - Cargo handling for water transport activities"
-            },
-            "52242": {
-                "sicCode": "52242",
-                "sicDescription": "WELSH - Cargo handling for air transport activities"
-            },
-            "52243": {
-                "sicCode": "52243",
-                "sicDescription": "WELSH - Cargo handling for land transport activities"
-            },
-            "52290": {
-                "sicCode": "52290",
-                "sicDescription": "WELSH - Other transportation support activities"
-            },
-            "53100": {
-                "sicCode": "53100",
-                "sicDescription": "WELSH - Postal activities under universal service obligation"
-            },
-            "53201": {
-                "sicCode": "53201",
-                "sicDescription": "WELSH - Licensed carriers"
-            },
-            "53202": {
-                "sicCode": "53202",
-                "sicDescription": "WELSH - Unlicensed carriers"
-            },
-            "55100": {
-                "sicCode": "55100",
-                "sicDescription": "WELSH - Hotels and similar accommodation"
-            },
-            "55201": {
-                "sicCode": "55201",
-                "sicDescription": "WELSH - Holiday centres and villages"
-            },
-            "55202": {
-                "sicCode": "55202",
-                "sicDescription": "WELSH - Youth hostels"
-            },
-            "55209": {
-                "sicCode": "55209",
-                "sicDescription": "WELSH - Other holiday and other collective accommodation"
-            },
-            "55300": {
-                "sicCode": "55300",
-                "sicDescription": "WELSH - Recreational vehicle parks, trailer parks and camping grounds"
-            },
-            "55900": {
-                "sicCode": "55900",
-                "sicDescription": "WELSH - Other accommodation"
-            },
-            "56101": {
-                "sicCode": "56101",
-                "sicDescription": "WELSH - Licenced restaurants"
-            },
-            "56102": {
-                "sicCode": "56102",
-                "sicDescription": "WELSH - Unlicenced restaurants and cafes"
-            },
-            "56103": {
-                "sicCode": "56103",
-                "sicDescription": "WELSH - Take-away food shops and mobile food stands"
-            },
-            "56210": {
-                "sicCode": "56210",
-                "sicDescription": "WELSH - Event catering activities"
-            },
-            "56290": {
-                "sicCode": "56290",
-                "sicDescription": "WELSH - Other food services"
-            },
-            "56301": {
-                "sicCode": "56301",
-                "sicDescription": "WELSH - Licenced clubs"
-            },
-            "56302": {
-                "sicCode": "56302",
-                "sicDescription": "WELSH - Public houses and bars"
-            },
-            "58110": {
-                "sicCode": "58110",
-                "sicDescription": "WELSH - Book publishing"
-            },
-            "58120": {
-                "sicCode": "58120",
-                "sicDescription": "WELSH - Publishing of directories and mailing lists"
-            },
-            "58130": {
-                "sicCode": "58130",
-                "sicDescription": "WELSH - Publishing of newspapers"
-            },
-            "58141": {
-                "sicCode": "58141",
-                "sicDescription": "WELSH - Publishing of learned journals"
-            },
-            "58142": {
-                "sicCode": "58142",
-                "sicDescription": "WELSH - Publishing of consumer and business journals and periodicals"
-            },
-            "58190": {
-                "sicCode": "58190",
-                "sicDescription": "WELSH - Other publishing activities"
-            },
-            "58210": {
-                "sicCode": "58210",
-                "sicDescription": "WELSH - Publishing of computer games"
-            },
-            "58290": {
-                "sicCode": "58290",
-                "sicDescription": "WELSH - Other software publishing"
-            },
-            "59111": {
-                "sicCode": "59111",
-                "sicDescription": "WELSH - Motion picture production activities"
-            },
-            "59112": {
-                "sicCode": "59112",
-                "sicDescription": "WELSH - Video production activities"
-            },
-            "59113": {
-                "sicCode": "59113",
-                "sicDescription": "WELSH - Television programme production activities"
-            },
-            "59120": {
-                "sicCode": "59120",
-                "sicDescription": "WELSH - Motion picture, video and television programme post-production activities"
-            },
-            "59131": {
-                "sicCode": "59131",
-                "sicDescription": "WELSH - Motion picture distribution activities"
-            },
-            "59132": {
-                "sicCode": "59132",
-                "sicDescription": "WELSH - Video distribution activities"
-            },
-            "59133": {
-                "sicCode": "59133",
-                "sicDescription": "WELSH - Television programme distribution activities"
-            },
-            "59140": {
-                "sicCode": "59140",
-                "sicDescription": "WELSH - Motion picture projection activities"
-            },
-            "59200": {
-                "sicCode": "59200",
-                "sicDescription": "WELSH - Sound recording and music publishing activities"
-            },
-            "60100": {
-                "sicCode": "60100",
-                "sicDescription": "WELSH - Radio broadcasting"
-            },
-            "60200": {
-                "sicCode": "60200",
-                "sicDescription": "WELSH - Television programming and broadcasting activities"
-            },
-            "61100": {
-                "sicCode": "61100",
-                "sicDescription": "WELSH - Wired telecommunications activities"
-            },
-            "61200": {
-                "sicCode": "61200",
-                "sicDescription": "WELSH - Wireless telecommunications activities"
-            },
-            "61300": {
-                "sicCode": "61300",
-                "sicDescription": "WELSH - Satellite telecommunications activities"
-            },
-            "61900": {
-                "sicCode": "61900",
-                "sicDescription": "WELSH - Other telecommunications activities"
-            },
-            "62011": {
-                "sicCode": "62011",
-                "sicDescription": "WELSH - Ready-made interactive leisure and entertainment software development"
-            },
-            "62012": {
-                "sicCode": "62012",
-                "sicDescription": "WELSH - Business and domestic software development"
-            },
-            "62020": {
-                "sicCode": "62020",
-                "sicDescription": "WELSH - Information technology consultancy activities"
-            },
-            "62030": {
-                "sicCode": "62030",
-                "sicDescription": "WELSH - Computer facilities management activities"
-            },
-            "62090": {
-                "sicCode": "62090",
-                "sicDescription": "WELSH - Other information technology service activities"
-            },
-            "63110": {
-                "sicCode": "63110",
-                "sicDescription": "WELSH - Data processing, hosting and related activities"
-            },
-            "63120": {
-                "sicCode": "63120",
-                "sicDescription": "WELSH - Web portals"
-            },
-            "63910": {
-                "sicCode": "63910",
-                "sicDescription": "WELSH - News agency activities"
-            },
-            "63990": {
-                "sicCode": "63990",
-                "sicDescription": "WELSH - Other information service activities n.e.c."
-            },
-            "64110": {
-                "sicCode": "64110",
-                "sicDescription": "WELSH - Central banking"
-            },
-            "64191": {
-                "sicCode": "64191",
-                "sicDescription": "WELSH - Banks"
-            },
-            "64192": {
-                "sicCode": "64192",
-                "sicDescription": "WELSH - Building societies"
-            },
-            "64201": {
-                "sicCode": "64201",
-                "sicDescription": "WELSH - Activities of agricultural holding companies"
-            },
-            "64202": {
-                "sicCode": "64202",
-                "sicDescription": "WELSH - Activities of production holding companies"
-            },
-            "64203": {
-                "sicCode": "64203",
-                "sicDescription": "WELSH - Activities of construction holding companies"
-            },
-            "64204": {
-                "sicCode": "64204",
-                "sicDescription": "WELSH - Activities of distribution holding companies"
-            },
-            "64205": {
-                "sicCode": "64205",
-                "sicDescription": "WELSH - Activities of financial services holding companies"
-            },
-            "64209": {
-                "sicCode": "64209",
-                "sicDescription": "WELSH - Activities of other holding companies n.e.c."
-            },
-            "64301": {
-                "sicCode": "64301",
-                "sicDescription": "WELSH - Activities of investment trusts"
-            },
-            "64302": {
-                "sicCode": "64302",
-                "sicDescription": "WELSH - Activities of unit trusts"
-            },
-            "64303": {
-                "sicCode": "64303",
-                "sicDescription": "WELSH - Activities of venture and development capital companies"
-            },
-            "64304": {
-                "sicCode": "64304",
-                "sicDescription": "WELSH - Activities of open-ended investment companies"
-            },
-            "64305": {
-                "sicCode": "64305",
-                "sicDescription": "WELSH - Activities of property unit trusts"
-            },
-            "64306": {
-                "sicCode": "64306",
-                "sicDescription": "WELSH - Activities of real estate investment trusts"
-            },
-            "64910": {
-                "sicCode": "64910",
-                "sicDescription": "WELSH - Financial leasing"
-            },
-            "64921": {
-                "sicCode": "64921",
-                "sicDescription": "WELSH - Credit granting by non-deposit taking finance houses and other specialist consumer credit grantors"
-            },
-            "64922": {
-                "sicCode": "64922",
-                "sicDescription": "WELSH - Activities of mortgage finance companies"
-            },
-            "64929": {
-                "sicCode": "64929",
-                "sicDescription": "WELSH - Other credit granting n.e.c."
-            },
-            "64991": {
-                "sicCode": "64991",
-                "sicDescription": "WELSH - Security dealing on own account"
-            },
-            "64992": {
-                "sicCode": "64992",
-                "sicDescription": "WELSH - Factoring"
-            },
-            "64999": {
-                "sicCode": "64999",
-                "sicDescription": "WELSH - Financial intermediation not elsewhere classified"
-            },
-            "65110": {
-                "sicCode": "65110",
-                "sicDescription": "WELSH - Life insurance"
-            },
-            "65120": {
-                "sicCode": "65120",
-                "sicDescription": "WELSH - Non-life insurance"
-            },
-            "65201": {
-                "sicCode": "65201",
-                "sicDescription": "WELSH - Life reinsurance"
-            },
-            "65202": {
-                "sicCode": "65202",
-                "sicDescription": "WELSH - Non-life reinsurance"
-            },
-            "65300": {
-                "sicCode": "65300",
-                "sicDescription": "WELSH - Pension funding"
-            },
-            "66110": {
-                "sicCode": "66110",
-                "sicDescription": "WELSH - Administration of financial markets"
-            },
-            "66120": {
-                "sicCode": "66120",
-                "sicDescription": "WELSH - Security and commodity contracts dealing activities"
-            },
-            "66190": {
-                "sicCode": "66190",
-                "sicDescription": "WELSH - Activities auxiliary to financial intermediation n.e.c."
-            },
-            "66210": {
-                "sicCode": "66210",
-                "sicDescription": "WELSH - Risk and damage evaluation"
-            },
-            "66220": {
-                "sicCode": "66220",
-                "sicDescription": "WELSH - Activities of insurance agents and brokers"
-            },
-            "66290": {
-                "sicCode": "66290",
-                "sicDescription": "WELSH - Other activities auxiliary to insurance and pension funding"
-            },
-            "66300": {
-                "sicCode": "66300",
-                "sicDescription": "WELSH - Fund management activities"
-            },
-            "68100": {
-                "sicCode": "68100",
-                "sicDescription": "WELSH - Buying and selling of own real estate"
-            },
-            "68201": {
-                "sicCode": "68201",
-                "sicDescription": "WELSH - Renting and operating of Housing Association real estate"
-            },
-            "68202": {
-                "sicCode": "68202",
-                "sicDescription": "WELSH - Letting and operating of conference and exhibition centres"
-            },
-            "68209": {
-                "sicCode": "68209",
-                "sicDescription": "WELSH - Other letting and operating of own or leased real estate"
-            },
-            "68310": {
-                "sicCode": "68310",
-                "sicDescription": "WELSH - Real estate agencies"
-            },
-            "68320": {
-                "sicCode": "68320",
-                "sicDescription": "WELSH - Management of real estate on a fee or contract basis"
-            },
-            "69101": {
-                "sicCode": "69101",
-                "sicDescription": "WELSH - Barristers at law"
-            },
-            "69102": {
-                "sicCode": "69102",
-                "sicDescription": "WELSH - Solicitors"
-            },
-            "69109": {
-                "sicCode": "69109",
-                "sicDescription": "WELSH - Activities of patent and copyright agents; other legal activities n.e.c."
-            },
-            "69201": {
-                "sicCode": "69201",
-                "sicDescription": "WELSH - Accounting and auditing activities"
-            },
-            "69202": {
-                "sicCode": "69202",
-                "sicDescription": "WELSH - Bookkeeping activities"
-            },
-            "69203": {
-                "sicCode": "69203",
-                "sicDescription": "WELSH - Tax consultancy"
-            },
-            "70100": {
-                "sicCode": "70100",
-                "sicDescription": "WELSH - Activities of head offices"
-            },
-            "70210": {
-                "sicCode": "70210",
-                "sicDescription": "WELSH - Public relations and communications activities"
-            },
-            "70221": {
-                "sicCode": "70221",
-                "sicDescription": "WELSH - Financial management"
-            },
-            "70229": {
-                "sicCode": "70229",
-                "sicDescription": "WELSH - Management consultancy activities other than financial management"
-            },
-            "71111": {
-                "sicCode": "71111",
-                "sicDescription": "WELSH - Architectural activities"
-            },
-            "71112": {
-                "sicCode": "71112",
-                "sicDescription": "WELSH - Urban planning and landscape architectural activities"
-            },
-            "71121": {
-                "sicCode": "71121",
-                "sicDescription": "WELSH - Engineering design activities for industrial process and production"
-            },
-            "71122": {
-                "sicCode": "71122",
-                "sicDescription": "WELSH - Engineering related scientific and technical consulting activities"
-            },
-            "71129": {
-                "sicCode": "71129",
-                "sicDescription": "WELSH - Other engineering activities"
-            },
-            "71200": {
-                "sicCode": "71200",
-                "sicDescription": "WELSH - Technical testing and analysis"
-            },
-            "72110": {
-                "sicCode": "72110",
-                "sicDescription": "WELSH - Research and experimental development on biotechnology"
-            },
-            "72190": {
-                "sicCode": "72190",
-                "sicDescription": "WELSH - Other research and experimental development on natural sciences and engineering"
-            },
-            "72200": {
-                "sicCode": "72200",
-                "sicDescription": "WELSH - Research and experimental development on social sciences and humanities"
-            },
-            "73110": {
-                "sicCode": "73110",
-                "sicDescription": "WELSH - Advertising agencies"
-            },
-            "73120": {
-                "sicCode": "73120",
-                "sicDescription": "WELSH - Media representation services"
-            },
-            "73200": {
-                "sicCode": "73200",
-                "sicDescription": "WELSH - Market research and public opinion polling"
-            },
-            "74100": {
-                "sicCode": "74100",
-                "sicDescription": "WELSH - Specialised design activities"
-            },
-            "74201": {
-                "sicCode": "74201",
-                "sicDescription": "WELSH - Portrait photographic activities"
-            },
-            "74202": {
-                "sicCode": "74202",
-                "sicDescription": "WELSH - Other specialist photography"
-            },
-            "74203": {
-                "sicCode": "74203",
-                "sicDescription": "WELSH - Film processing"
-            },
-            "74209": {
-                "sicCode": "74209",
-                "sicDescription": "WELSH - Photographic activities not elsewhere classified"
-            },
-            "74300": {
-                "sicCode": "74300",
-                "sicDescription": "WELSH - Translation and interpretation activities"
-            },
-            "74901": {
-                "sicCode": "74901",
-                "sicDescription": "WELSH - Environmental consulting activities"
-            },
-            "74902": {
-                "sicCode": "74902",
-                "sicDescription": "WELSH - Quantity surveying activities"
-            },
-            "74909": {
-                "sicCode": "74909",
-                "sicDescription": "WELSH - Other professional, scientific and technical activities n.e.c."
-            },
-            "74990": {
-                "sicCode": "74990",
-                "sicDescription": "WELSH - Non-trading company"
-            },
-            "75000": {
-                "sicCode": "75000",
-                "sicDescription": "WELSH - Veterinary activities"
-            },
-            "77110": {
-                "sicCode": "77110",
-                "sicDescription": "WELSH - Renting and leasing of cars and light motor vehicles"
-            },
-            "77120": {
-                "sicCode": "77120",
-                "sicDescription": "WELSH - Renting and leasing of trucks and other heavy vehicles"
-            },
-            "77210": {
-                "sicCode": "77210",
-                "sicDescription": "WELSH - Renting and leasing of recreational and sports goods"
-            },
-            "77220": {
-                "sicCode": "77220",
-                "sicDescription": "WELSH - Renting of video tapes and disks"
-            },
-            "77291": {
-                "sicCode": "77291",
-                "sicDescription": "WELSH - Renting and leasing of media entertainment equipment"
-            },
-            "77299": {
-                "sicCode": "77299",
-                "sicDescription": "WELSH - Renting and leasing of other personal and household goods"
-            },
-            "77310": {
-                "sicCode": "77310",
-                "sicDescription": "WELSH - Renting and leasing of agricultural machinery and equipment"
-            },
-            "77320": {
-                "sicCode": "77320",
-                "sicDescription": "WELSH - Renting and leasing of construction and civil engineering machinery and equipment"
-            },
-            "77330": {
-                "sicCode": "77330",
-                "sicDescription": "WELSH - Renting and leasing of office machinery and equipment (including computers)"
-            },
-            "77341": {
-                "sicCode": "77341",
-                "sicDescription": "WELSH - Renting and leasing of passenger water transport equipment"
-            },
-            "77342": {
-                "sicCode": "77342",
-                "sicDescription": "WELSH - Renting and leasing of freight water transport equipment"
-            },
-            "77351": {
-                "sicCode": "77351",
-                "sicDescription": "WELSH - Renting and leasing of air passenger transport equipment"
-            },
-            "77352": {
-                "sicCode": "77352",
-                "sicDescription": "WELSH - Renting and leasing of freight air transport equipment"
-            },
-            "77390": {
-                "sicCode": "77390",
-                "sicDescription": "WELSH - Renting and leasing of other machinery, equipment and tangible goods n.e.c."
-            },
-            "77400": {
-                "sicCode": "77400",
-                "sicDescription": "WELSH - Leasing of intellectual property and similar products, except copyright works"
-            },
-            "78101": {
-                "sicCode": "78101",
-                "sicDescription": "WELSH - Motion picture, television and other theatrical casting activities"
-            },
-            "78109": {
-                "sicCode": "78109",
-                "sicDescription": "WELSH - Other activities of employment placement agencies"
-            },
-            "78200": {
-                "sicCode": "78200",
-                "sicDescription": "WELSH - Temporary employment agency activities"
-            },
-            "78300": {
-                "sicCode": "78300",
-                "sicDescription": "WELSH - Human resources provision and management of human resources functions"
-            },
-            "79110": {
-                "sicCode": "79110",
-                "sicDescription": "WELSH - Travel agency activities"
-            },
-            "79120": {
-                "sicCode": "79120",
-                "sicDescription": "WELSH - Tour operator activities"
-            },
-            "79901": {
-                "sicCode": "79901",
-                "sicDescription": "WELSH - Activities of tourist guides"
-            },
-            "79909": {
-                "sicCode": "79909",
-                "sicDescription": "WELSH - Other reservation service activities n.e.c."
-            },
-            "80100": {
-                "sicCode": "80100",
-                "sicDescription": "WELSH - Private security activities"
-            },
-            "80200": {
-                "sicCode": "80200",
-                "sicDescription": "WELSH - Security systems service activities"
-            },
-            "80300": {
-                "sicCode": "80300",
-                "sicDescription": "WELSH - Investigation activities"
-            },
-            "81100": {
-                "sicCode": "81100",
-                "sicDescription": "WELSH - Combined facilities support activities"
-            },
-            "81210": {
-                "sicCode": "81210",
-                "sicDescription": "WELSH - General cleaning of buildings"
-            },
-            "81221": {
-                "sicCode": "81221",
-                "sicDescription": "WELSH - Window cleaning services"
-            },
-            "81222": {
-                "sicCode": "81222",
-                "sicDescription": "WELSH - Specialised cleaning services"
-            },
-            "81223": {
-                "sicCode": "81223",
-                "sicDescription": "WELSH - Furnace and chimney cleaning services"
-            },
-            "81229": {
-                "sicCode": "81229",
-                "sicDescription": "WELSH - Other building and industrial cleaning activities"
-            },
-            "81291": {
-                "sicCode": "81291",
-                "sicDescription": "WELSH - Disinfecting and exterminating services"
-            },
-            "81299": {
-                "sicCode": "81299",
-                "sicDescription": "WELSH - Other cleaning services"
-            },
-            "81300": {
-                "sicCode": "81300",
-                "sicDescription": "WELSH - Landscape service activities"
-            },
-            "82110": {
-                "sicCode": "82110",
-                "sicDescription": "WELSH - Combined office administrative service activities"
-            },
-            "82190": {
-                "sicCode": "82190",
-                "sicDescription": "WELSH - Photocopying, document preparation and other specialised office support activities"
-            },
-            "82200": {
-                "sicCode": "82200",
-                "sicDescription": "WELSH - Activities of call centres"
-            },
-            "82301": {
-                "sicCode": "82301",
-                "sicDescription": "WELSH - Activities of exhibition and fair organisers"
-            },
-            "82302": {
-                "sicCode": "82302",
-                "sicDescription": "WELSH - Activities of conference organisers"
-            },
-            "82911": {
-                "sicCode": "82911",
-                "sicDescription": "WELSH - Activities of collection agencies"
-            },
-            "82912": {
-                "sicCode": "82912",
-                "sicDescription": "WELSH - Activities of credit bureaus"
-            },
-            "82920": {
-                "sicCode": "82920",
-                "sicDescription": "WELSH - Packaging activities"
-            },
-            "82990": {
-                "sicCode": "82990",
-                "sicDescription": "WELSH - Other business support service activities n.e.c."
-            },
-            "84110": {
-                "sicCode": "84110",
-                "sicDescription": "WELSH - General public administration activities"
-            },
-            "84120": {
-                "sicCode": "84120",
-                "sicDescription": "WELSH - Regulation of health care, education, cultural and other social services, not incl. social security"
-            },
-            "84130": {
-                "sicCode": "84130",
-                "sicDescription": "WELSH - Regulation of and contribution to more efficient operation of businesses"
-            },
-            "84210": {
-                "sicCode": "84210",
-                "sicDescription": "WELSH - Foreign affairs"
-            },
-            "84220": {
-                "sicCode": "84220",
-                "sicDescription": "WELSH - Defence activities"
-            },
-            "84230": {
-                "sicCode": "84230",
-                "sicDescription": "WELSH - Justice and judicial activities"
-            },
-            "84240": {
-                "sicCode": "84240",
-                "sicDescription": "WELSH - Public order and safety activities"
-            },
-            "84250": {
-                "sicCode": "84250",
-                "sicDescription": "WELSH - Fire service activities"
-            },
-            "84300": {
-                "sicCode": "84300",
-                "sicDescription": "WELSH - Compulsory social security activities"
-            },
-            "85100": {
-                "sicCode": "85100",
-                "sicDescription": "WELSH - Pre-primary education"
-            },
-            "85200": {
-                "sicCode": "85200",
-                "sicDescription": "WELSH - Primary education"
-            },
-            "85310": {
-                "sicCode": "85310",
-                "sicDescription": "WELSH - General secondary education"
-            },
-            "85320": {
-                "sicCode": "85320",
-                "sicDescription": "WELSH - Technical and vocational secondary education"
-            },
-            "85410": {
-                "sicCode": "85410",
-                "sicDescription": "WELSH - Post-secondary non-tertiary education"
-            },
-            "85421": {
-                "sicCode": "85421",
-                "sicDescription": "WELSH - First-degree level higher education"
-            },
-            "85422": {
-                "sicCode": "85422",
-                "sicDescription": "WELSH - Post-graduate level higher education"
-            },
-            "85510": {
-                "sicCode": "85510",
-                "sicDescription": "WELSH - Sports and recreation education"
-            },
-            "85520": {
-                "sicCode": "85520",
-                "sicDescription": "WELSH - Cultural education"
-            },
-            "85530": {
-                "sicCode": "85530",
-                "sicDescription": "WELSH - Driving school activities"
-            },
-            "85590": {
-                "sicCode": "85590",
-                "sicDescription": "WELSH - Other education n.e.c."
-            },
-            "85600": {
-                "sicCode": "85600",
-                "sicDescription": "WELSH - Educational support services"
-            },
-            "86101": {
-                "sicCode": "86101",
-                "sicDescription": "WELSH - Hospital activities"
-            },
-            "86102": {
-                "sicCode": "86102",
-                "sicDescription": "WELSH - Medical nursing home activities"
-            },
-            "86210": {
-                "sicCode": "86210",
-                "sicDescription": "WELSH - General medical practice activities"
-            },
-            "86220": {
-                "sicCode": "86220",
-                "sicDescription": "WELSH - Specialists medical practice activities"
-            },
-            "86230": {
-                "sicCode": "86230",
-                "sicDescription": "WELSH - Dental practice activities"
-            },
-            "86900": {
-                "sicCode": "86900",
-                "sicDescription": "WELSH - Other human health activities"
-            },
-            "87100": {
-                "sicCode": "87100",
-                "sicDescription": "WELSH - Residential nursing care facilities"
-            },
-            "87200": {
-                "sicCode": "87200",
-                "sicDescription": "WELSH - Residential care activities for learning difficulties, mental health and substance abuse"
-            },
-            "87300": {
-                "sicCode": "87300",
-                "sicDescription": "WELSH - Residential care activities for the elderly and disabled"
-            },
-            "87900": {
-                "sicCode": "87900",
-                "sicDescription": "WELSH - Other residential care activities n.e.c."
-            },
-            "88100": {
-                "sicCode": "88100",
-                "sicDescription": "WELSH - Social work activities without accommodation for the elderly and disabled"
-            },
-            "88910": {
-                "sicCode": "88910",
-                "sicDescription": "WELSH - Child day-care activities"
-            },
-            "88990": {
-                "sicCode": "88990",
-                "sicDescription": "WELSH - Other social work activities without accommodation n.e.c."
-            },
-            "90010": {
-                "sicCode": "90010",
-                "sicDescription": "WELSH - Performing arts"
-            },
-            "90020": {
-                "sicCode": "90020",
-                "sicDescription": "WELSH - Support activities to performing arts"
-            },
-            "90030": {
-                "sicCode": "90030",
-                "sicDescription": "WELSH - Artistic creation"
-            },
-            "90040": {
-                "sicCode": "90040",
-                "sicDescription": "WELSH - Operation of arts facilities"
-            },
-            "91011": {
-                "sicCode": "91011",
-                "sicDescription": "WELSH - Library activities"
-            },
-            "91012": {
-                "sicCode": "91012",
-                "sicDescription": "WELSH - Archives activities"
-            },
-            "91020": {
-                "sicCode": "91020",
-                "sicDescription": "WELSH - Museums activities"
-            },
-            "91030": {
-                "sicCode": "91030",
-                "sicDescription": "WELSH - Operation of historical sites and buildings and similar visitor attractions"
-            },
-            "91040": {
-                "sicCode": "91040",
-                "sicDescription": "WELSH - Botanical and zoological gardens and nature reserves activities"
-            },
-            "92000": {
-                "sicCode": "92000",
-                "sicDescription": "WELSH - Gambling and betting activities"
-            },
-            "93110": {
-                "sicCode": "93110",
-                "sicDescription": "WELSH - Operation of sports facilities"
-            },
-            "93120": {
-                "sicCode": "93120",
-                "sicDescription": "WELSH - Activities of sport clubs"
-            },
-            "93130": {
-                "sicCode": "93130",
-                "sicDescription": "WELSH - Fitness facilities"
-            },
-            "93191": {
-                "sicCode": "93191",
-                "sicDescription": "WELSH - Activities of racehorse owners"
-            },
-            "93199": {
-                "sicCode": "93199",
-                "sicDescription": "WELSH - Other sports activities"
-            },
-            "93210": {
-                "sicCode": "93210",
-                "sicDescription": "WELSH - Activities of amusement parks and theme parks"
-            },
-            "93290": {
-                "sicCode": "93290",
-                "sicDescription": "WELSH - Other amusement and recreation activities n.e.c."
-            },
-            "94110": {
-                "sicCode": "94110",
-                "sicDescription": "WELSH - Activities of business and employers membership organisations"
-            },
-            "94120": {
-                "sicCode": "94120",
-                "sicDescription": "WELSH - Activities of professional membership organisations"
-            },
-            "94200": {
-                "sicCode": "94200",
-                "sicDescription": "WELSH - Activities of trade unions"
-            },
-            "94910": {
-                "sicCode": "94910",
-                "sicDescription": "WELSH - Activities of religious organisations"
-            },
-            "94920": {
-                "sicCode": "94920",
-                "sicDescription": "WELSH - Activities of political organisations"
-            },
-            "94990": {
-                "sicCode": "94990",
-                "sicDescription": "WELSH - Activities of other membership organisations n.e.c."
-            },
-            "95110": {
-                "sicCode": "95110",
-                "sicDescription": "WELSH - Repair of computers and peripheral equipment"
-            },
-            "95120": {
-                "sicCode": "95120",
-                "sicDescription": "WELSH - Repair of communication equipment"
-            },
-            "95210": {
-                "sicCode": "95210",
-                "sicDescription": "WELSH - Repair of consumer electronics"
-            },
-            "95220": {
-                "sicCode": "95220",
-                "sicDescription": "WELSH - Repair of household appliances and home and garden equipment"
-            },
-            "95230": {
-                "sicCode": "95230",
-                "sicDescription": "WELSH - Repair of footwear and leather goods"
-            },
-            "95240": {
-                "sicCode": "95240",
-                "sicDescription": "WELSH - Repair of furniture and home furnishings"
-            },
-            "95250": {
-                "sicCode": "95250",
-                "sicDescription": "WELSH - Repair of watches, clocks and jewellery"
-            },
-            "95290": {
-                "sicCode": "95290",
-                "sicDescription": "WELSH - Repair of personal and household goods n.e.c."
-            },
-            "96010": {
-                "sicCode": "96010",
-                "sicDescription": "WELSH - Washing and (dry-)cleaning of textile and fur products"
-            },
-            "96020": {
-                "sicCode": "96020",
-                "sicDescription": "WELSH - Hairdressing and other beauty treatment"
-            },
-            "96030": {
-                "sicCode": "96030",
-                "sicDescription": "WELSH - Funeral and related activities"
-            },
-            "96040": {
-                "sicCode": "96040",
-                "sicDescription": "WELSH - Physical well-being activities"
-            },
-            "96090": {
-                "sicCode": "96090",
-                "sicDescription": "WELSH - Other service activities n.e.c."
-            },
-            "97000": {
-                "sicCode": "97000",
-                "sicDescription": "WELSH - Activities of households as employers of domestic personnel"
-            },
-            "98000": {
-                "sicCode": "98000",
-                "sicDescription": "WELSH - Residents property management"
-            },
-            "98100": {
-                "sicCode": "98100",
-                "sicDescription": "WELSH - Undifferentiated goods-producing activities of private households for own use"
-            },
-            "98200": {
-                "sicCode": "98200",
-                "sicDescription": "WELSH - Undifferentiated service-producing activities of private households for own use"
-            },
-            "99000": {
-                "sicCode": "99000",
-                "sicDescription": "WELSH - Activities of extraterritorial organisations and bodies"
-            },
-            "99999": {
-                "sicCode": "99999",
-                "sicDescription": "WELSH - Dormant Company"
-            }
+            "01110":"WELSH - Growing of cereals (except rice), leguminous crops and oil seeds",
+            "01120":"WELSH - Growing of rice",
+            "01130":"WELSH - Growing of vegetables and melons, roots and tubers",
+            "01140":"WELSH - Growing of sugar cane",
+            "01150":"WELSH - Growing of tobacco",
+            "01160":"WELSH - Growing of fibre crops",
+            "01190":"WELSH - Growing of other non-perennial crops",
+            "01210":"WELSH - Growing of grapes",
+            "01220":"WELSH - Growing of tropical and subtropical fruits",
+            "01230":"WELSH - Growing of citrus fruits",
+            "01240":"WELSH - Growing of pome fruits and stone fruits",
+            "01250":"WELSH - Growing of other tree and bush fruits and nuts",
+            "01260":"WELSH - Growing of oleaginous fruits",
+            "01270":"WELSH - Growing of beverage crops",
+            "01280":"WELSH - Growing of spices, aromatic, drug and pharmaceutical crops",
+            "01290":"WELSH - Growing of other perennial crops",
+            "01300":"WELSH - Plant propagation",
+            "01410":"WELSH - Raising of dairy cattle",
+            "01420":"WELSH - Raising of other cattle and buffaloes",
+            "01430":"WELSH - Raising of horses and other equines",
+            "01440":"WELSH - Raising of camels and camelids",
+            "01450":"WELSH - Raising of sheep and goats",
+            "01460":"WELSH - Raising of swine/pigs",
+            "01470":"WELSH - Raising of poultry",
+            "01490":"WELSH - Raising of other animals",
+            "01500":"WELSH - Mixed farming",
+            "01610":"WELSH - Support activities for crop production",
+            "01621":"WELSH - Farm animal boarding and care",
+            "01629":"WELSH - Support activities for animal production (other than farm animal boarding and care) n.e.c.",
+            "01630":"WELSH - Post-harvest crop activities",
+            "01640":"WELSH - Seed processing for propagation",
+            "01700":"WELSH - Hunting, trapping and related service activities",
+            "02100":"WELSH - Silviculture and other forestry activities",
+            "02200":"WELSH - Logging",
+            "02300":"WELSH - Gathering of wild growing non-wood products",
+            "02400":"WELSH - Support services to forestry",
+            "03110":"WELSH - Marine fishing",
+            "03120":"WELSH - Freshwater fishing",
+            "03210":"WELSH - Marine aquaculture",
+            "03220":"WELSH - Freshwater aquaculture",
+            "05101":"WELSH - Deep coal mines",
+            "05102":"WELSH - Open cast coal working",
+            "05200":"WELSH - Mining of lignite",
+            "06100":"WELSH - Extraction of crude petroleum",
+            "06200":"WELSH - Extraction of natural gas",
+            "07100":"WELSH - Mining of iron ores",
+            "07210":"WELSH - Mining of uranium and thorium ores",
+            "07290":"WELSH - Mining of other non-ferrous metal ores",
+            "08110":"WELSH - Quarrying of ornamental and building stone, limestone, gypsum, chalk and slate",
+            "08120":"WELSH - Operation of gravel and sand pits; mining of clays and kaolin",
+            "08910":"WELSH - Mining of chemical and fertilizer minerals",
+            "08920":"WELSH - Extraction of peat",
+            "08930":"WELSH - Extraction of salt",
+            "08990":"WELSH - Other mining and quarrying n.e.c.",
+            "09100":"WELSH - Support activities for petroleum and natural gas mining",
+            "09900":"WELSH - Support activities for other mining and quarrying",
+            "10110":"WELSH - Processing and preserving of meat",
+            "10120":"WELSH - Processing and preserving of poultry meat",
+            "10130":"WELSH - Production of meat and poultry meat products",
+            "10200":"WELSH - Processing and preserving of fish, crustaceans and molluscs",
+            "10310":"WELSH - Processing and preserving of potatoes",
+            "10320":"WELSH - Manufacture of fruit and vegetable juice",
+            "10390":"WELSH - Other processing and preserving of fruit and vegetables",
+            "10410":"WELSH - Manufacture of oils and fats",
+            "10420":"WELSH - Manufacture of margarine and similar edible fats",
+            "10511":"WELSH - Liquid milk and cream production",
+            "10512":"WELSH - Butter and cheese production",
+            "10519":"WELSH - Manufacture of other milk products",
+            "10520":"WELSH - Manufacture of ice cream",
+            "10611":"WELSH - Grain milling",
+            "10612":"WELSH - Manufacture of breakfast cereals and cereals-based food",
+            "10620":"WELSH - Manufacture of starches and starch products",
+            "10710":"WELSH - Manufacture of bread; manufacture of fresh pastry goods and cakes",
+            "10720":"WELSH - Manufacture of rusks and biscuits; manufacture of preserved pastry goods and cakes",
+            "10730":"WELSH - Manufacture of macaroni, noodles, couscous and similar farinaceous products",
+            "10810":"WELSH - Manufacture of sugar",
+            "10821":"WELSH - Manufacture of cocoa and chocolate confectionery",
+            "10822":"WELSH - Manufacture of sugar confectionery",
+            "10831":"WELSH - Tea processing",
+            "10832":"WELSH - Production of coffee and coffee substitutes",
+            "10840":"WELSH - Manufacture of condiments and seasonings",
+            "10850":"WELSH - Manufacture of prepared meals and dishes",
+            "10860":"WELSH - Manufacture of homogenized food preparations and dietetic food",
+            "10890":"WELSH - Manufacture of other food products n.e.c.",
+            "10910":"WELSH - Manufacture of prepared feeds for farm animals",
+            "10920":"WELSH - Manufacture of prepared pet foods",
+            "11010":"WELSH - Distilling, rectifying and blending of spirits",
+            "11020":"WELSH - Manufacture of wine from grape",
+            "11030":"WELSH - Manufacture of cider and other fruit wines",
+            "11040":"WELSH - Manufacture of other non-distilled fermented beverages",
+            "11050":"WELSH - Manufacture of beer",
+            "11060":"WELSH - Manufacture of malt",
+            "11070":"WELSH - Manufacture of soft drinks; production of mineral waters and other bottled waters",
+            "12000":"WELSH - Manufacture of tobacco products",
+            "13100":"WELSH - Preparation and spinning of textile fibres",
+            "13200":"WELSH - Weaving of textiles",
+            "13300":"WELSH - Finishing of textiles",
+            "13910":"WELSH - Manufacture of knitted and crocheted fabrics",
+            "13921":"WELSH - Manufacture of soft furnishings",
+            "13922":"WELSH - Manufacture of canvas goods, sacks, etc.",
+            "13923":"WELSH - Manufacture of household textiles",
+            "13931":"WELSH - Manufacture of woven or tufted carpets and rugs",
+            "13939":"WELSH - Manufacture of other carpets and rugs",
+            "13940":"WELSH - Manufacture of cordage, rope, twine and netting",
+            "13950":"WELSH - Manufacture of non-wovens and articles made from non-wovens, except apparel",
+            "13960":"WELSH - Manufacture of other technical and industrial textiles",
+            "13990":"WELSH - Manufacture of other textiles n.e.c.",
+            "14110":"WELSH - Manufacture of leather clothes",
+            "14120":"WELSH - Manufacture of workwear",
+            "14131":"WELSH - Manufacture of other men's outerwear",
+            "14132":"WELSH - Manufacture of other women's outerwear",
+            "14141":"WELSH - Manufacture of men's underwear",
+            "14142":"WELSH - Manufacture of women's underwear",
+            "14190":"WELSH - Manufacture of other wearing apparel and accessories n.e.c.",
+            "14200":"WELSH - Manufacture of articles of fur",
+            "14310":"WELSH - Manufacture of knitted and crocheted hosiery",
+            "14390":"WELSH - Manufacture of other knitted and crocheted apparel",
+            "15110":"WELSH - Tanning and dressing of leather; dressing and dyeing of fur",
+            "15120":"WELSH - Manufacture of luggage, handbags and the like, saddlery and harness",
+            "15200":"WELSH - Manufacture of footwear",
+            "16100":"WELSH - Sawmilling and planing of wood",
+            "16210":"WELSH - Manufacture of veneer sheets and wood-based panels",
+            "16220":"WELSH - Manufacture of assembled parquet floors",
+            "16230":"WELSH - Manufacture of other builders' carpentry and joinery",
+            "16240":"WELSH - Manufacture of wooden containers",
+            "16290":"WELSH - Manufacture of other products of wood; manufacture of articles of cork, straw and plaiting materials n.e.c.",
+            "17110":"WELSH - Manufacture of pulp",
+            "17120":"WELSH - Manufacture of paper and paperboard",
+            "17211":"WELSH - Manufacture of corrugated paper and paperboard, sacks and bags",
+            "17219":"WELSH - Manufacture of other paper and paperboard containers",
+            "17220":"WELSH - Manufacture of household and sanitary goods and of toilet requisites",
+            "17230":"WELSH - Manufacture of paper stationery",
+            "17240":"WELSH - Manufacture of wallpaper",
+            "17290":"WELSH - Manufacture of other articles of paper and paperboard n.e.c.",
+            "18110":"WELSH - Printing of newspapers",
+            "18121":"WELSH - Manufacture of printed labels",
+            "18129":"WELSH - Printing n.e.c.",
+            "18130":"WELSH - Pre-press and pre-media services",
+            "18140":"WELSH - Binding and related services",
+            "18201":"WELSH - Reproduction of sound recording",
+            "18202":"WELSH - Reproduction of video recording",
+            "18203":"WELSH - Reproduction of computer media",
+            "19100":"WELSH - Manufacture of coke oven products",
+            "19201":"WELSH - Mineral oil refining",
+            "19209":"WELSH - Other treatment of petroleum products (excluding petrochemicals manufacture)",
+            "20110":"WELSH - Manufacture of industrial gases",
+            "20120":"WELSH - Manufacture of dyes and pigments",
+            "20130":"WELSH - Manufacture of other inorganic basic chemicals",
+            "20140":"WELSH - Manufacture of other organic basic chemicals",
+            "20150":"WELSH - Manufacture of fertilizers and nitrogen compounds",
+            "20160":"WELSH - Manufacture of plastics in primary forms",
+            "20170":"WELSH - Manufacture of synthetic rubber in primary forms",
+            "20200":"WELSH - Manufacture of pesticides and other agrochemical products",
+            "20301":"WELSH - Manufacture of paints, varnishes and similar coatings, mastics and sealants",
+            "20302":"WELSH - Manufacture of printing ink",
+            "20411":"WELSH - Manufacture of soap and detergents",
+            "20412":"WELSH - Manufacture of cleaning and polishing preparations",
+            "20420":"WELSH - Manufacture of perfumes and toilet preparations",
+            "20510":"WELSH - Manufacture of explosives",
+            "20520":"WELSH - Manufacture of glues",
+            "20530":"WELSH - Manufacture of essential oils",
+            "20590":"WELSH - Manufacture of other chemical products n.e.c.",
+            "20600":"WELSH - Manufacture of man-made fibres",
+            "21100":"WELSH - Manufacture of basic pharmaceutical products",
+            "21200":"WELSH - Manufacture of pharmaceutical preparations",
+            "22110":"WELSH - Manufacture of rubber tyres and tubes; retreading and rebuilding of rubber tyres",
+            "22190":"WELSH - Manufacture of other rubber products",
+            "22210":"WELSH - Manufacture of plastic plates, sheets, tubes and profiles",
+            "22220":"WELSH - Manufacture of plastic packing goods",
+            "22230":"WELSH - Manufacture of builders ware of plastic",
+            "22290":"WELSH - Manufacture of other plastic products",
+            "23110":"WELSH - Manufacture of flat glass",
+            "23120":"WELSH - Shaping and processing of flat glass",
+            "23130":"WELSH - Manufacture of hollow glass",
+            "23140":"WELSH - Manufacture of glass fibres",
+            "23190":"WELSH - Manufacture and processing of other glass, including technical glassware",
+            "23200":"WELSH - Manufacture of refractory products",
+            "23310":"WELSH - Manufacture of ceramic tiles and flags",
+            "23320":"WELSH - Manufacture of bricks, tiles and construction products, in baked clay",
+            "23410":"WELSH - Manufacture of ceramic household and ornamental articles",
+            "23420":"WELSH - Manufacture of ceramic sanitary fixtures",
+            "23430":"WELSH - Manufacture of ceramic insulators and insulating fittings",
+            "23440":"WELSH - Manufacture of other technical ceramic products",
+            "23490":"WELSH - Manufacture of other ceramic products n.e.c.",
+            "23510":"WELSH - Manufacture of cement",
+            "23520":"WELSH - Manufacture of lime and plaster",
+            "23610":"WELSH - Manufacture of concrete products for construction purposes",
+            "23620":"WELSH - Manufacture of plaster products for construction purposes",
+            "23630":"WELSH - Manufacture of ready-mixed concrete",
+            "23640":"WELSH - Manufacture of mortars",
+            "23650":"WELSH - Manufacture of fibre cement",
+            "23690":"WELSH - Manufacture of other articles of concrete, plaster and cement",
+            "23700":"WELSH - Cutting, shaping and finishing of stone",
+            "23910":"WELSH - Production of abrasive products",
+            "23990":"WELSH - Manufacture of other non-metallic mineral products n.e.c.",
+            "24100":"WELSH - Manufacture of basic iron and steel and of ferro-alloys",
+            "24200":"WELSH - Manufacture of tubes, pipes, hollow profiles and related fittings, of steel",
+            "24310":"WELSH - Cold drawing of bars",
+            "24320":"WELSH - Cold rolling of narrow strip",
+            "24330":"WELSH - Cold forming or folding",
+            "24340":"WELSH - Cold drawing of wire",
+            "24410":"WELSH - Precious metals production",
+            "24420":"WELSH - Aluminium production",
+            "24430":"WELSH - Lead, zinc and tin production",
+            "24440":"WELSH - Copper production",
+            "24450":"WELSH - Other non-ferrous metal production",
+            "24460":"WELSH - Processing of nuclear fuel",
+            "24510":"WELSH - Casting of iron",
+            "24520":"WELSH - Casting of steel",
+            "24530":"WELSH - Casting of light metals",
+            "24540":"WELSH - Casting of other non-ferrous metals",
+            "25110":"WELSH - Manufacture of metal structures and parts of structures",
+            "25120":"WELSH - Manufacture of doors and windows of metal",
+            "25210":"WELSH - Manufacture of central heating radiators and boilers",
+            "25290":"WELSH - Manufacture of other tanks, reservoirs and containers of metal",
+            "25300":"WELSH - Manufacture of steam generators, except central heating hot water boilers",
+            "25400":"WELSH - Manufacture of weapons and ammunition",
+            "25500":"WELSH - Forging, pressing, stamping and roll-forming of metal; powder metallurgy",
+            "25610":"WELSH - Treatment and coating of metals",
+            "25620":"WELSH - Machining",
+            "25710":"WELSH - Manufacture of cutlery",
+            "25720":"WELSH - Manufacture of locks and hinges",
+            "25730":"WELSH - Manufacture of tools",
+            "25910":"WELSH - Manufacture of steel drums and similar containers",
+            "25920":"WELSH - Manufacture of light metal packaging",
+            "25930":"WELSH - Manufacture of wire products, chain and springs",
+            "25940":"WELSH - Manufacture of fasteners and screw machine products",
+            "25990":"WELSH - Manufacture of other fabricated metal products n.e.c.",
+            "26110":"WELSH - Manufacture of electronic components",
+            "26120":"WELSH - Manufacture of loaded electronic boards",
+            "26200":"WELSH - Manufacture of computers and peripheral equipment",
+            "26301":"WELSH - Manufacture of telegraph and telephone apparatus and equipment",
+            "26309":"WELSH - Manufacture of communication equipment other than telegraph, and telephone apparatus and equipment",
+            "26400":"WELSH - Manufacture of consumer electronics",
+            "26511":"WELSH - Manufacture of electronic measuring, testing etc. equipment, not for industrial process control",
+            "26512":"WELSH - Manufacture of electronic industrial process control equipment",
+            "26513":"WELSH - Manufacture of non-electronic measuring, testing etc. equipment, not for industrial process control",
+            "26514":"WELSH - Manufacture of non-electronic industrial process control equipment",
+            "26520":"WELSH - Manufacture of watches and clocks",
+            "26600":"WELSH - Manufacture of irradiation, electromedical and electrotherapeutic equipment",
+            "26701":"WELSH - Manufacture of optical precision instruments",
+            "26702":"WELSH - Manufacture of photographic and cinematographic equipment",
+            "26800":"WELSH - Manufacture of magnetic and optical media",
+            "27110":"WELSH - Manufacture of electric motors, generators and transformers",
+            "27120":"WELSH - Manufacture of electricity distribution and control apparatus",
+            "27200":"WELSH - Manufacture of batteries and accumulators",
+            "27310":"WELSH - Manufacture of fibre optic cables",
+            "27320":"WELSH - Manufacture of other electronic and electric wires and cables",
+            "27330":"WELSH - Manufacture of wiring devices",
+            "27400":"WELSH - Manufacture of electric lighting equipment",
+            "27510":"WELSH - Manufacture of electric domestic appliances",
+            "27520":"WELSH - Manufacture of non-electric domestic appliances",
+            "27900":"WELSH - Manufacture of other electrical equipment",
+            "28110":"WELSH - Manufacture of engines and turbines, except aircraft, vehicle and cycle engines",
+            "28120":"WELSH - Manufacture of fluid power equipment",
+            "28131":"WELSH - Manufacture of pumps",
+            "28132":"WELSH - Manufacture of compressors",
+            "28140":"WELSH - Manufacture of taps and valves",
+            "28150":"WELSH - Manufacture of bearings, gears, gearing and driving elements",
+            "28210":"WELSH - Manufacture of ovens, furnaces and furnace burners",
+            "28220":"WELSH - Manufacture of lifting and handling equipment",
+            "28230":"WELSH - Manufacture of office machinery and equipment (except computers and peripheral equipment)",
+            "28240":"WELSH - Manufacture of power-driven hand tools",
+            "28250":"WELSH - Manufacture of non-domestic cooling and ventilation equipment",
+            "28290":"WELSH - Manufacture of other general-purpose machinery n.e.c.",
+            "28301":"WELSH - Manufacture of agricultural tractors",
+            "28302":"WELSH - Manufacture of agricultural and forestry machinery other than tractors",
+            "28410":"WELSH - Manufacture of metal forming machinery",
+            "28490":"WELSH - Manufacture of other machine tools",
+            "28910":"WELSH - Manufacture of machinery for metallurgy",
+            "28921":"WELSH - Manufacture of machinery for mining",
+            "28922":"WELSH - Manufacture of earthmoving equipment",
+            "28923":"WELSH - Manufacture of equipment for concrete crushing and screening and roadworks",
+            "28930":"WELSH - Manufacture of machinery for food, beverage and tobacco processing",
+            "28940":"WELSH - Manufacture of machinery for textile, apparel and leather production",
+            "28950":"WELSH - Manufacture of machinery for paper and paperboard production",
+            "28960":"WELSH - Manufacture of plastics and rubber machinery",
+            "28990":"WELSH - Manufacture of other special-purpose machinery n.e.c.",
+            "29100":"WELSH - Manufacture of motor vehicles",
+            "29201":"WELSH - Manufacture of bodies (coachwork) for motor vehicles (except caravans)",
+            "29202":"WELSH - Manufacture of trailers and semi-trailers",
+            "29203":"WELSH - Manufacture of caravans",
+            "29310":"WELSH - Manufacture of electrical and electronic equipment for motor vehicles and their engines",
+            "29320":"WELSH - Manufacture of other parts and accessories for motor vehicles",
+            "30110":"WELSH - Building of ships and floating structures",
+            "30120":"WELSH - Building of pleasure and sporting boats",
+            "30200":"WELSH - Manufacture of railway locomotives and rolling stock",
+            "30300":"WELSH - Manufacture of air and spacecraft and related machinery",
+            "30400":"WELSH - Manufacture of military fighting vehicles",
+            "30910":"WELSH - Manufacture of motorcycles",
+            "30920":"WELSH - Manufacture of bicycles and invalid carriages",
+            "30990":"WELSH - Manufacture of other transport equipment n.e.c.",
+            "31010":"WELSH - Manufacture of office and shop furniture",
+            "31020":"WELSH - Manufacture of kitchen furniture",
+            "31030":"WELSH - Manufacture of mattresses",
+            "31090":"WELSH - Manufacture of other furniture",
+            "32110":"WELSH - Striking of coins",
+            "32120":"WELSH - Manufacture of jewellery and related articles",
+            "32130":"WELSH - Manufacture of imitation jewellery and related articles",
+            "32200":"WELSH - Manufacture of musical instruments",
+            "32300":"WELSH - Manufacture of sports goods",
+            "32401":"WELSH - Manufacture of professional and arcade games and toys",
+            "32409":"WELSH - Manufacture of other games and toys, n.e.c.",
+            "32500":"WELSH - Manufacture of medical and dental instruments and supplies",
+            "32910":"WELSH - Manufacture of brooms and brushes",
+            "32990":"WELSH - Other manufacturing n.e.c.",
+            "33110":"WELSH - Repair of fabricated metal products",
+            "33120":"WELSH - Repair of machinery",
+            "33130":"WELSH - Repair of electronic and optical equipment",
+            "33140":"WELSH - Repair of electrical equipment",
+            "33150":"WELSH - Repair and maintenance of ships and boats",
+            "33160":"WELSH - Repair and maintenance of aircraft and spacecraft",
+            "33170":"WELSH - Repair and maintenance of other transport equipment n.e.c.",
+            "33190":"WELSH - Repair of other equipment",
+            "33200":"WELSH - Installation of industrial machinery and equipment",
+            "35110":"WELSH - Production of electricity",
+            "35120":"WELSH - Transmission of electricity",
+            "35130":"WELSH - Distribution of electricity",
+            "35140":"WELSH - Trade of electricity",
+            "35210":"WELSH - Manufacture of gas",
+            "35220":"WELSH - Distribution of gaseous fuels through mains",
+            "35230":"WELSH - Trade of gas through mains",
+            "35300":"WELSH - Steam and air conditioning supply",
+            "36000":"WELSH - Water collection, treatment and supply",
+            "37000":"WELSH - Sewerage",
+            "38110":"WELSH - Collection of non-hazardous waste",
+            "38120":"WELSH - Collection of hazardous waste",
+            "38210":"WELSH - Treatment and disposal of non-hazardous waste",
+            "38220":"WELSH - Treatment and disposal of hazardous waste",
+            "38310":"WELSH - Dismantling of wrecks",
+            "38320":"WELSH - Recovery of sorted materials",
+            "39000":"WELSH - Remediation activities and other waste management services",
+            "41100":"WELSH - Development of building projects",
+            "41201":"WELSH - Construction of commercial buildings",
+            "41202":"WELSH - Construction of domestic buildings",
+            "42110":"WELSH - Construction of roads and motorways",
+            "42120":"WELSH - Construction of railways and underground railways",
+            "42130":"WELSH - Construction of bridges and tunnels",
+            "42210":"WELSH - Construction of utility projects for fluids",
+            "42220":"WELSH - Construction of utility projects for electricity and telecommunications",
+            "42910":"WELSH - Construction of water projects",
+            "42990":"WELSH - Construction of other civil engineering projects n.e.c.",
+            "43110":"WELSH - Demolition",
+            "43120":"WELSH - Site preparation",
+            "43130":"WELSH - Test drilling and boring",
+            "43210":"WELSH - Electrical installation",
+            "43220":"WELSH - Plumbing, heat and air-conditioning installation",
+            "43290":"WELSH - Other construction installation",
+            "43310":"WELSH - Plastering",
+            "43320":"WELSH - Joinery installation",
+            "43330":"WELSH - Floor and wall covering",
+            "43341":"WELSH - Painting",
+            "43342":"WELSH - Glazing",
+            "43390":"WELSH - Other building completion and finishing",
+            "43910":"WELSH - Roofing activities",
+            "43991":"WELSH - Scaffold erection",
+            "43999":"WELSH - Other specialised construction activities n.e.c.",
+            "45111":"WELSH - Sale of new cars and light motor vehicles",
+            "45112":"WELSH - Sale of used cars and light motor vehicles",
+            "45190":"WELSH - Sale of other motor vehicles",
+            "45200":"WELSH - Maintenance and repair of motor vehicles",
+            "45310":"WELSH - Wholesale trade of motor vehicle parts and accessories",
+            "45320":"WELSH - Retail trade of motor vehicle parts and accessories",
+            "45400":"WELSH - Sale, maintenance and repair of motorcycles and related parts and accessories",
+            "46110":"WELSH - Agents selling agricultural raw materials, livestock, textile raw materials and semi-finished goods",
+            "46120":"WELSH - Agents involved in the sale of fuels, ores, metals and industrial chemicals",
+            "46130":"WELSH - Agents involved in the sale of timber and building materials",
+            "46140":"WELSH - Agents involved in the sale of machinery, industrial equipment, ships and aircraft",
+            "46150":"WELSH - Agents involved in the sale of furniture, household goods, hardware and ironmongery",
+            "46160":"WELSH - Agents involved in the sale of textiles, clothing, fur, footwear and leather goods",
+            "46170":"WELSH - Agents involved in the sale of food, beverages and tobacco",
+            "46180":"WELSH - Agents specialised in the sale of other particular products",
+            "46190":"WELSH - Agents involved in the sale of a variety of goods",
+            "46210":"WELSH - Wholesale of grain, unmanufactured tobacco, seeds and animal feeds",
+            "46220":"WELSH - Wholesale of flowers and plants",
+            "46230":"WELSH - Wholesale of live animals",
+            "46240":"WELSH - Wholesale of hides, skins and leather",
+            "46310":"WELSH - Wholesale of fruit and vegetables",
+            "46320":"WELSH - Wholesale of meat and meat products",
+            "46330":"WELSH - Wholesale of dairy products, eggs and edible oils and fats",
+            "46341":"WELSH - Wholesale of fruit and vegetable juices, mineral water and soft drinks",
+            "46342":"WELSH - Wholesale of wine, beer, spirits and other alcoholic beverages",
+            "46350":"WELSH - Wholesale of tobacco products",
+            "46360":"WELSH - Wholesale of sugar and chocolate and sugar confectionery",
+            "46370":"WELSH - Wholesale of coffee, tea, cocoa and spices",
+            "46380":"WELSH - Wholesale of other food, including fish, crustaceans and molluscs",
+            "46390":"WELSH - Non-specialised wholesale of food, beverages and tobacco",
+            "46410":"WELSH - Wholesale of textiles",
+            "46420":"WELSH - Wholesale of clothing and footwear",
+            "46431":"WELSH - Wholesale of audio tapes, records, CDs and video tapes and the equipment on which these are played",
+            "46439":"WELSH - Wholesale of radio, television goods & electrical household appliances (other than records, tapes, CD,ideo tapes and the equipment used for playing them)",
+            "46440":"WELSH - Wholesale of china and glassware and cleaning materials",
+            "46450":"WELSH - Wholesale of perfume and cosmetics",
+            "46460":"WELSH - Wholesale of pharmaceutical goods",
+            "46470":"WELSH - Wholesale of furniture, carpets and lighting equipment",
+            "46480":"WELSH - Wholesale of watches and jewellery",
+            "46491":"WELSH - Wholesale of musical instruments",
+            "46499":"WELSH - Wholesale of household goods (other than musical instruments) n.e.c",
+            "46510":"WELSH - Wholesale of computers, computer peripheral equipment and software",
+            "46520":"WELSH - Wholesale of electronic and telecommunications equipment and parts",
+            "46610":"WELSH - Wholesale of agricultural machinery, equipment and supplies",
+            "46620":"WELSH - Wholesale of machine tools",
+            "46630":"WELSH - Wholesale of mining, construction and civil engineering machinery",
+            "46640":"WELSH - Wholesale of machinery for the textile industry and of sewing and knitting machines",
+            "46650":"WELSH - Wholesale of office furniture",
+            "46660":"WELSH - Wholesale of other office machinery and equipment",
+            "46690":"WELSH - Wholesale of other machinery and equipment",
+            "46711":"WELSH - Wholesale of petroleum and petroleum products",
+            "46719":"WELSH - Wholesale of other fuels and related products",
+            "46720":"WELSH - Wholesale of metals and metal ores",
+            "46730":"WELSH - Wholesale of wood, construction materials and sanitary equipment",
+            "46740":"WELSH - Wholesale of hardware, plumbing and heating equipment and supplies",
+            "46750":"WELSH - Wholesale of chemical products",
+            "46760":"WELSH - Wholesale of other intermediate products",
+            "46770":"WELSH - Wholesale of waste and scrap",
+            "46900":"WELSH - Non-specialised wholesale trade",
+            "47110":"WELSH - Retail sale in non-specialised stores with food, beverages or tobacco predominating",
+            "47190":"WELSH - Other retail sale in non-specialised stores",
+            "47210":"WELSH - Retail sale of fruit and vegetables in specialised stores",
+            "47220":"WELSH - Retail sale of meat and meat products in specialised stores",
+            "47230":"WELSH - Retail sale of fish, crustaceans and molluscs in specialised stores",
+            "47240":"WELSH - Retail sale of bread, cakes, flour confectionery and sugar confectionery in specialised stores",
+            "47250":"WELSH - Retail sale of beverages in specialised stores",
+            "47260":"WELSH - Retail sale of tobacco products in specialised stores",
+            "47290":"WELSH - Other retail sale of food in specialised stores",
+            "47300":"WELSH - Retail sale of automotive fuel in specialised stores",
+            "47410":"WELSH - Retail sale of computers, peripheral units and software in specialised stores",
+            "47421":"WELSH - Retail sale of mobile telephones",
+            "47429":"WELSH - Retail sale of telecommunications equipment other than mobile telephones",
+            "47430":"WELSH - Retail sale of audio and video equipment in specialised stores",
+            "47510":"WELSH - Retail sale of textiles in specialised stores",
+            "47520":"WELSH - Retail sale of hardware, paints and glass in specialised stores",
+            "47530":"WELSH - Retail sale of carpets, rugs, wall and floor coverings in specialised stores",
+            "47540":"WELSH - Retail sale of electrical household appliances in specialised stores",
+            "47591":"WELSH - Retail sale of musical instruments and scores",
+            "47599":"WELSH - Retail of furniture, lighting, and similar (not musical instruments or scores) in specialised store",
+            "47610":"WELSH - Retail sale of books in specialised stores",
+            "47620":"WELSH - Retail sale of newspapers and stationery in specialised stores",
+            "47630":"WELSH - Retail sale of music and video recordings in specialised stores",
+            "47640":"WELSH - Retail sale of sports goods, fishing gear, camping goods, boats and bicycles",
+            "47650":"WELSH - Retail sale of games and toys in specialised stores",
+            "47710":"WELSH - Retail sale of clothing in specialised stores",
+            "47721":"WELSH - Retail sale of footwear in specialised stores",
+            "47722":"WELSH - Retail sale of leather goods in specialised stores",
+            "47730":"WELSH - Dispensing chemist in specialised stores",
+            "47741":"WELSH - Retail sale of hearing aids",
+            "47749":"WELSH - Retail sale of medical and orthopaedic goods in specialised stores (not incl. hearing aids) n.e.c.",
+            "47750":"WELSH - Retail sale of cosmetic and toilet articles in specialised stores",
+            "47760":"WELSH - Retail sale of flowers, plants, seeds, fertilizers, pet animals and pet food in specialised stores",
+            "47770":"WELSH - Retail sale of watches and jewellery in specialised stores",
+            "47781":"WELSH - Retail sale in commercial art galleries",
+            "47782":"WELSH - Retail sale by opticians",
+            "47789":"WELSH - Other retail sale of new goods in specialised stores (not commercial art galleries and opticians)",
+            "47791":"WELSH - Retail sale of antiques including antique books in stores",
+            "47799":"WELSH - Retail sale of other second-hand goods in stores (not incl. antiques)",
+            "47810":"WELSH - Retail sale via stalls and markets of food, beverages and tobacco products",
+            "47820":"WELSH - Retail sale via stalls and markets of textiles, clothing and footwear",
+            "47890":"WELSH - Retail sale via stalls and markets of other goods",
+            "47910":"WELSH - Retail sale via mail order houses or via Internet",
+            "47990":"WELSH - Other retail sale not in stores, stalls or markets",
+            "49100":"WELSH - Passenger rail transport, interurban",
+            "49200":"WELSH - Freight rail transport",
+            "49311":"WELSH - Urban and suburban passenger railway transportation by underground, metro and similar systems",
+            "49319":"WELSH - Other urban, suburban or metropolitan passenger land transport (not underground, metro or similar)",
+            "49320":"WELSH - Taxi operation",
+            "49390":"WELSH - Other passenger land transport",
+            "49410":"WELSH - Freight transport by road",
+            "49420":"WELSH - Removal services",
+            "49500":"WELSH - Transport via pipeline",
+            "50100":"WELSH - Sea and coastal passenger water transport",
+            "50200":"WELSH - Sea and coastal freight water transport",
+            "50300":"WELSH - Inland passenger water transport",
+            "50400":"WELSH - Inland freight water transport",
+            "51101":"WELSH - Scheduled passenger air transport",
+            "51102":"WELSH - Non-scheduled passenger air transport",
+            "51210":"WELSH - Freight air transport",
+            "51220":"WELSH - Space transport",
+            "52101":"WELSH - Operation of warehousing and storage facilities for water transport activities",
+            "52102":"WELSH - Operation of warehousing and storage facilities for air transport activities",
+            "52103":"WELSH - Operation of warehousing and storage facilities for land transport activities",
+            "52211":"WELSH - Operation of rail freight terminals",
+            "52212":"WELSH - Operation of rail passenger facilities at railway stations",
+            "52213":"WELSH - Operation of bus and coach passenger facilities at bus and coach stations",
+            "52219":"WELSH - Other service activities incidental to land transportation, n.e.c.",
+            "52220":"WELSH - Service activities incidental to water transportation",
+            "52230":"WELSH - Service activities incidental to air transportation",
+            "52241":"WELSH - Cargo handling for water transport activities",
+            "52242":"WELSH - Cargo handling for air transport activities",
+            "52243":"WELSH - Cargo handling for land transport activities",
+            "52290":"WELSH - Other transportation support activities",
+            "53100":"WELSH - Postal activities under universal service obligation",
+            "53201":"WELSH - Licensed carriers",
+            "53202":"WELSH - Unlicensed carriers",
+            "55100":"WELSH - Hotels and similar accommodation",
+            "55201":"WELSH - Holiday centres and villages",
+            "55202":"WELSH - Youth hostels",
+            "55209":"WELSH - Other holiday and other collective accommodation",
+            "55300":"WELSH - Recreational vehicle parks, trailer parks and camping grounds",
+            "55900":"WELSH - Other accommodation",
+            "56101":"WELSH - Licenced restaurants",
+            "56102":"WELSH - Unlicenced restaurants and cafes",
+            "56103":"WELSH - Take-away food shops and mobile food stands",
+            "56210":"WELSH - Event catering activities",
+            "56290":"WELSH - Other food services",
+            "56301":"WELSH - Licenced clubs",
+            "56302":"WELSH - Public houses and bars",
+            "58110":"WELSH - Book publishing",
+            "58120":"WELSH - Publishing of directories and mailing lists",
+            "58130":"WELSH - Publishing of newspapers",
+            "58141":"WELSH - Publishing of learned journals",
+            "58142":"WELSH - Publishing of consumer and business journals and periodicals",
+            "58190":"WELSH - Other publishing activities",
+            "58210":"WELSH - Publishing of computer games",
+            "58290":"WELSH - Other software publishing",
+            "59111":"WELSH - Motion picture production activities",
+            "59112":"WELSH - Video production activities",
+            "59113":"WELSH - Television programme production activities",
+            "59120":"WELSH - Motion picture, video and television programme post-production activities",
+            "59131":"WELSH - Motion picture distribution activities",
+            "59132":"WELSH - Video distribution activities",
+            "59133":"WELSH - Television programme distribution activities",
+            "59140":"WELSH - Motion picture projection activities",
+            "59200":"WELSH - Sound recording and music publishing activities",
+            "60100":"WELSH - Radio broadcasting",
+            "60200":"WELSH - Television programming and broadcasting activities",
+            "61100":"WELSH - Wired telecommunications activities",
+            "61200":"WELSH - Wireless telecommunications activities",
+            "61300":"WELSH - Satellite telecommunications activities",
+            "61900":"WELSH - Other telecommunications activities",
+            "62011":"WELSH - Ready-made interactive leisure and entertainment software development",
+            "62012":"WELSH - Business and domestic software development",
+            "62020":"WELSH - Information technology consultancy activities",
+            "62030":"WELSH - Computer facilities management activities",
+            "62090":"WELSH - Other information technology service activities",
+            "63110":"WELSH - Data processing, hosting and related activities",
+            "63120":"WELSH - Web portals",
+            "63910":"WELSH - News agency activities",
+            "63990":"WELSH - Other information service activities n.e.c.",
+            "64110":"WELSH - Central banking",
+            "64191":"WELSH - Banks",
+            "64192":"WELSH - Building societies",
+            "64201":"WELSH - Activities of agricultural holding companies",
+            "64202":"WELSH - Activities of production holding companies",
+            "64203":"WELSH - Activities of construction holding companies",
+            "64204":"WELSH - Activities of distribution holding companies",
+            "64205":"WELSH - Activities of financial services holding companies",
+            "64209":"WELSH - Activities of other holding companies n.e.c.",
+            "64301":"WELSH - Activities of investment trusts",
+            "64302":"WELSH - Activities of unit trusts",
+            "64303":"WELSH - Activities of venture and development capital companies",
+            "64304":"WELSH - Activities of open-ended investment companies",
+            "64305":"WELSH - Activities of property unit trusts",
+            "64306":"WELSH - Activities of real estate investment trusts",
+            "64910":"WELSH - Financial leasing",
+            "64921":"WELSH - Credit granting by non-deposit taking finance houses and other specialist consumer credit grantors",
+            "64922":"WELSH - Activities of mortgage finance companies",
+            "64929":"WELSH - Other credit granting n.e.c.",
+            "64991":"WELSH - Security dealing on own account",
+            "64992":"WELSH - Factoring",
+            "64999":"WELSH - Financial intermediation not elsewhere classified",
+            "65110":"WELSH - Life insurance",
+            "65120":"WELSH - Non-life insurance",
+            "65201":"WELSH - Life reinsurance",
+            "65202":"WELSH - Non-life reinsurance",
+            "65300":"WELSH - Pension funding",
+            "66110":"WELSH - Administration of financial markets",
+            "66120":"WELSH - Security and commodity contracts dealing activities",
+            "66190":"WELSH - Activities auxiliary to financial intermediation n.e.c.",
+            "66210":"WELSH - Risk and damage evaluation",
+            "66220":"WELSH - Activities of insurance agents and brokers",
+            "66290":"WELSH - Other activities auxiliary to insurance and pension funding",
+            "66300":"WELSH - Fund management activities",
+            "68100":"WELSH - Buying and selling of own real estate",
+            "68201":"WELSH - Renting and operating of Housing Association real estate",
+            "68202":"WELSH - Letting and operating of conference and exhibition centres",
+            "68209":"WELSH - Other letting and operating of own or leased real estate",
+            "68310":"WELSH - Real estate agencies",
+            "68320":"WELSH - Management of real estate on a fee or contract basis",
+            "69101":"WELSH - Barristers at law",
+            "69102":"WELSH - Solicitors",
+            "69109":"WELSH - Activities of patent and copyright agents; other legal activities n.e.c.",
+            "69201":"WELSH - Accounting and auditing activities",
+            "69202":"WELSH - Bookkeeping activities",
+            "69203":"WELSH - Tax consultancy",
+            "70100":"WELSH - Activities of head offices",
+            "70210":"WELSH - Public relations and communications activities",
+            "70221":"WELSH - Financial management",
+            "70229":"WELSH - Management consultancy activities other than financial management",
+            "71111":"WELSH - Architectural activities",
+            "71112":"WELSH - Urban planning and landscape architectural activities",
+            "71121":"WELSH - Engineering design activities for industrial process and production",
+            "71122":"WELSH - Engineering related scientific and technical consulting activities",
+            "71129":"WELSH - Other engineering activities",
+            "71200":"WELSH - Technical testing and analysis",
+            "72110":"WELSH - Research and experimental development on biotechnology",
+            "72190":"WELSH - Other research and experimental development on natural sciences and engineering",
+            "72200":"WELSH - Research and experimental development on social sciences and humanities",
+            "73110":"WELSH - Advertising agencies",
+            "73120":"WELSH - Media representation services",
+            "73200":"WELSH - Market research and public opinion polling",
+            "74100":"WELSH - Specialised design activities",
+            "74201":"WELSH - Portrait photographic activities",
+            "74202":"WELSH - Other specialist photography",
+            "74203":"WELSH - Film processing",
+            "74209":"WELSH - Photographic activities not elsewhere classified",
+            "74300":"WELSH - Translation and interpretation activities",
+            "74901":"WELSH - Environmental consulting activities",
+            "74902":"WELSH - Quantity surveying activities",
+            "74909":"WELSH - Other professional, scientific and technical activities n.e.c.",
+            "74990":"WELSH - Non-trading company",
+            "75000":"WELSH - Veterinary activities",
+            "77110":"WELSH - Renting and leasing of cars and light motor vehicles",
+            "77120":"WELSH - Renting and leasing of trucks and other heavy vehicles",
+            "77210":"WELSH - Renting and leasing of recreational and sports goods",
+            "77220":"WELSH - Renting of video tapes and disks",
+            "77291":"WELSH - Renting and leasing of media entertainment equipment",
+            "77299":"WELSH - Renting and leasing of other personal and household goods",
+            "77310":"WELSH - Renting and leasing of agricultural machinery and equipment",
+            "77320":"WELSH - Renting and leasing of construction and civil engineering machinery and equipment",
+            "77330":"WELSH - Renting and leasing of office machinery and equipment (including computers)",
+            "77341":"WELSH - Renting and leasing of passenger water transport equipment",
+            "77342":"WELSH - Renting and leasing of freight water transport equipment",
+            "77351":"WELSH - Renting and leasing of air passenger transport equipment",
+            "77352":"WELSH - Renting and leasing of freight air transport equipment",
+            "77390":"WELSH - Renting and leasing of other machinery, equipment and tangible goods n.e.c.",
+            "77400":"WELSH - Leasing of intellectual property and similar products, except copyright works",
+            "78101":"WELSH - Motion picture, television and other theatrical casting activities",
+            "78109":"WELSH - Other activities of employment placement agencies",
+            "78200":"WELSH - Temporary employment agency activities",
+            "78300":"WELSH - Human resources provision and management of human resources functions",
+            "79110":"WELSH - Travel agency activities",
+            "79120":"WELSH - Tour operator activities",
+            "79901":"WELSH - Activities of tourist guides",
+            "79909":"WELSH - Other reservation service activities n.e.c.",
+            "80100":"WELSH - Private security activities",
+            "80200":"WELSH - Security systems service activities",
+            "80300":"WELSH - Investigation activities",
+            "81100":"WELSH - Combined facilities support activities",
+            "81210":"WELSH - General cleaning of buildings",
+            "81221":"WELSH - Window cleaning services",
+            "81222":"WELSH - Specialised cleaning services",
+            "81223":"WELSH - Furnace and chimney cleaning services",
+            "81229":"WELSH - Other building and industrial cleaning activities",
+            "81291":"WELSH - Disinfecting and exterminating services",
+            "81299":"WELSH - Other cleaning services",
+            "81300":"WELSH - Landscape service activities",
+            "82110":"WELSH - Combined office administrative service activities",
+            "82190":"WELSH - Photocopying, document preparation and other specialised office support activities",
+            "82200":"WELSH - Activities of call centres",
+            "82301":"WELSH - Activities of exhibition and fair organisers",
+            "82302":"WELSH - Activities of conference organisers",
+            "82911":"WELSH - Activities of collection agencies",
+            "82912":"WELSH - Activities of credit bureaus",
+            "82920":"WELSH - Packaging activities",
+            "82990":"WELSH - Other business support service activities n.e.c.",
+            "84110":"WELSH - General public administration activities",
+            "84120":"WELSH - Regulation of health care, education, cultural and other social services, not incl. social security",
+            "84130":"WELSH - Regulation of and contribution to more efficient operation of businesses",
+            "84210":"WELSH - Foreign affairs",
+            "84220":"WELSH - Defence activities",
+            "84230":"WELSH - Justice and judicial activities",
+            "84240":"WELSH - Public order and safety activities",
+            "84250":"WELSH - Fire service activities",
+            "84300":"WELSH - Compulsory social security activities",
+            "85100":"WELSH - Pre-primary education",
+            "85200":"WELSH - Primary education",
+            "85310":"WELSH - General secondary education",
+            "85320":"WELSH - Technical and vocational secondary education",
+            "85410":"WELSH - Post-secondary non-tertiary education",
+            "85421":"WELSH - First-degree level higher education",
+            "85422":"WELSH - Post-graduate level higher education",
+            "85510":"WELSH - Sports and recreation education",
+            "85520":"WELSH - Cultural education",
+            "85530":"WELSH - Driving school activities",
+            "85590":"WELSH - Other education n.e.c.",
+            "85600":"WELSH - Educational support services",
+            "86101":"WELSH - Hospital activities",
+            "86102":"WELSH - Medical nursing home activities",
+            "86210":"WELSH - General medical practice activities",
+            "86220":"WELSH - Specialists medical practice activities",
+            "86230":"WELSH - Dental practice activities",
+            "86900":"WELSH - Other human health activities",
+            "87100":"WELSH - Residential nursing care facilities",
+            "87200":"WELSH - Residential care activities for learning difficulties, mental health and substance abuse",
+            "87300":"WELSH - Residential care activities for the elderly and disabled",
+            "87900":"WELSH - Other residential care activities n.e.c.",
+            "88100":"WELSH - Social work activities without accommodation for the elderly and disabled",
+            "88910":"WELSH - Child day-care activities",
+            "88990":"WELSH - Other social work activities without accommodation n.e.c.",
+            "90010":"WELSH - Performing arts",
+            "90020":"WELSH - Support activities to performing arts",
+            "90030":"WELSH - Artistic creation",
+            "90040":"WELSH - Operation of arts facilities",
+            "91011":"WELSH - Library activities",
+            "91012":"WELSH - Archives activities",
+            "91020":"WELSH - Museums activities",
+            "91030":"WELSH - Operation of historical sites and buildings and similar visitor attractions",
+            "91040":"WELSH - Botanical and zoological gardens and nature reserves activities",
+            "92000":"WELSH - Gambling and betting activities",
+            "93110":"WELSH - Operation of sports facilities",
+            "93120":"WELSH - Activities of sport clubs",
+            "93130":"WELSH - Fitness facilities",
+            "93191":"WELSH - Activities of racehorse owners",
+            "93199":"WELSH - Other sports activities",
+            "93210":"WELSH - Activities of amusement parks and theme parks",
+            "93290":"WELSH - Other amusement and recreation activities n.e.c.",
+            "94110":"WELSH - Activities of business and employers membership organisations",
+            "94120":"WELSH - Activities of professional membership organisations",
+            "94200":"WELSH - Activities of trade unions",
+            "94910":"WELSH - Activities of religious organisations",
+            "94920":"WELSH - Activities of political organisations",
+            "94990":"WELSH - Activities of other membership organisations n.e.c.",
+            "95110":"WELSH - Repair of computers and peripheral equipment",
+            "95120":"WELSH - Repair of communication equipment",
+            "95210":"WELSH - Repair of consumer electronics",
+            "95220":"WELSH - Repair of household appliances and home and garden equipment",
+            "95230":"WELSH - Repair of footwear and leather goods",
+            "95240":"WELSH - Repair of furniture and home furnishings",
+            "95250":"WELSH - Repair of watches, clocks and jewellery",
+            "95290":"WELSH - Repair of personal and household goods n.e.c.",
+            "96010":"WELSH - Washing and (dry-)cleaning of textile and fur products",
+            "96020":"WELSH - Hairdressing and other beauty treatment",
+            "96030":"WELSH - Funeral and related activities",
+            "96040":"WELSH - Physical well-being activities",
+            "96090":"WELSH - Other service activities n.e.c.",
+            "97000":"WELSH - Activities of households as employers of domestic personnel",
+            "98000":"WELSH - Residents property management",
+            "98100":"WELSH - Undifferentiated goods-producing activities of private households for own use",
+            "98200":"WELSH - Undifferentiated service-producing activities of private households for own use",
+            "99000":"WELSH - Activities of extraterritorial organisations and bodies",
+            "99999":"WELSH - Dormant Company"
         }
     }
 }

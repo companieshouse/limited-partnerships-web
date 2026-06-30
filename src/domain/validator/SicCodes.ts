@@ -14,7 +14,7 @@ class SicCodesValidator {
       uiErrors.setWebError(this.errorKey, i18n.errorMessages.sicCodes.maxSicCodes);
     }
 
-    const sicDescription = i18n.sicCodes.condensedSicCodes[sicCode]?.sicDescription ?? "";
+    const sicDescription = i18n.sicCodes.condensedSicCodes[sicCode] ?? "";
 
     if (!sicDescription) {
       uiErrors.setWebError(this.errorKey, i18n.errorMessages.sicCodes.sicCodeInvalid);

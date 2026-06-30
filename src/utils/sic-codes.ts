@@ -1,12 +1,13 @@
+import { SicCode } from "../domain/validator/SicCodes";
 
 export const setSicCodesList = (i18n: Record<string, any>) => {
-  const sicCodesList: { value: string; text: string; }[] = [];
+  const sicCodesList: SicCode[] = [];
   const condensedSicCodes = i18n.sicCodes.condensedSicCodes;
 
-  for (const sicCode of Object.values(condensedSicCodes)) {
+  for (const [sicCodeKey, sicCodeValue] of Object.entries(condensedSicCodes) as [string, string][]) {
     sicCodesList.push({
-      value: (sicCode as { sicCode: string }).sicCode,
-      text: (sicCode as { sicDescription: string }).sicDescription,
+      code: sicCodeKey,
+      description: sicCodeValue
     });
   }
 
