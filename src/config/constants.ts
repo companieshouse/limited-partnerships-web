@@ -12,7 +12,6 @@ export const COOKIE_DOMAIN = getEnvironmentValue("COOKIE_DOMAIN");
 export const COOKIE_NAME = getEnvironmentValue("COOKIE_NAME");
 export const COOKIE_SECRET = getEnvironmentValue("COOKIE_SECRET");
 export const DEFAULT_SESSION_EXPIRATION = getEnvironmentValue("DEFAULT_SESSION_EXPIRATION", "3600");
-export const CHS_API_KEY = getEnvironmentValue("CHS_API_KEY");
 export const INTERNAL_API_URL = getEnvironmentValue("INTERNAL_API_URL");
 export const LOG_LEVEL = getEnvironmentValue("LOG_LEVEL");
 export const NODE_ENV = process.env["NODE_ENV"];

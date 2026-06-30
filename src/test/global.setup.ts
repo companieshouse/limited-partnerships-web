@@ -9,7 +9,6 @@ export default () => {
   process.env.COOKIE_SECRET = "123456789012345678901234";
   process.env.DEFAULT_SESSION_EXPIRATION = "3600";
   process.env.INTERNAL_API_URL = "https://api.chs.local:4001";
-  process.env.CHS_API_KEY = "https://api.chs.local:4001";
   process.env.LOCALES_ENABLED = "false";
   process.env.LOG_LEVEL = "ERROR";
   process.env.NODE_ENV = "development";
