@@ -44,6 +44,7 @@ import LimitedPartnerService from "../../../application/service/LimitedPartnerSe
 import PersonWithSignificantControlService from "../../../application/service/PersonWithSignificantControlService";
 
 import PartnershipController from "../common/PartnershipController";
+import { SicCode } from "../../../domain/validator/SicCodes";
 
 class LimitedPartnershipController extends PartnershipController {
   constructor(
@@ -516,9 +517,16 @@ class LimitedPartnershipController extends PartnershipController {
           return;
         }
 
-        let sicCodes: { code: string; description: string }[] = [];
+        let sicCodes: SicCode[] = [];
         if (pageType === RegistrationPageType.sic) {
-          sicCodes = this.concatenateSicCodeList(request, limitedPartnership, response);
+          const { ids } = super.extract(request);
+          const cache = this.cacheService.getDataFromCacheById(request.signedCookies, ids.transactionId);
+
+          if (cache?.[SIC_CODES_CACHE_KEY]) {
+            sicCodes = this.translateSicCodesDescription(response, request, cache);
+          } else {
+            sicCodes = this.addSicCodesFromDbToCache(sicCodes, limitedPartnership, request, response);
+          }
         }
 
         const isShowingAddSection = this.isShowingAddSection(sicCodes);
@@ -533,37 +541,16 @@ class LimitedPartnershipController extends PartnershipController {
     };
   }
 
-  private concatenateSicCodeList(request: Request, limitedPartnership: LimitedPartnership, response: Response) {
+  private addSicCodesFromDbToCache(
+    sicCodes: SicCode[],
+    limitedPartnership: LimitedPartnership,
+    request: Request,
+    response: Response
+  ) {
     const { ids } = super.extract(request);
-    const cache = this.cacheService.getDataFromCacheById(request.signedCookies, ids.transactionId);
-
-    let sicCodes: { code: string; description: string }[] = [];
-
-    if (cache?.[SIC_CODES_CACHE_KEY]) {
-      const { code, description } = cache[SIC_CODES_CACHE_KEY][0];
-      const sicDescription = response.locals.i18n.sicCodes.condensedSicCodes[code]?.sicDescription ?? "";
-
-      if (sicDescription !== description) {
-        const translatedCache = cache[SIC_CODES_CACHE_KEY].map((sic: { code: string; description: string }) => {
-          sic.description = response.locals.i18n.sicCodes.condensedSicCodes[sic.code]?.sicDescription ?? "";
-          return sic;
-        });
-
-        const cacheUpdated = this.cacheService.addDataToCache(request.signedCookies, {
-          [ids.transactionId]: {
-            ...cache,
-            [SIC_CODES_CACHE_KEY]: translatedCache
-          }
-        });
-        response.cookie(APPLICATION_CACHE_KEY, cacheUpdated, cookieOptions);
-      }
-
-      return cache?.[SIC_CODES_CACHE_KEY];
-    }
-
     if (limitedPartnership?.data?.sic_codes) {
       limitedPartnership.data.sic_codes.forEach((sicCode: string) => {
-        if (!sicCodes.some((sic: { code: string; description: string }) => sic.code === sicCode)) {
+        if (!sicCodes.some((sic: SicCode) => sic.code === sicCode)) {
           const sicDescription = response.locals.i18n.sicCodes.condensedSicCodes[sicCode]?.sicDescription ?? "";
           sicCodes.push({ code: sicCode, description: sicDescription });
         }
@@ -574,13 +561,35 @@ class LimitedPartnershipController extends PartnershipController {
 
     const cacheUpdated = this.cacheService.addDataToCache(request.signedCookies, {
       [ids.transactionId]: {
-        ...cache,
         [SIC_CODES_CACHE_KEY]: sicCodes
       }
     });
     response.cookie(APPLICATION_CACHE_KEY, cacheUpdated, cookieOptions);
 
     return sicCodes;
+  }
+
+  private translateSicCodesDescription(response: Response, request: Request, cache: Record<string, any>) {
+    const { ids } = super.extract(request);
+    const { code, description } = cache[SIC_CODES_CACHE_KEY][0];
+    const sicDescription = response.locals.i18n.sicCodes.condensedSicCodes[code]?.sicDescription ?? "";
+
+    if (sicDescription !== description) {
+      const translatedCache = cache[SIC_CODES_CACHE_KEY].map((sic: SicCode) => {
+        sic.description = response.locals.i18n.sicCodes.condensedSicCodes[sic.code]?.sicDescription ?? "";
+        return sic;
+      });
+
+      const cacheUpdated = this.cacheService.addDataToCache(request.signedCookies, {
+        [ids.transactionId]: {
+          ...cache,
+          [SIC_CODES_CACHE_KEY]: translatedCache
+        }
+      });
+      response.cookie(APPLICATION_CACHE_KEY, cacheUpdated, cookieOptions);
+    }
+
+    return cache?.[SIC_CODES_CACHE_KEY];
   }
 
   sendSicCodesPageData() {
@@ -595,7 +604,7 @@ class LimitedPartnershipController extends PartnershipController {
 
         const cache = this.cacheService.getDataFromCacheById(request.signedCookies, ids.transactionId);
 
-        const sicCodes: { code: string; description: string }[] = cache?.[SIC_CODES_CACHE_KEY] ?? [];
+        const sicCodes: SicCode[] = cache?.[SIC_CODES_CACHE_KEY] ?? [];
         const isShowingAddSection = sicCodes.length < 4;
         const sicCodesData = { isShowingAddSection, sicCodes };
 
@@ -642,12 +651,18 @@ class LimitedPartnershipController extends PartnershipController {
 
       const cacheById = this.cacheService.getDataFromCacheById(request.signedCookies, ids.transactionId);
 
-      let sicCodes: { code: string; description: string }[] = cacheById?.[SIC_CODES_CACHE_KEY] ?? [];
-      const sicCode = escape(request.body.codeToAdd);
+      let sicCodes: SicCode[] = cacheById?.[SIC_CODES_CACHE_KEY] ?? [];
+
+      const [code, description] = request.body.codeToAdd.split(",");
+      const desc = description?.trim() ?? response.locals.i18n.sicCodes.condensedSicCodes[code]?.sicDescription;
+      const sicCode: SicCode = {
+        code: code.trim(),
+        description: desc
+      };
 
       let isShowingAddSection = this.isShowingAddSection(sicCodes);
 
-      const uiErrors = this.limitedPartnershipService.runAddSicCodeValidation(sicCodes, sicCode);
+      const uiErrors = this.limitedPartnershipService.runAddSicCodeValidation(sicCodes, sicCode.code);
 
       if (uiErrors.hasErrors()) {
         response.render(
@@ -670,14 +685,13 @@ class LimitedPartnershipController extends PartnershipController {
   private addSicCodeToCache(
     request: Request,
     response: Response,
-    sicCode: string,
-    sicCodes: { code: string; description: string }[],
+    sicCode: SicCode,
+    sicCodes: SicCode[],
     cacheById: Record<string, any>
   ) {
     const { ids } = super.extract(request);
-    const description = response.locals.i18n.sicCodes.condensedSicCodes[sicCode]?.sicDescription ?? "";
 
-    sicCodes.push({ code: sicCode, description });
+    sicCodes.push(sicCode);
 
     sicCodes = sicCodes.sort((a, b) => a.code.localeCompare(b.code));
 
@@ -700,7 +714,7 @@ class LimitedPartnershipController extends PartnershipController {
 
       const cache = this.cacheService.getDataFromCacheById(request.signedCookies, ids.transactionId);
 
-      const sicCodes: { code: string; description: string }[] = cache?.[SIC_CODES_CACHE_KEY] ?? [];
+      const sicCodes: SicCode[] = cache?.[SIC_CODES_CACHE_KEY] ?? [];
 
       const updatedSicCodes = this.removeSicCodeFromCache(request, sicCodes, cache, response);
 
@@ -713,12 +727,7 @@ class LimitedPartnershipController extends PartnershipController {
     };
   }
 
-  private removeSicCodeFromCache(
-    request: Request,
-    sicCodes: { code: string; description: string }[],
-    cache: Record<string, any>,
-    response: Response
-  ) {
+  private removeSicCodeFromCache(request: Request, sicCodes: SicCode[], cache: Record<string, any>, response: Response) {
     const { ids } = super.extract(request);
 
     const codeToRemove = escape(request.body.action_remove);
@@ -744,7 +753,7 @@ class LimitedPartnershipController extends PartnershipController {
     }
   }
 
-  private isShowingAddSection(updatedSicCodes: { code: string; description: string }[]) {
+  private isShowingAddSection(updatedSicCodes: SicCode[]) {
     return updatedSicCodes.length < 4;
   }
 }

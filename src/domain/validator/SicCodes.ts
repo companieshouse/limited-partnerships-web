@@ -3,10 +3,10 @@ import UIErrors from "../entities/UIErrors";
 class SicCodesValidator {
   readonly errorKey = "sic_codes";
 
-  addSicCode(sicCodes: Array<{ code: string; description: string }>, sicCode: string, i18n: Record<string, any>): UIErrors {
+  addSicCode(sicCodes: SicCode[], sicCode: string, i18n: Record<string, any>): UIErrors {
     const uiErrors = new UIErrors();
 
-    if (sicCodes.map((sic) => sic.code).includes(sicCode)){
+    if (sicCodes.map((sic) => sic.code).includes(sicCode)) {
       uiErrors.setWebError(this.errorKey, i18n.errorMessages.sicCodes.sicCodeDuplicate);
     }
 
@@ -25,3 +25,8 @@ class SicCodesValidator {
 }
 
 export default SicCodesValidator;
+
+export type SicCode = {
+  code: string;
+  description: string;
+};

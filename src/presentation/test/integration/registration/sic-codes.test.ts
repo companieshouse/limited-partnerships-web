@@ -189,7 +189,7 @@ describe("Sic Codes", () => {
 
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.sic,
-        codeToAdd: "01140",
+        codeToAdd: "01140, Growing of sugar cane",
         action_add: "true"
       });
 
@@ -211,7 +211,7 @@ describe("Sic Codes", () => {
 
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.sic,
-        codeToAdd: "01110",
+        codeToAdd: "01110, Growing of cereals (except rice), leguminous crops and oil seeds",
         action_add: "true"
       });
 
@@ -224,7 +224,7 @@ describe("Sic Codes", () => {
     it("should not add an invalid sic code to the list", async () => {
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.sic,
-        codeToAdd: "12345",
+        codeToAdd: "12345, Invalid SIC Code",
         action_add: "true"
       });
 
@@ -250,7 +250,7 @@ describe("Sic Codes", () => {
 
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.sic,
-        codeToAdd: "01150",
+        codeToAdd: "01150, Growing of maize",
         action_add: "true"
       });
 
@@ -274,7 +274,7 @@ describe("Sic Codes", () => {
 
       const res = await request(app).post(URL).send({
         pageType: RegistrationPageType.sic,
-        codeToAdd: "01120",
+        codeToAdd: "01120, Growing of rice",
         action_add: "true"
       });
 
@@ -303,6 +303,24 @@ describe("Sic Codes", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(enTranslationText.errorMessages.sicCodes.sicCodeRequired);
+    });
+
+    it("should return the code if no description is provided", async () => {
+      const res = await request(app).post(URL).send({
+        pageType: RegistrationPageType.sic,
+        codeToAdd: "01110",
+        action_add: "true"
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain("01110");
+      expect(appDevDependencies.cacheRepository.getData()).toEqual({
+        [appDevDependencies.transactionGateway.transactionId]: {
+          sicCodes: [
+            { code: "01110", description: "Growing of cereals (except rice), leguminous crops and oil seeds" }
+          ]
+        }
+      });
     });
   });
 
