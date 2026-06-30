@@ -169,6 +169,46 @@ describe("Resume a journey", () => {
   });
 
   it.each([
+    {
+      filingMode: TransactionKind.registration,
+      expectedPaymentReturnUrl: getUrl(`${CHS_URL}${PAYMENT_RESPONSE_URL}`).replace(
+        JOURNEY_TYPE_PARAM,
+        Journey.registration
+      )
+    },
+    {
+      filingMode: TransactionKind.transition,
+      expectedPaymentReturnUrl: getUrl(`${CHS_URL}${PAYMENT_RESPONSE_URL}`).replace(
+        JOURNEY_TYPE_PARAM,
+        Journey.transition
+      )
+    }
+  ])(
+    "should preserve the language when resuming a pay now $filingMode journey in Welsh",
+    async ({ filingMode, expectedPaymentReturnUrl }) => {
+      const transaction = new TransactionBuilder()
+        .withFilingMode(filingMode)
+        .withCompanyName("Test Company")
+        .withCompanyNumber("LP123456")
+        .withStatus(TransactionStatus.closedPendingPayment)
+        .build();
+
+      appDevDependencies.transactionGateway.feedTransactions([transaction]);
+
+      const res = await request(app).get(`${RESUME_REGISTRATION_OR_TRANSITION_URL}?lang=cy`);
+
+      expect(res.status).toEqual(302);
+      expect(res.headers.location).toEqual(appDevDependencies.paymentGateway.payment.links.journey);
+
+      // The lang param must be carried into the payment return url so the
+      // payment success/failure screens resume in Welsh
+      expect(appDevDependencies.paymentGateway.lastCreatePaymentRequest?.redirectUri).toEqual(
+        `${expectedPaymentReturnUrl}?lang=cy`
+      );
+    }
+  );
+
+  it.each([
     { filingMode: undefined as unknown as string, description: "undefined" },
     { filingMode: "", description: "empty string" },
     { filingMode: "invalid", description: "invalid string" }

@@ -291,7 +291,7 @@ class GlobalController extends AbstractController {
       const { journey, resumeUrl } = getJourneyAndUrl(transaction);
 
       if (this.isPendingPayment(transaction)) {
-        return this.handlePendingPayment(response, tokens, ids, journey);
+        return this.handlePendingPayment(request, response, tokens, ids, journey);
       }
 
       const resumePage = super.insertIdsInUrl(resumeUrl, { ...ids, companyId: transaction.companyNumber ?? "" });
@@ -305,10 +305,10 @@ class GlobalController extends AbstractController {
     return transaction.status === TransactionStatus.closedPendingPayment;
   }
 
-  private async handlePendingPayment(response: Response, tokens: Tokens, ids: Ids, journey: string) {
+  private async handlePendingPayment(request: Request, response: Response, tokens: Tokens, ids: Ids, journey: string) {
     const startPaymentSessionUrl = PAYMENTS_API_URL + "/payments";
     const paymentReturnUrl = `${CHS_URL}${PAYMENT_RESPONSE_URL}`.replace(JOURNEY_TYPE_PARAM, journey);
-    const paymentReturnUrlWithIds = super.insertIdsInUrl(paymentReturnUrl, ids);
+    const paymentReturnUrlWithIds = super.insertIdsInUrl(paymentReturnUrl, ids, request.url);
     const redirectToPaymentServiceUrl = await this.paymentService.startPaymentSession(
       tokens,
       startPaymentSessionUrl,
