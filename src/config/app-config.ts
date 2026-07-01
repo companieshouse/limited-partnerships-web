@@ -18,6 +18,7 @@ import { serviceAvailabilityMiddleware } from "../middlewares/service-availabili
 import { journeyDetectionMiddleware } from "../middlewares/journey.detection.middleware";
 import { TRANSITION_START_URL } from "../presentation/controller/transition/url";
 import { REGISTRATION_START_URL } from "../presentation/controller/registration/url";
+import { setSicCodesList } from "../utils/sic-codes";
 
 export const appConfig = (app: express.Application) => {
   // set some app variables from the environment
@@ -67,6 +68,7 @@ export const appConfig = (app: express.Application) => {
   nunjucksEnv.addGlobal("SET_CEASE_DATE_SECTION", setCeaseDateSection);
   nunjucksEnv.addGlobal("SET_COUNTRIES_DROPDOWN", setCountriesDropdown);
   nunjucksEnv.addGlobal("SET_NATIONALITIES_DROPDOWN", setNationalitiesDropdown);
+  nunjucksEnv.addGlobal("SET_SIC_CODES_LIST", setSicCodesList);
 
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));

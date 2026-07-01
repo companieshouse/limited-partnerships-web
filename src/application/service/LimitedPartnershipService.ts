@@ -12,6 +12,7 @@ import { Transaction } from "@companieshouse/api-sdk-node/dist/services/transact
 import { JourneyTypes } from "../../domain/entities/journey";
 import PageType from "../../presentation/controller/PageType";
 import LimitedPartnershipValidator from "../../domain/validator/LimitedPartnership";
+import SicCodesValidator from "../../domain/validator/SicCodes";
 
 class LimitedPartnershipService {
   i18n: any;
@@ -20,7 +21,8 @@ class LimitedPartnershipService {
     private readonly limitedPartnershipGateway: ILimitedPartnershipGateway,
     private readonly transactionGateway: ITransactionGateway,
     private readonly incorporationGateway: IIncorporationGateway,
-    private readonly limitedPartnershipValidator: LimitedPartnershipValidator
+    private readonly limitedPartnershipValidator: LimitedPartnershipValidator,
+    private readonly sicCodesValidator: SicCodesValidator
   ) {}
 
   setI18n(i18n: any) {
@@ -45,6 +47,10 @@ class LimitedPartnershipService {
 
   runEmailValidation(data: Record<string, any>): UIErrors {
     return this.limitedPartnershipValidator.set(data, this.i18n).runEmailValidation();
+  }
+
+  runAddSicCodeValidation(sicCodes: Array<{ code: string; description: string }>, sicCode: string): UIErrors {
+    return this.sicCodesValidator.addSicCode(sicCodes, sicCode, this.i18n);
   }
 
   async createLimitedPartnership(

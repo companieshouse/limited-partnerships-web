@@ -141,7 +141,14 @@ export const registrationEndpoints = (
   );
   router.post(
     SIC_URL,
-    dependencies.limitedPartnershipRegistrationController.sendSicCodesPageData()
+    (req, res, next) => {
+      if (req.body.action_add) {
+        return dependencies.limitedPartnershipRegistrationController.addSicCode()(req, res);
+      } else if (req.body.action_remove) {
+        return dependencies.limitedPartnershipRegistrationController.removeSicCode()(req, res);
+      }
+      return dependencies.limitedPartnershipRegistrationController.sendSicCodesPageData()(req, res, next);
+    }
   );
 
   // general partner
