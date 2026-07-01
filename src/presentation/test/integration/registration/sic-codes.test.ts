@@ -195,9 +195,9 @@ describe("Sic Codes", () => {
 
       expect(res.status).toBe(200);
 
+      // 2 occurrences of 01140, one in the added list, one in the remove button value - the list of options is hidden when four SIC codes have been added
       expect(countOccurrences(res.text, "01140")).toBe(2);
       expect(res.text).not.toContain(enTranslationText.sicCodes.addButton);
-
     });
 
     it("should not add a duplicate sic code to the list", async () => {
@@ -217,6 +217,7 @@ describe("Sic Codes", () => {
 
       expect(res.status).toBe(200);
 
+      // 3 occurrences of 01110, one in the added list, one in the remove button value and one in the option list
       expect(countOccurrences(res.text, "01110")).toBe(3);
       expect(res.text).toContain(enTranslationText.errorMessages.sicCodes.sicCodeDuplicate);
     });
