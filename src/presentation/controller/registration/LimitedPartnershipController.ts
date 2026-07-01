@@ -522,7 +522,7 @@ class LimitedPartnershipController extends PartnershipController {
           const { ids } = super.extract(request);
           const cache = this.cacheService.getDataFromCacheById(request.signedCookies, ids.transactionId);
 
-          if (cache?.[SIC_CODES_CACHE_KEY]) {
+          if (cache?.[SIC_CODES_CACHE_KEY]?.length) {
             sicCodes = this.translateSicCodesDescription(response, request, cache);
           } else {
             sicCodes = this.addSicCodesFromDbToCache(sicCodes, limitedPartnership, request, response);
@@ -653,11 +653,12 @@ class LimitedPartnershipController extends PartnershipController {
 
       let sicCodes: SicCode[] = cacheById?.[SIC_CODES_CACHE_KEY] ?? [];
 
-      const [code, description] = request.body.codeToAdd.split(",");
-      const desc = description?.trim() ?? response.locals.i18n.sicCodes.condensedSicCodes[code];
+      const code = request.body.codeToAdd.split(",")[0].trim();
+      const description = response.locals.i18n.sicCodes.condensedSicCodes[code];
+
       const sicCode: SicCode = {
         code: code.trim(),
-        description: desc
+        description: description
       };
 
       let isShowingAddSection = this.isShowingAddSection(sicCodes);
