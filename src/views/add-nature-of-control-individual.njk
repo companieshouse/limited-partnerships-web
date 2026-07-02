@@ -1,9 +1,8 @@
 {% extends "layout.njk" %}
 
-{% set translation = i18n.personWithSignificantControl.addNatureOfControlPage %}
-{% set pageTitle = translation.individual.title %}
-{% set titleHint = translation.individual.titleHint %}
-{% set publicRegisterInformationLine1 = translation.publicRegisterInformationLine1 %}
+{% set publicRegisterInformationLine1 = i18n.personWithSignificantControl.addNatureOfControlPage.publicRegisterInformationLine1 %}
+{% set shareOfAssetsHint = i18n.personWithSignificantControl.addNatureOfControlPage.individual.shareOfAssetsHint %}
+{% set votingRightsHint = i18n.personWithSignificantControl.addNatureOfControlPage.individual.votingRightsHint %}
 
 {% block content %}
 
@@ -14,14 +13,14 @@
         
             {% include "pages/personWithSignificantControl/person-with-significant-control-name.njk" %}
             
-            <h1 class="govuk-heading-l govuk-!-margin-bottom-0">{{ pageTitle }}</h1>
-            <p class="govuk-hint govuk-!-margin-top-0">{{ titleHint }}</p>
+            <h1 class="govuk-heading-l govuk-!-margin-bottom-0">{{ i18n.personWithSignificantControl.addNatureOfControlPage.individual.title }}</h1>
+            <p class="govuk-hint govuk-!-margin-top-0">{{ i18n.personWithSignificantControl.addNatureOfControlPage.individual.titleHint }}</p>
 
             <form class="form" method="post">
                 <input type="hidden" name="pageType" value={{ props.pageType }}>      
                 {% include "includes/csrf_token.njk" %}
 
-                    {% include "pages/natureOfControl/share-of-assets-radios.njk" %}
+                    {% include "pages/natureOfControl/nature-of-control-radio.njk" %}
 
                     {% include "includes/public-register-information.njk" %}
 
