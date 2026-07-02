@@ -1,0 +1,34 @@
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+
+{% set fieldName = "natureOfControlType" %}
+
+{% set selectedValue = currentValue or "" %}
+
+<h2 class="govuk-heading-m">{{ translation.shareOfAssets }}</h2>
+<p class="govuk-body">{{ translation.individual.shareOfAssetsHint }}</p>
+
+{{ govukRadios({
+  name: fieldName,
+  items: [
+    {
+        value: "more-than-25-less-than-50",
+        text: translation.moreThan25LessThan50,
+        checked: selectedValue == "more-than-25-less-than-50"
+    },
+    {
+        value: "more-than-50-less-than-75",
+        text: translation.moreThan50LessThan75,
+        checked: selectedValue == "more-than-50-less-than-75"
+    },
+    {
+        value: "more-than-75",
+        text: translation.moreThan75,
+        checked: selectedValue == "more-than-75"
+    },
+    {
+        value: "does-not-apply",
+        text: translation.doesNotApply,
+        checked: selectedValue == "does-not-apply"
+    }
+  ]
+}) }}

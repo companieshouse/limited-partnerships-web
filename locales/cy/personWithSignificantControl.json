@@ -169,6 +169,20 @@
                 }
             }
         },
+        "addNatureOfControlPage": {
+            "publicRegisterInformationLine1": "WELSH - We'll show this information on the public register.",
+            "shareOfAssets": "WELSH - Share of assets",
+            "moreThan25LessThan50": "WELSH - More than 25% but not more than 50%",
+            "moreThan50LessThan75": "WELSH - More than 50% but not more than 75%",
+            "moreThan75": "WELSH - 75% or more",
+            "doesNotApply": "WELSH - Does not apply",
+
+            "individual": {
+                "title": "WELSH - What is the individual's nature of control?",
+                "titleHint": "WELSH - You've told us that the individual meets one or more natures of control.",
+                "shareOfAssetsHint": "WELSH - The individual holds (directly or indirectly) the right to the following percentage of surplus assets of the partnership on a winding up:"
+            }
+        },
         "removePscPage": {
             "title": "WELSH - Are you sure you want to remove",
             "errorMessage": "WELSH - Select yes if you need to remove a PSC"

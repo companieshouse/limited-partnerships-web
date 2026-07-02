@@ -1,5 +1,10 @@
 {% extends "layout.njk" %}
 
+{% set translation = i18n.personWithSignificantControl.addNatureOfControlPage %}
+{% set pageTitle = translation.individual.title %}
+{% set titleHint = translation.individual.titleHint %}
+{% set publicRegisterInformationLine1 = translation.publicRegisterInformationLine1 %}
+
 {% block content %}
 
   <div class="govuk-grid-row">
@@ -8,14 +13,17 @@
             {% include "includes/errors.njk" %}
         
             {% include "pages/personWithSignificantControl/person-with-significant-control-name.njk" %}
+            
+            <h1 class="govuk-heading-l govuk-!-margin-bottom-0">{{ pageTitle }}</h1>
+            <p class="govuk-hint govuk-!-margin-top-0">{{ titleHint }}</p>
 
             <form class="form" method="post">
                 <input type="hidden" name="pageType" value={{ props.pageType }}>      
                 {% include "includes/csrf_token.njk" %}
 
-                    <div class="govuk-!-margin-6">
-                        {{ props.data.natureOfControlType }}
-                    </div>
+                    {% include "pages/natureOfControl/share-of-assets-radios.njk" %}
+
+                    {% include "includes/public-register-information.njk" %}
 
                     {% include "includes/save-and-continue-button.njk" %}
             </form>

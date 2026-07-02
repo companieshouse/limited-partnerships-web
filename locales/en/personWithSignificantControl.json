@@ -170,6 +170,20 @@
                 }
             }
         },
+        "addNatureOfControlPage": {
+            "publicRegisterInformationLine1": "We'll show this information on the public register.",
+            "shareOfAssets": "Share of assets",
+            "moreThan25LessThan50": "More than 25% but not more than 50%",
+            "moreThan50LessThan75": "More than 50% but not more than 75%",
+            "moreThan75": "75% or more",
+            "doesNotApply": "Does not apply",
+
+            "individual": {
+                "title": "What is the individual's nature of control?",
+                "titleHint": "You've told us that the individual meets one or more natures of control.",
+                "shareOfAssetsHint": "The individual holds (directly or indirectly) the right to the following percentage of surplus assets of the partnership on a winding up:"
+            }
+        },
         "removePscPage": {
             "title": "Are you sure you want to remove",
             "errorMessage": "Select yes if you need to remove a PSC"
