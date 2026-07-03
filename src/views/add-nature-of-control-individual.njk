@@ -1,5 +1,6 @@
 {% extends "layout.njk" %}
 
+{% set pageTitle = i18n.personWithSignificantControl.addNatureOfControlPage.individual.title %}
 {% set publicRegisterInformationLine1 = i18n.personWithSignificantControl.addNatureOfControlPage.publicRegisterInformationLine1 %}
 {% set shareOfAssetsHint = i18n.personWithSignificantControl.addNatureOfControlPage.individual.shareOfAssetsHint %}
 {% set votingRightsHint = i18n.personWithSignificantControl.addNatureOfControlPage.individual.votingRightsHint %}
@@ -13,7 +14,7 @@
         
             {% include "pages/personWithSignificantControl/person-with-significant-control-name.njk" %}
             
-            <h1 class="govuk-heading-l govuk-!-margin-bottom-0">{{ i18n.personWithSignificantControl.addNatureOfControlPage.individual.title }}</h1>
+            <h1 class="govuk-heading-l govuk-!-margin-bottom-0">{{ pageTitle }}</h1>
             <p class="govuk-hint govuk-!-margin-top-0">{{ i18n.personWithSignificantControl.addNatureOfControlPage.individual.titleHint }}</p>
 
             <form class="form" method="post">

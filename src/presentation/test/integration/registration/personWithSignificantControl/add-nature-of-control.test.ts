@@ -104,5 +104,43 @@ describe("Which Type of Nature of Control Page", () => {
         })
       ]);
     });
+
+    it("should update the list of natures of control when there is an existing nature of control with the same type", async () => {
+      const existingNatureOfControl = {
+        type: NatureOfControlType.INDIVIDUAL,
+        part_righttosharesurplusassets_25to50percent: true,
+        votingrights_25to50percent: true
+      };
+
+      individualPerson = new PersonWithSignificantControlBuilder()
+        .isIndividualPerson()
+        .withId(appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId)
+        .withNaturesOfControl([existingNatureOfControl])
+        .build();
+
+      appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([individualPerson]);
+
+      const res = await request(app).post(getUrl(ADD_NATURE_OF_CONTROL_INDIVIDUAL_URL)).send({
+        pageType: RegistrationPageType.addNatureOfControlIndividual,
+        type: NatureOfControlType.INDIVIDUAL,
+        share_of_assets: "part_righttosharesurplusassets_50to75percent",
+        ownership_of_voting_rights: "votingrights_25to50percent"
+      });
+
+      expect(res.status).toBe(302);
+
+      const redirectUrl = getUrl(CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL);
+      expect(res.headers.location).toBe(redirectUrl);
+
+      expect(individualPerson.data?.natures_of_control).toEqual([
+        expect.objectContaining({
+          type: NatureOfControlType.INDIVIDUAL,
+          part_righttosharesurplusassets_50to75percent: true,
+          votingrights_25to50percent: true
+        })
+      ]);
+
+      expect(individualPerson?.data?.natures_of_control?.[0]?.part_righttosharesurplusassets_25to50percent).toBeUndefined();
+    });
   });
 });

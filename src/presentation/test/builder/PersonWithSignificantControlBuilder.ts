@@ -1,4 +1,7 @@
-import { PersonWithSignificantControlType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
+import {
+  NatureOfControl,
+  PersonWithSignificantControlType
+} from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 import TransactionPersonWithSignificantControl from "../../../domain/entities/TransactionPersonWithSignificantControl";
 
@@ -9,9 +12,9 @@ export const personWithSignificantControlIndividualPerson = {
   forename: "John",
   middle_names: "Michael",
   surname: "Smith",
-  'date_of_birth-day': "01",
-  'date_of_birth-month': "01",
-  'date_of_birth-year': "1980",
+  "date_of_birth-day": "01",
+  "date_of_birth-month": "01",
+  "date_of_birth-year": "1980",
   date_of_birth: "1980-01-01",
   nationality1: "British",
   nationality2: "American",
@@ -78,6 +81,7 @@ class PersonWithSignificantControlBuilder {
       country: "England"
     },
     nature_of_control_types: null,
+    natures_of_control: [],
 
     etag: "",
     kind: ""
@@ -106,6 +110,11 @@ class PersonWithSignificantControlBuilder {
 
   withServiceAddress(address: Record<string, any>) {
     this.data.service_address = address;
+    return this;
+  }
+
+  withNaturesOfControl(naturesOfControl: NatureOfControl[]) {
+    this.data.natures_of_control = naturesOfControl;
     return this;
   }
 

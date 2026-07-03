@@ -1,5 +1,11 @@
 import { NextFunction, Request, Response } from "express";
-import { LimitedPartnership, NatureOfControlType, PersonWithSignificantControl, PersonWithSignificantControlType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
+import {
+  LimitedPartnership,
+  NatureOfControl,
+  NatureOfControlType,
+  PersonWithSignificantControl,
+  PersonWithSignificantControlType
+} from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 import AbstractController from "../AbstractController";
 import UIErrors from "../../../domain/entities/UIErrors";
@@ -309,6 +315,8 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
           );
         }
 
+        await this.handleNatureOfControlRedirection(request, pageRouting);
+
         response.redirect(pageRouting.nextUrl);
       } catch (error) {
         next(error);
@@ -335,8 +343,24 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
         }
 
         if (isAddNatureOfControlPage(pageType)) {
+          const personWithSignificantControl = await this.personWithSignificantControlService.getPersonWithSignificantControl(
+            tokens,
+            ids.transactionId,
+            ids.personWithSignificantControlId
+          );
+
+          const existingNaturesOfControl = personWithSignificantControl?.data?.natures_of_control ?? [];
+          const filteredNaturesOfControl = existingNaturesOfControl.filter(
+            (natureOfControl) => natureOfControl.type !== body.type
+          );
+
+          const naturesOfControl: NatureOfControl[] = [
+            ...filteredNaturesOfControl,
+            { ...body, [body.share_of_assets]: true, [body.ownership_of_voting_rights]: true }
+          ];
+
           body = {
-            natures_of_control: [{ ...body, [body.share_of_assets]: true, [body.ownership_of_voting_rights]: true }]
+            natures_of_control: naturesOfControl
           };
         }
 
