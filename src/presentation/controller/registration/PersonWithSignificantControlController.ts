@@ -285,6 +285,46 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
         const body = request.body;
 
+        const result = await this.personWithSignificantControlService.sendPageData(
+          tokens,
+          ids.transactionId,
+          ids.personWithSignificantControlId,
+          body
+        );
+
+        if (result?.errors) {
+          const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+            tokens,
+            ids.transactionId,
+            ids.submissionId
+          );
+
+          return response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(
+              pageRouting,
+              { limitedPartnership, personWithSignificantControl: { data: body } },
+              result.errors
+            )
+          );
+        }
+
+        response.redirect(pageRouting.nextUrl);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  postNaturesOfControl() {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        this.personWithSignificantControlService.setI18n(response.locals.i18n);
+
+        const { ids, pageType, tokens } = super.extract(request);
+        const pageRouting = super.getRouting(registrationsRouting, pageType, request);
+        let body = request.body;
+
         const uiErrors = this.convertNatureOfControlTypesToArrayOrReturnError(request, response);
 
         if (uiErrors?.hasErrors()) {
@@ -292,6 +332,12 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
             super.templateName(pageRouting.currentUrl),
             super.makeProps(pageRouting, { personWithSignificantControl: { data: body } }, uiErrors)
           );
+        }
+
+        if (isAddNatureOfControlPage(pageType)) {
+          body = {
+            natures_of_control: [{ ...body, [body.share_of_assets]: true, [body.ownership_of_voting_rights]: true }]
+          };
         }
 
         const result = await this.personWithSignificantControlService.sendPageData(

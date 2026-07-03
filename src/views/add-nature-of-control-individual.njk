@@ -5,7 +5,7 @@
 {% set votingRightsHint = i18n.personWithSignificantControl.addNatureOfControlPage.individual.votingRightsHint %}
 
 {% block content %}
-
+{{ props.data.natureOfControlType }}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
@@ -17,7 +17,8 @@
             <p class="govuk-hint govuk-!-margin-top-0">{{ i18n.personWithSignificantControl.addNatureOfControlPage.individual.titleHint }}</p>
 
             <form class="form" method="post">
-                <input type="hidden" name="pageType" value={{ props.pageType }}>      
+                <input type="hidden" name="pageType" value={{ props.pageType }}> 
+                <input type="hidden" name="type" value={{ props.data.natureOfControlType }}>     
                 {% include "includes/csrf_token.njk" %}
 
                     {% include "pages/natureOfControl/nature-of-control-radio.njk" %}

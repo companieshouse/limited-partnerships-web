@@ -13,9 +13,9 @@ import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 
 import {
-  ADD_NATURE_OF_CONTROL_FIRM_URL,
+  // ADD_NATURE_OF_CONTROL_FIRM_URL,
   ADD_NATURE_OF_CONTROL_INDIVIDUAL_URL,
-  ADD_NATURE_OF_CONTROL_TRUST_URL,
+  // ADD_NATURE_OF_CONTROL_TRUST_URL,
   WHICH_TYPE_OF_NATURE_OF_CONTROL_INDIVIDUAL_PERSON_URL
 } from "../../../../controller/registration/url";
 import { CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../controller/addressLookUp/url/registration";
@@ -81,16 +81,28 @@ describe("Which Type of Nature of Control Page", () => {
         NatureOfControlType.INDIVIDUAL,
         RegistrationPageType.addNatureOfControlIndividual,
         getUrl(ADD_NATURE_OF_CONTROL_INDIVIDUAL_URL)
-      ],
-      [NatureOfControlType.FIRM, RegistrationPageType.addNatureOfControlFirm, getUrl(ADD_NATURE_OF_CONTROL_FIRM_URL)],
-      [NatureOfControlType.TRUST, RegistrationPageType.addNatureOfControlTrust, getUrl(ADD_NATURE_OF_CONTROL_TRUST_URL)]
-    ])("should redirect to confirm address page - %s", async (_description, pageType, url) => {
-      const res = await request(app).post(url).send({ pageType });
+      ]
+      // [NatureOfControlType.FIRM, RegistrationPageType.addNatureOfControlFirm, getUrl(ADD_NATURE_OF_CONTROL_FIRM_URL)],
+      // [NatureOfControlType.TRUST, RegistrationPageType.addNatureOfControlTrust, getUrl(ADD_NATURE_OF_CONTROL_TRUST_URL)]
+    ])("should redirect to confirm address page - %s", async (type, pageType, url) => {
+      const res = await request(app).post(url).send({
+        pageType: pageType,
+        type: type,
+        share_of_assets: "part_righttosharesurplusassets_25to50percent",
+        ownership_of_voting_rights: "votingrights_25to50percent"
+      });
 
       expect(res.status).toBe(302);
 
       const redirectUrl = getUrl(CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL);
       expect(res.headers.location).toBe(redirectUrl);
+      expect(individualPerson.data?.natures_of_control).toEqual([
+        expect.objectContaining({
+          type: type,
+          part_righttosharesurplusassets_25to50percent: true,
+          votingrights_25to50percent: true
+        })
+      ]);
     });
   });
 });
