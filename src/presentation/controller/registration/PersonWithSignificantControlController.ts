@@ -432,7 +432,7 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
 
         const naturesOfControl: NatureOfControl[] = [
           ...filteredNaturesOfControl,
-          { ...body, [body.share_of_assets]: true, [body.ownership_of_voting_rights]: true }
+          { ...body, [body.share_of_assets]: true, [body.voting_rights]: true }
         ];
 
         body = {

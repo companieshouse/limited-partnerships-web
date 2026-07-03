@@ -11,24 +11,24 @@
   name: "share_of_assets",
   items: [
     {
-        value: "part_righttosharesurplusassets_25to50percent",
+        value: "share_of_assets_25_to_50",
         text: translationText.moreThan25LessThan50,
-        checked: selectedValue == "part_righttosharesurplusassets_25to50percent"
+        checked: selectedValue == "share_of_assets_25_to_50"
     },
     {
-        value: "part_righttosharesurplusassets_50to75percent",
+        value: "share_of_assets_50_to_75",
         text: translationText.moreThan50LessThan75,
-        checked: selectedValue == "part_righttosharesurplusassets_50to75percent"
+        checked: selectedValue == "share_of_assets_50_to_75"
     },
     {
-        value: "part_righttosharesurplusassets_morethan75percent",
+        value: "share_of_assets_75_to_100",
         text: translationText.moreThan75,
-        checked: selectedValue == "part_righttosharesurplusassets_morethan75percent"
+        checked: selectedValue == "share_of_assets_75_to_100"
     },
     {
-        value: "part_righttosharesurplusassets_does_not_apply",
+        value: "share_of_assets_does_not_apply",
         text: translationText.doesNotApply,
-        checked: selectedValue == "part_righttosharesurplusassets_does_not_apply"
+        checked: selectedValue == "share_of_assets_does_not_apply"
     }
   ]
 }) }}
@@ -37,33 +37,33 @@
 <p class="govuk-body">{{ votingRightsHint }}</p>
 
 {{ govukRadios({
-  name: "ownership_of_voting_rights",
+  name: "voting_rights",
   items: [
     {
-        value: "votingrights_25to50percent",
+        value: "voting_rights_25_to_50",
         text: translationText.moreThan25LessThan50,
-        checked: selectedValue == "votingrights_25to50percent"
+        checked: selectedValue == "voting_rights_25_to_50"
     },
     {
-        value: "votingrights_50to75percent",
+        value: "voting_rights_50_to_75",
         text: translationText.moreThan50LessThan75,
-        checked: selectedValue == "votingrights_50to75percent"
+        checked: selectedValue == "voting_rights_50_to_75"
     },
     {
-        value: "votingrights_morethan75percent",
+        value: "voting_rights_75_to_100",
         text: translationText.moreThan75,
-        checked: selectedValue == "votingrights_morethan75percent"
+        checked: selectedValue == "voting_rights_75_to_100"
     },
     {
-        value: "votingrights_does_not_apply",
+        value: "voting_rights_does_not_apply",
         text: translationText.doesNotApply,
-        checked: selectedValue == "votingrights_does_not_apply"
+        checked: selectedValue == "voting_rights_does_not_apply"
     }
   ]
 }) }}
 
 {{ govukCheckboxes({
-    name: "righttoappointmentandremovepersons",
+    name: "right_to_appointment_and_remove",
     fieldset: {
     legend: {
         text: translationText.ownershipOfRightToAppointOrRemove,
@@ -83,7 +83,7 @@
 
 
 {{ govukCheckboxes({
-    name: "siginfluencecontrol",
+    name: "significant_influence_control",
     fieldset: {
     legend: {
         text: translationText.sigInfluenceOrControl,

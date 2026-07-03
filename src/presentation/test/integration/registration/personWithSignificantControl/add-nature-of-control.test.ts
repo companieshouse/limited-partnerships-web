@@ -88,8 +88,8 @@ describe("Which Type of Nature of Control Page", () => {
       const res = await request(app).post(url).send({
         pageType: pageType,
         type: type,
-        share_of_assets: "part_righttosharesurplusassets_25to50percent",
-        ownership_of_voting_rights: "votingrights_25to50percent"
+        share_of_assets: "share_of_assets_25_to_50",
+        voting_rights: "voting_rights_25_to_50"
       });
 
       expect(res.status).toBe(302);
@@ -99,8 +99,8 @@ describe("Which Type of Nature of Control Page", () => {
       expect(individualPerson.data?.natures_of_control).toEqual([
         expect.objectContaining({
           type: type,
-          part_righttosharesurplusassets_25to50percent: true,
-          votingrights_25to50percent: true
+          share_of_assets_25_to_50: true,
+          voting_rights_25_to_50: true
         })
       ]);
     });
@@ -108,8 +108,8 @@ describe("Which Type of Nature of Control Page", () => {
     it("should update the list of natures of control when there is an existing nature of control with the same type", async () => {
       const existingNatureOfControl = {
         type: NatureOfControlType.INDIVIDUAL,
-        part_righttosharesurplusassets_25to50percent: true,
-        votingrights_25to50percent: true
+        share_of_assets_25_to_50: true,
+        voting_rights_25_to_50: true
       };
 
       individualPerson = new PersonWithSignificantControlBuilder()
@@ -123,8 +123,8 @@ describe("Which Type of Nature of Control Page", () => {
       const res = await request(app).post(getUrl(ADD_NATURE_OF_CONTROL_INDIVIDUAL_URL)).send({
         pageType: RegistrationPageType.addNatureOfControlIndividual,
         type: NatureOfControlType.INDIVIDUAL,
-        share_of_assets: "part_righttosharesurplusassets_50to75percent",
-        ownership_of_voting_rights: "votingrights_25to50percent"
+        share_of_assets: "share_of_assets_50_to_75",
+        voting_rights: "voting_rights_25_to_50"
       });
 
       expect(res.status).toBe(302);
@@ -135,12 +135,12 @@ describe("Which Type of Nature of Control Page", () => {
       expect(individualPerson.data?.natures_of_control).toEqual([
         expect.objectContaining({
           type: NatureOfControlType.INDIVIDUAL,
-          part_righttosharesurplusassets_50to75percent: true,
-          votingrights_25to50percent: true
+          share_of_assets_50_to_75: true,
+          voting_rights_25_to_50: true
         })
       ]);
 
-      expect(individualPerson?.data?.natures_of_control?.[0]?.part_righttosharesurplusassets_25to50percent).toBeUndefined();
+      expect(individualPerson?.data?.natures_of_control?.[0]?.share_of_assets_25_to_50).toBeUndefined();
     });
   });
 });
