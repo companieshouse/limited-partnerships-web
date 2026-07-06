@@ -30,11 +30,13 @@ import {
 } from "./url";
 import { PageRouting } from "../PageRouting";
 import { addNocUrlMap } from "./routing/personWithSignificantControl";
+import NatureOfControlValidator from "../../../domain/validator/NatureOfControlValidator";
 
 class PersonWithSignificantControlRegistrationController extends AbstractController {
   constructor(
-    protected readonly limitedPartnershipService: LimitedPartnershipService,
-    protected readonly personWithSignificantControlService: PersonWithSignificantControlService
+    private readonly limitedPartnershipService: LimitedPartnershipService,
+    private readonly personWithSignificantControlService: PersonWithSignificantControlService,
+    private readonly natureOfControlValidator: NatureOfControlValidator
   ) {
     super();
   }
@@ -427,13 +429,30 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
           ids.personWithSignificantControlId
         );
 
+        const natureOfControl: NatureOfControl = { ...body, [body.share_of_assets]: true, [body.voting_rights]: true };
+
+        const uiErrors = this.natureOfControlValidator.set(natureOfControl, response.locals.i18n).runValidation();
+
+        if (uiErrors.hasErrors()) {
+          return response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(
+              pageRouting,
+              {
+                personWithSignificantControl: {
+                  ...personWithSignificantControl,
+                  data: { ...personWithSignificantControl.data, natures_of_control: [natureOfControl] }
+                }
+              },
+              uiErrors
+            )
+          );
+        }
+
         const existingNaturesOfControl = personWithSignificantControl?.data?.natures_of_control ?? [];
         const filteredNaturesOfControl = existingNaturesOfControl.filter((natureOfControl) => natureOfControl.type !== body.type);
 
-        const naturesOfControl: NatureOfControl[] = [
-          ...filteredNaturesOfControl,
-          { ...body, [body.share_of_assets]: true, [body.voting_rights]: true }
-        ];
+        const naturesOfControl: NatureOfControl[] = [...filteredNaturesOfControl, natureOfControl];
 
         body = {
           natures_of_control: naturesOfControl

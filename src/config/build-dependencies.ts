@@ -25,6 +25,8 @@ import AddressValidator from "../domain/validator/Address";
 import PersonWithSignificantControlValidator from "../domain/validator/PersonWithSignificantControl";
 import LimitedPartnershipValidator from "../domain/validator/LimitedPartnership";
 import SicCodesValidator from "../domain/validator/SicCodes";
+import PartnerValidator from "../domain/validator/PartnerValidator";
+import NatureOfControlValidator from "../domain/validator/NatureOfControlValidator";
 
 import CacheService from "../application/service/CacheService";
 import AddressLookUpService from "../application/service/AddressService";
@@ -51,7 +53,6 @@ import LimitedPartnershipPostTransitionController from "../presentation/controll
 import PostTransitionPartnerController from "../presentation/controller/postTransition/PostTransitionPartnerController";
 import GeneralPartnerPostTransitionController from "../presentation/controller/postTransition/GeneralPartnerController";
 import LimitedPartnerPostTransitionController from "../presentation/controller/postTransition/LimitedPartnerController";
-import PartnerValidator from "../domain/validator/PartnerValidator";
 
 export type BuiltDependencies = {
   // Gateways / repositories
@@ -116,6 +117,7 @@ export function buildDependencies(useInMemory = false): BuiltDependencies {
   const limitedPartnershipValidator = new LimitedPartnershipValidator();
   const partnerValidator = new PartnerValidator();
   const sicCodesValidator = new SicCodesValidator();
+  const natureOfControlValidator = new NatureOfControlValidator();
 
   // Services
   const limitedPartnershipService: LimitedPartnershipService = new LimitedPartnershipService(
@@ -175,7 +177,8 @@ export function buildDependencies(useInMemory = false): BuiltDependencies {
   const personWithSignificantControlRegistrationController: PersonWithSignificantControlRegistrationController =
     new PersonWithSignificantControlRegistrationController(
       limitedPartnershipService,
-      personWithSignificantControlService
+      personWithSignificantControlService,
+      natureOfControlValidator
     );
 
   const limitedPartnershipTransitionController: LimitedPartnershipTransitionController =
