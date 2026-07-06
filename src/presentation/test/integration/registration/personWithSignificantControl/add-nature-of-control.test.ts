@@ -10,7 +10,7 @@ import cyErrorsTranslationText from "../../../../../../locales/cy/errors.json";
 
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
+import { getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../utils";
 
 import {
   // ADD_NATURE_OF_CONTROL_FIRM_URL,
@@ -26,7 +26,7 @@ import TransactionPersonWithSignificantControl from "../../../../../domain/entit
 
 import RegistrationPageType from "../../../../controller/registration/PageType";
 
-describe("Which Type of Nature of Control Page", () => {
+describe("Add Nature of Control Page", () => {
   let individualPerson: TransactionPersonWithSignificantControl;
 
   const enTranslationText = {
@@ -192,5 +192,74 @@ describe("Which Type of Nature of Control Page", () => {
 
       expect(individualPerson?.data?.natures_of_control?.[0]?.share_of_assets_25_to_50).toBeUndefined();
     });
+
+    it.each([
+      [
+        "no nature of control is selected",
+        {},
+        enTranslationText.errorMessages.personWithSignificantControl.addNatureOfControl.individual.youMustSelectAtLeastOne
+      ],
+      [
+        "share of assets is not selected",
+        {
+          voting_rights: "voting_rights_25_to_50",
+          right_to_appointment_and_remove: true,
+          significant_influence_control: false
+        },
+        enTranslationText.errorMessages.personWithSignificantControl.addNatureOfControl.individual.shareOfAssetsMissing
+      ],
+      [
+        "voting rights is not selected",
+        {
+          share_of_assets: "share_of_assets_25_to_50",
+          right_to_appointment_and_remove: true,
+          significant_influence_control: false
+        },
+        enTranslationText.errorMessages.personWithSignificantControl.addNatureOfControl.individual.votingRightsMissing
+      ],
+      [
+        "both right to appointment and remove and significant influence control are selected",
+        {
+          share_of_assets: "share_of_assets_25_to_50",
+          voting_rights: "voting_rights_25_to_50",
+          right_to_appointment_and_remove: true,
+          significant_influence_control: true
+        },
+        enTranslationText.errorMessages.personWithSignificantControl.addNatureOfControl.individual.significantInfluence
+      ],
+      [
+        "significant influence control is selected with share of assets or voting rights percentages",
+        {
+          share_of_assets: "share_of_assets_25_to_50",
+          voting_rights: "voting_rights_25_to_50",
+          right_to_appointment_and_remove: false,
+          significant_influence_control: true
+        },
+        enTranslationText.errorMessages.personWithSignificantControl.addNatureOfControl.individual.significantInfluence
+      ],
+      [
+        "no share of assets or voting rights percentages are selected and neither right to appointment and remove nor significant influence control are selected",
+        {
+          right_to_appointment_and_remove: false,
+          significant_influence_control: false
+        },
+        enTranslationText.errorMessages.personWithSignificantControl.addNatureOfControl.individual.youMustSelectAtLeastOne
+      ]
+    ])(
+      "should return a validation error when %s",
+      async (_description: string, requestBody: Record<string, any>, errorMessage: string) => {
+        const res = await request(app)
+          .post(getUrl(ADD_NATURE_OF_CONTROL_INDIVIDUAL_URL))
+          .send({
+            pageType: RegistrationPageType.addNatureOfControlIndividual,
+            type: NatureOfControlType.INDIVIDUAL,
+            ...requestBody
+          });
+
+        expect(res.status).toBe(200);
+
+        expect(res.text).toContain(toEscapedHtml(errorMessage));
+      }
+    );
   });
 });

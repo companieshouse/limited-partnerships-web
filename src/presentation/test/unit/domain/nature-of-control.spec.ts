@@ -1,6 +1,6 @@
 import NatureOfControlBuilder from "../../builder/NatureOfControlBuilder";
-import enTranslationText from "../../../../../locales/en/personWithSignificantControl.json";
-import NatureOfControlValidator from "../../../../domain/validator/NatureOfControlValidator";
+import enTranslationText from "../../../../../locales/en/errors.json";
+import NatureOfControlValidator, { NatureOfControlUIFields } from "../../../../domain/validator/NatureOfControlValidator";
 
 describe("Nature of Control", () => {
   describe("Individual", () => {
@@ -13,7 +13,7 @@ describe("Nature of Control", () => {
       [ new NatureOfControlBuilder().withShareOfAssets25To50().withVotingRightsDoesNotApply().withRightToAppointmentAndRemove().build() ],
       [ new NatureOfControlBuilder().withShareOfAssetsDoesNotApply().withVotingRights75To100().withRightToAppointmentAndRemove().build() ],
       [ new NatureOfControlBuilder().withShareOfAssets75To100().withVotingRights50To75().withRightToAppointmentAndRemove().build() ],
-    ])("Valid combination - should not return a validation error", (natureOfControl) => {
+    ])("Valid combination - should not return a validation error", (natureOfControl: NatureOfControlUIFields) => {
       const validator = new NatureOfControlValidator().set(natureOfControl, enTranslationText);
       const uiErrors = validator.runValidation();
       expect(uiErrors.hasErrors()).toBe(false);
@@ -40,7 +40,7 @@ describe("Nature of Control", () => {
       [ new NatureOfControlBuilder().withVotingRightsDoesNotApply().withSignificantInfluenceControl().build()],
       [ new NatureOfControlBuilder().withShareOfAssetsDoesNotApply().withRightToAppointmentAndRemove().build()],
       [ new NatureOfControlBuilder().withVotingRightsDoesNotApply().withRightToAppointmentAndRemove().build()],
-    ])("Invalid combination - should return a validation error", (natureOfControl) => {
+    ])("Invalid combination - should return a validation error", (natureOfControl: NatureOfControlUIFields) => {
       const validator = new NatureOfControlValidator().set(natureOfControl, enTranslationText);
       const uiErrors = validator.runValidation();
       expect(uiErrors.hasErrors()).toBe(true);

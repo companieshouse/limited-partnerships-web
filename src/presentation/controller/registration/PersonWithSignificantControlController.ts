@@ -30,7 +30,7 @@ import {
 } from "./url";
 import { PageRouting } from "../PageRouting";
 import { addNocUrlMap } from "./routing/personWithSignificantControl";
-import NatureOfControlValidator from "../../../domain/validator/NatureOfControlValidator";
+import NatureOfControlValidator, { NatureOfControlUIFields } from "../../../domain/validator/NatureOfControlValidator";
 
 class PersonWithSignificantControlRegistrationController extends AbstractController {
   constructor(
@@ -421,7 +421,7 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
 
         const { ids, pageType, tokens } = super.extract(request);
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
-        let body = request.body;
+        const body = request.body;
 
         const personWithSignificantControl = await this.personWithSignificantControlService.getPersonWithSignificantControl(
           tokens,
@@ -429,7 +429,11 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
           ids.personWithSignificantControlId
         );
 
-        const natureOfControl: NatureOfControl = { ...body, [body.share_of_assets]: true, [body.voting_rights]: true };
+        const natureOfControl: NatureOfControlUIFields = {
+          ...body,
+          [body.share_of_assets]: true,
+          [body.voting_rights]: true
+        };
 
         const uiErrors = this.natureOfControlValidator.set(natureOfControl, response.locals.i18n).runValidation();
 
@@ -454,27 +458,28 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
 
         const naturesOfControl: NatureOfControl[] = [...filteredNaturesOfControl, natureOfControl];
 
-        body = {
-          natures_of_control: naturesOfControl
-        };
-
         const result = await this.personWithSignificantControlService.sendPageData(
           tokens,
           ids.transactionId,
           ids.personWithSignificantControlId,
-          body
+          {
+            natures_of_control: naturesOfControl
+          }
         );
 
         if (result?.errors) {
-          const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
-            tokens,
-            ids.transactionId,
-            ids.submissionId
-          );
-
           return response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { limitedPartnership, personWithSignificantControl: { data: body } }, result.errors)
+            super.makeProps(
+              pageRouting,
+              {
+                personWithSignificantControl: {
+                  ...personWithSignificantControl,
+                  data: { ...personWithSignificantControl.data, natures_of_control: [natureOfControl] }
+                }
+              },
+              result.errors
+            )
           );
         }
 
