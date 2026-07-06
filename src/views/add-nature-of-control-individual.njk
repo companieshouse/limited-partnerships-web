@@ -5,8 +5,9 @@
 {% set shareOfAssetsHint = i18n.personWithSignificantControl.addNatureOfControlPage.individual.shareOfAssetsHint %}
 {% set votingRightsHint = i18n.personWithSignificantControl.addNatureOfControlPage.individual.votingRightsHint %}
 
+{% set natureOfControl = (props.data.personWithSignificantControl.data.natures_of_control or []) | selectattr("type", "equalto", "INDIVIDUAL") | first %}
+
 {% block content %}
-{{ props.data.natureOfControlType }}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
