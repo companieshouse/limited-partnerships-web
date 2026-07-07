@@ -1,7 +1,7 @@
 import AddressPageType from "../../PageType";
 import {
+  ADD_NATURE_OF_CONTROL_INDIVIDUAL_URL,
   REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL,
-  WHICH_TYPE_OF_NATURE_OF_CONTROL_INDIVIDUAL_PERSON_URL,
   WHICH_TYPE_OF_NATURE_OF_CONTROL_OTHER_REGISTRABLE_PERSON_URL,
   WHICH_TYPE_OF_NATURE_OF_CONTROL_RELEVANT_LEGAL_ENTITY_URL
 } from "../../../registration/url";
@@ -155,7 +155,7 @@ const personWithSignificantControlUsualResidentialAddressCacheKeys = {
 };
 
 const registrationAddressRoutingTerritoryChoicePersonWithSignificantControlIndividualPersonUsualResidentialAddress = {
-  previousUrl: WHICH_TYPE_OF_NATURE_OF_CONTROL_INDIVIDUAL_PERSON_URL,
+  previousUrl: ADD_NATURE_OF_CONTROL_INDIVIDUAL_URL,
   currentUrl: url.TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL,
   nextUrl: url.POSTCODE_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL,
   pageType: AddressPageType.territoryChoicePersonWithSignificantControlIndividualPersonUsualResidentialAddress,

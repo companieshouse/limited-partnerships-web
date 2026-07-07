@@ -1,5 +1,6 @@
 import {
   NatureOfControl,
+  NatureOfControlType,
   PersonWithSignificantControlType
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
@@ -110,6 +111,11 @@ class PersonWithSignificantControlBuilder {
 
   withServiceAddress(address: Record<string, any>) {
     this.data.service_address = address;
+    return this;
+  }
+
+  withNatureOfControlTypes(natureOfControlTypes: NatureOfControlType[]) {
+    this.data.nature_of_control_types = natureOfControlTypes;
     return this;
   }
 
