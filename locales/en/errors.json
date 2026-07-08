@@ -184,6 +184,14 @@
             },
             "whichTypeOfNatureOfControl": {
                 "natureOfControlTypesMissing": "Select at least one type of nature of control"
+            },
+            "addNatureOfControl": {
+                "individual": {
+                    "shareOfAssetsMissing": "Select whether the individual holds any right to the share of assets of the limited partnership",
+                    "votingRightsMissing": "Select whether the individual holds any voting rights in the limited partnership",
+                    "significantInfluence": "You can only select significant influence or control if none of the other options apply",
+                    "youMustSelectAtLeastOne": "You must select at least one option that applies, or select 'Significant influence or control' if none of the other options apply"
+                }
             }
         },
 

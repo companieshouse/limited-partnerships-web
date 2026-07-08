@@ -170,6 +170,28 @@
                 }
             }
         },
+        "addNatureOfControlPage": {
+            "publicRegisterInformationLine1": "We'll show this information on the public register.",
+            "shareOfAssets": "Share of assets",
+            "votingRights": "Ownership of voting rights",
+            "moreThan25LessThan50": "More than 25% but not more than 50%",
+            "moreThan50LessThan75": "More than 50% but not more than 75%",
+            "moreThan75": "75% or more",
+            "doesNotApply": "Does not apply",
+            "ownershipOfRightToAppointOrRemove": "Ownership of right to appoint or remove management",
+            "selectOwnershipHint": "Select if this statement applies",
+            "sigInfluenceOrControl": "Significant influence or control",
+            "selectSigInfluenceHint": "Only select this statement if the other natures of control do not apply",
+
+            "individual": {
+                "title": "What is the individual's nature of control?",
+                "titleHint": "You've told us that the individual meets one or more natures of control.",
+                "shareOfAssetsHint": "The individual holds (directly or indirectly) the right to the following percentage of surplus assets of the partnership on a winding up:",
+                "votingRightsHint": "The individual holds (directly or indirectly) the following percentage of voting rights in the limited partnership:",
+                "ownershipCheckboxText": "The individual holds, directly or indirectly, the right to appoint or remove a majority of the persons entitled to take part in the management of the limited partnership.",
+                "sigInfluenceCheckboxText": "The individual has the right to exercise, or actually exercises, significant influence or control over the limited partnership."
+            }
+        },
         "removePscPage": {
             "title": "Are you sure you want to remove",
             "errorMessage": "Select yes if you need to remove a PSC"

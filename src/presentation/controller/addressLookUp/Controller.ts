@@ -4,6 +4,7 @@ import {
   Address,
   GeneralPartner,
   LimitedPartner,
+  NatureOfControlType,
   PartnerKind,
   PartnershipType,
   PersonWithSignificantControl
@@ -45,7 +46,12 @@ import LimitedPartnerService from "../../../application/service/LimitedPartnerSe
 import PersonWithSignificantControlService from "../../../application/service/PersonWithSignificantControlService";
 
 import { CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_CORRESPONDENCE_ADDRESS_URL, CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL } from "./url/registration";
-import { REVIEW_GENERAL_PARTNERS_URL } from "../registration/url";
+import {
+  ADD_NATURE_OF_CONTROL_FIRM_URL,
+  ADD_NATURE_OF_CONTROL_INDIVIDUAL_URL,
+  ADD_NATURE_OF_CONTROL_TRUST_URL,
+  REVIEW_GENERAL_PARTNERS_URL
+} from "../registration/url";
 import {
   UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL,
   WHEN_DID_GENERAL_PARTNER_PERSON_DETAILS_CHANGE_URL,
@@ -110,6 +116,8 @@ class AddressLookUpController extends AbstractController {
           this.conditionalBackLink(pageRouting, generalPartner, ids);
         } else if (ids.limitedPartnerId) {
           this.conditionalBackLink(pageRouting, limitedPartner, ids);
+        } else if (ids.personWithSignificantControlId) {
+          this.conditionalPscBackLink(pageRouting, personWithSignificantControl, ids);
         }
 
         response.render(
@@ -243,6 +251,26 @@ class AddressLookUpController extends AbstractController {
           ids
         );
         return;
+      }
+    }
+  }
+
+  private conditionalPscBackLink(pageRouting: PageRouting, personWithSignificantControl: PersonWithSignificantControl, ids: Ids) {
+    if (
+      pageRouting.pageType ===
+      AddressLookUpPageType.territoryChoicePersonWithSignificantControlIndividualPersonUsualResidentialAddress
+    ) {
+      const natureOfControlTypes = personWithSignificantControl?.data?.nature_of_control_types ?? [];
+      if (natureOfControlTypes.length > 0) {
+        const type = natureOfControlTypes[natureOfControlTypes.length - 1];
+
+        const natureOfControlBackLinks: Map<NatureOfControlType, string> = new Map([
+          [NatureOfControlType.INDIVIDUAL, ADD_NATURE_OF_CONTROL_INDIVIDUAL_URL],
+          [NatureOfControlType.FIRM, ADD_NATURE_OF_CONTROL_FIRM_URL],
+          [NatureOfControlType.TRUST, ADD_NATURE_OF_CONTROL_TRUST_URL]
+        ]);
+
+        pageRouting.previousUrl = this.insertIdsInUrl(natureOfControlBackLinks.get(type) ?? pageRouting.previousUrl, ids);
       }
     }
   }

@@ -23,6 +23,12 @@ import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBui
 import PersonWithSignificantControlBuilder from "../../../../builder/PersonWithSignificantControlBuilder";
 
 import TransactionPersonWithSignificantControl from "../../../../../../domain/entities/TransactionPersonWithSignificantControl";
+import {
+  ADD_NATURE_OF_CONTROL_FIRM_URL,
+  ADD_NATURE_OF_CONTROL_INDIVIDUAL_URL,
+  ADD_NATURE_OF_CONTROL_TRUST_URL
+} from "../../../../../controller/registration/url";
+import { NatureOfControlType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 describe("PSC usual residential Address Territory Choice", () => {
   const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText, ...enErrorsTranslationText };
@@ -77,6 +83,29 @@ describe("PSC usual residential Address Territory Choice", () => {
             personWithSignificantControl?.data?.surname
           ].join(' ').toUpperCase()
         );
+      }
+    );
+
+    it.each([
+      [[NatureOfControlType.INDIVIDUAL], getUrl(ADD_NATURE_OF_CONTROL_INDIVIDUAL_URL)],
+      [[NatureOfControlType.FIRM], getUrl(ADD_NATURE_OF_CONTROL_FIRM_URL)],
+      [[NatureOfControlType.TRUST], getUrl(ADD_NATURE_OF_CONTROL_TRUST_URL)]
+    ])(
+      "should load the PSC usual residential address territory choice page with the correct backlink to the nature of control page - %s",
+      async (natureOfControlTypes: NatureOfControlType[], backlink: string) => {
+        const personWithSignificantControl = new PersonWithSignificantControlBuilder()
+          .isIndividualPerson()
+          .withId(appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId)
+          .withNatureOfControlTypes(natureOfControlTypes)
+          .build();
+
+        appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([personWithSignificantControl]);
+
+        const res = await request(app).get(URL);
+
+        expect(res.status).toBe(200);
+
+        expect(res.text).toContain(backlink);
       }
     );
   });

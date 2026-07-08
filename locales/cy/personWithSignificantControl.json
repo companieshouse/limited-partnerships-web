@@ -169,6 +169,28 @@
                 }
             }
         },
+        "addNatureOfControlPage": {
+            "publicRegisterInformationLine1": "WELSH - We'll show this information on the public register.",
+            "shareOfAssets": "WELSH - Share of assets",
+            "votingRights": "WELSH - Ownership of voting rights",
+            "moreThan25LessThan50": "WELSH - More than 25% but not more than 50%",
+            "moreThan50LessThan75": "WELSH - More than 50% but not more than 75%",
+            "moreThan75": "WELSH - 75% or more",
+            "doesNotApply": "WELSH - Does not apply",
+            "ownershipOfRightToAppointOrRemove": "WELSH - Ownership of right to appoint or remove management",
+            "selectOwnershipHint": "WELSH - Select if this statement applies",
+            "sigInfluenceOrControl": "WELSH - Significant influence or control",
+            "selectSigInfluenceHint": "WELSH - Only select this statement if the other natures of control do not apply",
+
+            "individual": {
+                "title": "WELSH - What is the individual's nature of control?",
+                "titleHint": "WELSH - You've told us that the individual meets one or more natures of control.",
+                "shareOfAssetsHint": "WELSH - The individual holds (directly or indirectly) the right to the following percentage of surplus assets of the partnership on a winding up:",
+                "votingRightsHint": "WELSH - The individual holds (directly or indirectly) the following percentage of voting rights in the limited partnership:",
+                "ownershipCheckboxText": "WELSH - The individual holds, directly or indirectly, the right to appoint or remove a majority of the persons entitled to take part in the management of the limited partnership.",
+                "sigInfluenceCheckboxText": "WELSH - The individual has the right to exercise, or actually exercises, significant influence or control over the limited partnership."
+            }
+        },
         "removePscPage": {
             "title": "WELSH - Are you sure you want to remove",
             "errorMessage": "WELSH - Select yes if you need to remove a PSC"

@@ -373,7 +373,7 @@ export const registrationEndpoints = (
   );
   router.post(
     WHICH_TYPE_OF_NATURE_OF_CONTROL_RELEVANT_LEGAL_ENTITY_URL,
-    dependencies.personWithSignificantControlRegistrationController.sendPageData()
+    dependencies.personWithSignificantControlRegistrationController.sendNatureOfControlTypes()
   );
 
   router.get(
@@ -382,7 +382,7 @@ export const registrationEndpoints = (
   );
   router.post(
     WHICH_TYPE_OF_NATURE_OF_CONTROL_OTHER_REGISTRABLE_PERSON_URL,
-    dependencies.personWithSignificantControlRegistrationController.sendPageData()
+    dependencies.personWithSignificantControlRegistrationController.sendNatureOfControlTypes()
   );
 
   router.get(
@@ -391,7 +391,7 @@ export const registrationEndpoints = (
   );
   router.post(
     WHICH_TYPE_OF_NATURE_OF_CONTROL_INDIVIDUAL_PERSON_URL,
-    dependencies.personWithSignificantControlRegistrationController.sendPageData()
+    dependencies.personWithSignificantControlRegistrationController.sendNatureOfControlTypes()
   );
 
   router.get(
@@ -400,7 +400,7 @@ export const registrationEndpoints = (
   );
   router.post(
     ADD_NATURE_OF_CONTROL_INDIVIDUAL_URL,
-    dependencies.personWithSignificantControlRegistrationController.sendPageData()
+    dependencies.personWithSignificantControlRegistrationController.postNaturesOfControl()
   );
 
   router.get(
@@ -409,7 +409,7 @@ export const registrationEndpoints = (
   );
   router.post(
     ADD_NATURE_OF_CONTROL_FIRM_URL,
-    dependencies.personWithSignificantControlRegistrationController.sendPageData()
+    dependencies.personWithSignificantControlRegistrationController.postNaturesOfControl()
   );
 
   router.get(
@@ -418,7 +418,7 @@ export const registrationEndpoints = (
   );
   router.post(
     ADD_NATURE_OF_CONTROL_TRUST_URL,
-    dependencies.personWithSignificantControlRegistrationController.sendPageData()
+    dependencies.personWithSignificantControlRegistrationController.postNaturesOfControl()
   );
 
   router.get(
