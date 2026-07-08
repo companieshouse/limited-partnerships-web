@@ -1,9 +1,20 @@
 {% extends "layout.njk" %}
 
-{% set pageTitle = i18n.personWithSignificantControl.addNatureOfControlPage.individual.title %}
 {% set publicRegisterInformationLine1 = i18n.personWithSignificantControl.addNatureOfControlPage.publicRegisterInformationLine1 %}
-{% set shareOfAssetsHint = i18n.personWithSignificantControl.addNatureOfControlPage.individual.shareOfAssetsHint %}
-{% set votingRightsHint = i18n.personWithSignificantControl.addNatureOfControlPage.individual.votingRightsHint %}
+
+{% set pscType = 'individual' %}
+{% if props.data.personWithSignificantControl.data.type == "RELEVANT_LEGAL_ENTITY" %}
+    {% set pscType = 'RLE' %}
+{% elif props.data.personWithSignificantControl.data.type == "OTHER_REGISTRABLE_PERSON" %}
+    {% set pscType = 'ORP' %}
+{% endif %}
+
+{% set pageTitle = i18n.personWithSignificantControl.addNatureOfControlPage.individual.title | replace("individual", pscType) %}
+{% set pageTitleHint = i18n.personWithSignificantControl.addNatureOfControlPage.individual.titleHint | replace("individual", pscType) %}
+{% set shareOfAssetsHint = i18n.personWithSignificantControl.addNatureOfControlPage.individual.shareOfAssetsHint | replace("individual", pscType)  %}
+{% set votingRightsHint = i18n.personWithSignificantControl.addNatureOfControlPage.individual.votingRightsHint | replace("individual", pscType)  %}
+{% set ownershipCheckboxText = i18n.personWithSignificantControl.addNatureOfControlPage.individual.ownershipCheckboxText | replace("individual", pscType)  %}
+{% set sigInfluenceCheckboxText = i18n.personWithSignificantControl.addNatureOfControlPage.individual.sigInfluenceCheckboxText | replace("individual", pscType)  %}
 
 {% set natureOfControl = (props.data.personWithSignificantControl.data.natures_of_control or []) | selectattr("type", "equalto", "INDIVIDUAL") | first %}
 
@@ -16,7 +27,7 @@
             {% include "pages/personWithSignificantControl/person-with-significant-control-name.njk" %}
             
             <h1 class="govuk-heading-l govuk-!-margin-bottom-0">{{ pageTitle }}</h1>
-            <p class="govuk-hint govuk-!-margin-top-0">{{ i18n.personWithSignificantControl.addNatureOfControlPage.individual.titleHint }}</p>
+            <p class="govuk-hint govuk-!-margin-top-0">{{ pageTitleHint }}</p>
 
             <form class="form" method="post">
                 <input type="hidden" name="pageType" value={{ props.pageType }}> 
