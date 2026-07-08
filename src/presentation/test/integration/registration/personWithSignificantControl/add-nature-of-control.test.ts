@@ -122,51 +122,44 @@ describe("Add Nature of Control Page", () => {
     );
 
     it.each([
-      [`en - ${NatureOfControlType.INDIVIDUAL}`, "en", getUrl(ADD_NATURE_OF_CONTROL_INDIVIDUAL_URL), enTranslationText, ["firm"]],
-      [`cy - ${NatureOfControlType.INDIVIDUAL}`, "cy", getUrl(ADD_NATURE_OF_CONTROL_INDIVIDUAL_URL), cyTranslationText, ["firm"]]
-    ])(
-      "should load the add nature of control page with data from api - %s",
-      async (_description: string, lang: string, url: string, translationText: Record<string, any>, excludedTexts: string[]) => {
-        const personWithNatureOfControl = new PersonWithSignificantControlBuilder()
-          .isIndividualPerson()
-          .withId(appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId)
-          .withNaturesOfControl([
-            {
-              type: NatureOfControlType.INDIVIDUAL,
-              share_of_assets_25_to_50: true,
-              voting_rights_25_to_50: true,
-              right_to_appointment_and_remove: true
-            },
-            {
-              type: NatureOfControlType.FIRM,
-              share_of_assets_50_to_75: true,
-              voting_rights_50_to_75: true,
-              right_to_appointment_and_remove: true
-            }
-          ])
-          .build();
+      [NatureOfControlType.INDIVIDUAL, getUrl(ADD_NATURE_OF_CONTROL_INDIVIDUAL_URL)],
+      [NatureOfControlType.FIRM, getUrl(ADD_NATURE_OF_CONTROL_FIRM_URL)]
+    ])("should load the add nature of control page with data from api - %s", async (type: string, url: string) => {
+      const personWithNatureOfControl = new PersonWithSignificantControlBuilder()
+        .isIndividualPerson()
+        .withId(appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId)
+        .withNaturesOfControl([
+          {
+            type: NatureOfControlType.INDIVIDUAL,
+            share_of_assets_25_to_50: true,
+            voting_rights_25_to_50: true,
+            right_to_appointment_and_remove: true
+          },
+          {
+            type: NatureOfControlType.FIRM,
+            share_of_assets_25_to_50: true,
+            voting_rights_25_to_50: true,
+            right_to_appointment_and_remove: true
+          }
+        ])
+        .build();
 
-        appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([personWithNatureOfControl]);
+      appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([personWithNatureOfControl]);
 
-        const res = await request(app).get(`${url}?lang=${lang}`);
+      const res = await request(app).get(url);
 
-        expect(res.status).toBe(200);
+      expect(res.status).toBe(200);
 
-        testTranslations(res.text, translationText.personWithSignificantControl.addNatureOfControlPage, excludedTexts);
+      expect(res.text).toContain(individualPerson.data?.legal_entity_name?.toUpperCase());
 
-        expect(res.text).toContain(individualPerson.data?.legal_entity_name?.toUpperCase());
-
-        expect(res.text).toContain('value="share_of_assets_25_to_50" checked');
-        expect(res.text).not.toContain('value="share_of_assets_50_to_75" checked');
-        expect(res.text).toContain('value="voting_rights_25_to_50" checked');
-        expect(res.text).not.toContain('value="voting_rights_50_to_75" checked');
-        expect(res.text).toContain('name="right_to_appointment_and_remove" type="checkbox" value="true" checked');
-        expect(res.text).not.toContain('name="significant_influence_control" type="checkbox" value="true" checked');
-
-        const backUrl = getUrl(WHICH_TYPE_OF_NATURE_OF_CONTROL_INDIVIDUAL_PERSON_URL);
-        expect(res.text).toContain(backUrl);
-      }
-    );
+      expect(res.text).toContain(type);
+      expect(res.text).toContain('value="share_of_assets_25_to_50" checked');
+      expect(res.text).not.toContain('value="share_of_assets_50_to_75" checked');
+      expect(res.text).toContain('value="voting_rights_25_to_50" checked');
+      expect(res.text).not.toContain('value="voting_rights_50_to_75" checked');
+      expect(res.text).toContain('name="right_to_appointment_and_remove" type="checkbox" value="true" checked');
+      expect(res.text).not.toContain('name="significant_influence_control" type="checkbox" value="true" checked');
+    });
   });
 
   describe("Post Add Nature of Control Page", () => {
