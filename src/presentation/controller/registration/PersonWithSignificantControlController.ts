@@ -513,14 +513,35 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
     pageRouting: PageRouting,
     request: Request
   ) {
-    const { pageType } = super.extract(request);
+    const { pageType, ids } = super.extract(request);
 
     if (isAddNatureOfControlPage(pageType)) {
+      const natureOfControlTypes = personWithSignificantControl.data?.nature_of_control_types ?? [];
+
       // step 1 – check nature_of_control_types and redirect to the next nature of control page
       // if the type is the last one on the list, proceed to step 2
+      const indexOfTheCurrentType = natureOfControlTypes.indexOf(pageRouting.data?.natureOfControlType ?? "");
 
-      // step 2 – redirect to the correct address page
-      this.setListAddNatureOfControlUrls(personWithSignificantControl, pageRouting, request);
+      if (indexOfTheCurrentType !== undefined && indexOfTheCurrentType !== -1) {
+        const nextType = natureOfControlTypes[indexOfTheCurrentType + 1];
+
+        if (nextType) {
+          const urlMap: Map<string, string> = new Map([
+            [NatureOfControlType.INDIVIDUAL, ADD_NATURE_OF_CONTROL_INDIVIDUAL_URL],
+            [NatureOfControlType.FIRM, ADD_NATURE_OF_CONTROL_FIRM_URL],
+            [NatureOfControlType.TRUST, ADD_NATURE_OF_CONTROL_TRUST_URL]
+          ]);
+
+          const nextNocUrl = urlMap.get(nextType);
+
+          if (nextNocUrl) {
+            pageRouting.nextUrl = super.insertIdsInUrl(nextNocUrl, ids, request.url);
+          }
+        } else {
+          // step 2 – redirect to the correct address page
+          this.setListAddNatureOfControlUrls(personWithSignificantControl, pageRouting, request);
+        }
+      }
     }
   }
 

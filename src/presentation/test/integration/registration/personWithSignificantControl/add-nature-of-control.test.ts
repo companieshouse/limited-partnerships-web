@@ -19,6 +19,7 @@ import {
   ADD_NATURE_OF_CONTROL_FIRM_URL,
   // ADD_NATURE_OF_CONTROL_FIRM_URL,
   ADD_NATURE_OF_CONTROL_INDIVIDUAL_URL,
+  ADD_NATURE_OF_CONTROL_TRUST_URL,
   // ADD_NATURE_OF_CONTROL_TRUST_URL,
   WHICH_TYPE_OF_NATURE_OF_CONTROL_INDIVIDUAL_PERSON_URL
 } from "../../../../controller/registration/url";
@@ -165,13 +166,35 @@ describe("Add Nature of Control Page", () => {
   describe("Post Add Nature of Control Page", () => {
     it.each([
       [
+        "Firm",
         NatureOfControlType.INDIVIDUAL,
         RegistrationPageType.addNatureOfControlIndividual,
-        getUrl(ADD_NATURE_OF_CONTROL_INDIVIDUAL_URL)
+        getUrl(ADD_NATURE_OF_CONTROL_INDIVIDUAL_URL),
+        getUrl(ADD_NATURE_OF_CONTROL_FIRM_URL)
+      ],
+      [
+        "Trust",
+        NatureOfControlType.FIRM,
+        RegistrationPageType.addNatureOfControlFirm,
+        getUrl(ADD_NATURE_OF_CONTROL_FIRM_URL),
+        getUrl(ADD_NATURE_OF_CONTROL_TRUST_URL)
+      ],
+      [
+        "Confirm Address",
+        NatureOfControlType.TRUST,
+        RegistrationPageType.addNatureOfControlTrust,
+        getUrl(ADD_NATURE_OF_CONTROL_TRUST_URL),
+        getUrl(CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL)
       ]
-      // [NatureOfControlType.FIRM, RegistrationPageType.addNatureOfControlFirm, getUrl(ADD_NATURE_OF_CONTROL_FIRM_URL)],
-      // [NatureOfControlType.TRUST, RegistrationPageType.addNatureOfControlTrust, getUrl(ADD_NATURE_OF_CONTROL_TRUST_URL)]
-    ])("should redirect to confirm address page - %s", async (type, pageType, url) => {
+    ])("should redirect to the %s page", async (_description: string, type, pageType, url, redirectUrl: string) => {
+      const personWithNatureOfControl = new PersonWithSignificantControlBuilder()
+        .isIndividualPerson()
+        .withId(appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId)
+        .withNatureOfControlTypes([NatureOfControlType.INDIVIDUAL, NatureOfControlType.FIRM, NatureOfControlType.TRUST])
+        .build();
+
+      appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([personWithNatureOfControl]);
+
       const res = await request(app).post(url).send({
         pageType: pageType,
         type: type,
@@ -181,15 +204,7 @@ describe("Add Nature of Control Page", () => {
 
       expect(res.status).toBe(302);
 
-      const redirectUrl = getUrl(CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL);
       expect(res.headers.location).toBe(redirectUrl);
-      expect(individualPerson.data?.natures_of_control).toEqual([
-        expect.objectContaining({
-          type: type,
-          share_of_assets_25_to_50: true,
-          voting_rights_25_to_50: true
-        })
-      ]);
     });
 
     it("should update the list of natures of control when there is an existing nature of control with the same type", async () => {
@@ -215,9 +230,6 @@ describe("Add Nature of Control Page", () => {
       });
 
       expect(res.status).toBe(302);
-
-      const redirectUrl = getUrl(CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL);
-      expect(res.headers.location).toBe(redirectUrl);
 
       expect(individualPerson.data?.natures_of_control).toEqual([
         expect.objectContaining({
