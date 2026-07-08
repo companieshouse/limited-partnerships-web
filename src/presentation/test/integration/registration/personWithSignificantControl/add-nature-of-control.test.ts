@@ -1,5 +1,8 @@
 import request from "supertest";
-import { NatureOfControlType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
+import {
+  NatureOfControlType,
+  PersonWithSignificantControlType
+} from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
 import enGeneralTranslationText from "../../../../../../locales/en/translations.json";
 import cyGeneralTranslationText from "../../../../../../locales/cy/translations.json";
@@ -74,6 +77,46 @@ describe("Add Nature of Control Page", () => {
 
         const backUrl = getUrl(WHICH_TYPE_OF_NATURE_OF_CONTROL_INDIVIDUAL_PERSON_URL);
         expect(res.text).toContain(backUrl);
+      }
+    );
+
+    it.each([
+      [PersonWithSignificantControlType.INDIVIDUAL_PERSON, "individual"],
+      [PersonWithSignificantControlType.RELEVANT_LEGAL_ENTITY, "RLE"],
+      [PersonWithSignificantControlType.OTHER_REGISTRABLE_PERSON, "ORP"]
+    ])(
+      "should load the add nature of control page with text depending of the PSC type - %s",
+      async (type: string, expectedText: string) => {
+        const personWithSignificantControlBuilder = new PersonWithSignificantControlBuilder().withId(
+          appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId
+        );
+
+        if (type === PersonWithSignificantControlType.INDIVIDUAL_PERSON) {
+          personWithSignificantControlBuilder.isIndividualPerson();
+        } else if (type === PersonWithSignificantControlType.RELEVANT_LEGAL_ENTITY) {
+          personWithSignificantControlBuilder.isRelevantLegalEntity();
+        } else if (type === PersonWithSignificantControlType.OTHER_REGISTRABLE_PERSON) {
+          personWithSignificantControlBuilder.isOtherRegistrablePerson();
+        }
+
+        const personWithSignificantControl = personWithSignificantControlBuilder.build();
+
+        appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([personWithSignificantControl]);
+
+        const URL = getUrl(ADD_NATURE_OF_CONTROL_INDIVIDUAL_URL);
+
+        const res = await request(app).get(URL);
+
+        expect(res.status).toBe(200);
+
+        expect(res.text).toContain(
+          toEscapedHtml(
+            enPersonWithSignificantControlTranslationText.personWithSignificantControl.addNatureOfControlPage.individual.title.replace(
+              "individual",
+              expectedText
+            )
+          )
+        );
       }
     );
 
