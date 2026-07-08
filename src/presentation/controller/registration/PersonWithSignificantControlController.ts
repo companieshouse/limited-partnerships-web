@@ -51,18 +51,34 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
 
         const { limitedPartnership, personWithSignificantControl } = await this.getLimitedPartnershipAndPsc(tokens, ids);
 
-        if (personWithSignificantControl) {
-          this.setAddNatureOfControlUrls(personWithSignificantControl, pageRouting, request);
-        }
+        const natureOfControl: NatureOfControl = this.handleNatureOfControl(personWithSignificantControl, pageRouting, request);
 
         response.render(
           super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { limitedPartnership, personWithSignificantControl }, null)
+          super.makeProps(pageRouting, { limitedPartnership, personWithSignificantControl, natureOfControl }, null)
         );
       } catch (error) {
         next(error);
       }
     };
+  }
+
+  private handleNatureOfControl(
+    personWithSignificantControl: PersonWithSignificantControl | undefined,
+    pageRouting: PageRouting,
+    request: Request
+  ) {
+    if (personWithSignificantControl) {
+      this.setAddNatureOfControlUrls(personWithSignificantControl, pageRouting, request);
+
+      return (
+        personWithSignificantControl.data?.natures_of_control?.filter(
+          (noc) => noc.type === pageRouting?.data?.natureOfControlType
+        )?.[0] ?? {}
+      );
+    }
+
+    return {};
   }
 
   getReviewPage() {

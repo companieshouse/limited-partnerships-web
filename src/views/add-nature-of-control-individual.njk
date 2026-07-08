@@ -16,8 +16,6 @@
 {% set ownershipCheckboxText = i18n.personWithSignificantControl.addNatureOfControlPage.individual.ownershipCheckboxText | replace("individual", pscType)  %}
 {% set sigInfluenceCheckboxText = i18n.personWithSignificantControl.addNatureOfControlPage.individual.sigInfluenceCheckboxText | replace("individual", pscType)  %}
 
-{% set natureOfControl = (props.data.personWithSignificantControl.data.natures_of_control or []) | selectattr("type", "equalto", "INDIVIDUAL") | first %}
-
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -34,14 +32,13 @@
                 <input type="hidden" name="type" value={{ props.data.natureOfControlType }}>     
                 {% include "includes/csrf_token.njk" %}
 
-                    {% include "pages/natureOfControl/nature-of-control-radio.njk" %}
+                {% include "pages/natureOfControl/nature-of-control-radio.njk" %}
 
-                    {% include "includes/public-register-information.njk" %}
+                {% include "includes/public-register-information.njk" %}
 
-                    {% include "includes/save-and-continue-button.njk" %}
+                {% include "includes/save-and-continue-button.njk" %}
             </form>
 
         </div>
     </div>
-
 {% endblock %}
