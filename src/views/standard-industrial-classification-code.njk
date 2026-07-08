@@ -38,26 +38,28 @@
 
         {% if props.data.sicCodes.length > 0 %}
           <div class="govuk-summary-list" role="list">
-            {% for sic in props.data.sicCodes %}
-                <div class="govuk-summary-list__row">
-                  <div class="govuk-summary-list__key">{{ sic.code }}</div>
-                  <div class="govuk-summary-list__value">{{ sic.description }}</div>
-                  <div class="govuk-summary-list__actions">
-                    {{ govukButton({
-                      text: i18n.sicCodes.removeButton,
-                      name: "action_remove",
-                      value: sic.code,
-                      classes: "govuk-link", 
-                      attributes: {
-                        id: "remove-sic-code-button",
-                        class: "govuk-link",
-                        type: "submit",
-                        "data-event-id": "remove-sic-code-button"
-                      }
-                    }) }}
+            <dl class="govuk-summary-list govuk-!-margin-bottom-0">
+              {% for sic in props.data.sicCodes %}
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">{{ sic.code }}</dt>
+                    <dd class="govuk-summary-list__value">{{ sic.description }}</dd>
+                    <dd class="govuk-summary-list__actions">
+                      {{ govukButton({
+                        text: i18n.sicCodes.removeButton,
+                        name: "action_remove",
+                        value: sic.code,
+                        classes: "govuk-link govuk-!-margin-0", 
+                        attributes: {
+                          id: "remove-sic-code-button",
+                          class: "govuk-link",
+                          type: "submit",
+                          "data-event-id": "remove-sic-code-button"
+                        }
+                      }) }}
+                    </dd>
                   </div>
-                </div>
-            {% endfor %}
+              {% endfor %}
+            <dl>
           </div>
         {% endif %}
             
