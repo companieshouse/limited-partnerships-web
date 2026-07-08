@@ -17,10 +17,8 @@ import { getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../.
 
 import {
   ADD_NATURE_OF_CONTROL_FIRM_URL,
-  // ADD_NATURE_OF_CONTROL_FIRM_URL,
   ADD_NATURE_OF_CONTROL_INDIVIDUAL_URL,
   ADD_NATURE_OF_CONTROL_TRUST_URL,
-  // ADD_NATURE_OF_CONTROL_TRUST_URL,
   WHICH_TYPE_OF_NATURE_OF_CONTROL_INDIVIDUAL_PERSON_URL
 } from "../../../../controller/registration/url";
 import { CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../controller/addressLookUp/url/registration";

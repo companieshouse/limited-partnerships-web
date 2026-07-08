@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from "express";
 import {
   LimitedPartnership,
   NatureOfControl,
-  NatureOfControlType,
   PersonWithSignificantControl,
   PersonWithSignificantControlType
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
@@ -17,9 +16,6 @@ import LimitedPartnershipService from "../../../application/service/LimitedPartn
 import PersonWithSignificantControlService from "../../../application/service/PersonWithSignificantControlService";
 
 import {
-  ADD_NATURE_OF_CONTROL_FIRM_URL,
-  ADD_NATURE_OF_CONTROL_INDIVIDUAL_URL,
-  ADD_NATURE_OF_CONTROL_TRUST_URL,
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_URL,
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_URL,
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL,
@@ -29,7 +25,7 @@ import {
   TELL_US_ABOUT_PSC_URL
 } from "./url";
 import { PageRouting } from "../PageRouting";
-import { addNocUrlMap } from "./routing/personWithSignificantControl";
+import { addNocUrlMap, nocTypeToUrlMap } from "./routing/personWithSignificantControl";
 import NatureOfControlValidator, { NatureOfControlUIFields } from "../../../domain/validator/NatureOfControlValidator";
 
 class PersonWithSignificantControlRegistrationController extends AbstractController {
@@ -416,13 +412,7 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
     );
 
     if (personWithSignificantControl.data?.nature_of_control_types) {
-      const urlMap: Map<string, string> = new Map([
-        [NatureOfControlType.INDIVIDUAL, ADD_NATURE_OF_CONTROL_INDIVIDUAL_URL],
-        [NatureOfControlType.FIRM, ADD_NATURE_OF_CONTROL_FIRM_URL],
-        [NatureOfControlType.TRUST, ADD_NATURE_OF_CONTROL_TRUST_URL]
-      ]);
-
-      const nextNocUrl = urlMap.get(personWithSignificantControl.data?.nature_of_control_types[0]);
+      const nextNocUrl = nocTypeToUrlMap.get(personWithSignificantControl.data?.nature_of_control_types[0]);
 
       if (nextNocUrl) {
         pageRouting.nextUrl = super.insertIdsInUrl(nextNocUrl, ids, request.url);
@@ -515,33 +505,28 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
   ) {
     const { pageType, ids } = super.extract(request);
 
-    if (isAddNatureOfControlPage(pageType)) {
-      const natureOfControlTypes = personWithSignificantControl.data?.nature_of_control_types ?? [];
+    if (!isAddNatureOfControlPage(pageType)) {
+      return;
+    }
 
-      // step 1 – check nature_of_control_types and redirect to the next nature of control page
-      // if the type is the last one on the list, proceed to step 2
-      const indexOfTheCurrentType = natureOfControlTypes.indexOf(pageRouting.data?.natureOfControlType ?? "");
+    const natureOfControlTypes = personWithSignificantControl.data?.nature_of_control_types ?? [];
+    const currentIndex = natureOfControlTypes.indexOf(pageRouting.data?.natureOfControlType ?? "");
 
-      if (indexOfTheCurrentType !== undefined && indexOfTheCurrentType !== -1) {
-        const nextType = natureOfControlTypes[indexOfTheCurrentType + 1];
+    if (currentIndex === -1) {
+      return;
+    }
 
-        if (nextType) {
-          const urlMap: Map<string, string> = new Map([
-            [NatureOfControlType.INDIVIDUAL, ADD_NATURE_OF_CONTROL_INDIVIDUAL_URL],
-            [NatureOfControlType.FIRM, ADD_NATURE_OF_CONTROL_FIRM_URL],
-            [NatureOfControlType.TRUST, ADD_NATURE_OF_CONTROL_TRUST_URL]
-          ]);
+    const nextType = natureOfControlTypes[currentIndex + 1];
 
-          const nextNocUrl = urlMap.get(nextType);
+    if (!nextType) {
+      this.setListAddNatureOfControlUrls(personWithSignificantControl, pageRouting, request);
+      return;
+    }
 
-          if (nextNocUrl) {
-            pageRouting.nextUrl = super.insertIdsInUrl(nextNocUrl, ids, request.url);
-          }
-        } else {
-          // step 2 – redirect to the correct address page
-          this.setListAddNatureOfControlUrls(personWithSignificantControl, pageRouting, request);
-        }
-      }
+    const nextNocUrl = nocTypeToUrlMap.get(nextType);
+
+    if (nextNocUrl) {
+      pageRouting.nextUrl = super.insertIdsInUrl(nextNocUrl, ids, request.url);
     }
   }
 
