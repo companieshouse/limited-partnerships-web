@@ -121,6 +121,47 @@ describe("Add Nature of Control Page", () => {
     );
 
     it.each([
+      [
+        "Which type",
+        NatureOfControlType.INDIVIDUAL,
+        RegistrationPageType.addNatureOfControlIndividual,
+        getUrl(ADD_NATURE_OF_CONTROL_INDIVIDUAL_URL),
+        getUrl(WHICH_TYPE_OF_NATURE_OF_CONTROL_INDIVIDUAL_PERSON_URL)
+      ],
+      [
+        "Individual",
+        NatureOfControlType.FIRM,
+        RegistrationPageType.addNatureOfControlFirm,
+        getUrl(ADD_NATURE_OF_CONTROL_FIRM_URL),
+        getUrl(ADD_NATURE_OF_CONTROL_INDIVIDUAL_URL)
+      ],
+      [
+        "Trust",
+        NatureOfControlType.TRUST,
+        RegistrationPageType.addNatureOfControlTrust,
+        getUrl(ADD_NATURE_OF_CONTROL_TRUST_URL),
+        getUrl(ADD_NATURE_OF_CONTROL_FIRM_URL)
+      ]
+    ])(
+      "should have the correct back link to the %s page",
+      async (_description: string, type, pageType, url, backLinkUrl: string) => {
+        const personWithNatureOfControl = new PersonWithSignificantControlBuilder()
+          .isIndividualPerson()
+          .withId(appDevDependencies.personWithSignificantControlGateway.personWithSignificantControlId)
+          .withNatureOfControlTypes([NatureOfControlType.INDIVIDUAL, NatureOfControlType.FIRM, NatureOfControlType.TRUST])
+          .build();
+
+        appDevDependencies.personWithSignificantControlGateway.feedPersonsWithSignificantControl([personWithNatureOfControl]);
+
+        const res = await request(app).get(url);
+
+        expect(res.status).toBe(200);
+
+        expect(res.text).toContain(backLinkUrl);
+      }
+    );
+
+    it.each([
       [NatureOfControlType.INDIVIDUAL, getUrl(ADD_NATURE_OF_CONTROL_INDIVIDUAL_URL)],
       [NatureOfControlType.FIRM, getUrl(ADD_NATURE_OF_CONTROL_FIRM_URL)]
     ])("should load the add nature of control page with data from api - %s", async (type: string, url: string) => {
@@ -308,5 +349,23 @@ describe("Add Nature of Control Page", () => {
         expect(res.text).toContain(toEscapedHtml(errorMessage));
       }
     );
+
+    it("should replay the form with the previously entered values when there is a validation error", async () => {
+      const res = await request(app).post(getUrl(ADD_NATURE_OF_CONTROL_INDIVIDUAL_URL)).send({
+        pageType: RegistrationPageType.addNatureOfControlIndividual,
+        type: NatureOfControlType.INDIVIDUAL,
+        share_of_assets: "share_of_assets_25_to_50",
+        voting_rights: "voting_rights_25_to_50",
+        right_to_appointment_and_remove: true,
+        significant_influence_control: true
+      });
+
+      expect(res.status).toBe(200);
+
+      expect(res.text).toContain('value="share_of_assets_25_to_50" checked');
+      expect(res.text).toContain('value="voting_rights_25_to_50" checked');
+      expect(res.text).toContain('name="right_to_appointment_and_remove" type="checkbox" value="true" checked');
+      expect(res.text).toContain('name="significant_influence_control" type="checkbox" value="true" checked');
+    });
   });
 });

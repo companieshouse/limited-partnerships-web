@@ -26,7 +26,7 @@ import {
 } from "./url";
 import { PageRouting } from "../PageRouting";
 import { addNocUrlMap, nocTypeToUrlMap } from "./routing/personWithSignificantControl";
-import NatureOfControlValidator, { NatureOfControlUIFields } from "../../../domain/validator/NatureOfControlValidator";
+import NatureOfControlValidator from "../../../domain/validator/NatureOfControlValidator";
 
 class PersonWithSignificantControlRegistrationController extends AbstractController {
   constructor(
@@ -435,10 +435,12 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
           ids.personWithSignificantControlId
         );
 
-        const natureOfControl: NatureOfControlUIFields = {
-          ...body,
+        const natureOfControl: NatureOfControl = {
+          type: body.type,
           [body.share_of_assets]: true,
-          [body.voting_rights]: true
+          [body.voting_rights]: true,
+          right_to_appointment_and_remove: body.right_to_appointment_and_remove,
+          significant_influence_control: body.significant_influence_control
         };
 
         const uiErrors = this.natureOfControlValidator.set(natureOfControl, response.locals.i18n).runValidation();
@@ -446,16 +448,7 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
         if (uiErrors.hasErrors()) {
           return response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(
-              pageRouting,
-              {
-                personWithSignificantControl: {
-                  ...personWithSignificantControl,
-                  data: { ...personWithSignificantControl.data, natures_of_control: [natureOfControl] }
-                }
-              },
-              uiErrors
-            )
+            super.makeProps(pageRouting, { personWithSignificantControl, natureOfControl }, uiErrors)
           );
         }
 
@@ -520,13 +513,20 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
 
     if (!nextType) {
       this.setListAddNatureOfControlUrls(personWithSignificantControl, pageRouting, request);
-      return;
+    } else {
+      const nextNocUrl = nocTypeToUrlMap.get(nextType);
+      if (nextNocUrl) {
+        pageRouting.nextUrl = super.insertIdsInUrl(nextNocUrl, ids, request.url);
+      }
     }
 
-    const nextNocUrl = nocTypeToUrlMap.get(nextType);
+    const previousType = natureOfControlTypes[currentIndex - 1];
 
-    if (nextNocUrl) {
-      pageRouting.nextUrl = super.insertIdsInUrl(nextNocUrl, ids, request.url);
+    if (previousType) {
+      const previousNocUrl = nocTypeToUrlMap.get(previousType);
+      if (previousNocUrl) {
+        pageRouting.previousUrl = super.insertIdsInUrl(previousNocUrl, ids, request.url);
+      }
     }
   }
 
