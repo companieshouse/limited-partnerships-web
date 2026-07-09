@@ -2,6 +2,7 @@ export * from "./acsp-authentication.middleware";
 export * from "./authentication.middleware";
 export * from "./error.middleware";
 export * from "./localisation.middleware";
+export * from "./language.middleware";
 export * from "./company-authentication.middleware";
 export * from "./trailing-slash.middleware";
 export * from "./transition-filing.middleware";

@@ -13,7 +13,7 @@ import { setCeaseDateSection, setDateEffectiveFromSection, setDateOfBirthSection
 import { setCountriesDropdown } from "../utils/countries";
 import { setNationalitiesDropdown } from "../utils/nationalities";
 import * as config from "./constants";
-import { acspAuthentication, authentication, localisationMiddleware, trailingSlashMiddleware } from "../middlewares";
+import { acspAuthentication, authentication, languageMiddleware, localisationMiddleware, trailingSlashMiddleware } from "../middlewares";
 import { serviceAvailabilityMiddleware } from "../middlewares/service-availability.middleware";
 import { journeyDetectionMiddleware } from "../middlewares/journey.detection.middleware";
 import { TRANSITION_START_URL } from "../presentation/controller/transition/url";
@@ -91,6 +91,11 @@ export const appConfig = (app: express.Application) => {
   const sessionStore = new SessionStore(new Redis(`redis://${config.CACHE_SERVER}`));
 
   app.use(config.allPathsExceptHealthcheck, SessionMiddleware(cookieConfig, sessionStore));
+
+  // persist the selected language on the session so it can be recovered when
+  // the app is re-entered without a lang query param (e.g. resuming a payment
+  // from the "Your filings" page) - must run after SessionMiddleware
+  app.use(config.allPathsExceptHealthcheck, languageMiddleware);
 
   // csrf middleware
   const csrfProtectionMiddleware = CsrfProtectionMiddleware({
