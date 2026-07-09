@@ -16,6 +16,9 @@ import enPersonWithSignificantControlTranslationText from "../../../../../locale
 import cyPersonWithSignificantControlTranslationText from "../../../../../locales/cy/personWithSignificantControl.json";
 import enErrorMessages from "../../../../../locales/en/errors.json";
 import cyErrorMessages from "../../../../../locales/cy/errors.json";
+import enSicCodes from "../../../../../locales/en/sicCodes.json";
+import cySicCodes from "../../../../../locales/cy/sicCodes.json";
+
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
@@ -41,8 +44,20 @@ import TransactionGeneralPartner from "../../../../domain/entities/TransactionGe
 import TransactionLimitedPartnership from "../../../../domain/entities/TransactionLimitedPartnership";
 
 describe("Check Your Answers Page", () => {
-  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText, ...enErrorMessages, ...enPersonWithSignificantControlTranslationText };
-  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText, ...cyErrorMessages, ...cyPersonWithSignificantControlTranslationText };
+  const enTranslationText = {
+    ...enGeneralTranslationText,
+    ...enAddressTranslationText,
+    ...enErrorMessages,
+    ...enPersonWithSignificantControlTranslationText,
+    ...enSicCodes
+  };
+  const cyTranslationText = {
+    ...cyGeneralTranslationText,
+    ...cyAddressTranslationText,
+    ...cyErrorMessages,
+    ...cyPersonWithSignificantControlTranslationText,
+    ...cySicCodes
+  };
 
   const URL = getUrl(CHECK_YOUR_ANSWERS_URL);
   const PAYMENT_LINK_JOURNEY = "https://api-test-payments.chs.local:4001";
@@ -54,7 +69,7 @@ describe("Check Your Answers Page", () => {
   let limitedPartnerLegalEntity: TransactionLimitedPartner;
 
   beforeEach(() => {
-    limitedPartnership = new LimitedPartnershipBuilder().build();
+    limitedPartnership = new LimitedPartnershipBuilder().withSicCodes(["10110", "46711"]).build();
 
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
@@ -94,10 +109,8 @@ describe("Check Your Answers Page", () => {
 
       expect(res.status).toBe(200);
       testTranslations(res.text, translationText.checkYourAnswersPage, [
-        "headingTerm",
-        "jurisdictions",
-        "headingSic",
         "dateEffectiveFrom",
+        "jurisdictions",
         "warningMessage",
         "headingNumber",
         "submitFiling",
@@ -144,7 +157,8 @@ describe("Check Your Answers Page", () => {
       expect(res.text).toContain("2 Line 3, Line 4, Burton-On-Trent, Regionpp, England, DE6 3LJ");
       expect(res.text).toContain("enter-principal-place-of-business#premises");
       expect(res.text).toContain("Such term as decided by the partners within the partnership agreement");
-      expect(res.text).toContain("12345,67890");
+      expect(res.text).toContain(`10110 - ${enTranslationText.sicCodes.condensedSicCodes["10110"]}`);
+      expect(res.text).toContain(`46711 - ${enTranslationText.sicCodes.condensedSicCodes["46711"]}`);
       expect(res.text).toContain("name#partnership_name");
       expect(res.text).toContain("registered-email-address#email");
       expect(res.text).toContain("jurisdiction#jurisdiction");
