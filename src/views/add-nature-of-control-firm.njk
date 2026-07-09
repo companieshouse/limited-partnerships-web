@@ -1,26 +1,19 @@
 {% extends "layout.njk" %}
 
+{% set pscType = 'individual' %}
+{% if props.data.personWithSignificantControl.data.type == "RELEVANT_LEGAL_ENTITY" %}
+    {% set pscType = 'RLE' %}
+{% elif props.data.personWithSignificantControl.data.type == "OTHER_REGISTRABLE_PERSON" %}
+    {% set pscType = 'ORP' %}
+{% endif %}
+
+{% set pageTitle = i18n.personWithSignificantControl.addNatureOfControlPage.firm.title %}
+{% set pageTitleHint = i18n.personWithSignificantControl.addNatureOfControlPage.firm.titleHint | replace("individual", pscType) %}
+{% set shareOfAssetsHint = i18n.personWithSignificantControl.addNatureOfControlPage.firm.shareOfAssetsHint  %}
+{% set votingRightsHint = i18n.personWithSignificantControl.addNatureOfControlPage.firm.votingRightsHint  %}
+{% set ownershipCheckboxText = i18n.personWithSignificantControl.addNatureOfControlPage.firm.ownershipCheckboxText  %}
+{% set sigInfluenceCheckboxText = i18n.personWithSignificantControl.addNatureOfControlPage.firm.sigInfluenceCheckboxText  %}
+
 {% block content %}
-
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-
-            {% include "includes/errors.njk" %}
-        
-            {% include "pages/personWithSignificantControl/person-with-significant-control-name.njk" %} 
-
-            <form class="form" method="post">
-                <input type="hidden" name="pageType" value={{ props.pageType }}>      
-                {% include "includes/csrf_token.njk" %}
-
-                    <div class="govuk-!-margin-6">
-                        {{ props.data.natureOfControlType }}
-                    </div>
-
-                    {% include "includes/save-and-continue-button.njk" %}
-            </form>
-
-        </div>
-    </div>
-
+    {% include "pages/natureOfControl/nature-of-control-form.njk" %}
 {% endblock %}

@@ -191,6 +191,11 @@
                     "votingRightsMissing": "Select whether the individual holds any voting rights in the limited partnership",
                     "significantInfluence": "You can only select significant influence or control if none of the other options apply",
                     "youMustSelectAtLeastOne": "You must select at least one option that applies, or select 'Significant influence or control' if none of the other options apply"
+                },
+                "firm": {
+                    "shareOfAssetsMissing": "Select whether the members of the firm hold any right to the share of assets of the limited partnership",
+                    "votingRightsMissing": "Select whether the members of the firm hold any voting rights in the limited partnership",
+                    "youMustSelectAtLeastOne": "You must select at least one option that applies"
                 }
             }
         },

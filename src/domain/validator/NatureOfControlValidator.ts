@@ -1,4 +1,4 @@
-import { NatureOfControl } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { NatureOfControl, NatureOfControlType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import UIErrors from "../entities/UIErrors";
 
 export type NatureOfControlUIFields = NatureOfControl & { share_of_assets?: string; voting_rights?: string };
@@ -15,7 +15,12 @@ class NatureOfControlValidator {
 
   runValidation(): UIErrors {
     const uiErrors = new UIErrors();
-    this.validateIndividual(uiErrors);
+    if (NatureOfControlType.INDIVIDUAL === this.natureOfControl?.type) {
+      this.validateIndividual(uiErrors);
+    }
+    if (NatureOfControlType.FIRM === this.natureOfControl?.type) {
+      this.validateFirm(uiErrors);
+    }
     return uiErrors;
   }
 
@@ -49,6 +54,25 @@ class NatureOfControlValidator {
       !this.natureOfControl?.significant_influence_control
     ) {
       uiErrors.setWebError("share_of_assets", this.errorMessages.individual.youMustSelectAtLeastOne);
+    }
+  }
+
+  validateFirm(uiErrors: UIErrors): void {
+    if (!this.hasShareOfAssets()) {
+      uiErrors.setWebError("share_of_assets", this.errorMessages.firm.shareOfAssetsMissing);
+    }
+
+    if (!this.hasVotingRights()) {
+      uiErrors.setWebError("voting_rights", this.errorMessages.firm.votingRightsMissing);
+    }
+
+    if (
+      !this.hasShareOfAssetsPercentage() &&
+      !this.hasVotingRightsPercentage() &&
+      !this.natureOfControl?.right_to_appointment_and_remove &&
+      !this.natureOfControl?.significant_influence_control
+    ) {
+      uiErrors.setWebError("share_of_assets", this.errorMessages.firm.youMustSelectAtLeastOne);
     }
   }
 

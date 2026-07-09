@@ -12,6 +12,7 @@ import {
   NatureOfControlType,
   PersonWithSignificantControlType
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
+import { ADD_NATURE_OF_CONTROL_FIRM_URL, ADD_NATURE_OF_CONTROL_INDIVIDUAL_URL, ADD_NATURE_OF_CONTROL_TRUST_URL } from "../url";
 
 const registrationRoutingPersonWithSignificantControl = {
   previousUrl: url.REVIEW_LIMITED_PARTNERS_URL,
@@ -191,3 +192,9 @@ export const addNocUrlMap: Map<string, { address: string; previousUrl: string; t
       }
     ]
   ]);
+
+export const nocTypeToUrlMap: Map<string, string> = new Map([
+  [NatureOfControlType.INDIVIDUAL, ADD_NATURE_OF_CONTROL_INDIVIDUAL_URL],
+  [NatureOfControlType.FIRM, ADD_NATURE_OF_CONTROL_FIRM_URL],
+  [NatureOfControlType.TRUST, ADD_NATURE_OF_CONTROL_TRUST_URL]
+]);

@@ -1,6 +1,7 @@
-import { NatureOfControl } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { NatureOfControl, NatureOfControlType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 class NatureOfControlBuilder {
+  private type: NatureOfControlType = NatureOfControlType.INDIVIDUAL;
   private share_of_assets_25_to_50: boolean = false;
   private share_of_assets_50_to_75: boolean = false;
   private share_of_assets_75_to_100: boolean = false;
@@ -11,6 +12,11 @@ class NatureOfControlBuilder {
   private voting_rights_does_not_apply: boolean = false;
   private right_to_appointment_and_remove: boolean = false;
   private significant_influence_control: boolean = false;
+
+  withType(type: NatureOfControlType) {
+    this.type = type;
+    return this;
+  }
 
   withShareOfAssets25To50() {
     this.share_of_assets_25_to_50 = true;
@@ -64,6 +70,7 @@ class NatureOfControlBuilder {
 
   build(): NatureOfControl {
     return {
+      type: this.type,
       share_of_assets_25_to_50: this.share_of_assets_25_to_50,
       share_of_assets_50_to_75: this.share_of_assets_50_to_75,
       share_of_assets_75_to_100: this.share_of_assets_75_to_100,

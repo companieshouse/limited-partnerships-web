@@ -258,7 +258,11 @@ class AddressLookUpController extends AbstractController {
   private conditionalPscBackLink(pageRouting: PageRouting, personWithSignificantControl: PersonWithSignificantControl, ids: Ids) {
     if (
       pageRouting.pageType ===
-      AddressLookUpPageType.territoryChoicePersonWithSignificantControlIndividualPersonUsualResidentialAddress
+        AddressLookUpPageType.territoryChoicePersonWithSignificantControlIndividualPersonUsualResidentialAddress ||
+      pageRouting.pageType ===
+        AddressLookUpPageType.territoryChoicePersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress ||
+      pageRouting.pageType ===
+        AddressLookUpPageType.territoryChoicePersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress
     ) {
       const natureOfControlTypes = personWithSignificantControl?.data?.nature_of_control_types ?? [];
       if (natureOfControlTypes.length > 0) {
