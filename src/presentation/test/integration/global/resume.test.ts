@@ -28,24 +28,6 @@ import {
   TERM_WITH_IDS_URL
 } from "presentation/controller/postTransition/url";
 
-// The global test setup stubs SessionMiddleware to a no-op that never sets
-// req.session. Override it here so a stored session language can be injected via
-// the x-session-lang header, exercising the payment-resume language fallback.
-jest.mock("@companieshouse/node-session-handler", () => {
-  const actual = jest.requireActual("@companieshouse/node-session-handler");
-  return {
-    ...actual,
-    SessionMiddleware: () => (req: any, _res: any, next: any) => {
-      const lang = req.headers["x-session-lang"];
-      if (lang) {
-        req.session = new actual.Session();
-        req.session.setLanguage(lang);
-      }
-      next();
-    }
-  };
-});
-
 describe("Resume a journey", () => {
   const RESUME_REGISTRATION_OR_TRANSITION_URL = getUrl(RESUME_JOURNEY_REGISTRATION_OR_TRANSITION_URL);
   const RESUME_POST_TRANSITION_GENERAL_PARTNER_URL = getUrl(RESUME_JOURNEY_POST_TRANSITION_GENERAL_PARTNER_URL);
@@ -220,46 +202,6 @@ describe("Resume a journey", () => {
 
       // The lang param must be carried into the payment return url so the
       // payment success/failure screens resume in Welsh
-      expect(appDevDependencies.paymentGateway.lastCreatePaymentRequest?.redirectUri).toEqual(
-        `${expectedPaymentReturnUrl}?lang=cy`
-      );
-    }
-  );
-
-  it.each([
-    {
-      filingMode: TransactionKind.registration,
-      expectedPaymentReturnUrl: getUrl(`${CHS_URL}${PAYMENT_RESPONSE_URL}`).replace(
-        JOURNEY_TYPE_PARAM,
-        Journey.registration
-      )
-    },
-    {
-      filingMode: TransactionKind.transition,
-      expectedPaymentReturnUrl: getUrl(`${CHS_URL}${PAYMENT_RESPONSE_URL}`).replace(
-        JOURNEY_TYPE_PARAM,
-        Journey.transition
-      )
-    }
-  ])(
-    "should preserve the language from the session when resuming a pay now $filingMode journey with no lang query param",
-    async ({ filingMode, expectedPaymentReturnUrl }) => {
-      const transaction = new TransactionBuilder()
-        .withFilingMode(filingMode)
-        .withCompanyName("Test Company")
-        .withCompanyNumber("LP123456")
-        .withStatus(TransactionStatus.closedPendingPayment)
-        .build();
-
-      appDevDependencies.transactionGateway.feedTransactions([transaction]);
-
-      // Resume link from the "Your filings" page carries no lang query param -
-      // the Welsh preference is recovered from the session instead (LP-1529)
-      const res = await request(app).get(RESUME_REGISTRATION_OR_TRANSITION_URL).set("x-session-lang", "cy");
-
-      expect(res.status).toEqual(302);
-      expect(res.headers.location).toEqual(appDevDependencies.paymentGateway.payment.links.journey);
-
       expect(appDevDependencies.paymentGateway.lastCreatePaymentRequest?.redirectUri).toEqual(
         `${expectedPaymentReturnUrl}?lang=cy`
       );

@@ -15,7 +15,7 @@ import {
   JOURNEY_QUERY_PARAM
 } from "../../../config/constants";
 import LimitedPartnershipService from "../../../application/service/LimitedPartnershipService";
-import { addLangToUrl, getJourneyTypes, getLoggedInUserEmail, logger } from "../../../utils";
+import { getJourneyTypes, getLoggedInUserEmail, logger } from "../../../utils";
 import PaymentService from "../../../application/service/PaymentService";
 import { CONFIRMATION_URL, PAYMENT_FAILED_URL, PAYMENT_RESPONSE_URL, CONFIRMATION_POST_TRANSITION_URL } from "./url";
 import TransactionService from "../../../application/service/TransactionService";
@@ -145,9 +145,9 @@ class GlobalController extends AbstractController {
     const currentUrlParams = new URLSearchParams(new URL(`http://${request.url}`)?.search);
 
     if (currentUrlParams.has("lang")) {
-      const langParam = currentUrlParams.get("lang");
+      const langParam = currentUrlParams.get("lang") ?? "";
 
-      nextPageUrlWithJourneyAndIds = nextPageUrlWithJourneyAndIds + `?lang=${langParam}`;
+      nextPageUrlWithJourneyAndIds = this.addOrAppendQueryParam(nextPageUrlWithJourneyAndIds, "lang", langParam);
     }
 
     return nextPageUrlWithJourneyAndIds;
@@ -308,10 +308,7 @@ class GlobalController extends AbstractController {
   private async handlePendingPayment(request: Request, response: Response, tokens: Tokens, ids: Ids, journey: string) {
     const startPaymentSessionUrl = PAYMENTS_API_URL + "/payments";
     const paymentReturnUrl = `${CHS_URL}${PAYMENT_RESPONSE_URL}`.replace(JOURNEY_TYPE_PARAM, journey);
-    const paymentReturnUrlWithIds = this.appendSessionLanguageIfMissing(
-      request,
-      super.insertIdsInUrl(paymentReturnUrl, ids, request.url)
-    );
+    const paymentReturnUrlWithIds = super.insertIdsInUrl(paymentReturnUrl, ids, request.url);
     const redirectToPaymentServiceUrl = await this.paymentService.startPaymentSession(
       tokens,
       startPaymentSessionUrl,
@@ -319,19 +316,6 @@ class GlobalController extends AbstractController {
       ids.transactionId
     );
     return response.redirect(redirectToPaymentServiceUrl);
-  }
-
-  // When a Welsh journey is resumed from the "Your filings" page the resume
-  // request carries no lang query param, so insertIdsInUrl cannot propagate it.
-  // Fall back to the language stored on the session so the payment
-  // success/failure screens still resume in Welsh (LP-1529).
-  private appendSessionLanguageIfMissing(request: Request, url: string): string {
-    const hasLangParam = new URLSearchParams(url.split("?")[1] ?? "").has("lang");
-    if (hasLangParam) {
-      return url;
-    }
-
-    return addLangToUrl(url, request.session?.getLanguage?.());
   }
 }
 

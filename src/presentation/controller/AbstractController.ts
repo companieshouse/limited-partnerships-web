@@ -163,13 +163,13 @@ abstract class AbstractController {
     const currentUrlParams = new URLSearchParams(new URL(`http://${currentUrl}`)?.search);
 
     if (currentUrlParams.has("lang")) {
-      const langQuery = `?lang=${currentUrlParams.get("lang")}`;
+      const lang = currentUrlParams.get("lang") ?? "";
 
       return {
         ...pageRouting,
-        previousUrl: `${pageRouting.previousUrl}${langQuery}`,
-        currentUrl: `${pageRouting.currentUrl}${langQuery}`,
-        nextUrl: `${pageRouting.nextUrl}${langQuery}`
+        previousUrl: this.addOrAppendQueryParam(pageRouting.previousUrl, "lang", lang),
+        currentUrl: this.addOrAppendQueryParam(pageRouting.currentUrl, "lang", lang),
+        nextUrl: this.addOrAppendQueryParam(pageRouting.nextUrl, "lang", lang)
       };
     }
 

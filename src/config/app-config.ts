@@ -80,7 +80,6 @@ export const appConfig = (app: express.Application) => {
   app.use(trailingSlashMiddleware);
   app.use(serviceAvailabilityMiddleware);
   app.use(config.allPathsExceptHealthcheck, journeyDetectionMiddleware);
-  app.use(config.allPathsExceptHealthcheck, localisationMiddleware);
 
   const cookieConfig = {
     cookieName: "__SID",
@@ -96,6 +95,12 @@ export const appConfig = (app: express.Application) => {
   // the app is re-entered without a lang query param (e.g. resuming a payment
   // from the "Your filings" page) - must run after SessionMiddleware
   app.use(config.allPathsExceptHealthcheck, languageMiddleware);
+
+  // localisation must run after SessionMiddleware/languageMiddleware so it can
+  // fall back to the language persisted on the session when a request carries
+  // no (valid) lang query param - e.g. the payment success/failure/confirmation
+  // screens reached after resuming a Welsh payment (LP-1529)
+  app.use(config.allPathsExceptHealthcheck, localisationMiddleware);
 
   // csrf middleware
   const csrfProtectionMiddleware = CsrfProtectionMiddleware({
