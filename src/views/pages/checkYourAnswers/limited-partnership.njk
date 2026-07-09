@@ -11,6 +11,12 @@
 
 {% set fullName = (props.data.limitedPartnership.data.partnership_name | upper) + " " + (props.data.limitedPartnership.data.name_ending | upper) %}
 
+{% set sicCodes %}
+  {% for code in props.data.limitedPartnership.data.sic_codes %}
+    <p class ="govuk-body">{{ code }} - {{ i18n.sicCodes.condensedSicCodes[code] }}</p>
+  {% endfor %}
+{% endset %}
+
 {{ govukSummaryList({
   classes: "govuk-!-margin-bottom-7",
   rows: [
@@ -147,7 +153,7 @@
         text: i18n.checkYourAnswersPage.headingSic
       },
       value: {
-        text: props.data.limitedPartnership.data.sic_codes
+        html: sicCodes
       },
       actions: {
         items: [
