@@ -141,16 +141,10 @@ class GlobalController extends AbstractController {
     };
   }
 
-  private appendLangParamIfExists(request: Request, nextPageUrlWithJourneyAndIds: string) {
-    const currentUrlParams = new URLSearchParams(new URL(`http://${request.url}`)?.search);
+  private appendLangParamIfExists(request: Request, url: string): string {
+    const lang = this.getLangFromUrl(request.url);
 
-    if (currentUrlParams.has("lang")) {
-      const langParam = currentUrlParams.get("lang");
-
-      nextPageUrlWithJourneyAndIds = nextPageUrlWithJourneyAndIds + `?lang=${langParam}`;
-    }
-
-    return nextPageUrlWithJourneyAndIds;
+    return lang !== null ? this.addOrAppendQueryParam(url, "lang", lang) : url;
   }
 
   getConfirmationPage() {

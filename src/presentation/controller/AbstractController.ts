@@ -160,20 +160,18 @@ abstract class AbstractController {
   }
 
   private addLangToUrls(currentUrl: string, pageRouting: PageRouting): PageRouting {
-    const currentUrlParams = new URLSearchParams(new URL(`http://${currentUrl}`)?.search);
+    const lang = this.getLangFromUrl(currentUrl);
 
-    if (currentUrlParams.has("lang")) {
-      const langQuery = `?lang=${currentUrlParams.get("lang")}`;
-
-      return {
-        ...pageRouting,
-        previousUrl: `${pageRouting.previousUrl}${langQuery}`,
-        currentUrl: `${pageRouting.currentUrl}${langQuery}`,
-        nextUrl: `${pageRouting.nextUrl}${langQuery}`
-      };
+    if (lang === null) {
+      return pageRouting;
     }
 
-    return pageRouting;
+    return {
+      ...pageRouting,
+      previousUrl: this.addOrAppendQueryParam(pageRouting.previousUrl, "lang", lang),
+      currentUrl: this.addOrAppendQueryParam(pageRouting.currentUrl, "lang", lang),
+      nextUrl: this.addOrAppendQueryParam(pageRouting.nextUrl, "lang", lang)
+    };
   }
 
   protected extractPageTypeOrThrowError(request: Request, pageTypeEnum: object) {
@@ -224,6 +222,10 @@ abstract class AbstractController {
     }
 
     return PARTNERSHIP_TYPE_URL;
+  }
+
+  protected getLangFromUrl(url: string): string | null {
+    return new URLSearchParams(new URL(`http://${url}`).search).get("lang");
   }
 
   protected addOrAppendQueryParam(url: string, key: string, value: string): string {
