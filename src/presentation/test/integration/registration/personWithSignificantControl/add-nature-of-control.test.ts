@@ -345,7 +345,7 @@ describe("Add Nature of Control Page", () => {
           });
 
         expect(res.status).toBe(200);
-        expect(countOccurrences(res.text, toEscapedHtml(errorMessage))).toBe(1);
+        expect(countOccurrences(res.text, toEscapedHtml(errorMessage))).toBe(2);
       }
     );
 
