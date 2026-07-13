@@ -47,7 +47,10 @@
                         text: translationText.doesNotApply,
                         checked: natureOfControl.share_of_assets_does_not_apply
                     }
-                ]
+                ],
+                errorMessage: {
+                    text: props.errors.share_of_assets.message
+                } if props.errors.share_of_assets
             }) }}
 
             <h2 class="govuk-heading-m">{{ translationText.votingRights }}</h2>
@@ -76,7 +79,10 @@
                         text: translationText.doesNotApply,
                         checked: natureOfControl.voting_rights_does_not_apply
                     }
-                ]
+                ],
+                errorMessage: {
+                    text: props.errors.voting_rights.message
+                } if props.errors.voting_rights
             }) }}
 
             {{ govukCheckboxes({
@@ -91,11 +97,11 @@
                     text: translationText.selectOwnershipHint
                 },
                 items: [
-                {
-                    value: "true",
-                    text: ownershipCheckboxText,
-                    checked: natureOfControl.right_to_appointment_and_remove
-                }
+                    {
+                        value: "true",
+                        text: ownershipCheckboxText,
+                        checked: natureOfControl.right_to_appointment_and_remove
+                    }
                 ]
             }) }}
 
@@ -112,12 +118,15 @@
                     text: translationText.selectSigInfluenceHint
                 },
                 items: [
-                {
-                    value: "true",
-                    text: sigInfluenceCheckboxText,
-                    checked: natureOfControl.significant_influence_control
-                }
-                ]
+                    {
+                        value: "true",
+                        text: sigInfluenceCheckboxText,
+                        checked: natureOfControl.significant_influence_control
+                    }
+                ],
+                errorMessage: {
+                    text: props.errors.significant_influence_control.message
+                } if props.errors.significant_influence_control
             }) }}
 
             {% include "includes/public-register-information.njk" %}
