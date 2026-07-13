@@ -33,15 +33,12 @@ class NatureOfControlValidator {
       uiErrors.setWebError("voting_rights", this.errorMessages.individual.votingRightsMissing);
     }
 
-    // Cannot select both right to appointment and remove and significant influence control
-    if (this.natureOfControl?.right_to_appointment_and_remove && this.natureOfControl?.significant_influence_control) {
-      uiErrors.setWebError("significant_influence_control", this.errorMessages.individual.significantInfluence);
-    }
-
-    // Cannot select significant influence control and any share of assets or voting rights percentages
+    // Cannot select significant influence control and shareOfAssetsPercentage, votingRightsPercentage or rightToAppointmentAndRemove
     if (
       this.natureOfControl?.significant_influence_control &&
-      (this.hasShareOfAssetsPercentage() || this.hasVotingRightsPercentage())
+      (this.natureOfControl?.right_to_appointment_and_remove ||
+        this.hasShareOfAssetsPercentage() ||
+        this.hasVotingRightsPercentage())
     ) {
       uiErrors.setWebError("significant_influence_control", this.errorMessages.individual.significantInfluence);
     }

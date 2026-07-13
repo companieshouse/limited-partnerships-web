@@ -13,7 +13,7 @@ import cyErrorsTranslationText from "../../../../../../locales/cy/errors.json";
 
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../utils";
 
 import {
   ADD_NATURE_OF_CONTROL_FIRM_URL,
@@ -345,8 +345,7 @@ describe("Add Nature of Control Page", () => {
           });
 
         expect(res.status).toBe(200);
-
-        expect(res.text).toContain(toEscapedHtml(errorMessage));
+        expect(countOccurrences(res.text, toEscapedHtml(errorMessage))).toBe(1);
       }
     );
 
