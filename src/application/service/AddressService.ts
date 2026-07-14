@@ -40,14 +40,7 @@ class AddressService {
     try {
       const uiErrors = new UIErrors();
 
-      const address: Address = {
-        postal_code: postalCode,
-        address_line_1: "",
-        address_line_2: "",
-        locality: "",
-        country: "",
-        premises: premises && premises !== "null" ? premises : ""
-      };
+      const address: Address = this.createLookupAddress(postalCode, premises);
 
       // invalid characters premises
       if (premises && !this.validCharactersRegex.test(premises)) {
@@ -118,6 +111,17 @@ class AddressService {
 
       throw error;
     }
+  }
+
+  private createLookupAddress(postalCode: string, premises: string | undefined): Address {
+    return {
+      postal_code: postalCode,
+      address_line_1: "",
+      address_line_2: "",
+      locality: "",
+      country: "",
+      premises: premises && premises !== "null" ? premises : ""
+    };
   }
 
   private isFromCorrectCountry(uiErrors: UIErrors, ukAddresses: Address[], jurisdiction?: string): boolean {
