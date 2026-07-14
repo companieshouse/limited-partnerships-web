@@ -113,7 +113,7 @@ class AddressService {
     }
   }
 
-  private createLookupAddress(postalCode: string, premises: string | undefined): Address {
+  private createLookupAddress(postalCode: string, premises?: string): Address {
     return {
       postal_code: postalCode,
       address_line_1: "",
