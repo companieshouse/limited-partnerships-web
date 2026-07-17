@@ -15,29 +15,23 @@ const MAX_DIGITS = 10;
 // them unlocalised (English). See LP-1473.
 const CAPITAL_CONTRIBUTION_PARTNERSHIP_TYPES: string[] = [PartnershipType.LP, PartnershipType.SLP];
 
-const isCapitalContributionApplicable = (journeyTypes: JourneyTypes, partnershipType: PartnershipType): boolean => {
-  const isCapitalContributionJourney = Boolean(journeyTypes.isRegistration || journeyTypes.isPostTransition);
+const isCapitalContributionApplicable = (journeyTypes: JourneyTypes | undefined, partnershipType: PartnershipType): boolean => {
+  const isCapitalContributionJourney = Boolean(journeyTypes?.isRegistration || journeyTypes?.isPostTransition);
   const isCapitalContributionPartnershipType = CAPITAL_CONTRIBUTION_PARTNERSHIP_TYPES.includes(partnershipType);
 
   return isCapitalContributionJourney && isCapitalContributionPartnershipType;
 };
 
 const capitalContributionValidation = (data: Record<string, any>, uiErrors: UIErrors, errorMessages: any): void => {
-  // const uiErrors = new UIErrors();
-
   if (!data.contribution_currency_type) {
     uiErrors.setWebError("contribution_currency_type", errorMessages?.currencyRequired);
   }
 
+  contributionCurrencyValueValidation(data, uiErrors, errorMessages);
+
   if (!data.contribution_sub_types?.length) {
     uiErrors.setWebError("contribution_sub_types", errorMessages?.atLeastOneType);
   }
-
-  contributionCurrencyValueValidation(data, uiErrors, errorMessages);
-
-  // if (uiErrors.hasErrors()) {
-  //   throw uiErrors;
-  // }
 };
 
 const contributionCurrencyValueValidation = (data: Record<string, any>, uiErrors: UIErrors, errorMessages: any) => {

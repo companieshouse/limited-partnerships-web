@@ -19,6 +19,21 @@ mockCreateApiClient.mockReturnValue(sdkMock);
 describe("Add Limited Partner Person Page", () => {
   const URL = getUrl(ADD_LIMITED_PARTNER_PERSON_URL);
 
+  const validPageData = {
+    forename: "test",
+    previous_name: "false",
+    former_names: "",
+    surname: "surname",
+    "date_of_birth-day": "01",
+    "date_of_birth-month": "11",
+    "date_of_birth-year": "1987",
+    nationality1: "Mongolian",
+    nationality2: "Uzbek",
+    contribution_currency_type: "GBP",
+    contribution_currency_value: "100.00",
+    contribution_sub_types: ["MONEY"]
+  };
+
   beforeEach(() => {
     setLocalesEnabled(false);
 
@@ -29,7 +44,8 @@ describe("Add Limited Partner Person Page", () => {
   describe("200", () => {
     it("should add a limited partner person", async () => {
       const res = await request(appRealDependencies).post(URL).send({
-        pageType: RegistrationPageType.addLimitedPartnerPerson
+        pageType: RegistrationPageType.addLimitedPartnerPerson,
+        ...validPageData
       });
 
       expect(res.status).toBe(302);
@@ -71,7 +87,8 @@ describe("Add Limited Partner Person Page", () => {
       });
 
       const res = await request(appRealDependencies).post(URL).send({
-        pageType: RegistrationPageType.addLimitedPartnerPerson
+        pageType: RegistrationPageType.addLimitedPartnerPerson,
+        ...validPageData
       });
 
       expect(res.status).toBe(200);
@@ -96,7 +113,8 @@ describe("Add Limited Partner Person Page", () => {
       const URL = getUrl(ADD_LIMITED_PARTNER_PERSON_WITH_ID_URL);
 
       const res = await request(appRealDependencies).post(URL).send({
-        pageType: RegistrationPageType.addLimitedPartnerPerson
+        pageType: RegistrationPageType.addLimitedPartnerPerson,
+        ...validPageData
       });
 
       expect(res.status).toBe(200);
@@ -118,7 +136,8 @@ describe("Add Limited Partner Person Page", () => {
       });
 
       const res = await request(appRealDependencies).post(URL).send({
-        pageType: RegistrationPageType.addLimitedPartnerPerson
+        pageType: RegistrationPageType.addLimitedPartnerPerson,
+        ...validPageData
       });
 
       expect(res.status).toBe(500);
