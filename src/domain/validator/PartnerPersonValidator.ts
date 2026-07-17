@@ -1,6 +1,10 @@
+import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+
+import { capitalContributionValidation, isCapitalContributionApplicable } from "../../application/service/utils/capitalContributionValidation";
 import { FORENAME_FIELD, FORMER_NAMES_FIELD, NATIONALITY1_FIELD, NATIONALITY2_FIELD, NOT_DISQUALIFIED_STATEMENT_CHECKED_FIELD, PREVIOUS_NAME_FIELD, SURNAME_FIELD } from "../../config";
 import { JourneyTypes } from "../entities/journey";
 import UIErrors from "../entities/UIErrors";
+import { PartnerType, PartnerEntityType } from "../types";
 import { DateErrorMessages, validateDateOfBirth } from "./DateValidators";
 import { containsInvalidCharacters, isFieldValueMissing, isFieldValueTooLong } from "./FieldValidators";
 
@@ -18,7 +22,14 @@ class PartnerPersonValidator {
   private dateEffectiveFromDay?: string;
   private dateEffectiveFromMonth?: string;
   private dateEffectiveFromYear?: string;
-  private journeyTypes?: JourneyTypes;
+  private journeyTypes: JourneyTypes = {} as JourneyTypes;
+  private partnerType?: PartnerType;
+  private partnerEntityType?: PartnerEntityType;
+  private partnershipType: PartnershipType = {} as PartnershipType;
+
+  private contribution_currency_type?: string;
+  private contribution_currency_value?: string;
+  private contribution_sub_types?: string[];
 
   private errorMessages: Record<string, any> = {};
 
@@ -39,9 +50,21 @@ class PartnerPersonValidator {
     this.dateEffectiveFromMonth = data['date_effective_from-month'];
     this.dateEffectiveFromYear = data['date_effective_from-year'];
 
-    this.journeyTypes = data.journeyTypes;
+    this.contribution_currency_type = data.contribution_currency_type;
+    this.contribution_currency_value = data.contribution_currency_value;
+    this.contribution_sub_types = data.contribution_sub_types;
 
-    this.errorMessages = i18n?.errorMessages?.partners?.addPartner || {};
+    this.journeyTypes = data.journeyTypes;
+    this.partnerType = data.partnerType;
+    this.partnerEntityType = data.partnerEntityType;
+    this.partnershipType = data.partnershipType;
+
+    this.errorMessages = {
+      ...i18n?.errorMessages?.partners?.addPartner,
+      capitalContribution: {
+        ...i18n?.errorMessages?.capitalContribution
+      }
+    };
 
     const dateOfBirthErrors = (i18n?.errorMessages?.dateOfBirth ?? {}) as Partial<DateErrorMessages>;
     this.dateOfBirthErrorMessages = {
@@ -61,7 +84,18 @@ class PartnerPersonValidator {
     validateDateOfBirth(this.dateOfBirthDay, this.dateOfBirthMonth, this.dateOfBirthYear, uiErrors, this.dateOfBirthErrorMessages);
     this.validateNationalities(uiErrors);
 
-    if (!this.journeyTypes?.isTransition) {
+    if (this.partnerType === PartnerType.limitedPartner && isCapitalContributionApplicable(this.journeyTypes, this.partnershipType)) {
+      capitalContributionValidation(
+        {
+          contribution_currency_type: this.contribution_currency_type,
+          contribution_currency_value: this.contribution_currency_value,
+          contribution_sub_types: this.contribution_sub_types
+        },
+        uiErrors,
+        this.errorMessages?.capitalContribution);
+    }
+
+    if (!this.journeyTypes?.isTransition && this.partnerType === PartnerType.generalPartner) {
       this.validateDisqualificationStatement(uiErrors);
     }
 
