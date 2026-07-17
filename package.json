@@ -61,6 +61,7 @@
     "globals": "^17.3.0",
     "husky": "^9.1.7",
     "jest": "^29.7.0",
+    "jest-util": "^29.7.0",
     "nodemon": "^3.1.13",
     "sonarqube-scanner": "^3.5.0",
     "supertest": "^7.1.4",
