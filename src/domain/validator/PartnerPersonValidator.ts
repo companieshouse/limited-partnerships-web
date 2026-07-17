@@ -1,6 +1,6 @@
 import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-import { capitalContributionValidation, isCapitalContributionApplicable } from "../../application/service/utils/capitalContributionValidation";
+import { capitalContributionValidation, isCapitalContributionApplicable } from "./capitalContributionValidator";
 import { FORENAME_FIELD, FORMER_NAMES_FIELD, NATIONALITY1_FIELD, NATIONALITY2_FIELD, NOT_DISQUALIFIED_STATEMENT_CHECKED_FIELD, PREVIOUS_NAME_FIELD, SURNAME_FIELD } from "../../config";
 import { JourneyTypes } from "../entities/journey";
 import UIErrors from "../entities/UIErrors";

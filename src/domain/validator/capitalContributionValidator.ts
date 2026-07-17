@@ -1,8 +1,8 @@
 import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-import UIErrors from "../../../domain/entities/UIErrors";
-import { symbols } from "./currencies";
-import { JourneyTypes } from "../../../domain/entities/journey";
+import UIErrors from "../entities/UIErrors";
+import { symbols } from "../../application/service/utils/currencies";
+import { JourneyTypes } from "../entities/journey";
 
 // CHIPS enforces a maximum of 10 digits in total with up to 2 decimal places
 // (CheckMaxDecimalValueRule precision=10, scale=2), giving a maximum value of 99999999.99.

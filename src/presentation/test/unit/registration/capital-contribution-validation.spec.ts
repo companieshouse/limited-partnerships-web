@@ -2,7 +2,7 @@ import UIErrors from "../../../../domain/entities/UIErrors";
 import {
   capitalContributionValidation,
   isCapitalContributionApplicable
-} from "../../../../application/service/utils/capitalContributionValidation";
+} from "../../../../domain/validator/capitalContributionValidator";
 
 import i18nErrorsEn from "../../../../../locales/en/errors.json";
 import i18nErrorsCy from "../../../../../locales/cy/errors.json";
