@@ -209,8 +209,6 @@ abstract class PartnerController extends AbstractController {
           partnerEntityType: pageRouting?.data?.partnerEntityType
         };
 
-        console.log("serviceData", serviceData);
-
         let result: { generalPartnerId?: string, limitedPartnerId?: string, errors?: UIErrors } = {};
         if (partner === PartnerType.generalPartner) {
           result = await this.generalPartnerService.createGeneralPartner(tokens, ids.transactionId, serviceData);
@@ -219,7 +217,6 @@ abstract class PartnerController extends AbstractController {
         }
 
         if (result?.errors) {
-          console.log("request.body", request.body);
           resetFormerNamesIfPreviousNameIsFalse(request.body);
 
           const { limitedPartnership } = await this.getEntities(tokens, ids);
