@@ -2,13 +2,15 @@ import request from "supertest";
 
 import enTranslationText from "../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../locales/cy/translations.json";
+import enErrorsText from "../../../../../../locales/en/errors.json";
+import cyErrorsText from "../../../../../../locales/cy/errors.json";
 
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 
 import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
+import { getUrl, setLocalesEnabled, testTranslations, countOccurrences } from "../../../utils";
 import { REMOVE_LIMITED_PARTNER_URL, REVIEW_LIMITED_PARTNERS_URL } from "../../../../controller/registration/url";
 import RegistrationPageType from "../../../../controller/registration/PageType";
 
@@ -130,6 +132,29 @@ describe("Remove Limited Partner Page", () => {
       expect(res.header.location).toBe(getUrl(REVIEW_LIMITED_PARTNERS_URL));
 
       expect(appDevDependencies.limitedPartnerGateway.limitedPartners).toHaveLength(1);
+    });
+
+    it.each([
+      ["en", enErrorsText],
+      ["cy", cyErrorsText]
+    ])("should trigger validation errors when no option is selected: %s", async (lang, errors) => {
+      setLocalesEnabled(true);
+
+      const limitedPartnerPerson = new LimitedPartnerBuilder()
+        .isPerson()
+        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+        .build();
+
+      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerPerson]);
+
+      const res = await request(app)
+        .post(URL + `?lang=${lang}`)
+        .send({
+          pageType: RegistrationPageType.removeLimitedPartner
+        });
+
+      expect(res.status).toBe(200);
+      expect(countOccurrences(res.text, errors.errorMessages.partners.removePartner.selectRemoveChoice)).toBe(2);
     });
   });
 });
