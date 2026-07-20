@@ -27,6 +27,23 @@ describe("Add Limited Partner Person Page", () => {
   const URL = getUrl(ADD_LIMITED_PARTNER_PERSON_URL);
   const REDIRECT_URL = getUrl(TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
 
+  const validPageData = {
+    pageType: RegistrationPageType.addLimitedPartnerPerson,
+    partnershipType: PartnershipType.LP,
+    forename: "test",
+    previous_name: "false",
+    former_names: "",
+    surname: "surname",
+    "date_of_birth-day": "01",
+    "date_of_birth-month": "11",
+    "date_of_birth-year": "1987",
+    nationality1: "Mongolian",
+    nationality2: "Uzbek",
+    contribution_currency_type: "GBP",
+    contribution_currency_value: "100.00",
+    contribution_sub_types: ["MONEY"]
+  };
+
   beforeEach(() => {
     setLocalesEnabled(false);
 
@@ -165,20 +182,9 @@ describe("Add Limited Partner Person Page", () => {
       ["false", ""]
     ])("should send the Limited partner details", async (previousName, formerNames) => {
       const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.addLimitedPartnerPerson,
-        partnershipType: PartnershipType.LP,
-        forename: "test",
+        ...validPageData,
         previous_name: previousName,
         former_names: formerNames,
-        surname: "surname",
-        "date_of_birth-day": "01",
-        "date_of_birth-month": "11",
-        "date_of_birth-year": "1987",
-        nationality1: "Mongolian",
-        nationality2: "Uzbek",
-        contribution_currency_type: "GBP",
-        contribution_currency_value: "100.00",
-        contribution_sub_types: ["MONEY"]
       });
 
       expect(res.status).toBe(302);
@@ -200,24 +206,13 @@ describe("Add Limited Partner Person Page", () => {
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
       const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.addLimitedPartnerPerson,
+        ...validPageData,
         forename: "INVALID-CHARACTERS-FORENAME§§",
-        surname: "SURNAME",
-        former_names: "",
-        previous_name: "false",
-        "date_of_birth-day": "01",
-        "date_of_birth-month": "11",
-        "date_of_birth-year": "1987",
-        nationality1: "Mongolian",
-        nationality2: "Uzbek",
-        contribution_currency_type: "GBP",
-        contribution_currency_value: "100.00",
-        contribution_sub_types: ["MONEY"]
       });
 
       expect(res.status).toBe(200);
       expect(res.text).toContain("INVALID-CHARACTERS-FORENAME§§");
-      expect(res.text).toContain("SURNAME");
+      expect(res.text).toContain("surname");
       expect(res.text).toContain('id="previous_name-2" name="previous_name" type="radio" value="false" checked');
       expect(res.text).toContain("Mongolian");
       expect(res.text).toContain("Uzbek");
@@ -275,16 +270,9 @@ describe("Add Limited Partner Person Page", () => {
       "should show error message if previous names is Yes but no previous name entered",
       async (formerNames: string | undefined) => {
         const res = await request(app).post(URL).send({
-          pageType: RegistrationPageType.addLimitedPartnerPerson,
-          forename: "forename",
-          surname: "SURNAME",
+          ...validPageData,
           former_names: formerNames,
           previous_name: "true",
-          "date_of_birth-Day": "01",
-          "date_of_birth-Month": "11",
-          "date_of_birth-Year": "1987",
-          nationality1: "Mongolian",
-          nationality2: "Uzbek"
         });
 
         expect(res.status).toBe(200);
@@ -306,19 +294,7 @@ describe("Add Limited Partner Person Page", () => {
       appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
 
       const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.addLimitedPartnerPerson,
-        forename: "test",
-        previous_name: "false",
-        former_names: "",
-        surname: "surname",
-        "date_of_birth-day": "01",
-        "date_of_birth-month": "11",
-        "date_of_birth-year": "1987",
-        nationality1: "Mongolian",
-        nationality2: "Uzbek",
-        contribution_currency_type: "GBP",
-        contribution_currency_value: "100.00",
-        contribution_sub_types: ["MONEY"]
+        ...validPageData
       });
 
       expect(res.status).toBe(302);
@@ -359,16 +335,11 @@ describe("Add Limited Partner Person Page", () => {
       appDevDependencies.limitedPartnerGateway.feedErrors(apiErrors);
 
       const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.addLimitedPartnerPerson,
+        ...validPageData,
         forename: "INVALID-CHARACTERS-FORENAME",
         surname: "SURNAME",
         former_names: "FORMER-NAMES",
         previous_name: "true",
-        "date_of_birth-Day": "01",
-        "date_of_birth-Month": "11",
-        "date_of_birth-Year": "1987",
-        nationality1: "Mongolian",
-        nationality2: "Uzbek"
       });
 
       expect(res.status).toBe(200);
