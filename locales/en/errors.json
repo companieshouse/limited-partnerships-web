@@ -141,6 +141,9 @@
                 "disqualificationStatementMissingGeneralPartner": "Confirm that the general partner is not disqualified",
 
                 "dateOfBirthMissing": "Enter the partner's date of birth"
+             },
+            "removePartner":{
+                "selectRemoveChoice": "Select yes if you want to remove this partner"
              }
         },
 

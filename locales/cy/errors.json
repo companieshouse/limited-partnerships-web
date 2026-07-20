@@ -142,6 +142,9 @@
                 "disqualificationStatementMissingGeneralPartner": "WELSH - Confirm that the general partner is not disqualified",
 
                 "dateOfBirthMissing": "WELSH - Enter the partner's date of birth"
+             },
+             "removePartner":{
+                "selectRemoveChoice": "WELSH - Select yes if you want to remove this partner"
              }
         },
 
