@@ -382,106 +382,195 @@ describe("Add Limited Partner Person Page", () => {
   });
 
   describe("Validation", () => {
-    it("should return validation errors when no data is submitted", async () => {
+    it.each([
+      ["English", "en", enErrorsText],
+      ["Welsh", "cy", cyErrorsText]
+    ])(
+      "should return validation errors when no data is submitted (%s)",
+      async (_language, lang, errorsText) => {
+        setLocalesEnabled(true);
 
-      const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.addLimitedPartnerPerson,
-        partnershipType: PartnershipType.LP
-      });
+        const res = await request(app)
+          .post(URL + `?lang=${lang}`)
+          .send({
+            pageType: RegistrationPageType.addLimitedPartnerPerson,
+            partnershipType: PartnershipType.LP
+          });
 
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(toEscapedHtml(enErrorsText.errorMessages.partners.addPartner.firstNameMissing));
-      expect(res.text).toContain(toEscapedHtml(enErrorsText.errorMessages.partners.addPartner.lastNameMissing));
-      expect(res.text).toContain(enErrorsText.errorMessages.partners.addPartner.previousNameNotSelected);
-      expect(res.text).toContain(toEscapedHtml(enErrorsText.errorMessages.partners.addPartner.dateOfBirthMissing));
-      expect(res.text).toContain(toEscapedHtml(enErrorsText.errorMessages.partners.addPartner.nationality1Missing));
-      expect(res.text).toContain(enErrorsText.errorMessages.capitalContribution.currencyRequired);
-      expect(res.text).toContain(enErrorsText.errorMessages.capitalContribution.valueRequired);
-      expect(res.text).toContain(enErrorsText.errorMessages.capitalContribution.atLeastOneType);
-      expect(res.text).not.toContain(enErrorsText.errorMessages.partners.addPartner.disqualificationStatementMissingGeneralPartner);
-    });
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(toEscapedHtml(errorsText.errorMessages.partners.addPartner.firstNameMissing));
+        expect(res.text).toContain(toEscapedHtml(errorsText.errorMessages.partners.addPartner.lastNameMissing));
+        expect(res.text).toContain(errorsText.errorMessages.partners.addPartner.previousNameNotSelected);
+        expect(res.text).toContain(toEscapedHtml(errorsText.errorMessages.partners.addPartner.dateOfBirthMissing));
+        expect(res.text).toContain(toEscapedHtml(errorsText.errorMessages.partners.addPartner.nationality1Missing));
+        expect(res.text).toContain(errorsText.errorMessages.capitalContribution.currencyRequired);
+        expect(res.text).toContain(errorsText.errorMessages.capitalContribution.valueRequired);
+        expect(res.text).toContain(errorsText.errorMessages.capitalContribution.atLeastOneType);
+        expect(res.text).not.toContain(errorsText.errorMessages.partners.addPartner.disqualificationStatementMissingGeneralPartner);
+      }
+    );
 
-    it("should return validation error if first name has invalid characters", async () => {
-      const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.addLimitedPartnerPerson,
-        forename: "INVALID-CHARACTERS§§"
-      });
+    it.each([
+      ["English", "en", enErrorsText],
+      ["Welsh", "cy", cyErrorsText]
+    ])(
+      "should return validation error if first name has invalid characters (%s)",
+      async (_language, lang, errorsText) => {
+        setLocalesEnabled(true);
 
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(enErrorsText.errorMessages.partners.addPartner.firstNameInvalid);
-    });
+        const res = await request(app)
+          .post(URL + `?lang=${lang}`)
+          .send({
+            pageType: RegistrationPageType.addLimitedPartnerPerson,
+            forename: "INVALID-CHARACTERS§§"
+          });
 
-    it("should return validation error if first name is too long", async () => {
-      const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.addLimitedPartnerPerson,
-        forename: "A".repeat(256)
-      });
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(errorsText.errorMessages.partners.addPartner.firstNameInvalid);
+      }
+    );
 
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(enErrorsText.errorMessages.partners.addPartner.firstNameTooLong);
-    });
+    it.each([
+      ["English", "en", enErrorsText],
+      ["Welsh", "cy", cyErrorsText]
+    ])(
+      "should return validation error if first name is too long (%s)",
+      async (_language, lang, errorsText) => {
+        setLocalesEnabled(true);
 
-    it("should return validation error if last name has invalid characters", async () => {
-      const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.addLimitedPartnerPerson,
-        surname: "INVALID-CHARACTERS§§"
-      });
+        const res = await request(app)
+          .post(URL + `?lang=${lang}`)
+          .send({
+            pageType: RegistrationPageType.addLimitedPartnerPerson,
+            forename: "A".repeat(256)
+          });
 
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(enErrorsText.errorMessages.partners.addPartner.lastNameInvalid);
-    });
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(errorsText.errorMessages.partners.addPartner.firstNameTooLong);
+      }
+    );
 
-    it("should return validation error if last name is too long", async () => {
-      const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.addLimitedPartnerPerson,
-        surname: "A".repeat(256)
-      });
+    it.each([
+      ["English", "en", enErrorsText],
+      ["Welsh", "cy", cyErrorsText]
+    ])(
+      "should return validation error if last name has invalid characters (%s)",
+      async (_language, lang, errorsText) => {
+        setLocalesEnabled(true);
 
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(enErrorsText.errorMessages.partners.addPartner.lastNameTooLong);
-    });
+        const res = await request(app)
+          .post(URL + `?lang=${lang}`)
+          .send({
+            pageType: RegistrationPageType.addLimitedPartnerPerson,
+            surname: "INVALID-CHARACTERS§§"
+          });
 
-    it("should return validation error if former names missing", async () => {
-      const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.addLimitedPartnerPerson,
-        previous_name: "true",
-      });
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(errorsText.errorMessages.partners.addPartner.lastNameInvalid);
+      }
+    );
 
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(toEscapedHtml(enErrorsText.errorMessages.partners.addPartner.formerNamesMissing));
-    });
+    it.each([
+      ["English", "en", enErrorsText],
+      ["Welsh", "cy", cyErrorsText]
+    ])(
+      "should return validation error if last name is too long (%s)",
+      async (_language, lang, errorsText) => {
+        setLocalesEnabled(true);
 
-    it("should return validation error if former names has invalid characters", async () => {
-      const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.addLimitedPartnerPerson,
-        previous_name: "true",
-        former_names: "INVALID-CHARACTERS§§"
-      });
+        const res = await request(app)
+          .post(URL + `?lang=${lang}`)
+          .send({
+            pageType: RegistrationPageType.addLimitedPartnerPerson,
+            surname: "A".repeat(256)
+          });
 
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(enErrorsText.errorMessages.partners.addPartner.formerNamesInvalid);
-    });
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(errorsText.errorMessages.partners.addPartner.lastNameTooLong);
+      }
+    );
 
-    it("should return validation error if former names is too long", async () => {
-      const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.addLimitedPartnerPerson,
-        previous_name: "true",
-        former_names: "A".repeat(256)
-      });
+    it.each([
+      ["English", "en", enErrorsText],
+      ["Welsh", "cy", cyErrorsText]
+    ])(
+      "should return validation error if former names missing (%s)",
+      async (_language, lang, errorsText) => {
+        setLocalesEnabled(true);
 
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(enErrorsText.errorMessages.partners.addPartner.formerNamesTooLong);
-    });
+        const res = await request(app)
+          .post(URL + `?lang=${lang}`)
+          .send({
+            pageType: RegistrationPageType.addLimitedPartnerPerson,
+            previous_name: "true"
+          });
 
-    it("should return validation error if nationality2 is same as nationality1", async () => {
-      const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.addLimitedPartnerPerson,
-        nationality1: "British",
-        nationality2: "British"
-      });
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(toEscapedHtml(errorsText.errorMessages.partners.addPartner.formerNamesMissing));
+      }
+    );
 
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(enErrorsText.errorMessages.partners.addPartner.nationality2Same);
-    });
+    it.each([
+      ["English", "en", enErrorsText],
+      ["Welsh", "cy", cyErrorsText]
+    ])(
+      "should return validation error if former names has invalid characters (%s)",
+      async (_language, lang, errorsText) => {
+        setLocalesEnabled(true);
+
+        const res = await request(app)
+          .post(URL + `?lang=${lang}`)
+          .send({
+            pageType: RegistrationPageType.addLimitedPartnerPerson,
+            previous_name: "true",
+            former_names: "INVALID-CHARACTERS§§"
+          });
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(errorsText.errorMessages.partners.addPartner.formerNamesInvalid);
+      }
+    );
+
+    it.each([
+      ["English", "en", enErrorsText],
+      ["Welsh", "cy", cyErrorsText]
+    ])(
+      "should return validation error if former names is too long (%s)",
+      async (_language, lang, errorsText) => {
+        setLocalesEnabled(true);
+
+        const res = await request(app)
+          .post(URL + `?lang=${lang}`)
+          .send({
+            pageType: RegistrationPageType.addLimitedPartnerPerson,
+            previous_name: "true",
+            former_names: "A".repeat(256)
+          });
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(errorsText.errorMessages.partners.addPartner.formerNamesTooLong);
+      }
+    );
+
+    it.each([
+      ["English", "en", enErrorsText],
+      ["Welsh", "cy", cyErrorsText]
+    ])(
+      "should return validation error if nationality2 is same as nationality1 (%s)",
+      async (_language, lang, errorsText) => {
+        setLocalesEnabled(true);
+
+        const res = await request(app)
+          .post(URL + `?lang=${lang}`)
+          .send({
+            pageType: RegistrationPageType.addLimitedPartnerPerson,
+            nationality1: "British",
+            nationality2: "British"
+          });
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(errorsText.errorMessages.partners.addPartner.nationality2Same);
+      }
+    );
   });
 });
