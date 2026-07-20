@@ -1,7 +1,9 @@
 import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-import UIErrors from "../../../domain/entities/UIErrors";
-import { symbols } from "./currencies";
+import UIErrors from "../entities/UIErrors";
+import { symbols } from "../../application/service/utils/currencies";
+import { JourneyTypes } from "../entities/journey";
+import { PartnerType } from "../types";
 
 // CHIPS enforces a maximum of 10 digits in total with up to 2 decimal places
 // (CheckMaxDecimalValueRule precision=10, scale=2), giving a maximum value of 99999999.99.
@@ -14,47 +16,43 @@ const MAX_DIGITS = 10;
 // them unlocalised (English). See LP-1473.
 const CAPITAL_CONTRIBUTION_PARTNERSHIP_TYPES: string[] = [PartnershipType.LP, PartnershipType.SLP];
 
-const isCapitalContributionApplicable = (data: Record<string, any>): boolean => {
-  const journeyTypes = data?.journeyTypes ?? {};
-  const isCapitalContributionJourney = Boolean(journeyTypes.isRegistration || journeyTypes.isPostTransition);
-  const isCapitalContributionPartnershipType = CAPITAL_CONTRIBUTION_PARTNERSHIP_TYPES.includes(data?.partnershipType);
+const isCapitalContributionApplicable = (journeyTypes: JourneyTypes, partnershipType: PartnershipType, partnerType: PartnerType): boolean => {
+  if (partnerType !== PartnerType.limitedPartner) {
+    return false;
+  }
+  const isCapitalContributionJourney = Boolean(journeyTypes?.isRegistration || journeyTypes?.isPostTransition);
+  const isCapitalContributionPartnershipType = CAPITAL_CONTRIBUTION_PARTNERSHIP_TYPES.includes(partnershipType);
 
   return isCapitalContributionJourney && isCapitalContributionPartnershipType;
 };
 
-const capitalContributionValidation = (data: Record<string, string | string[]>, i18n: any): void => {
-  const uiErrors = new UIErrors();
-
+const capitalContributionValidation = (data: Record<string, any>, uiErrors: UIErrors, errorMessages: any): void => {
   if (!data.contribution_currency_type) {
-    uiErrors.setWebError("contribution_currency_type", i18n?.errorMessages?.capitalContribution?.currencyRequired);
+    uiErrors.setWebError("contribution_currency_type", errorMessages?.currencyRequired);
   }
+
+  contributionCurrencyValueValidation(data, uiErrors, errorMessages);
 
   if (!data.contribution_sub_types?.length) {
-    uiErrors.setWebError("contribution_sub_types", i18n?.errorMessages?.capitalContribution?.atLeastOneType);
-  }
-
-  contributionCurrencyValueValidation(data, uiErrors, i18n);
-
-  if (uiErrors.hasErrors()) {
-    throw uiErrors;
+    uiErrors.setWebError("contribution_sub_types", errorMessages?.atLeastOneType);
   }
 };
 
-const contributionCurrencyValueValidation = (data: Record<string, any>, uiErrors: UIErrors, i18n: any) => {
+const contributionCurrencyValueValidation = (data: Record<string, any>, uiErrors: UIErrors, errorMessages: any) => {
   const field = "contribution_currency_value";
 
   if (!data.contribution_currency_value) {
-    uiErrors.setWebError(field, i18n?.errorMessages?.capitalContribution?.valueRequired);
+    uiErrors.setWebError(field, errorMessages?.valueRequired);
   } else if (hasSymbol(data.contribution_currency_value, symbols)) {
-    uiErrors.setWebError(field, i18n?.errorMessages?.capitalContribution?.noSymbols);
+    uiErrors.setWebError(field, errorMessages?.noSymbols);
   } else if (hasComma(data.contribution_currency_value)) {
-    uiErrors.setWebError(field, i18n?.errorMessages?.capitalContribution?.noComma);
+    uiErrors.setWebError(field, errorMessages?.noComma);
   } else if (!isNumber(data.contribution_currency_value) || !has2Decimal(data.contribution_currency_value)) {
-    uiErrors.setWebError(field, i18n?.errorMessages?.capitalContribution?.twoDecimalPlaces);
+    uiErrors.setWebError(field, errorMessages?.twoDecimalPlaces);
   } else if (!isGreaterThanZero(data.contribution_currency_value)) {
-    uiErrors.setWebError(field, i18n?.errorMessages?.capitalContribution?.moreThanZero);
+    uiErrors.setWebError(field, errorMessages?.moreThanZero);
   } else if (!isWithinMaxDigits(data.contribution_currency_value)) {
-    uiErrors.setWebError(field, i18n?.errorMessages?.capitalContribution?.maxValue);
+    uiErrors.setWebError(field, errorMessages?.maxValue);
   }
 };
 

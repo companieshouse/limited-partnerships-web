@@ -130,7 +130,7 @@ export function buildDependencies(useInMemory = false): BuiltDependencies {
   const addressLookUpService: AddressLookUpService = new AddressLookUpService(addressLookUpGateway, addressValidator);
   const cacheService = new CacheService(cacheRepository);
   const generalPartnerService: GeneralPartnerService = new GeneralPartnerService(generalPartnerGateway, partnerValidator);
-  const limitedPartnerService: LimitedPartnerService = new LimitedPartnerService(limitedPartnerGateway);
+  const limitedPartnerService: LimitedPartnerService = new LimitedPartnerService(limitedPartnerGateway, partnerValidator);
   const personWithSignificantControlService: PersonWithSignificantControlService =
     new PersonWithSignificantControlService(personWithSignificantControlGateway, personWithSignificantControlValidator);
   const companyService = new CompanyService(companyGateway);

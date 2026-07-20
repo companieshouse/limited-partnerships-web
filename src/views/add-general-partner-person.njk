@@ -35,8 +35,8 @@
   {% set previousNames = props.data.generalPartner.data.previous_name %}
 {% elif props.data.generalPartner.data.former_names %}
   {% set previousNames = "true" %}
-{% elif props.data.generalPartner.data.forename %}
-  {# After the first check, if any other general partner person field is set, they cannot have a previous name #}
+{% elif props.data.generalPartner.data.forename and not props.data.generalPartner.data.pageType %}
+  {# After the first check, if any other general partner person field is set AND this is not a form post-back, they cannot have a previous name #}
   {% set previousNames = "false" %}
 {% endif %}
 

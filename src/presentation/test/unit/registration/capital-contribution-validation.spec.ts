@@ -2,10 +2,11 @@ import UIErrors from "../../../../domain/entities/UIErrors";
 import {
   capitalContributionValidation,
   isCapitalContributionApplicable
-} from "../../../../application/service/utils/capitalContributionValidation";
+} from "../../../../domain/validator/capitalContributionValidator";
 
 import i18nErrorsEn from "../../../../../locales/en/errors.json";
 import i18nErrorsCy from "../../../../../locales/cy/errors.json";
+import { PartnerType } from "../../../../domain/types";
 
 describe("Gateway capital contribition validation test suite", () => {
   const data = {
@@ -80,15 +81,11 @@ describe("Gateway capital contribition validation test suite", () => {
         "Select the currency of the capital contribution"
       ]
     ])("should throw an error for invalid capital contribution - %s", (description, data, field, errorMessage) => {
-      let thrownError: UIErrors | null = null;
+      const uiErrors = new UIErrors();
 
-      try {
-        capitalContributionValidation(data, i18nErrorsEn);
-      } catch (error) {
-        thrownError = error;
-      }
+      capitalContributionValidation(data, uiErrors, i18nErrorsEn.errorMessages?.capitalContribution);
 
-      expect(thrownError).toEqual(
+      expect(uiErrors).toEqual(
         expect.objectContaining({
           errors: expect.objectContaining({
             [field]: { text: errorMessage }
@@ -100,28 +97,24 @@ describe("Gateway capital contribition validation test suite", () => {
     it.each(["0.01", "12345678.90", "99999999.98", "99999999.99", "099999999.99"])(
       "should not throw an error for a valid capital contribution value - %s",
       (contribution_currency_value) => {
-        let thrownError: UIErrors | null = null;
+        const uiErrors = new UIErrors();
 
-        try {
-          capitalContributionValidation({ ...data, contribution_currency_value }, i18nErrorsEn);
-        } catch (error) {
-          thrownError = error;
-        }
+        capitalContributionValidation({ ...data, contribution_currency_value }, uiErrors, i18nErrorsEn.errorMessages?.capitalContribution);
 
-        expect(thrownError).toBeNull();
+        expect(uiErrors).toEqual(
+          expect.objectContaining({
+            errors: expect.objectContaining({})
+          })
+        );
       }
     );
 
     it("should throw an error for invalid capital contribution - welsh", () => {
-      let thrownError: UIErrors | null = null;
+      const uiErrors = new UIErrors();
 
-      try {
-        capitalContributionValidation({ ...data, contribution_currency_value: "aaaa" }, i18nErrorsCy);
-      } catch (error) {
-        thrownError = error;
-      }
+      capitalContributionValidation({ ...data, contribution_currency_value: "aaaa" }, uiErrors, i18nErrorsCy.errorMessages?.capitalContribution);
 
-      expect(thrownError).toEqual(
+      expect(uiErrors).toEqual(
         expect.objectContaining({
           errors: expect.objectContaining({
             contribution_currency_value: { text: "WELSH - Value must be a number with 2 decimal places" }
@@ -134,17 +127,18 @@ describe("Gateway capital contribition validation test suite", () => {
 
 describe("isCapitalContributionApplicable", () => {
   it.each([
-    ["registration LP", { journeyTypes: { isRegistration: true }, partnershipType: "LP" }, true],
-    ["registration SLP", { journeyTypes: { isRegistration: true }, partnershipType: "SLP" }, true],
-    ["post-transition LP", { journeyTypes: { isPostTransition: true }, partnershipType: "LP" }, true],
-    ["post-transition SLP", { journeyTypes: { isPostTransition: true }, partnershipType: "SLP" }, true],
-    ["registration PFLP", { journeyTypes: { isRegistration: true }, partnershipType: "PFLP" }, false],
-    ["registration SPFLP", { journeyTypes: { isRegistration: true }, partnershipType: "SPFLP" }, false],
-    ["transition LP (section not shown)", { journeyTypes: { isTransition: true }, partnershipType: "LP" }, false],
+    ["registration LP", { journeyTypes: { isRegistration: true }, partnershipType: "LP", partnerType: PartnerType.limitedPartner }, true],
+    ["registration SLP", { journeyTypes: { isRegistration: true }, partnershipType: "SLP", partnerType: PartnerType.limitedPartner }, true],
+    ["post-transition LP", { journeyTypes: { isPostTransition: true }, partnershipType: "LP", partnerType: PartnerType.limitedPartner }, true],
+    ["post-transition SLP", { journeyTypes: { isPostTransition: true }, partnershipType: "SLP", partnerType: PartnerType.limitedPartner }, true],
+    ["registration PFLP", { journeyTypes: { isRegistration: true }, partnershipType: "PFLP", partnerType: PartnerType.limitedPartner }, false],
+    ["registration SPFLP", { journeyTypes: { isRegistration: true }, partnershipType: "SPFLP", partnerType: PartnerType.limitedPartner }, false],
+    ["transition LP (section not shown)", { journeyTypes: { isTransition: true }, partnershipType: "LP", partnerType: PartnerType.limitedPartner }, false],
     ["missing partnership type", { journeyTypes: { isRegistration: true } }, false],
     ["missing journey types", { partnershipType: "LP" }, false],
-    ["empty data", {}, false]
-  ])("returns %s -> %s", (_description, data, expected) => {
-    expect(isCapitalContributionApplicable(data)).toBe(expected);
+    ["empty data", {}, false],
+    ["general partner", { journeyTypes: { isRegistration: true }, partnershipType: "LP", partnerType: PartnerType.generalPartner }, false]
+  ])("returns %s -> %s", (_description, data: any, expected) => {
+    expect(isCapitalContributionApplicable(data.journeyTypes, data.partnershipType, data.partnerType || "" as PartnerType)).toBe(expected);
   });
 });
