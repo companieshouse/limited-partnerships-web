@@ -15,11 +15,14 @@ class NatureOfControlValidator {
 
   runValidation(): UIErrors {
     const uiErrors = new UIErrors();
-    if (NatureOfControlType.INDIVIDUAL === this.natureOfControl?.type) {
+    if (this.natureOfControl?.type === NatureOfControlType.INDIVIDUAL) {
       this.validateIndividual(uiErrors);
     }
-    if (NatureOfControlType.FIRM === this.natureOfControl?.type) {
+    if (this.natureOfControl?.type === NatureOfControlType.FIRM) {
       this.validateFirm(uiErrors);
+    }
+    if (this.natureOfControl?.type === NatureOfControlType.TRUST) {
+      this.validateTrust(uiErrors);
     }
     return uiErrors;
   }
@@ -44,14 +47,7 @@ class NatureOfControlValidator {
     }
 
     // If no share of assets or voting rights percentages are selected, then either right to appointment and remove or significant influence control must be selected
-    if (
-      !this.hasShareOfAssetsPercentage() &&
-      !this.hasVotingRightsPercentage() &&
-      !this.natureOfControl?.right_to_appointment_and_remove &&
-      !this.natureOfControl?.significant_influence_control
-    ) {
-      uiErrors.setWebError("share_of_assets", this.errorMessages.individual.youMustSelectAtLeastOne);
-    }
+    this.hasSelectAtLeastOne(uiErrors, this.natureOfControl?.type);
   }
 
   validateFirm(uiErrors: UIErrors): void {
@@ -63,14 +59,19 @@ class NatureOfControlValidator {
       uiErrors.setWebError("voting_rights", this.errorMessages.firm.votingRightsMissing);
     }
 
-    if (
-      !this.hasShareOfAssetsPercentage() &&
-      !this.hasVotingRightsPercentage() &&
-      !this.natureOfControl?.right_to_appointment_and_remove &&
-      !this.natureOfControl?.significant_influence_control
-    ) {
-      uiErrors.setWebError("share_of_assets", this.errorMessages.firm.youMustSelectAtLeastOne);
+    this.hasSelectAtLeastOne(uiErrors, this.natureOfControl?.type);
+  }
+
+  validateTrust(uiErrors: UIErrors): void {
+    if (!this.hasShareOfAssets()) {
+      uiErrors.setWebError("share_of_assets", this.errorMessages.trust.shareOfAssetsMissing);
     }
+
+    if (!this.hasVotingRights()) {
+      uiErrors.setWebError("voting_rights", this.errorMessages.trust.votingRightsMissing);
+    }
+
+    this.hasSelectAtLeastOne(uiErrors, this.natureOfControl?.type);
   }
 
   private hasShareOfAssetsPercentage() {
@@ -95,6 +96,19 @@ class NatureOfControlValidator {
 
   private hasVotingRights() {
     return this.hasVotingRightsPercentage() || this.natureOfControl?.voting_rights_does_not_apply;
+  }
+
+  private hasSelectAtLeastOne(uiErrors: UIErrors, type?: string) {
+    const typeToLowerCase = type?.toLocaleLowerCase() ?? "";
+
+    if (
+      !this.hasShareOfAssetsPercentage() &&
+      !this.hasVotingRightsPercentage() &&
+      !this.natureOfControl?.right_to_appointment_and_remove &&
+      !this.natureOfControl?.significant_influence_control
+    ) {
+      uiErrors.setWebError("", this.errorMessages[typeToLowerCase].youMustSelectAtLeastOne);
+    }
   }
 }
 
