@@ -4,6 +4,7 @@ import {
   TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
 } from "../../addressLookUp/url/registration";
+import { PartnerEntityType, PartnerType } from "../../../../domain/types";
 
 const registrationRoutingLimitedPartners = {
   previousUrl: url.REVIEW_GENERAL_PARTNERS_URL,
@@ -25,7 +26,9 @@ const registrationRoutingAddLimitedPartnerPerson = {
   nextUrl: TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   pageType: RegistrationPageType.addLimitedPartnerPerson,
   data: {
-    customPreviousUrl: url.REVIEW_LIMITED_PARTNERS_URL
+    customPreviousUrl: url.REVIEW_LIMITED_PARTNERS_URL,
+    partnerType: PartnerType.limitedPartner,
+    partnerEntityType: PartnerEntityType.person
   }
 };
 

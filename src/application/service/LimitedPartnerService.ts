@@ -4,15 +4,22 @@ import { logger } from "../../utils";
 import UIErrors from "../../domain/entities/UIErrors";
 import { extractAPIErrors, incompletePartnerErrorList } from "./utils";
 import { Tokens } from "../../domain/types";
-import { capitalContributionValidation, isCapitalContributionApplicable } from "./utils/capitalContributionValidation";
+import PartnerValidator from "../../domain/validator/PartnerValidator";
 
 class LimitedPartnerService {
   i18n: any;
 
-  constructor(private readonly limitedPartnerGateway: ILimitedPartnerGateway) {}
+  constructor(
+    private readonly limitedPartnerGateway: ILimitedPartnerGateway,
+    private readonly partnerValidator: PartnerValidator
+  ) {}
 
   setI18n(i18n: any) {
     this.i18n = i18n;
+  }
+
+  runValidation(data: Record<string, any>): UIErrors {
+    return this.partnerValidator.set(data, this.i18n).runValidation();
   }
 
   async createLimitedPartner(
@@ -24,8 +31,9 @@ class LimitedPartnerService {
     errors?: UIErrors;
   }> {
     try {
-      if (isCapitalContributionApplicable(data)) {
-        capitalContributionValidation(data, this.i18n);
+      const validationErrors = this.runValidation(data);
+      if (validationErrors.hasErrors()) {
+        return { limitedPartnerId: "", errors: validationErrors };
       }
 
       const limitedPartnerId = await this.limitedPartnerGateway.createLimitedPartner(opt, transactionId, data);
@@ -93,8 +101,9 @@ class LimitedPartnerService {
     errors?: UIErrors;
   }> {
     try {
-      if (isCapitalContributionApplicable(data)) {
-        capitalContributionValidation(data, this.i18n);
+      const validationErrors = this.runValidation(data);
+      if (validationErrors.hasErrors()) {
+        return { errors: validationErrors };
       }
 
       await this.limitedPartnerGateway.sendPageData(opt, transactionId, limitedPartnerId, data);
