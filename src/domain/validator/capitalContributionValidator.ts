@@ -3,6 +3,7 @@ import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limi
 import UIErrors from "../entities/UIErrors";
 import { symbols } from "../../application/service/utils/currencies";
 import { JourneyTypes } from "../entities/journey";
+import { PartnerType } from "../types";
 
 // CHIPS enforces a maximum of 10 digits in total with up to 2 decimal places
 // (CheckMaxDecimalValueRule precision=10, scale=2), giving a maximum value of 99999999.99.
@@ -15,7 +16,10 @@ const MAX_DIGITS = 10;
 // them unlocalised (English). See LP-1473.
 const CAPITAL_CONTRIBUTION_PARTNERSHIP_TYPES: string[] = [PartnershipType.LP, PartnershipType.SLP];
 
-const isCapitalContributionApplicable = (journeyTypes: JourneyTypes | undefined, partnershipType: PartnershipType): boolean => {
+const isCapitalContributionApplicable = (journeyTypes: JourneyTypes, partnershipType: PartnershipType, partnerType: PartnerType): boolean => {
+  if (partnerType !== PartnerType.limitedPartner) {
+    return false;
+  }
   const isCapitalContributionJourney = Boolean(journeyTypes?.isRegistration || journeyTypes?.isPostTransition);
   const isCapitalContributionPartnershipType = CAPITAL_CONTRIBUTION_PARTNERSHIP_TYPES.includes(partnershipType);
 

@@ -84,7 +84,7 @@ class PartnerPersonValidator {
     validateDateOfBirth(this.dateOfBirthDay, this.dateOfBirthMonth, this.dateOfBirthYear, uiErrors, this.dateOfBirthErrorMessages);
     this.validateNationalities(uiErrors);
 
-    if (this.partnerType === PartnerType.limitedPartner && isCapitalContributionApplicable(this.journeyTypes, this.partnershipType)) {
+    if (isCapitalContributionApplicable(this.journeyTypes, this.partnershipType, this.partnerType || "" as PartnerType)) {
       capitalContributionValidation(
         {
           contribution_currency_type: this.contribution_currency_type,
