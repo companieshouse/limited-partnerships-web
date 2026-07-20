@@ -289,7 +289,7 @@ describe("Add Limited Partner Person Page", () => {
 
         expect(res.status).toBe(200);
         expect(res.text).toContain('id="previous_name" name="previous_name" type="radio" value="true" checked');
-        expect(res.text).toContain(toEscapedHtml("Enter the partner's previous name"));
+        expect(res.text).toContain(toEscapedHtml(enErrorsText.errorMessages.partners.addPartner.formerNamesMissing));
       }
     );
   });
@@ -339,7 +339,7 @@ describe("Add Limited Partner Person Page", () => {
         forename: "INVALID-CHARACTERS§§"
       });
       expect(res.status).toBe(200);
-      expect(res.text).toContain("First name must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes");
+      expect(res.text).toContain(enErrorsText.errorMessages.partners.addPartner.firstNameInvalid);
     });
 
     it("should replay entered data when invalid data is entered and a validation error occurs", async () => {
