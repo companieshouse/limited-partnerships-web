@@ -347,13 +347,111 @@ describe("Add Nature of Control Page", () => {
         1
       ]
     ])(
-      "should return a validation error when %s",
+      "should return a validation error when %s - Individual",
       async (_description: string, requestBody: Record<string, any>, errorMessage: string, count: number) => {
         const res = await request(app)
           .post(getUrl(ADD_NATURE_OF_CONTROL_INDIVIDUAL_URL))
           .send({
             pageType: RegistrationPageType.addNatureOfControlIndividual,
             type: NatureOfControlType.INDIVIDUAL,
+            ...requestBody
+          });
+
+        expect(res.status).toBe(200);
+        expect(countOccurrences(res.text, toEscapedHtml(errorMessage))).toBe(count);
+      }
+    );
+
+    it.each([
+      [
+        "no nature of control is selected",
+        NatureOfControlType.FIRM,
+        {},
+        enTranslationText.errorMessages.personWithSignificantControl.addNatureOfControl.firm.youMustSelectAtLeastOne,
+        1
+      ],
+      [
+        "no nature of control is selected",
+        NatureOfControlType.TRUST,
+        {},
+        enTranslationText.errorMessages.personWithSignificantControl.addNatureOfControl.trust.youMustSelectAtLeastOne,
+        1
+      ],
+      [
+        "share of assets is not selected",
+        NatureOfControlType.FIRM,
+        {
+          voting_rights: "voting_rights_25_to_50",
+          right_to_appointment_and_remove: true,
+          significant_influence_control: false
+        },
+        enTranslationText.errorMessages.personWithSignificantControl.addNatureOfControl.firm.shareOfAssetsMissing,
+        2
+      ],
+      [
+        "share of assets is not selected",
+        NatureOfControlType.TRUST,
+        {
+          voting_rights: "voting_rights_25_to_50",
+          right_to_appointment_and_remove: true,
+          significant_influence_control: false
+        },
+        enTranslationText.errorMessages.personWithSignificantControl.addNatureOfControl.trust.shareOfAssetsMissing,
+        2
+      ],
+      [
+        "voting rights is not selected",
+        NatureOfControlType.FIRM,
+        {
+          share_of_assets: "share_of_assets_25_to_50",
+          right_to_appointment_and_remove: true,
+          significant_influence_control: false
+        },
+        enTranslationText.errorMessages.personWithSignificantControl.addNatureOfControl.firm.votingRightsMissing,
+        2
+      ],
+      [
+        "voting rights is not selected",
+        NatureOfControlType.TRUST,
+        {
+          share_of_assets: "share_of_assets_25_to_50",
+          right_to_appointment_and_remove: true,
+          significant_influence_control: false
+        },
+        enTranslationText.errorMessages.personWithSignificantControl.addNatureOfControl.trust.votingRightsMissing,
+        2
+      ],
+      [
+        "no share of assets or voting rights percentages are selected and neither right to appointment and remove nor significant influence control are selected",
+        NatureOfControlType.FIRM,
+        {
+          right_to_appointment_and_remove: false,
+          significant_influence_control: false
+        },
+        enTranslationText.errorMessages.personWithSignificantControl.addNatureOfControl.firm.youMustSelectAtLeastOne,
+        1
+      ],
+      [
+        "no share of assets or voting rights percentages are selected and neither right to appointment and remove nor significant influence control are selected",
+        NatureOfControlType.TRUST,
+        {
+          right_to_appointment_and_remove: false,
+          significant_influence_control: false
+        },
+        enTranslationText.errorMessages.personWithSignificantControl.addNatureOfControl.trust.youMustSelectAtLeastOne,
+        1
+      ]
+    ])(
+      "should return a validation error when %s - Firm or Trust",
+      async (_description: string, type: NatureOfControlType, requestBody: Record<string, any>, errorMessage: string, count: number) => {
+        const URL = type === NatureOfControlType.FIRM ? getUrl(ADD_NATURE_OF_CONTROL_FIRM_URL) : getUrl(ADD_NATURE_OF_CONTROL_TRUST_URL);
+        const pageType = type === NatureOfControlType.FIRM ? RegistrationPageType.addNatureOfControlFirm : RegistrationPageType.addNatureOfControlTrust;
+
+        const res = await request(app)
+          .post(getUrl(URL))
+          .send({
+            pageType,
+            type: type,
             ...requestBody
           });
 
