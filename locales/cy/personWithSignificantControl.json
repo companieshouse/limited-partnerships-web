@@ -197,6 +197,14 @@
                 "votingRightsHint": "WELSH - The members of the firm hold (directly or indirectly) the following percentage of voting rights in the limited partnership:",
                 "ownershipCheckboxText": "WELSH - The members of the firm hold, directly or indirectly, the right to appoint or remove a majority of the persons entitled to take part in the management of the limited partnership.",
                 "sigInfluenceCheckboxText": "WELSH - The members of the firm have the right to exercise, or actually exercises, significant influence or control over the limited partnership."
+            },
+            "trust": {
+                "title": "WELSH - What is the trust's nature of control?",
+                "titleHint": "WELSH - You've told us that the individual has control over a trust that meets one or more natures of control.",
+                "shareOfAssetsHint": "WELSH - The trustees of the trust hold (directly or indirectly) the right to the following percentage of surplus assets of the partnership on a winding up:",
+                "votingRightsHint": "WELSH - The trustees of the trust hold (directly or indirectly) the following percentage of voting rights in the limited partnership:",
+                "ownershipCheckboxText": "WELSH - The trustees of the trust hold, directly or indirectly, the right to appoint or remove a majority of the persons entitled to take part in the management of the limited partnership.",
+                "sigInfluenceCheckboxText": "WELSH - The trustees of the trust have the right to exercise, or actually exercises, significant influence or control over the limited partnership."
             }
         },
         "removePscPage": {

@@ -196,6 +196,11 @@
                     "shareOfAssetsMissing": "Select whether the members of the firm hold any right to the share of assets of the limited partnership",
                     "votingRightsMissing": "Select whether the members of the firm hold any voting rights in the limited partnership",
                     "youMustSelectAtLeastOne": "You must select at least one option that applies"
+                },
+                "trust": {
+                    "shareOfAssetsMissing": "Select whether the trustees of the trust hold any right to the share of assets of the limited partnership",
+                    "votingRightsMissing": "Select whether the trustees of the trust hold any voting rights in the limited partnership",
+                    "youMustSelectAtLeastOne": "You must select at least one option that applies"
                 }
             }
         },
