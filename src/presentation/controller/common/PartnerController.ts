@@ -407,6 +407,10 @@ abstract class PartnerController extends AbstractController {
 
         const remove = request.body.remove;
 
+        if (!remove) {
+          return await this.renderRemovePartnerPageWithError(request, response);
+        }
+
         if (remove === "yes") {
           if (partner === PartnerType.generalPartner) {
             await this.generalPartnerService.deleteGeneralPartner(tokens, ids.transactionId, ids.generalPartnerId);
@@ -786,7 +790,6 @@ abstract class PartnerController extends AbstractController {
   }
 
   protected async renderPartnerChoicePageWithError(request: Request, response: Response) {
-
     const { ids, pageRouting, tokens, pageType } = this.extractRequestData(request);
     const { limitedPartnership, generalPartner, limitedPartner } = await this.getEntities(tokens, ids);
 
@@ -805,7 +808,6 @@ abstract class PartnerController extends AbstractController {
       super.templateName(pageRouting.currentUrl),
       super.makeProps(pageRouting, { limitedPartnership, generalPartner, limitedPartner }, uiErrors)
     );
-
   }
 
   protected async renderReviewPartnersPageWithError(request: Request, response: Response, generalPartners: GeneralPartner[], limitedPartners: LimitedPartner[]) {
@@ -824,6 +826,20 @@ abstract class PartnerController extends AbstractController {
     return response.render(
       super.templateName(pageRouting.currentUrl),
       super.makeProps(pageRouting, { limitedPartnership, generalPartners, limitedPartners }, uiErrors)
+    );
+  }
+
+  protected async renderRemovePartnerPageWithError(request: Request, response: Response) {
+    const { ids, pageRouting, tokens } = this.extractRequestData(request);
+    const { limitedPartnership, generalPartner, limitedPartner } = await this.getEntities(tokens, ids);
+
+    const errorMessage = response.locals.i18n.errorMessages.partners.removePartner.selectRemoveChoice;
+
+    const uiErrors = new UIErrors().setWebError("remove", errorMessage);
+
+    return response.render(
+      super.templateName(pageRouting.currentUrl),
+      super.makeProps(pageRouting, { limitedPartnership, generalPartner, limitedPartner }, uiErrors)
     );
   }
 }
