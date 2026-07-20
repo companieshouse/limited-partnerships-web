@@ -143,7 +143,7 @@
                 "dateOfBirthMissing": "Enter the partner's date of birth"
              },
             "removePartner":{
-                "selectRemoveChoice": "Select yes if you want to remove this partner"
+                "selectRemoveChoice": "Select if you are sure you want to remove this partner."
              }
         },
 

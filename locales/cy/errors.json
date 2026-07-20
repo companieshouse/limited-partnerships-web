@@ -144,7 +144,7 @@
                 "dateOfBirthMissing": "WELSH - Enter the partner's date of birth"
              },
              "removePartner":{
-                "selectRemoveChoice": "WELSH - Select yes if you want to remove this partner"
+                "selectRemoveChoice": "WELSH - Select if you are sure you want to remove this partner."
              }
         },
 
