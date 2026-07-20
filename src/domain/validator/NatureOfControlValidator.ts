@@ -18,12 +18,15 @@ class NatureOfControlValidator {
     if (this.natureOfControl?.type === NatureOfControlType.INDIVIDUAL) {
       this.validateIndividual(uiErrors);
     }
+
     if (this.natureOfControl?.type === NatureOfControlType.FIRM) {
       this.validateFirm(uiErrors);
     }
+
     if (this.natureOfControl?.type === NatureOfControlType.TRUST) {
       this.validateTrust(uiErrors);
     }
+
     return uiErrors;
   }
 
