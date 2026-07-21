@@ -31,6 +31,7 @@ import PostTransitionPageType from "../../../../../presentation/controller/postT
 import LimitedPartnershipBuilder from "../../../../../presentation/test/builder/LimitedPartnershipBuilder";
 import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
 import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
+import { YOUR_COMPANY_URL } from "../../../../../config";
 
 describe("Enter Principal Place Of Business Address Page", () => {
   const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText, ...enErrorsTranslationText };
@@ -38,6 +39,7 @@ describe("Enter Principal Place Of Business Address Page", () => {
   const URL = getUrl(ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL);
   const URL_WITH_IDS = getUrl(ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_WITH_IDS_URL);
   const REDIRECT_URL = getUrl(WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_URL);
+  const BACK_LINK = getUrl(YOUR_COMPANY_URL);
 
   let companyProfile: { _id: string; data: Partial<CompanyProfile> };
 
@@ -88,6 +90,7 @@ describe("Enter Principal Place Of Business Address Page", () => {
         )
       ).toBe(2);
       expect(res.text).toContain(customerFeedbackUrlMap.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress);
+      expect(res.text).toContain(BACK_LINK);
     });
 
     it("should load the enter principal place of business address page with Welsh text", async () => {
@@ -114,6 +117,7 @@ describe("Enter Principal Place Of Business Address Page", () => {
         )
       ).toBe(2);
       expect(res.text).toContain(customerFeedbackUrlMap.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress);
+      expect(res.text).toContain(BACK_LINK);
     });
   });
 

@@ -24,12 +24,14 @@ import LimitedPartnershipBuilder from "../../../../../presentation/test/builder/
 import CompanyProfileBuilder from "../../../../../presentation/test/builder/CompanyProfileBuilder";
 import PostTransitionPageType from "../../../../../presentation/controller/postTransition/pageType";
 import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
+import { YOUR_COMPANY_URL } from "../../../../../config";
 
 describe("Enter Registered Office Address Page", () => {
   const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText, ...enErrorsTranslationText };
   const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText, ...cyErrorsTranslationText };
   const URL = getUrl(ENTER_REGISTERED_OFFICE_ADDRESS_URL);
   const URL_WITH_IDS = getUrl(ENTER_REGISTERED_OFFICE_ADDRESS_WITH_IDS_URL);
+  const BACK_LINK = getUrl(YOUR_COMPANY_URL);
 
   let companyProfile: { _id: string; data: Partial<CompanyProfile> };
 
@@ -67,6 +69,7 @@ describe("Enter Registered Office Address Page", () => {
         )
       ).toBe(2);
       expect(res.text).toContain(customerFeedbackUrlMap.updateLimitedPartnershipRegisteredOfficeAddress);
+      expect(res.text).toContain(BACK_LINK);
     });
 
     it("should load the enter registered office address page with Welsh text", async () => {
@@ -91,6 +94,7 @@ describe("Enter Registered Office Address Page", () => {
         )
       ).toBe(2);
       expect(res.text).toContain(customerFeedbackUrlMap.updateLimitedPartnershipRegisteredOfficeAddress);
+      expect(res.text).toContain(BACK_LINK);
     });
   });
 

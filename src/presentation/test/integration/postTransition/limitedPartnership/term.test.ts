@@ -19,10 +19,12 @@ import PostTransitionPageType from "../../../../controller/postTransition/pageTy
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 import TransactionBuilder from "../../../builder/TransactionBuilder";
+import { YOUR_COMPANY_URL } from "../../../../../config";
 
 describe("Email Page", () => {
   const URL = getUrl(TERM_URL);
   const REDIRECT_URL = getUrl(WHEN_DID_THE_TERM_CHANGE_URL);
+  const BACK_LINK = getUrl(YOUR_COMPANY_URL);
 
   let companyProfile: any;
 
@@ -48,6 +50,7 @@ describe("Email Page", () => {
         );
         expect(res.text).not.toContain("WELSH -");
         expect(res.text).toContain(customerFeedbackUrlMap.updateLimitedPartnershipTerm);
+        expect(res.text).toContain(BACK_LINK);
       });
 
       it("should load the page with Welsh text", async () => {
@@ -61,6 +64,7 @@ describe("Email Page", () => {
         testTranslations(res.text, cyTranslationText.termPage);
         expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
         expect(res.text).toContain(customerFeedbackUrlMap.updateLimitedPartnershipTerm);
+        expect(res.text).toContain(BACK_LINK);
       });
 
       it("should load the page with ids", async () => {
