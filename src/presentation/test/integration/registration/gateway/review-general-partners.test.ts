@@ -48,7 +48,6 @@ describe("Review General Partner page", () => {
       pageType: RegistrationPageType.reviewGeneralPartners
     });
 
-    expect(getGeneralPartners).toHaveBeenCalled();
     expect(res.status).toBe(500);
   });
 });

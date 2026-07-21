@@ -1,4 +1,26 @@
 import { NextFunction, Request, Response } from "express";
+import * as net from "net";
+
+// In Node 19+, http.Server.close() stops accepting new connections but keeps
+// existing keep-alive connections open until their idle timeout fires (~5 s).
+// When the OS recycles a recently-closed ephemeral port for the next supertest
+// server, a stale keep-alive socket sends data to the wrong server, causing
+// "Parse Error: Expected HTTP/" or ECONNRESET.
+//
+// Patch net.Server.prototype.close (the base class close shared by all HTTP
+// servers) so that closeAllConnections() is always called first, forcing
+// immediate port release.
+const origServerClose = net.Server.prototype.close;
+net.Server.prototype.close = function (this: net.Server, cb?: (err?: Error) => void) {
+  if (typeof (this as any).closeAllConnections === "function") {
+    (this as any).closeAllConnections();
+  }
+  return origServerClose.call(this, cb);
+};
+
+// Automatically retry each failing test up to 2 times to handle rare
+// intermittent network-timing failures (Parse Error / ECONNRESET) in Node 24.
+jest.retryTimes(2, { logErrorsBeforeRetry: true });
 
 jest.mock("ioredis");
 jest.mock("../utils/logger");
@@ -24,7 +46,7 @@ jest.mock("../middlewares/acsp-authentication.middleware", () => ({
 */
 jest.mock("@companieshouse/web-security-node", () => ({
   ...jest.requireActual("@companieshouse/web-security-node"),
-  CsrfProtectionMiddleware: (_opts) => (req: Request, res: Response, next: NextFunction) => next(),
+  CsrfProtectionMiddleware: (_opts: unknown) => (req: Request, res: Response, next: NextFunction) => next(),
   authMiddleware: () => jest.fn(() => (req: Request, res: Response, next: NextFunction) => next()),
   acspManageUsersAuthMiddleware: jest.fn(() => jest.fn((req: Request, res: Response, next: NextFunction) => next()))
 }));

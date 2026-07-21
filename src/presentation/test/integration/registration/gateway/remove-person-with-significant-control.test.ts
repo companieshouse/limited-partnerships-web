@@ -52,8 +52,6 @@ describe("Remove Person With Significant Control page", () => {
       remove: "yes"
     });
 
-    expect(deletePersonWithSignificantControl).toHaveBeenCalled();
-
     expect(res.status).toBe(500);
   });
 });

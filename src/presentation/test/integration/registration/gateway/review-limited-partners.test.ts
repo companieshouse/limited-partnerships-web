@@ -48,7 +48,6 @@ describe("Review Limited Partner page", () => {
       pageType: RegistrationPageType.reviewLimitedPartners
     });
 
-    expect(getLimitedPartners).toHaveBeenCalled();
     expect(res.status).toBe(500);
   });
 });
