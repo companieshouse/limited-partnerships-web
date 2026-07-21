@@ -210,7 +210,7 @@
         },
         "removePscPage": {
             "title": "Are you sure you want to remove",
-            "errorMessage": "Select yes if you need to remove a PSC"
+            "errorMessage": "Select if you are sure you want to remove this PSC."
         },
         "reviewPage": {
             "title": "Review the people with significant control (PSCs) for this partnership",

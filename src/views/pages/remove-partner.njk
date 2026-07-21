@@ -25,16 +25,19 @@
                         text: i18n.yesAndNo.yes,
                         attributes: {
                             required: true
-                        }
+                        } if not journeyTypes.isRegistration
                     },
                     {
                         value: "no",
                         text: i18n.yesAndNo.no,
                         attributes: {
                             required: true
-                        }
+                        } if not journeyTypes.isRegistration
                     }
-                ]
+                ],
+
+                errorMessage: props.errors.remove if props.errors
+
             }) }}
             
             {{ govukButton({

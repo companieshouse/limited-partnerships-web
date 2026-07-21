@@ -2,13 +2,15 @@ import request from "supertest";
 
 import enTranslationText from "../../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../../locales/cy/translations.json";
+import enErrorsText from "../../../../../../locales/en/errors.json";
+import cyErrorsText from "../../../../../../locales/cy/errors.json";
 
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 
 import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
+import { getUrl, setLocalesEnabled, testTranslations, countOccurrences } from "../../../utils";
 import { REMOVE_GENERAL_PARTNER_URL, REVIEW_GENERAL_PARTNERS_URL } from "../../../../controller/registration/url";
 import RegistrationPageType from "../../../../controller/registration/PageType";
 
@@ -130,6 +132,29 @@ describe("Remove General Partner Page", () => {
       expect(res.header.location).toBe(getUrl(REVIEW_GENERAL_PARTNERS_URL));
 
       expect(appDevDependencies.generalPartnerGateway.generalPartners).toHaveLength(1);
+    });
+
+    it.each([
+      ["en", enErrorsText],
+      ["cy", cyErrorsText]
+    ])("should trigger validation errors when no option is selected", async (lang, errors) => {
+      setLocalesEnabled(true);
+
+      const generalPartnerPerson = new GeneralPartnerBuilder()
+        .isPerson()
+        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+        .build();
+
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartnerPerson]);
+
+      const res = await request(app)
+        .post(URL + `?lang=${lang}`)
+        .send({
+          pageType: RegistrationPageType.removeGeneralPartner
+        });
+
+      expect(res.status).toBe(200);
+      expect(countOccurrences(res.text, errors.errorMessages.partners.removePartner.selectRemoveChoice)).toBe(2);
     });
   });
 });

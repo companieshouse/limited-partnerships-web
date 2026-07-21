@@ -563,17 +563,7 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
         const remove = request.body.remove;
 
         if (!remove) {
-          const { limitedPartnership, personWithSignificantControl } = await this.getLimitedPartnershipAndPsc(tokens, ids);
-
-          const uiErrors = new UIErrors().setWebError(
-            "remove",
-            response.locals.i18n.personWithSignificantControl.removePscPage.errorMessage
-          );
-
-          return response.render(
-            super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, { limitedPartnership, personWithSignificantControl }, uiErrors)
-          );
+          return await this.renderRemovePageWithErrors(request, response);
         }
 
         if (remove === "yes") {
@@ -636,6 +626,23 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
         },
         resultErrors
       )
+    );
+  }
+
+  private async renderRemovePageWithErrors(request: Request, response: Response) {
+    const { tokens, ids } = super.extract(request);
+    const pageType = super.extractPageTypeOrThrowError(request, RegistrationPageType);
+    const pageRouting = super.getRouting(registrationsRouting, pageType, request);
+    const { limitedPartnership, personWithSignificantControl } = await this.getLimitedPartnershipAndPsc(tokens, ids);
+
+    const uiErrors = new UIErrors().setWebError(
+      "remove",
+      response.locals.i18n.personWithSignificantControl.removePscPage.errorMessage
+    );
+
+    return response.render(
+      super.templateName(pageRouting.currentUrl),
+      super.makeProps(pageRouting, { limitedPartnership, personWithSignificantControl }, uiErrors)
     );
   }
 
