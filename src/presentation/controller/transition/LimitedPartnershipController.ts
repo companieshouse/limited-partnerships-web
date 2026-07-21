@@ -16,6 +16,7 @@ import LimitedPartnerService from "../../../application/service/LimitedPartnerSe
 import PartnershipController from "../common/PartnershipController";
 
 import { CONFIRMATION_URL } from "../global/url";
+import UIErrors from "../../../domain/entities/UIErrors";
 
 class LimitedPartnershipController extends PartnershipController {
   constructor(
@@ -193,9 +194,16 @@ class LimitedPartnershipController extends PartnershipController {
   sendPageData() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
+        this.limitedPartnershipService.setI18n(response.locals.i18n);
         const { tokens, ids } = super.extract(request);
         const pageType = super.extractPageTypeOrThrowError(request, TransitionPageType);
         const pageRouting = super.getRouting(transitionRouting, pageType, request);
+
+        const errors: UIErrors = this.handleValidation(pageType, request);
+
+        if (errors.hasErrors()) {
+          return this.handlePageRerenderWithPartnershipAndError(errors, request, response);
+        }
 
         const result = await this.limitedPartnershipService.sendPageData(
           tokens,
@@ -238,6 +246,42 @@ class LimitedPartnershipController extends PartnershipController {
         next(error);
       }
     };
+  }
+
+  private handleValidation(pageType: TransitionPageType, request: Request): UIErrors {
+    if (pageType === TransitionPageType.email) {
+      return this.limitedPartnershipService.runEmailValidation(request.body);
+    }
+
+    return new UIErrors();
+  }
+
+  private async handlePageRerenderWithPartnershipAndError(uiErrors: UIErrors, request: Request, response: Response) {
+    const { tokens, pageType, ids } = super.extract(request);
+    const pageRouting = super.getRouting(transitionRouting, pageType, request);
+
+    const limitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+      tokens,
+      ids.transactionId,
+      ids.submissionId
+    );
+
+    return response.render(
+      super.templateName(pageRouting.currentUrl),
+      super.makeProps(
+        pageRouting,
+        {
+          limitedPartnership: {
+            ...limitedPartnership,
+            data: {
+              ...limitedPartnership.data,
+              ...request.body
+            }
+          }
+        },
+        uiErrors
+      )
+    );
   }
 
   private async conditionalNextUrl(tokens: Tokens, ids: Ids, pageRouting: PageRouting, request: Request) {
