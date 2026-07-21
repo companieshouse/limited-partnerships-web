@@ -1,21 +1,31 @@
 import request from "supertest";
-import enTranslationText from "../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../locales/cy/translations.json";
+
+import enGeneralTranslationText from "../../../../../locales/en/translations.json";
+import cyGeneralTranslationText from "../../../../../locales/cy/translations.json";
+import enErrorsTranslationText from "../../../../../locales/en/errors.json";
+import cyErrorsTranslationText from "../../../../../locales/cy/errors.json";
+
 import app from "../app";
-import { EMAIL_URL } from "../../../controller/transition/url";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
-import RegistrationPageType from "../../../controller/registration/PageType";
-import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
-import { ApiErrors } from "../../../../domain/entities/UIErrors";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
+import { ApiErrors } from "../../../../domain/entities/UIErrors";
+
+import TransitionPageType from "../../../controller/transition/PageType";
+import { JOURNEY_TYPE_PARAM } from "../../../../config/constants";
+import { Journey } from "../../../../domain/entities/journey";
+
+import { EMAIL_URL } from "../../../controller/transition/url";
 import {
   CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
   POSTCODE_REGISTERED_OFFICE_ADDRESS_URL
 } from "../../../controller/addressLookUp/url/transition";
-import { JOURNEY_TYPE_PARAM } from "../../../../config/constants";
-import { Journey } from "../../../../domain/entities/journey";
+
+import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 
 describe("Email Page", () => {
+  const enTranslationText = { ...enGeneralTranslationText, ...enErrorsTranslationText };
+  const cyTranslationText = { ...cyGeneralTranslationText, ...cyErrorsTranslationText };
+
   const URL = getUrl(EMAIL_URL);
   const REDIRECT_URL = getUrl(POSTCODE_REGISTERED_OFFICE_ADDRESS_URL).replace(JOURNEY_TYPE_PARAM, Journey.transition);
 
@@ -81,7 +91,7 @@ describe("Email Page", () => {
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
       const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.email,
+        pageType: TransitionPageType.email,
         email: "test@example.com"
       });
 
@@ -95,7 +105,7 @@ describe("Email Page", () => {
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
       const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.email,
+        pageType: TransitionPageType.email,
         email: "test@example.com"
       });
 
@@ -108,7 +118,67 @@ describe("Email Page", () => {
       expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
     });
 
-    it("should return a validation error", async () => {
+    it.each([
+      ["English", "en", enTranslationText],
+      ["Welsh", "cy", cyTranslationText]
+    ])("should return a validation error if email is empty in %s", async (_description, lang, translationText) => {
+      setLocalesEnabled(true);
+
+      const limitedPartnership = new LimitedPartnershipBuilder()
+        .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+        .build();
+
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+      const res = await request(app).post(URL + `?lang=${lang}`).send({
+        pageType: TransitionPageType.email,
+        email: ""
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(translationText.errorMessages.limitedPartnership.email.emailRequired);
+      expect(res.text).toContain('href="#email"');
+      expect(res.text).toContain(translationText.govUk.error.title);
+    });
+
+    it.each([
+      ["English", "en", enTranslationText],
+      ["Welsh", "cy", cyTranslationText]
+    ])("should return a validation error if email is not in the correct format in %s", async (_description, lang, translationText) => {
+      setLocalesEnabled(true);
+
+      const limitedPartnership = new LimitedPartnershipBuilder()
+        .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+        .build();
+
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+      const res = await request(app).post(URL + `?lang=${lang}`).send({
+        pageType: TransitionPageType.email,
+        email: "test@example."
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(translationText.errorMessages.limitedPartnership.email.emailInvalid);
+    });
+
+    it("should replay the invalid email the user submitted when validation fails", async () => {
+      const limitedPartnership = new LimitedPartnershipBuilder()
+        .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+        .build();
+
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+      const res = await request(app).post(URL).send({
+        pageType: TransitionPageType.email,
+        email: "test@example."
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain('value="test@example."');
+    });
+
+    it("should render an api validation error when the format passes web validation", async () => {
       const limitedPartnership = new LimitedPartnershipBuilder()
         .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
         .build();
@@ -122,8 +192,8 @@ describe("Email Page", () => {
       appDevDependencies.limitedPartnershipGateway.feedErrors(apiErrors);
 
       const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.email,
-        email: "test@example."
+        pageType: TransitionPageType.email,
+        email: "test@example.com"
       });
 
       expect(res.status).toBe(200);
