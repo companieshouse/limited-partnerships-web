@@ -10,7 +10,6 @@ import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from ".
 import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 
 import {
-  LANDING_PAGE_URL,
   TERM_URL,
   TERM_WITH_IDS_URL,
   WHEN_DID_THE_TERM_CHANGE_URL
@@ -25,7 +24,7 @@ describe("Email Page", () => {
   const URL = getUrl(TERM_URL);
   const REDIRECT_URL = getUrl(WHEN_DID_THE_TERM_CHANGE_URL);
 
-  let companyProfile;
+  let companyProfile: any;
 
   beforeEach(() => {
     setLocalesEnabled(true);
@@ -90,9 +89,8 @@ describe("Email Page", () => {
       });
     });
 
-    describe("should redirect to landing page", () => {
-      it(`should redirect to landing page if ${PartnershipType.PFLP}`, async () => {
-        const REDIRECT_URL = getUrl(LANDING_PAGE_URL);
+    describe("should render the error page", () => {
+      it(`should render to error page if ${PartnershipType.PFLP}`, async () => {
 
         companyProfile.data.subtype = "private-fund-limited-partnership";
 
@@ -100,13 +98,11 @@ describe("Email Page", () => {
 
         const res = await request(app).get(URL);
 
-        expect(res.status).toBe(302);
-        expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+        expect(res.status).toBe(500);
+        expect(res.text).toContain(enTranslationText.errorPage.title);
       });
 
-      it(`should redirect to landing page if ${PartnershipType.SPFLP}`, async () => {
-        const REDIRECT_URL = getUrl(LANDING_PAGE_URL);
-
+      it(`should render the error page if ${PartnershipType.SPFLP}`, async () => {
         companyProfile.data.jurisdiction = Jurisdiction.SCOTLAND;
         companyProfile.data.subtype = "private-fund-limited-partnership";
 
@@ -114,8 +110,8 @@ describe("Email Page", () => {
 
         const res = await request(app).get(URL);
 
-        expect(res.status).toBe(302);
-        expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+        expect(res.status).toBe(500);
+        expect(res.text).toContain(enTranslationText.errorPage.title);
       });
     });
 
