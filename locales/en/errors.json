@@ -205,6 +205,9 @@
                     "votingRightsMissing": "Select whether the trustees of the trust hold any voting rights in the limited partnership",
                     "youMustSelectAtLeastOne": "You must select at least one option that applies"
                 }
+            },
+            "removePscPage": {
+                "errorMessage": "Select if you are sure you want to remove this PSC."
             }
         },
 

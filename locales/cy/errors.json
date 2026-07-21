@@ -206,6 +206,9 @@
                     "votingRightsMissing": "WELSH - Select whether the trustees of the trust hold any voting rights in the limited partnership",
                     "youMustSelectAtLeastOne": "WELSH - You must select at least one option that applies"
                 }
+            },
+            "removePscPage": {
+                "errorMessage": "WELSH - Select if you are sure you want to remove this PSC."
             }
         },
 
