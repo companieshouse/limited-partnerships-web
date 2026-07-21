@@ -637,7 +637,7 @@ class PersonWithSignificantControlRegistrationController extends AbstractControl
 
     const uiErrors = new UIErrors().setWebError(
       "remove",
-      response.locals.i18n.personWithSignificantControl.removePscPage.errorMessage
+      response.locals.i18n.errorMessages.personWithSignificantControl.removePscPage.errorMessage
     );
 
     return response.render(
