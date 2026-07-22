@@ -9,8 +9,8 @@ import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from ".
 import { REDESIGNATE_TO_PFLP_URL } from "presentation/controller/postTransition/url";
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 import PostTransitionPageType from "presentation/controller/postTransition/pageType";
-import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-import { TRANSACTION_DESCRIPTION_DESIGNATE_AS_PRIVATE_FUND_PARTNERSHIP } from "config";
+import { Jurisdiction, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { TRANSACTION_DESCRIPTION_DESIGNATE_AS_PRIVATE_FUND_PARTNERSHIP, YOUR_COMPANY_URL } from "config";
 import LimitedPartnershipBuilder from "presentation/test/builder/LimitedPartnershipBuilder";
 import { ApiErrors } from "domain/entities/UIErrors";
 import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
@@ -18,7 +18,9 @@ import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feed
 describe("Redesignate to pflp page", () => {
   const URL = getUrl(REDESIGNATE_TO_PFLP_URL);
   const PAYMENT_LINK_JOURNEY = "https://api-test-payments.chs.local:4001";
-  let companyProfile;
+  const BACK_LINK = getUrl(YOUR_COMPANY_URL);
+
+  let companyProfile: any;
 
   beforeEach(() => {
     setLocalesEnabled(true);
@@ -42,6 +44,7 @@ describe("Redesignate to pflp page", () => {
       expect(countOccurrences(res.text, enTranslationText.serviceName.updateLimitedPartnershipRedesignateToPFLP)).toBe(2);
       expect(res.text).toContain(enTranslationText.redesignateToPflpPage.cost.replace("{{ cost }}", process.env.COST_LP8D_REDESIGNATE_TO_PFLP as string));
       expect(res.text).toContain(customerFeedbackUrlMap.updateLimitedPartnershipRedesignateToPFLP);
+      expect(res.text).toContain(BACK_LINK);
     });
 
     it("should load the page with Welsh text", async () => {
@@ -55,6 +58,7 @@ describe("Redesignate to pflp page", () => {
       expect(countOccurrences(res.text, cyTranslationText.serviceName.updateLimitedPartnershipRedesignateToPFLP)).toBe(2);
       expect(res.text).toContain(cyTranslationText.redesignateToPflpPage.cost.replace("{{ cost }}", process.env.COST_LP8D_REDESIGNATE_TO_PFLP as string));
       expect(res.text).toContain(customerFeedbackUrlMap.updateLimitedPartnershipRedesignateToPFLP);
+      expect(res.text).toContain(BACK_LINK);
     });
   });
 
@@ -102,6 +106,32 @@ describe("Redesignate to pflp page", () => {
 
       expect(res.status).toBe(500);
       expect(res.text).not.toContain(`Redirecting to ${PAYMENT_LINK_JOURNEY}`);
+    });
+  });
+
+  describe("should render the error page", () => {
+    it(`should render to error page if ${PartnershipType.PFLP}`, async () => {
+
+      companyProfile.data.subtype = "private-fund-limited-partnership";
+
+      appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
+
+      const res = await request(app).get(URL);
+
+      expect(res.status).toBe(500);
+      expect(res.text).toContain(enTranslationText.errorPage.title);
+    });
+
+    it(`should render the error page if ${PartnershipType.SPFLP}`, async () => {
+      companyProfile.data.jurisdiction = Jurisdiction.SCOTLAND;
+      companyProfile.data.subtype = "private-fund-limited-partnership";
+
+      appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
+
+      const res = await request(app).get(URL);
+
+      expect(res.status).toBe(500);
+      expect(res.text).toContain(enTranslationText.errorPage.title);
     });
   });
 });

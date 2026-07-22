@@ -1,4 +1,4 @@
-import { COST_LP8D_REDESIGNATE_TO_PFLP } from "../../../../config";
+import { COST_LP8D_REDESIGNATE_TO_PFLP, YOUR_COMPANY_URL } from "../../../../config";
 import PostTransitionPageType from "../pageType";
 import * as url from "../url";
 
@@ -33,7 +33,7 @@ const postTransitionRoutingLandingPage = {
 };
 
 const postTransitionRoutingEnterRegisteredOfficeAddress = {
-  previousUrl: url.LANDING_PAGE_URL,
+  previousUrl: YOUR_COMPANY_URL,
   currentUrl: url.ENTER_REGISTERED_OFFICE_ADDRESS_URL,
   nextUrl: url.WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL,
   pageType: PostTransitionPageType.enterRegisteredOfficeAddress,
@@ -67,7 +67,7 @@ const postTransitionRoutingRegisteredOfficeAddressChangeCheckYourAnswers = {
 const PARTNERSHIP_NAME_KEY = "partnershipName";
 
 const postTransitionRoutingPartnershipName = {
-  previousUrl: url.LANDING_PAGE_URL,
+  previousUrl: YOUR_COMPANY_URL,
   currentUrl: url.PARTNERSHIP_NAME_URL,
   nextUrl: url.WHEN_DID_THE_PARTNERSHIP_NAME_CHANGE_URL,
   pageType: PostTransitionPageType.partnershipName,
@@ -97,7 +97,7 @@ const postTransitionRoutingPartnershipNameChangeCheckYourAnswers = {
 };
 
 const postTransitionRoutingTerm = {
-  previousUrl: url.LANDING_PAGE_URL,
+  previousUrl: YOUR_COMPANY_URL,
   currentUrl: url.TERM_URL,
   nextUrl: url.WHEN_DID_THE_TERM_CHANGE_URL,
   pageType: PostTransitionPageType.term,
@@ -129,7 +129,7 @@ const postTransitionRoutingTermChangeCheckYourAnswers = {
 };
 
 const postTransitionRoutingPrincipalPlaceOfBusinessAddress = {
-  previousUrl: url.LANDING_PAGE_URL,
+  previousUrl: YOUR_COMPANY_URL,
   currentUrl: url.ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
   nextUrl: url.WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_URL,
   pageType: PostTransitionPageType.enterPrincipalPlaceOfBusinessAddress,
@@ -161,7 +161,7 @@ const postTransitionRoutingPrincipalPlaceOfBusinessAddressChangeCheckYourAnswers
 };
 
 const postTransitionRoutingRedesignateToPFLP = {
-  previousUrl: url.LANDING_PAGE_URL,
+  previousUrl: YOUR_COMPANY_URL,
   currentUrl: url.REDESIGNATE_TO_PFLP_URL,
   nextUrl: "/",
   pageType: PostTransitionPageType.redesignateToPflp,

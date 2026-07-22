@@ -10,11 +10,13 @@ import { Jurisdiction, NameEndingType, PartnershipType } from "@companieshouse/a
 import LimitedPartnershipBuilder from "../../../../../presentation/test/builder/LimitedPartnershipBuilder";
 import PostTransitionPageType from "../../../../../presentation/controller/postTransition/pageType";
 import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
+import { YOUR_COMPANY_URL } from "../../../../../config/constants";
 
 describe("Name Page", () => {
   const URL = getUrl(PARTNERSHIP_NAME_URL);
   const REDIRECT_URL = getUrl(WHEN_DID_THE_PARTNERSHIP_NAME_CHANGE_URL);
-  let companyProfile;
+  const BACK_LINK = getUrl(YOUR_COMPANY_URL);
+  let companyProfile: any;
 
   beforeEach(() => {
     setLocalesEnabled(false);
@@ -52,8 +54,8 @@ describe("Name Page", () => {
       expect(res.text).toContain(`${expected.title} - ${cyTranslationText.serviceName.updateLimitedPartnershipName} - GOV.UK`);
       testTranslations(res.text, expected, exclude);
       expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
-      expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
       expect(res.text).toContain(customerFeedbackUrlMap.updateLimitedPartnershipName);
+      expect(res.text).toContain(BACK_LINK);
     });
 
     it.each([
@@ -82,6 +84,7 @@ describe("Name Page", () => {
       testTranslations(res.text, expected, exclude);
       expect(res.text).toContain(enTranslationText.buttons.saveAndContinue);
       expect(res.text).toContain(customerFeedbackUrlMap.updateLimitedPartnershipName);
+      expect(res.text).toContain(BACK_LINK);
     });
 
     it("should load the name page with data from api", async () => {

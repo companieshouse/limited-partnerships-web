@@ -32,7 +32,6 @@ import TransactionService from "../../../application/service/TransactionService"
 import AddressService from "../../../application/service/AddressService";
 
 import { CONFIRMATION_POST_TRANSITION_URL, PAYMENT_RESPONSE_URL } from "../global/url";
-import { LANDING_PAGE_URL } from "./url";
 import PaymentService from "../../../application/service/PaymentService";
 
 class LimitedPartnershipController extends AbstractController {
@@ -56,6 +55,14 @@ class LimitedPartnershipController extends AbstractController {
         this.conditionalPreviousUrl(pageRouting, request);
 
         const limitedPartnership = await this.getLimitedPartnership(ids, tokens);
+
+        if (pageType === PostTransitionPageType.redesignateToPflp) {
+          // TODO - make this check a middleware and apply to all the redesignate routes and redirect to a new stop page?
+          this.blockIfPflpOrSpflp(
+            limitedPartnership?.data?.partnership_type as PartnershipType,
+            "Redesignate to PFLP is not allowed for PFLP or SPFLP partnership types"
+          );
+        }
 
         const submissionId = ids.submissionId;
 
@@ -170,17 +177,11 @@ class LimitedPartnershipController extends AbstractController {
 
         const limitedPartnership = await this.getLimitedPartnership(ids, tokens);
 
-        if (
-          limitedPartnership?.data?.partnership_type === PartnershipType.PFLP ||
-          limitedPartnership?.data?.partnership_type === PartnershipType.SPFLP
-        ) {
-          response.redirect(
-            super
-              .insertIdsInUrl(LANDING_PAGE_URL, ids, request.url)
-              .replace(JOURNEY_TYPE_PARAM, getJourneyTypes(request.url).journey)
-          );
-          return;
-        }
+        // TODO - make this check a middleware and apply to all routes on the term journey and redirect to a new stop page?
+        this.blockIfPflpOrSpflp(
+          limitedPartnership?.data?.partnership_type as PartnershipType,
+          "Term change is not allowed for PFLP or SPFLP partnership types"
+        );
 
         response.render(
           super.templateName(pageRouting.currentUrl),
@@ -632,6 +633,15 @@ class LimitedPartnershipController extends AbstractController {
         data: { ...limitedPartnership.data, ...data }
       }
     };
+  }
+
+  private blockIfPflpOrSpflp(partnershipType: PartnershipType, message: string) {
+    if (
+      partnershipType === PartnershipType.PFLP ||
+      partnershipType === PartnershipType.SPFLP
+    ) {
+      throw new Error(message);
+    }
   }
 }
 

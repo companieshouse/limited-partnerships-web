@@ -3,8 +3,8 @@ import { CsrfError, InvalidAcspNumberError } from "@companieshouse/web-security-
 
 import { addLangToUrl, getLoggedInUserEmail, logger } from "../utils";
 import * as config from "../config/constants";
-import { PARTNERSHIP_TYPE_URL } from "../presentation/controller/registration/url";
 import { NOT_ELIGIBLE_URL } from "../presentation/controller/global/url";
+import { PARTNERSHIP_TYPE_URL } from "../presentation/controller/registration/url";
 
 const pageNotFound = (req: Request, res: Response) => {
   const headerData = getHeaderData(req);
