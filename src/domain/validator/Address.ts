@@ -54,8 +54,7 @@ class AddressValidator {
     if (!this.locality?.trim()) {
       uiErrors.setWebError(this.localityFieldName, this.errorMessages?.localityMissing);
     }
-    const noCountryOrUkCountry = !this.country || (this.country?.trim() && this.ukCountries.has(this.country));
-    if (noCountryOrUkCountry && !this.postal_code?.trim()) {
+    if (!this.isOverseas() && !this.postal_code?.trim()) {
       uiErrors.setWebError(this.postcodeFieldName, this.errorMessages?.postcodeMissing);
     }
     if (!this.country?.trim()) {
@@ -71,7 +70,7 @@ class AddressValidator {
 
     const ukPostcodeLettersNotMainland: Set<string> = new Set(["JE", "GY", "IM"]);
 
-    if (this.country && this.ukCountries.has(this.country)) {
+    if (!this.isOverseas()) {
       this.isValidPostcode(ukPostcodeLettersNotMainland, uiErrors);
     } else if (this.postal_code && !VALID_CHARACTERS_REGEX.test(this.postal_code)) {
       uiErrors.setWebError(this.postcodeFieldName, this.errorMessages?.postcodeInvalid);
@@ -133,6 +132,10 @@ class AddressValidator {
         uiErrors.setWebError(fieldName, this.errorMessages?.[errorKey]);
       }
     }
+  }
+
+  private isOverseas(): boolean {
+    return !!this.country && !this.ukCountries.has(this.country.trim());
   }
 }
 

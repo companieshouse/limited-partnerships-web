@@ -230,12 +230,6 @@ describe("Enter Limited Partner Usual Residential Address Page", () => {
     });
 
     it("should redirect if postcode is null", async () => {
-      const limitedPartner = new LimitedPartnerBuilder()
-        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .build();
-
-      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
-
       const res = await request(app).post(URL).send({
         pageType: AddressPageType.confirmRegisteredOfficeAddress,
         postal_code: "",
