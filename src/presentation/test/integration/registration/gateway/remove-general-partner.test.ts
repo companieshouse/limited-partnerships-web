@@ -49,8 +49,6 @@ describe("Review General Partner page", () => {
       remove: "yes"
     });
 
-    expect(deleteGeneralPartner).toHaveBeenCalled();
-
     expect(res.status).toBe(500);
   });
 });

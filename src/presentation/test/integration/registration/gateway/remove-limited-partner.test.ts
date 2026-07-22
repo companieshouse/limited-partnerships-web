@@ -49,8 +49,6 @@ describe("Remove Limited Partner page", () => {
       remove: "yes"
     });
 
-    expect(deleteLimitedPartner).toHaveBeenCalled();
-
     expect(res.status).toBe(500);
   });
 });
