@@ -10,7 +10,7 @@ export const makeApiCallWithRetry = async <T>(
   tokens: Tokens,
   info: { service: string; method: string; args: any[] }
 ): Promise<T> => {
-  logger.info(`Making a ${info.method} call on ${info.service} service with token ${tokens.access_token}`);
+  logger.info(`Making a ${info.method} call on ${info.service} service`);
 
   const client = createApi(tokens.access_token);
 
@@ -20,7 +20,6 @@ export const makeApiCallWithRetry = async <T>(
     logger.info(`Retrying ${info.method} call on ${info.service} service after unauthorised response`);
 
     const accessToken = await refreshToken(client, tokens.refresh_token);
-    logger.info(`New access token: ${accessToken}`);
 
     const refreshClient = createApi(accessToken);
     response = await refreshClient[info.service][info.method](...info.args);
