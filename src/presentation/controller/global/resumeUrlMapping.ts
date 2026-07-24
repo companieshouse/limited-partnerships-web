@@ -11,6 +11,7 @@ import {
   ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_WITH_IDS_URL,
   ENTER_REGISTERED_OFFICE_ADDRESS_WITH_IDS_URL,
   PARTNERSHIP_NAME_WITH_IDS_URL,
+  REDESIGNATE_TO_PFLP_URL,
   TERM_WITH_IDS_URL
 } from "../postTransition/url";
 
@@ -63,5 +64,9 @@ export const RESUME_PARTNERSHIP_URL_MAP: Record<string, { journey: string; resum
   [PartnershipKind.UPDATE_PARTNERSHIP_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS]: {
     journey: Journey.postTransition,
     resumeUrl: ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_WITH_IDS_URL
+  },
+  [PartnershipKind.UPDATE_PARTNERSHIP_REDESIGNATE_TO_PFLP]: {
+    journey: Journey.postTransition,
+    resumeUrl: REDESIGNATE_TO_PFLP_URL
   }
 };
