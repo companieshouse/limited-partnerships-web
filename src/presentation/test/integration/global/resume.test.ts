@@ -25,6 +25,7 @@ import {
   ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_WITH_IDS_URL,
   ENTER_REGISTERED_OFFICE_ADDRESS_WITH_IDS_URL,
   PARTNERSHIP_NAME_WITH_IDS_URL,
+  REDESIGNATE_TO_PFLP_URL,
   TERM_WITH_IDS_URL
 } from "presentation/controller/postTransition/url";
 
@@ -105,6 +106,11 @@ describe("Resume a journey", () => {
       resumeUrl: RESUME_POST_TRANSITION_PARTNERSHIP_URL,
       resourceKind: PartnershipKind.UPDATE_PARTNERSHIP_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS,
       expectedLocation: getUrl(ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_WITH_IDS_URL)
+    },
+    {
+      resumeUrl: RESUME_POST_TRANSITION_PARTNERSHIP_URL,
+      resourceKind: PartnershipKind.UPDATE_PARTNERSHIP_REDESIGNATE_TO_PFLP,
+      expectedLocation: getUrl(REDESIGNATE_TO_PFLP_URL)
     }
   ])(
     "should resume a no payment post-transition $resourceKind journey",
