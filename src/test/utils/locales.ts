@@ -11,21 +11,21 @@ import cyPsc from "../../../locales/cy/personWithSignificantControl.json";
 import cySicCodes from "../../../locales/cy/sicCodes.json";
 import cyRootTranslations from "../../../locales/cy/translations.json";
 
-export const enTranslationText = Object.assign(
-  {},
-  enRootTranslations,
-  enAddress,
-  enCountries,
-  enErrors,
-  enPsc,
-  enSicCodes);
+export const enTranslationText = {
+  ...enRootTranslations,
+  ...enAddress,
+  ...enCountries,
+  ...enErrors,
+  ...enPsc,
+  ...enSicCodes
+};
 
-export const cyTranslationText = Object.assign(
-  {},
-  cyRootTranslations,
-  cyAddress,
-  cyCountries,
-  cyErrors,
-  cyPsc,
-  cySicCodes);
+export const cyTranslationText = {
+  ...cyRootTranslations,
+  ...cyAddress,
+  ...cyCountries,
+  ...cyErrors,
+  ...cyPsc,
+  ...cySicCodes
+};
 
