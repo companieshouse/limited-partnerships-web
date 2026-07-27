@@ -1,9 +1,11 @@
 import request from "supertest";
 import enTranslationText from "../../../../../locales/en/translations.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
+import enErrorsText from "../../../../../locales/en/errors.json";
+import cyErrorsText from "../../../../../locales/cy/errors.json";
 import app from "../app";
 import { SIGN_OUT_URL } from "../../../controller/global/url";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
+import { getUrl, setLocalesEnabled, testTranslations, countOccurrences } from "../../utils";
 import { ACCOUNTS_SIGN_OUT_URL, REGISTRATION_BASE_URL } from "../../../../config";
 import { EMAIL_TEMPLATE } from "presentation/controller/registration/template";
 
@@ -48,6 +50,20 @@ describe("Sign out page", () => {
       });
       expect(res.status).toEqual(302);
       expect(res.header.location).toEqual(previousPage);
+    });
+
+    it.each([
+      ["en", enErrorsText],
+      ["cy", cyErrorsText]
+    ])("should render the sign out page with an error message when no option is selected (%s)", async (lang, errors) => {
+      const previousPage = "";
+      const res = await request(app)
+        .post(URL + `?lang=${lang}`)
+        .send({
+          previousPage
+        });
+      expect(res.status).toEqual(200);
+      expect(countOccurrences(res.text, errors.errorMessages.signOutPage.selectionRequired)).toEqual(2);
     });
   });
 });
