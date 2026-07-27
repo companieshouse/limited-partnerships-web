@@ -1,9 +1,5 @@
 import request from "supertest";
 
-import enTranslationText from "../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../locales/cy/translations.json";
-import enErrorMessages from "../../../../../../locales/en/errors.json";
-
 import app from "../../app";
 
 import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
@@ -23,7 +19,7 @@ import CompanyAppointmentBuilder from "../../../builder/CompanyAppointmentBuilde
 import { OFFICER_ROLE_GENERAL_PARTNER_LEGAL_ENTITY } from "../../../../../config/constants";
 import TransactionGeneralPartner from "../../../../../domain/entities/TransactionGeneralPartner";
 import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
-
+import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("General partner legal entity change date page", () => {
   const URL = getUrl(WHEN_DID_GENERAL_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL);
   const BACK_LINK_URL = getUrl(UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL);
@@ -142,7 +138,7 @@ describe("General partner legal entity change date page", () => {
       appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
 
       const originalErrorMessage = "Default";
-      const expectedErrorMessage = toEscapedHtml(enErrorMessages.errorMessages.dateOfUpdate.generalPartner);
+      const expectedErrorMessage = toEscapedHtml(enTranslationText.errorMessages.dateOfUpdate.generalPartner);
       const apiErrors: ApiErrors = {
         errors: { date_of_update: originalErrorMessage }
       };

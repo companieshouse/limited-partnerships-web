@@ -1,10 +1,4 @@
 import request from "supertest";
-
-import enGeneralTranslationText from "../../../../../../locales/en/translations.json";
-import cyGeneralTranslationText from "../../../../../../locales/cy/translations.json";
-import enPersonWithSignificantControlTranslationText from "../../../../../../locales/en/personWithSignificantControl.json";
-import cyPersonWithSignificantControlTranslationText from "../../../../../../locales/cy/personWithSignificantControl.json";
-
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
@@ -20,10 +14,8 @@ import {
   WILL_LIMITED_PARTNERSHIP_HAVE_PSC_URL
 } from "../../../../controller/registration/url";
 import { PersonWithSignificantControlType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-
+import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("Which type Page", () => {
-  const enTranslationText = { ...enGeneralTranslationText, ...enPersonWithSignificantControlTranslationText };
-  const cyTranslationText = { ...cyGeneralTranslationText, ...cyPersonWithSignificantControlTranslationText };
   const URL = getUrl(PERSON_WITH_SIGNIFICANT_CONTROL_CHOICE_URL);
 
   beforeEach(() => {

@@ -1,8 +1,5 @@
 import request from "supertest";
 
-import enTranslationText from "../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../locales/cy/translations.json";
-
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
@@ -10,7 +7,7 @@ import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import { LIMITED_PARTNERS_URL, REVIEW_LIMITED_PARTNERS_URL } from "../../../../controller/transition/url";
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
 import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
-
+import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("Limited Partners Page", () => {
   const URL = getUrl(LIMITED_PARTNERS_URL);
 

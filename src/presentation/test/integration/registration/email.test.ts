@@ -1,8 +1,5 @@
 import request from "supertest";
-import enGeneralTranslationText from "../../../../../locales/en/translations.json";
-import cyGeneralTranslationText from "../../../../../locales/cy/translations.json";
-import enErrorsTranslationText from "../../../../../locales/en/errors.json";
-import cyErrorsTranslationText from "../../../../../locales/cy/errors.json";
+
 import app from "../app";
 import { EMAIL_URL, WHERE_IS_THE_JURISDICTION_URL } from "../../../controller/registration/url";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
@@ -11,11 +8,8 @@ import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { ApiErrors } from "../../../../domain/entities/UIErrors";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import { CONFIRM_REGISTERED_OFFICE_ADDRESS_URL } from "../../../controller/addressLookUp/url/registration";
-
+import { enTranslationText, cyTranslationText } from "../../../../test/utils/locales";
 describe("Email Page", () => {
-  const enTranslationText = { ...enGeneralTranslationText, ...enErrorsTranslationText };
-  const cyTranslationText = { ...cyGeneralTranslationText, ...cyErrorsTranslationText };
-
   const URL = getUrl(EMAIL_URL);
   const REDIRECT_URL = getUrl(WHERE_IS_THE_JURISDICTION_URL);
 

@@ -1,7 +1,5 @@
 import request from "supertest";
-import enTranslationText from "../../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../../locales/cy/translations.json";
-import enErrorMessages from "../../../../../../../locales/en/errors.json";
+
 import app from "../../../app";
 import { countOccurrences, getUrl, setLocalesEnabled, toEscapedHtml } from "../../../../utils";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
@@ -14,7 +12,7 @@ import {
 import { ApiErrors } from "domain/entities/UIErrors";
 import TransactionBuilder from "../../../../builder/TransactionBuilder";
 import { PartnershipKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-
+import { enTranslationText, cyTranslationText } from "../../../../../../test/utils/locales";
 describe("Partnership principal place of business address change date page", () => {
   const URL = getUrl(WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_URL);
 
@@ -72,7 +70,7 @@ describe("Partnership principal place of business address change date page", () 
 
     it("should display the specifc error message rather than the original when the date is before the incorporation date", async () => {
       const originalErrorMessage = "Default";
-      const expectedErrorMessage = toEscapedHtml(enErrorMessages.errorMessages.dateOfUpdate.principalPlaceOfBusinessAddress);
+      const expectedErrorMessage = toEscapedHtml(enTranslationText.errorMessages.dateOfUpdate.principalPlaceOfBusinessAddress);
 
       const apiErrors: ApiErrors = {
         errors: { date_of_update: originalErrorMessage }

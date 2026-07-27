@@ -1,8 +1,5 @@
 import request from "supertest";
 
-import enTranslationText from "../../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../../locales/cy/translations.json";
-
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import { countOccurrences, getUrl, setLocalesEnabled } from "../../../../utils";
@@ -14,7 +11,7 @@ import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBui
 import { PARTNERSHIP_NAME_TEMPLATE, WHEN_DID_THE_PARTNERSHIP_NAME_CHANGE_TEMPLATE } from "../../../../../../presentation/controller/postTransition/template";
 import TransactionBuilder from "../../../../builder/TransactionBuilder";
 import { PartnershipKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
-
+import { enTranslationText, cyTranslationText } from "../../../../../../test/utils/locales";
 describe("Partnership name check your answers page", () => {
   const URL = getUrl(PARTNERSHIP_NAME_CHANGE_CHECK_YOUR_ANSWERS_URL);
   const PAYMENT_LINK_JOURNEY = "https://api-test-payments.chs.local:4001";

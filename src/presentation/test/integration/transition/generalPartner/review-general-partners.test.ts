@@ -1,10 +1,5 @@
 import request from "supertest";
 
-import enTranslationText from "../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../locales/cy/translations.json";
-import enErrorsTranslationText from "../../../../../../locales/en/errors.json";
-import cyErrorsTranslationText from "../../../../../../locales/cy/errors.json";
-
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import {
@@ -22,7 +17,7 @@ import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
 import { TRANSITION_WITH_IDS_URL } from "../../../../../config/constants";
 import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-
+import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("Review General Partners Page", () => {
   const URL = getUrl(REVIEW_GENERAL_PARTNERS_URL);
 
@@ -134,8 +129,8 @@ describe("Review General Partners Page", () => {
     });
 
     it.each([
-      ["en", enErrorsTranslationText],
-      ["cy", cyErrorsTranslationText]
+      ["en", enTranslationText],
+      ["cy", cyTranslationText]
     ])("%s: should trigger GDS validation error when no option is selected", async (lang, errors) => {
       setLocalesEnabled(true);
 

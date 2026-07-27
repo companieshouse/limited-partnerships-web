@@ -1,6 +1,5 @@
 import request from "supertest";
-import enTranslationText from "../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../locales/cy/translations.json";
+
 import app from "../app";
 import { GENERAL_PARTNERS_URL, REVIEW_GENERAL_PARTNERS_URL } from "../../../controller/registration/url";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
@@ -9,7 +8,7 @@ import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { REGISTRATION_BASE_URL } from "../../../../config/constants";
 import GeneralPartnerBuilder from "../../builder/GeneralPartnerBuilder";
-
+import { enTranslationText, cyTranslationText } from "../../../../test/utils/locales";
 describe("General Partners Page", () => {
   const URL = getUrl(GENERAL_PARTNERS_URL);
 

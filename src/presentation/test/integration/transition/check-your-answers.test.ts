@@ -7,10 +7,6 @@ import {
   PartnershipType
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { CHECK_YOUR_ANSWERS_URL } from "../../../controller/transition/url";
-import enTranslationText from "../../../../../locales/en/translations.json";
-import enCountriesText from "../../../../../locales/en/countries.json";
-import cyTranslationText from "../../../../../locales/cy/translations.json";
-import cyCountriesText from "../../../../../locales/cy/countries.json";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
@@ -24,7 +20,7 @@ import { CONFIRMATION_URL } from "../../../controller/global/url";
 import { JOURNEY_TYPE_PARAM } from "../../../../config/constants";
 import { Journey } from "../../../../domain/entities/journey";
 import { customerFeedbackUrlMap } from "../../../../middlewares/customer-feedback.middleware";
-
+import { enTranslationText, cyTranslationText } from "../../../../test/utils/locales";
 describe("Check Your Answers Page", () => {
   const URL = getUrl(CHECK_YOUR_ANSWERS_URL);
   const REDIRECT_URL = getUrl(CONFIRMATION_URL).replace(JOURNEY_TYPE_PARAM, Journey.transition);
@@ -178,7 +174,7 @@ describe("Check Your Answers Page", () => {
       checkIfValuesInText(res, limitedPartnerLegalEntity, enTranslationText);
 
       expect(res.text).toContain(enTranslationText.nationalities.british);
-      expect(res.text).toContain(enCountriesText.countries.unitedStates);
+      expect(res.text).toContain(enTranslationText.countries.unitedStates);
     });
 
     it("should load the check your answers page with partners - CY", async () => {
@@ -206,7 +202,7 @@ describe("Check Your Answers Page", () => {
       checkIfValuesInText(res, limitedPartnerLegalEntity, cyTranslationText);
 
       expect(res.text).toContain(cyTranslationText.nationalities.british);
-      expect(res.text).toContain(cyCountriesText.countries.unitedStates);
+      expect(res.text).toContain(cyTranslationText.countries.unitedStates);
     });
   });
 

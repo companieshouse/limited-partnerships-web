@@ -1,12 +1,6 @@
 import request from "supertest";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-import enGeneralTranslationText from "../../../../../../../locales/en/translations.json";
-import cyGeneralTranslationText from "../../../../../../../locales/cy/translations.json";
-import enAddressTranslationText from "../../../../../../../locales/en/address.json";
-import cyAddressTranslationText from "../../../../../../../locales/cy/address.json";
-import enErrorsTranslationText from "../../../../../../../locales/en/errors.json";
-
 import app from "../../../app";
 import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import { appDevDependencies } from "config/dev-dependencies";
@@ -23,10 +17,8 @@ import {
 import AddressPageType from "presentation/controller/addressLookUp/PageType";
 import TransactionBuilder from "../../../../builder/TransactionBuilder";
 import LimitedPartnerBuilder from "../../../../builder/LimitedPartnerBuilder";
-
+import { enTranslationText, cyTranslationText } from "../../../../../../test/utils/locales";
 describe("Choose principal office address of the limited partner page", () => {
-  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
-  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText };
   const URL = getUrl(CHOOSE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
   const REDIRECT_URL = getUrl(CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
 
@@ -149,7 +141,7 @@ describe("Choose principal office address of the limited partner page", () => {
           pageType: AddressPageType.chooseLimitedPartnerPrincipalOfficeAddress
         });
 
-      const errorMessage = enErrorsTranslationText.errorMessages.address.chooseAddress.selectionRequired;
+      const errorMessage = enTranslationText.errorMessages.address.chooseAddress.selectionRequired;
 
       expect(res.status).toBe(200);
       expect(countOccurrences(res.text, errorMessage)).toBe(2);

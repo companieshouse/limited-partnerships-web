@@ -1,11 +1,10 @@
 import request from "supertest";
 
 import app from "./app";
-import enTranslationText from "../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../locales/cy/translations.json";
+
 import { setLocalesEnabled } from "../utils";
 import { PARTNERSHIP_TYPE_URL } from "../../../presentation/controller/registration/url";
-
+import { enTranslationText, cyTranslationText } from "../../../test/utils/locales";
 describe("Localisation tests", () => {
   beforeEach(() => {
     jest.clearAllMocks();

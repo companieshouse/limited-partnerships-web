@@ -1,6 +1,6 @@
 import request from "supertest";
 import { createApiClient } from "@companieshouse/api-sdk-node";
-import enTranslationText from "../../../../../../locales/en/translations.json";
+
 import {
   ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
   ADD_GENERAL_PARTNER_PERSON_WITH_ID_URL
@@ -10,7 +10,7 @@ import { getUrl, setLocalesEnabled } from "../../../utils";
 import RegistrationPageType from "../../../../controller/registration/PageType";
 import sdkMock from "../../mock/sdkMock";
 import appRealDependencies from "../../../../../app";
-
+import { enTranslationText } from "../../../../../test/utils/locales";
 jest.mock("@companieshouse/api-sdk-node");
 
 const mockCreateApiClient = createApiClient as jest.Mock;

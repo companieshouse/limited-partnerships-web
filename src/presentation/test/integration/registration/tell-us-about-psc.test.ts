@@ -1,19 +1,11 @@
 import request from "supertest";
-
-import enGeneralTranslationText from "../../../../../locales/en/translations.json";
-import cyGeneralTranslationText from "../../../../../locales/cy/translations.json";
-import enPersonWithSignificantControlTranslationText from "../../../../../locales/en/personWithSignificantControl.json";
-import cyPersonWithSignificantControlTranslationText from "../../../../../locales/cy/personWithSignificantControl.json";
-
 import app from "../app";
 import { TELL_US_ABOUT_PSC_URL, WILL_LIMITED_PARTNERSHIP_HAVE_PSC_URL } from "../../../controller/registration/url";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
-
+import { enTranslationText, cyTranslationText } from "../../../../test/utils/locales";
 describe("Tell Us About PSC Page", () => {
-  const enTranslationText = { ...enGeneralTranslationText, ...enPersonWithSignificantControlTranslationText };
-  const cyTranslationText = { ...cyGeneralTranslationText, ...cyPersonWithSignificantControlTranslationText };
   const URL = getUrl(TELL_US_ABOUT_PSC_URL);
   const REDIRECT_URL = getUrl(WILL_LIMITED_PARTNERSHIP_HAVE_PSC_URL);
   let limitedPartnership;

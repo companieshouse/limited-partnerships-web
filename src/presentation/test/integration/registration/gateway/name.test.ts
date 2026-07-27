@@ -12,9 +12,9 @@ import sdkMock, {
   postTransaction
 } from "../../mock/sdkMock";
 import { getUrl } from "../../../utils";
-import enTranslationText from "../../../../../../locales/en/translations.json";
-import CacheRepository from "../../../../../infrastructure/repository/CacheRepository";
 
+import CacheRepository from "../../../../../infrastructure/repository/CacheRepository";
+import { enTranslationText } from "../../../../../test/utils/locales";
 jest.mock("@companieshouse/api-sdk-node");
 
 const mockCreateApiClient = createApiClient as jest.Mock;

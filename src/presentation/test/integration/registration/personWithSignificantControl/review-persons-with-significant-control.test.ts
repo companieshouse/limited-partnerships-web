@@ -1,10 +1,4 @@
 import request from "supertest";
-
-import enGeneralTranslationText from "../../../../../../locales/en/translations.json";
-import cyGeneralTranslationText from "../../../../../../locales/cy/translations.json";
-import enPersonWithSignificantControlTranslationText from "../../../../../../locales/en/personWithSignificantControl.json";
-import cyPersonWithSignificantControlTranslationText from "../../../../../../locales/cy/personWithSignificantControl.json";
-
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import {
@@ -20,11 +14,8 @@ import {
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import RegistrationPageType from "../../../../controller/registration/PageType";
 import PersonWithSignificantControlBuilder, { personWithSignificantControlOtherRegistrablePerson, personWithSignificantControlRelevantLegalEntity } from "../../../builder/PersonWithSignificantControlBuilder";
-
+import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("Review Persons With Significant Control Page", () => {
-  const enTranslationText = { ...enGeneralTranslationText, ...enPersonWithSignificantControlTranslationText };
-  const cyTranslationText = { ...cyGeneralTranslationText, ...cyPersonWithSignificantControlTranslationText };
-
   const URL = getUrl(REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL);
   const REDIRECT_URL = getUrl(CHECK_YOUR_ANSWERS_URL);
 

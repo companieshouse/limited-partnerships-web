@@ -1,10 +1,5 @@
 import request from "supertest";
 
-import enGeneralTranslationText from "../../../../../locales/en/translations.json";
-import cyGeneralTranslationText from "../../../../../locales/cy/translations.json";
-import enErrorsTranslationText from "../../../../../locales/en/errors.json";
-import cyErrorsTranslationText from "../../../../../locales/cy/errors.json";
-
 import app from "../app";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
@@ -21,11 +16,8 @@ import {
 } from "../../../controller/addressLookUp/url/transition";
 
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
-
+import { enTranslationText, cyTranslationText } from "../../../../test/utils/locales";
 describe("Email Page", () => {
-  const enTranslationText = { ...enGeneralTranslationText, ...enErrorsTranslationText };
-  const cyTranslationText = { ...cyGeneralTranslationText, ...cyErrorsTranslationText };
-
   const URL = getUrl(EMAIL_URL);
   const REDIRECT_URL = getUrl(POSTCODE_REGISTERED_OFFICE_ADDRESS_URL).replace(JOURNEY_TYPE_PARAM, Journey.transition);
 

@@ -1,8 +1,5 @@
 import request from "supertest";
 
-import enTranslationText from "../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../locales/cy/translations.json";
-
 import app from "../../app";
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
@@ -19,7 +16,7 @@ import {
 } from "../../../../controller/addressLookUp/url/transition";
 import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
 import { TRANSITION_WITH_IDS_URL } from "../../../../../config/constants";
-
+import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("Add General Partner Person Page", () => {
   const URL = getUrl(ADD_GENERAL_PARTNER_PERSON_URL);
   const REDIRECT_URL = getUrl(TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);

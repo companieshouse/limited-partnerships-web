@@ -1,11 +1,5 @@
 import request from "supertest";
 
-import enGeneralTranslationText from "../../../../../../../locales/en/translations.json";
-import cyGeneralTranslationText from "../../../../../../../locales/cy/translations.json";
-import enAddressTranslationText from "../../../../../../../locales/en/address.json";
-import cyAddressTranslationText from "../../../../../../../locales/cy/address.json";
-import enErrorsTranslationText from "../../../../../../../locales/en/errors.json";
-
 import app from "../../../app";
 import { appDevDependencies } from "config/dev-dependencies";
 import { createPersonWithSignificantControl, getUrl, setLocalesEnabled, testTranslations, countOccurrences } from "../../../../utils";
@@ -20,10 +14,8 @@ import {
 
 import AddressPageType from "presentation/controller/addressLookUp/PageType";
 import { englandAddressList } from "../../../../../../infrastructure/gateway/addressLookUp/AddressLookUpInMemoryGateway";
-
+import { enTranslationText, cyTranslationText } from "../../../../../../test/utils/locales";
 describe("Choose principal office address of the person with significant control page", () => {
-  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
-  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText };
   const URL_RELEVANT_LEGAL_ENTITY = getUrl(
     CHOOSE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL
   );
@@ -196,7 +188,7 @@ describe("Choose principal office address of the person with significant control
             pageType: addressPageType
           });
 
-        const errorMessage = enErrorsTranslationText.errorMessages.address.chooseAddress.selectionRequired;
+        const errorMessage = enTranslationText.errorMessages.address.chooseAddress.selectionRequired;
 
         expect(res.status).toBe(200);
         expect(countOccurrences(res.text, errorMessage)).toBe(2);

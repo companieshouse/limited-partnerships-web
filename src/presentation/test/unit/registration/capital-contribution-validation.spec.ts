@@ -4,10 +4,8 @@ import {
   isCapitalContributionApplicable
 } from "../../../../domain/validator/capitalContributionValidator";
 
-import i18nErrorsEn from "../../../../../locales/en/errors.json";
-import i18nErrorsCy from "../../../../../locales/cy/errors.json";
 import { PartnerType } from "../../../../domain/types";
-
+import { enTranslationText, cyTranslationText } from "../../../../test/utils/locales";
 describe("Gateway capital contribition validation test suite", () => {
   const data = {
     contribution_currency_type: "£",
@@ -83,7 +81,7 @@ describe("Gateway capital contribition validation test suite", () => {
     ])("should throw an error for invalid capital contribution - %s", (description, data, field, errorMessage) => {
       const uiErrors = new UIErrors();
 
-      capitalContributionValidation(data, uiErrors, i18nErrorsEn.errorMessages?.capitalContribution);
+      capitalContributionValidation(data, uiErrors, enTranslationText.errorMessages?.capitalContribution);
 
       expect(uiErrors).toEqual(
         expect.objectContaining({
@@ -99,7 +97,7 @@ describe("Gateway capital contribition validation test suite", () => {
       (contribution_currency_value) => {
         const uiErrors = new UIErrors();
 
-        capitalContributionValidation({ ...data, contribution_currency_value }, uiErrors, i18nErrorsEn.errorMessages?.capitalContribution);
+        capitalContributionValidation({ ...data, contribution_currency_value }, uiErrors, enTranslationText.errorMessages?.capitalContribution);
 
         expect(uiErrors).toEqual(
           expect.objectContaining({
@@ -112,7 +110,7 @@ describe("Gateway capital contribition validation test suite", () => {
     it("should throw an error for invalid capital contribution - welsh", () => {
       const uiErrors = new UIErrors();
 
-      capitalContributionValidation({ ...data, contribution_currency_value: "aaaa" }, uiErrors, i18nErrorsCy.errorMessages?.capitalContribution);
+      capitalContributionValidation({ ...data, contribution_currency_value: "aaaa" }, uiErrors, cyTranslationText.errorMessages?.capitalContribution);
 
       expect(uiErrors).toEqual(
         expect.objectContaining({

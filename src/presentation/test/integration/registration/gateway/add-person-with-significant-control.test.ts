@@ -1,8 +1,6 @@
 import request from "supertest";
 import { createApiClient } from "@companieshouse/api-sdk-node";
 
-import enTranslationText from "../../../../../../locales/en/translations.json";
-
 import appRealDependencies from "../../../../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled } from "../../../utils";
@@ -10,6 +8,7 @@ import { getUrl, setLocalesEnabled } from "../../../utils";
 import sdkMock from "../../mock/sdkMock";
 
 import RegistrationPageType from "../../../../controller/registration/PageType";
+import { enTranslationText } from "../../../../../test/utils/locales";
 import {
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_URL,
   ADD_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_WITH_IDS_URL

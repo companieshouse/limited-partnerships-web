@@ -1,13 +1,5 @@
 import request from "supertest";
 import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-
-import enGeneralTranslationText from "../../../../../../locales/en/translations.json";
-import enCountriesText from "../../../../../../locales/en/countries.json";
-import cyGeneralTranslationText from "../../../../../../locales/cy/translations.json";
-import cyCountriesText from "../../../../../../locales/cy/countries.json";
-import enAddressTranslationText from "../../../../../../locales/en/address.json";
-import cyAddressTranslationText from "../../../../../../locales/cy/address.json";
-
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { ApiErrors } from "../../../../../domain/entities/UIErrors";
@@ -19,10 +11,8 @@ import { REVIEW_GENERAL_PARTNERS_URL, TERM_URL } from "../../../../../presentati
 import AddressPageType from "../../../../../presentation/controller/addressLookUp/PageType";
 import LimitedPartnershipBuilder from "../../../../../presentation/test/builder/LimitedPartnershipBuilder";
 import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
-
+import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("Confirm Principal Place Of Business Address Page", () => {
-  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
-  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText };
   const URL = getUrl(CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL);
   const body = {
     pageType: AddressPageType.confirmPrincipalPlaceOfBusinessAddress,
@@ -68,7 +58,7 @@ describe("Confirm Principal Place Of Business Address Page", () => {
       expect(res.text).toContain("Line 2");
       expect(res.text).toContain("Stoke-On-Trent");
       expect(res.text).toContain("Region");
-      expect(res.text).toContain(enCountriesText.countries.england);
+      expect(res.text).toContain(enTranslationText.countries.england);
       expect(res.text).toContain("ST6 3LJ");
     });
 
@@ -79,7 +69,7 @@ describe("Confirm Principal Place Of Business Address Page", () => {
 
       expect(res.status).toBe(200);
       testTranslations(res.text, cyTranslationText.address.confirm.principalPlaceOfBusinessAddress);
-      expect(res.text).toContain(cyCountriesText.countries.england);
+      expect(res.text).toContain(cyTranslationText.countries.england);
     });
   });
 

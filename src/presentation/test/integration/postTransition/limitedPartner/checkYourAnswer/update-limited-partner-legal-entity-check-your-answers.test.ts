@@ -1,9 +1,6 @@
 import request from "supertest";
 import { LimitedPartner, PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-import enTranslationText from "../../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../../locales/cy/translations.json";
-
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import { countOccurrences, expectChangeLinks, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
@@ -16,7 +13,7 @@ import { CONFIRMATION_POST_TRANSITION_URL } from "../../../../../controller/glob
 import TransactionBuilder from "../../../../builder/TransactionBuilder";
 import { OFFICER_ROLE_GENERAL_PARTNER_LEGAL_ENTITY } from "../../../../../../config";
 import LimitedPartnerBuilder from "../../../../builder/LimitedPartnerBuilder";
-
+import { enTranslationText, cyTranslationText } from "../../../../../../test/utils/locales";
 describe("Update limited partner legal entity check your answers page", () => {
   const URL = getUrl(UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_URL);
   let limitedPartner: LimitedPartner;

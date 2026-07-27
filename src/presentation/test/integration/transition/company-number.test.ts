@@ -1,7 +1,5 @@
 import request from "supertest";
 
-import enTranslationText from "../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../locales/cy/translations.json";
 import app from "../app";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import {
@@ -12,7 +10,7 @@ import TransitionPageType from "../../../controller/transition/PageType";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import { SERVICE_NAME_TRANSITION } from "../../../../config/constants";
 import CompanyProfileBuilder from "../../builder/CompanyProfileBuilder";
-
+import { enTranslationText, cyTranslationText } from "../../../../test/utils/locales";
 describe("Company number page", () => {
   const URL = getUrl(COMPANY_NUMBER_URL);
 

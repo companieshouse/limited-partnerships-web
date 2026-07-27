@@ -1,10 +1,4 @@
 import request from "supertest";
-
-import enTranslationText from "../../../../../../../locales/en/translations.json";
-import enCountriesText from "../../../../../../../locales/en/countries.json";
-import cyTranslationText from "../../../../../../../locales/cy/translations.json";
-import cyCountriesText from "../../../../../../../locales/cy/countries.json";
-
 import app from "../../../app";
 import { countOccurrences, getUrl, setLocalesEnabled, toEscapedHtml } from "../../../../../../presentation/test/utils";
 import { PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL } from "../../../../../../presentation/controller/postTransition/url";
@@ -15,7 +9,7 @@ import LimitedPartnershipBuilder from "../../../../../../presentation/test/build
 import { CONFIRMATION_POST_TRANSITION_URL } from "../../../../../../presentation/controller/global/url";
 import { ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_TEMPLATE, WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_TEMPLATE } from "../../../../../../presentation/controller/postTransition/template";
 import TransactionBuilder from "../../../../builder/TransactionBuilder";
-
+import { enTranslationText, cyTranslationText } from "../../../../../../test/utils/locales";
 describe("Principal place of business address check your answers page", () => {
   const URL = getUrl(PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL);
 
@@ -47,7 +41,7 @@ describe("Principal place of business address check your answers page", () => {
       expect(res.text).toContain(`${ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_TEMPLATE}?lang=en`);
       expect(res.text).toContain(`${WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_TEMPLATE}?lang=en`);
 
-      expect(res.text).toContain(enCountriesText.countries.england);
+      expect(res.text).toContain(enTranslationText.countries.england);
       expect(countOccurrences(res.text, toEscapedHtml(enTranslationText.serviceName.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress))).toBe(2);
     });
 
@@ -65,7 +59,7 @@ describe("Principal place of business address check your answers page", () => {
       expect(res.text).toContain(`${ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_TEMPLATE}?lang=cy`);
       expect(res.text).toContain(`${WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_TEMPLATE}?lang=cy`);
 
-      expect(res.text).toContain(cyCountriesText.countries.england);
+      expect(res.text).toContain(cyTranslationText.countries.england);
       expect(countOccurrences(res.text, toEscapedHtml(cyTranslationText.serviceName.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress))).toBe(2);
     });
   });

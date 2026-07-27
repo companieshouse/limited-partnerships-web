@@ -1,7 +1,6 @@
 import { Jurisdiction, NameEndingType, PartnershipType, Term } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 import LimitedPartnership from "../../../../domain/validator/LimitedPartnership";
-import enTranslationText from "../../../../../locales/en/errors.json";
-
+import { enTranslationText } from "../../../../test/utils/locales";
 describe("Limited Partnership Validation", () => {
   describe("Partnership Type validation", () => {
     it("should not return an error if partnership type is valid", () => {

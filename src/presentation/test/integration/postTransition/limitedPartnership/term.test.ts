@@ -1,9 +1,6 @@
 import request from "supertest";
 import { Jurisdiction, PartnershipKind, PartnershipType, Term } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-import enTranslationText from "../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../locales/cy/translations.json";
-
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
@@ -20,7 +17,7 @@ import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 import TransactionBuilder from "../../../builder/TransactionBuilder";
 import { YOUR_COMPANY_URL } from "../../../../../config";
-
+import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("Email Page", () => {
   const URL = getUrl(TERM_URL);
   const REDIRECT_URL = getUrl(WHEN_DID_THE_TERM_CHANGE_URL);

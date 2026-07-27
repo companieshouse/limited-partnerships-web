@@ -1,8 +1,5 @@
 import request from "supertest";
 
-import enTranslationText from "../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../locales/cy/translations.json";
-
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
@@ -12,7 +9,7 @@ import { GENERAL_PARTNERS_URL, REVIEW_GENERAL_PARTNERS_URL } from "../../../../c
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
 import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
 import TransitionPageType from "../../../../controller/transition/PageType";
-
+import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("General Partners Page", () => {
   const URL = getUrl(GENERAL_PARTNERS_URL);
 

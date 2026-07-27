@@ -1,8 +1,6 @@
 import request from "supertest";
 
 import app from "../app";
-import enTranslationText from "../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../locales/cy/translations.json";
 
 import { CONFIRMATION_URL } from "../../../controller/global/url";
 import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../utils";
@@ -10,7 +8,7 @@ import { appDevDependencies } from "../../../../config/dev-dependencies";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { JOURNEY_TYPE_PARAM } from "../../../../config";
 import { Journey } from "../../../../domain/entities/journey";
-
+import { enTranslationText, cyTranslationText } from "../../../../test/utils/locales";
 jest.mock("../../../../utils/session", () => ({
   getLoggedInUserEmail: (_session) => "test@example.com"
 }));

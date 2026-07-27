@@ -1,9 +1,6 @@
 import request from "supertest";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
-import enTranslationText from "../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../locales/cy/translations.json";
-
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
@@ -32,7 +29,7 @@ import {
 } from "../../../../../config/constants";
 import TransactionGeneralPartner from "../../../../../domain/entities/TransactionGeneralPartner";
 import TransactionLimitedPartner from "../../../../../domain/entities/TransactionLimitedPartner";
-
+import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("Stop screen - no change", () => {
   const { generalPartnerId } = appDevDependencies.generalPartnerGateway;
   const GENERAL_PARTNER_PERSON_STOP_URL = getUrl(UPDATE_GENERAL_PARTNER_STOP_SCREEN_NO_CHANGE_URL);

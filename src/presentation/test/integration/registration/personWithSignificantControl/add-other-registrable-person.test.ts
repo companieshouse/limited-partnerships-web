@@ -1,12 +1,4 @@
 import request from "supertest";
-
-import enGeneralTranslationText from "../../../../../../locales/en/translations.json";
-import cyGeneralTranslationText from "../../../../../../locales/cy/translations.json";
-import enPersonWithSignificantControlTranslationText from "../../../../../../locales/en/personWithSignificantControl.json";
-import cyPersonWithSignificantControlTranslationText from "../../../../../../locales/cy/personWithSignificantControl.json";
-import enErrorsTranslationText from "../../../../../../locales/en/errors.json";
-import cyErrorsTranslationText from "../../../../../../locales/cy/errors.json";
-
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../utils";
@@ -25,18 +17,8 @@ import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilde
 import PersonWithSignificantControlBuilder from "../../../builder/PersonWithSignificantControlBuilder";
 import TransactionPersonWithSignificantControl from "../../../../../domain/entities/TransactionPersonWithSignificantControl";
 import { PersonWithSignificantControlType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-
+import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("Add Person With Significant Control Other registrable person Page", () => {
-  const enTranslationText = {
-    ...enGeneralTranslationText,
-    ...enPersonWithSignificantControlTranslationText,
-    ...enErrorsTranslationText
-  };
-  const cyTranslationText = {
-    ...cyGeneralTranslationText,
-    ...cyPersonWithSignificantControlTranslationText,
-    ...cyErrorsTranslationText
-  };
   const URL = getUrl(ADD_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_URL);
   const REDIRECT_URL = getUrl(WHICH_TYPE_OF_NATURE_OF_CONTROL_OTHER_REGISTRABLE_PERSON_URL);
 

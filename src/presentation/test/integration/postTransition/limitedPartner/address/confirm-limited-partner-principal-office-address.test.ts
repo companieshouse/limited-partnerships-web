@@ -1,15 +1,5 @@
 import request from "supertest";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-
-import enGeneralTranslationText from "../../../../../../../locales/en/translations.json";
-import enCountriesText from "../../../../../../../locales/en/countries.json";
-import cyGeneralTranslationText from "../../../../../../../locales/cy/translations.json";
-import cyCountriesText from "../../../../../../../locales/cy/countries.json";
-import enAddressTranslationText from "../../../../../../../locales/en/address.json";
-import cyAddressTranslationText from "../../../../../../../locales/cy/address.json";
-import enErrorMessages from "../../../../../../../locales/en/errors.json";
-import cyErrorMessages from "../../../../../../../locales/cy/errors.json";
-
 import app from "../../../app";
 import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
@@ -24,10 +14,8 @@ import { LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL, UPDATE_LIMITED_PARTNER_PRINCIPA
 import LimitedPartnerBuilder, { limitedPartnerLegalEntity } from "../../../../builder/LimitedPartnerBuilder";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import TransactionBuilder from "../../../../builder/TransactionBuilder";
-
+import { enTranslationText, cyTranslationText } from "../../../../../../test/utils/locales";
 describe("Confirm Limited Partner Principal Office Address Page", () => {
-  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
-  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText };
   const URL = getUrl(CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
 
   beforeEach(() => {
@@ -65,7 +53,7 @@ describe("Confirm Limited Partner Principal Office Address Page", () => {
       ["update", "cy"]
     ])("should load the confirm principal office address page with %s limited partner person journey and %s language", async (journey: string, lang: string) => {
       const translationtext = lang === "en" ? enTranslationText : cyTranslationText;
-      const countriesText = lang === "en" ? enCountriesText : cyCountriesText;
+      const countriesText = lang === "en" ? enTranslationText : cyTranslationText;
       const transactionKind = journey === "add" ? PartnerKind.ADD_LIMITED_PARTNER_LEGAL_ENTITY : PartnerKind.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY;
       setupTransactionAndLimitedPartner(transactionKind);
 
@@ -147,8 +135,8 @@ describe("Confirm Limited Partner Principal Office Address Page", () => {
     });
 
     it.each([
-      [ "en", enErrorMessages ],
-      [ "cy", cyErrorMessages ]
+      [ "en", enTranslationText ],
+      [ "cy", cyTranslationText ]
     ])("should show validation error message if validation error occurs when saving address with lang %s", async (lang: string, errorMessagesJson: any) => {
       setLocalesEnabled(true);
       const res = await request(app).post(`${URL}?lang=${lang}`).send({

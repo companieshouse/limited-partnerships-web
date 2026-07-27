@@ -1,8 +1,5 @@
 import request from "supertest";
 
-import enTranslationText from "../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../locales/cy/translations.json";
-
 import app from "../../app";
 
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
@@ -22,7 +19,7 @@ import {
   REVIEW_LIMITED_PARTNERS_TEMPLATE
 } from "../../../../../presentation/controller/registration/template";
 import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
-
+import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("Add Limited Partner Legal Entity Page", () => {
   const URL = getUrl(ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL);
   const REDIRECT_URL = getUrl(TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);

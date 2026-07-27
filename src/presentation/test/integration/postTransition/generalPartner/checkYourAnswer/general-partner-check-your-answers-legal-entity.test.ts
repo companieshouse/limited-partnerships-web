@@ -1,10 +1,5 @@
 import request from "supertest";
 import app from "../../../app";
-
-import enTranslationText from "../../../../../../../locales/en/translations.json";
-import enCountriesText from "../../../../../../../locales/en/countries.json";
-import cyTranslationText from "../../../../../../../locales/cy/translations.json";
-import cyCountriesText from "../../../../../../../locales/cy/countries.json";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import GeneralPartnerBuilder from "../../../../builder/GeneralPartnerBuilder";
@@ -20,7 +15,7 @@ import PostTransitionPageType from "../../../../../controller/postTransition/pag
 import { CONFIRMATION_POST_TRANSITION_URL } from "../../../../../controller/global/url";
 import TransactionBuilder from "../../../../builder/TransactionBuilder";
 import TransactionGeneralPartner from "../../../../../../domain/entities/TransactionGeneralPartner";
-
+import { enTranslationText, cyTranslationText } from "../../../../../../test/utils/locales";
 describe("Check Your Answers Page", () => {
   const URL = getUrl(GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL);
   const REDIRECT_URL = getUrl(CONFIRMATION_POST_TRANSITION_URL);
@@ -46,8 +41,8 @@ describe("Check Your Answers Page", () => {
 
   describe("GET Check Your Answers Page", () => {
     it.each([
-      ["en", enTranslationText, enCountriesText],
-      ["cy", cyTranslationText, cyCountriesText]
+      ["en", enTranslationText, enTranslationText],
+      ["cy", cyTranslationText, cyTranslationText]
     ])("should GET Check Your Answers Page %s text", async (lang, translationText, countriesText) => {
       setLocalesEnabled(true);
       const res = await request(app).get(URL + `?lang=${lang}`);

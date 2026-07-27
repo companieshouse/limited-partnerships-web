@@ -2,8 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import request from "supertest";
 
 import app from "../app";
-import enTranslationText from "../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../locales/cy/translations.json";
+
 import * as webSecurityNode from "@companieshouse/web-security-node";
 
 import { HEALTHCHECK_URL, NOT_ELIGIBLE_URL, SIGN_OUT_URL, RESUME_JOURNEY_POST_TRANSITION_GENERAL_PARTNER_URL, RESUME_JOURNEY_POST_TRANSITION_LIMITED_PARTNER_URL, RESUME_JOURNEY_POST_TRANSITION_PARTNERSHIP_URL, RESUME_JOURNEY_REGISTRATION_OR_TRANSITION_URL } from "../../../controller/global/url";
@@ -25,7 +24,7 @@ import {
 } from "../../../controller/postTransition/url";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import CompanyProfileBuilder from "../../builder/CompanyProfileBuilder";
-
+import { enTranslationText, cyTranslationText } from "../../../../test/utils/locales";
 jest.mocked(webSecurityNode.acspManageUsersAuthMiddleware).mockImplementation(() =>
   (req: Request, res: Response, next: NextFunction) =>
     next(new webSecurityNode.InvalidAcspNumberError("Acsp Number invalid"))

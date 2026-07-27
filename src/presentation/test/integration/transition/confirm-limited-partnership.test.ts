@@ -1,9 +1,6 @@
 import request from "supertest";
 import { Jurisdiction, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-import enTranslationText from "../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../locales/cy/translations.json";
-
 import app from "../app";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
@@ -11,7 +8,7 @@ import { SERVICE_NAME_TRANSITION } from "../../../../config";
 
 import CompanyProfileBuilder from "../../builder/CompanyProfileBuilder";
 import { CONFIRM_LIMITED_PARTNERSHIP_URL, EMAIL_URL } from "../../../controller/transition/url";
-
+import { enTranslationText, cyTranslationText } from "../../../../test/utils/locales";
 describe("Confirm correct limited partnership page", () => {
   const URL = getUrl(CONFIRM_LIMITED_PARTNERSHIP_URL);
   let companyProfile;

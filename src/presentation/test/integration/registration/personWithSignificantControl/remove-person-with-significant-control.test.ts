@@ -1,12 +1,4 @@
 import request from "supertest";
-
-import enGeneralTranslationText from "../../../../../../locales/en/translations.json";
-import cyGeneralTranslationText from "../../../../../../locales/cy/translations.json";
-import enPersonWithSignificantControlTranslationText from "../../../../../../locales/en/personWithSignificantControl.json";
-import cyPersonWithSignificantControlTranslationText from "../../../../../../locales/cy/personWithSignificantControl.json";
-import enErrorTranslationsText from "../../../../../../locales/en/errors.json";
-import cyErrorTranslationsText from "../../../../../../locales/cy/errors.json";
-
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 
@@ -18,10 +10,8 @@ import {
   REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL
 } from "../../../../controller/registration/url";
 import RegistrationPageType from "../../../../controller/registration/PageType";
-
+import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("Remove Person With Significant Control Page", () => {
-  const enTranslationText = { ...enGeneralTranslationText, ...enPersonWithSignificantControlTranslationText, ...enErrorTranslationsText };
-  const cyTranslationText = { ...cyGeneralTranslationText, ...cyPersonWithSignificantControlTranslationText, ...cyErrorTranslationsText };
   const URL = getUrl(REMOVE_PERSON_WITH_SIGNIFICANT_CONTROL_URL);
 
   const pscRle = new PersonWithSignificantControlBuilder()

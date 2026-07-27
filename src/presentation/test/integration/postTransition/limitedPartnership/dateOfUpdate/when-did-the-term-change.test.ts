@@ -1,9 +1,5 @@
 import request from "supertest";
 
-import enTranslationText from "../../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../../locales/cy/translations.json";
-import enErrorMessages from "../../../../../../../locales/en/errors.json";
-
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import { countOccurrences, getUrl, setLocalesEnabled, toEscapedHtml } from "../../../../utils";
@@ -18,7 +14,7 @@ import CompanyProfileBuilder from "../../../../builder/CompanyProfileBuilder";
 import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBuilder";
 import TransactionBuilder from "../../../../builder/TransactionBuilder";
 import { PartnershipKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-
+import { enTranslationText, cyTranslationText } from "../../../../../../test/utils/locales";
 describe("Partnership term change date page", () => {
   const URL = getUrl(WHEN_DID_THE_TERM_CHANGE_URL);
 
@@ -78,7 +74,7 @@ describe("Partnership term change date page", () => {
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
     const originalErrorMessage = "Default";
-    const expectedErrorMessage = toEscapedHtml(enErrorMessages.errorMessages.dateOfUpdate.term);
+    const expectedErrorMessage = toEscapedHtml(enTranslationText.errorMessages.dateOfUpdate.term);
     const apiErrors: ApiErrors = {
       errors: { date_of_update: originalErrorMessage }
     };

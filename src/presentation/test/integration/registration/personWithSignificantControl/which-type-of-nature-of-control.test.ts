@@ -1,12 +1,4 @@
 import request from "supertest";
-
-import enGeneralTranslationText from "../../../../../../locales/en/translations.json";
-import cyGeneralTranslationText from "../../../../../../locales/cy/translations.json";
-import enPersonWithSignificantControlTranslationText from "../../../../../../locales/en/personWithSignificantControl.json";
-import cyPersonWithSignificantControlTranslationText from "../../../../../../locales/cy/personWithSignificantControl.json";
-import enErrorsTranslationText from "../../../../../../locales/en/errors.json";
-import cyErrorsTranslationText from "../../../../../../locales/cy/errors.json";
-
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../utils";
@@ -28,7 +20,7 @@ import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilde
 import PersonWithSignificantControlBuilder from "../../../builder/PersonWithSignificantControlBuilder";
 import TransactionPersonWithSignificantControl from "../../../../../domain/entities/TransactionPersonWithSignificantControl";
 import { NatureOfControlType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
-
+import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 let relevantLegalEntity: TransactionPersonWithSignificantControl;
 let otherRegistrablePerson: TransactionPersonWithSignificantControl;
 let individualPerson: TransactionPersonWithSignificantControl;
@@ -55,18 +47,6 @@ describe("Which Type of Nature of Control Page", () => {
     backUrl: ADD_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_WITH_IDS_URL,
     pscId: "individualPersonId"
   });
-
-  const enTranslationText = {
-    ...enGeneralTranslationText,
-    ...enPersonWithSignificantControlTranslationText,
-    ...enErrorsTranslationText
-  };
-  const cyTranslationText = {
-    ...cyGeneralTranslationText,
-    ...cyPersonWithSignificantControlTranslationText,
-    ...cyErrorsTranslationText
-  };
-
   beforeEach(() => {
     setLocalesEnabled(true);
 

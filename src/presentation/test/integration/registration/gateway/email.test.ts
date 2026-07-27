@@ -8,12 +8,12 @@ import appRealDependencies from "../../../../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { EMAIL_URL, NAME_URL, WHERE_IS_THE_JURISDICTION_URL } from "../../../../controller/registration/url";
 import RegistrationPageType from "../../../../controller/registration/PageType";
-import enTranslationText from "../../../../../../locales/en/translations.json";
+
 import sdkMock from "../../mock/sdkMock";
 import { getUrl } from "../../../utils";
 import { CONFIRM_REGISTERED_OFFICE_ADDRESS_URL } from "../../../../controller/addressLookUp/url/registration";
 import { Ids } from "../../../../../domain/types";
-
+import { enTranslationText } from "../../../../../test/utils/locales";
 jest.mock("@companieshouse/api-sdk-node");
 
 const mockCreateApiClient = createApiClient as jest.Mock;

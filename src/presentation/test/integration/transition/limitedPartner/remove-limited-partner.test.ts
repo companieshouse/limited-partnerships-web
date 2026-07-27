@@ -1,8 +1,5 @@
 import request from "supertest";
 
-import enTranslationText from "../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../locales/cy/translations.json";
-
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 
@@ -11,7 +8,7 @@ import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilde
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import { REMOVE_LIMITED_PARTNER_URL, REVIEW_LIMITED_PARTNERS_URL } from "../../../../controller/transition/url";
 import RegistrationPageType from "../../../../controller/transition/PageType";
-
+import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("Remove Limited Partner Page", () => {
   const URL = getUrl(REMOVE_LIMITED_PARTNER_URL);
 

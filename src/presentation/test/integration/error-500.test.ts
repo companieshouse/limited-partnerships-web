@@ -10,8 +10,7 @@ jest.spyOn(LimitedPartnershipController.prototype, "getPageRouting").mockImpleme
 import request from "supertest";
 import app from "./app";
 import { PARTNERSHIP_TYPE_URL } from "presentation/controller/registration/url";
-import enTranslationText from "../../../../locales/en/translations.json";
-
+import { enTranslationText } from "../../../test/utils/locales";
 describe("Error 500", () => {
   beforeEach(() => {
     jest.clearAllMocks();

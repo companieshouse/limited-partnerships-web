@@ -1,8 +1,4 @@
 import request from "supertest";
-import enTranslationText from "../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../locales/cy/translations.json";
-import enErrorsTranslationText from "../../../../../../locales/en/errors.json";
-import cyErrorsTranslationText from "../../../../../../locales/cy/errors.json";
 
 import app from "../../app";
 import {
@@ -14,7 +10,7 @@ import PostTransitionPageType from "../../../../controller/postTransition/pageTy
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
-
+import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("Limited Partner Choice Page", () => {
   const URL = getUrl(LIMITED_PARTNER_CHOICE_URL);
 
@@ -83,8 +79,8 @@ describe("Limited Partner Choice Page", () => {
   });
 
   it.each([
-    ["en", enErrorsTranslationText],
-    ["cy", cyErrorsTranslationText]
+    ["en", enTranslationText],
+    ["cy", cyTranslationText]
   ])("%s: should trigger GDS validation error when no option is selected", async (lang, errors) => {
     setLocalesEnabled(true);
     const res = await request(app).post(URL + `?lang=${lang}`).send({

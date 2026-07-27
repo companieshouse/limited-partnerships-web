@@ -1,7 +1,6 @@
 import request from "supertest";
 import app from "../../app";
-import enTranslationText from "../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../locales/cy/translations.json";
+
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import { PARTNERSHIP_NAME_URL, WHEN_DID_THE_PARTNERSHIP_NAME_CHANGE_URL } from "../../../../../presentation/controller/postTransition/url";
@@ -11,7 +10,7 @@ import LimitedPartnershipBuilder from "../../../../../presentation/test/builder/
 import PostTransitionPageType from "../../../../../presentation/controller/postTransition/pageType";
 import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 import { YOUR_COMPANY_URL } from "../../../../../config/constants";
-
+import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("Name Page", () => {
   const URL = getUrl(PARTNERSHIP_NAME_URL);
   const REDIRECT_URL = getUrl(WHEN_DID_THE_PARTNERSHIP_NAME_CHANGE_URL);

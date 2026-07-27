@@ -1,13 +1,5 @@
 import request from "supertest";
 import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-
-import enGeneralTranslationText from "../../../../../locales/en/translations.json";
-import cyGeneralTranslationText from "../../../../../locales/cy/translations.json";
-import enSicCodesTranslationText from "../../../../../locales/en/sicCodes.json";
-import cySicCodesTranslationText from "../../../../../locales/cy/sicCodes.json";
-import enErrorsTranslationText from "../../../../../locales/en/errors.json";
-import cyErrorsTranslationText from "../../../../../locales/cy/errors.json";
-
 import app from "../app";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../utils";
@@ -19,14 +11,10 @@ import RegistrationPageType from "../../../controller/registration/PageType";
 
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import GeneralPartnerBuilder from "../../builder/GeneralPartnerBuilder";
-
+import { enTranslationText, cyTranslationText } from "../../../../test/utils/locales";
 describe("Sic Codes", () => {
   const URL = getUrl(SIC_URL);
   const REDIRECT_URL = getUrl(GENERAL_PARTNERS_URL);
-
-  const enTranslationText = { ...enGeneralTranslationText, ...enSicCodesTranslationText, ...enErrorsTranslationText };
-  const cyTranslationText = { ...cyGeneralTranslationText, ...cySicCodesTranslationText, ...cyErrorsTranslationText };
-
   beforeEach(() => {
     const limitedPartnership = new LimitedPartnershipBuilder()
       .withId(appDevDependencies.limitedPartnershipGateway.submissionId)

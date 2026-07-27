@@ -1,8 +1,7 @@
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import request from "supertest";
-import enTranslationText from "../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../locales/cy/translations.json";
+
 import app from "../../app";
 import {
   UPDATE_GENERAL_PARTNER_LEGAL_ENTITY_URL,
@@ -18,7 +17,7 @@ import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 import CompanyAppointmentBuilder from "../../../builder/CompanyAppointmentBuilder";
 import { OFFICER_ROLE_GENERAL_PARTNER_LEGAL_ENTITY } from "../../../../../config";
 import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
-
+import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("Update General Partner Legal Entity Page", () => {
   const URL = getUrl(UPDATE_GENERAL_PARTNER_LEGAL_ENTITY_URL);
   const URL_WITH_IDS = getUrl(UPDATE_GENERAL_PARTNER_LEGAL_ENTITY_WITH_IDS_URL);

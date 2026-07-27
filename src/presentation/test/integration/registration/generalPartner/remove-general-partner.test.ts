@@ -1,10 +1,5 @@
 import request from "supertest";
 
-import enTranslationText from "../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../locales/cy/translations.json";
-import enErrorsText from "../../../../../../locales/en/errors.json";
-import cyErrorsText from "../../../../../../locales/cy/errors.json";
-
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 
@@ -13,7 +8,7 @@ import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilde
 import { getUrl, setLocalesEnabled, testTranslations, countOccurrences } from "../../../utils";
 import { REMOVE_GENERAL_PARTNER_URL, REVIEW_GENERAL_PARTNERS_URL } from "../../../../controller/registration/url";
 import RegistrationPageType from "../../../../controller/registration/PageType";
-
+import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("Remove General Partner Page", () => {
   const URL = getUrl(REMOVE_GENERAL_PARTNER_URL);
 
@@ -135,8 +130,8 @@ describe("Remove General Partner Page", () => {
     });
 
     it.each([
-      ["en", enErrorsText],
-      ["cy", cyErrorsText]
+      ["en", enTranslationText],
+      ["cy", cyTranslationText]
     ])("should trigger validation errors when no option is selected", async (lang, errors) => {
       setLocalesEnabled(true);
 

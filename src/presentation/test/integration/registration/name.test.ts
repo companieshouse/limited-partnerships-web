@@ -2,10 +2,6 @@ import request from "supertest";
 import { Request, Response } from "express";
 import { NameEndingType, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-import enGeneralTranslationText from "../../../../../locales/en/translations.json";
-import cyGeneralTranslationText from "../../../../../locales/cy/translations.json";
-import enErrorsTranslationText from "../../../../../locales/en/errors.json";
-import cyErrorsTranslationText from "../../../../../locales/cy/errors.json";
 import app from "../app";
 import { EMAIL_URL, NAME_URL, NAME_WITH_IDS_URL } from "../../../controller/registration/url";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
@@ -18,10 +14,8 @@ import {
 import RegistrationPageType from "../../../controller/registration/PageType";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../utils";
-
+import { enTranslationText, cyTranslationText } from "../../../../test/utils/locales";
 describe("Name Page", () => {
-  const enTranslationText = { ...enGeneralTranslationText, ...enErrorsTranslationText };
-  const cyTranslationText = { ...cyGeneralTranslationText, ...cyErrorsTranslationText };
   const REDIRECT_URL = getUrl(EMAIL_URL);
 
   beforeEach(() => {

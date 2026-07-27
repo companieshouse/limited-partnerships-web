@@ -1,8 +1,5 @@
 import request from "supertest";
-import enTranslationText from "../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../locales/cy/translations.json";
-import enErrorsText from "../../../../../../locales/en/errors.json";
-import cyErrorsText from "../../../../../../locales/cy/errors.json";
+
 import app from "../../app";
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
@@ -22,7 +19,7 @@ import {
   REVIEW_LIMITED_PARTNERS_TEMPLATE
 } from "../../../../../presentation/controller/registration/template";
 import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
-
+import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("Add Limited Partner Person Page", () => {
   const URL = getUrl(ADD_LIMITED_PARTNER_PERSON_URL);
   const REDIRECT_URL = getUrl(TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
@@ -239,9 +236,9 @@ describe("Add Limited Partner Person Page", () => {
         });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(cyErrorsText.errorMessages.capitalContribution.currencyRequired);
-      expect(res.text).toContain(cyErrorsText.errorMessages.capitalContribution.valueRequired);
-      expect(res.text).toContain(cyErrorsText.errorMessages.capitalContribution.atLeastOneType);
+      expect(res.text).toContain(cyTranslationText.errorMessages.capitalContribution.currencyRequired);
+      expect(res.text).toContain(cyTranslationText.errorMessages.capitalContribution.valueRequired);
+      expect(res.text).toContain(cyTranslationText.errorMessages.capitalContribution.atLeastOneType);
     });
 
     it("should not require capital contribution when the section is not shown (PFLP)", async () => {
@@ -277,7 +274,7 @@ describe("Add Limited Partner Person Page", () => {
 
         expect(res.status).toBe(200);
         expect(res.text).toContain('id="previous_name" name="previous_name" type="radio" value="true" checked');
-        expect(res.text).toContain(toEscapedHtml(enErrorsText.errorMessages.partners.addPartner.formerNamesMissing));
+        expect(res.text).toContain(toEscapedHtml(enTranslationText.errorMessages.partners.addPartner.formerNamesMissing));
       }
     );
   });
@@ -315,7 +312,7 @@ describe("Add Limited Partner Person Page", () => {
         forename: "INVALID-CHARACTERS§§"
       });
       expect(res.status).toBe(200);
-      expect(res.text).toContain(enErrorsText.errorMessages.partners.addPartner.firstNameInvalid);
+      expect(res.text).toContain(enTranslationText.errorMessages.partners.addPartner.firstNameInvalid);
     });
 
     it("should replay entered data when invalid data is entered and a validation error occurs", async () => {
@@ -354,8 +351,8 @@ describe("Add Limited Partner Person Page", () => {
 
   describe("Validation", () => {
     it.each([
-      ["English", "en", enErrorsText],
-      ["Welsh", "cy", cyErrorsText]
+      ["English", "en", enTranslationText],
+      ["Welsh", "cy", cyTranslationText]
     ])(
       "should return validation errors when no data is submitted (%s)",
       async (_language, lang, errorsText) => {
@@ -382,8 +379,8 @@ describe("Add Limited Partner Person Page", () => {
     );
 
     it.each([
-      ["English", "en", enErrorsText],
-      ["Welsh", "cy", cyErrorsText]
+      ["English", "en", enTranslationText],
+      ["Welsh", "cy", cyTranslationText]
     ])(
       "should return validation error if first name has invalid characters (%s)",
       async (_language, lang, errorsText) => {
@@ -402,8 +399,8 @@ describe("Add Limited Partner Person Page", () => {
     );
 
     it.each([
-      ["English", "en", enErrorsText],
-      ["Welsh", "cy", cyErrorsText]
+      ["English", "en", enTranslationText],
+      ["Welsh", "cy", cyTranslationText]
     ])(
       "should return validation error if first name is too long (%s)",
       async (_language, lang, errorsText) => {
@@ -422,8 +419,8 @@ describe("Add Limited Partner Person Page", () => {
     );
 
     it.each([
-      ["English", "en", enErrorsText],
-      ["Welsh", "cy", cyErrorsText]
+      ["English", "en", enTranslationText],
+      ["Welsh", "cy", cyTranslationText]
     ])(
       "should return validation error if last name has invalid characters (%s)",
       async (_language, lang, errorsText) => {
@@ -442,8 +439,8 @@ describe("Add Limited Partner Person Page", () => {
     );
 
     it.each([
-      ["English", "en", enErrorsText],
-      ["Welsh", "cy", cyErrorsText]
+      ["English", "en", enTranslationText],
+      ["Welsh", "cy", cyTranslationText]
     ])(
       "should return validation error if last name is too long (%s)",
       async (_language, lang, errorsText) => {
@@ -462,8 +459,8 @@ describe("Add Limited Partner Person Page", () => {
     );
 
     it.each([
-      ["English", "en", enErrorsText],
-      ["Welsh", "cy", cyErrorsText]
+      ["English", "en", enTranslationText],
+      ["Welsh", "cy", cyTranslationText]
     ])(
       "should return validation error if former names missing (%s)",
       async (_language, lang, errorsText) => {
@@ -482,8 +479,8 @@ describe("Add Limited Partner Person Page", () => {
     );
 
     it.each([
-      ["English", "en", enErrorsText],
-      ["Welsh", "cy", cyErrorsText]
+      ["English", "en", enTranslationText],
+      ["Welsh", "cy", cyTranslationText]
     ])(
       "should return validation error if former names has invalid characters (%s)",
       async (_language, lang, errorsText) => {
@@ -503,8 +500,8 @@ describe("Add Limited Partner Person Page", () => {
     );
 
     it.each([
-      ["English", "en", enErrorsText],
-      ["Welsh", "cy", cyErrorsText]
+      ["English", "en", enTranslationText],
+      ["Welsh", "cy", cyTranslationText]
     ])(
       "should return validation error if former names is too long (%s)",
       async (_language, lang, errorsText) => {
@@ -524,8 +521,8 @@ describe("Add Limited Partner Person Page", () => {
     );
 
     it.each([
-      ["English", "en", enErrorsText],
-      ["Welsh", "cy", cyErrorsText]
+      ["English", "en", enTranslationText],
+      ["Welsh", "cy", cyTranslationText]
     ])(
       "should return validation error if nationality2 is same as nationality1 (%s)",
       async (_language, lang, errorsText) => {

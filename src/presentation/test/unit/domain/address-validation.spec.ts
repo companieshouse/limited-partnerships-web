@@ -1,7 +1,5 @@
 import AddressValidator from "../../../../domain/validator/Address";
-
-import enTranslationText from "../../../../../locales/en/errors.json";
-
+import { enTranslationText } from "../../../../test/utils/locales";
 const defaultAddress = {
   premises: "123",
   address_line_1: "Main Street",
