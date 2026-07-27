@@ -2,7 +2,9 @@ import request from "supertest";
 import app from "../../../app";
 
 import enTranslationText from "../../../../../../../locales/en/translations.json";
+import enCountriesText from "../../../../../../../locales/en/countries.json";
 import cyTranslationText from "../../../../../../../locales/cy/translations.json";
+import cyCountriesText from "../../../../../../../locales/cy/countries.json";
 
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import LimitedPartnerBuilder from "../../../../builder/LimitedPartnerBuilder";
@@ -55,7 +57,7 @@ describe("Limited Partner Check Your Answers Page", () => {
     expect(res.text).toContain(translationText.checkYourAnswersPage.update.title);
     expect(res.text).toContain(translationText.print.buttonText);
     expect(res.text).toContain(translationText.print.buttonTextNoJs);
-    expect(res.text).toContain(translationText.countries.wales);
+    expect(res.text).toContain(lang === "en" ? enCountriesText.countries.wales : cyCountriesText.countries.wales);
     if (lang === "cy") {
       expect(res.text).toContain("WELSH -");
     } else {

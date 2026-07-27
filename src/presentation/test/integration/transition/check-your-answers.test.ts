@@ -8,7 +8,9 @@ import {
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { CHECK_YOUR_ANSWERS_URL } from "../../../controller/transition/url";
 import enTranslationText from "../../../../../locales/en/translations.json";
+import enCountriesText from "../../../../../locales/en/countries.json";
 import cyTranslationText from "../../../../../locales/cy/translations.json";
+import cyCountriesText from "../../../../../locales/cy/countries.json";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
@@ -176,7 +178,7 @@ describe("Check Your Answers Page", () => {
       checkIfValuesInText(res, limitedPartnerLegalEntity, enTranslationText);
 
       expect(res.text).toContain(enTranslationText.nationalities.british);
-      expect(res.text).toContain(enTranslationText.countries.unitedStates);
+      expect(res.text).toContain(enCountriesText.countries.unitedStates);
     });
 
     it("should load the check your answers page with partners - CY", async () => {
@@ -204,7 +206,7 @@ describe("Check Your Answers Page", () => {
       checkIfValuesInText(res, limitedPartnerLegalEntity, cyTranslationText);
 
       expect(res.text).toContain(cyTranslationText.nationalities.british);
-      expect(res.text).toContain(cyTranslationText.countries.unitedStates);
+      expect(res.text).toContain(cyCountriesText.countries.unitedStates);
     });
   });
 

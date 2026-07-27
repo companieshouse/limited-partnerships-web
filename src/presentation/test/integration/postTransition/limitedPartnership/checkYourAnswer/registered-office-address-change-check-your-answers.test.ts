@@ -1,7 +1,9 @@
 import request from "supertest";
 
 import enTranslationText from "../../../../../../../locales/en/translations.json";
+import enCountriesText from "../../../../../../../locales/en/countries.json";
 import cyTranslationText from "../../../../../../../locales/cy/translations.json";
+import cyCountriesText from "../../../../../../../locales/cy/countries.json";
 
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
@@ -53,7 +55,7 @@ describe("Registered office address check your answers page", () => {
       expect(res.text).toContain(`${ENTER_REGISTERED_OFFICE_ADDRESSS_TEMPLATE}?lang=en`);
       expect(res.text).toContain(`${WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_TEMPLATE}?lang=en`);
 
-      expect(res.text).toContain(enTranslationText.countries.england);
+      expect(res.text).toContain(enCountriesText.countries.england);
       expect(countOccurrences(res.text, toEscapedHtml(enTranslationText.serviceName.updateLimitedPartnershipRegisteredOfficeAddress))).toBe(2);
     });
 
@@ -71,7 +73,7 @@ describe("Registered office address check your answers page", () => {
       expect(res.text).toContain(`${ENTER_REGISTERED_OFFICE_ADDRESSS_TEMPLATE}?lang=cy`);
       expect(res.text).toContain(`${WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_TEMPLATE}?lang=cy`);
 
-      expect(res.text).toContain(cyTranslationText.countries.england);
+      expect(res.text).toContain(cyCountriesText.countries.england);
       expect(countOccurrences(res.text, toEscapedHtml(cyTranslationText.serviceName.updateLimitedPartnershipRegisteredOfficeAddress))).toBe(2);
     });
   });

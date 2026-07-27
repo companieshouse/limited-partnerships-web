@@ -9,7 +9,9 @@ import {
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { CHECK_YOUR_ANSWERS_URL, REVIEW_LIMITED_PARTNERS_URL, REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL, WILL_LIMITED_PARTNERSHIP_HAVE_PSC_URL } from "../../../controller/registration/url";
 import enGeneralTranslationText from "../../../../../locales/en/translations.json";
+import enCountriesText from "../../../../../locales/en/countries.json";
 import cyGeneralTranslationText from "../../../../../locales/cy/translations.json";
+import cyCountriesText from "../../../../../locales/cy/countries.json";
 import enAddressTranslationText from "../../../../../locales/en/address.json";
 import cyAddressTranslationText from "../../../../../locales/cy/address.json";
 import enPersonWithSignificantControlTranslationText from "../../../../../locales/en/personWithSignificantControl.json";
@@ -327,7 +329,7 @@ describe("Check Your Answers Page", () => {
     checkIfValuesInText(res, limitedPartnerLegalEntity, translationText);
 
     expect(res.text).toContain(translationText.nationalities.british);
-    expect(res.text).toContain(translationText.countries.unitedStates);
+    expect(res.text).toContain(lang === "en" ? enCountriesText.countries.unitedStates : cyCountriesText.countries.unitedStates);
   });
 
   it("should load the check your answers page with capital contribution data for limited partner person", async () => {
