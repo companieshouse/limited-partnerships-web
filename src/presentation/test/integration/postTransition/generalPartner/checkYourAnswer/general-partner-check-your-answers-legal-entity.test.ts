@@ -2,7 +2,9 @@ import request from "supertest";
 import app from "../../../app";
 
 import enTranslationText from "../../../../../../../locales/en/translations.json";
+import enCountriesText from "../../../../../../../locales/en/countries.json";
 import cyTranslationText from "../../../../../../../locales/cy/translations.json";
+import cyCountriesText from "../../../../../../../locales/cy/countries.json";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import GeneralPartnerBuilder from "../../../../builder/GeneralPartnerBuilder";
@@ -44,9 +46,9 @@ describe("Check Your Answers Page", () => {
 
   describe("GET Check Your Answers Page", () => {
     it.each([
-      ["en", enTranslationText],
-      ["cy", cyTranslationText]
-    ])("should GET Check Your Answers Page %s text", async (lang, translationText) => {
+      ["en", enTranslationText, enCountriesText],
+      ["cy", cyTranslationText, cyCountriesText]
+    ])("should GET Check Your Answers Page %s text", async (lang, translationText, countriesText) => {
       setLocalesEnabled(true);
       const res = await request(app).get(URL + `?lang=${lang}`);
 
@@ -55,7 +57,7 @@ describe("Check Your Answers Page", () => {
       testTranslations(res.text, translationText.checkYourAnswersPage.warningMessage);
       expect(res.text).toContain(translationText.print.buttonText);
       expect(res.text).toContain(translationText.print.buttonTextNoJs);
-      expect(res.text).toContain(translationText.countries.wales);
+      expect(res.text).toContain(countriesText.countries.wales);
       if (lang === "cy") {
         expect(res.text).toContain("WELSH -");
       } else {

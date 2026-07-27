@@ -1,7 +1,9 @@
 import request from "supertest";
 
 import enGeneralTranslationText from "../../../../../../../locales/en/translations.json";
+import enCountriesText from "../../../../../../../locales/en/countries.json";
 import cyGeneralTranslationText from "../../../../../../../locales/cy/translations.json";
+import cyCountriesText from "../../../../../../../locales/cy/countries.json";
 import enAddressTranslationText from "../../../../../../../locales/en/address.json";
 import cyAddressTranslationText from "../../../../../../../locales/cy/address.json";
 import enErrorMessages from "../../../../../../../locales/en/errors.json";
@@ -64,7 +66,7 @@ describe("Confirm General Partner Usual Residential Address Page", () => {
       expect(res.text).toContain("Line 2");
       expect(res.text).toContain("Stoke-On-Trent");
       expect(res.text).toContain("Region");
-      expect(res.text).toContain(enTranslationText.countries.england);
+      expect(res.text).toContain(enCountriesText.countries.england);
       expect(res.text).toContain("ST6 3LJ");
     });
 
@@ -80,7 +82,7 @@ describe("Confirm General Partner Usual Residential Address Page", () => {
       expect(res.text).toContain("Line 2");
       expect(res.text).toContain("Stoke-On-Trent");
       expect(res.text).toContain("Region");
-      expect(res.text).toContain(cyTranslationText.countries.england);
+      expect(res.text).toContain(cyCountriesText.countries.england);
       expect(res.text).toContain("ST6 3LJ");
     });
 
