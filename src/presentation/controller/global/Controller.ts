@@ -27,6 +27,7 @@ import LimitedPartnerService from "../../../application/service/LimitedPartnerSe
 import { Transaction } from "@companieshouse/api-sdk-node/dist/services/transaction/types";
 import { RESUME_REGISTRATION_OR_TRANSITION_URL_MAP } from "./resumeUrlMapping";
 import { serviceNameKindMap } from "../../../config/service-name-kind-map";
+import UIErrors from "../../../domain/entities/UIErrors";
 
 class GlobalController extends AbstractController {
   constructor(
@@ -75,10 +76,15 @@ class GlobalController extends AbstractController {
   signOutChoice() {
     return (request: Request, response: Response, next: NextFunction) => {
       try {
+        if (!request.body["sign_out"]) {
+          return this.renderSignOutPageWithErrors(request, response);
+        }
+
         if (request.body["sign_out"] === "yes") {
           this.clearCache(response);
           return response.redirect(ACCOUNTS_SIGN_OUT_URL);
         }
+
         const previousPage = request.body["previousPage"];
 
         return this.redirectWithChecks(response, previousPage);
@@ -191,11 +197,7 @@ class GlobalController extends AbstractController {
 
         response.render(
           super.templateName(pageRouting.currentUrl),
-          super.makeProps(
-            pageRouting,
-            { limitedPartnership, generalPartner, limitedPartner, userEmail, ids, subtype },
-            null
-          )
+          super.makeProps(pageRouting, { limitedPartnership, generalPartner, limitedPartner, userEmail, ids, subtype }, null)
         );
       } catch (error) {
         next(error);
@@ -261,9 +263,7 @@ class GlobalController extends AbstractController {
 
         const resumeData = resumeUrlMap[resource.kind];
         if (!resumeData) {
-          throw new Error(
-            `Unknown transaction resource kind '${resource.kind}' found when resuming post transition journey`
-          );
+          throw new Error(`Unknown transaction resource kind '${resource.kind}' found when resuming post transition journey`);
         }
         return resumeData;
       });
@@ -310,6 +310,16 @@ class GlobalController extends AbstractController {
       ids.transactionId
     );
     return response.redirect(redirectToPaymentServiceUrl);
+  }
+
+  private renderSignOutPageWithErrors(request: Request, response: Response) {
+    const pageType = super.pageType(request.path);
+    const pageRouting = super.getRouting(globalsRouting, pageType, request);
+    pageRouting.previousUrl = request.body["previousPage"];
+
+    const uiErrors = new UIErrors().setWebError("sign_out", response.locals.i18n.errorMessages.signOutPage.selectionRequired);
+
+    return response.render(super.templateName(pageRouting.currentUrl), super.makeProps(pageRouting, null, uiErrors));
   }
 }
 
