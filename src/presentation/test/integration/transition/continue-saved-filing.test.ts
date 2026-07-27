@@ -5,8 +5,7 @@ import {
   CONTINUE_SAVED_FILING_URL,
   COMPANY_NUMBER_URL
 } from "../../../controller/transition/url";
-import enTranslationText from "../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../locales/cy/translations.json";
+
 import TransitionPageType from "../../../controller/transition/PageType";
 import {
   SERVICE_NAME_TRANSITION,
@@ -14,7 +13,7 @@ import {
 } from "../../../../config/constants";
 import { setLocalesEnabled, testTranslations } from "../../utils";
 import { customerFeedbackUrlMap } from "../../../../middlewares/customer-feedback.middleware";
-
+import { enTranslationText, cyTranslationText } from "../../../../test/utils/locales";
 describe("Continue Saved Filing Page", () => {
   beforeEach(() => {
     setLocalesEnabled(false);

@@ -1,9 +1,6 @@
 import request from "supertest";
 import { GeneralPartner, PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-import enTranslationText from "../../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../../locales/cy/translations.json";
-
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import { countOccurrences, expectChangeLinks, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
@@ -16,7 +13,7 @@ import PostTransitionPageType from "../../../../../controller/postTransition/pag
 import { CONFIRMATION_POST_TRANSITION_URL } from "../../../../../controller/global/url";
 import TransactionBuilder from "../../../../builder/TransactionBuilder";
 import { OFFICER_ROLE_GENERAL_PARTNER_PERSON } from "../../../../../../config";
-
+import { enTranslationText, cyTranslationText } from "../../../../../../test/utils/locales";
 describe("Update general partner check your answers page", () => {
   const URL = getUrl(UPDATE_GENERAL_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL);
   let generalPartner: GeneralPartner;

@@ -1,8 +1,7 @@
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import request from "supertest";
-import enTranslationText from "../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../locales/cy/translations.json";
+
 import app from "../../app";
 import {
   UPDATE_GENERAL_PARTNER_PERSON_URL,
@@ -18,7 +17,7 @@ import PostTransitionPageType from "../../../../../presentation/controller/postT
 import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 import { OFFICER_ROLE_GENERAL_PARTNER_PERSON } from "../../../../../config";
 import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
-
+import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("Update General Partner Person Page", () => {
   const URL = getUrl(UPDATE_GENERAL_PARTNER_PERSON_URL);
   const URL_WITH_IDS = getUrl(UPDATE_GENERAL_PARTNER_PERSON_WITH_IDS_URL);

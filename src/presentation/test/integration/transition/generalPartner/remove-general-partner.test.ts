@@ -1,8 +1,5 @@
 import request from "supertest";
 
-import enTranslationText from "../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../locales/cy/translations.json";
-
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 
@@ -11,7 +8,7 @@ import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilde
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import { REMOVE_GENERAL_PARTNER_URL, REVIEW_GENERAL_PARTNERS_URL } from "../../../../controller/transition/url";
 import TransitionPageType from "../../../../controller/transition/PageType";
-
+import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("Remove General Partner Page", () => {
   const URL = getUrl(REMOVE_GENERAL_PARTNER_URL);
 

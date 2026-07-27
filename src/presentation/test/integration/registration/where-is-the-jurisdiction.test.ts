@@ -1,10 +1,6 @@
 import request from "supertest";
 import { Jurisdiction, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-import enTranslationText from "../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../locales/cy/translations.json";
-import enErrorMessages from "../../../../../locales/en/errors.json";
-import cyErrorMessages from "../../../../../locales/cy/errors.json";
 import app from "../app";
 import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
@@ -12,7 +8,7 @@ import { WHERE_IS_THE_JURISDICTION_URL } from "../../../controller/registration/
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import { POSTCODE_REGISTERED_OFFICE_ADDRESS_URL } from "../../../controller/addressLookUp/url/registration";
-
+import { enTranslationText, cyTranslationText } from "../../../../test/utils/locales";
 describe("Where is the jurisdiction page", () => {
   const URL = getUrl(WHERE_IS_THE_JURISDICTION_URL);
   const REDIRECT_URL = getUrl(POSTCODE_REGISTERED_OFFICE_ADDRESS_URL);
@@ -88,7 +84,7 @@ describe("Where is the jurisdiction page", () => {
       ["en", PartnershipType.PFLP],
       ["cy", PartnershipType.PFLP],
     ])("should return validation error when no jurisdiction is selected", async (lang: string, partnershipType: PartnershipType) => {
-      const translationText = lang === "en" ? enErrorMessages : cyErrorMessages;
+      const translationText = lang === "en" ? enTranslationText : cyTranslationText;
       const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
 
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);

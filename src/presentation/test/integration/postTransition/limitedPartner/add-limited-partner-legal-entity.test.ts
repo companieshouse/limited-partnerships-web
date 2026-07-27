@@ -2,9 +2,6 @@ import request from "supertest";
 import { PartnerKind, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 
-import enTranslationText from "../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../locales/cy/translations.json";
-
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../utils";
@@ -24,7 +21,7 @@ import {
   TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
 } from "../../../../controller/addressLookUp/url/postTransition";
 import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
-
+import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("Add Limited Partner Legal Entity Page", () => {
   const URL = getUrl(ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL);
   const REDIRECT_URL = getUrl(TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);

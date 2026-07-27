@@ -1,11 +1,6 @@
 import request from "supertest";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-import enGeneralTranslationText from "../../../../../../locales/en/translations.json";
-import cyGeneralTranslationText from "../../../../../../locales/cy/translations.json";
-import enAddressTranslationText from "../../../../../../locales/en/address.json";
-import cyAddressTranslationText from "../../../../../../locales/cy/address.json";
-
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../utils";
@@ -21,10 +16,8 @@ import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
 import TransactionBuilder from "../../../builder/TransactionBuilder";
 import TransactionGeneralPartner from "../../../../../domain/entities/TransactionGeneralPartner";
-
+import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("Update Principal Office Address Yes No Page", () => {
-  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
-  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText };
   const URL = getUrl(UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL);
   const REDIRECT_YES = getUrl(ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
   const REDIRECT_NO = getUrl(WHEN_DID_GENERAL_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL);

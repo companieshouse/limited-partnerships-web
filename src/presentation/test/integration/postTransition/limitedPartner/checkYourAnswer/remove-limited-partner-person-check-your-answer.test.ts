@@ -1,9 +1,6 @@
 import request from "supertest";
 import { LimitedPartner, PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-import enTranslationText from "../../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../../locales/cy/translations.json";
-
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import { countOccurrences, getUrl, setLocalesEnabled } from "../../../../utils";
@@ -11,7 +8,7 @@ import { countOccurrences, getUrl, setLocalesEnabled } from "../../../../utils";
 import { REMOVE_LIMITED_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/postTransition/url";
 import LimitedPartnerBuilder from "../../../../../../presentation/test/builder/LimitedPartnerBuilder";
 import TransactionBuilder from "../../../../builder/TransactionBuilder";
-
+import { enTranslationText, cyTranslationText } from "../../../../../../test/utils/locales";
 describe("Remove limited partner person check your answers page", () => {
   const URL = getUrl(REMOVE_LIMITED_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL);
   let limitedPartner: LimitedPartner;

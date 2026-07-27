@@ -1,14 +1,12 @@
 import request from "supertest";
 
 import app from "../app";
-import enTranslationText from "../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../locales/cy/translations.json";
 
 import { PAYMENT_FAILED_URL } from "../../../controller/global/url";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import { JOURNEY_TYPE_PARAM } from "../../../../config";
 import { Journey } from "../../../../domain/entities/journey";
-
+import { enTranslationText, cyTranslationText } from "../../../../test/utils/locales";
 describe("Payment Failed Page", () => {
   const REGISTRATION_URL = getUrl(PAYMENT_FAILED_URL).replace(JOURNEY_TYPE_PARAM, Journey.registration);
   const TRANSITION_URL = getUrl(PAYMENT_FAILED_URL).replace(JOURNEY_TYPE_PARAM, Journey.transition);

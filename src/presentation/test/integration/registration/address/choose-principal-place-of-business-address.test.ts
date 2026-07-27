@@ -1,11 +1,5 @@
 import request from "supertest";
 
-import enGeneralTranslationText from "../../../../../../locales/en/translations.json";
-import cyGeneralTranslationText from "../../../../../../locales/cy/translations.json";
-import enAddressTranslationText from "../../../../../../locales/en/address.json";
-import cyAddressTranslationText from "../../../../../../locales/cy/address.json";
-import enErrorsTranslationText from "../../../../../../locales/en/errors.json";
-
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations, countOccurrences } from "../../../utils";
@@ -18,10 +12,8 @@ import {
 
 import AddressPageType from "../../../../controller/addressLookUp/PageType";
 import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
-
+import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("Choose Principal Place Of Business Address Page", () => {
-  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
-  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText };
   const URL = getUrl(CHOOSE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL);
   const REDIRECT_URL = getUrl(CONFIRM_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL);
 
@@ -133,7 +125,7 @@ describe("Choose Principal Place Of Business Address Page", () => {
           pageType: AddressPageType.choosePrincipalPlaceOfBusinessAddress,
         });
 
-      const errorMessage = enErrorsTranslationText.errorMessages.address.chooseAddress.selectionRequired;
+      const errorMessage = enTranslationText.errorMessages.address.chooseAddress.selectionRequired;
 
       expect(res.status).toBe(200);
       expect(countOccurrences(res.text, errorMessage)).toBe(2);

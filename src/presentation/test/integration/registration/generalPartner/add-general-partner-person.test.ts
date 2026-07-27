@@ -1,10 +1,5 @@
 import request from "supertest";
 
-import enTranslationText from "../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../locales/cy/translations.json";
-import enErrorMessages from "../../../../../../locales/en/errors.json";
-import cyErrorMessages from "../../../../../../locales/cy/errors.json";
-
 import app from "../../app";
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
@@ -23,7 +18,7 @@ import {
   REVIEW_GENERAL_PARTNERS_TEMPLATE
 } from "../../../../controller/registration/template";
 import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
-
+import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("Add General Partner Person Page", () => {
   const URL = getUrl(ADD_GENERAL_PARTNER_PERSON_URL);
   const REDIRECT_URL = getUrl(TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
@@ -155,8 +150,8 @@ describe("Add General Partner Person Page", () => {
     });
 
     it.each([
-      ["en", enErrorMessages],
-      ["cy", cyErrorMessages]
+      ["en", enTranslationText],
+      ["cy", cyTranslationText]
     ])("should return validation errors when all data is missing - %s", async (lang: string, errorMessages: any) => {
       setLocalesEnabled(true);
 
@@ -176,8 +171,8 @@ describe("Add General Partner Person Page", () => {
     });
 
     it.each([
-      ["en", enErrorMessages],
-      ["cy", cyErrorMessages]
+      ["en", enTranslationText],
+      ["cy", cyTranslationText]
     ])("should return validation errors when former names is missing - %s", async (lang: string, errorMessages: any) => {
       setLocalesEnabled(true);
 
@@ -193,10 +188,10 @@ describe("Add General Partner Person Page", () => {
     });
 
     it.each([
-      ["en", "§", enErrorMessages.errorMessages.partners.addPartner.firstNameInvalid],
-      ["en", "a".repeat(51), enErrorMessages.errorMessages.partners.addPartner.firstNameTooLong],
-      ["cy", "§", cyErrorMessages.errorMessages.partners.addPartner.firstNameInvalid],
-      ["cy", "a".repeat(51), cyErrorMessages.errorMessages.partners.addPartner.firstNameTooLong]
+      ["en", "§", enTranslationText.errorMessages.partners.addPartner.firstNameInvalid],
+      ["en", "a".repeat(51), enTranslationText.errorMessages.partners.addPartner.firstNameTooLong],
+      ["cy", "§", cyTranslationText.errorMessages.partners.addPartner.firstNameInvalid],
+      ["cy", "a".repeat(51), cyTranslationText.errorMessages.partners.addPartner.firstNameTooLong]
     ])("should return validation errors for forename errors - %s", async (lang: string, forename: string, errorMessage: string) => {
       setLocalesEnabled(true);
 
@@ -212,10 +207,10 @@ describe("Add General Partner Person Page", () => {
     });
 
     it.each([
-      ["en", "§", enErrorMessages.errorMessages.partners.addPartner.lastNameInvalid],
-      ["en", "a".repeat(161), enErrorMessages.errorMessages.partners.addPartner.lastNameTooLong],
-      ["cy", "§", cyErrorMessages.errorMessages.partners.addPartner.lastNameInvalid],
-      ["cy", "a".repeat(161), cyErrorMessages.errorMessages.partners.addPartner.lastNameTooLong]
+      ["en", "§", enTranslationText.errorMessages.partners.addPartner.lastNameInvalid],
+      ["en", "a".repeat(161), enTranslationText.errorMessages.partners.addPartner.lastNameTooLong],
+      ["cy", "§", cyTranslationText.errorMessages.partners.addPartner.lastNameInvalid],
+      ["cy", "a".repeat(161), cyTranslationText.errorMessages.partners.addPartner.lastNameTooLong]
     ])("should return validation errors for surname errors - %s", async (lang: string, surname: string, errorMessage: string) => {
       setLocalesEnabled(true);
 
@@ -231,10 +226,10 @@ describe("Add General Partner Person Page", () => {
     });
 
     it.each([
-      ["en", "§", enErrorMessages.errorMessages.partners.addPartner.formerNamesInvalid],
-      ["en", "a".repeat(161), enErrorMessages.errorMessages.partners.addPartner.formerNamesTooLong],
-      ["cy", "§", cyErrorMessages.errorMessages.partners.addPartner.formerNamesInvalid],
-      ["cy", "a".repeat(161), cyErrorMessages.errorMessages.partners.addPartner.formerNamesTooLong]
+      ["en", "§", enTranslationText.errorMessages.partners.addPartner.formerNamesInvalid],
+      ["en", "a".repeat(161), enTranslationText.errorMessages.partners.addPartner.formerNamesTooLong],
+      ["cy", "§", cyTranslationText.errorMessages.partners.addPartner.formerNamesInvalid],
+      ["cy", "a".repeat(161), cyTranslationText.errorMessages.partners.addPartner.formerNamesTooLong]
     ])("should return validation errors for former names errors - %s", async (lang: string, formerNames: string, errorMessage: string) => {
       setLocalesEnabled(true);
 
@@ -250,8 +245,8 @@ describe("Add General Partner Person Page", () => {
     });
 
     it.each([
-      ["en", enErrorMessages],
-      ["cy", cyErrorMessages]
+      ["en", enTranslationText],
+      ["cy", cyTranslationText]
     ])("should return a validation error when nationality 1 and 2 are the same - %s", async (lang: string, errorMessages: any) => {
       setLocalesEnabled(true);
 
@@ -318,7 +313,7 @@ describe("Add General Partner Person Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain('id="previous_name" name="previous_name" type="radio" value="true" checked');
-      expect(res.text).toContain(toEscapedHtml(enErrorMessages.errorMessages.partners.addPartner.formerNamesMissing));
+      expect(res.text).toContain(toEscapedHtml(enTranslationText.errorMessages.partners.addPartner.formerNamesMissing));
     });
   });
 
@@ -372,7 +367,7 @@ describe("Add General Partner Person Page", () => {
       });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(enErrorMessages.errorMessages.partners.addPartner.firstNameInvalid);
+      expect(res.text).toContain(enTranslationText.errorMessages.partners.addPartner.firstNameInvalid);
     });
 
     it("should replay entered data when invalid data is entered and a validation error occurs", async () => {

@@ -1,7 +1,5 @@
 import request from "supertest";
-import enTranslationText from "../../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../../locales/cy/translations.json";
-import enErrorMessages from "../../../../../../../locales/en/errors.json";
+
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import { countOccurrences, getUrl, setLocalesEnabled, toEscapedHtml } from "../../../../utils";
@@ -12,7 +10,7 @@ import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBui
 import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
 import TransactionBuilder from "../../../../builder/TransactionBuilder";
 import { PartnershipKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-
+import { enTranslationText, cyTranslationText } from "../../../../../../test/utils/locales";
 describe("Registered office address change date page", () => {
   const URL = getUrl(WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL);
 
@@ -84,7 +82,7 @@ describe("Registered office address change date page", () => {
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
     const originalErrorMessage = "Default";
-    const expectedErrorMessage = toEscapedHtml(enErrorMessages.errorMessages.dateOfUpdate.registeredOfficeAddress);
+    const expectedErrorMessage = toEscapedHtml(enTranslationText.errorMessages.dateOfUpdate.registeredOfficeAddress);
     const apiErrors: ApiErrors = {
       errors: { date_of_update: originalErrorMessage }
     };

@@ -2,13 +2,6 @@ import request from "supertest";
 import { UKAddress } from "@companieshouse/api-sdk-node/dist/services/postcode-lookup";
 import { Jurisdiction } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
-import enGeneralTranslationText from "../../../../../../locales/en/translations.json";
-import cyGeneralTranslationText from "../../../../../../locales/cy/translations.json";
-import enAddressTranslationText from "../../../../../../locales/en/address.json";
-import cyAddressTranslationText from "../../../../../../locales/cy/address.json";
-import enErrorsTranslationText from "../../../../../../locales/en/errors.json";
-import cyErrorsTranslationText from "../../../../../../locales/cy/errors.json";
-
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../utils";
@@ -22,10 +15,8 @@ import {
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
 import AddressPageType from "../../../../controller/addressLookUp/PageType";
 import { APPLICATION_CACHE_KEY } from "../../../../../config/constants";
-
+import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("Postcode Principal Place Of Business Address Page", () => {
-  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText, ...enErrorsTranslationText };
-  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText, ...cyErrorsTranslationText };
   const URL = getUrl(POSTCODE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL);
   const REDIRECT_URL = getUrl(CHOOSE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL);
   const addresses: UKAddress[] = appDevDependencies.addressLookUpGateway.englandAddresses;

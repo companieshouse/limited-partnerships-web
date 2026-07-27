@@ -1,9 +1,6 @@
 import request from "supertest";
 import { PartnershipKind, Term } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-import enTranslationText from "../../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../../locales/cy/translations.json";
-
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import { countOccurrences, getUrl, setLocalesEnabled } from "../../../../utils";
@@ -14,7 +11,7 @@ import PostTransitionPageType from "../../../../../controller/postTransition/pag
 import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBuilder";
 import { TERM_TEMPLATE, WHEN_DID_TERM_CHANGE_TEMPLATE } from "../../../../../../presentation/controller/postTransition/template";
 import TransactionBuilder from "../../../../builder/TransactionBuilder";
-
+import { enTranslationText, cyTranslationText } from "../../../../../../test/utils/locales";
 describe("Term change check your answers page", () => {
   const URL = getUrl(TERM_CHANGE_CHECK_YOUR_ANSWERS_URL);
 

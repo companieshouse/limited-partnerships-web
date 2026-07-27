@@ -2,13 +2,6 @@ import request from "supertest";
 import { Jurisdiction } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 
-import enGeneralTranslationText from "../../../../../../locales/en/translations.json";
-import cyGeneralTranslationText from "../../../../../../locales/cy/translations.json";
-import enAddressTranslationText from "../../../../../../locales/en/address.json";
-import cyAddressTranslationText from "../../../../../../locales/cy/address.json";
-import enErrorsTranslationText from "../../../../../../locales/en/errors.json";
-import cyErrorsTranslationText from "../../../../../../locales/cy/errors.json";
-
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../utils";
@@ -25,10 +18,8 @@ import CompanyProfileBuilder from "../../../../../presentation/test/builder/Comp
 import PostTransitionPageType from "../../../../../presentation/controller/postTransition/pageType";
 import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 import { YOUR_COMPANY_URL } from "../../../../../config";
-
+import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("Enter Registered Office Address Page", () => {
-  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText, ...enErrorsTranslationText };
-  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText, ...cyErrorsTranslationText };
   const URL = getUrl(ENTER_REGISTERED_OFFICE_ADDRESS_URL);
   const URL_WITH_IDS = getUrl(ENTER_REGISTERED_OFFICE_ADDRESS_WITH_IDS_URL);
   const BACK_LINK = getUrl(YOUR_COMPANY_URL);

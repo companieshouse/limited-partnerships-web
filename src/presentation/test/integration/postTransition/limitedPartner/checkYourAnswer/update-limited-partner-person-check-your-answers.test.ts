@@ -1,9 +1,6 @@
 import request from "supertest";
 import { LimitedPartner, PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-import enTranslationText from "../../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../../locales/cy/translations.json";
-
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import { countOccurrences, expectChangeLinks, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
@@ -16,7 +13,7 @@ import TransactionBuilder from "../../../../builder/TransactionBuilder";
 import LimitedPartnerBuilder from "../../../../builder/LimitedPartnerBuilder";
 import { OFFICER_ROLE_LIMITED_PARTNER_PERSON } from "../../../../../../config/constants";
 import { UPDATE_LIMITED_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL, UPDATE_LIMITED_PARTNER_PERSON_WITH_IDS_URL, WHEN_DID_LIMITED_PARTNER_PERSON_DETAILS_CHANGE_URL } from "../../../../../controller/postTransition/url";
-
+import { enTranslationText, cyTranslationText } from "../../../../../../test/utils/locales";
 describe("Update limited partner check your answers page", () => {
   const URL = getUrl(UPDATE_LIMITED_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL);
   let limitedPartner: LimitedPartner;

@@ -1,8 +1,6 @@
 import request from "supertest";
 import { createApiClient } from "@companieshouse/api-sdk-node";
 
-import enTranslationText from "../../../../../../locales/en/translations.json";
-
 import appRealDependencies from "../../../../../app";
 
 import { CONFIRM_LIMITED_PARTNERSHIP_URL, TRANSITION_ALREADY_FILED_URL } from "../../../../controller/transition/url";
@@ -12,7 +10,7 @@ import { getUrl } from "../../../utils";
 
 import sdkMock from "../../mock/sdkMock";
 import FilingHistoryBuilder from "../../../builder/FilingHistoryBuilder";
-
+import { enTranslationText } from "../../../../../test/utils/locales";
 jest.mock("@companieshouse/api-sdk-node");
 
 const mockCreateApiClient = createApiClient as jest.Mock;

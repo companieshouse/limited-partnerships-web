@@ -1,14 +1,11 @@
 import request from "supertest";
-import enTranslationText from "../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../locales/cy/translations.json";
-import enErrorsText from "../../../../../locales/en/errors.json";
-import cyErrorsText from "../../../../../locales/cy/errors.json";
+
 import app from "../app";
 import { SIGN_OUT_URL } from "../../../controller/global/url";
 import { getUrl, setLocalesEnabled, testTranslations, countOccurrences } from "../../utils";
 import { ACCOUNTS_SIGN_OUT_URL, REGISTRATION_BASE_URL } from "../../../../config";
 import { EMAIL_TEMPLATE } from "presentation/controller/registration/template";
-
+import { enTranslationText, cyTranslationText } from "../../../../test/utils/locales";
 describe("Sign out page", () => {
   const URL = getUrl(SIGN_OUT_URL);
 
@@ -53,8 +50,8 @@ describe("Sign out page", () => {
     });
 
     it.each([
-      ["en", enErrorsText],
-      ["cy", cyErrorsText]
+      ["en", enTranslationText],
+      ["cy", cyTranslationText]
     ])("should render the sign out page with an error message when no option is selected (%s)", async (lang, errors) => {
       const previousPage = "";
       const res = await request(app)

@@ -1,12 +1,5 @@
 import request from "supertest";
 
-import enGeneralTranslationText from "../../../../../../../locales/en/translations.json";
-import cyGeneralTranslationText from "../../../../../../../locales/cy/translations.json";
-import enAddressTranslationText from "../../../../../../../locales/en/address.json";
-import cyAddressTranslationText from "../../../../../../../locales/cy/address.json";
-import enErrorsTranslationText from "../../../../../../../locales/en/errors.json";
-import cyErrorsTranslationText from "../../../../../../../locales/cy/errors.json";
-
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
@@ -23,11 +16,8 @@ import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBui
 import PersonWithSignificantControlBuilder from "../../../../builder/PersonWithSignificantControlBuilder";
 
 import TransactionPersonWithSignificantControl from "../../../../../../domain/entities/TransactionPersonWithSignificantControl";
-
+import { enTranslationText, cyTranslationText } from "../../../../../../test/utils/locales";
 describe("PSC correspondence Address Territory Choice", () => {
-  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText, ...enErrorsTranslationText };
-  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText, ...cyErrorsTranslationText };
-
   const URL = getUrl(TERRITORY_CHOICE_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_CORRESPONDENCE_ADDRESS_URL);
 
   const pageType = AddressPageType.territoryChoicePersonWithSignificantControlIndividualPersonCorrespondenceAddress;

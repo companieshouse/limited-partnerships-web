@@ -2,10 +2,6 @@ import request from "supertest";
 import { PartnershipType, Term } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import app from "../app";
-import enGeneralTranslationText from "../../../../../locales/en/translations.json";
-import cyGeneralTranslationText from "../../../../../locales/cy/translations.json";
-import enErrorMessages from "../../../../../locales/en/errors.json";
-import cyErrorMessages from "../../../../../locales/cy/errors.json";
 
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import { GENERAL_PARTNERS_URL, SIC_URL, TERM_URL } from "../../../controller/registration/url";
@@ -13,11 +9,8 @@ import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import { ApiErrors } from "../../../../domain/entities/UIErrors";
-
+import { enTranslationText, cyTranslationText } from "../../../../test/utils/locales";
 describe("Email Page", () => {
-  const enTranslationText = { ...enGeneralTranslationText, ...enErrorMessages };
-  const cyTranslationText = { ...cyGeneralTranslationText, ...cyErrorMessages };
-
   const URL = getUrl(TERM_URL);
   const REDIRECT_URL = getUrl(SIC_URL);
 
@@ -180,7 +173,7 @@ describe("Email Page", () => {
         });
 
         expect(res.status).toBe(200);
-        expect(res.text).toContain(enErrorMessages.errorMessages.limitedPartnership.term.termRequired);
+        expect(res.text).toContain(enTranslationText.errorMessages.limitedPartnership.term.termRequired);
         expect(res.text).toContain('href="#term"');
       });
     });

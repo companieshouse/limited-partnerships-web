@@ -1,12 +1,4 @@
 import request from "supertest";
-
-import enGeneralTranslationText from "../../../../../../locales/en/translations.json";
-import cyGeneralTranslationText from "../../../../../../locales/cy/translations.json";
-import enPersonWithSignificantControlTranslationText from "../../../../../../locales/en/personWithSignificantControl.json";
-import cyPersonWithSignificantControlTranslationText from "../../../../../../locales/cy/personWithSignificantControl.json";
-import enErrors from "../../../../../../locales/en/errors.json";
-import cyErrors from "../../../../../../locales/cy/errors.json";
-
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../utils";
@@ -25,10 +17,8 @@ import TransactionBuilder from "../../../builder/TransactionBuilder";
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
 import TransactionPersonWithSignificantControl from "../../../../../domain/entities/TransactionPersonWithSignificantControl";
 import { PersonWithSignificantControlType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-
+import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("Add Person With Significant Control Individual Person Page", () => {
-  const enTranslationText = { ...enGeneralTranslationText, ...enPersonWithSignificantControlTranslationText };
-  const cyTranslationText = { ...cyGeneralTranslationText, ...cyPersonWithSignificantControlTranslationText };
   const URL = getUrl(ADD_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_URL);
   const REDIRECT_URL = getUrl(WHICH_TYPE_OF_NATURE_OF_CONTROL_INDIVIDUAL_PERSON_URL);
 
@@ -219,8 +209,8 @@ describe("Add Person With Significant Control Individual Person Page", () => {
     });
 
     it.each([
-      ["en", enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.otherTitleShouldBeEmpty],
-      ["cy", cyErrors.errorMessages.personWithSignificantControl.addIndividualPerson.otherTitleShouldBeEmpty]
+      ["en", enTranslationText.errorMessages.personWithSignificantControl.addIndividualPerson.otherTitleShouldBeEmpty],
+      ["cy", cyTranslationText.errorMessages.personWithSignificantControl.addIndividualPerson.otherTitleShouldBeEmpty]
     ])("should display an error if other title is provided when title is not OTHER for %s", async (lang, expectedMsg) => {
       const personWithSignificantControl = new PersonWithSignificantControlBuilder()
         .isIndividualPerson()
@@ -247,13 +237,13 @@ describe("Add Person With Significant Control Individual Person Page", () => {
     it.each([
       [
         "en",
-        enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.otherTitleMissing,
-        enPersonWithSignificantControlTranslationText.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.titles.other
+        enTranslationText.errorMessages.personWithSignificantControl.addIndividualPerson.otherTitleMissing,
+        enTranslationText.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.titles.other
       ],
       [
         "cy",
-        cyErrors.errorMessages.personWithSignificantControl.addIndividualPerson.otherTitleMissing,
-        cyPersonWithSignificantControlTranslationText.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.titles.other
+        cyTranslationText.errorMessages.personWithSignificantControl.addIndividualPerson.otherTitleMissing,
+        cyTranslationText.personWithSignificantControl.addPersonWithSignificantControl.addIndividualPerson.titles.other
       ]
     ])("should display an error if other title is missing when title is OTHER for %s", async (lang, expectedMsg, otherTitleValue) => {
       const personWithSignificantControl = new PersonWithSignificantControlBuilder()
@@ -334,33 +324,33 @@ describe("Add Person With Significant Control Individual Person Page", () => {
 
   describe("Date of birth validations", () => {
     const cases: Array<[string, string, string, string, string, string]> = [
-      ["missing all", "", "", "", "en", enErrors.errorMessages.dateOfBirth.dateMissing],
-      ["day missing", "", "3", "1976", "en", enErrors.errorMessages.dateOfBirth.dayMissing],
-      ["month missing", "1", "", "1976", "en", enErrors.errorMessages.dateOfBirth.monthMissing],
-      ["year missing", "1", "3", "", "en", enErrors.errorMessages.dateOfBirth.yearMissing],
-      ["day & month missing", "", "", "1976", "en", enErrors.errorMessages.dateOfBirth.dayAndMonthMissing],
-      ["month & year missing", "1", "", "", "en", enErrors.errorMessages.dateOfBirth.monthAndYearMissing],
-      ["day & year missing", "", "3", "", "en", enErrors.errorMessages.dateOfBirth.dayAndYearMissing],
-      ["invalid chars", "aa", "bb", "1976", "en", enErrors.errorMessages.dateOfBirth.dateInvalidChars],
-      ["invalid date (29 Feb non leap year)", "29", "2", "2019", "en", enErrors.errorMessages.dateOfBirth.dateInvalidDate],
-      ["in future", "1", "1", "2099", "en", enErrors.errorMessages.dateOfBirth.dateNotInPast],
-      ["day too long", "123", "1", "1976", "en", enErrors.errorMessages.dateOfBirth.dayInvalidLength],
-      ["month too long", "1", "123", "1976", "en", enErrors.errorMessages.dateOfBirth.monthInvalidLength],
-      ["year wrong length", "1", "1", "76", "en", enErrors.errorMessages.dateOfBirth.yearInvalidLength],
+      ["missing all", "", "", "", "en", enTranslationText.errorMessages.dateOfBirth.dateMissing],
+      ["day missing", "", "3", "1976", "en", enTranslationText.errorMessages.dateOfBirth.dayMissing],
+      ["month missing", "1", "", "1976", "en", enTranslationText.errorMessages.dateOfBirth.monthMissing],
+      ["year missing", "1", "3", "", "en", enTranslationText.errorMessages.dateOfBirth.yearMissing],
+      ["day & month missing", "", "", "1976", "en", enTranslationText.errorMessages.dateOfBirth.dayAndMonthMissing],
+      ["month & year missing", "1", "", "", "en", enTranslationText.errorMessages.dateOfBirth.monthAndYearMissing],
+      ["day & year missing", "", "3", "", "en", enTranslationText.errorMessages.dateOfBirth.dayAndYearMissing],
+      ["invalid chars", "aa", "bb", "1976", "en", enTranslationText.errorMessages.dateOfBirth.dateInvalidChars],
+      ["invalid date (29 Feb non leap year)", "29", "2", "2019", "en", enTranslationText.errorMessages.dateOfBirth.dateInvalidDate],
+      ["in future", "1", "1", "2099", "en", enTranslationText.errorMessages.dateOfBirth.dateNotInPast],
+      ["day too long", "123", "1", "1976", "en", enTranslationText.errorMessages.dateOfBirth.dayInvalidLength],
+      ["month too long", "1", "123", "1976", "en", enTranslationText.errorMessages.dateOfBirth.monthInvalidLength],
+      ["year wrong length", "1", "1", "76", "en", enTranslationText.errorMessages.dateOfBirth.yearInvalidLength],
 
-      ["missing all", "", "", "", "cy", cyErrors.errorMessages.dateOfBirth.dateMissing],
-      ["day missing", "", "3", "1976", "cy", cyErrors.errorMessages.dateOfBirth.dayMissing],
-      ["month missing", "1", "", "1976", "cy", cyErrors.errorMessages.dateOfBirth.monthMissing],
-      ["year missing", "1", "3", "", "cy", cyErrors.errorMessages.dateOfBirth.yearMissing],
-      ["day & month missing", "", "", "1976", "cy", cyErrors.errorMessages.dateOfBirth.dayAndMonthMissing],
-      ["month & year missing", "1", "", "", "cy", cyErrors.errorMessages.dateOfBirth.monthAndYearMissing],
-      ["day & year missing", "", "3", "", "cy", cyErrors.errorMessages.dateOfBirth.dayAndYearMissing],
-      ["invalid chars", "aa", "bb", "1976", "cy", cyErrors.errorMessages.dateOfBirth.dateInvalidChars],
-      ["invalid date (29 Feb non leap year)", "29", "2", "2019", "cy", cyErrors.errorMessages.dateOfBirth.dateInvalidDate],
-      ["in future", "1", "1", "2099", "cy", cyErrors.errorMessages.dateOfBirth.dateNotInPast],
-      ["day too long", "123", "1", "1976", "cy", cyErrors.errorMessages.dateOfBirth.dayInvalidLength],
-      ["month too long", "1", "123", "1976", "cy", cyErrors.errorMessages.dateOfBirth.monthInvalidLength],
-      ["year wrong length", "1", "1", "76", "cy", cyErrors.errorMessages.dateOfBirth.yearInvalidLength]
+      ["missing all", "", "", "", "cy", cyTranslationText.errorMessages.dateOfBirth.dateMissing],
+      ["day missing", "", "3", "1976", "cy", cyTranslationText.errorMessages.dateOfBirth.dayMissing],
+      ["month missing", "1", "", "1976", "cy", cyTranslationText.errorMessages.dateOfBirth.monthMissing],
+      ["year missing", "1", "3", "", "cy", cyTranslationText.errorMessages.dateOfBirth.yearMissing],
+      ["day & month missing", "", "", "1976", "cy", cyTranslationText.errorMessages.dateOfBirth.dayAndMonthMissing],
+      ["month & year missing", "1", "", "", "cy", cyTranslationText.errorMessages.dateOfBirth.monthAndYearMissing],
+      ["day & year missing", "", "3", "", "cy", cyTranslationText.errorMessages.dateOfBirth.dayAndYearMissing],
+      ["invalid chars", "aa", "bb", "1976", "cy", cyTranslationText.errorMessages.dateOfBirth.dateInvalidChars],
+      ["invalid date (29 Feb non leap year)", "29", "2", "2019", "cy", cyTranslationText.errorMessages.dateOfBirth.dateInvalidDate],
+      ["in future", "1", "1", "2099", "cy", cyTranslationText.errorMessages.dateOfBirth.dateNotInPast],
+      ["day too long", "123", "1", "1976", "cy", cyTranslationText.errorMessages.dateOfBirth.dayInvalidLength],
+      ["month too long", "1", "123", "1976", "cy", cyTranslationText.errorMessages.dateOfBirth.monthInvalidLength],
+      ["year wrong length", "1", "1", "76", "cy", cyTranslationText.errorMessages.dateOfBirth.yearInvalidLength]
     ];
 
     it.each(cases)(
@@ -430,7 +420,7 @@ describe("Add Person With Significant Control Individual Person Page", () => {
         });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(enErrors.errorMessages.dateOfBirth.dateNotInPast);
+      expect(res.text).toContain(enTranslationText.errorMessages.dateOfBirth.dateNotInPast);
 
       expect(appDevDependencies.personWithSignificantControlGateway.personsWithSignificantControl).toHaveLength(0);
     });
@@ -438,8 +428,8 @@ describe("Add Person With Significant Control Individual Person Page", () => {
 
   describe("Individual person field validations", () => {
     it.each([
-      ["en", enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.consentCheckedMissing],
-      ["cy", cyErrors.errorMessages.personWithSignificantControl.addIndividualPerson.consentCheckedMissing]
+      ["en", enTranslationText.errorMessages.personWithSignificantControl.addIndividualPerson.consentCheckedMissing],
+      ["cy", cyTranslationText.errorMessages.personWithSignificantControl.addIndividualPerson.consentCheckedMissing]
     ])("shows consent checked missing validation for %s", async (lang, expectedMsg) => {
       const person = new PersonWithSignificantControlBuilder().isIndividualPerson().build();
 
@@ -462,8 +452,8 @@ describe("Add Person With Significant Control Individual Person Page", () => {
     });
 
     it.each([
-      ["en", enErrors],
-      ["cy", cyErrors]
+      ["en", enTranslationText],
+      ["cy", cyTranslationText]
     ])("shows title invalid validation for %s", async (lang, errorTranslations) => {
       const person = new PersonWithSignificantControlBuilder().isIndividualPerson().build();
 
@@ -487,8 +477,8 @@ describe("Add Person With Significant Control Individual Person Page", () => {
     });
 
     it.each([
-      ["en", enErrors],
-      ["cy", cyErrors]
+      ["en", enTranslationText],
+      ["cy", cyTranslationText]
     ])("shows title too long validation for %s", async (lang, errorTranslations) => {
       const person = new PersonWithSignificantControlBuilder().isIndividualPerson().build();
       const longTitle = "A".repeat(51);
@@ -513,8 +503,8 @@ describe("Add Person With Significant Control Individual Person Page", () => {
     });
 
     it.each([
-      ["en", enErrors, enPersonWithSignificantControlTranslationText],
-      ["cy", cyErrors, cyPersonWithSignificantControlTranslationText]
+      ["en", enTranslationText, enTranslationText],
+      ["cy", cyTranslationText, cyTranslationText]
     ])("shows other title invalid validation for %s", async (lang, errorTranslations, translationText) => {
       const person = new PersonWithSignificantControlBuilder().isIndividualPerson().build();
 
@@ -539,8 +529,8 @@ describe("Add Person With Significant Control Individual Person Page", () => {
     });
 
     it.each([
-      ["en", enErrors, enPersonWithSignificantControlTranslationText],
-      ["cy", cyErrors, cyPersonWithSignificantControlTranslationText]
+      ["en", enTranslationText, enTranslationText],
+      ["cy", cyTranslationText, cyTranslationText]
     ])("shows other title too long validation for %s", async (lang, errorTranslations, translationText) => {
       const person = new PersonWithSignificantControlBuilder().isIndividualPerson().build();
       const longTitle = "A".repeat(51);
@@ -566,8 +556,8 @@ describe("Add Person With Significant Control Individual Person Page", () => {
     });
 
     it.each([
-      ["en", enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.firstNameMissing],
-      ["cy", cyErrors.errorMessages.personWithSignificantControl.addIndividualPerson.firstNameMissing]
+      ["en", enTranslationText.errorMessages.personWithSignificantControl.addIndividualPerson.firstNameMissing],
+      ["cy", cyTranslationText.errorMessages.personWithSignificantControl.addIndividualPerson.firstNameMissing]
     ])("shows first name missing validation for %s", async (lang, expectedMsg) => {
       const person = new PersonWithSignificantControlBuilder().isIndividualPerson().build();
 
@@ -590,8 +580,8 @@ describe("Add Person With Significant Control Individual Person Page", () => {
     });
 
     it.each([
-      ["en", enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.firstNameInvalid],
-      ["cy", cyErrors.errorMessages.personWithSignificantControl.addIndividualPerson.firstNameInvalid]
+      ["en", enTranslationText.errorMessages.personWithSignificantControl.addIndividualPerson.firstNameInvalid],
+      ["cy", cyTranslationText.errorMessages.personWithSignificantControl.addIndividualPerson.firstNameInvalid]
     ])("shows first name invalid validation for %s", async (lang, expectedMsg) => {
       const person = new PersonWithSignificantControlBuilder().isIndividualPerson().build();
 
@@ -614,8 +604,8 @@ describe("Add Person With Significant Control Individual Person Page", () => {
     });
 
     it.each([
-      ["en", enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.firstNameTooLong],
-      ["cy", cyErrors.errorMessages.personWithSignificantControl.addIndividualPerson.firstNameTooLong]
+      ["en", enTranslationText.errorMessages.personWithSignificantControl.addIndividualPerson.firstNameTooLong],
+      ["cy", cyTranslationText.errorMessages.personWithSignificantControl.addIndividualPerson.firstNameTooLong]
     ])("shows first name too long validation for %s", async (lang, expectedMsg) => {
       const person = new PersonWithSignificantControlBuilder().isIndividualPerson().build();
       const longName = "A".repeat(51);
@@ -639,8 +629,8 @@ describe("Add Person With Significant Control Individual Person Page", () => {
     });
 
     it.each([
-      ["en", enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.middleNamesInvalid],
-      ["cy", cyErrors.errorMessages.personWithSignificantControl.addIndividualPerson.middleNamesInvalid]
+      ["en", enTranslationText.errorMessages.personWithSignificantControl.addIndividualPerson.middleNamesInvalid],
+      ["cy", cyTranslationText.errorMessages.personWithSignificantControl.addIndividualPerson.middleNamesInvalid]
     ])("shows middle names invalid validation for %s", async (lang, expectedMsg) => {
       const person = new PersonWithSignificantControlBuilder().isIndividualPerson().build();
 
@@ -663,8 +653,8 @@ describe("Add Person With Significant Control Individual Person Page", () => {
     });
 
     it.each([
-      ["en", enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.middleNamesTooLong],
-      ["cy", cyErrors.errorMessages.personWithSignificantControl.addIndividualPerson.middleNamesTooLong]
+      ["en", enTranslationText.errorMessages.personWithSignificantControl.addIndividualPerson.middleNamesTooLong],
+      ["cy", cyTranslationText.errorMessages.personWithSignificantControl.addIndividualPerson.middleNamesTooLong]
     ])("shows middle names too long validation for %s", async (lang, expectedMsg) => {
       const person = new PersonWithSignificantControlBuilder().isIndividualPerson().build();
       const longNames = "A".repeat(51);
@@ -688,8 +678,8 @@ describe("Add Person With Significant Control Individual Person Page", () => {
     });
 
     it.each([
-      ["en", enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.lastNameMissing],
-      ["cy", cyErrors.errorMessages.personWithSignificantControl.addIndividualPerson.lastNameMissing]
+      ["en", enTranslationText.errorMessages.personWithSignificantControl.addIndividualPerson.lastNameMissing],
+      ["cy", cyTranslationText.errorMessages.personWithSignificantControl.addIndividualPerson.lastNameMissing]
     ])("shows last name missing validation for %s", async (lang, expectedMsg) => {
       const person = new PersonWithSignificantControlBuilder().isIndividualPerson().build();
 
@@ -712,8 +702,8 @@ describe("Add Person With Significant Control Individual Person Page", () => {
     });
 
     it.each([
-      ["en", enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.lastNameInvalid],
-      ["cy", cyErrors.errorMessages.personWithSignificantControl.addIndividualPerson.lastNameInvalid]
+      ["en", enTranslationText.errorMessages.personWithSignificantControl.addIndividualPerson.lastNameInvalid],
+      ["cy", cyTranslationText.errorMessages.personWithSignificantControl.addIndividualPerson.lastNameInvalid]
     ])("shows last name invalid validation for %s", async (lang, expectedMsg) => {
       const person = new PersonWithSignificantControlBuilder().isIndividualPerson().build();
 
@@ -736,8 +726,8 @@ describe("Add Person With Significant Control Individual Person Page", () => {
     });
 
     it.each([
-      ["en", enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.lastNameTooLong],
-      ["cy", cyErrors.errorMessages.personWithSignificantControl.addIndividualPerson.lastNameTooLong]
+      ["en", enTranslationText.errorMessages.personWithSignificantControl.addIndividualPerson.lastNameTooLong],
+      ["cy", cyTranslationText.errorMessages.personWithSignificantControl.addIndividualPerson.lastNameTooLong]
     ])("shows last name too long validation for %s", async (lang, expectedMsg) => {
       const person = new PersonWithSignificantControlBuilder().isIndividualPerson().build();
       const longSurname = "A".repeat(161);
@@ -761,8 +751,8 @@ describe("Add Person With Significant Control Individual Person Page", () => {
     });
 
     it.each([
-      ["en", enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.nationality1Missing],
-      ["cy", cyErrors.errorMessages.personWithSignificantControl.addIndividualPerson.nationality1Missing]
+      ["en", enTranslationText.errorMessages.personWithSignificantControl.addIndividualPerson.nationality1Missing],
+      ["cy", cyTranslationText.errorMessages.personWithSignificantControl.addIndividualPerson.nationality1Missing]
     ])("shows nationality1 missing validation for %s", async (lang, expectedMsg) => {
       const person = new PersonWithSignificantControlBuilder().isIndividualPerson().build();
 
@@ -785,8 +775,8 @@ describe("Add Person With Significant Control Individual Person Page", () => {
     });
 
     it.each([
-      ["en", enErrors.errorMessages.personWithSignificantControl.addIndividualPerson.nationality2Same],
-      ["cy", cyErrors.errorMessages.personWithSignificantControl.addIndividualPerson.nationality2Same]
+      ["en", enTranslationText.errorMessages.personWithSignificantControl.addIndividualPerson.nationality2Same],
+      ["cy", cyTranslationText.errorMessages.personWithSignificantControl.addIndividualPerson.nationality2Same]
     ])("shows nationality2 same validation for %s", async (lang, expectedMsg) => {
       const person = new PersonWithSignificantControlBuilder().isIndividualPerson().build();
 

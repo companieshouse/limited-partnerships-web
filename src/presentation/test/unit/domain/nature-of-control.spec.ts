@@ -1,8 +1,8 @@
 import NatureOfControlBuilder from "../../builder/NatureOfControlBuilder";
-import enTranslationText from "../../../../../locales/en/errors.json";
+
 import NatureOfControlValidator, { NatureOfControlUIFields } from "../../../../domain/validator/NatureOfControlValidator";
 import { NatureOfControlType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-
+import { enTranslationText } from "../../../../test/utils/locales";
 describe("Nature of Control", () => {
   describe("Individual", () => {
     it.each([

@@ -1,8 +1,6 @@
 import request from "supertest";
 
 import app from "../app";
-import enTranslationText from "../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../locales/cy/translations.json";
 
 import { CONFIRMATION_POST_TRANSITION_URL } from "../../../controller/global/url";
 import { getUrl, toEscapedHtml, setLocalesEnabled, testTranslations, countOccurrences } from "../../utils";
@@ -19,7 +17,7 @@ import LimitedPartnerBuilder from "../../builder/LimitedPartnerBuilder";
 import TransactionBuilder from "../../../../presentation/test/builder/TransactionBuilder";
 import LimitedPartnershipBuilder from "../../../../presentation/test/builder/LimitedPartnershipBuilder";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-
+import { enTranslationText, cyTranslationText } from "../../../../test/utils/locales";
 describe("Confirmation Page", () => {
   const URL = getUrl(CONFIRMATION_POST_TRANSITION_URL).replace(JOURNEY_TYPE_PARAM, Journey.postTransition);
 

@@ -1,12 +1,5 @@
 import request from "supertest";
 
-import enGeneralTranslationText from "../../../../../../../locales/en/translations.json";
-import cyGeneralTranslationText from "../../../../../../../locales/cy/translations.json";
-import enAddressTranslationText from "../../../../../../../locales/en/address.json";
-import cyAddressTranslationText from "../../../../../../../locales/cy/address.json";
-import enErrorsTranslationText from "../../../../../../../locales/en/errors.json";
-import cyErrorsTranslationText from "../../../../../../../locales/cy/errors.json";
-
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
@@ -18,10 +11,8 @@ import {
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import GeneralPartnerBuilder, { generalPartnerPerson } from "../../../../builder/GeneralPartnerBuilder";
 import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
-
+import { enTranslationText, cyTranslationText } from "../../../../../../test/utils/locales";
 describe("General Partner Usual Residential Address Territory Choice", () => {
-  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText, ...enErrorsTranslationText };
-  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText, ...cyErrorsTranslationText };
   const URL = getUrl(TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
 
   beforeEach(() => {

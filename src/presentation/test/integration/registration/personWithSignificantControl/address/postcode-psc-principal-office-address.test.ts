@@ -1,13 +1,6 @@
 import request from "supertest";
 import { Jurisdiction } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
-import enGeneralTranslationText from "../../../../../../../locales/en/translations.json";
-import cyGeneralTranslationText from "../../../../../../../locales/cy/translations.json";
-import enAddressTranslationText from "../../../../../../../locales/en/address.json";
-import cyAddressTranslationText from "../../../../../../../locales/cy/address.json";
-import enErrorsTranslationText from "../../../../../../../locales/en/errors.json";
-import cyErrorsTranslationText from "../../../../../../../locales/cy/errors.json";
-
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import {
@@ -29,10 +22,8 @@ import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
 
 import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBuilder";
-
+import { enTranslationText, cyTranslationText } from "../../../../../../test/utils/locales";
 describe("Postcode person with significant control's principal office address page", () => {
-  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText, ...enErrorsTranslationText };
-  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText, ...cyErrorsTranslationText };
   const URL_RELEVANT_LEGAL_ENTITY = getUrl(
     POSTCODE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL
   );

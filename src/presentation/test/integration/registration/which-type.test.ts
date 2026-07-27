@@ -9,10 +9,7 @@ import {
   PARTNERSHIP_TYPE_WITH_IDS_URL
 } from "../../../controller/registration/url";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
-import enTranslationText from "../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../locales/cy/translations.json";
-import enErrorMessages from "../../../../../locales/en/errors.json";
-import cyErrorMessages from "../../../../../locales/cy/errors.json";
+
 import RegistrationPageType from "../../../controller/registration/PageType";
 import {
   APPLICATION_CACHE_KEY,
@@ -21,7 +18,7 @@ import {
 } from "../../../../config/constants";
 import { expectErrorSummaryAndInlineError, getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import LimitedPartnershipBuilder from "../../../../presentation/test/builder/LimitedPartnershipBuilder";
-
+import { enTranslationText, cyTranslationText } from "../../../../test/utils/locales";
 describe("Which type Page", () => {
   beforeEach(() => {
     setLocalesEnabled(false);
@@ -41,7 +38,7 @@ describe("Which type Page", () => {
     testTranslations(res.text, enTranslationText.types);
     expect(res.text).toContain(enTranslationText.buttons.continue);
     expect(res.text).toContain(SERVICE_NAME_REGISTRATION);
-    expect(res.text).not.toContain(enErrorMessages.errorMessages.limitedPartnership.partnershipType.typeRequired);
+    expect(res.text).not.toContain(enTranslationText.errorMessages.limitedPartnership.partnershipType.typeRequired);
   });
 
   it("should load the partnership-type page with Welsh text", async () => {
@@ -53,7 +50,7 @@ describe("Which type Page", () => {
     testTranslations(res.text, cyTranslationText.partnershipTypePage);
     expect(res.text).toContain(cyTranslationText.buttons.continue);
     expect(res.text).toContain(SERVICE_NAME_REGISTRATION);
-    expect(res.text).not.toContain(cyErrorMessages.errorMessages.limitedPartnership.partnershipType.typeRequired);
+    expect(res.text).not.toContain(cyTranslationText.errorMessages.limitedPartnership.partnershipType.typeRequired);
   });
 
   it("should redirect to name page and cache contains the type selected", async () => {
@@ -131,8 +128,8 @@ describe("Which type Page", () => {
   });
 
   it.each([
-    ["English", "en", enTranslationText, enErrorMessages],
-    ["Welsh", "cy", cyTranslationText, cyErrorMessages]
+    ["English", "en", enTranslationText, enTranslationText],
+    ["Welsh", "cy", cyTranslationText, cyTranslationText]
   ])(
     "should re-render the page with an error summary and inline error in %s when no partnership type is selected",
     async (
@@ -168,7 +165,7 @@ describe("Which type Page", () => {
         partnership_type: "INVALID"
       });
 
-    const message = enErrorMessages.errorMessages.limitedPartnership.partnershipType.typeRequired;
+    const message = enTranslationText.errorMessages.limitedPartnership.partnershipType.typeRequired;
 
     expect(res.status).toBe(200);
     expectErrorSummaryAndInlineError(res.text, "partnership_type", message);

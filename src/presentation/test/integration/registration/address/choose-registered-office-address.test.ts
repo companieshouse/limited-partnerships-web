@@ -1,11 +1,5 @@
 import request from "supertest";
 
-import enGeneralTranslationText from "../../../../../../locales/en/translations.json";
-import cyGeneralTranslationText from "../../../../../../locales/cy/translations.json";
-import enAddressTranslationText from "../../../../../../locales/en/address.json";
-import cyAddressTranslationText from "../../../../../../locales/cy/address.json";
-import enErrorsTranslationText from "../../../../../../locales/en/errors.json";
-
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations, countOccurrences } from "../../../utils";
@@ -17,10 +11,8 @@ import {
 } from "../../../../controller/addressLookUp/url/registration";
 
 import AddressPageType from "../../../../controller/addressLookUp/PageType";
-
+import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("Choose Registered Office Address Page", () => {
-  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
-  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText };
   const URL = getUrl(CHOOSE_REGISTERED_OFFICE_ADDRESS_URL);
 
   beforeEach(() => {
@@ -129,7 +121,7 @@ describe("Choose Registered Office Address Page", () => {
         pageType: AddressPageType.chooseRegisteredOfficeAddress,
       });
 
-      const errorMessage = enErrorsTranslationText.errorMessages.address.chooseAddress.selectionRequired;
+      const errorMessage = enTranslationText.errorMessages.address.chooseAddress.selectionRequired;
 
       expect(res.status).toBe(200);
       expect(countOccurrences(res.text, errorMessage)).toBe(2);

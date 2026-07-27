@@ -1,10 +1,4 @@
 import request from "supertest";
-
-import enGeneralTranslationText from "../../../../../../locales/en/translations.json";
-import cyGeneralTranslationText from "../../../../../../locales/cy/translations.json";
-import enPersonWithSignificantControlTranslationText from "../../../../../../locales/en/personWithSignificantControl.json";
-import cyPersonWithSignificantControlTranslationText from "../../../../../../locales/cy/personWithSignificantControl.json";
-
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
@@ -19,10 +13,8 @@ import {
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
 import RegistrationPageType from "../../../../controller/registration/PageType";
 import PersonWithSignificantControlBuilder from "../../../builder/PersonWithSignificantControlBuilder";
-
+import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("Will Limited Partnership Have PSC Page", () => {
-  const enTranslationText = { ...enGeneralTranslationText, ...enPersonWithSignificantControlTranslationText };
-  const cyTranslationText = { ...cyGeneralTranslationText, ...cyPersonWithSignificantControlTranslationText };
   const URL = getUrl(WILL_LIMITED_PARTNERSHIP_HAVE_PSC_URL);
 
   beforeEach(() => {

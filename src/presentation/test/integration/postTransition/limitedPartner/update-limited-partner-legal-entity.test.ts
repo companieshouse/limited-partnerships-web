@@ -1,9 +1,6 @@
 import request from "supertest";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
-import enTranslationText from "../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../locales/cy/translations.json";
-
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { OFFICER_ROLE_LIMITED_PARTNER_LEGAL_ENTITY } from "../../../../../config";
@@ -22,7 +19,7 @@ import {
   UPDATE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL
 } from "../../../../controller/postTransition/url";
 import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
-
+import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("Update Limited Partner Legal Entity Page", () => {
   const URL = getUrl(UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_URL);
   const URL_WITH_IDS = getUrl(UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_WITH_IDS_URL);

@@ -1,9 +1,6 @@
 import request from "supertest";
 import { createApiClient } from "@companieshouse/api-sdk-node";
 
-import enTranslationText from "../../../../../../locales/en/translations.json";
-import enErrorsTranslation from "../../../../../../locales/en/errors.json";
-
 import appRealDependencies from "../../../../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import sdkMock, { getListOfValidPostcodeAddresses, isValidUKPostcode } from "../../mock/sdkMock";
@@ -16,7 +13,7 @@ import {
 import AddressPageType from "../../../../controller/addressLookUp/PageType";
 import { getUrl } from "../../../utils";
 import CacheRepository from "../../../../../infrastructure/repository/CacheRepository";
-
+import { enTranslationText } from "../../../../../test/utils/locales";
 jest.mock("@companieshouse/api-sdk-node");
 
 const mockCreateApiClient = createApiClient as jest.Mock;
@@ -110,7 +107,7 @@ describe("Gateway Address Look Up", () => {
       });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(enErrorsTranslation.errorMessages.address.postcodeLookup.postcodeNotFound);
+      expect(res.text).toContain(enTranslationText.errorMessages.address.postcodeLookup.postcodeNotFound);
 
       expect(appDevDependencies.cacheRepository.cache).toEqual(null);
     });

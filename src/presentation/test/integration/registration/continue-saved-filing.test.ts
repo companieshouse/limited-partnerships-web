@@ -2,13 +2,12 @@ import request from "supertest";
 
 import app from "../app";
 import { CONTINUE_SAVED_FILING_URL, PARTNERSHIP_TYPE_URL } from "../../../controller/registration/url";
-import enTranslationText from "../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../locales/cy/translations.json";
+
 import RegistrationPageType from "../../../controller/registration/PageType";
 import { SERVICE_NAME_REGISTRATION, YOUR_FILINGS_URL } from "../../../../config/constants";
 import { setLocalesEnabled, testTranslations } from "../../utils";
 import { customerFeedbackUrlMap } from "../../../../middlewares/customer-feedback.middleware";
-
+import { enTranslationText, cyTranslationText } from "../../../../test/utils/locales";
 describe("Continue Saved Filing Page", () => {
   beforeEach(() => {
     setLocalesEnabled(false);

@@ -1,15 +1,5 @@
 import request from "supertest";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-
-import enGeneralTranslationText from "../../../../../../../locales/en/translations.json";
-import enCountriesText from "../../../../../../../locales/en/countries.json";
-import cyGeneralTranslationText from "../../../../../../../locales/cy/translations.json";
-import cyCountriesText from "../../../../../../../locales/cy/countries.json";
-import enAddressTranslationText from "../../../../../../../locales/en/address.json";
-import cyAddressTranslationText from "../../../../../../../locales/cy/address.json";
-import enErrorMessages from "../../../../../../../locales/en/errors.json";
-import cyErrorMessages from "../../../../../../../locales/cy/errors.json";
-
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
@@ -26,10 +16,8 @@ import { UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL } from "../../
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import GeneralPartnerBuilder from "../../../../builder/GeneralPartnerBuilder";
 import TransactionBuilder from "../../../../builder/TransactionBuilder";
-
+import { enTranslationText, cyTranslationText } from "../../../../../../test/utils/locales";
 describe("Confirm General Partner Usual Residential Address Page", () => {
-  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
-  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText };
   const URL = getUrl(CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
 
   beforeEach(() => {
@@ -77,7 +65,7 @@ describe("Confirm General Partner Usual Residential Address Page", () => {
       expect(res.text).toContain("Line 2");
       expect(res.text).toContain("Stoke-On-Trent");
       expect(res.text).toContain("Region");
-      expect(res.text).toContain(enCountriesText.countries.england);
+      expect(res.text).toContain(enTranslationText.countries.england);
       expect(res.text).toContain("ST6 3LJ");
       expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
     });
@@ -100,7 +88,7 @@ describe("Confirm General Partner Usual Residential Address Page", () => {
       expect(res.text).toContain("Line 2");
       expect(res.text).toContain("Stoke-On-Trent");
       expect(res.text).toContain("Region");
-      expect(res.text).toContain(cyCountriesText.countries.england);
+      expect(res.text).toContain(cyTranslationText.countries.england);
       expect(res.text).toContain("ST6 3LJ");
       expect(countOccurrences(res.text, toEscapedHtml(serviceName))).toBe(2);
     });
@@ -162,8 +150,8 @@ describe("Confirm General Partner Usual Residential Address Page", () => {
     });
 
     it.each([
-      ["en", enErrorMessages],
-      ["cy", cyErrorMessages]
+      ["en", enTranslationText],
+      ["cy", cyTranslationText]
     ])(
       "should show validation error message if validation error occurs when saving address with lang %s",
       async (lang: string, errorMessagesJson: any) => {

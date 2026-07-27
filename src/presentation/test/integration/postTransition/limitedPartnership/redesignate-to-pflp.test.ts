@@ -1,8 +1,5 @@
 import request from "supertest";
 
-import enTranslationText from "../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../locales/cy/translations.json";
-
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
@@ -14,7 +11,7 @@ import { TRANSACTION_DESCRIPTION_DESIGNATE_AS_PRIVATE_FUND_PARTNERSHIP, YOUR_COM
 import LimitedPartnershipBuilder from "presentation/test/builder/LimitedPartnershipBuilder";
 import { ApiErrors } from "domain/entities/UIErrors";
 import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
-
+import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("Redesignate to pflp page", () => {
   const URL = getUrl(REDESIGNATE_TO_PFLP_URL);
   const PAYMENT_LINK_JOURNEY = "https://api-test-payments.chs.local:4001";

@@ -1,11 +1,5 @@
 import request from "supertest";
 import app from "../../../app";
-
-import enTranslationText from "../../../../../../../locales/en/translations.json";
-import enCountriesText from "../../../../../../../locales/en/countries.json";
-import cyTranslationText from "../../../../../../../locales/cy/translations.json";
-import cyCountriesText from "../../../../../../../locales/cy/countries.json";
-
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import LimitedPartnerBuilder from "../../../../builder/LimitedPartnerBuilder";
 import CompanyProfileBuilder from "../../../../builder/CompanyProfileBuilder";
@@ -21,7 +15,7 @@ import PostTransitionPageType from "../../../../../controller/postTransition/pag
 import { CONFIRMATION_POST_TRANSITION_URL } from "../../../../../controller/global/url";
 import TransactionBuilder from "../../../../builder/TransactionBuilder";
 import TransactionLimitedPartner from "../../../../../../domain/entities/TransactionLimitedPartner";
-
+import { enTranslationText, cyTranslationText } from "../../../../../../test/utils/locales";
 describe("Limited Partner Check Your Answers Page", () => {
   const URL = getUrl(LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL);
   const REDIRECT_URL = getUrl(CONFIRMATION_POST_TRANSITION_URL);
@@ -46,8 +40,8 @@ describe("Limited Partner Check Your Answers Page", () => {
   });
 
   it.each([
-    ["en", enTranslationText, enCountriesText],
-    ["cy", cyTranslationText, cyCountriesText]
+    ["en", enTranslationText, enTranslationText],
+    ["cy", cyTranslationText, cyTranslationText]
   ])("should GET Check Your Answers Page %s text", async (lang, translationText, countriesText) => {
     setLocalesEnabled(true);
     const res = await request(app).get(URL + `?lang=${lang}`);

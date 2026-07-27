@@ -11,8 +11,7 @@ import sdkMock, {
   putTransaction
 } from "../../mock/sdkMock";
 import { getUrl } from "../../../utils";
-import enTranslationText from "../../../../../../locales/en/translations.json";
-
+import { enTranslationText } from "../../../../../test/utils/locales";
 jest.mock("@companieshouse/api-sdk-node");
 
 const mockCreateApiClient = createApiClient as jest.Mock;

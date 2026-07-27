@@ -1,8 +1,5 @@
 import request from "supertest";
 
-import enTranslationText from "../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../locales/cy/translations.json";
-
 import app from "../app";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
@@ -10,7 +7,7 @@ import { appDevDependencies } from "../../../../config/dev-dependencies";
 import { CONFIRM_LIMITED_PARTNERSHIP_URL } from "presentation/controller/postTransition/url";
 
 import CompanyProfileBuilder from "../../builder/CompanyProfileBuilder";
-
+import { enTranslationText, cyTranslationText } from "../../../../test/utils/locales";
 describe("Confirm correct limited partnership page", () => {
   const URL = getUrl(CONFIRM_LIMITED_PARTNERSHIP_URL);
   let companyProfile;

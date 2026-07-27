@@ -3,14 +3,6 @@ import {
   NatureOfControlType,
   PersonWithSignificantControlType
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
-
-import enGeneralTranslationText from "../../../../../../locales/en/translations.json";
-import cyGeneralTranslationText from "../../../../../../locales/cy/translations.json";
-import enPersonWithSignificantControlTranslationText from "../../../../../../locales/en/personWithSignificantControl.json";
-import cyPersonWithSignificantControlTranslationText from "../../../../../../locales/cy/personWithSignificantControl.json";
-import enErrorsTranslationText from "../../../../../../locales/en/errors.json";
-import cyErrorsTranslationText from "../../../../../../locales/cy/errors.json";
-
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../utils";
@@ -28,21 +20,9 @@ import PersonWithSignificantControlBuilder from "../../../builder/PersonWithSign
 import TransactionPersonWithSignificantControl from "../../../../../domain/entities/TransactionPersonWithSignificantControl";
 
 import RegistrationPageType from "../../../../controller/registration/PageType";
-
+import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("Add Nature of Control Page", () => {
   let individualPerson: TransactionPersonWithSignificantControl;
-
-  const enTranslationText = {
-    ...enGeneralTranslationText,
-    ...enPersonWithSignificantControlTranslationText,
-    ...enErrorsTranslationText
-  };
-  const cyTranslationText = {
-    ...cyGeneralTranslationText,
-    ...cyPersonWithSignificantControlTranslationText,
-    ...cyErrorsTranslationText
-  };
-
   beforeEach(() => {
     setLocalesEnabled(true);
 
@@ -111,7 +91,7 @@ describe("Add Nature of Control Page", () => {
 
         expect(res.text).toContain(
           toEscapedHtml(
-            enPersonWithSignificantControlTranslationText.personWithSignificantControl.addNatureOfControlPage.individual.title.replace(
+            enTranslationText.personWithSignificantControl.addNatureOfControlPage.individual.title.replace(
               "individual",
               expectedText
             )

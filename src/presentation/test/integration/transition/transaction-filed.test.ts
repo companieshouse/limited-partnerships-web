@@ -1,8 +1,5 @@
 import request from "supertest";
 
-import enTranslationText from "../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../locales/cy/translations.json";
-
 import app from "../app";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 
@@ -12,7 +9,7 @@ import { NAME_URL } from "../../../controller/registration/url";
 import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import CompanyProfileBuilder from "../../builder/CompanyProfileBuilder";
 import FilingHistoryBuilder from "../../builder/FilingHistoryBuilder";
-
+import { enTranslationText, cyTranslationText } from "../../../../test/utils/locales";
 describe("Transition already filed", () => {
   const URL = getUrl(TRANSITION_ALREADY_FILED_URL);
   let companyProfile;

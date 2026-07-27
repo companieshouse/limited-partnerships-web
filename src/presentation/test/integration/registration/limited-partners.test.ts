@@ -1,13 +1,12 @@
 import request from "supertest";
-import enTranslationText from "../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../locales/cy/translations.json";
+
 import app from "../app";
 import { LIMITED_PARTNERS_URL, REVIEW_LIMITED_PARTNERS_URL } from "../../../controller/registration/url";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import LimitedPartnerBuilder from "../../builder/LimitedPartnerBuilder";
-
+import { enTranslationText, cyTranslationText } from "../../../../test/utils/locales";
 describe("Limited Partners Page", () => {
   const URL = getUrl(LIMITED_PARTNERS_URL);
 

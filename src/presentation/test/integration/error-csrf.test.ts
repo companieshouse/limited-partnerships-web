@@ -4,8 +4,7 @@ import { NextFunction, Request, Response } from "express";
 
 import app from "./app";
 import { HEALTHCHECK_URL } from "../../controller/global/url";
-import enTranslationText from "../../../../locales/en/translations.json";
-
+import { enTranslationText } from "../../../test/utils/locales";
 jest.mock("../../controller/global/Controller", () => {
   return function () {
     return {

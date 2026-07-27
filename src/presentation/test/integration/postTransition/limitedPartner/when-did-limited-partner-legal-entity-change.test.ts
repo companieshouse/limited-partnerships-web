@@ -1,9 +1,5 @@
 import request from "supertest";
 
-import enTranslationText from "../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../locales/cy/translations.json";
-import enErrorMessages from "../../../../../../locales/en/errors.json";
-
 import app from "../../app";
 
 import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
@@ -22,7 +18,7 @@ import TransactionBuilder from "../../../builder/TransactionBuilder";
 import CompanyAppointmentBuilder from "../../../builder/CompanyAppointmentBuilder";
 import { OFFICER_ROLE_GENERAL_PARTNER_LEGAL_ENTITY } from "../../../../../config/constants";
 import TransactionLimitedPartner from "../../../../../domain/entities/TransactionLimitedPartner";
-
+import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("Limited partner legal entity change date page", () => {
   const URL = getUrl(WHEN_DID_LIMITED_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL);
   const BACK_LINK_URL = getUrl(UPDATE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL);
@@ -128,7 +124,7 @@ describe("Limited partner legal entity change date page", () => {
       appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
 
       const originalErrorMessage = "Default";
-      const expectedErrorMessage = toEscapedHtml(enErrorMessages.errorMessages.dateOfUpdate.limitedPartner);
+      const expectedErrorMessage = toEscapedHtml(enTranslationText.errorMessages.dateOfUpdate.limitedPartner);
       const apiErrors: ApiErrors = {
         errors: { date_of_update: originalErrorMessage }
       };

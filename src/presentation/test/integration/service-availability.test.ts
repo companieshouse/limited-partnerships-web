@@ -3,9 +3,9 @@ import request from "supertest";
 import app from "./app";
 import { PARTNERSHIP_TYPE_URL } from "../../controller/registration/url";
 import * as configConstants from "../../../config/constants";
-import enTranslationText from "../../../../locales/en/translations.json";
-import { HEALTHCHECK_URL } from "../../controller/global/url";
 
+import { HEALTHCHECK_URL } from "../../controller/global/url";
+import { enTranslationText } from "../../../test/utils/locales";
 const SERVICE_UNAVAILABLE_TEXT = "Sorry, the service is unavailable";
 
 describe("Service Availability tests", () => {

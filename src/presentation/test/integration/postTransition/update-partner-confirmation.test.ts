@@ -3,9 +3,6 @@ import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/compa
 
 import request from "supertest";
 
-import enTranslationText from "../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../locales/cy/translations.json";
-
 import app from "../app";
 import {
   countOccurrences,
@@ -22,7 +19,7 @@ import { CONFIRMATION_POST_TRANSITION_URL } from "../../../controller/global/url
 import CompanyProfileBuilder from "../../builder/CompanyProfileBuilder";
 import TransactionBuilder from "../../builder/TransactionBuilder";
 import { customerFeedbackUrlMap } from "../../../../middlewares/customer-feedback.middleware";
-
+import { enTranslationText, cyTranslationText } from "../../../../test/utils/locales";
 describe("Update partner confirmation page", () => {
   const URL = getUrl(CONFIRMATION_POST_TRANSITION_URL);
 

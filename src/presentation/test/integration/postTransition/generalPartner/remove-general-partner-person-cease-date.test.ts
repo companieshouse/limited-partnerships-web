@@ -1,8 +1,5 @@
 import request from "supertest";
 
-import enTranslationText from "../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../locales/cy/translations.json";
-
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { countOccurrences, getUrl, setLocalesEnabled } from "../../../utils";
@@ -19,7 +16,7 @@ import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-
 import GeneralPartnerBuilder from "../../../../../presentation/test/builder/GeneralPartnerBuilder";
 import { OFFICER_ROLE_GENERAL_PARTNER_PERSON } from "../../../../../config";
 import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
-
+import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("General Partner cease date page", () => {
   const URL = getUrl(WHEN_DID_THE_GENERAL_PARTNER_PERSON_CEASE_URL);
   const URL_WITH_IDS = getUrl(WHEN_DID_THE_GENERAL_PARTNER_PERSON_CEASE_WITH_IDS_URL);

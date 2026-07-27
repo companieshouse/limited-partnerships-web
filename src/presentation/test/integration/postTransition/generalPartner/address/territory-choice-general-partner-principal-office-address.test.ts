@@ -1,13 +1,6 @@
 import request from "supertest";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-import enGeneralTranslationText from "../../../../../../../locales/en/translations.json";
-import cyGeneralTranslationText from "../../../../../../../locales/cy/translations.json";
-import enAddressTranslationText from "../../../../../../../locales/en/address.json";
-import cyAddressTranslationText from "../../../../../../../locales/cy/address.json";
-import enErrorsTranslationText from "../../../../../../../locales/en/errors.json";
-import cyErrorsTranslationText from "../../../../../../../locales/cy/errors.json";
-
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
@@ -23,10 +16,8 @@ import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import GeneralPartnerBuilder, { generalPartnerLegalEntity } from "../../../../builder/GeneralPartnerBuilder";
 import TransactionBuilder from "../../../../builder/TransactionBuilder";
 import { ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_IDS_URL } from "../../../../../controller/postTransition/url";
-
+import { enTranslationText, cyTranslationText } from "../../../../../../test/utils/locales";
 describe("General Partner Principal Office Address Territory Choice", () => {
-  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText, ...enErrorsTranslationText };
-  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText, ...cyErrorsTranslationText };
   const URL = getUrl(TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
 
   beforeEach(() => {

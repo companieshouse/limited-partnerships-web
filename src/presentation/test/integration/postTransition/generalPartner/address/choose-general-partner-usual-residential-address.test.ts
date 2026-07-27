@@ -1,12 +1,6 @@
 import request from "supertest";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-import enGeneralTranslationText from "../../../../../../../locales/en/translations.json";
-import cyGeneralTranslationText from "../../../../../../../locales/cy/translations.json";
-import enAddressTranslationText from "../../../../../../../locales/en/address.json";
-import cyAddressTranslationText from "../../../../../../../locales/cy/address.json";
-import enErrorsTranslationText from "../../../../../../../locales/en/errors.json";
-
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
@@ -20,10 +14,8 @@ import {
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import TransactionBuilder from "../../../../builder/TransactionBuilder";
 import GeneralPartnerBuilder from "../../../../builder/GeneralPartnerBuilder";
-
+import { enTranslationText, cyTranslationText } from "../../../../../../test/utils/locales";
 describe("Choose usual residential address of the general partner page", () => {
-  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
-  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText };
   const URL = getUrl(CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
   const REDIRECT_URL = getUrl(CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
 
@@ -160,7 +152,7 @@ describe("Choose usual residential address of the general partner page", () => {
           pageType: AddressPageType.chooseGeneralPartnerUsualResidentialAddress
         });
 
-      const errorMessage = enErrorsTranslationText.errorMessages.address.chooseAddress.selectionRequired;
+      const errorMessage = enTranslationText.errorMessages.address.chooseAddress.selectionRequired;
 
       expect(res.status).toBe(200);
       expect(countOccurrences(res.text, errorMessage)).toBe(2);

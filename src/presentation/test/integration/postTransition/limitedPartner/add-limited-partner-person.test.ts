@@ -3,9 +3,6 @@ import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/compa
 
 import request from "supertest";
 
-import enTranslationText from "../../../../../../locales/en/translations.json";
-import cyTranslationText from "../../../../../../locales/cy/translations.json";
-
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { ApiErrors } from "../../../../../domain/entities/UIErrors";
@@ -26,7 +23,7 @@ import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 import { POST_TRANSITION_WITH_ID_URL } from "../../../../../config/constants";
 import TransactionLimitedPartner from "../../../../../domain/entities/TransactionLimitedPartner";
 import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
-
+import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("Add Limited Partner Person Page", () => {
   const URL = getUrl(ADD_LIMITED_PARTNER_PERSON_URL);
   const REDIRECT_URL = getUrl(TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);

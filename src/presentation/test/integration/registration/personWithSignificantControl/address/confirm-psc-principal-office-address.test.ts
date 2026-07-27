@@ -1,12 +1,5 @@
 import request from "supertest";
 
-import enGeneralTranslationText from "../../../../../../../locales/en/translations.json";
-import cyGeneralTranslationText from "../../../../../../../locales/cy/translations.json";
-import enAddressTranslationText from "../../../../../../../locales/en/address.json";
-import cyAddressTranslationText from "../../../../../../../locales/cy/address.json";
-import enErrorMessages from "../../../../../../../locales/en/errors.json";
-import cyErrorMessages from "../../../../../../../locales/cy/errors.json";
-
 import app from "../../../app";
 import { createPersonWithSignificantControl, getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
@@ -22,10 +15,8 @@ import {
 import { REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL } from "../../../../../controller/registration/url";
 
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
-
+import { enTranslationText, cyTranslationText } from "../../../../../../test/utils/locales";
 describe("Confirm PSC Principal Office Address Page", () => {
-  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
-  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText };
   const URL_RELEVANT_LEGAL_ENTITY = getUrl(
     CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL
   );
@@ -213,28 +204,28 @@ describe("Confirm PSC Principal Office Address Page", () => {
         "en",
         URL_RELEVANT_LEGAL_ENTITY,
         AddressPageType.confirmPersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
-        enErrorMessages
+        enTranslationText
       ],
       [
         "RLE cy",
         "cy",
         URL_RELEVANT_LEGAL_ENTITY,
         AddressPageType.confirmPersonWithSignificantControlRelevantLegalEntityPrincipalOfficeAddress,
-        cyErrorMessages
+        cyTranslationText
       ],
       [
         "ORP en",
         "en",
         URL_OTHER_REGISTRABLE_PERSON,
         AddressPageType.confirmPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress,
-        enErrorMessages
+        enTranslationText
       ],
       [
         "ORP cy",
         "cy",
         URL_OTHER_REGISTRABLE_PERSON,
         AddressPageType.confirmPersonWithSignificantControlOtherRegistrablePersonPrincipalOfficeAddress,
-        cyErrorMessages
+        cyTranslationText
       ]
     ])(
       "should show validation error message if country is missing with lang %s",

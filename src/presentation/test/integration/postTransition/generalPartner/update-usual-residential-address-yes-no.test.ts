@@ -1,11 +1,6 @@
 import request from "supertest";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
-import enGeneralTranslationText from "../../../../../../locales/en/translations.json";
-import cyGeneralTranslationText from "../../../../../../locales/cy/translations.json";
-import enAddressTranslationText from "../../../../../../locales/en/address.json";
-import cyAddressTranslationText from "../../../../../../locales/cy/address.json";
-
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import {
@@ -27,10 +22,8 @@ import TransactionBuilder from "../../../builder/TransactionBuilder";
 import GeneralPartnerBuilder from "../../../../../presentation/test/builder/GeneralPartnerBuilder";
 import CompanyProfileBuilder from "../../../../../presentation/test/builder/CompanyProfileBuilder";
 import TransactionGeneralPartner from "../../../../../domain/entities/TransactionGeneralPartner";
-
+import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("Update Usual Residential Address Yes No Page", () => {
-  const enTranslationText = { ...enGeneralTranslationText, ...enAddressTranslationText };
-  const cyTranslationText = { ...cyGeneralTranslationText, ...cyAddressTranslationText };
   const URL = getUrl(UPDATE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL);
   const REDIRECT_YES = getUrl(TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
   const REDIRECT_NO = getUrl(UPDATE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_YES_NO_URL);
