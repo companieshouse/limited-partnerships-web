@@ -46,9 +46,9 @@ describe("Limited Partner Check Your Answers Page", () => {
   });
 
   it.each([
-    ["en", enTranslationText],
-    ["cy", cyTranslationText]
-  ])("should GET Check Your Answers Page %s text", async (lang, translationText) => {
+    ["en", enTranslationText, enCountriesText],
+    ["cy", cyTranslationText, cyCountriesText]
+  ])("should GET Check Your Answers Page %s text", async (lang, translationText, countriesText) => {
     setLocalesEnabled(true);
     const res = await request(app).get(URL + `?lang=${lang}`);
 
@@ -57,7 +57,7 @@ describe("Limited Partner Check Your Answers Page", () => {
     expect(res.text).toContain(translationText.checkYourAnswersPage.update.title);
     expect(res.text).toContain(translationText.print.buttonText);
     expect(res.text).toContain(translationText.print.buttonTextNoJs);
-    expect(res.text).toContain(lang === "en" ? enCountriesText.countries.wales : cyCountriesText.countries.wales);
+    expect(res.text).toContain(countriesText.countries.wales);
     if (lang === "cy") {
       expect(res.text).toContain("WELSH -");
     } else {

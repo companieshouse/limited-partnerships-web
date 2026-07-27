@@ -65,6 +65,7 @@ describe("Confirm Limited Partner Principal Office Address Page", () => {
       ["update", "cy"]
     ])("should load the confirm principal office address page with %s limited partner person journey and %s language", async (journey: string, lang: string) => {
       const translationtext = lang === "en" ? enTranslationText : cyTranslationText;
+      const countriesText = lang === "en" ? enCountriesText : cyCountriesText;
       const transactionKind = journey === "add" ? PartnerKind.ADD_LIMITED_PARTNER_LEGAL_ENTITY : PartnerKind.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY;
       setupTransactionAndLimitedPartner(transactionKind);
 
@@ -78,7 +79,7 @@ describe("Confirm Limited Partner Principal Office Address Page", () => {
       expect(res.text).toContain("Line 2");
       expect(res.text).toContain("Stoke-On-Trent");
       expect(res.text).toContain("Region");
-      expect(res.text).toContain(lang === "en" ? enCountriesText.countries.england : cyCountriesText.countries.england);
+      expect(res.text).toContain(countriesText.countries.england);
       expect(res.text).toContain("ST6 3LJ");
       expect(res.text).toContain(limitedPartnerLegalEntity.legal_entity_name?.toUpperCase());
 

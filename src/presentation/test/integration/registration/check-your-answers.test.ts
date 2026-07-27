@@ -298,9 +298,9 @@ describe("Check Your Answers Page", () => {
   });
 
   it.each([
-    ["en", enTranslationText],
-    ["cy", cyTranslationText]
-  ])("should load the %s check your answers page with partners", async (lang: string, translationText: Record<string, any>) => {
+    ["en", enTranslationText, enCountriesText],
+    ["cy", cyTranslationText, cyCountriesText]
+  ])("should load the %s check your answers page with partners", async (lang: string, translationText: Record<string, any>, countriesText: Record<string, any>) => {
     setLocalesEnabled(true);
 
     const res = await request(app).get(URL + `?lang=${lang}`);
@@ -329,7 +329,7 @@ describe("Check Your Answers Page", () => {
     checkIfValuesInText(res, limitedPartnerLegalEntity, translationText);
 
     expect(res.text).toContain(translationText.nationalities.british);
-    expect(res.text).toContain(lang === "en" ? enCountriesText.countries.unitedStates : cyCountriesText.countries.unitedStates);
+    expect(res.text).toContain(countriesText.countries.unitedStates);
   });
 
   it("should load the check your answers page with capital contribution data for limited partner person", async () => {
