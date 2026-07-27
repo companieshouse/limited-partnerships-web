@@ -6,6 +6,8 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
+      {% include "includes/errors.njk" %}
+
       <form class="form" method="post">
         <input type="hidden" name="pageType" value={{ props.pageType }}>
         <input type="hidden" name="previousPage" value={{ props.previousUrl }}>
@@ -17,6 +19,7 @@
           classes: "govuk-radios--inline",
           idPrefix: "sign_out",
           name: "sign_out",
+          errorMessage: props.errors.sign_out if props.errors.sign_out,
           fieldset: {
           legend: {
             text: i18n.signOutPage.title,
@@ -30,17 +33,11 @@
         items: [
           {
             value: "yes",
-            text: i18n.yesAndNo.yes,
-            attributes: {
-              required: true
-            }
+            text: i18n.yesAndNo.yes
           },
           {
             value: "no",
-            text: i18n.yesAndNo.no,
-            attributes: {
-              required: true
-            }
+            text: i18n.yesAndNo.no
           }
         ]
         }) }}
