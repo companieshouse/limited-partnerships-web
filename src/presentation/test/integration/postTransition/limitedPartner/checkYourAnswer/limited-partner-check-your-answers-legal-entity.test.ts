@@ -16,6 +16,7 @@ import { CONFIRMATION_POST_TRANSITION_URL } from "../../../../../controller/glob
 import TransactionBuilder from "../../../../builder/TransactionBuilder";
 import TransactionLimitedPartner from "../../../../../../domain/entities/TransactionLimitedPartner";
 import { enTranslationText, cyTranslationText } from "../../../../../../test/utils/locales";
+
 describe("Limited Partner Check Your Answers Page", () => {
   const URL = getUrl(LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL);
   const REDIRECT_URL = getUrl(CONFIRMATION_POST_TRANSITION_URL);
