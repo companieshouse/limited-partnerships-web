@@ -1,4 +1,6 @@
 {
+    "error": "Error: ",
+
     "errorMessages": {
         "capitalContribution": {
             "valueRequired": "Enter the total value of all monetary and non-monetary contributions",
