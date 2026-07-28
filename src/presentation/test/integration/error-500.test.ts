@@ -1,19 +1,16 @@
-jest.mock("../../controller/registration/LimitedPartnershipController", () => {
-  const actual = jest.requireActual("../../controller/registration/LimitedPartnershipController");
-  jest.spyOn(actual.default.prototype, "getPageRouting").mockImplementation(() => {
-    return (req: Request, res: Response, next: NextFunction) => {
-      return Promise.resolve().then(() => next(new Error("Mocked Error 500")));
-    };
-  });
-  return actual;
+import LimitedPartnershipController from "../../controller/registration/LimitedPartnershipController";
+
+// we have to create the spy before the real one is initialised when we import app
+jest.spyOn(LimitedPartnershipController.prototype, "getPageRouting").mockImplementation(() => {
+  return (req, res, next) => {
+    return Promise.resolve().then(() => next(new Error("Mocked Error 500")));
+  };
 });
 
 import request from "supertest";
 import app from "./app";
 import { PARTNERSHIP_TYPE_URL } from "presentation/controller/registration/url";
 import { enTranslationText } from "../../../test/utils/locales";
-import { Request, Response, NextFunction } from "express";
-
 describe("Error 500", () => {
   beforeEach(() => {
     jest.clearAllMocks();
