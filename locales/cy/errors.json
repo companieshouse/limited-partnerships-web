@@ -1,6 +1,13 @@
 {
     "error": "WELSH - Error: ",
 
+    "errorPage": {
+        "title": "WELSH - Service unavailable",
+        "sorryMessage": "WELSH - Sorry, the service is unavailable",
+        "tryLater": "WELSH - You will be able to use the service at a later date.",
+        "moreInfo": "WELSH - Email <a class='govuk-link' href='mailto: enquiries@companieshouse.gov.uk'>enquiries@companieshouse.gov.uk</a>, if you need more information."
+    },
+
     "errorMessages": {
         "capitalContribution": {
             "valueRequired": "WELSH - Enter the total value of all monetary and non-monetary contributions",

@@ -1,6 +1,13 @@
 {
     "error": "Error: ",
 
+    "errorPage": {
+        "title": "Service unavailable",
+        "sorryMessage": "Sorry, the service is unavailable",
+        "tryLater": "You will be able to use the service at a later date.",
+        "moreInfo": "Email <a class='govuk-link' href='mailto: enquiries@companieshouse.gov.uk'>enquiries@companieshouse.gov.uk</a>, if you need more information."
+    },
+
     "errorMessages": {
         "capitalContribution": {
             "valueRequired": "Enter the total value of all monetary and non-monetary contributions",
