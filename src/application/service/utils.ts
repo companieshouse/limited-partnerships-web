@@ -20,10 +20,12 @@ export const incompletePartnerErrorList = (
     .filter((partner) => partner?.data?.completed === false)
     .forEach((partner) => {
       const name = partner.data?.forename ? `${partner.data.forename} ${partner.data.surname}` : partner.data?.legal_entity_name ?? "";
+      const beforeName = i18n?.errorMessages?.reviewGeneralPartnersPage?.beforeName ?? "";
+      const afterName = i18n?.errorMessages?.reviewGeneralPartnersPage?.afterName ?? "";
 
       errorList = {
         ...errorList,
-        [name.toLowerCase()]: `${i18n.reviewGeneralPartnersPage.errorMessage.beforeName} ${name} ${i18n.reviewGeneralPartnersPage.errorMessage.afterName}`
+        [name.toLowerCase()]: `${beforeName} ${name} ${afterName}`.trim()
       };
     });
 

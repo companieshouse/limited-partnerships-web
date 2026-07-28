@@ -30,6 +30,16 @@
             "limitedPartner": "WELSH - Select if you need to add another limited partner"
         },
 
+        "reviewGeneralPartnersPage": {
+            "beforeName": "WELSH - You must provide all information for",
+            "afterName": "WELSH - before continuing. Select Change to provide more information"
+        },
+
+        "reviewLimitedPartnersPage": {
+            "beforeName": "WELSH - You must provide all information for",
+            "afterName": "WELSH - before continuing. Select Change to provide more information"
+        },
+
         "address": {
             "chooseAddress": {
                 "selectionRequired": "WELSH - Select an address from the list"
