@@ -9,7 +9,7 @@ import request from "supertest";
 import PersonWithSignificantControlBuilder from "./builder/PersonWithSignificantControlBuilder";
 
 export const setLocalesEnabled = (bool: boolean) => {
-  process.env.LOCALES_ENABLED = String(bool);
+  jest.spyOn(config, "isLocalesEnabled").mockReturnValue(bool);
   LocalesService.getInstance().enabled = bool;
 };
 
