@@ -49,8 +49,6 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@stylistic/eslint-plugin": "^5.9.0",
-    "@swc/core": "^1.15.46",
-    "@swc/jest": "^0.2.39",
     "@types/cookie-parser": "^1.4.10",
     "@types/escape-html": "^1.0.4",
     "@types/express": "^5.0.6",
@@ -65,6 +63,7 @@
     "jest": "^30.4.2",
     "nodemon": "^3.1.13",
     "sonarqube-scanner": "^5.0.0",
-    "supertest": "^7.1.4"
+    "supertest": "^7.1.4",
+    "ts-jest": "^29.4.12"
   }
 }
