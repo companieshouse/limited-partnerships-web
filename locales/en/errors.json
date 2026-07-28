@@ -40,6 +40,10 @@
             "afterName": "before continuing. Select Change to provide more information"
         },
 
+        "continueSavedFilingPage": {
+            "selectOption": "Select whether to continue with a saved filing"
+        },
+
         "address": {
             "chooseAddress": {
                 "selectionRequired": "Select an address from the list"
