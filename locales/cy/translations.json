@@ -1,13 +1,4 @@
 {
-    "error": "WELSH - Error: ",
-
-    "errorPage": {
-        "title": "WELSH - Service unavailable",
-        "sorryMessage": "WELSH - Sorry, the service is unavailable",
-        "tryLater": "WELSH - You will be able to use the service at a later date.",
-        "moreInfo": "WELSH - Email <a class='govuk-link' href='mailto: enquiries@companieshouse.gov.uk'>enquiries@companieshouse.gov.uk</a>, if you need more information."
-    },
-
     "addOrUpdatePartnerLegalEntityPage" : {
         "generalPartner": {
             "title" : "WELSH - Add a general partner (legal entity)",
@@ -328,6 +319,15 @@
         "publicRegisterInformation" : {
             "line1": "WELSH - We will not show the registered email address on the public register."
         }
+    },
+
+    "error": "WELSH - Error: ",
+
+    "errorPage": {
+        "title": "WELSH - Service unavailable",
+        "sorryMessage": "WELSH - Sorry, the service is unavailable",
+        "tryLater": "WELSH - You will be able to use the service at a later date.",
+        "moreInfo": "WELSH - Email <a class='govuk-link' href='mailto: enquiries@companieshouse.gov.uk'>enquiries@companieshouse.gov.uk</a>, if you need more information."
     },
 
     "generalPartnerChoicePage": {
