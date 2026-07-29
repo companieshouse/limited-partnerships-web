@@ -25,10 +25,10 @@ describe("Continue Saved Filing Page", () => {
     const res = await request(app).get(CONTINUE_SAVED_FILING_URL + "?lang=en");
 
     expect(res.status).toBe(200);
-    testTranslations(res.text, enTranslationText.continueSavedFilingPage, ["errorMessage"]);
+    testTranslations(res.text, enTranslationText.continueSavedFilingPage);
     expect(res.text).toContain(enTranslationText.buttons.continue);
     expect(res.text).toContain(SERVICE_NAME_TRANSITION);
-    expect(res.text).not.toContain(enTranslationText.continueSavedFilingPage.errorMessage);
+    expect(res.text).not.toContain(enTranslationText.errorMessages.continueSavedFilingPage.selectOption);
     expect(res.text).toContain(customerFeedbackUrlMap.transition);
   });
 
@@ -38,10 +38,10 @@ describe("Continue Saved Filing Page", () => {
     const res = await request(app).get(CONTINUE_SAVED_FILING_URL + "?lang=cy");
 
     expect(res.status).toBe(200);
-    testTranslations(res.text, cyTranslationText.continueSavedFilingPage, ["errorMessage"]);
+    testTranslations(res.text, cyTranslationText.continueSavedFilingPage);
     expect(res.text).toContain(cyTranslationText.buttons.continue);
     expect(res.text).toContain(SERVICE_NAME_TRANSITION);
-    expect(res.text).not.toContain(cyTranslationText.continueSavedFilingPage.errorMessage);
+    expect(res.text).not.toContain(cyTranslationText.errorMessages.continueSavedFilingPage.selectOption);
     expect(res.text).toContain(customerFeedbackUrlMap.transition);
   });
 
@@ -80,7 +80,7 @@ describe("Continue Saved Filing Page", () => {
         });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(translationText.continueSavedFilingPage.errorMessage);
+      expect(res.text).toContain(translationText.errorMessages.continueSavedFilingPage.selectOption);
       expect(res.text).toContain('href="#continue_saved_filing"');
       expect(res.text).toContain(translationText.govUk.error.title);
     }

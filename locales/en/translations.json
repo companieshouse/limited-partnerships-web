@@ -26,19 +26,7 @@
         "countryRegistered" : "Which country is it registered in?",
         "registrationNumber" : "What is the registration number?",
         "registrationNumberHint" : "For example, the company number.",
-        "publicRegisterLine1" : "We'll show all of this information on the public register.",
-        "errorMessages": {
-          "legalEntityNameMissing": "Enter a legal entity name",
-          "legalEntityNameLength": "Legal entity name must be 160 characters or less",
-          "legalFormMissing" : "Enter a legal form",
-          "legalFormLength" : "Legal form must be 160 characters or less",
-          "governingLawMissing" : "Enter a governing law",
-          "governingLawLength" : "Governing law must be 160 characters or less",
-          "whichRegisterMissing" : "Enter a register",
-          "whichRegisterLength" : "Register must be 160 characters or less",
-          "registrationNumberMissing" : "Enter a registration number",
-          "registrationNumberLength" : "Registration number must be 160 characters or less"
-        }
+        "publicRegisterLine1" : "We'll show all of this information on the public register."
     },
 
     "addPartnerPersonPage" : {
@@ -79,14 +67,7 @@
         "secondNationalitySelectPrompt": "Select a second nationality",
         "secondNationalityHint" : "Dual citizenship (also known as dual nationality) is allowed in some countries. This means you can be a citizen of your own country and another country.",
         "publicRegisterLine1" : "We'll show the month and year of the partner's date of birth, but not the exact date.",
-        "publicRegisterLine2" : "We'll show all the other information you provide on this screen on the public register.",
-        "errorMessages": {
-          "firstNameMissing": "Enter a first name",
-          "firstNameLength": "First name must be 50 characters or less",
-          "lastNameMissing": "Enter a last name",
-          "lastNameLength": "Last name must be 160 characters or less",
-          "previousNameLength": "Previous name must be 160 characters or less"
-        }
+        "publicRegisterLine2" : "We'll show all the other information you provide on this screen on the public register."
     },
 
     "buttons" : {
@@ -302,8 +283,7 @@
         "no": {
           "text": "No, start a new filing",
           "hint": "This will not delete any saved filings"
-        },
-        "errorMessage": "Select whether to continue with a saved filing"
+                }
     },
 
     "dateOfUpdate" : {
@@ -341,13 +321,13 @@
         }
     },
 
-    "error" : "Error: ",
+    "error": "Error: ",
 
-    "errorPage" : {
+    "errorPage": {
         "title": "Service unavailable",
-        "sorryMessage" : "Sorry, the service is unavailable",
-        "tryLater" : "You will be able to use the service at a later date.",
-        "moreInfo" : "Email <a class='govuk-link' href='mailto: enquiries@companieshouse.gov.uk'>enquiries@companieshouse.gov.uk</a>, if you need more information."
+        "sorryMessage": "Sorry, the service is unavailable",
+        "tryLater": "You will be able to use the service at a later date.",
+        "moreInfo": "Email <a class='govuk-link' href='mailto: enquiries@companieshouse.gov.uk'>enquiries@companieshouse.gov.uk</a>, if you need more information."
     },
 
     "generalPartnerChoicePage": {
@@ -509,10 +489,6 @@
             "title": "Do you need to add another general partner?",
             "optionPerson": "Yes, a person",
             "optionLegalEntity": "Yes, a legal entity"
-        },
-        "errorMessage": {
-            "beforeName": "You must provide all information for",
-            "afterName": "before continuing. Select Change to provide more information"
         }
     },
 
@@ -530,10 +506,6 @@
             "title": "Do you need to add another limited partner?",
             "optionPerson": "Yes, a person",
             "optionLegalEntity": "Yes, a legal entity"
-        },
-        "errorMessage": {
-            "beforeName": "You must provide all information for",
-            "afterName": "before continuing. Select Change to provide more information"
         }
     },
 

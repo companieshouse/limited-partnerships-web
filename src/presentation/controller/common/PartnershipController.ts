@@ -16,7 +16,7 @@ class PartnershipController extends AbstractController {
 
           const uiErrors = new UIErrors().setWebError(
             "continue_saved_filing",
-            response.locals.i18n.continueSavedFilingPage.errorMessage
+            response.locals.i18n.errorMessages.continueSavedFilingPage.selectOption
           );
 
           return response.render(

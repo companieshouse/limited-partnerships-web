@@ -21,6 +21,20 @@
             "limitedPartner": "Select if you need to add another limited partner"
         },
 
+        "reviewGeneralPartnersPage": {
+            "beforeName": "You must provide all information for",
+            "afterName": "before continuing. Select Change to provide more information"
+        },
+
+        "reviewLimitedPartnersPage": {
+            "beforeName": "You must provide all information for",
+            "afterName": "before continuing. Select Change to provide more information"
+        },
+
+        "continueSavedFilingPage": {
+            "selectOption": "Select whether to continue with a saved filing"
+        },
+
         "address": {
             "chooseAddress": {
                 "selectionRequired": "Select an address from the list"
