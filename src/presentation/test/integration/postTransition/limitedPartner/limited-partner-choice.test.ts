@@ -6,6 +6,7 @@ import {
   ADD_LIMITED_PARTNER_PERSON_URL,
   LIMITED_PARTNER_CHOICE_URL
 } from "../../../../controller/postTransition/url";
+import { YOUR_COMPANY_URL } from "../../../../../config";
 import PostTransitionPageType from "../../../../controller/postTransition/pageType";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
@@ -13,6 +14,7 @@ import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("Limited Partner Choice Page", () => {
   const URL = getUrl(LIMITED_PARTNER_CHOICE_URL);
+  const BACK_LINK = getUrl(YOUR_COMPANY_URL);
 
   let companyProfile;
 
@@ -23,59 +25,37 @@ describe("Limited Partner Choice Page", () => {
     appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
   });
 
-  it("should load the limited partner choice page with Welsh text", async () => {
+  it.each([
+    ["en", enTranslationText],
+    ["cy", cyTranslationText]
+  ])("should load the limited partner choice page with %s text", async (lang, translation) => {
     setLocalesEnabled(true);
-    const res = await request(app).get(URL + "?lang=cy");
+    const res = await request(app).get(URL + `?lang=${lang}`);
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
-      `${cyTranslationText.limitedPartnerChoicePage.isPersonOrLegalEntity} - ${cyTranslationText.serviceName.addLimitedPartner} - GOV.UK`
+      `${translation.limitedPartnerChoicePage.isPersonOrLegalEntity} - ${translation.serviceName.addLimitedPartner} - GOV.UK`
     );
-    testTranslations(res.text, cyTranslationText.limitedPartnerChoicePage, ["isPersonOrLegalEntityHint"]);
-    expect(res.text).not.toContain(cyTranslationText.limitedPartnerChoicePage.isPersonOrLegalEntityHint);
-    expect(countOccurrences(res.text, cyTranslationText.serviceName.addLimitedPartner)).toBe(2);
-  });
-
-  it("should load the limited partner choice page with English text", async () => {
-    setLocalesEnabled(true);
-    const res = await request(app).get(URL + "?lang=en");
-
-    expect(res.status).toBe(200);
-    expect(res.text).toContain(
-      `${enTranslationText.limitedPartnerChoicePage.isPersonOrLegalEntity} - ${enTranslationText.serviceName.addLimitedPartner} - GOV.UK`
-    );
-    testTranslations(res.text, enTranslationText.limitedPartnerChoicePage, ["isPersonOrLegalEntityHint"]);
-    expect(res.text).not.toContain(enTranslationText.limitedPartnerChoicePage.isPersonOrLegalEntityHint);
-    expect(countOccurrences(res.text, enTranslationText.serviceName.addLimitedPartner)).toBe(2);
-  });
-
-  it("should redirect to limitedPartner Person page when person is selected", async () => {
-    const res = await request(app).post(URL).send({
-      pageType: PostTransitionPageType.limitedPartnerType,
-      parameter: "person"
-    });
-
-    expect(res.status).toBe(302);
-    expect(res.text).toContain(getUrl(ADD_LIMITED_PARTNER_PERSON_URL));
-  });
-
-  it("should redirect to limited Partner Legal Entity page when legal entity is selected", async () => {
-    const res = await request(app).post(URL).send({
-      pageType: PostTransitionPageType.limitedPartnerType,
-      parameter: "legalEntity"
-    });
-
-    expect(res.status).toBe(302);
-    expect(res.text).toContain(getUrl(ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL));
-  });
-
-  it("should contain the proposed name - data from api", async () => {
-    const res = await request(app).get(URL);
-
-    expect(res.status).toBe(200);
     expect(res.text).toContain(
       `${companyProfile.data.companyName.toUpperCase()} (${companyProfile.data.companyNumber.toUpperCase()})`
     );
+    testTranslations(res.text, translation.limitedPartnerChoicePage, ["isPersonOrLegalEntityHint"]);
+    expect(res.text).not.toContain(translation.limitedPartnerChoicePage.isPersonOrLegalEntityHint);
+    expect(countOccurrences(res.text, translation.serviceName.addLimitedPartner)).toBe(2);
+    expect(res.text).toContain(BACK_LINK);
+  });
+
+  it.each([
+    ["person", getUrl(ADD_LIMITED_PARTNER_PERSON_URL)],
+    ["legal entity", getUrl(ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL)]
+  ])("should redirect to the Limited Partner %s page when %s is selected", async (partnerType, expectedUrl) => {
+    const res = await request(app).post(URL).send({
+      pageType: PostTransitionPageType.limitedPartnerType,
+      parameter: partnerType
+    });
+
+    expect(res.status).toBe(302);
+    expect(res.text).toContain(expectedUrl);
   });
 
   it.each([

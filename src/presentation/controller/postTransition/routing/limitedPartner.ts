@@ -8,9 +8,10 @@ import {
   TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "../../addressLookUp/url/postTransition";
+import { YOUR_COMPANY_URL } from "../../../../config/constants";
 
 const postTransitionRoutingLimitedPartnerChoice = {
-  previousUrl: url.LANDING_PAGE_URL,
+  previousUrl: YOUR_COMPANY_URL,
   currentUrl: url.LIMITED_PARTNER_CHOICE_URL,
   nextUrl: "/",
   pageType: PostTransitionPageType.limitedPartnerType,

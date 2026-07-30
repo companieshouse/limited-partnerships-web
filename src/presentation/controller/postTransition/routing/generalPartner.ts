@@ -9,9 +9,10 @@ import {
   TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL
 } from "../../addressLookUp/url/postTransition";
+import { YOUR_COMPANY_URL } from "../../../../config";
 
 const postTransitionRoutingGeneralPartnerChoice = {
-  previousUrl: url.LANDING_PAGE_URL,
+  previousUrl: YOUR_COMPANY_URL,
   currentUrl: url.GENERAL_PARTNER_CHOICE_URL,
   nextUrl: "/",
   pageType: PostTransitionPageType.generalPartnerType,
