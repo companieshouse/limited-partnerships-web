@@ -1,9 +1,11 @@
-import enCountriesText from "../../locales/en/countries.json";
+import { loadLocaleJson } from "./locale-loader";
+
+const enCountriesText = loadLocaleJson<{ countries: Record<string, string> }>("countries.json");
 
 export const setCountriesDropdown = (i18n: Record<string, any>, countryField: string) => {
   const countries: { value: string; text: string; selected: boolean }[] = [];
   const ukCountries: { value: string; text: string; selected: boolean }[] = [];
-  const enCountries = enCountriesText.countries as Record<string, string>;
+  const enCountries = enCountriesText.countries;
 
   const ukCountriesKeys = ["england", "scotland", "wales", "northernIreland"];
 
