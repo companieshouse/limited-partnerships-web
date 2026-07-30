@@ -21,11 +21,18 @@
             <input type="hidden" name="type" value={{ props.data.natureOfControlType }}>
             {% include "includes/csrf_token.njk" %}
 
-            <h2 class="govuk-heading-m">{{ translationText.shareOfAssets }}</h2>
-            <p class="govuk-body">{{ shareOfAssetsHint }}</p>
-
             {{ govukRadios({
                 name: "share_of_assets",
+                fieldset: {
+                    legend: {
+                        text: translationText.shareOfAssets,
+                        isPageHeading: false,
+                        classes: "govuk-fieldset__legend--m"
+                    }
+                },
+                hint: {
+                    text: shareOfAssetsHint
+                },
                 items: [
                     {
                         value: "share_of_assets_25_to_50",
@@ -53,11 +60,18 @@
                 } if props.errors.share_of_assets
             }) }}
 
-            <h2 class="govuk-heading-m">{{ translationText.votingRights }}</h2>
-            <p class="govuk-body">{{ votingRightsHint }}</p>
-
             {{ govukRadios({
                 name: "voting_rights",
+                fieldset: {
+                    legend: {
+                        text: translationText.votingRights,
+                        isPageHeading: false,
+                        classes: "govuk-fieldset__legend--m"
+                    }
+                },
+                hint: {
+                    text: votingRightsHint
+                },
                 items: [
                     {
                         value: "voting_rights_25_to_50",
