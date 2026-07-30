@@ -15,13 +15,14 @@ import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import GeneralPartnerBuilder from "../../../../../presentation/test/builder/GeneralPartnerBuilder";
 import PostTransitionPageType from "../../../../../presentation/controller/postTransition/pageType";
 import { ApiErrors } from "../../../../../domain/entities/UIErrors";
-import { OFFICER_ROLE_GENERAL_PARTNER_PERSON } from "../../../../../config";
+import { OFFICER_ROLE_GENERAL_PARTNER_PERSON, YOUR_COMPANY_URL } from "../../../../../config";
 import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("Update General Partner Person Page", () => {
   const URL = getUrl(UPDATE_GENERAL_PARTNER_PERSON_URL);
   const URL_WITH_IDS = getUrl(UPDATE_GENERAL_PARTNER_PERSON_WITH_IDS_URL);
   const REDIRECT = getUrl(UPDATE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL);
+  const BACK_LINK = getUrl(YOUR_COMPANY_URL);
 
   let companyProfile;
   let companyAppointment;
@@ -63,6 +64,7 @@ describe("Update General Partner Person Page", () => {
         expect(res.text).not.toContain("WELSH -");
       }
       expect(res.text).toContain(customerFeedbackUrlMap.updateGeneralPartnerPerson);
+      expect(res.text).toContain(BACK_LINK);
     });
 
     it.each([

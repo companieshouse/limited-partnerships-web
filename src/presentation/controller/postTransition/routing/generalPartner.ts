@@ -104,7 +104,7 @@ const PERSON_CHANGE_LINK = PostTransitionPageType.updateGeneralPartnerPerson;
 const LEGAL_ENTITY_CHANGE_LINK = PostTransitionPageType.updateGeneralPartnerLegalEntity;
 
 const postTransitionRoutingUpdateGeneralPartnerPerson = {
-  previousUrl: url.LANDING_PAGE_URL,
+  previousUrl: YOUR_COMPANY_URL,
   currentUrl: url.UPDATE_GENERAL_PARTNER_PERSON_URL,
   nextUrl: url.UPDATE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
   pageType: PostTransitionPageType.updateGeneralPartnerPerson,
@@ -166,7 +166,7 @@ const postTransitionRoutingChangeGeneralPartnerPersonCheckYourAnswers = {
 };
 
 const postTransitionRoutingUpdateGeneralPartnerLegalEntity = {
-  previousUrl: url.LANDING_PAGE_URL,
+  previousUrl: YOUR_COMPANY_URL,
   currentUrl: url.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY_URL,
   nextUrl: url.UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL,
   pageType: PostTransitionPageType.updateGeneralPartnerLegalEntity,
