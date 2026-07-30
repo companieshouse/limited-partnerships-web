@@ -55,7 +55,7 @@ const postTransitionRoutingGeneralPartnerCheckYourAnswers = {
 const REMOVE_GENERAL_PARTNER_KEY = "removeGeneralPartner";
 
 const postTransitionRoutingRemoveGeneralPartnerPerson = {
-  previousUrl: url.LANDING_PAGE_URL,
+  previousUrl: YOUR_COMPANY_URL,
   currentUrl: url.WHEN_DID_THE_GENERAL_PARTNER_PERSON_CEASE_URL,
   nextUrl: url.REMOVE_GENERAL_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL,
   pageType: PostTransitionPageType.whenDidTheGeneralPartnerPersonCease,
@@ -76,7 +76,7 @@ const postTransitionRoutingRemoveGeneralPartnerPersonCheckYourAnswers = {
 };
 
 const postTransitionRoutingRemoveGeneralPartnerLegalEntity = {
-  previousUrl: url.LANDING_PAGE_URL,
+  previousUrl: YOUR_COMPANY_URL,
   currentUrl: url.WHEN_DID_THE_GENERAL_PARTNER_LEGAL_ENTITY_CEASE_URL,
   nextUrl: url.REMOVE_GENERAL_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_URL,
   pageType: PostTransitionPageType.whenDidTheGeneralPartnerLegalEntityCease,

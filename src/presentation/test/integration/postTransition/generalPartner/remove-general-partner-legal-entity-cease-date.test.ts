@@ -2,7 +2,7 @@ import request from "supertest";
 
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { countOccurrences, getUrl, setLocalesEnabled } from "../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 import {
@@ -14,13 +14,14 @@ import CompanyAppointmentBuilder from "../../../builder/CompanyAppointmentBuilde
 import PostTransitionPageType from "../../../../controller/postTransition/pageType";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 import GeneralPartnerBuilder from "../../../../../presentation/test/builder/GeneralPartnerBuilder";
-import { OFFICER_ROLE_GENERAL_PARTNER_LEGAL_ENTITY } from "../../../../../config";
+import { OFFICER_ROLE_GENERAL_PARTNER_LEGAL_ENTITY, YOUR_COMPANY_URL } from "../../../../../config";
 import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("General Partner cease date page", () => {
   const URL = getUrl(WHEN_DID_THE_GENERAL_PARTNER_LEGAL_ENTITY_CEASE_URL);
   const URL_WITH_IDS = getUrl(WHEN_DID_THE_GENERAL_PARTNER_LEGAL_ENTITY_CEASE_WITH_IDS_URL);
   const REDIRECT = getUrl(REMOVE_GENERAL_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_URL);
+  const BACK_LINK = getUrl(YOUR_COMPANY_URL);
 
   let companyProfile;
   let companyAppointment;
@@ -44,26 +45,20 @@ describe("General Partner cease date page", () => {
   });
 
   describe("GET general partner cease date page", () => {
-    it("should load general partner cease date page with english text", async () => {
-      const res = await request(app).get(URL + "?lang=en");
+    it.each([
+      ["en", enTranslationText],
+      ["cy", cyTranslationText]
+    ])("should load general partner cease date page with %s text", async (lang: string, translationText: any) => {
+      const res = await request(app).get(URL + `?lang=${lang}`);
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(`${enTranslationText.ceaseDate.removeGeneralPartner.title}`);
-      expect(res.text).not.toContain("WELSH -");
+      testTranslations(res.text, translationText.ceaseDate.removeGeneralPartner, ["person"]);
 
       expect(res.text).toContain(companyProfile.data.companyName.toUpperCase());
       expect(res.text).toContain(companyAppointment.name ?? "");
-      expect(countOccurrences(res.text, enTranslationText.serviceName.removeGeneralPartnerEntity)).toBe(2);
+      expect(countOccurrences(res.text, translationText.serviceName.removeGeneralPartnerEntity)).toBe(2);
       expect(res.text).toContain(customerFeedbackUrlMap.removeGeneralPartnerEntity);
-    });
-
-    it("should load general partner cease date page with welsh text", async () => {
-      const res = await request(app).get(URL + "?lang=cy");
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(`${cyTranslationText.ceaseDate.removeGeneralPartner.title}`);
-      expect(res.text).toContain("WELSH -");
-      expect(countOccurrences(res.text, cyTranslationText.serviceName.removeGeneralPartnerEntity)).toBe(2);
+      expect(res.text).toContain(BACK_LINK);
     });
   });
 
