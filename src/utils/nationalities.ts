@@ -1,6 +1,11 @@
-import { loadLocaleJson } from "./locale-loader";
+/* eslint-disable @typescript-eslint/no-require-imports */
+import path from "path";
 
-const enNationalitiesText = loadLocaleJson<{ nationalities: Record<string, string> }>("nationalities.json");
+const LOCALES_PATH = path.resolve(process.cwd(), "locales");
+const enNationalitiesPath = path.join(LOCALES_PATH, "en", "nationalities.json");
+
+// need to use require to lookup the file at runtime in CiDev
+const enNationalitiesText: Record<string, any> = require(enNationalitiesPath);
 
 export const setNationalitiesDropdown = (i18n: Record<string, any>, nationalityField: string | undefined, selectPrompt: string) => {
   const nationalities: { value: string; text: string; selected: boolean }[] = [];
