@@ -7,16 +7,19 @@
     id: "legal_entity_name",
     name: "legal_entity_name",
     value: props.data.personWithSignificantControl.data.legal_entity_name,
+    hint: {
+        text: legalEntityNameHint if legalEntityNameHint
+    },
     errorMessage: props.errors.legal_entity_name if props.errors
 }) }}
 
 {{ govukInput({
     label: {
-        text: i18n.personWithSignificantControl.addPersonWithSignificantControl.commonEntityFields.legalFormOrCorporateIdentity,
+        text: legalForm,
         classes: "govuk-label govuk-label--m"
     },
     hint: {
-        text: i18n.personWithSignificantControl.addPersonWithSignificantControl.commonEntityFields.legalFormOrCorporateIdentityHint
+        text: legalFormHint
     },
     id: "legal_form",
     name: "legal_form",
@@ -30,7 +33,7 @@
         classes: "govuk-label govuk-label--m"
     },
     hint: {
-        text: i18n.personWithSignificantControl.addPersonWithSignificantControl.commonEntityFields.governingLawHint
+        text: governingLawHint
     },
     id: "governing_law",
     name: "governing_law",

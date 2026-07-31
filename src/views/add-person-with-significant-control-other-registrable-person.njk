@@ -1,7 +1,8 @@
 {% extends "layout.njk" %}
 
-{% set pageTitle = i18n.personWithSignificantControl.addPersonWithSignificantControl.addOtherRegistrablePerson.title %}
-{% set publicRegisterInformationLine1 = i18n.personWithSignificantControl.addPersonWithSignificantControl.commonEntityFields.publicRegisterLine1 %}
+{% set pageContent = i18n.personWithSignificantControl.addPersonWithSignificantControl %}
+{% set pageTitle = pageContent.addOtherRegistrablePerson.title %}
+{% set publicRegisterInformationLine1 = pageContent.commonEntityFields.publicRegisterLine1 %}
 
 
 {% block content %}
@@ -19,7 +20,12 @@
 
                 <input type="hidden" name="type" value="OTHER_REGISTRABLE_PERSON">
 
-                {% set legalEntityName = i18n.personWithSignificantControl.addPersonWithSignificantControl.addOtherRegistrablePerson.legalEntityName %}
+                {% set legalEntityName = pageContent.addOtherRegistrablePerson.legalEntityName %}
+                {% set legalEntityNameHint = pageContent.addOtherRegistrablePerson.legalEntityNameHint %}
+                {% set legalForm = pageContent.addOtherRegistrablePerson.legalForm %}
+                {% set legalFormHint = pageContent.addOtherRegistrablePerson.legalFormHint %}
+                {% set governingLawHint = pageContent.addOtherRegistrablePerson.governingLawHint %}
+                
                 {% include "pages/personWithSignificantControl/add-person-with-significant-control.njk" %}
 
                 {% include "includes/public-register-information.njk" %}

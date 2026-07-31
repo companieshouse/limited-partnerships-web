@@ -1,8 +1,9 @@
 {% extends "layout.njk" %}
 {% import 'includes/countries.njk' as macros %}
 
-{% set pageTitle = i18n.personWithSignificantControl.addPersonWithSignificantControl.addRelevantLegalEntity.title %}
-{% set publicRegisterInformationLine1 = i18n.personWithSignificantControl.addPersonWithSignificantControl.commonEntityFields.publicRegisterLine1 %}
+{% set pageContent = i18n.personWithSignificantControl.addPersonWithSignificantControl %}
+{% set pageTitle = pageContent.addRelevantLegalEntity.title %}
+{% set publicRegisterInformationLine1 = pageContent.commonEntityFields.publicRegisterLine1 %}
 
 {% block content %}
     <div class="govuk-grid-row">
@@ -19,16 +20,20 @@
 
                 <input type="hidden" name="type" value="RELEVANT_LEGAL_ENTITY">
 
-                {% set legalEntityName = i18n.personWithSignificantControl.addPersonWithSignificantControl.addRelevantLegalEntity.legalEntityName %}
+                {% set legalEntityName = pageContent.addRelevantLegalEntity.legalEntityName %}
+                {% set legalForm = pageContent.commonEntityFields.legalFormOrCorporateIdentity %}
+                {% set legalFormHint = pageContent.commonEntityFields.legalFormOrCorporateIdentityHint %}
+                {% set governingLawHint = pageContent.commonEntityFields.governingLawHint %}
+                
                 {% include "pages/personWithSignificantControl/add-person-with-significant-control.njk" %}
 
                 {{ govukInput({
                     label: {
-                        text: i18n.personWithSignificantControl.addPersonWithSignificantControl.addRelevantLegalEntity.whichRegister,
+                        text: pageContent.addRelevantLegalEntity.whichRegister,
                         classes: "govuk-label govuk-label--m"
                     },
                     hint: {
-                        text: i18n.personWithSignificantControl.addPersonWithSignificantControl.addRelevantLegalEntity.whichRegisterHint
+                        text: pageContent.addRelevantLegalEntity.whichRegisterHint
                     },
                     id: "legal_entity_register_name",
                     name: "legal_entity_register_name",
@@ -36,7 +41,7 @@
                     errorMessage: props.errors.legal_entity_register_name if props.errors
                 }) }}
 
-                {% set countryText = i18n.personWithSignificantControl.addPersonWithSignificantControl.addRelevantLegalEntity.countryRegistered %}
+                {% set countryText = pageContent.addRelevantLegalEntity.countryRegistered %}
                 {% set countryFormId = "legal_entity_registration_location" %}
                 {% set countryErrorMessage = props.errors.legal_entity_registration_location if props.errors %}
                 {% set countryFormValue = props.data.personWithSignificantControl.data.legal_entity_registration_location %}
@@ -46,11 +51,11 @@
 
                 {{ govukInput({
                     label: {
-                        text: i18n.personWithSignificantControl.addPersonWithSignificantControl.addRelevantLegalEntity.registrationNumber,
+                        text: pageContent.addRelevantLegalEntity.registrationNumber,
                         classes: "govuk-label govuk-label--m"
                     },
                     hint: {
-                        text: i18n.personWithSignificantControl.addPersonWithSignificantControl.addRelevantLegalEntity.registrationNumberHint
+                        text: pageContent.addRelevantLegalEntity.registrationNumberHint
                     },
                     id: "registered_company_number",
                     name: "registered_company_number",
