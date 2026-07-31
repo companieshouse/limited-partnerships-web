@@ -134,10 +134,9 @@ export const createPersonWithSignificantControl = (url: string, urlToCompare: st
   return personWithSignificantControl;
 };
 
-export const checkLegalEntityValuesInText = (
-  res: request.Response,
+const forEachPartnerValue = (
   partner: GeneralPartner | LimitedPartner,
-  translationText: Record<string, any>
+  handler: (key: string, value: any) => void
 ) => {
   const partnerData = partner.data as Record<string, any>;
 
@@ -148,14 +147,46 @@ export const checkLegalEntityValuesInText = (
       continue;
     }
 
+    handler(key, value);
+  }
+};
+
+const checkCommonPartnerValue = (
+  key: string,
+  value: any,
+  res: request.Response,
+  translationText: Record<string, any>
+): boolean => {
+  if (key === "nationality1") {
+    expect(res.text).toContain(capitalize(value));
+    return true;
+  } else if (key.includes("date_of_birth") && value) {
+    expect(res.text).toContain(formatDate(value, translationText));
+    return true;
+  } else if (key.includes("date_effective_from") && value) {
+    expect(res.text).toContain(formatDate(value, translationText));
+    return true;
+  }
+
+  return false;
+};
+
+export const checkLegalEntityValuesInText = (
+  res: request.Response,
+  partner: GeneralPartner | LimitedPartner,
+  translationText: Record<string, any>
+) => {
+  forEachPartnerValue(partner, (key, value) => {
+    if (checkCommonPartnerValue(key, value, res, translationText)) {
+      return;
+    }
+
     if (key === "principal_office_address") {
       expect(res.text).toContain(value.address_line_1.split(" ").map(capitalize).join(" "));
-    } else if (key.includes("date_effective_from")) {
-      expect(res.text).toContain(formatDate(value, translationText));
     } else if (!key.includes("address")) {
       expect(res.text).toContain(value);
     }
-  }
+  });
 };
 
 export const checkPersonValuesInText = (
@@ -163,23 +194,42 @@ export const checkPersonValuesInText = (
   partner: GeneralPartner | LimitedPartner,
   translationText: Record<string, any>
 ) => {
-  const partnerData = partner.data as Record<string, any>;
-
-  for (const key in partnerData) {
-    const value = partnerData[key];
-
-    if (typeof value !== "string" && typeof value !== "object") {
-      continue;
+  forEachPartnerValue(partner, (key, value) => {
+    if (checkCommonPartnerValue(key, value, res, translationText)) {
+      return;
     }
 
-    if (key === "nationality1") {
-      expect(res.text).toContain(capitalize(value));
-    } else if (key.includes("date_of_birth") && value) {
-      expect(res.text).toContain(formatDate(value, translationText));
-    } else if (key.includes("usual_residential_address")) {
+    if (key.includes("usual_residential_address")) {
       expect(res.text).toContain(value.address_line_1.split(" ").map(capitalize).join(" "));
-    } else if (key.includes("date_effective_from")) {
-      expect(res.text).toContain(formatDate(value, translationText));
     }
-  }
+  });
+};
+
+export const checkPartnerValuesInText = (
+  res: request.Response,
+  partner: GeneralPartner | LimitedPartner,
+  translationText: Record<string, any>
+) => {
+  forEachPartnerValue(partner, (key, value) => {
+    if (checkCommonPartnerValue(key, value, res, translationText)) {
+      return;
+    }
+
+    if (key.includes("address")) {
+      expect(res.text).toContain(value.address_line_1.split(" ").map(capitalize).join(" "));
+    } else if (key.includes("contribution_sub_types")) {
+      const capitalContributionSubTypesMap: Record<string, string> = {
+        MONEY: translationText.capitalContribution.money,
+        LAND_OR_PROPERTY: translationText.capitalContribution.landOrProperty,
+        SHARES: translationText.capitalContribution.shares,
+        SERVICES_OR_GOODS: translationText.capitalContribution.servicesOrGoods,
+        ANY_OTHER_ASSET: translationText.capitalContribution.anyOtherAsset
+      };
+
+      const str = value.map((word: string) => capitalContributionSubTypesMap[word]).join(" / ");
+      expect(res.text).toContain(str.split("_").join(" "));
+    } else {
+      expect(res.text).toContain(value);
+    }
+  });
 };

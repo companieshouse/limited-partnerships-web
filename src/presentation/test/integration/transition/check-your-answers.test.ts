@@ -2,17 +2,14 @@ import request from "supertest";
 import app from "../app";
 
 import {
-  GeneralPartner,
-  LimitedPartner,
   PartnershipType
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { CHECK_YOUR_ANSWERS_URL } from "../../../controller/transition/url";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
-import { capitalize, getUrl, setLocalesEnabled, testTranslations } from "../../utils";
+import { checkPartnerValuesInText, getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import GeneralPartnerBuilder from "../../builder/GeneralPartnerBuilder";
 import LimitedPartnerBuilder from "../../builder/LimitedPartnerBuilder";
-import { formatDate } from "../../../../utils/date-format";
 import { TransactionKind } from "../../../../domain/entities/TransactionTypes";
 import TransactionBuilder from "../../builder/TransactionBuilder";
 import TransitionPageType from "../../../controller/transition/PageType";
@@ -25,11 +22,11 @@ describe("Check Your Answers Page", () => {
   const URL = getUrl(CHECK_YOUR_ANSWERS_URL);
   const REDIRECT_URL = getUrl(CONFIRMATION_URL).replace(JOURNEY_TYPE_PARAM, Journey.transition);
 
-  let limitedPartnership;
-  let generalPartnerPerson;
-  let generalPartnerLegalEntity;
-  let limitedPartnerPerson;
-  let limitedPartnerLegalEntity;
+  let limitedPartnership: any;
+  let generalPartnerPerson: any;
+  let generalPartnerLegalEntity: any;
+  let limitedPartnerPerson: any;
+  let limitedPartnerLegalEntity: any;
 
   beforeEach(() => {
     const transaction = new TransactionBuilder().withFilingMode(TransactionKind.transition).build();
@@ -165,13 +162,13 @@ describe("Check Your Answers Page", () => {
         "warningMessageUpdate"
       ]);
 
-      checkIfValuesInText(res, generalPartnerPerson, enTranslationText);
+      checkPartnerValuesInText(res, generalPartnerPerson, enTranslationText);
 
-      checkIfValuesInText(res, generalPartnerLegalEntity, enTranslationText);
+      checkPartnerValuesInText(res, generalPartnerLegalEntity, enTranslationText);
 
-      checkIfValuesInText(res, limitedPartnerPerson, enTranslationText);
+      checkPartnerValuesInText(res, limitedPartnerPerson, enTranslationText);
 
-      checkIfValuesInText(res, limitedPartnerLegalEntity, enTranslationText);
+      checkPartnerValuesInText(res, limitedPartnerLegalEntity, enTranslationText);
 
       expect(res.text).toContain(enTranslationText.nationalities.british);
       expect(res.text).toContain(enTranslationText.countries.unitedStates);
@@ -193,13 +190,13 @@ describe("Check Your Answers Page", () => {
         "warningMessageUpdate"
       ]);
 
-      checkIfValuesInText(res, generalPartnerPerson, cyTranslationText);
+      checkPartnerValuesInText(res, generalPartnerPerson, cyTranslationText);
 
-      checkIfValuesInText(res, generalPartnerLegalEntity, cyTranslationText);
+      checkPartnerValuesInText(res, generalPartnerLegalEntity, cyTranslationText);
 
-      checkIfValuesInText(res, limitedPartnerPerson, cyTranslationText);
+      checkPartnerValuesInText(res, limitedPartnerPerson, cyTranslationText);
 
-      checkIfValuesInText(res, limitedPartnerLegalEntity, cyTranslationText);
+      checkPartnerValuesInText(res, limitedPartnerLegalEntity, cyTranslationText);
 
       expect(res.text).toContain(cyTranslationText.nationalities.british);
       expect(res.text).toContain(cyTranslationText.countries.unitedStates);
@@ -217,29 +214,3 @@ describe("Check Your Answers Page", () => {
     });
   });
 });
-
-const checkIfValuesInText = (
-  res: request.Response,
-  partner: GeneralPartner | LimitedPartner,
-  translationText: Record<string, any>
-) => {
-  const partnerData = partner.data as Record<string, any>;
-
-  for (const key in partnerData) {
-    const value = partnerData[key];
-
-    if (typeof value !== "string" && typeof value !== "object") {
-      continue;
-    }
-
-    if (key === "nationality1") {
-      expect(res.text).toContain(capitalize(value));
-    } else if (key.includes("date_of_birth") && value) {
-      expect(res.text).toContain(formatDate(value, translationText));
-    } else if (key.includes("address")) {
-      expect(res.text).toContain(value.address_line_1.split(" ").map(capitalize).join(" "));
-    } else {
-      expect(res.text).toContain(value);
-    }
-  }
-};
