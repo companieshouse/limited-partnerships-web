@@ -160,10 +160,7 @@ const checkCommonPartnerValue = (
   if (key === "nationality1") {
     expect(res.text).toContain(capitalize(value));
     return true;
-  } else if (key.includes("date_of_birth") && value) {
-    expect(res.text).toContain(formatDate(value, translationText));
-    return true;
-  } else if (key.includes("date_effective_from") && value) {
+  } else if ((key.includes("date_of_birth") || key.includes("date_effective_from")) && value) {
     expect(res.text).toContain(formatDate(value, translationText));
     return true;
   }
