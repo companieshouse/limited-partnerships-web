@@ -5,7 +5,7 @@ import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import GeneralPartnerBuilder from "../../../../builder/GeneralPartnerBuilder";
 import CompanyProfileBuilder from "../../../../builder/CompanyProfileBuilder";
 import { GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/postTransition/url";
-import { countOccurrences, getUrl, setLocalesEnabled } from "../../../../utils";
+import { capitalize, countOccurrences, getUrl, setLocalesEnabled } from "../../../../utils";
 import { formatDate } from "../../../../../../utils/date-format";
 import { GeneralPartner, PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL, CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../../../../controller/addressLookUp/url/postTransition";
@@ -110,23 +110,23 @@ describe("General Partner Check Your Answers Page", () => {
 });
 
 const checkIfValuesInText = (res: request.Response, partner: GeneralPartner, translationText: Record<string, any>) => {
-  for (const key in partner.data) {
-    if (typeof partner.data[key] === "string" || typeof partner.data[key] === "object") {
-      if (key === "nationality1") {
-        const capitalized = partner.data[key].charAt(0).toUpperCase() + partner.data[key].slice(1).toLowerCase();
+  const partnerData = partner.data as Record<string, any>;
 
-        expect(res.text).toContain(capitalized);
-      } else if (key.includes("date_of_birth") && partner.data[key]) {
-        expect(res.text).toContain(formatDate(partner.data[key], translationText));
-      } else if (key.includes("usual_residential_address")) {
-        const capitalized = partner.data[key].address_line_1
-          .split(" ")
-          .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-          .join(" ");
-        expect(res.text).toContain(capitalized);
-      } else if (key.includes("date_effective_from")) {
-        expect(res.text).toContain(formatDate(partner.data[key], translationText));
-      }
+  for (const key in partnerData) {
+    const value = partnerData[key];
+
+    if (typeof value !== "string" && typeof value !== "object") {
+      continue;
+    }
+
+    if (key === "nationality1") {
+      expect(res.text).toContain(capitalize(value));
+    } else if (key.includes("date_of_birth") && value) {
+      expect(res.text).toContain(formatDate(value, translationText));
+    } else if (key.includes("usual_residential_address")) {
+      expect(res.text).toContain(value.address_line_1.split(" ").map(capitalize).join(" "));
+    } else if (key.includes("date_effective_from")) {
+      expect(res.text).toContain(formatDate(value, translationText));
     }
   }
 };

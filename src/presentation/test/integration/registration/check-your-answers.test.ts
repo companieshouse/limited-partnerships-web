@@ -10,7 +10,7 @@ import {
 import { CHECK_YOUR_ANSWERS_URL, REVIEW_LIMITED_PARTNERS_URL, REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL, WILL_LIMITED_PARTNERSHIP_HAVE_PSC_URL } from "../../../controller/registration/url";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
+import { capitalize, getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import GeneralPartnerBuilder from "../../builder/GeneralPartnerBuilder";
 import LimitedPartnerBuilder from "../../builder/LimitedPartnerBuilder";
@@ -696,33 +696,29 @@ const checkIfValuesInText = (
   for (const key in partnerData) {
     const value = partnerData[key];
 
-    if (typeof value === "string" || typeof value === "object") {
-      if (key === "nationality1") {
-        const capitalized = value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+    if (typeof value !== "string" && typeof value !== "object") {
+      continue;
+    }
 
-        expect(res.text).toContain(capitalized);
-      } else if (key.includes("date_of_birth") && value) {
-        expect(res.text).toContain(formatDate(value, translationText));
-      } else if (key.includes("address")) {
-        const capitalized = value.address_line_1
-          .split(" ")
-          .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-          .join(" ");
-        expect(res.text).toContain(capitalized);
-      } else if (key.includes("contribution_sub_types")) {
-        const capitalContributionSubTypesMap: Record<string, string> = {
-          MONEY: translationText.capitalContribution.money,
-          LAND_OR_PROPERTY: translationText.capitalContribution.landOrProperty,
-          SHARES: translationText.capitalContribution.shares,
-          SERVICES_OR_GOODS: translationText.capitalContribution.servicesOrGoods,
-          ANY_OTHER_ASSET: translationText.capitalContribution.anyOtherAsset
-        };
+    if (key === "nationality1") {
+      expect(res.text).toContain(capitalize(value));
+    } else if (key.includes("date_of_birth") && value) {
+      expect(res.text).toContain(formatDate(value, translationText));
+    } else if (key.includes("address")) {
+      expect(res.text).toContain(value.address_line_1.split(" ").map(capitalize).join(" "));
+    } else if (key.includes("contribution_sub_types")) {
+      const capitalContributionSubTypesMap: Record<string, string> = {
+        MONEY: translationText.capitalContribution.money,
+        LAND_OR_PROPERTY: translationText.capitalContribution.landOrProperty,
+        SHARES: translationText.capitalContribution.shares,
+        SERVICES_OR_GOODS: translationText.capitalContribution.servicesOrGoods,
+        ANY_OTHER_ASSET: translationText.capitalContribution.anyOtherAsset
+      };
 
-        const str = value.map((word: string) => capitalContributionSubTypesMap[word]).join(" / ");
-        expect(res.text).toContain(str.replaceAll("_", " "));
-      } else {
-        expect(res.text).toContain(value);
-      }
+      const str = value.map((word: string) => capitalContributionSubTypesMap[word]).join(" / ");
+      expect(res.text).toContain(str.split("_").join(" "));
+    } else {
+      expect(res.text).toContain(value);
     }
   }
 };

@@ -9,7 +9,7 @@ import {
 import { CHECK_YOUR_ANSWERS_URL } from "../../../controller/transition/url";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
+import { capitalize, getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import GeneralPartnerBuilder from "../../builder/GeneralPartnerBuilder";
 import LimitedPartnerBuilder from "../../builder/LimitedPartnerBuilder";
 import { formatDate } from "../../../../utils/date-format";
@@ -223,22 +223,23 @@ const checkIfValuesInText = (
   partner: GeneralPartner | LimitedPartner,
   translationText: Record<string, any>
 ) => {
-  for (const key in partner.data) {
-    if (typeof partner.data[key] === "string" || typeof partner.data[key] === "object") {
-      if (key === "nationality1") {
-        const capitalized = partner.data[key].charAt(0).toUpperCase() + partner.data[key].slice(1).toLowerCase();
-        expect(res.text).toContain(capitalized);
-      } else if (key.includes("date_of_birth") && partner.data[key]) {
-        expect(res.text).toContain(formatDate(partner.data[key], translationText));
-      } else if (key.includes("address")) {
-        const capitalized = partner.data[key].address_line_1
-          .split(" ")
-          .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-          .join(" ");
-        expect(res.text).toContain(capitalized);
-      } else {
-        expect(res.text).toContain(partner.data[key]);
-      }
+  const partnerData = partner.data as Record<string, any>;
+
+  for (const key in partnerData) {
+    const value = partnerData[key];
+
+    if (typeof value !== "string" && typeof value !== "object") {
+      continue;
+    }
+
+    if (key === "nationality1") {
+      expect(res.text).toContain(capitalize(value));
+    } else if (key.includes("date_of_birth") && value) {
+      expect(res.text).toContain(formatDate(value, translationText));
+    } else if (key.includes("address")) {
+      expect(res.text).toContain(value.address_line_1.split(" ").map(capitalize).join(" "));
+    } else {
+      expect(res.text).toContain(value);
     }
   }
 };

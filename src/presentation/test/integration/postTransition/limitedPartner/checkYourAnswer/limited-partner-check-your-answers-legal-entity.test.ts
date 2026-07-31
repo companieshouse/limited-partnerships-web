@@ -4,7 +4,7 @@ import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import LimitedPartnerBuilder from "../../../../builder/LimitedPartnerBuilder";
 import CompanyProfileBuilder from "../../../../builder/CompanyProfileBuilder";
 import { LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/postTransition/url";
-import { countOccurrences, getUrl, setLocalesEnabled } from "../../../../utils";
+import { capitalize, countOccurrences, getUrl, setLocalesEnabled } from "../../../../utils";
 import { formatDate } from "../../../../../../utils/date-format";
 import { LimitedPartner, PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import {
@@ -138,19 +138,21 @@ describe("Limited Partner Check Your Answers Page", () => {
 });
 
 const checkIfValuesInText = (res: request.Response, partner: LimitedPartner, translationText: Record<string, any>) => {
-  for (const key in partner.data) {
-    if (typeof partner.data[key] === "string" || typeof partner.data[key] === "object") {
-      if (key === "principal_office_address") {
-        const capitalized = partner.data[key].address_line_1
-          .split(" ")
-          .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-          .join(" ");
-        expect(res.text).toContain(capitalized);
-      } else if (key.includes("date_effective_from")) {
-        expect(res.text).toContain(formatDate(partner.data[key], translationText));
-      } else if (!key.includes("address")) {
-        expect(res.text).toContain(partner.data[key]);
-      }
+  const partnerData = partner.data as Record<string, any>;
+
+  for (const key in partnerData) {
+    const value = partnerData[key];
+
+    if (typeof value !== "string" && typeof value !== "object") {
+      continue;
+    }
+
+    if (key === "principal_office_address") {
+      expect(res.text).toContain(value.address_line_1.split(" ").map(capitalize).join(" "));
+    } else if (key.includes("date_effective_from")) {
+      expect(res.text).toContain(formatDate(value, translationText));
+    } else if (!key.includes("address")) {
+      expect(res.text).toContain(value);
     }
   }
 };

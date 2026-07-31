@@ -39,6 +39,8 @@ export const getUrl = (url: string) => {
   return appDevDependencies.addressLookUpController.insertIdsInUrl(url, ids);
 };
 
+export const capitalize = (value: string): string => value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+
 export const toEscapedHtml = (input: string) => {
   return input
     .replace(/&/g, "&amp;")
