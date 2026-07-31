@@ -2,17 +2,14 @@ import request from "supertest";
 import app from "../app";
 
 import {
-  GeneralPartner,
-  LimitedPartner,
   PartnershipType
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { CHECK_YOUR_ANSWERS_URL } from "../../../controller/transition/url";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
+import { checkPartnerValuesInText, getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import GeneralPartnerBuilder from "../../builder/GeneralPartnerBuilder";
 import LimitedPartnerBuilder from "../../builder/LimitedPartnerBuilder";
-import { formatDate } from "../../../../utils/date-format";
 import { TransactionKind } from "../../../../domain/entities/TransactionTypes";
 import TransactionBuilder from "../../builder/TransactionBuilder";
 import TransitionPageType from "../../../controller/transition/PageType";
@@ -24,6 +21,12 @@ import { enTranslationText, cyTranslationText } from "../../../../test/utils/loc
 describe("Check Your Answers Page", () => {
   const URL = getUrl(CHECK_YOUR_ANSWERS_URL);
   const REDIRECT_URL = getUrl(CONFIRMATION_URL).replace(JOURNEY_TYPE_PARAM, Journey.transition);
+  const partnerValueChecks = {
+    capitalizeKeys: ["nationality1"],
+    dateKeyIncludes: ["date_of_birth"],
+    addressKeyIncludes: ["address"],
+    assertOtherStringValues: true
+  };
 
   let limitedPartnership;
   let generalPartnerPerson;
@@ -165,13 +168,13 @@ describe("Check Your Answers Page", () => {
         "warningMessageUpdate"
       ]);
 
-      checkIfValuesInText(res, generalPartnerPerson, enTranslationText);
+      checkPartnerValuesInText(res, generalPartnerPerson, enTranslationText, partnerValueChecks);
 
-      checkIfValuesInText(res, generalPartnerLegalEntity, enTranslationText);
+      checkPartnerValuesInText(res, generalPartnerLegalEntity, enTranslationText, partnerValueChecks);
 
-      checkIfValuesInText(res, limitedPartnerPerson, enTranslationText);
+      checkPartnerValuesInText(res, limitedPartnerPerson, enTranslationText, partnerValueChecks);
 
-      checkIfValuesInText(res, limitedPartnerLegalEntity, enTranslationText);
+      checkPartnerValuesInText(res, limitedPartnerLegalEntity, enTranslationText, partnerValueChecks);
 
       expect(res.text).toContain(enTranslationText.nationalities.british);
       expect(res.text).toContain(enTranslationText.countries.unitedStates);
@@ -193,13 +196,13 @@ describe("Check Your Answers Page", () => {
         "warningMessageUpdate"
       ]);
 
-      checkIfValuesInText(res, generalPartnerPerson, cyTranslationText);
+      checkPartnerValuesInText(res, generalPartnerPerson, cyTranslationText, partnerValueChecks);
 
-      checkIfValuesInText(res, generalPartnerLegalEntity, cyTranslationText);
+      checkPartnerValuesInText(res, generalPartnerLegalEntity, cyTranslationText, partnerValueChecks);
 
-      checkIfValuesInText(res, limitedPartnerPerson, cyTranslationText);
+      checkPartnerValuesInText(res, limitedPartnerPerson, cyTranslationText, partnerValueChecks);
 
-      checkIfValuesInText(res, limitedPartnerLegalEntity, cyTranslationText);
+      checkPartnerValuesInText(res, limitedPartnerLegalEntity, cyTranslationText, partnerValueChecks);
 
       expect(res.text).toContain(cyTranslationText.nationalities.british);
       expect(res.text).toContain(cyTranslationText.countries.unitedStates);
@@ -218,27 +221,3 @@ describe("Check Your Answers Page", () => {
   });
 });
 
-const checkIfValuesInText = (
-  res: request.Response,
-  partner: GeneralPartner | LimitedPartner,
-  translationText: Record<string, any>
-) => {
-  for (const key in partner.data) {
-    if (typeof partner.data[key] === "string" || typeof partner.data[key] === "object") {
-      if (key === "nationality1") {
-        const capitalized = partner.data[key].charAt(0).toUpperCase() + partner.data[key].slice(1).toLowerCase();
-        expect(res.text).toContain(capitalized);
-      } else if (key.includes("date_of_birth") && partner.data[key]) {
-        expect(res.text).toContain(formatDate(partner.data[key], translationText));
-      } else if (key.includes("address")) {
-        const capitalized = partner.data[key].address_line_1
-          .split(" ")
-          .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-          .join(" ");
-        expect(res.text).toContain(capitalized);
-      } else {
-        expect(res.text).toContain(partner.data[key]);
-      }
-    }
-  }
-};

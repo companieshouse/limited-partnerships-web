@@ -7,6 +7,16 @@ import GeneralPartnerBuilder from "./builder/GeneralPartnerBuilder";
 import LimitedPartnerBuilder from "./builder/LimitedPartnerBuilder";
 import request from "supertest";
 import PersonWithSignificantControlBuilder from "./builder/PersonWithSignificantControlBuilder";
+import { formatDate } from "../../utils/date-format";
+
+type CheckPartnerValuesInTextOptions = {
+  capitalizeKeys?: string[];
+  dateKeyIncludes?: string[];
+  addressKeyIncludes?: string[];
+  contributionSubtypeKeyIncludes?: string[];
+  assertOtherStringValues?: boolean;
+  skipOtherIfKeyIncludes?: string[];
+};
 
 export const setLocalesEnabled = (bool: boolean) => {
   jest.spyOn(config, "isLocalesEnabled").mockReturnValue(bool);
@@ -129,4 +139,73 @@ export const createPersonWithSignificantControl = (url: string, urlToCompare: st
     personWithSignificantControl.build()
   ]);
   return personWithSignificantControl;
+};
+
+const includesAnyPattern = (key: string, patterns: string[] = []): boolean => {
+  return patterns.some((pattern) => key.includes(pattern));
+};
+
+const titleCaseWords = (value: string): string => {
+  return value
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
+};
+
+export const checkPartnerValuesInText = (
+  res: request.Response,
+  partner: LimitedPartner | GeneralPartner,
+  translationText: Record<string, any>,
+  options: CheckPartnerValuesInTextOptions = {}
+) => {
+  const partnerData = partner.data as Record<string, any>;
+
+  for (const key in partnerData) {
+    const value = partnerData[key];
+
+    if (value === undefined || value === null) {
+      continue;
+    }
+
+    if (typeof value !== "string" && typeof value !== "object") {
+      continue;
+    }
+
+    if (options.capitalizeKeys?.includes(key) && typeof value === "string") {
+      expect(res.text).toContain(value.charAt(0).toUpperCase() + value.slice(1).toLowerCase());
+      continue;
+    }
+
+    if (includesAnyPattern(key, options.dateKeyIncludes) && value) {
+      expect(res.text).toContain(formatDate(value, translationText));
+      continue;
+    }
+
+    if (includesAnyPattern(key, options.addressKeyIncludes) && typeof value === "object" && value.address_line_1) {
+      expect(res.text).toContain(titleCaseWords(value.address_line_1));
+      continue;
+    }
+
+    if (includesAnyPattern(key, options.contributionSubtypeKeyIncludes) && Array.isArray(value)) {
+      const capitalContributionSubTypesMap: Record<string, string> = {
+        MONEY: translationText.capitalContribution.money,
+        LAND_OR_PROPERTY: translationText.capitalContribution.landOrProperty,
+        SHARES: translationText.capitalContribution.shares,
+        SERVICES_OR_GOODS: translationText.capitalContribution.servicesOrGoods,
+        ANY_OTHER_ASSET: translationText.capitalContribution.anyOtherAsset
+      };
+
+      const str = value.map((word: string) => capitalContributionSubTypesMap[word]).join(" / ");
+      expect(res.text).toContain(str.split("_").join(" "));
+      continue;
+    }
+
+    if (
+      options.assertOtherStringValues &&
+      typeof value === "string" &&
+      !includesAnyPattern(key, options.skipOtherIfKeyIncludes)
+    ) {
+      expect(res.text).toContain(value);
+    }
+  }
 };

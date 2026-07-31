@@ -2,15 +2,13 @@ import request from "supertest";
 import app from "../app";
 
 import {
-  GeneralPartner,
-  LimitedPartner,
   Jurisdiction,
   PartnershipType
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { CHECK_YOUR_ANSWERS_URL, REVIEW_LIMITED_PARTNERS_URL, REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL, WILL_LIMITED_PARTNERSHIP_HAVE_PSC_URL } from "../../../controller/registration/url";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
+import { checkPartnerValuesInText, getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import GeneralPartnerBuilder from "../../builder/GeneralPartnerBuilder";
 import LimitedPartnerBuilder from "../../builder/LimitedPartnerBuilder";
@@ -35,6 +33,13 @@ import { enTranslationText, cyTranslationText } from "../../../../test/utils/loc
 describe("Check Your Answers Page", () => {
   const URL = getUrl(CHECK_YOUR_ANSWERS_URL);
   const PAYMENT_LINK_JOURNEY = "https://api-test-payments.chs.local:4001";
+  const partnerValueChecks = {
+    capitalizeKeys: ["nationality1"],
+    dateKeyIncludes: ["date_of_birth"],
+    addressKeyIncludes: ["address"],
+    contributionSubtypeKeyIncludes: ["contribution_sub_types"],
+    assertOtherStringValues: true
+  };
 
   let limitedPartnership: TransactionLimitedPartnership;
   let generalPartnerPerson: TransactionGeneralPartner;
@@ -292,13 +297,13 @@ describe("Check Your Answers Page", () => {
       "psc"
     ]);
 
-    checkIfValuesInText(res, generalPartnerPerson, translationText);
+    checkPartnerValuesInText(res, generalPartnerPerson, translationText, partnerValueChecks);
 
-    checkIfValuesInText(res, generalPartnerLegalEntity, translationText);
+    checkPartnerValuesInText(res, generalPartnerLegalEntity, translationText, partnerValueChecks);
 
-    checkIfValuesInText(res, limitedPartnerPerson, translationText);
+    checkPartnerValuesInText(res, limitedPartnerPerson, translationText, partnerValueChecks);
 
-    checkIfValuesInText(res, limitedPartnerLegalEntity, translationText);
+    checkPartnerValuesInText(res, limitedPartnerLegalEntity, translationText, partnerValueChecks);
 
     expect(res.text).toContain(translationText.nationalities.british);
     expect(res.text).toContain(countriesText.countries.unitedStates);
@@ -686,43 +691,3 @@ describe("Check Your Answers Page", () => {
   });
 });
 
-const checkIfValuesInText = (
-  res: request.Response,
-  partner: GeneralPartner | LimitedPartner,
-  translationText: Record<string, any>
-) => {
-  const partnerData = partner.data as Record<string, any>;
-
-  for (const key in partnerData) {
-    const value = partnerData[key];
-
-    if (typeof value === "string" || typeof value === "object") {
-      if (key === "nationality1") {
-        const capitalized = value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
-
-        expect(res.text).toContain(capitalized);
-      } else if (key.includes("date_of_birth") && value) {
-        expect(res.text).toContain(formatDate(value, translationText));
-      } else if (key.includes("address")) {
-        const capitalized = value.address_line_1
-          .split(" ")
-          .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-          .join(" ");
-        expect(res.text).toContain(capitalized);
-      } else if (key.includes("contribution_sub_types")) {
-        const capitalContributionSubTypesMap: Record<string, string> = {
-          MONEY: translationText.capitalContribution.money,
-          LAND_OR_PROPERTY: translationText.capitalContribution.landOrProperty,
-          SHARES: translationText.capitalContribution.shares,
-          SERVICES_OR_GOODS: translationText.capitalContribution.servicesOrGoods,
-          ANY_OTHER_ASSET: translationText.capitalContribution.anyOtherAsset
-        };
-
-        const str = value.map((word: string) => capitalContributionSubTypesMap[word]).join(" / ");
-        expect(res.text).toContain(str.replaceAll("_", " "));
-      } else {
-        expect(res.text).toContain(value);
-      }
-    }
-  }
-};
