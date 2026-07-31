@@ -20,6 +20,11 @@
                 <input type="hidden" name="type" value="OTHER_REGISTRABLE_PERSON">
 
                 {% set legalEntityName = i18n.personWithSignificantControl.addPersonWithSignificantControl.addOtherRegistrablePerson.legalEntityName %}
+                {% set legalEntityNameHint = i18n.personWithSignificantControl.addPersonWithSignificantControl.addOtherRegistrablePerson.legalEntityNameHint %}
+                {% set legalForm = i18n.personWithSignificantControl.addPersonWithSignificantControl.addOtherRegistrablePerson.legalForm %}
+                {% set legalFormHint = i18n.personWithSignificantControl.addPersonWithSignificantControl.addOtherRegistrablePerson.legalFormHint %}
+                {% set governingLawHint = i18n.personWithSignificantControl.addPersonWithSignificantControl.addOtherRegistrablePerson.governingLawHint %}
+                
                 {% include "pages/personWithSignificantControl/add-person-with-significant-control.njk" %}
 
                 {% include "includes/public-register-information.njk" %}
