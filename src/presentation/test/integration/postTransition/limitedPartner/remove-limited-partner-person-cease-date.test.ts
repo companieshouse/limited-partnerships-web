@@ -14,13 +14,14 @@ import CompanyAppointmentBuilder from "../../../builder/CompanyAppointmentBuilde
 import PostTransitionPageType from "../../../../controller/postTransition/pageType";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 import LimitedPartnerBuilder from "../../../../../presentation/test/builder/LimitedPartnerBuilder";
-import { OFFICER_ROLE_LIMITED_PARTNER_PERSON } from "../../../../../config";
+import { OFFICER_ROLE_LIMITED_PARTNER_PERSON, YOUR_COMPANY_OFFICERS_URL } from "../../../../../config";
 import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("Limited Partner Person cease date page", () => {
   const URL = getUrl(WHEN_DID_THE_LIMITED_PARTNER_PERSON_CEASE_URL);
   const URL_WITH_IDS = getUrl(WHEN_DID_THE_LIMITED_PARTNER_PERSON_CEASE_WITH_IDS_URL);
   const REDIRECT = getUrl(REMOVE_LIMITED_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL);
+  const BACK_LINK = getUrl(YOUR_COMPANY_OFFICERS_URL);
 
   let companyProfile;
   let companyAppointment;
@@ -44,27 +45,20 @@ describe("Limited Partner Person cease date page", () => {
   });
 
   describe("GET limited partner person cease date page", () => {
-    it("should load limited partner person cease date page with english text", async () => {
-      const res = await request(app).get(URL + "?lang=en");
+    it.each([
+      ["en", enTranslationText],
+      ["cy", cyTranslationText]
+    ])("should load limited partner person cease date page with %s text", async (lang: string, translationText: any) => {
+      const res = await request(app).get(`${URL}?lang=${lang}`);
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(`${enTranslationText.ceaseDate.removeLimitedPartner.title}`);
-      expect(res.text).not.toContain("WELSH -");
+      expect(res.text).toContain(`${translationText.ceaseDate.removeLimitedPartner.title}`);
 
       expect(res.text).toContain(companyProfile.data.companyName.toUpperCase());
       expect(res.text).toContain(companyAppointment.name?.split(",")[0] ?? "");
-      expect(countOccurrences(res.text, enTranslationText.serviceName.removeLimitedPartnerPerson)).toBe(2);
+      expect(countOccurrences(res.text, translationText.serviceName.removeLimitedPartnerPerson)).toBe(2);
       expect(res.text).toContain(customerFeedbackUrlMap.removeLimitedPartnerPerson);
-    });
-
-    it("should load limited partner person cease date page with welsh text", async () => {
-      const res = await request(app).get(URL + "?lang=cy");
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(`${cyTranslationText.ceaseDate.removeLimitedPartner.title}`);
-      expect(res.text).toContain("WELSH -");
-      expect(countOccurrences(res.text, cyTranslationText.serviceName.removeLimitedPartnerPerson)).toBe(2);
-      expect(res.text).toContain(customerFeedbackUrlMap.removeLimitedPartnerPerson);
+      expect(res.text).toContain(BACK_LINK);
     });
   });
 

@@ -89,6 +89,7 @@ export const APPOINTMENT_ID = "appointmentId";
 
 export const YOUR_FILINGS_URL = "/user/transactions";
 export const YOUR_COMPANY_URL = "/company/:companyId";
+export const YOUR_COMPANY_OFFICERS_URL = `${YOUR_COMPANY_URL}/officers`;
 
 export const BASE_URL = "/limited-partnerships";
 
