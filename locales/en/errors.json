@@ -81,7 +81,7 @@
             "postcodeLookup": {
                 "premisesInvalid": "Property name or number must only include letters a to z, numbers and common special characters such as hyphens, spaces and apostrophes",
 
-                "postcodeNotFound": "Enter a full UK postcode",
+                "postcodeNotFound": "We cannot find this postcode. Enter a different one, or enter the address manually.",
                 "postcodeMissing": "Enter a postcode",
                 "postcodeInvalid": "Postcode must only include letters a to z, numbers and spaces"
             },
