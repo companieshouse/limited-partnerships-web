@@ -7,6 +7,7 @@ import GeneralPartnerBuilder from "./builder/GeneralPartnerBuilder";
 import LimitedPartnerBuilder from "./builder/LimitedPartnerBuilder";
 import request from "supertest";
 import PersonWithSignificantControlBuilder from "./builder/PersonWithSignificantControlBuilder";
+import { formatDate } from "../../utils/date-format";
 
 export const setLocalesEnabled = (bool: boolean) => {
   jest.spyOn(config, "isLocalesEnabled").mockReturnValue(bool);
@@ -131,4 +132,54 @@ export const createPersonWithSignificantControl = (url: string, urlToCompare: st
     personWithSignificantControl.build()
   ]);
   return personWithSignificantControl;
+};
+
+export const checkLegalEntityValuesInText = (
+  res: request.Response,
+  partner: GeneralPartner | LimitedPartner,
+  translationText: Record<string, any>
+) => {
+  const partnerData = partner.data as Record<string, any>;
+
+  for (const key in partnerData) {
+    const value = partnerData[key];
+
+    if (typeof value !== "string" && typeof value !== "object") {
+      continue;
+    }
+
+    if (key === "principal_office_address") {
+      expect(res.text).toContain(value.address_line_1.split(" ").map(capitalize).join(" "));
+    } else if (key.includes("date_effective_from")) {
+      expect(res.text).toContain(formatDate(value, translationText));
+    } else if (!key.includes("address")) {
+      expect(res.text).toContain(value);
+    }
+  }
+};
+
+export const checkPersonValuesInText = (
+  res: request.Response,
+  partner: GeneralPartner | LimitedPartner,
+  translationText: Record<string, any>
+) => {
+  const partnerData = partner.data as Record<string, any>;
+
+  for (const key in partnerData) {
+    const value = partnerData[key];
+
+    if (typeof value !== "string" && typeof value !== "object") {
+      continue;
+    }
+
+    if (key === "nationality1") {
+      expect(res.text).toContain(capitalize(value));
+    } else if (key.includes("date_of_birth") && value) {
+      expect(res.text).toContain(formatDate(value, translationText));
+    } else if (key.includes("usual_residential_address")) {
+      expect(res.text).toContain(value.address_line_1.split(" ").map(capitalize).join(" "));
+    } else if (key.includes("date_effective_from")) {
+      expect(res.text).toContain(formatDate(value, translationText));
+    }
+  }
 };

@@ -4,9 +4,8 @@ import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import LimitedPartnerBuilder from "../../../../builder/LimitedPartnerBuilder";
 import CompanyProfileBuilder from "../../../../builder/CompanyProfileBuilder";
 import { LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/postTransition/url";
-import { capitalize, countOccurrences, getUrl, setLocalesEnabled } from "../../../../utils";
-import { formatDate } from "../../../../../../utils/date-format";
-import { LimitedPartner, PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { checkLegalEntityValuesInText, countOccurrences, getUrl, setLocalesEnabled } from "../../../../utils";
+import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import {
   CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
@@ -86,7 +85,7 @@ describe("Limited Partner Check Your Answers Page", () => {
     const res = await request(app).get(URL);
 
     expect(res.status).toBe(200);
-    checkIfValuesInText(res, limitedPartnerLegalEntity, enTranslationText);
+    checkLegalEntityValuesInText(res, limitedPartnerLegalEntity, enTranslationText);
   });
 
   it.each([
@@ -136,23 +135,3 @@ describe("Limited Partner Check Your Answers Page", () => {
     });
   });
 });
-
-const checkIfValuesInText = (res: request.Response, partner: LimitedPartner, translationText: Record<string, any>) => {
-  const partnerData = partner.data as Record<string, any>;
-
-  for (const key in partnerData) {
-    const value = partnerData[key];
-
-    if (typeof value !== "string" && typeof value !== "object") {
-      continue;
-    }
-
-    if (key === "principal_office_address") {
-      expect(res.text).toContain(value.address_line_1.split(" ").map(capitalize).join(" "));
-    } else if (key.includes("date_effective_from")) {
-      expect(res.text).toContain(formatDate(value, translationText));
-    } else if (!key.includes("address")) {
-      expect(res.text).toContain(value);
-    }
-  }
-};
