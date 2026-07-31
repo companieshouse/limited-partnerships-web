@@ -15,11 +15,11 @@
 
 {{ govukInput({
     label: {
-        text: legalForm if legalForm else i18n.personWithSignificantControl.addPersonWithSignificantControl.commonEntityFields.legalFormOrCorporateIdentity,
+        text: legalForm,
         classes: "govuk-label govuk-label--m"
     },
     hint: {
-        text: legalFormHint if legalFormHint else i18n.personWithSignificantControl.addPersonWithSignificantControl.commonEntityFields.legalFormOrCorporateIdentityHint
+        text: legalFormHint
     },
     id: "legal_form",
     name: "legal_form",
@@ -33,7 +33,7 @@
         classes: "govuk-label govuk-label--m"
     },
     hint: {
-        text: governingLawHint if governingLawHint else i18n.personWithSignificantControl.addPersonWithSignificantControl.commonEntityFields.governingLawHint
+        text: governingLawHint
     },
     id: "governing_law",
     name: "governing_law",
