@@ -152,6 +152,93 @@ const titleCaseWords = (value: string): string => {
     .join(" ");
 };
 
+const resolvePartnerCapitalizedValue = (
+  key: string,
+  value: unknown,
+  options: CheckPartnerValuesInTextOptions
+): string | undefined => {
+  if (typeof value !== "string" || !options.capitalizeKeys?.includes(key)) {
+    return undefined;
+  }
+  return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+};
+
+const resolvePartnerDateValue = (
+  key: string,
+  value: unknown,
+  translationText: Record<string, any>,
+  options: CheckPartnerValuesInTextOptions
+): string | undefined => {
+  if (!value || !includesAnyPattern(key, options.dateKeyIncludes)) {
+    return undefined;
+  }
+  return formatDate(value as string, translationText);
+};
+
+const resolvePartnerAddressValue = (
+  key: string,
+  value: unknown,
+  options: CheckPartnerValuesInTextOptions
+): string | undefined => {
+  const addressLine1 = (value as { address_line_1?: string })?.address_line_1;
+  if (!addressLine1 || !includesAnyPattern(key, options.addressKeyIncludes)) {
+    return undefined;
+  }
+  return titleCaseWords(addressLine1);
+};
+
+const resolvePartnerContributionSubtypeValue = (
+  key: string,
+  value: unknown,
+  translationText: Record<string, any>,
+  options: CheckPartnerValuesInTextOptions
+): string | undefined => {
+  if (!Array.isArray(value) || !includesAnyPattern(key, options.contributionSubtypeKeyIncludes)) {
+    return undefined;
+  }
+
+  const capitalContributionSubTypesMap: Record<string, string> = {
+    MONEY: translationText.capitalContribution.money,
+    LAND_OR_PROPERTY: translationText.capitalContribution.landOrProperty,
+    SHARES: translationText.capitalContribution.shares,
+    SERVICES_OR_GOODS: translationText.capitalContribution.servicesOrGoods,
+    ANY_OTHER_ASSET: translationText.capitalContribution.anyOtherAsset
+  };
+
+  return value
+    .map((word: string) => capitalContributionSubTypesMap[word])
+    .join(" / ")
+    .split("_")
+    .join(" ");
+};
+
+const resolvePartnerOtherStringValue = (
+  key: string,
+  value: unknown,
+  options: CheckPartnerValuesInTextOptions
+): string | undefined => {
+  if (typeof value !== "string" || !options.assertOtherStringValues) {
+    return undefined;
+  }
+  return includesAnyPattern(key, options.skipOtherIfKeyIncludes) ? undefined : value;
+};
+
+// tries each rule in turn and uses the first one that applies to this key/value
+const resolvePartnerExpectedText = (
+  key: string,
+  value: unknown,
+  translationText: Record<string, any>,
+  options: CheckPartnerValuesInTextOptions
+): string | undefined => {
+  return (
+    resolvePartnerCapitalizedValue(key, value, options) ??
+    resolvePartnerDateValue(key, value, translationText, options) ??
+    resolvePartnerAddressValue(key, value, options) ??
+    resolvePartnerContributionSubtypeValue(key, value, translationText, options) ??
+    resolvePartnerOtherStringValue(key, value, options)
+  );
+};
+
 export const checkPartnerValuesInText = (
   res: request.Response,
   partner: LimitedPartner | GeneralPartner,
@@ -171,41 +258,10 @@ export const checkPartnerValuesInText = (
       continue;
     }
 
-    if (options.capitalizeKeys?.includes(key) && typeof value === "string") {
-      expect(res.text).toContain(value.charAt(0).toUpperCase() + value.slice(1).toLowerCase());
-      continue;
-    }
+    const expected = resolvePartnerExpectedText(key, value, translationText, options);
 
-    if (includesAnyPattern(key, options.dateKeyIncludes) && value) {
-      expect(res.text).toContain(formatDate(value, translationText));
-      continue;
-    }
-
-    if (includesAnyPattern(key, options.addressKeyIncludes) && typeof value === "object" && value.address_line_1) {
-      expect(res.text).toContain(titleCaseWords(value.address_line_1));
-      continue;
-    }
-
-    if (includesAnyPattern(key, options.contributionSubtypeKeyIncludes) && Array.isArray(value)) {
-      const capitalContributionSubTypesMap: Record<string, string> = {
-        MONEY: translationText.capitalContribution.money,
-        LAND_OR_PROPERTY: translationText.capitalContribution.landOrProperty,
-        SHARES: translationText.capitalContribution.shares,
-        SERVICES_OR_GOODS: translationText.capitalContribution.servicesOrGoods,
-        ANY_OTHER_ASSET: translationText.capitalContribution.anyOtherAsset
-      };
-
-      const str = value.map((word: string) => capitalContributionSubTypesMap[word]).join(" / ");
-      expect(res.text).toContain(str.split("_").join(" "));
-      continue;
-    }
-
-    if (
-      options.assertOtherStringValues &&
-      typeof value === "string" &&
-      !includesAnyPattern(key, options.skipOtherIfKeyIncludes)
-    ) {
-      expect(res.text).toContain(value);
+    if (expected !== undefined) {
+      expect(res.text).toContain(expected);
     }
   }
 };
