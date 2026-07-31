@@ -51,10 +51,7 @@ describe("Add Person With Significant Control Other registrable person Page", ()
           `${translationText.personWithSignificantControl.addPersonWithSignificantControl.addOtherRegistrablePerson.title} - ${translationText.serviceRegistration} - GOV.UK`
         );
 
-        testTranslations(res.text, translationText.personWithSignificantControl.addPersonWithSignificantControl, [
-          "addRelevantLegalEntity",
-          "addIndividualPerson"
-        ]);
+        testTranslations(res.text, translationText.personWithSignificantControl.addPersonWithSignificantControl.addOtherRegistrablePerson);
       }
     );
 

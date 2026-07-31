@@ -59,9 +59,12 @@
                 "registrationNumberHint" : "For example, the company number."
             },
             "addOtherRegistrablePerson": {
-                "title": "Add an other registrable person PSC",
-
-                "legalEntityName" : "What is the other registrable person (ORP)'s name?"
+                "title": "Add a PSC (other registrable person)",
+                "legalEntityName" : "What is the name of the other registrable person (ORP)?",
+                "legalEntityNameHint" : "This is the name of the office or official position, not the name of the person who holds the position.",
+                "legalForm": "What is its legal form?",
+                "legalFormHint": "This is the non-corporate entity type. For example, local authority or government department.",
+                "governingLawHint": "This is the law that governs the entity. For example, United Kingdom."
             },
             "addIndividualPerson": {
                 "title": "Add a PSC (individual person)",
