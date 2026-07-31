@@ -11,10 +11,10 @@ import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
-import { YOUR_COMPANY_URL } from "../../../../../config";
+import { YOUR_COMPANY_OFFICERS_URL } from "../../../../../config";
 describe("General Partner Choice Page", () => {
   const URL = getUrl(GENERAL_PARTNER_CHOICE_URL);
-  const BACK_LINK = getUrl(YOUR_COMPANY_URL);
+  const BACK_LINK = getUrl(YOUR_COMPANY_OFFICERS_URL);
 
   let companyProfile;
 

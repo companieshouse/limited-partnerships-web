@@ -15,14 +15,14 @@ import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import LimitedPartnerBuilder from "../../../../../presentation/test/builder/LimitedPartnerBuilder";
 import PostTransitionPageType from "../../../../../presentation/controller/postTransition/pageType";
 import { ApiErrors } from "../../../../../domain/entities/UIErrors";
-import { OFFICER_ROLE_LIMITED_PARTNER_PERSON, YOUR_COMPANY_URL } from "../../../../../config";
+import { OFFICER_ROLE_LIMITED_PARTNER_PERSON, YOUR_COMPANY_OFFICERS_URL } from "../../../../../config";
 import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("Update Limited Partner Person Page", () => {
   const URL = getUrl(UPDATE_LIMITED_PARTNER_PERSON_URL);
   const URL_WITH_IDS = getUrl(UPDATE_LIMITED_PARTNER_PERSON_WITH_IDS_URL);
   const REDIRECT = getUrl(UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL);
-  const BACK_LINK = getUrl(YOUR_COMPANY_URL);
+  const BACK_LINK = getUrl(YOUR_COMPANY_OFFICERS_URL);
 
   let companyProfile;
   let companyAppointment;

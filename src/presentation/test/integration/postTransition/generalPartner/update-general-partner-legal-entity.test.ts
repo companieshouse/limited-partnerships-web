@@ -14,14 +14,14 @@ import GeneralPartnerBuilder from "../../../../../presentation/test/builder/Gene
 import PostTransitionPageType from "../../../../../presentation/controller/postTransition/pageType";
 import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 import CompanyAppointmentBuilder from "../../../builder/CompanyAppointmentBuilder";
-import { OFFICER_ROLE_GENERAL_PARTNER_LEGAL_ENTITY, YOUR_COMPANY_URL } from "../../../../../config";
+import { OFFICER_ROLE_GENERAL_PARTNER_LEGAL_ENTITY, YOUR_COMPANY_OFFICERS_URL } from "../../../../../config";
 import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("Update General Partner Legal Entity Page", () => {
   const URL = getUrl(UPDATE_GENERAL_PARTNER_LEGAL_ENTITY_URL);
   const URL_WITH_IDS = getUrl(UPDATE_GENERAL_PARTNER_LEGAL_ENTITY_WITH_IDS_URL);
   const REDIRECT = getUrl(UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL);
-  const BACK_LINK = getUrl(YOUR_COMPANY_URL);
+  const BACK_LINK = getUrl(YOUR_COMPANY_OFFICERS_URL);
 
   let companyProfile;
   let companyAppointment;

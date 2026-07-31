@@ -6,7 +6,7 @@ import {
   ADD_LIMITED_PARTNER_PERSON_URL,
   LIMITED_PARTNER_CHOICE_URL
 } from "../../../../controller/postTransition/url";
-import { YOUR_COMPANY_URL } from "../../../../../config";
+import { YOUR_COMPANY_OFFICERS_URL } from "../../../../../config";
 import PostTransitionPageType from "../../../../controller/postTransition/pageType";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
@@ -14,7 +14,7 @@ import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("Limited Partner Choice Page", () => {
   const URL = getUrl(LIMITED_PARTNER_CHOICE_URL);
-  const BACK_LINK = getUrl(YOUR_COMPANY_URL);
+  const BACK_LINK = getUrl(YOUR_COMPANY_OFFICERS_URL);
 
   let companyProfile;
 

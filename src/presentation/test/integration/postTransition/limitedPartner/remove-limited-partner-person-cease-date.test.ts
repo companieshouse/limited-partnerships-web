@@ -14,14 +14,14 @@ import CompanyAppointmentBuilder from "../../../builder/CompanyAppointmentBuilde
 import PostTransitionPageType from "../../../../controller/postTransition/pageType";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 import LimitedPartnerBuilder from "../../../../../presentation/test/builder/LimitedPartnerBuilder";
-import { OFFICER_ROLE_LIMITED_PARTNER_PERSON, YOUR_COMPANY_URL } from "../../../../../config";
+import { OFFICER_ROLE_LIMITED_PARTNER_PERSON, YOUR_COMPANY_OFFICERS_URL } from "../../../../../config";
 import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("Limited Partner Person cease date page", () => {
   const URL = getUrl(WHEN_DID_THE_LIMITED_PARTNER_PERSON_CEASE_URL);
   const URL_WITH_IDS = getUrl(WHEN_DID_THE_LIMITED_PARTNER_PERSON_CEASE_WITH_IDS_URL);
   const REDIRECT = getUrl(REMOVE_LIMITED_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL);
-  const BACK_LINK = getUrl(YOUR_COMPANY_URL);
+  const BACK_LINK = getUrl(YOUR_COMPANY_OFFICERS_URL);
 
   let companyProfile;
   let companyAppointment;

@@ -3,7 +3,7 @@ import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-
 
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { OFFICER_ROLE_LIMITED_PARTNER_LEGAL_ENTITY, YOUR_COMPANY_URL } from "../../../../../config";
+import { OFFICER_ROLE_LIMITED_PARTNER_LEGAL_ENTITY, YOUR_COMPANY_OFFICERS_URL } from "../../../../../config";
 import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 
 import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../utils";
@@ -24,7 +24,7 @@ describe("Update Limited Partner Legal Entity Page", () => {
   const URL = getUrl(UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_URL);
   const URL_WITH_IDS = getUrl(UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_WITH_IDS_URL);
   const REDIRECT = getUrl(UPDATE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL);
-  const BACK_LINK = getUrl(YOUR_COMPANY_URL);
+  const BACK_LINK = getUrl(YOUR_COMPANY_OFFICERS_URL);
 
   let companyProfile;
   let companyAppointment;

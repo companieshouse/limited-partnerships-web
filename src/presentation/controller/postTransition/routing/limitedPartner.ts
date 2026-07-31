@@ -8,10 +8,10 @@ import {
   TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "../../addressLookUp/url/postTransition";
-import { YOUR_COMPANY_URL } from "../../../../config/constants";
+import { YOUR_COMPANY_OFFICERS_URL } from "../../../../config/constants";
 
 const postTransitionRoutingLimitedPartnerChoice = {
-  previousUrl: YOUR_COMPANY_URL,
+  previousUrl: YOUR_COMPANY_OFFICERS_URL,
   currentUrl: url.LIMITED_PARTNER_CHOICE_URL,
   nextUrl: "/",
   pageType: PostTransitionPageType.limitedPartnerType,
@@ -54,7 +54,7 @@ const postTransitionRoutingLimitedPartnerCheckYourAnswers = {
 const REMOVE_LIMITED_PARTNER_KEY = "removeLimitedPartner";
 
 const postTransitionRoutingRemoveLimitedPartnerPerson = {
-  previousUrl: YOUR_COMPANY_URL,
+  previousUrl: YOUR_COMPANY_OFFICERS_URL,
   currentUrl: url.WHEN_DID_THE_LIMITED_PARTNER_PERSON_CEASE_URL,
   nextUrl: url.REMOVE_LIMITED_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL,
   pageType: PostTransitionPageType.whenDidTheLimitedPartnerPersonCease,
@@ -75,7 +75,7 @@ const postTransitionRoutingRemoveLimitedPartnerPersonCheckYourAnswers = {
 };
 
 const postTransitionRoutingRemoveLimitedPartnerLegalEntity = {
-  previousUrl: YOUR_COMPANY_URL,
+  previousUrl: YOUR_COMPANY_OFFICERS_URL,
   currentUrl: url.WHEN_DID_THE_LIMITED_PARTNER_LEGAL_ENTITY_CEASE_URL,
   nextUrl: url.REMOVE_LIMITED_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_URL,
   pageType: PostTransitionPageType.whenDidTheLimitedPartnerLegalEntityCease,
@@ -96,7 +96,7 @@ const postTransitionRoutingRemoveLimitedPartnerLegalEntityCheckYourAnswers = {
 };
 
 const postTransitionRoutingUpdateLimitedPartnerPerson = {
-  previousUrl: YOUR_COMPANY_URL,
+  previousUrl: YOUR_COMPANY_OFFICERS_URL,
   currentUrl: url.UPDATE_LIMITED_PARTNER_PERSON_URL,
   nextUrl: url.UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
   pageType: PostTransitionPageType.updateLimitedPartnerPerson,
@@ -148,7 +148,7 @@ const postTransitionRoutingUpdateLimitedPartnerPersonCheckYourAnswers = {
 };
 
 const postTransitionRoutingUpdateLimitedPartnerLegalEntity = {
-  previousUrl: YOUR_COMPANY_URL,
+  previousUrl: YOUR_COMPANY_OFFICERS_URL,
   currentUrl: url.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_URL,
   nextUrl: url.UPDATE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL,
   pageType: PostTransitionPageType.updateLimitedPartnerLegalEntity,
