@@ -54,7 +54,7 @@ const postTransitionRoutingLimitedPartnerCheckYourAnswers = {
 const REMOVE_LIMITED_PARTNER_KEY = "removeLimitedPartner";
 
 const postTransitionRoutingRemoveLimitedPartnerPerson = {
-  previousUrl: url.LANDING_PAGE_URL,
+  previousUrl: YOUR_COMPANY_URL,
   currentUrl: url.WHEN_DID_THE_LIMITED_PARTNER_PERSON_CEASE_URL,
   nextUrl: url.REMOVE_LIMITED_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL,
   pageType: PostTransitionPageType.whenDidTheLimitedPartnerPersonCease,
@@ -75,7 +75,7 @@ const postTransitionRoutingRemoveLimitedPartnerPersonCheckYourAnswers = {
 };
 
 const postTransitionRoutingRemoveLimitedPartnerLegalEntity = {
-  previousUrl: url.LANDING_PAGE_URL,
+  previousUrl: YOUR_COMPANY_URL,
   currentUrl: url.WHEN_DID_THE_LIMITED_PARTNER_LEGAL_ENTITY_CEASE_URL,
   nextUrl: url.REMOVE_LIMITED_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_URL,
   pageType: PostTransitionPageType.whenDidTheLimitedPartnerLegalEntityCease,
