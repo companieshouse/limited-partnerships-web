@@ -208,17 +208,6 @@
         }
     },
 
-    "companyNumber" : {
-        "whatIsPartnershipNumber": "What is the limited partnership number?",
-        "hint": "This is 2 letters followed by 6 numbers."
-    },
-
-    "confirmLimitedPartnership": {
-        "title": "Confirm this is the correct limited partnership",
-        "name": "Name",
-        "number": "Number"
-    },
-
     "confirmationPage" : {
         "title" : "Application submitted",
         "referenceNumber" : "Your reference number",
@@ -313,14 +302,6 @@
       }
     },
 
-    "emailPage" : {
-        "title" : "What is the registered email address for the partnership?",
-        "hint": "We'll use this email address to send important information that relates to the partnership. For example, new legislative requirements or warnings about missed deadlines.",
-        "publicRegisterInformation" : {
-            "line1": "We will not show the registered email address on the public register."
-        }
-    },
-
     "error": "Error: ",
 
     "errorPage": {
@@ -374,35 +355,6 @@
       "signOut": "Sign out"
     },
 
-    "namePage" : {
-        "partnershipRulesHint" : {
-            "rules" : "The partnership name needs to meet set rules. For example, it cannot be the same as another registered partnership or company, or include certain words or phrases.",
-            "rulesLinkStart" : "To find out more about the rules the limited partnership's name needs to meet,",
-            "rulesLinkEnd" : "read the guidance on choosing a name (opens in new tab)."
-        },
-        "warning" : "You must check the name meets the rules before you register the partnership. If it does not, we may reject your application, or you may need to change it later.",
-        "warningFallback" : "Warning",
-        "title" : "Limited partnership name",
-        "whatIsName" : "What's the name of the partnership?",
-        "whatIsNameHint" : "Do not enter a name ending, like Limited Partnership or LP. We'll add this for you.",
-        "nameEnding" : "Which name ending would you prefer to go on the public record?",
-        "nameEndingHint" : "There's no difference between the name endings Limited Partnership, LP and L.P. except how they look.",
-        "nameEndingWelshHint" : "There's no difference between the name endings Limited Partnership, LP and L.P. except how they look. Partneriaeth Cyfyngedig, PC and P.C. can only be used if the partnership's principal place of business is in Wales.",
-
-        "privateFund" : {
-            "title" : "Private fund limited partnership name",
-            "nameEnding" : "Which private fund limited partnership name ending would you prefer to go on the public record?",
-
-            "scottish" : {
-                "title" : "Scottish private fund limited partnership name"
-            }
-        },
-
-        "scottish" : {
-            "title" : "Scottish limited partnership name"
-        }
-    },
-
     "notEligiblePage" : {
         "title" : "You must be an Authorised Corporate Service Provider (ACSP) to use this service",
         "notLinked": "You cannot use this service because the email you have signed in with is not linked to an ACSP account.",
@@ -449,26 +401,6 @@
 
     "publicRegisterInformation" : {
         "title": "What information we'll show on the public register"
-    },
-
-    "redesignateToPflpPage": {
-       "title": "Apply for designation as a private fund limited partnership (PFLP)",
-       "introduction1": "A limited partnership can be designated as a PFLP if it is constituted by an agreement in writing and is a collective investment scheme.",
-       "introduction2": "Once the designation has been made, the type of partnership cannot be changed again.",
-       "pflpMeaningsIntro": "Becoming a PFLP means that:",
-       "pflpMeanings": {
-           "capital": "Limited partners will no longer be required to contribute capital",
-           "appoint": "Limited partners can appoint a person to wind up the partnership if there is no general partner available to do so",
-           "agreement": "Partners can make an agreement about winding up the partnership",
-           "risk": "Limited partners may take more actions without risking losing their limited liability status",
-           "admin": "Some administrative requirements will be removed",
-           "scheme": "The partnership will no longer qualify as a ‘partnership scheme’, and therefore cannot be an authorised contractual scheme under section 235A(6)(aa) of the Financial Services and Markets Act 2000"
-        },
-        "information": "Find more information in the",
-        "informationLink": "Legislative Reform (Private Fund Limited Partnerships) Order 2017",
-        "cost": "It costs £{{ cost }} to apply.",
-        "applicationCheck": "I/We apply for this firm to be designated as a private fund limited partnership. For that purpose, I confirm that the partnership is constituted by an agreement in writing and is a collective investment scheme within the meaning of section 8D(4) of the Limited Partnerships Act 1907",
-        "confirmationCheck": "I confirm that all general partners have agreed for this application to be made"
     },
 
     "removePartnerPage": {
@@ -530,19 +462,6 @@
         "updateLimitedPartnerLegalEntity": "Update a limited partner's details (legal entity)"
     },
 
-    "sicCodePage" : {
-        "title" : "What is the Standard Industrial Classification (SIC) code?",
-        "hint" : "You should use the SIC code that best describes the partnership's nature of business.",
-        "find": "Find your SIC code using our look up tool (opens in new tab)",
-        "findUrl": "https://resources.companieshouse.gov.uk/sic/",
-        "additionalHint" : "Enter up to 3 additional SIC codes (optional):",
-        "publicRegisterLine1": "We'll show the SIC codes on the public register.",
-        "sicCode1": "SIC code 1",
-        "sicCode2": "SIC code 2 (optional)",
-        "sicCode3": "SIC code 3 (optional)",
-        "sicCode4": "SIC code 4 (optional)"
-    },
-
     "signOutPage": {
          "title": "Are you sure you want to sign out?",
          "hint": "We will save your application.",
@@ -557,28 +476,12 @@
         "buttonBackRegister": "Go back to the register"
     },
 
-    "termPage": {
-        "title": "What is the term of the partnership?",
-        "hint": "This is the length of time for which the partnership will be entered into.",
-        "byAgreement": "Such term as decided by the partners within the partnership agreement",
-        "untilDissolution": "Until a general partner determines the partnership is dissolved",
-        "noTerm": "No set term",
-        "publicRegisterLine1": "We'll show the term of partnership on the public register."
-    },
-
     "transactionFiled": {
         "title": "Information has already been provided for the limited partnership",
         "alreadyReceived": "We've already received a filing with the required information for",
         "acceptedInformationLine1": "After we've accepted the filing, you can search for the limited partnership on the",
         "acceptedInformationLine2": "to view or update its information.",
         "acceptedInformationLink": "Companies House register"
-    },
-
-    "types": {
-        "LP": "Limited partnership in England, Wales or Northern Ireland",
-        "PFLP": "Private fund limited partnership in England, Wales or Northern Ireland",
-        "SLP": "Scottish limited partnership",
-        "SPFLP": "Scottish private fund limited partnership"
     },
 
     "updatePartnerPersonPage" : {
@@ -594,25 +497,6 @@
         "secondNationalitySelectPrompt": "Select a second nationality",
         "secondNationalityHint" : "Dual citizenship (also known as dual nationality) is allowed in some countries. This means you can be a citizen of your own country and another country.",
         "publicRegisterLine1" : "We'll show all of this information on the public register."
-    },
-
-    "whereIsTheJurisdiction" : {
-        "title" : "Where is the jurisdiction?",
-        "whereIsJurisdiction" : "Where is the jurisdiction?",
-        "options": {
-            "EnglandWales" : "England and Wales",
-            "NorthernIreland" : "Northern Ireland"
-        },
-        "hint" : "This is where the partnership was formed. The registered office address and principal place of business will need to be in the same jurisdiction.",
-        "scotland": {
-            "title" : "The partnership will be registered in Scotland",
-            "information" : "The partnership's registered office address must be in Scotland. The principal place of business must be in Scotland at registration.",
-            "ifNotScotland" : "If the partnership's addresses are in England, Wales or Northern Ireland, you'll need to go back to change the type of partnership you are registering."
-        }
-    },
-
-    "partnershipTypePage": {
-        "title": "Which type of partnership do you want to register?"
     },
 
 
