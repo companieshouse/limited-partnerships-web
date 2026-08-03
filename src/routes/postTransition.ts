@@ -14,13 +14,10 @@ import {
   ADD_LIMITED_PARTNER_LEGAL_ENTITY_WITH_IDS_URL,
   ADD_LIMITED_PARTNER_PERSON_URL,
   ADD_LIMITED_PARTNER_PERSON_WITH_IDS_URL,
-  COMPANY_NUMBER_URL,
-  CONFIRM_LIMITED_PARTNERSHIP_URL,
   ENTER_REGISTERED_OFFICE_ADDRESS_URL,
   ENTER_REGISTERED_OFFICE_ADDRESS_WITH_IDS_URL,
   GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL,
   GENERAL_PARTNER_CHOICE_URL,
-  LANDING_PAGE_URL,
   LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL,
   LIMITED_PARTNER_CHOICE_URL,
   PARTNERSHIP_NAME_URL,
@@ -90,21 +87,6 @@ import {
 } from "../config/constants";
 
 const postTransitionEndpoints = (router: Router, dependencies: IDependencies): void => {
-  router.get(COMPANY_NUMBER_URL, dependencies.limitedPartnershipPostTransitionController.getPageRouting());
-  router.post(COMPANY_NUMBER_URL, dependencies.limitedPartnershipPostTransitionController.checkCompanyNumber());
-
-  router.get(
-    CONFIRM_LIMITED_PARTNERSHIP_URL,
-    companyAuthentication,
-    dependencies.limitedPartnershipPostTransitionController.getCompanyPage()
-  );
-  router.post(
-    CONFIRM_LIMITED_PARTNERSHIP_URL,
-    companyAuthentication,
-    dependencies.limitedPartnershipPostTransitionController.limitedPartnershipConfirm()
-  );
-
-  router.get(LANDING_PAGE_URL, dependencies.limitedPartnershipPostTransitionController.getCompanyPage());
 
   router.get(
     GENERAL_PARTNER_CHOICE_URL,

@@ -201,7 +201,7 @@ const postTransitionRoutingLimitedPartnerStopScreenNoChange = {
   pageType: PostTransitionPageType.updateLimitedPartnerStopScreenNoChange,
   data: {
     updatePartnerDetailsLink: url.UPDATE_LIMITED_PARTNER_PERSON_WITH_IDS_URL,
-    goBackRegisterLink: url.LANDING_PAGE_URL
+    goBackRegisterLink: YOUR_COMPANY_OFFICERS_URL
   }
 };
 
