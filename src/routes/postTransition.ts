@@ -87,21 +87,6 @@ import {
 } from "../config/constants";
 
 const postTransitionEndpoints = (router: Router, dependencies: IDependencies): void => {
-  // router.get(COMPANY_NUMBER_URL, dependencies.limitedPartnershipPostTransitionController.getPageRouting());
-  // router.post(COMPANY_NUMBER_URL, dependencies.limitedPartnershipPostTransitionController.checkCompanyNumber());
-
-  // router.get(
-  //   CONFIRM_LIMITED_PARTNERSHIP_URL,
-  //   companyAuthentication,
-  //   dependencies.limitedPartnershipPostTransitionController.getCompanyPage()
-  // );
-  // router.post(
-  //   CONFIRM_LIMITED_PARTNERSHIP_URL,
-  //   companyAuthentication,
-  //   dependencies.limitedPartnershipPostTransitionController.limitedPartnershipConfirm()
-  // );
-
-  // router.get(LANDING_PAGE_URL, dependencies.limitedPartnershipPostTransitionController.getCompanyPage());
 
   router.get(
     GENERAL_PARTNER_CHOICE_URL,
