@@ -17,14 +17,21 @@ import {
   TRANSITION_START_URL
 } from "../../../controller/transition/url";
 import {
-  COMPANY_NUMBER_URL as POST_TRANSITION_COMPANY_NUMBER_URL,
-  LANDING_PAGE_URL as POST_TRANSITION_LANDING_PAGE_URL,
+  ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+  ENTER_REGISTERED_OFFICE_ADDRESS_URL,
+  PARTNERSHIP_NAME_URL,
   GENERAL_PARTNER_CHOICE_URL as POST_TRANSITION_GENERAL_PARTNER_CHOICE_URL,
-  LIMITED_PARTNER_CHOICE_URL as POST_TRANSITION_LIMITED_PARTNER_CHOICE_URL
+  LIMITED_PARTNER_CHOICE_URL as POST_TRANSITION_LIMITED_PARTNER_CHOICE_URL,
+  TERM_URL,
+  WHEN_DID_THE_GENERAL_PARTNER_LEGAL_ENTITY_CEASE_URL,
+  WHEN_DID_THE_GENERAL_PARTNER_PERSON_CEASE_URL,
+  WHEN_DID_THE_LIMITED_PARTNER_LEGAL_ENTITY_CEASE_URL,
+  WHEN_DID_THE_LIMITED_PARTNER_PERSON_CEASE_URL
 } from "../../../controller/postTransition/url";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import CompanyProfileBuilder from "../../builder/CompanyProfileBuilder";
 import { enTranslationText, cyTranslationText } from "../../../../test/utils/locales";
+
 jest.mocked(webSecurityNode.acspManageUsersAuthMiddleware).mockImplementation(() =>
   (req: Request, res: Response, next: NextFunction) =>
     next(new webSecurityNode.InvalidAcspNumberError("Acsp Number invalid"))
@@ -88,8 +95,6 @@ describe("Not Eligible Page", () => {
   });
 
   it.each([
-    POST_TRANSITION_COMPANY_NUMBER_URL,
-    getUrl(POST_TRANSITION_LANDING_PAGE_URL),
     getUrl(POST_TRANSITION_GENERAL_PARTNER_CHOICE_URL),
     getUrl(POST_TRANSITION_LIMITED_PARTNER_CHOICE_URL)
   ])("should block post-transition route %s", async (url) => {
@@ -203,10 +208,31 @@ describe("Valid ACSP User - Post Transition", () => {
     mocked.mockReset();
   });
 
-  it.each(["en", "cy"])(
-    "should allow valid ACSP user to access the post-transition company number page - %s",
-    async (lang) => {
-      const res = await request(app).get(`${getUrl(POST_TRANSITION_COMPANY_NUMBER_URL)}?lang=${lang}`);
+  it.each([
+    [getUrl(POST_TRANSITION_GENERAL_PARTNER_CHOICE_URL), "en"],
+    [getUrl(POST_TRANSITION_GENERAL_PARTNER_CHOICE_URL), "cy"],
+    [getUrl(POST_TRANSITION_LIMITED_PARTNER_CHOICE_URL), "en"],
+    [getUrl(POST_TRANSITION_LIMITED_PARTNER_CHOICE_URL), "cy"],
+    [getUrl(ENTER_REGISTERED_OFFICE_ADDRESS_URL), "en"],
+    [getUrl(ENTER_REGISTERED_OFFICE_ADDRESS_URL), "cy"],
+    [getUrl(PARTNERSHIP_NAME_URL), "en"],
+    [getUrl(PARTNERSHIP_NAME_URL), "cy"],
+    [getUrl(TERM_URL), "en"],
+    [getUrl(TERM_URL), "cy"],
+    [getUrl(ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL), "en"],
+    [getUrl(ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL), "cy"],
+    [getUrl(WHEN_DID_THE_GENERAL_PARTNER_PERSON_CEASE_URL), "en"],
+    [getUrl(WHEN_DID_THE_GENERAL_PARTNER_PERSON_CEASE_URL), "cy"],
+    [getUrl(WHEN_DID_THE_GENERAL_PARTNER_LEGAL_ENTITY_CEASE_URL), "en"],
+    [getUrl(WHEN_DID_THE_GENERAL_PARTNER_LEGAL_ENTITY_CEASE_URL), "cy"],
+    [getUrl(WHEN_DID_THE_LIMITED_PARTNER_PERSON_CEASE_URL), "en"],
+    [getUrl(WHEN_DID_THE_LIMITED_PARTNER_PERSON_CEASE_URL), "cy"],
+    [getUrl(WHEN_DID_THE_LIMITED_PARTNER_LEGAL_ENTITY_CEASE_URL), "en"],
+    [getUrl(WHEN_DID_THE_LIMITED_PARTNER_LEGAL_ENTITY_CEASE_URL), "cy"]
+  ])(
+    "should allow valid ACSP user to access the post-transition partner pages - %s",
+    async (url, lang) => {
+      const res = await request(app).get(`${url}?lang=${lang}`);
       expect(res.status).toBe(200);
       expect(res.text).not.toContain(enTranslationText.notEligiblePage.title);
       expect(jest.mocked(webSecurityNode.acspManageUsersAuthMiddleware)).toHaveBeenCalled();

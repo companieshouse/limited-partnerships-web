@@ -2,35 +2,35 @@ import { COST_LP8D_REDESIGNATE_TO_PFLP, YOUR_COMPANY_URL } from "../../../../con
 import PostTransitionPageType from "../pageType";
 import * as url from "../url";
 
-const postTransitionRoutingCompanyNumber = {
-  previousUrl: "/",
-  currentUrl: url.COMPANY_NUMBER_URL,
-  nextUrl: url.CONFIRM_LIMITED_PARTNERSHIP_URL,
-  pageType: PostTransitionPageType.companyNumber
-};
+// const postTransitionRoutingCompanyNumber = {
+//   previousUrl: "/",
+//   currentUrl: url.COMPANY_NUMBER_URL,
+//   nextUrl: url.CONFIRM_LIMITED_PARTNERSHIP_URL,
+//   pageType: PostTransitionPageType.companyNumber
+// };
 
-const postTransitionRoutingConfirmLimitedPartnership = {
-  previousUrl: url.COMPANY_NUMBER_URL,
-  currentUrl: url.CONFIRM_LIMITED_PARTNERSHIP_URL,
-  nextUrl: url.LANDING_PAGE_URL,
-  pageType: PostTransitionPageType.confirmLimitedPartnership
-};
+// const postTransitionRoutingConfirmLimitedPartnership = {
+//   previousUrl: url.COMPANY_NUMBER_URL,
+//   currentUrl: url.CONFIRM_LIMITED_PARTNERSHIP_URL,
+//   nextUrl: url.LANDING_PAGE_URL,
+//   pageType: PostTransitionPageType.confirmLimitedPartnership
+// };
 
-const postTransitionRoutingLandingPage = {
-  previousUrl: url.CONFIRM_LIMITED_PARTNERSHIP_URL,
-  currentUrl: url.LANDING_PAGE_URL,
-  nextUrl: "/",
-  pageType: PostTransitionPageType.landingPage,
-  data: {
-    addGeneralPartner: url.GENERAL_PARTNER_CHOICE_URL,
-    addLimitedPartner: url.LIMITED_PARTNER_CHOICE_URL,
-    updateROA: url.ENTER_REGISTERED_OFFICE_ADDRESS_URL,
-    updatePPOB: url.ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
-    updateName: url.PARTNERSHIP_NAME_URL,
-    updateTerm: url.TERM_URL,
-    redesignateToPflp: url.REDESIGNATE_TO_PFLP_URL
-  }
-};
+// const postTransitionRoutingLandingPage = {
+//   previousUrl: url.CONFIRM_LIMITED_PARTNERSHIP_URL,
+//   currentUrl: url.LANDING_PAGE_URL,
+//   nextUrl: "/",
+//   pageType: PostTransitionPageType.landingPage,
+//   data: {
+//     addGeneralPartner: url.GENERAL_PARTNER_CHOICE_URL,
+//     addLimitedPartner: url.LIMITED_PARTNER_CHOICE_URL,
+//     updateROA: url.ENTER_REGISTERED_OFFICE_ADDRESS_URL,
+//     updatePPOB: url.ENTER_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_URL,
+//     updateName: url.PARTNERSHIP_NAME_URL,
+//     updateTerm: url.TERM_URL,
+//     redesignateToPflp: url.REDESIGNATE_TO_PFLP_URL
+//   }
+// };
 
 const postTransitionRoutingEnterRegisteredOfficeAddress = {
   previousUrl: YOUR_COMPANY_URL,
@@ -172,9 +172,9 @@ const postTransitionRoutingRedesignateToPFLP = {
 };
 
 const limitedPartnershipRouting = [
-  postTransitionRoutingCompanyNumber,
-  postTransitionRoutingConfirmLimitedPartnership,
-  postTransitionRoutingLandingPage,
+  // postTransitionRoutingCompanyNumber,
+  // postTransitionRoutingConfirmLimitedPartnership,
+  // postTransitionRoutingLandingPage,
 
   postTransitionRoutingEnterRegisteredOfficeAddress,
   postTransitionRoutingRegisteredOfficeAddressChange,

@@ -6,9 +6,9 @@ import {
 } from "../../../config/constants";
 
 enum PostTransitionPageType {
-  companyNumber = "company-number",
-  confirmLimitedPartnership = "confirm-limited-partnership",
-  landingPage = "landing-page",
+  // companyNumber = "company-number",
+  // confirmLimitedPartnership = "confirm-limited-partnership",
+  // landingPage = "landing-page",
 
   generalPartnerType = "general-partner-type",
   addGeneralPartnerPerson = "add-general-partner-person",
