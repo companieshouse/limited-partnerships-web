@@ -1,0 +1,186 @@
+{
+    "addOrUpdatePartnerLegalEntityPage" : {
+        "generalPartner": {
+            "title" : "Add a general partner (legal entity)",
+            "updateTitle" : "Update a general partner's details (legal entity)",
+            "dateEffectiveFrom" : "When did it become a general partner for this partnership?"
+        },
+        "limitedPartner": {
+            "title": "Add a limited partner (legal entity)",
+            "updateTitle": "Update a limited partner's details (legal entity)",
+            "dateEffectiveFrom" : "When did it become a limited partner for this partnership?"
+        },
+
+        "dateHint" : "For example, 27 3 2000",
+        "dateDay" : "Day",
+        "dateMonth" : "Month",
+        "dateYear" : "Year",
+        "legalEntityName" : "What is the legal entity's name?",
+        "legalFormOrCorporateIdentity" : "What is its legal form or corporate identity?",
+        "legalFormOrCorporateIdentityHint" : "This is the corporate body type. For example, private limited company.",
+        "legalPersonalityWarning" : "By providing this information, you are confirming that this entity has legal personality.",
+        "governingLaw" : "What is the governing law?",
+        "governingLawHint" : "This is the law that the entity operates under. For example, the Companies Act 2006.",
+        "whichRegister" : "Which register is it entered in?",
+        "whichRegisterHint" : "For example, the Companies House public register.",
+        "countryRegistered" : "Which country is it registered in?",
+        "registrationNumber" : "What is the registration number?",
+        "registrationNumberHint" : "For example, the company number.",
+        "publicRegisterLine1" : "We'll show all of this information on the public register."
+    },
+    "addPartnerPersonPage" : {
+        "generalPartner": {
+            "title" : "Add a general partner (person)",
+            "dateEffectiveFrom" : "When did they become a general partner for this partnership?",
+            "previousName" : {
+                "title" : "Does the general partner have a previous name?",
+                "hint" : "For example, if they've changed their name as a result of marriage or divorce.",
+                "yes" : "Yes",
+                "yesHintTitle" : "What is the general partner's previous name?",
+                "yesHint" : "If the partner has more than one previous name, separate each name with a comma.",
+                "no" : "No"
+            }
+        },
+        "limitedPartner": {
+            "title": "Add a limited partner (person)",
+            "dateEffectiveFrom" : "When did they become a limited partner for this partnership?",
+            "previousName" : {
+                "title" : "Does the limited partner have a previous name?",
+                "hint" : "For example, if they've changed their name as a result of marriage or divorce.",
+                "yes" : "Yes",
+                "yesHintTitle" : "What is the limited partner's previous name?",
+                "yesHint" : "If the partner has more than one previous name, separate each name with a comma.",
+                "no" : "No"
+            }
+        },
+        "firstName" : "First name",
+        "lastName" : "Last name",
+        "dateOfBirth" : "Date of birth",
+        "dateHint" : "For example, 27 3 2000",
+        "dateDay" : "Day",
+        "dateMonth" : "Month",
+        "dateYear" : "Year",
+        "nationality" : "What is their nationality?",
+        "nationalitySelectPrompt": "Select a nationality",
+        "secondNationality" : "What is their second nationality (if relevant)?",
+        "secondNationalitySelectPrompt": "Select a second nationality",
+        "secondNationalityHint" : "Dual citizenship (also known as dual nationality) is allowed in some countries. This means you can be a citizen of your own country and another country.",
+        "publicRegisterLine1" : "We'll show the month and year of the partner's date of birth, but not the exact date.",
+        "publicRegisterLine2" : "We'll show all the other information you provide on this screen on the public register."
+    },
+    "capitalContribution" : {
+        "title" : "What is this partner's total capital contribution?",
+        "currencyTypeLabel": "Select the currency",
+        "valueLabel": "Enter the total value",
+        "hint" : "This is the total value of all monetary and non-monetary contributions.",
+        "amountHint": "For example, if it was £25 enter 25.00",
+        "compositionTitle" : "What is this total value made up of?",
+        "compositionHint" : "Select all that apply.",
+        "money" : "Money",
+        "landOrProperty" : "Land or property",
+        "shares" : "Shares or interests in other partnerships",
+        "servicesOrGoods" : "Services or goods",
+        "anyOtherAsset" : "Any other asset"
+    },
+    "ceaseDate" : {
+        "dateHint": "For example, 27 3 2025",
+        "dateDay" : "Day",
+        "dateMonth" : "Month",
+        "dateYear" : "Year",
+        "publicInformationLine1": "We'll show the date on the public register.",
+        "removeConfirmationChecked": "I confirm that ",
+
+        "removeGeneralPartner" : {
+            "title": "Remove a general partner",
+            "person": {
+                "subTitle": "When did this person cease to be a general partner?"
+            },
+            "legalEntity": {
+                "subTitle": "When did this entity cease to be a general partner?"
+            },
+            "removeConfirmationChecked": " is no longer a general partner"
+        },
+
+        "removeLimitedPartner" : {
+            "title": "Remove a limited partner",
+            "person": {
+                "subTitle": "When did this person cease to be a limited partner?"
+            },
+            "legalEntity": {
+                "subTitle": "When did this entity cease to be a limited partner?"
+            },
+            "removeConfirmationChecked": " is no longer a limited partner"
+        }
+    },
+    "generalPartnerChoicePage": {
+        "title": "Is the general partner a person or a legal entity?",
+        "hint": "You can add more later.",
+        "person": "A person",
+        "legalEntity": "A legal entity"
+    },
+    "generalPartnersPage": {
+        "title": "You now need to tell us about the general partners",
+        "pageInformation": "If the partnership has more than one general partner, you'll add them one at a time.",
+        "disqualificationStatement" : "I confirm that the general partner is not disqualified under the directors disqualification legislation, as defined in the Limited Partnership Act 1907.",
+        "disqualificationStatementLegend" : "General partner - person - disqualification statement"
+    },
+    "limitedPartnerChoicePage" : {
+        "isPersonOrLegalEntity" : "Is the limited partner a person or a legal entity?",
+        "isPersonOrLegalEntityHint" : "You can add more later.",
+        "person" : "A person",
+        "legalEntity" : "A legal entity"
+    },
+    "limitedPartnersPage": {
+        "title": "You now need to tell us about the limited partners",
+        "pageInformation": "If the partnership has more than one limited partner, you'll add them one at a time."
+    },
+    "removePartnerPage": {
+        "title": "Are you sure you want to remove"
+    },
+    "reviewGeneralPartnersPage": {
+        "title": "General partners",
+        "generalPartnersAdded": {
+            "title": "General partners you have added so far:",
+            "changeLink": "Change",
+            "removeLink": "Remove",
+            "person": "Person",
+            "legalEntity": "Legal entity",
+            "emptyList": "You must add at least one General Partner"
+        },
+        "addGeneralPartner": {
+            "title": "Do you need to add another general partner?",
+            "optionPerson": "Yes, a person",
+            "optionLegalEntity": "Yes, a legal entity"
+        }
+    },
+    "reviewLimitedPartnersPage": {
+        "title": "Limited partners",
+        "limitedPartnersAdded": {
+            "title": "Limited partners you have added so far:",
+            "changeLink": "Change",
+            "removeLink": "Remove",
+            "person": "Person",
+            "legalEntity": "Legal entity",
+            "emptyList": "You must add at least one Limited Partner"
+        },
+        "addLimitedPartner": {
+            "title": "Do you need to add another limited partner?",
+            "optionPerson": "Yes, a person",
+            "optionLegalEntity": "Yes, a legal entity"
+        }
+    },
+    "updatePartnerPersonPage" : {
+        "generalPartner": {
+            "title" : "Update a general partner's details (person)"
+        },
+        "limitedPartner": {
+            "title" : "Update a limited partner's details (person)"
+        },
+        "nationality" : "What is their nationality?",
+        "nationalitySelectPrompt": "Select a nationality",
+        "secondNationality" : "What is their second nationality (if relevant)?",
+        "secondNationalitySelectPrompt": "Select a second nationality",
+        "secondNationalityHint" : "Dual citizenship (also known as dual nationality) is allowed in some countries. This means you can be a citizen of your own country and another country.",
+        "publicRegisterLine1" : "We'll show all of this information on the public register."
+    }
+}
