@@ -1,9 +1,9 @@
 {% extends "layout.njk" %}
 
-{% set publicRegisterInformationLine1 = i18n.updatePartnerPersonPage.publicRegisterLine1 %}
-{% set publicRegisterInformationLine2 = i18n.updatePartnerPersonPage.publicRegisterLine2 %}
+{% set publicRegisterInformationLine1 = i18n.partner.updatePartnerPersonPage.publicRegisterLine1 %}
+{% set publicRegisterInformationLine2 = i18n.partner.updatePartnerPersonPage.publicRegisterLine2 %}
 
-{% set pageTitle = i18n.updatePartnerPersonPage.limitedPartner.title  %}
+{% set pageTitle = i18n.partner.updatePartnerPersonPage.limitedPartner.title  %}
 
 {% block content %}
   <div class="govuk-grid-row">
@@ -21,18 +21,18 @@
         {% include "pages/partner/full-name.njk" %}
 
         {% set nationalityField = props.data.limitedPartner.data.nationality1 %}
-        {% set nationalityFieldSelectPrompt = i18n.updatePartnerPersonPage.nationalitySelectPrompt %}
+        {% set nationalityFieldSelectPrompt = i18n.partner.updatePartnerPersonPage.nationalitySelectPrompt %}
         {% set nationalityFieldRequired = "true" %}
-        {% set nationalityFieldText = i18n.updatePartnerPersonPage.nationality %}
+        {% set nationalityFieldText = i18n.partner.updatePartnerPersonPage.nationality %}
         {% set nationalityFieldHintText = "" %}
         {% set nationalityFieldNameId = "nationality1" %}
         {% include "includes/nationalities.njk" %}
 
         {% set nationalityField = props.data.limitedPartner.data.nationality2 %}
-        {% set nationalityFieldSelectPrompt = i18n.updatePartnerPersonPage.secondNationalitySelectPrompt %}
+        {% set nationalityFieldSelectPrompt = i18n.partner.updatePartnerPersonPage.secondNationalitySelectPrompt %}
         {% set nationalityFieldRequired = "false" %}
-        {% set nationalityFieldText = i18n.updatePartnerPersonPage.secondNationality %}
-        {% set nationalityFieldHintText = i18n.updatePartnerPersonPage.secondNationalityHint  %}
+        {% set nationalityFieldText = i18n.partner.updatePartnerPersonPage.secondNationality %}
+        {% set nationalityFieldHintText = i18n.partner.updatePartnerPersonPage.secondNationalityHint  %}
         {% set nationalityFieldNameId = "nationality2" %}
         {% include "includes/nationalities.njk" %}
 

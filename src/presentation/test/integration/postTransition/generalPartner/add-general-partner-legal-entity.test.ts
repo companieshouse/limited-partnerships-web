@@ -48,8 +48,8 @@ describe("Add General Partner Legal Entity Page", () => {
         `${companyProfile.data.companyName?.toUpperCase()} (${companyProfile.data.companyNumber?.toUpperCase()})`
       );
 
-      testTranslations(res.text, enTranslationText.addOrUpdatePartnerLegalEntityPage, ["updateTitle", "limitedPartner", "errorMessages"]);
-      testTranslations(res.text, enTranslationText.generalPartnersPage, [
+      testTranslations(res.text, enTranslationText.partner.addOrUpdatePartnerLegalEntityPage, ["updateTitle", "limitedPartner", "errorMessages"]);
+      testTranslations(res.text, enTranslationText.partner.generalPartnersPage, [
         "title",
         "pageInformation",
         "disqualificationStatement",
@@ -71,8 +71,8 @@ describe("Add General Partner Legal Entity Page", () => {
         `${companyProfile.data.companyName?.toUpperCase()} (${companyProfile.data.companyNumber?.toUpperCase()})`
       );
 
-      testTranslations(res.text, cyTranslationText.addOrUpdatePartnerLegalEntityPage, ["updateTitle", "limitedPartner", "errorMessages"]);
-      testTranslations(res.text, cyTranslationText.generalPartnersPage, [
+      testTranslations(res.text, cyTranslationText.partner.addOrUpdatePartnerLegalEntityPage, ["updateTitle", "limitedPartner", "errorMessages"]);
+      testTranslations(res.text, cyTranslationText.partner.generalPartnersPage, [
         "title",
         "pageInformation",
         "disqualificationStatement",

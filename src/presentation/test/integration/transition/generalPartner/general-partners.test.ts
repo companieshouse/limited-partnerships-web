@@ -26,9 +26,9 @@ describe("General Partners Page", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
-      `${cyTranslationText.generalPartnersPage.title} - ${cyTranslationText.serviceTransition} - GOV.UK`
+      `${cyTranslationText.partner.generalPartnersPage.title} - ${cyTranslationText.serviceTransition} - GOV.UK`
     );
-    testTranslations(res.text, cyTranslationText.generalPartnersPage, [
+    testTranslations(res.text, cyTranslationText.partner.generalPartnersPage, [
       "disqualificationStatement",
       "disqualificationStatementLegend"
     ]);
@@ -40,9 +40,9 @@ describe("General Partners Page", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
-      `${enTranslationText.generalPartnersPage.title} - ${enTranslationText.serviceTransition} - GOV.UK`
+      `${enTranslationText.partner.generalPartnersPage.title} - ${enTranslationText.serviceTransition} - GOV.UK`
     );
-    testTranslations(res.text, enTranslationText.generalPartnersPage, [
+    testTranslations(res.text, enTranslationText.partner.generalPartnersPage, [
       "disqualificationStatement",
       "disqualificationStatementLegend"
     ]);

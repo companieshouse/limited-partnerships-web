@@ -36,9 +36,9 @@ describe("General Partner Choice Page", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
-      `${cyTranslationText.generalPartnerChoicePage.title} - ${cyTranslationText.serviceTransition} - GOV.UK`
+      `${cyTranslationText.partner.generalPartnerChoicePage.title} - ${cyTranslationText.serviceTransition} - GOV.UK`
     );
-    testTranslations(res.text, cyTranslationText.generalPartnerChoicePage);
+    testTranslations(res.text, cyTranslationText.partner.generalPartnerChoicePage);
   });
 
   it("should load the general partner choice page with English text", async () => {
@@ -47,9 +47,9 @@ describe("General Partner Choice Page", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
-      `${enTranslationText.generalPartnerChoicePage.title} - ${enTranslationText.serviceTransition} - GOV.UK`
+      `${enTranslationText.partner.generalPartnerChoicePage.title} - ${enTranslationText.serviceTransition} - GOV.UK`
     );
-    testTranslations(res.text, enTranslationText.generalPartnerChoicePage);
+    testTranslations(res.text, enTranslationText.partner.generalPartnerChoicePage);
   });
 
   it("should redirect to General Partner Person page when person is selected", async () => {

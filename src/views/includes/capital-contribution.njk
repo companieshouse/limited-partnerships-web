@@ -6,9 +6,9 @@
 
   <hr class="govuk-section-break govuk-section-break--visible govuk-section-break--m">
 
-  <h2 class="govuk-heading-m">{{ i18n.capitalContribution.title}}</h2>
+  <h2 class="govuk-heading-m">{{ i18n.partner.capitalContribution.title}}</h2>
 
-  <p class="govuk-hint">{{ i18n.capitalContribution.hint }}</p>
+  <p class="govuk-hint">{{ i18n.partner.capitalContribution.hint }}</p>
 
   {% set currencyField = props.data.limitedPartner.data.contribution_currency_type %}
   {% include "includes/currencies.njk" %}
@@ -20,12 +20,12 @@
 
   {{ govukInput({
     label: {
-      text: i18n.capitalContribution.valueLabel,
+      text: i18n.partner.capitalContribution.valueLabel,
       classes: "govuk-label--m",
       isPageHeading: false
      },
     hint: {
-      text: i18n.capitalContribution.amountHint
+      text: i18n.partner.capitalContribution.amountHint
     },
     classes: "govuk-input--width-10",
     id: "contribution_currency_value",
@@ -40,18 +40,18 @@
     name: "contribution_sub_types",            
     fieldset: {
       legend: {
-        text: i18n.capitalContribution.compositionTitle,
+        text: i18n.partner.capitalContribution.compositionTitle,
         isPageHeading: false,
         classes: "govuk-fieldset__legend--m"
       }
     },
     hint: {
-      text: i18n.capitalContribution.compositionHint
+      text: i18n.partner.capitalContribution.compositionHint
     },   
     items: [
       {        
         value: "MONEY",            
-        text: i18n.capitalContribution.money,
+        text: i18n.partner.capitalContribution.money,
         checked: true if "MONEY" in contribution_sub_types else false,
         attributes: {
           "data-event-id": "capital_contribution_money"
@@ -59,7 +59,7 @@
       },
       {        
         value: "LAND_OR_PROPERTY",           
-        text: i18n.capitalContribution.landOrProperty,
+        text: i18n.partner.capitalContribution.landOrProperty,
         checked: true if "LAND_OR_PROPERTY" in contribution_sub_types else false,
         attributes: {
           "data-event-id": "capital_contribution_landOrProperty"
@@ -67,7 +67,7 @@
       },
       {        
         value: "SHARES",          
-        text: i18n.capitalContribution.shares,
+        text: i18n.partner.capitalContribution.shares,
         checked: true if "SHARES" in contribution_sub_types else false,
         attributes: {
           "data-event-id": "capital_contribution_shares"
@@ -75,7 +75,7 @@
       },
       {        
         value: "SERVICES_OR_GOODS",        
-        text: i18n.capitalContribution.servicesOrGoods,
+        text: i18n.partner.capitalContribution.servicesOrGoods,
         checked: true if "SERVICES_OR_GOODS" in contribution_sub_types else false,
         attributes: {
           "data-event-id": "capital_contribution_servicesOrGoods"
@@ -83,7 +83,7 @@
       },
       {
         value: "ANY_OTHER_ASSET",
-        text: i18n.capitalContribution.anyOtherAsset,
+        text: i18n.partner.capitalContribution.anyOtherAsset,
         checked: true if "ANY_OTHER_ASSET" in contribution_sub_types else false,
         attributes: {
           "data-event-id": "capital_contribution_anyOtherAsset"

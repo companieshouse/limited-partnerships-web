@@ -55,7 +55,7 @@ describe("Update Limited Partner Person Page", () => {
         `${companyProfile.data.companyName?.toUpperCase()} (${companyProfile.data.companyNumber?.toUpperCase()})`
       );
 
-      testTranslations(res.text, translationText.updatePartnerPersonPage, ["generalPartner"]);
+      testTranslations(res.text, translationText.partner.updatePartnerPersonPage, ["generalPartner"]);
       expect(countOccurrences(res.text, toEscapedHtml(translationText.serviceName.updateLimitedPartnerPerson))).toBe(4);
 
       if (lang === "cy") {

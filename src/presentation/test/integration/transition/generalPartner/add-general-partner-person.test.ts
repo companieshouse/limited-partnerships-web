@@ -35,9 +35,9 @@ describe("Add General Partner Person Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${cyTranslationText.addPartnerPersonPage.generalPartner.title} - ${cyTranslationText.serviceTransition} - GOV.UK`
+        `${cyTranslationText.partner.addPartnerPersonPage.generalPartner.title} - ${cyTranslationText.serviceTransition} - GOV.UK`
       );
-      testTranslations(res.text, cyTranslationText.addPartnerPersonPage, [
+      testTranslations(res.text, cyTranslationText.partner.addPartnerPersonPage, [
         "errorMessages",
         "limitedPartner",
         "dateEffectiveFrom",
@@ -46,7 +46,7 @@ describe("Add General Partner Person Page", () => {
         "dateMonth",
         "dateYear"
       ]);
-      testTranslations(res.text, cyTranslationText.generalPartnersPage, [
+      testTranslations(res.text, cyTranslationText.partner.generalPartnersPage, [
         "title",
         "pageInformation",
         "disqualificationStatement",
@@ -60,9 +60,9 @@ describe("Add General Partner Person Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${enTranslationText.addPartnerPersonPage.generalPartner.title} - ${enTranslationText.serviceTransition} - GOV.UK`
+        `${enTranslationText.partner.addPartnerPersonPage.generalPartner.title} - ${enTranslationText.serviceTransition} - GOV.UK`
       );
-      testTranslations(res.text, enTranslationText.addPartnerPersonPage, [
+      testTranslations(res.text, enTranslationText.partner.addPartnerPersonPage, [
         "errorMessages",
         "limitedPartner",
         "dateEffectiveFrom",
@@ -71,7 +71,7 @@ describe("Add General Partner Person Page", () => {
         "dateMonth",
         "dateYear"
       ]);
-      testTranslations(res.text, enTranslationText.generalPartnersPage, [
+      testTranslations(res.text, enTranslationText.partner.generalPartnersPage, [
         "title",
         "pageInformation",
         "disqualificationStatement",

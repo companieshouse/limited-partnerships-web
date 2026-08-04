@@ -34,10 +34,10 @@ describe("Remove Limited Partner Page", () => {
       expect(res.status).toBe(200);
 
       expect(res.text).toContain(
-        `${enTranslationText.removePartnerPage.title} - ${enTranslationText.serviceTransition} - GOV.UK`
+        `${enTranslationText.partner.removePartnerPage.title} - ${enTranslationText.serviceTransition} - GOV.UK`
       );
 
-      testTranslations(res.text, enTranslationText.removePartnerPage);
+      testTranslations(res.text, enTranslationText.partner.removePartnerPage);
 
       expect(res.text).toContain(`${limitedPartnerPerson?.data?.forename} ${limitedPartnerPerson?.data?.surname}`);
     });
@@ -77,10 +77,10 @@ describe("Remove Limited Partner Page", () => {
       expect(res.status).toBe(200);
 
       expect(res.text).toContain(
-        `${cyTranslationText.removePartnerPage.title} - ${cyTranslationText.serviceTransition} - GOV.UK`
+        `${cyTranslationText.partner.removePartnerPage.title} - ${cyTranslationText.serviceTransition} - GOV.UK`
       );
 
-      testTranslations(res.text, cyTranslationText.removePartnerPage);
+      testTranslations(res.text, cyTranslationText.partner.removePartnerPage);
 
       expect(res.text).toContain(`${limitedPartnerLegalEntity?.data?.legal_entity_name}`);
     });

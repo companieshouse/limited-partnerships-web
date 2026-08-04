@@ -56,7 +56,7 @@ describe("Update General Partner Legal Entity Page", () => {
           `${companyProfile.data.companyName?.toUpperCase()} (${companyProfile.data.companyNumber?.toUpperCase()})`
         );
 
-        testTranslations(res.text, translationText.addOrUpdatePartnerLegalEntityPage, [
+        testTranslations(res.text, translationText.partner.addOrUpdatePartnerLegalEntityPage, [
           "title",
           "limitedPartner",
           "errorMessages",

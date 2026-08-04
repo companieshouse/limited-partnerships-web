@@ -74,8 +74,8 @@ describe("Add Limited Partner Person Page", () => {
           `${companyProfile.data.companyName?.toUpperCase()} (${companyProfile.data.companyNumber?.toUpperCase()})`
         );
 
-        testTranslations(res.text, i18n.addPartnerPersonPage, ["errorMessages", "generalPartner"]);
-        testTranslations(res.text, i18n.limitedPartnersPage, [
+        testTranslations(res.text, i18n.partner.addPartnerPersonPage, ["errorMessages", "generalPartner"]);
+        testTranslations(res.text, i18n.partner.limitedPartnersPage, [
           "title",
           "pageInformation",
           "disqualificationStatement",
@@ -83,9 +83,9 @@ describe("Add Limited Partner Person Page", () => {
         ]);
 
         if (expectCapitalContributionText) {
-          testTranslations(res.text, i18n.capitalContribution);
+          testTranslations(res.text, i18n.partner.capitalContribution);
         } else {
-          expect(res.text).not.toContain(toEscapedHtml(i18n.capitalContribution.title));
+          expect(res.text).not.toContain(toEscapedHtml(i18n.partner.capitalContribution.title));
         }
 
         if (lang !== "cy") {

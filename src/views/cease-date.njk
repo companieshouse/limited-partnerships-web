@@ -13,15 +13,15 @@
   {% set cease_date_day = cease_date[8] + cease_date[9] %}
 {% endif %}
 
-{% set publicRegisterInformationLine1 = i18n.ceaseDate.publicInformationLine1 %}
+{% set publicRegisterInformationLine1 = i18n.partner.ceaseDate.publicInformationLine1 %}
 
 {% set name = "" %}
 {% if props.data.partner.data.forename %}
   {% set name = props.data.partner.data.forename + " " + props.data.partner.data.surname %}
-  {% set pageTitle = i18n.ceaseDate[props.data.titleKey].person.subTitle %}
+  {% set pageTitle = i18n.partner.ceaseDate[props.data.titleKey].person.subTitle %}
 {% else %}
   {% set name = props.data.partner.data.legal_entity_name %}
-  {% set pageTitle = i18n.ceaseDate[props.data.titleKey].legalEntity.subTitle %}
+  {% set pageTitle = i18n.partner.ceaseDate[props.data.titleKey].legalEntity.subTitle %}
 {% endif %}
 
 {% if props.data.remove_confirmation_checked is defined %}
@@ -37,7 +37,7 @@
       {% include "includes/errors.njk" %}
 
       {% include "includes/proposed-name.njk" %}
-      <h1 class="govuk-heading-xl" >{{i18n.ceaseDate[props.data.titleKey].title}}</h1>
+      <h1 class="govuk-heading-xl" >{{i18n.partner.ceaseDate[props.data.titleKey].title}}</h1>
 
       <span class="govuk-caption-l">{{ name }} </span>
 
@@ -52,12 +52,12 @@
           namePrefix: "cease_date",
           errorMessage: props.errors.cease_date if props.errors,
           hint: {
-            text: i18n.ceaseDate.dateHint
+            text: i18n.partner.ceaseDate.dateHint
           },
           items: [
             {
               classes: "govuk-input--width-2",
-              label: i18n.ceaseDate.dateDay,
+              label: i18n.partner.ceaseDate.dateDay,
               name: "day",
               value: cease_date_day,
               attributes: {
@@ -67,7 +67,7 @@
             },
             {
               classes: "govuk-input--width-2",
-              label: i18n.ceaseDate.dateMonth,
+              label: i18n.partner.ceaseDate.dateMonth,
               name: "month",
               value: cease_date_month,
               attributes: {
@@ -77,7 +77,7 @@
             },
             {
               classes: "govuk-input--width-4",
-              label: i18n.ceaseDate.dateYear,
+              label: i18n.partner.ceaseDate.dateYear,
               name: "year",
               value: cease_date_year,
               attributes: {
@@ -94,7 +94,7 @@
           items: [
             {
               value: "true",
-              text: i18n.ceaseDate.removeConfirmationChecked + name + i18n.ceaseDate[props.data.titleKey].removeConfirmationChecked,
+              text: i18n.partner.ceaseDate.removeConfirmationChecked + name + i18n.partner.ceaseDate[props.data.titleKey].removeConfirmationChecked,
               attributes: {
                 required: true
               },

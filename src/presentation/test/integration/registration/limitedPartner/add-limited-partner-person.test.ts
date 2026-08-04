@@ -66,16 +66,16 @@ describe("Add Limited Partner Person Page", () => {
 
         expect(res.status).toBe(200);
         expect(res.text).toContain(
-          `${cyTranslationText.addPartnerPersonPage.limitedPartner.title} - ${cyTranslationText.serviceRegistration} - GOV.UK`
+          `${cyTranslationText.partner.addPartnerPersonPage.limitedPartner.title} - ${cyTranslationText.serviceRegistration} - GOV.UK`
         );
-        testTranslations(res.text, cyTranslationText.addPartnerPersonPage, [
+        testTranslations(res.text, cyTranslationText.partner.addPartnerPersonPage, [
           "errorMessages",
           "generalPartner",
           "dateEffectiveFrom"
         ]);
 
         if (!isCapitalContributionPresent) {
-          expect(res.text).not.toContain(cyTranslationText.capitalContribution.title);
+          expect(res.text).not.toContain(cyTranslationText.partner.capitalContribution.title);
         }
         expect(res.text).toContain(customerFeedbackUrlMap.registration);
       }
@@ -98,9 +98,9 @@ describe("Add Limited Partner Person Page", () => {
 
         expect(res.status).toBe(200);
         expect(res.text).toContain(
-          `${enTranslationText.addPartnerPersonPage.limitedPartner.title} - ${enTranslationText.serviceRegistration} - GOV.UK`
+          `${enTranslationText.partner.addPartnerPersonPage.limitedPartner.title} - ${enTranslationText.serviceRegistration} - GOV.UK`
         );
-        testTranslations(res.text, enTranslationText.addPartnerPersonPage, [
+        testTranslations(res.text, enTranslationText.partner.addPartnerPersonPage, [
           "errorMessages",
           "generalPartner",
           "dateEffectiveFrom"
@@ -108,7 +108,7 @@ describe("Add Limited Partner Person Page", () => {
         expect(res.text).not.toContain("WELSH -");
 
         if (!isCapitalContributionPresent) {
-          expect(res.text).not.toContain(enTranslationText.capitalContribution.title);
+          expect(res.text).not.toContain(enTranslationText.partner.capitalContribution.title);
         }
         expect(res.text).toContain(customerFeedbackUrlMap.registration);
       }

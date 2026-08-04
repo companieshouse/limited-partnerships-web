@@ -1,10 +1,10 @@
 {{ govukWarningText({
-  text: i18n.addOrUpdatePartnerLegalEntityPage.legalPersonalityWarning
+  text: i18n.partner.addOrUpdatePartnerLegalEntityPage.legalPersonalityWarning
 }) }}
 
 {{ govukInput({
   label: {
-    text: i18n.addOrUpdatePartnerLegalEntityPage.legalEntityName,
+    text: i18n.partner.addOrUpdatePartnerLegalEntityPage.legalEntityName,
     classes: "govuk-label govuk-label--m",
     isPageHeading: true
   },
@@ -19,11 +19,11 @@
 
 {{ govukInput({
   label: {
-    text: i18n.addOrUpdatePartnerLegalEntityPage.legalFormOrCorporateIdentity,
+    text: i18n.partner.addOrUpdatePartnerLegalEntityPage.legalFormOrCorporateIdentity,
     classes: "govuk-label govuk-label--m"
   },
   hint: {
-    text: i18n.addOrUpdatePartnerLegalEntityPage.legalFormOrCorporateIdentityHint
+    text: i18n.partner.addOrUpdatePartnerLegalEntityPage.legalFormOrCorporateIdentityHint
   },
   id: "legal_form",
   name: "legal_form",
@@ -36,11 +36,11 @@
 
 {{ govukInput({
   label: {
-    text: i18n.addOrUpdatePartnerLegalEntityPage.governingLaw,
+    text: i18n.partner.addOrUpdatePartnerLegalEntityPage.governingLaw,
     classes: "govuk-label govuk-label--m"
   },
   hint: {
-    text: i18n.addOrUpdatePartnerLegalEntityPage.governingLawHint
+    text: i18n.partner.addOrUpdatePartnerLegalEntityPage.governingLawHint
   },
   id: "governing_law",
   name: "governing_law",
@@ -53,11 +53,11 @@
 
 {{ govukInput({
   label: {
-    text: i18n.addOrUpdatePartnerLegalEntityPage.whichRegister,
+    text: i18n.partner.addOrUpdatePartnerLegalEntityPage.whichRegister,
     classes: "govuk-label govuk-label--m"
   },
   hint: {
-    text: i18n.addOrUpdatePartnerLegalEntityPage.whichRegisterHint
+    text: i18n.partner.addOrUpdatePartnerLegalEntityPage.whichRegisterHint
   },
   id: "legal_entity_register_name",
   name: "legal_entity_register_name",
@@ -68,7 +68,7 @@
   }
 }) }}
 
-{% set countryText = i18n.addOrUpdatePartnerLegalEntityPage.countryRegistered %}
+{% set countryText = i18n.partner.addOrUpdatePartnerLegalEntityPage.countryRegistered %}
 {% set countryFormId = "legal_entity_registration_location" %}
 {% set countryErrorMessage = props.errors.legal_entity_registration_location if props.errors %}
 {% set countryFormValue = props.data[partnerKind].data.legal_entity_registration_location %}
@@ -78,11 +78,11 @@
 
 {{ govukInput({
   label: {
-    text: i18n.addOrUpdatePartnerLegalEntityPage.registrationNumber,
+    text: i18n.partner.addOrUpdatePartnerLegalEntityPage.registrationNumber,
     classes: "govuk-label govuk-label--m"
   },
   hint: {
-    text: i18n.addOrUpdatePartnerLegalEntityPage.registrationNumberHint
+    text: i18n.partner.addOrUpdatePartnerLegalEntityPage.registrationNumberHint
   },
   id: "registered_company_number",
   name: "registered_company_number",

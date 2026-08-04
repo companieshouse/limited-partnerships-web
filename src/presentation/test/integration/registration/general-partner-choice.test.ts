@@ -29,9 +29,9 @@ describe("General Partner Choice Page", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
-      `${cyTranslationText.generalPartnerChoicePage.title} - ${cyTranslationText.serviceRegistration} - GOV.UK`
+      `${cyTranslationText.partner.generalPartnerChoicePage.title} - ${cyTranslationText.serviceRegistration} - GOV.UK`
     );
-    testTranslations(res.text, cyTranslationText.generalPartnerChoicePage);
+    testTranslations(res.text, cyTranslationText.partner.generalPartnerChoicePage);
     expect(res.text).toContain(customerFeedbackUrlMap.registration);
   });
 
@@ -41,9 +41,9 @@ describe("General Partner Choice Page", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
-      `${enTranslationText.generalPartnerChoicePage.title} - ${enTranslationText.serviceRegistration} - GOV.UK`
+      `${enTranslationText.partner.generalPartnerChoicePage.title} - ${enTranslationText.serviceRegistration} - GOV.UK`
     );
-    testTranslations(res.text, enTranslationText.generalPartnerChoicePage);
+    testTranslations(res.text, enTranslationText.partner.generalPartnerChoicePage);
     expect(res.text).toContain(customerFeedbackUrlMap.registration);
   });
 

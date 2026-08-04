@@ -37,14 +37,14 @@ describe("Add General Partner Person Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${cyTranslationText.addPartnerPersonPage.generalPartner.title} - ${cyTranslationText.serviceRegistration} - GOV.UK`
+        `${cyTranslationText.partner.addPartnerPersonPage.generalPartner.title} - ${cyTranslationText.serviceRegistration} - GOV.UK`
       );
-      testTranslations(res.text, cyTranslationText.addPartnerPersonPage, [
+      testTranslations(res.text, cyTranslationText.partner.addPartnerPersonPage, [
         "errorMessages",
         "limitedPartner",
         "dateEffectiveFrom"
       ]);
-      testTranslations(res.text, cyTranslationText.generalPartnersPage, ["title", "pageInformation"]);
+      testTranslations(res.text, cyTranslationText.partner.generalPartnersPage, ["title", "pageInformation"]);
       expect(res.text).toContain(customerFeedbackUrlMap.registration);
     });
 
@@ -54,14 +54,14 @@ describe("Add General Partner Person Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${enTranslationText.addPartnerPersonPage.generalPartner.title} - ${enTranslationText.serviceRegistration} - GOV.UK`
+        `${enTranslationText.partner.addPartnerPersonPage.generalPartner.title} - ${enTranslationText.serviceRegistration} - GOV.UK`
       );
-      testTranslations(res.text, enTranslationText.addPartnerPersonPage, [
+      testTranslations(res.text, enTranslationText.partner.addPartnerPersonPage, [
         "errorMessages",
         "limitedPartner",
         "dateEffectiveFrom"
       ]);
-      testTranslations(res.text, enTranslationText.generalPartnersPage, ["title", "pageInformation"]);
+      testTranslations(res.text, enTranslationText.partner.generalPartnersPage, ["title", "pageInformation"]);
       expect(res.text).not.toContain("WELSH -");
       expect(res.text).toContain(customerFeedbackUrlMap.registration);
     });

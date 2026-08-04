@@ -34,13 +34,13 @@ describe("Limited Partner Choice Page", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
-      `${translation.limitedPartnerChoicePage.isPersonOrLegalEntity} - ${translation.serviceName.addLimitedPartner} - GOV.UK`
+      `${translation.partner.limitedPartnerChoicePage.isPersonOrLegalEntity} - ${translation.serviceName.addLimitedPartner} - GOV.UK`
     );
     expect(res.text).toContain(
       `${companyProfile.data.companyName.toUpperCase()} (${companyProfile.data.companyNumber.toUpperCase()})`
     );
-    testTranslations(res.text, translation.limitedPartnerChoicePage, ["isPersonOrLegalEntityHint"]);
-    expect(res.text).not.toContain(translation.limitedPartnerChoicePage.isPersonOrLegalEntityHint);
+    testTranslations(res.text, translation.partner.limitedPartnerChoicePage, ["isPersonOrLegalEntityHint"]);
+    expect(res.text).not.toContain(translation.partner.limitedPartnerChoicePage.isPersonOrLegalEntityHint);
     expect(countOccurrences(res.text, translation.serviceName.addLimitedPartner)).toBe(2);
     expect(res.text).toContain(BACK_LINK);
   });
