@@ -22,9 +22,9 @@ describe("Limited Partners Page", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
-      `${cyTranslationText.limitedPartnersPage.title} - ${cyTranslationText.serviceRegistration} - GOV.UK`
+      `${cyTranslationText.partner.limitedPartnersPage.title} - ${cyTranslationText.serviceRegistration} - GOV.UK`
     );
-    testTranslations(res.text, cyTranslationText.limitedPartnersPage);
+    testTranslations(res.text, cyTranslationText.partner.limitedPartnersPage);
   });
 
   it("should load the limited partners page with English text", async () => {
@@ -33,9 +33,9 @@ describe("Limited Partners Page", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
-      `${enTranslationText.limitedPartnersPage.title} - ${enTranslationText.serviceRegistration} - GOV.UK`
+      `${enTranslationText.partner.limitedPartnersPage.title} - ${enTranslationText.serviceRegistration} - GOV.UK`
     );
-    testTranslations(res.text, enTranslationText.limitedPartnersPage);
+    testTranslations(res.text, enTranslationText.partner.limitedPartnersPage);
   });
 
   it("should contain the proposed name - data from api", async () => {

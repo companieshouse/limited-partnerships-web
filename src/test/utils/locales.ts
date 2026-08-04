@@ -3,6 +3,7 @@ import enCountries from "../../../locales/en/countries.json";
 import enCurrencies from "../../../locales/en/currencies.json";
 import enErrors from "../../../locales/en/errors.json";
 import enNationalities from "../../../locales/en/nationalities.json";
+import enPartner from "../../../locales/en/partner.json";
 import enPartnership from "../../../locales/en/partnership.json";
 import enPsc from "../../../locales/en/personWithSignificantControl.json";
 import enSicCodes from "../../../locales/en/sicCodes.json";
@@ -12,6 +13,7 @@ import cyCountries from "../../../locales/cy/countries.json";
 import cyCurrencies from "../../../locales/cy/currencies.json";
 import cyErrors from "../../../locales/cy/errors.json";
 import cyNationalities from "../../../locales/cy/nationalities.json";
+import cyPartner from "../../../locales/cy/partner.json";
 import cyPartnership from "../../../locales/cy/partnership.json";
 import cyPsc from "../../../locales/cy/personWithSignificantControl.json";
 import cySicCodes from "../../../locales/cy/sicCodes.json";
@@ -24,6 +26,7 @@ export const enTranslationText = {
   ...enCurrencies,
   ...enErrors,
   ...enNationalities,
+  ...enPartner,
   ...enPartnership,
   ...enPsc,
   ...enSicCodes
@@ -36,6 +39,7 @@ export const cyTranslationText = {
   ...cyCurrencies,
   ...cyErrors,
   ...cyNationalities,
+  ...cyPartner,
   ...cyPartnership,
   ...cyPsc,
   ...cySicCodes

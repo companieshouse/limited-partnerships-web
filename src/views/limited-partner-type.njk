@@ -1,6 +1,6 @@
 {% extends "layout.njk" %}
 
-{% set pageTitle =  i18n.limitedPartnerChoicePage.isPersonOrLegalEntity %}
+{% set pageTitle =  i18n.partner.limitedPartnerChoicePage.isPersonOrLegalEntity %}
 
 {% block content %}
   <div class="govuk-grid-row">
@@ -19,13 +19,13 @@
           value: props.data.limitedPartnership.limited_partner,
           fieldset: {
             legend: {
-              text: i18n.limitedPartnerChoicePage.isPersonOrLegalEntity,
+              text: i18n.partner.limitedPartnerChoicePage.isPersonOrLegalEntity,
               isPageHeading: true,
               classes: "govuk-fieldset__legend--xl"
             }
           },
           hint: {
-            text: i18n.limitedPartnerChoicePage.isPersonOrLegalEntityHint
+            text: i18n.partner.limitedPartnerChoicePage.isPersonOrLegalEntityHint
           } if not journeyTypes.isPostTransition,
           errorMessage:{
             text: props.errors.parameter.text
@@ -34,11 +34,11 @@
           items: [
             {
               value: "person",
-              text: i18n.limitedPartnerChoicePage.person
+              text: i18n.partner.limitedPartnerChoicePage.person
             },
             {
               value: "legal_entity",
-              text: i18n.limitedPartnerChoicePage.legalEntity
+              text: i18n.partner.limitedPartnerChoicePage.legalEntity
             }
           ]
         }) }}

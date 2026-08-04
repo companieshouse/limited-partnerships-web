@@ -52,7 +52,7 @@ describe("Limited Partner Person cease date page", () => {
       const res = await request(app).get(`${URL}?lang=${lang}`);
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(`${translationText.ceaseDate.removeLimitedPartner.title}`);
+      expect(res.text).toContain(`${translationText.partner.ceaseDate.removeLimitedPartner.title}`);
 
       expect(res.text).toContain(companyProfile.data.companyName.toUpperCase());
       expect(res.text).toContain(companyAppointment.name?.split(",")[0] ?? "");

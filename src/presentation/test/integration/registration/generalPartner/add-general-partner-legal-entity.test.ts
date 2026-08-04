@@ -41,9 +41,9 @@ describe("Add General Partner Legal Entity Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${cyTranslationText.addOrUpdatePartnerLegalEntityPage.generalPartner.title} - ${cyTranslationText.serviceRegistration} - GOV.UK`
+        `${cyTranslationText.partner.addOrUpdatePartnerLegalEntityPage.generalPartner.title} - ${cyTranslationText.serviceRegistration} - GOV.UK`
       );
-      testTranslations(res.text, cyTranslationText.addOrUpdatePartnerLegalEntityPage, [
+      testTranslations(res.text, cyTranslationText.partner.addOrUpdatePartnerLegalEntityPage, [
         "updateTitle",
         "limitedPartner",
         "errorMessages",
@@ -53,7 +53,7 @@ describe("Add General Partner Legal Entity Page", () => {
         "dateMonth",
         "dateYear"
       ]);
-      testTranslations(res.text, cyTranslationText.generalPartnersPage, ["title", "pageInformation"]);
+      testTranslations(res.text, cyTranslationText.partner.generalPartnersPage, ["title", "pageInformation"]);
     });
 
     it("should load the add general partner legal entity page with English text", async () => {
@@ -62,9 +62,9 @@ describe("Add General Partner Legal Entity Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${enTranslationText.addOrUpdatePartnerLegalEntityPage.generalPartner.title} - ${enTranslationText.serviceRegistration} - GOV.UK`
+        `${enTranslationText.partner.addOrUpdatePartnerLegalEntityPage.generalPartner.title} - ${enTranslationText.serviceRegistration} - GOV.UK`
       );
-      testTranslations(res.text, enTranslationText.addOrUpdatePartnerLegalEntityPage, [
+      testTranslations(res.text, enTranslationText.partner.addOrUpdatePartnerLegalEntityPage, [
         "updateTitle",
         "limitedPartner",
         "errorMessages",
@@ -74,7 +74,7 @@ describe("Add General Partner Legal Entity Page", () => {
         "dateMonth",
         "dateYear"
       ]);
-      testTranslations(res.text, enTranslationText.generalPartnersPage, ["title", "pageInformation"]);
+      testTranslations(res.text, enTranslationText.partner.generalPartnersPage, ["title", "pageInformation"]);
       expect(res.text).not.toContain("WELSH -");
     });
 

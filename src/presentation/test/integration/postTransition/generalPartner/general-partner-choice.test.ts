@@ -34,12 +34,12 @@ describe("General Partner Choice Page", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(
-      `${translation.generalPartnerChoicePage.title} - ${translation.serviceName.addGeneralPartner} - GOV.UK`
+      `${translation.partner.generalPartnerChoicePage.title} - ${translation.serviceName.addGeneralPartner} - GOV.UK`
     );
     expect(res.text).toContain(
       `${companyProfile.data.companyName.toUpperCase()} (${companyProfile.data.companyNumber.toUpperCase()})`
     );
-    testTranslations(res.text, translation.generalPartnerChoicePage, ["hint"]);
+    testTranslations(res.text, translation.partner.generalPartnerChoicePage, ["hint"]);
     expect(countOccurrences(res.text, translation.serviceName.addGeneralPartner)).toBe(2);
     expect(res.text).toContain(BACK_LINK);
   });

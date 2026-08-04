@@ -1,6 +1,6 @@
 {% extends "layout.njk" %}
 
-{% set pageTitle = i18n.generalPartnerChoicePage.title  %}
+{% set pageTitle = i18n.partner.generalPartnerChoicePage.title  %}
 
 {% block content %}
 
@@ -19,13 +19,13 @@
           value: data['generalPartner'],
           fieldset: {
             legend: {
-              text: i18n.generalPartnerChoicePage.title,
+              text: i18n.partner.generalPartnerChoicePage.title,
               isPageHeading: true,
               classes: "govuk-fieldset__legend--xl"
             }
           },
           hint: {
-            text: i18n.generalPartnerChoicePage.hint
+            text: i18n.partner.generalPartnerChoicePage.hint
           } if not journeyTypes.isPostTransition,
 
           errorMessage:{
@@ -35,11 +35,11 @@
           items: [
             {
               value: "person",
-              text: i18n.generalPartnerChoicePage.person
+              text: i18n.partner.generalPartnerChoicePage.person
             },
             {
               value: "legalEntity",
-              text: i18n.generalPartnerChoicePage.legalEntity
+              text: i18n.partner.generalPartnerChoicePage.legalEntity
             }
           ]
         }) }}

@@ -711,11 +711,11 @@ const checkIfValuesInText = (
         expect(res.text).toContain(capitalized);
       } else if (key.includes("contribution_sub_types")) {
         const capitalContributionSubTypesMap: Record<string, string> = {
-          MONEY: translationText.capitalContribution.money,
-          LAND_OR_PROPERTY: translationText.capitalContribution.landOrProperty,
-          SHARES: translationText.capitalContribution.shares,
-          SERVICES_OR_GOODS: translationText.capitalContribution.servicesOrGoods,
-          ANY_OTHER_ASSET: translationText.capitalContribution.anyOtherAsset
+          MONEY: translationText.partner.capitalContribution.money,
+          LAND_OR_PROPERTY: translationText.partner.capitalContribution.landOrProperty,
+          SHARES: translationText.partner.capitalContribution.shares,
+          SERVICES_OR_GOODS: translationText.partner.capitalContribution.servicesOrGoods,
+          ANY_OTHER_ASSET: translationText.partner.capitalContribution.anyOtherAsset
         };
 
         const str = value.map((word: string) => capitalContributionSubTypesMap[word]).join(" / ");

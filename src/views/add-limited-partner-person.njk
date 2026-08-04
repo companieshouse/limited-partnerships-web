@@ -1,8 +1,8 @@
 {% extends "layout.njk" %}
 
-{% set pageTitle = i18n.addPartnerPersonPage.limitedPartner.title %}
-{% set publicRegisterInformationLine1 = i18n.addPartnerPersonPage.publicRegisterLine1 %}
-{% set publicRegisterInformationLine2 = i18n.addPartnerPersonPage.publicRegisterLine2 %}
+{% set pageTitle = i18n.partner.addPartnerPersonPage.limitedPartner.title %}
+{% set publicRegisterInformationLine1 = i18n.partner.addPartnerPersonPage.publicRegisterLine1 %}
+{% set publicRegisterInformationLine2 = i18n.partner.addPartnerPersonPage.publicRegisterLine2 %}
 {% set partnershipType = props.data.limitedPartnership.data.partnership_type %}
 
 {% if props.data.limitedPartner.data.date_of_birth  %}
@@ -54,7 +54,7 @@
         
         {% include "includes/proposed-name.njk" %}  
     
-        <h1 class="govuk-heading-xl">{{ i18n.addPartnerPersonPage.limitedPartner.title }}</h1>
+        <h1 class="govuk-heading-xl">{{ i18n.partner.addPartnerPersonPage.limitedPartner.title }}</h1>
 
         {% set partner = "limitedPartner" %}
         {% include "pages/partner/full-name.njk" %}
@@ -62,10 +62,10 @@
         {% set previousHtmlPerson %}
           {{ govukInput({
             label: {
-              text: i18n.addPartnerPersonPage.limitedPartner.previousName.yesHintTitle
+              text: i18n.partner.addPartnerPersonPage.limitedPartner.previousName.yesHintTitle
             },
             hint: {
-              text: i18n.addPartnerPersonPage.limitedPartner.previousName.yesHint
+              text: i18n.partner.addPartnerPersonPage.limitedPartner.previousName.yesHint
             },
             id: "former_names",
             name: "former_names",
@@ -80,19 +80,19 @@
           value: previousNames,
           fieldset: {
             legend: {
-              text: i18n.addPartnerPersonPage.limitedPartner.previousName.title,
+              text: i18n.partner.addPartnerPersonPage.limitedPartner.previousName.title,
               isPageHeading: false,
               classes: "govuk-fieldset__legend--m"
             }
           },
           hint: {
-            text: i18n.addPartnerPersonPage.limitedPartner.previousName.hint
+            text: i18n.partner.addPartnerPersonPage.limitedPartner.previousName.hint
           },
 
           items: [
             {
               value: "true",
-              text: i18n.addPartnerPersonPage.limitedPartner.previousName.yes,
+              text: i18n.partner.addPartnerPersonPage.limitedPartner.previousName.yes,
               attributes: {
                 required: true,
                 "role": "radiogroup"
@@ -103,7 +103,7 @@
             },
             {
               value: "false",
-              text: i18n.addPartnerPersonPage.limitedPartner.previousName.no,
+              text: i18n.partner.addPartnerPersonPage.limitedPartner.previousName.no,
               attributes: {
                 required: true
               } if not journeyTypes.isRegistration
@@ -118,18 +118,18 @@
           errorMessage: props.errors.date_of_birth if props.errors,
           fieldset: {
             legend: {
-              text: i18n.addPartnerPersonPage.dateOfBirth,
+              text: i18n.partner.addPartnerPersonPage.dateOfBirth,
               isPageHeading: false,
               classes: "govuk-fieldset__legend--m"
             }
           },
           hint: {
-            text: i18n.addPartnerPersonPage.dateHint
+            text: i18n.partner.addPartnerPersonPage.dateHint
           },
           items: [
             {
               classes: "govuk-input--width-2",
-              label: i18n.addPartnerPersonPage.dateDay,
+              label: i18n.partner.addPartnerPersonPage.dateDay,
               name: "day",
               value: date_of_birth_day,
               attributes: {
@@ -139,7 +139,7 @@
             },
             {
               classes: "govuk-input--width-2",
-              label: i18n.addPartnerPersonPage.dateMonth,
+              label: i18n.partner.addPartnerPersonPage.dateMonth,
               name: "month",
               value: date_of_birth_month,
               attributes: {
@@ -149,7 +149,7 @@
             },
             {
               classes: "govuk-input--width-4",
-              label: i18n.addPartnerPersonPage.dateYear,
+              label: i18n.partner.addPartnerPersonPage.dateYear,
               name: "year",
               value: date_of_birth_year,
               attributes: {
@@ -161,18 +161,18 @@
         }) }}
 
         {% set nationalityField = props.data.limitedPartner.data.nationality1 %}
-        {% set nationalityFieldSelectPrompt = i18n.addPartnerPersonPage.nationalitySelectPrompt %}
+        {% set nationalityFieldSelectPrompt = i18n.partner.addPartnerPersonPage.nationalitySelectPrompt %}
         {% set nationalityFieldRequired = "true" if not journeyTypes.isRegistration else "false" %}
-        {% set nationalityFieldText = i18n.addPartnerPersonPage.nationality %}
+        {% set nationalityFieldText = i18n.partner.addPartnerPersonPage.nationality %}
         {% set nationalityFieldHintText = "" %}
         {% set nationalityFieldNameId = "nationality1" %}
         {% include "includes/nationalities.njk" %}
 
         {% set nationalityField = props.data.limitedPartner.data.nationality2 %}
-        {% set nationalityFieldSelectPrompt = i18n.addPartnerPersonPage.secondNationalitySelectPrompt %}
+        {% set nationalityFieldSelectPrompt = i18n.partner.addPartnerPersonPage.secondNationalitySelectPrompt %}
         {% set nationalityFieldRequired = "false" %}
-        {% set nationalityFieldText = i18n.addPartnerPersonPage.secondNationality %}
-        {% set nationalityFieldHintText = i18n.addPartnerPersonPage.secondNationalityHint  %}
+        {% set nationalityFieldText = i18n.partner.addPartnerPersonPage.secondNationality %}
+        {% set nationalityFieldHintText = i18n.partner.addPartnerPersonPage.secondNationalityHint  %}
         {% set nationalityFieldNameId = "nationality2" %}
         {% include "includes/nationalities.njk" %}
         
@@ -187,18 +187,18 @@
             errorMessage: props.errors.date_effective_from if props.errors,
             fieldset: {
               legend: {
-                text: i18n.addPartnerPersonPage.limitedPartner.dateEffectiveFrom,
+                text: i18n.partner.addPartnerPersonPage.limitedPartner.dateEffectiveFrom,
                 isPageHeading: false,
                 classes: "govuk-fieldset__legend--m"
               }
             },
             hint: {
-              text: i18n.addPartnerPersonPage.dateHint
+              text: i18n.partner.addPartnerPersonPage.dateHint
             },
             items: [
               {
                 classes: "govuk-input--width-2",
-                label: i18n.addPartnerPersonPage.dateDay,
+                label: i18n.partner.addPartnerPersonPage.dateDay,
                 name: "day",
                 value: date_effective_from_day,
                 attributes: {
@@ -208,7 +208,7 @@
               },
               {
                 classes: "govuk-input--width-2",
-                label: i18n.addPartnerPersonPage.dateMonth,
+                label: i18n.partner.addPartnerPersonPage.dateMonth,
                 name: "month",
                 value: date_effective_from_month,
                 attributes: {
@@ -218,7 +218,7 @@
               },
               {
                 classes: "govuk-input--width-4",
-                label: i18n.addPartnerPersonPage.dateYear,
+                label: i18n.partner.addPartnerPersonPage.dateYear,
                 name: "year",
                 value: date_effective_from_year,
                 attributes: {

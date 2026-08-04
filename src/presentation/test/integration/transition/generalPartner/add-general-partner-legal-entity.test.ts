@@ -43,9 +43,9 @@ describe("Add General Partner Legal Entity Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${cyTranslationText.addOrUpdatePartnerLegalEntityPage.generalPartner.title} - ${cyTranslationText.serviceTransition} - GOV.UK`
+        `${cyTranslationText.partner.addOrUpdatePartnerLegalEntityPage.generalPartner.title} - ${cyTranslationText.serviceTransition} - GOV.UK`
       );
-      testTranslations(res.text, cyTranslationText.addOrUpdatePartnerLegalEntityPage, [
+      testTranslations(res.text, cyTranslationText.partner.addOrUpdatePartnerLegalEntityPage, [
         "updateTitle",
         "limitedPartner",
         "errorMessages",
@@ -55,7 +55,7 @@ describe("Add General Partner Legal Entity Page", () => {
         "dateMonth",
         "dateYear"
       ]);
-      testTranslations(res.text, cyTranslationText.generalPartnersPage, [
+      testTranslations(res.text, cyTranslationText.partner.generalPartnersPage, [
         "title",
         "pageInformation",
         "disqualificationStatement",
@@ -69,9 +69,9 @@ describe("Add General Partner Legal Entity Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${enTranslationText.addOrUpdatePartnerLegalEntityPage.generalPartner.title} - ${enTranslationText.serviceTransition} - GOV.UK`
+        `${enTranslationText.partner.addOrUpdatePartnerLegalEntityPage.generalPartner.title} - ${enTranslationText.serviceTransition} - GOV.UK`
       );
-      testTranslations(res.text, enTranslationText.addOrUpdatePartnerLegalEntityPage, [
+      testTranslations(res.text, enTranslationText.partner.addOrUpdatePartnerLegalEntityPage, [
         "updateTitle",
         "limitedPartner",
         "errorMessages",
@@ -81,7 +81,7 @@ describe("Add General Partner Legal Entity Page", () => {
         "dateMonth",
         "dateYear"
       ]);
-      testTranslations(res.text, enTranslationText.generalPartnersPage, [
+      testTranslations(res.text, enTranslationText.partner.generalPartnersPage, [
         "title",
         "pageInformation",
         "disqualificationStatement",

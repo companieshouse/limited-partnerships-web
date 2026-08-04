@@ -1,126 +1,9 @@
 {
-    "addOrUpdatePartnerLegalEntityPage" : {
-        "generalPartner": {
-            "title" : "WELSH - Add a general partner (legal entity)",
-            "updateTitle" : "WELSH - Update a general partner's details (legal entity)",
-            "dateEffectiveFrom" : "WELSH - When did it become a general partner for this partnership?"
-        },
-        "limitedPartner": {
-            "title": "WELSH - Add a limited partner (legal entity)",
-            "updateTitle": "WELSH - Update a limited partner's details (legal entity)",
-            "dateEffectiveFrom" : "WELSH - When did it become a limited partner for this partnership?"
-        },
-
-        "dateHint" : "WELSH - For example, 27 3 2000",
-        "dateDay" : "WELSH - Day",
-        "dateMonth" : "WELSH - Month",
-        "dateYear" : "WELSH - Year",
-        "legalEntityName" : "WELSH - What is the legal entity's name?",
-        "legalFormOrCorporateIdentity" : "WELSH - What is its legal form or corporate identity?",
-        "legalFormOrCorporateIdentityHint" : "WELSH - This is the corporate body type. For example, private limited company.",
-        "legalPersonalityWarning" : "WELSH - By providing this information, you are confirming that this entity has legal personality.",
-        "governingLaw" : "WELSH - What is the governing law?",
-        "governingLawHint" : "WELSH - This is the law that the entity operates under. For example, the Companies Act 2006.",
-        "whichRegister" : "WELSH - Which register is it entered in?",
-        "whichRegisterHint" : "WELSH - For example, the Companies House public register.",
-        "countryRegistered" : "WELSH - Which country is it registered in?",
-        "registrationNumber" : "WELSH - What is the registration number?",
-        "registrationNumberHint" : "WELSH - For example, the company number.",
-        "publicRegisterLine1" : "WELSH - We'll show all of this information on the public register."
-    },
-
-    "addPartnerPersonPage" : {
-        "generalPartner": {
-            "title" : "WELSH - Add a general partner (person)",
-            "dateEffectiveFrom" : "WELSH - When did they become a general partner for this partnership?",
-            "previousName" : {
-                "title" : "WELSH - Does the general partner have a previous name?",
-                "hint" : "WELSH - For example, if they've changed their name as a result of marriage or divorce.",
-                "yes" : "WELSH - Yes",
-                "yesHintTitle" : "WELSH - What is the general partner's previous name?",
-                "yesHint" : "WELSH - If the partner has more than one previous name, separate each name with a comma.",
-                "no" : "WELSH - No"
-            }
-        },
-        "limitedPartner": {
-            "title": "WELSH - Add a limited partner (person)",
-            "dateEffectiveFrom" : "WELSH - When did they become a limited partner for this partnership?",
-            "previousName" : {
-                "title" : "WELSH - Does the limited partner have a previous name?",
-                "hint" : "WELSH - For example, if they've changed their name as a result of marriage or divorce.",
-                "yes" : "WELSH - Yes",
-                "yesHintTitle" : "WELSH - What is the limited partner's previous name?",
-                "yesHint" : "WELSH - If the partner has more than one previous name, separate each name with a comma.",
-                "no" : "WELSH - No"
-            }
-        },
-        "firstName" : "WELSH - First name",
-        "lastName" : "WELSH - Last name",
-        "dateOfBirth" : "WELSH - Date of birth",
-        "dateHint" : "WELSH - For example, 27 3 2000",
-        "dateDay" : "WELSH - Day",
-        "dateMonth" : "WELSH - Month",
-        "dateYear" : "WELSH - Year",
-        "nationality" : "WELSH - What is their nationality?",
-        "nationalitySelectPrompt": "WELSH - Select a nationality",
-        "secondNationality" : "WELSH - What is their second nationality (if relevant)?",
-        "secondNationalitySelectPrompt": "WELSH - Select a second nationality",
-        "secondNationalityHint" : "WELSH - Dual citizenship (also known as dual nationality) is allowed in some countries. This means you can be a citizen of your own country and another country.",
-        "publicRegisterLine1" : "WELSH - We'll show the month and year of the partner's date of birth, but not the exact date.",
-        "publicRegisterLine2" : "WELSH - We'll show all the other information you provide on this screen on the public register."
-    },
-
     "buttons" : {
         "continue" : "WELSH - Continue",
         "saveAndContinue" : "WELSH - Save and continue",
         "submit": "WELSH - Submit",
         "submitUpdate": "WELSH - Submit update"
-    },
-
-    "capitalContribution" : {
-        "title" : "WELSH - What is this partner's total capital contribution?",
-        "currencyTypeLabel": "WELSH - Select the currency",
-        "valueLabel": "WELSH - Enter the total value",
-        "hint" : "WELSH - This is the total value of all monetary and non-monetary contributions.",
-        "amountHint": "WELSH - For example, if it was £25 enter 25.00",
-        "compositionTitle" : "WELSH - What is this total value made up of?",
-        "compositionHint" : "WELSH - Select all that apply.",
-        "money" : "WELSH - Money",
-        "landOrProperty" : "WELSH - Land or property",
-        "shares" : "WELSH - Shares or interests in other partnerships",
-        "anyOtherAsset" : "WELSH - Any other asset",
-        "servicesOrGoods" : "WELSH - Services or goods"
-     },
-
-    "ceaseDate" : {
-      "dateHint": "WELSH - For example, 27 3 2025",
-      "dateDay" : "WELSH - Day",
-      "dateMonth" : "WELSH - Month",
-      "dateYear" : "WELSH - Year",
-      "publicInformationLine1": "WELSH - We'll show the date on the public register.",
-      "removeConfirmationChecked": "WELSH -I confirm that ",
-
-      "removeGeneralPartner" : {
-        "title": "WELSH - Remove a general partner",
-        "person": {
-            "subTitle": "WELSH - When did this person cease to be a general partner?"
-        },
-        "legalEntity": {
-            "subTitle": "WELSH - When did this entity cease to be a general partner?"
-        },
-        "removeConfirmationChecked": " WELSH - is no longer a general partner"
-      },
-
-      "removeLimitedPartner" : {
-        "title": "WELSH - Remove a limited partner",
-        "person": {
-            "subTitle": "WELSH - When did this person cease to be a limited partner?"
-        },
-        "legalEntity": {
-            "subTitle": "WELSH - When did this entity cease to be a limited partner?"
-        },
-        "removeConfirmationChecked": "WELSH - is no longer a limited partner"
-      }
     },
 
     "checkYourAnswersPage" : {
@@ -243,21 +126,21 @@
             "term": "WELSH - We've received your filing to update the term of the partnership for",
             "principalPlaceOfBusinessAddress": "WELSH - We've received your filing to update the principal place of business address for",
             "partner":{
-              "addPartner": "WELSH - We've received your filing to add",
-              "removePartner": "WELSH - We've received your filing to remove",
-              "updatePartner": "WELSH - We've received the updated details for",
-              "generalPartnerType": "WELSH - as a general partner of",
-              "limitedPartnerType": "WELSH - as a limited partner of",
-              "updateGeneralPartnerType": "WELSH - who is a general partner of",
-              "updateLimitedPartnerType": "WELSH - who is a limited partner of",
-              "updateWontShow": "WELSH - This update will not show on the public register until we accept the filing.",
-              "processFiling": "WELSH - We'll process this filing withing 5 working days, and email",
-              "processFilingConfirmation": "WELSH - to let you know if it's been accepted or rejected.",
-              "filingAccepted": "WELSH - If it's accepted, we'll update this information on the public register.",
-              "updateFilingAccepted": "WELSH - If it's accepted, we'll publish the new information on the public register.",
-              "filingRejected": "WELSH - If it's rejected, we'll explain why and tell you what to do next.",
-              "confirmationStatementTitle": "WELSH - If you need to file a confirmation statement",
-              "confirmationStatementBody": "WELSH - As long as all required updates have been submitted, you can file a confirmation statement. You do not need to wait for the updates to be accepted."
+                "addPartner": "WELSH - We've received your filing to add",
+                "removePartner": "WELSH - We've received your filing to remove",
+                "updatePartner": "WELSH - We've received the updated details for",
+                "generalPartnerType": "WELSH - as a general partner of",
+                "limitedPartnerType": "WELSH - as a limited partner of",
+                "updateGeneralPartnerType": "WELSH - who is a general partner of",
+                "updateLimitedPartnerType": "WELSH - who is a limited partner of",
+                "updateWontShow": "WELSH - This update will not show on the public register until we accept the filing.",
+                "processFiling": "WELSH - We'll process this filing withing 5 working days, and email",
+                "processFilingConfirmation": "WELSH - to let you know if it's been accepted or rejected.",
+                "filingAccepted": "WELSH - If it's accepted, we'll update this information on the public register.",
+                "updateFilingAccepted": "WELSH - If it's accepted, we'll publish the new information on the public register.",
+                "filingRejected": "WELSH - If it's rejected, we'll explain why and tell you what to do next.",
+                "confirmationStatementTitle": "WELSH - If you need to file a confirmation statement",
+                "confirmationStatementBody": "WELSH - As long as all required updates have been submitted, you can file a confirmation statement. You do not need to wait for the updates to be accepted."
             }
         }
     },
@@ -266,13 +149,13 @@
         "title": "WELSH - Do you want to continue with a saved filing?",
         "hint": "WELSH - If you have saved filings, you can continue with one of these or start a new one",
         "yes": {
-          "text": "WELSH - Yes, continue with a saved filing",
-          "hint": "WELSH - You'll be able to choose which filing you want to continue with"
+            "text": "WELSH - Yes, continue with a saved filing",
+            "hint": "WELSH - You'll be able to choose which filing you want to continue with"
         },
         "no": {
-          "text": "WELSH - No, start a new filing",
-          "hint": "WELSH - This will not delete any saved filings"
-                }
+            "text": "WELSH - No, start a new filing",
+            "hint": "WELSH - This will not delete any saved filings"
+        }
     },
 
     "dateOfUpdate" : {
@@ -311,48 +194,22 @@
         "moreInfo": "WELSH - Email <a class='govuk-link' href='mailto: enquiries@companieshouse.gov.uk'>enquiries@companieshouse.gov.uk</a>, if you need more information."
     },
 
-    "generalPartnerChoicePage": {
-        "title": "WELSH - Is the general partner a person or a legal entity?",
-        "hint": "WELSH - You can add more later.",
-        "person": "WELSH - A person",
-        "legalEntity": "WELSH - A legal entity"
-    },
-
-    "generalPartnersPage": {
-        "title": "WELSH - You now need to tell us about the general partners",
-        "pageInformation": "WELSH - If the partnership has more than one general partner, you'll add them one at a time.",
-        "disqualificationStatement" : "WELSH - I confirm that the general partner is not disqualified under the directors disqualification legislation, as defined in the Limited Partnership Act 1907.",
-        "disqualificationStatementLegend" : "WELSH - General partner - person - disqualification statement"
-    },
-
     "govUk" : {
-         "banner" : {
-          "feedbackLinkText": "WELSH - feedback",
-          "feedbackStart": "WELSH - your",
-          "feedbackEnd": "WELSH - will help us to improve it.",
-          "newService": "WELSH - This is a new service",
-          "tag": "WELSH - Beta"
+        "banner" : {
+            "feedbackLinkText": "WELSH - feedback",
+            "feedbackStart": "WELSH - your",
+            "feedbackEnd": "WELSH - will help us to improve it.",
+            "newService": "WELSH - This is a new service",
+            "tag": "WELSH - Beta"
         },
         "error" : {
-          "title" : "WELSH - There is a problem"
+            "title" : "WELSH - There is a problem"
         }
     },
 
-    "limitedPartnerChoicePage" : {
-        "isPersonOrLegalEntity" : "WELSH - Is the limited partner a person or a legal entity?",
-        "isPersonOrLegalEntityHint" : "WELSH - You can add more later.",
-        "person" : "WELSH - A person",
-        "legalEntity" : "WELSH - A legal entity"
-    },
-
-    "limitedPartnersPage": {
-        "title": "WELSH - You now need to tell us about the limited partners",
-        "pageInformation": "WELSH - If the partnership has more than one limited partner, you'll add them one at a time."
-    },
-
     "links" : {
-      "back": "WELSH - Back",
-      "signOut": "WELSH - Sign out"
+        "back": "WELSH - Back",
+        "signOut": "WELSH - Sign out"
     },
 
     "notEligiblePage" : {
@@ -385,13 +242,13 @@
     },
 
     "paymentFailedPage" : {
-      "title" : "WELSH - Payment failed",
-      "reasonHeading" : "WELSH - Your application has not been submitted because we have not been able to take payment. This could be because:",
-      "cancelled" : "WELSH - you cancelled your payment",
-      "declined" : "WELSH - your payment was declined",
-      "expired" : "WELSH - your payment expired",
-      "error" : "WELSH - there was an error (for example, a technical error)",
-      "retry" : "WELSH - Your application has been saved in Your Filings. To submit the application, you will need to <a class='govuk-link' href='/user/transactions'>find the application in Your Filings</a> and complete payment."
+        "title" : "WELSH - Payment failed",
+        "reasonHeading" : "WELSH - Your application has not been submitted because we have not been able to take payment. This could be because:",
+        "cancelled" : "WELSH - you cancelled your payment",
+        "declined" : "WELSH - your payment was declined",
+        "expired" : "WELSH - your payment expired",
+        "error" : "WELSH - there was an error (for example, a technical error)",
+        "retry" : "WELSH - Your application has been saved in Your Filings. To submit the application, you will need to <a class='govuk-link' href='/user/transactions'>find the application in Your Filings</a> and complete payment."
     },
 
     "print" : {
@@ -401,44 +258,6 @@
 
     "publicRegisterInformation" : {
         "title": "WELSH - What information we'll show on the public register"
-    },
-
-    "removePartnerPage": {
-        "title": "WELSH - Are you sure you want to remove"
-    },
-
-    "reviewGeneralPartnersPage": {
-        "title": "WELSH - General partners",
-        "generalPartnersAdded": {
-            "title": "WELSH - General partners you have added so far:",
-            "changeLink": "WELSH - Change",
-            "removeLink": "WELSH - Remove",
-            "person": "WELSH - Person",
-            "legalEntity": "WELSH - Legal entity",
-            "emptyList": "WELSH - You must add at least one General Partner"
-        },
-        "addGeneralPartner": {
-            "title": "WELSH - Do you need to add another general partner?",
-            "optionPerson": "WELSH - Yes, a person",
-            "optionLegalEntity": "WELSH - Yes, a legal entity"
-        }
-    },
-
-    "reviewLimitedPartnersPage": {
-        "title": "WELSH - Limited partners",
-        "limitedPartnersAdded": {
-            "title": "WELSH - Limited partners you have added so far:",
-            "changeLink": "WELSH - Change",
-            "removeLink": "WELSH - Remove",
-            "person": "WELSH - Person",
-            "legalEntity": "WELSH - Legal entity",
-            "emptyList": "WELSH - You must add at least one Limited Partner"
-        },
-        "addLimitedPartner": {
-            "title": "WELSH - Do you need to add another limited partner?",
-            "optionPerson": "WELSH - Yes, a person",
-            "optionLegalEntity": "WELSH - Yes, a legal entity"
-        }
     },
 
     "serviceRegistration" : "WELSH - Register a limited partnership",
@@ -465,8 +284,8 @@
     "signOutPage": {
         "title": "WELSH - Are you sure you want to sign out?",
         "hint": "WELSH - We will save your application.",
-         "saved": "WELSH - How do I find my saved applications?",
-         "filingsInfo": "WELSH - Sign in to your Companies House account and select Your filings to access your saved applications."
+        "saved": "WELSH - How do I find my saved applications?",
+        "filingsInfo": "WELSH - Sign in to your Companies House account and select Your filings to access your saved applications."
    },
 
     "stopPage": {
@@ -483,22 +302,6 @@
         "acceptedInformationLine2": "WELSH - to view or update its information.",
         "acceptedInformationLink": "WELSH - Companies House register"
     },
-
-    "updatePartnerPersonPage" : {
-        "generalPartner": {
-            "title" : "WELSH - Update a general partner's details (person)"
-        },
-        "limitedPartner": {
-            "title" : "WELSH - Update a limited partner's details (person)"
-        },
-        "nationality" : "WELSH - What is their nationality?",
-        "nationalitySelectPrompt": "WELSH - Select a nationality",
-        "secondNationality" : "WELSH - What is their second nationality (if relevant)?",
-        "secondNationalitySelectPrompt": "WELSH - Select a second nationality",
-        "secondNationalityHint" : "WELSH - Dual citizenship (also known as dual nationality) is allowed in some countries. This means you can be a citizen of your own country and another country.",
-        "publicRegisterLine1" : "WELSH - We'll show all of this information on the public register."
-    },
-
 
     "months": {
         "january": "WELSH - January",

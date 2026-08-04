@@ -59,9 +59,9 @@ describe("Update Limited Partner Legal Entity Page", () => {
           `${companyProfile.data.companyName?.toUpperCase()} (${companyProfile.data.companyNumber?.toUpperCase()})`
         );
 
-        expect(res.text).toContain(toEscapedHtml(translationText.addOrUpdatePartnerLegalEntityPage.limitedPartner.updateTitle));
+        expect(res.text).toContain(toEscapedHtml(translationText.partner.addOrUpdatePartnerLegalEntityPage.limitedPartner.updateTitle));
 
-        testTranslations(res.text, translationText.addOrUpdatePartnerLegalEntityPage, [
+        testTranslations(res.text, translationText.partner.addOrUpdatePartnerLegalEntityPage, [
           "title",
           "generalPartner",
           "errorMessages",

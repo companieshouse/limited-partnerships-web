@@ -145,8 +145,8 @@ describe("Limited Partner Check Your Answers Page for Person", () => {
       expect(res.text).toContain(translationText.checkYourAnswersPage.partners.limitedPartners.capitalContribution);
       expect(res.text).toContain("5000.00");
       expect(res.text).toContain(translationText.currencies.GBP);
-      expect(res.text).toContain(translationText.capitalContribution.money);
-      expect(res.text).toContain(translationText.capitalContribution.shares);
+      expect(res.text).toContain(translationText.partner.capitalContribution.money);
+      expect(res.text).toContain(translationText.partner.capitalContribution.shares);
     }
   );
 

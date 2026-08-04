@@ -52,7 +52,7 @@ describe("General Partner cease date page", () => {
       const res = await request(app).get(URL + `?lang=${lang}`);
 
       expect(res.status).toBe(200);
-      testTranslations(res.text, translationText.ceaseDate.removeGeneralPartner, ["person"]);
+      testTranslations(res.text, translationText.partner.ceaseDate.removeGeneralPartner, ["person"]);
 
       expect(res.text).toContain(companyProfile.data.companyName.toUpperCase());
       expect(res.text).toContain(companyAppointment.name ?? "");

@@ -40,10 +40,10 @@ describe("Review Limited Partners Page", () => {
       expect(res.status).toBe(200);
 
       expect(res.text).toContain(
-        `${enTranslationText.reviewLimitedPartnersPage.title} - ${enTranslationText.serviceTransition} - GOV.UK`
+        `${enTranslationText.partner.reviewLimitedPartnersPage.title} - ${enTranslationText.serviceTransition} - GOV.UK`
       );
 
-      testTranslations(res.text, enTranslationText.reviewLimitedPartnersPage, ["emptyList"]);
+      testTranslations(res.text, enTranslationText.partner.reviewLimitedPartnersPage, ["emptyList"]);
 
       expect(res.text).toContain(`${limitedPartnerPerson?.data?.forename} ${limitedPartnerPerson?.data?.surname}`);
       expect(res.text).toContain(`${limitedPartnerLegalEntity?.data?.legal_entity_name}`);
@@ -59,10 +59,10 @@ describe("Review Limited Partners Page", () => {
       expect(res.status).toBe(200);
 
       expect(res.text).toContain(
-        `${cyTranslationText.reviewLimitedPartnersPage.title} - ${cyTranslationText.serviceTransition} - GOV.UK`
+        `${cyTranslationText.partner.reviewLimitedPartnersPage.title} - ${cyTranslationText.serviceTransition} - GOV.UK`
       );
 
-      testTranslations(res.text, cyTranslationText.reviewLimitedPartnersPage, ["emptyList", "errorMessage"]);
+      testTranslations(res.text, cyTranslationText.partner.reviewLimitedPartnersPage, ["emptyList", "errorMessage"]);
 
       expect(res.text).toContain(`${limitedPartnerPerson?.data?.forename} ${limitedPartnerPerson?.data?.surname}`);
       expect(res.text).toContain(`${limitedPartnerLegalEntity?.data?.legal_entity_name}`);
@@ -123,7 +123,7 @@ describe("Review Limited Partners Page", () => {
       expect(res.status).toBe(200);
 
       expect(res.text).toContain(
-        `${enTranslationText.reviewLimitedPartnersPage.title} - ${enTranslationText.serviceTransition} - GOV.UK`
+        `${enTranslationText.partner.reviewLimitedPartnersPage.title} - ${enTranslationText.serviceTransition} - GOV.UK`
       );
     });
 

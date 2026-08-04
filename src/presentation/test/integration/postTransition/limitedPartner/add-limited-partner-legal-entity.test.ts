@@ -59,8 +59,8 @@ describe("Add Limited Partner Legal Entity Page", () => {
         const res = await request(app).get(URL + `?lang=${lang}`);
 
         expect(res.status).toBe(200);
-        expect(res.text).toContain(`${i18n.addOrUpdatePartnerLegalEntityPage.limitedPartner.title}`);
-        testTranslations(res.text, i18n.addOrUpdatePartnerLegalEntityPage, [
+        expect(res.text).toContain(`${i18n.partner.addOrUpdatePartnerLegalEntityPage.limitedPartner.title}`);
+        testTranslations(res.text, i18n.partner.addOrUpdatePartnerLegalEntityPage, [
           "errorMessages",
           "generalPartner",
           "updateTitle",
@@ -69,9 +69,9 @@ describe("Add Limited Partner Legal Entity Page", () => {
         ]);
 
         if (expectCapitalContributionText) {
-          testTranslations(res.text, i18n.capitalContribution);
+          testTranslations(res.text, i18n.partner.capitalContribution);
         } else {
-          expect(res.text).not.toContain(toEscapedHtml(i18n.capitalContribution.title));
+          expect(res.text).not.toContain(toEscapedHtml(i18n.partner.capitalContribution.title));
         }
 
         if (lang !== "cy") {

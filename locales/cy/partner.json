@@ -1,0 +1,189 @@
+{
+    "partner" : {
+        "addOrUpdatePartnerLegalEntityPage" : {
+            "generalPartner": {
+                "title" : "WELSH - Add a general partner (legal entity)",
+                "updateTitle" : "WELSH - Update a general partner's details (legal entity)",
+                "dateEffectiveFrom" : "WELSH - When did it become a general partner for this partnership?"
+            },
+            "limitedPartner": {
+                "title": "WELSH - Add a limited partner (legal entity)",
+                "updateTitle": "WELSH - Update a limited partner's details (legal entity)",
+                "dateEffectiveFrom" : "WELSH - When did it become a limited partner for this partnership?"
+            },
+
+            "dateHint" : "WELSH - For example, 27 3 2000",
+            "dateDay" : "WELSH - Day",
+            "dateMonth" : "WELSH - Month",
+            "dateYear" : "WELSH - Year",
+            "legalEntityName" : "WELSH - What is the legal entity's name?",
+            "legalFormOrCorporateIdentity" : "WELSH - What is its legal form or corporate identity?",
+            "legalFormOrCorporateIdentityHint" : "WELSH - This is the corporate body type. For example, private limited company.",
+            "legalPersonalityWarning" : "WELSH - By providing this information, you are confirming that this entity has legal personality.",
+            "governingLaw" : "WELSH - What is the governing law?",
+            "governingLawHint" : "WELSH - This is the law that the entity operates under. For example, the Companies Act 2006.",
+            "whichRegister" : "WELSH - Which register is it entered in?",
+            "whichRegisterHint" : "WELSH - For example, the Companies House public register.",
+            "countryRegistered" : "WELSH - Which country is it registered in?",
+            "registrationNumber" : "WELSH - What is the registration number?",
+            "registrationNumberHint" : "WELSH - For example, the company number.",
+            "publicRegisterLine1" : "WELSH - We'll show all of this information on the public register."
+        },
+        "addPartnerPersonPage" : {
+            "generalPartner": {
+                "title" : "WELSH - Add a general partner (person)",
+                "dateEffectiveFrom" : "WELSH - When did they become a general partner for this partnership?",
+                "previousName" : {
+                    "title" : "WELSH - Does the general partner have a previous name?",
+                    "hint" : "WELSH - For example, if they've changed their name as a result of marriage or divorce.",
+                    "yes" : "WELSH - Yes",
+                    "yesHintTitle" : "WELSH - What is the general partner's previous name?",
+                    "yesHint" : "WELSH - If the partner has more than one previous name, separate each name with a comma.",
+                    "no" : "WELSH - No"
+                }
+            },
+            "limitedPartner": {
+                "title": "WELSH - Add a limited partner (person)",
+                "dateEffectiveFrom" : "WELSH - When did they become a limited partner for this partnership?",
+                "previousName" : {
+                    "title" : "WELSH - Does the limited partner have a previous name?",
+                    "hint" : "WELSH - For example, if they've changed their name as a result of marriage or divorce.",
+                    "yes" : "WELSH - Yes",
+                    "yesHintTitle" : "WELSH - What is the limited partner's previous name?",
+                    "yesHint" : "WELSH - If the partner has more than one previous name, separate each name with a comma.",
+                    "no" : "WELSH - No"
+                }
+            },
+            "firstName" : "WELSH - First name",
+            "lastName" : "WELSH - Last name",
+            "dateOfBirth" : "WELSH - Date of birth",
+            "dateHint" : "WELSH - For example, 27 3 2000",
+            "dateDay" : "WELSH - Day",
+            "dateMonth" : "WELSH - Month",
+            "dateYear" : "WELSH - Year",
+            "nationality" : "WELSH - What is their nationality?",
+            "nationalitySelectPrompt": "WELSH - Select a nationality",
+            "secondNationality" : "WELSH - What is their second nationality (if relevant)?",
+            "secondNationalitySelectPrompt": "WELSH - Select a second nationality",
+            "secondNationalityHint" : "WELSH - Dual citizenship (also known as dual nationality) is allowed in some countries. This means you can be a citizen of your own country and another country.",
+            "publicRegisterLine1" : "WELSH - We'll show the month and year of the partner's date of birth, but not the exact date.",
+            "publicRegisterLine2" : "WELSH - We'll show all the other information you provide on this screen on the public register."
+        },
+        "capitalContribution" : {
+            "title" : "WELSH - What is this partner's total capital contribution?",
+            "currencyTypeLabel": "WELSH - Select the currency",
+            "valueLabel": "WELSH - Enter the total value",
+            "hint" : "WELSH - This is the total value of all monetary and non-monetary contributions.",
+            "amountHint": "WELSH - For example, if it was £25 enter 25.00",
+            "compositionTitle" : "WELSH - What is this total value made up of?",
+            "compositionHint" : "WELSH - Select all that apply.",
+            "money" : "WELSH - Money",
+            "landOrProperty" : "WELSH - Land or property",
+            "shares" : "WELSH - Shares or interests in other partnerships",
+            "anyOtherAsset" : "WELSH - Any other asset",
+            "servicesOrGoods" : "WELSH - Services or goods"
+        },
+        "ceaseDate" : {
+            "dateHint": "WELSH - For example, 27 3 2025",
+            "dateDay" : "WELSH - Day",
+            "dateMonth" : "WELSH - Month",
+            "dateYear" : "WELSH - Year",
+            "publicInformationLine1": "WELSH - We'll show the date on the public register.",
+            "removeConfirmationChecked": "WELSH -I confirm that ",
+
+            "removeGeneralPartner" : {
+                "title": "WELSH - Remove a general partner",
+                "person": {
+                    "subTitle": "WELSH - When did this person cease to be a general partner?"
+                },
+                "legalEntity": {
+                    "subTitle": "WELSH - When did this entity cease to be a general partner?"
+                },
+                "removeConfirmationChecked": " WELSH - is no longer a general partner"
+            },
+
+            "removeLimitedPartner" : {
+                "title": "WELSH - Remove a limited partner",
+                "person": {
+                    "subTitle": "WELSH - When did this person cease to be a limited partner?"
+                },
+                "legalEntity": {
+                    "subTitle": "WELSH - When did this entity cease to be a limited partner?"
+                },
+                "removeConfirmationChecked": "WELSH - is no longer a limited partner"
+            }
+        },
+        "generalPartnerChoicePage": {
+            "title": "WELSH - Is the general partner a person or a legal entity?",
+            "hint": "WELSH - You can add more later.",
+            "person": "WELSH - A person",
+            "legalEntity": "WELSH - A legal entity"
+        },
+        "generalPartnersPage": {
+            "title": "WELSH - You now need to tell us about the general partners",
+            "pageInformation": "WELSH - If the partnership has more than one general partner, you'll add them one at a time.",
+            "disqualificationStatement" : "WELSH - I confirm that the general partner is not disqualified under the directors disqualification legislation, as defined in the Limited Partnership Act 1907.",
+            "disqualificationStatementLegend" : "WELSH - General partner - person - disqualification statement"
+        },
+        "limitedPartnerChoicePage" : {
+            "isPersonOrLegalEntity" : "WELSH - Is the limited partner a person or a legal entity?",
+            "isPersonOrLegalEntityHint" : "WELSH - You can add more later.",
+            "person" : "WELSH - A person",
+            "legalEntity" : "WELSH - A legal entity"
+        },
+        "limitedPartnersPage": {
+            "title": "WELSH - You now need to tell us about the limited partners",
+            "pageInformation": "WELSH - If the partnership has more than one limited partner, you'll add them one at a time."
+        },
+        "removePartnerPage": {
+            "title": "WELSH - Are you sure you want to remove"
+        },
+        "reviewGeneralPartnersPage": {
+            "title": "WELSH - General partners",
+            "generalPartnersAdded": {
+                "title": "WELSH - General partners you have added so far:",
+                "changeLink": "WELSH - Change",
+                "removeLink": "WELSH - Remove",
+                "person": "WELSH - Person",
+                "legalEntity": "WELSH - Legal entity",
+                "emptyList": "WELSH - You must add at least one General Partner"
+            },
+            "addGeneralPartner": {
+                "title": "WELSH - Do you need to add another general partner?",
+                "optionPerson": "WELSH - Yes, a person",
+                "optionLegalEntity": "WELSH - Yes, a legal entity"
+            }
+        },
+        "reviewLimitedPartnersPage": {
+            "title": "WELSH - Limited partners",
+            "limitedPartnersAdded": {
+                "title": "WELSH - Limited partners you have added so far:",
+                "changeLink": "WELSH - Change",
+                "removeLink": "WELSH - Remove",
+                "person": "WELSH - Person",
+                "legalEntity": "WELSH - Legal entity",
+                "emptyList": "WELSH - You must add at least one Limited Partner"
+            },
+            "addLimitedPartner": {
+                "title": "WELSH - Do you need to add another limited partner?",
+                "optionPerson": "WELSH - Yes, a person",
+                "optionLegalEntity": "WELSH - Yes, a legal entity"
+            }
+        },
+        "updatePartnerPersonPage" : {
+            "generalPartner": {
+                "title" : "WELSH - Update a general partner's details (person)"
+            },
+            "limitedPartner": {
+                "title" : "WELSH - Update a limited partner's details (person)"
+            },
+            "nationality" : "WELSH - What is their nationality?",
+            "nationalitySelectPrompt": "WELSH - Select a nationality",
+            "secondNationality" : "WELSH - What is their second nationality (if relevant)?",
+            "secondNationalitySelectPrompt": "WELSH - Select a second nationality",
+            "secondNationalityHint" : "WELSH - Dual citizenship (also known as dual nationality) is allowed in some countries. This means you can be a citizen of your own country and another country.",
+            "publicRegisterLine1" : "WELSH - We'll show all of this information on the public register."
+        }
+    }
+}
+

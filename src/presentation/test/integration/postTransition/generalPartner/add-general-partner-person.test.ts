@@ -51,8 +51,8 @@ describe("Add General Partner Person Page", () => {
         `${companyProfile.data.companyName?.toUpperCase()} (${companyProfile.data.companyNumber?.toUpperCase()})`
       );
 
-      testTranslations(res.text, enTranslationText.addPartnerPersonPage, ["limitedPartner", "errorMessages"]);
-      testTranslations(res.text, enTranslationText.generalPartnersPage, [
+      testTranslations(res.text, enTranslationText.partner.addPartnerPersonPage, ["limitedPartner", "errorMessages"]);
+      testTranslations(res.text, enTranslationText.partner.generalPartnersPage, [
         "title",
         "pageInformation",
         "disqualificationStatement",
@@ -74,8 +74,8 @@ describe("Add General Partner Person Page", () => {
         `${companyProfile.data.companyName?.toUpperCase()} (${companyProfile.data.companyNumber?.toUpperCase()})`
       );
 
-      testTranslations(res.text, cyTranslationText.addPartnerPersonPage, ["limitedPartner", "errorMessages"]);
-      testTranslations(res.text, cyTranslationText.generalPartnersPage, [
+      testTranslations(res.text, cyTranslationText.partner.addPartnerPersonPage, ["limitedPartner", "errorMessages"]);
+      testTranslations(res.text, cyTranslationText.partner.generalPartnersPage, [
         "title",
         "pageInformation",
         "disqualificationStatement",

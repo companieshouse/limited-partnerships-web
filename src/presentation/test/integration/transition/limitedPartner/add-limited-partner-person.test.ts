@@ -34,9 +34,9 @@ describe("Add Limited Partner Person Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${cyTranslationText.addPartnerPersonPage.limitedPartner.title} - ${cyTranslationText.serviceTransition} - GOV.UK`
+        `${cyTranslationText.partner.addPartnerPersonPage.limitedPartner.title} - ${cyTranslationText.serviceTransition} - GOV.UK`
       );
-      testTranslations(res.text, cyTranslationText.addPartnerPersonPage, [
+      testTranslations(res.text, cyTranslationText.partner.addPartnerPersonPage, [
         "errorMessages",
         "generalPartner",
         "dateEffectiveFrom",
@@ -46,7 +46,7 @@ describe("Add Limited Partner Person Page", () => {
         "dateYear"
       ]);
 
-      expect(res.text).not.toContain(enTranslationText.capitalContribution.title);
+      expect(res.text).not.toContain(enTranslationText.partner.capitalContribution.title);
     });
 
     it("should load the add limited partner page with English text", async () => {
@@ -56,9 +56,9 @@ describe("Add Limited Partner Person Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${enTranslationText.addPartnerPersonPage.limitedPartner.title} - ${enTranslationText.serviceTransition} - GOV.UK`
+        `${enTranslationText.partner.addPartnerPersonPage.limitedPartner.title} - ${enTranslationText.serviceTransition} - GOV.UK`
       );
-      testTranslations(res.text, enTranslationText.addPartnerPersonPage, [
+      testTranslations(res.text, enTranslationText.partner.addPartnerPersonPage, [
         "errorMessages",
         "generalPartner",
         "dateEffectiveFrom",
@@ -69,7 +69,7 @@ describe("Add Limited Partner Person Page", () => {
       ]);
       expect(res.text).not.toContain("WELSH -");
 
-      expect(res.text).not.toContain(enTranslationText.capitalContribution.title);
+      expect(res.text).not.toContain(enTranslationText.partner.capitalContribution.title);
     });
 
     it("should contain the proposed name - data from api", async () => {
