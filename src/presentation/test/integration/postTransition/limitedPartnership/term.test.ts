@@ -40,10 +40,10 @@ describe("Email Page", () => {
         const res = await request(app).get(URL + "?lang=en");
 
         expect(res.status).toBe(200);
-        testTranslations(res.text, enTranslationText.termPage);
+        testTranslations(res.text, enTranslationText.partnership.termPage);
         expect(countOccurrences(res.text, enTranslationText.serviceName.updateLimitedPartnershipTerm)).toBe(2);
         expect(res.text).toContain(
-          `${enTranslationText.termPage.title} - ${enTranslationText.serviceName.updateLimitedPartnershipTerm} - GOV.UK`
+          `${enTranslationText.partnership.termPage.title} - ${enTranslationText.serviceName.updateLimitedPartnershipTerm} - GOV.UK`
         );
         expect(res.text).not.toContain("WELSH -");
         expect(res.text).toContain(customerFeedbackUrlMap.updateLimitedPartnershipTerm);
@@ -56,9 +56,9 @@ describe("Email Page", () => {
         expect(res.status).toBe(200);
         expect(countOccurrences(res.text, cyTranslationText.serviceName.updateLimitedPartnershipTerm)).toBe(2);
         expect(res.text).toContain(
-          `${cyTranslationText.termPage.title} - ${cyTranslationText.serviceName.updateLimitedPartnershipTerm} - GOV.UK`
+          `${cyTranslationText.partnership.termPage.title} - ${cyTranslationText.serviceName.updateLimitedPartnershipTerm} - GOV.UK`
         );
-        testTranslations(res.text, cyTranslationText.termPage);
+        testTranslations(res.text, cyTranslationText.partnership.termPage);
         expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
         expect(res.text).toContain(customerFeedbackUrlMap.updateLimitedPartnershipTerm);
         expect(res.text).toContain(BACK_LINK);
@@ -81,9 +81,9 @@ describe("Email Page", () => {
         const res = await request(app).get(URL + "?lang=en");
 
         expect(res.status).toBe(200);
-        testTranslations(res.text, enTranslationText.termPage);
+        testTranslations(res.text, enTranslationText.partnership.termPage);
         expect(res.text).toContain(
-          `${enTranslationText.termPage.title} - ${enTranslationText.serviceName.updateLimitedPartnershipTerm} - GOV.UK`
+          `${enTranslationText.partnership.termPage.title} - ${enTranslationText.serviceName.updateLimitedPartnershipTerm} - GOV.UK`
         );
         expect(res.text).not.toContain("WELSH -");
         expect(res.text).toContain(customerFeedbackUrlMap.updateLimitedPartnershipTerm);

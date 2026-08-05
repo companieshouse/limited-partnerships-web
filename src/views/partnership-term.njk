@@ -1,7 +1,7 @@
 {% extends "layout.njk" %}
 
-{% set pageTitle = i18n.termPage.title %}
-{% set publicRegisterInformationLine1 = i18n.termPage.publicRegisterLine1 %}
+{% set pageTitle = i18n.partnership.termPage.title %}
+{% set publicRegisterInformationLine1 = i18n.partnership.termPage.publicRegisterLine1 %}
 
 {% block content %}
   <div class="govuk-grid-row">
@@ -21,27 +21,27 @@
           errorMessage: props.errors.term if props.errors.term,
           fieldset: {
             legend: {
-              text: i18n.termPage.title,
+              text: i18n.partnership.termPage.title,
               isPageHeading: true,
               classes: "govuk-fieldset__legend--xl"
             }
           },
           hint: {
-            text: i18n.termPage.hint
+            text: i18n.partnership.termPage.hint
           },
 
           items: [
             {
               value: "BY_AGREEMENT",
-              text: i18n.termPage.byAgreement
+              text: i18n.partnership.termPage.byAgreement
             },
             {
               value: "UNTIL_DISSOLUTION",
-              text: i18n.termPage.untilDissolution
+              text: i18n.partnership.termPage.untilDissolution
             },
             {
               value: "NONE",
-              text: i18n.termPage.noTerm
+              text: i18n.partnership.termPage.noTerm
             }
           ]
         }) }}

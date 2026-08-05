@@ -21,6 +21,7 @@ import { JOURNEY_TYPE_PARAM } from "../../../../config/constants";
 import { Journey } from "../../../../domain/entities/journey";
 import { customerFeedbackUrlMap } from "../../../../middlewares/customer-feedback.middleware";
 import { enTranslationText, cyTranslationText } from "../../../../test/utils/locales";
+
 describe("Check Your Answers Page", () => {
   const URL = getUrl(CHECK_YOUR_ANSWERS_URL);
   const REDIRECT_URL = getUrl(CONFIRMATION_URL).replace(JOURNEY_TYPE_PARAM, Journey.transition);
@@ -134,10 +135,10 @@ describe("Check Your Answers Page", () => {
     });
 
     it.each([
-      [PartnershipType.LP, enTranslationText.types.LP],
-      [PartnershipType.SLP, enTranslationText.types.SLP],
-      [PartnershipType.PFLP, enTranslationText.types.PFLP],
-      [PartnershipType.SPFLP, enTranslationText.types.SPFLP]
+      [PartnershipType.LP, enTranslationText.partnership.types.LP],
+      [PartnershipType.SLP, enTranslationText.partnership.types.SLP],
+      [PartnershipType.PFLP, enTranslationText.partnership.types.PFLP],
+      [PartnershipType.SPFLP, enTranslationText.partnership.types.SPFLP]
     ])("should show the partnership type", async (partnershipType: PartnershipType, text: string) => {
       const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);

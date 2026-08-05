@@ -69,14 +69,14 @@ describe("Transition already filed", () => {
     const res = await request(app).get(URL);
 
     expect(res.status).toBe(200);
-    expect(res.text).toContain(enTranslationText.confirmLimitedPartnership.title);
-    expect(countOccurrences(res.text, enTranslationText.confirmLimitedPartnership.title)).toBe(2);
+    expect(res.text).toContain(enTranslationText.partnership.confirmLimitedPartnership.title);
+    expect(countOccurrences(res.text, enTranslationText.partnership.confirmLimitedPartnership.title)).toBe(2);
   });
 
   it("should not redirect to transition-already-filed url if it is not transiton journey", async () => {
     const res = await request(app).get(NAME_URL);
 
     expect(res.status).toBe(200);
-    expect(res.text).toContain(enTranslationText.namePage.nameEnding);
+    expect(res.text).toContain(enTranslationText.partnership.namePage.nameEnding);
   });
 });

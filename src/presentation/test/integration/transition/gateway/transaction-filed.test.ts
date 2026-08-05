@@ -48,14 +48,14 @@ describe("Transition already filed - real gateway", () => {
     const res = await request(appRealDependencies).get(URL);
 
     expect(res.status).toBe(200);
-    expect(res.text).toContain(enTranslationText.confirmLimitedPartnership.title);
+    expect(res.text).toContain(enTranslationText.partnership.confirmLimitedPartnership.title);
   });
 
   it("should not redirect to transition-already-filed url if it is not transiton journey", async () => {
     const res = await request(appRealDependencies).get(NAME_URL);
 
     expect(res.status).toBe(200);
-    expect(res.text).toContain(enTranslationText.namePage.nameEnding);
+    expect(res.text).toContain(enTranslationText.partnership.namePage.nameEnding);
   });
 
   it("should load error page when error thrown from getFilingHistoryList", async () => {

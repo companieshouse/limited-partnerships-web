@@ -34,9 +34,9 @@ describe("Email Page", () => {
         const res = await request(app).get(URL + "?lang=en");
 
         expect(res.status).toBe(200);
-        testTranslations(res.text, enTranslationText.emailPage, ["registration"]);
+        testTranslations(res.text, enTranslationText.partnership.emailPage, ["registration"]);
         expect(res.text).toContain(
-          `${enTranslationText.emailPage.title} - ${enTranslationText.serviceTransition} - GOV.UK`
+          `${enTranslationText.partnership.emailPage.title} - ${enTranslationText.serviceTransition} - GOV.UK`
         );
         expect(res.text).not.toContain("WELSH -");
       });
@@ -49,9 +49,9 @@ describe("Email Page", () => {
 
         expect(res.status).toBe(200);
         expect(res.text).toContain(
-          `${cyTranslationText.emailPage.title} - ${cyTranslationText.serviceTransition} - GOV.UK`
+          `${cyTranslationText.partnership.emailPage.title} - ${cyTranslationText.serviceTransition} - GOV.UK`
         );
-        testTranslations(res.text, cyTranslationText.emailPage, ["registration"]);
+        testTranslations(res.text, cyTranslationText.partnership.emailPage, ["registration"]);
         expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
       });
     });

@@ -1,8 +1,8 @@
 {% extends "layout.njk" %}
 
-{% set pageTitle = i18n.emailPage.title %}
+{% set pageTitle = i18n.partnership.emailPage.title %}
 
-{% set publicRegisterInformationLine1 = i18n.emailPage.publicRegisterInformation.line1 %} 
+{% set publicRegisterInformationLine1 = i18n.partnership.emailPage.publicRegisterInformation.line1 %} 
 
 {% set emailErrorMessage = null %}
 
@@ -22,9 +22,9 @@
 
       {% include "includes/proposed-name.njk" %}
 
-      <h1 class="govuk-heading-xl govuk-!-margin-bottom-2">{{ i18n.emailPage.title }}</h1>
+      <h1 class="govuk-heading-xl govuk-!-margin-bottom-2">{{ i18n.partnership.emailPage.title }}</h1>
 
-      <p class="govuk-hint">{{ i18n.emailPage.hint }}</p>
+      <p class="govuk-hint">{{ i18n.partnership.emailPage.hint }}</p>
 
       <form class="form" method="post">
         <input type="hidden" name="pageType" value={{ props.pageType }}>

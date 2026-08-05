@@ -193,7 +193,7 @@ describe("Gateway Update - Refresh Token", () => {
       const res = await request(appRealDependencies).get(URL);
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(enTranslationText.emailPage.title);
+      expect(res.text).toContain(enTranslationText.partnership.emailPage.title);
     });
 
     it("should load error page if submissionId is incorrect", async () => {

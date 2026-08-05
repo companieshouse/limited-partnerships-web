@@ -116,9 +116,9 @@
 
 {% macro mapTerm(term, i18n) %}
   {% set termMap = {
-    "BY_AGREEMENT": i18n.termPage.byAgreement,
-    "UNTIL_DISSOLUTION": i18n.termPage.untilDissolution,
-    "NONE": i18n.termPage.noTerm
+    "BY_AGREEMENT": i18n.partnership.termPage.byAgreement,
+    "UNTIL_DISSOLUTION": i18n.partnership.termPage.untilDissolution,
+    "NONE": i18n.partnership.termPage.noTerm
   } %}
 
   {% set term = termMap[term] %}

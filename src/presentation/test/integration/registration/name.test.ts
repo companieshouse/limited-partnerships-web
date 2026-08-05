@@ -41,9 +41,9 @@ describe("Name Page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        `${translationText.namePage.title} - ${translationText.serviceRegistration} - GOV.UK`
+        `${translationText.partnership.namePage.title} - ${translationText.serviceRegistration} - GOV.UK`
       );
-      testTranslations(res.text, translationText.namePage, ["privateFund", "scottish"]);
+      testTranslations(res.text, translationText.partnership.namePage, ["privateFund", "scottish"]);
       expect(res.text).toContain(translationText.buttons.saveAndContinue);
     });
 
@@ -65,12 +65,12 @@ describe("Name Page", () => {
     });
 
     it.each([
-      ["English", "en", enTranslationText.namePage.privateFund, PartnershipType.PFLP, ],
-      ["Welsh", "cy", cyTranslationText.namePage.privateFund, PartnershipType.PFLP, ],
-      ["English", "en", enTranslationText.namePage.scottish, PartnershipType.SLP, ],
-      ["Welsh", "cy", cyTranslationText.namePage.scottish, PartnershipType.SLP, ],
-      ["English", "en", enTranslationText.namePage.privateFund.scottish, PartnershipType.SPFLP, ],
-      ["Welsh", "cy", cyTranslationText.namePage.privateFund.scottish, PartnershipType.SPFLP, ]
+      ["English", "en", enTranslationText.partnership.namePage.privateFund, PartnershipType.PFLP, ],
+      ["Welsh", "cy", cyTranslationText.partnership.namePage.privateFund, PartnershipType.PFLP, ],
+      ["English", "en", enTranslationText.partnership.namePage.scottish, PartnershipType.SLP, ],
+      ["Welsh", "cy", cyTranslationText.partnership.namePage.scottish, PartnershipType.SLP, ],
+      ["English", "en", enTranslationText.partnership.namePage.privateFund.scottish, PartnershipType.SPFLP, ],
+      ["Welsh", "cy", cyTranslationText.partnership.namePage.privateFund.scottish, PartnershipType.SPFLP, ]
     ])("should load the name page with %s text for %s partnership type", async (
       _description: string,
       lang: string,
@@ -91,7 +91,7 @@ describe("Name Page", () => {
       );
       testTranslations(res.text, partnershipTypeTranslation, ["scottish", "nameEnding"]);
       expect(res.text).toContain(translationText.buttons.saveAndContinue);
-      expect(res.text).toContain(toEscapedHtml(translationText.namePage.whatIsNameHint));
+      expect(res.text).toContain(toEscapedHtml(translationText.partnership.namePage.whatIsNameHint));
     });
 
     it("should load the name page with ids in back link url when name page has ids in url", async () => {
