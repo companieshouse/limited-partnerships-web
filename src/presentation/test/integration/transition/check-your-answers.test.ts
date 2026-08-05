@@ -21,6 +21,7 @@ import { JOURNEY_TYPE_PARAM } from "../../../../config/constants";
 import { Journey } from "../../../../domain/entities/journey";
 import { customerFeedbackUrlMap } from "../../../../middlewares/customer-feedback.middleware";
 import { enTranslationText, cyTranslationText } from "../../../../test/utils/locales";
+
 describe("Check Your Answers Page", () => {
   const URL = getUrl(CHECK_YOUR_ANSWERS_URL);
   const REDIRECT_URL = getUrl(CONFIRMATION_URL).replace(JOURNEY_TYPE_PARAM, Journey.transition);
