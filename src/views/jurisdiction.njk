@@ -3,9 +3,9 @@
 {% set partnershipType = props.data.limitedPartnership.data.partnership_type %}
 
 {% if partnershipType == "SLP" or partnershipType == "SPFLP" %}
-  {% set pageTitle = i18n.whereIsTheJurisdiction.scotland.title %}
+  {% set pageTitle = i18n.partnership.whereIsTheJurisdiction.scotland.title %}
 {% else %}
-  {% set pageTitle = i18n.whereIsTheJurisdiction.title %}
+  {% set pageTitle = i18n.partnership.whereIsTheJurisdiction.title %}
 {% endif %}
 
 {% block content %}

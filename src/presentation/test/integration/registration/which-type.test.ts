@@ -34,8 +34,8 @@ describe("Which type Page", () => {
     const res = await request(app).get(PARTNERSHIP_TYPE_URL + "?lang=en");
 
     expect(res.status).toBe(200);
-    testTranslations(res.text, enTranslationText.partnershipTypePage);
-    testTranslations(res.text, enTranslationText.types);
+    testTranslations(res.text, enTranslationText.partnership.partnershipTypePage);
+    testTranslations(res.text, enTranslationText.partnership.types);
     expect(res.text).toContain(enTranslationText.buttons.continue);
     expect(res.text).toContain(SERVICE_NAME_REGISTRATION);
     expect(res.text).not.toContain(enTranslationText.errorMessages.limitedPartnership.partnershipType.typeRequired);
@@ -47,7 +47,7 @@ describe("Which type Page", () => {
     const res = await request(app).get(PARTNERSHIP_TYPE_URL + "?lang=cy");
 
     expect(res.status).toBe(200);
-    testTranslations(res.text, cyTranslationText.partnershipTypePage);
+    testTranslations(res.text, cyTranslationText.partnership.partnershipTypePage);
     expect(res.text).toContain(cyTranslationText.buttons.continue);
     expect(res.text).toContain(SERVICE_NAME_REGISTRATION);
     expect(res.text).not.toContain(cyTranslationText.errorMessages.limitedPartnership.partnershipType.typeRequired);

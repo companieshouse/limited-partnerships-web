@@ -1,6 +1,6 @@
 {% extends "layout.njk" %}
 
-{% set pageTitle = i18n.partnershipTypePage.title %}
+{% set pageTitle = i18n.partnership.partnershipTypePage.title %}
 
 {% block content %}
 
@@ -19,7 +19,7 @@
           errorMessage: props.errors.partnership_type if props.errors.partnership_type,
           fieldset: {
             legend: {
-              text: i18n.partnershipTypePage.title,
+              text: i18n.partnership.partnershipTypePage.title,
               isPageHeading: true,
               classes: "govuk-fieldset__legend--xl"
             }
@@ -27,7 +27,7 @@
           items: [
             {
               value: "LP",
-              text: i18n.types.LP,
+              text: i18n.partnership.types.LP,
               checked: props.data.limitedPartnership.data.partnership_type === "LP",
               attributes: {
                 "data-goal-id": PIWIK_REGISTRATION_LP_GOAL_ID
@@ -35,7 +35,7 @@
             },
             {
               value: "PFLP",
-              text: i18n.types.PFLP,
+              text: i18n.partnership.types.PFLP,
               checked: props.data.limitedPartnership.data.partnership_type === "PFLP",
               attributes: {
                 "data-goal-id": PIWIK_REGISTRATION_PRIVATE_FUND_LP_GOAL_ID
@@ -43,7 +43,7 @@
             },
             {
               value: "SLP",
-              text: i18n.types.SLP,
+              text: i18n.partnership.types.SLP,
               checked: props.data.limitedPartnership.data.partnership_type === "SLP",
               attributes: {
                 "data-goal-id": PIWIK_REGISTRATION_SCOTTISH_LP_GOAL_ID
@@ -51,7 +51,7 @@
             },
             {
               value: "SPFLP",
-              text: i18n.types.SPFLP,
+              text: i18n.partnership.types.SPFLP,
               checked: props.data.limitedPartnership.data.partnership_type === "SPFLP",
               attributes: {
                 "data-goal-id": PIWIK_REGISTRATION_SCOTTISH_PRIVATE_FUND_LP_GOAL_ID

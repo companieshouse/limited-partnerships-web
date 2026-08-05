@@ -36,7 +36,7 @@ describe("Term change check your answers page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(`${enTranslationText.checkYourAnswersPage.update.title}`);
-      expect(res.text).toContain(enTranslationText.termPage.byAgreement);
+      expect(res.text).toContain(enTranslationText.partnership.termPage.byAgreement);
       expect(res.text).toContain(enTranslationText.print.buttonText);
       expect(res.text).toContain(enTranslationText.print.buttonTextNoJs);
       expect(res.text).not.toContain("WELSH -");
@@ -53,7 +53,7 @@ describe("Term change check your answers page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(`${cyTranslationText.checkYourAnswersPage.update.title}`);
-      expect(res.text).toContain(cyTranslationText.termPage.byAgreement);
+      expect(res.text).toContain(cyTranslationText.partnership.termPage.byAgreement);
       expect(res.text).toContain(cyTranslationText.print.buttonText);
       expect(res.text).toContain(cyTranslationText.print.buttonTextNoJs);
       expect(res.text).toContain("WELSH -");

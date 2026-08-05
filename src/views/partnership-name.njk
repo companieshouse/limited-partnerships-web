@@ -11,17 +11,17 @@
 {% endif %}
 
 {% if partnershipType == "LP" %}
-  {% set title = i18n.namePage.title %}
+  {% set title = i18n.partnership.namePage.title %}
 {% elif partnershipType == "PFLP" %}
-  {% set title = i18n.namePage.privateFund.title %}
+  {% set title = i18n.partnership.namePage.privateFund.title %}
 {% elif partnershipType == "SLP" %}
-  {% set title = i18n.namePage.scottish.title %}
+  {% set title = i18n.partnership.namePage.scottish.title %}
 {% elif partnershipType == "SPFLP" %}
-  {% set title = i18n.namePage.privateFund.scottish.title %}
+  {% set title = i18n.partnership.namePage.privateFund.scottish.title %}
 {% endif %}
 
-{% set whatIsName = i18n.namePage.whatIsName %}
-{% set nameEnding = i18n.namePage.nameEnding %} 
+{% set whatIsName = i18n.partnership.namePage.whatIsName %}
+{% set nameEnding = i18n.partnership.namePage.nameEnding %} 
 
 {% if not journeyTypes.isPostTransition or
   (journeyTypes.isPostTransition and props.data.submissionId) or props.errors.partnership_name %}
@@ -44,13 +44,13 @@
 
       <h1 class="govuk-heading-xl">{{ title }}</h1>
 
-      <p class="govuk-body">{{ i18n.namePage.partnershipRulesHint.rules }}</p>
+      <p class="govuk-body">{{ i18n.partnership.namePage.partnershipRulesHint.rules }}</p>
 
-      <p class="govuk-body">{{ i18n.namePage.partnershipRulesHint.rulesLinkStart }} <a class='govuk-link' href= 'https://www.gov.uk/guidance/set-up-and-run-a-limited-partnership#choose-a-name' target="_blank"> {{ i18n.namePage.partnershipRulesHint.rulesLinkEnd }} </a></p>
+      <p class="govuk-body">{{ i18n.partnership.namePage.partnershipRulesHint.rulesLinkStart }} <a class='govuk-link' href= 'https://www.gov.uk/guidance/set-up-and-run-a-limited-partnership#choose-a-name' target="_blank"> {{ i18n.partnership.namePage.partnershipRulesHint.rulesLinkEnd }} </a></p>
 
       {{ govukWarningText({
-        text: i18n.namePage.warning,
-        iconFallbackText: i18n.namePage.warningFallback
+        text: i18n.partnership.namePage.warning,
+        iconFallbackText: i18n.partnership.namePage.warningFallback
       }) }}      
 
       <div class="govuk-form-group">
@@ -67,7 +67,7 @@
             isPageHeading: false
           },
           hint: {
-            text: i18n.namePage.whatIsNameHint
+            text: i18n.partnership.namePage.whatIsNameHint
           },
           attributes : {
             required : true,

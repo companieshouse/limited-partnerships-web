@@ -1,6 +1,6 @@
 {% extends "layout.njk" %}
 
-{% set pageTitle = i18n.companyNumber.whatIsPartnershipNumber %}
+{% set pageTitle = i18n.partnership.companyNumber.whatIsPartnershipNumber %}
 
 {% block content %}
   <div class="govuk-grid-row">
@@ -12,12 +12,12 @@
 
           {{ govukInput({
             label: {
-              text: i18n.companyNumber.whatIsPartnershipNumber,
+              text: i18n.partnership.companyNumber.whatIsPartnershipNumber,
               classes: "govuk-label--xl",
               isPageHeading: true
             },
             hint: {
-                text: i18n.companyNumber.hint
+                text: i18n.partnership.companyNumber.hint
             },
             id: "company_number",
             name: "company_number",

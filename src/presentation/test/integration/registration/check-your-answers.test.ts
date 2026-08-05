@@ -93,7 +93,7 @@ describe("Check Your Answers Page", () => {
         "warningMessageUpdate",
         "psc"
       ]);
-      expect(res.text).toContain(translationText.termPage.byAgreement);
+      expect(res.text).toContain(translationText.partnership.termPage.byAgreement);
       expect(res.text).toContain(translationText.print.buttonText);
       expect(res.text).toContain(translationText.print.buttonTextNoJs);
 
@@ -234,9 +234,9 @@ describe("Check Your Answers Page", () => {
     );
 
     it.each([
-      ["BY_AGREEMENT", enTranslationText.termPage.byAgreement],
-      ["UNTIL_DISSOLUTION", enTranslationText.termPage.untilDissolution],
-      ["NONE", enTranslationText.termPage.noTerm],
+      ["BY_AGREEMENT", enTranslationText.partnership.termPage.byAgreement],
+      ["UNTIL_DISSOLUTION", enTranslationText.partnership.termPage.untilDissolution],
+      ["NONE", enTranslationText.partnership.termPage.noTerm],
       ["TERM_NOT_MATCHED", ""]
     ])(
       "should show the correct text for term based on term selected",
@@ -254,10 +254,10 @@ describe("Check Your Answers Page", () => {
   });
 
   it.each([
-    [PartnershipType.LP, enTranslationText.types.LP],
-    [PartnershipType.SLP, enTranslationText.types.SLP],
-    [PartnershipType.PFLP, enTranslationText.types.PFLP],
-    [PartnershipType.SPFLP, enTranslationText.types.SPFLP]
+    [PartnershipType.LP, enTranslationText.partnership.types.LP],
+    [PartnershipType.SLP, enTranslationText.partnership.types.SLP],
+    [PartnershipType.PFLP, enTranslationText.partnership.types.PFLP],
+    [PartnershipType.SPFLP, enTranslationText.partnership.types.SPFLP]
   ])("should show the partnership type", async (partnershipType: PartnershipType, text: string) => {
     const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);

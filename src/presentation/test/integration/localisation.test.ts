@@ -15,7 +15,7 @@ describe("Localisation tests", () => {
 
     const resp = await request(app).get(PARTNERSHIP_TYPE_URL + "?lang=en");
 
-    expect(resp.text).toContain(enTranslationText.partnershipTypePage.title);
+    expect(resp.text).toContain(enTranslationText.partnership.partnershipTypePage.title);
   });
 
   test("renders the start page with Welsh text when lang is cy", async () => {
@@ -23,7 +23,7 @@ describe("Localisation tests", () => {
 
     const resp = await request(app).get(PARTNERSHIP_TYPE_URL + "?lang=cy");
 
-    expect(resp.text).toContain(cyTranslationText.partnershipTypePage.title);
+    expect(resp.text).toContain(cyTranslationText.partnership.partnershipTypePage.title);
   });
 
   test("renders the start page with English text when an unsupported language is given", async () => {
@@ -31,7 +31,7 @@ describe("Localisation tests", () => {
 
     const resp = await request(app).get(PARTNERSHIP_TYPE_URL + "?lang=pp");
 
-    expect(resp.text).toContain(enTranslationText.partnershipTypePage.title);
+    expect(resp.text).toContain(enTranslationText.partnership.partnershipTypePage.title);
   });
 
   test("renders the start page with English text as default when localisation is switched on", async () => {
@@ -39,7 +39,7 @@ describe("Localisation tests", () => {
 
     const resp = await request(app).get(PARTNERSHIP_TYPE_URL);
 
-    expect(resp.text).toContain(enTranslationText.partnershipTypePage.title);
+    expect(resp.text).toContain(enTranslationText.partnership.partnershipTypePage.title);
     expect(resp.text).toContain("English");
     expect(resp.text).toContain("Cymraeg");
   });
@@ -49,7 +49,7 @@ describe("Localisation tests", () => {
 
     const resp = await request(app).get(PARTNERSHIP_TYPE_URL);
 
-    expect(resp.text).toContain(enTranslationText.partnershipTypePage.title);
+    expect(resp.text).toContain(enTranslationText.partnership.partnershipTypePage.title);
     expect(resp.text).not.toContain("English");
     expect(resp.text).not.toContain("Cymraeg");
   });

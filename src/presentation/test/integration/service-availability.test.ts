@@ -30,7 +30,7 @@ describe("Service Availability tests", () => {
 
     const resp = await request(app).get(PARTNERSHIP_TYPE_URL);
 
-    expect(resp.text).toContain(enTranslationText.partnershipTypePage.title);
+    expect(resp.text).toContain(enTranslationText.partnership.partnershipTypePage.title);
   });
 
   test("allows the healthcheck to run when service unavailable flag is true", async () => {

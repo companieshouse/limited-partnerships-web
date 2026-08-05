@@ -41,16 +41,16 @@ describe("Where is the jurisdiction page", () => {
 
       if (jurisdiction === "Scotland") {
         expect(res.text).toContain(
-          `${translationText.whereIsTheJurisdiction.scotland.title} - ${translationText.serviceRegistration} - GOV.UK`
+          `${translationText.partnership.whereIsTheJurisdiction.scotland.title} - ${translationText.serviceRegistration} - GOV.UK`
         );
 
-        testTranslations(res.text, translationText.whereIsTheJurisdiction.scotland, []);
+        testTranslations(res.text, translationText.partnership.whereIsTheJurisdiction.scotland, []);
       } else {
         expect(res.text).toContain(
-          `${translationText.whereIsTheJurisdiction.title} - ${translationText.serviceRegistration} - GOV.UK`
+          `${translationText.partnership.whereIsTheJurisdiction.title} - ${translationText.serviceRegistration} - GOV.UK`
         );
 
-        testTranslations(res.text, translationText.whereIsTheJurisdiction, ["scotland"]);
+        testTranslations(res.text, translationText.partnership.whereIsTheJurisdiction, ["scotland"]);
       }
 
       expect(res.text).toContain(limitedPartnership.data?.partnership_name?.toUpperCase());

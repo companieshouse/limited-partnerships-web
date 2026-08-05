@@ -29,10 +29,10 @@ describe("Name Page", () => {
   describe("Get Name Page", () => {
 
     it.each([
-      [PartnershipType.LP, cyTranslationText.namePage, ["privateFund", "scottish"]],
-      [PartnershipType.PFLP, cyTranslationText.namePage.privateFund, ["scottish", "nameEnding"]],
-      [PartnershipType.SLP, cyTranslationText.namePage.scottish, []],
-      [PartnershipType.SPFLP, cyTranslationText.namePage.privateFund.scottish, []]
+      [PartnershipType.LP, cyTranslationText.partnership.namePage, ["privateFund", "scottish"]],
+      [PartnershipType.PFLP, cyTranslationText.partnership.namePage.privateFund, ["scottish", "nameEnding"]],
+      [PartnershipType.SLP, cyTranslationText.partnership.namePage.scottish, []],
+      [PartnershipType.SPFLP, cyTranslationText.partnership.namePage.privateFund.scottish, []]
     ])("should load the name page with Welsh text", async (partnershipType: PartnershipType, expected, exclude) => {
       setLocalesEnabled(true);
 
@@ -58,10 +58,10 @@ describe("Name Page", () => {
     });
 
     it.each([
-      [PartnershipType.LP, enTranslationText.namePage, ["privateFund", "scottish"]],
-      [PartnershipType.PFLP, enTranslationText.namePage.privateFund, ["scottish", "nameEnding"]],
-      [PartnershipType.SLP, enTranslationText.namePage.scottish, []],
-      [PartnershipType.SPFLP, enTranslationText.namePage.privateFund.scottish, []]
+      [PartnershipType.LP, enTranslationText.partnership.namePage, ["privateFund", "scottish"]],
+      [PartnershipType.PFLP, enTranslationText.partnership.namePage.privateFund, ["scottish", "nameEnding"]],
+      [PartnershipType.SLP, enTranslationText.partnership.namePage.scottish, []],
+      [PartnershipType.SPFLP, enTranslationText.partnership.namePage.privateFund.scottish, []]
     ])("should load the name page with English text", async (partnershipType: PartnershipType, expected, exclude) => {
       setLocalesEnabled(true);
 
