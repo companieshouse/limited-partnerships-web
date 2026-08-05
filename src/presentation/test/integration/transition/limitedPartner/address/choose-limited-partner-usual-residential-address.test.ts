@@ -1,14 +1,14 @@
 import request from "supertest";
 
 import app from "../../../app";
-import { appDevDependencies } from "config/dev-dependencies";
+import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations, countOccurrences } from "../../../../utils";
-import * as config from "config";
+import * as config from "../../../../../../config/index";
 
 import {
   CHOOSE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
-} from "presentation/controller/addressLookUp/url/transition";
+} from "../../../../../controller/addressLookUp/url/transition";
 
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import LimitedPartnerBuilder from "../../../../builder/LimitedPartnerBuilder";

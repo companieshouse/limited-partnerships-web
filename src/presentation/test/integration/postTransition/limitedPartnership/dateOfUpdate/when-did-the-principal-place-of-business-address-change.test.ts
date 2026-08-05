@@ -9,7 +9,7 @@ import {
   PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL,
   WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_URL
 } from "../../../../../../presentation/controller/postTransition/url";
-import { ApiErrors } from "domain/entities/UIErrors";
+import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
 import TransactionBuilder from "../../../../builder/TransactionBuilder";
 import { PartnershipKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { enTranslationText, cyTranslationText } from "../../../../../../test/utils/locales";

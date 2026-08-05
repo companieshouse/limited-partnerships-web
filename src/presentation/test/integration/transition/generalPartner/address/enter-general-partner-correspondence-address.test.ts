@@ -2,7 +2,7 @@ import request from "supertest";
 
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
-import * as config from "config";
+import * as config from "../../../../../../config/index";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 
 import {

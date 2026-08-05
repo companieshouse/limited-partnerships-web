@@ -7,7 +7,7 @@ import { getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import {
   ENTER_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
-} from "presentation/controller/addressLookUp/url/registration";
+} from "../../../../../controller/addressLookUp/url/registration";
 
 import GeneralPartnerBuilder, {
   generalPartnerLegalEntity,

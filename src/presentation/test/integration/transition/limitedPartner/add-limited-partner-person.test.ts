@@ -4,7 +4,7 @@ import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
-import { TRANSITION_WITH_IDS_URL } from "config";
+import { TRANSITION_WITH_IDS_URL } from "../../../../../config/index";
 
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
 import TransitionPageType from "../../../../controller/transition/PageType";

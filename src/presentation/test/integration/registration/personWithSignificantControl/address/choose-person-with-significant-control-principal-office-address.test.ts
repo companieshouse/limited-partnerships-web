@@ -1,7 +1,7 @@
 import request from "supertest";
 
 import app from "../../../app";
-import { appDevDependencies } from "config/dev-dependencies";
+import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import { createPersonWithSignificantControl, getUrl, setLocalesEnabled, testTranslations, countOccurrences } from "../../../../utils";
 import * as config from "../../../../../../config";
 
@@ -10,9 +10,9 @@ import {
   CHOOSE_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL,
   CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_OTHER_REGISTRABLE_PERSON_PRINCIPAL_OFFICE_ADDRESS_URL,
   CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_RELEVANT_LEGAL_ENTITY_PRINCIPAL_OFFICE_ADDRESS_URL
-} from "presentation/controller/addressLookUp/url/registration";
+} from "../../../../../controller/addressLookUp/url/registration";
 
-import AddressPageType from "presentation/controller/addressLookUp/PageType";
+import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import { englandAddressList } from "../../../../../../infrastructure/gateway/addressLookUp/AddressLookUpInMemoryGateway";
 import { enTranslationText, cyTranslationText } from "../../../../../../test/utils/locales";
 describe("Choose principal office address of the person with significant control page", () => {

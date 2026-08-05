@@ -1,7 +1,7 @@
 import request from "supertest";
 
 import app from "./app";
-import { PARTNERSHIP_TYPE_URL } from "presentation/controller/registration/url";
+import { PARTNERSHIP_TYPE_URL } from "../../controller/registration/url";
 import { enTranslationText } from "../../../test/utils/locales";
 describe("Error pages", () => {
   beforeEach(() => {

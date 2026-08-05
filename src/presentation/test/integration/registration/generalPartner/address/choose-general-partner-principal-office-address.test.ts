@@ -1,16 +1,16 @@
 import request from "supertest";
 
 import app from "../../../app";
-import { appDevDependencies } from "config/dev-dependencies";
+import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations, countOccurrences } from "../../../../utils";
 import * as config from "../../../../../../config";
 
 import {
   CHOOSE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
-} from "presentation/controller/addressLookUp/url/registration";
+} from "../../../../../controller/addressLookUp/url/registration";
 
-import AddressPageType from "presentation/controller/addressLookUp/PageType";
+import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import GeneralPartnerBuilder from "../../../../builder/GeneralPartnerBuilder";
 import { enTranslationText, cyTranslationText } from "../../../../../../test/utils/locales";
 describe("Choose principal office address of the general partner page", () => {

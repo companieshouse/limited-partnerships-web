@@ -4,7 +4,7 @@ import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../../utils";
-import * as config from "config";
+import * as config from "../../../../../../config/index";
 
 import {
   CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,

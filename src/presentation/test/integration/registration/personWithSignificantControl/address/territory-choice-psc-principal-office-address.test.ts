@@ -24,7 +24,7 @@ import {
   ADD_NATURE_OF_CONTROL_TRUST_URL,
   WHICH_TYPE_OF_NATURE_OF_CONTROL_OTHER_REGISTRABLE_PERSON_URL,
   WHICH_TYPE_OF_NATURE_OF_CONTROL_RELEVANT_LEGAL_ENTITY_URL
-} from "presentation/controller/registration/url";
+} from "../../../../../controller/registration/url";
 import { NatureOfControlType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { enTranslationText, cyTranslationText } from "../../../../../../test/utils/locales";
 describe("PSC Principal Office Address Territory Choice", () => {

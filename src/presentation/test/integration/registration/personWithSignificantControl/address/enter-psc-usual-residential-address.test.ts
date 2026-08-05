@@ -13,7 +13,7 @@ import {
 import {
   CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL,
   ENTER_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_USUAL_RESIDENTIAL_ADDRESS_URL
-} from "presentation/controller/addressLookUp/url/registration";
+} from "../../../../../controller/addressLookUp/url/registration";
 
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBuilder";

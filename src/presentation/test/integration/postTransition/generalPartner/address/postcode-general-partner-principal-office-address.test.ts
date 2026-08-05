@@ -9,7 +9,7 @@ import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
 import {
   POSTCODE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   CHOOSE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
-} from "presentation/controller/addressLookUp/url/postTransition";
+} from "../../../../../controller/addressLookUp/url/postTransition";
 
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import GeneralPartnerBuilder, {
