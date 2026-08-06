@@ -1,6 +1,6 @@
 import FilingHistoryService from "../application/service/FilingHistoryService";
 import LimitedPartnershipService from "../application/service/LimitedPartnershipService";
-import TransactionService from "application/service/TransactionService";
+import TransactionService from "../application/service/TransactionService";
 
 import AddressLookUpController from "../presentation/controller/addressLookUp/Controller";
 import GlobalController from "../presentation/controller/global/Controller";

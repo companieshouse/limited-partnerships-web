@@ -8,7 +8,7 @@ import { APPLICATION_CACHE_KEY } from "../../../../../../config/constants";
 import {
   POSTCODE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
   CHOOSE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL
-} from "presentation/controller/addressLookUp/url/transition";
+} from "../../../../../controller/addressLookUp/url/transition";
 
 import GeneralPartnerBuilder, { generalPartnerLegalEntity } from "../../../../builder/GeneralPartnerBuilder";
 import AddressPageType from "../../../../../controller/addressLookUp/PageType";

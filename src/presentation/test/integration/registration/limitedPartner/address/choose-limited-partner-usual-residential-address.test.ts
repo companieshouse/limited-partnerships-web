@@ -1,7 +1,7 @@
 import request from "supertest";
 
 import app from "../../../app";
-import { appDevDependencies } from "config/dev-dependencies";
+import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations, countOccurrences } from "../../../../utils";
 import * as config from "../../../../../../config";
 

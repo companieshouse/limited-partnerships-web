@@ -27,7 +27,7 @@ import {
   PARTNERSHIP_NAME_WITH_IDS_URL,
   REDESIGNATE_TO_PFLP_URL,
   TERM_WITH_IDS_URL
-} from "presentation/controller/postTransition/url";
+} from "../../../controller/postTransition/url";
 
 describe("Resume a journey", () => {
   const RESUME_REGISTRATION_OR_TRANSITION_URL = getUrl(RESUME_JOURNEY_REGISTRATION_OR_TRANSITION_URL);

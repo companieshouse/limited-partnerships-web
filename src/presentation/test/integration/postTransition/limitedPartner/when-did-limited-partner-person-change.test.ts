@@ -12,7 +12,7 @@ import {
   UPDATE_LIMITED_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL
 } from "../../../../../presentation/controller/postTransition/url";
 import PostTransitionPageType from "../../../../controller/postTransition/pageType";
-import { ApiErrors } from "domain/entities/UIErrors";
+import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import TransactionBuilder from "../../../builder/TransactionBuilder";
 import CompanyAppointmentBuilder from "../../../builder/CompanyAppointmentBuilder";

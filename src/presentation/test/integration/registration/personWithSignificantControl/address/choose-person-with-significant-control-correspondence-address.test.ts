@@ -1,16 +1,16 @@
 import request from "supertest";
 
 import app from "../../../app";
-import { appDevDependencies } from "config/dev-dependencies";
+import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations, countOccurrences } from "../../../../utils";
 import * as config from "../../../../../../config";
 
 import {
   CHOOSE_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_CORRESPONDENCE_ADDRESS_URL,
   CONFIRM_PERSON_WITH_SIGNIFICANT_CONTROL_INDIVIDUAL_PERSON_CORRESPONDENCE_ADDRESS_URL,
-} from "presentation/controller/addressLookUp/url/registration";
+} from "../../../../../controller/addressLookUp/url/registration";
 
-import AddressPageType from "presentation/controller/addressLookUp/PageType";
+import AddressPageType from "../../../../../controller/addressLookUp/PageType";
 import { englandAddressList } from "../../../../../../infrastructure/gateway/addressLookUp/AddressLookUpInMemoryGateway";
 import PersonWithSignificantControlBuilder from "../../../../builder/PersonWithSignificantControlBuilder";
 import TransactionPersonWithSignificantControl from "../../../../../../domain/entities/TransactionPersonWithSignificantControl";

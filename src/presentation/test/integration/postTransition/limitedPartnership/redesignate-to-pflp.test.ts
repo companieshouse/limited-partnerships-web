@@ -3,13 +3,13 @@ import request from "supertest";
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
-import { REDESIGNATE_TO_PFLP_URL } from "presentation/controller/postTransition/url";
+import { REDESIGNATE_TO_PFLP_URL } from "../../../../controller/postTransition/url";
 import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
-import PostTransitionPageType from "presentation/controller/postTransition/pageType";
+import PostTransitionPageType from "../../../../controller/postTransition/pageType";
 import { Jurisdiction, PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-import { TRANSACTION_DESCRIPTION_DESIGNATE_AS_PRIVATE_FUND_PARTNERSHIP, YOUR_COMPANY_URL } from "config";
-import LimitedPartnershipBuilder from "presentation/test/builder/LimitedPartnershipBuilder";
-import { ApiErrors } from "domain/entities/UIErrors";
+import { TRANSACTION_DESCRIPTION_DESIGNATE_AS_PRIVATE_FUND_PARTNERSHIP, YOUR_COMPANY_URL } from "../../../../../config/index";
+import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
+import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 describe("Redesignate to pflp page", () => {

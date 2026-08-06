@@ -10,10 +10,10 @@ import {
 } from "../../../controller/global/url";
 import { getUrl } from "../../utils";
 import { JOURNEY_TYPE_PARAM } from "../../../../config";
-import { appDevDependencies } from "config/dev-dependencies";
+import { appDevDependencies } from "../../../../config/dev-dependencies";
 import { Journey } from "../../../../domain/entities/journey";
 import TransactionBuilder from "../../../../presentation/test/builder/TransactionBuilder";
-import CompanyProfileBuilder from "presentation/test/builder/CompanyProfileBuilder";
+import CompanyProfileBuilder from "../../builder/CompanyProfileBuilder";
 
 describe("Payment decision routing", () => {
   const TRANSITION_URL = getUrl(PAYMENT_RESPONSE_URL).replace(JOURNEY_TYPE_PARAM, Journey.transition);
