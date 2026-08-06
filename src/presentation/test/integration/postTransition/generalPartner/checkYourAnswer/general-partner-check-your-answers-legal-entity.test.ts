@@ -1,7 +1,7 @@
 import request from "supertest";
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
-import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
+import { checkIfPartnerValuesInText, countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
 import GeneralPartnerBuilder from "../../../../builder/GeneralPartnerBuilder";
 import { GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/postTransition/url";
 import CompanyProfileBuilder from "../../../../builder/CompanyProfileBuilder";
@@ -9,13 +9,13 @@ import {
   CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL
 } from "../../../../../controller/addressLookUp/url/postTransition";
-import { GeneralPartner, PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
-import { formatDate } from "../../../../../../utils/date-format";
+import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 import PostTransitionPageType from "../../../../../controller/postTransition/pageType";
 import { CONFIRMATION_POST_TRANSITION_URL } from "../../../../../controller/global/url";
 import TransactionBuilder from "../../../../builder/TransactionBuilder";
 import TransactionGeneralPartner from "../../../../../../domain/entities/TransactionGeneralPartner";
 import { enTranslationText, cyTranslationText } from "../../../../../../test/utils/locales";
+
 describe("Check Your Answers Page", () => {
   const URL = getUrl(GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL);
   const REDIRECT_URL = getUrl(CONFIRMATION_POST_TRANSITION_URL);
@@ -115,7 +115,7 @@ describe("Check Your Answers Page", () => {
         "ceaseDate"
       ]);
 
-      checkIfValuesInText(res, generalPartnerLegalEntity, enTranslationText);
+      checkIfPartnerValuesInText(res.text, generalPartnerLegalEntity.data!, legalEntityKeys, enTranslationText);
     });
 
     it("should load the check your answers page with partners - CY", async () => {
@@ -136,7 +136,7 @@ describe("Check Your Answers Page", () => {
         "ceaseDate"
       ]);
 
-      checkIfValuesInText(res, generalPartnerLegalEntity, cyTranslationText);
+      checkIfPartnerValuesInText(res.text, generalPartnerLegalEntity.data!, legalEntityKeys, cyTranslationText);
     });
   });
   describe("POST Check Your Answers Page", () => {
@@ -159,20 +159,13 @@ describe("Check Your Answers Page", () => {
   });
 });
 
-const checkIfValuesInText = (res: request.Response, partner: GeneralPartner, translationText: Record<string, any>) => {
-  for (const key in partner.data) {
-    if (typeof partner.data[key] === "string" || typeof partner.data[key] === "object") {
-      if (key === "principal_office_address") {
-        const capitalized = partner.data[key].address_line_1
-          .split(" ")
-          .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-          .join(" ");
-        expect(res.text).toContain(capitalized);
-      } else if (key.includes("date_effective_from")) {
-        expect(res.text).toContain(formatDate(partner.data[key], translationText));
-      } else if (!key.includes("address")) {
-        expect(res.text).toContain(partner.data[key]);
-      }
-    }
-  }
-};
+const legalEntityKeys = [
+  "legal_entity_name",
+  "legal_form",
+  "governing_law",
+  "legal_entity_register_name",
+  "legal_entity_registration_location",
+  "registered_company_number",
+  "principal_office_address",
+  "date_effective_from"
+];

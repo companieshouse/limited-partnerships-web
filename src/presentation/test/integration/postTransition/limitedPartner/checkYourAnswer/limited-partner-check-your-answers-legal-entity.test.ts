@@ -4,9 +4,8 @@ import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import LimitedPartnerBuilder from "../../../../builder/LimitedPartnerBuilder";
 import CompanyProfileBuilder from "../../../../builder/CompanyProfileBuilder";
 import { LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/postTransition/url";
-import { countOccurrences, getUrl, setLocalesEnabled } from "../../../../utils";
-import { formatDate } from "../../../../../../utils/date-format";
-import { LimitedPartner, PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { checkIfPartnerValuesInText, countOccurrences, getUrl, setLocalesEnabled } from "../../../../utils";
+import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import {
   CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
@@ -86,7 +85,7 @@ describe("Limited Partner Check Your Answers Page", () => {
     const res = await request(app).get(URL);
 
     expect(res.status).toBe(200);
-    checkIfValuesInText(res, limitedPartnerLegalEntity, enTranslationText);
+    checkIfPartnerValuesInText(res.text, limitedPartnerLegalEntity.data!, legalEntityKeys, enTranslationText);
   });
 
   it.each([
@@ -137,20 +136,13 @@ describe("Limited Partner Check Your Answers Page", () => {
   });
 });
 
-const checkIfValuesInText = (res: request.Response, partner: LimitedPartner, translationText: Record<string, any>) => {
-  for (const key in partner.data) {
-    if (typeof partner.data[key] === "string" || typeof partner.data[key] === "object") {
-      if (key === "principal_office_address") {
-        const capitalized = partner.data[key].address_line_1
-          .split(" ")
-          .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-          .join(" ");
-        expect(res.text).toContain(capitalized);
-      } else if (key.includes("date_effective_from")) {
-        expect(res.text).toContain(formatDate(partner.data[key], translationText));
-      } else if (!key.includes("address")) {
-        expect(res.text).toContain(partner.data[key]);
-      }
-    }
-  }
-};
+const legalEntityKeys = [
+  "legal_entity_name",
+  "legal_form",
+  "governing_law",
+  "legal_entity_register_name",
+  "legal_entity_registration_location",
+  "registered_company_number",
+  "principal_office_address",
+  "date_effective_from"
+];

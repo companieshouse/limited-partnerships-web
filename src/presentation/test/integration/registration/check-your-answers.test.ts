@@ -2,15 +2,13 @@ import request from "supertest";
 import app from "../app";
 
 import {
-  GeneralPartner,
-  LimitedPartner,
   Jurisdiction,
   PartnershipType
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { CHECK_YOUR_ANSWERS_URL, REVIEW_LIMITED_PARTNERS_URL, REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL, WILL_LIMITED_PARTNERSHIP_HAVE_PSC_URL } from "../../../controller/registration/url";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
+import { checkIfPartnerValuesInText, getUrl, setLocalesEnabled, testTranslations } from "../../utils";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import GeneralPartnerBuilder from "../../builder/GeneralPartnerBuilder";
 import LimitedPartnerBuilder from "../../builder/LimitedPartnerBuilder";
@@ -32,6 +30,7 @@ import TransactionLimitedPartner from "../../../../domain/entities/TransactionLi
 import TransactionGeneralPartner from "../../../../domain/entities/TransactionGeneralPartner";
 import TransactionLimitedPartnership from "../../../../domain/entities/TransactionLimitedPartnership";
 import { enTranslationText, cyTranslationText } from "../../../../test/utils/locales";
+
 describe("Check Your Answers Page", () => {
   const URL = getUrl(CHECK_YOUR_ANSWERS_URL);
   const PAYMENT_LINK_JOURNEY = "https://api-test-payments.chs.local:4001";
@@ -292,13 +291,13 @@ describe("Check Your Answers Page", () => {
       "psc"
     ]);
 
-    checkIfValuesInText(res, generalPartnerPerson, translationText);
+    checkIfPartnerValuesInText(res.text, generalPartnerPerson.data!, generalPersonKeys, translationText);
 
-    checkIfValuesInText(res, generalPartnerLegalEntity, translationText);
+    checkIfPartnerValuesInText(res.text, generalPartnerLegalEntity.data!, generalLegalEntityKeys, translationText);
 
-    checkIfValuesInText(res, limitedPartnerPerson, translationText);
+    checkIfPartnerValuesInText(res.text, limitedPartnerPerson.data!, limitedPersonKeys, translationText);
 
-    checkIfValuesInText(res, limitedPartnerLegalEntity, translationText);
+    checkIfPartnerValuesInText(res.text, limitedPartnerLegalEntity.data!, limitedLegalEntityKeys, translationText);
 
     expect(res.text).toContain(translationText.nationalities.british);
     expect(res.text).toContain(countriesText.countries.unitedStates);
@@ -686,43 +685,8 @@ describe("Check Your Answers Page", () => {
   });
 });
 
-const checkIfValuesInText = (
-  res: request.Response,
-  partner: GeneralPartner | LimitedPartner,
-  translationText: Record<string, any>
-) => {
-  const partnerData = partner.data as Record<string, any>;
-
-  for (const key in partnerData) {
-    const value = partnerData[key];
-
-    if (typeof value === "string" || typeof value === "object") {
-      if (key === "nationality1") {
-        const capitalized = value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
-
-        expect(res.text).toContain(capitalized);
-      } else if (key.includes("date_of_birth") && value) {
-        expect(res.text).toContain(formatDate(value, translationText));
-      } else if (key.includes("address")) {
-        const capitalized = value.address_line_1
-          .split(" ")
-          .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-          .join(" ");
-        expect(res.text).toContain(capitalized);
-      } else if (key.includes("contribution_sub_types")) {
-        const capitalContributionSubTypesMap: Record<string, string> = {
-          MONEY: translationText.partner.capitalContribution.money,
-          LAND_OR_PROPERTY: translationText.partner.capitalContribution.landOrProperty,
-          SHARES: translationText.partner.capitalContribution.shares,
-          SERVICES_OR_GOODS: translationText.partner.capitalContribution.servicesOrGoods,
-          ANY_OTHER_ASSET: translationText.partner.capitalContribution.anyOtherAsset
-        };
-
-        const str = value.map((word: string) => capitalContributionSubTypesMap[word]).join(" / ");
-        expect(res.text).toContain(str.replaceAll("_", " "));
-      } else {
-        expect(res.text).toContain(value);
-      }
-    }
-  }
-};
+const generalPersonKeys = ["forename", "surname", "former_names", "date_of_birth", "nationality1", "usual_residential_address", "principal_office_address"];
+const generalLegalEntityKeys = ["legal_entity_name", "legal_form", "governing_law", "legal_entity_register_name", "legal_entity_registration_location", "registered_company_number", "principal_office_address"];
+const contributionKeys = ["contribution_currency_type", "contribution_currency_value", "contribution_sub_types"];
+const limitedPersonKeys = [...generalPersonKeys, ...contributionKeys];
+const limitedLegalEntityKeys = [...generalLegalEntityKeys, ...contributionKeys];

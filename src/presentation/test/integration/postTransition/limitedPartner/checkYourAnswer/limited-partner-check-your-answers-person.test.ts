@@ -4,9 +4,8 @@ import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import CompanyProfileBuilder from "../../../../builder/CompanyProfileBuilder";
 import { LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/postTransition/url";
-import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
-import { formatDate } from "../../../../../../utils/date-format";
-import { LimitedPartner, PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+import { checkIfPartnerValuesInText, countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
+import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL, CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../../controller/addressLookUp/url/postTransition";
 import LimitedPartnerBuilder from "../../../../../../presentation/test/builder/LimitedPartnerBuilder";
 import PostTransitionPageType from "../../../../../controller/postTransition/pageType";
@@ -98,7 +97,7 @@ describe("Limited Partner Check Your Answers Page for Person", () => {
     const res = await request(app).get(URL);
 
     expect(res.status).toBe(200);
-    checkIfValuesInText(res, limitedPartnerPerson, enTranslationText);
+    checkIfPartnerValuesInText(res.text, limitedPartnerPerson.data!, personKeys, enTranslationText);
   });
 
   it("should load the check your answers page with partners with dates- EN", async () => {
@@ -115,7 +114,7 @@ describe("Limited Partner Check Your Answers Page for Person", () => {
     const res = await request(app).get(URL);
 
     expect(res.status).toBe(200);
-    checkIfValuesInText(res, limitedPartnerPerson, enTranslationText);
+    checkIfPartnerValuesInText(res.text, limitedPartnerPerson.data!, personKeys, enTranslationText);
   });
 
   it.each([
@@ -170,25 +169,13 @@ describe("Limited Partner Check Your Answers Page for Person", () => {
   });
 });
 
-const checkIfValuesInText = (res: request.Response, partner: LimitedPartner, translationText: Record<string, any>) => {
-  for (const key in partner.data) {
-    if (typeof partner.data[key] === "string" || typeof partner.data[key] === "object") {
-      if (key === "nationality1") {
-        const capitalized = partner.data[key].charAt(0).toUpperCase() + partner.data[key].slice(1).toLowerCase();
-
-        expect(res.text).toContain(capitalized);
-      } else if (key.includes("date_of_birth") && partner.data[key]) {
-        expect(res.text).toContain(formatDate(partner.data[key], translationText));
-      } else if (key.includes("usual_residential_address")) {
-        const capitalized = partner.data[key].address_line_1
-          .split(" ")
-          .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-          .join(" ");
-        expect(res.text).toContain(capitalized);
-      } else if (key.includes("date_effective_from")) {
-        expect(res.text).toContain(formatDate(partner.data[key], translationText));
-      }
-    }
-  }
-};
+const personKeys = [
+  "forename",
+  "surname",
+  "former_names",
+  "date_of_birth",
+  "nationality1",
+  "usual_residential_address",
+  "date_effective_from"
+];
 
