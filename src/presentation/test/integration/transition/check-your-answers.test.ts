@@ -9,10 +9,9 @@ import {
 import { CHECK_YOUR_ANSWERS_URL } from "../../../controller/transition/url";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../utils";
+import { checkIfPartnerValuesInText, getUrl, checkYourAnswersPersonKeys, setLocalesEnabled, testTranslations, checkYourAnswersLegalEntityKeys } from "../../utils";
 import GeneralPartnerBuilder from "../../builder/GeneralPartnerBuilder";
 import LimitedPartnerBuilder from "../../builder/LimitedPartnerBuilder";
-import { formatDate } from "../../../../utils/date-format";
 import { TransactionKind } from "../../../../domain/entities/TransactionTypes";
 import TransactionBuilder from "../../builder/TransactionBuilder";
 import TransitionPageType from "../../../controller/transition/PageType";
@@ -21,16 +20,17 @@ import { JOURNEY_TYPE_PARAM } from "../../../../config/constants";
 import { Journey } from "../../../../domain/entities/journey";
 import { customerFeedbackUrlMap } from "../../../../middlewares/customer-feedback.middleware";
 import { enTranslationText, cyTranslationText } from "../../../../test/utils/locales";
+import TransactionLimitedPartnership from "../../../../domain/entities/TransactionLimitedPartnership";
 
 describe("Check Your Answers Page", () => {
   const URL = getUrl(CHECK_YOUR_ANSWERS_URL);
   const REDIRECT_URL = getUrl(CONFIRMATION_URL).replace(JOURNEY_TYPE_PARAM, Journey.transition);
 
-  let limitedPartnership;
-  let generalPartnerPerson;
-  let generalPartnerLegalEntity;
-  let limitedPartnerPerson;
-  let limitedPartnerLegalEntity;
+  let limitedPartnership: TransactionLimitedPartnership;
+  let generalPartnerPerson: GeneralPartner;
+  let generalPartnerLegalEntity: GeneralPartner;
+  let limitedPartnerPerson: LimitedPartner;
+  let limitedPartnerLegalEntity: LimitedPartner;
 
   beforeEach(() => {
     const transaction = new TransactionBuilder().withFilingMode(TransactionKind.transition).build();
@@ -166,13 +166,13 @@ describe("Check Your Answers Page", () => {
         "warningMessageUpdate"
       ]);
 
-      checkIfValuesInText(res, generalPartnerPerson, enTranslationText);
+      checkIfPartnerValuesInText(res.text, generalPartnerPerson.data!, checkYourAnswersPersonKeys, enTranslationText);
 
-      checkIfValuesInText(res, generalPartnerLegalEntity, enTranslationText);
+      checkIfPartnerValuesInText(res.text, generalPartnerLegalEntity.data!, checkYourAnswersLegalEntityKeys, enTranslationText);
 
-      checkIfValuesInText(res, limitedPartnerPerson, enTranslationText);
+      checkIfPartnerValuesInText(res.text, limitedPartnerPerson.data!, checkYourAnswersPersonKeys, enTranslationText);
 
-      checkIfValuesInText(res, limitedPartnerLegalEntity, enTranslationText);
+      checkIfPartnerValuesInText(res.text, limitedPartnerLegalEntity.data!, checkYourAnswersLegalEntityKeys, enTranslationText);
 
       expect(res.text).toContain(enTranslationText.nationalities.british);
       expect(res.text).toContain(enTranslationText.countries.unitedStates);
@@ -194,13 +194,13 @@ describe("Check Your Answers Page", () => {
         "warningMessageUpdate"
       ]);
 
-      checkIfValuesInText(res, generalPartnerPerson, cyTranslationText);
+      checkIfPartnerValuesInText(res.text, generalPartnerPerson.data!, checkYourAnswersPersonKeys, cyTranslationText);
 
-      checkIfValuesInText(res, generalPartnerLegalEntity, cyTranslationText);
+      checkIfPartnerValuesInText(res.text, generalPartnerLegalEntity.data!, checkYourAnswersLegalEntityKeys, cyTranslationText);
 
-      checkIfValuesInText(res, limitedPartnerPerson, cyTranslationText);
+      checkIfPartnerValuesInText(res.text, limitedPartnerPerson.data!, checkYourAnswersPersonKeys, cyTranslationText);
 
-      checkIfValuesInText(res, limitedPartnerLegalEntity, cyTranslationText);
+      checkIfPartnerValuesInText(res.text, limitedPartnerLegalEntity.data!, checkYourAnswersLegalEntityKeys, cyTranslationText);
 
       expect(res.text).toContain(cyTranslationText.nationalities.british);
       expect(res.text).toContain(cyTranslationText.countries.unitedStates);
@@ -218,28 +218,3 @@ describe("Check Your Answers Page", () => {
     });
   });
 });
-
-const checkIfValuesInText = (
-  res: request.Response,
-  partner: GeneralPartner | LimitedPartner,
-  translationText: Record<string, any>
-) => {
-  for (const key in partner.data) {
-    if (typeof partner.data[key] === "string" || typeof partner.data[key] === "object") {
-      if (key === "nationality1") {
-        const capitalized = partner.data[key].charAt(0).toUpperCase() + partner.data[key].slice(1).toLowerCase();
-        expect(res.text).toContain(capitalized);
-      } else if (key.includes("date_of_birth") && partner.data[key]) {
-        expect(res.text).toContain(formatDate(partner.data[key], translationText));
-      } else if (key.includes("address")) {
-        const capitalized = partner.data[key].address_line_1
-          .split(" ")
-          .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-          .join(" ");
-        expect(res.text).toContain(capitalized);
-      } else {
-        expect(res.text).toContain(partner.data[key]);
-      }
-    }
-  }
-};

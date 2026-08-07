@@ -7,6 +7,7 @@ import GeneralPartnerBuilder from "./builder/GeneralPartnerBuilder";
 import LimitedPartnerBuilder from "./builder/LimitedPartnerBuilder";
 import request from "supertest";
 import PersonWithSignificantControlBuilder from "./builder/PersonWithSignificantControlBuilder";
+import { formatDate } from "../../utils/date-format";
 
 export const setLocalesEnabled = (bool: boolean) => {
   jest.spyOn(config, "isLocalesEnabled").mockReturnValue(bool);
@@ -129,4 +130,74 @@ export const createPersonWithSignificantControl = (url: string, urlToCompare: st
     personWithSignificantControl.build()
   ]);
   return personWithSignificantControl;
+};
+
+export const capitalizeFirstLetter = (str?: string) => {
+  return str ? str.charAt(0).toUpperCase() + str.slice(1).toLowerCase() : "";
+};
+
+export const checkYourAnswersPersonKeys = [
+  "forename",
+  "surname",
+  "former_names",
+  "date_of_birth",
+  "nationality1",
+  "usual_residential_address",
+  "service_address",
+  "date_effective_from"
+];
+
+export const checkYourAnswersLegalEntityKeys = [
+  "legal_entity_name",
+  "legal_form",
+  "governing_law",
+  "legal_entity_register_name",
+  "legal_entity_registration_location",
+  "registered_company_number",
+  "principal_office_address",
+  "date_effective_from"
+];
+
+export const contributionKeys = [
+  "contribution_currency_type",
+  "contribution_currency_value",
+  "contribution_sub_types"
+];
+
+export const checkIfPartnerValuesInText = (
+  text: string,
+  partner: Record<string, any>,
+  keys: string[],
+  translationText: Record<string, any>
+) => {
+  for (const key of keys) {
+    const value = partner[key];
+    if (typeof value !== "object" && typeof value !== "string") {
+      continue;
+    }
+
+    if (key === "nationality1") {
+      expect(text).toContain(capitalizeFirstLetter(value));
+    } else if (key.startsWith("date_") && value) {
+      expect(text).toContain(formatDate(value, translationText));
+    } else if (key.includes("address")) {
+      const capitalized = value.address_line_1
+        .split(" ")
+        .map((word: string) => capitalizeFirstLetter(word))
+        .join(" ");
+      expect(text).toContain(capitalized);
+    } else if (key === "contribution_sub_types" && Array.isArray(value)) {
+      const subTypeMap: Record<string, string> = {
+        MONEY: translationText.partner.capitalContribution.money,
+        LAND_OR_PROPERTY: translationText.partner.capitalContribution.landOrProperty,
+        SHARES: translationText.partner.capitalContribution.shares,
+        SERVICES_OR_GOODS: translationText.partner.capitalContribution.servicesOrGoods,
+        ANY_OTHER_ASSET: translationText.partner.capitalContribution.anyOtherAsset
+      };
+      const str = value.map((word: string) => subTypeMap[word]).join(" / ");
+      expect(text).toContain(str.replace(/_/g, " "));
+    } else {
+      expect(text).toContain(value);
+    }
+  }
 };
