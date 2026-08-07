@@ -8,7 +8,7 @@ import {
 import { CHECK_YOUR_ANSWERS_URL, REVIEW_LIMITED_PARTNERS_URL, REVIEW_PERSONS_WITH_SIGNIFICANT_CONTROL_URL, WILL_LIMITED_PARTNERSHIP_HAVE_PSC_URL } from "../../../controller/registration/url";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
-import { checkIfPartnerValuesInText, getUrl, setLocalesEnabled, testTranslations } from "../../utils";
+import { checkIfPartnerValuesInText, contributionKeys, getUrl, checkYourAnswersLegalEntityKeys, checkYourAnswersPersonKeys, setLocalesEnabled, testTranslations } from "../../utils";
 import RegistrationPageType from "../../../controller/registration/PageType";
 import GeneralPartnerBuilder from "../../builder/GeneralPartnerBuilder";
 import LimitedPartnerBuilder from "../../builder/LimitedPartnerBuilder";
@@ -291,9 +291,9 @@ describe("Check Your Answers Page", () => {
       "psc"
     ]);
 
-    checkIfPartnerValuesInText(res.text, generalPartnerPerson.data!, generalPersonKeys, translationText);
+    checkIfPartnerValuesInText(res.text, generalPartnerPerson.data!, checkYourAnswersPersonKeys, translationText);
 
-    checkIfPartnerValuesInText(res.text, generalPartnerLegalEntity.data!, generalLegalEntityKeys, translationText);
+    checkIfPartnerValuesInText(res.text, generalPartnerLegalEntity.data!, checkYourAnswersLegalEntityKeys, translationText);
 
     checkIfPartnerValuesInText(res.text, limitedPartnerPerson.data!, limitedPersonKeys, translationText);
 
@@ -685,8 +685,5 @@ describe("Check Your Answers Page", () => {
   });
 });
 
-const generalPersonKeys = ["forename", "surname", "former_names", "date_of_birth", "nationality1", "usual_residential_address", "principal_office_address"];
-const generalLegalEntityKeys = ["legal_entity_name", "legal_form", "governing_law", "legal_entity_register_name", "legal_entity_registration_location", "registered_company_number", "principal_office_address"];
-const contributionKeys = ["contribution_currency_type", "contribution_currency_value", "contribution_sub_types"];
-const limitedPersonKeys = [...generalPersonKeys, ...contributionKeys];
-const limitedLegalEntityKeys = [...generalLegalEntityKeys, ...contributionKeys];
+const limitedPersonKeys = [...checkYourAnswersPersonKeys, ...contributionKeys];
+const limitedLegalEntityKeys = [...checkYourAnswersLegalEntityKeys, ...contributionKeys];

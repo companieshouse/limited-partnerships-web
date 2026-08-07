@@ -136,6 +136,34 @@ export const capitalizeFirstLetter = (str?: string) => {
   return str ? str.charAt(0).toUpperCase() + str.slice(1).toLowerCase() : "";
 };
 
+export const checkYourAnswersPersonKeys = [
+  "forename",
+  "surname",
+  "former_names",
+  "date_of_birth",
+  "nationality1",
+  "usual_residential_address",
+  "service_address",
+  "date_effective_from"
+];
+
+export const checkYourAnswersLegalEntityKeys = [
+  "legal_entity_name",
+  "legal_form",
+  "governing_law",
+  "legal_entity_register_name",
+  "legal_entity_registration_location",
+  "registered_company_number",
+  "principal_office_address",
+  "date_effective_from"
+];
+
+export const contributionKeys = [
+  "contribution_currency_type",
+  "contribution_currency_value",
+  "contribution_sub_types"
+];
+
 export const checkIfPartnerValuesInText = (
   text: string,
   partner: Record<string, any>,

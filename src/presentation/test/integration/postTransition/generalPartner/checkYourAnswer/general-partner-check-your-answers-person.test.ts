@@ -5,7 +5,7 @@ import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import GeneralPartnerBuilder from "../../../../builder/GeneralPartnerBuilder";
 import CompanyProfileBuilder from "../../../../builder/CompanyProfileBuilder";
 import { GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/postTransition/url";
-import { checkIfPartnerValuesInText, countOccurrences, getUrl, setLocalesEnabled } from "../../../../utils";
+import { checkIfPartnerValuesInText, countOccurrences, getUrl, checkYourAnswersPersonKeys, setLocalesEnabled } from "../../../../utils";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL, CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../../../../controller/addressLookUp/url/postTransition";
 import PostTransitionPageType from "../../../../../controller/postTransition/pageType";
@@ -86,7 +86,7 @@ describe("General Partner Check Your Answers Page", () => {
     const res = await request(app).get(URL);
 
     expect(res.status).toBe(200);
-    checkIfPartnerValuesInText(res.text, generalPartnerPerson.data!, personKeys, enTranslationText);
+    checkIfPartnerValuesInText(res.text, generalPartnerPerson.data!, checkYourAnswersPersonKeys, enTranslationText);
   });
 
   describe("POST Check Your Answers Page", () => {
@@ -108,14 +108,3 @@ describe("General Partner Check Your Answers Page", () => {
     });
   });
 });
-
-const personKeys = [
-  "forename",
-  "surname",
-  "former_names",
-  "date_of_birth",
-  "nationality1",
-  "usual_residential_address",
-  "date_effective_from"
-];
-

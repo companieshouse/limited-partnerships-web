@@ -1,7 +1,7 @@
 import request from "supertest";
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
-import { checkIfPartnerValuesInText, countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
+import { checkIfPartnerValuesInText, countOccurrences, getUrl, checkYourAnswersLegalEntityKeys, setLocalesEnabled, testTranslations } from "../../../../utils";
 import GeneralPartnerBuilder from "../../../../builder/GeneralPartnerBuilder";
 import { GENERAL_PARTNER_CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/postTransition/url";
 import CompanyProfileBuilder from "../../../../builder/CompanyProfileBuilder";
@@ -115,7 +115,7 @@ describe("Check Your Answers Page", () => {
         "ceaseDate"
       ]);
 
-      checkIfPartnerValuesInText(res.text, generalPartnerLegalEntity.data!, legalEntityKeys, enTranslationText);
+      checkIfPartnerValuesInText(res.text, generalPartnerLegalEntity.data!, checkYourAnswersLegalEntityKeys, enTranslationText);
     });
 
     it("should load the check your answers page with partners - CY", async () => {
@@ -136,7 +136,7 @@ describe("Check Your Answers Page", () => {
         "ceaseDate"
       ]);
 
-      checkIfPartnerValuesInText(res.text, generalPartnerLegalEntity.data!, legalEntityKeys, cyTranslationText);
+      checkIfPartnerValuesInText(res.text, generalPartnerLegalEntity.data!, checkYourAnswersLegalEntityKeys, cyTranslationText);
     });
   });
   describe("POST Check Your Answers Page", () => {
@@ -158,14 +158,3 @@ describe("Check Your Answers Page", () => {
     });
   });
 });
-
-const legalEntityKeys = [
-  "legal_entity_name",
-  "legal_form",
-  "governing_law",
-  "legal_entity_register_name",
-  "legal_entity_registration_location",
-  "registered_company_number",
-  "principal_office_address",
-  "date_effective_from"
-];

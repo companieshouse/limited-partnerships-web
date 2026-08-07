@@ -4,7 +4,7 @@ import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import CompanyProfileBuilder from "../../../../builder/CompanyProfileBuilder";
 import { LIMITED_PARTNER_CHECK_YOUR_ANSWERS_URL } from "../../../../../controller/postTransition/url";
-import { checkIfPartnerValuesInText, countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../../utils";
+import { checkIfPartnerValuesInText, countOccurrences, getUrl, checkYourAnswersPersonKeys, setLocalesEnabled, testTranslations } from "../../../../utils";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL, CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL } from "../../../../../controller/addressLookUp/url/postTransition";
 import LimitedPartnerBuilder from "../../../../../../presentation/test/builder/LimitedPartnerBuilder";
@@ -97,7 +97,7 @@ describe("Limited Partner Check Your Answers Page for Person", () => {
     const res = await request(app).get(URL);
 
     expect(res.status).toBe(200);
-    checkIfPartnerValuesInText(res.text, limitedPartnerPerson.data!, personKeys, enTranslationText);
+    checkIfPartnerValuesInText(res.text, limitedPartnerPerson.data!, checkYourAnswersPersonKeys, enTranslationText);
   });
 
   it("should load the check your answers page with partners with dates- EN", async () => {
@@ -114,7 +114,7 @@ describe("Limited Partner Check Your Answers Page for Person", () => {
     const res = await request(app).get(URL);
 
     expect(res.status).toBe(200);
-    checkIfPartnerValuesInText(res.text, limitedPartnerPerson.data!, personKeys, enTranslationText);
+    checkIfPartnerValuesInText(res.text, limitedPartnerPerson.data!, checkYourAnswersPersonKeys, enTranslationText);
   });
 
   it.each([
@@ -168,14 +168,3 @@ describe("Limited Partner Check Your Answers Page for Person", () => {
     });
   });
 });
-
-const personKeys = [
-  "forename",
-  "surname",
-  "former_names",
-  "date_of_birth",
-  "nationality1",
-  "usual_residential_address",
-  "date_effective_from"
-];
-

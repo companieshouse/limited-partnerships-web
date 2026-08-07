@@ -9,7 +9,7 @@ import {
 import { CHECK_YOUR_ANSWERS_URL } from "../../../controller/transition/url";
 import { appDevDependencies } from "../../../../config/dev-dependencies";
 import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
-import { checkIfPartnerValuesInText, getUrl, setLocalesEnabled, testTranslations } from "../../utils";
+import { checkIfPartnerValuesInText, getUrl, checkYourAnswersPersonKeys, setLocalesEnabled, testTranslations, checkYourAnswersLegalEntityKeys } from "../../utils";
 import GeneralPartnerBuilder from "../../builder/GeneralPartnerBuilder";
 import LimitedPartnerBuilder from "../../builder/LimitedPartnerBuilder";
 import { TransactionKind } from "../../../../domain/entities/TransactionTypes";
@@ -166,13 +166,13 @@ describe("Check Your Answers Page", () => {
         "warningMessageUpdate"
       ]);
 
-      checkIfPartnerValuesInText(res.text, generalPartnerPerson.data!, personKeys, enTranslationText);
+      checkIfPartnerValuesInText(res.text, generalPartnerPerson.data!, checkYourAnswersPersonKeys, enTranslationText);
 
-      checkIfPartnerValuesInText(res.text, generalPartnerLegalEntity.data!, legalEntityKeys, enTranslationText);
+      checkIfPartnerValuesInText(res.text, generalPartnerLegalEntity.data!, checkYourAnswersLegalEntityKeys, enTranslationText);
 
-      checkIfPartnerValuesInText(res.text, limitedPartnerPerson.data!, personKeys, enTranslationText);
+      checkIfPartnerValuesInText(res.text, limitedPartnerPerson.data!, checkYourAnswersPersonKeys, enTranslationText);
 
-      checkIfPartnerValuesInText(res.text, limitedPartnerLegalEntity.data!, legalEntityKeys, enTranslationText);
+      checkIfPartnerValuesInText(res.text, limitedPartnerLegalEntity.data!, checkYourAnswersLegalEntityKeys, enTranslationText);
 
       expect(res.text).toContain(enTranslationText.nationalities.british);
       expect(res.text).toContain(enTranslationText.countries.unitedStates);
@@ -194,13 +194,13 @@ describe("Check Your Answers Page", () => {
         "warningMessageUpdate"
       ]);
 
-      checkIfPartnerValuesInText(res.text, generalPartnerPerson.data!, personKeys, cyTranslationText);
+      checkIfPartnerValuesInText(res.text, generalPartnerPerson.data!, checkYourAnswersPersonKeys, cyTranslationText);
 
-      checkIfPartnerValuesInText(res.text, generalPartnerLegalEntity.data!, legalEntityKeys, cyTranslationText);
+      checkIfPartnerValuesInText(res.text, generalPartnerLegalEntity.data!, checkYourAnswersLegalEntityKeys, cyTranslationText);
 
-      checkIfPartnerValuesInText(res.text, limitedPartnerPerson.data!, personKeys, cyTranslationText);
+      checkIfPartnerValuesInText(res.text, limitedPartnerPerson.data!, checkYourAnswersPersonKeys, cyTranslationText);
 
-      checkIfPartnerValuesInText(res.text, limitedPartnerLegalEntity.data!, legalEntityKeys, cyTranslationText);
+      checkIfPartnerValuesInText(res.text, limitedPartnerLegalEntity.data!, checkYourAnswersLegalEntityKeys, cyTranslationText);
 
       expect(res.text).toContain(cyTranslationText.nationalities.british);
       expect(res.text).toContain(cyTranslationText.countries.unitedStates);
@@ -218,7 +218,3 @@ describe("Check Your Answers Page", () => {
     });
   });
 });
-
-const personKeys = ["forename", "surname", "former_names", "date_of_birth", "nationality1", "usual_residential_address", "principal_office_address"];
-const legalEntityKeys = ["legal_entity_name", "legal_form", "governing_law", "legal_entity_register_name", "legal_entity_registration_location", "registered_company_number", "principal_office_address"];
-
