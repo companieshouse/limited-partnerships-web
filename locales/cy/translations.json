@@ -303,21 +303,6 @@
         "acceptedInformationLink": "WELSH - Companies House register"
     },
 
-    "months": {
-        "january": "WELSH - January",
-        "february": "WELSH - February",
-        "march": "WELSH - March",
-        "april": "WELSH - April",
-        "may": "WELSH - May",
-        "june": "WELSH - June",
-        "july": "WELSH - July",
-        "august": "WELSH - August",
-        "september": "WELSH - September",
-        "october": "WELSH - October",
-        "november": "WELSH - November",
-        "december": "WELSH - December"
-    },
-
     "yesAndNo": {
         "yes": "WELSH - Yes",
         "no": "WELSH - No"
