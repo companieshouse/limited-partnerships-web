@@ -24,130 +24,7 @@ import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
 import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
 import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 
-const testConfigs = [
-  {
-    description: "general partner correspondence address",
-    partnerType: "general",
-    addressType: "correspondence",
-    urlConstant: CHOOSE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
-    redirectUrlConstant: CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
-    postcodeKey: "sa_postcode",
-    addressKey: "service_address",
-    pageType: AddressPageType.chooseGeneralPartnerCorrespondenceAddress,
-    partnerKinds: [
-      {
-        kind: PartnerKind.ADD_GENERAL_PARTNER_PERSON,
-        enServiceName: enTranslationText.serviceName.addGeneralPartner,
-        cyServiceName: cyTranslationText.serviceName.addGeneralPartner
-      },
-      {
-        kind: PartnerKind.UPDATE_GENERAL_PARTNER_PERSON,
-        enServiceName: enTranslationText.serviceName.updateGeneralPartnerPerson,
-        cyServiceName: cyTranslationText.serviceName.updateGeneralPartnerPerson
-      }
-    ],
-    getAddressTranslations: (translationText: typeof enTranslationText | typeof cyTranslationText) =>
-      translationText.address.chooseAddress.generalPartnerCorrespondenceAddress
-  },
-  {
-    description: "general partner principal office address",
-    partnerType: "general",
-    addressType: "principalOffice",
-    urlConstant: CHOOSE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
-    redirectUrlConstant: CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
-    postcodeKey: "poa_postcode",
-    addressKey: "principal_office_address",
-    pageType: AddressPageType.chooseGeneralPartnerPrincipalOfficeAddress,
-    partnerKinds: [
-      {
-        kind: PartnerKind.ADD_GENERAL_PARTNER_LEGAL_ENTITY,
-        enServiceName: enTranslationText.serviceName.addGeneralPartner,
-        cyServiceName: cyTranslationText.serviceName.addGeneralPartner
-      },
-      {
-        kind: PartnerKind.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY,
-        enServiceName: enTranslationText.serviceName.updateGeneralPartnerLegalEntity,
-        cyServiceName: cyTranslationText.serviceName.updateGeneralPartnerLegalEntity
-      }
-    ],
-    getAddressTranslations: (translationText: typeof enTranslationText | typeof cyTranslationText) =>
-      translationText.address.chooseAddress.generalPartnerPrincipalOfficeAddress
-  },
-  {
-    description: "general partner usual residential address",
-    partnerType: "general",
-    addressType: "usualResidential",
-    urlConstant: CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-    redirectUrlConstant: CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-    postcodeKey: "ura_postcode",
-    addressKey: "usual_residential_address",
-    pageType: AddressPageType.chooseGeneralPartnerUsualResidentialAddress,
-    partnerKinds: [
-      {
-        kind: PartnerKind.ADD_GENERAL_PARTNER_PERSON,
-        enServiceName: enTranslationText.serviceName.addGeneralPartner,
-        cyServiceName: cyTranslationText.serviceName.addGeneralPartner
-      },
-      {
-        kind: PartnerKind.UPDATE_GENERAL_PARTNER_PERSON,
-        enServiceName: enTranslationText.serviceName.updateGeneralPartnerPerson,
-        cyServiceName: cyTranslationText.serviceName.updateGeneralPartnerPerson
-      }
-    ],
-    getAddressTranslations: (translationText: typeof enTranslationText | typeof cyTranslationText) =>
-      translationText.address.chooseAddress.generalPartnerUsualResidentialAddress
-  },
-  {
-    description: "limited partner principal office address",
-    partnerType: "limited",
-    addressType: "principalOffice",
-    urlConstant: CHOOSE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
-    redirectUrlConstant: CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
-    postcodeKey: "poa_postcode",
-    addressKey: "principal_office_address",
-    pageType: AddressPageType.chooseLimitedPartnerPrincipalOfficeAddress,
-    partnerKinds: [
-      {
-        kind: PartnerKind.ADD_LIMITED_PARTNER_LEGAL_ENTITY,
-        enServiceName: enTranslationText.serviceName.addLimitedPartner,
-        cyServiceName: cyTranslationText.serviceName.addLimitedPartner
-      },
-      {
-        kind: PartnerKind.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY,
-        enServiceName: enTranslationText.serviceName.updateLimitedPartnerLegalEntity,
-        cyServiceName: cyTranslationText.serviceName.updateLimitedPartnerLegalEntity
-      }
-    ],
-    getAddressTranslations: (translationText: typeof enTranslationText | typeof cyTranslationText) =>
-      translationText.address.chooseAddress.limitedPartnerPrincipalOfficeAddress
-  },
-  {
-    description: "limited partner usual residential address",
-    partnerType: "limited",
-    addressType: "usualResidential",
-    urlConstant: CHOOSE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-    redirectUrlConstant: CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
-    postcodeKey: "ura_postcode",
-    addressKey: "usual_residential_address",
-    pageType: AddressPageType.chooseLimitedPartnerUsualResidentialAddress,
-    partnerKinds: [
-      {
-        kind: PartnerKind.ADD_LIMITED_PARTNER_PERSON,
-        enServiceName: enTranslationText.serviceName.addLimitedPartner,
-        cyServiceName: cyTranslationText.serviceName.addLimitedPartner
-      },
-      {
-        kind: PartnerKind.UPDATE_LIMITED_PARTNER_PERSON,
-        enServiceName: enTranslationText.serviceName.updateLimitedPartnerPerson,
-        cyServiceName: cyTranslationText.serviceName.updateLimitedPartnerPerson
-      }
-    ],
-    getAddressTranslations: (translationText: typeof enTranslationText | typeof cyTranslationText) =>
-      translationText.address.chooseAddress.limitedPartnerUsualResidentialAddress
-  }
-];
-
-describe.each(testConfigs)(
+describe.each(testConfigs())(
   "Choose $description page",
   ({
     partnerType,
@@ -315,3 +192,128 @@ describe.each(testConfigs)(
     });
   }
 );
+
+function testConfigs() {
+  return [
+    {
+      description: "general partner correspondence address",
+      partnerType: "general",
+      addressType: "correspondence",
+      urlConstant: CHOOSE_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
+      redirectUrlConstant: CONFIRM_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL,
+      postcodeKey: "sa_postcode",
+      addressKey: "service_address",
+      pageType: AddressPageType.chooseGeneralPartnerCorrespondenceAddress,
+      partnerKinds: [
+        {
+          kind: PartnerKind.ADD_GENERAL_PARTNER_PERSON,
+          enServiceName: enTranslationText.serviceName.addGeneralPartner,
+          cyServiceName: cyTranslationText.serviceName.addGeneralPartner
+        },
+        {
+          kind: PartnerKind.UPDATE_GENERAL_PARTNER_PERSON,
+          enServiceName: enTranslationText.serviceName.updateGeneralPartnerPerson,
+          cyServiceName: cyTranslationText.serviceName.updateGeneralPartnerPerson
+        }
+      ],
+      getAddressTranslations: (translationText: typeof enTranslationText | typeof cyTranslationText) =>
+        translationText.address.chooseAddress.generalPartnerCorrespondenceAddress
+    },
+    {
+      description: "general partner principal office address",
+      partnerType: "general",
+      addressType: "principalOffice",
+      urlConstant: CHOOSE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+      redirectUrlConstant: CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+      postcodeKey: "poa_postcode",
+      addressKey: "principal_office_address",
+      pageType: AddressPageType.chooseGeneralPartnerPrincipalOfficeAddress,
+      partnerKinds: [
+        {
+          kind: PartnerKind.ADD_GENERAL_PARTNER_LEGAL_ENTITY,
+          enServiceName: enTranslationText.serviceName.addGeneralPartner,
+          cyServiceName: cyTranslationText.serviceName.addGeneralPartner
+        },
+        {
+          kind: PartnerKind.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY,
+          enServiceName: enTranslationText.serviceName.updateGeneralPartnerLegalEntity,
+          cyServiceName: cyTranslationText.serviceName.updateGeneralPartnerLegalEntity
+        }
+      ],
+      getAddressTranslations: (translationText: typeof enTranslationText | typeof cyTranslationText) =>
+        translationText.address.chooseAddress.generalPartnerPrincipalOfficeAddress
+    },
+    {
+      description: "general partner usual residential address",
+      partnerType: "general",
+      addressType: "usualResidential",
+      urlConstant: CHOOSE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+      redirectUrlConstant: CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+      postcodeKey: "ura_postcode",
+      addressKey: "usual_residential_address",
+      pageType: AddressPageType.chooseGeneralPartnerUsualResidentialAddress,
+      partnerKinds: [
+        {
+          kind: PartnerKind.ADD_GENERAL_PARTNER_PERSON,
+          enServiceName: enTranslationText.serviceName.addGeneralPartner,
+          cyServiceName: cyTranslationText.serviceName.addGeneralPartner
+        },
+        {
+          kind: PartnerKind.UPDATE_GENERAL_PARTNER_PERSON,
+          enServiceName: enTranslationText.serviceName.updateGeneralPartnerPerson,
+          cyServiceName: cyTranslationText.serviceName.updateGeneralPartnerPerson
+        }
+      ],
+      getAddressTranslations: (translationText: typeof enTranslationText | typeof cyTranslationText) =>
+        translationText.address.chooseAddress.generalPartnerUsualResidentialAddress
+    },
+    {
+      description: "limited partner principal office address",
+      partnerType: "limited",
+      addressType: "principalOffice",
+      urlConstant: CHOOSE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+      redirectUrlConstant: CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+      postcodeKey: "poa_postcode",
+      addressKey: "principal_office_address",
+      pageType: AddressPageType.chooseLimitedPartnerPrincipalOfficeAddress,
+      partnerKinds: [
+        {
+          kind: PartnerKind.ADD_LIMITED_PARTNER_LEGAL_ENTITY,
+          enServiceName: enTranslationText.serviceName.addLimitedPartner,
+          cyServiceName: cyTranslationText.serviceName.addLimitedPartner
+        },
+        {
+          kind: PartnerKind.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY,
+          enServiceName: enTranslationText.serviceName.updateLimitedPartnerLegalEntity,
+          cyServiceName: cyTranslationText.serviceName.updateLimitedPartnerLegalEntity
+        }
+      ],
+      getAddressTranslations: (translationText: typeof enTranslationText | typeof cyTranslationText) =>
+        translationText.address.chooseAddress.limitedPartnerPrincipalOfficeAddress
+    },
+    {
+      description: "limited partner usual residential address",
+      partnerType: "limited",
+      addressType: "usualResidential",
+      urlConstant: CHOOSE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+      redirectUrlConstant: CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
+      postcodeKey: "ura_postcode",
+      addressKey: "usual_residential_address",
+      pageType: AddressPageType.chooseLimitedPartnerUsualResidentialAddress,
+      partnerKinds: [
+        {
+          kind: PartnerKind.ADD_LIMITED_PARTNER_PERSON,
+          enServiceName: enTranslationText.serviceName.addLimitedPartner,
+          cyServiceName: cyTranslationText.serviceName.addLimitedPartner
+        },
+        {
+          kind: PartnerKind.UPDATE_LIMITED_PARTNER_PERSON,
+          enServiceName: enTranslationText.serviceName.updateLimitedPartnerPerson,
+          cyServiceName: cyTranslationText.serviceName.updateLimitedPartnerPerson
+        }
+      ],
+      getAddressTranslations: (translationText: typeof enTranslationText | typeof cyTranslationText) =>
+        translationText.address.chooseAddress.limitedPartnerUsualResidentialAddress
+    }
+  ];
+}
