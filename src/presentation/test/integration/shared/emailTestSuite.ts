@@ -106,9 +106,11 @@ export function runEmailTests(config: EmailTestConfig): void {
       });
 
       it.each([
-        ["English", "en", enTranslationText],
-        ["Welsh", "cy", cyTranslationText]
-      ])("should return a validation error if email is empty in %s", async (_description, lang, translationText) => {
+        ["English", "en", enTranslationText, "", "emailRequired"],
+        ["Welsh", "cy", cyTranslationText, "", "emailRequired"],
+        ["English", "en", enTranslationText, "test@example.", "emailInvalid"],
+        ["Welsh", "cy", cyTranslationText, "test@example.", "emailInvalid"]
+      ])("should return a validation error if email is not in the correct format in %s", async (_description, lang, translationText: Record<string, any>, email, errorType) => {
         setLocalesEnabled(true);
 
         const limitedPartnership = new LimitedPartnershipBuilder()
@@ -119,34 +121,13 @@ export function runEmailTests(config: EmailTestConfig): void {
 
         const res = await request(app).post(emailUrl + `?lang=${lang}`).send({
           pageType,
-          email: ""
+          email: email
         });
 
         expect(res.status).toBe(200);
-        expect(res.text).toContain(translationText.errorMessages.limitedPartnership.email.emailRequired);
+        expect(res.text).toContain(translationText.errorMessages.limitedPartnership.email[errorType]);
         expect(res.text).toContain('href="#email"');
         expect(res.text).toContain(translationText.govUk.error.title);
-      });
-
-      it.each([
-        ["English", "en", enTranslationText],
-        ["Welsh", "cy", cyTranslationText]
-      ])("should return a validation error if email is not in the correct format in %s", async (_description, lang, translationText) => {
-        setLocalesEnabled(true);
-
-        const limitedPartnership = new LimitedPartnershipBuilder()
-          .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
-          .build();
-
-        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
-        const res = await request(app).post(emailUrl + `?lang=${lang}`).send({
-          pageType,
-          email: "test@example."
-        });
-
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(translationText.errorMessages.limitedPartnership.email.emailInvalid);
       });
 
       it("should replay the invalid email the user submitted when validation fails", async () => {
