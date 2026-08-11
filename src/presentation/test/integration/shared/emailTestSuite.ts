@@ -12,8 +12,7 @@ export interface EmailTestConfig {
   pageType: string;
   defaultRedirectUrl: string;
   confirmAddressRedirectUrl: string;
-  enServiceTitle: string;
-  cyServiceTitle: string;
+  serviceTitleTranslationKey: string;
   translateExclude: string[];
   getPartnershipDisplay: (lp: any) => string;
 }
@@ -24,8 +23,7 @@ export function runEmailTests(config: EmailTestConfig): void {
     pageType,
     defaultRedirectUrl,
     confirmAddressRedirectUrl,
-    enServiceTitle,
-    cyServiceTitle,
+    serviceTitleTranslationKey,
     translateExclude,
     getPartnershipDisplay
   } = config;
@@ -38,28 +36,23 @@ export function runEmailTests(config: EmailTestConfig): void {
     });
 
     describe("Get email page", () => {
-      it("should load the email page with English text", async () => {
+      it.each([
+        ["English", "en", enTranslationText],
+        ["Welsh", "cy", cyTranslationText]
+      ])("should load the email page with %s text", async (_language, lang, translationText) => {
         setLocalesEnabled(true);
-        const res = await request(app).get(emailUrl + "?lang=en");
+        const res = await request(app).get(emailUrl + `?lang=${lang}`);
 
         expect(res.status).toBe(200);
-        testTranslations(res.text, enTranslationText.partnership.emailPage, translateExclude);
+        testTranslations(res.text, translationText.partnership.emailPage, translateExclude);
         expect(res.text).toContain(
-          `${enTranslationText.partnership.emailPage.title} - ${enServiceTitle} - GOV.UK`
+          `${translationText.partnership.emailPage.title} - ${translationText[serviceTitleTranslationKey]} - GOV.UK`
         );
-        expect(res.text).not.toContain("WELSH -");
-      });
-
-      it("should load the email page with Welsh text", async () => {
-        setLocalesEnabled(true);
-        const res = await request(app).get(emailUrl + "?lang=cy");
-
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(
-          `${cyTranslationText.partnership.emailPage.title} - ${cyServiceTitle} - GOV.UK`
-        );
-        testTranslations(res.text, cyTranslationText.partnership.emailPage, translateExclude);
-        expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
+        if (lang === "en") {
+          expect(res.text).not.toContain("WELSH -");
+        } else {
+          expect(res.text).toContain("WELSH -");
+        }
       });
 
       it("should load the email page with data from api", async () => {
@@ -75,12 +68,26 @@ export function runEmailTests(config: EmailTestConfig): void {
     });
 
     describe("Post email", () => {
-      it("should send email and redirect to the next page", async () => {
-        const limitedPartnership = new LimitedPartnershipBuilder()
-          .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
-          .withRegisteredOfficeAddress(null)
-          .build();
+      it.each([
+        {
+          description: "redirect to the next page",
+          nullifyAddress: true,
+          expectedRedirect: defaultRedirectUrl
+        },
+        {
+          description: "redirect to the confirm registered office address page if the registered office address is already saved",
+          nullifyAddress: false,
+          expectedRedirect: confirmAddressRedirectUrl
+        }
+      ])("should $description", async ({ nullifyAddress, expectedRedirect }) => {
+        const builder = new LimitedPartnershipBuilder()
+          .withId(appDevDependencies.limitedPartnershipGateway.submissionId);
 
+        if (nullifyAddress) {
+          builder.withRegisteredOfficeAddress(null);
+        }
+
+        const limitedPartnership = builder.build();
         appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
         const res = await request(app).post(emailUrl).send({
@@ -89,20 +96,7 @@ export function runEmailTests(config: EmailTestConfig): void {
         });
 
         expect(res.status).toBe(302);
-        expect(res.text).toContain(`Redirecting to ${defaultRedirectUrl}`);
-      });
-
-      it("should redirect to the confirm registered office address page if the registered office address is already saved", async () => {
-        const limitedPartnership = new LimitedPartnershipBuilder().build();
-        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
-        const res = await request(app).post(emailUrl).send({
-          pageType,
-          email: "test@example.com"
-        });
-
-        expect(res.status).toBe(302);
-        expect(res.text).toContain(`Redirecting to ${confirmAddressRedirectUrl}`);
+        expect(res.text).toContain(`Redirecting to ${expectedRedirect}`);
       });
 
       it.each([

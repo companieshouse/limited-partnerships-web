@@ -2,7 +2,6 @@ import { EMAIL_URL, WHERE_IS_THE_JURISDICTION_URL } from "../../../controller/re
 import RegistrationPageType from "../../../controller/registration/PageType";
 import { CONFIRM_REGISTERED_OFFICE_ADDRESS_URL } from "../../../controller/addressLookUp/url/registration";
 import { getUrl } from "../../utils";
-import { enTranslationText, cyTranslationText } from "../../../../test/utils/locales";
 import { runEmailTests } from "../shared/emailTestSuite";
 
 runEmailTests({
@@ -10,8 +9,7 @@ runEmailTests({
   pageType: RegistrationPageType.email,
   defaultRedirectUrl: getUrl(WHERE_IS_THE_JURISDICTION_URL),
   confirmAddressRedirectUrl: getUrl(CONFIRM_REGISTERED_OFFICE_ADDRESS_URL),
-  enServiceTitle: enTranslationText.serviceRegistration,
-  cyServiceTitle: cyTranslationText.serviceRegistration,
+  serviceTitleTranslationKey: "serviceRegistration",
   translateExclude: ["transition"],
   getPartnershipDisplay: (lp) =>
     `${lp?.data?.partnership_name?.toUpperCase()} ${lp?.data?.name_ending?.toUpperCase()}`
