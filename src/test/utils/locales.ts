@@ -21,7 +21,7 @@ import cyPsc from "../../../locales/cy/personWithSignificantControl.json";
 import cySicCodes from "../../../locales/cy/sicCodes.json";
 import cyRootTranslations from "../../../locales/cy/translations.json";
 
-export const enTranslationText = {
+export const enTranslationText: Record<string, any> = {
   ...enRootTranslations,
   ...enAddress,
   ...enCountries,
@@ -35,7 +35,7 @@ export const enTranslationText = {
   ...enSicCodes
 };
 
-export const cyTranslationText = {
+export const cyTranslationText: Record<string, any> = {
   ...cyRootTranslations,
   ...cyAddress,
   ...cyCountries,
