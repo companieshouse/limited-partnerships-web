@@ -151,4 +151,23 @@ describe("Partnership term change date page", () => {
       expect(res.text).toContain(toEscapedHtml(enTranslationText.errorMessages.dateOfUpdate.dateInvalidChars.term));
     }
   );
+
+  it.each([
+    ["32", "02", "2023"],
+    ["02", "13", "2023"]
+  ])("should display error message when a field contains an invalid date", async (day: string, month: string, year: string) => {
+    const limitedPartnership = new LimitedPartnershipBuilder().build();
+
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+    const res = await request(app).post(URL).send({
+      pageType: PostTransitionPageType.whenDidTheTermChange,
+      "date_of_update-day": day,
+      "date_of_update-month": month,
+      "date_of_update-year": year
+    });
+
+    expect(res.status).toBe(200);
+    expect(res.text).toContain(toEscapedHtml(enTranslationText.errorMessages.dateOfUpdate.dateInvalidDate.term));
+  });
 });
