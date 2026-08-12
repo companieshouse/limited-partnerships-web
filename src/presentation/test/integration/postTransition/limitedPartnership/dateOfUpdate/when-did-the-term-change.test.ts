@@ -82,19 +82,50 @@ describe("Partnership term change date page", () => {
     expect(res.text).toContain(toEscapedHtml(enTranslationText.errorMessages.dateOfUpdate.dateNotInPast.term));
   });
 
-  it("should display error message when the date is missing", async () => {
-    const limitedPartnership = new LimitedPartnershipBuilder().build();
+  it.each([
+    ["", "", "", "dateMissing"],
+    ["", "01", "", "dayMissing"],
+    ["10", "", "", "monthMissing"],
+    ["10", "01", "", "yearMissing"]
+  ])(
+    "should display error message when the date is missing",
+    async (day: string, month: string, year: string, errorKey: string) => {
+      const limitedPartnership = new LimitedPartnershipBuilder().build();
 
-    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-    const res = await request(app).post(URL).send({
-      pageType: PostTransitionPageType.whenDidTheTermChange,
-      "date_of_update-day": "",
-      "date_of_update-month": "",
-      "date_of_update-year": ""
-    });
+      const res = await request(app).post(URL).send({
+        pageType: PostTransitionPageType.whenDidTheTermChange,
+        "date_of_update-day": day,
+        "date_of_update-month": month,
+        "date_of_update-year": year
+      });
 
-    expect(res.status).toBe(200);
-    expect(res.text).toContain(toEscapedHtml(enTranslationText.errorMessages.dateOfUpdate.dateMissing.term));
-  });
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(toEscapedHtml(enTranslationText.errorMessages.dateOfUpdate[errorKey].term));
+    }
+  );
+
+  it.each([
+    ["222", "02", "2023", "dayInvalidLength"],
+    ["02", "123", "2023", "monthInvalidLength"],
+    ["02", "02", "20201", "yearInvalidLength"]
+  ])(
+    "should display error message when the %s is too long",
+    async (day: string, month: string, year: string, errorKey: string) => {
+      const limitedPartnership = new LimitedPartnershipBuilder().build();
+
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+      const res = await request(app).post(URL).send({
+        pageType: PostTransitionPageType.whenDidTheTermChange,
+        "date_of_update-day": day,
+        "date_of_update-month": month,
+        "date_of_update-year": year
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(toEscapedHtml(enTranslationText.errorMessages.dateOfUpdate[errorKey]));
+    }
+  );
 });

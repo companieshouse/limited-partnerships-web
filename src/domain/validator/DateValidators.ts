@@ -64,6 +64,10 @@ export const validateDateOfUpdate = (
     return uiErrors;
   }
 
+  if (hasInvalidDateFieldLengths(safeDay, safeMonth, safeYear, dateOfUpdateField, uiErrors, dateErrorMessages)) {
+    return uiErrors;
+  }
+
   if (!isDateInPast(safeDay, safeMonth, safeYear)) {
     uiErrors.setWebError(dateOfUpdateField, dateErrorMessages?.dateNotInPast[pageKey]);
   }
@@ -145,7 +149,14 @@ const hasMissingDateFields = (
   return false;
 };
 
-const hasInvalidDateFieldLengths = (day: string, month: string, year: string, fieldId: string, uiErrors: UIErrors, errorMessages: DateErrorMessages): boolean => {
+const hasInvalidDateFieldLengths = (
+  day: string,
+  month: string,
+  year: string,
+  fieldId: string,
+  uiErrors: UIErrors,
+  errorMessages: DateErrorMessages | Record<string, any>
+): boolean => {
   if ((day?.trim().length || 0) > 2) {
     uiErrors.setWebError(fieldId, errorMessages?.dayInvalidLength);
     return true;
