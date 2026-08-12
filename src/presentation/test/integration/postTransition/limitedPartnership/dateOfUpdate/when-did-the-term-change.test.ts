@@ -84,11 +84,11 @@ describe("Partnership term change date page", () => {
 
   it.each([
     ["", "", "", "dateMissing"],
-    ["", "01", "", "dayMissing"],
-    ["10", "", "", "monthMissing"],
+    ["", "01", "2025", "dayMissing"],
+    ["10", "", "2025", "monthMissing"],
     ["10", "01", "", "yearMissing"]
   ])(
-    "should display error message when the date is missing",
+    "should display error message when day='%s', month='%s', year='%s'",
     async (day: string, month: string, year: string, errorKey: string) => {
       const limitedPartnership = new LimitedPartnershipBuilder().build();
 
@@ -111,7 +111,7 @@ describe("Partnership term change date page", () => {
     ["02", "123", "2023", "monthInvalidLength"],
     ["02", "02", "20201", "yearInvalidLength"]
   ])(
-    "should display error message when the %s is too long",
+    "should display error message when field length is too long",
     async (day: string, month: string, year: string, errorKey: string) => {
       const limitedPartnership = new LimitedPartnershipBuilder().build();
 
@@ -126,6 +126,29 @@ describe("Partnership term change date page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(toEscapedHtml(enTranslationText.errorMessages.dateOfUpdate[errorKey]));
+    }
+  );
+
+  it.each([
+    ["a2", "02", "2023"],
+    ["02", "2a", "2023"],
+    ["02", "02", "202a"]
+  ])(
+    "should display error message when a field contains non-numeric characters",
+    async (day: string, month: string, year: string) => {
+      const limitedPartnership = new LimitedPartnershipBuilder().build();
+
+      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+      const res = await request(app).post(URL).send({
+        pageType: PostTransitionPageType.whenDidTheTermChange,
+        "date_of_update-day": day,
+        "date_of_update-month": month,
+        "date_of_update-year": year
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(toEscapedHtml(enTranslationText.errorMessages.dateOfUpdate.dateInvalidChars.term));
     }
   );
 });

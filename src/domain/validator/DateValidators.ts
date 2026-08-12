@@ -68,6 +68,11 @@ export const validateDateOfUpdate = (
     return uiErrors;
   }
 
+  if (dateContainsInvalidChars(safeDay, safeMonth, safeYear)) {
+    uiErrors.setWebError(dateOfUpdateField, dateErrorMessages?.dateInvalidChars[pageKey]);
+    return uiErrors;
+  }
+
   if (!isDateInPast(safeDay, safeMonth, safeYear)) {
     uiErrors.setWebError(dateOfUpdateField, dateErrorMessages?.dateNotInPast[pageKey]);
   }
