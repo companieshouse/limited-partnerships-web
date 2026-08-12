@@ -51,12 +51,14 @@ export const validateDateOfUpdate = (
   month: string,
   year: string,
   dateErrorMessages: Record<string, any>,
-  pageKey: string
+  pageKey: string,
+  registrationDate?: string
 ): UIErrors => {
   const safeDay = day ?? "";
   const safeMonth = month ?? "";
   const safeYear = year ?? "";
   const dateOfUpdateField = "date_of_update";
+  const registrationDateUtcMidnight = registrationDate ? getUtcMidnightFromIsoDate(registrationDate) : null;
 
   const uiErrors: UIErrors = new UIErrors();
 
@@ -82,7 +84,41 @@ export const validateDateOfUpdate = (
     uiErrors.setWebError(dateOfUpdateField, dateErrorMessages?.dateNotInPast[pageKey]);
   }
 
+  const enteredDateUtcMidnight = getUtcMidnightFromDateParts(safeDay, safeMonth, safeYear);
+
+  if (
+    enteredDateUtcMidnight !== null &&
+    registrationDateUtcMidnight !== null &&
+    enteredDateUtcMidnight < registrationDateUtcMidnight
+  ) {
+    uiErrors.setWebError(dateOfUpdateField, dateErrorMessages?.dateBeforeRegistrationDate[pageKey]);
+  }
+
   return uiErrors;
+};
+
+const getUtcMidnightFromIsoDate = (isoDate: string): number | null => {
+  const parsedRegistrationDate = new Date(isoDate);
+
+  if (Number.isNaN(parsedRegistrationDate.getTime())) {
+    return null;
+  }
+
+  return Date.UTC(
+    parsedRegistrationDate.getUTCFullYear(),
+    parsedRegistrationDate.getUTCMonth(),
+    parsedRegistrationDate.getUTCDate()
+  );
+};
+
+const getUtcMidnightFromDateParts = (day: string, month: string, year: string): number | null => {
+  const parsedDateParts = parseDateParts(day, month, year);
+
+  if (!parsedDateParts) {
+    return null;
+  }
+
+  return Date.UTC(parsedDateParts.y, parsedDateParts.m, parsedDateParts.d);
 };
 
 const isDigitsOnly = (value: string): boolean => /^\d+$/.test(value);
@@ -223,16 +259,13 @@ export const isValidDateStringAndNotInFuture = (date: string): boolean => {
 };
 
 export const isDateInPast = (day: string, month: string, year: string): boolean => {
-  const parsedDateParts = parseDateParts(day, month, year);
+  const targetUtcMidnight = getUtcMidnightFromDateParts(day, month, year);
 
-  if (!parsedDateParts) {
+  if (targetUtcMidnight === null) {
     return false;
   }
 
-  const { d, m, y } = parsedDateParts;
-
   // use UTC to deal with daylight savings and timezones; compare date-only at UTC midnight
-  const targetUtcMidnight = Date.UTC(y, m, d);
   const now = new Date();
   const todayUtcMidnightForLocal = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
 
@@ -240,16 +273,13 @@ export const isDateInPast = (day: string, month: string, year: string): boolean 
 };
 
 export const isDateToday = (day: string, month: string, year: string): boolean => {
-  const parsedDateParts = parseDateParts(day, month, year);
+  const targetUtcMidnight = getUtcMidnightFromDateParts(day, month, year);
 
-  if (!parsedDateParts) {
+  if (targetUtcMidnight === null) {
     return false;
   }
 
-  const { d, m, y } = parsedDateParts;
-
   // use UTC to deal with daylight savings and timezones; compare date-only at UTC midnight
-  const targetUtcMidnight = Date.UTC(y, m, d);
   const now = new Date();
   const todayUtcMidnightForLocal = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
 

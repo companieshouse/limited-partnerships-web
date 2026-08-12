@@ -241,13 +241,15 @@ class LimitedPartnershipController extends AbstractController {
         const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
 
         const limitedPartnership = await this.getLimitedPartnership(ids, tokens);
+        const registrationDate = await this.companyService.getCompanyIncorporationDate(tokens, ids.companyId);
 
         const errors: UIErrors = validateDateOfUpdate(
           request.body["date_of_update-day"],
           request.body["date_of_update-month"],
           request.body["date_of_update-year"],
           response.locals.i18n.errorMessages.dateOfUpdate,
-          pageRouting?.data?.titleKey
+          pageRouting?.data?.titleKey,
+          registrationDate
         );
 
         const errorData = this.makeErrorData(limitedPartnership, request.body);

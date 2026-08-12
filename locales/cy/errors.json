@@ -236,6 +236,9 @@
             "dateNotInPast": {
                 "term":"WELSH - Date the term changed must be in the past"
             },
+            "dateBeforeRegistrationDate": {
+                "term":"WELSH - Date the term changed must be the same as or after limited partnership’s registration date"
+            },
             "dateMissing": {
                 "term": "WELSH - Enter the date the term changed"
             },

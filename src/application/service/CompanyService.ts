@@ -112,6 +112,23 @@ class CompanyService {
     }
   }
 
+  public async getCompanyIncorporationDate(opt: Tokens, company_number: string): Promise<string | undefined> {
+    try {
+      const companyProfile = await this.companyGateway.getCompanyProfile(opt, company_number);
+      return companyProfile.dateOfCreation;
+    } catch (errors: any) {
+      const { isValidationErrors } = extractAPIErrors(errors);
+
+      logger.error(`Error retrieving Company profile: ${company_number} ${JSON.stringify(errors)}`);
+
+      if (!isValidationErrors) {
+        throw errors;
+      }
+
+      return undefined;
+    }
+  }
+
   private buildPersonPartner(
     partner: Partial<GeneralPartner> | Partial<LimitedPartner>,
     companyAppointment: Partial<CompanyOfficer>
@@ -207,13 +224,15 @@ class CompanyService {
     const partners = {
       generalPartners:
         this.addAppointmentId(companyOfficers, company_number).filter(
-          (officer) => officer.officerRole === "general-partner-in-a-limited-partnership"
-            || officer.officerRole === "corporate-general-partner-in-a-limited-partnership"
+          (officer) =>
+            officer.officerRole === "general-partner-in-a-limited-partnership" ||
+            officer.officerRole === "corporate-general-partner-in-a-limited-partnership"
         ) || [],
       limitedPartners:
         this.addAppointmentId(companyOfficers, company_number).filter(
-          (officer) => officer.officerRole === "limited-partner-in-a-limited-partnership"
-            || officer.officerRole === "corporate-limited-partner-in-a-limited-partnership"
+          (officer) =>
+            officer.officerRole === "limited-partner-in-a-limited-partnership" ||
+            officer.officerRole === "corporate-limited-partner-in-a-limited-partnership"
         ) || []
     };
     return partners;
@@ -257,9 +276,7 @@ class CompanyService {
 
   private calculatePartnershipType(companyProfile: Partial<CompanyProfile>): PartnershipType | undefined {
     const isCompanyInTransition =
-      !companyProfile.subtype ||
-      companyProfile.subtype === "" ||
-      companyProfile.subtype === "private-fund-limited-partnership";
+      !companyProfile.subtype || companyProfile.subtype === "" || companyProfile.subtype === "private-fund-limited-partnership";
 
     if (isCompanyInTransition) {
       return this.calculatePartnershipTypeTransition(companyProfile);
@@ -310,9 +327,13 @@ class CompanyService {
   }
 
   private toTitleCase(str: any) {
-    return str.toLowerCase().split(' ').map((word: any) => {
-      return (word.charAt(0).toUpperCase() + word.slice(1));
-    }).join(' ');
+    return str
+      .toLowerCase()
+      .split(" ")
+      .map((word: any) => {
+        return word.charAt(0).toUpperCase() + word.slice(1);
+      })
+      .join(" ");
   }
 }
 

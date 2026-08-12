@@ -235,6 +235,9 @@
             "dateNotInPast": {
                 "term": "Date the term changed must be in the past"
             },
+            "dateBeforeRegistrationDate": {
+                "term": "Date the term changed must be the same as or after limited partnership's registration date"
+            },
             "dateMissing": {
                 "term": "Enter the date the term changed"
             },

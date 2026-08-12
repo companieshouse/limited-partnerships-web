@@ -10,7 +10,6 @@ import {
 } from "../../../../../controller/postTransition/url";
 import PostTransitionPageType from "../../../../../controller/postTransition/pageType";
 import CompanyProfileBuilder from "../../../../builder/CompanyProfileBuilder";
-import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBuilder";
 import TransactionBuilder from "../../../../builder/TransactionBuilder";
 import { PartnershipKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { enTranslationText, cyTranslationText } from "../../../../../../test/utils/locales";
@@ -56,7 +55,7 @@ describe("Partnership term change date page", () => {
         pageType: PostTransitionPageType.whenDidTheTermChange,
         "date_of_update-day": "10",
         "date_of_update-month": "01",
-        "date_of_update-year": "2020"
+        "date_of_update-year": "2024"
       });
 
       const REDIRECT_URL = getUrl(TERM_CHANGE_CHECK_YOUR_ANSWERS_URL);
@@ -67,10 +66,6 @@ describe("Partnership term change date page", () => {
   });
 
   it("should display error message when the date is in the future", async () => {
-    const limitedPartnership = new LimitedPartnershipBuilder().build();
-
-    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
     const res = await request(app).post(URL).send({
       pageType: PostTransitionPageType.whenDidTheTermChange,
       "date_of_update-day": "10",
@@ -90,10 +85,6 @@ describe("Partnership term change date page", () => {
   ])(
     "should display error message when day='%s', month='%s', year='%s'",
     async (day: string, month: string, year: string, errorKey: string) => {
-      const limitedPartnership = new LimitedPartnershipBuilder().build();
-
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
       const res = await request(app).post(URL).send({
         pageType: PostTransitionPageType.whenDidTheTermChange,
         "date_of_update-day": day,
@@ -113,10 +104,6 @@ describe("Partnership term change date page", () => {
   ])(
     "should display error message when field length is too long",
     async (day: string, month: string, year: string, errorKey: string) => {
-      const limitedPartnership = new LimitedPartnershipBuilder().build();
-
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
       const res = await request(app).post(URL).send({
         pageType: PostTransitionPageType.whenDidTheTermChange,
         "date_of_update-day": day,
@@ -136,10 +123,6 @@ describe("Partnership term change date page", () => {
   ])(
     "should display error message when a field contains non-numeric characters",
     async (day: string, month: string, year: string) => {
-      const limitedPartnership = new LimitedPartnershipBuilder().build();
-
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
       const res = await request(app).post(URL).send({
         pageType: PostTransitionPageType.whenDidTheTermChange,
         "date_of_update-day": day,
@@ -156,10 +139,6 @@ describe("Partnership term change date page", () => {
     ["32", "02", "2023"],
     ["02", "13", "2023"]
   ])("should display error message when a field contains an invalid date", async (day: string, month: string, year: string) => {
-    const limitedPartnership = new LimitedPartnershipBuilder().build();
-
-    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
     const res = await request(app).post(URL).send({
       pageType: PostTransitionPageType.whenDidTheTermChange,
       "date_of_update-day": day,
@@ -169,5 +148,31 @@ describe("Partnership term change date page", () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(toEscapedHtml(enTranslationText.errorMessages.dateOfUpdate.dateInvalidDate.term));
+  });
+
+  it("should display error message when date is before the partnership incorporation date", async () => {
+    const res = await request(app).post(URL).send({
+      pageType: PostTransitionPageType.whenDidTheTermChange,
+      "date_of_update-day": "10",
+      "date_of_update-month": "01",
+      "date_of_update-year": "2000"
+    });
+
+    expect(res.status).toBe(200);
+    expect(res.text).toContain(toEscapedHtml(enTranslationText.errorMessages.dateOfUpdate.dateBeforeRegistrationDate.term));
+  });
+
+  it("should not display error message when date is the same as the partnership incorporation date", async () => {
+    const res = await request(app).post(URL).send({
+      pageType: PostTransitionPageType.whenDidTheTermChange,
+      "date_of_update-day": "29",
+      "date_of_update-month": "12",
+      "date_of_update-year": "2023"
+    });
+
+    const REDIRECT_URL = getUrl(TERM_CHANGE_CHECK_YOUR_ANSWERS_URL);
+
+    expect(res.status).toBe(302);
+    expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
   });
 });
