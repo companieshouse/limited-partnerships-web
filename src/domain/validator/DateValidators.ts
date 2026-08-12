@@ -46,6 +46,31 @@ export const validateDateOfBirth = (day: string | undefined, month: string | und
   }
 };
 
+export const validateDateOfUpdate = (
+  day: string,
+  month: string,
+  year: string,
+  dateErrorMessages: Record<string, any>,
+  pageKey: string
+): UIErrors => {
+  const safeDay = day ?? "";
+  const safeMonth = month ?? "";
+  const safeYear = year ?? "";
+  const dateOfUpdateField = "date_of_update";
+
+  const uiErrors: UIErrors = new UIErrors();
+
+  if (hasMissingDateFields(safeDay, safeMonth, safeYear, dateOfUpdateField, uiErrors, dateErrorMessages, pageKey)) {
+    return uiErrors;
+  }
+
+  if (!isDateInPast(safeDay, safeMonth, safeYear)) {
+    uiErrors.setWebError(dateOfUpdateField, dateErrorMessages?.dateNotInPast[pageKey]);
+  }
+
+  return uiErrors;
+};
+
 const isDigitsOnly = (value: string): boolean => /^\d+$/.test(value);
 
 const parseDateParts = (day: string, month: string, year: string): { d: number; m: number; y: number } | null => {
@@ -73,39 +98,47 @@ const parseDateParts = (day: string, month: string, year: string): { d: number; 
   return { d, m, y };
 };
 
-const hasMissingDateFields = (day: string, month: string, year: string, fieldId: string, uiErrors: UIErrors, errorMessages: DateErrorMessages): boolean => {
+const hasMissingDateFields = (
+  day: string,
+  month: string,
+  year: string,
+  fieldId: string,
+  uiErrors: UIErrors,
+  errorMessages: DateErrorMessages | Record<string, any>,
+  pageKey?: string
+): boolean => {
   if (!day?.trim() && !month?.trim() && !year?.trim()) {
-    uiErrors.setWebError(fieldId, errorMessages?.dateMissing);
+    uiErrors.setWebError(fieldId, pageKey ? errorMessages?.dateMissing[pageKey] : errorMessages?.dateMissing);
     return true;
   }
 
   if (!day?.trim() && month?.trim() && year?.trim()) {
-    uiErrors.setWebError(fieldId, errorMessages?.dayMissing);
+    uiErrors.setWebError(fieldId, pageKey ? errorMessages?.dayMissing[pageKey] : errorMessages?.dayMissing);
     return true;
   }
 
   if (day?.trim() && !month?.trim() && year?.trim()) {
-    uiErrors.setWebError(fieldId, errorMessages?.monthMissing);
+    uiErrors.setWebError(fieldId, pageKey ? errorMessages?.monthMissing[pageKey] : errorMessages?.monthMissing);
     return true;
   }
 
   if (day?.trim() && month?.trim() && !year?.trim()) {
-    uiErrors.setWebError(fieldId, errorMessages?.yearMissing);
+    uiErrors.setWebError(fieldId, pageKey ? errorMessages?.yearMissing[pageKey] : errorMessages?.yearMissing);
     return true;
   }
 
   if (!day?.trim() && !month?.trim() && year?.trim()) {
-    uiErrors.setWebError(fieldId, errorMessages?.dayAndMonthMissing);
+    uiErrors.setWebError(fieldId, pageKey ? errorMessages?.dayAndMonthMissing[pageKey] : errorMessages?.dayAndMonthMissing);
     return true;
   }
 
   if (day?.trim() && !month?.trim() && !year?.trim()) {
-    uiErrors.setWebError(fieldId, errorMessages?.monthAndYearMissing);
+    uiErrors.setWebError(fieldId, pageKey ? errorMessages?.monthAndYearMissing[pageKey] : errorMessages?.monthAndYearMissing);
     return true;
   }
 
   if (!day?.trim() && month?.trim() && !year?.trim()) {
-    uiErrors.setWebError(fieldId, errorMessages?.dayAndYearMissing);
+    uiErrors.setWebError(fieldId, pageKey ? errorMessages?.dayAndYearMissing[pageKey] : errorMessages?.dayAndYearMissing);
     return true;
   }
 

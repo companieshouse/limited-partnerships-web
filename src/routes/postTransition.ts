@@ -376,7 +376,7 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
   router.post(
     WHEN_DID_THE_TERM_CHANGE_URL,
     companyAuthentication,
-    dependencies.limitedPartnershipPostTransitionController.sendPageData()
+    dependencies.limitedPartnershipPostTransitionController.sendDateOfUpdatePageData()
   );
 
   router.get(

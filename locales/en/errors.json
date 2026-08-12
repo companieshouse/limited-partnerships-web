@@ -231,7 +231,40 @@
             "partnershipName": "Date the partnership name changed must be the same as or after limited partnership's registration date",
             "term": "Date the term changed must be the same as or after limited partnership's registration date",
             "generalPartner": "Date the general partner changed must be the same as or after limited partnership's registration date",
-            "limitedPartner": "Date the limited partner changed must be the same as or after limited partnership's registration date"
+            "limitedPartner": "Date the limited partner changed must be the same as or after limited partnership's registration date",
+            "dateNotInPast": {
+                "term": "Date the term changed must be in the past"
+            },
+            "dateMissing": {
+                "term": "Enter the date the term changed"
+            },
+            "dayMissing": {
+                "term": "Date the term changed must include a day"
+            },
+            "monthMissing": {
+                "term": "Date the term changed must include a month"
+            },
+            "yearMissing": {
+                "term": "Date the term changed must include a year"
+            },
+            "dayAndMonthMissing": {
+                "term": "Date the term changed must include a day and a month"
+            },
+            "monthAndYearMissing": {
+                "term": "Date the term changed must include a month and a year"
+            },
+            "dayAndYearMissing": {
+                "term": "Date the term changed must include a day and a year"
+            },
+            "dateInvalidChars": {
+                "term": "Date the term changed must only include numbers"
+            },
+            "dateInvalidDate": {
+                "term": "Date the term changed must be a real date"
+            },
+            "dayInvalidLength": "Day must be 1 or 2 numbers",
+            "monthInvalidLength": "Month must be 1 or 2 numbers",
+            "yearInvalidLength": "Year must be 4 numbers"
         },
 
         "sicCodes": {

@@ -3,7 +3,6 @@ import request from "supertest";
 import app from "../../../app";
 import { appDevDependencies } from "../../../../../../config/dev-dependencies";
 import { countOccurrences, getUrl, setLocalesEnabled, toEscapedHtml } from "../../../../utils";
-import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
 
 import {
   TERM_CHANGE_CHECK_YOUR_ANSWERS_URL,
@@ -53,12 +52,11 @@ describe("Partnership term change date page", () => {
 
   describe("POST partnership term change date page", () => {
     it("should navigate to next page with date of update", async () => {
-      const limitedPartnership = new LimitedPartnershipBuilder().withDateOfUpdate("2024-10-10").build();
-
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
       const res = await request(app).post(URL).send({
-        pageType: PostTransitionPageType.whenDidTheTermChange
+        pageType: PostTransitionPageType.whenDidTheTermChange,
+        "date_of_update-day": "10",
+        "date_of_update-month": "01",
+        "date_of_update-year": "2020"
       });
 
       const REDIRECT_URL = getUrl(TERM_CHANGE_CHECK_YOUR_ANSWERS_URL);
@@ -68,24 +66,35 @@ describe("Partnership term change date page", () => {
     });
   });
 
-  it("should display the specifc error message rather than the original when the date is before the incorporation date", async () => {
-    const limitedPartnership = new LimitedPartnershipBuilder().withDateOfUpdate("2024-10-10").build();
+  it("should display error message when the date is in the future", async () => {
+    const limitedPartnership = new LimitedPartnershipBuilder().build();
 
     appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-    const originalErrorMessage = "Default";
-    const expectedErrorMessage = toEscapedHtml(enTranslationText.errorMessages.dateOfUpdate.term);
-    const apiErrors: ApiErrors = {
-      errors: { date_of_update: originalErrorMessage }
-    };
-    appDevDependencies.limitedPartnershipGateway.feedErrors(apiErrors);
-
     const res = await request(app).post(URL).send({
-      pageType: PostTransitionPageType.whenDidTheTermChange
+      pageType: PostTransitionPageType.whenDidTheTermChange,
+      "date_of_update-day": "10",
+      "date_of_update-month": "01",
+      "date_of_update-year": "2030"
     });
 
     expect(res.status).toBe(200);
-    expect(res.text).not.toContain(originalErrorMessage);
-    expect(res.text).toContain(expectedErrorMessage);
+    expect(res.text).toContain(toEscapedHtml(enTranslationText.errorMessages.dateOfUpdate.dateNotInPast.term));
+  });
+
+  it("should display error message when the date is missing", async () => {
+    const limitedPartnership = new LimitedPartnershipBuilder().build();
+
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+    const res = await request(app).post(URL).send({
+      pageType: PostTransitionPageType.whenDidTheTermChange,
+      "date_of_update-day": "",
+      "date_of_update-month": "",
+      "date_of_update-year": ""
+    });
+
+    expect(res.status).toBe(200);
+    expect(res.text).toContain(toEscapedHtml(enTranslationText.errorMessages.dateOfUpdate.dateMissing.term));
   });
 });

@@ -14,7 +14,6 @@ import { PageRouting } from "../PageRouting";
 import postTransitionRouting from "./routing";
 import PostTransitionPageType from "./pageType";
 import {
-  DATE_OF_UPDATE_TYPE_PREFIX,
   DATE_OF_UPDATE_TEMPLATE,
   JOURNEY_TYPE_PARAM,
   CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX,
@@ -22,7 +21,8 @@ import {
   TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNERSHIP,
   CHS_URL,
   TRANSACTION_DESCRIPTION_DESIGNATE_AS_PRIVATE_FUND_PARTNERSHIP,
-  JOURNEY_QUERY_PARAM
+  JOURNEY_QUERY_PARAM,
+  DATE_OF_UPDATE_TYPE_PREFIX
 } from "../../../config/constants";
 import { getJourneyTypes } from "../../../utils";
 import CompanyService from "../../../application/service/CompanyService";
@@ -33,6 +33,7 @@ import AddressService from "../../../application/service/AddressService";
 
 import { CONFIRMATION_POST_TRANSITION_URL, PAYMENT_RESPONSE_URL } from "../global/url";
 import PaymentService from "../../../application/service/PaymentService";
+import { validateDateOfUpdate } from "../../../domain/validator/DateValidators";
 
 class LimitedPartnershipController extends AbstractController {
   constructor(
@@ -92,10 +93,7 @@ class LimitedPartnershipController extends AbstractController {
           "Term change is not allowed for PFLP or SPFLP partnership types"
         );
 
-        response.render(
-          super.templateName(pageRouting.currentUrl),
-          super.makeProps(pageRouting, { limitedPartnership }, null)
-        );
+        response.render(super.templateName(pageRouting.currentUrl), super.makeProps(pageRouting, { limitedPartnership }, null));
       } catch (error) {
         next(error);
       }
@@ -121,10 +119,7 @@ class LimitedPartnershipController extends AbstractController {
         const pageType = super.extractPageTypeOrThrowError(request, PostTransitionPageType);
         const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
 
-        const { limitedPartnership } = await this.companyService.buildLimitedPartnershipFromCompanyProfile(
-          tokens,
-          ids.companyId
-        );
+        const { limitedPartnership } = await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId);
 
         const errorData = this.makeErrorData(
           limitedPartnership,
@@ -134,16 +129,12 @@ class LimitedPartnershipController extends AbstractController {
         if (addressKey) {
           const errors = this.validateAddress(request, response, limitedPartnership, partnershipKind);
           if (errors?.hasErrors()) {
-            return response.render(
-              super.templateName(pageRouting.currentUrl),
-              super.makeProps(pageRouting, errorData, errors)
-            );
+            return response.render(super.templateName(pageRouting.currentUrl), super.makeProps(pageRouting, errorData, errors));
           }
         }
 
         const transactionDescription = response.locals.serviceName ?? TRANSACTION_DESCRIPTION_UPDATE_LIMITED_PARTNERSHIP;
-        const resultTransaction = await this.createTransaction(
-          limitedPartnership, tokens, transactionDescription);
+        const resultTransaction = await this.createTransaction(limitedPartnership, tokens, transactionDescription);
         if (resultTransaction.errors) {
           return response.render(
             super.templateName(pageRouting.currentUrl),
@@ -210,10 +201,7 @@ class LimitedPartnershipController extends AbstractController {
         if (addressKey) {
           const errors = this.validateAddress(request, response, limitedPartnership, limitedPartnership.data?.kind ?? "");
           if (errors?.hasErrors()) {
-            return response.render(
-              super.templateName(pageRouting.currentUrl),
-              super.makeProps(pageRouting, errorData, errors)
-            );
+            return response.render(super.templateName(pageRouting.currentUrl), super.makeProps(pageRouting, errorData, errors));
           }
         }
 
@@ -226,7 +214,6 @@ class LimitedPartnershipController extends AbstractController {
         );
 
         let template = super.templateName(pageRouting.currentUrl);
-
         if (pageRouting.currentUrl.includes(DATE_OF_UPDATE_TYPE_PREFIX)) {
           template = DATE_OF_UPDATE_TEMPLATE;
         } else if (pageRouting.currentUrl.includes(CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX)) {
@@ -246,7 +233,53 @@ class LimitedPartnershipController extends AbstractController {
     };
   }
 
-  private specifyErrorMessagesForDateOfUpdate(errors: UIErrors, response: Response<any, Record<string, any>>, pageRouting: PageRouting) {
+  sendDateOfUpdatePageData() {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { ids, tokens } = super.extract(request);
+        const pageType = super.extractPageTypeOrThrowError(request, PostTransitionPageType);
+        const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
+
+        const limitedPartnership = await this.getLimitedPartnership(ids, tokens);
+
+        const errors: UIErrors = validateDateOfUpdate(
+          request.body["date_of_update-day"],
+          request.body["date_of_update-month"],
+          request.body["date_of_update-year"],
+          response.locals.i18n.errorMessages.dateOfUpdate,
+          pageRouting?.data?.titleKey
+        );
+
+        const errorData = this.makeErrorData(limitedPartnership, request.body);
+
+        if (errors.hasErrors()) {
+          return response.render(DATE_OF_UPDATE_TEMPLATE, super.makeProps(pageRouting, errorData, errors));
+        }
+
+        const result = await this.limitedPartnershipService.sendPageData(
+          tokens,
+          ids.transactionId,
+          ids.submissionId,
+          pageType,
+          request.body
+        );
+
+        if (result?.errors) {
+          return response.render(super.templateName(pageRouting.currentUrl), super.makeProps(pageRouting, errorData, errors));
+        }
+
+        response.redirect(pageRouting.nextUrl);
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  private specifyErrorMessagesForDateOfUpdate(
+    errors: UIErrors,
+    response: Response<any, Record<string, any>>,
+    pageRouting: PageRouting
+  ) {
     if (errors.errors.errorList[0].href === "#date_of_update") {
       errors.errors.errorList[0].text = response.locals.i18n.errorMessages.dateOfUpdate[pageRouting?.data?.titleKey];
       errors.errors.date_of_update.text = response.locals.i18n.errorMessages.dateOfUpdate[pageRouting?.data?.titleKey];
@@ -280,10 +313,7 @@ class LimitedPartnershipController extends AbstractController {
 
         const cache = this.cacheService.getDataFromCache(request.signedCookies);
 
-        response.render(
-          CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE,
-          super.makeProps(pageRouting, { limitedPartnership, cache }, null)
-        );
+        response.render(CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE, super.makeProps(pageRouting, { limitedPartnership, cache }, null));
       } catch (error) {
         next(error);
       }
@@ -304,10 +334,7 @@ class LimitedPartnershipController extends AbstractController {
           redirectUrl = this.addOrAppendQueryParam(redirectUrl, JOURNEY_QUERY_PARAM, serviceName);
         }
 
-        const closeTransactionResponse = await this.limitedPartnershipService.closeTransaction(
-          tokens,
-          ids.transactionId
-        );
+        const closeTransactionResponse = await this.limitedPartnershipService.closeTransaction(tokens, ids.transactionId);
 
         if (payment) {
           const startPaymentSessionUrl: string = closeTransactionResponse.headers?.["x-payment-required"];
@@ -348,18 +375,15 @@ class LimitedPartnershipController extends AbstractController {
         const { tokens, ids } = super.extract(request);
         const pageType = super.extractPageTypeOrThrowError(request, PostTransitionPageType);
         const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
-        const { limitedPartnership } = await this.companyService.buildLimitedPartnershipFromCompanyProfile(
-          tokens,
-          ids.companyId
-        );
+        const { limitedPartnership } = await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId);
 
-        const errorData = this.makeErrorData(
-          limitedPartnership,
-          request.body
-        );
+        const errorData = this.makeErrorData(limitedPartnership, request.body);
 
         const resultTransaction = await this.createTransaction(
-          limitedPartnership, tokens, TRANSACTION_DESCRIPTION_DESIGNATE_AS_PRIVATE_FUND_PARTNERSHIP);
+          limitedPartnership,
+          tokens,
+          TRANSACTION_DESCRIPTION_DESIGNATE_AS_PRIVATE_FUND_PARTNERSHIP
+        );
         if (resultTransaction.errors) {
           return response.render(
             super.templateName(pageRouting.currentUrl),
@@ -399,10 +423,7 @@ class LimitedPartnershipController extends AbstractController {
           redirectUrl = this.addOrAppendQueryParam(redirectUrl, JOURNEY_QUERY_PARAM, serviceName);
         }
 
-        const closeTransactionResponse = await this.limitedPartnershipService.closeTransaction(
-          tokens,
-          newIds.transactionId
-        );
+        const closeTransactionResponse = await this.limitedPartnershipService.closeTransaction(tokens, newIds.transactionId);
 
         const startPaymentSessionUrl: string = closeTransactionResponse.headers?.["x-payment-required"];
         if (!startPaymentSessionUrl) {
@@ -457,11 +478,7 @@ class LimitedPartnershipController extends AbstractController {
     errors = this.addressService.runValidation(address);
 
     if (partnershipKind !== PartnershipKind.UPDATE_PARTNERSHIP_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS) {
-      errors = this.addressService.isValidJurisdictionAndCountry(
-        limitedPartnership?.data?.jurisdiction ?? "",
-        country,
-        errors
-      );
+      errors = this.addressService.isValidJurisdictionAndCountry(limitedPartnership?.data?.jurisdiction ?? "", country, errors);
     }
 
     return errors;
@@ -545,10 +562,7 @@ class LimitedPartnershipController extends AbstractController {
   }
 
   private blockIfPflpOrSpflp(partnershipType: PartnershipType, message: string) {
-    if (
-      partnershipType === PartnershipType.PFLP ||
-      partnershipType === PartnershipType.SPFLP
-    ) {
+    if (partnershipType === PartnershipType.PFLP || partnershipType === PartnershipType.SPFLP) {
       throw new Error(message);
     }
   }

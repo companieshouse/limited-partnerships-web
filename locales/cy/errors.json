@@ -232,7 +232,40 @@
             "partnershipName": "WELSH - Date the partnership name changed must be the same as or after limited partnership’s registration date",
             "term": "WELSH - Date the term changed must be the same as or after limited partnership’s registration date",
             "generalPartner": "WELSH - Date the general partner changed must be the same as or after limited partnership's registration date",
-            "limitedPartner": "WELSH - Date the limited partner changed must be the same as or after limited partnership's registration date"
+            "limitedPartner": "WELSH - Date the limited partner changed must be the same as or after limited partnership's registration date",
+            "dateNotInPast": {
+                "term":"WELSH - Date the term changed must be in the past"
+            },
+            "dateMissing": {
+                "term": "WELSH - Enter the date the term changed"
+            },
+            "dayMissing": {
+                "term": "WELSH - Date the term changed must include a day"
+            },
+            "monthMissing": {
+                "term": "WELSH - Date the term changed must include a month"
+            },
+            "yearMissing": {
+                "term": "WELSH - Date the term changed must include a year"
+            },
+            "dayAndMonthMissing": {
+                "term": "WELSH - Date the term changed must include a day and a month"
+            },
+            "monthAndYearMissing": {
+                "term": "WELSH - Date the term changed must include a month and a year"
+            },
+            "dayAndYearMissing": {
+                "term": "WELSH - Date the term changed must include a day and a year"
+            },
+            "dateInvalidChars": {
+                "term": "WELSH - Date the term changed must only include numbers"
+            },
+            "dateInvalidDate": {
+                "term": "WELSH - Date the term changed must be a real date"
+            },
+            "dayInvalidLength": "WELSH - Day must be 1 or 2 numbers",
+            "monthInvalidLength": "WELSH - Month must be 1 or 2 numbers",
+            "yearInvalidLength": "WELSH - Year must be 4 numbers"
         },
 
         "sicCodes": {
