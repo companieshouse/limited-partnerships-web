@@ -249,7 +249,7 @@ class LimitedPartnershipController extends AbstractController {
           request.body["date_of_update-year"],
           response.locals.i18n.errorMessages.dateOfUpdate,
           pageRouting?.data?.titleKey,
-          registrationDate
+          registrationDate ? registrationDate : ""
         );
 
         const errorData = this.makeErrorData(limitedPartnership, request.body);

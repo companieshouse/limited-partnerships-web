@@ -52,7 +52,7 @@ export const validateDateOfUpdate = (
   year: string,
   dateErrorMessages: Record<string, any>,
   pageKey: string,
-  registrationDate?: string
+  registrationDate: string
 ): UIErrors => {
   const safeDay = day ?? "";
   const safeMonth = month ?? "";
@@ -84,14 +84,7 @@ export const validateDateOfUpdate = (
     return uiErrors;
   }
 
-  const registrationDateUtcMidnight = registrationDate ? getUtcMidnightFromIsoDate(registrationDate) : null;
-  const enteredDateUtcMidnight = getUtcMidnightFromDateParts(safeDay, safeMonth, safeYear);
-  const isEnteredDateBeforeRegistrationDate =
-    enteredDateUtcMidnight !== null &&
-    registrationDateUtcMidnight !== null &&
-    enteredDateUtcMidnight < registrationDateUtcMidnight;
-
-  if (isEnteredDateBeforeRegistrationDate) {
+  if (isBeforeRegistrationDate(safeDay, safeMonth, safeYear, registrationDate)) {
     uiErrors.setWebError(dateOfUpdateField, dateErrorMessages?.dateBeforeRegistrationDate[pageKey]);
   }
 
@@ -284,6 +277,17 @@ export const isDateToday = (day: string, month: string, year: string): boolean =
   const todayUtcMidnightForLocal = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
 
   return targetUtcMidnight === todayUtcMidnightForLocal;
+};
+
+const isBeforeRegistrationDate = (day: string, month: string, year: string, registrationDate: string): boolean => {
+  const registrationDateUtcMidnight = getUtcMidnightFromIsoDate(registrationDate);
+  const enteredDateUtcMidnight = getUtcMidnightFromDateParts(day, month, year);
+
+  if (enteredDateUtcMidnight === null || registrationDateUtcMidnight === null) {
+    return false;
+  }
+
+  return enteredDateUtcMidnight < registrationDateUtcMidnight;
 };
 
 export const dateContainsInvalidChars = (day: string, month: string, year: string): boolean => {
