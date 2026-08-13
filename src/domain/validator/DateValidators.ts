@@ -149,6 +149,17 @@ const parseDateParts = (day: string, month: string, year: string): { d: number; 
   return { d, m, y };
 };
 
+// keys represent which fields are present: d=day, m=month, y=year, -=missing
+const MISSING_FIELDS_ERROR_KEY: Record<string, keyof DateErrorMessages> = {
+  "---": "dateMissing",
+  "-my": "dayMissing",
+  "d-y": "monthMissing",
+  "dm-": "yearMissing",
+  "--y": "dayAndMonthMissing",
+  "d--": "monthAndYearMissing",
+  "-m-": "dayAndYearMissing",
+};
+
 const hasMissingDateFields = (
   day: string,
   month: string,
@@ -158,42 +169,16 @@ const hasMissingDateFields = (
   errorMessages: DateErrorMessages | Record<string, any>,
   pageKey?: string
 ): boolean => {
-  if (!day?.trim() && !month?.trim() && !year?.trim()) {
-    uiErrors.setWebError(fieldId, pageKey ? errorMessages?.dateMissing[pageKey] : errorMessages?.dateMissing);
-    return true;
+  const key = `${day?.trim() ? "d" : "-"}${month?.trim() ? "m" : "-"}${year?.trim() ? "y" : "-"}`;
+  const errorKey = MISSING_FIELDS_ERROR_KEY[key];
+
+  if (!errorKey) {
+    return false;
   }
 
-  if (!day?.trim() && month?.trim() && year?.trim()) {
-    uiErrors.setWebError(fieldId, pageKey ? errorMessages?.dayMissing[pageKey] : errorMessages?.dayMissing);
-    return true;
-  }
-
-  if (day?.trim() && !month?.trim() && year?.trim()) {
-    uiErrors.setWebError(fieldId, pageKey ? errorMessages?.monthMissing[pageKey] : errorMessages?.monthMissing);
-    return true;
-  }
-
-  if (day?.trim() && month?.trim() && !year?.trim()) {
-    uiErrors.setWebError(fieldId, pageKey ? errorMessages?.yearMissing[pageKey] : errorMessages?.yearMissing);
-    return true;
-  }
-
-  if (!day?.trim() && !month?.trim() && year?.trim()) {
-    uiErrors.setWebError(fieldId, pageKey ? errorMessages?.dayAndMonthMissing[pageKey] : errorMessages?.dayAndMonthMissing);
-    return true;
-  }
-
-  if (day?.trim() && !month?.trim() && !year?.trim()) {
-    uiErrors.setWebError(fieldId, pageKey ? errorMessages?.monthAndYearMissing[pageKey] : errorMessages?.monthAndYearMissing);
-    return true;
-  }
-
-  if (!day?.trim() && month?.trim() && !year?.trim()) {
-    uiErrors.setWebError(fieldId, pageKey ? errorMessages?.dayAndYearMissing[pageKey] : errorMessages?.dayAndYearMissing);
-    return true;
-  }
-
-  return false;
+  const message = errorMessages?.[errorKey];
+  uiErrors.setWebError(fieldId, pageKey ? message[pageKey] : message);
+  return true;
 };
 
 const hasInvalidDateFieldLengths = (
