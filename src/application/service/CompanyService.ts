@@ -115,7 +115,7 @@ class CompanyService {
   public async getCompanyIncorporationDate(opt: Tokens, company_number: string): Promise<string> {
     const companyProfile = await this.companyGateway.getCompanyProfile(opt, company_number);
     const incorporationDate = companyProfile.dateOfCreation;
-    return incorporationDate ? incorporationDate : "";
+    return incorporationDate ?? "";
   }
 
   private buildPersonPartner(
