@@ -112,21 +112,10 @@ class CompanyService {
     }
   }
 
-  public async getCompanyIncorporationDate(opt: Tokens, company_number: string): Promise<string | undefined> {
-    try {
-      const companyProfile = await this.companyGateway.getCompanyProfile(opt, company_number);
-      return companyProfile.dateOfCreation;
-    } catch (errors: any) {
-      const { isValidationErrors } = extractAPIErrors(errors);
-
-      logger.error(`Error retrieving Company profile: ${company_number} ${JSON.stringify(errors)}`);
-
-      if (!isValidationErrors) {
-        throw errors;
-      }
-
-      return undefined;
-    }
+  public async getCompanyIncorporationDate(opt: Tokens, company_number: string): Promise<string> {
+    const companyProfile = await this.companyGateway.getCompanyProfile(opt, company_number);
+    const incorporationDate = companyProfile.dateOfCreation;
+    return incorporationDate ? incorporationDate : "";
   }
 
   private buildPersonPartner(
