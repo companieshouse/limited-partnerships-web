@@ -117,126 +117,126 @@ export function runDateOfUpdateTests(config: DateOfUpdateTestConfig): void {
           day: "10",
           month: "01",
           year: "2030",
-          getExpectedError: (t: Record<string, any>) => t.errorMessages.dateOfUpdate.dateNotInPast[dateFieldType]
+          getExpectedError: enTranslationText.errorMessages.dateOfUpdate.dateNotInPast[dateFieldType]
         },
         {
           description: "all date fields are missing",
           day: "",
           month: "",
           year: "",
-          getExpectedError: (t: Record<string, any>) => t.errorMessages.dateOfUpdate.dateMissing[dateFieldType]
+          getExpectedError: enTranslationText.errorMessages.dateOfUpdate.dateMissing[dateFieldType]
         },
         {
           description: "day is missing",
           day: "",
           month: "01",
           year: "2025",
-          getExpectedError: (t: Record<string, any>) => t.errorMessages.dateOfUpdate.dayMissing[dateFieldType]
+          getExpectedError: enTranslationText.errorMessages.dateOfUpdate.dayMissing[dateFieldType]
         },
         {
           description: "month is missing",
           day: "10",
           month: "",
           year: "2025",
-          getExpectedError: (t: Record<string, any>) => t.errorMessages.dateOfUpdate.monthMissing[dateFieldType]
+          getExpectedError: enTranslationText.errorMessages.dateOfUpdate.monthMissing[dateFieldType]
         },
         {
           description: "year is missing",
           day: "10",
           month: "01",
           year: "",
-          getExpectedError: (t: Record<string, any>) => t.errorMessages.dateOfUpdate.yearMissing[dateFieldType]
+          getExpectedError: enTranslationText.errorMessages.dateOfUpdate.yearMissing[dateFieldType]
         },
         {
           description: "day and month are missing",
           day: "",
           month: "",
           year: "2025",
-          getExpectedError: (t: Record<string, any>) => t.errorMessages.dateOfUpdate.dayAndMonthMissing[dateFieldType]
+          getExpectedError: enTranslationText.errorMessages.dateOfUpdate.dayAndMonthMissing[dateFieldType]
         },
         {
           description: "month and year are missing",
           day: "10",
           month: "",
           year: "",
-          getExpectedError: (t: Record<string, any>) => t.errorMessages.dateOfUpdate.monthAndYearMissing[dateFieldType]
+          getExpectedError: enTranslationText.errorMessages.dateOfUpdate.monthAndYearMissing[dateFieldType]
         },
         {
           description: "day and year are missing",
           day: "",
           month: "01",
           year: "",
-          getExpectedError: (t: Record<string, any>) => t.errorMessages.dateOfUpdate.dayAndYearMissing[dateFieldType]
+          getExpectedError: enTranslationText.errorMessages.dateOfUpdate.dayAndYearMissing[dateFieldType]
         },
         {
           description: "day field length is too long",
           day: "222",
           month: "02",
           year: "2023",
-          getExpectedError: (t: Record<string, any>) => t.errorMessages.dateOfUpdate.dayInvalidLength
+          getExpectedError: enTranslationText.errorMessages.dateOfUpdate.dayInvalidLength
         },
         {
           description: "month field length is too long",
           day: "02",
           month: "123",
           year: "2023",
-          getExpectedError: (t: Record<string, any>) => t.errorMessages.dateOfUpdate.monthInvalidLength
+          getExpectedError: enTranslationText.errorMessages.dateOfUpdate.monthInvalidLength
         },
         {
           description: "year field length is too long",
           day: "02",
           month: "02",
           year: "20201",
-          getExpectedError: (t: Record<string, any>) => t.errorMessages.dateOfUpdate.yearInvalidLength
+          getExpectedError: enTranslationText.errorMessages.dateOfUpdate.yearInvalidLength
         },
         {
           description: "year field length is too short",
           day: "02",
           month: "02",
           year: "202",
-          getExpectedError: (t: Record<string, any>) => t.errorMessages.dateOfUpdate.yearInvalidLength
+          getExpectedError: enTranslationText.errorMessages.dateOfUpdate.yearInvalidLength
         },
         {
           description: "day contains non-numeric characters",
           day: "a2",
           month: "02",
           year: "2023",
-          getExpectedError: (t: Record<string, any>) => t.errorMessages.dateOfUpdate.dateInvalidChars[dateFieldType]
+          getExpectedError: enTranslationText.errorMessages.dateOfUpdate.dateInvalidChars[dateFieldType]
         },
         {
           description: "month contains non-numeric characters",
           day: "02",
           month: "2a",
           year: "2023",
-          getExpectedError: (t: Record<string, any>) => t.errorMessages.dateOfUpdate.dateInvalidChars[dateFieldType]
+          getExpectedError: enTranslationText.errorMessages.dateOfUpdate.dateInvalidChars[dateFieldType]
         },
         {
           description: "year contains non-numeric characters",
           day: "02",
           month: "02",
           year: "202a",
-          getExpectedError: (t: Record<string, any>) => t.errorMessages.dateOfUpdate.dateInvalidChars[dateFieldType]
+          getExpectedError: enTranslationText.errorMessages.dateOfUpdate.dateInvalidChars[dateFieldType]
         },
         {
           description: "day is out of range",
           day: "32",
           month: "02",
           year: "2023",
-          getExpectedError: (t: Record<string, any>) => t.errorMessages.dateOfUpdate.dateInvalidDate[dateFieldType]
+          getExpectedError: enTranslationText.errorMessages.dateOfUpdate.dateInvalidDate[dateFieldType]
         },
         {
           description: "month is out of range",
           day: "02",
           month: "13",
           year: "2023",
-          getExpectedError: (t: Record<string, any>) => t.errorMessages.dateOfUpdate.dateInvalidDate[dateFieldType]
+          getExpectedError: enTranslationText.errorMessages.dateOfUpdate.dateInvalidDate[dateFieldType]
         },
         {
           description: "date is before the partnership incorporation date",
           day: "10",
           month: "01",
           year: "2000",
-          getExpectedError: (t: Record<string, any>) => t.errorMessages.dateOfUpdate.dateBeforeRegistrationDate[dateFieldType]
+          getExpectedError: enTranslationText.errorMessages.dateOfUpdate.dateBeforeRegistrationDate[dateFieldType]
         }
       ])("should display error message when $description", async ({ day, month, year, getExpectedError }) => {
         const res = await request(app).post(url).send({
@@ -247,7 +247,7 @@ export function runDateOfUpdateTests(config: DateOfUpdateTestConfig): void {
         });
 
         expect(res.status).toBe(200);
-        expect(res.text).toContain(toEscapedHtml(getExpectedError(enTranslationText)));
+        expect(res.text).toContain(toEscapedHtml(getExpectedError));
       });
     });
   });
