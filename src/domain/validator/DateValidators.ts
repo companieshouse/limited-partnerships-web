@@ -58,15 +58,10 @@ export const validateDateOfUpdate = (
   const safeMonth = month ?? "";
   const safeYear = year ?? "";
   const dateOfUpdateField = "date_of_update";
-  const registrationDateUtcMidnight = registrationDate ? getUtcMidnightFromIsoDate(registrationDate) : null;
 
   const uiErrors: UIErrors = new UIErrors();
 
   if (hasMissingDateFields(safeDay, safeMonth, safeYear, dateOfUpdateField, uiErrors, dateErrorMessages, pageKey)) {
-    return uiErrors;
-  }
-
-  if (hasInvalidDateFieldLengths(safeDay, safeMonth, safeYear, dateOfUpdateField, uiErrors, dateErrorMessages)) {
     return uiErrors;
   }
 
@@ -75,22 +70,28 @@ export const validateDateOfUpdate = (
     return uiErrors;
   }
 
+  if (hasInvalidDateFieldLengths(safeDay, safeMonth, safeYear, dateOfUpdateField, uiErrors, dateErrorMessages)) {
+    return uiErrors;
+  }
+
   if (!isValidDate(safeDay, safeMonth, safeYear)) {
     uiErrors.setWebError(dateOfUpdateField, dateErrorMessages?.dateInvalidDate[pageKey]);
     return uiErrors;
   }
 
-  if (!isDateInPast(safeDay, safeMonth, safeYear)) {
+  if (!isDateInPastOrToday(safeDay, safeMonth, safeYear)) {
     uiErrors.setWebError(dateOfUpdateField, dateErrorMessages?.dateNotInPast[pageKey]);
+    return uiErrors;
   }
 
+  const registrationDateUtcMidnight = registrationDate ? getUtcMidnightFromIsoDate(registrationDate) : null;
   const enteredDateUtcMidnight = getUtcMidnightFromDateParts(safeDay, safeMonth, safeYear);
-
-  if (
+  const isEnteredDateBeforeRegistrationDate =
     enteredDateUtcMidnight !== null &&
     registrationDateUtcMidnight !== null &&
-    enteredDateUtcMidnight < registrationDateUtcMidnight
-  ) {
+    enteredDateUtcMidnight < registrationDateUtcMidnight;
+
+  if (isEnteredDateBeforeRegistrationDate) {
     uiErrors.setWebError(dateOfUpdateField, dateErrorMessages?.dateBeforeRegistrationDate[pageKey]);
   }
 
@@ -256,6 +257,20 @@ export const isValidDateStringAndNotInFuture = (date: string): boolean => {
     return false;
   }
   return true;
+};
+
+const isDateInPastOrToday = (day: string, month: string, year: string): boolean => {
+  const targetUtcMidnight = getUtcMidnightFromDateParts(day, month, year);
+
+  if (targetUtcMidnight === null) {
+    return false;
+  }
+
+  // use UTC to deal with daylight savings and timezones; compare date-only at UTC midnight
+  const now = new Date();
+  const todayUtcMidnightForLocal = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+
+  return targetUtcMidnight <= todayUtcMidnightForLocal;
 };
 
 export const isDateInPast = (day: string, month: string, year: string): boolean => {
