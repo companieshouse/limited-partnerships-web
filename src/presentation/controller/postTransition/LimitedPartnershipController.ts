@@ -267,7 +267,7 @@ class LimitedPartnershipController extends AbstractController {
         );
 
         if (result?.errors) {
-          return response.render(super.templateName(pageRouting.currentUrl), super.makeProps(pageRouting, errorData, errors));
+          return response.render(super.templateName(DATE_OF_UPDATE_TEMPLATE), super.makeProps(pageRouting, errorData, errors));
         }
 
         response.redirect(pageRouting.nextUrl);
