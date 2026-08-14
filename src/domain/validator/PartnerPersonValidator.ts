@@ -69,7 +69,7 @@ class PartnerPersonValidator {
     const dateOfBirthErrors = (i18n?.errorMessages?.dateOfBirth ?? {}) as Partial<DateErrorMessages>;
     this.dateOfBirthErrorMessages = {
       ...dateOfBirthErrors,
-      dateMissing: this.errorMessages?.dateOfBirthMissing
+      missing: this.errorMessages?.dateOfBirthMissing
     } as DateErrorMessages;
 
     return this;
