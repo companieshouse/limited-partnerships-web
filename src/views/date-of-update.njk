@@ -9,7 +9,7 @@
 {% endif %}
 
 {% set dateData = null %}
-{% if propsData.data["date_of_update-year"] %}
+{% if propsData.data["date_of_update-year"] or propsData.data["date_of_update-month"] or propsData.data["date_of_update-day"] %}
   {% set dateData = propsData.data %}
 {% elif props.data.generalPartner.data["date_of_update-year"] %}
   {% set dateData = props.data.generalPartner.data %}
