@@ -10,14 +10,16 @@ import { getGOVUKFrontendVersion } from "@companieshouse/ch-node-utils";
 
 import { createSummaryListLink } from "../utils/change-link";
 import { setCeaseDateSection, setDateEffectiveFromSection, setDateOfBirthSection, setDateOfUpdateSection } from "../utils/date-format-section";
-import { setCountriesDropdown } from "../utils/countries";
-import { setNationalitiesDropdown } from "../utils/nationalities";
 import * as config from "./constants";
 import { acspAuthentication, authentication, languageMiddleware, localisationMiddleware, trailingSlashMiddleware } from "../middlewares";
 import { serviceAvailabilityMiddleware } from "../middlewares/service-availability.middleware";
 import { journeyDetectionMiddleware } from "../middlewares/journey.detection.middleware";
 import { TRANSITION_START_URL } from "../presentation/controller/transition/url";
 import { REGISTRATION_START_URL } from "../presentation/controller/registration/url";
+
+import { setCountriesDropdown } from "../utils/countries";
+import { setNationalitiesDropdown } from "../utils/nationalities";
+import { setCurrenciesDropdown } from "../utils/currencies";
 import { setSicCodesList } from "../utils/sic-codes";
 
 export const appConfig = (app: express.Application) => {
@@ -68,6 +70,7 @@ export const appConfig = (app: express.Application) => {
   nunjucksEnv.addGlobal("SET_CEASE_DATE_SECTION", setCeaseDateSection);
   nunjucksEnv.addGlobal("SET_COUNTRIES_DROPDOWN", setCountriesDropdown);
   nunjucksEnv.addGlobal("SET_NATIONALITIES_DROPDOWN", setNationalitiesDropdown);
+  nunjucksEnv.addGlobal("SET_CURRENCIES_DROPDOWN", setCurrenciesDropdown);
   nunjucksEnv.addGlobal("SET_SIC_CODES_LIST", setSicCodesList);
 
   app.use(express.json());

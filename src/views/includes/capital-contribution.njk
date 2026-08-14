@@ -1,7 +1,5 @@
 {% if (partnershipType == "LP") or (partnershipType == "SLP") %}
 
-  {# Lets the server know the capital contribution section was shown so it can validate
-     it even when every field is left blank (LP-1473). #}
   <input type="hidden" name="partnershipType" value="{{ partnershipType }}">
 
   <hr class="govuk-section-break govuk-section-break--visible govuk-section-break--m">
@@ -11,7 +9,20 @@
   <p class="govuk-hint">{{ i18n.partner.capitalContribution.hint }}</p>
 
   {% set currencyField = props.data.limitedPartner.data.contribution_currency_type %}
-  {% include "includes/currencies.njk" %}
+
+  {% set currencyList = SET_CURRENCIES_DROPDOWN(i18n, currencyField) %}
+
+  {{ govukSelect({
+    id: "contribution_currency_type",
+    name: "contribution_currency_type",
+    label: {
+      text: i18n.partner.capitalContribution.currencyTypeLabel,
+      classes: "govuk-label--m",
+      isPageHeading: false
+    },
+    errorMessage: props.errors.contribution_currency_type if props.errors.contribution_currency_type,
+    items: currencyList
+  }) }}
 
   {% set contribution_sub_types = [] %}
   {% if props.data.limitedPartner.data.contribution_sub_types %}
