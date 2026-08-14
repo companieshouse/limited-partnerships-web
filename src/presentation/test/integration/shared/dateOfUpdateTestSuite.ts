@@ -117,14 +117,14 @@ export function runDateOfUpdateTests(config: DateOfUpdateTestConfig): void {
           day: "10",
           month: "01",
           year: "2030",
-          getExpectedError: enTranslationText.errorMessages.dateOfUpdate.dateNotInPast[dateFieldType]
+          getExpectedError: enTranslationText.errorMessages.dateOfUpdate.notInPast[dateFieldType]
         },
         {
           description: "all date fields are missing",
           day: "",
           month: "",
           year: "",
-          getExpectedError: enTranslationText.errorMessages.dateOfUpdate.dateMissing[dateFieldType]
+          getExpectedError: enTranslationText.errorMessages.dateOfUpdate.missing[dateFieldType]
         },
         {
           description: "day is missing",
@@ -201,42 +201,42 @@ export function runDateOfUpdateTests(config: DateOfUpdateTestConfig): void {
           day: "a2",
           month: "02",
           year: "2023",
-          getExpectedError: enTranslationText.errorMessages.dateOfUpdate.dateInvalidChars[dateFieldType]
+          getExpectedError: enTranslationText.errorMessages.dateOfUpdate.invalidChars[dateFieldType]
         },
         {
           description: "month contains non-numeric characters",
           day: "02",
           month: "2a",
           year: "2023",
-          getExpectedError: enTranslationText.errorMessages.dateOfUpdate.dateInvalidChars[dateFieldType]
+          getExpectedError: enTranslationText.errorMessages.dateOfUpdate.invalidChars[dateFieldType]
         },
         {
           description: "year contains non-numeric characters",
           day: "02",
           month: "02",
           year: "202a",
-          getExpectedError: enTranslationText.errorMessages.dateOfUpdate.dateInvalidChars[dateFieldType]
+          getExpectedError: enTranslationText.errorMessages.dateOfUpdate.invalidChars[dateFieldType]
         },
         {
           description: "day is out of range",
           day: "32",
           month: "02",
           year: "2023",
-          getExpectedError: enTranslationText.errorMessages.dateOfUpdate.dateInvalidDate[dateFieldType]
+          getExpectedError: enTranslationText.errorMessages.dateOfUpdate.invalid[dateFieldType]
         },
         {
           description: "month is out of range",
           day: "02",
           month: "13",
           year: "2023",
-          getExpectedError: enTranslationText.errorMessages.dateOfUpdate.dateInvalidDate[dateFieldType]
+          getExpectedError: enTranslationText.errorMessages.dateOfUpdate.invalid[dateFieldType]
         },
         {
           description: "date is before the partnership incorporation date",
           day: "10",
           month: "01",
           year: "2000",
-          getExpectedError: enTranslationText.errorMessages.dateOfUpdate.dateBeforeRegistrationDate[dateFieldType]
+          getExpectedError: enTranslationText.errorMessages.dateOfUpdate.beforeRegistrationDate[dateFieldType]
         }
       ])("should display error message when $description", async ({ day, month, year, getExpectedError }) => {
         const res = await request(app).post(url).send({

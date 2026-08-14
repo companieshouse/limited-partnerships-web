@@ -120,16 +120,16 @@
         },
 
         "dateOfBirth": {
-            "dateMissing": "WELSH - Enter their date of birth",
+            "missing": "WELSH - Enter their date of birth",
             "dayMissing": "WELSH - Date of birth must include a day",
             "monthMissing": "WELSH - Date of birth must include a month",
             "yearMissing": "WELSH - Date of birth must include a year",
             "dayAndMonthMissing": "WELSH - Date of birth must include a day and a month",
             "monthAndYearMissing": "WELSH - Date of birth must include a month and a year",
             "dayAndYearMissing": "WELSH - Date of birth must include a day and a year",
-            "dateInvalidChars": "WELSH - Date of birth must only include numbers",
-            "dateInvalidDate": "WELSH - Date of birth must be a real date",
-            "dateNotInPast": "WELSH - Date of birth must be in the past",
+            "invalidChars": "WELSH - Date of birth must only include numbers",
+            "invalid": "WELSH - Date of birth must be a real date",
+            "notInPast": "WELSH - Date of birth must be in the past",
             "dayInvalidLength": "WELSH - Day must be 1 or 2 numbers",
             "monthInvalidLength": "WELSH - Month must be 1 or 2 numbers",
             "yearInvalidLength": "WELSH - Year must be 4 numbers"
@@ -230,16 +230,15 @@
             "registeredOfficeAddress": "WELSH - Date the registered office address changed must be the same as or after limited partnership’s registration date",
             "principalPlaceOfBusinessAddress": "WELSH - Date the principal place of business changed must be the same as or after limited partnership’s registration date’",
             "partnershipName": "WELSH - Date the partnership name changed must be the same as or after limited partnership’s registration date",
-            "term": "WELSH - Date the term changed must be the same as or after limited partnership’s registration date",
             "generalPartner": "WELSH - Date the general partner changed must be the same as or after limited partnership's registration date",
             "limitedPartner": "WELSH - Date the limited partner changed must be the same as or after limited partnership's registration date",
-            "dateNotInPast": {
+            "notInPast": {
                 "term":"WELSH - Date the term changed must be in the past"
             },
-            "dateBeforeRegistrationDate": {
-                "term":"WELSH - Date the term changed must be the same as or after limited partnership’s registration date"
+            "beforeRegistrationDate": {
+                "term":"WELSH - Date the term changed must be after the partnership’s registration date"
             },
-            "dateMissing": {
+            "missing": {
                 "term": "WELSH - Enter the date the term changed"
             },
             "dayMissing": {
@@ -260,10 +259,10 @@
             "dayAndYearMissing": {
                 "term": "WELSH - Date the term changed must include a day and a year"
             },
-            "dateInvalidChars": {
+            "invalidChars": {
                 "term": "WELSH - Date the term changed must only include numbers"
             },
-            "dateInvalidDate": {
+            "invalid": {
                 "term": "WELSH - Date the term changed must be a real date"
             },
             "dayInvalidLength": "WELSH - Day must be 1 or 2 numbers",

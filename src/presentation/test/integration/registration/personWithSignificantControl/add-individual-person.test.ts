@@ -324,30 +324,30 @@ describe("Add Person With Significant Control Individual Person Page", () => {
 
   describe("Date of birth validations", () => {
     const cases: Array<[string, string, string, string, string, string]> = [
-      ["missing all", "", "", "", "en", enTranslationText.errorMessages.dateOfBirth.dateMissing],
+      ["missing all", "", "", "", "en", enTranslationText.errorMessages.dateOfBirth.missing],
       ["day missing", "", "3", "1976", "en", enTranslationText.errorMessages.dateOfBirth.dayMissing],
       ["month missing", "1", "", "1976", "en", enTranslationText.errorMessages.dateOfBirth.monthMissing],
       ["year missing", "1", "3", "", "en", enTranslationText.errorMessages.dateOfBirth.yearMissing],
       ["day & month missing", "", "", "1976", "en", enTranslationText.errorMessages.dateOfBirth.dayAndMonthMissing],
       ["month & year missing", "1", "", "", "en", enTranslationText.errorMessages.dateOfBirth.monthAndYearMissing],
       ["day & year missing", "", "3", "", "en", enTranslationText.errorMessages.dateOfBirth.dayAndYearMissing],
-      ["invalid chars", "aa", "bb", "1976", "en", enTranslationText.errorMessages.dateOfBirth.dateInvalidChars],
-      ["invalid date (29 Feb non leap year)", "29", "2", "2019", "en", enTranslationText.errorMessages.dateOfBirth.dateInvalidDate],
-      ["in future", "1", "1", "2099", "en", enTranslationText.errorMessages.dateOfBirth.dateNotInPast],
+      ["invalid chars", "aa", "bb", "1976", "en", enTranslationText.errorMessages.dateOfBirth.invalidChars],
+      ["invalid date (29 Feb non leap year)", "29", "2", "2019", "en", enTranslationText.errorMessages.dateOfBirth.invalid],
+      ["in future", "1", "1", "2099", "en", enTranslationText.errorMessages.dateOfBirth.notInPast],
       ["day too long", "123", "1", "1976", "en", enTranslationText.errorMessages.dateOfBirth.dayInvalidLength],
       ["month too long", "1", "123", "1976", "en", enTranslationText.errorMessages.dateOfBirth.monthInvalidLength],
       ["year wrong length", "1", "1", "76", "en", enTranslationText.errorMessages.dateOfBirth.yearInvalidLength],
 
-      ["missing all", "", "", "", "cy", cyTranslationText.errorMessages.dateOfBirth.dateMissing],
+      ["missing all", "", "", "", "cy", cyTranslationText.errorMessages.dateOfBirth.missing],
       ["day missing", "", "3", "1976", "cy", cyTranslationText.errorMessages.dateOfBirth.dayMissing],
       ["month missing", "1", "", "1976", "cy", cyTranslationText.errorMessages.dateOfBirth.monthMissing],
       ["year missing", "1", "3", "", "cy", cyTranslationText.errorMessages.dateOfBirth.yearMissing],
       ["day & month missing", "", "", "1976", "cy", cyTranslationText.errorMessages.dateOfBirth.dayAndMonthMissing],
       ["month & year missing", "1", "", "", "cy", cyTranslationText.errorMessages.dateOfBirth.monthAndYearMissing],
       ["day & year missing", "", "3", "", "cy", cyTranslationText.errorMessages.dateOfBirth.dayAndYearMissing],
-      ["invalid chars", "aa", "bb", "1976", "cy", cyTranslationText.errorMessages.dateOfBirth.dateInvalidChars],
-      ["invalid date (29 Feb non leap year)", "29", "2", "2019", "cy", cyTranslationText.errorMessages.dateOfBirth.dateInvalidDate],
-      ["in future", "1", "1", "2099", "cy", cyTranslationText.errorMessages.dateOfBirth.dateNotInPast],
+      ["invalid chars", "aa", "bb", "1976", "cy", cyTranslationText.errorMessages.dateOfBirth.invalidChars],
+      ["invalid date (29 Feb non leap year)", "29", "2", "2019", "cy", cyTranslationText.errorMessages.dateOfBirth.invalid],
+      ["in future", "1", "1", "2099", "cy", cyTranslationText.errorMessages.dateOfBirth.notInPast],
       ["day too long", "123", "1", "1976", "cy", cyTranslationText.errorMessages.dateOfBirth.dayInvalidLength],
       ["month too long", "1", "123", "1976", "cy", cyTranslationText.errorMessages.dateOfBirth.monthInvalidLength],
       ["year wrong length", "1", "1", "76", "cy", cyTranslationText.errorMessages.dateOfBirth.yearInvalidLength]
@@ -420,7 +420,7 @@ describe("Add Person With Significant Control Individual Person Page", () => {
         });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(enTranslationText.errorMessages.dateOfBirth.dateNotInPast);
+      expect(res.text).toContain(enTranslationText.errorMessages.dateOfBirth.notInPast);
 
       expect(appDevDependencies.personWithSignificantControlGateway.personsWithSignificantControl).toHaveLength(0);
     });
