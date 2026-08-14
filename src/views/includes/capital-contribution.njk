@@ -8,21 +8,24 @@
 
   <p class="govuk-hint">{{ i18n.partner.capitalContribution.hint }}</p>
 
-  {% set currencyField = props.data.limitedPartner.data.contribution_currency_type %}
-  {% set currencyList = SET_CURRENCIES_DROPDOWN(i18n, currencyField) %}
-  {% set currencySelected = (currencyList | selectattr("selected") | first).text %}
+  {% set contribution_currency_type = "" %}
+  {% if props.data.limitedPartner.data.contribution_currency_type %}
+    {% set contribution_currency_type = props.data.limitedPartner.data.contribution_currency_type %}
+  {% endif %}
 
-  {# {{ govukSelect({
-    id: "contribution_currency_type",
-    name: "contribution_currency_type",
-    label: {
-      text: i18n.partner.capitalContribution.currencyTypeLabel,
-      classes: "govuk-label--m",
-      isPageHeading: false
-    },
-    errorMessage: props.errors.contribution_currency_type if props.errors.contribution_currency_type,
-    items: currencyList
-  }) }} #}
+  {% set contribution_currency_value = "" %}
+  {% if props.data.limitedPartner.data.contribution_currency_value %}
+    {% set contribution_currency_value = props.data.limitedPartner.data.contribution_currency_value %}
+  {% endif %}
+
+  {% set contribution_sub_types = [] %}
+  {% if props.data.limitedPartner.data.contribution_sub_types %}
+    {% set contribution_sub_types = props.data.limitedPartner.data.contribution_sub_types %}
+  {% endif %}
+
+  {% set currencyField = contribution_currency_type %}
+  {% set currencyList = SET_CURRENCIES_DROPDOWN(i18n, currencyField) %}
+  {% set currencySelected = (currencyList | selectattr("selected") | first).text or contribution_currency_type %}
 
   <div>
     {{ govukInput({
@@ -35,6 +38,9 @@
         text: i18n.partner.capitalContribution.currencyTypeLabel,
         classes: "govuk-label--m",
         isPageHeading: false
+      },
+      hint: {
+        text: i18n.partner.capitalContribution.currencyTypeHint
       },
       attributes: {
         placeholder: currencyList[0].text,
@@ -51,11 +57,6 @@
     </datalist>
   </div>
 
-  {% set contribution_sub_types = [] %}
-  {% if props.data.limitedPartner.data.contribution_sub_types %}
-    {% set contribution_sub_types = props.data.limitedPartner.data.contribution_sub_types %}
-  {% endif %}
-
   {{ govukInput({
     label: {
       text: i18n.partner.capitalContribution.valueLabel,
@@ -68,7 +69,7 @@
     classes: "govuk-input--width-10",
     id: "contribution_currency_value",
     name: "contribution_currency_value",
-    value: props.data.limitedPartner.data.contribution_currency_value,
+    value: contribution_currency_value,
     errorMessage: props.errors.contribution_currency_value if props.errors.contribution_currency_value
   }) }}
 

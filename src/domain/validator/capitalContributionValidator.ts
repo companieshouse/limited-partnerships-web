@@ -24,7 +24,7 @@ const capitalContributionValidation = (data: Record<string, any>, currencies: Re
     uiErrors.setWebError("contribution_currency_type", errorMessages?.currencyRequired);
   }
 
-  const currencyCode = data.contribution_currency_type.match(/([A-Z]{3})/g)?.[0];
+  const currencyCode = data.contribution_currency_type.match(/\([A-Z]{3}\)/g)?.[0]?.replace(/[()]/g, "");
   if (currencyCode && currencies[currencyCode] !== data.contribution_currency_type) {
     uiErrors.setWebError("contribution_currency_type", errorMessages?.invalidCurrency);
   } else {
