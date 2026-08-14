@@ -217,7 +217,7 @@ describe("Add Limited Partner Person Page", () => {
       expect(res.text).toContain("11");
       expect(res.text).toContain("1987");
       expect(res.text).toContain("100.00");
-      expect(res.text).toContain('"GBP" selected');
+      expect(res.text).toContain("Pound Sterling (GBP)");
       expect(res.text).toContain('"MONEY" checked');
     });
 
