@@ -1,11 +1,11 @@
 export const setCurrenciesDropdown = (i18n: Record<string, any>, currencyField: string | undefined) => {
-  const currencies: { value: string; text: string; selected: boolean }[] = [];
+  const currencies: { code: string; text: string; selected: boolean }[] = [];
 
-  for (const [currency, value] of Object.entries(i18n.currencies)) {
+  for (const [code, text] of Object.entries(i18n.currencies)) {
     currencies.push({
-      value: currency,
-      text: value as string,
-      selected: currencyField?.toLowerCase() === currency?.toLowerCase()
+      code,
+      text: text as string,
+      selected: currencyField?.toLowerCase() === code?.toLowerCase()
     });
   }
 

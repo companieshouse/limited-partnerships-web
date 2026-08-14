@@ -9,6 +9,7 @@ import { DateErrorMessages, validateDateOfBirth } from "./DateValidators";
 import { containsInvalidCharacters, isFieldValueMissing, isFieldValueTooLong } from "./FieldValidators";
 
 class PartnerPersonValidator {
+  private data: Record<string, any> = {};
   private forename?: string;
   private surname?: string;
   private previousName?: string;
@@ -31,11 +32,13 @@ class PartnerPersonValidator {
   private contribution_currency_value?: string;
   private contribution_sub_types?: string[];
 
+  private currencies: Record<string, any> = {};
   private errorMessages: Record<string, any> = {};
 
   private dateOfBirthErrorMessages: DateErrorMessages = {} as DateErrorMessages;
 
   set(data: Record<string, any>, i18n: any): this {
+    this.data = data;
     this.forename = data.forename;
     this.surname = data.surname;
     this.previousName = data.previous_name;
@@ -59,6 +62,7 @@ class PartnerPersonValidator {
     this.partnerEntityType = data.partnerEntityType;
     this.partnershipType = data.partnershipType;
 
+    this.currencies = i18n?.currencies || {};
     this.errorMessages = {
       ...i18n?.errorMessages?.partners?.addPartner,
       capitalContribution: {
@@ -91,6 +95,8 @@ class PartnerPersonValidator {
           contribution_currency_value: this.contribution_currency_value,
           contribution_sub_types: this.contribution_sub_types
         },
+        this.currencies,
+        this.overrideCapitalContributionType.bind(this),
         uiErrors,
         this.errorMessages?.capitalContribution);
     }
@@ -169,6 +175,10 @@ class PartnerPersonValidator {
     if (!this.not_disqualified_statement_checked || this.not_disqualified_statement_checked === "false") {
       uiErrors.setWebError(NOT_DISQUALIFIED_STATEMENT_CHECKED_FIELD, this.errorMessages?.disqualificationStatementMissingGeneralPartner);
     }
+  }
+
+  private overrideCapitalContributionType(capitalContributionType: string): void {
+    this.data.contribution_currency_type = capitalContributionType;
   }
 }
 

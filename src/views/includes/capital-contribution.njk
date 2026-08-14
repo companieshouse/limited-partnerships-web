@@ -9,10 +9,10 @@
   <p class="govuk-hint">{{ i18n.partner.capitalContribution.hint }}</p>
 
   {% set currencyField = props.data.limitedPartner.data.contribution_currency_type %}
-
   {% set currencyList = SET_CURRENCIES_DROPDOWN(i18n, currencyField) %}
+  {% set currencySelected = (currencyList | selectattr("selected") | first).text %}
 
-  {{ govukSelect({
+  {# {{ govukSelect({
     id: "contribution_currency_type",
     name: "contribution_currency_type",
     label: {
@@ -22,7 +22,34 @@
     },
     errorMessage: props.errors.contribution_currency_type if props.errors.contribution_currency_type,
     items: currencyList
-  }) }}
+  }) }} #}
+
+  <div>
+    {{ govukInput({
+      id: "contribution_currency_type",
+      name: "contribution_currency_type",
+      type: "text",
+      classes: "govuk-input--width-20",
+      describedBy: "currency-hint",
+      label: {
+        text: i18n.partner.capitalContribution.currencyTypeLabel,
+        classes: "govuk-label--m",
+        isPageHeading: false
+      },
+      attributes: {
+        placeholder: currencyList[0].text,
+        list: "currenciess"
+      },
+      value: currencySelected,
+      errorMessage: props.errors.contribution_currency_type if props.errors.contribution_currency_type
+    }) }}
+
+    <datalist id="currenciess">
+      {% for currency in currencyList %}
+        <option value="{{ currency.text }}" label="{{ currency.code }}"></option>
+      {% endfor %}
+    </datalist>
+  </div>
 
   {% set contribution_sub_types = [] %}
   {% if props.data.limitedPartner.data.contribution_sub_types %}
