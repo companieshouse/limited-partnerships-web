@@ -85,44 +85,24 @@ describe("Redesignate to pflp page", () => {
       expect(res.text).not.toContain(`Redirecting to ${PAYMENT_LINK_JOURNEY}`);
     });
 
-    it("should render the page with errors if the user does not select both checkboxes", async () => {
-      const res = await request(app).post(URL).send({
-        pageType: PostTransitionPageType.redesignateToPflp,
-        redesignate_to_pflp_apply: false,
-        redesignate_to_pflp_confirm: false,
-        partnership_type: PartnershipType.LP
-      });
+    it.each([
+      ["both checkboxes", false, false, enTranslationText.errorMessages.redesignateToPflpPage.bothRequired],
+      ["the apply checkbox", false, true, enTranslationText.errorMessages.redesignateToPflpPage.applyRequired],
+      ["the confirm checkbox", true, false, enTranslationText.errorMessages.redesignateToPflpPage.confirmationRequired]
+    ])(
+      "should render the page with errors if the user does not select %s",
+      async (_description: string, redesignate_to_pflp_apply: boolean, redesignate_to_pflp_confirm: boolean, errorMessage: string) => {
+        const res = await request(app).post(URL).send({
+          pageType: PostTransitionPageType.redesignateToPflp,
+          redesignate_to_pflp_apply,
+          redesignate_to_pflp_confirm,
+          partnership_type: PartnershipType.LP
+        });
 
-      const errorMessage = enTranslationText.errorMessages.redesignateToPflpPage.bothRequired;
-      expect(res.status).toBe(200);
-      expect(countOccurrences(res.text, errorMessage)).toBe(2);
-    });
-
-    it("should render the page with errors if the user does not select the apply checkbox", async () => {
-      const res = await request(app).post(URL).send({
-        pageType: PostTransitionPageType.redesignateToPflp,
-        redesignate_to_pflp_apply: false,
-        redesignate_to_pflp_confirm: true,
-        partnership_type: PartnershipType.LP
-      });
-
-      const errorMessage = enTranslationText.errorMessages.redesignateToPflpPage.applyRequired;
-      expect(res.status).toBe(200);
-      expect(countOccurrences(res.text, errorMessage)).toBe(2);
-    });
-
-    it("should render the page with errors if the user does not select the confirm checkbox", async () => {
-      const res = await request(app).post(URL).send({
-        pageType: PostTransitionPageType.redesignateToPflp,
-        redesignate_to_pflp_apply: true,
-        redesignate_to_pflp_confirm: false,
-        partnership_type: PartnershipType.LP
-      });
-
-      const errorMessage = enTranslationText.errorMessages.redesignateToPflpPage.confirmationRequired;
-      expect(res.status).toBe(200);
-      expect(countOccurrences(res.text, errorMessage)).toBe(2);
-    });
+        expect(res.status).toBe(200);
+        expect(countOccurrences(res.text, errorMessage)).toBe(2);
+      }
+    );
   });
 
   describe("should render the error page", () => {

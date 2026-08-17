@@ -36,11 +36,9 @@
         {{ govukCheckboxes({
           id: "redesignate_to_pflp_apply", 
           name: "redesignate_to_pflp_apply",   
-          
           errorMessage: {
             text: props.errors.redesignate_to_pflp_apply.text
           } if props.errors.redesignate_to_pflp_apply,
-
           items: [
             {
               value: "true",
@@ -53,11 +51,9 @@
         {{ govukCheckboxes({
           id: "redesignate_to_pflp_confirm", 
           name: "redesignate_to_pflp_confirm",  
-
           errorMessage: {
             text: props.errors.redesignate_to_pflp_confirm.text
           } if props.errors.redesignate_to_pflp_confirm,
-
           items: [
             {
               value: "true",
