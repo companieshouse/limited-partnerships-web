@@ -22,7 +22,8 @@ import {
   CHS_URL,
   TRANSACTION_DESCRIPTION_DESIGNATE_AS_PRIVATE_FUND_PARTNERSHIP,
   JOURNEY_QUERY_PARAM,
-  DATE_OF_UPDATE_TYPE_PREFIX
+  DATE_OF_UPDATE_TYPE_PREFIX,
+  DATE_OF_UPDATE_FIELD
 } from "../../../config/constants";
 import { getJourneyTypes } from "../../../utils";
 import CompanyService from "../../../application/service/CompanyService";
@@ -33,7 +34,7 @@ import AddressService from "../../../application/service/AddressService";
 
 import { CONFIRMATION_POST_TRANSITION_URL, PAYMENT_RESPONSE_URL } from "../global/url";
 import PaymentService from "../../../application/service/PaymentService";
-import { validateDateOfUpdate } from "../../../domain/validator/DateValidators";
+import { validateDate } from "../../../domain/validator/DateValidators";
 
 class LimitedPartnershipController extends AbstractController {
   constructor(
@@ -243,10 +244,12 @@ class LimitedPartnershipController extends AbstractController {
         const limitedPartnership = await this.getLimitedPartnership(ids, tokens);
         const registrationDate = await this.companyService.getCompanyIncorporationDate(tokens, ids.companyId);
 
-        const errors: UIErrors = validateDateOfUpdate(
-          request.body["date_of_update-day"],
-          request.body["date_of_update-month"],
-          request.body["date_of_update-year"],
+        const errors: UIErrors = new UIErrors();
+
+        validateDate(
+          request.body,
+          errors,
+          DATE_OF_UPDATE_FIELD,
           response.locals.i18n.errorMessages.dateOfUpdate,
           pageRouting?.data?.titleKey,
           registrationDate

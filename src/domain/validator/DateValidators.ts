@@ -1,40 +1,64 @@
-import { DATE_OF_BIRTH_FIELD, DATE_OF_UPDATE_FIELD } from "../../config";
 import UIErrors from "../entities/UIErrors";
 
-export type DateErrorMessages = {
-  missing: string;
-  dayMissing: string;
-  monthMissing: string;
-  yearMissing: string;
-  dayAndMonthMissing: string;
-  dayAndYearMissing: string;
-  monthAndYearMissing: string;
-  dayInvalidLength: string;
-  monthInvalidLength: string;
-  yearInvalidLength: string;
-  invalidChars: string;
-  invalid: string;
-  notInPast: string;
-  beforeRegistrationDate?: string;
-};
+export enum DateErrorMessages {
+  missing = "missing",
+  dayMissing = "dayMissing",
+  monthMissing = "monthMissing",
+  yearMissing = "yearMissing",
+  dayAndMonthMissing = "dayAndMonthMissing",
+  dayAndYearMissing = "dayAndYearMissing",
+  monthAndYearMissing = "monthAndYearMissing",
+  dayInvalidLength = "dayInvalidLength",
+  monthInvalidLength = "monthInvalidLength",
+  yearInvalidLength = "yearInvalidLength",
+  invalidChars = "invalidChars",
+  invalid = "invalid",
+  notInPast = "notInPast",
+  beforeRegistrationDate = "beforeRegistrationDate"
+}
 
-export type DateErrorKey = keyof DateErrorMessages;
-
-// This type is required because the date error messages for a page may be scoped to a specific page, e.g. "dateOfUpdate" errors are scoped to the page title key.
-// Whereas date of birth errors are not scoped to a specific page, and are always the same regardless of the page.
-export type PageScopedDateErrorMessages = Partial<Record<DateErrorKey, string | Record<string, string>>>;
+type DateErrorKey = keyof typeof DateErrorMessages;
 
 type DateParts = { day: string; month: string; year: string };
 
 type DateRule = (parts: DateParts) => DateErrorKey | null;
 
-const toDateParts = (day?: string, month?: string, year?: string): DateParts => ({
-  day: (day ?? "").trim(),
-  month: (month ?? "").trim(),
-  year: (year ?? "").trim()
-});
+export const validateDate = (
+  body: Record<string, any>,
+  uiErrors: UIErrors,
+  dateFieldType: string,
+  dateErrorMessages: Record<string, string>,
+  pageKey?: string,
+  registrationDate?: string
+): void => {
+  const parts = toDatePartsFromBody(body, dateFieldType);
 
-const isDigitsOnly = (value: string): boolean => /^\d+$/.test(value);
+  const errorKey = firstFailure(parts, [
+    noMissingFields,
+    validFieldLengths,
+    digitsOnly,
+    realDate,
+    pageKey ? inPastOrToday : inPast,
+    ...(registrationDate ? [notBeforeRegistrationDate(registrationDate)] : [])
+  ]);
+
+  if (errorKey !== null) {
+    const entry = dateErrorMessages[errorKey];
+    const text = typeof entry === "string" ? entry : entry?.[pageKey ?? ""];
+    uiErrors.setWebError(dateFieldType, text);
+  }
+};
+
+const toDatePartsFromBody = (body: Record<string, any>, key: string): DateParts => {
+  if (body[`${key}-day`] || body[`${key}-month`] || body[`${key}-year`]) {
+    return {
+      day: (body[`${key}-day`] ?? "").trim(),
+      month: (body[`${key}-month`] ?? "").trim(),
+      year: (body[`${key}-year`] ?? "").trim()
+    };
+  }
+  return body as DateParts;
+};
 
 const parseDateParts = ({ day, month, year }: DateParts): { d: number; m: number; y: number } | null => {
   if (!day || !month || !year) {
@@ -48,6 +72,8 @@ const parseDateParts = ({ day, month, year }: DateParts): { d: number; m: number
   // months are 0-indexed in JavaScript Date, so we need to subtract 1 from the month
   return { d: Number(day), m: Number(month) - 1, y: Number(year) };
 };
+
+const isDigitsOnly = (value: string): boolean => /^\d+$/.test(value);
 
 const utcMidnightFromDateParts = (parts: DateParts): number | null => {
   const parsed = parseDateParts(parts);
@@ -94,20 +120,20 @@ const isRealCalendarDate = (parts: DateParts): boolean => {
   const date = new Date(Date.UTC(y, m, d));
 
   return date.getUTCFullYear() === y && date.getUTCMonth() === m && date.getUTCDate() === d;
-};;
+};
 
 const containsNonDigits = ({ day, month, year }: DateParts): boolean =>
   [day, month, year].some((value) => value !== "" && !isDigitsOnly(value));
 
 // keys represent which fields are present: d=day, m=month, y=year, -=missing
 const MISSING_FIELDS_ERROR_KEY: Record<string, DateErrorKey> = {
-  "---": "missing",
-  "-my": "dayMissing",
-  "d-y": "monthMissing",
-  "dm-": "yearMissing",
-  "--y": "dayAndMonthMissing",
-  "d--": "monthAndYearMissing",
-  "-m-": "dayAndYearMissing"
+  "---": DateErrorMessages.missing,
+  "-my": DateErrorMessages.dayMissing,
+  "d-y": DateErrorMessages.monthMissing,
+  "dm-": DateErrorMessages.yearMissing,
+  "--y": DateErrorMessages.dayAndMonthMissing,
+  "d--": DateErrorMessages.monthAndYearMissing,
+  "-m-": DateErrorMessages.dayAndYearMissing
 };
 
 const noMissingFields: DateRule = ({ day, month, year }) => {
@@ -118,34 +144,34 @@ const noMissingFields: DateRule = ({ day, month, year }) => {
 
 const validFieldLengths: DateRule = ({ day, month, year }) => {
   if (day.length > 2) {
-    return "dayInvalidLength";
+    return DateErrorMessages.dayInvalidLength;
   }
 
   if (month.length > 2) {
-    return "monthInvalidLength";
+    return DateErrorMessages.monthInvalidLength;
   }
 
   if (year.length !== 4) {
-    return "yearInvalidLength";
+    return DateErrorMessages.yearInvalidLength;
   }
 
   return null;
 };
 
-const digitsOnly: DateRule = (parts) => (containsNonDigits(parts) ? "invalidChars" : null);
+const digitsOnly: DateRule = (parts) => (containsNonDigits(parts) ? DateErrorMessages.invalidChars : null);
 
-const realDate: DateRule = (parts) => (isRealCalendarDate(parts) ? null : "invalid");
+const realDate: DateRule = (parts) => (isRealCalendarDate(parts) ? null : DateErrorMessages.invalid);
 
 const inPast: DateRule = (parts) => {
   const comparison = compareWithToday(parts);
 
-  return comparison !== null && comparison < 0 ? null : "notInPast";
+  return comparison !== null && comparison < 0 ? null : DateErrorMessages.notInPast;
 };
 
 const inPastOrToday: DateRule = (parts) => {
   const comparison = compareWithToday(parts);
 
-  return comparison !== null && comparison <= 0 ? null : "notInPast";
+  return comparison !== null && comparison <= 0 ? null : DateErrorMessages.notInPast;
 };
 
 const notBeforeRegistrationDate =
@@ -158,7 +184,7 @@ const notBeforeRegistrationDate =
         return null;
       }
 
-      return entered < registration ? "beforeRegistrationDate" : null;
+      return entered < registration ? DateErrorMessages.beforeRegistrationDate : null;
     };
 
 const firstFailure = (dateParts: DateParts, dateRules: DateRule[]): DateErrorKey | null => {
@@ -173,69 +199,6 @@ const firstFailure = (dateParts: DateParts, dateRules: DateRule[]): DateErrorKey
   return null;
 };
 
-export const validateDateOfBirth = (
-  day: string | undefined,
-  month: string | undefined,
-  year: string | undefined,
-  uiErrors: UIErrors,
-  dateErrorMessages: DateErrorMessages
-): void => {
-  const parts = toDateParts(day, month, year);
-
-  const errorKey = firstFailure(parts, [noMissingFields, validFieldLengths, digitsOnly, realDate, inPast]);
-
-  if (errorKey !== null) {
-    // safe cast: DOB rules never produce "beforeRegistrationDate", which is the only optional key
-    uiErrors.setWebError(DATE_OF_BIRTH_FIELD, dateErrorMessages[errorKey] as string);
-  }
-};
-
-export const validateDateOfUpdate = (
-  day: string | undefined,
-  month: string | undefined,
-  year: string | undefined,
-  dateErrorMessages: PageScopedDateErrorMessages,
-  pageKey: string,
-  registrationDate: string
-): UIErrors => {
-  const uiErrors = new UIErrors();
-  const parts = toDateParts(day, month, year);
-
-  const errorKey = firstFailure(parts, [
-    noMissingFields,
-    validFieldLengths,
-    digitsOnly,
-    realDate,
-    inPastOrToday,
-    notBeforeRegistrationDate(registrationDate)
-  ]);
-
-  if (errorKey !== null) {
-    const entry = dateErrorMessages[errorKey];
-    const text = typeof entry === "string" ? entry : (entry?.[pageKey] ?? "");
-    uiErrors.setWebError(DATE_OF_UPDATE_FIELD, text);
-  }
-
-  return uiErrors;
-};
-
-export const isValidDate = (day: string, month: string, year: string): boolean =>
-  isRealCalendarDate(toDateParts(day, month, year));
-
-export const dateContainsInvalidChars = (day: string, month: string, year: string): boolean =>
-  containsNonDigits(toDateParts(day, month, year));
-
-export const isDateInPast = (day: string, month: string, year: string): boolean => inPast(toDateParts(day, month, year)) === null;
-
-export const isDateInPastOrToday = (day: string, month: string, year: string): boolean =>
-  inPastOrToday(toDateParts(day, month, year)) === null;
-
-export const isDateToday = (day: string, month: string, year: string): boolean =>
-  compareWithToday(toDateParts(day, month, year)) === 0;
-
-export const isBeforeRegistrationDate = (day: string, month: string, year: string, registrationDate: string): boolean =>
-  notBeforeRegistrationDate(registrationDate)(toDateParts(day, month, year)) !== null;
-
 export const isValidDateStringAndNotInFuture = (date: string): boolean => {
   const [year, month, day, ...unexpected] = date.split("-");
 
@@ -243,7 +206,7 @@ export const isValidDateStringAndNotInFuture = (date: string): boolean => {
     return false;
   }
 
-  const parts = toDateParts(day, month, year);
+  const parts = { day, month, year };
 
   return validFieldLengths(parts) === null && isRealCalendarDate(parts) && inPastOrToday(parts) === null;
 };

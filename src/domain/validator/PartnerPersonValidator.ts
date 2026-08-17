@@ -1,11 +1,20 @@
 import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 
 import { capitalContributionValidation, isCapitalContributionApplicable } from "./capitalContributionValidator";
-import { FORENAME_FIELD, FORMER_NAMES_FIELD, NATIONALITY1_FIELD, NATIONALITY2_FIELD, NOT_DISQUALIFIED_STATEMENT_CHECKED_FIELD, PREVIOUS_NAME_FIELD, SURNAME_FIELD } from "../../config";
+import {
+  DATE_OF_BIRTH_FIELD,
+  FORENAME_FIELD,
+  FORMER_NAMES_FIELD,
+  NATIONALITY1_FIELD,
+  NATIONALITY2_FIELD,
+  NOT_DISQUALIFIED_STATEMENT_CHECKED_FIELD,
+  PREVIOUS_NAME_FIELD,
+  SURNAME_FIELD
+} from "../../config";
 import { JourneyTypes } from "../entities/journey";
 import UIErrors from "../entities/UIErrors";
 import { PartnerType, PartnerEntityType } from "../types";
-import { DateErrorMessages, validateDateOfBirth } from "./DateValidators";
+import { validateDate } from "./DateValidators";
 import { containsInvalidCharacters, isFieldValueMissing, isFieldValueTooLong } from "./FieldValidators";
 
 class PartnerPersonValidator {
@@ -33,22 +42,22 @@ class PartnerPersonValidator {
 
   private errorMessages: Record<string, any> = {};
 
-  private dateOfBirthErrorMessages: DateErrorMessages = {} as DateErrorMessages;
+  private dateOfBirthErrorMessages: Record<string, string> = {};
 
   set(data: Record<string, any>, i18n: any): this {
     this.forename = data.forename;
     this.surname = data.surname;
     this.previousName = data.previous_name;
     this.formerNames = data.former_names;
-    this.dateOfBirthDay = data['date_of_birth-day'];
-    this.dateOfBirthMonth = data['date_of_birth-month'];
-    this.dateOfBirthYear = data['date_of_birth-year'];
+    this.dateOfBirthDay = data["date_of_birth-day"];
+    this.dateOfBirthMonth = data["date_of_birth-month"];
+    this.dateOfBirthYear = data["date_of_birth-year"];
     this.nationality1 = data.nationality1;
     this.nationality2 = data.nationality2;
     this.not_disqualified_statement_checked = data.not_disqualified_statement_checked;
-    this.dateEffectiveFromDay = data['date_effective_from-day'];
-    this.dateEffectiveFromMonth = data['date_effective_from-month'];
-    this.dateEffectiveFromYear = data['date_effective_from-year'];
+    this.dateEffectiveFromDay = data["date_effective_from-day"];
+    this.dateEffectiveFromMonth = data["date_effective_from-month"];
+    this.dateEffectiveFromYear = data["date_effective_from-year"];
 
     this.contribution_currency_type = data.contribution_currency_type;
     this.contribution_currency_value = data.contribution_currency_value;
@@ -66,11 +75,11 @@ class PartnerPersonValidator {
       }
     };
 
-    const dateOfBirthErrors = (i18n?.errorMessages?.dateOfBirth ?? {}) as Partial<DateErrorMessages>;
+    const dateOfBirthErrors: Record<string, any> = i18n?.errorMessages?.dateOfBirth ?? {};
     this.dateOfBirthErrorMessages = {
       ...dateOfBirthErrors,
       missing: this.errorMessages?.dateOfBirthMissing
-    } as DateErrorMessages;
+    };
 
     return this;
   }
@@ -81,10 +90,19 @@ class PartnerPersonValidator {
     this.validateSurname(uiErrors);
     this.validatePreviousName(uiErrors);
     this.validateFormerNames(uiErrors);
-    validateDateOfBirth(this.dateOfBirthDay, this.dateOfBirthMonth, this.dateOfBirthYear, uiErrors, this.dateOfBirthErrorMessages);
+    validateDate(
+      {
+        day: this.dateOfBirthDay,
+        month: this.dateOfBirthMonth,
+        year: this.dateOfBirthYear
+      },
+      uiErrors,
+      DATE_OF_BIRTH_FIELD,
+      this.dateOfBirthErrorMessages
+    );
     this.validateNationalities(uiErrors);
 
-    if (isCapitalContributionApplicable(this.journeyTypes, this.partnershipType, this.partnerType || "" as PartnerType)) {
+    if (isCapitalContributionApplicable(this.journeyTypes, this.partnershipType, this.partnerType || ("" as PartnerType))) {
       capitalContributionValidation(
         {
           contribution_currency_type: this.contribution_currency_type,
@@ -92,7 +110,8 @@ class PartnerPersonValidator {
           contribution_sub_types: this.contribution_sub_types
         },
         uiErrors,
-        this.errorMessages?.capitalContribution);
+        this.errorMessages?.capitalContribution
+      );
     }
 
     if (!this.journeyTypes?.isTransition && this.partnerType === PartnerType.generalPartner) {
@@ -142,7 +161,10 @@ class PartnerPersonValidator {
   }
 
   private validateFormerNames(uiErrors: UIErrors) {
-    if (this.previousName?.trim() === 'true' && isFieldValueMissing(this.formerNames, FORMER_NAMES_FIELD, uiErrors, this.errorMessages?.formerNamesMissing)) {
+    if (
+      this.previousName?.trim() === "true" &&
+      isFieldValueMissing(this.formerNames, FORMER_NAMES_FIELD, uiErrors, this.errorMessages?.formerNamesMissing)
+    ) {
       return;
     }
 
@@ -167,7 +189,10 @@ class PartnerPersonValidator {
 
   private validateDisqualificationStatement(uiErrors: UIErrors) {
     if (!this.not_disqualified_statement_checked || this.not_disqualified_statement_checked === "false") {
-      uiErrors.setWebError(NOT_DISQUALIFIED_STATEMENT_CHECKED_FIELD, this.errorMessages?.disqualificationStatementMissingGeneralPartner);
+      uiErrors.setWebError(
+        NOT_DISQUALIFIED_STATEMENT_CHECKED_FIELD,
+        this.errorMessages?.disqualificationStatementMissingGeneralPartner
+      );
     }
   }
 }
