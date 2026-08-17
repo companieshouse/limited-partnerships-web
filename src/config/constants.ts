@@ -188,6 +188,7 @@ export const SURNAME_FIELD = "surname";
 export const PREVIOUS_NAME_FIELD = "previous_name";
 export const FORMER_NAMES_FIELD = "former_names";
 export const DATE_OF_BIRTH_FIELD = "date_of_birth";
+export const DATE_OF_UPDATE_FIELD = "date_of_update";
 export const NATIONALITY1_FIELD = "nationality1";
 export const NATIONALITY2_FIELD = "nationality2";
 export const CONSENT_CHECKED_FIELD = "consent_checked";

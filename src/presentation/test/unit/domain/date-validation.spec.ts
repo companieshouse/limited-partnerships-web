@@ -445,6 +445,11 @@ describe("validateDateOfBirth", () => {
       expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.yearInvalidLength);
     });
 
+    it("reports length before invalid characters when a field is both", () => {
+      validateDateOfBirth("aaa", "05", "2000", mockUIErrors, testErrorMessages);
+      expect(mockUIErrors.setWebError).toHaveBeenCalledWith(DATE_OF_BIRTH_FIELD, testErrorMessages.dayInvalidLength);
+    });
+
     it("allows year with exactly 4 digits", () => {
       jest.useFakeTimers();
       jest.setSystemTime(new Date(2026, 4, 21, 10, 0, 0));

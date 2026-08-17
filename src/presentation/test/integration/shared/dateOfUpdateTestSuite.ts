@@ -197,6 +197,13 @@ export function runDateOfUpdateTests(config: DateOfUpdateTestConfig): void {
           getExpectedError: enTranslationText.errorMessages.dateOfUpdate.yearInvalidLength
         },
         {
+          description: "a field is both too long and non-numeric",
+          day: "aaa",
+          month: "02",
+          year: "2023",
+          getExpectedError: enTranslationText.errorMessages.dateOfUpdate.dayInvalidLength
+        },
+        {
           description: "day contains non-numeric characters",
           day: "a2",
           month: "02",
