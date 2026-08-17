@@ -203,8 +203,8 @@ export const validateDateOfUpdate = (
 
   const errorKey = firstFailure(parts, [
     noMissingFields,
-    digitsOnly,
     validFieldLengths,
+    digitsOnly,
     realDate,
     inPastOrToday,
     notBeforeRegistrationDate(registrationDate)

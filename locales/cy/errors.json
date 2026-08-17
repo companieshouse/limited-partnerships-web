@@ -233,36 +233,47 @@
             "generalPartner": "WELSH - Date the general partner changed must be the same as or after limited partnership's registration date",
             "limitedPartner": "WELSH - Date the limited partner changed must be the same as or after limited partnership's registration date",
             "notInPast": {
+                "registeredOfficeAddress":"WELSH - The date the registered office address changed must be in the past",
                 "term":"WELSH - Date the term changed must be in the past"
             },
             "beforeRegistrationDate": {
+                "registeredOfficeAddress":"WELSH - The date the registered office address changed must be after the partnership’s registration date",
                 "term":"WELSH - Date the term changed must be after the partnership’s registration date"
             },
             "missing": {
+                "registeredOfficeAddress": "WELSH - Enter the date the registered office address changed",
                 "term": "WELSH - Enter the date the term changed"
             },
             "dayMissing": {
+                "registeredOfficeAddress": "WELSH - The date the registered office address changed  must include a day",
                 "term": "WELSH - Date the term changed must include a day"
             },
             "monthMissing": {
+                "registeredOfficeAddress": "WELSH - The date the registered office address changed must include a month",
                 "term": "WELSH - Date the term changed must include a month"
             },
             "yearMissing": {
+                "registeredOfficeAddress": "WELSH - The date the registered office address changed must include a year",
                 "term": "WELSH - Date the term changed must include a year"
             },
             "dayAndMonthMissing": {
+                "registeredOfficeAddress": "WELSH - The date the registered office address changed must include a day and a month",
                 "term": "WELSH - Date the term changed must include a day and a month"
             },
             "monthAndYearMissing": {
+                "registeredOfficeAddress": "WELSH - The date the registered office address changed must include a month and a year",
                 "term": "WELSH - Date the term changed must include a month and a year"
             },
             "dayAndYearMissing": {
+                "registeredOfficeAddress": "WELSH - The date the registered office address changed must include a day and a year",
                 "term": "WELSH - Date the term changed must include a day and a year"
             },
             "invalidChars": {
+                "registeredOfficeAddress": "WELSH - The date the registered office address changed must only include numbers",
                 "term": "WELSH - Date the term changed must only include numbers"
             },
             "invalid": {
+                "registeredOfficeAddress": "WELSH - The date the registered office address changed must be a real date",
                 "term": "WELSH - Date the term changed must be a real date"
             },
             "dayInvalidLength": "WELSH - Day must be 1 or 2 numbers",

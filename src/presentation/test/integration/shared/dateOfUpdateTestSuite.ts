@@ -62,7 +62,7 @@ export function runDateOfUpdateTests(config: DateOfUpdateTestConfig): void {
         } else {
           expect(res.text).not.toContain("WELSH -");
         }
-        expect(countOccurrences(res.text, translationText.serviceName[serviceNameTranslationKey])).toBe(2);
+        expect(countOccurrences(res.text, toEscapedHtml(translationText.serviceName[serviceNameTranslationKey]))).toBe(2);
 
         const limitedPartnership = new LimitedPartnershipBuilder().build();
         expect(res.text).toContain(getPartnershipDisplay(limitedPartnership));
