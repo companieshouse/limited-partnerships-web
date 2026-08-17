@@ -381,6 +381,10 @@ class LimitedPartnershipController extends AbstractController {
 
         const errorData = this.makeErrorData(limitedPartnership, request.body);
 
+        if (!request.body.redesignate_to_pflp_apply || !request.body.redesignate_to_pflp_confirm) {
+          return await this.renderRedesignateAsPflpPageWithErrors(request, response);
+        }
+
         const resultTransaction = await this.createTransaction(
           limitedPartnership,
           tokens,
@@ -567,6 +571,29 @@ class LimitedPartnershipController extends AbstractController {
     if (partnershipType === PartnershipType.PFLP || partnershipType === PartnershipType.SPFLP) {
       throw new Error(message);
     }
+  }
+
+  private async renderRedesignateAsPflpPageWithErrors(request: Request, response: Response) {
+    const { tokens, ids } = super.extract(request);
+    const pageType = super.extractPageTypeOrThrowError(request, PostTransitionPageType);
+    const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
+
+    const limitedPartnership = await this.getLimitedPartnership(ids, tokens);
+    const errorData = this.makeErrorData(limitedPartnership, request.body);
+    const uiErrors = new UIErrors();
+
+    if (!request.body.redesignate_to_pflp_apply && !request.body.redesignate_to_pflp_confirm) {
+      uiErrors.setWebError("redesignate_to_pflp_apply", response.locals.i18n.errorMessages.redesignateToPflpPage.bothRequired);
+    } else if (!request.body.redesignate_to_pflp_apply) {
+      uiErrors.setWebError("redesignate_to_pflp_apply", response.locals.i18n.errorMessages.redesignateToPflpPage.applyRequired);
+    } else if (!request.body.redesignate_to_pflp_confirm) {
+      uiErrors.setWebError("redesignate_to_pflp_confirm", response.locals.i18n.errorMessages.redesignateToPflpPage.confirmationRequired);
+    }
+
+    return response.render(
+      super.templateName(pageRouting.currentUrl),
+      super.makeProps(pageRouting, { ...errorData, submissionId: ids.submissionId }, uiErrors)
+    );
   }
 }
 
