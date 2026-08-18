@@ -19,6 +19,8 @@ import {
 } from "../../../../controller/registration/template";
 import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
+import registrationRouting from "../../../../../presentation/controller/registration/Routing";
+
 describe("Add General Partner Person Page", () => {
   const URL = getUrl(ADD_GENERAL_PARTNER_PERSON_URL);
   const REDIRECT_URL = getUrl(TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
@@ -247,20 +249,29 @@ describe("Add General Partner Person Page", () => {
     it.each([
       ["en", enTranslationText],
       ["cy", cyTranslationText]
-    ])("should return a validation error when nationality 1 and 2 are the same - %s", async (lang: string, errorMessages: any) => {
-      setLocalesEnabled(true);
+    ])(
+      "should return a validation error when nationality 1 and 2 are the same - %s",
+      async (lang: string, errorMessages: any) => {
+        const generalPartner = new GeneralPartnerBuilder().isPerson().withNationality2("British").build();
+        setLocalesEnabled(true);
 
-      const res = await request(app).post(URL + "?lang=" + lang).send({
-        pageType: RegistrationPageType.addGeneralPartnerPerson,
-        nationality1: "English",
-        nationality2: "English"
-      });
+        const res = await request(app)
+          .post(URL + "?lang=" + lang)
+          .send({
+            ...generalPartner.data,
+            ...registrationRouting?.get(RegistrationPageType?.addGeneralPartnerPerson),
+            "date_of_birth-day": "01",
+            "date_of_birth-month": "11",
+            "date_of_birth-year": "1987",
+            previous_name: "false"
+          });
 
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(toEscapedHtml(errorMessages.errorMessages.partners.addPartner.nationality2Same));
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(toEscapedHtml(errorMessages.errorMessages.partners.addPartner.nationality2Same));
 
-      setLocalesEnabled(false);
-    });
+        setLocalesEnabled(false);
+      }
+    );
 
     it("should replay entered data when invalid data is entered and a validation error occurs", async () => {
       const apiErrors: ApiErrors = {

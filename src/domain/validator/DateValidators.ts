@@ -198,15 +198,3 @@ const firstFailure = (dateParts: DateParts, dateRules: DateRule[]): DateErrorKey
 
   return null;
 };
-
-export const isValidDateStringAndNotInFuture = (date: string): boolean => {
-  const [year, month, day, ...unexpected] = date.split("-");
-
-  if (unexpected.length > 0) {
-    return false;
-  }
-
-  const parts = { day, month, year };
-
-  return validFieldLengths(parts) === null && isRealCalendarDate(parts) && inPastOrToday(parts) === null;
-};

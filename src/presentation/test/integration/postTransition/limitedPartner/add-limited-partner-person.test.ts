@@ -253,7 +253,11 @@ describe("Add Limited Partner Person Page", () => {
         .post(URL)
         .send({
           pageType: PostTransitionPageType.addLimitedPartnerPerson,
-          ...limitedPartner.data
+          ...limitedPartner.data,
+          "date_of_birth-day": "01",
+          "date_of_birth-month": "11",
+          "date_of_birth-year": "1987",
+          previous_name: "false"
         });
 
       expect(res.status).toBe(302);
@@ -268,10 +272,16 @@ describe("Add Limited Partner Person Page", () => {
 
       appDevDependencies.limitedPartnerGateway.feedErrors(apiErrors);
 
-      const res = await request(app).post(URL).send({
-        pageType: PostTransitionPageType.addLimitedPartnerPerson,
-        forename: "INVALID-CHARACTERS"
-      });
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: PostTransitionPageType.addLimitedPartnerPerson,
+          ...limitedPartner.data,
+          "date_of_birth-day": "01",
+          "date_of_birth-month": "11",
+          "date_of_birth-year": "1987",
+          previous_name: "false"
+        });
       expect(res.status).toBe(200);
       expect(res.text).toContain("limited partner name is invalid");
     });
@@ -283,7 +293,11 @@ describe("Add Limited Partner Person Page", () => {
         .post(URL)
         .send({
           pageType: PostTransitionPageType.addLimitedPartnerPerson,
-          ...limitedPartner.data
+          ...limitedPartner.data,
+          "date_of_birth-day": "01",
+          "date_of_birth-month": "11",
+          "date_of_birth-year": "1987",
+          previous_name: "false"
         });
 
       const REDIRECT = getUrl(CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);

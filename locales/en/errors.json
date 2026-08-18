@@ -134,6 +134,22 @@
             "yearInvalidLength": "Year must be 4 numbers"
         },
 
+        "ceaseDate": {
+            "missing": "WELSH - Enter the cease date",
+            "dayMissing": "WELSH - Cease date must include a day",
+            "monthMissing": "WELSH - Cease date must include a month",
+            "yearMissing": "WELSH - Cease date must include a year",
+            "dayAndMonthMissing": "WELSH - Cease date must include a day and a month",
+            "monthAndYearMissing": "WELSH - Cease date must include a month and a year",
+            "dayAndYearMissing": "WELSH - Cease date must include a day and a year",
+            "invalidChars": "WELSH - Cease date must only include numbers",
+            "invalid": "WELSH - Cease date must be a real date",
+            "notInPast": "WELSH - Cease date must be in the past",
+            "dayInvalidLength": "WELSH - Day must be 1 or 2 numbers",
+            "monthInvalidLength": "WELSH - Month must be 1 or 2 numbers",
+            "yearInvalidLength": "WELSH - Year must be 4 numbers"
+        },
+
         "partners": {
              "addPartner": {
                 "firstNameMissing": "Enter the partner's first name",

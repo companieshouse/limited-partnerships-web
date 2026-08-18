@@ -10,13 +10,13 @@ describe("Gateway utils test suite", () => {
 
     describe("Date validation tests", () => {
       it("should build date string and correctly pad day field", () => {
-        const date: string = convertValidDateToIsoDateString({ day: "1", month: "12", year: "2011" }, "date_of_birth");
+        const date: string = convertValidDateToIsoDateString({ day: "1", month: "12", year: "2011" });
 
         expect(date).toBe("2011-12-01");
       });
 
       it("should build date string and correctly pad month field", () => {
-        const date: string = convertValidDateToIsoDateString({ day: "26", month: "4", year: "2011" }, "date_of_birth");
+        const date: string = convertValidDateToIsoDateString({ day: "26", month: "4", year: "2011" });
 
         expect(date).toBe("2011-04-26");
       });
@@ -26,7 +26,7 @@ describe("Gateway utils test suite", () => {
         ["month", { day: "11", month: " 03 ", year: "1980" }],
         ["year", { day: "11", month: "03", year: " 1980 " }]
       ])("it should format the date and trim leading and trailing spaces from the %s", (_decription, date) => {
-        const result: string = convertValidDateToIsoDateString(date, "date_of_birth");
+        const result: string = convertValidDateToIsoDateString(date);
 
         expect(result).toBe("1980-03-11");
       });
@@ -43,7 +43,7 @@ describe("Gateway utils test suite", () => {
         ["month full word but not a number", { day: "11", month: "OCTOBER", year: "2023" }],
         ["year invalid not a number", { day: "01", month: "10", year: "wrong" }],
         ["year above 4 digits", { day: "01", month: "10", year: "12345" }],
-        ["date in futur", { day: "11", month: "03", year: "2050" }],
+        ["date in future", { day: "11", month: "03", year: "2050" }],
         ["space as day", { day: " ", month: "03", year: "1980" }],
         ["space as month", { day: "11", month: " ", year: "1980" }],
         ["space as year", { day: "11", month: "03", year: " " }],

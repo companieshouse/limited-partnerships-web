@@ -128,10 +128,15 @@ describe("Update General Partner Person Page", () => {
 
       const res = await request(app).post(url).send({
         pageType: PostTransitionPageType.updateGeneralPartnerPerson,
-        "forename": "John",
-        "surname": "Doe",
-        "nationality1": "British",
-        "nationality2": "Irish"
+        forename: "John",
+        surname: "Doe",
+        nationality1: "British",
+        nationality2: "Irish",
+        "date_of_birth-day": "01",
+        "date_of_birth-month": "01",
+        "date_of_birth-year": "1987",
+        previous_name: "false",
+        not_disqualified_statement_checked: "true"
       });
 
       expect(res.status).toBe(302);

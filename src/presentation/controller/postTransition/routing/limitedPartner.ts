@@ -9,6 +9,7 @@ import {
   TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "../../addressLookUp/url/postTransition";
 import { YOUR_COMPANY_OFFICERS_URL } from "../../../../config/constants";
+import { PartnerEntityType } from "../../../../domain/types";
 
 const postTransitionRoutingLimitedPartnerChoice = {
   previousUrl: YOUR_COMPANY_OFFICERS_URL,
@@ -26,7 +27,8 @@ const postTransitionRoutingAddLimitedPartnerPerson = {
   nextUrl: TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   pageType: PostTransitionPageType.addLimitedPartnerPerson,
   data: {
-    serviceName: "addLimitedPartner"
+    serviceName: "addLimitedPartner",
+    partnerEntityType: PartnerEntityType.person
   }
 };
 
@@ -36,7 +38,8 @@ const postTransitionRoutingAddLimitedPartnerLegalEntity = {
   nextUrl: TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   pageType: PostTransitionPageType.addLimitedPartnerLegalEntity,
   data: {
-    serviceName: "addLimitedPartner"
+    serviceName: "addLimitedPartner",
+    partnerEntityType: PartnerEntityType.legalEntity
   }
 };
 
@@ -60,7 +63,8 @@ const postTransitionRoutingRemoveLimitedPartnerPerson = {
   pageType: PostTransitionPageType.whenDidTheLimitedPartnerPersonCease,
   data: {
     titleKey: REMOVE_LIMITED_PARTNER_KEY,
-    serviceName: "removeLimitedPartnerPerson"
+    serviceName: "removeLimitedPartnerPerson",
+    partnerEntityType: PartnerEntityType.person
   }
 };
 
@@ -81,7 +85,8 @@ const postTransitionRoutingRemoveLimitedPartnerLegalEntity = {
   pageType: PostTransitionPageType.whenDidTheLimitedPartnerLegalEntityCease,
   data: {
     titleKey: REMOVE_LIMITED_PARTNER_KEY,
-    serviceName: "removeLimitedPartnerEntity"
+    serviceName: "removeLimitedPartnerEntity",
+    partnerEntityType: PartnerEntityType.legalEntity
   }
 };
 
@@ -101,7 +106,8 @@ const postTransitionRoutingUpdateLimitedPartnerPerson = {
   nextUrl: url.UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
   pageType: PostTransitionPageType.updateLimitedPartnerPerson,
   data: {
-    serviceName: "updateLimitedPartnerPerson"
+    serviceName: "updateLimitedPartnerPerson",
+    partnerEntityType: PartnerEntityType.person
   }
 };
 
@@ -153,7 +159,8 @@ const postTransitionRoutingUpdateLimitedPartnerLegalEntity = {
   nextUrl: url.UPDATE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL,
   pageType: PostTransitionPageType.updateLimitedPartnerLegalEntity,
   data: {
-    serviceName: "updateLimitedPartnerLegalEntity"
+    serviceName: "updateLimitedPartnerLegalEntity",
+    partnerEntityType: PartnerEntityType.legalEntity
   }
 };
 

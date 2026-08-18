@@ -186,7 +186,12 @@ describe("Add General Partner Person Page", () => {
         .post(URL)
         .send({
           pageType: PostTransitionPageType.addGeneralPartnerPerson,
-          ...generalPartner.data
+          ...generalPartner.data,
+          "date_of_birth-day": "01",
+          "date_of_birth-month": "11",
+          "date_of_birth-year": "1987",
+          not_disqualified_statement_checked: "true",
+          previous_name: "false"
         });
 
       const REDIRECT = getUrl(CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);

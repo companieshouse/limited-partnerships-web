@@ -16,8 +16,10 @@ import UIErrors from "../entities/UIErrors";
 import { PartnerType, PartnerEntityType } from "../types";
 import { validateDate } from "./DateValidators";
 import { containsInvalidCharacters, isFieldValueMissing, isFieldValueTooLong } from "./FieldValidators";
+import { isCeaseDatePage } from "../../presentation/controller/postTransition/pageType";
 
 class PartnerPersonValidator {
+  private data: Record<string, any> = {};
   private forename?: string;
   private surname?: string;
   private previousName?: string;
@@ -31,6 +33,9 @@ class PartnerPersonValidator {
   private dateEffectiveFromDay?: string;
   private dateEffectiveFromMonth?: string;
   private dateEffectiveFromYear?: string;
+  private ceaseDateDay?: string;
+  private ceaseDateMonth?: string;
+  private ceaseDateYear?: string;
   private journeyTypes: JourneyTypes = {} as JourneyTypes;
   private partnerType?: PartnerType;
   private partnerEntityType?: PartnerEntityType;
@@ -43,8 +48,10 @@ class PartnerPersonValidator {
   private errorMessages: Record<string, any> = {};
 
   private dateOfBirthErrorMessages: Record<string, string> = {};
+  private ceaseDateErrorMessages: Record<string, string> = {};
 
   set(data: Record<string, any>, i18n: any): this {
+    this.data = data;
     this.forename = data.forename;
     this.surname = data.surname;
     this.previousName = data.previous_name;
@@ -58,7 +65,9 @@ class PartnerPersonValidator {
     this.dateEffectiveFromDay = data["date_effective_from-day"];
     this.dateEffectiveFromMonth = data["date_effective_from-month"];
     this.dateEffectiveFromYear = data["date_effective_from-year"];
-
+    this.ceaseDateDay = data["cease_date-day"];
+    this.ceaseDateMonth = data["cease_date-month"];
+    this.ceaseDateYear = data["cease_date-year"];
     this.contribution_currency_type = data.contribution_currency_type;
     this.contribution_currency_value = data.contribution_currency_value;
     this.contribution_sub_types = data.contribution_sub_types;
@@ -75,17 +84,31 @@ class PartnerPersonValidator {
       }
     };
 
-    const dateOfBirthErrors: Record<string, any> = i18n?.errorMessages?.dateOfBirth ?? {};
     this.dateOfBirthErrorMessages = {
-      ...dateOfBirthErrors,
+      ...(i18n?.errorMessages?.dateOfBirth ?? {}),
       missing: this.errorMessages?.dateOfBirthMissing
     };
+
+    this.ceaseDateErrorMessages = i18n?.errorMessages?.ceaseDate ?? {};
 
     return this;
   }
 
   runValidation(): UIErrors {
     const uiErrors = new UIErrors();
+    if (isCeaseDatePage(this.data.pageType)) {
+      validateDate(
+        {
+          day: this.ceaseDateDay,
+          month: this.ceaseDateMonth,
+          year: this.ceaseDateYear
+        },
+        uiErrors,
+        "cease_date",
+        this.ceaseDateErrorMessages
+      );
+      return uiErrors;
+    }
     this.validateForename(uiErrors);
     this.validateSurname(uiErrors);
     this.validatePreviousName(uiErrors);

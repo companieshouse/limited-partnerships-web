@@ -17,6 +17,8 @@ import GeneralPartnerBuilder from "../../../../../presentation/test/builder/Gene
 import { OFFICER_ROLE_GENERAL_PARTNER_PERSON, YOUR_COMPANY_OFFICERS_URL } from "../../../../../config";
 import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
+import PostTransitionRouting from "../../../../controller/postTransition/routing";
+
 describe("General Partner cease date page", () => {
   const URL = getUrl(WHEN_DID_THE_GENERAL_PARTNER_PERSON_CEASE_URL);
   const URL_WITH_IDS = getUrl(WHEN_DID_THE_GENERAL_PARTNER_PERSON_CEASE_WITH_IDS_URL);
@@ -88,44 +90,46 @@ describe("General Partner cease date page", () => {
     });
 
     it.each([
-      ["without ids", false, URL ],
-      ["with ids", true, URL_WITH_IDS ]
-    ])("should replay entered data when invalid cease date is entered and a validation error occurs %s", async (description: string, isWithIds: boolean, url: string) => {
-      const errorMessage = "The date is not valid";
+      ["without ids", false, URL],
+      ["with ids", true, URL_WITH_IDS]
+    ])(
+      "should replay entered data when invalid cease date is entered and a validation error occurs %s",
+      async (description: string, isWithIds: boolean, url: string) => {
+        let generalPartner;
+        if (isWithIds) {
+          generalPartner = new GeneralPartnerBuilder()
+            .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+            .isPerson()
+            .build();
 
-      let generalPartner;
-      if (isWithIds) {
-        generalPartner = new GeneralPartnerBuilder()
-          .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-          .isPerson()
-          .build();
+          appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+        }
 
-        appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+        // Use date values that don't appear elsewhere in the HTML to ensure they are being
+        // pulled from the submitted form data
+        const res = await request(app)
+          .post(url)
+          .send({
+            ...PostTransitionRouting?.get(PostTransitionPageType?.whenDidTheGeneralPartnerPersonCease),
+            "cease_date-day": "DAY_41",
+            "cease_date-month": "MONTH_01",
+            "cease_date-year": "YEAR_2025",
+            remove_confirmation_checked: true
+          });
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain("DAY_41");
+        expect(res.text).toContain("MONTH_01");
+        expect(res.text).toContain("YEAR_2025");
+        if (isWithIds) {
+          expect(res.text).toContain(generalPartner.data?.forename + " " + generalPartner.data?.surname);
+        } else {
+          expect(res.text).toContain(companyAppointment.name.split(",")[0]);
+        }
+        expect(res.text).toContain(enTranslationText.errorMessages.ceaseDate.dayInvalidLength);
+
+        expect(res.text).toContain('name="remove_confirmation_checked" type="checkbox" value="true" checked');
       }
-
-      // Use date values that don't appear elsewhere in the HTML to ensure they are being
-      // pulled from the submitted form data
-      const res = await request(app).post(url).send({
-        pageType: PostTransitionPageType.whenDidTheGeneralPartnerPersonCease,
-        "cease_date-day": "DAY_41",
-        "cease_date-month": "MONTH_01",
-        "cease_date-year": "YEAR_2025",
-        remove_confirmation_checked: true
-      });
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain("DAY_41");
-      expect(res.text).toContain("MONTH_01");
-      expect(res.text).toContain("YEAR_2025");
-      if (isWithIds) {
-        expect(res.text).toContain(generalPartner.data?.forename + " " + generalPartner.data?.surname);
-      } else {
-        expect(res.text).toContain(companyAppointment.name.split(",")[0]);
-      }
-      expect(res.text).toContain(errorMessage);
-
-      expect(res.text).toContain('name="remove_confirmation_checked" type="checkbox" value="true" checked');
-    });
-
+    );
   });
 });
