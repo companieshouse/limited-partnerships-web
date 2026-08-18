@@ -22,13 +22,13 @@ const isCapitalContributionApplicable = (journeyTypes: JourneyTypes, partnership
 const capitalContributionValidation = (data: Record<string, any>, currencies: Record<string, any>, overrideCapitalContributionType: (capitalContributionType: string) => void, uiErrors: UIErrors, errorMessages: any): void => {
   if (!data.contribution_currency_type) {
     uiErrors.setWebError("contribution_currency_type", errorMessages?.currencyRequired);
-  }
-
-  const currencyCode = data?.contribution_currency_type?.match(/\([A-Z]{3}\)/g)?.[0]?.replace(/[()]/g, "");
-  if (currencyCode && currencies[currencyCode] !== data.contribution_currency_type) {
-    uiErrors.setWebError("contribution_currency_type", errorMessages?.invalidCurrency);
   } else {
-    overrideCapitalContributionType(currencyCode);
+    const currencyCode = data?.contribution_currency_type?.match(/\([A-Z]{3}\)/g)?.[0]?.replace(/[()]/g, "");
+    if (currencies[currencyCode] !== data.contribution_currency_type) {
+      uiErrors.setWebError("contribution_currency_type", errorMessages?.invalidCurrency);
+    } else {
+      overrideCapitalContributionType(currencyCode);
+    }
   }
 
   contributionCurrencyValueValidation(data, uiErrors, errorMessages);
