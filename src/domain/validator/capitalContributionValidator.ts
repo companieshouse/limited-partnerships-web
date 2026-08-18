@@ -5,15 +5,8 @@ import { symbols } from "../../application/service/utils/currencies";
 import { JourneyTypes } from "../entities/journey";
 import { PartnerType } from "../types";
 
-// CHIPS enforces a maximum of 10 digits in total with up to 2 decimal places
-// (CheckMaxDecimalValueRule precision=10, scale=2), giving a maximum value of 99999999.99.
 const MAX_DIGITS = 10;
 
-// The capital contribution section is only shown for LP/SLP partnerships in the
-// registration and post-transition journeys (see capital-contribution.njk). It must
-// be validated whenever that section is shown - including when every field is left
-// blank - otherwise the "required" errors fall through to the backend, which returns
-// them unlocalised (English). See LP-1473.
 const CAPITAL_CONTRIBUTION_PARTNERSHIP_TYPES: string[] = [PartnershipType.LP, PartnershipType.SLP];
 
 const isCapitalContributionApplicable = (journeyTypes: JourneyTypes, partnershipType: PartnershipType, partnerType: PartnerType): boolean => {
@@ -26,9 +19,16 @@ const isCapitalContributionApplicable = (journeyTypes: JourneyTypes, partnership
   return isCapitalContributionJourney && isCapitalContributionPartnershipType;
 };
 
-const capitalContributionValidation = (data: Record<string, any>, uiErrors: UIErrors, errorMessages: any): void => {
+const capitalContributionValidation = (data: Record<string, any>, currencies: Record<string, any>, overrideCapitalContributionType: (capitalContributionType: string) => void, uiErrors: UIErrors, errorMessages: any): void => {
   if (!data.contribution_currency_type) {
     uiErrors.setWebError("contribution_currency_type", errorMessages?.currencyRequired);
+  } else {
+    const currencyCode = data?.contribution_currency_type?.match(/\([A-Z]{3}\)/g)?.[0]?.replace(/[()]/g, "");
+    if (currencies[currencyCode] !== data.contribution_currency_type) {
+      uiErrors.setWebError("contribution_currency_type", errorMessages?.invalidCurrency);
+    } else {
+      overrideCapitalContributionType(currencyCode);
+    }
   }
 
   contributionCurrencyValueValidation(data, uiErrors, errorMessages);

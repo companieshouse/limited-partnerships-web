@@ -1,7 +1,5 @@
 {% if (partnershipType == "LP") or (partnershipType == "SLP") %}
 
-  {# Lets the server know the capital contribution section was shown so it can validate
-     it even when every field is left blank (LP-1473). #}
   <input type="hidden" name="partnershipType" value="{{ partnershipType }}">
 
   <hr class="govuk-section-break govuk-section-break--visible govuk-section-break--m">
@@ -10,13 +8,54 @@
 
   <p class="govuk-hint">{{ i18n.partner.capitalContribution.hint }}</p>
 
-  {% set currencyField = props.data.limitedPartner.data.contribution_currency_type %}
-  {% include "includes/currencies.njk" %}
+  {% set contribution_currency_type = "" %}
+  {% if props.data.limitedPartner.data.contribution_currency_type %}
+    {% set contribution_currency_type = props.data.limitedPartner.data.contribution_currency_type %}
+  {% endif %}
+
+  {% set contribution_currency_value = "" %}
+  {% if props.data.limitedPartner.data.contribution_currency_value %}
+    {% set contribution_currency_value = props.data.limitedPartner.data.contribution_currency_value %}
+  {% endif %}
 
   {% set contribution_sub_types = [] %}
   {% if props.data.limitedPartner.data.contribution_sub_types %}
     {% set contribution_sub_types = props.data.limitedPartner.data.contribution_sub_types %}
   {% endif %}
+
+  {% set currencyField = contribution_currency_type %}
+  {% set currencyList = SET_CURRENCIES_DROPDOWN(i18n, currencyField) %}
+  {% set currencySelected = (currencyList | selectattr("selected") | first).text or contribution_currency_type %}
+
+  <div>
+    {{ govukInput({
+      id: "contribution_currency_type",
+      name: "contribution_currency_type",
+      type: "text",
+      classes: "govuk-input--width-20",
+      describedBy: "currency-hint",
+      label: {
+        text: i18n.partner.capitalContribution.currencyTypeLabel,
+        classes: "govuk-label--m",
+        isPageHeading: false
+      },
+      hint: {
+        text: i18n.partner.capitalContribution.currencyTypeHint
+      },
+      attributes: {
+        placeholder: currencyList[0].text,
+        list: "currencies"
+      },
+      value: currencySelected,
+      errorMessage: props.errors.contribution_currency_type if props.errors.contribution_currency_type
+    }) }}
+
+    <datalist id="currencies">
+      {% for currency in currencyList %}
+        <option value="{{ currency.text }}" label="{{ currency.code }}"></option>
+      {% endfor %}
+    </datalist>
+  </div>
 
   {{ govukInput({
     label: {
@@ -30,7 +69,7 @@
     classes: "govuk-input--width-10",
     id: "contribution_currency_value",
     name: "contribution_currency_value",
-    value: props.data.limitedPartner.data.contribution_currency_value,
+    value: contribution_currency_value,
     errorMessage: props.errors.contribution_currency_value if props.errors.contribution_currency_value
   }) }}
 

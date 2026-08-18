@@ -8,7 +8,8 @@
             "noSymbols": "WELSH - Value must not include currency symbols like £, $ and €",
             "noComma": "WELSH - Value must not include a comma",
             "atLeastOneType": "WELSH - Select at least one type of contribution",
-            "currencyRequired": "WELSH - Select the currency of the capital contribution"
+            "currencyRequired": "WELSH - Select the currency of the capital contribution",
+            "invalidCurrency": "WELSH - The currency you've entered cannot be found. You must select a currency from the list"
         },
 
         "choosePartnerType":{

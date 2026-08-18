@@ -8,7 +8,8 @@
             "noSymbols": "Value must not include currency symbols like £, $ and €",
             "noComma": "Value must not include a comma",
             "atLeastOneType": "Select at least one type of contribution",
-            "currencyRequired": "Select the currency of the capital contribution"
+            "currencyRequired": "Select the currency of the capital contribution",
+            "invalidCurrency": "The currency you've entered cannot be found. You must select a currency from the list"
         },
 
         "choosePartnerType":{
