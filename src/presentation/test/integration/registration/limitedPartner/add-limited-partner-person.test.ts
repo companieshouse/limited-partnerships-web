@@ -36,7 +36,7 @@ describe("Add Limited Partner Person Page", () => {
     "date_of_birth-year": "1987",
     nationality1: "Mongolian",
     nationality2: "Uzbek",
-    contribution_currency_type: "GBP",
+    contribution_currency_type: "Pound Sterling (GBP)",
     contribution_currency_value: "100.00",
     contribution_sub_types: ["MONEY"]
   };
@@ -217,7 +217,7 @@ describe("Add Limited Partner Person Page", () => {
       expect(res.text).toContain("11");
       expect(res.text).toContain("1987");
       expect(res.text).toContain("100.00");
-      expect(res.text).toContain('"GBP" selected');
+      expect(res.text).toContain("Pound Sterling (GBP)");
       expect(res.text).toContain('"MONEY" checked');
     });
 

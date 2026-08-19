@@ -1,0 +1,181 @@
+import request from "supertest";
+import { PartnershipType, Term } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+
+import app from "../../app";
+
+import { appDevDependencies } from "../../../../../config/dev-dependencies";
+import { GENERAL_PARTNERS_URL, SIC_URL, TERM_URL } from "../../../../controller/registration/url";
+import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
+import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
+import RegistrationPageType from "../../../../controller/registration/PageType";
+import { ApiErrors } from "../../../../../domain/entities/UIErrors";
+import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
+describe("Email Page", () => {
+  const URL = getUrl(TERM_URL);
+  const REDIRECT_URL = getUrl(SIC_URL);
+
+  beforeEach(() => {
+    setLocalesEnabled(true);
+
+    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([]);
+  });
+
+  describe("Get Term Page", () => {
+    describe("should load page", () => {
+      it("should load the page with English text", async () => {
+        const limitedPartnership = new LimitedPartnershipBuilder()
+          .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+          .withPartnershipType(PartnershipType.LP)
+          .build();
+
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+        const res = await request(app).get(URL + "?lang=en");
+
+        expect(res.status).toBe(200);
+        testTranslations(res.text, enTranslationText.partnership.termPage);
+        expect(res.text).toContain(`${enTranslationText.partnership.termPage.title} - ${enTranslationText.serviceRegistration} - GOV.UK`);
+        expect(res.text).not.toContain("WELSH -");
+      });
+
+      it("should load the page with Welsh text", async () => {
+        const limitedPartnership = new LimitedPartnershipBuilder()
+          .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+          .withPartnershipType(PartnershipType.SLP)
+          .build();
+
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+        const res = await request(app).get(URL + "?lang=cy");
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(`${cyTranslationText.partnership.termPage.title} - ${cyTranslationText.serviceRegistration} - GOV.UK`);
+        testTranslations(res.text, cyTranslationText.partnership.termPage);
+        expect(res.text).toContain(cyTranslationText.buttons.saveAndContinue);
+      });
+    });
+
+    describe("should redirect to general partner page", () => {
+      it(`should redirect to general partner page if ${PartnershipType.PFLP}`, async () => {
+        const REDIRECT_URL = getUrl(GENERAL_PARTNERS_URL);
+
+        const limitedPartnership = new LimitedPartnershipBuilder()
+          .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+          .withPartnershipType(PartnershipType.PFLP)
+          .build();
+
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+        const res = await request(app).get(URL);
+
+        expect(res.status).toBe(302);
+        expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+      });
+
+      it(`should redirect to general partner page if ${PartnershipType.SPFLP}`, async () => {
+        const REDIRECT_URL = getUrl(GENERAL_PARTNERS_URL);
+
+        const limitedPartnership = new LimitedPartnershipBuilder()
+          .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+          .withPartnershipType(PartnershipType.SPFLP)
+          .build();
+
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+        const res = await request(app).get(URL);
+
+        expect(res.status).toBe(302);
+        expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+      });
+    });
+
+    describe("Post term", () => {
+      it("should send term", async () => {
+        const limitedPartnership = new LimitedPartnershipBuilder()
+          .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+          .withPartnershipType(PartnershipType.LP)
+          .build();
+
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+        const res = await request(app).post(URL).send({
+          pageType: RegistrationPageType.term,
+          term: Term.BY_AGREEMENT
+        });
+
+        expect(res.status).toBe(302);
+        expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+      });
+
+      it("should return a validation error", async () => {
+        const limitedPartnership = new LimitedPartnershipBuilder()
+          .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+          .build();
+
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+        const apiErrors: ApiErrors = {
+          errors: { "data.term": "Term must be valid" }
+        };
+
+        appDevDependencies.limitedPartnershipGateway.feedErrors(apiErrors);
+
+        const res = await request(app).post(URL).send({
+          pageType: RegistrationPageType.term,
+          term: Term.BY_AGREEMENT
+        });
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain("Term must be valid");
+      });
+
+      it.each([
+        ["English", "en", enTranslationText],
+        ["Welsh", "cy", cyTranslationText]
+      ])(
+        "should re-render the page with an error summary in %s when no term is selected",
+        async (
+          _description: string,
+          lang: string,
+          translationText
+        ) => {
+          const limitedPartnership = new LimitedPartnershipBuilder()
+            .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+            .withPartnershipType(PartnershipType.LP)
+            .build();
+
+          appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+          const res = await request(app)
+            .post(URL + `?lang=${lang}`)
+            .send({
+              pageType: RegistrationPageType.term
+            });
+
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(translationText.errorMessages.limitedPartnership.term.termRequired);
+          expect(res.text).toContain('href="#term"');
+          expect(res.text).toContain(translationText.govUk.error.title);
+        }
+      );
+
+      it("should re-render the page with an error summary when an invalid term is submitted", async () => {
+        const limitedPartnership = new LimitedPartnershipBuilder()
+          .withId(appDevDependencies.limitedPartnershipGateway.submissionId)
+          .withPartnershipType(PartnershipType.LP)
+          .build();
+
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+        const res = await request(app).post(URL).send({
+          pageType: RegistrationPageType.term,
+          term: "INVALID"
+        });
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(enTranslationText.errorMessages.limitedPartnership.term.termRequired);
+        expect(res.text).toContain('href="#term"');
+      });
+    });
+  });
+});
