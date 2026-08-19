@@ -153,7 +153,8 @@ const postTransitionRoutingWhenDidGeneralPartnerPersonChange = {
   nextUrl: url.UPDATE_GENERAL_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL,
   pageType: PostTransitionPageType.whenDidGeneralPartnerPersonDetailsChange,
   data: {
-    titleKey: GENERAL_PARTNER
+    titleKey: GENERAL_PARTNER,
+    partnerEntityType: PartnerEntityType.person
   }
 };
 
@@ -202,7 +203,8 @@ const postTransitionRoutingWhenDidGeneralPartnerLegalEntityChange = {
   nextUrl: url.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_URL,
   pageType: PostTransitionPageType.whenDidGeneralPartnerLegalEntityDetailsChange,
   data: {
-    titleKey: GENERAL_PARTNER
+    titleKey: GENERAL_PARTNER,
+    partnerEntityType: PartnerEntityType.legalEntity
   }
 };
 

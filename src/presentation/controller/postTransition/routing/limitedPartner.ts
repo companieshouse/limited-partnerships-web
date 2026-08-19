@@ -136,7 +136,8 @@ const postTransitionRoutingWhenDidLimitedPartnerPersonChange = {
   nextUrl: url.UPDATE_LIMITED_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL,
   pageType: PostTransitionPageType.whenDidLimitedPartnerPersonDetailsChange,
   data: {
-    titleKey: LIMITED_PARTNER
+    titleKey: LIMITED_PARTNER,
+    partnerEntityType: PartnerEntityType.person
   }
 };
 
@@ -184,7 +185,8 @@ const postTransitionRoutingWhenDidLimitedPartnerLegalEntityChange = {
   nextUrl: url.UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_URL,
   pageType: PostTransitionPageType.whenDidLimitedPartnerLegalEntityDetailsChange,
   data: {
-    titleKey: LIMITED_PARTNER
+    titleKey: LIMITED_PARTNER,
+    partnerEntityType: PartnerEntityType.legalEntity
   }
 };
 

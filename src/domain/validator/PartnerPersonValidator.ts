@@ -5,6 +5,7 @@ import {
   CEASE_DATE_FIELD,
   DATE_EFFECTIVE_FROM_FIELD,
   DATE_OF_BIRTH_FIELD,
+  DATE_OF_UPDATE_FIELD,
   FORENAME_FIELD,
   FORMER_NAMES_FIELD,
   NATIONALITY1_FIELD,
@@ -18,7 +19,11 @@ import UIErrors from "../entities/UIErrors";
 import { PartnerType, PartnerEntityType } from "../types";
 import { validateDate } from "./DateValidators";
 import { containsInvalidCharacters, isFieldValueMissing, isFieldValueTooLong } from "./FieldValidators";
-import { isAddPartnerPage, isCeaseDatePage } from "../../presentation/controller/postTransition/pageType";
+import {
+  isAddPartnerPage,
+  isCeaseDatePage,
+  isWhenDidChangeUpdatePage
+} from "../../presentation/controller/postTransition/pageType";
 
 class PartnerPersonValidator {
   private data: Record<string, any> = {};
@@ -39,9 +44,13 @@ class PartnerPersonValidator {
   private ceaseDateMonth?: string;
   private ceaseDateYear?: string;
   private journeyTypes: JourneyTypes = {} as JourneyTypes;
+  private pageKey?: string;
   private partnerType?: PartnerType;
   private partnerEntityType?: PartnerEntityType;
   private partnershipType: PartnershipType = {} as PartnershipType;
+  private dateOfUpdateDay?: string;
+  private dateOfUpdateMonth?: string;
+  private dateOfUpdateYear?: string;
 
   private contribution_currency_type?: string;
   private contribution_currency_value?: string;
@@ -54,6 +63,7 @@ class PartnerPersonValidator {
   private dateOfBirthErrorMessages: Record<string, string> = {};
   private dateEffectiveFromErrorMessages: Record<string, string> = {};
   private ceaseDateErrorMessages: Record<string, string> = {};
+  private dateOfUpdateErrorMessages: Record<string, string> = {};
 
   set(data: Record<string, any>, i18n: any): this {
     this.data = data;
@@ -73,12 +83,16 @@ class PartnerPersonValidator {
     this.ceaseDateDay = data[`${CEASE_DATE_FIELD}-day`];
     this.ceaseDateMonth = data[`${CEASE_DATE_FIELD}-month`];
     this.ceaseDateYear = data[`${CEASE_DATE_FIELD}-year`];
+    this.dateOfUpdateDay = data[`${DATE_OF_UPDATE_FIELD}-day`];
+    this.dateOfUpdateMonth = data[`${DATE_OF_UPDATE_FIELD}-month`];
+    this.dateOfUpdateYear = data[`${DATE_OF_UPDATE_FIELD}-year`];
     this.registrationDate = data.registration_date;
     this.contribution_currency_type = data.contribution_currency_type;
     this.contribution_currency_value = data.contribution_currency_value;
     this.contribution_sub_types = data.contribution_sub_types;
 
     this.journeyTypes = data.journeyTypes;
+    this.pageKey = data.pageKey;
     this.partnerType = data.partnerType;
     this.partnerEntityType = data.partnerEntityType;
     this.partnershipType = data.partnershipType;
@@ -97,6 +111,7 @@ class PartnerPersonValidator {
 
     this.dateEffectiveFromErrorMessages = i18n?.errorMessages?.dateEffectiveFrom ?? {};
     this.ceaseDateErrorMessages = i18n?.errorMessages?.ceaseDate ?? {};
+    this.dateOfUpdateErrorMessages = i18n?.errorMessages?.dateOfUpdate ?? {};
 
     return this;
   }
@@ -114,6 +129,23 @@ class PartnerPersonValidator {
         CEASE_DATE_FIELD,
         this.ceaseDateErrorMessages
       );
+      return uiErrors;
+    }
+
+    if (isWhenDidChangeUpdatePage(this.data.pageType)) {
+      validateDate(
+        {
+          day: this.dateOfUpdateDay,
+          month: this.dateOfUpdateMonth,
+          year: this.dateOfUpdateYear
+        },
+        uiErrors,
+        DATE_OF_UPDATE_FIELD,
+        this.dateOfUpdateErrorMessages,
+        this.registrationDate,
+        this.pageKey
+      );
+
       return uiErrors;
     }
 

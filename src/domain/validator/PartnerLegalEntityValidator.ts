@@ -1,5 +1,9 @@
-import { isCeaseDatePage, isAddPartnerPage } from "../../presentation/controller/postTransition/pageType";
-import { CEASE_DATE_FIELD, DATE_EFFECTIVE_FROM_FIELD } from "../../config";
+import {
+  isCeaseDatePage,
+  isAddPartnerPage,
+  isWhenDidChangeUpdatePage
+} from "../../presentation/controller/postTransition/pageType";
+import { CEASE_DATE_FIELD, DATE_EFFECTIVE_FROM_FIELD, DATE_OF_UPDATE_FIELD } from "../../config";
 import { JourneyTypes } from "../entities/journey";
 import UIErrors from "../entities/UIErrors";
 import { validateDate } from "./DateValidators";
@@ -12,14 +16,19 @@ class PartnerLegalEntityValidator {
   private dateEffectiveFromDay?: string;
   private dateEffectiveFromMonth?: string;
   private dateEffectiveFromYear?: string;
+  private dateOfUpdateDay?: string;
+  private dateOfUpdateMonth?: string;
+  private dateOfUpdateYear?: string;
 
   private registrationDate?: string;
 
   private journeyTypes: JourneyTypes = {} as JourneyTypes;
+  private pageKey?: string;
 
   private dateEffectiveFromErrorMessages: Record<string, string> = {};
   private errorMessages: Record<string, any> = {};
   private ceaseDateErrorMessages: Record<string, string> = {};
+  private dateOfUpdateErrorMessages: Record<string, string> = {};
 
   set(data: Record<string, any>, i18n: any): this {
     this.data = data;
@@ -31,17 +40,24 @@ class PartnerLegalEntityValidator {
     this.dateEffectiveFromMonth = data[`${DATE_EFFECTIVE_FROM_FIELD}-month`];
     this.dateEffectiveFromYear = data[`${DATE_EFFECTIVE_FROM_FIELD}-year`];
 
+    this.dateOfUpdateDay = data[`${DATE_OF_UPDATE_FIELD}-day`];
+    this.dateOfUpdateMonth = data[`${DATE_OF_UPDATE_FIELD}-month`];
+    this.dateOfUpdateYear = data[`${DATE_OF_UPDATE_FIELD}-year`];
+
     this.registrationDate = data.registration_date;
 
     this.journeyTypes = data.journeyTypes;
+    this.pageKey = data.pageKey;
 
     this.ceaseDateErrorMessages = i18n?.errorMessages?.ceaseDate ?? {};
     this.dateEffectiveFromErrorMessages = i18n?.errorMessages?.dateEffectiveFrom ?? {};
+    this.dateOfUpdateErrorMessages = i18n?.errorMessages?.dateOfUpdate ?? {};
     return this;
   }
 
   runValidation(): UIErrors {
     const uiErrors = new UIErrors();
+
     if (isCeaseDatePage(this.data.pageType)) {
       validateDate(
         {
@@ -55,6 +71,7 @@ class PartnerLegalEntityValidator {
       );
       return uiErrors;
     }
+
     if (isAddPartnerPage(this.data.pageType) && this.journeyTypes.isPostTransition) {
       validateDate(
         {
@@ -69,6 +86,24 @@ class PartnerLegalEntityValidator {
       );
       return uiErrors;
     }
+
+    if (isWhenDidChangeUpdatePage(this.data.pageType)) {
+      validateDate(
+        {
+          day: this.dateOfUpdateDay,
+          month: this.dateOfUpdateMonth,
+          year: this.dateOfUpdateYear
+        },
+        uiErrors,
+        DATE_OF_UPDATE_FIELD,
+        this.dateOfUpdateErrorMessages,
+        this.registrationDate,
+        this.pageKey
+      );
+
+      return uiErrors;
+    }
+
     return uiErrors;
   }
 }

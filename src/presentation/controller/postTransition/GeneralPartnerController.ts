@@ -70,7 +70,7 @@ class GeneralPartnerPostTransitionController extends PartnerController {
   }
 
   sendUpdatePageData() {
-    return super.sendPageData(PartnerType.generalPartner);
+    return this.postTransitionPartnerController.sendPageData(PartnerType.generalPartner);
   }
 
   getCeaseDate() {

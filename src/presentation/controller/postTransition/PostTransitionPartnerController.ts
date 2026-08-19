@@ -400,7 +400,8 @@ class PostTransitionPartnerController extends PartnerController {
           partnerType: partner,
           partnerEntityType: pageRouting?.data?.partnerEntityType,
           journeyTypes: response.locals.journeyTypes,
-          registration_date
+          registration_date,
+          pageKey: partner
         };
 
         const result = await super.sendData(partner, tokens, ids, data);
@@ -419,14 +420,7 @@ class PostTransitionPartnerController extends PartnerController {
             partner
           );
 
-          if (result.errors.errors.errorList[0].href === "#date_of_update") {
-            const errors = result.errors.errors;
-            if (errors.errorList[0].href === "#date_of_update") {
-              const errorMessage = response.locals.i18n.errorMessages.dateOfUpdate[pageRouting?.data?.titleKey];
-              errors.errorList[0].text = errorMessage;
-              errors.date_of_update.text = errorMessage;
-            }
-
+          if (result?.errors.errors["date_of_update"]) {
             return response.render(DATE_OF_UPDATE_TEMPLATE, super.makeProps(pageRouting, renderData, result.errors));
           }
 
