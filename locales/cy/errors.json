@@ -280,6 +280,12 @@
 
         "signOutPage":{
             "selectionRequired": "WELSH - Select if you are sure you want to sign out"
+        },
+
+        "redesignateToPflpPage": {
+            "bothRequired": "WELSH - Select both statements to confirm that you are applying for PFLP designation, and that all general partners have agreed to the application",
+            "applyRequired": "WELSH - Select the statement to confirm that you are applying for PFLP designation",
+            "confirmationRequired": "WELSH - Select the statement to confirm that all general partners have agreed to the application"
         }
     }
 }

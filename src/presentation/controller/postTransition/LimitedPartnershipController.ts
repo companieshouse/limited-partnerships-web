@@ -121,7 +121,7 @@ class LimitedPartnershipController extends AbstractController {
 
         const { limitedPartnership } = await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId);
 
-        const errorData = this.makeErrorData(
+        const errorData = this.makeRenderData(
           limitedPartnership,
           addressKey ? { [addressKey]: { ...request.body } } : request.body
         );
@@ -193,7 +193,7 @@ class LimitedPartnershipController extends AbstractController {
 
         const limitedPartnership = await this.getLimitedPartnership(ids, tokens);
 
-        const errorData = this.makeErrorData(
+        const errorData = this.makeRenderData(
           limitedPartnership,
           addressKey ? { [addressKey]: { ...request.body } } : request.body
         );
@@ -252,7 +252,7 @@ class LimitedPartnershipController extends AbstractController {
           registrationDate
         );
 
-        const errorData = this.makeErrorData(limitedPartnership, request.body);
+        const errorData = this.makeRenderData(limitedPartnership, request.body);
 
         if (errors.hasErrors()) {
           return response.render(DATE_OF_UPDATE_TEMPLATE, super.makeProps(pageRouting, errorData, errors));
@@ -379,7 +379,15 @@ class LimitedPartnershipController extends AbstractController {
         const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
         const { limitedPartnership } = await this.companyService.buildLimitedPartnershipFromCompanyProfile(tokens, ids.companyId);
 
-        const errorData = this.makeErrorData(limitedPartnership, request.body);
+        const renderData = this.makeRenderData(limitedPartnership, request.body);
+        const errors = this.validateRedesignateToPflpSelection(request, response);
+
+        if (errors.hasErrors()) {
+          return response.render(
+            super.templateName(pageRouting.currentUrl),
+            super.makeProps(pageRouting, { ...renderData, submissionId: ids.submissionId }, errors)
+          );
+        }
 
         const resultTransaction = await this.createTransaction(
           limitedPartnership,
@@ -389,7 +397,7 @@ class LimitedPartnershipController extends AbstractController {
         if (resultTransaction.errors) {
           return response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, errorData, resultTransaction.errors)
+            super.makeProps(pageRouting, renderData, resultTransaction.errors)
           );
         }
 
@@ -406,7 +414,7 @@ class LimitedPartnershipController extends AbstractController {
         if (resultLimitedPartnershipCreate.errors) {
           return response.render(
             super.templateName(pageRouting.currentUrl),
-            super.makeProps(pageRouting, errorData, resultLimitedPartnershipCreate.errors)
+            super.makeProps(pageRouting, renderData, resultLimitedPartnershipCreate.errors)
           );
         }
 
@@ -554,7 +562,7 @@ class LimitedPartnershipController extends AbstractController {
     return resultLimitedPartnershipCreate;
   }
 
-  private makeErrorData(limitedPartnership: LimitedPartnership, data: Record<string, any>): Record<string, any> | null {
+  private makeRenderData(limitedPartnership: LimitedPartnership, data: Record<string, any>): Record<string, any> | null {
     return {
       limitedPartnership: {
         ...limitedPartnership,
@@ -567,6 +575,20 @@ class LimitedPartnershipController extends AbstractController {
     if (partnershipType === PartnershipType.PFLP || partnershipType === PartnershipType.SPFLP) {
       throw new Error(message);
     }
+  }
+
+  private validateRedesignateToPflpSelection(request: Request, response: Response){
+    const errors = new UIErrors();
+
+    if (!request.body.redesignate_to_pflp_apply && !request.body.redesignate_to_pflp_confirm) {
+      errors.setWebError("redesignate_to_pflp_apply", response.locals.i18n.errorMessages.redesignateToPflpPage.bothRequired);
+    } else if (!request.body.redesignate_to_pflp_apply) {
+      errors.setWebError("redesignate_to_pflp_apply", response.locals.i18n.errorMessages.redesignateToPflpPage.applyRequired);
+    } else if (!request.body.redesignate_to_pflp_confirm) {
+      errors.setWebError("redesignate_to_pflp_confirm", response.locals.i18n.errorMessages.redesignateToPflpPage.confirmationRequired);
+    }
+
+    return errors;
   }
 }
 

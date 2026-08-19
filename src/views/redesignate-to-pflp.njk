@@ -13,6 +13,8 @@
         <input type="hidden" name="pageType" value={{ props.pageType }}>
         {% include "includes/csrf_token.njk" %}
         
+        {% include "includes/errors.njk" %}
+
         {% include "includes/proposed-name.njk" %}  
 
         <h1 class="govuk-heading-xl govuk-!-margin-bottom-2"> {{ pageTitle }} </h1>
@@ -33,28 +35,30 @@
         
         {{ govukCheckboxes({
           id: "redesignate_to_pflp_apply", 
-          name: "redesignate_to_pflp_apply",            
+          name: "redesignate_to_pflp_apply",   
+          errorMessage: {
+            text: props.errors.redesignate_to_pflp_apply.text
+          } if props.errors.redesignate_to_pflp_apply,
           items: [
             {
               value: "true",
               text: i18n.partnership.redesignateToPflpPage.applicationCheck,
-              attributes: {
-                required: true
-              }
+              checked: props.data.limitedPartnership.data.redesignate_to_pflp_apply
             }
           ]
         }) }}
 
         {{ govukCheckboxes({
           id: "redesignate_to_pflp_confirm", 
-          name: "redesignate_to_pflp_confirm",          
+          name: "redesignate_to_pflp_confirm",  
+          errorMessage: {
+            text: props.errors.redesignate_to_pflp_confirm.text
+          } if props.errors.redesignate_to_pflp_confirm,
           items: [
             {
               value: "true",
               text: i18n.partnership.redesignateToPflpPage.confirmationCheck,
-              attributes: {
-                required: true
-              }
+              checked: props.data.limitedPartnership.data.redesignate_to_pflp_confirm
             }
           ]
         }) }}
