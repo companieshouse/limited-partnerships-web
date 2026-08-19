@@ -2,6 +2,8 @@ import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limi
 
 import { capitalContributionValidation, isCapitalContributionApplicable } from "./capitalContributionValidator";
 import {
+  CEASE_DATE_FIELD,
+  DATE_EFFECTIVE_FROM_FIELD,
   DATE_OF_BIRTH_FIELD,
   FORENAME_FIELD,
   FORMER_NAMES_FIELD,
@@ -16,7 +18,7 @@ import UIErrors from "../entities/UIErrors";
 import { PartnerType, PartnerEntityType } from "../types";
 import { validateDate } from "./DateValidators";
 import { containsInvalidCharacters, isFieldValueMissing, isFieldValueTooLong } from "./FieldValidators";
-import { isCeaseDatePage } from "../../presentation/controller/postTransition/pageType";
+import { isAddPartnerPage, isCeaseDatePage } from "../../presentation/controller/postTransition/pageType";
 
 class PartnerPersonValidator {
   private data: Record<string, any> = {};
@@ -45,9 +47,12 @@ class PartnerPersonValidator {
   private contribution_currency_value?: string;
   private contribution_sub_types?: string[];
 
+  private registrationDate?: string;
+
   private errorMessages: Record<string, any> = {};
 
   private dateOfBirthErrorMessages: Record<string, string> = {};
+  private dateEffectiveFromErrorMessages: Record<string, string> = {};
   private ceaseDateErrorMessages: Record<string, string> = {};
 
   set(data: Record<string, any>, i18n: any): this {
@@ -56,18 +61,19 @@ class PartnerPersonValidator {
     this.surname = data.surname;
     this.previousName = data.previous_name;
     this.formerNames = data.former_names;
-    this.dateOfBirthDay = data["date_of_birth-day"];
-    this.dateOfBirthMonth = data["date_of_birth-month"];
-    this.dateOfBirthYear = data["date_of_birth-year"];
+    this.dateOfBirthDay = data[`${DATE_OF_BIRTH_FIELD}-day`];
+    this.dateOfBirthMonth = data[`${DATE_OF_BIRTH_FIELD}-month`];
+    this.dateOfBirthYear = data[`${DATE_OF_BIRTH_FIELD}-year`];
     this.nationality1 = data.nationality1;
     this.nationality2 = data.nationality2;
     this.not_disqualified_statement_checked = data.not_disqualified_statement_checked;
-    this.dateEffectiveFromDay = data["date_effective_from-day"];
-    this.dateEffectiveFromMonth = data["date_effective_from-month"];
-    this.dateEffectiveFromYear = data["date_effective_from-year"];
-    this.ceaseDateDay = data["cease_date-day"];
-    this.ceaseDateMonth = data["cease_date-month"];
-    this.ceaseDateYear = data["cease_date-year"];
+    this.dateEffectiveFromDay = data[`${DATE_EFFECTIVE_FROM_FIELD}-day`];
+    this.dateEffectiveFromMonth = data[`${DATE_EFFECTIVE_FROM_FIELD}-month`];
+    this.dateEffectiveFromYear = data[`${DATE_EFFECTIVE_FROM_FIELD}-year`];
+    this.ceaseDateDay = data[`${CEASE_DATE_FIELD}-day`];
+    this.ceaseDateMonth = data[`${CEASE_DATE_FIELD}-month`];
+    this.ceaseDateYear = data[`${CEASE_DATE_FIELD}-year`];
+    this.registrationDate = data.registration_date;
     this.contribution_currency_type = data.contribution_currency_type;
     this.contribution_currency_value = data.contribution_currency_value;
     this.contribution_sub_types = data.contribution_sub_types;
@@ -89,6 +95,7 @@ class PartnerPersonValidator {
       missing: this.errorMessages?.dateOfBirthMissing
     };
 
+    this.dateEffectiveFromErrorMessages = i18n?.errorMessages?.dateEffectiveFrom ?? {};
     this.ceaseDateErrorMessages = i18n?.errorMessages?.ceaseDate ?? {};
 
     return this;
@@ -104,15 +111,17 @@ class PartnerPersonValidator {
           year: this.ceaseDateYear
         },
         uiErrors,
-        "cease_date",
+        CEASE_DATE_FIELD,
         this.ceaseDateErrorMessages
       );
       return uiErrors;
     }
+
     this.validateForename(uiErrors);
     this.validateSurname(uiErrors);
     this.validatePreviousName(uiErrors);
     this.validateFormerNames(uiErrors);
+
     validateDate(
       {
         day: this.dateOfBirthDay,
@@ -123,6 +132,21 @@ class PartnerPersonValidator {
       DATE_OF_BIRTH_FIELD,
       this.dateOfBirthErrorMessages
     );
+
+    if (isAddPartnerPage(this.data.pageType) && this.journeyTypes.isPostTransition) {
+      validateDate(
+        {
+          day: this.dateEffectiveFromDay,
+          month: this.dateEffectiveFromMonth,
+          year: this.dateEffectiveFromYear
+        },
+        uiErrors,
+        DATE_EFFECTIVE_FROM_FIELD,
+        this.dateEffectiveFromErrorMessages,
+        this.registrationDate
+      );
+    }
+
     this.validateNationalities(uiErrors);
 
     if (isCapitalContributionApplicable(this.journeyTypes, this.partnershipType, this.partnerType || ("" as PartnerType))) {
@@ -140,11 +164,6 @@ class PartnerPersonValidator {
     if (!this.journeyTypes?.isTransition && this.partnerType === PartnerType.generalPartner) {
       this.validateDisqualificationStatement(uiErrors);
     }
-
-    // TODO
-    // if (this.journeyTypes?.isPostTransition) {
-    //    validate date effective from
-    // }
 
     return uiErrors;
   }

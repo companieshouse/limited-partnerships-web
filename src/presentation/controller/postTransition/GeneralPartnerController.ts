@@ -63,7 +63,7 @@ class GeneralPartnerPostTransitionController extends PartnerController {
   }
 
   sendPageData() {
-    return super.sendPageData(PartnerType.generalPartner, {
+    return this.postTransitionPartnerController.sendPageData(PartnerType.generalPartner, {
       confirmPartnerUsualResidentialAddressUrl: CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
       confirmPartnerPrincipalOfficeAddressUrl: CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
     });

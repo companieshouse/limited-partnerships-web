@@ -68,7 +68,6 @@ describe("Limited Partner LegalEntity cease date page", () => {
     it("should send the limited partner legal entity details", async () => {
       const res = await request(app).post(URL).send({
         pageType: PostTransitionPageType.whenDidTheLimitedPartnerLegalEntityCease,
-
         "cease_date-day": "01",
         "cease_date-month": "01",
         "cease_date-year": "2025",

@@ -16,7 +16,11 @@ import { CompanyOfficer } from "@companieshouse/api-sdk-node/dist/services/compa
 import { Tokens } from "../../domain/types";
 
 export type DataIncludingPartners = {
-  data: LimitedPartnership["data"] & { partners?: CompanyOfficer[]; limitedPartners?: CompanyOfficer[] };
+  data: LimitedPartnership["data"] & {
+    registration_date?: string;
+    partners?: CompanyOfficer[];
+    limitedPartners?: CompanyOfficer[];
+  };
 };
 
 class CompanyService {
@@ -42,6 +46,7 @@ class CompanyService {
 
       const roa = companyProfile.registeredOfficeAddress;
       const ppob = companyProfile.serviceAddress;
+      const registrationDate = companyProfile.dateOfCreation;
 
       limitedPartnership = {
         data: {
@@ -52,7 +57,8 @@ class CompanyService {
           term: this.mapPartnershipTerm(companyProfile),
           registered_office_address: this.mapAddress(roa),
           principal_place_of_business_address: this.mapAddress(ppob),
-          ...partners
+          ...partners,
+          registration_date: registrationDate
         }
       };
     }

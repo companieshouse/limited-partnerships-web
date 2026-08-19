@@ -251,8 +251,8 @@ class LimitedPartnershipController extends AbstractController {
           errors,
           DATE_OF_UPDATE_FIELD,
           response.locals.i18n.errorMessages.dateOfUpdate,
-          pageRouting?.data?.titleKey,
-          registrationDate
+          registrationDate,
+          pageRouting?.data?.titleKey
         );
 
         const errorData = this.makeErrorData(limitedPartnership, request.body);

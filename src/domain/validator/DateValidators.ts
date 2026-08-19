@@ -28,8 +28,8 @@ export const validateDate = (
   uiErrors: UIErrors,
   dateFieldType: string,
   dateErrorMessages: Record<string, string>,
-  pageKey?: string,
-  registrationDate?: string
+  registrationDate?: string,
+  pageKey?: string
 ): void => {
   const parts = toDatePartsFromBody(body, dateFieldType);
 
@@ -38,13 +38,13 @@ export const validateDate = (
     validFieldLengths,
     digitsOnly,
     realDate,
-    pageKey ? inPastOrToday : inPast,
+    registrationDate ? inPastOrToday : inPast,
     ...(registrationDate ? [notBeforeRegistrationDate(registrationDate)] : [])
   ]);
 
   if (errorKey !== null) {
     const entry = dateErrorMessages[errorKey];
-    const text = typeof entry === "string" ? entry : entry?.[pageKey ?? ""];
+    const text = typeof entry === "object" ? entry?.[pageKey ?? ""] : entry;
     uiErrors.setWebError(dateFieldType, text);
   }
 };

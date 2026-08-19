@@ -51,9 +51,9 @@ export default class IndividualPscValidator {
     this.forename = data.forename;
     this.middle_names = data.middle_names;
     this.surname = data.surname;
-    this.date_of_birth_day = data["date_of_birth-day"];
-    this.date_of_birth_month = data["date_of_birth-month"];
-    this.date_of_birth_year = data["date_of_birth-year"];
+    this.date_of_birth_day = data[`${DATE_OF_BIRTH_FIELD}-day`];
+    this.date_of_birth_month = data[`${DATE_OF_BIRTH_FIELD}-month`];
+    this.date_of_birth_year = data[`${DATE_OF_BIRTH_FIELD}-year`];
     this.nationality1 = data.nationality1;
     this.nationality2 = data.nationality2;
     this.consent_checked = data.consent_checked;

@@ -109,4 +109,15 @@ export const isLegalEntity = (pageType: string): boolean => {
   return legalEntityPageTypes.includes(pageType);
 };
 
+const isAddPartnerPageTypes: string[] = [
+  PostTransitionPageType.addGeneralPartnerPerson,
+  PostTransitionPageType.addGeneralPartnerLegalEntity,
+  PostTransitionPageType.addLimitedPartnerPerson,
+  PostTransitionPageType.addLimitedPartnerLegalEntity
+];
+
+export const isAddPartnerPage = (pageType: string): boolean => {
+  return isAddPartnerPageTypes.includes(pageType);
+};
+
 export default PostTransitionPageType;

@@ -135,7 +135,7 @@
         },
 
         "ceaseDate": {
-            "missing": "WELSH - Enter the cease date",
+            "missing": "WELSH - Enter the partner's cease date",
             "dayMissing": "WELSH - Cease date must include a day",
             "monthMissing": "WELSH - Cease date must include a month",
             "yearMissing": "WELSH - Cease date must include a year",
@@ -148,6 +148,23 @@
             "dayInvalidLength": "WELSH - Day must be 1 or 2 numbers",
             "monthInvalidLength": "WELSH - Month must be 1 or 2 numbers",
             "yearInvalidLength": "WELSH - Year must be 4 numbers"
+        },
+
+        "dateEffectiveFrom": {
+            "missing": "WELSH - Enter the partner's date effective from",
+            "dayMissing": "WELSH - Date effective from must include a day",
+            "monthMissing": "WELSH - Date effective from must include a month",
+            "yearMissing": "WELSH - Date effective from must include a year",
+            "dayAndMonthMissing": "WELSH - Date effective from must include a day and a month",
+            "monthAndYearMissing": "WELSH - Date effective from must include a month and a year",
+            "dayAndYearMissing": "WELSH - Date effective from must include a day and a year",
+            "invalidChars": "WELSH - Date effective from must only include numbers",
+            "invalid": "WELSH - Date effective from must be a real date",
+            "notInPast": "WELSH - Date effective from must be in the past",
+            "dayInvalidLength": "WELSH - Day must be 1 or 2 numbers",
+            "monthInvalidLength": "WELSH - Month must be 1 or 2 numbers",
+            "yearInvalidLength": "WELSH - Year must be 4 numbers",
+            "beforeRegistrationDate": "WELSH - Date effective from must be the same as or after the partnership's registration date"
         },
 
         "partners": {
