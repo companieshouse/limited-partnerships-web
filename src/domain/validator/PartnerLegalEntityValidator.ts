@@ -26,7 +26,6 @@ class PartnerLegalEntityValidator {
   private pageKey?: string;
 
   private dateEffectiveFromErrorMessages: Record<string, string> = {};
-  private errorMessages: Record<string, any> = {};
   private ceaseDateErrorMessages: Record<string, string> = {};
   private dateOfUpdateErrorMessages: Record<string, string> = {};
 
