@@ -111,6 +111,21 @@ export function runDateOfUpdateTests(config: DateOfUpdateTestConfig): void {
         expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
       });
 
+      it("should display error messages in welsh when the language is set to Welsh", async () => {
+        setLocalesEnabled(true);
+        const res = await request(app)
+          .post(url + "?lang=cy")
+          .send({
+            pageType,
+            "date_of_update-day": "",
+            "date_of_update-month": "",
+            "date_of_update-year": ""
+          });
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(toEscapedHtml(cyTranslationText.errorMessages.dateOfUpdate.missing[dateFieldType]));
+      });
+
       it.each([
         {
           description: "the date is in the future",
