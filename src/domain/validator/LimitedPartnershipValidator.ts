@@ -49,12 +49,8 @@ class LimitedPartnershipValidator {
 
   // Partnership Type
   private runPartnershipTypeValidation(uiErrors: UIErrors): UIErrors {
-    if (!this.data.partnership_type) {
-      uiErrors.setWebError("partnership_type", this.errorMessages?.partnershipType?.typeRequired);
-    }
-
-    if (this.data.partnership_type && !Object.values(PartnershipType).includes(this.data.partnership_type)) {
-      uiErrors.setWebError("partnership_type", this.errorMessages?.partnershipType?.typeRequired);
+    if (!this.data.partnership_type || !Object.values(PartnershipType).includes(this.data.partnership_type)) {
+      return uiErrors.setWebError("partnership_type", this.errorMessages?.partnershipType?.typeRequired);
     }
 
     return uiErrors;
@@ -64,21 +60,20 @@ class LimitedPartnershipValidator {
   private runNameValidation(uiErrors: UIErrors): UIErrors {
     if (!this.data.partnership_name?.trim()) {
       uiErrors.setWebError("partnership_name", this.errorMessages?.name?.nameRequired);
+    } else if (!VALID_CHARACTERS_REGEX.test(this.data.partnership_name)) {
+      uiErrors.setWebError("partnership_name", this.errorMessages?.name?.nameInvalid);
+    } else if (this.data.name_ending) {
+      const partnershipNameMaxLength = 160;
+      const partnershipName = this.data.partnership_name.trim();
+      const partnershipNameWithEnding = `${partnershipName} ${this.data.name_ending}`;
+
+      if (partnershipNameWithEnding.length > partnershipNameMaxLength) {
+        uiErrors.setWebError("partnership_name", this.errorMessages?.name?.nameLength);
+      }
     }
+
     if (!this.data.name_ending) {
       uiErrors.setWebError("name_ending", this.errorMessages?.name?.nameEndingRequired);
-    }
-
-    if (this.data.partnership_name && !VALID_CHARACTERS_REGEX.test(this.data.partnership_name)) {
-      uiErrors.setWebError("partnership_name", this.errorMessages?.name?.nameInvalid);
-    }
-
-    const partnershipNameMaxLength = 160;
-    const partnershipName = this.data.partnership_name?.trim() ?? "";
-    const partnershipNameWithEnding = `${partnershipName} ${this.data.name_ending}`;
-
-    if (partnershipName && partnershipNameWithEnding.length > partnershipNameMaxLength) {
-      uiErrors.setWebError("partnership_name", this.errorMessages?.name?.nameLength);
     }
 
     return uiErrors;
@@ -86,11 +81,7 @@ class LimitedPartnershipValidator {
 
   // Jurisdiction
   private runJurisdictionValidation(uiErrors: UIErrors): UIErrors {
-    if (!this.data.jurisdiction) {
-      uiErrors.setWebError("jurisdiction", this.errorMessages?.jurisdiction?.required);
-    }
-
-    if (this.data.jurisdiction && !Object.values(Jurisdiction).includes(this.data.jurisdiction)) {
+    if (!this.data.jurisdiction || !Object.values(Jurisdiction).includes(this.data.jurisdiction)) {
       uiErrors.setWebError("jurisdiction", this.errorMessages?.jurisdiction?.required);
     }
 
@@ -99,11 +90,7 @@ class LimitedPartnershipValidator {
 
   // Term
   private runTermValidation(uiErrors: UIErrors): UIErrors {
-    if (!this.data.term) {
-      uiErrors.setWebError("term", this.errorMessages?.term?.termRequired);
-    }
-
-    if (this.data.term && !Object.values(Term).includes(this.data.term)) {
+    if (!this.data.term || !Object.values(Term).includes(this.data.term)) {
       uiErrors.setWebError("term", this.errorMessages?.term?.termRequired);
     }
 
@@ -113,7 +100,7 @@ class LimitedPartnershipValidator {
   // Email
   private runEmailValidation(uiErrors: UIErrors): UIErrors {
     if (!this.data.email?.trim()) {
-      uiErrors.setWebError("email", this.errorMessages?.email?.emailRequired);
+      return uiErrors.setWebError("email", this.errorMessages?.email?.emailRequired);
     }
 
     const email = this.data.email?.trim() ?? "";

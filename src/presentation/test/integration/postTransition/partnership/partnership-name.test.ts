@@ -119,15 +119,13 @@ describe("Name Page", () => {
     });
 
     it("should return validation errors", async () => {
-      const res = await request(app)
-        .post(PARTNERSHIP_NAME_URL)
-        .send({
-          pageType: PostTransitionPageType.partnershipName,
-          partnership_name: "Test Limited Partnership".repeat(20)
-        });
+      const res = await request(app).post(PARTNERSHIP_NAME_URL).send({
+        pageType: PostTransitionPageType.partnershipName
+      });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain(enTranslationText.errorMessages.limitedPartnership.name.nameLength);
+      expect(res.text).toContain(enTranslationText.errorMessages.limitedPartnership.name.nameRequired);
+      expect(res.text).toContain(enTranslationText.errorMessages.limitedPartnership.name.nameEndingRequired);
     });
   });
 });
