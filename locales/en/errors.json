@@ -8,7 +8,8 @@
             "noSymbols": "Value must not include currency symbols like £, $ and €",
             "noComma": "Value must not include a comma",
             "atLeastOneType": "Select at least one type of contribution",
-            "currencyRequired": "Select the currency of the capital contribution"
+            "currencyRequired": "Select the currency of the capital contribution",
+            "invalidCurrency": "The currency you've entered cannot be found. You must select a currency from the list"
         },
 
         "choosePartnerType":{
@@ -342,6 +343,12 @@
         
         "signOutPage":{
             "selectionRequired": "Select if you are sure you want to sign out"
+        },
+
+        "redesignateToPflpPage": {
+            "bothRequired": "Select both statements to confirm that you are applying for PFLP designation, and that all general partners have agreed to the application",
+            "applyRequired": "Select the statement to confirm that you are applying for PFLP designation",
+            "confirmationRequired": "Select the statement to confirm that all general partners have agreed to the application"
         }
     }
 }

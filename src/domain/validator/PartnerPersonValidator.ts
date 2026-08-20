@@ -58,6 +58,7 @@ class PartnerPersonValidator {
 
   private registrationDate?: string;
 
+  private currencies: Record<string, any> = {};
   private errorMessages: Record<string, any> = {};
 
   private dateOfBirthErrorMessages: Record<string, string> = {};
@@ -97,6 +98,7 @@ class PartnerPersonValidator {
     this.partnerEntityType = data.partnerEntityType;
     this.partnershipType = data.partnershipType;
 
+    this.currencies = i18n?.currencies || {};
     this.errorMessages = {
       ...i18n?.errorMessages?.partners?.addPartner,
       capitalContribution: {
@@ -188,6 +190,8 @@ class PartnerPersonValidator {
           contribution_currency_value: this.contribution_currency_value,
           contribution_sub_types: this.contribution_sub_types
         },
+        this.currencies,
+        this.overrideCapitalContributionType.bind(this),
         uiErrors,
         this.errorMessages?.capitalContribution
       );
@@ -268,6 +272,10 @@ class PartnerPersonValidator {
         this.errorMessages?.disqualificationStatementMissingGeneralPartner
       );
     }
+  }
+
+  private overrideCapitalContributionType(capitalContributionType: string): void {
+    this.data.contribution_currency_type = capitalContributionType;
   }
 }
 

@@ -71,7 +71,8 @@
         },
         "capitalContribution" : {
             "title" : "WELSH - What is this partner's total capital contribution?",
-            "currencyTypeLabel": "WELSH - Select the currency",
+            "currencyTypeLabel": "WELSH - Currency",
+            "currencyTypeHint": "WELSH - Start typing a currency, then choose from the list.",
             "valueLabel": "WELSH - Enter the total value",
             "hint" : "WELSH - This is the total value of all monetary and non-monetary contributions.",
             "amountHint": "WELSH - For example, if it was £25 enter 25.00",
