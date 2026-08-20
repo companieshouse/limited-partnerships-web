@@ -14,7 +14,7 @@ import RegistrationPageType from "../../../../controller/registration/PageType";
 
 import { runAddGeneralPartnerLegalEntityTests } from "../../shared/addGeneralPartnerLegalEntity";
 
-it("should run add general partner legal entity tests for transition journey", () => {
+it("should run add general partner legal entity tests for registration journey", () => {
   expect(ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL).toContain("registration");
 });
 
