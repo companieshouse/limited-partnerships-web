@@ -148,7 +148,9 @@
             "notInPast": "Cease date must be in the past",
             "dayInvalidLength": "Day must be 1 or 2 numbers",
             "monthInvalidLength": "Month must be 1 or 2 numbers",
-            "yearInvalidLength": "Year must be 4 numbers"
+            "yearInvalidLength": "Year must be 4 numbers",
+            "beforeRegistrationDate": "Cease date must be the same as or after the limited partnership’s registration date"
+
         },
 
         "dateEffectiveFrom": {
