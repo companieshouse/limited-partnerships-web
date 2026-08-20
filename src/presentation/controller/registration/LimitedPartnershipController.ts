@@ -223,17 +223,6 @@ class LimitedPartnershipController extends PartnershipController {
         const pageRouting = super.getRouting(registrationsRouting, pageType, request);
         const journeyTypes = getJourneyTypes(pageRouting.currentUrl);
 
-        // const errors: UIErrors = this.handleValidation(request, pageType);
-        // if (errors.hasErrors()) {
-        //   const cache = this.cacheService.getDataFromCache(request.signedCookies);
-
-        //   response.render(
-        //     super.templateName(pageRouting.currentUrl),
-        //     super.makeProps(pageRouting, { limitedPartnership: { data: request.body }, cache }, errors)
-        //   );
-        //   return;
-        // }
-
         const result = await this.limitedPartnershipService.createTransactionAndFirstSubmission(
           tokens,
           pageType,
