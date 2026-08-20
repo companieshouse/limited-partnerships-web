@@ -11,7 +11,7 @@ import { ApiResponse } from "@companieshouse/api-sdk-node/dist/services/resource
 import { Transaction } from "@companieshouse/api-sdk-node/dist/services/transaction/types";
 import { JourneyTypes } from "../../domain/entities/journey";
 import PageType from "../../presentation/controller/PageType";
-import LimitedPartnershipValidator from "../../domain/validator/LimitedPartnership";
+import LimitedPartnershipValidator from "../../domain/validator/LimitedPartnershipValidator";
 import SicCodesValidator from "../../domain/validator/SicCodes";
 
 class LimitedPartnershipService {
@@ -29,24 +29,8 @@ class LimitedPartnershipService {
     this.i18n = i18n;
   }
 
-  runPartnershipTypeValidation(data: Record<string, any>): UIErrors {
-    return this.limitedPartnershipValidator.set(data, this.i18n).runPartnershipTypeValidation();
-  }
-
-  runNameValidation(data: Record<string, any>): UIErrors {
-    return this.limitedPartnershipValidator.set(data, this.i18n).runNameValidation();
-  }
-
-  runJurisdictionValidation(data: Record<string, any>): UIErrors {
-    return this.limitedPartnershipValidator.set(data, this.i18n).runJurisdictionValidation();
-  }
-
-  runTermValidation(data: Record<string, any>): UIErrors {
-    return this.limitedPartnershipValidator.set(data, this.i18n).runTermValidation();
-  }
-
-  runEmailValidation(data: Record<string, any>): UIErrors {
-    return this.limitedPartnershipValidator.set(data, this.i18n).runEmailValidation();
+  runValidation(data: Record<string, any>): UIErrors {
+    return this.limitedPartnershipValidator.set(data, this.i18n).runValidation();
   }
 
   runAddSicCodeValidation(sicCodes: Array<{ code: string; description: string }>, sicCode: string): UIErrors {
@@ -59,13 +43,16 @@ class LimitedPartnershipService {
     pageType: PageType,
     data: Record<string, any>
   ): Promise<{
-      submissionId: string;
-      errors?: UIErrors;
-    }> {
+    submissionId: string;
+    errors?: UIErrors;
+  }> {
     try {
+      const validationErrors = this.runValidation(data);
+      if (validationErrors.hasErrors()) {
+        return { submissionId: "", errors: validationErrors };
+      }
       const submissionId = await this.limitedPartnershipGateway.createSubmission(opt, pageType, transactionId, data);
       return { submissionId };
-
     } catch (errors: any) {
       const { apiErrors, isValidationErrors } = extractAPIErrors(errors);
 
@@ -89,7 +76,9 @@ class LimitedPartnershipService {
     try {
       return await this.limitedPartnershipGateway.getLimitedPartnership(opt, transactionId, submissionId);
     } catch (error: any) {
-      logger.error(`Error getting LimitedPartnership txnId: ${transactionId} submissionId: ${submissionId} ${JSON.stringify(error)}`);
+      logger.error(
+        `Error getting LimitedPartnership txnId: ${transactionId} submissionId: ${submissionId} ${JSON.stringify(error)}`
+      );
 
       throw error;
     }
@@ -111,16 +100,14 @@ class LimitedPartnershipService {
     errors?: UIErrors;
   }> {
     try {
-      const incorporationKind = journeyTypes.isRegistration
-        ? IncorporationKind.REGISTRATION
-        : IncorporationKind.TRANSITION;
+      const validationErrors = this.runValidation(data);
+      if (validationErrors.hasErrors()) {
+        return { submissionId: "", transactionId: "", errors: validationErrors };
+      }
 
-      const transactionId = await this.transactionGateway.createTransaction(
-        opt,
-        incorporationKind,
-        company,
-        description
-      );
+      const incorporationKind = journeyTypes.isRegistration ? IncorporationKind.REGISTRATION : IncorporationKind.TRANSITION;
+
+      const transactionId = await this.transactionGateway.createTransaction(opt, incorporationKind, company, description);
 
       await this.incorporationGateway.createIncorporation(opt, pageType, transactionId, incorporationKind);
 
@@ -169,6 +156,11 @@ class LimitedPartnershipService {
     errors?: UIErrors;
   }> {
     try {
+      const validationErrors = this.runValidation(data);
+      if (validationErrors.hasErrors()) {
+        return { errors: validationErrors };
+      }
+
       await this.limitedPartnershipGateway.sendPageData(opt, transactionId, submissionId, registrationType, data);
     } catch (errors: any) {
       const { apiErrors, isValidationErrors } = extractAPIErrors(errors);

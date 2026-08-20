@@ -24,6 +24,8 @@ import { POST_TRANSITION_WITH_ID_URL } from "../../../../../config/constants";
 import TransactionLimitedPartner from "../../../../../domain/entities/TransactionLimitedPartner";
 import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
+import PostTransitionRouting from "../../../../controller/postTransition/routing";
+
 describe("Add Limited Partner Person Page", () => {
   const URL = getUrl(ADD_LIMITED_PARTNER_PERSON_URL);
   const REDIRECT_URL = getUrl(TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
@@ -151,6 +153,11 @@ describe("Add Limited Partner Person Page", () => {
         .withFormerNames("john")
         .build();
 
+      const today = new Date();
+      const day = today.getDate().toString().padStart(2, "0");
+      const month = (today.getMonth() + 1).toString().padStart(2, "0");
+      const year = today.getFullYear().toString();
+
       if (previousName === "true") {
         if (limitedPartner.data) {
           limitedPartner.data.former_names = "john";
@@ -160,9 +167,15 @@ describe("Add Limited Partner Person Page", () => {
       const res = await request(app)
         .post(URL)
         .send({
-          pageType: PostTransitionPageType.addLimitedPartnerPerson,
+          ...PostTransitionRouting.get(PostTransitionPageType.addLimitedPartnerPerson),
           previous_name: previousName,
-          ...limitedPartner.data
+          ...limitedPartner.data,
+          "date_of_birth-day": "01",
+          "date_of_birth-month": "11",
+          "date_of_birth-year": "1987",
+          "date_effective_from-day": day,
+          "date_effective_from-month": month,
+          "date_effective_from-year": year
         });
 
       expect(res.status).toBe(302);
@@ -193,6 +206,40 @@ describe("Add Limited Partner Person Page", () => {
       expect(res.text).toContain("limited partner name is invalid");
     });
 
+    it("should return a validation error when date effective from is %s", async () => {
+      const res = await request(app)
+        .post(URL)
+        .send({
+          ...PostTransitionRouting.get(PostTransitionPageType.addLimitedPartnerPerson),
+          "date_of_birth-day": "01",
+          "date_of_birth-month": "11",
+          "date_of_birth-year": "1987",
+          "date_effective_from-day": "222",
+          "date_effective_from-month": "10",
+          "date_effective_from-year": "2024"
+        });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(enTranslationText.errorMessages.dateEffectiveFrom.dayInvalidLength);
+    });
+
+    it("should return a validation error when date effective from is before registration date", async () => {
+      const res = await request(app)
+        .post(URL)
+        .send({
+          ...PostTransitionRouting.get(PostTransitionPageType.addLimitedPartnerPerson),
+          "date_of_birth-day": "01",
+          "date_of_birth-month": "11",
+          "date_of_birth-year": "1987",
+          "date_effective_from-day": "22",
+          "date_effective_from-month": "10",
+          "date_effective_from-year": "2011"
+        });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(toEscapedHtml(enTranslationText.errorMessages.dateEffectiveFrom.beforeRegistrationDate));
+    });
+
     it("should replay entered data when invalid data is entered and a validation error occurs", async () => {
       const apiErrors: ApiErrors = {
         errors: { forename: "limited partner name is invalid" }
@@ -206,9 +253,9 @@ describe("Add Limited Partner Person Page", () => {
         surname: "SURNAME",
         former_names: "",
         previous_name: "false",
-        "date_of_birth-Day": "01",
-        "date_of_birth-Month": "11",
-        "date_of_birth-Year": "1987",
+        "date_of_birth-day": "01",
+        "date_of_birth-month": "11",
+        "date_of_birth-year": "1987",
         nationality1: "Mongolian",
         nationality2: "Uzbek"
       });
@@ -230,9 +277,9 @@ describe("Add Limited Partner Person Page", () => {
           surname: "SURNAME",
           former_names: formerNames,
           previous_name: "true",
-          "date_of_birth-Day": "01",
-          "date_of_birth-Month": "11",
-          "date_of_birth-Year": "1987",
+          "date_of_birth-day": "01",
+          "date_of_birth-month": "11",
+          "date_of_birth-year": "1987",
           nationality1: "Mongolian",
           nationality2: "Uzbek",
           not_disqualified_statement_checked: "true"
@@ -253,7 +300,14 @@ describe("Add Limited Partner Person Page", () => {
         .post(URL)
         .send({
           pageType: PostTransitionPageType.addLimitedPartnerPerson,
-          ...limitedPartner.data
+          ...limitedPartner.data,
+          "date_of_birth-day": "01",
+          "date_of_birth-month": "11",
+          "date_of_birth-year": "1987",
+          "date_effective_from-day": "01",
+          "date_effective_from-month": "11",
+          "date_effective_from-year": "2024",
+          previous_name: "false"
         });
 
       expect(res.status).toBe(302);
@@ -268,10 +322,19 @@ describe("Add Limited Partner Person Page", () => {
 
       appDevDependencies.limitedPartnerGateway.feedErrors(apiErrors);
 
-      const res = await request(app).post(URL).send({
-        pageType: PostTransitionPageType.addLimitedPartnerPerson,
-        forename: "INVALID-CHARACTERS"
-      });
+      const res = await request(app)
+        .post(URL)
+        .send({
+          pageType: PostTransitionPageType.addLimitedPartnerPerson,
+          ...limitedPartner.data,
+          "date_of_birth-day": "01",
+          "date_of_birth-month": "11",
+          "date_of_birth-year": "1987",
+          "date_effective_from-day": "01",
+          "date_effective_from-month": "11",
+          "date_effective_from-year": "2024",
+          previous_name: "false"
+        });
       expect(res.status).toBe(200);
       expect(res.text).toContain("limited partner name is invalid");
     });
@@ -283,7 +346,14 @@ describe("Add Limited Partner Person Page", () => {
         .post(URL)
         .send({
           pageType: PostTransitionPageType.addLimitedPartnerPerson,
-          ...limitedPartner.data
+          ...limitedPartner.data,
+          "date_of_birth-day": "01",
+          "date_of_birth-month": "11",
+          "date_of_birth-year": "1987",
+          "date_effective_from-day": "01",
+          "date_effective_from-month": "11",
+          "date_effective_from-year": "2024",
+          previous_name: "false"
         });
 
       const REDIRECT = getUrl(CONFIRM_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
@@ -307,9 +377,9 @@ describe("Add Limited Partner Person Page", () => {
         surname: "SURNAME",
         former_names: "FORMER-NAMES",
         previous_name: "true",
-        "date_of_birth-Day": "01",
-        "date_of_birth-Month": "11",
-        "date_of_birth-Year": "1987",
+        "date_of_birth-day": "01",
+        "date_of_birth-month": "11",
+        "date_of_birth-year": "1987",
         nationality1: "Mongolian",
         nationality2: "Uzbek"
       });

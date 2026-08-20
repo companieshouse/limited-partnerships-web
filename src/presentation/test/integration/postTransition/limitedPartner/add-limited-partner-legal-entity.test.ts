@@ -22,6 +22,8 @@ import {
 } from "../../../../controller/addressLookUp/url/postTransition";
 import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
+import PostTransitionRouting from "../../../../controller/postTransition/routing";
+
 describe("Add Limited Partner Legal Entity Page", () => {
   const URL = getUrl(ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL);
   const REDIRECT_URL = getUrl(TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
@@ -104,11 +106,19 @@ describe("Add Limited Partner Legal Entity Page", () => {
     it("should send the limited partner legal entity details", async () => {
       const limitedPartner = new LimitedPartnerBuilder().isLegalEntity().build();
 
+      const today = new Date();
+      const day = today.getDate().toString().padStart(2, "0");
+      const month = (today.getMonth() + 1).toString().padStart(2, "0");
+      const year = today.getFullYear().toString();
+
       const res = await request(app)
         .post(URL)
         .send({
-          pageType: PostTransitionPageType.addLimitedPartnerLegalEntity,
-          ...limitedPartner.data
+          ...PostTransitionRouting.get(PostTransitionPageType.addLimitedPartnerLegalEntity),
+          ...limitedPartner.data,
+          "date_effective_from-day": day,
+          "date_effective_from-month": month,
+          "date_effective_from-year": year
         });
 
       expect(res.status).toBe(302);
@@ -141,6 +151,34 @@ describe("Add Limited Partner Legal Entity Page", () => {
       expect(res.text).toContain("Legal entity name is invalid");
     });
 
+    it("should return a validation error when date effective from is %s", async () => {
+      const res = await request(app)
+        .post(URL)
+        .send({
+          ...PostTransitionRouting.get(PostTransitionPageType.addLimitedPartnerLegalEntity),
+          "date_effective_from-day": "222",
+          "date_effective_from-month": "10",
+          "date_effective_from-year": "2024"
+        });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(enTranslationText.errorMessages.dateEffectiveFrom.dayInvalidLength);
+    });
+
+    it("should return a validation error when date effective from is before registration date", async () => {
+      const res = await request(app)
+        .post(URL)
+        .send({
+          ...PostTransitionRouting.get(PostTransitionPageType.addLimitedPartnerLegalEntity),
+          "date_effective_from-day": "22",
+          "date_effective_from-month": "10",
+          "date_effective_from-year": "2011"
+        });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(toEscapedHtml(enTranslationText.errorMessages.dateEffectiveFrom.beforeRegistrationDate));
+    });
+
     it("should send the limited partner details and go to confirm principal office address page if already saved", async () => {
       const limitedPartner = new LimitedPartnerBuilder()
         .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
@@ -155,7 +193,10 @@ describe("Add Limited Partner Legal Entity Page", () => {
         .post(URL)
         .send({
           pageType: PostTransitionPageType.addLimitedPartnerLegalEntity,
-          ...limitedPartner.data
+          ...limitedPartner.data,
+          "date_effective_from-day": "01",
+          "date_effective_from-month": "10",
+          "date_effective_from-year": "2011"
         });
 
       const REDIRECT_URL = getUrl(CONFIRM_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);

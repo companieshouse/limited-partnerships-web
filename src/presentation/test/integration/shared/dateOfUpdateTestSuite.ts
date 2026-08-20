@@ -62,7 +62,7 @@ export function runDateOfUpdateTests(config: DateOfUpdateTestConfig): void {
         } else {
           expect(res.text).not.toContain("WELSH -");
         }
-        expect(countOccurrences(res.text, translationText.serviceName[serviceNameTranslationKey])).toBe(2);
+        expect(countOccurrences(res.text, toEscapedHtml(translationText.serviceName[serviceNameTranslationKey]))).toBe(2);
 
         const limitedPartnership = new LimitedPartnershipBuilder().build();
         expect(res.text).toContain(getPartnershipDisplay(limitedPartnership));
@@ -195,6 +195,13 @@ export function runDateOfUpdateTests(config: DateOfUpdateTestConfig): void {
           month: "02",
           year: "202",
           getExpectedError: enTranslationText.errorMessages.dateOfUpdate.yearInvalidLength
+        },
+        {
+          description: "a field is both too long and non-numeric",
+          day: "aaa",
+          month: "02",
+          year: "2023",
+          getExpectedError: enTranslationText.errorMessages.dateOfUpdate.dayInvalidLength
         },
         {
           description: "day contains non-numeric characters",

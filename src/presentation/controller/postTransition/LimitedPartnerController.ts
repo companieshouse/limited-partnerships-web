@@ -70,7 +70,7 @@ class LimitedPartnerPostTransitionController extends PartnerController {
   }
 
   sendUpdatePageData() {
-    return super.sendPageData(PartnerType.limitedPartner);
+    return this.postTransitionPartnerController.sendPageData(PartnerType.limitedPartner);
   }
 
   getCeaseDate() {

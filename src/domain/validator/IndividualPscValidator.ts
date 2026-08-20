@@ -1,7 +1,17 @@
 import UIErrors from "../entities/UIErrors";
 import { containsInvalidCharacters, isFieldValueMissing, isFieldValueTooLong } from "./FieldValidators";
-import { validateDateOfBirth, DateErrorMessages } from "./DateValidators";
-import { CONSENT_CHECKED_FIELD, FORENAME_FIELD, MIDDLE_NAMES_FIELD, NATIONALITY2_FIELD, NATIONALITY1_FIELD, SURNAME_FIELD, TITLE_FIELD, TITLE_OTHER_FIELD } from "../../config";
+import { validateDate } from "./DateValidators";
+import {
+  CONSENT_CHECKED_FIELD,
+  FORENAME_FIELD,
+  MIDDLE_NAMES_FIELD,
+  NATIONALITY2_FIELD,
+  NATIONALITY1_FIELD,
+  SURNAME_FIELD,
+  TITLE_FIELD,
+  TITLE_OTHER_FIELD,
+  DATE_OF_BIRTH_FIELD
+} from "../../config";
 
 type PscFormData = {
   consent_checked?: boolean | string;
@@ -33,7 +43,7 @@ export default class IndividualPscValidator {
   private titleOtherValue?: string;
 
   private errorMessages: Record<string, string> = {};
-  private dateOfBirthErrorMessages: DateErrorMessages = {} as DateErrorMessages;
+  private dateOfBirthErrorMessages: Record<string, string> = {};
 
   set(data: PscFormData, i18n: any): this {
     this.title = data.title;
@@ -41,16 +51,17 @@ export default class IndividualPscValidator {
     this.forename = data.forename;
     this.middle_names = data.middle_names;
     this.surname = data.surname;
-    this.date_of_birth_day = data['date_of_birth-day'];
-    this.date_of_birth_month = data['date_of_birth-month'];
-    this.date_of_birth_year = data['date_of_birth-year'];
+    this.date_of_birth_day = data[`${DATE_OF_BIRTH_FIELD}-day`];
+    this.date_of_birth_month = data[`${DATE_OF_BIRTH_FIELD}-month`];
+    this.date_of_birth_year = data[`${DATE_OF_BIRTH_FIELD}-year`];
     this.nationality1 = data.nationality1;
     this.nationality2 = data.nationality2;
     this.consent_checked = data.consent_checked;
 
     this.errorMessages = i18n?.errorMessages?.personWithSignificantControl?.addIndividualPerson || {};
-    this.titleOtherValue = i18n?.personWithSignificantControl?.addPersonWithSignificantControl?.addIndividualPerson?.titles?.other;
-    this.dateOfBirthErrorMessages = i18n?.errorMessages?.dateOfBirth || {} as DateErrorMessages;
+    this.titleOtherValue =
+      i18n?.personWithSignificantControl?.addPersonWithSignificantControl?.addIndividualPerson?.titles?.other;
+    this.dateOfBirthErrorMessages = i18n?.errorMessages?.dateOfBirth || {};
     return this;
   }
 
@@ -62,7 +73,16 @@ export default class IndividualPscValidator {
     this.validateForename(uiErrors);
     this.validateMiddleNames(uiErrors);
     this.validateSurname(uiErrors);
-    validateDateOfBirth(this.date_of_birth_day, this.date_of_birth_month, this.date_of_birth_year, uiErrors, this.dateOfBirthErrorMessages);
+    validateDate(
+      {
+        day: this.date_of_birth_day,
+        month: this.date_of_birth_month,
+        year: this.date_of_birth_year
+      },
+      uiErrors,
+      DATE_OF_BIRTH_FIELD,
+      this.dateOfBirthErrorMessages
+    );
     this.validateNationalities(uiErrors);
     return uiErrors;
   }
@@ -84,7 +104,10 @@ export default class IndividualPscValidator {
   }
 
   private validateTitleOther(uiErrors: UIErrors) {
-    if (this.title === this.titleOtherValue && isFieldValueMissing(this.title_other, TITLE_OTHER_FIELD, uiErrors, this.errorMessages?.otherTitleMissing)) {
+    if (
+      this.title === this.titleOtherValue &&
+      isFieldValueMissing(this.title_other, TITLE_OTHER_FIELD, uiErrors, this.errorMessages?.otherTitleMissing)
+    ) {
       return;
     }
 
@@ -149,5 +172,4 @@ export default class IndividualPscValidator {
       uiErrors.setWebError(NATIONALITY2_FIELD, this.errorMessages?.nationality2Same);
     }
   }
-
 };

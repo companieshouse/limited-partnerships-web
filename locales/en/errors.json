@@ -135,6 +135,41 @@
             "yearInvalidLength": "Year must be 4 numbers"
         },
 
+        "ceaseDate": {
+            "missing": "Enter the partner's cease date",
+            "dayMissing": "Cease date must include a day",
+            "monthMissing": "Cease date must include a month",
+            "yearMissing": "Cease date must include a year",
+            "dayAndMonthMissing": "Cease date must include a day and a month",
+            "monthAndYearMissing": "Cease date must include a month and a year",
+            "dayAndYearMissing": "Cease date must include a day and a year",
+            "invalidChars": "Cease date must only include numbers",
+            "invalid": "Cease date must be a real date",
+            "notInPast": "Cease date must be in the past",
+            "dayInvalidLength": "Day must be 1 or 2 numbers",
+            "monthInvalidLength": "Month must be 1 or 2 numbers",
+            "yearInvalidLength": "Year must be 4 numbers",
+            "beforeRegistrationDate": "Cease date must be the same as or after the limited partnership’s registration date"
+
+        },
+
+        "dateEffectiveFrom": {
+            "missing": "Enter the partner's date effective from",
+            "dayMissing": "Date effective from must include a day",
+            "monthMissing": "Date effective from must include a month",
+            "yearMissing": "Date effective from must include a year",
+            "dayAndMonthMissing": "Date effective from must include a day and a month",
+            "monthAndYearMissing": "Date effective from must include a month and a year",
+            "dayAndYearMissing": "Date effective from must include a day and a year",
+            "invalidChars": "Date effective from must only include numbers",
+            "invalid": "Date effective from must be a real date",
+            "notInPast": "Date effective from must be in the past",
+            "dayInvalidLength": "Day must be 1 or 2 numbers",
+            "monthInvalidLength": "Month must be 1 or 2 numbers",
+            "yearInvalidLength": "Year must be 4 numbers",
+            "beforeRegistrationDate": "Date effective from must be the same as or after the partnership's registration date"
+        },
+
         "partners": {
              "addPartner": {
                 "firstNameMissing": "Enter the partner's first name",
@@ -230,40 +265,71 @@
             "registeredOfficeAddress": "Date the registered office address changed must be the same as or after limited partnership's registration date",
             "principalPlaceOfBusinessAddress": "Date the principal place of business changed must be the same as or after limited partnership's registration date",
             "partnershipName": "Date the partnership name changed must be the same as or after limited partnership's registration date",
-            "generalPartner": "Date the general partner changed must be the same as or after limited partnership's registration date",
-            "limitedPartner": "Date the limited partner changed must be the same as or after limited partnership's registration date",
             "notInPast": {
-                "term": "Date the term changed must be in the past"
+                "registeredOfficeAddress":"The date the registered office address changed must be in the past",
+                "term":"Date the term changed must be in the past",
+                "generalPartner":"Date the general partner changed must be in the past",
+                "limitedPartner":"Date the limited partner changed must be in the past"
             },
             "beforeRegistrationDate": {
-                "term": "Date the term changed must be after the partnership’s registration date"
+                "registeredOfficeAddress":"The date the registered office address changed must be after the partnership’s registration date",
+                "term":"Date the term changed must be after the partnership’s registration date",
+                "generalPartner":"Date the general partner changed must be after the partnership’s registration date",
+                "limitedPartner":"Date the limited partner changed must be after the partnership’s registration date"
             },
             "missing": {
-                "term": "Enter the date the term changed"
+                "registeredOfficeAddress": "Enter the date the registered office address changed",
+                "term": "Enter the date the term changed",
+                "generalPartner": "Enter the date the general partner changed",
+                "limitedPartner": "Enter the date the limited partner changed"
             },
             "dayMissing": {
-                "term": "Date the term changed must include a day"
+                "registeredOfficeAddress": "The date the registered office address changed  must include a day",
+                "term": "Date the term changed must include a day",
+                "generalPartner": "Date the general partner changed must include a day",
+                "limitedPartner": "Date the limited partner changed must include a day"
             },
             "monthMissing": {
-                "term": "Date the term changed must include a month"
+                "registeredOfficeAddress": "The date the registered office address changed must include a month",
+                "term": "Date the term changed must include a month",
+                "generalPartner": "Date the general partner changed must include a month",
+                "limitedPartner": "Date the limited partner changed must include a month"
             },
             "yearMissing": {
-                "term": "Date the term changed must include a year"
+                "registeredOfficeAddress": "The date the registered office address changed must include a year",
+                "term": "Date the term changed must include a year",
+                "generalPartner": "Date the general partner changed must include a year",
+                "limitedPartner": "Date the limited partner changed must include a year"
             },
             "dayAndMonthMissing": {
-                "term": "Date the term changed must include a day and a month"
+                "registeredOfficeAddress": "The date the registered office address changed must include a day and a month",
+                "term": "Date the term changed must include a day and a month",
+                "generalPartner": "Date the general partner changed must include a day and a month",
+                "limitedPartner": "Date the limited partner changed must include a day and a month"
             },
             "monthAndYearMissing": {
-                "term": "Date the term changed must include a month and a year"
+                "registeredOfficeAddress": "The date the registered office address changed must include a month and a year",
+                "term": "Date the term changed must include a month and a year",
+                "generalPartner": "Date the general partner changed must include a month and a year",
+                "limitedPartner": "Date the limited partner changed must include a month and a year"
             },
             "dayAndYearMissing": {
-                "term": "Date the term changed must include a day and a year"
+                "registeredOfficeAddress": "The date the registered office address changed must include a day and a year",
+                "term": "Date the term changed must include a day and a year",
+                "generalPartner": "Date the general partner changed must include a day and a year",
+                "limitedPartner": "Date the limited partner changed must include a day and a year"
             },
             "invalidChars": {
-                "term": "Date the term changed must only include numbers"
+                "registeredOfficeAddress": "The date the registered office address changed must only include numbers",
+                "term": "Date the term changed must only include numbers",
+                "generalPartner": "Date the general partner changed must only include numbers",
+                "limitedPartner": "Date the limited partner changed must only include numbers"
             },
             "invalid": {
-                "term": "Date the term changed must be a real date"
+                "registeredOfficeAddress": "The date the registered office address changed must be a real date",
+                "term": "Date the term changed must be a real date",
+                "generalPartner": "Date the general partner changed must be a real date",
+                "limitedPartner": "Date the limited partner changed must be a real date"
             },
             "dayInvalidLength": "Day must be 1 or 2 numbers",
             "monthInvalidLength": "Month must be 1 or 2 numbers",

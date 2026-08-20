@@ -179,9 +179,9 @@ describe("Add Limited Partner Person Page", () => {
         surname: "SURNAME",
         former_names: "",
         previous_name: "false",
-        "date_of_birth-Day": "01",
-        "date_of_birth-Month": "11",
-        "date_of_birth-Year": "1987",
+        "date_of_birth-day": "01",
+        "date_of_birth-month": "11",
+        "date_of_birth-year": "1987",
         nationality1: "Mongolian",
         nationality2: "Uzbek"
       });
@@ -203,9 +203,9 @@ describe("Add Limited Partner Person Page", () => {
           surname: "SURNAME",
           former_names: formerNames,
           previous_name: "true",
-          "date_of_birth-Day": "01",
-          "date_of_birth-Month": "11",
-          "date_of_birth-Year": "1987",
+          "date_of_birth-day": "01",
+          "date_of_birth-month": "11",
+          "date_of_birth-year": "1987",
           nationality1: "Mongolian",
           nationality2: "Uzbek",
           not_disqualified_statement_checked: "true"
@@ -283,9 +283,9 @@ describe("Add Limited Partner Person Page", () => {
         surname: "SURNAME",
         former_names: "FORMER-NAMES",
         previous_name: "true",
-        "date_of_birth-Day": "01",
-        "date_of_birth-Month": "11",
-        "date_of_birth-Year": "1987",
+        "date_of_birth-day": "01",
+        "date_of_birth-month": "11",
+        "date_of_birth-year": "1987",
         nationality1: "Mongolian",
         nationality2: "Uzbek"
       });

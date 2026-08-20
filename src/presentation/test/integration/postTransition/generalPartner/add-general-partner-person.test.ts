@@ -2,7 +2,7 @@ import request from "supertest";
 
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../utils";
 import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 
 import PostTransitionPageType from "../../../../controller/postTransition/pageType";
@@ -21,6 +21,8 @@ import {
 } from "../../../../../presentation/controller/addressLookUp/url/postTransition";
 import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
+import PostTransitionRouting from "../../../../controller/postTransition/routing";
+
 describe("Add General Partner Person Page", () => {
   const URL = getUrl(ADD_GENERAL_PARTNER_PERSON_URL);
   const REDIRECT = getUrl(TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
@@ -139,9 +141,15 @@ describe("Add General Partner Person Page", () => {
       const res = await request(app)
         .post(URL)
         .send({
-          pageType: PostTransitionPageType.addGeneralPartnerPerson,
+          ...PostTransitionRouting.get(PostTransitionPageType.addGeneralPartnerPerson),
           previous_name: previousName,
-          ...generalPartner.data
+          ...generalPartner.data,
+          "date_of_birth-day": "01",
+          "date_of_birth-month": "11",
+          "date_of_birth-year": "1987",
+          "date_effective_from-day": "01",
+          "date_effective_from-month": "11",
+          "date_effective_from-year": "2024"
         });
 
       expect(res.status).toBe(302);
@@ -172,6 +180,50 @@ describe("Add General Partner Person Page", () => {
       expect(res.text).toContain("first name is invalid");
     });
 
+    it("should return a validation error when date effective from is %s", async () => {
+      const res = await request(app)
+        .post(URL)
+        .send({
+          ...PostTransitionRouting.get(PostTransitionPageType.addGeneralPartnerPerson),
+          "date_effective_from-day": "222",
+          "date_effective_from-month": "10",
+          "date_effective_from-year": "2024"
+        });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(enTranslationText.errorMessages.dateEffectiveFrom.dayInvalidLength);
+    });
+
+    it.each([
+      ["without ids", false, getUrl(ADD_GENERAL_PARTNER_PERSON_URL)],
+      ["with ids", true, getUrl(ADD_GENERAL_PARTNER_PERSON_WITH_IDS_URL)]
+    ])(
+      "should return a validation error when date effective from is before registration date when %s",
+      async (_description, withIds, URL) => {
+        if (withIds) {
+          const generalPartner = new GeneralPartnerBuilder()
+            .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+            .isPerson()
+            .withKind(PartnerKind.ADD_GENERAL_PARTNER_PERSON)
+            .build();
+
+          appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+        }
+
+        const res = await request(app)
+          .post(URL)
+          .send({
+            ...PostTransitionRouting.get(PostTransitionPageType.addGeneralPartnerPerson),
+            "date_effective_from-day": "22",
+            "date_effective_from-month": "10",
+            "date_effective_from-year": "2011"
+          });
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(toEscapedHtml(enTranslationText.errorMessages.dateEffectiveFrom.beforeRegistrationDate));
+      }
+    );
+
     it("should send the general partner details and go to confirm ura address page if already saved", async () => {
       const generalPartner = new GeneralPartnerBuilder()
         .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
@@ -186,7 +238,15 @@ describe("Add General Partner Person Page", () => {
         .post(URL)
         .send({
           pageType: PostTransitionPageType.addGeneralPartnerPerson,
-          ...generalPartner.data
+          ...generalPartner.data,
+          "date_of_birth-day": "01",
+          "date_of_birth-month": "11",
+          "date_of_birth-year": "1987",
+          "date_effective_from-day": "01",
+          "date_effective_from-month": "11",
+          "date_effective_from-year": "2024",
+          not_disqualified_statement_checked: "true",
+          previous_name: "false"
         });
 
       const REDIRECT = getUrl(CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL);
@@ -208,9 +268,9 @@ describe("Add General Partner Person Page", () => {
         surname: "SURNAME",
         former_names: "",
         previous_name: "false",
-        "date_of_birth-Day": "01",
-        "date_of_birth-Month": "11",
-        "date_of_birth-Year": "1987",
+        "date_of_birth-day": "01",
+        "date_of_birth-month": "11",
+        "date_of_birth-year": "1987",
         nationality1: "Mongolian",
         nationality2: "Uzbek",
         not_disqualified_statement_checked: "true"
@@ -234,9 +294,9 @@ describe("Add General Partner Person Page", () => {
           surname: "SURNAME",
           former_names: formerNames,
           previous_name: "true",
-          "date_of_birth-Day": "01",
-          "date_of_birth-Month": "11",
-          "date_of_birth-Year": "1987",
+          "date_of_birth-day": "01",
+          "date_of_birth-month": "11",
+          "date_of_birth-year": "1987",
           nationality1: "Mongolian",
           nationality2: "Uzbek",
           not_disqualified_statement_checked: "true"

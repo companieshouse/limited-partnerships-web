@@ -1,305 +1,200 @@
-import { DATE_OF_BIRTH_FIELD } from "../../config";
 import UIErrors from "../entities/UIErrors";
 
-export type DateErrorMessages = {
-  missing: string;
-  dayMissing: string;
-  monthMissing: string;
-  yearMissing: string;
-  dayAndMonthMissing: string;
-  dayAndYearMissing: string;
-  monthAndYearMissing: string;
-  dayInvalidLength: string;
-  monthInvalidLength: string;
-  yearInvalidLength: string;
-  invalidChars: string;
-  invalid: string;
-  notInPast: string;
+export enum DateErrorMessages {
+  missing = "missing",
+  dayMissing = "dayMissing",
+  monthMissing = "monthMissing",
+  yearMissing = "yearMissing",
+  dayAndMonthMissing = "dayAndMonthMissing",
+  dayAndYearMissing = "dayAndYearMissing",
+  monthAndYearMissing = "monthAndYearMissing",
+  dayInvalidLength = "dayInvalidLength",
+  monthInvalidLength = "monthInvalidLength",
+  yearInvalidLength = "yearInvalidLength",
+  invalidChars = "invalidChars",
+  invalid = "invalid",
+  notInPast = "notInPast",
+  beforeRegistrationDate = "beforeRegistrationDate"
+}
+
+type DateErrorKey = keyof typeof DateErrorMessages;
+
+type DateParts = { day: string; month: string; year: string };
+
+type DateRule = (parts: DateParts) => DateErrorKey | null;
+
+export const validateDate = (
+  body: Record<string, any>,
+  uiErrors: UIErrors,
+  dateFieldType: string,
+  dateErrorMessages: Record<string, string>,
+  registrationDate?: string,
+  pageKey?: string
+): void => {
+  const parts = toDatePartsFromBody(body, dateFieldType);
+
+  const errorKey = firstFailure(parts, [
+    noMissingFields,
+    validFieldLengths,
+    digitsOnly,
+    realDate,
+    registrationDate ? inPastOrToday : inPast,
+    ...(registrationDate ? [notBeforeRegistrationDate(registrationDate)] : [])
+  ]);
+
+  if (errorKey !== null) {
+    const entry = dateErrorMessages[errorKey];
+    const text = typeof entry === "object" ? entry?.[pageKey ?? ""] : entry;
+    uiErrors.setWebError(dateFieldType, text);
+  }
 };
 
-export const validateDateOfBirth = (day: string | undefined, month: string | undefined, year: string | undefined, uiErrors: UIErrors, dateErrorMessages: DateErrorMessages) => {
-  const safeDobDay = day ?? "";
-  const safeDobMonth = month ?? "";
-  const safeDobYear = year ?? "";
-  const dateOfBirthField = DATE_OF_BIRTH_FIELD;
-
-  if (hasMissingDateFields(safeDobDay, safeDobMonth, safeDobYear, dateOfBirthField, uiErrors, dateErrorMessages)) {
-    return;
+const toDatePartsFromBody = (body: Record<string, any>, key: string): DateParts => {
+  if (body[`${key}-day`] || body[`${key}-month`] || body[`${key}-year`]) {
+    return {
+      day: (body[`${key}-day`] ?? "").trim(),
+      month: (body[`${key}-month`] ?? "").trim(),
+      year: (body[`${key}-year`] ?? "").trim()
+    };
   }
-
-  if (hasInvalidDateFieldLengths(safeDobDay, safeDobMonth, safeDobYear, dateOfBirthField, uiErrors, dateErrorMessages)) {
-    return;
-  }
-
-  if (dateContainsInvalidChars(safeDobDay, safeDobMonth, safeDobYear)) {
-    uiErrors.setWebError(dateOfBirthField, dateErrorMessages?.invalidChars);
-    return;
-  }
-
-  if (!isValidDate(safeDobDay, safeDobMonth, safeDobYear)) {
-    uiErrors.setWebError(dateOfBirthField, dateErrorMessages?.invalid);
-    return;
-  }
-
-  if (!isDateInPast(safeDobDay, safeDobMonth, safeDobYear)) {
-    uiErrors.setWebError(dateOfBirthField, dateErrorMessages?.notInPast);
-  }
+  return body as DateParts;
 };
 
-export const validateDateOfUpdate = (
-  day: string,
-  month: string,
-  year: string,
-  dateErrorMessages: Record<string, any>,
-  pageKey: string,
-  registrationDate: string
-): UIErrors => {
-  const safeDay = day ?? "";
-  const safeMonth = month ?? "";
-  const safeYear = year ?? "";
-  const dateOfUpdateField = "date_of_update";
-
-  const uiErrors: UIErrors = new UIErrors();
-
-  if (hasMissingDateFields(safeDay, safeMonth, safeYear, dateOfUpdateField, uiErrors, dateErrorMessages, pageKey)) {
-    return uiErrors;
-  }
-
-  if (dateContainsInvalidChars(safeDay, safeMonth, safeYear)) {
-    uiErrors.setWebError(dateOfUpdateField, dateErrorMessages?.invalidChars[pageKey]);
-    return uiErrors;
-  }
-
-  if (hasInvalidDateFieldLengths(safeDay, safeMonth, safeYear, dateOfUpdateField, uiErrors, dateErrorMessages)) {
-    return uiErrors;
-  }
-
-  if (!isValidDate(safeDay, safeMonth, safeYear)) {
-    uiErrors.setWebError(dateOfUpdateField, dateErrorMessages?.invalid[pageKey]);
-    return uiErrors;
-  }
-
-  if (!isDateInPastOrToday(safeDay, safeMonth, safeYear)) {
-    uiErrors.setWebError(dateOfUpdateField, dateErrorMessages?.notInPast[pageKey]);
-    return uiErrors;
-  }
-
-  if (isBeforeRegistrationDate(safeDay, safeMonth, safeYear, registrationDate)) {
-    uiErrors.setWebError(dateOfUpdateField, dateErrorMessages?.beforeRegistrationDate[pageKey]);
-  }
-
-  return uiErrors;
-};
-
-const getUtcMidnightFromIsoDate = (isoDate: string): number | null => {
-  const parsedRegistrationDate = new Date(isoDate);
-
-  if (Number.isNaN(parsedRegistrationDate.getTime())) {
+const parseDateParts = ({ day, month, year }: DateParts): { d: number; m: number; y: number } | null => {
+  if (!day || !month || !year) {
     return null;
   }
 
-  return Date.UTC(
-    parsedRegistrationDate.getUTCFullYear(),
-    parsedRegistrationDate.getUTCMonth(),
-    parsedRegistrationDate.getUTCDate()
-  );
-};
-
-const getUtcMidnightFromDateParts = (day: string, month: string, year: string): number | null => {
-  const parsedDateParts = parseDateParts(day, month, year);
-
-  if (!parsedDateParts) {
-    return null;
-  }
-
-  return Date.UTC(parsedDateParts.y, parsedDateParts.m, parsedDateParts.d);
-};
-
-const isDigitsOnly = (value: string): boolean => /^\d+$/.test(value);
-
-const parseDateParts = (day: string, month: string, year: string): { d: number; m: number; y: number } | null => {
-  const trimmedDay = (day || "").trim();
-  const trimmedMonth = (month || "").trim();
-  const trimmedYear = (year || "").trim();
-
-  if (!trimmedDay || !trimmedMonth || !trimmedYear) {
-    return null;
-  }
-
-  if (!isDigitsOnly(trimmedDay) || !isDigitsOnly(trimmedMonth) || !isDigitsOnly(trimmedYear)) {
+  if (!isDigitsOnly(day) || !isDigitsOnly(month) || !isDigitsOnly(year)) {
     return null;
   }
 
   // months are 0-indexed in JavaScript Date, so we need to subtract 1 from the month
-  const y = Number(trimmedYear);
-  const m = Number(trimmedMonth) - 1;
-  const d = Number(trimmedDay);
+  return { d: Number(day), m: Number(month) - 1, y: Number(year) };
+};
 
-  if ([y, m, d].some(Number.isNaN)) {
+const isDigitsOnly = (value: string): boolean => /^\d+$/.test(value);
+
+const utcMidnightFromDateParts = (parts: DateParts): number | null => {
+  const parsed = parseDateParts(parts);
+
+  return parsed === null ? null : Date.UTC(parsed.y, parsed.m, parsed.d);
+};
+
+const utcMidnightFromIsoDate = (isoDate: string): number | null => {
+  const parsed = new Date(isoDate);
+
+  if (Number.isNaN(parsed.getTime())) {
     return null;
   }
 
-  return { d, m, y };
+  return Date.UTC(parsed.getUTCFullYear(), parsed.getUTCMonth(), parsed.getUTCDate());
 };
+
+/**
+ * Compares the date with today, both at UTC midnight to avoid daylight saving and timezone drift.
+ * Negative when in the past, zero for today, positive when in the future, null when unparseable.
+ */
+const compareWithToday = (parts: DateParts): number | null => {
+  const targetUtcMidnight = utcMidnightFromDateParts(parts);
+
+  if (targetUtcMidnight === null) {
+    return null;
+  }
+
+  const now = new Date();
+
+  return targetUtcMidnight - Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+};
+
+const isRealCalendarDate = (parts: DateParts): boolean => {
+  const parsed = parseDateParts(parts);
+
+  if (parsed === null) {
+    return false;
+  }
+
+  const { d, m, y } = parsed;
+
+  // Check if the date is valid by creating a new Date object and comparing the components
+  const date = new Date(Date.UTC(y, m, d));
+
+  return date.getUTCFullYear() === y && date.getUTCMonth() === m && date.getUTCDate() === d;
+};
+
+const containsNonDigits = ({ day, month, year }: DateParts): boolean =>
+  [day, month, year].some((value) => value !== "" && !isDigitsOnly(value));
 
 // keys represent which fields are present: d=day, m=month, y=year, -=missing
-const MISSING_FIELDS_ERROR_KEY: Record<string, keyof DateErrorMessages> = {
-  "---": "missing",
-  "-my": "dayMissing",
-  "d-y": "monthMissing",
-  "dm-": "yearMissing",
-  "--y": "dayAndMonthMissing",
-  "d--": "monthAndYearMissing",
-  "-m-": "dayAndYearMissing"
+const MISSING_FIELDS_ERROR_KEY: Record<string, DateErrorKey> = {
+  "---": DateErrorMessages.missing,
+  "-my": DateErrorMessages.dayMissing,
+  "d-y": DateErrorMessages.monthMissing,
+  "dm-": DateErrorMessages.yearMissing,
+  "--y": DateErrorMessages.dayAndMonthMissing,
+  "d--": DateErrorMessages.monthAndYearMissing,
+  "-m-": DateErrorMessages.dayAndYearMissing
 };
 
-const hasMissingDateFields = (
-  day: string,
-  month: string,
-  year: string,
-  fieldId: string,
-  uiErrors: UIErrors,
-  errorMessages: DateErrorMessages | Record<string, any>,
-  pageKey?: string
-): boolean => {
-  const key = `${day?.trim() ? "d" : "-"}${month?.trim() ? "m" : "-"}${year?.trim() ? "y" : "-"}`;
-  const errorKey = MISSING_FIELDS_ERROR_KEY[key];
+const noMissingFields: DateRule = ({ day, month, year }) => {
+  const presence = `${day ? "d" : "-"}${month ? "m" : "-"}${year ? "y" : "-"}`;
 
-  if (!errorKey) {
-    return false;
-  }
-
-  const message = errorMessages?.[errorKey];
-  uiErrors.setWebError(fieldId, pageKey ? message[pageKey] : message);
-  return true;
+  return MISSING_FIELDS_ERROR_KEY[presence] ?? null;
 };
 
-const hasInvalidDateFieldLengths = (
-  day: string,
-  month: string,
-  year: string,
-  fieldId: string,
-  uiErrors: UIErrors,
-  errorMessages: DateErrorMessages | Record<string, any>
-): boolean => {
-  if ((day?.trim().length || 0) > 2) {
-    uiErrors.setWebError(fieldId, errorMessages?.dayInvalidLength);
-    return true;
+const validFieldLengths: DateRule = ({ day, month, year }) => {
+  if (day.length > 2) {
+    return DateErrorMessages.dayInvalidLength;
   }
 
-  if ((month?.trim().length || 0) > 2) {
-    uiErrors.setWebError(fieldId, errorMessages?.monthInvalidLength);
-    return true;
+  if (month.length > 2) {
+    return DateErrorMessages.monthInvalidLength;
   }
 
-  if ((year?.trim().length || 0) !== 4) {
-    uiErrors.setWebError(fieldId, errorMessages?.yearInvalidLength);
-    return true;
+  if (year.length !== 4) {
+    return DateErrorMessages.yearInvalidLength;
   }
-  return false;
+
+  return null;
 };
 
-export const isValidDate = (day: string, month: string, year: string): boolean => {
-  const parsedDateParts = parseDateParts(day, month, year);
+const digitsOnly: DateRule = (parts) => (containsNonDigits(parts) ? DateErrorMessages.invalidChars : null);
 
-  if (!parsedDateParts) {
-    return false;
-  }
+const realDate: DateRule = (parts) => (isRealCalendarDate(parts) ? null : DateErrorMessages.invalid);
 
-  const { d, m, y } = parsedDateParts;
+const inPast: DateRule = (parts) => {
+  const comparison = compareWithToday(parts);
 
-  // handles leap years as well
-  const parsedDate = new Date(y, m, d);
-
-  return (
-    parsedDate.getFullYear() === y &&
-    parsedDate.getMonth() === m &&
-    parsedDate.getDate() === d
-  );
+  return comparison !== null && comparison < 0 ? null : DateErrorMessages.notInPast;
 };
 
-export const isValidDateStringAndNotInFuture = (date: string): boolean => {
-  const [year, month, day] = date.split("-");
-  const isDayInvalid = day.length > 2;
-  const isMonthInvalid = month.length > 2;
-  const isYearInvalid = year.length !== 4;
+const inPastOrToday: DateRule = (parts) => {
+  const comparison = compareWithToday(parts);
 
-  if (isDayInvalid || isMonthInvalid || isYearInvalid) {
-    return false;
-  }
-
-  if (!isValidDate(day, month, year)) {
-    return false;
-  }
-  if (!isDateInPast(day, month, year) && !isDateToday(day, month, year)) {
-    return false;
-  }
-  return true;
+  return comparison !== null && comparison <= 0 ? null : DateErrorMessages.notInPast;
 };
 
-export const isDateInPastOrToday = (day: string, month: string, year: string): boolean => {
-  const targetUtcMidnight = getUtcMidnightFromDateParts(day, month, year);
+const notBeforeRegistrationDate =
+  (registrationDate: string): DateRule =>
+    (parts) => {
+      const registration = utcMidnightFromIsoDate(registrationDate);
+      const entered = utcMidnightFromDateParts(parts);
 
-  if (targetUtcMidnight === null) {
-    return false;
+      if (registration === null || entered === null) {
+        return null;
+      }
+
+      return entered < registration ? DateErrorMessages.beforeRegistrationDate : null;
+    };
+
+const firstFailure = (dateParts: DateParts, dateRules: DateRule[]): DateErrorKey | null => {
+  for (const rule of dateRules) {
+    const errorKey = rule(dateParts);
+
+    if (errorKey !== null) {
+      return errorKey;
+    }
   }
 
-  // use UTC to deal with daylight savings and timezones; compare date-only at UTC midnight
-  const now = new Date();
-  const todayUtcMidnightForLocal = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
-
-  return targetUtcMidnight <= todayUtcMidnightForLocal;
-};
-
-export const isDateInPast = (day: string, month: string, year: string): boolean => {
-  const targetUtcMidnight = getUtcMidnightFromDateParts(day, month, year);
-
-  if (targetUtcMidnight === null) {
-    return false;
-  }
-
-  // use UTC to deal with daylight savings and timezones; compare date-only at UTC midnight
-  const now = new Date();
-  const todayUtcMidnightForLocal = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
-
-  return targetUtcMidnight < todayUtcMidnightForLocal;
-};
-
-export const isDateToday = (day: string, month: string, year: string): boolean => {
-  const targetUtcMidnight = getUtcMidnightFromDateParts(day, month, year);
-
-  if (targetUtcMidnight === null) {
-    return false;
-  }
-
-  // use UTC to deal with daylight savings and timezones; compare date-only at UTC midnight
-  const now = new Date();
-  const todayUtcMidnightForLocal = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
-
-  return targetUtcMidnight === todayUtcMidnightForLocal;
-};
-
-export const isBeforeRegistrationDate = (day: string, month: string, year: string, registrationDate: string): boolean => {
-  const registrationDateUtcMidnight = getUtcMidnightFromIsoDate(registrationDate);
-  const enteredDateUtcMidnight = getUtcMidnightFromDateParts(day, month, year);
-
-  if (enteredDateUtcMidnight === null || registrationDateUtcMidnight === null) {
-    return false;
-  }
-
-  return enteredDateUtcMidnight < registrationDateUtcMidnight;
-};
-
-export const dateContainsInvalidChars = (day: string, month: string, year: string): boolean => {
-  const trimmedDay = (day || "").trim();
-  const trimmedMonth = (month || "").trim();
-  const trimmedYear = (year || "").trim();
-
-  if ((trimmedDay && !isDigitsOnly(trimmedDay)) ||
-      (trimmedMonth && !isDigitsOnly(trimmedMonth)) ||
-      (trimmedYear && !isDigitsOnly(trimmedYear))) {
-    return true;
-  }
-
-  return false;
+  return null;
 };
