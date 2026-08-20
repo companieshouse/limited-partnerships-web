@@ -3,6 +3,7 @@ import {
   GeneralPartner,
   IncorporationKind,
   LimitedPartner,
+  LimitedPartnership,
   PartnerKind
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 
@@ -40,7 +41,6 @@ import { ParamsDictionary } from "express-serve-static-core";
 import { ParsedQs } from "qs";
 import { PageRouting } from "../PageRouting";
 import { resetFormerNamesIfPreviousNameIsFalse } from "../../../infrastructure/gateway/utils";
-import LimitedPartnership from "../../../domain/validator/LimitedPartnership";
 
 type PartnerData = {
   person: {

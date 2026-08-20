@@ -82,17 +82,22 @@ describe("Where is the jurisdiction page", () => {
       ["en", PartnershipType.LP],
       ["cy", PartnershipType.LP],
       ["en", PartnershipType.PFLP],
-      ["cy", PartnershipType.PFLP],
-    ])("should return validation error when no jurisdiction is selected", async (lang: string, partnershipType: PartnershipType) => {
-      const translationText = lang === "en" ? enTranslationText : cyTranslationText;
-      const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
+      ["cy", PartnershipType.PFLP]
+    ])(
+      "should return validation error when no jurisdiction is selected",
+      async (lang: string, partnershipType: PartnershipType) => {
+        const translationText = lang === "en" ? enTranslationText : cyTranslationText;
+        const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
 
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
-      const res = await request(app).post(URL + `?lang=${lang}`).send({ pageType: RegistrationPageType.jurisdiction });
+        const res = await request(app)
+          .post(URL + `?lang=${lang}`)
+          .send({ pageType: RegistrationPageType.jurisdiction });
 
-      expect(res.status).toBe(200);
-      expect(countOccurrences(res.text, translationText.errorMessages.limitedPartnership.jurisdiction.required)).toBe(2);
-    });
+        expect(res.status).toBe(200);
+        expect(countOccurrences(res.text, translationText.errorMessages.limitedPartnership.jurisdiction.required)).toBe(2);
+      }
+    );
   });
 });

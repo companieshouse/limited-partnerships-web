@@ -1,8 +1,12 @@
 import { Jurisdiction, NameEndingType, PartnershipType, Term } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
-import { EMAIL_REGEX, VALID_CHARACTERS_REGEX } from "../../config/constants";
+import { DATE_OF_UPDATE_FIELD, EMAIL_REGEX, VALID_CHARACTERS_REGEX } from "../../config/constants";
 import UIErrors from "../entities/UIErrors";
+import { validateDate } from "./DateValidators";
+import PostTransitionPageType from "../../presentation/controller/postTransition/pageType";
+import RegistrationPageType from "../../presentation/controller/registration/PageType";
 
 class LimitedPartnershipValidator {
+  private data: Record<string, any> = {};
   private partnership_type?: PartnershipType;
   private partnership_name?: string;
   private name_ending?: NameEndingType;
@@ -10,9 +14,18 @@ class LimitedPartnershipValidator {
   private term?: Term;
   private email?: string;
 
+  private date_of_update_day?: string;
+  private date_of_update_month?: string;
+  private date_of_update_year?: string;
+
+  private registration_date?: string;
+  private pageKey?: string;
+
   private errorMessages: Record<string, any> = {};
+  private dateOfUpdateErrorMessages: Record<string, any> = {};
 
   set(data: Record<string, any>, i18n: any): this {
+    this.data = data;
     this.partnership_type = data.partnership_type;
     this.partnership_name = data.partnership_name;
     this.name_ending = data.name_ending;
@@ -20,15 +33,66 @@ class LimitedPartnershipValidator {
     this.term = data.term;
     this.email = data.email;
 
+    this.date_of_update_day = data[`${DATE_OF_UPDATE_FIELD}-day`];
+    this.date_of_update_month = data[`${DATE_OF_UPDATE_FIELD}-month`];
+    this.date_of_update_year = data[`${DATE_OF_UPDATE_FIELD}-year`];
+
+    this.registration_date = data.registration_date;
+    this.pageKey = data.pageKey;
+
     this.errorMessages = i18n?.errorMessages?.limitedPartnership || {};
+    this.dateOfUpdateErrorMessages = i18n?.errorMessages?.dateOfUpdate || {};
 
     return this;
   }
 
-  // Partnership Type
-  public runPartnershipTypeValidation(): UIErrors {
+  public runValidation(): UIErrors {
     const uiErrors = new UIErrors();
 
+    if (
+      this.data.pageType === PostTransitionPageType.whenDidTheRegisteredOfficeAddressChange ||
+      this.data.pageType === PostTransitionPageType.whenDidTheTermChange
+    ) {
+      this.runDateOfUpdateValidation(uiErrors);
+      return uiErrors;
+    }
+
+    this.handleValidation(uiErrors);
+
+    return uiErrors;
+  }
+
+  private runDateOfUpdateValidation(uiErrors: UIErrors): UIErrors {
+    validateDate(
+      {
+        day: this.date_of_update_day,
+        month: this.date_of_update_month,
+        year: this.date_of_update_year
+      },
+      uiErrors,
+      DATE_OF_UPDATE_FIELD,
+      this.dateOfUpdateErrorMessages,
+      this.registration_date,
+      this.pageKey
+    );
+
+    return uiErrors;
+  }
+
+  private handleValidation(uiErrors: UIErrors): UIErrors {
+    const pageTypeValidatorMap = new Map<RegistrationPageType, () => UIErrors>([
+      [RegistrationPageType.partnershipType, () => this.runPartnershipTypeValidation(uiErrors)],
+      [RegistrationPageType.partnershipName, () => this.runNameValidation(uiErrors)],
+      [RegistrationPageType.jurisdiction, () => this.runJurisdictionValidation(uiErrors)],
+      [RegistrationPageType.term, () => this.runTermValidation(uiErrors)],
+      [RegistrationPageType.email, () => this.runEmailValidation(uiErrors)]
+    ]);
+
+    return pageTypeValidatorMap.get(this.data.pageType as RegistrationPageType)?.() ?? uiErrors;
+  }
+
+  // Partnership Type
+  public runPartnershipTypeValidation(uiErrors: UIErrors): UIErrors {
     this.partnershipTypeEmpty(uiErrors);
     this.isValidPartnershipType(uiErrors);
 
@@ -50,9 +114,7 @@ class LimitedPartnershipValidator {
   }
 
   // Partnership Name
-  public runNameValidation(): UIErrors {
-    const uiErrors = new UIErrors();
-
+  public runNameValidation(uiErrors: UIErrors): UIErrors {
     this.isEmpty(uiErrors);
     this.isValidCharacters(uiErrors);
     this.checkPartnershipNameLength(uiErrors);
@@ -63,7 +125,7 @@ class LimitedPartnershipValidator {
     if (!this.partnership_name?.trim()) {
       uiErrors.setWebError("partnership_name", this.errorMessages?.name?.nameRequired);
     }
-    if (!this.name_ending){
+    if (!this.name_ending) {
       uiErrors.setWebError("name_ending", this.errorMessages?.name?.nameEndingRequired);
     }
     return uiErrors;
@@ -90,9 +152,7 @@ class LimitedPartnershipValidator {
   }
 
   // Jurisdiction
-  public runJurisdictionValidation(): UIErrors {
-    const uiErrors = new UIErrors();
-
+  public runJurisdictionValidation(uiErrors: UIErrors): UIErrors {
     this.jurisdictionEmpty(uiErrors);
     this.isValidJurisdiction(uiErrors);
 
@@ -114,9 +174,7 @@ class LimitedPartnershipValidator {
   }
 
   // Term
-  public runTermValidation(): UIErrors {
-    const uiErrors = new UIErrors();
-
+  public runTermValidation(uiErrors: UIErrors): UIErrors {
     this.termEmpty(uiErrors);
     this.isValidTerm(uiErrors);
 
@@ -138,9 +196,7 @@ class LimitedPartnershipValidator {
   }
 
   // Email
-  public runEmailValidation(): UIErrors {
-    const uiErrors = new UIErrors();
-
+  public runEmailValidation(uiErrors: UIErrors): UIErrors {
     this.emailEmpty(uiErrors);
     this.isValidEmail(uiErrors);
 

@@ -199,12 +199,6 @@ class LimitedPartnershipController extends PartnershipController {
         const pageType = super.extractPageTypeOrThrowError(request, TransitionPageType);
         const pageRouting = super.getRouting(transitionRouting, pageType, request);
 
-        const errors: UIErrors = this.handleValidation(pageType, request);
-
-        if (errors.hasErrors()) {
-          return this.handlePageRerenderWithPartnershipAndError(errors, request, response);
-        }
-
         const result = await this.limitedPartnershipService.sendPageData(
           tokens,
           ids.transactionId,
@@ -246,14 +240,6 @@ class LimitedPartnershipController extends PartnershipController {
         next(error);
       }
     };
-  }
-
-  private handleValidation(pageType: TransitionPageType, request: Request): UIErrors {
-    if (pageType === TransitionPageType.email) {
-      return this.limitedPartnershipService.runEmailValidation(request.body);
-    }
-
-    return new UIErrors();
   }
 
   private async handlePageRerenderWithPartnershipAndError(uiErrors: UIErrors, request: Request, response: Response) {

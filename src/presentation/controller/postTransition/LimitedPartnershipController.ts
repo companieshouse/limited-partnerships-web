@@ -22,8 +22,7 @@ import {
   CHS_URL,
   TRANSACTION_DESCRIPTION_DESIGNATE_AS_PRIVATE_FUND_PARTNERSHIP,
   JOURNEY_QUERY_PARAM,
-  DATE_OF_UPDATE_TYPE_PREFIX,
-  DATE_OF_UPDATE_FIELD
+  DATE_OF_UPDATE_TYPE_PREFIX
 } from "../../../config/constants";
 import { getJourneyTypes } from "../../../utils";
 import CompanyService from "../../../application/service/CompanyService";
@@ -34,7 +33,6 @@ import AddressService from "../../../application/service/AddressService";
 
 import { CONFIRMATION_POST_TRANSITION_URL, PAYMENT_RESPONSE_URL } from "../global/url";
 import PaymentService from "../../../application/service/PaymentService";
-import { validateDate } from "../../../domain/validator/DateValidators";
 
 class LimitedPartnershipController extends AbstractController {
   constructor(
@@ -116,6 +114,7 @@ class LimitedPartnershipController extends AbstractController {
   create(partnershipKind: PartnershipKind, addressKey?: string) {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
+        this.limitedPartnershipService.setI18n(response.locals.i18n);
         const { tokens, ids } = super.extract(request);
         const pageType = super.extractPageTypeOrThrowError(request, PostTransitionPageType);
         const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
@@ -237,40 +236,36 @@ class LimitedPartnershipController extends AbstractController {
   sendDateOfUpdatePageData() {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
+        this.limitedPartnershipService.setI18n(response.locals.i18n);
         const { ids, tokens } = super.extract(request);
         const pageType = super.extractPageTypeOrThrowError(request, PostTransitionPageType);
         const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
 
-        const limitedPartnership = await this.getLimitedPartnership(ids, tokens);
-        const registrationDate = await this.companyService.getCompanyIncorporationDate(tokens, ids.companyId);
+        const registration_date = await this.companyService.getCompanyIncorporationDate(tokens, ids.companyId);
 
-        const errors: UIErrors = new UIErrors();
-
-        validateDate(
-          request.body,
-          errors,
-          DATE_OF_UPDATE_FIELD,
-          response.locals.i18n.errorMessages.dateOfUpdate,
-          registrationDate,
-          pageRouting?.data?.titleKey
+        const limitedPartnership: LimitedPartnership = await this.limitedPartnershipService.getLimitedPartnership(
+          tokens,
+          ids.transactionId,
+          ids.submissionId
         );
 
-        const errorData = this.makeErrorData(limitedPartnership, request.body);
-
-        if (errors.hasErrors()) {
-          return response.render(DATE_OF_UPDATE_TEMPLATE, super.makeProps(pageRouting, errorData, errors));
-        }
+        const data = {
+          ...request.body,
+          limitedPartnership,
+          registration_date: registration_date,
+          pageKey: pageRouting?.data?.titleKey
+        };
 
         const result = await this.limitedPartnershipService.sendPageData(
           tokens,
           ids.transactionId,
           ids.submissionId,
           pageType,
-          request.body
+          data
         );
 
         if (result?.errors) {
-          return response.render(super.templateName(DATE_OF_UPDATE_TEMPLATE), super.makeProps(pageRouting, errorData, errors));
+          return response.render(super.templateName(DATE_OF_UPDATE_TEMPLATE), super.makeProps(pageRouting, data, result.errors));
         }
 
         response.redirect(pageRouting.nextUrl);
