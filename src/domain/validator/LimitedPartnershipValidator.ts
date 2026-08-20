@@ -1,4 +1,9 @@
-import { Jurisdiction, PartnershipType, Term } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
+import {
+  Jurisdiction,
+  NameEndingType,
+  PartnershipType,
+  Term
+} from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 import { DATE_OF_UPDATE_FIELD, EMAIL_REGEX, VALID_CHARACTERS_REGEX } from "../../config/constants";
 import UIErrors from "../entities/UIErrors";
 import { validateDate } from "./DateValidators";
@@ -72,7 +77,7 @@ class LimitedPartnershipValidator {
       }
     }
 
-    if (!this.data.name_ending) {
+    if (!this.data.name_ending || !Object.values(NameEndingType).includes(this.data.name_ending)) {
       uiErrors.setWebError("name_ending", this.errorMessages?.name?.nameEndingRequired);
     }
 
