@@ -59,7 +59,7 @@ export const runAddGeneralPartnerLegalEntityTests = (config: AddGeneralPartnerLe
         ["English", "en", enTranslationText],
         ["Welsh", "cy", cyTranslationText]
       ])(
-        "should load the add general partner legal entity page with English text",
+        "should load the add general partner legal entity page with %s text",
         async (_description: string, lang: string, translationText: Record<string, any>) => {
           const res = await request(app).get(`${getUrl(config.url)}?lang=${lang}`);
 
