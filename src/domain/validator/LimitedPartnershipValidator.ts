@@ -44,6 +44,7 @@ class LimitedPartnershipValidator {
 
     if (
       this.data.pageType === PostTransitionPageType.whenDidTheRegisteredOfficeAddressChange ||
+      this.data.pageType === PostTransitionPageType.whenDidThePrincipalPlaceOfBusinessAddressChange ||
       this.data.pageType === PostTransitionPageType.whenDidTheTermChange
     ) {
       return this.runDateOfUpdateValidation(uiErrors);
