@@ -13,7 +13,7 @@ import {
 
 import { POST_TRANSITION_WITH_ID_URL } from "../../../../../config/constants";
 
-import { runAddGeneralPartnerPersonTests } from "../../shared/addGeneralPartnerPerson";
+import { runAddGeneralPartnerPersonTests } from "../../shared/generalPartner/addGeneralPartnerPerson";
 
 it("should run add general partner person tests for post-transition journey", () => {
   expect(ADD_GENERAL_PARTNER_PERSON_URL).toContain("update");

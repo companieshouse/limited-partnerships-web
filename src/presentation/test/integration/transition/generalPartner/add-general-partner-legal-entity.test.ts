@@ -12,7 +12,7 @@ import { TRANSITION_WITH_IDS_URL } from "../../../../../config/constants";
 
 import TransitionPageType from "../../../../controller/transition/PageType";
 
-import { runAddGeneralPartnerLegalEntityTests } from "../../shared/addGeneralPartnerLegalEntity";
+import { runAddGeneralPartnerLegalEntityTests } from "../../shared/generalPartner/addGeneralPartnerLegalEntity";
 
 it("should run add general partner legal entity tests for transition journey", () => {
   expect(ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL).toContain("transition");

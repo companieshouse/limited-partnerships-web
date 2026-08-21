@@ -6,7 +6,7 @@ import {
 
 import PostTransitionPageType from "../../../../controller/postTransition/pageType";
 
-import { runGeneralPartnerChoiceTests } from "../../shared/generalPartnerChoice";
+import { runGeneralPartnerChoiceTests } from "../../shared/generalPartner/generalPartnerChoice";
 
 it("should run general partner choice tests for post-transition journey", () => {
   expect(ADD_GENERAL_PARTNER_PERSON_URL).toContain("update");

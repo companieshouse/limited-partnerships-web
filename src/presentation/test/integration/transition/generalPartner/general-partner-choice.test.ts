@@ -6,7 +6,7 @@ import {
 
 import TransitionPageType from "../../../../../presentation/controller/transition/PageType";
 
-import { runGeneralPartnerChoiceTests } from "../../shared/generalPartnerChoice";
+import { runGeneralPartnerChoiceTests } from "../../shared/generalPartner/generalPartnerChoice";
 
 it("should run general partner choice tests for transition journey", () => {
   expect(ADD_GENERAL_PARTNER_PERSON_URL).toContain("transition");

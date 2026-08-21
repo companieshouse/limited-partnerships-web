@@ -1,19 +1,21 @@
 import request from "supertest";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 
-import app from "../app";
-import { appDevDependencies } from "../../../../config/dev-dependencies";
-import { ApiErrors } from "../../../../domain/entities/UIErrors";
-import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../utils";
+import app from "../../app";
+import { appDevDependencies } from "../../../../../config/dev-dependencies";
+import { ApiErrors } from "../../../../../domain/entities/UIErrors";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 
-import { enTranslationText, cyTranslationText } from "../../../../test/utils/locales";
+import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 
-import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
-import GeneralPartnerBuilder from "../../builder/GeneralPartnerBuilder";
-import TransactionLimitedPartnership from "../../../../domain/entities/TransactionLimitedPartnership";
-import CompanyProfileBuilder from "../../builder/CompanyProfileBuilder";
+import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
+import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
+import TransactionLimitedPartnership from "../../../../../domain/entities/TransactionLimitedPartnership";
+import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 
-import { customerFeedbackUrlMap } from "../../../../middlewares/customer-feedback.middleware";
+import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
+
+import { getServiceTitle, isPostTransition } from "./utils";
 
 type AddGeneralPartnerLegalEntityTestConfig = {
   url: string;
@@ -173,15 +175,3 @@ export const runAddGeneralPartnerLegalEntityTests = (config: AddGeneralPartnerLe
     });
   });
 };
-
-const getServiceTitle = (
-  serviceTitleTranslationKey: AddGeneralPartnerLegalEntityTestConfig["serviceTitleTranslationKey"],
-  translationText: Record<string, any>
-): string =>
-  typeof serviceTitleTranslationKey === "string" ?
-    translationText[serviceTitleTranslationKey]
-    : translationText.serviceName[serviceTitleTranslationKey.serviceName];
-
-const isPostTransition = (
-  serviceTitleTranslationKey: AddGeneralPartnerLegalEntityTestConfig["serviceTitleTranslationKey"]
-): boolean => typeof serviceTitleTranslationKey !== "string";

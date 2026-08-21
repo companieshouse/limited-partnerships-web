@@ -1,20 +1,22 @@
 import request from "supertest";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 
-import app from "../app";
-import { appDevDependencies } from "../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../utils";
-import { ApiErrors } from "../../../../domain/entities/UIErrors";
+import app from "../../app";
+import { appDevDependencies } from "../../../../../config/dev-dependencies";
+import { getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../utils";
+import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 
-import { enTranslationText, cyTranslationText } from "../../../../test/utils/locales";
+import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 
-import { customerFeedbackUrlMap } from "../../../../middlewares/customer-feedback.middleware";
+import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 
-import GeneralPartnerBuilder from "../../builder/GeneralPartnerBuilder";
-import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
-import CompanyProfileBuilder from "../../builder/CompanyProfileBuilder";
+import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
+import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
+import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 
-import TransactionLimitedPartnership from "../../../../domain/entities/TransactionLimitedPartnership";
+import TransactionLimitedPartnership from "../../../../../domain/entities/TransactionLimitedPartnership";
+
+import { getServiceTitle, isPostTransition } from "./utils";
 
 type AddGeneralPartnerPersonTestConfig = {
   url: string;
@@ -402,15 +404,3 @@ export const runAddGeneralPartnerPersonTests = (config: AddGeneralPartnerPersonT
     });
   });
 };
-
-const getServiceTitle = (
-  serviceTitleTranslationKey: AddGeneralPartnerPersonTestConfig["serviceTitleTranslationKey"],
-  translationText: Record<string, any>
-): string =>
-  typeof serviceTitleTranslationKey === "string" ?
-    translationText[serviceTitleTranslationKey]
-    : translationText.serviceName[serviceTitleTranslationKey.serviceName];
-
-const isPostTransition = (
-  serviceTitleTranslationKey: AddGeneralPartnerPersonTestConfig["serviceTitleTranslationKey"]
-): boolean => typeof serviceTitleTranslationKey !== "string";

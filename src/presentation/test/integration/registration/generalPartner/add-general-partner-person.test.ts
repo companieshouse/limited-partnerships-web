@@ -9,7 +9,7 @@ import { REGISTRATION_WITH_IDS_URL } from "../../../../../config/constants";
 
 import RegistrationPageType from "../../../../controller/registration/PageType";
 
-import { runAddGeneralPartnerPersonTests } from "../../shared/addGeneralPartnerPerson";
+import { runAddGeneralPartnerPersonTests } from "../../shared/generalPartner/addGeneralPartnerPerson";
 
 it("should run add general partner person tests for registration journey", () => {
   expect(ADD_GENERAL_PARTNER_PERSON_URL).toContain("registration");

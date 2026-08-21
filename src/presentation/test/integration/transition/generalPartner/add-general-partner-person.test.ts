@@ -9,7 +9,7 @@ import { TRANSITION_WITH_IDS_URL } from "../../../../../config/constants";
 
 import TransitionPageType from "../../../../controller/transition/PageType";
 
-import { runAddGeneralPartnerPersonTests } from "../../shared/addGeneralPartnerPerson";
+import { runAddGeneralPartnerPersonTests } from "../../shared/generalPartner/addGeneralPartnerPerson";
 
 it("should run add general partner person tests for transition journey", () => {
   expect(ADD_GENERAL_PARTNER_PERSON_URL).toContain("transition");

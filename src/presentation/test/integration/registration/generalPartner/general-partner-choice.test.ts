@@ -6,7 +6,7 @@ import {
 
 import RegistrationPageType from "../../../../controller/registration/PageType";
 
-import { runGeneralPartnerChoiceTests } from "../../shared/generalPartnerChoice";
+import { runGeneralPartnerChoiceTests } from "../../shared/generalPartner/generalPartnerChoice";
 
 it("should run general partner choice tests for registration journey", () => {
   expect(ADD_GENERAL_PARTNER_PERSON_URL).toContain("registration");

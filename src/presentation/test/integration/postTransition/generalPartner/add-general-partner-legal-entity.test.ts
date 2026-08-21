@@ -7,7 +7,7 @@ import {
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships/types";
 import { CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL, TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../../../controller/addressLookUp/url/postTransition";
 
-import { runAddGeneralPartnerLegalEntityTests } from "../../shared/addGeneralPartnerLegalEntity";
+import { runAddGeneralPartnerLegalEntityTests } from "../../shared/generalPartner/addGeneralPartnerLegalEntity";
 import { POST_TRANSITION_WITH_ID_URL } from "../../../../../config/constants";
 
 it("should run add general partner legal entity tests for post-transition journey", () => {

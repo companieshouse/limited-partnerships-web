@@ -1,17 +1,19 @@
 import request from "supertest";
 import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile/types";
 
-import app from "../app";
-import { appDevDependencies } from "../../../../config/dev-dependencies";
-import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../utils";
+import app from "../../app";
+import { appDevDependencies } from "../../../../../config/dev-dependencies";
+import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 
-import { enTranslationText, cyTranslationText } from "../../../../test/utils/locales";
+import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 
-import LimitedPartnershipBuilder from "../../builder/LimitedPartnershipBuilder";
-import TransactionLimitedPartnership from "../../../../domain/entities/TransactionLimitedPartnership";
-import CompanyProfileBuilder from "../../builder/CompanyProfileBuilder";
+import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
+import TransactionLimitedPartnership from "../../../../../domain/entities/TransactionLimitedPartnership";
+import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 
-import { customerFeedbackUrlMap } from "../../../../middlewares/customer-feedback.middleware";
+import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
+
+import { getServiceTitle, isPostTransition } from "./utils";
 
 type GeneralPartnerChoiceTestConfig = {
   url: string;
@@ -99,14 +101,3 @@ export const runGeneralPartnerChoiceTests = (config: GeneralPartnerChoiceTestCon
   });
 };
 
-const getServiceTitle = (
-  serviceTitleTranslationKey: GeneralPartnerChoiceTestConfig["serviceTitleTranslationKey"],
-  translationText: Record<string, any>
-): string =>
-  typeof serviceTitleTranslationKey === "string" ?
-    translationText[serviceTitleTranslationKey]
-    : translationText.serviceName[serviceTitleTranslationKey.serviceName];
-
-const isPostTransition = (
-  serviceTitleTranslationKey: GeneralPartnerChoiceTestConfig["serviceTitleTranslationKey"]
-): boolean => typeof serviceTitleTranslationKey !== "string";
