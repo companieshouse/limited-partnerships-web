@@ -14,6 +14,7 @@ import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 
 import { getServiceTitle, isPostTransition } from "./utils";
+import { SERVICE_NAME_KEY_REGISTRATION, SERVICE_NAME_KEY_TRANSITION } from "../../../../../config/constants";
 
 type GeneralPartnerChoiceTestConfig = {
   url: string;
@@ -56,7 +57,7 @@ export const runGeneralPartnerChoiceTests = (config: GeneralPartnerChoiceTestCon
       );
 
       let partnershipName = limitedPartnership?.data?.partnership_name?.toUpperCase();
-      if (config.serviceTitleTranslationKey === "serviceTransition") {
+      if (config.serviceTitleTranslationKey === SERVICE_NAME_KEY_TRANSITION) {
         partnershipName = `${partnershipName} (${limitedPartnership?.data?.partnership_number?.toUpperCase()})`;
       } else if (isPostTransition(config.serviceTitleTranslationKey)) {
         partnershipName = `${companyProfile.data.companyName?.toUpperCase()} (${companyProfile.data.companyNumber?.toUpperCase()})`;
@@ -66,8 +67,8 @@ export const runGeneralPartnerChoiceTests = (config: GeneralPartnerChoiceTestCon
 
       testTranslations(res.text, translationText.partner.generalPartnerChoicePage, config.translateExclude);
 
-      if (config.serviceTitleTranslationKey !== "serviceTransition") {
-        const key = config.serviceTitleTranslationKey === "serviceRegistration" ? "registration" : "addGeneralPartner";
+      if (config.serviceTitleTranslationKey !== SERVICE_NAME_KEY_TRANSITION) {
+        const key = config.serviceTitleTranslationKey === SERVICE_NAME_KEY_REGISTRATION ? "registration" : "addGeneralPartner";
         expect(res.text).toContain(customerFeedbackUrlMap[key]);
       }
     });

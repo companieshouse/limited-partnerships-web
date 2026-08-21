@@ -36,7 +36,9 @@ export const COST_LP8D_REDESIGNATE_TO_PFLP = getEnvironmentValue("COST_LP8D_REDE
 export const REFRESH_TOKEN_GRANT_TYPE = "refresh_token";
 
 // Service Names
+export const SERVICE_NAME_KEY_REGISTRATION = "serviceRegistration";
 export const SERVICE_NAME_REGISTRATION = "Register a limited partnership";
+export const SERVICE_NAME_KEY_TRANSITION = "serviceTransition";
 export const SERVICE_NAME_TRANSITION = "Provide new required information about a limited partnership";
 export const SERVICE_NAME_POST_TRANSITION = "File for a limited partnership";
 

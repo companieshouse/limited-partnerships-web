@@ -17,6 +17,7 @@ import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 import TransactionLimitedPartnership from "../../../../../domain/entities/TransactionLimitedPartnership";
 
 import { getServiceTitle, isPostTransition } from "./utils";
+import { SERVICE_NAME_KEY_REGISTRATION, SERVICE_NAME_KEY_TRANSITION } from "../../../../../config/constants";
 
 type AddGeneralPartnerPersonTestConfig = {
   url: string;
@@ -74,7 +75,7 @@ export const runAddGeneralPartnerPersonTests = (config: AddGeneralPartnerPersonT
           );
 
           let partnershipName = limitedPartnership?.data?.partnership_name?.toUpperCase();
-          if (config.serviceTitleTranslationKey === "serviceTransition") {
+          if (config.serviceTitleTranslationKey === SERVICE_NAME_KEY_TRANSITION) {
             partnershipName = `${partnershipName} (${limitedPartnership?.data?.partnership_number?.toUpperCase()})`;
           } else if (isPostTransition(config.serviceTitleTranslationKey)) {
             partnershipName = `${companyProfile.data.companyName?.toUpperCase()} (${companyProfile.data.companyNumber?.toUpperCase()})`;
@@ -89,8 +90,9 @@ export const runAddGeneralPartnerPersonTests = (config: AddGeneralPartnerPersonT
           );
           testTranslations(res.text, translationText.partner.generalPartnersPage, config.translateExcludeGeneralPartnersPage);
 
-          if (config.serviceTitleTranslationKey !== "serviceTransition") {
-            const key = config.serviceTitleTranslationKey === "serviceRegistration" ? "registration" : "addGeneralPartner";
+          if (config.serviceTitleTranslationKey !== SERVICE_NAME_KEY_TRANSITION) {
+            const key =
+              config.serviceTitleTranslationKey === SERVICE_NAME_KEY_REGISTRATION ? "registration" : "addGeneralPartner";
             expect(res.text).toContain(customerFeedbackUrlMap[key]);
           }
         }
@@ -125,7 +127,7 @@ export const runAddGeneralPartnerPersonTests = (config: AddGeneralPartnerPersonT
         expect(res.text).toContain("FORMER-NAMES");
         expect(res.text).toContain('<option value="British" selected>British</option>');
 
-        if (config.serviceTitleTranslationKey !== "serviceTransition") {
+        if (config.serviceTitleTranslationKey !== SERVICE_NAME_KEY_TRANSITION) {
           expect(res.text).toContain('name="not_disqualified_statement_checked" type="checkbox" value="true" checked');
         }
 
@@ -184,7 +186,7 @@ export const runAddGeneralPartnerPersonTests = (config: AddGeneralPartnerPersonT
         expect(res.text).toContain(toEscapedHtml(errorMessages.errorMessages.partners.addPartner.dateOfBirthMissing));
         expect(res.text).toContain(toEscapedHtml(errorMessages.errorMessages.partners.addPartner.nationality1Missing));
 
-        if (config.serviceTitleTranslationKey !== "serviceTransition") {
+        if (config.serviceTitleTranslationKey !== SERVICE_NAME_KEY_TRANSITION) {
           expect(res.text).toContain(
             errorMessages.errorMessages.partners.addPartner.disqualificationStatementMissingGeneralPartner
           );

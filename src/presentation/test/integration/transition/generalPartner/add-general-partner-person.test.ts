@@ -5,7 +5,7 @@ import {
   TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "../../../../controller/addressLookUp/url/transition";
 
-import { TRANSITION_WITH_IDS_URL } from "../../../../../config/constants";
+import { SERVICE_NAME_KEY_TRANSITION, TRANSITION_WITH_IDS_URL } from "../../../../../config/constants";
 
 import TransitionPageType from "../../../../controller/transition/PageType";
 
@@ -41,5 +41,5 @@ runAddGeneralPartnerPersonTests({
     "disqualificationStatement",
     "disqualificationStatementLegend"
   ],
-  serviceTitleTranslationKey: "serviceTransition"
+  serviceTitleTranslationKey: SERVICE_NAME_KEY_TRANSITION
 });

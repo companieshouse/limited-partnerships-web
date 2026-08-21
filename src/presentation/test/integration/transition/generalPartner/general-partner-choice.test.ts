@@ -7,6 +7,7 @@ import {
 import TransitionPageType from "../../../../../presentation/controller/transition/PageType";
 
 import { runGeneralPartnerChoiceTests } from "../../shared/generalPartner/generalPartnerChoice";
+import { SERVICE_NAME_KEY_TRANSITION } from "../../../../../config/constants";
 
 it("should run general partner choice tests for transition journey", () => {
   expect(ADD_GENERAL_PARTNER_PERSON_URL).toContain("transition");
@@ -18,5 +19,5 @@ runGeneralPartnerChoiceTests({
   redirectUrlPerson: ADD_GENERAL_PARTNER_PERSON_URL,
   redirectUrlLegalEntity: ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
   translateExclude: [],
-  serviceTitleTranslationKey: "serviceTransition"
+  serviceTitleTranslationKey: SERVICE_NAME_KEY_TRANSITION
 });

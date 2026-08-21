@@ -16,6 +16,7 @@ import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 
 import { getServiceTitle, isPostTransition } from "./utils";
+import { SERVICE_NAME_KEY_TRANSITION } from "../../../../../config/constants";
 
 type AddGeneralPartnerLegalEntityTestConfig = {
   url: string;
@@ -72,7 +73,7 @@ export const runAddGeneralPartnerLegalEntityTests = (config: AddGeneralPartnerLe
           );
 
           let partnershipName = limitedPartnership?.data?.partnership_name?.toUpperCase();
-          if (config.serviceTitleTranslationKey === "serviceTransition") {
+          if (config.serviceTitleTranslationKey === SERVICE_NAME_KEY_TRANSITION) {
             partnershipName = `${partnershipName} (${limitedPartnership?.data?.partnership_number?.toUpperCase()})`;
           } else if (isPostTransition(config.serviceTitleTranslationKey)) {
             partnershipName = `${companyProfile.data.companyName?.toUpperCase()} (${companyProfile.data.companyNumber?.toUpperCase()})`;

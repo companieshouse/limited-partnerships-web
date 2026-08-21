@@ -8,7 +8,7 @@ import {
   TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
 } from "../../../../controller/addressLookUp/url/registration";
 
-import { REGISTRATION_WITH_IDS_URL } from "../../../../../config/constants";
+import { REGISTRATION_WITH_IDS_URL, SERVICE_NAME_KEY_REGISTRATION } from "../../../../../config/constants";
 
 import RegistrationPageType from "../../../../controller/registration/PageType";
 
@@ -40,5 +40,5 @@ runAddGeneralPartnerLegalEntityTests({
     "dateYear"
   ],
   translateExcludeGeneralPartnersPage: ["title", "pageInformation"],
-  serviceTitleTranslationKey: "serviceRegistration"
+  serviceTitleTranslationKey: SERVICE_NAME_KEY_REGISTRATION
 });
