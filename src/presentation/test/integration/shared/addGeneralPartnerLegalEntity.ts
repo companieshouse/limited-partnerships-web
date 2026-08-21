@@ -100,7 +100,7 @@ export const runAddGeneralPartnerLegalEntityTests = (config: AddGeneralPartnerLe
       it("should contain a back link to the review page when general partners are present", async () => {
         const generalPartner = new GeneralPartnerBuilder()
           .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-          .isPerson()
+          .isLegalEntity()
           .build();
         appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
 

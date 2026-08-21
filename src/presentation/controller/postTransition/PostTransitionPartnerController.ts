@@ -268,6 +268,9 @@ class PostTransitionPartnerController extends PartnerController {
   createPartner(partner: PartnerType, data?: PartnerData) {
     return async (request: Request, response: Response, next: NextFunction) => {
       try {
+        this.generalPartnerService.setI18n(response.locals.i18n);
+        this.limitedPartnerService.setI18n(response.locals.i18n);
+
         const { tokens, ids } = super.extract(request);
         const pageType = super.extractPageTypeOrThrowError(request, PostTransitionPageType);
         const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
@@ -312,7 +315,9 @@ class PostTransitionPartnerController extends PartnerController {
           const dataToSend = {
             ...request.body,
             kind: isLegalEntity(pageType) ? data?.legalEntity.kind : data?.person.kind,
-            journeyTypes: response.locals.journeyTypes
+            journeyTypes: response.locals.journeyTypes,
+            partnerEntityType: pageRouting?.data?.partnerEntityType,
+            partnerType: partner
           };
 
           if (partner === PartnerType.generalPartner) {
@@ -372,6 +377,8 @@ class PostTransitionPartnerController extends PartnerController {
     resultTransaction: { transactionId: string; errors?: UIErrors }
   ) {
     const { tokens, ids } = super.extract(request);
+    const pageType = super.extractPageTypeOrThrowError(request, PostTransitionPageType);
+    const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
 
     const dataToSend = {
       forename: resultAppointment?.partner.data?.forename,
@@ -382,7 +389,8 @@ class PostTransitionPartnerController extends PartnerController {
       ...request.body,
 
       appointment_id: ids.appointmentId,
-      kind: isLegalEntity ? data?.legalEntity.kind : data?.person.kind
+      kind: isLegalEntity ? data?.legalEntity.kind : data?.person.kind,
+      partnerEntityType: pageRouting?.data?.partnerEntityType
     };
 
     if (partner === PartnerType.generalPartner) {

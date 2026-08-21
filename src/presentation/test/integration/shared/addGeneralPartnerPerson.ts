@@ -60,31 +60,39 @@ export const runAddGeneralPartnerPersonTests = (config: AddGeneralPartnerPersonT
       it.each([
         ["English", "en", enTranslationText],
         ["Welsh", "cy", cyTranslationText]
-      ])("should load the add general partner page with %s text", async (_description: string, lang: string, translationText: Record<string, any>) => {
-        const res = await request(app).get(`${getUrl(config.url)}?lang=${lang}`);
+      ])(
+        "should load the add general partner page with %s text",
+        async (_description: string, lang: string, translationText: Record<string, any>) => {
+          const res = await request(app).get(`${getUrl(config.url)}?lang=${lang}`);
 
-        expect(res.status).toBe(200);
+          expect(res.status).toBe(200);
 
-        expect(res.text).toContain(
-          `${translationText.partner.addPartnerPersonPage.generalPartner.title} - ${getServiceTitle(config.serviceTitleTranslationKey, translationText)} - GOV.UK`
-        );
+          expect(res.text).toContain(
+            `${translationText.partner.addPartnerPersonPage.generalPartner.title} - ${getServiceTitle(config.serviceTitleTranslationKey, translationText)} - GOV.UK`
+          );
 
-        let partnershipName = limitedPartnership?.data?.partnership_name?.toUpperCase();
-        if (config.serviceTitleTranslationKey === "serviceTransition") {
-          partnershipName = `${partnershipName} (${limitedPartnership?.data?.partnership_number?.toUpperCase()})`;
-        } else if (isPostTransition(config.serviceTitleTranslationKey)) {
-          partnershipName = `${companyProfile.data.companyName?.toUpperCase()} (${companyProfile.data.companyNumber?.toUpperCase()})`;
+          let partnershipName = limitedPartnership?.data?.partnership_name?.toUpperCase();
+          if (config.serviceTitleTranslationKey === "serviceTransition") {
+            partnershipName = `${partnershipName} (${limitedPartnership?.data?.partnership_number?.toUpperCase()})`;
+          } else if (isPostTransition(config.serviceTitleTranslationKey)) {
+            partnershipName = `${companyProfile.data.companyName?.toUpperCase()} (${companyProfile.data.companyNumber?.toUpperCase()})`;
+          }
+
+          expect(res.text).toContain(partnershipName);
+
+          testTranslations(
+            res.text,
+            translationText.partner.addPartnerPersonPage,
+            config.translateExcludeAddOrUpdatePartnerPersonPage
+          );
+          testTranslations(res.text, translationText.partner.generalPartnersPage, config.translateExcludeGeneralPartnersPage);
+
+          if (config.serviceTitleTranslationKey !== "serviceTransition") {
+            const key = config.serviceTitleTranslationKey === "serviceRegistration" ? "registration" : "addGeneralPartner";
+            expect(res.text).toContain(customerFeedbackUrlMap[key]);
+          }
         }
-
-        expect(res.text).toContain(partnershipName);
-
-        testTranslations(res.text, translationText.partner.addPartnerPersonPage, config.translateExcludeAddOrUpdatePartnerPersonPage);
-        testTranslations(res.text, translationText.partner.generalPartnersPage, config.translateExcludeGeneralPartnersPage);
-
-        if (config.serviceTitleTranslationKey === "serviceRegistration") {
-          expect(res.text).toContain(customerFeedbackUrlMap.registration);
-        }
-      });
+      );
 
       it("should contain a back link to the choice page when general partners are not present", async () => {
         const res = await request(app).get(getUrl(config.url));
@@ -115,7 +123,7 @@ export const runAddGeneralPartnerPersonTests = (config: AddGeneralPartnerPersonT
         expect(res.text).toContain("FORMER-NAMES");
         expect(res.text).toContain('<option value="British" selected>British</option>');
 
-        if (config.serviceTitleTranslationKey === "serviceRegistration") {
+        if (config.serviceTitleTranslationKey !== "serviceTransition") {
           expect(res.text).toContain('name="not_disqualified_statement_checked" type="checkbox" value="true" checked');
         }
 
@@ -146,16 +154,25 @@ export const runAddGeneralPartnerPersonTests = (config: AddGeneralPartnerPersonT
         expect(res.status).toBe(302);
 
         expect(res.text).toContain(`Redirecting to ${getUrl(config.redirectUrl)}`);
+
+        if (isPostTransition(config.serviceTitleTranslationKey)) {
+          expect(appDevDependencies.transactionGateway.transactions).toHaveLength(1);
+          expect(appDevDependencies.transactionGateway.transactions[0].description).toBe("Add a general partner (person)");
+
+          expect(appDevDependencies.generalPartnerGateway.generalPartners).toHaveLength(1);
+          expect(appDevDependencies.generalPartnerGateway.generalPartners[0].data?.kind).toEqual(config.partnerKind);
+        }
       });
 
       it.each([
         ["en", enTranslationText],
         ["cy", cyTranslationText]
       ])("should return validation errors when all data is missing - %s", async (lang: string, errorMessages: any) => {
-
-        const res = await request(app).post(`${getUrl(config.url)}?lang=${lang}`).send({
-          pageType: config.pageType.addGeneralPartnerPerson
-        });
+        const res = await request(app)
+          .post(`${getUrl(config.url)}?lang=${lang}`)
+          .send({
+            pageType: config.pageType.addGeneralPartnerPerson
+          });
 
         expect(res.status).toBe(200);
 
@@ -165,8 +182,10 @@ export const runAddGeneralPartnerPersonTests = (config: AddGeneralPartnerPersonT
         expect(res.text).toContain(toEscapedHtml(errorMessages.errorMessages.partners.addPartner.dateOfBirthMissing));
         expect(res.text).toContain(toEscapedHtml(errorMessages.errorMessages.partners.addPartner.nationality1Missing));
 
-        if (config.serviceTitleTranslationKey === "serviceRegistration") {
-          expect(res.text).toContain(errorMessages.errorMessages.partners.addPartner.disqualificationStatementMissingGeneralPartner);
+        if (config.serviceTitleTranslationKey !== "serviceTransition") {
+          expect(res.text).toContain(
+            errorMessages.errorMessages.partners.addPartner.disqualificationStatementMissingGeneralPartner
+          );
         }
       });
 
@@ -243,18 +262,22 @@ export const runAddGeneralPartnerPersonTests = (config: AddGeneralPartnerPersonT
       it.each([
         ["en", enTranslationText],
         ["cy", cyTranslationText]
-      ])("should return a validation error when nationality 1 and 2 are the same - %s", async (lang: string, errorMessages: any) => {
+      ])(
+        "should return a validation error when nationality 1 and 2 are the same - %s",
+        async (lang: string, errorMessages: any) => {
+          const res = await request(app)
+            .post(`${getUrl(config.url)}?lang=${lang}`)
+            .send({
+              pageType: config.pageType.addGeneralPartnerPerson,
+              nationality1: "English",
+              nationality2: "English"
+            });
 
-        const res = await request(app).post(`${getUrl(config.url)}?lang=${lang}`).send({
-          pageType: config.pageType.addGeneralPartnerPerson,
-          nationality1: "English",
-          nationality2: "English"
-        });
+          expect(res.status).toBe(200);
 
-        expect(res.status).toBe(200);
-
-        expect(res.text).toContain(toEscapedHtml(errorMessages.errorMessages.partners.addPartner.nationality2Same));
-      });
+          expect(res.text).toContain(toEscapedHtml(errorMessages.errorMessages.partners.addPartner.nationality2Same));
+        }
+      );
 
       it("should replay entered data when invalid data is entered and a validation error occurs", async () => {
         const apiErrors: ApiErrors = {
