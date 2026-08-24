@@ -579,7 +579,7 @@ class LimitedPartnershipController extends AbstractController {
     const errors = new UIErrors();
 
     if (!request.body.redesignate_to_pflp_apply && !request.body.redesignate_to_pflp_confirm) {
-      errors.setWebError("redesignate_to_pflp_apply", response.locals.i18n.errorMessages.redesignateToPflpPage.bothRequired);
+      errors.setWebError("redesignate_to_pflp_both", response.locals.i18n.errorMessages.redesignateToPflpPage.bothRequired);
     } else if (!request.body.redesignate_to_pflp_apply) {
       errors.setWebError("redesignate_to_pflp_apply", response.locals.i18n.errorMessages.redesignateToPflpPage.applyRequired);
     } else if (!request.body.redesignate_to_pflp_confirm) {
