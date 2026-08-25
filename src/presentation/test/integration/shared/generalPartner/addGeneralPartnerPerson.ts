@@ -50,7 +50,7 @@ export const runAddGeneralPartnerPersonTests = (config: AddGeneralPartnerPersonT
       .isPerson()
       .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
       .withAppointmentId(appDevDependencies.generalPartnerGateway.generalPartnerAppointmentId)
-      .withKind(config.partnerKind || "")
+      .withKind(config.partnerKind ?? "")
       .withNotDisqualifiedStatementChecked(true)
       .withPreviousName(false)
       .build();

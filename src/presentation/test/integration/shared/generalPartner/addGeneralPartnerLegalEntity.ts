@@ -46,6 +46,12 @@ export const runAddGeneralPartnerLegalEntityTests = (config: AddGeneralPartnerLe
       data: Partial<CompanyProfile>;
     };
 
+    const datesBody = {
+      "date_effective_from-day": "01",
+      "date_effective_from-month": "11",
+      "date_effective_from-year": "2024"
+    };
+
     const generalPartner = new GeneralPartnerBuilder()
       .isLegalEntity()
       .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
@@ -53,24 +59,18 @@ export const runAddGeneralPartnerLegalEntityTests = (config: AddGeneralPartnerLe
       .withKind(config.partnerKind ?? "")
       .build();
 
-    const datesBody = {
-      "date_effective_from-day": "01",
-      "date_effective_from-month": "11",
-      "date_effective_from-year": "2024"
-    };
-
     beforeEach(() => {
       setLocalesEnabled(true);
+
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+
+      appDevDependencies.transactionGateway.feedTransactions([]);
 
       limitedPartnership = new LimitedPartnershipBuilder().build();
       appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
 
       companyProfile = new CompanyProfileBuilder().build();
       appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
-
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
-
-      appDevDependencies.transactionGateway.feedTransactions([]);
     });
 
     describe("Get Add General Partner Legal Entity Page", () => {
