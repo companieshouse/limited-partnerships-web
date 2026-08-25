@@ -4,7 +4,6 @@ import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/compa
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../utils";
-import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 
 import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
 
@@ -58,7 +57,6 @@ export const runAddGeneralPartnerPersonTests = (config: AddGeneralPartnerPersonT
       appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
       appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
-      appDevDependencies.generalPartnerGateway.feedErrors();
 
       appDevDependencies.transactionGateway.feedTransactions([]);
     });
@@ -182,7 +180,7 @@ export const runAddGeneralPartnerPersonTests = (config: AddGeneralPartnerPersonT
         const res = await request(app)
           .post(`${getUrl(config.url)}?lang=${lang}`)
           .send({
-            pageType: config.pageType.addGeneralPartnerPerson
+            ...config.pageRouting.get(config.pageType.addGeneralPartnerPerson as PageType)
           });
 
         expect(res.status).toBe(200);
@@ -207,7 +205,7 @@ export const runAddGeneralPartnerPersonTests = (config: AddGeneralPartnerPersonT
         const res = await request(app)
           .post(`${getUrl(config.url)}?lang=${lang}`)
           .send({
-            pageType: config.pageType.addGeneralPartnerPerson,
+            ...config.pageRouting.get(config.pageType.addGeneralPartnerPerson as PageType),
             previous_name: "true"
           });
 
@@ -226,7 +224,7 @@ export const runAddGeneralPartnerPersonTests = (config: AddGeneralPartnerPersonT
           const res = await request(app)
             .post(`${getUrl(config.url)}?lang=${lang}`)
             .send({
-              pageType: config.pageType.addGeneralPartnerPerson,
+              ...config.pageRouting.get(config.pageType.addGeneralPartnerPerson as PageType),
               forename: forename
             });
 
@@ -246,7 +244,7 @@ export const runAddGeneralPartnerPersonTests = (config: AddGeneralPartnerPersonT
           const res = await request(app)
             .post(`${getUrl(config.url)}?lang=${lang}`)
             .send({
-              pageType: config.pageType.addGeneralPartnerPerson,
+              ...config.pageRouting.get(config.pageType.addGeneralPartnerPerson as PageType),
               surname: surname
             });
 
@@ -270,7 +268,7 @@ export const runAddGeneralPartnerPersonTests = (config: AddGeneralPartnerPersonT
           const res = await request(app)
             .post(`${getUrl(config.url)}?lang=${lang}`)
             .send({
-              pageType: config.pageType.addGeneralPartnerPerson,
+              ...config.pageRouting.get(config.pageType.addGeneralPartnerPerson as PageType),
               former_names: formerNames,
               previous_name: "true"
             });
@@ -292,7 +290,7 @@ export const runAddGeneralPartnerPersonTests = (config: AddGeneralPartnerPersonT
           const res = await request(app)
             .post(`${getUrl(config.url)}?lang=${lang}`)
             .send({
-              pageType: config.pageType.addGeneralPartnerPerson,
+              ...config.pageRouting.get(config.pageType.addGeneralPartnerPerson as PageType),
               nationality1: "English",
               nationality2: "English"
             });
@@ -304,25 +302,21 @@ export const runAddGeneralPartnerPersonTests = (config: AddGeneralPartnerPersonT
       );
 
       it("should replay entered data when invalid data is entered and a validation error occurs", async () => {
-        const apiErrors: ApiErrors = {
-          errors: { forename: "general partner name is invalid" }
-        };
-
-        appDevDependencies.generalPartnerGateway.feedErrors(apiErrors);
-
-        const res = await request(app).post(getUrl(config.url)).send({
-          pageType: config.pageType.addGeneralPartnerPerson,
-          forename: "§§",
-          surname: "SURNAME",
-          former_names: "",
-          previous_name: "false",
-          "date_of_birth-day": "01",
-          "date_of_birth-month": "11",
-          "date_of_birth-year": "1987",
-          nationality1: "Mongolian",
-          nationality2: "Uzbek",
-          not_disqualified_statement_checked: "true"
-        });
+        const res = await request(app)
+          .post(getUrl(config.url))
+          .send({
+            ...config.pageRouting.get(config.pageType.addGeneralPartnerPerson as PageType),
+            forename: "§§",
+            surname: "SURNAME",
+            former_names: "",
+            previous_name: "false",
+            "date_of_birth-day": "01",
+            "date_of_birth-month": "11",
+            "date_of_birth-year": "1987",
+            nationality1: "Mongolian",
+            nationality2: "Uzbek",
+            not_disqualified_statement_checked: "true"
+          });
 
         expect(res.status).toBe(200);
 
@@ -350,7 +344,7 @@ export const runAddGeneralPartnerPersonTests = (config: AddGeneralPartnerPersonT
         const res = await request(app)
           .post(URL)
           .send({
-            pageType: config.pageType.addGeneralPartnerPerson,
+            ...config.pageRouting.get(config.pageType.addGeneralPartnerPerson as PageType),
             ...generalPartner.data,
             "date_of_birth-day": "01",
             "date_of_birth-month": "11",
@@ -369,28 +363,25 @@ export const runAddGeneralPartnerPersonTests = (config: AddGeneralPartnerPersonT
       });
 
       it("should replay entered data when invalid data is entered and a validation error occurs", async () => {
-        const apiErrors: ApiErrors = {
-          errors: { forename: "general partner name is invalid" }
-        };
-
-        appDevDependencies.generalPartnerGateway.feedErrors(apiErrors);
-
-        const res = await request(app).post(getUrl(config.url)).send({
-          pageType: config.pageType.addGeneralPartnerPerson,
-          forename: "INVALID-CHARACTERS-FORENAME",
-          surname: "SURNAME",
-          former_names: "",
-          previous_name: "false",
-          "date_of_birth-day": "01",
-          "date_of_birth-month": "11",
-          "date_of_birth-year": "1987",
-          nationality1: "Mongolian",
-          nationality2: "Uzbek",
-          not_disqualified_statement_checked: "true"
-        });
+        const res = await request(app)
+          .post(getUrl(config.url))
+          .send({
+            ...config.pageRouting.get(config.pageType.addGeneralPartnerPerson as PageType),
+            forename: "***!!!@@@£££%%%^^^***((()))___+++[]{}|;:',.<>?/~`",
+            surname: "SURNAME",
+            former_names: "",
+            previous_name: "false",
+            "date_of_birth-day": "01",
+            "date_of_birth-month": "11",
+            "date_of_birth-year": "1987",
+            nationality1: "Mongolian",
+            nationality2: "Uzbek",
+            not_disqualified_statement_checked: "true"
+          });
 
         expect(res.status).toBe(200);
-        expect(res.text).toContain("INVALID-CHARACTERS-FORENAME");
+
+        expect(res.text).toContain(toEscapedHtml("***!!!@@@£££%%%^^^***((()))___+++[]{}|;:',.<>?/~`"));
         expect(res.text).toContain("SURNAME");
         expect(res.text).toContain('id="previous_name-2" name="previous_name" type="radio" value="false" checked');
         expect(res.text).toContain('<option value="Mongolian" selected>Mongolian</option>');
@@ -404,19 +395,21 @@ export const runAddGeneralPartnerPersonTests = (config: AddGeneralPartnerPersonT
       it.each(["", "   ", undefined])(
         "should show error message if previous names is Yes but no previous name entered",
         async (formerNames: string | undefined) => {
-          const res = await request(app).post(getUrl(config.url)).send({
-            pageType: config.pageType.addGeneralPartnerPerson,
-            forename: "forename",
-            surname: "SURNAME",
-            former_names: formerNames,
-            previous_name: "true",
-            "date_of_birth-day": "01",
-            "date_of_birth-month": "11",
-            "date_of_birth-year": "1987",
-            nationality1: "Mongolian",
-            nationality2: "Uzbek",
-            not_disqualified_statement_checked: "true"
-          });
+          const res = await request(app)
+            .post(getUrl(config.url))
+            .send({
+              ...config.pageRouting.get(config.pageType.addGeneralPartnerPerson as PageType),
+              forename: "forename",
+              surname: "SURNAME",
+              former_names: formerNames,
+              previous_name: "true",
+              "date_of_birth-day": "01",
+              "date_of_birth-month": "11",
+              "date_of_birth-year": "1987",
+              nationality1: "Mongolian",
+              nationality2: "Uzbek",
+              not_disqualified_statement_checked: "true"
+            });
 
           expect(res.status).toBe(200);
           expect(res.text).toContain('id="previous_name" name="previous_name" type="radio" value="true" checked');
@@ -435,22 +428,24 @@ export const runAddGeneralPartnerPersonTests = (config: AddGeneralPartnerPersonT
 
       appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
 
-      const res = await request(app).post(getUrl(config.urlWithIds)).send({
-        pageType: config.pageType.addGeneralPartnerPerson,
-        forename: "test",
-        surname: "test",
-        previous_name: "true",
-        former_names: "bob",
-        "date_of_birth-day": "01",
-        "date_of_birth-month": "11",
-        "date_of_birth-year": "1987",
-        nationality1: "Mongolian",
-        nationality2: "Uzbek",
-        not_disqualified_statement_checked: "true",
-        "date_effective_from-day": "01",
-        "date_effective_from-month": "11",
-        "date_effective_from-year": "2024"
-      });
+      const res = await request(app)
+        .post(getUrl(config.urlWithIds))
+        .send({
+          ...config.pageRouting.get(config.pageType.addGeneralPartnerPerson as PageType),
+          forename: "test",
+          surname: "test",
+          previous_name: "true",
+          former_names: "bob",
+          "date_of_birth-day": "01",
+          "date_of_birth-month": "11",
+          "date_of_birth-year": "1987",
+          nationality1: "Mongolian",
+          nationality2: "Uzbek",
+          not_disqualified_statement_checked: "true",
+          "date_effective_from-day": "01",
+          "date_effective_from-month": "11",
+          "date_effective_from-year": "2024"
+        });
 
       expect(res.status).toBe(302);
     });
@@ -463,16 +458,12 @@ export const runAddGeneralPartnerPersonTests = (config: AddGeneralPartnerPersonT
 
       appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
 
-      const apiErrors: ApiErrors = {
-        errors: { forename: enTranslationText.errorMessages.partners.addPartner.firstNameInvalid }
-      };
-
-      appDevDependencies.generalPartnerGateway.feedErrors(apiErrors);
-
-      const res = await request(app).post(getUrl(config.urlWithIds)).send({
-        pageType: config.pageType.addGeneralPartnerPerson,
-        forename: "§§"
-      });
+      const res = await request(app)
+        .post(getUrl(config.urlWithIds))
+        .send({
+          ...config.pageRouting.get(config.pageType.addGeneralPartnerPerson as PageType),
+          forename: "§§"
+        });
 
       expect(res.status).toBe(200);
 
@@ -480,29 +471,25 @@ export const runAddGeneralPartnerPersonTests = (config: AddGeneralPartnerPersonT
     });
 
     it("should replay entered data when invalid data is entered and a validation error occurs", async () => {
-      const apiErrors: ApiErrors = {
-        errors: { forename: enTranslationText.errorMessages.partners.addPartner.firstNameInvalid }
-      };
-
-      appDevDependencies.generalPartnerGateway.feedErrors(apiErrors);
-
-      const res = await request(app).post(getUrl(config.url)).send({
-        pageType: config.pageType.addGeneralPartnerPerson,
-        forename: "INVALID-CHARACTERS-FORENAME",
-        surname: "SURNAME",
-        former_names: "FORMER-NAMES",
-        previous_name: "true",
-        "date_of_birth-day": "01",
-        "date_of_birth-month": "11",
-        "date_of_birth-year": "1987",
-        nationality1: "Mongolian",
-        nationality2: "Uzbek",
-        not_disqualified_statement_checked: "true"
-      });
+      const res = await request(app)
+        .post(getUrl(config.url))
+        .send({
+          ...config.pageRouting.get(config.pageType.addGeneralPartnerPerson as PageType),
+          forename: "***!!!@@@£££%%%^^^***((()))___+++[]{}|;:',.<>?/~`",
+          surname: "SURNAME",
+          former_names: "FORMER-NAMES",
+          previous_name: "true",
+          "date_of_birth-day": "01",
+          "date_of_birth-month": "11",
+          "date_of_birth-year": "1987",
+          nationality1: "Mongolian",
+          nationality2: "Uzbek",
+          not_disqualified_statement_checked: "true"
+        });
 
       expect(res.status).toBe(200);
 
-      expect(res.text).toContain("INVALID-CHARACTERS-FORENAME");
+      expect(res.text).toContain(toEscapedHtml("***!!!@@@£££%%%^^^***((()))___+++[]{}|;:',.<>?/~`"));
       expect(res.text).toContain("SURNAME");
       expect(res.text).toContain('id="previous_name" name="previous_name" type="radio" value="true" checked');
       expect(res.text).toContain("FORMER-NAMES");

@@ -56,7 +56,6 @@ export const runAddGeneralPartnerLegalEntityTests = (config: AddGeneralPartnerLe
       appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
       appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
-      appDevDependencies.generalPartnerGateway.feedErrors();
     });
 
     describe("Get Add General Partner Legal Entity Page", () => {
@@ -164,7 +163,7 @@ export const runAddGeneralPartnerLegalEntityTests = (config: AddGeneralPartnerLe
         const res = await request(app)
           .post(getUrl(config.urlWithIds))
           .send({
-            pageType: config.pageType.addGeneralPartnerLegalEntity,
+            ...config.pageRouting.get(config.pageType.addGeneralPartnerLegalEntity as PageType),
             ...generalPartner.data,
             "date_effective_from-day": "01",
             "date_effective_from-month": "10",

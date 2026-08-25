@@ -47,31 +47,34 @@ export const runGeneralPartnerChoiceTests = (config: GeneralPartnerChoiceTestCon
     it.each([
       ["English", "en", enTranslationText],
       ["Welsh", "cy", cyTranslationText]
-    ])("should load the general partner choice page with Welsh text", async (_description: string, lang: string, translationText: Record<string, any>) => {
-      const res = await request(app).get(`${getUrl(config.url)}?lang=${lang}`);
+    ])(
+      "should load the general partner choice page with %s text",
+      async (_description: string, lang: string, translationText: Record<string, any>) => {
+        const res = await request(app).get(`${getUrl(config.url)}?lang=${lang}`);
 
-      expect(res.status).toBe(200);
+        expect(res.status).toBe(200);
 
-      expect(res.text).toContain(
-        `${translationText.partner.generalPartnerChoicePage.title} - ${getServiceTitle(config.serviceTitleTranslationKey, translationText)} - GOV.UK`
-      );
+        expect(res.text).toContain(
+          `${translationText.partner.generalPartnerChoicePage.title} - ${getServiceTitle(config.serviceTitleTranslationKey, translationText)} - GOV.UK`
+        );
 
-      let partnershipName = limitedPartnership?.data?.partnership_name?.toUpperCase();
-      if (config.serviceTitleTranslationKey === SERVICE_NAME_KEY_TRANSITION) {
-        partnershipName = `${partnershipName} (${limitedPartnership?.data?.partnership_number?.toUpperCase()})`;
-      } else if (isPostTransition(config.serviceTitleTranslationKey)) {
-        partnershipName = `${companyProfile.data.companyName?.toUpperCase()} (${companyProfile.data.companyNumber?.toUpperCase()})`;
+        let partnershipName = limitedPartnership?.data?.partnership_name?.toUpperCase();
+        if (config.serviceTitleTranslationKey === SERVICE_NAME_KEY_TRANSITION) {
+          partnershipName = `${partnershipName} (${limitedPartnership?.data?.partnership_number?.toUpperCase()})`;
+        } else if (isPostTransition(config.serviceTitleTranslationKey)) {
+          partnershipName = `${companyProfile.data.companyName?.toUpperCase()} (${companyProfile.data.companyNumber?.toUpperCase()})`;
+        }
+
+        expect(res.text).toContain(partnershipName);
+
+        testTranslations(res.text, translationText.partner.generalPartnerChoicePage, config.translateExclude);
+
+        if (config.serviceTitleTranslationKey !== SERVICE_NAME_KEY_TRANSITION) {
+          const key = config.serviceTitleTranslationKey === SERVICE_NAME_KEY_REGISTRATION ? "registration" : "addGeneralPartner";
+          expect(res.text).toContain(customerFeedbackUrlMap[key]);
+        }
       }
-
-      expect(res.text).toContain(partnershipName);
-
-      testTranslations(res.text, translationText.partner.generalPartnerChoicePage, config.translateExclude);
-
-      if (config.serviceTitleTranslationKey !== SERVICE_NAME_KEY_TRANSITION) {
-        const key = config.serviceTitleTranslationKey === SERVICE_NAME_KEY_REGISTRATION ? "registration" : "addGeneralPartner";
-        expect(res.text).toContain(customerFeedbackUrlMap[key]);
-      }
-    });
+    );
 
     it.each([
       ["Person", "person", config.redirectUrlPerson],
