@@ -1,99 +1,20 @@
-import request from "supertest";
-
-import app from "../../../app";
-import { appDevDependencies } from "../../../../../../config/dev-dependencies";
-import { countOccurrences, getUrl, setLocalesEnabled, toEscapedHtml } from "../../../../utils";
-import { REGISTERED_OFFICE_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL, WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL } from "../../../../../controller/postTransition/url";
-import CompanyProfileBuilder from "../../../../builder/CompanyProfileBuilder";
+import {
+  REGISTERED_OFFICE_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL,
+  WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL
+} from "../../../../../controller/postTransition/url";
 import PostTransitionPageType from "../../../../../controller/postTransition/pageType";
-import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBuilder";
-import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
-import TransactionBuilder from "../../../../builder/TransactionBuilder";
 import { PartnershipKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-import { enTranslationText, cyTranslationText } from "../../../../../../test/utils/locales";
-describe("Registered office address change date page", () => {
-  const URL = getUrl(WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL);
+import { getUrl } from "../../../../utils";
+import { runDateOfUpdateTests } from "../../../shared/dateOfUpdateTestSuite";
 
-  beforeEach(() => {
-    appDevDependencies.companyGateway.setError(false);
-    appDevDependencies.cacheRepository.feedCache(null);
-
-    const companyProfile = new CompanyProfileBuilder().build();
-    appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
-
-    const transaction = new TransactionBuilder().withKind(PartnershipKind.UPDATE_PARTNERSHIP_REGISTERED_OFFICE_ADDRESS).build();
-    appDevDependencies.transactionGateway.feedTransactions([transaction]);
-  });
-
-  describe("GET registered office address change date page", () => {
-    it("should load registered office address change date page with english text", async () => {
-      setLocalesEnabled(true);
-      const res = await request(app).get(URL + "?lang=en");
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(`${enTranslationText.dateOfUpdate.registeredOfficeAddress.title}`);
-      expect(res.text).not.toContain("WELSH -");
-      expect(countOccurrences(res.text, toEscapedHtml(enTranslationText.serviceName.updateLimitedPartnershipRegisteredOfficeAddress))).toBe(2);
-    });
-
-    it("should load registered office address change date page with welsh text", async () => {
-      setLocalesEnabled(true);
-      const res = await request(app).get(URL + "?lang=cy");
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(`${cyTranslationText.dateOfUpdate.registeredOfficeAddress.title}`);
-      expect(res.text).toContain("WELSH -");
-      expect(countOccurrences(res.text, toEscapedHtml(cyTranslationText.serviceName.updateLimitedPartnershipRegisteredOfficeAddress))).toBe(2);
-    });
-
-    it("should populate the date fields with the existing date of update if it exists", async () => {
-      const limitedPartnership = new LimitedPartnershipBuilder().withDateOfUpdate("2024-10-10").build();
-
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
-      const res = await request(app).get(URL);
-
-      expect(res.status).toBe(200);
-      expect(res.text).toMatch(/<input[^>]*name="date_of_update-year"[^>]*value="2024"[^>]*>/);
-      expect(res.text).toMatch(/<input[^>]*name="date_of_update-month"[^>]*value="10"[^>]*>/);
-      expect(res.text).toMatch(/<input[^>]*name="date_of_update-day"[^>]*value="10"[^>]*>/);
-    });
-  });
-
-  describe("POST registered office address change date page", () => {
-    it("should navigate to next page with date of update", async () => {
-      const limitedPartnership = new LimitedPartnershipBuilder().withDateOfUpdate("2024-10-10").build();
-
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
-      const res = await request(app).post(URL).send({
-        pageType: PostTransitionPageType.whenDidTheRegisteredOfficeAddressChange
-      });
-
-      const redirectUrl = getUrl(REGISTERED_OFFICE_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL);
-      expect(res.status).toBe(302);
-      expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
-    });
-  });
-
-  it("should display the specifc error message rather than the original when the date is before the incorporation date", async () => {
-    const limitedPartnership = new LimitedPartnershipBuilder().withDateOfUpdate("2024-10-10").build();
-
-    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
-    const originalErrorMessage = "Default";
-    const expectedErrorMessage = toEscapedHtml(enTranslationText.errorMessages.dateOfUpdate.registeredOfficeAddress);
-    const apiErrors: ApiErrors = {
-      errors: { date_of_update: originalErrorMessage }
-    };
-    appDevDependencies.limitedPartnershipGateway.feedErrors(apiErrors);
-
-    const res = await request(app).post(URL).send({
-      pageType: PostTransitionPageType.whenDidTheRegisteredOfficeAddressChange
-    });
-
-    expect(res.status).toBe(200);
-    expect(res.text).not.toContain(originalErrorMessage);
-    expect(res.text).toContain(expectedErrorMessage);
-  });
+runDateOfUpdateTests({
+  url: getUrl(WHEN_DID_THE_REGISTERED_OFFICE_ADDRESS_CHANGE_URL),
+  pageType: PostTransitionPageType.whenDidTheRegisteredOfficeAddressChange,
+  redirectUrl: getUrl(REGISTERED_OFFICE_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL),
+  translateExclude: ["principalPlaceOfBusinessAddress", "term", "partnershipName", "generalPartner", "limitedPartner"],
+  serviceNameTranslationKey: "updateLimitedPartnershipRegisteredOfficeAddress",
+  partnershipKind: PartnershipKind.UPDATE_PARTNERSHIP_REGISTERED_OFFICE_ADDRESS,
+  dateFieldType: "registeredOfficeAddress",
+  getPartnershipDisplay: (lp) =>
+    `${lp?.data?.partnership_name?.toUpperCase()} ${lp?.data?.name_ending?.toUpperCase()} (${lp?.data?.partnership_number})`
 });

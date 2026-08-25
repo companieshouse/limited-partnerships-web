@@ -1,103 +1,20 @@
-import request from "supertest";
-
-import app from "../../../app";
-import { countOccurrences, getUrl, setLocalesEnabled, toEscapedHtml } from "../../../../utils";
-import { appDevDependencies } from "../../../../../../config/dev-dependencies";
-import LimitedPartnershipBuilder from "../../../../builder/LimitedPartnershipBuilder";
-import PostTransitionPageType from "../../../../../controller/postTransition/pageType";
 import {
-  PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL,
-  WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_URL
+  WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_URL,
+  PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL
 } from "../../../../../controller/postTransition/url";
-import { ApiErrors } from "../../../../../../domain/entities/UIErrors";
-import TransactionBuilder from "../../../../builder/TransactionBuilder";
+import PostTransitionPageType from "../../../../../controller/postTransition/pageType";
 import { PartnershipKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-import { enTranslationText, cyTranslationText } from "../../../../../../test/utils/locales";
-describe("Partnership principal place of business address change date page", () => {
-  const URL = getUrl(WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_URL);
+import { getUrl } from "../../../../utils";
+import { runDateOfUpdateTests } from "../../../shared/dateOfUpdateTestSuite";
 
-  beforeEach(() => {
-    const transaction = new TransactionBuilder().withKind(PartnershipKind.UPDATE_PARTNERSHIP_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS).build();
-    appDevDependencies.transactionGateway.feedTransactions([transaction]);
-
-    const limitedPartnership = new LimitedPartnershipBuilder().withDateOfUpdate("2024-10-10").build();
-    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-    appDevDependencies.limitedPartnershipGateway.feedErrors([]);
-  });
-
-  describe("GET principal place of business address change date page", () => {
-    it("should load principal place of business address change date page with english text", async () => {
-      setLocalesEnabled(true);
-      const res = await request(app).get(URL + "?lang=en");
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(`${enTranslationText.dateOfUpdate.principalPlaceOfBusinessAddress.title}`);
-      expect(res.text).not.toContain("WELSH -");
-      expect(countOccurrences(res.text, toEscapedHtml(enTranslationText.serviceName.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress))).toBe(2);
-    });
-
-    it("should load principal place of business address change date page with welsh text", async () => {
-      setLocalesEnabled(true);
-      const res = await request(app).get(URL + "?lang=cy");
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(`${cyTranslationText.dateOfUpdate.principalPlaceOfBusinessAddress.title}`);
-      expect(res.text).toContain("WELSH -");
-      expect(countOccurrences(res.text, toEscapedHtml(cyTranslationText.serviceName.updateLimitedPartnershipPrincipalPlaceOfBusinessAddress))).toBe(2);
-    });
-
-    it("should populate the date fields with the existing date of update if it exists", async () => {
-
-      const res = await request(app).get(URL);
-
-      expect(res.status).toBe(200);
-      expect(res.text).toMatch(/<input[^>]*name="date_of_update-year"[^>]*value="2024"[^>]*>/);
-      expect(res.text).toMatch(/<input[^>]*name="date_of_update-month"[^>]*value="10"[^>]*>/);
-      expect(res.text).toMatch(/<input[^>]*name="date_of_update-day"[^>]*value="10"[^>]*>/);
-    });
-  });
-
-  describe("POST principal place of business address change date page", () => {
-    it("should navigate to next page with date of update", async () => {
-      const res = await request(app).post(URL).send({
-        pageType: PostTransitionPageType.whenDidThePrincipalPlaceOfBusinessAddressChange
-      });
-
-      const redirectUrl = getUrl(PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL);
-      expect(res.status).toBe(302);
-      expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
-    });
-
-    it("should display the specifc error message rather than the original when the date is before the incorporation date", async () => {
-      const originalErrorMessage = "Default";
-      const expectedErrorMessage = toEscapedHtml(enTranslationText.errorMessages.dateOfUpdate.principalPlaceOfBusinessAddress);
-
-      const apiErrors: ApiErrors = {
-        errors: { date_of_update: originalErrorMessage }
-      };
-      appDevDependencies.limitedPartnershipGateway.feedErrors(apiErrors);
-
-      const res = await request(app).post(URL).send({
-        pageType: PostTransitionPageType.whenDidThePrincipalPlaceOfBusinessAddressChange
-      });
-
-      expect(res.status).toBe(200);
-      expect(res.text).not.toContain(originalErrorMessage);
-      expect(res.text).toContain(expectedErrorMessage);
-    });
-
-    it("should not show validation error when submitting todays date", async () => {
-      const today = new Date();
-      const res = await request(app).post(URL).send({
-        pageType: PostTransitionPageType.whenDidThePrincipalPlaceOfBusinessAddressChange,
-        "date_of_update-day": today.getDate().toString(),
-        "date_of_update-month": (today.getMonth() + 1).toString(),
-        "date_of_update-year": today.getFullYear().toString()
-      });
-
-      const redirectUrl = getUrl(PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL);
-      expect(res.status).toBe(302);
-      expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
-    });
-  });
+runDateOfUpdateTests({
+  url: getUrl(WHEN_DID_THE_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_URL),
+  pageType: PostTransitionPageType.whenDidThePrincipalPlaceOfBusinessAddressChange,
+  redirectUrl: getUrl(PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS_CHANGE_CHECK_YOUR_ANSWERS_URL),
+  translateExclude: ["registeredOfficeAddress", "term", "partnershipName", "generalPartner", "limitedPartner"],
+  serviceNameTranslationKey: "updateLimitedPartnershipPrincipalPlaceOfBusinessAddress",
+  partnershipKind: PartnershipKind.UPDATE_PARTNERSHIP_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS,
+  dateFieldType: "principalPlaceOfBusinessAddress",
+  getPartnershipDisplay: (lp) =>
+    `${lp?.data?.partnership_name?.toUpperCase()} ${lp?.data?.name_ending?.toUpperCase()} (${lp?.data?.partnership_number})`
 });

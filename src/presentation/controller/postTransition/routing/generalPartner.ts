@@ -64,7 +64,8 @@ const postTransitionRoutingRemoveGeneralPartnerPerson = {
   pageType: PostTransitionPageType.whenDidTheGeneralPartnerPersonCease,
   data: {
     titleKey: REMOVE_GENERAL_PARTNER_KEY,
-    serviceName: "removeGeneralPartnerPerson"
+    serviceName: "removeGeneralPartnerPerson",
+    partnerEntityType: PartnerEntityType.person
   }
 };
 
@@ -85,7 +86,8 @@ const postTransitionRoutingRemoveGeneralPartnerLegalEntity = {
   pageType: PostTransitionPageType.whenDidTheGeneralPartnerLegalEntityCease,
   data: {
     titleKey: REMOVE_GENERAL_PARTNER_KEY,
-    serviceName: "removeGeneralPartnerEntity"
+    serviceName: "removeGeneralPartnerEntity",
+    partnerEntityType: PartnerEntityType.legalEntity
   }
 };
 
@@ -112,7 +114,8 @@ const postTransitionRoutingUpdateGeneralPartnerPerson = {
   nextUrl: url.UPDATE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
   pageType: PostTransitionPageType.updateGeneralPartnerPerson,
   data: {
-    serviceName: "updateGeneralPartnerPerson"
+    serviceName: "updateGeneralPartnerPerson",
+    partnerEntityType: PartnerEntityType.person
   }
 };
 
@@ -150,7 +153,8 @@ const postTransitionRoutingWhenDidGeneralPartnerPersonChange = {
   nextUrl: url.UPDATE_GENERAL_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL,
   pageType: PostTransitionPageType.whenDidGeneralPartnerPersonDetailsChange,
   data: {
-    titleKey: GENERAL_PARTNER
+    titleKey: GENERAL_PARTNER,
+    partnerEntityType: PartnerEntityType.person
   }
 };
 
@@ -174,7 +178,8 @@ const postTransitionRoutingUpdateGeneralPartnerLegalEntity = {
   nextUrl: url.UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL,
   pageType: PostTransitionPageType.updateGeneralPartnerLegalEntity,
   data: {
-    serviceName: "updateGeneralPartnerLegalEntity"
+    serviceName: "updateGeneralPartnerLegalEntity",
+    partnerEntityType: PartnerEntityType.legalEntity
   }
 };
 
@@ -198,7 +203,8 @@ const postTransitionRoutingWhenDidGeneralPartnerLegalEntityChange = {
   nextUrl: url.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_URL,
   pageType: PostTransitionPageType.whenDidGeneralPartnerLegalEntityDetailsChange,
   data: {
-    titleKey: GENERAL_PARTNER
+    titleKey: GENERAL_PARTNER,
+    partnerEntityType: PartnerEntityType.legalEntity
   }
 };
 

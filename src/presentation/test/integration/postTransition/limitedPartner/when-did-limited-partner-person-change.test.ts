@@ -97,18 +97,37 @@ describe("Limited partner person change date page", () => {
 
   describe("POST limited partner change date page", () => {
     it("should navigate to next page with date of update", async () => {
+      const today = new Date();
+      const day = today.getDate().toString().padStart(2, "0");
+      const month = (today.getMonth() + 1).toString().padStart(2, "0");
+      const year = today.getFullYear().toString();
+
       const res = await request(app).post(URL).send({
         pageType: PostTransitionPageType.whenDidLimitedPartnerPersonDetailsChange,
-        "date_of_update-day": "10",
-        "date_of_update-month": "10",
-        "date_of_update-year": "2024"
+        "date_of_update-day": day,
+        "date_of_update-month": month,
+        "date_of_update-year": year
       });
 
       const REDIRECT_URL = getUrl(UPDATE_LIMITED_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL);
 
       expect(res.status).toBe(302);
-      expect(limitedPartner.data?.date_of_update).toBe("2024-10-10");
+      expect(limitedPartner.data?.date_of_update).toBe(`${year}-${month}-${day}`);
       expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
+    });
+
+    it("should display error message when date of update is before the incorporation date", async () => {
+      const res = await request(app).post(URL).send({
+        pageType: PostTransitionPageType.whenDidLimitedPartnerPersonDetailsChange,
+        "date_of_update-day": "10",
+        "date_of_update-month": "01",
+        "date_of_update-year": "2022"
+      });
+
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(
+        toEscapedHtml(enTranslationText.errorMessages.dateOfUpdate.beforeRegistrationDate.limitedPartner)
+      );
     });
 
     it("should display the specifc error message rather than the original when the date is before the incorporation date", async () => {
@@ -120,10 +139,11 @@ describe("Limited partner person change date page", () => {
 
       appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
 
-      const originalErrorMessage = "Default";
-      const expectedErrorMessage = toEscapedHtml(enTranslationText.errorMessages.dateOfUpdate.limitedPartner);
+      const expectedErrorMessage = toEscapedHtml(
+        enTranslationText.errorMessages.dateOfUpdate.beforeRegistrationDate.limitedPartner
+      );
       const apiErrors: ApiErrors = {
-        errors: { date_of_update: originalErrorMessage }
+        errors: { date_of_update: expectedErrorMessage }
       };
       appDevDependencies.limitedPartnerGateway.feedErrors(apiErrors);
 
@@ -135,7 +155,6 @@ describe("Limited partner person change date page", () => {
       });
 
       expect(res.status).toBe(200);
-      expect(res.text).not.toContain(originalErrorMessage);
       expect(res.text).toContain(expectedErrorMessage);
       expect(res.text).toContain("10");
       expect(res.text).toContain("01");

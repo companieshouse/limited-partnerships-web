@@ -62,7 +62,7 @@ export function runDateOfUpdateTests(config: DateOfUpdateTestConfig): void {
         } else {
           expect(res.text).not.toContain("WELSH -");
         }
-        expect(countOccurrences(res.text, translationText.serviceName[serviceNameTranslationKey])).toBe(2);
+        expect(countOccurrences(res.text, toEscapedHtml(translationText.serviceName[serviceNameTranslationKey]))).toBe(2);
 
         const limitedPartnership = new LimitedPartnershipBuilder().build();
         expect(res.text).toContain(getPartnershipDisplay(limitedPartnership));
@@ -109,6 +109,21 @@ export function runDateOfUpdateTests(config: DateOfUpdateTestConfig): void {
 
         expect(res.status).toBe(302);
         expect(res.text).toContain(`Redirecting to ${redirectUrl}`);
+      });
+
+      it("should display error messages in welsh when the language is set to Welsh", async () => {
+        setLocalesEnabled(true);
+        const res = await request(app)
+          .post(url + "?lang=cy")
+          .send({
+            pageType,
+            "date_of_update-day": "",
+            "date_of_update-month": "",
+            "date_of_update-year": ""
+          });
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(toEscapedHtml(cyTranslationText.errorMessages.dateOfUpdate.missing[dateFieldType]));
       });
 
       it.each([
@@ -195,6 +210,13 @@ export function runDateOfUpdateTests(config: DateOfUpdateTestConfig): void {
           month: "02",
           year: "202",
           getExpectedError: enTranslationText.errorMessages.dateOfUpdate.yearInvalidLength
+        },
+        {
+          description: "a field is both too long and non-numeric",
+          day: "aaa",
+          month: "02",
+          year: "2023",
+          getExpectedError: enTranslationText.errorMessages.dateOfUpdate.dayInvalidLength
         },
         {
           description: "day contains non-numeric characters",

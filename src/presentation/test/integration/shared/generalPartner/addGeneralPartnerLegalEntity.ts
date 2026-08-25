@@ -3,7 +3,6 @@ import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/compa
 
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 import { countOccurrences, getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
 
 import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
@@ -17,6 +16,8 @@ import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feed
 
 import { getServiceTitle, isPostTransition } from "./utils";
 import { SERVICE_NAME_KEY_TRANSITION } from "../../../../../config/constants";
+import { PagesRouting } from "../../../../controller/PageRouting";
+import PageType from "../../../../controller/PageType";
 
 type AddGeneralPartnerLegalEntityTestConfig = {
   url: string;
@@ -26,6 +27,7 @@ type AddGeneralPartnerLegalEntityTestConfig = {
     reviewGeneralPartners: string;
     generalPartnerType: string;
   };
+  pageRouting: PagesRouting;
   redirectUrl: string;
   confirmRedirectUrl: string;
   baseUrlWithIds: string;
@@ -120,10 +122,22 @@ export const runAddGeneralPartnerLegalEntityTests = (config: AddGeneralPartnerLe
 
     describe("Post Add General Partner Legal Entity", () => {
       it("should send the general partner legal entity details", async () => {
-        const res = await request(app).post(getUrl(config.url)).send({
-          pageType: config.pageType.addGeneralPartnerLegalEntity,
-          legal_entity_name: "test"
-        });
+        const generalPartner = new GeneralPartnerBuilder().isLegalEntity().build();
+
+        const today = new Date();
+        const day = today.getDate().toString().padStart(2, "0");
+        const month = (today.getMonth() + 1).toString().padStart(2, "0");
+        const year = today.getFullYear().toString();
+
+        const res = await request(app)
+          .post(getUrl(config.url))
+          .send({
+            ...config.pageRouting.get(config.pageType.addGeneralPartnerLegalEntity as PageType),
+            ...generalPartner.data,
+            "date_effective_from-day": day,
+            "date_effective_from-month": month,
+            "date_effective_from-year": year
+          });
 
         expect(res.status).toBe(302);
         expect(res.text).toContain(`Redirecting to ${getUrl(config.redirectUrl)}`);
@@ -139,22 +153,6 @@ export const runAddGeneralPartnerLegalEntityTests = (config: AddGeneralPartnerLe
         }
       });
 
-      it("should return a validation error when invalid data is entered", async () => {
-        const apiErrors: ApiErrors = {
-          errors: { legal_entity_name: "Legal entity name is invalid" }
-        };
-
-        appDevDependencies.generalPartnerGateway.feedErrors(apiErrors);
-
-        const res = await request(app).post(getUrl(config.url)).send({
-          pageType: config.pageType.addGeneralPartnerLegalEntity,
-          legal_entity_name: "INVALID-CHARACTERS"
-        });
-
-        expect(res.status).toBe(200);
-        expect(res.text).toContain("Legal entity name is invalid");
-      });
-
       it("should send the general partner details and go to confirm ura address page if already saved", async () => {
         const generalPartner = new GeneralPartnerBuilder()
           .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
@@ -167,7 +165,10 @@ export const runAddGeneralPartnerLegalEntityTests = (config: AddGeneralPartnerLe
           .post(getUrl(config.urlWithIds))
           .send({
             pageType: config.pageType.addGeneralPartnerLegalEntity,
-            ...generalPartner.data
+            ...generalPartner.data,
+            "date_effective_from-day": "01",
+            "date_effective_from-month": "10",
+            "date_effective_from-year": "2024"
           });
 
         expect(res.status).toBe(302);

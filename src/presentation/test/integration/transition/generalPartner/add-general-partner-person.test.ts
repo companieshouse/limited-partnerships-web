@@ -8,6 +8,7 @@ import {
 import { SERVICE_NAME_KEY_TRANSITION, TRANSITION_WITH_IDS_URL } from "../../../../../config/constants";
 
 import TransitionPageType from "../../../../controller/transition/PageType";
+import TransitionRouting from "../../../../../presentation/controller/transition/Routing";
 
 import { runAddGeneralPartnerPersonTests } from "../../shared/generalPartner/addGeneralPartnerPerson";
 
@@ -23,6 +24,7 @@ runAddGeneralPartnerPersonTests({
     reviewGeneralPartners: TransitionPageType.reviewGeneralPartners,
     generalPartnerType: TransitionPageType.generalPartnerType
   },
+  pageRouting: TransitionRouting,
   redirectUrl: TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   confirmRedirectUrl: CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   baseUrlWithIds: TRANSITION_WITH_IDS_URL,

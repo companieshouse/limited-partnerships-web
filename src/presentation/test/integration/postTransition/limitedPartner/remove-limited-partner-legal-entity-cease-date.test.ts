@@ -17,6 +17,8 @@ import LimitedPartnerBuilder from "../../../../../presentation/test/builder/Limi
 import { OFFICER_ROLE_LIMITED_PARTNER_LEGAL_ENTITY, YOUR_COMPANY_OFFICERS_URL } from "../../../../../config";
 import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
+import PostTransitionRouting from "../../../../controller/postTransition/routing";
+
 describe("Limited Partner LegalEntity cease date page", () => {
   const URL = getUrl(WHEN_DID_THE_LIMITED_PARTNER_LEGAL_ENTITY_CEASE_URL);
   const URL_WITH_IDS = getUrl(WHEN_DID_THE_LIMITED_PARTNER_LEGAL_ENTITY_CEASE_WITH_IDS_URL);
@@ -66,7 +68,6 @@ describe("Limited Partner LegalEntity cease date page", () => {
     it("should send the limited partner legal entity details", async () => {
       const res = await request(app).post(URL).send({
         pageType: PostTransitionPageType.whenDidTheLimitedPartnerLegalEntityCease,
-
         "cease_date-day": "01",
         "cease_date-month": "01",
         "cease_date-year": "2025",
@@ -88,42 +89,44 @@ describe("Limited Partner LegalEntity cease date page", () => {
     });
 
     it.each([
-      ["without ids", false, URL ],
-      ["with ids", true, URL_WITH_IDS ]
-    ])("should replay entered data when invalid cease date is entered and a validation error occurs %s", async (description: string, isWithIds: boolean, url: string) => {
-      const errorMessage = "The date is not valid";
+      ["without ids", false, URL],
+      ["with ids", true, URL_WITH_IDS]
+    ])(
+      "should replay entered data when invalid cease date is entered and a validation error occurs %s",
+      async (description: string, isWithIds: boolean, url: string) => {
+        let limitedPartner;
+        if (isWithIds) {
+          limitedPartner = new LimitedPartnerBuilder()
+            .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
+            .isLegalEntity()
+            .build();
 
-      let limitedPartner;
-      if (isWithIds) {
-        limitedPartner = new LimitedPartnerBuilder()
-          .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-          .isLegalEntity()
-          .build();
+          appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
+        }
 
-        appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
+        const res = await request(app)
+          .post(url)
+          .send({
+            ...PostTransitionRouting?.get(PostTransitionPageType?.whenDidTheLimitedPartnerLegalEntityCease),
+            "cease_date-day": "DAY_41",
+            "cease_date-month": "MONTH_01",
+            "cease_date-year": "YEAR_2025",
+            remove_confirmation_checked: true
+          });
+
+        expect(res.status).toBe(200);
+        expect(res.text).toContain("DAY_41");
+        expect(res.text).toContain("MONTH_01");
+        expect(res.text).toContain("YEAR_2025");
+        if (isWithIds) {
+          expect(res.text).toContain(limitedPartner.data?.legal_entity_name);
+        } else {
+          expect(res.text).toContain(companyAppointment.name);
+        }
+        expect(res.text).toContain(enTranslationText.errorMessages.ceaseDate.dayInvalidLength);
+
+        expect(res.text).toContain('name="remove_confirmation_checked" type="checkbox" value="true" checked');
       }
-
-      const res = await request(app).post(url).send({
-        pageType: PostTransitionPageType.whenDidTheLimitedPartnerLegalEntityCease,
-        "cease_date-day": "DAY_41",
-        "cease_date-month": "MONTH_01",
-        "cease_date-year": "YEAR_2025",
-        remove_confirmation_checked: true
-      });
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain("DAY_41");
-      expect(res.text).toContain("MONTH_01");
-      expect(res.text).toContain("YEAR_2025");
-      if (isWithIds) {
-        expect(res.text).toContain(limitedPartner.data?.legal_entity_name);
-      } else {
-        expect(res.text).toContain(companyAppointment.name);
-      }
-      expect(res.text).toContain(errorMessage);
-
-      expect(res.text).toContain('name="remove_confirmation_checked" type="checkbox" value="true" checked');
-
-    });
+    );
   });
 });

@@ -11,6 +11,7 @@ import {
 import { SERVICE_NAME_KEY_TRANSITION, TRANSITION_WITH_IDS_URL } from "../../../../../config/constants";
 
 import TransitionPageType from "../../../../controller/transition/PageType";
+import TransitionRouting from "../../../../controller/transition/Routing";
 
 import { runAddGeneralPartnerLegalEntityTests } from "../../shared/generalPartner/addGeneralPartnerLegalEntity";
 
@@ -26,6 +27,7 @@ runAddGeneralPartnerLegalEntityTests({
     reviewGeneralPartners: TransitionPageType.reviewGeneralPartners,
     generalPartnerType: TransitionPageType.generalPartnerType
   },
+  pageRouting: TransitionRouting,
   redirectUrl: TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   confirmRedirectUrl: CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   baseUrlWithIds: TRANSITION_WITH_IDS_URL,

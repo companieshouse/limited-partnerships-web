@@ -11,6 +11,7 @@ import {
 import { REGISTRATION_WITH_IDS_URL, SERVICE_NAME_KEY_REGISTRATION } from "../../../../../config/constants";
 
 import RegistrationPageType from "../../../../controller/registration/PageType";
+import RegistrationRouting from "../../../../controller/registration/Routing";
 
 import { runAddGeneralPartnerLegalEntityTests } from "../../shared/generalPartner/addGeneralPartnerLegalEntity";
 
@@ -26,6 +27,7 @@ runAddGeneralPartnerLegalEntityTests({
     reviewGeneralPartners: RegistrationPageType.reviewGeneralPartners,
     generalPartnerType: RegistrationPageType.generalPartnerType
   },
+  pageRouting: RegistrationRouting,
   redirectUrl: TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   confirmRedirectUrl: CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   baseUrlWithIds: REGISTRATION_WITH_IDS_URL,

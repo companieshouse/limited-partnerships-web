@@ -18,7 +18,8 @@ import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feed
 import TransactionBuilder from "../../../builder/TransactionBuilder";
 import { YOUR_COMPANY_URL } from "../../../../../config";
 import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
-describe("Email Page", () => {
+
+describe("Term Page", () => {
   const URL = getUrl(TERM_URL);
   const REDIRECT_URL = getUrl(WHEN_DID_THE_TERM_CHANGE_URL);
   const BACK_LINK = getUrl(YOUR_COMPANY_URL);
@@ -92,7 +93,6 @@ describe("Email Page", () => {
 
     describe("should render the error page", () => {
       it(`should render to error page if ${PartnershipType.PFLP}`, async () => {
-
         companyProfile.data.subtype = "private-fund-limited-partnership";
 
         appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
@@ -161,7 +161,9 @@ describe("Email Page", () => {
 
         expect(res.status).toBe(302);
         expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
-        expect(appDevDependencies.transactionGateway.transactions[0].description).toEqual(enTranslationText.serviceName.updateLimitedPartnershipTerm);
+        expect(appDevDependencies.transactionGateway.transactions[0].description).toEqual(
+          enTranslationText.serviceName.updateLimitedPartnershipTerm
+        );
 
         expect(appDevDependencies.limitedPartnershipGateway.limitedPartnerships?.[0]?.data?.partnership_type).toEqual(
           partnershipType
@@ -209,7 +211,7 @@ describe("Email Page", () => {
         });
 
         expect(res.status).toBe(200);
-        expect(res.text).toContain("Term must be valid");
+        expect(res.text).toContain(enTranslationText.errorMessages.limitedPartnership.term.termRequired);
       });
     });
   });

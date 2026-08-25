@@ -14,7 +14,7 @@ import CompanyAppointmentBuilder from "../../../builder/CompanyAppointmentBuilde
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import LimitedPartnerBuilder from "../../../../../presentation/test/builder/LimitedPartnerBuilder";
 import PostTransitionPageType from "../../../../../presentation/controller/postTransition/pageType";
-import { ApiErrors } from "../../../../../domain/entities/UIErrors";
+
 import { OFFICER_ROLE_LIMITED_PARTNER_PERSON, YOUR_COMPANY_OFFICERS_URL } from "../../../../../config";
 import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
@@ -107,7 +107,7 @@ describe("Update Limited Partner Person Page", () => {
   describe("POST update limited partner person page", () => {
     it.each([
       ["with appointment id", URL],
-      ["with limited partner id", URL_WITH_IDS],
+      ["with limited partner id", URL_WITH_IDS]
     ])("should send the limited partner person details to API %s", async (description: string, url: string) => {
       expect(appDevDependencies.limitedPartnerGateway.limitedPartners).toHaveLength(0);
 
@@ -121,17 +121,19 @@ describe("Update Limited Partner Person Page", () => {
           .withKind(PartnerKind.UPDATE_LIMITED_PARTNER_PERSON)
           .build();
 
-        appDevDependencies.limitedPartnerGateway.feedLimitedPartners([
-          limitedPartner,
-        ]);
+        appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
       }
 
       const res = await request(app).post(url).send({
         pageType: PostTransitionPageType.updateLimitedPartnerPerson,
-        "forename": "John",
-        "surname": "Doe",
-        "nationality1": "British",
-        "nationality2": "Irish"
+        forename: "John",
+        surname: "Doe",
+        nationality1: "British",
+        nationality2: "Irish",
+        "date_of_birth-day": "01",
+        "date_of_birth-month": "01",
+        "date_of_birth-year": "1987",
+        previous_name: "false"
       });
 
       expect(res.status).toBe(302);
@@ -146,28 +148,5 @@ describe("Update Limited Partner Person Page", () => {
       expect(appDevDependencies.limitedPartnerGateway.limitedPartners[0].data?.nationality1).toEqual("British");
       expect(appDevDependencies.limitedPartnerGateway.limitedPartners[0].data?.nationality2).toEqual("Irish");
     });
-
-    it("should replay entered data when a validation error occurs", async () => {
-      const apiErrors: ApiErrors = {
-        errors: { forename: "forename is invalid" }
-      };
-      appDevDependencies.limitedPartnerGateway.feedErrors(apiErrors);
-
-      const res = await request(app).post(URL).send({
-        pageType: PostTransitionPageType.updateLimitedPartnerPerson,
-        "forename": "INVALID-FORENAME",
-        "surname": "Doe",
-        "nationality1": "British",
-        "nationality2": "Irish"
-      });
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain("forename is invalid");
-      expect(res.text).toContain("INVALID-FORENAME");
-      expect(res.text).toContain("Doe");
-      expect(res.text).toContain('<option value="British" selected>British</option>');
-      expect(res.text).toContain('<option value="Irish" selected>Irish</option>');
-    });
   });
-
 });

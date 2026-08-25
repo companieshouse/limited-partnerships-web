@@ -1,28 +1,8 @@
 import UIErrors from "../../domain/entities/UIErrors";
-import { isValidDateStringAndNotInFuture } from "../../domain/validator/DateValidators";
 
-export const convertValidDateToIsoDateString = (
-  date: { day: string; month: string; year: string },
-  fieldName: string
-): string => {
-  const dateStr = convertDateToIsoDateString(date.day.trim(), date.month.trim(), date.year.trim());
-
-  if (!isValidDateStringAndNotInFuture(dateStr)) {
-    const uiErrors = new UIErrors();
-    uiErrors.formatValidationErrorToUiErrors({
-      errors: {
-        [fieldName]: "The date is not valid"
-      }
-    });
-
-    throw uiErrors;
-  }
-
-  return dateStr;
-};
-
-const convertDateToIsoDateString = (day: string, month: string, year: string): string => {
-  return `${year}-${zeroPadNumber(month)}-${zeroPadNumber(day)}`;
+export const convertValidDateToIsoDateString = (data: { day: string; month: string; year: string }): string => {
+  const { day, month, year } = data;
+  return `${year.trim()}-${zeroPadNumber(month.trim())}-${zeroPadNumber(day.trim())}`;
 };
 
 const zeroPadNumber = (input: string = ""): string => {
@@ -55,53 +35,41 @@ export const removeEmptyStringValues = (data: Record<string, any>, exclude: stri
 export const validateAndFormatPersonDateOfBirth = (data: Record<string, any>) => {
   if (data["forename"] && data["date_of_birth-day"]) {
     // Only do this if Limited Partner Person data is being sent to the API
-    data["date_of_birth"] = convertValidDateToIsoDateString(
-      {
-        day: data["date_of_birth-day"],
-        month: data["date_of_birth-month"],
-        year: data["date_of_birth-year"]
-      },
-      "date_of_birth"
-    );
+    data["date_of_birth"] = convertValidDateToIsoDateString({
+      day: data["date_of_birth-day"],
+      month: data["date_of_birth-month"],
+      year: data["date_of_birth-year"]
+    });
   }
 };
 
 export const validateAndFormatPartnerDateEffectiveFrom = (data: Record<string, any>) => {
   if (data["date_effective_from-day"]) {
-    data["date_effective_from"] = convertValidDateToIsoDateString(
-      {
-        day: data["date_effective_from-day"],
-        month: data["date_effective_from-month"],
-        year: data["date_effective_from-year"]
-      },
-      "date_effective_from"
-    );
+    data["date_effective_from"] = convertValidDateToIsoDateString({
+      day: data["date_effective_from-day"],
+      month: data["date_effective_from-month"],
+      year: data["date_effective_from-year"]
+    });
   }
 };
 
 export const validateAndFormatPartnerDateOfUpdate = (data: Record<string, any>) => {
   if (data["date_of_update-day"]) {
-    data["date_of_update"] = convertValidDateToIsoDateString(
-      {
-        day: data["date_of_update-day"],
-        month: data["date_of_update-month"],
-        year: data["date_of_update-year"]
-      },
-      "date_of_update"
-    );
+    data["date_of_update"] = convertValidDateToIsoDateString({
+      day: data["date_of_update-day"],
+      month: data["date_of_update-month"],
+      year: data["date_of_update-year"]
+    });
   }
 };
 
 export const validateAndFormatPartnerCeaseDate = (data: Record<string, any>) => {
   if (data["cease_date-day"]) {
-    data["cease_date"] = convertValidDateToIsoDateString(
-      {
-        day: data["cease_date-day"],
-        month: data["cease_date-month"],
-        year: data["cease_date-year"]
-      },
-      "cease_date"
-    );
+    data["cease_date"] = convertValidDateToIsoDateString({
+      day: data["cease_date-day"],
+      month: data["cease_date-month"],
+      year: data["cease_date-year"]
+    });
   }
 };
 
@@ -125,7 +93,9 @@ export const validateFormerNamesNotEmptyIfPreviousNameIsTrue = (data: Record<str
 };
 
 export const snakeToNormalCase = (str: string): string => {
-  if (!str) { return str; }
+  if (!str) {
+    return str;
+  }
 
   return str.replace(/_+/g, " ").trim().toLowerCase();
 };

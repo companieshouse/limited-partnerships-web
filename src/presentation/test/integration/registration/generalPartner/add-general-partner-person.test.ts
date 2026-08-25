@@ -8,6 +8,7 @@ import {
 import { REGISTRATION_WITH_IDS_URL, SERVICE_NAME_KEY_REGISTRATION } from "../../../../../config/constants";
 
 import RegistrationPageType from "../../../../controller/registration/PageType";
+import RegistrationRouting from "../../../../../presentation/controller/registration/Routing";
 
 import { runAddGeneralPartnerPersonTests } from "../../shared/generalPartner/addGeneralPartnerPerson";
 
@@ -23,6 +24,7 @@ runAddGeneralPartnerPersonTests({
     reviewGeneralPartners: RegistrationPageType.reviewGeneralPartners,
     generalPartnerType: RegistrationPageType.generalPartnerType
   },
+  pageRouting: RegistrationRouting,
   redirectUrl: TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   confirmRedirectUrl: CONFIRM_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   baseUrlWithIds: REGISTRATION_WITH_IDS_URL,

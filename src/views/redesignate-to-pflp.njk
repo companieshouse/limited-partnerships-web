@@ -5,7 +5,6 @@
 
 
 {% block content %}
-
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
@@ -31,37 +30,48 @@
           <li> {{ i18n.partnership.redesignateToPflpPage.pflpMeanings.scheme }} </li>
         </ul>
         <p class="govuk-body"> {{ i18n.partnership.redesignateToPflpPage.information }} <a href="https://www.legislation.gov.uk/uksi/2017/514/article/2/made" target="_blank" class="govuk-link">{{ i18n.partnership.redesignateToPflpPage.informationLink }}</a>.</p>
-        <p class="govuk-body">{{ i18n.partnership.redesignateToPflpPage.cost | replace("{{ cost }}", props.data.costRedesignateToPflp) }}</p>      
-        
-        {{ govukCheckboxes({
-          id: "redesignate_to_pflp_apply", 
-          name: "redesignate_to_pflp_apply",   
-          errorMessage: {
-            text: props.errors.redesignate_to_pflp_apply.text
-          } if props.errors.redesignate_to_pflp_apply,
-          items: [
-            {
-              value: "true",
-              text: i18n.partnership.redesignateToPflpPage.applicationCheck,
-              checked: props.data.limitedPartnership.data.redesignate_to_pflp_apply
-            }
-          ]
-        }) }}
+        <p class="govuk-body">{{ i18n.partnership.redesignateToPflpPage.cost | replace("{{ cost }}", props.data.costRedesignateToPflp) }}</p>     
 
-        {{ govukCheckboxes({
-          id: "redesignate_to_pflp_confirm", 
-          name: "redesignate_to_pflp_confirm",  
-          errorMessage: {
-            text: props.errors.redesignate_to_pflp_confirm.text
-          } if props.errors.redesignate_to_pflp_confirm,
-          items: [
-            {
-              value: "true",
-              text: i18n.partnership.redesignateToPflpPage.confirmationCheck,
-              checked: props.data.limitedPartnership.data.redesignate_to_pflp_confirm
-            }
-          ]
-        }) }}
+        {% set bothError = props.errors.redesignate_to_pflp_both %}
+        {% set errorClass = "govuk-form-group govuk-form-group--error" if bothError else "govuk-form-group" %}
+      
+        <div id="redesignate_to_pflp_both" class="{{ errorClass }}">
+          {% if bothError %}
+            <p class="govuk-error-message">
+              {{ bothError.text }}
+            </p>
+          {% endif %}
+
+          {{ govukCheckboxes({
+            id: "redesignate_to_pflp_apply", 
+            name: "redesignate_to_pflp_apply",   
+            errorMessage: {
+              text: props.errors.redesignate_to_pflp_apply.text
+            } if props.errors.redesignate_to_pflp_apply,
+            items: [
+              {
+                value: "true",
+                text: i18n.partnership.redesignateToPflpPage.applicationCheck,
+                checked: props.data.limitedPartnership.data.redesignate_to_pflp_apply
+              }
+            ]
+          }) }}
+
+          {{ govukCheckboxes({
+            id: "redesignate_to_pflp_confirm", 
+            name: "redesignate_to_pflp_confirm",  
+            errorMessage: {
+              text: props.errors.redesignate_to_pflp_confirm.text
+            } if props.errors.redesignate_to_pflp_confirm,
+            items: [
+              {
+                value: "true",
+                text: i18n.partnership.redesignateToPflpPage.confirmationCheck,
+                checked: props.data.limitedPartnership.data.redesignate_to_pflp_confirm
+              }
+            ]
+          }) }}
+        </div>
   
        {{ govukButton({
           text: submitButtonText,

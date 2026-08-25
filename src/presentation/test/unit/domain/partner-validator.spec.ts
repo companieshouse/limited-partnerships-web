@@ -10,16 +10,24 @@ const mockI18n = {
         previousNameNotSelected: "Select yes if the person has used another name",
         formerNamesMissing: "Enter former names",
         nationality1Missing: "Enter nationality",
+        dateOfBirthMissing: "Enter the partner's date of birth",
         disqualificationStatementMissingGeneralPartner: "You must confirm they are not disqualified"
       }
     },
     dateOfBirth: {
+      missing: "Enter a date of birth",
       dayMissing: "Enter a day",
       monthMissing: "Enter a month",
       yearMissing: "Enter a year",
-      dateMissing: "Enter a date of birth",
+      dayAndMonthMissing: "Enter a day and a month",
+      monthAndYearMissing: "Enter a month and a year",
+      dayAndYearMissing: "Enter a day and a year",
+      dayInvalidLength: "Day must be 1 or 2 numbers",
+      monthInvalidLength: "Month must be 1 or 2 numbers",
+      yearInvalidLength: "Year must be 4 numbers",
+      invalidChars: "Date of birth must only include numbers",
       invalid: "Enter a real date of birth",
-      future: "Date of birth must be in the past"
+      notInPast: "Date of birth must be in the past"
     }
   }
 };
