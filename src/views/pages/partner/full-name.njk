@@ -8,10 +8,7 @@
     name: "forename",
     value: props.data[partner].data.forename,
     classes: "govuk-!-width-full",
-    errorMessage: props.errors.forename if props.errors,
-    attributes : {
-        required: true
-    } if not journeyTypes.isRegistration
+    errorMessage: props.errors.forename if props.errors
 }) }}
 
 {{ govukInput({
@@ -24,8 +21,5 @@
     name: "surname",
     value: props.data[partner].data.surname,
     classes: "govuk-!-width-full",
-    errorMessage: props.errors.surname if props.errors,
-    attributes : {
-        required : true
-    } if not journeyTypes.isRegistration
+    errorMessage: props.errors.surname if props.errors
 }) }}

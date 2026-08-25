@@ -5,7 +5,7 @@ import {
   TERRITORY_CHOICE_GENERAL_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
 } from "../../addressLookUp/url/transition";
-import { PartnerEntityType } from "../../../../domain/types";
+import { PartnerEntityType, PartnerType } from "../../../../domain/types";
 
 const transitionRoutingGeneralPartners = {
   previousUrl: CONFIRM_REGISTERED_OFFICE_ADDRESS_URL,
@@ -28,6 +28,7 @@ const transitionRoutingAddGeneralPartnerPerson = {
   pageType: TransitionPageType.addGeneralPartnerPerson,
   data: {
     customPreviousUrl: url.REVIEW_GENERAL_PARTNERS_URL,
+    partnerType: PartnerType.generalPartner,
     partnerEntityType: PartnerEntityType.person
   }
 };

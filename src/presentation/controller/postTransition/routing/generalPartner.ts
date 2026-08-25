@@ -10,7 +10,7 @@ import {
   ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL
 } from "../../addressLookUp/url/postTransition";
 import { YOUR_COMPANY_OFFICERS_URL } from "../../../../config";
-import { PartnerEntityType } from "../../../../domain/types";
+import { PartnerEntityType, PartnerType } from "../../../../domain/types";
 
 const postTransitionRoutingGeneralPartnerChoice = {
   previousUrl: YOUR_COMPANY_OFFICERS_URL,
@@ -40,6 +40,7 @@ const postTransitionRoutingAddGeneralPartnerPerson = {
   pageType: PostTransitionPageType.addGeneralPartnerPerson,
   data: {
     serviceName: "addGeneralPartner",
+    partnerType: PartnerType.generalPartner,
     partnerEntityType: PartnerEntityType.person
   }
 };
