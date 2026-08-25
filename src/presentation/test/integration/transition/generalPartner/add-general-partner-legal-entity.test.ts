@@ -1,181 +1,51 @@
-import request from "supertest";
-
-import app from "../../app";
-import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
-import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
-import TransitionPageType from "../../../../controller/transition/PageType";
-import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 import {
   ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
   ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_ID_URL
 } from "../../../../controller/transition/url";
+
 import {
   CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
 } from "../../../../controller/addressLookUp/url/transition";
-import { TRANSITION_WITH_IDS_URL } from "../../../../../config/constants";
 
-import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
-import TransactionLimitedPartnership from "../../../../../domain/entities/TransactionLimitedPartnership";
-import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
-describe("Add General Partner Legal Entity Page", () => {
-  const URL = getUrl(ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL);
-  const REDIRECT_URL = getUrl(TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
+import { SERVICE_NAME_KEY_TRANSITION, TRANSITION_WITH_IDS_URL } from "../../../../../config/constants";
 
-  let limitedPartnership: TransactionLimitedPartnership;
+import TransitionPageType from "../../../../controller/transition/PageType";
+import TransitionRouting from "../../../../controller/transition/Routing";
 
-  beforeEach(() => {
-    setLocalesEnabled(false);
+import { runAddGeneralPartnerLegalEntityTests } from "../../shared/generalPartner/addGeneralPartnerLegalEntity";
 
-    limitedPartnership = new LimitedPartnershipBuilder().build();
+it("should run add general partner legal entity tests for transition journey", () => {
+  expect(ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL).toContain("transition");
+});
 
-    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
-    appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
-    appDevDependencies.generalPartnerGateway.feedErrors();
-  });
-
-  describe("Get Add General Partner Legal Entity Page", () => {
-    it("should load the add general partner legal entity page with Welsh text", async () => {
-      setLocalesEnabled(true);
-      const res = await request(app).get(URL + "?lang=cy");
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(
-        `${cyTranslationText.partner.addOrUpdatePartnerLegalEntityPage.generalPartner.title} - ${cyTranslationText.serviceTransition} - GOV.UK`
-      );
-      testTranslations(res.text, cyTranslationText.partner.addOrUpdatePartnerLegalEntityPage, [
-        "updateTitle",
-        "limitedPartner",
-        "errorMessages",
-        "dateEffectiveFrom",
-        "dateHint",
-        "dateDay",
-        "dateMonth",
-        "dateYear"
-      ]);
-      testTranslations(res.text, cyTranslationText.partner.generalPartnersPage, [
-        "title",
-        "pageInformation",
-        "disqualificationStatement",
-        "disqualificationStatementLegend"
-      ]);
-    });
-
-    it("should load the add general partner legal entity page with English text", async () => {
-      setLocalesEnabled(true);
-      const res = await request(app).get(URL + "?lang=en");
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(
-        `${enTranslationText.partner.addOrUpdatePartnerLegalEntityPage.generalPartner.title} - ${enTranslationText.serviceTransition} - GOV.UK`
-      );
-      testTranslations(res.text, enTranslationText.partner.addOrUpdatePartnerLegalEntityPage, [
-        "updateTitle",
-        "limitedPartner",
-        "errorMessages",
-        "dateEffectiveFrom",
-        "dateHint",
-        "dateDay",
-        "dateMonth",
-        "dateYear"
-      ]);
-      testTranslations(res.text, enTranslationText.partner.generalPartnersPage, [
-        "title",
-        "pageInformation",
-        "disqualificationStatement",
-        "disqualificationStatementLegend"
-      ]);
-      expect(res.text).not.toContain("WELSH -");
-    });
-
-    it("should contain the proposed name - data from api", async () => {
-      const res = await request(app).get(URL);
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(
-        `${limitedPartnership?.data?.partnership_name?.toUpperCase()} (${limitedPartnership?.data?.partnership_number?.toUpperCase()})`
-      );
-    });
-
-    it("should contain a back link to the review page when general partners are present", async () => {
-      const generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isPerson()
-        .build();
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
-
-      const res = await request(app).get(getUrl(ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_ID_URL) + "?lang=en");
-
-      expect(res.status).toBe(200);
-
-      const BACK_LINK = `${getUrl(TRANSITION_WITH_IDS_URL)}/${TransitionPageType.reviewGeneralPartners}`;
-
-      const regex = new RegExp(BACK_LINK);
-      expect(res.text).toMatch(regex);
-    });
-
-    it("should contain a back link to the choice page when general partners are not present", async () => {
-      const res = await request(app).get(getUrl(ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL) + "?lang=en");
-
-      expect(res.status).toBe(200);
-
-      const BACK_LINK = `${getUrl(TRANSITION_WITH_IDS_URL)}/${TransitionPageType.generalPartnerType}`;
-
-      const regex = new RegExp(BACK_LINK);
-      expect(res.text).toMatch(regex);
-    });
-  });
-
-  describe("Post Add General Partner Legal Entity", () => {
-    it("should send the general partner legal entity details", async () => {
-      const res = await request(app).post(URL).send({
-        pageType: TransitionPageType.addGeneralPartnerLegalEntity,
-        legal_entity_name: "test"
-      });
-
-      expect(res.status).toBe(302);
-      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
-    });
-
-    it("should return a validation error when invalid data is entered", async () => {
-      const apiErrors: ApiErrors = {
-        errors: { legal_entity_name: "Legal entity name is invalid" }
-      };
-
-      appDevDependencies.generalPartnerGateway.feedErrors(apiErrors);
-
-      const res = await request(app).post(URL).send({
-        pageType: TransitionPageType.addGeneralPartnerLegalEntity,
-        legal_entity_name: "INVALID-CHARACTERS"
-      });
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain("Legal entity name is invalid");
-    });
-
-    it("should send the general partner details and go to confirm ura address page if already saved", async () => {
-      const generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isLegalEntity()
-        .build();
-
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
-
-      const URL = getUrl(ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_ID_URL);
-
-      const res = await request(app)
-        .post(URL)
-        .send({
-          pageType: TransitionPageType.addGeneralPartnerLegalEntity,
-          ...generalPartner.data
-        });
-
-      const REDIRECT_URL = getUrl(CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
-
-      expect(res.status).toBe(302);
-      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
-    });
-  });
+runAddGeneralPartnerLegalEntityTests({
+  url: ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
+  urlWithIds: ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_ID_URL,
+  pageType: {
+    addGeneralPartnerLegalEntity: TransitionPageType.addGeneralPartnerLegalEntity,
+    reviewGeneralPartners: TransitionPageType.reviewGeneralPartners,
+    generalPartnerType: TransitionPageType.generalPartnerType
+  },
+  pageRouting: TransitionRouting,
+  redirectUrl: TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  confirmRedirectUrl: CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  baseUrlWithIds: TRANSITION_WITH_IDS_URL,
+  translateExcludeAddOrUpdatePartnerLegalEntityPage: [
+    "updateTitle",
+    "limitedPartner",
+    "errorMessages",
+    "dateEffectiveFrom",
+    "dateHint",
+    "dateDay",
+    "dateMonth",
+    "dateYear"
+  ],
+  translateExcludeGeneralPartnersPage: [
+    "title",
+    "pageInformation",
+    "disqualificationStatement",
+    "disqualificationStatementLegend"
+  ],
+  serviceTitleTranslationKey: SERVICE_NAME_KEY_TRANSITION
 });

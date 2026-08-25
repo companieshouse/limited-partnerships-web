@@ -178,7 +178,9 @@ class PartnerPersonValidator {
 
   private validateFormerNames(uiErrors: UIErrors) {
     if (
-      this.data.previous_name?.trim() === "true" &&
+      (typeof this.data?.previous_name === "string" ?
+        this.data?.previous_name?.trim() === "true"
+        : this.data?.previous_name === true) &&
       isFieldValueMissing(this.data.former_names, FORMER_NAMES_FIELD, uiErrors, this.errorMessages?.formerNamesMissing)
     ) {
       return;

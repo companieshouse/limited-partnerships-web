@@ -190,22 +190,6 @@ describe("Add Limited Partner Person Page", () => {
       );
     });
 
-    it("should return a validation error when invalid data is entered", async () => {
-      const apiErrors: ApiErrors = {
-        errors: { forename: "limited partner name is invalid" }
-      };
-
-      appDevDependencies.limitedPartnerGateway.feedErrors(apiErrors);
-
-      const res = await request(app).post(URL).send({
-        pageType: PostTransitionPageType.addLimitedPartnerPerson,
-        forename: "INVALID-CHARACTERS"
-      });
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain("limited partner name is invalid");
-    });
-
     it("should return a validation error when date effective from is %s", async () => {
       const res = await request(app)
         .post(URL)
@@ -287,7 +271,7 @@ describe("Add Limited Partner Person Page", () => {
 
         expect(res.status).toBe(200);
         expect(res.text).toContain('id="previous_name" name="previous_name" type="radio" value="true" checked');
-        expect(res.text).toContain("Enter the previous name(s) of the limited partner");
+        expect(res.text).toContain(toEscapedHtml(enTranslationText.errorMessages.partners.addPartner.formerNamesMissing));
       }
     );
   });

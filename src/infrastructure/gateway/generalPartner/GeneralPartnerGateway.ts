@@ -27,7 +27,7 @@ class GeneralPartnerGateway implements IGeneralPartnerGateway {
   ): Promise<string> {
     validateAndFormatPersonDateOfBirth(data);
     validateAndFormatPartnerDateEffectiveFrom(data);
-    validateFormerNamesNotEmptyIfPreviousNameIsTrue(data, this.partnerType);
+    validateFormerNamesNotEmptyIfPreviousNameIsTrue(data);
     resetFormerNamesIfPreviousNameIsFalse(data);
     validateAndFormatPartnerCeaseDate(data);
 
@@ -98,7 +98,7 @@ class GeneralPartnerGateway implements IGeneralPartnerGateway {
   ): Promise<void> {
     validateAndFormatPersonDateOfBirth(data);
     validateAndFormatPartnerDateEffectiveFrom(data);
-    validateFormerNamesNotEmptyIfPreviousNameIsTrue(data, this.partnerType);
+    validateFormerNamesNotEmptyIfPreviousNameIsTrue(data);
     resetFormerNamesIfPreviousNameIsFalse(data);
     validateAndFormatPartnerCeaseDate(data);
     validateAndFormatPartnerDateOfUpdate(data);

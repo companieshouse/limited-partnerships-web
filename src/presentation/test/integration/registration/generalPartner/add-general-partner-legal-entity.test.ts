@@ -1,144 +1,46 @@
-import request from "supertest";
-
-import app from "../../app";
-import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
-import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
-import RegistrationPageType from "../../../../controller/registration/PageType";
-import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 import {
   ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
   ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_ID_URL
 } from "../../../../controller/registration/url";
-import { TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL } from "../../../../controller/addressLookUp/url/registration";
+
 import {
-  GENERAL_PARTNER_CHOICE_TEMPLATE,
-  REVIEW_GENERAL_PARTNERS_TEMPLATE
-} from "../../../../controller/registration/template";
-import { REGISTRATION_BASE_URL } from "../../../../../config/constants";
+  CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL
+} from "../../../../controller/addressLookUp/url/registration";
 
-import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
-import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
-describe("Add General Partner Legal Entity Page", () => {
-  const URL = getUrl(ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL);
-  const REDIRECT_URL = getUrl(TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL);
+import { REGISTRATION_WITH_IDS_URL, SERVICE_NAME_KEY_REGISTRATION } from "../../../../../config/constants";
 
-  beforeEach(() => {
-    setLocalesEnabled(false);
+import RegistrationPageType from "../../../../controller/registration/PageType";
+import RegistrationRouting from "../../../../controller/registration/Routing";
 
-    const generalPartner = new GeneralPartnerBuilder()
-      .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-      .isLegalEntity()
-      .build();
+import { runAddGeneralPartnerLegalEntityTests } from "../../shared/generalPartner/addGeneralPartnerLegalEntity";
 
-    appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
-  });
+it("should run add general partner legal entity tests for registration journey", () => {
+  expect(ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL).toContain("registration");
+});
 
-  describe("Get Add General Partner Legal Entity Page", () => {
-    it("should load the add general partner legal entity page with Welsh text", async () => {
-      setLocalesEnabled(true);
-      const res = await request(app).get(URL + "?lang=cy");
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(
-        `${cyTranslationText.partner.addOrUpdatePartnerLegalEntityPage.generalPartner.title} - ${cyTranslationText.serviceRegistration} - GOV.UK`
-      );
-      testTranslations(res.text, cyTranslationText.partner.addOrUpdatePartnerLegalEntityPage, [
-        "updateTitle",
-        "limitedPartner",
-        "errorMessages",
-        "dateEffectiveFrom",
-        "dateHint",
-        "dateDay",
-        "dateMonth",
-        "dateYear"
-      ]);
-      testTranslations(res.text, cyTranslationText.partner.generalPartnersPage, ["title", "pageInformation"]);
-    });
-
-    it("should load the add general partner legal entity page with English text", async () => {
-      setLocalesEnabled(true);
-      const res = await request(app).get(URL + "?lang=en");
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(
-        `${enTranslationText.partner.addOrUpdatePartnerLegalEntityPage.generalPartner.title} - ${enTranslationText.serviceRegistration} - GOV.UK`
-      );
-      testTranslations(res.text, enTranslationText.partner.addOrUpdatePartnerLegalEntityPage, [
-        "updateTitle",
-        "limitedPartner",
-        "errorMessages",
-        "dateEffectiveFrom",
-        "dateHint",
-        "dateDay",
-        "dateMonth",
-        "dateYear"
-      ]);
-      testTranslations(res.text, enTranslationText.partner.generalPartnersPage, ["title", "pageInformation"]);
-      expect(res.text).not.toContain("WELSH -");
-    });
-
-    it("should contain the proposed name - data from api", async () => {
-      const limitedPartnership = new LimitedPartnershipBuilder().build();
-
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
-      const res = await request(app).get(URL);
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(
-        `${limitedPartnership?.data?.partnership_name?.toUpperCase()} ${limitedPartnership?.data?.name_ending?.toUpperCase()}`
-      );
-    });
-
-    it("should contain a back link to the review page when general partners are present", async () => {
-      const res = await request(app).get(getUrl(ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_ID_URL) + "?lang=en");
-
-      expect(res.status).toBe(200);
-      const regex = new RegExp(
-        `${REGISTRATION_BASE_URL}/transaction/.*?/submission/.*?/${REVIEW_GENERAL_PARTNERS_TEMPLATE}`
-      );
-      expect(res.text).toMatch(regex);
-    });
-
-    it("should contain a back link to the choice page when general partners are not present", async () => {
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
-
-      const res = await request(app).get(getUrl(ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL) + "?lang=en");
-
-      expect(res.status).toBe(200);
-      const regex = new RegExp(
-        `${REGISTRATION_BASE_URL}/transaction/.*?/submission/.*?/${GENERAL_PARTNER_CHOICE_TEMPLATE}`
-      );
-      expect(res.text).toMatch(regex);
-    });
-  });
-
-  describe("Post Add General Partner Legal Entity", () => {
-    it("should send the general partner legal entity details", async () => {
-      const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.addGeneralPartnerLegalEntity,
-        legal_entity_name: "test"
-      });
-
-      expect(res.status).toBe(302);
-      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
-    });
-
-    it("should return a validation error when invalid data is entered", async () => {
-      const apiErrors: ApiErrors = {
-        errors: { legal_entity_name: "Legal entity name is invalid" }
-      };
-
-      appDevDependencies.generalPartnerGateway.feedErrors(apiErrors);
-
-      const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.addGeneralPartnerLegalEntity,
-        legal_entity_name: "INVALID-CHARACTERS"
-      });
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain("Legal entity name is invalid");
-    });
-  });
+runAddGeneralPartnerLegalEntityTests({
+  url: ADD_GENERAL_PARTNER_LEGAL_ENTITY_URL,
+  urlWithIds: ADD_GENERAL_PARTNER_LEGAL_ENTITY_WITH_ID_URL,
+  pageType: {
+    addGeneralPartnerLegalEntity: RegistrationPageType.addGeneralPartnerLegalEntity,
+    reviewGeneralPartners: RegistrationPageType.reviewGeneralPartners,
+    generalPartnerType: RegistrationPageType.generalPartnerType
+  },
+  pageRouting: RegistrationRouting,
+  redirectUrl: TERRITORY_CHOICE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  confirmRedirectUrl: CONFIRM_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
+  baseUrlWithIds: REGISTRATION_WITH_IDS_URL,
+  translateExcludeAddOrUpdatePartnerLegalEntityPage: [
+    "updateTitle",
+    "limitedPartner",
+    "errorMessages",
+    "dateEffectiveFrom",
+    "dateHint",
+    "dateDay",
+    "dateMonth",
+    "dateYear"
+  ],
+  translateExcludeGeneralPartnersPage: ["title", "pageInformation"],
+  serviceTitleTranslationKey: SERVICE_NAME_KEY_REGISTRATION
 });

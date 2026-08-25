@@ -1,94 +1,23 @@
-import request from "supertest";
-
-import app from "../../app";
 import { GENERAL_PARTNERS_URL, REVIEW_GENERAL_PARTNERS_URL } from "../../../../controller/registration/url";
-import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
-import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
-import { PartnershipType } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-import { REGISTRATION_BASE_URL } from "../../../../../config/constants";
-import GeneralPartnerBuilder from "../../../builder/GeneralPartnerBuilder";
-import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
-describe("General Partners Page", () => {
-  const URL = getUrl(GENERAL_PARTNERS_URL);
 
-  beforeEach(() => {
-    setLocalesEnabled(false);
+import { REGISTRATION_WITH_IDS_URL, SERVICE_NAME_KEY_REGISTRATION } from "../../../../../config/constants";
 
-    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([]);
-  });
+import RegistrationPageType from "../../../../controller/registration/PageType";
 
-  it("should load the general partners page with Welsh text", async () => {
-    setLocalesEnabled(true);
-    const res = await request(app).get(URL + "?lang=cy");
+import { runGeneralPartnersTests } from "../../shared/generalPartner/generalPartners";
 
-    expect(res.status).toBe(200);
-    expect(res.text).toContain(
-      `${cyTranslationText.partner.generalPartnersPage.title} - ${cyTranslationText.serviceRegistration} - GOV.UK`
-    );
-    testTranslations(res.text, cyTranslationText.partner.generalPartnersPage, [
-      "disqualificationStatement",
-      "disqualificationStatementLegend"
-    ]);
-  });
+it("should run general partners tests for registration journey", () => {
+  expect(GENERAL_PARTNERS_URL).toContain("registration");
+});
 
-  it("should load the general partners page with English text", async () => {
-    setLocalesEnabled(true);
-    const res = await request(app).get(URL + "?lang=en");
-
-    expect(res.status).toBe(200);
-    expect(res.text).toContain(
-      `${enTranslationText.partner.generalPartnersPage.title} - ${enTranslationText.serviceRegistration} - GOV.UK`
-    );
-    testTranslations(res.text, enTranslationText.partner.generalPartnersPage, [
-      "disqualificationStatement",
-      "disqualificationStatementLegend"
-    ]);
-  });
-
-  it("should contain the proposed name - data from api", async () => {
-    const limitedPartnership = new LimitedPartnershipBuilder().build();
-
-    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
-    const res = await request(app).get(URL);
-
-    expect(res.status).toBe(200);
-    expect(res.text).toContain(
-      `${limitedPartnership?.data?.partnership_name?.toUpperCase()} ${limitedPartnership?.data?.name_ending?.toUpperCase()}`
-    );
-  });
-
-  it.each([
-    [PartnershipType.LP, "standard-industrial-classification-code"],
-    [PartnershipType.SLP, "standard-industrial-classification-code"],
-    [PartnershipType.PFLP, "confirm-principal-place-of-business"],
-    [PartnershipType.SPFLP, "confirm-principal-place-of-business"]
-  ])(
-    "should contain the correct back link based on partnership type",
-    async (partnershipType: PartnershipType, backLink: string) => {
-      setLocalesEnabled(true);
-      const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(partnershipType).build();
-
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
-      const res = await request(app).get(URL + "?lang=en");
-
-      expect(res.status).toBe(200);
-      const regex = new RegExp(`${REGISTRATION_BASE_URL}/transaction/.*?/submission/.*?/${backLink}`);
-      expect(res.text).toMatch(regex);
-    }
-  );
-
-  it("should redirect to review page if list not empty", async () => {
-    const generalPartner = new GeneralPartnerBuilder().isPerson().build();
-    appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
-
-    const res = await request(app).get(URL);
-
-    const REDIRECT_URL = getUrl(REVIEW_GENERAL_PARTNERS_URL);
-
-    expect(res.status).toBe(302);
-    expect(res.text).toContain(REDIRECT_URL);
-  });
+runGeneralPartnersTests({
+  url: GENERAL_PARTNERS_URL,
+  pageType: {
+    generalPartners: RegistrationPageType.generalPartners,
+    generalPartnerType: RegistrationPageType.generalPartnerType
+  },
+  redirectUrlReview: REVIEW_GENERAL_PARTNERS_URL,
+  baseUrlWithIds: REGISTRATION_WITH_IDS_URL,
+  translateExclude: ["disqualificationStatement", "disqualificationStatementLegend"],
+  serviceTitleTranslationKey: SERVICE_NAME_KEY_REGISTRATION
 });

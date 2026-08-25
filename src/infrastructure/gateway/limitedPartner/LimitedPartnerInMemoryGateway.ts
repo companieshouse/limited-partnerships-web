@@ -53,7 +53,7 @@ class LimitedPartnerInMemoryGateway implements ILimitedPartnerGateway {
 
     validateAndFormatPersonDateOfBirth(data);
     validateAndFormatPartnerDateEffectiveFrom(data);
-    validateFormerNamesNotEmptyIfPreviousNameIsTrue(data, this.partnerType);
+    validateFormerNamesNotEmptyIfPreviousNameIsTrue(data);
     resetFormerNamesIfPreviousNameIsFalse(data);
     validateAndFormatPartnerCeaseDate(data);
 
@@ -107,7 +107,7 @@ class LimitedPartnerInMemoryGateway implements ILimitedPartnerGateway {
 
     validateAndFormatPersonDateOfBirth(data);
     validateAndFormatPartnerDateEffectiveFrom(data);
-    validateFormerNamesNotEmptyIfPreviousNameIsTrue(data, this.partnerType);
+    validateFormerNamesNotEmptyIfPreviousNameIsTrue(data);
     resetFormerNamesIfPreviousNameIsFalse(data);
     validateAndFormatPartnerCeaseDate(data);
     validateAndFormatPartnerDateOfUpdate(data);

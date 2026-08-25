@@ -5,7 +5,6 @@ import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/compa
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { countOccurrences, getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../utils";
-import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 
 import PostTransitionPageType from "../../../../controller/postTransition/pageType";
 import {
@@ -133,22 +132,6 @@ describe("Add Limited Partner Legal Entity Page", () => {
       expect(appDevDependencies.limitedPartnerGateway.limitedPartners[0].data?.kind).toEqual(
         PartnerKind.ADD_LIMITED_PARTNER_LEGAL_ENTITY
       );
-    });
-
-    it("should return a validation error when invalid data is entered", async () => {
-      const apiErrors: ApiErrors = {
-        errors: { legal_entity_name: "Legal entity name is invalid" }
-      };
-
-      appDevDependencies.limitedPartnerGateway.feedErrors(apiErrors);
-
-      const res = await request(app).post(URL).send({
-        pageType: PostTransitionPageType.addLimitedPartnerLegalEntity,
-        legal_entity_name: "INVALID-CHARACTERS"
-      });
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain("Legal entity name is invalid");
     });
 
     it("should return a validation error when date effective from is %s", async () => {

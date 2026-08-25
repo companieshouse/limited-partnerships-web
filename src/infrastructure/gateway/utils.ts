@@ -79,12 +79,12 @@ export const resetFormerNamesIfPreviousNameIsFalse = (data: Record<string, any>)
   }
 };
 
-export const validateFormerNamesNotEmptyIfPreviousNameIsTrue = (data: Record<string, any>, partnerType: string) => {
+export const validateFormerNamesNotEmptyIfPreviousNameIsTrue = (data: Record<string, any>) => {
   if (data?.previous_name === "true" && (!data?.former_names || data?.former_names.trim() === "")) {
     const uiErrors = new UIErrors();
     uiErrors.formatValidationErrorToUiErrors({
       errors: {
-        former_names: `Enter the previous name(s) of the ${partnerType} partner`
+        former_names: "Enter the partner's previous name"
       }
     });
 
