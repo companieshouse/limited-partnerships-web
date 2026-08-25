@@ -7,7 +7,7 @@ import {
 import { DATE_OF_UPDATE_FIELD, EMAIL_REGEX, VALID_CHARACTERS_REGEX } from "../../config/constants";
 import UIErrors from "../entities/UIErrors";
 import { validateDate } from "./DateValidators";
-import PostTransitionPageType from "../../presentation/controller/postTransition/pageType";
+import { isWhenDidChangeUpdatePage } from "../../presentation/controller/postTransition/pageType";
 import RegistrationPageType from "../../presentation/controller/registration/PageType";
 
 class LimitedPartnershipValidator {
@@ -42,11 +42,7 @@ class LimitedPartnershipValidator {
       [RegistrationPageType.email, () => this.runEmailValidation(uiErrors)]
     ]);
 
-    if (
-      this.data.pageType === PostTransitionPageType.whenDidTheRegisteredOfficeAddressChange ||
-      this.data.pageType === PostTransitionPageType.whenDidThePrincipalPlaceOfBusinessAddressChange ||
-      this.data.pageType === PostTransitionPageType.whenDidTheTermChange
-    ) {
+    if (isWhenDidChangeUpdatePage(this.data.pageType)) {
       return this.runDateOfUpdateValidation(uiErrors);
     }
 

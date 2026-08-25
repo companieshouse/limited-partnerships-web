@@ -262,8 +262,8 @@
         },
 
         "dateOfUpdate": {
-            "partnershipName": "WELSH - Date the partnership name changed must be the same as or after limited partnership's registration date",
             "notInPast": {
+                "partnershipName": "WELSH - The date the name of the partnership changed must be in the past",
                 "registeredOfficeAddress":"WELSH - The date the registered office address changed must be in the past",
                 "principalPlaceOfBusinessAddress":"WELSH - The date the principal place of business changed must be in the past",
                 "term":"WELSH - Date the term changed must be in the past",
@@ -271,6 +271,7 @@
                 "limitedPartner":"WELSH - Date the limited partner changed must be in the past"
             },
             "beforeRegistrationDate": {
+                "partnershipName": "WELSH - The date the name of the partnership changed must be after the partnership’s registration date",
                 "registeredOfficeAddress":"WELSH - The date the registered office address changed must be after the partnership’s registration date",
                 "principalPlaceOfBusinessAddress":"WELSH - The date the principal place of business changed must be after the partnership’s registration date",
                 "term":"WELSH - Date the term changed must be after the partnership’s registration date",
@@ -278,6 +279,7 @@
                 "limitedPartner":"WELSH - Date the limited partner changed must be after the partnership’s registration date"
             },
             "missing": {
+                "partnershipName": "WELSH - Enter the date the name of the partnership changed",
                 "registeredOfficeAddress": "WELSH - Enter the date the registered office address changed",
                 "principalPlaceOfBusinessAddress": "WELSH - Enter the date the principal place of business changed",
                 "term": "WELSH - Enter the date the term changed",
@@ -285,6 +287,7 @@
                 "limitedPartner": "WELSH - Enter the date the limited partner changed"
             },
             "dayMissing": {
+                "partnershipName": "WELSH - The date the name of the partnership changed must include a day",
                 "registeredOfficeAddress": "WELSH - The date the registered office address changed  must include a day",
                 "principalPlaceOfBusinessAddress": "WELSH - The date the principal place of business changed must include a day",
                 "term": "WELSH - Date the term changed must include a day",
@@ -292,6 +295,7 @@
                 "limitedPartner": "WELSH - Date the limited partner changed must include a day"
             },
             "monthMissing": {
+                "partnershipName": "WELSH - The date the name of the partnership changed must include a month",
                 "registeredOfficeAddress": "WELSH - The date the registered office address changed must include a month",
                 "principalPlaceOfBusinessAddress": "WELSH - The date the principal place of business changed must include a month",
                 "term": "WELSH - Date the term changed must include a month",
@@ -299,6 +303,7 @@
                 "limitedPartner": "WELSH - Date the limited partner changed must include a month"
             },
             "yearMissing": {
+                "partnershipName": "WELSH - The date the name of the partnership changed must include a year",
                 "registeredOfficeAddress": "WELSH - The date the registered office address changed must include a year",
                 "principalPlaceOfBusinessAddress": "WELSH - The date the principal place of business changed must include a year",
                 "term": "WELSH - Date the term changed must include a year",
@@ -306,6 +311,7 @@
                 "limitedPartner": "WELSH - Date the limited partner changed must include a year"
             },
             "dayAndMonthMissing": {
+                "partnershipName": "WELSH - The date the name of the partnership changed must include a day and a month",
                 "registeredOfficeAddress": "WELSH - The date the registered office address changed must include a day and a month",
                 "principalPlaceOfBusinessAddress": "WELSH - The date the principal place of business changed must include a day and a month",
                 "term": "WELSH - Date the term changed must include a day and a month",
@@ -313,6 +319,7 @@
                 "limitedPartner": "WELSH - Date the limited partner changed must include a day and a month"
             },
             "monthAndYearMissing": {
+                "partnershipName": "WELSH - The date the name of the partnership changed must include a month and a year",
                 "registeredOfficeAddress": "WELSH - The date the registered office address changed must include a month and a year",
                 "principalPlaceOfBusinessAddress": "WELSH - The date the principal place of business changed must include a month and a year",
                 "term": "WELSH - Date the term changed must include a month and a year",
@@ -320,6 +327,7 @@
                 "limitedPartner": "WELSH - Date the limited partner changed must include a month and a year"
             },
             "dayAndYearMissing": {
+                "partnershipName": "WELSH - The date the name of the partnership changed must include a day and a year",
                 "registeredOfficeAddress": "WELSH - The date the registered office address changed must include a day and a year",
                 "principalPlaceOfBusinessAddress": "WELSH - The date the principal place of business changed must include a day and a year",
                 "term": "WELSH - Date the term changed must include a day and a year",
@@ -327,6 +335,7 @@
                 "limitedPartner": "WELSH - Date the limited partner changed must include a day and a year"
             },
             "invalidChars": {
+                "partnershipName": "WELSH - The date the name of the partnership changed must only include numbers",
                 "registeredOfficeAddress": "WELSH - The date the registered office address changed must only include numbers",
                 "principalPlaceOfBusinessAddress": "WELSH - The date the principal place of business changed must only include numbers",
                 "term": "WELSH - Date the term changed must only include numbers",
@@ -334,6 +343,7 @@
                 "limitedPartner": "WELSH - Date the limited partner changed must only include numbers"
             },
             "invalid": {
+                "partnershipName": "WELSH - The date the name of the partnership changed must be a real date",
                 "registeredOfficeAddress": "WELSH - The date the registered office address changed must be a real date",
                 "principalPlaceOfBusinessAddress": "WELSH - The date the principal place of business changed must be a real date",
                 "term": "WELSH - Date the term changed must be a real date",
