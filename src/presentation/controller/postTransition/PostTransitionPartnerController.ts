@@ -304,9 +304,9 @@ class PostTransitionPartnerController extends PartnerController {
           const dataToSend = {
             ...request.body,
             kind: isLegalEntity(pageType) ? data?.legalEntity.kind : data?.person.kind,
-            journeyTypes: response.locals.journeyTypes,
-            partnerEntityType: pageRouting?.data?.partnerEntityType,
             partnerType: partner,
+            partnerEntityType: pageRouting?.data?.partnerEntityType,
+            journeyTypes: response.locals.journeyTypes,
             registration_date: limitedPartnershipData?.registration_date
           };
 
