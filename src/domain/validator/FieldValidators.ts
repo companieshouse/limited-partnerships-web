@@ -10,7 +10,7 @@ export function containsInvalidCharacters(fieldValue: string | undefined, fieldN
 };
 
 export function isFieldValueMissing(fieldValue: string | undefined, fieldName: string, uiErrors: UIErrors, errorMessage: string): boolean {
-  if (!fieldValue?.trim()) {
+  if (typeof fieldValue === "string" ? !fieldValue?.trim() : (fieldValue === undefined || fieldValue === null)) {
     uiErrors.setWebError(fieldName, errorMessage);
     return true;
   }

@@ -3,7 +3,7 @@ import request from "supertest";
 import app from "../../app";
 import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { ApiErrors } from "../../../../../domain/entities/UIErrors";
-import { getUrl, setLocalesEnabled, testTranslations } from "../../../utils";
+import { getUrl, setLocalesEnabled, testTranslations, toEscapedHtml } from "../../../utils";
 import { TRANSITION_WITH_IDS_URL } from "../../../../../config/index";
 
 import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
@@ -213,7 +213,7 @@ describe("Add Limited Partner Person Page", () => {
 
         expect(res.status).toBe(200);
         expect(res.text).toContain('id="previous_name" name="previous_name" type="radio" value="true" checked');
-        expect(res.text).toContain("Enter the previous name(s) of the limited partner");
+        expect(res.text).toContain(toEscapedHtml(enTranslationText.errorMessages.partners.addPartner.formerNamesMissing));
       }
     );
   });

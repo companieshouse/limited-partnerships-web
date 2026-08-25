@@ -46,6 +46,19 @@ export const runAddGeneralPartnerLegalEntityTests = (config: AddGeneralPartnerLe
       data: Partial<CompanyProfile>;
     };
 
+    const generalPartner = new GeneralPartnerBuilder()
+      .isLegalEntity()
+      .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
+      .withAppointmentId(appDevDependencies.generalPartnerGateway.generalPartnerAppointmentId)
+      .withKind(config.partnerKind ?? "")
+      .build();
+
+    const datesBody = {
+      "date_effective_from-day": "01",
+      "date_effective_from-month": "11",
+      "date_effective_from-year": "2024"
+    };
+
     beforeEach(() => {
       setLocalesEnabled(true);
 
@@ -55,7 +68,9 @@ export const runAddGeneralPartnerLegalEntityTests = (config: AddGeneralPartnerLe
       companyProfile = new CompanyProfileBuilder().build();
       appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([]);
+      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
+
+      appDevDependencies.transactionGateway.feedTransactions([]);
     });
 
     describe("Get Add General Partner Legal Entity Page", () => {
@@ -89,7 +104,7 @@ export const runAddGeneralPartnerLegalEntityTests = (config: AddGeneralPartnerLe
           );
           testTranslations(res.text, translationText.partner.generalPartnersPage, config.translateExcludeGeneralPartnersPage);
 
-          const BACK_LINK = `${getUrl(config.baseUrlWithIds)}/${config.pageType.generalPartnerType}`;
+          const BACK_LINK = `${getUrl(config.baseUrlWithIds)}/${config.pageType.reviewGeneralPartners}`;
 
           const regex = new RegExp(BACK_LINK);
           expect(res.text).toMatch(regex);
@@ -102,12 +117,6 @@ export const runAddGeneralPartnerLegalEntityTests = (config: AddGeneralPartnerLe
       );
 
       it("should contain a back link to the review page when general partners are present", async () => {
-        const generalPartner = new GeneralPartnerBuilder()
-          .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-          .isLegalEntity()
-          .build();
-        appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
-
         const res = await request(app).get(getUrl(config.urlWithIds));
 
         expect(res.status).toBe(200);
@@ -121,8 +130,6 @@ export const runAddGeneralPartnerLegalEntityTests = (config: AddGeneralPartnerLe
 
     describe("Post Add General Partner Legal Entity", () => {
       it("should send the general partner legal entity details", async () => {
-        const generalPartner = new GeneralPartnerBuilder().isLegalEntity().build();
-
         const today = new Date();
         const day = today.getDate().toString().padStart(2, "0");
         const month = (today.getMonth() + 1).toString().padStart(2, "0");
@@ -147,27 +154,18 @@ export const runAddGeneralPartnerLegalEntityTests = (config: AddGeneralPartnerLe
             enTranslationText.partner.addOrUpdatePartnerLegalEntityPage.generalPartner.title
           );
 
-          expect(appDevDependencies.generalPartnerGateway.generalPartners).toHaveLength(1);
+          expect(appDevDependencies.generalPartnerGateway.generalPartners).toHaveLength(2);
           expect(appDevDependencies.generalPartnerGateway.generalPartners[0].data?.kind).toEqual(config.partnerKind);
         }
       });
 
       it("should send the general partner details and go to confirm ura address page if already saved", async () => {
-        const generalPartner = new GeneralPartnerBuilder()
-          .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-          .isLegalEntity()
-          .build();
-
-        appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
-
         const res = await request(app)
           .post(getUrl(config.urlWithIds))
           .send({
             ...config.pageRouting.get(config.pageType.addGeneralPartnerLegalEntity as PageType),
             ...generalPartner.data,
-            "date_effective_from-day": "01",
-            "date_effective_from-month": "10",
-            "date_effective_from-year": "2024"
+            ...datesBody
           });
 
         expect(res.status).toBe(302);

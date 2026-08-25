@@ -6,7 +6,9 @@ export const generalPartnerPerson = {
   surname: "Doe - GP",
   date_of_birth: "2001-01-01",
   nationality1: "British",
-  nationality2: undefined
+  nationality2: undefined,
+  previous_name: false,
+  former_names: undefined
 };
 
 export const generalPartnerLegalEntity = {
@@ -63,6 +65,11 @@ class GeneralPartnerBuilder extends AbstractPartnerBuilder {
 
   withFormerNames(formerNames: string) {
     this.data.former_names = formerNames;
+    return this;
+  }
+
+  withPreviousName(previousName: boolean) {
+    this.data.previous_name = previousName;
     return this;
   }
 
