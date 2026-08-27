@@ -1,3 +1,28 @@
+// TODO Use new dateOfUpdateTestSuite.ts for this and the other general partner and limited partner date of update tests
+
+// import {
+//   WHEN_DID_THE_GENERAL_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL,
+//   UPDATE_GENERAL_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_URL,
+//   UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL
+// } from "../../../../../controller/postTransition/url";
+// import PostTransitionPageType from "../../../../../controller/postTransition/pageType";
+// import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
+// import { getUrl } from "../../../../utils";
+// import { runDateOfUpdateTests } from "../../../shared/dateOfUpdateTestSuite";
+
+// runDateOfUpdateTests({
+//   url: getUrl(WHEN_DID_THE_GENERAL_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL),
+//   backLinkUrl: getUrl(UPDATE_GENERAL_PARTNER_PRINCIPAL_OFFICE_ADDRESS_YES_NO_URL),
+//   pageType: PostTransitionPageType.whenDidTheGeneralPartnerLegalEntityDetailsChange,
+//   redirectUrl: getUrl(UPDATE_GENERAL_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_URL),
+//   translateExclude: ["registeredOfficeAddress", "principalPlaceOfBusinessAddress", "term", "partnershipName", "limitedPartner"],
+//   serviceNameTranslationKey: "updateLimitedPartnershipName",
+//   partnershipKind: PartnerKind.UPDATE_GENERAL_PARTNER_LEGAL_ENTITY,
+//   dateFieldType: "general partner legal entity details",
+//   getDisplayedName: (gp) =>
+//     `${gp?.data?.partnership_name?.toUpperCase()} ${gp?.data?.name_ending?.toUpperCase()} (${gp?.data?.partnership_number})`
+// });
+
 import request from "supertest";
 
 import app from "../../app";
@@ -12,7 +37,6 @@ import {
   WHEN_DID_GENERAL_PARTNER_LEGAL_ENTITY_DETAILS_CHANGE_URL
 } from "../../../../../presentation/controller/postTransition/url";
 import PostTransitionPageType from "../../../../controller/postTransition/pageType";
-import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import TransactionBuilder from "../../../builder/TransactionBuilder";
 import CompanyAppointmentBuilder from "../../../builder/CompanyAppointmentBuilder";
@@ -65,32 +89,25 @@ describe("General partner legal entity change date page", () => {
     it.each([
       ["English", "en"],
       ["Welsh", "cy"]
-    ])(
-      "should load general partner legal entity change date page with %s text",
-      async (_description: string, lang: string) => {
-        setLocalesEnabled(true);
-        const res = await request(app).get(`${URL}?lang=${lang}`);
+    ])("should load general partner legal entity change date page with %s text", async (_description: string, lang: string) => {
+      setLocalesEnabled(true);
+      const res = await request(app).get(`${URL}?lang=${lang}`);
 
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(BACK_LINK_URL);
-        expect(res.text).toContain(`${generalPartner.data?.legal_entity_name?.toUpperCase()}`);
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(BACK_LINK_URL);
+      expect(res.text).toContain(`${generalPartner.data?.legal_entity_name?.toUpperCase()}`);
 
-        if (lang === "cy") {
-          expect(res.text).toContain("WELSH - ");
-          expect(res.text).toContain(`${cyTranslationText.dateOfUpdate.generalPartner.title}`);
-          expect(
-            countOccurrences(res.text, toEscapedHtml(cyTranslationText.serviceName.updateGeneralPartnerLegalEntity))
-          ).toBe(2);
-        } else {
-          expect(res.text).not.toContain("WELSH -");
-          expect(res.text).toContain(`${enTranslationText.dateOfUpdate.generalPartner.title}`);
-          expect(
-            countOccurrences(res.text, toEscapedHtml(enTranslationText.serviceName.updateGeneralPartnerLegalEntity))
-          ).toBe(2);
-        }
-        expect(res.text).toContain(customerFeedbackUrlMap.updateGeneralPartnerLegalEntity);
+      if (lang === "cy") {
+        expect(res.text).toContain("WELSH - ");
+        expect(res.text).toContain(`${cyTranslationText.dateOfUpdate.generalPartner.title}`);
+        expect(countOccurrences(res.text, toEscapedHtml(cyTranslationText.serviceName.updateGeneralPartnerLegalEntity))).toBe(2);
+      } else {
+        expect(res.text).not.toContain("WELSH -");
+        expect(res.text).toContain(`${enTranslationText.dateOfUpdate.generalPartner.title}`);
+        expect(countOccurrences(res.text, toEscapedHtml(enTranslationText.serviceName.updateGeneralPartnerLegalEntity))).toBe(2);
       }
-    );
+      expect(res.text).toContain(customerFeedbackUrlMap.updateGeneralPartnerLegalEntity);
+    });
 
     it("should populate the date fields with the existing date of update if it exists", async () => {
       const res = await request(app).get(URL);
@@ -143,41 +160,13 @@ describe("General partner legal entity change date page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        toEscapedHtml(enTranslationText.errorMessages.dateOfUpdate.beforeRegistrationDate.generalPartner)
+        toEscapedHtml(
+          enTranslationText.errorMessages.dateOfUpdate.beforeRegistrationDate.replace(
+            "{change-type}",
+            "general partner legal entity details"
+          )
+        )
       );
-    });
-
-    it("should display the specifc error message rather than the original when the date is before the incorporation date", async () => {
-      const generalPartner = new GeneralPartnerBuilder()
-        .withId(appDevDependencies.generalPartnerGateway.generalPartnerId)
-        .isLegalEntity()
-        .withDateOfUpdate("2024-10-10")
-        .build();
-
-      appDevDependencies.generalPartnerGateway.feedGeneralPartners([generalPartner]);
-
-      const expectedErrorMessage = toEscapedHtml(
-        enTranslationText.errorMessages.dateOfUpdate.beforeRegistrationDate.generalPartner
-      );
-      const apiErrors: ApiErrors = {
-        errors: { date_of_update: expectedErrorMessage }
-      };
-      appDevDependencies.generalPartnerGateway.feedErrors(apiErrors);
-
-      const res = await request(app).post(URL).send({
-        pageType: PostTransitionPageType.whenDidGeneralPartnerLegalEntityDetailsChange,
-        "date_of_update-day": "10",
-        "date_of_update-month": "01",
-        "date_of_update-year": "2000"
-      });
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(expectedErrorMessage);
-      expect(res.text).toContain("10");
-      expect(res.text).toContain("01");
-      expect(res.text).toContain("2000");
-      expect(res.text).toContain(BACK_LINK_URL);
-      expect(res.text).toContain(`${generalPartner.data?.legal_entity_name?.toUpperCase()}`);
     });
   });
 });

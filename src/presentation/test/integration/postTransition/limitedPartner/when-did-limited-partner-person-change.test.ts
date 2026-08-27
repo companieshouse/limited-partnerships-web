@@ -12,7 +12,6 @@ import {
   UPDATE_LIMITED_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL
 } from "../../../../../presentation/controller/postTransition/url";
 import PostTransitionPageType from "../../../../controller/postTransition/pageType";
-import { ApiErrors } from "../../../../../domain/entities/UIErrors";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import TransactionBuilder from "../../../builder/TransactionBuilder";
 import CompanyAppointmentBuilder from "../../../builder/CompanyAppointmentBuilder";
@@ -126,42 +125,12 @@ describe("Limited partner person change date page", () => {
 
       expect(res.status).toBe(200);
       expect(res.text).toContain(
-        toEscapedHtml(enTranslationText.errorMessages.dateOfUpdate.beforeRegistrationDate.limitedPartner)
-      );
-    });
-
-    it("should display the specifc error message rather than the original when the date is before the incorporation date", async () => {
-      const limitedPartner = new LimitedPartnerBuilder()
-        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .isPerson()
-        .withDateOfUpdate("2024-10-10")
-        .build();
-
-      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
-
-      const expectedErrorMessage = toEscapedHtml(
-        enTranslationText.errorMessages.dateOfUpdate.beforeRegistrationDate.limitedPartner
-      );
-      const apiErrors: ApiErrors = {
-        errors: { date_of_update: expectedErrorMessage }
-      };
-      appDevDependencies.limitedPartnerGateway.feedErrors(apiErrors);
-
-      const res = await request(app).post(URL).send({
-        pageType: PostTransitionPageType.whenDidLimitedPartnerPersonDetailsChange,
-        "date_of_update-day": "10",
-        "date_of_update-month": "01",
-        "date_of_update-year": "2000"
-      });
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(expectedErrorMessage);
-      expect(res.text).toContain("10");
-      expect(res.text).toContain("01");
-      expect(res.text).toContain("2000");
-      expect(res.text).toContain(BACK_LINK_URL);
-      expect(res.text).toContain(
-        `${limitedPartner.data?.forename?.toUpperCase()} ${limitedPartner.data?.surname?.toUpperCase()}`
+        toEscapedHtml(
+          enTranslationText.errorMessages.dateOfUpdate.beforeRegistrationDate.replace(
+            "{change-type}",
+            "limited partner person details"
+          )
+        )
       );
     });
   });

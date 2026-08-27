@@ -1,3 +1,4 @@
+import PostTransitionPageType, { isWhenDidChangeUpdatePage } from "../../presentation/controller/postTransition/pageType";
 import UIErrors from "../entities/UIErrors";
 
 export enum DateErrorMessages {
@@ -17,6 +18,19 @@ export enum DateErrorMessages {
   beforeRegistrationDate = "beforeRegistrationDate"
 }
 
+// TODO this map needs updating, the strings should be moved to the i18n files so they get translated.
+// Also, the text for partners is wrong, but this can be updated on their relevant tickets.
+const changeTypeMap = new Map<PostTransitionPageType, string>([
+  [PostTransitionPageType.whenDidThePartnershipNameChange, "name of the partnership"],
+  [PostTransitionPageType.whenDidTheRegisteredOfficeAddressChange, "registered office address"],
+  [PostTransitionPageType.whenDidThePrincipalPlaceOfBusinessAddressChange, "principal place of business address"],
+  [PostTransitionPageType.whenDidTheTermChange, "term"],
+  [PostTransitionPageType.whenDidGeneralPartnerPersonDetailsChange, "general partner person details"],
+  [PostTransitionPageType.whenDidGeneralPartnerLegalEntityDetailsChange, "general partner legal entity details"],
+  [PostTransitionPageType.whenDidLimitedPartnerPersonDetailsChange, "limited partner person details"],
+  [PostTransitionPageType.whenDidLimitedPartnerLegalEntityDetailsChange, "limited partner legal entity details"]
+]);
+
 type DateErrorKey = keyof typeof DateErrorMessages;
 
 type DateParts = { day: string; month: string; year: string };
@@ -28,8 +42,7 @@ export const validateDate = (
   uiErrors: UIErrors,
   dateFieldType: string,
   dateErrorMessages: Record<string, string>,
-  registrationDate?: string,
-  pageKey?: string
+  registrationDate?: string
 ): void => {
   const parts = toDatePartsFromBody(body, dateFieldType);
 
@@ -42,10 +55,17 @@ export const validateDate = (
     ...(registrationDate ? [notBeforeRegistrationDate(registrationDate)] : [])
   ]);
 
-  if (errorKey !== null) {
+  if (!errorKey) {
+    return;
+  }
+
+  if (isWhenDidChangeUpdatePage(body.pageType)) {
+    const pageKey = changeTypeMap.get(body.pageType as PostTransitionPageType);
     const entry = dateErrorMessages[errorKey];
-    const text = typeof entry === "object" ? entry?.[pageKey ?? ""] : entry;
+    const text = entry.replace("{change-type}", pageKey ?? "");
     uiErrors.setWebError(dateFieldType, text);
+  } else {
+    uiErrors.setWebError(dateFieldType, dateErrorMessages[errorKey]);
   }
 };
 

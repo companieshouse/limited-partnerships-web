@@ -126,13 +126,13 @@ class LimitedPartnershipValidator {
       {
         day: this.data[`${DATE_OF_UPDATE_FIELD}-day`],
         month: this.data[`${DATE_OF_UPDATE_FIELD}-month`],
-        year: this.data[`${DATE_OF_UPDATE_FIELD}-year`]
+        year: this.data[`${DATE_OF_UPDATE_FIELD}-year`],
+        pageType: this.data.pageType
       },
       uiErrors,
       DATE_OF_UPDATE_FIELD,
       this.dateOfUpdateErrorMessages,
-      this.data.registration_date,
-      this.data.pageKey
+      this.data.registration_date
     );
 
     return uiErrors;
