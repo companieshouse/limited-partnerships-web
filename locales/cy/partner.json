@@ -82,7 +82,8 @@
             "landOrProperty" : "WELSH - Land or property",
             "shares" : "WELSH - Shares or interests in other partnerships",
             "anyOtherAsset" : "WELSH - Any other asset",
-            "servicesOrGoods" : "WELSH - Services or goods"
+            "servicesOrGoods" : "WELSH - Services or goods",
+            "searchPlaceholder": "WELSH - Select currency"
         },
         "ceaseDate" : {
             "dateHint": "WELSH - For example, 27 3 2025",
