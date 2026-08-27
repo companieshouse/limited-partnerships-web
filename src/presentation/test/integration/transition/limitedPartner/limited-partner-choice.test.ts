@@ -1,93 +1,24 @@
-import request from "supertest";
-
-import app from "../../app";
-import { appDevDependencies } from "../../../../../config/dev-dependencies";
-
 import {
   LIMITED_PARTNER_CHOICE_URL,
   ADD_LIMITED_PARTNER_PERSON_URL,
   ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL
 } from "../../../../controller/transition/url";
+
 import TransitionPageType from "../../../../controller/transition/PageType";
-import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
-import { getUrl, setLocalesEnabled, testTranslations, countOccurrences } from "../../../utils";
-import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
-describe("Limited Partner Choice Page", () => {
-  const URL = getUrl(LIMITED_PARTNER_CHOICE_URL);
 
-  beforeEach(() => {
-    setLocalesEnabled(false);
+import { SERVICE_NAME_KEY_TRANSITION } from "../../../../../config/constants";
 
-    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([]);
-    appDevDependencies.limitedPartnershipGateway.feedErrors();
-    appDevDependencies.cacheRepository.feedCache(null);
-  });
+import { runLimitedPartnerChoiceTests } from "../../shared/limitedPartner/limitedPartnerChoice";
 
-  it("should load the limited partner choice page with Welsh text", async () => {
-    setLocalesEnabled(true);
-    const res = await request(app).get(URL + "?lang=cy");
+it("should run limited partner choice tests for transition journey", () => {
+  expect(ADD_LIMITED_PARTNER_PERSON_URL).toContain("transition");
+});
 
-    expect(res.status).toBe(200);
-    expect(res.text).toContain(
-      `${cyTranslationText.partner.limitedPartnerChoicePage.isPersonOrLegalEntity} - ${cyTranslationText.serviceTransition} - GOV.UK`
-    );
-    testTranslations(res.text, cyTranslationText.partner.limitedPartnerChoicePage);
-  });
-
-  it("should load the limited partner choice page with English text", async () => {
-    setLocalesEnabled(true);
-    const res = await request(app).get(URL + "?lang=en");
-
-    expect(res.status).toBe(200);
-    expect(res.text).toContain(
-      `${enTranslationText.partner.limitedPartnerChoicePage.isPersonOrLegalEntity} - ${enTranslationText.serviceTransition} - GOV.UK`
-    );
-    testTranslations(res.text, enTranslationText.partner.limitedPartnerChoicePage);
-  });
-
-  it("should redirect to Limited Partner Person page when person is selected", async () => {
-    const res = await request(app).post(URL).send({
-      pageType: TransitionPageType.limitedPartnerType,
-      parameter: "person"
-    });
-    expect(res.status).toBe(302);
-    expect(res.text).toContain(getUrl(ADD_LIMITED_PARTNER_PERSON_URL));
-  });
-
-  it("should redirect to Limited Partner Legal Entity page when legal entity is selected", async () => {
-    const res = await request(app).post(URL).send({
-      pageType: TransitionPageType.limitedPartnerType,
-      parameter: "legalEntity"
-    });
-    expect(res.status).toBe(302);
-    expect(res.text).toContain(getUrl(ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL));
-  });
-
-  it("should contain the proposed name - data from api", async () => {
-    const limitedPartnership = new LimitedPartnershipBuilder().build();
-
-    appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
-    const res = await request(app).get(URL);
-
-    expect(res.status).toBe(200);
-    expect(res.text).toContain(
-      `${limitedPartnership?.data?.partnership_name?.toUpperCase()} (${limitedPartnership?.data?.partnership_number?.toUpperCase()})`
-    );
-  });
-
-  it.each([
-    ["en", enTranslationText],
-    ["cy", cyTranslationText]
-  ])("%s: should trigger GDS validation error when no option is selected", async (lang, errors) => {
-    setLocalesEnabled(true);
-    const res = await request(app).post(URL + `?lang=${lang}`).send({
-      pageType: TransitionPageType.limitedPartnerType
-    });
-
-    const errorMessage = errors.errorMessages.choosePartnerType.limitedPartner;
-
-    expect(res.status).toBe(200);
-    expect(countOccurrences(res.text, errorMessage)).toBe(2);
-  });
+runLimitedPartnerChoiceTests({
+  url: LIMITED_PARTNER_CHOICE_URL,
+  pageType: TransitionPageType.limitedPartnerType,
+  redirectUrlPerson: ADD_LIMITED_PARTNER_PERSON_URL,
+  redirectUrlLegalEntity: ADD_LIMITED_PARTNER_LEGAL_ENTITY_URL,
+  translateExclude: [],
+  serviceTitleTranslationKey: SERVICE_NAME_KEY_TRANSITION
 });

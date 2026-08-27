@@ -1,3 +1,4 @@
+import { PartnerEntityType, PartnerType } from "../../../../domain/types";
 import {
   TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
@@ -26,7 +27,9 @@ const transitionRoutingAddLimitedPartnerPerson = {
   nextUrl: TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL,
   pageType: TransitionPageType.addLimitedPartnerPerson,
   data: {
-    customPreviousUrl: REVIEW_LIMITED_PARTNERS_URL
+    customPreviousUrl: REVIEW_LIMITED_PARTNERS_URL,
+    partnerType: PartnerType.limitedPartner,
+    partnerEntityType: PartnerEntityType.person
   }
 };
 
@@ -36,7 +39,9 @@ const transitionRoutingAddLimitedPartnerLegalEntity = {
   nextUrl: TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   pageType: TransitionPageType.addLimitedPartnerLegalEntity,
   data: {
-    customPreviousUrl: url.REVIEW_LIMITED_PARTNERS_URL
+    customPreviousUrl: url.REVIEW_LIMITED_PARTNERS_URL,
+    partnerType: PartnerType.limitedPartner,
+    partnerEntityType: PartnerEntityType.legalEntity
   }
 };
 

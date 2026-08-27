@@ -1,155 +1,21 @@
-import request from "supertest";
-
-import app from "../../app";
-import { appDevDependencies } from "../../../../../config/dev-dependencies";
-
-import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
-import LimitedPartnershipBuilder from "../../../builder/LimitedPartnershipBuilder";
-import { getUrl, setLocalesEnabled, testTranslations, countOccurrences } from "../../../utils";
 import { REMOVE_LIMITED_PARTNER_URL, REVIEW_LIMITED_PARTNERS_URL } from "../../../../controller/registration/url";
+
 import RegistrationPageType from "../../../../controller/registration/PageType";
-import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
-describe("Remove Limited Partner Page", () => {
-  const URL = getUrl(REMOVE_LIMITED_PARTNER_URL);
 
-  beforeEach(() => {
-    setLocalesEnabled(false);
+import { SERVICE_NAME_KEY_REGISTRATION } from "../../../../../config/constants";
 
-    appDevDependencies.limitedPartnerGateway.feedLimitedPartners([]);
-  });
+import { runRemoveLimitedPartnerTests } from "../../shared/limitedPartner/removeLimitedPartner";
 
-  describe("Get Remove Limited Partners Page", () => {
-    it("should load the remove limited partners page with English text", async () => {
-      setLocalesEnabled(true);
+it("should run remove limited partner tests for registration journey", () => {
+  expect(REMOVE_LIMITED_PARTNER_URL).toContain("registration");
+});
 
-      const limitedPartnerPerson = new LimitedPartnerBuilder()
-        .isPerson()
-        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .build();
-
-      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerPerson]);
-
-      const res = await request(app).get(URL + "?lang=en");
-
-      expect(res.status).toBe(200);
-
-      expect(res.text).toContain(
-        `${enTranslationText.partner.removePartnerPage.title} - ${enTranslationText.serviceRegistration} - GOV.UK`
-      );
-
-      testTranslations(res.text, enTranslationText.partner.removePartnerPage);
-
-      expect(res.text).toContain(`${limitedPartnerPerson?.data?.forename} ${limitedPartnerPerson?.data?.surname}`);
-    });
-
-    it("should contain the partnership name above the page title", async () => {
-      const limitedPartnership = new LimitedPartnershipBuilder().build();
-
-      appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
-
-      const limitedPartnerPerson = new LimitedPartnerBuilder()
-        .isPerson()
-        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .build();
-
-      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerPerson]);
-
-      const res = await request(app).get(URL);
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(
-        `${limitedPartnership?.data?.partnership_name?.toUpperCase()} ${limitedPartnership?.data?.name_ending?.toUpperCase()}`
-      );
-    });
-
-    it("should load the remove limited partners page with Welsh text", async () => {
-      setLocalesEnabled(true);
-
-      const limitedPartnerLegalEntity = new LimitedPartnerBuilder()
-        .isLegalEntity()
-        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .build();
-
-      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerLegalEntity]);
-
-      const res = await request(app).get(URL + "?lang=cy");
-
-      expect(res.status).toBe(200);
-
-      expect(res.text).toContain(
-        `${cyTranslationText.partner.removePartnerPage.title} - ${cyTranslationText.serviceRegistration} - GOV.UK`
-      );
-
-      testTranslations(res.text, cyTranslationText.partner.removePartnerPage);
-
-      expect(res.text).toContain(`${limitedPartnerLegalEntity?.data?.legal_entity_name}`);
-    });
-  });
-
-  describe("Post Remove Limited Partners Page", () => {
-    it("should redirect to the review limited partners page - lp removed", async () => {
-      setLocalesEnabled(true);
-
-      const limitedPartnerPerson = new LimitedPartnerBuilder()
-        .isPerson()
-        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .build();
-
-      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerPerson]);
-
-      const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.removeLimitedPartner,
-        remove: "yes"
-      });
-
-      expect(res.status).toBe(302);
-      expect(res.header.location).toBe(getUrl(REVIEW_LIMITED_PARTNERS_URL));
-
-      expect(appDevDependencies.limitedPartnerGateway.limitedPartners).toHaveLength(0);
-    });
-
-    it("should redirect to the review limited partners page - lp not removed", async () => {
-      setLocalesEnabled(true);
-
-      const limitedPartnerLegalEntity = new LimitedPartnerBuilder()
-        .isLegalEntity()
-        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .build();
-
-      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerLegalEntity]);
-
-      const res = await request(app).post(URL).send({
-        pageType: RegistrationPageType.removeLimitedPartner,
-        remove: "no"
-      });
-
-      expect(res.status).toBe(302);
-      expect(res.header.location).toBe(getUrl(REVIEW_LIMITED_PARTNERS_URL));
-
-      expect(appDevDependencies.limitedPartnerGateway.limitedPartners).toHaveLength(1);
-    });
-
-    it.each([
-      ["en", enTranslationText],
-      ["cy", cyTranslationText]
-    ])("should trigger validation errors when no option is selected: %s", async (lang, errors) => {
-      setLocalesEnabled(true);
-
-      const limitedPartnerPerson = new LimitedPartnerBuilder()
-        .isPerson()
-        .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
-        .build();
-
-      appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartnerPerson]);
-
-      const res = await request(app)
-        .post(URL + `?lang=${lang}`)
-        .send({
-          pageType: RegistrationPageType.removeLimitedPartner
-        });
-
-      expect(res.status).toBe(200);
-      expect(countOccurrences(res.text, errors.errorMessages.partners.removePartner.selectRemoveChoice)).toBe(2);
-    });
-  });
+runRemoveLimitedPartnerTests({
+  url: REMOVE_LIMITED_PARTNER_URL,
+  pageType: {
+    removeLimitedPartner: RegistrationPageType.removeLimitedPartner
+  },
+  redirectUrlReview: REVIEW_LIMITED_PARTNERS_URL,
+  translateExclude: [],
+  serviceTitleTranslationKey: SERVICE_NAME_KEY_REGISTRATION
 });

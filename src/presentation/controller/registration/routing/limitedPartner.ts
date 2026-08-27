@@ -38,7 +38,9 @@ const registrationRoutingAddLimitedPartnerLegalEntity = {
   nextUrl: TERRITORY_CHOICE_LIMITED_PARTNER_PRINCIPAL_OFFICE_ADDRESS_URL,
   pageType: RegistrationPageType.addLimitedPartnerLegalEntity,
   data: {
-    customPreviousUrl: url.REVIEW_LIMITED_PARTNERS_URL
+    customPreviousUrl: url.REVIEW_LIMITED_PARTNERS_URL,
+    partnerType: PartnerType.limitedPartner,
+    partnerEntityType: PartnerEntityType.legalEntity
   }
 };
 
