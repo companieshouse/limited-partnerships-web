@@ -92,21 +92,19 @@
     },
 
     "confirmationPage" : {
-        "title" : "Application submitted",
+        "title" : "Filing submitted",
         "referenceNumber" : "Your reference number",
-        "sentEmailTo" : "We have sent a confirmation email to",
+        "filingReceived" : "We've received your filing to register",
+        "sentEmailTo" : "We've sent a confirmation email to",
         "happensNext" : "What happens next",
-        "applicationProcess" : "We'll process the application as soon as possible. This will usually take no more than 3 to 5 working days.",
-        "willEmail": "We'll email",
-        "applicationAcceptedOrRejected" : "to let you know if your application has been accepted or rejected.",
+        "applicationProcess" : "We'll process this filing within 2 working days, and email",
+        "applicationAcceptedOrRejected" : "to let you know if it's been accepted or rejected.",
         "accepted": {
-            "title": "If the application is accepted",
-            "publicRegister": "We'll register the limited partnership and add the details to the Companies House public register."
+            "explain": "If it's accepted we'll register the limited partnership and publish its information on the Companies House public register. We'll send a certificate of registration to",
+            "registeredEmailAddress": "the partnership's registered email address",
+            "publish": "and publish a copy of this on the public register."
         },
-        "rejected": {
-            "title": "If the application is rejected",
-            "explain": "We'll explain why your application has been rejected and what you can do next. We'll also refund the registration fee."
-        },
+        "rejected": "If it's rejected, we'll explain why and tell you what you can do next. We'll also refund the registration fee.",
         "filing": {
             "partnershipName": "We've received your filing for",
             "sentEmail": "We've sent an email to",
@@ -119,8 +117,12 @@
             "message": "What did you think of this service?",
             "time": "(takes 30 seconds)"
         },
+        "transition" : {
+            "title": "Application submitted"
+        },
         "postTransition": {
             "title": "Update submitted",
+            "sentEmailTo" : "We have sent a confirmation email to",
             "registeredOfficeAddress": "We've received your filing to update the registered office address for",
             "name": "We've received your filing to update the name of",
             "term": "We've received your filing to update the term of the partnership for",

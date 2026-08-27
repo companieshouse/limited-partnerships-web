@@ -42,7 +42,7 @@ describe("Confirmation Page", () => {
       testTranslations(
         res.text,
         translationText.confirmationPage,
-        url === REGISTRATION_URL ? excludedKeysRegistartion : excludedKeysTransition
+        url === REGISTRATION_URL ? excludedKeysRegistration : excludedKeysTransition
       );
 
       if (url === TRANSITION_URL) {
@@ -59,7 +59,7 @@ describe("Confirmation Page", () => {
   });
 });
 
-const excludedKeysRegistartion = [
+const excludedKeysRegistration = [
   "provideMoreInformation",
   "tellUsAboutPSCs",
   "download",
@@ -67,13 +67,15 @@ const excludedKeysRegistartion = [
   "processUpdate",
   "willSendEmailTo",
   "updatePublicRegister",
-  "postTransition"
+  "postTransition",
+  "transition"
 ];
 
 const excludedKeysTransition = [
+  "title",
+  "filingReceived",
   "sentEmailTo",
   "applicationProcess",
-  "willEmail",
   "applicationAcceptedOrRejected",
   "accepted",
   "rejected",
