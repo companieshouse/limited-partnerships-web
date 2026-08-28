@@ -70,7 +70,8 @@ import {
   UPDATE_LIMITED_PARTNER_LEGAL_ENTITY_CHECK_YOUR_ANSWERS_URL,
   UPDATE_GENERAL_PARTNER_STOP_SCREEN_NO_CHANGE_URL,
   UPDATE_LIMITED_PARTNER_STOP_SCREEN_NO_CHANGE_URL,
-  GENERAL_PARTNER_CONTINUE_SAVED_FILING_URL
+  GENERAL_PARTNER_CONTINUE_SAVED_FILING_URL,
+  LIMITED_PARTNER_CONTINUE_SAVED_FILING_URL
 } from "../presentation/controller/postTransition/url";
 import {
   TRANSACTION_DESCRIPTION_ADD_GENERAL_PARTNER_LEGAL_ENTITY,
@@ -185,6 +186,17 @@ const postTransitionEndpoints = (router: Router, dependencies: IDependencies): v
   );
 
   // Limited Partner
+
+  router.get(
+    LIMITED_PARTNER_CONTINUE_SAVED_FILING_URL,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.getContinueSavedFilingPage()
+  );
+  router.post(
+    LIMITED_PARTNER_CONTINUE_SAVED_FILING_URL,
+    companyAuthentication,
+    dependencies.generalPartnerPostTransitionController.continueSavedFiling()
+  );
 
   router.get(
     LIMITED_PARTNER_CHOICE_URL,
