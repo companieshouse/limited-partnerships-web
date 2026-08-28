@@ -23,7 +23,7 @@ export interface DateOfUpdateTestConfig {
   translateExclude: string[];
   serviceNameTranslationKey: string;
   kind: PartnershipKind;
-  dateFieldType: string;
+  changeTypeKey: string;
   getDisplayedName: (entity: LimitedPartnership | GeneralPartner | LimitedPartner) => string;
 }
 
@@ -36,9 +36,12 @@ export function runDateOfUpdateTests(config: DateOfUpdateTestConfig): void {
     translateExclude,
     serviceNameTranslationKey,
     kind: kind,
-    dateFieldType,
+    changeTypeKey,
     getDisplayedName
   } = config;
+
+  const dateFieldType = enTranslationText.errorMessages.dateOfUpdate.changeType[changeTypeKey];
+  const dateFieldTypeCy = cyTranslationText.errorMessages.dateOfUpdate.changeType[changeTypeKey];
 
   describe("Date of update page", () => {
     beforeEach(() => {
@@ -144,7 +147,7 @@ export function runDateOfUpdateTests(config: DateOfUpdateTestConfig): void {
 
         expect(res.status).toBe(200);
         expect(res.text).toContain(
-          toEscapedHtml(getExpectedErrorMessage(cyTranslationText.errorMessages.dateOfUpdate.missing, dateFieldType))
+          toEscapedHtml(getExpectedErrorMessage(cyTranslationText.errorMessages.dateOfUpdate.missing, dateFieldTypeCy))
         );
       });
 

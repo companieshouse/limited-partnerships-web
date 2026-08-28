@@ -7,6 +7,7 @@ import {
 import { DATE_OF_UPDATE_FIELD, EMAIL_REGEX, VALID_CHARACTERS_REGEX } from "../../config/constants";
 import UIErrors from "../entities/UIErrors";
 import { validateDate } from "./DateValidators";
+import { buildDateOfUpdateErrorMessages } from "./dateOfUpdateErrorMessages";
 import { isWhenDidChangeUpdatePage } from "../../presentation/controller/postTransition/pageType";
 import RegistrationPageType from "../../presentation/controller/registration/PageType";
 
@@ -20,7 +21,7 @@ class LimitedPartnershipValidator {
     this.data = data;
 
     this.errorMessages = i18n?.errorMessages?.limitedPartnership || {};
-    this.dateOfUpdateErrorMessages = i18n?.errorMessages?.dateOfUpdate || {};
+    this.dateOfUpdateErrorMessages = buildDateOfUpdateErrorMessages(data.pageType, i18n);
 
     return this;
   }
@@ -126,8 +127,7 @@ class LimitedPartnershipValidator {
       {
         day: this.data[`${DATE_OF_UPDATE_FIELD}-day`],
         month: this.data[`${DATE_OF_UPDATE_FIELD}-month`],
-        year: this.data[`${DATE_OF_UPDATE_FIELD}-year`],
-        pageType: this.data.pageType
+        year: this.data[`${DATE_OF_UPDATE_FIELD}-year`]
       },
       uiErrors,
       DATE_OF_UPDATE_FIELD,

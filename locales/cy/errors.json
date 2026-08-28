@@ -150,7 +150,7 @@
             "dayInvalidLength": "WELSH - Day must be 1 or 2 numbers",
             "monthInvalidLength": "WELSH - Month must be 1 or 2 numbers",
             "yearInvalidLength": "WELSH - Year must be 4 numbers",
-            "beforeRegistrationDate": "WELSH - Cease date must be the same as or after the limited partnership’s registration date"
+            "beforeRegistrationDate": "WELSH - Cease date must be the same as or after the limited partnership's registration date"
         },
 
         "dateEffectiveFrom": {
@@ -167,7 +167,7 @@
             "dayInvalidLength": "WELSH - Day must be 1 or 2 numbers",
             "monthInvalidLength": "WELSH - Month must be 1 or 2 numbers",
             "yearInvalidLength": "WELSH - Year must be 4 numbers",
-            "beforeRegistrationDate": "WELSH - Date effective from must be the same as or after the limited partnership’s registration date"
+            "beforeRegistrationDate": "WELSH - Date effective from must be the same as or after the limited partnership's registration date"
         },
 
         "partners": {
@@ -262,20 +262,30 @@
         },
 
         "dateOfUpdate": {
-            "notInPast": "WELSH - The date the {change-type} changed must be in the past",
-            "beforeRegistrationDate": "WELSH - The date the {change-type} changed must be after the partnership’s registration date",
+            "notInPast": "WELSH - Date the {change-type} changed must be today or in the past",
+            "beforeRegistrationDate": "WELSH - Date the {change-type} changed must be after the partnership's registration date",
             "missing": "WELSH - Enter the date the {change-type} changed",
-            "dayMissing": "WELSH - The date the {change-type} changed must include a day",
-            "monthMissing": "WELSH - The date the {change-type} changed must include a month",
-            "yearMissing": "WELSH - The date the {change-type} changed must include a year",
-            "dayAndMonthMissing": "WELSH - The date the {change-type} changed must include a day and a month",
-            "monthAndYearMissing": "WELSH - The date the {change-type} changed must include a month and a year",
-            "dayAndYearMissing": "WELSH - The date the {change-type} changed must include a day and a year",
-            "invalidChars": "WELSH - The date the {change-type} changed must only include numbers",
-            "invalid": "WELSH - The date the {change-type} changed must be a real date",
+            "dayMissing": "WELSH - Date the {change-type} changed must include a day",
+            "monthMissing": "WELSH - Date the {change-type} changed must include a month",
+            "yearMissing": "WELSH - Date the {change-type} changed must include a year",
+            "dayAndMonthMissing": "WELSH - Date the {change-type} changed must include a day and a month",
+            "monthAndYearMissing": "WELSH - Date the {change-type} changed must include a month and a year",
+            "dayAndYearMissing": "WELSH - Date the {change-type} changed must include a day and a year",
+            "invalidChars": "WELSH - Date the {change-type} changed must only include numbers",
+            "invalid": "WELSH - Date the {change-type} changed must be a real date",
             "dayInvalidLength": "WELSH - Day must be 1 or 2 numbers",
             "monthInvalidLength": "WELSH - Month must be 1 or 2 numbers",
-            "yearInvalidLength": "WELSH - Year must be 4 numbers"
+            "yearInvalidLength": "WELSH - Year must be 4 numbers",
+            "changeType": {
+                "partnershipName": "WELSH - name of the partnership",
+                "registeredOfficeAddress": "WELSH - registered office address",
+                "principalPlaceOfBusinessAddress": "WELSH - principal place of business address",
+                "term": "WELSH - term",
+                "generalPartnerPerson": "WELSH - general partner person details",
+                "generalPartnerLegalEntity": "WELSH - general partner legal entity details",
+                "limitedPartnerPerson": "WELSH - limited partner person details",
+                "limitedPartnerLegalEntity": "WELSH - limited partner legal entity details"
+            }
         },
 
         "sicCodes": {

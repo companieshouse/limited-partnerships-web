@@ -149,7 +149,7 @@
             "dayInvalidLength": "Day must be 1 or 2 numbers",
             "monthInvalidLength": "Month must be 1 or 2 numbers",
             "yearInvalidLength": "Year must be 4 numbers",
-            "beforeRegistrationDate": "Cease date must be the same as or after the limited partnership’s registration date"
+            "beforeRegistrationDate": "Cease date must be the same as or after the limited partnership's registration date"
 
         },
 
@@ -262,20 +262,30 @@
         },
 
         "dateOfUpdate": {
-            "notInPast": "The date the {change-type} changed must be in the past",
-            "beforeRegistrationDate": "The date the {change-type} changed must be after the partnership’s registration date",
+            "notInPast": "Date the {change-type} changed must be today or in the past",
+            "beforeRegistrationDate": "Date the {change-type} changed must be after the partnership's registration date",
             "missing": "Enter the date the {change-type} changed",
-            "dayMissing": "The date the {change-type} changed must include a day",
-            "monthMissing": "The date the {change-type} changed must include a month",
-            "yearMissing": "The date the {change-type} changed must include a year",
-            "dayAndMonthMissing": "The date the {change-type} changed must include a day and a month",
-            "monthAndYearMissing": "The date the {change-type} changed must include a month and a year",
-            "dayAndYearMissing": "The date the {change-type} changed must include a day and a year",
-            "invalidChars": "The date the {change-type} changed must only include numbers",
-            "invalid": "The date the {change-type} changed must be a real date",
+            "dayMissing": "Date the {change-type} changed must include a day",
+            "monthMissing": "Date the {change-type} changed must include a month",
+            "yearMissing": "Date the {change-type} changed must include a year",
+            "dayAndMonthMissing": "Date the {change-type} changed must include a day and a month",
+            "monthAndYearMissing": "Date the {change-type} changed must include a month and a year",
+            "dayAndYearMissing": "Date the {change-type} changed must include a day and a year",
+            "invalidChars": "Date the {change-type} changed must only include numbers",
+            "invalid": "Date the {change-type} changed must be a real date",
             "dayInvalidLength": "Day must be 1 or 2 numbers",
             "monthInvalidLength": "Month must be 1 or 2 numbers",
-            "yearInvalidLength": "Year must be 4 numbers"
+            "yearInvalidLength": "Year must be 4 numbers",
+            "changeType": {
+                "partnershipName": "name of the partnership",
+                "registeredOfficeAddress": "registered office address",
+                "principalPlaceOfBusinessAddress": "principal place of business address",
+                "term": "term",
+                "generalPartnerPerson": "general partner person details",
+                "generalPartnerLegalEntity": "general partner legal entity details",
+                "limitedPartnerPerson": "limited partner person details",
+                "limitedPartnerLegalEntity": "limited partner legal entity details"
+            }
         },
 
         "sicCodes": {

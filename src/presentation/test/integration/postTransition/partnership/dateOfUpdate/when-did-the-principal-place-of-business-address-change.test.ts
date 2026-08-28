@@ -16,7 +16,7 @@ runDateOfUpdateTests({
   translateExclude: ["registeredOfficeAddress", "term", "partnershipName", "generalPartner", "limitedPartner"],
   serviceNameTranslationKey: "updateLimitedPartnershipPrincipalPlaceOfBusinessAddress",
   kind: PartnershipKind.UPDATE_PARTNERSHIP_PRINCIPAL_PLACE_OF_BUSINESS_ADDRESS,
-  dateFieldType: "principal place of business address",
+  changeTypeKey: "principalPlaceOfBusinessAddress",
   getDisplayedName: (lp: LimitedPartnership) =>
     `${lp?.data?.partnership_name?.toUpperCase()} ${lp?.data?.name_ending?.toUpperCase()} (${lp?.data?.partnership_number})`
 });
