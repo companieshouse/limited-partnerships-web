@@ -1,11 +1,3 @@
-import request from "supertest";
-
-import app from "../../app";
-
-import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
-import { appDevDependencies } from "../../../../../config/dev-dependencies";
-import { countOccurrences, getUrl, setLocalesEnabled, toEscapedHtml } from "../../../utils";
-import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 import {
   WHEN_DID_LIMITED_PARTNER_PERSON_DETAILS_CHANGE_URL,
   UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL,
@@ -13,22 +5,31 @@ import {
 } from "../../../../../presentation/controller/postTransition/url";
 import PostTransitionPageType from "../../../../controller/postTransition/pageType";
 import { PartnerKind } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
-import TransactionBuilder from "../../../builder/TransactionBuilder";
+import { getUrl } from "../../../utils";
+import { runDateOfUpdateTests } from "../../shared/dateOfUpdateTestSuite";
+import LimitedPartnerBuilder from "../../../builder/LimitedPartnerBuilder";
 import CompanyAppointmentBuilder from "../../../builder/CompanyAppointmentBuilder";
+import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
+import { appDevDependencies } from "../../../../../config/dev-dependencies";
 import { OFFICER_ROLE_GENERAL_PARTNER_PERSON } from "../../../../../config/constants";
 import TransactionLimitedPartner from "../../../../../domain/entities/TransactionLimitedPartner";
-import { enTranslationText, cyTranslationText } from "../../../../../test/utils/locales";
-describe("Limited partner person change date page", () => {
-  const URL = getUrl(WHEN_DID_LIMITED_PARTNER_PERSON_DETAILS_CHANGE_URL);
-  const BACK_LINK_URL = getUrl(UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL);
 
-  let limitedPartner: TransactionLimitedPartner;
-
-  beforeEach(() => {
-    setLocalesEnabled(false);
-
+runDateOfUpdateTests({
+  url: getUrl(WHEN_DID_LIMITED_PARTNER_PERSON_DETAILS_CHANGE_URL),
+  backLinkUrl: getUrl(UPDATE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_YES_NO_URL),
+  pageType: PostTransitionPageType.whenDidLimitedPartnerPersonDetailsChange,
+  redirectUrl: getUrl(UPDATE_LIMITED_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL),
+  translateExclude: ["registeredOfficeAddress", "principalPlaceOfBusinessAddress", "term", "partnershipName", "limitedPartner"],
+  serviceNameTranslationKey: "updateLimitedPartnerPerson",
+  kind: PartnerKind.UPDATE_LIMITED_PARTNER_PERSON,
+  changeTypeKey: "limitedPartnerPerson",
+  existingDate: { day: "10", month: "10", year: "2024" },
+  getDisplayedName: (entity) => {
+    const limitedPartner = entity as TransactionLimitedPartner;
+    return `${limitedPartner?.data?.forename?.toUpperCase()} ${limitedPartner?.data?.surname?.toUpperCase()}`;
+  },
+  additionalSetup: () => {
     const companyProfile = new CompanyProfileBuilder().build();
-    appDevDependencies.companyGateway.feedCompanyProfile(companyProfile.data);
 
     const companyAppointmentPerson = new CompanyAppointmentBuilder()
       .withOfficerRole(OFFICER_ROLE_GENERAL_PARTNER_PERSON)
@@ -39,7 +40,7 @@ describe("Limited partner person change date page", () => {
 
     const [surname, forename] = companyAppointmentPerson?.name?.split(", ") ?? [];
 
-    limitedPartner = new LimitedPartnerBuilder()
+    const limitedPartner = new LimitedPartnerBuilder()
       .withId(appDevDependencies.limitedPartnerGateway.limitedPartnerId)
       .isPerson()
       .withKind(PartnerKind.UPDATE_LIMITED_PARTNER_PERSON)
@@ -51,87 +52,6 @@ describe("Limited partner person change date page", () => {
 
     appDevDependencies.limitedPartnerGateway.feedLimitedPartners([limitedPartner]);
 
-    const transaction = new TransactionBuilder().withKind(PartnerKind.UPDATE_LIMITED_PARTNER_PERSON).build();
-    appDevDependencies.transactionGateway.feedTransactions([transaction]);
-  });
-
-  describe("GET limited partner change date page", () => {
-    it.each([
-      ["English", "en"],
-      ["Welsh", "cy"]
-    ])("should load limited partner change date page with %s text", async (description: string, lang: string) => {
-      setLocalesEnabled(true);
-      const res = await request(app).get(`${URL}?lang=${lang}`);
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(BACK_LINK_URL);
-      expect(res.text).toContain(
-        `${limitedPartner.data?.forename?.toUpperCase()} ${limitedPartner.data?.surname?.toUpperCase()}`
-      );
-
-      if (lang === "cy") {
-        expect(res.text).toContain("WELSH - ");
-        expect(res.text).toContain(`${cyTranslationText.dateOfUpdate.limitedPartner.title}`);
-        expect(
-          countOccurrences(res.text, toEscapedHtml(cyTranslationText.serviceName.updateLimitedPartnerPerson))
-        ).toBe(2);
-      } else {
-        expect(res.text).not.toContain("WELSH -");
-        expect(res.text).toContain(`${enTranslationText.dateOfUpdate.limitedPartner.title}`);
-        expect(
-          countOccurrences(res.text, toEscapedHtml(enTranslationText.serviceName.updateLimitedPartnerPerson))
-        ).toBe(2);
-      }
-    });
-
-    it("should populate the date fields with the existing date of update if it exists", async () => {
-      const res = await request(app).get(URL);
-
-      expect(res.status).toBe(200);
-      expect(res.text).toMatch(/<input[^>]*name="date_of_update-year"[^>]*value="2024"[^>]*>/);
-      expect(res.text).toMatch(/<input[^>]*name="date_of_update-month"[^>]*value="10"[^>]*>/);
-      expect(res.text).toMatch(/<input[^>]*name="date_of_update-day"[^>]*value="10"[^>]*>/);
-    });
-  });
-
-  describe("POST limited partner change date page", () => {
-    it("should navigate to next page with date of update", async () => {
-      const today = new Date();
-      const day = today.getDate().toString().padStart(2, "0");
-      const month = (today.getMonth() + 1).toString().padStart(2, "0");
-      const year = today.getFullYear().toString();
-
-      const res = await request(app).post(URL).send({
-        pageType: PostTransitionPageType.whenDidLimitedPartnerPersonDetailsChange,
-        "date_of_update-day": day,
-        "date_of_update-month": month,
-        "date_of_update-year": year
-      });
-
-      const REDIRECT_URL = getUrl(UPDATE_LIMITED_PARTNER_PERSON_CHECK_YOUR_ANSWERS_URL);
-
-      expect(res.status).toBe(302);
-      expect(limitedPartner.data?.date_of_update).toBe(`${year}-${month}-${day}`);
-      expect(res.text).toContain(`Redirecting to ${REDIRECT_URL}`);
-    });
-
-    it("should display error message when date of update is before the incorporation date", async () => {
-      const res = await request(app).post(URL).send({
-        pageType: PostTransitionPageType.whenDidLimitedPartnerPersonDetailsChange,
-        "date_of_update-day": "10",
-        "date_of_update-month": "01",
-        "date_of_update-year": "2022"
-      });
-
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(
-        toEscapedHtml(
-          enTranslationText.errorMessages.dateOfUpdate.beforeRegistrationDate.replace(
-            "{change-type}",
-            "limited partner person details"
-          )
-        )
-      );
-    });
-  });
+    return limitedPartner;
+  }
 });

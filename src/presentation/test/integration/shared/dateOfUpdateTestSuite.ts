@@ -10,6 +10,7 @@ import {
   GeneralPartner,
   LimitedPartner,
   LimitedPartnership,
+  PartnerKind,
   PartnershipKind
 } from "@companieshouse/api-sdk-node/dist/services/limited-partnerships";
 import { enTranslationText, cyTranslationText } from "../../../../test/utils/locales";
@@ -22,9 +23,12 @@ export interface DateOfUpdateTestConfig {
   redirectUrl: string;
   translateExclude: string[];
   serviceNameTranslationKey: string;
-  kind: PartnershipKind;
+  kind: PartnershipKind | PartnerKind;
   changeTypeKey: string;
   getDisplayedName: (entity: LimitedPartnership | GeneralPartner | LimitedPartner) => string;
+  // feeds any entity-specific gateways (e.g. a general/limited partner and its company appointment) and returns the entity under test
+  additionalSetup?: () => LimitedPartnership | GeneralPartner | LimitedPartner;
+  existingDate?: { day: string; month: string; year: string };
 }
 
 export function runDateOfUpdateTests(config: DateOfUpdateTestConfig): void {
@@ -37,11 +41,15 @@ export function runDateOfUpdateTests(config: DateOfUpdateTestConfig): void {
     serviceNameTranslationKey,
     kind: kind,
     changeTypeKey,
-    getDisplayedName
+    getDisplayedName,
+    additionalSetup,
+    existingDate = { day: "01", month: "01", year: "2023" }
   } = config;
 
   const dateFieldType = enTranslationText.errorMessages.dateOfUpdate.changeType[changeTypeKey];
   const dateFieldTypeCy = cyTranslationText.errorMessages.dateOfUpdate.changeType[changeTypeKey];
+
+  let entity: LimitedPartnership | GeneralPartner | LimitedPartner;
 
   describe("Date of update page", () => {
     beforeEach(() => {
@@ -56,6 +64,8 @@ export function runDateOfUpdateTests(config: DateOfUpdateTestConfig): void {
 
       const transaction = new TransactionBuilder().withKind(kind).build();
       appDevDependencies.transactionGateway.feedTransactions([transaction]);
+
+      entity = additionalSetup ? additionalSetup() : limitedPartnership;
     });
 
     describe("GET date of update page", () => {
@@ -75,8 +85,7 @@ export function runDateOfUpdateTests(config: DateOfUpdateTestConfig): void {
         }
         expect(countOccurrences(res.text, toEscapedHtml(translationText.serviceName[serviceNameTranslationKey]))).toBe(2);
 
-        const limitedPartnership = new LimitedPartnershipBuilder().build();
-        expect(res.text).toContain(getDisplayedName(limitedPartnership));
+        expect(res.text).toContain(getDisplayedName(entity));
         expect(res.text).toContain(customerFeedbackUrlMap[serviceNameTranslationKey]);
         expect(res.text).toContain(backLinkUrl);
       });
@@ -85,9 +94,9 @@ export function runDateOfUpdateTests(config: DateOfUpdateTestConfig): void {
         const res = await request(app).get(url);
 
         expect(res.status).toBe(200);
-        expect(res.text).toMatch(/<input[^>]*name="date_of_update-year"[^>]*value="2023"[^>]*>/);
-        expect(res.text).toMatch(/<input[^>]*name="date_of_update-month"[^>]*value="01"[^>]*>/);
-        expect(res.text).toMatch(/<input[^>]*name="date_of_update-day"[^>]*value="01"[^>]*>/);
+        expect(res.text).toMatch(new RegExp(`<input[^>]*name="date_of_update-year"[^>]*value="${existingDate.year}"[^>]*>`));
+        expect(res.text).toMatch(new RegExp(`<input[^>]*name="date_of_update-month"[^>]*value="${existingDate.month}"[^>]*>`));
+        expect(res.text).toMatch(new RegExp(`<input[^>]*name="date_of_update-day"[^>]*value="${existingDate.day}"[^>]*>`));
       });
     });
 
