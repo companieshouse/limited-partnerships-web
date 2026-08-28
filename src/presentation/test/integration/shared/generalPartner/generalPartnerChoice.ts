@@ -13,7 +13,7 @@ import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 
 import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 
-import { getServiceTitle, isPostTransition } from "./utils";
+import { getServiceTitle, isPostTransition } from "../utils";
 import { SERVICE_NAME_KEY_REGISTRATION, SERVICE_NAME_KEY_TRANSITION } from "../../../../../config/constants";
 
 type GeneralPartnerChoiceTestConfig = {

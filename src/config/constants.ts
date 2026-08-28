@@ -146,6 +146,9 @@ export const CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE = "limited-partnership-change-ch
 export const REMOVE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX = "remove-check-your-answers";
 export const PARTNER_CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE = "partner-change-check-your-answers";
 
+// Continue saved filing
+export const CONTINUE_SAVED_FILING_TEMPLATE = "continue-saved-filing";
+
 // services
 export const SDK_LIMITED_PARTNERSHIP_SERVICE = "limitedPartnershipsService";
 export const SDK_POSTCODE_LOOKUP_SERVICE = "postCodeLookup";

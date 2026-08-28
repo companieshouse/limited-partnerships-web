@@ -10,10 +10,20 @@ import {
   ENTER_GENERAL_PARTNER_CORRESPONDENCE_ADDRESS_URL
 } from "../../addressLookUp/url/postTransition";
 import { YOUR_COMPANY_OFFICERS_URL } from "../../../../config";
-import { PartnerEntityType } from "../../../../domain/types";
+import { PartnerEntityType, PartnerType } from "../../../../domain/types";
+
+const postTransitionRoutingGeneralPartnerContinueSavedFiling = {
+  previousUrl: YOUR_COMPANY_OFFICERS_URL,
+  currentUrl: url.GENERAL_PARTNER_CONTINUE_SAVED_FILING_URL,
+  nextUrl: url.GENERAL_PARTNER_CHOICE_URL,
+  pageType: PostTransitionPageType.generalPartnerContinueSavedFiling,
+  data: {
+    serviceName: "addGeneralPartner"
+  }
+};
 
 const postTransitionRoutingGeneralPartnerChoice = {
-  previousUrl: YOUR_COMPANY_OFFICERS_URL,
+  previousUrl: url.GENERAL_PARTNER_CONTINUE_SAVED_FILING_URL,
   currentUrl: url.GENERAL_PARTNER_CHOICE_URL,
   nextUrl: "/",
   pageType: PostTransitionPageType.generalPartnerType,
@@ -40,6 +50,7 @@ const postTransitionRoutingAddGeneralPartnerPerson = {
   pageType: PostTransitionPageType.addGeneralPartnerPerson,
   data: {
     serviceName: "addGeneralPartner",
+    partnerType: PartnerType.generalPartner,
     partnerEntityType: PartnerEntityType.person
   }
 };
@@ -233,6 +244,7 @@ const postTransitionRoutingGeneralPartnerStopScreenNoChange = {
 };
 
 const generalPartnerRouting = [
+  postTransitionRoutingGeneralPartnerContinueSavedFiling,
   postTransitionRoutingGeneralPartnerChoice,
   postTransitionRoutingAddGeneralPartnerLegalEntity,
   postTransitionRoutingAddGeneralPartnerPerson,

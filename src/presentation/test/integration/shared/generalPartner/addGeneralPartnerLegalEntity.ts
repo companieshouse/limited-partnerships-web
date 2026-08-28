@@ -14,7 +14,7 @@ import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 
 import { customerFeedbackUrlMap } from "../../../../../middlewares/customer-feedback.middleware";
 
-import { getServiceTitle, isPostTransition } from "./utils";
+import { getServiceTitle, isPostTransition } from "../utils";
 import { SERVICE_NAME_KEY_TRANSITION } from "../../../../../config/constants";
 import { PagesRouting } from "../../../../controller/PageRouting";
 import PageType from "../../../../controller/PageType";
@@ -46,11 +46,7 @@ export const runAddGeneralPartnerLegalEntityTests = (config: AddGeneralPartnerLe
       data: Partial<CompanyProfile>;
     };
 
-    const datesBody = {
-      "date_effective_from-day": "01",
-      "date_effective_from-month": "11",
-      "date_effective_from-year": "2024"
-    };
+    const datesBody = isPostTransition(config.serviceTitleTranslationKey) ? { "date_effective_from-day": "01", "date_effective_from-month": "11", "date_effective_from-year": "2024" } : {};
 
     const generalPartner = new GeneralPartnerBuilder()
       .isLegalEntity()

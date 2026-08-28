@@ -6,6 +6,8 @@ import {
 import { CEASE_DATE_FIELD, DATE_EFFECTIVE_FROM_FIELD, DATE_OF_UPDATE_FIELD } from "../../config";
 import UIErrors from "../entities/UIErrors";
 import { validateDate } from "./DateValidators";
+import { capitalContributionValidation, isCapitalContributionApplicable } from "./capitalContributionValidator";
+import { PartnerType } from "../types";
 
 class PartnerLegalEntityValidator {
   private data: Record<string, any> = {};
@@ -14,12 +16,24 @@ class PartnerLegalEntityValidator {
   private ceaseDateErrorMessages: Record<string, string> = {};
   private dateOfUpdateErrorMessages: Record<string, string> = {};
 
+  private currencies: Record<string, any> = {};
+  private errorMessages: Record<string, any> = {};
+
   set(data: Record<string, any>, i18n: any): this {
     this.data = data;
 
     this.ceaseDateErrorMessages = i18n?.errorMessages?.ceaseDate ?? {};
     this.dateEffectiveFromErrorMessages = i18n?.errorMessages?.dateEffectiveFrom ?? {};
     this.dateOfUpdateErrorMessages = i18n?.errorMessages?.dateOfUpdate ?? {};
+
+    this.currencies = i18n?.currencies || {};
+    this.errorMessages = {
+      ...i18n?.errorMessages?.partners?.addPartner,
+      capitalContribution: {
+        ...i18n?.errorMessages?.capitalContribution
+      }
+    };
+
     return this;
   }
 
@@ -37,7 +51,6 @@ class PartnerLegalEntityValidator {
         CEASE_DATE_FIELD,
         this.ceaseDateErrorMessages
       );
-      return uiErrors;
     }
 
     if (isAddPartnerPage(this.data.pageType) && this.data.journeyTypes.isPostTransition) {
@@ -52,7 +65,6 @@ class PartnerLegalEntityValidator {
         this.dateEffectiveFromErrorMessages,
         this.data.registration_date
       );
-      return uiErrors;
     }
 
     if (isWhenDidChangeUpdatePage(this.data.pageType)) {
@@ -68,11 +80,33 @@ class PartnerLegalEntityValidator {
         this.dateOfUpdateErrorMessages,
         this.data.registration_date
       );
+    }
 
-      return uiErrors;
+    if (
+      isCapitalContributionApplicable(
+        this.data.journeyTypes,
+        this.data.partnershipType,
+        this.data.partnerType || ("" as PartnerType)
+      )
+    ) {
+      capitalContributionValidation(
+        {
+          contribution_currency_type: this.data.contribution_currency_type,
+          contribution_currency_value: this.data.contribution_currency_value,
+          contribution_sub_types: this.data.contribution_sub_types
+        },
+        this.currencies,
+        this.overrideCapitalContributionType.bind(this),
+        uiErrors,
+        this.errorMessages?.capitalContribution
+      );
     }
 
     return uiErrors;
+  }
+
+  private overrideCapitalContributionType(capitalContributionType: string): void {
+    this.data.contribution_currency_type = capitalContributionType;
   }
 }
 

@@ -4,17 +4,18 @@ import app from "../app";
 import { YOUR_FILINGS_URL } from "../../../../config/constants";
 import { setLocalesEnabled, testTranslations } from "../../utils";
 import { enTranslationText, cyTranslationText } from "../../../../test/utils/locales";
+import { getServiceTitle } from "./utils";
 
 export interface ContinueSavedFilingTestConfig {
   continueUrl: string;
   pageType: string;
-  serviceName: string;
+  serviceTitleTranslationKey: { serviceName: string } | string;
   noRedirectUrl: string;
   customerFeedbackUrl: string;
 }
 
 export function runContinueSavedFilingTests(config: ContinueSavedFilingTestConfig): void {
-  const { continueUrl, pageType, serviceName, noRedirectUrl, customerFeedbackUrl } = config;
+  const { continueUrl, pageType, serviceTitleTranslationKey, noRedirectUrl, customerFeedbackUrl } = config;
 
   describe("Continue Saved Filing Page", () => {
     beforeEach(() => {
@@ -32,7 +33,9 @@ export function runContinueSavedFilingTests(config: ContinueSavedFilingTestConfi
       expect(res.status).toBe(200);
       testTranslations(res.text, translationText.continueSavedFilingPage);
       expect(res.text).toContain(translationText.buttons.continue);
-      expect(res.text).toContain(serviceName);
+
+      expect(res.text).toContain(getServiceTitle(serviceTitleTranslationKey, translationText));
+
       expect(res.text).toContain(customerFeedbackUrl);
       expect(res.text).not.toContain(translationText.errorMessages.continueSavedFilingPage.selectOption);
     });

@@ -82,7 +82,8 @@
             "landOrProperty" : "Land or property",
             "shares" : "Shares or interests in other partnerships",
             "servicesOrGoods" : "Services or goods",
-            "anyOtherAsset" : "Any other asset"
+            "anyOtherAsset" : "Any other asset",
+            "searchPlaceholder": "Select currency"
         },
         "ceaseDate" : {
             "dateHint": "For example, 27 3 2025",

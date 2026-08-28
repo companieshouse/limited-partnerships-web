@@ -6,12 +6,13 @@ import {
 } from "../../../config/constants";
 
 enum PostTransitionPageType {
-
+  generalPartnerContinueSavedFiling = "general-partner-continue-saved-filing",
   generalPartnerType = "general-partner-type",
   addGeneralPartnerPerson = "add-general-partner-person",
   addGeneralPartnerLegalEntity = "add-general-partner-legal-entity",
   generalPartnerCheckYourAnswers = "general-partner-check-your-answers",
 
+  limitedPartnerContinueSavedFiling = "limited-partner-continue-saved-filing",
   limitedPartnerType = "limited-partner-type",
   addLimitedPartnerPerson = "add-limited-partner-person",
   addLimitedPartnerLegalEntity = "add-limited-partner-legal-entity",

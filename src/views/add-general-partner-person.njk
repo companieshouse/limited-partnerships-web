@@ -92,20 +92,13 @@
             {
               value: "true",
               text: i18n.partner.addPartnerPersonPage.generalPartner.previousName.yes,
-              attributes: {
-                "role": "radiogroup",
-                required: true
-              }  if not journeyTypes.isRegistration,
               conditional: {
                 html: previousHtmlPerson
               }
             },
             {
               value: "false",
-              text: i18n.partner.addPartnerPersonPage.generalPartner.previousName.no,
-              attributes: {
-                required: true
-              } if not journeyTypes.isRegistration
+              text: i18n.partner.addPartnerPersonPage.generalPartner.previousName.no
             }
           ],
           errorMessage: props.errors.previous_name if props.errors
@@ -130,38 +123,26 @@
               classes: "govuk-input--width-2",
               label: i18n.partner.addPartnerPersonPage.dateDay,
               name: "day",
-              value: date_of_birth_day,
-              attributes: {
-                required: true,
-                pattern: "[0-9]*"
-              } if not journeyTypes.isRegistration
+              value: date_of_birth_day
             },
             {
               classes: "govuk-input--width-2",
               label: i18n.partner.addPartnerPersonPage.dateMonth,
               name: "month",
-              value: date_of_birth_month,
-              attributes: {
-                required: true,
-                pattern: "[0-9]*"
-              } if not journeyTypes.isRegistration
+              value: date_of_birth_month
             },
             {
               classes: "govuk-input--width-4",
               label: i18n.partner.addPartnerPersonPage.dateYear,
               name: "year",
-              value: date_of_birth_year,
-               attributes: {
-                required: true,
-                pattern: "[0-9]*"
-              } if not journeyTypes.isRegistration
+              value: date_of_birth_year
             }
           ]
         }) }}
 
         {% set nationalityField = props.data.generalPartner.data.nationality1 %}
         {% set nationalityFieldSelectPrompt = i18n.partner.addPartnerPersonPage.nationalitySelectPrompt %}
-        {% set nationalityFieldRequired = "true" if not journeyTypes.isRegistration else "false" %}
+        {% set nationalityFieldRequired = "false" %}
         {% set nationalityFieldText = i18n.partner.addPartnerPersonPage.nationality %}
         {% set nationalityFieldHintText = "" %}
         {% set nationalityFieldNameId = "nationality1" %}
@@ -199,31 +180,19 @@
                 classes: "govuk-input--width-2",
                 label: i18n.partner.addPartnerPersonPage.dateDay,
                 name: "day",
-                value: date_effective_from_day,
-                attributes: {
-                  required: true,
-                  pattern: "[0-9]*"
-                }
+                value: date_effective_from_day
               },
               {
                 classes: "govuk-input--width-2",
                 label: i18n.partner.addPartnerPersonPage.dateMonth,
                 name: "month",
-                value: date_effective_from_month,
-                attributes: {
-                  required: true,
-                  pattern: "[0-9]*"
-                }
+                value: date_effective_from_month
               },
               {
                 classes: "govuk-input--width-4",
                 label: i18n.partner.addPartnerPersonPage.dateYear,
                 name: "year",
-                value: date_effective_from_year,
-                attributes: {
-                  required: true,
-                  pattern: "[0-9]*"
-                }
+                value: date_effective_from_year
               }
             ]
           }) }}

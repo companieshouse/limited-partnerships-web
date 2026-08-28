@@ -15,7 +15,7 @@ import CompanyProfileBuilder from "../../../builder/CompanyProfileBuilder";
 
 import TransactionLimitedPartnership from "../../../../../domain/entities/TransactionLimitedPartnership";
 
-import { getServiceTitle, isPostTransition } from "./utils";
+import { getServiceTitle, isPostTransition } from "../utils";
 import { SERVICE_NAME_KEY_REGISTRATION, SERVICE_NAME_KEY_TRANSITION } from "../../../../../config/constants";
 import { PagesRouting } from "../../../../controller/PageRouting";
 import PageType from "../../../../controller/PageType";

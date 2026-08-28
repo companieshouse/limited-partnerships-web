@@ -9,10 +9,20 @@ import {
   TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "../../addressLookUp/url/postTransition";
 import { YOUR_COMPANY_OFFICERS_URL } from "../../../../config/constants";
-import { PartnerEntityType } from "../../../../domain/types";
+import { PartnerEntityType, PartnerType } from "../../../../domain/types";
+
+const postTransitionRoutingLimitedPartnerContinueSavedFiling = {
+  previousUrl: YOUR_COMPANY_OFFICERS_URL,
+  currentUrl: url.LIMITED_PARTNER_CONTINUE_SAVED_FILING_URL,
+  nextUrl: url.LIMITED_PARTNER_CHOICE_URL,
+  pageType: PostTransitionPageType.limitedPartnerContinueSavedFiling,
+  data: {
+    serviceName: "addLimitedPartner"
+  }
+};
 
 const postTransitionRoutingLimitedPartnerChoice = {
-  previousUrl: YOUR_COMPANY_OFFICERS_URL,
+  previousUrl: url.LIMITED_PARTNER_CONTINUE_SAVED_FILING_URL,
   currentUrl: url.LIMITED_PARTNER_CHOICE_URL,
   nextUrl: "/",
   pageType: PostTransitionPageType.limitedPartnerType,
@@ -28,6 +38,7 @@ const postTransitionRoutingAddLimitedPartnerPerson = {
   pageType: PostTransitionPageType.addLimitedPartnerPerson,
   data: {
     serviceName: "addLimitedPartner",
+    partnerType: PartnerType.limitedPartner,
     partnerEntityType: PartnerEntityType.person
   }
 };
@@ -39,6 +50,7 @@ const postTransitionRoutingAddLimitedPartnerLegalEntity = {
   pageType: PostTransitionPageType.addLimitedPartnerLegalEntity,
   data: {
     serviceName: "addLimitedPartner",
+    partnerType: PartnerType.limitedPartner,
     partnerEntityType: PartnerEntityType.legalEntity
   }
 };
@@ -215,6 +227,7 @@ const postTransitionRoutingLimitedPartnerStopScreenNoChange = {
 };
 
 const limitedPartnerRouting = [
+  postTransitionRoutingLimitedPartnerContinueSavedFiling,
   postTransitionRoutingLimitedPartnerChoice,
   postTransitionRoutingAddLimitedPartnerPerson,
   postTransitionRoutingAddLimitedPartnerLegalEntity,
