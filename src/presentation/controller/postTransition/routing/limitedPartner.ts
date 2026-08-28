@@ -9,7 +9,7 @@ import {
   TERRITORY_CHOICE_LIMITED_PARTNER_USUAL_RESIDENTIAL_ADDRESS_URL
 } from "../../addressLookUp/url/postTransition";
 import { YOUR_COMPANY_OFFICERS_URL } from "../../../../config/constants";
-import { PartnerEntityType } from "../../../../domain/types";
+import { PartnerEntityType, PartnerType } from "../../../../domain/types";
 
 const postTransitionRoutingLimitedPartnerChoice = {
   previousUrl: YOUR_COMPANY_OFFICERS_URL,
@@ -28,6 +28,7 @@ const postTransitionRoutingAddLimitedPartnerPerson = {
   pageType: PostTransitionPageType.addLimitedPartnerPerson,
   data: {
     serviceName: "addLimitedPartner",
+    partnerType: PartnerType.limitedPartner,
     partnerEntityType: PartnerEntityType.person
   }
 };
@@ -39,6 +40,7 @@ const postTransitionRoutingAddLimitedPartnerLegalEntity = {
   pageType: PostTransitionPageType.addLimitedPartnerLegalEntity,
   data: {
     serviceName: "addLimitedPartner",
+    partnerType: PartnerType.limitedPartner,
     partnerEntityType: PartnerEntityType.legalEntity
   }
 };

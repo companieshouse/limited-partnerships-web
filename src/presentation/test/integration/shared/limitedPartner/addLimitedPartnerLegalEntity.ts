@@ -161,19 +161,21 @@ export const runAddLimitedPartnerLegalEntityTests = (config: AddLimitedPartnerLe
 
       // validation tests skipped until proper validation logic is implemented
       it.skip("should replay entered data when invalid data is entered and a validation error occurs", async () => {
-        const res = await request(app).post(getUrl(config.url)).send({
-          ...config.pageRouting.get(config.pageType.addLimitedPartnerLegalEntity as PageType),
-          legal_entity_name: "INVALID-CHARACTERS-FORENAME",
-          legal_form: "Limited Company",
-          governing_law: "Act of law",
-          legal_entity_register_name: "US Register",
-          legal_entity_registration_location: "United States",
-          registered_company_number: "12345678",
-          contribution_currency_value: "11111",
-          contribution_currency_type: "EUR",
-          contribution_sub_types: "SHARES",
-          partnershipType: PartnershipType.LP
-        });
+        const res = await request(app)
+          .post(getUrl(config.url))
+          .send({
+            ...config.pageRouting.get(config.pageType.addLimitedPartnerLegalEntity as PageType),
+            partnershipType: PartnershipType.LP,
+            legal_entity_name: "INVALID-CHARACTERS-FORENAME",
+            legal_form: "Limited Company",
+            governing_law: "Act of law",
+            legal_entity_register_name: "US Register",
+            legal_entity_registration_location: "United States",
+            registered_company_number: "12345678",
+            contribution_currency_value: "11111",
+            contribution_currency_type: "EUR",
+            contribution_sub_types: "SHARES"
+          });
 
         expect(res.status).toBe(200);
 
@@ -183,6 +185,49 @@ export const runAddLimitedPartnerLegalEntityTests = (config: AddLimitedPartnerLe
         expect(res.text).toContain("11111");
         expect(res.text).toContain("EUR");
         expect(res.text).toContain("SHARES");
+      });
+
+      if (config.serviceTitleTranslationKey !== SERVICE_NAME_KEY_TRANSITION) {
+        it("should show localised capital contribution errors when the section is left blank for an LP", async () => {
+          const res = await request(app)
+            .post(`${getUrl(config.url)}`)
+            .send({
+              ...config.pageRouting.get(config.pageType.addLimitedPartnerLegalEntity as PageType),
+              ...limitedPartner.data,
+              ...datesBody,
+              partnershipType: PartnershipType.LP,
+              contribution_currency_type: null,
+              contribution_currency_value: null,
+              contribution_sub_types: []
+            });
+
+          expect(res.status).toBe(200);
+
+          expect(res.text).toContain(enTranslationText.errorMessages.capitalContribution.currencyRequired);
+          expect(res.text).toContain(enTranslationText.errorMessages.capitalContribution.valueRequired);
+          expect(res.text).toContain(enTranslationText.errorMessages.capitalContribution.atLeastOneType);
+        });
+      }
+
+      it("should not require capital contribution when the section is not shown (PFLP)", async () => {
+        const limitedPartnership = new LimitedPartnershipBuilder().withPartnershipType(PartnershipType.PFLP).build();
+        appDevDependencies.limitedPartnershipGateway.feedLimitedPartnerships([limitedPartnership]);
+
+        const res = await request(app)
+          .post(getUrl(config.url))
+          .send({
+            ...config.pageRouting.get(config.pageType.addLimitedPartnerLegalEntity as PageType),
+            ...limitedPartner.data,
+            ...datesBody,
+            partnershipType: PartnershipType.PFLP,
+            contribution_currency_type: null,
+            contribution_currency_value: null,
+            contribution_sub_types: []
+          });
+
+        expect(res.status).toBe(302);
+
+        expect(res.text).toContain(`Redirecting to ${getUrl(config.redirectUrl)}`);
       });
     });
 
