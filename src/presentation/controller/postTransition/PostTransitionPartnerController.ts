@@ -19,12 +19,14 @@ import postTransitionRouting from "./routing";
 import {
   CEASE_DATE_TEMPLATE,
   CHANGE_CHECK_YOUR_ANSWERS_TYPE_SUFFIX,
+  CONTINUE_SAVED_FILING_TEMPLATE,
   DATE_OF_UPDATE_TEMPLATE,
   PARTNER_CHANGE_CHECK_YOUR_ANSWERS_TEMPLATE,
   STOP_SCREEN_NO_CHANGE_TEMPLATE,
   UPDATE_ADDRESS_YES_NO_TEMPLATE,
   UPDATE_ADDRESS_YES_NO_TYPE_SUFFIX,
-  YOUR_COMPANY_URL
+  YOUR_COMPANY_URL,
+  YOUR_FILINGS_URL
 } from "../../../config/constants";
 import UIErrors from "../../../domain/entities/UIErrors";
 import { Ids, PartnerType, Tokens } from "../../../domain/types";
@@ -63,6 +65,51 @@ class PostTransitionPartnerController extends PartnerController {
     private readonly transactionService: TransactionService
   ) {
     super(limitedPartnershipService, generalPartnerService, limitedPartnerService, companyService);
+  }
+
+  getContinueSavedFilingPage() {
+    return (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const { pageType } = super.extract(request);
+        const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
+
+        response.render(CONTINUE_SAVED_FILING_TEMPLATE, super.makeProps(pageRouting, {}, null));
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  continueSavedFiling() {
+    return (request: Request, response: Response, next: NextFunction) => {
+      try {
+        const pageType = super.extractPageTypeOrThrowError(request, PostTransitionPageType);
+        const pageRouting = super.getRouting(postTransitionRouting, pageType, request);
+
+        const selection = request.body["continue_saved_filing"];
+
+        if (selection !== "YES" && selection !== "NO") {
+
+          const uiErrors = new UIErrors().setWebError(
+            "continue_saved_filing",
+            response.locals.i18n.errorMessages.continueSavedFilingPage.selectOption
+          );
+
+          return response.render(
+            this.templateName(CONTINUE_SAVED_FILING_TEMPLATE),
+            this.makeProps(pageRouting, null, uiErrors)
+          );
+        }
+
+        if (selection === "YES") {
+          return response.redirect(YOUR_FILINGS_URL);
+        }
+
+        return response.redirect(pageRouting.nextUrl);
+      } catch (error) {
+        next(error);
+      }
+    };
   }
 
   getCeaseDate() {

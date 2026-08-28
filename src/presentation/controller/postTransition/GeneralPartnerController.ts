@@ -37,6 +37,14 @@ class GeneralPartnerPostTransitionController extends PartnerController {
     return super.getPageRouting();
   }
 
+  getContinueSavedFilingPage() {
+    return this.postTransitionPartnerController.getContinueSavedFilingPage();
+  }
+
+  continueSavedFiling() {
+    return this.postTransitionPartnerController.continueSavedFiling();
+  }
+
   getUpdatePageRouting() {
     return this.postTransitionPartnerController.getUpdatePartner(PartnerType.generalPartner);
   }

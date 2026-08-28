@@ -11,8 +11,18 @@ import {
 import { YOUR_COMPANY_OFFICERS_URL } from "../../../../config/constants";
 import { PartnerEntityType, PartnerType } from "../../../../domain/types";
 
-const postTransitionRoutingLimitedPartnerChoice = {
+const postTransitionRoutingLimitedPartnerContinueSavedFiling = {
   previousUrl: YOUR_COMPANY_OFFICERS_URL,
+  currentUrl: url.LIMITED_PARTNER_CONTINUE_SAVED_FILING_URL,
+  nextUrl: url.LIMITED_PARTNER_CHOICE_URL,
+  pageType: PostTransitionPageType.limitedPartnerContinueSavedFiling,
+  data: {
+    serviceName: "addLimitedPartner"
+  }
+};
+
+const postTransitionRoutingLimitedPartnerChoice = {
+  previousUrl: url.LIMITED_PARTNER_CONTINUE_SAVED_FILING_URL,
   currentUrl: url.LIMITED_PARTNER_CHOICE_URL,
   nextUrl: "/",
   pageType: PostTransitionPageType.limitedPartnerType,
@@ -217,6 +227,7 @@ const postTransitionRoutingLimitedPartnerStopScreenNoChange = {
 };
 
 const limitedPartnerRouting = [
+  postTransitionRoutingLimitedPartnerContinueSavedFiling,
   postTransitionRoutingLimitedPartnerChoice,
   postTransitionRoutingAddLimitedPartnerPerson,
   postTransitionRoutingAddLimitedPartnerLegalEntity,
