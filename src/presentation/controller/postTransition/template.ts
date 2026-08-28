@@ -1,12 +1,14 @@
 import PostTransitionPageType from "./pageType";
 
 // general partner
+export const GENERAL_PARTNER_CONTINUE_SAVED_FILING_TEMPLATE = PostTransitionPageType.generalPartnerContinueSavedFiling;
 export const GENERAL_PARTNER_CHOICE_TEMPLATE = PostTransitionPageType.generalPartnerType;
 export const ADD_GENERAL_PARTNER_PERSON_TEMPLATE = PostTransitionPageType.addGeneralPartnerPerson;
 export const ADD_GENERAL_PARTNER_LEGAL_ENTITY_TEMPLATE = PostTransitionPageType.addGeneralPartnerLegalEntity;
 export const GENERAL_PARTNER_CHECK_YOUR_ANSWERS_TEMPLATE = PostTransitionPageType.generalPartnerCheckYourAnswers;
 
 // limited partner
+export const LIMITED_PARTNER_CONTINUE_SAVED_FILING_TEMPLATE = PostTransitionPageType.limitedPartnerContinueSavedFiling;
 export const LIMITED_PARTNER_CHOICE_TEMPLATE = PostTransitionPageType.limitedPartnerType;
 export const ADD_LIMITED_PARTNER_PERSON_TEMPLATE = PostTransitionPageType.addLimitedPartnerPerson;
 export const ADD_LIMITED_PARTNER_LEGAL_ENTITY_TEMPLATE = PostTransitionPageType.addLimitedPartnerLegalEntity;

@@ -12,8 +12,18 @@ import {
 import { YOUR_COMPANY_OFFICERS_URL } from "../../../../config";
 import { PartnerEntityType, PartnerType } from "../../../../domain/types";
 
-const postTransitionRoutingGeneralPartnerChoice = {
+const postTransitionRoutingGeneralPartnerContinueSavedFiling = {
   previousUrl: YOUR_COMPANY_OFFICERS_URL,
+  currentUrl: url.GENERAL_PARTNER_CONTINUE_SAVED_FILING_URL,
+  nextUrl: url.GENERAL_PARTNER_CHOICE_URL,
+  pageType: PostTransitionPageType.generalPartnerContinueSavedFiling,
+  data: {
+    serviceName: "addGeneralPartner"
+  }
+};
+
+const postTransitionRoutingGeneralPartnerChoice = {
+  previousUrl: url.GENERAL_PARTNER_CONTINUE_SAVED_FILING_URL,
   currentUrl: url.GENERAL_PARTNER_CHOICE_URL,
   nextUrl: "/",
   pageType: PostTransitionPageType.generalPartnerType,
@@ -234,6 +244,7 @@ const postTransitionRoutingGeneralPartnerStopScreenNoChange = {
 };
 
 const generalPartnerRouting = [
+  postTransitionRoutingGeneralPartnerContinueSavedFiling,
   postTransitionRoutingGeneralPartnerChoice,
   postTransitionRoutingAddGeneralPartnerLegalEntity,
   postTransitionRoutingAddGeneralPartnerPerson,
