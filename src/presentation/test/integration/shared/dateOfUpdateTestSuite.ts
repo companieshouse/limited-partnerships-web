@@ -16,6 +16,8 @@ import {
 import { enTranslationText, cyTranslationText } from "../../../../test/utils/locales";
 import { customerFeedbackUrlMap } from "../../../../middlewares/customer-feedback.middleware";
 
+type DateOfUpdateEntity = LimitedPartnership | GeneralPartner | LimitedPartner;
+
 export interface DateOfUpdateTestConfig {
   url: string;
   backLinkUrl: string;
@@ -25,9 +27,9 @@ export interface DateOfUpdateTestConfig {
   serviceNameTranslationKey: string;
   kind: PartnershipKind | PartnerKind;
   changeTypeKey: string;
-  getDisplayedName: (entity: LimitedPartnership | GeneralPartner | LimitedPartner) => string;
+  getDisplayedName: (entity: DateOfUpdateEntity) => string;
   // feeds any entity-specific gateways (e.g. a general/limited partner and its company appointment) and returns the entity under test
-  additionalSetup?: () => LimitedPartnership | GeneralPartner | LimitedPartner;
+  additionalSetup?: () => DateOfUpdateEntity;
   existingDate?: { day: string; month: string; year: string };
 }
 
@@ -39,7 +41,7 @@ export function runDateOfUpdateTests(config: DateOfUpdateTestConfig): void {
     redirectUrl,
     translateExclude,
     serviceNameTranslationKey,
-    kind: kind,
+    kind,
     changeTypeKey,
     getDisplayedName,
     additionalSetup,
@@ -49,7 +51,7 @@ export function runDateOfUpdateTests(config: DateOfUpdateTestConfig): void {
   const dateFieldType = enTranslationText.errorMessages.dateOfUpdate.changeType[changeTypeKey];
   const dateFieldTypeCy = cyTranslationText.errorMessages.dateOfUpdate.changeType[changeTypeKey];
 
-  let entity: LimitedPartnership | GeneralPartner | LimitedPartner;
+  let entity: DateOfUpdateEntity;
 
   describe("Date of update page", () => {
     beforeEach(() => {
