@@ -19,6 +19,7 @@ import { containsInvalidCharacters, isFieldValueMissing, isFieldValueTooLong } f
 import {
   isAddPartnerPage,
   isCeaseDatePage,
+  isUpdatePartnerPage,
   isWhenDidChangeUpdatePage
 } from "../../presentation/controller/postTransition/pageType";
 
@@ -91,19 +92,22 @@ class PartnerPersonValidator {
 
     this.validateForename(uiErrors);
     this.validateSurname(uiErrors);
-    this.validatePreviousName(uiErrors);
-    this.validateFormerNames(uiErrors);
 
-    validateDate(
-      {
-        day: this.data[`${DATE_OF_BIRTH_FIELD}-day`],
-        month: this.data[`${DATE_OF_BIRTH_FIELD}-month`],
-        year: this.data[`${DATE_OF_BIRTH_FIELD}-year`]
-      },
-      uiErrors,
-      DATE_OF_BIRTH_FIELD,
-      this.dateOfBirthErrorMessages
-    );
+    if (!isUpdatePartnerPage(this.data.pageType)) {
+      this.validatePreviousName(uiErrors);
+      this.validateFormerNames(uiErrors);
+
+      validateDate(
+        {
+          day: this.data[`${DATE_OF_BIRTH_FIELD}-day`],
+          month: this.data[`${DATE_OF_BIRTH_FIELD}-month`],
+          year: this.data[`${DATE_OF_BIRTH_FIELD}-year`]
+        },
+        uiErrors,
+        DATE_OF_BIRTH_FIELD,
+        this.dateOfBirthErrorMessages
+      );
+    }
 
     if (isAddPartnerPage(this.data.pageType) && this.data.journeyTypes.isPostTransition) {
       validateDate(

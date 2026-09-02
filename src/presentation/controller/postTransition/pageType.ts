@@ -121,4 +121,14 @@ export const isAddPartnerPage = (pageType: string): boolean => {
   return isAddPartnerPageTypes.includes(pageType);
 };
 
+export const isUpdatePartnerPage = (pageType: string): boolean => {
+  const updatePartnerPageTypes: string[] = [
+    PostTransitionPageType.updateGeneralPartnerPerson,
+    PostTransitionPageType.updateGeneralPartnerLegalEntity,
+    PostTransitionPageType.updateLimitedPartnerPerson,
+    PostTransitionPageType.updateLimitedPartnerLegalEntity
+  ];
+  return updatePartnerPageTypes.includes(pageType);
+};
+
 export default PostTransitionPageType;
