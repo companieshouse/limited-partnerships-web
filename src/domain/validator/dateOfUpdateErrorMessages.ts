@@ -14,13 +14,13 @@ const changeTypeMap = new Map<PostTransitionPageType, string>([
 
 // resolves the {change-type} placeholder in errorMessages.dateOfUpdate against the translated text for the given page type
 export const buildDateOfUpdateErrorMessages = (pageType: string, i18n: any): Record<string, string> => {
-  const template: Record<string, any> = i18n?.errorMessages?.dateOfUpdate ?? {};
+  const dateOfUpdateMessages: Record<string, any> = i18n?.errorMessages?.dateOfUpdate ?? {};
   const changeTypeKey = changeTypeMap.get(pageType as PostTransitionPageType);
-  const changeTypeText = changeTypeKey ? template?.changeType?.[changeTypeKey] : undefined;
+  const changeTypeText = changeTypeKey ? dateOfUpdateMessages?.changeType?.[changeTypeKey] : "";
 
   return Object.fromEntries(
-    Object.entries(template)
+    Object.entries(dateOfUpdateMessages)
       .filter(([key]) => key !== "changeType")
-      .map(([key, value]) => [key, String(value).replace("{change-type}", changeTypeText ?? "")])
+      .map(([key, value]) => [key, String(value).replace("{change-type}", changeTypeText)])
   );
 };
